@@ -55,6 +55,137 @@ completion requirements.
 
 ## Current findings
 
+### Native monster check-dodgeables entry
+
+Public `547C50` now uses a native-pointer C/Go entry (`dabae22`), shared by
+the ordinary MainAI helper. It preserves the cached direction and ray origin,
+the same mutable ray across world-service calls and all five attempts, live
+position/radius reloads, original nonzero service admission, attack-action
+pop, dependency-time push followed by frame/FPS reload, and final dodge
+arguments. The public result remains an int; the original C body remains
+byte-identical under `#if 0`. Local arithmetic preserves the startup x87
+rounding and invalid-operation NaN bits without changing thread FPU state.
+
+Original execution and four native reference files were frozen before engine
+changes, with reference-only commit `436ad52`. Each FPU profile executes
+**2,361 root contexts plus four ancillary RNG contexts**, including three raw
+faults. The actual root/RNG/attack-pop instructions total **550 bytes**;
+**15 alignment bytes** receive no instruction credit. The profiles differ
+in **1,569 root contexts** and remain separate. The **18,465 data bytes** and
+all instruction bytes are already covered by the unchanged oracle manifest;
+all **3,341 code / 693 data ranges** were independently rechecked. No duplicate
+coverage was added. The original reuses its first by-value caller argument
+for distance; only its two observed four-byte stores are permitted there.
+
+Original `547CA2` multiplies by **object+176, the collision radius**, rather
+than current speed at +544. The prior Go helper used speed. An independent
+original control setting only +544 to zero produces byte-identical complete
+golden output. The frozen literal-radius test fails on the old Go helper;
+the unchanged legacy-int public C entry SIGSEGVs after independent native
+layouts, whole initial-record guards and typed getter controls pass above
+4 GiB. Exact failed executables, producer/preparation failures and the first
+nonfinite-comparison failure are preserved. Reference expectations and all
+four frozen files remain unchanged.
+
+Local C/direct-Go original comparison passes **4,727 events**; actual native
+production RNG/clock/Pop/Push composition passes **275**. Affected ordinary
+server checks pass **1,026**, and the focused highres/cgocheck2/checkptr2
+selection passes **5,003** with zero build warnings. Trace, obstacle and tile
+services are declared observer boundaries in the original comparison; full
+geometry, general AI and campaign completion are not inferred from it.
+Local overlays limit unrelated test registrations; full CI remains complete.
+
+The first eleven full native configurations at `dabae22` fail in two older
+actual-legacy test fixtures. They set speed but leave radius zero while
+expecting a lateral dodge. Normal profiles have six failing leaves and two
+failing parents; strict selects the dodge family only and has two failing
+events. Fixture-only `7d328a8` adds explicit radius 10 in those two tests,
+retaining speed 10, every expected coordinate/timer/HP/velocity assertion and
+real world services. Both fixtures pass **23 events** locally in normal and
+strict modes, with zero warnings. The four earlier server fixture adapters
+likewise bind the same values to the original radius; one disproved
+zero-speed-collapse expectation is replaced by the original independent
+zero-speed control. Original fixture sources and first CI failures remain.
+
+All **eleven full follow-up native configurations pass** at immutable
+`7d328a8`: Windows `41372674540`, Linux `41372693333` and macOS
+`41372693373`. Every complete compiler/linker/test-build output, test JSONL
+and raw job log is warning-scanned: **zero warnings**, with no new suppression
+or skips. All **22 complete CI archives** from the first and corrected runs
+are retained with API-digest verification. All ZIP member CRCs and all
+**20 native products / 48 actual full test executables** are checked;
+strict archives contain tests only. All first eleven failures remain failed.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 763,443 | 54 | 0 |
+| linux-amd64-opennox-hd | 763,443 | 54 | 0 |
+| linux-amd64-opennox-server | 757,333 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 757,333 | 7 | 0 |
+| macos-arm64-hd | 761,452 | 43 | 0 |
+| macos-arm64-normal | 761,452 | 43 | 0 |
+| macos-arm64-server | 755,383 | 4 | 0 |
+| macos-arm64-server-hd | 755,383 | 4 | 0 |
+| macos-arm64-strict | 622,532 | 8 | 0 |
+| opennox-server-windows-386 | 735,623 | 94 | 0 |
+| opennox-server-windows-amd64 | 755,353 | 11 | 0 |
+
+Windows retains every previous terminal identity and multiplicity, adds
+**5,003 new entry passes** per architecture, and changes only the two old
+fixture families' eight failure events back to passes. Strict retains every
+old terminal and adds **5,393 events**: 5,003 new entry checks, 383 existing
+server MainAI checks and seven existing actual-legacy Dodge checks newly
+selected by the appended prefixes. Independent raw inventories identify the
+seven events omitted by the initial predicted increment; the old prediction
+and preparation failures remain preserved. The fixture follow-up changes only
+the two strict Dodge failures to passes. Linux's additional default-link
+damage selection runs only for the server and retains **133,384 passes**.
+
+The clean ARM64 runtime product is `opennox-arm64-v2`, **66,195,746 bytes**,
+SHA-256 `63f7e38d73a1eb8effc00d445cef318e0a0ece4f0da10be831ed95a3a5ac3e34`.
+It passes help with zero build warnings. Six Blink modes pass in **37.444s**,
+sixteen first-attack modes in **43.226s**, and Lightning exits naturally in
+**32.175s**. All 28 host images are preserved; four representative frames
+were actually viewed. The first product build fails in dsymutil with an
+explicit LLVM no-space diagnostic; its exact failed command/logs remain.
+The successful build uses the same application source and flags, and the
+temporary .git pointer is restored. The subsequent commit changes tests only.
+
+The input inventory is **4,263**: six additions and six existing radius-fixture
+changes from the previous 4,257; all **4,251 other prior inputs** remain exact.
+Preservation rehashes 298 older standalone products, 81 older test executables,
+4,649 personal asset files, the original GAME.EXE, all 15 protected failed-Save
+files, four frozen references and the current runtime product. Transparent
+compression of **7,356** closed JSON records recovers **4,386,263,040 allocated
+bytes**, preserving logical bytes/hashes/paths, mode/owner/mtime, original
+xattrs and failure states. Only **1,534 closed regenerable compiler archives**
+are removed, recovering **2,371,379,200 allocated bytes**; cached executable tools, modules, assets,
+every Save, failure and executable remain. Subsequent private next-entry
+checks regenerate the normal compiler cache.
+
+Evidence: `ROOT/monster-check-dodgeables-native-entry-port`,
+`ROOT/monster-dodgeables-native-product-e2e-v1` and
+`ROOT/native-ci-retention-20261102`. The actual user's sale-silence report,
+older intermittent Windows memory-failure cause, all nine final chapter 1-3
+audits and overall **100%** remain open; chapter 4+ is excluded.
+
+Next `547DB0` remains unported. Its unchanged **302 instruction bytes** and
+**eight data bytes** execute across **987 independent contexts per FPU
+profile**, including three raw faults; two alignment bytes are excluded.
+Both profiles produce byte-identical output. The actual legacy-int public C
+entry SIGSEGVs after independent layouts, typed getter controls, positive
+native geometry and whole initial-memory guards pass above 4 GiB. Its frozen
+original-versus-existing-Go comparison executes all 987 rows and exposes
+**nine result mismatches** (11 failure events including parents), covering
+unspilled circle/box arithmetic and unordered box gates. Every allocation
+and raw-fault guard passes. Exact failed binaries, inputs, getter, comparator
+and goldens are frozen privately before engine changes. Active C callers
+`54EF00`/`54EF60` still narrow the point context and require further original
+execution and native-call validation. The 302 root bytes are absent from the
+current oracle manifest; one candidate record is prepared, without modifying
+the current manifest. No new native-port or campaign credit is claimed.
+Evidence: `ROOT/point-shape-native-entry-port`.
+
 ### Native monster attack-action pop entry
 
 Public `5471B0` now uses the native Go raw entry (`26a686b`), shared by
@@ -177,18 +308,9 @@ Evidence: `ROOT/monster-pop-attack-actions-native-entry-port`,
 GAME.EXE bytes. All nine final class/chapter 1-3 audits, user sale-silence,
 and overall **100%** remain open; chapter 4+ is excluded.
 
-Next candidate `547C50` remains unported. Its independently frozen inputs
-now execute **2,361 root contexts plus four ancillary RNG contexts per FPU
-profile**, including three raw faults. All **550 actual instruction bytes**
-execute (337 root plus actual RNG/attack-pop children); 15 alignment bytes
-receive no instruction credit. The profiles differ in **1,569 root contexts**,
-so the results remain separate. Whole original heap/code/data/stack,
-nonvolatile registers and FPU guards pass. The root reuses exactly its first
-by-value stack argument for distance; the observer permits only the original
-stores at 547CAB/547CBC, preserving every other caller byte. Original producer
-preparation failures remain preserved. Native consumers, actual C-before
-qualification and engine changes are pending; this earns no port credit.
-Evidence is under `ROOT/monster-check-dodgeables-native-entry-port`.
+The subsequent `547C50` candidate is now implemented and has independent
+original/native validation; its current evidence and pending full follow-up
+gates are recorded in the check-dodgeables section above.
 
 ### Native monster idle-sound entry
 

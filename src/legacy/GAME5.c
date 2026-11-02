@@ -211,6 +211,7 @@ void sub_5456D0(int a1) {
 #endif
 
 //----- (00545790) --------------------------------------------------------
+#if 0 // Native entries live in monster_roam_lifecycle_native_545790_export.go.
 long long sub_545790(int a1) {
 	int v1;           // ecx
 	long long result; // rax
@@ -233,6 +234,7 @@ int sub_5457C0(int a1) {
 	*(uint32_t*)(result + 24 * *(char*)(result + 544) + 556) = 0;
 	return result;
 }
+#endif
 
 //----- (005457E0) --------------------------------------------------------
 // Oracle provenance only: ACTION_ROAM dispatches to the native-width

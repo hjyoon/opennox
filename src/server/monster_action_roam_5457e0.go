@@ -71,9 +71,7 @@ func (s *Server) MonsterActionRoamStart545790(unit *Object) {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
 		return
 	}
-	update := unit.UpdateDataMonster()
-	update.Waypoints[0] = nil
-	update.Field91 = 0
+	unit.MonsterActionRoamStartNative545790()
 }
 
 // MonsterActionRoamCancel5457C0 clears the first argument of the active ROAM
@@ -82,8 +80,8 @@ func (s *Server) MonsterActionRoamCancel5457C0(unit *Object) {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
 		return
 	}
-	if head := unit.UpdateDataMonster().AIStackHead(); head != nil {
-		head.Args[0] = 0
+	if unit.UpdateDataMonster().AIStackHead() != nil {
+		unit.MonsterActionRoamCancelNative5457C0()
 	}
 }
 

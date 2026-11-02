@@ -25,8 +25,8 @@ int nox_xxx_monsterCanCast2_5455B0(nox_object_t* unit);
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1);
 #include "monster_fight_run_state_native_531e20.h"
 void sub_5456D0(nox_object_t* unit);
-long long sub_545790(int a1);
-int sub_5457C0(int a1);
+void* sub_545790(nox_object_t* unit);
+void* sub_5457C0(nox_object_t* unit);
 char nox_xxx_mobActionRoam_5457E0(int* a1);
 void sub_545B00(void* update, nox_waypoint_t* waypoint);
 nox_waypoint_t* sub_545B60(void* update, unsigned char mask);

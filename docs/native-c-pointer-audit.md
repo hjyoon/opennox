@@ -158,13 +158,49 @@ identities remain. All 191 C inputs and headers match clean `f6672bd1c`, with
 zero preprocessor warnings. The original working-tree captures retain their
 actual provenance under `ROOT/secret-wall-state-native-entry-port`.
 
-Raw wall-destroyed entry `4DF0A0` is a follow-up integer-pointer candidate.
+At the preceding `f6672bd1c` source, raw wall-destroyed entry `4DF0A0` remains
+an integer-pointer candidate.
 Its existing ordinary Go counterpart does not port its public C ABI. The
 complete 118-byte original body has distinct direct-Send return and recipient-
 32 broadcast paths. Both original FPU profiles execute 1,974 contexts,
 including 43 faults, with byte-identical complete outputs. This is original
 execution evidence only: its native getter/consumer, actual C reproduction
-and port remain pending under `ROOT/wall-destroyed-native-entry-port`.
+and port are subsequent gates under `ROOT/wall-destroyed-native-entry-port`.
+
+Runtime `c335ee23d` subsequently ports that public entry to a native wall
+argument, retaining the signed C-int recipient/result and direct-Send versus
+recipient-32 broadcast behavior. The raw player traversal core is shared
+with both preceding secret-wall entries. Six references are frozen before
+engine changes; the actual old C entry faults above 4 GiB in two routing
+modes after native controls. Normal/strict selections each pass 6,363 events,
+including thirteen new and fourteen preceding actual default-C children,
+without changing the 4,312 prior inputs or six frozen references.
+
+The new hash-bound host scan finds **3,490 active definitions / 296 integer-
+parameter cast candidates**. Only `4DF0A0` leaves that view. The typed-pointer
+view retains **42 definitions / eleven integer-view overlaps**, with zero
+preprocessor warnings. All 191 C source/header hashes match clean
+`c335ee23d`; no working-tree capture is retrospectively relabelled.
+
+Engine `b65798bc5` then ports raw Chakram driver `4EB250` and callback
+`4EB340`, including native object/point/result pointers and shared pointer
+scratch. Original integer class bits replace the old numeric float cast.
+Ten references are frozen first; the actual old driver crashes above 4 GiB
+after native controls, while the callback reproduces a valid-target class
+failure. Complete original execution covers 376 bytes and 272 contexts per
+FPU profile, including nine faults. Ordinary native startup rounding also
+fails 75 of 99 original comparisons before correction; those failures remain
+preserved. Normal/strict selections subsequently each pass 7,618 events,
+including fourteen actual default-C production children per profile.
+
+The hash-bound host scan now finds **3,488 definitions / 294 integer-cast
+candidates**. Only these two entries leave that view. The typed-pointer view
+has **41 candidates / ten overlaps**, with only `4EB340` removed. All other
+candidate identities remain and all 191 preprocessing logs have zero
+warnings. The manifest's existing 4,043 records remain unchanged. Working-
+tree snapshots keep their original source labels and are rebound by exact
+C source/header hashes to the committed engine. Product and CI evidence for
+this subsequent engine are separate pending gates.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

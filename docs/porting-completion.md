@@ -55,6 +55,158 @@ completion requirements.
 
 ## Current findings
 
+### Native Chakram retarget public entries
+
+Engine `b65798bc5` ports public C `4EB250` and `4EB340` to native object,
+point and returned-object pointers. The callback reads integer class/flag
+bits directly. The original cached update pointer, live point/position/speed
+reads, shared exclusions/result and reentrant scratch replacement are
+retained. Both original C bodies remain exact under `#if 0`; independent
+C11 checks establish both public signatures.
+
+Reference-only `d8c1f72a8` freezes ten contract/getter/consumer/before-test/
+input/producer/golden/provenance files before engine changes. Both original
+FPU profiles execute all **376 instruction bytes**, **272 inputs** and
+**nine faults** each. The profiles differ in **112 complete outputs**, so
+both goldens are retained. Rectangle `517C10`, buff `4FF350` and visibility
+`537110` are declared world services. Nested calls execute original driver
+and callback instructions; whole image, 64 KiB heap, five scratch words,
+guarded caller, valid-return registers and FPU CW/TOP are checked. The driver
+legitimately spills Y into its first argument slot; the initial preparation
+rejection of that slot and its source/log remain preserved. The published
+producer regenerates both goldens byte for byte.
+
+Actual old C reproduces a driver SIGSEGV above 4 GiB after independent
+complete layouts, owner/update/LastHit pointer-chain, native rectangle/buff
+and real C visibility controls. The old callback instead rejects valid
+class bits through a numeric float-to-integer cast, before reaching its
+narrowed point. This is a semantic failure, not a claimed callback crash.
+Both full before executables and their source bindings remain retained.
+
+The original startup comparison also exposes **75 mismatches in 99 sampled
+ordinary native searches**. The ordinary game adapter now selects the
+original PC53/toward-zero arithmetic shared with the raw port. Existing
+generic nearest-profile controls keep their expectations. All 99 original
+startup cases and 45 previous Chakram controls subsequently pass; the failed
+before executable, source and complete JSON stream remain retained.
+
+Normal and highres/cgocheck2/checkptr2 selections each pass **7,618 events**,
+with identical terminal identities/actions/multiplicities and zero skips.
+All **6,363 preceding wall/secret-wall events** and **45 previous Chakram
+controls** remain, with **1,210 new native-family passes**. Fourteen new
+default-C children qualify real rectangle/callback/buff/vision paths, plus
+all 27 preceding secret-wall/wall-destroyed children. Complete seven/eight
+native records are guarded, including the real services' exact Field62
+visitation effects. An independent real C rectangle collector distinguishes
+an excluded boundary-center shape from an admitted radius-one shape at the
+same 400-unit center distance. The two unqualified production fixtures and
+their logs/executables remain preserved. Fourteen local test executables
+are retained; local warnings are zero and the manifest verifier passes 21.
+
+All **4,319 preceding inputs** and ten frozen references remain exact.
+The existing manifest already covers these 376 bytes and constants; all
+**4,043 records** remain unchanged. The strict selector adds only
+`ChakramRetarget`. Hash-bound host preprocessing finds **3,488 definitions /
+294 integer-cast candidates**, with **41 typed-pointer candidates / ten
+overlaps** and zero warnings. Only the two ported entries leave the integer
+view; only `4EB340` leaves the typed view. The original working-tree captures
+retain their provenance, with exact source/header rebinding to the engine
+commit. These are triage counts, not completion percentages.
+
+Product, host E2E and native CI qualification for this engine remain pending.
+All nine final campaign audits and the previously open user issues remain
+open; overall 100% is **not** achieved.
+
+### Native wall-destroyed packet C entry
+
+Runtime `c335ee23d` ports public C `4DF0A0` from an integer wall argument to
+the existing native wall record type. The cached opcode-58/WORD packet and
+all routing arguments retain their original behavior. Recipient 32 uses
+live player traversal and returns zero; every other signed 32-bit recipient
+calls Send directly and preserves its signed C-int result. Direct sends do
+not inspect player records. The raw traversal core is shared with the two
+previous secret-wall entries, with no class/null admission added. The
+ordinary Go sender keeps its separate void-return contract. The original
+C body remains exact under `#if 0`, with an independent C11 signature check.
+
+Reference-only `7380dbbef` freezes six getter/consumer/before-test/producer/
+golden/provenance files before engine changes, reusing the unchanged prior
+native layout and world-service contracts. Both original FPU profiles execute
+**1,974 contexts**, including **43 faults**, with byte-identical complete
+outputs. All **118 instruction bytes** execute, including both return paths;
+ten alignment bytes earn no credit. First `4DA7C0`, Next `4DA7F0` and Send
+`4E5420` are explicit world-service boundaries. Whole image, guarded 64 KiB
+heap/caller, valid-return nonvolatile state and FPU CW/TOP are checked.
+The actual old C entry **SIGSEGV above 4 GiB** in direct-recipient-0 and
+broadcast-recipient-32 modes after real native pointer/traversal controls
+and seven whole records pass. The full before executable and both crashes
+remain retained.
+
+Normal and highres/cgocheck2/checkptr2 selections each pass **6,363 events**,
+retaining all **2,397 preceding identities/actions/multiplicities** and adding
+**3,966 native passes**, without new skips. Each profile passes **thirteen
+new default-C production children**, plus all fourteen preceding secret-wall
+children. The new modes inspect real C traversal, packet allocation/queue
+links, direct/broadcast returns, unsigned 255 and slot 31, empty/inactive
+players, cached wall ID, live disconnection, direct sends with absent update
+records and a real accepted/no-allocation Send result. Each new child guards
+37 complete native records, including all 32 player slots. Five local
+qualification executables are retained. Local warnings are zero, and the
+manifest verifier passes 21 events.
+
+All **4,312 prior inputs** and six frozen references remain exact. The
+manifest preserves all **4,042 prior records**, metadata/order and backed
+bytes, adding one 118-byte code range and no data: **3,350 code / 693 data
+ranges**, **4,043 records**. The strict CI pattern adds only `WallDestroyed`,
+retaining all earlier alternatives, flags, guards and skip rules.
+
+The clean Go 1.26.9 ARM64 product is **66,259,458 bytes**, SHA-256
+`cbdf1f5dc96cd729028ac356ec435e1f20bf1514d1610a057631c095d5702942`.
+Build/help pass with zero warnings and the original `.git` pointer restored.
+The unchanged stock secret-wall target passes in **37.822s**, Blink in
+**37.280s**, first-attack in **43.499s**, and Lightning/Drain Mana cleanup in
+**32.847s**. All four lanes exit naturally with code 0. All 28 regression
+captures match the preceding secret-wall product byte for byte; four are
+actually viewed. These controlled headless/virtual/mock-audio lanes exercise
+ordinary host paths; thirteen new and fourteen preceding default-C children
+separately qualify the raw entries. No earned-campaign or audible-fidelity
+credit is inferred.
+
+At immutable `c335ee23d`, Windows `41470276949` passes both amd64/386 gates,
+Linux `41470378750` passes all four gates, and macOS `41470378189` passes HD,
+server and strict. Complete available archives, products/test executables,
+all text/JSONL and raw job logs qualify with zero compiler/linker warnings.
+All nine available profiles retain every `f6672bd1c` terminal identity,
+action and multiplicity, adding exactly 3,966 passes each and no new skips.
+The macOS aggregate run nevertheless retains its original **failure**:
+normal/server-HD never acquire hosted ARM64 runners in three attempts,
+with capacity annotations and failed/cancelled states preserved. The same
+full normal gate is requested individually as `41482200967`; server-HD
+remains pending. Neither unfinished profile earns passing credit, and an
+observation timeout never cancels or restarts a live queued job.
+
+Host preprocessing finds **3,490 active C definitions / 296 integer-cast
+candidates**. Only `4DF0A0` leaves that integer view; all other candidate
+identities remain. The separate typed-pointer view retains **42 definitions /
+eleven overlaps**, with zero preprocessor warnings. All 191 C sources and
+headers match clean `c335ee23d`; original working-tree captures keep their
+actual provenance. These are triage counts, not completion percentages.
+
+Preservation rehashes all surviving/restored older products and test
+executables, personal assets, original GAME.EXE, protected failed Saves,
+compressed records/logs, recent products and current retained executables.
+The five unavailable historical products retain their original hashes and
+missing state. The user explicitly directs continued porting because these
+old validation executables are not required: **additional copy search is
+stopped, and their restoration is not a porting gate**. Existing assets,
+Saves, failure records, goldens and current products remain preserved. Only
+an identical, unexecuted source draft is removed after verified publication
+of the exact copy in the repository.
+
+All nine final chapter 1–3 audits, actual user sale-silence reproduction and
+the older Windows memory-failure cause remain open. Overall 100% is **not**
+achieved.
+
 ### Native secret-wall state packet C entries
 
 Runtime `f6672bd1c` ports public C `4DF120` and `4DF180` to native wall

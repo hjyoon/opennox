@@ -230,6 +230,19 @@ complete frozen consumers, actual old-C high-pointer reproductions, the
 port and its product/runtime gates remain pending. These references earn
 no new native-entry or overall completion credit.
 
+Four further contract/getter/consumer/before-test files are frozen before
+the engine change, bringing this family's reference set to ten. All four
+actual old C entries SIGSEGV above 4 GiB after independent complete native
+layouts, guarded whole records and real C point/spark packet and empty-map
+push controls pass. An initial nested Go field-offset preparation failure
+is retained and corrected by including the containing object's field offset;
+it earns no crash credit. The frozen ordinary consumer compares 289 valid
+inputs: 278 match and eleven fail only in later point values after declared
+world mutations/reentry. All other events, returns, final positions and
+canonical heap hashes match. This is a controlled original-service
+comparison, not a claimed ordinary-gameplay failure. Full native raw/ordinary
+implementation and default-C production gates remain pending.
+
 The full Go code-verifier CLI rejects the earlier `5471F4` jump-table data
 in an executable section. The untouched preceding
 manifest reproduces the identical first rejection; both failures and the

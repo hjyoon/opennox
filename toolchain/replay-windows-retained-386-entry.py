@@ -73,12 +73,17 @@ def retain(label, artifact_id, revision, checkout):
     return folder, executable, metadata
 
 
-environment = dict(os.environ, GOTOOLCHAIN="local", GOARCH="386", CGO_ENABLED="0",
-                   GOWORK="off", GOGC="100", GODEBUG="")
+environment = dict(os.environ, GOTOOLCHAIN="local", GOARCH="386", CGO_ENABLED="1",
+                   GOWORK=str(repo / "go.work"), GOGC="100", GODEBUG="")
 environment.pop("GOEXPERIMENT", None)
+compiler = Path(environment["CC"])
+assert compiler.name == "i686-w64-mingw32-clang.exe" and compiler.is_file()
+assert environment["CGO_CFLAGS"] == "-O2 -g"
 (report / "environment.json").write_text(json.dumps(dict(
     platform=platform.platform(), go_version=subprocess.check_output(["go", "version"], text=True).strip(),
-    environment={key: environment.get(key) for key in ["GOARCH", "GOGC", "GODEBUG", "GOEXPERIMENT"]},
+    compiler_version=subprocess.check_output([str(compiler), "--version"], text=True),
+    environment={key: environment.get(key) for key in ["GOARCH", "GOGC", "GODEBUG", "GOEXPERIMENT", "CC", "CXX", "CGO_CFLAGS", "CGO_ENABLED", "GOWORK"]},
+    original_independent_C_probes_keep_native_386_compiler=True,
     no_engine_test_or_runtime_changes=True), indent=2))
 current = retain("current", os.environ["RETAINED_ARTIFACT_ID"], source, repo)
 baseline_id = os.environ.get("BASELINE_RETAINED_ARTIFACT_ID", "")
@@ -97,10 +102,11 @@ def replay(group, label, pattern, count):
     args = [str(executable), "-test.v=test2json", "-test.count=" + str(count),
             "-test.timeout=15m", "-test.run=" + pattern]
     raw, errors = folder / (label + ".stdout.log"), folder / (label + ".stderr.log")
+    replay_env = dict(environment, GOWORK=str(Path(metadata["checkout"]) / "go.work"))
     with raw.open("xb") as out, errors.open("xb") as err:
         try:
             run = subprocess.run(args, cwd=Path(metadata["checkout"]) / "src/legacy",
-                                 env=environment, stdout=out, stderr=err, timeout=1000)
+                                 env=replay_env, stdout=out, stderr=err, timeout=1000)
             code = run.returncode
         except subprocess.TimeoutExpired:
             code = None

@@ -213,6 +213,32 @@ jobs:
         with:
           go-version: ${{ steps.retained_go.outputs.version }}
           cache: false
+      - name: Restore original 386 compiler for retained independent C probes
+        if: ${{ inputs.retained_entry_probe }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # The retained Go test PE is never rebuilt. Its existing tests
+          # compile independent C probes using the original native compiler.
+          $name = 'llvm-mingw-20261020-ucrt-x86_64'
+          $archive = Join-Path $env:RUNNER_TEMP "$name.zip"
+          Invoke-WebRequest "https://github.com/mstorsjo/llvm-mingw/releases/download/20261020/$name.zip" -OutFile $archive
+          $expected = 'fd5462b7f5d93b2ff981fcd3f9c7e427e47f3203c64ea91c27bcc444eebd74cd'
+          $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          if ($actual -ne $expected) { throw "LLVM-MinGW archive digest mismatch: $actual" }
+          Expand-Archive -LiteralPath $archive -DestinationPath $env:RUNNER_TEMP
+          $mingwBin = Join-Path (Join-Path $env:RUNNER_TEMP $name) 'bin'
+          $compiler = Join-Path $mingwBin 'i686-w64-mingw32-clang.exe'
+          if (-not (Test-Path $compiler)) { throw 'Missing original 386 compiler' }
+          & $compiler --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          'int opennox_retained_probe;' | & $compiler -x c -fsyntax-only -
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $mingwBin >> $env:GITHUB_PATH
+          "CC=$compiler" >> $env:GITHUB_ENV
+          "CXX=$(Join-Path $mingwBin 'i686-w64-mingw32-clang++.exe')" >> $env:GITHUB_ENV
+          'CGO_CFLAGS=-O2 -g' >> $env:GITHUB_ENV
+          'CGO_CFLAGS_ALLOW=-f.*' >> $env:GITHUB_ENV
       - name: Replay retained executable and compare pointer snapshot lifetimes
         shell: python
         env:

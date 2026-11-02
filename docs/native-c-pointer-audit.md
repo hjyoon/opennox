@@ -36,6 +36,14 @@ integer. Raw entries retain original faults and short circuits; ordinary
 callers keep their earlier admission checks. Original C bodies remain exact
 under `#if 0`, and the frozen original getters/consumers are unchanged.
 
+At ported source `43ae3d9`, the repeated host scan finds **3,499 active C
+definitions / 301 integer-cast candidates / 287 fixed-32-bit candidates**.
+Only the resume and cast predicates disappear from the cast inventory; the
+third, forwarding retreat predicate had no cast of its own. All three typed
+public ABIs are independently typechecked and compared with the original.
+The fourteen native-width/other candidates remain separated. This scan
+introduces no new fixed-32-bit candidate or preprocessor warning.
+
 The raw `5456D0` C update still has an integer object argument. Its call to
 the newly typed predicate explicitly reconstructs only the pointer width
 that this old entry already admitted; this does not port `5456D0`. No direct

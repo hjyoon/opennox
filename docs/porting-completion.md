@@ -55,6 +55,125 @@ completion requirements.
 
 ## Current findings
 
+### Native retreat predicate C entries and fixed-width pointer audit
+
+Runtime `43ae3d9` ports public `545520`, `545580` and `5455B0` from integer
+object arguments to typed `nox_object_t*` C/Go entries. Ordinary retreat and
+retreat-to-master helpers share the same health/cast cores and preserve their
+earlier admission checks. Raw entries add no class/null admission, retain
+health/MUD pointer-load order, the zero-Max path, PC53/ToZero division,
+unordered rejection, the low-byte status gate, real native buff getter and
+original parent short circuit. C results remain canonical ints; all three
+original C bodies remain byte-identical under `#if 0`.
+
+Reference-only `6d61406` freezes five getter/consumer/golden/provenance files
+before engine changes. Each original FPU profile executes **2,073 root
+contexts plus one ancillary null-buff context**, including **19 raw faults**;
+the two complete outputs agree byte-for-byte. The parent executes actual
+original health/cast/buff bodies with no service or arithmetic substitution.
+All **201 instruction bytes / four constant-data bytes** are already covered
+by the unchanged **3,342 code / 693 data range** manifest; 39 alignment bytes
+earn no instruction credit. Every existing record/backed byte/SHA is checked.
+The original health routine's two stores into its by-value caller argument
+are admitted only at their observed instruction addresses. Whole original
+image, heap and guarded caller bytes, valid-return nonvolatile registers,
+CW and TOP are checked.
+
+Before porting, **all three actual C entries SIGSEGV** above 4 GiB after
+independent C/Go layouts, typed native sound/action/buff positive controls and
+complete initial-allocation guards pass. The exact executed binary and
+failure logs remain retained. The first link runs out of disk space; a second
+preparation lacks a cached module with offline fetching disabled. Both are
+preserved; the same source then builds after dependency restoration.
+
+The frozen original comparison passes **4,150 normal events**. A broader
+ordinary-caller and raw-class selection passes **5,976** both normally and
+with highres/cgocheck2/checkptr2. New raw-class checks reject accidental
+Monster-only admission. Seven exact local test executables, including the
+before binary and setup-failed run's completed legacy binary, are retained.
+Local build/link warnings are **zero**. All **4,274 prior inputs** and five
+frozen reference files remain exact; six additions make **4,280** current
+inputs. No golden, expected value, existing selector or skip is changed.
+
+All **eleven required native configurations pass at the same immutable
+`43ae3d9` source**: Windows `41387353163`, Linux `41387375743`, four successful
+profiles in macOS `41387378055`, and unchanged full macOS server-hd replay
+`41389658359`. The first macOS run remains a **failure**: its existing Quest
+renderer C child completes 4,032 cases, then `mmap` returns a different address
+for the third requested mapping. The exact-address guard rejects it with
+`failure=0 draws=58/58`; no new retreat check fails. All twelve renderer/test
+dependencies match the previous passing point-port source. The unchanged
+standalone C program also passes all 6,048 cases in sixteen fresh local
+processes. Only that unchanged full server-hd profile is repeated; all address
+and output assertions remain. The first and replay server-hd products are
+byte-identical. This does not claim the mapping-placement intermittency is
+eliminated.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 770,893 | 54 | 0 |
+| linux-amd64-opennox-hd | 770,893 | 54 | 0 |
+| linux-amd64-opennox-server | 764,783 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 764,783 | 7 | 0 |
+| macos-arm64-hd | 768,902 | 43 | 0 |
+| macos-arm64-normal | 768,902 | 43 | 0 |
+| macos-arm64-server | 762,833 | 4 | 0 |
+| macos-arm64-server-hd | 762,833 | 4 | 0 |
+| macos-arm64-strict | 630,171 | 8 | 0 |
+| opennox-server-windows-386 | 743,073 | 94 | 0 |
+| opennox-server-windows-amd64 | 762,803 | 11 | 0 |
+
+Every prior Windows and macOS-strict terminal identity/action/multiplicity
+is retained, adding **4,182 new pass events** per profile and no new skips.
+The strict selector is unchanged. Linux's extra default-link damage lane
+retains **133,384 passes**. All available **12 runtime artifact ZIPs / 11
+products / 27 full parent test executables** and every raw non-skipped job log
+are retained with API digests, all payload SHA checks and every member CRC.
+All text/JSONL bytes are warning-scanned: compiler, linker, test-build and
+raw-job warnings are **zero**, with no new suppression flags. The separate
+reference-only Windows run `41386465377` retains 4,149 pending-native-consumer
+failure events per architecture, its two ZIPs, two products and six full test
+executables. Neither failed run is relabelled as successful. The temporary C
+child in the first failed macOS run is cleaned by the unchanged fixture;
+its exact parent Go test executable, extracted source inputs and full failure
+output are preserved.
+
+The clean Go 1.26.9 ARM64 product is **66,199,986 bytes**, SHA-256
+`927c175272e8d5415ea24dc8ee3b5ce71fdaa748ff564eca8c8c646826c1825c`.
+Build/help pass without warnings and record clean `43ae3d9` source. Unchanged
+host Blink (six modes), first-attack (sixteen modes) and Lightning natural-exit
+lanes pass in **39.090s / 46.244s / 35.257s**. All 28 captures are preserved
+and byte-identical to the preceding point product; four are actually viewed.
+These controlled headless/virtual/mock-audio lanes earn no additional campaign
+or audible-output completion credit.
+
+Host clang preprocessing audits **191 C files**, excluding preserved `#if 0`
+bodies. Before the port it finds **3,502 active definitions / 303 integer-cast
+candidates**, including **289 fixed-32-bit candidates** and fourteen native
+width/other cases. Afterwards it finds 3,499 / 301 / **287**, respectively;
+the forwarding `545580` is outside both cast counts. These are static triage
+counts, not confirmed remaining defects or a completion percentage. Integer
+handles, control flags and callback-address references require semantic
+classification; see [native-c-pointer-audit.md](native-c-pointer-audit.md).
+Raw C `5456D0` remains an unported integer-object entry and a follow-up target;
+ordinary runtime uses its existing native Go update. Its call-site conversion
+does not port that outer entry or close indirect reachability.
+
+Preservation rechecks all earlier 298 products, 81 full test executables,
+4,649 personal files, original GAME.EXE, 15 protected failed-Save files and
+14,167 compressed JSON records, plus prior output logs and recent products.
+Only **325 closed regenerable Go temporary AR files / 271,880,192 allocated
+bytes** are deleted after stat/SHA/lsof checks. A proposed transparent test
+executable compression changes zero files because free space has recovered;
+no compression savings are claimed. Assets, every Save, failures, records,
+inputs, goldens, products and executables remain preserved.
+
+Evidence: `ROOT/monster-retreat-predicates-native-entry-port` and
+`ROOT/monster-retreat-predicates-native-product-e2e-v1`. All nine final
+class/chapter 1-3 audits, actual user sale-silence, the older intermittent
+Windows memory-failure cause and overall **100%** remain open. Chapter 4+
+is excluded.
+
 ### Native point/shape and occupancy call closure
 
 Runtime `1c83052` ports public `547DB0`, `54EF00` and `54EF60` to native

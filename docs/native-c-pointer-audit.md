@@ -110,6 +110,36 @@ execution, actual C reproductions, native scratch/return and ordinary-caller
 analysis before porting. No crash or completion credit is inferred from these
 new static findings alone.
 
+Runtime `c351c49c0` subsequently ports all three edible-family entries.
+`5455E0` returns a native action-slot pointer, `544A00` uses native search
+input/result/shared scratch, and `544A40` accepts native candidate/owner
+pointers. Raw live globals, nested search and fault order remain distinct
+from ordinary admission and local scratch. All three actual old C entries
+fault above 4 GiB after native positive controls. Eight original references
+are frozen before the engine change; each FPU profile executes 3,406
+contexts, including thirteen faults, across 439 instruction bytes. Normal
+and strict selections each pass 14,761 events, including fifty fresh actual-C
+production children, without changing those frozen references.
+
+The new hash-bound host scan finds **3,493 active definitions / 297 integer-
+cast candidates**. Only `544A40` leaves that cast view: forwarding `5455E0`
+was missed because it had no cast of its own, while `544A00` belonged to the
+typed-parameter view. The latter now contains **44 definitions**, eleven
+overlapping the integer-candidate view. Preprocessor warnings remain zero.
+Source/header hashes are independently rebound to clean `c351c49c0`;
+earlier working-tree snapshots are not relabelled as clean-source captures.
+Both inventories and their provenance remain under
+`ROOT/monster-retreat-edibles-native-entry-port`.
+
+The remaining direct Go references need semantic classification: several
+parser casts reduce successful non-null results to a boolean, some references
+identify callbacks that already dispatch to native Go implementations, and
+others call raw C entries. In particular secret-wall packet entries `4DF120`
+and `4DF180` accept pointers but narrow them internally, and truncate player-
+unit traversal pointers. Their existing ordinary Go implementation does not
+close those public C paths. Original execution and actual C reproduction
+must precede a port; a static match supplies no crash or completion credit.
+
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source
 revision. Static inventory changes alone earn no campaign, audio, runtime

@@ -55,6 +55,119 @@ completion requirements.
 
 ## Current findings
 
+### Native edible-search C entries and archival copy recovery
+
+Runtime `c351c49c0` ports raw `5455E0`, search `544A00` and callback `544A40`
+to typed native object arguments. The search now returns the complete native
+object pointer and uses native pointer scratch; the outer entry returns the
+complete action-slot pointer. These entries share arithmetic, filtering and
+action stores with the ordinary retreat-to-food dispatcher. Ordinary local
+scratch, admission and captured online state remain; raw shared scratch,
+live flags, nested-search behavior and original fault prefixes remain.
+All three original C bodies stay exact under `#if 0`, with three independent
+C11 public-signature assertions.
+
+Reference-only `c0e054dd` freezes eight getter/consumer/input/golden/producer/
+provenance files before the engine change. Each FPU profile executes **3,406
+original contexts**, including **13 faults**. The independent original runs
+**439 instruction bytes** across the three entries and two original flag/
+poison callees; only spatial enumeration, visibility and action allocation
+are service boundaries. Nine contexts distinguish original FPU rounding;
+PC53/ToZero is canonical and nearest-rounding results remain preserved.
+Whole original image, guarded 64 KiB heap, scratch, caller/nonvolatile state
+and valid-return FPU state are checked. Three actual old C entries **SIGSEGV
+above 4 GiB** after independent layouts, whole native records and real
+ordinary map/visibility/action/sound/health/poison controls pass. The exact
+before executable and all preparation failures remain retained.
+
+The first normal run exposes signed-NaN differences for same-sign infinity
+subtraction and incorrect production-fixture expectations for spatial visit
+stamps. The engine preserves the original negative indefinite NaN. The first
+fixture correction still misses nested visibility enumeration in accepted
+food cases; the second models both visit levels exactly, retaining whole-
+record assertions. These corrections change neither the eight frozen
+references nor any original golden, expected value, guard or selector.
+Both failed runs, binaries and outputs remain preserved. Final normal and
+highres/cgocheck2/checkptr2 selections each pass **14,761 events**, including
+**6,868 new passes** and **50 fresh actual-C production children**, with
+identical terminal identities/actions/multiplicities and no new skips.
+All twelve local test executables remain retained; the manifest test passes
+21 events. Final local compiler/linker warnings are zero.
+
+The manifest adds only **206 instruction bytes** for the search and callback;
+the outer entry and flag/poison callees already have seals. All **4,038 prior
+records**, their metadata/order and backed bytes remain exact. Current
+totals are **3,347 code / 693 data ranges**, **4,040 records**; mutable scratch
+earns no constant-data credit. All 4,295 earlier inputs and eight frozen
+references remain exact.
+
+All eleven native configurations pass at the same immutable `c351c49c0`
+source: Windows `41422246576`, Linux `41422476064` and macOS `41422480227`.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 782,344 | 54 | 0 |
+| linux-amd64-opennox-hd | 782,344 | 54 | 0 |
+| linux-amd64-opennox-server | 776,234 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 776,234 | 7 | 0 |
+| macos-arm64-hd | 780,353 | 43 | 0 |
+| macos-arm64-normal | 780,353 | 43 | 0 |
+| macos-arm64-server | 774,284 | 4 | 0 |
+| macos-arm64-server-hd | 774,284 | 4 | 0 |
+| macos-arm64-strict | 641,622 | 8 | 0 |
+| opennox-server-windows-386 | 754,524 | 94 | 0 |
+| opennox-server-windows-amd64 | 774,254 | 11 | 0 |
+
+Every prior terminal identity/action/multiplicity is retained, adding 6,868
+passes per profile and no new skips. Strict selection and established pointer-
+label normalization remain unchanged. All **11 artifact ZIPs / 10 products /
+24 full parent test executables** are retained with API digests, binary SHA
+checks and every member CRC. Complete text/JSONL streams and raw job logs
+have **zero compiler/linker/test-build warnings**, without new suppression.
+Earlier failed CI runs retain their original conclusions.
+
+The clean Go 1.26.9 ARM64 product is **66,238,786 bytes**, SHA-256
+`bb18c9a8e6187e5e069e183117a4d397ff8c628e611e412f3304aac67e4bf30a`.
+Build/help pass with zero warnings and the original `.git` pointer restored.
+Periodic food retreat passes eight modes in **45.578s**, exercising actual
+Troll/NPC/apple/meat objects, cadence, movement, healing/sound events and
+server/client deletion. Blink, first-attack and Lightning/Drain Mana cleanup
+regressions pass in **41.335s / 46.726s / 33.623s**. All four lanes exit
+naturally with code 0. All **36 captures** remain; six are actually viewed,
+and all 28 regression captures match the preceding ROAM product byte for
+byte. These controlled headless/virtual/mock-audio results earn no new
+campaign or perceptual-audio credit. The earlier unsuccessful passive
+PICKUP probe remains separate and uncredited.
+
+The repeated host scan finds **3,493 active C definitions / 297 integer-cast
+candidates** and a separate **44-definition typed-pointer narrowing view**,
+with eleven overlaps. Forwarding `5455E0` had no explicit cast and was missed
+by that heuristic; typed `544A00` leaves the separate view. These counts are
+triage, not defect or completion denominators. See
+[native-c-pointer-audit.md](native-c-pointer-audit.md).
+
+During final preservation checks, user-confirmed cleanup removed 42 older
+standalone products. **37 are restored from existing copies with the exact
+original SHA-256 and size**, without rebuilding or substituting changed
+bytes. Five remain missing: `monster-facing-native-entry-port`,
+`door-and-shop-audio-native`, `shop-audio-playback-observer-v1`,
+`shop-audio-independent-peer-v1` and `door-audio-stock-playback-v1`
+(`opennox-arm64` in each directory). Their original hashes, build records
+and successful/failed results remain. Consequently the historical 298-product
+preservation claim below describes the earlier checkpoint; it is **not a
+current all-products-preserved claim**. Recovery receipts and the missing
+inventory are under `ROOT/monster-retreat-edibles-native-entry-port`.
+The final rehash verifies 293 surviving/restored older products, all 81
+older test executables, 4,649 personal files, original GAME.EXE, fifteen
+protected failed-Save files, 14,167 compressed JSON records and 1,879
+compressed output logs. Current engine qualification and the five-product
+archival gap are recorded together in
+`all-current-edibles-engine-gates-qualified-archival-five-open-v1.json`.
+
+All nine final chapter 1–3 audits, actual user sale-silence reproduction and
+the older Windows memory-failure cause remain open. Overall 100% is **not**
+achieved.
+
 ### Native ROAM start/cancel C entries and pointer narrowing inventory
 
 Runtime `7d404efc` ports public C `545790` and `5457C0` to typed

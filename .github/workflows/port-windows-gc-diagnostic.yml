@@ -41,6 +41,13 @@ on:
         type: choice
         options: [all, normal, hd, server, server-hd, strict]
         default: all
+      macos_native_runner:
+        description: Standard Apple Silicon image; all native gate checks remain the same
+        type: choice
+        # Both labels are standard arm64 images in the GitHub runner reference.
+        # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+        options: [macos-26, macos-15]
+        default: macos-26
 
 permissions:
   contents: read
@@ -387,7 +394,7 @@ jobs:
   macos_native:
     if: inputs.macos_native_gate && !inputs.macos_fixture_address_probe
     name: macOS/ARM64 ${{ matrix.variant }} native gate
-    runs-on: macos-26
+    runs-on: ${{ inputs.macos_native_runner }}
     timeout-minutes: 60
     strategy:
       fail-fast: false

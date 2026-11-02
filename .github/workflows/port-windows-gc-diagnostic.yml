@@ -16,6 +16,18 @@ on:
         description: Optional retained native artifact; replay exact executables without rebuilding
         type: string
         default: ''
+      retained_entry_probe:
+        description: Replay exact retained Windows/386 legacy entry executable without rebuilding
+        type: boolean
+        default: false
+      baseline_retained_artifact_id:
+        description: Optional previous passing Windows/386 artifact for the entry replay
+        type: string
+        default: ''
+      baseline_source_revision:
+        description: Exact source of the optional previous passing artifact
+        type: string
+        default: ''
       macos_native_gate:
         description: Run full macOS ARM64 product and strict gates instead of Windows diagnostics
         type: boolean
@@ -201,6 +213,9 @@ jobs:
           RETAINED_ARTIFACT_ID: ${{ inputs.retained_artifact_id }}
           SOURCE_REVISION: ${{ inputs.source_revision }}
           REPORT_DIR: build/windows-retained-diagnostic
+          RETAINED_ENTRY_PROBE: ${{ inputs.retained_entry_probe }}
+          BASELINE_RETAINED_ARTIFACT_ID: ${{ inputs.baseline_retained_artifact_id }}
+          BASELINE_SOURCE_REVISION: ${{ inputs.baseline_source_revision }}
         run: |
           import hashlib, json, os, pathlib, shutil, subprocess, urllib.parse, urllib.request, zipfile
           report = pathlib.Path(os.environ['REPORT_DIR']).resolve()
@@ -226,6 +241,13 @@ jobs:
           assert artifact['workflow_run']['head_sha'] == source
           assert not artifact['expired']
           (report/'original-artifact.json').write_text(json.dumps(artifact, indent=2))
+          if os.environ.get('RETAINED_ENTRY_PROBE') == 'true':
+              assert artifact['name'] == 'opennox-server-windows-386'
+              runner = report/'replay-windows-retained-386-entry.py'
+              runner.write_bytes(subprocess.check_output([
+                  'git', 'show', '${{ github.sha }}:toolchain/replay-windows-retained-386-entry.py']))
+              import sys
+              raise SystemExit(subprocess.call([sys.executable, str(runner)]))
           if artifact['name'] == 'opennox-server-windows-amd64':
               runner = report/'replay-windows-retained-amd64.py'
               runner.write_bytes(subprocess.check_output([
@@ -355,6 +377,9 @@ jobs:
             !build/windows-retained-diagnostic/retained.zip
             !build/windows-retained-diagnostic/server.test.exe
             !build/windows-retained-diagnostic/legacy.test.exe
+            !build/windows-retained-diagnostic/entry386/**/retained.zip
+            !build/windows-retained-diagnostic/entry386/**/legacy.test.exe
+            !build/windows-retained-diagnostic/entry386/baseline-checkout/**
             !build/windows-retained-diagnostic/v1.test.exe
           if-no-files-found: error
           retention-days: 7

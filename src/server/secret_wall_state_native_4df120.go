@@ -11,10 +11,5 @@ func (wall *Wall) SecretWallStateNative4DF120(open bool, runtime SecretWallPacke
 		packet[0] = 60
 	}
 	binary.LittleEndian.PutUint16(packet[1:], wall.Field10)
-	for unit := runtime.FirstUnit(); unit != nil; unit = runtime.NextUnit(unit) {
-		// The raw entry does not classify the object or guard either pointer.
-		player := (*PlayerUpdateData)(unit.UpdateData).Player
-		runtime.Send(int(player.PlayerInd), packet[:], nil, 1)
-	}
-	return 0
+	return int(sendWallPacketToPlayersNative4DF0A0(packet[:], runtime))
 }

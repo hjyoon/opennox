@@ -5488,6 +5488,7 @@ char* sub_4DF020() {
 }
 
 //----- (004DF0A0) --------------------------------------------------------
+#if 0 // Preserved PE32 body; the public C entry uses native wall/player pointers.
 int nox_xxx_wallSendDestroyed_4DF0A0(int a1, int a2) {
 	int result; // eax
 	int i;      // esi
@@ -5505,6 +5506,7 @@ int nox_xxx_wallSendDestroyed_4DF0A0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004DF120) --------------------------------------------------------
 #if 0 // Preserved PE32 body; the public C entry uses native wall/player pointers.

@@ -266,7 +266,7 @@ char* nox_xxx_playerCallDisconnect_4DEAB0(int a1, char a2);
 void nox_xxx_playerDisconnByPlrID_4DEB00(int a1);
 int nox_xxx_netGameSettings_4DEF00();
 char* sub_4DF020();
-int nox_xxx_wallSendDestroyed_4DF0A0(int a1, int a2);
+int nox_xxx_wallSendDestroyed_4DF0A0(nox_map_wall_504290* wall, int recipient);
 int sub_4DF120(nox_map_wall_504290* wall);
 int sub_4DF180(nox_map_wall_504290* wall);
 void sub_4DF2E0(int a1);

@@ -4445,6 +4445,13 @@
       "purpose": "disconnect one player, clear native-width unit and update-data state, reset the ordered protection handles, then clear the remaining players' per-client state"
     },
     {
+      "name": "original_wall_destroyed_packet_4DF0A0",
+      "address": "0x004DF0A0",
+      "size": 118,
+      "sha256": "1a36e5c23bb08dcfdc7741b7b6df4369a850f3f80259ccb93ad6f72a3e7353a0",
+      "purpose": "Complete original wall-destroyed packet body, independently executed1974contexts perPC53ToZero/nearest profile including43faultprefixes; bothcompleteoutputs byte-identical. Signed32directrecipient/Sendreturn and recipient32livebroadcast retain cachedwallWORD, opcode58, allroutingarguments, alias/repeatedrecords, live/packetmutations, fullheap/caller/valid-nonvolatile/FPU guards. First4DA7C0/Next4DA7F0/Send4E5420 are declaredworldservices;no instruction/result substitution. Tenalignmentbytes excluded."
+    },
+    {
       "name": "original_secret_wall_packet_4DF120",
       "address": "0x004DF120",
       "size": 86,

@@ -55,6 +55,154 @@ completion requirements.
 
 ## Current findings
 
+### Native ROAM start/cancel C entries and pointer narrowing inventory
+
+Runtime `7d404efc` ports public C `545790` and `5457C0` to typed
+`nox_object_t*` inputs and native pointer returns. Clean qualification source
+`f6a41c78e` contains the same engine code and corrected fixture preparation
+producing byte-identical inputs. Both raw entries share state changes with the ordinary
+ROAM dispatcher. Start clears only waypoint zero and its cursor; cancel
+clears the active first argument using signed native stack arithmetic. The
+ordinary dispatcher retains class/null/empty-head admission and its existing
+invalid-positive-index fault. The raw entries add no admission, retain the
+original null/unmapped faults and return the complete native update pointer.
+Both original C bodies remain exact under `#if 0`; two independent C11
+assertions check the public input and return signatures.
+
+Reference-only `c8293c51` freezes five original getter/consumer/golden/
+provenance files before engine changes. Each original FPU profile executes
+**1,321 contexts**, including **six faults**, and both complete outputs are
+byte-identical. All **75 instruction bytes** execute without callee services
+or instruction/result substitution; five alignment bytes earn no credit.
+Whole original image, guarded 64 KiB heap/caller, valid-return nonvolatile
+registers and CW/TOP are checked. Two actual old C entries **SIGSEGV above
+4 GiB** after independent layouts, real ordinary native start/cancel, typed
+sound/action/health controls and four whole initial records pass. The exact
+before binary and failures remain retained.
+
+The first normal selection passes **21,126 events**, including **2,665 new
+native lifecycle passes** and **18,461 earlier waypoint passes**. Its first
+strict run completes the twelve actual C/registered ordinary production
+modes, then rejects the fixture's typed construction of intentionally
+unaligned poison pointers at seed 00000001 before invoking the engine for
+that comparison. That failed strict binary, full output and all five initial
+frozen references remain preserved.
+
+Only the consumer's poison preparation changes: a raw little-endian uint64
+store at the independent C mirror offset creates exactly the same bits.
+Every seed, case, expected value, original golden, fault, guard, selector,
+skip and strict option stays unchanged. An isolated checkout of untouched
+pre-engine `c8293c51` independently proves byte-identical **complete 64 KiB
+allocations for all five seeds** and reproduces both actual old C crashes
+with the corrected preparation. V2 was corrected after strict discovery;
+it is not retrospectively described as chronologically frozen before the
+first engine commit. The four other frozen references and all runtime engine
+inputs remain exact; a separate provenance addendum records the correction.
+
+Corrected normal and highres/cgocheck2/checkptr2 selections each pass
+**21,126 events**, with identical terminal names/actions/multiplicities to
+the first normal run and no new skips. The manifest verifier passes **21**.
+All twelve fresh production child modes check actual C returns, ordinary
+registered ROAM start/cancel, two update-data identities, active slots
+0/11/23, six whole native records and unchanged frame/RNG/stack-change state.
+All **eleven local test executables**, including the first failed strict
+binary and both before binaries, remain retained. Local warnings are zero.
+
+The raw comparison covers every signed-byte index with guarded native array
+arithmetic. Negative and out-of-range projections do **not** establish named-
+field alias equivalence outside the array after native pointer expansion,
+and do not certify malformed game states. Valid stack slots and ordinary
+empty/invalid-head admission are checked separately.
+
+All **4,036 earlier original-manifest records**, metadata, relative order
+and backed bytes/SHA remain exact. Only two nonoverlapping code ranges,
+43 and 32 bytes, are added: **3,345 code / 693 data ranges**, **4,038 records**.
+All **4,287 earlier inputs** remain exact. The initial five references and
+two production/admission tests make 4,294 inputs; the disclosed consumer
+preparation correction and separate addendum give **4,295 current inputs**.
+
+All **eleven required native configurations pass at the same immutable
+`f6a41c78e` source**: Windows `41402195229`, Linux `41402261728`, four passing
+profiles in macOS `41402264648`, and one unchanged full macOS server replay
+`41404914950`. The first full macOS run remains a **failure**: its existing
+Quest six-row C child completes 4,032 correct cases, then the third `mmap`
+returns a different address from the requested hint. The exact-address guard
+rejects it with `failure=0 draws=58/58`. All twelve renderer/test/compiler
+dependencies are identical to the passing initial ROAM source and earlier
+point/predicate sources. One unchanged retained local rows diagnostic also
+passes all 6,048 cases. Only the unchanged full server profile is repeated;
+all address/output assertions remain, and first/replay products are byte-
+identical. This does not prove the ASLR cause or eliminate the placement
+intermittency. Full failure output, exact parent Go executable and extracted
+C source inputs remain preserved; the unchanged fixture cleans its temporary
+C child after execution.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 775,476 | 54 | 0 |
+| linux-amd64-opennox-hd | 775,476 | 54 | 0 |
+| linux-amd64-opennox-server | 769,366 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 769,366 | 7 | 0 |
+| macos-arm64-hd | 773,485 | 43 | 0 |
+| macos-arm64-normal | 773,485 | 43 | 0 |
+| macos-arm64-server | 767,416 | 4 | 0 |
+| macos-arm64-server-hd | 767,416 | 4 | 0 |
+| macos-arm64-strict | 634,754 | 8 | 0 |
+| opennox-server-windows-386 | 747,656 | 94 | 0 |
+| opennox-server-windows-amd64 | 767,386 | 11 | 0 |
+
+Every prior Windows and macOS-strict terminal identity/action/multiplicity
+is retained, adding **2,665 new passes** per profile and no new skips. The
+strict selector is unchanged. Linux's extra default-link damage lane retains
+**133,384 passes**. All **12 current-source artifact ZIPs / 11 products / 27
+full parent test executables**, raw non-skipped job logs and API digests are
+retained, with all binary payload SHA checks and every ZIP member CRC.
+Every text/JSONL byte is warning-scanned: compiler, linker, test-build and
+raw-job warnings are **zero**, with no new suppression.
+
+The initial `7d404efc` Windows `41400221131` and Linux `41400239408` successes
+and macOS `41400357946` failure are also retained: **11 ZIPs / 10 products /
+24 full test executables**. That initial macOS strict failure records the
+fixture preparation defect described above. The earlier abbreviated-SHA
+dispatch `41400242532` fails checkout before any native build/test; all five
+raw job logs and zero available artifacts are recorded without runtime
+credit. None of these failed runs is relabelled as successful. The complete
+batch proof is
+`ROOT/monster-roam-lifecycle-native-entry-port/all-current-roam-lifecycle-gates-and-preservation-qualified-v3.json`.
+
+The clean Go 1.26.9 ARM64 product is **66,235,314 bytes**, SHA-256
+`1b82c2e3dcf3b80ddfb6d212750bc65ed7f41d83f79215bba2b439e3cb793eda`.
+Build/help pass with zero warnings and clean `f6a41c78e` source; the original
+`.git` pointer is restored. Unchanged host Blink, first-attack and
+Lightning/Drain Mana cleanup lanes pass in **36.106s / 41.723s / 31.568s**.
+All 28 captures are preserved and byte-identical to the preceding retreat-
+master product; four are actually viewed. These headless/virtual/mock-audio
+lanes earn no new campaign or audible-output fidelity credit.
+
+The repeated preprocessed C audit finds **3,496 active definitions / 298
+integer-cast candidates / 284 fixed-32-bit candidates**. Only the two ROAM
+entries leave that inventory; no new candidate or preprocessor warning is
+introduced. An additional scan of the same hash-verified **191 C inputs**
+finds **45 definitions** explicitly narrowing a standalone pointer parameter
+value to 32 bits; eleven overlap the earlier all-integer-candidate inventory.
+Scalar field/index/call operands are excluded; the preliminary broader
+100-match inventory remains preserved. Twelve refined candidates have direct
+non-test Go C.symbol references, which may store callback addresses. These are
+separate triage views, not combined remaining-defect totals or a completion
+denominator. Typed `544A00` narrows its argument internally and
+also has an integer pointer-shaped return and uint32 scratch pointer; this
+and callbacks/aliases/globals require semantic follow-up beyond parameter
+type changes. See [native-c-pointer-audit.md](native-c-pointer-audit.md).
+
+Preservation rehashes all earlier 298 products, 81 full test executables,
+4,649 personal files, original GAME.EXE, 15 protected failed-Save files,
+14,167 compressed JSON records and 1,879 compressed output logs, plus recent
+products, all 4,295 current inputs and eleven current local executables.
+Original failures, fixture versions, isolated pre-engine evidence, inputs,
+goldens, every Save and all products/executables remain preserved. All nine
+final chapter 1–3 audits, actual user sale-silence reproduction and the older
+Windows memory-failure cause remain open. Overall 100% is **not** achieved.
+
 ### Native retreat-to-master C update and continued fixed-width audit
 
 Runtime `8212e8c` ports the public `5456D0` update from an integer object
@@ -145,9 +293,10 @@ active definitions / 300 integer-cast candidates / 286 fixed-32-bit
 candidates**, with fourteen native-width/other candidates kept separate.
 Only `5456D0` leaves the fixed-width inventory; no candidate or preprocessor
 warning is added. These are static triage counts, not remaining confirmed
-defects or a completion percentage. The integer-object ROAM start/cancel
-entries `545790`/`5457C0` and edible-check entry `5455E0` remain follow-up
-targets; ordinary native dispatcher implementations do not port those ABIs.
+defects or a completion percentage. At that preceding `8212e8c` source,
+integer-object ROAM start/cancel entries `545790`/`5457C0` and edible-check
+entry `5455E0` remain follow-up targets; ordinary native implementations do
+not port those ABIs. The subsequent ROAM entry port is recorded above.
 
 Preservation rehashes all earlier 298 products, 81 full test executables,
 4,649 personal files, original GAME.EXE, 15 protected failed-Save files,

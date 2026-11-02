@@ -1,8 +1,8 @@
 # Native C entry pointer audit
 
 This inventory prioritizes remaining public C ABIs after the native point,
-occupancy and retreat ports. It does not supply an overall porting denominator or
-count confirmed runtime crashes.
+occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
+denominator or count confirmed runtime crashes.
 
 At `616b61d`, host macOS ARM64 normal preprocessing of all **191** top-level
 `src/legacy/*.c` files finds **3,502** active function definitions. Real clang
@@ -63,10 +63,52 @@ The repeated `8212e8c` host scan finds **3,498 active C definitions / 300
 integer-cast candidates / 286 fixed-32-bit candidates**. Only `5456D0` leaves
 the fixed-width inventory. Fourteen native-width/other candidates remain
 separate; no new candidate or preprocessor warning is introduced. Integer
-object entries `5455E0`, `545790` and `5457C0` remain follow-up targets.
-Their ordinary native dispatcher implementations do not port those raw C
-ABIs. In particular, ROAM cancel has signed unchecked stack-index arithmetic
-and a pointer-shaped return; widening its first argument alone is insufficient.
+object entries `5455E0`, `545790` and `5457C0` remain follow-up targets at that
+source.
+Their ordinary native dispatcher implementations do not port those raw C ABIs.
+
+Runtime `7d404efc` subsequently ports ROAM start `545790` and cancel `5457C0`
+to native object arguments and pointer returns, sharing their stores with the
+ordinary dispatcher while retaining its admission rules. Clean `f6a41c78e`
+has identical engine inputs and a corrected opaque-bit fixture preparation.
+Both old actual C entries SIGSEGV above 4 GiB after native positive controls.
+The independent original executes 75 instruction bytes and 1,321 contexts
+per FPU profile, including six faults. The first frozen fixture's unaligned
+typed-pointer construction fails strict preparation; a raw-byte replacement
+is proved identical across complete 64 KiB allocations at untouched pre-engine
+source, retaining original goldens/expected values/guards and all failed files.
+The original four other references remain exact. Corrected normal/strict
+selections each pass 21,126 events, with matching identities and no new skips.
+
+The repeated host scan finds **3,496 active C definitions / 298 integer-cast
+candidates / 284 fixed-32-bit candidates**. Only the two ROAM entries leave
+the fixed-width inventory; no new candidate or preprocessor warning is added.
+Raw cancel keeps signed unchecked native array arithmetic. Diagnostic
+out-of-array projections do not establish named-field alias equivalence after
+pointer expansion or certify malformed states; valid slots and ordinary
+empty/invalid-head behavior have separate checks.
+
+An additional scan reuses all **191 hash-verified preprocessed C inputs** at
+`f6a41c78e`. It finds **45 definitions** explicitly casting a standalone pointer
+parameter value to a fixed 32-bit integer; eleven overlap the earlier
+all-integer candidate inventory. Scalar field/index/call operands are excluded;
+the preliminary broader 100-match inventory remains preserved. Twelve of the
+45 have direct non-test Go C.symbol references, which may store callback
+addresses rather than invoke them. These views must not be added into a
+remaining-defect total. They are semantic triage, with local aliases,
+pointer-shaped returns,
+callbacks, globals/fields and other narrowing expressions still outside the
+expression scan. The full inventory and provenance are retained in
+`ROOT/monster-roam-lifecycle-native-entry-port/active-C-typed-pointer-parameter-narrowing-inventory-v2.json`.
+
+For example, `544A00` accepts `nox_object_t*` but explicitly casts it to `int`
+before computing the position address. It also returns an integer-shaped
+object pointer and stores the selected pointer in uint32 scratch. Its callback
+`544A40` still takes two integer object arguments; outer edible-check `5455E0`
+is another legacy-int public entry. This family requires its own original
+execution, actual C reproductions, native scratch/return and ordinary-caller
+analysis before porting. No crash or completion credit is inferred from these
+new static findings alone.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

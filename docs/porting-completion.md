@@ -87,6 +87,12 @@ forced host shutdown remain a failed lifecycle run; the successful replay
 uses the same product and closes the host through ordinary window-close
 input. No physical keyboard or original Windows-peer credit is inferred.
 
+Linux run `41684148567` passes all four engine products: normal/HD each
+**792,302 passes / 54 skips**, server/server-HD each **786,192 / seven**.
+The separate default-link damage gate retains **133,384 passes**. Complete
+artifact ZIPs, API digests and raw job logs are retained; this Linux workflow
+publishes its products and logs but does not publish test executables.
+
 ### Native Troll death C entry
 
 Reference commits `f77fdc7f6` and `d1dd3eb02` freeze six original references
@@ -183,6 +189,29 @@ legacy replays each pass **553 events**, with zero skips/warnings and complete
 `CurePoison` required-argument nil failure remains open; a retained-executable
 diagnostic records direct 386 exit statuses separately from test2json and
 does not rebuild or relabel the failed native gate.
+
+The next Windows run `41689067986` passes amd64 and its 386 root/server
+packages. Its complete Troll matrix finishes before the same fixture defect
+appears in wall-destruction tests: a Go write-barrier flush reports the exact
+**0x12345678** guard seed. Both wall-destruction and secret-wall consumers
+initially store native object/update/player pointers into seed-filled C
+records. Their initialization and scripted pointer replacements now write
+the same native-width bits as scalar bytes. Original inputs, goldens,
+packet identities, fault prefixes and complete 64 KiB guards are unchanged.
+Both normal and strict legacy family selections subsequently pass
+**6,915 events**, with matching terminal identities/multiplicities, zero
+skips/warnings and retained executables. This changes test preparation only.
+
+Retained-executable diagnostics `41689244649` and `41690961526` run the exact
+failed `91bc3f57c` PEs without rebuilding them. Each passes ten fresh required-
+nil server cases, 2,210 CurePoison controls, 1,653 Troll events at ordinary
+GC and 1,653 with `GOGC=10`; each full server replay passes **203,356 / 16**.
+The first full legacy replay has 636 preparation failures using a fallback
+x64 compiler and earns no native-suite qualification. The second restores
+the original pinned i686 LLVM compiler and reproduces the old Troll
+write-barrier fatal exit, preserving direct binary status **two** separately
+from the converter's zero exit. The original failed gates remain failed;
+the separate intermittent server/nil and older memory causes remain open.
 
 ### Native Chakram retarget public entries
 

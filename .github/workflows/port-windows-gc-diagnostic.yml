@@ -20,6 +20,10 @@ on:
         description: Replay exact retained Windows/386 legacy entry executable without rebuilding
         type: boolean
         default: false
+      retained_386_fault_matrix:
+        description: Replay exact retained 386 server nil-fault and Troll matrix executables
+        type: boolean
+        default: false
       baseline_retained_artifact_id:
         description: Optional previous passing Windows/386 artifact for the entry replay
         type: string
@@ -247,6 +251,7 @@ jobs:
           SOURCE_REVISION: ${{ inputs.source_revision }}
           REPORT_DIR: build/windows-retained-diagnostic
           RETAINED_ENTRY_PROBE: ${{ inputs.retained_entry_probe }}
+          RETAINED_386_FAULT_MATRIX: ${{ inputs.retained_386_fault_matrix }}
           BASELINE_RETAINED_ARTIFACT_ID: ${{ inputs.baseline_retained_artifact_id }}
           BASELINE_SOURCE_REVISION: ${{ inputs.baseline_source_revision }}
         run: |
@@ -274,6 +279,13 @@ jobs:
           assert artifact['workflow_run']['head_sha'] == source
           assert not artifact['expired']
           (report/'original-artifact.json').write_text(json.dumps(artifact, indent=2))
+          if os.environ.get('RETAINED_386_FAULT_MATRIX') == 'true':
+              assert artifact['name'] == 'opennox-server-windows-386'
+              runner = report/'replay-windows-retained-386-faults.py'
+              runner.write_bytes(subprocess.check_output([
+                  'git', 'show', '${{ github.sha }}:toolchain/replay-windows-retained-386-faults.py']))
+              import sys
+              raise SystemExit(subprocess.call([sys.executable, str(runner)]))
           if os.environ.get('RETAINED_ENTRY_PROBE') == 'true':
               assert artifact['name'] == 'opennox-server-windows-386'
               runner = report/'replay-windows-retained-386-entry.py'
@@ -413,6 +425,8 @@ jobs:
             !build/windows-retained-diagnostic/entry386/**/retained.zip
             !build/windows-retained-diagnostic/entry386/**/legacy.test.exe
             !build/windows-retained-diagnostic/entry386/baseline-checkout/**
+            !build/windows-retained-diagnostic/faults386/retained.zip
+            !build/windows-retained-diagnostic/faults386/*.test.exe
             !build/windows-retained-diagnostic/v1.test.exe
           if-no-files-found: error
           retention-days: 7

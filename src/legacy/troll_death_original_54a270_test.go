@@ -289,12 +289,12 @@ func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode st
 			return (*server.Object)(ptr(in.New))
 		},
 		Create: func(o, owner *server.Object, pos types.Pointf, extra uint32) uint32 {
-			at := serviceIndex
+			at := uint32(serviceIndex)
 			service("create", map[string]any{"object": role(unsafe.Pointer(o)), "owner": role(unsafe.Pointer(owner)), "position": [2]uint32{math.Float32bits(pos.X), math.Float32bits(pos.Y)}, "trailing_zero": extra}, uint64(0xa5a50000+at))
 			return uint32(0xa5a50000 + at)
 		},
 		Audio: func(id uint32, o *server.Object, kind, arg uint32) uint32 {
-			at := serviceIndex
+			at := uint32(serviceIndex)
 			service("audio", map[string]any{"sound": id, "unit": role(unsafe.Pointer(o)), "kind_arg": kind, "arg": arg}, uint64(0xa5a50000+at))
 			return uint32(0xa5a50000 + at)
 		},

@@ -254,7 +254,11 @@ func (f *e2eTrollCloudFixture) tick() {
 	}
 	if !f.visible && !f.expired && noxClient.Objs.ByNetCode(uint16(f.wire)) != nil {
 		meter, ready := e2eClientHUDMeter(0)
-		if ready && meter.Poisoned && meter.PoisonTubeReady {
+		// Dose one precedes its first periodic damage tick. Wait for that
+		// observed damage and its replicated partial meter before checking
+		// filled and empty pixels; a newly poisoned full tube has no empty part.
+		if ready && f.victims[0].dot && meter.Poisoned && meter.PoisonTubeReady &&
+			meter.Current > 0 && meter.Current < meter.Maximum {
 			pixels, err := e2eAssertHUDMeterPixels(noxClient.r.CopyPixBuffer(), meter, 'g', "Troll small cloud poison")
 			if err != nil {
 				e2eError(err)

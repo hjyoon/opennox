@@ -110,6 +110,24 @@ exact. This selected union covers wall destruction, Chakram retarget, the
 four preceding explosion/point entries and ordinary Troll controls. No
 campaign, audible-fidelity or overall 100% credit is inferred.
 
+Engine `624d0e649` subsequently passes all five local profiles: normal/HD
+**790,301 passes / 43 skips** each, server/server-HD **784,232 / four** each,
+and strict **651,575 / eight**. All test executables and complete streams
+are retained. Linux run `41675265507` passes all four products; Windows run
+`41674873174` passes amd64 but its 386 legacy test package fails to compile.
+The consumer's `0xa5a50000 + int` service sentinel overflows a 32-bit signed
+int. Its service index is now explicitly `uint32`; expected outputs, input
+and golden files, native engine code and the historical reference commit stay
+unchanged. The failed run and its available products/test binaries are retained.
+
+The first complete-assets product replay reaches natural Troll death,
+SmallToxicCloud creation and dose-one application, then its visual observer
+incorrectly asks a still-full **150/150** poison tube to contain empty pixels.
+That observer now waits for independently observed periodic damage and its
+replicated partial meter before applying the same pixel assertion. It does
+not inject health or poison state. Product requalification follows this
+fixture correction; the failed executable, runtime and logs remain retained.
+
 ### Native Chakram retarget public entries
 
 Engine `b65798bc5` ports public C `4EB250` and `4EB340` to native object,

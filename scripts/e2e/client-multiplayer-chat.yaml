@@ -1,0 +1,88 @@
+# Join an owned local UDP host using a private game_ip.txt.
+# Both peers must retain their native chat echoes; no direct packet injection.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 432
+    y: 98
+    name: select actual local server row
+  - action: wait
+    dt: 30
+    name: wait for server popup
+  - action: click
+    x: 448
+    y: 232
+    name: join actual local dedicated server
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait-client-connected
+    name: actual remote client drawable binding
+  - action: checkpoint
+  - action: wait
+    dt: 500
+    name: wait for actual remote join and map
+  - action: click
+    x: 512
+    y: 486
+    name: dismiss stock chat information
+  - action: wait
+    dt: 2
+  - action: click
+    x: 463
+    y: 330
+    name: dismiss stock MOTD
+  - action: wait
+    dt: 2
+  - action: melee
+    dt: 2
+    ang: 0
+    name: normal Action input to join play after download
+  - action: wait
+    dt: 30
+    name: settle after normal participation input
+  - action: check-multiplayer-chat
+    role: peer
+    name: independent peer Enter text Enter and IME submission
+  - action: check-multiplayer-chat-exchange
+    role: peer
+    name: receive the real host reply after four peer messages
+  - action: quit
+    dt: 1
+  - action: checkpoint
+  - action: quit
+    dt: 30

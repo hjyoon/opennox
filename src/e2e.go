@@ -9397,6 +9397,7 @@ type e2eStepYML struct {
 	Time     uint64        `yaml:"dt,omitempty"`
 	Dur      time.Duration `yaml:"dur,omitempty"`
 	Name     string        `yaml:"name,omitempty"`
+	Role     string        `yaml:"role,omitempty"`
 	Text     string        `yaml:"text,omitempty"`
 	X        int           `yaml:"x,omitempty"`
 	Y        int           `yaml:"y,omitempty"`
@@ -9457,6 +9458,12 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-console-commands":
 			sc.Wait(dt, "")
 			sc.CheckConsoleCommands(l.Name)
+		case "check-multiplayer-chat":
+			sc.Wait(dt, "")
+			sc.CheckMultiplayerChat(l.Role, l.Name)
+		case "check-multiplayer-chat-exchange":
+			sc.Wait(dt, "")
+			sc.CheckMultiplayerChatExchange(l.Role, l.Name)
 		case "assert-item-amount-icon":
 			sc.Wait(dt, "")
 			sc.AssertItemAmountIcon(l.Item, l.Name)

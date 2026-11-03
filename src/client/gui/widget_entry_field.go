@@ -210,10 +210,15 @@ func EntryFieldProc(win *Window, ev WindowEvent) WindowEventResp {
 		if !ev.Pressed {
 			return RawEventResp(1)
 		}
-		if ev.Key == keybind.KeyEnter {
-			if d.Field_1044 == 0 {
-				entryFieldNotify(win, 0x401F, uintptr(unsafe.Pointer(win)), 0)
+		if ev.Key == keybind.KeyEnter || ev.Key == keybind.KeyKpEnter {
+			if inp := win.GUI().inp; inp != nil && inp.GetTextEditBuf() != "" {
+				return RawEventResp(1)
 			}
+			// SDL sends committed text separately and never sends WM_CHAR's
+			// CR for Return. Complete that character latch before notifying
+			// the owner, while a composing IME retains its confirming Return.
+			EntryFieldOnChar(win, '\r')
+			entryFieldNotify(win, 0x401F, uintptr(unsafe.Pointer(win)), 0)
 			return RawEventResp(1)
 		}
 		if ev.Key == keybind.KeyTab {

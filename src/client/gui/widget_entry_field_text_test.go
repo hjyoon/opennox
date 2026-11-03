@@ -106,3 +106,75 @@ func TestEntryFieldLegacyKeyboardTextIsPreserved(t *testing.T) {
 		})
 	}
 }
+
+func TestEntryFieldEnterAfterCommittedText(t *testing.T) {
+	for _, language := range []int{0, 6, 8} {
+		for _, key := range []keybind.Key{keybind.KeyEnter, keybind.KeyKpEnter} {
+			t.Run(strconv.Itoa(language)+"/"+key.String(), func(t *testing.T) {
+				f := newEntryTextFixture(t, language, EntryFieldData{Field_1040: 64})
+				owner := f.g.NewWindowRaw(nil, StatusEnabled, 0, 0, 640, 480, nil)
+				f.win.DrawData().Window = owner
+				var submissions []string
+				owner.SetFunc94(func(_ *Window, ev WindowEvent) WindowEventResp {
+					if ev.EventCode() == 0x401f {
+						submissions = append(submissions, f.text())
+					}
+					return RawEventResp(0)
+				})
+				want := "a"
+				if language != 0 {
+					want = "a 한글 中"
+				}
+				f.poll(&seat.KeyboardEvent{Key: keybind.KeyA, Pressed: true}, &seat.TextInputEvent{Text: want})
+				f.poll(&seat.KeyboardEvent{Key: keybind.KeyA, Pressed: false})
+				if got := f.text(); got != want {
+					t.Fatalf("committed text = %q, want %q", got, want)
+				}
+				f.poll(&seat.KeyboardEvent{Key: key, Pressed: false})
+				if len(submissions) != 0 {
+					t.Fatal("released Enter submitted the entry")
+				}
+				f.poll(&seat.KeyboardEvent{Key: key, Pressed: true})
+				f.poll(&seat.KeyboardEvent{Key: key, Pressed: false})
+				if len(submissions) != 1 || submissions[0] != want {
+					t.Fatalf("Enter submissions = %q, want one %q", submissions, want)
+				}
+			})
+		}
+	}
+}
+
+func TestEntryFieldEnterDuringIMEComposition(t *testing.T) {
+	for _, key := range []keybind.Key{keybind.KeyEnter, keybind.KeyKpEnter} {
+		t.Run(key.String(), func(t *testing.T) {
+			f := newEntryTextFixture(t, 6, EntryFieldData{Field_1040: 64})
+			owner := f.g.NewWindowRaw(nil, StatusEnabled, 0, 0, 640, 480, nil)
+			f.win.DrawData().Window = owner
+			submissions := 0
+			owner.SetFunc94(func(_ *Window, ev WindowEvent) WindowEventResp {
+				if ev.EventCode() == 0x401f {
+					submissions++
+				}
+				return RawEventResp(0)
+			})
+			f.poll(&seat.TextEditEvent{Text: "ㅎ"})
+			// The widget also rejects a direct legacy GUI dispatch while the
+			// IME owns Return, even before any committed character sets its latch.
+			f.win.Func93(WindowKeyPress{Key: key, Pressed: true})
+			if submissions != 0 {
+				t.Fatal("Enter submitted an active IME composition")
+			}
+			// SDL can commit text after the confirming Return in the same poll.
+			f.poll(&seat.KeyboardEvent{Key: key, Pressed: true}, &seat.TextInputEvent{Text: "한"})
+			f.poll(&seat.KeyboardEvent{Key: key, Pressed: false})
+			if submissions != 0 || f.text() != "한" {
+				t.Fatal("IME confirmation submitted or lost the committed text")
+			}
+			f.poll(&seat.KeyboardEvent{Key: key, Pressed: true})
+			f.poll(&seat.KeyboardEvent{Key: key, Pressed: false})
+			if submissions != 1 || f.text() != "한" {
+				t.Fatal("the next Enter did not submit the completed text exactly once")
+			}
+		})
+	}
+}

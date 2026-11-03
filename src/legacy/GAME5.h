@@ -87,7 +87,7 @@ int sub_549E90(int a1);
 int sub_549FA0(int a1);
 int nox_bomberDead_54A150(nox_object_t* a1);
 int sub_54A250(nox_object_t* unit);
-int nox_xxx_monsterDeadTroll_54A270(int a1);
+int nox_xxx_monsterDeadTroll_54A270(nox_object_t* a1);
 int sub_54A310(int a1);
 void sub_54A390(int a1, char* a2, const char* a3, const char* a4, const char* a5, const char* a6, int a7);
 void sub_54A4C0(int a1);

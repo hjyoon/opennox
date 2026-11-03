@@ -55,6 +55,61 @@ completion requirements.
 
 ## Current findings
 
+### Native Troll death C entry
+
+Reference commits `f77fdc7f6` and `d1dd3eb02` freeze six original references
+and four contract/getter/consumer/before-test files before the engine change.
+Both original FPU profiles execute the complete **154-byte callback and
+17-byte converter** across **136 inputs**. Each records eleven original
+memory faults, and 49 complete outputs differ between profiles. Both published
+producers and input generators replay byte-exact. Existing manifest seals
+already cover these ranges, so the **4,047 records** remain unchanged.
+
+The actual old public C entry faults above 4 GiB after independent complete
+C/Go layouts, a real C type lookup/constructor, native update-pointer identity
+and whole-record controls pass. The before gate passes **44 events** including
+the existing ordinary Troll controls. Earlier missing module files, stale
+module indexes and a test-registry initialization failure are preserved as
+preparation failures; none earns an old-C crash claim. Fixed dependency
+versions and original references remain unchanged during cache repair.
+
+Public `nox_xxx_monsterDeadTroll_54A270` now accepts `nox_object_t*`. The
+constructor result and cached update pointer remain native pointers, and the
+exact original C body stays under `#if 0`. The fixed-width type cache remains
+independent of object addresses. Allocation failure returns one before
+reading the source. The update pointer is cached before source position and
+world effects; later replacements do not redirect the final duration store.
+The binary64 balance result is multiplied by signed DWORD FPS, spilled once
+to binary32, then converted with the original rounding mode. Raw invalid
+pointer faults retain their original service prefix and final-store order.
+The separate ordinary callback and its admission/nil-update guards are
+unchanged.
+
+The frozen Go/C consumer compares all 136 cases in both FPU profiles, with
+complete 64 KiB native-buffer, cache-record and canonical-heap checks. Its
+first post-port gate passes **592 events** with zero build warnings. Four
+fresh default-C root-server children cover cold/warm caches, an audio observer
+replacing the cloud update pointer, and real constructor failure with a nil
+source. Real create/ownership, parsed Troll AUD data, allocated audio events,
+balance/FPS and the original cached duration **37** are verified. An
+uninitialized replacement sentinel in the first production fixture is
+preserved and corrected by explicit initialization; expected outputs and
+native code do not change.
+
+Host preprocessing covers 191 C files with **3,483 definitions / 289 integer
+pointer-cast candidates**, excluding this newly ported entry. The typed-pointer
+view retains **41 candidates / ten overlaps**, with zero preprocessing
+warnings. These are static triage counts. Product/E2E and full native CI
+qualification for this engine follow the focused normal/strict gates. Both
+selections pass **7,614 events**, including **558 new Troll events**, with
+identical terminal identities/actions/multiplicities, zero skips and zero
+warnings. The family selector runs in its three root/server/legacy packages;
+the initial extra audio package had no matching tests and its framework
+notice/output are retained. All ten frozen references and bound inputs remain
+exact. This selected union covers wall destruction, Chakram retarget, the
+four preceding explosion/point entries and ordinary Troll controls. No
+campaign, audible-fidelity or overall 100% credit is inferred.
+
 ### Native Chakram retarget public entries
 
 Engine `b65798bc5` ports public C `4EB250` and `4EB340` to native object,

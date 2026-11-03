@@ -2601,6 +2601,7 @@ int sub_54A250(int a1) {
 #endif
 
 //----- (0054A270) --------------------------------------------------------
+#if 0
 int nox_xxx_monsterDeadTroll_54A270(int a1) {
 	int v1;       // eax
 	uint32_t* v2; // eax
@@ -2622,6 +2623,8 @@ int nox_xxx_monsterDeadTroll_54A270(int a1) {
 	}
 	return 1;
 }
+
+#endif
 
 //----- (0054A310) --------------------------------------------------------
 int sub_54A310(int a1) {

@@ -278,3 +278,20 @@ Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source
 revision. Static inventory changes alone earn no campaign, audio, runtime
 stability or overall 100% completion credit.
+
+The Troll references are subsequently frozen in `f77fdc7f6` and `d1dd3eb02`
+before changing the public entry. The actual old C call faults above 4 GiB
+after the full native layout and real C constructor/update/whole-record
+controls pass. The native entry uses a typed source, typed constructor result
+and entry-cached native update pointer; its exact old C body remains under
+`#if 0`. All 136 inputs in both FPU profiles compare through Go and the real
+C symbol without changing any frozen reference. Four default-C root children
+also exercise real create/ownership/AUD/balance/FPS, including a live update
+replacement and allocation failure before a nil source is read.
+
+The repeated host scan has **3,483 active definitions / 289 integer-cast
+candidates**; only this one old C definition and its public declaration change
+in the tracked C/header sources. The independent typed-pointer pass retains
+**41 candidates / ten overlaps**. The unchanged ordinary callback keeps its
+existing admission guards. Product and full native CI qualification remain
+separate gates.

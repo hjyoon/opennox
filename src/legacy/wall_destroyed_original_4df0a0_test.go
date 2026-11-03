@@ -131,8 +131,10 @@ func TestWallDestroyedOriginal4DF0A0(t *testing.T) {
 					}
 					wall.Field10 = in.WallID
 					for i := range units {
-						units[i].ObjClass, units[i].UpdateData = object.Class(in.Classes[i]), updateAt(in.Updates[i])
-						updates[i].Player, players[i].PlayerInd = playerAt(in.Players[i]), in.Indices[i]
+						units[i].ObjClass = object.Class(in.Classes[i])
+						storeWallFixturePointerBits(buf, 0x1000+i*0x800+int(unsafe.Offsetof(server.Object{}.UpdateData)), updateAt(in.Updates[i]))
+						storeWallFixturePointerBits(buf, 0x4000+i*0x800+int(unsafe.Offsetof(server.PlayerUpdateData{}.Player)), unsafe.Pointer(playerAt(in.Players[i])))
+						players[i].PlayerInd = in.Indices[i]
 					}
 					want := bytes.Clone(buf)
 					writeExpected := func(offset, n int, value uint64) {
@@ -153,10 +155,10 @@ func TestWallDestroyedOriginal4DF0A0(t *testing.T) {
 								wall.Field10 = uint16(e.Value)
 								writeExpected(0x200+int(layout[0]), 2, uint64(e.Value))
 							case "update":
-								units[e.Slot].UpdateData = updateAt(e.Value)
+								storeWallFixturePointerBits(buf, 0x1000+e.Slot*0x800+int(unsafe.Offsetof(server.Object{}.UpdateData)), updateAt(e.Value))
 								writeExpected(0x1000+e.Slot*0x800+int(layout[3]), int(unsafe.Sizeof(uintptr(0))), uint64(uintptr(updateAt(e.Value))))
 							case "player":
-								updates[e.Slot].Player = playerAt(e.Value)
+								storeWallFixturePointerBits(buf, 0x4000+e.Slot*0x800+int(unsafe.Offsetof(server.PlayerUpdateData{}.Player)), unsafe.Pointer(playerAt(e.Value)))
 								writeExpected(0x4000+e.Slot*0x800+int(layout[5]), int(unsafe.Sizeof(uintptr(0))), uint64(uintptr(unsafe.Pointer(playerAt(e.Value)))))
 							case "index":
 								players[e.Slot].PlayerInd = byte(e.Value)

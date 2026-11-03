@@ -289,8 +289,72 @@ inputs throughout the final selections. The strict selector adds only
 zero warnings: **3,484 definitions / 290 integer-cast candidates**, removing
 only these four entries. The separate typed-pointer view retains **41
 candidates / ten overlaps**. These are static triage counts, not a completion
-denominator. Product/E2E and native CI qualification for this engine remains
-pending; earlier source results are not relabelled as this new engine.
+denominator.
+
+Engine `46f8d9027923a43adfd89c4beafa4145177d0e1e` now has a clean native ARM64
+product, all seven product E2E lanes, five local macOS test profiles and six
+remote native CI profiles qualified. The product is **66,302,370 bytes**,
+SHA-256 `019cbf1c02532669badc3ca1c62c84ede21772dd25d1261053d35eab6e93f2bc`;
+build/help exit successfully with zero warnings and `vcs.modified=false`.
+
+| Current native test profile | Pass | Existing skip |
+| --- | ---: | ---: |
+| macOS ARM64 normal / HD, each | 789,743 | 43 |
+| macOS ARM64 server / server HD, each | 783,674 | 4 |
+| macOS ARM64 official highres/cgocheck2/checkptr2 selection | 651,017 | 8 |
+| Windows amd64 server | 783,644 | 11 |
+| Windows 386 server | 763,914 | 94 |
+| Linux amd64 normal / HD, each | 791,734 | 54 |
+| Linux amd64 server / server HD, each | 785,624 | 7 |
+
+Every one of these eleven profiles preserves the preceding complete terminal
+test identities, actions and multiplicities, adding only **1,818 passing
+family events**, with **zero new skips and zero compiler/linker/test-build
+warnings**. Only the two established dynamic native-pointer test-name labels
+are normalized. macOS regular profiles run the four root/server/legacy/audio
+packages without a test selector; strict uses the unchanged published flags
+and the selector extended only by `MonsterDeathExplosion`. Windows native run
+[41550996304](https://github.com/hjyoon/opennox/actions/runs/41550996304) and
+Linux native run
+[41551514662](https://github.com/hjyoon/opennox/actions/runs/41551514662) both
+finish successfully at this exact engine source. The separate Linux server
+default-link damage control retains **133,384 passes**. Earlier failed Windows runs
+remain preserved; these passes do not establish their root-cause fixes.
+
+The unchanged controlled Warrior Spider melee lane finishes naturally in
+44.398 seconds, with native monster HP **0/12** and a living player. The six
+host regressions also finish naturally: RoundChakram 35.877s, FanChakram
+35.402s, secret-wall touch 35.797s, autonomous Blink 37.130s, first attack
+43.356s and Lightning 32.516s. RoundChakram/FanChakram cause natural damage
+38/30 and complete their original equipment return/deletion assertions.
+All **34 current PNGs** are retained and byte-identical to the preceding
+ported-product captures; six representative images are actually inspected.
+Only six own generated untracked image duplicates are removed from the
+worktree after exact preservation. These virtual/headless/mock-audio lanes
+earn no earned-chapter or original visual/audible-fidelity credit.
+
+All six CI ZIPs retain API SHA-256 verification, every member's CRC and full
+log warning scans. The current **seven products**, **18 macOS full test
+executables** and **six Windows full test executables** are preserved. Linux
+archives contain all four products and complete runtime/default-link logs;
+their workflow does not archive the executed test binaries. Ten passing
+macOS logs from this and the preceding batch are losslessly compressed,
+decoded and checked against their original qualified hashes before removing
+only their raw duplicates. Assets, Save, failures, references and executables
+are untouched. All **6,244 bound inputs and ten frozen references** remain
+exact after qualification.
+
+The aggregate receipt is
+`ROOT/monster-death-explosion-native-entry-port/all-current-death4-gates-and-preservation-qualified-v1.json`.
+The user's five missing historical products are nonessential for continued
+porting; their prior hashes/missing state remain recorded and copy searches
+and recovery gates are stopped. The next raw entry is Troll death `54A270`:
+three pointer hazards are identified, and both original 171-byte body/converter
+profiles independently replay 136 inputs, including eleven original memory
+faults each and 49 profile-dependent outputs. Native consumers, actual old-C
+fault reproduction and that port remain pending. The nine campaign final
+audits, actual user shop-sale silence and executable-section data CLI policy
+remain open; overall 100% is not claimed.
 
 ### Native wall-destroyed packet C entry
 

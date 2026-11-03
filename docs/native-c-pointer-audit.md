@@ -249,8 +249,30 @@ the target damage endpoint is explicitly captured, not an HP-gameplay claim.
 All frozen references stay unchanged. The repeated hash-bound host scan
 finds **3,484 definitions / 290 integer-cast candidates**: only these four
 leave that inventory. Typed-pointer candidates remain **41**, with ten
-overlaps and zero preprocessing warnings. The current product/CI gates are
-subsequent qualifications, not inferred from those counts.
+overlaps and zero preprocessing warnings.
+
+Engine `46f8d9027` subsequently qualifies all seven controlled native-product
+E2E lanes and all eleven local/remote test profiles. Each profile preserves
+the complete preceding terminal test identities/actions/multiplicities and
+adds only 1,818 passes, with no new skips or build warnings. The exact-source
+products, available full test executables, ZIPs and complete logs are retained
+under `ROOT/monster-death-explosion-native-entry-port` and its product E2E
+directory. Full profile counts and scope are recorded in the completion
+document; static triage counts still earn no completion percentage.
+
+Next, raw `nox_xxx_monsterDeadTroll_54A270(int)` narrows the source object,
+narrows the constructor result again for `createAt`, and reads the created
+object's update pointer through PE32 `uint32_t[187]`. Independent native C
+controls establish prefix size 912, position offsets 60/64, update offset
+872 and an eight-byte update pointer. Its already sealed original body is
+154 bytes, plus the 17-byte original converter. Two FPU profiles each execute
+all 171 bytes across 136 inputs, retain eleven original faults and differ in
+49 complete outputs; both producer and input replays are byte-exact. These
+preparations live in `ROOT/troll-death-native-entry-port`. No old-C runtime
+crash or native-port credit is inferred before the pending frozen consumers,
+positive-control fault reproduction and engine change. The user's remaining
+five historical product copies are nonessential; further copy search and
+recovery gates are stopped, retaining their hash/missing-state records.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

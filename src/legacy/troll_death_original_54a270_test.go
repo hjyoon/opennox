@@ -180,9 +180,21 @@ func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode st
 		}
 		return 0x21000000 + uint32(offsets[n])
 	}
+	storeUpdate := func(i int, p unsafe.Pointer) {
+		at := offsets[i] + int(unsafe.Offsetof(server.Object{}.UpdateData))
+		// These are C-owned records with arbitrary guard bytes. A typed
+		// pointer assignment would feed the old poison word to Go's write
+		// barrier; on 386 it can resemble an invalid Go heap pointer.
+		// Store the same native pointer bits without tracing the old bytes.
+		if unsafe.Sizeof(uintptr(0)) == 4 {
+			binary.LittleEndian.PutUint32(buf[at:], uint32(uintptr(p)))
+		} else {
+			binary.LittleEndian.PutUint64(buf[at:], uint64(uintptr(p)))
+		}
+	}
 	for i, o := range objects {
 		o.PosVec = types.Ptf(math.Float32frombits(in.Positions[i][0]), math.Float32frombits(in.Positions[i][1]))
-		o.UpdateData = ptr(in.Updates[i])
+		storeUpdate(i, ptr(in.Updates[i]))
 		binary.LittleEndian.PutUint32(canonical[offsets[i]+56:], in.Positions[i][0])
 		binary.LittleEndian.PutUint32(canonical[offsets[i]+60:], in.Positions[i][1])
 		binary.LittleEndian.PutUint32(canonical[offsets[i]+748:], pePtr(in.Updates[i]))
@@ -229,7 +241,7 @@ func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode st
 		}
 		if len(plan.Update) != 0 {
 			i := plan.Update[0]
-			objects[i].UpdateData = ptr(plan.Update[1])
+			storeUpdate(i, ptr(plan.Update[1]))
 			at := offsets[i] + int(unsafe.Offsetof(server.Object{}.UpdateData))
 			copy(expected[at:at+int(unsafe.Sizeof(uintptr(0)))], buf[at:at+int(unsafe.Sizeof(uintptr(0)))])
 		}

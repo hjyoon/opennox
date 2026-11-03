@@ -213,6 +213,27 @@ write-barrier fatal exit, preserving direct binary status **two** separately
 from the converter's zero exit. The original failed gates remain failed;
 the separate intermittent server/nil and older memory causes remain open.
 
+After those preparation repairs, primary native run `41693815683` at
+`b56523d90` passes Windows amd64 **784,202 / 11** and 386 **764,472 / 94**.
+Both products build and pass help checks, all three required packages finish,
+and compiler warnings/build failures are zero. All six actual PE test
+executables match their archived manifest hashes; both products, complete
+ZIPs, API digests and raw job logs are retained. The earlier failed native
+runs are preserved with their original outcomes. Production source is
+byte-identical to the clean `91bc3f57c` product; only test preparation,
+diagnostics and documentation follow it.
+
+Static preparation of the next skeleton/drop family identifies complete
+linear bodies of **124 / 297 / 644 / 124 bytes** at `54A310`, `54A390`,
+`54A4C0` and `54A750`: **1,189 bytes** total, currently without covering
+sealed code ranges. These read-only bytes/call inventories are preparation,
+not executed-original or port credit. A fresh pinned original-emulator
+environment replays both existing 136-input Troll FPU profiles byte-exact;
+the initial sandboxed JIT failures remain recorded. New-family original
+execution, complete guards, reference freezing and actual old-C controls
+remain prerequisites. The manifest stays **4,047 records** and overall
+100% completion remains open.
+
 ### Native Chakram retarget public entries
 
 Engine `b65798bc5` ports public C `4EB250` and `4EB340` to native object,

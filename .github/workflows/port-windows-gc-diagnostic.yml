@@ -214,7 +214,7 @@ jobs:
           go-version: ${{ steps.retained_go.outputs.version }}
           cache: false
       - name: Restore original 386 compiler for retained independent C probes
-        if: ${{ inputs.retained_entry_probe }}
+        if: ${{ inputs.retained_entry_probe || inputs.profiles == 'retained-386-faults' }}
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
@@ -239,7 +239,7 @@ jobs:
           "CXX=$(Join-Path $mingwBin 'i686-w64-mingw32-clang++.exe')" >> $env:GITHUB_ENV
           'CGO_CFLAGS=-O2 -g' >> $env:GITHUB_ENV
           'CGO_CFLAGS_ALLOW=-f.*' >> $env:GITHUB_ENV
-      - name: Replay retained executable and compare pointer snapshot lifetimes
+      - name: Replay exact retained executables
         shell: python
         env:
           GH_TOKEN: ${{ github.token }}

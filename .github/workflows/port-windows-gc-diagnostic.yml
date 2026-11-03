@@ -8,9 +8,9 @@ on:
         type: string
         required: true
       profiles:
-        description: Diagnostic instrumentation; native production gate is unchanged
+        description: Diagnostic instrumentation; retained-386-faults requires retained_artifact_id
         type: choice
-        options: [checks, report, checkptr, gccheckmark, race]
+        options: [checks, report, checkptr, gccheckmark, race, retained-386-faults]
         default: checks
       retained_artifact_id:
         description: Optional retained native artifact; replay exact executables without rebuilding
@@ -18,10 +18,6 @@ on:
         default: ''
       retained_entry_probe:
         description: Replay exact retained Windows/386 legacy entry executable without rebuilding
-        type: boolean
-        default: false
-      retained_386_fault_matrix:
-        description: Replay exact retained 386 server nil-fault and Troll matrix executables
         type: boolean
         default: false
       baseline_retained_artifact_id:
@@ -251,7 +247,7 @@ jobs:
           SOURCE_REVISION: ${{ inputs.source_revision }}
           REPORT_DIR: build/windows-retained-diagnostic
           RETAINED_ENTRY_PROBE: ${{ inputs.retained_entry_probe }}
-          RETAINED_386_FAULT_MATRIX: ${{ inputs.retained_386_fault_matrix }}
+          RETAINED_386_FAULT_MATRIX: ${{ inputs.profiles == 'retained-386-faults' }}
           BASELINE_RETAINED_ARTIFACT_ID: ${{ inputs.baseline_retained_artifact_id }}
           BASELINE_SOURCE_REVISION: ${{ inputs.baseline_source_revision }}
         run: |

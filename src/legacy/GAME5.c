@@ -2463,6 +2463,7 @@ int nox_xxx_strikeSpittingSpider_549CA0(float a1) {
 }
 
 //----- (00549D80) --------------------------------------------------------
+#if 0
 int sub_549D80(int a1) {
 	int v1; // esi
 
@@ -2475,7 +2476,10 @@ int sub_549D80(int a1) {
 	return 1;
 }
 
+#endif
+
 //----- (00549E00) --------------------------------------------------------
+#if 0
 int sub_549E00(int a1) {
 	nox_xxx_mapPushUnitsAround_52E040(a1 + 56, 150.0, 10.0, 150.0, a1, 0, 0);
 	nox_xxx_mapDamageUnitsAround_4E25B0(a1 + 56, 150.0, 10.0, 148, 7, a1, 0);
@@ -2485,11 +2489,16 @@ int sub_549E00(int a1) {
 	return 1;
 }
 
+#endif
+
 //----- (00549E70) --------------------------------------------------------
+#if 0
 int sub_549E70(int a1) {
 	nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)(a1 + 56));
 	return 1;
 }
+
+#endif
 
 //----- (00549E90) --------------------------------------------------------
 int sub_549E90(int a1) {
@@ -2583,10 +2592,13 @@ int sub_549FA0(int a1) {
 }
 
 //----- (0054A250) --------------------------------------------------------
+#if 0
 int sub_54A250(int a1) {
 	nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)(a1 + 56));
 	return 1;
 }
+
+#endif
 
 //----- (0054A270) --------------------------------------------------------
 int nox_xxx_monsterDeadTroll_54A270(int a1) {

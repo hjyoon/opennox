@@ -110,35 +110,22 @@ func MonsterDeadCallbackNative549D80(
 			runtime.SparkExplosion == nil || runtime.Audio == nil || runtime.DelayedDelete == nil {
 			return false
 		}
-		damage := 96
-		if runtime.CoopMode() {
-			damage = 30
-		}
-		position := unit.PosVec
-		runtime.PushUnits(position, 96, 10, 100, unit)
-		runtime.DamageUnits(position, 96, 10, damage, object.DamageExplosion, unit)
-		runtime.SparkExplosion(position, 128)
-		runtime.Audio(sound.ID(42), unit)
-		runtime.DelayedDelete(unit)
-		return true
+		return unit.MonsterDeathExplosionNative549D80(0x549d80, monsterDeathOrdinaryExplosionRuntime549D80(runtime)) == 1
 	case MonsterDeadCallbackDemon549E00:
 		if runtime.PushUnits == nil || runtime.DamageUnits == nil || runtime.SparkExplosion == nil ||
 			runtime.Audio == nil || runtime.DelayedDelete == nil {
 			return false
 		}
-		position := unit.PosVec
-		runtime.PushUnits(position, 150, 10, 150, unit)
-		runtime.DamageUnits(position, 150, 10, 148, object.DamageExplosion, unit)
-		runtime.SparkExplosion(position, 255)
-		runtime.Audio(sound.ID(42), unit)
-		runtime.DelayedDelete(unit)
-		return true
+		return unit.MonsterDeathExplosionNative549D80(0x549e00, monsterDeathOrdinaryExplosionRuntime549D80(runtime)) == 1
 	case MonsterDeadCallbackImp549E70, MonsterDeadCallbackSpider54A250:
 		if runtime.PointFX == nil {
 			return false
 		}
-		runtime.PointFX(netmsg.MSG_FX_BLUE_SPARKS, unit.PosVec)
-		return true
+		entry := uint32(0x549e70)
+		if kind == MonsterDeadCallbackSpider54A250 {
+			entry = 0x54a250
+		}
+		return unit.MonsterDeathExplosionNative549D80(entry, monsterDeathOrdinaryExplosionRuntime549D80(runtime)) == 1
 	case MonsterDeadCallbackMechGolem549E90:
 		return monsterDeadMechGolem549E90(unit, runtime)
 	case MonsterDeadCallbackGolem549FA0:

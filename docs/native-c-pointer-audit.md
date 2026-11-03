@@ -236,6 +236,22 @@ above-4-GiB C reproductions and the port remain pending under
 `ROOT/monster-death-explosion-native-entry-port`; no crash or new native-port
 credit is inferred from this preparation.
 
+After the ten-reference freeze at `995a01e0f`, the four entries are ported to
+native object arguments and the ordinary callback shares their live-point
+core. All four actual old C calls previously faulted above 4 GiB after
+native layout/full-record and real typed C packet/push controls. Eleven of
+289 ordinary original comparisons exposed copied-point mismatches before
+the correction. Normal/strict selections now each pass 9,455 events, retain
+all 7,618 preceding wall/Chakram events and nineteen earlier death controls,
+and add 1,818 family events. Eight fresh default-C root-server children per
+profile qualify real map/ray/C-target/packet/audio/deletion composition;
+the target damage endpoint is explicitly captured, not an HP-gameplay claim.
+All frozen references stay unchanged. The repeated hash-bound host scan
+finds **3,484 definitions / 290 integer-cast candidates**: only these four
+leave that inventory. Typed-pointer candidates remain **41**, with ten
+overlaps and zero preprocessing warnings. The current product/CI gates are
+subsequent qualifications, not inferred from those counts.
+
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source
 revision. Static inventory changes alone earn no campaign, audio, runtime

@@ -209,7 +209,7 @@ their original digests/missing state remain recorded, with no further copy
 search or recovery gate. All nine final campaign audits and the previously
 open user issues remain open; overall 100% is **not** achieved.
 
-### Next raw monster-death original references
+### Native raw monster-death explosion and point entries
 
 Reference-only preparation seals original `549D80`, `549E00`, `549E70` and
 `54A250` before changing their native engine or public integer object ABIs.
@@ -227,7 +227,7 @@ An initial global-sort preparation is rejected before any source mutation;
 that failed source/result is retained and the corrected publication appends
 the records. The native getter draft passes C syntax/type preflight, but
 complete frozen consumers, actual old-C high-pointer reproductions, the
-port and its product/runtime gates remain pending. These references earn
+port and its product/runtime gates were still pending at that checkpoint. These references earn
 no new native-entry or overall completion credit.
 
 Four further contract/getter/consumer/before-test files are frozen before
@@ -240,8 +240,8 @@ it earns no crash credit. The frozen ordinary consumer compares 289 valid
 inputs: 278 match and eleven fail only in later point values after declared
 world mutations/reentry. All other events, returns, final positions and
 canonical heap hashes match. This is a controlled original-service
-comparison, not a claimed ordinary-gameplay failure. Full native raw/ordinary
-implementation and default-C production gates remain pending.
+comparison, not a claimed ordinary-gameplay failure. Native raw/ordinary
+implementation and default-C production gates were pending at that reference-only checkpoint.
 
 The full Go code-verifier CLI rejects the earlier `5471F4` jump-table data
 in an executable section. The untouched preceding
@@ -251,6 +251,46 @@ byte hash, raw-file range bound and original full-tree file binding for all
 4,047 records, identifying `5471F4` and `5471FC` as the two existing
 executable-section data records. No expected value or CLI section policy changes, and no full
 Go CLI pass is claimed. That preexisting verifier-policy issue remains open.
+
+After reference-only `995a01e0f`, all four public C entries accept native
+`nox_object_t*` arguments and retain their canonical signed-int result.
+Their exact original C bodies remain under `#if 0`. The shared native core
+caches the flag-dependent damage choice, keeps the live point allocation
+across world calls, and preserves raw service/fault order and reentrancy.
+The C world adapters derive position addresses using the native C layout;
+raw nil/unmapped addresses reach the world operation without an earlier Go
+field dereference. Ordinary callbacks share that core while retaining their
+existing object/dependency admission checks. All eleven before mismatches
+then pass without changing the frozen inputs, goldens or consumer.
+
+Normal and highres/cgocheck2/checkptr2 selections each pass **9,455 events**,
+with identical complete terminal identities/actions/multiplicities and zero
+skips or warnings. All **7,618 preceding wall/Chakram events** remain, plus
+**19 preceding death-callback controls** and **1,818 new family events**.
+Both original FPU profiles compare all 305 raw Go/C inputs and 289 admitted
+ordinary inputs, including no-read invalid-address controls, against the
+unchanged original outputs. Complete native 64 KiB buffers stay guarded.
+
+Eight fresh default-C children per profile use the real root server, native
+map/ray traversal, typed C target callback, wire packets, parsed AUD descriptor,
+audio allocator and delayed-deletion service. They cover all four entries,
+Coop damage selection and damage callbacks moving the source before later
+spark/audio operations. Whole nine-record fixtures remain exact apart from
+declared world effects. The target damage endpoint is an explicit C capture;
+this does not supply target-HP or audible-gameplay credit. An initial live
+fixture put the new point outside its receiver viewport; its source/result/
+executable remain preserved. The corrected fixture keeps the viewport bounds,
+centers the receiver between the two points, and independently proves both
+points are admitted before invoking the death entry.
+
+All ten frozen references remain exact, as do all 6,244 bound runtime/test
+inputs throughout the final selections. The strict selector adds only
+`MonsterDeathExplosion`. Host preprocessing still covers 191 C files with
+zero warnings: **3,484 definitions / 290 integer-cast candidates**, removing
+only these four entries. The separate typed-pointer view retains **41
+candidates / ten overlaps**. These are static triage counts, not a completion
+denominator. Product/E2E and native CI qualification for this engine remains
+pending; earlier source results are not relabelled as this new engine.
 
 ### Native wall-destroyed packet C entry
 

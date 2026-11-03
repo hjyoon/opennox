@@ -55,6 +55,38 @@ completion requirements.
 
 ## Current findings
 
+### Multiplayer Enter/text/Enter submission
+
+Engine `91bc3f57c` fixes the native entry-field Return bridge used by the
+stock multiplayer chat modal. Committed SDL text sets `Field_1044`, but SDL
+does not send the Windows carriage-return character that clears it. The old
+entry therefore leaves typed text focused and never notifies the chat owner.
+Return and keypad Return now complete that latch before the owner callback.
+An active IME retains its confirming Return; the next Return submits the
+completed text. Released keys do not submit.
+
+The unchanged `624d0e649` product reproduces the stranded English/Korean
+input after the second Enter, with its complete screenshot retained. The
+new regression has seven failing leaf scenarios before the fix. The final
+normal selection passes **673 events** across GUI/input/root/server/legacy;
+highres/cgocheck2/checkptr2 passes **669** across GUI/root/server/legacy.
+Both have zero skips and zero build warnings and retain their test binaries.
+They include the preceding Troll original, native C and ordinary controls.
+
+A clean macOS ARM64 product (`c6a0e9eefb9e4e6505191f9aad00b720474dcfaadc01d27852287985934d698a`,
+`vcs.modified=false`) passes an ordinary-clock owned host and independent UDP
+peer replay. Each sends English, Korean/Chinese, keypad and IME-confirmation
+messages through physical seat key/text events and the stock C chat callback.
+Each message echoes exactly once, creates its chat bubble and releases input;
+both Escape cancellation and empty-chat reopening/closure pass. The host
+receives all four independently typed peer messages and the peer receives
+the host's further reply. Both processes exit zero without forced termination;
+all eight ports are released. Eight full PNG copies, logs, private runtimes
+and the product are retained. The first controller's server-only `quit` and
+forced host shutdown remain a failed lifecycle run; the successful replay
+uses the same product and closes the host through ordinary window-close
+input. No physical keyboard or original Windows-peer credit is inferred.
+
 ### Native Troll death C entry
 
 Reference commits `f77fdc7f6` and `d1dd3eb02` freeze six original references
@@ -127,6 +159,30 @@ That observer now waits for independently observed periodic damage and its
 replicated partial meter before applying the same pixel assertion. It does
 not inject health or poison state. Product requalification follows this
 fixture correction; the failed executable, runtime and logs remain retained.
+
+The subsequent clean `91bc3f57c` product passes all three unchanged Troll
+death/cloud, placement and DOT scenarios, with natural process exits and
+the corrected observer. Each verifies stock duration **450**, dose one
+without instant HP loss, periodic player/monster/NPC damage and client
+replay, unchanged immune-Troll HP, one flatus event, natural world/client
+expiry and the green partial poison meter. Six full PNGs and all owned
+runtimes/logs are retained. These controlled host fixtures supply no earned
+campaign or physical audible-output credit.
+
+Windows run `41684103504` subsequently passes amd64, while its 386 build
+has zero compiler failures/warnings but two incomplete package executions.
+The legacy trace reports `runtime.badPointer` while flushing a Go write
+barrier for **0x10ffeedd**. These are exactly the guard bytes `dd ee ff 10`
+at native 386 source offset `0x1000 + 748`, before the fixture replaces
+`UpdateData`. The fixture now writes these C-owned pointer lanes as scalar
+native-width words, including scripted replacements, so it never traces the
+old arbitrary bytes as Go pointers. All six original reference files remain
+byte-exact to `f77fdc7f6`, including the expected outputs. Normal and strict
+legacy replays each pass **553 events**, with zero skips/warnings and complete
+64 KiB/canonical comparisons. Product code is unchanged. The separate server
+`CurePoison` required-argument nil failure remains open; a retained-executable
+diagnostic records direct 386 exit statuses separately from test2json and
+does not rebuild or relabel the failed native gate.
 
 ### Native Chakram retarget public entries
 

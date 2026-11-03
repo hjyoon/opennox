@@ -4,6 +4,19 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+After the Troll port, static follow-up at `91bc3f57c` identifies the related
+public entries `54A310`, `54A750`, `54A4C0` and `54A390`. The first two forward
+an integer-shaped source into the skeleton-debris and cooperative-drop
+helpers; neither needs its own cast to retain that unsafe public ABI. The
+helpers also narrow constructor results and source/update pointers. Existing
+ordinary Go callback classification and drop adapters are separate from
+these raw C bodies. Both forwarding callbacks remain in the stock callback
+table. Original execution, complete native layout/service controls and actual
+old-C fault reproductions are still required before porting this family;
+this triage claims no new crash or completed entry. Legacy C/header inputs
+have no delta from `624d0e649`, so the preceding Troll inventory remains the
+applicable static view.
+
 At `616b61d`, host macOS ARM64 normal preprocessing of all **191** top-level
 `src/legacy/*.c` files finds **3,502** active function definitions. Real clang
 preprocessing excludes the preserved `#if 0` original bodies; all 191

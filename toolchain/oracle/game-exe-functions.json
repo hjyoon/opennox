@@ -23511,6 +23511,20 @@
       "size": 124,
       "sha256": "3f9bd64fe0debb63b37176b6c1f0bf6aee4d760ebd2ba096b1d4be8c1062a51b",
       "purpose": "Complete raw Skeleton death/debris/drop body, independently executed before native-pointer port under PC53/to-zero and PC53/nearest; padding excluded. Earlier constituent call-site seals are retained."
+    },
+    {
+      "name": "sub_549E90_complete_MechGolem_death",
+      "address": "0x00549E90",
+      "size": 265,
+      "sha256": "089be747744c081c29d4a9f7ff9d20c6d2505f8e806c4cbc7f725842f26e17f6",
+      "purpose": "Complete original MechGolem/Golem death raw C callback, independently executed before native engine changes: 164 inputs per PC53-tozero/nearest profile; all 691 instruction bytes, 22 original reentrant calls/profile, ten memory faults and two CPU divide errors/profile; complete image/heap/caller/nonvolatile/FPU guards. Only named world services replaced. Six complete outputs differ between FPU profiles. Alignment NOPs excluded."
+    },
+    {
+      "name": "sub_549FA0_complete_Golem_death",
+      "address": "0x00549FA0",
+      "size": 426,
+      "sha256": "ab7579907728c6f2f94f480296cceaa0b7b2085ad40e1ba80464fa5c2fd479d7",
+      "purpose": "Complete original MechGolem/Golem death raw C callback, independently executed before native engine changes: 164 inputs per PC53-tozero/nearest profile; all 691 instruction bytes, 22 original reentrant calls/profile, ten memory faults and two CPU divide errors/profile; complete image/heap/caller/nonvolatile/FPU guards. Only named world services replaced. Six complete outputs differ between FPU profiles. Alignment NOPs excluded."
     }
   ],
   "data": [
@@ -28364,6 +28378,34 @@
       "size": 13,
       "sha256": "d1b4c7a7e5f2eca9e3a18e3975a9e5b95b6858d45767eb05c67e0930b29f6ec0",
       "purpose": "Thirteen-byte actual action16..28 switch map for original5471B0;data only."
+    },
+    {
+      "name": "original_Golem_mass_bytes_and_signed_divisor_5CD264",
+      "address": "0x005CD264",
+      "size": 16,
+      "sha256": "f390b10b5fb96af7853ab4a929633852aed743550362411a0dc0214bdd25a021",
+      "purpose": "Exact original static data read by the independently executed Golem death reference. Packed DWORD pointer slots and byte masses are distinct from native pointer storage. The word preceding the rock table is debug-string data, not a valid pointer slot; malformed out-of-table projections do not certify native named-field alias equivalence."
+    },
+    {
+      "name": "original_MechGolem_debris_name_slots_5CD4E8",
+      "address": "0x005CD4E8",
+      "size": 36,
+      "sha256": "acfdade3d5fc7209de05f3f2a391917c586c3b7ae83f6d40e1de6843d7ba2d02",
+      "purpose": "Exact original static data read by the independently executed Golem death reference. Packed DWORD pointer slots and byte masses are distinct from native pointer storage. The word preceding the rock table is debug-string data, not a valid pointer slot; malformed out-of-table projections do not certify native named-field alias equivalence."
+    },
+    {
+      "name": "original_Golem_preceding_nonpointer_word_5CD5EC",
+      "address": "0x005CD5EC",
+      "size": 4,
+      "sha256": "c7a1aeee53503927d6d1fa90ea9e518127a9a10cb29ba15c6dd785f7f0fa489c",
+      "purpose": "Exact original static data read by the independently executed Golem death reference. Packed DWORD pointer slots and byte masses are distinct from native pointer storage. The word preceding the rock table is debug-string data, not a valid pointer slot; malformed out-of-table projections do not certify native named-field alias equivalence."
+    },
+    {
+      "name": "original_Golem_debris_name_slots_5CD5F0",
+      "address": "0x005CD5F0",
+      "size": 48,
+      "sha256": "5a16264044150fb3eca0e5d070ec0718a22239b625f9198a668920074c95c0f2",
+      "purpose": "Exact original static data read by the independently executed Golem death reference. Packed DWORD pointer slots and byte masses are distinct from native pointer storage. The word preceding the rock table is debug-string data, not a valid pointer slot; malformed out-of-table projections do not certify native named-field alias equivalence."
     }
   ],
   "allow_overlapping_ranges": true

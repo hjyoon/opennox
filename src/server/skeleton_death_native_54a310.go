@@ -7,6 +7,24 @@ import (
 	"unsafe"
 )
 
+// The raw C entries can form a nil-base position address and pass it to a
+// service that does not dereference it, then return after allocation failure.
+// Keep this one address representation separate from checked native object
+// arithmetic; the consuming world service retains the original memory fault.
+//
+//go:noinline
+//go:nocheckptr
+func skeletonNilOrigin54A310() *types.Pointf {
+	return (*types.Pointf)(unsafe.Pointer(unsafe.Offsetof(Object{}.PosVec)))
+}
+
+func skeletonOrigin54A310(unit *Object) *types.Pointf {
+	if unit == nil {
+		return skeletonNilOrigin54A310()
+	}
+	return (*types.Pointf)(unsafe.Add(unsafe.Pointer(unit), unsafe.Offsetof(Object{}.PosVec)))
+}
+
 // SkeletonDeathNative54A310 preserves the raw public C callbacks. Ordinary
 // monster admission and its guarded Go adapters remain separate.
 func (unit *Object) SkeletonDeathNative54A310(lord bool, state *SkeletonDeathState54A310, rt SkeletonDeathRuntime54A310) int32 {
@@ -37,7 +55,7 @@ func (unit *Object) SkeletonDropNative54A390(name unsafe.Pointer, mods [4]unsafe
 	if item == nil {
 		return
 	}
-	origin := (*types.Pointf)(unsafe.Add(unsafe.Pointer(unit), unsafe.Offsetof(Object{}.PosVec)))
+	origin := skeletonOrigin54A310(unit)
 	var pos types.Pointf
 	rt.Point(50, origin, &pos)
 	rt.Create(item, nil, pos, 0)
@@ -49,7 +67,7 @@ func (unit *Object) SkeletonDropNative54A390(name unsafe.Pointer, mods [4]unsafe
 		rt.Apply(item, &attrs)
 	}
 	if charge != 0 && uint32(item.ObjClass)&0x1000000 != 0 && uint32(item.ObjSubClass)&0x82 != 0 {
-		*(*byte)(unsafe.Add(item.UseData.Ptr, 1)) = byte(charge)
+		(*[2]byte)(item.UseData.Ptr)[1] = byte(charge)
 	}
 	class := uint32(item.ObjClass)
 	if class&0x2000000 != 0 {
@@ -65,7 +83,7 @@ func (unit *Object) SkeletonDropNative54A390(name unsafe.Pointer, mods [4]unsafe
 // advance the live signed-DWORD index using the live signed divisor.
 func (unit *Object) SkeletonDebrisNative54A4C0(state *SkeletonDeathState54A310, rt SkeletonDeathRuntime54A310) int32 {
 	rt.Audio(356, unit, 0, 0)
-	origin := (*types.Pointf)(unsafe.Add(unsafe.Pointer(unit), unsafe.Offsetof(Object{}.PosVec)))
+	origin := skeletonOrigin54A310(unit)
 	rt.PointFX(0x8a, origin)
 	skull := rt.New(rt.Names.Skull)
 	if skull == nil {

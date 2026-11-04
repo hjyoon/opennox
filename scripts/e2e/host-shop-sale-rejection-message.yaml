@@ -1,0 +1,111 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept colors
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat help
+  - action: wait
+    dt: 30
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+  - action: grant-item
+    item: SponsorshipLetter
+    count: 1
+  - action: set-player-gold
+    gold: 100
+  - action: wait
+    dt: 60
+  - action: assert-inventory-count
+    item: SponsorshipLetter
+    count: 1
+  - action: open-server-shop-fixture
+    item: RedPotion
+    count: 1
+  - action: wait
+    dt: 60
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 1
+  - action: click
+    x: 786
+    y: 695
+    name: select sell mode
+  - action: wait
+    dt: 10
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 1
+  - action: click-inventory-item
+    item: SponsorshipLetter
+    name: attempt actual quest-item sale
+  - action: wait
+    dt: 30
+  - action: assert-shop-sale-rejection
+    text: CantSellQuestItem
+    name: quest item sale rejection message
+  - action: assert-inventory-count
+    item: SponsorshipLetter
+    count: 1
+  - action: assert-player-gold
+    gold: 100
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 1
+  - action: click
+    x: 786
+    y: 752
+    name: leave shop
+  - action: wait
+    dt: 60
+  - action: assert-server-shop
+    active: false
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+  - action: quit

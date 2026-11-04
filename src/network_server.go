@@ -635,10 +635,12 @@ func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
 			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
 		},
 		ReportCannotSellQuest: func(player *server.Object) {
-			s.NetPriMsgToPlayer(player, "CantSellQuestItem", 0)
+			message := s.Strings().GetStringInFile("CantSellQuestItem", "Trade.c")
+			legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
 		},
 		ReportCannotSellItem: func(player *server.Object) {
-			s.NetPriMsgToPlayer(player, "CantSellItem", 0)
+			message := s.Strings().GetStringInFile("CantSellItem", "Trade.c")
+			legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
 		},
 		PlayRejectSound: func(player *server.Object) {
 			s.Audio.EventObj(sound.SoundNoCanDo, player, 2, player.NetCode)

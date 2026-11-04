@@ -10867,6 +10867,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertItemAmountClosed(l.Name)
+		case "assert-shop-sale-rejection":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertShopSaleRejection(l.Text, l.Name)
 		case "open-shop-fixture":
 			if dt != 0 {
 				sc.Wait(dt, "")

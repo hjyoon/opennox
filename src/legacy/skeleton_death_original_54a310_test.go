@@ -189,8 +189,10 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		Index, Divisor uint32
 		After          [16]byte
 	}
-	g, freeState := alloc.New(guardedState{Before: [16]byte{1, 2, 3}, Index: in.Cache, Divisor: uint32(in.Divisor), After: [16]byte{4, 5, 6}})
+	g, freeState := alloc.New(guardedState{})
 	defer freeState()
+	// alloc.New allocates zero-filled C memory; it does not copy its argument.
+	*g = guardedState{Before: [16]byte{1, 2, 3}, Index: in.Cache, Divisor: uint32(in.Divisor), After: [16]byte{4, 5, 6}}
 	beforeState := *g
 	state := server.SkeletonDeathState54A310{Index: &g.Index, Divisor: &g.Divisor}
 	fps, coop := in.FPS, in.Coop

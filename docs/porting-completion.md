@@ -55,6 +55,155 @@ completion requirements.
 
 ## Current findings
 
+### Native Skeleton death, debris and cooperative-drop C entries
+
+Reference commits `c8cb55522` and `2b0b7a9d0` freeze the original four
+entries `54A310`, `54A390`, `54A4C0` and `54A750` before the engine port.
+The independent PE execution covers all **1,189 instruction bytes** across
+**169 inputs per FPU profile**. Both profiles retain seven original memory
+faults and three CPU divide faults; three complete outputs differ between
+profiles. The published producer/input generator replay is byte-exact. Four
+complete code ranges are added without changing earlier seals: **3,358 code
+plus 693 data records = 4,051**. The broader executable-section/data CLI
+policy remains open.
+
+Actual old C entries each fault above 4 GiB after independent complete native
+layouts, actual C type lookup/constructors, update/position pointer identities
+and whole-allocation controls pass. The before gate passes **34 events**.
+The frozen consumer initially failed because the C allocator zeroed rather
+than copied its argument; an independent twelve-case allocation control
+proves the explicit scalar setup correction. A second fixture-only change
+moves recovered-error formatting after the raw frames unwind, avoiding the
+Windows/386 stack copier interpreting the original nil-base position address
+as a live pointer. Original input/output goldens, expectations, assertions,
+guards and other reference files remain unchanged. All failed files and
+actual test executables are retained.
+
+Engine `12af92f96`, completed by `7c00b5765` and `aa26dfa24`, changes all four
+public entries to native object pointers and preserves the original C bodies
+under `#if 0`.
+The shared raw core retains source/load order, allocation short circuits,
+live class/use reloads, reentrancy, RNG/FPU spill sites and signed DWORD
+index/divisor behavior. The adapter uses native packed pointer side slots,
+the actual extracted C index shared with ordinary callbacks, canonical
+`_Bool` conversion and a pinned Go output point across the real C service.
+The source-relative origin retains a native object reference across callbacks.
+Valid positions stay typed pointers. Only the malformed nil-source offset is
+materialized as a pointer in C; no small invalid address occupies a Go pointer
+slot, and no unchecked Go pointer exception is required. The original
+uninitialized fifth modifier stack DWORD is excluded explicitly from semantic
+equality; native `Field16` is initialized to zero. Ordinary dispatch/admission
+remains separate from the raw public entries.
+
+The earlier exact Windows386 PE GC10 replay at `a24399707` reproduces an
+actual engine defect in its second repetition: nil+position-offset `0x38`
+remains a live Go pointer while the PointFX recorder allocates and grows the
+stack. The process exits with native status 2 before the allocation-failure
+return. Moving error
+formatting outside recovery had not fixed this callback-time failure.
+`aa26dfa24` retains the native source reference instead. The three internal
+origin-service argument types and the consumer's transport are corrected;
+the ported public C signatures and original method behavior stay intact.
+All eight other original reference files remain byte-exact, every existing assertion call is
+preserved, and one independent C position-offset assertion is added. Golden
+inputs, complete expected outputs and original producers are unchanged.
+An independent Go-only strict/GOGC10 control reproduces the old stack fatal
+and passes all three reference-carrier controls; it supplies no native ABI
+or original-output completion credit.
+
+Final selected normal and highres/cgocheck2/checkptr2 gates at clean
+`aa26dfa24` each pass **10,720 events**, with zero skips/failures/build
+warnings and complete terminal identity/action/multiplicity agreement.
+Each includes **676** complete original Go/C leaf comparisons, all six real
+default C conditions, static extracted-variable policy and intersection
+checks. Three new forced-stack regression tests additionally pass **150**
+events under GOGC10/cgocheck2/checkptr2/count50. They preserve nil-source
+allocation-failure short circuits, the actual dependent-read memory fault,
+and cached source identity with live position values across reentry/GC.
+Fixture `c123fe2ef` initializes actual blob data and verifies the real shared
+C index through the complete alternating bone sequence without accessing
+the retired blob slot. No static-policy exception is added.
+
+Clean ordinary and HD macOS ARM64 products at `aa26dfa24` pass the hosted
+stock-map direct-C diagnostic, each exiting zero without forced termination.
+All four public entries use default world services. Exact `Material2`, three
+nil modifier slots, `Field16=0`, debris motion, client replication of generated
+bones, exactly three audio events and living host HP150 unchanged are
+verified. Console-generated audio is checked after ordinary frame replay,
+not immediately at queue insertion. Four complete PNG copies are visually
+inspected; both products, logs/private runtimes and the earlier failed
+immediate-audio observation are retained. All eight ports are released.
+This diagnostic supplies no natural Skeleton kill, earned campaign or
+perceptual audible-fidelity credit.
+
+The five complete local profiles at clean `aa26dfa24` pass:
+
+| Local profile | Test passes | Existing skips |
+| --- | ---: | ---: |
+| normal | 791,147 | 43 |
+| highres | 791,147 | 43 |
+| server | 784,928 | 4 |
+| server-highres | 784,928 | 4 |
+| strict-highres | 652,297 | 8 |
+
+Strict uses the official additive selector with cgocheck2/checkptr2 and
+the enabled native FX/OpenAL-null gates. All **8,258** source/test/fixture
+inputs remain exact through the run; all **21 actual ARM64 main test
+executables** are retained and hashed. Prior terminal identities, actions
+and multiplicities are preserved. Only three allocation-address names in
+two unchanged nonparallel test loops are bound to their literal input
+roles; the original names, source hashes and mappings remain recorded.
+
+Linux run `41796630314` at `aa26dfa24` passes all four full products:
+**792,998 passes / 54 skips** each for normal/HD and **786,888 / seven**
+each for server/server-HD, plus **133,384** separate default-link damage
+passes. Its **155 actual ELF main test executables**, including three
+default-link executables, have verified native headers and manifest
+hashes. Relative work-directory paths preserve duplicate basenames.
+
+Final ordinary Windows run `41796630322` at `aa26dfa24` passes all three
+packages on both architectures:
+
+| Windows architecture | Test passes | Existing skips |
+| --- | ---: | ---: |
+| 386 | 765,168 | 94 |
+| AMD64 | 784,898 | 11 |
+
+The exact primary 386 legacy PE additionally passes **6,760** complete
+original leaves under GOGC10/count10, including twenty actual C nil-origin
+faults and twenty nil-allocation-failure returns, with direct native exit
+zero and unchanged PE hashes. The first extra replay in run `41784438520`
+failed before any leaf because its CWD was `src`; the corrected child runs
+in `src/legacy`.
+
+Earlier Windows run `41787197860` remains failed: AMD64 had a newproc1
+goroutine-state fatal, PC0 exception and Green Tea GC internal bounds
+fatal. Diagnostic `41789036264` replays those exact three failed PEs
+without rebuilding and completes all full suites (**784,895 passes /
+eleven skips**) plus focused ordinary/GC controls. The final corrected
+ordinary gate includes the GC-safe origin correction. The AMD64 replay
+observations do not resolve the intermittent memory-corruption cause or
+turn the old failure into a pass.
+All complete artifact ZIP/API digests, raw jobs, products and actual PEs
+are retained. Archive transfer occurs only while local Go work is idle.
+
+Evidence and scripts are retained under
+`ROOT/skeleton-death-drop-native-entry-port`, including the full-profile
+source seal, terminal comparisons, native CI receipts and product E2E
+qualification.
+
+The host C inventory is rebound by hashes to clean `8882981b0`: all **191 C
+sources and 474 headers** match the preserved original WIP capture and
+remain exact at `aa26dfa24`. The three new cgo preamble helpers are outside
+this host macOS ARM64 normal preprocessing scan. It finds
+**3,479 active definitions / 287 integer-cast candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero preprocessor warnings**. Four
+old C definitions disappear, but only two cast candidates disappear because
+two were forwarding entries. These inventories are triage, not completion
+denominators. All nine final class/chapter audits, user sale-silence listening,
+older Windows memory/nilcold causes and the code-oracle CLI policy remain
+open; overall 100% is not claimed.
+
 ### Multiplayer Enter/text/Enter submission
 
 Engine `91bc3f57c` fixes the native entry-field Return bridge used by the

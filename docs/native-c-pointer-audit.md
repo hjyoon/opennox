@@ -4,18 +4,44 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
-After the Troll port, static follow-up at `91bc3f57c` identifies the related
-public entries `54A310`, `54A750`, `54A4C0` and `54A390`. The first two forward
-an integer-shaped source into the skeleton-debris and cooperative-drop
-helpers; neither needs its own cast to retain that unsafe public ABI. The
-helpers also narrow constructor results and source/update pointers. Existing
-ordinary Go callback classification and drop adapters are separate from
-these raw C bodies. Both forwarding callbacks remain in the stock callback
-table. Original execution, complete native layout/service controls and actual
-old-C fault reproductions are still required before porting this family;
-this triage claims no new crash or completed entry. Legacy C/header inputs
-have no delta from `624d0e649`, so the preceding Troll inventory remains the
-applicable static view.
+The Skeleton family now ports raw public entries `54A310`, `54A390`,
+`54A4C0` and `54A750` to native object pointers. Engine `12af92f96`, completed
+by `7c00b5765` and `aa26dfa24`, preserves all four old C bodies under
+`#if 0`; ordinary Go dispatch/admission remains separate. Frozen original
+execution covers all 1,189 bytes, 169 inputs and both FPU profiles, including
+memory/divide faults.
+Actual old C entries each fault above 4 GiB after complete native-layout and
+real constructor/service positive controls. Selected normal/strict gates
+each pass **10,720** events, including **676** complete original Go/C leaves
+and all six default C conditions. The exact 386 PE GC10 replay exposes a live nil+offset
+Go pointer during callback allocation/stack growth at `a24399707`. `aa26dfa24`
+retains a native source reference across callbacks and projects malformed
+nil-source addresses only in C. Valid origins stay typed pointers. Three
+internal service argument types and fixture transport are corrected without
+changing ported public C signatures, method behavior or golden/expected data;
+the other eight reference files remain exact. Three forced-stack regressions pass **150** events
+under GOGC10/cgocheck2/checkptr2/count50. Full local/product/native CI evidence
+and all preserved failures are recorded in `porting-completion.md`.
+
+The preserved host scan, captured at the original WIP and rebound by hashes
+to clean `8882981b0`, verifies all **191 C sources and 474 headers**. Those
+C/header inputs also remain exact at `aa26dfa24`; its new cgo preamble
+helpers are outside this scan. It finds
+**3,479 active definitions / 287 integer-cast candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero preprocessor warnings**. Four old
+C definitions disappear, but only two cast candidates disappear: the other
+two were forwarding entries. This covers host macOS ARM64 normal C
+preprocessing, excluding cgo preambles and other target configurations;
+these views are triage, not a remaining-defect denominator. Full original
+preprocessed outputs and provenance remain under
+`ROOT/skeleton-death-drop-native-entry-port`.
+
+Read-only follow-up identifies raw MechGolem `549E90` and Golem `549FA0`
+bodies totaling **691 original bytes**. No complete covering seals, independent
+execution/goldens, native before controls or port are credited for these
+entries. Existing ordinary Go dispatch does not close their raw C ABI.
+The byte/call inventory is retained in
+`ROOT/next-golem-death-original-PE-byte-and-call-audit-20261104-v1.json`.
 
 At `616b61d`, host macOS ARM64 normal preprocessing of all **191** top-level
 `src/legacy/*.c` files finds **3,502** active function definitions. Real clang

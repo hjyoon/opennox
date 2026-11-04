@@ -314,13 +314,17 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		pending = ""
 	}
 	sentinel := func(e map[string]any) uint32 { return uint32(0xa5a50000) + uint32(e["index"].(int)) }
-	readOrigin := func(p *types.Pointf) [2]uint32 {
+	readOrigin := func(p server.SkeletonOrigin54A310) [2]uint32 {
 		pending = "origin"
-		return [2]uint32{math.Float32bits(p.X), math.Float32bits(p.Y)}
+		pos := p.Read()
+		return [2]uint32{math.Float32bits(pos.X), math.Float32bits(pos.Y)}
 	}
-	checkOrigin := func(p *types.Pointf) {
+	checkOrigin := func(p server.SkeletonOrigin54A310) {
 		t.Helper()
-		r := role(unsafe.Add(unsafe.Pointer(p), -int(nativeOff[3])))
+		if p.Address() != uintptr(unsafe.Pointer(p.Source()))+uintptr(nativeOff[3]) {
+			t.Fatal("origin address differs from independent C position offset")
+		}
+		r := role(unsafe.Pointer(p.Source()))
 		if r != in.Unit && r != 1 {
 			t.Fatal("origin pointer identity", r)
 		}
@@ -358,7 +362,7 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		finish(e, p, r)
 		return (*server.Object)(ptr(r))
 	}
-	rt.Point = func(radius float32, origin, output *types.Pointf) {
+	rt.Point = func(radius float32, origin server.SkeletonOrigin54A310, output *types.Pointf) {
 		e, p, seq := begin("point")
 		checkOrigin(origin)
 		e["radius"], e["origin"] = math.Float32bits(radius), readOrigin(origin)
@@ -380,7 +384,7 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		finish(e, p, r)
 		return r
 	}
-	rt.Force = func(origin *types.Pointf, o *server.Object, force float32) uint32 {
+	rt.Force = func(origin server.SkeletonOrigin54A310, o *server.Object, force float32) uint32 {
 		e, p, _ := begin("force")
 		checkOrigin(origin)
 		e["object"], e["origin"], e["force"] = role(unsafe.Pointer(o)), readOrigin(origin), math.Float32bits(force)
@@ -400,10 +404,10 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		finish(e, p, r)
 		return r
 	}
-	rt.PointFX = func(id uint32, origin *types.Pointf) uint32 {
+	rt.PointFX = func(id uint32, origin server.SkeletonOrigin54A310) uint32 {
 		e, p, _ := begin("pointfx")
 		checkOrigin(origin)
-		e["effect"], e["origin_pointer"] = id, role(unsafe.Add(unsafe.Pointer(origin), -nativeOff[3]))
+		e["effect"], e["origin_pointer"] = id, role(unsafe.Pointer(origin.Source()))
 		r := sentinel(e)
 		finish(e, p, r)
 		return r

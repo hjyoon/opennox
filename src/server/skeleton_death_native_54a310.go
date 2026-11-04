@@ -7,23 +7,34 @@ import (
 	"unsafe"
 )
 
-// The raw C entries can form a nil-base position address and pass it to a
-// service that does not dereference it, then return after allocation failure.
-// Keep this one address representation separate from checked native object
-// arithmetic; the consuming world service retains the original memory fault.
-//
-//go:noinline
-//go:nocheckptr
-func skeletonNilOrigin54A310() *types.Pointf {
-	return (*types.Pointf)(unsafe.Pointer(unsafe.Offsetof(Object{}.PosVec)))
+// SkeletonOrigin54A310 retains the source of the original cached position
+// address. A nil source still denotes nil+position-offset, not a nil position.
+// Keeping that small address in a Go pointer slot would make stack growth
+// fatal even when the service only records it and allocation then fails.
+type SkeletonOrigin54A310 struct{ unit *Object }
+
+func skeletonOrigin54A310(unit *Object) SkeletonOrigin54A310 {
+	return SkeletonOrigin54A310{unit: unit}
 }
 
-func skeletonOrigin54A310(unit *Object) *types.Pointf {
-	if unit == nil {
-		return skeletonNilOrigin54A310()
+func (p SkeletonOrigin54A310) Source() *Object { return p.unit }
+
+// NativePoint returns a GC-safe pointer for a nonnil source. A nil result
+// requires Address at a foreign boundary; callers must retain its offset.
+func (p SkeletonOrigin54A310) NativePoint() *types.Pointf {
+	if p.unit == nil {
+		return nil
 	}
-	return (*types.Pointf)(unsafe.Add(unsafe.Pointer(unit), unsafe.Offsetof(Object{}.PosVec)))
+	return &p.unit.PosVec
 }
+
+func (p SkeletonOrigin54A310) Address() uintptr {
+	return uintptr(unsafe.Pointer(p.unit)) + unsafe.Offsetof(Object{}.PosVec)
+}
+
+// Read delays the original dependent read until the consuming service.
+// A nil source faults here without ever storing nil+offset in a Go pointer.
+func (p SkeletonOrigin54A310) Read() types.Pointf { return p.unit.PosVec }
 
 // SkeletonDeathNative54A310 preserves the raw public C callbacks. Ordinary
 // monster admission and its guarded Go adapters remain separate.

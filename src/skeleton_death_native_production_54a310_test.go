@@ -86,13 +86,12 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 	}
 	s.Audio.Reset()
 	index, count := legacy.SkeletonDeathIndex54A310(), memmap.PtrUint32(0x587000, 287348)
-	blobIndex := memmap.PtrUint32(0x5D4594, 2491588)
-	if index == blobIndex {
-		t.Fatal("shared C cache aliases retired blob storage")
-	}
-	oldIndex, oldCount, oldBlobIndex := *index, *count, *blobIndex
-	*index, *count, *blobIndex = 0, 2, 0x7fffffff
-	t.Cleanup(func() { *index, *count, *blobIndex = oldIndex, oldCount, oldBlobIndex })
+	oldIndex, oldCount := *index, *count
+	// The fresh retired slot is zero; seed only the actual C cache to one.
+	// LegBone-first creation then proves the native entry uses that live cache
+	// without accessing an extracted variable through its former blob address.
+	*index, *count = 1, 2
+	t.Cleanup(func() { *index, *count = oldIndex, oldCount })
 	entry := map[string]int{"skeleton": 0, "lord": 3, "debris": 2, "drop": 1, "drop-flags-off": 1, "allocation-failure": 2}[mode]
 	if mode != "allocation-failure" {
 		for _, n := range []string{"Skull", "ArmBone", "LegBone", "Sword", "WoodenShield", "SteelShield", "TestItem"} {
@@ -124,10 +123,8 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 	if !ok || value != 1 {
 		t.Fatal("typed public C and default runtime", value, ok)
 	}
-	if *blobIndex != 0x7fffffff {
-		t.Fatal("raw native entry changed retired blob cache")
-	}
 	pieces, bones, skulls, items := 0, 0, 0, 0
+	var boneNames []string
 	for obj := s.Objs.Pending; obj != nil; obj = obj.ObjNext {
 		pieces++
 		if obj.ObjOwner != nil || !obj.Flags().Has(object.FlagActive|object.FlagPending) {
@@ -141,6 +138,7 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 			}
 		case "ArmBone", "LegBone":
 			bones++
+			boneNames = append(boneNames, obj.ObjectTypeC().ID())
 			if obj.ZVal < 10 || obj.ZVal > 35 {
 				t.Fatal("bone raise")
 			}
@@ -170,8 +168,14 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 			t.Fatal("raw debris allocation prefix")
 		}
 	default:
-		if skulls != 1 || bones < 10 || bones > 20 || items > 1 || sounds != 1 || *index != uint32(bones%2) {
+		if skulls != 1 || bones < 10 || bones > 20 || items > 1 || sounds != 1 || *index != uint32((1+bones)%2) {
 			t.Fatal("actual debris/count/cache/audio", skulls, bones, items, sounds, *index)
+		}
+		// createAt prepends to Pending, so inspect creation order backwards.
+		for i, name := range boneNames {
+			if want := [2]string{"LegBone", "ArmBone"}[(bones-1-i)%2]; name != want {
+				t.Fatal("actual C cache/table creation sequence", i, name, want)
+			}
 		}
 	}
 	if !bytes.Equal(sourceFrame, unsafe.Slice((*byte)(unsafe.Pointer(unit)), int(unsafe.Sizeof(*unit)))) {

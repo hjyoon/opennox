@@ -502,31 +502,34 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 	}
 	oldFault := debug.SetPanicOnFault(true)
 	defer debug.SetPanicOnFault(oldFault)
+	var panicValue any
 	func() {
-		defer func() {
-			if r := recover(); r != nil {
-				kind, site := "memory", pending
-				text := fmt.Sprint(r)
-				if strings.Contains(text, "divide") || strings.Contains(text, "modulo") {
-					kind, site = "arithmetic", "bone-modulo"
-				} else if site == "" {
-					site = "object"
-					if in.Entry == "54a390" {
-						site = "charge"
-					}
-				}
-				if kind == "memory" && !strings.Contains(text, "invalid memory") && !strings.Contains(text, "fault") {
-					t.Fatalf("not an actual native memory fault: %T %v", r, r)
-				}
-				out.Fault = map[string]any{"kind": kind, "site": site}
-			}
-		}()
+		defer func() { panicValue = recover() }()
 		r := invoke(in.Entry, in.Unit)
 		if in.Entry != "54a390" {
 			v := uint32(r)
 			out.Result = &v
 		}
 	}()
+	// Format only after the raw frames unwind. A nil-base native position
+	// address is intentionally invalid Go pointer data; growing a 386 stack
+	// while formatting inside recovery would scan those still-live frames.
+	if r := panicValue; r != nil {
+		kind, site := "memory", pending
+		text := fmt.Sprint(r)
+		if strings.Contains(text, "divide") || strings.Contains(text, "modulo") {
+			kind, site = "arithmetic", "bone-modulo"
+		} else if site == "" {
+			site = "object"
+			if in.Entry == "54a390" {
+				site = "charge"
+			}
+		}
+		if kind == "memory" && !strings.Contains(text, "invalid memory") && !strings.Contains(text, "fault") {
+			t.Fatalf("not an actual native memory fault: %T %v", r, r)
+		}
+		out.Fault = map[string]any{"kind": kind, "site": site}
+	}
 	// Reconcile only the original stores, then compare every byte of the entire
 	// native buffer and the complete independently expected PE32 heap digest.
 	for n := range objs {

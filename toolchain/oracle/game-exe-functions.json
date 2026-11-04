@@ -23483,6 +23483,34 @@
       "size": 27,
       "sha256": "5f113c7feb7cdefb55fe0dfc53bd01ada304de36eb9745c5b2801c58b010aefd",
       "purpose": "Complete original raw death callback, independently executed in both PC53 FPU profiles before native ABI changes; declared world services and their read faults are separately recorded. This seal alone supplies no native-port credit."
+    },
+    {
+      "name": "sub_54A310",
+      "address": "0x0054A310",
+      "size": 124,
+      "sha256": "fc81e1cbc8cf0c7d255a3ce89924495fc208b5af1811684b20e7fdffd549f274",
+      "purpose": "Complete raw Skeleton death/debris/drop body, independently executed before native-pointer port under PC53/to-zero and PC53/nearest; padding excluded. Earlier constituent call-site seals are retained."
+    },
+    {
+      "name": "sub_54A390",
+      "address": "0x0054A390",
+      "size": 297,
+      "sha256": "a7456c5dea5f19a123f5570f4e705d30fd1e44f4d3d497b43481ef88f2c227e8",
+      "purpose": "Complete raw Skeleton death/debris/drop body, independently executed before native-pointer port under PC53/to-zero and PC53/nearest; padding excluded. Earlier constituent call-site seals are retained."
+    },
+    {
+      "name": "sub_54A4C0",
+      "address": "0x0054A4C0",
+      "size": 644,
+      "sha256": "ed201956c5e80ca9a6581eccaf71698954cd9ab249da5c07a6e4c0a25eb061fd",
+      "purpose": "Complete raw Skeleton death/debris/drop body, independently executed before native-pointer port under PC53/to-zero and PC53/nearest; padding excluded. Earlier constituent call-site seals are retained."
+    },
+    {
+      "name": "sub_54A750",
+      "address": "0x0054A750",
+      "size": 124,
+      "sha256": "3f9bd64fe0debb63b37176b6c1f0bf6aee4d760ebd2ba096b1d4be8c1062a51b",
+      "purpose": "Complete raw Skeleton death/debris/drop body, independently executed before native-pointer port under PC53/to-zero and PC53/nearest; padding excluded. Earlier constituent call-site seals are retained."
     }
   ],
   "data": [

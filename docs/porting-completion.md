@@ -55,6 +55,138 @@ completion requirements.
 
 ## Current findings
 
+### Native MechGolem and Golem death C entries
+
+Reference `ba9f9ddff` freezes complete original MechGolem `549E90` (265
+bytes) and Golem `549FA0` (426): **691 instruction bytes**, **164 inputs
+per FPU profile**, and **22 original reentrant calls per profile**. Both
+PC53/to-zero and nearest profiles execute every instruction and retain ten
+memory failures and two CPU divide errors. Six complete outputs differ
+between profiles. Full PE image/heap/caller/nonvolatile/FPU guards pass;
+only the original two stores reusing Golem's incoming argument for its
+part count are admitted. Published generator and producer replay compressed
+and decoded bytes exactly. Explicit gzip level 9 preserves reproducibility
+across the different Python default compression levels. The original
+manifest adds two complete code ranges and four static-data ranges, keeping
+all previous records unchanged: **3,360 code + 697 data = 4,057 records**.
+
+`41b5f6083` freezes the contract, getter, consumer and before gate. Seven
+actual C constructor types, independent complete C/Go object layouts,
+native position/use identities and whole-record controls pass before both
+unchanged raw C entries SIGSEGV with source pointers above 4 GiB. This gate
+passes eight events in two packages; the original consumer at that source
+compiles without claiming any native comparison leaves.
+
+The first native comparison exposes one reference-buffer transport defect:
+a formerly unmapped mass projection can land in unrelated mapped native
+memory after relocation. Independent code importing no engine deliberately
+maps that address, proves the old read succeeds, and checks actual protected
+page faults for both mass and pointer-table projections. All 48 neighbouring
+byte addresses/values and seven mapped DWORD slot identities remain exact.
+Fixture-only `1b5a6afb9` preserves the original mapped/unmapped domains for
+this frozen corpus. Every prior assertion call, golden, complete expected
+output and producer is unchanged; the other nine original/contract files
+remain byte-exact. The consumer's address transport is corrected explicitly,
+so it is not labelled wholly unchanged. Earlier compile preparations, the
+actual mismatch, full failed logs and every executed main test binary remain
+preserved. Controlled out-of-table projections do not certify arbitrary
+native named-field aliases after pointer expansion.
+
+Engine `5aaefaaa5` ports both public C arguments to `nox_object_t*` and
+preserves both original bodies exactly under `#if 0`. Its raw core retains
+source/load order, allocation short circuits, live table/mass/cache/flag/FPS
+loads, unsigned byte masses, reentry, each original binary32 spill, DWORD
+multiply/wrap and signed remainder/divide-overflow behavior. Ordinary guarded
+dispatch and index normalization remain separate. The adapter uses native
+packed pointer slots and the actual extracted C cache shared with ordinary
+callbacks. It reuses the GC-safe source-reference carrier, keeps normal
+origins typed, forms only malformed nil-origin pointers in C, and pins the
+output point across the real C point service.
+
+Normal and highres/cgocheck2/checkptr2 selections each pass **11,409 events**,
+zero skips/failures/build warnings, with identical terminal identities,
+actions and multiplicities. Each includes **656** complete original Go/C
+leaves, all **six** actual default-C conditions and the earlier Skeleton and
+other selected native gates. Every one of the previous **10,720** selected
+terminal events remains present. Forced-stack/nested-call regressions pass
+**450 events** under GOGC10/cgocheck2/checkptr2/count50. All **8,277** bound
+source/test/fixture inputs remain exact through the clean engine commit.
+
+Clean ordinary and HD ARM64 products at `5aaefaaa5` pass the hosted stock-map
+direct-C diagnostic without forced termination. Both public entries run with
+default world services in three calls: Mech, cooperative Golem and ordinary
+Golem. Each product creates eight mechanical parts, 21 cooperative rocks and
+six ordinary rocks; the exact stock sequences, shared index transitions,
+byte masses, motion/raise, client replication of all eight Mech parts and
+27 rocks, three audio events and living host HP150 unchanged are observed.
+Four full PNG copies are visually inspected. Products, private runtimes,
+frames and logs remain retained; all eight ports are released. The diagnostic
+supplies no natural Golem kill, earned campaign or perceptual audio credit.
+
+All five full local profiles at clean `5aaefaaa5` pass:
+
+| Local profile | Test passes | Existing skips |
+| --- | ---: | ---: |
+| normal | 791,836 | 43 |
+| highres | 791,836 | 43 |
+| server | 785,617 | 4 |
+| server-highres | 785,617 | 4 |
+| strict-highres | 652,988 | 8 |
+
+The strict selector adds the Golem family and its preceding ordinary
+callbacks while preserving every earlier alternative. All **8,277** runtime
+inputs and three pipeline/oracle inputs stay exact; all **21 actual ARM64
+main test executables** are retained with native headers and hashes. Every
+prior full-profile terminal identity, action and multiplicity remains.
+Only the three existing address-named cases in two unchanged nonparallel
+loops use their recorded literal input-role mappings; raw names and source
+hashes remain retained.
+
+Linux run `41839043543` passes all four full products:
+
+| Linux product | Test passes | Existing skips |
+| --- | ---: | ---: |
+| opennox | 793,687 | 54 |
+| opennox-hd | 793,687 | 54 |
+| opennox-server | 787,577 | 7 |
+| opennox-server-hd | 787,577 | 7 |
+
+Its **155 actual ELF main test executables**, including three separate
+default-link damage executables, have verified manifest hashes and native
+headers. The latter gate retains **133,384 passes**. Windows run
+`41838951718` passes all three packages on both architectures:
+
+| Windows architecture | Test passes | Existing skips |
+| --- | ---: | ---: |
+| 386 | 765,857 | 94 |
+| AMD64 | 785,587 | 11 |
+
+The exact primary 386 legacy PE additionally passes **6,560 Golem original
+leaves**, including forty actual C nil-origin faults and forty nil-allocation
+returns, under GOGC10/count10. The preceding **6,760 Skeleton leaves** and
+twenty faults/twenty returns also remain required and pass. Direct native
+exit is zero, with unchanged PE hashes and no rebuild. All six actual PE
+test mains, full artifact ZIPs/API digests, products and raw job logs remain
+retained. Earlier Windows failures remain failed observations with their
+original binaries; this successful gate supplies no causal attribution for
+the older intermittent memory/nilcold failures.
+
+Artifact transfers occur only while local Go work is idle. Evidence, full
+outputs, source seals, controls and scripts are retained under
+`ROOT/golem-death-native-entry-port`; complete CI archives remain under
+`ROOT/native-ci-retention-20261102`.
+
+The hash-bound host scan covers all **191 C sources / 474 headers** and finds
+**3,477 active definitions / 285 integer-cast candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero preprocessor warnings**. Only
+these two entries leave the integer view. The original dirty capture at
+`41b5f6083` is retained as a working-tree capture, with exact inputs rebound
+to clean `5aaefaaa5`. Cgo preambles and other target macros are outside that
+scan. These inventories are triage, not a remaining-defect denominator.
+All nine final class/chapter audits, user sale-silence listening, older
+Windows memory/nilcold causes, the original code-oracle CLI section/data
+policy and remaining raw C pointer ports stay open; overall 100% is not claimed.
+
 ### Native Skeleton death, debris and cooperative-drop C entries
 
 Reference commits `c8cb55522` and `2b0b7a9d0` freeze the original four

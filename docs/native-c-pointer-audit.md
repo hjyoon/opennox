@@ -4,6 +4,46 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+MechGolem `549E90` and Golem `549FA0` now have typed native object C
+arguments at `5aaefaaa5`, with both original C bodies exact under `#if 0`.
+Original seals `ba9f9ddff` and `41b5f6083` precede the engine: all **691**
+instruction bytes, **164** inputs and both FPU profiles execute, including
+22 reentrant calls and ten memory/two divide errors per profile. Both old
+actual C entries SIGSEGV above 4 GiB after seven real C constructors,
+independent complete layouts and whole-record controls pass. Normal/strict
+selections each pass **11,409** events, including **656** complete original
+Go/C leaves and six actual default-C conditions. Forced stack/GC regressions
+pass **450** events under GOGC10/cgocheck2/checkptr2/count50.
+
+The raw core preserves the live packed name tables, unsigned mass bytes,
+shared extracted C cache, mode/FPS reloads, signed modulo, allocation/fault
+order, FPU spills and reentry. It reuses a GC-safe native source reference;
+ordinary dispatcher admission and index normalization remain separate.
+Fixture-only `1b5a6afb9` corrects mapped/unmapped address transport after an
+independent no-engine strict control proves that a relocated invalid mass
+or slot address can land in another native mapping. All prior assertions,
+expected data and producers stay unchanged; the other nine original files
+remain exact. Controlled out-of-table projections supply no general native
+named-field alias certificate. Full local/native CI/product evidence and
+all failed/preparation files are retained in `porting-completion.md` and
+`ROOT/golem-death-native-entry-port`.
+
+Read-only follow-up identifies raw ImpEgg `54CAE0`, Polyp `54CB10` and
+Potion `54CBB0` bodies totaling **214 original bytes**. Polyp already has
+one complete 150-byte precision seal; it is not counted as a new execution
+or new raw/native qualification. Their ordinary native callbacks do not
+close these raw C ABIs. Byte/call provenance is retained in
+`ROOT/next-object-death-original-PE-byte-and-call-audit-20261104-v1.json`.
+
+The latest host-normal CPP view verifies **191 C sources / 474 headers**:
+**3,477 active definitions / 285 integer-cast candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero warnings**. Only these two
+integer candidates disappear relative to the Skeleton view. The original
+working-tree capture at `41b5f6083` is not relabelled; its exact C/header
+inputs are rebound to clean `5aaefaaa5`. Cgo preambles and other target
+macros remain outside this scan. These are triage views, not a completion
+percentage or remaining-defect denominator.
+
 The Skeleton family now ports raw public entries `54A310`, `54A390`,
 `54A4C0` and `54A750` to native object pointers. Engine `12af92f96`, completed
 by `7c00b5765` and `aa26dfa24`, preserves all four old C bodies under
@@ -35,13 +75,6 @@ preprocessing, excluding cgo preambles and other target configurations;
 these views are triage, not a remaining-defect denominator. Full original
 preprocessed outputs and provenance remain under
 `ROOT/skeleton-death-drop-native-entry-port`.
-
-Read-only follow-up identifies raw MechGolem `549E90` and Golem `549FA0`
-bodies totaling **691 original bytes**. No complete covering seals, independent
-execution/goldens, native before controls or port are credited for these
-entries. Existing ordinary Go dispatch does not close their raw C ABI.
-The byte/call inventory is retained in
-`ROOT/next-golem-death-original-PE-byte-and-call-audit-20261104-v1.json`.
 
 At `616b61d`, host macOS ARM64 normal preprocessing of all **191** top-level
 `src/legacy/*.c` files finds **3,502** active function definitions. Real clang

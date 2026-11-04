@@ -4,6 +4,12 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Shop sale rejections at `766134ea8` resolve the original `Trade.c` strings
+and reuse the typed native `004D9EB0` line-message service. English/Korean
+tests decode real queued packets, and both clean-product shop UI replays
+verify the displayed quest rejection and unchanged item/gold. This Go adapter
+correction leaves original C bodies and the C pointer inventory unchanged.
+
 Fireball Staff shop repair is restored at `487729563` in the existing native
 `005108D0`/`00510AE0` transaction. Wand charge fields use `WandUseData`, recharge
 uses the already ported `0053C520` service, and the typed charge report binding

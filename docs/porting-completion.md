@@ -55,6 +55,48 @@ completion requirements.
 
 ## Current findings
 
+### Localized shop sale rejection messages
+
+`766134ea8` restores the original messages for unsellable quest items and
+Glyphs. The native trade adapter sent unqualified `CantSellQuestItem` and
+`CantSellItem` IDs through `MSG_INFORM`, where the client resolved them in
+`inform.c`. The stock entries belong to `Trade.c`. Both bindings now resolve
+that catalog and send the resulting text through the existing native
+`004D9EB0` line-message service, matching the original trade C callers.
+Original assets, translations, C bodies, sale eligibility and prices remain
+unchanged; the preceding Fireball Staff repair is retained.
+
+Four English/Korean wire cases, seven events with parents, reproduce the
+original failure and pass after the fix. They decode the actual native
+message queue, including Korean UTF-16 text. Related normal tests pass
+**16,844** events in three packages; highres `cgocheck2`/`checkptr=2` passes
+**16,845** in four, including the additional `TestCodeStatic` gate.
+All ten executed local Go test mains, failed preparation attempts and logs
+are retained. The initial missing fixture initialization and the unsupported
+ordinary Glyph grant are preparation failures; the latter changes only the
+UI scenario. Both rejection bindings remain covered by the wire tests.
+
+Clean normal/HD products from the source commit both pass
+`scripts/e2e/host-shop-sale-rejection-message.yaml`. Actual mouse input
+attempts a SponsorshipLetter sale. The real client centered-message ring and
+console both contain the stock quest rejection text; no quote opens, both
+inventories retain the item and both gold values remain 100. Both processes
+exit normally, release their ports and retain their private
+runtime data. Both diagnostic frames were visually inspected. Evidence:
+`ROOT/shop-sale-rejection-localization-fix/local-sale-rejection-regression-and-product-binding-v1.json`.
+
+The completed Windows/386 job in run `41875997464` records **765,879 passes /
+94 skips**, including all seven new message events. Its full archive, API
+digest and raw job log are retained; the three actual PE test mains have
+verified native headers, sizes and hashes. The same primary PE retains the
+existing GOGC10 Skeleton/Golem replay. Qualification is explicitly limited
+to that completed job:
+`ROOT/shop-sale-rejection-localization-fix/Windows386-completed-job-qualified-v1.json`.
+The amd64 full suite remains in progress at this checkpoint; its outcome
+and local artifact retention remain pending. The macOS message fix is
+implemented and product-qualified. Earlier Linux evidence stays attached
+to its original source.
+
 ### Fireball Staff shop repair
 
 `487729563` fixes the native shop repair path for `LesserFireballWand`

@@ -187,6 +187,7 @@ jobs:
           New-Item -ItemType Directory $stressReport | Out-Null
           $stressProc = [System.Diagnostics.Process]::new()
           $stressProc.StartInfo.FileName = $stressBinary
+          $stressProc.StartInfo.WorkingDirectory = [System.IO.Path]::GetFullPath('legacy')
           $stressProc.StartInfo.UseShellExecute = $false
           $stressProc.StartInfo.RedirectStandardOutput = $true
           $stressProc.StartInfo.RedirectStandardError = $true

@@ -116,10 +116,12 @@ func init() {
 				}
 				e2eLog.Printf("SKELETON NATIVE C ENTRY: entry=%d source=%p pieces=%d bones=%d items=%d index=%d default-world=true", entry, host, pieces, parts, items, *legacy.SkeletonDeathIndex54A310())
 			}
-			if sounds != 3 || host.HealthData.Cur != hp {
-				e2eError(fmt.Errorf("actual C sound/host health count=%d", sounds))
+			if host.HealthData.Cur != hp {
+				e2eError(fmt.Errorf("actual C host health changed"))
 				return true
 			}
+			// Console calls can queue sounds outside the audio loop. The finish
+			// step checks all three after normal frame processing replays them.
 			noxServer.TickHook(func() {
 				if !active || visible {
 					return

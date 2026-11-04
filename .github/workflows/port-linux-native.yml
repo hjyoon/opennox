@@ -107,8 +107,10 @@ jobs:
           set +e
           # PIE also places the real C static regions above 4GiB. All original
           # high-address assertions and the fixed low-address cases still run.
-          ../scripts/go.sh test "${tags[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m ./... > "$NATIVE_REPORT_DIR/test.jsonl" 2> "$NATIVE_REPORT_DIR/test.stderr.log"
+          ../scripts/go.sh test -work "${tags[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m ./... > "$NATIVE_REPORT_DIR/test.jsonl" 2> "$NATIVE_REPORT_DIR/test.stderr.log"
           status=$?
+          python3 ../scripts/preserve-go-test-unix-binaries.py "$NATIVE_REPORT_DIR"
+          preservation_status=$?
           set -e
           echo "$status" > "$NATIVE_REPORT_DIR/test.exit"
           printf '%s\n' '{"test_buildmode":"pie","test_runtime_MALLOC_MMAP_THRESHOLD_":"0","compiler_allocator":"default","product_buildmode":"default","product_allocator":"default"}' > "$NATIVE_REPORT_DIR/test-profile.json"
@@ -141,6 +143,7 @@ jobs:
           if not expected or expected != terminal:
               sys.exit('Incomplete package evidence; inspect preserved test output')
           PY
+          test "$preservation_status" -eq 0
           exit "$status"
 
       - name: Check damage through the default product link mode
@@ -151,8 +154,10 @@ jobs:
           ulimit -c 0
           unset MALLOC_MMAP_THRESHOLD_
           set +e
-          ../scripts/go.sh test -tags=server '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m -run '^Test(PlayerDamage|DefaultDamage|SelfMissileFlame|SourceLessElectricPrecisionOriginal)' . ./server ./legacy > "$NATIVE_REPORT_DIR/default-link-damage.jsonl" 2> "$NATIVE_REPORT_DIR/default-link-damage.stderr.log"
+          ../scripts/go.sh test -work -tags=server '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m -run '^Test(PlayerDamage|DefaultDamage|SelfMissileFlame|SourceLessElectricPrecisionOriginal)' . ./server ./legacy > "$NATIVE_REPORT_DIR/default-link-damage.jsonl" 2> "$NATIVE_REPORT_DIR/default-link-damage.stderr.log"
           status=$?
+          python3 ../scripts/preserve-go-test-unix-binaries.py "$NATIVE_REPORT_DIR" --prefix default-link-damage
+          preservation_status=$?
           set -e
           echo "$status" > "$NATIVE_REPORT_DIR/default-link-damage.exit"
           python3 - "$NATIVE_REPORT_DIR" <<'PY'
@@ -176,6 +181,7 @@ jobs:
           if set(packages) != expected:
               sys.exit('Incomplete default-link damage package evidence')
           PY
+          test "$preservation_status" -eq 0
           exit "$status"
 
       - uses: actions/upload-artifact@v7.0.2

@@ -10832,6 +10832,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.DamageInventoryItem(l.Item, l.Health, l.Name)
+		case "set-inventory-charges":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SetInventoryItemCharges(l.Item, l.Amount, l.Name)
+		case "assert-inventory-charges":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertInventoryItemCharges(l.Item, l.Amount, l.Full, l.Name)
 		case "assert-inventory-health":
 			if dt != 0 {
 				sc.Wait(dt, "")

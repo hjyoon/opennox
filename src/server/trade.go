@@ -113,15 +113,15 @@ const (
 	ShopRepairComplete5108D0
 )
 
-// ShopRepairRuntime5108D0 binds the regular/Coop health-durability subset of
-// the quote and completion paths at 005108D0 and 00510AE0. Charge-bearing
-// wands and ammo weapons remain explicitly outside this first native subset.
+// ShopRepairRuntime5108D0 binds the durability and rechargeable-wand services
+// used by the quote and completion paths at 005108D0 and 00510AE0.
 type ShopRepairRuntime5108D0 struct {
 	RepairCoefficient float32
 	SetHealth         func(*Object, uint16)
 	ProtectGold       func(token uint32, delta int32)
 	SendQuote         func(*Player, *Object, uint32)
 	ReportHealth      func(*Player, *Object)
+	ReportCharges     func(*Player, *Object, uint8, uint8)
 	ReportGold        func(*Player, *Object)
 	PlayRejectSound   func(*Object)
 	PlayRepairSound   func(*Object)
@@ -1000,8 +1000,15 @@ func (s *Server) SellShopItemsByTypeNative510D10(
 	return sold
 }
 
+func shopRepairWand5108D0(item *Object) *WandUseData {
+	if !item.Class().Has(object.ClassWand) || uint32(item.SubClass())&0x047f0000 == 0 || item.UseData.Ptr == nil {
+		return nil
+	}
+	return item.UseData.AsWand()
+}
+
 // QuoteShopRepairNative5108D0 restores the C9/1E request and C9/1F response
-// for ordinary health-durability items.
+// for damaged items and rechargeable wands with missing charges.
 func (s *Server) QuoteShopRepairNative5108D0(
 	playerUnit *Object,
 	session *TradeSession,
@@ -1019,8 +1026,10 @@ func (s *Server) QuoteShopRepairNative5108D0(
 	if item == nil {
 		return ShopRepairNoItem5108D0
 	}
+	wand := shopRepairWand5108D0(item)
+	needsCharge := wand != nil && wand.MaxCharge != 0 && wand.Charge < wand.MaxCharge
 	health := item.HealthData
-	if health == nil || health.Max == 0 || health.Cur == health.Max {
+	if !needsCharge && (health == nil || health.Max == 0 || health.Cur == health.Max) {
 		if runtime.PlayRejectSound != nil {
 			runtime.PlayRejectSound(playerUnit)
 		}
@@ -1035,7 +1044,7 @@ func (s *Server) QuoteShopRepairNative5108D0(
 }
 
 // RepairShopItemNative510AE0 restores the C9/1A single-item completion path
-// for ordinary health durability. Like GAME.EXE, it trusts the prior client
+// for durability and wand charges. Like GAME.EXE, it trusts the prior client
 // quote for affordability, clamps gold at zero, then repairs and reports.
 func (s *Server) RepairShopItemNative510AE0(
 	playerUnit *Object,
@@ -1073,6 +1082,9 @@ func (s *Server) RepairShopItemNative510AE0(
 	runtime.SetHealth(item, health.Max)
 	if runtime.ReportHealth != nil {
 		runtime.ReportHealth(player, item)
+	}
+	if wand := shopRepairWand5108D0(item); wand != nil && ObeliskRechargeItem53C520(item, 100) && runtime.ReportCharges != nil {
+		runtime.ReportCharges(player, item, wand.Charge, wand.MaxCharge)
 	}
 	if runtime.ReportGold != nil {
 		runtime.ReportGold(player, playerUnit)

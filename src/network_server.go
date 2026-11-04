@@ -674,6 +674,9 @@ func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {
 			packet := server.BuildShopItemHealthPacket4D87A0(item)
 			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
 		},
+		ReportCharges: func(player *server.Player, item *server.Object, charge, maximum uint8) {
+			legacy.Nox_xxx_netReportCharges_4D82B0(player.PlayerInd, item, charge, maximum)
+		},
 		ReportGold: func(player *server.Player, _ *server.Object) {
 			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
 			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)

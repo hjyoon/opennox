@@ -138,7 +138,7 @@ func shopItemCostNative50E3D0(
 	}
 
 	// Full price is captured before ammunition or wand-charge scaling. Repair
-	// therefore charges for restoring durability only, just like the source.
+	// compares it with the charge- and durability-adjusted current value.
 	fullPrice := price
 	if class.Has(object.ClassWeapon) && subclass&0x82 != 0 && item.UseData.Ptr != nil {
 		ammo := item.UseData.AsAmmo()

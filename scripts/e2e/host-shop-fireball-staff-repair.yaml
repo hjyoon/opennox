@@ -1,0 +1,209 @@
+# Stock Fireball Staff, actual merchant, mouse input, quote/completion packets,
+# and independent server/client charge and durability observations.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept colors
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat help
+  - action: wait
+    dt: 30
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+  - action: grant-item
+    item: LesserFireballWand
+    count: 1
+    name: grant stock fireball staff
+  - action: set-player-gold
+    gold: 10000
+    name: fund staff repairs
+  - action: wait
+    dt: 60
+  - action: assert-inventory-count
+    item: LesserFireballWand
+    count: 1
+  - action: assert-player-gold
+    gold: 10000
+  - action: open-server-shop-fixture
+    item: RedPotion
+    count: 1
+  - action: wait
+    dt: 60
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 1
+  - action: click
+    x: 786
+    y: 723
+    name: select repair
+  - action: wait
+    dt: 10
+  - action: assert-shop
+    active: true
+    mode: 4
+    count: 1
+  - action: set-inventory-charges
+    item: LesserFireballWand
+    amount: 3
+    name: deplete charges with intact durability
+  - action: wait
+    dt: 20
+  - action: assert-inventory-health
+    item: LesserFireballWand
+    full: true
+  - action: click-inventory-item
+    item: LesserFireballWand
+    name: request charge-only repair quote
+  - action: wait
+    dt: 30
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 510
+    name: verify stock charge-only repair cost
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    amount: 3
+    name: fireball staff charge-only repair quote
+  - action: click-item-amount-accept
+  - action: wait
+    dt: 60
+  - action: assert-item-amount-closed
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    full: true
+    name: fireball staff charge-only repaired
+  - action: assert-player-gold
+    gold: 9490
+  - action: set-inventory-charges
+    item: LesserFireballWand
+    amount: 0
+    name: completely empty staff
+  - action: wait
+    dt: 20
+  - action: click-inventory-item
+    item: LesserFireballWand
+  - action: wait
+    dt: 30
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 599
+    name: verify stock empty repair cost
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    amount: 0
+    name: fireball staff empty repair quote
+  - action: click-item-amount-accept
+  - action: wait
+    dt: 60
+  - action: assert-item-amount-closed
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    full: true
+    name: fireball staff empty repaired
+  - action: assert-player-gold
+    gold: 8891
+  - action: damage-inventory-item
+    item: LesserFireballWand
+    health: 10
+  - action: set-inventory-charges
+    item: LesserFireballWand
+    amount: 1
+    name: deplete damaged staff
+  - action: wait
+    dt: 20
+  - action: assert-inventory-health
+    item: LesserFireballWand
+    health: 10
+  - action: click-inventory-item
+    item: LesserFireballWand
+  - action: wait
+    dt: 30
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 597
+    name: verify stock combined repair cost
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    amount: 1
+    name: fireball staff durability and charge repair quote
+  - action: click-item-amount-accept
+  - action: wait
+    dt: 60
+  - action: assert-item-amount-closed
+  - action: assert-inventory-health
+    item: LesserFireballWand
+    full: true
+  - action: assert-inventory-charges
+    item: LesserFireballWand
+    full: true
+    name: fireball staff durability and charges repaired
+  - action: assert-player-gold
+    gold: 8294
+  - action: click-inventory-item
+    item: LesserFireballWand
+    name: reject already full staff
+  - action: wait
+    dt: 30
+  - action: assert-item-amount-closed
+  - action: assert-player-gold
+    gold: 8294
+    name: fully repaired staff costs no extra gold
+  - action: click
+    x: 786
+    y: 752
+    name: leave shop
+  - action: wait
+    dt: 60
+  - action: assert-server-shop
+    active: false
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+  - action: quit

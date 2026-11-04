@@ -169,7 +169,7 @@ jobs:
           if ($preservationCode -ne 0) { exit $preservationCode }
           exit $code
 
-      - name: Replay exact Windows/386 Skeleton references under GC pressure
+      - name: Replay exact Windows/386 Skeleton and Golem references under GC pressure
         if: matrix.arch == '386'
         working-directory: src
         shell: pwsh
@@ -191,7 +191,7 @@ jobs:
           $stressProc.StartInfo.UseShellExecute = $false
           $stressProc.StartInfo.RedirectStandardOutput = $true
           $stressProc.StartInfo.RedirectStandardError = $true
-          foreach ($arg in @('-test.v','-test.count=10','-test.timeout=5m','-test.run=^TestSkeletonDeathOriginal54A310$')) {
+          foreach ($arg in @('-test.v','-test.count=10','-test.timeout=5m','-test.run=^Test(SkeletonDeathOriginal54A310|GolemDeathOriginal549E90)$')) {
             $stressProc.StartInfo.ArgumentList.Add($arg)
           }
           $stressOutPath = Join-Path $stressReport 'native.stdout.log'
@@ -213,6 +213,9 @@ jobs:
           $stressLeaves = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestSkeletonDeathOriginal54A310/(?:pc53_tozero|pc53_nearest)/(?:Go|C)/[^\r\n]+ \(').Count
           $stressNilFaults = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestSkeletonDeathOriginal54A310/(?:pc53_tozero|pc53_nearest)/C/bad-unit--1-world-origin-read \(').Count
           $stressNilReturns = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestSkeletonDeathOriginal54A310/(?:pc53_tozero|pc53_nearest)/C/bad-unit--1-constructor-fails \(').Count
+          $golemLeaves = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestGolemDeathOriginal549E90/(?:pc53_tozero|pc53_nearest)/(?:Go|C)/[^\r\n]+ \(').Count
+          $golemNilFaults = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestGolemDeathOriginal549E90/(?:pc53_tozero|pc53_nearest)/C/549(?:e90|fa0)-unit--1-origin-read \(').Count
+          $golemNilReturns = [regex]::Matches($stressText, '(?m)^\s*--- PASS: TestGolemDeathOriginal549E90/(?:pc53_tozero|pc53_nearest)/C/549(?:e90|fa0)-unit--1-allocation-fails \(').Count
           $stressHashAfter = (Get-FileHash $stressBinary -Algorithm SHA256).Hash.ToLower()
           @{
             source=(Get-Content -Raw (Join-Path $report 'source-revision.txt')).Trim()
@@ -222,13 +225,16 @@ jobs:
             original_leaf_passes=$stressLeaves
             actual_C_nil_origin_fault_passes=$stressNilFaults
             actual_C_nil_allocation_failure_returns=$stressNilReturns
+            golem_original_leaf_passes=$golemLeaves
+            golem_actual_C_nil_origin_fault_passes=$golemNilFaults
+            golem_actual_C_nil_allocation_failure_returns=$golemNilReturns
             exact_primary_PE_sha256=$stressHash
             PE_hash_after_replay=$stressHashAfter
             rebuilt=$false
           } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $stressReport 'summary.json')
           if ($stressExit -ne 0) { exit $stressExit }
-          if ($stressLeaves -ne 6760 -or $stressNilFaults -ne 20 -or $stressNilReturns -ne 20 -or $stressHashAfter -ne $stressHash) {
-            throw 'Incomplete exact-PE Skeleton original replay'
+          if ($stressLeaves -ne 6760 -or $stressNilFaults -ne 20 -or $stressNilReturns -ne 20 -or $golemLeaves -ne 6560 -or $golemNilFaults -ne 40 -or $golemNilReturns -ne 40 -or $stressHashAfter -ne $stressHash) {
+            throw 'Incomplete exact-PE Skeleton/Golem original replay'
           }
 
       - uses: actions/upload-artifact@v7.0.2

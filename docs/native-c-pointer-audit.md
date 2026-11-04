@@ -4,6 +4,13 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Fireball Staff shop repair is restored at `487729563` in the existing native
+`005108D0`/`00510AE0` transaction. Wand charge fields use `WandUseData`, recharge
+uses the already ported `0053C520` service, and the typed charge report binding
+updates the actual client inventory. The original C bodies and the host C
+inventory are unchanged. Normal/strict selections and both clean-product
+shop UI replays pass; see the Fireball Staff finding in `porting-completion.md`.
+
 MechGolem `549E90` and Golem `549FA0` now have typed native object C
 arguments at `5aaefaaa5`, with both original C bodies exact under `#if 0`.
 Original seals `ba9f9ddff` and `41b5f6083` precede the engine: all **691**

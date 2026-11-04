@@ -55,6 +55,46 @@ completion requirements.
 
 ## Current findings
 
+### Fireball Staff shop repair
+
+`487729563` fixes the native shop repair path for `LesserFireballWand`
+(Fireball Staff). The previous quote accepted durability damage only, and
+completion omitted wand recharge and its client report. The restored
+`005108D0` condition accepts missing charges for the original wand subclass
+mask `0x047f0000`. Completion preserves gold protection, health repair/report,
+`0053C520` recharge, changed-charge report, gold report and repair sound order.
+The existing native recharge service and item-price arithmetic are reused;
+the original C bodies, price calculation and earlier reference data are unchanged.
+
+Regression tests reproduce both omissions before the fix. The normal selection
+and highres `cgocheck2`/`checkptr=2` selection each pass **16,868** events across the root,
+server and legacy packages. The new cases cover partial/empty charges,
+combined durability damage, full/unlimited/non-wand rejection, restoration
+and report order. Failed executables and logs remain preserved, including a
+new fixture's corrected nearest-even expectation for `99.5 -> 100`.
+
+Both clean ARM64 products built from that commit pass the actual merchant UI
+scenario `scripts/e2e/host-shop-fireball-staff-repair.yaml`. Stock worth 1000,
+20 maximum charges and coefficient 0.6 produce repair quotes **510, 599, 597**
+for 3/20 intact, empty intact, and 1/20 with durability 10/100. Each repair
+restores server/client charges to 20/20; the last also restores durability to
+100/100. Gold progresses **10000 -> 9490 -> 8891 -> 8294** on server and client;
+reselecting the fully repaired staff opens no quote and debits nothing.
+Both processes exit normally, release their ports and retain all twelve
+diagnostic PNGs. The normal quote/final and HD empty-quote/final frames were
+visually inspected. This is an isolated shop regression, with prepared item
+depletion; it does not close campaign audits or establish overall completion.
+Receipts, products and all nine executed local Go test mains are retained in
+`ROOT/shop-fireball-staff-repair-fix`.
+
+Windows native run `41868770048` also passes at `487729563`: amd64 records
+**785,602 passes / 11 skips**, and 386 records **765,872 / 94**. Both include
+all nine new wand-quote and four completion cases. Complete archives, API
+digests, raw jobs and all six executed PE test mains are retained and their
+hashes/native headers verified. The exact primary 386 PE also retains the
+existing Skeleton/Golem GOGC10 replays without rebuilding. Qualification:
+`ROOT/shop-fireball-staff-repair-fix/CI-41868770048-qualified-v1.json`.
+
 ### Native MechGolem and Golem death C entries
 
 Reference `ba9f9ddff` freezes complete original MechGolem `549E90` (265

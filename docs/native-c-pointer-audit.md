@@ -4,6 +4,27 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+The active toolchain is **Go 1.27.3** at `9b7a7fa2d`. Original-only
+`18bb167e4` freezes all 679 body bytes for Marker `54E460`, Boulder `54E4B0`,
+MonsterGenerator `54E630` and credit `4D61B0`, before native implementation.
+`90d9e324b` verifies independent complete layouts, eight actual C constructors,
+whole-record guards and real typed owner/audio controls, then records all
+four unchanged old C entries faulting above 4 GiB. Credit's independent
+286-case initial memory and complete consumers are frozen at `9bdcf473c`
+and `b2e8af7fd`; Go 1.27.3 normal/strict gates pass 304/299 events, with
+zero native implementation/comparison credit yet. The first three entries
+still require native memory fixtures and complete consumers before engine
+changes. These preparation gates close none of the four raw ABIs.
+
+Go 1.27.3 normal/HD products at `e1113a42b` verify 20 actual NPC/Troll hearing
+cases, including eight native turns toward real server sound events before
+visual acquisition and twelve negative controls. Related normal/strict
+selections each pass 16,845 events. Production hearing code and C signatures
+are unchanged. Declared diagnostic properties, mock client output and
+retained failures/products/mains are detailed in `porting-completion.md`.
+The latest complete six native CI results at `772da88ee` still use Go 1.26.9;
+fresh full Go 1.27.3 qualification remains open.
+
 At `6f12e2168`, the native shop sale binding restores original sound307
 instead of791. Normal/strict related selections each pass192 events, and
 normal/HD grouped/single and equipped-sale UI replays verify real OpenAL

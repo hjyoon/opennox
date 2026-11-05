@@ -55,6 +55,89 @@ completion requirements.
 
 ## Current findings
 
+### Go 1.27.3 and NPC/monster hearing, 2026-11-05
+
+The active toolchain is now the user's goenv installation of **Go 1.27.3**.
+Commit `9b7a7fa2d` updates the workspace, module, build/ABI/layout tools and
+active macOS gate pins. Local runners clear inherited `GOROOT`/`GOTOOLDIR`
+and use that installation with `GOTOOLCHAIN=local`; the global goenv selection
+is unchanged. Four preserved tool mains identify Go 1.27.3 and pass 94 test
+events. The obsolete task Go 1.26 build cache (5,019,979,683 logical bytes)
+was removed after verified retention; module sources and protected evidence
+remain. New full local five-configuration and six native CI qualifications
+under Go 1.27.3 are still required.
+
+Clean normal/HD Go 1.27.3 products at `e1113a42b` pass **20** stock-map
+hearing cases: **eight actual turns toward sound** and **twelve negative
+controls**. Real `Audio.EventObj` events reach the session's audio hook,
+native `MonsterListen` records, ordinary AI hearing and native reaction
+actions. Stock NPC and Troll turn toward `RunOnDirt` 276 and
+`CleansingFlameCast` 9 while their current visual enemy remains nil. At the
+same distance, `WalkOnDirt` 270 is below the original walking threshold;
+kind2 private audio creates no AI listen record; friendly running audio is
+queued but rejected by the original hostility/flags gate. Negative cases
+cover the complete original two-frame eligibility window.
+
+The fixture declares aggression 0.83 and sight range zero, and supplies real
+server audio events directly. It does not inject hearing fields/actions or
+claim actual keyboard running, earned spell casts, default campaign NPC
+configuration, or physical audible-output fidelity. Client OpenAL output is
+mocked; server audio and AI run normally. The observer requires the native
+direction to change closer to the sound before visual acquisition. Both
+processes exit zero without forced termination, release ports and reverify
+original inputs. Two unique run frames were visually inspected; matching
+normal/HD frames are byte-identical. No production hearing defect was found
+in this scope, and production hearing code is unchanged.
+
+Related normal and strict HD `cgocheck2`/`checkptr=2` selections each pass
+**16,845** events in four packages, with eight actual Go 1.27.3 mains retained
+before execution. Earlier readiness and late-visual-observation failures
+remain archived; diagnostic fixes do not alter production hearing. The
+earlier `c2d003c84` replay proves scheduled reactions; `e1113a42b` additionally
+requires actual direction changes. Evidence is under
+`ART/npc-hearing-verification-go1273`, particularly
+`actual-hearing-and-direction-change-final-qualified-v1.json`. Every exact
+product and runtime remains in a byte-verified compressed archive; redundant
+raw copies are removed.
+
+### Four remaining raw death entries: reference gates before implementation
+
+Original-only `18bb167e4` freezes Marker `54E460`, Boulder `54E4B0`,
+MonsterGenerator `54E630` and generator credit `4D61B0`: **679** body bytes,
+two FPU profiles, 200 inputs for the first three bodies and 286 credit
+inputs. Existing call seals are not counted twice. Complete original
+heap/image/caller guards and reentry/fault records reproduce independently.
+`90d9e324b` then verifies 29 independent C/Go layout values, eight real C
+constructors, complete native record guards and actual typed owner/audio
+positive controls before all four unchanged integer-argument C entries
+fault above 4 GiB.
+
+Credit initial-memory commit `9bdcf473c` independently freezes all 286
+cases and four explicitly declared PE32 alias correspondences. Complete
+memory/fault consumers are compiled before the engine at `b2e8af7fd`;
+their symbols are verified in an actual preserved main. Go 1.27.3 normal
+and strict gates pass 304/299 events, including those initial-memory cases;
+normal also repeats the four actual old-C faults. **Native implementation
+and native comparison credit are still zero for these four entries.**
+The first three bodies still need independent native memory fixtures and
+complete consumers before implementation. Evidence is under
+`ART/marker-boulder-generator-native-entry-port`. The host C inventory below
+is unchanged by these reference gates and hearing diagnostics.
+
+### Latest retained six native CI results before the Go upgrade
+
+At `772da88ee`, Windows `42030237566` passes amd64 **790,029 / 11 skipped**
+and 386 **770,299 / 94**; Linux `42030570833` passes normal/HD
+**798,130 / 54** and server/server-HD **792,020 / 7**, all with zero failures.
+All six complete ZIPs and API digests are verified under `ART/native-ci-archive`.
+Windows retains six PE mains before execution; Linux's existing collector
+verifies 155 ELF manifests after execution. These runs use **Go 1.26.9**
+and do not establish Go 1.27.3 CI qualification. All prior Skull, Polyp,
+Skeleton and Golem comparisons remain passing. The source-bound qualifiers
+are `CI-42030237566-qualified-v1.json` and
+`CI-42030570833-qualified-v1.json` in the Skull evidence directory. Overall
+completion and the nine final class/chapter audits remain open.
+
 ### Current retained verification, 2026-11-05
 
 Fresh retained evidence now lives under

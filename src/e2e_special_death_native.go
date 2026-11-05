@@ -66,10 +66,21 @@ func init() {
 				sounds[name]++
 				e2eLog.Printf("SPECIAL DEATH NATIVE AUDIO: case=%s sound=%d source=%p frame=%d actual-server-event=true", name, id, source, noxServer.Frame())
 			})
-			prepare := func(name, label string, owner *server.Object) *server.Object {
-				u := noxServer.NewObjectByTypeID(name)
-				if u == nil {
-					fail("missing stock constructor " + name)
+			prepare := func(handler, label string, owner *server.Object) *server.Object {
+				death, size, ok := server.ObjectDeathHandler(handler)
+				if !ok || death == nil || size != 0 {
+					fail("missing stock death handler " + handler)
+					return nil
+				}
+				var u *server.Object
+				for _, typ := range noxServer.Types.List() {
+					if typ.Death == death {
+						u = noxServer.NewObjectByTypeID(typ.ID())
+						break
+					}
+				}
+				if u == nil || u.Death != death {
+					fail("missing actual stock constructor for " + handler)
 					return nil
 				}
 				noxServer.CreateObjectAt(u, owner, from)
@@ -80,6 +91,7 @@ func init() {
 					fail("stock source pointer must exceed4GiB")
 					return nil
 				}
+				e2eLog.Printf("SPECIAL DEATH NATIVE SOURCE: case=%s handler=%s type=%s source=%p update=%p class=%#x stock-constructor=true", label, handler, u.ObjectTypeC().ID(), u, u.UpdateData, uint32(u.ObjClass))
 				return u
 			}
 			call := func(entry int, u *server.Object, label string) bool {
@@ -91,7 +103,7 @@ func init() {
 				e2eLog.Printf("SPECIAL DEATH NATIVE C ENTRY: case=%s entry=%d source=%p update=%p default-world=true stock-source=true", label, entry, u, u.UpdateData)
 				return true
 			}
-			marker := prepare("Marker", "marker", host)
+			marker := prepare("MarkerDie", "marker", host)
 			if marker == nil {
 				return true
 			}
@@ -112,7 +124,7 @@ func init() {
 			oldIndex := *index
 			defer func() { *index = oldIndex }()
 			*index = 11
-			boulder := prepare("Boulder", "boulder", nil)
+			boulder := prepare("BoulderDie", "boulder", nil)
 			if boulder == nil {
 				return true
 			}
@@ -142,7 +154,7 @@ func init() {
 				}
 			}
 			e2eLog.Printf("SPECIAL DEATH NATIVE BOULDER: pieces=%d initial-index=11 final-index=%d names=true masses=true motion=true deleted=true", len(rocks), *index)
-			failed := prepare("Boulder", "boulder-lookup-failure", nil)
+			failed := prepare("BoulderDie", "boulder-lookup-failure", nil)
 			if failed == nil {
 				return true
 			}
@@ -164,7 +176,7 @@ func init() {
 			}
 			e2eLog.Printf("SPECIAL DEATH NATIVE BOULDER FAILURE: constructor-name=nil pieces=0 cache=11 deleted=false stock-table-restored=true OOM-credit=false")
 			noxServer.DelayedDelete(failed)
-			gen := prepare("MonsterGenerator", "generator", nil)
+			gen := prepare("MonsterGeneratorDie", "generator", nil)
 			if gen == nil || gen.UpdateData == nil {
 				fail("complete stock generator update required")
 				return true

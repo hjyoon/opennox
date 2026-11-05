@@ -1,0 +1,433 @@
+# Real audio -> native hearing queue -> ordinary NPC/Troll AI reaction.
+# Prepared stock bodies use SightRange=0 to isolate audition. Sound definitions,
+# hearing fields, AI actions, source clocks and HP are never supplied as results.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start NPC run}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: NPC run ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start NPC walk}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: NPC walk ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start NPC private}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: NPC private ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start NPC friendly-run}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: NPC friendly-run ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start Troll run}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: Troll run ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start Troll walk}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: Troll walk ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start Troll private}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: Troll private ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start Troll friendly-run}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: Troll friendly-run ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: quit
+    name: finish eight native hearing cases

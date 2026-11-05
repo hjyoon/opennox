@@ -55,6 +55,30 @@ completion requirements.
 
 ## Current findings
 
+### Coupled raw Inversion checker: complete original execution, 2026-11-06
+
+The raw two-integer `4FA4F0` checker now has an additive, pre-engine reference
+over 207 independent inputs in both original PC53 FPU modes. The actual
+original checker159, parent lookup38 and Inversion22 execute all **219 bytes**
+without substituted helpers. Each profile records 267 parent/263 Inversion
+calls, **2,269 external accesses** and thirteen intentional faults. Complete
+64-KiB heap/stack bytes, caller/register/write/call/return/fault records are
+retained. Whole stack write certificates, unchanged external heaps/section
+images, successful nonvolatile/stack returns and FPU checks pass. Complete
+outputs and committed-producer reproductions are byte-identical between
+profiles; one canonical output avoids duplicate reference data.
+
+The parent helper reads owner508 before class byte8 and skips terminal class
+reads. The checker performs parent lookup before strength testing, then
+reloads the callback for the indirect call at `4FA561`. Existing ordinary Go
+collision dispatch does not close this raw C ABI. Earlier three-entry
+reference/initial/consumer freezes and all existing 3,373 code/713 data seals
+remain exact. Raw bodies/prototypes and all four native engines remain
+pending independent checker memory/default-parent/fault and consumer gates.
+This adds original reference evidence, with zero native implementation credit.
+Scope and exact hashes: `src/legacy/testdata/inversion_inventory_original_4fa4f0.md`;
+evidence: `ART/modifier-inversion-inventory-4fa4f0-native-entry-port/repository-original-reference-before-native-qualified-v1.json`.
+
 ### Three-entry products, five local profiles and six native CI profiles, 2026-11-06
 
 The Marker/Boulder/MonsterGenerator implementation at clean source

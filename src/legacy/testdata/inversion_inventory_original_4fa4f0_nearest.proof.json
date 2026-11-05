@@ -1,0 +1,78 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "declared_section_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "original_function_ranges": [
+    {
+      "name": "checker",
+      "address": "0x4fa4f0",
+      "size": 159,
+      "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2"
+    },
+    {
+      "name": "parent",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    },
+    {
+      "name": "inversion",
+      "address": "0x4e03d0",
+      "size": 22,
+      "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f"
+    }
+  ],
+  "all219_original_instruction_bytes_executed": true,
+  "decoded_instructions": 81,
+  "cases": 207,
+  "actual_original_parent_and_inversion_executed": true,
+  "declared_external_services": [],
+  "function_calls": {
+    "checker": 207,
+    "parent": 267,
+    "inversion": 263
+  },
+  "observed_external_accesses": 2269,
+  "intentional_faults": 13,
+  "fault_sites": [
+    {
+      "instruction": "0x4fa4f9",
+      "access": 19,
+      "count": 2
+    },
+    {
+      "instruction": "0x4fa507",
+      "access": 19,
+      "count": 2
+    },
+    {
+      "instruction": "0x4fa534",
+      "access": 19,
+      "count": 3
+    },
+    {
+      "instruction": "0x4fa526",
+      "access": 19,
+      "count": 2
+    },
+    {
+      "instruction": "0x4ec588",
+      "access": 19,
+      "count": 2
+    },
+    {
+      "instruction": "0x4ec59b",
+      "access": 19,
+      "count": 2
+    }
+  ],
+  "whole64KiB_external_heaps_unchanged": true,
+  "whole64KiB_stack_write_certificates": true,
+  "callers_unchanged": true,
+  "complete_declared_section_image_unchanged": true,
+  "FPU_control": 575,
+  "FPU_status_unchanged": true,
+  "encoded_sha256": "0bb44fa16475b2311e8d1ec5aa862fbeb87b7b94141719efe681e44310269853",
+  "decoded_sha256": "df0ec5b5b7bb81bc8c36e7e7ff2f7e936f3d741949926d91c2c4f86e6dcea609",
+  "native_initial_memory_or_implementation_credit": false,
+  "overall100": false
+}

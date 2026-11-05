@@ -4,6 +4,16 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+An additive pre-engine `4FA4F0` reference now executes the complete original
+checker159, parent38 and Inversion22 on 207 inputs per FPU profile, with no
+helper substitution. All219 bytes, 2,269 external accesses,267parent/263effect
+calls and thirteen faults are observed per profile. Complete heap/stack/
+caller/register/write/return/fault outputs reproduce byte-exactly. The raw
+two-integer C ABI remains active. Independent native initial/default-parent/
+fault controls and complete consumers must precede this coupled four-entry
+engine. Earlier freezes and all3373code/713data seals remain unchanged; no
+integer candidate is removed. See `inversion_inventory_original_4fa4f0.md`.
+
 The actual raw Marker `54E460`, Boulder `54E4B0` and MonsterGenerator
 `54E630` entries now have native object arguments, following native initial
 memory `4a66bcefa` and whole-consumer `31e0dfea7` freezes. Exact old bodies

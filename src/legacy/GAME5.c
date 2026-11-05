@@ -4537,6 +4537,7 @@ short nox_xxx_dieSpawnObject_54E070(int a1) {
 #endif
 
 //----- (0054E460) --------------------------------------------------------
+#if 0 // Restored by special_death_native_54e460_export.go; retained as ABI32 provenance.
 void nox_xxx_dieMarker_54E460(int a1) {
 	int v1;       // eax
 	int v2;       // edx
@@ -4561,8 +4562,10 @@ LABEL_7:
 	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 }
+#endif
 
 //----- (0054E4B0) --------------------------------------------------------
+#if 0 // Restored by special_death_native_54e460_export.go; retained as ABI32 provenance.
 void nox_xxx_dieBoulder_54E4B0(int a1) {
 	int v1;     // esi
 	float2* v2; // edi
@@ -4614,6 +4617,7 @@ void nox_xxx_dieBoulder_54E4B0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (0054E620) --------------------------------------------------------
 #if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
@@ -4621,6 +4625,7 @@ int nox_xxx_dieGameBall_54E620(int a1) { return sub_417F50(a1); }
 #endif
 
 //----- (0054E630) --------------------------------------------------------
+#if 0 // Restored by special_death_native_54e460_export.go; retained as ABI32 provenance.
 void nox_xxx_dieMonsterGen_54E630(int a1) {
 	int v1;       // edi
 	int v2;       // eax
@@ -4646,6 +4651,7 @@ void nox_xxx_dieMonsterGen_54E630(int a1) {
 	}
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 }
+#endif
 
 //----- (0054E6F0) --------------------------------------------------------
 int sub_54E6F0(nox_object_t* first, nox_object_t* second) {

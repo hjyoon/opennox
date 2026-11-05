@@ -55,6 +55,63 @@ completion requirements.
 
 ## Current findings
 
+### Three raw death entries: native object pointers implemented, 2026-11-06
+
+Marker `54E460`, Boulder `54E4B0` and MonsterGenerator `54E630` now accept
+`nox_object_t*` at their actual public C symbols. Their exact old C bodies
+remain under `#if 0`; only those three `GAME5.h` declarations change. The
+initial native memory freeze `4a66bcefa` and complete consumer freeze
+`31e0dfea7` precede the repository engine changes. All original producers,
+inputs, outputs, independent getters and frozen consumers remain exact.
+
+Go 1.27.3 normal and strict HD (cgocheck2/checkptr=2) selections each pass
+**8,071 events**, with zero failures/skips/build warnings and eight actual
+mains retained before execution. Each includes **800 complete original Go/C
+leaves** (200 inputs, two FPU profiles, both entry paths), 200 native initial
+states, 400 first-boundary transports, nine actual default-C root conditions
+and two forced-GC/stack-growth callback cases. Existing complete contracts
+remain passing: credit 1,144/five default-C cases, Skull 3,012/twelve,
+Polyp 596/seven, Skeleton 676/six and Golem 656/six.
+
+The raw cores preserve first-match marker clearing without extra admission
+guards; Boulder's allocation-failure return without deletion, actual shared
+C cache, live unsigned mass byte, float spills and signed division faults;
+and generator entry-cached update data with later live owner/position reads.
+Callback/origin carriers keep malformed nil-base offsets out of Go pointer
+slots. Default services use native constructors, create/force/raise, real
+AUD/RNG/script/timer/FX/deletion and typed destruction credit.
+
+Eight root conditions return normally. The ninth intentionally verifies the
+original malformed unowned-Marker slot fault: the real owner service returns
+terminal self, whose update allocation is nil. The first integration attempt
+incorrectly expected a nil parent and fails; its four actual mains/full logs
+remain retained. Only that new test expectation is corrected. Engine, C
+headers and frozen consumers stay unchanged between failed and green runs;
+the 800 original leaves already pass in the first attempt. The disabled
+script-service case and controlled constructors are not earned campaign
+or stock-map product evidence.
+
+The fresh host-normal scan has **3,465 active C definitions / 274 integer
+candidates / 41 typed narrowing candidates / ten overlaps / zero warnings**
+across 191 sources and 474 headers. Only these three leave the prior integer
+inventory. Eight additional integer arguments receive read-only semantic
+notes, without removing candidates or qualifying their complete return ABIs.
+Cgo preambles and other target macros remain outside the scan.
+
+Evidence: `ART/marker-boulder-generator-native-entry-port/three-entry-native-Go1273-normal-and-strict-final-qualified-v1.json`
+and `three-entry-first-native-failure-qualification-v1.json`. All mains/logs,
+initial drafts and source snapshots are byte-verified in archives; duplicate
+source copies and successful/fully archived failed WORK trees are removed.
+Fresh products/E2Es, full five local configurations and six native CI
+configurations for this implementation remain separate pending gates.
+The overall 100% goal and nine final chapter audits remain open.
+
+Both preceding preparation commits also pass fully retained Windows
+amd64/386 CI: `42077859808` at `4a66bcefa` (791,680/771,950 passes) and
+`42080710068` at `31e0dfea7` (792,091/772,361 passes), with unchanged 11/94
+skips and no failures. All four products and twelve manifest mains identify
+Go 1.27.3. These pre-engine runs add no CI credit for the three implementations.
+
 ### Three raw death entries: complete consumer freeze, 2026-11-06
 
 Following the native initial-memory freeze, complete Marker/Boulder/

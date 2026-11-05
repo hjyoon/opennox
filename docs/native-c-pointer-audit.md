@@ -4,6 +4,26 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+The actual raw Marker `54E460`, Boulder `54E4B0` and MonsterGenerator
+`54E630` entries now have native object arguments, following native initial
+memory `4a66bcefa` and whole-consumer `31e0dfea7` freezes. Exact old bodies
+remain under `#if 0`; original references/getters/consumers stay unchanged.
+Go 1.27.3 normal/strict HD selections each pass 8,071 events, including
+800 complete original Go/C leaves, nine actual default-C conditions and two
+forced-GC callback cases; eight actual mains are retained before execution.
+The initial integration failure is a malformed unowned-Marker expectation:
+real owner lookup returns terminal self and its nil update faults originally.
+Only the new test is corrected; engine/headers/frozen consumers stay exact.
+Products, full local suites and fresh six native configurations remain open.
+
+The repeated 191-source/474-header host-normal scan finds **3,465 active
+definitions / 274 integer candidates / 41 typed narrowing candidates / ten
+overlaps / zero warnings**. Only the three entries leave that inventory.
+Eight other integer arguments receive semantic notes without closing whole
+functions/returns or lowering the candidate count. Cgo preambles and other
+target macros remain outside this triage view. See `porting-completion.md`
+and `ART/marker-boulder-generator-native-entry-port/three-entry-native-Go1273-normal-and-strict-final-qualified-v1.json`.
+
 Complete three-entry original-output consumers are subsequently frozen with
 all three C ABIs still integers and no raw native method in the repository.
 Normal/strict HD Go 1.27.3 selections each pass 2,246 events and 400 initial

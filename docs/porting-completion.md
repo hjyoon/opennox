@@ -79,6 +79,20 @@ This adds original reference evidence, with zero native implementation credit.
 Scope and exact hashes: `src/legacy/testdata/inversion_inventory_original_4fa4f0.md`;
 evidence: `ART/modifier-inversion-inventory-4fa4f0-native-entry-port/repository-original-reference-before-native-qualified-v1.json`.
 
+The subsequent independent checker initial-memory gate passes normal/strict
+HD Go 1.27.3 with **427 events each**, zero failures/skips/build warnings and
+six actual pre-execution parent mains. All 207 whole initial heaps and 242
+actual independent nil/protected reads agree; eighteen C/Go layout comparisons
+and all valid typed C getters pass. The actual existing C parent service
+matches all **267 original calls / 263 pointer returns / four memory faults**
+per profile without changing any native allocation byte. One actual old-C
+high-pointer checker fault per profile follows full independent native/parent
+positive controls. Parents/drivers exit unforced zero; expected child faults
+remain retained. C bodies/prototypes, existing parent implementation and
+earlier three-entry freezes stay exact. Full checker consumers must precede
+the four native engines. Scope/hashes/evidence:
+`src/legacy/testdata/inversion_inventory_initial_memory_4fa4f0.md`.
+
 ### Three-entry products, five local profiles and six native CI profiles, 2026-11-06
 
 The Marker/Boulder/MonsterGenerator implementation at clean source

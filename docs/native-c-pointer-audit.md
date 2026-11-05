@@ -14,6 +14,15 @@ fault controls and complete consumers must precede this coupled four-entry
 engine. Earlier freezes and all3373code/713data seals remain unchanged; no
 integer candidate is removed. See `inversion_inventory_original_4fa4f0.md`.
 
+Independent native checker memory then passes 427 normal/strict HD Go 1.27.3
+events each: 207 whole initial heaps,242selected nil/protected read domains,
+eighteen C/Go layout comparisons and267actual default C parent calls with
+four original-matching helper faults. Each profile also proves the actual
+old raw checker fails above4GiB after valid native/parent/whole-heap controls.
+Six PREEXEC parent mains and all expected child-fault logs are retained.
+Old C bodies/prototypes and the helper/earlier freezes remain exact; complete
+checker consumers and all four raw engines remain pending.
+
 The actual raw Marker `54E460`, Boulder `54E4B0` and MonsterGenerator
 `54E630` entries now have native object arguments, following native initial
 memory `4a66bcefa` and whole-consumer `31e0dfea7` freezes. Exact old bodies

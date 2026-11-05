@@ -4,6 +4,15 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Current clean macOS normal/HD Go 1.27.3 products at `c41351758` also pass
+20 actual NPC/Troll hearing cases, including eight native turns toward
+sound and twelve negative controls. Both processes exit zero unforced;
+inputs remain exact and all products/runtime/frames are compactly retained.
+These prepared diagnostics change no production hearing/C signatures and
+supply no direct raw-death-entry or earned campaign credit. The previous
+declared properties and mock-client-output limits remain; see
+`porting-completion.md` for the source-bound current product evidence.
+
 Clean `0894002e4` passes five local Go 1.27.3 configurations in the recorded
 six-client/five-server-package scope, with 26 actual mains retained before
 execution. Windows `42058922871` and Linux `42058956843` then pass all six

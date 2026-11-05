@@ -55,6 +55,34 @@ completion requirements.
 
 ## Current findings
 
+### Current macOS products: NPC/Troll hearing verified, 2026-11-06
+
+Clean normal/HD products at `c41351758` build with Go 1.27.3, identify that
+revision with `vcs.modified=false`, and exit zero on help. Both pass the
+same **20 hearing cases, eight actual native sound-directed turns and twelve
+negative controls**: running/spell sounds cause NPC/Troll reactions before
+a visual enemy is acquired; distant walking, private audio and friendly
+running follow the original filters. Both processes exit zero without
+forced termination (36.960/37.285 seconds), release ports and reverify
+original assets and repository inputs. No production hearing bug is found
+in this scope; production hearing code is unchanged.
+
+The declared diagnostic properties/stimuli below still apply: stock bodies,
+aggression 0.83, sight range zero and real server audio events, with mocked
+client output. This supplies no earned campaign, actual keyboard movement/
+spell-cast, default NPC configuration or physical listening certificate.
+Two unique run frames are visually inspected; corresponding normal/HD
+frames are byte-identical. All twenty frames and private runtime/Save state
+remain in verified archives; duplicate raw frames/products and owned temp
+PNGs are removed.
+
+Evidence: `ART/npc-hearing-verification-go1273/current-code-actual-hearing-and-direction-change-qualified-v5.json`
+and `two-Go1273-products-hearing-E2Es-qualified-v5.json`. Both exact products
+are retained in `current-clean-go1273-hearing-products-v5.zip`; per-run
+archives and the visual-review/cleanup receipt retain the full observations.
+The later initial-memory producer/data and documentation changes leave
+the Go/C/header code exact to the full local/native CI source below.
+
 ### Go 1.27.3 full local and native CI qualification, 2026-11-06
 
 At clean `0894002e4`, all five recorded local configurations pass with
@@ -104,8 +132,9 @@ Evidence in `ART/go1273-toolchain-transition` includes
 `CI-*-all-retained-native-Go1273-buildinfos-qualified-v1.json` reports, and
 `six-native-Go1273-current-code-final-qualified-v1.json`. The earlier Linux
 PNG-only failures and their complete archives remain preserved below.
-These passes do not complete the remaining raw C entries, current combined
-macOS product/E2E qualification, or nine final class/chapter audits.
+These passes do not complete the remaining raw C entries, their direct
+product diagnostics, or nine final class/chapter audits. The current
+macOS hearing diagnostics above have their own declared scope.
 
 At reference-only `4cd52e87d`, the independent 200-case initial PE32 memory
 producer/data for Marker/Boulder/MonsterGenerator is frozen before their
@@ -253,7 +282,7 @@ cause/correction qualifiers. The fresh host-normal CPP inventory at the
 engine commit covers 191 C sources and 474 headers: **3,468 active
 definitions, 277 integer candidates, 41 typed-pointer narrowing candidates,
 ten overlaps and zero warnings**. These remain triage counts. The other
-three entries below, current combined macOS product/E2E qualification and
+three entries below, remaining direct raw-entry product qualification and
 campaign final audits remain open. The later full-suite/native CI gates
 above are bound to their recorded source.
 

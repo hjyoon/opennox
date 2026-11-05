@@ -1,0 +1,81 @@
+{
+  "original_exe_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "independent_inputs_sha256": "adc9b7435ce18b9006cf77e7e84057d18b1ed42272bda5432dd81d99b99ad5c7",
+  "original_image_unchanged": true,
+  "cases": 298,
+  "original_function_ranges": [
+    {
+      "name": "inversion",
+      "address": "0x4e03d0",
+      "size": 22,
+      "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f"
+    },
+    {
+      "name": "scan",
+      "address": "0x4e03f0",
+      "size": 139,
+      "sha256": "919c3f4fb8031a9ebf9aebea590e0d6e0f6e5c4db0070ed4b09e5621c30cefa5"
+    },
+    {
+      "name": "grip",
+      "address": "0x4e0480",
+      "size": 22,
+      "sha256": "0ea4bb7047e57a59eaa5ee0ebf55591a37f990c49ab8cde7aae8bafdc3924a9f"
+    }
+  ],
+  "all183_original_bytes_reached": true,
+  "instruction_addresses": 73,
+  "original_Grip_body_executed_on_real_indirect_calls": true,
+  "declared_external_services": [],
+  "FPU_control": 3647,
+  "FPU_status_unchanged": true,
+  "full64KiB_heap_and_caller_and_write_trace_retained": true,
+  "fault_domains": [
+    {
+      "entry": "inversion",
+      "instruction": "0x4e03d6",
+      "access": 19,
+      "count": 4
+    },
+    {
+      "entry": "inversion",
+      "instruction": "0x4e03e3",
+      "access": 20,
+      "count": 2
+    },
+    {
+      "entry": "grip",
+      "instruction": "0x4e0486",
+      "access": 19,
+      "count": 4
+    },
+    {
+      "entry": "grip",
+      "instruction": "0x4e0493",
+      "access": 20,
+      "count": 2
+    },
+    {
+      "entry": "scan",
+      "instruction": "0x4e03fd",
+      "access": 19,
+      "count": 1
+    },
+    {
+      "entry": "scan",
+      "instruction": "0x4e0427",
+      "access": 19,
+      "count": 2
+    },
+    {
+      "entry": "scan",
+      "instruction": "0x4e042d",
+      "access": 19,
+      "count": 3
+    }
+  ],
+  "native_memory_equivalence": false,
+  "native_implementation_credit": false,
+  "overall100": false
+}

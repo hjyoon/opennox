@@ -4627,6 +4627,20 @@
       "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
     },
     {
+      "name": "nox_xxx_unusedCheckGripEffect_4E03F0",
+      "address": "0x004E03F0",
+      "size": 139,
+      "sha256": "919c3f4fb8031a9ebf9aebea590e0d6e0f6e5c4db0070ed4b09e5621c30cefa5",
+      "purpose": "complete two-slot modifier traversal: gate on item class bits 0x03001000, cache the modifier-array base, compare exact Grip callback identity, execute the original Grip body and return early on zero output; the original reuses caller argument three as its loop counter and argument four as callback output"
+    },
+    {
+      "name": "nox_xxx_gripEffect_4E0480",
+      "address": "0x004E0480",
+      "size": 22,
+      "sha256": "0ea4bb7047e57a59eaa5ee0ebf55591a37f990c49ab8cde7aae8bafdc3924a9f",
+      "purpose": "write and return one exactly when the modifier's signed strength at offset 96 is below one, preserving read-before-output-store order and leaving the other callback arguments unused"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4E0778",
       "address": "0x004E0778",
       "size": 5,

@@ -57,7 +57,7 @@ completion requirements.
 
 ### Raw ImpEgg, Polyp and Potion C pointer entries
 
-The public `54CAE0`, `54CB10` and `54CBB0` entries now take native object
+At `7b71b8889`, public `54CAE0`, `54CB10` and `54CBB0` entries take native object
 pointers, preserving each exact old C body under `#if 0`. Their ordinary Go
 dispatcher admission stays unchanged. The raw Polyp core retains its live
 numeric type cache, source Y-before-X fault order, cached native update
@@ -93,11 +93,65 @@ inputs, producers, goldens and assertions remain exact. This controlled
 fixture correspondence supplies no general native named-field alias proof.
 The earlier failed strict run remains failed and preserved.
 
+Observer-only `db9cdda44` preserves all seven engine/test files and all six
+frozen original files exactly. Its clean normal and HD products pass
+`scripts/e2e/host-warrior-simple-polyp-native.yaml`. Three prepared stock
+RedPotion source records call the actual class-unrestricted public C entries
+with default services. Full ImpEgg flags/return, Polyp/Potion delayed
+deletion, an unowned ToxicCloud at the source position with initial original
+stock lifetime450, native object/update pointers above 4 GiB and client
+netcode replication are verified. Host HP150 and poison0 remain unchanged.
+All four frames were visually inspected; the final frames show the green
+cloud. Earlier replication captures precede the rendered particle frame.
+Both processes exit normally, release ports and retain their private data.
+This diagnostic supplies no natural ImpEgg/Polyp kill, earned campaign or
+physical audible-fidelity credit. Proof:
+`ROOT/simple-polyp-death-native-entry-port/two-clean-products-default-C-map-E2E-qualified-v2.json`.
+
+The first product attempt remains a retained failure. Its immediate sound
+count expected a synchronous callback, although console commands run outside
+the server audio phase. The corrected observer independently calls the real
+server audio service without a death entry, proves its queued delivery,
+then requires all three unchanged C entry events and their post-return
+deletion states. The seven original production conditions separately retain
+synchronous audio-before-delete checks. Nine root regression events pass
+after each observer change; the engine and frozen reference files are exact.
+The observer fix does not change ordinary play or the audio service.
+
 The updated host-normal scan finds 3,474 active C definitions and 283
 explicit integer-cast candidates in all 191 sources/474 headers, with zero
-preprocessor warnings. These are triage counts, not a remaining-defect
-denominator. Clean products, stock-map direct-C E2E and new engine CI are
-pending; this does not establish overall 100% completion.
+preprocessor warnings. All 665 source/header inputs and commit blobs bind
+to clean `7b71b8889`, and every retained CPP output/log is rehashed; the
+original WIP capture is not relabelled. These are triage counts, not a
+remaining-defect denominator.
+
+Windows run `41969128461` at engine `7b71b8889` and run `41970766870` at
+product source `db9cdda44` both pass the unchanged complete suites. Each
+records amd64 **786,234 passes / 11 skips**, 386 **766,504 / 94**, all 596
+original Go/C leaves and seven actual default-C conditions. Both full
+archives, API ZIP digests, raw jobs, six actual PE mains and two clean
+server products per run are retained with hashes, headers and source
+metadata verified. Every main is preserved before execution; every native
+test/driver exits zero without forced termination. The exact primary 386
+PEs retain the pre-existing Skeleton/Golem GOGC10 replay with unchanged
+hashes and no rebuild. Evidence:
+`ROOT/native-ci-retention-20261102/41969128461/retention-qualified-v1.json` and
+`ROOT/native-ci-retention-20261102/41970766870/retention-qualified-v1.json`.
+These new gates neither recover the three absent original amd64 mains nor
+establish the cause of the earlier cancelled run. Overall 100% remains open.
+
+The next read-only raw-pointer analysis finds five Skull/ArrowTrap bodies
+totalling 751 original bytes, with no overlapping existing function seals.
+Intraprocedural CFG boundaries exclude the independent `54FCB0`/`54FCC0`
+RET stubs; the first 773-byte overcount and its correction remain preserved.
+The independent 753-input producer subsequently executes all 751 body bytes
+and the existing 17-byte converter under both FPU profiles. Each profile
+has 53 original reentries, 402 original enumeration callback calls, 276
+actual FISTP calls and 26 memory faults. Full heap/image/caller/nonvolatile/
+FPU guards pass; 303 complete outputs differ by profile. Reproduction
+matches complete encoded/decoded outputs and proof files. Original manifest
+and sealing work remain pending. These five raw C entries stay unported;
+no actual unchanged-C runtime crash or new native-port credit is assigned.
 
 ### Localized shop sale rejection messages
 

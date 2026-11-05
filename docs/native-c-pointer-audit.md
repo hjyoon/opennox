@@ -66,7 +66,7 @@ Evidence:
 The separate before-engine gate is retained in
 `ROOT/simple-polyp-death-native-entry-port/actual-old-C-causality-before-native-qualified-v1.json`.
 
-The three public entries now accept native `nox_object_t*` arguments, with
+At `7b71b8889`, the three public entries accept native `nox_object_t*` arguments, with
 the exact old C bodies retained under `#if 0`. Polyp keeps the live numeric
 type cache, Y-before-X fault order, entry-cached update pointer, signed FPS,
 PC53 multiplication/binary32 spill/FISTP, and audio-before-delete order.
@@ -82,16 +82,53 @@ projects the mapped flags to the unchanged PE32 heap location. An independent
 strict memory control then passes eight events. Engine files, original
 inputs, producers, goldens and assertions stay unchanged; both complete
 selections pass after that correction. This declared fixture correspondence
-does not certify arbitrary native named-field aliasing. Clean products,
-stock-map direct-C E2E and new engine CI remain pending.
+does not certify arbitrary native named-field aliasing.
+
+Clean normal/HD products at observer-only `db9cdda44` pass the stock-map
+direct-C diagnostic for all three entries. Prepared stock RedPotion records
+exercise the class-unrestricted raw contract, preserving living host HP150
+and poison0. The unowned ToxicCloud has native source/update pointers above
+4 GiB and initial original-stock lifetime450; it replicates to the client
+and the final frames show its green particles. Real queued audio supplies
+three entry events plus one independent server-service control. The first
+product attempt's incorrect immediate-audio assertion stays failed and
+preserved. The observer correction changes none of the seven engine/test
+files or six frozen original files. Both products exit normally, release
+ports and retain private runtime data. No earned kill/campaign or physical
+audible-fidelity credit is assigned.
+
+Windows runs `41969128461` at engine `7b71b8889` and `41970766870` at product
+source `db9cdda44` both pass: amd64 **786,234 / 11 skips**, 386 **766,504 /
+94**. Each job preserves all 596 original Go/C leaves and seven actual
+default-C conditions. Every full archive, API digest, raw job log, six
+pre-execution PE mains and two clean server products per run are retained
+and hash/header/source verified. Both exact primary 386 PEs retain the
+existing Skeleton/Golem GOGC10 replay without rebuilding. This does not
+recover the three missing mains or prove the old cancelled run's cause.
 
 The current host-normal CPP view verifies **191 C sources / 474 headers**:
 **3,474 active definitions / 283 integer-cast candidates / 41 typed-pointer
 narrowing candidates / ten overlaps / zero warnings**. Three definitions and
 only two explicit integer-cast candidates disappear: Potion's former pointer
-conversion was implicit. This WIP capture needs exact-hash binding to the
-clean engine commit. Cgo preambles and other target macros remain outside
+conversion was implicit. The WIP capture remains labelled with its original
+source; all 665 current C/header inputs and commit blobs are hash-bound to
+clean `7b71b8889`, along with all 191 retained CPP outputs/logs. Cgo preambles
+and other target macros remain outside
 the scan; these counts are triage, not remaining-defect or completion totals.
+
+Read-only next-target analysis identifies five remaining raw Skull/ArrowTrap
+entries `54F9A0` through `54FC50`, totaling **751** original body bytes.
+Reachable CFG boundaries exclude separate RET stubs at `54FCB0`/`54FCC0`;
+the first 773-byte boundary overcount and its correction are retained.
+The independent 753-input producer subsequently executes all 751 body bytes
+and the existing 17-byte converter in both FPU profiles, with 53 original
+reentries, 402 original enumeration callback calls, 276 actual FISTP calls
+and 26 memory faults per profile. All heap/image/caller/nonvolatile/FPU
+guards pass, and 303 complete outputs differ between profiles. Independent
+reproduction matches encoded/decoded outputs and proof bytes. Original
+manifest additions and sealing remain pending; these five C entries are
+still unported, with no actual unchanged-C runtime fault credit.
+Evidence: `ROOT/skull-update-native-entry-port/original-PE-byte-and-call-audit-v2.json`.
 
 Before this three-entry port, the Golem host-normal CPP view verifies
 **191 C sources / 474 headers**:

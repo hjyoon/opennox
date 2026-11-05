@@ -16,8 +16,9 @@ import (
 )
 
 // The source event is a diagnostic stimulus through the real audio binding.
-// SightRange=0 is an ordinary map property used solely to exclude visual
-// acquisition. No hearing fields, AI actions, sound flags or clocks are set.
+// SightRange=0 is an ordinary diagnostic map property. Auditory admission and
+// reaction must precede any visual enemy; no hearing fields, AI actions,
+// sound flags or clocks are set.
 type e2eAIHearingFixture struct {
 	kind, mode                   string
 	host, unit                   *server.Object
@@ -51,7 +52,7 @@ func init() {
 			return false
 		}
 		switch args[2] {
-		case "run", "walk", "private", "friendly-run":
+		case "run", "walk", "spell", "private", "friendly-run":
 		default:
 			return false
 		}
@@ -119,7 +120,13 @@ func (f *e2eAIHearingFixture) prepare() {
 		}
 	}
 	walk := f.mode == "walk"
-	for id := sound.ID(1); id < 1024; id++ {
+	candidates := []sound.ID{sound.SoundRunOnDirt, sound.SoundRunOnStone, sound.SoundRunOnWood, sound.SoundRunOnSnow, sound.SoundRunOnMud, sound.SoundRunOnWater}
+	if walk {
+		candidates = []sound.ID{sound.SoundWalkOnDirt, sound.SoundWalkOnStone, sound.SoundWalkOnWood, sound.SoundWalkOnSnow, sound.SoundWalkOnMud, sound.SoundWalkOnWater}
+	} else if f.mode == "spell" {
+		candidates = []sound.ID{sound.SoundCleansingFlameCast}
+	}
+	for _, id := range candidates {
 		flags := noxServer.Audio.Flags(id)
 		if noxServer.Audio.Field12(id) <= 0 || flags&0x10 != 0 || (flags&0x20 != 0) != walk || (!walk && flags&0x40 == 0) {
 			continue
@@ -187,7 +194,14 @@ func (f *e2eAIHearingFixture) tick() {
 		noxServer.Audio.EventObj(f.sound, f.host, f.kindCode, f.host.NetCode)
 	}
 	d := f.unit.UpdateDataMonster()
-	f.visual = f.visual || d.CurrentEnemy != nil || d.PreferredEnemy != nil
+	if f.emitted && f.mode != "run" && f.mode != "spell" && noxServer.Frame()-f.emittedFrame > 2 {
+		// The original event is no longer eligible after two frames. Observe
+		// that complete window before a later visual encounter can interfere.
+		defer f.finish()
+	}
+	if !f.reacted {
+		f.visual = f.visual || d.CurrentEnemy != nil || d.PreferredEnemy != nil
+	}
 	if !f.emitted || d.Field101 < f.emittedFrame || d.Field101-f.emittedFrame > 2 || d.Field98 != f.host.NetCode || d.Field99X != f.sourcePosition.X || d.Field99Y != f.sourcePosition.Y {
 		return
 	}
@@ -207,11 +221,17 @@ func (f *e2eAIHearingFixture) tick() {
 		f.reacted = true
 		e2eLog.Printf("AI HEARING REACTION: body=%s mode=%s facing=%d->%d position=%v natural=true current-enemy=%p", f.kind, f.mode, f.faceAtEmit, f.unit.Direction1, f.sourcePosition, d.CurrentEnemy)
 	}
+	if (f.mode == "run" || f.mode == "spell") && f.reacted {
+		// Later visual acquisition after turning is a separate natural stage.
+		f.finish()
+	}
 }
 
 func (f *e2eAIHearingFixture) finish() {
-	f.tick()
-	want := f.mode == "run"
+	if f.done {
+		return
+	}
+	want := f.mode == "run" || f.mode == "spell"
 	if f.unit == nil || f.host == nil || !f.emitted || f.audioEvents != 1 || f.queued != (f.mode != "private") || f.heard != want || f.reacted != want || f.visual || f.host.HealthData.Cur != f.hostHP || f.unit.HealthData.Cur != f.unitHP {
 		e2eError(fmt.Errorf("hearing %s/%s failed: emitted=%t events=%d queued=%t heard=%t reacted=%t want=%t visual=%t", f.kind, f.mode, f.emitted, f.audioEvents, f.queued, f.heard, f.reacted, want, f.visual))
 		return

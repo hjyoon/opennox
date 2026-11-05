@@ -160,6 +160,52 @@ steps:
     ev: {type: key, key: 59, pressed: false}
   - action: raw
     dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start NPC spell}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: NPC spell ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
     ev: {type: text_input, text: e2e-ai-hearing start NPC private}
   - action: raw
     dt: 2
@@ -344,6 +390,52 @@ steps:
     ev: {type: key, key: 59, pressed: false}
   - action: raw
     dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing start Troll spell}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 120
+    name: Troll spell ordinary hearing and reaction
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-ai-hearing finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 15
+    name: release previous hearing body
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
     ev: {type: text_input, text: e2e-ai-hearing start Troll private}
   - action: raw
     dt: 2
@@ -430,4 +522,4 @@ steps:
     dt: 15
     name: release previous hearing body
   - action: quit
-    name: finish eight native hearing cases
+    name: finish ten native hearing cases

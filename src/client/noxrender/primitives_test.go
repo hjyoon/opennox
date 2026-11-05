@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"math"
 	"os"
+	"path/filepath"
 	"testing"
 
 	noxcolor "github.com/opennox/libs/color"
@@ -38,7 +39,7 @@ func TestDrawCircle(t *testing.T) {
 		r.DrawCircleAlpha(20, 70, 10+10*i, cl4)
 	}
 
-	f, err := os.Create("circles.png")
+	f, err := os.Create(filepath.Join(t.TempDir(), "circles.png"))
 	require.NoError(t, err)
 	defer f.Close()
 	err = png.Encode(f, img)
@@ -70,7 +71,7 @@ func TestDrawLines(t *testing.T) {
 		r.DrawLine(c, c.Add(image.Pt(dx, dy)), cl2)
 	}
 
-	f, err := os.Create("lines.png")
+	f, err := os.Create(filepath.Join(t.TempDir(), "lines.png"))
 	require.NoError(t, err)
 	defer f.Close()
 	err = png.Encode(f, img)

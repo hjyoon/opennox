@@ -546,7 +546,7 @@ func TestDrawImage(t *testing.T) {
 					h.Reset()
 					buf.Reset()
 
-					var w io.Writer = h
+					var w io.Writer = io.MultiWriter(h, &buf)
 					if debug {
 						fname := filepath.Join(outDir, c.image+"_"+strings.ReplaceAll(b.name, " ", "_")+".png")
 						out, err := os.Create(fname)
@@ -569,7 +569,7 @@ func TestDrawImage(t *testing.T) {
 						skip = true
 						t.Logf("%q", got)
 					} else {
-						require.Equal(t, exp, got)
+						requireRasterPNGGolden(t, exp, buf.Bytes())
 					}
 					if debug {
 						rgba := image.NewNRGBA(pix.Rect)

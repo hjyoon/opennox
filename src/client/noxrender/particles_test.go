@@ -87,7 +87,7 @@ func TestDrawParticle(t *testing.T) {
 			h.Reset()
 			buf.Reset()
 
-			var w io.Writer = h
+			var w io.Writer = io.MultiWriter(h, &buf)
 			if debug {
 				fname := filepath.Join(outDir, "part_"+c.name+".png")
 				out, err := os.Create(fname)
@@ -104,7 +104,7 @@ func TestDrawParticle(t *testing.T) {
 				skip = true
 				t.Logf("%q", got)
 			} else {
-				require.Equal(t, c.exp, got)
+				requireRasterPNGGolden(t, c.exp, buf.Bytes())
 			}
 			if debug {
 				rgba := image.NewNRGBA(pix.Rect)

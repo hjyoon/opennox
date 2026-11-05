@@ -23,4 +23,4 @@ the temporary encoder is not part of the final test implementation.
 Evidence directory: `go1273-toolchain-transition` under the retained
 `opennox-port-20261105` artifacts. See
 `Go1273-historical-PNG-existing-hash-reference-qualified-v1.json` and
-`PNG-existing-goldens-pixel-reference-frozen-v1.json`.
+`PNG-existing-goldens-pixel-reference-frozen-v2.json`.

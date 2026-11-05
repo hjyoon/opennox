@@ -87,3 +87,7 @@ func simplePolypOriginalNew54CAE0(id uint32) *server.Object {
 func simplePolypOriginalAudio54CAE0(id uint32, source *server.Object) {
 	C.simple_polyp_audio_control_54cae0(C.uint32_t(id), (*C.nox_object_t)(unsafe.Pointer(source)))
 }
+
+var simplePolypOriginalSimpleRuntimeOverride54CAE0 *server.SimpleObjectDeathRuntime54CAE0
+var simplePolypOriginalRuntimeOverride54CB10 *server.PolypDeathRawRuntime54CB10
+var simplePolypOriginalStateOverride54CB10 *server.PolypDeathState54CB10

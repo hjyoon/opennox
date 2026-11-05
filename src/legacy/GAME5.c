@@ -5129,6 +5129,8 @@ void nox_xxx_unitCreatureCopyUC_54F2B0(int a1, int a2) {
 	*(uint16_t*)(a2 + 126) = result;
 }
 
+// Native pointer exports preserve these five original raw contracts.
+#if 0
 //----- (0054F9A0) --------------------------------------------------------
 int nox_xxx_updateShootingTrap_54F9A0(int a1) {
 	int result; // eax
@@ -5257,6 +5259,8 @@ void nox_xxx_unitIsAttackReachable_54FC50(int a1, int a2) {
 		}
 	}
 }
+
+#endif
 
 //----- (0054FCD0) --------------------------------------------------------
 extern void nox_xxx_collideTrigger_54FCD0_go(nox_object_t* trigger, nox_object_t* candidate);

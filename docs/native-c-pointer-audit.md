@@ -133,9 +133,8 @@ executable-data record and a falsely file-backed virtual-zero tail. The
 existing 4.0 constant and 2048-byte direction table receive no new data
 credit. Virtual-zero and malformed-index fixture scope is explicit in
 `src/server/testdata/skull_raw_native_original_54f9a0.md`.
-These five C entries remain unported, with no actual unchanged-C runtime
-fault credit from the original reference alone. A separate before-engine
-gate subsequently proves all five actual unchanged C entries SIGSEGV above
+The original reference alone assigns no actual unchanged-C fault credit.
+A separate before-engine gate subsequently proves all five actual unchanged C entries SIGSEGV above
 4 GiB after 19 independent native layout checks, three real C constructors,
 52-byte update/eight-byte collide records, typed C direction/audio and whole
 allocation/data guards pass. The two-package selection passes 39 events;
@@ -144,7 +143,7 @@ compared the complete C prefix912 to Go's allocation928. Fixture-only size
 accounting now asserts the shared prefix and the two native-word Go suffix
 independently, retaining every whole-allocation guard. That failed source,
 logs and both executed mains remain preserved, with no old-C crash credit.
-Native implementation/full-output comparison is still pending. Evidence:
+Before-engine evidence:
 `ROOT/skull-update-native-entry-port/actual-old-C-causality-before-native-qualified-v2.json`.
 Before native implementation, the independent whole-heap correspondence
 passes all 753 inputs with highres/cgocheck2/checkptr=2 (757 test events).
@@ -154,6 +153,24 @@ while the five methods are absent. Original-only regeneration reproduces
 both transport fixtures exactly. Both executed mains are retained before
 startup. Proofs: `ROOT/skull-update-native-entry-port/independent-strict-memory-before-native-qualified-v1.json`
 and `ROOT/skull-update-native-entry-port/frozen-complete-consumer-before-native-qualified-v1.json`.
+The five public C entries now accept native `nox_object_t*` arguments.
+All five exact old C bodies and intermediate helpers remain under `#if 0`.
+The raw core retains all six live numeric dwords, cached update/collide
+pointers, signed direction indexing, PC53 arithmetic/spills/FISTP, exact
+fault and callback order, and shared-marker reentry. Ordinary Go dispatcher
+admission and direction normalization are unchanged. Normal and strict HD
+`cgocheck2`/`checkptr=2` selections each pass **7,147** test events in four
+packages, including **3,012** complete immutable original Go/C leaves and
+**12** actual default-C server conditions. All earlier selected terminal
+identities/actions/multiplicities remain; normal and strict terminals match.
+All eight actual selected mains were retained before execution, and all
+13 frozen original/getter/consumer/transport files stay exact. The first
+normal wrapper fails only in its post-test collector (expected three mains,
+retained four); its successful tests/four mains and failed metadata remain
+preserved. A fresh four-main normal gate passes completely. New clean
+products, stock-map E2E, CPP inventory and native CI remain pending. Proofs:
+`ROOT/skull-update-native-entry-port/normal-related-original-and-default-C-qualified-v2.json`
+and `ROOT/skull-update-native-entry-port/strict-HD-related-original-and-default-C-qualified-v1.json`.
 Full original reproduction evidence:
 `ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 Evidence: `ROOT/skull-update-native-entry-port/original-PE-byte-and-call-audit-v2.json`.

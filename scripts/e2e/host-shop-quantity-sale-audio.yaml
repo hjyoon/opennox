@@ -263,8 +263,8 @@
     },
     {
       "action": "check-shop-audio",
-      "mode": 0,
-      "name": "arm only after completed purchase"
+      "mode": 2,
+      "name": "arm original TreasurePickup sale effect"
     },
     {
       "action": "click-inventory-item",
@@ -307,9 +307,9 @@
     },
     {
       "action": "check-shop-audio",
-      "mode": 1,
+      "mode": 3,
       "count": 1,
-      "name": "group sale actual audio and complete hardware drain"
+      "name": "verify original sale effect reaches native OpenAL with positive gain"
     },
     {
       "action": "wait",
@@ -358,9 +358,9 @@
     },
     {
       "action": "check-shop-audio",
-      "mode": 1,
+      "mode": 3,
       "count": 2,
-      "name": "single-after-group sale hardware drain"
+      "name": "verify original sale effect reaches native OpenAL with positive gain"
     },
     {
       "action": "wait",

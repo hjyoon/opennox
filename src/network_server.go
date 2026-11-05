@@ -646,7 +646,7 @@ func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
 			s.Audio.EventObj(sound.SoundNoCanDo, player, 2, player.NetCode)
 		},
 		PlaySellSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundInventoryPickup, player, 2, player.NetCode)
+			s.Audio.EventObj(sound.SoundTreasurePickup, player, 2, player.NetCode)
 		},
 	}
 }

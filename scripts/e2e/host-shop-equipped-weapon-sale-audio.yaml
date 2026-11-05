@@ -238,6 +238,11 @@
       "name": "audio reproduction v2 host game server shop purchased"
     },
     {
+      "action": "check-shop-audio",
+      "mode": 2,
+      "name": "arm original sale effect after completed purchase audio"
+    },
+    {
       "action": "click",
       "x": 786,
       "y": 695,
@@ -282,9 +287,9 @@
     },
     {
       "action": "check-shop-audio",
-      "mode": 1,
-      "count": 2,
-      "name": "verify actual sale audio positive gain and full hardware drain"
+      "mode": 3,
+      "count": 1,
+      "name": "verify original sale effect reaches native OpenAL with positive gain"
     },
     {
       "action": "wait",
@@ -351,9 +356,9 @@
     },
     {
       "action": "check-shop-audio",
-      "mode": 1,
-      "count": 3,
-      "name": "equipment sale actual sound and complete hardware drain"
+      "mode": 3,
+      "count": 2,
+      "name": "verify original sale effect reaches native OpenAL with positive gain"
     },
     {
       "action": "wait",

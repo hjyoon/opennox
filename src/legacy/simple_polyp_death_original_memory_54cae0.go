@@ -35,7 +35,11 @@ static void* simple_polyp_bad_54cae0(void* heap,size_t page,int role) {
  if(role==-1)return NULL;
  if(role==-2)return (unsigned char*)heap-page;
  if(role==-3)return (unsigned char*)heap- offsetof(nox_object_t,y);
- if(role==-4)return (unsigned char*)heap- offsetof(nox_object_t,obj_flags);
+ if(role==-4) {
+  uintptr_t align=_Alignof(nox_object_t);
+  uintptr_t source=(uintptr_t)heap- offsetof(nox_object_t,obj_flags);
+  return (void*)((source+align-1)&~(align-1));
+ }
  return NULL;
 }
 */

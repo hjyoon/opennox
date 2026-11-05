@@ -33,6 +33,10 @@ func TestSimplePolypFixtureMemoryDomain54CAE0(t *testing.T) {
 		t.Fatal("independent nil/unmapped/partial pointer identities")
 	}
 	partial := ptr(-4)
+	// Original PE32 flags and partial Y share heap+0. Native flags are at
+	// offset20 in an8-aligned object, so the aligned partial source uses a
+	// separate mapped word. Initialize both independently to the same input.
+	*(*uint32)(heap) = 0x11223300
 	partial.ObjFlags = 0x11223300
 	partial.PosVec = types.Ptf(7, 8)
 	p, words := simplePolypOriginalControl54CAE0(partial)

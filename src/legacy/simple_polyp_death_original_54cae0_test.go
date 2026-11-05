@@ -176,11 +176,15 @@ func simplePolypRunOriginal54CAE0(t *testing.T, in simplePolypInput54CAE0, mode 
 		put(buf, at+yOffset, 0x41000000+uint32(n))
 		putPointer(at+updateOffset, ptr(in.Update))
 	}
-	// In original role -4, flags alias heap+0 and source X/Y alias +40/+44.
-	// Native field growth moves the latter two reads; preserve their declared
-	// original values without treating unrelated native padding as PE memory.
-	copy(buf[xOffset-flagOffset:xOffset-flagOffset+4], canonical[40:44])
-	copy(buf[yOffset-flagOffset:yOffset-flagOffset+4], canonical[44:48])
+	// PE32 role-4 flags alias heap+0 and X/Y alias +40/+44. Native flags
+	// offset20 requires rounding the source to object alignment8, placing
+	// flags at heap+4. Keep role-3's independently mapped Y at heap+0.
+	// This is controlled fixture transport, not arbitrary native alias proof.
+	partialBase := int(uintptr(ptr(-4)) - uintptr(base))
+	partialFlags, partialX, partialY := partialBase+flagOffset, partialBase+xOffset, partialBase+yOffset
+	copy(buf[partialFlags:partialFlags+4], canonical[:4])
+	copy(buf[partialX:partialX+4], canonical[40:44])
+	copy(buf[partialY:partialY+4], canonical[44:48])
 	expected := bytes.Clone(buf)
 	type guardedState struct {
 		Before [16]byte
@@ -401,8 +405,13 @@ func simplePolypRunOriginal54CAE0(t *testing.T, in simplePolypInput54CAE0, mode 
 			copy(canonical[at+16:at+20], buf[at+flagOffset:at+flagOffset+4])
 		}
 	}
-	copy(expected[:4], buf[:4])
-	copy(canonical[:4], buf[:4])
+	if in.Unit == -4 {
+		copy(expected[partialFlags:partialFlags+4], buf[partialFlags:partialFlags+4])
+		copy(canonical[:4], buf[partialFlags:partialFlags+4])
+	} else {
+		copy(expected[:4], buf[:4])
+		copy(canonical[:4], buf[:4])
+	}
 	if !bytes.Equal(buf, expected) {
 		t.Fatal("whole64KiB native frame changed outside original outputs and declared callbacks")
 	}

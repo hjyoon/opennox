@@ -60,7 +60,7 @@ raise SystemExit(17)
         code = r'''
 import subprocess,sys,time
 subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)'])
-print('test entered',flush=True)
+sys.stdout.buffer.write(b'test entered\n');sys.stdout.buffer.flush()
 time.sleep(60)
 '''
         with tempfile.TemporaryDirectory() as directory:

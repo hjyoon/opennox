@@ -4,6 +4,25 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Clean `0894002e4` passes five local Go 1.27.3 configurations in the recorded
+six-client/five-server-package scope, with 26 actual mains retained before
+execution. Windows `42058922871` and Linux `42058956843` then pass all six
+native configurations. Every profile preserves all 1,144 credit Go/C leaves,
+five actual credit C conditions and the earlier Skull/Polyp/Skeleton/Golem
+contracts. Whole ZIPs/products/API digests/raw jobs are retained. All six
+products and 161 retained manifest executables identify Go 1.27.3; Windows
+retention is pre-execution, Linux's existing 155-manifest collector is
+post-execution. Counts, exact scopes and qualifiers are in
+`porting-completion.md`. These are source-bound passing gates, not an
+overall porting percentage or completion of the remaining raw entries.
+
+Reference-only `4cd52e87d` freezes the other three entries' 200-case complete
+initial PE32 heap digests and read/fault domains. A separate actual original
+emulator setup check verifies every case without executing a raw body.
+Native memory relocation/guards and complete frozen consumers remain
+required before implementing those entries. Existing Go/C/header code is
+unchanged by this data/producer/documentation addition.
+
 Go 1.27.3 checkpoint `74813f67c` passes both Windows architectures, with
 complete products and six pre-execution mains retained and compiler-verified.
 All four Linux variants fail only the six particle compressed-PNG hashes

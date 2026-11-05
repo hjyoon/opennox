@@ -55,6 +55,68 @@ completion requirements.
 
 ## Current findings
 
+### Go 1.27.3 full local and native CI qualification, 2026-11-06
+
+At clean `0894002e4`, all five recorded local configurations pass with
+**26 actual Go 1.27.3 mains retained before execution**. The scope is six
+client/five server packages; strict runs the previous recorded selector
+with credit and renderer additions. It is not every repository package.
+
+| Configuration | Passing test events | Skipped | Actual mains |
+| --- | ---: | ---: | ---: |
+| Normal | 797,858 | 46 | 6 |
+| HD | 797,858 | 46 | 6 |
+| Server | 791,639 | 7 | 4 |
+| Server HD | 791,639 | 7 | 4 |
+| Strict HD, cgocheck2/checkptr=2 selection | 661,612 | 10 | 6 |
+
+All have zero failures and no forced termination. Complete source hashes
+remain exact. Every profile preserves 1,144 complete credit Go/C leaves,
+five actual credit C conditions, 286 credit initial-memory cases, the
+reload-window control, all 3,012 Skull leaves/twelve C conditions and the
+earlier Polyp/Skeleton/Golem contracts. Reports, all executed mains and
+cleanup receipts are in `ART/go1273-toolchain-transition/local-suite-archives`;
+qualification: `full-five-Go1273-current-source-final-qualified-v1.json`.
+
+The same source passes all six native configurations in Windows
+`42058922871` and Linux `42058956843`:
+
+| Native configuration | Passing test events | Skipped |
+| --- | ---: | ---: |
+| Windows amd64 server | 791,478 | 11 |
+| Windows 386 server | 771,748 | 94 |
+| Linux normal / HD, each | 799,580 | 54 |
+| Linux server / server HD, each | 793,470 | 7 |
+
+All six complete artifact ZIPs, API digests, raw jobs and products are
+retained and qualified under `ART/native-ci-archive`. Windows preserves six
+actual PE mains before execution. Linux retains 155 ELF manifests through
+its existing post-execution collector; no pre-execution claim is added.
+Read-only build-info inspection verifies Go 1.27.3 in all six products
+and 161 retained manifest test executables. Temporary extraction copies
+are removed. Each configuration preserves the complete credit and prior
+raw-entry contracts; Linux also checks the particle/pixel-change controls.
+The unchanged 386 stress replay covers Skeleton/Golem on the exact primary
+PE; it supplies no new credit-specific GC-stress claim.
+
+Evidence in `ART/go1273-toolchain-transition` includes
+`CI-42058922871-qualified-v1.json`, `CI-42058956843-qualified-v1.json`, both
+`CI-*-all-retained-native-Go1273-buildinfos-qualified-v1.json` reports, and
+`six-native-Go1273-current-code-final-qualified-v1.json`. The earlier Linux
+PNG-only failures and their complete archives remain preserved below.
+These passes do not complete the remaining raw C entries, current combined
+macOS product/E2E qualification, or nine final class/chapter audits.
+
+At reference-only `4cd52e87d`, the independent 200-case initial PE32 memory
+producer/data for Marker/Boulder/MonsterGenerator is frozen before their
+native implementation. A separate original-emulator setup control verifies
+every complete initial heap and declared read/fault domain; no raw body
+executes in that control. The fixture reproduces byte for byte. Existing
+Go/C/header code remains exact to the qualified source. Native relocation,
+allocation guards and complete frozen consumers for these three entries
+still precede their engines. See the new initial-memory reference README
+and `three-entry-initial-memory-preparation-v1` in the raw-entry artifacts.
+
 ### Go 1.27 PNG encoding compatibility, 2026-11-06
 
 The first Go 1.27.3 native checkpoint at `74813f67c` passes Windows
@@ -103,8 +165,8 @@ Evidence is under `ART/go1273-toolchain-transition`:
 `CI-42048435866-qualified-v1.json`,
 `Go1273-historical-PNG-existing-hash-reference-qualified-v1.json`, and
 `renderer-Go1273-original-pixels-normal-and-strict-qualified-v1.json`.
-Fresh full five-configuration local and current native CI gates remain
-required. The local runner now includes the renderer in all five profiles:
+Those related renderer selections alone do not supply the later full local
+and native CI gates above. The local runner includes the renderer in all five profiles:
 six client/five server packages and 26 actual mains, with the previous
 strict selector preserved and extended. This remains a recorded package
 scope, not every repository package or overall completion.
@@ -118,8 +180,8 @@ and use that installation with `GOTOOLCHAIN=local`; the global goenv selection
 is unchanged. Four preserved tool mains identify Go 1.27.3 and pass 94 test
 events. The obsolete task Go 1.26 build cache (5,019,979,683 logical bytes)
 was removed after verified retention; module sources and protected evidence
-remain. New full local five-configuration and six native CI qualifications
-under Go 1.27.3 are still required.
+remain. The initial pin checks alone do not supply the later full local
+five-configuration and six native CI qualifications documented above.
 
 Clean normal/HD Go 1.27.3 products at `e1113a42b` pass **20** stock-map
 hearing cases: **eight actual turns toward sound** and **twelve negative
@@ -191,8 +253,9 @@ cause/correction qualifiers. The fresh host-normal CPP inventory at the
 engine commit covers 191 C sources and 474 headers: **3,468 active
 definitions, 277 integer candidates, 41 typed-pointer narrowing candidates,
 ten overlaps and zero warnings**. These remain triage counts. The other
-three entries below, current product/full-suite qualification and campaign
-final audits remain open.
+three entries below, current combined macOS product/E2E qualification and
+campaign final audits remain open. The later full-suite/native CI gates
+above are bound to their recorded source.
 
 ### Four raw death entries: original reference gates before implementation
 

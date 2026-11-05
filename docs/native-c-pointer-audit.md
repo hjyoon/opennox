@@ -4,6 +4,17 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Go 1.27.3 checkpoint `74813f67c` passes both Windows architectures, with
+complete products and six pre-execution mains retained and compiler-verified.
+All four Linux variants fail only the six particle compressed-PNG hashes
+and their parent. Test-only `53f9fef33`, following the independent original
+hash/pixel freeze at `4f1481e9e`, preserves every original MD5 label and
+compares all original pixels instead of version-dependent compression bytes.
+Full stock-asset renderer normal/strict selections each pass 438 events,
+including 276 goldens and a native pixel-change rejection control. Production
+renderer and C signatures are unchanged; these related passes do not supply
+fresh full-suite/native-CI or overall completion credit.
+
 At `dd1632f88`, raw credit `4D61B0` now accepts `nox_object_t*`; its old C
 body remains exact under `#if 0`. Go 1.27.3 normal/strict HD selections each
 pass 1,633 events, including 1,144 complete original Go/C leaves and five

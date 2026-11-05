@@ -55,6 +55,60 @@ completion requirements.
 
 ## Current findings
 
+### Go 1.27 PNG encoding compatibility, 2026-11-06
+
+The first Go 1.27.3 native checkpoint at `74813f67c` passes Windows
+`42048383746`: amd64 **790,327 / 11 skipped**, 386 **770,597 / 94**, zero
+failures. Entire archives, API digests, products and six pre-execution PE
+mains are retained. Build-info inspection verifies Go 1.27.3 in both
+products and all six actual mains, without executing Windows binaries here.
+
+Linux `42048435866` fails all four configurations solely in six particle
+PNG MD5 comparisons and their parent test. Normal/HD each retain **798,421
+passes / 54 skipped / 7 failed**; server/server-HD each retain **792,311 /
+7 / 7**. All other recorded raw-entry contracts and the normal server's
+133,384 default-link damage checks pass. All four products, complete ZIPs,
+API digests, raw jobs and 155 post-execution ELF manifests are retained.
+A transient HTTP 503 while fetching one job log is preserved; the bounded
+retry reuses both already verified ZIPs. These results remain failures.
+
+Go 1.27 changes DEFLATE output. A temporary historical PNG/DEFLATE encoding
+reference, compiled **only with Go 1.27.3**, reproduces all **276 existing
+PNG MD5 expectations**: six particles and 270 original-stock sprite/blend
+cases. The same actual main records the standard encoder mismatches and
+all historical encoder successes. Before changing the comparisons,
+`4f1481e9e` freezes dimensions and complete decoded RGBA16 pixel hashes for
+all 225 distinct original PNG hashes. No existing MD5 string is changed or
+reaccepted from an unmatched current output. Original encoded images and
+temporary reference sources remain in the verified artifacts; that temporary
+encoding code is removed from the repository.
+
+Test-only `53f9fef33` compares standard-decoded PNG pixels and dimensions
+against those frozen references. A control must detect an actual native
+pixel bit change. Both full renderer normal and strict HD
+`cgocheck2`/`checkptr=2` selections pass **438 events, zero skips/failures**,
+including all 276 golden cases. Four Go 1.27.3 mains are retained before
+execution, and original stock inputs and source hashes remain exact.
+Production renderer/color code is unchanged.
+
+The first renderer attempt passes the native tests but fails the source
+guard because existing primitive tests rewrite `lines.png` and `circles.png`.
+Both previous and new diagnostic bytes are retained; the previous files are
+restored exactly. Those tests now use private temporary output paths, and
+both complete selections pass with unchanged source inputs. The earlier
+attempt is not relabeled as a qualified suite success.
+
+Evidence is under `ART/go1273-toolchain-transition`:
+`CI42048383746-Go1273-products-and-six-actual-mains-qualified-v1.json`,
+`CI-42048435866-qualified-v1.json`,
+`Go1273-historical-PNG-existing-hash-reference-qualified-v1.json`, and
+`renderer-Go1273-original-pixels-normal-and-strict-qualified-v1.json`.
+Fresh full five-configuration local and current native CI gates remain
+required. The local runner now includes the renderer in all five profiles:
+six client/five server packages and 26 actual mains, with the previous
+strict selector preserved and extended. This remains a recorded package
+scope, not every repository package or overall completion.
+
 ### Go 1.27.3 and NPC/monster hearing, 2026-11-05
 
 The active toolchain is now the user's goenv installation of **Go 1.27.3**.

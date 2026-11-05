@@ -23539,6 +23539,41 @@
       "size": 31,
       "sha256": "09411c20fc834d61f4bf98d6b418e4a71ab5d0fc16832995c667bf3308a830d0",
       "purpose": "Complete original ImpEgg/Polyp/Potion raw-entry reference before native changes: 149 contexts per PC53-tozero/nearest profile, all 214 body bytes plus real17-byte419A70 converter, 31 original reentrant calls/profile, 15 memory faults/profile, complete heap/image/caller/nonvolatile/FPU guards. Only six declared world services replaced; no FP arithmetic/conversion substitutions. Polyp and converter already have full seals; new body bytes are only ImpEgg33 and Potion31. No native/product/campaign completion credit."
+    },
+    {
+      "name": "nox_xxx_updateShootingTrap_54F9A0",
+      "address": "0x0054F9A0",
+      "size": 215,
+      "sha256": "b79f13c5294ff503c6c585b8c967c3e3b463019bd943a1e60a2065db0b47c862",
+      "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
+    },
+    {
+      "name": "nox_xxx_createArrowTrapProjectile_54FA80",
+      "address": "0x0054FA80",
+      "size": 300,
+      "sha256": "c580ca147c534ab48e9186e4ad3f126f9a513a31bde673b0e45a29fdc8309bdd",
+      "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
+    },
+    {
+      "name": "sub_54FBB0",
+      "address": "0x0054FBB0",
+      "size": 51,
+      "sha256": "42356876554beba9c143631ba4fdc958744d9a73fe567ff437c1d75423e0d5e0",
+      "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
+    },
+    {
+      "name": "sub_54FBF0",
+      "address": "0x0054FBF0",
+      "size": 94,
+      "sha256": "215b664efef388461519e9d1e18a74d13ec447b2a1b7d7574a05fc32e82cc9d8",
+      "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
+    },
+    {
+      "name": "nox_xxx_unitIsAttackReachable_54FC50",
+      "address": "0x0054FC50",
+      "size": 91,
+      "sha256": "e4f6e35e82ae0c21b86ac7fc68dc9c9cb89ee879116cdd01d4bb14a262421585",
+      "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
     }
   ],
   "data": [
@@ -28422,6 +28457,77 @@
       "size": 48,
       "sha256": "5a16264044150fb3eca0e5d070ec0718a22239b625f9198a668920074c95c0f2",
       "purpose": "Exact original static data read by the independently executed Golem death reference. Packed DWORD pointer slots and byte masses are distinct from native pointer storage. The word preceding the rock table is debug-string data, not a valid pointer slot; malformed out-of-table projections do not certify native named-field alias equivalence."
+    },
+    {
+      "name": "skull_scan_radius_350_583D98",
+      "address": "0x00583D98",
+      "size": 4,
+      "sha256": "24739a99764885992610fcae0f5ee8ea97d3f5903a82bbfc35d27a089ea66c2f",
+      "purpose": "the original binary32 radius350 used by all four rectangle operations in 0054FBF0"
+    },
+    {
+      "name": "skull_main_arrowtrap1_name_5CE630",
+      "address": "0x005CE630",
+      "size": 11,
+      "sha256": "9d6c3594dfeca1298bd239c6b10dd9b5506abfbf7b520bf240b5af3edfed9ba0",
+      "purpose": "the exact NUL-terminated ArrowTrap1 literal for the first live main update cache lookup"
+    },
+    {
+      "name": "skull_main_arrowtrap2_name_5CE63C",
+      "address": "0x005CE63C",
+      "size": 11,
+      "sha256": "c68bef49b221a1360cd4c1b4147fcf6330fb5630ac66a160c13ee326c3622d6e",
+      "purpose": "the distinct NUL-terminated ArrowTrap2 literal for the second live main update cache lookup"
+    },
+    {
+      "name": "skull_projectile_merc_arrow_name_5CE648",
+      "address": "0x005CE648",
+      "size": 16,
+      "sha256": "e53c0abd8cce938397c36cfa368d87cf69d6339ef561b3f09bdf9175134abc56",
+      "purpose": "the exact NUL-terminated MercArcherArrow literal for the first live projectile cache lookup"
+    },
+    {
+      "name": "skull_projectile_arrowtrap1_name_5CE658",
+      "address": "0x005CE658",
+      "size": 11,
+      "sha256": "9d6c3594dfeca1298bd239c6b10dd9b5506abfbf7b520bf240b5af3edfed9ba0",
+      "purpose": "the distinct NUL-terminated ArrowTrap1 literal for the second live projectile cache lookup"
+    },
+    {
+      "name": "skull_projectile_arrowtrap2_name_5CE664",
+      "address": "0x005CE664",
+      "size": 11,
+      "sha256": "c68bef49b221a1360cd4c1b4147fcf6330fb5630ac66a160c13ee326c3622d6e",
+      "purpose": "the distinct NUL-terminated ArrowTrap2 literal for the third live projectile cache lookup"
+    },
+    {
+      "name": "skull_arrow_trap_damage_name_5CE670",
+      "address": "0x005CE670",
+      "size": 16,
+      "sha256": "885ce9cd6ff455f900074a53625665599e88e97e60811e46b108511dcf843bc6",
+      "purpose": "the exact NUL-terminated ArrowTrapDamage literal passed before the original binary32 spill and real FISTP conversion"
+    },
+    {
+      "name": "skull_direction_negative_one_neighborhood_5B6650",
+      "address": "0x005B6650",
+      "size": 8,
+      "sha256": "5eb6da0e0e522104c6d50b0748e6893762f7f2c00a7163a46ccbb535bfd61a0d",
+      "purpose": "the two exact file-backed dwords read before the direction table for signed direction minus1; controlled original malformed-index fixture only, no general native named-field alias certificate"
+    },
+    {
+      "name": "skull_direction_256_neighborhood_5B6E58",
+      "address": "0x005B6E58",
+      "size": 8,
+      "sha256": "169a61485a051d78dd4265c9b1dd8e6aba3fd4326709c262563f8b65ad058d90",
+      "purpose": "the two exact file-backed dwords read immediately after the direction table for signed direction256; controlled original malformed-index fixture only"
+    },
+    {
+      "name": "skull_direction_negative_32768_executable_data_576658",
+      "address": "0x00576658",
+      "size": 8,
+      "sha256": "d80533d6d7a6cdf63d50b40cf8c618e002de57a39e35de58529d137eb2c61fd8",
+      "purpose": "the eight exact executable-section bytes consumed as two float operands by original signed direction minus32768; explicitly classified data, controlled original malformed-index fixture only",
+      "executable_section": true
     }
   ],
   "allow_overlapping_ranges": true

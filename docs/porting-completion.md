@@ -149,9 +149,17 @@ and the existing 17-byte converter under both FPU profiles. Each profile
 has 53 original reentries, 402 original enumeration callback calls, 276
 actual FISTP calls and 26 memory faults. Full heap/image/caller/nonvolatile/
 FPU guards pass; 303 complete outputs differ by profile. Reproduction
-matches complete encoded/decoded outputs and proof files. Original manifest
-and sealing work remain pending. These five raw C entries stay unported;
-no actual unchanged-C runtime crash or new native-port credit is assigned.
+matches complete encoded/decoded outputs and proof files. The reference
+adds five complete function seals and ten file-backed data records (104
+bytes), preserving every previous record and its order. The unchanged CLI
+verifies all 3,367 code/707 data ranges and separately rejects an unmarked
+new executable-data record and a virtual-zero range presented as file-backed.
+The existing 4.0 constant and 2048-byte direction table receive no new data
+credit. Virtual-zero, malformed-index and native alias limitations are
+explicit in `src/server/testdata/skull_raw_native_original_54f9a0.md`.
+These five raw C entries stay unported; no actual unchanged-C runtime crash
+or new native-port credit is assigned. Full reproduction proof:
+`ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 
 ### Localized shop sale rejection messages
 
@@ -234,8 +242,10 @@ nor proves the cause of run `41875997464`'s cancellation.
 
 ### Original code-oracle executable-section data policy
 
-The CLI now verifies all **3,362 code / 697 data ranges** against the original
-file. The 8-byte jump table at `005471F4` and 13-byte switch map at `005471FC`
+At `f142d4f2c`, the CLI verifies the then-complete **3,362 code / 697 data
+ranges** against the original file; later Skull references extend that set
+to 3,367/707 with the same unchanged policy. The 8-byte jump table at
+`005471F4` and 13-byte switch map at `005471FC`
 are data embedded in `.text`. Their records explicitly require an executable
 section; ordinary data still requires a non-executable section, and function
 records cannot set this property. All original names, addresses, sizes,

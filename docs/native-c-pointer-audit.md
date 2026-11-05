@@ -125,9 +125,17 @@ and the existing 17-byte converter in both FPU profiles, with 53 original
 reentries, 402 original enumeration callback calls, 276 actual FISTP calls
 and 26 memory faults per profile. All heap/image/caller/nonvolatile/FPU
 guards pass, and 303 complete outputs differ between profiles. Independent
-reproduction matches encoded/decoded outputs and proof bytes. Original
-manifest additions and sealing remain pending; these five C entries are
-still unported, with no actual unchanged-C runtime fault credit.
+reproduction matches encoded/decoded outputs and proof bytes. The original
+reference adds five complete function seals and ten file-backed data records
+(104 bytes), preserving every prior record and its order. The unchanged CLI
+verifies all **3,367 code / 707 data ranges**. It rejects an unmarked new
+executable-data record and a falsely file-backed virtual-zero tail. The
+existing 4.0 constant and 2048-byte direction table receive no new data
+credit. Virtual-zero and malformed-index fixture scope is explicit in
+`src/server/testdata/skull_raw_native_original_54f9a0.md`.
+These five C entries remain unported, with no actual unchanged-C runtime
+fault credit. Full reproduction evidence:
+`ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 Evidence: `ROOT/skull-update-native-entry-port/original-PE-byte-and-call-audit-v2.json`.
 
 Before this three-entry port, the Golem host-normal CPP view verifies

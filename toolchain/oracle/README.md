@@ -1,5 +1,11 @@
 # 비공개 원본 오라클 매니페스트
 
+## 실행 섹션에 포함된 원본 데이터
+
+원본 `005471F4` 점프 테이블 8바이트와 `005471FC` switch map 13바이트는 `.text`에 있지만 데이터다. 두 data 레코드는 `executable_section: true`를 명시하여 실제 실행 섹션에 있는지 검증한다. 기본 data 레코드는 계속 비실행 섹션을 요구하며, function 레코드에는 이 속성의 true 값을 허용하지 않는다. 원본 파일 바인딩과 모든 범위의 주소·크기·SHA-256 검증은 유지된다. 기존 레코드의 이름·바이트·해시·목적·순서를 바꾸거나 데이터 바이트를 코드 실행 범위로 계산하지 않는다.
+
+현재 CLI는 원본의 code 3,362/data 697개 범위를 검증한다. 이전 CLI의 분류 실패, 수정 후 전체 통과, 기본 분류·잘못된 섹션·범위 해시·function 속성·전체 파일 바인딩의 거부를 실제 CLI로 확인했다. 로컬 unit 22개와 실제 테스트 main, 수정 전/후 CLI 제품은 `ROOT/code-oracle-executable-data-policy`에 보존한다. 이 도구 수정은 게임 엔진이나 포팅 완료율을 변경하지 않는다.
+
 ## 화약통 world-source 폭발과 실제 HP 검증
 
 R47의 네 기능 커밋은 각각 DefaultDamage, Player weaponless-explosion armor tail, Player 입구 shape, NPC 입구의 기존 본체 하나만 수정한다. 실제 stock Breaking의 SIMPLE·LIGHT/owner 없음/UpdateData=nil/nil weapon EXPLOSION을 거부하던 unit-source 가정을 좁게 보완하고 guard·Shield·armor/carry/wear·immune/protection·Quest·HP/attribution 계약은 유지한다. C/native 회귀와 수정 전 실패, original marker/shield 순서 및 AI의 `0050A7DC` Injured 소비/`0050A83D` OnFire 수명을 [상세 R47 ledger](../PORTING-INVENTORY.md#화약통-폭발의-playermonsternpc-피해-복원)에 구분했다. 새 fixture의 초기 arena/queued-audio/post-AI latch 실패 세 건을 통과 기록과 섞지 않는다.

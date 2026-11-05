@@ -48,6 +48,24 @@ or new raw/native qualification. Their ordinary native callbacks do not
 close these raw C ABIs. Byte/call provenance is retained in
 `ROOT/next-object-death-original-PE-byte-and-call-audit-20261104-v1.json`.
 
+Reference commit `fd15e447c` independently executes all 214 body bytes and
+the existing 17-byte FISTP helper for 149 inputs in each PC53 to-zero/nearest
+profile. Each profile includes 31 original reentrant calls, 110 actual FISTP
+calls and 15 memory faults, with full heap/image/caller guards. Seventy-three
+complete outputs differ by profile. Only ImpEgg's 33 and Potion's 31 bytes
+lacked prior seals; the Polyp/converter bytes receive no new body credit.
+Inputs, producers, outputs and proofs reproduce before native engine changes.
+All three unchanged actual C entries fault above 4 GiB after independent
+complete C/Go layouts, a real ToxicCloud C constructor/native update record,
+whole-record checks and all three real typed C audio controls pass. Two
+preparation failures remain preserved: a missing declaration header, then
+missing audio initialization in the minimal fixture. No old-C fault credit
+is assigned to those failed preparations. These raw C entries remain unported.
+Evidence:
+`ROOT/simple-polyp-death-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
+The separate before-engine gate is retained in
+`ROOT/simple-polyp-death-native-entry-port/actual-old-C-causality-before-native-qualified-v1.json`.
+
 The latest host-normal CPP view verifies **191 C sources / 474 headers**:
 **3,477 active definitions / 285 integer-cast candidates / 41 typed-pointer
 narrowing candidates / ten overlaps / zero warnings**. Only these two

@@ -115,10 +115,42 @@ three packages, verifies the three pre-execution Mach-O ARM64 copies and
 exercises paths containing spaces. Five supervisor checks pass locally;
 all six, including native Windows exception status, pass on Windows.
 Pre-build Python checks suppress bytecode output to retain the clean source
-required by product verification. Full native-gate requalification is pending.
+required by product verification.
 This improves evidence retention; it does not establish a hang fix or a
-passing Windows gate. Local proof:
+passing result for the earlier cancelled gate. Local proof:
 `ROOT/windows-native-test-preservation-and-hang-diagnostic/local-supervised-Go-smoke-qualified-v1.json`.
+
+Fresh ordinary Windows run `41946585815` passes at `6bc18f7c0`: amd64 has
+**785,609 passes / 11 skips**, and 386 has **765,879 / 94**, with all three
+packages and all seven localized-message events passing in both jobs.
+Runtime source under `src` is identical to `766134ea8`; these intervening
+commits change CI tooling and documentation. Both complete uploaded archives,
+API digests, raw jobs, six actual PE test mains and two clean server products
+are retained and verified. All six test mains were copied and hashed before
+startup, completed without forced termination, and retain Go's original
+flags. The 386 Skeleton/Golem GOGC10 replay uses the same primary PE, with
+6,760/6,560 original leaf passes and unchanged hashes. Qualification:
+`ROOT/native-ci-retention-20261102/41946585815/retention-qualified-v1.json`.
+This new passing gate neither recovers the three absent original amd64 mains
+nor proves the cause of run `41875997464`'s cancellation.
+
+### Original code-oracle executable-section data policy
+
+The CLI now verifies all **3,362 code / 697 data ranges** against the original
+file. The 8-byte jump table at `005471F4` and 13-byte switch map at `005471FC`
+are data embedded in `.text`. Their records explicitly require an executable
+section; ordinary data still requires a non-executable section, and function
+records cannot set this property. All original names, addresses, sizes,
+hashes, purposes and record order remain unchanged. Full-file oracle binding
+and every range digest remain mandatory.
+
+The actual prior CLI reproduces the classification failure; the updated CLI
+passes the complete manifest. Five separate negative controls retain default
+data rejection, reject a wrong section, enforce the range digest, reject a
+function override and enforce the full-file binding. All 22 tool tests pass;
+the actual test main and both tool products are retained. Game engine code
+and original assets are unchanged. Proof:
+`ROOT/code-oracle-executable-data-policy/code-oracle-executable-data-policy-qualified-v1.json`.
 
 ### Fireball Staff shop repair
 

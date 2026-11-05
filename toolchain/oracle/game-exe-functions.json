@@ -28384,14 +28384,16 @@
       "address": "0x005471F4",
       "size": 8,
       "sha256": "80119b0e8b8a71a52b29072cd0cc9f7f0a82313564123c522f0b5e879e34dd77",
-      "purpose": "Two actual absolute switch targets used by original5471B0;data bytes are not instruction execution coverage."
+      "purpose": "Two actual absolute switch targets used by original5471B0;data bytes are not instruction execution coverage.",
+      "executable_section": true
     },
     {
       "name": "original_monster_pop_attacks_switch_map_5471fc",
       "address": "0x005471FC",
       "size": 13,
       "sha256": "d1b4c7a7e5f2eca9e3a18e3975a9e5b95b6858d45767eb05c67e0930b29f6ec0",
-      "purpose": "Thirteen-byte actual action16..28 switch map for original5471B0;data only."
+      "purpose": "Thirteen-byte actual action16..28 switch map for original5471B0;data only.",
+      "executable_section": true
     },
     {
       "name": "original_Golem_mass_bytes_and_signed_divisor_5CD264",

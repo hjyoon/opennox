@@ -17,11 +17,12 @@ import (
 const codeManifestSchema = "opennox-game-exe-code-v2"
 
 type codeRecord struct {
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	Size    uint32 `json:"size"`
-	SHA256  string `json:"sha256"`
-	Purpose string `json:"purpose"`
+	Name              string `json:"name"`
+	Address           string `json:"address"`
+	Size              uint32 `json:"size"`
+	SHA256            string `json:"sha256"`
+	Purpose           string `json:"purpose"`
+	ExecutableSection bool   `json:"executable_section,omitempty"`
 }
 
 type codeManifest struct {
@@ -104,7 +105,10 @@ func verifyCodeOracle(root, manifestPath, oracleManifestPath string) (*codeManif
 	}
 	for _, rec := range m.Data {
 		va, _ := parseCodeAddress(rec.Address)
-		data, section, err := readDataRange(f, va, rec.Size)
+		// Some original jump tables are data embedded in .text. Require an
+		// explicit per-record section classification; default data still
+		// requires a non-executable section. Every byte remains SHA-bound.
+		data, section, err := readPERange(f, va, rec.Size, rec.ExecutableSection)
 		if err != nil {
 			return nil, fmt.Errorf("%s at %s: %w", rec.Name, rec.Address, err)
 		}
@@ -180,6 +184,9 @@ func validateCodeManifest(m *codeManifest) error {
 func validateCodeRecords(kind string, records []codeRecord, base uint64, names map[string]bool, allowOverlaps bool) error {
 	var previousEnd uint64
 	for i, rec := range records {
+		if rec.ExecutableSection && kind != "data" {
+			return fmt.Errorf("executable_section is only valid for data records: %q", rec.Name)
+		}
 		if strings.TrimSpace(rec.Name) == "" || strings.TrimSpace(rec.Purpose) == "" {
 			return fmt.Errorf("%s %d has an empty name or purpose", kind, i)
 		}

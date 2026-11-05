@@ -60,6 +60,21 @@ func TestValidateCodeManifest(t *testing.T) {
 	}
 }
 
+func TestExecutableDataSectionClassificationIsExplicitAndDataOnly(t *testing.T) {
+	m := validCodeManifest()
+	if m.Data[0].ExecutableSection {
+		t.Fatal("default data classification must remain non-executable")
+	}
+	m.Data[0].ExecutableSection = true
+	if err := validateCodeManifest(&m); err != nil {
+		t.Fatal("explicit data section classification", err)
+	}
+	m.Functions[0].ExecutableSection = true
+	if err := validateCodeManifest(&m); err == nil || !strings.Contains(err.Error(), "only valid for data records") {
+		t.Fatalf("function section override = %v, want rejection", err)
+	}
+}
+
 func TestReadCodeRange(t *testing.T) {
 	code := []byte{0x90, 0x8b, 0x44, 0x24, 0x04, 0xc3}
 	data := []byte{0x01, 0x02, 0x03, 0x04, 0x05, 0x06}

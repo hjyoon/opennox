@@ -2864,6 +2864,7 @@ int sub_4D6170(int a1) {
 }
 
 //----- (004D61B0) --------------------------------------------------------
+#if 0 // Restored by server/generator_credit_raw_4d61b0.go at native width.
 void sub_4D61B0(int a1) {
 	int v2; // eax
 	if (a1) {
@@ -2875,6 +2876,7 @@ void sub_4D61B0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004D61F0) --------------------------------------------------------
 nox_playerInfo* sub_4D61F0(nox_object_t* player_unit) {

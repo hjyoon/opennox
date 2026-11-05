@@ -87,7 +87,7 @@ int sub_4D60B0();
 uint32_t* sub_4D60E0(int a1);
 uintptr_t sub_4D6130(nox_object_t* unit);
 int sub_4D6170(int a1);
-void sub_4D61B0(int a1);
+void sub_4D61B0(nox_object_t* a1);
 nox_playerInfo* sub_4D61F0(nox_object_t* player_unit);
 unsigned int sub_4D6540(int a1);
 int sub_4D66E0(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4);

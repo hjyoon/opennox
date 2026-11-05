@@ -58,7 +58,7 @@ func init() {
 	server.RegisterObjectDeathGo("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070_go, func(source *server.Object) {
 		spawnObjectDieCall54E070(source)
 	}, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
-	server.RegisterObjectDeathGo("PolypDie", C.nox_xxx_diePolyp_54CB10_go, func(source *server.Object) {
+	server.RegisterObjectDeathGo("PolypDie", C.nox_xxx_diePolyp_54CB10, func(source *server.Object) {
 		polypDieCall54CB10(source)
 	}, 0)
 	server.RegisterObjectDeathGo("MarkerDie", C.nox_xxx_dieMarker_54E460_go, func(source *server.Object) {

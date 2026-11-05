@@ -3778,6 +3778,7 @@ uint32_t* nox_xxx_createRewardMarker_54CAC0(nox_object_t* obj) {
 }
 
 //----- (0054CAE0) --------------------------------------------------------
+#if 0
 int nox_xxx_dieImpEgg_54CAE0(int a1) {
 	int result; // eax
 
@@ -3787,8 +3788,10 @@ int nox_xxx_dieImpEgg_54CAE0(int a1) {
 	*(uint32_t*)(a1 + 16) = result;
 	return result;
 }
+#endif
 
 //----- (0054CB10) --------------------------------------------------------
+#if 0
 void nox_xxx_diePolyp_54CB10(int a1) {
 	int v1;       // eax
 	uint32_t* v2; // eax
@@ -3810,12 +3813,15 @@ void nox_xxx_diePolyp_54CB10(int a1) {
 	nox_xxx_aud_501960(284, a1, 0, 0);
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 }
+#endif
 
 //----- (0054CBB0) --------------------------------------------------------
+#if 0
 void nox_xxx_diePotion_54CBB0(int a1) {
 	nox_xxx_aud_501960(753, a1, 0, 0);
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 }
+#endif
 
 //----- (0054CBD0) --------------------------------------------------------
 #if 0

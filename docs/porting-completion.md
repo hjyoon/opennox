@@ -55,6 +55,50 @@ completion requirements.
 
 ## Current findings
 
+### Raw ImpEgg, Polyp and Potion C pointer entries
+
+The public `54CAE0`, `54CB10` and `54CBB0` entries now take native object
+pointers, preserving each exact old C body under `#if 0`. Their ordinary Go
+dispatcher admission stays unchanged. The raw Polyp core retains its live
+numeric type cache, source Y-before-X fault order, cached native update
+pointer across creation callbacks, signed FPS, original PC53 multiplication,
+binary32 spill and FISTP result. Allocation failure still reaches source
+audio and deletion without reading source coordinates or the update record.
+ImpEgg keeps the complete live flags word after audio; Potion retains
+audio-before-delete order. Default exports call the real C world services.
+
+Original reference `fd15e447c` precedes the engine: all 214 body bytes and
+the existing 17-byte converter execute for 149 inputs in each FPU profile.
+The unchanged actual C entries subsequently fault above 4 GiB only after
+complete native C/Go layouts, whole-record checks, a real ToxicCloud
+constructor/update record and all three typed C audio controls pass.
+Inputs, producers, outputs and failed preparation records are retained.
+
+Normal tests pass **3,334** events in three packages; strict HD with
+`cgocheck2` and `checkptr=2` passes **3,335** in four, including `CodeStatic`.
+Both preserve all **596** complete original Go/C leaves and seven actual
+default-C conditions using real root-server creation, balance, audio and
+delayed deletion. Every executed main is copied and hashed before startup.
+Proofs are retained under `ROOT/simple-polyp-death-native-entry-port` in
+`normal-original-and-actual-default-C-qualified-v2.json` and
+`strict-HD-original-and-actual-default-C-qualified-v2.json`.
+
+The first strict attempt fails in the fixture's partial-flags object
+alignment. Its exact retained main reproduces the same failure in an
+independent memory test without invoking the death engine. Fixture-only
+`7329b1c27` aligns that native object and projects its flags to the unchanged
+PE32 heap location. All eight independent strict memory checks and both
+complete selections subsequently pass. The seven engine files, original
+inputs, producers, goldens and assertions remain exact. This controlled
+fixture correspondence supplies no general native named-field alias proof.
+The earlier failed strict run remains failed and preserved.
+
+The updated host-normal scan finds 3,474 active C definitions and 283
+explicit integer-cast candidates in all 191 sources/474 headers, with zero
+preprocessor warnings. These are triage counts, not a remaining-defect
+denominator. Clean products, stock-map direct-C E2E and new engine CI are
+pending; this does not establish overall 100% completion.
+
 ### Localized shop sale rejection messages
 
 `766134ea8` restores the original messages for unsellable quest items and

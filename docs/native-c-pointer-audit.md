@@ -60,13 +60,41 @@ complete C/Go layouts, a real ToxicCloud C constructor/native update record,
 whole-record checks and all three real typed C audio controls pass. Two
 preparation failures remain preserved: a missing declaration header, then
 missing audio initialization in the minimal fixture. No old-C fault credit
-is assigned to those failed preparations. These raw C entries remain unported.
+is assigned to those failed preparations.
 Evidence:
 `ROOT/simple-polyp-death-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 The separate before-engine gate is retained in
 `ROOT/simple-polyp-death-native-entry-port/actual-old-C-causality-before-native-qualified-v1.json`.
 
-The latest host-normal CPP view verifies **191 C sources / 474 headers**:
+The three public entries now accept native `nox_object_t*` arguments, with
+the exact old C bodies retained under `#if 0`. Polyp keeps the live numeric
+type cache, Y-before-X fault order, entry-cached update pointer, signed FPS,
+PC53 multiplication/binary32 spill/FISTP, and audio-before-delete order.
+Ordinary Go dispatcher admission remains unchanged. Normal and strict HD
+`cgocheck2`/`checkptr=2` selections pass **3,334 / 3,335** test events,
+including **596** complete original Go/C leaves and seven actual default-C
+server conditions. All executed mains and preparation failures are retained.
+
+The first strict run fails in the reference fixture's partial-flags object
+alignment. Replaying its exact retained main without the death engine
+reproduces that failure. Fixture-only `7329b1c27` aligns the native object and
+projects the mapped flags to the unchanged PE32 heap location. An independent
+strict memory control then passes eight events. Engine files, original
+inputs, producers, goldens and assertions stay unchanged; both complete
+selections pass after that correction. This declared fixture correspondence
+does not certify arbitrary native named-field aliasing. Clean products,
+stock-map direct-C E2E and new engine CI remain pending.
+
+The current host-normal CPP view verifies **191 C sources / 474 headers**:
+**3,474 active definitions / 283 integer-cast candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero warnings**. Three definitions and
+only two explicit integer-cast candidates disappear: Potion's former pointer
+conversion was implicit. This WIP capture needs exact-hash binding to the
+clean engine commit. Cgo preambles and other target macros remain outside
+the scan; these counts are triage, not remaining-defect or completion totals.
+
+Before this three-entry port, the Golem host-normal CPP view verifies
+**191 C sources / 474 headers**:
 **3,477 active definitions / 285 integer-cast candidates / 41 typed-pointer
 narrowing candidates / ten overlaps / zero warnings**. Only these two
 integer candidates disappear relative to the Skeleton view. The original

@@ -23,6 +23,13 @@ Full current-source local profiles, products/E2Es and six native CI profiles
 remain pending. This checkpoint supplies no overall completion percentage.
 Evidence: `ART/modifier-inversion-inventory-4fa4f0-native-entry-port/four-entry-native-normal-and-strict-qualified-v1.json`.
 
+The first full normal gate then has802,752PASS/46skip and one failure: the
+older real `4E1320` C-entry integration test still expects unsigned behavior
+for `MinInt32`. Its two expected values are corrected to original Inversion0/
+Grip1; production engines and all38frozen inputs stay exact. All six actual
+mains and complete parent/child failure output are retained before failed
+WORK cleanup. The five full profiles must rerun on this corrected test source.
+
 Preparation notes below describe the earlier source states at their freezes.
 
 An additive pre-engine `4FA4F0` reference now executes the complete original

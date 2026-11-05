@@ -89,6 +89,16 @@ entries and all nine class/chapter final audits remain open; overall100 is
 false. Evidence:
 `ART/modifier-inversion-inventory-4fa4f0-native-entry-port/four-entry-native-normal-and-strict-qualified-v1.json`.
 
+The first broad normal run finishes with **802,752PASS /46skip /one failure**.
+The failure is `TestItemDefendEffectsCEntry4E1320`: its older negative-strength
+integration expectations still assert unsigned Inversion1/Grip0. They are
+corrected to the sealed original signed Inversion0/Grip1, without changing
+production code, test identities or any of the38frozen inputs. The actual
+six mains, full child/parent output and source5277e20cd are retained in a
+byte-verified archive; the failed WORK tree is removed afterward. All five
+profiles must rerun. Evidence:
+`ART/four-modifier-native-full-five-go1273/first-full-normal-old-unsigned-expectation-failure-qualified-v1.json`.
+
 ### Coupled raw Inversion checker: complete original execution, 2026-11-06
 
 The raw two-integer `4FA4F0` checker now has an additive, pre-engine reference

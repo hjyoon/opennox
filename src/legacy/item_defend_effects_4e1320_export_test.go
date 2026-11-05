@@ -94,9 +94,10 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 		{"breaking", fns.breaking, 0, 0, math.MaxInt32, math.MaxInt32},
 		{"puncture prone", fns.punctureProne, 0, 0, -1, -1},
 		{"inversion", fns.inversion, 0, 0, 99, 0},
-		{"inversion unsigned", fns.inversion, 0, math.MinInt32, -99, 1},
+		// The original setge/setl predicates interpret this DWORD as signed.
+		{"inversion unsigned", fns.inversion, 0, math.MinInt32, -99, 0},
 		{"grip", fns.grip, 0, 0, -99, 1},
-		{"grip unsigned", fns.grip, 0, math.MinInt32, 99, 0},
+		{"grip unsigned", fns.grip, 0, math.MinInt32, 99, 1},
 	} {
 		*armor = server.ModifierEff{Defend76: server.ModifierEffFnc{Fnc: tc.function, Valf: tc.value}, DefendCollide88: server.ModifierEffFnc{Val: tc.collision}}
 		*damage = tc.damage

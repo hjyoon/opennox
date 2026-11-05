@@ -104,6 +104,12 @@ jobs:
           & ..\scripts\go.ps1 test -x runtime/cgo
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Verify pre-execution retention and independent deadlines
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts/tests -p test_go_test_supervision.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Build server product
         working-directory: src
         shell: pwsh
@@ -135,39 +141,29 @@ jobs:
           # are the same complete suites, with the ordinary collector.
           $env:GOTOOLCHAIN = 'local'
           $env:GOEXPERIMENT = ''
-          $p = [System.Diagnostics.Process]::new()
-          $p.StartInfo.FileName = (Get-Command go).Source
-          $p.StartInfo.UseShellExecute = $false
-          $p.StartInfo.RedirectStandardOutput = $true
-          $p.StartInfo.RedirectStandardError = $true
           # Keep symbols and the actual failed/passing test executables, so
           # an intermittent memory failure remains inspectable after CI exits.
           $testOutput = Join-Path $env:RUNNER_TEMP "opennox-native-test-binaries-$env:TARGET_ARCH"
           New-Item -ItemType Directory -Force $testOutput | Out-Null
-          foreach ($arg in @('test','-work',"-o=$testOutput",'-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
-            $p.StartInfo.ArgumentList.Add($arg)
-          }
-          $out = [System.IO.File]::Open((Join-Path $report 'test.jsonl'), [System.IO.FileMode]::CreateNew)
-          $err = [System.IO.File]::Open((Join-Path $report 'test.stderr.log'), [System.IO.FileMode]::CreateNew)
-          try {
-            if (-not $p.Start()) { throw 'Test process failed to start' }
-            $copyOut = $p.StandardOutput.BaseStream.CopyToAsync($out)
-            $copyErr = $p.StandardError.BaseStream.CopyToAsync($err)
-            $p.WaitForExit()
-            [System.Threading.Tasks.Task]::WaitAll(@($copyOut, $copyErr))
-            $code = $p.ExitCode
-          } finally {
-            $out.Dispose()
-            $err.Dispose()
-            $p.Dispose()
-          }
-          $code | Set-Content -Encoding utf8 (Join-Path $report 'test.exit')
-          python ../scripts/preserve-go-test-binaries.py $report $testOutput
-          $preservationCode = $LASTEXITCODE
+          # Go installs -o after execution. -exec preserves each actual WORK
+          # binary before startup, even if init, GC or the Go driver hangs.
+          # Python bounds both the independent driver and each native process.
+          python ../scripts/run-bounded-go-test-suite.py --report $report --test-output $testOutput
+          $code = $LASTEXITCODE
           python ../scripts/summarize-go-test.py $report
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          if ($preservationCode -ne 0) { exit $preservationCode }
           exit $code
+
+      - name: Retain actual test executables after interrupted suites
+        if: always()
+        working-directory: src
+        shell: pwsh
+        run: |
+          $report = [System.IO.Path]::GetFullPath("../build/windows-$env:TARGET_ARCH")
+          $testOutput = Join-Path $env:RUNNER_TEMP "opennox-native-test-binaries-$env:TARGET_ARCH"
+          # Incomplete/cancelled execution is recorded, never promoted to pass.
+          python ../scripts/preserve-go-test-binaries.py $report $testOutput --allow-incomplete
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Replay exact Windows/386 Skeleton and Golem references under GC pressure
         if: matrix.arch == '386'
@@ -178,7 +174,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $report = [System.IO.Path]::GetFullPath("../build/windows-$env:TARGET_ARCH")
-          $stressBinary = Join-Path $env:RUNNER_TEMP "opennox-native-test-binaries-$env:TARGET_ARCH/legacy.test.exe"
+          $stressBinary = Join-Path $report 'test-binaries/legacy.test.exe'
           $expectedBinary = @((Get-Content -Raw (Join-Path $report 'test-binaries.json') | ConvertFrom-Json) | Where-Object { $_.name -eq 'legacy.test.exe' })
           if ($expectedBinary.Count -ne 1) { throw 'Missing exact legacy test manifest' }
           $stressHash = (Get-FileHash $stressBinary -Algorithm SHA256).Hash.ToLower()

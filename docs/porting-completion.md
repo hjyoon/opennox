@@ -92,10 +92,31 @@ verified native headers, sizes and hashes. The same primary PE retains the
 existing GOGC10 Skeleton/Golem replay. Qualification is explicitly limited
 to that completed job:
 `ROOT/shop-sale-rejection-localization-fix/Windows386-completed-job-qualified-v1.json`.
-The amd64 full suite remains in progress at this checkpoint; its outcome
-and local artifact retention remain pending. The macOS message fix is
-implemented and product-qualified. Earlier Linux evidence stays attached
-to its original source.
+The amd64 job was cancelled at its 90-minute job limit. The root package
+completed, including all seven message events; server records only a package
+start, and legacy stops after the final child of
+`TestZombieEntriesOriginalNativeC534A10`. No full-suite pass is credited.
+Its complete uploaded archive, raw job log and server product are retained,
+but the three actual amd64 test mains were absent from that archive and
+are not recovered. The original hang cause remains open. Evidence:
+`ROOT/windows-native-test-preservation-and-hang-diagnostic/cancelled-Windows-amd64-evidence-v1.json`.
+The macOS message fix is implemented and product-qualified. Earlier Linux
+evidence stays attached to its original source.
+
+The pinned Go 1.26.9 test driver installs `-o` outputs after test execution;
+post-run collection alone therefore loses binaries when a test hangs.
+The Windows gate now copies and hashes the actual executable through
+`go test -exec` before starting it, retaining Go's arguments, environment,
+working directory and streams. Independent process deadlines record native
+exit status and forced termination as failure. Final collection also runs
+after interrupted suites. The ordinary collector, suites and expectations
+are unchanged. A local three-package smoke passes 26 test events and all
+three packages, verifies the three pre-execution Mach-O ARM64 copies and
+exercises paths containing spaces. Five supervisor checks pass locally;
+the native Windows exception-status check awaits Windows execution.
+This improves evidence retention; it does not establish a hang fix or a
+passing Windows gate. Local proof:
+`ROOT/windows-native-test-preservation-and-hang-diagnostic/local-supervised-Go-smoke-qualified-v1.json`.
 
 ### Fireball Staff shop repair
 

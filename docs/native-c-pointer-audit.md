@@ -4,6 +4,25 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+At `6f12e2168`, the native shop sale binding restores original sound307
+instead of791. Normal/strict related selections each pass192 events, and
+normal/HD grouped/single and equipped-sale UI replays verify real OpenAL
+source/buffer submission. This Go binding correction changes no C pointer
+signatures. `1439d7502` independently fixes mutable access-list isolation in
+the E2E harness. Exact products at `836d9c7c2` also pass both five-entry Skull
+stock-map diagnostics. See the current evidence and retention correction in
+`porting-completion.md`; historical ROOT retention claims predate user cleanup.
+
+The host-normal CPP view after the five Skull entries verifies 191 C sources
+and 474 headers: **3,469 active definitions / 278 integer candidates / 41
+typed-pointer narrowing candidates / ten overlaps / zero warnings**. It is
+bound to `4ecdd9ed8` C/header bytes, unchanged by the shop fix. The fresh
+full-five local gates and all six retained Windows/Linux artifact ZIPs pass.
+Scope, actual-main preservation differences and remaining historical evidence
+gaps are stated in `porting-completion.md`. These counts remain triage views,
+not a percentage or a confirmed-defect denominator. Evidence is under
+`/Users/ghost/codex-sandbox/artifacts/opennox-port-20261105/skull-update-native-entry-port`.
+
 Shop sale rejections at `766134ea8` resolve the original `Trade.c` strings
 and reuse the typed native `004D9EB0` line-message service. English/Korean
 tests decode real queued packets, and both clean-product shop UI replays
@@ -167,8 +186,9 @@ All eight actual selected mains were retained before execution, and all
 13 frozen original/getter/consumer/transport files stay exact. The first
 normal wrapper fails only in its post-test collector (expected three mains,
 retained four); its successful tests/four mains and failed metadata remain
-preserved. A fresh four-main normal gate passes completely. New clean
-products, stock-map E2E, CPP inventory and native CI remain pending. Proofs:
+preserved. A fresh four-main normal gate passes completely. Subsequent full
+local, product, CPP and native-CI results are recorded in the current retained
+verification section of `porting-completion.md`. Selected proofs:
 `ROOT/skull-update-native-entry-port/normal-related-original-and-default-C-qualified-v2.json`
 and `ROOT/skull-update-native-entry-port/strict-HD-related-original-and-default-C-qualified-v1.json`.
 Full original reproduction evidence:

@@ -55,6 +55,108 @@ completion requirements.
 
 ## Current findings
 
+### Current retained verification, 2026-11-05
+
+Fresh retained evidence now lives under
+`/Users/ghost/codex-sandbox/artifacts/opennox-port-20261105` (`ART` below).
+Historical `ROOT` paths and retention statements below describe their earlier
+runs. User-directed storage cleanup removed some older mains/products and
+CI downloads; those statements do not establish present file availability.
+The five nonessential historical products are not being recovered. Current
+runs retain a byte-verified compressed archive, including each actual test
+main preserved before execution, then remove redundant runtime/build copies.
+
+At clean `4ecdd9ed8`, five local configurations pass the recorded client
+five-package/server four-package scope. These are not all repository packages;
+the strict configuration runs the recorded extended selection.
+
+| Configuration | Passing test events | Skipped | Actual executed mains |
+| --- | ---: | ---: | ---: |
+| Normal | 796,275 | 43 | 5 |
+| HD | 796,275 | 43 | 5 |
+| Server | 790,056 | 4 | 3 |
+| Server HD | 790,056 | 4 | 3 |
+| Strict HD, cgocheck2/checkptr=2 selection | 660,134 | 8 | 5 |
+
+All have zero failures and no forced termination. Each preserves all 3,012
+Skull original Go/C leaves, twelve default-C conditions, 753 initial-memory
+cases, the stock direction table and earlier Polyp/Skeleton/Golem contracts.
+All 21 actual mains and full reports are retained in
+`ART/skull-update-native-entry-port/local-suite-archives`; qualification:
+`full-five-current-source-final-qualified-v1.json`. Module-cache repair adds
+workspace checksums without changing dependency versions.
+
+At engine `278d548e8`, Windows run `41991195690` and Linux run `41991475983`
+succeed for amd64/386 and normal/HD/server/server-HD respectively. All six
+complete artifact ZIPs, API digests, raw job records and actual native mains
+were recovered and verified under `ART/native-ci-archive`. Windows retains
+six PE mains before execution; Linux retains 155 hash-verified ELF manifests
+using its existing post-execution collector. No new Linux pre-execution or
+Skull-specific 386 GC-stress credit is assigned. The three unavailable older
+amd64 mains and unexplained prior cancellation remain unresolved historical
+facts. Qualification is in `CI-41991195690-qualified-v1.json` and
+`CI-41991475983-qualified-v1.json` under the Skull evidence directory.
+
+The current host-normal CPP scan covers 191 C sources and 474 headers:
+3,469 active definitions, 278 integer candidates, 41 typed-pointer narrowing
+candidates, ten overlaps and zero warnings. These are triage counts, not a
+remaining-defect denominator. Cgo preambles and other target macros are outside
+this scan. Evidence: `active-C-pointer-audit-after-skull-raw-v1/inventory.json`.
+
+Clean normal/HD products built at `836d9c7c2` pass six stock-asset diagnostics
+with harness `1439d7502`: grouped/single shop sales, equipped-weapon sales and
+all five direct Skull C entries in each product. Skull checks two real native
+projectiles with original damage25/owner/velocity, two client projectile
+replicas, an independent replica control, two entry audio events and an
+independent queued-audio control. The static trap is correctly absent from
+the dynamic replica list. All four Skull frames were visually inspected.
+These prepared records supply no earned campaign or physical audible-output
+credit. Both processes exit normally and release ports. The source correction
+is observer-only and leaves raw engine/original consumers unchanged.
+Evidence: `ART/shop-sell-original-sound-20261105/two-fixed-products-six-E2Es-qualified-v4.json`.
+Both exact products remain in `current-clean-arm64-products-v2.zip`; per-case
+archives retain mutable runtime state and frames while unchanged map bytes
+are hash-bound references to protected inputs.
+
+Original immutable stock assets are protected through verified hardlinks,
+without duplicating their data. Map-case aliases exist only in private E2E
+copies. An initial successful sale replay exposes a harness write-through:
+normal shutdown rewrites source `ban.txt` from CRLF to LF. The changed state
+is retained, the original is restored to its exact prior SHA-256, and
+`1439d7502` gives every runtime a private regular access-list copy. All six
+subsequent runs reverify original inputs. Failed preparations, the incorrect
+immediate-buffer assertion and the failed retention collector remain recorded.
+No goldens or expected original outputs were changed. Overall completion and
+the nine final class/chapter audits remain open.
+
+### Original shop sale completion sound
+
+`6f12e2168` fixes successful sale audio in the production native trade binding.
+Both original `00510BE0` single sale and `00510D10` completed grouped sale
+request `TreasurePickup` **307**, audience kind2 and the seller's full netcode.
+The adapter incorrectly requested `InventoryPickup` **791**, a different stock
+click. Both descriptors exist in the tested stock bank, so this establishes
+wrong effect selection rather than proving that 791 is always silent.
+Partial grouped-sale early returns still produce no completion sound.
+
+The actual production audio queue reproduces the wrong ID before the fix;
+normal and strict HD related selections then each pass **192** events in four
+packages. Both queue timing branches and the full native seller/netcode are
+checked without replacing the production binding. All eight actual mains
+from the final selection were retained before execution. Existing Fireball
+Staff repair and English/Korean sale-rejection cases remain passing.
+
+Four normal/HD real shop UI replays verify original 307 packets, stock
+`pgoldpua`/`pgoldpub`/`pgoldpuc` selection, owned OpenAL sources with positive
+gain, asynchronously queued native buffers, inventory/equipment/gold and
+normal exit. The observer waits for actual buffer submission; it does not
+replace audio or claim full hardware drain for these sale samples. OpenAL's
+null output is used, so physical listening fidelity remains unmeasured.
+The previous purchase-click four-buffer drain probe remains unchanged.
+Evidence, before-fix failure, exact products and failed attempts are retained
+under `ART/shop-sell-original-sound-20261105`. Original C bodies, prices,
+asset bytes and C pointer signatures remain unchanged by the audio fix.
+
 ### Raw ImpEgg, Polyp and Potion C pointer entries
 
 At `7b71b8889`, public `54CAE0`, `54CB10` and `54CBB0` entries take native object
@@ -191,8 +293,9 @@ All eight actual selected mains were retained before execution, and all
 13 frozen original/getter/consumer/transport files stay exact. The first
 normal wrapper fails only in its post-test collector (expected three mains,
 retained four); its successful tests/four mains and failed metadata remain
-preserved. A fresh four-main normal gate passes completely. New clean
-products, stock-map E2E, CPP inventory and native CI remain pending. Proofs:
+preserved. A fresh four-main normal gate passes completely. Subsequent full
+local, product, CPP and native-CI results are recorded in the current retained
+verification section above. Selected proofs:
 `ROOT/skull-update-native-entry-port/normal-related-original-and-default-C-qualified-v2.json`
 and `ROOT/skull-update-native-entry-port/strict-HD-related-original-and-default-C-qualified-v1.json`.
 Full original reproduction proof:

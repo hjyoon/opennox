@@ -59,8 +59,7 @@ func init() {
 			e2eError(fmt.Errorf("one hearing diagnostic at a time"))
 			return true
 		}
-		current = &e2eAIHearingFixture{kind: args[1], mode: args[2]}
-		current.prepare()
+		current = &e2eAIHearingFixture{kind: args[1], mode: args[2], armed: noxServer.Frame()}
 		if !installed {
 			installed = true
 			noxServer.Audio.OnSound(func(id sound.ID, kind int, source *server.Object, pos types.Pointf) {
@@ -162,7 +161,24 @@ func (f *e2eAIHearingFixture) observeAudio(id sound.ID, kind int, source *server
 }
 
 func (f *e2eAIHearingFixture) tick() {
-	if f.unit == nil || f.host == nil || f.unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+	if f.unit == nil {
+		host := noxServer.Players.HostUnit()
+		if host != nil && host.HealthData != nil && host.HealthData.Cur != 0 && host.Buffs == 0 {
+			f.prepare()
+		} else if noxServer.Frame()-f.armed >= 30 && (noxServer.Frame()-f.armed)%30 == 0 {
+			var hp uint16
+			var buffs uint32
+			if host != nil {
+				buffs = host.Buffs
+				if host.HealthData != nil {
+					hp = host.HealthData.Cur
+				}
+			}
+			e2eLog.Printf("AI HEARING WAIT: body=%s mode=%s host=%p HP=%d buffs=%#x elapsed=%d", f.kind, f.mode, host, hp, buffs, noxServer.Frame()-f.armed)
+		}
+		return
+	}
+	if f.host == nil || f.unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
 		return
 	}
 	if !f.requested && noxServer.Frame()-f.armed >= 8 {

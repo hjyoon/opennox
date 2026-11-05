@@ -22,6 +22,7 @@ type e2eShopAudioRecord struct {
 	gain              float32
 	queued, processed int
 	completed         bool
+	awaitingBuffers   bool
 }
 
 type e2eShopAudioProbeState struct {
@@ -69,11 +70,11 @@ func e2eObserveShopAudioPacket(op netmsg.Op, id sound.ID, volume, pan int, submi
 		}
 		source := openal.Source(*ptr)
 		gain, queued := source.Getf(openal.AlGain), int(source.BuffersQueued())
-		if !(gain > 0) || queued == 0 {
+		if !(gain > 0) {
 			probe.failure = fmt.Sprintf("sale source gain=%g queued=%d", gain, queued)
 			return
 		}
-		probe.records = append(probe.records, &e2eShopAudioRecord{voice: voice, source: source, gain: gain, queued: queued, completed: true})
+		probe.records = append(probe.records, &e2eShopAudioRecord{voice: voice, source: source, gain: gain, queued: queued, awaitingBuffers: true})
 		e2eLog.Printf("SHOP SALE AUDIO SUBMITTED: event=%d original-id=%d opcode=%s samples=%q voice=%#x source=%d gain=%g queued=%d wire-volume=%d pan=%d", len(probe.records), id, op, def.sampleIDs, voice, source, gain, queued, volume, pan)
 		return
 	}
@@ -124,6 +125,13 @@ func e2eObserveShopAudioRecord(record *e2eShopAudioRecord) {
 	}
 	record.queued = int(record.source.BuffersQueued())
 	record.processed = int(record.source.BuffersProcessed())
+	if record.awaitingBuffers {
+		if record.queued > 0 || record.processed > 0 {
+			record.completed = true
+			e2eLog.Printf("SHOP SALE AUDIO BUFFERS: voice=%#x source=%d queued=%d processed=%d gain=%g", record.voice, record.source, record.queued, record.processed, record.gain)
+		}
+		return
+	}
 	if record.queued == record.blocks && record.processed == record.blocks && record.source.State() == openal.Stopped {
 		record.completed = true
 		e2eLog.Printf("SHOP AUDIO DRAINED: voice=%#x source=%d queued=%d processed=%d gain=%g", record.voice, record.source, record.queued, record.processed, record.gain)

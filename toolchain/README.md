@@ -1,5 +1,12 @@
 # Go 도구체인 정책
 
+현재 도구 체인은 사용자 요청에 따라 goenv Go **1.27.3**으로 전환한다.
+`.go-version`, `go.work`, `src/go.mod`, `go-version.txt` 및 빌드·ABI·배치
+검사기의 고정을 함께 맞춘다. 전역 goenv 선택은 변경하지 않는다.
+아래 Go 1.26.9 검증 기록은 당시 결과이며 1.27.3 통과 근거로 재사용하지 않는다.
+새 도구 체인의 빌드·포인터·제품 검증은 별도로 기록한다.
+
+
 ## R284: 활성 C UI의 네이티브 Player 이름·폰트·아이콘 주소 교정
 
 기준 clean/pushed revision은 `ef95caa1277a7bf2735e6f18c00fc8a69b76b26e`이며 goenv Go 1.26.9를 유지한다. 활성 채팅 `sub_48D990`·사망 알림 `sub_495500`·P2P 거래 시작/준비의 이름 접근식7개를 `nox_playerInfo->name_final`로 교정했다. PE32의 byte4704/UTF-16 word2352는 native64에서 장비 영역이며 실제 이름은 byte6008이다. 기존 단일 이름 저장소와 구조체 배치는 유지하고 offset4704/6008·폭56byte를 C assertion으로 고정했다. 옛 위치에 이름을 미러 저장하지 않는다. 사망 알림의 폰트 두 지역 변수와 직접 스펠/능력 아이콘 지역 변수는 포인터 폭을 보존하며, Thing/default 이미지 별칭과 메타데이터 출력·좌표는 기존32비트를 유지한다. lookup/guard·callback 전 캐시·호출 순서·문자열 format 정책·반환 ABI·wire/save 형식은 바꾸지 않았다.

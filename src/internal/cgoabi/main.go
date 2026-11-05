@@ -19,7 +19,7 @@ import (
 	"strings"
 )
 
-const requiredGoVersion = "go1.26.9"
+const requiredGoVersion = "go1.27.3"
 
 var writeFiles = flag.Bool("w", false, "rewrite files in place")
 

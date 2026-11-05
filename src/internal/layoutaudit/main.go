@@ -15,7 +15,7 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
-const requiredGoVersion = "go1.26.9"
+const requiredGoVersion = "go1.27.3"
 
 var (
 	targetOS   = flag.String("os", runtime.GOOS, "target GOOS")

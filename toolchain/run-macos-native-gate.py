@@ -42,7 +42,7 @@ def capture(label, args, required=True):
 
 
 capture('go-version', ['go', 'version'])
-assert 'go1.26.9 darwin/arm64' in (report / 'go-version.stdout.log').read_text()
+assert 'go1.27.3 darwin/arm64' in (report / 'go-version.stdout.log').read_text()
 capture('compiler', ['clang', '--version'])
 capture('libraries', ['pkg-config', '--modversion', 'sdl2', 'openal'])
 capture('SDK', ['xcrun', '--show-sdk-path'])
@@ -74,7 +74,7 @@ if variant != 'strict':
     capture('product-verify', ['go', 'run', './internal/noxbuild', '-verify', str(binary)])
     capture('product-build-info', ['go', 'version', '-m', str(binary)])
     info = (report / 'product-build-info.stdout.log').read_text()
-    for token in ['go1.26.9', 'GOOS=darwin', 'GOARCH=arm64', 'CGO_ENABLED=1',
+    for token in ['go1.27.3', 'GOOS=darwin', 'GOARCH=arm64', 'CGO_ENABLED=1',
                   'vcs.modified=false', 'vcs.revision=' + source]:
         assert token in info, token
     capture('product-help', [str(binary), '-h'])

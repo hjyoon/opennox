@@ -27,7 +27,7 @@ const (
 	versPackage       = "github.com/opennox/opennox/v1/internal/version"
 	productBuildPath  = "github.com/opennox/opennox/v1/cmd/opennox"
 	serverBuildPath   = "github.com/opennox/opennox/v1/cmd/opennox-server"
-	requiredGoVersion = "go1.26.9"
+	requiredGoVersion = "go1.27.3"
 	cgoCFlagsAllow    = `(-fsigned-char)|(-fshort-wchar)|(-fno-strict-aliasing)|(-fno-strict-overflow)`
 )
 

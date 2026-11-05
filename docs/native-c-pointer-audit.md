@@ -23,6 +23,19 @@ Six PREEXEC parent mains and all expected child-fault logs are retained.
 Old C bodies/prototypes and the helper/earlier freezes remain exact; complete
 checker consumers and all four raw engines remain pending.
 
+The complete checker consumer preparation subsequently passes **2,464 events**
+in each Go 1.27.3 normal/strict HD profile, with zero skips/failures/warnings.
+All 414 full native transports and 2,269 original accesses per FPU profile
+agree, including complete native/PE32 final heaps and fault prefixes. The
+actual parent helper's field reads are now optionally observed, with its
+traversal algorithm unchanged; all 267 calls/four faults and complete read
+sequences pass again. Whole stack/write/caller/return certificates and the
+actual C call transport consumer are compiled before any of the four raw
+engines. Six PREEXEC mains per preparation version are retained. All original
+and earlier freezes remain exact; C bodies/prototypes remain old. See
+`inversion_inventory_native_projection_4fa4f0.md`. This is preparation,
+without native-engine or product/CI credit.
+
 The actual raw Marker `54E460`, Boulder `54E4B0` and MonsterGenerator
 `54E630` entries now have native object arguments, following native initial
 memory `4a66bcefa` and whole-consumer `31e0dfea7` freezes. Exact old bodies

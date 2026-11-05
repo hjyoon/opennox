@@ -1410,10 +1410,10 @@ func (obj *Object) HasOwner(owner *Object) bool {
 func (obj *Object) FindOwnerChainPlayer() *Object {
 	return findOwnerChainPlayer4EC580(obj, findOwnerChainPlayerHooks4EC580[*Object]{
 		owner: func(current *Object) *Object {
-			return current.ObjOwner
+			return ownerChainPlayerOwner4EC580(current)
 		},
 		classLow: func(current *Object) uint8 {
-			return uint8(current.ObjClass)
+			return ownerChainPlayerClassLow4EC580(current)
 		},
 	})
 }

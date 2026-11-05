@@ -93,6 +93,25 @@ earlier three-entry freezes stay exact. Full checker consumers must precede
 the four native engines. Scope/hashes/evidence:
 `src/legacy/testdata/inversion_inventory_initial_memory_4fa4f0.md`.
 
+The full checker consumers then pass **2,464 events** in each Go 1.27.3
+normal/strict HD preparation mode, zero skips/failures/build warnings. Both
+versions retain six actual pre-execution mains and unforced-zero parents and
+drivers. There are **414 complete native-memory transports** per mode, using
+all 2,269 original external accesses for each original FPU profile as replay
+data. Full native guards/PE32 heaps, ordered read values/widths/fault prefixes,
+complete original stack writes/caller/register certificates and the compiled
+public-C call/return/scratch consumer are checked before the engines.
+The existing owner-helper algorithm stays exact; its two field getters gain
+optional diagnostics and all 267 actual C parent calls/four faults plus their
+complete internal read sequences pass again. All old C bodies/prototypes,
+original fixtures and previous three-entry freezes remain unchanged. Version
+two separately consumes actual faulting callback entries in its compiled
+native branch. Machine-code inspection confirms whole consumers and the
+dynamic C call carrier exist, with all four raw Go exports absent. Actual
+native-engine leaves remain zero. Scope and evidence:
+`src/legacy/testdata/inversion_inventory_native_projection_4fa4f0.md` and
+`ART/modifier-inversion-inventory-4fa4f0-native-entry-port/complete-frozen-consumers-normal-and-strict-qualified-v2.json`.
+
 ### Three-entry products, five local profiles and six native CI profiles, 2026-11-06
 
 The Marker/Boulder/MonsterGenerator implementation at clean source

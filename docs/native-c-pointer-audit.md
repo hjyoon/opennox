@@ -134,7 +134,19 @@ existing 4.0 constant and 2048-byte direction table receive no new data
 credit. Virtual-zero and malformed-index fixture scope is explicit in
 `src/server/testdata/skull_raw_native_original_54f9a0.md`.
 These five C entries remain unported, with no actual unchanged-C runtime
-fault credit. Full reproduction evidence:
+fault credit from the original reference alone. A separate before-engine
+gate subsequently proves all five actual unchanged C entries SIGSEGV above
+4 GiB after 19 independent native layout checks, three real C constructors,
+52-byte update/eight-byte collide records, typed C direction/audio and whole
+allocation/data guards pass. The two-package selection passes 39 events;
+both actual pre-execution mains are retained. The first preparation wrongly
+compared the complete C prefix912 to Go's allocation928. Fixture-only size
+accounting now asserts the shared prefix and the two native-word Go suffix
+independently, retaining every whole-allocation guard. That failed source,
+logs and both executed mains remain preserved, with no old-C crash credit.
+Native implementation/full-output comparison is still pending. Evidence:
+`ROOT/skull-update-native-entry-port/actual-old-C-causality-before-native-qualified-v2.json`.
+Full original reproduction evidence:
 `ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 Evidence: `ROOT/skull-update-native-entry-port/original-PE-byte-and-call-audit-v2.json`.
 

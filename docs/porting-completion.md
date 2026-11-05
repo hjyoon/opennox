@@ -157,8 +157,19 @@ new executable-data record and a virtual-zero range presented as file-backed.
 The existing 4.0 constant and 2048-byte direction table receive no new data
 credit. Virtual-zero, malformed-index and native alias limitations are
 explicit in `src/server/testdata/skull_raw_native_original_54f9a0.md`.
-These five raw C entries stay unported; no actual unchanged-C runtime crash
-or new native-port credit is assigned. Full reproduction proof:
+These five raw C entries stay unported. A separate before-engine gate then
+reproduces all five actual unchanged C SIGSEGVs above 4 GiB, after 19 native
+C/Go layout checks, three real C constructors, native 52/8-byte data records,
+typed C direction/audio services and whole allocation/data controls pass.
+Both packages pass 39 test events, and both executed mains were preserved
+before startup. The first preparation fails only because it compares the
+C prefix912 with the Go allocation928, which includes two private native
+handle words. Corrected fixture accounting asserts both areas separately
+and retains complete allocation guards. Its failed source/logs/two mains
+remain preserved and provide no old-C fault credit. Native implementation
+and complete native output comparison remain subsequent gates. Proof:
+`ROOT/skull-update-native-entry-port/actual-old-C-causality-before-native-qualified-v2.json`.
+Full original reproduction proof:
 `ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 
 ### Localized shop sale rejection messages

@@ -1,0 +1,13 @@
+{
+  "original_producer_sha256": "82b09332665ebe1f81564d1cab1c411bac2ab757a4862f0efe45a21c55dcb252",
+  "original_producer_unchanged": true,
+  "complete_original_output_byte_identical": true,
+  "cases": 298,
+  "FPU_control": 3647,
+  "observed_accesses": 1411,
+  "intentional_function_faults": 18,
+  "encoded_sha256": "f8b4b5c700b802200b3d03ed286bfd36f1677384c02e5e3dbd48448087ddba59",
+  "decoded_sha256": "58f0b8982be0a65f4a86748769a64b05bfac9ca79d8f823d635962715f29615b",
+  "physical_stack_projection_claim": false,
+  "native_implementation_credit": false
+}

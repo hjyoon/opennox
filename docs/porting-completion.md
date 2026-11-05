@@ -162,6 +162,27 @@ their 136 probes are distinct from the original bodies' 18 execution faults.
 Full consumers and engines remain pending. Scope and exact artifact paths:
 `src/legacy/testdata/modifier_defend_predicates_initial_memory_4e03d0.md`.
 
+The next complete consumer preparation passes normal/strict HD Go 1.27.3
+with **1,205 events each**, four pre-execution parent mains, no failures/skips/
+build warnings and no forced parent/driver termination. Each contains 596
+complete native-memory transports: all 1,411 observed original external
+accesses per FPU profile, exact ordered values/fault prefixes and complete
+final heaps. Frozen getter/store and native C function-pointer carrier
+controls precede any engine. Native-engine comparison leaves remain zero;
+the three old C roots still fault after valid independent high-pointer
+controls. Original producers/inputs/goldens and the independent initial
+fixture/getters remain unchanged. Complete consumer/dynamic-call machine
+code is present before any raw Go export.
+
+Dependency review also identifies the still-active raw Inversion checker
+`4FA4F0` (existing 159-byte seal). It performs parent lookup and reloads the
+callback for its indirect call. Its two-integer public C ABI also needs
+original/native-initial/whole-consumer freezes before the related four-entry
+port. Existing ordinary Go collision paths do not close that raw C entry.
+Evidence and physical-stack/semantic-access scope:
+`src/legacy/testdata/modifier_defend_predicates_native_projection_4e03d0.md`
+and `ART/modifier-defend-predicates-native-entry-port/complete-frozen-consumers-normal-and-strict-qualified-v2.json`.
+
 ### Three raw death entries: native object pointers implemented, 2026-11-06
 
 Marker `54E460`, Boulder `54E4B0` and MonsterGenerator `54E630` now accept

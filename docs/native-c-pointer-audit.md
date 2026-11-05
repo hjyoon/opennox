@@ -45,6 +45,17 @@ mains are retained before execution, with complete expected child-fault logs.
 Original goldens/producers/inputs stay exact. Full consumers must freeze next;
 no native implementation or candidate-removal credit is added.
 
+The full consumer preparation subsequently passes 1,205 events in each normal/
+strict HD Go 1.27.3 profile. Each replays 596 complete native-memory transports,
+including all 1,411 original access observations per FPU profile, ordered
+read/write/fault prefixes and full final heaps. Frozen typed getters/stores,
+actual six-address C callback transport and compiled consumer machine code
+precede the raw engines; native-engine leaves remain zero. The old integer
+C bodies and all original/initial references stay exact. Read-only dependency
+analysis adds the still-active raw two-integer `4FA4F0` checker to this coupled
+family; its ordinary Go collision path does not close the public C entry.
+Its separate original/initial/full-consumer freeze is the next prerequisite.
+
 The repeated 191-source/474-header host-normal scan finds **3,465 active
 definitions / 274 integer candidates / 41 typed narrowing candidates / ten
 overlaps / zero warnings**. Only the three entries leave that inventory.

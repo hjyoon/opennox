@@ -4,6 +4,16 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+The three remaining raw Marker/Boulder/MonsterGenerator entries now have
+an independent 200-input native initial-memory fixture, frozen before
+implementation. Go 1.27.3 normal/strict HD selections each pass 1,835 events
+and 184 actual protected/null read-fault domains, with six actual mains
+retained before execution. Whole 64-KiB native guards and PE32 projection
+stay exact; observed C/Go fields agree. Unobserved update-data bytes are
+guarded, without an arbitrary cross-structure alias claim. Their C ABIs
+remain integers and complete consumers/engines remain pending. Evidence and
+scope are recorded in `porting-completion.md`; no native-port credit is added.
+
 Current clean macOS normal/HD Go 1.27.3 products at `c41351758` also pass
 20 actual NPC/Troll hearing cases, including eight native turns toward
 sound and twelve negative controls. Both processes exit zero unforced;

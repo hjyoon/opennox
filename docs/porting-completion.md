@@ -55,6 +55,28 @@ completion requirements.
 
 ## Current findings
 
+### Three raw death entries: native initial memory frozen, 2026-11-06
+
+Before implementing Marker `54E460`, Boulder `54E4B0` or MonsterGenerator
+`54E630`, Go 1.27.3 normal and strict HD (cgocheck2/checkptr=2) selections
+each pass **1,835 events**, including all 200 independent initial-memory
+inputs and 184 actual protected/null memory-fault domains. Six actual test
+mains are retained before execution. The complete 64-KiB C-owned native
+allocation, independently checked C/Go field layouts and its original PE32
+heap projection remain exact. Existing credit whole-output comparisons and
+actual C controls remain passing; all original references remain unchanged.
+
+The fixture explicitly maps observed object fields, generator headers and
+marker pointer slots. Remaining bytes are guarded; this does not certify
+arbitrary aliases between differently widened update-data structures. All
+three raw C ABIs still use integers. Complete output consumers must be
+frozen before their engines; this initial-memory gate earns no native-port,
+product, new CI or campaign completion credit.
+
+Evidence: `ART/marker-boulder-generator-native-entry-port/three-entry-native-initial-memory-normal-and-strict-qualified-v1.json`.
+Verified archives retain full logs and all six Go 1.27.3 executables; raw
+duplicates and successful compiler WORK trees are removed.
+
 ### Current macOS products: NPC/Troll hearing verified, 2026-11-06
 
 Clean normal/HD products at `c41351758` build with Go 1.27.3, identify that

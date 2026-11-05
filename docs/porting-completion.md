@@ -100,7 +100,47 @@ requires actual direction changes. Evidence is under
 product and runtime remains in a byte-verified compressed archive; redundant
 raw copies are removed.
 
-### Four remaining raw death entries: reference gates before implementation
+### Raw generator credit entry ported at native width, 2026-11-06
+
+At `dd1632f88`, `4D61B0` accepts `nox_object_t*` through its actual public C
+entry and calls the native Go method. The old C body remains byte-exact under
+`#if 0`. The raw entry preserves its nil-unit/one-byte destroyed-flag gate,
+entry-cached update pointer, uint32 counter wrap and player-pointer reload
+before the flags write. It adds no class or nil-data admission checks; the
+ordinary dispatcher retains its separate checks.
+
+Go 1.27.3 normal and strict HD `cgocheck2`/`checkptr=2` selections each pass
+**1,633** events in three packages. Each includes **1,144** complete original
+Go/C leaves (286 inputs, two profiles, both entry paths), 286 independent
+initial-memory cases, and five actual C-constructor conditions: live, wrap,
+destroyed, nonplayer class and nil. Independent C getters and complete native
+object/update/player guards verify actual calls above 4 GiB. Six executed
+mains are retained before execution. Every recorded input matches the clean
+engine commit; original outputs and the frozen whole-output consumer remain
+byte-exact. The four declared PE32 alias correspondences are not a general
+native named-field alias certificate or native instruction/bus-trace proof.
+
+The first native attempt exposes an initial-memory transport defect in the
+counter/update-player alias: reloading the incremented player shifts the
+flags read by one byte, but its fifth initial byte had not been relocated.
+An isolated pre-engine `b2e8af7fd` worktree reproduces that mismatch under
+strict checks, with the native method explicitly absent. Fixture-only
+`3d4546be8` relocates the complete five-byte initial window for that declared
+alias; the same no-engine selection then passes 299 events. No expected
+output, consumer mask or engine change makes that correction pass. Both
+failed runs and all actual mains remain archived; the temporary worktree
+and redundant compiler files are removed after verification.
+
+Evidence: `ART/marker-boulder-generator-native-entry-port/credit-native-Go1273-normal-and-strict-final-qualified-v1.json`
+and `credit-native-clean-commit-binding-v1.json`, with separate no-engine
+cause/correction qualifiers. The fresh host-normal CPP inventory at the
+engine commit covers 191 C sources and 474 headers: **3,468 active
+definitions, 277 integer candidates, 41 typed-pointer narrowing candidates,
+ten overlaps and zero warnings**. These remain triage counts. The other
+three entries below, current product/full-suite qualification and campaign
+final audits remain open.
+
+### Four raw death entries: original reference gates before implementation
 
 Original-only `18bb167e4` freezes Marker `54E460`, Boulder `54E4B0`,
 MonsterGenerator `54E630` and generator credit `4D61B0`: **679** body bytes,
@@ -117,8 +157,8 @@ cases and four explicitly declared PE32 alias correspondences. Complete
 memory/fault consumers are compiled before the engine at `b2e8af7fd`;
 their symbols are verified in an actual preserved main. Go 1.27.3 normal
 and strict gates pass 304/299 events, including those initial-memory cases;
-normal also repeats the four actual old-C faults. **Native implementation
-and native comparison credit are still zero for these four entries.**
+normal also repeats the four actual old-C faults. At that before-engine gate,
+native implementation and comparison credit are zero for all four entries.
 The first three bodies still need independent native memory fixtures and
 complete consumers before implementation. Evidence is under
 `ART/marker-boulder-generator-native-entry-port`. The host C inventory below
@@ -180,7 +220,7 @@ amd64 mains and unexplained prior cancellation remain unresolved historical
 facts. Qualification is in `CI-41991195690-qualified-v1.json` and
 `CI-41991475983-qualified-v1.json` under the Skull evidence directory.
 
-The current host-normal CPP scan covers 191 C sources and 474 headers:
+At that source, the host-normal CPP scan covers 191 C sources and 474 headers:
 3,469 active definitions, 278 integer candidates, 41 typed-pointer narrowing
 candidates, ten overlaps and zero warnings. These are triage counts, not a
 remaining-defect denominator. Cgo preambles and other target macros are outside

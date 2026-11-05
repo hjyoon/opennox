@@ -4,6 +4,25 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+At `dd1632f88`, raw credit `4D61B0` now accepts `nox_object_t*`; its old C
+body remains exact under `#if 0`. Go 1.27.3 normal/strict HD selections each
+pass 1,633 events, including 1,144 complete original Go/C leaves and five
+actual C-constructor conditions, with complete native memory guards. It
+preserves the byte flag gate, cached update and player reload after counter
+increment. The first failed alias comparison and an independent no-engine
+strict reproduction identify a missing fifth initial flags byte in the
+fixture. Fixture-only `3d4546be8` corrects that transport; original outputs,
+the frozen consumer and engine stay unchanged. The no-engine green gate
+passes 299 events before the native comparisons pass. See the full scope
+and retained failure/correction evidence in `porting-completion.md`.
+
+The fresh host-normal CPP scan at that engine covers 191 C sources and 474
+headers: **3,468 active definitions / 277 integer candidates / 41 typed-pointer
+narrowing candidates / ten overlaps / zero warnings**. Cgo preambles and
+other target macros remain outside this triage view. Marker, Boulder and
+MonsterGenerator raw entries still need their native fixtures/consumers and
+ports; their reference gates below do not close those ABIs.
+
 The active toolchain is **Go 1.27.3** at `9b7a7fa2d`. Original-only
 `18bb167e4` freezes all 679 body bytes for Marker `54E460`, Boulder `54E4B0`,
 MonsterGenerator `54E630` and credit `4D61B0`, before native implementation.
@@ -12,9 +31,9 @@ whole-record guards and real typed owner/audio controls, then records all
 four unchanged old C entries faulting above 4 GiB. Credit's independent
 286-case initial memory and complete consumers are frozen at `9bdcf473c`
 and `b2e8af7fd`; Go 1.27.3 normal/strict gates pass 304/299 events, with
-zero native implementation/comparison credit yet. The first three entries
+zero native implementation/comparison credit at that gate. The first three entries
 still require native memory fixtures and complete consumers before engine
-changes. These preparation gates close none of the four raw ABIs.
+changes. Those preparation gates alone close none of the four raw ABIs.
 
 Go 1.27.3 normal/HD products at `e1113a42b` verify 20 actual NPC/Troll hearing
 cases, including eight native turns toward real server sound events before

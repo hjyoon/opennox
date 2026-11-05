@@ -14,7 +14,36 @@ forced-GC callback cases; eight actual mains are retained before execution.
 The initial integration failure is a malformed unowned-Marker expectation:
 real owner lookup returns terminal self and its nil update faults originally.
 Only the new test is corrected; engine/headers/frozen consumers stay exact.
-Products, full local suites and fresh six native configurations remain open.
+At exact clean source `239638703`, normal/HD product E2Es, all five recorded
+local profiles and all six native CI profiles now pass. The 26 local mains
+are retained before execution; every prior test identity/action/multiplicity
+is retained in each profile, with 1,426 new passing events. Full archives and
+compiler metadata qualify all six CI products and 161 manifest mains
+(Windows six PREEXEC, Linux existing 155 POSTEXEC). Exact scope, event counts,
+prepared diagnostic limits and artifact references are in the latest
+`porting-completion.md` checkpoint. Remaining raw entries and nine chapter
+final audits remain open.
+
+The next reference-only freeze `26086de87` covers Inversion `4E03D0`, Grip
+traversal `4E03F0` and Grip `4E0480`: 183 original bytes, 298 inputs per FPU
+profile and 18 intentional original memory faults each. All original
+instruction bytes execute, including actual nested Grip calls, with complete
+byte-identical output reproduction. The predicates use signed comparisons;
+their decompiled C still uses unsigned fields and integer effect pointers.
+The original C bodies remain active pending independent native initial
+memory, actual unchanged-C fault controls and a full consumer freeze. No
+integer candidate is removed by this preparation. The seal inventory is
+3,373 code / 713 data ranges; the previous code/data entries stay exact.
+Earlier preparation notes below describe the source states at their freezes.
+
+Independent initial memory then passes normal/strict HD Go 1.27.3, 306 events
+each: all 298 full initial heaps, thirteen C/Go layout facts, 136 selected
+nil/protected read-fault domains and three actual old-C high-pointer faults
+per profile. The old C bodies and integer prototypes remain active; only the
+previously missing four-integer traversal prototype is declared. Four parent
+mains are retained before execution, with complete expected child-fault logs.
+Original goldens/producers/inputs stay exact. Full consumers must freeze next;
+no native implementation or candidate-removal credit is added.
 
 The repeated 191-source/474-header host-normal scan finds **3,465 active
 definitions / 274 integer candidates / 41 typed narrowing candidates / ten

@@ -291,6 +291,7 @@ void sub_4E0170(void* effect, nox_object_t* owner, const nox_object_t* item);
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
+int nox_xxx_unusedCheckGripEffect_4E03F0(int a1, int a2, int a3, int a4);
 int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
 float* nox_xxx_effectDamageMultiplier_4E04C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage);
 void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);

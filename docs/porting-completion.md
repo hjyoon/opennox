@@ -55,6 +55,113 @@ completion requirements.
 
 ## Current findings
 
+### Three-entry products, five local profiles and six native CI profiles, 2026-11-06
+
+The Marker/Boulder/MonsterGenerator implementation at clean source
+`239638703` now passes its actual Go 1.27.3 normal/HD product diagnostics,
+all five recorded local configurations and all six native CI configurations.
+The following results bind to that exact source. Later reference/fixture
+preparations require their own qualification.
+
+| Local configuration | Pass | Skip | Fail |
+| --- | ---: | ---: | ---: |
+| Normal | 799,284 | 46 | 0 |
+| HD | 799,284 | 46 | 0 |
+| Server | 793,065 | 7 | 0 |
+| Server HD | 793,065 | 7 | 0 |
+| Strict HD, cgocheck2/checkptr=2 | 663,038 | 10 | 0 |
+
+All 26 actual local mains were retained before execution. All drivers/mains
+exit normally; source inputs stay exact through all five runs. Every prior
+terminal test identity, action and multiplicity from Go 1.27.3 source
+`0894002e4` remains present. Each profile adds exactly 1,426 passing events
+from the three-entry family. The scope is the recorded six client/five
+server packages; strict retains and extends the official selector.
+
+| Native CI configuration | Pass | Skip | Fail |
+| --- | ---: | ---: | ---: |
+| Linux normal | 801,006 | 54 | 0 |
+| Linux HD | 801,006 | 54 | 0 |
+| Linux server | 794,896 | 7 | 0 |
+| Linux server HD | 794,896 | 7 | 0 |
+| Windows amd64 server | 792,904 | 11 | 0 |
+| Windows 386 server | 773,174 | 94 | 0 |
+
+Runs `42090396058` and `42089298381` have complete API-digest-verified
+archives and raw job logs. All previous primary test identities/actions/
+multiplicities remain, with the same 1,426 passing additions per configuration.
+The six products and all 161 manifest test executables identify Go 1.27.3;
+products identify the clean exact revision. Windows retains six mains before
+execution; Linux uses the existing post-execution manifests for 155 mains.
+The preceding engine-source Linux run `42085369763` and diagnostic-source
+Windows run `42087857543` are also fully retained and contract/compiler
+qualified, including all their products and manifest mains.
+
+The two current macOS products each execute four public C entry calls across
+the three functions. They produce 20 stock rocks plus DestroyedGenerator,
+with client replication confirmed. Marker preserves first-match clearing,
+duplicate/neighbour slots and restoration; Boulder's actual nil-name
+constructor failure returns without deletion; actual player destruction
+credit increments once. Server audio events are observed and host HP stays
+150. Both ordinary-clock E2Es exit zero without forced termination. These
+diagnostics hold source updates and disable the generator script service;
+they establish neither naturally earned deaths nor physical audible output.
+The first product attempt's absent literal Marker fixture is retained and
+resolved by selecting the registered stock death-handler type; engine and
+original assets remain unchanged. Products, Save/runtime state and all four
+captured frames are retained in verified archives; duplicate runtime/WORK/
+frame/product copies are removed after verification.
+
+NPC/Troll hearing retains its 20 product cases at `c41351758`: eight actual
+sound-directed turns before visual enemy acquisition and twelve negative
+controls, with no production hearing defect in that prepared range. All ten
+sealed hearing product inputs are byte-identical at `239638703`. Sight and
+aggression are prepared diagnostic properties; these results add no physical
+audio or earned campaign credit.
+
+Evidence: `ART/three-death-native-product-go1273/current-code-three-entry-actual-product-E2Es-qualified-v2.json`,
+`ART/three-death-native-full-five-go1273/full-five-three-death-Go1273-current-source-final-qualified-v1.json`,
+`ART/go1273-toolchain-transition/six-native-three-death-Go1273-current-code-final-qualified-v1.json`
+and `ART/npc-hearing-verification-go1273/current-three-death-source-hearing-input-binding-v1.json`.
+The remaining raw C pointer work and all nine final class/chapter audits stay
+open. These successful gates do not supply an overall completion percentage.
+
+### Inversion/Grip raw C follow-up: original references frozen, 2026-11-06
+
+Reference-only commit `26086de87` freezes the complete Inversion `4E03D0`
+(22 bytes), Grip traversal `4E03F0` (139) and Grip `4E0480` (22). Both FPU
+profiles execute all 183 instruction bytes over 298 independent inputs,
+including 18 original memory faults per profile and actual nested original
+Grip calls. Complete heap/caller-window/write/return/fault outputs reproduce
+byte-exactly from the committed producers. The single canonical output is
+identical between profiles. All old code/data seals stay exact; two new seals
+raise the inventory to 3,373 code / 713 data ranges. This is reference evidence.
+
+The original predicates use signed `setge`/`setl` for strength versus one;
+the decompiled C uses unsigned comparison and still accepts effect pointers
+through `int`. An independent C-only layout probe observes native effect
+callback/strength offsets 128/140, with size 208. The initial producer's
+incorrect caller-argument immutability assertion and the C layout probe's
+field-name compile failure are preserved. No engine change resolves either
+preparation failure. Native initial-memory/fault controls and full consumers
+must pass and freeze before changing the three raw bodies. See
+`src/legacy/testdata/modifier_defend_predicates_original_4e03d0.md` and
+`ART/modifier-defend-predicates-native-entry-port`.
+
+The subsequent independent initial-memory gate now passes Go 1.27.3 normal
+and strict HD with **306 events each**, zero failures/skips/build warnings,
+298 complete initial heaps and **136 actual nil/protected read domains**.
+Thirteen C/Go layout facts and every valid selected C getter agree. Each
+profile also proves **three actual unchanged-C faults above 4 GiB**, after
+the whole heap/layout/getter controls pass; four parent mains are retained
+before execution, with all intentional child faults/stacks in the archives.
+The added traversal prototype declares its existing four-integer ABI.
+All three C bodies and original producers/inputs/goldens remain unchanged.
+The independent initial fields include domains skipped by original gates;
+their 136 probes are distinct from the original bodies' 18 execution faults.
+Full consumers and engines remain pending. Scope and exact artifact paths:
+`src/legacy/testdata/modifier_defend_predicates_initial_memory_4e03d0.md`.
+
 ### Three raw death entries: native object pointers implemented, 2026-11-06
 
 Marker `54E460`, Boulder `54E4B0` and MonsterGenerator `54E630` now accept
@@ -102,8 +209,8 @@ Evidence: `ART/marker-boulder-generator-native-entry-port/three-entry-native-Go1
 and `three-entry-first-native-failure-qualification-v1.json`. All mains/logs,
 initial drafts and source snapshots are byte-verified in archives; duplicate
 source copies and successful/fully archived failed WORK trees are removed.
-Fresh products/E2Es, full five local configurations and six native CI
-configurations for this implementation remain separate pending gates.
+The subsequent exact-source products/E2Es, full five local configurations
+and six native CI gates are qualified in the checkpoint above.
 The overall 100% goal and nine final chapter audits remain open.
 
 Both preceding preparation commits also pass fully retained Windows

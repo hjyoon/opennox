@@ -66,8 +66,9 @@ original stack, without claiming identical physical stack layout in another
 ABI or arbitrary aliases between unrelated native structures.
 
 An initial, unfrozen producer incorrectly asserted that caller argument three
-stayed unchanged. Its source, inputs, complete logs and failing exit are
-retained in `ART/modifier-defend-predicates-native-entry-port/first-original-producer-caller-window-failure-v1.zip`.
+stayed unchanged. Its source, inputs and complete logs are retained in
+`ART/modifier-defend-predicates-native-entry-port/first-original-producer-caller-window-failure-v1.zip`;
+the failing exit is in `original-tozero-v1-exit.json` in the same directory.
 The successful producer records both original scratch words. No native engine
 or repository C body was changed to resolve that producer failure.
 

@@ -23525,6 +23525,20 @@
       "size": 426,
       "sha256": "ab7579907728c6f2f94f480296cceaa0b7b2085ad40e1ba80464fa5c2fd479d7",
       "purpose": "Complete original MechGolem/Golem death raw C callback, independently executed before native engine changes: 164 inputs per PC53-tozero/nearest profile; all 691 instruction bytes, 22 original reentrant calls/profile, ten memory faults and two CPU divide errors/profile; complete image/heap/caller/nonvolatile/FPU guards. Only named world services replaced. Six complete outputs differ between FPU profiles. Alignment NOPs excluded."
+    },
+    {
+      "name": "nox_xxx_dieImpEgg_54CAE0_complete_raw",
+      "address": "0x0054CAE0",
+      "size": 33,
+      "sha256": "6f42bc269662b3a3b55c158088b8b2d8e8f9672afc01f675830e826bf1cf5b5b",
+      "purpose": "Complete original ImpEgg/Polyp/Potion raw-entry reference before native changes: 149 contexts per PC53-tozero/nearest profile, all 214 body bytes plus real17-byte419A70 converter, 31 original reentrant calls/profile, 15 memory faults/profile, complete heap/image/caller/nonvolatile/FPU guards. Only six declared world services replaced; no FP arithmetic/conversion substitutions. Polyp and converter already have full seals; new body bytes are only ImpEgg33 and Potion31. No native/product/campaign completion credit."
+    },
+    {
+      "name": "nox_xxx_diePotion_54CBB0_complete_raw",
+      "address": "0x0054CBB0",
+      "size": 31,
+      "sha256": "09411c20fc834d61f4bf98d6b418e4a71ab5d0fc16832995c667bf3308a830d0",
+      "purpose": "Complete original ImpEgg/Polyp/Potion raw-entry reference before native changes: 149 contexts per PC53-tozero/nearest profile, all 214 body bytes plus real17-byte419A70 converter, 31 original reentrant calls/profile, 15 memory faults/profile, complete heap/image/caller/nonvolatile/FPU guards. Only six declared world services replaced; no FP arithmetic/conversion substitutions. Polyp and converter already have full seals; new body bytes are only ImpEgg33 and Potion31. No native/product/campaign completion credit."
     }
   ],
   "data": [

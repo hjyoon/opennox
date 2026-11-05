@@ -179,6 +179,7 @@ int sub_4FA280(int a1) {
 // GAME.EXE 004FA2B0 is restored by the native Go player-action state implementation.
 
 //----- (004FA4F0) --------------------------------------------------------
+#if 0 // Original body retained; native entry is in inversion_inventory_native_4fa4f0.go.
 int nox_xxx_checkInversionEffect_4FA4F0(int a1, int a2) {
 	uint32_t* v2;                             // edi
 	int v3;                                   // eax
@@ -231,6 +232,7 @@ int nox_xxx_checkInversionEffect_4FA4F0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004FA590) --------------------------------------------------------
 uint32_t* nox_xxx_playerAddGold_4FA590(int a1, int a2) {

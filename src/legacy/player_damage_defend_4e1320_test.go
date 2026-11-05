@@ -32,10 +32,11 @@ func TestPlayerDamageLateDefendNative4E1320KnownEffects(t *testing.T) {
 		{name: "breaking", function: fns.breaking, damage: 38, wantDamage: 38},
 		{name: "puncture prone", function: fns.punctureProne, damage: 39, wantDamage: 39},
 		{name: "inversion enabled", function: fns.inversion, collision: 1, damage: 40, wantDamage: 1},
-		{name: "inversion unsigned high", function: fns.inversion, collision: math.MinInt32, damage: 40, wantDamage: 1},
+		// Original setge/setl compare signed strength, including high-bit words.
+		{name: "inversion unsigned high", function: fns.inversion, collision: math.MinInt32, damage: 40, wantDamage: 0},
 		{name: "inversion disabled", function: fns.inversion, collision: 0, damage: 41, wantDamage: 0},
 		{name: "grip enabled", function: fns.grip, collision: 0, damage: 42, wantDamage: 1},
-		{name: "grip unsigned high", function: fns.grip, collision: math.MinInt32, damage: 42, wantDamage: 0},
+		{name: "grip unsigned high", function: fns.grip, collision: math.MinInt32, damage: 42, wantDamage: 1},
 		{name: "grip disabled", function: fns.grip, collision: 1, damage: 43, wantDamage: 0},
 	}
 	for _, test := range tests {

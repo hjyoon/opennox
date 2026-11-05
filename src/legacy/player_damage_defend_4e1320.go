@@ -8,8 +8,8 @@ void nullsub_41(void);
 void nullsub_42(void);
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
-int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
-int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
+int32_t nox_xxx_inversionEffect_4E03D0(void* effect, nox_object_t* item, uintptr_t context, nox_object_t* target, uintptr_t other, int32_t* output);
+int32_t nox_xxx_gripEffect_4E0480(void* effect, nox_object_t* item, uintptr_t context, nox_object_t* target, uintptr_t other, int32_t* output);
 */
 import "C"
 
@@ -82,9 +82,9 @@ func playerDamageApplyLateDefendNative4E1320(
 	case fns.resilience, fns.breaking, fns.punctureProne:
 		return damage
 	case fns.inversion:
-		return int32(bool2int(uint32(effect.DefendCollide88.Val) >= 1))
+		return int32(bool2int(effect.DefendCollide88.Val >= 1))
 	case fns.grip:
-		return int32(bool2int(uint32(effect.DefendCollide88.Val) < 1))
+		return int32(bool2int(effect.DefendCollide88.Val < 1))
 	}
 	if unsafe.Sizeof(uintptr(0)) != 4 {
 		return damage

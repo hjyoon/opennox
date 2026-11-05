@@ -6123,6 +6123,7 @@ float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* 
 }
 
 //----- (004E03D0) --------------------------------------------------------
+#if 0 // Original bodies retained; native entries are in modifier_defend_predicates_native_4e03d0.go.
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6) {
 	int result; // eax
 
@@ -6177,6 +6178,7 @@ int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6) {
 	*a6 = result;
 	return result;
 }
+#endif
 
 static nox_playerInfo* nox_xxx_modifierEffectPlayer_4E04D0(nox_object_t* target) {
 	if (!target || !(target->obj_class & 4) || !target->data_update) {

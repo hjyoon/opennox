@@ -55,6 +55,40 @@ completion requirements.
 
 ## Current findings
 
+### Four raw modifier entries: native pointer implementation, 2026-11-06
+
+After complete consumer freeze `8b6368bdb`, raw Inversion `4E03D0`, Grip
+`4E0480`, Grip traversal `4E03F0` and inventory checker `4FA4F0` have native
+C pointer signatures and actual Go exports. Opaque contexts use `uintptr_t`;
+caller-owned output and cached returns remain signed DWORDs. The exact old
+C bodies stay under `#if 0`; all **38 immutable reference/initial/getter/
+consumer/helper inputs** remain byte-identical. Traversals retain the exact
+class/flag/slot filters, cached context/data, live next links, real parent
+lookup before strength testing and callback reload after that parent call.
+No extra admission guard suppresses an original memory fault.
+
+Go 1.27.3 normal/strict HD each pass **3,492 events**, with no skips, failures
+or build warnings. Each mode executes **1,010 complete actual-C original
+comparison leaves**:596predicate/traversal and414checker, including62original
+fault leaves. Complete native/PE32 heaps, ordered access widths/values/fault
+prefixes, caller certificates, actual parent/effect arguments, returns and
+scratch agree with both original reference profiles. Five additional native
+strength cases use pinned Go inventory/modifier/owner graphs across all four
+public C entries and survive **20 in-callback forced GCs** per local mode;
+all six actual dynamic-C arguments and scratch guards are checked. Six actual
+mains are retained before execution, with unforced-zero parents/drivers.
+Symbol inspection finds all four actual raw Go exports in the retained main.
+
+The original predicates use signed setge/setl. The existing ordinary Go
+late-defend path also had unsigned casts; those casts and two earlier test
+expectations for `MinInt32` are corrected from the sealed original evidence.
+Test identities and all original fixtures remain unchanged. The current
+engine still needs the five full local profiles, actual products/E2Es and
+six native CI profiles before final qualification/push. Remaining raw pointer
+entries and all nine class/chapter final audits remain open; overall100 is
+false. Evidence:
+`ART/modifier-inversion-inventory-4fa4f0-native-entry-port/four-entry-native-normal-and-strict-qualified-v1.json`.
+
 ### Coupled raw Inversion checker: complete original execution, 2026-11-06
 
 The raw two-integer `4FA4F0` checker now has an additive, pre-engine reference

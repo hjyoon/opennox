@@ -26,7 +26,7 @@ void nox_xxx_sympathyEffect_4E08E0(void* effect, nox_object_t* weapon, nox_objec
 nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile);
 void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
-int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
+int32_t nox_xxx_gripEffect_4E0480(void* effect, nox_object_t* item, uintptr_t context, nox_object_t* target, uintptr_t other, int32_t* output);
 void nox_xxx_effectRegeneration_4E01D0(int a1, int a2);
 void nox_xxx_effectRegenerationNative_4E01D0(void* effect, nox_object_t* item, void* context);
 void nox_xxx_stunEffect_4E04D0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
@@ -37,7 +37,7 @@ void nox_xxx_recoilEffect_4E0640(void* effect, nox_object_t* weapon, nox_object_
 void nox_xxx_lightngEffect_4E06F0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_vampirismEffect_4E07C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);
 void nox_xxx_poisonEffect_4E0850(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
-int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
+int32_t nox_xxx_inversionEffect_4E03D0(void* effect, nox_object_t* item, uintptr_t context, nox_object_t* target, uintptr_t other, int32_t* output);
 void sub_4DFB50(void* effect, nox_object_t* owner, const nox_object_t* item);
 void sub_4DFB80(void* effect, nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_effectSpeedEngage_4DFC30(void* effect, nox_object_t* owner, const nox_object_t* item);

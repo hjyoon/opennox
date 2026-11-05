@@ -4,6 +4,27 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Latest four-entry engine checkpoint, 2026-11-06: after consumer freeze
+`8b6368bdb`, Inversion `4E03D0`, Grip `4E0480`, Grip traversal `4E03F0`
+and inventory checker `4FA4F0` now expose native-pointer C signatures and
+actual Go exports. The exact four old C bodies remain under `#if 0`.
+All 38 sealed reference/initial/getter/consumer/helper inputs stay exact.
+Go 1.27.3 normal/strict HD each pass **3,492 events**, zero failures/skips/
+warnings: **1,010 actual-public-C complete original comparisons** per mode
+(596 predicate/traversal and414checker), including62original fault leaves,
+whole native/PE32 heaps, ordered accesses, real parent/callback arguments,
+returns and scratch. Five pinned Go-object graphs additionally exercise all
+four C entries with20in-callback forced GCs per mode and guarded scratch.
+All six actual mains are retained before execution; parents/drivers exit
+unforced zero. The predicates and the existing ordinary late-defend path
+now use the original signed strength comparison; two earlier incorrect
+unsigned-high expectations are corrected against sealed original setge/setl.
+Full current-source local profiles, products/E2Es and six native CI profiles
+remain pending. This checkpoint supplies no overall completion percentage.
+Evidence: `ART/modifier-inversion-inventory-4fa4f0-native-entry-port/four-entry-native-normal-and-strict-qualified-v1.json`.
+
+Preparation notes below describe the earlier source states at their freezes.
+
 An additive pre-engine `4FA4F0` reference now executes the complete original
 checker159, parent38 and Inversion22 on 207 inputs per FPU profile, with no
 helper substitution. All219 bytes, 2,269 external accesses,267parent/263effect

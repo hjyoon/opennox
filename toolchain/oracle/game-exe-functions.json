@@ -23574,6 +23574,34 @@
       "size": 91,
       "sha256": "e4f6e35e82ae0c21b86ac7fc68dc9c9cb89ee879116cdd01d4bb14a262421585",
       "purpose": "complete original raw Skull/ArrowTrap body; executed for independent 753-input PC53 tozero/nearest references before native C entry changes, including original callbacks/reentry/faults; excludes following alignment and standalone RET stubs"
+    },
+    {
+      "name": "nox_xxx_dieMarker_54E460_complete_raw",
+      "address": "0x0054E460",
+      "size": 77,
+      "sha256": "20f351cb74ee7120bd3f87114ee15b8d9fb437344ec5e9a0a218fad792af4d57",
+      "purpose": "Complete original raw Marker/Boulder/MonsterGenerator body executed independently before native C entry changes: 200 inputs in each of two PC53 profiles; full heap/image/helper/caller/register/FPU guards, real original reentry and faults. Declared world-service boundaries; no native implementation or unchanged-C runtime fault credit. The existing two five-byte call-site seals retain their earlier credit."
+    },
+    {
+      "name": "nox_xxx_dieBoulder_54E4B0_complete_raw",
+      "address": "0x0054E4B0",
+      "size": 366,
+      "sha256": "269ac493c49a805f472061a9f622cdeef9167b0ebb43cd1e9c58d8545b9be7f3",
+      "purpose": "Complete original raw Marker/Boulder/MonsterGenerator body executed independently before native C entry changes: 200 inputs in each of two PC53 profiles; full heap/image/helper/caller/register/FPU guards, real original reentry and faults. Declared world-service boundaries; no native implementation or unchanged-C runtime fault credit. The existing two five-byte call-site seals retain their earlier credit."
+    },
+    {
+      "name": "nox_xxx_dieMonsterGen_54E630_complete_raw",
+      "address": "0x0054E630",
+      "size": 178,
+      "sha256": "db2bdc0a2fa4c4d468eb5a270f6d75069355ac46d40882b321e6ea3ee5c8680c",
+      "purpose": "Complete original raw Marker/Boulder/MonsterGenerator body executed independently before native C entry changes: 200 inputs in each of two PC53 profiles; full heap/image/helper/caller/register/FPU guards, real original reentry and faults. Declared world-service boundaries; no native implementation or unchanged-C runtime fault credit. The existing two five-byte call-site seals retain their earlier credit."
+    },
+    {
+      "name": "sub_4D61B0_generator_credit_complete_raw",
+      "address": "0x004D61B0",
+      "size": 58,
+      "sha256": "d2cd4243d76370abbb0e7498bb59b9e4aee8617dc183598f2b31ede0847ca717",
+      "purpose": "Complete original generator-destruction credit helper independently executed for 286 inputs in both PC53 profiles, without service substitutions, before native entry changes; full heap/image/helper/caller/register/FPU guards and exact fault sites. Includes live player reload after counter write and declared PE32 alias cases; no general native alias or implementation credit."
     }
   ],
   "data": [
@@ -28528,6 +28556,48 @@
       "sha256": "d80533d6d7a6cdf63d50b40cf8c618e002de57a39e35de58529d137eb2c61fd8",
       "purpose": "the eight exact executable-section bytes consumed as two float operands by original signed direction minus32768; explicitly classified data, controlled original malformed-index fixture only",
       "executable_section": true
+    },
+    {
+      "name": "boulder_death_live_mass_bytes_5CDE18",
+      "address": "0x005CDE18",
+      "size": 12,
+      "sha256": "228aa642f6296949ce160bd1ce40466a6924a82a9aa72aff6ebf732863ca2362",
+      "purpose": "Twelve live unsigned mass bytes indexed after the random-float return."
+    },
+    {
+      "name": "boulder_death_live_signed_divisor_5CDE24",
+      "address": "0x005CDE24",
+      "size": 4,
+      "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+      "purpose": "Live signed IDIV divisor for the post-decay round-robin index."
+    },
+    {
+      "name": "boulder_death_live_type_names_table_5CE2B8",
+      "address": "0x005CE2B8",
+      "size": 48,
+      "sha256": "537ab740d50fdb7f3f76c3df224ee4dfb9394318adf0aaff8dab82e2a35fade3",
+      "purpose": "Twelve original PE32 string pointers selected from the live index."
+    },
+    {
+      "name": "boulder_death_type_name_strings_5CE2E8",
+      "address": "0x005CE2E8",
+      "size": 140,
+      "sha256": "fabd17577ab27e9a867bd4239cbd7ca20b248b9003d8dca8c10038f45f34f659",
+      "purpose": "Twelve original pointed rock-name strings and their PE alignment bytes."
+    },
+    {
+      "name": "boulder_death_rng_source_paths_5CE374",
+      "address": "0x005CE374",
+      "size": 200,
+      "sha256": "664abfacd2d207ee9a414327fd227f2ee16e10c80c752de1edb13e5de0dbffde",
+      "purpose": "Five source-path strings and their PE alignment bytes passed to controlled random services; their callees are not executed."
+    },
+    {
+      "name": "monster_generator_destroyed_type_name_5CE43C",
+      "address": "0x005CE43C",
+      "size": 19,
+      "sha256": "755f0bc281ec900ad541b96b66aea828e7ec241fb2c03d0bbbbc3c68d6b42026",
+      "purpose": "Original DestroyedGenerator NUL-terminated constructor name."
     }
   ],
   "allow_overlapping_ranges": true

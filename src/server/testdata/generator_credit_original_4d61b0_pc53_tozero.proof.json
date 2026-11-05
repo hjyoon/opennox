@@ -1,0 +1,76 @@
+{
+  "original_executable_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "input_sha256": "a086a617a8b90e951ac06183f77992dfb07f9c6b811757a36c668be3dff1e542",
+  "cases": 286,
+  "control": "0xe3f",
+  "body_address": "0x004D61B0",
+  "body_bytes": 58,
+  "body_sha256": "d2cd4243d76370abbb0e7498bb59b9e4aee8617dc183598f2b31ede0847ca717",
+  "all58_original_instruction_bytes_executed": true,
+  "no_world_services_replaced": true,
+  "whole_heap_image_and_helper_guards": true,
+  "caller_bytes_unchanged": true,
+  "valid_return_stack_registers_and_FPU_TOP_preserved": true,
+  "FPU_control_preserved": true,
+  "faults": {
+    "unit-flags": 1,
+    "update-player": 2,
+    "player-counter": 3
+  },
+  "fault_details": [
+    {
+      "name": "unit-unmapped",
+      "pc": "0x4d61b8",
+      "address": "0x41000010",
+      "size": 4,
+      "access": 19
+    },
+    {
+      "name": "update-nil",
+      "pc": "0x4d61c9",
+      "address": "0x114",
+      "size": 4,
+      "access": 19
+    },
+    {
+      "name": "update-unmapped",
+      "pc": "0x4d61c9",
+      "address": "0x41000114",
+      "size": 4,
+      "access": 19
+    },
+    {
+      "name": "update-unit",
+      "pc": "0x4d61cf",
+      "address": "0x4130314a",
+      "size": 4,
+      "access": 19
+    },
+    {
+      "name": "player-nil",
+      "pc": "0x4d61cf",
+      "address": "0x123c",
+      "size": 4,
+      "access": 19
+    },
+    {
+      "name": "player-unmapped",
+      "pc": "0x4d61cf",
+      "address": "0x4100123c",
+      "size": 4,
+      "access": 19
+    }
+  ],
+  "declared_PE32_aliases": [
+    "alias-counter-is-update-player",
+    "alias-counter-is-unit-update",
+    "alias-counter-is-unit-flags",
+    "alias-player-flags-is-update-player"
+  ],
+  "general_native_named_field_alias_credit": false,
+  "native_source_used": false,
+  "output_sha256": "0eb974de529c5318fb01df4a4319a88893d55b3dfc379e3d1ba10c7f91bca2b5",
+  "decoded_output_sha256": "f0c52f84e982bcf12e461aa1f86fa0712631434a17baceae2c96251ff5064759",
+  "actual_unchanged_C_fault_credit": false,
+  "native_comparison_credit": false
+}

@@ -1,0 +1,256 @@
+{
+  "original_executable_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "input_sha256": "33513f4d4be79a95526c408703bbe11ecb71bd7dfa69283c3d29f84d3dbf2cf8",
+  "cases": 200,
+  "control": "0xe3f",
+  "ranges": [
+    {
+      "address": "0x54e460",
+      "size": 77,
+      "sha256": "20f351cb74ee7120bd3f87114ee15b8d9fb437344ec5e9a0a218fad792af4d57"
+    },
+    {
+      "address": "0x54e4b0",
+      "size": 366,
+      "sha256": "269ac493c49a805f472061a9f622cdeef9167b0ebb43cd1e9c58d8545b9be7f3"
+    },
+    {
+      "address": "0x54e630",
+      "size": 178,
+      "sha256": "db2bdc0a2fa4c4d468eb5a270f6d75069355ac46d40882b321e6ea3ee5c8680c"
+    }
+  ],
+  "all621_instruction_bytes_executed": true,
+  "complete_heap_and_image_guards": true,
+  "complete_helper_region_guard": true,
+  "caller_bytes_unchanged": true,
+  "valid_return_stack_and_nonvolatile_registers_preserved": true,
+  "FPU_control_and_valid_TOP_preserved": true,
+  "original_faults": {
+    "memory:origin": 2,
+    "memory:part": 1,
+    "memory:source-update": 4,
+    "memory:parent-update": 1,
+    "memory:marker-slot": 2,
+    "arithmetic:boulder-modulo": 2,
+    "memory:name": 1,
+    "memory:mass-table": 2,
+    "memory:name-table": 1,
+    "memory:parent-class": 2
+  },
+  "fault_details": [
+    {
+      "name": "54e4b0-source--1",
+      "kind": "declared-world-read",
+      "site": "origin",
+      "address": "0x38",
+      "size": 8
+    },
+    {
+      "name": "54e4b0-source--2",
+      "kind": "declared-world-read",
+      "site": "origin",
+      "address": "0x41000038",
+      "size": 8
+    },
+    {
+      "name": "54e4b0-allocation-alias--2",
+      "kind": "original-memory-access",
+      "pc": "0x54e57a",
+      "access": 20,
+      "address": "0x4100006c",
+      "size": 4
+    },
+    {
+      "name": "54e630-source--1",
+      "kind": "original-memory-access",
+      "pc": "0x54e63c",
+      "access": 19,
+      "address": "0x2ec",
+      "size": 4
+    },
+    {
+      "name": "54e630-source--1-allocation-fails",
+      "kind": "original-memory-access",
+      "pc": "0x54e63c",
+      "access": 19,
+      "address": "0x2ec",
+      "size": 4
+    },
+    {
+      "name": "54e630-source--2",
+      "kind": "original-memory-access",
+      "pc": "0x54e63c",
+      "access": 19,
+      "address": "0x410002ec",
+      "size": 4
+    },
+    {
+      "name": "54e630-source--2-allocation-fails",
+      "kind": "original-memory-access",
+      "pc": "0x54e63c",
+      "access": 19,
+      "address": "0x410002ec",
+      "size": 4
+    },
+    {
+      "name": "marker-parent--2",
+      "kind": "original-memory-access",
+      "pc": "0x54e472",
+      "access": 19,
+      "address": "0x410002ec",
+      "size": 4
+    },
+    {
+      "name": "marker-parent-update--1",
+      "kind": "original-memory-access",
+      "pc": "0x54e47d",
+      "access": 19,
+      "address": "0x74",
+      "size": 4
+    },
+    {
+      "name": "marker-parent-update--2",
+      "kind": "original-memory-access",
+      "pc": "0x54e47d",
+      "access": 19,
+      "address": "0x41000074",
+      "size": 4
+    },
+    {
+      "name": "boulder-index-00000000-divisor-0",
+      "kind": "original-divide-error",
+      "pc": "0x54e5f4",
+      "interrupt": 0
+    },
+    {
+      "name": "boulder-index-0000000c-divisor-12",
+      "kind": "declared-world-read",
+      "site": "name",
+      "address": "0x52676942",
+      "size": 48
+    },
+    {
+      "name": "boulder-index-80000000-divisor-12",
+      "kind": "original-memory-access",
+      "pc": "0x54e58f",
+      "access": 19,
+      "address": "0x805cde18",
+      "size": 1
+    },
+    {
+      "name": "boulder-index-10000000-divisor-12",
+      "kind": "original-memory-access",
+      "pc": "0x54e500",
+      "access": 19,
+      "address": "0x405ce2b8",
+      "size": 4
+    },
+    {
+      "name": "boulder-mass-index-10000000",
+      "kind": "original-memory-access",
+      "pc": "0x54e58f",
+      "access": 19,
+      "address": "0x105cde18",
+      "size": 1
+    },
+    {
+      "name": "boulder-signed-divide-overflow",
+      "kind": "original-divide-error",
+      "pc": "0x54e5f4",
+      "interrupt": 0
+    },
+    {
+      "name": "generator-parent--1",
+      "kind": "original-memory-access",
+      "pc": "0x54e69d",
+      "access": 19,
+      "address": "0x8",
+      "size": 1
+    },
+    {
+      "name": "generator-parent--2",
+      "kind": "original-memory-access",
+      "pc": "0x54e69d",
+      "access": 19,
+      "address": "0x41000008",
+      "size": 1
+    }
+  ],
+  "only_declared_world_services_replaced": {
+    "0x4ec580": "owner",
+    "0x522ff0": "pointfx",
+    "0x4e5cc0": "delete",
+    "0x501960": "audio",
+    "0x415fa0": "int",
+    "0x4e3810": "new",
+    "0x4ed970": "point",
+    "0x4daa50": "create",
+    "0x416030": "float",
+    "0x4e46f0": "raise",
+    "0x52df80": "force",
+    "0x511660": "decay",
+    "0x4d71e0": "timer",
+    "0x4d7520": "mode",
+    "0x502490": "script",
+    "0x523200": "generatorfx",
+    "0x40a5c0": "flags",
+    "0x4d61b0": "credit"
+  },
+  "original_reentrant_calls_executed": 34,
+  "world_calls": {
+    "owner": 108,
+    "pointfx": 145,
+    "delete": 206,
+    "audio": 193,
+    "int": 323,
+    "new": 308,
+    "point": 217,
+    "create": 292,
+    "float": 642,
+    "raise": 215,
+    "force": 212,
+    "decay": 212,
+    "timer": 82,
+    "mode": 82,
+    "script": 82,
+    "generatorfx": 82,
+    "flags": 82,
+    "credit": 63
+  },
+  "stock_names": [
+    "BigRock",
+    "MediumRock",
+    "SmallRock",
+    "MediumRock",
+    "SmallRock",
+    "SmallRock",
+    "MediumRock",
+    "SmallRock",
+    "SmallRock",
+    "SmallRock",
+    "SmallRock",
+    "SmallRock"
+  ],
+  "stock_mass": [
+    1,
+    3,
+    5,
+    3,
+    5,
+    5,
+    3,
+    5,
+    5,
+    5,
+    5,
+    5
+  ],
+  "pointFX_boundary": "Pointer observation only; boundary spies do not execute pointFX callees or read pointed coordinates",
+  "script_boundary": "Original body passes three words; semantic event3 is the declared native world-service projection, not a fourth original stack word",
+  "output_sha256": "c575d3d1f06b4b963fc759609be895e71883b1473112780602c921d7865eeb5a",
+  "decoded_output_sha256": "6f790dea714ab3061aecdeed56eab8cea3d15c1c0ded1a90454795046cc6f297",
+  "native_source_used": false,
+  "actual_unchanged_C_fault_credit": false,
+  "native_comparison_credit": false
+}

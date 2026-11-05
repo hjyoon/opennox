@@ -113,7 +113,9 @@ after interrupted suites. The ordinary collector, suites and expectations
 are unchanged. A local three-package smoke passes 26 test events and all
 three packages, verifies the three pre-execution Mach-O ARM64 copies and
 exercises paths containing spaces. Five supervisor checks pass locally;
-the native Windows exception-status check awaits Windows execution.
+all six, including native Windows exception status, pass on Windows.
+Pre-build Python checks suppress bytecode output to retain the clean source
+required by product verification. Full native-gate requalification is pending.
 This improves evidence retention; it does not establish a hang fix or a
 passing Windows gate. Local proof:
 `ROOT/windows-native-test-preservation-and-hang-diagnostic/local-supervised-Go-smoke-qualified-v1.json`.

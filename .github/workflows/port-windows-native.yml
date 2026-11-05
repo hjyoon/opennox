@@ -39,6 +39,8 @@ jobs:
       CGO_CFLAGS_ALLOW: '-f.*'
       CGO_CFLAGS: ${{ matrix.cflags }}
       TARGET_ARCH: ${{ matrix.arch }}
+      # Pre-build Python checks must preserve a clean source tree for -verify.
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v7.0.1
         with:

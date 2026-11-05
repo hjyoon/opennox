@@ -88,7 +88,7 @@ else
 fi
 
 # Keep persistent player saves and generated configuration out of the source
-# data tree. Map assets get private copies so runtime saves cannot write through
+# data tree. Maps and the server access list get private copies so writes cannot pass through
 # symlinks and the map HTTP server can archive regular files. Other immutable
 # files still resolve to the exact input GAME.EXE and game assets.
 temp_root="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
@@ -109,7 +109,10 @@ trap cleanup_runtime_data EXIT
 
 while IFS= read -r -d '' source_path; do
 	entry_name="$(basename "$source_path")"
-	ln -s "$source_path" "$runtime_data_dir/$entry_name"
+	case "$entry_name" in
+	[Bb][Aa][Nn].[Tt][Xx][Tt]) cp -pL "$source_path" "$runtime_data_dir/$entry_name" ;;
+	*) ln -s "$source_path" "$runtime_data_dir/$entry_name" ;;
+	esac
 done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
 	! -iname save ! -iname nox.cfg ! -iname opennox.yml \
 	! -iname nc.obj ! -iname maps -print0)

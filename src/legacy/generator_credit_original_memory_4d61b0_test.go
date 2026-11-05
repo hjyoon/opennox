@@ -102,6 +102,13 @@ func newGeneratorCreditMemory4D61B0(t *testing.T, c generatorCreditInput4D61B0, 
 	putPE(initial.ChosenPlayer+4692, c.PlayerFlags)
 	putNative(m.chosenNative+int(m.off[17]), c.Counter)
 	putNative(m.chosenNative+int(m.off[18]), c.PlayerFlags)
+	if c.Alias == "counter-is-update-player" {
+		// Reloading the incremented player pointer shifts the flags read by
+		// one byte. Relocate its complete original five-byte initial window.
+		nativeAt := m.chosenNative + int(m.off[18])
+		peAt := int(m.chosenPE-0x21000000) + 4692
+		copy(m.buf[nativeAt:nativeAt+5], m.pe[peAt:peAt+5])
+	}
 	putPE(0x21009114, initial.SelectedPlayer)
 	m.putPointer(0x9000+int(m.off[12]), m.fromPE(initial.SelectedPlayer))
 	putPE(0x210042ec, initial.SelectedUpdate)

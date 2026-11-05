@@ -4,7 +4,24 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
-Latest four-entry engine checkpoint, 2026-11-06: after consumer freeze
+Latest full validation checkpoint, 2026-11-06: clean source `5eee32f9b`
+passes all five recorded macOS Go 1.27.3 profiles and all six current native
+Windows/Linux CI profiles. Each profile executes1,010actual-public-C whole
+original comparisons and20in-callback forced GCs. All prior primary test
+identities/actions/multiplicities remain; each unrestricted profile adds
+3,469passing four-entry events. All26local PREEXEC mains, six CI products
+and161CI manifest mains are retained and compiler/hash/architecture checked
+(Windows6PREEXEC, Linux155existing POSTEXEC). Whole CI ZIPs match API digests.
+Actual clean normal/HD products also pass20NPC/Troll hearing cases, including
+eight physical sound-directed turns and12negative controls. This verifies
+prepared hearing conditions, with no hearing production defect found there;
+it does not exercise the four raw modifier entries directly in a live product.
+Direct four-entry product/default-gameobject diagnostics, other raw pointer
+entries and nine chapter final audits remain open. No overall100 credit.
+See `porting-completion.md` and
+`ART/four-modifier-native-ci-go1273/six-native-four-modifier-Go1273-current-code-final-qualified-v1.json`.
+
+Four-entry engine checkpoint, 2026-11-06: after consumer freeze
 `8b6368bdb`, Inversion `4E03D0`, Grip `4E0480`, Grip traversal `4E03F0`
 and inventory checker `4FA4F0` now expose native-pointer C signatures and
 actual Go exports. The exact four old C bodies remain under `#if 0`.

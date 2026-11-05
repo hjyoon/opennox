@@ -55,6 +55,63 @@ completion requirements.
 
 ## Current findings
 
+### Four raw modifier entries: five local and six native CI gates, 2026-11-06
+
+Clean source **`5eee32f9b`**, including the older C-entry signed-expectation
+correction, passes all five recorded macOS ARM64 Go 1.27.3 configurations and
+six current native Windows/Linux CI configurations. The table groups profiles
+with identical counts; counts are per profile.
+
+| Platform/configuration | PASS | Skip | Fail |
+| --- | ---: | ---: | ---: |
+| macOS normal / HD | 802,753 | 46 | 0 |
+| macOS server / server HD | 796,534 | 7 | 0 |
+| macOS strict HD, cgocheck2/checkptr2 | 666,551 | 10 | 0 |
+| Windows 386 server | 776,643 | 94 | 0 |
+| Windows AMD64 server | 796,373 | 11 | 0 |
+| Linux AMD64 normal / HD | 804,475 | 54 | 0 |
+| Linux AMD64 server / server HD | 798,365 | 7 | 0 |
+
+Every profile includes **596predicate/traversal +414checker actual-public-C
+complete original comparisons**, five pinned Go-object strength cases and
+20in-callback forced GCs. Earlier Skeleton/Golem/Polyp/Skull/credit/three-death
+original/default-service contracts remain. All prior primary identities,
+actions and multiplicities are retained. Each unrestricted profile adds
+3,469passing four-entry events; the local strict selector additionally retains
+44existing helper events. This is the recorded package/selector scope, with
+no claim that the local commands cover every repository package.
+
+All26local mains are retained before execution, with unforced-zero parents
+and drivers. Windows6PREEXEC mains and Linux155existing POSTEXEC manifest
+mains, plus six CI products, have verified native headers, complete hashes,
+Go 1.27.3 metadata and correct source/clean-product revisions. Entire CI ZIPs
+match GitHub API sizes/digests; raw jobs/logs remain. Temporary metadata
+extraction copies and verified compiler WORK/report/executable duplicates are
+removed. The first normal unsigned-expectation failure and both unfrozen
+artifact-qualifier mistakes remain preserved; original references and all38
+frozen initial/getter/runtime/consumer/helper inputs stay exact.
+
+The same clean source's actual normal/HD products pass **20NPC/Troll hearing
+cases**, including eight real sound-directed direction changes and12negative
+controls. Real server audio, listen data and native AI changes are observed
+before any visual enemy is acquired; health stays unchanged. Prepared sight0/
+aggression0.83 conditions, mock client audio and excluded physical-speaker/
+earned-campaign credit remain explicit. No production hearing defect is found
+in this tested range. All4rawGoexports are linked in both products; this
+hearing scenario supplies no direct invocation credit for those four entries.
+Both processes exit unforced zero, release ports and preserve every original
+asset. All4,439asset files and126prior Save files retain their sealed hashes.
+Products/runtime/Save/logs/frames are archived byte-exactly;22raw frame copies
+and20temporary source PNGs are removed after verification and visual review.
+
+Evidence: `ART/four-modifier-native-full-five-go1273/full-five-four-modifier-Go1273-current-source-final-qualified-v2.json`,
+`ART/four-modifier-native-products-go1273/current-four-modifier-source-actual-hearing-qualified-v1.json`
+and `ART/four-modifier-native-ci-go1273/six-native-four-modifier-Go1273-current-code-final-qualified-v1.json`.
+Current CI runs: Windows42128055283 and Linux42128110809. The eight preparation/
+engine/test-correction commits are pushed to the authorized branch. Direct
+four-entry product/default-gameobject coverage, remaining raw pointer work
+and all nine chapter final audits remain incomplete. **Overall100 is false.**
+
 ### Four raw modifier entries: native pointer implementation, 2026-11-06
 
 After complete consumer freeze `8b6368bdb`, raw Inversion `4E03D0`, Grip

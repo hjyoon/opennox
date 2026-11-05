@@ -29,6 +29,7 @@ type e2eAIHearingFixture struct {
 	hostHP, unitHP               uint16
 	faceAtEmit                   server.Dir16
 	requested, emitted, queued   bool
+	scheduled                    bool
 	heard, reacted, visual, done bool
 	audioEvents                  int
 }
@@ -199,7 +200,7 @@ func (f *e2eAIHearingFixture) tick() {
 		// that complete window before a later visual encounter can interfere.
 		defer f.finish()
 	}
-	if !f.reacted {
+	if !f.scheduled {
 		f.visual = f.visual || d.CurrentEnemy != nil || d.PreferredEnemy != nil
 	}
 	if !f.emitted || d.Field101 < f.emittedFrame || d.Field101-f.emittedFrame > 2 || d.Field98 != f.host.NetCode || d.Field99X != f.sourcePosition.X || d.Field99Y != f.sourcePosition.Y {
@@ -211,15 +212,20 @@ func (f *e2eAIHearingFixture) tick() {
 	}
 	for _, action := range d.GetAIStack() {
 		if (action.Type() == ai.ACTION_FACE_LOCATION || action.Type() == ai.ACTION_MOVE_TO) && action.ArgPos(0) == f.sourcePosition {
-			if !f.reacted {
-				f.reacted = true
-				e2eLog.Printf("AI HEARING REACTION: body=%s mode=%s action=%s position=%v natural=true current-enemy=%p", f.kind, f.mode, action.Type(), action.ArgPos(0), d.CurrentEnemy)
+			if !f.scheduled {
+				f.scheduled = true
+				e2eLog.Printf("AI HEARING SCHEDULED: body=%s mode=%s action=%s position=%v natural=true current-enemy=%p", f.kind, f.mode, action.Type(), action.ArgPos(0), d.CurrentEnemy)
 			}
 		}
 	}
-	if !f.reacted && f.unit.Direction1 != f.faceAtEmit && f.unit.Direction1 == server.DirFromVec(f.sourcePosition.Sub(f.unit.PosVec)) {
+	target := server.DirFromVec(f.sourcePosition.Sub(f.unit.PosVec))
+	errorToTarget := func(direction server.Dir16) int {
+		delta := (int(byte(direction)) - int(byte(target)) + 256) % 256
+		return min(delta, 256-delta)
+	}
+	if f.scheduled && !f.reacted && d.CurrentEnemy == nil && f.unit.Direction1 != f.faceAtEmit && errorToTarget(f.unit.Direction1) < errorToTarget(f.faceAtEmit) {
 		f.reacted = true
-		e2eLog.Printf("AI HEARING REACTION: body=%s mode=%s facing=%d->%d position=%v natural=true current-enemy=%p", f.kind, f.mode, f.faceAtEmit, f.unit.Direction1, f.sourcePosition, d.CurrentEnemy)
+		e2eLog.Printf("AI HEARING REACTION: body=%s mode=%s physical-turn=true facing=%d->%d target=%d position=%v natural=true current-enemy=%p", f.kind, f.mode, f.faceAtEmit, f.unit.Direction1, target, f.sourcePosition, d.CurrentEnemy)
 	}
 	if (f.mode == "run" || f.mode == "spell") && f.reacted {
 		// Later visual acquisition after turning is a separate natural stage.

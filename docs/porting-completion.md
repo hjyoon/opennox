@@ -169,6 +169,15 @@ and retains complete allocation guards. Its failed source/logs/two mains
 remain preserved and provide no old-C fault credit. Native implementation
 and complete native output comparison remain subsequent gates. Proof:
 `ROOT/skull-update-native-entry-port/actual-old-C-causality-before-native-qualified-v2.json`.
+An independent initial-memory transport then passes all 753 inputs under
+highres, cgocheck2 and checkptr=2 (757 test events, one package). The full
+consumer for 753 inputs/two FPU profiles/Go and C is compiled before native
+implementation, together with the same memory and constructor controls
+(758 test events). Its absent-engine branch receives no native comparison
+credit. A standalone original-only generator reproduces both new transport
+fixtures byte for byte. Both actually executed mains are retained before
+execution. Proofs: `ROOT/skull-update-native-entry-port/independent-strict-memory-before-native-qualified-v1.json`
+and `ROOT/skull-update-native-entry-port/frozen-complete-consumer-before-native-qualified-v1.json`.
 Full original reproduction proof:
 `ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 

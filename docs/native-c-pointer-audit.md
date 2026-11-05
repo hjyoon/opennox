@@ -146,6 +146,14 @@ independently, retaining every whole-allocation guard. That failed source,
 logs and both executed mains remain preserved, with no old-C crash credit.
 Native implementation/full-output comparison is still pending. Evidence:
 `ROOT/skull-update-native-entry-port/actual-old-C-causality-before-native-qualified-v2.json`.
+Before native implementation, the independent whole-heap correspondence
+passes all 753 inputs with highres/cgocheck2/checkptr=2 (757 test events).
+The full immutable-output consumer compiles with the same independent
+controls (758 test events), explicitly assigning no native comparison credit
+while the five methods are absent. Original-only regeneration reproduces
+both transport fixtures exactly. Both executed mains are retained before
+startup. Proofs: `ROOT/skull-update-native-entry-port/independent-strict-memory-before-native-qualified-v1.json`
+and `ROOT/skull-update-native-entry-port/frozen-complete-consumer-before-native-qualified-v1.json`.
 Full original reproduction evidence:
 `ROOT/skull-update-native-entry-port/complete-original-reference-reproduced-before-native-v1.json`.
 Evidence: `ROOT/skull-update-native-entry-port/original-PE-byte-and-call-audit-v2.json`.

@@ -1,0 +1,13 @@
+{
+  "original_producer_sha256": "495b201aab6158e286759e41a50027f19126e41c15e0754c78919bf5847d7f4e",
+  "original_output_sha256": "c575d3d1f06b4b963fc759609be895e71883b1473112780602c921d7865eeb5a",
+  "original_proof_sha256": "eea7aa42fff160f7c9544d7205dec72e87252cec7f21d8c0c06e36fd4c5102f1",
+  "input_cases": 200,
+  "whole_original_boundaries": 3743,
+  "original_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "encoded_sha256": "064c2fbf2ad02b904bd98cb33560c81d76bc36835ef83328c81b74ec64e16e96",
+  "decoded_sha256": "6cdb3f63caf36f14a3fa72ec9b249c3576c12a7325f821984fcb7828bd6e752a",
+  "control": "0xe3f",
+  "native_source_used": false,
+  "native_comparison_credit": false
+}

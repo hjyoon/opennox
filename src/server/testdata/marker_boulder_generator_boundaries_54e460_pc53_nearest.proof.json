@@ -1,0 +1,13 @@
+{
+  "original_producer_sha256": "495b201aab6158e286759e41a50027f19126e41c15e0754c78919bf5847d7f4e",
+  "original_output_sha256": "7095f87e5535ebbf97792ea37d9fd573c0274ed9955cba062653e8ab694b1557",
+  "original_proof_sha256": "6ed07ce23c622d94fcadbd9b6293fe45ce99837848034669b2944f0661251dca",
+  "input_cases": 200,
+  "whole_original_boundaries": 3743,
+  "original_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "encoded_sha256": "0e034279c38a99d88431431bc050f9d849f6aad47d07146d4d4a081700482c77",
+  "decoded_sha256": "cb57267cdbc9d2f0ff68e6ac488e10a45cec8eb13714556c1b48ca2e0a31fee2",
+  "control": "0x23f",
+  "native_source_used": false,
+  "native_comparison_credit": false
+}

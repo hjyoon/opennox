@@ -4,6 +4,16 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Complete three-entry original-output consumers are subsequently frozen with
+all three C ABIs still integers and no raw native method in the repository.
+Normal/strict HD Go 1.27.3 selections each pass 2,246 events and 400 initial
+transport leaves, with six pre-execution mains retained. Independent original
+execution adds 3,743 memory observations per FPU profile while reproducing
+both old complete output bytes exactly. Whole heap/write-prefix/world/fault
+checks and the explicitly compositional image projection are documented in
+the new native projection reference. Absent-engine branches receive no native
+leaf credit; the actual three ports remain the next gate.
+
 The three remaining raw Marker/Boulder/MonsterGenerator entries now have
 an independent 200-input native initial-memory fixture, frozen before
 implementation. Go 1.27.3 normal/strict HD selections each pass 1,835 events

@@ -55,6 +55,29 @@ completion requirements.
 
 ## Current findings
 
+### Three raw death entries: complete consumer freeze, 2026-11-06
+
+Following the native initial-memory freeze, complete Marker/Boulder/
+MonsterGenerator output consumers compile while all three C arguments are
+still integers and their native Go method is absent. Go 1.27.3 normal and
+strict HD selections each pass **2,246 events**, including 400 first-boundary
+transport leaves. Four absent-engine branches per selection receive no native
+comparison leaf credit. All six actual mains are retained before execution.
+
+A separate original-only observation producer reproduces both existing
+complete outputs byte for byte and freezes **3,743 whole-memory observations
+per FPU profile**. Consumers check full heap guards/projection, exact write
+prefixes, ordered world traces, final state and fault sites. Their image
+projection requires exact native mutable patches and a case-independent
+original patch-to-full-image digest certificate; it does not hash unrelated
+native code/process memory as PE32. Reentries must run the actual future
+native bodies. The projection reference documents the explicit boundaries
+and alias limits. No raw native engine or new product/CI credit is added.
+
+Evidence: `ART/marker-boulder-generator-native-entry-port/three-entry-complete-consumer-before-native-normal-and-strict-qualified-v1.json`.
+The restricted-host original JIT failure is retained separately; the approved
+original-only reruns verify all original invariants and old output hashes.
+
 ### Three raw death entries: native initial memory frozen, 2026-11-06
 
 Before implementing Marker `54E460`, Boulder `54E4B0` or MonsterGenerator

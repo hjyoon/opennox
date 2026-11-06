@@ -1,5 +1,17 @@
 # Native C entry pointer audit
 
+Clean `07e7913a3` normal/highres-tag Go1.27.3 ARM64 products now pass24actual
+raw Regeneration public C calls,6positive/18negative, unforced native exits0.
+Actual stock Sword/LeatherArmor use the human Warrior and WizardRobe an owned
+NPC with ordinary class admission; descriptors/clocks/default services stay
+unchanged and observers nil. Both complete health guards and restoration,
+native allocations above4GiB and real Sword mouse equipment are checked.
+Shared-boundary robe positives do not add differential-period proof beyond
+the focused actual-default tests. Both actual frames are viewed and archived;
+only verified owned duplicates are removed. Existing56frozen inputs,4439asset
+hashes and126Save files remain exact. Other entries, full current local
+profiles and nine chapter final audits remain open; overall100 remains false.
+
 At clean `3cb7514e9`, the next product setup reaches the original armor
 class gate: Warrior cannot pick up WizardRobe. Its complete failure is kept.
 The diagnostic now uses the human Warrior for Sword/LeatherArmor and an

@@ -55,6 +55,33 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration actual normal/HD products, local macOS, 2026-11-06
+
+Clean `07e7913a3` Go1.27.3 ARM64 normal and highres-tag products pass
+24actual public two-pointer C calls: six positive and eighteen negative
+conditions, with both native exits0 and no forced termination. Real stock
+Sword/LeatherArmor use the human Warrior; WizardRobe uses a real owned NPC
+through ordinary class admission. Real mouse input equips/dequips the Sword.
+All live allocations exceed4GiB, the original active Regeneration1 stays
+unchanged, and clock/armor/HP services remain default with nil observers.
+Each call immediately checks complete holder/item health guards and restores
+the declared prepared HP/cooldown/flag inputs before the next world tick.
+
+The observed live frames1440/2880 produce exactly HP148→149; off-interval
+and early gates preserve HP. Robe positives here use a shared interval
+boundary; differential robe timing is separately proved by focused actual-
+default C tests. These prepared API fixtures supply no human Wizard robe,
+earned campaign, peer-network or physical audio credit.
+
+Both actual frames were visually reviewed; their full PNG bytes are equal.
+All product/source/runtime/failure archives and4439original asset hashes plus
+126protected Save files remain exact. Verified raw products, runtime/frame
+duplicates and owned compiler WORK are removed after archival and visual QA.
+Evidence: `ART/regeneration-4e01d0-native-entry-port/local-products-v3/local-normal-HD-raw-regeneration-products-final-qualified-v1.json`.
+The two earlier setup failures remain preserved. Current full local profiles,
+other raw pointer entries and all nine chapter final audits remain open;
+overall100 is false. GitHub CI is not polled or awaited.
+
 ### Raw Regeneration stock armor class admission, local macOS, 2026-11-06
 
 The second normal E2E at clean `3cb7514e9` passes the stock interval admission

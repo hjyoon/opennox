@@ -1,0 +1,95 @@
+{
+  "original_exe_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "original_file_unchanged": true,
+  "independent_inputs_sha256": "e7a9dc92b938fd023aef24b062e14b0e7127259350ec67cd2bdf8b14c030b713",
+  "cases": 198,
+  "original_function_ranges": [
+    {
+      "name": "regeneration",
+      "address": "0x4e01d0",
+      "size": 204,
+      "sha256": "7b5720413e3ae9a93e233ed1ec5d6e07fd973d1ae6f79bc1a9fd8055d4d2daea"
+    },
+    {
+      "name": "current-hp",
+      "address": "0x4ee780",
+      "size": 26,
+      "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674"
+    },
+    {
+      "name": "maximum-hp",
+      "address": "0x4ee7a0",
+      "size": 27,
+      "sha256": "f45238ed5aa92034eef46ed574b2967bc0595a25e2a1d3b149fe6bc20f6475d6"
+    }
+  ],
+  "all257_original_bytes_reached": true,
+  "instruction_addresses": 85,
+  "actual_original_HP_getter_bodies": true,
+  "clock_values_read_from_original_global_addresses": true,
+  "declared_external_services": [
+    "armor-flags lookup: input flags returned, no body credit",
+    "HP adjustment: exact cached owner/delta observed; body and effects excluded"
+  ],
+  "external_service_effects_credited": false,
+  "root_C_ABI_void": true,
+  "hardware_EAX_retained_but_not_a_defined_void_return": true,
+  "full64KiB_heap_and_stack_before_after_retained": true,
+  "all_writes_reconstruct_whole_memory": true,
+  "fresh_independent_emulator_state_for_each_input": true,
+  "caller_words_unchanged": true,
+  "nonvolatile_registers_and_stack_preserved_on_success": true,
+  "all_original_image_bytes_unchanged_except_declared_clock_input_stimuli": true,
+  "FPU_control": 3647,
+  "FPU_status_unchanged": true,
+  "original_calls": {
+    "regeneration": 198,
+    "maximum-hp": 341,
+    "current-hp": 175,
+    "adjust-hp": 97,
+    "armor-flags": 61
+  },
+  "external_accesses": 2844,
+  "memory_and_arithmetic_faults": [
+    {
+      "kind": "integer-divide",
+      "instruction": "0x4e0279",
+      "count": 3
+    },
+    {
+      "kind": "integer-divide",
+      "instruction": "0x4e0287",
+      "count": 22
+    },
+    {
+      "kind": "memory",
+      "instruction": "0x4e01df",
+      "count": 1
+    },
+    {
+      "kind": "memory",
+      "instruction": "0x4e01ed",
+      "count": 1
+    },
+    {
+      "kind": "memory",
+      "instruction": "0x4e0242",
+      "count": 2
+    },
+    {
+      "kind": "memory",
+      "instruction": "0x4ee792",
+      "count": 1
+    },
+    {
+      "kind": "memory",
+      "instruction": "0x4ee7b2",
+      "count": 4
+    }
+  ],
+  "native_initial_memory_credit": false,
+  "native_implementation_credit": false,
+  "actual_product_credit": false,
+  "overall100": false
+}

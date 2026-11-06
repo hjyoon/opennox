@@ -1,0 +1,121 @@
+{
+  "original_exe_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+  "original_file_unchanged": true,
+  "original_manifest_sha256": "cbe217010a1bffd6dd75299ac02629d7bda88b396ea7d52450bd8524cf972afd",
+  "original_manifest_unchanged": true,
+  "independent_inputs_sha256": "1f96b7f8b86e8fd9f37cd9ee8c71993b8f1c9a2093ca0e5ba9afb0586f6fdac6",
+  "cases": 487,
+  "cases_per_entry": {
+    "attack": 317,
+    "friendly": 170
+  },
+  "original_function_ranges": [
+    {
+      "name": "attack",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "friendly",
+      "address": "0x4e1470",
+      "size": 34,
+      "sha256": "fa632520ae8b970b679dd6c5b8bd947f81f4b41d65295f6d3a26edbcb975b92e"
+    }
+  ],
+  "all146_original_bytes_reached": true,
+  "instruction_addresses": 49,
+  "external_service_boundaries": [],
+  "actual_callee_bodies_required": 0,
+  "no_helpers_substituted": true,
+  "full64KiB_heap_stack_before_after_retained": true,
+  "complete_ordered_heap_and_stack_read_values_widths_retained": true,
+  "complete_caller_call_return_fault_register_certificates": true,
+  "actual_original_memory_writes": 0,
+  "declared_input_stimulus_writes": 9,
+  "all_writes_reconstruct_whole_heap": true,
+  "complete_stack_and_caller_words_unchanged": true,
+  "whole_original_PE_image_unchanged": true,
+  "nonvolatile_registers_stack_and_canonical_int_return_verified": true,
+  "fresh_emulator_per_input": true,
+  "FPU_control": 3647,
+  "FPU_status_unchanged": true,
+  "external_heap_access_records": 874,
+  "stack_read_records": 1050,
+  "returns": [
+    {
+      "entry": "attack",
+      "kind": "return-0",
+      "count": 128
+    },
+    {
+      "entry": "attack",
+      "kind": "return-1",
+      "count": 156
+    },
+    {
+      "entry": "friendly",
+      "kind": "return-0",
+      "count": 140
+    },
+    {
+      "entry": "friendly",
+      "kind": "return-1",
+      "count": 18
+    }
+  ],
+  "memory_faults": [
+    {
+      "entry": "attack",
+      "instruction": "0x4e140c",
+      "count": 16
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e141d",
+      "count": 2
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e142c",
+      "count": 4
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e1434",
+      "count": 1
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e143d",
+      "count": 1
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e1443",
+      "count": 8
+    },
+    {
+      "entry": "attack",
+      "instruction": "0x4e1456",
+      "count": 1
+    },
+    {
+      "entry": "friendly",
+      "instruction": "0x4e1478",
+      "count": 8
+    },
+    {
+      "entry": "friendly",
+      "instruction": "0x4e1481",
+      "count": 4
+    }
+  ],
+  "compressed_output_sha256": "1148775df123f822dcc2d5b8b2d97b311edba63eeaa3fbfecb7bb07d548247b7",
+  "decoded_output_sha256": "81f7a5a71486d1ee3904ca9087f72b8aa4bc40d48bfeb670e592e881c97f74f3",
+  "native_initial_memory_credit": false,
+  "native_implementation_credit": false,
+  "actual_product_credit": false,
+  "overall100": false
+}

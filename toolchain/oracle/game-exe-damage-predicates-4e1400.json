@@ -1,0 +1,26 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_4E1400",
+      "address": "0x004E1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73",
+      "purpose": "qualify an attack for friendly-hit and Shock checks using the original no-weapon unit classes, WAND use-data flags, WEAPON subclass mask 0x047F00FE, and MONSTER fallback"
+    },
+    {
+      "name": "sub_4E1470",
+      "address": "0x004E1470",
+      "size": 34,
+      "sha256": "fa632520ae8b970b679dd6c5b8bd947f81f4b41d65295f6d3a26edbcb975b92e",
+      "purpose": "identify the friendly-damage exception only for a non-null WEAPON with subclass bit 0x4000"
+    }
+  ],
+  "data": []
+}

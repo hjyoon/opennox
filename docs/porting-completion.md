@@ -55,6 +55,40 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration actual default services and pinned Go graphs, 2026-11-06
+
+At core source `aad99d057`, additive local tests execute eight actual public-C
+default-service conditions and two pinned Go graph conditions. A real Server's
+Frame/TickRate, production armor lookup, UnitAdjustHP, actual C UnitSetHP and
+the monster notification's nil-owner gate execute. Prepared named Thing records
+initialize the ordinary armor table: real LeatherArmor/WizardRobe flags produce
+the expected timing difference. Whole owner/item/health/effect records retain
+all bytes except the current-HP word and setter's Field38 sync DWORD.
+Full HP, dead/cooldown gates and DWORD frame/product wrap are covered.
+
+The weapon/robe Go graphs pin all four allocations and force six GCs inside
+actual HP getter reads per C call, twelve per profile, with full argument and
+record checks. All other read/call/arithmetic observers and all clock/armor/
+adjustment bodies remain ordinary. This prepared unit scope supplies no stock
+constructor, player protection, owner packet-send or earned campaign credit.
+
+Normal and strict HD Go1.27.3 each pass **1,641 events**, including all792
+actual Go/C original leaves, the actual default/GC cases and the existing
+registered-regeneration schedule regression. Eight actual mains are retained
+before execution; drivers/mains exit unforced with zero skips/failures/warnings.
+The first four-package selector compiled the root without selecting a test;
+its no-tests warnings and original archives remain. A runtime-selector-only
+cached rerun adds the existing schedule test; all eight binary hashes remain
+unchanged. No source/expectation changes were needed for that rerun.
+
+The additive product diagnostic is compiled and checks ordinary service
+identities plus nil raw and HP observers. Its stock Sword/LeatherArmor/
+WizardRobe and original Regeneration1 conditions are **not yet executed**.
+Both clean normal/HD product builds, actual E2E results, full current local
+profiles and nine chapter final audits remain open. All56 frozen inputs remain
+exact. Local testing does not wait for GitHub CI; overall100 remains false.
+Evidence: `artifacts/opennox-port-20261106/regeneration-4e01d0-native-entry-port/regeneration-raw-default-product-normal-and-strict-qualified-v2.json`.
+
 ### Raw Regeneration native pointer implementation, local macOS, 2026-11-06
 
 After complete consumer freeze `88625f307`, the raw public

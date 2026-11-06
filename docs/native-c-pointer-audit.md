@@ -1,5 +1,13 @@
 # Native C entry pointer audit
 
+Actual default Regeneration services now pass eight prepared public-C
+conditions and two pinned Go graph calls with twelve in-HP-read GCs per local
+profile. Normal/strict HD Go1.27.3 each pass 1,641 events, including all792
+original leaves and the existing registered schedule regression. Eight actual
+PREEXEC mains are retained; all56 frozen inputs remain exact. The compiled
+product diagnostic remains unexecuted. Full local profiles/products and the
+nine chapter final audits remain open; no additional candidate is removed.
+
 Raw Regeneration is now a native two-pointer void Go export, after consumer
 freeze `88625f307`. Exact old C bytes remain under `#if 0` and all 56 frozen
 inputs stay exact. Local normal/strict HD Go 1.27.3 each pass 1,631 events,

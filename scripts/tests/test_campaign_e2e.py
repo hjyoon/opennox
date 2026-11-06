@@ -17,11 +17,15 @@ spec.loader.exec_module(runner)
 class SuiteFieldsTests(unittest.TestCase):
     def test_published_suites_keep_their_outcome_requirements(self):
         for path in (Path(runner.__file__).parent / 'e2e' / 'campaign').glob('*.json'):
+            if path.name.endswith('.sequence.json'):
+                continue
             with self.subTest(path=path.name):
                 runner.validate_suite_fields(json.loads(path.read_text()))
 
     def test_published_scenarios_only_replay_allowed_inputs(self):
         for path in (Path(runner.__file__).parent / 'e2e' / 'campaign').glob('*.json'):
+            if path.name.endswith('.sequence.json'):
+                continue
             for case in json.loads(path.read_text())['cases']:
                 with self.subTest(suite=path.name, case=case['name']):
                     runner.validate_scenario(path.parent / case['scenario'])
@@ -182,8 +186,10 @@ class PlayerOutcomeTests(unittest.TestCase):
 
 class SequenceTests(unittest.TestCase):
     def test_published_sequences_validate_all_stages_without_gameplay(self):
-        directory = Path(runner.__file__).parent / 'e2e' / 'campaign' / 'sequences'
-        for path in directory.glob('*.json'):
+        directory = Path(runner.__file__).parent / 'e2e' / 'campaign'
+        paths = sorted(directory.glob('*.sequence.json')) + sorted((directory / 'sequences').glob('*.json'))
+        self.assertTrue(paths)
+        for path in paths:
             with self.subTest(path=path.name):
                 _, stages = runner.load_sequence(path)
                 self.assertTrue(stages)

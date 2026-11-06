@@ -103,8 +103,9 @@ func init() {
 				return true
 			}
 			stockInversionBefore, stockGripBefore = *stockInversion, *stockGrip
-			inversion, freeInversion = alloc.New(*stockInversion)
-			grip, freeGrip = alloc.New(*stockGrip)
+			inversion, freeInversion = alloc.New(server.ModifierEff{})
+			grip, freeGrip = alloc.New(server.ModifierEff{})
+			*inversion, *grip = *stockInversion, *stockGrip
 			inversion.DefendCollide88.Fnc, inversion.DefendCollide88.Val = functions[0], 1
 			grip.DefendCollide88.Fnc, grip.DefendCollide88.Val = functions[1], 1
 			count, err := e2eInventoryItemCount("Sword")
@@ -147,8 +148,9 @@ func init() {
 			if !check("configured-equipped", inversion, grip, [4]int32{1, 0, 1, 1}) {
 				return true
 			}
-			inv, freeInv := alloc.New(*inversion)
-			gr, freeGrip := alloc.New(*grip)
+			inv, freeInv := alloc.New(server.ModifierEff{})
+			gr, freeGrip := alloc.New(server.ModifierEff{})
+			*inv, *gr = *inversion, *grip
 			defer func() {
 				data.Modifiers = original
 				freeGrip()

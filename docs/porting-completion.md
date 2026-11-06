@@ -55,6 +55,27 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration stock armor class admission, local macOS, 2026-11-06
+
+The second normal E2E at clean `3cb7514e9` passes the stock interval admission
+and real Sword equipment, then exits2 before a raw call. The diagnostic gave
+WizardRobe to a Warrior; ordinary ArmorPickup rejects that class combination.
+The complete failure, runtime and both rebuilt product binaries are retained.
+
+The prepared diagnostic now gives Sword/LeatherArmor to the human Warrior
+and WizardRobe to a real stock owned NPC through the ordinary constructor
+and inventory services. Each raw call uses its real holder/health/maximum;
+the robe interval follows the NPC's actual maximum. Both complete health
+records are checked, and initial HP/cooldown/flags are restored after each
+call. Classes, game flags, descriptors, clocks, maxima and production engines
+are unchanged. This does not exercise a human Wizard's robe. Focused normal
+and strict HD Go1.27.3 each pass1641events with zero skips/failures/warnings,
+including792original leaves, eight default C conditions and two pinned Go
+conditions with twelve in-HP-read GCs. Eight PREEXEC mains and full logs are
+retained, owned duplicates are removed and all56frozen inputs remain exact.
+Evidence: `ART/regeneration-4e01d0-native-entry-port/regeneration-raw-default-product-normal-and-strict-qualified-v3.json`.
+Rebuilt normal/HD actual-C E2Es remain pending; overall100 is false.
+
 ### Raw Regeneration product wait budget, local macOS, 2026-11-06
 
 Clean source `8a7d74829` builds both Go1.27.3 ARM64 normal/HD products,

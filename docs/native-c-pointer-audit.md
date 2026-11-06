@@ -1,5 +1,15 @@
 # Native C entry pointer audit
 
+At clean `3cb7514e9`, the next product setup reaches the original armor
+class gate: Warrior cannot pick up WizardRobe. Its complete failure is kept.
+The diagnostic now uses the human Warrior for Sword/LeatherArmor and an
+actual stock owned NPC for WizardRobe, with ordinary inventory admission,
+the real per-holder HP maximum/interval and both complete health guards.
+No class/flag/descriptor/clock or production engine changes are made. Focused
+normal/strict HD each pass1641events with eight PREEXEC mains, zero warnings
+and all56frozen inputs exact. A human Wizard robe, rebuilt products and full
+current local profiles remain open.
+
 Both clean `8a7d74829` normal/HD Go1.27.3 products build and start. The first
 normal product E2E equips a stock Regeneration1 Sword, then stops before its
 first raw call because the new diagnostic budget1200 is below the unchanged

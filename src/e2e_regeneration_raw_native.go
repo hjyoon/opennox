@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -21,10 +22,13 @@ const e2eRawRegenerationWaitFrames = 3600
 
 type e2eRawRegenerationFixture struct {
 	host, sword, leather, robe  *server.Object
+	robeOwner                   *server.Object
 	modifier                    *server.ModifierEff
 	modifierBefore              server.ModifierEff
 	health                      *server.HealthData
+	robeHealth                  *server.HealthData
 	maximum, savedHP            uint16
+	robeMaximum, robeSavedHP    uint16
 	fps, interval, robeInterval uint32
 	cases, calls, restores      int
 }
@@ -70,12 +74,18 @@ func (f *e2eRawRegenerationFixture) validate() error {
 		f.modifier == nil || *f.modifier != f.modifierBefore {
 		return fmt.Errorf("live host, equipped stock sword, health identity or immutable Regeneration1 changed")
 	}
-	for _, item := range []*server.Object{f.sword, f.leather, f.robe} {
-		if item == nil || !f.host.HasItem(item) || item.InvHolder != f.host || item.InitData == nil ||
+	if f.robeOwner == nil || !f.robeOwner.Class().Has(object.ClassMonster) || f.robeOwner.ObjOwner != f.host ||
+		f.robeOwner.FindOwnerChainPlayer() != f.host || f.robeHealth == nil || f.robeOwner.HealthData != f.robeHealth ||
+		f.robeHealth.Max != f.robeMaximum || f.robeOwner.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+		return fmt.Errorf("actual living owned NPC robe holder and complete health identity required")
+	}
+	for _, pair := range [][2]*server.Object{{f.sword, f.host}, {f.leather, f.host}, {f.robe, f.robeOwner}} {
+		item, owner := pair[0], pair[1]
+		if item == nil || !owner.HasItem(item) || item.InvHolder != owner || item.InitData == nil ||
 			item.InitDataModifier().Modifiers != [4]*server.ModifierEff{nil, nil, f.modifier, nil} {
-			return fmt.Errorf("actual stock construction, inventory or original descriptor slots changed: %p", item)
+			return fmt.Errorf("actual stock construction, inventory or original descriptor slots changed: item=%p owner=%p", item, owner)
 		}
-		for _, pointer := range []unsafe.Pointer{unsafe.Pointer(f.host), unsafe.Pointer(f.health), f.host.UpdateData,
+		for _, pointer := range []unsafe.Pointer{unsafe.Pointer(owner), unsafe.Pointer(owner.HealthData), owner.UpdateData,
 			unsafe.Pointer(item), item.InitData, item.UpdateData, unsafe.Pointer(f.modifier)} {
 			if pointer == nil || unsafe.Sizeof(uintptr(0)) != 8 || uintptr(pointer) <= math.MaxUint32 {
 				return fmt.Errorf("macOS ARM64 product requires real native data above4GiB: %p", pointer)
@@ -111,13 +121,26 @@ func (f *e2eRawRegenerationFixture) prepare() error {
 	f.fps = facts.FPS
 	rate := uint32(f.modifier.Update100.Val)
 	f.interval = rate * f.fps / uint32(f.maximum)
-	f.robeInterval = (rate / 3) * f.fps / uint32(f.maximum)
+	// Warrior cannot pick up WizardRobe under the ordinary class admission.
+	// A real owned NPC can carry it without changing any class or game flag.
+	f.robeOwner = noxServer.NewObjectByTypeID("NPC")
+	if f.robeOwner == nil || f.robeOwner.HealthData == nil || f.robeOwner.UpdateData == nil || f.robeOwner.CarryCapacity == 0 {
+		return fmt.Errorf("actual stock NPC constructor required for class-admitted robe inventory")
+	}
+	noxServer.CreateObjectAt(f.robeOwner, f.host, f.host.PosVec.Add(types.Ptf(32, 0)))
+	noxServer.ObjectsAddPending()
+	f.robeHealth = f.robeOwner.HealthData
+	f.robeMaximum, f.robeSavedHP = f.robeHealth.Max, f.robeHealth.Cur
+	if f.robeMaximum < 3 || f.robeSavedHP != f.robeMaximum {
+		return fmt.Errorf("actual stock NPC must start at full living HP")
+	}
+	f.robeInterval = (rate / 3) * f.fps / uint32(f.robeMaximum)
 	if f.interval <= 1 || f.robeInterval <= 1 || f.interval > e2eRawRegenerationWaitFrames || f.robeInterval > e2eRawRegenerationWaitFrames {
 		return fmt.Errorf("stock rates cannot provide bounded on/off interval controls: rate=%d FPS=%d MaxHP=%d intervals=%d/%d", rate, f.fps, f.maximum, f.interval, f.robeInterval)
 	}
 	attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{nil, nil, f.modifier, nil}}
 	f.leather = legacy.Nox_xxx_playerRespawnItem_4EF750(f.host, "LeatherArmor", attrs, 1, 0)
-	f.robe = legacy.Nox_xxx_playerRespawnItem_4EF750(f.host, "WizardRobe", attrs, 1, 0)
+	f.robe = legacy.Nox_xxx_playerRespawnItem_4EF750(f.robeOwner, "WizardRobe", attrs, 1, 0)
 	if f.sword.Class().Has(object.ClassArmor) || f.leather == nil || f.robe == nil || !f.leather.Class().Has(object.ClassArmor) || !f.robe.Class().Has(object.ClassArmor) {
 		return fmt.Errorf("actual Sword/LeatherArmor/WizardRobe constructor classes required")
 	}
@@ -129,7 +152,7 @@ func (f *e2eRawRegenerationFixture) prepare() error {
 	if err := f.validate(); err != nil {
 		return err
 	}
-	e2eLog.Printf("RAW REGEN C PREPARED: host=%p health=%p sword=%p leather=%p robe=%p modifier=%p stock=%s rate=%d max=%d fps=%d intervals=%d/%d raw=%p registered=%p stock-active=true original-descriptor=unchanged clocks=live services=default observers=nil earned-campaign-credit=false", f.host, f.health, f.sword, f.leather, f.robe, f.modifier, f.modifier.Name(), rate, f.maximum, f.fps, f.interval, f.robeInterval, facts.RawEntry, facts.RegisteredUpdate)
+	e2eLog.Printf("RAW REGEN C PREPARED: host=%p health=%p sword=%p leather=%p robe=%p robe-holder=%p robe-holder-type=NPC robe-max=%d robe-capacity=%d robe-weight=%d modifier=%p stock=%s rate=%d max=%d fps=%d intervals=%d/%d raw=%p registered=%p stock-active=true class-admission=ordinary original-descriptor=unchanged clocks=live services=default observers=nil earned-campaign-credit=false", f.host, f.health, f.sword, f.leather, f.robe, f.robeOwner, f.robeMaximum, f.robeOwner.CarryCapacity, f.robe.Weight, f.modifier, f.modifier.Name(), rate, f.maximum, f.fps, f.interval, f.robeInterval, facts.RawEntry, facts.RegisteredUpdate)
 	return nil
 }
 
@@ -153,61 +176,70 @@ func (f *e2eRawRegenerationFixture) run(row e2eRawRegenerationCase) error {
 		return err
 	}
 	item, effect := f.item(row.item), f.modifier
+	owner, health, maximum := f.host, f.health, f.maximum
+	if row.item == "robe" {
+		owner, health, maximum = f.robeOwner, f.robeHealth, f.robeMaximum
+	}
 	frame := noxServer.Frame()
-	originalHP, originalFlags, originalFrame := f.health.Cur, f.host.Flags(), f.host.Frame134
+	originalHP, originalFlags, originalFrame := health.Cur, owner.Flags(), owner.Frame134
 	var holder *server.Object
 	if item != nil {
 		holder = item.InvHolder
 	}
 	defer func() {
-		f.host.HealthData = f.health
+		owner.HealthData = health
 		if item != nil {
 			item.InvHolder = holder
 		}
-		f.host.SetFlags(originalFlags)
-		f.host.Frame134 = originalFrame
-		legacy.Nox_xxx_unitSetHP_4E4560(f.host, originalHP)
-		if f.host.HealthData != f.health || f.health.Cur != originalHP || f.host.Flags() != originalFlags || f.host.Frame134 != originalFrame ||
+		owner.SetFlags(originalFlags)
+		owner.Frame134 = originalFrame
+		legacy.Nox_xxx_unitSetHP_4E4560(owner, originalHP)
+		if owner.HealthData != health || health.Cur != originalHP || owner.Flags() != originalFlags || owner.Frame134 != originalFrame ||
 			(item != nil && item.InvHolder != holder) {
 			e2eError(fmt.Errorf("case=%s fixture pointer/HP/flags/cooldown restoration failed", row.name))
 			return
 		}
 		f.restores++
 	}()
-	before := f.maximum - 2
+	before := maximum - 2
 	if row.gate == "full" {
-		before = f.maximum
+		before = maximum
 	}
-	legacy.Nox_xxx_unitSetHP_4E4560(f.host, before)
-	if f.health.Cur != before {
+	legacy.Nox_xxx_unitSetHP_4E4560(owner, before)
+	if health.Cur != before {
 		return fmt.Errorf("real HP setter did not prepare initial injury")
 	}
-	f.host.Frame134 = frame - f.fps - 1
+	owner.Frame134 = frame - f.fps - 1
 	if row.gate == "cooldown" {
-		f.host.Frame134 = frame
+		owner.Frame134 = frame
 	}
 	if row.gate == "dead20" {
-		f.host.SetFlags(f.host.Flags() | object.Flags(0x20))
+		owner.SetFlags(owner.Flags() | object.Flags(0x20))
 	}
 	if row.gate == "dead8000" {
-		f.host.SetFlags(f.host.Flags() | object.Flags(0x8000))
+		owner.SetFlags(owner.Flags() | object.Flags(0x8000))
 	}
-	preparedFlags, preparedFrame := f.host.Flags(), f.host.Frame134
+	preparedFlags, preparedFrame := owner.Flags(), owner.Frame134
 	if row.gate == "holder" {
 		item.InvHolder = nil
 	}
 	if row.gate == "health" {
-		f.host.HealthData = nil
+		owner.HealthData = nil
 	}
 	if row.item == "nil" {
 		effect = nil
 	}
-	healthPointerBefore := f.host.HealthData
+	healthPointerBefore := owner.HealthData
 	var holderBefore *server.Object
 	if item != nil {
 		holderBefore = item.InvHolder
 	}
-	healthBefore := *f.health
+	healthBefore := *health
+	otherHealth := f.robeHealth
+	if owner == f.robeOwner {
+		otherHealth = f.health
+	}
+	otherHealthBefore := *otherHealth
 	attrsBefore := [3]server.ModifierInitData{*f.sword.InitDataModifier(), *f.leather.InitDataModifier(), *f.robe.InitDataModifier()}
 	itemHealth := [3]*server.HealthData{f.sword.HealthData, f.leather.HealthData, f.robe.HealthData}
 	var itemHealthBefore [3]server.HealthData
@@ -224,10 +256,10 @@ func (f *e2eRawRegenerationFixture) run(row e2eRawRegenerationCase) error {
 	if row.positive {
 		want.Cur++
 	}
-	if *f.health != want || f.host.HealthData != healthPointerBefore || (item != nil && item.InvHolder != holderBefore) ||
-		f.host.Flags() != preparedFlags || f.host.Frame134 != preparedFrame ||
+	if *health != want || *otherHealth != otherHealthBefore || owner.HealthData != healthPointerBefore || (item != nil && item.InvHolder != holderBefore) ||
+		owner.Flags() != preparedFlags || owner.Frame134 != preparedFrame ||
 		noxServer.Frame() != frame || noxServer.TickRate() != f.fps || *f.modifier != f.modifierBefore {
-		return fmt.Errorf("case=%s direct C health/whole-health guards/flags/cooldown/clock/descriptor mismatch: HP=%d->%d want=%d frame=%d", row.name, before, f.health.Cur, want.Cur, frame)
+		return fmt.Errorf("case=%s direct C health/whole-health guards/flags/cooldown/clock/descriptor mismatch: HP=%d->%d want=%d frame=%d", row.name, before, health.Cur, want.Cur, frame)
 	}
 	for index, obj := range []*server.Object{f.sword, f.leather, f.robe} {
 		if *obj.InitDataModifier() != attrsBefore[index] || obj.HealthData != itemHealth[index] ||
@@ -236,7 +268,7 @@ func (f *e2eRawRegenerationFixture) run(row e2eRawRegenerationCase) error {
 		}
 	}
 	f.cases++
-	e2eLog.Printf("RAW REGEN C PASS: case=%s item=%s frame=%d fps=%d hp=%d->%d/%d positive=%t actual-public-two-pointer-C=true hp-adjust=real armor-table=real clocks=live observers=nil whole-health-guards=unchanged descriptor=unchanged prepared-inputs=true earned-campaign-credit=false", row.name, row.item, frame, f.fps, before, f.health.Cur, f.maximum, row.positive)
+	e2eLog.Printf("RAW REGEN C PASS: case=%s item=%s holder=%p holder-class=%#x frame=%d fps=%d hp=%d->%d/%d positive=%t actual-public-two-pointer-C=true hp-adjust=real armor-table=real clocks=live observers=nil whole-health-guards=unchanged descriptor=unchanged prepared-inputs=true earned-campaign-credit=false", row.name, row.item, owner, uint32(owner.Class()), frame, f.fps, before, health.Cur, maximum, row.positive)
 	return nil
 }
 
@@ -264,12 +296,13 @@ func (sc *e2eScenario) CheckRawRegenerationNative(name string) {
 			e2eError(err)
 			return
 		}
-		if f.cases != 12 || f.calls != 12 || f.restores != 12 || f.health.Cur != f.savedHP {
+		if f.cases != 12 || f.calls != 12 || f.restores != 12 || f.health.Cur != f.savedHP || f.robeHealth.Cur != f.robeSavedHP {
 			e2eError(fmt.Errorf("all12 direct C conditions and exact fixture HP/cooldown/flags restoration required"))
 			return
 		}
 		noxServer.DelayedDelete(f.leather)
 		noxServer.DelayedDelete(f.robe)
-		e2eLog.Printf("RAW REGEN C VERIFIED: cases=%d calls=%d positive=3 negative=9 stock-Regeneration1=active actual-stock-items=true actual-mouse-equipment=true actual-public-two-pointer-C=true native-data-above4GiB=true services=default observers=nil original-descriptor=unchanged fixture-restored=true prepared-inputs=true earned-campaign-credit=false", f.cases, f.calls)
+		noxServer.DelayedDelete(f.robeOwner)
+		e2eLog.Printf("RAW REGEN C VERIFIED: cases=%d calls=%d positive=3 negative=9 stock-Regeneration1=active actual-stock-items=true actual-mouse-equipment=true robe-holder=actual-owned-NPC class-admission=ordinary actual-public-two-pointer-C=true native-data-above4GiB=true services=default observers=nil original-descriptor=unchanged fixture-restored=true prepared-inputs=true earned-campaign-credit=false", f.cases, f.calls)
 	})
 }

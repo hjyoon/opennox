@@ -1,5 +1,15 @@
 # Native C entry pointer audit
 
+Raw Readiness also passes actual pinned Go-heap integration after `7b8e947f3`.
+Normal/strict highres each pass 1,040 events, preserving the preceding 1,029
+and adding eleven. Six Go objects per graph are individually pinned; three
+default public-C cases use nil observers, and six Go/C cases force 36 GCs
+during reads with eight declared stimuli per mode. Full object bytes and
+actual C argument/signed-return traces agree. Both modes enable cgo checks;
+all four PREEXEC mains exit unforced 0, without skips, failures or warnings.
+All 75 preceding inputs remain exact. Products and broader local profiles
+remain pending; this test addition removes no further pointer candidate.
+
 Raw Readiness is now a native object-pointer Go export after consumer freeze
 `93f175870`. Local Go 1.27.3 normal/strict highres each pass 1,029 events,
 including 452 actual Go/public-C original comparisons. All 70 frozen inputs

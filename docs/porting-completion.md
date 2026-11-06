@@ -55,6 +55,28 @@ completion requirements.
 
 ## Current findings
 
+### Raw Readiness pinned Go-heap and GC checkpoint, 2026-11-06
+
+After native engine `7b8e947f3`, local normal/strict highres Go 1.27.3 each
+pass 1,040 events, with zero skips, failures or build warnings. All four
+actual PREEXEC mains and both drivers exit unforced 0. Exact run/pass
+identities preserve all 1,029 preceding cases and add eleven events.
+
+Each Go-owned graph individually pins its item, two modifier tables and
+three descriptors. Three default public-C calls use nil observers and
+check zero priority, negative strength and full-width callback nonmatch.
+Six Go/C cases force 36 GCs during typed reads, applying eight declared
+stimuli to check the cached table, cached first slot, matching-slot reload
+and cached strength. Tests compare all six complete objects and actual
+public-C pointer arguments and signed returns. Both modes explicitly enable
+cgo checks; strict additionally enables cgocheck2 and checkptr2.
+
+All 75 committed original/reference/initial/consumer/engine inputs remain
+exact. The sole test addition and complete archives pass final qualification
+before commit. Current products and broader local profiles remain pending;
+no further static candidate, campaign cell or overall completion is credited.
+Evidence: `ART/readiness-4e0960-native-entry-port/readiness-raw-goheap-normal-and-strict-qualified-v1.json`.
+
 ### Raw Readiness native pointer entry, 2026-11-06
 
 After consumer freeze `93f175870`, the raw public C signature becomes

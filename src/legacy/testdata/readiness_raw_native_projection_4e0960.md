@@ -70,3 +70,25 @@ Evidence: `readiness-native-preexecution-input-seal-v1.json` and
 directory. Actual pinned Go-heap/GC and product integration remain pending.
 The two profile labels still do not establish native CPU FPU-control,
 program-image or stack equivalence. No campaign or overall 100% is credited.
+
+## Actual pinned Go-owned graphs and GC
+
+After native engine `7b8e947f3`, normal/strict highres Go 1.27.3 each pass
+1,040 events, including all 1,029 preceding run/pass identities and eleven
+additive events. Four actual PREEXEC mains and both drivers exit unforced 0;
+there are no skips, failures or build warnings. All 75 committed protected
+inputs remain exact. Only `readiness_raw_goheap_4e0960_test.go` is added.
+
+Each graph individually pins six real Go-owned objects. Three default public
+C cases run with read/root observers nil: first-slot zero priority, second-slot
+negative strength and a same-low32/different-full-pointer callback nonmatch.
+Six Go/C cases force six GCs each during actual typed reads and apply eight
+declared stimuli in total. They check cached table and first-slot values,
+matching-slot reload, cached strength, all six whole object byte sequences,
+and actual C pointer-argument/signed-return traces. Both modes explicitly use
+`GODEBUG=cgocheck=1`; strict also uses cgocheck2 and checkptr2. Cgo checks are
+never bypassed. C trace data is cleared before pinned graph cleanup.
+
+The separate phase seal is `readiness-goheap-preexecution-input-seal-v1.json`;
+the final proof is `readiness-raw-goheap-normal-and-strict-qualified-v1.json`.
+Product, broader local suites and campaign qualification remain separate.

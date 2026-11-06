@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Raw DefaultDamage: complete parent reference, 2026-11-07
+
+The retained raw `nox_xxx_damageDefaultProc_4E0B30` still takes three
+pointer-valued `int` arguments. This checkpoint freezes its original reference
+before changing that ABI or its implementation; the separately registered,
+admission-limited Go DefaultDamage callback remains unchanged.
+
+Independent inputs comprise 1,034 cases and four separately frozen nil-weapon
+Shield cases. Under guest FPCW `0E3F` and `023F`, the original executes 2,076
+parent entries: 1,902 return and 174 fault. These are observations, not expected
+native outcomes. The union completes all 592 instructions of the 1,783-byte
+parent. Its actual 112/34-byte predicates and 17-byte converter execute when
+reached; the parent never supplies a nil weapon to those predicates. The
+remaining 25 direct targets and three indirect call sites are explicit service
+boundaries and earn no helper-body execution credit.
+
+A separate streaming verifier reconstructs every full image, graph, stack and
+auxiliary buffer from immutable inputs and recorded writes. Both input sets
+pass exact multiplicity, original bytes, call arguments/returns, caller scratch,
+FPU/register records, invalid-address permissions and complete memory checks.
+All 79 declared mutations execute in each primary profile; some are intentional
+same-value controls, so this is not 79 distinct branch witnesses. The existing
+3,373-code/713-data manifest remains unchanged, and an additive 14-code/three-data
+manifest passes the actual local Go 1.27.3 verifier.
+
+The first recorder failure retains 1,821 rows: Unicorn changes one mapped byte
+before a cross-page WORD-store fault. An additive recorder preserves that
+fragment explicitly while leaving the instruction incomplete. Two failed
+post-run checks caused by an indirect-call metadata key and a wrapper launch
+failure are also retained with their corrected, independently reviewed tools.
+No original input, expected result or existing assertion changes.
+
+An isolated, archived-before-execution ARM64 C control verifies an actual
+`STRH`: a healthy store yields `02 00`, while the guarded store raises SIGBUS
+and leaves the first byte `AA`. The two original emulator records instead
+observe `02`. Both raw observations remain; their physical post-fault memory
+equivalence, Go-engine behavior and actual Windows/x86 fault atomicity are
+unqualified. No byte masking, synthesized native write or golden correction
+resolves this distinction.
+
+Initial native memory fixtures and full consumers remain pending. This is not
+a native parent port, service integration, new product/E2E or campaign result.
+The previous qualified code `4303b7607` and its local five-profile/shop/hearing
+evidence remain unchanged. All nine final campaign audits and overall 100%
+remain open; GitHub CI waiting and downloads remain disabled.
+
 ### Damage predicates: complete local profiles and shop/hearing products, 2026-11-06
 
 Clean `4303b7607` passes the complete recorded macOS ARM64 Go 1.27.3

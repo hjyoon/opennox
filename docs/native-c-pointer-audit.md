@@ -1,5 +1,26 @@
 # Native C entry pointer audit
 
+Raw DefaultDamage now has an independently verified original reference before
+its pointer ABI changes. The 1,034-case primary set and four separately frozen
+Shield inputs execute 2,076 parent entries under two FPU modes. Their union
+completes all 592 parent instructions; 1,902 returns and 174 faults are retained
+as observations. Full memory, original bytes, argument transport, caller scratch,
+register/FPU records, fault extents and protection conditions pass the separate
+streaming verifier. Actual predicate112/34 and converter17 bodies execute when
+reached; the other 25 direct targets/three indirect sites remain declared
+external services. The main 3,373/713 manifest is unchanged; the additive 14/3
+manifest passes the actual local Go 1.27.3 byte verifier.
+
+Failed recorder/wrapper/metadata checks remain alongside corrected tools.
+The original cross-page WORD-store observation contains two partial-fragment
+records. An isolated native ARM64 STRH control instead leaves the mapped byte
+unchanged on SIGBUS. Both observations remain exact; physical fault-state
+equivalence, Go-engine behavior and actual Windows/x86 atomicity are unqualified.
+The raw parent still takes integer object arguments, its C call edges remain,
+and ordinary Go aliases are unchanged. No integer candidate is removed: counts
+stay 266 integer/41 typed candidates with ten overlaps. Initial native fixtures,
+whole consumers, the parent port and nine final campaign audits remain open.
+
 Damage predicates now qualify the complete recorded local five-profile scope
 at clean `4303b7607`: normal/highres 809,810 passes each, server variants
 803,591 each and strict highres 673,611, with no failures/warnings and 26

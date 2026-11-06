@@ -1,0 +1,51 @@
+DefaultDamage4E0B30 portable original reference
+
+This bundle contains unchanged actual original rows and whole-memory snapshots
+for1034 independently frozen cases plus4 separately frozen additive cases, each
+under original guest CW0E3F and023F:2076 original root calls. Across both sets,
+all592 original parent instruction boundaries were entered and completed.
+Original parent1783 bytes, padding9, child112/34 and converter17 are sealed.
+Child coverage is only the parent-reached domain;12 attack-child nil-weapon
+instructions are not reached by this parent. Separate child487 proofs retain
+their existing independent domain and are not silently merged into this bundle.
+
+TRUE: actual original reference certificates independently qualified; full raw
+rows, calls, failures observed within successful recordings, complete heap/
+image/stack/caller before/after snapshots and exact byte hashes preserved.
+TRUE: all memory snapshot gzip bytes are retained once per shared content hash.
+TRUE: original input/source seals and qualified records preserve exact bytes,
+including authentic absolute paths. Use bundle-index-v1.json mappings or the
+read_reference_bundle_v1.py helper to resolve portable relative members.
+
+FALSE: a native raw parent engine has been qualified. FALSE: external service
+bodies were executed by these references. Only the actual original parent,
+two predicates and17-byte converter execute;25 other direct targets and3
+indirect sites remain explicitly declared external input boundaries.
+FALSE: natural campaign/product entry, physical speaker output, Windows/Linux
+native behavior, whole pointer-port100percent or CI success is established.
+
+The two physical fault ledgers stay separate. Unicorn's guarded WORD store
+observably left first byte02; actual standalone macOS ARM64 STRH retainedAA
+and raised SIGBUS10, recorded by a handler followed by explicit exit170.
+The healthy native control wrote02/00 and returned0. Its actual PREEXEC Mach-O
+and raw logs are archived in the separate physical-observation members. It made
+ZERO OpenNox parent calls. Native fault atomicity/physical post-fault equality
+with the original emulator or Windows x86 is not qualified. No expected file
+was altered to erase that difference; a future engine must not synthesize the
+emulator's physical fragment merely to force post-fault buffer equality.
+
+The original GAME.EXE is not duplicated here; identity is SHA256
+0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a.
+Unchanged main3373code/713data and separate additive14code/3data manifests are
+included. Existing main manifest, assets, Save, old goldens and old failures
+remain untouched. Large prior failed-run raw rows remain immutable in ART;
+small provenance/reference records explicitly say which historical files are
+contained. No unrelated old phase products are copied.
+
+Authentic producer/generator/qualifier source copies are provenance. Their
+original absolute path/seal assumptions are intentionally not rewritten.
+Reading this bundle is portable; replaying its historical scripts from another
+location requires an explicit newly reviewed path/seal projection and the exact
+original EXE. Never treat copied source as permission to rerun code implicitly.
+Repository installation is a draft performed only by root. The packer/reader
+perform ZIP/gzip byte verification only; no original/Go/C/game execution.

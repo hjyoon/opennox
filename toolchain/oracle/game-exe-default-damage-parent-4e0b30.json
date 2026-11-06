@@ -1,0 +1,133 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "signed_float_to_DWORD_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Unchanged original real helper body; service stubs must not replace this body in the new parent producer."
+    },
+    {
+      "name": "raw_DefaultDamage_complete_body_4E0B30",
+      "address": "0x004E0B30",
+      "size": 1783,
+      "sha256": "4cf4af9b19b58d3912660df35a7b47010c363e5f595aa4ac1e74c3adae541fe1",
+      "purpose": "Complete unchanged parent through final RET; external-service execution boundaries must be declared separately; no natural-gameplay admission claim."
+    },
+    {
+      "name": "raw_attack_predicate_4E1400",
+      "address": "0x004E1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73",
+      "purpose": "Unchanged original real helper body; service stubs must not replace this body in the new parent producer."
+    },
+    {
+      "name": "raw_friendly_predicate_4E1470",
+      "address": "0x004E1470",
+      "size": 34,
+      "sha256": "fa632520ae8b970b679dd6c5b8bd947f81f4b41d65295f6d3a26edbcb975b92e",
+      "purpose": "Unchanged original real helper body; service stubs must not replace this body in the new parent producer."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E14E5",
+      "address": "0x004E14E5",
+      "size": 5,
+      "sha256": "3b7fbb257e469fbb2c1004a0f0d8952391aa741b1af051b5f223f03abe0625c1",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E154A",
+      "address": "0x004E154A",
+      "size": 5,
+      "sha256": "2431aa388135c6a274f022d42d75999acdabb5aea3f7f7df46d1437688dd3f24",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E2098",
+      "address": "0x004E2098",
+      "size": 5,
+      "sha256": "236648d3427452b33de394cc6e08d465780ea93740ca79b0dfb8653ff848f591",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E249D",
+      "address": "0x004E249D",
+      "size": 5,
+      "sha256": "7f63593fb6a357a2f75d60e6b92b1e027afa504fafb315f7be4f0778702382b0",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E24C9",
+      "address": "0x004E24C9",
+      "size": 5,
+      "sha256": "fcfe33e593b42fa2b01aaa79bce276ad7ee861ccb6dc771ec801c3cfa958124d",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E250B",
+      "address": "0x004E250B",
+      "size": 5,
+      "sha256": "ebc6f36bc650e19e1ab5baab1b36a68ba9120475f2db08f1b3887b70cb137690",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E254D",
+      "address": "0x004E254D",
+      "size": 5,
+      "sha256": "7ef3c35ba9866d6260f1ca71b6370dd0e2d3f0e7eab6b7e7b6e380427072e0b2",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E258F",
+      "address": "0x004E258F",
+      "size": 5,
+      "sha256": "9ccbb24b562e50906decb047c351ccda9c155845abd944591a26fb0672800bf4",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_incoming_CALL_004E28C7",
+      "address": "0x004E28C7",
+      "size": 5,
+      "sha256": "b5b94e09b8696aa9b46e416d0ea0c38570c7b895a20f65e200eb989257d1f7e4",
+      "purpose": "Original incoming CALL instruction only. Does not qualify the enclosing caller, its runtime admission or its native pointer ABI."
+    },
+    {
+      "name": "raw_DefaultDamage_initializer_store_4E2D3A",
+      "address": "0x004E2D3A",
+      "size": 10,
+      "sha256": "ad9fbc349f429650a1f6d260a7a6c8c40ae7b05284ec3518c8cef7d866e6e57c",
+      "purpose": "Original complete MOV instruction storing the parent callback at the object-type default slot; no execution credit."
+    }
+  ],
+  "data": [
+    {
+      "name": "raw_DefaultDamage_trailing_NOP9_4E1227",
+      "address": "0x004E1227",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "Trailing NOP padding outside the complete 1783-byte parent body.",
+      "executable_section": true
+    },
+    {
+      "name": "raw_DefaultDamage_name_callback_record_5CA058",
+      "address": "0x005CA058",
+      "size": 8,
+      "sha256": "51591b559880b9a7a8adea08847ce61770e6e182c1ad9d021d294e80be136cc4",
+      "purpose": "Exact eight-byte name-pointer/callback-pointer record; not a 12-byte parser record."
+    },
+    {
+      "name": "raw_DefaultDamage_name_aligned_5CA0D0",
+      "address": "0x005CA0D0",
+      "size": 16,
+      "sha256": "8fdbbbbbeebe888e76c1f47ade89c7386e47378612d468c4d0512f16b7c0e348",
+      "purpose": "DefaultDamage NUL-terminated name and two unchanged padding bytes."
+    }
+  ]
+}

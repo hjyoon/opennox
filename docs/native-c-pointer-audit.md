@@ -1,5 +1,16 @@
 # Native C entry pointer audit
 
+Current preparation, 2026-11-06: raw Regeneration `4E01D0` retains its active
+two-integer C ABI. Original reference `ccceee5ba` covers 257 complete bytes
+and 198 independent inputs. Native initial controls pass Go 1.27.3 normal and
+strict HD, 205 events each: 198 whole heaps, 36 read-fault domains, 11 C/Go layout
+facts and actual unchanged-C high-pointer faults after positive controls.
+Four PREEXEC mains and all preparation/cache failures are preserved.
+Complete consumers and raw implementation remain pending; no integer candidate
+is removed. See `testdata/regeneration_raw_initial_memory_4e01d0.md` under
+`src/legacy`. The active branch is `port/go1.27-multiarch`; recovery gaps and
+current evidence are recorded in the latest `porting-completion.md` checkpoint.
+
 This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.

@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Go 1.27 branch, recovered evidence and raw Regeneration preparation, 2026-11-06
+
+The active local/remote branch is **`port/go1.27-multiarch`**. Commit
+`3d4239ef7` moves five active workflow filters/guards; `089e8c344` fixes the
+campaign checker to load root sequence files with their stage loader.
+All 89 local Python checks and campaign CI 42165455841 pass. Historical
+old-branch/source citations below retain their original scope.
+
+Raw Regeneration original reference `ccceee5ba` executes 257 complete bytes
+(root 204/current HP 26/max HP 27) on 198 independent inputs in both FPU profiles,
+freezing whole heap/stack/caller/access/write/call/fault records. Armor-query
+and HP-adjustment bodies/effects remain explicit external boundaries; the root
+ABI is void. Independent native initial memory then passes Go 1.27.3 normal/
+strict HD: **205 events each**, all 198 whole initial heaps, 36 actual nil/
+protected read-fault domains and 11 C/Go layout facts. Both modes prove the
+unchanged two-integer C entry faults above 4 GiB after valid native-memory
+controls. Four actual mains are retained before execution. The new layout
+test's incorrect whole-Go/C-size expectation and all cache failures remain
+preserved. Production layouts are unchanged. See
+`src/legacy/testdata/regeneration_raw_initial_memory_4e01d0.md`.
+Complete consumers and raw native implementation remain pending.
+
+User-authorized recovery restores **eight exact original CI ZIPs, eight
+products and 167 manifest mains** from runs 42128055283, 42128110809 and
+42138984753. API sizes/digests, native headers/hashes, all 175 Go 1.27.3 build
+metadata records and raw jobs/logs qualify. Windows 12 PREEXEC mains remain
+distinct from Linux 155 historical POSTEXEC mains. Earlier/current Windows
+terminal identities, actions and multiplicities match exactly. Canonical ZIPs
+total 1,417,005,181 bytes; temporary extraction copies are removed.
+
+All 4,439 original asset hashes qualify after 1,774 missing staging map files
+are restored as verified hardlinks with zero copied original-data bytes.
+All nine candidate Save trees remain: 126 files/24,514,944 bytes. A fresh current
+inventory is recorded and three known historical Warrior 1 player hashes
+match. The deleted original 126-file inventory is absent; the other 123 prior
+hash comparisons remain unproved. Deleted local full-five executable/log
+archives and the two latest macOS products are still missing. Surviving runtime
+ZIPs/build metadata do not restore those executable bytes. Fresh builds and
+revalidation must be recorded separately. The five previously excluded product
+copies remain excluded.
+
+Receipts are under `artifacts/opennox-port-20261106/recovery`, including
+`recovered-eight-native-CI-complete-audit-v1.json` and
+`nine-candidate-Save-recovery-audit-v1.json`. Earlier retention claims below
+describe historical checkpoints; this section states what is present now.
+Remaining raw entries and all nine chapter final audits remain open.
+**Overall100 is false.**
+
 ### Four raw modifier entries: direct normal/HD product calls, 2026-11-06
 
 Clean source **`d009345015`** builds actual normal/HD macOS ARM64 products

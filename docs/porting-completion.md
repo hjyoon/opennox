@@ -55,6 +55,23 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration product wait budget, local macOS, 2026-11-06
+
+Clean source `8a7d74829` builds both Go1.27.3 ARM64 normal/HD products,
+preserves their exact binaries before execution and passes both startup
+checks. The first normal product E2E constructs/equips the original
+Regeneration1 Sword through real inventory input, then exits2 before any raw
+C diagnostic call: stock rate7200, FPS30 and MaxHP150 yield intervals1440/480,
+exceeding the diagnostic's1200-frame admission/wait budget.
+
+The diagnostic now allows3600frames for its bounded natural interval checks.
+The descriptor, game clock, HP maximum and production engine are unchanged.
+The failed product, complete panic/logs and mutable runtime are archived;
+the two-product actual-C E2E and full current local profiles remain pending.
+An independent resume-wrapper archive-name collision is preserved separately;
+both actual builds/help checks exit0 and the complete session is archived
+under a new name. No campaign or overall100credit is supplied.
+
 ### Raw Regeneration actual default services and pinned Go graphs, 2026-11-06
 
 At core source `aad99d057`, additive local tests execute eight actual public-C

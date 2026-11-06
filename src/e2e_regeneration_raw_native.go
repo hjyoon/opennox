@@ -15,6 +15,10 @@ import (
 // cooldown and synchronous early-gate fixtures are explicit preparation.
 // The world clock, stock descriptor, armor lookup and HP adjustment are real.
 // It does not establish naturally earned campaign progression.
+// Stock Regeneration1 at 7200, 30 FPS and 150 max HP has a 1440-frame
+// interval. Allow its next natural boundary without changing those inputs.
+const e2eRawRegenerationWaitFrames = 3600
+
 type e2eRawRegenerationFixture struct {
 	host, sword, leather, robe  *server.Object
 	modifier                    *server.ModifierEff
@@ -108,7 +112,7 @@ func (f *e2eRawRegenerationFixture) prepare() error {
 	rate := uint32(f.modifier.Update100.Val)
 	f.interval = rate * f.fps / uint32(f.maximum)
 	f.robeInterval = (rate / 3) * f.fps / uint32(f.maximum)
-	if f.interval <= 1 || f.robeInterval <= 1 || f.interval > 1200 || f.robeInterval > 1200 {
+	if f.interval <= 1 || f.robeInterval <= 1 || f.interval > e2eRawRegenerationWaitFrames || f.robeInterval > e2eRawRegenerationWaitFrames {
 		return fmt.Errorf("stock rates cannot provide bounded on/off interval controls: rate=%d FPS=%d MaxHP=%d intervals=%d/%d", rate, f.fps, f.maximum, f.interval, f.robeInterval)
 	}
 	attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{nil, nil, f.modifier, nil}}
@@ -238,7 +242,7 @@ func (f *e2eRawRegenerationFixture) run(row e2eRawRegenerationCase) error {
 
 func (sc *e2eScenario) CheckRawRegenerationNative(name string) {
 	f := &e2eRawRegenerationFixture{}
-	sc.addWhen(0, name+" prepare actual stock items", 1200, func() bool {
+	sc.addWhen(0, name+" prepare actual stock items", e2eRawRegenerationWaitFrames, func() bool {
 		return noxServer.Players.HostUnit() != nil && e2e.engageItem != nil
 	}, func() {
 		if err := f.prepare(); err != nil {
@@ -247,7 +251,7 @@ func (sc *e2eScenario) CheckRawRegenerationNative(name string) {
 	})
 	for _, row := range e2eRawRegenerationCases {
 		row := row
-		sc.addWhen(0, name+" "+row.name, 1200, func() bool { return f.ready(row) }, func() {
+		sc.addWhen(0, name+" "+row.name, e2eRawRegenerationWaitFrames, func() bool { return f.ready(row) }, func() {
 			if err := f.run(row); err != nil {
 				e2eError(err)
 			}

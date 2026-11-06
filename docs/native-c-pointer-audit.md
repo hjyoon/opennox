@@ -1,5 +1,13 @@
 # Native C entry pointer audit
 
+Both clean `8a7d74829` normal/HD Go1.27.3 products build and start. The first
+normal product E2E equips a stock Regeneration1 Sword, then stops before its
+first raw call because the new diagnostic budget1200 is below the unchanged
+stock1440-frame interval. Its failure/product/runtime are retained. Only the
+diagnostic wait budget increases to3600; production behavior and frozen56
+inputs stay exact. Actual two-product E2E and full current local profiles
+remain pending; no pointer candidate or chapter is newly credited.
+
 Actual default Regeneration services now pass eight prepared public-C
 conditions and two pinned Go graph calls with twelve in-HP-read GCs per local
 profile. Normal/strict HD Go1.27.3 each pass 1,641 events, including all792

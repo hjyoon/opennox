@@ -95,8 +95,50 @@ equivalence, Go-engine behavior and actual Windows/x86 fault atomicity are
 unqualified. No byte masking, synthesized native write or golden correction
 resolves this distinction.
 
-Initial native memory fixtures and full consumers remain pending. This is not
-a native parent port, service integration, new product/E2E or campaign result.
+The complete initial-memory fixture now passes locally with Go 1.27.3 in
+normal and strict highres/cgocheck2/checkptr2 modes: **1,044 test passes and
+two separately counted package passes per mode**, with no skips, failures or
+compiler warnings. Each mode checks all 1,038 independent inputs, 158,814 Go
+field reads, 157,472 readable in-process C reads, 158,814 standalone C reads
+including 1,342 protected accesses, and 2,076 five-word transport echoes.
+The initial fixture executes no parent algorithm. Its four new Go sources
+are selected only on Darwin ARM64; other platforms were not tested here.
+
+An independent reader verifies exact raw test IDs, four actual PREEXEC Go
+mains, two standalone worker lifecycles, actual ARM64 load instructions and
+fault PCs/addresses, pointer relocation, complete Go AFTER pages and PE
+region guards. C whole-page memcmp certificates pass; independent healthy
+C AFTER snapshots were not emitted. Twenty-three offsets have actual C
+named-field or explicit fixture-view evidence; four Monster offsets remain
+Go-derived adapters without a named C type. The initial relative-seal-path
+orchestration failure remains preserved. The corrected attempt changes only
+the invocation path, retaining sources, inputs, worker and expected results.
+Canonical archives retain all executed mains, worker plans and raw records;
+owned duplicate reports and compiler WORK directories were removed only
+after byte verification and terminal-process checks.
+
+The prepared bounded runner also passes the same 1,044 tests through its
+automatic worker build and PREEXEC archive in a fresh local normal run. Its
+two Go mains are byte-identical to the qualified normal mains. The distinct
+new worker, actual transitive headers, raw records and complete native
+reconstruction pass a separate check. The ordinary three-main default is
+preserved in source; this focused run explicitly selects two packages.
+Make's two Darwin ARM64 targets and the strict CGo shell now prepare their
+workers through a test-specific entry point. Fresh focused runs qualify the
+normal root/server/legacy route with 1,045 tests and the strict legacy/two-movie
+package route with 1,089 tests; each has three package passes, three PREEXEC
+mains and no skips, failures or compiler warnings. Independent checks retain
+every selected raw ID, native field value/fault and exact source lease.
+The normal run exercises Make's empty-environment defaults and explicit Clang
+ARM64 selection. The strict run keeps two distinct `noxmovie.test` files in
+package-specific reports, using the pinned Go tool's `/dev/null` output
+exception and retained compiler WORK. Its single invocation preserves the
+original caller arguments. Both modes retain complete raw evidence before
+byte-verified duplicate cleanup. These focused runs do not establish a full
+default Make or `./...` suite pass; broader local-gate qualification remains
+separate. Whole consumers and the native parent implementation remain pending.
+This is not a native parent
+port, service integration, new product/E2E or campaign result.
 The previous qualified code `4303b7607` and its local five-profile/shop/hearing
 evidence remain unchanged. All nine final campaign audits and overall 100%
 remain open; GitHub CI waiting and downloads remain disabled.

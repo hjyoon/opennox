@@ -4,6 +4,7 @@
 import argparse
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -38,11 +39,15 @@ def main():
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--test-output", type=Path, required=True)
     parser.add_argument("--go", default="go")
+    parser.add_argument("--expected-mains", type=int, default=3,
+                        help="Exact package executable count; ordinary default remains 3")
     parser.add_argument("--suite-timeout-seconds", type=float, default=2400)
     parser.add_argument("--test-timeout-seconds", type=float, default=1320)
     parser.add_argument("--heartbeat-seconds", type=float, default=30)
     parser.add_argument("arguments", nargs=argparse.REMAINDER)
     options = parser.parse_args()
+    if options.expected_mains < 1:
+        parser.error("--expected-mains must be positive")
     arguments = options.arguments
     if arguments[:1] == ["--"]:
         arguments = arguments[1:]
@@ -61,9 +66,18 @@ def main():
     go = shutil.which(options.go)
     if go is None:
         raise FileNotFoundError(options.go)
+    worker_helper = load_script("prepare-default-damage-initial-worker.py")
+    worker_setup = worker_helper.prepare_for_suite(
+        Path(__file__).resolve().parents[1], go, report, os.environ,
+    )
+    # Only these four prepared-worker variables change. Caller owns BEFORE,
+    # Go experiments, selectors, packages, counts and all ordinary test flags.
+    os.environ.update(worker_setup["environment"])
     command = [go, "test", "-work", "-o=" + str(test_output), "-json", "-exec=" + exec_argument] + arguments
     with (report / "test-command.json").open("x", encoding="utf-8") as stream:
         json.dump(dict(command=command, cwd=str(Path.cwd()),
+                       initial_worker_setup=worker_setup,
+                       expected_package_executables=options.expected_mains,
                        suite_timeout_seconds=options.suite_timeout_seconds,
                        test_timeout_seconds=options.test_timeout_seconds), stream, indent=2)
         stream.write("\n")
@@ -76,9 +90,10 @@ def main():
     with (report / "test.exit").open("x", encoding="utf-8") as stream:
         stream.write(str(code) + "\n")
     # Aggregate the pre-execution records even on failed or timed-out suites.
-    # The ordinary gate still requires all three completed package executables.
+    # The ordinary default still requires three completed package executables;
+    # a focused invocation must explicitly declare its exact package count.
     collector = load_script("preserve-go-test-binaries.py")
-    collector.preserve(report, test_output)
+    collector.preserve(report, test_output, expected_count=options.expected_mains)
     return code
 
 

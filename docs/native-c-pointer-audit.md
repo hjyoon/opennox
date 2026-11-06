@@ -18,8 +18,8 @@ unchanged on SIGBUS. Both observations remain exact; physical fault-state
 equivalence, Go-engine behavior and actual Windows/x86 atomicity are unqualified.
 The raw parent still takes integer object arguments, its C call edges remain,
 and ordinary Go aliases are unchanged. No integer candidate is removed: counts
-stay 266 integer/41 typed candidates with ten overlaps. Initial native fixtures,
-whole consumers, the parent port and nine final campaign audits remain open.
+stay 266 integer/41 typed candidates with ten overlaps. Whole consumers, the
+parent port and nine final campaign audits remain open.
 
 Pre-ABI controls additionally pass normal/strict local Go 1.27.3: four tests
 per profile, no skips/failures/warnings and four preserved PREEXEC mains. Healthy
@@ -27,7 +27,36 @@ high C memory, sixteen C/Go layout facts, real Buff queries and nil-target retur
 precede the actual old-C fault. Its earliest observed access is the typed Buffs
 callee using the truncated target plus344, before the parent class read. Source
 and weapon losses have transport-echo evidence only. No native parent engine
-or full 1,038-case initial-memory qualification is credited.
+is credited by those separate pre-ABI controls.
+
+The subsequent complete 1,038-case initial-memory fixture now qualifies in
+local normal and strict highres/cgocheck2/checkptr2 Go 1.27.3 runs. Each has
+1,044 raw test passes, zero skips/failures/warnings and two package passes
+counted separately. Per mode, 158,814 Go and 158,814 standalone C reads include
+1,342 protected accesses; 157,472 readable C loads and 2,076 actual five-word
+echoes also pass. Independent reconstruction checks exact test identities,
+four PREEXEC mains across both modes, actual ARM64 load opcodes/fault PCs,
+full-width pointer relocation, complete Go AFTER pages and PE region guards.
+C whole-page memcmp certificates are retained, with no independent healthy
+C AFTER snapshots. Twenty-three offsets have actual C named-field or explicit
+fixture-view evidence; four Monster offsets remain Go-derived adapters.
+
+The prepared bounded runner additionally passes a fresh focused normal run:
+1,044 tests, two byte-identical qualified Go mains and a distinct automatically
+built worker with actual header bytes preserved. Independent reconstruction
+of that worker's actual records also passes. Make and strict-shell preparation
+are now connected and independently qualify focused local runs of 1,045 and
+1,089 tests, respectively: three PREEXEC mains each, zero skips/failures/warnings,
+and exact initial-field/fault reconstruction. The strict route retains both
+distinct `noxmovie.test` mains by package identity; no package scope is pruned.
+The normal route exercises the original Make environment defaults. Neither
+focused result claims a complete default Make or `./...` run. The fixture Go
+sources select only Darwin ARM64. The failed
+relative-seal-path invocation and corrected absolute-path run remain, with
+all original inputs/expected values unchanged. No parent algorithm executes
+in this fixture, and no integer candidate leaves the inventory. Whole
+consumers, the raw parent port, physical post-fault equivalence and the nine
+final campaign audits remain open. No GitHub CI is awaited or downloaded.
 
 Damage predicates now qualify the complete recorded local five-profile scope
 at clean `4303b7607`: normal/highres 809,810 passes each, server variants

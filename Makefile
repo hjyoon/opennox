@@ -2,6 +2,7 @@ GO_WRAPPER := ../scripts/go.sh
 NOX_ORACLE_ROOT ?= ../nox
 NOX_ORACLE_MANIFEST ?= toolchain/oracle/nox-2023-1003-01.json
 NOX_CODE_MANIFEST ?= toolchain/oracle/game-exe-functions.json
+LOCAL_TEST_PYTHON ?= python3
 
 .PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64 test-darwin-amd64-server test-darwin-arm64 test-darwin-arm64-server build-darwin-arm64
 
@@ -36,12 +37,14 @@ test-darwin-amd64:
 # Native Apple Silicon server tests do not require client-side SDL2 or OpenAL.
 test-darwin-arm64-server:
 	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
-		CC='clang -arch arm64' ./scripts/go.sh -C src test -tags server . ./server ./legacy -count=1
+		CC='clang -arch arm64' "$(LOCAL_TEST_PYTHON)" ./scripts/run-prepared-go-tests.py \
+			--label make-darwin-arm64-server --expected-mains 3 -- -tags server . ./server ./legacy -count=1
 
 # Native Apple Silicon client tests require ARM64 SDL2 and OpenAL libraries.
 test-darwin-arm64:
 	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
-		CC='clang -arch arm64' ./scripts/go.sh -C src test . ./server ./legacy -count=1
+		CC='clang -arch arm64' "$(LOCAL_TEST_PYTHON)" ./scripts/run-prepared-go-tests.py \
+			--label make-darwin-arm64 --expected-mains 3 -- . ./server ./legacy -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \

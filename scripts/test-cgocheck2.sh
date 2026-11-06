@@ -34,4 +34,6 @@ echo "Strict CGo tests: $actual_go GOEXPERIMENT=$actual_experiment CGO_ENABLED=$
 if [ "$#" -eq 0 ]; then
 	set -- ./...
 fi
-exec "$test_go_command" -C "$repo_dir/src" test "$@"
+test_python=${OPENNOX_TEST_PYTHON:-python3}
+exec "$test_python" "$script_dir/run-prepared-go-tests.py" \
+	--go "$test_go_command" --label strict-cgocheck2 --isolate-main-names -- "$@"

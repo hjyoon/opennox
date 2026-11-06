@@ -1,5 +1,14 @@
 # Native C entry pointer audit
 
+Raw Readiness whole consumers now pass local macOS Go 1.27.3 normal and
+strict highres: 577 events each, no skips, failures or build warnings, and
+four preserved actual mains. All 71 sealed inputs remain exact. The checks
+include 113 C argument transports, 113 typed-runtime cases, 226 complete
+reference-guided transports and the existing native callback collision and
+old-C fault controls. The raw integer ABI/body and absent engine remain;
+no integer candidate is removed. See the Readiness projection document in
+`src/legacy/testdata` and the latest completion checkpoint.
+
 Independent Readiness initial memory now passes local normal/strict HD
 Go1.27.3:119events each,113whole heaps,1808typed probes,52unreadable domains,
 15C/Go facts and actual old-C high-pointer fault controls after healthy data

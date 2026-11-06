@@ -55,6 +55,27 @@ completion requirements.
 
 ## Current findings
 
+### Raw Readiness whole-consumer freeze, 2026-11-06
+
+After initial freeze `d67f2a171`, local macOS ARM64 Go 1.27.3 normal and
+strict highres each pass 577 events, with zero skips, failures or build
+warnings. Strict enables cgocheck2/checkptr2. All four actual PREEXEC mains
+and both drivers exit unforced 0; complete archives, source hashes and the
+71-file seal pass final qualification before committing the consumers.
+
+The 458 additive events include 113 full-pointer C stub transports, 113
+typed-runtime cases and 226 whole reference-guided transports. They check
+all 113 original heap/stack/caller/image/call/return/fault certificates,
+611 reads, 29 stimuli, 93 signed return words and 20 faults. Existing
+1,808 typed probes, 52 protected domains, three native callback collision
+witnesses and actual old-C high-pointer faults remain required in both modes.
+
+The engine remains absent and creates zero original-engine leaves; the C
+integer ABI/body are unchanged. Native FPU-control, product and campaign
+equivalence are separate gates. No integer-candidate reduction or overall
+completion is inferred. See `src/legacy/testdata/readiness_raw_native_projection_4e0960.md`
+and `ART/readiness-4e0960-native-entry-port/readiness-raw-consumer-normal-and-strict-qualified-v1.json`.
+
 ### Raw Readiness independent native initial freeze, 2026-11-06
 
 After original reference `e92c637c0`, local normal/strict HD Go1.27.3 each

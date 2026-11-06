@@ -6533,7 +6533,7 @@ int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5) {
 		}
 	}
 	if (a2 && a3 && !nox_xxx_unitIsEnemyTo_5330C0(a1, a2) && *(uint8_t*)(a1 + 8) & 6 &&
-			sub_4E1400(a2, (uint32_t*)a3) && !sub_4E1470(a3) ||
+			sub_4E1400((nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3) && !sub_4E1470((nox_object_t*)(uintptr_t)(uint32_t)a3) ||
 		*(uint8_t*)(a1 + 16) & 2) {
 		return 1;
 	}
@@ -6541,7 +6541,7 @@ int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5) {
 		if (nox_xxx_testUnitBuffs_4FF350(a1, 22)) {
 			if (*(uint8_t*)(a2 + 8) & 6) {
 				if (a3) {
-					if (sub_4E1400(a2, (uint32_t*)a3)) {
+					if (sub_4E1400((nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3)) {
 						nox_xxx_aud_501960(135, a2, 0, 0);
 						nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 22);
 						v41 = nox_xxx_gamedataGetFloatTable_419D70("ShockDamage", 4);
@@ -6884,6 +6884,7 @@ int nox_xxx_itemApplyPreDamageEffect_4E13B0(nox_object_t* a1p, nox_object_t* a2p
 #endif
 
 //----- (004E1400) --------------------------------------------------------
+#if 0 // Original PE32 transcription; native pointer entry is exported from Go.
 int sub_4E1400(int a1, uint32_t* a2) {
 	int v2;     // eax
 	int result; // eax
@@ -6911,8 +6912,10 @@ int sub_4E1400(int a1, uint32_t* a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004E1470) --------------------------------------------------------
+#if 0 // Original PE32 transcription; native pointer entry is exported from Go.
 int sub_4E1470(int a1) {
 	int v1;     // ecx
 	int result; // eax
@@ -6928,6 +6931,7 @@ int sub_4E1470(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004E14A0) --------------------------------------------------------
 int sub_4E14A0() { return 0; }

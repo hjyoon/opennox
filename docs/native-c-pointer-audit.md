@@ -1,5 +1,22 @@
 # Native C entry pointer audit
 
+Raw `4E1400`/`4E1470` now use typed object-pointer C exports after consumer
+freeze `c03b34f56`. Local macOS ARM64 Go 1.27.3 normal/strict HD each pass
+4,394 events with zero skips/failures/warnings and four PREEXEC mains.
+The 1,948 actual Go/public-C original comparisons preserve lazy BYTE/DWORD
+reads, full UseData pointers, cached values and 180 fault outcomes. Old C
+bodies511/231 remain exact under `#if 0`; ordinary guarded aliases remain.
+The raw DefaultDamage parent still takes integer pointers: three call-site
+casts retain existing DWORD bits and do not restore lost native bits.
+
+The new phase protects 89 immutable inputs and admits only reviewed shared
+C/header changes plus the native Go file, totaling 92 inputs. Readiness449/
+nativeGo1216/typed declaration/four ABI32 fallback anchors stay exact. The
+host scan now reports 191 C files, 477 headers, 3,457 definitions, 266 integer
+candidates, 41 typed candidates, ten overlaps and no warnings. Only these
+two entries leave the previous integer set. Actual Go-heap/GC, current
+products, broader profiles, the raw parent and nine final audits remain open.
+
 Raw damage predicates now also pass whole consumers after `2ed97ebe7`:
 local normal/strict HD Go 1.27.3 each pass 2,449 events, zero skips/failures/
 warnings and four actual PREEXEC mains. All 91 phase inputs remain exact.

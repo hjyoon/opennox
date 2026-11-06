@@ -55,6 +55,38 @@ completion requirements.
 
 ## Current findings
 
+### Raw damage-predicate native pointer entries, 2026-11-06
+
+After complete-consumer freeze `c03b34f56`, `sub_4E1400` and `sub_4E1470`
+become typed object-pointer C entries exported from Go. Their exact old
+511-byte and 231-byte C bodies remain under `#if 0`. The implementation
+retains cached class values, WAND priority, conditional reads, source/flags
+BYTE reads, friendly subclass DWORD reads and the original nil fault domain.
+The ordinary guarded Go aliases remain unchanged. Three raw DefaultDamage
+call sites explicitly pass their existing DWORD address bits; the parent's
+integer arguments still lose native pointer bits and remain unresolved.
+
+Local macOS ARM64 Go 1.27.3 normal/strict highres each pass 4,394 events,
+with zero skips, failures or build warnings. All four PREEXEC mains and both
+drivers exit unforced 0. The 1,948 actual engine leaves compare all 487
+inputs through Go and the public C symbols against both retained reference
+labels, including 180 in-process fault outcomes. Actual C traces retain
+974 entries, 884 returns and ninety faulting entries per mode. These are
+recoverable memory-fault observations, not new child processes.
+
+All 89 immutable inputs remain exact. The new phase explicitly permits
+only the two shared production C/header files and the new native Go file;
+the dedicated damage header stays exact. Individual Readiness C449/native
+Go1216/declaration/four ABI32 fallback anchors remain unchanged. The host
+normal scan has 191 C files, 477 headers, 3,457 definitions, 266 integer
+candidates, 41 typed candidates, ten overlaps and zero warnings. Only these
+two entries leave the preceding integer set; counts are static triage.
+
+Actual pinned Go-owned graphs/GC, current products, broader local profiles,
+raw-parent fidelity and nine campaign final audits remain pending. Evidence:
+`ART/damage-predicates-4e1400-native-entry-port/damage-predicates-raw-native-normal-and-strict-qualified-v1.json`
+and its `native-C-pointer-audit-v1` directory.
+
 ### Raw damage-predicate whole-consumer freeze, 2026-11-06
 
 After initial freeze `2ed97ebe7`, local macOS ARM64 Go 1.27.3 normal and

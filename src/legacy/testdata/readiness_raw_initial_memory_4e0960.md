@@ -42,7 +42,7 @@ native identity case was introduced. Their exact sources, seals, mains and
 logs remain. The accepted v2 adds only the native token relocation/control
 and assertions in two initial Go files; header/generator/initial gzip and all
 prior56/reference8 inputs remain exact. Evidence:
-`ART/readiness-4e0960-native-entry-port/readiness-raw-initial-normal-strict-qualified-v2.json`.
+`ART/readiness-4e0960-native-entry-port/readiness-raw-initial-normal-and-strict-qualified-v2.json`.
 
 Keep these initial model/getter/generator/fixture bytes frozen before complete
 consumer acceptance and native implementation. `readiness_raw_4e0960.h` is

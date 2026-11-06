@@ -75,7 +75,7 @@ The raw C ABI/body remain old and no engine or full consumer has run. This
 freezes independent initial evidence before the next complete consumer step;
 it removes no additional pointer candidate and supplies no product/campaign
 or overall100credit. See `src/legacy/testdata/readiness_raw_initial_memory_4e0960.md`
-and `ART/readiness-4e0960-native-entry-port/readiness-raw-initial-normal-strict-qualified-v2.json`.
+and `ART/readiness-4e0960-native-entry-port/readiness-raw-initial-normal-and-strict-qualified-v2.json`.
 
 ### Raw Regeneration complete local five-profile checkpoint, 2026-11-06
 

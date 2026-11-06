@@ -1,5 +1,18 @@
 # Native C entry pointer audit
 
+Readiness now qualifies the complete recorded local five-profile scope at
+clean `bfa2fea41`: normal/highres 805,394 passes each, server variants 799,175
+each and strict highres 669,195, all with zero failures/warnings and 26 actual
+PREEXEC mains. Each retains 9,138 original Go/C leaves and all 76 phase inputs.
+All five actual e92/bfa primary comparisons preserve every shared old test
+ID/action/multiplicity and add exactly 1,038 raw Readiness IDs; address-only
+differences remain explicit and unnormalized. Normal/HD products also pass
+ten original shop/hearing scenarios. Targeted images and byte-preserving
+cleanup are complete, with generic merchant-name and hearing actor-visibility
+limitations recorded. Static counts remain 268 integer/41 typed candidates;
+no additional entry is removed by these broader checks. Nine final chapter
+audits and overall completion remain open. See the latest completion evidence.
+
 Raw Readiness also passes actual pinned Go-heap integration after `7b8e947f3`.
 Normal/strict highres each pass 1,040 events, preserving the preceding 1,029
 and adding eleven. Six Go objects per graph are individually pinned; three

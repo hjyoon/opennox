@@ -55,6 +55,69 @@ completion requirements.
 
 ## Current findings
 
+### Readiness complete local profiles and shop/hearing products, 2026-11-06
+
+Clean `bfa2fea41` passes all five recorded macOS ARM64 Go 1.27.3 profiles.
+The inherited package lists and strict selector remain; strict adds only raw
+Readiness. All drivers and 26 actual PREEXEC mains exit unforced 0, with no
+failures or build warnings. This is the recorded package scope, not every
+repository package.
+
+| Local profile | Passing events | Skipped events | PREEXEC mains |
+| --- | ---: | ---: | ---: |
+| normal | 805394 | 46 | 6 |
+| highres | 805394 | 46 | 6 |
+| server | 799175 | 7 | 4 |
+| server, highres | 799175 | 7 | 4 |
+| strict highres, cgocheck2/checkptr2 | 669195 | 10 | 6 |
+
+Each retains 9,138 original-family leaves: 4,064 Go and 5,074 actual C,
+including the 452 Readiness comparisons. Readiness also retains 36 in-call
+GCs and eight stimuli; the preceding Regeneration defaults and twelve GCs
+remain required. All 76 phase inputs and complete source hashes stay exact.
+
+A separate comparison authenticates all five actual `e92c637c0` baseline
+ZIPs against these five ZIPs, including 52 old/new PREEXEC mains. Each adds
+exactly 1,038 raw Readiness identities with run1/pass1. Every shared old ID,
+action and multiplicity is unchanged; unexpected missing/extra rows are 0.
+Raw address names are retained without normalization: the first four pairs
+have six address-only difference rows, strict four. Source/body hashes and
+actual per-profile serial observations bind those rows. All derived SQLite
+databases are hash-recorded and removed after canonical archive checks.
+
+The same clean source's normal/HD products build, pass help and are archived
+before execution. All ten unchanged shop/hearing YAML runs exit unforced 0.
+Fireball staff repair restores client/server charges to 20/20, original prices
+510/599/597 and gold debits, combined durability and full-item guards. The
+actual rejection frame reads “You cannot sell a quest item.”; item and gold
+remain. Quantity and equipped sales preserve their original item/equipment
+transitions and submit eight TreasurePickup307 events through real client
+packets and positive-gain queued OpenAL buffers. Audio output uses the null
+backend; physical speaker fidelity is not measured.
+
+Prepared NPC/Troll hearing passes 20 conditions across both products: eight
+actual native direction changes and twelve negative conditions. Sight0 and
+aggression0.83 isolate hearing before visual enemy acquisition; server audio
+events, native listening and AI updates are real, while client audio is mocked.
+This does not establish default NPC configuration or actual keyboard-run/
+earned-spell input. All 56 captured frame paths are inspected or linked to
+already inspected identical PNG bytes. World/HUD and targeted shop UI are
+readable; some hearing actors are obscured, so images alone do not prove turns.
+
+The generic prepared merchant lacks an instance ID and visibly falls back to
+`MISSING:NPCShopkeeper`. Original C naming rules and the original CSF explain
+the missing generic key; this is separate from the repaired sale rejection.
+The condition remains recorded, with a fixture-only correction prepared but
+not applied in this checkpoint. No blanket visual/UI pass is claimed.
+
+Original 4,439 assets and 126 candidate Save files remain exact. Canonical
+products, executed test mains, logs, all frames and limitations are preserved.
+After fresh byte verification, ten owned runtime directories, two raw product
+copies and 56 owned temporary PNGs are removed. The nine campaign final audits
+remain open; no completion percentage follows from these event counts.
+Evidence: `ART/regeneration-4e01d0-native-entry-port/local-full-five-readiness-v1`
+and `ART/current-local-shop-hearing-regressions-v1`.
+
 ### Raw Readiness pinned Go-heap and GC checkpoint, 2026-11-06
 
 After native engine `7b8e947f3`, local normal/strict highres Go 1.27.3 each

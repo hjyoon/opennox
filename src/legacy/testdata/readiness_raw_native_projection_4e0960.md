@@ -92,3 +92,25 @@ never bypassed. C trace data is cleared before pinned graph cleanup.
 The separate phase seal is `readiness-goheap-preexecution-input-seal-v1.json`;
 the final proof is `readiness-raw-goheap-normal-and-strict-qualified-v1.json`.
 Product, broader local suites and campaign qualification remain separate.
+
+## Complete local profile checkpoint
+
+At clean `bfa2fea41`, normal/highres each pass 805,394 events, server variants
+799,175 each and strict highres 669,195. All five have zero failures/build
+warnings and retain their existing skips and package/selector scope. All 26
+actual PREEXEC mains exit unforced 0. Each profile includes all 452 Readiness
+original leaves, 36 in-call GCs and eight stimuli, with the 76 phase inputs
+unchanged. These counts do not measure feature coverage.
+
+The independent full primary-event comparison against actual e92 archives
+finds only the expected 1,038 Readiness IDs and observed address-name rows.
+All shared old IDs/actions/multiplicities remain exact. Neither test names
+nor addresses are normalized. Canonical archives and actual executables are
+retained; derived counters and verified owned duplicates are removed.
+
+The same source's normal/HD products pass ten stock shop/hearing diagnostics.
+These are broader integration checks; ordinary gameplay still uses its
+unchanged guarded Readiness alias. Product hearing uses prepared NPC settings,
+sound playback uses a null output backend, and frame review records both the
+generic merchant-name fallback and obscured hearing actors. No native image/
+FPU equivalence, physical sound, earned campaign or overall completion is added.

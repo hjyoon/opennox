@@ -55,6 +55,50 @@ completion requirements.
 
 ## Current findings
 
+### Four raw modifier entries: direct normal/HD product calls, 2026-11-06
+
+Clean source **`d009345015`** builds actual normal/HD macOS ARM64 products
+with Go 1.27.3 and clean VCS metadata. Each product passes ten conditions and
+40 direct calls through the four public C APIs: **20 conditions / 80 calls**
+in total. Stock Sword construction, inventory placement, mouse/protocol
+equipment and dequipment, and the ordinary parent service execute on live
+objects. All eight checked object/data/modifier addresses exceed4GiB.
+Returns, guarded output, equipped state and unchanged health agree; optional
+memory/call/parent observers are nil.
+
+The sealed asset's `MagicReflection1` and `Grip1` entries are disabled
+placeholders with nil callbacks and zero strength. Two conditions per product
+verify that original state. The other eight use private complete descriptor
+copies configured with the actual C callback identities. They cover loose,
+equipped and dequipped states, negative/zero/maximum signed strengths,
+ineligible slots and reversed eligible slots. Original descriptors remain
+unchanged. This is prepared product/API evidence; it supplies no natural
+stock active-effect or earned campaign credit.
+
+Normal and strict HD focused regressions each pass5,381events without skips,
+failures or warnings, including all1,010actual-C complete original leaves.
+All prior focused identities/actions/multiplicities remain. Eight actual
+mains are retained before execution. The two product diagnostic failures
+(requiring active stock placeholders, then assuming `alloc.New` copied its
+argument) and their products remain preserved. Only diagnostic code changes;
+all38frozen inputs and existing engines stay exact.
+
+The earlier full-five, six-CI and20case hearing results retain their original
+`5eee32f9b` execution scope. Of their8,152source inputs,8,151remain exact;
+the existing E2E parser only gains the new diagnostic action. The two added
+Go files and YAML provide the separate current product diagnostic. No hearing
+production defect is found in the previously tested conditions.
+
+All4,439original asset files and126prior Save files retain their sealed
+hashes. Both products, runtime state, logs and visually reviewed frames are
+archived byte-exactly; raw products/runtime and six duplicate frame/metadata
+files are removed after verification. Evidence:
+`ART/four-modifier-native-direct-product-go1273-v3/current-code-four-raw-entry-direct-product-final-qualified-v1.json`
+and `previous-full5-CI6-hearing-unchanged-input-binding-v1.json` in that folder.
+Direct four-entry product invocation is now verified within this explicit
+diagnostic scope. Remaining raw pointer entries and all nine chapter final
+audits remain open. **Overall100 is false.**
+
 ### Four raw modifier entries: five local and six native CI gates, 2026-11-06
 
 Clean source **`5eee32f9b`**, including the older C-entry signed-expectation
@@ -109,8 +153,10 @@ Evidence: `ART/four-modifier-native-full-five-go1273/full-five-four-modifier-Go1
 and `ART/four-modifier-native-ci-go1273/six-native-four-modifier-Go1273-current-code-final-qualified-v1.json`.
 Current CI runs: Windows42128055283 and Linux42128110809. The eight preparation/
 engine/test-correction commits are pushed to the authorized branch. Direct
-four-entry product/default-gameobject coverage, remaining raw pointer work
-and all nine chapter final audits remain incomplete. **Overall100 is false.**
+four-entry product/default-gameobject coverage was still pending at this
+checkpoint; the later product diagnostic above supplies that evidence.
+Remaining raw pointer work and all nine chapter final audits remain
+incomplete. **Overall100 is false.**
 
 ### Four raw modifier entries: native pointer implementation, 2026-11-06
 

@@ -4,6 +4,24 @@ This inventory prioritizes remaining public C ABIs after the native point,
 occupancy, retreat and ROAM lifecycle ports. It does not supply a porting
 denominator or count confirmed runtime crashes.
 
+Latest direct-product checkpoint, 2026-11-06: clean source `d009345015`
+passes20conditions and80actual public-C calls in normal/HD Go 1.27.3 ARM64
+products. Actual stock item/inventory construction, mouse equipment messages
+and default owner-chain services use live addresses above4GiB. Original
+`MagicReflection1`/`Grip1` descriptors are disabled placeholders: two negative
+conditions per product preserve that state; eight others configure only
+private complete copies with real C callbacks and diagnostic strengths/slots.
+No natural stock active-effect or earned campaign credit is claimed. Health,
+original descriptors and all38frozen inputs remain unchanged. Focused normal/
+strict HD each pass5,381events, including1,010complete actual-C original
+leaves and all prior identities/actions/multiplicities. Eight PREEXEC mains,
+both earlier diagnostic failures and all products are retained; verified raw
+duplicates are removed. The previous full5/CI6/hearing runs retain their
+`5eee32f9b` execution scope;8,151of8,152old source inputs are exact, with only
+the existing E2E parser gaining the diagnostic action. See
+`ART/four-modifier-native-direct-product-go1273-v3/current-code-four-raw-entry-direct-product-final-qualified-v1.json`.
+Other raw pointer entries and all nine chapter final audits remain open.
+
 Latest full validation checkpoint, 2026-11-06: clean source `5eee32f9b`
 passes all five recorded macOS Go 1.27.3 profiles and all six current native
 Windows/Linux CI profiles. Each profile executes1,010actual-public-C whole
@@ -16,8 +34,9 @@ Actual clean normal/HD products also pass20NPC/Troll hearing cases, including
 eight physical sound-directed turns and12negative controls. This verifies
 prepared hearing conditions, with no hearing production defect found there;
 it does not exercise the four raw modifier entries directly in a live product.
-Direct four-entry product/default-gameobject diagnostics, other raw pointer
-entries and nine chapter final audits remain open. No overall100 credit.
+The later checkpoint above adds direct four-entry product/default-gameobject
+diagnostics. Other raw pointer entries and nine chapter final audits remain
+open. No overall100 credit.
 See `porting-completion.md` and
 `ART/four-modifier-native-ci-go1273/six-native-four-modifier-Go1273-current-code-final-qualified-v1.json`.
 

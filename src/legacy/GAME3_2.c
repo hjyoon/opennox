@@ -6008,6 +6008,8 @@ void sub_4E0170(void* effect, nox_object_t* owner, const nox_object_t* item) {
 }
 
 //----- (004E01D0) --------------------------------------------------------
+#if 0
+// PE32 provenance; the public raw symbol is now the native-width Go export.
 void nox_xxx_effectRegeneration_4E01D0(int a1, int a2) {
 	uint32_t* v2;      // esi
 	unsigned short v3; // di
@@ -6038,6 +6040,7 @@ void nox_xxx_effectRegeneration_4E01D0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004E02C0) --------------------------------------------------------
 #if 0

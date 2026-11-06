@@ -55,6 +55,39 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration native pointer implementation, local macOS, 2026-11-06
+
+After complete consumer freeze `88625f307`, the raw public
+`nox_xxx_effectRegeneration_4E01D0` uses two native pointers and a void Go
+export. The exact old C body remains under `#if 0`; all 56 original/initial/
+runtime/getter/consumer inputs stay byte-identical. The separately registered
+three-argument variant stays unchanged. The new body retains cached holder,
+HP helper reloads, class-before-rate reads, unsigned DWORD product wrapping
+and both original DIV fault stages without extra admission guards.
+
+Local Go 1.27.3 normal and strict HD (`cgocheck2`, `checkptr=2`) each pass
+**1,631 events**, including **792 actual Go/C complete original leaves**.
+Whole native/PE32 heaps, ordered reads/stimuli/calls/WORD returns and memory/
+DIV fault prefixes agree with both original profiles. Six PREEXEC mains and
+both drivers exit unforced, with no skips, failures or warnings. Symbol
+inspection binds the actual normal main to the raw C entry, its Go engine/
+cgo bridge and the separate registered entry. It adds no ABI proof by itself.
+
+The canonical host-normal scan measures 191 C files/475 headers, 3,460 active
+definitions, 269 integer candidates, 41 typed candidates and ten overlaps,
+with zero warnings. An exact prior Git projection reproduces 3,461/270/41/10
+over 191 C/474 headers. Only raw Regeneration leaves the integer inventory;
+all other identities and prior headers remain exact. The added header is
+reported explicitly. These are triage counts, not a completion denominator.
+
+Evidence under `artifacts/opennox-port-20261106`:
+`regeneration-4e01d0-native-entry-port/regeneration-raw-native-normal-and-strict-qualified-v1.json`
+and `recovery/regeneration-native-C-pointer-audit-v1/regeneration-native-canonical-host-pointer-audit-qualified-v1.json`.
+Actual default armor/HP-adjust effects, pinned Go graph cases, products and
+full current local profiles remain pending. Testing continues locally on
+macOS without GitHub CI waiting. Nine chapter final audits remain open;
+**overall100 is false**.
+
 ### Raw Regeneration complete consumer preparation, 2026-11-06
 
 The latest user instruction limits current testing to local macOS and removes

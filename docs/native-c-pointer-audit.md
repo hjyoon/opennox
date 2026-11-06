@@ -1,5 +1,20 @@
 # Native C entry pointer audit
 
+Raw Regeneration is now a native two-pointer void Go export, after consumer
+freeze `88625f307`. Exact old C bytes remain under `#if 0` and all 56 frozen
+inputs stay exact. Local normal/strict HD Go 1.27.3 each pass 1,631 events,
+including 792 actual Go/C complete original leaves and six PREEXEC mains
+across both modes. Actual default services, GC and product gates remain.
+
+The remeasured canonical host-normal inventory is **191 C/475 headers,
+3,460 active definitions, 269 integer candidates, 41 typed candidates and ten
+overlaps, zero warnings**. Prior source reproduces 3,461/270/41/10 over
+191 C/474 headers. The sole removed integer identity is raw Regeneration;
+all other integer/typed identities and all 474 old headers stay exact. One
+dedicated Regeneration header is added. Cgo preambles and other target macros
+remain outside this view. Counts do not supply a completion percentage.
+See the latest local checkpoint in `porting-completion.md` for evidence.
+
 Complete Regeneration consumers subsequently pass local Go1.27.3 normal/strict
 HD,839 events each:396 whole original transports,198 frozen-runtime cases,
 actual existing HP helpers and complete read/call/memory/DIV fault prefixes.

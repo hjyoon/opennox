@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "regeneration_raw_4e01d0.h"
 
 void nullsub_22();
 void nullsub_36();
@@ -27,7 +28,6 @@ nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* w
 void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
 int32_t nox_xxx_gripEffect_4E0480(void* effect, nox_object_t* item, uintptr_t context, nox_object_t* target, uintptr_t other, int32_t* output);
-void nox_xxx_effectRegeneration_4E01D0(int a1, int a2);
 void nox_xxx_effectRegenerationNative_4E01D0(void* effect, nox_object_t* item, void* context);
 void nox_xxx_stunEffect_4E04D0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);

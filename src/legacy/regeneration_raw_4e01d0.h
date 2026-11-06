@@ -3,7 +3,6 @@
 
 #include "defs.h"
 
-/* The unchanged raw ABI. Native initial controls must precede its port. */
-void nox_xxx_effectRegeneration_4E01D0(int effect, int item);
+void nox_xxx_effectRegeneration_4E01D0(void* effect, nox_object_t* item);
 
 #endif

@@ -1,5 +1,14 @@
 # Native C entry pointer audit
 
+Raw damage predicates now also pass whole consumers after `2ed97ebe7`:
+local normal/strict HD Go 1.27.3 each pass 2,449 events, zero skips/failures/
+warnings and four actual PREEXEC mains. All 91 phase inputs remain exact.
+The added 1,954 events cover 487 actual C argument transports, 487 typed
+runtime cases and 974 complete reference-guided transports, retaining the
+preceding 495 IDs and six actual old-C fault children. Both raw integer
+ABIs/bodies remain and native engine leaves are zero. No additional integer
+candidate, product or campaign audit is credited.
+
 Raw damage predicates `4E1400`/`4E1470` now pass independent initial-memory
 checks before implementation: local macOS ARM64 Go 1.27.3 normal/strict HD
 each pass 495 events with zero skips/failures/warnings and four PREEXEC

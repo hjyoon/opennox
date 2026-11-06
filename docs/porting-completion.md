@@ -55,6 +55,28 @@ completion requirements.
 
 ## Current findings
 
+### Raw damage-predicate whole-consumer freeze, 2026-11-06
+
+After initial freeze `2ed97ebe7`, local macOS ARM64 Go 1.27.3 normal and
+strict highres each pass 2,449 events, with no skips, failures or build
+warnings. Both drivers and all four PREEXEC mains exit unforced 0. Exact
+run/pass identities retain the preceding 495 and add 1,954 consumer events;
+all 91 phase inputs and canonical archives pass final qualification.
+
+The two new files check all 487 complete original certificates, separate
+actual C two-argument/one-argument transports and signed scalar returns,
+487 typed-runtime cases with 2,922 probes/1,222 unreadable domains, and 974
+reference-guided whole transports. These retain exact BYTE/DWORD widths,
+full pointers, ordered reads, eighteen stimuli and ninety in-process fault
+observations. All six actual old-C fault children remain. The original
+146-byte execution and two FPU proofs stay unchanged; reference-label loops
+do not establish native FPU-control equivalence.
+
+Both raw C integer ABIs/bodies remain and both native engine hooks are nil.
+There are zero engine descendants in this phase. Actual predicate execution,
+pinned Go-owned graphs/GC, the raw parent integer-pointer loss and products
+remain pending. Evidence: `ART/damage-predicates-4e1400-native-entry-port/damage-predicates-raw-consumer-normal-and-strict-qualified-v1.json`.
+
 ### Raw damage-predicate independent initial memory, 2026-11-06
 
 After reference freeze `746613950`, local macOS ARM64 Go 1.27.3 normal

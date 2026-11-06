@@ -10174,6 +10174,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckShopMovement(true, true, l.Name)
+		case "check-modifier-native":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckModifierPredicatesNative(l.Text, l.Name)
 		case "check-ai-inversion":
 			if dt != 0 {
 				sc.Wait(dt, "")

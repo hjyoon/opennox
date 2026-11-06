@@ -55,6 +55,31 @@ completion requirements.
 
 ## Current findings
 
+### Raw damage-predicate independent initial memory, 2026-11-06
+
+After reference freeze `746613950`, local macOS ARM64 Go 1.27.3 normal
+and strict highres each pass 495 events, with no skips, failures or build
+warnings. Strict enables cgocheck2/checkptr2. Both drivers and all four
+PREEXEC mains exit unforced 0; archives and all 89 phase inputs pass final
+qualification before freezing the five initial-memory files.
+
+The 487 independently prepared native heaps retain all 317 attack and 170
+friendly inputs. Whole 64 KiB native/PE guards, 15 C/Go layout facts and
+2,922 individual field probes agree, including 1,222 unreadable domains.
+Three actual old-C children per mode fault after healthy full-memory and
+native-field controls: truncated source, weapon UseData and friendly weapon.
+The source case intentionally supplies a nil weapon; all required nonnull
+native pointers are above 4 GiB. Actual failures use the archived parent
+test executable. A preceding metadata-only attempt failed before any build
+or test main because `go env GOENV` returns empty when `GOENV=off`; its
+complete failure remains, and only that query expectation is corrected.
+
+The raw C bodies/integer ABI remain unchanged and the native engine is
+absent. Complete consumers, pinned Go-owned graphs/GC, parent integer-pointer
+loss and product integration remain pending. These initial-memory results
+do not establish native physical fault-address/PC equivalence or complete a
+campaign audit. Evidence: `ART/damage-predicates-4e1400-native-entry-port/damage-predicates-raw-initial-normal-and-strict-qualified-v2.json`.
+
 ### Readiness complete local profiles and shop/hearing products, 2026-11-06
 
 Clean `bfa2fea41` passes all five recorded macOS ARM64 Go 1.27.3 profiles.

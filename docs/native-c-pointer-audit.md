@@ -1,5 +1,16 @@
 # Native C entry pointer audit
 
+Raw damage predicates `4E1400`/`4E1470` now pass independent initial-memory
+checks before implementation: local macOS ARM64 Go 1.27.3 normal/strict HD
+each pass 495 events with zero skips/failures/warnings and four PREEXEC
+mains. All 487 heaps, 2,922 typed probes, 1,222 unreadable domains, 15 layout
+facts and 89 frozen phase inputs qualify. Three actual old-C fault children
+per mode follow healthy controls, covering source, weapon UseData and friendly
+weapon pointer loss. A metadata-only GOENV query failure is retained; it
+started no build or test main. The raw integer ABI/body still remain and no
+native engine or complete consumer is present. No static candidate, product
+or campaign audit is credited. See the latest completion checkpoint.
+
 Readiness now qualifies the complete recorded local five-profile scope at
 clean `bfa2fea41`: normal/highres 805,394 passes each, server variants 799,175
 each and strict highres 669,195, all with zero failures/warnings and 26 actual

@@ -1,0 +1,5 @@
+#ifndef OPENNOX_DAMAGE_PREDICATES_RAW_4E1400_H
+#define OPENNOX_DAMAGE_PREDICATES_RAW_4E1400_H
+#include "defs.h"
+#include "GAME3_2.h"
+#endif

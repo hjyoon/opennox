@@ -55,6 +55,25 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration complete consumer preparation, 2026-11-06
+
+The latest user instruction limits current testing to local macOS and removes
+GitHub CI waiting/polling/downloads from this workflow. The full porting and
+nine chapter audit scope remains; earlier CI results retain historical scope.
+
+After initial freeze `6b7b6756a`, complete raw Regeneration consumers pass
+Go 1.27.3 normal/strict HD: **839 events each**, with zero skips, failures or
+warnings and six PREEXEC mains. Each mode runs 396 complete original
+transports, 198 frozen-runtime cases and the earlier initial/fault controls.
+Actual existing HP getters and declared input changes reproduce all ordered
+reads, calls, WORD returns and memory/DIV fault prefixes; whole native/PE32
+heaps and original stack/caller/register/write certificates agree. A separate
+whole PE image reconstruction qualifies all 198 records and clock changes.
+See `src/legacy/testdata/regeneration_raw_native_projection_4e01d0.md` for the
+precise compositional scope. The raw native engine is still absent and its
+compiled engine consumer has zero leaves during this preparation. Actual
+implementation/default services/products remain next; overall100 is false.
+
 ### Go 1.27 branch, recovered evidence and raw Regeneration preparation, 2026-11-06
 
 The active local/remote branch is **`port/go1.27-multiarch`**. Commit

@@ -6,10 +6,28 @@ func unitGetMaxHPNative4EE7A0(unit *Object) uint16 {
 			return unit
 		},
 		loadHealth: func(unit *Object) *HealthData {
-			return unit.HealthData
+			read := UnitHPRead4EE780{Unit: unit, Field: 0}
+			if ObserveUnitHPRead4EE780 != nil {
+				ObserveUnitHPRead4EE780(read)
+			}
+			health := unit.HealthData
+			if ObserveUnitHPRead4EE780 != nil {
+				read.Complete, read.ValueHealth = true, health
+				ObserveUnitHPRead4EE780(read)
+			}
+			return health
 		},
 		loadMaximum: func(health *HealthData) uint16 {
-			return health.Max
+			read := UnitHPRead4EE780{Health: health, Field: 2}
+			if ObserveUnitHPRead4EE780 != nil {
+				ObserveUnitHPRead4EE780(read)
+			}
+			value := health.Max
+			if ObserveUnitHPRead4EE780 != nil {
+				read.Complete, read.Value = true, value
+				ObserveUnitHPRead4EE780(read)
+			}
+			return value
 		},
 	})
 }

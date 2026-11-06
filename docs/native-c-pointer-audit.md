@@ -1,5 +1,13 @@
 # Native C entry pointer audit
 
+Complete Regeneration consumers subsequently pass local Go1.27.3 normal/strict
+HD,839 events each:396 whole original transports,198 frozen-runtime cases,
+actual existing HP helpers and complete read/call/memory/DIV fault prefixes.
+Six PREEXEC mains are retained. The raw engine remains absent and its original
+consumer has zero engine leaves; no candidate is removed. The latest user
+instruction continues local macOS tests without waiting for GitHub CI.
+See `src/legacy/testdata/regeneration_raw_native_projection_4e01d0.md`.
+
 Current preparation, 2026-11-06: raw Regeneration `4E01D0` retains its active
 two-integer C ABI. Original reference `ccceee5ba` covers 257 complete bytes
 and 198 independent inputs. Native initial controls pass Go 1.27.3 normal and

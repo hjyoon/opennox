@@ -1,5 +1,27 @@
 # Native C entry pointer audit
 
+Damage predicates now qualify the complete recorded local five-profile scope
+at clean `4303b7607`: normal/highres 809,810 passes each, server variants
+803,591 each and strict highres 673,611, with no failures/warnings and 26
+actual PREEXEC mains. All 93 inputs and 11,086 original-family leaves remain.
+All five actual bfa baseline primary comparisons retain every shared raw ID/
+action/multiplicity, adding exactly 4,416 IDs; address rows remain explicit
+and unnormalized. Normal/HD products also pass ten fresh original shop/hearing
+scenarios. Targeted image evidence covers 56 paths with recorded merchant-name
+and actor-visibility limits. Full failure records, canonical products/test
+mains, 4,439 assets and 126 Save files remain after byte-verified duplicate
+cleanup. The global-marker wrapper and tuple/JSON aggregate errors are
+preserved with their separate corrected v2 evidence; gameplay code and
+original YAML/assertions did not change for these corrections.
+
+Static counts stay 266 integer/41 typed candidates with ten overlaps; the
+broader checks remove no additional entry. Raw `4E0B30` still narrows object
+arguments. Its next reference plan distinguishes the existing 1,792-byte
+seal from the 1,783-byte body/nine trailing NOPs, and 50 direct call sites
+to 28 unique targets from three indirect sites. This is static preparation:
+no new parent input freeze, original execution or native implementation is
+credited. Nine campaign final audits and overall completion remain open.
+
 Raw damage predicates also pass actual pinned Go-heap integration after
 `884557bf4`: local normal/strict HD Go 1.27.3 each pass 4,417 events, no
 skips/failures/warnings and four PREEXEC mains. The previous 4,394 events

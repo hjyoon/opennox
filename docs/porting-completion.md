@@ -55,6 +55,73 @@ completion requirements.
 
 ## Current findings
 
+### Damage predicates: complete local profiles and shop/hearing products, 2026-11-06
+
+Clean `4303b7607` passes the complete recorded macOS ARM64 Go 1.27.3
+five-profile scope. All 26 PREEXEC mains and five drivers exit unforced 0,
+without failures or build warnings. Package lists remain the inherited six
+client/five server packages; strict preserves its previous selector and adds
+only the damage-predicate family. This is not every repository package.
+
+| Local profile | Passing events | Skipped events | PREEXEC mains |
+| --- | ---: | ---: | ---: |
+| normal | 809810 | 46 | 6 |
+| highres | 809810 | 46 | 6 |
+| server | 803591 | 7 | 4 |
+| server, highres | 803591 | 7 | 4 |
+| strict highres, cgocheck2/checkptr2 | 673611 | 10 | 6 |
+
+Each retains 11,086 original-family leaves: 5,038 Go and 6,048 actual C,
+including the 1,948 new damage-predicate comparisons. Separate checks retain
+five default C graph calls and 44 forced GCs/sixteen stimuli. The preceding Regeneration
+defaults/twelve GCs and Readiness 36 GCs/eight stimuli remain required.
+All 93 phase inputs and complete tracked source hashes remain exact.
+All five actual `bfa2fea41` baseline ZIP comparisons preserve every shared
+raw test ID/action/multiplicity and add exactly 4,416 damage-predicate IDs.
+Address-containing IDs remain unchanged in the evidence; only explicit
+source-bound address rows differ. Unexpected missing/extra/action changes
+are zero. Derived SQLite counters and compiler WORK are removed only after
+canonical byte verification and unforced terminal records.
+
+The same clean source builds normal/HD products, archives each before its
+first execution and passes help. Ten fresh unchanged shop/hearing YAML runs
+then exit unforced 0 and pass source-bound completion and all original case
+assertions. Fireball staff charges restore to 20/20 with original prices
+510/599/597, matching client/server gold and combined durability guards.
+The quest-item rejection displays its original sentence and preserves item/
+gold. Quantity/equipped sales submit eight actual TreasurePickup307 effects
+through real client packets and positive-gain queued OpenAL buffers; the
+backend is null, so physical speaker output is not measured.
+
+Prepared NPC/Troll hearing retains twenty conditions: eight native direction
+changes and twelve negatives. Sight0/aggression0.83 isolate hearing, server
+audio/listening/AI are real and client audio is mocked. These results do not
+establish default NPC settings, keyboard input or earned casting. All 56 PNG
+paths are verified against actual image views or byte-identical previously
+viewed PNGs. World/HUD and targeted shop UI are readable; listener identity/
+heading can be obscured. The prepared generic merchant still shows
+`MISSING:NPCShopkeeper`; no blanket visual/localization pass is claimed.
+These product regressions do not close the raw DefaultDamage parent.
+
+Two orchestration failures remain preserved. The first product wrapper
+incorrectly required an unemitted global success marker after a native-0
+repair run; separately sealed v2 tools use the actual complete named-state
+sequence, terminal assertions and error-propagating native exit. All ten
+cases run freshly with v2. The first five-profile aggregate compared Python
+tuples with JSON arrays; v2 compares the same serialized JSON values, keeping
+all values/order and raw IDs unchanged, without rerunning Go tests.
+
+Final source/original/archive checks preserve all 4,439 assets, 126 candidate
+Save files, golden inputs, canonical products, executed test mains and every
+failure record. Eleven owned runtime duplicates, 62 temporary PNGs and two
+raw executable duplicates are removed after fresh byte checks; canonical
+product members remain. Evidence lives under
+`ART/damage-predicates-4e1400-native-entry-port/local-full-five-damage-v1`
+(`full-five-current-local-Go1273-damage-final-qualified-v2.json`) and
+`current-local-products-4303-v1` (`ten-game-aggregate-qualified-4303-v2.json`).
+The integer-pointer parent and nine campaign final audits remain open;
+no overall completion percentage or new CI qualification is inferred.
+
 ### Raw damage-predicate pinned Go-heap and GC checkpoint, 2026-11-06
 
 After native-core freeze `884557bf4`, local macOS ARM64 Go 1.27.3 normal

@@ -55,6 +55,30 @@ completion requirements.
 
 ## Current findings
 
+### Raw damage-predicate pinned Go-heap and GC checkpoint, 2026-11-06
+
+After native-core freeze `884557bf4`, local macOS ARM64 Go 1.27.3 normal
+and strict highres each pass 4,417 events, with no skips, failures or build
+warnings. Both drivers and all four PREEXEC mains exit unforced 0. Exact
+run/pass identities preserve all 4,394 core events and add 23. All 92
+committed inputs and the sole new test remain byte exact.
+
+Each graph individually pins its source, weapon and two Wand payloads.
+Five actual public-C cases keep read/root observers nil and compare complete
+allocation bytes. Sixteen Go/C cases force 44 in-call GCs and apply sixteen
+after-read stimuli to distinguish cached class, subclass test, UseData,
+flags BYTE, source subclass BYTE and friendly subclass DWORD values. Tests
+compare all four complete allocations, full root arguments/results and
+thirteen C entry/return traces per mode. The 1,948 original Go/C leaves,
+partial/unaligned C-owned heaps and 180 fault outcomes remain required.
+Both modes enable cgo checks; strict also enables cgocheck2/checkptr2.
+
+Complete archives pass final qualification before freezing the test. Current
+products, broader local profiles, the raw DefaultDamage parent and nine
+campaign final audits remain open. No further static candidate or completion
+percentage is credited. Evidence:
+`ART/damage-predicates-4e1400-native-entry-port/damage-predicates-raw-goheap-normal-and-strict-qualified-v1.json`.
+
 ### Raw damage-predicate native pointer entries, 2026-11-06
 
 After complete-consumer freeze `c03b34f56`, `sub_4E1400` and `sub_4E1470`

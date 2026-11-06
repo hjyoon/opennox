@@ -1,5 +1,16 @@
 # Native C entry pointer audit
 
+Raw damage predicates also pass actual pinned Go-heap integration after
+`884557bf4`: local normal/strict HD Go 1.27.3 each pass 4,417 events, no
+skips/failures/warnings and four PREEXEC mains. The previous 4,394 events
+and all 92 committed inputs remain exact. Four allocations are individually
+pinned per graph; five default public-C cases keep observers nil, and sixteen
+Go/C cases force 44 GCs with sixteen declared stimuli. Whole allocation
+bytes, cached values, full arguments and thirteen C return traces agree.
+Original 1,948 engine leaves and C-owned fault domains remain. Static counts
+stay 266 integer/41 typed candidates; products, broader profiles, the raw
+integer parent and nine final campaign audits remain open.
+
 Raw `4E1400`/`4E1470` now use typed object-pointer C exports after consumer
 freeze `c03b34f56`. Local macOS ARM64 Go 1.27.3 normal/strict HD each pass
 4,394 events with zero skips/failures/warnings and four PREEXEC mains.

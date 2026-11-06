@@ -1,0 +1,37 @@
+{
+  "exe_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "complete_original_root_address": "0x4e0960",
+  "complete_original_root_bytes": 68,
+  "complete_original_root_sha256": "dd2e32642e9c728d4d6c6efb83957760d70c9cc4d7054fbc042d32e3db9319a8",
+  "instructions": 25,
+  "all25original_instructions_reached": true,
+  "cases": 113,
+  "FPU_control": "0xe3f",
+  "FPU_status": 0,
+  "all_full_heaps_stacks_callers_images_checked": true,
+  "helper_calls_executed": 0,
+  "callback_identity_compared_only": "0x004e0950",
+  "fault_domains": {
+    "0x4e0965": 3,
+    "0x4e0980": 3,
+    "0x4e0986": 4,
+    "0x4e09a0": 10
+  },
+  "faults": 20,
+  "read_counts": {
+    "item/init-data": 113,
+    "item/class": 110,
+    "table/slot": 219,
+    "modifier/callback": 98,
+    "modifier/strength": 71
+  },
+  "read_events": 611,
+  "stimuli": 29,
+  "input_encoded_sha256": "cb6330a5622ee63f15cc64b2979d3521fac88df4b3184651517bdc2e88987d4f",
+  "input_decoded_sha256": "daca8b8c2e4e0ed897a33394dba93657b15cfbfa78dc0bc3ffb3f09f22e8413f",
+  "output_encoded_sha256": "140b4b826179835437332b84fe003fcd7bd2c9c0fd1733a077df847e3de13fcf",
+  "output_decoded_sha256": "b78afdb05c301ba79af06b2c2425adc9ec427a8132a2108c66ccd8bec61ba25b",
+  "producer_sha256": "c7c44c319ec1a5166a04e67f24424ed6fa38d69aab4172566c262ed0cfb79caf",
+  "native_implementation_credit": false,
+  "repository_or_original_manifest_modified": false
+}

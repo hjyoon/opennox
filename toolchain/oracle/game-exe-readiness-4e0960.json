@@ -1,0 +1,33 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "nullsub_22_4E0950_callback_identity",
+      "address": "0x004E0950",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "Exact single RET byte at the ReadinessEffect callback identity compared by raw Readiness. The root never invokes this callback; identity seal only, without helper-body execution credit."
+    },
+    {
+      "name": "nox_xxx_itemCheckReadinessEffect_4E0960",
+      "address": "0x004E0960",
+      "size": 68,
+      "sha256": "dd2e32642e9c728d4d6c6efb83957760d70c9cc4d7054fbc042d32e3db9319a8",
+      "purpose": "Complete original raw Readiness predicate: InitData is read before nil/class admission, only slots2/3 are scanned, callback004E0950 is compared and the matched slot is reloaded before its signed DWORD strength. Independent113-input PC53 tozero/nearest full-memory reference; no native implementation or product credit."
+    },
+    {
+      "name": "nox_xxx_itemCheckReadinessEffect_4E0960_padding",
+      "address": "0x004E09A4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "Exact twelve NOP alignment bytes after the complete Readiness root and before the already sealed projectile-speed leaf at004E09B0. Static byte seal only; not reached root instructions or execution credit."
+    }
+  ],
+  "data": []
+}

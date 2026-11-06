@@ -6356,6 +6356,9 @@ void nox_xxx_sympathyEffect_4E08E0(
 }
 
 //----- (004E0960) --------------------------------------------------------
+// The native-pointer export is implemented in readiness_raw_native_4e0960.go.
+// Preserve the ABI32 transcription verbatim as original provenance.
+#if 0
 int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 	int v1; // esi
 	int v2; // edx
@@ -6374,6 +6377,8 @@ int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 	return *(uint32_t*)(*(uint32_t*)(v1 + 4 * v2) + 48);
 }
 // 4E0950: using guessed type void nullsub_22();
+
+#endif
 
 //----- (004E09B0) --------------------------------------------------------
 nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(

@@ -55,6 +55,37 @@ completion requirements.
 
 ## Current findings
 
+### Raw Readiness native pointer entry, 2026-11-06
+
+After consumer freeze `93f175870`, the raw public C signature becomes
+`int32_t(nox_object_t*)` through a Go export. Its complete old 449-byte C
+transcription remains byte exact under `#if 0`. The native implementation
+keeps the original entry-time table read before admission, cached table,
+full-width callback comparison, matching-slot reload and signed DWORD return.
+The ordinary guarded Go alias is unchanged. Four existing ABI32 fallback
+calls compile against the new signature through explicit 32-bit address-bit
+casts; no 32-bit runtime execution is claimed by this macOS ARM64 checkpoint.
+
+Local Go 1.27.3 normal and strict highres each pass 1,029 events with zero
+skips, failures or build warnings. Strict enables cgocheck2/checkptr2.
+All four actual PREEXEC mains and both drivers exit unforced 0. The added
+452 original-engine leaves cover 113 inputs, two reference-profile labels
+and direct Go/actual public-C backends. They preserve ordered reads, stimuli,
+whole memory and signed returns, including 80 expected fault observations.
+These faults recover in process; they are not additional fault children.
+The C traces verify 226 full-pointer entries, 186 signed returns and 40
+faulting entries per mode. All 70 immutable inputs remain exact; only the
+dedicated header is explicitly admitted as mutable by the new phase seal.
+
+The canonical host-normal C inventory is 191 C files, 476 headers, 3,459
+definitions, 268 integer candidates, 41 typed candidates and ten overlaps,
+with zero warnings. Only Readiness leaves the preceding candidate set;
+counts are static triage, not a defect total or completion denominator.
+Actual pinned Go-heap/GC, current products and broader local profiles are
+pending. Native program-image/stack/FPU-control equivalence and the nine
+campaign final audits are not credited. See the projection document and
+`ART/readiness-4e0960-native-entry-port/readiness-raw-native-normal-and-strict-qualified-v1.json`.
+
 ### Raw Readiness whole-consumer freeze, 2026-11-06
 
 After initial freeze `d67f2a171`, local macOS ARM64 Go 1.27.3 normal and

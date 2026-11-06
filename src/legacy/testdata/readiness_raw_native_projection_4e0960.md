@@ -40,3 +40,33 @@ The later engine phase must retain all these evidence bytes. Its new immutable
 set contains the 70 original/reference/initial/consumer files after explicitly
 excluding the dedicated ABI header. Only a separately reviewed native-phase
 seal may admit that header's signature change. Existing seals stay unchanged.
+
+## Native engine qualification
+
+After consumer freeze `93f175870`, normal and strict highres Go 1.27.3 each
+pass 1,029 events: the preceding 577 plus 452 actual original-engine leaves.
+All four PREEXEC mains and both drivers exit unforced 0, with no skips,
+failures or build warnings. The tested source is that consumer commit plus
+the five reviewed engine/ABI files. All 70 frozen inputs remain byte exact.
+The new native-phase seal admits the dedicated header change explicitly;
+it does not rewrite the preceding 71-file consumer seal.
+
+The new public C entry takes `nox_object_t*` and returns `int32_t`. Both the
+direct Go and public C routes execute the same native core. It preserves the
+original entry-time InitData read, class mask, slots 2/3, full pointer callback
+identity, reload of the matching slot and live signed strength read. The
+ordinary guarded Go alias stays unchanged. The old 449-byte C transcription
+is preserved verbatim under `#if 0`.
+
+Each mode compares all 113 original cases through Go and C against both
+original-profile labels. The 452 leaves include 372 successful outcomes and
+80 expected in-process fault observations. Actual C traces verify 226 entries,
+186 returns and 40 faulting entries. The three native callback low32 collision
+witnesses remain required. The obsolete integer-C fault child is not executed
+in engine mode; its preceding successful reproduction remains archived.
+
+Evidence: `readiness-native-preexecution-input-seal-v1.json` and
+`readiness-raw-native-normal-and-strict-qualified-v1.json` in the same ART
+directory. Actual pinned Go-heap/GC and product integration remain pending.
+The two profile labels still do not establish native CPU FPU-control,
+program-image or stack equivalence. No campaign or overall 100% is credited.

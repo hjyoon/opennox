@@ -297,7 +297,7 @@ float* nox_xxx_effectDamageMultiplier_4E04C0(void* effect, nox_object_t* weapon,
 void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_recoilEffect_4E0640(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_lightngEffect_4E06F0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
-int nox_xxx_itemCheckReadinessEffect_4E0960(int a1);
+int32_t nox_xxx_itemCheckReadinessEffect_4E0960(nox_object_t* item);
 nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile);
 int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1);
 int nox_xxx_projectileReflect_4E0A70(int a1, int a2);

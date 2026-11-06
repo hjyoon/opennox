@@ -1,5 +1,17 @@
 # Native C entry pointer audit
 
+Raw Readiness is now a native object-pointer Go export after consumer freeze
+`93f175870`. Local Go 1.27.3 normal/strict highres each pass 1,029 events,
+including 452 actual Go/public-C original comparisons. All 70 frozen inputs
+and the original 449-byte C transcription remain exact. The implementation
+retains the entry table read, full callback identity and matching-slot reload;
+the ordinary guarded alias remains unchanged. Four ABI32 fallback calls now
+pass their original 32-bit address bits explicitly to the pointer signature.
+The canonical host scan reports 191 C files, 476 headers, 3,459 definitions,
+268 integer candidates, 41 typed candidates, ten overlaps and zero warnings.
+Only Readiness leaves the preceding integer-candidate set. Actual Go-heap GC,
+current products and broader local profiles remain separate pending gates.
+
 Raw Readiness whole consumers now pass local macOS Go 1.27.3 normal and
 strict highres: 577 events each, no skips, failures or build warnings, and
 four preserved actual mains. All 71 sealed inputs remain exact. The checks

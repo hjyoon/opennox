@@ -2221,12 +2221,12 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 				if (*(uint8_t*)(a1 + 8) & 4) {
 					v63 = (uint32_t*)v79;
 					if (!*(uint32_t*)v79) {
-						v64 = nox_xxx_itemCheckReadinessEffect_4E0960(v4);
+						v64 = nox_xxx_itemCheckReadinessEffect_4E0960((nox_object_t*)(uintptr_t)(uint32_t)v4);
 						*v63 = gameFrame() + v77 * (v78 + 1) - v64;
 					}
 				}
 				v65 = (gameFrame() - *(uint32_t*)(a1 + 136)) / (unsigned int)(v78 + 1);
-				v66 = nox_xxx_itemCheckReadinessEffect_4E0960(v4) + v65;
+				v66 = nox_xxx_itemCheckReadinessEffect_4E0960((nox_object_t*)(uintptr_t)(uint32_t)v4) + v65;
 				HIBYTE(v76) = v66;
 				if (v66 >= v77 - 1 && v66 > (unsigned char)v76) {
 					nox_xxx_shootBowCrossbow1_539BD0(a1, v4);
@@ -2237,7 +2237,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 				if (*(uint8_t*)(a1 + 8) & 4) {
 					v67 = (uint32_t*)v79;
 					if (!*(uint32_t*)v79) {
-						v68 = nox_xxx_itemCheckReadinessEffect_4E0960(v4);
+						v68 = nox_xxx_itemCheckReadinessEffect_4E0960((nox_object_t*)(uintptr_t)(uint32_t)v4);
 						*v67 = gameFrame() + v77 * (v78 + 1) - v68;
 					}
 				}
@@ -2250,7 +2250,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v69 = 0;
 				}
 				if (!v69) {
-					HIBYTE(v76) += nox_xxx_itemCheckReadinessEffect_4E0960(v4);
+					HIBYTE(v76) += nox_xxx_itemCheckReadinessEffect_4E0960((nox_object_t*)(uintptr_t)(uint32_t)v4);
 				}
 			}
 			goto LABEL_159;

@@ -21,6 +21,14 @@ and ordinary Go aliases are unchanged. No integer candidate is removed: counts
 stay 266 integer/41 typed candidates with ten overlaps. Initial native fixtures,
 whole consumers, the parent port and nine final campaign audits remain open.
 
+Pre-ABI controls additionally pass normal/strict local Go 1.27.3: four tests
+per profile, no skips/failures/warnings and four preserved PREEXEC mains. Healthy
+high C memory, sixteen C/Go layout facts, real Buff queries and nil-target return
+precede the actual old-C fault. Its earliest observed access is the typed Buffs
+callee using the truncated target plus344, before the parent class read. Source
+and weapon losses have transport-echo evidence only. No native parent engine
+or full 1,038-case initial-memory qualification is credited.
+
 Damage predicates now qualify the complete recorded local five-profile scope
 at clean `4303b7607`: normal/highres 809,810 passes each, server variants
 803,591 each and strict highres 673,611, with no failures/warnings and 26

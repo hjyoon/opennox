@@ -101,6 +101,18 @@ The previous qualified code `4303b7607` and its local five-profile/shop/hearing
 evidence remain unchanged. All nine final campaign audits and overall 100%
 remain open; GitHub CI waiting and downloads remain disabled.
 
+Separate pre-ABI controls now pass locally with Go 1.27.3 in normal and strict
+highres/cgocheck2/checkptr2 modes: four tests per profile, no skips, failures or
+compiler warnings, and four actual PREEXEC mains preserved. Sixteen C/Go layout
+facts, complete C-owned heap guards, real Buff23 clear/set queries and the
+actual raw parent's nil-target return pass before one old-C fault child per
+profile. Both children fault in the already typed Buffs read at the truncated
+target plus native offset344; the parent's later class read is not reached.
+Separate C echoes prove all three integer argument losses and full-width native
+transport without claiming three whole-parent faults. These controls contain
+zero native parent algorithm leaves and do not qualify the full 1,038-case
+initial-memory fixture.
+
 ### Damage predicates: complete local profiles and shop/hearing products, 2026-11-06
 
 Clean `4303b7607` passes the complete recorded macOS ARM64 Go 1.27.3

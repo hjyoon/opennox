@@ -16,8 +16,9 @@ import (
 
 // Playback-only diagnostic: real asset parsing, stock item construction,
 // inventory placement, mouse equipment messages and the four public C APIs.
-// Strength/slot negatives use private copies of the parsed descriptors.
-// No original modifier, game algorithm, parent service or result is replaced.
+// Stock Grip/MagicReflection descriptors are disabled placeholders. Only
+// private copies receive real callback identities and diagnostic strengths.
+// Original descriptors, game algorithms and parent services stay unchanged.
 var e2eModifierNativeRun func([]string) bool
 
 func (sc *e2eScenario) CheckModifierPredicatesNative(mode, name string) {
@@ -34,11 +35,18 @@ func init() {
 	}
 	var host, item, target *server.Object
 	var inversion, grip *server.ModifierEff
+	var stockInversion, stockGrip *server.ModifierEff
+	var stockInversionBefore, stockGripBefore server.ModifierEff
+	var freeInversion, freeGrip func()
 	var hostHP, targetHP uint16
 	var calls, cases int
 	finished := false
 	fail := func(message string) { e2eError(fmt.Errorf("modifier native C diagnostic: %s", message)) }
 	check := func(label string, inv, gr *server.ModifierEff, want [4]int32) bool {
+		if stockInversion == nil || stockGrip == nil || *stockInversion != stockInversionBefore || *stockGrip != stockGripBefore {
+			fail("original parsed placeholder descriptors must stay unchanged")
+			return false
+		}
 		if host == nil || item == nil || target == nil || !host.HasItem(item) || item.InvHolder != host || target.ObjOwner != host || target.FindOwnerChainPlayer() != host || host.HealthData.Cur != hostHP || target.HealthData.Cur != targetHP {
 			fail("live stock inventory, default owner chain and unchanged health required")
 			return false
@@ -88,30 +96,26 @@ func init() {
 				fail("native public C signatures and default services required")
 				return true
 			}
-			for mod := noxServer.Modif.ListByType(2); mod != nil; mod = mod.Next() {
-				if mod.DefendCollide88.Val < 1 {
-					continue
-				}
-				if inversion == nil && mod.DefendCollide88.Fnc == functions[0] {
-					inversion = mod
-				}
-				if grip == nil && mod.DefendCollide88.Fnc == functions[1] {
-					grip = mod
-				}
-			}
-			if inversion == nil || grip == nil {
-				fail("both stock parsed positive Inversion/Grip descriptors required")
+			stockInversion = noxServer.Modif.Nox_xxx_modifGetDescById413330(noxServer.Modif.Nox_xxx_modifGetIdByName413290("MagicReflection1"))
+			stockGrip = noxServer.Modif.Nox_xxx_modifGetDescById413330(noxServer.Modif.Nox_xxx_modifGetIdByName413290("Grip1"))
+			if stockInversion == nil || stockGrip == nil || stockInversion.DefendCollide88.Fnc != nil || stockGrip.DefendCollide88.Fnc != nil || stockInversion.DefendCollide88.Val != 0 || stockGrip.DefendCollide88.Val != 0 {
+				fail("sealed stock MagicReflection1/Grip1 disabled placeholders required")
 				return true
 			}
+			stockInversionBefore, stockGripBefore = *stockInversion, *stockGrip
+			inversion, freeInversion = alloc.New(*stockInversion)
+			grip, freeGrip = alloc.New(*stockGrip)
+			inversion.DefendCollide88.Fnc, inversion.DefendCollide88.Val = functions[0], 1
+			grip.DefendCollide88.Fnc, grip.DefendCollide88.Val = functions[1], 1
 			count, err := e2eInventoryItemCount("Sword")
 			if err != nil || count != 0 {
 				fail("unique new Sword fixture required")
 				return true
 			}
-			attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{nil, nil, inversion, grip}}
+			attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{nil, nil, stockInversion, stockGrip}}
 			item = legacy.Nox_xxx_playerRespawnItem_4EF750(host, "Sword", attrs, 1, 0)
 			if item == nil || item.InitData == nil || item.InitDataModifier().Modifiers != attrs.Modifiers || item.Flags().Has(object.FlagEquipped) {
-				fail("actual respawn/init/modifier/placement services must preserve both stock slots")
+				fail("actual respawn/init/modifier/placement services must preserve both original placeholder slots")
 				return true
 			}
 			target = noxServer.NewObjectByTypeID("Troll")
@@ -122,8 +126,12 @@ func init() {
 			noxServer.CreateObjectAt(target, host, host.PosVec.Add(types.Ptf(32, 0)))
 			noxServer.ObjectsAddPending()
 			hostHP, targetHP = host.HealthData.Cur, target.HealthData.Cur
-			e2eLog.Printf("MODIFIER NATIVE C PREPARED: inv=%s/%d/%d grip=%s/%d/%d stock-descriptors=true constructor-and-placement=actual stock-strengths=unchanged", inversion.Name(), inversion.Index(), inversion.DefendCollide88.Val, grip.Name(), grip.Index(), grip.DefendCollide88.Val)
-			check("loose-stock", inversion, grip, [4]int32{1, 0, 1, 0})
+			e2eLog.Printf("MODIFIER NATIVE C PREPARED: inv=%s/%d/%d grip=%s/%d/%d constructor-and-placement=actual private-parsed-copies-configured=true original-placeholders-disabled=true original-descriptors=unchanged", inversion.Name(), inversion.Index(), inversion.DefendCollide88.Val, grip.Name(), grip.Index(), grip.DefendCollide88.Val)
+			if !check("stock-placeholders-loose", stockInversion, stockGrip, [4]int32{0, 1, 0, 0}) {
+				return true
+			}
+			item.InitDataModifier().Modifiers = [4]*server.ModifierEff{nil, nil, inversion, grip}
+			check("configured-loose", inversion, grip, [4]int32{1, 0, 1, 0})
 		case "equipped":
 			if item == nil || !item.Flags().Has(object.FlagEquipped) || host.UpdateDataPlayer().EquippedWeapon != item {
 				fail("actual mouse equipment message must equip the prepared Sword")
@@ -131,7 +139,12 @@ func init() {
 			}
 			data := item.InitDataModifier()
 			original := data.Modifiers
-			if !check("equipped-stock", inversion, grip, [4]int32{1, 0, 1, 1}) {
+			data.Modifiers = [4]*server.ModifierEff{nil, nil, stockInversion, stockGrip}
+			if !check("stock-placeholders-equipped", stockInversion, stockGrip, [4]int32{0, 1, 0, 0}) {
+				return true
+			}
+			data.Modifiers = original
+			if !check("configured-equipped", inversion, grip, [4]int32{1, 0, 1, 1}) {
 				return true
 			}
 			inv, freeInv := alloc.New(*inversion)
@@ -167,8 +180,8 @@ func init() {
 				fail("actual mouse equipment message must dequip the prepared Sword")
 				return true
 			}
-			if !check("dequipped-stock", inversion, grip, [4]int32{1, 0, 1, 0}) || cases != 8 || calls != 32 {
-				fail("all eight cases and32actual C calls must complete")
+			if !check("configured-dequipped", inversion, grip, [4]int32{1, 0, 1, 0}) || cases != 10 || calls != 40 {
+				fail("all ten cases and40actual C calls must complete")
 				return true
 			}
 			path, err := e2eWriteMagicFrame("", noxClient.r.CopyPixBuffer())
@@ -176,9 +189,12 @@ func init() {
 				e2eError(err)
 				return true
 			}
-			e2eLog.Printf("MODIFIER NATIVE C VERIFIED: cases=%d calls=%d actual-stock-constructors=true parsed-original-modifiers=true actual-mouse-equip-dequip=true parent-services=default source-objects=live health=unchanged path=%s earned-campaign-credit=false", cases, calls, path)
+			e2eLog.Printf("MODIFIER NATIVE C VERIFIED: cases=%d calls=%d actual-stock-constructors=true private-parsed-copies-configured=true original-placeholders-disabled=true original-descriptors=unchanged actual-mouse-equip-dequip=true parent-services=default source-objects=live health=unchanged path=%s earned-campaign-credit=false", cases, calls, path)
+			item.InitDataModifier().Modifiers = [4]*server.ModifierEff{nil, nil, stockInversion, stockGrip}
 			noxServer.DelayedDelete(target)
 			noxServer.DelayedDelete(item)
+			freeGrip()
+			freeInversion()
 			finished = true
 		default:
 			return false

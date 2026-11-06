@@ -61,7 +61,7 @@ steps:
     name: settle after server options
   - action: check-modifier-native
     text: start
-    name: construct stock Sword and parsed Inversion and Grip descriptors and check loose C APIs
+    name: construct stock Sword and check disabled originals and configured private descriptor copies
   - action: wait
     dt: 30
     name: receive actual inventory replication
@@ -87,6 +87,6 @@ steps:
     name: receive ordinary dequipment result
   - action: check-modifier-native
     text: dequipped
-    name: verify all32 actual C calls and unchanged live health and original descriptors
+    name: verify all40 actual C calls and unchanged live health and original descriptors
   - action: quit
     dt: 1

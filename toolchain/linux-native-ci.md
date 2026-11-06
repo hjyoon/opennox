@@ -20,7 +20,7 @@ failures, compiler/build metadata and executables are preserved as artifacts.
 A missing package result fails the evidence check. Artifact retention is seven
 days; keep qualification artifacts locally when archiving a checkpoint.
 
-A push to `port/go1.26-multiarch` changing the workflow or
+A push to `port/go1.27-multiarch` changing the workflow or
 `linux-native-ci-checkpoint.txt` runs all four variants. Update the checkpoint
 file when intentionally qualifying a new native source checkpoint. Routine
 campaign scenario changes reuse prebuilt products.
@@ -29,7 +29,7 @@ The manual workflow defaults to the server variant. To request all variants:
 
 ```sh
 gh workflow run port-linux-native.yml \
-  --ref port/go1.26-multiarch -f products=all
+  --ref port/go1.27-multiarch -f products=all
 ```
 
 Native CI proves the reported build and test scope. It does not certify an

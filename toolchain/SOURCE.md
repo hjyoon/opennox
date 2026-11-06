@@ -4,7 +4,7 @@
 - 기준 커밋: `b184030e76be2b681a7f6d2bcdef52b091d94b9b`
 - 커밋 시각: `2026-07-04T14:10:29Z`
 - 커밋 제목: `Update Go version.`
-- 로컬 포팅 브랜치: `port/go1.26-multiarch`
+- 로컬 포팅 브랜치: `port/go1.27-multiarch`
 - 체크아웃 날짜: `2026-08-12` (`Asia/Seoul`)
 - Git 서브모듈: 없음
 

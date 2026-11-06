@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - port/go1.26-multiarch
+      - port/go1.27-multiarch
     paths:
       - .github/workflows/port-linux-native-audio.yml
       - src/legacy/client/audio/**
@@ -17,7 +17,7 @@ permissions:
 jobs:
   audio:
     name: Linux/amd64 audio ${{ matrix.profile }}
-    if: github.ref == 'refs/heads/port/go1.26-multiarch'
+    if: github.ref == 'refs/heads/port/go1.27-multiarch'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:

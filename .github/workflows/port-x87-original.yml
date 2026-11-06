@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - port/go1.26-multiarch
+      - port/go1.27-multiarch
     paths:
       - .github/workflows/port-x87-original.yml
       - toolchain/oracle/native-x87-range.c

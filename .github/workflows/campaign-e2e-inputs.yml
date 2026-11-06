@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - port/go1.26-multiarch
+      - port/go1.27-multiarch
     paths:
       - .github/workflows/campaign-e2e-inputs.yml
       - scripts/e2e/campaign/**

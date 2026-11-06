@@ -1,5 +1,25 @@
 # Native C entry pointer audit
 
+All five current local macOS Go1.27.3 profiles at clean `e92c637c0` now pass:
+normal/highres804356PASS46skip each, server/server-highres798137PASS7skip
+each, strict-highres668157PASS10skip. Failures/build warnings0;26actual
+PREEXEC mains/full logs archived and verified before owned duplicate cleanup.
+Each profile retains8686fixed original-family leaf IDs(3838Go/4848C), including
+792raw Regeneration leaves, plus ten default C calls/twelve in-call GCs.
+All56frozen/fullsource inputs remain exact. The earlier unexecuted plan's
+1010phantom Go leaves are corrected against the two C-only test roots;
+test command scope and all earlier C assertions stay unchanged.
+
+Readiness reference `e92c637c0` separately freezes68original bytes/113inputs/
+twoFPU proofs. Actual CLI validates the existing3373code/713data manifest
+and new dedicated3code/0data manifest without changing the old56. Its raw C
+integer ABI, independent native initial/consumer/engine/product gates remain
+open. No additional pointer candidate is removed. Current normal/HD raw test
+names differ only in three actual-address names per run; shared actions/counts
+agree, with the six raw names retained. No historical deleted-primary replay
+or new CI credit is claimed. Nine chapter final audits and overall100 remain
+open. See the latest `porting-completion.md` checkpoints for exact scopes.
+
 Clean `07e7913a3` normal/highres-tag Go1.27.3 ARM64 products now pass24actual
 raw Regeneration public C calls,6positive/18negative, unforced native exits0.
 Actual stock Sword/LeatherArmor use the human Warrior and WizardRobe an owned

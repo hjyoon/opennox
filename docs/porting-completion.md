@@ -55,6 +55,61 @@ completion requirements.
 
 ## Current findings
 
+### Raw Regeneration complete local five-profile checkpoint, 2026-11-06
+
+Clean `e92c637c0` passes all five recorded macOS ARM64 Go1.27.3 profiles.
+The first four retain every test in their inherited six client/five server
+packages; strict retains its original selector plus the prior extension and
+additive raw Regeneration/schedule tests. This is not an all-repository-package
+claim. All drivers/mains exit unforced0, with zero failures/build warnings.
+
+| Local profile | Passing events | Skipped events | PREEXEC mains |
+| --- | ---: | ---: | ---: |
+| normal | 804356 | 46 | 6 |
+| highres | 804356 | 46 | 6 |
+| server | 798137 | 7 | 4 |
+| server,highres | 798137 | 7 | 4 |
+| strict highres, cgocheck2/checkptr2 | 668157 | 10 | 6 |
+
+Each profile verifies8686fixed original-family leaf identities:3838Go and
+4848actual-public-C comparisons, including792raw Regeneration leaves. Ten
+prepared Regeneration C calls and twelve in-call GCs also pass per profile.
+All56prior frozen inputs and full8653tracked-source hashes remain exact.
+The26actual mains/full logs are byte-verified in archives; owned raw report,
+installed-output and compiler WORK duplicates are removed after terminal proof.
+
+The first source-only expected-ID draft incorrectly added1010Go leaves to
+two C-only families. That unexecuted draft is preserved; the corrected plan
+uses actual declared backends without reducing any test command or previous
+C596/414 assertion. No deleted historical macOS primary events are synthesized.
+An independent current normal/HD comparison finds three address-named tests
+per variant (`%p`), each run1/pass1; shared IDs have no action/multiplicity
+differences. The six differing raw names are retained without normalization.
+
+Evidence: `ART/regeneration-4e01d0-native-entry-port/local-full-five-v2/full-five-current-local-Go1273-final-qualified-v2.json`.
+The source differs from the qualified `07e7913a3` two-product checkpoint only
+in documentation and eight additive Readiness reference files. Existing
+production Go/C/header files remain exact. No GitHub CI is polled or awaited.
+Other raw pointer entries and nine chapter final audits remain open;
+overall100 is false.
+
+### Raw Readiness original reference freeze, local macOS, 2026-11-06
+
+Reference freeze `e92c637c0` adds the complete68-byte/25-instruction Readiness
+root,113independent inputs and retained PC53 tozero/nearest original proofs.
+Each original profile reaches611reads/29input stimuli/20memory faults with
+zero helper calls and complete heap/stack/caller/image certificates. The
+successful modifier slot must reload after the callback identity comparison.
+The callback RET1/padding12bytes are static seals, not executed root credit.
+
+A dedicated code-v2 manifest preserves the entire previous main manifest and
+all56frozen files. Actual clean-source Go1.27.3 ARM64 noxoracle CLI passes both
+the original3373code/713data gate and dedicated3code/0data gate, unforced0,
+with its binary archived before execution and source/archives reverified.
+The raw Readiness C integer ABI remains active. Independent native initial,
+whole consumers, native implementation and product validation remain pending.
+Evidence: `ART/readiness-4e0960-native-entry-port/code-verifier-local-v1/actual-two-CLI-gates-source-archives-independent-final-qualified-v1.json`.
+
 ### Raw Regeneration actual normal/HD products, local macOS, 2026-11-06
 
 Clean `07e7913a3` Go1.27.3 ARM64 normal and highres-tag products pass
@@ -64,7 +119,8 @@ Sword/LeatherArmor use the human Warrior; WizardRobe uses a real owned NPC
 through ordinary class admission. Real mouse input equips/dequips the Sword.
 All live allocations exceed4GiB, the original active Regeneration1 stays
 unchanged, and clock/armor/HP services remain default with nil observers.
-Each call immediately checks complete holder/item health guards and restores
+The existing E2E virtual platform supplies ticks; ordinary wall-clock latency
+is not claimed. Each call immediately checks complete holder/item health guards and restores
 the declared prepared HP/cooldown/flag inputs before the next world tick.
 
 The observed live frames1440/2880 produce exactly HP148→149; off-interval

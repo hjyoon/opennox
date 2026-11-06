@@ -1,5 +1,15 @@
 # Native C entry pointer audit
 
+Independent Readiness initial memory now passes local normal/strict HD
+Go1.27.3:119events each,113whole heaps,1808typed probes,52unreadable domains,
+15C/Go facts and actual old-C high-pointer fault controls after healthy data
+checks. Four PREEXEC mains/parents exit0. Three original NONMATCH callback
+rows additionally prove equal low32/different full native pointers, including
+a deliberate bad uint32 comparison. Original input/result/initial gzip and
+prior56/reference8 remain exact; v1 actual success is retained separately.
+The raw integer ABI and body still remain; whole consumers/engine/products
+are pending. No new integer candidate or chapter is credited.
+
 All five current local macOS Go1.27.3 profiles at clean `e92c637c0` now pass:
 normal/highres804356PASS46skip each, server/server-highres798137PASS7skip
 each, strict-highres668157PASS10skip. Failures/build warnings0;26actual

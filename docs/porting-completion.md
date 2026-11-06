@@ -55,6 +55,28 @@ completion requirements.
 
 ## Current findings
 
+### Raw Readiness independent native initial freeze, 2026-11-06
+
+After original reference `e92c637c0`, local normal/strict HD Go1.27.3 each
+pass119events with zero skips/failures/warnings. Actual typed C/Go checks
+cover113whole initial heaps,1808field probes,52unreadable domains and15layout
+facts. Each real old-C child first verifies healthy high-address data, then
+faults in the unchanged integer entry; parents and four PREEXEC mains exit0.
+
+Three original nonmatch cases now have native callback tokens with the same
+low32bits as actual C.nullsub_22 but different high32bits. Typed C/Go loads
+retain full pointers, while a deliberate uint32-only comparison demonstrates
+the false equality. Both profiles require all three actual witness markers.
+Original inputs/results/initial gzip and prior56/reference8 stay exact. The
+earlier v1 success is preserved; v2 changes only two initial Go sources.
+
+The C912-byte prefix/Go928-byte object relationship is checked explicitly.
+The raw C ABI/body remain old and no engine or full consumer has run. This
+freezes independent initial evidence before the next complete consumer step;
+it removes no additional pointer candidate and supplies no product/campaign
+or overall100credit. See `src/legacy/testdata/readiness_raw_initial_memory_4e0960.md`
+and `ART/readiness-4e0960-native-entry-port/readiness-raw-initial-normal-strict-qualified-v2.json`.
+
 ### Raw Regeneration complete local five-profile checkpoint, 2026-11-06
 
 Clean `e92c637c0` passes all five recorded macOS ARM64 Go1.27.3 profiles.

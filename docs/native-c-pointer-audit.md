@@ -1,5 +1,33 @@
 # Native C entry pointer audit
 
+## Raw damage checkpoint, 2026-11-07 (WIP)
+
+Raw DefaultDamage `4E0B30` and the four scalar callers `4E24B0`, `4E24E0`,
+`4E2520` and `4E2560` now retain three native object pointers at their existing
+public C entries. Signed 32-bit damage/type/result transport, full DWORD type
+comparisons, wrapping MechGolem doubling and conditional parent calls are
+preserved. Their old C bodies remain exact under `#if 0`; ordinary bool
+registrations keep their existing behavior.
+
+The scalar callers have complete original 196-byte/75-instruction evidence and
+430 independently verified original boundary executions. Normal/strict Go 1.27.3
+each pass 871 tests and two packages, including actual high-address C consumers.
+Full parent normal/strict profiles each execute 2,076 Go and 2,076 C rows:
+2,074 pass and two cross-page WORD rows fail per backend. All 8,348 test IDs run;
+8,342 pass and six fail, counting the four failed leaves and two parent tests.
+The original `02` versus actual native `AA` post-fault byte remains unqualified.
+Independent ordered observations retain full pointer identities and caller
+scratch; this difference is not evidence of a truncated pointer.
+
+Fresh normal/HD products pass ten unchanged shop/hearing scenarios from the
+same dirty source epoch. Canonical products, executed mains, failures, original
+assets/Save and 56 frame paths remain preserved after byte-verified duplicate
+cleanup. Physical audio and direct raw-entry gameplay coverage retain their
+separate limits. Earlier inventory counts below describe their recorded source
+epochs; this checkpoint establishes no new global count or campaign completion.
+
+## Earlier checkpoints
+
 `sub_409B50` now uses full native pointers and a Go implementation behind its
 unchanged public const-source C signature. Its unsigned count remains 32-bit;
 it is a value, not a pointer. The complete 41-byte original scan and ordered

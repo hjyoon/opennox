@@ -55,6 +55,39 @@ completion requirements.
 
 ## Current findings
 
+### Raw damage pointer entries, 2026-11-07 (WIP)
+
+The public raw `4E0B30` entry now uses three native object pointers, two signed
+32-bit arguments and a signed 32-bit result. Its original C transcription is
+preserved under `#if 0`. Stone `4E24B0`, MechGolem `4E24E0`, Flammable `4E2520`
+and BlackPowder `4E2560` also use native-pointer Go exports. Their raw type tests,
+32-bit wrapping arithmetic and return bits are preserved separately from the
+existing ordinary bool callbacks.
+
+The four complete original callers total 196 bytes and 75 instruction starts.
+Their independently verified 430 original executions retain an explicit external
+parent boundary. Local Go 1.27.3 normal and strict checks each pass 871 tests and
+two packages: 430 Go and 430 actual C comparisons, nested calls, four default
+parent nil-target controls and the existing static check.
+
+Both full parent profiles execute all 2,076 original rows through each Go/C
+backend. Each profile records 8,342 passes and six failed test events: four WORD
+row failures and their two parent tests. Each backend has 2,074 passing rows and
+two failed rows, with no unattempted tail. The cross-page WORD observation still
+has original Unicorn byte `02` and actual ARM64 byte `AA`. Full fault-state
+conformance and actual x86 hardware behavior remain unqualified; the failed
+rows, raw banks, ordered observations and executed mains are preserved.
+
+Fresh normal/HD products from the exact 8,755-file dirty source epoch also pass
+all ten original shop/hearing scenarios. They verify staff repair, quest-item
+rejection, eight sale-sound 307 events and twenty hearing conditions with eight
+natural turns and twelve negative controls. The 56 frame paths receive targeted
+visual review. Original 4,439 assets and 126 Save files remain exact. Physical
+speaker output, obscured hearing actors, direct raw-entry gameplay coverage and
+the generic merchant fixture's MISSING label retain their recorded limits.
+These results preserve all nine final campaign audits as open; overall 100%
+completion is not established.
+
 ### Shared map-name setter `sub_409B50`, 2026-11-07
 
 The setter now runs in Go behind its unchanged public `unsigned int

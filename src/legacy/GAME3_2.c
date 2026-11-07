@@ -6445,6 +6445,7 @@ int nox_xxx_projectileReflect_4E0A70(int a1, int a2) {
 }
 
 //----- (004E0B30) --------------------------------------------------------
+#if 0 // Preserved PE32 body; native pointer entry is in raw_default_damage_export_4e0b30.go.
 int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5) {
 	int v6;                // edi
 	int v7;                // eax
@@ -6763,6 +6764,7 @@ LABEL_137:
 	nox_xxx_unitDamageClear_4EE5E0(a1, a4);
 	return 1;
 }
+#endif
 
 //----- (004E1230) --------------------------------------------------------
 void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3) {
@@ -6941,7 +6943,7 @@ int sub_4E14B0(int a1, int a2, int a3, int a4, int a5) {
 	int result; // eax
 
 	if (a1 && *(uint32_t*)(a1 + 8) & 0x1001000 && (*(uint32_t*)(a1 + 492) || a5 == 12)) {
-		result = nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, a4, a5);
+		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, a4, a5);
 	} else {
 		result = 0;
 	}
@@ -6955,7 +6957,7 @@ int nox_xxx_damageArmor_4E1500(int a1, int a2, int a3, int a4, int a5) {
 
 	if (*(uint32_t*)(a1 + 8) & 0x2000000 && (*(uint32_t*)(a1 + 492) || a5 == 12) &&
 		(a5 != 2 || !(*(uint8_t*)(a1 + 24) & 0x10) ? (v5 = a4) : (v5 = 2 * a4), v5)) {
-		result = nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, v5, a5);
+		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v5, a5);
 	} else {
 		result = 0;
 	}

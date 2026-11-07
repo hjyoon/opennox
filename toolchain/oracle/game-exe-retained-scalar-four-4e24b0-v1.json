@@ -1,0 +1,69 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_4E24B0",
+      "address": "0x004E24B0",
+      "size": 34,
+      "sha256": "36292f1a417badd3ba058d2b1f189205e185299e3e0518a4b1bde936a6eb9738",
+      "purpose": "Complete raw scalar caller through RET. Parent004E0B30 remains an explicitly declared external5word/int32 boundary in this proposed reference layer; no parent-body execution credit."
+    },
+    {
+      "name": "sub_4E24E0",
+      "address": "0x004E24E0",
+      "size": 52,
+      "sha256": "14a54c161033426e0de778a01725f8c26e692a4b9b788ae7070dd10f8dfa6ada",
+      "purpose": "Complete raw scalar caller through RET. Parent004E0B30 remains an explicitly declared external5word/int32 boundary in this proposed reference layer; no parent-body execution credit."
+    },
+    {
+      "name": "nox_xxx_damageFlammable_4E2520",
+      "address": "0x004E2520",
+      "size": 54,
+      "sha256": "905956060dbdc76ec76198cad89c47047db83260a67e6975ff029c182e6200af",
+      "purpose": "Complete raw scalar caller through RET. Parent004E0B30 remains an explicitly declared external5word/int32 boundary in this proposed reference layer; no parent-body execution credit."
+    },
+    {
+      "name": "nox_xxx_damageBlackPowder_4E2560",
+      "address": "0x004E2560",
+      "size": 56,
+      "sha256": "77db4b7fc2ed8ecbe27b17b67a200cb0cc896a8732d088d4a0616e8d9c1152f7",
+      "purpose": "Complete raw scalar caller through RET. Parent004E0B30 remains an explicitly declared external5word/int32 boundary in this proposed reference layer; no parent-body execution credit."
+    }
+  ],
+  "data": [
+    {
+      "name": "padding_after_sub_4E24B0",
+      "address": "0x004E24D2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "Exact original NOP padding, retained but never executable in the proposed caller reference run."
+    },
+    {
+      "name": "padding_after_sub_4E24E0",
+      "address": "0x004E2514",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "Exact original NOP padding, retained but never executable in the proposed caller reference run."
+    },
+    {
+      "name": "padding_after_nox_xxx_damageFlammable_4E2520",
+      "address": "0x004E2556",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "Exact original NOP padding, retained but never executable in the proposed caller reference run."
+    },
+    {
+      "name": "padding_after_nox_xxx_damageBlackPowder_4E2560",
+      "address": "0x004E2598",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "Exact original NOP padding, retained but never executable in the proposed caller reference run."
+    }
+  ]
+}

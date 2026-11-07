@@ -1,0 +1,77 @@
+{
+  "schema": "opennox-default-damage-native-PC-contract-v1",
+  "prepared_source_only": true,
+  "native_parent_engine_exists_at_draft": false,
+  "root_symbols": {
+    "C": "_nox_xxx_damageDefaultProc_4E0B30",
+    "Go": "github.com/opennox/opennox/v1/legacy.rawDefaultDamageNative4E0B30"
+  },
+  "operand_functions": {
+    "read": "github.com/opennox/opennox/v1/legacy.rawDefaultDamageReadNativeOperand4E0B30",
+    "write": "github.com/opennox/opennox/v1/legacy.rawDefaultDamageWriteNativeOperand4E0B30",
+    "predicate_read": "github.com/opennox/opennox/v1/legacy.damagePredicateRawRead4E1400"
+  },
+  "production_callback_wrappers": [
+    "_rdd_native_damage_callback_4e0b30",
+    "_rdd_native_sound_callback_4e0b30"
+  ],
+  "production_callback_wrappers_exist_at_draft": false,
+  "primitive_symbols": {
+    "write": "_rdd_shared_strh_4e0b30",
+    "callback": "_rdd_shared_invoke_4e0b30"
+  },
+  "shared_header_words": 41,
+  "shared_header_version": 2,
+  "supported_scalar_widths": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "supported_scalar_addressing": [
+    "integer unsigned-immediate",
+    "integer unscaled-immediate without writeback",
+    "unsigned integer register-offset LSL Xm unshifted (option3,S0)"
+  ],
+  "nil_probe": {
+    "separate_classification": "nil-check-before-access",
+    "actual_address": 0,
+    "base": 0,
+    "byte_load_to_reserved_R27": true,
+    "mnemonics": [
+      "LDRB",
+      "LDRSB"
+    ],
+    "completed_semantic_access": false
+  },
+  "pinned_go_versions": [
+    "go1.27.3",
+    "go1.27.3-X:cgocheck2"
+  ],
+  "fullrow_qualification_requires_actual_dispatch": true,
+  "original_or_expected_data_used": false,
+  "limitations": {
+    "GPR_registers_captured": false,
+    "register_effective_address_reconstruction": false,
+    "whole_stack_or_heap_equivalence": false,
+    "original_result_equivalence": false,
+    "whole_build_source_reproducibility": false,
+    "C_function_range": "next unstripped text symbol upper bound; primitives additionally exact assembly certificate",
+    "signal_code_alone_proves_hardware_origin": false
+  },
+  "rejection_policy": [
+    "missing/ambiguous symbols or planned engine/wrapper",
+    "unqualified status4/reason, software-signal or wrong-owner observations",
+    "nonzero validation flag",
+    "timeout/forced termination",
+    "unsupported opcode/addressing/width or another runtime/helper PC",
+    "callback LR-4 not BLR in fixed production wrapper",
+    "partial/missing observation JSONL or mismatched PREEXEC/source/main/header"
+  ],
+  "healthy_primitive_output": "completed-control observation only; no PC-qualified file",
+  "source_approval": "Root must independently review and supply exact contract SHA plus actual archive/main SHA to any later invocation; this prepared file is not an execution approval.",
+  "source_revision": {
+    "prior_contract_SHA256": "5983c8a3d18597249eb514873a8752e6b663e96d99155fca50e999d0e0130a77",
+    "reason": "Observed retained Go1.27.3 scalar LDR W4,[X0,X2] wordb8626804; decoding class only, no captured GPR/EA proof added."
+  }
+}

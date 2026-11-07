@@ -563,7 +563,7 @@ LABEL_120:
 	} else {
 		v45 = a1;
 	}
-	return nox_xxx_damageDefaultProc_4E0B30(v5, a2, a3, v45, SLODWORD(a5));
+	return nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)v5, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v45, SLODWORD(a5));
 }
 
 //----- (004E20F0) --------------------------------------------------------
@@ -756,15 +756,18 @@ int sub_4E23C0(int a1, int a2, int a3, int a4, int a5) {
 		nox_xxx_aud_501960(878, a1, 0, 0);
 		result = 1;
 	} else {
-		result = nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, a4, a5);
+		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, a4, a5);
 	}
 	return result;
 }
 
 //----- (004E24B0) --------------------------------------------------------
-int sub_4E24B0(int a1, int a2, int a3, int a4, int a5) { return nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, a4, a5); }
+#if 0 // PE32 caller retained; native pointer entry exported from Go.
+int sub_4E24B0(int a1, int a2, int a3, int a4, int a5) { return nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, a4, a5); }
+#endif
 
 //----- (004E24E0) --------------------------------------------------------
+#if 0 // PE32 caller retained; native pointer entry exported from Go.
 int sub_4E24E0(int a1, int a2, int a3, int a4, int a5) {
 	int v5; // eax
 
@@ -773,30 +776,35 @@ int sub_4E24E0(int a1, int a2, int a3, int a4, int a5) {
 	} else {
 		v5 = 2 * a4;
 	}
-	return nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, v5, a5);
+	return nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v5, a5);
 }
+#endif
 
 //----- (004E2520) --------------------------------------------------------
+#if 0 // PE32 caller retained; native pointer entry exported from Go.
 int nox_xxx_damageFlammable_4E2520(int a1, int a2, int a3, int a4, int a5) {
 	int v5; // eax
 
 	if (a5 == 1 || a5 == 12 || (v5 = a4, a5 == 7)) {
 		v5 = 9999999;
 	}
-	return nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, v5, a5);
+	return nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v5, a5);
 }
+#endif
 
 //----- (004E2560) --------------------------------------------------------
+#if 0 // PE32 caller retained; native pointer entry exported from Go.
 int nox_xxx_damageBlackPowder_4E2560(int a1, int a2, int a3, int a4, int a5) {
 	int result; // eax
 
 	if (a5 != 1 && a5 != 12 && a5 != 2 && a5) {
 		result = 0;
 	} else {
-		result = nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, 999999, a5);
+		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, 999999, a5);
 	}
 	return result;
 }
+#endif
 
 //----- (004E27D0) --------------------------------------------------------
 int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
@@ -831,7 +839,7 @@ int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 		nox_xxx_aud_501960(1001, a1, 0, 0);
 	}
 	v7 = (unsigned short)nox_xxx_unitGetHP_4EE780(a1);
-	v17 = nox_xxx_damageDefaultProc_4E0B30(a1, a2, a3, a4, a5);
+	v17 = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, a4, a5);
 	if ((unsigned short)nox_xxx_unitGetHP_4EE780(a1) < v7) {
 		nox_xxx_scriptCallByEventBlock_502490((int*)(v5 + 48), a2, a1, 23);
 	}

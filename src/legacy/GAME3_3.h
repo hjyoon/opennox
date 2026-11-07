@@ -102,10 +102,10 @@ double sub_4E2220(int a1);
 int sub_4E22A0(int a1, int a2, int a3, int a4, float a5, int a6);
 int sub_4E2330(int a1, int a2, int a3, int a4, float a5, int a6);
 int sub_4E23C0(int a1, int a2, int a3, int a4, int a5);
-int sub_4E24B0(int a1, int a2, int a3, int a4, int a5);
-int sub_4E24E0(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_damageFlammable_4E2520(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_damageBlackPowder_4E2560(int a1, int a2, int a3, int a4, int a5);
+int32_t sub_4E24B0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int32_t damage, int32_t typ);
+int32_t sub_4E24E0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int32_t damage, int32_t typ);
+int32_t nox_xxx_damageFlammable_4E2520(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int32_t damage, int32_t typ);
+int32_t nox_xxx_damageBlackPowder_4E2560(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int32_t damage, int32_t typ);
 int nox_object_call_damage_native(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int32_t damage, int32_t damage_type);
 void nox_xxx_gameSetWallsDamage_4E25A0(int a1);

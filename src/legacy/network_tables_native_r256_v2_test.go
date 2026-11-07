@@ -88,22 +88,26 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 		}
 		_, body, _ := strings.Cut(string(source), entry.first)
 		body, _, _ = strings.Cut(body, entry.last)
-		if entry.marker == "// SETTINGS_BODY" {
-			// This historical C body remains a separate baseline after its
-			// public symbol moves to Go. Verify its bytes before extracting it
-			// from the provenance-only preprocessor fence.
-			const signature = "int sub_409A70(short a1) {"
+		if entry.marker == "// SETTINGS_BODY" || entry.marker == "// RATE_BODY" {
+			// Extract the exact preserved definition after its public entry moves
+			// to Go. Do not compile the surrounding provenance-only #if0 fence.
+			signature := "int sub_409A70(short a1) {"
+			wantSHA := "1b9cffc7b8e4c2e8b016246fdfc4b73e4595d479788cfd4b98c7caf1ff99c6d5"
+			if entry.marker == "// RATE_BODY" {
+				signature = "int sub_40A710(int a1) {"
+				wantSHA = "33adc12701852ecc9e4c1c7d5934433fd131b443b21d5d4692e0889ae659fc42"
+			}
 			if strings.Count(body, signature) != 1 {
-				t.Fatal("unique preserved settings C body")
+				t.Fatal("unique preserved network table C body")
 			}
 			body = body[strings.Index(body, signature):]
 			end := strings.Index(body, "\n}")
 			if end < 0 {
-				t.Fatal("complete preserved settings C body")
+				t.Fatal("complete preserved network table C body")
 			}
 			body = body[:end+2]
-			if got := sha256.Sum256([]byte(body)); got != [32]byte{0x1b, 0x9c, 0xff, 0xc7, 0xb8, 0xe4, 0xc2, 0xe8, 0xb0, 0x16, 0x24, 0x6f, 0xdf, 0xc4, 0xb7, 0x3e, 0x45, 0x95, 0xd4, 0x79, 0x78, 0x8c, 0xfd, 0x4b, 0x98, 0xc7, 0xca, 0xf1, 0xff, 0x99, 0xc6, 0xd5} {
-				t.Fatal("preserved settings C bytes changed")
+			if got := fmt.Sprintf("%x", sha256.Sum256([]byte(body))); got != wantSHA {
+				t.Fatal("preserved network table C bytes changed")
 			}
 			body = "\n" + body + "\n"
 		}

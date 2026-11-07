@@ -160,7 +160,7 @@ int sub_415840(int a1);
 int nox_xxx_ammoCheck_415880(int typ_ind);
 int sub_415960(wchar2_t* a1);
 wchar2_t* sub_4159F0(int a1);
-double sub_415BD0(int a1);
+double sub_415BD0(nox_object_t* item);
 double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item);
 int nox_xxx_unitArmorInventoryEquipFlags_415C70(const nox_object_t* item);
 int sub_415CD0(int a1);

@@ -662,7 +662,8 @@ double sub_4E2220(int a1) {
 						if (*(uint32_t*)(v1 + 12) & 0x2000000) {
 							v3 = *getMemFloatPtr(0x587000, 201108);
 						} else {
-							v3 = sub_415BD0(v1);
+							// This retained caller still carries a PE32 word; its loop is not a native-pointer port.
+							v3 = sub_415BD0((nox_object_t*)(uintptr_t)(uint32_t)v1);
 						}
 						v5 = v3 + v5;
 					}

@@ -55,6 +55,48 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 native pointer entries and six scalar leaves, 2026-11-08
+
+`sub_4133D0` now preserves native object, InitData, material-slot and descriptor
+pointers. Its Material7 cache is a typed pointer owned by each server, cleared
+before modifier reload and free, including failed reload. The raw caller keeps
+the original eager InitData load, lazy resolver calls and pointer identity
+comparison. Equal names do not merge distinct descriptors; an unresolved nil
+descriptor remains retryable and can compare equal to an eligible nil slot.
+
+`sub_415BD0` now accepts `nox_object_t*` and reads its armor definition through
+native named fields. Compiled object class/type offsets are 12/8; the native
+coefficient offset is 76. Its original 43-byte caller is already sealed in the
+main oracle. An actual preserved-C standalone crashes with a truncated high
+address; a separately labelled transport-only control returns 0.125 after
+widening that argument. The failed low-address allocation control is retained.
+The existing raw `4E2220` loop still uses PE32 carriers; its call has an explicit
+compatibility cast and receives no native-loop execution credit.
+
+Six additional settings entries, `40A180`, `40A220`, `40A3C0`, `40A6A0`,
+`40A6B0` and `40A710`, also execute in Go through their existing C signatures.
+Their complete original 106-byte/33-instruction bodies and exact old C remain
+preserved. Each local profile compares 1,180,680 Go/C calls with a separately
+compiled old-C executable, including nine complete 16-bit lookup domains and
+516 scalar/state-canary cases. This supplies no new original CPU execution.
+
+Go 1.27.3 normal and strict/highres profiles each pass 4,477 test IDs and three
+packages. Material7 comparisons include 28 actual calls, opaque unaligned
+descriptor identities, eight in-call GCs over individually pinned graphs and
+real empty-server resolver controls. Server isolation/free/failed-reload tests
+pass. Armor coefficient tests make 5,134 Go/C calls and 2,560 typed C conversion
+comparisons, including actual linked lookup and pinned Go memory. Finite IEEE
+widening and native default NaN behavior are tested; original NaN/x87 return
+ABI, exception state and partial-fault equivalence are not established.
+
+The initial profiles each recorded 4,475 passes and two failures because the
+new armor tests treated `alloc.New`'s type witness as an initializer. A separate
+retry explicitly initialized the intended C-heap objects; production code,
+assertions and all 2,560 expected IEEE values were unchanged. Both failed
+profiles and their executed mains remain preserved. Current GAME1 accounting
+is 21 Go connections and 62 remaining C algorithms out of 83 definitions.
+Product/campaign gates and the known parent WORD difference remain open.
+
 ### GAME1 setting flags, 2026-11-08
 
 `sub_409E40`, `sub_409E70`, `sub_409EC0`, `sub_409EF0` and `sub_409F40`

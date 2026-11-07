@@ -79,6 +79,7 @@ func RegisterModifEngageEffect(name string, fnc unsafe.Pointer, parse ModifierPa
 }
 
 type serverModifiers struct {
+	material7Cache4133D0       *ModifierEff
 	sm                         *strman.StringManager
 	types                      [3]*ModifierEff // EFFECTIVENESS, MATERIAL, ENCHANTMENT
 	cnt                        uint32
@@ -88,6 +89,12 @@ type serverModifiers struct {
 	ready                      bool
 	boltDamageArcherType4EF1E0 uint32
 	teamBaseTypeInd4E4990      uint32
+}
+
+// Material7CacheCell4133D0 is a typed native pointer cell owned by this server.
+// A nil value is not memoized: the raw caller retries its named resolver.
+func (s *serverModifiers) Material7CacheCell4133D0() **ModifierEff {
+	return &s.material7Cache4133D0
 }
 
 func (s *serverModifiers) init(sm *strman.StringManager) {
@@ -433,6 +440,7 @@ func (s *serverModifiers) nox_xxx_parseModifDesc_412AE0(typ int, arr []modifiers
 }
 
 func (s *serverModifiers) Nox_xxx_parseModifierBin_412930(fname string) error {
+	s.material7Cache4133D0 = nil
 	s.types[0] = nil
 	s.types[1] = nil
 	s.types[2] = nil
@@ -571,6 +579,7 @@ func nox_xxx_modifFreeOne_413140(head *ModifierEff) {
 }
 
 func (s *serverModifiers) Nox_xxx_freeWeaponArmorDefAndModifs_413060() {
+	s.material7Cache4133D0 = nil
 	sub_4130C0(s.Dword_5d4594_251600)
 	s.Dword_5d4594_251600 = nil
 	sub_413100(s.Dword_5d4594_251608)

@@ -267,7 +267,9 @@ int nox_xxx_servGetPlrLimit_409FA0() { return *getMemU32Ptr(0x5D4594, 3464); }
 short nox_xxx_servGamedataGet_40A020(short a1) { return *getMemU16Ptr(0x5D4594, 3488 + 2 * sub_409A70(a1)); }
 
 //----- (0040A180) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 unsigned char sub_40A180(short a1) { return getMemByte(0x5D4594, 3500 + sub_409A70(a1)); }
+#endif
 
 //----- (0040A1F0) --------------------------------------------------------
 int sub_40A1F0(int a1) {
@@ -282,7 +284,9 @@ int sub_40A1F0(int a1) {
 }
 
 //----- (0040A220) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 int sub_40A220() { return *getMemU32Ptr(0x587000, 4660); }
+#endif
 
 //----- (0040A230) --------------------------------------------------------
 int sub_40A230() { return *getMemU32Ptr(0x5D4594, 3468) - (unsigned long long)nox_platform_get_ticks(); }
@@ -320,6 +324,7 @@ void nox_xxx_set3512_40A340(int a1) { *getMemU32Ptr(0x5D4594, 3512) = a1; }
 int nox_xxx_get3512_40A350() { return *getMemU32Ptr(0x5D4594, 3512); }
 
 //----- (0040A3C0) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 unsigned int sub_40A3C0(unsigned int a1) {
 	unsigned int result; // eax
 
@@ -329,6 +334,7 @@ unsigned int sub_40A3C0(unsigned int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0040A440) --------------------------------------------------------
 char* nox_xxx_gameSetServername_40A440(char* a1) {
@@ -385,6 +391,7 @@ int nox_server_gameDoSwitchMap_40A680() { return nox_server_gameSettingsUpdated;
 void nox_server_gameUnsetMapLoad_40A690() { nox_server_gameSettingsUpdated = 0; }
 
 //----- (0040A6A0) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 int sub_40A6A0(int a1) {
 	int result; // eax
 
@@ -392,9 +399,12 @@ int sub_40A6A0(int a1) {
 	*getMemU32Ptr(0x5D4594, 3588) = a1;
 	return result;
 }
+#endif
 
 //----- (0040A6B0) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 int sub_40A6B0() { return *getMemU32Ptr(0x5D4594, 3588); }
+#endif
 
 //----- (0040A6C0) --------------------------------------------------------
 int nox_xxx_rateGet_40A6C0() { return *getMemU32Ptr(0x587000, 4728); }
@@ -415,6 +425,7 @@ int nox_xxx_rateUpdate_40A6D0(int a1) {
 }
 
 //----- (0040A710) --------------------------------------------------------
+#if 0 // Exact prior scalar C body retained; public entry implemented in Go.
 int sub_40A710(int a1) {
 	int v1;            // ecx
 	unsigned char* v2; // eax
@@ -430,6 +441,7 @@ int sub_40A710(int a1) {
 	}
 	return *getMemU32Ptr(0x587000, 4668 + 8 * v1);
 }
+#endif
 
 //----- (0040A740) --------------------------------------------------------
 int sub_40A740() {
@@ -1203,6 +1215,7 @@ int nox_xxx_mapTileAllowTeleport_411A90(float2* a1) {
 obj_412ae0_t* nox_xxx_modifNext_4133C0(obj_412ae0_t* a1) { return a1->field_34; }
 
 //----- (004133D0) --------------------------------------------------------
+#if 0 // Exact original Material7 predicate retained; native pointer entry in sub_4133d0_export.go.
 int sub_4133D0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1; // eax
@@ -1218,6 +1231,7 @@ int sub_4133D0(nox_object_t* a1p) {
 	}
 	return *(uint32_t*)(a1 + 8) & 0x13001000 && *(uint32_t*)(v2 + 4) == v1;
 }
+#endif
 
 //----- (00413420) --------------------------------------------------------
 extern nox_video_bag_image_t* nox_item_enchantment_icon_native_413420(uint8_t flag);
@@ -1691,6 +1705,7 @@ wchar2_t* sub_4159F0(int a1) {
 }
 
 //----- (00415BD0) --------------------------------------------------------
+#if 0 // Exact PE32-pointer C transcription; native Go entry uses nox_object_t*.
 double sub_415BD0(int a1) {
 	float* v1;     // eax
 	double result; // st7
@@ -1703,6 +1718,7 @@ double sub_415BD0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00415C00) --------------------------------------------------------
 double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {

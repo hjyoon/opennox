@@ -1,5 +1,36 @@
 # Native C entry pointer audit
 
+## GAME1 Material7 and armor coefficient pointers, 2026-11-08
+
+`sub_4133D0` no longer narrows its typed object argument, InitData or cached
+descriptor to a DWORD. Object fields and material slot one use named native
+offsets, and the descriptor cache is a server-owned typed pointer with reload
+and free invalidation. The original cache-read/eager-InitData/resolver/class/
+slot order and raw identity comparison are retained. Warm opaque descriptors
+are compared as pointers without adding struct-alignment admission.
+
+`sub_415BD0` now takes `nox_object_t*` and loads the definition's float at its
+native offset 76. Its exact old C body remains under `#if 0`; a preserved-C
+high-address crash and a separate argument-widened positive control are retained.
+The old raw `4E2220` loop remains a PE32 carrier path with an explicit call-site
+compatibility cast; it is not included in the native-pointer claim.
+
+Normal/strict Go 1.27.3 each pass 4,477 tests and three packages. Checks cover
+28 actual Material7 Go/C calls, pinned graphs and eight in-call GCs, opaque
+identities, server cache isolation and invalidation, and 5,134 armor coefficient
+Go/C calls with 2,560 typed C conversion comparisons. Original nonfinite/x87
+physical return behavior and nil/partial-fault address equivalence remain open.
+Two initial failures from new-test C-heap initialization were corrected in a
+separate retry without changing production code, assertions or IEEE expectations;
+all failed evidence and actual mains are preserved.
+
+Six additional scalar entries also migrate to Go: `40A180`, `40A220`,
+`40A3C0`, `40A6A0`, `40A6B0` and `40A710`. Each profile compares 1,180,680
+actual calls with preserved old C, native live cells and state canaries.
+Their prior pointers already had native width. Current GAME1 accounting is
+21 Go connections and 62 remaining C algorithms among 83 definitions.
+The parent WORD discrepancy and campaign/product completion gates remain open.
+
 ## GAME1 setting-flag entries, 2026-11-08
 
 Five public C entries, `409E40`, `409E70`, `409EC0`, `409EF0` and `409F40`,

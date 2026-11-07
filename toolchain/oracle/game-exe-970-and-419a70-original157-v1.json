@@ -1,0 +1,48 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "game-exe-970-and-419a70-original157-v1",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_40A970",
+      "address": "0x0040A970",
+      "size": 140,
+      "sha256": "1d3f9bdbb7849e919cd55b710ef1c478bf9c5f627dce035e07767f6717b05192",
+      "purpose": "Only 970 caller algorithm; public void(void). No execution in this preparation."
+    },
+    {
+      "name": "original_float_to_signed_DWORD_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Actual FLD32/FISTP32 converter instructions, never a host cast boundary."
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_40A970_padding",
+      "address": "0x0040A9FC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "Separate NOP padding; no body coverage."
+    },
+    {
+      "name": "SuddenDeathPlayerThreshold_cstring",
+      "address": "0x005883F8",
+      "size": 27,
+      "sha256": "200de403a3d396c6349217160a56f9ba27717a7d1672a9a71b0b5b72b5165a75",
+      "purpose": "Actual immutable gamedata argument bytes."
+    },
+    {
+      "name": "SuddenDeathLifeTime_cstring",
+      "address": "0x00588414",
+      "size": 20,
+      "sha256": "44e6b2303f508a9a5fcbbae65ee409129130b18e60c01e8ad48bf43a20aadcf3",
+      "purpose": "Actual immutable gamedata argument bytes."
+    }
+  ]
+}

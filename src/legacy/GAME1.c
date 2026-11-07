@@ -550,6 +550,7 @@ int nox_xxx_gamePlayIsAnyPlayers_40A8A0() {
 }
 
 //----- (0040A970) --------------------------------------------------------
+#if 0 // Exact prior C body retained; native Go sudden death entry owns this symbol.
 void sub_40A970() {
 	float v3; // [esp+0h] [ebp-8h]
 	float v4; // [esp+0h] [ebp-8h]
@@ -568,6 +569,7 @@ void sub_40A970() {
 	}
 	nox_common_gameFlags_unset_40A540(0x4000000);
 }
+#endif
 
 //----- (0040AA00) --------------------------------------------------------
 #if 0 // Preserved original C body; native Go public entry owns this symbol.

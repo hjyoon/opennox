@@ -55,6 +55,31 @@ completion requirements.
 
 ## Current findings
 
+### Shared map-name setter `sub_409B50`, 2026-11-07
+
+The setter now runs in Go behind its unchanged public `unsigned int
+sub_409B50(const char*)` C ABI. Full native source and destination addresses
+are retained; the unsigned 32-bit result includes the terminating NUL. The
+complete 41-byte original uses an inline byte scan, forward DWORD copies and
+then a BYTE tail. The Go implementation preserves that order, including its
+destructive overlap behavior. The previous C transcription remains exact
+under `#if 0`; the public C forwarder retains the const source declaration.
+
+A separate seal and fifty actual original calls cover twenty-five independent
+contexts under two FPU controls: forty returns and ten original fault
+observations, all nineteen instruction starts, complete mapped pages,
+read/write ordering, caller bytes and saved registers. In local macOS ARM64
+Go 1.27.3 normal and strict highres/cgocheck2/checkptr2 integration runs, all
+thirty-one setter/getter/static test IDs pass. Each recorded profile has
+forty-one test passes and two separately counted package passes; the ten
+additional raw DefaultDamage GC checks remain a separate port scope.
+Setter checks include forty primary Go/public-C comparisons and eight exact
+Go source-allocation NUL boundaries. Both source and destination addresses
+exceed 4 GiB. Original data, failure evidence and four PREEXEC mains remain
+preserved; owned duplicates and WORK are retired after byte verification.
+This establishes the normal DF=0 C ABI cases, not native fault equivalence,
+DF=1 or a four-GiB scan, buffer capacity or complete GUI map transitions.
+
 ### Shared map-name getter `sub_409B80`, 2026-11-07
 
 `GAME1.c`'s getter now uses a Go implementation and the same public `char*`

@@ -1,0 +1,19 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_409B50",
+      "address": "0x00409B50",
+      "size": 41,
+      "sha256": "39f4f1088bbfd476b125556405887c8220aa5912fb70137f4620cc0ab6bf5ee4",
+      "purpose": "Complete inline REPNE SCASB, forward REP MOVSD then REP MOVSB setter. No external callee substitution, no safety truncation, no DF1 standard-native equivalence claim."
+    }
+  ],
+  "data": []
+}

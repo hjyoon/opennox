@@ -118,6 +118,7 @@ char* nox_server_currentMapGetFilename_409B30() { return (char*)getMemAt(0x5D459
 char* nox_xxx_mapGetMapName_409B40() { return (char*)getMemAt(0x85B3FC, 36); }
 
 //----- (00409B50) --------------------------------------------------------
+#if 0 // Exact REP scan/copy restored in sub_409b50_native.go; const ABI bridge remains C.
 unsigned int sub_409B50(const char* a1) {
 	unsigned int result; // eax
 
@@ -125,6 +126,7 @@ unsigned int sub_409B50(const char* a1) {
 	memcpy(getMemAt(0x5D4594, 3452), a1, result);
 	return result;
 }
+#endif
 
 //----- (00409B80) --------------------------------------------------------
 #if 0 // Native pointer getter moved to sub_409b80_export.go.

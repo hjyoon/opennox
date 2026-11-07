@@ -1,5 +1,18 @@
 # Native C entry pointer audit
 
+`sub_409B50` now uses full native pointers and a Go implementation behind its
+unchanged public const-source C signature. Its unsigned count remains 32-bit;
+it is a value, not a pointer. The complete 41-byte original scan and ordered
+DWORD/BYTE copies qualify fifty original calls across two FPU controls, with
+forty returns and ten original-only fault observations. Local macOS ARM64 Go
+1.27.3 normal/strict integration checks each retain all thirty-one
+setter/getter/static IDs within forty-one passing tests and two package
+passes. Forty Go/C comparisons and eight exact Go allocation-end NUL checks
+preserve overlap order, high pointer bits and the shared getter alias. The
+original C transcription and all executed mains remain preserved. The prior
+setter already accepted a native pointer, so no integer candidate is removed;
+native fault, DF=1, four-GiB scan and whole GUI/campaign results are not claimed.
+
 `sub_409B80` in `GAME1.c` now exports its original `char*` entry from Go and
 returns the same C-owned shared map-name buffer at full native width. Its
 old C return already preserved pointers; no integer candidate is removed.

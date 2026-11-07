@@ -1,5 +1,16 @@
 # Native C entry pointer audit
 
+`sub_409B80` in `GAME1.c` now exports its original `char*` entry from Go and
+returns the same C-owned shared map-name buffer at full native width. Its
+old C return already preserved pointers; no integer candidate is removed.
+The complete six-byte original body is sealed separately and sixteen actual
+original calls qualify across two FPU controls. Local Go 1.27.3 normal and
+strict macOS ARM64 checks each pass nine tests and two packages, including
+six actual C-consumer/string cases above 4 GiB. Setter visibility, stable
+aliases, first-NUL/non-UTF-8 copies and earlier Go-copy independence pass.
+The old C statement, actual test mains and raw evidence remain preserved;
+buffer capacity, whole GUI routes and campaign completion are not inferred.
+
 Raw DefaultDamage now has an independently verified original reference before
 its pointer ABI changes. The 1,034-case primary set and four separately frozen
 Shield inputs execute 2,076 parent entries under two FPU modes. Their union

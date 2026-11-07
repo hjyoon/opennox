@@ -127,7 +127,9 @@ unsigned int sub_409B50(const char* a1) {
 }
 
 //----- (00409B80) --------------------------------------------------------
+#if 0 // Native pointer getter moved to sub_409b80_export.go.
 char* sub_409B80() { return (char*)getMemAt(0x5D4594, 3452); }
+#endif
 
 //----- (00409D70) --------------------------------------------------------
 char* nox_xxx_gameSetMapPath_409D70(char* a1) {

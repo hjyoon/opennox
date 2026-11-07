@@ -16,7 +16,7 @@ void nox_client_setVersion_409AE0(unsigned int vers);
 char* nox_server_currentMapGetFilename_409B30();
 char* nox_xxx_mapGetMapName_409B40();
 unsigned int sub_409B50(const char* a1);
-char* sub_409B80();
+char* sub_409B80(void);
 char* nox_xxx_gameSetMapPath_409D70(char* a1);
 int sub_409E40(int a1);
 int nox_xxx_getServerSubFlags_409E60();

@@ -55,6 +55,27 @@ completion requirements.
 
 ## Current findings
 
+### Shared map-name getter `sub_409B80`, 2026-11-07
+
+`GAME1.c`'s getter now uses a Go implementation and the same public `char*`
+C entry. It returns the relocated address of the original shared C buffer;
+repeated calls, the existing setter and C aliases see the same storage. The
+Go-facing wrapper still copies through the first NUL. The prior getter was
+already pointer-typed, so this change removes no integer-pointer candidate.
+The original C statement remains under `#if 0`.
+
+The complete six original bytes pass a separate seal and sixteen actual
+original calls across eight caller/data contexts and two FPU controls.
+Local macOS ARM64 Go 1.27.3 normal and strict highres/cgocheck2/checkptr2
+profiles each pass nine tests and two separately counted packages, with no
+failures, skips or build warnings. Six native cases use an actual C caller,
+a buffer address above 4 GiB, live setter/alias changes, first-NUL and raw
+non-UTF-8 bytes, and immutable earlier Go string copies. All four PREEXEC
+test mains and raw records are retained; owned duplicates and compiler WORK
+are removed after whole-byte archive verification. The main 3,373-code/
+713-data manifest is unchanged. This getter check establishes no buffer
+capacity, complete GUI map-selection route or new campaign result.
+
 ### Raw DefaultDamage: complete parent reference, 2026-11-07
 
 The retained raw `nox_xxx_damageDefaultProc_4E0B30` still takes three

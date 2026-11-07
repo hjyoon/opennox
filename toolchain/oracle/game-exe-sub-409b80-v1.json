@@ -1,0 +1,19 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_409B80",
+      "address": "0x00409B80",
+      "size": 6,
+      "sha256": "2171b26dc3b3aa41e6ec1720367d741f96c119ebcb5d114d8851f6e0c3f8ff34",
+      "purpose": "Complete zero-argument MOV EAX,005D5310;RET getter only. No original buffer read, allocation, helper, setter or GUI caller body credit."
+    }
+  ],
+  "data": []
+}

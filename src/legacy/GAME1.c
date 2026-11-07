@@ -609,6 +609,7 @@ int sub_40AA60(int a1) {
 #endif
 
 //----- (0040AA70) --------------------------------------------------------
+#if 0 // Exact prior C body retained; native Go setting eligibility entry owns this symbol.
 int sub_40AA70(nox_playerInfo* pl) {
 	char* v1;   // edi
 	int result; // eax
@@ -675,6 +676,7 @@ LABEL_31:
 	}
 	return 0;
 }
+#endif
 
 //----- (0040E090) --------------------------------------------------------
 #if 0 // Preserved original C body; native Go public entry owns this symbol.

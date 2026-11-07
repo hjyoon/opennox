@@ -55,6 +55,49 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 eligibility entry, 2026-11-08
+
+`sub_40AA70` now executes in native Go through the existing
+`int(nox_playerInfo*)` C ABI. Cached info/player identities retain full pointer
+width. Info BYTE52 is distinct from the other settings getter; player status,
+team key and iterator state retain DWORD reads at named native offsets 4976,
+2072 and 2144. The lazy global read, cached key, two independent Check96 calls,
+two unsigned low-AL results and signed count/limit comparisons preserve the
+original order. The iterator now uses `int32(raw) > 0`, correcting the former
+C unsigned comparison for high-bit state words. The former C entry already
+used native pointers; this is an algorithm migration and a signed-comparison
+fix, without a new entry-pointer truncation claim.
+
+Before implementation, 662 independent inputs produced 1,324 qualified
+original records in two FPU controls: 1,286 returns and 38 read faults. All
+346 bytes and 127 instruction starts are covered in both controls. Eighteen
+call sites remain external boundaries; their eleven helper bodies receive
+no original execution credit. Expected original rows never enter native
+workers.
+
+Go 1.27.3 normal and strict/highres each pass 11,955 selected test IDs and
+three packages. An independent reader verifies 2,648 actual Go/C corpus calls
+per profile against the corresponding original control-word record: 2,572
+returns and 76 read faults. Full int32 return bits, ordered BYTE/DWORD loads,
+service words/arguments/full pointers, input consumption and every mapped
+native AFTER/canary byte agree. Ten additional linked-default/pinned-Go calls
+pass, including three individually pinned Players and eighteen forced GCs
+per profile. Default controls use the actual production global, C AL bridge
+and separate C limit symbol; these extra results are source-bound assertions,
+not invented raw default-service traces. Whole-source snapshots before and
+after both profiles match exactly.
+
+The exact 1,351-byte former C definition remains under `#if 0`, with the public
+header unchanged. Current GAME1 accounting is **35 Go connections and 48
+remaining C algorithms out of 83 definitions**; all 83 retained definition
+hashes remain exact. Next source-order entries are `410390`, `410550`,
+`410730` and `4107A0`. The clean `34916ce3a` normal/HD products build and pass
+help checks; they precede this entry and provide no new-entry gameplay credit.
+Native physical fault-PC/nil-EA/register/stack/FPU equivalence, original
+external helper bodies, the separate high-bit key issue in `418AE0`, `4E2220`,
+the parent WORD discrepancy, the missing shopkeeper heading and all nine
+chapter 1-3 final audits remain open. Overall porting is incomplete.
+
 ### GAME1 sudden-death entry, 2026-11-08
 
 `sub_40A970` now executes in native Go through its existing `void(void)` C
@@ -88,7 +131,7 @@ The first build failed on an unused import in the new test. Its full failure
 record remains preserved, with zero legacy/native entry execution credit.
 The successful retry removes only that unused test import.
 
-Current GAME1 accounting is **34 Go connections and 49 remaining C algorithms
+At that checkpoint, GAME1 accounting was **34 Go connections and 49 remaining C algorithms
 out of 83 definitions**; all 83 retained C definition hashes remain exact.
 Next is `40AA70`: the original signed `field_2140 > 0` predicate differs from
 the current unsigned C comparison and is awaiting original boundary-input

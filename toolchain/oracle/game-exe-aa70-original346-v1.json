@@ -1,0 +1,25 @@
+{
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "functions": [
+    {
+      "name": "sub_40AA70",
+      "address": "0x0040AA70",
+      "size": 346,
+      "sha256": "9ecbe9b78c9959a64f71f057c82494dea51f3b3cc261d56c4a8a70f5bf449000"
+    }
+  ],
+  "data": [
+    {
+      "name": "observed_NOPs_after_40AA70_no_next_function_claim",
+      "address": "0x0040ABCA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564"
+    }
+  ],
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "game-exe-aa70-original346-v1",
+  "path": "GAME.EXE",
+  "format": "PE32",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false
+}

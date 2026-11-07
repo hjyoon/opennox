@@ -1,0 +1,27 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_409A70",
+      "address": "0x00409A70",
+      "size": 36,
+      "sha256": "5a3c58d018faf2c8889bd558f93fe852724eb63760b96cbb12fe53a78c06466e",
+      "purpose": "Complete six-DWORD settings lookup; existing immutable network fixture is preserved. No new original execution is implied by this additive byte manifest."
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_409A70_settings_stock_table",
+      "address": "0x00588260",
+      "size": 24,
+      "sha256": "aa8a38bc917cf27323d40d5ed7169a89736fbd4ccbbf8d495065d122378e3600",
+      "purpose": "Original stock six-DWORD table only; native lookup continues to read the live writable memmap table, including independently recorded duplicate/unusual variants."
+    }
+  ]
+}

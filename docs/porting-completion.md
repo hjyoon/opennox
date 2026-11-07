@@ -55,6 +55,22 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 `sub_409A70`, 2026-11-07
+
+The settings-table lookup now runs in Go through its unchanged public C
+signature, preserving the live table, first-match order, mask and zero miss
+result. Its original C body and immutable original fixture remain preserved.
+Local Go 1.27.3 normal and strict/highres profiles each pass 11 tests and two
+packages, including the complete 16-bit stock input domain and all three
+original table variants through Go and C. The final runs retain their actual
+C comparison executable before execution. The initial successful runs did
+not retain that temporary C executable; their limitation is preserved.
+
+This is the first additional migration in the requested source-order sweep
+of all `GAME1.c` `sub_*` definitions. Eight of 83 entries now have Go
+connections and 75 C algorithms remain. This leaf had no input pointer
+truncation in its prior C implementation. The overall port remains partial.
+
 ### Raw damage pointer entries, 2026-11-07 (WIP)
 
 The public raw `4E0B30` entry now uses three native object pointers, two signed

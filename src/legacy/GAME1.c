@@ -95,6 +95,7 @@ int nox_xxx_parseString_409470(FILE* a1, uint8_t* a2) {
 }
 
 //----- (00409A70) --------------------------------------------------------
+#if 0 // Original scalar lookup retained; native Go entry in sub_409a70_export.go.
 int sub_409A70(short a1) {
 	int result;        // eax
 	unsigned char* v2; // ecx
@@ -110,6 +111,7 @@ int sub_409A70(short a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00409B30) --------------------------------------------------------
 char* nox_server_currentMapGetFilename_409B30() { return (char*)getMemAt(0x5D4594, 2598188); }

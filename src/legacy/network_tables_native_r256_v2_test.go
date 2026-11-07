@@ -2,8 +2,10 @@ package legacy
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -86,6 +88,25 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 		}
 		_, body, _ := strings.Cut(string(source), entry.first)
 		body, _, _ = strings.Cut(body, entry.last)
+		if entry.marker == "// SETTINGS_BODY" {
+			// This historical C body remains a separate baseline after its
+			// public symbol moves to Go. Verify its bytes before extracting it
+			// from the provenance-only preprocessor fence.
+			const signature = "int sub_409A70(short a1) {"
+			if strings.Count(body, signature) != 1 {
+				t.Fatal("unique preserved settings C body")
+			}
+			body = body[strings.Index(body, signature):]
+			end := strings.Index(body, "\n}")
+			if end < 0 {
+				t.Fatal("complete preserved settings C body")
+			}
+			body = body[:end+2]
+			if got := sha256.Sum256([]byte(body)); got != [32]byte{0x1b, 0x9c, 0xff, 0xc7, 0xb8, 0xe4, 0xc2, 0xe8, 0xb0, 0x16, 0x24, 0x6f, 0xdf, 0xc4, 0xb7, 0x3e, 0x45, 0x95, 0xd4, 0x79, 0x78, 0x8c, 0xfd, 0x4b, 0x98, 0xc7, 0xca, 0xf1, 0xff, 0x99, 0xc6, 0xd5} {
+				t.Fatal("preserved settings C bytes changed")
+			}
+			body = "\n" + body + "\n"
+		}
 		program = bytes.Replace(program, []byte(entry.marker), []byte("//"+body), 1)
 	}
 	var input bytes.Buffer
@@ -112,19 +133,67 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}
 	}
-	bin := filepath.Join(t.TempDir(), "network-tables-native")
+	binDir := t.TempDir()
+	if artifacts := os.Getenv("OPENNOX_LOCAL_TEST_ARTIFACTS"); artifacts != "" {
+		if err := os.MkdirAll(artifacts, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		binDir, err = os.MkdirTemp(artifacts, "network-tables-native-")
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	bin := filepath.Join(binDir, "network-tables-native")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-Wno-sign-compare", "-x", "c", "-", "-o", bin)
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete C lookup bodies: %v\n%s", err, output)
 	}
+	// Keep the actual compiled C executable and its exact source/input before
+	// its first invocation. An explicit artifact root survives t.TempDir cleanup.
+	for name, data := range map[string][]byte{"source.c": program, "input.bin": input.Bytes()} {
+		if err := os.WriteFile(filepath.Join(binDir, name), data, 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	executable, err := os.ReadFile(bin)
+	if err != nil {
+		t.Fatal(err)
+	}
+	preexec, err := json.MarshalIndent(map[string]any{
+		"executable": bin, "bytes": len(executable), "sha256": fmt.Sprintf("%x", sha256.Sum256(executable)),
+		"source_sha256": fmt.Sprintf("%x", sha256.Sum256(program)), "input_sha256": fmt.Sprintf("%x", sha256.Sum256(input.Bytes())),
+		"compile_argv": cmd.Args, "execution_started": false,
+	}, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(binDir, "actual-C-executable-PREEXEC.json"), preexec, 0o600); err != nil {
+		t.Fatal(err)
+	}
 	for _, name := range []string{"settings", "rate", "mode"} {
 		t.Run(name, func(t *testing.T) {
 			cmd := exec.Command(bin, name)
 			cmd.Stdin = bytes.NewReader(input.Bytes())
-			if output, err := cmd.CombinedOutput(); err != nil {
-				t.Fatalf("native lookup: %v\n%s", err, output)
+			output, runErr := cmd.CombinedOutput()
+			if err := os.WriteFile(filepath.Join(binDir, name+".combined.log"), output, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			var exitCode any
+			state := "not started"
+			if cmd.ProcessState != nil {
+				exitCode, state = cmd.ProcessState.ExitCode(), cmd.ProcessState.String()
+			}
+			wait, err := json.MarshalIndent(map[string]any{"argv": cmd.Args, "Wait_terminal": true, "exit_code": exitCode, "process_state": state, "error": fmt.Sprint(runErr)}, "", "  ")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(binDir, name+".Wait.json"), wait, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			if runErr != nil {
+				t.Fatalf("native lookup: %v\n%s", runErr, output)
 			} else {
 				t.Log(strings.TrimSpace(string(output)))
 			}

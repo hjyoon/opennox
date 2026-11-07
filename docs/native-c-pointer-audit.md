@@ -1,5 +1,29 @@
 # Native C entry pointer audit
 
+## GAME1 source-order port, 2026-11-07
+
+`sub_409A70` now implements its six-DWORD live settings lookup in Go behind
+the unchanged `int(short)` C entry. The exact original C definition remains
+under `#if 0`. The prior C implementation already kept its internal table
+pointer native-width; this is an algorithm migration, not a newly fixed
+pointer truncation. Existing `sub_409B50` and `sub_409B80` ports are retained.
+
+Go 1.27.3 local macOS ARM64 normal and highres/strict profiles each pass
+11 test IDs and two packages. The new original-table comparisons exercise
+three variants and two input signs through Go and the real C entry (3,072
+calls per profile); the existing stock consumer covers all 65,536 input
+words. Separate preserved-C comparisons retain four address placements and
+canaries. The final profiles preserve their actual compiled C executable,
+source, input, pre-execution hashes and all three child results. Earlier
+successful profiles lacked that ephemeral C executable and remain recorded
+with this limitation. No new original execution is claimed for this leaf.
+
+The source-order inventory contains 83 `GAME1.c` `sub_*` definitions. This
+change moves one of the 76 remaining C algorithms to Go: eight entries now
+have Go connections and 75 remain to migrate. These are inventory states,
+not an overall completion percentage. Raw Skeleton and campaign gates remain
+open as described below.
+
 ## Raw damage checkpoint, 2026-11-07 (WIP)
 
 Raw DefaultDamage `4E0B30` and the four scalar callers `4E24B0`, `4E24E0`,

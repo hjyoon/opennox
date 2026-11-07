@@ -1,5 +1,29 @@
 # Native C entry pointer audit
 
+## GAME1 setting-flag entries, 2026-11-08
+
+Five public C entries, `409E40`, `409E70`, `409EC0`, `409EF0` and `409F40`,
+now call native Go bodies. Each retains its actual `int(int)` ABI and its
+exact old C definition under `#if 0`. Subflags and the dirty flag remain
+separate actual C globals with compile-time/runtime DWORD width checks;
+no PE-address alias, adjacent struct or Go shadow replaces either cell.
+Full signed return words, the second E70 read, EC0's cached result and
+dirty-before-flags stores, and EF0's conditional live reload are preserved.
+
+The complete original 256-byte/77-instruction caller set has 2,522 qualified
+two-FPU recordings. Normal/strict Go 1.27.3 each pass 3,915 tests and two
+packages, including 2,522 actual Go/C calls and 5,044 original comparisons.
+Actual global addresses exceed 4 GiB; VM-bounded neighbouring bytes, raw
+returns, ordered operands and independent service mutations agree. Declared
+external helpers receive no body-execution credit. The prior five scalar
+bodies did not truncate pointers; these are algorithm migrations.
+
+Current GAME1 accounting is 13 Go connections and 70 remaining C algorithms
+out of 83 definitions. Clean pre-flags `532dc25ae` products also pass the ten
+unchanged shop/hearing scenarios in normal/HD with retained original assets
+and Save data. The native parent WORD discrepancy and campaign gates remain
+open; this accounting is not an overall completion percentage.
+
 ## Raw Skeleton pointer entry, 2026-11-08
 
 `sub_4E23C0` now transports three native object pointers and two signed

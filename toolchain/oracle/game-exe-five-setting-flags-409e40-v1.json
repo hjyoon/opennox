@@ -1,0 +1,83 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "game-exe-five-setting-flags-original256-external-services-v1",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_409E40",
+      "address": "0x00409E40",
+      "size": 30,
+      "sha256": "473eaf282cfdd1ecc1062b9bd4c997226d643fe81d6ec7622dcb4075d17d81f9",
+      "purpose": "Complete original setting-flag caller body; Check40A5C0 and Refresh4D7EA0 are declared external boundaries, not executed callees."
+    },
+    {
+      "name": "sub_409E70",
+      "address": "0x00409E70",
+      "size": 69,
+      "sha256": "3f93bbe4e67979c9e6a91afa183e405700463c559884065f64d2b3cb3818e03f",
+      "purpose": "Complete original setting-flag caller body; Check40A5C0 and Refresh4D7EA0 are declared external boundaries, not executed callees."
+    },
+    {
+      "name": "sub_409EC0",
+      "address": "0x00409EC0",
+      "size": 35,
+      "sha256": "4289d13faf1bdf516aba42b930c492a9c1e42f9a6fedd87206bdd355c836832d",
+      "purpose": "Complete original setting-flag caller body; Check40A5C0 and Refresh4D7EA0 are declared external boundaries, not executed callees."
+    },
+    {
+      "name": "sub_409EF0",
+      "address": "0x00409EF0",
+      "size": 70,
+      "sha256": "3a071e5eb48bfe35637a42eb907761a1dce4a8efa2017e6f07be99b07c41585a",
+      "purpose": "Complete original setting-flag caller body; Check40A5C0 and Refresh4D7EA0 are declared external boundaries, not executed callees."
+    },
+    {
+      "name": "sub_409F40",
+      "address": "0x00409F40",
+      "size": 52,
+      "sha256": "115924a8514d6d4e5c73ca4dee816822fdc78f90776ecbfaff5c7c92b3d930db",
+      "purpose": "Complete original setting-flag caller body; Check40A5C0 and Refresh4D7EA0 are declared external boundaries, not executed callees."
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_409E40_padding",
+      "address": "0x00409E5E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "SeparateexacttrailingNOPpadding, notoriginalbodyinstructioncoverage."
+    },
+    {
+      "name": "sub_409E70_padding",
+      "address": "0x00409EB5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "SeparateexacttrailingNOPpadding, notoriginalbodyinstructioncoverage."
+    },
+    {
+      "name": "sub_409EC0_padding",
+      "address": "0x00409EE3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "SeparateexacttrailingNOPpadding, notoriginalbodyinstructioncoverage."
+    },
+    {
+      "name": "sub_409EF0_padding",
+      "address": "0x00409F36",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "SeparateexacttrailingNOPpadding, notoriginalbodyinstructioncoverage."
+    },
+    {
+      "name": "sub_409F40_padding",
+      "address": "0x00409F74",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "SeparateexacttrailingNOPpadding, notoriginalbodyinstructioncoverage."
+    }
+  ]
+}

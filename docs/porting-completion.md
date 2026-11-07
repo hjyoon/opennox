@@ -55,6 +55,40 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 setting flags, 2026-11-08
+
+`sub_409E40`, `sub_409E70`, `sub_409EC0`, `sub_409EF0` and `sub_409F40`
+now execute in Go behind their unchanged public `int(int)` C signatures.
+Their exact prior C definitions remain under `#if 0`. The implementation
+uses the two actual independent C globals, preserves their DWORD widths,
+live rereads and store order, and retains full signed return bits. External
+Check and Refresh replies are not narrowed to bool in the diagnostic domain;
+the production Check bridge canonicalizes its actual C bool before Go conversion.
+
+The five complete original bodies total 256 bytes and 77 instructions.
+Independent inputs produce 2,522 qualified original returns across two FPU
+controls. Local Go 1.27.3 normal and strict/highres profiles each pass 3,915
+test IDs and two packages, including the existing 1,391-test regression set.
+Each profile makes 2,522 actual Go/C calls and 5,044 original comparisons;
+native addresses exceed 4 GiB, ordered reads/writes and raw results agree,
+and the VM-bounded C-global windows and private service-input canaries remain
+exact. All executed mains, original observations and failure records are retained.
+
+The GAME1 inventory now has 13 Go connections and 70 remaining C algorithms
+among 83 `sub_*` definitions. These five scalar migrations do not establish
+a prior pointer-truncation defect. External helper bodies, physical x86 ABI
+equivalence and natural raw-entry gameplay are outside this comparison.
+
+Separately, clean `532dc25ae` normal/HD macOS products built with Go 1.27.3
+pass all ten unchanged repair, rejection, quantity, equipped-sale and hearing
+scenarios. Independent retention verifies both actual products and all ten
+canonical archives; all 56 frame paths have targeted visual review (32 unique
+images). Eight sale-sound events and twenty hearing conditions retain eight
+natural turns and twelve negative controls. Physical speaker output, obscured
+hearing actors and the generic merchant fixture's missing/clipped name retain
+their recorded limits. These products precede the five flags changes above.
+The parent WORD fault difference and nine campaign audits remain open.
+
 ### Raw Skeleton `sub_4E23C0`, 2026-11-08
 
 The existing C entry now accepts three native object pointers and preserves

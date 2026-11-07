@@ -163,6 +163,7 @@ char* nox_xxx_gameSetMapPath_409D70(char* a1) {
 }
 
 //----- (00409E40) --------------------------------------------------------
+#if 0 // Exact prior C body; native Go entry preserves the public ABI.
 int sub_409E40(int a1) {
 	int result; // eax
 
@@ -173,11 +174,13 @@ int sub_409E40(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00409E60) --------------------------------------------------------
 int nox_xxx_getServerSubFlags_409E60() { return dword_5d4594_3484; }
 
 //----- (00409E70) --------------------------------------------------------
+#if 0 // Exact prior C body; native Go entry preserves the public ABI.
 int sub_409E70(int a1) {
 	int result; // eax
 
@@ -194,8 +197,10 @@ int sub_409E70(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00409EC0) --------------------------------------------------------
+#if 0 // Exact prior C body; native Go entry preserves the public ABI.
 int sub_409EC0(int a1) {
 	int result; // eax
 
@@ -207,8 +212,10 @@ int sub_409EC0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00409EF0) --------------------------------------------------------
+#if 0 // Exact prior C body; native Go entry preserves the public ABI.
 int sub_409EF0(int a1) {
 	int result; // eax
 
@@ -225,8 +232,10 @@ int sub_409EF0(int a1) {
 	nox_server_gameSettingsUpdated = 1;
 	return result;
 }
+#endif
 
 //----- (00409F40) --------------------------------------------------------
+#if 0 // Exact prior C body; native Go entry preserves the public ABI.
 int sub_409F40(int a1) {
 	int result; // eax
 
@@ -237,6 +246,7 @@ int sub_409F40(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00409F80) --------------------------------------------------------
 int nox_xxx_servSetPlrLimit_409F80(int a1) {

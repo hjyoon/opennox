@@ -1,0 +1,41 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "game-exe-two-settings-pointer-callers-40a740-v1",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_40A740",
+      "address": "0x0040A740",
+      "size": 42,
+      "sha256": "aa3e7199bf2ca97d2c5513730a0b1a17583bbe6c554aa09fb3881efb428b1011",
+      "purpose": "Complete source-order caller, static only; no execution credit."
+    },
+    {
+      "name": "sub_40A770",
+      "address": "0x0040A770",
+      "size": 188,
+      "sha256": "bc5b76dc0ca5acd554af246f4033377d1d99fded521149870f37344a302c0cc7",
+      "purpose": "Complete source-order caller, static only; no execution credit."
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_40A740_padding",
+      "address": "0x0040A76A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "Separate trailing NOPs, not body coverage."
+    },
+    {
+      "name": "sub_40A770_padding",
+      "address": "0x0040A82C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "Separate trailing NOPs, not body coverage."
+    }
+  ]
+}

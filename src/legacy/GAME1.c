@@ -452,14 +452,17 @@ int sub_40A710(int a1) {
 #endif
 
 //----- (0040A740) --------------------------------------------------------
+#if 0 // Exact prior C body retained; native pointer entry implemented in Go.
 int sub_40A740() {
 	char* v0; // esi
 
 	v0 = sub_4165B0();
 	return nox_common_gameFlags_check_40A5C0(128) && v0[53] < 0;
 }
+#endif
 
 //----- (0040A770) --------------------------------------------------------
+#if 0 // Exact prior C body retained; native pointer entry implemented in Go.
 int sub_40A770() {
 	int count = 0;
 	if (!nox_xxx_CheckGameplayFlags_417DA0(4)) {
@@ -491,6 +494,7 @@ int sub_40A770() {
 	}
 	return count;
 }
+#endif
 
 //----- (0040A830) --------------------------------------------------------
 int nox_xxx_countNonEliminatedPlayersInTeam_40A830(nox_team_t* a1p) {

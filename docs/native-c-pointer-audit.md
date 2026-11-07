@@ -1,5 +1,38 @@
 # Native C entry pointer audit
 
+## GAME1 info and active-player entries, 2026-11-08
+
+`sub_40A740` and `sub_40A770` now execute in native Go through their existing
+C ABI. Info, player, unit, update and opaque team identities retain full
+pointer width. The original cached-info-before-flag order, BYTE status/index
+loads, lazy engine-flag DWORD read and fresh global unit scan for each team
+are preserved. No team-membership filter is added. The previous C definitions
+already used native pointers; these are two algorithm migrations, rather than
+two newly discovered pointer truncations. Their exact bodies remain under
+`#if 0` and public headers are unchanged.
+
+Before implementation, 394 independent inputs produced 788 qualified original
+records in two FPU modes: 652 returns and 136 read faults. The complete caller
+bodies cover 230 bytes and 85 instruction starts. Each normal/strict profile
+makes 788 actual Go/C corpus calls and 1,576 comparisons with those records.
+Ordered reads, raw service words, full relocated pointers, aliases, guarded
+prefixes and whole mapped native AFTER/canary banks agree. Thirty-four separate
+default-path and pinned-Go calls also pass, including actual player/unit/team
+iterators and 64 forced GCs per profile. The total is 822 new entry calls per
+profile. Go 1.27.3 normal and strict/highres each pass 7,671 test IDs and three
+packages. An independent reader verifies actual main bytes and bounded child
+execution records; original expected rows are never sent to native workers.
+
+Current GAME1 accounting is **33 Go connections and 50 remaining C algorithms
+out of 83 definitions**. All 83 retained C definition hashes remain exact.
+Next source-order work is `40A970`, with its distinct DWORD status bit and
+actual x87 store/conversion boundary, followed by `40AA70`. Physical fault-PC,
+nil effective-address and native register/stack/FPU equivalence remain
+unqualified. External service bodies, the retained `4E2220` traversal, the
+parent WORD discrepancy and the nine chapter 1-3 final audits remain open.
+The clean `2c0e65c2a` products pass ten shop/hearing scenarios; those products
+precede these two new ports and supply no new-entry gameplay credit.
+
 ## GAME1 timer and setting entry follow-up, 2026-11-08
 
 Ten additional algorithms now execute in Go: timer entries `40A1F0`,
@@ -26,7 +59,7 @@ compile failure remains preserved, with no native legacy execution claim.
 Only that new-test import changed for the successful retry. Exact prior C
 bodies, source fixtures and actual executables remain retained.
 
-Current GAME1 accounting is **31 Go connections / 52 remaining C algorithms
+At that checkpoint, GAME1 accounting was **31 Go connections / 52 remaining C algorithms
 among 83 definitions**. Original helper bodies, protected/invalid-index timer
 faults, native physical register/stack/FPU equivalence, the retained `4E2220`
 PE32 traversal, the parent WORD discrepancy and campaign final audits remain

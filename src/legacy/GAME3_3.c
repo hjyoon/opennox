@@ -736,6 +736,7 @@ int sub_4E2330(int a1, int a2, int a3, int a4, float a5, int a6) {
 }
 
 //----- (004E23C0) --------------------------------------------------------
+#if 0 // Exact PE32 transcription retained; native pointer caller exported from Go.
 int sub_4E23C0(int a1, int a2, int a3, int a4, int a5) {
 	int result; // eax
 	float v6;   // ecx
@@ -760,6 +761,7 @@ int sub_4E23C0(int a1, int a2, int a3, int a4, int a5) {
 	}
 	return result;
 }
+#endif
 
 //----- (004E24B0) --------------------------------------------------------
 #if 0 // PE32 caller retained; native pointer entry exported from Go.

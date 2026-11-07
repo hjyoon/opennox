@@ -1,5 +1,36 @@
 # Native C entry pointer audit
 
+## Raw Skeleton pointer entry, 2026-11-08
+
+`sub_4E23C0` now transports three native object pointers and two signed
+32-bit values through its existing public C entry. Its exact 1,027-byte C
+transcription, including its final newline, is preserved under `#if 0`.
+The Go caller uses named native field offsets and preserves the original
+DWORD X-before-Y copies, signed direction WORD, low-bit Direction test,
+UpdateData pointer cached before Action, byte480-before-byte481 reads and
+full signed parent result. The ordinary registered bool route is unchanged.
+
+The complete 237-byte/91-instruction original has 502 independently checked
+recordings from 251 chosen inputs and two FPU controls. Each local Go 1.27.3
+normal/strict profile passes 1,391 test IDs and two packages. Its 502 actual
+Go/C child calls each compare both original controls: 446 return naturally
+and 56 retain actual captured native read faults. All selected ordered reads,
+service arguments, scalar/pointer values, input mutations, returns and full
+foreign-bank canaries agree with the original field projection. Children get
+only independently selected inputs; original observations stay in the parent.
+
+Compiled C/Go object offsets are 60/76/80/128/872. Compiled Monster animation
+offsets are 552/553: Waypoints alignment contributes four extra bytes beyond
+pointer widening. Go/C tests also pass with explicitly pinned Go heap graphs
+and GC during Action after the update pointer has been cached. Actual nil-target
+Buff/DefaultDamage fallbacks pass without diagnostic observers.
+
+Native fault-PC classification and physical nil effective-address equivalence
+remain outside this evidence. Go's actual nil trap and the numeric field address
+are recorded separately. Declared helper boundaries supply no helper-body or
+gameplay execution credit; the earlier parent WORD difference remains open.
+Fresh product/E2E and the nine campaign audits remain separate completion gates.
+
 ## GAME1 source-order port, 2026-11-07
 
 `sub_409A70` now implements its six-DWORD live settings lookup in Go behind

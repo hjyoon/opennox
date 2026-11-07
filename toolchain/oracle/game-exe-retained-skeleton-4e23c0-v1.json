@@ -1,0 +1,28 @@
+{
+  "allow_overlapping_ranges": false,
+  "data": [
+    {
+      "address": "0x004E24AD",
+      "executable_section": true,
+      "name": "raw_SkeletonDamage_trailing_NOP3_4E24AD",
+      "purpose": "Exact original NOP padding, not executable body credit.",
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "size": 3
+    }
+  ],
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "functions": [
+    {
+      "address": "0x004E23C0",
+      "name": "raw_SkeletonDamage_complete_body_4E23C0",
+      "purpose": "Complete raw SkeletonDamage through finalRET; proposed reference layer declares Buff/Audio/Direction/Action/DefaultDamage external boundaries. No helper or parent-body execution credit.",
+      "sha256": "ea97dd6ef4df3626d89519a91eb7698663adf409dfac526b47f31072819ad466",
+      "size": 237
+    }
+  ],
+  "image_base": "0x00400000",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "schema": "opennox-game-exe-code-v2"
+}

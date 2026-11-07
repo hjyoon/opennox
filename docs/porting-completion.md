@@ -55,6 +55,27 @@ completion requirements.
 
 ## Current findings
 
+### Raw Skeleton `sub_4E23C0`, 2026-11-08
+
+The existing C entry now accepts three native object pointers and preserves
+the full signed 32-bit result. Its original C body remains exact under
+`#if 0`. The new caller follows actual original read order, caches UpdateData
+before querying Action, and uses compiled native offsets rather than PE32
+pointer slots. Monster animation bytes are at native offsets 552/553.
+
+Normal and strict/highres macOS ARM64 Go 1.27.3 profiles each pass 1,391 tests
+and two packages, including 502 real Go/C child calls compared with both FPU
+recordings of 251 independently chosen original inputs. Each profile retains
+446 native returns and 56 captured read faults, full foreign-bank canaries
+and ordered observations. Pinned Go heap graphs survive GC during Action;
+the cached update pointer and raw coordinate bits are preserved through C.
+The actual nil-target default service path also passes without an observer.
+
+This completes the native-pointer entry implementation and selected local
+comparisons. Helper-body behavior, physical nil fault addresses, native fault
+PC classification, fresh product/E2E and campaign audits are separate gates.
+The known parent WORD discrepancy remains open; overall completion is not 100%.
+
 ### GAME1 `sub_409A70`, 2026-11-07
 
 The settings-table lookup now runs in Go through its unchanged public C

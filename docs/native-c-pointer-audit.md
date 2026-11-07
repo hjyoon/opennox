@@ -1,5 +1,37 @@
 # Native C entry pointer audit
 
+## GAME1 timer and setting entry follow-up, 2026-11-08
+
+Ten additional algorithms now execute in Go: timer entries `40A1F0`,
+`40A230`, `40A250`, `40A310`, and scalar entries `40AA00`, `40AA20`,
+`40AA30`, `40AA40`, `40AA60`, `40E090`. Native scalar cell pointers exceed
+4 GiB. The timer clock retains all 64 bits; deadline stores remain separate
+low then high DWORD writes, and the live selected limit remains a BYTE read
+after the clock. Public C widths are checked at compile time. These scalar
+migrations do not imply ten pre-existing truncated pointer arguments.
+
+The 172-byte/60-instruction original timer callers have 2,246 qualified
+recordings from 1,123 inputs and two FPU controls. Per normal/strict profile,
+2,246 Go/C corpus calls match both original records 4,492 times, including
+ordered scalar/service observations and all 140 state bytes. Eight separate
+default/reentry calls also pass. The six settings callers have 75-byte/
+22-instruction static seals and 224 actual Go/C comparisons with the exact
+preserved compiled C6, plus fourteen order/alias calls. All 104 state bytes
+and the actual independent C-global neighbour canary agree. E090 clears its
+separate C global, and its void return is excluded from return comparisons.
+
+Both Go 1.27.3 profiles pass 6,853 test IDs and three packages; independent
+raw-result/main-byte verification also passes. The initial unused-import
+compile failure remains preserved, with no native legacy execution claim.
+Only that new-test import changed for the successful retry. Exact prior C
+bodies, source fixtures and actual executables remain retained.
+
+Current GAME1 accounting is **31 Go connections / 52 remaining C algorithms
+among 83 definitions**. Original helper bodies, protected/invalid-index timer
+faults, native physical register/stack/FPU equivalence, the retained `4E2220`
+PE32 traversal, the parent WORD discrepancy and campaign final audits remain
+open. Source-order work continues with `40A740/770/970`.
+
 ## GAME1 Material7 and armor coefficient pointers, 2026-11-08
 
 `sub_4133D0` no longer narrows its typed object argument, InitData or cached
@@ -27,8 +59,8 @@ all failed evidence and actual mains are preserved.
 Six additional scalar entries also migrate to Go: `40A180`, `40A220`,
 `40A3C0`, `40A6A0`, `40A6B0` and `40A710`. Each profile compares 1,180,680
 actual calls with preserved old C, native live cells and state canaries.
-Their prior pointers already had native width. Current GAME1 accounting is
-21 Go connections and 62 remaining C algorithms among 83 definitions.
+Their prior pointers already had native width. At that earlier checkpoint,
+GAME1 accounting was 21 Go connections and 62 remaining C algorithms among 83 definitions.
 The parent WORD discrepancy and campaign/product completion gates remain open.
 
 ## GAME1 setting-flag entries, 2026-11-08

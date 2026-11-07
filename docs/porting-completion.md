@@ -55,6 +55,65 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 timers and six setting entries, 2026-11-08
+
+Four timer entries now execute in Go: `40A1F0`, `40A230`, `40A250` and
+`40A310`. Their public C signatures retain two signed DWORD returns and two
+signed 64-bit returns. Native scalar addresses remain pointers above 4 GiB.
+The implementation consumes the existing full `uint64` Go clock, preserves
+low/high deadline store order and signed argument extension, and reads the
+selected limit BYTE after the clock call. The unrelated C clock export remains
+unchanged. The exact four prior C bodies are retained under `#if 0`.
+
+The complete original timer bodies total 172 bytes and 60 instructions.
+The 1,123 independently chosen inputs produced 2,246 qualified original
+returns across two FPU modes before the native implementation was written.
+Each native profile makes 2,246 Go/C corpus calls and compares them 4,492
+times with those original records: raw returns, ordered operands, all seven
+external service sites, used/unused mutations and complete 140-byte state
+windows agree. Four default-clock and four nested-observer calls separately
+pass, bringing actual timer-entry calls to 2,254 per profile. The domain uses
+indices 0 through 5; protected/invalid-index faults and physical native
+register, caller-stack and FPU equivalence remain unqualified. External
+services receive no original helper-body execution credit.
+
+Six more scalar entries now execute in Go: `40AA00`, `40AA20`, `40AA30`,
+`40AA40`, `40AA60` and `40E090`. Frame/start/FPS reads preserve the original
+order and unsigned DWORD arithmetic. E090 clears the actual independent C
+global `dword_5d4594_10984`, rather than the similarly labelled packed blob.
+Their complete original 75-byte/22-instruction bodies have static seals;
+there is no new original CPU execution for this group. A separately compiled
+executable containing the exact six old C definitions supplies 112 reference
+cases. Both native routes make 224 calls against those outputs, comparing
+104 bytes of state plus the actual C-global neighbour canary. Four read-order
+and ten live-alias calls separately pass, for 238 entry calls per profile.
+The 16 void-return transports receive no return-value equivalence credit.
+
+Go 1.27.3 normal and strict/highres profiles each pass all 6,853 test IDs and
+three packages. An independent reader verifies both actual test-main sets,
+the original timer projections and both separately executed old-C reference
+programs. The initial two profiles failed to build legacy because the new
+test imported unused `unsafe`; the retry removes only that import. Production
+code, input/reference fixtures, expected values and assertions are unchanged;
+the failed source and all actually executed mains remain preserved.
+
+The current GAME1 inventory is **31 Go connections and 52 remaining C
+algorithms out of 83 definitions**. All 83 retained C definition hashes remain
+exact. Next source-order work is `40A740`, `40A770` and `40A970`, including
+native pointer traversal, exact BYTE/DWORD read widths and the separate x87
+conversion boundary. Overall completion and the nine chapter 1-3 campaign
+final audits remain open.
+
+The earlier clean `8683cf83c` normal/HD products independently pass the ten
+unchanged shop/hearing scenarios and all 56 diagnostic frame paths are
+reviewed. Sales produce eight original sound307 events; hearing covers eight
+actual turns and twelve controls that must not react. Physical speaker output,
+default NPC coverage and campaign completion receive no additional credit.
+Canonical products, original assets/Save data and all execution evidence are
+preserved; 66 owned runtime/temporary-frame paths totalling 1,466,318,994 bytes
+were removed after full byte verification. Those products precede these ten
+new ports; their results are not attributed to the new native source.
+
 ### GAME1 native pointer entries and six scalar leaves, 2026-11-08
 
 `sub_4133D0` now preserves native object, InitData, material-slot and descriptor
@@ -93,8 +152,8 @@ The initial profiles each recorded 4,475 passes and two failures because the
 new armor tests treated `alloc.New`'s type witness as an initializer. A separate
 retry explicitly initialized the intended C-heap objects; production code,
 assertions and all 2,560 expected IEEE values were unchanged. Both failed
-profiles and their executed mains remain preserved. Current GAME1 accounting
-is 21 Go connections and 62 remaining C algorithms out of 83 definitions.
+profiles and their executed mains remain preserved. At that earlier checkpoint
+GAME1 accounting was 21 Go connections and 62 remaining C algorithms out of 83 definitions.
 Product/campaign gates and the known parent WORD difference remain open.
 
 ### GAME1 setting flags, 2026-11-08

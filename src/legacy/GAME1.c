@@ -272,6 +272,7 @@ unsigned char sub_40A180(short a1) { return getMemByte(0x5D4594, 3500 + sub_409A
 #endif
 
 //----- (0040A1F0) --------------------------------------------------------
+#if 0 // Exact prior timer caller C body retained; public entry implemented in Go.
 int sub_40A1F0(int a1) {
 	int result; // eax
 
@@ -282,6 +283,7 @@ int sub_40A1F0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0040A220) --------------------------------------------------------
 #if 0 // Exact prior scalar C body retained; public entry implemented in Go.
@@ -289,9 +291,12 @@ int sub_40A220() { return *getMemU32Ptr(0x587000, 4660); }
 #endif
 
 //----- (0040A230) --------------------------------------------------------
+#if 0 // Exact prior timer caller C body retained; public entry implemented in Go.
 int sub_40A230() { return *getMemU32Ptr(0x5D4594, 3468) - (unsigned long long)nox_platform_get_ticks(); }
+#endif
 
 //----- (0040A250) --------------------------------------------------------
+#if 0 // Exact prior timer caller C body retained; public entry implemented in Go.
 long long sub_40A250() {
 	short v0;         // ax
 	int v1;           // esi
@@ -305,8 +310,10 @@ long long sub_40A250() {
 	*getMemU64Ptr(0x5D4594, 3468) = result + v2;
 	return result;
 }
+#endif
 
 //----- (0040A310) --------------------------------------------------------
+#if 0 // Exact prior timer caller C body retained; public entry implemented in Go.
 long long sub_40A310(int a1) {
 	long long v1;     // kr00_8
 	long long result; // rax
@@ -316,6 +323,7 @@ long long sub_40A310(int a1) {
 	*getMemU64Ptr(0x5D4594, 3468) = a1 + v1;
 	return result;
 }
+#endif
 
 //----- (0040A340) --------------------------------------------------------
 void nox_xxx_set3512_40A340(int a1) { *getMemU32Ptr(0x5D4594, 3512) = a1; }
@@ -558,12 +566,17 @@ void sub_40A970() {
 }
 
 //----- (0040AA00) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 int sub_40AA00() { return 20 * gameFPS() < (unsigned int)(gameFrame() - *getMemU32Ptr(0x5D4594, 3520)); }
+#endif
 
 //----- (0040AA20) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 int sub_40AA20() { return *getMemU32Ptr(0x5D4594, 3536); }
+#endif
 
 //----- (0040AA30) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 int sub_40AA30(int a1) {
 	int result; // eax
 
@@ -571,11 +584,15 @@ int sub_40AA30(int a1) {
 	*getMemU32Ptr(0x5D4594, 3536) = a1;
 	return result;
 }
+#endif
 
 //----- (0040AA40) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 int sub_40AA40() { return *getMemU32Ptr(0x5D4594, 3476); }
+#endif
 
 //----- (0040AA60) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 int sub_40AA60(int a1) {
 	int result; // eax
 
@@ -583,6 +600,7 @@ int sub_40AA60(int a1) {
 	*getMemU32Ptr(0x5D4594, 3508) = a1;
 	return result;
 }
+#endif
 
 //----- (0040AA70) --------------------------------------------------------
 int sub_40AA70(nox_playerInfo* pl) {
@@ -653,7 +671,9 @@ LABEL_31:
 }
 
 //----- (0040E090) --------------------------------------------------------
+#if 0 // Preserved original C body; native Go public entry owns this symbol.
 void sub_40E090() { dword_5d4594_10984 = 0; }
+#endif
 
 //----- (004100F0) --------------------------------------------------------
 int nox_xxx_cliCanTalkMB_4100F0(short* a1) {

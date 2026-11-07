@@ -1,0 +1,69 @@
+{
+  "schema": "opennox-game-exe-code-v2",
+  "oracle_id": "game-exe-four-countdown-timers-40a1f0-v1",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32",
+  "image_base": "0x00400000",
+  "allow_overlapping_ranges": false,
+  "functions": [
+    {
+      "name": "sub_40A1F0",
+      "address": "0x0040A1F0",
+      "size": 41,
+      "sha256": "66a0cbd510c68594484fcd533800cc3d61a81a8cb2cb450497a9a22202fff56c",
+      "purpose": "Complete requested timer caller through last reachable RET; static PE only, execution0."
+    },
+    {
+      "name": "sub_40A230",
+      "address": "0x0040A230",
+      "size": 25,
+      "sha256": "616adad2144e7091e9d85bec1d322069f91705d30d61be7dabe61ef60086cdd8",
+      "purpose": "Complete requested timer caller through last reachable RET; static PE only, execution0."
+    },
+    {
+      "name": "sub_40A250",
+      "address": "0x0040A250",
+      "size": 73,
+      "sha256": "25b342f3ecfc8590a1173f304f91d6b9f94f5d0aa71201934c7b690323b418d1",
+      "purpose": "Complete requested timer caller through last reachable RET; static PE only, execution0."
+    },
+    {
+      "name": "sub_40A310",
+      "address": "0x0040A310",
+      "size": 33,
+      "sha256": "0707eeba0af3932c60064ed3fb36f06f75b71df3d485d35bc38c4e6c0953f31c",
+      "purpose": "Complete requested timer caller through last reachable RET; static PE only, execution0."
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_40A1F0_padding",
+      "address": "0x0040A219",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "Separate trailing NOPs; not body coverage."
+    },
+    {
+      "name": "sub_40A230_padding",
+      "address": "0x0040A249",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "Separate trailing NOPs; not body coverage."
+    },
+    {
+      "name": "sub_40A250_padding",
+      "address": "0x0040A299",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "Separate trailing NOPs; not body coverage."
+    },
+    {
+      "name": "sub_40A310_padding",
+      "address": "0x0040A331",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "Separate trailing NOPs; not body coverage."
+    }
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "schema": "opennox-game1-six-settings-scalar-original-static-manifest-v1",
+  "original_executable": {
+    "path": "/Users/ghost/codex-sandbox/nox-pjt/Nox/GAME.EXE",
+    "bytes": 1929216,
+    "sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a"
+  },
+  "current_source": {
+    "GAME1.c": {
+      "bytes": 76695,
+      "sha256": "6e66140782eb8dc5d8134a1085eb4666af9c766bfa92cecc44288f36cc6d6dca"
+    },
+    "GAME1.h": {
+      "bytes": 11911,
+      "sha256": "5b922b181c57a477a7ad6b772072c3ce7bd8362db1931c4cb116348e3a97eff5"
+    }
+  },
+  "functions": [
+    {
+      "name": "sub_40AA00",
+      "address": "0040aa00",
+      "size": 32,
+      "file_offset": 43520,
+      "sha256": "acce58ef6924d9b508f4b5a06aab9455a6e5bd174ff5e3859964aca9ee80bd8c",
+      "encoding": "8b0d04ea84008b1554535d00a1fcb385002bca8d1480c1e2023bd11bc0f7d8c3",
+      "instruction_count": 10,
+      "instructions": [
+        {
+          "address": "0040aa00",
+          "size": 6,
+          "encoding": "8b0d04ea8400",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0x84ea04]"
+        },
+        {
+          "address": "0040aa06",
+          "size": 6,
+          "encoding": "8b1554535d00",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [0x5d5354]"
+        },
+        {
+          "address": "0040aa0c",
+          "size": 5,
+          "encoding": "a1fcb38500",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x85b3fc]"
+        },
+        {
+          "address": "0040aa11",
+          "size": 2,
+          "encoding": "2bca",
+          "mnemonic": "sub",
+          "operands": "ecx, edx"
+        },
+        {
+          "address": "0040aa13",
+          "size": 3,
+          "encoding": "8d1480",
+          "mnemonic": "lea",
+          "operands": "edx, [eax + eax*4]"
+        },
+        {
+          "address": "0040aa16",
+          "size": 3,
+          "encoding": "c1e202",
+          "mnemonic": "shl",
+          "operands": "edx, 2"
+        },
+        {
+          "address": "0040aa19",
+          "size": 2,
+          "encoding": "3bd1",
+          "mnemonic": "cmp",
+          "operands": "edx, ecx"
+        },
+        {
+          "address": "0040aa1b",
+          "size": 2,
+          "encoding": "1bc0",
+          "mnemonic": "sbb",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0040aa1d",
+          "size": 2,
+          "encoding": "f7d8",
+          "mnemonic": "neg",
+          "operands": "eax"
+        },
+        {
+          "address": "0040aa1f",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040aa20",
+        "size": 0,
+        "encoding": "",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 16884,
+        "end_byte_exclusive": 16989,
+        "size": 105,
+        "sha256": "8a720b501cf4f1748660ea731d2ee951f06b24ee0562443cabd8eed72d7161ee",
+        "signature": "int sub_40AA00() {"
+      }
+    },
+    {
+      "name": "sub_40AA20",
+      "address": "0040aa20",
+      "size": 6,
+      "file_offset": 43552,
+      "sha256": "a0c7c6d328434556f58dc6909b97b95e653373eba7abfed1460815016095828e",
+      "encoding": "a164535d00c3",
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "0040aa20",
+          "size": 5,
+          "encoding": "a164535d00",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x5d5364]"
+        },
+        {
+          "address": "0040aa25",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040aa26",
+        "size": 10,
+        "encoding": "90909090909090909090",
+        "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 17067,
+        "end_byte_exclusive": 17125,
+        "size": 58,
+        "sha256": "fc9759581d0f36b8a06eebba8600ea64f56d4c663a81c851fe17ae2bd3f39fbb",
+        "signature": "int sub_40AA20() {"
+      }
+    },
+    {
+      "name": "sub_40AA30",
+      "address": "0040aa30",
+      "size": 10,
+      "file_offset": 43568,
+      "sha256": "c365ca73d61895b78feff84c83ef52e6dfee9147262b6bf3a9dcaace9ac46f6f",
+      "encoding": "8b442404a364535d00c3",
+      "instruction_count": 3,
+      "instructions": [
+        {
+          "address": "0040aa30",
+          "size": 4,
+          "encoding": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0040aa34",
+          "size": 5,
+          "encoding": "a364535d00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x5d5364], eax"
+        },
+        {
+          "address": "0040aa39",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040aa3a",
+        "size": 6,
+        "encoding": "909090909090",
+        "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 17203,
+        "end_byte_exclusive": 17317,
+        "size": 114,
+        "sha256": "99dc2c61ac3b9eb8ee12588aab2442e06a069f2ab9dfa3b88a6f3ab3baa5c56d",
+        "signature": "int sub_40AA30(int a1) {"
+      }
+    },
+    {
+      "name": "sub_40AA40",
+      "address": "0040aa40",
+      "size": 6,
+      "file_offset": 43584,
+      "sha256": "0059f6268212a1eab8ae97a2839deac034b90859d3ac546b0aca55a9f5aa7d33",
+      "encoding": "a128535d00c3",
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "0040aa40",
+          "size": 5,
+          "encoding": "a128535d00",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x5d5328]"
+        },
+        {
+          "address": "0040aa45",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040aa46",
+        "size": 10,
+        "encoding": "90909090909090909090",
+        "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 17395,
+        "end_byte_exclusive": 17453,
+        "size": 58,
+        "sha256": "9a94c6d92a166a99bb711ab1e929618988f046eed6a83cafa803dcfd9da9b44e",
+        "signature": "int sub_40AA40() {"
+      }
+    },
+    {
+      "name": "sub_40AA60",
+      "address": "0040aa60",
+      "size": 10,
+      "file_offset": 43616,
+      "sha256": "c18a7be1e677154b66f5dbd3f7a063489e1489ea7183d3d0655582cf84b231cc",
+      "encoding": "8b442404a348535d00c3",
+      "instruction_count": 3,
+      "instructions": [
+        {
+          "address": "0040aa60",
+          "size": 4,
+          "encoding": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0040aa64",
+          "size": 5,
+          "encoding": "a348535d00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x5d5348], eax"
+        },
+        {
+          "address": "0040aa69",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040aa6a",
+        "size": 6,
+        "encoding": "909090909090",
+        "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 17531,
+        "end_byte_exclusive": 17645,
+        "size": 114,
+        "sha256": "d7ea1ce4b9b12d0ab12ac66b1573cebf5be20241a9f10c4b2db0c29bcd16172f",
+        "signature": "int sub_40AA60(int a1) {"
+      }
+    },
+    {
+      "name": "sub_40E090",
+      "address": "0040e090",
+      "size": 11,
+      "file_offset": 57488,
+      "sha256": "f1d673332eed707710c8d9c4d8aa55256ed90e981d3fcb6daff4c5a3e703fecc",
+      "encoding": "c7057c705d0000000000c3",
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "0040e090",
+          "size": 10,
+          "encoding": "c7057c705d0000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x5d707c], 0"
+        },
+        {
+          "address": "0040e09a",
+          "size": 1,
+          "encoding": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "padding": {
+        "address": "0040e09b",
+        "size": 5,
+        "encoding": "9090909090",
+        "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de"
+      },
+      "current_C": {
+        "path": "src/legacy/GAME1.c",
+        "start_byte": 19152,
+        "end_byte_exclusive": 19197,
+        "size": 45,
+        "sha256": "e65f447cab5961c7d6e79ab4ab181487312e96d7c26d90f748a9793af3b1dc62",
+        "signature": "void sub_40E090() {"
+      }
+    }
+  ],
+  "total_function_bytes": 75,
+  "total_instructions": 22,
+  "total_padding_bytes": 37,
+  "new_original_CPU_execution": false,
+  "functions_are_whole_bodies": true,
+  "root_reviewed": false,
+  "data_contract": {
+    "AA00_read_order": [
+      "frame DWORD @0084ea04 via existing gameFrame hook",
+      "start DWORD @005d5354, blob5d4594+3520",
+      "FPS DWORD @0085b3fc via existing gameFPS hook"
+    ],
+    "AA00_arithmetic": "DWORD subtract, DWORD FPS*20, unsigned strict greater; equality returns zero",
+    "AA20_AA30": "same live blob5d4594+3536 DWORD",
+    "AA40": "live blob5d4594+3476 DWORD",
+    "AA60": "live blob5d4594+3508 DWORD",
+    "E090": "actual separate C global dword_5d4594_10984 DWORD, not packed memmap offset10984"
+  },
+  "excluded_source_order_entries": [
+    "sub_40A740",
+    "sub_40A770",
+    "sub_40A970",
+    "four timers 40A1F0 family"
+  ],
+  "unsupported_claims": [
+    "new original CPU evidence",
+    "original stack/FPU physical equivalence",
+    "incoming C caller bodies ported",
+    "whole GAME1 source-order completion"
+  ]
+}

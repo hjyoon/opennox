@@ -42,9 +42,17 @@ All 83 former C definition/body hashes and the public header remain exact.
 The static inventory has **42 Go connections / 41 remaining C algorithms**.
 Next entries begin `4134D0`, `4137E0`, `413890`; removed installation-drive
 fallback/state policy and native focus dispatch require separate review.
-Current products/E2E, physical fault-PC/nil-EA/private stack/GPR/FPU equivalence,
-partial pointer writes, full caller/gameplay and nine chapter 1–3 final audits
-remain separate gates. Overall porting remains incomplete.
+The exact clean implementation `954abbf97` subsequently builds normal/HD
+Go 1.27.3 products and passes all ten existing shop/hearing product E2Es.
+Independent product, raw/canonical log and 56-frame checks qualify; current
+products and every executed main remain preserved. Eight native test/WORK
+trees, ten E2E trees and 56 temporary PNGs are removed only after complete
+canonical-byte and fresh-identity checks. Original 4,439 assets and 126 Save
+files remain exact. Details and hashes are in the completion document.
+Physical fault-PC/nil-EA/private stack/GPR/FPU equivalence, partial pointer
+writes, full caller/gameplay, physical speakers, the prepared shopkeeper
+heading/clipping and nine chapter 1–3 final audits remain separate gates.
+Overall porting remains incomplete.
 
 ## GAME1 SecretWall list entries, 2026-11-08
 

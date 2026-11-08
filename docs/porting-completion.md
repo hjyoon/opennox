@@ -100,10 +100,40 @@ Independent qualification is
 All 83 retained C definition/body hashes and the public header remain exact.
 The source inventory now has **42 Go connections and 41 remaining C algorithms
 out of 83 definitions**. These counts are not an overall completion percentage.
-Current product/E2E validation is the next separate gate. Physical native
-fault-PC/nil-EA, private stack/GPR/FPU, partial pointer writes, complete caller
-coverage and the nine chapter 1–3 final audits remain open. Overall porting is
-incomplete.
+
+Clean implementation `954abbf979ae6b9ef0ba3d556c33c0c3dddf32eb` builds both
+normal and HD ARM64 products with embedded Go 1.27.3, the exact revision and
+`vcs.modified=false`; both actual help executions exit naturally with zero.
+Ten fresh product E2Es also exit unforced zero. The unchanged five scenarios
+per product revalidate Fireball staff charges/durability/prices, the readable
+quest-item sale rejection, quantity/equipped sales and prepared NPC/Troll
+hearing. Eight TreasurePickup307 events reach real client packets and queued
+positive-gain OpenAL buffers using the null output backend. Twenty hearing
+conditions produce eight native sound-directed turns and twelve negative
+controls; the prepared hearing client audio is mocked. Physical speaker and
+default NPC-configuration equivalence are not inferred.
+
+All 56 captured paths are checked: 28 actual current image views, 27 strict
+prior encoded-byte aliases and one current alias, covering 33 unique PNGs.
+The prepared generic merchant's `MISSING:NPCShopkeeper` heading and right/top
+clipping remain visible limitations. Some hearing actors are obscured by
+trees; the direction findings use retained native-state checks, not images
+alone. Independent product/E2E qualification is
+`actual-tile-list-products-and-ten-games-independently-qualified-v1.json`,
+SHA-256 `9fadff69e5722165a3ad7fe65040884b7a7b22efbe678bc94a9de7ec8e6f4345`.
+
+Original 4,439 assets and 126 Save files remain exact. Two complete native
+profile ZIPs independently reproduce every comparison before eight owned
+test/WORK trees are removed (1,980,442,054 logical bytes). Ten owned E2E trees
+and 56 temporary PNGs are subsequently removed after canonical byte/identity
+checks (1,466,327,371 logical bytes). Current products, executed mains, failure
+records, original inputs and canonical payloads remain preserved. Canonical
+native qualification is
+`actual-tile-list-three17854-canonical-independently-qualified-v1.json`,
+SHA-256 `8d0c8b9fd7997dc1ca31b188603cb8d61a16565448621ad983a3d2f5ed95941d`.
+Physical native fault-PC/nil-EA, private stack/GPR/FPU, partial pointer writes,
+complete caller/gameplay coverage and the nine chapter 1–3 final audits remain
+open. Overall porting is incomplete.
 
 ### GAME1 SecretWall list entries, 2026-11-08
 

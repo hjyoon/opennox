@@ -735,6 +735,7 @@ void* sub_410390(nox_drawable* drawable, int x, int y) {
 #endif
 
 //----- (00410550) --------------------------------------------------------
+#if 0 // Exact previous C definition retained; native pointer entry in secret_wall_list_export_410550.go.
 void* sub_410550(short a1) {
 	nox_secret_wall_t* v1; // eax
 
@@ -750,8 +751,10 @@ void* sub_410550(short a1) {
 	}
 	return v1->wall;
 }
+#endif
 
 //----- (00410730) --------------------------------------------------------
+#if 0 // Exact previous C definition retained; native pointer entry in secret_wall_list_export_410550.go.
 nox_secret_wall_t* sub_410730() {
 	nox_secret_wall_t* result; // eax
 	nox_secret_wall_t* v1;     // esi
@@ -769,6 +772,7 @@ nox_secret_wall_t* sub_410730() {
 	}
 	return result;
 }
+#endif
 
 //----- (00410760) --------------------------------------------------------
 nox_secret_wall_t* nox_xxx_wallSecretBlock_410760(nox_secret_wall_t* a1) {
@@ -791,6 +795,7 @@ nox_secret_wall_t* nox_xxx_wallSecretNext_410790(nox_secret_wall_t* a1) {
 }
 
 //----- (004107A0) --------------------------------------------------------
+#if 0 // Exact previous C definition retained; native pointer entry in secret_wall_list_export_410550.go.
 nox_secret_wall_t* sub_4107A0(void* lpMem) {
 	nox_secret_wall_t* result; // eax
 	nox_secret_wall_t* v2;     // esi
@@ -814,6 +819,7 @@ nox_secret_wall_t* sub_4107A0(void* lpMem) {
 	}
 	return result;
 }
+#endif
 
 //----- (00410F60) --------------------------------------------------------
 int nox_xxx_tileAlloc_410F60_init() {

@@ -55,6 +55,60 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 SecretWall list entries, 2026-11-08
+
+`sub_410550`, `sub_410730` and `sub_4107A0` now execute native Go
+algorithms through their existing C signatures. Next, Wall, the actual C head
+and returned references retain full pointer width; wall ID remains an unsigned
+WORD and the other record scalars remain DWORDs. Lookup retains the second
+Wall read on success. Clear caches Next before Free and clears the head at
+the end. Remove caches the live-head reload before Next and unlinks before
+Free. The former C bodies already used native pointers: this is an algorithm
+migration, without a new pointer-truncation defect claim.
+
+Before implementation, 273 independently frozen inputs produced 546 actual
+original records in two FPU controls: 408 returns and 138 protected read
+faults. All 189 function bytes and 75 instruction starts are covered in both
+controls. Eight CALL sites remain declared First/Next/Free boundaries; the
+three helper bodies receive no original execution credit. Nine actual
+standalone old-C positive controls pass separately.
+
+Go 1.27.3 normal and strict/highres each pass all **15,728 selected IDs**
+across three packages, with no skips. Whole-source leases contain 8,861 files
+and remain exact before and after both profiles. A separate reader compares
+1,092 actual Go/C corpus calls per profile with the matching original control:
+816 returns and 276 read faults. It independently reconstructs native BEFORE
+fields and canaries, checks ordered operands and full service pointers,
+actual base/offset/effective addresses, consumed and unused inputs, and all
+six native AFTER banks. Eighteen extra calls cover actual production-head
+defaults, pinned Go owners and observer reentry; ten individually pinned
+owners and eighteen forced GCs are exercised per profile.
+
+For 148 returned remove calls per profile, original post-Free EAX remains
+raw diagnostic data. The current typed-C cached removed-pointer return is
+checked separately against the observed Free argument. A Free DWORD is never
+converted into a native pointer; all ordered effects and final fields remain
+compared. Individual injected service/stimulus writes are source-bound and
+corroborated by consumption, following reads and AFTER, rather than separate
+write events.
+
+Independent qualification is
+`actual-secret-wall-three15728-independently-qualified-v2.json`, SHA-256
+`a8f494da86413d59632581cd8178947e07b84c43b032fb47eff21b8bdc082a3d`.
+The earlier reader's missing historical negative-record reference remains a
+retained rejection; its explicit historical-reference correction changes no
+game code, native comparison or original fixture.
+
+The exact 300-, 346- and 554-byte former C definitions remain under three
+`#if 0` guards; the public header and all 83 retained definition hashes are
+unchanged. GAME1 now has **39 Go connections and 44 remaining C algorithms
+out of 83 definitions**. Next source-order entries are `411350`, `4113A0`
+and `411490`. Native fault-PC/physical nil-EA/private stack/FPU equivalence,
+partial pointer writes and shifted/cross-kind aliases remain unqualified.
+The parent WORD discrepancy, `4E2220`, the separate `418AE0` high-bit key,
+shopkeeper heading and nine chapter 1-3 final audits remain open. Overall
+porting is incomplete.
+
 ### GAME1 wall attachment and NPC damage, 2026-11-08
 
 `sub_410390` now executes in native Go through its existing C entry. It

@@ -24,14 +24,14 @@ func TestPlayerDamageNPCMonsterSimpleMissileImpact4E17B0Carry(t *testing.T) {
 	u := v.UpdateDataMonster()
 	u.Field518, u.Field547, u.Field546 = math.Float32bits(0.25), 99, 77
 	beforeSource, beforeSourceUD, beforeWeapon := *a, *a.UpdateDataMonster(), *w
-	for i, want := range []struct {
-		hp    uint16
-		carry float32
-	}{{198, .25}, {196, .5}, {193, -.25}} {
+	wantHP := uint16(200)
+	for i := 0; i < 3; i++ {
+		original := npcMissileCarryOriginal4E17B0(t, math.Float32frombits(u.Field1))
+		wantHP -= uint16(original.Damage)
 		if handled, result := PlayerDamageNative4E17B0(v, a, w, 3, object.DamageImpact, r); !handled || !result {
 			t.Fatalf("hit%d handled/result=%t/%t", i, handled, result)
 		}
-		if v.HealthData.Cur != want.hp || math.Float32frombits(u.Field1) != want.carry ||
+		if v.HealthData.Cur != wantHP || u.Field1 != original.Carry ||
 			u.Field547 != 1 || u.Field546 != 525 || v.Obj130 != w || v.Pos132 != w.PrevPos ||
 			v.Field131 != uint32(object.DamageImpact) || v.Frame134 != 1400 {
 			t.Fatalf("hit%d HP=%d carry=%g marker=%d/%d attribution=%p pos=%v", i, v.HealthData.Cur, math.Float32frombits(u.Field1), u.Field547, u.Field546, v.Obj130, v.Pos132)

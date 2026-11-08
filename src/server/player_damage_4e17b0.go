@@ -459,16 +459,17 @@ func playerDamageMonsterMissilePierce4E17B0(
 	if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
-	scaled := float32((1.0 - float64(armorValue)) * float64(damage))
+	// The startup x87 control word is toward zero at PC53, including
+	// the binary32 amount/carry spills and signed-DWORD conversion.
+	scaled := playerDamageFullArmorAmount4E17B0(armorValue, damage)
 	live := target.UpdateDataMonster()
-	accumulated := scaled + math.Float32frombits(live.Field1)
-	effective := playerDamageRound4E17B0(accumulated)
+	effective, remaining := playerDamagePhysicalCarry4E17B0(scaled, math.Float32frombits(live.Field1))
 	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field547 = 1
 	update.Field546 = uint32(weapon.TypeInd)
-	live.Field1 = math.Float32bits(accumulated - float32(effective))
+	live.Field1 = math.Float32bits(remaining)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 	if update.Field547 == 0 {
 		update.Field547 = 2
@@ -482,7 +483,8 @@ func playerDamageMonsterMissilePierce4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}
@@ -858,7 +860,10 @@ func playerDamageMonster4E17B0(
 		!source.Class().HasAny(object.ClassPlayer|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) && weapon.Class().Has(object.ClassSimple) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand)
-	if harpoonImpact || monsterMissileImpact {
+	// An unowned Pixie is its own terminal source and has no unit update.
+	// Its pure spell-missile IMPACT uses the existing NPC case-11 tail.
+	selfSourcedMissileImpact := source == weapon && playerDamageSpellMissileImpactShape4E17B0(source, weapon, typ)
+	if harpoonImpact || monsterMissileImpact || selfSourcedMissileImpact {
 		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, update, armorValue, damage, typ, runtime)
 	}
 	// Match the already restored DefaultDamage PIERCE tail. Stock GolemArrow

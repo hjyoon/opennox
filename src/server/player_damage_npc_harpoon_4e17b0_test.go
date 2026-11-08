@@ -27,14 +27,14 @@ func TestPlayerDamageNPCHarpoon4E17B0FractionalCarry(t *testing.T) {
 	ud := target.UpdateDataMonster()
 	ud.Field518, ud.Field547, ud.Field546 = math.Float32bits(0.25), 99, 77
 	beforeSource, beforeUD, beforeBolt := *source, *source.UpdateDataPlayer(), *bolt
-	for i, hit := range []struct {
-		hp    uint16
-		carry float32
-	}{{198, 0.25}, {196, 0.5}, {193, -0.25}} {
+	wantHP := uint16(200)
+	for i := 0; i < 3; i++ {
+		original := npcMissileCarryOriginal4E17B0(t, math.Float32frombits(ud.Field1))
+		wantHP -= uint16(original.Damage)
 		if h, result := PlayerDamageNative4E17B0(target, source, bolt, 3, object.DamageImpact, r); !h || !result {
 			t.Fatalf("harpoon %d handled/result=%t/%t", i, h, result)
 		}
-		if target.HealthData.Cur != hit.hp || math.Float32frombits(ud.Field1) != hit.carry ||
+		if target.HealthData.Cur != wantHP || ud.Field1 != original.Carry ||
 			ud.Field547 != 1 || ud.Field546 != uint32(bolt.TypeInd) || target.Obj130 != bolt ||
 			target.Pos132 != bolt.PrevPos || target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 1400 {
 			t.Fatalf("hit=%d HP=%d carry=%g marker=%d/%d attribution=%p/%d", i,

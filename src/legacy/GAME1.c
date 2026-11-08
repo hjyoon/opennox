@@ -714,6 +714,7 @@ void* nox_xxx_doorAttachWall_410360(nox_object_t* obj, int x, int y) {
 //----- (00410390) --------------------------------------------------------
 void* nox_client_wallAttachDoor(void* wall, void* drawable, unsigned char tile);
 
+#if 0 // Exact prior C body retained; native Go wall attachment entry owns this symbol.
 void* sub_410390(nox_drawable* drawable, int x, int y) {
 	void* wall = nox_xxx_wall_4105E0(x, y);
 	if (!wall) {
@@ -731,6 +732,7 @@ void* sub_410390(nox_drawable* drawable, int x, int y) {
 	nox_client_wallAttachDoor(wall, drawable, tile);
 	return polygon;
 }
+#endif
 
 //----- (00410550) --------------------------------------------------------
 void* sub_410550(short a1) {

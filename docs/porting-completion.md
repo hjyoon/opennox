@@ -55,6 +55,57 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 wall attachment and NPC damage, 2026-11-08
+
+`sub_410390` now executes in native Go through its existing C entry. It
+keeps the drawable and wall references at full pointer width, while the
+original coordinate pair remains exactly two signed DWORDs in eight bytes.
+The drawable pointer store, cached flag byte, live coordinate queries,
+polygon byte and final wall byte retain their original order. The complete
+567-byte former C definition stays under `#if 0`; the public header and all
+existing original fixtures remain unchanged.
+
+Before implementation, 375 independently frozen inputs produced 750 original
+records across two FPU controls, covering all 145 bytes and 57 instruction
+starts: 626 returns and 124 protected read faults. Each normal/strict profile
+compares 1,500 actual Go/C calls with the matching original control: 1,252
+returns and 248 read faults, including ordered scalar/full-pointer accesses,
+current eight-byte query coordinates and complete mapped AFTER/canary banks.
+Fourteen extra default-service, observer and pinned-Go calls exercise 36
+forced GCs per profile. External helper bodies, physical fault addresses/PCs,
+private stack/FPU state and shifted/partial-pointer alias domains receive no
+new equivalence credit.
+
+The map-transition `IndexObject` nil dereference at the former line 308 is
+reproduced with an outside-grid collider before the fix. Collider bounds are
+now intersected with the finite AI grid without turning an empty intersection
+into a border obstacle. Invalid point markers and waypoints are skipped;
+valid overlaps and iteration behavior remain. All 1,045 selected AI-path IDs
+pass in both modes, including the unchanged existing original corpus.
+
+The reported NPC1343/Pixie672 IMPACT shape has a pure missile as both source
+and weapon, with no unit update. It now enters the existing NPC case-11 tail
+instead of reporting an unsupported shape. That shared NPC case-3/11 tail
+also follows the original toward-zero amount/carry/Quest conversions; the
+global rounding helper is unchanged. The old nearest-rounding carry assertions
+now look up unique rows from the unchanged SHA-pinned 6,622-row original
+numeric fixture. Twenty-two new Pixie IDs and 87 related existing IDs pass
+in both modes, including actual collision-to-HP/attribution integration.
+Original whole nonnil caller execution is not inferred from numeric fixtures.
+
+Go 1.27.3 normal and strict/highres each pass all 14,625 selected IDs across
+three packages with no skips. The source lease is byte-exact before and
+after both modes; a separate data reader verifies actual retained executions
+and raw comparisons. Earlier compile and functional failures remain retained
+as failed epochs. GAME1 has **36 Go connections and 47 remaining C algorithms
+out of 83 definitions**, with every retained definition hash unchanged.
+Next source-order entries are `410550`, `410730` and `4107A0`.
+
+The parent WORD fault discrepancy, `4E2220`, the separate `418AE0` high-bit
+key issue, shopkeeper heading and all nine chapter 1-3 final audits remain
+open. These scoped checks establish neither full gameplay completion nor
+100% porting.
+
 ### GAME1 eligibility entry, 2026-11-08
 
 `sub_40AA70` now executes in native Go through the existing

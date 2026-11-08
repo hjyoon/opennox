@@ -262,6 +262,19 @@ func (s *serverAIPaths) IndexObjects() {
 	s.calculated = true
 }
 
+// aiPathGridBounds50AFA0 intersects a collider's original rounded bounds with
+// the finite AI grid. Keep an empty intersection empty: clamping both ends to
+// the same edge would turn a wholly outside object into a border candidate.
+// Every nonempty loop stays in [0, aiMapIndexSize), so int32 increments cannot
+// wrap even when an object has extreme or invalid map-transition coordinates.
+func aiPathGridBounds50AFA0(p1, p2 types.Pointf) (minX, minY, maxX, maxY int32) {
+	minX = max(aiPathGridCell50AFA0(p1.X), 0)
+	minY = max(aiPathGridCell50AFA0(p1.Y), 0)
+	maxX = min(aiPathGridCell50AFA0(p2.X), int32(aiMapIndexSize-1))
+	maxY = min(aiPathGridCell50AFA0(p2.Y), int32(aiMapIndexSize-1))
+	return
+}
+
 func (s *serverAIPaths) IndexObject(obj *Object) {
 	class := obj.Class()
 	flags := obj.Flags()
@@ -290,10 +303,7 @@ func (s *serverAIPaths) IndexObject(obj *Object) {
 		obj.Nox_xxx_objectUnkUpdateCoords_4E7290()
 	}
 
-	minX := aiPathGridCell50AFA0(obj.CollideP1.X)
-	minY := aiPathGridCell50AFA0(obj.CollideP1.Y)
-	maxX := aiPathGridCell50AFA0(obj.CollideP2.X)
-	maxY := aiPathGridCell50AFA0(obj.CollideP2.Y)
+	minX, minY, maxX, maxY := aiPathGridBounds50AFA0(obj.CollideP1, obj.CollideP2)
 	for y := minY; y <= maxY; y++ {
 		for x := minX; x <= maxX; x++ {
 			cell := s.MapIndex(int(x), int(y))
@@ -530,22 +540,27 @@ func (s *serverAIPaths) Sub50AFA0() {
 		y := aiPathGridCell50AFA0(it.PosVec.Y)
 		switch {
 		case class.Has(object.ClassHole):
-			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexHole
+			if cell := s.MapIndex(int(x), int(y)); cell != nil {
+				cell.Flags8 |= AIIndexHole
+			}
 		case class.Has(object.ClassTransporter):
-			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexTransporter
+			if cell := s.MapIndex(int(x), int(y)); cell != nil {
+				cell.Flags8 |= AIIndexTransporter
+			}
 		case class.Has(object.ClassElevator):
-			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexElevator
+			if cell := s.MapIndex(int(x), int(y)); cell != nil {
+				cell.Flags8 |= AIIndexElevator
+			}
 		case class.Has(object.ClassElevatorShaft):
-			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexElevatorShaft
+			if cell := s.MapIndex(int(x), int(y)); cell != nil {
+				cell.Flags8 |= AIIndexElevatorShaft
+			}
 		case class.Has(object.ClassImmobile):
 			flags := it.Flags()
 			if flags.HasAny(object.FlagBelow | object.FlagAllowOverlap | object.FlagNoCollide) {
 				continue
 			}
-			minX := aiPathGridCell50AFA0(it.CollideP1.X)
-			minY := aiPathGridCell50AFA0(it.CollideP1.Y)
-			maxX := aiPathGridCell50AFA0(it.CollideP2.X)
-			maxY := aiPathGridCell50AFA0(it.CollideP2.Y)
+			minX, minY, maxX, maxY := aiPathGridBounds50AFA0(it.CollideP1, it.CollideP2)
 			for cy := minY; cy <= maxY; cy++ {
 				for cx := minX; cx <= maxX; cx++ {
 					cell := s.MapIndex(int(cx), int(cy))
@@ -571,7 +586,9 @@ func (s *serverAIPaths) Sub50AFA0() {
 		if wp.HasFlag2Mask(0x80) {
 			x := aiPathGridCell50AFA0(wp.PosVec.X)
 			y := aiPathGridCell50AFA0(wp.PosVec.Y)
-			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexWaypoint
+			if cell := s.MapIndex(int(x), int(y)); cell != nil {
+				cell.Flags8 |= AIIndexWaypoint
+			}
 		}
 	}
 }

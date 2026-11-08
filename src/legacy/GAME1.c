@@ -912,6 +912,7 @@ int nox_xxx_tileNFromPoint_411160(float2* a1) {
 }
 
 //----- (00411350) --------------------------------------------------------
+#if 0 // Native Go implementation; exact former C retained.
 int sub_411350(nox_tile_list_node_t* a1, int* a2, int a3) {
 	nox_tile_list_node_t* v3; // esi
 	int v4;  // ebx
@@ -931,8 +932,11 @@ int sub_411350(nox_tile_list_node_t* a1, int* a2, int a3) {
 	} while (v3);
 	return v4;
 }
+#endif
+
 
 //----- (004113A0) --------------------------------------------------------
+#if 0 // Native Go implementation; exact former C retained.
 int sub_4113A0(int* a1, int a2) {
 	int v2 = *a1;
 	int v3 = a1[1];
@@ -1033,8 +1037,11 @@ int sub_4113A0(int* a1, int a2) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (00411490) --------------------------------------------------------
+#if 0 // Native Go implementation; exact former C retained.
 int sub_411490(int a1, int a2) {
 	int v2; // ecx
 	int v3; // edx
@@ -1068,6 +1075,8 @@ int sub_411490(int a1, int a2) {
 	}
 	return 6;
 }
+#endif
+
 
 //----- (00411540) --------------------------------------------------------
 int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {

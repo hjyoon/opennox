@@ -1,5 +1,51 @@
 # Native C entry pointer audit
 
+## GAME1 tile-list entries, 2026-11-09
+
+`sub_411350`, `sub_4113A0` and `sub_411490` now use native Go algorithms
+through their unchanged typed C signatures. Four node scalars remain int32;
+Next stays a full native pointer at offset 16 (ARM64 node size 24). XY is
+exactly two DWORDs. Variation is read before Edge, the actual 490 and 3A0
+bodies execute in order, Value is lazy, and Next is read last. Aligned Go
+pointer slots use typed loads; unaligned foreign slots use native-width
+`memcpy`. No DWORD is reconstructed as a Go pointer. EDGE uses its actual
+60-byte BYTE-table owner, distinct from the native TileDef array.
+
+Before implementation, 1,049 frozen inputs yield 2,098 independently qualified
+original rows across two FPU controls, covering all 412 bytes and 180 instruction
+starts in both controls. All three original bodies, their internal CALLs and
+the 48-byte switch table are sealed; no host branch/return model substitutes
+for these helper bodies. Nine actual old-C positive controls pass separately.
+The former C already had typed native pointers, so no new truncation crash is
+claimed for this algorithm migration.
+
+Go 1.27.3 normal and strict/highres each pass **17,854 selected IDs** with no
+skips or failures, retaining all preceding 15,728 IDs. The complete 8,872-file
+source lease remains exact throughout both profiles, and all six actual mains
+are retained before execution. Independent raw comparison checks each
+profile's 2,098 Go/C calls against both original controls, including independent
+input/original BEFORE reconstruction, full native pointer identities, every
+bank canary, ordered reads/real helper returns, input consumption and AFTER.
+There are 1,602 primary returns and 496 primary read faults per profile.
+
+Ten native-width controls include eight actual unfinished PTR8 reads across
+20–23-byte node guards; they earn no complete-original prefix equivalence.
+Eight default, four pinned-Go and four reentry calls bring each profile to
+2,124 calls and 4,232 original-control comparisons. Sixteen individually pinned
+owner operations and 124 forced GCs are source-bound controls, not separate
+raw GC-event logs. The initial independent reader's empty-trace rejection is
+retained; its format-check correction changes no engine, input or reference.
+
+Qualification: `actual-tile-list-three17854-independently-qualified-v2.json`,
+SHA-256 `2000cdc42a7a38c3a9decc1ad8a75f3e19d9e1d22f929af4df9374d98523cec7`.
+All 83 former C definition/body hashes and the public header remain exact.
+The static inventory has **42 Go connections / 41 remaining C algorithms**.
+Next entries begin `4134D0`, `4137E0`, `413890`; removed installation-drive
+fallback/state policy and native focus dispatch require separate review.
+Current products/E2E, physical fault-PC/nil-EA/private stack/GPR/FPU equivalence,
+partial pointer writes, full caller/gameplay and nine chapter 1–3 final audits
+remain separate gates. Overall porting remains incomplete.
+
 ## GAME1 SecretWall list entries, 2026-11-08
 
 `sub_410550`, `sub_410730` and `sub_4107A0` now execute native Go

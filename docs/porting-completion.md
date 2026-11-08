@@ -55,6 +55,56 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 tile-list entries, 2026-11-09
+
+`sub_411350`, `sub_4113A0` and `sub_411490` now execute native Go
+algorithms through the unchanged typed C signatures. The list reads Variation
+before Edge, executes both real helper bodies, reads Value only after acceptance,
+and finally reads the native-width Next pointer at offset 16. The native node is
+24 bytes on ARM64; its four scalar fields and both XY coordinates remain DWORDs.
+The EDGE owner retains its actual 60-byte stride and ordered BYTE reads, with
+raw 32-bit index arithmetic. The original C already used native pointers; this
+is an algorithm migration, without a new pointer-truncation crash claim.
+
+Before implementation, 1,049 frozen inputs produced 2,098 independently checked
+original records across two FPU controls: 1,602 returns and 496 protected read
+faults. All 412 function bytes and 180 instruction starts execute in both
+controls. The three original bodies and their internal CALLs execute directly;
+no host helper-return or branch model substitutes for them. The separate
+48-byte switch table is sealed. Nine standalone old-C positive controls pass.
+
+Go 1.27.3 normal and strict/highres (`cgocheck2`, `checkptr=2`) each pass all
+**17,854 selected IDs**, retaining every preceding 15,728 ID with no skips or
+failures. All 8,872 source files remain exact throughout both profiles. Six
+actual test mains are preserved before execution. An independent reader
+reconstructs input and original BEFORE pages, native pointer identities and
+every bank canary; it then compares ordered operands, real internal calls,
+returns, consumed/unused mutations and complete native AFTER bytes. Each
+profile has 2,098 primary native Go/C calls, compared with both original FPU
+records: 1,602 returns and 496 actual read faults.
+
+Ten additional controls distinguish complete native 24-byte nodes from
+20–23-byte prefixes: eight actual unfinished eight-byte Next reads fault at
+the guard. Those partial native prefixes earn no complete-original equivalence
+credit. Eight production-default, four pinned-Go and four reentry calls bring
+the total to 2,124 native calls and 4,232 original-control comparisons per
+profile. Sixteen individually pinned owner operations and 124 forced GCs are
+checked through source-bound assertions; individual raw GC events are not
+separately retained. The first independent reader's rejection of a legitimate
+empty nil-head trace remains preserved; correcting that format check changes
+no engine code, input or original reference.
+
+Independent qualification is
+`actual-tile-list-three17854-independently-qualified-v2.json`, SHA-256
+`2000cdc42a7a38c3a9decc1ad8a75f3e19d9e1d22f929af4df9374d98523cec7`.
+All 83 retained C definition/body hashes and the public header remain exact.
+The source inventory now has **42 Go connections and 41 remaining C algorithms
+out of 83 definitions**. These counts are not an overall completion percentage.
+Current product/E2E validation is the next separate gate. Physical native
+fault-PC/nil-EA, private stack/GPR/FPU, partial pointer writes, complete caller
+coverage and the nine chapter 1–3 final audits remain open. Overall porting is
+incomplete.
+
 ### GAME1 SecretWall list entries, 2026-11-08
 
 `sub_410550`, `sub_410730` and `sub_4107A0` now execute native Go

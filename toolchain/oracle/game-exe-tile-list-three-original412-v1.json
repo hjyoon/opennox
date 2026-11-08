@@ -1,0 +1,66 @@
+{
+  "schema": "opennox-tile-list-three-static-original412-manifest-v1",
+  "oracle_id": "GAME.EXE-tile-list-three-original412",
+  "path": "/Users/ghost/codex-sandbox/nox-pjt/Nox/GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32",
+  "image_base": "0x400000",
+  "functions": [
+    {
+      "name": "sub_411350",
+      "address": "0x411350",
+      "size": 67,
+      "sha256": "60224a5865b44a61e30802be5ad6e254b8eef2b7cb3c262db4ec2df2abcdb5b6"
+    },
+    {
+      "name": "sub_4113A0",
+      "address": "0x4113a0",
+      "size": 181,
+      "sha256": "bc0f871fb561815f2e689992b87197c5191fbb7ef4b5920e0a2be9bff0a8f909"
+    },
+    {
+      "name": "sub_411490",
+      "address": "0x411490",
+      "size": 164,
+      "sha256": "4a9a3ebe0b8ebd0240bdb2014e25028d84366f948d360b8e844660867da6a8cb"
+    }
+  ],
+  "data": [
+    {
+      "name": "sub_411350_separate_trailing_NOP",
+      "address": "0x411393",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "executable_section": true
+    },
+    {
+      "name": "sub_4113A0_separate_alignment_NOP",
+      "address": "0x411455",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "executable_section": true
+    },
+    {
+      "name": "sub_4113A0_separate_switch_table",
+      "address": "0x411458",
+      "size": 48,
+      "sha256": "f709f68715085d620f4ab108aa03d876d15fd2350408f8fa4fe03671fe606dfc",
+      "executable_section": true
+    },
+    {
+      "name": "sub_4113A0_separate_trailing_NOP",
+      "address": "0x411488",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "executable_section": true
+    },
+    {
+      "name": "sub_411490_separate_trailing_NOP",
+      "address": "0x411534",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "executable_section": true
+    }
+  ],
+  "scope": "Three complete integer bodies; 48-byte immutable switch table and 36-byte alignment/padding are data, not executed instruction coverage. Main manifest unchanged."
+}

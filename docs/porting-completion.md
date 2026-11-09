@@ -55,6 +55,65 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 startup, pause and comparator entries, 2026-11-09
+
+Eight more entries now run Go algorithms through the unchanged public C ABI:
+`sub_4134D0`, `sub_4137E0`, `sub_413890`, `sub_4138E0`,
+`sub_413900`, `sub_413920`, `sub_4139B0` and `sub_413F60`.
+The five actual C DWORD globals remain distinct from same-offset memmap
+shadows. Pause scratch and the drive buffer retain their actual memmap owners.
+Focus registration retains typed native C callbacks and native `sizeof` storage.
+The comparator reads DWORDs at byte 80 through full native pointers, in argument
+order, and returns the raw signed SUB32 bit pattern, including wraparound.
+A small const-qualified C adapter preserves its public qsort signature.
+All eight former C definitions remain byte-exact under literal `#if 0` guards.
+
+The separate original seal covers 271 root bytes and 31 bytes of two real pure
+helpers: **302 bytes and 87 instruction starts**. The 535 frozen independent
+inputs produce 1,070 qualified original rows across two FPU controls: 794 natural
+RET returns, 58 declared external music-tail host returns and 218 read faults.
+Every sealed instruction is entered and completed in both controls. External
+callee bodies are excluded. Forty-six actual old-C positive controls pass; the
+old pointer boundaries were already native, so no new truncation crash is claimed.
+
+Current startup policy still clears four C globals and returns zero. Current
+music policy still clears exactly two buffer bytes and returns a disabled nil
+drive fallback. The original fifth clear, startup helper state and nonzero-drive
+suffix path remain recorded diagnostics, separately from these native policies.
+They are not claimed as whole-original equivalence and are not restored blindly.
+
+Go 1.27.3 normal and strict/highres each pass **18,938 selected IDs**, with no
+failures or skips. Strict uses compiled `cgocheck2` and `checkptr=2`. All 8,883
+source files remain exact across the combined parent, and all six actual mains
+are retained before execution. The new 1,084 IDs retain all preceding 17,854
+IDs as passing regressions on unchanged algorithm/test/fixture source facts;
+this batch's independent reader does not recertify every older numeric corpus.
+
+Independent raw checks qualify each profile's 1,070 Go/C calls: 162 current-policy
+calls and 908 core calls compared against both original controls, giving 1,816
+comparisons, 690 core returns and 218 recovered read faults. They reconstruct
+BEFORE from the independent inputs and check four complete 4-KiB data banks,
+native Base/Address/Offset/Width, completion pairs, ordered service effects and
+callback/string roles. Thirteen extra default/pinned/reentry entry calls per
+profile, six pinned owners and three forced GCs are source-bound assertions;
+qsort's internal callback count is not inferred. Larger-page extension canaries
+also remain source-bound assertions, rather than retained raw byte arrays.
+
+The initial test import-alias and mixed JSON `after` decoding failures are
+preserved. Their test-only corrections change no algorithm, input or reference.
+The second failed strict run was explicitly interrupted through the reviewed
+supervisor cleanup; its original Wait and pending main record remain intact.
+Focused normal/strict validation passes before the final full union rerun.
+
+Qualification: `actual-next-eight18938-independently-qualified-v1.json`, SHA-256
+`830928063b3615df579c8e46f8c254b2a570b357e27fb5c54a1f752118a66632`.
+The exact retained inventory now has **83 definitions, 50 Go connections and
+33 C algorithms remaining**. This is a source classification, not an overall
+completion percentage. Native physical fault PCs, nil effective addresses,
+private GPR/FPU/stack equivalence, window-focus delivery and the containing
+memdump/qsort pointer graph remain outside this leaf qualification. Current
+clean product builds and the ten shop/hearing games remain pending for this batch.
+
 ### GAME1 tile-list entries, 2026-11-09
 
 `sub_411350`, `sub_4113A0` and `sub_411490` now execute native Go

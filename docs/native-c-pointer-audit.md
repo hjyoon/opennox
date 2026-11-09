@@ -1,5 +1,51 @@
 # Native C entry pointer audit
 
+## GAME1 startup, pause and comparator entries, 2026-11-09
+
+`sub_4134D0`, `sub_4137E0`, `sub_413890`, `sub_4138E0`,
+`sub_413900`, `sub_413920`, `sub_4139B0` and `sub_413F60`
+now use Go algorithms with unchanged public C signatures. The retained old eight
+C bodies already used native pointers; this migration supplies no fabricated
+pointer-truncation negative control. Their original bodies and public header
+remain exact, with only eight literal `#if 0` wrappers added to GAME1.c.
+
+The C DWORD globals 251708/712/716/720/744 use actual symbol addresses, not
+same-offset memmap shadows. Scratch 251740 and buffer 251636 retain their real
+memmap owners. Scalar accesses stay BYTE1 or DWORD4. Focus callbacks remain
+typed `void (*)(int)` addresses in the existing native C registration arrays;
+no original PE callback DWORD is manufactured into a Go pointer. The const C
+qsort adapter passes both full pointers to the private Go export. Its 84-byte
+record still has a DWORD at byte 80: pointer width does not expand this scalar
+layout. The two ordered reads return raw SUB32 wrap, without sign normalization.
+
+Before R installation, 535 frozen inputs produce 1,070 independently checked
+original rows over both controls, covering all 302 bytes and 87 starts. Both pure
+helpers execute actual guest instructions. Music's external tail host return is
+separate from a real original RET. Forty-six native old-C positive controls pass.
+Current four-global startup and disabled two-BYTE/nil CD policies are explicitly
+separate from the original fifth clear/helper and drive suffix behavior.
+
+Normal and strict/highres Go 1.27.3 each pass **18,938 IDs**, preserving the old
+17,854 regression IDs and all 8,883 source files. All six actual mains are saved
+before execution. Independent new-family checks verify each profile's 1,070
+calls: 162 compatibility-policy calls plus 908 core calls against both controls,
+1,816 original comparisons, 690 core returns and 218 read faults. Four full data
+pages, independently initialized BEFORE bytes, complete native operand metadata,
+ordered reads/writes/service effects, packet consumption and full callback/string
+role words are checked. Defaults, pinned Go owners, GC, observer reentry and
+larger-page canaries have passing source-bound assertions; separate raw default
+or GC-event logs are not retained. Per-call PID/main-SHA/child-Wait receipts,
+physical fault-PC/nil-EA/private register/stack equivalence and window-focus
+dispatch are not claimed. The old memdump/qsort parent pointer graph remains open.
+
+Qualification: `actual-next-eight18938-independently-qualified-v1.json`, SHA-256
+`830928063b3615df579c8e46f8c254b2a570b357e27fb5c54a1f752118a66632`.
+The retained source inventory is **50 Go connections and 33 C algorithms out of
+83 definitions**; all old body hashes remain exact. Older regression PASS is
+separate from recertifying all older raw numeric corpora. Test-only import and
+JSON decoder failures and the explicitly interrupted failed strict attempt are
+preserved. Current product/E2E evidence for this batch is still pending.
+
 ## GAME1 tile-list entries, 2026-11-09
 
 `sub_411350`, `sub_4113A0` and `sub_411490` now use native Go algorithms

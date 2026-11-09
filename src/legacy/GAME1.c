@@ -1285,6 +1285,7 @@ nox_video_bag_image_t* sub_413420(char a1) {
 }
 
 //----- (004134D0) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 int sub_4134D0() {
 	dword_5d4594_251708 = 0;
 	dword_5d4594_251712 = 0;
@@ -1292,16 +1293,20 @@ int sub_4134D0() {
 	dword_5d4594_251720 = 0;
 	return 0;
 }
+#endif
 
 //----- (004137E0) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 void sub_4137E0() {
 	if (dword_5d4594_251720) {
 		dword_5d4594_251720 = 0;
 		sub_43DBE0();
 	}
 }
+#endif
 
 //----- (00413890) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 char* sub_413890() {
 	unsigned char* v0; // edi
 	int v1;            // ecx
@@ -1323,14 +1328,18 @@ char* sub_413890() {
 	v0[10] = v3;
 	return (char*)getMemAt(0x5D4594, 251636);
 }
+#endif
 
 //----- (004138E0) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 void sub_4138E0(int a1) {
 	*getMemU32Ptr(0x5D4594, 251740) = nox_xxx_checkGameFlagPause_413A50();
 	sub_413A00(1);
 }
+#endif
 
 //----- (00413900) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 void sub_413900(int a1) {
 	if (!nox_video_inFadeTransition_44E0D0()) {
 		if (!*getMemU32Ptr(0x5D4594, 251740)) {
@@ -1338,17 +1347,22 @@ void sub_413900(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (00413920) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 int sub_413920() {
 	sub_42EBB0(1u, sub_413900, 0, "Pause");
 	sub_42EBB0(2u, sub_4138E0, 0, "Pause");
 	dword_5d4594_251744 = 0;
 	return 1;
 }
+#endif
 
 //----- (004139B0) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 int sub_4139B0() { return dword_5d4594_251744 != 0; }
+#endif
 
 //----- (00413A50) --------------------------------------------------------
 int nox_xxx_checkGameFlagPause_413A50() { return nox_common_gameFlags_check_40A5C0(0x40000); }
@@ -1415,7 +1429,9 @@ void nox_xxx_gameLoopMemDump_413E30() {
 }
 
 //----- (00413F60) --------------------------------------------------------
+#if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
 int sub_413F60(const void* a1, const void* a2) { return *((uint32_t*)a1 + 20) - *((uint32_t*)a2 + 20); }
+#endif
 
 //----- (00414C90) --------------------------------------------------------
 // GAME.EXE initializes under precision53/toward-zero. The fixed float grid

@@ -1,0 +1,90 @@
+{
+  "oracle_id": "GAME.EXE-startup-pause-eight-original302",
+  "path": "/Users/ghost/codex-sandbox/nox-pjt/Nox/GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32",
+  "image_base": "0x400000",
+  "functions": [
+    {
+      "name": "sub_4134D0",
+      "address": "0x4134d0",
+      "size": 32,
+      "sha256": "f045275ffd1ee5b78fd6054c6bda6f92a0ad15fdc6e52387c43f1d6ef743ef80"
+    },
+    {
+      "name": "sub_4137E0",
+      "address": "0x4137e0",
+      "size": 25,
+      "sha256": "7d47aa8a1405527eb928cba99f811baa3d0d3ba3430c82fb7648454a2f6fde1d"
+    },
+    {
+      "name": "sub_413890",
+      "address": "0x413890",
+      "size": 80,
+      "sha256": "d4b0ebf55ff6db9c8c76369e2ec7c1d0aea079009f13fe0491fbc3ec3023dbad"
+    },
+    {
+      "name": "sub_4138E0",
+      "address": "0x4138e0",
+      "size": 19,
+      "sha256": "c4798977618867e93f8928067e2b4d43da136f6971dfac27bd6f8f09841bfb80"
+    },
+    {
+      "name": "sub_413900",
+      "address": "0x413900",
+      "size": 27,
+      "sha256": "26129c15e92bcb85fc5c60f9427a8743058643d24ae749514b5c75ca33009e77"
+    },
+    {
+      "name": "sub_413920",
+      "address": "0x413920",
+      "size": 57,
+      "sha256": "93760ec9dfa28dc815ea9a69c7fe0c7665964d438cbd194dd7879bf14704bd49"
+    },
+    {
+      "name": "sub_4139B0",
+      "address": "0x4139b0",
+      "size": 14,
+      "sha256": "9d16810d8841da8f022fe40699fd58fecdf2a60c5bff14be7f7024b5ed6d57bb"
+    },
+    {
+      "name": "sub_413F60",
+      "address": "0x413f60",
+      "size": 17,
+      "sha256": "ca248b4257a125be41dae2244d8e357bbbe5118a565e2f3e06242fb5f8399369"
+    },
+    {
+      "name": "sub_413850",
+      "address": "0x413850",
+      "size": 25,
+      "sha256": "6c8f0e448e16be319df224d560642f343539ffebc6adf09d6c1f7c413c2c233b"
+    },
+    {
+      "name": "sub_423EC0",
+      "address": "0x423ec0",
+      "size": 6,
+      "sha256": "4ac3789f6ecdabbac90a3f24938c9a50e7827f360dd982a75f1241f2aeb76c2a"
+    }
+  ],
+  "data": [
+    {
+      "name": "constant_0x58ee38",
+      "address": "0x58ee38",
+      "size": 11,
+      "sha256": "76b1b63f75d16d1556eaf0b21cc3caef84f4b6533aeacce6c2a15479190c9872"
+    },
+    {
+      "name": "constant_0x58ee44",
+      "address": "0x58ee44",
+      "size": 6,
+      "sha256": "55b2a63e68fc41ee4673a22eb2e735993a21a9d8ae1da5307ec7cb353678e04d"
+    },
+    {
+      "name": "constant_0x58ee4c",
+      "address": "0x58ee4c",
+      "size": 6,
+      "sha256": "55b2a63e68fc41ee4673a22eb2e735993a21a9d8ae1da5307ec7cb353678e04d"
+    }
+  ],
+  "scope": "Eight roots271B and two pure guest helpers31B. External services use declared boundaries. Current native startup4-global/CDnil policies are separate from original equivalence."
+}

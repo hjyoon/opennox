@@ -44,10 +44,32 @@ It verifies source-bound assertions and transport, not all per-call raw numeric
 arrays, private native state or old corpus recertification. The compile/layout
 test-only failures remain preserved alongside the passing focused attempt.
 
-New products and ten shop/hearing E2E games are pending at this source checkpoint.
-Other pointer graphs, physical audio, default NPC settings, nine campaign final
-audits and the known shop heading/clipping limits remain open; overall 100% is
-not established. The older 50/33 counts below describe the preceding checkpoint.
+Clean code `b1ade25b23ec` supplies the normal/HD macOS ARM64 products with
+Go 1.27.3, embedded `vcs.modified=false` and natural zero build/help exits.
+Independent two-product qualification SHA-256 is
+`dd37b75d48c7f2e78b48583cde37d5ca4194d33239518f410abef4945101c84a`.
+The later documentation update does not replace this code/product source binding.
+All ten actual shop/hearing games have same-PID product PREEXEC preservation
+and natural zero exits. Independent product/game qualification SHA-256 is
+`183eb09c00714c083cec271235bc12fbf70a92a0b90ec85a1f5e94b4786c3bb5`.
+It verifies eight sale sound-307 events, twenty prepared hearing conditions,
+eight native turns and twelve negative controls. All 56 capture paths have
+actual-view or exact encoded-byte alias closure over 32 distinct PNG streams:
+thirteen current actual-view paths, forty prior-view aliases and three current
+aliases. Known MISSING shopkeeper heading and clipping limits remain open.
+
+Validation stays local to macOS; no GitHub CI is queried, awaited or downloaded.
+Complete native MODE/available-WORK evidence, executed mains, current products
+and canonical failure/success archives remain preserved. Only byte-verified,
+owned duplicates were removed: nine focused paths, ten full-native paths,
+ten game runtimes and 56 temporary PNGs. Both large metadata JSON files retain
+their whole bytes in a verified ZIP; the redundant raw files alone were removed.
+Original 4,439 assets, 126 Save files, products and all canonical archives remain
+exact. These diagnostics add no all33 original CPU equivalence, all-entry raw
+array recertification, entry-specific gameplay, default NPC hearing, physical
+speaker or nine-cell campaign credit. Other pointer graphs and campaign final
+audits remain open; overall 100% is not established. The older 50/33 counts
+below describe the preceding checkpoint.
 
 ## GAME1 startup, pause and comparator entries, 2026-11-09
 

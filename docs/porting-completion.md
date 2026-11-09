@@ -100,12 +100,43 @@ The independent source/transport qualification is
 Its scope is source-bound assertions, rather than independent recomputation of
 all old/new numeric arrays or original CPU equivalence for all 33 entries.
 
-Products and ten shop/hearing E2E games for this batch remain pending at this
-source checkpoint. The two failed focused attempts and the passing 617-ID
-attempt retain complete canonical MODE/WORK bytes; only nine verified duplicate
-paths were removed. Campaign final audits, default NPC hearing settings,
-physical speaker fidelity and the known shop heading/clipping limits remain
-open. Overall project completion is still below 100%.
+Clean code commit `b1ade25b23ec` supplies both normal and HD macOS ARM64
+products built with Go 1.27.3. Both embed that code revision and
+`vcs.modified=false`, with natural zero build/help exits. The independent
+product qualification is
+`actual-remaining33-clean-two-products-independently-qualified-v1.json`, SHA-256
+`dd37b75d48c7f2e78b48583cde37d5ca4194d33239518f410abef4945101c84a`.
+This code/product revision remains distinct from the later documentation update.
+
+All ten actual product games pass: staff repair, rejected sale, quantity sale,
+equipped sale and prepared hearing in normal/HD. Each game has same-PID
+pre-execution product preservation and a natural zero exit; the whole game
+parent exits naturally with zero after 957.27 seconds. Independent checks
+verify eight sale sound-307 events, twenty prepared hearing conditions,
+eight native sound-directed turns and twelve negative controls. The visual
+ledger covers 56 capture paths and 32 distinct PNG byte streams: thirteen
+current actual-view paths, forty exact prior-view byte aliases and three
+current-view aliases. Encoded-byte closure does not supply independent machine
+visual interpretation. Known MISSING shopkeeper heading and clipping limits
+remain open; prepared hearing does not establish default NPC settings or
+physical speaker fidelity.
+
+The product/game qualification is
+`actual-remaining33-products-and-ten-games-independently-qualified-v1.json`,
+SHA-256 `183eb09c00714c083cec271235bc12fbf70a92a0b90ec85a1f5e94b4786c3bb5`.
+These builds and checks use local macOS validation, with no GitHub CI query,
+wait or download. They add no all33 original CPU equivalence, all-entry raw
+numeric recertification, entry-specific gameplay or nine-cell campaign credit.
+
+Complete canonical MODE/available-WORK bytes, all executed mains, both current
+products and failure/success records remain preserved. Nine focused and ten
+full-native duplicate paths, ten owned game runtimes and 56 temporary PNG paths
+were removed only after full-byte canonical checks and fresh owned-identity
+checks. Both large metadata JSON files remain preserved byte-for-byte in a
+verified ZIP; only their redundant raw copies were removed. The original
+4,439 assets, 126 Save files, products and all canonical archives stay exact.
+Campaign final audits, other pointer graphs, default NPC hearing settings and
+physical audio remain open. Overall project completion is still below 100%.
 
 ### GAME1 startup, pause and comparator entries, 2026-11-09
 

@@ -1,9 +1,11 @@
+#include <stdint.h>
 #include "memmap.h"
 #include "client__gui__window.h"
 #include "common__strman.h"
 #include "operators.h"
 
 //----- (00415D50) --------------------------------------------------------
+#if 0 // Preserved PE32/raw-pointer loader; native Go owns packed pointer side slots.
 char** nox_xxx_loadLook_415D50() {
 	char** result;     // eax
 	unsigned char* v1; // esi
@@ -26,4 +28,12 @@ char** nox_xxx_loadLook_415D50() {
 		*getMemU32Ptr(0x5D4594, 371256) = 1;
 	}
 	return result;
+}
+#endif
+
+// The historical return is an opaque word; actual callers discard it.
+// Preserve char** ABI here, including scalar-ready returns, outside Go.
+extern uintptr_t nox_native_loadLook_415D50(void);
+char** nox_xxx_loadLook_415D50() {
+	return (char**)(uintptr_t)nox_native_loadLook_415D50();
 }

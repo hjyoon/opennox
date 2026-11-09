@@ -1,5 +1,54 @@
 # Native C entry pointer audit
 
+## All remaining GAME1 sub_ algorithms, 2026-11-09
+
+The final 33 algorithms in the retained `GAME1.c` `sub_` inventory now use Go:
+four title lookups, twelve settings entries, eleven access-list entries and six
+team entries. The same denominator is **83 Go connections, zero remaining C
+algorithms**. Seventy-eight use direct public Go exports; five keep C adapters
+with only typed/const ABI forwarding. All 83 old definition/body hashes, their
+source order and the complete public header remain exact. This selected set
+excludes other C entry names, files, preambles and macro configurations.
+
+The four title lookups now read localized UTF-16 at +0 and preserve the char key
+at +4, DWORD mask at +8 and 12-byte row stride. Native pointer side slots retain
+full addresses. Both real C loaders (`4158C0`/`415D50`) delegate to the same Go
+loader as startup, removing their pointer-to-DWORD writes. The old native-C
+loader diagnostic deliberately transports a key pointer across an unused mask
+slot; it is preserved as a controlled bug observation, not a valid production
+packed-row equivalence or a fabricated crash for already-native entry pointers.
+
+Settings use the original 58-byte raw records, actual C global owners, signed
+char promotion and full DWORD masks. Access nodes use the C sentinel owners,
+native-width links, exact name/serial fields and the existing truncated-32-bit
+clock boundary before uint64 expiry arithmetic. Team traversal uses typed
+native object/player/update/team links. C object size is the shared prefix;
+two Go-only handles follow it. Nearest-team math retains precision53/chop,
+unordered comparisons and ties; team packets preserve all 18 prefix bytes,
+UTF-16 bytes and low-BYTE length behavior.
+
+Before-port C references and the frozen nearest-team original corpus remain
+preserved. The separate title seal executes 64 original calls over two controls:
+six roots/406 bytes plus the actual C-locale helper/223 bytes, 60 returns and
+four nil-read faults. All 160 root instruction starts complete in both controls.
+Nil-query zero and the current `416690` no-op remain separately declared native
+policies. No full helper-branch or all33 original CPU equivalence is inferred.
+
+Normal and strict/highres Go 1.27.3 each pass **19,555 IDs** with no failures or
+skips: all preceding 18,938 plus 617 new IDs. Strict compiles `cgocheck2` and
+`checkptr=2`. All 8,912 source files remain unchanged across the combined parent,
+and all six mains have full bytes preserved before execution. Independent
+qualification SHA-256 is
+`7a85968a24532c05ce5c6f27a5386a231ee314a1be6634e1559ea65cdfb7e5a4`.
+It verifies source-bound assertions and transport, not all per-call raw numeric
+arrays, private native state or old corpus recertification. The compile/layout
+test-only failures remain preserved alongside the passing focused attempt.
+
+New products and ten shop/hearing E2E games are pending at this source checkpoint.
+Other pointer graphs, physical audio, default NPC settings, nine campaign final
+audits and the known shop heading/clipping limits remain open; overall 100% is
+not established. The older 50/33 counts below describe the preceding checkpoint.
+
 ## GAME1 startup, pause and comparator entries, 2026-11-09
 
 `sub_4134D0`, `sub_4137E0`, `sub_413890`, `sub_4138E0`,

@@ -1,0 +1,2056 @@
+{
+  "schema": "opennox-title-six-independent-original-results-v1",
+  "qualified": true,
+  "source_CPU_executions": 0,
+  "raw": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/actual-original-v1/original-title-six-actual64-v1.json",
+    "bytes": 476981,
+    "sha256": "d366f9d740c8d233458c333150f38613b2a514b3ecb81fd57b8b5b290329c3f4"
+  },
+  "root_Wait": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/root-original-Wait-v1.json",
+    "bytes": 1807,
+    "sha256": "fee5253233a81af9a66634e4de35e92d78588d457a33e26cfc1d6205c21372c1"
+  },
+  "root_PREEXEC": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/root-original-PREEXEC-v1.json",
+    "bytes": 1804,
+    "sha256": "3580308ffaf03dc1e62f2181d38bc1496c5ad8da39debd1fb583000b21b2df45"
+  },
+  "sources": {
+    "exe": {
+      "path": "/Users/ghost/codex-sandbox/nox-pjt/Nox/GAME.EXE",
+      "bytes": 1929216,
+      "sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a"
+    },
+    "inputs": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/inputs-v1.json",
+      "bytes": 20359,
+      "sha256": "871a0d1171455847f352405c10fb0277f640ff681eb25adb2ad323e7a15c64b3"
+    },
+    "static": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/title-dynamic-static-seal-v1.json",
+      "bytes": 13847,
+      "sha256": "785ffd14d3659a7def682e03da459e19bf2501b236600a2e722c3ed5e3bbf6c7"
+    },
+    "freeze": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/input-freeze-before-original-CPU-v1.json",
+      "bytes": 1197,
+      "sha256": "afe5f932960a164f68d29f907efedeba283144a156e9bd206de3a19d460d0c1d"
+    },
+    "producer": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-port-20261106/GAME1-remaining33-native-port-v1/title-candidate-v1/original-dynamic-v1/record_original_title_six_v1.py",
+      "bytes": 17217,
+      "sha256": "00d0f29b36ac1bf07fba777206cbb08d2a3f4a9f5482c4f80fdc92d409578e3c"
+    }
+  },
+  "inputs_SHA": "871a0d1171455847f352405c10fb0277f640ff681eb25adb2ad323e7a15c64b3",
+  "rows": [
+    {
+      "case": 0,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 0,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 1,
+      "cw": 639,
+      "status": "returned",
+      "result": 2147483649,
+      "after": {
+        "table_hex": "000000218003002101000080000000210004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 1,
+      "cw": 3711,
+      "status": "returned",
+      "result": 2147483649,
+      "after": {
+        "table_hex": "000000218003002101000080000000210004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 2,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648128
+          ],
+          "query": "qMiss",
+          "title": "t0",
+          "saved": [
+            553648768,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 12,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 2,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648256
+          ],
+          "query": "qMiss",
+          "title": "t1",
+          "saved": [
+            553648768,
+            5829244,
+            1,
+            1163290488
+          ],
+          "returned": true,
+          "result": 11,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 3,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648384
+          ],
+          "query": "qMiss",
+          "title": "t2",
+          "saved": [
+            553648768,
+            5829256,
+            2,
+            1163290488
+          ],
+          "returned": true,
+          "result": 6,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 2,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648128
+          ],
+          "query": "qMiss",
+          "title": "t0",
+          "saved": [
+            553648768,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 12,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 2,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648256
+          ],
+          "query": "qMiss",
+          "title": "t1",
+          "saved": [
+            553648768,
+            5829244,
+            1,
+            1163290488
+          ],
+          "returned": true,
+          "result": 11,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 3,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648768,
+            553648384
+          ],
+          "query": "qMiss",
+          "title": "t2",
+          "saved": [
+            553648768,
+            5829256,
+            2,
+            1163290488
+          ],
+          "returned": true,
+          "result": 6,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 3,
+      "cw": 639,
+      "status": "read-fault",
+      "result": 553648128,
+      "after": {
+        "table_hex": "000000218003002101000080000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            0,
+            553648128
+          ],
+          "query": "nil",
+          "title": "t0",
+          "saved": [
+            0,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": false
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 3,
+      "cw": 3711,
+      "status": "read-fault",
+      "result": 553648128,
+      "after": {
+        "table_hex": "000000218003002101000080000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            0,
+            553648128
+          ],
+          "query": "nil",
+          "title": "t0",
+          "saved": [
+            0,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": false
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 4,
+      "cw": 639,
+      "status": "returned",
+      "result": 4045620583,
+      "after": {
+        "table_hex": "0000002180030021674523f1000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 4,
+      "cw": 3711,
+      "status": "returned",
+      "result": 4045620583,
+      "after": {
+        "table_hex": "0000002180030021674523f1000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 5,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000800000000000040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648896,
+            553648128
+          ],
+          "query": "qBeta",
+          "title": "t0",
+          "saved": [
+            553648896,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 1,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 5,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000800000000000040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4282749,
+          "return_pc": 4282754,
+          "sp": 570427368,
+          "frame": [
+            4282754,
+            553648896,
+            553648128
+          ],
+          "query": "qBeta",
+          "title": "t0",
+          "saved": [
+            553648896,
+            5829232,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 1,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 6,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 6,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 7,
+      "cw": 639,
+      "status": "returned",
+      "result": 553648384,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 7,
+      "cw": 3711,
+      "status": "returned",
+      "result": 553648384,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 8,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 8,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 9,
+      "cw": 639,
+      "status": "returned",
+      "result": 553648512,
+      "after": {
+        "table_hex": "800100218003002101000080800000210004002101000080000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 9,
+      "cw": 3711,
+      "status": "returned",
+      "result": 553648512,
+      "after": {
+        "table_hex": "800100218003002101000080800000210004002101000080000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 10,
+      "cw": 639,
+      "status": "returned",
+      "result": 4275878552,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 4275878552
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 10,
+      "cw": 3711,
+      "status": "returned",
+      "result": 4275878552,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 4275878552
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 11,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 11,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 12,
+      "cw": 639,
+      "status": "returned",
+      "result": 5829260,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021ffffffff000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649152,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k1",
+          "reply": "t1",
+          "result": 553648256,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 12,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5829260,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021ffffffff000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649152,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k1",
+          "reply": "t1",
+          "result": 553648256,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 13,
+      "cw": 639,
+      "status": "returned",
+      "result": 5829248,
+      "after": {
+        "table_hex": "000000218003002101000000000000000000000002000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 13,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5829248,
+      "after": {
+        "table_hex": "000000218003002101000000000000000000000002000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 14,
+      "cw": 639,
+      "status": "returned",
+      "result": 5829260,
+      "after": {
+        "table_hex": "000000218003002101000000800100218004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649280,
+            0,
+            5830644,
+            200
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 14,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5829260,
+      "after": {
+        "table_hex": "000000218003002101000000800100218004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649024,
+            0,
+            5830644,
+            200
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649280,
+            0,
+            5830644,
+            200
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 15,
+      "cw": 639,
+      "status": "returned",
+      "result": 5829248,
+      "after": {
+        "table_hex": "800100218004002101000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649280,
+            0,
+            5830644,
+            200
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 15,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5829248,
+      "after": {
+        "table_hex": "800100218004002101000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4282601,
+          "sp": 570427368,
+          "frame": [
+            4282606,
+            553649280,
+            0,
+            5830644,
+            200
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 16,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 16,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 17,
+      "cw": 639,
+      "status": "returned",
+      "result": 2147483649,
+      "after": {
+        "table_hex": "000000218003002101000080000000210004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 17,
+      "cw": 3711,
+      "status": "returned",
+      "result": 2147483649,
+      "after": {
+        "table_hex": "000000218003002101000080000000210004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 18,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648128
+          ],
+          "query": "qMiss",
+          "title": "t0",
+          "saved": [
+            553648768,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 12,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 2,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648256
+          ],
+          "query": "qMiss",
+          "title": "t1",
+          "saved": [
+            553648768,
+            5831348,
+            1,
+            1163290488
+          ],
+          "returned": true,
+          "result": 11,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 3,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648384
+          ],
+          "query": "qMiss",
+          "title": "t2",
+          "saved": [
+            553648768,
+            5831360,
+            2,
+            1163290488
+          ],
+          "returned": true,
+          "result": 6,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 18,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648128
+          ],
+          "query": "qMiss",
+          "title": "t0",
+          "saved": [
+            553648768,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 12,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 2,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648256
+          ],
+          "query": "qMiss",
+          "title": "t1",
+          "saved": [
+            553648768,
+            5831348,
+            1,
+            1163290488
+          ],
+          "returned": true,
+          "result": 11,
+          "return_sp": 570427372
+        },
+        {
+          "kind": "compare",
+          "ordinal": 3,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648768,
+            553648384
+          ],
+          "query": "qMiss",
+          "title": "t2",
+          "saved": [
+            553648768,
+            5831360,
+            2,
+            1163290488
+          ],
+          "returned": true,
+          "result": 6,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 19,
+      "cw": 639,
+      "status": "read-fault",
+      "result": 553648128,
+      "after": {
+        "table_hex": "000000218003002101000080000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            0,
+            553648128
+          ],
+          "query": "nil",
+          "title": "t0",
+          "saved": [
+            0,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": false
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 19,
+      "cw": 3711,
+      "status": "read-fault",
+      "result": 553648128,
+      "after": {
+        "table_hex": "000000218003002101000080000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            0,
+            553648128
+          ],
+          "query": "nil",
+          "title": "t0",
+          "saved": [
+            0,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": false
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 20,
+      "cw": 639,
+      "status": "returned",
+      "result": 4045620583,
+      "after": {
+        "table_hex": "0000002180030021674523f1000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 20,
+      "cw": 3711,
+      "status": "returned",
+      "result": 4045620583,
+      "after": {
+        "table_hex": "0000002180030021674523f1000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648640,
+            553648128
+          ],
+          "query": "qFold",
+          "title": "t0",
+          "saved": [
+            553648640,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 0,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 21,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000800000000000040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648896,
+            553648128
+          ],
+          "query": "qBeta",
+          "title": "t0",
+          "saved": [
+            553648896,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 1,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 21,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000800000000000040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [
+        {
+          "kind": "compare",
+          "ordinal": 1,
+          "call_pc": 4283837,
+          "return_pc": 4283842,
+          "sp": 570427368,
+          "frame": [
+            4283842,
+            553648896,
+            553648128
+          ],
+          "query": "qBeta",
+          "title": "t0",
+          "saved": [
+            553648896,
+            5831336,
+            0,
+            1163290488
+          ],
+          "returned": true,
+          "result": 1,
+          "return_sp": 570427372
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 22,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 22,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 23,
+      "cw": 639,
+      "status": "returned",
+      "result": 553648384,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 23,
+      "cw": 3711,
+      "status": "returned",
+      "result": 553648384,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 24,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 24,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021020000000001002180040021ffffffff000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 25,
+      "cw": 639,
+      "status": "returned",
+      "result": 553648512,
+      "after": {
+        "table_hex": "800100218003002101000080800000210004002101000080000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 25,
+      "cw": 3711,
+      "status": "returned",
+      "result": 553648512,
+      "after": {
+        "table_hex": "800100218003002101000080800000210004002101000080000000000000000000000000000000000000000000000000",
+        "ready": 0
+      },
+      "services": [],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 26,
+      "cw": 639,
+      "status": "returned",
+      "result": 4275878552,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 4275878552
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 26,
+      "cw": 3711,
+      "status": "returned",
+      "result": 4275878552,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 4275878552
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 27,
+      "cw": 639,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 27,
+      "cw": 3711,
+      "status": "returned",
+      "result": 0,
+      "after": {
+        "table_hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 28,
+      "cw": 639,
+      "status": "returned",
+      "result": 5831364,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021ffffffff000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649152,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k1",
+          "reply": "t1",
+          "result": 553648256,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 28,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5831364,
+      "after": {
+        "table_hex": "0000002180030021010000808000002100040021ffffffff000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649152,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k1",
+          "reply": "t1",
+          "result": 553648256,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [],
+      "effects_unused": []
+    },
+    {
+      "case": 29,
+      "cw": 639,
+      "status": "returned",
+      "result": 5831352,
+      "after": {
+        "table_hex": "000000218003002101000000000000000000000002000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 29,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5831352,
+      "after": {
+        "table_hex": "000000218003002101000000000000000000000002000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 30,
+      "cw": 639,
+      "status": "returned",
+      "result": 5831364,
+      "after": {
+        "table_hex": "000000218003002101000000800100218004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649280,
+            0,
+            5833692,
+            380
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 30,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5831364,
+      "after": {
+        "table_hex": "000000218003002101000000800100218004002102000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649024,
+            0,
+            5833692,
+            380
+          ],
+          "key": "k0",
+          "reply": "t0",
+          "result": 553648128,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        },
+        {
+          "kind": "load",
+          "ordinal": 2,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649280,
+            0,
+            5833692,
+            380
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 31,
+      "cw": 639,
+      "status": "returned",
+      "result": 5831352,
+      "after": {
+        "table_hex": "800100218004002101000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649280,
+            0,
+            5833692,
+            380
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    },
+    {
+      "case": 31,
+      "cw": 3711,
+      "status": "returned",
+      "result": 5831352,
+      "after": {
+        "table_hex": "800100218004002101000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ready": 1
+      },
+      "services": [
+        {
+          "kind": "load",
+          "ordinal": 1,
+          "call_pc": 4283769,
+          "sp": 570427368,
+          "frame": [
+            4283774,
+            553649280,
+            0,
+            5833692,
+            380
+          ],
+          "key": "kAlt",
+          "reply": "tAlt",
+          "result": 553648512,
+          "returned": true,
+          "return_kind": "declared-host-return"
+        }
+      ],
+      "effects_used": [
+        0
+      ],
+      "effects_unused": []
+    }
+  ],
+  "original_executions": 64,
+  "returned": 60,
+  "actual_CRT_nil_read_faults": 4,
+  "root_code_bytes": 406,
+  "compare_helper_bytes": 223,
+  "static_root_PC_count": 160,
+  "root_entered_PC_counts": {
+    "639": 160,
+    "3711": 160
+  },
+  "root_completed_PC_counts": {
+    "639": 160,
+    "3711": 160
+  },
+  "uncovered_root_PC_by_CW": {
+    "639": [],
+    "3711": []
+  },
+  "all_root_PCs_entered_and_completed_both_CW": true,
+  "all_CRT_helper_branches_qualified": false,
+  "native_nil_query_is_compatibility_policy": true,
+  "entire_port_100": false
+}

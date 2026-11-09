@@ -1737,6 +1737,7 @@ int nox_thing_read_audio_415660(nox_memfile* f, char* buf) {
 }
 
 //----- (00415960) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_415960(wchar2_t* a1) {
 	if (!a1 || !getMemPtr(0x587000, 33392 + 4)) {
 		return 0;
@@ -1751,8 +1752,10 @@ int sub_415960(wchar2_t* a1) {
 		}
 	}
 }
+#endif
 
 //----- (004159F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 wchar2_t* sub_4159F0(int a1) {
 	for (uintptr_t off = 33392;; off += 12) {
 		wchar2_t* title = getMemPtr(0x587000, off + 4);
@@ -1764,6 +1767,7 @@ wchar2_t* sub_4159F0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (00415BD0) --------------------------------------------------------
 #if 0 // Exact PE32-pointer C transcription; native Go entry uses nox_object_t*.
@@ -1803,6 +1807,7 @@ double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {
 }
 
 //----- (00415DA0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_415DA0(wchar2_t* a1) {
 	if (!a1 || !getMemPtr(0x587000, 35496 + 4)) {
 		return 0;
@@ -1817,8 +1822,10 @@ int sub_415DA0(wchar2_t* a1) {
 		}
 	}
 }
+#endif
 
 //----- (00415E80) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 wchar2_t* sub_415E80(int a1) {
 	for (uintptr_t off = 35496;; off += 12) {
 		wchar2_t* title = getMemPtr(0x587000, off + 4);
@@ -1830,8 +1837,10 @@ wchar2_t* sub_415E80(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004161E0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_4161E0() {
 	int v0;            // ebx
 	int v1;            // eax
@@ -1934,27 +1943,37 @@ int sub_4161E0() {
 	dword_5d4594_371692 = 1;
 	return result;
 }
+#endif
 // 4161E0: using guessed type int var_14[5];
 
 //----- (004164F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void sub_4164F0() { dword_5d4594_371692 = 0; }
+#endif
 
 //----- (00416580) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_416580() { return *getMemU32Ptr(0x5D4594, 371688); }
+#endif
 
 //----- (00416590) --------------------------------------------------------
 char* nox_xxx_cliGamedataGet_416590(int a1) { return (char*)getMemAt(0x5D4594, 371380 + 58*a1); }
 
 //----- (004165B0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 char* sub_4165B0() { return (char*)getMemAt(0x5D4594, 371380 + 58 * *getMemU32Ptr(0x5D4594, 371688)); }
+#endif
 
 //----- (004165D0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 char* sub_4165D0(int a1) {
 	*getMemU32Ptr(0x5D4594, 371688) = a1;
 	return (char*)getMemAt(0x5D4594, 371380 + 58*a1);
 }
+#endif
 
 //----- (004165F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_4165F0(int a1, int a2) {
 	int result; // eax
 
@@ -1962,17 +1981,25 @@ int sub_4165F0(int a1, int a2) {
 	memcpy(getMemAt(0x5D4594, 371380 + 58*a2), getMemAt(0x5D4594, 371380 + 58*a1), 0x3Au);
 	return result;
 }
+#endif
 
 //----- (00416630) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 char* sub_416630() { return (char*)getMemAt(0x5D4594, 371516 + 100); }
+#endif
 
 //----- (00416640) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void* sub_416640() { return getMemAt(0x5D4594, 371516); }
+#endif
 
 //----- (00416650) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_416650() { return *getMemU32Ptr(0x5D4594, 371700); }
+#endif
 
 //----- (00416690) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void sub_416690() {
 	char* v0;    // esi
 	char* v1;    // ebx
@@ -1994,6 +2021,7 @@ void sub_416690() {
 		sub_4164F0();
 	}
 }
+#endif
 // 416690: using guessed type char var_54[84];
 
 // The original two list sentinels occupy 12-byte slots in the PE32 memmap.
@@ -2012,7 +2040,17 @@ static void nox_access_lists_ensure_416720(void) {
 	nox_access_lists_initialized = true;
 }
 
+/* Insert after nox_access_lists_ensure_416720, outside the preserved11 bodies.
+ * The existing static sentinels and initialized flag remain the sole owners.
+ */
+void* nox_access_native_head_416720(int banned) {
+    nox_access_lists_ensure_416720();
+    return banned ? (void*)&nox_access_banned_list_416900 : (void*)&nox_access_allowed_list_4168E0;
+}
+
+
 //----- (00416720) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void sub_416720() {
 	int v0 = 0;
 	nox_access_banned_entry_t* v2 = sub_416900();
@@ -2027,8 +2065,10 @@ void sub_416720() {
 		v2 = v3;
 	}
 }
+#endif
 
 //----- (00416770) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int* sub_416770(int a1, wchar2_t* a2, const char* a3) {
 	nox_access_banned_entry_t* v3; // ebp
 
@@ -2053,8 +2093,10 @@ int* sub_416770(int a1, wchar2_t* a2, const char* a3) {
 	}
 	return sub_455800();
 }
+#endif
 
 //----- (00416820) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void sub_416820(int a1) {
 	nox_access_banned_entry_t* v2; // esi
 	int v3;  // edi
@@ -2078,8 +2120,10 @@ void sub_416820(int a1) {
 	nox_common_list_remove_425920(&v2->list);
 	free(v2);
 }
+#endif
 
 //----- (00416860) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int* sub_416860(int a1) {
 	nox_access_allowed_entry_t* result; // eax
 	nox_access_allowed_entry_t* v2;     // esi
@@ -2106,8 +2150,10 @@ int* sub_416860(int a1) {
 	}
 	return (int*)result;
 }
+#endif
 
 //----- (004168A0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int* sub_4168A0(wchar2_t* a1) {
 	nox_access_allowed_entry_t* v1; // esi
 
@@ -2121,28 +2167,37 @@ int* sub_4168A0(wchar2_t* a1) {
 	nox_common_list_append_4258E0(&nox_access_allowed_list_4168E0, &v1->list);
 	return sub_455800();
 }
+#endif
 
 //----- (004168E0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 nox_access_allowed_entry_t* sub_4168E0() {
 	nox_access_lists_ensure_416720();
 	return (nox_access_allowed_entry_t*)nox_common_list_getFirstSafe_425890(&nox_access_allowed_list_4168E0);
 }
+#endif
 
 //----- (004168F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 nox_access_allowed_entry_t* sub_4168F0(nox_access_allowed_entry_t* a1) {
 	return (nox_access_allowed_entry_t*)nox_common_list_getNextSafe_4258A0(&a1->list);
 }
+#endif
 
 //----- (00416900) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 nox_access_banned_entry_t* sub_416900() {
 	nox_access_lists_ensure_416720();
 	return (nox_access_banned_entry_t*)nox_common_list_getFirstSafe_425890(&nox_access_banned_list_416900);
 }
+#endif
 
 //----- (00416910) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 nox_access_banned_entry_t* sub_416910(nox_access_banned_entry_t* a1) {
 	return (nox_access_banned_entry_t*)nox_common_list_getNextSafe_4258A0(&a1->list);
 }
+#endif
 
 wchar2_t* nox_access_allowed_name_4168E0(nox_access_allowed_entry_t* entry) {
 	return entry ? entry->name : 0;
@@ -2157,14 +2212,17 @@ char* nox_access_banned_serial_416900(nox_access_banned_entry_t* entry) {
 }
 
 //----- (00416920) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_416920() {
 	nox_access_lists_ensure_416720();
 	nox_common_list_clear_425760(&nox_access_allowed_list_4168E0);
 	nox_common_list_clear_425760(&nox_access_banned_list_416900);
 	return sub_4E41B0((char*)getMemAt(0x587000, 54280));
 }
+#endif
 
 //----- (00416950) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int* sub_416950() {
 	nox_access_allowed_entry_t* v0; // esi
 	nox_access_allowed_entry_t* v1; // edi
@@ -2194,9 +2252,12 @@ int* sub_416950() {
 	}
 	return result;
 }
+#endif
 
 //----- (004169C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_4169C0() { return *getMemU32Ptr(0x5D4594, 371704); }
+#endif
 
 //----- (004169D0) --------------------------------------------------------
 int nox_xxx_cliSetSettingsAcquired_4169D0(int a1) {
@@ -2208,6 +2269,7 @@ int nox_xxx_cliSetSettingsAcquired_4169D0(int a1) {
 }
 
 //----- (004169F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 char* sub_4169F0() {
 	char* result; // eax
 
@@ -2215,6 +2277,7 @@ char* sub_4169F0() {
 	result[100] &= 0xEFu;
 	return result;
 }
+#endif
 
 //----- (00416E50) --------------------------------------------------------
 char* nox_xxx_playerForceSendLessons_416E50(int a1) {
@@ -2362,12 +2425,17 @@ nox_playerInfo* sub_417B80(uint8_t opcode, int player_net_code, uint32_t item_ty
 }
 
 //----- (00417CF0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_417CF0() { return nox_server_teamsZzz_419030(0); }
+#endif
 
 //----- (00417DC0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_417DC0() { return dword_5d4594_526276; }
+#endif
 
 //----- (00417DE0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 char sub_417DE0() {
 	char v0; // bl
 	nox_team_t* i; // eax
@@ -2380,6 +2448,7 @@ char sub_417DE0() {
 	}
 	return v0;
 }
+#endif
 
 //----- (00417EA0) --------------------------------------------------------
 #if 0 // Restored by map_mode_setup_417ea0_export.go; retained as ABI32 provenance.
@@ -2687,6 +2756,7 @@ void sub_4181F0(int a1) {
 #endif
 
 //----- (00418390) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_418390() {
 	if (!nox_xxx_getTeamCounter_417DD0()) {
 		return 0;
@@ -2695,6 +2765,7 @@ int sub_418390() {
 	sub_4181F0(0);
 	return 1;
 }
+#endif
 
 // GAME.EXE's gameplay x87 environment is precision 53, round-toward-zero.
 // Correct local nearest-even operations without changing the thread's FP
@@ -2726,6 +2797,7 @@ static float nox_chat_team_spill_chop32_4183C0(double value) {
 }
 
 //----- (004183C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 int sub_4183C0() {
 	nox_object_t* result; // eax
 	nox_object_t* i;      // esi
@@ -2783,8 +2855,10 @@ int sub_4183C0() {
 	// The exhausted player iterator is NULL on every returning original path.
 	return 0;
 }
+#endif
 
 //----- (004184D0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
 void sub_4184D0(nox_team_t* a1p) {
 	wchar2_t* a1 = a1p;
 	int v1;       // edi
@@ -2815,6 +2889,7 @@ void sub_4184D0(nox_team_t* a1p) {
 		free(v2);
 	}
 }
+#endif
 
 // 004185B0, 00418640, and 00418690 use native object/team pointers in
 // team_flags_4185b0.c.

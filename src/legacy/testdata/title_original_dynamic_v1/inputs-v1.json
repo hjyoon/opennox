@@ -1,0 +1,1006 @@
+{
+  "schema": "opennox-title-independent-finite-inputs-v1",
+  "case_count": 32,
+  "control_words": [
+    639,
+    3711
+  ],
+  "roles": {
+    "t0": {
+      "address": 553648128,
+      "kind": "wide",
+      "text": "Alpha"
+    },
+    "t1": {
+      "address": 553648256,
+      "kind": "wide",
+      "text": "Beta"
+    },
+    "t2": {
+      "address": 553648384,
+      "kind": "wide",
+      "text": "Gamma"
+    },
+    "tAlt": {
+      "address": 553648512,
+      "kind": "wide",
+      "text": "Omega"
+    },
+    "qFold": {
+      "address": 553648640,
+      "kind": "wide",
+      "text": "aLpHa"
+    },
+    "qMiss": {
+      "address": 553648768,
+      "kind": "wide",
+      "text": "Missing"
+    },
+    "qBeta": {
+      "address": 553648896,
+      "kind": "wide",
+      "text": "Beta"
+    },
+    "k0": {
+      "address": 553649024,
+      "kind": "bytes",
+      "text": "key:first"
+    },
+    "k1": {
+      "address": 553649152,
+      "kind": "bytes",
+      "text": "key:second"
+    },
+    "kAlt": {
+      "address": 553649280,
+      "kind": "bytes",
+      "text": "key:alternate"
+    }
+  },
+  "cases": [
+    {
+      "name": "weapon/empty-table-nil-query",
+      "kind": "to",
+      "rows": [],
+      "query": "nil",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": true,
+      "id": 0,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/folded-first-duplicate-title",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t0",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 1,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/missing-across-three",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qMiss",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 2,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/nil-query-real-helper-read-fault",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        }
+      ],
+      "query": "nil",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": true,
+      "id": 3,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/mask-reloaded-after-compare",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_compare",
+          "occurrence": 1,
+          "field": "mask",
+          "row": 0,
+          "value": 4045620583
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 4,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/next-title-reloaded-after-compare",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qBeta",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_compare",
+          "occurrence": 1,
+          "field": "title",
+          "row": 1,
+          "role": "nil"
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 5,
+      "family": "weapon",
+      "entry": 4282720,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/mask-empty-localized-sentinel",
+      "kind": "from",
+      "rows": [],
+      "query": "qFold",
+      "mask": 9,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 6,
+      "family": "weapon",
+      "entry": 4282864,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/mask-last-full32",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 4294967295,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 7,
+      "family": "weapon",
+      "entry": 4282864,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/mask-missing",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 305419896,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 8,
+      "family": "weapon",
+      "entry": 4282864,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/mask-match-reloads-current-title",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2147483649
+        }
+      ],
+      "query": "qFold",
+      "mask": 2147483649,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_root_read",
+          "occurrence": 1,
+          "field": "title",
+          "row": 0,
+          "role": "tAlt",
+          "read_field": "mask"
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 9,
+      "family": "weapon",
+      "entry": 4282864,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-ready-scalar",
+      "kind": "load",
+      "rows": [],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 4275878552,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 10,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-empty-key",
+      "kind": "load",
+      "rows": [],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 11,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-two-keys",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        },
+        {
+          "key": "k1",
+          "reply": "t1"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 12,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-next-key-nil-after-service",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_load",
+          "occurrence": 1,
+          "field": "key",
+          "row": 1,
+          "role": "nil"
+        }
+      ],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 13,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-next-key-changed-after-service",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_load",
+          "occurrence": 1,
+          "field": "key",
+          "row": 1,
+          "role": "kAlt"
+        }
+      ],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        },
+        {
+          "key": "kAlt",
+          "reply": "tAlt"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 14,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "weapon/loader-current-key-reloaded",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_root_read",
+          "occurrence": 1,
+          "field": "key",
+          "row": 0,
+          "role": "kAlt",
+          "read_field": "key"
+        }
+      ],
+      "loads": [
+        {
+          "key": "kAlt",
+          "reply": "tAlt"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 15,
+      "family": "weapon",
+      "entry": 4282560,
+      "table": 5829232,
+      "flag": 6483908
+    },
+    {
+      "name": "armor/empty-table-nil-query",
+      "kind": "to",
+      "rows": [],
+      "query": "nil",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": true,
+      "id": 16,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/folded-first-duplicate-title",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t0",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 17,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/missing-across-three",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qMiss",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 18,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/nil-query-real-helper-read-fault",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        }
+      ],
+      "query": "nil",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": true,
+      "id": 19,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/mask-reloaded-after-compare",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_compare",
+          "occurrence": 1,
+          "field": "mask",
+          "row": 0,
+          "value": 4045620583
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 20,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/next-title-reloaded-after-compare",
+      "kind": "to",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qBeta",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_compare",
+          "occurrence": 1,
+          "field": "title",
+          "row": 1,
+          "role": "nil"
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 21,
+      "family": "armor",
+      "entry": 4283808,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/mask-empty-localized-sentinel",
+      "kind": "from",
+      "rows": [],
+      "query": "qFold",
+      "mask": 9,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 22,
+      "family": "armor",
+      "entry": 4284032,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/mask-last-full32",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 4294967295,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 23,
+      "family": "armor",
+      "entry": 4284032,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/mask-missing",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2
+        },
+        {
+          "title": "t2",
+          "key": "kAlt",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 305419896,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 24,
+      "family": "armor",
+      "entry": 4284032,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/mask-match-reloads-current-title",
+      "kind": "from",
+      "rows": [
+        {
+          "title": "t0",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "t1",
+          "key": "k1",
+          "mask": 2147483649
+        }
+      ],
+      "query": "qFold",
+      "mask": 2147483649,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_root_read",
+          "occurrence": 1,
+          "field": "title",
+          "row": 0,
+          "role": "tAlt",
+          "read_field": "mask"
+        }
+      ],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 25,
+      "family": "armor",
+      "entry": 4284032,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-ready-scalar",
+      "kind": "load",
+      "rows": [],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 4275878552,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 26,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-empty-key",
+      "kind": "load",
+      "rows": [],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [],
+      "native_nil_query_policy": false,
+      "id": 27,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-two-keys",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 2147483649
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 4294967295
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        },
+        {
+          "key": "k1",
+          "reply": "t1"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 28,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-next-key-nil-after-service",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_load",
+          "occurrence": 1,
+          "field": "key",
+          "row": 1,
+          "role": "nil"
+        }
+      ],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 29,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-next-key-changed-after-service",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        },
+        {
+          "title": "nil",
+          "key": "k1",
+          "mask": 2
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_load",
+          "occurrence": 1,
+          "field": "key",
+          "row": 1,
+          "role": "kAlt"
+        }
+      ],
+      "loads": [
+        {
+          "key": "k0",
+          "reply": "t0"
+        },
+        {
+          "key": "kAlt",
+          "reply": "tAlt"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 30,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    },
+    {
+      "name": "armor/loader-current-key-reloaded",
+      "kind": "load",
+      "rows": [
+        {
+          "title": "nil",
+          "key": "k0",
+          "mask": 1
+        }
+      ],
+      "query": "qFold",
+      "mask": 0,
+      "ready": 0,
+      "effects": [
+        {
+          "trigger": "after_root_read",
+          "occurrence": 1,
+          "field": "key",
+          "row": 0,
+          "role": "kAlt",
+          "read_field": "key"
+        }
+      ],
+      "loads": [
+        {
+          "key": "kAlt",
+          "reply": "tAlt"
+        }
+      ],
+      "native_nil_query_policy": false,
+      "id": 31,
+      "family": "armor",
+      "entry": 4283728,
+      "table": 5831336,
+      "flag": 6483916
+    }
+  ],
+  "expected_outcomes_authored": false,
+  "source_CPU_or_Go_executions": 0
+}

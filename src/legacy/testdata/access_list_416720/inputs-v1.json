@@ -1,0 +1,793 @@
+{
+  "schema": "opennox-access-list-independent-inputs-v1",
+  "case_count": 18,
+  "expected_outcomes_authored": false,
+  "cases": [
+    {
+      "name": "empty-iterators",
+      "ops": [
+        {
+          "kind": "first-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "first-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "next-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "next-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "allowed-append-and-cache",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "ALPHA",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "beta",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "first-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "next-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 1
+        },
+        {
+          "kind": "next-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 2
+        },
+        {
+          "kind": "remove-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "allowed-middle-remove",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "one",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "two",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "three",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": 1,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "allowed-out-of-range",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "one",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": 7,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": -1,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": -2147483648,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-allow",
+          "value": 2147483647,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "banned-serial-null-empty",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "none",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "empty",
+          "serial": "",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "banned-serial-cut",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "short",
+          "serial": "xyz",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "limit23",
+          "serial": "12345678901234567890123",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "long",
+          "serial": "1234567890123456789012345678901234567890",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "nul",
+          "serial": "ABC\u0000TAIL",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "utf16-name",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "가나☃",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "é😀",
+          "serial": "UTF8-ASCII",
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "ABCDEFGHIJKLMNOPQRSTUVWXY",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "banned-middle-remove",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "one",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "two",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "three",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-ban",
+          "value": 1,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "first-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "banned-out-of-range",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "one",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-ban",
+          "value": -1,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "remove-ban",
+          "value": 3,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "expiry-equality-and-after",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 1,
+          "name": "exp",
+          "serial": null,
+          "clock": 100,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 60100,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 60101,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "expiry-persistent-zero",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "persist",
+          "serial": null,
+          "clock": 4294967295,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 4294967295,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "expiry-full64",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 71583,
+          "name": "high",
+          "serial": null,
+          "clock": 4294967295,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 4294967295,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "expiry-negative-minutes",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": -1,
+          "name": "negative",
+          "serial": null,
+          "clock": 99,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": -2147483648,
+          "name": "min",
+          "serial": null,
+          "clock": 99,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 2147483647,
+          "name": "max",
+          "serial": null,
+          "clock": 99,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 4294967295,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "expiry-index-is-not-compacted",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 1,
+          "name": "first",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 1,
+          "name": "second",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "expire",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 60001,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "reset-forgets-without-free",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "allowed",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "banned",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "reset",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "first-allow",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "first-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "clear-save-first-and-freed-return",
+      "ops": [
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "allowed",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "banned",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "allocation-failure",
+      "ops": [
+        {
+          "kind": "fail-next-allocation",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "allow",
+          "value": 0,
+          "name": "none",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "fail-next-allocation",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 1,
+          "name": "none",
+          "serial": null,
+          "clock": 8,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    },
+    {
+      "name": "banned-next-and-remove-last",
+      "ops": [
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "a",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "ban",
+          "value": 0,
+          "name": "b",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "next-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 1
+        },
+        {
+          "kind": "next-ban",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 2
+        },
+        {
+          "kind": "remove-ban",
+          "value": 1,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        },
+        {
+          "kind": "clear",
+          "value": 0,
+          "name": "",
+          "serial": null,
+          "clock": 0,
+          "pointer_id": 0
+        }
+      ]
+    }
+  ]
+}

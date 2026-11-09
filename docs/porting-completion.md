@@ -55,6 +55,58 @@ completion requirements.
 
 ## Current findings
 
+### All remaining GAME1 sub_ algorithms, 2026-11-09
+
+The remaining 33 algorithms now run in Go through the unchanged public C ABI.
+The same 83-definition inventory has **83 Go connections and zero remaining C
+algorithms**: 78 direct public Go exports and five C adapters containing only
+ABI forwarding. This denominator covers `GAME1.c` functions named `sub_`, rather
+than other C functions, preambles, source files or macro configurations.
+
+| Family | Newly migrated entries |
+| --- | --- |
+| Equipment titles | `415960`, `4159F0`, `415DA0`, `415E80` |
+| Settings | `4161E0`, `4164F0`, `416580`, `4165B0`, `4165D0`, `4165F0`, `416630`, `416640`, `416650`, `416690`, `4169C0`, `4169F0` |
+| Access lists | `416720`, `416770`, `416820`, `416860`, `4168A0`, `4168E0`, `4168F0`, `416900`, `416910`, `416920`, `416950` |
+| Teams | `417CF0`, `417DC0`, `417DE0`, `418390`, `4183C0`, `4184D0` |
+
+Title lookup reads localized UTF-16 at row+0, with the separate char key at +4
+and DWORD mask at +8. Rows keep their 12-byte stride and native pointer side
+slots. The two real C loaders, `4158C0` and `415D50`, now share the Go startup
+loader and no longer write native pointers into DWORDs. Settings retain their
+58-byte records and actual C dirty globals. Access lists retain actual C
+sentinel owners and native links. Team traversal uses typed native object,
+player/update and team owners; the packet keeps its 18-byte wire prefix and
+low-BYTE UTF-16 length. Object layout checks distinguish the shared C prefix
+from the two Go-only handles.
+
+Retained before-port C controls cover 22 settings inputs, 18 access-list cases
+with 87 steps, 168 nearest-team original comparisons, 144 team-count controls
+and eight complete team packets. Separate title recording executes six original
+roots (406 bytes) and the actual C-locale comparator helper (223 bytes): 32 inputs
+in two controls yield 60 returns and four CRT nil-read faults. All 160 root
+instruction starts complete in both controls. Native nil-query protection and
+the current `416690` no-op remain explicit compatibility policies; full CRT
+branch coverage and original broadcast behavior are not claimed.
+
+Go 1.27.3 normal and strict/highres each pass **19,555 selected IDs**, retaining
+all old 18,938 IDs and adding 617. There are no failures or skips. Strict uses
+compiled `cgocheck2` and `checkptr=2`. All 8,912 source files stay exact across
+both profiles, and all six actual mains are retained before execution. All 83
+old C definition/body hashes and the complete public header remain exact.
+The independent source/transport qualification is
+`actual-remaining33-normal-strict-independently-qualified-v1.json`, SHA-256
+`7a85968a24532c05ce5c6f27a5386a231ee314a1be6634e1559ea65cdfb7e5a4`.
+Its scope is source-bound assertions, rather than independent recomputation of
+all old/new numeric arrays or original CPU equivalence for all 33 entries.
+
+Products and ten shop/hearing E2E games for this batch remain pending at this
+source checkpoint. The two failed focused attempts and the passing 617-ID
+attempt retain complete canonical MODE/WORK bytes; only nine verified duplicate
+paths were removed. Campaign final audits, default NPC hearing settings,
+physical speaker fidelity and the known shop heading/clipping limits remain
+open. Overall project completion is still below 100%.
+
 ### GAME1 startup, pause and comparator entries, 2026-11-09
 
 Eight more entries now run Go algorithms through the unchanged public C ABI:

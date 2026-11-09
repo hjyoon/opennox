@@ -1,7 +1,9 @@
+#include <stdint.h>
 #include "common__object__weaplook.h"
 #include "common__strman.h"
 
 //----- (004158C0) --------------------------------------------------------
+#if 0 // Preserved PE32/raw-pointer loader; native Go owns packed pointer side slots.
 char** nox_xxx_loadModifyers_4158C0() {
 	char** result;     // eax
 	unsigned char* v1; // esi
@@ -24,4 +26,12 @@ char** nox_xxx_loadModifyers_4158C0() {
 		*getMemU32Ptr(0x5D4594, 371248) = 1;
 	}
 	return result;
+}
+#endif
+
+// The historical return is an opaque word; actual callers discard it.
+// Preserve char** ABI here, including scalar-ready returns, outside Go.
+extern uintptr_t nox_native_loadModifyers_4158C0(void);
+char** nox_xxx_loadModifyers_4158C0() {
+	return (char**)(uintptr_t)nox_native_loadModifyers_4158C0();
 }

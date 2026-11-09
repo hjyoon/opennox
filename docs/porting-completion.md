@@ -111,8 +111,38 @@ The exact retained inventory now has **83 definitions, 50 Go connections and
 33 C algorithms remaining**. This is a source classification, not an overall
 completion percentage. Native physical fault PCs, nil effective addresses,
 private GPR/FPU/stack equivalence, window-focus delivery and the containing
-memdump/qsort pointer graph remain outside this leaf qualification. Current
-clean product builds and the ten shop/hearing games remain pending for this batch.
+memdump/qsort pointer graph remain outside this leaf qualification.
+
+Clean code commit `62036a0a9` supplies both normal and HD macOS ARM64 products
+with Go 1.27.3, `vcs.modified=false` and natural zero build/help exits. The
+independent two-product qualification is
+`actual-startup-pause-eight-clean-two-products-independently-qualified-v3.json`,
+SHA-256 `54b787c8da2a1ebe7297c2656818f8676274fc40cac0f2a40742653b74e9fb6b`.
+All non-documentation inputs remain byte-exact to the qualified native epoch.
+
+All ten actual product games pass: staff repair, rejected sale, quantity sale,
+equipped sale and prepared hearing in normal/HD. Their whole parent exits
+naturally with zero after 768.410 seconds. Independent canonical/raw checks
+verify eight original sale sound-307 events, twenty prepared hearing conditions,
+eight native sound-directed turns and twelve negative controls. OpenAL uses
+the null sink; physical speaker output and default NPC settings are not credited.
+The 56 captured paths contain 31 distinct PNG byte streams: twelve current
+images are actually viewed, 43 paths have exact prior-view byte aliases and one
+has an exact current-view alias. Known MISSING shopkeeper heading and top/right
+clipping remain open. These diagnostics earn no raw-entry gameplay or nine-cell
+campaign completion credit.
+
+Product/game qualification:
+`actual-startup-pause-two-products-and-ten-games-independently-qualified-v1.json`,
+SHA-256 `6956a141743cb841979712095fd464d6b31c7bfbc6a57a110e2e34f51f73bd6d`.
+The initial product-reader schema rejections and sandbox-launch failure are
+retained; their corrections change no engine, scenario, assertion or reference.
+Successful games use a fresh attempt and the same reviewed loopback sandbox.
+No GitHub CI is queried or awaited. Original assets, 126 Save files, references,
+all executed test mains, both products and canonical failure/success records
+remain preserved; only byte-verified owned runtime/WORK/PNG duplicates are removed.
+The final evidence update changes only the two porting documents. Overall 100%
+and the remaining 33 C algorithms are still open.
 
 ### GAME1 tile-list entries, 2026-11-09
 

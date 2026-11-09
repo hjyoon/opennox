@@ -44,7 +44,21 @@ The retained source inventory is **50 Go connections and 33 C algorithms out of
 83 definitions**; all old body hashes remain exact. Older regression PASS is
 separate from recertifying all older raw numeric corpora. Test-only import and
 JSON decoder failures and the explicitly interrupted failed strict attempt are
-preserved. Current product/E2E evidence for this batch is still pending.
+preserved.
+
+Clean code `62036a0a9` also qualifies both Go 1.27.3 macOS ARM64 products and
+all ten normal/HD shop/hearing games, with actual product PREEXEC bytes and
+natural zero parent exits. Independent product/game qualification SHA-256 is
+`6956a141743cb841979712095fd464d6b31c7bfbc6a57a110e2e34f51f73bd6d`.
+Twenty prepared hearing conditions include eight native turns and twelve
+negative controls; eight sale sound-307 events use the OpenAL null sink.
+All 56 captures have actual-view or exact encoded-byte alias closure. These
+diagnostics do not prove default NPC settings, physical audio, execution of all
+eight raw entries during gameplay or campaign completion. Known shopkeeper
+heading/clipping limitations remain. Original assets/Save, references, products,
+executed mains and failure/success records stay preserved in canonical storage;
+only verified owned duplicates are removed. This final evidence update changes
+the two documents only; 33 C algorithms and overall 100% remain open.
 
 ## GAME1 tile-list entries, 2026-11-09
 

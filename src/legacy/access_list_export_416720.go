@@ -6,6 +6,35 @@ package legacy
 import "C"
 import "unsafe"
 
+//export nox_access_native_head_416720
+func nox_access_native_head_416720(banned C.int) unsafe.Pointer {
+	return accessListNativeDefaultHead416720(banned != 0)
+}
+
+//export nox_access_allowed_name_4168E0
+func nox_access_allowed_name_4168E0(entry *C.nox_access_allowed_entry_t) *C.wchar2_t {
+	if entry == nil {
+		return nil
+	}
+	return &entry.name[0]
+}
+
+//export nox_access_banned_name_416900
+func nox_access_banned_name_416900(entry *C.nox_access_banned_entry_t) *C.wchar2_t {
+	if entry == nil {
+		return nil
+	}
+	return &entry.name[0]
+}
+
+//export nox_access_banned_serial_416900
+func nox_access_banned_serial_416900(entry *C.nox_access_banned_entry_t) *C.char {
+	if entry == nil {
+		return nil
+	}
+	return &entry.serial[0]
+}
+
 //export sub_416720
 func sub_416720() { sub416720Native() }
 

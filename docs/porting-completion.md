@@ -55,6 +55,51 @@ completion requirements.
 
 ## Current findings
 
+### GAME1 support implementations in Go, 2026-11-10
+
+The five remaining access-list support implementations now run in Go: lazy
+initialization of both sentinels, native head selection, and the three borrowed
+name/serial field accessors. Public C function signatures and nil behavior remain
+unchanged; any nonzero banned selector still selects the banned list. Go
+`sync.Once` initializes both existing native C data objects before publishing
+either head. Their storage, full pointer width and process lifetime remain in C;
+no Go heap head or PE32 pointer cell is exposed to retained C links.
+
+The four arithmetic operations already had Go implementations. Their old C
+support bodies are now reference-only alongside the preserved algorithms.
+All 155 literal C definitions retain their exact definition/body hashes and
+source order, and `GAME1.h` remains byte-exact. Only six existing ABI forwarders
+remain active in `GAME1.c`; their algorithm implementations are in Go. Typed C
+data and ABI forwarding remain, so this does not claim removal of cgo or all C.
+This supersedes the nine retained C support implementations described below.
+
+Local Go 1.27.3 validation passes **444 selected IDs across 15 roots in each
+profile**, normal and highres with `cgocheck2` plus `checkptr=2`, with zero
+failures or skips. Both profiles execute identical IDs against the same 8,946
+source files. The new tests exercise actual C exports, nil and high native
+addresses, independent C field offsets and canaries, UTF16/serial aliasing,
+nonzero selectors, repeated lookup and GC, populated-head preservation, and
+existing Go/C list traversal, removal, string consumers and free order.
+Existing access-list controls and frozen chat/trig references also pass.
+The historical 21,720-ID suites and ten product games below remain historical;
+they are not relabeled as fresh full-suite or gameplay runs for this change.
+
+Evidence is under `artifacts/opennox-port-20261110/GAME1-support-native-port-v1`.
+`tests-qualified.json` has SHA-256
+`aed0fc29dbb475b2361fb06d76e948cb6b28eb786302fafe8ee1e8c04a171afd`;
+`support-port-literal-inventory-audit-v1.json` has SHA-256
+`6e44c77ab3f48c03aad61c77cb3ea6b778295c12c0bd9a9b552d6a436349cbe6`.
+The nine-operation Go mapping is recorded separately. Full regular-file bytes,
+executed test mains, standalone compiler-produced executables and available
+WORK are retained in SHA/CRC-verified canonical mode archives. Exact owned
+runtime/build duplicates were removed after verification. These cleanup records
+make no inode, symlink preservation or physical disk reclamation claim.
+Original 4,439 assets and 126 Save files match their protected input seals.
+
+Whole-project pointer/call-graph coverage and the existing campaign, UI and
+physical-audio completion gates remain open. This closes the selected GAME1
+support implementation work, without an overall project 100% claim.
+
 ### Remaining GAME1 non-sub algorithms, 2026-11-09
 
 The additional 56 GAME1 algorithms use Go through their unchanged public C

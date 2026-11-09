@@ -6,8 +6,9 @@ package legacy
 #include "GAME1.h"
 #include "GAME2.h"
 #include "GAME3_3.h"
-// Defined by the tiny accessor inserted after the existing static C owners.
-extern void* nox_access_native_head_416720(int banned);
+// Only storage remains in C. Initialization and field access live in Go.
+extern nox_list_item_t nox_access_allowed_list_4168E0;
+extern nox_list_item_t nox_access_banned_list_416900;
 static void* access_list_config_416720(void) { return getMemAt(0x587000,54280); }
 static void access_list_save_416720(void) { sub_4E43F0("ban.txt"); }
 static void access_list_layout_416720(size_t* a) {
@@ -18,15 +19,27 @@ static void access_list_layout_416720(size_t* a) {
 import "C"
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 )
 
+var accessListNativeOwnersOnce416720 sync.Once
+
+func accessListNativeEnsure416720() {
+	accessListNativeOwnersOnce416720.Do(func() {
+		// Keep the existing C-owned, native-width sentinels for their entire
+		// process lifetime. C links never retain pointers into the Go heap.
+		accessListNativeClear416720((*accessListNode416720)(unsafe.Pointer(&C.nox_access_allowed_list_4168E0)))
+		accessListNativeClear416720((*accessListNode416720)(unsafe.Pointer(&C.nox_access_banned_list_416900)))
+	})
+}
+
 func accessListNativeDefaultHead416720(banned bool) unsafe.Pointer {
-	v := C.int(0)
+	accessListNativeEnsure416720()
 	if banned {
-		v = 1
+		return unsafe.Pointer(&C.nox_access_banned_list_416900)
 	}
-	return C.nox_access_native_head_416720(v)
+	return unsafe.Pointer(&C.nox_access_allowed_list_4168E0)
 }
 func accessListNativeDefaultAlloc416720(size uintptr) unsafe.Pointer {
 	return C.calloc(1, C.size_t(size))

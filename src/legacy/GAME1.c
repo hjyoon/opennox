@@ -1511,6 +1511,7 @@ int sub_413F60(const void* a1, const void* a2) { return *((uint32_t*)a1 + 20) - 
 // GAME.EXE initializes under precision53/toward-zero. The fixed float grid
 // products and subtraction below are exact; preserve the final multiply's
 // rounding locally without changing the process floating-point environment.
+#if 0 // Exact former C body; native Go diagnostic/table entry owns this symbol.
 static double nox_trig_mul_chop53_414C90(double a, double b) {
 	double product = a * b;
 	double error = fma(a, b, -product);
@@ -1520,7 +1521,6 @@ static double nox_trig_mul_chop53_414C90(double a, double b) {
 	return product;
 }
 
-#if 0 // Exact former C body; native Go diagnostic/table entry owns this symbol.
 char nox_xxx_initSinCosTables_414C90() {
 	long long v0;      // rax
 	unsigned char* v1; // esi
@@ -2123,8 +2123,9 @@ void sub_416690() {
 // The original two list sentinels occupy 12-byte slots in the PE32 memmap.
 // A native pointer list needs 24 bytes on a 64-bit host, which would overlap
 // adjacent GAME.EXE globals. Keep native-width sentinels in a sidecar instead.
-static nox_list_item_t nox_access_allowed_list_4168E0;
-static nox_list_item_t nox_access_banned_list_416900;
+nox_list_item_t nox_access_allowed_list_4168E0;
+nox_list_item_t nox_access_banned_list_416900;
+#if 0 // Exact former support bodies; Go initializes and accesses the C storage.
 static bool nox_access_lists_initialized;
 
 static void nox_access_lists_ensure_416720(void) {
@@ -2143,6 +2144,7 @@ void* nox_access_native_head_416720(int banned) {
     nox_access_lists_ensure_416720();
     return banned ? (void*)&nox_access_banned_list_416900 : (void*)&nox_access_allowed_list_4168E0;
 }
+#endif // native Go access-list support
 
 
 //----- (00416720) --------------------------------------------------------
@@ -2295,6 +2297,7 @@ nox_access_banned_entry_t* sub_416910(nox_access_banned_entry_t* a1) {
 }
 #endif
 
+#if 0 // Exact former field accessors; the public ABI now enters Go.
 wchar2_t* nox_access_allowed_name_4168E0(nox_access_allowed_entry_t* entry) {
 	return entry ? entry->name : 0;
 }
@@ -2306,6 +2309,7 @@ wchar2_t* nox_access_banned_name_416900(nox_access_banned_entry_t* entry) {
 char* nox_access_banned_serial_416900(nox_access_banned_entry_t* entry) {
 	return entry ? entry->serial : 0;
 }
+#endif // native Go access-list fields
 
 //----- (00416920) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
@@ -2882,6 +2886,7 @@ int sub_418390() {
 // GAME.EXE's gameplay x87 environment is precision 53, round-toward-zero.
 // Correct local nearest-even operations without changing the thread's FP
 // environment. Volatile spills prevent contraction across instruction steps.
+#if 0 // Go owns the math; preserve these exact bodies for standalone C controls.
 static double nox_chat_team_add_chop53_4183C0(double a, double b) {
 	volatile double sum = a + b;
 	volatile double virtual_b = sum - a;
@@ -2907,6 +2912,7 @@ static float nox_chat_team_spill_chop32_4183C0(double value) {
 	}
 	return narrow;
 }
+#endif // reference-only team arithmetic
 
 //----- (004183C0) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.

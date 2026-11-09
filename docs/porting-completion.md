@@ -96,6 +96,42 @@ runtime/build duplicates were removed after verification. These cleanup records
 make no inode, symlink preservation or physical disk reclamation claim.
 Original 4,439 assets and 126 Save files match their protected input seals.
 
+Independent focused evidence review is
+`independent-tests-evidence-review-v3.json`, SHA-256
+`406f6a7fa4ed3ac4ab247be26c3eeb7da5ab0b8e73035bab628731052e95123b`.
+It verifies both profiles, main PREEXEC event chains, strict embedded settings,
+compiler-produced executable copies, full regular-file archives and the source
+checkpoint before the two documentation-only edits. Its first metadata reader
+attempt incorrectly required a vanished Go temporary main path; that rejection
+is preserved. The corrected reader verifies the actual retained main copies
+and event chain. No suite, input, expected value or implementation was changed
+or rerun for this metadata correction.
+
+Clean code commit `a0b29529dcb0047077ff68eae2b962650cabc788` supplies the current
+normal and HD macOS ARM64 products. Both embed Go 1.27.3 and that revision with
+`vcs.modified=false`, and their build and help processes exit naturally with
+zero. Product qualification `products-qualified.json` has SHA-256
+`2026f7c888171a3bfe5b20b0944bd241a7770078cf225fcc6f9c51fae3d57f1a`.
+Independent product evidence review
+`independent-products-evidence-review-v1.json`, SHA-256
+`038634b3dfc32b47b1726f39a877b8a5482e2232dd978ffcdcbd1a2fc13ed0fc`,
+confirms complete product bytes, PREEXEC archives, independently read embedded
+build settings, natural build/help termination and canonical regular-file
+preservation. The later final documentation commit changes only these two
+evidence documents relative to the code/product commit.
+
+| Product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Normal | 68,356,594 | `dd543831240a5e2bfe15db4ef1443bb141a67eb7cf1597882ebddd4cb1727898` |
+| HD/highres | 68,472,226 | `d6267a7c537e7cead7b91f1e4d1de6f0e8815e786368f05152bf4df6597d1da3` |
+
+All four test/build modes are canonicalized and their 12 exact owned duplicate
+subtrees are removed, totaling 1,082,741,210 logical bytes. Current products and
+full PREEXEC product copies remain available. A final fresh check after both
+products and cleanup again verifies all original 4,439 assets and 126 Save
+files against the protected seals. Build/help checks add no new gameplay or E2E
+coverage, and physical disk reclamation remains unmeasured.
+
 Whole-project pointer/call-graph coverage and the existing campaign, UI and
 physical-audio completion gates remain open. This closes the selected GAME1
 support implementation work, without an overall project 100% claim.

@@ -57,17 +57,75 @@ parser entries, on their defined input domains. They supply separate reference
 and ownership checks, not all56 original PE CPU equivalence or fabricated
 pointer-truncation crashes for bodies already using native C pointers.
 
-Actual local Go1.27.3 normal/strict results and IDs: both profiles pass 21,720 selected IDs each, with zero failures or skips; all prior 19,555 IDs are retained and 2,165 additional IDs are selected, including the two existing trig roots.
-Strict highres/cgocheck2/checkptr2 settings, unchanged source lease and all actual
-main preservation: Strict compiles highres, cgocheck2 and checkptr=2. All 8,944 source files remain exact across both profiles; all six actual mains and the compiler-produced executables have full bytes retained before execution/return respectively. Qualification path/SHA:
-`actual-nonsub56-source-bound-qualified-v2.json`, SHA-256 `e9d69f9d376cecd9408b809565b58536482e32531a742d282d873099e6e5a7e7`. Its true predicate is
-`evidence_transport_and_source_bound_assertions_verified`; legacy all-entry raw
-comparison qualification remains false. Product HEAD/build-help and two-product
-qualification: Pending fresh normal/HD builds and help checks from the first clean code commit of this batch. Ten-game/same-PID/56-frame visual and
-owned-cleanup evidence: Pending the unchanged local ten-case shop/hearing product run and independent qualification. Pending the current 56-path capture census and actual views or exact encoded-byte aliases. Focused attempts 1–3 retain their complete MODE/available-WORK bytes and failures in verified ZIPs; 12 owned duplicate paths (777,505,233 logical bytes) were removed. Full native preservation is in progress; initial diagnostic duplicates remain available until canonical native qualification closes.
+Go 1.27.3 local macOS normal and strict/highres each pass **21,720 selected
+IDs**, with zero failures or skips: all prior 19,555 IDs plus 2,165 additional
+IDs, including the two existing trig roots. Strict compiles highres,
+`cgocheck2` and `checkptr=2`. All 8,944 source files remain exact across both
+profiles, and all six actual mains retain their full bytes before execution.
+Compiler-produced executable bytes are also preserved before wrapper return;
+these records do not establish actual C test-child PIDs or invocation counts.
 
-The selected GAME1 textual algorithm migration can be closed after those actual
-proof fields are supplied. Whole-project100 remains unestablished. The retained15
+Independent source-bound qualification is
+`actual-nonsub56-source-bound-qualified-v2.json`, SHA-256
+`e9d69f9d376cecd9408b809565b58536482e32531a742d282d873099e6e5a7e7`.
+The canonical MODE-archive reread also qualifies:
+`actual-nonsub56-canonical-source-bound-qualified-v2.json`, SHA-256
+`3e166e0c547cb7024f1566e39a4f9e6a70495c29d6f80be19d2b810b2db988f0`.
+Its scope is transport and source-bound assertions; all56 original CPU
+equivalence, independent recomputation of every numeric array and
+recertification of all historical raw corpora remain unclaimed. Archive
+qualification alone supplies no duplicate-deletion completion claim.
+
+Clean code commit `803a3ba5e07dbc69b8ce91199e8c0f89d659044e` supplies both
+normal and HD macOS ARM64 products with Go 1.27.3. Each embeds that exact
+revision and `vcs.modified=false`, and each build/help process exits naturally
+with zero. Product SHA-256 values are:
+
+| Product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Normal | 68,338,850 | `ac308f53a66e1dde994ff8720f08375182630f4dc33ef3e892a8e3822f81e20c` |
+| HD/highres | 68,470,994 | `670f7aeb7a1ac4c139e3735c070fe788a93981e7cb8e6f1ce6f2bb25ab735706` |
+
+The independent two-product qualification is
+`actual-nonsub56-clean-two-products-independently-qualified-v1.json`, SHA-256
+`3a8b86a1fdda57c6768be7037a5351c3dc6254984a5ea176ab621bb139ffdf4f`.
+It verifies both complete PREEXEC product archives, embedded build settings,
+actual build/help records and the clean source binding to the tested native
+epoch. The 4,439 original assets and 126 original Save files are verified
+unchanged. This code/product commit is separate from the later final evidence
+documentation commit; build/help qualification adds no gameplay coverage.
+
+The normal/strict qualification verifies source-bound assertions and evidence
+transport; legacy all-entry raw comparison qualification remains false.
+
+All ten local repair/rejection/quantity/equipped/hearing games have same-PID
+product PREEXEC preservation and natural zero exits. Independent qualification
+`actual-nonsub56-products-and-ten-games-independently-qualified-v2.json` has
+SHA-256 `1b82981d4e932e3cc9a192e619fb8ab96aa60c550729653c915f79f7ecbb0cab`. It
+verifies eight sale sound-307 events, twenty prepared hearing conditions, eight
+native turns and twelve negative controls; default-NPC and physical-speaker
+credit remain open.
+
+All 56 current capture paths close over 34 distinct encoded PNG streams: 16
+current original-resolution actual views, 39 prior exact-byte aliases and one
+current exact-byte alias. Visual ledger `root-current56-visual-ledger-v1.json`
+has SHA-256 `298de3f52f5bad9cd8084a4ed58dcf17b41c0760e5a33a0cecdd4699261a44e3`.
+The known MISSING shopkeeper heading and right clipping remain open.
+
+Complete native MODE/available-WORK data, executed mains, compiler outputs,
+failure records, baseline evidence and both products remain preserved in
+verified canonical archives. Only exact owned duplicates were removed: 12
+focused paths (777,505,233 logical bytes), 12 full-native paths (2,154,842,238
+bytes), four baseline paths (430,714,859 bytes), two owned product-build WORK
+directories, ten E2E runtime trees and 56 temporary PNGs (1,466,323,082 bytes).
+Full inode/stat/SHA lists are compressed inside ZIP manifests. Removal receipt
+`actual-root-nonsub56-owned-cleanup-receipt-v1.json` has SHA-256
+`7564802e8c8ec9933e26af7dce28d62c457792a64b31c2d141c12d6050f409a3`. Original
+4,439 assets, 126 Save files, products and canonical archives remain exact after
+removal. Physical disk reclamation is not measured.
+
+The selected GAME1 textual inventory is completely classified: 146 Go entry
+connections and nine C support helpers. Whole-project100 remains unestablished. The retained15
 audit separately queues the complete active GAME3_2 `4D8D40` ABI/object-update-
 player/team chain for a later whole-entry audit; no isolated two-cast patch or
 current runtime traversal is inferred. Campaign, default NPC hearing, physical

@@ -55,6 +55,84 @@ completion requirements.
 
 ## Current findings
 
+### Remaining GAME1 non-sub algorithms, 2026-11-09
+
+The additional 56 GAME1 algorithms use Go through their unchanged public C
+signatures. The source scope comprises 21 head/settings/string entries,
+23 player/team/wall/tile entries, ten thing-file parsers and two diagnostics
+(memory dump and trigonometric table initialization). The earlier 83-entry
+`sub_` inventory remains a separate, preserved checkpoint.
+
+The complete literal inventory partitions into **146 Go entry connections**
+(137 direct public Go exports and nine C ABI forwarders) and nine C support
+helpers. The earlier three map-mode Go exports and four named ABI forwarders
+are counted once alongside the 83 sub_ and 56 additional entries.
+
+All 155 literal GAME1 C definitions retain their definition/body hashes and
+source order, and GAME1.h remains byte-exact. The 56 additional bodies are
+retained under literal `#if 0` guards. Fifteen definitions remain active:
+six existing Go ABI forwarders, five typed C access-list owner/field helpers
+and four numerical support helpers. The retained-fifteen source audit supplies
+this classification; preserving these support functions does not leave another
+GAME1 game algorithm awaiting migration. This is completion of the selected
+textual GAME1 algorithm inventory, rather than whole-project 100% or complete
+compiled-macro/call-graph coverage.
+
+Native links and callbacks retain full addresses through typed object, player,
+team, secret-wall and C-owner interfaces. BYTE/WORD/DWORD records and packets
+keep their original scalar widths. In particular, the status packet is seven
+bytes, settings records retain their 58-byte stride, tile cells use the checked
+native layout, and EDGE's 60-byte packed legacy memory-record stride and native image pointer
+sidecar remain distinct from variable on-disk BYTE/WORD/DWORD parsing and the
+native TileDef layout. Actual C dirty/list/tile owners and
+native memmap pointer side slots are used instead of same-offset DWORD shadows.
+Go owners retained through C are pinned individually, and real C head slots are
+restored before Unpin; C Free receives C-owned allocations only.
+
+Evidence has two distinct reference scopes: the before-port diagnostic baseline
+contains 20 selected test IDs; private, renamed current-C references preserve
+54 definitions (21+23+10) for valid-input comparisons. These counts are not
+54 original CPU cases or proof of all56 original CPU equivalence. The existing
+49,152-byte trig fixture and return-flag cases retain their own declared scope.
+Malformed parser inputs are checked through native safety policies, without
+executing unchecked old C: bounded short reads, invalid names/skips and complete
+audio-record validation retain already completed effects. Non-sentinel floor
+RGB uses the three serialized bytes; uninitialized old C argument bits are
+unqualified. Settings' short/oversized map basenames and nil inputs have explicit
+native policies. Existing caller-capacity contracts remain where the ABI has no
+size argument.
+
+The debug list uses a native head and full links; output stays 1,024 rows of
+84 bytes (80-byte name plus DWORD count). Cycle termination, excess-name handling
+and bounded unterminated names are native policies. This diagnostic has no
+observed active head producer in the source audit. Go owns trig control flow,
+state and conversions while the existing C sin/acos services remain in use.
+These changes do not certify arbitrary corrupt pointers, all native allocation
+paths or physical original stack/FPU state.
+
+Go 1.27.3 local macOS normal and strict/highres validation: both profiles pass 21,720 selected IDs each, with zero failures or skips; all prior 19,555 IDs are retained and 2,165 additional IDs are selected, including the two existing trig roots.
+Normal IDs: 21,720; strict IDs: 21,720; failures/skips:
+0/0. Strict configuration and actual source/main
+preservation: Strict compiles highres, cgocheck2 and checkptr=2. All 8,944 source files remain exact across both profiles; all six actual mains and the compiler-produced executables have full bytes retained before execution/return respectively. Independent qualification:
+`actual-nonsub56-source-bound-qualified-v2.json`, SHA-256 `e9d69f9d376cecd9408b809565b58536482e32531a742d282d873099e6e5a7e7`. Its scope is transport and
+source-bound assertions; all56 original CPU equivalence, independent recomputation
+of every numeric array and recertification of all historical raw corpora remain
+unclaimed.
+
+Clean code/product HEAD: Pending the first clean code commit of this batch. Normal/HD build and help outcomes,
+embedded revision/modified flags and independent two-product qualification:
+Pending fresh normal/HD builds and help checks from the first clean code commit of this batch. Ten actual repair/rejection/quantity/equipped/hearing
+games, same-PID product preservation, natural whole-parent exit and independent
+qualification: Pending the unchanged local ten-case shop/hearing product run and independent qualification. The 56-frame visual ledger and actual
+views/exact byte aliases: Pending the current 56-path capture census and actual views or exact encoded-byte aliases. Canonical evidence preservation
+and exact-owned duplicate cleanup: Focused attempts 1–3 retain their complete MODE/available-WORK bytes and failures in verified ZIPs; 12 owned duplicate paths (777,505,233 logical bytes) were removed. Full native preservation is in progress; initial diagnostic duplicates remain available until canonical native qualification closes. Product and E2E qualification remains pending for this batch.
+
+Validation is local; no CI query, wait or download supplies these claims. The
+existing shop heading/clipping limits, prepared-vs-default hearing distinction,
+physical audio, chapter/campaign final audits and pointer work outside this
+selected file remain open. GAME1 source migration completion adds no overall
+project 100% claim.
+
 ### All remaining GAME1 sub_ algorithms, 2026-11-09
 
 The remaining 33 algorithms now run in Go through the unchanged public C ABI.

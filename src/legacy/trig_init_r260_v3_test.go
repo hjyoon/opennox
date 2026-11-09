@@ -64,6 +64,19 @@ func TestTrigInit260CompleteNativeBody(t *testing.T) {
 	}
 	_, body, _ := strings.Cut(string(source), start)
 	body, _, _ = strings.Cut(body, end)
+	// The production entry now runs Go. Keep this standalone current-C
+	// reference active only after validating/removing its one preservation
+	// guard; every old helper/body byte and every oracle assertion stays exact.
+	const preservedGuard = "#if 0 // Exact former C body; native Go diagnostic/table entry owns this symbol.\n"
+	const preservedEnd = "\n#endif // native diagnostic/table port"
+	if strings.Count(body, preservedGuard) != strings.Count(body, preservedEnd) || strings.Count(body, preservedGuard) > 1 {
+		t.Fatal("ambiguous preserved trig reference guard")
+	}
+	body = strings.Replace(body, preservedGuard, "", 1)
+	body = strings.Replace(body, preservedEnd, "", 1)
+	if fmt.Sprintf("%x", sha256.Sum256([]byte(body))) != "316e42f38088c29f9a9ad58bf5cd42724618b6e94200a3b3c0d636055b458365" {
+		t.Fatal("changed preserved complete trig reference bytes")
+	}
 	program = bytes.Replace(program, []byte("// TRIG_BODY"), []byte("//"+body), 1)
 	constants, err := hex.DecodeString(original.Constants)
 	if err != nil || len(constants) != 28 {

@@ -1,5 +1,79 @@
 # Native C entry pointer audit
 
+## Remaining GAME1 non-sub native ownership, 2026-11-09
+
+The additional GAME1 port comprises head/settings21, world/player23,
+thing-parser10 and diagnostics2. All 155 literal C definition/body hashes and
+source order remain exact, with the 56 replaced bodies retained under `#if 0`;
+the public header remains unchanged. The retained15 audit classifies six existing
+Go ABI forwarders, five real typed access-owner/field helpers and four numerical
+support helpers. No pointer-to-DWORD reconstruction was found within those
+15 definitions. This finding covers the selected definitions and consumers,
+rather than every call graph or macro configuration.
+
+The complete literal inventory partitions into **146 Go entry connections**
+(137 direct public Go exports and nine C ABI forwarders) and nine C support
+helpers. The earlier three map-mode Go exports and four named ABI forwarders
+are counted once alongside the 83 sub_ and 56 additional entries.
+
+Native pointer ownership and serialized scalar storage remain separate:
+
+| Boundary | Native representation | Fixed scalar/record representation |
+| --- | --- | --- |
+| Players, objects, teams and modifiers | Existing typed owners and full links | Masks, IDs, coordinates and counters keep declared widths |
+| Secret-wall and access lists | Actual C/native head owners, native Next, typed fields | Named scalar fields remain DWORDs; no PE token becomes a host pointer |
+| Tile allocation and lookup | Full row pointers, actual immutable capacity owner; checked C/Go cell layout | Cell scalar fields remain fixed-width; missing-map transition policy stays explicit |
+| Tile/edge definitions | Checked native TileDef and edge-image pointer sidecar | Variable on-disk BYTE/WORD/DWORD parsing is distinct from EDGE's packed legacy memory-record stride60 and its native image pointer sidecar |
+| Settings and status | Actual C dirty/flag symbols and native memory owners | 58-byte settings records and seven-byte status packet stay fixed |
+| Memory diagnostics | Native pointer side slot, two pointer roles and named node fields | Three node DWORDs; 1,024 output rows of80-byte name plus DWORD count |
+
+Typed C callback bridges preserve full function and argument addresses. Go
+allocations exposed to C are pinned individually while retained; saved C heads
+are restored before unpinning. C Free applies to C-owned controls. High-address,
+layout, whole-region canary, callback-order and GC assertions are source-bound
+checks; actual execution and strict-mode qualification are recorded below.
+
+The parser cursor uses native data/current/end pointers and signed32 sizes.
+Zero-sized reads do not manufacture pointers. Short or inconsistent streams,
+invalid fixed names and negative signed block skips fail through declared
+native policies, preserving completed effects. Audio validates a whole serialized
+record before entering the unchanged external C audio helper. RGB policy supplies
+three actual serialized bytes to the existing color endpoint; old uninitialized
+stack bytes are outside comparison scope. Unsized caller-buffer ABIs retain their
+caller-capacity requirement. Map-basename bounding/nil protection is also an
+explicit native policy rather than evidence for executing old C undefined behavior.
+
+The native debug head is a memmap pointer side slot, not a DWORD reinterpretation.
+The source audit found no active producer; valid native controls supply actual
+linked allocations. Cycle/overcapacity/unterminated-name handling bounds output,
+with DWORD count wrap retained and the actual C qsort/raw SUB32 comparator kept.
+Trig owns table writes/control/conversions in Go while retaining C sin/acos.
+The 49,152-byte reference tables and flag cases are finite tests, not all floating
+point environments or arbitrary input equivalence.
+
+The before-port diagnostic baseline covers20 selected IDs. Private exact-body
+current-C references cover54 definitions, comprising21 settings,23 world and10
+parser entries, on their defined input domains. They supply separate reference
+and ownership checks, not all56 original PE CPU equivalence or fabricated
+pointer-truncation crashes for bodies already using native C pointers.
+
+Actual local Go1.27.3 normal/strict results and IDs: both profiles pass 21,720 selected IDs each, with zero failures or skips; all prior 19,555 IDs are retained and 2,165 additional IDs are selected, including the two existing trig roots.
+Strict highres/cgocheck2/checkptr2 settings, unchanged source lease and all actual
+main preservation: Strict compiles highres, cgocheck2 and checkptr=2. All 8,944 source files remain exact across both profiles; all six actual mains and the compiler-produced executables have full bytes retained before execution/return respectively. Qualification path/SHA:
+`actual-nonsub56-source-bound-qualified-v2.json`, SHA-256 `e9d69f9d376cecd9408b809565b58536482e32531a742d282d873099e6e5a7e7`. Its true predicate is
+`evidence_transport_and_source_bound_assertions_verified`; legacy all-entry raw
+comparison qualification remains false. Product HEAD/build-help and two-product
+qualification: Pending fresh normal/HD builds and help checks from the first clean code commit of this batch. Ten-game/same-PID/56-frame visual and
+owned-cleanup evidence: Pending the unchanged local ten-case shop/hearing product run and independent qualification. Pending the current 56-path capture census and actual views or exact encoded-byte aliases. Focused attempts 1–3 retain their complete MODE/available-WORK bytes and failures in verified ZIPs; 12 owned duplicate paths (777,505,233 logical bytes) were removed. Full native preservation is in progress; initial diagnostic duplicates remain available until canonical native qualification closes.
+
+The selected GAME1 textual algorithm migration can be closed after those actual
+proof fields are supplied. Whole-project100 remains unestablished. The retained15
+audit separately queues the complete active GAME3_2 `4D8D40` ABI/object-update-
+player/team chain for a later whole-entry audit; no isolated two-cast patch or
+current runtime traversal is inferred. Campaign, default NPC hearing, physical
+speaker fidelity, arbitrary corrupt-pointer safety and old raw-corpus
+recertification remain outside this source-bound closure.
+
 ## All remaining GAME1 sub_ algorithms, 2026-11-09
 
 The final 33 algorithms in the retained `GAME1.c` `sub_` inventory now use Go:

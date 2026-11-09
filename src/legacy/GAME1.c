@@ -55,6 +55,7 @@ uint32_t nox_tile_def_cnt = 0;
 nox_tileDef_t nox_tile_defs_arr[176] = {0};
 
 //----- (00409470) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_parseString_409470(FILE* a1, uint8_t* a2) {
 	uint8_t* v2;          // ebx
 	int v3;               // ecx
@@ -93,6 +94,7 @@ int nox_xxx_parseString_409470(FILE* a1, uint8_t* a2) {
 	*v2 = 0;
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00409A70) --------------------------------------------------------
 #if 0 // Original scalar lookup retained; native Go entry in sub_409a70_export.go.
@@ -114,10 +116,14 @@ int sub_409A70(short a1) {
 #endif
 
 //----- (00409B30) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_server_currentMapGetFilename_409B30() { return (char*)getMemAt(0x5D4594, 2598188); }
+#endif // native non-sub port
 
 //----- (00409B40) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_mapGetMapName_409B40() { return (char*)getMemAt(0x85B3FC, 36); }
+#endif // native non-sub port
 
 //----- (00409B50) --------------------------------------------------------
 #if 0 // Exact REP scan/copy restored in sub_409b50_native.go; const ABI bridge remains C.
@@ -136,6 +142,7 @@ char* sub_409B80() { return (char*)getMemAt(0x5D4594, 3452); }
 #endif
 
 //----- (00409D70) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_gameSetMapPath_409D70(char* a1) {
 	char* result;  // eax
 	char* v2;      // eax
@@ -161,6 +168,7 @@ char* nox_xxx_gameSetMapPath_409D70(char* a1) {
 	}
 	return result;
 }
+#endif // native non-sub port
 
 //----- (00409E40) --------------------------------------------------------
 #if 0 // Exact prior C body; native Go entry preserves the public ABI.
@@ -177,7 +185,9 @@ int sub_409E40(int a1) {
 #endif
 
 //----- (00409E60) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_getServerSubFlags_409E60() { return dword_5d4594_3484; }
+#endif // native non-sub port
 
 //----- (00409E70) --------------------------------------------------------
 #if 0 // Exact prior C body; native Go entry preserves the public ABI.
@@ -249,6 +259,7 @@ int sub_409F40(int a1) {
 #endif
 
 //----- (00409F80) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_servSetPlrLimit_409F80(int a1) {
 	int result; // eax
 
@@ -259,12 +270,17 @@ int nox_xxx_servSetPlrLimit_409F80(int a1) {
 	}
 	return result;
 }
+#endif // native non-sub port
 
 //----- (00409FA0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_servGetPlrLimit_409FA0() { return *getMemU32Ptr(0x5D4594, 3464); }
+#endif // native non-sub port
 
 //----- (0040A020) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 short nox_xxx_servGamedataGet_40A020(short a1) { return *getMemU16Ptr(0x5D4594, 3488 + 2 * sub_409A70(a1)); }
+#endif // native non-sub port
 
 //----- (0040A180) --------------------------------------------------------
 #if 0 // Exact prior scalar C body retained; public entry implemented in Go.
@@ -326,10 +342,14 @@ long long sub_40A310(int a1) {
 #endif
 
 //----- (0040A340) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 void nox_xxx_set3512_40A340(int a1) { *getMemU32Ptr(0x5D4594, 3512) = a1; }
+#endif // native non-sub port
 
 //----- (0040A350) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_get3512_40A350() { return *getMemU32Ptr(0x5D4594, 3512); }
+#endif // native non-sub port
 
 //----- (0040A3C0) --------------------------------------------------------
 #if 0 // Exact prior scalar C body retained; public entry implemented in Go.
@@ -345,6 +365,7 @@ unsigned int sub_40A3C0(unsigned int a1) {
 #endif
 
 //----- (0040A440) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_gameSetServername_40A440(char* a1) {
 	char* result; // eax
 	char v2[16];  // [esp+0h] [ebp-10h]
@@ -365,11 +386,15 @@ char* nox_xxx_gameSetServername_40A440(char* a1) {
 	}
 	return result;
 }
+#endif // native non-sub port
 
 //----- (0040A4C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_serverOptionsGetServername_40A4C0() { return (char*)getMemAt(0x5D4594, 1324); }
+#endif // native non-sub port
 
 //----- (0040A5E0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_ruleSetNoRespawn_40A5E0(int a1) {
 	int result; // eax
 
@@ -377,26 +402,39 @@ int nox_xxx_ruleSetNoRespawn_40A5E0(int a1) {
 	*getMemU32Ptr(0x5D4594, 3584) = a1;
 	return result;
 }
+#endif // native non-sub port
 
 //----- (0040A5F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_server_doPlayersAutoRespawn_40A5F0() {
 	return !nox_common_gameFlags_check_40A5C0(4096) ? *getMemU32Ptr(0x5D4594, 3584) : 0;
 }
+#endif // native non-sub port
 
 //----- (0040A610) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 wchar2_t* nox_xxx_sysopSetPass_40A610(wchar2_t* a1) { return nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 3540), a1); }
+#endif // native non-sub port
 
 //----- (0040A630) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 wchar2_t* nox_xxx_sysopGetPass_40A630() { return (wchar2_t*)getMemAt(0x5D4594, 3540); }
+#endif // native non-sub port
 
 //----- (0040A670) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 void nox_server_gameSettingsUpdated_40A670() { nox_server_gameSettingsUpdated = 1; }
+#endif // native non-sub port
 
 //----- (0040A680) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_server_gameDoSwitchMap_40A680() { return nox_server_gameSettingsUpdated; }
+#endif // native non-sub port
 
 //----- (0040A690) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 void nox_server_gameUnsetMapLoad_40A690() { nox_server_gameSettingsUpdated = 0; }
+#endif // native non-sub port
 
 //----- (0040A6A0) --------------------------------------------------------
 #if 0 // Exact prior scalar C body retained; public entry implemented in Go.
@@ -415,9 +453,12 @@ int sub_40A6B0() { return *getMemU32Ptr(0x5D4594, 3588); }
 #endif
 
 //----- (0040A6C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_rateGet_40A6C0() { return *getMemU32Ptr(0x587000, 4728); }
+#endif // native non-sub port
 
 //----- (0040A6D0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_rateUpdate_40A6D0(int a1) {
 	int result; // eax
 
@@ -431,6 +472,7 @@ int nox_xxx_rateUpdate_40A6D0(int a1) {
 	*getMemU32Ptr(0x587000, 4728) = a1;
 	return result;
 }
+#endif // native non-sub port
 
 //----- (0040A710) --------------------------------------------------------
 #if 0 // Exact prior scalar C body retained; public entry implemented in Go.
@@ -497,6 +539,7 @@ int sub_40A770() {
 #endif
 
 //----- (0040A830) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_countNonEliminatedPlayersInTeam_40A830(nox_team_t* a1p) {
 	int count = 0;
 	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
@@ -512,8 +555,10 @@ int nox_xxx_countNonEliminatedPlayersInTeam_40A830(nox_team_t* a1p) {
 	}
 	return count;
 }
+#endif // native non-sub port
 
 //----- (0040A8A0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_gamePlayIsAnyPlayers_40A8A0() {
 	int count = 0;
 	if (!nox_xxx_CheckGameplayFlags_417DA0(4)) {
@@ -548,6 +593,7 @@ int nox_xxx_gamePlayIsAnyPlayers_40A8A0() {
 	}
 	return count > 1;
 }
+#endif // native non-sub port
 
 //----- (0040A970) --------------------------------------------------------
 #if 0 // Exact prior C body retained; native Go sudden death entry owns this symbol.
@@ -684,6 +730,7 @@ void sub_40E090() { dword_5d4594_10984 = 0; }
 #endif
 
 //----- (004100F0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_cliCanTalkMB_4100F0(short* a1) {
 	short v1;  // ax
 	short* v2; // ecx
@@ -702,14 +749,17 @@ int nox_xxx_cliCanTalkMB_4100F0(short* a1) {
 	}
 	return 0;
 }
+#endif // native non-sub port
 
 //----- (00410360) --------------------------------------------------------
 void* nox_server_wallAttachDoor(void* wall, nox_object_t* obj);
 
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 void* nox_xxx_doorAttachWall_410360(nox_object_t* obj, int x, int y) {
 	void* wall = nox_xxx_wallCreateAt_410250(x, y);
 	return nox_server_wallAttachDoor(wall, obj);
 }
+#endif // native non-sub port
 
 //----- (00410390) --------------------------------------------------------
 void* nox_client_wallAttachDoor(void* wall, void* drawable, unsigned char tile);
@@ -775,6 +825,7 @@ nox_secret_wall_t* sub_410730() {
 #endif
 
 //----- (00410760) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 nox_secret_wall_t* nox_xxx_wallSecretBlock_410760(nox_secret_wall_t* a1) {
 	nox_secret_wall_t* result; // eax
 
@@ -783,16 +834,21 @@ nox_secret_wall_t* nox_xxx_wallSecretBlock_410760(nox_secret_wall_t* a1) {
 	dword_5d4594_251560 = a1;
 	return result;
 }
+#endif // native non-sub port
 
 //----- (00410780) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 nox_secret_wall_t* nox_xxx_wallSecretGetFirstWall_410780() {
 	return (nox_secret_wall_t*)dword_5d4594_251560;
 }
+#endif // native non-sub port
 
 //----- (00410790) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 nox_secret_wall_t* nox_xxx_wallSecretNext_410790(nox_secret_wall_t* a1) {
 	return a1 ? a1->next : NULL;
 }
+#endif // native non-sub port
 
 //----- (004107A0) --------------------------------------------------------
 #if 0 // Exact previous C definition retained; native pointer entry in secret_wall_list_export_410550.go.
@@ -822,6 +878,7 @@ nox_secret_wall_t* sub_4107A0(void* lpMem) {
 #endif
 
 //----- (00410F60) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_tileAlloc_410F60_init() {
 	ptr_5D4594_2650668 = calloc(ptr_5D4594_2650668_cap, sizeof(void*));
 	if (!ptr_5D4594_2650668) {
@@ -836,8 +893,10 @@ int nox_xxx_tileAlloc_410F60_init() {
 	}
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00410FC0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 void nox_xxx_tileFree_410FC0_free() {
 	for (int i = 0; i < ptr_5D4594_2650668_cap; i++) {
 		obj_5D4594_2650668_t* ptr = ptr_5D4594_2650668[i];
@@ -846,8 +905,10 @@ void nox_xxx_tileFree_410FC0_free() {
 		}
 	}
 }
+#endif // native non-sub port
 
 //----- (00411160) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_tileNFromPoint_411160(float2* a1) {
 	float v12 = (a1->field_0 + 11.5) * 0.021739131;
 	float v13 = (a1->field_4 + 11.5) * 0.021739131;
@@ -910,6 +971,7 @@ int nox_xxx_tileNFromPoint_411160(float2* a1) {
 	}
 	return result;
 }
+#endif // native non-sub port
 
 //----- (00411350) --------------------------------------------------------
 #if 0 // Native Go implementation; exact former C retained.
@@ -1079,6 +1141,7 @@ int sub_411490(int a1, int a2) {
 
 
 //----- (00411540) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {
 	if (nox_tile_def_cnt >= 176) {
 		return 0;
@@ -1147,6 +1210,7 @@ int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {
 	++nox_tile_def_cnt;
 	return 1;
 }
+#endif // native non-sub port
 // 411618: variable 'v29' is possibly undefined
 // 411540: using guessed type char var_20[32];
 
@@ -1156,6 +1220,7 @@ int nox_xxx_checkFacade_4117E0(nox_tileDef_t* tile) {
 }
 
 //----- (00411850) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_EDGE_411850(nox_memfile* f, uint8_t* a2) {
 	int v5;            // eax
 	int v7;            // ecx
@@ -1230,9 +1295,11 @@ int nox_thing_read_EDGE_411850(nox_memfile* f, uint8_t* a2) {
 	++dword_5d4594_251572;
 	return 1;
 }
+#endif // native non-sub port
 // 411850: using guessed type char var_20[32];
 
 //----- (00411A90) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_mapTileAllowTeleport_411A90(float2* a1) {
 	if (*getMemIntPtr(0x587000, 26520) == -1) {
 		for (int i = 0; i < 176; i++) {
@@ -1255,9 +1322,12 @@ int nox_xxx_mapTileAllowTeleport_411A90(float2* a1) {
 		   v3 == *getMemU32Ptr(0x587000, 26524) || v3 == *getMemU32Ptr(0x587000, 26528) ||
 		   v3 == *getMemU32Ptr(0x587000, 26532);
 }
+#endif // native non-sub port
 
 //----- (004133C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 obj_412ae0_t* nox_xxx_modifNext_4133C0(obj_412ae0_t* a1) { return a1->field_34; }
+#endif // native non-sub port
 
 //----- (004133D0) --------------------------------------------------------
 #if 0 // Exact original Material7 predicate retained; native pointer entry in sub_4133d0_export.go.
@@ -1365,9 +1435,12 @@ int sub_4139B0() { return dword_5d4594_251744 != 0; }
 #endif
 
 //----- (00413A50) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_checkGameFlagPause_413A50() { return nox_common_gameFlags_check_40A5C0(0x40000); }
+#endif // native non-sub port
 
 //----- (00413E30) --------------------------------------------------------
+#if 0 // Exact former C body; native Go diagnostic/table entry owns this symbol.
 void nox_xxx_gameLoopMemDump_413E30() {
 	signed int v0;     // ebx
 	int v1;            // esi
@@ -1427,6 +1500,7 @@ void nox_xxx_gameLoopMemDump_413E30() {
 		} while (v7);
 	}
 }
+#endif // native diagnostic/table port
 
 //----- (00413F60) --------------------------------------------------------
 #if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
@@ -1446,6 +1520,7 @@ static double nox_trig_mul_chop53_414C90(double a, double b) {
 	return product;
 }
 
+#if 0 // Exact former C body; native Go diagnostic/table entry owns this symbol.
 char nox_xxx_initSinCosTables_414C90() {
 	long long v0;      // rax
 	unsigned char* v1; // esi
@@ -1477,8 +1552,10 @@ char nox_xxx_initSinCosTables_414C90() {
 	}
 	return v0;
 }
+#endif // native diagnostic/table port
 
 //----- (00414D40) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_skip_AUD_414D40(nox_memfile* f) {
 	int v2;           // edx
 	int v3;           // esi
@@ -1503,8 +1580,10 @@ int nox_thing_skip_AUD_414D40(nox_memfile* f) {
 	} while (v3);
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00414DB0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_FLOR_414DB0(nox_memfile* f) {
 	unsigned char* v2;  // ecx
 	unsigned char* v3;  // ecx
@@ -1553,8 +1632,10 @@ int nox_thing_read_FLOR_414DB0(nox_memfile* f) {
 	f->cur = v11 + 1;
 	return v12 == 1162757152;
 }
+#endif // native non-sub port
 
 //----- (00414E70) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_EDGE_414E70(nox_memfile* f, void* a2) {
 	nox_memfile_skip(f, 4);
 	unsigned char v20 = nox_memfile_read_u8(f);
@@ -1582,8 +1663,10 @@ int nox_thing_read_EDGE_414E70(nox_memfile* f, void* a2) {
 	}
 	return nox_memfile_read_i32(f) == 1162757152;
 }
+#endif // native non-sub port
 
 //----- (00414F60) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_WALL_414F60(nox_memfile* f, void* a2) {
 	uint8_t* buf = a2;
 	nox_memfile_skip(f, 4);
@@ -1626,8 +1709,10 @@ int nox_thing_read_WALL_414F60(nox_memfile* f, void* a2) {
 	}
 	return nox_memfile_read_i32(f) == 1162757152;
 }
+#endif // native non-sub port
 
 //----- (00415100) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_skip_spells_415100(nox_memfile* f) {
 	int count = nox_memfile_read_i32(f);
 	if (count <= 0) {
@@ -1659,8 +1744,10 @@ int nox_thing_skip_spells_415100(nox_memfile* f) {
 	}
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00415240) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_image_415240(nox_memfile* f) {
 	int count = nox_memfile_read_i32(f);
 	if (count <= 0) {
@@ -1690,8 +1777,10 @@ int nox_thing_read_image_415240(nox_memfile* f) {
 	}
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00415320) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_ability_415320(nox_memfile* f) {
 	int count = nox_memfile_read_i32(f);
 	if (count <= 0) {
@@ -1718,8 +1807,10 @@ int nox_thing_read_ability_415320(nox_memfile* f) {
 	}
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00415660) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_thing_read_audio_415660(nox_memfile* f, char* buf) {
 	int count = nox_memfile_read_i32(f);
 	if (count <= 0) {
@@ -1735,6 +1826,7 @@ int nox_thing_read_audio_415660(nox_memfile* f, char* buf) {
 	}
 	return 1;
 }
+#endif // native non-sub port
 
 //----- (00415960) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
@@ -1786,6 +1878,7 @@ double sub_415BD0(int a1) {
 #endif
 
 //----- (00415C00) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {
 	if (!item || !(item->obj_class & 0x2000000)) {
 		return 0.0;
@@ -1805,6 +1898,7 @@ double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {
 	}
 	return value;
 }
+#endif // native non-sub port
 
 //----- (00415DA0) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
@@ -1957,7 +2051,9 @@ int sub_416580() { return *getMemU32Ptr(0x5D4594, 371688); }
 #endif
 
 //----- (00416590) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_cliGamedataGet_416590(int a1) { return (char*)getMemAt(0x5D4594, 371380 + 58*a1); }
+#endif // native non-sub port
 
 //----- (004165B0) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
@@ -2260,6 +2356,7 @@ int sub_4169C0() { return *getMemU32Ptr(0x5D4594, 371704); }
 #endif
 
 //----- (004169D0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_cliSetSettingsAcquired_4169D0(int a1) {
 	int result; // eax
 
@@ -2267,6 +2364,7 @@ int nox_xxx_cliSetSettingsAcquired_4169D0(int a1) {
 	*getMemU32Ptr(0x5D4594, 371704) = a1;
 	return result;
 }
+#endif // native non-sub port
 
 //----- (004169F0) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.
@@ -2280,6 +2378,7 @@ char* sub_4169F0() {
 #endif
 
 //----- (00416E50) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_playerForceSendLessons_416E50(int a1) {
 	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
 		 player = nox_common_playerInfoGetNext_416EE0(player)) {
@@ -2291,8 +2390,10 @@ char* nox_xxx_playerForceSendLessons_416E50(int a1) {
 	}
 	return 0;
 }
+#endif // native non-sub port
 
 //----- (004170D0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
@@ -2309,6 +2410,7 @@ nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 	}
 	return v1;
 }
+#endif // native non-sub port
 
 // GAME.EXE 00417270 and 004173D0 are exported by object.go. The original
 // bodies decoded PE32 minimap nodes with uint32_t addresses and truncated the
@@ -2316,6 +2418,7 @@ nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 // MinimapItem list without depending on host pointer size or node offsets.
 
 //----- (00417470) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_netUnmarkMinimapSpec_417470(nox_object_t* a1, int a2) {
 	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
 		 player = nox_common_playerInfoGetNext_416EE0(player)) {
@@ -2323,8 +2426,10 @@ char* nox_xxx_netUnmarkMinimapSpec_417470(nox_object_t* a1, int a2) {
 	}
 	return 0;
 }
+#endif // native non-sub port
 
 //----- (004174B0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_netMarkMinimapForAll_4174B0(nox_object_t* a1, int a2) {
 	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
 		 player = nox_common_playerInfoGetNext_416EE0(player)) {
@@ -2332,6 +2437,7 @@ char* nox_xxx_netMarkMinimapForAll_4174B0(nox_object_t* a1, int a2) {
 	}
 	return 0;
 }
+#endif // native non-sub port
 
 //----- (004174F0) --------------------------------------------------------
 int nox_xxx_netNeedTimestampStatus_4174F0(nox_playerInfo* a1p, int a2) {
@@ -2339,6 +2445,7 @@ int nox_xxx_netNeedTimestampStatus_4174F0(nox_playerInfo* a1p, int a2) {
 }
 
 //----- (00417530) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char nox_xxx_playerUnsetStatus_417530(nox_playerInfo* a1p, int a2) {
 	int v2;   // eax
 	short v3; // ax
@@ -2369,9 +2476,11 @@ char nox_xxx_playerUnsetStatus_417530(nox_playerInfo* a1p, int a2) {
 	}
 	return v2;
 }
+#endif // native non-sub port
 // 417577: variable 'v2' is possibly undefined
 
 //----- (004175C0) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 char* nox_xxx_sendAllClientStatus_4175C0(nox_playerInfo* a1) {
 	int v3;       // [esp-18h] [ebp-24h]
 	char v4[7];   // [esp+4h] [ebp-8h]
@@ -2385,8 +2494,10 @@ char* nox_xxx_sendAllClientStatus_4175C0(nox_playerInfo* a1) {
 	}
 	return NULL;
 }
+#endif // native non-sub port
 
 //----- (00417630) --------------------------------------------------------
+#if 0 // Exact former C body; native Go non-sub entry owns this symbol.
 int nox_xxx_netReportPlayerStatus_417630(nox_playerInfo* pl) {
 	short v1;   // cx
 	int v2;     // edx
@@ -2399,6 +2510,7 @@ int nox_xxx_netReportPlayerStatus_417630(nox_playerInfo* pl) {
 	*(uint32_t*)&v4[3] = v2;
 	return nox_xxx_netSendPacket1_4E5390(255, v4, 7, 0, 0);
 }
+#endif // native non-sub port
 
 //----- (00417680) --------------------------------------------------------
 extern void nox_xxx_cliPlayerRespawn_native_417680(void* player, uint8_t equipment_mask);

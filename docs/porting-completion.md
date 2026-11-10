@@ -135,11 +135,48 @@ is 190,820 bytes, SHA-256
 The separate source-only v3 mapping and changed-ABI audits are recorded in
 `independent-function-coverage-audit-v1/`.
 
-**Pending:** clean committed normal/HD products, independent product review,
-product GUI scenarios, actual image review and exact-owned cleanup.
-No pending phase receives pass credit here. This does not establish all 264
-original CPU paths, recertify historical raw suites, prove audible fidelity,
-complete the nine campaign audits or establish overall project 100%.
+Clean code commit `35a68f9dbac3f5d37d06bc82d21d708e621a4123` supplies the new
+normal and HD macOS ARM64 products. Both embed Go 1.27.3 and that revision
+with `vcs.modified=false`; both build and help processes exit naturally with zero.
+Product qualification `products-build-v1/products-qualified.json` has SHA-256
+`6359b04c5051687111a147a4642917601e351d9caeeee902d073273d387448fd`;
+independent product review `independent-products-review-v1/independent-products-qualified-v1.json`
+has SHA-256 `757fb4849a1ce40142f8518e2a314160bba74628924193965d9a9e113deffdc2`.
+
+| Product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| normal | 69,052,482 | `b97cfabaa92cfa4ed69e6054992fea80a4b09fbbfa784e8a0809a55395685378` |
+| hd | 69,151,586 | `70a408e81a2a9f1ab1dd579ca66f6ef7932aaeead30f89d02a436e819d230c4b` |
+
+The unchanged quickbar-drag, trap-icon, Wizard/Conjurer chapter1 book-default
+and advanced-server-options scenarios pass in both products: ten actual game
+processes, each with full product PREEXEC lineage and natural exit0. Independent
+GUI review `product-GUI-E2E-v1/independent-GUI-qualified-v1.json` has SHA-256
+`2ff2db769a0d1e1cc1fefd42354279241faba4bdb3e3871fda57c28202125f11`.
+Root actually viewed all 34 recorded PNGs; both advanced-options cases have
+no PNG and receive controller/widget assertion credit only. The recorded book
+frames cover briefing/fade/gameplay/reward HUD, without a full book-page image
+claim. No YAML, golden, fixed input or expected assertion was changed.
+
+All ten exact owned GUI runtime directories are removed after complete archive,
+independent assertion review and actual visual review. Cleanup receipt
+`product-GUI-E2E-v1/exact-owned-cleanup-result-v1.json` has SHA-256
+`538187af7fc6962d252e7d88a7289e844dd96cfba5d7285bcded5679deb9bb00`.
+A subsequent canonical-only reader passes without restoring or rerunning games:
+`independent-postcleanup-canonical-GUI-qualified-v1.json`, SHA-256
+`7d3f1db0c7805966b31ae949590ea668fa152ad19db11d776daf0943067493ec`.
+Original 4,439 assets and the protected recovered 126-Save inventory match their
+seals throughout. All executed test mains, products, failures, PNGs and mutable
+runtime evidence remain canonical. Fourteen test profiles remove 2,847,882,719
+logical duplicate bytes, product builds 225,863,971, and GUI directories
+1,410,762,517: total 4,484,509,207 logical bytes; physical reclamation is unmeasured.
+The final documentation-only commit changes these two evidence documents
+relative to the clean code/product commit.
+
+This completes the selected GAME2 implementation connection and bounded local
+validation. It does not qualify every original 264 CPU/control-flow path,
+recertify historical raw suites, establish physical audibility, finish the nine
+campaign-cell audits, or establish overall project 100%.
 
 
 ### GAME1 support implementations in Go, 2026-11-10

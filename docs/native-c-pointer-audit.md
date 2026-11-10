@@ -74,8 +74,26 @@ symlink-target preservation do not establish inode identity or physical disk
 reclamation. Each real-audio profile also preserves the new bridge child's
 own PID/main bytes; historical six-child individual PREEXEC credit is still
 excluded.
-Clean normal/HD products, independent product review, product GUI execution,
-actual image review and exact-owned cleanup remain pending at this checkpoint.
+Clean normal/HD products now bind code commit
+`35a68f9dbac3f5d37d06bc82d21d708e621a4123`, Go 1.27.3 and
+`vcs.modified=false`; both build/help processes close naturally with zero. Independent
+product review SHA-256 is
+`757fb4849a1ce40142f8518e2a314160bba74628924193965d9a9e113deffdc2`.
+Ten unchanged product GUI scenarios (five per product, including advanced
+server options) pass. Their independent GUI Q has SHA-256
+`2ff2db769a0d1e1cc1fefd42354279241faba4bdb3e3871fda57c28202125f11`.
+All34 recorded PNGs were actually viewed by root; advanced-options has no
+recorded PNG, and the book images do not prove a complete book-page display.
+Ten exact owned runtime directories are removed only after canonical SHA/CRC,
+independent controller review and visual review. Post-cleanup canonical-only
+verification passes, SHA-256
+`7d3f1db0c7805966b31ae949590ea668fa152ad19db11d776daf0943067493ec`.
+Mutable files and PNGs remain complete in canonical case archives; immutable
+stock map bytes are bound to protected original-map seal references. Original
+4,439 assets and 126 protected recovered Save files remain exact. Total removed
+logical duplicates across tests/builds/GUI are 4,484,509,207 bytes; no physical
+reclamation claim is made. The final documentation commit changes only these
+two evidence documents from the code/product commit.
 
 Source facts are in `independent-function-coverage-audit-v1/` (v3 detailed
 mapping SHA-256
@@ -93,7 +111,7 @@ Final `independent-all-five-runtime-review-v1/independent-runtime-qualified-v1.j
 is 190,820 bytes, SHA-256
 `88e172a53afa26902f5a97412aa96c7f2848cae7916c59cd760309dfffe9a566`.
 These findings do not supply all-entry numeric/CPU equivalence, historical
-six-audio-child individual PREEXEC credit, physical audibility, new product
+six-audio-child individual PREEXEC credit, physical audibility, broader product
 gameplay, final campaign audits or overall project 100%.
 
 

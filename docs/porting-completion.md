@@ -116,9 +116,28 @@ Normal tested source lease (9,063 files):
 `b02427194acba9359b1d686272f7e98eb999fe5a973006ae1718b9b882d122ac`.
 Strict tested source lease: `b02427194acba9359b1d686272f7e98eb999fe5a973006ae1718b9b882d122ac`.
 Independent selected-tests reader Q: `ff11fa89fa9493c45de0f8d00e73397dc1dbcb50695e8f0cb5f0480a60e6c6e4`.
-Clean product builds follow the implementation commit.
 
-Clean normal/HD products, help and product GUI/E2E qualification are pending.
+Both clean normal/HD products build and run help with Go 1.27.3 and
+`vcs.modified=false`, from implementation commit `c92ed1ede8981adaa824995024aaff31a8cf2eb5`.
+Their full clean source lease is
+`b397a196f0febb707e730af43e641a5891a8b816f7d6b6565daba9e176be03d1`; independent product Q is
+`54c710f07796adcc328e30bf33268f492859623ad61579088a7761de4521611c`.
+
+All eight local product GUI/E2E invocations pass: the four unchanged source
+cases in both normal and HD, with natural whole-parent exit 0 in 318.760 s.
+Independent GUI Q:
+`139d2f732f5328b57836ebf9e6b914f326c3837652a886eaf80b87257cb9c584`. Root actually viewed all
+six declared current options PNGs; visual ledger:
+`8271573761b2ed6cad56ffab305aaadc1b2984da28e521351f84664cc1db69b4`. Cases without PNGs
+receive their controller assertion scope only.
+
+Exactly eight owned raw runtime case directories were removed after full
+canonical SHA/CRC verification and actual frame review. A fresh canonical-only
+reader passes all eight cases after cleanup:
+`64a7445b2180eea8729995e947b013ea8b24e89693b83a3e68c89dbfcb3f96e7`. Original assets
+(4,439 files), protected Save files (126), products, goldens and failure
+archives remain preserved. This does not establish original pixel equivalence
+or post-cleanup inode identity.
 
 All-entry original-CPU/path equivalence, full trade/gameplay coverage, physical
 audio, final campaign audits and whole-project 100% remain unproved. Campaign

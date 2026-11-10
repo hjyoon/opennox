@@ -1,3 +1,5 @@
+// Exact original native C support implementation retained for comparisons.
+#if 0 // Production implementations are Go.
 #include "map_temp_lists_503f40.h"
 
 #include <stdlib.h>
@@ -210,3 +212,5 @@ void nox_mapgen_adjust_waypoint_506260(void* bounds, float2* position) {
 	position->field_0 = position->field_0 - (float)(23 * *(int32_t*)map_size) + (float)map_origin.field_0 - 11.0f;
 	position->field_4 = position->field_4 - (float)(23 * *((int32_t*)map_size + 1)) + (float)map_origin.field_4 - 11.0f;
 }
+
+#endif // Preserved original native support.

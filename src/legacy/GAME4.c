@@ -1,3 +1,4 @@
+#if 0 // Exact original GAME4 payload; native Go entries and data owners are in game4_* units.
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
@@ -5011,3 +5012,5 @@ int sub_5096F0() {
 	return sub_40A1F0(0);
 }
 #endif
+
+#endif // Exact original GAME4 payload.

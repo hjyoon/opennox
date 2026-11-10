@@ -1,3 +1,5 @@
+// Exact original native C support implementation retained for comparisons.
+#if 0 // Production implementations are Go.
 #include "map_object_list_5048a0.h"
 
 #include <stdlib.h>
@@ -137,3 +139,5 @@ nox_map_object_list_node_5048A0* nox_map_object_list_node_next_5048A0(nox_map_ob
 void nox_map_object_list_node_free_5048A0(nox_map_object_list_node_5048A0* node) {
 	free(node);
 }
+
+#endif // Preserved original native support.

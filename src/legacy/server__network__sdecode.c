@@ -32,6 +32,7 @@
 
 #include "common/fs/nox_fs.h"
 #include "server__system__trade.h"
+#include "game4_gold_consumers.h"
 
 #include <string.h>
 
@@ -395,6 +396,7 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		default:
 			return -1;
 		}
+#if 0 // Exact pre-native MSG_TRADE fragment; native formal owner is used below.
 	case 0xC9u: // MSG_TRADE
 		switch (data[1]) {
 		case 0xEu:
@@ -496,6 +498,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		default:
 			return -1;
 		}
+#endif
+	case 0xC9u: // MSG_TRADE: unitp/data/dsz retain the actual native inputs.
+		return nox_server_netTradeNative_GAME4_51BAD0(data, dsz, unitp);
 	case 0xF0u: // MSG_GAUNTLET
 		// GAME.EXE 0051CDFD..0051CE43 is retained in the oracle. The live
 		// bridge keeps update, Player, and both PlayerUnit reads native-width.

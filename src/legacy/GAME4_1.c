@@ -2158,6 +2158,7 @@ int sub_50F2B0(int a1, uint32_t* a2) {
 }
 
 //----- (0050F3A0) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 void sub_50F3A0(uint32_t* a1) {
 	int* i; // edi
 	int* j; // edi
@@ -2176,6 +2177,7 @@ void sub_50F3A0(uint32_t* a1) {
 	sub_50F490(a1, a1[3]);
 	sub_510000((int)a1);
 }
+#endif
 
 //----- (0050F450) --------------------------------------------------------
 int sub_50F450(int a1) {
@@ -2372,6 +2374,7 @@ void sub_50F790(int a1, int a2, int* a3) {
 }
 
 //----- (0050F7F0) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 uint32_t* sub_50F7F0(int a1, int a2) {
 	uint32_t* result; // eax
 
@@ -2381,6 +2384,7 @@ uint32_t* sub_50F7F0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050FA00) --------------------------------------------------------
 int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2) {
@@ -2418,6 +2422,7 @@ int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2) {
 }
 
 //----- (0050FB90) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 uint32_t* sub_50FB90(uint32_t* a1) {
 	int v1;           // ecx
 	uint32_t* result; // eax
@@ -2498,6 +2503,7 @@ uint32_t* sub_50FB90(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050FD20) --------------------------------------------------------
 int sub_50FD20(uint32_t* a1, int a2) {
@@ -2776,6 +2782,7 @@ uint32_t* sub_5108D0(int a1, int a2, int a3) {
 }
 
 //----- (00510AE0) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 uint32_t* sub_510AE0(int* a1, int a2, uint32_t* a3) {
 	uint32_t* result; // eax
 	int v4;           // esi
@@ -2812,8 +2819,10 @@ uint32_t* sub_510AE0(int* a1, int a2, uint32_t* a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (00510D10) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 void sub_510D10(int* a1, int a2, int a3, unsigned int a4) {
 	unsigned short result; // ax
 	int v5;                // ebp
@@ -2854,6 +2863,7 @@ void sub_510D10(int* a1, int a2, int a3, unsigned int a4) {
 		}
 	}
 }
+#endif
 
 //----- (00510DC0) --------------------------------------------------------
 extern int nox_xxx_shopCancelSession_510DC0_go(void* session);

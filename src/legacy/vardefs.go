@@ -672,7 +672,7 @@ extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_1599476;
 extern void* dword_5d4594_1599540;
 extern void* dword_5d4594_1599532;
-extern void* dword_5d4594_1599556;
+extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern void* dword_5d4594_1599548;
 extern void* dword_5d4594_1599588;
 extern void* dword_5d4594_1599592;
@@ -961,7 +961,7 @@ func Get_dword_5d4594_1599548() unsafe.Pointer {
 	return C.dword_5d4594_1599548
 }
 func Get_dword_5d4594_1599556() unsafe.Pointer {
-	return C.dword_5d4594_1599556
+	return unsafe.Pointer(C.dword_5d4594_1599556)
 }
 func Get_dword_5d4594_1599532() unsafe.Pointer {
 	return C.dword_5d4594_1599532
@@ -1144,7 +1144,7 @@ func Set_dword_5d4594_1599532(v unsafe.Pointer) {
 	C.dword_5d4594_1599532 = v
 }
 func Set_dword_5d4594_1599556(v unsafe.Pointer) {
-	C.dword_5d4594_1599556 = v
+	C.dword_5d4594_1599556 = (*C.nox_tile_coord_entry_t)(v)
 }
 func Set_dword_5d4594_1599548(v unsafe.Pointer) {
 	C.dword_5d4594_1599548 = v

@@ -522,6 +522,7 @@ int nox_xxx_tradeP2PAddOffer2_50F820_trade(int a1, int a2, float a3) {
 }
 
 //----- (005100C0) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 	nox_object_t* owner;                    // original ABI32 object handle; migrate with this caller
 	int v3;                                // edi
@@ -617,8 +618,10 @@ void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 		}
 	}
 }
+#endif
 
 //----- (00510640) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 	nox_object_t* owner;                    // original ABI32 object handle; migrate with this caller
 	int v4;                                // ebp
@@ -728,6 +731,7 @@ float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 	}
 	return result;
 }
+#endif
 
 //----- (005109C0) --------------------------------------------------------
 uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3) {
@@ -773,6 +777,7 @@ uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3) {
 }
 
 //----- (00510BE0) --------------------------------------------------------
+#if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
 uint32_t* sub_510BE0_trade(int* a1, int a2, uint32_t* a3) {
 	uint32_t* result; // eax
 	int v4;           // ebx
@@ -817,3 +822,4 @@ uint32_t* sub_510BE0_trade(int* a1, int a2, uint32_t* a3) {
 	}
 	return result;
 }
+#endif

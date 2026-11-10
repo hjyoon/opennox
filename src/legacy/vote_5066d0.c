@@ -1,3 +1,5 @@
+// Exact original native C support implementation retained for comparisons.
+#if 0 // Production implementations are Go.
 #include "vote_5066d0.h"
 
 #include <limits.h>
@@ -549,3 +551,5 @@ void nox_vote_set_voters_5066D0(nox_vote_5066D0* vote, uint32_t voters, uint8_t 
 		vote->count = count;
 	}
 }
+
+#endif // Preserved original native support.

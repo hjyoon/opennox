@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_1
 
 #include "defs.h"
+#include "game4_gold_consumers.h"
 #include "floor_brush_native.h"
 #include "decay_511660.h"
 #include "match_state_5096f0.h"
@@ -58,7 +59,6 @@ void nox_xxx_loadShopItems_50E970(int a1);
 float* nox_xxx_addItemToShopSession_50EE00(int a1, float a2);
 int sub_50EEC0(uint32_t* a1);
 int sub_50F2B0(int a1, uint32_t* a2);
-void sub_50F3A0(uint32_t* a1);
 int sub_50F450(int a1);
 int sub_50F490(uint32_t* a1, int a2);
 void nox_xxx_shopExit_50F4C0(uint32_t* a1);
@@ -68,9 +68,7 @@ int sub_50F6B0(int a1);
 int sub_50F6E0(int a1);
 int sub_50F720(int a1, uint32_t* a2);
 void sub_50F790(int a1, int a2, int* a3);
-uint32_t* sub_50F7F0(int a1, int a2);
 int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2);
-uint32_t* sub_50FB90(uint32_t* a1);
 int sub_50FD20(uint32_t* a1, int a2);
 int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2);
 int sub_50FF90(int a1, int a2, int a3);
@@ -79,8 +77,6 @@ void sub_510000(int a1);
 int nox_xxx_getSomeShopData_5103A0(int a1, int a2);
 int sub_5103F0(int a1, int a2);
 uint32_t* sub_5108D0(int a1, int a2, int a3);
-uint32_t* sub_510AE0(int* a1, int a2, uint32_t* a3);
-void sub_510D10(int* a1, int a2, int a3, unsigned int a4);
 void nox_xxx_shopCancelSession_510DC0(void* a1);
 int sub_510DE0(int a1, int a2);
 void sub_510E20(int a1);

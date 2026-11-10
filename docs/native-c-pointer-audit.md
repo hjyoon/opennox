@@ -1,5 +1,60 @@
 # Native C entry pointer audit
 
+## GAME4 native ownership and validation boundary, 2026-11-10
+
+The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one
+outer false branch, with its nested guards and between-definition text.
+The source map records 140 literal definitions: 120 same-name Go exports,
+six thin C ABI adapters, four private Go helpers and ten renamed integrations,
+including earlier Go-backed entries. Frozen map SHA-256:
+`01aff0e7f2e17a8bfb0a9a624daf5c6910894033b904e007ee9b9525352ba014`.
+The separate C data translation unit has ten owners and no algorithms;
+typed C storage, services, ABI transport and private references remain.
+
+The 70 support definitions (15 temporary-list, 12 map-object-list and 43 vote;
+57 public / 13 private) use a separate denominator. Their 35-name overlap
+with the GAME4 inventory is counted once, rather than presented as extra
+semantic migration or original-CPU proof.
+
+Native Object, PlayerUpdateData, Player, TradeSession, list/tile and FILE
+links retain full-width owners. Packet scalars, 76-byte wire records, float
+bits and protection tokens remain fixed-width. Mixed gold/CRC return words
+cross C as `uintptr_t` before Go sees them; Go never manufactures a pointer
+from a low token. The eight adjacent native gold consumers close 21 old C
+gold calls, while the C trade packet branch forwards the actual native formal
+owner to the existing 13-subtype Go decoder. Other direct PE32 helper chains
+and unobserved mixed shop return values remain outside the claim.
+
+Vote creation caches the target before allocation/reentry and keeps ordered
+type/frame/team stores. Bounded 48-byte reward names and zero-initialized
+52-byte packet padding are explicit native policies; added invalid-owner or
+malformed-input guards do not prove original fault behavior. A declaration-only
+Cgo correction aligns the tile-head slot with `nox_tile_coord_entry_t*`,
+preserving public Go accessor signatures and algorithm bytes (proof
+`35143b5d60030e43bf9cf0bb81ac74a660b0f2e24c14026527d9681ec1bc0a01`).
+The fixture allocator constraint correction leaves inputs and assertions
+unchanged. Private reference-head accesses now use typed C getters/setters
+in the same translation unit; all 70 reference definitions and the complete
+header remain exact. The first three failed normal outcomes, including the
+third attempt's reference-head link failure, remain in full canonical form.
+Across these attempts, 1,115,947,883 verified duplicate bytes were removed;
+this is a logical count, not measured physical reclamation.
+
+Normal macOS ARM64 / Go 1.27.3 root qualification passes 1,168 selected
+IDs / 253 roots, zero failures or skips, three actual mains and unchanged
+source: `8aebba36c2d2807f8d4862ac6214b6c47041595e02fc0b02f63c0f05cfafd272`.
+Normal lease (9,063 files):
+`b02427194acba9359b1d686272f7e98eb999fe5a973006ae1718b9b882d122ac`.
+Strict/highres cgocheck2/checkptr2 also passes the same 1,168 IDs / 253 roots,
+with zero failures or skips and three actual mains:
+`842d80fdf67b52adf0961d171fcd37b114009a9ec143609ee249c5b640009f9b`. Both profiles use that same full source lease.
+The independent selected-tests reader verifies the same IDs, six actual
+before-EXEC-preserved mains and canonical records:
+`ff11fa89fa9493c45de0f8d00e73397dc1dbcb50695e8f0cb5f0480a60e6c6e4`.
+Clean normal/HD products, help and product GUI/E2E qualification are pending.
+CI is unused. These source connections do not supply all-entry original-CPU,
+all-gameplay, physical-audio, final campaign or whole-project 100% credit.
+
 ## GAME3 native pointer ownership and local validation, 2026-11-10
 
 The exact `GAME3.c` payload is preserved byte-for-byte: 143,656 original

@@ -55,6 +55,75 @@ completion requirements.
 
 ## Current findings
 
+### GAME4 native implementation and local validation, 2026-11-10
+
+The exact `GAME4.c` baseline retains its complete 140,091 bytes inside one
+outer `#if 0`, including existing nested guards and intervening text. Its 140
+literal definitions connect to 120 same-name Go exports, six thin C ABI
+adapters, four private Go helpers and ten renamed Go integrations. This
+includes earlier Go-backed entries and native support helpers; it is not 140
+new algorithm or original-CPU qualifications. `game4_native_data.c` retains
+ten C data owners and no algorithms. Frozen source map:
+`01aff0e7f2e17a8bfb0a9a624daf5c6910894033b904e007ee9b9525352ba014`.
+
+The separate temporary-list, map-object-list and vote support batch contains
+70 baseline definitions (57 public and 13 private). Thirty-five names already
+occur in the GAME4 inventory; these are overlapping source inventories, not
+210 distinct algorithms. Original support bodies and complete source files
+remain preserved.
+
+Eight adjacent gold consumers now use typed Object/TradeSession owners,
+retaining their original C bodies as references and closing their 21 old
+integer-pointer gold calls. The C MSG_TRADE branch uses its native formal
+owner and packet buffer to call the existing Go decoder for the same 13
+subtypes and 2/4/5-byte widths. Transactions reuse the existing native shop
+and player-trade pipelines. Other direct PE32 trade-helper chains are outside
+this closure. Decoded shop callers discard their old mixed return words;
+documented scalar residues/completed-count returns do not establish original
+failure-EAX equivalence.
+
+Objects, player/session links, native list nodes, tile layers and FILE owners
+retain full pointer width. Packet fields, 76-byte AreaMap records, protection
+tokens and float-bit words keep their scalar widths. Opaque CRC return words
+become `uintptr_t` inside C before reaching Go, so small scalar tokens never
+enter Go pointer roots. Vote creation caches its target before allocation or
+reentry and preserves ordered state stores. Reward names are bounded to 48
+bytes; the 52-byte packet padding is explicitly zeroed. Added invalid-owner
+guards, bounded malformed-input handling and deterministic padding are native
+policies, not original fault or undefined-stack-byte equivalence.
+
+A stale Cgo tile-head declaration now matches the actual native typed owner;
+the public Go accessor signatures and algorithms are unchanged (source proof
+`35143b5d60030e43bf9cf0bb81ac74a660b0f2e24c14026527d9681ec1bc0a01`).
+The fixture allocator constraint was corrected without changing inputs or
+assertions. Typed C accessors also keep private reference-head state in its
+own translation unit; all 70 reference definitions and the complete reference
+header remain byte-exact. The first three failed normal outcomes, including
+the third attempt's reference-head link failure, remain retained with their
+full canonical archives. Across these three attempts, 1,115,947,883 logical
+duplicate bytes were removed only after verification; physical reclamation
+was not measured.
+
+Both macOS ARM64 / Go 1.27.3 profiles passed with three actual package
+mains each, natural terminal records and unchanged source. CI was not used.
+
+| Profile | Status | Selected IDs / roots | Qualification SHA-256 |
+| --- | --- | --- | --- |
+| Normal | PASS (root qualification) | `1168` / `253` | `8aebba36c2d2807f8d4862ac6214b6c47041595e02fc0b02f63c0f05cfafd272` |
+| Highres, cgocheck2/checkptr2 | PASS | `1168` / `253` | `842d80fdf67b52adf0961d171fcd37b114009a9ec143609ee249c5b640009f9b` |
+
+Normal tested source lease (9,063 files):
+`b02427194acba9359b1d686272f7e98eb999fe5a973006ae1718b9b882d122ac`.
+Strict tested source lease: `b02427194acba9359b1d686272f7e98eb999fe5a973006ae1718b9b882d122ac`.
+Independent selected-tests reader Q: `ff11fa89fa9493c45de0f8d00e73397dc1dbcb50695e8f0cb5f0480a60e6c6e4`.
+Clean product builds follow the implementation commit.
+
+Clean normal/HD products, help and product GUI/E2E qualification are pending.
+
+All-entry original-CPU/path equivalence, full trade/gameplay coverage, physical
+audio, final campaign audits and whole-project 100% remain unproved. Campaign
+scope remains Warrior, Conjurer and Wizard chapters 1–3.
+
 ### GAME3 native implementation and local validation, 2026-11-10
 
 The exact `GAME3.c` batch preserves its complete 143,656-byte original

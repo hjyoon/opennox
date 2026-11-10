@@ -55,6 +55,58 @@ completion requirements.
 
 ## Current findings
 
+### GAME3 native implementation and local validation, 2026-11-10
+
+The exact `GAME3.c` batch preserves its complete 143,656-byte original
+payload inside one outer `#if 0`, including nested guards and text between
+definitions. Its 119 original definitions map to 100 direct Go exports,
+12 thin C ABI-to-Go adapters and seven private connections to six distinct
+Go helpers. `game3_native_data.c` retains seven C data owners and has no
+functions. This source partition does not measure whole-project completion.
+
+The class/config/options, widgets, map and effect implementations use native
+window, string, item and callback pointers. Two listbox draw signatures and
+five radio-button signatures carry full pointers. Clock DWORDs, opaque image
+handles and serialized BYTE/WORD/DWORD fields keep their declared widths.
+Radio reentry keeps the original parent across notification and applies the
+original live XOR toggle. Other corrections preserve door low-BYTE truth,
+pressure-plate activation before width/height reads, signed spark Y versus unsigned X,
+and lazy post-Z bounce frame reads. Selection shifting stays within the
+native owner's exact Count of entries; added controls use pinned owners and a guard-page
+boundary. Two stale C declarations use the actual zero-argument ABI; nine older
+cgo declarations now use their scalar owner's exact `uint32_t` spelling. The
+macro callback boundary forwards through the native registry-preserving
+function.
+
+Position controls use C-owned output and explicitly pinned Go output across
+GC. Sliders created through the migrated C entry keep their C data until
+deferred disposal, which frees it once before window-pool reuse. Checks cover explicit destroy
+events, child windows and reentrant cleanup/DestroyAll requests. The C-facing
+window and GUI layouts remain unchanged.
+
+Previously undefined map-local values use explicit native zero initialization.
+Malformed-input and valid-window-owner registry policies are recorded
+separately from original behavior claims.
+
+Local macOS ARM64 / Go 1.27.3 profiles passed with zero failures or skips; CI was not used:
+
+| Profile | Selected IDs | Roots | Qualification SHA-256 |
+| --- | --- | --- | --- |
+| Normal | 866 | 121 | `88d1b4f37118919524f367b93faefc7c6c589146920e1f749479a0fa260926bc` |
+| Highres, cgocheck2/checkptr2 | 866 | 121 | `a5d50c4da842d5b6524ae8f3205aa9f643ccee3e6da9afc7aecfd520f7491718` |
+
+Tested lease: `48aac0ba271f1defcfe9017c0fa1c0c7fe42d9802aaaa48a1aa1f10cb8a2c402`
+(`9028` files). This code checkpoint precedes clean product binding.
+The independent reader confirms the same exact IDs and all three actual
+package mains per profile: Q
+`75fb624cdee4176b699b01d7f9d57100e61c85fc7513f54c2128539ff41c7036`.
+
+Clean normal/HD products, current product GUI/E2E, actual image review and
+post-cleanup canonical review are **PENDING**. Final evidence updates will
+change only these two porting documents after code/product binding.
+All-entry original-CPU equivalence, physical audio, final campaign audits and
+whole-project 100% remain unproved; campaign scope remains chapters 1–3.
+
 ### GAME2 native implementation and current validation, 2026-11-10
 
 All 264 original literal definitions, their bodies, source order and text

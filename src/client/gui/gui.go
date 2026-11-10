@@ -379,6 +379,7 @@ func (g *GUI) stackPop(win *Window) int {
 }
 
 func (g *GUI) FreeDestroyed() {
+	destroyAll := false
 	win := g.free
 	g.free = nil
 	for win != nil {
@@ -400,9 +401,13 @@ func (g *GUI) FreeDestroyed() {
 			g.WinYYY = nil
 		}
 		win.Func94(WindowDestroy{})
+		destroyAll = win.runCleanups() || destroyAll
 		setExt(win, nil)
 		g.alloc.FreeObjectFirst(win)
 		win = prev
+	}
+	if destroyAll && !g.deferDestroyAllFromCleanup() {
+		g.DestroyAll()
 	}
 }
 
@@ -447,7 +452,7 @@ func (g *GUI) destroyWindow(win *Window) {
 
 	ext := win.ext()
 	// clear everything except GUI reference
-	*ext = windowExt{GUI: ext.GUI}
+	*ext = windowExt{GUI: ext.GUI, cleanups: ext.cleanups}
 }
 
 func (g *GUI) showModal(win *Window) int {
@@ -467,12 +472,22 @@ func (g *GUI) showModal(win *Window) int {
 }
 
 func (g *GUI) DestroyAll() {
-	var prev *Window
-	for it := g.last; it != nil; it = prev {
-		prev = it.Prev()
-		it.Destroy()
+	if g.deferDestroyAllFromCleanup() {
+		return
 	}
-	g.FreeDestroyed()
+	for {
+		var prev *Window
+		for it := g.last; it != nil; it = prev {
+			prev = it.Prev()
+			it.Destroy()
+		}
+		g.FreeDestroyed()
+		// A cleanup may have created or queued another owned window. Drain it
+		// before a pool-wide free can invalidate its live side-storage entry.
+		if g.last == nil && g.free == nil {
+			break
+		}
+	}
 	g.alloc.FreeAllObjects()
 }
 

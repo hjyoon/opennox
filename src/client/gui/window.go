@@ -43,6 +43,56 @@ type windowExt struct {
 	Func93 WindowFunc
 	Func94 WindowFunc
 	Draw   WindowDrawFunc
+
+	cleanups          []func()
+	cleanupRunning    bool
+	cleanupDestroyAll bool
+}
+
+// AddCleanup registers a GUI-thread resource cleanup before this window is
+// returned to its pool by FreeDestroyed. Callbacks run once in registration
+// order. Registration after Destroy is ignored. A DestroyAll requested from a
+// cleanup callback is deferred until the active cleanup batch has drained.
+func (win *Window) AddCleanup(f func()) {
+	if win == nil || f == nil {
+		return
+	}
+	ext := win.ext()
+	if ext == nil || win.isNilOrDead() {
+		return
+	}
+	ext.cleanups = append(ext.cleanups, f)
+}
+
+func (win *Window) runCleanups() bool {
+	ext := win.ext()
+	if ext == nil {
+		return false
+	}
+	pending := ext.cleanups
+	ext.cleanups = nil
+	ext.cleanupRunning = true
+	defer func() { ext.cleanupRunning = false }()
+	for _, cleanup := range pending {
+		cleanup()
+	}
+	return ext.cleanupDestroyAll
+}
+
+// A cleanup may reenter DestroyAll while an outer FreeDestroyed still owns a
+// detached queue. Keep the request in Go side storage so neither that queue
+// nor its current window can be recycled by a nested pool-wide free.
+func (g *GUI) deferDestroyAllFromCleanup() bool {
+	emu.Lock()
+	defer emu.Unlock()
+	deferred := false
+	for _, ext := range exts {
+		if ext.GUI == g && ext.cleanupRunning {
+			ext.cleanupDestroyAll = true
+			deferred = true
+		}
+	}
+	return deferred
 }
 
 type WidgetData interface {

@@ -1,5 +1,51 @@
 # Native C entry pointer audit
 
+## GAME3 native pointer ownership and local validation, 2026-11-10
+
+The exact `GAME3.c` payload is preserved byte-for-byte: 143,656 original
+bytes, all 119 definitions and intervening text, including nested guards,
+inside one outer false branch. Connections partition into 100 direct Go
+exports, 12 thin C ABI adapters and seven private connections using six
+distinct Go helpers. The separate seven C data owners have no functions.
+Typed C storage, ABI forwarding and private references remain; cgo remains.
+
+Native window/data, text, selection and callback fields retain full pointer
+width and declared owners. The two listbox draw and five radio signatures
+are widened together with their native consumers. Scalar clock DWORDs,
+opaque image handles and fixed wire fields are not widened as pointers.
+Selection shifting uses exactly Count owned uint32 entries; the omitted original
+extra read produced a value immediately overwritten by the last sentinel.
+This is a native allocation-bound policy, with pinned-owner and actual
+guard-boundary controls, not equivalence for an out-of-owner fault.
+
+Source corrections cover radio cached-parent/live-XOR reentry, low-BYTE door
+status, pressure-plate activation before width/height RW, signed spark Y, and lazy bounce
+frame access after the Z write. Two old declarations now match their actual
+zero-argument ABI. Nine older cgo scalar declarations now use the exact
+`uint32_t` type of their shared C owner. The macro/function boundary preserves the full callback
+and native registry. Undefined old map locals receive explicit zero values;
+invalid-input and valid-owner registry limits remain separate policies.
+
+C-owned output and explicit Pin/GC controls exercise the C-to-Go pointer
+return boundary. Deferred cleanup releases C data owned by the migrated slider
+constructor before its window returns to the pool, with explicit-event and reentrant-disposal
+controls. Cleanup state lives in Go side storage; the C-facing window and
+GUI layouts remain unchanged.
+
+Both profiles passed with zero failures or skips, local macOS ARM64 / Go 1.27.3 only, with CI unused.
+Normal: `866` IDs / `121` roots,
+Q `88d1b4f37118919524f367b93faefc7c6c589146920e1f749479a0fa260926bc`. Strict/highres with cgocheck2/checkptr2:
+`866` / `121`,
+Q `a5d50c4da842d5b6524ae8f3205aa9f643ccee3e6da9afc7aecfd520f7491718`. Both used the exact source lease
+`48aac0ba271f1defcfe9017c0fa1c0c7fe42d9802aaaa48a1aa1f10cb8a2c402` and natural terminal records.
+The independent selected-tests reader Q is
+`75fb624cdee4176b699b01d7f9d57100e61c85fc7513f54c2128539ff41c7036`.
+Clean normal/HD products and
+current GUI/E2E/visual/canonical results remain **PENDING**. Only the two
+evidence documents may change afterward for final reporting.
+No all-119 original-CPU, all-gameplay, physical-audio, final campaign or
+whole-project 100% credit follows from this source inventory.
+
 ## GAME2 native ownership and evidence boundary, 2026-11-10
 
 The source-only v3 audit verifies the complete original 264-definition

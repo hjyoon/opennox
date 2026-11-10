@@ -13,7 +13,7 @@ package legacy
 #include "server__magic__plyrspel.h"
 
 extern uint32_t nox_tile_def_cnt;
-extern unsigned int dword_5d4594_2650652;
+extern uint32_t dword_5d4594_2650652;
 
 void nox_xxx_updateProjectile_53AC10(nox_object_t* a1);
 void nox_xxx_updateDeathBall_53D080(nox_object_t* a1);

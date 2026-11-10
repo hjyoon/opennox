@@ -13,7 +13,7 @@ package legacy
 #include "common__net_list.h"
 #include "defs.h"
 extern nox_window* dword_5d4594_1046492;
-extern unsigned int dword_5d4594_2650652;
+extern uint32_t dword_5d4594_2650652;
 extern unsigned int nox_player_netCode_85319C;
 void nox_xxx_WideScreenDo_515240(bool enable);
 static void nox_xxx_printToAll_4D9FD0_go(int a1, wchar2_t* str) {

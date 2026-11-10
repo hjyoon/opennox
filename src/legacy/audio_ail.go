@@ -24,7 +24,7 @@ extern uint32_t dword_5d4594_831092;
 
 void sub_43DC00();
 void sub_44D960();
-void sub_453050();
+void sub_453050(void);
 int sub_451850(void* a2, void* a3);
 extern void* dword_587000_122852;
 extern void* dword_587000_81128;

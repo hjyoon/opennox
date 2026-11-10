@@ -37,11 +37,12 @@ func RadioButtonProcPre(win *Window, e WindowEvent) WindowEventResp {
 			return RawEventResp(0)
 		}
 		a1, _ := e.EventArgsC()
+		parent := win.Parent()
 		if win.DrawData().Field0&0x4 == 0 {
 			if a1 == 1 {
 				radioButtonNotify(win, 0x4007, uintptr(unsafe.Pointer(win)), 0)
 			}
-			radioButtonSelect(win)
+			radioButtonSelectParent(win, parent, false)
 		}
 		return RawEventResp(0)
 	}
@@ -67,7 +68,11 @@ func radioButtonNotify(win *Window, code int, a1, a2 uintptr) {
 }
 
 func radioButtonSelect(win *Window) {
-	if parent := win.Parent(); parent != nil {
+	radioButtonSelectParent(win, win.Parent(), false)
+}
+
+func radioButtonSelectParent(win, parent *Window, toggle bool) {
+	if parent != nil {
 		group := win.DrawData().Group()
 		for it := parent.Field100(); it != nil; it = it.Prev() {
 			if it != win && it.DrawData().Group() == group {
@@ -75,7 +80,11 @@ func radioButtonSelect(win *Window) {
 			}
 		}
 	}
-	win.DrawData().Field0 |= 0x4
+	if toggle {
+		win.DrawData().Field0 ^= 0x4
+	} else {
+		win.DrawData().Field0 |= 0x4
+	}
 }
 
 func radioButtonProc(win *Window, e WindowEvent) WindowEventResp {
@@ -86,8 +95,9 @@ func radioButtonProc(win *Window, e WindowEvent) WindowEventResp {
 			return RawEventResp(1)
 		case keybind.KeyEnter, keybind.KeySpace:
 			if e.Pressed && win.DrawData().Field0&0x4 == 0 {
+				parent := win.Parent()
 				radioButtonNotify(win, 0x4007, uintptr(unsafe.Pointer(win)), 0)
-				radioButtonSelect(win)
+				radioButtonSelectParent(win, parent, true)
 			}
 			return RawEventResp(1)
 		default:
@@ -98,6 +108,7 @@ func radioButtonProc(win *Window, e WindowEvent) WindowEventResp {
 		case input.NOX_MOUSE_LEFT_DOWN:
 			return RawEventResp(1)
 		case input.NOX_MOUSE_LEFT_DRAG_END, input.NOX_MOUSE_LEFT_UP:
+			parent := win.Parent()
 			if win.DrawData().Field0&0x4 != 0 {
 				if win.DrawData().Field0&0x2 != 0 {
 					return RawEventResp(1)
@@ -106,7 +117,7 @@ func radioButtonProc(win *Window, e WindowEvent) WindowEventResp {
 			}
 			a1, _ := e.EventArgsC()
 			radioButtonNotify(win, 0x4007, uintptr(unsafe.Pointer(win)), a1)
-			radioButtonSelect(win)
+			radioButtonSelectParent(win, parent, false)
 			return RawEventResp(1)
 		case input.NOX_MOUSE_LEFT_PRESSED:
 			a1, _ := e.EventArgsC()

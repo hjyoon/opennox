@@ -49,7 +49,7 @@ void  sub_500510(const char* a1);
 int nox_xxx_guiChatIconLoad_445650();
 int nox_xxx_loadGuides_427070();
 void sub_41CAC0(char* a1, void* a2);
-int nox_game_showOptions_native();
+int nox_game_showOptions_native(void);
 
 wchar2_t* nox_xxx_guiServerOptionsGetGametypeName_4573C0(short mode);
 void nox_xxx_mapSwitchLevel_4D12E0_tileFree();

@@ -1,3 +1,5 @@
+// Original GAME3 implementations remain byte-exact for native-port comparisons.
+#if 0 // Production entries are implemented in Go; native C data owners are separate.
 #include <math.h>
 #include <sys/stat.h>
 
@@ -5135,3 +5137,5 @@ uint32_t* sub_4B8E10(uint32_t* a1, char* a2) {
 // 4B8E57: variable 'v5' is possibly undefined
 // 4B8E57: variable 'v6' is possibly undefined
 // 4B8E90: variable 'v10' is possibly undefined
+
+#endif // Original GAME3 reference payload.

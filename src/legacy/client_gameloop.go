@@ -16,7 +16,7 @@ package legacy
 #include "GAME5_2.h"
 
 extern unsigned int nox_client_gui_flag_1556112;
-extern unsigned int dword_5d4594_2650652;
+extern uint32_t dword_5d4594_2650652;
 */
 import "C"
 import "github.com/opennox/opennox/v1/client/noxrender"

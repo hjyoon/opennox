@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/internal/binfile"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
 )
 
@@ -212,6 +213,7 @@ func (s *nativeAudioEffectsState) close() {
 }
 
 func (s *nativeAudioEffectsState) resetDefs() {
+	legacy.Game2AudioResetDefinitions()
 	s.mu.Lock()
 	s.resetDefsLocked()
 	s.mu.Unlock()
@@ -227,9 +229,17 @@ func (s *nativeAudioEffectsState) resetDefsLocked() {
 }
 
 func (s *nativeAudioEffectsState) readAUD(f *binfile.MemFile) error {
+	input := f.Data()
 	s.mu.Lock()
-	n, records, err := s.parseAUDLocked(f.Data())
+	n, records, err := s.parseAUDLocked(input)
 	s.mu.Unlock()
+	if err == nil {
+		if mirrored, mirrorErr := legacy.Game2AudioReadAUDData(input); mirrorErr != nil {
+			err = mirrorErr
+		} else if mirrored != 0 && mirrored != n {
+			err = fmt.Errorf("AUD event cursor %d != platform cursor %d", mirrored, n)
+		}
+	}
 	f.Skip(n)
 	if err == nil && audioEffectsDebug {
 		audioEffectsLog.Printf("loaded %d AUD definitions", records)
@@ -238,9 +248,17 @@ func (s *nativeAudioEffectsState) readAUD(f *binfile.MemFile) error {
 }
 
 func (s *nativeAudioEffectsState) readAVNT(f *binfile.MemFile) error {
+	input := f.Data()
 	s.mu.Lock()
-	n, err := s.parseAVNTLocked(f.Data())
+	n, err := s.parseAVNTLocked(input)
 	s.mu.Unlock()
+	if err == nil {
+		if mirrored, mirrorErr := legacy.Game2AudioReadAVNTData(input); mirrorErr != nil {
+			err = mirrorErr
+		} else if mirrored != 0 && mirrored != n {
+			err = fmt.Errorf("AVNT event cursor %d != platform cursor %d", mirrored, n)
+		}
+	}
 	f.Skip(n)
 	return err
 }

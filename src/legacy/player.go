@@ -12,7 +12,7 @@ package legacy
 #include "GAME4_1.h"
 #include "common__net_list.h"
 #include "defs.h"
-extern unsigned int dword_5d4594_1046492;
+extern nox_window* dword_5d4594_1046492;
 extern unsigned int dword_5d4594_2650652;
 extern unsigned int nox_player_netCode_85319C;
 void nox_xxx_WideScreenDo_515240(bool enable);
@@ -355,8 +355,8 @@ func Nox_xxx_playerResetImportantCtr_4E4F40(v ntype.PlayerInd) int {
 	return int(C.nox_xxx_playerResetImportantCtr_4E4F40(C.int(v)))
 }
 
-func Get_dword_5d4594_1046492() int {
-	return int(C.dword_5d4594_1046492)
+func Get_dword_5d4594_1046492() unsafe.Pointer {
+	return unsafe.Pointer(C.dword_5d4594_1046492)
 }
 
 //export nox_xxx_playerInitColors_461460_go

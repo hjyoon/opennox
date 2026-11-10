@@ -55,6 +55,93 @@ completion requirements.
 
 ## Current findings
 
+### GAME2 native implementation and current validation, 2026-11-10
+
+All 264 original literal definitions, their bodies, source order and text
+between definitions remain byte-exact inside the outer `#if 0` in `GAME2.c`.
+The former 262 active names now partition into 244 direct Go export
+connections, 13 thin C ABI-to-Go adapters and five private Go helpers; the two
+already-disabled definitions remain reference-only. This source inventory
+includes existing Go-backed entries. It is not 262 independent algorithm or
+original-CPU qualifications. `game2_native_data.c` contains data definitions
+without functions; native C storage, typed headers, ABI transport and private
+C comparison references remain, so cgo has not been removed.
+
+The port covers the briefing, audio/event, server/options/player/drawable,
+book and quickbar groups. Native windows, linked nodes, event owners and text
+use full-width pointers with declared lifetimes. The server-options getter
+returns the actual C-owned window pointer; packed player-class reads use the
+existing native `PlayerClass()` accessor. Object messages 47, 48 and 0xC3
+use bounded 9/11/12-byte C-to-Go handoffs into the typed receiver, preserving
+following message bytes. Fixed wire fields and 200-byte audio scalar records
+keep their declared widths. Bounded handoff controls and selected main-package
+decoder/visual-state tests are separate evidence from full network gameplay.
+
+The ordinary `nativeAudioFX` bank and voices remain the normal production
+owner. The legacy event API uses registered full native contexts and an
+explicit real-bank initializer; ordinary startup does not automatically open
+a duplicate bank. Conditional AUD/AVNT mirrors and reset/shutdown connect the
+two owners without replacing ordinary playback. The parser now preserves the
+last sample's scratch bytes when it reads the zero-length list terminator,
+including AUD extension-tail bytes; an initial empty sound name still writes
+its terminating NUL. Handles reject stopped native owners even when a cached
+generation zero collides with Stop's zero serial. The uint32 allocation
+sequence is unchanged and a live generation-zero handle remains valid. The
+stopped-owner edge is an explicit native lifetime policy, not old-C/CPU
+equivalence for invalid/stopped handles. Tests, input and expected bytes were
+not changed to correct either failure.
+
+The current independent completed-profile review verifies **773 legacy IDs
+across 40 roots** and **86 main-package IDs across 16 roots**, with zero
+failures or skips and the same 8,997-file source lease. The main-normal tests
+are the original successful Go/native execution: its original outer driver
+exit 1 and false qualification remain preserved because a metadata check
+incorrectly required a vanished Go temporary executable. The independent
+reader checks retained full mains, their PREEXEC/PID/terminal event chains,
+canonical regular/symlink-target bytes, source leases and embedded metadata;
+it does not rerun the SUT or relabel the rejected driver as successful.
+
+All five selected test profiles have terminated naturally and the final
+independent data reader qualifies each profile with zero failures or skips:
+
+| Profile | Passing selected IDs | Roots |
+| --- | ---: | ---: |
+| Legacy normal | 773 | 40 |
+| Legacy strict/highres, cgocheck2/checkptr2 | 773 | 40 |
+| Main normal, same-execution metadata correction | 86 | 16 |
+| Main real null OpenAL | 7 | 7 |
+| Main strict/highres, cgocheck2/checkptr2 and real null OpenAL | 93 | 23 |
+
+This is 1,732 passing profile events, including IDs repeated across modes,
+not 1,732 distinct tests. Legacy normal/strict have identical IDs and all
+profiles use the same 8,997-file lease. The new audio bridge child retains its
+own actual PID/main bytes in each real-audio profile; it is separate from
+these parent test-ID counts. Complete canonical archives retain the executed
+mains, available compiler outputs and profile evidence before exact owned
+duplicates are removed. The independent reader verifies regular-member and
+symlink-target bytes with SHA/CRC and exact member closure; it makes no inode
+identity or physical disk-reclamation claim.
+
+Evidence is under `artifacts/opennox-port-20261110/GAME2-native-port-v1`:
+`independent-completed-normal-review-v1/independent-runtime-qualified-v1.json`
+has SHA-256 `2312e859c32a8231bfd2cf8cd3474a04af1721a6537872aaf326c2c2f0f546e6`;
+`focus-strict-v1/tests-qualified.json` has SHA-256
+`cec6fe7c357ad136cfb0aadd630e17fe8b9c600b0618f315db0f5d172dd02615`.
+`main-focused-v3/main-focused-qualified.json` has SHA-256
+`cbbe67065268f9fa08ad6e60f26d64aa122ab0722cbe0fd117b2ddf74f7f73ac`.
+Final `independent-all-five-runtime-review-v1/independent-runtime-qualified-v1.json`
+is 190,820 bytes, SHA-256
+`88e172a53afa26902f5a97412aa96c7f2848cae7916c59cd760309dfffe9a566`.
+The separate source-only v3 mapping and changed-ABI audits are recorded in
+`independent-function-coverage-audit-v1/`.
+
+**Pending:** clean committed normal/HD products, independent product review,
+product GUI scenarios, actual image review and exact-owned cleanup.
+No pending phase receives pass credit here. This does not establish all 264
+original CPU paths, recertify historical raw suites, prove audible fidelity,
+complete the nine campaign audits or establish overall project 100%.
+
+
 ### GAME1 support implementations in Go, 2026-11-10
 
 The five remaining access-list support implementations now run in Go: lazy

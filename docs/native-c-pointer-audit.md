@@ -1,5 +1,102 @@
 # Native C entry pointer audit
 
+## GAME2 native ownership and evidence boundary, 2026-11-10
+
+The source-only v3 audit verifies the complete original 264-definition
+`GAME2.c` payload, every body, source order and all between-definition text
+inside one outer false branch. Its 262 previously active names have unique
+connections: 244 direct Go exports, 13 thin C ABI-to-Go adapters and five
+private Go helpers. Two previously disabled definitions are recorded
+separately. There are no active algorithm definitions left in `GAME2.c`, and
+the new `game2_native_data.c` has no functions. This is a source partition,
+not independent behavioral/original-CPU proof for every entry or every path.
+
+The retained native data owners store C-allocated links, windows, strings,
+contexts, events and voices at full pointer width. The server-options window
+getter reads its actual `nox_window*` owner rather than a low DWORD. Book,
+briefing and quickbar class decisions use the existing native player-class
+accessor instead of treating the packed player-info member as a cgo field.
+Fixed wire IDs/masks and the 200-byte scalar sound record remain fixed-width;
+pointer-bearing event/voice structures and their native sidecars are distinct.
+Thin adapters handle const or mixed return ABIs without making a Go pointer
+from a serialized DWORD. Public pointer signatures were widened where needed;
+this batch does not claim an unchanged `GAME2.h` or removal of cgo.
+
+The bounded changed-ABI query checks 37 names. Its four active retained C
+consumer calls use typed drawable pointers; no int/LODWORD argument or return
+sink was found in that bounded set. Former packed object-message cases 47,
+48 and 0xC3 are preserved inactive, while their active C-to-Go bridge checks
+one complete 9/11/12-byte message, opcode, callback registration and success
+before advancing. High-pointer/canary framing controls are distinct from
+selected main receiver/visual-state assertions and from broader dispatcher
+or peer/gameplay qualification. External C algorithms outside this query are
+not declared ported or pointer-safe by this finding.
+
+Ordinary `nativeAudioFX` remains the production FX owner. The explicit legacy
+service registers a real AIL context/bank and owns separate native resources;
+ordinary initialization does not automatically duplicate them. Parser taps
+run only when the explicit service is initialized, and shared reset/shutdown
+preserve the ordinary owner until its own lifecycle closes. New native event
+tokens do not enter the old packed voice/device callback path. C-owned
+storage stays alive for retained links; controls exposing Go owners pin them
+for the C retention interval. Freed-slot return values remain opaque tokens.
+
+Two failures were corrected in production without changing fixed assertions:
+zero sample-list lengths now break before touching caller scratch, while
+initial empty sound names still write NUL and AUD dot-NUL/tail bytes remain
+intact. A stopped owner is now an invalid handle even if generation zero
+matches Stop's serial zero. Raw uint32 serial allocation and valid live zero
+handles remain unchanged. This stopped-owner boundary, including setting a
+handle after Stop, is a native lifetime policy rather than old-C equivalence
+for that stopped/invalid domain.
+
+The completed independent normal review checks legacy 773 IDs/40 roots and
+main-normal 86 IDs/16 roots, zero failures/skips, against the same 8,997-file
+lease. Its canonical ZIP checks stream full member SHA/CRC and preserve
+regular bytes and symlink-target bytes without extracting or following ZIP
+links. Main PREEXEC/running/terminal events retain the same actual PID and
+main bytes. The final all-five reader also independently checks normal versus
+highres/cgocheck2/checkptr2 embedded Go 1.27.3 settings. A vanished transient
+main path is optional when
+the actual retained and output copies are present. The original main-normal
+metadata rejection remains exit 1/false; the independent review qualifies
+the same execution without a rerun or an invented original driver pass.
+
+All selected test parents have now closed naturally: legacy normal and
+strict each 773 IDs/40 roots, main normal 86/16, real-null-OpenAL main 7/7,
+and strict/highres main 93/23. There are no failures/skips. The 1,732 passing
+profile events include repeated IDs; legacy normal/strict IDs are identical,
+and all five source leases are the same 8,997 files. The final independent
+all-five review qualifies these actual runs and source/main/strict-metadata
+bindings. Canonical archives retain executed mains, available compiler outputs
+and profile evidence before exact-owned duplicate cleanup. Byte/SHA/CRC and
+symlink-target preservation do not establish inode identity or physical disk
+reclamation. Each real-audio profile also preserves the new bridge child's
+own PID/main bytes; historical six-child individual PREEXEC credit is still
+excluded.
+Clean normal/HD products, independent product review, product GUI execution,
+actual image review and exact-owned cleanup remain pending at this checkpoint.
+
+Source facts are in `independent-function-coverage-audit-v1/` (v3 detailed
+mapping SHA-256
+`d7d41820eb161495f4d8c817597cb1ccda6206adc7307ca31f2301b839057cc2`,
+changed-ABI audit
+`809f8723fdfb6844ae41eeb687e0f43e5aca4e439d04a67e9f2ed11e15904ad6`).
+The completed subset review is
+`independent-completed-normal-review-v1/independent-runtime-qualified-v1.json`,
+SHA-256 `2312e859c32a8231bfd2cf8cd3474a04af1721a6537872aaf326c2c2f0f546e6`.
+Root terminal strict qualification `focus-strict-v1/tests-qualified.json`
+has SHA-256 `cec6fe7c357ad136cfb0aadd630e17fe8b9c600b0618f315db0f5d172dd02615`;
+`main-focused-v3/main-focused-qualified.json` has SHA-256
+`cbbe67065268f9fa08ad6e60f26d64aa122ab0722cbe0fd117b2ddf74f7f73ac`.
+Final `independent-all-five-runtime-review-v1/independent-runtime-qualified-v1.json`
+is 190,820 bytes, SHA-256
+`88e172a53afa26902f5a97412aa96c7f2848cae7916c59cd760309dfffe9a566`.
+These findings do not supply all-entry numeric/CPU equivalence, historical
+six-audio-child individual PREEXEC credit, physical audibility, new product
+gameplay, final campaign audits or overall project 100%.
+
+
 ## GAME1 support implementations in Go, 2026-11-10
 
 The five remaining access-list support implementations now run in Go: lazy

@@ -1,3 +1,5 @@
+/* Exact pre-port source retained for comparison; native Go owns the entries. */
+#if 0
 #include <math.h>
 #include "audio_ambient_native_45a9b0.h"
 #include <stdio.h>
@@ -6483,3 +6485,5 @@ int sub_460B90(int a1) {
 	}
 	return 1;
 }
+
+#endif // GAME2 native Go port

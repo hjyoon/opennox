@@ -5,6 +5,7 @@
 #include "GAME2_2.h"
 #include "GAME3_1.h"
 
+#if 0 // Exact packed C algorithms retained; native Go owns the entries.
 //----- (00451CF0) --------------------------------------------------------
 int sub_451CF0(uint32_t* a1) {
 	int v1;       // ecx
@@ -203,3 +204,5 @@ int sub_452770(uint32_t* a1) {
 	}
 	return 0;
 }
+
+#endif // native audio event dependencies

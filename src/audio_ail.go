@@ -308,6 +308,7 @@ func sub_4311F0() int {
 }
 
 func shutdownNativeAudio() {
+	legacy.Game2AudioShutdownNative()
 	nativeAudioFX.close()
 	legacy.Set_dword_587000_81128(nil)
 	if audioMaster != nil {

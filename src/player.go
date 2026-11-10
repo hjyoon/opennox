@@ -183,7 +183,7 @@ func nox_xxx_netNewPlayerMakePacket_4DDA90(buf []byte, pl *server.Player) {
 
 func sub_459D70() int {
 	var v0 uint32
-	if legacy.Get_dword_5d4594_1046492() != 0 {
+	if legacy.Get_dword_5d4594_1046492() != nil {
 		v0 = math.MaxInt32
 	} else {
 		v0 = 0

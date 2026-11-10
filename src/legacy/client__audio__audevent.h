@@ -3,10 +3,10 @@
 
 #include "defs.h"
 
-int sub_451CF0(uint32_t* a1);
-int sub_451DC0(int a1);
-int sub_451E80(int a1);
-int sub_452580(uint32_t* a1);
-int sub_452770(uint32_t* a1);
+void* sub_451CF0(void* a1);
+int sub_451DC0(void* a1);
+int sub_451E80(void* a1);
+int sub_452580(void* a1);
+int sub_452770(void* a1);
 
 #endif // NOX_PORT_CLIENT_AUDIO_AUDEVENT

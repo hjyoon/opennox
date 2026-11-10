@@ -25,7 +25,7 @@ extern uint32_t dword_5d4594_831092;
 void sub_43DC00();
 void sub_44D960();
 void sub_453050();
-int sub_451850(int a2, void* a3);
+int sub_451850(void* a2, void* a3);
 extern void* dword_587000_122852;
 extern void* dword_587000_81128;
 extern void* dword_587000_93164;
@@ -400,7 +400,7 @@ func sub_4862E0(a1 unsafe.Pointer, a2 int32) C.int {
 }
 
 func Sub_451850(a1 unsafe.Pointer, a2 unsafe.Pointer) {
-	C.sub_451850(C.int(uintptr(a1)), a2)
+	C.sub_451850(a1, a2)
 }
 
 func Sub_486FA0(a1 int) {

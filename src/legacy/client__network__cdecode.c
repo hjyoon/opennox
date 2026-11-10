@@ -1,3 +1,4 @@
+#include "game2_packet_bridge.h"
 #include <math.h>
 
 #include "client__network__cdecode.h"
@@ -459,6 +460,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	unsigned char* end = data + sz;
 
 	switch (op) {
+	case 47: // Native object messages share the existing typed Go receiver.
+		return nox_game2_decode_native_object(a1, op, data, sz);
+#if 0 // Exact former packed-pointer object-message case.
 	case 47: // MSG_SIMPLE_OBJ
 		nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (nox_client_isConnected_43C700()) {
@@ -473,6 +477,10 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			}
 		}
 		return 9;
+#endif // native object-message dependency
+	case 48: // Native object messages share the existing typed Go receiver.
+		return nox_game2_decode_native_object(a1, op, data, sz);
+#if 0 // Exact former packed-pointer object-message case.
 	case 48: // MSG_COMPLEX_OBJ
 		nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (!nox_client_isConnected_43C700()) {
@@ -510,6 +518,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			nox_xxx_setKeybTimeout_4160D0(9);
 		}
 		return 11;
+#endif // native object-message dependency
 	case 50: { // MSG_OBJECT_OUT_OF_SIGHT
 		v49 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v50 = v49;
@@ -2239,6 +2248,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v290);
 		}
 		return 2;
+	case 0xC3u: // Native object messages share the existing typed Go receiver.
+		return nox_game2_decode_native_object(a1, op, data, sz);
+#if 0 // Exact former packed-pointer object-message case.
 	case 0xC3u: // MSG_PLAYER_OBJ
 		nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ADDITIONAL_NETWORK_TEST)) {
@@ -2270,6 +2282,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		nox_xxx_cliUpdateCameraPos_435600(*(unsigned short*)(data + 5), *(unsigned short*)(data + 7));
 		nox_xxx_setKeybTimeout_4160D0(8);
 		return 12;
+#endif // native object-message dependency
 	case 0xC4u: // MSG_TEAM_MSG
 		switch (*(unsigned char*)(data + 1)) {
 		case 0u: {

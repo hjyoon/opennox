@@ -62,7 +62,8 @@ payload inside one outer `#if 0`, including nested guards and text between
 definitions. Its 119 original definitions map to 100 direct Go exports,
 12 thin C ABI-to-Go adapters and seven private connections to six distinct
 Go helpers. `game3_native_data.c` retains seven C data owners and has no
-functions. This source partition does not measure whole-project completion.
+functions. This partition includes earlier Go-backed entries and does not
+measure whole-project completion.
 
 The class/config/options, widgets, map and effect implementations use native
 window, string, item and callback pointers. Two listbox draw signatures and
@@ -96,14 +97,41 @@ Local macOS ARM64 / Go 1.27.3 profiles passed with zero failures or skips; CI wa
 | Highres, cgocheck2/checkptr2 | 866 | 121 | `a5d50c4da842d5b6524ae8f3205aa9f643ccee3e6da9afc7aecfd520f7491718` |
 
 Tested lease: `48aac0ba271f1defcfe9017c0fa1c0c7fe42d9802aaaa48a1aa1f10cb8a2c402`
-(`9028` files). This code checkpoint precedes clean product binding.
+(`9028` files). Clean product code commit:
+`03568afb8d3a2ffe75a985e9b93649d1b60c290d`; only the two evidence documents
+change afterward.
 The independent reader confirms the same exact IDs and all three actual
 package mains per profile: Q
 `75fb624cdee4176b699b01d7f9d57100e61c85fc7513f54c2128539ff41c7036`.
 
-Clean normal/HD products, current product GUI/E2E, actual image review and
-post-cleanup canonical review are **PENDING**. Final evidence updates will
-change only these two porting documents after code/product binding.
+Both clean normal/HD products build and run `-h` with `vcs.modified=false`.
+Their source lease is
+`5ccb19f29c48bda1032c309dba3a17ec27524dc5f4936597e59e484d07eef605`;
+product-reader Q is
+`0f441718cc8fa8947152d8e7345318d9e570e695e00fe5bca49db67ff7fdb274`.
+
+| Product | SHA-256 |
+| --- | --- |
+| Normal | `8c3a5d010e70c4c07f49280774f75a101874f1220854ac19df6c167567626d2d` |
+| HD | `3bf56d442035948f9e63482adbe3588361084d0aca6bf323b954be4077c607ab` |
+
+The four existing source-bound cases (options lifecycle, ColorLight,
+Oval Shield and advanced server options) pass in both products: **8/8**.
+The original YAML/controller assertions and fixture-assisted starting actions
+remain unchanged. Independent GUI Q:
+`a36f4e773d49c5c590379a7571badfc4d73bb00dd744254dd76fd545065ec3a9`.
+Root actually viewed the six current options PNGs; visible controls and
+Escape/Back returns have no observed issue. View ledger:
+`0948dc89cd5ca375aad2a911dbd52a83e623f9e164fce273009b5fac125cafaf`.
+The other cases declare no PNGs and receive controller-assertion credit only.
+
+After full canonical verification, exactly eight owned runtime directories
+were removed; products, full archives, original assets, Save and goldens remain.
+All **4,439 original asset files and 126 protected Save files** match their seals.
+A fresh canonical-only GUI reader passes all eight after raw cleanup:
+`6cc1bbf9c0cca9652d7b6d60534f33b168f169f46e6115089030355fa75e9c6e`.
+This is byte-preserving evidence transport, without a post-cleanup inode or
+original-golden pixel-equivalence claim.
 All-entry original-CPU equivalence, physical audio, final campaign audits and
 whole-project 100% remain unproved; campaign scope remains chapters 1–3.
 

@@ -6,7 +6,8 @@ The exact `GAME3.c` payload is preserved byte-for-byte: 143,656 original
 bytes, all 119 definitions and intervening text, including nested guards,
 inside one outer false branch. Connections partition into 100 direct Go
 exports, 12 thin C ABI adapters and seven private connections using six
-distinct Go helpers. The separate seven C data owners have no functions.
+distinct Go helpers, including earlier Go-backed entries. The separate seven
+C data owners have no functions.
 Typed C storage, ABI forwarding and private references remain; cgo remains.
 
 Native window/data, text, selection and callback fields retain full pointer
@@ -40,9 +41,26 @@ Q `a5d50c4da842d5b6524ae8f3205aa9f643ccee3e6da9afc7aecfd520f7491718`. Both used 
 `48aac0ba271f1defcfe9017c0fa1c0c7fe42d9802aaaa48a1aa1f10cb8a2c402` and natural terminal records.
 The independent selected-tests reader Q is
 `75fb624cdee4176b699b01d7f9d57100e61c85fc7513f54c2128539ff41c7036`.
-Clean normal/HD products and
-current GUI/E2E/visual/canonical results remain **PENDING**. Only the two
-evidence documents may change afterward for final reporting.
+Clean product code commit is
+`03568afb8d3a2ffe75a985e9b93649d1b60c290d`; only these two evidence
+documents change afterward. Both normal/HD products build and run help with
+`vcs.modified=false`; source lease
+`5ccb19f29c48bda1032c309dba3a17ec27524dc5f4936597e59e484d07eef605`,
+independent product Q
+`0f441718cc8fa8947152d8e7345318d9e570e695e00fe5bca49db67ff7fdb274`.
+
+All eight current product GUI/E2E invocations pass (the four unchanged source
+cases in normal and HD), with independent GUI Q
+`a36f4e773d49c5c590379a7571badfc4d73bb00dd744254dd76fd545065ec3a9`.
+Root viewed the six declared current options PNGs; ledger
+`0948dc89cd5ca375aad2a911dbd52a83e623f9e164fce273009b5fac125cafaf`.
+No visual credit is assigned to cases without PNGs. Exactly eight owned raw
+runtime directories were removed after full canonical verification; a fresh
+archive-only reader passes all eight,
+Q `6cc1bbf9c0cca9652d7b6d60534f33b168f169f46e6115089030355fa75e9c6e`.
+All 4,439 original assets and 126 protected Save files remain exact; products,
+archives and original goldens are preserved. This does not claim original
+pixel equivalence or post-cleanup inode identity.
 No all-119 original-CPU, all-gameplay, physical-audio, final campaign or
 whole-project 100% credit follows from this source inventory.
 

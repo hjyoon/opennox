@@ -124,7 +124,7 @@ type waypointOriginalWorld545B00 struct {
 func waypointOriginalWorldNew545B00(t *testing.T, row waypointOriginalRow545B00) *waypointOriginalWorld545B00 {
 	t.Helper()
 	const size = 32768
-	base, free := alloc.Malloc(size)
+	base, free := alloc.MallocHigh(size)
 	t.Cleanup(free)
 	w := &waypointOriginalWorld545B00{Raw: unsafe.Slice((*byte)(base), size), RNG: row.Input.Seed, Events: make([]map[string]any, 0)}
 	for i := range w.Raw {

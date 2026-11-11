@@ -11,7 +11,7 @@ import (
 )
 
 func TestScriptCallbackSetExport509120PreservesNativeObjectEventAndName(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(object)) <= math.MaxUint32 {
 		t.Fatalf("object pointer = %p, want native address above 4 GiB", object)

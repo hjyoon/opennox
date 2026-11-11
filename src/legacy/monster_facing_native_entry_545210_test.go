@@ -48,7 +48,7 @@ func TestMonsterFacingNextPublicCEntriesNative545210(t *testing.T) {
 		}
 		return
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := server.New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -69,7 +69,7 @@ func TestMonsterFacingNextPublicCEntriesNative545210(t *testing.T) {
 		Update server.MonsterUpdateData
 		After  [32]byte
 	}
-	f, free := alloc.New(guarded{})
+	f, free := alloc.NewHigh(guarded{})
 	t.Cleanup(free)
 	*f = guarded{}
 	for i := range f.Before {

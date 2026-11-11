@@ -26,7 +26,7 @@ func TestUnitBuffPowerExport4FF570PreservesNativePointerSignedDwordAndByte(t *te
 	}
 	t.Cleanup(func() { unitBuffPowerExportImpl4FF570 = old })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -54,7 +54,7 @@ func TestUnitBuffPowerExport4FF570PreservesNativePointerSignedDwordAndByte(t *te
 }
 
 func TestUnitBuffPowerExport4FF570CallsNativeBinding(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	unit.BuffsPower[0] = 0x80
 	unit.BuffsPower[31] = math.MaxUint8

@@ -107,7 +107,7 @@ func TestGolemDeathOriginal549E90(t *testing.T) {
 }
 func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, nearest bool) (out golemOutput549E90) {
 	t.Helper()
-	base, free := alloc.Malloc(0x10000)
+	base, free := alloc.MallocHigh(0x10000)
 	defer free()
 	buf := unsafe.Slice((*byte)(base), 0x10000)
 	for i := range buf {
@@ -153,13 +153,13 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 		Index  uint32
 		After  [16]byte
 	}
-	g, freeState := alloc.New(guardedState{})
+	g, freeState := alloc.NewHigh(guardedState{})
 	defer freeState()
 	*g = guardedState{Before: [16]byte{1, 2, 3}, Index: in.Cache, After: [16]byte{4, 5, 6}}
 	beforeState := *g
 	// Stock byte image includes the adjacent divisor, so index12 aliases its
 	// least significant byte exactly, while negative/huge reads remain raw.
-	massStorage, freeMass := alloc.Malloc(80)
+	massStorage, freeMass := alloc.MallocHigh(80)
 	defer freeMass()
 	massBuf := unsafe.Slice((*byte)(massStorage), 80)
 	for i := range massBuf {
@@ -179,7 +179,7 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 	fps, coop := in.FPS, in.Coop
 	slotSize := int(unsafe.Sizeof(uintptr(0)))
 	makeTable := func(ids []int) (unsafe.Pointer, []byte, []byte, func()) {
-		address, release := alloc.Malloc(uintptr((len(ids) + 4) * slotSize))
+		address, release := alloc.MallocHigh(uintptr((len(ids) + 4) * slotSize))
 		data := unsafe.Slice((*byte)(address), (len(ids)+4)*slotSize)
 		for i := range data {
 			data[i] = 0x96

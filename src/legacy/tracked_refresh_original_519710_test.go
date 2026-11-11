@@ -115,9 +115,9 @@ func refreshBytes519710(pointer unsafe.Pointer, size uintptr) []byte {
 }
 func newRefreshFixture519710(t *testing.T, in refreshInput519710) *refreshFixture519710 {
 	t.Helper()
-	u, fu := alloc.New(refreshGuardUpdate519710{})
-	p, fp := alloc.New(refreshGuardPlayer519710{})
-	o, fo := alloc.New(refreshGuardPlayer519710{})
+	u, fu := alloc.NewHigh(refreshGuardUpdate519710{})
+	p, fp := alloc.NewHigh(refreshGuardPlayer519710{})
+	o, fo := alloc.NewHigh(refreshGuardPlayer519710{})
 	t.Cleanup(fu)
 	t.Cleanup(fp)
 	t.Cleanup(fo)

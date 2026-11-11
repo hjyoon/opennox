@@ -1,5 +1,3 @@
-//go:build darwin && arm64
-
 package legacy
 
 /*
@@ -8,8 +6,15 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(__APPLE__)
 #include <mach/mach.h>
 #include <mach/mach_vm.h>
+#else
+#include <stdio.h>
+#include <inttypes.h>
+#endif
 typedef int (*setting_flags_fixture_fn_409e40)(int);
 _Static_assert(sizeof(int)==4,"raw int ABI is DWORD");
 _Static_assert(_Generic(&sub_409E40,setting_flags_fixture_fn_409e40:1,default:0),"E40 int(int)");
@@ -37,13 +42,33 @@ static void* setting_flags_fixture_game_cell_409e40(void*p){return &((setting_fl
 // C globals are separate symbols. Their neighbours are never guessed to be a
 // struct. The actual readable VM interval bounds this optional small window.
 static void* setting_flags_fixture_window_409e40(void*cell,size_t*length,size_t*center){
- mach_vm_address_t region=(mach_vm_address_t)(uintptr_t)cell;mach_vm_size_t size=0;
+ uintptr_t address=(uintptr_t)cell,region=0,size=0;
+#if defined(_WIN32)
+ MEMORY_BASIC_INFORMATION info;
+ if(VirtualQuery(cell,&info,sizeof(info))!=sizeof(info)||info.State!=MEM_COMMIT||
+    (info.Protect&(PAGE_GUARD|PAGE_NOACCESS))||
+    !(info.Protect&(PAGE_READWRITE|PAGE_WRITECOPY|PAGE_EXECUTE_READWRITE|PAGE_EXECUTE_WRITECOPY)))return 0;
+ region=(uintptr_t)info.BaseAddress;size=(uintptr_t)info.RegionSize;
+#elif defined(__APPLE__)
+ mach_vm_address_t mapped_region=(mach_vm_address_t)address;mach_vm_size_t mapped_size=0;
  vm_region_basic_info_data_64_t info;mach_msg_type_number_t count=VM_REGION_BASIC_INFO_COUNT_64;
  mach_port_t object=MACH_PORT_NULL;
- kern_return_t code=mach_vm_region(mach_task_self(),&region,&size,VM_REGION_BASIC_INFO_64,(vm_region_info_t)&info,&count,&object);
+ kern_return_t code=mach_vm_region(mach_task_self(),&mapped_region,&mapped_size,VM_REGION_BASIC_INFO_64,(vm_region_info_t)&info,&count,&object);
  if(object!=MACH_PORT_NULL)mach_port_deallocate(mach_task_self(),object);
- uintptr_t address=(uintptr_t)cell;
- if(code!=KERN_SUCCESS||!(info.protection&VM_PROT_READ)||!(info.protection&VM_PROT_WRITE)||region>address||size<4||address-region>size-4)return 0;
+ if(code!=KERN_SUCCESS||!(info.protection&VM_PROT_READ)||!(info.protection&VM_PROT_WRITE))return 0;
+ region=(uintptr_t)mapped_region;size=(uintptr_t)mapped_size;
+#else
+ FILE*maps=fopen("/proc/self/maps","r");if(!maps)return 0;
+ char line[512],permissions[5];uintptr_t start,end;
+ while(fgets(line,sizeof(line),maps)){
+  if(sscanf(line,"%" SCNxPTR "-%" SCNxPTR " %4s",&start,&end,permissions)==3&&
+     start<=address&&address<end&&permissions[0]=='r'&&permissions[1]=='w'){
+   region=start;size=end-start;break;
+  }
+ }
+ fclose(maps);
+#endif
+ if(region>address||size<4||address-region>size-4)return 0;
  uintptr_t before=address-region<16?address-region:16;
  uintptr_t available=region+size-(address+4),after=available<16?available:16;
  *center=(size_t)before;*length=(size_t)(before+4+after);return (void*)(address-before);

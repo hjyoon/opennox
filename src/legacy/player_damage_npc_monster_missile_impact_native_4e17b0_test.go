@@ -1,8 +1,10 @@
 package legacy
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
+	"os"
 	"testing"
 	"unsafe"
 
@@ -18,6 +20,30 @@ import (
 // registered PlayerDamage -> DefaultDamage -> UnitSetHP. No replacement HP,
 // damage, attribution or armor callback supplies the result.
 func TestPlayerDamageNPCMonsterSimpleMissileImpactNative4E17B0CRecords(t *testing.T) {
+	// The adjacent original-machine-code oracle supplies the exact shared
+	// physical numeric inputs under startup FPCW0xe3f; host RoundToEven is a
+	// separate diagnostic control and does not model the game startup mode.
+	originalBytes, err := os.ReadFile("../server/testdata/npc_physical_carry_ci_original_4e17b0.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var original struct {
+		Rows []struct {
+			Name    string `json:"name"`
+			Mode    string `json:"mode"`
+			Raw     int32  `json:"raw"`
+			Armor   uint32 `json:"armor_bits32"`
+			Initial uint32 `json:"initial_carry_bits32"`
+			Damage  int32  `json:"damage_bits32"`
+			Carry   uint32 `json:"carry_bits32"`
+		} `json:"rows"`
+	}
+	if err = json.Unmarshal(originalBytes, &original); err != nil {
+		t.Fatal(err)
+	}
+	if len(original.Rows) != 32 {
+		t.Fatal("incomplete original physical numeric controls")
+	}
 	srv := npcReflectLegacyServer4E17B0(t)
 	srv.Audio.Init(srv)
 	t.Cleanup(srv.Audio.Free)
@@ -56,11 +82,23 @@ func TestPlayerDamageNPCMonsterSimpleMissileImpactNative4E17B0CRecords(t *testin
 					}
 				}
 				beforeA, beforeAU, beforeW := *a, *au, *w
-				accumulated := float32((1-float64(absorption))*float64(raw)) + float32(.125)
-				rounded := int32(math.RoundToEven(float64(accumulated)))
-				effective := max(rounded, 1)
+				var effective int32
+				var carry uint32
+				found := false
+				for _, row := range original.Rows {
+					if row.Name == fmt.Sprintf("stone-armor-%g-raw-%d", absorption, raw) && row.Mode == "actual-startup" {
+						if row.Raw != raw || row.Armor != math.Float32bits(absorption) || row.Initial != math.Float32bits(.125) {
+							t.Fatal("original physical numeric input mismatch")
+						}
+						effective, carry, found = row.Damage, row.Carry, true
+						break
+					}
+				}
+				if !found {
+					t.Fatal("missing original physical numeric input")
+				}
 				if !objectDamageDispatchCallNative(v, a, w, raw, object.DamageImpact) || hp.Cur != uint16(2000-effective) || hp.Field2 != 2000 || hp.Max != 2000 ||
-					u.Field1 != math.Float32bits(accumulated-float32(rounded)) || u.Field518 != math.Float32bits(absorption) || u.Field547 != 1 || u.Field546 != 525 || u.Field523_2 != 88 ||
+					u.Field1 != carry || u.Field518 != math.Float32bits(absorption) || u.Field547 != 1 || u.Field546 != 525 || u.Field523_2 != 88 ||
 					!u.StatusFlags.Has(object.MonStatusInjured) || v.Obj130 != w || v.Pos132 != w.PrevPos || v.Field131 != 11 || v.Frame134 != 1400 ||
 					*a != beforeA || *au != beforeAU || *w != beforeW {
 					t.Fatalf("C->NPC stone raw=%d armor=%g HP=%d effective=%d carry=%g marker=%d/%d source/projectile unchanged=%t/%t/%t", raw, absorption, hp.Cur, effective, math.Float32frombits(u.Field1), u.Field547, u.Field546, *a == beforeA, *au == beforeAU, *w == beforeW)

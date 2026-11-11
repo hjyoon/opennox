@@ -154,11 +154,11 @@ func TestCircleCollisionStartupOriginal(t *testing.T) {
 func testCircleCollisionOriginal(t *testing.T, row circleRowOriginal, tables map[string][]byte) {
 	t.Helper()
 	i := row.Input
-	a, fa := alloc.New(Object{})
-	b, fb := alloc.New(Object{})
-	u, fu := alloc.New(PlayerUpdateData{})
-	alt, falt := alloc.New(PlayerUpdateData{})
-	wall, fw := alloc.New(Wall{})
+	a, fa := alloc.NewHigh(Object{})
+	b, fb := alloc.NewHigh(Object{})
+	u, fu := alloc.NewHigh(PlayerUpdateData{})
+	alt, falt := alloc.NewHigh(PlayerUpdateData{})
+	wall, fw := alloc.NewHigh(Wall{})
 	for _, free := range []func(){fa, fb, fu, falt, fw} {
 		t.Cleanup(free)
 	}

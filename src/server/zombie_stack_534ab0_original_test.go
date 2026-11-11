@@ -65,7 +65,7 @@ func TestZombieStackOriginalNative534AB0(t *testing.T) {
 	}
 	frame := func(t *testing.T, size uintptr) []byte {
 		t.Helper()
-		p, free := alloc.Make([]byte(nil), int(size)+64)
+		p, free := alloc.MakeHigh([]byte(nil), int(size)+64)
 		t.Cleanup(free)
 		for n := range p {
 			p[n] = 0xa5

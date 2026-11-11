@@ -25,9 +25,9 @@ type tooltipFixture4BF050 struct {
 
 func newTooltipFixture4BF050(t *testing.T) *tooltipFixture4BF050 {
 	t.Helper()
-	dr, freeDr := alloc.New(client.Drawable{})
+	dr, freeDr := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(freeDr)
-	buf, freeBuf := alloc.Make([]uint16{}, 1025)
+	buf, freeBuf := alloc.MakeHigh([]uint16{}, 1025)
 	t.Cleanup(freeBuf)
 	buf[1024] = 0x55AA
 	f := &tooltipFixture4BF050{t: t, dr: dr, buf: buf, d: clientAskInfoDepsFactory4BF050()}
@@ -113,7 +113,7 @@ func (f *tooltipFixture4BF050) run() *uint16 {
 
 func (f *tooltipFixture4BF050) modifier(primary, secondary, identify string) *server.ModifierEff {
 	f.t.Helper()
-	m, free := alloc.New(server.ModifierEff{})
+	m, free := alloc.NewHigh(server.ModifierEff{})
 	f.t.Cleanup(free)
 	// Test-only native metadata access: the production function uses typed
 	// accessors, never these PE32 offsets or reflection.
@@ -181,7 +181,7 @@ func TestClientAskInfo4BF050EquipmentLanguageOrderAndDescriptions(t *testing.T) 
 		t.Run(fmt.Sprintf("lang%d", tc.lang), func(t *testing.T) {
 			f := newTooltipFixture4BF050(t)
 			f.dr.TypeIDVal, f.dr.ObjClass = 1170, object.ClassWeapon
-			def, free := alloc.New(server.Modifier{})
+			def, free := alloc.NewHigh(server.Modifier{})
 			t.Cleanup(free)
 			def.Desc8 = alloc.InternCString16("SWORD")
 			f.d.weaponDef = func(uint32) *server.Modifier { return def }
@@ -232,7 +232,7 @@ func TestClientAskInfo4BF050EquipmentLanguageOrderAndDescriptions(t *testing.T) 
 	f := newTooltipFixture4BF050(t)
 	f.dr.ObjClass = object.ClassArmor
 	f.d.armorDef = func(uint32) *server.Modifier { return &server.Modifier{Desc8: alloc.InternCString16("BASE")} }
-	m, free := alloc.New(server.ModifierEff{})
+	m, free := alloc.NewHigh(server.ModifierEff{})
 	t.Cleanup(free)
 	u := f.dr.UnionItem()
 	u.Field_108, u.Field_109, u.Field_110, u.Field_111 = m.C(), m.C(), m.C(), m.C()
@@ -413,7 +413,7 @@ func TestClientAskInfo4BF050CEntryHighPointersAndRawUTF16(t *testing.T) {
 		t.Fatalf("real C entry name=%q", got)
 	}
 	f.dr.ObjClass = object.ClassWeapon
-	base, free := alloc.CloneSlice([]uint16{0xD800, 0xAC00, 0})
+	base, free := alloc.CloneSliceHigh([]uint16{0xD800, 0xAC00, 0})
 	t.Cleanup(free)
 	f.d.weaponDef = func(uint32) *server.Modifier { return &server.Modifier{Desc8: &base[0]} }
 	Nox_xxx_clientAskInfoMb_4BF050(f.dr)

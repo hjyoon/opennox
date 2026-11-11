@@ -76,7 +76,7 @@ func TestNPCDialogNative479B00RepeatAbove4GiB(t *testing.T) {
 	}
 	root, button, _, list := npcDialogTestState479B00(t)
 	button.SetID(3907)
-	filename, free := alloc.CString("War01A.scr:Opening-voice-file")
+	filename, free := alloc.CStringHigh("War01A.scr:Opening-voice-file")
 	defer free()
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(filename)) <= math.MaxUint32 {
 		t.Fatalf("filename %p did not exceed 4 GiB", filename)
@@ -106,7 +106,7 @@ func TestNPCDialogNative479B00ButtonsPauseAndHidden(t *testing.T) {
 					button.SetID(id)
 					root.SetHidden(hidden)
 					*npcDialogPauseSlot479B00() = pause
-					file, free := alloc.CString("native-repeat-file")
+					file, free := alloc.CStringHigh("native-repeat-file")
 					defer free()
 					*memmap.PtrPtr(0x5D4594, 1115312) = unsafe.Pointer(file)
 					var calls int
@@ -151,8 +151,8 @@ func TestNPCDialogNative479B00ReadsLiveFileAfterSound(t *testing.T) {
 		t.Run(fmt.Sprintf("cached_id_%d", id), func(t *testing.T) {
 			root, button, _, list := npcDialogTestState479B00(t)
 			button.SetID(id)
-			before, freeBefore := alloc.CString("before-click")
-			after, freeAfter := alloc.CString("live-file-after-click")
+			before, freeBefore := alloc.CStringHigh("before-click")
+			after, freeAfter := alloc.CStringHigh("live-file-after-click")
 			defer freeBefore()
 			defer freeAfter()
 			*memmap.PtrPtr(0x5D4594, 1115312) = unsafe.Pointer(before)
@@ -214,7 +214,7 @@ func TestNPCDialogNative479B00EmptyAndDisabledRepeat(t *testing.T) {
 				if mode == "disabled" {
 					name, *enabled = "new-file", 0
 				}
-				file, free := alloc.CString(name)
+				file, free := alloc.CStringHigh(name)
 				defer free()
 				*memmap.PtrPtr(0x5D4594, 1115312) = unsafe.Pointer(file)
 			}

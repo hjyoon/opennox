@@ -47,7 +47,7 @@ func tagOriginalAllocate530160[T comparable](t *testing.T, blocks *[]*tagOrigina
 		Value  T
 		After  [32]byte
 	}
-	p, free := alloc.New(frame{})
+	p, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*p = frame{}
 	for i := range p.Before {

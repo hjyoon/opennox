@@ -23,7 +23,7 @@ func TestFlameCleanseUpdate53D510NativeDispatch(t *testing.T) {
 	if !ok || callback == nil || callback != Get_nox_xxx_updateFlameCleanse_53D510() || size != 0 {
 		t.Fatalf("FlameCleanseUpdate registration=%p/%d/%t", callback, size, ok)
 	}
-	obj, freeObj := alloc.New(server.Object{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
 	defer freeObj()
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
 		t.Fatalf("object=%p, want C-owned pointer above 4 GiB", obj)

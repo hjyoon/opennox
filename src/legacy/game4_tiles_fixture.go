@@ -5,6 +5,8 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include "GAME4.h"
+extern void* game4_fixture_calloc_go(size_t count, size_t size);
+extern void game4_fixture_release_go(void* p);
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern uint32_t nox_tile_def_cnt;
@@ -81,7 +83,11 @@ static int game4_tiles_test_subtile(float2* at) {
 	return -31;
 }
 
+#define calloc game4_fixture_calloc_go
+#define free game4_fixture_release_go
 #include "game4_tiles_reference.h"
+#undef free
+#undef calloc
 
 static game4_tiles_test_bank* game4_tiles_test_begin(void) {
 	game4_tiles_test_bank* b = calloc(1, sizeof(*b));
@@ -105,7 +111,7 @@ static void game4_tiles_test_end(game4_tiles_test_bank* b) {
 	memcpy(nox_tile_defs_arr, b->old_defs, sizeof(b->old_defs));
 	game4_tiles_test_active = b->old_active;
 	for (uint32_t i = 0; i < b->allocated_count; ++i) {
-		free(b->allocated[i]->layer); free(b->allocated[i]);
+		game4_fixture_release_go(b->allocated[i]->layer); game4_fixture_release_go(b->allocated[i]);
 	}
 	free(b);
 }
@@ -189,16 +195,24 @@ import "C"
 
 import "unsafe"
 
-type game4TilesTestBank struct{ ptr *C.game4_tiles_test_bank }
+type game4TilesTestBank struct {
+	ptr           *C.game4_tiles_test_bank
+	releaseMemory func()
+}
 
 func game4TilesTestBegin() *game4TilesTestBank {
+	releaseMemory := game4SupportHighFixtureMemory()
 	p := C.game4_tiles_test_begin()
 	if p == nil {
+		releaseMemory()
 		return nil
 	}
-	return &game4TilesTestBank{p}
+	return &game4TilesTestBank{ptr: p, releaseMemory: releaseMemory}
 }
-func (b *game4TilesTestBank) close() { C.game4_tiles_test_end(b.ptr) }
+func (b *game4TilesTestBank) close() {
+	C.game4_tiles_test_end(b.ptr)
+	b.releaseMemory()
+}
 func (b *game4TilesTestBank) seed(shape, definitions int, cached int32) {
 	C.game4_tiles_test_seed(b.ptr, C.int(shape), C.int(definitions), C.int32_t(cached))
 }

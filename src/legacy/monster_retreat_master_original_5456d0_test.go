@@ -116,7 +116,7 @@ type retreatMasterWorld5456D0 struct {
 
 func newRetreatMasterWorld5456D0(t *testing.T, input retreatMasterInput5456D0) *retreatMasterWorld5456D0 {
 	t.Helper()
-	ptr, free := alloc.Malloc(65536)
+	ptr, free := alloc.MallocHigh(65536)
 	t.Cleanup(free)
 	w := &retreatMasterWorld5456D0{Heap: unsafe.Slice((*byte)(ptr), 65536), Events: make([]any, 0)}
 	for i := range w.Heap {

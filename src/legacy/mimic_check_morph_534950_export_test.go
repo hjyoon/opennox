@@ -15,8 +15,8 @@ import (
 )
 
 func TestMimicCheckMorph534950CEntryDelegatesWholeBody(t *testing.T) {
-	obj, freeObj := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeObj)
 	t.Cleanup(freeUpdate)
 	obj.ObjClass, obj.UpdateData = object.ClassMonster, unsafe.Pointer(update)
@@ -53,7 +53,7 @@ func TestMimicCheckMorph534950CEntryProductionStack(t *testing.T) {
 	if obj == nil {
 		t.Fatal("native object allocation failed")
 	}
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	obj.ObjClass, obj.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 	if unsafe.Sizeof(uintptr(0)) > 4 {

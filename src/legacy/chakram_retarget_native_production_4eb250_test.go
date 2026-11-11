@@ -25,11 +25,11 @@ func TestChakramRetargetActualCProduction4EB250(t *testing.T) {
 		}
 		TestChakramRetargetNativeLayout4EB250(t)
 		s, source, oldUpdate, owner := monsterMainBlockLegacyFixture547210(t)
-		update, freeUpdate := alloc.New(server.ChakramUpdateData{})
+		update, freeUpdate := alloc.NewHigh(server.ChakramUpdateData{})
 		t.Cleanup(freeUpdate)
-		last, freeLast := alloc.New(server.Object{})
+		last, freeLast := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeLast)
-		target, freeTarget := alloc.New(server.Object{})
+		target, freeTarget := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeTarget)
 		source.ObjClass, source.ObjOwner, source.UpdateData = object.ClassMissile, owner, unsafe.Pointer(update)
 		source.PosVec, source.NewPos, source.SpeedCur = types.Ptf(10, 20), types.Ptf(10, 20), 11
@@ -66,7 +66,7 @@ func TestChakramRetargetActualCProduction4EB250(t *testing.T) {
 		}
 		var tied *server.Object
 		if mode == "tie" {
-			value, free := alloc.New(server.Object{})
+			value, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			tied = value
 			*tied = *target

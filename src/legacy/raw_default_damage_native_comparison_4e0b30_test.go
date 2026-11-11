@@ -3,6 +3,7 @@
 package legacy
 
 import (
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -11,18 +12,19 @@ import (
 )
 
 type rddNativeStep4E0B30 struct {
-	DerivedAttempt bool
-	Kind           string
-	Field          int
-	Base           uint32
-	Event          rddEvent4E0B30
-	Frame          rddFrame4E0B30
-	Effect         *rddEffect4E0B30
-	EffectArgs     []uint32
-	ArgumentKinds  []string
-	Strings        map[int]string
-	Coordinates    map[int][4]uint32
-	DamageBefore   map[int]uint32
+	DerivedAttempt    bool
+	Kind              string
+	Field             int
+	Base              uint32
+	Event             rddEvent4E0B30
+	Frame             rddFrame4E0B30
+	Effect            *rddEffect4E0B30
+	EffectArgs        []uint32
+	ArgumentKinds     []string
+	Strings           map[int]string
+	Coordinates       map[int][4]uint32
+	DamageBefore      map[int]uint32
+	TerminalFragments []rddEvent4E0B30
 }
 type rddActualChildFrame4E0B30 struct {
 	Entry       uint32
@@ -246,6 +248,18 @@ func rddNativePlan4E0B30(b *rddBundle4E0B30, row *rddRow4E0B30, f *ddiFixture4E0
 				out.Steps = append(out.Steps, rddNativeStep4E0B30{Kind: "call-after", Frame: frame})
 			}
 		case "observed-partial-write-fragment":
+			found := false
+			for i := range out.Steps {
+				step := &out.Steps[i]
+				if step.Kind == "write" && step.Event.Sequence == event.OriginalWrite {
+					step.TerminalFragments = append(step.TerminalFragments, event)
+					found = true
+					break
+				}
+			}
+			if !found {
+				return nil, fmt.Errorf("certified terminal fragment lacks original write")
+			}
 			data, e := hex.DecodeString(event.After)
 			if e != nil {
 				return nil, e
@@ -363,6 +377,11 @@ func (c *rddNativeComparison4E0B30) operand(event rawDefaultDamageNativeOperand4
 		}
 		copy := event
 		c.Pending = &copy
+		if len(step.TerminalFragments) != 0 {
+			if e := c.stageTerminalFragments(step); e != nil {
+				c.fail("terminal expected-shadow fragment: %v", e)
+			}
+		}
 		if c.Progress != nil {
 			c.Progress(c.Position, event)
 		}
@@ -399,6 +418,43 @@ func (c *rddNativeComparison4E0B30) operand(event rawDefaultDamageNativeOperand4
 	c.Pending = nil
 	c.Position++
 	c.drainEffects()
+}
+
+// Prepare only the expected bank before the actual attempted store. The
+// original row has already passed its independent fragment certificate. This
+// never writes an actual page, canonical input or AFTER artifact; a missing or
+// wrong physical low byte still fails the complete actual-vs-expected banks.
+func (c *rddNativeComparison4E0B30) stageTerminalFragments(step rddNativeStep4E0B30) error {
+	if step.Kind != "write" || step.Event.Completed || !step.Event.Fault || step.Event.Width != 2 || len(step.TerminalFragments) != 1 {
+		return fmt.Errorf("unsupported terminal store fragment shape")
+	}
+	g := c.Projection.Graph
+	if step.Field < 0 || g.Definitions[step.Field].pointer() {
+		return fmt.Errorf("terminal fragment requires scalar field")
+	}
+	fragment := step.TerminalFragments[0]
+	if fragment.OriginalWrite != step.Event.Sequence || fragment.WriteOffset != 0 || fragment.Width != 1 || fragment.OriginalCompleted || !fragment.PhysicalOnly || fragment.PC != step.Event.PC || mustRDDNumber4E0B30(fragment.Address) != mustRDDNumber4E0B30(step.Event.Address) {
+		return fmt.Errorf("terminal fragment identity/order")
+	}
+	before, err := hex.DecodeString(fragment.Before)
+	if err != nil || len(before) != 1 {
+		return fmt.Errorf("terminal fragment BEFORE bytes")
+	}
+	after, err := hex.DecodeString(fragment.After)
+	if err != nil || len(after) != 1 || after[0] != byte(step.Event.Value) {
+		return fmt.Errorf("terminal fragment attempted value")
+	}
+	token, ok := g.Tokens[step.Base]
+	if !ok || token.Kind != 1 || int(token.Allocation) >= len(g.Allocations) {
+		return fmt.Errorf("terminal fragment native allocation")
+	}
+	allocation := &g.Allocations[token.Allocation]
+	offset := int(token.Offset) + int(g.Offsets[step.Field])
+	if offset != g.Page-1 || !bytes.Equal(allocation.Expected[offset:], before) {
+		return fmt.Errorf("terminal fragment mapped prefix/BEFORE")
+	}
+	copy(allocation.Expected[offset:], after)
+	return nil
 }
 func (c *rddNativeComparison4E0B30) acceptNativeWrite(step rddNativeStep4E0B30, data []byte) error {
 	// No native write is performed here. Only expected canary and canonical
@@ -664,9 +720,8 @@ func (c *rddNativeComparison4E0B30) beforeCallback(site uint32, target unsafe.Po
 	}
 }
 
-// Partial original WORD observations are not applied to native pages here. The
-// supervised backend must retain its actual full AFTER pages and expose the
-// unresolved02-versus-AA difference; no fallback expected-memory normalization.
+// Terminal fragments affect only the expected bank before execution. Actual
+// full AFTER pages must agree through the real ordered-byte store and fault.
 
 type rddActualNativeFault4E0B30 struct {
 	CallerAddress                  uintptr
@@ -728,8 +783,8 @@ func (c *rddNativeComparison4E0B30) finishFault(proof rddActualNativeFault4E0B30
 	if e != nil || len(caller) != 24 || !proof.CallerValid || proof.CallerAddress != c.CallerNativeAddress || proof.CallerBits != uint32(ddiUnsigned4E0B30(caller[16:20])) {
 		return fmt.Errorf("actual pinned physical scalar AFTER missing or differs from original caller damage word")
 	}
-	if c.Row.PartialCount != 0 {
-		return fmt.Errorf("UNQUALIFIED physical WORD postfault equivalence: preserve original02 and actual native AFTER; no normalization")
+	if c.Row.PartialCount != 0 && (c.Pending == nil || len(step.TerminalFragments) != c.Row.PartialCount || proof.Address != uintptr(c.Pending.Address)+1) {
+		return fmt.Errorf("terminal WORD fragment lacks exact pending high-byte fault")
 	}
 	return nil
 }

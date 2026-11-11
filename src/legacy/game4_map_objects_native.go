@@ -16,7 +16,7 @@ func game4SetMapObjectHead(node *C.nox_map_object_list_node_5048A0) {
 
 //export nox_xxx_unitAddToList_5048A0
 func nox_xxx_unitAddToList_5048A0(object *C.nox_object_t) *C.nox_map_object_list_node_5048A0 {
-	node := (*C.nox_map_object_list_node_5048A0)(C.calloc(1, C.sizeof_nox_map_object_list_node_5048A0))
+	node := (*C.nox_map_object_list_node_5048A0)(game4SupportAllocate(1, C.sizeof_nox_map_object_list_node_5048A0))
 	if node == nil {
 		return nil
 	}

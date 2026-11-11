@@ -173,16 +173,16 @@ func game1SettingsSave40AA00(t *testing.T) func() {
 func TestGame1SettingsScalarABI40AA00(t *testing.T) {
 	for _, offset := range []uint32{3476, 3508, 3520, 3536} {
 		p := memmap.PtrOff(0x5d4594, uintptr(offset))
-		if uintptr(p) <= 0xffffffff || p != game1SettingsCellC40AA00(offset) {
+		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != game1SettingsCellC40AA00(offset) {
 			t.Fatalf("actual full native live cell alias offset=%d", offset)
 		}
 	}
 	p, width, align := game1SettingsGlobalC40AA00()
 	rawBlob := game1SettingsBlobC40AA00(10976, 20)
-	if p != game1SettingsGlobal40E090() || uintptr(p) <= 0xffffffff || width != 4 || align != 4 || uintptr(p)%align != 0 || p == unsafe.Pointer(&rawBlob[8]) {
+	if p != game1SettingsGlobal40E090() || (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || width != 4 || align != 4 || uintptr(p)%align != 0 || p == unsafe.Pointer(&rawBlob[8]) {
 		t.Fatal("actual C global DWORD width/alignment/address and independent packed blob")
 	}
-	t.Log("GAME1_SETTINGS_SCALAR_ABI_OK public-C=6 live-aliases=4 separate-C-global=1 native>4GiB original-pointer-truncation-claim=false")
+	t.Logf("GAME1_SETTINGS_SCALAR_ABI_OK public-C=6 live-aliases=4 separate-C-global=1 native-pointer-width=%d high-address-qualified=%t original-pointer-truncation-claim=false", unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(uintptr(0)) == 8)
 }
 
 func TestGame1SettingsScalarOldC40AA00(t *testing.T) {

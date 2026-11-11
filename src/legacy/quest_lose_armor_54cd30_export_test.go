@@ -30,11 +30,11 @@ func TestQuestLoseArmor54CD30NativeCGoRoundTrip(t *testing.T) {
 	oldServer := GetServer
 	GetServer = func() Server { return outer }
 	t.Cleanup(func() { GetServer = oldServer })
-	u, freeUnit := alloc.New(server.Object{})
+	u, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
-	a, freeA := alloc.New(server.Object{})
+	a, freeA := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeA)
-	b, freeB := alloc.New(server.Object{})
+	b, freeB := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeB)
 	*u = server.Object{InvFirstItem: a, Worth: 0xaabbccdd}
 	*a = server.Object{TypeInd: 65535, ObjClass: 0x82000000, ObjFlags: 0x80000100, InvNextItem: b}

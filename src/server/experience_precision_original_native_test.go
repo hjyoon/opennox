@@ -64,11 +64,11 @@ func TestExperiencePrecisionOriginalNative(t *testing.T) {
 				}
 				count++
 				t.Run(c.Name, func(t *testing.T) {
-					unitBytes, freeUnit := alloc.Make([]byte(nil), 1056)
+					unitBytes, freeUnit := alloc.MakeHigh([]byte(nil), 1056)
 					defer freeUnit()
-					updateBytes, freeUpdate := alloc.Make([]byte(nil), 784)
+					updateBytes, freeUpdate := alloc.MakeHigh([]byte(nil), 784)
 					defer freeUpdate()
-					playerBytes, freePlayer := alloc.Make([]byte(nil), 6288)
+					playerBytes, freePlayer := alloc.MakeHigh([]byte(nil), 6288)
 					defer freePlayer()
 					for _, frame := range [][]byte{unitBytes, updateBytes, playerBytes} {
 						for i := range frame {

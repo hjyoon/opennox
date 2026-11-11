@@ -33,7 +33,7 @@ func preserveQuestPreviewSlots44E110(t *testing.T) [12]**client.Drawable {
 
 func TestQuestPreview44E110CEntryNativeStorageAndFields(t *testing.T) {
 	slots := preserveQuestPreviewSlots44E110(t)
-	font, freeFont := alloc.Malloc(8)
+	font, freeFont := alloc.MallocHigh(8)
 	t.Cleanup(freeFont)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(font) <= math.MaxUint32 {
 		t.Fatalf("font=%p, want above 4 GiB", font)
@@ -41,7 +41,7 @@ func TestQuestPreview44E110CEntryNativeStorageAndFields(t *testing.T) {
 	var drawables [12]*client.Drawable
 	var before [12][]byte
 	for i := range drawables {
-		dr, free := alloc.New(client.Drawable{})
+		dr, free := alloc.NewHigh(client.Drawable{})
 		t.Cleanup(free)
 		// Fill the whole foreign object so wrong PE32 offset writes show up.
 		buf := unsafe.Slice((*byte)(unsafe.Pointer(dr)), int(unsafe.Sizeof(*dr)))
@@ -113,7 +113,7 @@ func TestQuestPreview44E110CEntryNativeStorageAndFields(t *testing.T) {
 
 func TestQuestPreview44E110CEntryReturnsFullPointerAndNil(t *testing.T) {
 	preserveQuestPreviewSlots44E110(t)
-	dr, free := alloc.New(client.Drawable{})
+	dr, free := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(dr)) <= math.MaxUint32 {
 		t.Fatalf("drawable=%p, want above 4 GiB", dr)

@@ -25,7 +25,7 @@ func tagNativeCompositionAlloc530160[T comparable](t *testing.T, value T) *T {
 		Value  T
 		After  [32]byte
 	}
-	p, free := alloc.New(frame{})
+	p, free := alloc.NewHigh(frame{})
 	*p = frame{Value: value}
 	t.Cleanup(free)
 	for i := range p.Before {

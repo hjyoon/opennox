@@ -51,9 +51,9 @@ func TestMonsterRoamWaypointLifecycleNativeProduction545790(t *testing.T) {
 		t.Fatal("typed native public ABI required")
 	}
 	s, unit, first, owner := monsterMainBlockLegacyFixture547210(t)
-	second, freeSecond := alloc.New(server.MonsterUpdateData{})
+	second, freeSecond := alloc.NewHigh(server.MonsterUpdateData{})
 	defer freeSecond()
-	waypoints, freeWaypoints := alloc.New([16]server.Waypoint{})
+	waypoints, freeWaypoints := alloc.NewHigh([16]server.Waypoint{})
 	defer freeWaypoints()
 	*second = *first
 	updates := [2]*server.MonsterUpdateData{first, second}

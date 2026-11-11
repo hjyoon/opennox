@@ -12,10 +12,10 @@ import (
 )
 
 func TestTriggerGlyphPublicSelector52CCD0KeepsPointersAndSignedResult(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
-	caster, freeCaster := alloc.New(server.Object{})
-	fourth, freeFourth := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	fourth, freeFourth := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeSecond, freeCaster, freeFourth, freeArg} {
 		t.Cleanup(free)
 	}

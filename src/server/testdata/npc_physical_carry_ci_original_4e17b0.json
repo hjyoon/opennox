@@ -1,0 +1,1438 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_startup_FPCW": 3647,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "NPC-action",
+      "address": "0x50a020",
+      "size": 27,
+      "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705"
+    }
+  ],
+  "rows": [
+    {
+      "name": "fractional-hit-0",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1048576000,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "fractional-hit-1",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1048576000,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1056964608,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "fractional-hit-2",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1056964608,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1061158912,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "ordered-armor",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1056964608,
+      "initial_carry_bits32": 1048576000,
+      "damage_bits32": 1,
+      "wear_bits32": 2,
+      "carry_bits32": 1061158912,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.1",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1036831949,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1060320048,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.2",
+      "mode": "actual-startup",
+      "raw": 9,
+      "armor_bits32": 1045220557,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 7,
+      "wear_bits32": 2,
+      "carry_bits32": 1045220544,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.4",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1053609165,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 1,
+      "wear_bits32": 2,
+      "carry_bits32": 1061997772,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-1",
+      "mode": "actual-startup",
+      "raw": 1,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-3",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 3,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-19",
+      "mode": "actual-startup",
+      "raw": 19,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 19,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-1",
+      "mode": "actual-startup",
+      "raw": 1,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 1,
+      "carry_bits32": 1063256064,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-3",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1052770304,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-19",
+      "mode": "actual-startup",
+      "raw": 19,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 14,
+      "wear_bits32": 5,
+      "carry_bits32": 1052770304,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-1",
+      "mode": "actual-startup",
+      "raw": 1,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 1,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-3",
+      "mode": "actual-startup",
+      "raw": 3,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 3,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-19",
+      "mode": "actual-startup",
+      "raw": 19,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 19,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "fractional-hit-0",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1048576000,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "fractional-hit-1",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1048576000,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1056964608,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "fractional-hit-2",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1056964608,
+      "damage_bits32": 3,
+      "wear_bits32": 0,
+      "carry_bits32": 3196059648,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "ordered-armor",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1056964608,
+      "initial_carry_bits32": 1048576000,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 3196059648,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.1",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1036831949,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 3,
+      "wear_bits32": 0,
+      "carry_bits32": 3197737368,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.2",
+      "mode": "nearest-control",
+      "raw": 9,
+      "armor_bits32": 1045220557,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 7,
+      "wear_bits32": 2,
+      "carry_bits32": 1045220544,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "binary32-0.4",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1053609165,
+      "initial_carry_bits32": 0,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 3192704208,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-1",
+      "mode": "nearest-control",
+      "raw": 1,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-3",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 3,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0-raw-19",
+      "mode": "nearest-control",
+      "raw": 19,
+      "armor_bits32": 0,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 19,
+      "wear_bits32": 0,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-1",
+      "mode": "nearest-control",
+      "raw": 1,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 0,
+      "carry_bits32": 3187671040,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-3",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 2,
+      "wear_bits32": 1,
+      "carry_bits32": 1052770304,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-0.25-raw-19",
+      "mode": "nearest-control",
+      "raw": 19,
+      "armor_bits32": 1048576000,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 14,
+      "wear_bits32": 5,
+      "carry_bits32": 1052770304,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-1",
+      "mode": "nearest-control",
+      "raw": 1,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 1,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-3",
+      "mode": "nearest-control",
+      "raw": 3,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 3,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "stone-armor-1-raw-19",
+      "mode": "nearest-control",
+      "raw": 19,
+      "armor_bits32": 1065353216,
+      "initial_carry_bits32": 1040187392,
+      "damage_bits32": 1,
+      "wear_bits32": 19,
+      "carry_bits32": 1040187392,
+      "nonoutput_bytes_unchanged": true
+    }
+  ],
+  "executed_original_instructions": [
+    {
+      "address": "0x419a70",
+      "bytes": "55"
+    },
+    {
+      "address": "0x419a71",
+      "bytes": "8bec"
+    },
+    {
+      "address": "0x419a73",
+      "bytes": "51"
+    },
+    {
+      "address": "0x419a74",
+      "bytes": "d94508"
+    },
+    {
+      "address": "0x419a77",
+      "bytes": "db5dfc"
+    },
+    {
+      "address": "0x419a7a",
+      "bytes": "8b45fc"
+    },
+    {
+      "address": "0x419a7d",
+      "bytes": "8be5"
+    },
+    {
+      "address": "0x419a7f",
+      "bytes": "5d"
+    },
+    {
+      "address": "0x419a80",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4e17b0",
+      "bytes": "83ec14"
+    },
+    {
+      "address": "0x4e17b3",
+      "bytes": "53"
+    },
+    {
+      "address": "0x4e17b4",
+      "bytes": "55"
+    },
+    {
+      "address": "0x4e17b5",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e17b6",
+      "bytes": "8b742424"
+    },
+    {
+      "address": "0x4e17ba",
+      "bytes": "57"
+    },
+    {
+      "address": "0x4e17bb",
+      "bytes": "8b4610"
+    },
+    {
+      "address": "0x4e17be",
+      "bytes": "a802"
+    },
+    {
+      "address": "0x4e17c0",
+      "bytes": "0f8539050000"
+    },
+    {
+      "address": "0x4e17c6",
+      "bytes": "f6c480"
+    },
+    {
+      "address": "0x4e17c9",
+      "bytes": "0f8530050000"
+    },
+    {
+      "address": "0x4e17cf",
+      "bytes": "6a17"
+    },
+    {
+      "address": "0x4e17d1",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e17d2",
+      "bytes": "e879db0100"
+    },
+    {
+      "address": "0x4e17d7",
+      "bytes": "83c408"
+    },
+    {
+      "address": "0x4e17da",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e17dc",
+      "bytes": "7425"
+    },
+    {
+      "address": "0x4e1803",
+      "bytes": "6800080000"
+    },
+    {
+      "address": "0x4e1808",
+      "bytes": "e8b38df2ff"
+    },
+    {
+      "address": "0x4e180d",
+      "bytes": "8b5c2430"
+    },
+    {
+      "address": "0x4e1811",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x4e1814",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e1816",
+      "bytes": "741e"
+    },
+    {
+      "address": "0x4e1836",
+      "bytes": "8b442430"
+    },
+    {
+      "address": "0x4e183a",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e183c",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x4e183e",
+      "bytes": "8bd8"
+    },
+    {
+      "address": "0x4e1840",
+      "bytes": "8b5608"
+    },
+    {
+      "address": "0x4e1843",
+      "bytes": "8bca"
+    },
+    {
+      "address": "0x4e1845",
+      "bytes": "83e104"
+    },
+    {
+      "address": "0x4e1848",
+      "bytes": "7421"
+    },
+    {
+      "address": "0x4e186b",
+      "bytes": "f6c202"
+    },
+    {
+      "address": "0x4e186e",
+      "bytes": "0f848b040000"
+    },
+    {
+      "address": "0x4e1874",
+      "bytes": "f6460c10"
+    },
+    {
+      "address": "0x4e1878",
+      "bytes": "0f8481040000"
+    },
+    {
+      "address": "0x4e187e",
+      "bytes": "8bbeec020000"
+    },
+    {
+      "address": "0x4e1884",
+      "bytes": "8b8708080000"
+    },
+    {
+      "address": "0x4e188a",
+      "bytes": "89442418"
+    },
+    {
+      "address": "0x4e188e",
+      "bytes": "8b870c080000"
+    },
+    {
+      "address": "0x4e1894",
+      "bytes": "89442414"
+    },
+    {
+      "address": "0x4e1898",
+      "bytes": "8b8718080000"
+    },
+    {
+      "address": "0x4e189e",
+      "bytes": "85c9"
+    },
+    {
+      "address": "0x4e18a0",
+      "bytes": "89442410"
+    },
+    {
+      "address": "0x4e18a4",
+      "bytes": "bd01000000"
+    },
+    {
+      "address": "0x4e18a9",
+      "bytes": "7413"
+    },
+    {
+      "address": "0x4e18be",
+      "bytes": "33c0"
+    },
+    {
+      "address": "0x4e18c0",
+      "bytes": "3bc8"
+    },
+    {
+      "address": "0x4e18c2",
+      "bytes": "7408"
+    },
+    {
+      "address": "0x4e18cc",
+      "bytes": "f6c202"
+    },
+    {
+      "address": "0x4e18cf",
+      "bytes": "7406"
+    },
+    {
+      "address": "0x4e18d1",
+      "bytes": "89878c080000"
+    },
+    {
+      "address": "0x4e18d7",
+      "bytes": "f6460804"
+    },
+    {
+      "address": "0x4e18db",
+      "bytes": "7416"
+    },
+    {
+      "address": "0x4e18f3",
+      "bytes": "6a1b"
+    },
+    {
+      "address": "0x4e18f5",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e18f6",
+      "bytes": "e855da0100"
+    },
+    {
+      "address": "0x4e18fb",
+      "bytes": "83c408"
+    },
+    {
+      "address": "0x4e18fe",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e1900",
+      "bytes": "0f84c2000000"
+    },
+    {
+      "address": "0x4e19c8",
+      "bytes": "8b44242c"
+    },
+    {
+      "address": "0x4e19cc",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e19ce",
+      "bytes": "0f84dd030000"
+    },
+    {
+      "address": "0x4e19d4",
+      "bytes": "8b0d4c207500"
+    },
+    {
+      "address": "0x4e19da",
+      "bytes": "85c9"
+    },
+    {
+      "address": "0x4e19dc",
+      "bytes": "7563"
+    },
+    {
+      "address": "0x4e19de",
+      "bytes": "68c4815b00"
+    },
+    {
+      "address": "0x4e19e3",
+      "bytes": "e8b8200000"
+    },
+    {
+      "address": "0x4e19e8",
+      "bytes": "68d0815b00"
+    },
+    {
+      "address": "0x4e19ed",
+      "bytes": "a34c207500"
+    },
+    {
+      "address": "0x4e19f2",
+      "bytes": "e8a9200000"
+    },
+    {
+      "address": "0x4e19f7",
+      "bytes": "68dc815b00"
+    },
+    {
+      "address": "0x4e19fc",
+      "bytes": "a350207500"
+    },
+    {
+      "address": "0x4e1a01",
+      "bytes": "e89a200000"
+    },
+    {
+      "address": "0x4e1a06",
+      "bytes": "68e8815b00"
+    },
+    {
+      "address": "0x4e1a0b",
+      "bytes": "a354207500"
+    },
+    {
+      "address": "0x4e1a10",
+      "bytes": "e88b200000"
+    },
+    {
+      "address": "0x4e1a15",
+      "bytes": "68f0815b00"
+    },
+    {
+      "address": "0x4e1a1a",
+      "bytes": "a358207500"
+    },
+    {
+      "address": "0x4e1a1f",
+      "bytes": "e87c200000"
+    },
+    {
+      "address": "0x4e1a24",
+      "bytes": "68fc815b00"
+    },
+    {
+      "address": "0x4e1a29",
+      "bytes": "a35c207500"
+    },
+    {
+      "address": "0x4e1a2e",
+      "bytes": "e86d200000"
+    },
+    {
+      "address": "0x4e1a33",
+      "bytes": "8b0d4c207500"
+    },
+    {
+      "address": "0x4e1a39",
+      "bytes": "83c418"
+    },
+    {
+      "address": "0x4e1a3c",
+      "bytes": "a360207500"
+    },
+    {
+      "address": "0x4e1a41",
+      "bytes": "8b542430"
+    },
+    {
+      "address": "0x4e1a45",
+      "bytes": "85d2"
+    },
+    {
+      "address": "0x4e1a47",
+      "bytes": "7471"
+    },
+    {
+      "address": "0x4e1a49",
+      "bytes": "8b4248"
+    },
+    {
+      "address": "0x4e1a4c",
+      "bytes": "8944241c"
+    },
+    {
+      "address": "0x4e1a50",
+      "bytes": "8b424c"
+    },
+    {
+      "address": "0x4e1a53",
+      "bytes": "89442420"
+    },
+    {
+      "address": "0x4e1a57",
+      "bytes": "33c0"
+    },
+    {
+      "address": "0x4e1a59",
+      "bytes": "668b4204"
+    },
+    {
+      "address": "0x4e1a5d",
+      "bytes": "3bc1"
+    },
+    {
+      "address": "0x4e1a5f",
+      "bytes": "742c"
+    },
+    {
+      "address": "0x4e1a61",
+      "bytes": "3b0550207500"
+    },
+    {
+      "address": "0x4e1a67",
+      "bytes": "7424"
+    },
+    {
+      "address": "0x4e1a69",
+      "bytes": "3b0554207500"
+    },
+    {
+      "address": "0x4e1a6f",
+      "bytes": "741c"
+    },
+    {
+      "address": "0x4e1a71",
+      "bytes": "3b0558207500"
+    },
+    {
+      "address": "0x4e1a77",
+      "bytes": "7414"
+    },
+    {
+      "address": "0x4e1a79",
+      "bytes": "3b055c207500"
+    },
+    {
+      "address": "0x4e1a7f",
+      "bytes": "740c"
+    },
+    {
+      "address": "0x4e1a81",
+      "bytes": "3b0560207500"
+    },
+    {
+      "address": "0x4e1a87",
+      "bytes": "7404"
+    },
+    {
+      "address": "0x4e1a89",
+      "bytes": "8bcd"
+    },
+    {
+      "address": "0x4e1a8b",
+      "bytes": "eb02"
+    },
+    {
+      "address": "0x4e1a8f",
+      "bytes": "3954242c"
+    },
+    {
+      "address": "0x4e1a93",
+      "bytes": "0f8486000000"
+    },
+    {
+      "address": "0x4e1b1f",
+      "bytes": "837c24380f"
+    },
+    {
+      "address": "0x4e1b24",
+      "bytes": "0f8492020000"
+    },
+    {
+      "address": "0x4e1b2a",
+      "bytes": "85c9"
+    },
+    {
+      "address": "0x4e1b2c",
+      "bytes": "0f847f020000"
+    },
+    {
+      "address": "0x4e1b32",
+      "bytes": "0fbf567c"
+    },
+    {
+      "address": "0x4e1b36",
+      "bytes": "8d4c241c"
+    },
+    {
+      "address": "0x4e1b3a",
+      "bytes": "8d4638"
+    },
+    {
+      "address": "0x4e1b3d",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4e1b3e",
+      "bytes": "52"
+    },
+    {
+      "address": "0x4e1b3f",
+      "bytes": "50"
+    },
+    {
+      "address": "0x4e1b40",
+      "bytes": "e80b530000"
+    },
+    {
+      "address": "0x4e1b45",
+      "bytes": "83c40c"
+    },
+    {
+      "address": "0x4e1b48",
+      "bytes": "a801"
+    },
+    {
+      "address": "0x4e1b4a",
+      "bytes": "0f8461020000"
+    },
+    {
+      "address": "0x4e1b50",
+      "bytes": "f6460804"
+    },
+    {
+      "address": "0x4e1b54",
+      "bytes": "740c"
+    },
+    {
+      "address": "0x4e1b62",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e1b63",
+      "bytes": "e8b8840200"
+    },
+    {
+      "address": "0x4e1b68",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x4e1b6b",
+      "bytes": "83f815"
+    },
+    {
+      "address": "0x4e1b6e",
+      "bytes": "0f859b000000"
+    },
+    {
+      "address": "0x4e1c0f",
+      "bytes": "8b442418"
+    },
+    {
+      "address": "0x4e1c13",
+      "bytes": "f6c404"
+    },
+    {
+      "address": "0x4e1c16",
+      "bytes": "0f84ed000000"
+    },
+    {
+      "address": "0x4e1d09",
+      "bytes": "8b6c2438"
+    },
+    {
+      "address": "0x4e1d0d",
+      "bytes": "a90080ff07"
+    },
+    {
+      "address": "0x4e1d12",
+      "bytes": "0f8499000000"
+    },
+    {
+      "address": "0x4e1db1",
+      "bytes": "837c243811"
+    },
+    {
+      "address": "0x4e1db6",
+      "bytes": "0f874d020000"
+    },
+    {
+      "address": "0x4e1dbc",
+      "bytes": "8b4c2438"
+    },
+    {
+      "address": "0x4e1dc0",
+      "bytes": "ff248da8204e00"
+    },
+    {
+      "address": "0x4e1f84",
+      "bytes": "d90568305800"
+    },
+    {
+      "address": "0x4e1f8a",
+      "bytes": "d8642410"
+    },
+    {
+      "address": "0x4e1f8e",
+      "bytes": "da4c2434"
+    },
+    {
+      "address": "0x4e1f92",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4e1f93",
+      "bytes": "8d4c242c"
+    },
+    {
+      "address": "0x4e1f97",
+      "bytes": "d91c24"
+    },
+    {
+      "address": "0x4e1f9a",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4e1f9b",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e1f9c",
+      "bytes": "e84f010000"
+    },
+    {
+      "address": "0x4e1fa1",
+      "bytes": "8b6c2440"
+    },
+    {
+      "address": "0x4e1fa5",
+      "bytes": "8b4c2434"
+    },
+    {
+      "address": "0x4e1fa9",
+      "bytes": "8b5c2444"
+    },
+    {
+      "address": "0x4e1fad",
+      "bytes": "8b44243c"
+    },
+    {
+      "address": "0x4e1fb1",
+      "bytes": "8bd5"
+    },
+    {
+      "address": "0x4e1fb3",
+      "bytes": "53"
+    },
+    {
+      "address": "0x4e1fb4",
+      "bytes": "2bd1"
+    },
+    {
+      "address": "0x4e1fb6",
+      "bytes": "8b4c243c"
+    },
+    {
+      "address": "0x4e1fba",
+      "bytes": "52"
+    },
+    {
+      "address": "0x4e1fbb",
+      "bytes": "50"
+    },
+    {
+      "address": "0x4e1fbc",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4e1fbd",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e1fbe",
+      "bytes": "e8bd010000"
+    },
+    {
+      "address": "0x4e1fc3",
+      "bytes": "8b4608"
+    },
+    {
+      "address": "0x4e1fc6",
+      "bytes": "83c420"
+    },
+    {
+      "address": "0x4e1fc9",
+      "bytes": "a804"
+    },
+    {
+      "address": "0x4e1fcb",
+      "bytes": "741c"
+    },
+    {
+      "address": "0x4e1fe9",
+      "bytes": "a802"
+    },
+    {
+      "address": "0x4e1feb",
+      "bytes": "7424"
+    },
+    {
+      "address": "0x4e1fed",
+      "bytes": "8b878c080000"
+    },
+    {
+      "address": "0x4e1ff3",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e1ff5",
+      "bytes": "751a"
+    },
+    {
+      "address": "0x4e1ff7",
+      "bytes": "c7878c08000002000000"
+    },
+    {
+      "address": "0x4e2001",
+      "bytes": "899f88080000"
+    },
+    {
+      "address": "0x4e2007",
+      "bytes": "eb08"
+    },
+    {
+      "address": "0x4e2011",
+      "bytes": "85ed"
+    },
+    {
+      "address": "0x4e2013",
+      "bytes": "7e10"
+    },
+    {
+      "address": "0x4e2015",
+      "bytes": "8b442428"
+    },
+    {
+      "address": "0x4e2019",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e201b",
+      "bytes": "7508"
+    },
+    {
+      "address": "0x4e201d",
+      "bytes": "c744242801000000"
+    },
+    {
+      "address": "0x4e2025",
+      "bytes": "f605a0b7850020"
+    },
+    {
+      "address": "0x4e202c",
+      "bytes": "7413"
+    },
+    {
+      "address": "0x4e2041",
+      "bytes": "6800100000"
+    },
+    {
+      "address": "0x4e2046",
+      "bytes": "e87585f2ff"
+    },
+    {
+      "address": "0x4e204b",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x4e204e",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4e2050",
+      "bytes": "7431"
+    },
+    {
+      "address": "0x4e2083",
+      "bytes": "8b442428"
+    },
+    {
+      "address": "0x4e2087",
+      "bytes": "8b542438"
+    },
+    {
+      "address": "0x4e208b",
+      "bytes": "8b4c242c"
+    },
+    {
+      "address": "0x4e208f",
+      "bytes": "52"
+    },
+    {
+      "address": "0x4e2090",
+      "bytes": "50"
+    },
+    {
+      "address": "0x4e2091",
+      "bytes": "8b442438"
+    },
+    {
+      "address": "0x4e2095",
+      "bytes": "50"
+    },
+    {
+      "address": "0x4e2096",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4e2097",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e2098",
+      "bytes": "e893eaffff"
+    },
+    {
+      "address": "0x4e209d",
+      "bytes": "83c414"
+    },
+    {
+      "address": "0x4e20a0",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4e20a1",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4e20a2",
+      "bytes": "5d"
+    },
+    {
+      "address": "0x4e20a3",
+      "bytes": "5b"
+    },
+    {
+      "address": "0x4e20a4",
+      "bytes": "83c414"
+    },
+    {
+      "address": "0x4e20a7",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4e20f0",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e20f1",
+      "bytes": "8b742408"
+    },
+    {
+      "address": "0x4e20f5",
+      "bytes": "85f6"
+    },
+    {
+      "address": "0x4e20f7",
+      "bytes": "57"
+    },
+    {
+      "address": "0x4e20f8",
+      "bytes": "7476"
+    },
+    {
+      "address": "0x4e20fa",
+      "bytes": "8b7c2410"
+    },
+    {
+      "address": "0x4e20fe",
+      "bytes": "85ff"
+    },
+    {
+      "address": "0x4e2100",
+      "bytes": "746e"
+    },
+    {
+      "address": "0x4e2102",
+      "bytes": "8b4608"
+    },
+    {
+      "address": "0x4e2105",
+      "bytes": "a804"
+    },
+    {
+      "address": "0x4e2107",
+      "bytes": "740f"
+    },
+    {
+      "address": "0x4e2118",
+      "bytes": "a802"
+    },
+    {
+      "address": "0x4e211a",
+      "bytes": "7411"
+    },
+    {
+      "address": "0x4e211c",
+      "bytes": "8b8eec020000"
+    },
+    {
+      "address": "0x4e2122",
+      "bytes": "d9442414"
+    },
+    {
+      "address": "0x4e2126",
+      "bytes": "d84104"
+    },
+    {
+      "address": "0x4e2129",
+      "bytes": "d95c2414"
+    },
+    {
+      "address": "0x4e212d",
+      "bytes": "8b542414"
+    },
+    {
+      "address": "0x4e2131",
+      "bytes": "52"
+    },
+    {
+      "address": "0x4e2132",
+      "bytes": "e83979f3ff"
+    },
+    {
+      "address": "0x4e2137",
+      "bytes": "89442410"
+    },
+    {
+      "address": "0x4e213b",
+      "bytes": "8907"
+    },
+    {
+      "address": "0x4e213d",
+      "bytes": "8b4608"
+    },
+    {
+      "address": "0x4e2140",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x4e2143",
+      "bytes": "a804"
+    },
+    {
+      "address": "0x4e2145",
+      "bytes": "7414"
+    },
+    {
+      "address": "0x4e215b",
+      "bytes": "a802"
+    },
+    {
+      "address": "0x4e215d",
+      "bytes": "7411"
+    },
+    {
+      "address": "0x4e215f",
+      "bytes": "db44240c"
+    },
+    {
+      "address": "0x4e2163",
+      "bytes": "8b8eec020000"
+    },
+    {
+      "address": "0x4e2169",
+      "bytes": "d86c2414"
+    },
+    {
+      "address": "0x4e216d",
+      "bytes": "d95904"
+    },
+    {
+      "address": "0x4e2170",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4e2171",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4e2172",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x50a020",
+      "bytes": "8b442404"
+    },
+    {
+      "address": "0x50a024",
+      "bytes": "8b88ec020000"
+    },
+    {
+      "address": "0x50a02a",
+      "bytes": "0fbe8120020000"
+    },
+    {
+      "address": "0x50a031",
+      "bytes": "83c017"
+    },
+    {
+      "address": "0x50a034",
+      "bytes": "8d1440"
+    },
+    {
+      "address": "0x50a037",
+      "bytes": "8b04d1"
+    },
+    {
+      "address": "0x50a03a",
+      "bytes": "c3"
+    }
+  ],
+  "excluded_observed_services": [
+    {
+      "address": "0x40a5c0",
+      "bytes": "a1a4535d00"
+    },
+    {
+      "address": "0x4e0b30",
+      "bytes": "83ec10"
+    },
+    {
+      "address": "0x4e2180",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4e3aa0",
+      "bytes": "8b442404"
+    },
+    {
+      "address": "0x4e6e50",
+      "bytes": "8b4c2408"
+    },
+    {
+      "address": "0x4ff350",
+      "bytes": "8b442404"
+    }
+  ],
+  "FP_arithmetic_store_conversion_substitutions": 0,
+  "scope": "Exact historical CI numeric inputs execute the original NPC IMPALE environment root. This proves shared physical arithmetic only; missile admission, HP, audio and armor service implementations are not substituted into this proof."
+}

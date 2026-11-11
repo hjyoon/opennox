@@ -14,13 +14,13 @@ import (
 
 func TestSecondaryWeaponReport53AB90NativePointersAndSidecar(t *testing.T) {
 	srv := new(Server)
-	owner, freeOwner := alloc.New(Object{})
+	owner, freeOwner := alloc.NewHigh(Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(Object{})
+	item, freeItem := alloc.NewHigh(Object{})
 	defer freeItem()
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
 	defer freeUpdate()
-	playerValue, freePlayer := alloc.New(Player{})
+	playerValue, freePlayer := alloc.NewHigh(Player{})
 	defer freePlayer()
 	owner.ObjClass = object.ClassPlayer
 	update.Field27 = 0xA5A5A5A5

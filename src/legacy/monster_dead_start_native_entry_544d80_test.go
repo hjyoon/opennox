@@ -46,7 +46,7 @@ func TestMonsterDeadStartNextPublicCNative544D80(t *testing.T) {
 	view.Write(1, 100)
 	view.Write(2, 200)
 	unit.TypeInd = 300
-	def, freeDef := alloc.New(server.MonsterDef{})
+	def, freeDef := alloc.NewHigh(server.MonsterDef{})
 	defer freeDef()
 	*def = server.MonsterDef{}
 	update.MonsterDef = def

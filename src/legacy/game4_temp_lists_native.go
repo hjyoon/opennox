@@ -22,11 +22,11 @@ func game4SetWaypointHead(node *C.nox_map_waypoint_list_node_5044B0) {
 
 //export sub_504290
 func sub_504290(x, y C.int8_t) *C.nox_map_wall_list_node_504290 {
-	node := (*C.nox_map_wall_list_node_504290)(C.calloc(1, C.sizeof_nox_map_wall_list_node_504290))
+	node := (*C.nox_map_wall_list_node_504290)(game4SupportAllocate(1, C.sizeof_nox_map_wall_list_node_504290))
 	if node == nil {
 		return nil
 	}
-	node.wall = (*C.nox_map_wall_504290)(C.calloc(1, C.sizeof_nox_map_wall_504290))
+	node.wall = (*C.nox_map_wall_504290)(game4SupportAllocate(1, C.sizeof_nox_map_wall_504290))
 	if node.wall == nil {
 		game4SupportFree(unsafe.Pointer(node))
 		return nil
@@ -101,7 +101,7 @@ func sub_504330(deltaX, deltaY C.int32_t) C.int32_t {
 
 //export sub_5044B0
 func sub_5044B0(index C.int32_t, x, y C.float) *C.nox_map_waypoint_list_node_5044B0 {
-	node := (*C.nox_map_waypoint_list_node_5044B0)(C.calloc(1, C.sizeof_nox_map_waypoint_list_node_5044B0))
+	node := (*C.nox_map_waypoint_list_node_5044B0)(game4SupportAllocate(1, C.sizeof_nox_map_waypoint_list_node_5044B0))
 	if node == nil {
 		return nil
 	}

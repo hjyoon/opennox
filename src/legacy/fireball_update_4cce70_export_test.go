@@ -14,8 +14,8 @@ import (
 
 func fireballUpdateEntryNative223(t *testing.T, power int, fn unsafe.Pointer) {
 	t.Helper()
-	vp, freeVP := alloc.New(noxrender.Viewport{})
-	dr, freeDR := alloc.New(client.Drawable{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
+	dr, freeDR := alloc.NewHigh(client.Drawable{})
 	defer freeVP()
 	defer freeDR()
 	for _, pointer := range []unsafe.Pointer{vp.C(), dr.C()} {

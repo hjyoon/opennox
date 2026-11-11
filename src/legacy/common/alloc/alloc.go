@@ -13,6 +13,9 @@ import (
 var (
 	allocMu sync.Mutex
 	allocs  = make(map[unsafe.Pointer]uintptr)
+	// Only explicitly requested high-address mappings have a custom release.
+	// Ordinary C allocations continue to use realloc/free.
+	allocReleases = make(map[unsafe.Pointer]func())
 )
 
 func Malloc(size uintptr) (unsafe.Pointer, func()) {
@@ -67,6 +70,19 @@ func Realloc(ptr unsafe.Pointer, size uintptr) unsafe.Pointer {
 	if size == 0 {
 		panic("zero alloc")
 	}
+	allocMu.Lock()
+	oldSize, mapped := allocs[ptr], allocReleases[ptr] != nil
+	allocMu.Unlock()
+	if mapped {
+		next, _ := MallocHigh(size)
+		n := oldSize
+		if size < n {
+			n = size
+		}
+		C.memcpy(next, ptr, C.size_t(n))
+		FreePtr(ptr)
+		return next
+	}
 	old := ptr
 	ptr = C.realloc(ptr, C.size_t(size))
 	allocMu.Lock()
@@ -109,12 +125,18 @@ func AdoptCAllocation(ptr unsafe.Pointer, size uintptr) {
 func FreePtr(ptr unsafe.Pointer) {
 	allocMu.Lock()
 	_, ok := allocs[ptr]
+	release := allocReleases[ptr]
 	delete(allocs, ptr)
+	delete(allocReleases, ptr)
 	allocMu.Unlock()
 	if !ok {
 		panic("incorrect free")
 	}
-	C.free(ptr)
+	if release != nil {
+		release()
+	} else {
+		C.free(ptr)
+	}
 }
 
 func Free[T comparable](ptr *T) {

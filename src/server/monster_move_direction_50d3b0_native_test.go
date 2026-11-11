@@ -106,7 +106,7 @@ func TestMonsterMoveDirection50D3B0NativeCapturedOriginal(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(fmt.Sprintf("frame-%d", tc.frame), func(t *testing.T) {
 			unit, update := monsterMoveSelectionFixture50D3B0(t)
-			def, freeDef := alloc.New(MonsterDef{})
+			def, freeDef := alloc.NewHigh(MonsterDef{})
 			t.Cleanup(freeDef)
 			*def = MonsterDef{RunMultiplier96: math.Float32frombits(0x3f800000)}
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(def)) <= math.MaxUint32 {

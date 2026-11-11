@@ -17,10 +17,10 @@ import (
 
 func monsterMoveSelectionFixture50D3B0(t *testing.T) (*Object, *MonsterUpdateData) {
 	t.Helper()
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	*unit = Object{ObjClass: object.ClassMonster, SpeedCur: 2, Direction1: 37, Direction2: 91, ForceVec: types.Ptf(7, -9)}
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	*update = MonsterUpdateData{Field0: 0x12345678, Field1: 0x89abcdef, Field70: 333, Field71: 444, Field127: 555, StatusFlags: object.MonStatusFrustrated}
 	unit.UpdateData = unsafe.Pointer(update)
@@ -210,7 +210,7 @@ func TestMonsterMoveSelection50D3B0NativeCachedOriginAndUpdate(t *testing.T) {
 	for _, replaceUpdate := range []bool{false, true} {
 		t.Run(fmt.Sprintf("replace-update-%t", replaceUpdate), func(t *testing.T) {
 			unit, update := monsterMoveSelectionFixture50D3B0(t)
-			replacement, freeReplacement := alloc.New(MonsterUpdateData{})
+			replacement, freeReplacement := alloc.NewHigh(MonsterUpdateData{})
 			t.Cleanup(freeReplacement)
 			*replacement = MonsterUpdateData{Field2: 1, Field67: 7, Field70: 999, Path: [32]types.Pointf{{X: -1000, Y: 999}}}
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(replacement)) <= math.MaxUint32 {

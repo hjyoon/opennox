@@ -73,6 +73,7 @@ jobs:
       CGO_CFLAGS: '-O2 -g -fno-peephole2'
       SOURCE_REVISION: ${{ inputs.source_revision }}
       REPORT_DIR: ${{ github.workspace }}/build/windows-gc-diagnostic
+      OPENNOX_LOCAL_TEST_ARTIFACTS: ${{ github.workspace }}/build/windows-gc-diagnostic/native-fixture-artifacts
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -133,6 +134,23 @@ jobs:
           if ($diagnosticRecord.GOEXPERIMENT -ne $expectedExperiment) { throw 'Unexpected diagnostic experiment' }
           $diagnosticRecord | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'diagnostic-profile.json')
           $diagnosticRecord | ConvertTo-Json
+      - name: Verify instrumented foreign allocation ownership
+        working-directory: src
+        shell: pwsh
+        run: |
+          if (Test-Path ../toolchain/run-windows-allocator-controls.py) {
+            python ../toolchain/run-windows-allocator-controls.py --profile $env:DIAGNOSTIC_PROFILE --report $env:REPORT_DIR
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } else {
+            # Historical source revisions predate these explicit fixture APIs.
+            # Their original full suites still run, without allocator credit.
+            @{
+              source_revision = $env:SOURCE_REVISION
+              reason = 'Historical source lacks explicit high-address allocator controls'
+              passed = $false
+              not_applicable_historical = $true
+            } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'allocator-controls-unavailable.json')
+          }
       - name: Reproduce unchanged full native suites with exact JSON streams
         working-directory: src
         shell: pwsh
@@ -431,7 +449,9 @@ jobs:
     if: inputs.macos_native_gate && !inputs.macos_fixture_address_probe
     name: macOS/ARM64 ${{ matrix.variant }} native gate
     runs-on: ${{ inputs.macos_native_runner }}
-    timeout-minutes: 60
+    # Complete original/native row comparisons take about an hour before
+    # product compilation and the remaining full package suites.
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:

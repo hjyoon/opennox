@@ -691,7 +691,7 @@ extern unsigned int dword_5d4594_527988;
 extern uint32_t dword_5d4594_528256;
 extern void* dword_5d4594_830232;
 extern void* dword_5d4594_830236;
-extern unsigned int dword_5d4594_831220;
+extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_831260;
 extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_831224;

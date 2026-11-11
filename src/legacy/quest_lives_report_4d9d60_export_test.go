@@ -24,8 +24,8 @@ func TestQuestLivesReport4D9D60RealCEntryHighNativePointers(t *testing.T) {
 	oldServer := GetServer
 	GetServer = func() Server { return &questLivesReportServer4D9D60{native: s} }
 	t.Cleanup(func() { GetServer = oldServer })
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	unit.NetCode, unit.UpdateData = 0x89ab9234, unsafe.Pointer(update)

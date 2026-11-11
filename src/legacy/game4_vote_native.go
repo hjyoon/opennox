@@ -77,7 +77,7 @@ func game4VoteRemoveVoter(vote *C.nox_vote_5066D0, mask uint32) {
 
 //export nox_xxx_allocVoteArray_5066D0
 func nox_xxx_allocVoteArray_5066D0() C.int {
-	allocator := C.nox_new_alloc_class(internCStr("VoteClass"), C.int(C.sizeof_nox_vote_5066D0), 64)
+	allocator := game4SupportNewClass(internCStr("VoteClass"), C.int(C.sizeof_nox_vote_5066D0), 64)
 	C.nox_alloc_vote_1599652 = unsafe.Pointer(allocator)
 	if allocator == nil {
 		return 0

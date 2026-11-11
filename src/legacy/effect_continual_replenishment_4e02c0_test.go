@@ -38,15 +38,15 @@ func runContinualReplenishmentNative218(t *testing.T, dispatch bool) {
 		t.Log(string(out))
 		return
 	}
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	use, freeUse := alloc.New(server.WandUseData{})
+	use, freeUse := alloc.NewHigh(server.WandUseData{})
 	defer freeUse()
-	effect, freeEffect := alloc.New(server.ModifierEff{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 	defer freeEffect()
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 	defer freeAttrs()
 	for _, p := range []unsafe.Pointer{owner.CObj(), item.CObj(), unsafe.Pointer(use), effect.C(), unsafe.Pointer(attrs)} {
 		if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(p) <= 0xffffffff {

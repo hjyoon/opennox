@@ -81,12 +81,22 @@ jobs:
           set -euo pipefail
           ulimit -c 0
           unset NOX_E2E NOX_E2E_RECORD NOX_E2E_AUDIO MALLOC_MMAP_THRESHOLD_
+          # go.sh deliberately clears experiments for product builds. Resolve
+          # its pinned compiler, then keep this test profile's checks enabled.
+          test_go="$(../scripts/go.sh env GOROOT)/bin/go"
+          export GOTOOLCHAIN=local
+          expected_experiment=''
+          if [[ "$AUDIO_PROFILE" == strict ]]; then
+            expected_experiment=cgocheck2
+          fi
+          test "$("$test_go" env GOEXPERIMENT)" = "$expected_experiment"
+          "$test_go" env -json GOVERSION GOOS GOARCH GOEXPERIMENT CGO_ENABLED > "$AUDIO_REPORT/test-go-environment.json"
           args=()
           if [[ "$AUDIO_PROFILE" == strict ]]; then
             args=(-tags=highres -gcflags=all=-d=checkptr=2)
           fi
           set +e
-          ../scripts/go.sh test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeNetworkAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
+          "$test_go" test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeNetworkAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
           status=$?
           set -e
           echo "$status" > "$AUDIO_REPORT/test.exit"

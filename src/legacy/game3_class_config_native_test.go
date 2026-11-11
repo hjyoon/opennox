@@ -77,8 +77,8 @@ func TestGame3ConfigLookupNativeSidecars(t *testing.T) {
 		words[i] = memmap.Uint32(0x587000, off+4+8*uintptr(i))
 	}
 	previous := memmap.Uint32(0x5D4594, 1308184)
-	a, fa := alloc.CString("First")
-	b, fb := alloc.CString("Second")
+	a, fa := alloc.CStringHigh("First")
+	b, fb := alloc.CStringHigh("Second")
 	defer func() {
 		for i := range old {
 			*memmap.PtrPtr(0x587000, off+8*uintptr(i)) = old[i]

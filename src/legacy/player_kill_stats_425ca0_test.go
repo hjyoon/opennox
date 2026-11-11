@@ -39,9 +39,9 @@ func TestPlayerKillStats425CA0NativePointers(t *testing.T) {
 		*pair = oldPair
 	})
 
-	first, freeFirst := alloc.New(server.Player{})
+	first, freeFirst := alloc.NewHigh(server.Player{})
 	defer freeFirst()
-	second, freeSecond := alloc.New(server.Player{})
+	second, freeSecond := alloc.NewHigh(server.Player{})
 	defer freeSecond()
 	first.Field4648, second.Field4648 = 17, 19
 	for _, player := range []*server.Player{first, second} {
@@ -94,9 +94,9 @@ func TestPlayerKillStats425CA0NativeRegistration(t *testing.T) {
 		playerKillStatsSetPairCount425CA0(oldPairs)
 	})
 
-	first, freeFirst := alloc.New(server.Player{})
+	first, freeFirst := alloc.NewHigh(server.Player{})
 	defer freeFirst()
-	second, freeSecond := alloc.New(server.Player{})
+	second, freeSecond := alloc.NewHigh(server.Player{})
 	defer freeSecond()
 	first.Field4648, second.Field4648 = -1, -1
 	first.PlayerInd, second.PlayerInd = 2, 31

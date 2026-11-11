@@ -16,6 +16,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
 )
@@ -285,6 +286,9 @@ func game1LeafReference40A180(t *testing.T, source, input []byte) ([]byte, strin
 		t.Fatal(err)
 	}
 	binaryPath := filepath.Join(directory, "old-C-six-leaves")
+	if runtime.GOOS == "windows" {
+		binaryPath += ".exe"
+	}
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}
@@ -325,7 +329,7 @@ func game1LeafReference40A180(t *testing.T, source, input []byte) ([]byte, strin
 		t.Fatal(err)
 	}
 	game1LeafPut40A180(t, filepath.Join(directory, "actual-C-before-first-EXEC.json"), map[string]any{"executable": binaryPath, "bytes": len(exe), "sha256": game1LeafHash40A180(exe), "source_sha256": game1LeafHash40A180(source), "input_sha256": game1LeafHash40A180(input), "actual_old_C_started": false, "Go_main": mainPath, "Go_main_sha256": game1LeafHash40A180(mainBytes), "Go_PID": os.Getpid(), "GOOS": runtime.GOOS, "GOARCH": runtime.GOARCH, "new_original_CPU_execution": 0})
-	game1LeafArchive40A180(t, directory, []string{"old-C-six-leaves", "source.c", "input.bin", "compile.combined.log", "compile.Wait.json", "actual-C-before-first-EXEC.json"})
+	game1LeafArchive40A180(t, directory, []string{filepath.Base(binaryPath), "source.c", "input.bin", "compile.combined.log", "compile.Wait.json", "actual-C-before-first-EXEC.json"})
 	runCtx, runCancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer runCancel()
 	cmd := exec.CommandContext(runCtx, binaryPath)
@@ -378,11 +382,11 @@ func game1LeafCallGo40A180(entry, argument uint32) uint32 {
 func TestGame1ScalarLeavesABI40A180(t *testing.T) {
 	for _, cell := range []struct{ base, offset uint32 }{{0x587000, 4652}, {0x587000, 4660}, {0x587000, 4664}, {0x587000, 4704}, {0x5d4594, 3500}, {0x5d4594, 3588}} {
 		p := memmap.PtrOff(uintptr(cell.base), uintptr(cell.offset))
-		if uintptr(p) <= 0xffffffff || p != game1LeafCellC40A180(cell.base, cell.offset) {
+		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != game1LeafCellC40A180(cell.base, cell.offset) {
 			t.Fatalf("actual native C/Go memmap alias base=%x offset=%d", cell.base, cell.offset)
 		}
 	}
-	t.Log("GAME1_SIX_LEAVES_ABI_OK public-typed-C-entries=6 actual-live-memmap-aliases=6 native>4GiB pointer-truncation-claim=false")
+	t.Logf("GAME1_SIX_LEAVES_ABI_OK public-typed-C-entries=6 actual-live-memmap-aliases=6 native-pointer-width=%d high-address-qualified=%t pointer-truncation-claim=false", unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(uintptr(0)) == 8)
 }
 
 func TestGame1ScalarLeavesOldC40A180(t *testing.T) {

@@ -104,7 +104,7 @@ func playerBotActionNew4FABC0(t *testing.T, row playerBotActionRow4FABC0) *playe
 	t.Helper()
 	w := new(playerBotActionWorld4FABC0)
 	take := func(size uintptr) unsafe.Pointer {
-		p, free := alloc.Malloc(size + 64)
+		p, free := alloc.MallocHigh(size + 64)
 		w.Free = append(w.Free, free)
 		raw := unsafe.Slice((*byte)(p), size+64)
 		for i := range raw {

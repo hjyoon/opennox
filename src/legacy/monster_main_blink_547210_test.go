@@ -30,7 +30,7 @@ func TestMonsterMainBlink547210ActualLegacyBinding(t *testing.T) {
 				unit.ObjFlags, unit.SpeedBase = object.FlagEnabled, 2
 				unit.PosVec = types.Ptf(300, 300)
 				unit.Shape.Kind, unit.Shape.Circle.R = server.ShapeKindCircle, 60
-				enemy, freeEnemy := alloc.New(server.Object{})
+				enemy, freeEnemy := alloc.NewHigh(server.Object{})
 				t.Cleanup(freeEnemy)
 				enemy.PosVec = types.Ptf(390, 300)
 				// Center distance 90 exceeds FleeRange; surface distance 30 is
@@ -42,7 +42,7 @@ func TestMonsterMainBlink547210ActualLegacyBinding(t *testing.T) {
 				var player *server.PlayerUpdateData
 				if bot {
 					var freePlayer func()
-					player, freePlayer = alloc.New(server.PlayerUpdateData{})
+					player, freePlayer = alloc.NewHigh(server.PlayerUpdateData{})
 					t.Cleanup(freePlayer)
 					player.Field73 = update
 					update.StatusFlags |= object.MonStatusBot

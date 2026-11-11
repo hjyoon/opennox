@@ -17,15 +17,15 @@ func TestQuestTheme51A1F0CEntryNativeObjectsAndThreeGroups(t *testing.T) {
 		t.Run(string(rune('0'+group)), func(t *testing.T) {
 			srv := server.New(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
-			unit, freeUnit := alloc.New(server.Object{})
+			unit, freeUnit := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeUnit)
-			removed, freeRemoved := alloc.New(server.Object{})
+			removed, freeRemoved := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeRemoved)
-			creature, freeCreature := alloc.New(server.Object{})
+			creature, freeCreature := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeCreature)
-			update, freeUpdate := alloc.New(server.MonsterGenUpdateData{})
+			update, freeUpdate := alloc.NewHigh(server.MonsterGenUpdateData{})
 			t.Cleanup(freeUpdate)
-			empty, freeEmpty := alloc.New(server.MonsterGenUpdateData{})
+			empty, freeEmpty := alloc.NewHigh(server.MonsterGenUpdateData{})
 			t.Cleanup(freeEmpty)
 			*unit = server.Object{ObjClass: object.ClassMonsterGenerator, TypeInd: 9, ObjNext: removed, UpdateData: unsafe.Pointer(update)}
 			*removed = server.Object{ObjClass: object.ClassMonsterGenerator, TypeInd: 10, UpdateData: unsafe.Pointer(empty)}

@@ -80,11 +80,11 @@ func TestHitLatchOriginalActualC532880(t *testing.T) {
 	if ref.Schema != "original-monster-hit-latch-532880-v1" || ref.Original != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || ref.Entry != 0x532880 || ref.Extent != 48 || ref.Body != 33 || ref.Code != "94c767def73db06645ceed1b9f0114c90cc104c1d3fd7d79a220ac95eb7b52ed" || ref.FrameAddress != 0x84ea04 || ref.Control != 0xe3f || len(ref.Services) != 0 || len(ref.Rows) != 3072 {
 		t.Fatal("original provenance/extent/dimensions")
 	}
-	unit, freeUnit := alloc.New(hitLatchGuard532880[server.Object]{})
+	unit, freeUnit := alloc.NewHigh(hitLatchGuard532880[server.Object]{})
 	t.Cleanup(freeUnit)
 	var updates [2]*hitLatchGuard532880[server.MonsterUpdateData]
 	for i := range updates {
-		v, free := alloc.New(hitLatchGuard532880[server.MonsterUpdateData]{})
+		v, free := alloc.NewHigh(hitLatchGuard532880[server.MonsterUpdateData]{})
 		updates[i] = v
 		t.Cleanup(free)
 	}

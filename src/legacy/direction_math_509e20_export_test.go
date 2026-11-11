@@ -13,11 +13,11 @@ import (
 )
 
 func TestDirectionMath509ExCABIRecordsAndResults(t *testing.T) {
-	data, freeData := alloc.New(server.DirectionInitData{X: -1, Y: 1})
+	data, freeData := alloc.NewHigh(server.DirectionInitData{X: -1, Y: 1})
 	defer freeData()
-	vector, freeVector := alloc.New(server.IndexedDirectionVector509E20{})
+	vector, freeVector := alloc.NewHigh(server.IndexedDirectionVector509E20{})
 	defer freeVector()
-	point, freePoint := alloc.New(types.Ptf(3, 4))
+	point, freePoint := alloc.NewHigh(types.Ptf(3, 4))
 	defer freePoint()
 	*data = server.DirectionInitData{X: -1, Y: 1}
 	*point = types.Ptf(3, 4)

@@ -68,7 +68,7 @@ func TestDefaultDamageElementalStartupOriginal4E0B30Native(t *testing.T) {
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
-			frame, free := alloc.New(defaultDamageElementalFrameOriginal{})
+			frame, free := alloc.NewHigh(defaultDamageElementalFrameOriginal{})
 			t.Cleanup(free)
 			*frame = defaultDamageElementalFrameOriginal{}
 			for i := range frame.Before {

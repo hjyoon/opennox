@@ -12,7 +12,7 @@ import (
 )
 
 func TestItemEnchantmentTooltip413480CEntryAllBytePatternsAndHighReturn(t *testing.T) {
-	text, free := alloc.Make([]uint16{}, 3)
+	text, free := alloc.MakeHigh([]uint16{}, 3)
 	t.Cleanup(free)
 	copy(text, []uint16{0xac00, 0xb098, 0})
 	pointer := unsafe.Pointer(&text[0])
@@ -62,11 +62,11 @@ func TestItemEnchantmentTooltip413480NativeSideSlotsAndPackedData(t *testing.T) 
 	// Register each allocation before its restoration callback, so LIFO
 	// cleanup restores side slots before freeing their temporary native data.
 	for i, key := range keys {
-		buf, freeKey := alloc.Make([]byte{}, len(key)+1)
+		buf, freeKey := alloc.MakeHigh([]byte{}, len(key)+1)
 		copy(buf, key)
 		t.Cleanup(freeKey)
 		keyPointers[i] = &buf[0]
-		text, freeText := alloc.Make([]uint16{}, 2)
+		text, freeText := alloc.MakeHigh([]uint16{}, 2)
 		t.Cleanup(freeText)
 		text[0] = uint16(0xac00 + i)
 		results[i] = unsafe.Pointer(&text[0])

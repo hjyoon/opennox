@@ -63,7 +63,7 @@ type dyingStartNativeFrame544C40 struct {
 func dyingStartNativeFixture544C40(t *testing.T, entry, soundIndex, callback int) dyingStartNativeFrame544C40 {
 	t.Helper()
 	s, unit, update, missile := monsterMainBlockLegacyFixture547210(t)
-	p, free := alloc.New(dyingStartNativeExtra544C40{})
+	p, free := alloc.NewHigh(dyingStartNativeExtra544C40{})
 	t.Cleanup(free)
 	*p = dyingStartNativeExtra544C40{}
 	for i := range p.Before {

@@ -119,7 +119,7 @@ func testBlackPowderOriginal(t *testing.T, row blackPowderRowOriginal) {
 	var frames [5][]byte
 	var want [5][]byte
 	for n := range objs {
-		p, free := alloc.Make([]byte(nil), int(unsafe.Sizeof(Object{}))+64)
+		p, free := alloc.MakeHigh([]byte(nil), int(unsafe.Sizeof(Object{}))+64)
 		t.Cleanup(free)
 		for k := range p {
 			p[k] = 0xa5

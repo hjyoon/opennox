@@ -114,7 +114,7 @@ func radialFixtureOriginal(t *testing.T, row radialRowOriginal, run func(radialO
 	var frames [5][]byte
 	var expected [5][]byte
 	frame := func(size uintptr) []byte {
-		p, free := alloc.Make([]byte(nil), int(size)+64)
+		p, free := alloc.MakeHigh([]byte(nil), int(size)+64)
 		t.Cleanup(free)
 		for n := range p {
 			p[n] = 0xa5

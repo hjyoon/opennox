@@ -43,10 +43,10 @@ func TestMonsterRetreatFoodArrival5443F0VisiblePassiveContract(t *testing.T) {
 				for _, frame := range []uint32{656, 672} {
 					t.Run(fmt.Sprintf("npc-%t/%s/%s/frame-%d", npc, foodKind.name, positions.name, frame), func(t *testing.T) {
 						s, unit, update := moveToNativeRetryFixture5443F0(t, ai.ACTION_IDLE)
-						health, freeHealth := alloc.New(HealthData{})
+						health, freeHealth := alloc.NewHigh(HealthData{})
 						t.Cleanup(freeHealth)
 						*health = HealthData{Cur: 76, Max: 80} // Initial injury, not a healing result.
-						food, freeFood := alloc.New(Object{})
+						food, freeFood := alloc.NewHigh(Object{})
 						t.Cleanup(freeFood)
 						s.Map.Init()
 						s.Walls.byPos = make([]*Wall, wallsPerBucket*WallGridSize)

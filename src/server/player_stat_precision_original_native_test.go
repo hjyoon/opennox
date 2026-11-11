@@ -94,7 +94,7 @@ func TestPlayerStatPrecisionOriginal4EEDC0Native(t *testing.T) {
 					before := make([][]byte, 4)
 					allowed := make([]map[int]bool, 4)
 					for i, n := range sizes {
-						frame, free := alloc.Make([]byte(nil), n+128)
+						frame, free := alloc.MakeHigh([]byte(nil), n+128)
 						defer free()
 						for j := range frame {
 							frame[j] = 0xa5

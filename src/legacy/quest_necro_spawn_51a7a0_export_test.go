@@ -10,7 +10,7 @@ import (
 )
 
 func TestQuestNecroSpawn51A7A0OriginalCEntryFullPositionPointer(t *testing.T) {
-	position, free := alloc.New(types.Pointf{})
+	position, free := alloc.NewHigh(types.Pointf{})
 	defer free()
 	*position = types.Pointf{X: math.Float32frombits(0x7fc12345), Y: math.Float32frombits(0x80000000)}
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(position)) <= math.MaxUint32 {

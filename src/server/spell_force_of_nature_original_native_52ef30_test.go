@@ -17,7 +17,7 @@ import (
 func forceOriginalAllocation52EF30[T comparable](t *testing.T) *T {
 	t.Helper()
 	var zero T
-	p, free := alloc.New(zero)
+	p, free := alloc.NewHigh(zero)
 	t.Cleanup(free)
 	if uintptr(unsafe.Pointer(p)) <= 0xffffffff {
 		t.Fatal("native original comparison allocation must exceed4GiB")

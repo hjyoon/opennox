@@ -191,7 +191,7 @@ func simplePolypRunOriginal54CAE0(t *testing.T, in simplePolypInput54CAE0, mode 
 		State  server.PolypDeathState54CB10
 		After  [16]byte
 	}
-	g, freeState := alloc.New(guardedState{})
+	g, freeState := alloc.NewHigh(guardedState{})
 	defer freeState()
 	*g = guardedState{Before: [16]byte{0x12, 0x34, 0x56}, State: server.PolypDeathState54CB10{TypeIndex: in.Cache}, After: [16]byte{0x87, 0x65, 0x43}}
 	initialState := *g

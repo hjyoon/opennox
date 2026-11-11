@@ -56,7 +56,7 @@ func TestUnitBuffTestNative4FF350AccessorOrder(t *testing.T) {
 }
 
 func TestUnitBuffTest4FF350ServerBindingPreservesNativePointer(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

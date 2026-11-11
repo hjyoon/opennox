@@ -110,7 +110,7 @@ type popWorld5471B0 struct {
 
 func newPopWorld5471B0(t *testing.T, row popRow5471B0) *popWorld5471B0 {
 	t.Helper()
-	ptr, free := alloc.Malloc(32768)
+	ptr, free := alloc.MallocHigh(32768)
 	t.Cleanup(free)
 	heap := unsafe.Slice((*byte)(ptr), 32768)
 	for i := range heap {

@@ -55,7 +55,7 @@ func TestPlayerTrackingNativeWidth425F10(t *testing.T) {
 		Set_dword_5d4594_608316(oldCount)
 	})
 
-	pl, freePlayer := alloc.New(server.Player{})
+	pl, freePlayer := alloc.NewHigh(server.Player{})
 	defer freePlayer()
 	pl.PlayerInd = server.HostPlayerIndex
 	pl.Field2068 = 0x12345678

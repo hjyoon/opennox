@@ -63,7 +63,7 @@ type retreatOriginalGuard545440[T comparable] struct {
 
 func retreatOriginalAlloc545440[T comparable](t *testing.T) (*T, func()) {
 	t.Helper()
-	g, free := alloc.New(retreatOriginalGuard545440[T]{})
+	g, free := alloc.NewHigh(retreatOriginalGuard545440[T]{})
 	t.Cleanup(free)
 	clear(unsafe.Slice((*byte)(unsafe.Pointer(&g.Value)), int(unsafe.Sizeof(g.Value))))
 	for i := range g.Head {

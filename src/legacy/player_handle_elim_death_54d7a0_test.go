@@ -126,11 +126,11 @@ func TestPlayerHandleElimDeath54D7A0CgoNativeTeamEntry(t *testing.T) {
 	var units [3]*server.Object
 	var players [3]*server.Player
 	for i := range units {
-		player, releasePlayer := alloc.New(server.Player{})
+		player, releasePlayer := alloc.NewHigh(server.Player{})
 		defer releasePlayer()
-		update, releaseUpdate := alloc.New(server.PlayerUpdateData{})
+		update, releaseUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		defer releaseUpdate()
-		unit, releaseUnit := alloc.New(server.Object{})
+		unit, releaseUnit := alloc.NewHigh(server.Object{})
 		defer releaseUnit()
 		player.PlayerUnit, update.Player = unit, player
 		*unit = server.Object{ObjClass: object.Class(0x80000004), NetCode: 0x80008300 + uint32(i), UpdateData: unsafe.Pointer(update)}

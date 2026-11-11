@@ -34,8 +34,8 @@ func useSpellDurationFirstLegacyServer4FE930(t *testing.T) *server.Server {
 
 func TestSpellDurationFirstExport4FE930UsesLiveNativeHead(t *testing.T) {
 	srv := useSpellDurationFirstLegacyServer4FE930(t)
-	first, freeFirst := alloc.New(server.DurSpell{ID: 0x1234})
-	second, freeSecond := alloc.New(server.DurSpell{ID: 0xabcd})
+	first, freeFirst := alloc.NewHigh(server.DurSpell{ID: 0x1234})
+	second, freeSecond := alloc.NewHigh(server.DurSpell{ID: 0xabcd})
 	t.Cleanup(freeFirst)
 	t.Cleanup(freeSecond)
 

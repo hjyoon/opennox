@@ -284,23 +284,23 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
 	srv.SetFrame(1234)
-	stale, freeStale := alloc.New(DurSpell{})
+	stale, freeStale := alloc.NewHigh(DurSpell{})
 	stale.Flags88 = 0x12345601
 	srv.Spells.Dur.List = stale
 
-	second, freeSecond := alloc.New(Object{})
-	third, freeThird := alloc.New(Object{})
+	second, freeSecond := alloc.NewHigh(Object{})
+	third, freeThird := alloc.NewHigh(Object{})
 	third.PosVec = types.Pointf{X: 11, Y: 12}
-	fourth, freeFourth := alloc.New(Object{})
+	fourth, freeFourth := alloc.NewHigh(Object{})
 	fourth.TypeInd = 7
 	fourth.PosVec = types.Pointf{X: 21, Y: 22}
-	target, freeTarget := alloc.New(Object{})
-	arg, freeArg := alloc.New(SpellAcceptArg{})
+	target, freeTarget := alloc.NewHigh(Object{})
+	arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 	arg.Obj = target
 	arg.Pos = types.Pointf{X: 31, Y: 32}
-	createCell, freeCreate := alloc.New(byte(0))
-	updateCell, freeUpdate := alloc.New(byte(0))
-	destroyCell, freeDestroy := alloc.New(byte(0))
+	createCell, freeCreate := alloc.NewHigh(byte(0))
+	updateCell, freeUpdate := alloc.NewHigh(byte(0))
+	destroyCell, freeDestroy := alloc.NewHigh(byte(0))
 	t.Cleanup(func() {
 		srv.Spells.Dur.Free()
 		freeStale()
@@ -405,10 +405,10 @@ func TestSpellDurationCreate4FEBA0ServerBindingAllowsNilCasterGlyph(t *testing.T
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
 
-	fourth, freeFourth := alloc.New(Object{})
+	fourth, freeFourth := alloc.NewHigh(Object{})
 	fourth.TypeInd = 7
 	fourth.PosVec = types.Pointf{X: -7, Y: 8}
-	arg, freeArg := alloc.New(SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 	t.Cleanup(func() {
 		srv.Spells.Dur.Free()
 		freeFourth()

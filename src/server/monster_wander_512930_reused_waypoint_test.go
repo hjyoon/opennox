@@ -16,9 +16,9 @@ func TestMonsterWanderNative512930ReusedWaypointFullWidth(t *testing.T) {
 	for _, npc := range []bool{false, true} {
 		t.Run(fmt.Sprintf("npc=%t", npc), func(t *testing.T) {
 			s := newMoverStateServer(t)
-			unit, freeUnit := alloc.New(Object{})
-			update, freeUpdate := alloc.New(MonsterUpdateData{})
-			waypoint, freeWaypoint := alloc.New(Waypoint{})
+			unit, freeUnit := alloc.NewHigh(Object{})
+			update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
+			waypoint, freeWaypoint := alloc.NewHigh(Waypoint{})
 			t.Cleanup(freeUnit)
 			t.Cleanup(freeUpdate)
 			t.Cleanup(freeWaypoint)

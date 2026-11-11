@@ -144,14 +144,14 @@ func TestElevatorShaftNativeLinksOriginal(t *testing.T) {
 func testElevatorShaftOriginal(t *testing.T, row elevatorRowOriginal, nativeLinks bool) {
 	t.Helper()
 	i := row.Input
-	a, fa := alloc.New(Object{})
-	b, fb := alloc.New(Object{})
-	c, fc := alloc.New(Object{})
-	d, fd := alloc.New(Object{})
-	u, fu := alloc.New(ElevatorUpdateData{})
-	alt, falt := alloc.New(ElevatorUpdateData{})
-	cu, fcu := alloc.New(ElevatorUpdateData{})
-	du, fdu := alloc.New(ElevatorUpdateData{})
+	a, fa := alloc.NewHigh(Object{})
+	b, fb := alloc.NewHigh(Object{})
+	c, fc := alloc.NewHigh(Object{})
+	d, fd := alloc.NewHigh(Object{})
+	u, fu := alloc.NewHigh(ElevatorUpdateData{})
+	alt, falt := alloc.NewHigh(ElevatorUpdateData{})
+	cu, fcu := alloc.NewHigh(ElevatorUpdateData{})
+	du, fdu := alloc.NewHigh(ElevatorUpdateData{})
 	for _, free := range []func(){fa, fb, fc, fd, fu, falt, fcu, fdu} {
 		t.Cleanup(free)
 	}

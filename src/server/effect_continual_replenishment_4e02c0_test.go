@@ -55,17 +55,17 @@ func TestContinualReplenishment4E02C0MatchesWholeOriginalAndFaultOrdering(t *tes
 	if original.OriginalSHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || original.Function.Address != "0x4e02c0" || original.Function.Bytes != 137 || original.Function.SHA256 != "56ba4d3256e141aacd6eeae507571aebead435fefb43e2205049fcf34c93edc0" || len(original.Cases) != 1484 || original.Executions != 4452 || !original.Guards {
 		t.Fatal("sealed original coverage changed")
 	}
-	effect, freeEffect := alloc.New(ModifierEff{})
+	effect, freeEffect := alloc.NewHigh(ModifierEff{})
 	defer freeEffect()
-	item, freeItem := alloc.New(Object{})
+	item, freeItem := alloc.NewHigh(Object{})
 	defer freeItem()
-	use, freeUse := alloc.New(WandUseData{})
+	use, freeUse := alloc.NewHigh(WandUseData{})
 	defer freeUse()
-	owner, freeOwner := alloc.New(Object{})
+	owner, freeOwner := alloc.NewHigh(Object{})
 	defer freeOwner()
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
 	defer freeUpdate()
-	player, freePlayer := alloc.New(Player{})
+	player, freePlayer := alloc.NewHigh(Player{})
 	defer freePlayer()
 	regions := []struct {
 		p unsafe.Pointer

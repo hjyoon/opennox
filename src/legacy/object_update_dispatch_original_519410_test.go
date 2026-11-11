@@ -81,7 +81,7 @@ type dispatchFixture519410 struct {
 }
 
 func dispatchAllocate519410[T comparable](f *dispatchFixture519410) *dispatchGuard519410[T] {
-	g, free := alloc.New(dispatchGuard519410[T]{})
+	g, free := alloc.NewHigh(dispatchGuard519410[T]{})
 	f.t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(g)) <= math.MaxUint32 {
 		f.t.Fatal("native allocation must exceed4GiB")

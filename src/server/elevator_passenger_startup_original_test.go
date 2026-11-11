@@ -130,7 +130,7 @@ func testElevatorPassengerOriginal(t *testing.T, row elevatorPassengerRowOrigina
 	var objects [5]*Object
 	var updates [4]*ElevatorUpdateData
 	for n := range objects {
-		p, free := alloc.New(Object{})
+		p, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		objects[n] = p
 		if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {
@@ -171,7 +171,7 @@ func testElevatorPassengerOriginal(t *testing.T, row elevatorPassengerRowOrigina
 	owner.Material = i.Material
 	owner.ObjSubClass = object.SubClass(i.Subclass)
 	for n := range updates {
-		p, free := alloc.New(ElevatorUpdateData{})
+		p, free := alloc.NewHigh(ElevatorUpdateData{})
 		t.Cleanup(free)
 		updates[n] = p
 		if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {

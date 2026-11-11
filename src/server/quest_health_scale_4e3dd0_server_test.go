@@ -27,12 +27,12 @@ func TestQuestHealthScale4E3DD0NativeFieldsAndScalarCache(t *testing.T) {
 	}
 	typ := srv.Types.ByID("QuestHealthFixture")
 	typ.Health().Cur = 1
-	gen, freeGen := alloc.New(Object{})
-	monster, freeMonster := alloc.New(Object{})
-	genHP, freeGenHP := alloc.New(HealthData{})
-	monsterHP, freeMonsterHP := alloc.New(HealthData{})
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
-	definition, freeDefinition := alloc.New(MonsterDef{})
+	gen, freeGen := alloc.NewHigh(Object{})
+	monster, freeMonster := alloc.NewHigh(Object{})
+	genHP, freeGenHP := alloc.NewHigh(HealthData{})
+	monsterHP, freeMonsterHP := alloc.NewHigh(HealthData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
+	definition, freeDefinition := alloc.NewHigh(MonsterDef{})
 	for _, free := range []func(){freeGen, freeMonster, freeGenHP, freeMonsterHP, freeUpdate, freeDefinition} {
 		t.Cleanup(free)
 	}

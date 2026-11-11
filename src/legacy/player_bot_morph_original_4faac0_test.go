@@ -132,11 +132,11 @@ func TestPlayerBotMorphOriginalNative4FAAC0(t *testing.T) {
 		t.Run(path, func(t *testing.T) {
 			for _, row := range rows {
 				t.Run(row.Input.Name, func(t *testing.T) {
-					ug, free := alloc.New(playerBotMorphUnitGuard4FAAC0{})
+					ug, free := alloc.NewHigh(playerBotMorphUnitGuard4FAAC0{})
 					defer free()
-					pg, free := alloc.New(playerBotMorphPlayerGuard4FAAC0{})
+					pg, free := alloc.NewHigh(playerBotMorphPlayerGuard4FAAC0{})
 					defer free()
-					mg, free := alloc.New(playerBotMorphMonsterGuard4FAAC0{})
+					mg, free := alloc.NewHigh(playerBotMorphMonsterGuard4FAAC0{})
 					defer free()
 					ub := unsafe.Slice((*byte)(unsafe.Pointer(ug)), unsafe.Sizeof(*ug))
 					pb := unsafe.Slice((*byte)(unsafe.Pointer(pg)), unsafe.Sizeof(*pg))
@@ -192,7 +192,7 @@ func TestPlayerBotMorphOriginalRawFaults4FAAC0(t *testing.T) {
 			if row.Input.Name != parts[1] {
 				continue
 			}
-			obj, free := alloc.New(server.Object{})
+			obj, free := alloc.NewHigh(server.Object{})
 			defer free()
 			obj.ObjClass = object.Class(row.Input.Class)
 			obj.ObjSubClass = object.SubClass(row.Input.Subclass)

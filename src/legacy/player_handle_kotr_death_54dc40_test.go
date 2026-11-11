@@ -139,11 +139,11 @@ func TestPlayerHandleKotrDeath54DC40CgoNativeCrownTeamEntry(t *testing.T) {
 	var units [3]*server.Object
 	var players [3]*server.Player
 	for i := range units {
-		unit, fu := alloc.New(server.Object{})
+		unit, fu := alloc.NewHigh(server.Object{})
 		defer fu()
-		update, fd := alloc.New(server.PlayerUpdateData{})
+		update, fd := alloc.NewHigh(server.PlayerUpdateData{})
 		defer fd()
-		player, fp := alloc.New(server.Player{})
+		player, fp := alloc.NewHigh(server.Player{})
 		defer fp()
 		*unit = server.Object{ObjClass: object.Class(0x80000004), NetCode: 0x80008400 + uint32(i), UpdateData: unsafe.Pointer(update)}
 		update.Player, player.PlayerUnit = player, unit
@@ -168,7 +168,7 @@ func TestPlayerHandleKotrDeath54DC40CgoNativeCrownTeamEntry(t *testing.T) {
 	noxflags.SetGame(noxflags.GameHost)
 	var crowns [2]*server.Object
 	var crownUpdates [2]*server.CrownUpdateData
-	slot, fs := alloc.New(uint64(0))
+	slot, fs := alloc.NewHigh(uint64(0))
 	defer fs()
 	drops := 0
 	server.RegisterObjectDrop("KotR54DC40DeclaredDropBoundary", unsafe.Pointer(slot), func(owner, item *server.Object, point *types.Pointf) int32 {
@@ -179,9 +179,9 @@ func TestPlayerHandleKotrDeath54DC40CgoNativeCrownTeamEntry(t *testing.T) {
 		return -17
 	})
 	for i := range crowns {
-		crown, fc := alloc.New(server.Object{})
+		crown, fc := alloc.NewHigh(server.Object{})
 		defer fc()
-		data, fd := alloc.New(server.CrownUpdateData{})
+		data, fd := alloc.NewHigh(server.CrownUpdateData{})
 		defer fd()
 		*crown = server.Object{TypeInd: 83, UpdateData: unsafe.Pointer(data), Drop: server.DropFuncPtr{Ptr: unsafe.Pointer(slot)}}
 		crowns[i], crownUpdates[i] = crown, data

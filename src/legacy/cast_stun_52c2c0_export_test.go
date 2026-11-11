@@ -24,16 +24,16 @@ func TestCastStunCEntry52C2C0PlayerClassAndLiveAttribution(t *testing.T) {
 			GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }
 			gameFrameHook = func() uint32 { return 0xfedcba98 }
 			t.Cleanup(func() { GetServer, buffApplyExportImpl4FF380, gameFrameHook = oldServer, oldApply, oldFrame })
-			source, freeSource := alloc.New(server.Object{})
-			target, freeTarget := alloc.New(server.Object{})
-			reloaded, freeReloaded := alloc.New(server.Object{})
-			sourceUpdate, freeSourceUpdate := alloc.New(server.PlayerUpdateData{})
-			targetUpdate, freeTargetUpdate := alloc.New(server.PlayerUpdateData{})
-			reloadedUpdate, freeReloadedUpdate := alloc.New(server.PlayerUpdateData{})
-			sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
-			targetPlayer, freeTargetPlayer := alloc.New(server.Player{})
-			reloadedPlayer, freeReloadedPlayer := alloc.New(server.Player{})
-			arg, freeArg := alloc.New(server.SpellAcceptArg{})
+			source, freeSource := alloc.NewHigh(server.Object{})
+			target, freeTarget := alloc.NewHigh(server.Object{})
+			reloaded, freeReloaded := alloc.NewHigh(server.Object{})
+			sourceUpdate, freeSourceUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			targetUpdate, freeTargetUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			reloadedUpdate, freeReloadedUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
+			targetPlayer, freeTargetPlayer := alloc.NewHigh(server.Player{})
+			reloadedPlayer, freeReloadedPlayer := alloc.NewHigh(server.Player{})
+			arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 			for _, free := range []func(){freeSource, freeTarget, freeReloaded, freeSourceUpdate, freeTargetUpdate, freeReloadedUpdate, freeSourcePlayer, freeTargetPlayer, freeReloadedPlayer, freeArg} {
 				t.Cleanup(free)
 			}
@@ -81,8 +81,8 @@ func TestCastStunCEntry52C2C0PlayerClassAndLiveAttribution(t *testing.T) {
 func TestCastStunCEntry52C2C0DelegatesSignedDwords(t *testing.T) {
 	old := castStunCall52C2C0
 	t.Cleanup(func() { castStunCall52C2C0 = old })
-	source, freeSource := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	source, freeSource := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeSource)
 	t.Cleanup(freeArg)
 	calls := 0
@@ -104,8 +104,8 @@ func TestCastStunCEntry52C2C0PreservesNativeMonsterTarget(t *testing.T) {
 	oldServer, oldApply := GetServer, buffApplyExportImpl4FF380
 	GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }
 	t.Cleanup(func() { GetServer, buffApplyExportImpl4FF380 = oldServer, oldApply })
-	target, freeTarget := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeTarget)
 	t.Cleanup(freeArg)
 	*target = server.Object{ObjClass: object.ClassMonster, Mass: 15, ZSize2: 1000}

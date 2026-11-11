@@ -30,13 +30,13 @@ import (
 
 //export nox_xxx_tileAllocTileInCoordList_5040A0
 func nox_xxx_tileAllocTileInCoordList_5040A0(x, y C.int, rawKind C.float) *C.nox_tile_coord_entry_t {
-	entry := (*C.nox_tile_coord_entry_t)(C.calloc(1, C.sizeof_nox_tile_coord_entry_t))
+	entry := (*C.nox_tile_coord_entry_t)(game4SupportAllocate(1, C.sizeof_nox_tile_coord_entry_t))
 	if entry == nil {
 		return nil
 	}
-	entry.layer = (*C.nox_tile_layer_t)(C.calloc(1, C.sizeof_nox_tile_layer_t))
+	entry.layer = (*C.nox_tile_layer_t)(game4SupportAllocate(1, C.sizeof_nox_tile_layer_t))
 	if entry.layer == nil {
-		C.free(unsafe.Pointer(entry))
+		game4SupportReleaseMemory(unsafe.Pointer(entry))
 		return nil
 	}
 	entry.prev = C.dword_5d4594_1599556

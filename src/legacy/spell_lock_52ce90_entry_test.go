@@ -37,11 +37,11 @@ func TestLockCastNativeEntry52CE90(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	aim, freeAim := alloc.New(server.Object{})
+	aim, freeAim := alloc.NewHigh(server.Object{})
 	defer freeAim()
 	*caster = server.Object{PosVec: types.Ptf(300, 500)}
 	*aim = server.Object{PosVec: types.Ptf(330, 520)}

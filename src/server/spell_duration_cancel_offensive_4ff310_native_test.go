@@ -119,13 +119,13 @@ func TestSpellDurationCancelOffensive4FF310ServerBinding(t *testing.T) {
 		},
 	}
 
-	caster, freeCaster := alloc.New(Object{})
-	other, freeOther := alloc.New(Object{})
-	recordA, freeA := alloc.New(DurSpell{})
-	recordB, freeB := alloc.New(DurSpell{})
-	recordC, freeC := alloc.New(DurSpell{})
-	recordD, freeD := alloc.New(DurSpell{})
-	recordNil, freeNil := alloc.New(DurSpell{})
+	caster, freeCaster := alloc.NewHigh(Object{})
+	other, freeOther := alloc.NewHigh(Object{})
+	recordA, freeA := alloc.NewHigh(DurSpell{})
+	recordB, freeB := alloc.NewHigh(DurSpell{})
+	recordC, freeC := alloc.NewHigh(DurSpell{})
+	recordD, freeD := alloc.NewHigh(DurSpell{})
+	recordNil, freeNil := alloc.NewHigh(DurSpell{})
 	t.Cleanup(func() {
 		freeCaster()
 		freeOther()

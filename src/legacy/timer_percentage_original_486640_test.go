@@ -109,7 +109,7 @@ func TestTimerPercentageOriginalNative486640(t *testing.T) {
 		t.Run(path, func(t *testing.T) {
 			for _, row := range rows {
 				t.Run(row.Input.Name, func(t *testing.T) {
-					g, free := alloc.New(timerPercentageGuard486640{})
+					g, free := alloc.NewHigh(timerPercentageGuard486640{})
 					defer free()
 					memory := unsafe.Slice((*byte)(unsafe.Pointer(g)), unsafe.Sizeof(*g))
 					for i := range memory {

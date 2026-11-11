@@ -41,12 +41,12 @@ func TestSpellDurationFindActiveTarget4FF2D0NativeLayout(t *testing.T) {
 }
 
 func TestSpellDurationFindActiveTarget4FF2D0NativeBindsLiveListAndFields(t *testing.T) {
-	target, freeTarget := alloc.New(Object{})
-	other, freeOther := alloc.New(Object{})
-	recordA, freeA := alloc.New(DurSpell{})
-	recordB, freeB := alloc.New(DurSpell{})
-	recordC, freeC := alloc.New(DurSpell{})
-	recordD, freeD := alloc.New(DurSpell{})
+	target, freeTarget := alloc.NewHigh(Object{})
+	other, freeOther := alloc.NewHigh(Object{})
+	recordA, freeA := alloc.NewHigh(DurSpell{})
+	recordB, freeB := alloc.NewHigh(DurSpell{})
+	recordC, freeC := alloc.NewHigh(DurSpell{})
+	recordD, freeD := alloc.NewHigh(DurSpell{})
 	t.Cleanup(freeTarget)
 	t.Cleanup(freeOther)
 	t.Cleanup(freeA)

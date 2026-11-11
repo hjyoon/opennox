@@ -126,7 +126,7 @@ func TestGame4VoteNativeExactCScalarAndUnlink(t *testing.T) {
 }
 
 func TestGame4VoteNativeCReferencePacketsAndLifetime(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	oldFrame := gameFrameHook
 	gameFrameHook = func() uint32 { return 0x12345678 }
@@ -168,13 +168,13 @@ func game4SupportTargetCacheControl(t *testing.T) {
 	if voter == nil || targetPlayer == nil {
 		t.Fatal("private player slots unavailable")
 	}
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	defer freeUnit()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeUpdate()
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	replacement, freeReplacement := alloc.New(server.Object{})
+	replacement, freeReplacement := alloc.NewHigh(server.Object{})
 	defer freeReplacement()
 	*unit = server.Object{}
 	*update = server.PlayerUpdateData{}

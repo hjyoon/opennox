@@ -31,7 +31,7 @@ func TestPlayerDamageSelfArrowCRecords4E17B0(t *testing.T) {
 				v, _, w := spellMissileImpactCRecords4E17B0(t, srv, owner)
 				v.TypeInd, v.ObjClass, v.ObjFlags = 713, object.Class(2621444), object.Flags(16777732)
 				w.TypeInd, w.ObjClass, w.ObjSubClass, w.ObjFlags = 529, object.Class(85983233), 16, object.Flags(16794116)
-				init, freeInit := alloc.New(server.ModifierInitData{})
+				init, freeInit := alloc.NewHigh(server.ModifierInitData{})
 				t.Cleanup(freeInit)
 				w.InitData = unsafe.Pointer(init)
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(w.InitData) <= math.MaxUint32 {

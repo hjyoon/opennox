@@ -50,7 +50,7 @@ func g2qTestIsolate(t *testing.T) {
 }
 func g2qTestObjects(t *testing.T, count int) unsafe.Pointer {
 	t.Helper()
-	b, free := alloc.Make([]byte{}, count*int(g2qTestLayout(6)))
+	b, free := alloc.MakeHigh([]byte{}, count*int(g2qTestLayout(6)))
 	t.Cleanup(free)
 	return unsafe.Pointer(&b[0])
 }
@@ -121,7 +121,7 @@ func TestGame2QuickbarNativeRegistryABIAndGC(t *testing.T) {
 
 func TestGame2QuickbarNativePackedRowsAndExpandedRoundtrip(t *testing.T) {
 	g2qTestIsolate(t)
-	storage, free := alloc.Make([]byte{}, 288)
+	storage, free := alloc.MakeHigh([]byte{}, 288)
 	defer free()
 	for i := range storage {
 		storage[i] = byte(i*29 + 7)
@@ -196,7 +196,7 @@ func TestGame2QuickbarNativePackedRowsAndExpandedRoundtrip(t *testing.T) {
 
 func TestGame2QuickbarNativeSelectorsAndSwap(t *testing.T) {
 	g2qTestIsolate(t)
-	data, free := alloc.Make([]byte{}, 256)
+	data, free := alloc.MakeHigh([]byte{}, 256)
 	defer free()
 	for i := range data {
 		data[i] = byte(i*13 + 3)
@@ -253,7 +253,7 @@ func TestGame2QuickbarNativeSelectorsAndSwap(t *testing.T) {
 
 func TestGame2QuickbarNativeDestroyOrder(t *testing.T) {
 	g2qTestIsolate(t)
-	data, free := alloc.Make([]byte{}, 256)
+	data, free := alloc.MakeHigh([]byte{}, 256)
 	defer free()
 	objects := g2qTestObjects(t, 16)
 	s := g2qTestLayout(6)
@@ -318,7 +318,7 @@ func TestGame2Quickbar45EF50ActualGoFrozenOriginal245(t *testing.T) {
 		t.Run(row.Case.Name, func(t *testing.T) {
 			g2qTestIsolate(t)
 			c := row.Case
-			main, free := alloc.Make([]byte{}, 256)
+			main, free := alloc.MakeHigh([]byte{}, 256)
 			defer free()
 			trap := memmap.Slice(0x5D4594, 1047940)[:256]
 			bars := [2][]byte{main, trap}
@@ -356,7 +356,7 @@ func TestGame2Quickbar45EF50ActualGoFrozenOriginal245(t *testing.T) {
 			for _, change := range row.Changes {
 				expected[change[0]][change[1]] = byte(change[2])
 			}
-			player, fp := alloc.Make([]byte{}, int(g2qTestLayout(8)))
+			player, fp := alloc.MakeHigh([]byte{}, int(g2qTestLayout(8)))
 			defer fp()
 			player[g2qTestLayout(9)] = byte(c.PlayerClass)
 			g2qTestPointer(1, unsafe.Pointer(&player[0]), true)
@@ -514,7 +514,7 @@ func TestGame2Quickbar45EF50ActualGoFrozenOriginal245(t *testing.T) {
 
 func TestGame2PlayerClassNativePackedField(t *testing.T) {
 	size, off := int(g2qTestLayout(8)), int(g2qTestLayout(9))
-	data, free := alloc.Make([]byte{}, size+32)
+	data, free := alloc.MakeHigh([]byte{}, size+32)
 	defer free()
 	p := unsafe.Pointer(&data[16])
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= math.MaxUint32 {

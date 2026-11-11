@@ -36,11 +36,11 @@ func TestCurePoisonNativeEntry52CDB0(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	health, freeHealth := alloc.New(server.HealthData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	defer freeHealth()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(health), unsafe.Pointer(arg)} {

@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 #include <stdlib.h>
+#include "native_fixture_alloc.h"
 #include <string.h>
 #include "defs.h"
 #include "GAME1.h"
@@ -17,13 +18,13 @@ static unsigned int game3_test_owner(int n){return n?dword_5d4594_1313788:dword_
 static void game3_test_set_owner(int n,unsigned int v){if(n)dword_5d4594_1313788=v;else dword_5d4594_1313740=v;}
 
 static void* game3_test_alloc(size_t n) {
- unsigned char* base=calloc(1,n+64); if(!base)return NULL;
+ unsigned char* base=nox_native_fixture_calloc_high(1,n+64); if(!base)return NULL;
  memset(base,0xA7,32); memset(base+32+n,0xD3,32); return base+32;
 }
 static int game3_test_guards(void* value,size_t n) {
  unsigned char* p=value; for(int i=0;i<32;i++)if(p[i-32]!=0xA7||p[n+i]!=0xD3)return 0;return 1;
 }
-static void game3_test_free(void* p){free((unsigned char*)p-32);}
+static void game3_test_free(void* p){nox_native_fixture_free_high((unsigned char*)p-32);}
 static size_t game3_test_draw_size(void){return sizeof(nox_drawable);}
 static size_t game3_test_equipment_size(void){return sizeof(nox_player_equipment_data_t);}
 static size_t game3_test_modifier_offset(void){return offsetof(nox_player_equipment_data_t,modifiers);}

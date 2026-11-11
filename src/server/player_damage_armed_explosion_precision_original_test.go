@@ -59,16 +59,16 @@ func TestPlayerDamageArmedExplosionPrecisionOriginal4E17B0(t *testing.T) {
 	for _, row := range fixture.Rows {
 		t.Run(row.Input.Name, func(t *testing.T) {
 			input := row.Input
-			unit, freeUnit := alloc.New(Object{})
+			unit, freeUnit := alloc.NewHigh(Object{})
 			defer freeUnit()
-			info, freeInfo := alloc.New(Player{})
+			info, freeInfo := alloc.NewHigh(Player{})
 			defer freeInfo()
 			*info = Player{}
 			var carry, marker, kind *uint32
 			var update []byte
 			var outputOffsets []uintptr
 			if input.Player {
-				ud, freeUD := alloc.New(PlayerUpdateData{})
+				ud, freeUD := alloc.NewHigh(PlayerUpdateData{})
 				defer freeUD()
 				*ud = PlayerUpdateData{Player: info, Field57: input.Armor, Field21: input.Carry, Field76: 99, Field75: 77}
 				*unit = Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(ud)}
@@ -76,7 +76,7 @@ func TestPlayerDamageArmedExplosionPrecisionOriginal4E17B0(t *testing.T) {
 				update = unsafe.Slice((*byte)(unsafe.Pointer(ud)), int(unsafe.Sizeof(*ud)))
 				outputOffsets = []uintptr{unsafe.Offsetof(ud.Field21), unsafe.Offsetof(ud.Field76), unsafe.Offsetof(ud.Field75)}
 			} else {
-				ud, freeUD := alloc.New(MonsterUpdateData{})
+				ud, freeUD := alloc.NewHigh(MonsterUpdateData{})
 				defer freeUD()
 				*ud = MonsterUpdateData{Field518: input.Armor, Field1: input.Carry, Field547: 99, Field546: 77}
 				*unit = Object{ObjClass: object.ClassMonster, ObjSubClass: 0x11012, UpdateData: unsafe.Pointer(ud)}
@@ -84,15 +84,15 @@ func TestPlayerDamageArmedExplosionPrecisionOriginal4E17B0(t *testing.T) {
 				update = unsafe.Slice((*byte)(unsafe.Pointer(ud)), int(unsafe.Sizeof(*ud)))
 				outputOffsets = []uintptr{unsafe.Offsetof(ud.Field1), unsafe.Offsetof(ud.Field547), unsafe.Offsetof(ud.Field546)}
 			}
-			attack, freeAttack := alloc.New(Object{})
+			attack, freeAttack := alloc.NewHigh(Object{})
 			defer freeAttack()
-			owner, freeOwner := alloc.New(Object{})
+			owner, freeOwner := alloc.NewHigh(Object{})
 			defer freeOwner()
-			ownerUD, freeOwnerUD := alloc.New(PlayerUpdateData{})
+			ownerUD, freeOwnerUD := alloc.NewHigh(PlayerUpdateData{})
 			defer freeOwnerUD()
-			ownerInfo, freeOwnerInfo := alloc.New(Player{})
+			ownerInfo, freeOwnerInfo := alloc.NewHigh(Player{})
 			defer freeOwnerInfo()
-			attackUD, freeAttackUD := alloc.New(MonsterUpdateData{})
+			attackUD, freeAttackUD := alloc.NewHigh(MonsterUpdateData{})
 			defer freeAttackUD()
 			*owner = Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(ownerUD)}
 			*ownerInfo = Player{PlayerUnit: owner}
@@ -101,7 +101,7 @@ func TestPlayerDamageArmedExplosionPrecisionOriginal4E17B0(t *testing.T) {
 			*attack = Object{TypeInd: 73}
 			var source, weapon *Object
 			source, weapon = owner, attack
-			init, freeInit := alloc.New(ModifierInitData{})
+			init, freeInit := alloc.NewHigh(ModifierInitData{})
 			defer freeInit()
 			*init = ModifierInitData{}
 			attack.ObjClass, attack.InitData = input.WeaponClass, unsafe.Pointer(init)
@@ -109,7 +109,7 @@ func TestPlayerDamageArmedExplosionPrecisionOriginal4E17B0(t *testing.T) {
 			case "armed-weapon-player", "armed-weapon-monster":
 				attack.ObjSubClass = 0x100
 			case "armed-wand-player", "armed-wand-monster":
-				use, freeUse := alloc.New(WandUseData{})
+				use, freeUse := alloc.NewHigh(WandUseData{})
 				defer freeUse()
 				*use = WandUseData{Flags: 2}
 				attack.ObjSubClass, attack.UseData.Ptr = 0x10000, unsafe.Pointer(use)

@@ -159,7 +159,7 @@ func floorReadNativeRegionR300(t *testing.T, version uint16) {
 		Region [8]uint32
 		Suffix [4]uint32
 	}
-	box, free := alloc.New(regionBox{})
+	box, free := alloc.NewHigh(regionBox{})
 	defer free()
 	*box = regionBox{
 		Prefix: [4]uint32{0x11223344, 0x55667788, 0x99aabbcc, 0xddeeff00},

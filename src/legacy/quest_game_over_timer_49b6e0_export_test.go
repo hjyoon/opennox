@@ -62,7 +62,7 @@ func TestQuestGameOverTimer49B6E0NativeHost(t *testing.T) {
 		return gui.RawEventResp(math.MaxUint32)
 	})
 	child.SetID(10712)
-	player, freePlayer := alloc.New(server.Player{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freePlayer)
 	player.PlayerInd = 31
 	if unsafe.Sizeof(uintptr(0)) > 4 {

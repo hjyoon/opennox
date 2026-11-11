@@ -37,11 +37,11 @@ func TestEarthquakeCastEntryNativePointers52DE40(t *testing.T) {
 	previousServer := GetServer
 	t.Cleanup(func() { GetServer = previousServer })
 	GetServer = func() Server { return &telekinesisCastLegacyServer52D330{srv: srv} }
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(12, 34)}
 	for _, p := range []unsafe.Pointer{unsafe.Pointer(second), unsafe.Pointer(owner), unsafe.Pointer(caster), unsafe.Pointer(arg)} {

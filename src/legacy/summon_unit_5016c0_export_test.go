@@ -18,12 +18,12 @@ func TestSummonUnitExport5016C0PreservesExactWidthsAndNativePointers(t *testing.
 		Nox_xxx_unitDoSummonAt_5016C0 = old
 	})
 
-	position, freePosition := alloc.New(types.Pointf{})
+	position, freePosition := alloc.NewHigh(types.Pointf{})
 	defer freePosition()
 	*position = types.Pointf{X: 12.5, Y: -7.25}
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	created, freeCreated := alloc.New(server.Object{})
+	created, freeCreated := alloc.NewHigh(server.Object{})
 	defer freeCreated()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {

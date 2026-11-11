@@ -18,8 +18,18 @@ var (
 
 // Init the handles memory region.
 func Init() {
+	initRegion(memguard.New)
+}
+
+// InitHigh initializes an explicitly high-address opaque-pointer fixture bank.
+// Production initialization continues to use Init's ordinary allocator.
+func InitHigh() {
+	initRegion(memguard.NewHigh)
+}
+
+func initRegion(reserve func(int) ([]byte, func())) {
 	const size = 16 * 1024 * 1024
-	data, free = memguard.New(size)
+	data, free = reserve(size)
 	base = uintptr(unsafe.Pointer(&data[0]))
 	end = base + size
 	atomic.StoreUint32(&cur, 0)

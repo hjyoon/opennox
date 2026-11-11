@@ -89,11 +89,11 @@ func TestDeadTargetOriginalActualC532040(t *testing.T) {
 		ref.Global != 0x833c1c || ref.Control != 0xe3f || len(ref.Rows) != 10800 {
 		t.Fatal("original provenance/extent/dimensions")
 	}
-	candidate, freeCandidate := alloc.New(deadTargetObjectGuard532040{})
+	candidate, freeCandidate := alloc.NewHigh(deadTargetObjectGuard532040{})
 	t.Cleanup(freeCandidate)
-	context, freeContext := alloc.New(deadTargetUpdateGuard532040{})
+	context, freeContext := alloc.NewHigh(deadTargetUpdateGuard532040{})
 	t.Cleanup(freeContext)
-	other, freeOther := alloc.New(deadTargetUpdateGuard532040{})
+	other, freeOther := alloc.NewHigh(deadTargetUpdateGuard532040{})
 	t.Cleanup(freeOther)
 	regions := []struct {
 		Pointer unsafe.Pointer

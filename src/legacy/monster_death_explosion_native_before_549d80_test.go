@@ -36,10 +36,10 @@ func monsterDeathNativeBeforeFixture549D80(t *testing.T) (*server.Server, *serve
 	if pl == nil {
 		t.Fatal("cannot allocate native receiver")
 	}
-	pu, freePU := alloc.New(server.PlayerUpdateData{})
+	pu, freePU := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freePU)
 	pu.Player = pl
-	receiver, freeReceiver := alloc.New(server.Object{})
+	receiver, freeReceiver := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeReceiver)
 	*receiver = server.Object{ObjClass: object.ClassPlayer, PosVec: unit.PosVec, UpdateData: unsafe.Pointer(pu)}
 	pl.PlayerUnit, pl.Field10, pl.Field12 = receiver, 100, 100

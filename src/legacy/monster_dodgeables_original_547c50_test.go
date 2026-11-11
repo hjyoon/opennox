@@ -138,7 +138,7 @@ type dodgeWorld547C50 struct {
 
 func newDodgeWorld547C50(t *testing.T, row dodgeRow547C50) *dodgeWorld547C50 {
 	t.Helper()
-	p, free := alloc.Malloc(32768)
+	p, free := alloc.MallocHigh(32768)
 	t.Cleanup(free)
 	heap := unsafe.Slice((*byte)(p), 32768)
 	for i := range heap {

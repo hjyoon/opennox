@@ -43,7 +43,7 @@ func TestBoxWallImpulse548600SpecialValuesOriginal(t *testing.T) {
 	}
 	for index, row := range fixture.Rows {
 		t.Run(fmt.Sprintf("%03d", index), func(t *testing.T) {
-			obj, free := alloc.New(Object{})
+			obj, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)
 			if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
 				t.Fatal("native impulse object below 4 GiB")

@@ -53,11 +53,11 @@ func TestSpellTagPublicEntryNativeRecord530160(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeTarget)
 	*f = frame{}
 	*caster = server.Object{ObjClass: object.ClassMonster}

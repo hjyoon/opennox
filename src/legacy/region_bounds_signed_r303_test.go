@@ -105,14 +105,14 @@ func TestRegionBoundsSignedCGoR303(t *testing.T) {
 				Suffix [4]uint32
 			}
 			canary := [4]uint32{0xa7b8c9da, 0x12345678, 0x87654321, 0xd9e8f7a6}
-			input, freeInput := alloc.New(inputBox{})
+			input, freeInput := alloc.NewHigh(inputBox{})
 			defer freeInput()
 			*input = inputBox{
 				Prefix: canary,
 				Region: [8]int32{lo, tc.endpoints[1], tc.endpoints[0], hi, tc.endpoints[2], -7654321, 0x13579bdf, tc.endpoints[3]},
 				Suffix: canary,
 			}
-			output, freeOutput := alloc.New(outputBox{})
+			output, freeOutput := alloc.NewHigh(outputBox{})
 			defer freeOutput()
 			*output = outputBox{Prefix: canary, Bounds: [4]int32{-99, -99, -99, -99}, Suffix: canary}
 			before := *input

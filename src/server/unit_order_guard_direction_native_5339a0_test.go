@@ -19,13 +19,13 @@ import (
 // literal expected words are independent of the native Dir16 conversion.
 func TestUnitOrderGuardDirectionNative5339A0(t *testing.T) {
 	s := unitOrderTestServer533900(t)
-	source, freeSource := alloc.New(Object{ObjClass: object.ClassSimple})
+	source, freeSource := alloc.NewHigh(Object{ObjClass: object.ClassSimple})
 	t.Cleanup(freeSource)
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
-	definition, freeDefinition := alloc.New(MonsterDef{})
+	definition, freeDefinition := alloc.NewHigh(MonsterDef{})
 	t.Cleanup(freeDefinition)
 	for _, pointer := range []unsafe.Pointer{unsafe.Pointer(source), unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(definition)} {
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {

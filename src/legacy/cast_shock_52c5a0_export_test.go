@@ -20,10 +20,10 @@ type shockCastLegacyServer52C5A0 struct {
 }
 
 func TestCastShockRealCWrapper52C5A0GlyphAndDamagePointers(t *testing.T) {
-	target, freeTarget := alloc.New(server.Object{})
-	caster, freeCaster := alloc.New(server.Object{})
-	context, freeContext := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	context, freeContext := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeTarget, freeCaster, freeContext, freeArg} {
 		t.Cleanup(free)
 	}
@@ -59,9 +59,9 @@ func TestCastShockRealCWrapper52C5A0GlyphAndDamagePointers(t *testing.T) {
 }
 
 func TestCastShockCEntry52C5A0SignedDwordsAndNativeLinks(t *testing.T) {
-	caster, freeCaster := alloc.New(server.Object{})
-	context, freeContext := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	context, freeContext := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeCaster, freeContext, freeArg} {
 		t.Cleanup(free)
 	}
@@ -81,8 +81,8 @@ func TestCastShockCEntry52C5A0SignedDwordsAndNativeLinks(t *testing.T) {
 }
 
 func TestCastShockCEntry52C5A0NilTargetSkipsServerLookup(t *testing.T) {
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
-	context, freeContext := alloc.New(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
+	context, freeContext := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeArg)
 	t.Cleanup(freeContext)
 	cache := Get_dword_5d4594_2487712_ptr()
@@ -100,8 +100,8 @@ func (s *shockCastLegacyServer52C5A0) S() *server.Server { return s.srv }
 // Use the unchanged public Go wrapper and actual six-argument C entrypoint.
 // Both the acceptance argument and the target are native-width C allocations.
 func TestCastShockRealCWrapper52C5A0PreservesTarget(t *testing.T) {
-	target, freeTarget := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeTarget)
 	t.Cleanup(freeArg)
 	*arg = server.SpellAcceptArg{Obj: target, Pos: types.Ptf(-12.5, 33.25)}

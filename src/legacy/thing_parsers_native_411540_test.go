@@ -156,7 +156,7 @@ func TestThingParserMalformedPolicies411540(t *testing.T) {
 func TestThingParserMemfileAndPinned411540(t *testing.T) {
 	_, restore := thingFixtureSave411540()
 	defer restore()
-	data, unusedFree := alloc.CloneSlice([]byte{0, 0, 0, 0})
+	data, unusedFree := alloc.CloneSliceHigh([]byte{0, 0, 0, 0})
 	_ = unusedFree
 	f := binfile.NewMemFile(unsafe.Pointer(&data[0]), len(data))
 	defer f.Free()

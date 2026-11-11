@@ -165,13 +165,13 @@ func schedNewFixture531B40(t *testing.T) *schedFixture531B40 {
 	f.server.SetFrame(1400)
 	for i := 0; i < 2; i++ {
 		f.prototypes[i] = *f.server.Objs.NewObject(&schedObjectType531B40{})
-		u, fu := alloc.New(schedObjectGuard531B40{})
+		u, fu := alloc.NewHigh(schedObjectGuard531B40{})
 		t.Cleanup(fu)
 		f.units[i] = u
-		d, fd := alloc.New(schedUpdateGuard531B40{})
+		d, fd := alloc.NewHigh(schedUpdateGuard531B40{})
 		t.Cleanup(fd)
 		f.updates[i] = d
-		m, fm := alloc.New(schedDefGuard531B40{})
+		m, fm := alloc.NewHigh(schedDefGuard531B40{})
 		t.Cleanup(fm)
 		f.defs[i] = m
 		f.regions = append(f.regions, schedRegion531B40{unsafe.Pointer(u), unsafe.Sizeof(*u)}, schedRegion531B40{unsafe.Pointer(d), unsafe.Sizeof(*d)}, schedRegion531B40{unsafe.Pointer(m), unsafe.Sizeof(*m)})

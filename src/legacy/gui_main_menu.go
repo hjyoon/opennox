@@ -14,7 +14,7 @@ package legacy
 #include "client__shell__selchar.h"
 #include "client__shell__mainmenu.h"
 extern nox_window* dword_5d4594_831236;
-extern unsigned int dword_5d4594_831220;
+extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_831260;
 int winMainMenuAnimOutStartFnc();
 int winMainMenuAnimOutDoneFnc();

@@ -80,11 +80,12 @@ func TestPlayerDamageNPCPierce4E17B0FractionalCarry(t *testing.T) {
 					}
 					update := target.UpdateDataMonster()
 					update.Field523_2 = 0x34
-					for hit, carry := range []float32{0.25, 0.5, -0.25} {
+					for hit, initialCarry := range []float32{0, 0.25, 0.5} {
+						original := npcPhysicalOriginal4E17B0(t, fmt.Sprintf("fractional-hit-%d", hit), 3, .25, initialCarry)
 						if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || !result {
 							t.Fatalf("hit %d = %t/%t", hit, h, result)
 						}
-						if math.Float32frombits(update.Field1) != carry || update.Field547 != 1 || update.Field546 != uint32(arrow.TypeInd) {
+						if update.Field1 != original.Carry || update.Field547 != 1 || update.Field546 != uint32(arrow.TypeInd) {
 							t.Fatalf("hit %d carry=%g marker=%d/%d", hit, math.Float32frombits(update.Field1), update.Field547, update.Field546)
 						}
 					}
@@ -95,7 +96,7 @@ func TestPlayerDamageNPCPierce4E17B0FractionalCarry(t *testing.T) {
 					if pure {
 						wantPos = arrow.PrevPos
 					}
-					if !reflect.DeepEqual(*damages, []int32{2, 2, 3}) || target.HealthData.Cur != 13 ||
+					if !reflect.DeepEqual(*damages, []int32{2, 2, 2}) || target.HealthData.Cur != 14 ||
 						update.Field523_2 != 0x34 || !update.StatusFlags.Has(object.MonStatusInjured) ||
 						target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != 700 || target.Pos132 != wantPos || (!playerSource && source.UpdateDataMonster().Field130 != 700) {
 						t.Fatalf("damage=%v HP=%d position=%v", *damages, target.HealthData.Cur, target.Pos132)
@@ -214,13 +215,12 @@ func TestPlayerDamageNPCPierce4E17B0AbsorptionBinary32Boundary(t *testing.T) {
 			for _, tc := range []struct {
 				armor  float32
 				damage int32
-				hp     uint16
-				carry  uint32
 			}{
-				{0.1, 3, 17, 0xbe999998},
-				{0.2, 9, 13, 0x3e4cccc0},
-				{0.4, 3, 18, 0xbe4cccd0},
+				{0.1, 3},
+				{0.2, 9},
+				{0.4, 3},
 			} {
+				original := npcPhysicalOriginal4E17B0(t, fmt.Sprintf("binary32-%g", tc.armor), tc.damage, tc.armor, 0)
 				target, source, arrow, r, _ := playerDamageNPCPierceSourceFixture4E17B0(t, playerSource)
 				ud := target.UpdateDataMonster()
 				ud.Field518 = math.Float32bits(tc.armor)
@@ -228,8 +228,8 @@ func TestPlayerDamageNPCPierce4E17B0AbsorptionBinary32Boundary(t *testing.T) {
 				// spills to binary32 before 004E20F0. Rounding 1-armor to binary32
 				// prematurely gives a different fractional carry for all three.
 				if h, result := PlayerDamageNative4E17B0(target, source, arrow, tc.damage, object.DamageImpale, r); !h || !result ||
-					target.HealthData.Cur != tc.hp || ud.Field1 != tc.carry {
-					t.Fatalf("armor=%g damage=%d result=%t/%t HP=%d carry=%08x, want HP=%d carry=%08x", tc.armor, tc.damage, h, result, target.HealthData.Cur, ud.Field1, tc.hp, tc.carry)
+					target.HealthData.Cur != uint16(20-original.Damage) || ud.Field1 != original.Carry {
+					t.Fatalf("armor=%g damage=%d result=%t/%t HP=%d carry=%08x, want HP=%d carry=%08x", tc.armor, tc.damage, h, result, target.HealthData.Cur, ud.Field1, 20-original.Damage, original.Carry)
 				}
 			}
 		})

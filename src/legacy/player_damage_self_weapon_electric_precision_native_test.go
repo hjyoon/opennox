@@ -15,7 +15,7 @@ import (
 
 func selfWeaponElectricNativeAlloc[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	p, free := alloc.New(value)
+	p, free := alloc.NewHigh(value)
 	*p = value
 	t.Cleanup(free)
 	return p

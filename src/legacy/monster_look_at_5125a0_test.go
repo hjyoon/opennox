@@ -31,7 +31,7 @@ func monsterLookAtFixture5125A0(t *testing.T) (*server.Server, *server.Object, *
 	noxflags.UnsetEngine(noxflags.EngineShowAI)
 	t.Cleanup(func() { noxflags.SetEngine(oldEngine) })
 	unit := srv.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	unit.ObjClass = object.ClassMonster
 	unit.UpdateData = unsafe.Pointer(update)
@@ -133,7 +133,7 @@ func TestMonsterLookAtCEntry5125A0GatesWithoutServerLookup(t *testing.T) {
 		{"dead monster", object.ClassMonster, object.FlagDead},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			unit, free := alloc.New(server.Object{ObjClass: tc.class, ObjFlags: tc.flags})
+			unit, free := alloc.NewHigh(server.Object{ObjClass: tc.class, ObjFlags: tc.flags})
 			t.Cleanup(free)
 			// No server handle or update data: original gates need neither.
 			angles := [...]uintptr{160, 192, 224, 128, 0, 0, 96, 64, 32}
@@ -147,7 +147,7 @@ func TestMonsterLookAtCEntry5125A0GatesWithoutServerLookup(t *testing.T) {
 }
 
 func TestMonsterLookAtCBridge5125A0PreservesPointerDirectionAndResult(t *testing.T) {
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	previous := monsterLookAtCall5125A0
 	t.Cleanup(func() { monsterLookAtCall5125A0 = previous })

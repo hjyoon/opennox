@@ -87,7 +87,7 @@ func TestClientAbilityPacketsActualDispatcher(t *testing.T) {
 								if op == netmsg.MSG_RESET_ABILITIES {
 									size = 2
 								}
-								storage, free := alloc.Make([]byte{0xa5}, size+8)
+								storage, free := alloc.MakeHigh([]byte{0xa5}, size+8)
 								for i := range storage {
 									storage[i] = 0xa5
 								}

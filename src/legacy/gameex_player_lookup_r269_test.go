@@ -57,7 +57,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 			}()
 
 			names := []string{"Alpha", "inactive", "Beta", strings.Repeat("x", 27), "é", "Ё", "ĀTail", "Alpha"}
-			units, freeUnits := alloc.Make([]server.Object{}, len(names))
+			units, freeUnits := alloc.MakeHigh([]server.Object{}, len(names))
 			defer freeUnits()
 			for i, name := range names {
 				p := s.Players.NewRaw(0x12340000 + i)
@@ -103,7 +103,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 			}
 			for _, pattern := range []byte{0, 0x5a, 0xff} {
 				for _, tc := range cases {
-					storage, free := alloc.Make([]byte{}, len(tc.query)+19)
+					storage, free := alloc.MakeHigh([]byte{}, len(tc.query)+19)
 					for i := range storage {
 						storage[i] = pattern
 					}
@@ -124,7 +124,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 						team   unsafe.Pointer
 						after  uintptr
 					}
-					out, freeOut := alloc.New(teamOutput{})
+					out, freeOut := alloc.NewHigh(teamOutput{})
 					*out = teamOutput{before: ^uintptr(0) - 1, team: units[7].TeamVal.C(), after: ^uintptr(0) - 2}
 					got := 0
 					if parser == "0" {
@@ -148,12 +148,12 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 			for _, p := range s.Players.ListSlots() {
 				p.Active = 0
 			}
-			record, free := alloc.Make([]byte{}, 4)
+			record, free := alloc.MakeHigh([]byte{}, 4)
 			defer free()
 			record[0], record[1] = 0xa5, 0x5a
 			got := PlayerInfoStructParser_0(unsafe.Pointer(&record[0]))
 			if parser == "1" {
-				out, free := alloc.New(unsafe.Pointer(nil))
+				out, free := alloc.NewHigh(unsafe.Pointer(nil))
 				defer free()
 				got = lookupWithTeam(unsafe.Pointer(&record[0]), out)
 				if *out != nil {

@@ -11,11 +11,11 @@ import (
 )
 
 func TestQuestRecordDeathBridge4D6130NativeCGoRoundTrip(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	defer freeUnit()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeUpdate()
-	player, freePlayer := alloc.New(server.Player{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	defer freePlayer()
 	unit.UpdateData, update.Player = unsafe.Pointer(update), player
 	if got := questRecordDeathBridge4D6130(nil); got != 0 {

@@ -46,11 +46,11 @@ func requirePlayerCancelSpellsLegacyPointers4FEAE0(t *testing.T, values ...unsaf
 
 func TestPlayerCancelSpellsExport4FEAE0PreservesNativePointers(t *testing.T) {
 	srv := usePlayerCancelSpellsLegacyServer4FEAE0(t)
-	caster, freeCaster := alloc.New(server.Object{})
-	other, freeOther := alloc.New(server.Object{})
-	recordA, freeA := alloc.New(server.DurSpell{})
-	recordB, freeB := alloc.New(server.DurSpell{})
-	recordC, freeC := alloc.New(server.DurSpell{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	other, freeOther := alloc.NewHigh(server.Object{})
+	recordA, freeA := alloc.NewHigh(server.DurSpell{})
+	recordB, freeB := alloc.NewHigh(server.DurSpell{})
+	recordC, freeC := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeCaster)
 	t.Cleanup(freeOther)
 	t.Cleanup(freeA)
@@ -85,7 +85,7 @@ func TestPlayerCancelSpellsExport4FEAE0PreservesNativePointers(t *testing.T) {
 
 func TestPlayerCancelSpellsExport4FEAE0MatchesNilCaster(t *testing.T) {
 	srv := usePlayerCancelSpellsLegacyServer4FEAE0(t)
-	record, freeRecord := alloc.New(server.DurSpell{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeRecord)
 	record.Flags88 = 0x87654320
 	srv.Spells.Dur.List = record

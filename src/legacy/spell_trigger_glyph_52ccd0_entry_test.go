@@ -36,11 +36,11 @@ func TestTriggerGlyphNativeEntry52CCD0(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	worldObject, freeObject := alloc.New(server.Object{})
+	worldObject, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*worldObject = server.Object{PosVec: types.Ptf(11, 13)}
 	*caster = server.Object{PosVec: types.Ptf(100, 200)}

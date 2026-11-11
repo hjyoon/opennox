@@ -129,7 +129,7 @@ func animationSnapshot533790(p unsafe.Pointer, n uintptr) []byte {
 	return append([]byte(nil), unsafe.Slice((*byte)(p), int(n))...)
 }
 func animationAllocate533790[T comparable](t *testing.T, f *animationFixture533790) *animationGuard533790[T] {
-	p, free := alloc.New(animationGuard533790[T]{})
+	p, free := alloc.NewHigh(animationGuard533790[T]{})
 	t.Cleanup(free)
 	f.regions = append(f.regions, animationRegion533790{unsafe.Pointer(p), unsafe.Sizeof(*p)})
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {

@@ -4,7 +4,7 @@ package legacy
 #include <stddef.h>
 #include "GAME2.h"
 #include "quest_win_screen_450770.h"
-extern unsigned int dword_5d4594_831220;
+extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_587000_122848,dword_5d4594_831092,dword_5d4594_831260,dword_5d4594_831244;
 extern uintptr_t dword_5d4594_832484;
 extern nox_window*dword_5d4594_831236,*nox_wnd_briefing_831232;

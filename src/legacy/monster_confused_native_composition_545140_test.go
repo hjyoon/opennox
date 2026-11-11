@@ -76,7 +76,7 @@ func TestMonsterConfusedPublicCComposition545140(t *testing.T) {
 		count++
 		t.Run(input.Name, func(t *testing.T) {
 			s, unit, update, missile := monsterMainBlockLegacyFixture547210(t)
-			def, freeDef := alloc.New(server.MonsterDef{})
+			def, freeDef := alloc.NewHigh(server.MonsterDef{})
 			t.Cleanup(freeDef)
 			unit.ObjSubClass = object.SubClass(0x80)
 			unit.Direction1, unit.Direction2 = server.Dir16(input.Direction), 0xbabe

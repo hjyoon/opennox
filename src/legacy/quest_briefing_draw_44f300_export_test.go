@@ -23,8 +23,8 @@ func preserveQuestBriefingDraw44F300(t *testing.T) {
 
 func TestQuestBriefingDraw44F300CEntryFullPointersAndReturn(t *testing.T) {
 	preserveQuestBriefingDraw44F300(t)
-	win, freeWin := alloc.New(gui.Window{})
-	draw, freeDraw := alloc.New(gui.WindowData{})
+	win, freeWin := alloc.NewHigh(gui.Window{})
+	draw, freeDraw := alloc.NewHigh(gui.WindowData{})
 	t.Cleanup(freeWin)
 	t.Cleanup(freeDraw)
 	for _, ptr := range []unsafe.Pointer{unsafe.Pointer(win), unsafe.Pointer(draw)} {
@@ -46,12 +46,12 @@ func TestQuestBriefingDraw44F300CEntryFullPointersAndReturn(t *testing.T) {
 func TestQuestBriefingDraw44F300NativeCEntryFieldsAndCaches(t *testing.T) {
 	slots := preserveQuestPreviewSlots44E110(t)
 	preserveQuestBriefingDraw44F300(t)
-	win, freeWin := alloc.New(gui.Window{})
-	draw, freeDraw := alloc.New(gui.WindowData{})
-	vp, freeVP := alloc.New(noxrender.Viewport{})
-	normal, freeNormal := alloc.Malloc(8)
-	title, freeTitle := alloc.Malloc(8)
-	changedTitle, freeChanged := alloc.Malloc(8)
+	win, freeWin := alloc.NewHigh(gui.Window{})
+	draw, freeDraw := alloc.NewHigh(gui.WindowData{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
+	normal, freeNormal := alloc.MallocHigh(8)
+	title, freeTitle := alloc.MallocHigh(8)
+	changedTitle, freeChanged := alloc.MallocHigh(8)
 	for _, free := range []func(){freeWin, freeDraw, freeVP, freeNormal, freeTitle, freeChanged} {
 		t.Cleanup(free)
 	}
@@ -62,7 +62,7 @@ func TestQuestBriefingDraw44F300NativeCEntryFieldsAndCaches(t *testing.T) {
 	var drs [12]*client.Drawable
 	var before [12][]byte
 	for i := range drs {
-		dr, free := alloc.New(client.Drawable{})
+		dr, free := alloc.NewHigh(client.Drawable{})
 		t.Cleanup(free)
 		buf := unsafe.Slice((*byte)(unsafe.Pointer(dr)), int(unsafe.Sizeof(*dr)))
 		for n := range buf {
@@ -74,7 +74,7 @@ func TestQuestBriefingDraw44F300NativeCEntryFieldsAndCaches(t *testing.T) {
 	texts := make(map[string]*uint16)
 	keys := make(map[*uint16]string)
 	for _, key := range []string{"1", "2a", "2b", "3a", "3b", "4a", "4b", "7a", "7b", "5a", "5b", "6a", "6b", "8a", "8b", "9a", "9b", "10a", "10b", "11a", "11b", "12"} {
-		p, free := alloc.New(uint16(0))
+		p, free := alloc.NewHigh(uint16(0))
 		t.Cleanup(free)
 		texts[key], keys[p] = p, key
 	}
@@ -200,7 +200,7 @@ func TestQuestBriefingDraw44F300NativeCEntryFieldsAndCaches(t *testing.T) {
 func TestQuestBriefingDraw44F300NativeNilHelperValuesAreNotSkipped(t *testing.T) {
 	preserveQuestPreviewSlots44E110(t)
 	preserveQuestBriefingDraw44F300(t)
-	draw, free := alloc.New(gui.WindowData{})
+	draw, free := alloc.NewHigh(gui.WindowData{})
 	t.Cleanup(free)
 	h := questBriefingDrawNativeHooks44F300(draw)
 	h.viewport = func() *noxrender.Viewport { return nil }

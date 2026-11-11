@@ -242,10 +242,10 @@ func TestSpellDurationDestroy4FEDA0ServerBinding(t *testing.T) {
 	}
 	t.Cleanup(srv.Spells.Dur.Free)
 
-	unit, freeUnit := alloc.New(Object{})
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
-	player, freePlayer := alloc.New(Player{})
-	callback, freeCallback := alloc.New(byte(0))
+	unit, freeUnit := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(Player{})
+	callback, freeCallback := alloc.NewHigh(byte(0))
 	t.Cleanup(func() {
 		freeUnit()
 		freeUpdate()

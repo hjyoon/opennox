@@ -77,7 +77,7 @@ func TestDefaultDamageFountainNative4E0B30CRecords(t *testing.T) {
 					u.Field57, u.Field21, u.Field76, u.Field75 = math.Float32bits(.5), math.Float32bits(.25), 99, 91
 					carry, marker, markerType = &u.Field21, &u.Field76, &u.Field75
 				} else {
-					u, freeU := alloc.New(server.MonsterUpdateData{})
+					u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
 					t.Cleanup(freeU)
 					*u = server.MonsterUpdateData{Field547: 99, Field546: 91, Field523_2: 88, Field518: math.Float32bits(.5), Field1: math.Float32bits(.25)}
 					v.UpdateData, ud = unsafe.Pointer(u), u

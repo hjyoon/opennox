@@ -86,7 +86,7 @@ func monsterEdibleNativeFoods544A00(t *testing.T, count int) []*Object {
 	t.Helper()
 	foods := make([]*Object, count)
 	for i := range foods {
-		food, free := alloc.New(Object{})
+		food, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		*food = Object{ObjClass: object.ClassFood, ObjSubClass: object.SubClass(object.FoodApple),
 			ObjFlags: object.FlagActive | object.FlagEnabled}

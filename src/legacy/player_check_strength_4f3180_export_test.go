@@ -29,15 +29,15 @@ func TestPlayerCheckStrengthExport4F3180PreservesNativePointersAndIgnoresCheat(t
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	player, freePlayerObject := alloc.New(server.Object{})
+	player, freePlayerObject := alloc.NewHigh(server.Object{})
 	defer freePlayerObject()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeUpdate()
-	playerValue, freePlayer := alloc.New(server.Player{})
+	playerValue, freePlayer := alloc.NewHigh(server.Player{})
 	defer freePlayer()
-	definition, freeDefinition := alloc.New(server.Modifier{})
+	definition, freeDefinition := alloc.NewHigh(server.Modifier{})
 	defer freeDefinition()
 
 	player.ObjClass = object.ClassPlayer

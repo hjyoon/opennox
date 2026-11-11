@@ -214,8 +214,8 @@ func questKeyNativeFixture4D9A3F(t *testing.T) (*Server, *Object, *PlayerUpdateD
 	}
 	s := New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	unit, freeUnit := alloc.New(Object{})
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
+	unit, freeUnit := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	unit.NetCode, unit.UpdateData = 0xffff9234, unsafe.Pointer(update)
@@ -241,8 +241,8 @@ func questKeyNativeFixture4D9A3F(t *testing.T) (*Server, *Object, *PlayerUpdateD
 
 func TestPlayerQuestKeysReportNative4D9A3FAllMarkerBytesPresenceAndSlots(t *testing.T) {
 	s, unit, update := questKeyNativeFixture4D9A3F(t)
-	silver, freeSilver := alloc.New(Object{})
-	gold, freeGold := alloc.New(Object{})
+	silver, freeSilver := alloc.NewHigh(Object{})
+	gold, freeGold := alloc.NewHigh(Object{})
 	t.Cleanup(freeSilver)
 	t.Cleanup(freeGold)
 	silver.TypeInd, gold.TypeInd = 0x9234, 0xb678
@@ -332,8 +332,8 @@ func TestQuestKeyReport4D9DF0WireAndSignedResult(t *testing.T) {
 
 func TestPlayerQuestKeysReportNative4D9A3FStoresEntryUpdateAcrossCallbackAndIncludesUnitlessPlayer(t *testing.T) {
 	s, unit, entry := questKeyNativeFixture4D9A3F(t)
-	live, freeLive := alloc.New(PlayerUpdateData{})
-	key, freeKey := alloc.New(Object{})
+	live, freeLive := alloc.NewHigh(PlayerUpdateData{})
+	key, freeKey := alloc.NewHigh(Object{})
 	t.Cleanup(freeLive)
 	t.Cleanup(freeKey)
 	key.TypeInd = 0x9234

@@ -11,9 +11,9 @@ import (
 )
 
 func TestPickupPotionExport4F37D0PreservesNativePointersFourArgumentsAndResult(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	potion, freePotion := alloc.New(server.Object{})
+	potion, freePotion := alloc.NewHigh(server.Object{})
 	defer freePotion()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {

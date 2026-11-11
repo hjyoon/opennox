@@ -43,7 +43,7 @@ func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 		for _, owner := range []string{"self", "player", "NPC"} {
 			t.Run(fmt.Sprintf("%s/%s", hazard.name, owner), func(t *testing.T) {
 				v, a, w := spellMissileImpactCRecords4E17B0(t, srv, owner)
-				data, freeData := alloc.New(server.DamageCollideData{})
+				data, freeData := alloc.NewHigh(server.DamageCollideData{})
 				t.Cleanup(freeData)
 				*data = server.DamageCollideData{Damage: hazard.damage, Reserved: [3]uint8{4, 5, 6}, DamageType: 3}
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(data)) <= math.MaxUint32 {

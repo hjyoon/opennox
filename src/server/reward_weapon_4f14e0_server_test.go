@@ -304,9 +304,9 @@ func TestRewardWeaponServerResolvesReplenishment4F14E0(t *testing.T) {
 		{Weight: 1, Name: "#Wand", TypeInd: 1, Kind: 1, Slots: 1},
 		{},
 	}
-	name, freeName := alloc.CString("Replenishment1")
+	name, freeName := alloc.CStringHigh("Replenishment1")
 	t.Cleanup(freeName)
-	replenishment, freeReplenishment := alloc.New(ModifierEff{})
+	replenishment, freeReplenishment := alloc.NewHigh(ModifierEff{})
 	t.Cleanup(freeReplenishment)
 	replenishment.name0 = name
 	replenishment.ind4 = 7

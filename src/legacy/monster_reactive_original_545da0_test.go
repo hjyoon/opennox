@@ -115,7 +115,7 @@ type reactiveWorld545DA0 struct {
 func reactiveWorldNew545DA0(t *testing.T, row reactiveRow545DA0) *reactiveWorld545DA0 {
 	t.Helper()
 	const size = 32768
-	base, free := alloc.Malloc(size)
+	base, free := alloc.MallocHigh(size)
 	t.Cleanup(free)
 	w := &reactiveWorld545DA0{Base: base, Raw: unsafe.Slice((*byte)(base), size), Frame: row.Input.Frame, FPS: row.Input.FPS, RNG: row.Input.Seed, Events: make([]map[string]any, 0)}
 	for i := range w.Raw {

@@ -87,7 +87,7 @@ func TestMonsterFloatOriginal517170Native(t *testing.T) {
 	}{{"SOLO", monsterBinMode{solo: true}}, {"ARENA", monsterBinMode{arena: true}}} {
 		frames := map[*server.MonsterDef]*frame{}
 		store := newMonsterBinStore(func() (*server.MonsterDef, func()) {
-			f, free := alloc.New(frame{})
+			f, free := alloc.NewHigh(frame{})
 			f.Before = canary
 			f.After = canary
 			allocated++

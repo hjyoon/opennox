@@ -103,7 +103,7 @@ func TestMonsterDyingStartOriginalNative544C40(t *testing.T) {
 				Marks       [5]byte
 				After       [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

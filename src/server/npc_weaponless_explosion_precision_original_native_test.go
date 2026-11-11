@@ -43,33 +43,33 @@ func observeWeaponlessNPCExplosionOriginalNative(t *testing.T, c weaponlessNPCEx
 			frees[i]()
 		}
 	}()
-	v, f := alloc.New(Object{})
+	v, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
-	u, f := alloc.New(MonsterUpdateData{})
+	u, f := alloc.NewHigh(MonsterUpdateData{})
 	frees = append(frees, f)
-	info, f := alloc.New(Player{})
+	info, f := alloc.NewHigh(Player{})
 	frees = append(frees, f)
 	*info = Player{}
-	hp, f := alloc.New(HealthData{})
+	hp, f := alloc.NewHigh(HealthData{})
 	frees = append(frees, f)
 	*hp = HealthData{Cur: 200, Max: 200, Field2: 200}
 	*u = MonsterUpdateData{Field518: c.Armor, Field1: c.Carry, Field547: 99, Field546: 77}
 	*v = Object{ObjClass: object.ClassMonster, ObjSubClass: 0x11012, UpdateData: unsafe.Pointer(u), HealthData: hp}
-	source, f := alloc.New(Object{})
+	source, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*source = Object{TypeInd: c.SourceType, ObjClass: c.SourceClass, PosVec: types.Pointf{X: 100}, PrevPos: types.Pointf{X: 100}}
-	sourceInfo, f := alloc.New(Player{})
+	sourceInfo, f := alloc.NewHigh(Player{})
 	frees = append(frees, f)
 	*sourceInfo = Player{}
 	var sourceUpdate []byte
 	if c.SourceClass.Has(object.ClassMonster) {
-		update, f := alloc.New(MonsterUpdateData{})
+		update, f := alloc.NewHigh(MonsterUpdateData{})
 		frees = append(frees, f)
 		*update = MonsterUpdateData{}
 		source.UpdateData = unsafe.Pointer(update)
 		sourceUpdate = weaponlessNPCExplosionOriginalFrame(unsafe.Pointer(update), unsafe.Sizeof(*update))
 	} else {
-		update, f := alloc.New(PlayerUpdateData{})
+		update, f := alloc.NewHigh(PlayerUpdateData{})
 		frees = append(frees, f)
 		*update = PlayerUpdateData{Player: sourceInfo}
 		if c.SourceClass.Has(object.ClassPlayer) {

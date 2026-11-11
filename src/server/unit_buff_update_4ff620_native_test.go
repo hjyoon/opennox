@@ -62,9 +62,9 @@ func TestUnitBuffUpdateNative4FF620ObjectLayouts(t *testing.T) {
 }
 
 func TestUnitBuffUpdateNative4FF620PreservesPointerAndAccessorOrder(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
-	marker, freeMarker := alloc.New(Object{})
+	marker, freeMarker := alloc.NewHigh(Object{})
 	t.Cleanup(freeMarker)
 	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 || uintptr(unsafe.Pointer(marker)) <= math.MaxUint32) {
 		t.Fatalf("native pointers = %p/%p, want both above 4 GiB", unit, marker)
@@ -244,9 +244,9 @@ func TestUnitBuffUpdate4FF620ServerBindingFlagAndSlowPaths(t *testing.T) {
 func TestUnitBuffUpdate4FF620ServerBindingDeathMetadataAndAudio(t *testing.T) {
 	var s Server
 	s.SetTickRate(60)
-	marker, freeMarker := alloc.New(Object{})
+	marker, freeMarker := alloc.NewHigh(Object{})
 	t.Cleanup(freeMarker)
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	unit.ObjClass = object.ClassClientPersist
 	unit.Buffs = uint32(1) << 16

@@ -108,7 +108,7 @@ func playerSendBytes518C30(pointer unsafe.Pointer, size uintptr) []byte {
 }
 func playerSendAllocate518C30[T comparable](f *playerSendFixture518C30) *T {
 	f.t.Helper()
-	p, free := alloc.New(playerSendGuard518C30[T]{})
+	p, free := alloc.NewHigh(playerSendGuard518C30[T]{})
 	f.t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {
 		f.t.Fatal("native allocations must exceed4GiB")
@@ -534,7 +534,7 @@ func comparePlayerSendOriginal518C30(t *testing.T, invoke func(*server.Object, *
 	if faults {
 		rows = bad
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := server.New(nil, nil, strman.New())
 	t.Cleanup(s.Close)

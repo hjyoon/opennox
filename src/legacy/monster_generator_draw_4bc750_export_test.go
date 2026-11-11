@@ -38,8 +38,8 @@ func TestMonsterGeneratorDraw4BC750NativeLayout(t *testing.T) {
 
 func TestMonsterGeneratorDraw4BC750CEntryFullPointersAndReturn(t *testing.T) {
 	preserveMonsterGeneratorDraw4BC750(t)
-	vp, freeVP := alloc.New(noxrender.Viewport{})
-	dr, freeDR := alloc.New(client.Drawable{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
+	dr, freeDR := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(freeVP)
 	t.Cleanup(freeDR)
 	for _, ptr := range []unsafe.Pointer{vp.C(), dr.C()} {
@@ -78,9 +78,9 @@ type nativeGeneratorFixture4BC750 struct {
 
 func newNativeGeneratorFixture4BC750(t *testing.T) nativeGeneratorFixture4BC750 {
 	t.Helper()
-	vp, freeVP := alloc.New(noxrender.Viewport{})
-	dr, freeDR := alloc.New(client.Drawable{})
-	data, freeData := alloc.New(monsterGeneratorDrawDataNative4BC750{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
+	dr, freeDR := alloc.NewHigh(client.Drawable{})
+	data, freeData := alloc.NewHigh(monsterGeneratorDrawDataNative4BC750{})
 	for _, free := range []func(){freeVP, freeDR, freeData} {
 		t.Cleanup(free)
 	}
@@ -89,12 +89,12 @@ func newNativeGeneratorFixture4BC750(t *testing.T) nativeGeneratorFixture4BC750 
 	for state := range data.images {
 		// The extra entries are deliberate: verify original inclusive random
 		// and unbounded slave indexing without accessing unallocated memory.
-		table, free := alloc.Make([]noxrender.ImageHandle(nil), 6)
+		table, free := alloc.MakeHigh([]noxrender.ImageHandle(nil), 6)
 		t.Cleanup(free)
 		f.images[state], data.images[state] = table, &table[0]
 		data.count[state], data.delay[state], data.kind[state] = 4, 1, 2
 		for i := range table {
-			p, free := alloc.Malloc(8)
+			p, free := alloc.MallocHigh(8)
 			t.Cleanup(free)
 			table[i] = noxrender.ImageHandle(p)
 			if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(p) <= math.MaxUint32 {
@@ -116,10 +116,10 @@ func newNativeGeneratorFixture4BC750(t *testing.T) nativeGeneratorFixture4BC750 
 func TestMonsterGeneratorDraw4BC750NativeCEntryCachedDataAndLiveOverlay(t *testing.T) {
 	preserveMonsterGeneratorDraw4BC750(t)
 	f := newNativeGeneratorFixture4BC750(t)
-	other, freeOther := alloc.New(monsterGeneratorDrawDataNative4BC750{})
+	other, freeOther := alloc.NewHigh(monsterGeneratorDrawDataNative4BC750{})
 	t.Cleanup(freeOther)
 	other.kind[0] = 1
-	changed, freeChanged := alloc.Make([]noxrender.ImageHandle(nil), 6)
+	changed, freeChanged := alloc.MakeHigh([]noxrender.ImageHandle(nil), 6)
 	t.Cleanup(freeChanged)
 	copy(changed, f.images[1])
 	buf := unsafe.Slice((*byte)(f.dr.C()), int(unsafe.Sizeof(*f.dr)))

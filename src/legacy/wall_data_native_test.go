@@ -11,9 +11,9 @@ import (
 )
 
 func TestWallDataExportsPreserveNativePointers(t *testing.T) {
-	wall, freeWall := alloc.New(server.Wall{})
-	serverData, freeServerData := alloc.Malloc(1)
-	clientData, freeClientData := alloc.Malloc(1)
+	wall, freeWall := alloc.NewHigh(server.Wall{})
+	serverData, freeServerData := alloc.MallocHigh(1)
+	clientData, freeClientData := alloc.MallocHigh(1)
 	t.Cleanup(freeWall)
 	t.Cleanup(freeServerData)
 	t.Cleanup(freeClientData)

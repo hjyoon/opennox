@@ -90,7 +90,7 @@ func TestMonsterDeadStartOriginalNative544D80(t *testing.T) {
 				FunctionMarkers [3][8]byte
 				After           [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

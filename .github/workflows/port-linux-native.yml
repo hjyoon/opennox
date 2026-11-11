@@ -51,6 +51,7 @@ jobs:
       ALSOFT_DRIVERS: 'null'
       NATIVE_PRODUCT: ${{ matrix.product }}
       NATIVE_REPORT_DIR: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}
+      OPENNOX_LOCAL_TEST_ARTIFACTS: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}/native-fixture-artifacts
     steps:
       - uses: actions/checkout@v7.0.1
         with:

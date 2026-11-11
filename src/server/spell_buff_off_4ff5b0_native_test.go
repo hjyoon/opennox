@@ -56,7 +56,7 @@ func spellBuffOffNativeTestDeps4FF5B0() spellBuffOffNativeDeps4FF5B0 {
 }
 
 func TestSpellBuffOffNative4FF5B0PreservesPointerWidthsAndAccessorOrder(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

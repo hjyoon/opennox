@@ -146,7 +146,7 @@ func playerBotCreateWorldNew4FA700(t *testing.T, row playerBotCreateRow4FA700, r
 	t.Helper()
 	w := &playerBotCreateWorld4FA700{Raw: make(map[string][]byte), Before: make(map[string][]byte), Original: make(map[string][]byte), Roles: map[uint32]uintptr{0: 0}, RNG: row.Input.RNG}
 	take := func(name string, size uintptr) unsafe.Pointer {
-		p, free := alloc.Malloc(size + 64)
+		p, free := alloc.MallocHigh(size + 64)
 		t.Cleanup(free)
 		raw := unsafe.Slice((*byte)(p), size+64)
 		for i := range raw {

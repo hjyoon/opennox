@@ -11,8 +11,8 @@ import (
 )
 
 func TestClientStatusAnimations473930NativeCache(t *testing.T) {
-	birds, freeBirds := alloc.New(ImageRef{RefKind: 2})
-	shield, freeShield := alloc.New(ImageRef{RefKind: 2})
+	birds, freeBirds := alloc.NewHigh(ImageRef{RefKind: 2})
+	shield, freeShield := alloc.NewHigh(ImageRef{RefKind: 2})
 	t.Cleanup(freeBirds)
 	t.Cleanup(freeShield)
 	if unsafe.Sizeof(uintptr(0)) > 4 && (uintptr(birds.C()) <= 0xffffffff || uintptr(shield.C()) <= 0xffffffff) {

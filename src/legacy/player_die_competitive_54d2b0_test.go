@@ -70,24 +70,24 @@ func TestPlayerDieCompetitive54D2B0ProductionCEntry(t *testing.T) {
 	var players [3]*server.Player
 	var health [3]*server.HealthData
 	for i := range units {
-		unit, freeUnit := alloc.New(server.Object{})
+		unit, freeUnit := alloc.NewHigh(server.Object{})
 		defer freeUnit()
-		update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		defer freeUpdate()
-		hp, freeHealth := alloc.New(server.HealthData{})
+		hp, freeHealth := alloc.NewHigh(server.HealthData{})
 		defer freeHealth()
 		*hp = server.HealthData{Cur: 0, Max: 100}
 		p := srv.Players.ByIndRaw(ntype.PlayerInd(i))
 		units[i], updates[i], players[i], health[i] = unit, update, p, hp
 		questPenaltyLegacyHighPointers54CBD0(t, unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(p), unsafe.Pointer(hp))
 	}
-	monster, freeMonster := alloc.New(server.Object{})
+	monster, freeMonster := alloc.NewHigh(server.Object{})
 	defer freeMonster()
 	*monster = server.Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagEnabled, NetCode: 0x9300}
-	ownedAttack, freeAttack := alloc.New(server.Object{})
+	ownedAttack, freeAttack := alloc.NewHigh(server.Object{})
 	defer freeAttack()
 	*ownedAttack = server.Object{ObjClass: object.ClassMissile, ObjOwner: units[1]}
-	spawned, freeSpawned := alloc.New(server.Object{})
+	spawned, freeSpawned := alloc.NewHigh(server.Object{})
 	defer freeSpawned()
 	*spawned = server.Object{ObjClass: object.ClassMissile, TypeInd: 77, ObjOwner: units[0]}
 	questPenaltyLegacyHighPointers54CBD0(t, unsafe.Pointer(monster), unsafe.Pointer(ownedAttack), unsafe.Pointer(spawned))

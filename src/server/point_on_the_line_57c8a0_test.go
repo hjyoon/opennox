@@ -206,9 +206,9 @@ func TestPointOnTheLine57C8A0NativeVisionRefresh(t *testing.T) {
 					for _, shadow := range []bool{false, true} {
 						t.Run(fmt.Sprintf("%s/reverse-%t/fraction-%g/radius-%g/shadow-%t", ray.name, reverse, fraction, radius, shadow), func(t *testing.T) {
 							s, unit, update := moveToNativeRetryFixture5443F0(t, ai.ACTION_MOVE_TO)
-							target, freeTarget := alloc.New(Object{})
+							target, freeTarget := alloc.NewHigh(Object{})
 							t.Cleanup(freeTarget)
-							obstacle, freeObstacle := alloc.New(Object{})
+							obstacle, freeObstacle := alloc.NewHigh(Object{})
 							t.Cleanup(freeObstacle)
 							s.Map.Init()
 							s.Walls.byPos = make([]*Wall, wallsPerBucket*WallGridSize)

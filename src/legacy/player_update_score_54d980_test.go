@@ -119,11 +119,11 @@ func TestPlayerUpdateScore54D980CgoNativeEntry(t *testing.T) {
 	var units [3]*server.Object
 	var players [3]*server.Player
 	for i := range units {
-		player, releasePlayer := alloc.New(server.Player{})
+		player, releasePlayer := alloc.NewHigh(server.Player{})
 		defer releasePlayer()
-		update, releaseUpdate := alloc.New(server.PlayerUpdateData{})
+		update, releaseUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		defer releaseUpdate()
-		unit, releaseUnit := alloc.New(server.Object{})
+		unit, releaseUnit := alloc.NewHigh(server.Object{})
 		defer releaseUnit()
 		player.PlayerUnit, update.Player = unit, player
 		*unit = server.Object{ObjClass: object.ClassPlayer, NetCode: 0x80008100 + uint32(i), UpdateData: unsafe.Pointer(update)}

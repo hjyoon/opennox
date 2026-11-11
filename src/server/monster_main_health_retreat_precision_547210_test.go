@@ -63,11 +63,11 @@ func monsterHealthRetreatNativeFixture547807(t *testing.T) (*Server, *Object, *M
 	unit := s.Objs.NewObject(&ObjectType{})
 	unit.ObjClass, unit.ObjFlags, unit.SpeedBase = object.ClassMonster, object.FlagActive|object.FlagEnabled, 2
 	unit.PosVec, unit.NewPos = types.Ptf(300, 300), types.Ptf(300, 300)
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
-	health, freeHealth := alloc.New(HealthData{})
+	health, freeHealth := alloc.NewHigh(HealthData{})
 	t.Cleanup(freeHealth)
-	sounds, freeSounds := alloc.New([14]uint32{})
+	sounds, freeSounds := alloc.NewHigh([14]uint32{})
 	t.Cleanup(freeSounds)
 	*sounds = [14]uint32{13: 773}
 	unit.UpdateData, unit.HealthData = unsafe.Pointer(update), health

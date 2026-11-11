@@ -33,9 +33,9 @@ func sourceLessPhysicalOriginalFrame(p unsafe.Pointer, n uintptr) []byte {
 }
 
 func observeSourceLessPhysicalOriginalNative(c sourceLessPhysicalOriginalInput) map[string]any {
-	v, freeV := alloc.New(Object{})
+	v, freeV := alloc.NewHigh(Object{})
 	defer freeV()
-	hp, freeHP := alloc.New(HealthData{})
+	hp, freeHP := alloc.NewHigh(HealthData{})
 	defer freeHP()
 	*hp = HealthData{Cur: 200, Max: 200, Field2: 200}
 	*v = Object{ObjClass: object.ClassMonster, ObjSubClass: 0x11012, HealthData: hp}
@@ -44,9 +44,9 @@ func observeSourceLessPhysicalOriginalNative(c sourceLessPhysicalOriginalInput) 
 	var update []byte
 	var offsets []uintptr
 	if c.Player {
-		u, freeU := alloc.New(PlayerUpdateData{})
+		u, freeU := alloc.NewHigh(PlayerUpdateData{})
 		defer freeU()
-		info, freeInfo := alloc.New(Player{})
+		info, freeInfo := alloc.NewHigh(Player{})
 		defer freeInfo()
 		*info = Player{}
 		*u = PlayerUpdateData{Player: info, State: PlayerState13, Field57: c.Armor, Field21: c.Carry, Field76: 99, Field75: 77}
@@ -55,7 +55,7 @@ func observeSourceLessPhysicalOriginalNative(c sourceLessPhysicalOriginalInput) 
 		update = sourceLessPhysicalOriginalFrame(unsafe.Pointer(u), unsafe.Sizeof(*u))
 		offsets = []uintptr{unsafe.Offsetof(u.Field21), unsafe.Offsetof(u.Field76), unsafe.Offsetof(u.Field75)}
 	} else {
-		u, freeU := alloc.New(MonsterUpdateData{})
+		u, freeU := alloc.NewHigh(MonsterUpdateData{})
 		defer freeU()
 		*u = MonsterUpdateData{Field518: c.Armor, Field1: c.Carry, Field547: 99, Field546: 77}
 		v.UpdateData = unsafe.Pointer(u)

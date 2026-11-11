@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 #include <stdlib.h>
+#include "native_fixture_alloc.h"
 #include <string.h>
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -27,7 +28,7 @@ typedef struct game4_map_archive_test_bank {
 } game4_map_archive_test_bank;
 
 static game4_map_archive_test_bank* game4_map_archive_test_begin(void) {
-	game4_map_archive_test_bank* b = calloc(1, sizeof(*b));
+	game4_map_archive_test_bank* b = nox_native_fixture_calloc_high(1, sizeof(*b));
 	if (!b) return NULL;
 	b->old_first = dword_5d4594_1599588;
 	b->old_second = dword_5d4594_1599592;
@@ -65,7 +66,7 @@ static void game4_map_archive_test_end(game4_map_archive_test_bank* b) {
 	dword_5d4594_1599576 = b->old_records;
 	dword_5d4594_1599596 = b->old_count;
 	nox_file_8 = b->old_file;
-	free(b);
+	nox_native_fixture_free_high(b);
 }
 
 typedef struct game4_map_archive_test_leaf_result {

@@ -11,9 +11,9 @@ import (
 )
 
 func TestPickupAnkhTradableExport4F3DD0PreservesNativePointersFourArgumentsAndResult(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {
@@ -63,9 +63,9 @@ func TestPickupAnkhTradableExport4F3DD0PreservesNativePointersFourArgumentsAndRe
 }
 
 func TestPickupAnkhTradableRegistration4F3DD0UsesExactFourArgumentCallback(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
 
 	pickup, ok := server.ObjectPickupHandler("AnkhTradablePickup")

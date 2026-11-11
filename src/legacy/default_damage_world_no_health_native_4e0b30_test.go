@@ -48,7 +48,7 @@ func TestDefaultDamageWorldNoHealthNative4E0B30(t *testing.T) {
 						srv.Log = slog.New(slog.NewTextHandler(&diagnostics, nil))
 						v := srv.Objs.NewObject(&server.ObjectType{})
 						a := srv.Objs.NewObject(&server.ObjectType{})
-						h, freeH := alloc.New(server.HealthData{})
+						h, freeH := alloc.NewHigh(server.HealthData{})
 						defer freeH()
 						*h = server.HealthData{Cur: 120, Max: 120, Field2: 119}
 						v.TypeInd, v.ObjClass, v.ObjSubClass, v.ObjFlags = meta.typ, meta.class, 0, meta.flags

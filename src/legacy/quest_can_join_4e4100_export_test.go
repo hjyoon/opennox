@@ -42,9 +42,9 @@ func TestQuestCanJoinCEntry4E4100PreservesHighPlayerPointers(t *testing.T) {
 		if player == nil {
 			t.Fatal("player fixture allocation failed")
 		}
-		update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		t.Cleanup(freeUpdate)
-		unit, freeUnit := alloc.New(server.Object{})
+		unit, freeUnit := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeUnit)
 		update.Player = player
 		*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}

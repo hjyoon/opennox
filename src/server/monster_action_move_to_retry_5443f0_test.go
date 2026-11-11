@@ -26,9 +26,9 @@ func moveToNativeRetryFixture5443F0(t *testing.T, action ai.ActionType) (*Server
 	s.SetFrame(1000)
 	s.SetTickRate(30)
 	s.Rand.Logic, s.Rand.Other = prand.New(1496), prand.New(3905)
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	*unit = Object{ObjClass: object.ClassMonster, SpeedBase: 2, PosVec: types.Ptf(100, 200), serverHandle: s.handle, UpdateData: unsafe.Pointer(update)}
 	*update = MonsterUpdateData{AIStackInd: 0, StatusFlags: object.MonStatusCanSeeFriends}
@@ -261,7 +261,7 @@ func TestMonsterActionMoveTo5443F0NativeLiveTailStatus(t *testing.T) {
 		for _, action := range moveToSharedActions5443F0 {
 			t.Run(tc.name+"/"+action.String(), func(t *testing.T) {
 				s, unit, update := moveToNativeRetryFixture5443F0(t, action)
-				alternate, freeAlternate := alloc.New(MonsterUpdateData{})
+				alternate, freeAlternate := alloc.NewHigh(MonsterUpdateData{})
 				t.Cleanup(freeAlternate)
 				*alternate = MonsterUpdateData{Field71: 2}
 				if byte(tc.tail) != 0 {

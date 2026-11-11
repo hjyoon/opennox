@@ -40,7 +40,7 @@ func secretWallLivePlayersFixture4DF120(t *testing.T) (*server.Server, *server.W
 	old := GetServer
 	GetServer = func() Server { return &secretWallLegacyServer4DF120{native: s} }
 	t.Cleanup(func() { GetServer = old })
-	wall, freeWall := alloc.New(server.Wall{})
+	wall, freeWall := alloc.NewHigh(server.Wall{})
 	t.Cleanup(freeWall)
 	wall.Field10 = 0x9234
 	var units [2]*server.Object
@@ -52,8 +52,8 @@ func secretWallLivePlayersFixture4DF120(t *testing.T) (*server.Server, *server.W
 		if i == 1 {
 			continue // The real first/next services skip active slots without units.
 		}
-		unit, freeUnit := alloc.New(server.Object{})
-		update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		unit, freeUnit := alloc.NewHigh(server.Object{})
+		update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		t.Cleanup(freeUnit)
 		t.Cleanup(freeUpdate)
 		unit.ObjClass, update.Player = object.ClassPlayer, pl

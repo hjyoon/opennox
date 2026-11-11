@@ -127,7 +127,7 @@ type meleeRegion532130 struct {
 
 func meleeAlloc532130[T comparable](t *testing.T, f *meleeFixture532130) *meleeGuard532130[T] {
 	t.Helper()
-	p, free := alloc.New(meleeGuard532130[T]{})
+	p, free := alloc.NewHigh(meleeGuard532130[T]{})
 	t.Cleanup(free)
 	f.regions = append(f.regions, meleeRegion532130{unsafe.Pointer(p), unsafe.Sizeof(*p)})
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {

@@ -25,9 +25,9 @@ func TestMonsterSightKillable528190(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			obj, freeObj := alloc.New(server.Object{})
+			obj, freeObj := alloc.NewHigh(server.Object{})
 			defer freeObj()
-			health, freeHealth := alloc.New(server.HealthData{})
+			health, freeHealth := alloc.NewHigh(server.HealthData{})
 			defer freeHealth()
 			health.Cur, health.Max = tc.cur, tc.max
 			obj.HealthData = health

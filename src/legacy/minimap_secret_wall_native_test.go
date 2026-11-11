@@ -15,9 +15,9 @@ import (
 
 func TestSecretWallMinimap472600NativeStateAndLegacyOffset(t *testing.T) {
 	const guardSize = 16
-	mem, free := alloc.Malloc(unsafe.Sizeof(server.SecretWall{}) + 2*guardSize)
-	next, freeNext := alloc.New(server.SecretWall{})
-	wall, freeWall := alloc.New(server.Wall{})
+	mem, free := alloc.MallocHigh(unsafe.Sizeof(server.SecretWall{}) + 2*guardSize)
+	next, freeNext := alloc.NewHigh(server.SecretWall{})
+	wall, freeWall := alloc.NewHigh(server.Wall{})
 	t.Cleanup(free)
 	t.Cleanup(freeNext)
 	t.Cleanup(freeWall)

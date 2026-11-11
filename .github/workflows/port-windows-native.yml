@@ -39,6 +39,7 @@ jobs:
       CGO_CFLAGS_ALLOW: '-f.*'
       CGO_CFLAGS: ${{ matrix.cflags }}
       TARGET_ARCH: ${{ matrix.arch }}
+      OPENNOX_LOCAL_TEST_ARTIFACTS: ${{ github.workspace }}/build/windows-${{ matrix.arch }}/native-fixture-artifacts
       # Pre-build Python checks must preserve a clean source tree for -verify.
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
@@ -127,6 +128,15 @@ jobs:
           & ..\scripts\go.ps1 run ./internal/noxbuild -verify $product
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $product -h
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Verify native foreign allocation ownership
+        working-directory: src
+        shell: pwsh
+        env:
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          python ../toolchain/run-windows-allocator-controls.py --report "../build/windows-$env:TARGET_ARCH"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Test root, server, and legacy packages

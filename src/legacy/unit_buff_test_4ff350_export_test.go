@@ -11,7 +11,7 @@ import (
 )
 
 func TestUnitBuffTestExport4FF350PreservesNativePointerAndSignedDword(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

@@ -13,7 +13,7 @@ import (
 )
 
 func TestItemEnchantmentIcon413420CEntryAllBytePatternsAndHighReturn(t *testing.T) {
-	image, free := alloc.Malloc(8)
+	image, free := alloc.MallocHigh(8)
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(image) <= math.MaxUint32 {
 		t.Fatal("image must exceed 4 GiB")
@@ -53,11 +53,11 @@ func TestItemEnchantmentIcon413420NativeSideSlotsPreservePackedNeighbors(t *test
 	oldPacked := bytes.Clone(packed)
 	oldLoaded, oldLoad := memmap.Uint32(0x5D4594, 251624), itemEnchantmentIconLoad413420
 	for i, name := range names {
-		buf, freeName := alloc.Make([]byte{}, len(name)+1)
+		buf, freeName := alloc.MakeHigh([]byte{}, len(name)+1)
 		copy(buf, name)
 		t.Cleanup(freeName)
 		namePointers[i] = &buf[0]
-		image, freeImage := alloc.Malloc(8)
+		image, freeImage := alloc.MallocHigh(8)
 		t.Cleanup(freeImage)
 		images[i] = image
 		if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(image) <= math.MaxUint32 || uintptr(unsafe.Pointer(&buf[0])) <= math.MaxUint32) {

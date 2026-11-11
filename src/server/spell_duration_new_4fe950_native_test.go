@@ -23,7 +23,7 @@ func requireNativeSpellDurationNewPointer4FE950(t *testing.T, name string, value
 func TestSpellDurationNewNative4FE950PreservesOrderPointersAndWrap(t *testing.T) {
 	originalClass := new(alloc.Class)
 	replacementClass := new(alloc.Class)
-	record, freeRecord := alloc.New(DurSpell{})
+	record, freeRecord := alloc.NewHigh(DurSpell{})
 	t.Cleanup(freeRecord)
 	requireNativeSpellDurationNewPointer4FE950(t, "original allocator", unsafe.Pointer(originalClass))
 	requireNativeSpellDurationNewPointer4FE950(t, "replacement allocator", unsafe.Pointer(replacementClass))
@@ -102,9 +102,9 @@ func TestSpellDurationNewNative4FE950ReusesZeroedNativeRecord(t *testing.T) {
 		t.Fatal("first allocation returned nil")
 	}
 	requireNativeSpellDurationNewPointer4FE950(t, "record", unsafe.Pointer(record))
-	caster, freeCaster := alloc.New(Object{})
+	caster, freeCaster := alloc.NewHigh(Object{})
 	t.Cleanup(freeCaster)
-	staleNext, freeNext := alloc.New(DurSpell{})
+	staleNext, freeNext := alloc.NewHigh(DurSpell{})
 	t.Cleanup(freeNext)
 	staleNext.ID = 0xbbbb
 	record.Spell = 0xaaaaaaaa

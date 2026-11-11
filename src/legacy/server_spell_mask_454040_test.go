@@ -56,7 +56,7 @@ func TestServerSpellMask454040NativeStackAndPackedWords(t *testing.T) {
 		t.Fatalf("C stack snapshot = %#v, want %#v", got, want)
 	}
 
-	heap, free := alloc.New([7]uint32{})
+	heap, free := alloc.NewHigh([7]uint32{})
 	t.Cleanup(free)
 	*heap = [7]uint32{want[0], 0, 0, 0, 0, 0, want[6]}
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(heap)) <= math.MaxUint32 {

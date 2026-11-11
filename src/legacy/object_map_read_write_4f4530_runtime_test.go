@@ -105,13 +105,13 @@ func assertObjectMapNativePointer4F4530(t *testing.T, name string, pointer unsaf
 }
 
 func TestObjectMapReadWriteNativeWriteV64_4F4530PreservesPointersAndWire(t *testing.T) {
-	obj, freeObj := alloc.New(server.Object{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
 	defer freeObj()
-	first, freeFirst := alloc.New(server.Object{})
+	first, freeFirst := alloc.NewHigh(server.Object{})
 	defer freeFirst()
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	id, freeID := alloc.CString("modern-id")
+	id, freeID := alloc.CStringHigh("modern-id")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(obj))
@@ -247,9 +247,9 @@ func TestObjectMapReadWriteNativeReadV64_4F4530RestoresNativeState(t *testing.T)
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	obj, freeObj := alloc.New(server.Object{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
 	defer freeObj()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	obj.ObjClass = objectlib.ClassPlayer | objectlib.ClassMissile
 	obj.IDPtr = unsafe.Pointer(oldID) // Forces the original admission result to -1 before wire input.

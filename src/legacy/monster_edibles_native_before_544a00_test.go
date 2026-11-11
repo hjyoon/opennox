@@ -37,7 +37,7 @@ func TestMonsterSearchEdibleActualCBefore544A00(t *testing.T) {
 		}
 		TestMonsterSearchEdibleNativeLayout544A00(t)
 		s, unit, update, owner := monsterMainBlockLegacyFixture547210(t)
-		food, freeFood := alloc.New(server.Object{})
+		food, freeFood := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeFood)
 		*food = server.Object{ObjClass: object.ClassFood, ObjFlags: object.FlagActive | object.FlagEnabled, PosVec: types.Ptf(320, 300), NewPos: types.Ptf(320, 300)}
 		food.Shape.Kind = server.ShapeKindCenter

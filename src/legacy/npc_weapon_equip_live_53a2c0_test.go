@@ -80,10 +80,10 @@ func TestNPCWeaponEquip53A2C0ReloadsSubclassAfterCallbacks(t *testing.T) {
 
 	for _, row := range oracle.Rows {
 		t.Run(fmt.Sprintf("npc_%t/type_%d/%s_%d", row.NPC, row.Initial, row.Phase, row.Mutation), func(t *testing.T) {
-			owner, freeOwner := alloc.New(server.Object{})
-			update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-			fire, freeFire := alloc.New(server.ModifierEff{})
-			brilliance, freeBrilliance := alloc.New(server.ModifierEff{})
+			owner, freeOwner := alloc.NewHigh(server.Object{})
+			update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+			fire, freeFire := alloc.NewHigh(server.ModifierEff{})
+			brilliance, freeBrilliance := alloc.NewHigh(server.ModifierEff{})
 			for _, free := range []func(){freeOwner, freeUpdate, freeFire, freeBrilliance} {
 				t.Cleanup(free)
 			}
@@ -132,8 +132,8 @@ func TestNPCWeaponEquip53A2C0ReloadsSubclassAfterCallbacks(t *testing.T) {
 			initialFlags := [4]uint32{0x20005100, 0x60001100, 0x04003100, 0x80002000}
 			subclasses := [4]uint32{0, 2, 256, row.Initial}
 			for index := range items {
-				item, freeItem := alloc.New(server.Object{})
-				attr, freeAttr := alloc.New(server.ModifierInitData{})
+				item, freeItem := alloc.NewHigh(server.Object{})
+				attr, freeAttr := alloc.NewHigh(server.ModifierInitData{})
 				t.Cleanup(freeItem)
 				t.Cleanup(freeAttr)
 				assertHigh(unsafe.Pointer(item))

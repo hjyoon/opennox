@@ -31,7 +31,7 @@ func TestMonsterMainFear547210ActualLegacyWrapper(t *testing.T) {
 			unit.ObjFlags = object.FlagEnabled
 			unit.Buffs = 1 << server.ENCHANT_AFRAID
 			unit.SpeedBase = 1.95
-			sounds, freeSounds := alloc.New([13]uint32{})
+			sounds, freeSounds := alloc.NewHigh([13]uint32{})
 			t.Cleanup(freeSounds)
 			*sounds = [13]uint32{12: 600}
 			update.SoundSet122 = unsafe.Pointer(sounds)

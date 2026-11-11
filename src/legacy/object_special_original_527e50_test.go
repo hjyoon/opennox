@@ -119,7 +119,7 @@ func specialFlagsBytes527E50(ptr unsafe.Pointer, size uintptr) []byte {
 }
 func specialFlagsAllocate527E50[T comparable](f *specialFlagsFixture527E50) *T {
 	f.t.Helper()
-	g, free := alloc.New(specialFlagsGuard527E50[T]{})
+	g, free := alloc.NewHigh(specialFlagsGuard527E50[T]{})
 	f.t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(g)) <= math.MaxUint32 {
 		f.t.Fatal("guarded native records must exceed4GiB")

@@ -93,7 +93,7 @@ func simplePolypActualFixture54CAE0(t *testing.T) (*server.Server, *server.Objec
 	if !bytes.Equal(frame, unsafe.Slice((*byte)(unsafe.Pointer(cloud)), int(unsafe.Sizeof(*cloud)))) || !bytes.Equal(update, unsafe.Slice((*byte)(cloud.UpdateData), int(unsafe.Sizeof(*data)))) {
 		t.Fatal("whole constructor/control records")
 	}
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	unit.PosVec, unit.ObjFlags = types.Ptf(300, 300), 0x11223300
 	if unsafe.Sizeof(uintptr(0)) == 8 {

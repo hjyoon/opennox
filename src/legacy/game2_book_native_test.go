@@ -184,7 +184,7 @@ func TestGame2BookClientPacketsNativeReference(t *testing.T) {
 
 func TestGame2BookFlagsMotionAndStateNativeReference(t *testing.T) {
 	// Foreign native allocation is independent of packed memmap DWORD storage.
-	owner, free := alloc.Make([]byte{}, int(game2BookTestLayout(6)))
+	owner, free := alloc.MakeHigh([]byte{}, int(game2BookTestLayout(6)))
 	defer free()
 	original := *memmap.PtrPtr(0x852978, 8)
 	defer func() { *memmap.PtrPtr(0x852978, 8) = original }()

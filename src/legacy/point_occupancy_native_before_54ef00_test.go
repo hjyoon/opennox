@@ -42,10 +42,10 @@ func TestPointOccupancyNativeCBefore54EF00(t *testing.T) {
 	old := GetServer
 	GetServer = func() Server { return &monsterMainLegacyServer547210{srv: srv} }
 	t.Cleanup(func() { GetServer = old })
-	point, freePoint := alloc.New(types.Ptf(300, 300))
+	point, freePoint := alloc.NewHigh(types.Ptf(300, 300))
 	*point = types.Ptf(300, 300)
 	t.Cleanup(freePoint)
-	sound, freeSound := alloc.New(server.AIStackItem{})
+	sound, freeSound := alloc.NewHigh(server.AIStackItem{})
 	t.Cleanup(freeSound)
 	unit.ObjClass, unit.ObjFlags, unit.Field5 = object.ClassMonster, object.FlagActive, 0
 	unit.PosVec, unit.NewPos = *point, *point

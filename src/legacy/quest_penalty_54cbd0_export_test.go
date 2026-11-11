@@ -41,9 +41,9 @@ func questPenaltyLegacyFixture54CBD0(t *testing.T) (*server.Server, *questPenalt
 	for slot := range types {
 		*types[slot] = uint32(11 + slot)
 	}
-	u, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	p, freePlayer := alloc.New(server.Player{})
+	u, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	p, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freePlayer)
@@ -143,10 +143,10 @@ func TestQuestPenalty54CBD0NativeCGoAllLossHelpersRNGAndGold(t *testing.T) {
 
 func TestQuestPenalty54CBD0NativeCGoOrderedInventoryAndCachedClass(t *testing.T) {
 	s, outer, u, entryUpdate, entryPlayer := questPenaltyLegacyFixture54CBD0(t)
-	liveUpdate, freeLive := alloc.New(server.PlayerUpdateData{})
-	livePlayer, freePlayer := alloc.New(server.Player{})
-	latePlayer, freeLate := alloc.New(server.Player{})
-	finalPlayer, freeFinal := alloc.New(server.Player{})
+	liveUpdate, freeLive := alloc.NewHigh(server.PlayerUpdateData{})
+	livePlayer, freePlayer := alloc.NewHigh(server.Player{})
+	latePlayer, freeLate := alloc.NewHigh(server.Player{})
+	finalPlayer, freeFinal := alloc.NewHigh(server.Player{})
 	for _, free := range []func(){freeLive, freePlayer, freeLate, freeFinal} {
 		t.Cleanup(free)
 	}
@@ -159,7 +159,7 @@ func TestQuestPenalty54CBD0NativeCGoOrderedInventoryAndCachedClass(t *testing.T)
 	liveUpdate.Player = livePlayer
 	items := make([]*server.Object, 10)
 	for slot := range items {
-		item, free := alloc.New(server.Object{})
+		item, free := alloc.NewHigh(server.Object{})
 		t.Cleanup(free)
 		items[slot] = item
 		questPenaltyLegacyHighPointers54CBD0(t, unsafe.Pointer(item))
@@ -268,9 +268,9 @@ func TestQuestPenalty54CBD0NativeCGoOrderedInventoryAndCachedClass(t *testing.T)
 
 func TestQuestPenalty54CBD0NativeCGoPacketChangesLaterHelperBindings(t *testing.T) {
 	s, _, u, entryUpdate, entryPlayer := questPenaltyLegacyFixture54CBD0(t)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	second, freeSecond := alloc.New(server.Player{})
-	third, freeThird := alloc.New(server.Player{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	second, freeSecond := alloc.NewHigh(server.Player{})
+	third, freeThird := alloc.NewHigh(server.Player{})
 	for _, free := range []func(){freeUpdate, freeSecond, freeThird} {
 		t.Cleanup(free)
 	}

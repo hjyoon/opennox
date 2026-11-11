@@ -45,7 +45,7 @@ func TestColliderBoundsPrecisionOriginalNative(t *testing.T) {
 					if len(c.Shape) != 13 || len(c.Pos) != 4 || len(c.Current) != 4 || len(c.Next) != 4 {
 						t.Fatal("incomplete input words")
 					}
-					frame, free := alloc.Make([]byte(nil), 928+128)
+					frame, free := alloc.MakeHigh([]byte(nil), 928+128)
 					defer free()
 					for i := range frame {
 						frame[i] = 0xa5

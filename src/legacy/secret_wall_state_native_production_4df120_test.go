@@ -35,12 +35,12 @@ func TestSecretWallStateActualCProduction4DF120(t *testing.T) {
 		if secretWallNativeRuntimeOverride4DF120 != nil || !secretWallOriginalTyped4DF120(entry) {
 			t.Fatal("actual native entry and default runtime are required")
 		}
-		handles.Init()
+		handles.InitHigh()
 		t.Cleanup(handles.Release)
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
 		setImportantListHeadsC(0, 0)
-		pool := alloc.NewClass("secret-wall-real-C-production", importantPacketSizeC(), 16)
+		pool := alloc.NewClassHigh("secret-wall-real-C-production", importantPacketSizeC(), 16)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC(0x80000005)
 		s, wall, units := secretWallLivePlayersFixture4DF120(t)

@@ -11,13 +11,13 @@ import (
 )
 
 func TestInventoryLookupExports4F78E0PreserveHighNativePointers(t *testing.T) {
-	holder, freeHolder := alloc.New(server.Object{})
+	holder, freeHolder := alloc.NewHigh(server.Object{})
 	defer freeHolder()
-	first, freeFirst := alloc.New(server.Object{})
+	first, freeFirst := alloc.NewHigh(server.Object{})
 	defer freeFirst()
-	matched, freeMatched := alloc.New(server.Object{})
+	matched, freeMatched := alloc.NewHigh(server.Object{})
 	defer freeMatched()
-	duplicate, freeDuplicate := alloc.New(server.Object{})
+	duplicate, freeDuplicate := alloc.NewHigh(server.Object{})
 	defer freeDuplicate()
 
 	first.NetCode = 0x0000ffff

@@ -118,8 +118,8 @@ func TestKOTRMapExit4D2160CGoReadsNativeCrownSideTable(t *testing.T) {
 		for _, pattern := range []uint32{0, 0x5a5a5a5a, 0xffffffff} {
 			for _, held := range []bool{false, true} {
 				srv := new(server.Server)
-				teams, freeTeams := alloc.Make([]server.Team{}, 17)
-				objects, freeObjects := alloc.Make([]server.Object{}, 4)
+				teams, freeTeams := alloc.MakeHigh([]server.Team{}, 17)
+				objects, freeObjects := alloc.MakeHigh([]server.Object{}, 4)
 				srv.Teams.Arr = teams
 				GetServer = func() Server { return &netClientSendTestServer{srv: srv} }
 				for i := 1; i <= count; i++ {

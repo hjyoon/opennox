@@ -57,7 +57,7 @@ func trollDeathActualConstructorFixture54A270(t *testing.T) (*server.Server, *se
 	if !bytes.Equal(frame, unsafe.Slice((*byte)(unsafe.Pointer(cloud)), int(unsafe.Sizeof(*cloud)))) || !bytes.Equal(dataFrame, unsafe.Slice((*byte)(cloud.UpdateData), int(unsafe.Sizeof(*data)))) {
 		t.Fatal("whole actual constructor records changed in typed C controls")
 	}
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	unit.PosVec = types.Ptf(300, 300)
 	if unsafe.Sizeof(uintptr(0)) == 8 {

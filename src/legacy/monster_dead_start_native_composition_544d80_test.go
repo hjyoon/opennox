@@ -105,7 +105,7 @@ func TestMonsterDeadStartNativeComposition544D80(t *testing.T) {
 	if s.Types.ByID("ReleasedSoul") != nil {
 		t.Fatal("declared unavailable soul allocation boundary")
 	}
-	def, freeDef := alloc.New(server.MonsterDef{})
+	def, freeDef := alloc.NewHigh(server.MonsterDef{})
 	defer freeDef()
 	*def = server.MonsterDef{}
 	update.MonsterDef = def

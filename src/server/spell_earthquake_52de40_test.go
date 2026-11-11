@@ -20,7 +20,7 @@ import (
 
 func earthquakeAlloc52DE40[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	ptr, free := alloc.New(value)
+	ptr, free := alloc.NewHigh(value)
 	t.Cleanup(free)
 	*ptr = value
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(ptr)) <= math.MaxUint32 {

@@ -31,7 +31,7 @@ func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
 	t.Cleanup(func() { noxflags.SetEngine(oldEngine) })
 
 	unit := srv.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	unit.ObjClass = object.ClassMonster
 	unit.UpdateData = unsafe.Pointer(update)
@@ -65,7 +65,7 @@ func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
 
 	// The original gates must return before either action-stack service reads
 	// the absent UpdateData or server handle on these C-owned objects.
-	blocked, freeBlocked := alloc.New(server.Object{})
+	blocked, freeBlocked := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeBlocked)
 	Nox_xxx_unitHunt_5157A0(nil)
 	blocked.ObjClass = object.ClassPlayer
@@ -75,7 +75,7 @@ func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
 }
 
 func TestUnitHuntCBridge5157A0PreservesPointerAndNull(t *testing.T) {
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("C-owned object pointer below 4 GiB: %p", unit)
@@ -95,7 +95,7 @@ func TestUnitHuntCEntry5157A0GatesWithoutServerLookup(t *testing.T) {
 	oldGetServer := GetServer
 	GetServer = func() Server { panic("Hunt queried an active server before its original gates") }
 	t.Cleanup(func() { GetServer = oldGetServer })
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	Nox_xxx_unitHunt_5157A0(nil)
 	unit.ObjClass = object.ClassPlayer

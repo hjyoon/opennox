@@ -132,9 +132,9 @@ func TestRemainingDrawableUpdateEntriesNative228(t *testing.T) {
 				t.Log(string(out))
 				return
 			}
-			vp, freeVP := alloc.New(noxrender.Viewport{})
+			vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 			defer freeVP()
-			dr, freeDR := alloc.New(client.Drawable{})
+			dr, freeDR := alloc.NewHigh(client.Drawable{})
 			defer freeDR()
 			for _, p := range []unsafe.Pointer{vp.C(), dr.C()} {
 				if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(p) <= math.MaxUint32 {

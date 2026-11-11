@@ -9,16 +9,16 @@ import (
 )
 
 func TestRegenerationUpdate4E01D0NativeCallback(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	health, freeHealth := alloc.New(server.HealthData{Cur: 149, Max: 150})
+	health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 149, Max: 150})
 	defer freeHealth()
 	// alloc.New reserves zeroed C memory; its argument determines the type,
 	// not the allocation's initial contents.
 	*health = server.HealthData{Cur: 149, Max: 150}
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	effect, freeEffect := alloc.New(server.ModifierEff{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 	defer freeEffect()
 	owner.HealthData = health
 	item.InvHolder = owner
@@ -55,16 +55,16 @@ func TestRegenerationUpdate4E01D0NativeCallback(t *testing.T) {
 }
 
 func TestItemsApplyUpdateEffect4FA490NativeRegeneration(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	health, freeHealth := alloc.New(server.HealthData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	defer freeHealth()
 	*health = server.HealthData{Cur: 149, Max: 150}
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 	defer freeAttrs()
-	effect, freeEffect := alloc.New(server.ModifierEff{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 	defer freeEffect()
 	owner.HealthData = health
 	owner.InvFirstItem = item

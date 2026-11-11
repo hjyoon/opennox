@@ -288,11 +288,16 @@ func rddRunSupervisedNativeRow4E0B30(t *testing.T, bundle *rddBundle4E0B30, row 
 		return fmt.Errorf("raw native fault retained, actual binary PC qualification is still missing: %w", e)
 	}
 	var pc struct {
-		Qualified     bool
-		ExecutableSHA string
-		PC, Address   uintptr
-		Site          uint32
-		RootEntry     uintptr
+		Qualified      bool
+		ExecutableSHA  string
+		PC, Address    uintptr
+		Site           uint32
+		RootEntry      uintptr
+		Classification string `json:"classification"`
+		Instruction    struct {
+			PhysicalWidth int `json:"physical_instruction_width"`
+			ByteOffset    int `json:"byte_offset"`
+		} `json:"instruction"`
 	}
 	if e = json.Unmarshal(pcProof, &pc); e != nil {
 		return e
@@ -310,6 +315,7 @@ func rddRunSupervisedNativeRow4E0B30(t *testing.T, bundle *rddBundle4E0B30, row 
 		BinaryPCQualificationSHA: ddiSHA4E0B30(pcProof), ActualExecutableSHA: seal.SHA, SamePIDPREEXECReceiptSHA: ddiSHA4E0B30(pre),
 		FullAFTERArtifactSHA: after.FullAFTERArtifactSHA, ObservableJSONL: observed, AllActualNativePagesCompared: after.AllActualNativePagesCompared,
 		ValidationFailed: words[36] != 0, ActualRootDispatched: words[38] == 1, Backend: backend, RootEntry: uintptr(words[39]),
+		FaultClassification: pc.Classification, FaultPhysicalWidth: pc.Instruction.PhysicalWidth, FaultByteOffset: pc.Instruction.ByteOffset,
 	}
 	return rddVerifyRetainedNativeFault4E0B30(row, plan, proof)
 }
@@ -493,8 +499,8 @@ func TestRawDefaultDamageNativeRowWorker4E0B30(t *testing.T) {
 	}
 }
 
-const rddNativePCScriptSHA4E0B30 = "9c1ccc77e9ab39c8cea3da97c2911c51fbc273c74ce1d59d52a6ababf5fb236d"
-const rddNativePCContractSHA4E0B30 = "073c5bb61c7ceac89b5d6b452ef92bf1326aa2d74f0e35263eea33e165c09934"
+const rddNativePCScriptSHA4E0B30 = "9ad8defb882784ced735849d983b2970bbf44623139c109a4fb386332529811d"
+const rddNativePCContractSHA4E0B30 = "b61db24bbf4815222c3e03375e8cd814e4a11a40960f47f19a238a1416992995"
 
 // Run the separately sealed standalone decoder only AFTER an actual native
 // fault child has exited. All paths are absolute, no original row/output is an
@@ -512,11 +518,11 @@ func rddProduceNativeFaultPC4E0B30(directory string, seal rddNativeChildSeal4E0B
 			}
 		}
 	}()
-	script, e := filepath.Abs(filepath.Join("..", "..", "scripts", "qualify-default-damage-native-fault-PC.py"))
+	script, e := filepath.Abs(filepath.Join("..", "..", "scripts", "qualify-default-damage-native-fault-PC-v2.py"))
 	if e != nil {
 		return e
 	}
-	contract, e := filepath.Abs(filepath.Join("testdata", "default_damage_parent_native_PC_contract_4e0b30.json"))
+	contract, e := filepath.Abs(filepath.Join("testdata", "default_damage_parent_native_PC_contract_4e0b30_v2.json"))
 	if e != nil {
 		return e
 	}

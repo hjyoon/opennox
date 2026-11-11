@@ -104,10 +104,10 @@ type regenerationRawDefaultGraph4E01D0 struct {
 
 func regenerationRawDefaultCGraph4E01D0(t *testing.T) regenerationRawDefaultGraph4E01D0 {
 	t.Helper()
-	owner, freeOwner := alloc.New(server.Object{})
-	item, freeItem := alloc.New(server.Object{})
-	health, freeHealth := alloc.New(server.HealthData{})
-	effect, freeEffect := alloc.New(server.ModifierEff{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 	t.Cleanup(freeOwner)
 	t.Cleanup(freeItem)
 	t.Cleanup(freeHealth)

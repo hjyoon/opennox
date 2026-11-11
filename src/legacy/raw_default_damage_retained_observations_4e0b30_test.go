@@ -114,6 +114,8 @@ type rddRetainedNativeFault4E0B30 struct {
 	AllActualNativePagesCompared, ValidationFailed, ActualRootDispatched                          bool
 	Backend                                                                                       string
 	RootEntry                                                                                     uintptr
+	FaultClassification                                                                           string
+	FaultPhysicalWidth, FaultByteOffset                                                           int
 }
 
 func rddVerifyRetainedNativeFault4E0B30(row *rddRow4E0B30, plan *rddNativeComparison4E0B30, p rddRetainedNativeFault4E0B30) error {
@@ -494,8 +496,8 @@ func rddVerifyRetainedNativeFault4E0B30(row *rddRow4E0B30, plan *rddNativeCompar
 			return bad("actual invalid fetch identity")
 		}
 	}
-	if row.PartialCount != 0 {
-		return bad("UNQUALIFIED original02/native physical WORD postfault equivalence; raw values retained")
+	if row.PartialCount != 0 && (!pendingOperand || step.Kind != "write" || step.Event.Width != 2 || len(step.TerminalFragments) != row.PartialCount || p.FaultClassification != "incomplete-ordered-WORD-access" || p.FaultPhysicalWidth != 1 || p.FaultByteOffset != 1) {
+		return bad("terminal fragment requires exact ordered WORD high-byte PC proof")
 	}
 	return nil
 }

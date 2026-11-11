@@ -43,13 +43,13 @@ func monsterMainBlockLegacyFixture547210(t *testing.T) (*server.Server, *server.
 	t.Logf("isolated direction table before initialization: %g/%g", oldX, oldY)
 	*directionX, *directionY = server.SinCosDir(0)
 	t.Cleanup(func() { *directionX, *directionY = oldX, oldY })
-	health, freeHealth := alloc.New(server.HealthData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeHealth)
 	*health = server.HealthData{Cur: 100, Max: 100}
 	unit.HealthData = health
 	*update = server.MonsterUpdateData{Aggression: 0.5, RetreatLevel: 0.25, AIStackInd: 0}
 	update.AIStack[0].Action = uint32(ai.ACTION_FIGHT)
-	missile, freeMissile := alloc.New(server.Object{})
+	missile, freeMissile := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeMissile)
 	*missile = server.Object{
 		ObjClass: object.ClassMissile, ObjFlags: object.FlagActive,

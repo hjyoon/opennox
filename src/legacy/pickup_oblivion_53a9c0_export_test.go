@@ -11,9 +11,9 @@ import (
 )
 
 func TestPickupOblivionExport53A9C0PreservesNativePointersFourArgumentsAndResult(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {
@@ -63,9 +63,9 @@ func TestPickupOblivionExport53A9C0PreservesNativePointersFourArgumentsAndResult
 }
 
 func TestPickupOblivionRegistration53A9C0UsesExactFourArgumentCallback(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
 
 	pickup, ok := server.ObjectPickupHandler("OblivionPickup")

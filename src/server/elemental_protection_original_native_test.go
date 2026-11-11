@@ -75,7 +75,7 @@ func TestElementalProtectionOriginalNative(t *testing.T) {
 				leaves++
 				count++
 				t.Run(row.Name, func(t *testing.T) {
-					frame, free := alloc.New(elementalProtectionNativeFrameOriginal{})
+					frame, free := alloc.NewHigh(elementalProtectionNativeFrameOriginal{})
 					defer free()
 					for i := range frame.Before {
 						frame.Before[i] = 0x123456789abcdef0

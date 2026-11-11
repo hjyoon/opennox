@@ -53,13 +53,13 @@ func TestMonsterHurtSoundNextPublicCNative532800(t *testing.T) {
 		t.Fatal("HurtSound native slot")
 	}
 	s, unit, first, other := monsterMainBlockLegacyFixture547210(t)
-	second, free := alloc.New(server.MonsterUpdateData{})
+	second, free := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(free)
 	*second = *first
 	updates := [2]*server.MonsterUpdateData{first, second}
 	var sounds [2]*[32]uint32
 	for i := 0; i < 2; i++ {
-		sounds[i], free = alloc.New([32]uint32{})
+		sounds[i], free = alloc.NewHigh([32]uint32{})
 		t.Cleanup(free)
 		sounds[i][2] = uint32(sound.SoundHammerMissing)
 		updates[i].SoundSet122 = unsafe.Pointer(sounds[i])

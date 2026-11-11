@@ -12,7 +12,7 @@ import (
 )
 
 func TestNetSendSimpleObject4DF360CEntryPreservesNativePointerAndX87Coordinates(t *testing.T) {
-	obj, free := alloc.New(server.Object{})
+	obj, free := alloc.NewHigh(server.Object{})
 	defer free()
 	*obj = server.Object{TypeInd: 0xabc, NetCode: 0x1234, PosVec: types.Pointf{X: 2.5, Y: -3.5}}
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {

@@ -176,7 +176,7 @@ func TestMonsterDeathServicesNativeComposition544CE0(t *testing.T) {
 			Marks   [2]server.MinimapItem
 			After   [32]byte
 		}
-		p, free := alloc.New(guarded{})
+		p, free := alloc.NewHigh(guarded{})
 		t.Cleanup(free)
 		*p = guarded{}
 		for i := range p.Before {

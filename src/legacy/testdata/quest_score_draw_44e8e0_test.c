@@ -1,3 +1,4 @@
+#include "native_exact_mapping.h"
 #include <stdio.h>
 #include <limits.h>
 #ifdef _WIN32
@@ -219,6 +220,8 @@ static void* map_near(uintptr_t address) {
 #endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+#elif defined(__APPLE__)
+	return opennox_native_test_exact_mapping(address,0x80000);
 #else
 	void* ptr=mmap((void*)address,0x80000,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
 	return ptr==MAP_FAILED ? NULL : ptr;
@@ -227,6 +230,8 @@ static void* map_near(uintptr_t address) {
 static void release_map(void* ptr) {
 #ifdef _WIN32
 	VirtualFree(ptr,0,MEM_RELEASE);
+#elif defined(__APPLE__)
+	opennox_native_test_release_mapping(ptr,0x80000);
 #else
 	munmap(ptr,0x80000);
 #endif
@@ -243,19 +248,19 @@ int main(int argc, char** argv) {
 		if (offsetof(nox_playerInfo,name_final)!=4704) memset((uint8_t*)&players[i]+4704,0,56);
 	}
 	if (sizeof(void*)>4) CHECK((uintptr_t)players>UINT32_MAX && (uintptr_t)draw_data>UINT32_MAX && (uintptr_t)draw_data->font>UINT32_MAX);
-	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+	const uintptr_t bases[]={OPENNOX_NATIVE_TEST_ADDRESS(0x37ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS(0x3fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS(0x440000000ull)};
 	const unsigned masks[]={0,1,3,0x15,0x2a,0x20,0x3f};
 	const int locals[]={-1,0,5};
 	const int32_t stages[]={0,1,0x8001,-1};
 	const uint32_t ticks[]={0,1,29,30,31,UINT_MAX};
 	for (unsigned map=0;map<3;map++) {
-		// Hint only: never MAP_FIXED or overwrite an existing mapping.
+		// Never overwrite an existing mapping; Darwin uses reserved addresses.
 		void* ptr=map_near(bases[map]); CHECK(ptr);
 		coordinates=(int32_t*)((uint8_t*)ptr+(map<2 ? 0x40000-20 : 64));
 		if (sizeof(void*)>4) {
 			CHECK((uintptr_t)ptr==bases[map]);
-			if (map==0) CHECK((uintptr_t)(coordinates+1)<0x380000000ull && (uintptr_t)(coordinates+13)>0x380000000ull);
-			if (map==1) CHECK((uintptr_t)(coordinates+1)<0x400000000ull && (uintptr_t)(coordinates+13)>0x400000000ull);
+			if (map==0) CHECK((uintptr_t)(coordinates+1)<OPENNOX_NATIVE_TEST_ADDRESS(0x380000000ull) && (uintptr_t)(coordinates+13)>OPENNOX_NATIVE_TEST_ADDRESS(0x380000000ull));
+			if (map==1) CHECK((uintptr_t)(coordinates+1)<OPENNOX_NATIVE_TEST_ADDRESS(0x400000000ull) && (uintptr_t)(coordinates+13)>OPENNOX_NATIVE_TEST_ADDRESS(0x400000000ull));
 		}
 		for (unsigned m=0;m<7;m++) for (unsigned l=0;l<3;l++) for (int resolution=0;resolution<2;resolution++)
 			for (unsigned st=0;st<4;st++) for (unsigned tick=0;tick<6;tick++) for (unsigned blink=0;blink<2;blink++) {

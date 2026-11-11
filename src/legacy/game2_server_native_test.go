@@ -43,7 +43,7 @@ func TestGame2ServerNativeLayoutAndFirstVisible(t *testing.T) {
 			t.Fatalf("C/Go named native layout field%d got%d want%d", field, got, want)
 		}
 	}
-	items, free := alloc.Make([]gui.ScrollListBoxItem{}, 4)
+	items, free := alloc.MakeHigh([]gui.ScrollListBoxItem{}, 4)
 	defer free()
 	for i, v := range []uint32{11, 22, 33, 44} {
 		items[i].Field_0 = v

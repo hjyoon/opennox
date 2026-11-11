@@ -12,3 +12,9 @@ func PageSize() int {
 func New(size int) ([]byte, func()) {
 	return newPage(size)
 }
+
+// NewHigh requests high native address bits for opaque-pointer fixtures.
+// It does not change the ordinary production reservation policy used by New.
+func NewHigh(size int) ([]byte, func()) {
+	return newPageHigh(size)
+}

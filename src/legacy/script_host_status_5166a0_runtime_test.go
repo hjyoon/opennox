@@ -121,15 +121,15 @@ func TestScriptHostStatusNative5166A0ServerQueries(t *testing.T) {
 	}
 
 	host := s.Players.ResetInd(server.HostPlayerIndex)
-	dialog, freeDialog := alloc.New(server.Object{})
+	dialog, freeDialog := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeDialog)
-	trade, freeTrade := alloc.New(server.TradeSession{})
+	trade, freeTrade := alloc.NewHigh(server.TradeSession{})
 	t.Cleanup(freeTrade)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
 	update.DialogWith = dialog
 	update.Trade70 = trade
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	unit.UpdateData = unsafe.Pointer(update)
 	host.PlayerUnit = unit

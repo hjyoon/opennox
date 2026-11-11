@@ -160,7 +160,7 @@ func TestMonsterDeathExplosionOriginal549D80(t *testing.T) {
 
 func monsterDeathRunOriginal549D80(t *testing.T, in monsterDeathInput549D80, mode string) monsterDeathOutput549D80 {
 	t.Helper()
-	base, free := alloc.Malloc(0x10000)
+	base, free := alloc.MallocHigh(0x10000)
 	defer free()
 	buffer := unsafe.Slice((*byte)(base), 0x10000)
 	canonical, expected := make([]byte, len(buffer)), make([]byte, len(buffer))

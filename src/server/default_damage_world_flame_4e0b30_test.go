@@ -26,8 +26,8 @@ func worldFlameFixture4E17B0(t *testing.T, owner, victim string) (target, source
 	case "NPC":
 		target.ObjSubClass = 0x11012
 	case "player":
-		update, freeUpdate := alloc.New(PlayerUpdateData{})
-		player, freePlayer := alloc.New(Player{})
+		update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
+		player, freePlayer := alloc.NewHigh(Player{})
 		t.Cleanup(freeUpdate)
 		t.Cleanup(freePlayer)
 		*player = Player{}

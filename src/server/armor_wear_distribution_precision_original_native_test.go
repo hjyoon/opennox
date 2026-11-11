@@ -42,22 +42,22 @@ func observeArmorWearDistributionOriginalNative(t *testing.T, s *Server, c armor
 			frees[i]()
 		}
 	}()
-	v, f := alloc.New(Object{})
+	v, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*v = Object{ObjClass: c.Class, ObjSubClass: c.Subclass}
-	source, f := alloc.New(Object{})
+	source, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*source = Object{}
-	effective, f := alloc.New(Object{})
+	effective, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*effective = Object{}
-	item, f := alloc.New(Object{})
+	item, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
-	init, f := alloc.New(ModifierInitData{})
+	init, f := alloc.NewHigh(ModifierInitData{})
 	frees = append(frees, f)
 	*init = ModifierInitData{}
 	*item = Object{TypeInd: 300, ObjClass: c.ItemClass, ObjFlags: c.ItemFlags, InitData: unsafe.Pointer(init)}
-	def, f := alloc.New(Modifier{})
+	def, f := alloc.NewHigh(Modifier{})
 	frees = append(frees, f)
 	*def = Modifier{TypeInd: 300, DamageCoeffOrArmor64: math.Float32frombits(c.Coefficient)}
 	if c.Missing {
@@ -68,13 +68,13 @@ func observeArmorWearDistributionOriginalNative(t *testing.T, s *Server, c armor
 	defer func() { s.Modif.Dword_5d4594_251608 = old }()
 	var update []byte
 	if c.Class.Has(object.ClassPlayer) {
-		u, f := alloc.New(PlayerUpdateData{})
+		u, f := alloc.NewHigh(PlayerUpdateData{})
 		frees = append(frees, f)
 		*u = PlayerUpdateData{Field57: c.Armor}
 		v.UpdateData = unsafe.Pointer(u)
 		update = armorWearDistributionOriginalFrame(unsafe.Pointer(u), unsafe.Sizeof(*u))
 	} else {
-		u, f := alloc.New(MonsterUpdateData{})
+		u, f := alloc.NewHigh(MonsterUpdateData{})
 		frees = append(frees, f)
 		*u = MonsterUpdateData{Field518: c.Armor}
 		v.UpdateData = unsafe.Pointer(u)

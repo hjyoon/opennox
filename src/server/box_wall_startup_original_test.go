@@ -123,7 +123,7 @@ func testBoxWall5504B0Original(t *testing.T, native bool) {
 		selected++
 		t.Run(row.Input.Name, func(t *testing.T) {
 			i := row.Input
-			obj, free := alloc.New(Object{})
+			obj, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)
 			if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
 				t.Fatal("native box below 4 GiB")
@@ -210,7 +210,7 @@ func testBoxWall5504B0Original(t *testing.T, native bool) {
 			wantEvents := row.Events
 			if native {
 				s := newDirectedVisionMap(t)
-				w, freeWall := alloc.New(Wall{})
+				w, freeWall := alloc.NewHigh(Wall{})
 				t.Cleanup(freeWall)
 				*w = Wall{X5: 15, Y6: 15, Dir0: i.WallType}
 				if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(w)) <= math.MaxUint32 {

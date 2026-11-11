@@ -43,8 +43,8 @@ func TestObjectDistance4E6C00NativeRetainedEntries(t *testing.T) {
 	} {
 		for _, entry := range []string{"implementation", "export-body"} {
 			t.Run(tc.name+"/"+entry, func(t *testing.T) {
-				a, freeA := alloc.New(server.Object{})
-				b, freeB := alloc.New(server.Object{})
+				a, freeA := alloc.NewHigh(server.Object{})
+				b, freeB := alloc.NewHigh(server.Object{})
 				defer freeA()
 				defer freeB()
 				if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(a)) <= math.MaxUint32 || uintptr(unsafe.Pointer(b)) <= math.MaxUint32) {

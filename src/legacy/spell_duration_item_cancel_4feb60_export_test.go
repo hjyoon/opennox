@@ -47,10 +47,10 @@ func requireItemCancelDurSpellsLegacyPointers4FEB60(t *testing.T, values ...unsa
 
 func TestItemCancelDurSpellsExport4FEB60PreservesNativePointers(t *testing.T) {
 	srv := useItemCancelDurSpellsLegacyServer4FEB60(t)
-	owner, freeOwner := alloc.New(server.Object{})
-	item, freeItem := alloc.New(server.Object{})
-	record43, free43 := alloc.New(server.DurSpell{})
-	record59, free59 := alloc.New(server.DurSpell{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
+	record43, free43 := alloc.NewHigh(server.DurSpell{})
+	record59, free59 := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeOwner)
 	t.Cleanup(freeItem)
 	t.Cleanup(free43)
@@ -83,8 +83,8 @@ func TestItemCancelDurSpellsExport4FEB60PreservesNativePointers(t *testing.T) {
 
 func TestItemCancelDurSpellsExport4FEB60ClassGateAndNilOwner(t *testing.T) {
 	srv := useItemCancelDurSpellsLegacyServer4FEB60(t)
-	item, freeItem := alloc.New(server.Object{})
-	record, freeRecord := alloc.New(server.DurSpell{})
+	item, freeItem := alloc.NewHigh(server.Object{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeItem)
 	t.Cleanup(freeRecord)
 

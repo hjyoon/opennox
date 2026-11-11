@@ -101,10 +101,10 @@ func TestMaidenDraw4BBF90MatchesGAMEEXE(t *testing.T) {
 			if !tc.NPCPresent {
 				npc.LiveVal = 0
 			}
-			vp, freeVP := alloc.New(noxrender.Viewport{})
-			dr, freeDR := alloc.New(client.Drawable{})
-			ud, freeUD := alloc.New(server.MonsterUpdateData{})
-			other, freeOther := alloc.New(server.MonsterUpdateData{})
+			vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
+			dr, freeDR := alloc.NewHigh(client.Drawable{})
+			ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+			other, freeOther := alloc.NewHigh(server.MonsterUpdateData{})
 			renderData, freeRender := noxrender.NewRenderData()
 			for _, free := range []func(){freeVP, freeDR, freeUD, freeOther, freeRender} {
 				t.Cleanup(free)
@@ -116,7 +116,7 @@ func TestMaidenDraw4BBF90MatchesGAMEEXE(t *testing.T) {
 			}
 			objects := make([]*server.Object, len(tc.Extents))
 			for i, extent := range tc.Extents {
-				obj, free := alloc.New(server.Object{})
+				obj, free := alloc.NewHigh(server.Object{})
 				t.Cleanup(free)
 				// Original MaidenDraw does not add a MONSTER class gate.
 				obj.Extent, obj.UpdateData = extent, unsafe.Pointer(ud)

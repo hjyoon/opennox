@@ -50,7 +50,7 @@ func npcRestoreTestServer52ADE0(t *testing.T) *server.Server {
 
 func npcRestoreTestObject52ADE0(t *testing.T) *server.Object {
 	t.Helper()
-	obj, free := alloc.New(server.Object{})
+	obj, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
 		t.Fatalf("equipment fixture object %p must exercise a native high address", obj)
@@ -76,10 +76,10 @@ func TestNPCRestoreEquipped52ADE0RestoresClothingProtectionAndEngage(t *testing.
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			owner, item := npcRestoreTestObject52ADE0(t), npcRestoreTestObject52ADE0(t)
-			update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-			attrs, freeAttrs := alloc.New(server.ModifierInitData{})
-			modifier, freeModifier := alloc.New(server.ModifierEff{})
-			definition, freeDefinition := alloc.New(server.Modifier{})
+			update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+			attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
+			modifier, freeModifier := alloc.NewHigh(server.ModifierEff{})
+			definition, freeDefinition := alloc.NewHigh(server.Modifier{})
 			for _, free := range []func(){freeUpdate, freeAttrs, freeModifier, freeDefinition} {
 				t.Cleanup(free)
 			}
@@ -123,7 +123,7 @@ func TestNPCRestoreEquipped52ADE0RestoresClothingProtectionAndEngage(t *testing.
 func TestNPCRestoreEquipped52ADE0LeavesLooseClothingAlone(t *testing.T) {
 	srv := npcRestoreTestServer52ADE0(t)
 	owner, item := npcRestoreTestObject52ADE0(t), npcRestoreTestObject52ADE0(t)
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	owner.ObjClass, owner.ObjSubClass, owner.UpdateData = object.ClassMonster, object.SubClass(object.MonsterNPC), unsafe.Pointer(update)
 	owner.InvFirstItem = item

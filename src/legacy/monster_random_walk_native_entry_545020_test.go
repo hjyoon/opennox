@@ -40,7 +40,7 @@ func TestMonsterRandomWalkNextPublicCNative545020(t *testing.T) {
 	}
 	mode := os.Getenv(child)
 	s, unit, update, missile := monsterMainBlockLegacyFixture547210(t)
-	def, free := alloc.New(server.MonsterDef{})
+	def, free := alloc.NewHigh(server.MonsterDef{})
 	t.Cleanup(free)
 	*def = server.MonsterDef{RunMultiplier96: 1.75, MoveSndFrameA100: 3, MoveSndFrameB104: 7}
 	unit.ObjSubClass, unit.Direction1, unit.Direction2, unit.SpeedCur = object.SubClass(0x400), 255, 13, 2.5

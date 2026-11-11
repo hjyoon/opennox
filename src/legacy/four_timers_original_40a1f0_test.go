@@ -15,6 +15,7 @@ import (
 	"sort"
 	"strconv"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
 )
@@ -675,12 +676,12 @@ func TestFourTimersNativeABI40A1F0(t *testing.T) {
 				base = 0x587000
 			}
 			p := timerNativeCell40A1F0(field, uint32(i))
-			if uintptr(p) <= 0xffffffff || p != fourTimersCellC40A1F0(base, offset) {
+			if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != fourTimersCellC40A1F0(base, offset) {
 				t.Fatal("actual full native scalar cell aliases")
 			}
 		}
 	}
-	t.Log("FOUR_TIMERS_NATIVE_ABI_OK Ctyped4 int32=2 int64=2 native-cell-pointers>4GiB declared42bytes packed-canary98bytes physical-stack-FP-credit=false")
+	t.Logf("FOUR_TIMERS_NATIVE_ABI_OK Ctyped4 int32=2 int64=2 native-pointer-width=%d high-address-qualified=%t declared42bytes packed-canary98bytes physical-stack-FP-credit=false", unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(uintptr(0)) == 8)
 }
 func TestFourTimersOriginal40A1F0(t *testing.T) {
 	chosen, e := timerLoad40A1F0()

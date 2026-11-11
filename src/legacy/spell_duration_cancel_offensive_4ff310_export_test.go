@@ -49,9 +49,9 @@ func TestSpellDurationCancelOffensiveExport4FF310PreservesNativePointer(t *testi
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	caster, freeCaster := alloc.New(server.Object{})
-	other, freeOther := alloc.New(server.Object{})
-	record, freeRecord := alloc.New(server.DurSpell{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	other, freeOther := alloc.NewHigh(server.Object{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeCaster)
 	t.Cleanup(freeOther)
 	t.Cleanup(freeRecord)

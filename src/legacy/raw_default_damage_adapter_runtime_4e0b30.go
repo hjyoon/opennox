@@ -168,7 +168,7 @@ func rawDefaultDamageWriteNativeOperand4E0B30(base unsafe.Pointer, field, width 
 		case 1:
 			*(*uint8)(address) = uint8(value.Word)
 		case 2:
-			*(*uint16)(address) = uint16(value.Word)
+			rawDefaultDamageWriteWord4E0B30(address, uint16(value.Word))
 		case 4:
 			*(*uint32)(address) = value.Word
 		}

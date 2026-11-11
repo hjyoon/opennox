@@ -18,7 +18,7 @@ import (
 func manaBombOriginalAllocation530F90[T comparable](t *testing.T) *T {
 	t.Helper()
 	var zero T
-	p, free := alloc.New(zero)
+	p, free := alloc.NewHigh(zero)
 	t.Cleanup(free)
 	if uintptr(unsafe.Pointer(p)) <= 0xffffffff {
 		t.Fatal("native comparison allocation must exceed4GiB")

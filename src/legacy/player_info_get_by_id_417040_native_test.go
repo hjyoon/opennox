@@ -125,7 +125,7 @@ func TestPlayerInfoGetByID417040ActualCTeamRemovalRefresh(t *testing.T) {
 			noxflags.ResetGame()
 			noxflags.SetGame(noxflags.GameHost | noxflags.GameOnline)
 			t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags) })
-			handles.Init()
+			handles.InitHigh()
 			t.Cleanup(handles.Release)
 			preserveImportantPacketState(t)
 			setImportantNativeListC(nil, nil)
@@ -136,9 +136,9 @@ func TestPlayerInfoGetByID417040ActualCTeamRemovalRefresh(t *testing.T) {
 			if player == nil {
 				t.Fatal("real player registry allocation failed")
 			}
-			update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+			update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 			t.Cleanup(freeUpdate)
-			unit, freeUnit := alloc.New(server.Object{})
+			unit, freeUnit := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeUnit)
 			*update = server.PlayerUpdateData{Player: player, State: 9}
 			*unit = server.Object{TypeInd: 713, ObjClass: object.ClassPlayer, ObjFlags: object.FlagEnabled, NetCode: raw, UpdateData: unsafe.Pointer(update), Extent: 0x89abcdef}

@@ -72,7 +72,7 @@ func TestMonsterDyingEndOriginalNative544CA0(t *testing.T) {
 				Alternate MonsterUpdateData
 				After     [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

@@ -33,14 +33,14 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 		t.Logf("real 004E1320 C entry passed:\n%s", output)
 		return
 	}
-	target, freeTarget := alloc.New(server.Object{})
-	source, freeSource := alloc.New(server.Object{})
-	weapon, freeWeapon := alloc.New(server.Object{})
-	item, freeItem := alloc.New(server.Object{})
-	initData, freeInit := alloc.New(server.ModifierInitData{})
-	armor, freeArmor := alloc.New(server.ModifierEff{})
-	grip, freeGrip := alloc.New(server.ModifierEff{})
-	damage, freeDamage := alloc.New(int32(0))
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
+	weapon, freeWeapon := alloc.NewHigh(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
+	initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+	armor, freeArmor := alloc.NewHigh(server.ModifierEff{})
+	grip, freeGrip := alloc.NewHigh(server.ModifierEff{})
+	damage, freeDamage := alloc.NewHigh(int32(0))
 	for _, free := range []func(){freeTarget, freeSource, freeWeapon, freeItem, freeInit, freeArmor, freeGrip, freeDamage} {
 		t.Cleanup(free)
 	}

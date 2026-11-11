@@ -70,7 +70,7 @@ func TestPlayerAttackCircle518040OriginalNative(t *testing.T) {
 	}
 	for _, row := range oracle.Rows {
 		t.Run(row.Input.Name, func(t *testing.T) {
-			center, freeCenter := alloc.New(types.Pointf{})
+			center, freeCenter := alloc.NewHigh(types.Pointf{})
 			t.Cleanup(freeCenter)
 			*center = types.Ptf(math.Float32frombits(row.Input.Center[0]), math.Float32frombits(row.Input.Center[1]))
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(center)) <= math.MaxUint32 {
@@ -80,7 +80,7 @@ func TestPlayerAttackCircle518040OriginalNative(t *testing.T) {
 			before := make(map[*Object][]byte)
 			var candidates []*Object
 			for _, input := range row.Input.Candidates {
-				candidate, free := alloc.New(Object{})
+				candidate, free := alloc.NewHigh(Object{})
 				t.Cleanup(free)
 				candidate.PosVec = types.Ptf(math.Float32frombits(input.Position[0]), math.Float32frombits(input.Position[1]))
 				candidate.Shape.Kind, candidate.Shape.Circle.R = ShapeKind(input.Shape), math.Float32frombits(input.Radius)

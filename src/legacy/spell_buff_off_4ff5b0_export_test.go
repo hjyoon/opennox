@@ -37,7 +37,7 @@ func TestSpellBuffOffExport4FF5B0PreservesNativePointerSignedDwordAndResult(t *t
 	}
 	t.Cleanup(func() { spellBuffOffExportImpl4FF5B0 = old })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -74,7 +74,7 @@ func TestSpellBuffOffExport4FF5B0CallsNativeBinding(t *testing.T) {
 	spellBuffOffExportImpl4FF5B0 = spellBuffOffLegacy4FF5B0
 	t.Cleanup(func() { spellBuffOffExportImpl4FF5B0 = oldImpl })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	unit.ObjClass = object.ClassClientPersist
 	unit.Buffs = uint32(1) << server.ENCHANT_CROWN

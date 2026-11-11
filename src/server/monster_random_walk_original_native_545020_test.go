@@ -90,7 +90,7 @@ func TestMonsterRandomWalkOriginalNative545020(t *testing.T) {
 				Definitions [3]MonsterDef
 				After       [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

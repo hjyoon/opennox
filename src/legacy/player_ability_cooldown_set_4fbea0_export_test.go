@@ -26,13 +26,13 @@ func TestPlayerAbilityCooldownSetExport4FBEA0PreservesNativePointerAndWidths(t *
 	t.Cleanup(srv.Close)
 	srv.Abils.Init4FB990()
 
-	lookupUnit, freeLookup := alloc.New(server.Object{})
+	lookupUnit, freeLookup := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeLookup)
 	lookupUnit.NetCode = 0xfedcba98
-	indexedUnit, freeIndexed := alloc.New(server.Object{})
+	indexedUnit, freeIndexed := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeIndexed)
 	indexedUnit.NetCode = 0x12345678
-	wrongUnit, freeWrong := alloc.New(server.Object{})
+	wrongUnit, freeWrong := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeWrong)
 	lookupPlayer := srv.Players.ResetInd(5)
 	lookupPlayer.NetCodeVal = lookupUnit.NetCode

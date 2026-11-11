@@ -27,7 +27,7 @@ func meleeSoundStorage532440[T comparable](t *testing.T, cOwned bool) *T {
 		return new(T)
 	}
 	var zero T
-	p, free := alloc.New(zero)
+	p, free := alloc.NewHigh(zero)
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= uintptr(^uint32(0)) {
 		t.Fatalf("C-owned test address = %p, want above 4 GiB", p)

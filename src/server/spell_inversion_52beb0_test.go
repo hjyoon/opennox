@@ -18,9 +18,9 @@ import (
 )
 
 func TestInversionCast52BEB0NativePointersLiveOriginAndOrder(t *testing.T) {
-	owner, freeOwner := alloc.New(Object{})
+	owner, freeOwner := alloc.NewHigh(Object{})
 	t.Cleanup(freeOwner)
-	caster, freeCaster := alloc.New(Object{})
+	caster, freeCaster := alloc.NewHigh(Object{})
 	t.Cleanup(freeCaster)
 	*owner, *caster = Object{PosVec: types.Ptf(7, 8)}, Object{PosVec: types.Ptf(9, 10)}
 	first, second := new(Object), new(Object)

@@ -36,9 +36,9 @@ func TestProjectileTrace537850NativeIndexedSmallCollider(t *testing.T) {
 	for _, delta := range []types.Pointf{{X: 9}, {X: -9}, {Y: 9}, {Y: -9}, {X: 15}, {X: -15}, {Y: 15}, {Y: -15}} {
 		t.Run(fmt.Sprintf("%g,%g", delta.X, delta.Y), func(t *testing.T) {
 			s := newDirectedVisionMap(t)
-			source, freeSource := alloc.New(Object{})
-			target, freeTarget := alloc.New(Object{})
-			token, freeToken := alloc.New(uint32(0x537850))
+			source, freeSource := alloc.NewHigh(Object{})
+			target, freeTarget := alloc.NewHigh(Object{})
+			token, freeToken := alloc.NewHigh(uint32(0x537850))
 			t.Cleanup(freeSource)
 			t.Cleanup(freeTarget)
 			t.Cleanup(freeToken)
@@ -137,8 +137,8 @@ func TestProjectileTrace537850StartupOriginal(t *testing.T) {
 		selected++
 		t.Run(row.Input.Name, func(t *testing.T) {
 			i := row.Input
-			source, freeSource := alloc.New(Object{})
-			target, freeTarget := alloc.New(Object{})
+			source, freeSource := alloc.NewHigh(Object{})
+			target, freeTarget := alloc.NewHigh(Object{})
 			t.Cleanup(freeSource)
 			t.Cleanup(freeTarget)
 			*source = Object{PosVec: point(i.Position), NewPos: point(i.NewPosition), Field29: 0x12345678}

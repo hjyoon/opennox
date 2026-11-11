@@ -97,7 +97,7 @@ func TestSpellDurationFreeRecursiveNative4FE980PreservesPointersAndOrder(t *test
 }
 
 func TestSpellDurationFreeRecursive4FE980NativeAllocatorReuse(t *testing.T) {
-	spells := SpellsDuration{alloc: alloc.NewClassT("DurationFree4FE980", DurSpell{}, 5)}
+	spells := SpellsDuration{alloc: alloc.NewClassTHigh("DurationFree4FE980", DurSpell{}, 5)}
 	t.Cleanup(spells.alloc.Free)
 
 	root := spells.alloc.NewObject()

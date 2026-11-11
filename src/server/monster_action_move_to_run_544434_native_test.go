@@ -20,12 +20,12 @@ import (
 // TEST C0 first stops on less or unordered; TEST C0|C3 then starts only
 // on ordered greater. The original run helpers honor AlwaysRun/NeverRun.
 func TestMonsterActionMoveToRun544434NativeOriginalBands(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{ObjClass: object.ClassMonster, SpeedBase: 2})
+	unit, freeUnit := alloc.NewHigh(Object{ObjClass: object.ClassMonster, SpeedBase: 2})
 	t.Cleanup(freeUnit)
 	*unit = Object{ObjClass: object.ClassMonster, SpeedBase: 2}
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
-	owner, freeOwner := alloc.New(Object{ObjClass: object.ClassPlayer})
+	owner, freeOwner := alloc.NewHigh(Object{ObjClass: object.ClassPlayer})
 	t.Cleanup(freeOwner)
 	owner.ObjClass = object.ClassPlayer
 	unit.UpdateData = unsafe.Pointer(update)

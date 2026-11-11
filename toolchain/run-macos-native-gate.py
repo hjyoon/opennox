@@ -2,13 +2,16 @@
 from pathlib import Path
 import collections
 import hashlib
+import importlib.util
 import json
 import os
 import platform
 import re
 import subprocess
+import sys
 import time
 
+sys.dont_write_bytecode = True
 repo = Path.cwd().resolve()
 variant = os.environ['GATE_VARIANT']
 source = os.environ['SOURCE_REVISION']
@@ -88,7 +91,18 @@ expected = set((report / 'expected-packages.stdout.log').read_text().splitlines(
 assert len(expected) == 4
 executables = report / 'test-binaries'
 executables.mkdir()
-status = capture('test', ['go', 'test', *flags, '-json', '-count=1', '-timeout=20m',
+# Original/native comparisons retain their inputs, fault workers and output
+# under a unique invocation root. Prepare the same worker as the local gate;
+# never replace these comparisons with an unprepared or skipped test run.
+helper_path = repo / 'scripts' / 'prepare-default-damage-initial-worker.py'
+helper_spec = importlib.util.spec_from_file_location('initial_worker_setup', helper_path)
+helper = importlib.util.module_from_spec(helper_spec)
+helper_spec.loader.exec_module(helper)
+setup = helper.prepare_for_suite(repo, 'go', report, env)
+env.update(setup['environment'])
+env['OPENNOX_LOCAL_TEST_ARTIFACTS'] = str(report / 'native-fixture-artifacts')
+test_timeout = '20m' if variant == 'strict' else '90m'
+status = capture('test', ['go', 'test', *flags, '-json', '-count=1', '-timeout=' + test_timeout,
                           '-o=' + str(executables), *packages], required=False)
 tests, terminal, failures, build_failures = collections.Counter(), {}, [], []
 digest, size = hashlib.sha256(), 0

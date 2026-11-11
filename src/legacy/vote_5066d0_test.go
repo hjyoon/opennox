@@ -14,7 +14,7 @@ import (
 )
 
 func TestVote5066D0PreservesNativeAllocatorRecordsLinksAndPlayerPointers(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	// The production shutdown path is intentionally idempotent so this test is
 	// independent of whether a prior test initialized the global vote class.
 	Sub_506720()
@@ -22,12 +22,12 @@ func TestVote5066D0PreservesNativeAllocatorRecordsLinksAndPlayerPointers(t *test
 		t.Fatalf("alloc vote array = %d, want 1", got)
 	}
 
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	player, freePlayer := alloc.New(server.Player{})
-	unit2, freeUnit2 := alloc.New(server.Object{})
-	update2, freeUpdate2 := alloc.New(server.PlayerUpdateData{})
-	player2, freePlayer2 := alloc.New(server.Player{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
+	unit2, freeUnit2 := alloc.NewHigh(server.Object{})
+	update2, freeUpdate2 := alloc.NewHigh(server.PlayerUpdateData{})
+	player2, freePlayer2 := alloc.NewHigh(server.Player{})
 	oldFrameHook := gameFrameHook
 	minimumVotes := memmap.PtrUint32(0x587000, 229980)
 	oldMinimumVotes := *minimumVotes

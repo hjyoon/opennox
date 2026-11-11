@@ -32,10 +32,10 @@ func useSpellDurationFindActiveTargetLegacyServer4FF2D0(t *testing.T) *server.Se
 
 func TestSpellDurationFindActiveTargetExport4FF2D0PreservesNativePointers(t *testing.T) {
 	srv := useSpellDurationFindActiveTargetLegacyServer4FF2D0(t)
-	target, freeTarget := alloc.New(server.Object{})
-	other, freeOther := alloc.New(server.Object{})
-	recordA, freeA := alloc.New(server.DurSpell{})
-	recordB, freeB := alloc.New(server.DurSpell{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	other, freeOther := alloc.NewHigh(server.Object{})
+	recordA, freeA := alloc.NewHigh(server.DurSpell{})
+	recordB, freeB := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeTarget)
 	t.Cleanup(freeOther)
 	t.Cleanup(freeA)

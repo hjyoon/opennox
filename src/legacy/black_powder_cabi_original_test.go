@@ -94,7 +94,7 @@ func TestBlackPowderCEntryOriginal(t *testing.T) {
 		// separate full server matrix and are not claimed by this C subset.
 		counts[i.Kind]++
 		t.Run(i.Name, func(t *testing.T) {
-			p, free := alloc.Make([]byte(nil), int(unsafe.Sizeof(server.Object{}))+64)
+			p, free := alloc.MakeHigh([]byte(nil), int(unsafe.Sizeof(server.Object{}))+64)
 			t.Cleanup(free)
 			for n := range p {
 				p[n] = 0xa5

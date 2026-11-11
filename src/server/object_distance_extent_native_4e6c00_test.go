@@ -25,7 +25,7 @@ func objectDistanceHeightReference4E6C54(word uint32) float64 {
 }
 
 func TestObjectDistanceExtentNative4E6C00HeightChop(t *testing.T) {
-	shape, free := alloc.New(Shape{})
+	shape, free := alloc.NewHigh(Shape{})
 	defer free()
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(shape)) <= math.MaxUint32 {
 		t.Fatalf("native shape below 4 GiB: %p", shape)

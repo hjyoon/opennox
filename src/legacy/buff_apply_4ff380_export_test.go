@@ -24,7 +24,7 @@ func TestBuffApplyExport4FF380PreservesNativePointerAndFixedWidths(t *testing.T)
 	}
 	t.Cleanup(func() { buffApplyExportImpl4FF380 = old })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

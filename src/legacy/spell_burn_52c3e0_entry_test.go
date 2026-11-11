@@ -39,13 +39,13 @@ func TestBurnCastNativeEntry52C3E0(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*caster = server.Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(-23, -23)}
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(300, 300)}

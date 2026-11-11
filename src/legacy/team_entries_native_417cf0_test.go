@@ -36,15 +36,15 @@ func TestRemainingTeamEntries4183C0FrozenOriginal(t *testing.T) {
 		for _, guard := range []byte{0, 0x5a, 0xff} {
 			for _, public := range []bool{false, true} {
 				t.Run(fmt.Sprintf("%s/%02x/C=%t", row.Name, guard, public), func(t *testing.T) {
-					teams, ft := alloc.Make([]server.Team{}, 3)
+					teams, ft := alloc.MakeHigh([]server.Team{}, 3)
 					defer ft()
-					units, fu := alloc.Make([]server.Object{}, 3)
+					units, fu := alloc.MakeHigh([]server.Object{}, 3)
 					defer fu()
-					flags, ff := alloc.Make([]server.Object{}, 3)
+					flags, ff := alloc.MakeHigh([]server.Object{}, 3)
 					defer ff()
-					updates, fd := alloc.Make([]server.PlayerUpdateData{}, 3)
+					updates, fd := alloc.MakeHigh([]server.PlayerUpdateData{}, 3)
 					defer fd()
-					players, fp := alloc.Make([]server.Player{}, 3)
+					players, fp := alloc.MakeHigh([]server.Player{}, 3)
 					defer fp()
 					banks := [][]byte{teamEntriesBytes417CF0(teams), teamEntriesBytes417CF0(units), teamEntriesBytes417CF0(flags), teamEntriesBytes417CF0(updates), teamEntriesBytes417CF0(players)}
 					for _, b := range banks {
@@ -241,7 +241,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 		}
 	}
 	for _, count := range []int{0, 1, 127, 128, 255, 256, 300} {
-		teams, free := alloc.Make([]server.Team{}, 301)
+		teams, free := alloc.MakeHigh([]server.Team{}, 301)
 		nextCalls := 0
 		for i := range teams {
 			*(*uint32)(unsafe.Add(teams[i].C(), 60)) = 0x80000000
@@ -309,7 +309,7 @@ func TestRemainingTeamEntries4184D0NativePacket(t *testing.T) {
 				}
 				expectedAfter, _ := hex.DecodeString(row.After)
 				expectedPacket, _ := hex.DecodeString(row.Packet)
-				owner, release := alloc.Malloc(1024)
+				owner, release := alloc.MallocHigh(1024)
 				defer release()
 				bank := unsafe.Slice((*byte)(owner), 1024)
 				copy(bank, before)
@@ -339,7 +339,7 @@ func TestRemainingTeamEntries4184D0NativePacket(t *testing.T) {
 					Flag512: func() bool { order = append(order, "flag512"); return row.Flag512 },
 					Alloc: func(n uintptr) unsafe.Pointer {
 						order = append(order, "alloc")
-						p, free := alloc.Malloc(n + 16)
+						p, free := alloc.MallocHigh(n + 16)
 						releasePacket = free
 						raw := unsafe.Slice((*byte)(p), int(n)+16)
 						for i := range raw {

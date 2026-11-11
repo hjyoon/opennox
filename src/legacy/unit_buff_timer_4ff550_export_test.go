@@ -26,7 +26,7 @@ func TestUnitBuffTimerExport4FF550PreservesNativePointerSignedDwordAndResult(t *
 	}
 	t.Cleanup(func() { unitBuffTimerExportImpl4FF550 = old })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -54,7 +54,7 @@ func TestUnitBuffTimerExport4FF550PreservesNativePointerSignedDwordAndResult(t *
 }
 
 func TestUnitBuffTimerExport4FF550CallsNativeBinding(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	unit.BuffsDur[0] = 0x8000
 	unit.BuffsDur[31] = math.MaxUint16

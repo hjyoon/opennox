@@ -49,13 +49,13 @@ func TestCheckVictory509A60NativeLayouts(t *testing.T) {
 }
 
 func TestCheckVictory509A60PreservesNativePointers(t *testing.T) {
-	teams, freeTeams := alloc.Make([]Team(nil), 2)
+	teams, freeTeams := alloc.MakeHigh([]Team(nil), 2)
 	defer freeTeams()
-	players, freePlayers := alloc.Make([]Player(nil), 1)
+	players, freePlayers := alloc.MakeHigh([]Player(nil), 1)
 	defer freePlayers()
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	defer freeUnit()
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
 	defer freeUpdate()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {

@@ -30,11 +30,11 @@ func TestMarkSlotCastNativeEntry52CBD0(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*second = server.Object{PosVec: types.Ptf(330, 520)}
 	*caster = server.Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(300, 500)}

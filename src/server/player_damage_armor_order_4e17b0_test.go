@@ -39,6 +39,11 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 			marker, markerType := uint32(1), uint32(701)
 			residual, portion := float32(-0.25), float32(0.5)
 			switch tc.typ {
+			case object.DamageImpale:
+				if !tc.player {
+					original := npcPhysicalOriginal4E17B0(t, "ordered-armor", 3, .5, .25)
+					residual, portion = math.Float32frombits(original.Carry), float32(original.Wear)*.5
+				}
 			case object.DamageElectric:
 				weapon, marker, markerType, residual, portion = source, 0, 77, .75, 1.5
 			case object.DamageBlade:

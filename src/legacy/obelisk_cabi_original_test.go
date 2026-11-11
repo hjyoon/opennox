@@ -18,7 +18,7 @@ import (
 func obeliskCFrameOriginal[T any](t *testing.T) (*T, []byte) {
 	t.Helper()
 	var zero T
-	p, free := alloc.Make([]byte(nil), int(unsafe.Sizeof(zero))+64)
+	p, free := alloc.MakeHigh([]byte(nil), int(unsafe.Sizeof(zero))+64)
 	t.Cleanup(free)
 	for n := range p {
 		p[n] = 0xa5

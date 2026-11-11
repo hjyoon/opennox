@@ -166,7 +166,7 @@ func TestMonsterMoveForce50D3B0NativeOriginalArithmetic(t *testing.T) {
 			for _, selected := range []int{0, 1} {
 				t.Run(fmt.Sprintf("%s/running-%t/selected-%d", tc.name, running, selected), func(t *testing.T) {
 					unit, update := monsterMoveSelectionFixture50D3B0(t)
-					def, freeDef := alloc.New(MonsterDef{})
+					def, freeDef := alloc.NewHigh(MonsterDef{})
 					t.Cleanup(freeDef)
 					*def = MonsterDef{RunMultiplier96: tc.run}
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(def)) <= math.MaxUint32 {
@@ -205,7 +205,7 @@ func TestMonsterMoveForce50D3B0NativeIndependentFiniteMatrix(t *testing.T) {
 	for _, domain := range []string{"finite-binary32", "map-coordinates", "small-force", "running-product"} {
 		t.Run(domain, func(t *testing.T) {
 			unit, update := monsterMoveSelectionFixture50D3B0(t)
-			def, freeDef := alloc.New(MonsterDef{})
+			def, freeDef := alloc.NewHigh(MonsterDef{})
 			t.Cleanup(freeDef)
 			*def = MonsterDef{}
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(def)) <= math.MaxUint32 {

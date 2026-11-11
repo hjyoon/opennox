@@ -223,11 +223,11 @@ func testRigidGeometryOriginal(t *testing.T, row rigidRowOriginal) {
 func testRigidObjectsOriginal(t *testing.T, row rigidRowOriginal, tables map[string][]byte) {
 	t.Helper()
 	i := row.Input
-	a, freeA := alloc.New(Object{})
-	b, freeB := alloc.New(Object{})
-	other, freeOther := alloc.New(Object{})
-	u, freeU := alloc.New(DoorUpdateData{})
-	alt, freeAlt := alloc.New(DoorUpdateData{})
+	a, freeA := alloc.NewHigh(Object{})
+	b, freeB := alloc.NewHigh(Object{})
+	other, freeOther := alloc.NewHigh(Object{})
+	u, freeU := alloc.NewHigh(DoorUpdateData{})
+	alt, freeAlt := alloc.NewHigh(DoorUpdateData{})
 	for _, free := range []func(){freeA, freeB, freeOther, freeU, freeAlt} {
 		t.Cleanup(free)
 	}

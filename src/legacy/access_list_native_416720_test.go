@@ -216,14 +216,14 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 						}
 						units := utf16.Encode([]rune(op.Name))
 						units = append(units, 0)
-						name, freeName := alloc.Make([]uint16{}, len(units))
+						name, freeName := alloc.MakeHigh([]uint16{}, len(units))
 						copy(name, units)
 						np := unsafe.Pointer(&name[0])
 						var sp unsafe.Pointer
 						freeSerial := func() {}
 						if op.Serial != nil {
 							b := append([]byte(*op.Serial), 0)
-							arr, free := alloc.Make([]byte{}, len(b))
+							arr, free := alloc.MakeHigh([]byte{}, len(b))
 							copy(arr, b)
 							sp = unsafe.Pointer(&arr[0])
 							freeSerial = free

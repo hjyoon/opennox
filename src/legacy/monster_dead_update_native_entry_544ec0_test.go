@@ -38,10 +38,10 @@ func TestMonsterDeadUpdateNextPublicCNative544EC0(t *testing.T) {
 	view.Write(1, 100)
 	view.Write(2, 200)
 	unit.TypeInd = 300
-	definition, free := alloc.New(server.MonsterDef{})
+	definition, free := alloc.NewHigh(server.MonsterDef{})
 	defer free()
 	*definition = server.MonsterDef{}
-	waypoints, freeWaypoints := alloc.Make([]server.Waypoint{}, 16)
+	waypoints, freeWaypoints := alloc.MakeHigh([]server.Waypoint{}, 16)
 	defer freeWaypoints()
 	update.MonsterDef = definition
 	update.Field74 = 2

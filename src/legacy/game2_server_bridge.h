@@ -92,7 +92,7 @@ extern uint32_t dword_5d4594_1047936;
 extern float2 obj_5d4594_1046620;
 extern nox_window* dword_5d4594_1046536;
 extern uint32_t dword_5d4594_1045436;
-extern unsigned int dword_5d4594_831220;
+extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_1045460;
 extern uint32_t dword_587000_122848;
 extern uint32_t dword_5d4594_1046932;

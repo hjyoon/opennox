@@ -49,7 +49,7 @@ func TestAIPathDangerousShapeOriginal50B2C0Native(t *testing.T) {
 					if len(c.Expected) != 13 {
 						t.Fatal("incomplete full shape words")
 					}
-					frame, free := alloc.Make([]byte(nil), 188)
+					frame, free := alloc.MakeHigh([]byte(nil), 188)
 					defer free()
 					for i := range frame {
 						frame[i] = 0xa5

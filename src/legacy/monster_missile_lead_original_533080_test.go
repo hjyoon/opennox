@@ -75,9 +75,9 @@ func TestMissileLeadOriginalActualC533080(t *testing.T) {
 	if ref.Entry != "0x533080" || ref.Control != 0xe3f || len(ref.Rows) != 2844 {
 		t.Fatal("unexpected frozen original prediction scope")
 	}
-	unit, freeUnit := alloc.New(missileLeadOriginalObjectGuard533080{})
-	target, freeTarget := alloc.New(missileLeadOriginalObjectGuard533080{})
-	out, freeOutput := alloc.New(missileLeadOriginalOutputGuard533080{})
+	unit, freeUnit := alloc.NewHigh(missileLeadOriginalObjectGuard533080{})
+	target, freeTarget := alloc.NewHigh(missileLeadOriginalObjectGuard533080{})
+	out, freeOutput := alloc.NewHigh(missileLeadOriginalOutputGuard533080{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeTarget)
 	t.Cleanup(freeOutput)

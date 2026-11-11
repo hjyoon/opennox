@@ -108,8 +108,8 @@ func killableRun528190(t *testing.T, path int, fault bool) {
 			if !row.Output.Heap || !row.Output.Stack || !row.Output.CW {
 				t.Fatal("original guards")
 			}
-			g, fg := alloc.New(killableObjectGuard528190{})
-			h, fh := alloc.New(killableHealthGuard528190{})
+			g, fg := alloc.NewHigh(killableObjectGuard528190{})
+			h, fh := alloc.NewHigh(killableHealthGuard528190{})
 			t.Cleanup(fg)
 			t.Cleanup(fh)
 			for i := 0; i < 32; i++ {

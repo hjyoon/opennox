@@ -31,7 +31,7 @@ type markCastTestWorld52CA80 struct {
 func newMarkCastTestWorld52CA80(t *testing.T) *markCastTestWorld52CA80 {
 	t.Helper()
 	newObject := func() *Object {
-		obj, free := alloc.New(Object{})
+		obj, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		*obj = Object{}
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
@@ -40,7 +40,7 @@ func newMarkCastTestWorld52CA80(t *testing.T) *markCastTestWorld52CA80 {
 		return obj
 	}
 	newData := func() *PlayerUpdateData {
-		data, free := alloc.New(PlayerUpdateData{})
+		data, free := alloc.NewHigh(PlayerUpdateData{})
 		t.Cleanup(free)
 		*data = PlayerUpdateData{Field39: 0xa1b2c3d4}
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(data)) <= math.MaxUint32 {

@@ -47,7 +47,7 @@ func monsterRetreatMasterNativeFixture5456D0(t *testing.T) (*Server, *Object, *M
 	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_RETREAT_TO_MASTER), Field5: 0}
 	owners := make([]*Object, 3)
 	for i := range owners {
-		owner, free := alloc.New(Object{})
+		owner, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		owner.PosVec = types.Ptf(100+float32(i)*10, 200+float32(i)*10)
 		owners[i] = owner
@@ -80,7 +80,7 @@ func monsterRetreatMasterAssertNative5456D0(t *testing.T, s *Server, unit *Objec
 	} else if !monsterActionRetreatToMaster5456D0(unit, monsterActionRetreatToMasterHooks5456D0{
 		push: func(action ai.ActionType, args ...any) *AIStackItem {
 			events = append(events, action)
-			item, free := alloc.New(AIStackItem{})
+			item, free := alloc.NewHigh(AIStackItem{})
 			t.Cleanup(free)
 			item.Action = uint32(action)
 			item.SetArgs(args...)
@@ -212,12 +212,12 @@ func TestMonsterRetreatToMaster5456D0NativePushReloads(t *testing.T) {
 		t.Run(fmt.Sprint(refused), func(t *testing.T) {
 			s, unit, cached, owners := monsterRetreatMasterNativeFixture5456D0(t)
 			unit.PosVec = types.Pointf{}
-			live, free := alloc.New(MonsterUpdateData{})
+			live, free := alloc.NewHigh(MonsterUpdateData{})
 			t.Cleanup(free)
 			*live = MonsterUpdateData{Field329: 777, ResumeLevel: 0.5}
 			var items [2]*AIStackItem
 			for i := range items {
-				item, free := alloc.New(AIStackItem{})
+				item, free := alloc.NewHigh(AIStackItem{})
 				t.Cleanup(free)
 				*item = AIStackItem{Args: [4]uintptr{0xabc, 0xdef, 0x123, 0x456}, Field5: 0xfedcba98}
 				items[i] = item

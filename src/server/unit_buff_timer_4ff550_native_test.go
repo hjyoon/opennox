@@ -32,7 +32,7 @@ func TestUnitBuffTimer4FF550NativeLayout(t *testing.T) {
 }
 
 func TestUnitBuffTimerNative4FF550AccessorOrderAndWidths(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -72,7 +72,7 @@ func TestUnitBuffTimerNative4FF550AccessorOrderAndWidths(t *testing.T) {
 }
 
 func TestUnitBuffTimer4FF550ServerBinding(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

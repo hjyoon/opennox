@@ -81,7 +81,7 @@ func TestMeleeBlockerOriginalActualC532390(t *testing.T) {
 	}
 	objects := make([]*meleeBlockerObjectGuard532390, 3)
 	for i := range objects {
-		value, free := alloc.New(meleeBlockerObjectGuard532390{})
+		value, free := alloc.NewHigh(meleeBlockerObjectGuard532390{})
 		t.Cleanup(free)
 		objects[i] = value
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(value)) <= math.MaxUint32 {

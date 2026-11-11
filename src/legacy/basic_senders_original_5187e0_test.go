@@ -109,7 +109,7 @@ func basicSenderBytes5187E0(p unsafe.Pointer, n uintptr) []byte {
 }
 func basicSenderAllocate5187E0[T comparable](f *basicSenderFixture5187E0) *T {
 	f.t.Helper()
-	g, free := alloc.New(basicSenderGuard5187E0[T]{})
+	g, free := alloc.NewHigh(basicSenderGuard5187E0[T]{})
 	f.t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(g)) <= math.MaxUint32 {
 		f.t.Fatal("native guarded records must exceed4GiB")
@@ -380,7 +380,7 @@ func compareBasicSenderOriginal5187E0(t *testing.T, invoke func(string, int32, *
 	if faults {
 		rows = bad
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := server.New(nil, nil, strman.New())
 	t.Cleanup(s.Close)

@@ -45,12 +45,12 @@ func TestQuestHealthScale4E3DD0CEntryNativeWorldAndRetainedSetter(t *testing.T) 
 		t.Fatal(err)
 	}
 	typ := srv.Types.ByID("QuestHealthCFixture")
-	gen, freeGen := alloc.New(server.Object{})
-	monster, freeMonster := alloc.New(server.Object{})
-	genHP, freeGenHP := alloc.New(server.HealthData{})
-	monsterHP, freeMonsterHP := alloc.New(server.HealthData{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-	definition, freeDefinition := alloc.New(server.MonsterDef{})
+	gen, freeGen := alloc.NewHigh(server.Object{})
+	monster, freeMonster := alloc.NewHigh(server.Object{})
+	genHP, freeGenHP := alloc.NewHigh(server.HealthData{})
+	monsterHP, freeMonsterHP := alloc.NewHigh(server.HealthData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+	definition, freeDefinition := alloc.NewHigh(server.MonsterDef{})
 	for _, free := range []func(){freeGen, freeMonster, freeGenHP, freeMonsterHP, freeUpdate, freeDefinition} {
 		t.Cleanup(free)
 	}

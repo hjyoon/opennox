@@ -40,7 +40,7 @@ func TestUnitBuffClear4FF580NativeLayout(t *testing.T) {
 }
 
 func TestUnitBuffClearNative4FF580PreservesPointerAndAccessorOrder(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -87,7 +87,7 @@ func TestUnitBuffClearNative4FF580PreservesPointerAndAccessorOrder(t *testing.T)
 }
 
 func TestUnitBuffClear4FF580ServerBinding(t *testing.T) {
-	unit, freeUnit := alloc.New(Object{})
+	unit, freeUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freeUnit)
 	unit.ObjClass = object.ClassClientPersist
 	unit.Buffs = math.MaxUint32

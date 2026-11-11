@@ -116,7 +116,7 @@ func TestUnitHeightOriginalNative4D9020(t *testing.T) {
 		t.Run(path, func(t *testing.T) {
 			for _, row := range rows {
 				t.Run(row.Input.Name, func(t *testing.T) {
-					g, free := alloc.New(heightOriginalGuard4D9020{})
+					g, free := alloc.NewHigh(heightOriginalGuard4D9020{})
 					defer free()
 					memory := unsafe.Slice((*byte)(unsafe.Pointer(g)), unsafe.Sizeof(*g))
 					for i := range memory {

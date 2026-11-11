@@ -40,13 +40,13 @@ func TestTelekinesisCastEntryNativePointers52D330(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*second = server.Object{ObjClass: object.ClassPlayer}
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(12, 34)}
@@ -79,7 +79,7 @@ func TestTelekinesisCastNativeMissingStockType52D330(t *testing.T) {
 		t.Run(fmt.Sprintf("class%08x", class), func(t *testing.T) {
 			srv, target, update := monsterLookAtFixture5125A0(t)
 			target.ObjClass = class
-			arg, freeArg := alloc.New(server.SpellAcceptArg{})
+			arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 			t.Cleanup(freeArg)
 			*arg = server.SpellAcceptArg{Obj: target, Pos: types.Ptf(44, 55)}
 			previousServer := GetServer

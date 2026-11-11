@@ -116,10 +116,10 @@ func TestMonsterDeadUpdateNativeComposition544EC0(t *testing.T) {
 	if got := uint32(zombieEntryCProbe534A10(1, unit)); got != query {
 		t.Fatal("real native IsZombie", got, query)
 	}
-	definition, free := alloc.New(server.MonsterDef{})
+	definition, free := alloc.NewHigh(server.MonsterDef{})
 	defer free()
 	*definition = server.MonsterDef{StatusFlags92: object.MonsterStatus(delete)}
-	waypoints, freeWaypoints := alloc.Make([]server.Waypoint{}, 16)
+	waypoints, freeWaypoints := alloc.MakeHigh([]server.Waypoint{}, 16)
 	defer freeWaypoints()
 	update.MonsterDef = definition
 	update.Field74 = wp

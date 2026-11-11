@@ -51,9 +51,9 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 			free[i]()
 		}
 	}()
-	v, f := alloc.New(server.Object{})
+	v, f := alloc.NewHigh(server.Object{})
 	free = append(free, f)
-	hp, f := alloc.New(server.HealthData{})
+	hp, f := alloc.NewHigh(server.HealthData{})
 	free = append(free, f)
 	*hp = server.HealthData{Cur: 200, Max: 200, Field2: 200}
 	*v = server.Object{ObjClass: object.ClassMonster, ObjSubClass: 0x11012, HealthData: hp}
@@ -62,9 +62,9 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 	var offsets []uintptr
 	var frames [][]byte
 	if c.Player {
-		u, f := alloc.New(server.PlayerUpdateData{})
+		u, f := alloc.NewHigh(server.PlayerUpdateData{})
 		free = append(free, f)
-		info, f := alloc.New(server.Player{})
+		info, f := alloc.NewHigh(server.Player{})
 		free = append(free, f)
 		*info = server.Player{}
 		*u = server.PlayerUpdateData{Player: info, State: server.PlayerState13, Field21: c.Carry, Field76: 99, Field75: 77}
@@ -74,7 +74,7 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 		offsets = []uintptr{unsafe.Offsetof(u.Field21), unsafe.Offsetof(u.Field76), unsafe.Offsetof(u.Field75)}
 		frames = append(frames, sourceLessElectricOriginalFrame(unsafe.Pointer(info), unsafe.Sizeof(*info)))
 	} else {
-		u, f := alloc.New(server.MonsterUpdateData{})
+		u, f := alloc.NewHigh(server.MonsterUpdateData{})
 		free = append(free, f)
 		*u = server.MonsterUpdateData{Field1: c.Carry, Field547: 99, Field546: 77}
 		v.UpdateData = unsafe.Pointer(u)
@@ -82,9 +82,9 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 		update = sourceLessElectricOriginalFrame(unsafe.Pointer(u), unsafe.Sizeof(*u))
 		offsets = []uintptr{unsafe.Offsetof(u.Field1), unsafe.Offsetof(u.Field547), unsafe.Offsetof(u.Field546)}
 	}
-	name, freeName := alloc.CString("Material7")
+	name, freeName := alloc.CStringHigh("Material7")
 	free = append(free, freeName)
-	effect, f := alloc.New(server.ModifierEff{})
+	effect, f := alloc.NewHigh(server.ModifierEff{})
 	free = append(free, f)
 	*effect = server.ModifierEff{}
 	// ModifierEff's canonical first member is a native name pointer. All
@@ -93,9 +93,9 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 	var lastItem *server.Object
 	var firstDef, lastDef *server.Modifier
 	for i, in := range c.Items {
-		item, f := alloc.New(server.Object{})
+		item, f := alloc.NewHigh(server.Object{})
 		free = append(free, f)
-		init, f := alloc.New(server.ModifierInitData{})
+		init, f := alloc.NewHigh(server.ModifierInitData{})
 		free = append(free, f)
 		*init = server.ModifierInitData{}
 		*item = server.Object{TypeInd: uint16(100 + i), ObjClass: in.Class, ObjSubClass: object.SubClass(in.Subclass), ObjFlags: in.Flags, Material: in.Material, InitData: unsafe.Pointer(init)}
@@ -108,7 +108,7 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 			lastItem.InvNextItem = item
 		}
 		lastItem = item
-		def, f := alloc.New(server.Modifier{})
+		def, f := alloc.NewHigh(server.Modifier{})
 		free = append(free, f)
 		*def = server.Modifier{TypeInd: uint32(item.TypeInd), DamageCoeffOrArmor64: math.Float32frombits(in.Coefficient)}
 		if in.Missing {

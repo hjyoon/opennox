@@ -58,9 +58,9 @@ func TestDefaultDamageWorldNoHealthMatchesGAMEEXE4E0B30(t *testing.T) {
 	}
 	for _, row := range oracle.Rows {
 		t.Run(row.Name, func(t *testing.T) {
-			v, freeV := alloc.New(Object{})
-			a, freeA := alloc.New(Object{})
-			h, freeH := alloc.New(HealthData{})
+			v, freeV := alloc.NewHigh(Object{})
+			a, freeA := alloc.NewHigh(Object{})
+			h, freeH := alloc.NewHigh(HealthData{})
 			defer freeV()
 			defer freeA()
 			defer freeH()

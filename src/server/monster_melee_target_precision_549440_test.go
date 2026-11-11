@@ -79,7 +79,7 @@ func TestMonsterPickMeleeTarget549440OriginalNative(t *testing.T) {
 	for _, row := range readMeleeTargetOracle549440(t).Results {
 		t.Run(row.Input.Name, func(t *testing.T) {
 			s, unit, update := monsterHealthRetreatNativeFixture547807(t)
-			def, freeDef := alloc.New(MonsterDef{})
+			def, freeDef := alloc.NewHigh(MonsterDef{})
 			t.Cleanup(freeDef)
 			update.MonsterDef = def
 			def.MeleeAttackRange112 = math.Float32frombits(row.Input.Range)
@@ -89,13 +89,13 @@ func TestMonsterPickMeleeTarget549440OriginalNative(t *testing.T) {
 			var candidates []*Object
 			byObject := make(map[*Object]meleeTargetCandidate549440)
 			for _, input := range row.Input.Candidates {
-				candidate, free := alloc.New(Object{})
+				candidate, free := alloc.NewHigh(Object{})
 				t.Cleanup(free)
 				candidate.ObjClass, candidate.ObjFlags = object.Class(input.Class), object.Flags(input.Flags)
 				candidate.PosVec = types.Ptf(math.Float32frombits(input.Position[0]), math.Float32frombits(input.Position[1]))
 				candidate.Shape.Circle.R = math.Float32frombits(input.Radius)
 				if input.HPMax != 0 {
-					hp, freeHP := alloc.New(HealthData{})
+					hp, freeHP := alloc.NewHigh(HealthData{})
 					t.Cleanup(freeHP)
 					hp.Max, candidate.HealthData = input.HPMax, hp
 				}

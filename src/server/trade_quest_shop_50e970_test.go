@@ -34,11 +34,11 @@ func TestQuestShopBonusItemTable50E970Sealed(t *testing.T) {
 }
 
 func TestLoadQuestShopItems50E970ExactSequence(t *testing.T) {
-	item, freeItem := alloc.New(Object{})
+	item, freeItem := alloc.NewHigh(Object{})
 	defer freeItem()
-	marker, freeMarker := alloc.New(Object{})
+	marker, freeMarker := alloc.NewHigh(Object{})
 	defer freeMarker()
-	markerData, freeMarkerData := alloc.New(RewardMarkerInitData{})
+	markerData, freeMarkerData := alloc.NewHigh(RewardMarkerInitData{})
 	defer freeMarkerData()
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for name, ptr := range map[string]unsafe.Pointer{

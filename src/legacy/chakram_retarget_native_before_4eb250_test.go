@@ -32,9 +32,9 @@ func TestChakramRetargetActualCBefore4EB250(t *testing.T) {
 		}
 		TestChakramRetargetNativeLayout4EB250(t)
 		s, source, _, owner := monsterMainBlockLegacyFixture547210(t)
-		update, freeUpdate := alloc.New(server.ChakramUpdateData{})
-		last, freeLast := alloc.New(server.Object{})
-		target, freeTarget := alloc.New(server.Object{})
+		update, freeUpdate := alloc.NewHigh(server.ChakramUpdateData{})
+		last, freeLast := alloc.NewHigh(server.Object{})
+		target, freeTarget := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeUpdate)
 		t.Cleanup(freeLast)
 		t.Cleanup(freeTarget)

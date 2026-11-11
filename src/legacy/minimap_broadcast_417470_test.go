@@ -27,7 +27,7 @@ func TestMinimapBroadcast417470NativePointersPlayerSlotsAndFlags(t *testing.T) {
 	GetServer = func() Server { return &minimapBroadcastLegacyServer417470{srv: srv} }
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	obj, freeObject := alloc.New(server.Object{})
+	obj, freeObject := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeObject)
 	defer srv.Players.Nox_xxx_netUnmarkMinimapSpec_417470(obj, math.MaxUint32)
 	first := srv.Players.NewRaw(1001)

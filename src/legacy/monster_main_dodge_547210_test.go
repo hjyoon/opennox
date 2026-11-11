@@ -19,7 +19,7 @@ func TestMonsterMainDodge547210ActualLegacyBinding(t *testing.T) {
 	for _, mode := range []string{"incoming", "outgoing", "own-missile", "not-indexed", "noncoop", "definition-disabled"} {
 		t.Run(mode, func(t *testing.T) {
 			srv, unit, update, missile := monsterMainBlockLegacyFixture547210(t)
-			definition, freeDefinition := alloc.New(server.MonsterDef{})
+			definition, freeDefinition := alloc.NewHigh(server.MonsterDef{})
 			t.Cleanup(freeDefinition)
 			definition.StatusFlags92, definition.RunMultiplier96 = object.MonStatusCanDodge, 1
 			update.MonsterDef = definition

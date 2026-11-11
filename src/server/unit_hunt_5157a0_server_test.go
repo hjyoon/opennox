@@ -21,7 +21,7 @@ func TestUnitHuntNative5157A0StackAndUnrelatedFlags(t *testing.T) {
 	}
 	t.Cleanup(s.Objs.FreeObjects)
 	unit := s.Objs.NewObject(&ObjectType{})
-	update, free := alloc.New(MonsterUpdateData{})
+	update, free := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(free)
 	unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 	if unsafe.Sizeof(uintptr(0)) == 8 &&

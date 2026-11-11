@@ -67,7 +67,7 @@ func TestMonsterSearchEdibleNativeProduction544A00(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	defer func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags) }()
 	s, unit, update, owner := monsterMainBlockLegacyFixture547210(t)
-	food, freeFood := alloc.New(server.Object{})
+	food, freeFood := alloc.NewHigh(server.Object{})
 	defer freeFood()
 	*food = server.Object{ObjClass: object.ClassFood, ObjFlags: object.FlagActive | object.FlagEnabled, PosVec: types.Ptf(320, 300), NewPos: types.Ptf(320, 300)}
 	food.Shape.Kind = server.ShapeKindCenter

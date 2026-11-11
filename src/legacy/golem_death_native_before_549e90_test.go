@@ -45,7 +45,7 @@ func golemActualConstructorFixture549E90(t *testing.T) (*server.Server, *server.
 		obj.ObjFlags = 0x10203040
 		obj.Field27 = -1.25
 		obj.Field29 = math.Float32bits(3)
-		data, _ := alloc.Malloc(8)
+		data, _ := alloc.MallocHigh(8)
 		obj.UseData.SetPtr(data)
 		before := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(obj)), int(unsafe.Sizeof(*obj))))
 		pointers, words := golemOriginalControl549E90(obj)
@@ -60,7 +60,7 @@ func golemActualConstructorFixture549E90(t *testing.T) (*server.Server, *server.
 		}
 		s.Objs.FreeObject(obj)
 	}
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	unit.PosVec = types.Ptf(300, 300)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {

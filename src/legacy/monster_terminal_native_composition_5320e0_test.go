@@ -92,7 +92,7 @@ func TestMonsterTerminalPublicCNativeComposition5320E0(t *testing.T) {
 	if len(wantBytes) != 450 {
 		t.Fatal("incomplete original return contexts")
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := server.New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -123,7 +123,7 @@ func TestMonsterTerminalPublicCNativeComposition5320E0(t *testing.T) {
 		Update server.MonsterUpdateData
 		After  [32]byte
 	}
-	f, free := alloc.New(guarded{})
+	f, free := alloc.NewHigh(guarded{})
 	t.Cleanup(free)
 	typ := ai.ACTION_BLOCK_FINISH
 	switch mode {

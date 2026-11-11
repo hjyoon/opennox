@@ -17,8 +17,8 @@ import (
 )
 
 func TestMimicCheckMorph534950NativeFieldsAndHighPointers(t *testing.T) {
-	obj, freeObj := alloc.New(Object{})
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	obj, freeObj := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeObj)
 	t.Cleanup(freeUpdate)
 	*obj = Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), PosVec: types.Pointf{X: -0x1p-22}}
@@ -106,8 +106,8 @@ func TestMimicCheckMorph534950ProductionStackResetAndAudio(t *testing.T) {
 	t.Cleanup(srv.Audio.Free)
 	srv.Audio.bySound[sound.SoundMimicMorph].Field12 = 1
 	srv.Audio.Reset()
-	obj, freeObj := alloc.New(Object{})
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	obj, freeObj := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeObj)
 	t.Cleanup(freeUpdate)
 	*obj = Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(update), serverHandle: srv.handle, PosVec: types.Pointf{X: 12, Y: -7}}

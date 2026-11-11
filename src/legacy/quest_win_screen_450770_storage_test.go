@@ -18,7 +18,7 @@ func TestQuestWin450770NativeRowsAndUnsignedPrefixSort(t *testing.T) {
 		t.Fatalf("C row=%d Go row=%d", got, unsafe.Sizeof(rows[0]))
 	}
 	for i, score := range []uint32{1, 0x80000000, math.MaxUint32, 7, 9, 11} {
-		player, free := alloc.New(server.Player{})
+		player, free := alloc.NewHigh(server.Player{})
 		t.Cleanup(free)
 		if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(player)) <= math.MaxUint32 {
 			t.Fatalf("player=%p, want above 4 GiB", player)

@@ -52,9 +52,9 @@ func TestMissileLeadAliasesOriginal533080(t *testing.T) {
 	if ref.Control != 0xe3f || len(ref.Rows) != 56 {
 		t.Fatal("original alias scope")
 	}
-	u, freeU := alloc.New(missileLeadOriginalObjectGuard533080{})
-	v, freeV := alloc.New(missileLeadOriginalObjectGuard533080{})
-	o, freeO := alloc.New(missileLeadOriginalOutputGuard533080{})
+	u, freeU := alloc.NewHigh(missileLeadOriginalObjectGuard533080{})
+	v, freeV := alloc.NewHigh(missileLeadOriginalObjectGuard533080{})
+	o, freeO := alloc.NewHigh(missileLeadOriginalOutputGuard533080{})
 	t.Cleanup(freeU)
 	t.Cleanup(freeV)
 	t.Cleanup(freeO)

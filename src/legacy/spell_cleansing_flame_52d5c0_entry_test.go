@@ -19,13 +19,13 @@ const cleansingFlameChild52D5C0 = "OPENNOX_TEST_CLEANSING_FLAME_NATIVE_WIDTH"
 func TestCleansingFlameCastPublicPointerForwarding52D5C0(t *testing.T) {
 	previous := cleansingFlameCastCall52D5C0
 	t.Cleanup(func() { cleansingFlameCastCall52D5C0 = previous })
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	recipient, freeRecipient := alloc.New(server.Object{})
+	recipient, freeRecipient := alloc.NewHigh(server.Object{})
 	defer freeRecipient()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	for _, id := range []spell.ID{spell.SPELL_CLEANSING_FLAME, spell.SPELL_CLEANSING_MANA_FLAME} {
 		for _, level := range []int{-1, 1, 5} {
@@ -58,13 +58,13 @@ func TestCleansingFlameCastNativeEntry52D5C0(t *testing.T) {
 		t.Logf("%s", out)
 		return
 	}
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	firstOwned, freeFirst := alloc.New(server.Object{})
+	firstOwned, freeFirst := alloc.NewHigh(server.Object{})
 	defer freeFirst()
-	lastOwned, freeLast := alloc.New(server.Object{})
+	lastOwned, freeLast := alloc.NewHigh(server.Object{})
 	defer freeLast()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	second.Field129, firstOwned.TypeInd, firstOwned.Field128, lastOwned.TypeInd = firstOwned, 77, lastOwned, 321
 	if unsafe.Sizeof(uintptr(0)) == 8 {

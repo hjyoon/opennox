@@ -11,9 +11,9 @@ import (
 )
 
 func TestAudEventPickupExport4F3D50PreservesNativePointersFourArgumentsAndResult(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {

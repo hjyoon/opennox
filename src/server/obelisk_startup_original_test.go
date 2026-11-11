@@ -90,7 +90,7 @@ type obeliskRowOriginal struct {
 func obeliskFrameOriginal[T any](t *testing.T) (*T, []byte) {
 	t.Helper()
 	var zero T
-	frame, free := alloc.Make([]byte(nil), int(unsafe.Sizeof(zero))+64)
+	frame, free := alloc.MakeHigh([]byte(nil), int(unsafe.Sizeof(zero))+64)
 	t.Cleanup(free)
 	for n := range frame {
 		frame[n] = 0xa5

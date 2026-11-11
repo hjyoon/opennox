@@ -51,7 +51,7 @@ func TestModifierFloatParameterOriginal4235C0(t *testing.T) {
 		}
 		count++
 		t.Run(row.Name, func(t *testing.T) {
-			frame, free := alloc.New(modifierFloatParameterFrame4235C0{})
+			frame, free := alloc.NewHigh(modifierFloatParameterFrame4235C0{})
 			defer free()
 			for i := range frame.Before {
 				frame.Before[i] = 0x123456789abcdef0

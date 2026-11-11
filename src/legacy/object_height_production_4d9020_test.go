@@ -112,7 +112,7 @@ func TestUnitHeightProductionOriginal4D9020(t *testing.T) {
 			if len(want) != 4 && len(want) != 6 {
 				t.Fatal("original fixed packet length")
 			}
-			g, free := alloc.New(heightProductionGuard4D9020{})
+			g, free := alloc.NewHigh(heightProductionGuard4D9020{})
 			defer free()
 			for i := range g.Before {
 				g.Before[i] = 0xa5

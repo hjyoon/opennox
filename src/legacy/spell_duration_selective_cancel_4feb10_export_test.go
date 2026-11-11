@@ -46,11 +46,11 @@ func requireSpellCancelDurSpellLegacyPointers4FEB10(t *testing.T, values ...unsa
 
 func TestSpellCancelDurSpellExport4FEB10PreservesNativePointersAndSummonRange(t *testing.T) {
 	srv := useSpellCancelDurSpellLegacyServer4FEB10(t)
-	caster, freeCaster := alloc.New(server.Object{})
-	other, freeOther := alloc.New(server.Object{})
-	recordA, freeA := alloc.New(server.DurSpell{})
-	recordB, freeB := alloc.New(server.DurSpell{})
-	recordC, freeC := alloc.New(server.DurSpell{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	other, freeOther := alloc.NewHigh(server.Object{})
+	recordA, freeA := alloc.NewHigh(server.DurSpell{})
+	recordB, freeB := alloc.NewHigh(server.DurSpell{})
+	recordC, freeC := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeCaster)
 	t.Cleanup(freeOther)
 	t.Cleanup(freeA)
@@ -89,8 +89,8 @@ func TestSpellCancelDurSpellExport4FEB10PreservesNativePointersAndSummonRange(t 
 
 func TestSpellCancelDurSpellExport4FEB10PreservesSignedDword(t *testing.T) {
 	srv := useSpellCancelDurSpellLegacyServer4FEB10(t)
-	caster, freeCaster := alloc.New(server.Object{})
-	record, freeRecord := alloc.New(server.DurSpell{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeCaster)
 	t.Cleanup(freeRecord)
 	record.Spell = uint32(0x80000000)
@@ -110,7 +110,7 @@ func TestSpellCancelDurSpellExport4FEB10PreservesSignedDword(t *testing.T) {
 
 func TestSpellCancelDurSpellExport4FEB10MatchesNilCasterAndEmpty(t *testing.T) {
 	srv := useSpellCancelDurSpellLegacyServer4FEB10(t)
-	record, freeRecord := alloc.New(server.DurSpell{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeRecord)
 	record.Spell = 67
 	record.Flags88 = 0x87654320

@@ -24,6 +24,10 @@ func NewClassT[T comparable](name string, typ T, cnt int) ClassT[T] {
 	return ClassT[T]{Class: NewClass(name, unsafe.Sizeof(typ), cnt)}
 }
 
+func NewClassTHigh[T comparable](name string, typ T, cnt int) ClassT[T] {
+	return ClassT[T]{Class: NewClassHigh(name, unsafe.Sizeof(typ), cnt)}
+}
+
 func NewDynamicClassT[T comparable](name string, typ T, cnt int) ClassT[T] {
 	return ClassT[T]{Class: NewDynamicClass(name, unsafe.Sizeof(typ), cnt)}
 }
@@ -174,6 +178,7 @@ type Class struct {
 	keep   []uintptr
 
 	allocs int
+	high   bool
 	static struct {
 		ptr  unsafe.Pointer
 		free func()
@@ -194,6 +199,15 @@ func (al *Class) String() string {
 }
 
 func NewClass(name string, size uintptr, cnt int) *Class {
+	return newClass(name, size, cnt, false)
+}
+
+// NewClassHigh uses the explicit high-address fixture policy for its records.
+func NewClassHigh(name string, size uintptr, cnt int) *Class {
+	return newClass(name, size, cnt, true)
+}
+
+func newClass(name string, size uintptr, cnt int, high bool) *Class {
 	if name == "" {
 		panic("empty name")
 	}
@@ -208,6 +222,7 @@ func NewClass(name string, size uintptr, cnt int) *Class {
 		size:   size,
 		cnt:    cnt,
 		allocs: cnt,
+		high:   high,
 		byPtr:  make(map[unsafe.Pointer]*object),
 	}
 	if debugClasses {
@@ -216,7 +231,11 @@ func NewClass(name string, size uintptr, cnt int) *Class {
 
 	// pre-allocate a fixed amount
 	const hdr = 16
-	al.static.ptr, al.static.free = Calloc(cnt, size+hdr)
+	if high {
+		al.static.ptr, al.static.free = CallocHigh(cnt, size+hdr)
+	} else {
+		al.static.ptr, al.static.free = Calloc(cnt, size+hdr)
+	}
 	for i := 0; i < cnt; i++ {
 		obj := &object{
 			al:  al,
@@ -331,7 +350,11 @@ func (al *Class) NewObject() unsafe.Pointer {
 				al:      al,
 				expires: time.Nanosecond,
 			}
-			obj.ptr, obj.free = Malloc(al.size)
+			if al.high {
+				obj.ptr, obj.free = MallocHigh(al.size)
+			} else {
+				obj.ptr, obj.free = Malloc(al.size)
+			}
 			al.byPtr[obj.ptr] = obj
 			al.allocs++
 			if debugClasses {

@@ -18,7 +18,7 @@ import (
 
 func game4Owned[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	p, free := alloc.New(value)
+	p, free := alloc.NewHigh(value)
 	*p = value // alloc.New allocates, but deliberately does not copy its argument.
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {

@@ -75,8 +75,8 @@ func monsterThreatRangeReference547704(value float32) uint32 {
 func monsterThreatSpillFixture547210(t *testing.T) (*Server, *Object, *MonsterUpdateData, *Object) {
 	t.Helper()
 	s, unit, update := monsterHealthRetreatNativeFixture547807(t)
-	enemy, freeEnemy := alloc.New(Object{})
-	definition, freeDefinition := alloc.New(MonsterDef{})
+	enemy, freeEnemy := alloc.NewHigh(Object{})
+	definition, freeDefinition := alloc.NewHigh(MonsterDef{})
 	t.Cleanup(freeEnemy)
 	t.Cleanup(freeDefinition)
 	unit.PosVec, unit.NewPos = types.Ptf(100, 100), types.Ptf(100, 100)

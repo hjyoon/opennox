@@ -47,7 +47,7 @@ func skeletonActualConstructorFixture54A310(t *testing.T) (*server.Server, *serv
 			t.Fatal("actual C constructor", index)
 		}
 		obj.PosVec = types.Ptf(7, 8)
-		data, _ := alloc.Malloc(8)
+		data, _ := alloc.MallocHigh(8)
 		obj.UseData.SetPtr(data)
 		before := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(obj)), int(unsafe.Sizeof(*obj))))
 		pointers, words := skeletonOriginalControl54A310(obj)
@@ -62,7 +62,7 @@ func skeletonActualConstructorFixture54A310(t *testing.T) (*server.Server, *serv
 		}
 		s.Objs.FreeObject(obj)
 	}
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	unit.PosVec = types.Ptf(300, 300)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {

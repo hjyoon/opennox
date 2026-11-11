@@ -43,7 +43,7 @@ func g2bTestIsolate(t *testing.T) {
 
 func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 	g2bTestIsolate(t)
-	data, free := alloc.Make([]byte{}, int(g2bTestLayout(0))+32)
+	data, free := alloc.MakeHigh([]byte{}, int(g2bTestLayout(0))+32)
 	defer free()
 	for i := range data {
 		data[i] = 0xa7
@@ -125,7 +125,7 @@ func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 	g2bTestIsolate(t)
 	size, off := g2bTestLayout(3), g2bTestLayout(4)
-	data, free := alloc.Make([]byte{}, int(size*2+32))
+	data, free := alloc.MakeHigh([]byte{}, int(size*2+32))
 	defer free()
 	for i := range data {
 		data[i] = 0xa7
@@ -147,9 +147,9 @@ func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 			}
 		}
 	}
-	image, fi := alloc.Make([]byte{}, 32)
+	image, fi := alloc.MakeHigh([]byte{}, 32)
 	defer fi()
-	text, ft := alloc.Make([]uint16{}, 8)
+	text, ft := alloc.MakeHigh([]uint16{}, 8)
 	defer ft()
 	ip, tp := unsafe.Pointer(&image[0]), unsafe.Pointer(&text[0])
 	calls := 0
@@ -195,12 +195,12 @@ func TestGame2BriefingNativeCleanupActualCSlots(t *testing.T) {
 			*(*unsafe.Pointer)(unsafe.Pointer(s)) = saved[i]
 		}
 	}()
-	objects, free := alloc.Make([]byte{}, 16*12)
+	objects, free := alloc.MakeHigh([]byte{}, 16*12)
 	defer free()
 	for i, s := range slots {
 		*(*unsafe.Pointer)(unsafe.Pointer(s)) = unsafe.Pointer(&objects[16*i])
 	}
-	window, fw := alloc.Make([]byte{}, 32)
+	window, fw := alloc.MakeHigh([]byte{}, 32)
 	defer fw()
 	wp := unsafe.Pointer(&window[0])
 	g2bTestPointer(0, wp, true)

@@ -87,7 +87,7 @@ func TestMonsterBlockStartOriginalNative532070(t *testing.T) {
 				Pushed    AIStackItem
 				After     [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

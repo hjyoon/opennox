@@ -33,8 +33,8 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 		t.Logf("real 004E13B0 C entry passed:\n%s", output)
 		return
 	}
-	weapon, freeWeapon := alloc.New(server.Object{})
-	initData, freeInit := alloc.New(server.ModifierInitData{})
+	weapon, freeWeapon := alloc.NewHigh(server.Object{})
+	initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
 	for _, free := range []func(){freeWeapon, freeInit} {
 		t.Cleanup(free)
 	}
@@ -49,12 +49,12 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 	if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(nil, nil, weapon, nil); got != 0 {
 		t.Fatalf("empty four-slot counter=%d, want 0", got)
 	}
-	target, freeTarget := alloc.New(server.Object{})
-	source, freeSource := alloc.New(server.Object{})
-	effect, freeEffect := alloc.New(server.ModifierEff{})
-	other, freeOther := alloc.New(server.ModifierEff{})
-	empty, freeEmpty := alloc.New(server.ModifierEff{})
-	damage, freeDamage := alloc.New(int32(0))
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
+	other, freeOther := alloc.NewHigh(server.ModifierEff{})
+	empty, freeEmpty := alloc.NewHigh(server.ModifierEff{})
+	damage, freeDamage := alloc.NewHigh(int32(0))
 	for _, free := range []func(){freeTarget, freeSource, freeEffect, freeOther, freeEmpty, freeDamage} {
 		t.Cleanup(free)
 	}
@@ -84,8 +84,8 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 	// not substituted callbacks. Clamping at max HP makes their order visible:
 	// Vampirism 19->20, then Sympathy 20->18 (the reverse order ends at 20).
 	srv := npcReflectLegacyServer4E17B0(t)
-	sourceHP, freeSourceHP := alloc.New(server.HealthData{})
-	targetHP, freeTargetHP := alloc.New(server.HealthData{})
+	sourceHP, freeSourceHP := alloc.NewHigh(server.HealthData{})
+	targetHP, freeTargetHP := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeSourceHP)
 	t.Cleanup(freeTargetHP)
 	for _, ptr := range []unsafe.Pointer{unsafe.Pointer(sourceHP), unsafe.Pointer(targetHP)} {

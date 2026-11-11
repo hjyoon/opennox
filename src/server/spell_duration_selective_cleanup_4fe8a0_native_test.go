@@ -99,8 +99,8 @@ func TestSpellResetDurations4FE8A0NativeSelectiveState(t *testing.T) {
 	}
 	t.Cleanup(spells.SpellFreeDurations4FE880)
 
-	player, freePlayer := alloc.New(Object{})
-	monster, freeMonster := alloc.New(Object{})
+	player, freePlayer := alloc.NewHigh(Object{})
+	monster, freeMonster := alloc.NewHigh(Object{})
 	t.Cleanup(freePlayer)
 	t.Cleanup(freeMonster)
 	player.ObjClass = object.ClassPlayer | object.Class(0x80000000)

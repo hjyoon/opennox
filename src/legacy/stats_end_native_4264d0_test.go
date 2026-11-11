@@ -201,9 +201,9 @@ func TestStatsEnd4264D0CgoEntry(t *testing.T) {
 		player := slots[index]
 		player.Active, player.PlayerInd, player.Field4792 = 1, byte(index), 1
 		player.SetField2096("ArmQuest")
-		update, releaseUpdate := alloc.New(server.PlayerUpdateData{})
+		update, releaseUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		defer releaseUpdate()
-		unit, releaseUnit := alloc.New(server.Object{})
+		unit, releaseUnit := alloc.NewHigh(server.Object{})
 		defer releaseUnit()
 		update.Player = player
 		*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}

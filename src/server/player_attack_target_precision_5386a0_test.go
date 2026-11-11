@@ -82,7 +82,7 @@ func TestPlayerAttackTarget5386A0OriginalNative(t *testing.T) {
 		t.Run(row.Input.Name, func(t *testing.T) {
 			s := New(nil, nil, strman.New())
 			t.Cleanup(s.Close)
-			attacker, free := alloc.New(Object{})
+			attacker, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)
 			attacker.ObjClass = object.ClassPlayer
 			attacker.PosVec = types.Ptf(math.Float32frombits(row.Input.Position[0]), math.Float32frombits(row.Input.Position[1]))
@@ -93,7 +93,7 @@ func TestPlayerAttackTarget5386A0OriginalNative(t *testing.T) {
 			inputs := make(map[*Object]playerTargetCandidate5386A0)
 			var candidates []*Object
 			for _, input := range row.Input.Candidates {
-				candidate, free := alloc.New(Object{})
+				candidate, free := alloc.NewHigh(Object{})
 				t.Cleanup(free)
 				candidate.ObjClass, candidate.ObjFlags = object.Class(input.Class), object.Flags(input.Flags)
 				candidate.PosVec = types.Ptf(math.Float32frombits(input.Position[0]), math.Float32frombits(input.Position[1]))

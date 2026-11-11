@@ -116,7 +116,7 @@ func TestMonsterDeadUpdateOriginalNative544EC0(t *testing.T) {
 				Current     Object
 				After       [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

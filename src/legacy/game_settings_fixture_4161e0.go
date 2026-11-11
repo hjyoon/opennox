@@ -4,6 +4,7 @@ package legacy
 #include <stdint.h>
 #include <stdlib.h>
 #include "GAME1.h"
+#include "native_fixture_alloc.h"
 _Static_assert(sizeof(int)==4 && sizeof(short)==2, "settings scalar ABI");
 typedef char* (*settings_index_fn)(int);
 typedef void* (*settings_info_fn)(void);
@@ -32,5 +33,7 @@ func gameSettingsFixtureWord4161E0(entry uint32, a, b int32) int32 {
 func gameSettingsFixturePointer4161E0(entry uint32, a int32) unsafe.Pointer {
 	return C.game_settings_fixture_pointer(C.int(entry), C.int32_t(a))
 }
-func gameSettingsFixtureAlloc4161E0(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) }
-func gameSettingsFixtureFree4161E0(p unsafe.Pointer)          { C.free(p) }
+func gameSettingsFixtureAlloc4161E0(n uintptr) unsafe.Pointer {
+	return C.nox_native_fixture_calloc_high(1, C.size_t(n))
+}
+func gameSettingsFixtureFree4161E0(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }

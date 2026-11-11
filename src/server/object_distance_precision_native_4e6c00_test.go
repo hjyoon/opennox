@@ -72,8 +72,8 @@ func objectDistanceReferenceRetained4E6C00(a, b *Object) float64 {
 
 func objectDistanceNativePair4E6C00(t *testing.T) (*Object, *Object) {
 	t.Helper()
-	a, freeA := alloc.New(Object{})
-	b, freeB := alloc.New(Object{})
+	a, freeA := alloc.NewHigh(Object{})
+	b, freeB := alloc.NewHigh(Object{})
 	t.Cleanup(freeA)
 	t.Cleanup(freeB)
 	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(a)) <= math.MaxUint32 || uintptr(unsafe.Pointer(b)) <= math.MaxUint32) {

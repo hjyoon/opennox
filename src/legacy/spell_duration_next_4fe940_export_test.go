@@ -11,9 +11,9 @@ import (
 )
 
 func TestSpellDurationNextExport4FE940UsesLiveNativeLink(t *testing.T) {
-	record, freeRecord := alloc.New(server.DurSpell{ID: 0x1234})
-	first, freeFirst := alloc.New(server.DurSpell{ID: 0xabcd})
-	second, freeSecond := alloc.New(server.DurSpell{ID: 0x5678})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{ID: 0x1234})
+	first, freeFirst := alloc.NewHigh(server.DurSpell{ID: 0xabcd})
+	second, freeSecond := alloc.NewHigh(server.DurSpell{ID: 0x5678})
 	t.Cleanup(freeRecord)
 	t.Cleanup(freeFirst)
 	t.Cleanup(freeSecond)

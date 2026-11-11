@@ -69,12 +69,12 @@ func TestPlayerDamageCarryPrecisionOriginal4E20F0Native(t *testing.T) {
 	}
 	for _, c := range f.Carry {
 		t.Run(c.Name, func(t *testing.T) {
-			obj, freeObj := alloc.Make([]byte(nil), 64+objectSize+64)
+			obj, freeObj := alloc.MakeHigh([]byte(nil), 64+objectSize+64)
 			defer freeObj()
 			udSize := max(unsafe.Sizeof(PlayerUpdateData{}), unsafe.Sizeof(MonsterUpdateData{}))
-			update, freeUpdate := alloc.Make([]byte(nil), int(128+udSize))
+			update, freeUpdate := alloc.MakeHigh([]byte(nil), int(128+udSize))
 			defer freeUpdate()
-			output, freeOutput := alloc.Make([]byte(nil), 12)
+			output, freeOutput := alloc.MakeHigh([]byte(nil), 12)
 			defer freeOutput()
 			for _, b := range [][]byte{obj, update, output} {
 				for i := range b {

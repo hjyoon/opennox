@@ -32,7 +32,7 @@ func TestUnitBuffUpdateExport4FF620PreservesNativePointer(t *testing.T) {
 	}
 	t.Cleanup(func() { unitBuffUpdateExportImpl4FF620 = old })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)
@@ -63,7 +63,7 @@ func TestUnitBuffUpdateExport4FF620CallsNativeBinding(t *testing.T) {
 	unitBuffUpdateExportImpl4FF620 = unitBuffUpdateLegacy4FF620
 	t.Cleanup(func() { unitBuffUpdateExportImpl4FF620 = oldImpl })
 
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	unit.Buffs = uint32(1) << 9
 	unit.SpeedCur = 8
@@ -80,7 +80,7 @@ func TestUnitBuffUpdateExport4FF620CallsNativeBinding(t *testing.T) {
 
 func TestUnitBuffUpdateRuntime4FF620PreservesIncrementPointer(t *testing.T) {
 	bridge := &unitBuffUpdateLegacyServer4FF620{}
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", unit)

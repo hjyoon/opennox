@@ -139,7 +139,7 @@ func TestTrollDeathOriginal54A270(t *testing.T) {
 
 func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode string, nearest bool) (out trollDeathOutput54A270) {
 	t.Helper()
-	base, free := alloc.Malloc(0x10000)
+	base, free := alloc.MallocHigh(0x10000)
 	defer free()
 	buf := unsafe.Slice((*byte)(base), 0x10000)
 	canonical := make([]byte, len(buf))
@@ -204,7 +204,7 @@ func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode st
 		binary.LittleEndian.PutUint32(canonical[offsets[i+4]:], v)
 	}
 	copy(expected, buf)
-	stateGuard, freeState := alloc.New(struct {
+	stateGuard, freeState := alloc.NewHigh(struct {
 		Before [16]byte
 		State  server.TrollDeathState54A270
 		After  [16]byte

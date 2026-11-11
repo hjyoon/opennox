@@ -130,7 +130,7 @@ func specialDeathActualFixture54E460(t *testing.T) (out [4]*server.Object) {
 	if parent.UpdateData == nil || parent.Update == nil || out[2].UpdateData == nil || out[2].Update == nil {
 		t.Fatal("real registered C constructors with complete PlayerUpdate/MonsterGeneratorUpdate allocations")
 	}
-	p, free := alloc.New(server.Player{})
+	p, free := alloc.NewHigh(server.Player{})
 	t.Cleanup(free)
 	d := (*server.PlayerUpdateData)(parent.UpdateData)
 	d.Player, d.Field29, d.ExtraLives, d.Field137 = p, [4]*server.Object{out[0], units[4], units[5], units[6]}, 0x12345678, 0xabcdef01

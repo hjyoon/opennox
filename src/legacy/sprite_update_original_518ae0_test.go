@@ -72,7 +72,7 @@ type spriteFixture518AE0 struct {
 }
 
 func spriteAllocate518AE0[T comparable](t *testing.T, f *spriteFixture518AE0) *spriteGuard518AE0[T] {
-	g, free := alloc.New(spriteGuard518AE0[T]{})
+	g, free := alloc.NewHigh(spriteGuard518AE0[T]{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(g)) <= math.MaxUint32 {
 		t.Fatal("native sprite allocation must exceed4GiB")

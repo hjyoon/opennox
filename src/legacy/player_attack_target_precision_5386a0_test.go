@@ -72,15 +72,15 @@ func TestPlayerAttackTarget5386A0IndexedCFrameCycles(t *testing.T) {
 			if memmap.Float32(0x587000, 194136) != 1 || memmap.Float32(0x587000, 194140) != 0 {
 				t.Fatal("original direction zero was changed")
 			}
-			unit, freeUnit := alloc.New(server.Object{})
+			unit, freeUnit := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeUnit)
-			update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+			update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 			t.Cleanup(freeUpdate)
-			player, freePlayer := alloc.New(server.Player{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
 			t.Cleanup(freePlayer)
-			weapon, freeWeapon := alloc.New(server.Object{})
+			weapon, freeWeapon := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeWeapon)
-			modifier, freeModifier := alloc.New(server.Modifier{})
+			modifier, freeModifier := alloc.NewHigh(server.Modifier{})
 			t.Cleanup(freeModifier)
 			unit.ObjClass, unit.Direction1 = object.ClassPlayer, server.Dir16(row.Input.Direction)
 			unit.PosVec = types.Ptf(math.Float32frombits(row.Input.Position[0]), math.Float32frombits(row.Input.Position[1]))
@@ -100,13 +100,13 @@ func TestPlayerAttackTarget5386A0IndexedCFrameCycles(t *testing.T) {
 			names := make(map[*server.Object]string)
 			var candidates []*server.Object
 			for _, input := range row.Input.Candidates {
-				candidate, free := alloc.New(server.Object{})
+				candidate, free := alloc.NewHigh(server.Object{})
 				t.Cleanup(free)
 				candidate.TypeInd, candidate.ObjClass, candidate.ObjFlags = math.MaxUint16, object.Class(input.Class), object.FlagActive
 				candidate.PosVec = types.Ptf(math.Float32frombits(input.Position[0]), math.Float32frombits(input.Position[1]))
 				candidate.NewPos, candidate.Shape.Kind, candidate.Shape.Circle.R = candidate.PosVec, server.ShapeKindCircle, math.Float32frombits(input.Radius)
 				candidate.Shape.Circle.R2 = candidate.Shape.Circle.R * candidate.Shape.Circle.R
-				ud, freeUD := alloc.New(server.MonsterUpdateData{})
+				ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
 				t.Cleanup(freeUD)
 				candidate.UpdateData = unsafe.Pointer(ud)
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(candidate)) <= math.MaxUint32 {

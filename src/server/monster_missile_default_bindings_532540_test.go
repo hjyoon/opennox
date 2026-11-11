@@ -19,11 +19,11 @@ func TestMonsterMissileNativeDefaultBindings532540(t *testing.T) {
 		t.Run(mode, func(t *testing.T) {
 			s := New(nil, nil, strman.New())
 			t.Cleanup(s.Close)
-			d, freeD := alloc.New(MonsterUpdateData{})
+			d, freeD := alloc.NewHigh(MonsterUpdateData{})
 			t.Cleanup(freeD)
-			definition, freeDef := alloc.New(MonsterDef{})
+			definition, freeDef := alloc.NewHigh(MonsterDef{})
 			t.Cleanup(freeDef)
-			sounds, freeSounds := alloc.New([17]uint32{})
+			sounds, freeSounds := alloc.NewHigh([17]uint32{})
 			t.Cleanup(freeSounds)
 			definition.MissileAttackFrame216 = 2
 			sounds[11] = 1111

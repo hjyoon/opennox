@@ -14,7 +14,7 @@ import (
 )
 
 func TestQuestWin450770CEntryFullPacketAndSignedReturn(t *testing.T) {
-	packet, free := alloc.Make([]byte{0xf0, 0x0c}, 90)
+	packet, free := alloc.MakeHigh([]byte{0xf0, 0x0c}, 90)
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(&packet[0])) <= math.MaxUint32 {
 		t.Fatalf("packet=%p, want above 4 GiB", &packet[0])
@@ -41,16 +41,16 @@ func TestQuestWin450770CEntryNativeStorageSparseSlotsAndLiveFont(t *testing.T) {
 	t.Cleanup(func() {
 		*rows, *width, *total, *stage, questWinCall450770 = oldRows, oldWidth, oldTotal, oldStage, oldCall
 	})
-	win, freeWin := alloc.New(gui.Window{})
-	font, freeFont := alloc.Malloc(8)
-	text, freeText := alloc.Make([]uint16{'x', 0}, 2)
+	win, freeWin := alloc.NewHigh(gui.Window{})
+	font, freeFont := alloc.MallocHigh(8)
+	text, freeText := alloc.MakeHigh([]uint16{'x', 0}, 2)
 	t.Cleanup(freeWin)
 	t.Cleanup(freeFont)
 	t.Cleanup(freeText)
 	win.DrawData().SetFont(font)
 	var players [6]*server.Player
 	for i := range players {
-		p, free := alloc.New(server.Player{})
+		p, free := alloc.NewHigh(server.Player{})
 		t.Cleanup(free)
 		players[i] = p
 		p.NameFinal[0] = uint16('A' + i)
@@ -61,7 +61,7 @@ func TestQuestWin450770CEntryNativeStorageSparseSlotsAndLiveFont(t *testing.T) {
 		}
 	}
 	for _, ids := range [][6]uint16{{}, {1, 2, 3, 4, 5, 6}, {1, 0, 3, 0, 5, 0}} {
-		packet, free := alloc.Make([]byte{0xf0, 0x0c}, 104)
+		packet, free := alloc.MakeHigh([]byte{0xf0, 0x0c}, 104)
 		t.Cleanup(free)
 		binary.LittleEndian.PutUint16(packet[2:], 0xffff)
 		binary.LittleEndian.PutUint16(packet[4:], 0x8001)

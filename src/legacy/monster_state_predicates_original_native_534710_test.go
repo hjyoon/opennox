@@ -110,11 +110,11 @@ func TestMonsterStatePredicatesOriginalActualC534710(t *testing.T) {
 		Value  server.HealthData
 		After  [64]byte
 	}
-	ug, freeU := alloc.New(unitGuard{})
+	ug, freeU := alloc.NewHigh(unitGuard{})
 	t.Cleanup(freeU)
-	dg, freeD := alloc.New(updateGuard{})
+	dg, freeD := alloc.NewHigh(updateGuard{})
 	t.Cleanup(freeD)
-	hg, freeH := alloc.New(healthGuard{})
+	hg, freeH := alloc.NewHigh(healthGuard{})
 	t.Cleanup(freeH)
 	regions := []struct {
 		ptr  unsafe.Pointer

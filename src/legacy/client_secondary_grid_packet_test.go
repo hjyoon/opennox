@@ -43,7 +43,7 @@ func TestClientSecondaryActualHostPacketQueue(t *testing.T) {
 	if pointerSize > 4 && base <= math.MaxUint32 {
 		t.Fatalf("native grid below 4 GiB: %#x", base)
 	}
-	drawables, free := alloc.Make([]byte{0}, cells*drawSize)
+	drawables, free := alloc.MakeHigh([]byte{0}, cells*drawSize)
 	defer free()
 	before := bytes.Clone(grid)
 	oldSelected, oldCode := clientSecondaryGridGlobals198()

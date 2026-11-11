@@ -39,11 +39,11 @@ func TestCustomWaypointNativeLayout4F7950(t *testing.T) {
 }
 
 func TestCustomWaypointPresence4F9A80PreservesNativePointer(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	defer freeUnit()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeUpdate()
-	waypoint, freeWaypoint := alloc.New(server.Object{})
+	waypoint, freeWaypoint := alloc.NewHigh(server.Object{})
 	defer freeWaypoint()
 
 	unit.UpdateData = unsafe.Pointer(update)

@@ -65,7 +65,7 @@ func TestWaterBarrelPrecisionOriginal53CB90Native(t *testing.T) {
 					before := make([][]byte, len(frames))
 					objects := make([]*Object, len(frames))
 					for i := range frames {
-						frame, free := alloc.Make([]byte(nil), 928+128)
+						frame, free := alloc.MakeHigh([]byte(nil), 928+128)
 						defer free()
 						for k := range frame {
 							frame[k] = 0xa5

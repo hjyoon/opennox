@@ -53,38 +53,38 @@ func observeItemDurabilityOriginalNative(t *testing.T, c itemDurabilityOriginalC
 			frees[i]()
 		}
 	}()
-	item, f := alloc.New(Object{})
+	item, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
-	old, f := alloc.New(WeaponArmorUpdateData{})
+	old, f := alloc.NewHigh(WeaponArmorUpdateData{})
 	frees = append(frees, f)
 	*old = WeaponArmorUpdateData{Field0: c.Carry}
-	live, f := alloc.New(WeaponArmorUpdateData{})
+	live, f := alloc.NewHigh(WeaponArmorUpdateData{})
 	frees = append(frees, f)
 	*live = WeaponArmorUpdateData{Field0: c.NewCarry}
-	init, f := alloc.New(ModifierInitData{})
+	init, f := alloc.NewHigh(ModifierInitData{})
 	frees = append(frees, f)
 	*init = ModifierInitData{}
-	hp, f := alloc.New(HealthData{})
+	hp, f := alloc.NewHigh(HealthData{})
 	frees = append(frees, f)
 	*hp = HealthData{Cur: 100, Field2: 100, Max: 100}
-	owner, f := alloc.New(Object{})
+	owner, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
-	ownerUpdate, f := alloc.New(PlayerUpdateData{})
+	ownerUpdate, f := alloc.NewHigh(PlayerUpdateData{})
 	frees = append(frees, f)
-	ownerInfo, f := alloc.New(Player{})
+	ownerInfo, f := alloc.NewHigh(Player{})
 	frees = append(frees, f)
 	*ownerInfo = Player{PlayerInd: 8}
 	*ownerUpdate = PlayerUpdateData{Player: ownerInfo}
 	*owner = Object{ObjClass: c.OwnerClass, UpdateData: unsafe.Pointer(ownerUpdate)}
-	source, f := alloc.New(Object{})
+	source, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*source = Object{}
-	effective, f := alloc.New(Object{})
+	effective, f := alloc.NewHigh(Object{})
 	frees = append(frees, f)
 	*effective = Object{}
-	modifier, f := alloc.New(ModifierEff{})
+	modifier, f := alloc.NewHigh(ModifierEff{})
 	frees = append(frees, f)
-	callback, f := alloc.New(byte(0))
+	callback, f := alloc.NewHigh(byte(0))
 	frees = append(frees, f)
 	*modifier = ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(callback)}}
 	if c.DefendSwap {

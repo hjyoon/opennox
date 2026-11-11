@@ -15,7 +15,7 @@ func TestPlayerQuestKeysClientReadNativeBytesAndDoesNotWrite(t *testing.T) {
 	if got := Nox_client_playerQuestKeysReceived(nil); got != [2]byte{} {
 		t.Fatalf("nil client player=%v", got)
 	}
-	player, free := alloc.New(server.Player{})
+	player, free := alloc.NewHigh(server.Player{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(player)) <= math.MaxUint32 {
 		t.Fatal("client player fixture must exceed 4 GiB")

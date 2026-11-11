@@ -34,9 +34,9 @@ func useSpellDurationUnlinkLegacyServer4FE900(t *testing.T) *server.Server {
 
 func TestSpellDurationUnlinkExport4FE900PreservesNativePointers(t *testing.T) {
 	srv := useSpellDurationUnlinkLegacyServer4FE900(t)
-	prev, freePrev := alloc.New(server.DurSpell{})
-	record, freeRecord := alloc.New(server.DurSpell{})
-	next, freeNext := alloc.New(server.DurSpell{})
+	prev, freePrev := alloc.NewHigh(server.DurSpell{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
+	next, freeNext := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freePrev)
 	t.Cleanup(freeRecord)
 	t.Cleanup(freeNext)
@@ -74,8 +74,8 @@ func TestSpellDurationUnlinkExport4FE900PreservesNativePointers(t *testing.T) {
 
 func TestSpellDurationUnlinkExport4FE900UpdatesHead(t *testing.T) {
 	srv := useSpellDurationUnlinkLegacyServer4FE900(t)
-	record, freeRecord := alloc.New(server.DurSpell{})
-	next, freeNext := alloc.New(server.DurSpell{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
+	next, freeNext := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeRecord)
 	t.Cleanup(freeNext)
 	record.Next = next

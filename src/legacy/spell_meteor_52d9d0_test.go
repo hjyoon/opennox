@@ -21,15 +21,15 @@ type meteorCastLegacyServer52D9D0 struct {
 func (s *meteorCastLegacyServer52D9D0) S() *server.Server { return s.srv }
 
 func TestMeteorCastNativeServiceUsesCSharedCache52D9D0(t *testing.T) {
-	last, freeLast := alloc.New(server.Object{TypeInd: 321})
+	last, freeLast := alloc.NewHigh(server.Object{TypeInd: 321})
 	defer freeLast()
-	first, freeFirst := alloc.New(server.Object{TypeInd: 99, Field128: last})
+	first, freeFirst := alloc.NewHigh(server.Object{TypeInd: 99, Field128: last})
 	defer freeFirst()
-	owner, freeOwner := alloc.New(server.Object{Field129: first})
+	owner, freeOwner := alloc.NewHigh(server.Object{Field129: first})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{PosVec: types.Ptf(10, 20)})
+	caster, freeCaster := alloc.NewHigh(server.Object{PosVec: types.Ptf(10, 20)})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{Obj: first, Pos: types.Ptf(30, 40)})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{Obj: first, Pos: types.Ptf(30, 40)})
 	defer freeArg()
 	// alloc.New reserves zeroed C storage; its argument specifies the type,
 	// not an initial record value.
@@ -65,13 +65,13 @@ func TestMeteorCastNativeServiceUsesCSharedCache52D9D0(t *testing.T) {
 }
 
 func TestMeteorCastGoDispatchPreservesNativeArguments52D9D0(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(101.5, -202.25)}
 	before := *arg
@@ -102,11 +102,11 @@ func TestMeteorCastGoDispatchPreservesNativeArguments52D9D0(t *testing.T) {
 // Exercise the public entry without replacing its dispatch hook. The reported
 // six-int C callee faults at owner+0x204 before finding this owned Meteor.
 func TestMeteorCastGoEntryWalksNativeOwnedPointers52D9D0(t *testing.T) {
-	last, freeLast := alloc.New(server.Object{})
+	last, freeLast := alloc.NewHigh(server.Object{})
 	defer freeLast()
-	first, freeFirst := alloc.New(server.Object{})
+	first, freeFirst := alloc.NewHigh(server.Object{})
 	defer freeFirst()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
 	*last = server.Object{TypeInd: 321}
 	*first = server.Object{TypeInd: 99, Field128: last}

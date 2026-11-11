@@ -12,13 +12,13 @@ import (
 
 func wallLifecycleFixture410430(t *testing.T) *serverWalls {
 	t.Helper()
-	byPos, freePos := alloc.Make([]*Wall{}, wallsPerBucket*WallGridSize)
-	indexY, freeY := alloc.Make([]*Wall{}, WallGridSize)
+	byPos, freePos := alloc.MakeHigh([]*Wall{}, wallsPerBucket*WallGridSize)
+	indexY, freeY := alloc.MakeHigh([]*Wall{}, WallGridSize)
 	t.Cleanup(freePos)
 	t.Cleanup(freeY)
 	s := &serverWalls{byPos: byPos, indexY: indexY}
 	for i := 0; i < 4; i++ {
-		w, free := alloc.New(Wall{})
+		w, free := alloc.NewHigh(Wall{})
 		t.Cleanup(free)
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(w)) <= math.MaxUint32 {
 			t.Fatal("wall fixture must retain a native address above 4 GiB")

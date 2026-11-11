@@ -94,7 +94,7 @@ func TestMonsterDeathServicesOriginalNative544CE0(t *testing.T) {
 				Cache   uint32
 				After   [32]byte
 			}
-			p, free := alloc.New(guarded{})
+			p, free := alloc.NewHigh(guarded{})
 			defer free()
 			*p = guarded{}
 			for i := range p.Before {

@@ -45,12 +45,12 @@ func TestDefaultDamageNPCSwordExplosionNative4E0B30(t *testing.T) {
 			for _, defense := range []string{"none", "invulnerable", "fire-immune"} {
 				t.Run(fmt.Sprintf("%s/player-source-%t/%s", tc.name, playerSource, defense), func(t *testing.T) {
 					v, a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					u, freeU := alloc.New(server.MonsterUpdateData{})
-					au, freeAU := alloc.New(server.MonsterUpdateData{})
-					pu, freePU := alloc.New(server.PlayerUpdateData{})
-					info, freeInfo := alloc.New(server.Player{})
-					hp, freeHP := alloc.New(server.HealthData{})
-					init, freeInit := alloc.New(server.ModifierInitData{})
+					u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
+					au, freeAU := alloc.NewHigh(server.MonsterUpdateData{})
+					pu, freePU := alloc.NewHigh(server.PlayerUpdateData{})
+					info, freeInfo := alloc.NewHigh(server.Player{})
+					hp, freeHP := alloc.NewHigh(server.HealthData{})
+					init, freeInit := alloc.NewHigh(server.ModifierInitData{})
 					for _, free := range []func(){freeU, freeAU, freePU, freeInfo, freeHP, freeInit} {
 						t.Cleanup(free)
 					}

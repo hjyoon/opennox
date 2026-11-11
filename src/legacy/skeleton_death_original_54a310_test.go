@@ -116,7 +116,7 @@ func TestSkeletonDeathOriginal54A310(t *testing.T) {
 
 func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string, nearest bool) (out skeletonOutput54A310) {
 	t.Helper()
-	base, free := alloc.Malloc(0x10000)
+	base, free := alloc.MallocHigh(0x10000)
 	defer free()
 	buf := unsafe.Slice((*byte)(base), 0x10000)
 	canonical := make([]byte, len(buf))
@@ -189,7 +189,7 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		Index, Divisor uint32
 		After          [16]byte
 	}
-	g, freeState := alloc.New(guardedState{})
+	g, freeState := alloc.NewHigh(guardedState{})
 	defer freeState()
 	// alloc.New allocates zero-filled C memory; it does not copy its argument.
 	*g = guardedState{Before: [16]byte{1, 2, 3}, Index: in.Cache, Divisor: uint32(in.Divisor), After: [16]byte{4, 5, 6}}
@@ -216,7 +216,7 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 	}
 	// The DWORD-scaled PE table aliases index7fffffff and ffffffff to its
 	// preceding nil slot. Use native C pointer slots while keeping that wrap.
-	table, freeTable := alloc.Malloc(4 * unsafe.Sizeof(uintptr(0)))
+	table, freeTable := alloc.MallocHigh(4 * unsafe.Sizeof(uintptr(0)))
 	defer freeTable()
 	tableBuf := unsafe.Slice((*byte)(table), 4*unsafe.Sizeof(uintptr(0)))
 	for i := range tableBuf {
@@ -232,7 +232,7 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		}
 	}
 	rt.BoneName = func(index int32) unsafe.Pointer { return skeletonOriginalBone54A310(tablePtr, index) }
-	descriptors, freeDescriptors := alloc.Malloc(1024)
+	descriptors, freeDescriptors := alloc.MallocHigh(1024)
 	defer freeDescriptors()
 	descriptor := func(id int32) unsafe.Pointer { return unsafe.Add(descriptors, int(id)*8) }
 	descriptorID := func(p unsafe.Pointer) int32 {

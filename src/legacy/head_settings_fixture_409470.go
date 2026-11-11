@@ -5,6 +5,7 @@ package legacy
 #include <stdlib.h>
 #include "GAME1.h"
 #include "head_settings_reference_409470.h"
+#include "native_fixture_alloc.h"
 _Static_assert(sizeof(int)==4 && sizeof(short)==2 && sizeof(wchar2_t)==2,"settings scalar/UTF16 ABI");
 typedef int (*head_parse_fn_409470)(FILE*,uint8_t*);
 typedef char* (*head_string_set_fn_409470)(char*);
@@ -79,5 +80,7 @@ func headSettingsFixtureParse409470(reference bool, file, out unsafe.Pointer) in
 	runtime.KeepAlive(out)
 	return v
 }
-func headSettingsFixtureAlloc409470(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) }
-func headSettingsFixtureFree409470(p unsafe.Pointer)          { C.free(p) }
+func headSettingsFixtureAlloc409470(n uintptr) unsafe.Pointer {
+	return C.nox_native_fixture_calloc_high(1, C.size_t(n))
+}
+func headSettingsFixtureFree409470(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }

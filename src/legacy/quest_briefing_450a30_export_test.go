@@ -15,7 +15,7 @@ import (
 )
 
 func TestQuestStartBriefing450A30CEntryDelegation(t *testing.T) {
-	packet, freePacket := alloc.Make([]byte{0xf0, 0x0e}, 69)
+	packet, freePacket := alloc.MakeHigh([]byte{0xf0, 0x0e}, 69)
 	t.Cleanup(freePacket)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(&packet[0])) <= math.MaxUint32 {
 		t.Fatalf("packet=%p, want above 4 GiB", &packet[0])
@@ -42,8 +42,8 @@ func TestQuestStartBriefing450A30CEntryDelegation(t *testing.T) {
 }
 
 func TestQuestStartBriefing450A30NativePacketAndCStorage(t *testing.T) {
-	image, freeImage := alloc.Malloc(8)
-	text, freeText := alloc.Malloc(8)
+	image, freeImage := alloc.MallocHigh(8)
+	text, freeText := alloc.MallocHigh(8)
 	t.Cleanup(freeImage)
 	t.Cleanup(freeText)
 	imageSlot, textSlot := memmap.PtrPtr(0x5D4594, 832460), memmap.PtrPtr(0x5D4594, 832464)
@@ -67,7 +67,7 @@ func TestQuestStartBriefing450A30NativePacketAndCStorage(t *testing.T) {
 		// replace PE32 strlen with a 32-byte cap inside the original body.
 		{key: strings.Repeat("x", 80), show: -1},
 	} {
-		packet, freePacket := alloc.Make([]byte{0xf0, 0x0e}, max(69, 37+len(tc.key)+1))
+		packet, freePacket := alloc.MakeHigh([]byte{0xf0, 0x0e}, max(69, 37+len(tc.key)+1))
 		t.Cleanup(freePacket)
 		copy(packet[5:], "StartImage")
 		copy(packet[37:], tc.key)

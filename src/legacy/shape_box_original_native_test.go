@@ -55,7 +55,7 @@ func TestShapeBoxOriginal428270Native(t *testing.T) {
 						if len(c.Expected) != 8 {
 							t.Fatal("incomplete eight original outputs")
 						}
-						frame, free := alloc.Make([]byte(nil), 180)
+						frame, free := alloc.MakeHigh([]byte(nil), 180)
 						defer free()
 						if uintptr(unsafe.Pointer(&frame[64])) <= 0xffffffff {
 							t.Fatal("native fixture below4GiB")

@@ -125,13 +125,13 @@ func TestMonsterCombatPredicatesOriginalActualC534020(t *testing.T) {
 		Value  types.Pointf
 		After  [64]byte
 	}
-	ug, freeU := alloc.New(unitGuard{})
+	ug, freeU := alloc.NewHigh(unitGuard{})
 	t.Cleanup(freeU)
-	udg, freeUD := alloc.New(updateGuard{})
+	udg, freeUD := alloc.NewHigh(updateGuard{})
 	t.Cleanup(freeUD)
-	dg, freeD := alloc.New(definitionGuard{})
+	dg, freeD := alloc.NewHigh(definitionGuard{})
 	t.Cleanup(freeD)
-	vg, freeV := alloc.New(vectorGuard{})
+	vg, freeV := alloc.NewHigh(vectorGuard{})
 	t.Cleanup(freeV)
 	for _, region := range []struct {
 		ptr  unsafe.Pointer

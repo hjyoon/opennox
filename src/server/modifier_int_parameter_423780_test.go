@@ -51,7 +51,7 @@ func TestModifierIntParameterOriginal423780(t *testing.T) {
 		}
 		count++
 		t.Run(row.Name, func(t *testing.T) {
-			frame, free := alloc.New(modifierIntParameterFrame423780{})
+			frame, free := alloc.NewHigh(modifierIntParameterFrame423780{})
 			defer free()
 			for i := range frame.Before {
 				frame.Before[i] = 0x123456789abcdef0

@@ -13,9 +13,9 @@ import (
 )
 
 func TestAudioEventZoneExport501C00PreservesNativePointersAndUnsignedResult(t *testing.T) {
-	position, freePosition := alloc.New(types.Ptf(123.5, -456.75))
+	position, freePosition := alloc.NewHigh(types.Ptf(123.5, -456.75))
 	defer freePosition()
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for name, pointer := range map[string]unsafe.Pointer{

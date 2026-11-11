@@ -26,13 +26,13 @@ func TestInventoryPutExport4F3070PreservesNativePointers(t *testing.T) {
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	oldHead, freeOldHead := alloc.New(server.Object{})
+	oldHead, freeOldHead := alloc.NewHigh(server.Object{})
 	defer freeOldHead()
-	oldPrevious, freeOldPrevious := alloc.New(server.Object{})
+	oldPrevious, freeOldPrevious := alloc.NewHigh(server.Object{})
 	defer freeOldPrevious()
 
 	owner.InvFirstItem = oldHead

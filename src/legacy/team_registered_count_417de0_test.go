@@ -73,7 +73,7 @@ func TestRegisteredTeamCount417DE0CGoUsesNativeServerTeams(t *testing.T) {
 	noxflags.SetGame(noxflags.GameModeCoopTeam)
 	for _, count := range []int{0, 1, 3, 16} {
 		srv := new(server.Server)
-		teams, free := alloc.Make([]server.Team{}, 17)
+		teams, free := alloc.MakeHigh([]server.Team{}, 17)
 		srv.Teams.Arr = teams
 		GetServer = func() Server { return &netClientSendTestServer{srv: srv} }
 		for i := 1; i <= count; i++ {

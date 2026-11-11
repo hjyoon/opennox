@@ -56,7 +56,7 @@ func TestPlayerDamageWorldFistFlameCRecords4E17B0(t *testing.T) {
 						u.Field57, u.Field21 = math.Float32bits(absorption), math.Float32bits(0.25)
 						carry, marker, kind = &u.Field21, &u.Field76, &u.Field75
 					} else {
-						u, freeU := alloc.New(server.MonsterUpdateData{})
+						u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
 						t.Cleanup(freeU)
 						v.ObjClass, v.ObjSubClass, v.UpdateData = object.ClassMonster, 0x11012, unsafe.Pointer(u)
 						u.Field518, u.Field1 = math.Float32bits(absorption), math.Float32bits(0.25)

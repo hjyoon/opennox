@@ -30,7 +30,7 @@ func TestQuestGeneratorType51A500InitializationPrecedesNilAndTableGates(t *testi
 				var unit *server.Object
 				if !nilUnit {
 					var free func()
-					unit, free = alloc.New(server.Object{})
+					unit, free = alloc.NewHigh(server.Object{})
 					t.Cleanup(free)
 				}
 				d := questGeneratorTypeDeps51A500{
@@ -69,7 +69,7 @@ func TestQuestGeneratorType51A500InitializationPrecedesNilAndTableGates(t *testi
 func TestQuestGeneratorType51A500CachesZeroExtendedTypeAndFirstMatch(t *testing.T) {
 	for _, cEntry := range []bool{false, true} {
 		t.Run(fmt.Sprintf("CEntry=%t", cEntry), func(t *testing.T) {
-			unit, free := alloc.New(server.Object{})
+			unit, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			unit.TypeInd = 77
 			if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
@@ -125,7 +125,7 @@ func TestQuestGeneratorType51A500CachesZeroExtendedTypeAndFirstMatch(t *testing.
 func TestQuestGeneratorType51A500UnknownAndZeroResult(t *testing.T) {
 	for _, objectType := range []uint16{0, 2, math.MaxUint16} {
 		t.Run(fmt.Sprint(objectType), func(t *testing.T) {
-			unit, free := alloc.New(server.Object{})
+			unit, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			unit.TypeInd = objectType
 			var trace []string
@@ -191,7 +191,7 @@ func TestQuestGeneratorType51A500RealTableCEntry(t *testing.T) {
 		t.Fatalf("cold nil C entry = %d, ready = %d", got, *ready)
 	}
 	initialized := append([]byte(nil), packed...)
-	unit, free := alloc.New(server.Object{})
+	unit, free := alloc.NewHigh(server.Object{})
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {
 		t.Fatalf("unit = %p, want above 4 GiB", unit)

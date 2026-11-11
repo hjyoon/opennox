@@ -16,7 +16,7 @@ import (
 
 func nativeTradeTestValue[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	ptr, free := alloc.New(value)
+	ptr, free := alloc.NewHigh(value)
 	*ptr = value
 	t.Cleanup(free)
 	return ptr
@@ -28,7 +28,7 @@ func addTestNativeTradeItem(t *testing.T, s *Server, session *TradeSession, item
 	if state == nil {
 		t.Fatal("test session is not native")
 	}
-	node, freeNode := alloc.New(TradeItem{})
+	node, freeNode := alloc.NewHigh(TradeItem{})
 	node.Item0 = item
 	node.Cost4 = cost
 	insertShopItem50EE00(&session.Field20, node)
@@ -87,9 +87,9 @@ func TestShopObjectNameKey4E39F0(t *testing.T) {
 }
 
 func TestShopObjectNameKey4E39F0KeepsNativePointer(t *testing.T) {
-	id, freeID := alloc.CString("MapGroup:Inn_Keeper")
+	id, freeID := alloc.CStringHigh("MapGroup:Inn_Keeper")
 	defer freeID()
-	obj, freeObj := alloc.New(Object{})
+	obj, freeObj := alloc.NewHigh(Object{})
 	defer freeObj()
 	obj.IDPtr = unsafe.Pointer(id)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= uintptr(^uint32(0)) {
@@ -101,9 +101,9 @@ func TestShopObjectNameKey4E39F0KeepsNativePointer(t *testing.T) {
 }
 
 func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
-	player, freePlayer := alloc.New(Object{})
+	player, freePlayer := alloc.NewHigh(Object{})
 	defer freePlayer()
-	merchant, freeMerchant := alloc.New(Object{})
+	merchant, freeMerchant := alloc.NewHigh(Object{})
 	defer freeMerchant()
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(player, merchant)
@@ -128,13 +128,13 @@ func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
 }
 
 func TestQuestShopSessionCacheLifecycle50E8F0(t *testing.T) {
-	player1, freePlayer1 := alloc.New(Object{})
+	player1, freePlayer1 := alloc.NewHigh(Object{})
 	defer freePlayer1()
-	merchant1, freeMerchant1 := alloc.New(Object{})
+	merchant1, freeMerchant1 := alloc.NewHigh(Object{})
 	defer freeMerchant1()
-	player2, freePlayer2 := alloc.New(Object{})
+	player2, freePlayer2 := alloc.NewHigh(Object{})
 	defer freePlayer2()
-	merchant2, freeMerchant2 := alloc.New(Object{})
+	merchant2, freeMerchant2 := alloc.NewHigh(Object{})
 	defer freeMerchant2()
 
 	s := &Server{}
@@ -142,7 +142,7 @@ func TestQuestShopSessionCacheLifecycle50E8F0(t *testing.T) {
 	if reused || session == nil {
 		t.Fatalf("fresh Quest shop = %p, reused %t; want non-nil/false", session, reused)
 	}
-	item, freeItem := alloc.New(Object{})
+	item, freeItem := alloc.NewHigh(Object{})
 	defer freeItem()
 	node := addTestNativeTradeItem(t, s, session, item, 41)
 	state := s.tradeNative.sessions[session]
@@ -212,7 +212,7 @@ func TestNativeTradeSessionAllocation50E870LinksGoldAndReleases(t *testing.T) {
 	var allocated []*Object
 	var released []*Object
 	newGold := func() (*Object, func()) {
-		obj, free := alloc.New(Object{})
+		obj, free := alloc.NewHigh(Object{})
 		allocated = append(allocated, obj)
 		return obj, func() {
 			released = append(released, obj)
@@ -269,9 +269,9 @@ func TestNativeTradeSessionAllocation50E870LinksGoldAndReleases(t *testing.T) {
 }
 
 func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
-	player, freePlayer := alloc.New(Object{})
+	player, freePlayer := alloc.NewHigh(Object{})
 	defer freePlayer()
-	merchant, freeMerchant := alloc.New(Object{})
+	merchant, freeMerchant := alloc.NewHigh(Object{})
 	defer freeMerchant()
 
 	s := &Server{}
@@ -290,7 +290,7 @@ func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
 		events = append(events, "session")
 		originalFreeSession()
 	}
-	node, freeNode := alloc.New(TradeItem{})
+	node, freeNode := alloc.NewHigh(TradeItem{})
 	state.items[node] = nativeTradeItemAllocation{
 		freeObject: func() { events = append(events, "object") },
 		freeNode: func() {
@@ -384,7 +384,7 @@ func TestShopItemSortKey50EEC0Categories(t *testing.T) {
 }
 
 func TestShopItemBuyCost50E3D0(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.BuyMultiplier = 1.5
 	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
@@ -583,9 +583,9 @@ func TestBuildShopItemPacket50F2B0(t *testing.T) {
 }
 
 func TestBuildShopItemPacketModifierIDs50F2B0(t *testing.T) {
-	attrs, freeAttrs := alloc.New(ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(ModifierInitData{})
 	defer freeAttrs()
-	mods, freeMods := alloc.Make([]ModifierEff{}, 4)
+	mods, freeMods := alloc.MakeHigh([]ModifierEff{}, 4)
 	defer freeMods()
 	for i, id := range [4]uint32{1, 17, 128, 255} {
 		mods[i].ind4 = id
@@ -605,7 +605,7 @@ func TestBuildShopItemPacketModifierIDs50F2B0(t *testing.T) {
 }
 
 func TestBuyShopItemNative5100C0TransfersOwnershipAndGold(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
@@ -687,7 +687,7 @@ func TestBuyShopItemNative5100C0TransfersOwnershipAndGold(t *testing.T) {
 }
 
 func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
@@ -719,7 +719,7 @@ func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
 }
 
 func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
@@ -754,7 +754,7 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 }
 
 func TestBuyShopItemsByTypeNative510640UsesStartingGoldAndNativePointers(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.Count = 2
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
@@ -856,7 +856,7 @@ func TestBuyShopItemsByTypeNative510640UsesStartingGoldAndNativePointers(t *test
 }
 
 func TestBuyShopItemsByTypeNative510640ClonesQuestAnkhAndStopsAtLimit(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 3}
@@ -985,13 +985,13 @@ func TestShopBuyLimitViolation5100C0EnforcesQuestForceOfNatureLimit(t *testing.T
 
 func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
 	s := &Server{}
-	idata, freeShop := alloc.New(ShopkeeperInitData{})
+	idata, freeShop := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeShop()
 	idata.BuyMultiplier = 2
 	idata.SellMultiplier = 0.5
 	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
 	session := &TradeSession{Field8: &Object{ObjClass: object.ClassPlayer}, Field12: merchant, Field16: 1}
-	attrs, freeAttrs := alloc.New(ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(ModifierInitData{})
 	defer freeAttrs()
 	modifier := nativeTradeTestValue(t, ModifierEff{Price20: 20})
 	attrs.Modifiers[0] = modifier
@@ -1015,7 +1015,7 @@ func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
 }
 
 func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 0.5
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
@@ -1107,7 +1107,7 @@ func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
 }
 
 func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 1
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
@@ -1137,7 +1137,7 @@ func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
 }
 
 func TestSellShopItemsByTypeNative510D10UsesNativePointers(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 1
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
@@ -1240,7 +1240,7 @@ func TestSellShopItemsByTypeNative510D10UsesNativePointers(t *testing.T) {
 }
 
 func TestSellShopItemsByTypeNative510D10StopsWithoutCompletionSound(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 1
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
@@ -1271,11 +1271,11 @@ func TestSellShopItemsByTypeNative510D10StopsWithoutCompletionSound(t *testing.T
 }
 
 func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
-	idata, freeShop := alloc.New(ShopkeeperInitData{})
+	idata, freeShop := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeShop()
 	idata.BuyMultiplier = 2
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
-	attrs, freeAttrs := alloc.New(ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(ModifierInitData{})
 	defer freeAttrs()
 	health := nativeTradeTestValue(t, HealthData{Cur: 25, Max: 100})
 	item := nativeTradeTestValue(t, Object{
@@ -1355,7 +1355,7 @@ func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 }
 
 func TestShopRepairQuoteRejectsPristineItem5108D0(t *testing.T) {
-	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	idata, freeInit := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeInit()
 	idata.BuyMultiplier = 1
 	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})

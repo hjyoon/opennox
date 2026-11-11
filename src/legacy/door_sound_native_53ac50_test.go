@@ -37,7 +37,7 @@ func TestDoorSoundActualNativeC53AC50(t *testing.T) {
 		for _, reached := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%x:%x:%t", tc.subclass, tc.material, reached), func(t *testing.T) {
 				s, door, _, _ := monsterMainBlockLegacyFixture547210(t)
-				update, free := alloc.New(server.DoorUpdateData{})
+				update, free := alloc.NewHigh(server.DoorUpdateData{})
 				t.Cleanup(free)
 				*update = server.DoorUpdateData{TargetDirection: 3, SyncedDirection: 3, CurrentDirection: 4}
 				if reached {

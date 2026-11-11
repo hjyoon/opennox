@@ -173,9 +173,9 @@ func TestRigidCollisionNativeProvidersOriginal(t *testing.T) {
 		selected[row.Input.Name] = true
 		t.Run(row.Input.Name, func(t *testing.T) {
 			i := row.Input
-			a, freeA := alloc.New(server.Object{})
-			b, freeB := alloc.New(server.Object{})
-			u, freeU := alloc.New(server.DoorUpdateData{})
+			a, freeA := alloc.NewHigh(server.Object{})
+			b, freeB := alloc.NewHigh(server.Object{})
+			u, freeU := alloc.NewHigh(server.DoorUpdateData{})
 			for _, free := range []func(){freeA, freeB, freeU} {
 				t.Cleanup(free)
 			}
@@ -318,7 +318,7 @@ func TestRigidCollisionNativeBoxWallSpringOriginal(t *testing.T) {
 		selected++
 		t.Run(row.Input.Name, func(t *testing.T) {
 			i := row.Input
-			obj, free := alloc.New(server.Object{})
+			obj, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			rigidNativeAddress(t, unsafe.Pointer(obj))
 			*obj = server.Object{ObjClass: object.Class(i.Class), NewPos: rigidNativePoint(i.New), PrevPos: rigidNativePoint(i.Previous), VelVec: rigidNativePoint(i.Velocity), Pos24: rigidNativePoint(i.Accumulator), Mass: math.Float32frombits(i.Mass), CollideP1: rigidNativePoint([2]uint32{i.Collide[0], i.Collide[1]}), CollideP2: rigidNativePoint([2]uint32{i.Collide[2], i.Collide[3]}), Field29: 0x13572468}

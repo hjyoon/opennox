@@ -25,10 +25,10 @@ func TestScriptMoveNative5123C0ReusedObjectTargetFullWidth(t *testing.T) {
 			} {
 				t.Run(fmt.Sprintf("npc=%t/linked=%t/prior=%s", npc, linked, prior), func(t *testing.T) {
 					s := newMoverStateServer(t)
-					unit, freeUnit := alloc.New(Object{})
-					update, freeUpdate := alloc.New(MonsterUpdateData{})
-					target, freeTarget := alloc.New(Object{})
-					waypoint, freeWaypoint := alloc.New(Waypoint{})
+					unit, freeUnit := alloc.NewHigh(Object{})
+					update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
+					target, freeTarget := alloc.NewHigh(Object{})
+					waypoint, freeWaypoint := alloc.NewHigh(Waypoint{})
 					t.Cleanup(freeUnit)
 					t.Cleanup(freeUpdate)
 					t.Cleanup(freeTarget)

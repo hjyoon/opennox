@@ -68,7 +68,7 @@ func TestSummonManaCostExport500CA0MatchesOracleBlob(t *testing.T) {
 	}
 
 	InitBlobData()
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	defer freeUnit()
 	unit.ObjClass = object.ClassPlayer
 	for i, want := range summonManaCostLegacyOracleTable500CA0 {

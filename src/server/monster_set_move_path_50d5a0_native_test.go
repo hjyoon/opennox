@@ -123,7 +123,7 @@ func monsterSetMovePathAssertRefresh50D5A0(t *testing.T, unit *Object, update *M
 
 func monsterSetMovePathWaypoint50D5A0(t *testing.T) *Waypoint {
 	t.Helper()
-	waypoint, free := alloc.New(Waypoint{})
+	waypoint, free := alloc.NewHigh(Waypoint{})
 	t.Cleanup(free)
 	*waypoint = Waypoint{PosVec: types.Ptf(400, 600), Flags: 1, Flags2: 0x80}
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(waypoint)) <= math.MaxUint32 {

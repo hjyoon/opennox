@@ -77,7 +77,7 @@ func TestMonsterFacingPublicCNativeComposition545210(t *testing.T) {
 		a := v.([]any)
 		return types.Ptf(math.Float32frombits(uint32(a[0].(float64))), math.Float32frombits(uint32(a[1].(float64))))
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := server.New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -101,7 +101,7 @@ func TestMonsterFacingPublicCNativeComposition545210(t *testing.T) {
 		Update server.MonsterUpdateData
 		After  [32]byte
 	}
-	f, free := alloc.New(guarded{})
+	f, free := alloc.NewHigh(guarded{})
 	t.Cleanup(free)
 	*f = guarded{}
 	for i := range f.Before {

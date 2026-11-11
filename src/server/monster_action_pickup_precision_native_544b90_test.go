@@ -55,7 +55,7 @@ func monsterPickupRangeReference544B90(unit, target types.Pointf) bool {
 func monsterPickupAssertPrecisionNative544B90(t *testing.T, position, targetPosition types.Pointf, visible bool) {
 	t.Helper()
 	s, unit, update := monsterHealthRetreatNativeFixture547807(t)
-	food, freeFood := alloc.New(Object{})
+	food, freeFood := alloc.NewHigh(Object{})
 	t.Cleanup(freeFood)
 	food.ObjClass, food.ObjSubClass, food.PosVec = object.ClassFood, 0x10, targetPosition
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(food)) <= math.MaxUint32 {

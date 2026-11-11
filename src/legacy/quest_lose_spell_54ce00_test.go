@@ -19,11 +19,11 @@ func TestQuestLoseSpell54CE00NativeCGoRoundTrip(t *testing.T) {
 	oldServer := GetServer
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: s} }
 	t.Cleanup(func() { GetServer = oldServer })
-	u, freeUnit := alloc.New(server.Object{})
+	u, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
-	p, freePlayer := alloc.New(server.Player{})
+	p, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freePlayer)
 	u.UpdateData, update.Player = unsafe.Pointer(update), p
 	p.PlayerInd = 255

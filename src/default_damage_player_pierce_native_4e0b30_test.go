@@ -50,7 +50,7 @@ func TestDefaultDamagePlayerPierceNative4E0B30HPAndOwnerReport(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativePlayerPierceDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(24) {
+	if !s.Objs.InitHigh(24) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -59,11 +59,11 @@ func TestDefaultDamagePlayerPierceNative4E0B30HPAndOwnerReport(t *testing.T) {
 			t.Run(fmt.Sprintf("NPC-%t/pure-%t", npc, pure), func(t *testing.T) {
 				def := s.Types.ByID("NativePlayerPierceDefault")
 				target, source, arrow := s.Objs.NewObject(def), s.Objs.NewObject(&server.ObjectType{}), s.Objs.NewObject(&server.ObjectType{})
-				ud, freeUD := alloc.New(server.MonsterUpdateData{})
-				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				hp, freeHP := alloc.New(server.HealthData{})
-				weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
+				ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+				playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				hp, freeHP := alloc.NewHigh(server.HealthData{})
+				weaponInit, freeWeaponInit := alloc.NewHigh(server.ModifierInitData{})
 				for _, free := range []func(){freeUD, freePlayerUD, freePlayer, freeHP, freeWeaponInit} {
 					t.Cleanup(free)
 				}

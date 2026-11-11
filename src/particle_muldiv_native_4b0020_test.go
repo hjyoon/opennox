@@ -227,7 +227,7 @@ func TestParticleMulDivOriginal4B0020RealDefaultUpdates(t *testing.T) {
 				assertParticleRegistration4B01B0(t, &owner, p)
 				setParticleMulDivInput4B0020(p, r)
 				p.flags |= 8 // actual hidden-input path; no draw/update result hook
-				dr, free := alloc.New(client.Drawable{})
+				dr, free := alloc.NewHigh(client.Drawable{})
 				defer free()
 				dr.PosVec = image.Pt(135, 131)
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= 0xffffffff {

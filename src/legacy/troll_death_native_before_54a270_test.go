@@ -28,7 +28,7 @@ func trollDeathActualConstructorFixture54A270(t *testing.T) (*server.Server, *se
 	TestTrollDeathNativeLayout54A270(t)
 	s := npcReflectLegacyServer4E17B0(t)
 	s.FreeObjectTypes()
-	if !s.Objs.Init(4) {
+	if !s.Objs.InitHigh(4) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

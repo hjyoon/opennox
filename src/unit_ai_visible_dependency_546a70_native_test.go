@@ -51,7 +51,7 @@ func aiVisibleDependencyWall546A70(t *testing.T, s *Server) {
 		alignedZero() // no sprites required by geometric ray tracing
 	}
 	word(0x454e4420)
-	raw, _ := alloc.Make([]byte{}, data.Len())
+	raw, _ := alloc.MakeHigh([]byte{}, data.Len())
 	copy(raw, data.Bytes())
 	f := binfile.NewMemFile(unsafe.Pointer(&raw[0]), len(raw))
 	defer f.Free()
@@ -67,7 +67,7 @@ func aiVisibleDependencyNative546A70(t *testing.T) (*Server, *server.Object, *se
 	t.Helper()
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(2) || s.Walls.Init() == 0 {
+	if !s.Objs.InitHigh(2) || s.Walls.Init() == 0 {
 		t.Fatal("cannot initialize native object/wall allocation")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -80,7 +80,7 @@ func aiVisibleDependencyNative546A70(t *testing.T) (*Server, *server.Object, *se
 	t.Cleanup(func() { noxflags.SetEngine(oldEngine) })
 	s.SetFrame(702)
 	unit, target := s.Objs.NewObject(&server.ObjectType{}), s.Objs.NewObject(&server.ObjectType{})
-	update, free := alloc.New(server.MonsterUpdateData{})
+	update, free := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(free)
 	unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 	target.ObjClass, target.ObjFlags = object.ClassFood, object.FlagActive

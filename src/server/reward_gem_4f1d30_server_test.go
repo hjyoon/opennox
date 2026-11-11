@@ -121,7 +121,7 @@ func TestRewardGemServerUsesLogicRNGFactoryAndBothEntrypoints4F1D30(t *testing.T
 	t.Cleanup(func() { servers.Delete(srv.handle) })
 	srv.Rand.Logic = prand.New(2011)
 	srv.Objs.init(srv.handle)
-	if !srv.Objs.Init(4) {
+	if !srv.Objs.InitHigh(4) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

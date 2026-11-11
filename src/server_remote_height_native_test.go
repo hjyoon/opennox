@@ -70,7 +70,7 @@ func TestNativeHeightReporterQueuesFixedWidthPacketsForHighObject(t *testing.T) 
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			obj, free := alloc.New(server.Object{})
+			obj, free := alloc.NewHigh(server.Object{})
 			defer free()
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
 				t.Fatal("native object must exceed 4 GiB")

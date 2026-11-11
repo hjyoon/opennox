@@ -16,7 +16,7 @@ import (
 
 func meteorShowerCastAlloc52D8A0[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	p, free := alloc.New(value)
+	p, free := alloc.NewHigh(value)
 	t.Cleanup(free)
 	*p = value
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {

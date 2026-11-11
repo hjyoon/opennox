@@ -51,9 +51,9 @@ func TestSpikeFrame518AE0UsesOriginalHighFlagByte(t *testing.T) {
 }
 
 func TestSpikeOnOff518AE0ReachesClientSlaveFrame(t *testing.T) {
-	obj, freeObject := alloc.New(server.Object{})
+	obj, freeObject := alloc.NewHigh(server.Object{})
 	*obj = server.Object{TypeInd: 12, ObjClass: object.ClassImmobile, ObjFlags: object.FlagEquipped}
-	dr, freeDrawable := alloc.New(client.Drawable{})
+	dr, freeDrawable := alloc.NewHigh(client.Drawable{})
 	*dr = client.Drawable{ObjClass: object.ClassImmobile, AnimFrameSlave: 7}
 	t.Cleanup(freeObject)
 	t.Cleanup(freeDrawable)

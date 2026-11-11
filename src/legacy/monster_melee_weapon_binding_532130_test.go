@@ -16,7 +16,7 @@ import (
 func TestNPCWeaponMeleeCache53A2C0OrdinaryWritersAndOwnerLifetime(t *testing.T) {
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if !srv.Objs.Init(1) {
+	if !srv.Objs.InitHigh(1) {
 		t.Fatal("native owner pool")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

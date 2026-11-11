@@ -25,7 +25,7 @@ func TestDefaultDamageOblivionHeartNative4E0B30CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeOblivionHeartDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("C-owned object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -42,11 +42,11 @@ func TestDefaultDamageOblivionHeartNative4E0B30CRecords(t *testing.T) {
 			for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 				t.Run(fmt.Sprintf("%s/%s/type-%d", tc.name, defense, typ), func(t *testing.T) {
 					v, a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					u, freeU := alloc.New(server.MonsterUpdateData{})
-					au, freeAU := alloc.New(server.PlayerUpdateData{})
-					info, freeInfo := alloc.New(server.Player{})
-					hp, freeHP := alloc.New(server.HealthData{})
-					init, freeInit := alloc.New(server.ModifierInitData{})
+					u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
+					au, freeAU := alloc.NewHigh(server.PlayerUpdateData{})
+					info, freeInfo := alloc.NewHigh(server.Player{})
+					hp, freeHP := alloc.NewHigh(server.HealthData{})
+					init, freeInit := alloc.NewHigh(server.ModifierInitData{})
 					for _, free := range []func(){freeU, freeAU, freeInfo, freeHP, freeInit} {
 						t.Cleanup(free)
 					}

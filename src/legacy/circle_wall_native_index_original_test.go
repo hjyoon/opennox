@@ -103,7 +103,7 @@ func TestCircleCollisionNativeWallIndexOriginal(t *testing.T) {
 		selected++
 		t.Run(i.Name, func(t *testing.T) {
 			wall.Dir0 = i.WallType
-			obj, free := alloc.New(server.Object{})
+			obj, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			rigidNativeAddress(t, unsafe.Pointer(obj))
 			*obj = server.Object{TypeInd: i.Type, NewPos: rigidNativePoint(i.New), PosVec: rigidNativePoint(i.Position), VelVec: rigidNativePoint(i.Velocity), Pos24: rigidNativePoint(i.Accumulator), Mass: math.Float32frombits(i.Mass), CollideP1: rigidNativePoint([2]uint32{i.Collide[0], i.Collide[1]}), CollideP2: rigidNativePoint([2]uint32{i.Collide[2], i.Collide[3]}), Field29: 0x13572468}

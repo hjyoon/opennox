@@ -38,7 +38,7 @@ func NewSliderRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h int, 
 		draw.Window = win
 	}
 	win.CopyDrawData(draw)
-	d, _ := alloc.New(SliderData{})
+	d, _ := newGUIData(g, SliderData{})
 	*d = *opts
 	if d.Max == d.Min {
 		d.Max = d.Min + 1

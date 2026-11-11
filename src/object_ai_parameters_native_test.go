@@ -35,7 +35,7 @@ func TestObjectAIParametersNativeScriptAccess(t *testing.T) {
 	for _, p := range properties {
 		for _, c := range classes {
 			t.Run(p.name+"/"+c.name, func(t *testing.T) {
-				o, freeObject := alloc.New(server.Object{ObjClass: c.class})
+				o, freeObject := alloc.NewHigh(server.Object{ObjClass: c.class})
 				t.Cleanup(freeObject)
 				*o = server.Object{ObjClass: c.class}
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(o)) <= 0xffffffff {
@@ -44,7 +44,7 @@ func TestObjectAIParametersNativeScriptAccess(t *testing.T) {
 				var data *server.MonsterUpdateData
 				if c.monster {
 					var freeData func()
-					data, freeData = alloc.New(server.MonsterUpdateData{})
+					data, freeData = alloc.NewHigh(server.MonsterUpdateData{})
 					*data = server.MonsterUpdateData{}
 					t.Cleanup(func() { o.UpdateData = nil; freeData() })
 					o.UpdateData = unsafe.Pointer(data)

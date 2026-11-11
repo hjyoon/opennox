@@ -165,7 +165,7 @@ type meleeFixture532130 struct {
 func meleeNewFixture532130(t *testing.T) *meleeFixture532130 {
 	f := &meleeFixture532130{srv: server.New(nil, nil, strman.New())}
 	t.Cleanup(f.srv.Close)
-	if !f.srv.Objs.Init(4) {
+	if !f.srv.Objs.InitHigh(4) {
 		t.Fatal("server object owner allocation")
 	}
 	t.Cleanup(f.srv.Objs.FreeObjects)

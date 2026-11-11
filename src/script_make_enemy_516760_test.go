@@ -15,7 +15,7 @@ import (
 func TestScriptMakeEnemy516760ClearsSubclassNotObjectFlags(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native objects")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -40,13 +40,13 @@ func TestScriptMakeEnemy516760ClearsSubclassNotObjectFlags(t *testing.T) {
 func TestScriptMakeEnemy516760PreservesNativeOwnerRemoval(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(2) {
+	if !s.Objs.InitHigh(2) {
 		t.Fatal("cannot initialize native objects")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
 	owner := s.Objs.NewObject(&server.ObjectType{})
 	unit := s.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	unit.ObjClass = object.ClassMonster
 	unit.ObjSubClass = object.SubClass(0x182)

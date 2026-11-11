@@ -21,9 +21,9 @@ import (
 // covered by each child's existing original-reference suite.
 func TestObjectSpecialOrdinaryBindings527E50(t *testing.T) {
 	s, unit, _, hp := basicSenderProductionFixture5187E0(t)
-	r, fr := alloc.New(server.Object{})
-	d, fd := alloc.New(server.PlayerUpdateData{})
-	m, fm := alloc.New(server.MonsterUpdateData{})
+	r, fr := alloc.NewHigh(server.Object{})
+	d, fd := alloc.NewHigh(server.PlayerUpdateData{})
+	m, fm := alloc.NewHigh(server.MonsterUpdateData{})
 	for _, free := range []func(){fr, fd, fm} {
 		t.Cleanup(free)
 	}

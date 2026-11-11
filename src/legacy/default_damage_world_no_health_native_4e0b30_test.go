@@ -28,7 +28,7 @@ func TestDefaultDamageWorldNoHealthNative4E0B30(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: id, OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(96) {
+	if !srv.Objs.InitHigh(96) {
 		t.Fatal("native world no-health allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

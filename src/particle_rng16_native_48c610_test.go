@@ -139,7 +139,7 @@ func TestParticleRNG16Original48C610InterleavedStreams(t *testing.T) {
 // allocator, creation, or random callbacks. Active-map registration/rendering
 // is an independently missing service and is not fabricated by this fixture.
 func TestParticleRNG16Original48C610RealType1Consumption(t *testing.T) {
-	dr, free := alloc.New(client.Drawable{})
+	dr, free := alloc.NewHigh(client.Drawable{})
 	defer free()
 	dr.PosVec = image.Pt(300, 400)
 	dr.Field_8, dr.Field_9 = 299, 399

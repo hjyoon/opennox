@@ -25,7 +25,7 @@ func TestDefaultDamagePlayerArmedExplosionNative4E0B30(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativePlayerArmedExplosionDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("C-owned allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -34,14 +34,14 @@ func TestDefaultDamagePlayerArmedExplosionNative4E0B30(t *testing.T) {
 			for _, invulnerable := range []bool{false, true} {
 				t.Run(fmt.Sprintf("player-source-%t/%s/invulnerable-%t", playerSource, attack, invulnerable), func(t *testing.T) {
 					v, a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					u, freeU := alloc.New(server.PlayerUpdateData{})
-					au, freeAU := alloc.New(server.MonsterUpdateData{})
-					apu, freeAPU := alloc.New(server.PlayerUpdateData{})
-					info, freeInfo := alloc.New(server.Player{})
-					ainfo, freeAInfo := alloc.New(server.Player{})
-					hp, freeHP := alloc.New(server.HealthData{})
-					init, freeInit := alloc.New(server.ModifierInitData{})
-					use, freeUse := alloc.New(server.WandUseData{})
+					u, freeU := alloc.NewHigh(server.PlayerUpdateData{})
+					au, freeAU := alloc.NewHigh(server.MonsterUpdateData{})
+					apu, freeAPU := alloc.NewHigh(server.PlayerUpdateData{})
+					info, freeInfo := alloc.NewHigh(server.Player{})
+					ainfo, freeAInfo := alloc.NewHigh(server.Player{})
+					hp, freeHP := alloc.NewHigh(server.HealthData{})
+					init, freeInit := alloc.NewHigh(server.ModifierInitData{})
+					use, freeUse := alloc.NewHigh(server.WandUseData{})
 					for _, free := range []func(){freeU, freeAU, freeAPU, freeInfo, freeAInfo, freeHP, freeInit, freeUse} {
 						t.Cleanup(free)
 					}

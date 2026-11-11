@@ -52,7 +52,7 @@ func TestPlayerDamageNPCMonsterSimpleMissileImpactNative4E17B0CRecords(t *testin
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeStoneImpactNPC", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(100) {
+	if !srv.Objs.InitHigh(100) {
 		t.Fatal("native stone allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

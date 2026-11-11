@@ -25,9 +25,9 @@ func (s *poisonCastLegacyServer52C720) S() *server.Server { return s.srv }
 // already-native poison service. An immune monster requires no RNG or
 // reporting, but still exposes the pointer truncation at that first load.
 func TestPoisonCastGoEntryPreservesTarget52C720(t *testing.T) {
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*target = server.Object{ObjClass: object.ClassMonster, ObjSubClass: object.SubClass(0x200), Poison540: 7}
 	*arg = server.SpellAcceptArg{Obj: target, Pos: types.Ptf(-1000, 2000)}
@@ -48,11 +48,11 @@ func TestPoisonCastGoEntryPreservesTarget52C720(t *testing.T) {
 }
 
 func TestPoisonCastGoEntryUsesNativePoisonState52C720(t *testing.T) {
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	health, freeHealth := alloc.New(server.HealthData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	defer freeHealth()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*target = server.Object{HealthData: health}
 	*arg = server.SpellAcceptArg{Obj: target, Pos: types.Ptf(-1, 2)}
@@ -69,19 +69,19 @@ func TestPoisonCastGoEntryUsesNativePoisonState52C720(t *testing.T) {
 }
 
 func TestPoisonCastGoEntryRecordsPlayerAttributionAfterRejection52C720(t *testing.T) {
-	source, freeSource := alloc.New(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
 	defer freeSource()
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	sourceUpdate, freeSourceUpdate := alloc.New(server.PlayerUpdateData{})
+	sourceUpdate, freeSourceUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeSourceUpdate()
-	targetUpdate, freeTargetUpdate := alloc.New(server.PlayerUpdateData{})
+	targetUpdate, freeTargetUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeTargetUpdate()
-	sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
+	sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
 	defer freeSourcePlayer()
-	targetPlayer, freeTargetPlayer := alloc.New(server.Player{})
+	targetPlayer, freeTargetPlayer := alloc.NewHigh(server.Player{})
 	defer freeTargetPlayer()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	sourcePlayer.PlayerInd = 0xfe
 	targetPlayer.Field3680 = 1 // the original observer gate rejects activation
@@ -103,13 +103,13 @@ func TestPoisonCastGoEntryRecordsPlayerAttributionAfterRejection52C720(t *testin
 }
 
 func TestPoisonCastGoDispatchPreservesNativeArguments52C720(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(-1, 2)}
 	before := *arg

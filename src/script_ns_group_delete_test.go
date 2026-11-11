@@ -37,7 +37,7 @@ func scriptNSGroupDeleteNew(t *testing.T, class object.Class, frame uint32) *scr
 	noxflags.ResetGame()
 	noxflags.SetGame(noxflags.GameHost)
 	f.s.SetFrame(frame)
-	if !f.s.Objs.Init(8) {
+	if !f.s.Objs.InitHigh(8) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(f.s.Objs.FreeObjects)
@@ -57,7 +57,7 @@ func scriptNSGroupDeleteNew(t *testing.T, class object.Class, frame uint32) *scr
 		unit.ObjClass, unit.ObjFlags = object.ClassMonster, object.FlagEnabled
 		unit.Extent, unit.NetCode = 0xe1234500+uint32(i), 201+uint32(i)
 		unit.DeletedAt = 0x12345678
-		update, free := alloc.New(server.MonsterUpdateData{})
+		update, free := alloc.NewHigh(server.MonsterUpdateData{})
 		t.Cleanup(free)
 		unit.UpdateData = unsafe.Pointer(update)
 		update.AIStackInd, update.Field333, update.Field124 = -1, 0xdeadbeef, 0xabcdef01
@@ -76,7 +76,7 @@ func scriptNSGroupDeleteNew(t *testing.T, class object.Class, frame uint32) *scr
 	f.units[5].ObjFlags |= object.FlagNoUpdate
 	f.s.Objs.List = f.units[0]
 	f.s.Objs.DeletedList, f.s.Objs.Pending = nil, nil
-	sentinel, freeSentinel := alloc.New(server.Object{})
+	sentinel, freeSentinel := alloc.NewHigh(server.Object{})
 	f.s.Objs.DeletedList = sentinel
 	f.s.Objs.DeletedList.ObjFlags = object.FlagDestroyed
 	f.s.Objs.DeletedList.DeletedAt = 17

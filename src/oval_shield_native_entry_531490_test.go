@@ -47,10 +47,10 @@ func TestOvalShieldNextPublicEntryNativeRecordProbe531490(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*f = frame{}
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeTarget)
 	*target = server.Object{ObjClass: object.ClassMonster}
 	for i := range f.Before {

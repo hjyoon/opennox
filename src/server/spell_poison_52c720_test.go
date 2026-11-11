@@ -90,13 +90,13 @@ func TestPoisonCastTargetReloadAndFaultPrefixes52C720(t *testing.T) {
 }
 
 func TestPoisonCastNativePointersAndLiveArgument52C720(t *testing.T) {
-	owner, freeOwner := alloc.New(Object{})
+	owner, freeOwner := alloc.NewHigh(Object{})
 	defer freeOwner()
-	entry, freeEntry := alloc.New(Object{})
+	entry, freeEntry := alloc.NewHigh(Object{})
 	defer freeEntry()
-	replacement, freeReplacement := alloc.New(Object{})
+	replacement, freeReplacement := alloc.NewHigh(Object{})
 	defer freeReplacement()
-	arg, freeArg := alloc.New(SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 	defer freeArg()
 	*entry = Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagDestroyed, Poison540: 7}
 	*arg = SpellAcceptArg{Obj: entry, Pos: types.Ptf(-1000, 2000)}

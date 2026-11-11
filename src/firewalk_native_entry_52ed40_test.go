@@ -57,10 +57,10 @@ func TestFirewalkNextPublicEntryNativeRecordProbe52ED40(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*f = frame{}
-	source, freeSource := alloc.New(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSource)
 	*source = server.Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(11.5, -22.25)}
 	for i := range f.Before {

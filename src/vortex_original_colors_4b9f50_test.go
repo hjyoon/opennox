@@ -67,7 +67,7 @@ func TestVortexOriginalColors4B9F50NativeHeadless(t *testing.T) {
 				cl := client.NewClient(nil, nil, s)
 				t.Cleanup(cl.Close)
 				t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
-				cl.Objs.Init(2)
+				cl.Objs.InitHigh(2)
 				t.Cleanup(cl.Objs.Free)
 				r := cl.Render()
 				t.Cleanup(r.Part.Free)

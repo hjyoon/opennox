@@ -18,7 +18,7 @@ import (
 
 func nativePlayerSpellTestValue[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	ptr, free := alloc.New(value)
+	ptr, free := alloc.NewHigh(value)
 	*ptr = value
 	t.Cleanup(free)
 	return ptr

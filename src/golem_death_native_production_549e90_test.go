@@ -62,7 +62,7 @@ func TestGolemDeathActualCProduction549E90(t *testing.T) {
 	s.SetTickRate(30)
 	s.FreeObjectTypes()
 	t.Cleanup(s.FreeObjectTypes)
-	if !s.Objs.Init(64) {
+	if !s.Objs.InitHigh(64) {
 		t.Fatal("actual object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

@@ -139,7 +139,7 @@ func TestManaBombPublicCNativeComposition530F90(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

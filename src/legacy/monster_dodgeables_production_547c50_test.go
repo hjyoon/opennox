@@ -42,7 +42,7 @@ func TestMonsterDodgeablesProduction547C50(t *testing.T) {
 				t.Run(row.Input.Name, func(t *testing.T) {
 					s := server.New(nil, nil, strman.New())
 					t.Cleanup(s.Close)
-					if !s.Objs.Init(1) {
+					if !s.Objs.InitHigh(1) {
 						t.Fatal("native object allocator")
 					}
 					t.Cleanup(s.Objs.FreeObjects)

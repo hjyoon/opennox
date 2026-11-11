@@ -320,9 +320,9 @@ func TestClientInputFramingActualServerFIFOAndAdmissionR273(t *testing.T) {
 	s.NetList.Init()
 	t.Cleanup(s.NetList.Free)
 	pl := s.Players.ResetInd(server.HostPlayerIndex)
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
 	*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
 	*update = server.PlayerUpdateData{Player: pl}

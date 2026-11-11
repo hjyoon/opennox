@@ -105,7 +105,7 @@ func TestPlayerDamageNPCReflectNativeCallback4E17B0ElectricHP(t *testing.T) {
 
 func TestPlayerDamageNPCReflectNativeCallback4E17B0MissileOwnership(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
-	if !srv.Objs.Init(4) {
+	if !srv.Objs.InitHigh(4) {
 		t.Fatal("native projectile allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

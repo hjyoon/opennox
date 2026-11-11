@@ -26,7 +26,7 @@ func TestDefaultDamageCloudPoisonNative4E0B30CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeCloudPoisonDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(300) {
+	if !srv.Objs.InitHigh(300) {
 		t.Fatal("cloud damage allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -36,11 +36,11 @@ func TestDefaultDamageCloudPoisonNative4E0B30CRecords(t *testing.T) {
 				t.Run(fmt.Sprintf("%s/subclass-%x/raw-%d", owner, subclass, raw), func(t *testing.T) {
 					v := srv.Objs.NewObject(&server.ObjectType{Damage: srv.Types.ByID("NativeCloudPoisonDefault").Damage})
 					a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					ud, freeUD := alloc.New(server.MonsterUpdateData{})
-					npcUD, freeNPCUD := alloc.New(server.MonsterUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-					health, freeHealth := alloc.New(server.HealthData{})
+					ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+					npcUD, freeNPCUD := alloc.NewHigh(server.MonsterUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					health, freeHealth := alloc.NewHigh(server.HealthData{})
 					for _, free := range []func(){freeUD, freeNPCUD, freePlayer, freePlayerUD, freeHealth} {
 						t.Cleanup(free)
 					}

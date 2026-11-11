@@ -112,7 +112,7 @@ func TestGame3ConfigLookupNativeSidecars(t *testing.T) {
 }
 
 func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 100, 100, nil)
 	old := game3FixtureSwapColorRoot(root)
@@ -153,7 +153,7 @@ func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
 }
 
 func TestGame3RadioNativeCEntryAndGC(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	var sender uintptr
 	parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 100, 100, func(_ *gui.Window, e gui.WindowEvent) gui.WindowEventResp {
@@ -199,7 +199,7 @@ func TestGame3RadioNativeCEntryAndGC(t *testing.T) {
 }
 
 func TestGame3RadioCTextPreservesRawUTF16Bound(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	w := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
 	words := make([]uint16, 63)

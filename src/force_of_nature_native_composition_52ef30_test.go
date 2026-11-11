@@ -126,7 +126,7 @@ func TestForceOfNaturePublicCNativeComposition52EF30(t *testing.T) {
 		}
 	}
 	s.Types.ByID("DeathBall").Speed = 5.125
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("native objects")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

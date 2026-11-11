@@ -24,7 +24,7 @@ func TestPlayerDamageNPCMissileLiveNative4E17B0CRecords(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
 	srv.Audio.Init(srv)
 	t.Cleanup(srv.Audio.Free)
-	if !srv.Objs.Init(16) {
+	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

@@ -22,9 +22,9 @@ type meteorShowerCastRootServer52D8A0 struct {
 func (s *meteorShowerCastRootServer52D8A0) S() *server.Server { return s.srv }
 
 func TestMeteorShowerCastRootInstantSelectorUsesNativeEntry52D8A0(t *testing.T) {
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*caster = server.Object{PosVec: types.Ptf(-100, -200)}
 	*arg = server.SpellAcceptArg{Pos: types.Ptf(30, 40)}

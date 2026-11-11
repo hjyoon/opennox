@@ -64,7 +64,7 @@ func simplePolypActualFixture54CAE0(t *testing.T) (*server.Server, *server.Objec
 	s.Audio.Init(s)
 	t.Cleanup(s.Audio.Free)
 	s.FreeObjectTypes()
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

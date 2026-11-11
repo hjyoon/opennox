@@ -45,7 +45,7 @@ func TestMimicCheckMorph534950CEntryProductionStack(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "MimicMorphCFixture"}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(1) {
+	if !srv.Objs.InitHigh(1) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

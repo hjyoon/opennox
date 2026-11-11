@@ -104,8 +104,8 @@ func TestCircleCollisionCEntryOriginal(t *testing.T) {
 		}
 		selected++
 		t.Run(i.Name, func(t *testing.T) {
-			a, fa := alloc.New(server.Object{})
-			b, fb := alloc.New(server.Object{})
+			a, fa := alloc.NewHigh(server.Object{})
+			b, fb := alloc.NewHigh(server.Object{})
 			t.Cleanup(fa)
 			t.Cleanup(fb)
 			rigidNativeAddress(t, unsafe.Pointer(a))

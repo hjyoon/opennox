@@ -50,7 +50,7 @@ func TestAIPassiveFoodPipeline547210NativeOriginalCancellation(t *testing.T) {
 				s, unit, food := aiVisibleDependencyNative546A70(t)
 				s.SetTickRate(30)
 				update := unit.UpdateDataMonster()
-				health, freeHealth := alloc.New(server.HealthData{})
+				health, freeHealth := alloc.NewHigh(server.HealthData{})
 				t.Cleanup(freeHealth)
 				*health = server.HealthData{Cur: tc.hp, Max: 80}
 				unit.HealthData = health

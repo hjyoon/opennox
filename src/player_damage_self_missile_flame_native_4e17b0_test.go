@@ -48,7 +48,7 @@ func TestPlayerDamageSelfMissileFlameNative4E17B0(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeSelfMissileFlame", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(32) {
+	if !s.Objs.InitHigh(32) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -61,9 +61,9 @@ func TestPlayerDamageSelfMissileFlameNative4E17B0(t *testing.T) {
 				}
 				v := s.Objs.NewObject(&server.ObjectType{Damage: s.Types.ByID("NativeSelfMissileFlame").Damage})
 				w := s.Objs.NewObject(&server.ObjectType{})
-				u, freeU := alloc.New(server.PlayerUpdateData{})
-				p, freeP := alloc.New(server.Player{})
-				h, freeH := alloc.New(server.HealthData{})
+				u, freeU := alloc.NewHigh(server.PlayerUpdateData{})
+				p, freeP := alloc.NewHigh(server.Player{})
+				h, freeH := alloc.NewHigh(server.HealthData{})
 				for _, free := range []func(){freeU, freeP, freeH} {
 					t.Cleanup(free)
 				}

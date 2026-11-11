@@ -186,6 +186,11 @@ func TestGame2QuickbarNativePackedRowsAndExpandedRoundtrip(t *testing.T) {
 			}
 		}
 	}
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// The PE32 row-pointer mirror is a real output at offset 204. On a
+		// native 64-bit host these same bytes remain guarded scalar padding.
+		binary.LittleEndian.PutUint32(original[16+204:], uint32(uintptr(unsafe.Add(base, 2*40))))
+	}
 	if !bytes.Equal(storage[:16], original[:16]) || !bytes.Equal(storage[16+201:], original[16+201:]) {
 		t.Fatal("packed row outer canary/64bit pointer mirror overwritten")
 	}

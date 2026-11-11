@@ -124,6 +124,7 @@ func (s *Server) CanSeeDir(obj, targ *Object) bool {
 type serverObjects struct {
 	handle          uintptr
 	alloc           alloc.ClassT[Object]
+	highAddresses   bool
 	ext             map[uintptr]*ObjectExt
 	extLast         uintptr
 	Alive           int
@@ -217,7 +218,22 @@ func (s *serverObjects) SetObjects(list *Object) { // nox_set_server_objects_4DA
 }
 
 func (s *serverObjects) Init(cnt int) bool {
-	s.alloc = alloc.NewClassT("objectMemClass", Object{}, cnt)
+	return s.initAllocator(cnt, false)
+}
+
+// InitHigh explicitly selects high foreign addresses for native-pointer
+// fixtures, including the object's owned data. Ordinary Init keeps the C heap.
+func (s *serverObjects) InitHigh(cnt int) bool {
+	return s.initAllocator(cnt, true)
+}
+
+func (s *serverObjects) initAllocator(cnt int, high bool) bool {
+	s.highAddresses = high
+	if high {
+		s.alloc = alloc.NewClassTHigh("objectMemClass", Object{}, cnt)
+	} else {
+		s.alloc = alloc.NewClassT("objectMemClass", Object{}, cnt)
+	}
 	s.alloc.Keep(unsafe.Offsetof(Object{}.NetCode))
 	if cnt == 0 {
 		s.alloc.ResetStats()
@@ -247,6 +263,33 @@ func (s *serverObjects) Init(cnt int) bool {
 	}
 	s.alloc.ResetStats()
 	return true
+}
+
+func (s *serverObjects) newHealthData() *HealthData {
+	if s.highAddresses {
+		data, _ := alloc.NewHigh(HealthData{})
+		return data
+	}
+	data, _ := alloc.New(HealthData{})
+	return data
+}
+
+func (s *serverObjects) newNativeData(size uintptr) []byte {
+	if s.highAddresses {
+		data, _ := alloc.MakeHigh([]byte{}, size)
+		return data
+	}
+	data, _ := alloc.Make([]byte{}, size)
+	return data
+}
+
+func (s *serverObjects) newNativeMemory(size uintptr) unsafe.Pointer {
+	if s.highAddresses {
+		data, _ := alloc.MallocHigh(size)
+		return data
+	}
+	data, _ := alloc.Malloc(size)
+	return data
 }
 
 func (s *serverObjects) FreeObjects() {
@@ -348,32 +391,32 @@ func (s *serverObjects) NewObject(t *ObjectType) *Object {
 	obj.Field38 = math.MaxUint32
 	obj.TypeInd = uint16(t.Ind())
 	if t.Health() != nil {
-		data, _ := alloc.New(HealthData{})
+		data := s.newHealthData()
 		obj.HealthData = data
 		*data = *t.Health()
 	}
 	obj.Init = t.Init
 	if t.InitDataSize != 0 {
-		data, _ := alloc.Make([]byte{}, t.InitDataSize)
+		data := s.newNativeData(t.InitDataSize)
 		obj.InitData = unsafe.Pointer(&data[0])
 		copy(data, unsafe.Slice((*byte)(t.InitData), t.InitDataSize))
 	}
 	obj.Collide = t.Collide
 	if t.CollideDataSize != 0 {
-		data, _ := alloc.Make([]byte{}, t.CollideDataSize)
+		data := s.newNativeData(t.CollideDataSize)
 		obj.CollideData = unsafe.Pointer(&data[0])
 		copy(data, unsafe.Slice((*byte)(t.CollideData), t.CollideDataSize))
 	}
 	obj.Xfer = t.Xfer
 	obj.Use = t.Use
 	if t.UseDataSize != 0 {
-		data, _ := alloc.Make([]byte{}, t.UseDataSize)
+		data := s.newNativeData(t.UseDataSize)
 		copy(data, unsafe.Slice((*byte)(t.UseData.Ptr), t.UseDataSize))
 		obj.UseData.SetPtr(unsafe.Pointer(&data[0]))
 	}
 	obj.Update = t.Update
 	if t.UpdateDataSize != 0 {
-		data, _ := alloc.Make([]byte{}, t.UpdateDataSize)
+		data := s.newNativeData(t.UpdateDataSize)
 		obj.UpdateData = unsafe.Pointer(&data[0])
 		copy(data, unsafe.Slice((*byte)(t.UpdateData), t.UpdateDataSize))
 	}
@@ -386,7 +429,7 @@ func (s *serverObjects) NewObject(t *ObjectType) *Object {
 	obj.DeathData = t.DeathData
 	obj.ScriptPickup.Func = -1
 	if noxflags.HasGame(noxflags.GameFlag22|noxflags.GameFlag23) && (obj.Class().HasAny(0x20A02) || obj.Xfer == s.XFerInvLight || obj.Weight != 0xff) {
-		obj.Field189, _ = alloc.Malloc(2572)
+		obj.Field189 = s.newNativeMemory(2572)
 	}
 	if t.Create != nil {
 		CallObjectCreate(t.Create, obj)

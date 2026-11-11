@@ -62,7 +62,7 @@ func monsterLookAtScript5125A0(t *testing.T, handle, direction int32) []byte {
 func TestMonsterLookAtScript5125A0NativeCallerAndTrigger(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(2) {
+	if !s.Objs.InitHigh(2) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -79,7 +79,7 @@ func TestMonsterLookAtScript5125A0NativeCallerAndTrigger(t *testing.T) {
 	caller := s.Objs.NewObject(&server.ObjectType{})
 	trigger := s.Objs.NewObject(&server.ObjectType{})
 	for _, unit := range []*server.Object{caller, trigger} {
-		update, free := alloc.New(server.MonsterUpdateData{})
+		update, free := alloc.NewHigh(server.MonsterUpdateData{})
 		t.Cleanup(free)
 		unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 		if unsafe.Sizeof(uintptr(0)) == 8 &&

@@ -102,16 +102,16 @@ func TestSpellMoonglowPublicCNativeComposition531A00(t *testing.T) {
 		Player server.Player
 		After  [32]byte
 	}
-	f, freeRecord := alloc.New(recordFrame{})
+	f, freeRecord := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeRecord)
 	*f = recordFrame{}
-	source, freeSource := alloc.New(objectFrame{})
+	source, freeSource := alloc.NewHigh(objectFrame{})
 	t.Cleanup(freeSource)
 	*source = objectFrame{}
-	data, freeData := alloc.New(dataFrame{})
+	data, freeData := alloc.NewHigh(dataFrame{})
 	t.Cleanup(freeData)
 	*data = dataFrame{}
-	info, freePlayer := alloc.New(playerFrame{})
+	info, freePlayer := alloc.NewHigh(playerFrame{})
 	t.Cleanup(freePlayer)
 	*info = playerFrame{}
 	for i := range f.Before {
@@ -140,7 +140,7 @@ func TestSpellMoonglowPublicCNativeComposition531A00(t *testing.T) {
 		source.Object.BuffsPower[server.ENCHANT_MOONGLOW] = 2
 	}
 	// Object cleanup must run while its C-owned owner frame remains alive.
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

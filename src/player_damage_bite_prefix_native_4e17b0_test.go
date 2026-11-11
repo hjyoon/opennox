@@ -48,7 +48,7 @@ func TestPlayerDamageBitePrefixNative4E17B0(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeBitePrefixPlayerDamage", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(70) {
+	if !s.Objs.InitHigh(70) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -57,10 +57,10 @@ func TestPlayerDamageBitePrefixNative4E17B0(t *testing.T) {
 			t.Run(fmt.Sprintf("observe-%t/raw-%d", observe, raw), func(t *testing.T) {
 				target := s.Objs.NewObject(&server.ObjectType{Damage: s.Types.ByID("NativeBitePrefixPlayerDamage").Damage})
 				source := s.Objs.NewObject(&server.ObjectType{})
-				ud, freeUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				sourceUD, freeSourceUD := alloc.New(server.MonsterUpdateData{})
-				health, freeHealth := alloc.New(server.HealthData{})
+				ud, freeUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				sourceUD, freeSourceUD := alloc.NewHigh(server.MonsterUpdateData{})
+				health, freeHealth := alloc.NewHigh(server.HealthData{})
 				for _, free := range []func(){freeUD, freePlayer, freeSourceUD, freeHealth} {
 					t.Cleanup(free)
 				}

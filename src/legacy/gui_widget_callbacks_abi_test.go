@@ -54,7 +54,7 @@ func newWidgetCallbackGUI(t *testing.T) *gui.GUI {
 	r := noxrender.NewRender(nil, nil)
 	r.SetData(data)
 	r.SetPixBuffer(noximage.NewImage16(image.Rect(0, 0, 640, 480)))
-	g := gui.New(r)
+	g := gui.NewHigh(r)
 	c := &widgetCallbackClient{cli: &client.Client{GUI: g}, render: &widgetCallbackRender{NoxRender: r}}
 	s := server.New(nil, nil, strman.New())
 	oldClient, oldServer := GetClient, GetServer

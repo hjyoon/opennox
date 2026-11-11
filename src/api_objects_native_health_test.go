@@ -15,7 +15,7 @@ import (
 func TestAPIObjectsNativeHealthSnapshot(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("native allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -23,7 +23,7 @@ func TestAPIObjectsNativeHealthSnapshot(t *testing.T) {
 	obj.Extent = 17
 	obj.ObjClass = object.ClassMonster
 	s.Objs.SetObjects(obj)
-	health, free := alloc.Make([]server.HealthData(nil), 1)
+	health, free := alloc.MakeHigh([]server.HealthData(nil), 1)
 	obj.HealthData = &health[0]
 	t.Cleanup(func() { obj.HealthData = nil; free() })
 	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(obj)) <= 0xffffffff || uintptr(unsafe.Pointer(obj.HealthData)) <= 0xffffffff) {

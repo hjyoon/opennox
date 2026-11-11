@@ -15,7 +15,7 @@ import (
 func defaultDamageCloudFixture4E0B30(t *testing.T, kind string, subclass object.SubClass) (target, source, cloud *Object) {
 	t.Helper()
 	target = defaultDamagePoisonFixture4E0B30(t, subclass)
-	cloud, freeCloud := alloc.New(Object{})
+	cloud, freeCloud := alloc.NewHigh(Object{})
 	t.Cleanup(freeCloud)
 	// Stock ToxicCloud is 0x190008, with neither WEAPON nor WAND bits.
 	*cloud = Object{TypeInd: 1221, ObjClass: 0x190008, PrevPos: types.Ptf(17, 19)}
@@ -25,24 +25,24 @@ func defaultDamageCloudFixture4E0B30(t *testing.T, kind string, subclass object.
 	if kind == "self" {
 		return target, cloud, cloud
 	}
-	source, freeSource := alloc.New(Object{})
+	source, freeSource := alloc.NewHigh(Object{})
 	t.Cleanup(freeSource)
 	*source = Object{TypeInd: 1399, PrevPos: types.Ptf(101, 103)}
 	cloud.ObjOwner = source
 	switch kind {
 	case "imaginary": // The real position-to-position script caster has class 0.
 	case "player":
-		update, freeUpdate := alloc.New(PlayerUpdateData{})
+		update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
 		t.Cleanup(freeUpdate)
 		*update = PlayerUpdateData{}
 		source.ObjClass, source.UpdateData = object.ClassPlayer, unsafe.Pointer(update)
 	case "NPC", "proxy-NPC":
-		update, freeUpdate := alloc.New(MonsterUpdateData{})
+		update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 		t.Cleanup(freeUpdate)
 		*update = MonsterUpdateData{}
 		source.ObjClass, source.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 		if kind == "proxy-NPC" {
-			proxy, freeProxy := alloc.New(Object{})
+			proxy, freeProxy := alloc.NewHigh(Object{})
 			t.Cleanup(freeProxy)
 			*proxy = Object{ObjOwner: source, ObjClass: object.ClassSimple}
 			source, cloud.ObjOwner = proxy, proxy
@@ -281,23 +281,23 @@ func TestDefaultDamageCloudPoison4E0B30Services(t *testing.T) {
 func TestDefaultDamageCloudPoison4E0B30LiveDefendAndFrame(t *testing.T) {
 	v, a, w := defaultDamageCloudFixture4E0B30(t, "NPC", 0x10)
 	cachedTarget, cachedSource := v.UpdateDataMonster(), a.UpdateDataMonster()
-	liveTarget, freeTarget := alloc.New(MonsterUpdateData{})
+	liveTarget, freeTarget := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeTarget)
 	*liveTarget = MonsterUpdateData{Field546: 91}
-	liveSource, freeSource := alloc.New(MonsterUpdateData{})
+	liveSource, freeSource := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeSource)
 	*liveSource = MonsterUpdateData{}
-	m, freeModifier := alloc.New(ModifierEff{})
+	m, freeModifier := alloc.NewHigh(ModifierEff{})
 	t.Cleanup(freeModifier)
 	*m = ModifierEff{}
-	f, freeFn := alloc.New(byte(0))
+	f, freeFn := alloc.NewHigh(byte(0))
 	t.Cleanup(freeFn)
 	m.Defend76.Fnc = unsafe.Pointer(f)
-	data, freeData := alloc.New(ModifierInitData{})
+	data, freeData := alloc.NewHigh(ModifierInitData{})
 	t.Cleanup(freeData)
 	*data = ModifierInitData{}
 	data.Modifiers[2] = m
-	item, freeItem := alloc.New(Object{})
+	item, freeItem := alloc.NewHigh(Object{})
 	t.Cleanup(freeItem)
 	*item = Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, InitData: unsafe.Pointer(data)}
 	v.InvFirstItem = item
@@ -370,7 +370,7 @@ func TestDefaultDamageCloudPoison4E0B30ShockBeforeLiveImmunity(t *testing.T) {
 	for _, change := range []string{"retain", "add", "remove"} {
 		t.Run(change, func(t *testing.T) {
 			v, a, w := defaultDamageCloudFixture4E0B30(t, "player", 0x10)
-			init, freeInit := alloc.New(ModifierInitData{})
+			init, freeInit := alloc.NewHigh(ModifierInitData{})
 			t.Cleanup(freeInit)
 			*init = ModifierInitData{}
 			w.InitData = unsafe.Pointer(init) // The live WEAPON class has a real slot base.

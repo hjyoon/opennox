@@ -11,10 +11,10 @@ import (
 )
 
 func TestLockPublicSelector52CE90KeepsSixArgumentsAndSignedResult(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
-	caster, freeCaster := alloc.New(server.Object{})
-	aim, freeAim := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	aim, freeAim := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeSecond, freeCaster, freeAim, freeArg} {
 		t.Cleanup(free)
 	}

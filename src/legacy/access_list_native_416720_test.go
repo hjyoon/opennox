@@ -124,11 +124,11 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 					clock := uint32(0)
 					failAlloc := false
 					events := []string{}
-					refresh := accessListNativeDefaultAlloc416720(4)
+					refresh := accessListNativeFixtureAlloc416720(4)
 					if refresh == nil {
 						t.Fatal("refresh anchor calloc")
 					}
-					defer accessListNativeDefaultFree416720(refresh)
+					defer accessListNativeFixtureFree416720(refresh)
 					role := func(p unsafe.Pointer) int {
 						if p == nil {
 							return 0
@@ -149,7 +149,7 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 							events = append(events, "alloc-fail")
 							return nil
 						}
-						p := accessListNativeDefaultAlloc416720(size)
+						p := accessListNativeFixtureAlloc416720(size)
 						if p == nil {
 							t.Fatal("actual C allocation failed")
 						}
@@ -172,7 +172,7 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 						}
 						events = append(events, fmt.Sprintf("free:%d", role(p)))
 						freed[p] = true
-						accessListNativeDefaultFree416720(p)
+						accessListNativeFixtureFree416720(p)
 					}
 					h.Clock = func() uint32 { events = append(events, fmt.Sprintf("clock:%d", clock)); return clock }
 					h.Refresh = func() unsafe.Pointer { events = append(events, "refresh"); return refresh }
@@ -190,7 +190,7 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 						for _, p := range owners {
 							if !freed[p] {
 								freed[p] = true
-								accessListNativeDefaultFree416720(p)
+								accessListNativeFixtureFree416720(p)
 							}
 						}
 					}()
@@ -330,11 +330,11 @@ func TestAccessListNativeProductionOwner416720(t *testing.T) {
 	defer func() { *ah = oldA; *bh = oldB }()
 	accessListNativeClear416720(ah)
 	accessListNativeClear416720(bh)
-	p := accessListNativeDefaultAlloc416720(unsafe.Sizeof(accessAllowed416720{}))
+	p := accessListNativeFixtureAlloc416720(unsafe.Sizeof(accessAllowed416720{}))
 	if p == nil {
 		t.Fatal("calloc")
 	}
-	defer accessListNativeDefaultFree416720(p)
+	defer accessListNativeFixtureFree416720(p)
 	n := (*accessAllowed416720)(p)
 	accessListNativeInit416720(&n.List)
 	accessListNativeAppend416720(ah, &n.List)

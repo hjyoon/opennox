@@ -53,7 +53,7 @@ func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(160) {
+	if !s.Objs.InitHigh(160) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -75,17 +75,17 @@ func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
 						return obj
 					}
 					target, source, arrow, item := newObject("PlayerDamage", 71), newObject("", 72), newObject("", 529), newObject("ArmorDamage", 74)
-					ud, freeUD := alloc.New(server.PlayerUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					sourceUD, freeSourceUD := alloc.New(server.MonsterUpdateData{})
-					sourcePlayerUD, freeSourcePlayerUD := alloc.New(server.PlayerUpdateData{})
-					sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
-					initData, freeInit := alloc.New(server.ModifierInitData{})
-					weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
-					itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
-					hp, freeHP := alloc.New(server.HealthData{})
-					itemHP, freeItemHP := alloc.New(server.HealthData{})
-					armorDef, freeDef := alloc.New(server.Modifier{})
+					ud, freeUD := alloc.NewHigh(server.PlayerUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					sourceUD, freeSourceUD := alloc.NewHigh(server.MonsterUpdateData{})
+					sourcePlayerUD, freeSourcePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
+					initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+					weaponInit, freeWeaponInit := alloc.NewHigh(server.ModifierInitData{})
+					itemUD, freeItemUD := alloc.NewHigh(server.WeaponArmorUpdateData{})
+					hp, freeHP := alloc.NewHigh(server.HealthData{})
+					itemHP, freeItemHP := alloc.NewHigh(server.HealthData{})
+					armorDef, freeDef := alloc.NewHigh(server.Modifier{})
 					for _, free := range []func(){freeUD, freePlayer, freeSourceUD, freeSourcePlayerUD, freeSourcePlayer, freeInit, freeWeaponInit, freeItemUD, freeHP, freeItemHP, freeDef} {
 						t.Cleanup(free)
 					}

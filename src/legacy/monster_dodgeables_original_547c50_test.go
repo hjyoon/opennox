@@ -151,6 +151,13 @@ func newDodgeWorld547C50(t *testing.T, row dodgeRow547C50) *dodgeWorld547C50 {
 	w.Unit.Shape.Circle.R = math.Float32frombits(row.Input.Radius176)
 	// A different, guarded value makes an accidental SpeedCur read observable.
 	w.Unit.SpeedCur = math.Float32frombits(0x3f123456)
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// The guarded foreign bank starts with arbitrary bytes, not valid Go
+		// pointers. Clear only the pointer cell about to be initialized before
+		// its typed store can shade the old canary as a Go-heap pointer. The
+		// completed native input frame is identical to the original fixture.
+		alloc.Memset(unsafe.Pointer(&w.Unit.UpdateData), 0, unsafe.Sizeof(w.Unit.UpdateData))
+	}
 	w.Unit.UpdateData = unsafe.Pointer(w.Data)
 	if row.Input.NilUpdate {
 		w.Unit.UpdateData = nil

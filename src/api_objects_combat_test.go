@@ -18,13 +18,13 @@ import (
 func TestAPIObjectCombatNativeSnapshot(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
 	o := s.Objs.NewObject(&server.ObjectType{})
 	o.Extent, o.ScriptIDVal, o.ObjClass = 17, 1000347545, object.ClassMonster
-	data, free := alloc.New(server.MonsterUpdateData{})
+	data, free := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(func() { o.UpdateData = nil; free() })
 	o.UpdateData = unsafe.Pointer(data)
 	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(o)) <= 0xffffffff || uintptr(o.UpdateData) <= 0xffffffff) {

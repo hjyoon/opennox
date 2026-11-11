@@ -15,11 +15,11 @@ import (
 
 func defaultDamagePoisonFixture4E0B30(t *testing.T, subclass object.SubClass) *Object {
 	t.Helper()
-	target, freeTarget := alloc.New(Object{})
+	target, freeTarget := alloc.NewHigh(Object{})
 	t.Cleanup(freeTarget)
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
-	health, freeHealth := alloc.New(HealthData{})
+	health, freeHealth := alloc.NewHigh(HealthData{})
 	t.Cleanup(freeHealth)
 	*update = MonsterUpdateData{Field547: 99, Field546: 91, Field1: math.Float32bits(0.25)}
 	*health = HealthData{Cur: 20, Max: 20, Field2: 20}
@@ -142,15 +142,15 @@ func TestDefaultDamageWorld4E0B30MonsterPoisonEarlyGates(t *testing.T) {
 
 func TestDefaultDamageWorld4E0B30MonsterPoisonNPCDefend(t *testing.T) {
 	target := defaultDamagePoisonFixture4E0B30(t, 0x10)
-	modifier, freeModifier := alloc.New(ModifierEff{})
+	modifier, freeModifier := alloc.NewHigh(ModifierEff{})
 	defer freeModifier()
-	fn, freeFn := alloc.New(byte(0))
+	fn, freeFn := alloc.NewHigh(byte(0))
 	defer freeFn()
 	modifier.Defend76.Fnc = unsafe.Pointer(fn)
-	initData, freeInit := alloc.New(ModifierInitData{})
+	initData, freeInit := alloc.NewHigh(ModifierInitData{})
 	defer freeInit()
 	initData.Modifiers[2] = modifier
-	armor, freeArmor := alloc.New(Object{})
+	armor, freeArmor := alloc.NewHigh(Object{})
 	defer freeArmor()
 	*armor = Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
 		InitData: unsafe.Pointer(initData)}

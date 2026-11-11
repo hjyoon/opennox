@@ -1,4 +1,10 @@
 #include "game2_server_bridge.h"
+extern void* game2_server_reference_alloc_go(size_t count, size_t size);
+extern void game2_server_reference_free_go(void* ptr);
+/* Only the retained diagnostic translation unit redirects these services;
+ * the complete reference include and ordinary product allocator stay intact. */
+#define calloc game2_server_reference_alloc_go
+#define free game2_server_reference_free_go
 #define nox_gui_server_list_first_visible game2_server_old_nox_gui_server_list_first_visible
 #define sub_4535E0 game2_server_old_sub_4535E0
 #define sub_4535F0 game2_server_old_sub_4535F0
@@ -82,6 +88,8 @@ int sub_457140(int a1, wchar2_t* a2) {
 	entry->net_code = a1;
 	return (int)nox_window_call_field_94(players, 16397, (uintptr_t)a2, 3);
 }
+#undef calloc
+#undef free
 #undef sub_457140
 #undef nox_gui_server_list_first_visible
 #undef sub_4535E0

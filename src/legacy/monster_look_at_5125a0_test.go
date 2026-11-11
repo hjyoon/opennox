@@ -20,7 +20,7 @@ func monsterLookAtFixture5125A0(t *testing.T) (*server.Server, *server.Object, *
 	t.Helper()
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if !srv.Objs.Init(1) {
+	if !srv.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

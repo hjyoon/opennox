@@ -51,7 +51,7 @@ func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeArmorItems", OnDamage: &things.ProcFunc{Name: "ArmorDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(100) {
+	if !s.Objs.InitHigh(100) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -82,14 +82,14 @@ func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
 					return obj
 				}
 				owner, source, effective, item := newObject(71), newObject(72), newObject(529), newObject(301)
-				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				monsterUD, freeMonsterUD := alloc.New(server.MonsterUpdateData{})
-				sourceUD, freeSourceUD := alloc.New(server.MonsterUpdateData{})
-				initData, freeInit := alloc.New(server.ModifierInitData{})
-				itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
-				itemHP, freeHP := alloc.New(server.HealthData{})
-				armorDef, freeDef := alloc.New(server.Modifier{})
+				playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				monsterUD, freeMonsterUD := alloc.NewHigh(server.MonsterUpdateData{})
+				sourceUD, freeSourceUD := alloc.NewHigh(server.MonsterUpdateData{})
+				initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+				itemUD, freeItemUD := alloc.NewHigh(server.WeaponArmorUpdateData{})
+				itemHP, freeHP := alloc.NewHigh(server.HealthData{})
+				armorDef, freeDef := alloc.NewHigh(server.Modifier{})
 				for _, free := range []func(){freePlayerUD, freePlayer, freeMonsterUD, freeSourceUD, freeInit, freeItemUD, freeHP, freeDef} {
 					t.Cleanup(free)
 				}

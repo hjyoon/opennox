@@ -27,12 +27,12 @@ func TestPlayerDamageNative4E17B0MonsterPoisonSkipsEquipment(t *testing.T) {
 			update.ArmorEquipFlags = 0x3000000
 			update.AIStack[0].Action = 21
 			target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
-			armor, freeArmor := alloc.New(Object{})
+			armor, freeArmor := alloc.NewHigh(Object{})
 			defer freeArmor()
-			carry, freeCarry := alloc.New(float32(0))
+			carry, freeCarry := alloc.NewHigh(float32(0))
 			defer freeCarry()
 			*carry = 0.4
-			health, freeHealth := alloc.New(HealthData{})
+			health, freeHealth := alloc.NewHigh(HealthData{})
 			defer freeHealth()
 			*health = HealthData{Cur: 10, Max: 10}
 			*armor = Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,

@@ -26,10 +26,10 @@ func TestShopSaleRejectionLocalizedLine5109C0(t *testing.T) {
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			s, unit, _, _ := basicSenderProductionFixture5187E0(t)
-			player, freePlayer := alloc.New(server.Player{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
 			t.Cleanup(freePlayer)
 			*player = server.Player{PlayerInd: 3}
-			update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+			update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 			t.Cleanup(freeUpdate)
 			*update = server.PlayerUpdateData{Player: player}
 			*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}

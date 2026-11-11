@@ -19,14 +19,14 @@ func aiAliveDependencyNative546A70(t *testing.T) (*Server, *server.Object, *serv
 	t.Helper()
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(2) {
+	if !s.Objs.InitHigh(2) {
 		t.Fatal("cannot initialize native AI object allocation")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
 	unit, target := s.Objs.NewObject(&server.ObjectType{}), s.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
-	health, freeHealth := alloc.New(server.HealthData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeHealth)
 	unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 	target.ObjClass, target.HealthData = object.ClassMonster, health

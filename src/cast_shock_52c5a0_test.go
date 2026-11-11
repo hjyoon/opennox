@@ -23,9 +23,9 @@ func TestCastShockRoot52C5A0AppliesNativeBuffThroughActualSelector(t *testing.T)
 	base := server.New(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
-	caster, freeCaster := alloc.New(server.Object{})
-	target, freeTarget := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeCaster, freeTarget, freeArg} {
 		t.Cleanup(free)
 	}

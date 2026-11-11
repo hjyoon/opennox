@@ -27,7 +27,7 @@ func TestMonsterMissileNativeDefaultBindings532540(t *testing.T) {
 			t.Cleanup(freeSounds)
 			definition.MissileAttackFrame216 = 2
 			sounds[11] = 1111
-			if !s.Objs.Init(3) {
+			if !s.Objs.InitHigh(3) {
 				t.Fatal("ordinary object allocator initialization")
 			}
 			t.Cleanup(s.Objs.FreeObjects)

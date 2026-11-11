@@ -74,7 +74,7 @@ func TestMonsterActionPushIfChanged50A360(t *testing.T) {
 	servers.Store(s.handle, s)
 	t.Cleanup(func() { servers.Delete(s.handle) })
 	s.Objs.init(s.handle)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

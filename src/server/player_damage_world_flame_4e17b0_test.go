@@ -45,11 +45,11 @@ func TestPlayerDamageWorldFlame4E17B0ClassAdmission(t *testing.T) {
 
 func worldFlameArmorFixture4E17B0(t *testing.T, target *Object) *Object {
 	t.Helper()
-	item, freeItem := alloc.New(Object{})
-	health, freeHealth := alloc.New(HealthData{})
-	update, freeUpdate := alloc.New(WeaponArmorUpdateData{})
-	init, freeInit := alloc.New(ModifierInitData{})
-	callback, freeCallback := alloc.New(byte(0))
+	item, freeItem := alloc.NewHigh(Object{})
+	health, freeHealth := alloc.NewHigh(HealthData{})
+	update, freeUpdate := alloc.NewHigh(WeaponArmorUpdateData{})
+	init, freeInit := alloc.NewHigh(ModifierInitData{})
+	callback, freeCallback := alloc.NewHigh(byte(0))
 	for _, free := range []func(){freeItem, freeHealth, freeUpdate, freeInit, freeCallback} {
 		t.Cleanup(free)
 	}
@@ -292,14 +292,14 @@ func TestPlayerDamageWorldFlame4E17B0CachedPrefixLiveArmor(t *testing.T) {
 			var live unsafe.Pointer
 			if victim == "player" {
 				cached := v.UpdateDataPlayer()
-				ud, free := alloc.New(PlayerUpdateData{})
+				ud, free := alloc.NewHigh(PlayerUpdateData{})
 				t.Cleanup(free)
 				*ud = PlayerUpdateData{Player: cached.Player, State: PlayerState16, Field76: 79, Field57: math.Float32bits(2)}
 				marker, kind, cachedArmor = &cached.Field76, &cached.Field75, &cached.Player.ArmorEquip
 				liveMarker, liveArmor, live = &ud.Field76, &ud.Field57, unsafe.Pointer(ud)
 			} else {
 				cached := v.UpdateDataMonster()
-				ud, free := alloc.New(MonsterUpdateData{})
+				ud, free := alloc.NewHigh(MonsterUpdateData{})
 				t.Cleanup(free)
 				*ud = MonsterUpdateData{Field547: 79, Field518: math.Float32bits(2)}
 				ud.AIStack[0].Action = 21

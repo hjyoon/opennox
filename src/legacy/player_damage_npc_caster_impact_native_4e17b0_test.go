@@ -27,7 +27,7 @@ func TestPlayerDamageNPCCasterImpactNative4E17B0CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeCasterImpactNPC", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(200) {
+	if !srv.Objs.InitHigh(200) {
 		t.Fatal("NPC caster IMPACT allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

@@ -351,7 +351,7 @@ func TestDefaultDamageInitializedWandPoisonShockNativeHP4E0B30(t *testing.T) {
 	t.Cleanup(srv.Audio.Free)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)
-	if !srv.Objs.Init(48) {
+	if !srv.Objs.InitHigh(48) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

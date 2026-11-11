@@ -67,7 +67,7 @@ func TestSpriteUpdateOrdinaryBindings518AE0(t *testing.T) {
 	if e := srv.Types.ReadObjectType(&things.Thing{Name: "SpriteOrdinaryNative", Class: []things.Class{"IMMOBILE"}, Flags: []things.Flag{"NO_COLLIDE"}}); e != nil {
 		t.Fatal(e)
 	}
-	if !srv.Objs.Init(8) {
+	if !srv.Objs.InitHigh(8) {
 		t.Fatal("native object allocator")
 	}
 	unit := srv.NewObjectByTypeID("SpriteOrdinaryNative")

@@ -58,7 +58,7 @@ func TestGreaterHealPublicCCreateGlyphNative52F220(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeGreaterHealTarget"}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

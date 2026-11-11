@@ -111,7 +111,7 @@ func TestToxicCloudScriptNativeEntry52DB60(t *testing.T) {
 			t.Run(fmt.Sprintf("%s/%d", route, i), func(t *testing.T) {
 				s := NewServer(nil, nil, strman.New())
 				t.Cleanup(s.Close)
-				if !s.Objs.Init(1) {
+				if !s.Objs.InitHigh(1) {
 					t.Fatal("cannot initialize native object allocator")
 				}
 				t.Cleanup(s.Objs.FreeObjects)

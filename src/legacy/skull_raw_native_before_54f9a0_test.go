@@ -80,7 +80,7 @@ func skullRawActualFixture54F9A0(t *testing.T) (source, target *server.Object, p
 	s.Audio.Init(s)
 	t.Cleanup(s.Audio.Free)
 	s.FreeObjectTypes()
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("actual native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

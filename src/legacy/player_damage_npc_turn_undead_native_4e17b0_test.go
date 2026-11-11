@@ -26,7 +26,7 @@ func TestPlayerDamageNPCTurnUndeadNativeCollisionHP4E17B0(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeTurnUndeadPlayerDamage", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("C-owned object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

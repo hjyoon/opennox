@@ -93,7 +93,7 @@ func specialDeathActualFixture54E460(t *testing.T) (out [4]*server.Object) {
 	s.Audio.Init(s)
 	t.Cleanup(s.Audio.Free)
 	s.FreeObjectTypes()
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("actual native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

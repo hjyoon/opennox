@@ -101,7 +101,7 @@ func TestLuaCompatSayNativePackets(t *testing.T) {
 								s.SetTickRate(60)
 								s.Audio.Init(s.Server)
 								t.Cleanup(s.Audio.Free)
-								if !s.Objs.Init(8) {
+								if !s.Objs.InitHigh(8) {
 									t.Fatal("cannot initialize actual native object pool")
 								}
 								t.Cleanup(s.Objs.FreeObjects)
@@ -121,7 +121,7 @@ func TestLuaCompatSayNativePackets(t *testing.T) {
 								indices := []ntype.PlayerInd{7, 17, 31}
 								for i, ind := range indices {
 									listener := s.Objs.NewObject(&server.ObjectType{})
-									update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+									update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 									t.Cleanup(freeUpdate)
 									if listener == nil {
 										t.Fatal("cannot allocate actual recipient unit")

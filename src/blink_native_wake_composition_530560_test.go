@@ -55,7 +55,7 @@ func TestSpellBlinkPublicCNativeWakeComposition530560(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "TeleportWake", Class: []things.Class{"SIMPLE"}, OnCollide: &things.ProcFunc{Name: "TeleportWakeCollide"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -70,8 +70,8 @@ func TestSpellBlinkPublicCNativeWakeComposition530560(t *testing.T) {
 		Point  types.Pointf
 		After  [32]byte
 	}
-	origin, freeOrigin := alloc.New(pointFrame{})
-	destination, freeDestination := alloc.New(pointFrame{})
+	origin, freeOrigin := alloc.NewHigh(pointFrame{})
+	destination, freeDestination := alloc.NewHigh(pointFrame{})
 	t.Cleanup(freeOrigin)
 	t.Cleanup(freeDestination)
 	*origin, *destination = pointFrame{Point: types.Ptf(123.5, -456.25)}, pointFrame{Point: types.Ptf(-17.5, 23.25)}

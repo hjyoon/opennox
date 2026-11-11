@@ -18,7 +18,7 @@ import (
 // headless tests load thing.bin itself.
 func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

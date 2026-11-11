@@ -27,7 +27,7 @@ func TestDefaultDamageCasterImpactNative4E0B30CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeCasterImpactDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(400) {
+	if !srv.Objs.InitHigh(400) {
 		t.Fatal("caster IMPACT allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -37,13 +37,13 @@ func TestDefaultDamageCasterImpactNative4E0B30CRecords(t *testing.T) {
 				t.Run(fmt.Sprintf("%s/%s/raw-%d", victim, owner, raw), func(t *testing.T) {
 					v := srv.Objs.NewObject(&server.ObjectType{Damage: srv.Types.ByID("NativeCasterImpactDefault").Damage})
 					a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					ud, freeUD := alloc.New(server.MonsterUpdateData{})
-					casterUD, freeCasterUD := alloc.New(server.MonsterUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-					victimPlayer, freeVictimPlayer := alloc.New(server.Player{})
-					victimPlayerUD, freeVictimPlayerUD := alloc.New(server.PlayerUpdateData{})
-					health, freeHealth := alloc.New(server.HealthData{})
+					ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+					casterUD, freeCasterUD := alloc.NewHigh(server.MonsterUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					victimPlayer, freeVictimPlayer := alloc.NewHigh(server.Player{})
+					victimPlayerUD, freeVictimPlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					health, freeHealth := alloc.NewHigh(server.HealthData{})
 					for _, free := range []func(){freeUD, freeCasterUD, freePlayer, freePlayerUD, freeVictimPlayer, freeVictimPlayerUD, freeHealth} {
 						t.Cleanup(free)
 					}

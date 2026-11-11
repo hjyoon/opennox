@@ -29,13 +29,13 @@ func TestObjectDispatchOrdinaryBindings519410(t *testing.T) {
 	}
 	t.Cleanup(base.Walls.Free)
 	s := &Server{Server: base}
-	recipient, freeRecipient := alloc.New(server.Object{})
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	playerUpdate, freePlayerUpdate := alloc.New(server.PlayerUpdateData{})
-	monsterUpdate, freeMonsterUpdate := alloc.New(server.MonsterUpdateData{})
-	elevatorUpdate, freeElevatorUpdate := alloc.New(server.ElevatorUpdateData{})
-	track, freeTrack := alloc.New(server.MinimapItem{})
+	recipient, freeRecipient := alloc.NewHigh(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	playerUpdate, freePlayerUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	monsterUpdate, freeMonsterUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+	elevatorUpdate, freeElevatorUpdate := alloc.NewHigh(server.ElevatorUpdateData{})
+	track, freeTrack := alloc.NewHigh(server.MinimapItem{})
 	for _, free := range []func(){freeRecipient, freeUnit, freeUpdate, freePlayerUpdate, freeMonsterUpdate, freeElevatorUpdate, freeTrack} {
 		t.Cleanup(free)
 	}

@@ -77,7 +77,7 @@ func TestPlayerDamageArmedGreatSwordNative4E17B0RegisteredDurabilityAndHP(t *tes
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(80) {
+	if !s.Objs.InitHigh(80) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -96,16 +96,16 @@ func TestPlayerDamageArmedGreatSwordNative4E17B0RegisteredDurabilityAndHP(t *tes
 					}
 					v, a, w, item := newObject("PlayerDamage", 713), newObject("", 1343), newObject("", 1174), newObject("WeaponDamage", 777)
 					sibling, firstOwned := newObject("", 778), newObject("", 779)
-					pu, freePU := alloc.New(server.PlayerUpdateData{})
-					apu, freeAPU := alloc.New(server.PlayerUpdateData{})
-					amu, freeAMU := alloc.New(server.MonsterUpdateData{})
-					info, freeInfo := alloc.New(server.Player{})
-					ainfo, freeAInfo := alloc.New(server.Player{})
-					init, freeInit := alloc.New(server.ModifierInitData{})
-					winit, freeWInit := alloc.New(server.ModifierInitData{})
-					iu, freeIU := alloc.New(server.WeaponArmorUpdateData{})
-					hp, freeHP := alloc.New(server.HealthData{})
-					ihp, freeIHP := alloc.New(server.HealthData{})
+					pu, freePU := alloc.NewHigh(server.PlayerUpdateData{})
+					apu, freeAPU := alloc.NewHigh(server.PlayerUpdateData{})
+					amu, freeAMU := alloc.NewHigh(server.MonsterUpdateData{})
+					info, freeInfo := alloc.NewHigh(server.Player{})
+					ainfo, freeAInfo := alloc.NewHigh(server.Player{})
+					init, freeInit := alloc.NewHigh(server.ModifierInitData{})
+					winit, freeWInit := alloc.NewHigh(server.ModifierInitData{})
+					iu, freeIU := alloc.NewHigh(server.WeaponArmorUpdateData{})
+					hp, freeHP := alloc.NewHigh(server.HealthData{})
+					ihp, freeIHP := alloc.NewHigh(server.HealthData{})
 					for _, free := range []func(){freePU, freeAPU, freeAMU, freeInfo, freeAInfo, freeInit, freeWInit, freeIU, freeHP, freeIHP} {
 						t.Cleanup(free)
 					}

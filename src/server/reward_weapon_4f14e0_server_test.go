@@ -233,7 +233,7 @@ func TestRewardWeaponServerUsesLogicRNGAndObjectFactory4F14E0(t *testing.T) {
 	t.Cleanup(func() { servers.Delete(srv.handle) })
 	srv.Rand.Logic = prand.New(2011)
 	srv.Objs.init(srv.handle)
-	if !srv.Objs.Init(2) {
+	if !srv.Objs.InitHigh(2) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -281,7 +281,7 @@ func TestRewardWeaponServerResolvesReplenishment4F14E0(t *testing.T) {
 	t.Cleanup(func() { servers.Delete(srv.handle) })
 	srv.Rand.Logic = prand.New(2011)
 	srv.Objs.init(srv.handle)
-	if !srv.Objs.Init(1) {
+	if !srv.Objs.InitHigh(1) {
 		t.Fatal("object allocator initialization failed")
 	}
 

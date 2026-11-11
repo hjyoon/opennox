@@ -22,7 +22,7 @@ func TestPlayerDamageWorldFistFlameCRecords4E17B0(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeWorldFistFlameDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

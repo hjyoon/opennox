@@ -25,8 +25,8 @@ func TestPlayerDamageNPCCloudPoison4E17B0SignedQuest(t *testing.T) {
 					update.Field518, update.ArmorEquipFlags, update.WeaponEquipFlags = math.Float32bits(0.9), 0x3000000, 0x400
 					update.AIStack[0].Action = 21
 					target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
-					armorHealth, freeArmorHealth := alloc.New(HealthData{})
-					armor, freeArmor := alloc.New(Object{})
+					armorHealth, freeArmorHealth := alloc.NewHigh(HealthData{})
+					armor, freeArmor := alloc.NewHigh(Object{})
 					t.Cleanup(freeArmorHealth)
 					t.Cleanup(freeArmor)
 					*armorHealth = HealthData{Cur: 50, Max: 50}
@@ -114,7 +114,7 @@ func TestPlayerDamageNPCCloudPoison4E17B0CachedLiveAndPosition(t *testing.T) {
 			t.Run(fmt.Sprintf("excluded-%t/%s", excluded, stage), func(t *testing.T) {
 				target, source, cloud := defaultDamageCloudFixture4E0B30(t, "player", 0x11012)
 				cached := target.UpdateDataMonster()
-				live, freeLive := alloc.New(MonsterUpdateData{})
+				live, freeLive := alloc.NewHigh(MonsterUpdateData{})
 				t.Cleanup(freeLive)
 				*live = MonsterUpdateData{Field547: 31, Field546: 33, Field1: math.Float32bits(-0.5), Field523_2: 88}
 				liveBefore, oldPos := *live, cloud.PrevPos
@@ -315,10 +315,10 @@ func TestPlayerDamageNPCCloudPoison4E17B0CustomShield(t *testing.T) {
 				target, source, cloud := defaultDamageCloudFixture4E0B30(t, "player", 0x11012)
 				cached := target.UpdateDataMonster()
 				cached.ArmorEquipFlags = 0x3000000
-				live, freeLive := alloc.New(MonsterUpdateData{})
+				live, freeLive := alloc.NewHigh(MonsterUpdateData{})
 				t.Cleanup(freeLive)
 				live.AIStack[0].Action = 21
-				shield, freeShield := alloc.New(Object{})
+				shield, freeShield := alloc.NewHigh(Object{})
 				t.Cleanup(freeShield)
 				*shield = Object{ObjFlags: object.FlagEquipped, ObjSubClass: 2}
 				if variant != "no-item" {

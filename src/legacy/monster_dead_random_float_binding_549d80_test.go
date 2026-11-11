@@ -81,7 +81,7 @@ func TestMonsterDeadRandomFloat549D80ActualRuntimeBinding(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			if !s.Objs.Init(64) {
+			if !s.Objs.InitHigh(64) {
 				t.Fatal("C-owned allocator initialization failed")
 			}
 			t.Cleanup(s.Objs.FreeObjects)

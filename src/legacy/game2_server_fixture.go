@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stddef.h>
 #include "game2_server_fixture.h"
+#include "native_fixture_alloc.h"
 static uintptr_t game2_server_public_call(uint32_t entry,void* p,int a,int b) {
  switch(entry){
  case 0x4535E0: return (uintptr_t)(intptr_t)sub_4535E0((int*)p);
@@ -78,7 +79,7 @@ static void* game2_server_fixture_head(int team){return team?(void*)&nox_gui_ser
 static size_t game2_server_fixture_layout(int field){switch(field){
 case 0:return sizeof(nox_window);case 1:return sizeof(nox_window_data);case 2:return sizeof(nox_scrollListBox_data);case 3:return sizeof(nox_scrollListBox_item);
 case 4:return sizeof(nox_list_item_t);case 5:return sizeof(nox_drawable);case 6:return offsetof(nox_gui_server_player_entry,name);case 7:return offsetof(nox_gui_server_player_entry,net_code);case 8:return offsetof(nox_gui_server_team_entry,team_id);case 9:return offsetof(nox_gui_server_team_entry,color);case 10:return sizeof(nox_gui_server_player_entry);case 11:return sizeof(nox_gui_server_team_entry);default:abort();}}
-static void* game2_server_fixture_team(uint32_t id,uint8_t color,const wchar2_t* name){nox_gui_server_team_entry* p=calloc(1,sizeof(*p));if(!p)return NULL;p->list.field_0=&p->list;p->list.field_1=&p->list;p->team_id=id;p->color=color;nox_wcscpy(p->name,name);return p;}
+static void* game2_server_fixture_team(uint32_t id,uint8_t color,const wchar2_t* name){nox_gui_server_team_entry* p=nox_native_fixture_calloc_high(1,sizeof(*p));if(!p)return NULL;p->list.field_0=&p->list;p->list.field_1=&p->list;p->team_id=id;p->color=color;nox_wcscpy(p->name,name);return p;}
 static int game2_server_fixture_access_event(void* w,int event,uintptr_t a,uintptr_t b){return nox_xxx_windowAccessProc_454BA0(w,event,a,b);}
 */
 import "C"
@@ -88,6 +89,9 @@ import (
 )
 
 func game2ServerFixtureCall(old bool, entry uint32, p unsafe.Pointer, a, b int32) uintptr {
+	previousAlloc, previousFree := game2ServerAllocationService, game2ServerReleaseService
+	game2ServerAllocationService, game2ServerReleaseService = game2ServerFixtureAllocateHigh, game2ServerFixtureFree
+	defer func() { game2ServerAllocationService, game2ServerReleaseService = previousAlloc, previousFree }()
 	var v C.uintptr_t
 	if old {
 		v = C.game2_server_reference_call(C.uint32_t(entry), p, C.int(a), C.int(b))
@@ -114,8 +118,26 @@ func game2ServerFixtureHead(team bool) *accessListNode416720 {
 func game2ServerFixtureLayout(field int) uintptr {
 	return uintptr(C.game2_server_fixture_layout(C.int(field)))
 }
-func game2ServerFixtureAlloc(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) }
-func game2ServerFixtureFree(p unsafe.Pointer)          { C.free(p) }
+
+var game2ServerFixtureHighOwners = make(map[unsafe.Pointer]struct{})
+
+func game2ServerFixtureAllocateHigh(count, size uintptr) unsafe.Pointer {
+	p := C.nox_native_fixture_calloc_high(C.size_t(count), C.size_t(size))
+	if p != nil {
+		game2ServerFixtureHighOwners[p] = struct{}{}
+	}
+	return p
+}
+
+func game2ServerFixtureAlloc(n uintptr) unsafe.Pointer { return game2ServerFixtureAllocateHigh(1, n) }
+func game2ServerFixtureFree(p unsafe.Pointer) {
+	if _, owned := game2ServerFixtureHighOwners[p]; owned {
+		delete(game2ServerFixtureHighOwners, p)
+		C.nox_native_fixture_free_high(p)
+	} else {
+		C.free(p)
+	}
+}
 func game2ServerFixtureFirstVisible(p unsafe.Pointer) int {
 	v := int(C.game2_server_reference_first_visible(p))
 	runtime.KeepAlive(p)
@@ -123,6 +145,9 @@ func game2ServerFixtureFirstVisible(p unsafe.Pointer) int {
 }
 func game2ServerFixtureTeam(id uint32, color byte, name unsafe.Pointer) unsafe.Pointer {
 	p := C.game2_server_fixture_team(C.uint32_t(id), C.uint8_t(color), (*C.wchar2_t)(name))
+	if p != nil {
+		game2ServerFixtureHighOwners[p] = struct{}{}
+	}
 	runtime.KeepAlive(name)
 	return p
 }

@@ -90,7 +90,7 @@ func nsTeamClearRun419570(t *testing.T, tc nsTeamClearCase419570, route string) 
 	}
 	records := map[string]record{"team": {unsafe.Pointer(team), unsafe.Sizeof(*team)}, "second-team": {unsafe.Pointer(second), unsafe.Sizeof(*second)}}
 	newObject := func(name string, value server.Object) *server.Object {
-		p, free := alloc.New(server.Object{})
+		p, free := alloc.NewHigh(server.Object{})
 		*p = value
 		// Match serverObjects.NewObject's real server association. Keep the
 		// original C-owned fixture bytes/inputs; copy only the native handle
@@ -109,7 +109,7 @@ func nsTeamClearRun419570(t *testing.T, tc nsTeamClearCase419570, route string) 
 		return p
 	}
 	newMonsterUpdate := func(name string) unsafe.Pointer {
-		p, free := alloc.New(server.MonsterUpdateData{})
+		p, free := alloc.NewHigh(server.MonsterUpdateData{})
 		*p = server.MonsterUpdateData{}
 		t.Cleanup(free)
 		records[name] = record{unsafe.Pointer(p), unsafe.Sizeof(*p)}
@@ -128,7 +128,7 @@ func nsTeamClearRun419570(t *testing.T, tc nsTeamClearCase419570, route string) 
 		player.Field3680 = 0x10
 		records["player"] = record{unsafe.Pointer(player), unsafe.Sizeof(*player)}
 		newPlayerUpdate := func(name string) unsafe.Pointer {
-			p, free := alloc.New(server.PlayerUpdateData{})
+			p, free := alloc.NewHigh(server.PlayerUpdateData{})
 			*p = server.PlayerUpdateData{Player: player, State: 9}
 			t.Cleanup(free)
 			records[name] = record{unsafe.Pointer(p), unsafe.Sizeof(*p)}

@@ -75,9 +75,9 @@ func TestElevatorCollisionCEntryOriginal(t *testing.T) {
 		}
 		selected++
 		t.Run(i.Name, func(t *testing.T) {
-			a, fa := alloc.New(server.Object{})
-			b, fb := alloc.New(server.Object{})
-			u, fu := alloc.New(server.ElevatorUpdateData{})
+			a, fa := alloc.NewHigh(server.Object{})
+			b, fb := alloc.NewHigh(server.Object{})
+			u, fu := alloc.NewHigh(server.ElevatorUpdateData{})
 			for _, free := range []func(){fa, fb, fu} {
 				t.Cleanup(free)
 			}

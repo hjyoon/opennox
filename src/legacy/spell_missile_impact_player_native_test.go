@@ -70,7 +70,7 @@ func TestDefaultDamagePlayerSpellMissileImpactCRecords4E0B30(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeSpellMissileImpactDefault", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(16) {
+	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

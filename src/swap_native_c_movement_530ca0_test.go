@@ -53,7 +53,7 @@ func TestSpellSwapPublicCRealMovement530CA0(t *testing.T) {
 	noxflags.UnsetGame(oldFlags)
 	t.Cleanup(func() { noxflags.UnsetGame(noxflags.GetGame()); noxflags.SetGame(oldFlags) })
 	s.SetFrame(142)
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -67,7 +67,7 @@ func TestSpellSwapPublicCRealMovement530CA0(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*f = frame{}
 	for i := range f.Before {

@@ -21,9 +21,9 @@ func TestPlayerReportSelfNative4D9900CachesQuestUpdateBeforeGoldCallback(t *test
 	native := server.New(nil, nil, strman.New())
 	t.Cleanup(native.Close)
 	s := &Server{Server: native}
-	unit, freeUnit := alloc.New(server.Object{})
-	entry, freeEntry := alloc.New(server.PlayerUpdateData{})
-	live, freeLive := alloc.New(server.PlayerUpdateData{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	entry, freeEntry := alloc.NewHigh(server.PlayerUpdateData{})
+	live, freeLive := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeEntry)
 	t.Cleanup(freeLive)

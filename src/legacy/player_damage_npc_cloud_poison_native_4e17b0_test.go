@@ -28,7 +28,7 @@ func TestPlayerDamageNPCCloudPoisonNative4E17B0CRecords(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !srv.Objs.Init(600) {
+	if !srv.Objs.InitHigh(600) {
 		t.Fatal("NPC cloud allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

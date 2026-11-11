@@ -84,7 +84,7 @@ func TestLuaCompatMuteNativeLifecycle(t *testing.T) {
 									s.SetTickRate(60)
 									s.Audio.Init(s.Server)
 									t.Cleanup(s.Audio.Free)
-									if !s.Objs.Init(8) {
+									if !s.Objs.InitHigh(8) {
 										t.Fatal("cannot initialize actual native object pool")
 									}
 									t.Cleanup(s.Objs.FreeObjects)
@@ -104,7 +104,7 @@ func TestLuaCompatMuteNativeLifecycle(t *testing.T) {
 									var updates []*server.PlayerUpdateData
 									for i, ind := range indices {
 										listener := s.Objs.NewObject(&server.ObjectType{})
-										update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+										update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 										t.Cleanup(freeUpdate)
 										if listener == nil {
 											t.Fatal("cannot allocate actual recipient unit")
@@ -144,7 +144,7 @@ func TestLuaCompatMuteNativeLifecycle(t *testing.T) {
 										}
 										records[i].before = scriptNSRoamFlagBytes515C80(records[i].ptr, records[i].size)
 									}
-									pool := alloc.NewClass("lua-mute-native-chat", legacy.ChatBubbleSize(), 8)
+									pool := alloc.NewClassHigh("lua-mute-native-chat", legacy.ChatBubbleSize(), 8)
 									handle := pool.UPtr()
 									legacy.Set_nox_alloc_chat_1197364(handle)
 									t.Cleanup(func() {

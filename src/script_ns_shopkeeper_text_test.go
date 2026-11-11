@@ -105,9 +105,9 @@ func TestScriptNSSetShopkeeperTextNativeRecordsAndClassicBuiltin(t *testing.T) {
 		for _, flags := range []object.Flags{0, object.FlagEnabled, object.FlagDead, object.FlagDestroyed, object.FlagNoUpdate} {
 			for _, text := range texts {
 				t.Run(fmt.Sprintf("%s/flags-%x/%s", cl.name, flags, text.name), func(t *testing.T) {
-					unit, freeUnit := alloc.New(server.Object{})
-					update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-					arena, freeArena := alloc.New([1724 + 64]byte{})
+					unit, freeUnit := alloc.NewHigh(server.Object{})
+					update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+					arena, freeArena := alloc.NewHigh([1724 + 64]byte{})
 					t.Cleanup(freeArena)
 					t.Cleanup(freeUpdate)
 					t.Cleanup(freeUnit)

@@ -18,14 +18,14 @@ func TestTrackedRefreshOrdinaryBindings519710(t *testing.T) {
 	previous := legacy.GetServer
 	legacy.GetServer = func() legacy.Server { return s }
 	t.Cleanup(func() { legacy.GetServer = previous })
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
 	player := base.Players.ByIndRaw(7)
 	player.PlayerInd = 7
 	update.Player = player
 	var nodes []*server.MinimapItem
 	for i := 0; i < 61; i++ {
-		node, free := alloc.New(server.MinimapItem{})
+		node, free := alloc.NewHigh(server.MinimapItem{})
 		t.Cleanup(free)
 		nodes = append(nodes, node)
 	}

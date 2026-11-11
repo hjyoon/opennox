@@ -14,7 +14,7 @@ import (
 )
 
 func TestE2EPlayerStatusSpellInitializesNativeArgument(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	*unit = server.Object{PosVec: types.Pointf{X: -33.5, Y: 12.25}}
 	arg, freeArg := e2ePlayerStatusSpellArg(unit)

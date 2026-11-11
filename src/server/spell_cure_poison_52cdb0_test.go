@@ -270,13 +270,13 @@ func TestCurePoisonCast52CDB0NilTargetAndRequiredArgument(t *testing.T) {
 func TestCurePoisonCast52CDB0NativeStateMessageAndActualAudio(t *testing.T) {
 	for _, power := range []int32{-3, 2, 3, math.MaxInt32} {
 		t.Run(fmt.Sprint(power), func(t *testing.T) {
-			target, freeTarget := alloc.New(Object{})
+			target, freeTarget := alloc.NewHigh(Object{})
 			defer freeTarget()
-			replacement, freeReplacement := alloc.New(Object{})
+			replacement, freeReplacement := alloc.NewHigh(Object{})
 			defer freeReplacement()
-			health, freeHealth := alloc.New(HealthData{})
+			health, freeHealth := alloc.NewHigh(HealthData{})
 			defer freeHealth()
-			arg, freeArg := alloc.New(SpellAcceptArg{})
+			arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 			defer freeArg()
 			*health = HealthData{Cur: 77, Max: 80, Field16: 91}
 			*target = Object{HealthData: health, Poison540: 3, Field542: 1234, ObjFlags: object.FlagDestroyed}

@@ -92,8 +92,8 @@ func fireballAssertPointBits52C790(t *testing.T, label string, got, want types.P
 
 func fireballPrecisionRecords52C790(t *testing.T) (*server.Object, *server.Object) {
 	t.Helper()
-	caster, freeCaster := alloc.New(server.Object{})
-	projectile, freeProjectile := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	projectile, freeProjectile := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
 	t.Cleanup(freeProjectile)
 	for _, pointer := range []unsafe.Pointer{unsafe.Pointer(caster), unsafe.Pointer(projectile)} {

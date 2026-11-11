@@ -17,7 +17,7 @@ import (
 
 func TestPlayerDamageItemsCEntry4E2180NativePointersAndLiveLinks(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
-	if !srv.Objs.Init(40) {
+	if !srv.Objs.InitHigh(40) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

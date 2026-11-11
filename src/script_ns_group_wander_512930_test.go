@@ -38,20 +38,20 @@ func scriptNSGroupWanderFixtureNew512930(t *testing.T, flag uint32, initial ai.A
 	noxflags.UnsetEngine(noxflags.EngineShowAI)
 	t.Cleanup(func() { noxflags.SetEngine(oldEngine) })
 	f.s.SetFrame(0xffffffff)
-	if !f.s.Objs.Init(8) {
+	if !f.s.Objs.InitHigh(8) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(f.s.Objs.FreeObjects)
 	f.s.MapGroups.Init()
 	t.Cleanup(f.s.MapGroups.Free)
-	waypoint, freeWaypoint := alloc.New(server.Waypoint{})
+	waypoint, freeWaypoint := alloc.NewHigh(server.Waypoint{})
 	t.Cleanup(freeWaypoint)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(waypoint)) <= math.MaxUint32 {
 		t.Fatal("native reused waypoint is not above 4 GiB")
 	}
 	for i := 0; i < 8; i++ {
 		unit := f.s.Objs.NewObject(&server.ObjectType{})
-		update, free := alloc.New(server.MonsterUpdateData{})
+		update, free := alloc.NewHigh(server.MonsterUpdateData{})
 		t.Cleanup(free)
 		unit.ObjClass, unit.ObjFlags = object.ClassMonster, object.FlagEnabled
 		unit.Extent = 0xe1234500 + uint32(i)

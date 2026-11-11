@@ -24,7 +24,7 @@ func TestMonsterQuickbarSwapTargetCopiesActualNativeRecord(t *testing.T) {
 		Records               [3]server.DurSpell
 		After                 [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*f = frame{}
 	for i := range f.Before {

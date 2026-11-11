@@ -13,13 +13,13 @@ import (
 )
 
 func TestCurePoisonNativeDispatch52CDB0(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(-1, 2)}
 	wantArg := *arg

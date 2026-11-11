@@ -65,7 +65,7 @@ func TestSkullRawActualCProduction54F9A0(t *testing.T) {
 	s.spells.duration.Init(s)
 	s.FreeObjectTypes()
 	t.Cleanup(s.FreeObjectTypes)
-	if !s.Objs.Init(12) {
+	if !s.Objs.InitHigh(12) {
 		t.Fatal("actual object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

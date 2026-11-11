@@ -48,7 +48,7 @@ func TestPlayerDamagePlayerZapRayNative4E17B0HPAndHurt(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativePlayerZapRayEntry", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(360) {
+	if !s.Objs.InitHigh(360) {
 		t.Fatal("native ray allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -59,12 +59,12 @@ func TestPlayerDamagePlayerZapRayNative4E17B0HPAndHurt(t *testing.T) {
 					t.Run(fmt.Sprintf("%s/observe-%t/state-%d/raw-%d", owner, observe, state, raw), func(t *testing.T) {
 						target := s.Objs.NewObject(&server.ObjectType{Damage: s.Types.ByID("NativePlayerZapRayEntry").Damage})
 						unit, ray := s.Objs.NewObject(&server.ObjectType{}), s.Objs.NewObject(&server.ObjectType{})
-						ud, freeUD := alloc.New(server.PlayerUpdateData{})
-						player, freePlayer := alloc.New(server.Player{})
-						sourceUD, freeSourceUD := alloc.New(server.PlayerUpdateData{})
-						sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
-						npcUD, freeNPCUD := alloc.New(server.MonsterUpdateData{})
-						health, freeHealth := alloc.New(server.HealthData{})
+						ud, freeUD := alloc.NewHigh(server.PlayerUpdateData{})
+						player, freePlayer := alloc.NewHigh(server.Player{})
+						sourceUD, freeSourceUD := alloc.NewHigh(server.PlayerUpdateData{})
+						sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
+						npcUD, freeNPCUD := alloc.NewHigh(server.MonsterUpdateData{})
+						health, freeHealth := alloc.NewHigh(server.HealthData{})
 						for _, free := range []func(){freeUD, freePlayer, freeSourceUD, freeSourcePlayer, freeNPCUD, freeHealth} {
 							t.Cleanup(free)
 						}

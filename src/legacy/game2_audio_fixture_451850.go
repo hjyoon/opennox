@@ -41,11 +41,51 @@ static int ga_fixture_enabled(int set){if(set<0)return sub_453070();if(set)nox_x
 */
 import "C"
 import (
+	"fmt"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/binfile"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/timer"
 	"runtime"
 	"unsafe"
 )
+
+func game2AudioHighFixtureMemory() func() {
+	oldAllocate, oldRelease, oldDefinition := game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService
+	owners := make(map[unsafe.Pointer]func())
+	definitions, freeDefinitions := alloc.CallocHigh(1023, 200)
+	// Preserve the actual pre-initialization scalar bytes and original stride.
+	// Only the fixture's foreign address changes; the product owner is untouched.
+	copy(unsafe.Slice((*byte)(definitions), 1023*200), unsafe.Slice((*byte)(memmap.PtrOff(0x5d4594, 840628)), 1023*200))
+	game2AudioAllocationService = func(size uintptr) unsafe.Pointer {
+		p, release := alloc.MallocHigh(size)
+		owners[p] = release
+		return p
+	}
+	game2AudioReleaseService = func(p unsafe.Pointer) {
+		if release, ok := owners[p]; ok {
+			delete(owners, p)
+			release()
+		} else if oldRelease != nil {
+			oldRelease(p)
+		} else {
+			C.free(p)
+		}
+	}
+	game2AudioDefinitionService = func(i int) unsafe.Pointer {
+		if i < 0 || i >= 1023 {
+			panic("audio fixture definition index")
+		}
+		return unsafe.Add(definitions, uintptr(i)*200)
+	}
+	return func() {
+		game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService = oldAllocate, oldRelease, oldDefinition
+		freeDefinitions()
+		if len(owners) != 0 {
+			panic(fmt.Sprintf("GAME2 audio high fixture retained %d foreign allocations", len(owners)))
+		}
+	}
+}
 
 func game2AudioFixtureLayout() []uintptr {
 	v := make([]uintptr, 21)

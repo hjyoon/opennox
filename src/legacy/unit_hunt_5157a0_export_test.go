@@ -19,7 +19,7 @@ import (
 func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if !srv.Objs.Init(1) {
+	if !srv.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize server object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

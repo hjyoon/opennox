@@ -31,21 +31,21 @@ func TestDefaultDamageLateDefendNative4E0B30CDispatcher(t *testing.T) {
 		return false
 	}
 	t.Cleanup(func() { Nox_xxx_playerSetState_4FA020 = oldSetState })
-	if !srv.Objs.Init(6) {
+	if !srv.Objs.InitHigh(6) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
 	for _, playerTarget := range []bool{false, true} {
 		t.Run(map[bool]string{false: "NPC", true: "player"}[playerTarget], func(t *testing.T) {
 			target, source, item := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-			playerUpdate, freePlayerUpdate := alloc.New(server.PlayerUpdateData{})
-			monsterUpdate, freeMonsterUpdate := alloc.New(server.MonsterUpdateData{})
-			sourceUpdate, freeSourceUpdate := alloc.New(server.PlayerUpdateData{})
-			player, freePlayer := alloc.New(server.Player{})
-			health, freeHealth := alloc.New(server.HealthData{})
-			initData, freeInit := alloc.New(server.ModifierInitData{})
-			first, freeFirst := alloc.New(server.ModifierEff{})
-			second, freeSecond := alloc.New(server.ModifierEff{})
+			playerUpdate, freePlayerUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			monsterUpdate, freeMonsterUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+			sourceUpdate, freeSourceUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
+			health, freeHealth := alloc.NewHigh(server.HealthData{})
+			initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+			first, freeFirst := alloc.NewHigh(server.ModifierEff{})
+			second, freeSecond := alloc.NewHigh(server.ModifierEff{})
 			for _, free := range []func(){freePlayerUpdate, freeMonsterUpdate, freeSourceUpdate, freePlayer, freeHealth, freeInit, freeFirst, freeSecond} {
 				t.Cleanup(free)
 			}

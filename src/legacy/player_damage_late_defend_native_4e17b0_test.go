@@ -19,7 +19,7 @@ func TestPlayerDamageLateDefendNative4E17B0CDispatcher(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
 	srv.Audio.Init(srv)
 	t.Cleanup(srv.Audio.Free)
-	if !srv.Objs.Init(4) {
+	if !srv.Objs.InitHigh(4) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

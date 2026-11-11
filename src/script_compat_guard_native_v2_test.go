@@ -47,7 +47,7 @@ func luaCompatGuardNew(t *testing.T) *luaCompatGuardFixture {
 	f.s.Audio.Init(f.s.Server)
 	t.Cleanup(f.s.Audio.Free)
 	luaCompatAudioDefinitions(t, f.s)
-	if !f.s.Objs.Init(8) {
+	if !f.s.Objs.InitHigh(8) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(f.s.Objs.FreeObjects)
@@ -56,11 +56,11 @@ func luaCompatGuardNew(t *testing.T) *luaCompatGuardFixture {
 	f.other = f.s.Objs.NewObject(&server.ObjectType{})
 	f.owner.ObjClass, f.other.ObjClass = object.ClassPlayer, object.ClassSimple
 	var free func()
-	f.update, free = alloc.New(server.MonsterUpdateData{})
+	f.update, free = alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(free)
-	f.definition, free = alloc.New(server.MonsterDef{})
+	f.definition, free = alloc.NewHigh(server.MonsterDef{})
 	t.Cleanup(free)
-	f.sounds, free = alloc.New([18]uint32{})
+	f.sounds, free = alloc.NewHigh([18]uint32{})
 	t.Cleanup(free)
 	f.sounds[17] = uint32(sound.SoundAnchorCast)
 	id, freeID := alloc.CString("lua_guard_target")

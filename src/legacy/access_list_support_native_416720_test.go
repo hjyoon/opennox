@@ -37,11 +37,11 @@ func TestAccessListSupportCFieldAddresses416720(t *testing.T) {
 			}
 			const guard = 16
 			size := accessSupportFixtureSize416720(item.banned)
-			base := accessListNativeDefaultAlloc416720(size + 2*guard)
+			base := accessListNativeFixtureAlloc416720(size + 2*guard)
 			if base == nil {
 				t.Fatal("C entry allocation")
 			}
-			defer accessListNativeDefaultFree416720(base)
+			defer accessListNativeFixtureFree416720(base)
 			storage := unsafe.Slice((*byte)(base), int(size)+2*guard)
 			copy(storage, bytes.Repeat([]byte{0xA7}, len(storage)))
 			want := append([]byte(nil), storage...)
@@ -151,7 +151,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			h := &accessListNativeHooks416720{
 				// Allowed/Banned stay nil: every list operation uses the real C owners.
 				Allocate: func(size uintptr) unsafe.Pointer {
-					p := accessListNativeDefaultAlloc416720(size)
+					p := accessListNativeFixtureAlloc416720(size)
 					if p == nil {
 						t.Fatal("C-owned entry allocation")
 					}
@@ -172,7 +172,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 					}
 					freed = append(freed, p)
 					dead[p] = true
-					accessListNativeDefaultFree416720(p)
+					accessListNativeFixtureFree416720(p)
 				},
 				Refresh: func() unsafe.Pointer { refreshes++; return nil },
 				Save: func(path string) {
@@ -190,27 +190,27 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 				pop()
 				for _, p := range allocations {
 					if !dead[p] {
-						accessListNativeDefaultFree416720(p)
+						accessListNativeFixtureFree416720(p)
 					}
 				}
 			}()
 			name := func(s string) unsafe.Pointer {
 				units := append(utf16.Encode([]rune(s)), 0)
-				p := accessListNativeDefaultAlloc416720(uintptr(len(units) * 2))
+				p := accessListNativeFixtureAlloc416720(uintptr(len(units) * 2))
 				if p == nil {
 					t.Fatal("C name allocation")
 				}
 				copy(unsafe.Slice((*uint16)(p), len(units)), units)
-				t.Cleanup(func() { accessListNativeDefaultFree416720(p) })
+				t.Cleanup(func() { accessListNativeFixtureFree416720(p) })
 				return p
 			}
 			firstName, secondName, bannedName := name("Alpha"), name("Omega Ω"), name("Banned 中")
 			serialBytes := append([]byte("serial-0001"), 0)
-			serial := accessListNativeDefaultAlloc416720(uintptr(len(serialBytes)))
+			serial := accessListNativeFixtureAlloc416720(uintptr(len(serialBytes)))
 			if serial == nil {
 				t.Fatal("C serial allocation")
 			}
-			defer accessListNativeDefaultFree416720(serial)
+			defer accessListNativeFixtureFree416720(serial)
 			copy(unsafe.Slice((*byte)(serial), len(serialBytes)), serialBytes)
 			for _, p := range []unsafe.Pointer{firstName, secondName} {
 				var result unsafe.Pointer

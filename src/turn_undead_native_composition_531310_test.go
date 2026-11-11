@@ -107,16 +107,16 @@ func TestSpellTurnUndeadPublicCNativeComposition531310(t *testing.T) {
 		Object server.Object
 		After  [32]byte
 	}
-	f, freeRecord := alloc.New(recordFrame{})
+	f, freeRecord := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeRecord)
 	*f = recordFrame{}
-	other, freeOther := alloc.New(server.DurSpell{})
+	other, freeOther := alloc.NewHigh(server.DurSpell{})
 	t.Cleanup(freeOther)
 	*other = server.DurSpell{}
-	caster, freeCaster := alloc.New(sourceFrame{})
+	caster, freeCaster := alloc.NewHigh(sourceFrame{})
 	t.Cleanup(freeCaster)
 	*caster = sourceFrame{}
-	anchor, freeAnchor := alloc.New(sourceFrame{})
+	anchor, freeAnchor := alloc.NewHigh(sourceFrame{})
 	t.Cleanup(freeAnchor)
 	*anchor = sourceFrame{}
 	for i := range f.Before {
@@ -136,7 +136,7 @@ func TestSpellTurnUndeadPublicCNativeComposition531310(t *testing.T) {
 		f.Record.Caster16 = nil
 		owner = nil
 	}
-	if !s.Objs.Init(64) {
+	if !s.Objs.InitHigh(64) {
 		t.Fatal("native allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

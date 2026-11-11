@@ -170,10 +170,10 @@ func TestLuaCompatAudioEffectNativeQueueAndPackets(t *testing.T) {
 							t.Fatalf("actual sound-name lookup %q = %d, want %d", item.name, got, item.id)
 						}
 
-						unit, freeUnit := alloc.New(server.Object{})
-						listener, freeListener := alloc.New(server.Object{})
-						update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-						player, freePlayer := alloc.New(server.Player{})
+						unit, freeUnit := alloc.NewHigh(server.Object{})
+						listener, freeListener := alloc.NewHigh(server.Object{})
+						update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+						player, freePlayer := alloc.NewHigh(server.Player{})
 						id, freeID := alloc.CString("native_audio_source")
 						t.Cleanup(freeID)
 						t.Cleanup(freePlayer)

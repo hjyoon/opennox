@@ -70,7 +70,7 @@ func TestElevatorUpdateCEntryOriginal(t *testing.T) {
 	}
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if !srv.Objs.Init(16) {
+	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native object class initialization")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -146,7 +146,7 @@ func TestElevatorUpdateCEntryOriginal(t *testing.T) {
 				return unsafe.Slice((*byte)(unsafe.Pointer(p)), int(unsafe.Sizeof(*p)))
 			}
 			for n := range ud {
-				p, free := alloc.New(server.ElevatorUpdateData{})
+				p, free := alloc.NewHigh(server.ElevatorUpdateData{})
 				t.Cleanup(free)
 				ud[n] = p
 				rigidNativeAddress(t, unsafe.Pointer(p))

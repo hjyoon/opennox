@@ -73,7 +73,7 @@ func TestLesserHealPrecisionOriginal52DD50NativeFrames(t *testing.T) {
 					frames := make([][]byte, len(sizes))
 					before := make([][]byte, len(sizes))
 					for i, n := range sizes {
-						frame, free := alloc.Make([]byte(nil), n+128)
+						frame, free := alloc.MakeHigh([]byte(nil), n+128)
 						defer free()
 						for k := range frame {
 							frame[k] = 0xa5

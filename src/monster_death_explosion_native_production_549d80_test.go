@@ -132,7 +132,7 @@ func TestMonsterDeathExplosionActualCProduction549D80(t *testing.T) {
 	s.SetFrame(1400)
 	s.SetTickRate(31)
 	s.spells.duration.Init(s)
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native real root object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -163,10 +163,10 @@ func TestMonsterDeathExplosionActualCProduction549D80(t *testing.T) {
 	if unit == nil || target == nil {
 		t.Fatal("real native objects")
 	}
-	ud, freeUD := alloc.New(server.MonsterUpdateData{})
-	td, freeTD := alloc.New(server.MonsterUpdateData{})
-	hp, freeHP := alloc.New(server.HealthData{})
-	th, freeTH := alloc.New(server.HealthData{})
+	ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+	td, freeTD := alloc.NewHigh(server.MonsterUpdateData{})
+	hp, freeHP := alloc.NewHigh(server.HealthData{})
+	th, freeTH := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeUD)
 	t.Cleanup(freeTD)
 	t.Cleanup(freeHP)
@@ -186,8 +186,8 @@ func TestMonsterDeathExplosionActualCProduction549D80(t *testing.T) {
 	if pl == nil {
 		t.Fatal("real native FX receiver")
 	}
-	pu, freePU := alloc.New(server.PlayerUpdateData{})
-	receiver, freeReceiver := alloc.New(server.Object{})
+	pu, freePU := alloc.NewHigh(server.PlayerUpdateData{})
+	receiver, freeReceiver := alloc.NewHigh(server.Object{})
 	t.Cleanup(freePU)
 	t.Cleanup(freeReceiver)
 	pu.Player = pl

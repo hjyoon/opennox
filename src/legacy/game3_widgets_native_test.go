@@ -170,7 +170,7 @@ func TestGame3WidgetsNativeLayoutAndPinnedSelection(t *testing.T) {
 }
 
 func TestGame3WidgetsNativeConstructorAndExistingDelegates(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	defer g.DestroyAll()
 	parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 320, 200, nil)
 	for _, vertical := range []bool{false, true} {
@@ -225,7 +225,7 @@ func TestGame3WidgetsNativeSliderCleanup(t *testing.T) {
 	for _, vertical := range []bool{false, true} {
 		for _, explicit := range []bool{false, true} {
 			t.Run(fmt.Sprintf("vertical/%t/explicit/%t", vertical, explicit), func(t *testing.T) {
-				g := gui.New(nil)
+				g := gui.NewHigh(nil)
 				defer g.DestroyAll()
 				parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 320, 200, nil)
 				draw, freeDraw := alloc.New(gui.WindowData{})

@@ -87,7 +87,7 @@ func TestFumbleCastEquippedItemPredicate52C060(t *testing.T) {
 func TestFumbleCastNativeInventorySavedNextAndLiveTarget52C060(t *testing.T) {
 	objects := make([]*Object, 5)
 	for i := range objects {
-		obj, free := alloc.New(Object{})
+		obj, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		objects[i] = obj
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
@@ -99,7 +99,7 @@ func TestFumbleCastNativeInventorySavedNextAndLiveTarget52C060(t *testing.T) {
 	*first = Object{ObjClass: object.Class(0x1000), ObjFlags: object.Flags(0x100), InvNextItem: second}
 	*second = Object{ObjClass: object.Class(0x1000000), ObjFlags: object.Flags(0x100), InvNextItem: skipped}
 	*skipped = Object{ObjClass: object.Class(0x1000)} // Unequipped: no drop.
-	arg, freeArg := alloc.New(SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = SpellAcceptArg{Obj: target, Pos: types.Ptf(-3, 4)}
 	var events []string
@@ -388,7 +388,7 @@ func TestFumbleCastServerNativeCacheOwnerAndEffectAudio52C060(t *testing.T) {
 	s.Spells.byID = map[spell.ID]*SpellDef{spell.SPELL_FUMBLE: {CastSound: sound.SoundFumbleCast, OnSound: sound.SoundFumbleEffect}}
 	objects := make([]*Object, 5)
 	for i := range objects {
-		obj, free := alloc.New(Object{})
+		obj, free := alloc.NewHigh(Object{})
 		t.Cleanup(free)
 		objects[i] = obj
 	}
@@ -397,7 +397,7 @@ func TestFumbleCastServerNativeCacheOwnerAndEffectAudio52C060(t *testing.T) {
 	*wrong = Object{TypeInd: 9, Field128: ball}
 	*ball = Object{TypeInd: 0x2468, ObjOwner: target, Field128: secondBall, ObjFlags: object.Flags(0xffffffff), Obj130: marker, serverHandle: s.handle}
 	*secondBall = Object{TypeInd: 0x2468, ObjOwner: target}
-	arg, freeArg := alloc.New(SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = SpellAcceptArg{Obj: target, Pos: types.Ptf(-1000, -2000)}
 	before := *arg

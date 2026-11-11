@@ -61,9 +61,9 @@ func TestE2EEarthquakeModesAndBoundedSchedule(t *testing.T) {
 }
 
 func TestE2EEarthquakeDamageWitnessNativeIdentityAndType(t *testing.T) {
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	other, freeOther := alloc.New(server.Object{})
+	other, freeOther := alloc.NewHigh(server.Object{})
 	defer freeOther()
 	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(caster)) <= math.MaxUint32 || uintptr(unsafe.Pointer(other)) <= math.MaxUint32) {
 		t.Fatal("native attribution fixtures below 4 GiB")

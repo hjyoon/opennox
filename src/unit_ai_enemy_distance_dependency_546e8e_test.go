@@ -155,7 +155,7 @@ func TestAIEnemyDistanceDependency546E8ECachedUpdateAndLiveEnemy(t *testing.T) {
 	_, unit, target, _ := aiAliveDependencyNative546A70(t)
 	unit.PosVec, target.PosVec = types.Pointf{}, types.Pointf{X: 3}
 	cached := unit.UpdateDataMonster()
-	other, freeOther := alloc.New(server.MonsterUpdateData{CurrentEnemy: unit, Field97: 91, Field101: 92})
+	other, freeOther := alloc.NewHigh(server.MonsterUpdateData{CurrentEnemy: unit, Field97: 91, Field101: 92})
 	t.Cleanup(freeOther)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(other)) <= math.MaxUint32 {
 		t.Fatal("replacement native update below 4 GiB")

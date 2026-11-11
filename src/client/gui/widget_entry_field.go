@@ -49,7 +49,7 @@ func NewEntryFieldRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h i
 	}
 	win.CopyDrawData(draw)
 
-	d, _ := alloc.New(EntryFieldData{})
+	d, _ := newGUIData(g, EntryFieldData{})
 	*d = *opts
 	clear(d.Text[:])
 	if d.Field_1040 == 0 || d.Field_1040 > 256 {

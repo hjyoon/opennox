@@ -113,7 +113,7 @@ func TestPlayerDamageNPCShieldNative4E17B0DurabilityAndBreak(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(160) {
+	if !s.Objs.InitHigh(160) {
 		t.Fatal("native object allocator initialization failed")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -133,13 +133,13 @@ func TestPlayerDamageNPCShieldNative4E17B0DurabilityAndBreak(t *testing.T) {
 					target, source, missile := newObject("PlayerDamage", 71), newObject("", 72), newObject("", 73)
 					shield, decoy, later := newObject("ArmorDamage", 74), newObject("", 75), newObject("", 76)
 					sibling, firstOwned := newObject("", 77), newObject("", 78)
-					ud, freeUD := alloc.New(server.MonsterUpdateData{})
-					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					initData, freeInit := alloc.New(server.ModifierInitData{})
-					itemUpdate, freeItemUpdate := alloc.New(server.WeaponArmorUpdateData{})
-					npcHP, freeNPCHP := alloc.New(server.HealthData{})
-					shieldHP, freeShieldHP := alloc.New(server.HealthData{})
+					ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+					playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+					itemUpdate, freeItemUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{})
+					npcHP, freeNPCHP := alloc.NewHigh(server.HealthData{})
+					shieldHP, freeShieldHP := alloc.NewHigh(server.HealthData{})
 					*npcHP, *shieldHP = server.HealthData{Cur: 60, Max: 60}, server.HealthData{Cur: 3, Max: 3}
 					*playerUD, *player, *initData, *itemUpdate = server.PlayerUpdateData{}, server.Player{}, server.ModifierInitData{}, server.WeaponArmorUpdateData{}
 					for _, free := range []func(){freeUD, freePlayerUD, freePlayer, freeInit, freeItemUpdate, freeNPCHP, freeShieldHP} {

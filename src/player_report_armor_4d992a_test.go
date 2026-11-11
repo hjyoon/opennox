@@ -21,9 +21,9 @@ func playerArmorReportFixture4D992A(t *testing.T) (*Server, *server.Object, *ser
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(old) })
 	native := server.New(nil, nil, strman.New())
 	t.Cleanup(native.Close)
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	player, freePlayer := alloc.New(server.Player{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freePlayer)
@@ -98,7 +98,7 @@ func TestPlayerReportArmorNative4D992AFloatingPointPacketAndUnchangedCache(t *te
 
 func TestPlayerReportArmorNative4D992ACachedUpdateAndLivePostSendValue(t *testing.T) {
 	s, unit, entry, player := playerArmorReportFixture4D992A(t)
-	live, freeLive := alloc.New(server.PlayerUpdateData{})
+	live, freeLive := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeLive)
 	live.Player, live.Field57, live.Field58 = player, math.Float32bits(0.875), math.Float32bits(0.125)
 	player.PlayerInd = 31

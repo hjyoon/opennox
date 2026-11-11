@@ -156,7 +156,7 @@ func TestSpellFirewalkPublicCNativeComposition52ED40(t *testing.T) {
 			t.Fatal("production type lookup")
 		}
 	}
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

@@ -58,12 +58,12 @@ func TestManaBombCancelProductionReceiveStartupContextV1(t *testing.T) {
 			t.Cleanup(func() { alloc.Free(cli.Viewport()) })
 			cli.Things.Nox_things_free_44C580_B()
 			t.Cleanup(cli.Things.Nox_things_free_44C580_B)
-			cli.Objs.Init(151)
+			cli.Objs.InitHigh(151)
 			t.Cleanup(cli.Objs.Free)
 			// A minimal parsed effect type isolates geometry without invoking a renderer.
 			bytes := append([]byte{9}, []byte("CyanSpark")...)
 			bytes = append(bytes, 0)
-			native, _ := alloc.Make([]byte{}, len(bytes))
+			native, _ := alloc.MakeHigh([]byte{}, len(bytes))
 			copy(native, bytes)
 			file := binfile.NewMemFile(unsafe.Pointer(&native[0]), len(native))
 			if err := cli.Things.ReadType(file, make([]byte, 512)); err != nil {

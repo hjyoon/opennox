@@ -147,16 +147,37 @@ func New(r *noxrender.NoxRender) *GUI {
 	return &GUI{r: r}
 }
 
+// NewHigh explicitly selects high foreign window addresses for native-pointer
+// fixtures. New retains the ordinary product window allocator.
+func NewHigh(r *noxrender.NoxRender) *GUI {
+	return &GUI{r: r, highAddresses: true}
+}
+
+func newGUIData[T comparable](g *GUI, zero T) (*T, func()) {
+	if g != nil && g.highAddresses {
+		return alloc.NewHigh(zero)
+	}
+	return alloc.New(zero)
+}
+
+func makeGUIData[T comparable](g *GUI, src []T, count int) ([]T, func()) {
+	if g != nil && g.highAddresses {
+		return alloc.MakeHigh(src, count)
+	}
+	return alloc.Make(src, count)
+}
+
 type windowRef struct {
 	Win  *Window
 	Next *windowRef
 }
 
 type GUI struct {
-	r       *noxrender.NoxRender
-	inp     *input.Handler
-	borders Borders
-	alloc   alloc.ClassT[Window]
+	r             *noxrender.NoxRender
+	inp           *input.Handler
+	borders       Borders
+	alloc         alloc.ClassT[Window]
+	highAddresses bool
 
 	captured *Window
 	stack    *windowRef
@@ -187,7 +208,11 @@ func (g *GUI) Render() *noxrender.NoxRender {
 
 func (g *GUI) NewWindowRaw(parent *Window, status StatusFlags, px, py, w, h int, fnc94 WindowFunc) *Window {
 	if g.alloc.Class == nil {
-		g.alloc = alloc.NewClassT("Window", Window{}, 576)
+		if g.highAddresses {
+			g.alloc = alloc.NewClassTHigh("Window", Window{}, 576)
+		} else {
+			g.alloc = alloc.NewClassT("Window", Window{}, 576)
+		}
 	}
 	win := g.alloc.NewObject()
 	setExt(win, &windowExt{GUI: g})

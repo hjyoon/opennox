@@ -56,7 +56,7 @@ func TestMonsterFacingNextPublicCEntriesNative545210(t *testing.T) {
 	oldGet := GetServer
 	GetServer = func() Server { return &facingProbeLegacyServer545210{srv: s} }
 	t.Cleanup(func() { GetServer = oldGet })
-	if !s.Objs.Init(4) {
+	if !s.Objs.InitHigh(4) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

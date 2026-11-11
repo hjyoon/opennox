@@ -297,7 +297,7 @@ func TestPlayerDamageSourceLessMixedMissileLavaInvisibleNative4E17B0(t *testing.
 	t.Cleanup(srv.Audio.Free)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)
-	if !srv.Objs.Init(16) {
+	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

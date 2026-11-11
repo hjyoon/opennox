@@ -12,7 +12,7 @@ import (
 // controlled scalar fixture values, not a claim about stock armor equipment.
 func TestPlayerDamageSpellMissileImpactCRecords4E17B0(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
-	if !srv.Objs.Init(16) {
+	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

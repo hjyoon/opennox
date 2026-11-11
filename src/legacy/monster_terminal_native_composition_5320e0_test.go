@@ -100,7 +100,7 @@ func TestMonsterTerminalPublicCNativeComposition5320E0(t *testing.T) {
 	oldGet := GetServer
 	GetServer = func() Server { return &terminalCompositionLegacyServer5320E0{srv: s} }
 	t.Cleanup(func() { GetServer = oldGet })
-	if !s.Objs.Init(64) {
+	if !s.Objs.InitHigh(64) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

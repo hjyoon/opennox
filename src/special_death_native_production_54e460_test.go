@@ -58,7 +58,7 @@ func TestSpecialDeathActualCProduction54E460(t *testing.T) {
 	s.SetTickRate(30)
 	s.FreeObjectTypes()
 	t.Cleanup(s.FreeObjectTypes)
-	if !s.Objs.Init(128) {
+	if !s.Objs.InitHigh(128) {
 		t.Fatal("actual native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -114,7 +114,7 @@ func TestSpecialDeathActualCProduction54E460(t *testing.T) {
 	unit.ObjFlags, unit.PosVec = object.FlagActive|object.FlagEnabled, types.Ptf(300, 300)
 	unit.ObjClass = 0
 	parent.ObjClass, parent.ObjFlags = object.ClassPlayer, object.FlagActive|object.FlagEnabled
-	player, freePlayer := alloc.New(server.Player{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freePlayer)
 	update := (*server.PlayerUpdateData)(parent.UpdateData)
 	update.Player = player

@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	noxcolor "github.com/opennox/libs/color"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const progressBarSetValueEvent = 0x4020
@@ -28,7 +26,7 @@ func NewProgressBarRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h 
 	if g == nil || draw == nil || !draw.Style.IsProgressBar() {
 		return nil
 	}
-	d, _ := alloc.New(progressBarData{})
+	d, _ := newGUIData(g, progressBarData{})
 	win := g.NewWindowRaw(parent, status&^StatusEnabled, px, py, w, h, progressBarProc)
 	if win == nil {
 		return nil

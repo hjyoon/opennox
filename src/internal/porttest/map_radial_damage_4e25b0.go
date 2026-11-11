@@ -207,7 +207,7 @@ func RunRadialOriginal4E25B0(t *testing.T, path string, rootsOnly bool, invoke f
 		t.Run(row.Input.Name, func(t *testing.T) {
 			s := &RadialScene4E25B0{Input: row.Input, flag: uint32(row.Input.Flag), calls: map[string]int{}, events: []radialEvent4E25B0{}}
 			frame := func(size uintptr) []byte {
-				v, free := alloc.Make([]byte(nil), int(size)+64)
+				v, free := alloc.MakeHigh([]byte(nil), int(size)+64)
 				t.Cleanup(free)
 				for n := range v {
 					v[n] = 0xa5

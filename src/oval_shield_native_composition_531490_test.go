@@ -89,7 +89,7 @@ func TestSpellOvalShieldPublicCNativeComposition531490(t *testing.T) {
 	if err := things.WriteSpellsYAML(filepath.Join(dir, "spells.yml"), defs); err != nil {
 		t.Fatal(err)
 	}
-	data, _ := alloc.Make([]byte{}, 4) // Empty original SPEL section; production loader reads YAML.
+	data, _ := alloc.MakeHigh([]byte{}, 4) // Empty original SPEL section; production loader reads YAML.
 	file := binfile.NewMemFile(unsafe.Pointer(&data[0]), len(data))
 	t.Cleanup(file.Free)
 	if err := s.Spells.Read(file, nil, false); err != nil {
@@ -118,28 +118,28 @@ func TestSpellOvalShieldPublicCNativeComposition531490(t *testing.T) {
 		Player server.Player
 		After  [32]byte
 	}
-	f, freeRecord := alloc.New(recordFrame{})
+	f, freeRecord := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeRecord)
 	*f = recordFrame{}
-	source, freeSource := alloc.New(objectFrame{})
+	source, freeSource := alloc.NewHigh(objectFrame{})
 	t.Cleanup(freeSource)
 	*source = objectFrame{}
-	other, freeOther := alloc.New(objectFrame{})
+	other, freeOther := alloc.NewHigh(objectFrame{})
 	t.Cleanup(freeOther)
 	*other = objectFrame{}
-	update, freeUpdate := alloc.New(dataFrame{})
+	update, freeUpdate := alloc.NewHigh(dataFrame{})
 	t.Cleanup(freeUpdate)
 	*update = dataFrame{}
-	info, freePlayer := alloc.New(playerFrame{})
+	info, freePlayer := alloc.NewHigh(playerFrame{})
 	t.Cleanup(freePlayer)
 	*info = playerFrame{}
-	offensive, freeOffensive := alloc.New(recordFrame{})
+	offensive, freeOffensive := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeOffensive)
 	*offensive = recordFrame{}
-	defensive, freeDefensive := alloc.New(recordFrame{})
+	defensive, freeDefensive := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeDefensive)
 	*defensive = recordFrame{}
-	otherSpell, freeOtherSpell := alloc.New(recordFrame{})
+	otherSpell, freeOtherSpell := alloc.NewHigh(recordFrame{})
 	t.Cleanup(freeOtherSpell)
 	*otherSpell = recordFrame{}
 	for i := range f.Before {

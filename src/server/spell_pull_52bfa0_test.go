@@ -17,9 +17,9 @@ import (
 )
 
 func TestPullCastNativePointersLiveOriginAndOrder52BFA0(t *testing.T) {
-	owner, freeOwner := alloc.New(Object{})
+	owner, freeOwner := alloc.NewHigh(Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(Object{})
+	caster, freeCaster := alloc.NewHigh(Object{})
 	defer freeCaster()
 	*owner, *caster = Object{PosVec: types.Ptf(7, 8)}, Object{PosVec: types.Ptf(9, 10)}
 	if unsafe.Sizeof(uintptr(0)) == 8 {

@@ -146,9 +146,9 @@ func TestAINotHealthyDependency546EC4CachedUpdateAndLiveHealth(t *testing.T) {
 	_, unit, _, health := aiAliveDependencyNative546A70(t)
 	cached := unit.UpdateDataMonster()
 	cached.ResumeLevel = math.Float32frombits(0x3e99999a)
-	other, freeOther := alloc.New(server.MonsterUpdateData{ResumeLevel: 0, Field97: 91, Field101: 92})
+	other, freeOther := alloc.NewHigh(server.MonsterUpdateData{ResumeLevel: 0, Field97: 91, Field101: 92})
 	t.Cleanup(freeOther)
-	replacement, freeReplacement := alloc.New(server.HealthData{Cur: 45, Max: 150, Field2: 0xabcd, Field16: 0x12345678})
+	replacement, freeReplacement := alloc.NewHigh(server.HealthData{Cur: 45, Max: 150, Field2: 0xabcd, Field16: 0x12345678})
 	t.Cleanup(freeReplacement)
 	for _, pointer := range []unsafe.Pointer{unsafe.Pointer(other), unsafe.Pointer(replacement)} {
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {

@@ -38,13 +38,35 @@ def historical(name):
 seal = json.loads(historical('seal.json'))
 (report/'frozen-seal.json').write_text(json.dumps(seal, indent=2)+'\n')
 files = []
+frozen_test_replacements = {}
+frozen_test_consumers = []
 for row in seal['frozen_files']:
     raw = historical(row['payload'])
     assert len(raw) == row['bytes'] and hashlib.sha256(raw).hexdigest() == row['sha256']
     target = repo/row['target']
     assert target.is_relative_to(repo/'src')
     if target.exists():
-        assert target.read_bytes() == raw
+        current = target.read_bytes()
+        if target.name.endswith('_test.go'):
+            # The full suite may strengthen its allocator fixture while this
+            # comparison must retain the exact pre-port consumer. Overlay only
+            # selected test registration; never rewrite the tracked source or
+            # substitute an existing engine getter or original output file.
+            frozen = report/'frozen-test-consumers'/row['payload']
+            frozen.parent.mkdir(parents=True, exist_ok=True)
+            with frozen.open('xb') as output:
+                output.write(raw)
+            assert frozen.read_bytes() == raw
+            frozen_test_replacements[str(target)] = str(frozen)
+            frozen_test_consumers.append(dict(
+                target=row['target'], source_bytes=len(current),
+                source_sha256=hashlib.sha256(current).hexdigest(),
+                frozen_payload=row['payload'], frozen_bytes=len(raw),
+                frozen_sha256=hashlib.sha256(raw).hexdigest(),
+                tracked_source_overwritten=False,
+            ))
+        else:
+            assert current == raw
     else:
         with target.open('xb') as output:
             output.write(raw)
@@ -58,13 +80,17 @@ empty = report/'unselected-legacy-tests.go'
 empty.write_text('package legacy\n')
 selected = {repo/row['target'] for row in files if row['target'].endswith('_test.go')}
 replacements = {str(path): str(empty) for path in (repo/'src/legacy').glob('*_test.go') if path not in selected}
+unselected_count = len(replacements)
+replacements.update(frozen_test_replacements)
 overlay = report/'focused-overlay.json'
 overlay.write_text(json.dumps({'Replace': replacements}, indent=2)+'\n')
 (report/'scope.json').write_text(json.dumps(dict(
     utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), source=source,
     payload_revision=payload, profile=profile, frozen_files=files,
     no_existing_engine_or_assertion_edits=True,
-    unrelated_test_registration_excluded=len(replacements), full_suite_credit=False,
+    unrelated_test_registration_excluded=unselected_count, full_suite_credit=False,
+    frozen_test_consumer_overlays=frozen_test_consumers,
+    existing_non_test_getter_and_original_output_exact=True,
     GOEXPERIMENT=env['GOEXPERIMENT'], TMPDIR=env['TMPDIR'],
     platform=platform.platform(),
 ), indent=2)+'\n')

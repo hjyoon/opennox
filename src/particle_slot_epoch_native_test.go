@@ -24,7 +24,7 @@ func TestParticleSlotEpochNativeResetInvalidatesOldHandle(t *testing.T) {
 			p := owner.nox_xxx_particleFxNew_4AF990(image.Pt(3, 5), 1, 4, color.White)
 			assertParticleRegistration4B01B0(t, &owner, p)
 			old := p.chnd
-			dr, free := alloc.New(client.Drawable{})
+			dr, free := alloc.NewHigh(client.Drawable{})
 			defer free()
 			dr.Field_124 = old // explicit stale native consumer input
 			before := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(dr)), int(unsafe.Sizeof(*dr))))

@@ -15,7 +15,7 @@ import (
 
 func TestAINoNewEnemyDependency546A70NativeOriginalDistanceAndGroup(t *testing.T) {
 	s, unit, old, health := aiAliveDependencyNative546A70(t)
-	enemy, freeEnemy := alloc.New(server.Object{})
+	enemy, freeEnemy := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeEnemy)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(enemy)) <= math.MaxUint32 {
 		t.Fatalf("native new enemy below 4 GiB: %p", enemy)

@@ -8,6 +8,12 @@
  * remains exactly 200 bytes. Its old pointer/list slots are NOT native slots.
  * Names and list membership live in the Go-owned sidecar, pointing only to
  * C-owned nodes and interned C strings. No Go pointer is kept by C storage. */
+#if defined(_WIN32) && UINTPTR_MAX == UINT32_MAX
+/* Go/386 aligns uint64 fields to four bytes. MinGW's default eight-byte
+ * structure alignment must not insert padding in these shared native owners.
+ * This affects private layouts only, never the function-call int64 ABI. */
+#pragma pack(push, 4)
+#endif
 typedef struct { uint32_t flags,current,target,delta; uint64_t max_delta,last; } game2_audio_timer;
 typedef struct { game2_audio_timer timers[3]; } game2_audio_group;
 typedef struct game2_audio_event game2_audio_event;
@@ -39,6 +45,9 @@ struct game2_audio_voice {
 };
 typedef struct { game2_audio_event *event; uint32_t serial; void *definition; } game2_audio_handle;
 typedef struct { game2_audio_group base_group; game2_audio_group *event_master; uintptr_t ail_driver; } game2_audio_context;
+#if defined(_WIN32) && UINTPTR_MAX == UINT32_MAX
+#pragma pack(pop)
+#endif
 
 /* Root must replace the corresponding GAME2.h signatures, not add conflicting
  * redeclarations. Pointer results below are real pointers, never raw EAX ints. */

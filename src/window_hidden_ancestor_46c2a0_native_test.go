@@ -8,7 +8,7 @@ import (
 )
 
 func TestWindowHiddenAncestorNative46C2A0HighPointersAndLowByteFlags(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 100, 100, nil)

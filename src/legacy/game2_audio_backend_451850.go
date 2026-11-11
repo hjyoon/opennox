@@ -54,8 +54,32 @@ var game2AudioBanks = make(map[unsafe.Pointer]*game2AudioBank)
 var game2AudioContexts = make(map[unsafe.Pointer]*game2AudioContext)
 var game2AudioSamples = make(map[unsafe.Pointer]*game2AudioSample)
 
-func game2AudioAlloc(n uintptr) unsafe.Pointer           { return C.calloc(1, C.size_t(n)) }
-func game2AudioFree(p unsafe.Pointer)                    { C.free(p) }
+// Synchronous fixture boundaries. Nil keeps the product's calloc/free and
+// existing 200-byte definition owner. Native-pointer comparisons can request
+// foreign high allocations without changing the ordinary runtime allocator.
+var game2AudioAllocationService func(uintptr) unsafe.Pointer
+var game2AudioReleaseService func(unsafe.Pointer)
+var game2AudioDefinitionService func(int) unsafe.Pointer
+
+func game2AudioAlloc(n uintptr) unsafe.Pointer {
+	if game2AudioAllocationService != nil {
+		return game2AudioAllocationService(n)
+	}
+	return C.calloc(1, C.size_t(n))
+}
+func game2AudioFree(p unsafe.Pointer) {
+	if game2AudioReleaseService != nil {
+		game2AudioReleaseService(p)
+	} else {
+		C.free(p)
+	}
+}
+func game2AudioDefinitionPointer(i int) unsafe.Pointer {
+	if game2AudioDefinitionService != nil {
+		return game2AudioDefinitionService(i)
+	}
+	return memmap.PtrOff(0x5d4594, uintptr(840628+200*i))
+}
 func game2AudioBankFor(p unsafe.Pointer) *game2AudioBank { return game2AudioBanks[p] }
 
 // A device context address is NOT an AIL numeric driver handle. Only a context

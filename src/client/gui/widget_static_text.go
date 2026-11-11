@@ -90,7 +90,7 @@ func (g *GUI) NewStaticTextRaw(par *Window, status StatusFlags, px, py, w, h int
 		draw.Window = win
 	}
 	win.CopyDrawData(draw)
-	wdata, _ := alloc.New(StaticTextData{})
+	wdata, _ := newGUIData(g, StaticTextData{})
 	*wdata = *data
 	win.WidgetData = unsafe.Pointer(wdata)
 	return win

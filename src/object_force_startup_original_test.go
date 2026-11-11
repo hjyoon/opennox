@@ -46,9 +46,9 @@ func TestObjectApplyForce52DF80ActualRecoil(t *testing.T) {
 			{"map-diagonal", types.Ptf(4363, 2036), types.Ptf(4016, 1984), [2]uint32{0x40f6e1d2, 0x3f7c770b}},
 		} {
 			t.Run(row.name+"/"+class.String(), func(t *testing.T) {
-				unit, freeUnit := alloc.New(server.Object{})
-				weapon, freeWeapon := alloc.New(server.Object{})
-				effect, freeEffect := alloc.New(server.ModifierEff{})
+				unit, freeUnit := alloc.NewHigh(server.Object{})
+				weapon, freeWeapon := alloc.NewHigh(server.Object{})
+				effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 				t.Cleanup(freeUnit)
 				t.Cleanup(freeWeapon)
 				t.Cleanup(freeEffect)
@@ -122,7 +122,7 @@ func objectApplyForceOriginalFixture52DF80(t *testing.T, path string, contexts i
 		count++
 		t.Run(row.Input.Name, func(t *testing.T) {
 			i := row.Input
-			unit, free := alloc.New(server.Object{})
+			unit, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			*unit = server.Object{ObjClass: object.Class(i.Class), ObjFlags: object.Flags(i.Flags), PosVec: point(i.Position), Mass: math.Float32frombits(i.Mass), ForceVec: point(i.Initial), Field29: 0xa55a1234}
 			if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 {

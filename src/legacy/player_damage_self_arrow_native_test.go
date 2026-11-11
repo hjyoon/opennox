@@ -21,7 +21,7 @@ func TestPlayerDamageSelfArrowCRecords4E17B0(t *testing.T) {
 		return false
 	}
 	t.Cleanup(func() { Nox_xxx_playerSetState_4FA020 = oldSetState })
-	if !srv.Objs.Init(32) {
+	if !srv.Objs.InitHigh(32) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

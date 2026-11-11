@@ -24,9 +24,9 @@ func basicSenderProductionFixture5187E0(t *testing.T) (*Server, *server.Object, 
 	t.Cleanup(base.NetList.Free)
 	base.SetFrame(100)
 	s := &Server{Server: base}
-	unit, fu := alloc.New(server.Object{})
-	update, fd := alloc.New(server.MonsterGenUpdateData{})
-	hp, fh := alloc.New(server.HealthData{})
+	unit, fu := alloc.NewHigh(server.Object{})
+	update, fd := alloc.NewHigh(server.MonsterGenUpdateData{})
+	hp, fh := alloc.NewHigh(server.HealthData{})
 	for _, free := range []func(){fu, fd, fh} {
 		t.Cleanup(free)
 	}

@@ -30,7 +30,7 @@ func TestDefaultDamageFountainNative4E0B30CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: id, OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("native fountain object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

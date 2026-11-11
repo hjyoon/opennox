@@ -23,13 +23,13 @@ func (s *pullCastLegacyServer52BFA0) S() *server.Server { return s.srv }
 // The former six-int C callee narrowed caster +56 before the radial-push
 // export could read its origin; the wide-host position is at +60 as well.
 func TestPullCastGoEntryPreservesNativePosition52BFA0(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*caster = server.Object{PosVec: types.Ptf(123.5, -456.25)}
 	*owner = server.Object{PosVec: types.Ptf(7, 8)}
@@ -62,13 +62,13 @@ func TestPullCastGoEntryPreservesNativePosition52BFA0(t *testing.T) {
 }
 
 func TestPullCastGoDispatchPreservesNativeArguments52BFA0(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(-1, 2)}
 	before := *arg

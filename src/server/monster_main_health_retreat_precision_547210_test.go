@@ -43,7 +43,7 @@ func monsterHealthRetreatNativeFixture547807(t *testing.T) (*Server, *Object, *M
 	t.Helper()
 	s := New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

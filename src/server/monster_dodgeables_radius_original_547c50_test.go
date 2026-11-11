@@ -19,7 +19,7 @@ import (
 func TestMonsterDodgeablesOriginalRadius547C50(t *testing.T) {
 	s := New(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

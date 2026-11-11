@@ -50,7 +50,7 @@ func TestPlayerDamageNPCMonsterSelfStrikeNative4E17B0HPAndDurability(t *testing.
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(80) {
+	if !s.Objs.InitHigh(80) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -67,15 +67,15 @@ func TestPlayerDamageNPCMonsterSelfStrikeNative4E17B0HPAndDurability(t *testing.
 					return obj
 				}
 				target, source, item, owner := newObject("PlayerDamage", 71), newObject("", 72), newObject("ArmorDamage", 74), newObject("", 75)
-				ud, freeUD := alloc.New(server.MonsterUpdateData{})
-				sourceUD, freeSourceUD := alloc.New(server.MonsterUpdateData{})
-				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				initData, freeInit := alloc.New(server.ModifierInitData{})
-				itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
-				npcHP, freeHP := alloc.New(server.HealthData{})
-				itemHP, freeItemHP := alloc.New(server.HealthData{})
-				armorDef, freeDef := alloc.New(server.Modifier{})
+				ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+				sourceUD, freeSourceUD := alloc.NewHigh(server.MonsterUpdateData{})
+				playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+				itemUD, freeItemUD := alloc.NewHigh(server.WeaponArmorUpdateData{})
+				npcHP, freeHP := alloc.NewHigh(server.HealthData{})
+				itemHP, freeItemHP := alloc.NewHigh(server.HealthData{})
+				armorDef, freeDef := alloc.NewHigh(server.Modifier{})
 				for _, free := range []func(){freeUD, freeSourceUD, freePlayerUD, freePlayer, freeInit, freeItemUD, freeHP, freeItemHP, freeDef} {
 					t.Cleanup(free)
 				}

@@ -18,7 +18,7 @@ import (
 func TestObjectPauseUsesNativeWidthMonsterRoute516090(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Server.Objs.Init(1) {
+	if !s.Server.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize server object allocator")
 	}
 	t.Cleanup(s.Server.Objs.FreeObjects)
@@ -27,7 +27,7 @@ func TestObjectPauseUsesNativeWidthMonsterRoute516090(t *testing.T) {
 	t.Cleanup(func() { noxServer = oldServer })
 
 	unit := s.Server.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	unit.ObjClass = object.ClassMonster
 	unit.UpdateData = unsafe.Pointer(update)

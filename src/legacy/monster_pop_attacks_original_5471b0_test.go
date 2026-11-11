@@ -118,6 +118,12 @@ func newPopWorld5471B0(t *testing.T, row popRow5471B0) *popWorld5471B0 {
 	}
 	w := &popWorld5471B0{Unit: (*server.Object)(unsafe.Add(ptr, 1024)), Data: [2]*server.MonsterUpdateData{(*server.MonsterUpdateData)(unsafe.Add(ptr, 4096)), (*server.MonsterUpdateData)(unsafe.Add(ptr, 12288))}, Heap: heap, Events: make([]popEvent5471B0, 0), Writes: make([]popWrite5471B0, 0)}
 	w.Unit.ObjClass = object.ClassMonster
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// The pending pointer store replaces arbitrary canary bytes. Clear
+		// only that cell through C before Go's barrier can shade the old
+		// bytes as a heap pointer; the completed native frame is unchanged.
+		alloc.Memset(unsafe.Pointer(&w.Unit.UpdateData), 0, unsafe.Sizeof(w.Unit.UpdateData))
+	}
 	w.Unit.UpdateData = w.pointer(row.Input.Update)
 	for n, d := range w.Data {
 		d.AIStackInd = row.Input.Data[n].Index

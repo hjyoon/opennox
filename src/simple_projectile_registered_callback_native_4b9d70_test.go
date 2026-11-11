@@ -115,7 +115,7 @@ func testRegisteredSimpleProjectileChild4B9D70(t *testing.T, name string) {
 	cl := client.NewClient(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
-	cl.Objs.Init(4)
+	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	cl.Things.Nox_things_free_44C580_B()
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)

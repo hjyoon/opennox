@@ -28,7 +28,7 @@ func TestPlayerDamageArmedExplosionNative4E17B0CProductionHP(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !srv.Objs.Init(256) {
+	if !srv.Objs.InitHigh(256) {
 		t.Fatal("C-owned object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

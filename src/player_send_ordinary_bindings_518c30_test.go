@@ -26,10 +26,10 @@ func TestPlayerSendOrdinaryBindings518C30(t *testing.T) {
 	base.NetList.Init()
 	t.Cleanup(base.NetList.Free)
 	s := &Server{Server: base}
-	recipient, freeR := alloc.New(server.Object{})
-	unit, freeU := alloc.New(server.Object{})
-	ru, freeRU := alloc.New(server.PlayerUpdateData{})
-	uu, freeUU := alloc.New(server.PlayerUpdateData{})
+	recipient, freeR := alloc.NewHigh(server.Object{})
+	unit, freeU := alloc.NewHigh(server.Object{})
+	ru, freeRU := alloc.NewHigh(server.PlayerUpdateData{})
+	uu, freeUU := alloc.NewHigh(server.PlayerUpdateData{})
 	for _, free := range []func(){freeR, freeU, freeRU, freeUU} {
 		t.Cleanup(free)
 	}

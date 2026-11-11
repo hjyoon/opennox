@@ -32,7 +32,7 @@ type plasmaNativeFrame531580[T comparable] struct {
 
 func plasmaNativeAllocation531580[T comparable](t *testing.T) *T {
 	t.Helper()
-	f, free := alloc.New(plasmaNativeFrame531580[T]{})
+	f, free := alloc.NewHigh(plasmaNativeFrame531580[T]{})
 	*f = plasmaNativeFrame531580[T]{}
 	for i := range f.Before {
 		f.Before[i], f.After[i] = byte(0x51+i), byte(0xe7-i)
@@ -124,7 +124,7 @@ func TestSpellPlasmaPublicCNativeComposition531580(t *testing.T) {
 	oldHec, oldOrb := *rt.HecubahType, *rt.HecubahOrbType
 	*rt.HecubahType, *rt.HecubahOrbType = 0, 0
 	t.Cleanup(func() { *rt.HecubahType, *rt.HecubahOrbType = oldHec, oldOrb })
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

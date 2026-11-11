@@ -94,7 +94,7 @@ func TestSpellEnergyBoltPublicCNativeComposition52E820(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeLightningVictim", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("native objects")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

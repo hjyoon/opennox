@@ -20,9 +20,9 @@ type meteorCastRootServer52D9D0 struct {
 func (s *meteorCastRootServer52D9D0) S() *server.Server { return s.srv }
 
 func TestMeteorCastRootInstantSelectorUsesNativeEntry52D9D0(t *testing.T) {
-	owned, freeOwned := alloc.New(server.Object{})
+	owned, freeOwned := alloc.NewHigh(server.Object{})
 	defer freeOwned()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
 	*owned = server.Object{TypeInd: 321}
 	*owner = server.Object{Field129: owned}

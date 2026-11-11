@@ -31,7 +31,7 @@ func skeletonActualConstructorFixture54A310(t *testing.T) (*server.Server, *serv
 	TestSkeletonDeathNativeLayout54A310(t)
 	s := npcReflectLegacyServer4E17B0(t)
 	s.FreeObjectTypes()
-	if !s.Objs.Init(16) {
+	if !s.Objs.InitHigh(16) {
 		t.Fatal("object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

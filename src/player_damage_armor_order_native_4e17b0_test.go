@@ -53,7 +53,7 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !s.Objs.Init(100) {
+	if !s.Objs.InitHigh(100) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -91,18 +91,18 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 					return obj
 				}
 				target, source, weapon, item := newObject("PlayerDamage", 71), newObject("", 72), newObject("", 777), newObject("ArmorDamage", 301)
-				player, freePlayer := alloc.New(server.Player{})
-				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-				monsterUD, freeMonsterUD := alloc.New(server.MonsterUpdateData{})
-				sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
-				sourcePlayerUD, freeSourcePlayerUD := alloc.New(server.PlayerUpdateData{})
-				sourceMonsterUD, freeSourceMonsterUD := alloc.New(server.MonsterUpdateData{})
-				initData, freeInit := alloc.New(server.ModifierInitData{})
-				weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
-				itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
-				hp, freeHP := alloc.New(server.HealthData{})
-				itemHP, freeItemHP := alloc.New(server.HealthData{})
-				armorDef, freeDef := alloc.New(server.Modifier{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				monsterUD, freeMonsterUD := alloc.NewHigh(server.MonsterUpdateData{})
+				sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
+				sourcePlayerUD, freeSourcePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				sourceMonsterUD, freeSourceMonsterUD := alloc.NewHigh(server.MonsterUpdateData{})
+				initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+				weaponInit, freeWeaponInit := alloc.NewHigh(server.ModifierInitData{})
+				itemUD, freeItemUD := alloc.NewHigh(server.WeaponArmorUpdateData{})
+				hp, freeHP := alloc.NewHigh(server.HealthData{})
+				itemHP, freeItemHP := alloc.NewHigh(server.HealthData{})
+				armorDef, freeDef := alloc.NewHigh(server.Modifier{})
 				for _, free := range []func(){freePlayer, freePlayerUD, freeMonsterUD, freeSourcePlayer, freeSourcePlayerUD, freeSourceMonsterUD, freeInit, freeWeaponInit, freeItemUD, freeHP, freeItemHP, freeDef} {
 					t.Cleanup(free)
 				}

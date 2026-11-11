@@ -69,7 +69,7 @@ func runAPIObjectsRequestR316(t *testing.T, s *Server, path string) *httptest.Re
 func TestAPIObjectsSnapshotR316IndexedFlagsAndErrors(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

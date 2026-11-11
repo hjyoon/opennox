@@ -48,7 +48,7 @@ func TestChainLightningPublicEntryNativeRecord(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	frame, free := alloc.New(nativeFrame{})
+	frame, free := alloc.NewHigh(nativeFrame{})
 	t.Cleanup(free)
 	*frame = nativeFrame{}
 	for i := range frame.Before {

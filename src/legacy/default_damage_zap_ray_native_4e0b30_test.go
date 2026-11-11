@@ -26,7 +26,7 @@ func TestDefaultDamageZapRayNativeCallback4E0B30CRecords(t *testing.T) {
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "NativeZapRayDefaultDamage", OnDamage: &things.ProcFunc{Name: "DefaultDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !srv.Objs.Init(90) {
+	if !srv.Objs.InitHigh(90) {
 		t.Fatal("native ray allocator initialization")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
@@ -36,11 +36,11 @@ func TestDefaultDamageZapRayNativeCallback4E0B30CRecords(t *testing.T) {
 				t.Run(fmt.Sprintf("%s/subclass-%x/raw-%d", owner, subclass, raw), func(t *testing.T) {
 					target := srv.Objs.NewObject(&server.ObjectType{Damage: srv.Types.ByID("NativeZapRayDefaultDamage").Damage})
 					unit, ray := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					ud, freeUD := alloc.New(server.MonsterUpdateData{})
-					npcUD, freeNPCUD := alloc.New(server.MonsterUpdateData{})
-					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					health, freeHealth := alloc.New(server.HealthData{})
+					ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+					npcUD, freeNPCUD := alloc.NewHigh(server.MonsterUpdateData{})
+					playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					health, freeHealth := alloc.NewHigh(server.HealthData{})
 					for _, free := range []func(){freeUD, freeNPCUD, freePlayerUD, freePlayer, freeHealth} {
 						t.Cleanup(free)
 					}

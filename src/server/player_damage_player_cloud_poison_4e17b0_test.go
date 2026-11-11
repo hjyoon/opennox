@@ -89,7 +89,7 @@ func TestPlayerDamagePlayerCloudPoison4E17B0CachedObserve(t *testing.T) {
 	w.ObjClass, w.TypeInd = 0x190008, 1221
 	old := v.UpdateDataPlayer()
 	old.Player.Field3680, old.Player.CameraFollowObj = 2, a
-	live, free := alloc.New(PlayerUpdateData{})
+	live, free := alloc.NewHigh(PlayerUpdateData{})
 	t.Cleanup(free)
 	*live = PlayerUpdateData{Player: old.Player, State: PlayerState16, Field76: 67, Field75: 68, Field21: math.Float32bits(-0.5)}
 	before, pos := *live, w.PrevPos

@@ -160,7 +160,7 @@ type schedFixture531B40 struct {
 func schedNewFixture531B40(t *testing.T) *schedFixture531B40 {
 	f := &schedFixture531B40{server: schedNewServer531B40()}
 	t.Cleanup(f.server.Close)
-	if !f.server.Objs.Init(2) {
+	if !f.server.Objs.InitHigh(2) {
 		t.Fatal("native object owner allocation")
 	}
 	t.Cleanup(f.server.Objs.FreeObjects)

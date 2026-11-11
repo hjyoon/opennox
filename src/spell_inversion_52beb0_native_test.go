@@ -21,7 +21,7 @@ func TestInversionSpell52BEB0RealSelectorAndOwnershipService(t *testing.T) {
 		t.Run(mode, func(t *testing.T) {
 			s := NewServer(nil, nil, strman.New())
 			t.Cleanup(s.Close)
-			if !s.Objs.Init(3) {
+			if !s.Objs.InitHigh(3) {
 				t.Fatal("cannot initialize native object allocator")
 			}
 			t.Cleanup(s.Objs.FreeObjects)
@@ -36,7 +36,7 @@ func TestInversionSpell52BEB0RealSelectorAndOwnershipService(t *testing.T) {
 			missile.PosVec, missile.NewPos = caster.PosVec, caster.PosVec
 			missile.ObjClass, missile.ObjSubClass, missile.ObjFlags = object.ClassMissile, object.SubClass(object.MissileMagic), object.FlagActive
 			missile.Field32 = 123
-			data, freeData := alloc.New(server.MissileUpdateData{})
+			data, freeData := alloc.NewHigh(server.MissileUpdateData{})
 			t.Cleanup(freeData)
 			*data = server.MissileUpdateData{Owner: caster, Target: owner, SpellID: int32(spell.SPELL_MAGIC_MISSILE)}
 			missile.UpdateData = unsafe.Pointer(data)

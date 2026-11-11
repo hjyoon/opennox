@@ -71,7 +71,7 @@ func TestObjectSetHealthZeroNativeDeathEffects(t *testing.T) {
 								s.Audio.Init(s.Server)
 								t.Cleanup(s.Audio.Free)
 								healthZeroDefinitions(t, s)
-								if !s.Objs.Init(2) {
+								if !s.Objs.InitHigh(2) {
 									t.Fatal("cannot allocate real native objects")
 								}
 								t.Cleanup(s.Objs.FreeObjects)
@@ -79,10 +79,10 @@ func TestObjectSetHealthZeroNativeDeathEffects(t *testing.T) {
 								if unit == nil {
 									t.Fatal("cannot allocate a server-associated object")
 								}
-								health, freeHealth := alloc.New(server.HealthData{})
-								update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-								player, freePlayer := alloc.New(server.Player{})
-								sentinel, freeSentinel := alloc.New(server.Object{})
+								health, freeHealth := alloc.NewHigh(server.HealthData{})
+								update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+								player, freePlayer := alloc.NewHigh(server.Player{})
+								sentinel, freeSentinel := alloc.NewHigh(server.Object{})
 								t.Cleanup(freeSentinel)
 								t.Cleanup(freePlayer)
 								t.Cleanup(freeUpdate)

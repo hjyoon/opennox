@@ -31,9 +31,9 @@ func TestGameExPacketBoundsR270(t *testing.T) {
 		noxflags.ResetGame()
 		noxflags.SetGame(previousGame)
 	}()
-	units, freeUnits := alloc.Make([]server.Object{}, 4)
+	units, freeUnits := alloc.MakeHigh([]server.Object{}, 4)
 	defer freeUnits()
-	updates, freeUpdates := alloc.Make([]server.PlayerUpdateData{}, 4)
+	updates, freeUpdates := alloc.MakeHigh([]server.PlayerUpdateData{}, 4)
 	defer freeUpdates()
 	p := s.Players.NewRaw(0x1234)
 	if p == nil {

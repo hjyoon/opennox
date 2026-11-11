@@ -23,7 +23,7 @@ func TestSentryGlobeFreeObject510FD0UnlinksBeforeRelease(t *testing.T) {
 			t.Run(fmt.Sprintf("enabled=%t/%s", enabled, position), func(t *testing.T) {
 				s := New(nil, nil, strman.New())
 				t.Cleanup(s.Close)
-				if !s.Objs.Init(4) {
+				if !s.Objs.InitHigh(4) {
 					t.Fatal("object allocator initialization failed")
 				}
 				t.Cleanup(s.Objs.FreeObjects)

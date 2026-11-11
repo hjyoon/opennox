@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -148,6 +149,9 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 		}
 	}
 	bin := filepath.Join(binDir, "network-tables-native")
+	if runtime.GOOS == "windows" {
+		bin += ".exe"
+	}
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-Wno-sign-compare", "-x", "c", "-", "-o", bin)
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)

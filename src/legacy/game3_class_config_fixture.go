@@ -4,6 +4,7 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include <wctype.h>
+#include "native_fixture_alloc.h"
 #include "game3_class_config_reference.h"
 #include "game3_class_config_options.h"
 extern nox_window* dword_5d4594_1308084;
@@ -32,14 +33,15 @@ static size_t game3_fixture_layout(int which) {switch(which){case 0:return sizeo
 import "C"
 import (
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"unsafe"
 )
 
 func game3FixtureConfig(reference bool, which int, text *string) (int, []byte, uintptr) {
 	var p unsafe.Pointer
 	if text != nil {
-		p = C.malloc(C.size_t(len(*text) + 33))
-		defer C.free(p)
+		p = C.nox_native_fixture_calloc_high(1, C.size_t(len(*text)+33))
+		defer C.nox_native_fixture_free_high(p)
 		C.memset(p, 0xD3, C.size_t(len(*text)+33))
 		copy(unsafe.Slice((*byte)(unsafe.Add(p, 8)), len(*text)+1), *text)
 		*(*byte)(unsafe.Add(p, 8+len(*text))) = 0
@@ -60,8 +62,8 @@ func game3FixtureConfig(reference bool, which int, text *string) (int, []byte, u
 	return int(r), after, uintptr(p)
 }
 func game3FixtureName(reference bool, words []uint16) (int, []byte) {
-	p := C.malloc(C.size_t(2*len(words) + 32))
-	defer C.free(p)
+	p := C.nox_native_fixture_calloc_high(1, C.size_t(2*len(words)+32))
+	defer C.nox_native_fixture_free_high(p)
 	C.memset(p, 0xA7, C.size_t(2*len(words)+32))
 	copy(unsafe.Slice((*uint16)(unsafe.Add(p, 8)), len(words)), words)
 	ref := C.int(0)
@@ -72,8 +74,8 @@ func game3FixtureName(reference bool, words []uint16) (int, []byte) {
 	return int(r), append([]byte(nil), unsafe.Slice((*byte)(p), 2*len(words)+32)...)
 }
 func game3FixtureMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr {
-	p := C.malloc(3)
-	defer C.free(p)
+	p := C.nox_native_fixture_calloc_high(1, 3)
+	defer C.nox_native_fixture_free_high(p)
 	copy(unsafe.Slice((*byte)(p), 3), rgb[:])
 	v := C.int(0)
 	if ref {
@@ -107,8 +109,8 @@ func game3FixtureRadioCallbackWords(w *gui.Window) (uintptr, uintptr) {
 	return uintptr(unsafe.Pointer(p.field_93)), uintptr(unsafe.Pointer(p.draw_func))
 }
 func game3FixtureRadioText(w *gui.Window, words []uint16) []uint16 {
-	p := C.malloc(C.size_t(2 * len(words)))
-	defer C.free(p)
+	p := C.nox_native_fixture_calloc_high(1, C.size_t(2*len(words)))
+	defer C.nox_native_fixture_free_high(p)
 	copy(unsafe.Slice((*uint16)(p), len(words)), words)
 	C.game3_fixture_radio((*C.nox_window)(w.C()), 16385, C.uintptr_t(uintptr(p)), 0, 1)
 	cw := (*C.nox_window)(w.C())
@@ -116,9 +118,9 @@ func game3FixtureRadioText(w *gui.Window, words []uint16) []uint16 {
 }
 func game3FixtureConfigAddress() unsafe.Pointer { return unsafe.Pointer(C.sub_4A7EF0()) }
 func game3FixtureLookup(text string) int {
-	p := C.CString(text)
-	defer C.free(unsafe.Pointer(p))
-	return int(C.sub_4A7B40(p))
+	p, free := alloc.CStringHigh(text)
+	defer free()
+	return int(C.sub_4A7B40((*C.char)(unsafe.Pointer(p))))
 }
 func game3FixtureUnknownOptions(w *gui.Window) [3]int {
 	return [3]int{int(C.sub_4AAA70()), int(C.sub_4AABE0((*C.nox_window)(w.C()), -902, nil, 0)), int(C.sub_4AB340((*C.nox_window)(w.C()), 21, 1, 0))}

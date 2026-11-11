@@ -39,7 +39,7 @@ func TestObjectSetHealthZeroNativeMonsterLifecycle(t *testing.T) {
 							s.SetFrame(37)
 							s.Audio.Init(s.Server)
 							t.Cleanup(s.Audio.Free)
-							if !s.Objs.Init(2) {
+							if !s.Objs.InitHigh(2) {
 								t.Fatal("cannot initialize the real native object allocator")
 							}
 							t.Cleanup(s.Objs.FreeObjects)
@@ -47,8 +47,8 @@ func TestObjectSetHealthZeroNativeMonsterLifecycle(t *testing.T) {
 							if unit == nil {
 								t.Fatal("cannot allocate a server-associated monster")
 							}
-							update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-							health, freeHealth := alloc.New(server.HealthData{})
+							update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+							health, freeHealth := alloc.NewHigh(server.HealthData{})
 							t.Cleanup(freeHealth)
 							t.Cleanup(freeUpdate)
 							*health = server.HealthData{Cur: 17, Max: 31, Field2: 0x4321, Field16: 0x87654321}

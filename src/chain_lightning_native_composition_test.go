@@ -24,12 +24,12 @@ func TestChainLightningNativeCRealWandAndRayAllocator(t *testing.T) {
 		t.Fatal("native duration allocator")
 	}
 	t.Cleanup(s.Spells.Dur.Free)
-	caster, freeCaster := alloc.New(server.Object{})
-	wand, freeWand := alloc.New(server.Object{})
-	target, freeTarget := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	data, freeData := alloc.New(server.WandUseData{})
-	record, freeRecord := alloc.New(server.DurSpell{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	wand, freeWand := alloc.NewHigh(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	data, freeData := alloc.NewHigh(server.WandUseData{})
+	record, freeRecord := alloc.NewHigh(server.DurSpell{})
 	for _, free := range []func(){freeCaster, freeWand, freeTarget, freeUpdate, freeData, freeRecord} {
 		t.Cleanup(free)
 	}

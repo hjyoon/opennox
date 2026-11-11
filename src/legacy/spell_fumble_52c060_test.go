@@ -25,11 +25,11 @@ func (s *fumbleCastLegacyServer52C060) S() *server.Server { return s.srv }
 // monster needs no inventory or physics side effects, but still faults on
 // that pointer load in the old implementation.
 func TestFumbleCastGoEntryPreservesTarget52C060(t *testing.T) {
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*target = server.Object{ObjClass: object.ClassMonster, ObjSubClass: object.SubClass(0x2000)}
 	*caster = server.Object{PosVec: types.Ptf(123.5, -456.25)}
@@ -51,13 +51,13 @@ func TestFumbleCastGoEntryPreservesTarget52C060(t *testing.T) {
 }
 
 func TestFumbleCastGoDispatchPreservesNativeArguments52C060(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	defer freeSecond()
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(-1, 2)}
 	before := *arg

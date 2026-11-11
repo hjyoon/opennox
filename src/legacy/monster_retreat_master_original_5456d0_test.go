@@ -129,6 +129,14 @@ func newRetreatMasterWorld5456D0(t *testing.T, input retreatMasterInput5456D0) *
 	w.Health = (*server.HealthData)(unsafe.Add(ptr, 49152))
 	w.Items = [2]*server.AIStackItem{(*server.AIStackItem)(unsafe.Add(ptr, 53248)), (*server.AIStackItem)(unsafe.Add(ptr, 55296))}
 	unit := w.Objects[0]
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// Each pointer cell below still contains the raw canary pattern.
+		// Remove only the bytes these typed stores are about to replace,
+		// keeping Go's barrier from shading a fabricated old heap pointer.
+		alloc.Memset(unsafe.Pointer(&unit.ObjOwner), 0, unsafe.Sizeof(unit.ObjOwner))
+		alloc.Memset(unsafe.Pointer(&unit.UpdateData), 0, unsafe.Sizeof(unit.UpdateData))
+		alloc.Memset(unsafe.Pointer(&unit.HealthData), 0, unsafe.Sizeof(unit.HealthData))
+	}
 	unit.ObjClass, unit.ObjOwner, unit.UpdateData = object.Class(input.UnitClass), w.obj(input.Owner), w.update(input.Update)
 	unit.HealthData, unit.Buffs = w.Health, input.Buffs
 	if input.NilHealth {

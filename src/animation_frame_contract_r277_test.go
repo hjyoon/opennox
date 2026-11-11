@@ -116,7 +116,7 @@ func frameRemoveFixtureR277(t *testing.T) (*Client, *client.Drawable, *client.An
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	t.Cleanup(cl.Render().Part.Free)
-	cl.Objs.Init(4)
+	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}}
 	dr := cl.Objs.New()

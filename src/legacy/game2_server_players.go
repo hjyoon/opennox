@@ -17,7 +17,7 @@ func g2ServerClearList(head *C.nox_list_item_t) {
 	for p := g2ServerFirst(head); p != nil; {
 		next := g2ServerNext(p)
 		accessListNativeRemove416720((*accessListNode416720)(p))
-		C.free(p)
+		g2ServerRelease(p)
 		p = next
 	}
 	accessListNativeClear416720((*accessListNode416720)(unsafe.Pointer(head)))
@@ -185,7 +185,7 @@ func sub_456E40(id, remove C.int) C.int {
 		if uint32(entry.net_code) == uint32(id) {
 			if remove != 0 {
 				accessListNativeRemove416720((*accessListNode416720)(p))
-				C.free(p)
+				g2ServerRelease(p)
 			}
 			return C.int(i)
 		}
@@ -223,7 +223,7 @@ func sub_456F10(name *C.wchar2_t, remove C.int) C.int {
 		if C.game2_server_icmp(&entry.name[0], name) == 0 {
 			if remove != 0 {
 				accessListNativeRemove416720((*accessListNode416720)(p))
-				C.free(p)
+				g2ServerRelease(p)
 			}
 			return C.int(i)
 		}
@@ -261,7 +261,7 @@ func sub_457140(id C.int, name *C.wchar2_t) C.int {
 	if w == nil {
 		return 0
 	}
-	p := C.calloc(1, C.sizeof_nox_gui_server_player_entry)
+	p := g2ServerAllocate(1, C.sizeof_nox_gui_server_player_entry)
 	if p == nil {
 		return 0
 	}

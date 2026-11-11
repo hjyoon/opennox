@@ -32,7 +32,7 @@ func defaultDamageCasterImpactFixture4E0B30(t *testing.T, owner, victim string) 
 		w = a
 		w.ObjOwner = nil
 	case "player-owned-NPC", "imaginary-owned-NPC":
-		update, freeUpdate := alloc.New(MonsterUpdateData{})
+		update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 		t.Cleanup(freeUpdate)
 		*update = MonsterUpdateData{Field523_2: 66, Field1: math.Float32bits(0.375)}
 		w.ObjClass, w.ObjSubClass, w.UpdateData = object.ClassMonster, 0x11012, unsafe.Pointer(update)
@@ -365,12 +365,12 @@ func TestDefaultDamageCasterImpact4E0B30LiveDefense(t *testing.T) {
 	for _, victim := range []string{"NPC", "player"} {
 		t.Run(victim, func(t *testing.T) {
 			v, a, w := defaultDamageCasterImpactFixture4E0B30(t, "player-owned-NPC", victim)
-			item, freeItem := alloc.New(Object{})
-			m, freeModifier := alloc.New(ModifierEff{})
-			fn, freeFn := alloc.New(byte(0))
-			init, freeInit := alloc.New(ModifierInitData{})
-			liveTarget, freeTarget := alloc.New(MonsterUpdateData{})
-			liveSource, freeSource := alloc.New(MonsterUpdateData{})
+			item, freeItem := alloc.NewHigh(Object{})
+			m, freeModifier := alloc.NewHigh(ModifierEff{})
+			fn, freeFn := alloc.NewHigh(byte(0))
+			init, freeInit := alloc.NewHigh(ModifierInitData{})
+			liveTarget, freeTarget := alloc.NewHigh(MonsterUpdateData{})
+			liveSource, freeSource := alloc.NewHigh(MonsterUpdateData{})
 			for _, free := range []func(){freeItem, freeModifier, freeFn, freeInit, freeTarget, freeSource} {
 				t.Cleanup(free)
 			}
@@ -433,7 +433,7 @@ func TestDefaultDamageCasterImpact4E0B30LiveQualifier(t *testing.T) {
 		for _, live := range []string{"player", "class-zero", "monster", "melee", "hammer", "wand"} {
 			t.Run(victim+"/"+live, func(t *testing.T) {
 				v, a, w := defaultDamageCasterImpactFixture4E0B30(t, "player-owned-NPC", victim)
-				init, freeInit := alloc.New(ModifierInitData{})
+				init, freeInit := alloc.NewHigh(ModifierInitData{})
 				t.Cleanup(freeInit)
 				*init = ModifierInitData{}
 				w.InitData = unsafe.Pointer(init)

@@ -88,7 +88,7 @@ func TestMonsterFacingPublicCNativeComposition545210(t *testing.T) {
 	oldEngine := noxflags.GetEngine()
 	noxflags.UnsetEngine(oldEngine)
 	t.Cleanup(func() { noxflags.UnsetEngine(noxflags.GetEngine()); noxflags.SetEngine(oldEngine) })
-	if !s.Objs.Init(4) {
+	if !s.Objs.InitHigh(4) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

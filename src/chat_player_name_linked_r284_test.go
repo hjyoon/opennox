@@ -140,7 +140,7 @@ func r284LinkedChatChild(t *testing.T, index int) {
 	noxflags.ResetEngine()
 	viewport := c.Viewport()
 	viewport.Screen, viewport.World, viewport.Size = pix.Rect, pix.Rect, pix.Size()
-	c.Objs.Init(2)
+	c.Objs.InitHigh(2)
 	t.Cleanup(c.Objs.Free)
 	dr := c.Objs.New()
 	if dr == nil {

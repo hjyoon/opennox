@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/timer"
 	"unsafe"
 )
@@ -92,7 +91,7 @@ func game2AudioInit451850(context unsafe.Pointer, bank unsafe.Pointer) int32 {
 	for i := range s.Definitions {
 		d := &s.Definitions[i]
 		// Actual existing C-owned scalar owner, preserving record stride.
-		d.Pointer = memmap.PtrOff(0x5d4594, uintptr(840628+200*i))
+		d.Pointer = game2AudioDefinitionPointer(i)
 		d.Name = game2AudioSoundName(i)
 		s.DefinitionMap[d.Pointer] = d
 		game2AudioReset451920(d.Pointer)

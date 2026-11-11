@@ -108,7 +108,7 @@ func TestSelfMissileFlamePlayerPrefixMatchesGAMEEXE4E17B0(t *testing.T) {
 			}
 			var shield *Object
 			if shieldGate {
-				item, free := alloc.New(Object{})
+				item, free := alloc.NewHigh(Object{})
 				t.Cleanup(free)
 				*item = Object{ObjClass: object.ClassArmor, ObjSubClass: 2, ObjFlags: object.FlagEquipped}
 				v.InvFirstItem, shield = item, item

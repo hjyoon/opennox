@@ -21,19 +21,19 @@ func TestDefaultDamageLiveMetadataNative4E0B30CRecords(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
 	srv.Audio.Init(srv)
 	t.Cleanup(srv.Audio.Free)
-	if !srv.Objs.Init(9) {
+	if !srv.Objs.InitHigh(9) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)
 	for _, latch := range []uint32{0, 7, math.MaxUint32} {
 		t.Run(fmt.Sprintf("latch-%#x", latch), func(t *testing.T) {
 			target, source, weapon := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-			old, freeOld := alloc.New(server.MonsterUpdateData{})
-			live, freeLive := alloc.New(server.MonsterUpdateData{})
-			playerUpdate, freePlayerUpdate := alloc.New(server.PlayerUpdateData{})
-			player, freePlayer := alloc.New(server.Player{})
-			health, freeHealth := alloc.New(server.HealthData{})
-			initData, freeInit := alloc.New(server.ModifierInitData{})
+			old, freeOld := alloc.NewHigh(server.MonsterUpdateData{})
+			live, freeLive := alloc.NewHigh(server.MonsterUpdateData{})
+			playerUpdate, freePlayerUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
+			health, freeHealth := alloc.NewHigh(server.HealthData{})
+			initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
 			for _, free := range []func(){freeOld, freeLive, freePlayerUpdate, freePlayer, freeHealth, freeInit} {
 				t.Cleanup(free)
 			}

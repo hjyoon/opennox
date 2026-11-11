@@ -169,7 +169,7 @@ func TestRewardSpellBookServerUsesLogicRNGSpellRegistryAndObjectFactory4F09F0(t 
 	t.Cleanup(func() { servers.Delete(srv.handle) })
 	srv.Rand.Logic = prand.New(2011)
 	srv.Objs.init(srv.handle)
-	if !srv.Objs.Init(2) {
+	if !srv.Objs.InitHigh(2) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

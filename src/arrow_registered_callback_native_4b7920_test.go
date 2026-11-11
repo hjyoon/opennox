@@ -171,7 +171,7 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 	if style == "pool-full" {
 		poolSize = 1
 	}
-	cl.Objs.Init(poolSize)
+	cl.Objs.InitHigh(poolSize)
 	t.Cleanup(cl.Objs.Free)
 	cl.Things.Nox_things_free_44C580_B()
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)

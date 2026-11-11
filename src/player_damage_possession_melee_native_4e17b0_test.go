@@ -48,7 +48,7 @@ func TestPlayerDamagePossessionMeleeNative4E17B0(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativePossessionMeleePlayerDamage", OnDamage: &things.ProcFunc{Name: "PlayerDamage"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(70) {
+	if !s.Objs.InitHigh(70) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -75,13 +75,13 @@ func TestPlayerDamagePossessionMeleeNative4E17B0(t *testing.T) {
 				}
 				target := newObject(s.Types.ByID("NativePossessionMeleePlayerDamage").Damage, 71)
 				source, item := newObject(nil, 88), newObject(nil, 777)
-				ud, freeUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				sourceUD, freeSourceUD := alloc.New(server.MonsterUpdateData{})
-				sourcePlayerUD, freeSourcePlayerUD := alloc.New(server.PlayerUpdateData{})
-				sourcePlayer, freeSourcePlayer := alloc.New(server.Player{})
-				health, freeHealth := alloc.New(server.HealthData{})
-				init, freeInit := alloc.New(server.ModifierInitData{})
+				ud, freeUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				sourceUD, freeSourceUD := alloc.NewHigh(server.MonsterUpdateData{})
+				sourcePlayerUD, freeSourcePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				sourcePlayer, freeSourcePlayer := alloc.NewHigh(server.Player{})
+				health, freeHealth := alloc.NewHigh(server.HealthData{})
+				init, freeInit := alloc.NewHigh(server.ModifierInitData{})
 				for _, free := range []func(){freeUD, freePlayer, freeSourceUD, freeSourcePlayerUD, freeSourcePlayer, freeHealth, freeInit} {
 					t.Cleanup(free)
 				}

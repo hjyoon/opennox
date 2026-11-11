@@ -25,8 +25,8 @@ import (
 // original low-byte store at MonsterUpdateData.Field333.
 func scriptNSRoamFlagFixture515C80(t *testing.T) (*server.Object, *server.MonsterUpdateData) {
 	t.Helper()
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freeUnit)
 	*unit = server.Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagEnabled, Extent: 0xf1234567, NetCode: 123, UpdateData: unsafe.Pointer(update)}

@@ -91,10 +91,10 @@ func NewScrollListBoxRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, 
 	}
 	win.CopyDrawData(draw)
 
-	d, _ := alloc.New(ScrollListBoxData{})
+	d, _ := newGUIData(g, ScrollListBoxData{})
 	*d = *opts
 	if d.Count != 0 {
-		items, _ := alloc.Make([]ScrollListBoxItem(nil), int(d.Count))
+		items, _ := makeGUIData(g, []ScrollListBoxItem(nil), int(d.Count))
 		d.Items = &items[0]
 	}
 	d.Field_10 = 0
@@ -103,7 +103,7 @@ func NewScrollListBoxRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, 
 	d.Field_13_0 = uint16(max(h-scrollListBoxTitleHeight(win), 0))
 	d.Field_13_1 = 0
 	if d.Field_4 != 0 && d.Count != 0 {
-		selected, _ := alloc.Make([]uint32(nil), int(d.Count))
+		selected, _ := makeGUIData(g, []uint32(nil), int(d.Count))
 		for i := range selected {
 			selected[i] = ^uint32(0)
 		}

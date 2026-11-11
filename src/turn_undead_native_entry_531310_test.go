@@ -59,17 +59,17 @@ func TestTurnUndeadNextPublicEntryNativeRecordProbe531310(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	f, free := alloc.New(frame{})
+	f, free := alloc.NewHigh(frame{})
 	t.Cleanup(free)
 	*f = frame{}
-	source, freeSource := alloc.New(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSource)
 	*source = server.Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(11.5, -22.25)}
 	for i := range f.Before {
 		f.Before[i], f.After[i] = byte(0x51+i), byte(0xe7-i)
 	}
 	f.Record = server.DurSpell{ID: 0xabcd, Spell: 0x66, Level: 3, Obj12: source, Caster16: source, Obj24: source, Target48: source, Field72: 0x55aa, Pos: types.Ptf(100, 200), Frame68: 0x87654321, Flags88: 0x77556601}
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

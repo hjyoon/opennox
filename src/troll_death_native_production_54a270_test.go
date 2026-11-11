@@ -105,7 +105,7 @@ func TestTrollDeathActualCProduction54A270(t *testing.T) {
 	s.spells.duration.Init(s)
 	s.FreeObjectTypes()
 	t.Cleanup(s.FreeObjectTypes)
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("real object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -173,7 +173,7 @@ func TestTrollDeathActualCProduction54A270(t *testing.T) {
 	unit.ObjFlags = object.FlagActive | object.FlagEnabled
 	unit.PosVec = types.Ptf(300, 300)
 	unitFrame := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(unit)), int(unsafe.Sizeof(*unit))))
-	replacement, freeReplacement := alloc.New(server.ToxicCloudUpdateData{Duration: -456})
+	replacement, freeReplacement := alloc.NewHigh(server.ToxicCloudUpdateData{Duration: -456})
 	t.Cleanup(freeReplacement)
 	replacement.Duration = -456
 	var cloud *server.Object

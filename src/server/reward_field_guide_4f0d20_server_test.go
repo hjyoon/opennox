@@ -127,7 +127,7 @@ func TestRewardFieldGuideServerUsesLogicRNGAndObjectFactory4F0D20(t *testing.T) 
 	t.Cleanup(func() { servers.Delete(srv.handle) })
 	srv.Rand.Logic = prand.New(2011)
 	srv.Objs.init(srv.handle)
-	if !srv.Objs.Init(2) {
+	if !srv.Objs.InitHigh(2) {
 		t.Fatal("object allocator initialization failed")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

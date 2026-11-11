@@ -467,7 +467,7 @@ func TestLockCast52CE90RealIndexedDoorsNativeOwnersAndAudio(t *testing.T) {
 	s.SetFrame(123)
 	s.Spells.byID = map[spell.ID]*SpellDef{spell.SPELL_LOCK: {CastSound: sound.SoundLockCast}}
 	newObject := func(value Object) *Object {
-		obj, free := alloc.New(value)
+		obj, free := alloc.NewHigh(value)
 		t.Cleanup(free)
 		*obj = value // alloc.New takes a type witness, not an initial value.
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
@@ -479,7 +479,7 @@ func TestLockCast52CE90RealIndexedDoorsNativeOwnersAndAudio(t *testing.T) {
 	aim := newObject(Object{PosVec: types.Ptf(310, 310)})
 	otherOwner := newObject(Object{PosVec: types.Ptf(300, 300)})
 	makeDoor := func(pos types.Pointf) *Object {
-		data, free := alloc.New(DoorUpdateData{CurrentDirection: 8, TileX: 14, TileY: 14, LockCode: 6})
+		data, free := alloc.NewHigh(DoorUpdateData{CurrentDirection: 8, TileX: 14, TileY: 14, LockCode: 6})
 		t.Cleanup(free)
 		*data = DoorUpdateData{CurrentDirection: 8, TileX: 14, TileY: 14, LockCode: 6}
 		obj := newObject(Object{ObjClass: object.ClassDoor, ObjFlags: object.FlagActive, PosVec: pos, NewPos: pos, UpdateData: unsafe.Pointer(data)})

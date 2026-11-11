@@ -129,7 +129,7 @@ func TestGreaterHealPublicCUpdateNativeComposition52F2E0(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "NativeGreaterHealUpdateActor"}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native object pool")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

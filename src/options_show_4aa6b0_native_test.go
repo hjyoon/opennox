@@ -41,7 +41,7 @@ func TestOptionsShow4AA6B0CEntryNativeWidgetsAndAnimation(t *testing.T) {
 		checks[index] = g.NewWindowRaw(root, gui.StatusEnabled, 0, 30*index, 20, 20, nil)
 		checks[index].SetID(uint(361 + index))
 		checks[index].DrawData().Field0 = 0xa5a50104
-		current, free := alloc.New(timer.Timer{})
+		current, free := alloc.NewHigh(timer.Timer{})
 		t.Cleanup(free)
 		current.Current, currents[index] = values[index], current
 	}

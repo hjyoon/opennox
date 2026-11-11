@@ -21,9 +21,9 @@ func playerItemEnchantmentReportFixture4D99A7(t *testing.T) (*Server, *server.Ob
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(old) })
 	native := server.New(nil, nil, strman.New())
 	t.Cleanup(native.Close)
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	player, freePlayer := alloc.New(server.Player{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freePlayer)
@@ -126,9 +126,9 @@ func TestPlayerReportItemEnchantmentNative4D99A7ReportsOnlyTheLowItemEnchantment
 
 func TestPlayerReportItemEnchantmentNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *testing.T) {
 	s, unit, entry, before := playerItemEnchantmentReportFixture4D99A7(t)
-	live, freeLive := alloc.New(server.PlayerUpdateData{})
-	after, freeAfter := alloc.New(server.Player{})
-	foreign, freeForeign := alloc.New(server.Player{})
+	live, freeLive := alloc.NewHigh(server.PlayerUpdateData{})
+	after, freeAfter := alloc.NewHigh(server.Player{})
+	foreign, freeForeign := alloc.NewHigh(server.Player{})
 	t.Cleanup(freeLive)
 	t.Cleanup(freeAfter)
 	t.Cleanup(freeForeign)
@@ -159,7 +159,7 @@ func TestPlayerReportItemEnchantmentNative4D99A7CachedUpdateAndPostSendPlayerAnd
 
 func TestPlayerReportItemEnchantmentNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
 	s, unit, entry, goldPlayer := playerItemEnchantmentReportFixture4D99A7(t)
-	enchantmentPlayer, freeEnchantmentPlayer := alloc.New(server.Player{})
+	enchantmentPlayer, freeEnchantmentPlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freeEnchantmentPlayer)
 	goldPlayer.PlayerInd, goldPlayer.GoldVal, goldPlayer.Field2168 = 31, 37, 12
 	enchantmentPlayer.PlayerInd, enchantmentPlayer.Field2172, unit.Field110 = 128, 3, 2

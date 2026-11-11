@@ -21,11 +21,11 @@ type meteorShowerCastLegacyServer52D8A0 struct {
 func (s *meteorShowerCastLegacyServer52D8A0) S() *server.Server { return s.srv }
 
 func TestMeteorShowerCastNativeServiceReadsPackedDWORD52D8A0(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	defer freeCaster()
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	defer freeArg()
 	*caster = server.Object{PosVec: types.Ptf(-100, -200)} // Ordinary MapTraceRay rejects an out-of-grid origin.
 	*arg = server.SpellAcceptArg{Obj: owner, Pos: types.Ptf(30, 40)}

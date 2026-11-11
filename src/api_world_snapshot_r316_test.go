@@ -88,7 +88,7 @@ func serveAPIWorldRouteR316(t *testing.T, s *Server, w http.ResponseWriter, path
 func TestAPIWorldSnapshotR316OwnsBytesBeforeHTTPAndPreservesFormat(t *testing.T) {
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.Init(1) {
+	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -109,7 +109,7 @@ func TestAPIWorldSnapshotR316OwnsBytesBeforeHTTPAndPreservesFormat(t *testing.T)
 	s.WPs.List = wp1
 	cl := client.NewClient(nil, nil, s.Server)
 	t.Cleanup(cl.Close)
-	cl.Objs.Init(2)
+	cl.Objs.InitHigh(2)
 	t.Cleanup(cl.Objs.Free)
 	dr1, dr2 := cl.Objs.New(), cl.Objs.New()
 	if w1 == nil || w2 == nil || dr1 == nil || dr2 == nil {

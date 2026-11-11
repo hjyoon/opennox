@@ -89,7 +89,7 @@ func TestSpellTeleportMarkersPublicCNativeComposition5305D0(t *testing.T) {
 	if err := s.Types.ReadObjectType(&things.Thing{Name: "TeleportWake", Class: []things.Class{"SIMPLE"}, OnCollide: &things.ProcFunc{Name: "TeleportWakeCollide"}}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Objs.Init(8) {
+	if !s.Objs.InitHigh(8) {
 		t.Fatal("native allocator initialization")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
@@ -114,13 +114,13 @@ func TestSpellTeleportMarkersPublicCNativeComposition5305D0(t *testing.T) {
 		Record server.DurSpell
 		After  [32]byte
 	}
-	source, freeSource := alloc.New(sourceFrame{})
+	source, freeSource := alloc.NewHigh(sourceFrame{})
 	t.Cleanup(freeSource)
 	*source = sourceFrame{}
-	data, freeData := alloc.New(dataFrame{})
+	data, freeData := alloc.NewHigh(dataFrame{})
 	t.Cleanup(freeData)
 	*data = dataFrame{}
-	f, freeRecord := alloc.New(durationFrame{})
+	f, freeRecord := alloc.NewHigh(durationFrame{})
 	t.Cleanup(freeRecord)
 	*f = durationFrame{}
 	for i := range f.Before {

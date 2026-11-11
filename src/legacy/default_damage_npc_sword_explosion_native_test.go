@@ -27,7 +27,7 @@ func TestDefaultDamageNPCSwordExplosionNative4E0B30(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if !srv.Objs.Init(64) {
+	if !srv.Objs.InitHigh(64) {
 		t.Fatal("C-owned object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

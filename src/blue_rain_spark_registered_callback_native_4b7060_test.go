@@ -115,7 +115,7 @@ func testRegisteredBlueRainSparkChild4B7060(t *testing.T, name string) {
 	if name == "pool-full" {
 		capacity = 1
 	}
-	cl.Objs.Init(capacity)
+	cl.Objs.InitHigh(capacity)
 	t.Cleanup(cl.Objs.Free)
 	cl.Things.Nox_things_free_44C580_B()
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)

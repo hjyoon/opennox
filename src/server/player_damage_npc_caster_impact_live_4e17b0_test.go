@@ -38,7 +38,7 @@ func TestPlayerDamageNPCCasterImpact4E17B0CachedLiveAndQuest(t *testing.T) {
 							events = append(events, "exclude")
 							if replace {
 								var free func()
-								live, free = alloc.New(MonsterUpdateData{})
+								live, free = alloc.NewHigh(MonsterUpdateData{})
 								t.Cleanup(free)
 								*live = MonsterUpdateData{Field547: 55, Field546: 66}
 								v.UpdateData = unsafe.Pointer(live)
@@ -143,15 +143,15 @@ func TestPlayerDamageNPCCasterImpact4E17B0LiveDefense(t *testing.T) {
 					case "staff":
 						cached.WeaponEquipFlags, mask, sound = 0x8000, 0x8000, 894
 					}
-					old, freeOld := alloc.New(Object{})
+					old, freeOld := alloc.NewHigh(Object{})
 					t.Cleanup(freeOld)
 					*old = Object{ObjSubClass: object.SubClass(mask), ObjFlags: object.FlagEquipped}
 					// 004E22A0/004E2330 test equipment flag/subclass, not item class.
-					item, freeItem := alloc.New(Object{})
+					item, freeItem := alloc.NewHigh(Object{})
 					t.Cleanup(freeItem)
 					*item = Object{ObjClass: object.ClassSimple, ObjSubClass: object.SubClass(mask), ObjFlags: object.FlagEquipped}
 					v.InvFirstItem = old
-					live, free := alloc.New(MonsterUpdateData{})
+					live, free := alloc.NewHigh(MonsterUpdateData{})
 					t.Cleanup(free)
 					*live = MonsterUpdateData{Field547: 55, Field546: 66, Field1: math.Float32bits(0.5)}
 					initialMissile := mutation == "exclude-missile" || mutation == "reflect-removes" || mutation == "reflect-sub2"

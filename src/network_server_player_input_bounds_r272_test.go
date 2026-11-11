@@ -28,9 +28,9 @@ func TestServerRawPlayerInputBoundsR272(t *testing.T) {
 	s := &Server{Server: base}
 	const index = ntype.PlayerInd(3)
 	pl := s.Players.ResetInd(index)
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
 	*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
 	*update = server.PlayerUpdateData{Player: pl}

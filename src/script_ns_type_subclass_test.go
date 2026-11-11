@@ -101,7 +101,7 @@ func TestScriptNSObjectTypeHasSubclassRegistryAndInstanceParity(t *testing.T) {
 		if uint32(typ.SubClass()) != wantMask {
 			t.Fatalf("metadata mask %s = %x, want independently assembled %x", spec.name, typ.SubClass(), wantMask)
 		}
-		unit, free := alloc.New(server.Object{})
+		unit, free := alloc.NewHigh(server.Object{})
 		t.Cleanup(free)
 		*unit = server.Object{ObjClass: typ.Class(), ObjSubClass: typ.SubClass(), TypeInd: uint16(typ.Ind()), ObjFlags: object.FlagEnabled, Extent: 0xf1234500 + uint32(fi)}
 		if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(typ)) <= math.MaxUint32 || uintptr(unsafe.Pointer(unit)) <= math.MaxUint32) {

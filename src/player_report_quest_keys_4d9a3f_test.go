@@ -36,8 +36,8 @@ func playerQuestKeyReportFixture4D9A3F(t *testing.T) (*Server, *server.Object, *
 
 func TestPlayerReportQuestKeysNative4D9A3FRestoresBothMissingLoops(t *testing.T) {
 	s, unit, update, _ := playerQuestKeyReportFixture4D9A3F(t)
-	silver, freeSilver := alloc.New(server.Object{})
-	gold, freeGold := alloc.New(server.Object{})
+	silver, freeSilver := alloc.NewHigh(server.Object{})
+	gold, freeGold := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSilver)
 	t.Cleanup(freeGold)
 	*silver = server.Object{TypeInd: 0x9234, ObjClass: object.ClassKey}
@@ -95,8 +95,8 @@ func TestPlayerReportQuestKeysNative4D9A3FRestoresBothMissingLoops(t *testing.T)
 
 func TestPlayerReportQuestKeysNative4D9A3FCachesQuestAdmissionAndEntryUpdate(t *testing.T) {
 	s, unit, entry, player := playerQuestKeyReportFixture4D9A3F(t)
-	live, freeLive := alloc.New(server.PlayerUpdateData{})
-	key, freeKey := alloc.New(server.Object{})
+	live, freeLive := alloc.NewHigh(server.PlayerUpdateData{})
+	key, freeKey := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeLive)
 	t.Cleanup(freeKey)
 	live.Player, key.TypeInd = player, 0x9234

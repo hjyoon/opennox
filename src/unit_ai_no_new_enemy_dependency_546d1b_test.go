@@ -34,7 +34,7 @@ func aiNoNewEnemyReferenceSquare546D34(unit, target types.Pointf) float64 {
 
 func TestAINoNewEnemyDependency546D1BIndependentChopModel(t *testing.T) {
 	_, unit, old, _ := aiAliveDependencyNative546A70(t)
-	enemy, freeEnemy := alloc.New(server.Object{})
+	enemy, freeEnemy := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeEnemy)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(enemy)) <= math.MaxUint32 {
 		t.Fatalf("native model enemy below 4 GiB: %p", enemy)
@@ -170,9 +170,9 @@ func TestAINoNewEnemyDependency546D1BMissingInputPrefix(t *testing.T) {
 
 func TestAINoNewEnemyDependency546D1BCachedUpdateAndLivePositions(t *testing.T) {
 	_, unit, old, _ := aiAliveDependencyNative546A70(t)
-	enemy, freeEnemy := alloc.New(server.Object{})
+	enemy, freeEnemy := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeEnemy)
-	other, freeOther := alloc.New(server.MonsterUpdateData{CurrentEnemy: old, Field97: 91, Field101: 92})
+	other, freeOther := alloc.NewHigh(server.MonsterUpdateData{CurrentEnemy: old, Field97: 91, Field101: 92})
 	t.Cleanup(freeOther)
 	for _, pointer := range []unsafe.Pointer{unsafe.Pointer(enemy), unsafe.Pointer(other)} {
 		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {

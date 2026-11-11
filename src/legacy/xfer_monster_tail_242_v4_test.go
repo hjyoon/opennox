@@ -140,7 +140,7 @@ func TestMonsterTailVersions242V4(t *testing.T) {
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags) })
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if !srv.Objs.Init(512) {
+	if !srv.Objs.InitHigh(512) {
 		t.Fatal("private object allocator")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

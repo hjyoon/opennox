@@ -20,7 +20,7 @@ func TestPlayerDamageNPCZapRayNativeCallback4E17B0CRecords(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
 	srv.Audio.Init(srv)
 	t.Cleanup(srv.Audio.Free)
-	if !srv.Objs.Init(70) {
+	if !srv.Objs.InitHigh(70) {
 		t.Fatal("native NPC ray allocator initialization")
 	}
 	t.Cleanup(srv.Objs.FreeObjects)

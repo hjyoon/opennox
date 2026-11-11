@@ -16,6 +16,7 @@ import (
 
 func game2AudioTestSetup(t *testing.T) *game2AudioDefinition {
 	t.Helper()
+	t.Cleanup(game2AudioHighFixtureMemory())
 	oldTicks, oldTimer := PlatformTicks, timer.PlatformTicks
 	PlatformTicks = func() uint64 { return 0x100000005 }
 	timer.PlatformTicks = PlatformTicks

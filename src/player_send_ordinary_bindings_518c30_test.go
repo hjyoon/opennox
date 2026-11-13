@@ -21,7 +21,7 @@ import (
 // complete original-reference suite separately checks the actual C important
 // health queue, independent flags, every load/callback order and raw returns.
 func TestPlayerSendOrdinaryBindings518C30(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	base.NetList.Init()
 	t.Cleanup(base.NetList.Free)

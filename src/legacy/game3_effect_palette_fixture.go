@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include "GAME3.h"
 #include <string.h>
 
@@ -41,19 +42,20 @@ static int game3_ref_original_4B63B0(int2*, int2*);
 #undef getMemIntPtr
 
 static int game3_ref_line_call(int x1, int y1, int x2, int y2, int* out, uintptr_t* address) {
-	struct { uint64_t before; int2 a, b; uint64_t after; } args;
-	memset(&args, 0, sizeof(args));
-	args.before = args.after = UINT64_C(0x123456789abcdef0);
-	args.a.field_0=x1; args.a.field_4=y1;
-	args.b.field_0=x2; args.b.field_4=y2;
-	*address = (uintptr_t)&args.a;
+	struct { uint64_t before; int2 a, b; uint64_t after; } *args = nox_native_fixture_calloc_high(1, sizeof(*args));
+	if (!args) abort();
+	memset(args, 0, sizeof(*args));
+	args->before = args->after = UINT64_C(0x123456789abcdef0);
+	args->a.field_0=x1; args->a.field_4=y1;
+	args->b.field_0=x2; args->b.field_4=y2;
+	*address = (uintptr_t)&args->a;
 	game3_ref_count=game3_ref_points=0;
-	int result = game3_ref_original_4B63B0(&args.a, &args.b);
+	int result = game3_ref_original_4B63B0(&args->a, &args->b);
 	memcpy(out, game3_ref_rows, sizeof(game3_ref_rows));
-	if (args.before != UINT64_C(0x123456789abcdef0) || args.after != args.before ||
-		args.a.field_0 != x1 || args.a.field_4 != y1 || args.b.field_0 != x2 || args.b.field_4 != y2)
-		return -1;
-	return result;
+	int unchanged = args->before == UINT64_C(0x123456789abcdef0) && args->after == args->before &&
+		args->a.field_0 == x1 && args->a.field_4 == y1 && args->b.field_0 == x2 && args->b.field_4 == y2;
+	nox_native_fixture_free_high(args);
+	return unchanged ? result : -1;
 }
 */
 import "C"

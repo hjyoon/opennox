@@ -12,7 +12,7 @@ import (
 func TestInputCfgRestoreFocusCEntry(t *testing.T) {
 	oldBackground := gui.MainBg
 	t.Cleanup(func() { gui.MainBg = oldBackground })
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	var backgroundFocus, promptBlur int
 	background := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, func(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {

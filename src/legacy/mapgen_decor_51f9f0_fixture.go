@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,14 +63,14 @@ static int nox_test_mapgen_read_decor_51f9f0(uint8_t* theme, const char* path) {
 static nox_test_mapgen_decor_51f9f0_result nox_test_mapgen_decor_51f9f0(
 	const char* template_path, const char* backdrop_path) {
 	nox_test_mapgen_decor_51f9f0_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	if (!theme) {
 		return out;
 	}
 	out.theme_address = (uintptr_t)theme;
 	out.theme_token = nox_mapgenLegacyPtrRegister(theme);
 	if (!out.theme_token) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 
@@ -144,7 +145,7 @@ static nox_test_mapgen_decor_51f9f0_result nox_test_mapgen_decor_51f9f0(
 		*(uint32_t*)(theme + 156) == 0 && *(uint32_t*)(theme + 184) == 0 &&
 		*(uint32_t*)(theme + 188) == 0;
 	nox_mapgenLegacyPtrForget(theme);
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 
@@ -210,6 +211,8 @@ type mapgenDecorResult51F9F0 struct {
 }
 
 func mapgenDecorFixture51F9F0(templatePath, backdropPath string) mapgenDecorResult51F9F0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	ctemplatePath := C.CString(templatePath)
 	defer C.free(unsafe.Pointer(ctemplatePath))
 	cbackdropPath := C.CString(backdropPath)

@@ -11,7 +11,7 @@ import (
 )
 
 func TestE2EWaitClientConnectedRejectsIncompleteBinding(t *testing.T) {
-	unit, free := alloc.New(client.Drawable{})
+	unit, free := alloc.NewHigh(client.Drawable{})
 	*unit = client.Drawable{}
 	connected := memmap.PtrUint32(0x5D4594, 815764)
 	drawable := memmap.PtrPtr(0x852978, 8)

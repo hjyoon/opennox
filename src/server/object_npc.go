@@ -1,19 +1,26 @@
 package server
 
-import (
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
-)
+import "unsafe"
 
 const maxNPCs = 1024
 
 type serverNPCs struct {
-	arr []NPC
+	arr           []NPC
+	highAddresses bool
 }
 
 func (s *serverNPCs) Init() {
-	s.arr, _ = alloc.Make([]NPC{}, maxNPCs)
+	s.init(false)
+}
+
+// InitHigh requests a separate foreign bank for native-pointer fixtures.
+func (s *serverNPCs) InitHigh() {
+	s.init(true)
+}
+
+func (s *serverNPCs) init(high bool) {
+	s.highAddresses = high
+	s.arr, _ = serverNativeMake(high, []NPC{}, maxNPCs)
 }
 
 func (s *serverNPCs) New(id int) *NPC { // nox_new_npc

@@ -125,7 +125,7 @@ func observeArmorWearDistributionOriginalNative(t *testing.T, s *Server, c armor
 }
 
 func TestPlayerDamageItemsPrecisionOriginal4E2180Native(t *testing.T) {
-	s := New(nil, nil, strman.New())
+	s := NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	b, err := os.ReadFile("testdata/armor_wear_distribution_precision_original.json")
 	if err != nil {

@@ -71,11 +71,11 @@ func TestFieldGuideCreatureLengthNative4F6390RejectsMissingTerminator(t *testing
 }
 
 func TestFieldGuideXferNativeWrite4F6390PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.FieldGuideUseData{})
+	data, freeData := alloc.NewHigh(server.FieldGuideUseData{})
 	defer freeData()
-	id, freeID := alloc.CString("field-guide")
+	id, freeID := alloc.CStringHigh("field-guide")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -219,13 +219,13 @@ func TestFieldGuideXferNativeRead4F6390UsesCachedRecordAndRestoresCount(t *testi
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.FieldGuideUseData{})
+	data, freeData := alloc.NewHigh(server.FieldGuideUseData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.FieldGuideUseData{})
+	liveData, freeLiveData := alloc.NewHigh(server.FieldGuideUseData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.SetCreature("old")
 	liveData.SetCreature("Spider")
@@ -294,7 +294,7 @@ func TestFieldGuideXferNativeRead4F6390UsesCachedRecordAndRestoresCount(t *testi
 }
 
 func TestFieldGuideXferExport4F6390PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

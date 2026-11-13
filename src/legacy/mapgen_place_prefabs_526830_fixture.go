@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -40,20 +41,20 @@ static void nox_test_mapgen_finalize_prefab_526830(
 
 static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs_526830(void) {
 	nox_test_mapgen_place_prefabs_526830_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	uint8_t* prefabs[3] = {0};
 	uint8_t* rooms[3] = {0};
 	uint32_t* foreach_entries[2] = {0};
 	uint32_t* choices[2] = {0};
 	if (!theme || !nox_mapgenLegacyPtrRegister(theme)) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 	out.theme_address = (uintptr_t)theme;
 
 	for (int i = 0; i < 3; ++i) {
-		prefabs[i] = (uint8_t*)calloc(1, 160);
-		rooms[i] = (uint8_t*)calloc(1, 64);
+		prefabs[i] = (uint8_t*)nox_native_fixture_calloc_high(1, 160);
+		rooms[i] = (uint8_t*)nox_native_fixture_calloc_high(1, 64);
 		if (!prefabs[i] || !rooms[i] || !nox_mapgenLegacyPtrRegister(prefabs[i]) ||
 			!nox_mapgenLegacyPtrRegister(rooms[i])) {
 			goto cleanup;
@@ -72,8 +73,8 @@ static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs
 	*(uint32_t*)(prefabs[2] + 76) = 1;
 
 	for (int i = 0; i < 2; ++i) {
-		foreach_entries[i] = (uint32_t*)calloc(1, 12);
-		choices[i] = (uint32_t*)calloc(1, 0x80C);
+		foreach_entries[i] = (uint32_t*)nox_native_fixture_calloc_high(1, 12);
+		choices[i] = (uint32_t*)nox_native_fixture_calloc_high(1, 0x80C);
 		if (!foreach_entries[i] || !choices[i] || !nox_mapgenLegacyPtrRegister(foreach_entries[i]) ||
 			!nox_mapgenLegacyPtrRegister(choices[i])) {
 			goto cleanup;
@@ -101,25 +102,25 @@ cleanup:
 	for (int i = 0; i < 2; ++i) {
 		if (choices[i]) {
 			nox_mapgenLegacyPtrForget(choices[i]);
-			free(choices[i]);
+			nox_native_fixture_free_high(choices[i]);
 		}
 		if (foreach_entries[i]) {
 			nox_mapgenLegacyPtrForget(foreach_entries[i]);
-			free(foreach_entries[i]);
+			nox_native_fixture_free_high(foreach_entries[i]);
 		}
 	}
 	for (int i = 0; i < 3; ++i) {
 		if (rooms[i]) {
 			nox_mapgenLegacyPtrForget(rooms[i]);
-			free(rooms[i]);
+			nox_native_fixture_free_high(rooms[i]);
 		}
 		if (prefabs[i]) {
 			nox_mapgenLegacyPtrForget(prefabs[i]);
-			free(prefabs[i]);
+			nox_native_fixture_free_high(prefabs[i]);
 		}
 	}
 	nox_mapgenLegacyPtrForget(theme);
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 */

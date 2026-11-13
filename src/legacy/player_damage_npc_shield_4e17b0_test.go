@@ -11,7 +11,7 @@ import (
 )
 
 func TestPlayerDamageNPCShieldSourceExclusions4E17B0(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)

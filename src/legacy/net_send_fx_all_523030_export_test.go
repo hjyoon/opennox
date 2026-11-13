@@ -27,7 +27,7 @@ func (s *netSendFxAllLegacyServer523030) S() *server.Server {
 }
 
 func TestNetSendFxAllCliEntry523030KeepsNativePlayerPointers(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.NetList.Init()
 	t.Cleanup(srv.NetList.Free)
@@ -47,10 +47,10 @@ func TestNetSendFxAllCliEntry523030KeepsNativePlayerPointers(t *testing.T) {
 		if pl == nil {
 			t.Fatal("cannot allocate player fixture")
 		}
-		update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		t.Cleanup(freeUpdate)
 		update.Player = pl
-		unit, freeUnit := alloc.New(server.Object{})
+		unit, freeUnit := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeUnit)
 		*unit = server.Object{
 			ObjClass:   object.ClassPlayer,
@@ -65,7 +65,7 @@ func TestNetSendFxAllCliEntry523030KeepsNativePlayerPointers(t *testing.T) {
 
 	direct := newPlayer(1001, types.Ptf(100, 100))
 	follow := newPlayer(1002, types.Ptf(1000, 1000))
-	camera, freeCamera := alloc.New(server.Object{})
+	camera, freeCamera := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCamera)
 	follow.camera = camera
 	follow.camera.PosVec = types.Ptf(100, 100)

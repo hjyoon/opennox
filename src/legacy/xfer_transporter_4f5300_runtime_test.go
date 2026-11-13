@@ -58,13 +58,13 @@ func TestTransporterXferNativeLayout4F5300(t *testing.T) {
 }
 
 func TestTransporterXferNativeWrite4F5300KeepsCachedExtentBesideNativePointer(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.TransporterUpdateData{})
+	data, freeData := alloc.NewHigh(server.TransporterUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.TransporterUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.TransporterUpdateData{})
 	defer freeLiveData()
-	id, freeID := alloc.CString("transporter")
+	id, freeID := alloc.CStringHigh("transporter")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -228,13 +228,13 @@ func TestTransporterXferNativeRead4F5300WritesCachedExtentAndRestoresCount(t *te
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.TransporterUpdateData{})
+	data, freeData := alloc.NewHigh(server.TransporterUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.TransporterUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.TransporterUpdateData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.TargetPE32 = 0
 	liveData.TargetExtent = 0x12345678

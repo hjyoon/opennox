@@ -117,8 +117,8 @@ func TestAPIDebugSnapshotR318ArchiveOwnsAllNativeBytesBeforeHTTP(t *testing.T) {
 	first := memmap.BlobByAddr(blobs[0].Addr)
 	last := memmap.BlobByAddr(blobs[len(blobs)-1].Addr)
 	oldFirst, oldLast := first.Data, last.Data
-	firstData, freeFirst := alloc.Make([]byte(nil), len(oldFirst))
-	lastData, freeLast := alloc.Make([]byte(nil), len(oldLast))
+	firstData, freeFirst := alloc.MakeHigh([]byte(nil), len(oldFirst))
+	lastData, freeLast := alloc.MakeHigh([]byte(nil), len(oldLast))
 	t.Cleanup(func() {
 		first.Data, last.Data = oldFirst, oldLast
 		freeFirst()

@@ -233,7 +233,7 @@ func TestConsoleSetSpellAndSparseList(t *testing.T) {
 	if err := things.WriteSpellsYAML(filepath.Join(dir, "spells.yml"), defs); err != nil {
 		t.Fatal(err)
 	}
-	data, _ := alloc.Make([]byte{}, 4) // An empty original SPEL section, skipped in favour of YAML.
+	data, _ := alloc.MakeHigh([]byte{}, 4) // An empty original SPEL section, skipped in favour of YAML.
 	f := binfile.NewMemFile(unsafe.Pointer(&data[0]), len(data))
 	t.Cleanup(f.Free)
 	if err := s.Spells.Read(f, nil, false); err != nil {

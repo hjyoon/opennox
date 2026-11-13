@@ -35,7 +35,7 @@ func (s *secretWallLegacyServer4DF120) S() *server.Server { return s.native }
 
 func secretWallLivePlayersFixture4DF120(t *testing.T) (*server.Server, *server.Wall, [2]*server.Object) {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	old := GetServer
 	GetServer = func() Server { return &secretWallLegacyServer4DF120{native: s} }

@@ -11,7 +11,7 @@ import (
 )
 
 func TestNoxXxxRespawnAdd4EC5E0NativeRecord(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	oldAllow := respawnAddLoadAllow4EC5E0()
@@ -19,7 +19,7 @@ func TestNoxXxxRespawnAdd4EC5E0NativeRecord(t *testing.T) {
 	oldHead := respawnAddLoadHead4EC5E0()
 	oldWeaponFlags := objectNPCWeaponEquipFlags
 
-	class := alloc.NewClass("RespawnAdd4EC5E0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), 3)
+	class := alloc.NewClassHigh("RespawnAdd4EC5E0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), 3)
 	defer func() {
 		respawnAddStoreHead4EC5E0(oldHead)
 		respawnAddStoreAllocator4EC5E0(oldAllocator)
@@ -28,13 +28,13 @@ func TestNoxXxxRespawnAdd4EC5E0NativeRecord(t *testing.T) {
 		class.Free()
 	}()
 
-	obj, freeObj := alloc.New(server.Object{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
 	defer freeObj()
-	modifier, freeModifier := alloc.New(server.ModifierEff{})
+	modifier, freeModifier := alloc.NewHigh(server.ModifierEff{})
 	defer freeModifier()
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 	defer freeAttrs()
-	useData, freeUseData := alloc.New([2]uint8{})
+	useData, freeUseData := alloc.NewHigh([2]uint8{})
 	defer freeUseData()
 
 	attrs.Modifiers[0] = modifier

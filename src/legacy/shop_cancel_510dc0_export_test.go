@@ -23,7 +23,7 @@ func (s *shopCancelLegacyServer510DC0) ShopCancelSessionNative510DC0(session *se
 }
 
 func TestShopCancelSessionEntry510DC0KeepsNativePointer(t *testing.T) {
-	session, free := alloc.New(server.TradeSession{})
+	session, free := alloc.NewHigh(server.TradeSession{})
 	defer free()
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(session)) <= math.MaxUint32 {
 		t.Fatalf("session pointer = %p, want address above the PE32 range", session)
@@ -44,7 +44,7 @@ func TestShopCancelSessionEntry510DC0RejectsUnknownPointerOn64Bit(t *testing.T) 
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("the PE32 fallback is valid on 32-bit hosts")
 	}
-	session, free := alloc.New(server.TradeSession{})
+	session, free := alloc.NewHigh(server.TradeSession{})
 	defer free()
 
 	fake := &shopCancelLegacyServer510DC0{}

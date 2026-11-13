@@ -63,11 +63,11 @@ func TestPlayerDamageInitializedWandMatchesGAMEEXE4E17B0(t *testing.T) {
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData = object.ClassArmor, 0, nil
 			}
 			weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassWand, row.WeaponSubclass, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			weapon.InitData = unsafe.Pointer(modifiers)
-			wandUse, freeWand := alloc.New(WandUseData{})
+			wandUse, freeWand := alloc.NewHigh(WandUseData{})
 			*wandUse = WandUseData{Flags: row.WandFlags}
 			t.Cleanup(freeWand)
 			weapon.UseData = UseDataPtr{Ptr: unsafe.Pointer(wandUse)}

@@ -119,10 +119,10 @@ func generatorType4BC720(t *testing.T, c *Client, p generatorInput4BC720) *clien
 		}
 	}
 	raw = append(raw, 0)
-	buf, _ := alloc.CloneSlice(raw)
+	buf, _ := alloc.CloneSliceHigh(raw)
 	f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
 	defer f.Free()
-	scratch, freeScratch := alloc.Make([]byte{}, 256)
+	scratch, freeScratch := alloc.MakeHigh([]byte{}, 256)
 	defer freeScratch()
 	if err := c.Things.ReadType(f, scratch); err != nil || len(f.Data()) != 0 {
 		t.Fatalf("actual registered parser failed: %v unread=%d", err, len(f.Data()))
@@ -173,11 +173,11 @@ func TestGeneratorStatusNative4BC720Headless(t *testing.T) {
 	}
 	t.Chdir(t.TempDir())
 	generatorBag4BC720(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
@@ -186,7 +186,7 @@ func TestGeneratorStatusNative4BC720Headless(t *testing.T) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	draw, freeDraw := noxrender.NewRenderData()
+	draw, freeDraw := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeDraw)
 	r.SetData(draw)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -196,7 +196,7 @@ func TestGeneratorStatusNative4BC720Headless(t *testing.T) {
 	}
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255

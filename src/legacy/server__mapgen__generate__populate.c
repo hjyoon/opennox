@@ -1,3 +1,4 @@
+#include "mapgen_allocation.h"
 #include "GAME1_2.h"
 #include "GAME2_1.h"
 #include "GAME3_2.h"
@@ -167,7 +168,7 @@ double sub_5259D0() { return *(float*)&dword_5d4594_2487580; }
 void sub_526A90() {
 	void* records = nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
 	nox_mapgenLegacyPtrForget(records);
-	free(records);
+	nox_mapgen_release_memory(records);
 	dword_5d4594_2487672 = 0;
 }
 

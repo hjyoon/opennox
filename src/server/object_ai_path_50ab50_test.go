@@ -94,7 +94,7 @@ func TestAIPathStorageNativeLayouts50AB90(t *testing.T) {
 func TestAIPathStorageLifecycle50AB90And50ABF0(t *testing.T) {
 	srv := new(Server)
 	paths := serverAIPaths{lastFrame: math.MaxUint32}
-	paths.Init(srv)
+	paths.InitHigh(srv)
 	t.Cleanup(func() {
 		if paths.Valid() {
 			paths.Free()

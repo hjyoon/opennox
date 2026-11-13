@@ -17,7 +17,7 @@ import (
 
 func game4ConsumerValue[T comparable](t *testing.T, value T) *T {
 	t.Helper()
-	p, free := alloc.New(value)
+	p, free := alloc.NewHigh(value)
 	*p = value
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= 0xffffffff {

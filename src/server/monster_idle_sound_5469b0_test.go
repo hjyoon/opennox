@@ -20,7 +20,7 @@ func TestMonsterIdleSound5469B0SchedulesAndPlays(t *testing.T) {
 	update.Field132 = 100
 	update.AIStackInd = 0
 	update.AIStack[0].Action = uint32(ai.ACTION_GUARD)
-	soundSet, freeSoundSet := alloc.Make([]uint32{}, 5)
+	soundSet, freeSoundSet := alloc.MakeHigh([]uint32{}, 5)
 	defer freeSoundSet()
 	soundSet[4] = 77
 	update.SoundSet122 = unsafe.Pointer(&soundSet[0])

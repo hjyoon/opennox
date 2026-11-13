@@ -29,18 +29,18 @@ import (
 func TestPlayerFrameRegisteredVectorR277(t *testing.T) {
 	t.Chdir(t.TempDir())
 	destroyOnceBag48EA70(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	draw, freeDraw := noxrender.NewRenderData()
+	draw, freeDraw := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeDraw)
 	r.SetData(draw)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -50,7 +50,7 @@ func TestPlayerFrameRegisteredVectorR277(t *testing.T) {
 	}
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255
@@ -79,9 +79,9 @@ func TestPlayerFrameRegisteredVectorR277(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	ani, freeAni := alloc.New(client.AnimationVector{})
+	ani, freeAni := alloc.NewHigh(client.AnimationVector{})
 	t.Cleanup(freeAni)
-	frames, freeFrames := alloc.Make([]noxrender.ImageHandle{}, 3)
+	frames, freeFrames := alloc.MakeHigh([]noxrender.ImageHandle{}, 3)
 	t.Cleanup(freeFrames)
 	for i := range frames {
 		frames[i] = r.GetBag().ImageByIndex(i).C()

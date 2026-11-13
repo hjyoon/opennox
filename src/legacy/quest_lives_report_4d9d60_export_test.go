@@ -19,7 +19,7 @@ type questLivesReportServer4D9D60 struct {
 func (s *questLivesReportServer4D9D60) S() *server.Server { return s.native }
 
 func TestQuestLivesReport4D9D60RealCEntryHighNativePointers(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	oldServer := GetServer
 	GetServer = func() Server { return &questLivesReportServer4D9D60{native: s} }

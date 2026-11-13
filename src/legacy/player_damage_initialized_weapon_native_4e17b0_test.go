@@ -76,7 +76,7 @@ func TestPlayerDamageInitializedWeaponNativeDamage4E17B0(t *testing.T) {
 									weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 								}
 								weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassWeapon, weaponSubclass, nil, nil
-								modifiers, free := alloc.New(server.ModifierInitData{})
+								modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 								*modifiers = server.ModifierInitData{}
 								t.Cleanup(free)
 								weapon.InitData = unsafe.Pointer(modifiers)
@@ -257,7 +257,7 @@ func TestPlayerDamageInitializedWeaponImmunityNative4E17B0(t *testing.T) {
 					weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 				}
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassWeapon, row.WeaponSubclass, nil, nil
-				modifiers, free := alloc.New(server.ModifierInitData{})
+				modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 				*modifiers = server.ModifierInitData{}
 				t.Cleanup(free)
 				weapon.InitData = unsafe.Pointer(modifiers)
@@ -369,7 +369,7 @@ func TestDefaultDamageInitializedWeaponPoisonShockNativeHP4E0B30(t *testing.T) {
 						return obj
 					}
 					target, actor, hero = bind(target), bind(actor), bind(hero)
-					mods, free := alloc.New(server.ModifierInitData{})
+					mods, free := alloc.NewHigh(server.ModifierInitData{})
 					*mods = server.ModifierInitData{}
 					t.Cleanup(free)
 					weapon := &server.Object{ObjClass: object.ClassWeapon, ObjSubClass: weaponSubclass, TypeInd: 73, InitData: unsafe.Pointer(mods), ObjOwner: actor}

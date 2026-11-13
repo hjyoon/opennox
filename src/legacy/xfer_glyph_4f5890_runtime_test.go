@@ -72,15 +72,15 @@ func TestGlyphXferNativeLayout4F5890(t *testing.T) {
 }
 
 func TestGlyphXferNativeWrite4F5890UsesCachedDataAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.GlyphInitData{})
+	data, freeData := alloc.NewHigh(server.GlyphInitData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.GlyphInitData{})
+	liveData, freeLiveData := alloc.NewHigh(server.GlyphInitData{})
 	defer freeLiveData()
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	id, freeID := alloc.CString("glyph")
+	id, freeID := alloc.CStringHigh("glyph")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -284,15 +284,15 @@ func TestGlyphXferNativeRead4F5890ClearsNativeTargetAndRestoresCount(t *testing.
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.GlyphInitData{})
+	data, freeData := alloc.NewHigh(server.GlyphInitData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.GlyphInitData{})
+	liveData, freeLiveData := alloc.NewHigh(server.GlyphInitData{})
 	defer freeLiveData()
-	target, freeTarget := alloc.New(server.Object{})
+	target, freeTarget := alloc.NewHigh(server.Object{})
 	defer freeTarget()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 
 	*data = server.GlyphInitData{
@@ -393,9 +393,9 @@ func TestGlyphXferNativeRead4F5890ClearsNativeTargetAndRestoresCount(t *testing.
 }
 
 func TestGlyphXferExport4F5890PreservesNativePointersAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	context, freeContext := alloc.New(uint64(0))
+	context, freeContext := alloc.NewHigh(uint64(0))
 	defer freeContext()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))

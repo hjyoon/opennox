@@ -92,7 +92,7 @@ func TestSpellDurationNewNative4FE950AllocationFailurePreservesID(t *testing.T) 
 
 func TestSpellDurationNewNative4FE950ReusesZeroedNativeRecord(t *testing.T) {
 	var spells SpellsDuration
-	if got := spells.SpellCreateDurations4FE850(); got != 1 {
+	if got := spells.SpellCreateDurationsHigh4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want canonical 1", got)
 	}
 	t.Cleanup(spells.Free)

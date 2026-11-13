@@ -28,7 +28,7 @@ func TestRenderFontsReloadPreservesHandles(t *testing.T) {
 	}
 	datapath.SetData(dir)
 	defer datapath.SetData(oldData)
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	var r RenderFonts
 	defer r.Free()
@@ -103,7 +103,7 @@ func TestRenderFontsReloadRejectsInvalidCachedHandles(t *testing.T) {
 	}
 	datapath.SetData(dir)
 	defer datapath.SetData(oldData)
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	var r RenderFonts
 	defer r.Free()
@@ -116,7 +116,7 @@ func TestRenderFontsReloadRejectsInvalidCachedHandles(t *testing.T) {
 	// reuse its old numeric range and would not reliably test this branch.
 	invalid := make(map[unsafe.Pointer]*fontFile)
 	for _, f := range r.byPtr {
-		ptr, free := alloc.New(byte(0))
+		ptr, free := alloc.NewHigh(byte(0))
 		defer free()
 		p := unsafe.Pointer(ptr)
 		if handles.IsValid(uintptr(p)) {

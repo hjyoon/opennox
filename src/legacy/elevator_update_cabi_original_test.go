@@ -68,7 +68,7 @@ func TestElevatorUpdateCEntryOriginal(t *testing.T) {
 	if err := json.Unmarshal(blob, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if !srv.Objs.InitHigh(16) {
 		t.Fatal("native object class initialization")

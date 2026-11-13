@@ -19,9 +19,9 @@ import (
 func spellMissileImpactCRecords4E17B0(t *testing.T, srv *server.Server, owner string) (target, source, missile *server.Object) {
 	t.Helper()
 	target, missile = srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	player, freePlayer := alloc.New(server.Player{})
-	health, freeHealth := alloc.New(server.HealthData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	*player = server.Player{PlayerInd: 7}
 	*update = server.PlayerUpdateData{Player: player, State: server.PlayerState13}
 	*health = server.HealthData{Cur: 60, Max: 60, Field2: 60}
@@ -38,8 +38,8 @@ func spellMissileImpactCRecords4E17B0(t *testing.T, srv *server.Server, owner st
 		source = srv.Objs.NewObject(&server.ObjectType{})
 		source.ObjFlags, source.Material = 0, 0x4000
 		if owner == "player" {
-			p, freeP := alloc.New(server.Player{})
-			u, freeU := alloc.New(server.PlayerUpdateData{})
+			p, freeP := alloc.NewHigh(server.Player{})
+			u, freeU := alloc.NewHigh(server.PlayerUpdateData{})
 			*p = server.Player{PlayerInd: 8}
 			*u = server.PlayerUpdateData{Player: p, State: server.PlayerState13}
 			source.ObjClass, source.UpdateData = object.ClassPlayer, unsafe.Pointer(u)
@@ -47,7 +47,7 @@ func spellMissileImpactCRecords4E17B0(t *testing.T, srv *server.Server, owner st
 			t.Cleanup(freeP)
 			t.Cleanup(freeU)
 		} else {
-			u, freeU := alloc.New(server.MonsterUpdateData{})
+			u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
 			source.ObjClass, source.ObjSubClass, source.UpdateData = object.ClassMonster, 0x10002, unsafe.Pointer(u)
 			pointers = append(pointers, unsafe.Pointer(u))
 			t.Cleanup(freeU)

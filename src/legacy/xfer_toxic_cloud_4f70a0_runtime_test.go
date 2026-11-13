@@ -63,12 +63,12 @@ func TestToxicCloudXferNativeLayout4F70A0(t *testing.T) {
 }
 
 func TestToxicCloudXferNativeWrite4F70A0PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ToxicCloudUpdateData{Duration: -0x1020304})
+	data, freeData := alloc.NewHigh(server.ToxicCloudUpdateData{Duration: -0x1020304})
 	defer freeData()
 	*data = server.ToxicCloudUpdateData{Duration: -0x1020304}
-	id, freeID := alloc.CString("toxic-cloud-native")
+	id, freeID := alloc.CStringHigh("toxic-cloud-native")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -208,12 +208,12 @@ func TestToxicCloudXferNativeRead4F70A0TransfersDurationAndRestoresCount(t *test
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ToxicCloudUpdateData{Duration: 1})
+	data, freeData := alloc.NewHigh(server.ToxicCloudUpdateData{Duration: 1})
 	defer freeData()
 	*data = server.ToxicCloudUpdateData{Duration: 1}
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassImmobile
 	object.IDPtr = unsafe.Pointer(oldID)
@@ -273,7 +273,7 @@ func TestToxicCloudXferNativeRead4F70A0TransfersDurationAndRestoresCount(t *test
 }
 
 func TestToxicCloudXferExport4F70A0PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

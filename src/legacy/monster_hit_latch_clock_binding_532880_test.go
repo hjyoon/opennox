@@ -12,8 +12,8 @@ import (
 
 func TestHitLatchProductionClockBinding532880(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
-	unit, freeUnit := alloc.New(server.Object{})
-	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeUnit)
 	t.Cleanup(freeUpdate)
 	*unit = server.Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(update)}

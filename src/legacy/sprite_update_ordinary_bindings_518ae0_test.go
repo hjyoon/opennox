@@ -29,7 +29,7 @@ func (s *spriteOrdinaryServer518AE0) NetUpdateObjectSpecialNative527E50(recipien
 }
 
 func TestSpriteUpdateOrdinaryBindings518AE0(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	rows, _ := spriteLoad518AE0(t)
 	selected := make([]spriteRow518AE0, 0, 10)

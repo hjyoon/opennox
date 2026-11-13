@@ -32,10 +32,10 @@ func TestNativeNoxWorldJoinErrorText438BD0(t *testing.T) {
 		return
 	}
 	strings := strman.New()
-	s := server.New(nil, nil, strings)
+	s := server.NewHigh(nil, nil, strings)
 	t.Cleanup(s.Close)
 	noxServer = &Server{Server: s}
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	noxClient = &Client{Client: &client.Client{Server: s, GUI: g}}
 	gui.MainBg = g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)

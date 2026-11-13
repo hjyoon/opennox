@@ -10,7 +10,7 @@ import (
 )
 
 func TestSaveListSelectedSlotNative(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	draw := gui.WindowData{Style: gui.StyleScrollListBox | gui.StyleMouseTrack}
 	win := gui.NewScrollListBoxRaw(g, nil, gui.StatusEnabled, 0, 0, 200, 300, &draw,
@@ -64,7 +64,7 @@ func TestSaveListSelectedSlotBounds(t *testing.T) {
 	if ind, ok := saveListSelectedSlot(nil, NOX_SAVEGAME_XXX_MAX); ind != -1 || ok {
 		t.Fatalf("nil list = (%d, %t), want (-1, false)", ind, ok)
 	}
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	win := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
 	for _, value := range []int{-2, -1, 0, 1, NOX_SAVEGAME_XXX_MAX - 1, NOX_SAVEGAME_XXX_MAX, 1 << 30} {

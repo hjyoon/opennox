@@ -101,17 +101,17 @@ func TestMonsterGeneratorXferNativeLayout4F7130(t *testing.T) {
 }
 
 func TestMonsterGeneratorXferNativeWrite4F7130PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.MonsterGenUpdateData{})
+	data, freeData := alloc.NewHigh(server.MonsterGenUpdateData{})
 	defer freeData()
-	prototypeA, freePrototypeA := alloc.New(server.Object{})
+	prototypeA, freePrototypeA := alloc.NewHigh(server.Object{})
 	defer freePrototypeA()
-	prototypeB, freePrototypeB := alloc.New(server.Object{})
+	prototypeB, freePrototypeB := alloc.NewHigh(server.Object{})
 	defer freePrototypeB()
-	scriptData, freeScriptData := alloc.New([2572]byte{})
+	scriptData, freeScriptData := alloc.NewHigh([2572]byte{})
 	defer freeScriptData()
-	id, freeID := alloc.CString("monster-generator-native")
+	id, freeID := alloc.CStringHigh("monster-generator-native")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -367,19 +367,19 @@ func TestMonsterGeneratorXferNativeRead4F7130StoresNativePointersAndExactWire(t 
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.MonsterGenUpdateData{})
+	data, freeData := alloc.NewHigh(server.MonsterGenUpdateData{})
 	defer freeData()
-	imp, freeImp := alloc.New(server.Object{})
+	imp, freeImp := alloc.NewHigh(server.Object{})
 	defer freeImp()
-	bat, freeBat := alloc.New(server.Object{})
+	bat, freeBat := alloc.NewHigh(server.Object{})
 	defer freeBat()
-	ogre, freeOgre := alloc.New(server.Object{})
+	ogre, freeOgre := alloc.NewHigh(server.Object{})
 	defer freeOgre()
-	scriptData, freeScriptData := alloc.New([2572]byte{})
+	scriptData, freeScriptData := alloc.NewHigh([2572]byte{})
 	defer freeScriptData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassMonsterGenerator | objectlib.ClassImmobile
 	object.IDPtr = unsafe.Pointer(oldID)
@@ -500,7 +500,7 @@ func TestMonsterGeneratorXferNativeRead4F7130StoresNativePointersAndExactWire(t 
 }
 
 func TestMonsterGeneratorXferExport4F7130PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

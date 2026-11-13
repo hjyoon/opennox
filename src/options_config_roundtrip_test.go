@@ -109,7 +109,7 @@ func TestOptionsConfigChild(t *testing.T) {
 		t.Fatal("configuration phase used the wrong E2E mode")
 	}
 	legacy.InitBlobData()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	noxServer = &Server{Server: s}
 	c, err := NewClient(nil, nil, noxServer)

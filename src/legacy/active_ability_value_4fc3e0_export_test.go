@@ -22,7 +22,7 @@ func (s *activeAbilityValueLegacyServer4FC3E0) S() *server.Server {
 }
 
 func TestActiveAbilityValueExport4FC3E0PreservesNativePointerInt32AbilityAndRawValue(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	unit := &server.Object{ObjClass: object.ClassPlayer}
 	record := &server.ExecAbilityClass{

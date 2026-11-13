@@ -326,7 +326,7 @@ func TestRigidCollisionNativeBoxWallSpringOriginal(t *testing.T) {
 			obj.Shape.Box.W, obj.Shape.Box.H = math.Float32frombits(i.Size[0]), math.Float32frombits(i.Size[1])
 			want := rigidNativeExpected(obj, row.New, row.Velocity, row.Accumulator)
 			s := &server.Server{}
-			if s.Walls.Init() != 1 {
+			if s.Walls.InitHigh() != 1 {
 				t.Fatal("native wall allocation failed")
 			}
 			t.Cleanup(s.Walls.Free)

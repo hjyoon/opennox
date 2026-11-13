@@ -22,7 +22,7 @@ func (s *playerAbilityCooldownSetLegacyServer4FBEA0) S() *server.Server {
 }
 
 func TestPlayerAbilityCooldownSetExport4FBEA0PreservesNativePointerAndWidths(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Abils.Init4FB990()
 
@@ -66,7 +66,7 @@ func TestPlayerAbilityCooldownSetExport4FBEA0PreservesNativePointerAndWidths(t *
 }
 
 func TestPlayerAbilityCooldownSetExport4FBEA0MissingPlayerReturnsZero(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Abils.Init4FB990()
 	unit := &server.Object{NetCode: 0x12345678}

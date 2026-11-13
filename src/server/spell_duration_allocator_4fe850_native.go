@@ -29,8 +29,21 @@ func spellDurationAllocatorNative4FE850(deps spellDurationAllocatorNativeDeps4FE
 // fields widen the record on 64-bit targets while scalar fields retain their
 // original widths.
 func (sp *SpellsDuration) SpellCreateDurations4FE850() int32 {
+	return sp.spellCreateDurations4FE850(sp.s != nil && sp.s.highAddresses)
+}
+
+// SpellCreateDurationsHigh4FE850 explicitly selects high foreign records for
+// this allocation class without changing any other duration-spell owner.
+func (sp *SpellsDuration) SpellCreateDurationsHigh4FE850() int32 {
+	return sp.spellCreateDurations4FE850(true)
+}
+
+func (sp *SpellsDuration) spellCreateDurations4FE850(highAddresses bool) int32 {
 	return spellDurationAllocatorNative4FE850(spellDurationAllocatorNativeDeps4FE850{
 		newClass: func(name string, recordSize uintptr, capacity int) alloc.ClassT[DurSpell] {
+			if highAddresses {
+				return alloc.ClassT[DurSpell]{Class: alloc.NewClassHigh(name, recordSize, capacity)}
+			}
 			return alloc.ClassT[DurSpell]{Class: alloc.NewClass(name, recordSize, capacity)}
 		},
 		storeAllocator: func(value alloc.ClassT[DurSpell]) {

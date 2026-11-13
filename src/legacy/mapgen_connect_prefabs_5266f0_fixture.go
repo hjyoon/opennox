@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -41,8 +42,8 @@ static int nox_test_mapgen_connect_prefab_5266f0(uint8_t* prefab, int direction,
 
 static nox_test_mapgen_connect_prefabs_5266f0_result nox_test_mapgen_connect_prefabs_5266f0(void) {
 	nox_test_mapgen_connect_prefabs_5266f0_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
-	uint8_t* prefab = (uint8_t*)calloc(1, 160);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
+	uint8_t* prefab = (uint8_t*)nox_native_fixture_calloc_high(1, 160);
 	uint8_t* old_room = NULL;
 	uint8_t* candidates[3] = {0};
 	uint32_t saved_opposite_directions[4] = {0};
@@ -152,9 +153,9 @@ cleanup:
 	}
 	if (prefab) {
 		nox_mapgenLegacyPtrForget(prefab);
-		free(prefab);
+		nox_native_fixture_free_high(prefab);
 	}
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 
@@ -172,8 +173,8 @@ typedef struct nox_test_mapgen_connect_prefabs_actual_5266f0_result {
 
 static nox_test_mapgen_connect_prefabs_actual_5266f0_result nox_test_mapgen_connect_prefabs_actual_5266f0(void) {
 	nox_test_mapgen_connect_prefabs_actual_5266f0_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
-	uint8_t* prefab = (uint8_t*)calloc(1, 160);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
+	uint8_t* prefab = (uint8_t*)nox_native_fixture_calloc_high(1, 160);
 	uint8_t* old_room = NULL;
 	uint8_t* candidate = NULL;
 	uint32_t saved_opposite_directions[4] = {0};
@@ -274,9 +275,9 @@ cleanup:
 	}
 	if (prefab) {
 		nox_mapgenLegacyPtrForget(prefab);
-		free(prefab);
+		nox_native_fixture_free_high(prefab);
 	}
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 */
@@ -311,6 +312,8 @@ type mapgenConnectPrefabsActualResult5266F0 struct {
 }
 
 func mapgenConnectPrefabsFixture5266F0() mapgenConnectPrefabsResult5266F0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_connect_prefabs_5266f0()
 	out := mapgenConnectPrefabsResult5266F0{
 		themeAddress:           uintptr(got.theme_address),
@@ -333,6 +336,8 @@ func mapgenConnectPrefabsFixture5266F0() mapgenConnectPrefabsResult5266F0 {
 }
 
 func mapgenConnectPrefabsActualFixture5266F0() mapgenConnectPrefabsActualResult5266F0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_connect_prefabs_actual_5266f0()
 	return mapgenConnectPrefabsActualResult5266F0{
 		replacementAddress:            uintptr(got.replacement_address),

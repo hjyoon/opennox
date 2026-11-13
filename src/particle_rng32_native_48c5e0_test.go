@@ -158,7 +158,7 @@ func TestParticleRNG32Original48C5E0PointFactoryLifecycle(t *testing.T) {
 	for i := 0; i < 321; i++ {
 		*memmap.PtrInt32(0x5D4594, 1309840+uintptr(i)*4) = int32((i - 160) * 1024)
 	}
-	handles.Init()
+	handles.InitHigh()
 	pfx := partFXes{}
 	pfx.Init(nil)
 	defer pfx.Free()

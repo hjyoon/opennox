@@ -31,6 +31,14 @@ func NewRenderData() (*RenderData, func()) {
 	return d, free
 }
 
+// NewRenderDataHigh provides the same reset state with an explicit high
+// foreign allocation for pointer-width fixtures.
+func NewRenderDataHigh() (*RenderData, func()) {
+	d, free := alloc.NewHigh(RenderData{})
+	d.Reset()
+	return d, free
+}
+
 type RenderMat struct {
 	field0  uint32 // 0, 0
 	field1  uint32 // 1, 4

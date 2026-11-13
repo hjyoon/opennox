@@ -19,7 +19,7 @@ import (
 
 func npcRestoreTestServer52ADE0(t *testing.T) *server.Server {
 	t.Helper()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)

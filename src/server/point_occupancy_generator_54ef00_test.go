@@ -37,7 +37,7 @@ func TestPointOccupancyGeneratorDefault54EF00(t *testing.T) {
 				blob.Data, blob.Size = data, uintptr(len(data))
 				t.Cleanup(func() { *blob = previous })
 			}
-			s := New(nil, nil, strman.New())
+			s := NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			s.Map.Init()
 			t.Cleanup(s.Map.Free)

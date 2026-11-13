@@ -87,6 +87,8 @@ type mapgenOccupiedRectsResult521BC0 struct {
 }
 
 func mapgenOccupiedRectsFixture521BC0() mapgenOccupiedRectsResult521BC0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_occupied_rects_521bc0()
 	return mapgenOccupiedRectsResult521BC0{
 		roomAddress:        uintptr(got.room_address),

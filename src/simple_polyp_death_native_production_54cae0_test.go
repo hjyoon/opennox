@@ -71,7 +71,7 @@ func TestSimplePolypDeathActualCProduction54CAE0(t *testing.T) {
 		t.Fatal("frozen original 1.25 times signed FPS30 result")
 	}
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -98,7 +98,7 @@ func TestSimplePolypDeathActualCProduction54CAE0(t *testing.T) {
 	t.Cleanup(s.Objs.FreeObjects)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("actual wall grid")
 	}
 	t.Cleanup(s.Walls.Free)

@@ -28,7 +28,7 @@ func assertParticleRegistration4B01B0(t *testing.T, owner *partFXes, p *particle
 }
 
 func TestParticleRegistrationOriginal4B01B0FreshAllocators(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Run("raw-allocator", func(t *testing.T) {
 		var owner partFXes
 		owner.Init(nil)
@@ -66,7 +66,7 @@ func TestParticleRegistrationOriginal4B01B0FreshAllocators(t *testing.T) {
 }
 
 func TestParticleRegistrationOriginal4B01B0SimultaneousOwners(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	var owners [2]partFXes
 	var particles [2][32]*particleFx
 	seen := make(map[unsafe.Pointer]bool)
@@ -98,7 +98,7 @@ func TestParticleRegistrationOriginal4B01B0SimultaneousOwners(t *testing.T) {
 }
 
 func TestParticleRegistrationOriginal4B01B0RealPoolReuse(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	var owner partFXes
 	owner.Init(nil)
 	defer owner.Free()

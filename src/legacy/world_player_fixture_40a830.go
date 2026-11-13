@@ -176,8 +176,8 @@ func worldPlayerFixtureArmor40A830(backend string, p *server.Object) float64 {
 func worldPlayerFixtureLayout40A830(i int) uintptr {
 	return uintptr(C.world_player_fixture_layout(C.int(i)))
 }
-func worldPlayerFixtureAlloc40A830(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) }
-func worldPlayerFixtureFree40A830(p unsafe.Pointer)          { C.free(p) }
+func worldPlayerFixtureAlloc40A830(n uintptr) unsafe.Pointer { return game4SupportAllocate(1, n) }
+func worldPlayerFixtureFree40A830(p unsafe.Pointer)          { game4SupportReleaseMemory(p) }
 func worldPlayerFixtureTileOwner40A830(p unsafe.Pointer, n int32) {
 	C.world_player_fixture_tile_owner(p, C.int(n))
 }

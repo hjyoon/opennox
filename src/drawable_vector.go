@@ -17,10 +17,28 @@ func init() {
 }
 
 func nox_xxx_spriteLoadVectoAnimatedImpl_44BFA0(ani *client.AnimationVector, f *binfile.MemFile) error {
+	return loadVectorAnimatedWithMemoryPolicy(ani, f, false)
+}
+
+func loadVectorAnimatedWithMemoryPolicy(ani *client.AnimationVector, f *binfile.MemFile, high bool) error {
 	if err := nox_xxx_loadVectorAnimated_44B8B0(ani, f); err != nil {
 		return err
 	}
-	return nox_xxx_loadVectorAnimated_44BC50(ani, f)
+	return loadVectorFramesWithMemoryPolicy(ani, f, high)
+}
+
+func newDrawParserRecord[T comparable](high bool, value T) (*T, func()) {
+	if high {
+		return alloc.NewHigh(value)
+	}
+	return alloc.New(value)
+}
+
+func makeDrawParserFrames(high bool, count int) ([]noxrender.ImageHandle, func()) {
+	if high {
+		return alloc.MakeHigh([]noxrender.ImageHandle{}, count)
+	}
+	return alloc.Make([]noxrender.ImageHandle{}, count)
 }
 
 func nox_xxx_loadVectorAnimated_44B8B0(ani *client.AnimationVector, f *binfile.MemFile) error {
@@ -32,12 +50,16 @@ func nox_xxx_loadVectorAnimated_44B8B0(ani *client.AnimationVector, f *binfile.M
 }
 
 func nox_xxx_loadVectorAnimated_44BC50(ani *client.AnimationVector, f *binfile.MemFile) error {
+	return loadVectorFramesWithMemoryPolicy(ani, f, false)
+}
+
+func loadVectorFramesWithMemoryPolicy(ani *client.AnimationVector, f *binfile.MemFile, high bool) error {
 	for i := 0; i < 8; i++ {
 		k := i
 		if i >= 4 {
 			k = i + 1
 		}
-		arr, _ := alloc.Make([]noxrender.ImageHandle{}, int(ani.Cnt40))
+		arr, _ := makeDrawParserFrames(high, int(ani.Cnt40))
 		ani.Frames[k] = &arr[0]
 		for j := 0; j < int(ani.Cnt40); j++ {
 			id := f.ReadI32()
@@ -56,8 +78,13 @@ func nox_xxx_loadVectorAnimated_44BC50(ani *client.AnimationVector, f *binfile.M
 }
 
 func parseAnimStateDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []byte) error {
-	dd, free := alloc.New(client.AnimationStateDrawData{})
-	if err := client.ParseAnimStateDrawData(dd, f, func(id int, typ byte, name string) noxrender.ImageHandle {
+	high := obj.UsesHighNativeMemory()
+	dd, free := newDrawParserRecord(high, client.AnimationStateDrawData{})
+	parse := client.ParseAnimStateDrawData
+	if high {
+		parse = client.ParseAnimStateDrawDataHigh
+	}
+	if err := parse(dd, f, func(id int, typ byte, name string) noxrender.ImageHandle {
 		return noxClient.r.Bag.ImageRef(id, typ, name).C()
 	}); err != nil {
 		free()
@@ -70,9 +97,10 @@ func parseAnimStateDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ 
 }
 
 func parseAnimVectorDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []byte) error {
-	dd, _ := alloc.New(client.AnimationVector{})
+	high := obj.UsesHighNativeMemory()
+	dd, _ := newDrawParserRecord(high, client.AnimationVector{})
 	dd.Size = uint32(unsafe.Sizeof(client.AnimationVector{}))
-	if err := nox_xxx_spriteLoadVectoAnimatedImpl_44BFA0(dd, f); err != nil {
+	if err := loadVectorAnimatedWithMemoryPolicy(dd, f, high); err != nil {
 		return err
 	}
 	obj.DrawFunc = legacy.Get_nox_thing_vector_animate_draw()

@@ -16,7 +16,7 @@ import (
 
 func questMapSelectionObserverFixture4D0F60(t *testing.T, countValue uint32) (*server.Server, []byte) {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	oldServer, oldSelector := GetServer, questMapFileCall4D0F60
 	GetServer = func() Server { return &questMapFileLegacyServer4D0F60{native: s} }

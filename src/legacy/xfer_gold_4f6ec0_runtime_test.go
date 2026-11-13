@@ -63,12 +63,12 @@ func TestGoldXferNativeLayout4F6EC0(t *testing.T) {
 }
 
 func TestGoldXferNativeWrite4F6EC0PreservesPointerAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.GoldInitData{Amount: 0xdecafbad})
+	data, freeData := alloc.NewHigh(server.GoldInitData{Amount: 0xdecafbad})
 	defer freeData()
 	*data = server.GoldInitData{Amount: 0xdecafbad}
-	id, freeID := alloc.CString("gold-native")
+	id, freeID := alloc.CStringHigh("gold-native")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -206,12 +206,12 @@ func TestGoldXferNativeRead4F6EC0TransfersAmountAndRestoresCount(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.GoldInitData{Amount: 1})
+	data, freeData := alloc.NewHigh(server.GoldInitData{Amount: 1})
 	defer freeData()
 	*data = server.GoldInitData{Amount: 1}
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassFood | objectlib.ClassPickup | objectlib.ClassClientPersist
 	object.IDPtr = unsafe.Pointer(oldID)
@@ -268,7 +268,7 @@ func TestGoldXferNativeRead4F6EC0TransfersAmountAndRestoresCount(t *testing.T) {
 }
 
 func TestGoldXferExport4F6EC0PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

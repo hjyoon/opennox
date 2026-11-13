@@ -61,9 +61,9 @@ func TestPlayerDamageNPCMonsterSimpleMissileImpactNative4E17B0CRecords(t *testin
 			t.Run(fmt.Sprintf("armor-%g/raw-%d", absorption, raw), func(t *testing.T) {
 				v := srv.Objs.NewObject(&server.ObjectType{Damage: srv.Types.ByID("NativeStoneImpactNPC").Damage})
 				a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-				u, freeU := alloc.New(server.MonsterUpdateData{})
-				au, freeAU := alloc.New(server.MonsterUpdateData{})
-				hp, freeHP := alloc.New(server.HealthData{})
+				u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
+				au, freeAU := alloc.NewHigh(server.MonsterUpdateData{})
+				hp, freeHP := alloc.NewHigh(server.HealthData{})
 				t.Cleanup(freeU)
 				t.Cleanup(freeAU)
 				t.Cleanup(freeHP)

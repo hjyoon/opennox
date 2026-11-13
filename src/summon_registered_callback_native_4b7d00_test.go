@@ -79,10 +79,10 @@ func registeredSummonType4B7D00(t *testing.T, c *Client, name, draw string) *cli
 		raw = binary.LittleEndian.AppendUint32(raw, 2)
 	}
 	raw = append(raw, 0)
-	buf, _ := alloc.CloneSlice(raw)
+	buf, _ := alloc.CloneSliceHigh(raw)
 	f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
 	defer f.Free()
-	scratch, free := alloc.Make([]byte{}, 256)
+	scratch, free := alloc.MakeHigh([]byte{}, 256)
 	defer free()
 	if err := c.Things.ReadType(f, scratch); err != nil || len(f.Data()) != 0 {
 		t.Fatalf("actual DRAW parser failed: %v unread=%d", err, len(f.Data()))
@@ -148,12 +148,12 @@ func testRegisteredSummonChild4B7D00(t *testing.T, style string) {
 	}
 	t.Chdir(t.TempDir())
 	destroyOnceBag48EA70(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(128)
@@ -162,7 +162,7 @@ func testRegisteredSummonChild4B7D00(t *testing.T, style string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	oldRenderDataC := *legacy.VideoModeRenderDataC
@@ -175,7 +175,7 @@ func testRegisteredSummonChild4B7D00(t *testing.T, style string) {
 	}
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255

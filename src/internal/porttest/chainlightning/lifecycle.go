@@ -54,7 +54,7 @@ func allocate[T comparable](blocks *[]*block) (*T, *block) {
 		Value  T
 		After  [32]byte
 	}
-	p, free := alloc.New(frame{})
+	p, free := alloc.NewHigh(frame{})
 	*p = frame{}
 	for i := range p.Before {
 		p.Before[i], p.After[i] = byte(0x55+i), byte(0xf1-i)

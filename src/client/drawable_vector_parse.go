@@ -12,7 +12,17 @@ import (
 // ParseAnimStateDrawData ports nox_things_animate_state_draw_parse and its
 // single-sequence frame loader. The binary input remains the original PE32
 // format, while dd uses the target architecture's native pointer width.
-func ParseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle) (err error) {
+func ParseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle) error {
+	return parseAnimStateDrawData(dd, f, imageRef, false)
+}
+
+// ParseAnimStateDrawDataHigh uses the same binary parser and failure cleanup
+// while requesting high foreign frame arrays for an explicit native owner.
+func ParseAnimStateDrawDataHigh(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle) error {
+	return parseAnimStateDrawData(dd, f, imageRef, true)
+}
+
+func parseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle, high bool) (err error) {
 	dd.Size = uint32(unsafe.Sizeof(*dd))
 	var frameAllocs []func()
 	defer func() {
@@ -61,7 +71,13 @@ func ParseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imag
 		if imageRef == nil {
 			return fmt.Errorf("animate-state image resolver is nil")
 		}
-		frames, free := alloc.Make([]noxrender.ImageHandle{}, cnt)
+		var frames []noxrender.ImageHandle
+		var free func()
+		if high {
+			frames, free = alloc.MakeHigh([]noxrender.ImageHandle{}, cnt)
+		} else {
+			frames, free = alloc.Make([]noxrender.ImageHandle{}, cnt)
+		}
 		frameAllocs = append(frameAllocs, free)
 		ani.Frames[0] = &frames[0]
 		for i := range frames {

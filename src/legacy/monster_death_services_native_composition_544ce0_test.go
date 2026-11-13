@@ -145,7 +145,7 @@ func TestMonsterDeathServicesNativeComposition544CE0(t *testing.T) {
 		return
 	}
 	mode := os.Getenv(child)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	if !s.Objs.InitHigh(16) {
 		t.Fatal("native allocator")

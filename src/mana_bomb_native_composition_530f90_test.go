@@ -106,7 +106,7 @@ func TestManaBombPublicCNativeComposition530F90(t *testing.T) {
 		return -1
 	}
 	createIndex := selectCase("create", 100, 20)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -128,7 +128,7 @@ func TestManaBombPublicCNativeComposition530F90(t *testing.T) {
 	s.SetTickRate(60)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native walls")
 	}
 	t.Cleanup(s.Walls.Free)

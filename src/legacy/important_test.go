@@ -91,7 +91,7 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 	if got := unsafe.Offsetof(importantRateControl{}.LowerThreshold); got != 8 {
 		t.Fatalf("lower-threshold offset: got %d, want 8", got)
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	oldFPS := gameFPSHook
@@ -150,7 +150,7 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 			setImportantListHeadsC(0x13579BDF, 0x2468ACE0)
 			Set_dword_5d4594_2650652(tc.mode)
 
-			pool := alloc.NewClass("important-init-contract", importantPacketSizeC(), 1)
+			pool := alloc.NewClassHigh("important-init-contract", importantPacketSizeC(), 1)
 			handle := pool.UPtr()
 			setImportantAllocClassC(handle)
 			packet := pool.NewObject()
@@ -365,7 +365,7 @@ func TestImportantRateControlReadMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantRateAdjustmentMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	type packetSpec struct {
@@ -426,7 +426,7 @@ func TestImportantRateAdjustmentMatchesGAMEEXEContract(t *testing.T) {
 		setImportantNativeListC(nil, nil)
 		packets := make([]unsafe.Pointer, len(specs))
 		if len(specs) != 0 {
-			pool := alloc.NewClass("important-rate-adjust-contract", importantPacketSizeC(), len(specs))
+			pool := alloc.NewClassHigh("important-rate-adjust-contract", importantPacketSizeC(), len(specs))
 			t.Cleanup(func() {
 				setImportantNativeListC(nil, nil)
 				pool.Free()
@@ -890,12 +890,12 @@ func TestImportantPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 		t.Fatalf("packet allocation size: got %d, want %d", got, wantSize)
 	}
 
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	oldAlloc := importantAllocClassC()
 	oldNativeFirst, oldNativeLast := importantNativeListC()
 	oldRawFirst, oldRawLast := importantListHeadsC()
-	pool := alloc.NewClass("important-cleanup-contract", wantSize, 5)
+	pool := alloc.NewClassHigh("important-cleanup-contract", wantSize, 5)
 	handle := pool.UPtr()
 	setImportantAllocClassC(handle)
 	setImportantNativeListC(nil, nil)
@@ -1070,7 +1070,7 @@ func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
 		t.Fatalf("native packet size: got %d, want %d", got, wantNativeSize)
 	}
 
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
@@ -1096,7 +1096,7 @@ func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
 	}
 
 	const packetCount = 4
-	pool := alloc.NewClass("important-create-contract", wantNativeSize, packetCount)
+	pool := alloc.NewClassHigh("important-create-contract", wantNativeSize, packetCount)
 	setImportantAllocClassC(pool.UPtr())
 	mask := (uint32(1) << 0) | (uint32(1) << 2) | (uint32(1) << 31)
 	setImportantRecipientMaskC(mask)
@@ -1107,7 +1107,7 @@ func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
 	initialCounters := *counters
 	frame := uint32(0x12345670)
 	gameFrameHook = func() uint32 { return frame }
-	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	relatedObject, freeRelatedObject := alloc.MallocHigh(1)
 	t.Cleanup(freeRelatedObject)
 
 	type createdPacket struct {
@@ -1264,12 +1264,12 @@ func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPacketSequenceWrapperMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
 
-	pool := alloc.NewClass("important-sequence-wrapper-contract", importantPacketSizeC(), 1)
+	pool := alloc.NewClassHigh("important-sequence-wrapper-contract", importantPacketSizeC(), 1)
 	setImportantAllocClassC(pool.UPtr())
 	setImportantRecipientMaskC(uint32(1) << 3)
 	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
@@ -1277,7 +1277,7 @@ func TestImportantPacketSequenceWrapperMatchesGAMEEXEContract(t *testing.T) {
 		counters[i] = uint16(0x1100 + i)
 	}
 	gameFrameHook = func() uint32 { return 0x1234ABCD }
-	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	relatedObject, freeRelatedObject := alloc.MallocHigh(1)
 	t.Cleanup(freeRelatedObject)
 	payload := []byte{0x31, 0x53, 0x90, 0xA5, 0x5A}
 
@@ -1320,14 +1320,14 @@ func TestImportantPacketSequenceWrapperMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("empty-list-failure", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
 		setImportantRecipientMaskC(1)
-		pool := alloc.NewClass("important-empty-full-contract", importantPacketSizeC(), 1)
+		pool := alloc.NewClassHigh("important-empty-full-contract", importantPacketSizeC(), 1)
 		setImportantAllocClassC(pool.UPtr())
 		if consumed := pool.NewObject(); consumed == nil {
 			t.Fatal("failed to consume the only allocation")
@@ -1343,7 +1343,7 @@ func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
 	t.Run("oldest-packet-reused", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantRecipientMaskC(1)
-		pool := alloc.NewClass("important-reuse-contract", importantPacketSizeC(), 1)
+		pool := alloc.NewClassHigh("important-reuse-contract", importantPacketSizeC(), 1)
 		setImportantAllocClassC(pool.UPtr())
 		oldest := pool.NewObject()
 		if oldest == nil {
@@ -1375,7 +1375,7 @@ func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	type packetSpec struct {
@@ -1384,7 +1384,7 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 	}
 	setup := func(t *testing.T, name string, specs []packetSpec) ([]unsafe.Pointer, *alloc.Class) {
 		t.Helper()
-		pool := alloc.NewClass(name, importantPacketSizeC(), len(specs))
+		pool := alloc.NewClassHigh(name, importantPacketSizeC(), len(specs))
 		setImportantAllocClassC(pool.UPtr())
 		packets := make([]unsafe.Pointer, len(specs))
 		for i, spec := range specs {
@@ -1560,7 +1560,7 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPlayerKickDueToRateMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	oldPlayerByInd := importantPlayerByIndHook
@@ -1631,7 +1631,7 @@ func TestImportantPlayerKickDueToRateMatchesGAMEEXEContract(t *testing.T) {
 
 	t.Run("real-packet-cleanup", func(t *testing.T) {
 		preserveImportantPacketState(t)
-		pool := alloc.NewClass("important-kick-cleanup", importantPacketSizeC(), 1)
+		pool := alloc.NewClassHigh("important-kick-cleanup", importantPacketSizeC(), 1)
 		setImportantAllocClassC(pool.UPtr())
 		packet := pool.NewObject()
 		if packet == nil {
@@ -1672,7 +1672,7 @@ func TestImportantPlayerKickDueToRateMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPacketLazyAllocationMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	for _, tc := range []struct {

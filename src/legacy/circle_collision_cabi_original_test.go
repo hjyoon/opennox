@@ -18,7 +18,7 @@ import (
 // These call the actual production C symbols. The finite object cases use the
 // actual collision queue and impulse callee; no C service is replaced.
 func TestCircleCollisionCEntryOriginal(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	t.Cleanup(circleCollisionCABIReleaseFixturePool)
 	blob, err := os.ReadFile("../server/testdata/circle_collision_startup_original.json")

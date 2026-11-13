@@ -1,3 +1,4 @@
+#include "draw_allocation.h"
 #include "client__draw__canidraw.h"
 #include "GAME1_2.h"
 #include "GAME3_1.h"
@@ -38,14 +39,14 @@ int nox_thing_cond_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
 
 //----- (0044B560) --------------------------------------------------------
 bool nox_things_cond_animate_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_value) {
-	nox_cond_animate_draw_data_t* data = calloc(1, sizeof(*data));
+	nox_cond_animate_draw_data_t* data = nox_draw_memory_calloc(1, sizeof(*data));
 	if (!data) {
 		return 0;
 	}
 	data->size = sizeof(*data);
 	uint8_t state_count = nox_memfile_read_u8(f);
 	if (state_count > 5) {
-		free(data);
+		nox_draw_memory_free(data);
 		return 0;
 	}
 	for (int state = 0; state < state_count; state++) {
@@ -56,12 +57,12 @@ bool nox_things_cond_animate_draw_parse(nox_thing* obj, nox_memfile* f, char* at
 		attr_value[kind_len] = 0;
 		data->animation_kind[state] = get_animation_kind_id_44B4C0(attr_value);
 		if (data->frame_count[state] != 0) {
-			data->images[state] = calloc(data->frame_count[state], sizeof(*data->images[state]));
+			data->images[state] = nox_draw_memory_calloc(data->frame_count[state], sizeof(*data->images[state]));
 			if (!data->images[state]) {
 				for (int prev = 0; prev < state; prev++) {
-					free(data->images[prev]);
+					nox_draw_memory_free(data->images[prev]);
 				}
-				free(data);
+				nox_draw_memory_free(data);
 				return 0;
 			}
 		}

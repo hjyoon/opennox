@@ -141,7 +141,14 @@ func TestChakramRetargetOriginal4EB250(t *testing.T) {
 						if !row.Output.Guard {
 							t.Fatal("original guards not certified")
 						}
-						buf, free := alloc.Make([]byte{}, 0x10000)
+						invalidNative := originalInvalidNativePointer32(t)
+						unmapped := func() unsafe.Pointer {
+							if invalidNative != nil {
+								return invalidNative
+							}
+							return secretWallOriginalUnmapped4DF120()
+						}
+						buf, free := alloc.MakeHigh([]byte{}, 0x10000)
 						defer free()
 						for i := range buf {
 							buf[i] = byte(i*37 + 0xa5)
@@ -159,7 +166,7 @@ func TestChakramRetargetOriginal4EB250(t *testing.T) {
 								return nil
 							}
 							if index == -2 {
-								return (*server.Object)(secretWallOriginalUnmapped4DF120())
+								return (*server.Object)(unmapped())
 							}
 							return objects[index]
 						}
@@ -168,7 +175,7 @@ func TestChakramRetargetOriginal4EB250(t *testing.T) {
 								return nil
 							}
 							if index == -2 {
-								return secretWallOriginalUnmapped4DF120()
+								return unmapped()
 							}
 							return unsafe.Pointer(updates[index])
 						}
@@ -201,9 +208,19 @@ func TestChakramRetargetOriginal4EB250(t *testing.T) {
 							obj.ObjClass, obj.ObjFlags = object.Class(value.Class), object.Flags(value.Flags)
 							obj.PosVec = types.Ptf(math.Float32frombits(value.Pos[0]), math.Float32frombits(value.Pos[1]))
 							obj.VelVec = types.Ptf(math.Float32frombits(value.Vel[0]), math.Float32frombits(value.Vel[1]))
+							if unsafe.Sizeof(uintptr(0)) == 4 {
+								// These initial pointer cells still contain raw canary words,
+								// including 0x300be6c1 at UpdateData. Clear only bytes
+								// this store replaces before Go's barrier reads them.
+								alloc.Memset(unsafe.Pointer(&obj.ObjOwner), 0, unsafe.Sizeof(obj.ObjOwner))
+								alloc.Memset(unsafe.Pointer(&obj.UpdateData), 0, unsafe.Sizeof(obj.UpdateData))
+							}
 							obj.SpeedCur, obj.ObjOwner, obj.UpdateData = math.Float32frombits(value.Speed), at(value.Owner), updateAt(value.Update)
 						}
 						for i, value := range in.Updates {
+							if unsafe.Sizeof(uintptr(0)) == 4 {
+								alloc.Memset(unsafe.Pointer(&updates[i].LastHit), 0, unsafe.Sizeof(updates[i].LastHit))
+							}
 							updates[i].LastHit, updates[i].ReturnState = at(value.Last), value.State
 						}
 						initial := bytes.Clone(buf)
@@ -403,7 +420,11 @@ func TestChakramRetargetOriginal4EB250(t *testing.T) {
 							}
 							var point *types.Pointf
 							if in.Point < 0 {
-								point = chakramRetargetOriginalBadPoint4EB250(in.Point, in.PointOffset)
+								if invalidNative != nil && in.Point == -2 {
+									point = (*types.Pointf)(unsafe.Add(invalidNative, in.PointOffset))
+								} else {
+									point = chakramRetargetOriginalBadPoint4EB250(in.Point, in.PointOffset)
+								}
 							} else {
 								switch in.PointOffset {
 								case 56:

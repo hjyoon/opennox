@@ -17,7 +17,7 @@ import (
 func TestMonsterMissileNativeDefaultBindings532540(t *testing.T) {
 	for _, mode := range []string{"clear-map", "outside-map", "missing-type"} {
 		t.Run(mode, func(t *testing.T) {
-			s := New(nil, nil, strman.New())
+			s := NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			d, freeD := alloc.NewHigh(MonsterUpdateData{})
 			t.Cleanup(freeD)

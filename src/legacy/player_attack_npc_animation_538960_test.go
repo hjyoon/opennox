@@ -25,7 +25,7 @@ func TestPlayerAttackNPC538960CompleteFrameCycle(t *testing.T) {
 	} {
 		for _, duration := range []int{0, 2} {
 			t.Run(fmt.Sprintf("%s/duration-%d", weaponKind.name, duration), func(t *testing.T) {
-				srv := server.New(nil, nil, strman.New())
+				srv := server.NewHigh(nil, nil, strman.New())
 				t.Cleanup(srv.Close)
 				srv.Map.Init()
 				t.Cleanup(srv.Map.Free)

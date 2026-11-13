@@ -15,13 +15,13 @@ import (
 )
 
 func TestBurnCastGoEntryForwardsNativePointers52C3E0(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSecond)
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeOwner)
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(12, 34)}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
@@ -63,7 +63,7 @@ func TestBurnCastNativeMissingFlameAndSharedGlyphCache52C3E0(t *testing.T) {
 				srv, caster, update := monsterLookAtFixture5125A0(t)
 				srv.Map.Init()
 				t.Cleanup(srv.Map.Free)
-				if srv.Walls.Init() == 0 {
+				if srv.Walls.InitHigh() == 0 {
 					t.Fatal("cannot initialize native wall map")
 				}
 				t.Cleanup(srv.Walls.Free)
@@ -71,9 +71,9 @@ func TestBurnCastNativeMissingFlameAndSharedGlyphCache52C3E0(t *testing.T) {
 				if isGlyph {
 					caster.TypeInd, caster.PosVec = 321, types.Ptf(-23, -23)
 				}
-				owner, freeOwner := alloc.New(server.Object{})
+				owner, freeOwner := alloc.NewHigh(server.Object{})
 				t.Cleanup(freeOwner)
-				arg, freeArg := alloc.New(server.SpellAcceptArg{})
+				arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 				t.Cleanup(freeArg)
 				*arg = server.SpellAcceptArg{Obj: owner, Pos: types.Ptf(330, 300)}
 				glyphCache := Get_dword_5d4594_2487712_ptr()
@@ -102,9 +102,9 @@ func TestBurnCastNativeMissingFlameAndSharedGlyphCache52C3E0(t *testing.T) {
 func TestBurnCastNativeNilGuards52C3E0(t *testing.T) {
 	for _, missing := range []string{"argument", "caster", "both"} {
 		t.Run(missing, func(t *testing.T) {
-			caster, freeCaster := alloc.New(server.Object{})
+			caster, freeCaster := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeCaster)
-			arg, freeArg := alloc.New(server.SpellAcceptArg{})
+			arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 			t.Cleanup(freeArg)
 			switch missing {
 			case "argument":

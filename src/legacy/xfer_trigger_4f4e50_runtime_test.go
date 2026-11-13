@@ -91,7 +91,7 @@ func TestTriggerXferNativeLayout4F4E50(t *testing.T) {
 	if got := triggerXferScriptContextNative4F4E50(nil, 256); got != nil {
 		t.Errorf("nil script-data context = %p, want nil", got)
 	}
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
 	if got, want := triggerXferScriptContextNative4F4E50(scriptData, 512), unsafe.Add(scriptData, 512); got != want {
 		t.Errorf("script-data context = %p, want %p", got, want)
@@ -99,17 +99,17 @@ func TestTriggerXferNativeLayout4F4E50(t *testing.T) {
 }
 
 func TestTriggerXferNativeWrite4F4E50PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	update, freeUpdate := alloc.New(server.TriggerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.TriggerUpdateData{})
 	defer freeUpdate()
-	liveUpdate, freeLiveUpdate := alloc.New(server.TriggerUpdateData{})
+	liveUpdate, freeLiveUpdate := alloc.NewHigh(server.TriggerUpdateData{})
 	defer freeLiveUpdate()
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
-	liveScriptData, freeLiveScriptData := alloc.Malloc(1024)
+	liveScriptData, freeLiveScriptData := alloc.MallocHigh(1024)
 	defer freeLiveScriptData()
-	id, freeID := alloc.CString("trigger")
+	id, freeID := alloc.CStringHigh("trigger")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -339,17 +339,17 @@ func TestTriggerXferNativeRead4F4E50PreservesNativePointersAndEntryCaches(t *tes
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	update, freeUpdate := alloc.New(server.TriggerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.TriggerUpdateData{})
 	defer freeUpdate()
-	liveUpdate, freeLiveUpdate := alloc.New(server.TriggerUpdateData{})
+	liveUpdate, freeLiveUpdate := alloc.NewHigh(server.TriggerUpdateData{})
 	defer freeLiveUpdate()
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
-	liveScriptData, freeLiveScriptData := alloc.Malloc(1024)
+	liveScriptData, freeLiveScriptData := alloc.MallocHigh(1024)
 	defer freeLiveScriptData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 
 	update.Flags = 0xffffffff

@@ -22,12 +22,12 @@ func (s *netClientSendTestServer) S() *server.Server {
 }
 
 func TestImportantPacketUnsequencedWrapperMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
 
-	pool := alloc.NewClass("important-unsequenced-wrapper-contract", importantPacketSizeC(), 1)
+	pool := alloc.NewClassHigh("important-unsequenced-wrapper-contract", importantPacketSizeC(), 1)
 	setImportantAllocClassC(pool.UPtr())
 	setImportantRecipientMaskC(uint32(1) << 6)
 	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
@@ -36,7 +36,7 @@ func TestImportantPacketUnsequencedWrapperMatchesGAMEEXEContract(t *testing.T) {
 	}
 	wantCounters := *counters
 	gameFrameHook = func() uint32 { return 0x56789ABC }
-	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	relatedObject, freeRelatedObject := alloc.MallocHigh(1)
 	t.Cleanup(freeRelatedObject)
 	payload := []byte{0x44, 0x54, 0x20, 0xC3, 0x3C, 0x7E}
 
@@ -69,7 +69,7 @@ func TestImportantPacketUnsequencedWrapperMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestNetClientSend2MatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
@@ -118,7 +118,7 @@ func TestNetClientSend2MatchesGAMEEXEContract(t *testing.T) {
 		t.Fatal("rejected non-host recipients allocated an important-packet class")
 	}
 
-	pool := alloc.NewClass("important-client-send-wrapper-contract", importantPacketSizeC(), 1)
+	pool := alloc.NewClassHigh("important-client-send-wrapper-contract", importantPacketSizeC(), 1)
 	setImportantAllocClassC(pool.UPtr())
 	setImportantRecipientMaskC(uint32(1) << 3)
 	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
@@ -128,7 +128,7 @@ func TestNetClientSend2MatchesGAMEEXEContract(t *testing.T) {
 	wantCounters := *counters
 	gameFrameHook = func() uint32 { return 0x89ABCDEF }
 	nonHostPayload := []byte{0x75, 0x76, 0x77, 0x78}
-	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	relatedObject, freeRelatedObject := alloc.MallocHigh(1)
 	t.Cleanup(freeRelatedObject)
 	if got := Nox_xxx_netClientSend2_4E53C0(3, nonHostPayload, AsObjectP(relatedObject), 0x60708090); got != 1 {
 		t.Fatalf("non-host forwarded return value: got %d, want 1", got)
@@ -153,18 +153,18 @@ func TestNetClientSend2MatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantPacketReplacementWrapperMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("direct-recipient-acknowledgement", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-replacement-direct-contract", importantPacketSizeC(), 6)
+		pool := alloc.NewClassHigh("important-replacement-direct-contract", importantPacketSizeC(), 6)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC((uint32(1) << 1) | (uint32(1) << 2) | (uint32(1) << 3))
 		frame := uint32(0x41000000)
 		gameFrameHook = func() uint32 { return frame }
-		relatedObject, freeRelatedObject := alloc.New(server.Object{})
+		relatedObject, freeRelatedObject := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeRelatedObject)
 		relatedObject.Field37 = (uint32(1) << 2) | (uint32(1) << 6)
 		sendOld := func(recipient int, payload []byte, related *server.Object) {
@@ -241,7 +241,7 @@ func TestImportantPacketReplacementWrapperMatchesGAMEEXEContract(t *testing.T) {
 		t.Run(tc.name+"-raw-high-message-byte", func(t *testing.T) {
 			preserveImportantPacketState(t)
 			setImportantNativeListC(nil, nil)
-			pool := alloc.NewClass("important-replacement-high-byte-contract", importantPacketSizeC(), 5)
+			pool := alloc.NewClassHigh("important-replacement-high-byte-contract", importantPacketSizeC(), 5)
 			setImportantAllocClassC(pool.UPtr())
 			setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
 			frame := uint32(0x42000000)
@@ -282,7 +282,7 @@ func TestImportantPacketReplacementWrapperMatchesGAMEEXEContract(t *testing.T) {
 	t.Run("masked-variable-shift-count", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-replacement-shift-contract", importantPacketSizeC(), 2)
+		pool := alloc.NewClassHigh("important-replacement-shift-contract", importantPacketSizeC(), 2)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
 		frame := uint32(0x43000000)

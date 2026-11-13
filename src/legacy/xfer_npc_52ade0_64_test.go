@@ -84,12 +84,12 @@ func TestNPCRestoreEquipped52ADE0(t *testing.T) {
 		return 0x34
 	}
 
-	ud, freeUD := alloc.New(server.MonsterUpdateData{})
+	ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
 	*ud = server.MonsterUpdateData{
 		WeaponEquipFlags: 0x80000000, ArmorEquipFlags: 0x80000000,
 		Field516: 0x12345678, Field517: 0x11223344,
 	}
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 	t.Cleanup(freeUD)
 	t.Cleanup(freeAttrs)
 	weapon := npcRestoreTestObject52ADE0(t)

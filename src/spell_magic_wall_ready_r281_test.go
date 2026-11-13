@@ -26,7 +26,7 @@ func magicWallPlayerBytesR281(pl *server.Player) []byte {
 
 func magicWallReadyPlayerR281(t *testing.T, index byte, flags uint32, oldByte byte) *server.Player {
 	t.Helper()
-	pl, free := alloc.New(server.Player{})
+	pl, free := alloc.NewHigh(server.Player{})
 	original := magicWallPlayerBytesR281(pl)
 	t.Cleanup(free)
 	t.Cleanup(func() {

@@ -45,7 +45,7 @@ func TestRespawnAllocatorFreeNative4ECA90OrderAndCachedPointer(t *testing.T) {
 }
 
 func TestSub4ECA90NativeStorageAndFree(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 
 	oldAllocator := respawnAllocatorLoad4ECA60()
@@ -57,7 +57,7 @@ func TestSub4ECA90NativeStorageAndFree(t *testing.T) {
 		t.Fatalf("nil allocator global after free = %p, want nil", got)
 	}
 
-	class := alloc.NewClass("RespawnFree4ECA90Test", 16, 2)
+	class := alloc.NewClassHigh("RespawnFree4ECA90Test", 16, 2)
 	allocator := class.UPtr()
 	respawnAllocatorStore4ECA60(allocator)
 	Sub_4ECA90()

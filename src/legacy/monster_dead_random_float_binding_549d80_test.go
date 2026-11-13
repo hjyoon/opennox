@@ -72,7 +72,7 @@ func monsterDeadFloatReference549D80(min, max float32, word int) float32 {
 func TestMonsterDeadRandomFloat549D80ActualRuntimeBinding(t *testing.T) {
 	for _, start := range []int{0, 4090} {
 		t.Run(fmt.Sprintf("Logic-%d", start), func(t *testing.T) {
-			s := server.New(nil, nil, strman.New())
+			s := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			s.FreeObjectTypes()
 			t.Cleanup(s.FreeObjectTypes)
@@ -87,7 +87,7 @@ func TestMonsterDeadRandomFloat549D80ActualRuntimeBinding(t *testing.T) {
 			t.Cleanup(s.Objs.FreeObjects)
 			s.Map.Init()
 			t.Cleanup(s.Map.Free)
-			s.Walls.Init()
+			s.Walls.InitHigh()
 			t.Cleanup(s.Walls.Free)
 			s.Audio.Init(s)
 			t.Cleanup(s.Audio.Free)
@@ -103,8 +103,8 @@ func TestMonsterDeadRandomFloat549D80ActualRuntimeBinding(t *testing.T) {
 			GetServer = func() Server { return outer }
 			t.Cleanup(func() { GetServer = previousGet })
 			unit := s.Objs.NewObject(&server.ObjectType{})
-			update, freeUpdate := alloc.New(server.MonsterUpdateData{Field67: 67, Field124: 124})
-			health, freeHealth := alloc.New(server.HealthData{Cur: 19, Max: 80, Field2: 80})
+			update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{Field67: 67, Field124: 124})
+			health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 19, Max: 80, Field2: 80})
 			t.Cleanup(freeUpdate)
 			t.Cleanup(freeHealth)
 			unit.ObjClass, unit.PosVec = object.ClassMonster, types.Ptf(300, 300)

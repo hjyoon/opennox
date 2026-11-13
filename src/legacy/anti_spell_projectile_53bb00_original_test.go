@@ -136,7 +136,7 @@ func TestAntiSpellOriginalNative53BB00(t *testing.T) {
 					sbefore := bytes.Clone(sframe)
 					world := new(server.Server)
 					if i.NativeGrid {
-						world = server.New(nil, nil, strman.New())
+						world = server.NewHigh(nil, nil, strman.New())
 						t.Cleanup(world.Close)
 						world.Map.Init()
 						t.Cleanup(world.Map.Free)

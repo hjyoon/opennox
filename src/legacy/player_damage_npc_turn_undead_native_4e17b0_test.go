@@ -40,13 +40,13 @@ func TestPlayerDamageNPCTurnUndeadNativeCollisionHP4E17B0(t *testing.T) {
 		for _, defense := range []string{"none", "invulnerable", "no-update", "non-undead"} {
 			t.Run(fmt.Sprintf("%s/%s", owner, defense), func(t *testing.T) {
 				v, a, killer := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-				u, freeU := alloc.New(server.MonsterUpdateData{})
-				au, freeAU := alloc.New(server.MonsterUpdateData{})
-				pu, freePU := alloc.New(server.PlayerUpdateData{})
-				info, freeInfo := alloc.New(server.Player{})
-				hp, freeHP := alloc.New(server.HealthData{})
-				spell, freeSpell := alloc.New(server.DurSpell{})
-				data, freeData := alloc.New(server.UndeadKillerCollideData{})
+				u, freeU := alloc.NewHigh(server.MonsterUpdateData{})
+				au, freeAU := alloc.NewHigh(server.MonsterUpdateData{})
+				pu, freePU := alloc.NewHigh(server.PlayerUpdateData{})
+				info, freeInfo := alloc.NewHigh(server.Player{})
+				hp, freeHP := alloc.NewHigh(server.HealthData{})
+				spell, freeSpell := alloc.NewHigh(server.DurSpell{})
+				data, freeData := alloc.NewHigh(server.UndeadKillerCollideData{})
 				for _, free := range []func(){freeU, freeAU, freePU, freeInfo, freeHP, freeSpell, freeData} {
 					t.Cleanup(free)
 				}

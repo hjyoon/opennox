@@ -69,7 +69,7 @@ func TestMapRadialDamageNative4E25B0RealMapTraceAndCallback(t *testing.T) {
 				t.Run(scenario.name+"/"+mode+map[bool]string{false: "/fixed", true: "/live-center"}[shift], func(t *testing.T) {
 					s := NewServer(nil, nil, strman.New())
 					t.Cleanup(s.Close)
-					if !s.Objs.InitHigh(3) || s.Walls.Init() == 0 {
+					if !s.Objs.InitHigh(3) || s.Walls.InitHigh() == 0 {
 						t.Fatal("native object/wall allocation")
 					}
 					t.Cleanup(s.Objs.FreeObjects)

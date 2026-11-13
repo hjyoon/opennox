@@ -45,10 +45,10 @@ func TestArmorCoefficientHighNative415BD0(t *testing.T) {
 	if len(fixture.Cases) != 2560 {
 		t.Fatal("independent every-exponent/sign boundary domain")
 	}
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	*item = server.Object{ObjClass: object.ClassArmor, TypeInd: 0x8001}
 	defer freeItem()
-	definition, freeDefinition := alloc.New(server.Modifier{})
+	definition, freeDefinition := alloc.NewHigh(server.Modifier{})
 	defer freeDefinition()
 	if uintptr(unsafe.Pointer(item)) <= 0xffffffff || uintptr(unsafe.Pointer(definition)) <= 0xffffffff {
 		t.Fatal("actual C object/definition must exceed 4GiB")
@@ -99,9 +99,9 @@ func TestArmorCoefficientHighNative415BD0(t *testing.T) {
 }
 
 func TestArmorCoefficientCachedReads415BD0(t *testing.T) {
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	definition, freeDefinition := alloc.New(server.Modifier{})
+	definition, freeDefinition := alloc.NewHigh(server.Modifier{})
 	defer freeDefinition()
 	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, armorCoefficientActualC415BD0} {
 		item.ObjClass, item.TypeInd, definition.DamageCoeffOrArmor64 = object.ClassArmor, 0xffff, -0.25
@@ -143,13 +143,13 @@ func TestArmorCoefficientDefaultLookup415BD0(t *testing.T) {
 	previous := GetServer
 	GetServer = func() Server { return &armorCoefficientLegacyServer415BD0{srv: srv} }
 	defer func() { GetServer = previous }()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	*item = server.Object{ObjClass: object.ClassArmor, TypeInd: 0x8001}
 	defer freeItem()
-	first, freeFirst := alloc.New(server.Modifier{})
+	first, freeFirst := alloc.NewHigh(server.Modifier{})
 	*first = server.Modifier{TypeInd: 0x8001, DamageCoeffOrArmor64: 0.125}
 	defer freeFirst()
-	last, freeLast := alloc.New(server.Modifier{})
+	last, freeLast := alloc.NewHigh(server.Modifier{})
 	*last = server.Modifier{TypeInd: 0x8001, DamageCoeffOrArmor64: 0.75}
 	defer freeLast()
 	first.Next80 = last

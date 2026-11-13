@@ -91,7 +91,7 @@ func drainOriginalAllocation52E210[T comparable](t *testing.T) *T {
 	t.Helper()
 	var zero T
 	size := int(unsafe.Sizeof(zero))
-	raw, free := alloc.Make([]byte(nil), size+64)
+	raw, free := alloc.MakeHigh([]byte(nil), size+64)
 	for i := 0; i < 32; i++ {
 		raw[i], raw[size+32+i] = byte(0x31+i), byte(0xe7-i)
 	}
@@ -160,7 +160,7 @@ func TestSpellDrainManaOriginalNative52E210(t *testing.T) {
 					}
 					var updates [4]unsafe.Pointer
 					for i := range updates {
-						data, free := alloc.Make([]byte(nil), int(maxSize)+64)
+						data, free := alloc.MakeHigh([]byte(nil), int(maxSize)+64)
 						for j := 0; j < 32; j++ {
 							data[j], data[int(maxSize)+32+j] = byte(0x51+j), byte(0xd7-j)
 						}

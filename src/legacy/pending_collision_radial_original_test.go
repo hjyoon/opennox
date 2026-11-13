@@ -61,11 +61,11 @@ func TestPendingCollisionRadialRootNativeMapOriginal(t *testing.T) {
 	}
 	for _, reverse := range []bool{false, true} {
 		t.Run(fmt.Sprintf("reverse-%t", reverse), func(t *testing.T) {
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
 			srv.Map.Init()
 			t.Cleanup(srv.Map.Free)
-			if srv.Walls.Init() == 0 {
+			if srv.Walls.InitHigh() == 0 {
 				t.Fatal("native wall index")
 			}
 			t.Cleanup(srv.Walls.Free)

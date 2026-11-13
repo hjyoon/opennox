@@ -53,7 +53,7 @@ func TestSaveCharacterDefaultSelectionNative(t *testing.T) {
 		{name: "empty style column", nameRows: 3, wantStyle: -1},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			g := gui.New(nil)
+			g := gui.NewHigh(nil)
 			t.Cleanup(g.DestroyAll)
 			root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 			buttons := make(map[uint]*gui.Window)

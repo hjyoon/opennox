@@ -76,11 +76,11 @@ func TestDoorXferNativeLayout4F4CB0(t *testing.T) {
 }
 
 func TestDoorXferNativeWrite4F4CB0PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	update, freeUpdate := alloc.New(server.DoorUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.DoorUpdateData{})
 	defer freeUpdate()
-	id, freeID := alloc.CString("door")
+	id, freeID := alloc.CStringHigh("door")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
@@ -231,13 +231,13 @@ func TestDoorXferNativeRead4F4CB0PreservesNativePointersAndEntryCaches(t *testin
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	update, freeUpdate := alloc.New(server.DoorUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.DoorUpdateData{})
 	defer freeUpdate()
-	liveUpdate, freeLiveUpdate := alloc.New(server.DoorUpdateData{})
+	liveUpdate, freeLiveUpdate := alloc.NewHigh(server.DoorUpdateData{})
 	defer freeLiveUpdate()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	update.CurrentDirection = -1
 	update.TargetDirection = -2

@@ -41,7 +41,7 @@ func monsterHealthRetreatReference547807(cur, maximum uint16) float32 {
 
 func monsterHealthRetreatNativeFixture547807(t *testing.T) (*Server, *Object, *MonsterUpdateData) {
 	t.Helper()
-	s := New(nil, nil, strman.New())
+	s := NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")

@@ -39,7 +39,7 @@ func TestMimicCheckMorph534950CEntryDelegatesWholeBody(t *testing.T) {
 }
 
 func TestMimicCheckMorph534950CEntryProductionStack(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Types.Free()
 	if err := srv.Types.ReadObjectType(&things.Thing{Name: "MimicMorphCFixture"}); err != nil {

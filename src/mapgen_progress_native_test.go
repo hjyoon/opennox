@@ -73,7 +73,7 @@ func mapGenActualChild201(t *testing.T, mode string, lang int) {
 	oldData := datapath.Data()
 	datapath.SetData(".")
 	t.Cleanup(func() { datapath.SetData(oldData) })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	c, _, d := actualVideoRender200(t)
 	labels := []string{"Generating", "Assembling", "Populating"}
@@ -153,7 +153,7 @@ func mapGenActualChild201(t *testing.T, mode string, lang int) {
 	legacy.Nox_xxx_gLoadImg = oldLoader
 	*memmap.PtrUint32(0x5D4594, 1309664) = 0xa55aa55a
 	packedBefore := bytes.Clone(memmap.Slice(0x5D4594, 1309516)[:152])
-	packet, freePacket := alloc.Make([]byte{}, 35)
+	packet, freePacket := alloc.MakeHigh([]byte{}, 35)
 	t.Cleanup(func() { freePacket() })
 	message := packet[16:19]
 	beforeFrame := memmap.Uint32(0x973A20, 496)

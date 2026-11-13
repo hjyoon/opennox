@@ -12,9 +12,9 @@ import (
 
 func journalTestPlayer427500(t *testing.T, index byte) (*Object, *Player) {
 	t.Helper()
-	unit, freeUnit := alloc.New(Object{})
-	update, freeUpdate := alloc.New(PlayerUpdateData{})
-	player, freePlayer := alloc.New(Player{})
+	unit, freeUnit := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(Player{})
 	t.Cleanup(freePlayer)
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freeUnit)

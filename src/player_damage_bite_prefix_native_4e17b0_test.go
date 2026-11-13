@@ -21,7 +21,7 @@ import (
 // C PlayerDamage dispatch, ObserveClear/status/CameraUnlock and DamageClear/HP
 // bindings remain intact; no test callback writes the resulting HP.
 func TestPlayerDamageBitePrefixNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

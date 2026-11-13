@@ -18,20 +18,20 @@ import (
 // dispatch. No balance file makes the radius zero; the native map still has
 // to enumerate the missile at the caster's exact live position.
 func TestInversionCastGoEntryNativePositionAndOwner52BEB0(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSecond)
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeOwner)
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
 	*caster = server.Object{PosVec: types.Ptf(123.5, 456.25)}
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(1000, 2000)}
-	missile, freeMissile := alloc.New(server.Object{})
+	missile, freeMissile := alloc.NewHigh(server.Object{})
 	*missile = server.Object{
 		ObjClass: object.ClassMissile, ObjFlags: object.FlagActive,
 		PosVec: caster.PosVec, NewPos: caster.PosVec,
@@ -63,13 +63,13 @@ func TestInversionCastGoEntryNativePositionAndOwner52BEB0(t *testing.T) {
 }
 
 func TestInversionCastGoDispatch52BEB0PreservesAllArguments(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSecond)
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeOwner)
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = server.SpellAcceptArg{Obj: second}
 	previous := inversionCastCall52BEB0

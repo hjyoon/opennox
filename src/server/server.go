@@ -35,14 +35,26 @@ func getServer(h uintptr) *Server {
 }
 
 func New(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server {
+	return newServer(log, pr, sm, false)
+}
+
+// NewHigh selects high foreign addresses for native-pointer fixtures owned by
+// this server. Other servers and the ordinary New constructor remain independent.
+// Object, wall, NPC and path pools retain their explicit Init/InitHigh selection.
+func NewHigh(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server {
+	return newServer(log, pr, sm, true)
+}
+
+func newServer(log *slog.Logger, pr console.Printer, sm *strman.StringManager, highAddresses bool) *Server {
 	if log == nil {
 		log = noxlog.New("server").Logger
 	} else {
 		log = noxlog.WithSystem(log, "server")
 	}
 	s := &Server{
-		Log:     log,
-		Printer: pr, sm: sm,
+		highAddresses: highAddresses,
+		Log:           log,
+		Printer:       pr, sm: sm,
 		loopHooks: make(chan func()),
 		port:      common.GamePort,
 		NetList:   netlist.New(),
@@ -62,15 +74,18 @@ func New(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server
 	s.NetStr.GameFrame = s.Frame
 	s.NetStr.KeyRand = s.Rand.Logic.IntClamp
 	s.NetStr.PacketDropRand = s.Rand.Other.Int
+	s.Types.highAddresses = highAddresses
 	s.Types.init(s.Log)
 	s.Objs.init(s.handle)
 	s.Modif.init(sm)
 	s.rewardDefinitions.init()
 	s.Players.init(s)
+	s.Teams.highAddresses = highAddresses
 	s.Teams.init(sm, pr)
 	s.Abils.init(s)
 	s.Spells.init(s)
 	s.Storage.init()
+	s.tradeNative.highAddresses = highAddresses
 	s.tradeNative.init()
 	s.NoxScriptVM.Init(s)
 	s.MapSend.init(s)
@@ -81,7 +96,8 @@ func New(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server
 type ObjectScriptID uint32
 
 type Server struct {
-	Log *slog.Logger
+	highAddresses bool
+	Log           *slog.Logger
 	console.Printer
 	handle     uintptr
 	sm         *strman.StringManager

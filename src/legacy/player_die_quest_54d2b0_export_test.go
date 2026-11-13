@@ -30,7 +30,7 @@ func TestPlayerDieQuest54D2B0RealCEntryNativeLivesStatsAndPenalty(t *testing.T) 
 	for _, lives := range []uint32{0, 1, 2, 0x80000000, 0xffffffff} {
 		t.Run(fmt.Sprintf("%08x", lives), func(t *testing.T) {
 			s, _, unit, update, p := questPenaltyLegacyFixture54CBD0(t)
-			health, freeHealth := alloc.New(server.HealthData{Cur: 0, Max: 450})
+			health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 0, Max: 450})
 			t.Cleanup(freeHealth)
 			questPenaltyLegacyHighPointers54CBD0(t, unsafe.Pointer(health))
 			unit.ObjClass, unit.ObjFlags, unit.HealthData = object.ClassPlayer, object.FlagDead|object.FlagEnabled, health

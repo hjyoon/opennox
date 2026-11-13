@@ -48,13 +48,13 @@ func TestOptionsAuditFXObserverChild(t *testing.T) {
 	if legacy.Sub_453070() != 1 {
 		t.Fatal("fresh FX observer fixture is not enabled")
 	}
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	root.SetID(300)
 	slider := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 70, 12, nil)
 	slider.SetID(351)
-	data, free := alloc.New(gui.SliderData{})
+	data, free := alloc.NewHigh(gui.SliderData{})
 	slider.WidgetData = unsafe.Pointer(data)
 	t.Cleanup(func() { slider.WidgetData = nil; free() })
 	noxClient = &Client{Client: &client.Client{GUI: g}}

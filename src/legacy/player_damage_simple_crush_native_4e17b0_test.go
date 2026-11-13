@@ -16,7 +16,7 @@ import (
 )
 
 func TestPlayerDamageSimpleCrushNativeCallback4E17B0BidirectionalHP(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1400)
 	oldGetServer := GetServer

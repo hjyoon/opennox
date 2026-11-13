@@ -22,7 +22,7 @@ func platformTicks() uint64 {
 func newTestDialog(t *testing.T) *Dialog {
 	timer.PlatformTicks = platformTicks
 
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(func() {
 		handles.Release()
 	})

@@ -40,9 +40,9 @@ func TestMonsterIdleSoundProduction5469B0(t *testing.T) {
 							s.Audio.inAudio = !queued
 							// Production audio stores C-owned object pointers in its
 							// native event pool; use the same ownership in this fixture.
-							unit, freeUnit := alloc.New(Object{})
+							unit, freeUnit := alloc.NewHigh(Object{})
 							t.Cleanup(freeUnit)
-							update, freeUpdate := alloc.New(MonsterUpdateData{})
+							update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 							t.Cleanup(freeUpdate)
 							unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 							unit.PosVec = types.Ptf(12.5, -6.25)
@@ -52,7 +52,7 @@ func TestMonsterIdleSoundProduction5469B0(t *testing.T) {
 							for i := range update.AIStack {
 								update.AIStack[i] = AIStackItem{Action: 4, Args: [4]uintptr{1, 2, 3, 4}}
 							}
-							set, free := alloc.Make([]uint32{}, 5)
+							set, free := alloc.MakeHigh([]uint32{}, 5)
 							t.Cleanup(free)
 							set[4] = 77
 							switch mode {

@@ -27,7 +27,7 @@ func (s *playerIDNativeServer417040) S() *server.Server { return s.base }
 
 func playerIDNativeFixture417040(t *testing.T) *server.Server {
 	t.Helper()
-	s := server.New(nil, console.NewMultiPrinter(), strman.New())
+	s := server.NewHigh(nil, console.NewMultiPrinter(), strman.New())
 	t.Cleanup(s.Close)
 	old := GetServer
 	GetServer = func() Server { return &playerIDNativeServer417040{base: s} }

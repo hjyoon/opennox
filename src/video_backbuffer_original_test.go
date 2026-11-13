@@ -136,7 +136,7 @@ func TestVideoBackBufferOriginalInitializationAndOwnership(t *testing.T) {
 			nox_video_renderTargetFlags = int(row.Flags)
 			if row.Borrowed {
 				for _, buffer := range []*videoPixelBuffer{&noxPixBuffer.videoPixelBuffer, &noxPixBuffer.back} {
-					data, free := alloc.Make([]uint16{}, row.Width*row.Height)
+					data, free := alloc.MakeHigh([]uint16{}, row.Width*row.Height)
 					buffer.img, buffer.free = noximage.NewImage16WithData(data, image.Pt(row.Width, row.Height)), free
 				}
 				*memmap.PtrUint32(0x5D4594, 1193200) = 1

@@ -20,7 +20,7 @@ type questCanJoinLegacyServer4E4100 struct {
 func (s *questCanJoinLegacyServer4E4100) S() *server.Server { return s.srv }
 
 func TestQuestCanJoinCEntry4E4100PreservesHighPlayerPointers(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: srv} }

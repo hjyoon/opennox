@@ -79,9 +79,9 @@ func TestPlayerWaypointCircleOriginal4B9790Geometry(t *testing.T) {
 	for _, row := range oracle.Rows {
 		for _, center := range []image.Point{{0, 0}, {50, 60}, {-30, -20}} {
 			t.Run(fmt.Sprintf("frame-%08x/center-%d-%d", row.Frame, center.X, center.Y), func(t *testing.T) {
-				dr, freeDR := alloc.New(client.Drawable{})
+				dr, freeDR := alloc.NewHigh(client.Drawable{})
 				t.Cleanup(freeDR)
-				vp, freeVP := alloc.New(noxrender.Viewport{})
+				vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 				t.Cleanup(freeVP)
 				dr.PosVec = image.Pt(100, 200).Add(center)
 				vp.World = image.Rect(100, 200, 740, 680)
@@ -133,12 +133,12 @@ func TestPlayerWaypointCircleOriginal4B9790NativeHeadless(t *testing.T) {
 			for _, clipped := range []bool{false, true} {
 				for _, color := range []uint16{0x03e0, 0x7fff} {
 					t.Run(fmt.Sprintf("frame-%d/alpha-%d/clip-%t/color-%04x", frame, alpha, clipped, color), func(t *testing.T) {
-						s := server.New(nil, nil, strman.New())
+						s := server.NewHigh(nil, nil, strman.New())
 						t.Cleanup(s.Close)
 						s.SetFrame(frame)
 						r := noxrender.NewRender(nil, s)
 						t.Cleanup(r.Part.Free)
-						d, freeData := noxrender.NewRenderData()
+						d, freeData := noxrender.NewRenderDataHigh()
 						t.Cleanup(freeData)
 						r.SetData(d)
 						pix := noximage.NewImage16(image.Rect(0, 0, 32, 32))
@@ -156,11 +156,11 @@ func TestPlayerWaypointCircleOriginal4B9790NativeHeadless(t *testing.T) {
 						}
 						d.SetColor2(noxcolor.RGBA5551(0x001f))
 						c := &Client{Client: &client.Client{Server: s}, srv: &Server{Server: s}, r: NewNoxRender(r)}
-						dr, freeDR := alloc.New(client.Drawable{})
+						dr, freeDR := alloc.NewHigh(client.Drawable{})
 						t.Cleanup(freeDR)
 						dr.PosVec = image.Pt(116, 216)
 						dr.DrawFuncPtr = legacy.Get_nox_thing_player_waypoint_draw()
-						vp, freeVP := alloc.New(noxrender.Viewport{})
+						vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 						t.Cleanup(freeVP)
 						vp.World = image.Rect(100, 200, 132, 232)
 						vp.Screen = image.Rect(7, 11, 39, 43)

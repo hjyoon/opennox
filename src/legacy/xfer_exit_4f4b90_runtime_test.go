@@ -53,16 +53,16 @@ func TestExitXferNativeLayout4F4B90(t *testing.T) {
 }
 
 func TestExitXferNativeWrite4F4B90PreservesPointersAndUnboundedWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	rawData, freeData := alloc.Calloc(1, 96)
+	rawData, freeData := alloc.CallocHigh(1, 96)
 	defer freeData()
 	dataBytes := unsafe.Slice((*byte)(rawData), 96)
 	for i := 0; i < 90; i++ {
 		dataBytes[i] = 'A'
 	}
 	dataBytes[90] = 0
-	id, freeID := alloc.CString("exit")
+	id, freeID := alloc.CStringHigh("exit")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
@@ -205,11 +205,11 @@ func TestExitXferNativeRead4F4B90RestoresEntryState(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ExitCollideData{})
+	data, freeData := alloc.NewHigh(server.ExitCollideData{})
 	defer freeData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	copy(data.MapName[:], "entry")
 	data.DestinationX = -1

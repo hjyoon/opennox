@@ -28,11 +28,11 @@ func TestPlayerDamageNPCZapRayNativeCallback4E17B0CRecords(t *testing.T) {
 		for _, raw := range []int32{1, 19, 500} {
 			t.Run(fmt.Sprintf("%s/raw-%d", owner, raw), func(t *testing.T) {
 				target, unit, ray := srv.Objs.NewObject(&server.ObjectType{Damage: playerDamageMeleeCallbackNative4E17B0()}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-				ud, freeUD := alloc.New(server.MonsterUpdateData{})
-				npcUD, freeNPCUD := alloc.New(server.MonsterUpdateData{})
-				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				health, freeHealth := alloc.New(server.HealthData{})
+				ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+				npcUD, freeNPCUD := alloc.NewHigh(server.MonsterUpdateData{})
+				playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				health, freeHealth := alloc.NewHigh(server.HealthData{})
 				for _, free := range []func(){freeUD, freeNPCUD, freePlayerUD, freePlayer, freeHealth} {
 					t.Cleanup(free)
 				}

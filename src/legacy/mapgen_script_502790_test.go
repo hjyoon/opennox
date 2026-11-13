@@ -27,7 +27,7 @@ func TestMapgenScript502790OriginalMetadataAndWideHandle(t *testing.T) {
 		t.Fatalf("out-of-range function count = %d, want 0", got)
 	}
 
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	const nameLen = 1025
 	wire := make([]byte, 4+nameLen+4+4+2+8+1)

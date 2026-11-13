@@ -29,7 +29,7 @@ type schedObjectType531B40 = server.ObjectType
 type schedSlotNative531B40 = server.AIStackItem
 type schedShapeKind531B40 = server.ShapeKind
 
-func schedNewServer531B40() *schedServer531B40 { return server.New(nil, nil, strman.New()) }
+func schedNewServer531B40() *schedServer531B40 { return server.NewHigh(nil, nil, strman.New()) }
 func schedDefaultReference531B40() string {
 	return "../server/testdata/monster_fight_schedulers_original_531b40.json.gz"
 }

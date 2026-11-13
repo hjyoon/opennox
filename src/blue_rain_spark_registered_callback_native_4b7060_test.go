@@ -73,9 +73,9 @@ func registeredBlueRainSparkTypes4B7060(t *testing.T, c *Client) {
 		}
 		raw = append(raw, make([]byte, 8)...)
 		raw = append(raw, 0)
-		buf, _ := alloc.CloneSlice(raw)
+		buf, _ := alloc.CloneSliceHigh(raw)
 		f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
-		scratch, freeScratch := alloc.Make([]byte{}, 256)
+		scratch, freeScratch := alloc.MakeHigh([]byte{}, 256)
 		err := c.Things.ReadType(f, scratch)
 		remaining := len(f.Data())
 		freeScratch()
@@ -97,7 +97,7 @@ func testRegisteredBlueRainSparkChild4B7060(t *testing.T, name string) {
 	if !slices.Contains(registeredBlueRainSparkCases4B7060, name) {
 		t.Fatal("unknown frozen blue-rain spark case")
 	}
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
 	frame := uint32(100)
@@ -108,7 +108,7 @@ func testRegisteredBlueRainSparkChild4B7060(t *testing.T, name string) {
 	}
 	s.SetFrame(frame)
 	s.Rand.Logic.Reset(93)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	capacity := 4
@@ -121,7 +121,7 @@ func testRegisteredBlueRainSparkChild4B7060(t *testing.T, name string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 144, 144))
@@ -133,7 +133,7 @@ func testRegisteredBlueRainSparkChild4B7060(t *testing.T, name string) {
 	registeredBlueRainSparkTypes4B7060(t, c)
 	beforeTypes := make(map[*client.ObjectType][]byte)
 	c.Things.Each(func(typ *client.ObjectType) { beforeTypes[typ] = registeredEffectBytes4B7540(typ) })
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World, vp.Screen = image.Rect(100, 200, 228, 328), image.Rect(8, 9, 136, 137)
 	vp.Size = pix.Size()

@@ -95,19 +95,19 @@ func TestAPIWorldSnapshotR316OwnsBytesBeforeHTTPAndPreservesFormat(t *testing.T)
 	obj := s.Objs.NewObject(&server.ObjectType{})
 	player := s.Players.ByIndRaw(1)
 	inactive := s.Players.ByIndRaw(2)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize native wall registry")
 	}
 	t.Cleanup(s.Walls.Free)
 	w1 := s.Walls.CreateAtGrid(image.Pt(12, 14))
 	w2 := s.Walls.CreateAtGrid(image.Pt(34, 36))
-	wp1, freeWP1 := alloc.New(server.Waypoint{})
-	wp2, freeWP2 := alloc.New(server.Waypoint{})
+	wp1, freeWP1 := alloc.NewHigh(server.Waypoint{})
+	wp2, freeWP2 := alloc.NewHigh(server.Waypoint{})
 	t.Cleanup(freeWP1)
 	t.Cleanup(freeWP2)
 	wp1.WpNext, wp2.WpPrev = wp2, wp1
 	s.WPs.List = wp1
-	cl := client.NewClient(nil, nil, s.Server)
+	cl := client.NewClientHigh(nil, nil, s.Server)
 	t.Cleanup(cl.Close)
 	cl.Objs.InitHigh(2)
 	t.Cleanup(cl.Objs.Free)

@@ -98,7 +98,7 @@ func suddenDeathExtraWorld40A970(t *testing.T, in *sdInput40A970, threshold stri
 		noxflags.ResetGame()
 		noxflags.SetGame(oldFlags)
 	})
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	previous, oldFrame, oldData := GetServer, gameFrameHook, datapath.Data("")
 	GetServer = func() Server { return &suddenDeathExtraServer40A970{native: srv} }
 	gameFrameHook = func() uint32 { return GetServer().S().Frame() }

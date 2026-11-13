@@ -159,18 +159,27 @@ func (s *serverWalls) ResetSprites() {
 }
 
 func (s *serverWalls) Init() int {
-	s.byPos, _ = alloc.Make([]*Wall{}, wallsPerBucket*WallGridSize)
+	return s.init(false)
+}
+
+// InitHigh requests high foreign addresses for this wall-storage owner only.
+func (s *serverWalls) InitHigh() int {
+	return s.init(true)
+}
+
+func (s *serverWalls) init(highAddresses bool) int {
+	s.byPos, _ = serverNativeMake(highAddresses, []*Wall{}, wallsPerBucket*WallGridSize)
 	if s.byPos == nil {
 		return 0
 	}
 
-	s.indexY, _ = alloc.Make([]*Wall{}, WallGridSize)
+	s.indexY, _ = serverNativeMake(highAddresses, []*Wall{}, WallGridSize)
 	if s.indexY == nil {
 		return 0
 	}
 	s.head = nil
 	for i := 0; i < wallsPerBucket*WallGridSize; i++ {
-		ptr, _ := alloc.New(Wall{})
+		ptr, _ := serverNativeNew(highAddresses, Wall{})
 		if ptr == nil {
 			return 0
 		}

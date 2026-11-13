@@ -67,11 +67,11 @@ func TestElevatorXferNativeLayout4F53D0(t *testing.T) {
 }
 
 func TestElevatorXferNativeWrite4F53D0PreservesFixedRecordAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ElevatorUpdateData{})
+	data, freeData := alloc.NewHigh(server.ElevatorUpdateData{})
 	defer freeData()
-	id, freeID := alloc.CString("elevator")
+	id, freeID := alloc.CStringHigh("elevator")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -235,13 +235,13 @@ func TestElevatorXferNativeRead4F53D0WritesCachedRecordAndRestoresCount(t *testi
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ElevatorUpdateData{})
+	data, freeData := alloc.NewHigh(server.ElevatorUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.ElevatorUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.ElevatorUpdateData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.Field_0 = 0x0badcafe
 	data.Field_1 = 0x89abcdef

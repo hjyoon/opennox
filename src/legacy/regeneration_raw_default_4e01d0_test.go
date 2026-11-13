@@ -56,7 +56,7 @@ func regenerationRawRequireDefaults4E01D0(t *testing.T, hpObserver bool) {
 func regenerationRawDefaultWorld4E01D0(t *testing.T) (*server.Server, map[string]uint16) {
 	t.Helper()
 	regenerationRawRequireDefaults4E01D0(t, false)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	s.FreeObjectTypes() // Establish the reserved index0 and writable type map.
 	t.Cleanup(s.Close)
 	t.Cleanup(s.FreeObjectTypes)

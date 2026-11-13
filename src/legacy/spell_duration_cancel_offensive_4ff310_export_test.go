@@ -37,7 +37,7 @@ func setSpellDurationCancelOffensiveFlags4FF310(
 }
 
 func TestSpellDurationCancelOffensiveExport4FF310PreservesNativePointer(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	setSpellDurationCancelOffensiveFlags4FF310(t, srv, map[spell.ID]*server.SpellDef{
 		31: {Def: things.Spell{Flags: things.SpellOffensive}},

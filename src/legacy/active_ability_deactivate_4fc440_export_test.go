@@ -22,7 +22,7 @@ func (s *activeAbilityDeactivateLegacyServer4FC440) S() *server.Server {
 }
 
 func TestActiveAbilityDeactivateExport4FC440PreservesNativePointerSignedInt32AndFirstMatch(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	unit := &server.Object{ObjClass: object.ClassPlayer}
 	other := new(server.Object)

@@ -19,7 +19,7 @@ func playerArmorReportFixture4D992A(t *testing.T) (*Server, *server.Object, *ser
 	old := noxflags.GetGame()
 	noxflags.ResetGame()
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(old) })
-	native := server.New(nil, nil, strman.New())
+	native := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(native.Close)
 	unit, freeUnit := alloc.NewHigh(server.Object{})
 	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})

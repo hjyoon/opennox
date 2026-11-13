@@ -19,7 +19,7 @@ func writeMapgenDecorFixture51F9F0(t *testing.T, name, contents string) string {
 }
 
 func TestMapgenDecor51F9F0CopiesAndSelectsNativePointerGraph(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	templatePath := writeMapgenDecorFixture51F9F0(t, "template.txt", `TEMPLATE
 TemplateBase

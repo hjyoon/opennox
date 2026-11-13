@@ -20,7 +20,7 @@ func TestFlagMaterialTeam4B9470ReadsNativePointerSlotsAndPackedIDs(t *testing.T)
 			t.Fatalf("missing shipped flag material name at row %d", row)
 		}
 		name := GoStringP(namePtr)
-		input, free := alloc.CString(name)
+		input, free := alloc.CStringHigh(name)
 		if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(namePtr) <= math.MaxUint32 || uintptr(unsafe.Pointer(input)) <= math.MaxUint32) {
 			free()
 			t.Fatalf("flag material %q pointers must be above 4 GiB: table=%p input=%p", name, namePtr, input)
@@ -44,7 +44,7 @@ func TestFlagMaterialTeam4B9470ReadsNativePointerSlotsAndPackedIDs(t *testing.T)
 		t.Fatalf("nil material result = %d, want 0", got)
 	}
 	for _, name := range []string{"not-a-flag-material", strings.ToLower(GoStringP(*memmap.PtrPtr(0x587000, 177488)))} {
-		input, free := alloc.CString(name)
+		input, free := alloc.CStringHigh(name)
 		got := flagMaterialTeamCall4B9470(input)
 		free()
 		if got != 0 {
@@ -59,7 +59,7 @@ func TestFlagMaterialTeam4B9470LiveSlotSentinelAndFullWidthID(t *testing.T) {
 	oldName := *first
 	id := memmap.PtrInt32(0x587000, 177492)
 	oldID := *id
-	input, free := alloc.CString("native-flag-material")
+	input, free := alloc.CStringHigh("native-flag-material")
 	t.Cleanup(free)
 	t.Cleanup(func() { *first, *id = oldName, oldID })
 	*first, *id = unsafe.Pointer(input), 0x12345678

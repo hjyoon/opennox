@@ -174,12 +174,12 @@ func TestGame3WidgetsNativeConstructorAndExistingDelegates(t *testing.T) {
 	defer g.DestroyAll()
 	parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 320, 200, nil)
 	for _, vertical := range []bool{false, true} {
-		draw, freeDraw := alloc.New(gui.WindowData{})
+		draw, freeDraw := alloc.NewHigh(gui.WindowData{})
 		*draw = gui.WindowData{Window: parent, Style: gui.StyleHorizSlider}
 		if vertical {
 			draw.Style = gui.StyleVertSlider
 		}
-		opts, freeOpts := alloc.New(game3SliderData{})
+		opts, freeOpts := alloc.NewHigh(game3SliderData{})
 		*opts = game3SliderData{Min: 7, Max: 7, Value: 100}
 		win := game3WidgetCreateSlider(parent, draw, opts)
 		if win == nil {
@@ -206,7 +206,7 @@ func TestGame3WidgetsNativeConstructorAndExistingDelegates(t *testing.T) {
 	}
 	game3WidgetInitList(list)
 	// Existing native selection registry and pre-handler remain the same owner.
-	text, free := alloc.CString16("entry")
+	text, free := alloc.CString16High("entry")
 	defer free()
 	if !gui.EventRespBool(list.Func94(gui.AsWindowEvent(0x400d, uintptr(unsafe.Pointer(text)), ^uintptr(0)))) {
 		t.Fatal("existing Go native list handler no longer installed")
@@ -228,13 +228,13 @@ func TestGame3WidgetsNativeSliderCleanup(t *testing.T) {
 				g := gui.NewHigh(nil)
 				defer g.DestroyAll()
 				parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 320, 200, nil)
-				draw, freeDraw := alloc.New(gui.WindowData{})
+				draw, freeDraw := alloc.NewHigh(gui.WindowData{})
 				defer freeDraw()
 				*draw = gui.WindowData{Window: parent, Style: gui.StyleHorizSlider}
 				if vertical {
 					draw.Style = gui.StyleVertSlider
 				}
-				opts, freeOpts := alloc.New(game3SliderData{})
+				opts, freeOpts := alloc.NewHigh(game3SliderData{})
 				defer freeOpts()
 				*opts = game3SliderData{Min: 2, Max: 9, Value: 3}
 				win := game3WidgetCreateSlider(parent, draw, opts)

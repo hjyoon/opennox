@@ -11,15 +11,15 @@ import (
 )
 
 func TestEnchantItemInventoryUsesNativeObjectAndModifierLayouts(t *testing.T) {
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	ignored, freeIgnored := alloc.New(server.Object{})
+	ignored, freeIgnored := alloc.NewHigh(server.Object{})
 	defer freeIgnored()
-	equipped, freeEquipped := alloc.New(server.Object{})
+	equipped, freeEquipped := alloc.NewHigh(server.Object{})
 	defer freeEquipped()
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 	defer freeAttrs()
-	modifier, freeModifier := alloc.New(server.ModifierEff{})
+	modifier, freeModifier := alloc.NewHigh(server.ModifierEff{})
 	defer freeModifier()
 
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(owner)) <= uintptr(^uint32(0)) {

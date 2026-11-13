@@ -84,15 +84,15 @@ func TestWeaponXferNativeLayout4F64A0(t *testing.T) {
 }
 
 func TestWeaponXferNativeWrite4F64A0PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{})
 	defer freeInitData()
-	health, freeHealth := alloc.New(server.HealthData{Cur: 73, Field2: 90, Max: 100})
+	health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 73, Field2: 90, Max: 100})
 	defer freeHealth()
-	update, freeUpdate := alloc.New(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
+	update, freeUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
 	defer freeUpdate()
-	id, freeID := alloc.CString("weapon-native")
+	id, freeID := alloc.CStringHigh("weapon-native")
 	defer freeID()
 	*health = server.HealthData{Cur: 73, Field2: 90, Max: 100}
 	*update = server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4}
@@ -247,17 +247,17 @@ func TestWeaponXferNativeRead4F64A0UsesNativeRecordsAndRestoresCount(t *testing.
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{Field16: 0x11223344})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{Field16: 0x11223344})
 	defer freeInitData()
-	health, freeHealth := alloc.New(server.HealthData{Cur: 50, Field2: 90, Max: 100})
+	health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 50, Field2: 90, Max: 100})
 	defer freeHealth()
-	useData, freeUseData := alloc.New(server.WandUseData{Charge: 9, MaxCharge: maximumCharge, Progress: 100})
+	useData, freeUseData := alloc.NewHigh(server.WandUseData{Charge: 9, MaxCharge: maximumCharge, Progress: 100})
 	defer freeUseData()
-	update, freeUpdate := alloc.New(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
+	update, freeUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
 	defer freeUpdate()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	*initData = server.ModifierInitData{Field16: 0x11223344}
 	*health = server.HealthData{Cur: 50, Field2: 90, Max: 100}
@@ -374,7 +374,7 @@ func TestWeaponXferNativeRead4F64A0UsesNativeRecordsAndRestoresCount(t *testing.
 }
 
 func TestWeaponXferExport4F64A0PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

@@ -280,7 +280,7 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 		},
 	}
 	srv.Spells.Dur.init(&srv)
-	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
+	if got := srv.Spells.Dur.SpellCreateDurationsHigh4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
 	srv.SetFrame(1234)
@@ -401,7 +401,7 @@ func TestSpellDurationCreate4FEBA0ServerBindingAllowsNilCasterGlyph(t *testing.T
 	srv.Types.fast.glyph = 7
 	srv.Spells.byID = map[spell.ID]*SpellDef{31: {}}
 	srv.Spells.Dur.init(&srv)
-	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
+	if got := srv.Spells.Dur.SpellCreateDurationsHigh4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
 

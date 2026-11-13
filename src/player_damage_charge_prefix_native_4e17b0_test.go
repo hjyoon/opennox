@@ -21,7 +21,7 @@ import (
 // PlayerDamage, ObserveClear/status/CameraUnlock and DamageClear/HP are real;
 // no test callback supplies the resulting HP, carry or attribution.
 func TestPlayerDamageChargePrefixNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

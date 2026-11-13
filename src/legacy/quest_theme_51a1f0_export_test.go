@@ -15,7 +15,7 @@ import (
 func TestQuestTheme51A1F0CEntryNativeObjectsAndThreeGroups(t *testing.T) {
 	for group := int32(0); group < 3; group++ {
 		t.Run(string(rune('0'+group)), func(t *testing.T) {
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
 			unit, freeUnit := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeUnit)

@@ -174,7 +174,7 @@ func TestMonsterVoiceChecksum237(t *testing.T) {
 			t.Run(fmt.Sprintf("present=%t/name=%s/xor=%t", tc.present, tc.name, xor), func(t *testing.T) {
 				ud := new(server.MonsterUpdateData)
 				if tc.present {
-					p, free := alloc.Malloc(soundSetRecordSize)
+					p, free := alloc.MallocHigh(soundSetRecordSize)
 					t.Cleanup(func() {
 						delete(soundSetByName, tc.name)
 						free()
@@ -231,7 +231,7 @@ func TestMonsterShopChecksum237(t *testing.T) {
 	dataDir := t.TempDir()
 	datapath.SetData(dataDir)
 	t.Cleanup(func() { datapath.SetData(oldData) })
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)

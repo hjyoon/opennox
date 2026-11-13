@@ -27,7 +27,7 @@ func installPlayerAttackProjectileRuntime538960(
 
 func installPlayerAttackProjectileServer538960(t *testing.T) *server.Server {
 	t.Helper()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	old := GetServer
 	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }

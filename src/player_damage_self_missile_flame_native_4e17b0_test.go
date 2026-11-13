@@ -21,7 +21,7 @@ import (
 // dispatcher with C-owned records above 4 GiB. Damage, HP and hurt-state
 // services are production bindings; this is not stock-map campaign evidence.
 func TestPlayerDamageSelfMissileFlameNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

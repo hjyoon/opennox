@@ -141,7 +141,7 @@ func skullRawRunOriginal54F9A0(t *testing.T, in skullRawInput54F9A0, mode string
 		State  server.SkullRawState54F9A0
 		After  [16]byte
 	}
-	g, freeState := alloc.New(guardedState{})
+	g, freeState := alloc.NewHigh(guardedState{})
 	defer freeState()
 	*g = guardedState{Before: [16]byte{0x13, 0x57, 0x9b}, After: [16]byte{0x24, 0x68, 0xac}}
 	stateWords := unsafe.Slice((*uint32)(unsafe.Pointer(&g.State)), 6)

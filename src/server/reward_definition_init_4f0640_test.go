@@ -226,7 +226,7 @@ func TestServerRewardDefinitionsInitUsesNativeServices4F0640(t *testing.T) {
 		"fanchakram": {id: "FanChakram", ind: 37},
 		"forcewand":  {id: "ForceWand", ind: 91},
 	}
-	name, freeName := alloc.CString("WeaponPower2")
+	name, freeName := alloc.CStringHigh("WeaponPower2")
 	t.Cleanup(freeName)
 	modifier := &ModifierEff{name0: name, ind4: 44}
 	server.Modif.types[0] = modifier

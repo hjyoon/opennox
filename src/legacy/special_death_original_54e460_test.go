@@ -89,7 +89,7 @@ type specialDeathGuardedImage54E460 struct {
 }
 
 func specialDeathImageAllocation54E460(t *testing.T, size int) specialDeathGuardedImage54E460 {
-	p, free := alloc.Malloc(uintptr(size + 64))
+	p, free := alloc.MallocHigh(uintptr(size + 64))
 	t.Cleanup(free)
 	b := unsafe.Slice((*byte)(p), size+64)
 	for i := range b {

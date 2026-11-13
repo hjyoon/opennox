@@ -21,7 +21,7 @@ func (s *activeAbilityDeadlineLegacyServer4FC070) S() *server.Server {
 }
 
 func TestActiveAbilityDeadlineExport4FC070PreservesNativePointerAndInt32Delta(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1)
 	unit := new(server.Object)

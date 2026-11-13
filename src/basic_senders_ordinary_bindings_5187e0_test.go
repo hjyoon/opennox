@@ -18,7 +18,7 @@ import (
 
 func basicSenderProductionFixture5187E0(t *testing.T) (*Server, *server.Object, *server.MonsterGenUpdateData, *server.HealthData) {
 	t.Helper()
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	base.NetList.Init()
 	t.Cleanup(base.NetList.Free)

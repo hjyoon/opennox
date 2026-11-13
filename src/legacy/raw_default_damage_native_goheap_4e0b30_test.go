@@ -363,7 +363,7 @@ func TestRawDefaultDamageDefaultPinnedGoGraph4E0B30(t *testing.T) {
 				Address uint32 `json:"address"`
 				Hex     string `json:"hex"`
 			}{{0x84ea04, "05000000"}}})
-			s := server.New(nil, nil, strman.New())
+			s := server.NewHigh(nil, nil, strman.New())
 			s.SetFrame(5) // actual fixture world; its real lazy frame read avoids audio.
 			previous := GetServer
 			GetServer = func() Server { return &rddPinnedDefaultWorld4E0B30{Value: s} }

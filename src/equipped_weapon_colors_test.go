@@ -39,7 +39,7 @@ func checkEquippedColorsMatchGAMEEXE(t *testing.T, weapon bool) {
 		noxflags.ResetGame()
 		noxflags.SetGame(previousFlags)
 	})
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	typeIDs := make(map[string]int)
 	s.Types.ClientTypeByID = func(name string) int {
@@ -52,14 +52,14 @@ func checkEquippedColorsMatchGAMEEXE(t *testing.T, weapon bool) {
 	s.Nox_xxx_equipArmor_415AB0()
 	r := noxrender.NewRender(nil, s)
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	c := &Client{Client: &client.Client{Server: s}, r: NewNoxRender(r)}
 	previousClient := noxClient
 	noxClient = c
 	t.Cleanup(func() { noxClient = previousClient })
-	def, freeDef := alloc.New(server.Modifier{})
+	def, freeDef := alloc.NewHigh(server.Modifier{})
 	t.Cleanup(freeDef)
 	bit := uint32(1 << 8)
 	if weapon {
@@ -74,7 +74,7 @@ func checkEquippedColorsMatchGAMEEXE(t *testing.T, weapon bool) {
 	}
 	var effects [4]*server.ModifierEff
 	for i := range effects {
-		p, free := alloc.New(server.ModifierEff{})
+		p, free := alloc.NewHigh(server.ModifierEff{})
 		t.Cleanup(free)
 		p.Color24 = types.RGB{R: byte(224 - 17*i), G: byte(31 + 37*i), B: byte(113 + 29*i)}
 		p.Price20 = int32(0x10203040 + i)
@@ -139,11 +139,11 @@ func checkEquippedColorsMatchGAMEEXE(t *testing.T, weapon bool) {
 					}
 					var h server.ArmorAndWeaponHolder
 					if holderName == "player" {
-						p, free := alloc.New(server.Player{})
+						p, free := alloc.NewHigh(server.Player{})
 						defer free()
 						h = p
 					} else {
-						p, free := alloc.New(server.NPC{})
+						p, free := alloc.NewHigh(server.NPC{})
 						defer free()
 						h = p
 					}

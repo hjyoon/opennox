@@ -64,7 +64,7 @@ func nsTeamClearRun419570(t *testing.T, tc nsTeamClearCase419570, route string) 
 	noxServer = s
 	defer s.Close()
 	s.Types.Free()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	s.SetFrame(37)
 	s.SetTickRate(30)

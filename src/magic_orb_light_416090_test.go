@@ -43,7 +43,7 @@ func magicOrbFixture416090(t *testing.T, glow bool) (*Client, *client.Drawable, 
 	t.Helper()
 	r := noxrender.NewRender(nil, nil)
 	t.Cleanup(r.Part.Free)
-	data, freeData := noxrender.NewRenderData()
+	data, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(data)
 	r.Part.RenderGlow = glow
@@ -53,10 +53,10 @@ func magicOrbFixture416090(t *testing.T, glow bool) (*Client, *client.Drawable, 
 	data.SetRect3(image.Rect(2, 3, 62, 63))
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
 	r.SetPixBuffer(pix)
-	dr, freeDrawable := alloc.New(client.Drawable{})
+	dr, freeDrawable := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(freeDrawable)
 	*dr = client.Drawable{PosVec: image.Pt(132, 241), ZVal: 12, ZVal2: 4}
-	vp, freeViewport := alloc.New(noxrender.Viewport{})
+	vp, freeViewport := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeViewport)
 	*vp = noxrender.Viewport{Screen: image.Rect(2, 3, 62, 63), World: image.Rect(100, 200, 160, 260), Size: image.Pt(60, 60), Field10: 7, Field11: 9, Jiggle12: -3}
 	if unsafe.Sizeof(uintptr(0)) == 8 {

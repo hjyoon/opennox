@@ -114,7 +114,7 @@ func TestScriptHostStatusNative5166A0PreservesHighPointers(t *testing.T) {
 }
 
 func TestScriptHostStatusNative5166A0ServerQueries(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	if NoxScriptIsTalkingNative5166A0(s) || NoxScriptPlayerIsTradingNative5166E0(s) {
 		t.Fatal("inactive host reported an active state")

@@ -95,7 +95,7 @@ func TestRespawnRechargeItem4EC720FixedPayload(t *testing.T) {
 
 func withRespawnSchedulerNative4EC720(t *testing.T, fn func()) {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	oldAllow := respawnAddLoadAllow4EC5E0()
@@ -111,13 +111,13 @@ func withRespawnSchedulerNative4EC720(t *testing.T, fn func()) {
 
 func TestRespawnSchedulerNative4EC720DueRecord(t *testing.T) {
 	withRespawnSchedulerNative4EC720(t, func() {
-		rec, freeRec := alloc.New(respawnRecord4EC5E0{})
+		rec, freeRec := alloc.NewHigh(respawnRecord4EC5E0{})
 		defer freeRec()
-		oldObj, freeOld := alloc.New(server.Object{})
+		oldObj, freeOld := alloc.NewHigh(server.Object{})
 		defer freeOld()
-		newObj, freeNew := alloc.New(server.Object{})
+		newObj, freeNew := alloc.NewHigh(server.Object{})
 		defer freeNew()
-		useData, freeUseData := alloc.New([2]uint8{})
+		useData, freeUseData := alloc.NewHigh([2]uint8{})
 		defer freeUseData()
 
 		rec.TypeInd = 7
@@ -225,13 +225,13 @@ func TestRespawnSchedulerNative4EC720DueRecord(t *testing.T) {
 
 func TestRespawnSchedulerNative4EC720RestoresMovedWand(t *testing.T) {
 	withRespawnSchedulerNative4EC720(t, func() {
-		rec, freeRec := alloc.New(respawnRecord4EC5E0{})
+		rec, freeRec := alloc.NewHigh(respawnRecord4EC5E0{})
 		defer freeRec()
-		obj, freeObj := alloc.New(server.Object{})
+		obj, freeObj := alloc.NewHigh(server.Object{})
 		defer freeObj()
-		data, freeData := alloc.New(respawnRechargeData4EC720{})
+		data, freeData := alloc.NewHigh(respawnRechargeData4EC720{})
 		defer freeData()
-		health, freeHealth := alloc.New(server.HealthData{})
+		health, freeHealth := alloc.NewHigh(server.HealthData{})
 		defer freeHealth()
 
 		rec.TypeInd = 8

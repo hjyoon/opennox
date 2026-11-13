@@ -12,7 +12,7 @@ import (
 
 func initMapgenItemSetHandles51F030(t *testing.T) {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 }
 

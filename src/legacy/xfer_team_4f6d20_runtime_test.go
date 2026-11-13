@@ -69,17 +69,17 @@ func TestTeamXferNativeLayout4F6D20(t *testing.T) {
 }
 
 func TestTeamXferNativeWrite4F6D20PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{})
 	defer freeInitData()
-	update, freeUpdate := alloc.New(server.FlagUpdateData4EA490{
+	update, freeUpdate := alloc.NewHigh(server.FlagUpdateData4EA490{
 		Home:  types.Pointf{X: 9, Y: 8},
 		State: 7,
 	})
 	defer freeUpdate()
 	*update = server.FlagUpdateData4EA490{Home: types.Pointf{X: 9, Y: 8}, State: 7}
-	id, freeID := alloc.CString("team-native")
+	id, freeID := alloc.CStringHigh("team-native")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -221,11 +221,11 @@ func TestTeamXferNativeRead4F6D20ResetsFlagHomeAndRestoresCount(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{Field16: 0x11223344})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{Field16: 0x11223344})
 	defer freeInitData()
-	update, freeUpdate := alloc.New(server.FlagUpdateData4EA490{
+	update, freeUpdate := alloc.NewHigh(server.FlagUpdateData4EA490{
 		Home:  types.Pointf{X: 1, Y: 2},
 		State: 0x76543210,
 	})
@@ -234,7 +234,7 @@ func TestTeamXferNativeRead4F6D20ResetsFlagHomeAndRestoresCount(t *testing.T) {
 		Home:  types.Pointf{X: 1, Y: 2},
 		State: 0x76543210,
 	}
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassFlag | objectlib.ClassClientPersist
 	object.IDPtr = unsafe.Pointer(oldID)
@@ -320,7 +320,7 @@ func TestTeamXferNativeRead4F6D20ResetsFlagHomeAndRestoresCount(t *testing.T) {
 }
 
 func TestTeamXferExport4F6D20PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

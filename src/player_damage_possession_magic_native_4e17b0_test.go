@@ -22,7 +22,7 @@ import (
 // normal player update restoration and DefaultDamage/UnitSetHP are real.
 // No damage, possession, camera, status or health callback is substituted.
 func TestPlayerDamagePossessionMagicNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

@@ -65,7 +65,7 @@ func TestPlayerAttackExport538960KeepsNestedPlayerPointersNativeWidth(t *testing
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }
@@ -123,7 +123,7 @@ func TestPlayerAttackExport538960RestoresNPCWandUseWithNativePointers(t *testing
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1)
 	oldGetServer := GetServer
@@ -223,7 +223,7 @@ func TestPlayerAttackExport538960RestoresNPCExhaustedWandDequipWithNativePointer
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1)
 	oldGetServer := GetServer
@@ -327,7 +327,7 @@ func TestPlayerAttackExport538960RestoresNPCStaffHitWithNativePointers(t *testin
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
@@ -416,11 +416,11 @@ func TestPlayerAttackExport538960KeepsArmedHitPointersNativeWidth(t *testing.T) 
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
-	if srv.Walls.Init() == 0 {
+	if srv.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize wall grid")
 	}
 	t.Cleanup(srv.Walls.Free)
@@ -602,11 +602,11 @@ func TestPlayerAttackExport538960PreservesUnarmedAndRestoresWoodenStaffLifecycle
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
 			srv.Map.Init()
 			t.Cleanup(srv.Map.Free)
-			if srv.Walls.Init() == 0 {
+			if srv.Walls.InitHigh() == 0 {
 				t.Fatal("cannot initialize wall grid")
 			}
 			t.Cleanup(srv.Walls.Free)
@@ -779,7 +779,7 @@ func TestPlayerAttackExport538960KeepsUnarmedTracePointersNativeWidth(t *testing
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
@@ -836,7 +836,7 @@ func TestPlayerAttackExport538960RestoresWarcryWithNativePointers(t *testing.T) 
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
@@ -916,7 +916,7 @@ func TestPlayerAttackExport538960RestoresBerserkWithNativePointers(t *testing.T)
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(7)
 	oldGetServer := GetServer

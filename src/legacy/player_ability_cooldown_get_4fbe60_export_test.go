@@ -22,7 +22,7 @@ func (s *playerAbilityCooldownGetLegacyServer4FBE60) S() *server.Server {
 }
 
 func TestPlayerAbilityCooldownGetExport4FBE60PreservesNativePointerAndWidths(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Abils.Init4FB990()
 

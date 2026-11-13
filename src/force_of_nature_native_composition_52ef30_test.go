@@ -98,7 +98,7 @@ func TestForceOfNaturePublicCNativeComposition52EF30(t *testing.T) {
 		t.Fatal("original create/launch contexts")
 	}
 	createCase := fixture.Cases[createIndex]
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -114,7 +114,7 @@ func TestForceOfNaturePublicCNativeComposition52EF30(t *testing.T) {
 	s.SetFrame(100)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native walls")
 	}
 	t.Cleanup(s.Walls.Free)

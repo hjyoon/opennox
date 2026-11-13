@@ -87,7 +87,14 @@ func TestSecretWallStateOriginal4DF120(t *testing.T) {
 					if !row.Output.Guard {
 						t.Fatal("original guards not certified")
 					}
-					buf, free := alloc.Make([]byte{}, 0x10000)
+					invalidNative := originalInvalidNativePointer32(t)
+					unmapped := func() unsafe.Pointer {
+						if invalidNative != nil {
+							return invalidNative
+						}
+						return secretWallOriginalUnmapped4DF120()
+					}
+					buf, free := alloc.MakeHigh([]byte{}, 0x10000)
 					defer free()
 					for i := 0; i < len(buf); i += 4 {
 						binary.LittleEndian.PutUint32(buf[i:], in.Seed)
@@ -106,7 +113,7 @@ func TestSecretWallStateOriginal4DF120(t *testing.T) {
 							return nil
 						}
 						if index == -2 {
-							return (*server.Object)(secretWallOriginalUnmapped4DF120())
+							return (*server.Object)(unmapped())
 						}
 						return units[index]
 					}
@@ -115,7 +122,7 @@ func TestSecretWallStateOriginal4DF120(t *testing.T) {
 							return nil
 						}
 						if index == -2 {
-							return secretWallOriginalUnmapped4DF120()
+							return unmapped()
 						}
 						return unsafe.Pointer(updates[index])
 					}
@@ -124,7 +131,7 @@ func TestSecretWallStateOriginal4DF120(t *testing.T) {
 							return nil
 						}
 						if index == -2 {
-							return (*server.Player)(secretWallOriginalUnmapped4DF120())
+							return (*server.Player)(unmapped())
 						}
 						return players[index]
 					}
@@ -221,7 +228,7 @@ func TestSecretWallStateOriginal4DF120(t *testing.T) {
 						arg = nil
 					}
 					if in.WallKind == -2 {
-						arg = (*server.Wall)(secretWallOriginalUnmapped4DF120())
+						arg = (*server.Wall)(unmapped())
 					}
 					var result int
 					var fault any

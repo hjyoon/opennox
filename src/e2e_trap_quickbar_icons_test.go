@@ -13,7 +13,7 @@ import (
 )
 
 func TestE2ETrapQuickbarVisibilityIncludesAncestors(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 30, 30, nil)
 	child := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 30, 30, nil)
 	leaf := g.NewWindowRaw(child, gui.StatusEnabled, 0, 0, 30, 30, nil)

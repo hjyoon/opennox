@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 
 #include "GAME4_2.h"
@@ -14,15 +15,19 @@ typedef struct nox_test_mapgen_prefab_entry_5262f0_result {
 } nox_test_mapgen_prefab_entry_5262f0_result;
 
 static nox_test_mapgen_prefab_entry_5262f0_result nox_test_mapgen_prefab_entry_5262f0(void) {
-	uint8_t theme[20] = {0};
-	uint8_t prefab[160] = {0};
-	return (nox_test_mapgen_prefab_entry_5262f0_result){
+	uint8_t* theme = nox_native_fixture_calloc_high(1, 20);
+	uint8_t* prefab = nox_native_fixture_calloc_high(1, 160);
+	if (!theme || !prefab) abort();
+	nox_test_mapgen_prefab_entry_5262f0_result out = {
 		.theme_address = (uintptr_t)&theme[0],
 		.prefab_address = (uintptr_t)&prefab[0],
 		.result = sub_5262F0(&theme[0], &prefab[0]),
 		.null_theme_result = sub_5262F0(NULL, &prefab[0]),
 		.null_prefab_result = sub_5262F0(&theme[0], NULL),
 	};
+	nox_native_fixture_free_high(prefab);
+	nox_native_fixture_free_high(theme);
+	return out;
 }
 */
 import "C"

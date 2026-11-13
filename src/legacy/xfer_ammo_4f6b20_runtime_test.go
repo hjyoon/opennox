@@ -67,13 +67,13 @@ func TestAmmoXferNativeLayout4F6B20(t *testing.T) {
 }
 
 func TestAmmoXferNativeWrite4F6B20PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{})
 	defer freeInitData()
-	useData, freeUseData := alloc.New(server.AmmoUseData{})
+	useData, freeUseData := alloc.NewHigh(server.AmmoUseData{})
 	defer freeUseData()
-	id, freeID := alloc.CString("ammo-native")
+	id, freeID := alloc.CStringHigh("ammo-native")
 	defer freeID()
 	*useData = server.AmmoUseData{Charge0: 0x12, Charge1: 0x34, Field2: 0x56}
 
@@ -218,13 +218,13 @@ func TestAmmoXferNativeRead4F6B20UsesCachedAmmoAndRestoresCount(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{Field16: 0x11223344})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{Field16: 0x11223344})
 	defer freeInitData()
-	useData, freeUseData := alloc.New(server.AmmoUseData{Charge0: 1, Charge1: 2, Field2: 3})
+	useData, freeUseData := alloc.NewHigh(server.AmmoUseData{Charge0: 1, Charge1: 2, Field2: 3})
 	defer freeUseData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	*initData = server.ModifierInitData{Field16: 0x11223344}
 	*useData = server.AmmoUseData{Charge0: 1, Charge1: 2, Field2: 3}
@@ -313,7 +313,7 @@ func TestAmmoXferNativeRead4F6B20UsesCachedAmmoAndRestoresCount(t *testing.T) {
 }
 
 func TestAmmoXferExport4F6B20PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

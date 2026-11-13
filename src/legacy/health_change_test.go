@@ -60,8 +60,8 @@ func (c *healthChangeClient) R2() Render2 {
 
 func newHealthChangeTestClient(t *testing.T) *healthChangeClient {
 	t.Helper()
-	handles.Init()
-	data, freeData := noxrender.NewRenderData()
+	handles.InitHigh()
+	data, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	render := &healthChangeRender{data: data}
 	client := &healthChangeClient{render: render}

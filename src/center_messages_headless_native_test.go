@@ -64,7 +64,7 @@ func centerMessagesActualChild202(t *testing.T, lang int) {
 	oldData := datapath.Data()
 	datapath.SetData(".")
 	t.Cleanup(func() { datapath.SetData(oldData) })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	c, _, d := actualVideoRender200(t)
 	if err := c.r.GetFonts().Load(lang); err != nil {

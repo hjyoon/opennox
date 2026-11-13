@@ -32,7 +32,7 @@ func TestManaBombRadiusIngressOriginal4CCAC0(t *testing.T) {
 	if err := json.Unmarshal(raw, &fixture); err != nil || !fixture.Unchanged || len(fixture.Rows) != 60 {
 		t.Fatalf("original ingress fixture: %v", err)
 	}
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	c := &Client{Client: &client.Client{}, srv: &Server{Server: base}}
 	data := t.TempDir()

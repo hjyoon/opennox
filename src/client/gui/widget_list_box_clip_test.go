@@ -27,14 +27,14 @@ func listBoxTestRender(t *testing.T) *noxrender.NoxRender {
 	oldData := datapath.Data()
 	datapath.SetData(path)
 	t.Cleanup(func() { datapath.SetData(oldData) })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	r := noxrender.NewRender(slog.Default(), nil)
 	if err := r.Fonts.Load(0); err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(r.Fonts.Free)
-	data, free := noxrender.NewRenderData()
+	data, free := noxrender.NewRenderDataHigh()
 	t.Cleanup(free)
 	data.SetRect3(image.Rect(0, 0, 320, 160))
 	data.SetClip(true)

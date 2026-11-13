@@ -108,7 +108,7 @@ func TestChannelLifePublicCNativeComposition52F460(t *testing.T) {
 		t.Fatal("sealed original context")
 	}
 	c := fixture.Cases[index]
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)

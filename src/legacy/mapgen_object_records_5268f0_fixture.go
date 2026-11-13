@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "mapgen_allocation.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +30,7 @@ static nox_test_mapgen_object_records_5268f0_result nox_test_mapgen_object_recor
 		return out;
 	}
 	out.setup_clean = 1;
-	char* records = (char*)calloc(3, 64);
+	char* records = (char*)nox_mapgen_alloc_memory(3, 64);
 	if (!records) {
 		return out;
 	}
@@ -41,7 +42,7 @@ static nox_test_mapgen_object_records_5268f0_result nox_test_mapgen_object_recor
 	dword_5d4594_2487676 = 3;
 	out.records_token = dword_5d4594_2487672;
 	if (!out.records_token) {
-		free(records);
+		nox_mapgen_release_memory(records);
 		dword_5d4594_2487676 = 0;
 		return out;
 	}
@@ -74,6 +75,8 @@ type mapgenObjectRecordsResult5268F0 struct {
 }
 
 func mapgenObjectRecordsFixture5268F0() mapgenObjectRecordsResult5268F0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_object_records_5268f0()
 	out := mapgenObjectRecordsResult5268F0{
 		recordsAddress:     uintptr(got.records_address),

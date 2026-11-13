@@ -23,10 +23,10 @@ import (
 
 func newParticleRegistrationHeadless4B01B0(t *testing.T) (*partFXes, *noximage.Image16, *render.Renderer, *headless.Seat) {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	core := noxrender.NewRender(nil, nil)
 	t.Cleanup(core.Part.Free)
-	data, free := noxrender.NewRenderData()
+	data, free := noxrender.NewRenderDataHigh()
 	t.Cleanup(free)
 	core.SetData(data)
 	pix := noximage.NewImage16(image.Rect(0, 0, 256, 160))
@@ -154,7 +154,7 @@ func TestParticleRegistrationOriginal4B01B0HeadlessRealType1(t *testing.T) {
 			for _, count := range []int{1, 3, 7} {
 				t.Run(fmt.Sprintf("count-%d", count), func(t *testing.T) {
 					owner, pix, win, sc := newParticleRegistrationHeadless4B01B0(t)
-					dr, free := alloc.New(client.Drawable{})
+					dr, free := alloc.NewHigh(client.Drawable{})
 					t.Cleanup(free)
 					dr.PosVec = image.Pt(135, 131)
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= 0xffffffff {

@@ -42,7 +42,7 @@ func TestSpecialDeathActualCProduction54E460(t *testing.T) {
 		return
 	}
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -64,7 +64,7 @@ func TestSpecialDeathActualCProduction54E460(t *testing.T) {
 	t.Cleanup(s.Objs.FreeObjects)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("actual wall grid")
 	}
 	t.Cleanup(s.Walls.Free)

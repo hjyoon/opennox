@@ -17,7 +17,7 @@ func TestNPCWeaponEquip53A2C0KeepsNativePointersThroughPlayerEquip(t *testing.T)
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }

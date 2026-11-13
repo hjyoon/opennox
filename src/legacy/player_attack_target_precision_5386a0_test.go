@@ -51,11 +51,11 @@ func TestPlayerAttackTarget5386A0IndexedCFrameCycles(t *testing.T) {
 			continue
 		}
 		t.Run(row.Input.Name, func(t *testing.T) {
-			s := server.New(nil, nil, strman.New())
+			s := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			s.Map.Init()
 			t.Cleanup(s.Map.Free)
-			if s.Walls.Init() == 0 {
+			if s.Walls.InitHigh() == 0 {
 				t.Fatal("cannot initialize native wall grid")
 			}
 			t.Cleanup(s.Walls.Free)

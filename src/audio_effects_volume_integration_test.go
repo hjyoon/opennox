@@ -67,7 +67,7 @@ func TestNativeAudioEffectsLiveVolumeChild(t *testing.T) {
 	prevTicks := timer.PlatformTicks
 	timer.PlatformTicks = func() uint64 { return 0 }
 	t.Cleanup(func() { timer.PlatformTicks = prevTicks })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	driver := ail.WaveOutOpen()
 	if driver == 0 {

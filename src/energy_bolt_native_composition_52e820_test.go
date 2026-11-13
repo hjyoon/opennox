@@ -49,7 +49,7 @@ func TestSpellEnergyBoltPublicCNativeComposition52E820(t *testing.T) {
 		}
 		return
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -71,7 +71,7 @@ func TestSpellEnergyBoltPublicCNativeComposition52E820(t *testing.T) {
 	s.SetTickRate(30)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native walls")
 	}
 	t.Cleanup(s.Walls.Free)

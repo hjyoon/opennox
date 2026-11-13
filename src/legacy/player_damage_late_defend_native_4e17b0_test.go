@@ -25,12 +25,12 @@ func TestPlayerDamageLateDefendNative4E17B0CDispatcher(t *testing.T) {
 	t.Cleanup(srv.Objs.FreeObjects)
 	target := srv.Objs.NewObject(&server.ObjectType{})
 	item := srv.Objs.NewObject(&server.ObjectType{})
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	player, freePlayer := alloc.New(server.Player{})
-	health, freeHealth := alloc.New(server.HealthData{})
-	initData, freeInit := alloc.New(server.ModifierInitData{})
-	first, freeFirst := alloc.New(server.ModifierEff{})
-	second, freeSecond := alloc.New(server.ModifierEff{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
+	initData, freeInit := alloc.NewHigh(server.ModifierInitData{})
+	first, freeFirst := alloc.NewHigh(server.ModifierEff{})
+	second, freeSecond := alloc.NewHigh(server.ModifierEff{})
 	for _, free := range []func(){freeUpdate, freePlayer, freeHealth, freeInit, freeFirst, freeSecond} {
 		t.Cleanup(free)
 	}

@@ -105,7 +105,7 @@ func setupImportantResendContract(
 	if len(specs) == 0 {
 		return records, packets, scratch
 	}
-	pool := alloc.NewClass("important-resend-contract", importantPacketSizeC(), len(specs))
+	pool := alloc.NewClassHigh("important-resend-contract", importantPacketSizeC(), len(specs))
 	setImportantAllocClassC(pool.UPtr())
 	for i, spec := range specs {
 		packets[i] = pool.NewObject()
@@ -169,7 +169,7 @@ func assertImportantResendList(t *testing.T, packets []unsafe.Pointer) {
 }
 
 func TestImportantResendMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("player-and-host-gate", func(t *testing.T) {
@@ -434,7 +434,7 @@ func TestImportantResendMatchesGAMEEXEContract(t *testing.T) {
 
 	t.Run("related-object-and-disconnect-termination", func(t *testing.T) {
 		t.Run("destroyed-related-object-is-cleared-before-routing", func(t *testing.T) {
-			related, free := alloc.New(server.Object{})
+			related, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			related.ObjFlags = 0x20
 			_, packets, _ := setupImportantResendContract(t, 7, []importantResendPacketSpec{{
@@ -449,7 +449,7 @@ func TestImportantResendMatchesGAMEEXEContract(t *testing.T) {
 		})
 
 		t.Run("missing-related-sync-bit-acknowledges-and-returns", func(t *testing.T) {
-			related, free := alloc.New(server.Object{})
+			related, free := alloc.NewHigh(server.Object{})
 			t.Cleanup(free)
 			related.Field37 = 0
 			_, packets, _ := setupImportantResendContract(t, 7, []importantResendPacketSpec{

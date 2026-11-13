@@ -156,8 +156,15 @@ func trollDeathRunOriginal54A270(t *testing.T, in trollDeathInput54A270, mode st
 	for i := range objects {
 		objects[i] = (*server.Object)(unsafe.Add(base, offsets[i]))
 	}
+	invalidNative := originalInvalidNativePointer32(t)
 	ptr := func(role int) unsafe.Pointer {
 		if role < 0 {
+			if invalidNative != nil {
+				if role == -1 {
+					return nil
+				}
+				return invalidNative
+			}
 			return trollDeathOriginalBad54A270(role)
 		}
 		return unsafe.Add(base, offsets[role])

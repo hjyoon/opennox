@@ -210,6 +210,8 @@ type mapgenRecursiveHallsResult4D4F40 struct {
 }
 
 func mapgenRecursiveHallsFixture4D4F40() mapgenRecursiveHallsResult4D4F40 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_recursive_halls_4d4f40()
 	return mapgenRecursiveHallsResult4D4F40{
 		themeAddress:               uintptr(got.theme_address),

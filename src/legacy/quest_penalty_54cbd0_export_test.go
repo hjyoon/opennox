@@ -25,7 +25,7 @@ func (s *questPenaltyLegacyServer54CBD0) DelayedDelete(item *server.Object) { s.
 
 func questPenaltyLegacyFixture54CBD0(t *testing.T) (*server.Server, *questPenaltyLegacyServer54CBD0, *server.Object, *server.PlayerUpdateData, *server.Player) {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	outer := &questPenaltyLegacyServer54CBD0{native: s, delete: func(*server.Object) { t.Fatal("unexpected deletion") }}
 	oldServer := GetServer

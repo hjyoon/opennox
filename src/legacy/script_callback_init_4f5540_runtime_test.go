@@ -97,7 +97,7 @@ func TestScriptCallbackInitNative4F5540PreservesWideIdentities(t *testing.T) {
 }
 
 func TestScriptCallbackInitRuntime4F5540ReadsOriginalParserWire(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	const parsedFlags = uint32(0xa1b2c3d4)

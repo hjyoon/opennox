@@ -18,7 +18,7 @@ func TestSaveCharacterSelectionRejectsUnavailableSlot(t *testing.T) {
 		winCharListNames, nox_xxx_saves_arr, nox_savegame_name_1307752 = oldList, oldSlots, oldName
 		*deleteIndex = oldDeleteIndex
 	})
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	list := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
 	button := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)

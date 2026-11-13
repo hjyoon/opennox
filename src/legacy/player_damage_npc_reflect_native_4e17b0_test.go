@@ -17,7 +17,7 @@ import (
 
 func npcReflectLegacyServer4E17B0(t *testing.T) *server.Server {
 	t.Helper()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1400)
 	oldGetServer := GetServer

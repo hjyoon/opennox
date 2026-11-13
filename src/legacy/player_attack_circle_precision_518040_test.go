@@ -50,11 +50,11 @@ func TestPlayerAttackCircle518040IndexedCFrameCycles(t *testing.T) {
 		}
 		cases++
 		t.Run(row.Input.Name, func(t *testing.T) {
-			s := server.New(nil, nil, strman.New())
+			s := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			s.Map.Init()
 			t.Cleanup(s.Map.Free)
-			if s.Walls.Init() == 0 {
+			if s.Walls.InitHigh() == 0 {
 				t.Fatal("cannot initialize native wall grid")
 			}
 			t.Cleanup(s.Walls.Free)
@@ -71,13 +71,13 @@ func TestPlayerAttackCircle518040IndexedCFrameCycles(t *testing.T) {
 			if memmap.Float32(0x587000, 194136) != 1 || memmap.Float32(0x587000, 194140) != 0 {
 				t.Fatal("unchanged original direction zero required")
 			}
-			unit, freeUnit := alloc.New(server.Object{})
-			update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-			player, freePlayer := alloc.New(server.Player{})
-			weapon, freeWeapon := alloc.New(server.Object{})
-			modifier, freeModifier := alloc.New(server.Modifier{})
-			candidate, freeCandidate := alloc.New(server.Object{})
-			data, freeData := alloc.New(server.MonsterUpdateData{})
+			unit, freeUnit := alloc.NewHigh(server.Object{})
+			update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
+			weapon, freeWeapon := alloc.NewHigh(server.Object{})
+			modifier, freeModifier := alloc.NewHigh(server.Modifier{})
+			candidate, freeCandidate := alloc.NewHigh(server.Object{})
+			data, freeData := alloc.NewHigh(server.MonsterUpdateData{})
 			for _, free := range []func(){freeUnit, freeUpdate, freePlayer, freeWeapon, freeModifier, freeCandidate, freeData} {
 				t.Cleanup(free)
 			}

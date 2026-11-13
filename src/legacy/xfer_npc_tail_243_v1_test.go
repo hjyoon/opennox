@@ -55,9 +55,9 @@ func npcTailChunks243(version int, mode string, dormant byte, namedVoice bool) [
 
 func npcTailObject243(t *testing.T, mode string, dormant byte, flag8000, namedVoice bool, voice, oldVoice unsafe.Pointer) *server.Object {
 	t.Helper()
-	obj, freeObj := alloc.New(server.Object{})
-	ud, freeUD := alloc.New(server.MonsterUpdateData{})
-	health, freeHealth := alloc.New(server.HealthData{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
+	ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeObj)
 	t.Cleanup(freeUD)
 	t.Cleanup(freeHealth)
@@ -145,8 +145,8 @@ func checkNPCTailState243(t *testing.T, obj *server.Object, version int, mode st
 func TestNPCTailVersions243V1(t *testing.T) {
 	oldFlags, oldSets := noxflags.GetGame(), soundSetByName
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags); soundSetByName = oldSets })
-	voice, freeVoice := alloc.Malloc(soundSetRecordSize)
-	oldVoice, freeOldVoice := alloc.Malloc(soundSetRecordSize)
+	voice, freeVoice := alloc.MallocHigh(soundSetRecordSize)
+	oldVoice, freeOldVoice := alloc.MallocHigh(soundSetRecordSize)
 	t.Cleanup(freeVoice)
 	t.Cleanup(freeOldVoice)
 	soundSetByName = map[string]*soundSetRecord{"NPC": {name: "NPC", data: voice}, "old": {name: "old", data: oldVoice}}

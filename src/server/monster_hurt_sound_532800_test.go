@@ -14,7 +14,7 @@ func TestMonsterHurtSound532800SchedulesAndPlaysAtNativeWidth(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()
 	update.Field133 = 100
-	soundSet, freeSoundSet := alloc.Make([]uint32{}, 3)
+	soundSet, freeSoundSet := alloc.MakeHigh([]uint32{}, 3)
 	defer freeSoundSet()
 	soundSet[2] = 731
 	update.SoundSet122 = unsafe.Pointer(&soundSet[0])

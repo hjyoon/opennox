@@ -109,7 +109,7 @@ func TestLuaCompatSayNativePackets(t *testing.T) {
 								if unit == nil {
 									t.Fatal("cannot allocate server-associated speaker")
 								}
-								id, freeID := alloc.CString("native_say_target")
+								id, freeID := alloc.CStringHigh("native_say_target")
 								t.Cleanup(freeID)
 								unit.ObjClass, unit.ObjFlags = class, flags
 								unit.NetCode, unit.Extent, unit.Field38 = 0x1234, 0x2345, 0x12345678

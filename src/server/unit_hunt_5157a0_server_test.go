@@ -14,7 +14,7 @@ import (
 )
 
 func TestUnitHuntNative5157A0StackAndUnrelatedFlags(t *testing.T) {
-	s := New(nil, nil, strman.New())
+	s := NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	if !s.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize server object allocator")

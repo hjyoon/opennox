@@ -102,7 +102,7 @@ func senderCanonical518960(v any) any {
 }
 
 func senderNewFixture518960(t *testing.T) *senderFixture518960 {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	f := &senderFixture518960{t: t, b: animationNewFixture533790(t)}
 	f.health = animationAllocate533790[server.HealthData](t, f.b)

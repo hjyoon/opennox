@@ -102,7 +102,7 @@ func TestPlayerUpdateScore54D980CgoNativeEntry(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	var packets [][]byte
 	srv.NetSendPacketXxx = func(recipient int, data []byte, related *server.Object, remove, sequence int) int {
 		if recipient != 255 || related != nil || remove != 1 || sequence != 1 || len(data) != 11 || data[0] != byte(netmsg.MSG_REPORT_LESSON) {

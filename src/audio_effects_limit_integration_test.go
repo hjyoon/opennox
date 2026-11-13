@@ -61,7 +61,7 @@ func TestNativeAudioEffectsEventLimitChild(t *testing.T) {
 	previousTicks := timer.PlatformTicks
 	timer.PlatformTicks = func() uint64 { return 0 }
 	t.Cleanup(func() { timer.PlatformTicks = previousTicks })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	driver := ail.WaveOutOpen()
 	if driver == 0 {

@@ -21,7 +21,7 @@ import (
 // data. CallDamage uses the registered C entry and real ObserveClear, electric
 // scale/protection, DefaultDamage, UnitDamageClear and C UnitSetHP services.
 func TestPlayerDamageSignedElectricNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

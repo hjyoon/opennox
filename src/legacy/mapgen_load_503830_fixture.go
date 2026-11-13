@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,10 +62,13 @@ typedef struct nox_test_mapgen_load_503830_result {
 
 static nox_test_mapgen_load_503830_result nox_test_mapgen_load_503830(const char* source) {
 	nox_test_mapgen_load_503830_result out = {0};
-	char path[0x800] = {0};
-	char records[0x26000] = {0};
-	if (!source || strlen(source) >= sizeof(path)) {
+	char* path = nox_native_fixture_calloc_high(1, 0x800);
+	char* records = nox_native_fixture_calloc_high(1, 0x26000);
+	if (!path || !records) abort();
+	if (!source || strlen(source) >= (0x800)) {
 		out.indexed = -1;
+		nox_native_fixture_free_high(records);
+		nox_native_fixture_free_high(path);
 		return out;
 	}
 	void* old_source = dword_5d4594_1599588;
@@ -107,6 +111,8 @@ static nox_test_mapgen_load_503830_result nox_test_mapgen_load_503830(const char
 	memcpy(getMemAt(0x5D4594, 739980), old_walls, sizeof(old_walls));
 	memcpy(getMemAt(0x5D4594, 1599500), old_bounds, sizeof(old_bounds));
 	nox_file_8 = old_file;
+	nox_native_fixture_free_high(records);
+	nox_native_fixture_free_high(path);
 	return out;
 }
 */

@@ -32,7 +32,7 @@ func TestPlayerCamperResetOriginal4D7C60(t *testing.T) {
 	if err := json.Unmarshal(raw, &fixture); err != nil || !fixture.Unchanged || len(fixture.Rows) != 90 || fixture.StartupCW&0xf3f != 0xe3f {
 		t.Fatalf("original Reset fixture: %v", err)
 	}
-	srv := New(nil, nil, strman.New())
+	srv := NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	selected := 0
 	for _, row := range fixture.Rows {

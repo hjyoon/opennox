@@ -16,7 +16,7 @@ import (
 // cache's arbitrary order. Native opaque handles identify logical records;
 // these tests do not assert the physical addresses of original PE realloc.
 func TestParticleSlotsOriginal4B01B0LowestInactive(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	tests := []struct {
 		name        string
 		freed, want []int
@@ -74,7 +74,7 @@ func TestParticleSlotsOriginal4B01B0LowestInactive(t *testing.T) {
 }
 
 func TestParticleSlotsOriginal4B01B0GrowthAndLowHoleReuse(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	for _, count := range []int{7, 512, 513, 1025} {
 		t.Run(fmt.Sprintf("slots-%d", count), func(t *testing.T) {
 			var owner partFXes
@@ -115,7 +115,7 @@ func TestParticleSlotsOriginal4B01B0GrowthAndLowHoleReuse(t *testing.T) {
 }
 
 func TestParticleSlotsOriginal4B01B0SurviveNativeGC(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	var owner partFXes
 	owner.Init(nil)
 	defer owner.Free()
@@ -146,7 +146,7 @@ func TestParticleSlotsOriginal4B01B0SurviveNativeGC(t *testing.T) {
 }
 
 func TestParticleSlotsOriginal4B01B0IsolatedOwnersAndReset(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	var owners [2]partFXes
 	var slots [2][4]*particleFx
 	for i := range owners {

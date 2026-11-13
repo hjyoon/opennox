@@ -76,7 +76,7 @@ func TestBlackPowderCEntryOriginal(t *testing.T) {
 	if f.SHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || f.Contexts != 471 || f.Executions != 942 || len(f.Rows) != 942 {
 		t.Fatal("incomplete original fixture")
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	shim := &powderCService53C9A0{srv: srv}
 	oldServer, oldWalls := GetServer, GetDoDamageWalls

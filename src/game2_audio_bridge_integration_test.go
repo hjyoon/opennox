@@ -33,7 +33,7 @@ const game2AudioBridgeChild = "NOX_TEST_GAME2_AUDIO_BRIDGE_CHILD"
 
 func game2AudioBridgeFile(t *testing.T, data []byte) *binfile.MemFile {
 	t.Helper()
-	p, _ := alloc.Malloc(uintptr(len(data) + 1))
+	p, _ := alloc.MallocHigh(uintptr(len(data) + 1))
 	copy(unsafe.Slice((*byte)(p), len(data)), data)
 	f := binfile.NewMemFile(p, len(data))
 	t.Cleanup(f.Free)
@@ -255,7 +255,7 @@ func TestGame2AudioBridgeActiveParsersAndShutdownChild(t *testing.T) {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	if audioDev != 0 || audioMaster != nil || len(nativeAudioFX.voices) != 0 || nativeAudioFX.bank != nil || legacy.Game2AudioBridgeSnapshot(1).Initialized {
 		t.Fatal("child requires fresh audio ownership")

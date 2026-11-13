@@ -80,7 +80,7 @@ func TestPlayerAttackTarget5386A0OriginalNative(t *testing.T) {
 	oracle := readPlayerTargetOracle5386A0(t)
 	for _, row := range oracle.Rows {
 		t.Run(row.Input.Name, func(t *testing.T) {
-			s := New(nil, nil, strman.New())
+			s := NewHigh(nil, nil, strman.New())
 			t.Cleanup(s.Close)
 			attacker, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)

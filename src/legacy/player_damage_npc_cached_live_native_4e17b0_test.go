@@ -28,11 +28,11 @@ func TestPlayerDamageNPCCachedLiveNative4E17B0ElectricCRecords(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(fmt.Sprint(typ), func(t *testing.T) {
 			target, source := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-			old, freeOld := alloc.New(server.MonsterUpdateData{})
-			live, freeLive := alloc.New(server.MonsterUpdateData{})
-			playerUpdate, freePlayerUpdate := alloc.New(server.PlayerUpdateData{})
-			player, freePlayer := alloc.New(server.Player{})
-			health, freeHealth := alloc.New(server.HealthData{})
+			old, freeOld := alloc.NewHigh(server.MonsterUpdateData{})
+			live, freeLive := alloc.NewHigh(server.MonsterUpdateData{})
+			playerUpdate, freePlayerUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+			player, freePlayer := alloc.NewHigh(server.Player{})
+			health, freeHealth := alloc.NewHigh(server.HealthData{})
 			for _, free := range []func(){freeOld, freeLive, freePlayerUpdate, freePlayer, freeHealth} {
 				t.Cleanup(free)
 			}

@@ -182,7 +182,7 @@ func TestObjectReadOldNativeRead4F4170RestoresOldPositionAndNativeID(t *testing.
 	}
 	defer func() { _ = cf.Close() }()
 
-	obj, freeObj := alloc.New(server.Object{})
+	obj, freeObj := alloc.NewHigh(server.Object{})
 	defer freeObj()
 	obj.ObjClass = objectlib.ClassPlayer
 	obj.ObjFlags = objectlib.Flags(originalFlag)

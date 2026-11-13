@@ -128,7 +128,7 @@ func TestSpellFirewalkPublicCNativeComposition52ED40(t *testing.T) {
 			wrotePosition = true
 		}
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)

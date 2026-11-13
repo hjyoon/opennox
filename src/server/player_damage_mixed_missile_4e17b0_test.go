@@ -64,7 +64,7 @@ func TestPlayerDamageMixedMissileMatchesGAMEEXE4E17B0(t *testing.T) {
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData = object.ClassArmor, 0, nil
 			}
 			weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassMissile|object.ClassWeapon, 0x10, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			weapon.InitData = unsafe.Pointer(modifiers)
@@ -161,7 +161,7 @@ func TestPlayerDamageMixedMissileFrontReflectMatchesGAMEEXE4E17B0(t *testing.T) 
 			a := damageMeleeUnitFixture4E17B0(t, true)
 			w := damageMeleeUnitFixture4E17B0(t, false)
 			w.ObjClass, w.ObjSubClass, w.UpdateData, w.HealthData = object.ClassMissile|object.ClassWeapon, 0x10, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			w.InitData = unsafe.Pointer(modifiers)
@@ -306,7 +306,7 @@ func TestPlayerDamageMixedMissileBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
 			owner.UpdateDataPlayer().Player.PlayerUnit = owner
 			owner.PosVec, owner.PrevPos = types.Ptf(40, 50), types.Ptf(-33, -44)
 			w.ObjClass, w.ObjSubClass, w.UpdateData, w.HealthData = object.ClassMissile|object.ClassWeapon, 0x10, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			w.InitData = unsafe.Pointer(modifiers)
@@ -319,7 +319,7 @@ func TestPlayerDamageMixedMissileBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
 			if strings.HasSuffix(row.Mode, "staff") {
 				mask, weaponFlags, armorFlags, state = 0x8000, 0x8000, 0, PlayerState13
 			}
-			item, freeItem := alloc.New(Object{})
+			item, freeItem := alloc.NewHigh(Object{})
 			*item = Object{ObjClass: object.ClassSimple, ObjSubClass: object.SubClass(mask), ObjFlags: object.FlagEquipped}
 			t.Cleanup(freeItem)
 			v.InvFirstItem = item

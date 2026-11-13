@@ -57,7 +57,7 @@ func TestCompleteServerSessionStartupRetries(t *testing.T) {
 				if live.active {
 					t.Fatal("previous session is still live at retry")
 				}
-				live.class = alloc.NewClassT("sessionStartupTest", uintptr(0), 1)
+				live.class = alloc.NewClassTHigh("sessionStartupTest", uintptr(0), 1)
 				live.object = live.class.NewObject()
 				live.active = true
 				*live.object = uintptr(attempt + 1)

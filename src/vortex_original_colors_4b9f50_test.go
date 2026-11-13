@@ -61,10 +61,10 @@ func TestVortexOriginalColors4B9F50NativeHeadless(t *testing.T) {
 	for index, row := range oracle.Rows {
 		for _, direct := range []bool{false, true} {
 			t.Run(fmt.Sprintf("case-%04d/direct-%t", index, direct), func(t *testing.T) {
-				s := server.New(nil, nil, strman.New())
+				s := server.NewHigh(nil, nil, strman.New())
 				t.Cleanup(s.Close)
 				s.SetFrame(7)
-				cl := client.NewClient(nil, nil, s)
+				cl := client.NewClientHigh(nil, nil, s)
 				t.Cleanup(cl.Close)
 				t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 				cl.Objs.InitHigh(2)
@@ -72,7 +72,7 @@ func TestVortexOriginalColors4B9F50NativeHeadless(t *testing.T) {
 				r := cl.Render()
 				t.Cleanup(r.Part.Free)
 				r.Part.RenderGlow = true
-				d, freeData := noxrender.NewRenderData()
+				d, freeData := noxrender.NewRenderDataHigh()
 				t.Cleanup(freeData)
 				r.SetData(d)
 				pix := noximage.NewImage16(image.Rect(0, 0, 160, 160))
@@ -81,7 +81,7 @@ func TestVortexOriginalColors4B9F50NativeHeadless(t *testing.T) {
 				oldClient := noxClient
 				noxClient = c
 				t.Cleanup(func() { noxClient = oldClient })
-				vp, freeVP := alloc.New(noxrender.Viewport{})
+				vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 				t.Cleanup(freeVP)
 				vp.Screen = image.Rect(7, 11, 135, 139)
 				vp.World = image.Rect(100, 200, 228, 328)

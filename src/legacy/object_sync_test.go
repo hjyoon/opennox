@@ -114,9 +114,9 @@ func TestObjectSetBuffFlagsCWrapperMatchesGo(t *testing.T) {
 }
 
 func TestObjectSetBuffFlagsCWrapperPlayerPath(t *testing.T) {
-	udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.PlayerUpdateData{}))
+	udMem, freeUD := alloc.MallocHigh(unsafe.Sizeof(server.PlayerUpdateData{}))
 	defer freeUD()
-	plMem, freePlayer := alloc.Malloc(unsafe.Sizeof(server.Player{}))
+	plMem, freePlayer := alloc.MallocHigh(unsafe.Sizeof(server.Player{}))
 	defer freePlayer()
 	ud := (*server.PlayerUpdateData)(udMem)
 	pl := (*server.Player)(plMem)
@@ -151,9 +151,9 @@ func TestObjectSetBuffFlagsCWrapperPlayerPath(t *testing.T) {
 }
 
 func TestObjectSetModifierAttrsCWrapperMatchesGo(t *testing.T) {
-	mod0, freeMod0 := alloc.New(server.ModifierEff{})
+	mod0, freeMod0 := alloc.NewHigh(server.ModifierEff{})
 	defer freeMod0()
-	mod1, freeMod1 := alloc.New(server.ModifierEff{})
+	mod1, freeMod1 := alloc.NewHigh(server.ModifierEff{})
 	defer freeMod1()
 	full := server.ModifierInitData{
 		Modifiers: [4]*server.ModifierEff{mod0, nil, mod1, nil},
@@ -175,10 +175,10 @@ func TestObjectSetModifierAttrsCWrapperMatchesGo(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+			attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
 			defer freeAttrs()
 			*attrs = tc.attrs
-			dst, freeDst := alloc.New(server.ModifierInitData{})
+			dst, freeDst := alloc.NewHigh(server.ModifierInitData{})
 			defer freeDst()
 			*dst = server.ModifierInitData{
 				Modifiers: [4]*server.ModifierEff{nil, mod1, nil, mod0},
@@ -229,7 +229,7 @@ func TestObjectSetModifierAttrsCWrapperMatchesGo(t *testing.T) {
 }
 
 func TestObjectSetNPCColorCWrapperMatchesGo(t *testing.T) {
-	udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.MonsterUpdateData{}))
+	udMem, freeUD := alloc.MallocHigh(unsafe.Sizeof(server.MonsterUpdateData{}))
 	defer freeUD()
 	ud := (*server.MonsterUpdateData)(udMem)
 	*ud = server.MonsterUpdateData{
@@ -253,7 +253,7 @@ func TestObjectSetNPCColorCWrapperMatchesGo(t *testing.T) {
 	wantUD := *ud
 	want := *got
 	want.UpdateData = unsafe.Pointer(&wantUD)
-	color, freeColor := alloc.New(server.Color3{})
+	color, freeColor := alloc.NewHigh(server.Color3{})
 	defer freeColor()
 	*color = server.Color3{R: 0xAB, G: 0xCD, B: 0xEF}
 	want.Nox_xxx_setNPCColor_4E4A90(5, color)
@@ -298,7 +298,7 @@ func TestObjectSetNPCItemEquipFlagsCWrapperMatchesGo(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.MonsterUpdateData{}))
+			udMem, freeUD := alloc.MallocHigh(unsafe.Sizeof(server.MonsterUpdateData{}))
 			defer freeUD()
 			ud := (*server.MonsterUpdateData)(udMem)
 			*ud = server.MonsterUpdateData{
@@ -455,11 +455,11 @@ func TestObjectNullableGettersCMatchGAMEEXEContract(t *testing.T) {
 		t.Fatalf("nil object performed %d type lookups", lookups)
 	}
 
-	id, freeID := alloc.Malloc(8)
+	id, freeID := alloc.MallocHigh(8)
 	defer freeID()
-	initData, freeInitData := alloc.Malloc(8)
+	initData, freeInitData := alloc.MallocHigh(8)
 	defer freeInitData()
-	adjacent, freeAdjacent := alloc.Malloc(8)
+	adjacent, freeAdjacent := alloc.MallocHigh(8)
 	defer freeAdjacent()
 
 	obj := &server.Object{

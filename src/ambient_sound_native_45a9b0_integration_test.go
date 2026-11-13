@@ -54,11 +54,11 @@ func TestNativeAmbientPublicCPlayback45A9B0(t *testing.T) {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	srv := NewServer(nil, nil, strman.New())
 	defer srv.Close()
-	c := &Client{Client: client.NewClient(nil, nil, srv.Server), srv: srv}
+	c := &Client{Client: client.NewClientHigh(nil, nil, srv.Server), srv: srv}
 	defer c.Client.Close()
 	oldClient, oldGet, oldWidth := noxClient, legacy.GetClient, nox_win_width
 	noxClient, legacy.GetClient, nox_win_width = c, func() legacy.Client { return c }, 640

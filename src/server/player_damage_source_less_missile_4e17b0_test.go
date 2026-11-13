@@ -279,7 +279,7 @@ func TestPlayerDamageSourceLessMissileBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
 			if strings.HasSuffix(row.Mode, "staff") {
 				mask, weaponFlags, armorFlags, state = 0x8000, 0x8000, 0, PlayerState13
 			}
-			item, free := alloc.New(Object{})
+			item, free := alloc.NewHigh(Object{})
 			*item = Object{ObjClass: object.ClassSimple, ObjSubClass: object.SubClass(mask), ObjFlags: object.FlagEquipped}
 			t.Cleanup(free)
 			v.InvFirstItem = item

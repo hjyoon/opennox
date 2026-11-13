@@ -80,11 +80,11 @@ func TestPlayerDamageInitializedWandNativeDamage4E17B0(t *testing.T) {
 									weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 								}
 								weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassWand, weaponSubclass, nil, nil
-								modifiers, free := alloc.New(server.ModifierInitData{})
+								modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 								*modifiers = server.ModifierInitData{}
 								t.Cleanup(free)
 								weapon.InitData = unsafe.Pointer(modifiers)
-								wandUse, freeWand := alloc.New(server.WandUseData{})
+								wandUse, freeWand := alloc.NewHigh(server.WandUseData{})
 								*wandUse = server.WandUseData{Flags: wandFlags}
 								t.Cleanup(freeWand)
 								weapon.UseData = server.UseDataPtr{Ptr: unsafe.Pointer(wandUse)}
@@ -266,11 +266,11 @@ func TestPlayerDamageInitializedWandImmunityNative4E17B0(t *testing.T) {
 					weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 				}
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassWand, row.WeaponSubclass, nil, nil
-				modifiers, free := alloc.New(server.ModifierInitData{})
+				modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 				*modifiers = server.ModifierInitData{}
 				t.Cleanup(free)
 				weapon.InitData = unsafe.Pointer(modifiers)
-				wandUse, freeWand := alloc.New(server.WandUseData{})
+				wandUse, freeWand := alloc.NewHigh(server.WandUseData{})
 				*wandUse = server.WandUseData{Flags: row.WandFlags}
 				t.Cleanup(freeWand)
 				weapon.UseData = server.UseDataPtr{Ptr: unsafe.Pointer(wandUse)}
@@ -386,11 +386,11 @@ func TestDefaultDamageInitializedWandPoisonShockNativeHP4E0B30(t *testing.T) {
 						return obj
 					}
 					target, actor, hero = bind(target), bind(actor), bind(hero)
-					mods, free := alloc.New(server.ModifierInitData{})
+					mods, free := alloc.NewHigh(server.ModifierInitData{})
 					*mods = server.ModifierInitData{}
 					t.Cleanup(free)
 					weapon := &server.Object{ObjClass: object.ClassWand, ObjSubClass: weaponSubclass, TypeInd: 73, InitData: unsafe.Pointer(mods), ObjOwner: actor}
-					wandUse, freeWand := alloc.New(server.WandUseData{})
+					wandUse, freeWand := alloc.NewHigh(server.WandUseData{})
 					*wandUse = server.WandUseData{Flags: wandFlags}
 					t.Cleanup(freeWand)
 					weapon.UseData = server.UseDataPtr{Ptr: unsafe.Pointer(wandUse)}

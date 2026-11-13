@@ -37,11 +37,11 @@ func TestPlayerDamageNPCCasterImpactNative4E17B0CRecords(t *testing.T) {
 				t.Run(fmt.Sprintf("%s/armor-%g/raw-%d", owner, absorption, raw), func(t *testing.T) {
 					v := srv.Objs.NewObject(&server.ObjectType{Damage: srv.Types.ByID("NativeCasterImpactNPC").Damage})
 					a, w := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-					ud, freeUD := alloc.New(server.MonsterUpdateData{})
-					casterUD, freeCasterUD := alloc.New(server.MonsterUpdateData{})
-					player, freePlayer := alloc.New(server.Player{})
-					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-					health, freeHealth := alloc.New(server.HealthData{})
+					ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+					casterUD, freeCasterUD := alloc.NewHigh(server.MonsterUpdateData{})
+					player, freePlayer := alloc.NewHigh(server.Player{})
+					playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+					health, freeHealth := alloc.NewHigh(server.HealthData{})
 					for _, free := range []func(){freeUD, freeCasterUD, freePlayer, freePlayerUD, freeHealth} {
 						t.Cleanup(free)
 					}

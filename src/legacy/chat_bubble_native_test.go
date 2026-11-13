@@ -20,9 +20,9 @@ func TestChatBubbleNativeListLifecycle(t *testing.T) {
 	oldFrame, oldFPS := gameFrameHook, gameFPSHook
 	gameFrameHook = func() uint32 { return 100 }
 	gameFPSHook = func() uint32 { return 30 }
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	pool := alloc.NewClass("chat-bubble-native-list", ChatBubbleSize(), 4)
+	pool := alloc.NewClassHigh("chat-bubble-native-list", ChatBubbleSize(), 4)
 	handle := pool.UPtr()
 	Set_nox_alloc_chat_1197364(handle)
 	t.Cleanup(func() {

@@ -99,7 +99,7 @@ func senderOrdinaryRows518960(t *testing.T) []struct {
 }
 
 func TestComplexObjectSendOrdinaryBindings518960(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	rows := senderOrdinaryRows518960(t)
 	srv := npcReflectLegacyServer4E17B0(t)

@@ -15,7 +15,7 @@ import (
 // Native consumers retain opaque keys, not Go object addresses. Replacing
 // the owner's active map must not resurrect an old key for a new generation.
 func TestParticleSlotEpochNativeResetInvalidatesOldHandle(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	for _, kind := range []string{"Free", "Init"} {
 		t.Run(kind, func(t *testing.T) {
 			var owner partFXes
@@ -46,7 +46,7 @@ func TestParticleSlotEpochNativeResetInvalidatesOldHandle(t *testing.T) {
 }
 
 func TestParticleSlotEpochNativeInitClearsRawRecord(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	var owner partFXes
 	owner.Init(nil)
 	defer owner.Free()

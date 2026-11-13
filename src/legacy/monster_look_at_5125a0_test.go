@@ -18,7 +18,7 @@ import (
 
 func monsterLookAtFixture5125A0(t *testing.T) (*server.Server, *server.Object, *server.MonsterUpdateData) {
 	t.Helper()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if !srv.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize native object allocator")

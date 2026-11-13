@@ -21,7 +21,7 @@ import (
 // ObserveClear, PlayerSetState, DamageClear and UnitSetHP. There are no test HP,
 // state or marker callbacks. This is not GUI ray-placement evidence.
 func TestPlayerDamagePlayerZapRayNative4E17B0HPAndHurt(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

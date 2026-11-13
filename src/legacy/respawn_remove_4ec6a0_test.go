@@ -11,17 +11,17 @@ import (
 
 func withRespawnRemove4EC6A0Class(t *testing.T, count int, fn func(*alloc.Class, []*respawnRecord4EC5E0, []*server.Object)) {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	oldAllocator := respawnAddLoadAllocator4EC5E0()
 	oldHead := respawnAddLoadHead4EC5E0()
-	class := alloc.NewClass("RespawnRemove4EC6A0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), count+1)
+	class := alloc.NewClassHigh("RespawnRemove4EC6A0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), count+1)
 	objects := make([]*server.Object, count)
 	freeObjects := make([]func(), count)
 	records := make([]*respawnRecord4EC5E0, count)
 	for i := range records {
-		objects[i], freeObjects[i] = alloc.New(server.Object{})
+		objects[i], freeObjects[i] = alloc.NewHigh(server.Object{})
 		records[i] = (*respawnRecord4EC5E0)(class.NewObject())
 		records[i].Object = objects[i]
 	}

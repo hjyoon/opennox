@@ -79,10 +79,10 @@ func registeredGlyphType4B9C70(t *testing.T, c *Client) *client.ObjectType {
 		raw = binary.LittleEndian.AppendUint32(raw, id)
 	}
 	raw = append(raw, 0)
-	buffer, _ := alloc.CloneSlice(raw)
+	buffer, _ := alloc.CloneSliceHigh(raw)
 	f := binfile.NewMemFile(unsafe.Pointer(&buffer[0]), len(buffer))
 	defer f.Free()
-	scratch, free := alloc.Make([]byte{}, 256)
+	scratch, free := alloc.MakeHigh([]byte{}, 256)
 	defer free()
 	if err := c.Things.ReadType(f, scratch); err != nil || len(f.Data()) != 0 {
 		t.Fatalf("actual GlyphDraw parser failed: %v unread=%d", err, len(f.Data()))
@@ -112,15 +112,15 @@ func testRegisteredGlyphChild4B9C70(t *testing.T, style string) {
 	}
 	t.Chdir(t.TempDir())
 	destroyOnceBag48EA70(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
 	s.SetFrame(100)
 	s.Rand.Logic.Reset(93)
 	s.Rand.Other.Reset(17)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(8)
@@ -129,7 +129,7 @@ func testRegisteredGlyphChild4B9C70(t *testing.T, style string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	oldRenderDataC := *legacy.VideoModeRenderDataC
@@ -142,7 +142,7 @@ func testRegisteredGlyphChild4B9C70(t *testing.T, style string) {
 	}
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255
@@ -182,7 +182,7 @@ func testRegisteredGlyphChild4B9C70(t *testing.T, style string) {
 	if dr == nil {
 		t.Fatal("actual native glyph creation failed")
 	}
-	local, freeLocal := alloc.New(client.Drawable{})
+	local, freeLocal := alloc.NewHigh(client.Drawable{})
 	local.PosVec = dr.PosVec
 	t.Cleanup(freeLocal)
 	dr.NetCode32, dr.AnimStart = 1, 96
@@ -231,7 +231,7 @@ func testRegisteredGlyphChild4B9C70(t *testing.T, style string) {
 	beforeDR, beforeLocal, beforeVP := registeredEffectBytes4B7540(dr), registeredEffectBytes4B7540(local), registeredEffectBytes4B7540(vp)
 	beforeType, beforeAnim := registeredEffectBytes4B7540(typ), registeredEffectBytes4B7540(anim)
 	beforeImages := slices.Clone(unsafe.Slice((*noxrender.ImageHandle)(anim.images), 3))
-	primer, freePrimer := alloc.New(client.Drawable{})
+	primer, freePrimer := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(freePrimer)
 	*primer = *dr
 	primer.PosVec = image.Pt(400, 280)

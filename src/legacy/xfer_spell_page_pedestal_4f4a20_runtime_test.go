@@ -47,12 +47,12 @@ func TestSpellPagePedestalXferNativeLayout4F4A20(t *testing.T) {
 }
 
 func TestSpellPagePedestalXferNativeWrite4F4A20PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.AwardSpellCollideData{})
+	data, freeData := alloc.NewHigh(server.AwardSpellCollideData{})
 	defer freeData()
 	data.Spell = 0xf1234567
-	id, freeID := alloc.CString("spell-page")
+	id, freeID := alloc.CStringHigh("spell-page")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
@@ -190,12 +190,12 @@ func TestSpellPagePedestalXferNativeRead4F4A20RestoresEntryState(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.AwardSpellCollideData{})
+	data, freeData := alloc.NewHigh(server.AwardSpellCollideData{})
 	defer freeData()
 	data.Spell = 0x11223344
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassPlayer | objectlib.ClassMissile
 	object.IDPtr = unsafe.Pointer(oldID)

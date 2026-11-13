@@ -159,7 +159,7 @@ func (s *game4SupportLegacyServer) S() *server.Server { return s.srv }
 
 func game4SupportTargetCacheControl(t *testing.T) {
 	t.Helper()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	defer srv.Close()
 	oldGet := GetServer
 	GetServer = func() Server { return &game4SupportLegacyServer{srv: srv} }

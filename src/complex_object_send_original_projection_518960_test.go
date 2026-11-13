@@ -167,7 +167,7 @@ type animationInput533790 struct {
 
 func TestComplexObjectPacketExistingGoProjection518960(t *testing.T) {
 	rows := senderOrdinaryRows518960(t)
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)
@@ -190,13 +190,13 @@ func TestComplexObjectPacketExistingGoProjection518960(t *testing.T) {
 	types.Write(0, 22)
 	types.Write(1, 33)
 	types.Write(2, 44)
-	unit, freeU := alloc.New(server.Object{})
+	unit, freeU := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeU)
-	update, freeD := alloc.New(server.MonsterUpdateData{})
+	update, freeD := alloc.NewHigh(server.MonsterUpdateData{})
 	t.Cleanup(freeD)
-	health, freeH := alloc.New(server.HealthData{})
+	health, freeH := alloc.NewHigh(server.HealthData{})
 	t.Cleanup(freeH)
-	enemy, freeE := alloc.New(server.Object{})
+	enemy, freeE := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeE)
 	for index, mode := range rows {
 		t.Run(mode.Name, func(t *testing.T) {

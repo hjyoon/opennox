@@ -67,7 +67,7 @@ func aiVisibleDependencyNative546A70(t *testing.T) (*Server, *server.Object, *se
 	t.Helper()
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	if !s.Objs.InitHigh(2) || s.Walls.Init() == 0 {
+	if !s.Objs.InitHigh(2) || s.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize native object/wall allocation")
 	}
 	t.Cleanup(s.Objs.FreeObjects)

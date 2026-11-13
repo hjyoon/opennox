@@ -22,7 +22,7 @@ type serverSpellMaskLegacyServer454040 struct {
 func (s *serverSpellMaskLegacyServer454040) S() *server.Server { return s.srv }
 
 func TestServerSpellMask454040NativeStackAndPackedWords(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &serverSpellMaskLegacyServer454040{srv: srv} }

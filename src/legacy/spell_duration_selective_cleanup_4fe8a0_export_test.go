@@ -66,8 +66,8 @@ func TestSpellDurationSelectiveCleanupExport4FE8A0NonzeroModePreservesNativePoin
 	}
 	t.Cleanup(srv.Spells.Dur.SpellFreeDurations4FE880)
 
-	player, freePlayer := alloc.New(server.Object{})
-	monster, freeMonster := alloc.New(server.Object{})
+	player, freePlayer := alloc.NewHigh(server.Object{})
+	monster, freeMonster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freePlayer)
 	t.Cleanup(freeMonster)
 	player.ObjClass = object.ClassPlayer | object.Class(0x80000000)

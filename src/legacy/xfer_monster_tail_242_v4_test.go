@@ -62,9 +62,9 @@ func monsterTailChunks242(version int, subclass object.MonsterClass, dormant byt
 func monsterTailObject242(t *testing.T, srv *server.Server, typ *server.ObjectType, subclass object.MonsterClass, mode string, dormant byte) *server.Object {
 	t.Helper()
 	obj := srv.Objs.NewObject(typ)
-	ud, freeUD := alloc.New(server.MonsterUpdateData{})
-	health, freeHealth := alloc.New(server.HealthData{})
-	shop, freeShop := alloc.New(server.ShopkeeperInitData{})
+	ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
+	shop, freeShop := alloc.NewHigh(server.ShopkeeperInitData{})
 	// alloc.New takes a type witness, not an initial value.
 	*health = server.HealthData{Cur: 50, Field2: 22, Max: 75}
 	*shop = server.ShopkeeperInitData{BuyMultiplier: 1.25, SellMultiplier: 2.5}
@@ -138,7 +138,7 @@ func checkMonsterTailState242(t *testing.T, obj *server.Object, version int, sub
 func TestMonsterTailVersions242V4(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags) })
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if !srv.Objs.InitHigh(512) {
 		t.Fatal("private object allocator")

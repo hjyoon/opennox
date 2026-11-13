@@ -31,11 +31,12 @@ func logUnknownHandler(name string) {
 }
 
 type serverObjTypes struct {
-	log   *slog.Logger
-	first *ObjectType
-	byInd []*ObjectType
-	byID  map[string]*ObjectType
-	crc   uint32
+	highAddresses bool
+	log           *slog.Logger
+	first         *ObjectType
+	byInd         []*ObjectType
+	byID          map[string]*ObjectType
+	crc           uint32
 
 	playerAnimFrames [][2]int
 	dropSoundTable   audEventDropSoundTable536AC0
@@ -405,7 +406,7 @@ func (s *serverObjTypes) ReadObjectType(thg *things.Thing) error {
 		if typ.health != nil {
 			alloc.Free(typ.health)
 		}
-		data, _ := alloc.New(HealthData{})
+		data, _ := serverNativeNew(s.highAddresses, HealthData{})
 		typ.health = data
 		data.Cur = uint16(*thg.Health)
 		data.Max = uint16(*thg.Health)
@@ -503,7 +504,7 @@ func (s *serverObjTypes) ReadObjectType(thg *things.Thing) error {
 	}
 	if typ.Class().HasAny(object.ClassWeapon | object.ClassArmor | object.ClassPlayer | object.ClassMonster) {
 		if typ.health == nil {
-			typ.health, _ = alloc.New(HealthData{})
+			typ.health, _ = serverNativeNew(s.highAddresses, HealthData{})
 		}
 	}
 	typ.allowed = true
@@ -973,7 +974,7 @@ func (t *ObjectType) parseInit(d *things.ProcFunc) error {
 	t.InitData = nil
 	t.InitDataSize = def.DataSize
 	if def.DataSize != 0 {
-		data, _ := alloc.Malloc(def.DataSize)
+		data, _ := serverNativeMalloc(t.s != nil && t.s.highAddresses, def.DataSize)
 		t.InitData = data
 	}
 	if parse, ok := initParseFuncs[d.Name]; ok {
@@ -1050,7 +1051,7 @@ func (t *ObjectType) parseUpdate(d *things.ProcFunc) error {
 	if def.DataSize == 0 {
 		return nil
 	}
-	data, _ := alloc.Malloc(def.DataSize)
+	data, _ := serverNativeMalloc(t.s != nil && t.s.highAddresses, def.DataSize)
 	t.UpdateData = data
 	if parse, ok := updateParseFuncs[d.Name]; ok {
 		if err := parse(t, d.Args); err != nil {
@@ -1076,7 +1077,7 @@ func (t *ObjectType) parseCollide(d *things.ProcFunc) error {
 	if def.DataSize == 0 {
 		return nil
 	}
-	data, _ := alloc.Malloc(def.DataSize)
+	data, _ := serverNativeMalloc(t.s != nil && t.s.highAddresses, def.DataSize)
 	t.CollideData = data
 	if parse, ok := collideParseFuncs[d.Name]; ok {
 		if err := parse(t, d.Args); err != nil {
@@ -1102,7 +1103,7 @@ func (t *ObjectType) parseUse(d *things.ProcFunc) error {
 	if def.DataSize == 0 {
 		return nil
 	}
-	data, _ := alloc.Malloc(def.DataSize)
+	data, _ := serverNativeMalloc(t.s != nil && t.s.highAddresses, def.DataSize)
 	t.UseData.SetPtr(data)
 	if parse, ok := useParseFuncs[d.Name]; ok {
 		if err := parse(t, d.Args); err != nil {
@@ -1143,7 +1144,7 @@ func (t *ObjectType) parseDeath(d *things.ProcFunc) error {
 	if def.DataSize == 0 {
 		return nil
 	}
-	data, _ := alloc.Malloc(def.DataSize)
+	data, _ := serverNativeMalloc(t.s != nil && t.s.highAddresses, def.DataSize)
 	t.DeathData = data
 	if parse, ok := deathParseFuncs[d.Name]; ok {
 		if err := parse(t, d.Args); err != nil {
@@ -1230,7 +1231,7 @@ func (t *ObjectType) parseDraw(d things.Draw) error {
 		if ud == nil {
 			return errors.New("no monster update data")
 		}
-		anims, _ := alloc.Make([]MonsterAnim{}, 16)
+		anims, _ := serverNativeMake(t.s != nil && t.s.highAddresses, []MonsterAnim{}, 16)
 		ud.Field119 = (*[16]MonsterAnim)(anims)
 		for _, st := range d.Anims {
 			if int(st.Type) >= len(anims) {

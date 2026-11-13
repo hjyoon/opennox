@@ -22,7 +22,7 @@ func (s *mapgenAdjacentReservationLegacyServer524FB0) S() *server.Server {
 func TestMapgenAdjacentReservation524FB0PreservesNativePointers(t *testing.T) {
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	if srv.Walls.Init() == 0 {
+	if srv.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize server wall grid")
 	}
 	t.Cleanup(srv.Walls.Free)

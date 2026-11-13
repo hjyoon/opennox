@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -14,10 +15,13 @@ typedef struct nox_test_map_section_426EA0_result {
 
 static nox_test_map_section_426EA0_result nox_test_map_section_426EA0(const char* name) {
 	nox_test_map_section_426EA0_result out = {0};
-	uint8_t context = 0x5a;
+	uint8_t* context = nox_native_fixture_calloc_high(1, sizeof(*context));
+	if (!context) abort();
+	*context = 0x5a;
 	out.error = 0xffffffffu;
-	out.context = (uintptr_t)&context;
-	out.result = nox_xxx_mapReadSection_426EA0(&context, (char*)name, &out.error);
+	out.context = (uintptr_t)context;
+	out.result = nox_xxx_mapReadSection_426EA0(context, (char*)name, &out.error);
+	nox_native_fixture_free_high(context);
 	return out;
 }
 */

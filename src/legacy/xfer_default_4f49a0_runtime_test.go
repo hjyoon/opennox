@@ -17,11 +17,11 @@ import (
 )
 
 func TestDefaultXferNativeWrite4F49A0PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	id, freeID := alloc.CString("default-xfer")
+	id, freeID := alloc.CStringHigh("default-xfer")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
@@ -152,9 +152,9 @@ func TestDefaultXferNativeRead4F49A0RestoresEntryField34AfterSerializer(t *testi
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassPlayer | objectlib.ClassMissile
 	object.IDPtr = unsafe.Pointer(oldID)

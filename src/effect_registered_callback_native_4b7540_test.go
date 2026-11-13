@@ -65,17 +65,17 @@ func testRegisteredEffectChild4B7540(t *testing.T, name string) {
 	if !slices.Contains(registeredEffectCases4B7540, name) {
 		t.Fatal("unknown frozen effect case")
 	}
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetFrame(1)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 128, 128))
@@ -84,7 +84,7 @@ func testRegisteredEffectChild4B7540(t *testing.T, name string) {
 	oldClient := noxClient
 	noxClient = c
 	t.Cleanup(func() { noxClient = oldClient })
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World = image.Rect(100, 200, 228, 328)
 	vp.Screen = pix.Rect

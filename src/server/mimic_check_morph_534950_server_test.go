@@ -91,7 +91,7 @@ func TestMimicCheckMorph534950NativeMalformedStateFaultsBeforeDependencies(t *te
 }
 
 func TestMimicCheckMorph534950ProductionStackResetAndAudio(t *testing.T) {
-	srv := New(nil, nil, strman.New())
+	srv := NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGame, oldEngine := noxflags.GetGame(), noxflags.GetEngine()
 	noxflags.ResetGame()

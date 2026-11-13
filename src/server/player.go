@@ -172,7 +172,7 @@ func (s *Server) OnClassStats(cl player.Class, stats ClassStats) {
 }
 
 func (s *serverPlayers) init(srv *Server) {
-	s.list, s.freeNative = alloc.Make([]Player{}, common.MaxPlayers)
+	s.list, s.freeNative = serverNativeMake(srv.highAddresses, []Player{}, common.MaxPlayers)
 	s.Mult.Warrior = ClassStats{
 		Health:   1,
 		Mana:     1,

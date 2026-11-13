@@ -284,7 +284,7 @@ func TestQuestMapFile4D0F60NativeSignedHistoryAndPointer(t *testing.T) {
 	} {
 		for _, seed := range []int{0, 4095} {
 			t.Run(fmt.Sprintf("%s/seed-%d", tc.name, seed), func(t *testing.T) {
-				s := server.New(nil, nil, strman.New())
+				s := server.NewHigh(nil, nil, strman.New())
 				t.Cleanup(s.Close)
 				oldServer := GetServer
 				GetServer = func() Server { return &questMapFileLegacyServer4D0F60{native: s} }

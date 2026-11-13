@@ -18,7 +18,7 @@ func BenchmarkParticleSparseSweep4AFD40(b *testing.B) {
 			for _, gap := range []int{0, 16, 256, 1024} {
 				b.Run(fmt.Sprintf("gap-%d", gap), func(b *testing.B) {
 					b.StopTimer()
-					handles.Init()
+					handles.InitHigh()
 					b.Cleanup(handles.Release)
 					owner := new(partFXes)
 					owner.Init(nil)

@@ -14,8 +14,8 @@ import (
 
 func randomWalkTestObject545020(t *testing.T) *Object {
 	t.Helper()
-	unit, freeUnit := alloc.New(Object{})
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	unit, freeUnit := alloc.NewHigh(Object{})
+	update, freeUpdate := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(freeUpdate)
 	t.Cleanup(freeUnit)
 	unit.ObjClass = object.ClassMonster
@@ -26,7 +26,7 @@ func randomWalkTestObject545020(t *testing.T) *Object {
 	unit.PosVec = types.Ptf(100, 200)
 	update.AIStackInd = 0
 	update.AIStack[0].Action = uint32(ai.ACTION_RANDOM_WALK)
-	def, freeDef := alloc.New(MonsterDef{})
+	def, freeDef := alloc.NewHigh(MonsterDef{})
 	t.Cleanup(freeDef)
 	def.RunMultiplier96 = 1.75
 	update.MonsterDef = def

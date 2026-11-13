@@ -33,7 +33,7 @@ func newInputCfgCaptureFocusFixture4CC170(t *testing.T) (*gui.GUI, *gui.Window, 
 	oldClient, oldBackground := GetClient, gui.MainBg
 	oldPrompt := *inputCfgCapturePromptSlot4CC170
 	oldSelection := *inputCfgCaptureSelectionSlot4CC170
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(func() {
 		g.DestroyAll()
 		*inputCfgCapturePromptSlot4CC170 = oldPrompt

@@ -16,10 +16,10 @@ import (
 )
 
 func TestMarkSlotPublicSelector52CBD0KeepsSixArguments(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
-	caster, freeCaster := alloc.New(server.Object{})
-	aim, freeAim := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	aim, freeAim := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeSecond, freeCaster, freeAim, freeArg} {
 		t.Cleanup(free)
 	}
@@ -47,10 +47,10 @@ func TestMarkSlotNative52CBD0SharedCacheAndMoveBinding(t *testing.T) {
 	for index := 0; index < 4; index++ {
 		for _, mode := range []string{"monster", "missing-type", "move", "immobile"} {
 			t.Run(fmt.Sprintf("slot-%d/%s", index, mode), func(t *testing.T) {
-				caster, freeCaster := alloc.New(server.Object{})
-				aim, freeAim := alloc.New(server.Object{})
-				marker, freeMarker := alloc.New(server.Object{})
-				data, freeData := alloc.New(server.PlayerUpdateData{})
+				caster, freeCaster := alloc.NewHigh(server.Object{})
+				aim, freeAim := alloc.NewHigh(server.Object{})
+				marker, freeMarker := alloc.NewHigh(server.Object{})
+				data, freeData := alloc.NewHigh(server.PlayerUpdateData{})
 				for _, free := range []func(){freeCaster, freeAim, freeMarker, freeData} {
 					t.Cleanup(free)
 				}

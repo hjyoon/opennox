@@ -75,11 +75,11 @@ func newPlayerAttackHammerFixture538960(t *testing.T) *playerAttackHammerFixture
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width attack routing applies to 64-bit builds")
 	}
-	f := &playerAttackHammerFixture538960{srv: server.New(nil, nil, strman.New())}
+	f := &playerAttackHammerFixture538960{srv: server.NewHigh(nil, nil, strman.New())}
 	t.Cleanup(f.srv.Close)
 	f.srv.Map.Init()
 	t.Cleanup(f.srv.Map.Free)
-	if f.srv.Walls.Init() == 0 {
+	if f.srv.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize hammer wall grid")
 	}
 	t.Cleanup(f.srv.Walls.Free)

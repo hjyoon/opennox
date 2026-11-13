@@ -96,7 +96,7 @@ func TestMusicLoopChild(t *testing.T) {
 	if mode == "" {
 		t.Skip("isolated music-loop subprocess only")
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	if mode == "mock" {
 		if !env.IsE2E() {

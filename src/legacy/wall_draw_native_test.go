@@ -19,7 +19,7 @@ func TestWallDrawUsesNativeImagePointers(t *testing.T) {
 		t.Fatal("wall edge draw image argument is not a native pointer")
 	}
 
-	image, freeImage := alloc.Malloc(1)
+	image, freeImage := alloc.MallocHigh(1)
 	t.Cleanup(freeImage)
 	addr := uintptr(image)
 	if unsafe.Sizeof(addr) == 8 && addr <= math.MaxUint32 {

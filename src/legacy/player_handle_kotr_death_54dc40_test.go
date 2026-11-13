@@ -102,7 +102,7 @@ func TestPlayerHandleKotrDeath54DC40CgoNativeCrownTeamEntry(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	bridge := &kotrScoreLegacyServer54DC40{srv: srv}
 	GetServer = func() Server { return bridge }
 	noxflags.ResetGame()

@@ -12,7 +12,7 @@ import (
 
 func newAnimationMemFile(t *testing.T, data []byte) *binfile.MemFile {
 	t.Helper()
-	buf, _ := alloc.CloneSlice(data)
+	buf, _ := alloc.CloneSliceHigh(data)
 	f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
 	t.Cleanup(f.Free)
 	return f
@@ -40,7 +40,7 @@ func TestParseAnimStateDrawDataUsesNativeLayout(t *testing.T) {
 	data = appendAnimationU32(data, 0x454E4420) // "END "
 
 	f := newAnimationMemFile(t, data)
-	dd, free := alloc.New(AnimationStateDrawData{})
+	dd, free := alloc.NewHigh(AnimationStateDrawData{})
 	t.Cleanup(free)
 	if err := ParseAnimStateDrawData(dd, f, nil); err != nil {
 		t.Fatalf("parse animate-state draw: %v", err)
@@ -68,7 +68,7 @@ func TestParseAnimStateDrawDataRejectsMissingState(t *testing.T) {
 	data = appendAnimationU32(data, 0)
 
 	f := newAnimationMemFile(t, data)
-	dd, free := alloc.New(AnimationStateDrawData{})
+	dd, free := alloc.NewHigh(AnimationStateDrawData{})
 	t.Cleanup(free)
 	if err := ParseAnimStateDrawData(dd, f, nil); err == nil {
 		t.Fatal("parse animate-state draw succeeded without a state bit")
@@ -87,7 +87,7 @@ func TestParseAnimStateDrawDataLoadsSingleFrameSequence(t *testing.T) {
 	data = appendAnimationU32(data, 0x454E4420)
 
 	f := newAnimationMemFile(t, data)
-	dd, free := alloc.New(AnimationStateDrawData{})
+	dd, free := alloc.NewHigh(AnimationStateDrawData{})
 	t.Cleanup(free)
 	type imageRequest struct {
 		id   int

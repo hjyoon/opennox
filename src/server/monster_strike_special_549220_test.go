@@ -23,7 +23,7 @@ func TestMonsterStrikeSpecial549220GhostNativeStack(t *testing.T) {
 				_, unit, update := moveToNativeRetryFixture5443F0(t, ai.ACTION_MELEE_ATTACK)
 				// The update record is C-owned, as in the game. Its definition
 				// must also have a native lifetime before publishing the pointer.
-				def, freeDef := alloc.New(MonsterDef{})
+				def, freeDef := alloc.NewHigh(MonsterDef{})
 				t.Cleanup(freeDef)
 				*def = MonsterDef{MeleeAttackDamage116: 10, MeleeAttackDamageType124: 4, MeleeAttackImpact120: 2}
 				update.MonsterDef = def

@@ -189,13 +189,13 @@ func TestJournalEntryMutationRejectsInvalidUnits(t *testing.T) {
 	if s.JournalEntryRemove427630(nil, "entry") || s.JournalEntryUpdate427720(nil, "entry", 1) != nil {
 		t.Fatal("nil unit was accepted")
 	}
-	nonPlayer, freeNonPlayer := alloc.New(Object{})
+	nonPlayer, freeNonPlayer := alloc.NewHigh(Object{})
 	t.Cleanup(freeNonPlayer)
 	nonPlayer.ObjClass = object.ClassMonster
 	if s.JournalEntryRemove427630(nonPlayer, "entry") || s.JournalEntryUpdate427720(nonPlayer, "entry", 1) != nil {
 		t.Fatal("non-player unit was accepted")
 	}
-	playerUnit, freePlayerUnit := alloc.New(Object{})
+	playerUnit, freePlayerUnit := alloc.NewHigh(Object{})
 	t.Cleanup(freePlayerUnit)
 	playerUnit.ObjClass = object.ClassPlayer
 	if s.JournalEntryRemove427630(playerUnit, "entry") || s.JournalEntryUpdate427720(playerUnit, "entry", 1) != nil {

@@ -44,7 +44,7 @@ func TestPlayerDamageWorldSelfMatchesGAMEEXE4E17B0(t *testing.T) {
 		t.Run(fmt.Sprintf("class-%x/player-%t/type-%d/raw-%d", uint32(row.SourceClass), row.Player, row.Type, row.Raw), func(t *testing.T) {
 			v := damageMeleeUnitFixture4E17B0(t, row.Player)
 			armor := damageMeleeArmorFixture4E17B0(v, .5, .25)
-			attacker, free := alloc.New(Object{})
+			attacker, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)
 			*attacker = Object{TypeInd: 71, ObjClass: row.SourceClass}
 			if row.Player {

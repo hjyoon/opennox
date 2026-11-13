@@ -1,3 +1,4 @@
+#include "draw_allocation.h"
 #include <stdio.h>
 
 #include "client__draw__debugdraw.h"
@@ -134,7 +135,7 @@ int nox_free_tile_defs() {
 	for (int i = 0; i < nox_tile_def_cnt; i++) {
 		nox_tileDef_t* it = &nox_tile_defs_arr[i];
 		if (it->data_32) {
-			free(it->data_32);
+			nox_draw_memory_free(it->data_32);
 			it->data_32 = 0;
 		}
 	}
@@ -148,7 +149,7 @@ int sub_485F30() {
 	}
 	for (int i = 0; i < *(int*)&dword_5d4594_251572; i++) {
 		if (nox_edge_images_native[i]) {
-			free(nox_edge_images_native[i]);
+			nox_draw_memory_free(nox_edge_images_native[i]);
 			nox_edge_images_native[i] = NULL;
 		}
 		*getMemU32Ptr(0x85B3FC, 28676 + 60 * i) = 0;
@@ -220,7 +221,7 @@ static void nox_xxx_draw_44C780(void* frames[9]) {
 	for (int i = 0; i < 9; i++) {
 		// Direction 4 is unused by the original eight-direction loader.
 		if (i != 4 && frames[i]) {
-			free(frames[i]);
+			nox_draw_memory_free(frames[i]);
 			frames[i] = NULL;
 		}
 	}
@@ -231,7 +232,7 @@ static void nox_free_player_equip_animation(nox_native_player_equip_animation_t*
 		return;
 	}
 	nox_xxx_draw_44C780(anim->frames);
-	free(anim);
+	nox_draw_memory_free(anim);
 }
 
 //----- (0044C7B0) --------------------------------------------------------
@@ -258,44 +259,44 @@ void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind) {
 	case 2:
 	case 3:
 		if (((nox_static_random_draw_data_t*)lpMem)->images) {
-			free(((nox_static_random_draw_data_t*)lpMem)->images);
+			nox_draw_memory_free(((nox_static_random_draw_data_t*)lpMem)->images);
 		}
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	case 4:
 		v7 = (void**)((nox_cond_animate_draw_data_t*)lpMem)->images;
 		v8 = 5;
 		do {
 			if (*v7) {
-				free(*v7);
+				nox_draw_memory_free(*v7);
 			}
 			++v7;
 			--v8;
 		} while (v8);
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	case 5:
 		nox_xxx_draw_44C780(((nox_native_animation_vector_t*)lpMem)->frames);
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	case 6:
 		sub_44C7B0((nox_native_player_draw_data_t*)lpMem);
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	case 7:
 		for (int i = 0; i < 16; i++) {
 			nox_xxx_draw_44C780(((nox_native_monster_draw_data_t*)lpMem)->anim[i].frames);
 		}
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	case 8:
 		for (int i = 0; i < 3; i++) {
 			nox_xxx_draw_44C780(((nox_native_animation_state_draw_data_t*)lpMem)->anim[i].frames);
 		}
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	default:
-		free(lpMem);
+		nox_draw_memory_free(lpMem);
 		break;
 	}
 }

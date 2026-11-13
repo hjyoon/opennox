@@ -22,7 +22,7 @@ func TestPlayerAttackExport538960NPCWarHammerKeepsQuakePlayersNativeWidth(t *tes
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width attack routing applies to 64-bit builds")
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
@@ -88,9 +88,9 @@ func TestPlayerAttackExport538960NPCWarHammerKeepsQuakePlayersNativeWidth(t *tes
 		if player == nil {
 			t.Fatal("cannot allocate quake recipient")
 		}
-		playerUpdate, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		playerUpdate, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 		t.Cleanup(freeUpdate)
-		playerUnit, freeUnit := alloc.New(server.Object{})
+		playerUnit, freeUnit := alloc.NewHigh(server.Object{})
 		t.Cleanup(freeUnit)
 		*playerUnit = server.Object{
 			ObjClass: object.ClassPlayer, PosVec: types.Ptf(5000, 5000),
@@ -168,7 +168,7 @@ func TestPlayerAttackExport538960WarHammerRoundsAllStrengthBytes(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width attack routing applies to 64-bit builds")
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
@@ -208,9 +208,9 @@ func TestPlayerAttackExport538960WarHammerRoundsAllStrengthBytes(t *testing.T) {
 	if player == nil {
 		t.Fatal("cannot allocate quake recipient")
 	}
-	playerUpdate, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	playerUpdate, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
-	playerUnit, freeUnit := alloc.New(server.Object{})
+	playerUnit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
 	playerUnit.ObjClass, playerUnit.UpdateData = object.ClassPlayer, unsafe.Pointer(playerUpdate)
 	playerUpdate.Player, player.PlayerUnit = player, playerUnit

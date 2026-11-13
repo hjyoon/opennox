@@ -142,11 +142,11 @@ func rewardMarkerXferNativeSpecificPayload4F74D0() []byte {
 }
 
 func TestRewardMarkerXferNativeRoundTrip4F74D0PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.RewardMarkerInitData{})
+	data, freeData := alloc.NewHigh(server.RewardMarkerInitData{})
 	defer freeData()
-	id, freeID := alloc.CString("reward-marker")
+	id, freeID := alloc.CStringHigh("reward-marker")
 	defer freeID()
 	for name, pointer := range map[string]unsafe.Pointer{
 		"object":                unsafe.Pointer(object),
@@ -202,11 +202,11 @@ func TestRewardMarkerXferNativeRoundTrip4F74D0PreservesPointersAndWire(t *testin
 		t.Fatalf("write pointers/fields changed: InitData=%p Field34=%#x Field216=%#x", object.InitData, object.Field34, data.Field216)
 	}
 
-	readObject, freeReadObject := alloc.New(server.Object{})
+	readObject, freeReadObject := alloc.NewHigh(server.Object{})
 	defer freeReadObject()
-	readData, freeReadData := alloc.New(server.RewardMarkerInitData{})
+	readData, freeReadData := alloc.NewHigh(server.RewardMarkerInitData{})
 	defer freeReadData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	readData.Spells[9] = 7
 	readData.Field216 = 0xaabbcc00
@@ -251,7 +251,7 @@ func TestRewardMarkerXferNativeRoundTrip4F74D0PreservesPointersAndWire(t *testin
 }
 
 func TestRewardMarkerXferExport4F74D0PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

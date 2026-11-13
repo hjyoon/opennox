@@ -62,7 +62,7 @@ func TestSpellTagNativeCRealMinimapAndPacket530160(t *testing.T) {
 		}
 		return
 	}
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	fake := &tagNativeEntryServer530160{base: s}
 	old := GetServer

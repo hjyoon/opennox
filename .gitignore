@@ -41,3 +41,6 @@ src/includes
 # Omit other source analysis dirs
 gonox/
 gonoxh/
+
+# Python validation helper bytecode.
+__pycache__/

@@ -6,6 +6,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/opennox/libs/log"
@@ -28,10 +29,19 @@ var (
 type ThingFieldFunc func(typ *ObjectType, f *binfile.MemFile, str string, buf []byte) error
 
 type clientObjTypes struct {
-	sm    *strman.StringManager
-	first *ObjectType
-	byInd []*ObjectType
-	byID  map[string]*ObjectType
+	highAddresses bool
+	sm            *strman.StringManager
+	first         *ObjectType
+	byInd         []*ObjectType
+	byID          map[string]*ObjectType
+}
+
+// Keep allocation policy outside the C-compatible ObjectType layout.
+var highThingOwners sync.Map
+
+func (t *ObjectType) UsesHighNativeMemory() bool {
+	_, high := highThingOwners.Load(t)
+	return high
 }
 
 func (c *clientObjTypes) init(sm *strman.StringManager) {
@@ -85,12 +95,24 @@ func (c *clientObjTypes) parseThing(f *binfile.MemFile, buf []byte, typ *ObjectT
 }
 
 func (c *clientObjTypes) ReadType(thg *binfile.MemFile, buf []byte) error {
-	typ, _ := alloc.New(ObjectType{})
+	var typ *ObjectType
+	if c.highAddresses {
+		typ, _ = alloc.NewHigh(ObjectType{})
+		highThingOwners.Store(typ, struct{}{})
+	} else {
+		typ, _ = alloc.New(ObjectType{})
+	}
 	id, err := thg.ReadString8()
 	if err != nil {
+		highThingOwners.Delete(typ)
+		alloc.Free(typ)
 		return fmt.Errorf("cannot read object type: %w", err)
 	}
-	typ.Name = alloc.InternCString(id)
+	if c.highAddresses {
+		typ.Name = alloc.InternCStringHigh(id)
+	} else {
+		typ.Name = alloc.InternCString(id)
+	}
 	typ.MenuIcon = -1
 	typ.Field_1c = int32(len(c.byInd))
 	c.byInd = append(c.byInd, typ)
@@ -128,6 +150,7 @@ func (c *clientObjTypes) Each(fnc func(it *ObjectType)) {
 
 func (c *clientObjTypes) Nox_things_free_44C580_B() {
 	c.Each(func(it *ObjectType) {
+		highThingOwners.Delete(it)
 		alloc.Free(it)
 	})
 	c.first = nil

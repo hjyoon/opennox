@@ -91,7 +91,7 @@ func TestMaidenDraw4BBF90MatchesGAMEEXE(t *testing.T) {
 				t.Fatal("unexpected fault in original bounded case")
 			}
 			srv := new(server.Server)
-			srv.NPCs.Init()
+			srv.NPCs.InitHigh()
 			npc := srv.NPCs.New(int(int32(tc.ID)))
 			if npc == nil {
 				t.Fatal("native NPC allocation failed")
@@ -105,7 +105,7 @@ func TestMaidenDraw4BBF90MatchesGAMEEXE(t *testing.T) {
 			dr, freeDR := alloc.NewHigh(client.Drawable{})
 			ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
 			other, freeOther := alloc.NewHigh(server.MonsterUpdateData{})
-			renderData, freeRender := noxrender.NewRenderData()
+			renderData, freeRender := noxrender.NewRenderDataHigh()
 			for _, free := range []func(){freeVP, freeDR, freeUD, freeOther, freeRender} {
 				t.Cleanup(free)
 			}

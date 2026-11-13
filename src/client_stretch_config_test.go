@@ -102,7 +102,7 @@ func TestOptionsStretchConfigChild(t *testing.T) {
 		t.Fatal(err)
 	}
 	noxClient = &Client{Client: &client.Client{Seat: sc, Win: r}}
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	noxServer = &Server{Server: s}
 	if err := readConfig(path); err != nil {

@@ -16,10 +16,10 @@ import (
 )
 
 func TestMarkPublicSelector52CA80KeepsSixArgumentsAndSignedResult(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
-	caster, freeCaster := alloc.New(server.Object{})
-	aim, freeAim := alloc.New(server.Object{})
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
+	aim, freeAim := alloc.NewHigh(server.Object{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	for _, free := range []func(){freeSecond, freeCaster, freeAim, freeArg} {
 		t.Cleanup(free)
 	}
@@ -53,9 +53,9 @@ func TestMarkPublicSelector52CA80KeepsSixArgumentsAndSignedResult(t *testing.T) 
 func TestMarkNative52CA80SharesLiveGlyphCacheNotRetiredBlob(t *testing.T) {
 	for _, class := range []object.Class{object.ClassMonster, object.ClassPlayer} {
 		t.Run(fmt.Sprintf("class-%x", uint32(class)), func(t *testing.T) {
-			caster, freeCaster := alloc.New(server.Object{})
+			caster, freeCaster := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeCaster)
-			data, freeData := alloc.New(server.PlayerUpdateData{})
+			data, freeData := alloc.NewHigh(server.PlayerUpdateData{})
 			t.Cleanup(freeData)
 			*data = server.PlayerUpdateData{Field39: 0x10203040}
 			*caster = server.Object{ObjClass: class, UpdateData: unsafe.Pointer(data), PosVec: types.Ptf(300, 500)}
@@ -82,17 +82,17 @@ func TestMarkNative52CA80SharesLiveGlyphCacheNotRetiredBlob(t *testing.T) {
 func TestMarkNative52CA80MoveBindingAndPackedRecharge(t *testing.T) {
 	for _, immobile := range []bool{false, true} {
 		t.Run(fmt.Sprintf("immobile-%t", immobile), func(t *testing.T) {
-			caster, freeCaster := alloc.New(server.Object{})
+			caster, freeCaster := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeCaster)
-			aim, freeAim := alloc.New(server.Object{})
+			aim, freeAim := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeAim)
-			data, freeData := alloc.New(server.PlayerUpdateData{})
+			data, freeData := alloc.NewHigh(server.PlayerUpdateData{})
 			t.Cleanup(freeData)
 			*data = server.PlayerUpdateData{Field39: 0x10203040}
 			*caster = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(data), PosVec: types.Ptf(300, 500)}
 			*aim = server.Object{TypeInd: 321, PosVec: types.Ptf(330, 520)}
 			for i := range data.Field29 {
-				marker, free := alloc.New(server.Object{})
+				marker, free := alloc.NewHigh(server.Object{})
 				t.Cleanup(free)
 				*marker = server.Object{Field34: uint32(i + 20), PosVec: types.Ptf(100, 200)}
 				data.Field29[i] = marker

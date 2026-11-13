@@ -128,11 +128,24 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 		t.Fatal("C-owned fixture must exceed4GiB")
 	}
 	offsets := [8]int{0x1000, 0x2000, 0x3000, 0x4000, 0x5000, 0x6000, 0x9000, 0xa000}
+	invalidNative := originalInvalidNativePointer32(t)
 	ptr := func(n int) unsafe.Pointer {
 		if n < 0 {
+			if invalidNative != nil {
+				if n == -1 {
+					return nil
+				}
+				return invalidNative
+			}
 			return skeletonOriginalBad54A310(n)
 		}
 		return unsafe.Add(base, offsets[n])
+	}
+	nameAt := func(index int) unsafe.Pointer {
+		if index < 0 && invalidNative != nil {
+			return ptr(index)
+		}
+		return skeletonOriginalName54A310(index)
 	}
 	role := func(p unsafe.Pointer) int {
 		for n := -2; n < 8; n++ {
@@ -197,11 +210,11 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 	state := server.SkeletonDeathState54A310{Index: &g.Index, Divisor: &g.Divisor}
 	fps, coop := in.FPS, in.Coop
 	rt := server.SkeletonDeathRuntime54A310{RoundToNearest: nearest}
-	rt.Names = server.SkeletonDeathNames54A310{Skull: skeletonOriginalName54A310(5), Sword: skeletonOriginalName54A310(8), WoodenShield: skeletonOriginalName54A310(9), SteelShield: skeletonOriginalName54A310(10), Power: skeletonOriginalName54A310(1), Material: skeletonOriginalName54A310(2)}
+	rt.Names = server.SkeletonDeathNames54A310{Skull: nameAt(5), Sword: nameAt(8), WoodenShield: nameAt(9), SteelShield: nameAt(10), Power: nameAt(1), Material: nameAt(2)}
 	names := []string{"TestItem", "WeaponPower1", "Material2", "FireEffect", "OtherEffect", "Skull", "ArmBone", "LegBone", "Sword", "WoodenShield", "SteelShield"}
 	nameValue := func(p unsafe.Pointer) any {
 		for i := -2; i < len(names); i++ {
-			if p == skeletonOriginalName54A310(i) {
+			if p == nameAt(i) {
 				if i == -1 {
 					return nil
 				}
@@ -226,9 +239,9 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 	for i, index := range []int{6, 7} {
 		off := (i + 1) * int(unsafe.Sizeof(uintptr(0)))
 		if unsafe.Sizeof(uintptr(0)) == 4 {
-			binary.LittleEndian.PutUint32(tableBuf[off:], uint32(uintptr(skeletonOriginalName54A310(index))))
+			binary.LittleEndian.PutUint32(tableBuf[off:], uint32(uintptr(nameAt(index))))
 		} else {
-			binary.LittleEndian.PutUint64(tableBuf[off:], uint64(uintptr(skeletonOriginalName54A310(index))))
+			binary.LittleEndian.PutUint64(tableBuf[off:], uint64(uintptr(nameAt(index))))
 		}
 	}
 	rt.BoneName = func(index int32) unsafe.Pointer { return skeletonOriginalBone54A310(tablePtr, index) }
@@ -477,10 +490,10 @@ func skeletonRunOriginal54A310(t *testing.T, in skeletonInput54A310, mode string
 	defer func() { skeletonOriginalRuntimeOverride54A310 = oldRT; skeletonOriginalStateOverride54A310 = oldState }()
 	invoke = func(entry string, unit int) int32 {
 		obj := (*server.Object)(ptr(unit))
-		name := skeletonOriginalName54A310(in.Type)
+		name := nameAt(in.Type)
 		var mods [4]unsafe.Pointer
 		for i, n := range in.Mods {
-			mods[i] = skeletonOriginalName54A310(n)
+			mods[i] = nameAt(n)
 		}
 		if mode == "C" {
 			number := map[string]int{"54a310": 0, "54a390": 1, "54a4c0": 2, "54a750": 3}[entry]

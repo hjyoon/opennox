@@ -125,9 +125,9 @@ func TestPressurePlateOriginal4BBB30Geometry(t *testing.T) {
 	for _, row := range oracle.Rows {
 		for _, base := range []image.Point{{0, 0}, {256, 256}, {-256, -256}} {
 			t.Run(fmt.Sprintf("%s/base-%d-%d", strings.ReplaceAll(row.Name, "/", "-"), base.X, base.Y), func(t *testing.T) {
-				dr, freeDR := alloc.New(client.Drawable{})
+				dr, freeDR := alloc.NewHigh(client.Drawable{})
 				t.Cleanup(freeDR)
-				vp, freeVP := alloc.New(noxrender.Viewport{})
+				vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 				t.Cleanup(freeVP)
 				vp.World, vp.Screen = image.Rect(100, 200, 164, 264), image.Rect(7, 11, 71, 75)
 				dr.PosVec = vp.World.Min.Add(base).Sub(vp.Screen.Min)
@@ -206,9 +206,9 @@ func registeredPressurePlateType4BBB30(t *testing.T, c *Client) *client.ObjectTy
 	}
 	raw = append(raw, make([]byte, 8)...)
 	raw = append(raw, 0)
-	buf, _ := alloc.CloneSlice(raw)
+	buf, _ := alloc.CloneSliceHigh(raw)
 	f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
-	scratch, freeScratch := alloc.Make([]byte{}, 256)
+	scratch, freeScratch := alloc.MakeHigh([]byte{}, 256)
 	err := c.Things.ReadType(f, scratch)
 	remaining := len(f.Data())
 	freeScratch()
@@ -240,9 +240,9 @@ func testRegisteredPressurePlateChild4BBB30(t *testing.T, name string) {
 	}
 	oracle := loadPressurePlateOriginal4BBB30(t)
 	t.Chdir(t.TempDir())
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
 	s.SetFrame(100)
@@ -251,7 +251,7 @@ func testRegisteredPressurePlateChild4BBB30(t *testing.T, name string) {
 	}
 	s.Rand.Logic.Reset(93)
 	s.Rand.Other.Reset(17)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
@@ -260,7 +260,7 @@ func testRegisteredPressurePlateChild4BBB30(t *testing.T, name string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -271,7 +271,7 @@ func testRegisteredPressurePlateChild4BBB30(t *testing.T, name string) {
 	t.Cleanup(func() { noxClient, noxServer = oldClient, oldServer })
 	typ := registeredPressurePlateType4BBB30(t, c)
 	beforeType := registeredEffectBytes4B7540(typ)
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World, vp.Screen = image.Rect(100, 200, 164, 264), image.Rect(7, 11, 71, 75)
 	vp.Size = pix.Size()

@@ -69,8 +69,12 @@ typedef struct two_settings_pointer_fixture_witness_40a740 {
 static two_settings_pointer_fixture_witness_40a740 two_settings_pointer_fixture_pointer_witness_40a740(void* ptr) {
     uintptr_t native = (uintptr_t)ptr;
     uint32_t low32 = (uint32_t)native;
+    int above_4GiB = 0;
+#if UINTPTR_MAX > UINT32_MAX
+    above_4GiB = native > UINT64_C(0x100000000);
+#endif
     two_settings_pointer_fixture_witness_40a740 out = {
-        native, low32, native > UINT64_C(0x100000000), (uintptr_t)low32 != native
+        native, low32, above_4GiB, (uintptr_t)low32 != native
     };
     return out;
 }

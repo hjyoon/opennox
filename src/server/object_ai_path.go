@@ -191,9 +191,22 @@ func (s *serverAIPaths) appendWorkPath(path []types.Pointf, ind int) int {
 // native pointer fields, so the allocation class deliberately uses the host
 // size of AIVisitNode instead of the original PE32 size of 16 bytes.
 func (s *serverAIPaths) Init(srv *Server) {
+	s.init(srv, false)
+}
+
+// InitHigh requests high foreign addresses for this path-storage owner only.
+func (s *serverAIPaths) InitHigh(srv *Server) {
+	s.init(srv, true)
+}
+
+func (s *serverAIPaths) init(srv *Server, highAddresses bool) {
 	s.s = srv
-	s.allocVisit = alloc.NewClassT("VisitNodes", AIVisitNode{}, 1024)
-	s.points, _ = alloc.Make([]types.Pointf{}, 1024)
+	if highAddresses {
+		s.allocVisit = alloc.NewClassTHigh("VisitNodes", AIVisitNode{}, 1024)
+	} else {
+		s.allocVisit = alloc.NewClassT("VisitNodes", AIVisitNode{}, 1024)
+	}
+	s.points, _ = serverNativeMake(highAddresses, []types.Pointf{}, 1024)
 	s.lastFrame = 0
 }
 func (s *serverAIPaths) Sub_50B500() {

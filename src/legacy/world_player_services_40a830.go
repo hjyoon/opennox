@@ -91,9 +91,9 @@ func worldPlayerCallDefend415C00(callback unsafe.Pointer, effect *server.Modifie
 func worldTileHeadCell411160() unsafe.Pointer { return C.world_tile_head_cell() }
 func worldTileCapacity411160() int32          { return int32(C.world_tile_cap()) }
 func worldTileCalloc411160(count, size uintptr) unsafe.Pointer {
-	return C.calloc(C.size_t(count), C.size_t(size))
+	return game4SupportAllocate(count, size)
 }
-func worldTileFree411160(p unsafe.Pointer)          { C.free(p) }
+func worldTileFree411160(p unsafe.Pointer)          { game4SupportReleaseMemory(p) }
 func worldTileFloatToInt411160(value float32) int32 { return int32(C.nox_float2int(C.float(value))) }
 func worldTileDefinitions411160() []server.TileDef {
 	return unsafe.Slice((*server.TileDef)(C.world_tile_defs()), 176)

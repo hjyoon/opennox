@@ -19,7 +19,7 @@ func setupImportantAcknowledgementPacket(
 	t.Helper()
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
-	pool := alloc.NewClass("important-acknowledgement-contract", importantPacketSizeC(), 1)
+	pool := alloc.NewClassHigh("important-acknowledgement-contract", importantPacketSizeC(), 1)
 	setImportantAllocClassC(pool.UPtr())
 	setImportantRecipientMaskC(recipientMask)
 	gameFrameHook = func() uint32 { return 0x54000000 }
@@ -61,7 +61,7 @@ func assertImportantPacketRemoved(t *testing.T) {
 }
 
 func TestImportantPacketAcknowledgementRelatedObjectMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	const (
 		initialField37 = uint32(0xA5A5FFFF)
@@ -84,7 +84,7 @@ func TestImportantPacketAcknowledgementRelatedObjectMatchesGAMEEXEContract(t *te
 			var relatedObject *server.Object
 			if tc.related {
 				var free func()
-				relatedObject, free = alloc.New(server.Object{})
+				relatedObject, free = alloc.NewHigh(server.Object{})
 				t.Cleanup(free)
 				relatedObject.Field37 = initialField37
 			}
@@ -108,7 +108,7 @@ func TestImportantPacketAcknowledgementRelatedObjectMatchesGAMEEXEContract(t *te
 }
 
 func TestImportantPacketAcknowledgementRecipientModesMatchGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("broadcast", func(t *testing.T) {
@@ -197,7 +197,7 @@ func TestImportantPacketAcknowledgementRecipientModesMatchGAMEEXEContract(t *tes
 }
 
 func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("empty-list", func(t *testing.T) {
@@ -211,7 +211,7 @@ func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T)
 	t.Run("head-middle-tail-removal", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-frame-acknowledgement-contract", importantPacketSizeC(), 5)
+		pool := alloc.NewClassHigh("important-frame-acknowledgement-contract", importantPacketSizeC(), 5)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
 		gameFrameHook = func() uint32 { return 0x55000000 }
@@ -252,7 +252,7 @@ func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T)
 	t.Run("player-index-31", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-frame-acknowledgement-index-contract", importantPacketSizeC(), 1)
+		pool := alloc.NewClassHigh("important-frame-acknowledgement-index-contract", importantPacketSizeC(), 1)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC(uint32(1) << 31)
 		gameFrameHook = func() uint32 { return 0x55000001 }
@@ -269,7 +269,7 @@ func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T)
 }
 
 func TestImportantPlayerPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	t.Run("empty-list", func(t *testing.T) {
@@ -283,7 +283,7 @@ func TestImportantPlayerPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 	t.Run("mixed-recipient-head-middle-tail-removal", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-player-cleanup-contract", importantPacketSizeC(), 5)
+		pool := alloc.NewClassHigh("important-player-cleanup-contract", importantPacketSizeC(), 5)
 		setImportantAllocClassC(pool.UPtr())
 		const (
 			playerIndex = uint8(2)
@@ -294,7 +294,7 @@ func TestImportantPlayerPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 		gameFrameHook = func() uint32 { return 0x55F00000 }
 		var relatedObject *server.Object
 		var freeRelated func()
-		relatedObject, freeRelated = alloc.New(server.Object{})
+		relatedObject, freeRelated = alloc.NewHigh(server.Object{})
 		t.Cleanup(freeRelated)
 		relatedObject.Field37 = 0xFFFFFFFF
 
@@ -350,7 +350,7 @@ func TestImportantPlayerPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 	t.Run("shift-count-wraps-without-truncating-player-index", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantNativeListC(nil, nil)
-		pool := alloc.NewClass("important-player-cleanup-shift-contract", importantPacketSizeC(), 2)
+		pool := alloc.NewClassHigh("important-player-cleanup-shift-contract", importantPacketSizeC(), 2)
 		setImportantAllocClassC(pool.UPtr())
 		setImportantRecipientMaskC(uint32(1) << 1)
 		gameFrameHook = func() uint32 { return 0x55F00001 }

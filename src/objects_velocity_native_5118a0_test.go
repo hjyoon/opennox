@@ -51,7 +51,7 @@ func TestObjectsVelocityNative5118A0RealQueuePreparationAndMap(t *testing.T) {
 			t.Run(row.Input.Name+"/"+mode, func(t *testing.T) {
 				s := NewServer(nil, nil, strman.New())
 				t.Cleanup(s.Close)
-				if !s.Objs.InitHigh(3) || s.Walls.Init() == 0 {
+				if !s.Objs.InitHigh(3) || s.Walls.InitHigh() == 0 {
 					t.Fatal("native object/wall allocation")
 				}
 				t.Cleanup(s.Objs.FreeObjects)

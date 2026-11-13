@@ -17,7 +17,7 @@ import (
 // Exercise the unchanged Go wrapper and the actual C entrypoint, not a
 // substituted export callback. Both the object and its update are C-owned.
 func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if !srv.Objs.InitHigh(1) {
 		t.Fatal("cannot initialize server object allocator")

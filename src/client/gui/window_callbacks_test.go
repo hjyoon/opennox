@@ -12,11 +12,11 @@ func TestWindowNativeCallbackStorage(t *testing.T) {
 	defer g.alloc.Free()
 
 	win := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 100, 100, nil)
-	proc93, freeProc93 := alloc.New(byte(0))
+	proc93, freeProc93 := alloc.NewHigh(byte(0))
 	defer freeProc93()
-	proc94, freeProc94 := alloc.New(byte(0))
+	proc94, freeProc94 := alloc.NewHigh(byte(0))
 	defer freeProc94()
-	draw, freeDraw := alloc.New(byte(0))
+	draw, freeDraw := alloc.NewHigh(byte(0))
 	defer freeDraw()
 
 	win.SetFunc93C(unsafe.Pointer(proc93))

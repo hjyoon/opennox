@@ -75,7 +75,7 @@ func TestPlayerDamageMixedMissileNativeDamage4E17B0(t *testing.T) {
 									weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 								}
 								weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassMissile|object.ClassWeapon, 0x10, nil, nil
-								modifiers, free := alloc.New(server.ModifierInitData{})
+								modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 								*modifiers = server.ModifierInitData{}
 								t.Cleanup(free)
 								weapon.InitData = unsafe.Pointer(modifiers)
@@ -255,7 +255,7 @@ func TestPlayerDamageMixedMissileImmunityNative4E17B0(t *testing.T) {
 					weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil
 				}
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassMissile|object.ClassWeapon, 0x10, nil, nil
-				modifiers, free := alloc.New(server.ModifierInitData{})
+				modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 				*modifiers = server.ModifierInitData{}
 				t.Cleanup(free)
 				weapon.InitData = unsafe.Pointer(modifiers)

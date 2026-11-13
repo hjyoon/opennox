@@ -157,7 +157,7 @@ func edibleCompareOriginal544A00(t *testing.T, mode string, row edibleRow544A00)
 	if !row.Output.Guard {
 		t.Fatal("original guards not certified")
 	}
-	buf, free := alloc.Make([]byte{}, 0x10000)
+	buf, free := alloc.MakeHigh([]byte{}, 0x10000)
 	defer free()
 	for i := range buf {
 		buf[i] = byte(i*37 + 0xa5)

@@ -314,7 +314,7 @@ func inputAdmissionReferenceR273(seed []server.PlayerCtrl, frames [][]server.Pla
 
 func TestClientInputFramingActualServerFIFOAndAdmissionR273(t *testing.T) {
 	inputHostModeR273(t, false)
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	s.NetList.Init()

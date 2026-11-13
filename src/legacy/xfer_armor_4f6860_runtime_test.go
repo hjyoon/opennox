@@ -72,15 +72,15 @@ func TestArmorXferNativeLayout4F6860(t *testing.T) {
 }
 
 func TestArmorXferNativeWrite4F6860PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{})
 	defer freeInitData()
-	health, freeHealth := alloc.New(server.HealthData{Cur: 73, Field2: 90, Max: 100})
+	health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 73, Field2: 90, Max: 100})
 	defer freeHealth()
-	update, freeUpdate := alloc.New(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
+	update, freeUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
 	defer freeUpdate()
-	id, freeID := alloc.CString("armor-native")
+	id, freeID := alloc.CStringHigh("armor-native")
 	defer freeID()
 	*health = server.HealthData{Cur: 73, Field2: 90, Max: 100}
 	*update = server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4}
@@ -231,17 +231,17 @@ func TestArmorXferNativeRead4F6860UsesNativeArmorAndRestoresCount(t *testing.T) 
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	initData, freeInitData := alloc.New(server.ModifierInitData{Field16: 0x11223344})
+	initData, freeInitData := alloc.NewHigh(server.ModifierInitData{Field16: 0x11223344})
 	defer freeInitData()
-	health, freeHealth := alloc.New(server.HealthData{Cur: 50, Field2: 90, Max: 100})
+	health, freeHealth := alloc.NewHigh(server.HealthData{Cur: 50, Field2: 90, Max: 100})
 	defer freeHealth()
-	update, freeUpdate := alloc.New(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
+	update, freeUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{Field0: 0x10203040, Field4: 0xa1b2c3d4})
 	defer freeUpdate()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
-	armor, freeArmor := alloc.New(server.Modifier{Durability52: 0x12340077})
+	armor, freeArmor := alloc.NewHigh(server.Modifier{Durability52: 0x12340077})
 	defer freeArmor()
 	*initData = server.ModifierInitData{Field16: 0x11223344}
 	*health = server.HealthData{Cur: 50, Field2: 90, Max: 100}
@@ -353,7 +353,7 @@ func TestArmorXferNativeRead4F6860UsesNativeArmorAndRestoresCount(t *testing.T) 
 }
 
 func TestArmorXferExport4F6860PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

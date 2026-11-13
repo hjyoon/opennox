@@ -103,12 +103,12 @@ func TestAnimationUpdateOrdinaryBindings50A850(t *testing.T) {
 	scratch := memmap.PtrOff(0x5D4594, 2487964)
 	savedScratch := animationSnapshot50A850(unsafe.Add(scratch, -32), 80)
 	t.Cleanup(func() { copy(unsafe.Slice((*byte)(unsafe.Add(scratch, -32)), 80), savedScratch) })
-	unit, freeU := alloc.New(server.Object{})
-	update, freeD := alloc.New(server.MonsterUpdateData{})
-	other, freeO := alloc.New(server.MonsterUpdateData{})
-	enemy, freeE := alloc.New(server.Object{})
-	a, freeA := alloc.New([16]server.MonsterAnim{})
-	b, freeB := alloc.New([16]server.MonsterAnim{})
+	unit, freeU := alloc.NewHigh(server.Object{})
+	update, freeD := alloc.NewHigh(server.MonsterUpdateData{})
+	other, freeO := alloc.NewHigh(server.MonsterUpdateData{})
+	enemy, freeE := alloc.NewHigh(server.Object{})
+	a, freeA := alloc.NewHigh([16]server.MonsterAnim{})
+	b, freeB := alloc.NewHigh([16]server.MonsterAnim{})
 	for _, free := range []func(){freeU, freeD, freeO, freeE, freeA, freeB} {
 		t.Cleanup(free)
 	}

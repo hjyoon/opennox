@@ -12,7 +12,7 @@ import (
 )
 
 func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
-	address, free := alloc.Malloc(80)
+	address, free := alloc.MallocHigh(80)
 	defer free()
 	data := unsafe.Slice((*byte)(address), 80)
 	for i := range data {

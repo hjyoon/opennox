@@ -66,7 +66,7 @@ func TestNativeAudioEffectsEnabledChild(t *testing.T) {
 	prevTicks := timer.PlatformTicks
 	timer.PlatformTicks = func() uint64 { return 0 }
 	t.Cleanup(func() { timer.PlatformTicks = prevTicks })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	driver := ail.WaveOutOpen()
 	if driver == 0 {
@@ -94,7 +94,7 @@ func TestNativeAudioEffectsEnabledChild(t *testing.T) {
 	if fx == nil || legacy.Sub_453070() != 1 {
 		t.Fatal("fresh process did not initialize the FX timer and enabled flag")
 	}
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	checkbox := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 70, 12, nil)

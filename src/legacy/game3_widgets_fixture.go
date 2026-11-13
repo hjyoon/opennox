@@ -45,6 +45,9 @@ static int game3_test_distance(int ref,uint32_t x,uint32_t y,int16_t sx,int16_t 
 }
 static void game3_test_slider(int ref,int vertical,int pre,int ev,uintptr_t a,uintptr_t b,
  int lo,int hi,uint32_t scale,int value,int64_t out[20]) {
+ // This transport borrows an inline widget-data record. Destruction requires
+ // an owning CRT allocation and is exercised separately by game3_test_destroy.
+ if(pre&&ev==2)abort();
  struct block {uint64_t before[2];nox_window w,thumb,parent,owner;nox_slider_data_4B4860 d;uint64_t after[2];}*p=nox_native_fixture_calloc_high(1,sizeof(*p));
  p->before[0]=p->before[1]=p->after[0]=p->after[1]=0xfeedcafe01234567ULL;
  p->w.flags=8;p->w.width=101;p->w.height=91;p->w.off_x=13;p->w.off_y=17;

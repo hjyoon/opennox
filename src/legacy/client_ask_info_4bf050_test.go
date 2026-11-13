@@ -31,6 +31,9 @@ func newTooltipFixture4BF050(t *testing.T) *tooltipFixture4BF050 {
 	t.Cleanup(freeBuf)
 	buf[1024] = 0x55AA
 	f := &tooltipFixture4BF050{t: t, dr: dr, buf: buf, d: clientAskInfoDepsFactory4BF050()}
+	space, freeSpace := alloc.MakeHigh([]uint16{' ', 0}, 2)
+	t.Cleanup(freeSpace)
+	f.d.space = &space[0]
 	f.d.scratch, f.d.initial = &buf[0], alloc.InternCString16("")
 	copyText, appendText, formatText := f.d.copyText, f.d.appendText, f.d.formatText
 	f.d.copyText = func(dst, src *uint16) {

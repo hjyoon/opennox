@@ -20,7 +20,7 @@ import (
 // callback, real armor definition/durability and HP setters. Only the final
 // owner-HP transport is captured; health, enemy and damage services are real.
 func TestPlayerDamageNPCMonsterSelfStrikeNative4E17B0HPAndDurability(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

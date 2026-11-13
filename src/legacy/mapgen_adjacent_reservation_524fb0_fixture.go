@@ -94,6 +94,8 @@ type mapgenAdjacentReservationResult524FB0 struct {
 }
 
 func mapgenAdjacentReservationFixture524FB0() mapgenAdjacentReservationResult524FB0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_adjacent_reservation_524fb0()
 	out := mapgenAdjacentReservationResult524FB0{
 		usedLegacyWrapper: got.used_legacy_wrapper != 0,

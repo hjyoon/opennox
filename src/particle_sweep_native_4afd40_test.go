@@ -13,7 +13,7 @@ import (
 
 func particleSweepOwner4AFD40(t *testing.T) *partFXes {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	pfx := new(partFXes)
 	pfx.Init(nil)
 	t.Cleanup(pfx.Free)

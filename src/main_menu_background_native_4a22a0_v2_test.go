@@ -24,11 +24,11 @@ import (
 
 func mainMenuBackgroundFixture4A22A0(t *testing.T) (*Client, *gui.Window, *noximage.Image16, *render.Renderer, *headless.Seat) {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	r := noxrender.NewRender(nil, s)
 	t.Cleanup(r.Part.Free)
-	d, free := noxrender.NewRenderData()
+	d, free := noxrender.NewRenderDataHigh()
 	t.Cleanup(free)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 24, 20))
@@ -37,7 +37,7 @@ func mainMenuBackgroundFixture4A22A0(t *testing.T) (*Client, *gui.Window, *noxim
 	d.SetClipRect(pix.Rect)
 	d.SetClipRect2(image.Rect(0, 0, 23, 19))
 	d.SetColor2(noxcolor.RGBA5551(0x001f))
-	g := gui.New(r)
+	g := gui.NewHigh(r)
 	t.Cleanup(g.DestroyAll)
 	parent := g.NewWindowRaw(nil, gui.StatusEnabled, 5, 7, 18, 12, nil)
 	win := g.NewWindowRaw(parent, gui.StatusEnabled, 3, 4, 4, 3, nil)

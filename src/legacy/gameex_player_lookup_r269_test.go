@@ -44,7 +44,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 					t.Fatal("GameEx parser1 still exports a 32-bit team-pointer output")
 				}
 			}
-			s := server.New(nil, nil, strman.New())
+			s := server.NewHigh(nil, nil, strman.New())
 			defer s.Close()
 			previous, previousFlags := GetServer, noxflags.GetGame()
 			GetServer = func() Server { return &netClientSendTestServer{srv: s} }

@@ -22,7 +22,7 @@ import (
 // PlayerSetState, DamageClear and UnitSetHP are production implementations.
 // No test callback supplies HP, animation state or hit attribution.
 func TestDefaultDamagePlayerZapRayNative4E0B30HPAndHurt(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

@@ -42,7 +42,7 @@ func TestSpriteDrawPredicatesOriginal4756E0(t *testing.T) {
 		"nil": nil, "static": Get_nox_thing_static_draw(), "random": Get_nox_thing_static_random_draw(),
 		"other1": Get_nox_thing_animate_draw(), "other2": Get_nox_thing_animate_state_draw(),
 	}
-	guard, free := alloc.New(struct {
+	guard, free := alloc.NewHigh(struct {
 		Before   [4]uint64
 		Drawable client.Drawable
 		After    [4]uint64

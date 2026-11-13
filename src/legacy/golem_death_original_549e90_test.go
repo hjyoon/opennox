@@ -118,8 +118,15 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 		t.Fatal("C fixture must exceed4GiB")
 	}
 	offsets := [8]int{0x1000, 0x2000, 0x3000, 0x4000, 0x5000, 0x6000, 0x9000, 0xa000}
+	invalidNative := originalInvalidNativePointer32(t)
 	ptr := func(n int) unsafe.Pointer {
 		if n < 0 {
+			if invalidNative != nil {
+				if n == -1 {
+					return nil
+				}
+				return invalidNative
+			}
 			return golemOriginalBad549E90(n)
 		}
 		return unsafe.Add(base, offsets[n])
@@ -178,6 +185,19 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 	state := server.GolemDeathState549E90{Index: &g.Index, Divisor: divisor}
 	fps, coop := in.FPS, in.Coop
 	slotSize := int(unsafe.Sizeof(uintptr(0)))
+	invalidName := originalInvalidNativePointer32(t)
+	nameAt := func(id int) unsafe.Pointer {
+		if invalidNative != nil && id < 0 {
+			if id == -3 {
+				return invalidName
+			}
+			return ptr(id)
+		}
+		if id == -3 {
+			return golemOriginalBadName549E90()
+		}
+		return golemOriginalName549E90(id)
+	}
 	makeTable := func(ids []int) (unsafe.Pointer, []byte, []byte, func()) {
 		address, release := alloc.MallocHigh(uintptr((len(ids) + 4) * slotSize))
 		data := unsafe.Slice((*byte)(address), (len(ids)+4)*slotSize)
@@ -185,10 +205,7 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 			data[i] = 0x96
 		}
 		for i, id := range ids {
-			value := golemOriginalName549E90(id)
-			if id == -3 {
-				value = golemOriginalBadName549E90()
-			}
+			value := nameAt(id)
 			at := (i + 2) * slotSize
 			if slotSize == 4 {
 				binary.LittleEndian.PutUint32(data[at:], uint32(uintptr(value)))
@@ -227,7 +244,7 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 		return string(raw[:end])
 	}
 	tableWrite := func(address unsafe.Pointer, data, expected []byte, index, name int) {
-		value := golemOriginalName549E90(name)
+		value := nameAt(name)
 		at := int(uintptr(golemOriginalSlotAddress549E90(address, int32(index))) - uintptr(unsafe.Pointer(&data[0])))
 		if slotSize == 4 {
 			binary.LittleEndian.PutUint32(data[at:], uint32(uintptr(value)))

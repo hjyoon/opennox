@@ -20,7 +20,7 @@ func TestMapTransitionPlayerInitRoot4FC6D0BindsExactStateAndUnitGates(t *testing
 		{name: "noncanonical states", initState: -1, entryState: 2},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			base := server.New(nil, nil, strman.New())
+			base := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(base.Close)
 			base.SetMapInitState4FC570(tc.initState)
 			base.SetMapEntryState4FC580(tc.entryState)

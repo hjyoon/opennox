@@ -14,7 +14,7 @@ import (
 
 func initMapgenReaderHandles502B10(t *testing.T) {
 	t.Helper()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 }
 

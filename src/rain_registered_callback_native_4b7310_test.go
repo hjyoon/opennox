@@ -79,9 +79,9 @@ func registeredRainTypes4B7310(t *testing.T, c *Client) {
 		}
 		raw = append(raw, make([]byte, 8)...)
 		raw = append(raw, 0)
-		buf, _ := alloc.CloneSlice(raw)
+		buf, _ := alloc.CloneSliceHigh(raw)
 		f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
-		scratch, freeScratch := alloc.Make([]byte{}, 256)
+		scratch, freeScratch := alloc.MakeHigh([]byte{}, 256)
 		err := c.Things.ReadType(f, scratch)
 		remaining := len(f.Data())
 		freeScratch()
@@ -147,7 +147,7 @@ func testRegisteredRainChild4B7310(t *testing.T, name string) {
 		t.Fatal("unknown frozen rain case")
 	}
 	kind, style, _ := strings.Cut(name, "/")
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	frame := uint32(100)
 	if style == "wrap" {
@@ -155,7 +155,7 @@ func testRegisteredRainChild4B7310(t *testing.T, name string) {
 	}
 	s.SetFrame(frame)
 	s.Rand.Logic.Reset(93)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(16)
@@ -164,7 +164,7 @@ func testRegisteredRainChild4B7310(t *testing.T, name string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 144, 144))
@@ -183,7 +183,7 @@ func testRegisteredRainChild4B7310(t *testing.T, name string) {
 	registeredRainTypes4B7310(t, c)
 	beforeTypes := make(map[*client.ObjectType][]byte)
 	c.Things.Each(func(p *client.ObjectType) { beforeTypes[p] = registeredEffectBytes4B7540(p) })
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World, vp.Screen = image.Rect(100, 200, 228, 328), image.Rect(8, 9, 136, 137)
 	vp.Size = pix.Size()

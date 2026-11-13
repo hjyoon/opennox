@@ -102,7 +102,7 @@ func TestPlayerHandleElimDeath54D7A0CgoNativeTeamEntry(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	var packets [][4]uint32
 	srv.NetSendPacketXxx = func(recipient int, data []byte, related *server.Object, remove, sequence int) int {
 		if related != nil || remove != 1 || sequence != 1 {

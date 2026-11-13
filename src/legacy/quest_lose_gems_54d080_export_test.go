@@ -21,7 +21,7 @@ func (s *questLoseGemsLegacyServer54D080) S() *server.Server                 { r
 func (s *questLoseGemsLegacyServer54D080) DelayedDelete(item *server.Object) { s.delete(item) }
 
 func TestQuestLoseGems54D080NativeCGoRoundTripAndLiveGoldBinding(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	outer := &questLoseGemsLegacyServer54D080{native: s}
 	oldServer := GetServer

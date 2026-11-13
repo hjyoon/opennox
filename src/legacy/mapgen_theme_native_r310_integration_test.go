@@ -47,7 +47,7 @@ func TestMapgenThemeNativeEncryptedBinfileR310(t *testing.T) {
 	oldFiles := files.byHandle
 	files.byHandle = make(map[unsafe.Pointer]*binfile.File)
 	files.Unlock()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(func() {
 		files.Lock()
 		owned := files.byHandle

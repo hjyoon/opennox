@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,12 +29,16 @@ typedef struct nox_test_mapgen_rename_503230_result {
 static nox_test_mapgen_rename_503230_result nox_test_mapgen_rename_503230(
 	const char* source, const char* directory, const char* old_name, const char* new_name) {
 	nox_test_mapgen_rename_503230_result out = {0};
-	char first[0x800] = {0};
-	char second[0x800] = {0};
-	char records[0x26000] = {0};
-	if (!source || !directory || !old_name || !new_name || strlen(source) >= sizeof(first) ||
-		strlen(directory) >= sizeof(first)) {
+	char* first = nox_native_fixture_calloc_high(1, 0x800);
+	char* second = nox_native_fixture_calloc_high(1, 0x800);
+	char* records = nox_native_fixture_calloc_high(1, 0x26000);
+	if (!first || !second || !records) abort();
+	if (!source || !directory || !old_name || !new_name || strlen(source) >= (0x800) ||
+		strlen(directory) >= (0x800)) {
 		out.result = -1;
+		nox_native_fixture_free_high(records);
+		nox_native_fixture_free_high(second);
+		nox_native_fixture_free_high(first);
 		return out;
 	}
 	char* directory_buffer = getMemAt(0x973F18, 42152);
@@ -72,6 +77,9 @@ static nox_test_mapgen_rename_503230_result nox_test_mapgen_rename_503230(
 	dword_5d4594_1599596 = old_count;
 	nox_file_8 = old_file;
 	memcpy(directory_buffer, old_directory, sizeof(old_directory));
+	nox_native_fixture_free_high(records);
+	nox_native_fixture_free_high(second);
+	nox_native_fixture_free_high(first);
 	return out;
 }
 */

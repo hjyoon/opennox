@@ -46,7 +46,7 @@ func TestElevatorPointInBoxCEntryOriginal(t *testing.T) {
 		}
 		selected++
 		t.Run(row.Input.Name, func(t *testing.T) {
-			frame, free := alloc.Make([]byte(nil), 192)
+			frame, free := alloc.MakeHigh([]byte(nil), 192)
 			t.Cleanup(free)
 			for i := range frame {
 				frame[i] = 0xa5

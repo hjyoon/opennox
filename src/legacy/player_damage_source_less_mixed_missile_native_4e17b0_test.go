@@ -61,7 +61,7 @@ func TestPlayerDamageSourceLessMixedMissileNativeDamage4E17B0(t *testing.T) {
 								var attacker *server.Object
 								weapon, _ := npcReflectLegacyObjects4E17B0(t, &pin)
 								weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = weaponClass, 0x10, nil, nil
-								modifiers, free := alloc.New(server.ModifierInitData{})
+								modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 								*modifiers = server.ModifierInitData{}
 								t.Cleanup(free)
 								weapon.InitData = unsafe.Pointer(modifiers)
@@ -221,7 +221,7 @@ func TestPlayerDamageSourceLessMixedMissileImmunityNative4E17B0(t *testing.T) {
 				var player *server.Object
 				weapon, _ := npcReflectLegacyObjects4E17B0(t, &pin)
 				weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = row.WeaponClass, 0x10, nil, nil
-				modifiers, free := alloc.New(server.ModifierInitData{})
+				modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 				*modifiers = server.ModifierInitData{}
 				t.Cleanup(free)
 				weapon.InitData = unsafe.Pointer(modifiers)
@@ -334,7 +334,7 @@ func TestPlayerDamageSourceLessMixedMissileLavaInvisibleNative4E17B0(t *testing.
 					u.Field547, u.Field546 = 99, 77
 					weapon, _ := npcReflectLegacyObjects4E17B0(t, &pin)
 					weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = class, 0x10, nil, nil
-					modifiers, free := alloc.New(server.ModifierInitData{})
+					modifiers, free := alloc.NewHigh(server.ModifierInitData{})
 					*modifiers = server.ModifierInitData{}
 					t.Cleanup(free)
 					weapon.InitData = unsafe.Pointer(modifiers)

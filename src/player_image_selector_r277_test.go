@@ -52,11 +52,11 @@ func newPlayerSelectorFixtureR277(t *testing.T, selected int, count, delay uint1
 	s.Rand.Other, s.Rand.Logic = prand.New(seed), prand.New(233)
 	f := &playerSelectorFixtureR277{c: &Client{Client: &client.Client{Server: s}, srv: &Server{Server: s}}}
 	var free func()
-	f.dr, free = alloc.New(client.Drawable{})
+	f.dr, free = alloc.NewHigh(client.Drawable{})
 	t.Cleanup(free)
-	f.dd, free = alloc.New(client.PlayerDrawData{})
+	f.dd, free = alloc.NewHigh(client.PlayerDrawData{})
 	t.Cleanup(free)
-	f.equip, free = alloc.Make([]client.PlayerEquipAnimation{}, server.PlayerAnimCnt*3)
+	f.equip, free = alloc.MakeHigh([]client.PlayerEquipAnimation{}, server.PlayerAnimCnt*3)
 	t.Cleanup(free)
 	f.dd.Size = uint32(unsafe.Sizeof(*f.dd))
 	f.dr.DrawData = unsafe.Pointer(f.dd)
@@ -76,9 +76,9 @@ func newPlayerSelectorFixtureR277(t *testing.T, selected int, count, delay uint1
 		}
 		total += int(a.Base.Cnt40) * len(playerSelectorDirsR277) * 4
 	}
-	f.images, free = alloc.Make([]noxrender.ImageHandle{}, total)
+	f.images, free = alloc.MakeHigh([]noxrender.ImageHandle{}, total)
 	t.Cleanup(free)
-	f.tokens, free = alloc.Make([]uint32{}, total)
+	f.tokens, free = alloc.MakeHigh([]uint32{}, total)
 	t.Cleanup(free)
 	pos := 0
 	for ai := range f.dd.Anim {

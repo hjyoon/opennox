@@ -67,11 +67,11 @@ func TestElevatorShaftXferNativeLayout4F54A0(t *testing.T) {
 }
 
 func TestElevatorShaftXferNativeWrite4F54A0PreservesFixedRecordAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ElevatorShaftUpdateData{})
+	data, freeData := alloc.NewHigh(server.ElevatorShaftUpdateData{})
 	defer freeData()
-	id, freeID := alloc.CString("elevator-shaft")
+	id, freeID := alloc.CStringHigh("elevator-shaft")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -227,13 +227,13 @@ func TestElevatorShaftXferNativeRead4F54A0WritesCachedRecordAndRestoresCount(t *
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ElevatorShaftUpdateData{})
+	data, freeData := alloc.NewHigh(server.ElevatorShaftUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.ElevatorShaftUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.ElevatorShaftUpdateData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.Field_0 = 0x0badcafe
 	data.Field_1 = 0x89abcdef
@@ -297,9 +297,9 @@ func TestElevatorShaftXferNativeRead4F54A0WritesCachedRecordAndRestoresCount(t *
 }
 
 func TestElevatorShaftXferExport4F54A0PreservesNativePointersAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	context, freeContext := alloc.New(uint64(0))
+	context, freeContext := alloc.NewHigh(uint64(0))
 	defer freeContext()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))

@@ -12,7 +12,6 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -21,7 +20,8 @@ func init() {
 }
 
 func parseMonsterDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []byte) error {
-	dd, _ := alloc.New(client.MonsterDrawData{})
+	high := obj.UsesHighNativeMemory()
+	dd, _ := newDrawParserRecord(high, client.MonsterDrawData{})
 	dd.Size = uint32(unsafe.Sizeof(client.MonsterDrawData{}))
 	for {
 		tok := f.ReadU32()
@@ -38,7 +38,7 @@ func parseMonsterDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []
 		if err := nox_xxx_loadVectorAnimated_44B8B0(ani, f); err != nil {
 			return err
 		}
-		if err := nox_xxx_loadVectorAnimated_44BC50(ani, f); err != nil {
+		if err := loadVectorFramesWithMemoryPolicy(ani, f, high); err != nil {
 			return err
 		}
 	}

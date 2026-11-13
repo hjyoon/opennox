@@ -73,13 +73,13 @@ func TestMoverXferNativeLayout4F5730(t *testing.T) {
 }
 
 func TestMoverXferNativeWrite4F5730UsesCachedRecordAndNativeWaypointIndexes(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.MoverUpdateData{})
+	data, freeData := alloc.NewHigh(server.MoverUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.MoverUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.MoverUpdateData{})
 	defer freeLiveData()
-	id, freeID := alloc.CString("mover")
+	id, freeID := alloc.CStringHigh("mover")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -294,13 +294,13 @@ func TestMoverXferNativeRead4F5730WritesCachedRecordAndRestoresCount(t *testing.
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.MoverUpdateData{})
+	data, freeData := alloc.NewHigh(server.MoverUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.MoverUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.MoverUpdateData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	*data = server.MoverUpdateData{
 		Field_0: 0x22, Field_1: 1.5, Field_2: 7,
@@ -380,9 +380,9 @@ func TestMoverXferNativeRead4F5730WritesCachedRecordAndRestoresCount(t *testing.
 }
 
 func TestMoverXferExport4F5730PreservesNativePointersAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	context, freeContext := alloc.New(uint64(0))
+	context, freeContext := alloc.NewHigh(uint64(0))
 	defer freeContext()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))

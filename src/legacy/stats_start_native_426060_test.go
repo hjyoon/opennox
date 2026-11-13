@@ -139,7 +139,7 @@ func TestStatsStart426060CgoEntry(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	srv.OwnIPStr = "203.0.113.250"
 	GetServer = func() Server { return &playerTrackingLegacyServer425F10{srv: srv} }
 	noxflags.ResetGame()

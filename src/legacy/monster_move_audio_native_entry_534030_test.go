@@ -54,10 +54,10 @@ func TestMonsterMoveAudioNextPublicCNative534030(t *testing.T) {
 	var sounds [2]*[32]uint32
 	for i := 0; i < 2; i++ {
 		var free func()
-		defs[i], free = alloc.New(server.MonsterDef{})
+		defs[i], free = alloc.NewHigh(server.MonsterDef{})
 		t.Cleanup(free)
 		*defs[i] = server.MonsterDef{MoveSndFrameA100: 1, MoveSndFrameB104: 2}
-		sounds[i], free = alloc.New([32]uint32{})
+		sounds[i], free = alloc.NewHigh([32]uint32{})
 		t.Cleanup(free)
 		sounds[i][18] = uint32(sound.SoundHammerMissing)
 	}

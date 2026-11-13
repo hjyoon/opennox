@@ -36,9 +36,9 @@ func TestMapReset5028E0ClearsOriginalSlotsAndPreservesLazyBuffers(t *testing.T) 
 	oldBufferA := legacy.Get_dword_5d4594_1599588()
 	oldBufferB := legacy.Get_dword_5d4594_1599592()
 
-	list, freeList := alloc.Malloc(16)
-	bufferA, freeBufferA := alloc.Malloc(2048)
-	bufferB, freeBufferB := alloc.Malloc(2048)
+	list, freeList := alloc.MallocHigh(16)
+	bufferA, freeBufferA := alloc.MallocHigh(2048)
+	bufferB, freeBufferB := alloc.MallocHigh(2048)
 	var newBufferA, newBufferB unsafe.Pointer
 	t.Cleanup(func() {
 		legacy.Set_dword_5d4594_1599480(oldIndex)

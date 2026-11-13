@@ -92,23 +92,23 @@ func TestDrawNPCPaletteMatchesUnchangedGAMEEXE(t *testing.T) {
 	previousAllyBytes := slices.Clone(allyBytes)
 	clear(allyBytes)
 	t.Cleanup(func() { copy(allyBytes, previousAllyBytes) })
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	c := &Client{Client: cl, r: NewNoxRender(r)}
 	previousClient := noxClient
 	noxClient = c
 	t.Cleanup(func() { noxClient = previousClient })
-	s.NPCs.Init()
+	s.NPCs.InitHigh()
 	npc := s.NPCs.New(0x1234)
 	if npc == nil {
 		t.Fatal("native NPC allocation failed")
@@ -119,11 +119,11 @@ func TestDrawNPCPaletteMatchesUnchangedGAMEEXE(t *testing.T) {
 	if host == nil || dr == nil || skull == nil || crown == nil {
 		t.Fatal("native drawable allocation failed")
 	}
-	dd, freeDD := alloc.New(client.PlayerDrawData{})
+	dd, freeDD := alloc.NewHigh(client.PlayerDrawData{})
 	t.Cleanup(freeDD)
-	naked, freeNaked := alloc.New(client.PlayerEquipAnimation{})
+	naked, freeNaked := alloc.NewHigh(client.PlayerEquipAnimation{})
 	t.Cleanup(freeNaked)
-	frames, freeFrames := alloc.Make([]noxrender.ImageHandle{}, 1)
+	frames, freeFrames := alloc.MakeHigh([]noxrender.ImageHandle{}, 1)
 	t.Cleanup(freeFrames)
 	dd.Size = uint32(unsafe.Sizeof(*dd))
 	naked.Size = uint32(unsafe.Sizeof(*naked))

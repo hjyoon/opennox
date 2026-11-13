@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,7 +36,8 @@ typedef struct nox_test_mapgen_stream_access_502D70_result {
 
 static nox_test_mapgen_stream_access_502D70_result nox_test_mapgen_stream_access_502D70(const char* path, const char* missing) {
 	nox_test_mapgen_stream_access_502D70_result out = {0};
-	char records[2 * 76] = {0};
+	char* records = nox_native_fixture_calloc_high(1, 2 * 76);
+	if (!records) abort();
 	uint32_t offset0 = 7, offset1 = 11;
 	float x = 1.5f, y = -2.5f;
 	memcpy(records, "Alpha", 6);
@@ -84,6 +86,7 @@ static nox_test_mapgen_stream_access_502D70_result nox_test_mapgen_stream_access
 	dword_5d4594_1599596 = old_count;
 	dword_5d4594_3835396 = old_selected;
 	nox_file_8 = old_file;
+	nox_native_fixture_free_high(records);
 	return out;
 }
 */

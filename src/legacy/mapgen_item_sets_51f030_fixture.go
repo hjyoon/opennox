@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,14 +34,14 @@ typedef struct nox_test_mapgen_item_sets_51f030_result {
 static nox_test_mapgen_item_sets_51f030_result nox_test_mapgen_item_sets_51f030(
 	const char* path, int armor) {
 	nox_test_mapgen_item_sets_51f030_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	if (!theme) {
 		return out;
 	}
 	out.theme_address = (uintptr_t)theme;
 	out.theme_token = nox_mapgenLegacyPtrRegister(theme);
 	if (!out.theme_token) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 
@@ -86,7 +87,7 @@ static nox_test_mapgen_item_sets_51f030_result nox_test_mapgen_item_sets_51f030(
 		*(uint32_t*)(theme + 1104) == 0 && *(uint32_t*)(theme + 1108) == 0 &&
 		*(uint32_t*)(theme + 1112) == 0;
 	nox_mapgenLegacyPtrForget(theme);
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 
@@ -128,6 +129,8 @@ type mapgenItemSetsResult51F030 struct {
 }
 
 func mapgenItemSetsFixture51F030(path string, armor bool) mapgenItemSetsResult51F030 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 	var carmor C.int

@@ -12,20 +12,20 @@ import (
 )
 
 func TestPlayerAbilityRuntimeTickNative4FBEE0BindsFixedMatrixAndGlobalList(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	s.abilities.s = s
 	s.Abils.Init4FB990()
 
-	warriorUnit, freeWarriorUnit := alloc.New(server.Object{})
+	warriorUnit, freeWarriorUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeWarriorUnit)
 	warrior := s.Players.ResetInd(3)
 	warrior.PlayerUnit = warriorUnit
 	warrior.Info().SetPlayerClass(player.Warrior)
 	s.Abils.SetPlayerAbilityCooldownAt(warrior.PlayerInd, server.AbilityHarpoon, 2)
 
-	wizardUnit, freeWizardUnit := alloc.New(server.Object{})
+	wizardUnit, freeWizardUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeWizardUnit)
 	wizard := s.Players.ResetInd(4)
 	wizard.PlayerUnit = wizardUnit

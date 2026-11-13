@@ -14,7 +14,7 @@ import (
 // Exercise the ordinary C equip boundary and actual dequip writer. A later
 // inventory/class change must not replace the pointer in an older cached MUD.
 func TestNPCWeaponMeleeCache53A2C0OrdinaryWritersAndOwnerLifetime(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if !srv.Objs.InitHigh(1) {
 		t.Fatal("native owner pool")

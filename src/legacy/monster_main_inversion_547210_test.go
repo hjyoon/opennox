@@ -48,9 +48,9 @@ func TestMonsterMainInversion547210ActualLegacyWrapper(t *testing.T) {
 				}
 				field := reflect.ValueOf(&srv.Spells).Elem().FieldByName("byID")
 				reflect.NewAt(field.Type(), unsafe.Pointer(field.UnsafeAddr())).Elem().Set(reflect.ValueOf(map[spell.ID]*server.SpellDef{spell.SPELL_INVERSION: def}))
-				missile, freeMissile := alloc.New(server.Object{})
+				missile, freeMissile := alloc.NewHigh(server.Object{})
 				t.Cleanup(freeMissile)
-				data, freeData := alloc.New(server.MissileUpdateData{})
+				data, freeData := alloc.NewHigh(server.MissileUpdateData{})
 				t.Cleanup(freeData)
 				*data = server.MissileUpdateData{Target: unit}
 				*missile = server.Object{ObjClass: object.ClassMissile, ObjSubClass: object.SubClass(object.MissileMagic), ObjFlags: object.FlagActive, PosVec: unit.PosVec, NewPos: unit.PosVec, UpdateData: unsafe.Pointer(data)}

@@ -39,13 +39,13 @@ func TestPlayerDamageNPCCloudPoisonNative4E17B0CRecords(t *testing.T) {
 					t.Run(fmt.Sprintf("%s/%s/immune-%t/raw-%d", name, owner, immune, raw), func(t *testing.T) {
 						v := srv.Objs.NewObject(&server.ObjectType{Damage: playerDamageMeleeCallbackNative4E17B0()})
 						a, w, proxy, armor := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-						ud, freeUD := alloc.New(server.MonsterUpdateData{})
-						npcUD, freeNPCUD := alloc.New(server.MonsterUpdateData{})
-						player, freePlayer := alloc.New(server.Player{})
-						playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
-						health, freeHealth := alloc.New(server.HealthData{})
-						armorHealth, freeArmorHealth := alloc.New(server.HealthData{})
-						armorInit, freeArmorInit := alloc.New(server.ModifierInitData{})
+						ud, freeUD := alloc.NewHigh(server.MonsterUpdateData{})
+						npcUD, freeNPCUD := alloc.NewHigh(server.MonsterUpdateData{})
+						player, freePlayer := alloc.NewHigh(server.Player{})
+						playerUD, freePlayerUD := alloc.NewHigh(server.PlayerUpdateData{})
+						health, freeHealth := alloc.NewHigh(server.HealthData{})
+						armorHealth, freeArmorHealth := alloc.NewHigh(server.HealthData{})
+						armorInit, freeArmorInit := alloc.NewHigh(server.ModifierInitData{})
 						for _, free := range []func(){freeUD, freeNPCUD, freePlayer, freePlayerUD, freeHealth, freeArmorHealth, freeArmorInit} {
 							t.Cleanup(free)
 						}

@@ -17,14 +17,14 @@ import (
 // Actual unit+176 is Shape.Circle.R; SpeedCur is the unrelated unit+544.
 // The original outputs are not calculated by a production arithmetic helper.
 func TestMonsterDodgeablesOriginalRadius547C50(t *testing.T) {
-	s := New(nil, nil, strman.New())
+	s := NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	if !s.Objs.InitHigh(1) {
 		t.Fatal("native object allocator")
 	}
 	t.Cleanup(s.Objs.FreeObjects)
 	unit := s.Objs.NewObject(&ObjectType{})
-	update, free := alloc.New(MonsterUpdateData{})
+	update, free := alloc.NewHigh(MonsterUpdateData{})
 	t.Cleanup(free)
 	unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 	unit.PosVec = types.Ptf(math.Float32frombits(1153884160), math.Float32frombits(1167323136))

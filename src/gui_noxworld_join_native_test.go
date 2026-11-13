@@ -55,10 +55,10 @@ func TestNativeNoxWorldJoin(t *testing.T) {
 }
 
 func testNativeNoxWorldJoinChild(t *testing.T, mode string) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	noxServer = &Server{Server: s}
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	noxClient = &Client{Client: &client.Client{Server: s, GUI: g}}
 	gui.MainBg = g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
@@ -146,7 +146,7 @@ func testNativeNoxWorldJoinChild(t *testing.T, mode string) {
 		}
 		entry := gui.NewEntryFieldRaw(g, root, gui.StatusEnabled, 0, 0, 40, 20, &gui.WindowData{Style: gui.StyleEntryField}, &gui.EntryFieldData{Field_1040: 64})
 		entry.SetID(4003)
-		text, free := alloc.CString16("abcdefghXYZ")
+		text, free := alloc.CString16High("abcdefghXYZ")
 		defer free()
 		entry.Func94(gui.AsWindowEvent(0x401E, uintptr(unsafe.Pointer(text)), 0))
 		nox_gui_curDialog_830224 = root

@@ -21,7 +21,7 @@ func (s *minimapBroadcastLegacyServer417470) S() *server.Server {
 }
 
 func TestMinimapBroadcast417470NativePointersPlayerSlotsAndFlags(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &minimapBroadcastLegacyServer417470{srv: srv} }

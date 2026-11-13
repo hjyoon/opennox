@@ -12,7 +12,7 @@ func TestSaveLoadConfirmRejectsUnavailableSlot(t *testing.T) {
 	t.Cleanup(func() {
 		dword_5d4594_1082864, nox_savegame_arr_1064948 = oldList, oldSlots
 	})
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	win := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
 	for _, tc := range []struct {

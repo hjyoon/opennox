@@ -149,16 +149,16 @@ func TestE2ENPCDialogRepeatRejectsMockAudio(t *testing.T) {
 }
 
 func TestE2ENPCDialogRepeatTextSnapshot(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 400, 140, nil)
 	title := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 80, 20, nil)
 	list := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 300, 100, nil)
 	title.SetID(3910)
 	list.SetID(3901)
 	title.DrawData().SetText("선장")
-	d, free := alloc.New(gui.ScrollListBoxData{})
+	d, free := alloc.NewHigh(gui.ScrollListBoxData{})
 	defer free()
-	items, freeItems := alloc.Make([]gui.ScrollListBoxItem(nil), 2)
+	items, freeItems := alloc.MakeHigh([]gui.ScrollListBoxItem(nil), 2)
 	defer freeItems()
 	defer g.DestroyAll()
 	alloc.StrCopyZero16(items[0].Text[:], "다시 듣기")

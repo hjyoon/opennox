@@ -210,7 +210,7 @@ func assertParticleMulDivState4B0020(t *testing.T, owner *partFXes, p *particleF
 }
 
 func TestParticleMulDivOriginal4B0020RealDefaultUpdates(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	for mask := 0; mask < 8; mask++ {
 		for _, bounce := range []bool{false, true} {
 			t.Run(fmt.Sprintf("mask-%d/bounce-%t", mask, bounce), func(t *testing.T) {

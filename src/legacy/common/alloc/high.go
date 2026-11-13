@@ -1,6 +1,9 @@
 package alloc
 
-import "unsafe"
+import (
+	"unicode/utf16"
+	"unsafe"
+)
 
 // MallocHigh allocates zeroed foreign memory for fixtures which must exercise
 // pointer bits above 32. Windows' non-ASLR race executables have a low C heap,
@@ -58,5 +61,12 @@ func CloneSliceHigh[T comparable](src []T) ([]T, func()) {
 func CStringHigh(s string) (*byte, func()) {
 	arr, free := MakeHigh([]byte(nil), len(s)+1)
 	copy(arr, s)
+	return &arr[0], free
+}
+
+// CString16High is CString16 with the explicit high-address fixture policy.
+func CString16High(s string) (*uint16, func()) {
+	words := utf16.Encode([]rune(s))
+	arr, free := MakeHigh(words, len(words)+1)
 	return &arr[0], free
 }

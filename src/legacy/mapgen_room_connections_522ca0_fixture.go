@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -67,7 +68,7 @@ static nox_test_mapgen_room_connections_522ca0_result nox_test_mapgen_room_conne
 	double saved_coordinate_epsilon = *coordinate_epsilon;
 	*coordinate_epsilon = 0.001;
 
-	theme = (uint8_t*)calloc(1, 0x45C);
+	theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	if (!theme) {
 		goto cleanup;
 	}
@@ -163,7 +164,7 @@ static nox_test_mapgen_room_connections_522ca0_result nox_test_mapgen_room_conne
 	}
 	out.adjust_rejected = !nox_mapgenAdjustHallNative_523A10(halls[0], (float*)neighbors[0]);
 
-	legacy_point = (float2*)calloc(1, sizeof(*legacy_point));
+	legacy_point = (float2*)nox_native_fixture_calloc_high(1, sizeof(*legacy_point));
 	if (!legacy_point) {
 		goto cleanup;
 	}
@@ -183,7 +184,7 @@ static nox_test_mapgen_room_connections_522ca0_result nox_test_mapgen_room_conne
 	out.legacy_center_point[1] = legacy_point->field_4;
 
 	for (int i = 0; i < 2; ++i) {
-		waypoints[i] = (nox_waypoint_t*)calloc(1, sizeof(*waypoints[i]));
+		waypoints[i] = (nox_waypoint_t*)nox_native_fixture_calloc_high(1, sizeof(*waypoints[i]));
 		if (!waypoints[i]) {
 			goto cleanup;
 		}
@@ -231,17 +232,17 @@ cleanup:
 		}
 		if (waypoints[i]) {
 			nox_mapgenLegacyPtrForget(waypoints[i]);
-			free(waypoints[i]);
+			nox_native_fixture_free_high(waypoints[i]);
 		}
 	}
 	if (legacy_point) {
 		nox_mapgenLegacyPtrForget(legacy_point);
-		free(legacy_point);
+		nox_native_fixture_free_high(legacy_point);
 	}
 	sub_520F80();
 	if (theme) {
 		nox_mapgenLegacyPtrForget(theme);
-		free(theme);
+		nox_native_fixture_free_high(theme);
 	}
 	out.cleanup_head_is_null = nox_xxx_mapGenGetTopRoom_521710() == NULL;
 	return out;
@@ -295,6 +296,8 @@ type mapgenRoomConnectionsResult522CA0 struct {
 }
 
 func mapgenRoomConnectionsFixture522CA0() mapgenRoomConnectionsResult522CA0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_room_connections_522ca0()
 	var out mapgenRoomConnectionsResult522CA0
 	out.themeAddress = uintptr(got.theme_address)

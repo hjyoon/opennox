@@ -15,7 +15,6 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -24,7 +23,8 @@ func init() {
 }
 
 func parsePlayerDraw(obj *client.ObjectType, f *binfile.MemFile, str string, buf []byte) error {
-	dd, _ := alloc.New(client.PlayerDrawData{})
+	high := obj.UsesHighNativeMemory()
+	dd, _ := newDrawParserRecord(high, client.PlayerDrawData{})
 	dd.Size = uint32(unsafe.Sizeof(client.PlayerDrawData{}))
 	tok := f.ReadU32()
 	if tok == 0x454E4420 { // "END "
@@ -53,21 +53,21 @@ loop:
 			}
 			attr, _ = f.ReadString8()
 			if attr == "NAKED" {
-				p, _ := alloc.New(client.PlayerEquipAnimation{})
+				p, _ := newDrawParserRecord(high, client.PlayerEquipAnimation{})
 				panim.Naked = p
-				if err := parsePlayerEquipAnim(p, int(panim.Base.Cnt40), f); err != nil {
+				if err := parsePlayerEquipAnimWithMemoryPolicy(p, int(panim.Base.Cnt40), f, high); err != nil {
 					return err
 				}
 			} else if ind := slices.Index(server.PlayerArmorNames[:], attr); ind >= 0 {
-				p, _ := alloc.New(client.PlayerEquipAnimation{})
+				p, _ := newDrawParserRecord(high, client.PlayerEquipAnimation{})
 				panim.Armor[ind] = p
-				if err := parsePlayerEquipAnim(p, int(panim.Base.Cnt40), f); err != nil {
+				if err := parsePlayerEquipAnimWithMemoryPolicy(p, int(panim.Base.Cnt40), f, high); err != nil {
 					return err
 				}
 			} else if ind = slices.Index(server.PlayerWeaponNames[:], attr); ind >= 0 {
-				p, _ := alloc.New(client.PlayerEquipAnimation{})
+				p, _ := newDrawParserRecord(high, client.PlayerEquipAnimation{})
 				panim.Weapon[ind] = p
-				if err := parsePlayerEquipAnim(p, int(panim.Base.Cnt40), f); err != nil {
+				if err := parsePlayerEquipAnimWithMemoryPolicy(p, int(panim.Base.Cnt40), f, high); err != nil {
 					return err
 				}
 			} else {
@@ -78,13 +78,17 @@ loop:
 }
 
 func parsePlayerEquipAnim(ani *client.PlayerEquipAnimation, cnt int, f *binfile.MemFile) error {
+	return parsePlayerEquipAnimWithMemoryPolicy(ani, cnt, f, false)
+}
+
+func parsePlayerEquipAnimWithMemoryPolicy(ani *client.PlayerEquipAnimation, cnt int, f *binfile.MemFile, high bool) error {
 	ani.Size = uint32(unsafe.Sizeof(client.PlayerEquipAnimation{}))
 	for i := 0; i < 8; i++ {
 		k := i
 		if i >= 4 {
 			k = i + 1
 		}
-		arr, _ := alloc.Make([]noxrender.ImageHandle{}, cnt)
+		arr, _ := makeDrawParserFrames(high, cnt)
 		ani.Frames[k] = &arr[0]
 		for j := 0; j < cnt; j++ {
 			ind := int(f.ReadI32())

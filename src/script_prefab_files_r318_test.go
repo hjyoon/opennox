@@ -77,7 +77,7 @@ func TestScriptPrefabFilesR318(t *testing.T) {
 	}
 
 	root := t.TempDir()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	datapath.SetData(root)
 	noxflags.ResetGame()
@@ -164,11 +164,11 @@ func TestScriptPrefabFilesR318(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			ca, fa := alloc.CString(a)
+			ca, fa := alloc.CStringHigh(a)
 			defer fa()
-			cb, fb := alloc.CString(b)
+			cb, fb := alloc.CStringHigh(b)
 			defer fb()
-			cdst, fdst := alloc.CString(dst)
+			cdst, fdst := alloc.CStringHigh(dst)
 			defer fdst()
 			if result := nox_script_readWriteZzz_541670(ca, cb, cdst); result != 1 {
 				t.Fatalf("actual merge returned %d", result)

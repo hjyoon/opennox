@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,8 +34,9 @@ _Static_assert(_Generic(&sub_502AF0, nox_mapgen_get_name_502A90_fn: 1, default: 
 	"the second mapgen name getter must return a native pointer");
 
 static int nox_test_mapgen_buffers_502A20(uintptr_t* first_address, uintptr_t* second_address) {
-	char first[2048] = {0};
-	char second[2048] = {0};
+	char* first = nox_native_fixture_calloc_high(1, 2048);
+	char* second = nox_native_fixture_calloc_high(1, 2048);
+	if (!first || !second) abort();
 	char long_name[2049];
 	void* old_first = dword_5d4594_1599588;
 	void* old_second = dword_5d4594_1599592;
@@ -85,6 +87,8 @@ static int nox_test_mapgen_buffers_502A20(uintptr_t* first_address, uintptr_t* s
 	dword_5d4594_1599592 = old_second;
 	dword_5d4594_1599596 = old_count;
 	dword_5d4594_3835396 = old_selected;
+	nox_native_fixture_free_high(second);
+	nox_native_fixture_free_high(first);
 	return ok;
 }
 */

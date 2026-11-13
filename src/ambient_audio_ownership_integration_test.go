@@ -45,7 +45,7 @@ func TestNativeAmbientVoiceOwnership45A9B0(t *testing.T) {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	driver := ail.WaveOutOpen()
 	if driver == 0 {

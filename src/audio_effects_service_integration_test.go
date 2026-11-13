@@ -66,7 +66,7 @@ func TestNativeAudioEffectsLiveServiceChild(t *testing.T) {
 	previousTicks, ticks := timer.PlatformTicks, uint64(0)
 	timer.PlatformTicks = func() uint64 { return ticks }
 	t.Cleanup(func() { timer.PlatformTicks = previousTicks })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	t.Cleanup(sub_43E9F0)
 	driver := ail.WaveOutOpen()
@@ -129,7 +129,7 @@ func TestNativeAudioEffectsLiveServiceChild(t *testing.T) {
 	}
 	foreign.LoadBuffer(uint32(ready), entry.data)
 	foreignSource := openal.Source(*foreign.GetSource())
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	previousClient := noxClient
 	noxClient = &Client{Client: &client.Client{GUI: g}}

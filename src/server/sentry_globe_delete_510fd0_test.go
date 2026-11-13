@@ -21,7 +21,7 @@ func TestSentryGlobeFreeObject510FD0UnlinksBeforeRelease(t *testing.T) {
 	for _, enabled := range []bool{false, true} {
 		for _, position := range []string{"only", "head", "middle", "tail", "outside", "reset"} {
 			t.Run(fmt.Sprintf("enabled=%t/%s", enabled, position), func(t *testing.T) {
-				s := New(nil, nil, strman.New())
+				s := NewHigh(nil, nil, strman.New())
 				t.Cleanup(s.Close)
 				if !s.Objs.InitHigh(4) {
 					t.Fatal("object allocator initialization failed")
@@ -37,7 +37,7 @@ func TestSentryGlobeFreeObject510FD0UnlinksBeforeRelease(t *testing.T) {
 
 				var linked []*Object
 				for i := 0; i < 3; i++ {
-					data, freeData := alloc.New(SentryUpdateData{Field4: 0x3f800000})
+					data, freeData := alloc.NewHigh(SentryUpdateData{Field4: 0x3f800000})
 					t.Cleanup(freeData)
 					obj := s.Objs.alloc.NewObject()
 					*obj = Object{serverHandle: s.handle, NetCode: uint32(i + 1),

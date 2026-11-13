@@ -79,7 +79,7 @@ func TestDefaultDamageMeleeMixedMissileOriginalOrdering4E0B30(t *testing.T) {
 				}
 			}
 			a.PrevPos = types.Ptf(-33, -44)
-			mods, free := alloc.New(ModifierInitData{})
+			mods, free := alloc.NewHigh(ModifierInitData{})
 			*mods = ModifierInitData{}
 			t.Cleanup(free)
 			w := &Object{ObjClass: object.ClassMissile | object.ClassWeapon, ObjSubClass: row.WeaponSubclass, TypeInd: 73, InitData: unsafe.Pointer(mods), ObjOwner: a, PrevPos: types.Ptf(32.5, -18.25)}

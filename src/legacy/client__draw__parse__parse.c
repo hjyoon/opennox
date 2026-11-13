@@ -1,10 +1,11 @@
+#include "draw_allocation.h"
 #include "client__draw__parse__parse.h"
 #include "GAME1_2.h"
 #include "operators.h"
 
 //----- (0044C000) --------------------------------------------------------
 nox_static_random_draw_data_t* nox_xxx_spriteLoadStaticRandomData_44C000(char* attr_value, nox_memfile* f) {
-	nox_static_random_draw_data_t* data = calloc(1, sizeof(*data));
+	nox_static_random_draw_data_t* data = nox_draw_memory_calloc(1, sizeof(*data));
 	if (!data) {
 		return NULL;
 	}
@@ -13,9 +14,9 @@ nox_static_random_draw_data_t* nox_xxx_spriteLoadStaticRandomData_44C000(char* a
 	if (data->count == 0) {
 		return data;
 	}
-	data->images = calloc(data->count, sizeof(*data->images));
+	data->images = nox_draw_memory_calloc(data->count, sizeof(*data->images));
 	if (!data->images) {
-		free(data);
+		nox_draw_memory_free(data);
 		return NULL;
 	}
 	for (int i = 0; i < data->count; i++) {
@@ -69,7 +70,7 @@ int nox_xxx_loadVectorAnimated_44BC50(int a1, nox_memfile* f) {
 	while (1) {
 		v13 = v2 >= 16 ? v2 + 4 : v2;
 		v3 = a1;
-		v4 = calloc(*(short*)(a1 + 40), 4);
+		v4 = nox_draw_memory_calloc(*(short*)(a1 + 40), 4);
 		*(uint32_t*)(v13 + a1 + 4) = v4;
 		if (!v4) {
 			break;

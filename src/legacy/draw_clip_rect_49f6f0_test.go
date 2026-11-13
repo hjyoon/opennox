@@ -36,7 +36,7 @@ func TestDrawClipRect49F6F0CEntry(t *testing.T) {
 	} {
 		for _, enabled := range []bool{false, true} {
 			t.Run(tc.name+map[bool]string{false: "/disabled", true: "/enabled"}[enabled], func(t *testing.T) {
-				data, free := noxrender.NewRenderData()
+				data, free := noxrender.NewRenderDataHigh()
 				defer free()
 				if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(data.C()) <= 0xFFFFFFFF {
 					t.Fatal("fixture must exercise a C-owned pointer above 4 GiB")
@@ -69,7 +69,7 @@ func TestDrawClipRect49F6F0CEntry(t *testing.T) {
 }
 
 func TestDrawClipRect49F6F0MinimapPixels(t *testing.T) {
-	data, free := noxrender.NewRenderData()
+	data, free := noxrender.NewRenderDataHigh()
 	defer free()
 	bounds := image.Rect(0, 0, 320, 240)
 	data.SetRect3(bounds)

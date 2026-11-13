@@ -115,7 +115,7 @@ func r284LinkedChatChild(t *testing.T, index int) {
 	oldData := datapath.Data()
 	datapath.SetData(".")
 	t.Cleanup(func() { datapath.SetData(oldData) })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	c, _, draw := actualVideoRender200(t)
 	if err := c.r.GetFonts().Load(1); err != nil {
@@ -168,7 +168,7 @@ func r284LinkedChatChild(t *testing.T, index int) {
 	beforeDR, beforeViewport := *dr, *viewport
 	beforeFrame := c.Server.Frame()
 	logic, other := c.Server.Rand.Logic.Index(), c.Server.Rand.Other.Index()
-	pool := alloc.NewClass("linked-chat-r284", legacy.ChatBubbleSize(), 2)
+	pool := alloc.NewClassHigh("linked-chat-r284", legacy.ChatBubbleSize(), 2)
 	legacy.Set_nox_alloc_chat_1197364(pool.UPtr())
 	t.Cleanup(func() {
 		legacy.ResetChatBubbles()

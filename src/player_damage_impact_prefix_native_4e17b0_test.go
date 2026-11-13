@@ -21,7 +21,7 @@ import (
 // PlayerDamage dispatcher, ObserveClear/status/CameraUnlock and DamageClear/HP
 // bindings are real. No test callback writes the resulting HP or attribution.
 func TestPlayerDamageImpactPrefixNative4E17B0(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

@@ -21,14 +21,14 @@ func TestMonsterPopAttacksProduction5471B0(t *testing.T) {
 			for index := -1; index < 24; index++ {
 				for _, action := range []uint32{16, 17, 18, 19, 20, 25, 26, 27, 28} {
 					t.Run(fmt.Sprintf("%d/%d", index, action), func(t *testing.T) {
-						s := server.New(nil, nil, strman.New())
+						s := server.NewHigh(nil, nil, strman.New())
 						t.Cleanup(s.Close)
 						if !s.Objs.InitHigh(1) {
 							t.Fatal("native object allocator")
 						}
 						t.Cleanup(s.Objs.FreeObjects)
 						unit := s.Objs.NewObject(&server.ObjectType{})
-						update, free := alloc.New(server.MonsterUpdateData{})
+						update, free := alloc.NewHigh(server.MonsterUpdateData{})
 						t.Cleanup(free)
 						unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 						s.SetFrame(100)

@@ -122,6 +122,17 @@ func (c *clientDrawables) init(cli *Client) {
 
 func (c *clientDrawables) Init(cnt int) {
 	c.Alloc = alloc.NewClassT("drawableClass", Drawable{}, cnt)
+	c.initAllocator()
+}
+
+// InitHigh selects high foreign addresses for drawable pointer fixtures.
+// Ordinary Init continues to allocate its native records on the C heap.
+func (c *clientDrawables) InitHigh(cnt int) {
+	c.Alloc = alloc.NewClassTHigh("drawableClass", Drawable{}, cnt)
+	c.initAllocator()
+}
+
+func (c *clientDrawables) initAllocator() {
 	c.initIndex2D()
 	c.Ext.init(c)
 }

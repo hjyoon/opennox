@@ -26,7 +26,7 @@ func monsterMainBlockLegacyFixture547210(t *testing.T) (*server.Server, *server.
 		noxflags.SetGame(oldFlags)
 	})
 	srv.Map.Init()
-	if srv.Walls.Init() == 0 {
+	if srv.Walls.InitHigh() == 0 {
 		t.Fatal("cannot initialize native empty wall map")
 	}
 	t.Cleanup(srv.Walls.Free)

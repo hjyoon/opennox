@@ -63,6 +63,20 @@ func TestHighFixtureTypedFramesAndClassOwnership(t *testing.T) {
 	if *value != 0 {
 		t.Fatal("typed fixture was not zeroed")
 	}
+	ordinaryText, freeOrdinaryText := CString16("ordinary")
+	defer freeOrdinaryText()
+	if allocReleases[unsafe.Pointer(ordinaryText)] != nil {
+		t.Fatal("ordinary UTF16 allocation inherited the fixture policy")
+	}
+	text, freeText := CString16High("native 한글 😀")
+	requireFixtureAddress(t, unsafe.Pointer(text))
+	if GoString16(text) != "native 한글 😀" || GoString16(ordinaryText) != "ordinary" {
+		t.Fatal("UTF16 fixture lost text or modified another allocation")
+	}
+	freeText()
+	if _, ok := allocs[unsafe.Pointer(text)]; ok {
+		t.Fatal("UTF16 fixture ownership remained registered after release")
+	}
 	pool := NewClassHigh("high-fixture-ownership", 32, 1)
 	pool.dynamic.enabled = true
 	a, b := pool.NewObject(), pool.NewObject()

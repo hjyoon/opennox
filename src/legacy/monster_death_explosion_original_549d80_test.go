@@ -191,9 +191,20 @@ func monsterDeathRunOriginal549D80(t *testing.T, in monsterDeathInput549D80, mod
 		}
 		return
 	}
-	bad := monsterDeathOriginalBadObject549D80(-2)
+	var bad *server.Object
+	if invalidNative := originalInvalidNativePointer32(t); invalidNative != nil {
+		bad = (*server.Object)(invalidNative)
+	} else {
+		bad = monsterDeathOriginalBadObject549D80(-2)
+	}
 	at := func(role int) *server.Object {
 		if role < 0 {
+			if unsafe.Sizeof(uintptr(0)) == 4 {
+				if role == -1 {
+					return nil
+				}
+				return bad
+			}
 			return monsterDeathOriginalBadObject549D80(role)
 		}
 		return objects[role]

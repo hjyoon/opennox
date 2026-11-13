@@ -18,7 +18,7 @@ import (
 )
 
 func TestGameExPacketBoundsR270(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	defer s.Close()
 	previous, previousFlags := noxServer, *legacy.Get_gameex_flags_ptr()
 	previousGame := noxflags.GetGame()

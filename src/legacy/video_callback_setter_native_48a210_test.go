@@ -89,7 +89,7 @@ func TestVideoCallbackSetterNativeDeclaration48A210(t *testing.T) {
 }
 
 func TestVideoCallbackSetterNativeStorage48A210(t *testing.T) {
-	owned, free := alloc.Make([]byte{}, 64)
+	owned, free := alloc.MakeHigh([]byte{}, 64)
 	defer free()
 	data := unsafe.Pointer(&owned[32])
 	callback := Get_sub_47FCE0()
@@ -143,7 +143,7 @@ func TestVideoCallbackSetterNativeStorage48A210(t *testing.T) {
 
 func TestVideoCallbackSetterRealConsumer48A210(t *testing.T) {
 	original := loadVideoCallbackOriginal48A210(t)
-	descriptor, free := alloc.Make([]uint32{}, 35)
+	descriptor, free := alloc.MakeHigh([]uint32{}, 35)
 	defer free()
 	const base, offset = uintptr(0x5D4594), uintptr(1193504)
 	slot := memmap.PtrPtr(base, offset)

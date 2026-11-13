@@ -8,7 +8,7 @@ import (
 
 func TestBreakableWallRetainsNativeWallPointer(t *testing.T) {
 	walls := serverWalls{}
-	wl, freeWall := alloc.New(Wall{})
+	wl, freeWall := alloc.NewHigh(Wall{})
 	defer freeWall()
 	walls.AddBreakable(wl)
 	defer walls.ClearBreakable()

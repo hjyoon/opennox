@@ -215,8 +215,8 @@ func logStackRead238(t *testing.T, payload []byte, crc uint32) {
 
 func TestMonsterAIStackItems238(t *testing.T) {
 	setupStackMetadata238(t)
-	obj, freeObject := alloc.New(server.Object{ScriptIDVal: 0x11223344})
-	wp, freeWaypoint := alloc.New(server.Waypoint{Index: 0x55667788})
+	obj, freeObject := alloc.NewHigh(server.Object{ScriptIDVal: 0x11223344})
+	wp, freeWaypoint := alloc.NewHigh(server.Waypoint{Index: 0x55667788})
 	// alloc.New's value specifies only the allocation's type and size.
 	obj.ScriptIDVal = 0x11223344
 	wp.Index = 0x55667788

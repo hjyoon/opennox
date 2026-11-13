@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	smu8     sync.RWMutex
-	strings8 = make(map[string]*byte)
+	smu8         sync.RWMutex
+	strings8     = make(map[string]*byte)
+	strings8High = make(map[string]*byte)
 )
 
 // FreeStrings frees string constants created by InternCString and InternCString16.
@@ -22,7 +23,11 @@ func freeIntern8() {
 	for _, v := range strings8 {
 		Free(v)
 	}
+	for _, v := range strings8High {
+		Free(v)
+	}
 	strings8 = make(map[string]*byte)
+	strings8High = make(map[string]*byte)
 }
 
 // CString is similar to C.CString, but with portable return type.
@@ -52,6 +57,25 @@ func InternCString(s string) *byte {
 	}
 	p, _ = CString(s)
 	strings8[s] = p
+	return p
+}
+
+// InternCStringHigh maintains a separate high-address foreign owner for native
+// fixtures. Ordinary interned strings retain their allocator and identity.
+// Like InternCString, its pointer is released only by FreeStrings.
+func InternCStringHigh(s string) *byte {
+	smu8.RLock()
+	p := strings8High[s]
+	smu8.RUnlock()
+	if p != nil {
+		return p
+	}
+	smu8.Lock()
+	defer smu8.Unlock()
+	if p = strings8High[s]; p == nil {
+		p, _ = CStringHigh(s)
+		strings8High[s] = p
+	}
 	return p
 }
 

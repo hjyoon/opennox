@@ -80,11 +80,11 @@ func TestDefaultDamageInitializedWandOriginalOrdering4E0B30(t *testing.T) {
 				}
 			}
 			a.PrevPos = types.Ptf(-33, -44)
-			mods, free := alloc.New(ModifierInitData{})
+			mods, free := alloc.NewHigh(ModifierInitData{})
 			*mods = ModifierInitData{}
 			t.Cleanup(free)
 			w := &Object{ObjClass: object.ClassWand, ObjSubClass: row.WeaponSubclass, TypeInd: 73, InitData: unsafe.Pointer(mods), ObjOwner: a, PrevPos: types.Ptf(32.5, -18.25)}
-			wandUse, freeWand := alloc.New(WandUseData{})
+			wandUse, freeWand := alloc.NewHigh(WandUseData{})
 			*wandUse = WandUseData{Flags: row.WandFlags}
 			t.Cleanup(freeWand)
 			w.UseData = UseDataPtr{Ptr: unsafe.Pointer(wandUse)}

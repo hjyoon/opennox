@@ -10,7 +10,7 @@ import (
 func TestInputConfigRootCallbacksDecodeEventPayload(t *testing.T) {
 	for _, shell := range []bool{false, true} {
 		t.Run(map[bool]string{false: "in_game", true: "shell"}[shell], func(t *testing.T) {
-			g := gui.New(nil)
+			g := gui.NewHigh(nil)
 			defer g.DestroyAll()
 			root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 			sender := g.NewWindowRaw(root, gui.StatusEnabled, 10, 20, 120, 20, nil)

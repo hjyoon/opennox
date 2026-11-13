@@ -12,7 +12,7 @@ import (
 // These are unit-test callbacks, not E2E input. The headless audit must still
 // reach this procedure through the stock Options.wnd and actual mouse events.
 func TestOptionsInGame4ADF30NativeExtensionDispatch(t *testing.T) {
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	control := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 70, 12, nil)

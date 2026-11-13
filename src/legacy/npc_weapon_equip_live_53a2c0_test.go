@@ -58,7 +58,7 @@ func TestNPCWeaponEquip53A2C0ReloadsSubclassAfterCallbacks(t *testing.T) {
 		t.Fatal("frozen original equip oracle provenance or coverage differs")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
 	t.Cleanup(srv.FreeObjectTypes)

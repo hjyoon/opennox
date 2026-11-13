@@ -40,14 +40,14 @@ func TestMonsterDodgeablesProduction547C50(t *testing.T) {
 				}
 				count++
 				t.Run(row.Input.Name, func(t *testing.T) {
-					s := server.New(nil, nil, strman.New())
+					s := server.NewHigh(nil, nil, strman.New())
 					t.Cleanup(s.Close)
 					if !s.Objs.InitHigh(1) {
 						t.Fatal("native object allocator")
 					}
 					t.Cleanup(s.Objs.FreeObjects)
 					unit := s.Objs.NewObject(&server.ObjectType{})
-					update, free := alloc.New(server.MonsterUpdateData{})
+					update, free := alloc.NewHigh(server.MonsterUpdateData{})
 					t.Cleanup(free)
 					unit.ObjClass, unit.UpdateData = object.ClassMonster, unsafe.Pointer(update)
 					unit.Direction1 = server.Dir16(row.Input.Direction)

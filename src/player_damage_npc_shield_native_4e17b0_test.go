@@ -63,7 +63,7 @@ func (f *npcShieldAudioFile4E17B0) Skip(size int) {
 // owner lists, UnitSetHP, and AI pop. Every object has its allocator's server
 // handle, and all transient records are C-owned native-width allocations.
 func TestPlayerDamageNPCShieldNative4E17B0DurabilityAndBreak(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

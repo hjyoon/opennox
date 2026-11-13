@@ -22,7 +22,7 @@ const npcDialogWidthChild479B00 = "OPENNOX_TEST_NPC_DIALOG_REPEAT_WIDTH"
 
 func npcDialogTestState479B00(t *testing.T) (*gui.Window, *gui.Window, *uint32, *netlist.List) {
 	t.Helper()
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 400, 140, nil)
 	button := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 80, 20, nil)

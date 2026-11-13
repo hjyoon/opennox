@@ -17,11 +17,11 @@ import (
 )
 
 func TestIncomingQuest4DDF60CEntryPreservesNativeUpdate(t *testing.T) {
-	unit, freeUnit := alloc.New(server.Object{})
+	unit, freeUnit := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeUnit)
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	t.Cleanup(freeUpdate)
-	player, freePlayer := alloc.New(server.Player{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	t.Cleanup(freePlayer)
 	unit.UpdateData = unsafe.Pointer(update)
 	update.Player = player

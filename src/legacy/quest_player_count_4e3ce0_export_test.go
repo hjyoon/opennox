@@ -13,7 +13,7 @@ import (
 )
 
 func TestQuestPlayerCount4E3CE0CEntryNativePointersAndExactState(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer := GetServer
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: srv} }

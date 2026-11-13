@@ -36,7 +36,7 @@ func TestElevatorAudioBindingOriginal(t *testing.T) {
 		}
 		count++
 		t.Run(row.Input.Name, func(t *testing.T) {
-			p, free := alloc.New(Object{})
+			p, free := alloc.NewHigh(Object{})
 			t.Cleanup(free)
 			owner = p
 			*p = Object{Material: row.Input.Material, ObjSubClass: object.SubClass(row.Input.Subclass), PosVec: rigidPointOriginal(row.Input.Source)}

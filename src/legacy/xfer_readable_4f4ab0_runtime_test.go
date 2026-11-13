@@ -50,11 +50,11 @@ func TestReadableXferNativeLayout4F4AB0(t *testing.T) {
 }
 
 func TestReadableXferNativeWrite4F4AB0PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ReadableUseData{})
+	data, freeData := alloc.NewHigh(server.ReadableUseData{})
 	defer freeData()
-	id, freeID := alloc.CString("readable")
+	id, freeID := alloc.CStringHigh("readable")
 	defer freeID()
 
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
@@ -199,11 +199,11 @@ func TestReadableXferNativeRead4F4AB0RestoresEntryState(t *testing.T) {
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ReadableUseData{})
+	data, freeData := alloc.NewHigh(server.ReadableUseData{})
 	defer freeData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	copy(data.Text[:], "entry text")
 	data.TransientReadState = transientState

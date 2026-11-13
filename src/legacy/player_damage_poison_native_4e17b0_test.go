@@ -16,7 +16,7 @@ import (
 )
 
 func TestPlayerDamagePoisonNativeCallback4E17B0MonsterHP(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(1400)
 	oldGetServer := GetServer
@@ -37,12 +37,12 @@ func TestPlayerDamagePoisonNativeCallback4E17B0MonsterHP(t *testing.T) {
 	})
 	for _, immune := range []bool{false, true} {
 		t.Run(fmt.Sprintf("immune-%t", immune), func(t *testing.T) {
-			target, freeTarget := alloc.New(server.Object{})
+			target, freeTarget := alloc.NewHigh(server.Object{})
 			defer freeTarget()
-			update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+			update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
 			defer freeUpdate()
 			*update = server.MonsterUpdateData{Field1: math.Float32bits(0.25), Field518: math.Float32bits(0.5), Field547: 99, Field546: 91}
-			health, freeHealth := alloc.New(server.HealthData{})
+			health, freeHealth := alloc.NewHigh(server.HealthData{})
 			defer freeHealth()
 			*health = server.HealthData{Cur: 20, Max: 20, Field2: 20}
 			*target = server.Object{ObjClass: object.ClassMonster, ObjSubClass: 0x11012, Material: 0x4000,

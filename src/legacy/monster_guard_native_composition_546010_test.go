@@ -86,7 +86,7 @@ func TestMonsterGuardPublicCComposition546010(t *testing.T) {
 	head.Action = uint32(ai.ACTION_GUARD)
 	head.SetArgs(unit.PosVec, uint32(0))
 	wantActions := []ai.ActionType{}
-	first, freeFirst := alloc.New(server.Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagEnabled, PosVec: types.Ptf(340, 300)})
+	first, freeFirst := alloc.NewHigh(server.Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagEnabled, PosVec: types.Ptf(340, 300)})
 	t.Cleanup(freeFirst)
 	switch parts[0] {
 	case "fight":

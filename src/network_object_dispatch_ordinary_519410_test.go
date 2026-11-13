@@ -20,11 +20,11 @@ import (
 )
 
 func TestObjectDispatchOrdinaryBindings519410(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	base.NetList.Init()
 	t.Cleanup(base.NetList.Free)
-	if base.Walls.Init() == 0 {
+	if base.Walls.InitHigh() == 0 {
 		t.Fatal("native empty wall grid")
 	}
 	t.Cleanup(base.Walls.Free)

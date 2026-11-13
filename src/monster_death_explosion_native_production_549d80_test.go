@@ -138,7 +138,7 @@ func TestMonsterDeathExplosionActualCProduction549D80(t *testing.T) {
 	t.Cleanup(s.Objs.FreeObjects)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native empty wall map")
 	}
 	t.Cleanup(s.Walls.Free)

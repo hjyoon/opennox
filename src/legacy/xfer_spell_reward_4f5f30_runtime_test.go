@@ -55,11 +55,11 @@ func TestSpellRewardXferNativeLayout4F5F30(t *testing.T) {
 }
 
 func TestSpellRewardXferNativeWrite4F5F30PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.SpellRewardUseData{})
+	data, freeData := alloc.NewHigh(server.SpellRewardUseData{})
 	defer freeData()
-	id, freeID := alloc.CString("spell-reward")
+	id, freeID := alloc.CStringHigh("spell-reward")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -201,13 +201,13 @@ func TestSpellRewardXferNativeRead4F5F30UsesCachedRecordAndRestoresCount(t *test
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.SpellRewardUseData{})
+	data, freeData := alloc.NewHigh(server.SpellRewardUseData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.SpellRewardUseData{})
+	liveData, freeLiveData := alloc.NewHigh(server.SpellRewardUseData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.Spell = uint8(spell.SPELL_ANCHOR)
 	liveData.Spell = uint8(spell.SPELL_BURN)
@@ -275,7 +275,7 @@ func TestSpellRewardXferNativeRead4F5F30UsesCachedRecordAndRestoresCount(t *test
 }
 
 func TestSpellRewardXferExport4F5F30PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

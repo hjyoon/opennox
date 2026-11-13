@@ -45,7 +45,7 @@ func TestMapgenConditionNativeEncryptedR311(t *testing.T) {
 	oldServer := GetServer
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: srv} }
 	t.Cleanup(func() { GetServer = oldServer })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	t.Chdir(t.TempDir())
 	if err := os.Mkdir("mapgen", 0o700); err != nil {

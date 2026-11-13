@@ -72,11 +72,11 @@ func TestAbilityRewardXferRuntimeNameTable4F6240(t *testing.T) {
 }
 
 func TestAbilityRewardXferNativeWrite4F6240PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.AbilityRewardUseData{})
+	data, freeData := alloc.NewHigh(server.AbilityRewardUseData{})
 	defer freeData()
-	id, freeID := alloc.CString("ability-reward")
+	id, freeID := alloc.CStringHigh("ability-reward")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -220,13 +220,13 @@ func TestAbilityRewardXferNativeRead4F6240UsesCachedRecordAndRestoresCount(t *te
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.AbilityRewardUseData{})
+	data, freeData := alloc.NewHigh(server.AbilityRewardUseData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.AbilityRewardUseData{})
+	liveData, freeLiveData := alloc.NewHigh(server.AbilityRewardUseData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.Ability = uint8(server.AbilityBerserk)
 	liveData.Ability = uint8(server.AbilityTreadLightly)
@@ -294,7 +294,7 @@ func TestAbilityRewardXferNativeRead4F6240UsesCachedRecordAndRestoresCount(t *te
 }
 
 func TestAbilityRewardXferExport4F6240PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

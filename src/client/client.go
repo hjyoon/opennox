@@ -32,6 +32,16 @@ func getClient(h uintptr) *Client {
 }
 
 func NewClient(log *slog.Logger, pr console.Printer, s *server.Server) *Client {
+	return newClient(log, pr, s, false)
+}
+
+// NewClientHigh selects high foreign viewport and GUI storage for native
+// pointer fixtures. Ordinary NewClient and other clients retain their policy.
+func NewClientHigh(log *slog.Logger, pr console.Printer, s *server.Server) *Client {
+	return newClient(log, pr, s, true)
+}
+
+func newClient(log *slog.Logger, pr console.Printer, s *server.Server, highAddresses bool) *Client {
 	if log == nil {
 		log = noxlog.New("client").Logger
 	} else {
@@ -52,10 +62,16 @@ func NewClient(log *slog.Logger, pr console.Printer, s *server.Server) *Client {
 		return c.Conn
 	}
 	s.OnXferExt(c.handleCBORXfer)
+	c.Things.highAddresses = highAddresses
 	c.Things.init(s.Strings())
 	c.Objs.init(c)
-	c.GUI = gui.New(c.r)
-	c.vp, _ = alloc.New(noxrender.Viewport{})
+	if highAddresses {
+		c.GUI = gui.NewHigh(c.r)
+		c.vp, _ = alloc.NewHigh(noxrender.Viewport{})
+	} else {
+		c.GUI = gui.New(c.r)
+		c.vp, _ = alloc.New(noxrender.Viewport{})
+	}
 	return c
 }
 

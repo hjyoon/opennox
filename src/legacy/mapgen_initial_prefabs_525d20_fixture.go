@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -46,23 +47,23 @@ static nox_test_mapgen_initial_prefabs_525d20_result nox_test_mapgen_initial_pre
 	for (int i = 0; i < 8; ++i) {
 		nox_test_mapgen_prefabs_525d20[i] = NULL;
 	}
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	if (!theme || !nox_mapgenLegacyPtrRegister(theme)) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 	*(float*)(theme + 64) = 128.0f;
 	*(uint32_t*)(theme + 84) = (uint32_t)count;
 
 	for (int i = 0; i < count; ++i) {
-		nox_test_mapgen_prefabs_525d20[i] = (uint8_t*)calloc(1, 160);
+		nox_test_mapgen_prefabs_525d20[i] = (uint8_t*)nox_native_fixture_calloc_high(1, 160);
 		if (!nox_test_mapgen_prefabs_525d20[i]) {
 			count = i;
 			break;
 		}
 		uint32_t token = nox_mapgenLegacyPtrRegister(nox_test_mapgen_prefabs_525d20[i]);
 		if (!token) {
-			free(nox_test_mapgen_prefabs_525d20[i]);
+			nox_native_fixture_free_high(nox_test_mapgen_prefabs_525d20[i]);
 			nox_test_mapgen_prefabs_525d20[i] = NULL;
 			count = i;
 			break;
@@ -107,11 +108,11 @@ static nox_test_mapgen_initial_prefabs_525d20_result nox_test_mapgen_initial_pre
 
 	for (int i = 0; i < count; ++i) {
 		nox_mapgenLegacyPtrForget(nox_test_mapgen_prefabs_525d20[i]);
-		free(nox_test_mapgen_prefabs_525d20[i]);
+		nox_native_fixture_free_high(nox_test_mapgen_prefabs_525d20[i]);
 		nox_test_mapgen_prefabs_525d20[i] = NULL;
 	}
 	nox_mapgenLegacyPtrForget(theme);
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 */
@@ -127,6 +128,8 @@ type mapgenInitialPrefabsResult525D20 struct {
 }
 
 func mapgenInitialPrefabsFixture525D20(count int, requiredMask uint32, failAt int) mapgenInitialPrefabsResult525D20 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_initial_prefabs_525d20(C.int(count), C.uint32_t(requiredMask), C.int(failAt))
 	out := mapgenInitialPrefabsResult525D20{
 		themeAddress: uintptr(got.theme_address),

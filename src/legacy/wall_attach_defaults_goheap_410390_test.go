@@ -70,8 +70,8 @@ func waExtraWorld410390(t *testing.T) *server.Server {
 		t.Fatal("default fixture starts with nil observer")
 	}
 	previous := GetServer
-	srv := server.New(nil, nil, strman.New())
-	if srv.Walls.Init() == 0 {
+	srv := server.NewHigh(nil, nil, strman.New())
+	if srv.Walls.InitHigh() == 0 {
 		srv.Close()
 		t.Fatal("actual wall pool initialization")
 	}
@@ -97,7 +97,7 @@ func waExtraWorld410390(t *testing.T) *server.Server {
 
 func waExtraDrawable410390(t *testing.T) *client.Drawable {
 	t.Helper()
-	drawable, free := alloc.New(client.Drawable{})
+	drawable, free := alloc.NewHigh(client.Drawable{})
 	*drawable = client.Drawable{}
 	drawable.PosVec = image.Pt(31, -44)
 	drawable.Field_0, drawable.Field_1 = 0x12345678, 0xfedcba98
@@ -180,10 +180,10 @@ type waExtraForeign410390 struct {
 func waExtraForeignObjects410390(t *testing.T) waExtraForeign410390 {
 	t.Helper()
 	drawable := waExtraDrawable410390(t)
-	wall, freeWall := alloc.New(server.Wall{})
+	wall, freeWall := alloc.NewHigh(server.Wall{})
 	*wall = server.Wall{}
 	wall.Flags4, wall.Field8 = 0x80, 0xabcd
-	polygon, freePolygon := alloc.Malloc(160)
+	polygon, freePolygon := alloc.MallocHigh(160)
 	for i := range unsafe.Slice((*byte)(polygon), 160) {
 		*(*byte)(unsafe.Add(polygon, i)) = byte(i*17 + 9)
 	}
@@ -223,7 +223,7 @@ func TestWallAttachObserverControls410390(t *testing.T) {
 			ordinal++
 			grid := image.Pt(51+ordinal, 61+ordinal)
 			drawable := waExtraDrawable410390(t)
-			poison, freePoison := alloc.Malloc(160)
+			poison, freePoison := alloc.MallocHigh(160)
 			defer freePoison()
 			counts := map[uint32]int{}
 			var local unsafe.Pointer
@@ -333,7 +333,7 @@ func TestWallAttachPinnedGo410390(t *testing.T) {
 				wall := new(server.Wall)
 				freeWall := func() {}
 				if owner == "foreign-wall" {
-					wall, freeWall = alloc.New(server.Wall{})
+					wall, freeWall = alloc.NewHigh(server.Wall{})
 					*wall = server.Wall{}
 				}
 				wall.Flags4, wall.Field8 = 0x80, 0xabcd

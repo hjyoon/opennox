@@ -36,7 +36,7 @@ func TestSpellDurationNewExport4FE950UsesLiveNativeServerAndPointer(t *testing.T
 		"first":  firstServer,
 		"second": secondServer,
 	} {
-		if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
+		if got := srv.Spells.Dur.SpellCreateDurationsHigh4FE850(); got != 1 {
 			t.Fatalf("%s allocator result = %d, want canonical 1", name, got)
 		}
 		t.Cleanup(srv.Spells.Dur.SpellFreeDurations4FE880)
@@ -81,7 +81,7 @@ func TestSpellDurationNewExport4FE950FailureDoesNotConsumeID(t *testing.T) {
 	if got := spellDurationNewExportCall4FE950(); got != nil {
 		t.Fatalf("uninitialized allocator result = %p, want nil", got)
 	}
-	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
+	if got := srv.Spells.Dur.SpellCreateDurationsHigh4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want canonical 1", got)
 	}
 	t.Cleanup(srv.Spells.Dur.SpellFreeDurations4FE880)

@@ -40,7 +40,7 @@ func TestGreaterHealNextPublicEntryNativeRecordProbe52F2E0(t *testing.T) {
 		}
 		return
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)

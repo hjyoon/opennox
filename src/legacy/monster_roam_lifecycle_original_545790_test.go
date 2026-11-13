@@ -84,12 +84,12 @@ func TestMonsterRoamWaypointLifecycleOriginal545790(t *testing.T) {
 					if !row.Output.Guard {
 						t.Fatal("original guards not certified")
 					}
-					buf, free := alloc.Make([]byte{}, 0x10000)
+					buf, free := alloc.MakeHigh([]byte{}, 0x10000)
 					defer free()
 					for i := 0; i < len(buf); i += 4 {
 						binary.LittleEndian.PutUint32(buf[i:], row.Input.Seed)
 					}
-					unit, freeUnit := alloc.New(server.Object{})
+					unit, freeUnit := alloc.NewHigh(server.Object{})
 					defer freeUnit()
 					update := (*server.MonsterUpdateData)(unsafe.Pointer(&buf[0x6000]))
 					unit.ObjClass, unit.UpdateData = object.Class(row.Input.UnitClass), unsafe.Pointer(update)
@@ -109,12 +109,17 @@ func TestMonsterRoamWaypointLifecycleOriginal545790(t *testing.T) {
 							}
 						}
 					}
+					invalidNative := originalInvalidNativePointer32(t)
 					switch row.Input.UpdateKind {
 					case "mapped":
 					case "null":
 						unit.UpdateData = nil
 					case "invalid":
-						unit.UpdateData = unsafe.Pointer(uintptr(0x41000000))
+						if invalidNative != nil {
+							unit.UpdateData = invalidNative
+						} else {
+							unit.UpdateData = unsafe.Pointer(uintptr(0x41000000))
+						}
 					default:
 						t.Fatal("unknown original pointer mode", row.Input.UpdateKind)
 					}

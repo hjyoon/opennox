@@ -23,7 +23,7 @@ import (
 // Only the outgoing network transport is captured; every C-bound record and
 // link is C-owned. The original assets and object definitions are not changed.
 func TestDefaultDamagePlayerPierceNative4E0B30HPAndOwnerReport(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

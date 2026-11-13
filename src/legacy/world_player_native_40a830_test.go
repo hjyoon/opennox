@@ -332,6 +332,8 @@ func TestWorldPlayerNativeDefaultPause413A50(t *testing.T) {
 }
 
 func TestWorldPlayerNativeListsPinned410760(t *testing.T) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	for _, backend := range []string{"old", "go", "c"} {
 		t.Run(backend, func(t *testing.T) {
 			nodes := [2]*server.SecretWall{new(server.SecretWall), new(server.SecretWall)}
@@ -388,6 +390,8 @@ func TestWorldPlayerNativeListsPinned410760(t *testing.T) {
 }
 
 func TestWorldPlayerNativeArmorCallback415C00(t *testing.T) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	item := (*server.Object)(worldPlayerFixtureAlloc40A830(unsafe.Sizeof(server.Object{})))
 	attrs := (*server.ModifierInitData)(worldPlayerFixtureAlloc40A830(unsafe.Sizeof(server.ModifierInitData{})))
 	effect := (*server.ModifierEff)(worldPlayerFixtureAlloc40A830(unsafe.Sizeof(server.ModifierEff{})))
@@ -448,6 +452,8 @@ func TestWorldPlayerNativeArmorCallback415C00(t *testing.T) {
 }
 
 func TestWorldPlayerNativeTileOwnership411160(t *testing.T) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	var player server.Player
 	var object server.Object
 	var cell worldTileCell411160

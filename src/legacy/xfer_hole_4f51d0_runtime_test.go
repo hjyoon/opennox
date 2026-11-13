@@ -80,7 +80,7 @@ func TestHoleXferNativeLayout4F51D0(t *testing.T) {
 	if got := holeXferScriptContextNative4F51D0(nil); got != nil {
 		t.Errorf("nil script-data context = %p, want nil", got)
 	}
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
 	if got, want := holeXferScriptContextNative4F51D0(scriptData), unsafe.Add(scriptData, 128); got != want {
 		t.Errorf("script-data context = %p, want %p", got, want)
@@ -88,17 +88,17 @@ func TestHoleXferNativeLayout4F51D0(t *testing.T) {
 }
 
 func TestHoleXferNativeWrite4F51D0PreservesPointersAndWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.HoleCollideData{})
+	data, freeData := alloc.NewHigh(server.HoleCollideData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.HoleCollideData{})
+	liveData, freeLiveData := alloc.NewHigh(server.HoleCollideData{})
 	defer freeLiveData()
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
-	liveScriptData, freeLiveScriptData := alloc.Malloc(1024)
+	liveScriptData, freeLiveScriptData := alloc.MallocHigh(1024)
 	defer freeLiveScriptData()
-	id, freeID := alloc.CString("hole")
+	id, freeID := alloc.CStringHigh("hole")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -301,17 +301,17 @@ func TestHoleXferNativeRead4F51D0PreservesNativePointersAndEntryCaches(t *testin
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.HoleCollideData{})
+	data, freeData := alloc.NewHigh(server.HoleCollideData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.HoleCollideData{})
+	liveData, freeLiveData := alloc.NewHigh(server.HoleCollideData{})
 	defer freeLiveData()
-	scriptData, freeScriptData := alloc.Malloc(1024)
+	scriptData, freeScriptData := alloc.MallocHigh(1024)
 	defer freeScriptData()
-	liveScriptData, freeLiveScriptData := alloc.Malloc(1024)
+	liveScriptData, freeLiveScriptData := alloc.MallocHigh(1024)
 	defer freeLiveScriptData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 
 	data.Reserved22 = 0xbeef

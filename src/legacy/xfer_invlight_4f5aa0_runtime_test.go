@@ -55,9 +55,9 @@ func TestInvLightXferNativeLayout4F5AA0(t *testing.T) {
 }
 
 func TestInvLightXferNativeWrite4F5AA0UsesNativeDrawableAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	id, freeID := alloc.CString("invisible-light")
+	id, freeID := alloc.CStringHigh("invisible-light")
 	defer freeID()
 	drawable := &client.Drawable{
 		LightFlags:        0xa1b2c3d4,
@@ -255,11 +255,11 @@ func TestInvLightXferNativeRead4F5AA0AppliesToWideField189AndRestoresCount(t *te
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
-	scriptData, freeScriptData := alloc.Make([]byte(nil), 2572)
+	scriptData, freeScriptData := alloc.MakeHigh([]byte(nil), 2572)
 	defer freeScriptData()
 	for index := range scriptData {
 		scriptData[index] = 0xcc
@@ -343,7 +343,7 @@ func TestInvLightXferNativeRead4F5AA0AppliesToWideField189AndRestoresCount(t *te
 }
 
 func TestInvLightXferExport4F5AA0PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

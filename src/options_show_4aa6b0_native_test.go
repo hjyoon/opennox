@@ -16,7 +16,7 @@ import (
 func TestOptionsShow4AA6B0CEntryNativeWidgetsAndAnimation(t *testing.T) {
 	oldAnimState := gui.AnimGlobalState()
 	t.Cleanup(func() { gui.SetAnimGlobalState(oldAnimState) })
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	root.SetID(300)

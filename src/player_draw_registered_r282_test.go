@@ -176,18 +176,18 @@ func r282RunRegisteredPlayerDrawChild(t *testing.T, tc r282PlayerDrawCase) {
 	t.Helper()
 	t.Chdir(t.TempDir())
 	r282WritePlayerRLEBag(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	draw, freeDraw := noxrender.NewRenderData()
+	draw, freeDraw := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeDraw)
 	r.SetData(draw)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -200,7 +200,7 @@ func r282RunRegisteredPlayerDrawChild(t *testing.T, tc r282PlayerDrawCase) {
 	}
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := range c.tiles.lightsOutBuf {
 		c.tiles.lightsOutBuf[i] = 255
@@ -243,10 +243,10 @@ func r282RunRegisteredPlayerDrawChild(t *testing.T, tc r282PlayerDrawCase) {
 	legacy.ClientSetPlayerNetCode(10)
 	t.Cleanup(func() { legacy.ClientSetPlayerNetCode(previousNetCode) })
 
-	dd, freeDD := alloc.New(client.PlayerDrawData{})
+	dd, freeDD := alloc.NewHigh(client.PlayerDrawData{})
 	t.Cleanup(freeDD)
 	dd.Size = uint32(unsafe.Sizeof(*dd))
-	frames, freeFrames := alloc.Make([]noxrender.ImageHandle{}, 9)
+	frames, freeFrames := alloc.MakeHigh([]noxrender.ImageHandle{}, 9)
 	t.Cleanup(freeFrames)
 	for i := range frames {
 		img := r.GetBag().ImageByIndex(i)
@@ -259,7 +259,7 @@ func r282RunRegisteredPlayerDrawChild(t *testing.T, tc r282PlayerDrawCase) {
 	panim.Base = client.AnimationVector{Size: uint32(unsafe.Sizeof(panim.Base)), Cnt40: 3, Kind: client.AnimSlave}
 	var equipment [3]*client.PlayerEquipAnimation
 	for layer := range equipment {
-		eani, freeEani := alloc.New(client.PlayerEquipAnimation{})
+		eani, freeEani := alloc.NewHigh(client.PlayerEquipAnimation{})
 		t.Cleanup(freeEani)
 		eani.Size = uint32(unsafe.Sizeof(*eani))
 		for _, dir := range []int{0, 1, 2, 3, 5, 6, 7, 8} {

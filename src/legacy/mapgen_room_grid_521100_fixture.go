@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -25,7 +26,7 @@ typedef struct nox_test_mapgen_room_grid_521100_result {
 
 static nox_test_mapgen_room_grid_521100_result nox_test_mapgen_room_grid_521100(void) {
 	nox_test_mapgen_room_grid_521100_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	uint8_t* first = NULL;
 	uint8_t* second = NULL;
 	int first_linked = 0;
@@ -37,7 +38,7 @@ static nox_test_mapgen_room_grid_521100_result nox_test_mapgen_room_grid_521100(
 	*(uint32_t*)(theme + 68) = 4;
 	out.grid_initialized = sub_520EA0(theme);
 	if (!out.grid_initialized) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 
@@ -89,7 +90,7 @@ cleanup:
 		second = NULL;
 	}
 	sub_520F80();
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 */
@@ -112,6 +113,8 @@ type mapgenRoomGridResult521100 struct {
 }
 
 func mapgenRoomGridFixture521100() mapgenRoomGridResult521100 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_room_grid_521100()
 	return mapgenRoomGridResult521100{
 		themeAddress:      uintptr(got.theme_address),

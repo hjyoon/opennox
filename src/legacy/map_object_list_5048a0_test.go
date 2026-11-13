@@ -12,8 +12,8 @@ import (
 func TestMapObjectList5048A0PreservesNativePointersAndBothLinkSets(t *testing.T) {
 	oldHead := Get_dword_5d4594_1599540()
 	Set_dword_5d4594_1599540(nil)
-	first, freeFirst := alloc.New(server.Object{})
-	second, freeSecond := alloc.New(server.Object{})
+	first, freeFirst := alloc.NewHigh(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	t.Cleanup(func() {
 		for node := Get_dword_5d4594_1599540(); node != nil; {
 			next := MapObjectListNodeNext5048A0(node)

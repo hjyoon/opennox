@@ -101,9 +101,9 @@ func TestVideoModeTransitionsHeadlessChild(t *testing.T) {
 	}
 	datapath.SetData(dir)
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	defer s.Close()
 	noxServer = &Server{Server: s}
 	c, err := NewClient(nil, nil, noxServer)

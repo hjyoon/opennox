@@ -28,7 +28,7 @@ func TestMonsterMainExport547210RejectsPE32FallbackOn64Bit(t *testing.T) {
 		t.Skip("native-width fallback regression applies to 64-bit builds")
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldGetServer := GetServer
 	GetServer = func() Server { return &monsterMainLegacyServer547210{srv: srv} }

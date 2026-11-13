@@ -18,7 +18,7 @@ func TestPlayerReportSelfNative4D9900CachesQuestUpdateBeforeGoldCallback(t *test
 	old := noxflags.GetGame()
 	noxflags.SetGame(noxflags.GameModeQuest)
 	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(old) })
-	native := server.New(nil, nil, strman.New())
+	native := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(native.Close)
 	s := &Server{Server: native}
 	unit, freeUnit := alloc.NewHigh(server.Object{})

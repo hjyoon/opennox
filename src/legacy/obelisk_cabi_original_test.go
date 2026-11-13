@@ -80,7 +80,7 @@ func TestObeliskCEntryOriginal(t *testing.T) {
 	if fixture.SHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || !fixture.Unchanged || fixture.CW != 0xe3f || fixture.Contexts != 772 || fixture.Executions != 1544 || len(fixture.Rows) != 1544 || len(fixture.Faults) != 0 {
 		t.Fatal("incomplete original Obelisk fixture")
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer := GetServer
 	GetServer = func() Server { return &obeliskUpdateLegacyServer53C580{srv: srv} }

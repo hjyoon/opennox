@@ -170,7 +170,7 @@ func TestStatsEnd4264D0CgoEntry(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	GetServer = func() Server { return &playerTrackingLegacyServer425F10{srv: srv} }
 	noxflags.ResetEngine()
 	for _, flags := range []noxflags.GameFlag{0, noxflags.GameOnline, noxflags.GameModeQuest, noxflags.GameOnline | noxflags.GameModeQuest} {

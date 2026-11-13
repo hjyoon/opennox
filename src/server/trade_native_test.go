@@ -105,7 +105,7 @@ func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
 	defer freePlayer()
 	merchant, freeMerchant := alloc.NewHigh(Object{})
 	defer freeMerchant()
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(player, merchant)
 	if session.Field8 != player || session.Field12 != merchant || session.Field16 != 1 {
 		t.Fatalf("session = %+v, want native player/merchant shop session", session)
@@ -137,7 +137,7 @@ func TestQuestShopSessionCacheLifecycle50E8F0(t *testing.T) {
 	merchant2, freeMerchant2 := alloc.NewHigh(Object{})
 	defer freeMerchant2()
 
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session, reused := s.OpenShopSessionNative50E8F0(player1, merchant1, true, 7)
 	if reused || session == nil {
 		t.Fatalf("fresh Quest shop = %p, reused %t; want non-nil/false", session, reused)
@@ -189,7 +189,7 @@ func TestQuestShopSessionCacheLifecycle50E8F0(t *testing.T) {
 }
 
 func TestQuestShopSessionCacheRejectsInvalidAndClearsOnRelease50F4C0(t *testing.T) {
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(nil, nil)
 	if s.CacheQuestShopSessionNative50F4C0(-1, session) ||
 		s.CacheQuestShopSessionNative50F4C0(questShopSessionSlots50E8F0, session) ||
@@ -208,7 +208,7 @@ func TestQuestShopSessionCacheRejectsInvalidAndClearsOnRelease50F4C0(t *testing.
 }
 
 func TestNativeTradeSessionAllocation50E870LinksGoldAndReleases(t *testing.T) {
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	var allocated []*Object
 	var released []*Object
 	newGold := func() (*Object, func()) {
@@ -274,7 +274,7 @@ func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
 	merchant, freeMerchant := alloc.NewHigh(Object{})
 	defer freeMerchant()
 
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	if !s.TradeInit50E2A0() || s.tradeNative.sessions == nil {
 		t.Fatal("native trade registry was not initialized")
 	}
@@ -392,7 +392,7 @@ func TestShopItemBuyCost50E3D0(t *testing.T) {
 	session := &TradeSession{Field8: player, Field12: merchant, Field16: 1}
 	health := &HealthData{Cur: 1, Max: 2}
 	item := &Object{Worth: 101, HealthData: health}
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 76 {
 		t.Fatalf("simple health-adjusted cost = %d, %t, want 76, true", got, ok)
 	}
@@ -451,7 +451,7 @@ func TestShopkeeperModifierIDEncoding50E970(t *testing.T) {
 }
 
 func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	s.Types.byInd = make([]*ObjectType, 6)
 	s.Types.byInd[5] = &ObjectType{ind: 5, id: "Wasp"}
 
@@ -614,7 +614,7 @@ func TestBuyShopItemNative5100C0TransfersOwnershipAndGold(t *testing.T) {
 	player := nativeTradeTestValue(t, Player{GoldVal: 100, ProtPlayerGold: 0xfedcba98})
 	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
@@ -696,7 +696,7 @@ func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
 	player := nativeTradeTestValue(t, Player{GoldVal: 3})
 	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
 	node := addTestNativeTradeItem(t, s, session, item, 40)
@@ -731,7 +731,7 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		playerUnit.InvFirstItem = nativeTradeTestValue(t, Object{TypeInd: 7, InvNextItem: playerUnit.InvFirstItem})
 	}
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
 	node := addTestNativeTradeItem(t, s, session, item, 40)
@@ -764,7 +764,7 @@ func TestBuyShopItemsByTypeNative510640UsesStartingGoldAndNativePointers(t *test
 	player := nativeTradeTestValue(t, Player{GoldVal: 50, ProtPlayerGold: 0xfedcba98})
 	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 	first := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
@@ -865,7 +865,7 @@ func TestBuyShopItemsByTypeNative510640ClonesQuestAnkhAndStopsAtLimit(t *testing
 	player := nativeTradeTestValue(t, Player{GoldVal: 100, ProtPlayerGold: 0x12345678})
 	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player, ExtraLives: 1})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 	original := nativeTradeTestValue(t, Object{ObjClass: object.ClassPickup, TypeInd: 7, NetCode: 0x2222, Worth: 10})
@@ -984,7 +984,7 @@ func TestShopBuyLimitViolation5100C0EnforcesQuestForceOfNatureLimit(t *testing.T
 }
 
 func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	idata, freeShop := alloc.NewHigh(ShopkeeperInitData{})
 	defer freeShop()
 	idata.BuyMultiplier = 2
@@ -1031,7 +1031,7 @@ func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
 	item.InvHolder = playerUnit
 	item.InvNextItem = other
 	other.InvHolder = playerUnit
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 
@@ -1117,7 +1117,7 @@ func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
 	exact := nativeTradeTestValue(t, Object{NetCode: 0x1234, Worth: 7})
 	lowHalfOnly.InvNextItem = exact
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: lowHalfOnly})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	quoted := (*Object)(nil)
 	got := s.QuoteShopSellNative5109C0(playerUnit, session, 0x1234, ShopSellRuntime5109C0{
@@ -1156,7 +1156,7 @@ func TestSellShopItemsByTypeNative510D10UsesNativePointers(t *testing.T) {
 	for _, item := range []*Object{first, other, second} {
 		item.InvHolder = playerUnit
 	}
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 	events := make([]string, 0, 9)
@@ -1249,7 +1249,7 @@ func TestSellShopItemsByTypeNative510D10StopsWithoutCompletionSound(t *testing.T
 	item := nativeTradeTestValue(t, Object{TypeInd: 7, Worth: 10})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
 	item.InvHolder = playerUnit
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	sounds := 0
 	sold := s.SellShopItemsByTypeNative510D10(playerUnit, session, 7, 2, ShopSellRuntime5109C0{
@@ -1289,7 +1289,7 @@ func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
 	item.InvHolder = playerUnit
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
 	events := make([]string, 0, 7)
@@ -1364,7 +1364,7 @@ func TestShopRepairQuoteRejectsPristineItem5108D0(t *testing.T) {
 	health := nativeTradeTestValue(t, HealthData{Cur: 10, Max: 10})
 	item := nativeTradeTestValue(t, Object{NetCode: 9, HealthData: health})
 	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
-	s := &Server{}
+	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	rejects := 0
 	got := s.QuoteShopRepairNative5108D0(playerUnit, session, 9, ShopRepairRuntime5108D0{

@@ -11,7 +11,7 @@ import (
 func TestOptionsShow4AA6B0LifecycleObserverReadOnlyAndRejectsInvalidState(t *testing.T) {
 	oldGlobal := gui.AnimGlobalState()
 	t.Cleanup(func() { gui.SetAnimGlobalState(oldGlobal) })
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	other := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)

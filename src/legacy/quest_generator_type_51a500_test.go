@@ -164,7 +164,7 @@ func TestQuestGeneratorType51A500UnknownAndZeroResult(t *testing.T) {
 
 func TestQuestGeneratorType51A500RealTableCEntry(t *testing.T) {
 	InitBlobData()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Types.Free()
 	for i := range 53 {

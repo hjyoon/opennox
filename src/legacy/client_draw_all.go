@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "draw_allocation.h"
 #include "client__draw__animdraw.h"
 #include "client__draw__armordraw.h"
 #include "client__draw__arrowdraw.h"
@@ -185,7 +186,11 @@ var (
 func wrapDrawParseC(fnc unsafe.Pointer) client.ThingFieldFunc {
 	return func(typ *client.ObjectType, f *binfile.MemFile, str string, buf []byte) error {
 		StrNCopyBytes(buf, str)
-		ccall.CallVoidPtr3(fnc, typ.C(), f.C(), unsafe.Pointer(&buf[0]))
+		high := C.int(0)
+		if typ.UsesHighNativeMemory() {
+			high = 1
+		}
+		C.nox_draw_parse_with_policy(fnc, (*C.nox_thing)(typ.C()), (*C.nox_memfile)(f.C()), (*C.char)(unsafe.Pointer(&buf[0])), high)
 		return nil
 	}
 }

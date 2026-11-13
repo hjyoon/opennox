@@ -37,19 +37,19 @@ func TestMaterial7NativeIdentityAndOrder4133D0(t *testing.T) {
 	for _, backend := range []string{"Go", "C"} {
 		for _, control := range controls {
 			t.Run(backend+"/"+control, func(t *testing.T) {
-				item, freeItem := alloc.New(server.Object{})
+				item, freeItem := alloc.NewHigh(server.Object{})
 				defer freeItem()
-				first, freeFirst := alloc.New(server.ModifierInitData{})
+				first, freeFirst := alloc.NewHigh(server.ModifierInitData{})
 				defer freeFirst()
-				second, freeSecond := alloc.New(server.ModifierInitData{})
+				second, freeSecond := alloc.NewHigh(server.ModifierInitData{})
 				defer freeSecond()
-				descriptor, freeDescriptor := alloc.New(server.ModifierEff{})
+				descriptor, freeDescriptor := alloc.NewHigh(server.ModifierEff{})
 				defer freeDescriptor()
-				other, freeOther := alloc.New(server.ModifierEff{})
+				other, freeOther := alloc.NewHigh(server.ModifierEff{})
 				defer freeOther()
-				cache, freeCache := alloc.New((*server.ModifierEff)(nil))
+				cache, freeCache := alloc.NewHigh((*server.ModifierEff)(nil))
 				defer freeCache()
-				name, freeName := alloc.CString("Material7")
+				name, freeName := alloc.CStringHigh("Material7")
 				defer freeName()
 				// Name is the first native pointer field. The raw predicate does not
 				// inspect it; equal text must not turn two descriptors into one identity.
@@ -184,13 +184,13 @@ func TestMaterial7NativeIdentityAndOrder4133D0(t *testing.T) {
 func TestMaterial7NativeOpaqueWarm4133D0(t *testing.T) {
 	for _, backend := range []string{"Go", "C"} {
 		t.Run(backend, func(t *testing.T) {
-			item, freeItem := alloc.New(server.Object{})
+			item, freeItem := alloc.NewHigh(server.Object{})
 			defer freeItem()
-			attributes, freeAttributes := alloc.New(server.ModifierInitData{})
+			attributes, freeAttributes := alloc.NewHigh(server.ModifierInitData{})
 			defer freeAttributes()
-			cache, freeCache := alloc.New((*server.ModifierEff)(nil))
+			cache, freeCache := alloc.NewHigh((*server.ModifierEff)(nil))
 			defer freeCache()
-			buffer, freeBuffer := alloc.Malloc(32)
+			buffer, freeBuffer := alloc.MallocHigh(32)
 			defer freeBuffer()
 			raw := unsafe.Slice((*byte)(buffer), 32)
 			for i := range raw {
@@ -292,9 +292,9 @@ func TestMaterial7NativeDefaultCold4133D0(t *testing.T) {
 			previous := GetServer
 			GetServer = func() Server { return facade }
 			defer func() { GetServer = previous }()
-			item, freeItem := alloc.New(server.Object{})
+			item, freeItem := alloc.NewHigh(server.Object{})
 			defer freeItem()
-			attributes, freeAttributes := alloc.New(server.ModifierInitData{})
+			attributes, freeAttributes := alloc.NewHigh(server.ModifierInitData{})
 			defer freeAttributes()
 			item.ObjClass = 0x10000000
 			item.InitData = unsafe.Pointer(attributes)

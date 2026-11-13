@@ -23,7 +23,7 @@ func newConsoleKeyboardTextFixture(t *testing.T, language int) consoleKeyboardTe
 	consoleCommandTestFlags(t)
 	oldClient := noxClient
 	t.Cleanup(func() { noxClient = oldClient })
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	inp := input.New(slog.Default(), &consoleEntryTestInput{}, false, language)
 	noxClient = &Client{Client: &client.Client{Inp: inp, GUI: g}, ctrl: new(CtrlEventHandler)}

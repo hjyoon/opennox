@@ -23,7 +23,7 @@ import (
 // This fixture reaches the actual receive dispatcher, without opening a
 // socket, launching a game, replacing a handler, or supplying a reply.
 func TestServerRawPlayerInputBoundsR272(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	const index = ntype.PlayerInd(3)

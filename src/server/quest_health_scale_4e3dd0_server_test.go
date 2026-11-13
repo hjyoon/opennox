@@ -13,7 +13,7 @@ import (
 )
 
 func TestQuestHealthScale4E3DD0NativeFieldsAndScalarCache(t *testing.T) {
-	srv := New(nil, nil, strman.New())
+	srv := NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Types.Free()
 	srv.Balance.file = &balance.File{Global: balance.Config{

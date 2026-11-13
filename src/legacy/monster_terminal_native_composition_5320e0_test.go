@@ -94,7 +94,7 @@ func TestMonsterTerminalPublicCNativeComposition5320E0(t *testing.T) {
 	}
 	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetFrame(150)
 	oldGet := GetServer

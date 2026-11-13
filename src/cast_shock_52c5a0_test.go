@@ -20,7 +20,7 @@ import (
 // those services. The empty balance/definition fixture deliberately supplies
 // zero duration/sound; nonzero stock balance values are covered in server.
 func TestCastShockRoot52C5A0AppliesNativeBuffThroughActualSelector(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	caster, freeCaster := alloc.NewHigh(server.Object{})

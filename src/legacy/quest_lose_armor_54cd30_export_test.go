@@ -24,7 +24,7 @@ func (s *questLoseArmorLegacyServer54CD30) DelayedDelete(item *server.Object) {
 }
 
 func TestQuestLoseArmor54CD30NativeCGoRoundTrip(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	outer := &questLoseArmorLegacyServer54CD30{native: s}
 	oldServer := GetServer

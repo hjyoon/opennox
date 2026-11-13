@@ -151,7 +151,7 @@ func TestQuestGeneratorTypesInit51A550SealedNamesAndNativeStorage(t *testing.T) 
 		t.Fatalf("sealed name pairs = %d bytes / %s", len(names), got)
 	}
 
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Types.Free()
 	for i := range 53 {

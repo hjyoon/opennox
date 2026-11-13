@@ -47,7 +47,7 @@ func TestRespawnAllocatorNative4ECA60LayoutAndResult(t *testing.T) {
 }
 
 func TestNoxXxxAllocItemRespawnArray4ECA60NativeStorage(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 
 	oldAllocator := respawnAllocatorLoad4ECA60()

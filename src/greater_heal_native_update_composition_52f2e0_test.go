@@ -98,7 +98,7 @@ func TestGreaterHealPublicCUpdateNativeComposition52F2E0(t *testing.T) {
 		t.Fatal("sealed original update context")
 	}
 	c := fixture.Cases[index]
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -120,7 +120,7 @@ func TestGreaterHealPublicCUpdateNativeComposition52F2E0(t *testing.T) {
 	s.SetTickRate(30)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native walls")
 	}
 	t.Cleanup(s.Walls.Free)

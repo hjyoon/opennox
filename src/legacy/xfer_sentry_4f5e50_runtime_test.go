@@ -65,11 +65,11 @@ func TestSentryXferNativeLayout4F5E50(t *testing.T) {
 }
 
 func TestSentryXferNativeWrite4F5E50PreservesFixedRecordAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.SentryUpdateData{})
+	data, freeData := alloc.NewHigh(server.SentryUpdateData{})
 	defer freeData()
-	id, freeID := alloc.CString("sentry")
+	id, freeID := alloc.CStringHigh("sentry")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -239,13 +239,13 @@ func TestSentryXferNativeRead4F5E50UsesCachedRecordAndRestoresCount(t *testing.T
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.SentryUpdateData{})
+	data, freeData := alloc.NewHigh(server.SentryUpdateData{})
 	defer freeData()
-	liveData, freeLiveData := alloc.New(server.SentryUpdateData{})
+	liveData, freeLiveData := alloc.NewHigh(server.SentryUpdateData{})
 	defer freeLiveData()
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	data.Field0 = 0x0badcafe
 	data.Field4 = 0x11111111
@@ -319,7 +319,7 @@ func TestSentryXferNativeRead4F5E50UsesCachedRecordAndRestoresCount(t *testing.T
 }
 
 func TestSentryXferExport4F5E50PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

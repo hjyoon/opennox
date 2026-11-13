@@ -39,7 +39,7 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 	// Fresh test children do not run game startup. Initialize the real packed
 	// data and native pointer slots, including the stock bone-name table.
 	legacy.InitBlobData()
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -66,7 +66,7 @@ func TestSkeletonDeathActualCProduction54A310(t *testing.T) {
 	t.Cleanup(s.Objs.FreeObjects)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("wall grid")
 	}
 	t.Cleanup(s.Walls.Free)

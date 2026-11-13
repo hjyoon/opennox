@@ -21,7 +21,7 @@ func (s *activeAbilityDurationLegacyServer4FC030) S() *server.Server {
 }
 
 func TestActiveAbilityDurationExport4FC030PreservesNativePointerAndInt32Result(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.SetFrame(0)
 	unit := new(server.Object)

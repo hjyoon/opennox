@@ -76,18 +76,18 @@ func videoTableChild200(t *testing.T, mode string) bool {
 
 func actualVideoRender200(t *testing.T) (*Client, *noximage.Image16, *noxrender.RenderData) {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetFrame(100)
 	s.SetTickRate(60)
 	s.Rand.Logic.Reset(93)
 	s.Rand.Other.Reset(17)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, free := noxrender.NewRenderData()
+	d, free := noxrender.NewRenderDataHigh()
 	t.Cleanup(free)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -155,7 +155,7 @@ func TestVideoCompassActualCGoHandlesHeadless4A9C80(t *testing.T) {
 	_, names := videoTableOriginal200(t)
 	t.Chdir(t.TempDir())
 	generatorBag4BC720(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	c, pix, d := actualVideoRender200(t)
 	if err := c.r.GetBag().ReadVideoBag(); err != nil {
@@ -199,7 +199,7 @@ func TestVideoCompassActualCGoHandlesHeadless4A9C80(t *testing.T) {
 			t.Fatal("actual compass handle store/registry contract")
 		}
 	}
-	aliasWord, freeAlias := alloc.New(uintptr(0))
+	aliasWord, freeAlias := alloc.NewHigh(uintptr(0))
 	t.Cleanup(freeAlias)
 	reset := func() {
 		for i := range pix.Pix {

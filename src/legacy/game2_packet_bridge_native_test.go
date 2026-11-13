@@ -15,11 +15,11 @@ func TestGame2PacketBridgeConsumesOneNativeMessage(t *testing.T) {
 	for _, tc := range []struct{ op, length int32 }{{47, 9}, {48, 11}, {195, 12}} {
 		for _, viaSwitch := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/switch_%t", tc.op, viaSwitch), func(t *testing.T) {
-				p := accessListNativeDefaultAlloc416720(64)
+				p := accessListNativeFixtureAlloc416720(64)
 				if p == nil {
 					t.Fatal("C packet allocation")
 				}
-				defer accessListNativeDefaultFree416720(p)
+				defer accessListNativeFixtureFree416720(p)
 				buf := unsafe.Slice((*byte)(p), 64)
 				for i := range buf {
 					buf[i] = byte(0x80 + i)
@@ -54,11 +54,11 @@ func TestGame2PacketBridgeConsumesOneNativeMessage(t *testing.T) {
 func TestGame2PacketBridgeRejectsIncompleteAndUnregistered(t *testing.T) {
 	old := Nox_xxx_netOnPacketRecvCli_48EA70
 	defer func() { Nox_xxx_netOnPacketRecvCli_48EA70 = old }()
-	p := accessListNativeDefaultAlloc416720(32)
+	p := accessListNativeFixtureAlloc416720(32)
 	if p == nil {
 		t.Fatal("C packet")
 	}
-	defer accessListNativeDefaultFree416720(p)
+	defer accessListNativeFixtureFree416720(p)
 	for _, tc := range []struct{ op, length int32 }{{47, 9}, {48, 11}, {195, 12}} {
 		*(*byte)(p) = byte(tc.op)
 		calls := 0

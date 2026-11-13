@@ -9,6 +9,7 @@ package legacy
 #include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
+#include "native_fixture_alloc.h"
 
 typedef struct nox_r310_theme_storage {
 	uint32_t before[8];
@@ -34,7 +35,7 @@ typedef struct nox_r310_theme_result {
 
 static nox_r310_theme_result nox_r310_read_theme(const char* name, int legacy) {
 	nox_r310_theme_result out = {0};
-	nox_r310_theme_storage* value = malloc(sizeof(*value));
+	nox_r310_theme_storage* value = nox_native_fixture_calloc_high(1, sizeof(*value));
 	if (!value) return out;
 	memset(value, 0xA5, sizeof(*value));
 	out.theme_address = (uintptr_t)value->words;
@@ -77,13 +78,17 @@ static nox_r310_theme_result nox_r310_read_theme(const char* name, int legacy) {
 		}
 	}
 	nox_mapgenLegacyPtrForget(value->words);
-	free(value);
+	nox_native_fixture_free_high(value);
 	return out;
 }
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
 
 type mapgenThemeResultR310 struct {
 	result, guardsPreserved, cleanupCleared, highNameToken bool
@@ -93,13 +98,15 @@ type mapgenThemeResultR310 struct {
 }
 
 func mapgenThemeFixtureR310(name string, legacy bool) mapgenThemeResultR310 {
-	cname := C.CString(name)
-	defer C.free(unsafe.Pointer(cname))
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	cname, release := alloc.CStringHigh(name)
+	defer release()
 	var flag C.int
 	if legacy {
 		flag = 1
 	}
-	out := C.nox_r310_read_theme(cname, flag)
+	out := C.nox_r310_read_theme((*C.char)(unsafe.Pointer(cname)), flag)
 	result := mapgenThemeResultR310{
 		result: out.result != 0, guardsPreserved: out.guards_preserved != 0,
 		cleanupCleared: out.cleanup_cleared != 0, highNameToken: out.high_name_token != 0,

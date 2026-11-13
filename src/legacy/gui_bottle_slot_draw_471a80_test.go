@@ -57,8 +57,8 @@ func (c *bottleSlotClient471A80) R2() Render2         { return c.render }
 
 func newBottleSlotFixture471A80(t *testing.T, slot int, size image.Point) (*gui.Window, *bottleSlotRender471A80, image.Point) {
 	t.Helper()
-	g := gui.New(nil)
-	data, free := noxrender.NewRenderData()
+	g := gui.NewHigh(nil)
+	data, free := noxrender.NewRenderDataHigh()
 	r := &bottleSlotRender471A80{data: data, height: 10}
 	c := &bottleSlotClient471A80{cli: &client.Client{GUI: g}, render: r}
 	oldClient := GetClient

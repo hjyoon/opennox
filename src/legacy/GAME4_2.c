@@ -29,6 +29,12 @@
 #include "server__script__script.h"
 
 #include <time.h>
+#include "mapgen_allocation.h"
+
+// Keep each graph allocation with its matching owner. The default service
+// remains CRT; high-address allocation is requested by scoped fixtures.
+#define calloc nox_mapgen_alloc_memory
+#define free nox_mapgen_release_memory
 
 extern uint32_t dword_5d4594_2487656;
 extern uint32_t dword_5d4594_3835368;

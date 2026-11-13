@@ -88,6 +88,15 @@ func TestContinualReplenishment4E02C0MatchesWholeOriginalAndFaultOrdering(t *tes
 					unsafe.Slice((*byte)(r.p), r.n)[i] = pattern
 				}
 			}
+			if unsafe.Sizeof(uintptr(0)) == 4 {
+				// The four pointer cells below are overwritten before the native
+				// input snapshot. Do not let Go's scalar write barrier shade a
+				// raw 0x5a5a5a5a canary as an address in its 32-bit heap.
+				alloc.Memset(unsafe.Pointer(&item.UseData.Ptr), 0, unsafe.Sizeof(item.UseData.Ptr))
+				alloc.Memset(unsafe.Pointer(&item.InvHolder), 0, unsafe.Sizeof(item.InvHolder))
+				alloc.Memset(unsafe.Pointer(&owner.UpdateData), 0, unsafe.Sizeof(owner.UpdateData))
+				alloc.Memset(unsafe.Pointer(&update.Player), 0, unsafe.Sizeof(update.Player))
+			}
 			in := row.Input
 			effect.Update100.Val = int32(in.Rate)
 			item.ObjClass = object.Class(in.Cls)

@@ -14,7 +14,7 @@ import (
 )
 
 func TestQuestHealthScale4E3DD0CEntryDelegatesWholeBody(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer, oldCall := GetServer, questHealthScaleCall4E3DD0
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: srv} }
@@ -34,7 +34,7 @@ func TestQuestHealthScale4E3DD0CEntryDelegatesWholeBody(t *testing.T) {
 }
 
 func TestQuestHealthScale4E3DD0CEntryNativeWorldAndRetainedSetter(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Types.Free()
 	oldServer, oldCall := GetServer, questHealthScaleCall4E3DD0

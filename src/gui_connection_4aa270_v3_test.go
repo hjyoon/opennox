@@ -46,7 +46,7 @@ func newConnectionFixture4AA270(t *testing.T) *connectionFixture4AA270 {
 	}
 	noxflags.UnsetGame(oldFlags)
 	gui.AnimSpeed = 1
-	f := &connectionFixture4AA270{g: gui.New(nil)}
+	f := &connectionFixture4AA270{g: gui.NewHigh(nil)}
 	f.root = f.g.NewWindowRaw(nil, gui.StatusEnabled|gui.StatusNoFocus, 0, 0, 640, 480, nil)
 	f.root.SetID(400)
 	top := f.g.NewWindowRaw(f.root, gui.StatusEnabled|gui.StatusNoFocus, 0, 0, 640, 240, nil)

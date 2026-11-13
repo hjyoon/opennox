@@ -12,6 +12,7 @@
 #include "operators.h"
 #include "common__system__team.h"
 #include "world_player_reference_40a830.h"
+#include "mapgen_allocation.h"
 extern void* dword_5d4594_251560;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern const int ptr_5D4594_2650668_cap;
@@ -71,7 +72,11 @@ int world_old_nox_xxx_netReportPlayerStatus_417630(nox_playerInfo*);
 #define nox_xxx_wallCreateAt_410250 wp_ref_wall_create
 #define nox_server_wallAttachDoor wp_ref_wall_attach
 #define nox_xxx_equipClothFindDefByTT_413270 wp_ref_armor
+#define calloc nox_mapgen_alloc_memory
+#define free nox_mapgen_release_memory
 #include "world_player_preserved_reference_40a830.inc"
+#undef free
+#undef calloc
 
 // Explicit public calls below cannot be rewritten to private copies.
 #undef nox_xxx_countNonEliminatedPlayersInTeam_40A830

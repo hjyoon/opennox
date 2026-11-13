@@ -96,7 +96,7 @@ func TestTwoSettingsPointerDefaultIterators40A740(t *testing.T) {
 				t.Fatal("actual nil-observer default iterator control")
 			}
 			twoSettingsPointerExtraSaveFlags40A740(t)
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			previous := GetServer
 			GetServer = func() Server { return &twoSettingsPointerDefaultServer40A740{native: srv} }
 			defer func() { srv.Close(); GetServer = previous }()
@@ -116,8 +116,8 @@ func TestTwoSettingsPointerDefaultIterators40A740(t *testing.T) {
 				if p == nil {
 					t.Fatal("actual initialized native player slot")
 				}
-				unit, freeUnit := alloc.New(server.Object{})
-				update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+				unit, freeUnit := alloc.NewHigh(server.Object{})
+				update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 				free = append(free, freeUnit, freeUpdate)
 				*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
 				*update = server.PlayerUpdateData{Player: p}

@@ -58,7 +58,7 @@ func TestOptionsDialogCycle4AA650NativePointerSlots(t *testing.T) {
 	if err := strings.ReadJSON(stringsPath); err != nil {
 		t.Fatal(err)
 	}
-	srv := server.New(nil, nil, strings)
+	srv := server.NewHigh(nil, nil, strings)
 	defer srv.Close()
 	bridge := &optionsDialogLegacyServer4AA650{srv: srv}
 	oldGetServer := GetServer

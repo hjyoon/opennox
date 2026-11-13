@@ -42,9 +42,9 @@ type questGameOverTimerServer49B6E0 struct {
 func (s *questGameOverTimerServer49B6E0) S() *server.Server { return s.srv }
 
 func TestQuestGameOverTimer49B6E0NativeHost(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	cli := client.NewClient(nil, nil, srv)
+	cli := client.NewClientHigh(nil, nil, srv)
 	t.Cleanup(cli.Close)
 	t.Cleanup(cli.GUI.DestroyAll)
 	oldClient, oldServer := GetClient, GetServer
@@ -137,9 +137,9 @@ func TestQuestGameOverTimer49B6E0NativeHost(t *testing.T) {
 }
 
 func TestQuestGameOverTimer49B6E0NativeFormatAndFreshRoot(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
-	cli := client.NewClient(nil, nil, srv)
+	cli := client.NewClientHigh(nil, nil, srv)
 	t.Cleanup(cli.Close)
 	t.Cleanup(cli.GUI.DestroyAll)
 	oldClient := GetClient

@@ -58,7 +58,7 @@ func TestMovieNaturalAndEarlyCloseChild(t *testing.T) {
 	}
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 	driver := ail.WaveOutOpen()
 	if driver == 0 {

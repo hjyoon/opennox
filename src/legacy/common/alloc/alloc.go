@@ -123,20 +123,31 @@ func AdoptCAllocation(ptr unsafe.Pointer, size uintptr) {
 }
 
 func FreePtr(ptr unsafe.Pointer) {
+	if !TryFreePtr(ptr) {
+		panic("incorrect free")
+	}
+}
+
+// TryFreePtr releases a registered foreign owner, including an explicit high
+// mapping. A C destructor can retain its CRT fallback for unregistered memory.
+// Unknown pointers are never freed here.
+func TryFreePtr(ptr unsafe.Pointer) bool {
 	allocMu.Lock()
 	_, ok := allocs[ptr]
+	if !ok {
+		allocMu.Unlock()
+		return false
+	}
 	release := allocReleases[ptr]
 	delete(allocs, ptr)
 	delete(allocReleases, ptr)
 	allocMu.Unlock()
-	if !ok {
-		panic("incorrect free")
-	}
 	if release != nil {
 		release()
 	} else {
 		C.free(ptr)
 	}
+	return true
 }
 
 func Free[T comparable](ptr *T) {

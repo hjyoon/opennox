@@ -46,7 +46,7 @@ func TestSpellTeleportTargetPublicCNativeComposition530A30(t *testing.T) {
 	s.spells.duration.Init(s)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 || legacy.Nox_xxx_tileAlloc_410F60_init() == 0 {
+	if s.Walls.InitHigh() == 0 || legacy.Nox_xxx_tileAlloc_410F60_init() == 0 {
 		t.Fatal("isolated blank map initialization")
 	}
 	t.Cleanup(s.Walls.Free)

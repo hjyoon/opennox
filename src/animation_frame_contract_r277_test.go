@@ -24,8 +24,8 @@ func frameFixtureR277(t *testing.T) (*Client, *client.Drawable, *client.Animatio
 	t.Helper()
 	s := &server.Server{}
 	c := &Client{Client: &client.Client{Server: s}, srv: &Server{Server: s}}
-	dr, freeDraw := alloc.New(client.Drawable{})
-	ani, freeAnim := alloc.New(client.AnimationVector{})
+	dr, freeDraw := alloc.NewHigh(client.Drawable{})
+	ani, freeAnim := alloc.NewHigh(client.AnimationVector{})
 	t.Cleanup(freeDraw)
 	t.Cleanup(freeAnim)
 	ani.Size = uint32(unsafe.Sizeof(*ani))
@@ -110,9 +110,9 @@ func frameRemoveFixtureR277(t *testing.T) (*Client, *client.Drawable, *client.An
 	// Real pool/list ownership permits the unchanged baseline to delete a
 	// negative-quotient input safely, producing an observable wrong lifecycle
 	// result instead of faulting on a fake/stack drawable. No images/assets.
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	t.Cleanup(cl.Render().Part.Free)
@@ -124,7 +124,7 @@ func frameRemoveFixtureR277(t *testing.T) (*Client, *client.Drawable, *client.An
 		t.Fatal("real isolated drawable pool allocation failed")
 	}
 	cl.Objs.List1, cl.Objs.Count = dr, 1
-	ani, freeAnim := alloc.New(client.AnimationVector{})
+	ani, freeAnim := alloc.NewHigh(client.AnimationVector{})
 	t.Cleanup(freeAnim)
 	ani.Size = uint32(unsafe.Sizeof(*ani))
 	ani.Kind, ani.Cnt40 = client.AnimOneShotRemove, 3

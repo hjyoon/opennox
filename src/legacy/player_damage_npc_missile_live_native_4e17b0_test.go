@@ -37,14 +37,14 @@ func TestPlayerDamageNPCMissileLiveNative4E17B0CRecords(t *testing.T) {
 				}
 				target, source := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
 				missile, armor := srv.Objs.NewObject(&server.ObjectType{}), srv.Objs.NewObject(&server.ObjectType{})
-				update, freeUpdate := alloc.New(server.MonsterUpdateData{})
-				playerUpdate, freePlayerUpdate := alloc.New(server.PlayerUpdateData{})
-				player, freePlayer := alloc.New(server.Player{})
-				health, freeHealth := alloc.New(server.HealthData{})
-				armorHealth, freeArmorHealth := alloc.New(server.HealthData{})
-				armorUpdate, freeArmorUpdate := alloc.New(server.WeaponArmorUpdateData{})
-				armorInit, freeArmorInit := alloc.New(server.ModifierInitData{})
-				missileInit, freeMissileInit := alloc.New(server.ModifierInitData{})
+				update, freeUpdate := alloc.NewHigh(server.MonsterUpdateData{})
+				playerUpdate, freePlayerUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+				player, freePlayer := alloc.NewHigh(server.Player{})
+				health, freeHealth := alloc.NewHigh(server.HealthData{})
+				armorHealth, freeArmorHealth := alloc.NewHigh(server.HealthData{})
+				armorUpdate, freeArmorUpdate := alloc.NewHigh(server.WeaponArmorUpdateData{})
+				armorInit, freeArmorInit := alloc.NewHigh(server.ModifierInitData{})
+				missileInit, freeMissileInit := alloc.NewHigh(server.ModifierInitData{})
 				for _, free := range []func(){freeUpdate, freePlayerUpdate, freePlayer, freeHealth, freeArmorHealth, freeArmorUpdate, freeArmorInit, freeMissileInit} {
 					t.Cleanup(free)
 				}

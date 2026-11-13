@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,11 +23,11 @@ typedef struct nox_test_mapgen_orient_object_527c60_result {
 
 static nox_test_mapgen_orient_object_527c60_result nox_test_mapgen_orient_object_527c60(void) {
 	nox_test_mapgen_orient_object_527c60_result out = {0};
-	nox_object_t* object = (nox_object_t*)calloc(1, sizeof(*object));
-	uint32_t* update = (uint32_t*)calloc(100, sizeof(*update));
+	nox_object_t* object = (nox_object_t*)nox_native_fixture_calloc_high(1, sizeof(*object));
+	uint32_t* update = (uint32_t*)nox_native_fixture_calloc_high(100, sizeof(*update));
 	if (!object || !update) {
-		free(update);
-		free(object);
+		nox_native_fixture_free_high(update);
+		nox_native_fixture_free_high(object);
 		return out;
 	}
 
@@ -56,8 +57,8 @@ static nox_test_mapgen_orient_object_527c60_result nox_test_mapgen_orient_object
 	out.legacy_frames[2] = update[3];
 
 	nox_mapgenLegacyPtrForget(object);
-	free(update);
-	free(object);
+	nox_native_fixture_free_high(update);
+	nox_native_fixture_free_high(object);
 	return out;
 }
 */

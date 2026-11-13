@@ -85,7 +85,7 @@ func TestCircleCollisionNativeWallIndexOriginal(t *testing.T) {
 	}
 	rigidNativeTable(t, 292496, tables["wall-edge-masks"])
 	s := &server.Server{}
-	if s.Walls.Init() != 1 {
+	if s.Walls.InitHigh() != 1 {
 		t.Fatal("native wall allocation failed")
 	}
 	t.Cleanup(s.Walls.Free)

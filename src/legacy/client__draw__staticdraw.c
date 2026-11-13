@@ -1,3 +1,4 @@
+#include "draw_allocation.h"
 #include "client__draw__staticdraw.h"
 #include "GAME1_2.h"
 #include "GAME3_1.h"
@@ -24,7 +25,7 @@ int nox_thing_static_random_draw(uint32_t* a1, nox_drawable* dr) {
 
 //----- (0044C160) --------------------------------------------------------
 bool nox_things_static_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_value) {
-	nox_static_draw_data_t* data = calloc(1, sizeof(*data));
+	nox_static_draw_data_t* data = nox_draw_memory_calloc(1, sizeof(*data));
 	if (!data) {
 		return 0;
 	}

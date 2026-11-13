@@ -49,7 +49,7 @@ func TestPlayerDamageSourceLessMixedMissileMatchesGAMEEXE4E17B0(t *testing.T) {
 			v := damageMeleeUnitFixture4E17B0(t, row.Player)
 			armor := damageMeleeArmorFixture4E17B0(v, .5, .25)
 			var attacker *Object
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			weapon := &Object{TypeInd: 73, ObjClass: row.WeaponClass, ObjSubClass: 0x10, InitData: unsafe.Pointer(modifiers)}
@@ -139,7 +139,7 @@ func TestPlayerDamageSourceLessMixedMissileFrontReflectMatchesGAMEEXE4E17B0(t *t
 			var a *Object
 			w := damageMeleeUnitFixture4E17B0(t, false)
 			w.ObjClass, w.ObjSubClass, w.UpdateData, w.HealthData = row.WeaponClass, 0x10, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			w.InitData = unsafe.Pointer(modifiers)
@@ -278,7 +278,7 @@ func TestPlayerDamageSourceLessMixedMissileBlocksMatchesGAMEEXE4E17B0(t *testing
 			var owner *Object
 			w := damageMeleeUnitFixture4E17B0(t, false)
 			w.ObjClass, w.ObjSubClass, w.UpdateData, w.HealthData = row.WeaponClass, 0x10, nil, nil
-			modifiers, free := alloc.New(ModifierInitData{})
+			modifiers, free := alloc.NewHigh(ModifierInitData{})
 			*modifiers = ModifierInitData{}
 			t.Cleanup(free)
 			w.InitData = unsafe.Pointer(modifiers)
@@ -291,7 +291,7 @@ func TestPlayerDamageSourceLessMixedMissileBlocksMatchesGAMEEXE4E17B0(t *testing
 			if strings.HasSuffix(row.Mode, "staff") {
 				mask, weaponFlags, armorFlags, state = 0x8000, 0x8000, 0, PlayerState13
 			}
-			item, freeItem := alloc.New(Object{})
+			item, freeItem := alloc.NewHigh(Object{})
 			*item = Object{ObjClass: object.ClassSimple, ObjSubClass: object.SubClass(mask), ObjFlags: object.FlagEquipped}
 			t.Cleanup(freeItem)
 			v.InvFirstItem = item

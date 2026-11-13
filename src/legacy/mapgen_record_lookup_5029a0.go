@@ -1,7 +1,9 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
+#include <string.h>
 
 #include "GAME4.h"
 
@@ -19,7 +21,10 @@ _Static_assert(sizeof(dword_5d4594_1599576) == sizeof(void*),
 	"mapgen record storage must preserve native pointer width");
 
 static int nox_test_mapgen_record_lookup_5029A0(uintptr_t* address) {
-	char records[4][76] = {"Alpha", "Beta", "Gamma", ""};
+	const char values[4][76] = {"Alpha", "Beta", "Gamma", ""};
+	char (*records)[76] = nox_native_fixture_calloc_high(4, 76);
+	if (!records) abort();
+	memcpy(records, values, sizeof(values));
 	char* old_records = dword_5d4594_1599576;
 	uint32_t old_count = dword_5d4594_1599596;
 	dword_5d4594_1599576 = &records[0][0];
@@ -38,6 +43,7 @@ static int nox_test_mapgen_record_lookup_5029A0(uintptr_t* address) {
 	ok = ok && sub_5029A0("Alpha") == -1;
 	dword_5d4594_1599576 = old_records;
 	dword_5d4594_1599596 = old_count;
+	nox_native_fixture_free_high(records);
 	return ok;
 }
 */

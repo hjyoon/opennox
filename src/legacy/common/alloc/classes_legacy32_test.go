@@ -7,7 +7,7 @@ import (
 )
 
 func TestClassLegacy32ResolvesHandleAndActiveObject(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	class := NewClass("Legacy32Resolver", 12, 2)

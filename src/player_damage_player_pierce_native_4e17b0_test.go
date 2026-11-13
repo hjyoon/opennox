@@ -22,9 +22,9 @@ import (
 // Registered PlayerDamage, C armor lookup and facing, the native armor-wear
 // tail, DefaultDamage and UnitSetHP run without replacement damage/HP callbacks.
 func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

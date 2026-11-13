@@ -237,7 +237,7 @@ func TestSpellDurationDestroy4FEDA0ServerBinding(t *testing.T) {
 	}
 	srv.Spells.init(&srv)
 	srv.Abils.init(&srv)
-	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
+	if got := srv.Spells.Dur.SpellCreateDurationsHigh4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
 	t.Cleanup(srv.Spells.Dur.Free)

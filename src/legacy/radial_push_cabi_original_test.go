@@ -65,11 +65,11 @@ func TestRadialPushRootCNativeMapOriginal(t *testing.T) {
 	}
 	for _, reverse := range []bool{false, true} {
 		t.Run(fmt.Sprintf("reverse-%t", reverse), func(t *testing.T) {
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
 			srv.Map.Init()
 			t.Cleanup(srv.Map.Free)
-			if srv.Walls.Init() == 0 {
+			if srv.Walls.InitHigh() == 0 {
 				t.Fatal("native empty walls initialization")
 			}
 			t.Cleanup(srv.Walls.Free)
@@ -213,11 +213,11 @@ func TestRadialPushCandidateCEntryOriginal(t *testing.T) {
 	if f.SHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || f.Contexts != 454 || f.Executions != 908 || len(f.Rows) != 908 {
 		t.Fatal("incomplete original radial fixture")
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.Map.Init()
 	t.Cleanup(srv.Map.Free)
-	if srv.Walls.Init() == 0 {
+	if srv.Walls.InitHigh() == 0 {
 		t.Fatal("empty native wall index initialization")
 	}
 	t.Cleanup(srv.Walls.Free)

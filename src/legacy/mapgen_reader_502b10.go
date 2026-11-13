@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,10 +36,14 @@ _Static_assert(sizeof(nox_test_mapgen_record_502B10) == 76, "fixture record layo
 
 static nox_test_mapgen_reader_502B10_result nox_test_mapgen_reader_502B10(const char* path) {
 	nox_test_mapgen_reader_502B10_result out = {0};
-	char first[2048] = {0};
-	char second[2048] = {0};
-	char records[2048 * 76] = {0};
-	if (!path || strlen(path) >= sizeof(first)) {
+	char* first = nox_native_fixture_calloc_high(1, 2048);
+	char* second = nox_native_fixture_calloc_high(1, 2048);
+	char* records = nox_native_fixture_calloc_high(1, 2048 * 76);
+	if (!first || !second || !records) abort();
+	if (!path || strlen(path) >= (2048)) {
+		nox_native_fixture_free_high(records);
+		nox_native_fixture_free_high(second);
+		nox_native_fixture_free_high(first);
 		return out;
 	}
 	strcpy(first, path);
@@ -70,6 +75,9 @@ static nox_test_mapgen_reader_502B10_result nox_test_mapgen_reader_502B10(const 
 	dword_5d4594_1599576 = old_records;
 	dword_5d4594_1599596 = old_count;
 	nox_file_8 = old_file;
+	nox_native_fixture_free_high(records);
+	nox_native_fixture_free_high(second);
+	nox_native_fixture_free_high(first);
 	return out;
 }
 

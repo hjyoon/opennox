@@ -14,7 +14,7 @@ import (
 )
 
 func TestQuestLoseAbility54CFB0NativeCGoRoundTrip(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	oldServer := GetServer
 	GetServer = func() Server { return &questCanJoinLegacyServer4E4100{srv: s} }

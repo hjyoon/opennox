@@ -14,25 +14,25 @@ import (
 func TestContinualReplenishment4E02C0NativeChargePacketAndHolderPointersV3(t *testing.T) {
 	// The actual C report queues an important packet, rather than invoking the
 	// Go Server.NetSendPacketXxx test hook. Own and restore that native queue.
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)
-	pool := alloc.NewClass("continual-replenishment-native-report", importantPacketSizeC(), 4)
+	pool := alloc.NewClassHigh("continual-replenishment-native-report", importantPacketSizeC(), 4)
 	setImportantAllocClassC(pool.UPtr())
 	setImportantRecipientMaskC(0xffffffff)
 	gameFrameHook = func() uint32 { return 240 }
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	defer freeOwner()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
 	defer freeUpdate()
-	player, freePlayer := alloc.New(server.Player{})
+	player, freePlayer := alloc.NewHigh(server.Player{})
 	defer freePlayer()
-	item, freeItem := alloc.New(server.Object{})
+	item, freeItem := alloc.NewHigh(server.Object{})
 	defer freeItem()
-	use, freeUse := alloc.New(server.WandUseData{})
+	use, freeUse := alloc.NewHigh(server.WandUseData{})
 	defer freeUse()
-	effect, freeEffect := alloc.New(server.ModifierEff{})
+	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
 	defer freeEffect()
 	owner.ObjClass = object.ClassPlayer
 	owner.UpdateData = unsafe.Pointer(update)

@@ -49,7 +49,7 @@ func TestLuaCompatMuteNativeLifecycle(t *testing.T) {
 	if old := legacy.Get_nox_alloc_chat_1197364(); old != nil {
 		t.Fatalf("native chat allocator already initialized: %p", old)
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	classes := []object.Class{object.ClassSimple, object.ClassMonster, object.ClassPlayer,
 		object.ClassMonster | object.ClassClientPersist, object.ClassSimple | object.ClassImmobile}
@@ -92,7 +92,7 @@ func TestLuaCompatMuteNativeLifecycle(t *testing.T) {
 									if unit == nil {
 										t.Fatal("cannot allocate actual server-associated speaker")
 									}
-									id, freeID := alloc.CString("native_mute_target")
+									id, freeID := alloc.CStringHigh("native_mute_target")
 									t.Cleanup(freeID)
 									unit.IDPtr, unit.ObjClass, unit.ObjFlags = unsafe.Pointer(id), class, flags
 									unit.NetCode, unit.Extent, unit.Field38 = code.net, code.extent, 0x12345678

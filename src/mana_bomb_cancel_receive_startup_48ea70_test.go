@@ -38,7 +38,7 @@ func TestManaBombCancelProductionReceiveStartupContextV1(t *testing.T) {
 	if err := json.Unmarshal(raw, &fixture); err != nil || !fixture.Unchanged || len(fixture.Rows) != 14 {
 		t.Fatalf("original full receive fixture: %v", err)
 	}
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	data := t.TempDir()
 	oldData := datapath.Data()
@@ -53,7 +53,7 @@ func TestManaBombCancelProductionReceiveStartupContextV1(t *testing.T) {
 			continue
 		}
 		t.Run(fmt.Sprintf("radius-%g", row.Radius), func(t *testing.T) {
-			cli := client.NewClient(nil, nil, base)
+			cli := client.NewClientHigh(nil, nil, base)
 			t.Cleanup(cli.Close)
 			t.Cleanup(func() { alloc.Free(cli.Viewport()) })
 			cli.Things.Nox_things_free_44C580_B()

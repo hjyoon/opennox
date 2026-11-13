@@ -7,7 +7,7 @@ import (
 )
 
 func TestImportantFreeSlotsMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
 	for _, tc := range []struct {
@@ -50,7 +50,7 @@ func TestImportantFreeSlotsMatchesGAMEEXEContract(t *testing.T) {
 }
 
 func TestImportantNoopMatchesGAMEEXEContract(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	const capacity = uint32(0x89ABCDEF)
 	_, packets, _ := setupImportantResendContract(t, 0, []importantResendPacketSpec{{

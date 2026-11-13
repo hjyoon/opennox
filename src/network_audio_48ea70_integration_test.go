@@ -69,7 +69,7 @@ func TestNativeNetworkAudioPlaybackChild(t *testing.T) {
 	prevTicks := timer.PlatformTicks
 	timer.PlatformTicks = func() uint64 { return 0 }
 	t.Cleanup(func() { timer.PlatformTicks = prevTicks })
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	driver := ail.WaveOutOpen()
 	if driver == 0 {
@@ -139,7 +139,7 @@ func TestNativeNetworkAudioPlaybackChild(t *testing.T) {
 func checkNativeNetworkAudioCases48EA70(t *testing.T, c *Client, driver ail.Driver, voice ail.Sample, entry *nativeAudioBankEntry, fx *timer.TimerGroup) {
 	t.Helper()
 	source := openal.Source(*voice.GetSource())
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
 	checkbox := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 70, 12, nil)

@@ -53,7 +53,7 @@ func TestPlayerDieCompetitive54D2B0ProductionCEntry(t *testing.T) {
 		t.Logf("isolated actual C entry:\n%s", output)
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	defer srv.Close()
 	srv.SetTickRate(30)
 	srv.SetFrame(1000)

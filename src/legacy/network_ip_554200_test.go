@@ -28,7 +28,7 @@ func TestNetworkConnectionIP554200(t *testing.T) {
 		}
 		return
 	}
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	GetServer = func() Server { return &playerTrackingLegacyServer425F10{srv: srv} }
 	field := reflect.ValueOf(srv.NetStr).Elem().FieldByName("streams")
 	if field.Len() != 128 || field.Type().Elem() != reflect.TypeOf((*netstr.Conn)(nil)) {

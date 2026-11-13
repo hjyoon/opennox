@@ -312,7 +312,7 @@ func seExtraWorld40AA70(t *testing.T, in *seExtraInput40AA70, flags uint32) {
 		t.Fatal("actual nil observer control")
 	}
 	previous, oldGame, oldGameplay := GetServer, noxflags.GetGame(), noxflags.GetGamePlay()
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	GetServer = func() Server { return &seExtraServer40AA70{native: srv} }
 	t.Cleanup(func() {
 		srv.Close()
@@ -371,7 +371,7 @@ func TestSettingEligibilityDefaultLinked40AA70(t *testing.T) {
 				seExtraWorld40AA70(t, &in, control.flags)
 				var arg unsafe.Pointer
 				if in.Args[0] != 0 {
-					p, free := alloc.New(server.Player{})
+					p, free := alloc.NewHigh(server.Player{})
 					t.Cleanup(free)
 					seExtraInitializePlayer40AA70(t, p, &in, in.Args[0])
 					arg = unsafe.Pointer(p)
@@ -419,7 +419,7 @@ func TestSettingEligibilityPinnedGoHeap40AA70(t *testing.T) {
 				before[i] = append([]byte(nil), unsafe.Slice((*byte)(ptr), int(unsafe.Sizeof(*p)))...)
 			}
 			for _, role := range []string{"info0", "info1"} {
-				p, free := alloc.Malloc(64)
+				p, free := alloc.MallocHigh(64)
 				t.Cleanup(free)
 				raw := unsafe.Slice((*byte)(p), 64)
 				for i := range raw {

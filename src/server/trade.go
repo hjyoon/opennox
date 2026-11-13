@@ -8,8 +8,6 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const (
@@ -165,6 +163,7 @@ type nativeTradeSessionAllocation struct {
 }
 
 type serverTradeNativeState struct {
+	highAddresses    bool
 	sessions         map[*TradeSession]*nativeTradeSessionAllocation
 	head             *TradeSession
 	questShopSession [questShopSessionSlots50E8F0]*TradeSession
@@ -279,6 +278,15 @@ func (t *serverTradeNativeState) clearQuestShopSession(playerIndex int) bool {
 // by GAME.EXE for TradeSession and TradeItem records. Native sessions already
 // own pointer-width-safe C-heap records, so session startup only needs to
 // establish an empty ownership registry.
+// TradeInitHigh50E2A0 selects high foreign session and item records for this
+// server's trade registry. Existing records are released before the new policy.
+func (s *Server) TradeInitHigh50E2A0() bool {
+	s.tradeNative.close()
+	s.tradeNative.highAddresses = true
+	s.tradeNative.init()
+	return true
+}
+
 func (s *Server) TradeInit50E2A0() bool {
 	s.tradeNative.reset()
 	return true
@@ -315,7 +323,7 @@ func (s *Server) newTradeSessionGold50E870() (*Object, func()) {
 // be tested independently from the object database.
 func (s *Server) newTradeSessionNative50E870(newObject tradeSessionObjectFactory50E870) *TradeSession {
 	s.tradeNative.init()
-	session, free := alloc.New(TradeSession{})
+	session, free := serverNativeNew(s.tradeNative.highAddresses, TradeSession{})
 	state := &nativeTradeSessionAllocation{
 		freeSession: free,
 		items:       make(map[*TradeItem]nativeTradeItemAllocation),
@@ -460,7 +468,7 @@ func (s *Server) addShopItemNative50EE00(session *TradeSession, item *Object, co
 	if state == nil || item == nil {
 		return nil
 	}
-	node, freeNode := alloc.New(TradeItem{})
+	node, freeNode := serverNativeNew(s.tradeNative.highAddresses, TradeItem{})
 	node.Item0 = item
 	node.Cost4 = cost
 	insertShopItem50EE00(&session.Field20, node)

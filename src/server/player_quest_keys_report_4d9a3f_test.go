@@ -212,7 +212,7 @@ func questKeyNativeFixture4D9A3F(t *testing.T) (*Server, *Object, *PlayerUpdateD
 		blob.Data, blob.Size = data, uintptr(len(data))
 		t.Cleanup(func() { *blob = previous })
 	}
-	s := New(nil, nil, strman.New())
+	s := NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	unit, freeUnit := alloc.NewHigh(Object{})
 	update, freeUpdate := alloc.NewHigh(PlayerUpdateData{})

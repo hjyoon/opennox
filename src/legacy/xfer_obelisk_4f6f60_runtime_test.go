@@ -64,12 +64,12 @@ func TestObeliskXferNativeLayout4F6F60(t *testing.T) {
 }
 
 func TestObeliskXferNativeWrite4F6F60PreservesPointersAndExactWire(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ObeliskUpdateData{Mana: -0x1020304})
+	data, freeData := alloc.NewHigh(server.ObeliskUpdateData{Mana: -0x1020304})
 	defer freeData()
 	*data = server.ObeliskUpdateData{Mana: -0x1020304}
-	id, freeID := alloc.CString("obelisk-native")
+	id, freeID := alloc.CStringHigh("obelisk-native")
 	defer freeID()
 
 	for name, pointer := range map[string]unsafe.Pointer{
@@ -215,12 +215,12 @@ func TestObeliskXferNativeRead4F6F60UsesNativeDrawablesAndRestoresCount(t *testi
 	defer func() { _ = cf.Close() }()
 	setObjectMapRuntimeGlobals4F4530(t, cf, 0x89abcdef)
 
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
-	data, freeData := alloc.New(server.ObeliskUpdateData{Mana: 1})
+	data, freeData := alloc.NewHigh(server.ObeliskUpdateData{Mana: 1})
 	defer freeData()
 	*data = server.ObeliskUpdateData{Mana: 1}
-	oldID, freeOldID := alloc.CString("")
+	oldID, freeOldID := alloc.CStringHigh("")
 	defer freeOldID()
 	object.ObjClass = objectlib.ClassImmobile
 	object.ObjSubClass = objectlib.SubClass(objectlib.OtherVisibleObelisk)
@@ -317,7 +317,7 @@ func TestObeliskXferNativeRead4F6F60UsesNativeDrawablesAndRestoresCount(t *testi
 }
 
 func TestObeliskXferExport4F6F60PreservesNativePointerAndResult(t *testing.T) {
-	object, freeObject := alloc.New(server.Object{})
+	object, freeObject := alloc.NewHigh(server.Object{})
 	defer freeObject()
 	assertObjectMapNativePointer4F4530(t, "object", unsafe.Pointer(object))
 

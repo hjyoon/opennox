@@ -23,7 +23,7 @@ import (
 // DefaultDamage and UnitSetHP run without replacement damage/HP callbacks.
 // Only outgoing player item-health transport is captured.
 func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

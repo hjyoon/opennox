@@ -88,9 +88,9 @@ func setScriptHandlerXferRuntimeGlobals4F5580(t *testing.T, cf *cryptfile.CryptF
 }
 
 func TestScriptHandlerXferRuntimeWrite4F5580PreservesWire(t *testing.T) {
-	context, freeContext := alloc.CString("wide-context")
+	context, freeContext := alloc.CStringHigh("wide-context")
 	defer freeContext()
-	handler, freeHandler := alloc.New(server.ScriptCallback{})
+	handler, freeHandler := alloc.NewHigh(server.ScriptCallback{})
 	defer freeHandler()
 	handler.Flags = 0xa1b2c3d4
 	handler.Func = 0x1020304
@@ -144,9 +144,9 @@ func TestScriptHandlerXferRuntimeRead4F5580RestoresContextAndFlags(t *testing.T)
 		t.Fatal(err)
 	}
 	setScriptHandlerXferRuntimeGlobals4F5580(t, cf)
-	context, freeContext := alloc.Make([]byte{}, 64)
+	context, freeContext := alloc.MakeHigh([]byte{}, 64)
 	defer freeContext()
-	handler, freeHandler := alloc.New(server.ScriptCallback{})
+	handler, freeHandler := alloc.NewHigh(server.ScriptCallback{})
 	defer freeHandler()
 	handler.Flags = 0xffffffff
 	handler.Func = 17

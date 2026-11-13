@@ -27,7 +27,7 @@ func TestConsoleEnterAfterCommittedTextInput(t *testing.T) {
 	noxflags.SetGame(noxflags.GameHost)
 	oldClient, oldConsole := noxClient, noxConsole
 	t.Cleanup(func() { noxClient, noxConsole = oldClient, oldConsole })
-	g := gui.New(nil)
+	g := gui.NewHigh(nil)
 	defer g.DestroyAll()
 	inp := input.New(slog.Default(), &consoleEntryTestInput{}, false, 6)
 	noxClient = &Client{Client: &client.Client{Inp: inp, GUI: g}, ctrl: new(CtrlEventHandler)}

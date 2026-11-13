@@ -34,9 +34,9 @@ func TestPlayerSelectorOriginalObservationsR282(t *testing.T) {
 	if legacy.Get_nox_alloc_chat_1197364() != nil {
 		t.Fatal("chat pool must be uninitialized for the owned fixture")
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	pool := alloc.NewClass("player-selector-original-r282", legacy.ChatBubbleSize(), 1)
+	pool := alloc.NewClassHigh("player-selector-original-r282", legacy.ChatBubbleSize(), 1)
 	legacy.Set_nox_alloc_chat_1197364(pool.UPtr())
 	t.Cleanup(func() {
 		legacy.ResetChatBubbles()

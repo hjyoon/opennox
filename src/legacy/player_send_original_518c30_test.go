@@ -536,7 +536,7 @@ func comparePlayerSendOriginal518C30(t *testing.T, invoke func(*server.Object, *
 	}
 	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	preserveImportantPacketState(t)
 	setImportantNativeListC(nil, nil)

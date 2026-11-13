@@ -12,7 +12,7 @@ import (
 )
 
 func TestTrackedRefreshOrdinaryBindings519710(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	previous := legacy.GetServer

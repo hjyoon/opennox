@@ -22,7 +22,7 @@ func (s *activeAbilityMembershipLegacyServer4FC250) S() *server.Server {
 }
 
 func TestActiveAbilityMembershipExport4FC250PreservesNativePointerAndInt32Ability(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	unit := &server.Object{ObjClass: object.ClassPlayer}
 	record := &server.ExecAbilityClass{

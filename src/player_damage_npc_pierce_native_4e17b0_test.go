@@ -26,9 +26,9 @@ import (
 // links crossing those C boundaries are C-owned native-width allocations.
 // The outgoing owner-HP transport alone is captured to verify the wire packet.
 func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

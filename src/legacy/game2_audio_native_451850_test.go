@@ -52,7 +52,7 @@ func game2AudioTestSetup(t *testing.T) *game2AudioDefinition {
 }
 func game2AudioTestFile(t *testing.T, data []byte) *binfile.MemFile {
 	t.Helper()
-	p, _ := alloc.Malloc(uintptr(len(data) + 32))
+	p, _ := alloc.MallocHigh(uintptr(len(data) + 32))
 	if p == nil {
 		t.Fatal("input allocation")
 	}

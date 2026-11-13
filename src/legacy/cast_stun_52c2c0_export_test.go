@@ -18,7 +18,7 @@ import (
 func TestCastStunCEntry52C2C0PlayerClassAndLiveAttribution(t *testing.T) {
 	for _, class := range []uint8{0, 1, 2, 255} {
 		t.Run(player.Class(class).String(), func(t *testing.T) {
-			srv := server.New(nil, nil, strman.New())
+			srv := server.NewHigh(nil, nil, strman.New())
 			t.Cleanup(srv.Close)
 			oldServer, oldApply, oldFrame := GetServer, buffApplyExportImpl4FF380, gameFrameHook
 			GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }
@@ -99,7 +99,7 @@ func TestCastStunCEntry52C2C0DelegatesSignedDwords(t *testing.T) {
 }
 
 func TestCastStunCEntry52C2C0PreservesNativeMonsterTarget(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer, oldApply := GetServer, buffApplyExportImpl4FF380
 	GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }

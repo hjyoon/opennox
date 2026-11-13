@@ -14,13 +14,13 @@ import (
 )
 
 func TestArachnaphobiaCastGoEntryForwardsNativePointers52DC80(t *testing.T) {
-	second, freeSecond := alloc.New(server.Object{})
+	second, freeSecond := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeSecond)
-	owner, freeOwner := alloc.New(server.Object{})
+	owner, freeOwner := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeOwner)
-	caster, freeCaster := alloc.New(server.Object{})
+	caster, freeCaster := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeCaster)
-	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 	t.Cleanup(freeArg)
 	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(12, 34)}
 	beforeSecond, beforeOwner, beforeCaster, beforeArg := *second, *owner, *caster, *arg
@@ -52,14 +52,14 @@ func TestArachnaphobiaCastNativeOpenTraceMissingType52DC80(t *testing.T) {
 			srv, caster, update := monsterLookAtFixture5125A0(t)
 			srv.Map.Init()
 			t.Cleanup(srv.Map.Free)
-			if srv.Walls.Init() == 0 {
+			if srv.Walls.InitHigh() == 0 {
 				t.Fatal("cannot initialize native wall map")
 			}
 			t.Cleanup(srv.Walls.Free)
 			caster.PosVec = types.Ptf(300, 300)
-			owner, freeOwner := alloc.New(server.Object{})
+			owner, freeOwner := alloc.NewHigh(server.Object{})
 			t.Cleanup(freeOwner)
-			arg, freeArg := alloc.New(server.SpellAcceptArg{})
+			arg, freeArg := alloc.NewHigh(server.SpellAcceptArg{})
 			t.Cleanup(freeArg)
 			*arg = server.SpellAcceptArg{Obj: nil, Pos: types.Ptf(330, 300)}
 			cache := memmap.PtrUint32(0x5D4594, 2487812)

@@ -34,10 +34,10 @@ func (c *bubbleCreateClient499F60) Nox_xxx_spriteLoadAdd_45A360_drawable(typ int
 
 func newBubbleCreateClient499F60(t *testing.T) *bubbleCreateClient499F60 {
 	t.Helper()
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetFrame(100)
-	c := &bubbleCreateClient499F60{cli: client.NewClient(nil, nil, s)}
+	c := &bubbleCreateClient499F60{cli: client.NewClientHigh(nil, nil, s)}
 	t.Cleanup(c.cli.Close)
 	t.Cleanup(c.cli.GUI.DestroyAll)
 	prev := GetClient
@@ -70,9 +70,9 @@ func TestBubbleCreate499F60NativePayloadAndLists(t *testing.T) {
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			c := newBubbleCreateClient499F60(t)
-			sentinel, freeSentinel := alloc.New(client.Drawable{})
+			sentinel, freeSentinel := alloc.NewHigh(client.Drawable{})
 			t.Cleanup(freeSentinel)
-			dr, free := alloc.New(client.Drawable{})
+			dr, free := alloc.NewHigh(client.Drawable{})
 			t.Cleanup(free)
 			t.Logf("actual C drawable=%p next sprite=%p", dr, sentinel)
 			dr.PosVec = image.Pt(-321, 654)
@@ -155,7 +155,7 @@ func TestBubbleCreate499F60MissingTypeCacheStillAttemptsAllocation(t *testing.T)
 
 func TestBubbleCreate499F60ColorUsesFirstMatchingCache(t *testing.T) {
 	c := newBubbleCreateClient499F60(t)
-	dr, free := alloc.New(client.Drawable{})
+	dr, free := alloc.NewHigh(client.Drawable{})
 	t.Cleanup(free)
 	c.dr = dr
 	*memmap.PtrUint32(0x5D4594, 1217528) = 100 // Red and green share a live type ID.

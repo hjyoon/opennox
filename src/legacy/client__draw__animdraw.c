@@ -1,3 +1,4 @@
+#include "draw_allocation.h"
 #include "client__draw__animdraw.h"
 #include "GAME1.h"
 #include "GAME1_2.h"
@@ -85,7 +86,7 @@ int nox_thing_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
 
 //----- (0044B390) --------------------------------------------------------
 bool nox_things_animate_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_value) {
-	nox_animate_draw_data_t* data = calloc(1, sizeof(*data));
+	nox_animate_draw_data_t* data = nox_draw_memory_calloc(1, sizeof(*data));
 	if (!data) {
 		return 0;
 	}
@@ -97,9 +98,9 @@ bool nox_things_animate_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_va
 	attr_value[kind_len] = 0;
 	data->animation_kind = get_animation_kind_id_44B4C0(attr_value);
 	if (data->frame_count != 0) {
-		data->images = calloc(data->frame_count, sizeof(*data->images));
+		data->images = nox_draw_memory_calloc(data->frame_count, sizeof(*data->images));
 		if (!data->images) {
-			free(data);
+			nox_draw_memory_free(data);
 			return 0;
 		}
 	}
@@ -132,7 +133,7 @@ int sub_44BE90(int a1, nox_memfile* f) {
 	char v12[128];   // [esp+Ch] [ebp-80h]
 
 	v2 = a1;
-	result = calloc(*(short*)(a1 + 40), 4);
+	result = nox_draw_memory_calloc(*(short*)(a1 + 40), 4);
 	*(uint32_t*)(a1 + 4) = result;
 	if (result) {
 		v4 = 0;
@@ -159,7 +160,7 @@ int sub_44BE90(int a1, nox_memfile* f) {
 //----- (0044BD90) --------------------------------------------------------
 bool nox_things_animate_state_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_value) {
 	const size_t data_sz = 0x94u;
-	uint32_t* draw_cb_data = calloc(1u, data_sz);
+	uint32_t* draw_cb_data = nox_draw_memory_calloc(1u, data_sz);
 	draw_cb_data[0] = data_sz;
 	while (1) {
 		int cmd = nox_memfile_read_u32(f);

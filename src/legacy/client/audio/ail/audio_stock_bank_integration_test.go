@@ -245,7 +245,7 @@ func TestNativeStockAudioBankPlaybackChild(t *testing.T) {
 
 	runtime.LockOSThread()
 	t.Cleanup(runtime.UnlockOSThread)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	driver := WaveOutOpen()
 	if driver == 0 {

@@ -95,9 +95,9 @@ func registeredArrowTypes4B7920(t *testing.T, c *Client) {
 			}
 		}
 		raw = append(raw, 0)
-		buf, _ := alloc.CloneSlice(raw)
+		buf, _ := alloc.CloneSliceHigh(raw)
 		f := binfile.NewMemFile(unsafe.Pointer(&buf[0]), len(buf))
-		scratch, freeScratch := alloc.Make([]byte{}, 256)
+		scratch, freeScratch := alloc.MakeHigh([]byte{}, 256)
 		err := c.Things.ReadType(f, scratch)
 		remaining := len(f.Data())
 		freeScratch()
@@ -152,9 +152,9 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 	}
 	t.Chdir(t.TempDir())
 	destroyOnceBag48EA70(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
 	frame := uint32(100)
@@ -164,7 +164,7 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 	s.SetFrame(frame)
 	s.Rand.Logic.Reset(93)
 	s.Rand.Other.Reset(17)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	poolSize := 4
@@ -177,7 +177,7 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	// Real image clipping saves/restores this C renderer pointer, independently
@@ -193,7 +193,7 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 	t.Cleanup(r.GetBag().Free)
 	c := &Client{Client: cl, srv: &Server{Server: s}, r: NewNoxRender(r)}
 	// Supply the same real ambient-light context as the image callback tests.
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255
@@ -231,7 +231,7 @@ func testRegisteredArrowChild4B7920(t *testing.T, name string) {
 			beforeImages[typ] = slices.Clone(unsafe.Slice(data.images, int(data.count)))
 		}
 	})
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World, vp.Screen = image.Rect(100, 200, 228, 328), image.Rect(8, 9, 136, 137)
 	vp.Size = pix.Size()

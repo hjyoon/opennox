@@ -20,7 +20,7 @@ type castConfuseLegacyServer52C1E0 struct {
 }
 
 func TestCastConfuseCEntry52C1E0PreservesCasterAndLiveAttribution(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer, oldApply, oldFrame := GetServer, buffApplyExportImpl4FF380, gameFrameHook
 	GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }
@@ -97,7 +97,7 @@ func TestCastConfuseCEntry52C1E0DelegatesSignedDwords(t *testing.T) {
 func (s *castConfuseLegacyServer52C1E0) S() *server.Server { return s.srv }
 
 func TestCastConfuseCEntry52C1E0PreservesNativeTargetAndPower(t *testing.T) {
-	srv := server.New(nil, nil, strman.New())
+	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	oldServer, oldApply := GetServer, buffApplyExportImpl4FF380
 	GetServer = func() Server { return &castConfuseLegacyServer52C1E0{srv: srv} }

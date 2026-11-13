@@ -29,7 +29,7 @@ var mapSectionNames249 = []string{
 }
 
 func TestMapSectionWriterNativeBoundaries249V2(t *testing.T) {
-	context, free := alloc.New([4]uint64{})
+	context, free := alloc.NewHigh([4]uint64{})
 	defer free()
 	*context = [4]uint64{0x1122334455667788, 0x99aabbccddeeff00, 0x0123456789abcdef, 0xfedcba9876543210}
 	before := *context

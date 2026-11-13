@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -41,7 +42,7 @@ typedef struct nox_test_mapgen_room_ranking_5259f0_result {
 
 static nox_test_mapgen_room_ranking_5259f0_result nox_test_mapgen_room_ranking_5259f0(void) {
 	nox_test_mapgen_room_ranking_5259f0_result out = {0};
-	uint8_t* theme = (uint8_t*)calloc(1, 0x45C);
+	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	uint8_t* rooms[5] = {0};
 	int room_count = 0;
 	if (!theme) {
@@ -51,7 +52,7 @@ static nox_test_mapgen_room_ranking_5259f0_result nox_test_mapgen_room_ranking_5
 	*(uint32_t*)(theme + 68) = 32;
 	out.grid_initialized = sub_520EA0(theme);
 	if (!out.grid_initialized) {
-		free(theme);
+		nox_native_fixture_free_high(theme);
 		return out;
 	}
 
@@ -120,7 +121,7 @@ cleanup:
 	out.sorted_head_after_cleanup = (uintptr_t)nox_mapgenSortedRoomHeadNative_525C90();
 	out.max_distance_after_cleanup = nox_mapgenMaxRoomDistanceNative_5259D0();
 	sub_520F80();
-	free(theme);
+	nox_native_fixture_free_high(theme);
 	return out;
 }
 */
@@ -155,6 +156,8 @@ type mapgenRoomRankingResult5259F0 struct {
 }
 
 func mapgenRoomRankingFixture5259F0() mapgenRoomRankingResult5259F0 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
 	got := C.nox_test_mapgen_room_ranking_5259f0()
 	var out mapgenRoomRankingResult5259F0
 	out.themeAddress = uintptr(got.theme_address)

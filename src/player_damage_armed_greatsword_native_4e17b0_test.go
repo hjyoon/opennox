@@ -28,7 +28,7 @@ import (
 // The registered damage path, enemy/facing/reflection/owner/audio/RNG/state,
 // WeaponDamage/DefaultDamage and C UnitSetHP services are not substituted.
 func TestPlayerDamageArmedGreatSwordNative4E17B0RegisteredDurabilityAndHP(t *testing.T) {
-	base := server.New(nil, nil, strman.New())
+	base := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
 	oldServer, oldGetServer := noxServer, legacy.GetServer

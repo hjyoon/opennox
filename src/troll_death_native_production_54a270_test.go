@@ -84,7 +84,7 @@ func TestTrollDeathActualCProduction54A270(t *testing.T) {
 	if !found {
 		t.Fatal("independent original lifetime result")
 	}
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	s := NewServer(nil, nil, strman.New())
 	t.Cleanup(s.Close)
@@ -111,7 +111,7 @@ func TestTrollDeathActualCProduction54A270(t *testing.T) {
 	t.Cleanup(s.Objs.FreeObjects)
 	s.Map.Init()
 	t.Cleanup(s.Map.Free)
-	if s.Walls.Init() == 0 {
+	if s.Walls.InitHigh() == 0 {
 		t.Fatal("native wall grid")
 	}
 	t.Cleanup(s.Walls.Free)

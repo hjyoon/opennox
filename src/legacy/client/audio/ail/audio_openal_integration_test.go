@@ -28,7 +28,7 @@ func openPlaybackTestDriver(t *testing.T) Driver {
 	}
 	runtime.LockOSThread()
 	t.Cleanup(runtime.UnlockOSThread)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
 	h := WaveOutOpen()
 	if h == 0 {

@@ -58,7 +58,7 @@ func TestPointOccupancyProduction54EF00(t *testing.T) {
 			oldRuntime := pointOccupancyRuntimeOverride54EF00
 			pointOccupancyRuntimeOverride54EF00 = nil
 			t.Cleanup(func() { pointOccupancyRuntimeOverride54EF00 = oldRuntime })
-			point, free := alloc.New(types.Pointf{})
+			point, free := alloc.NewHigh(types.Pointf{})
 			t.Cleanup(free)
 			*point = tc.point
 			unit.ObjClass, unit.ObjFlags, unit.Field5 = tc.class, object.FlagActive, tc.flags

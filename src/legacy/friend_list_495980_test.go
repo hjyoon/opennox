@@ -7,7 +7,7 @@ import (
 )
 
 func TestFriendListNative495980(t *testing.T) {
-	handles.Init()
+	handles.InitHigh()
 	defer handles.Release()
 
 	if got := Nox_xxx_allocClassListFriends_495980(); got == 0 {

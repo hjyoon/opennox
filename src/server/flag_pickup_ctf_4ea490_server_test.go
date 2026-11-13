@@ -29,7 +29,7 @@ func TestFlagPickupCTFFlagIndex4ECBD0MatchesMaterialTable(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			name, freeName := alloc.CString(tc.name)
+			name, freeName := alloc.CStringHigh(tc.name)
 			defer freeName()
 			material := &ModifierEff{name0: name}
 			data := &ModifierInitData{Modifiers: [4]*ModifierEff{nil, material}}

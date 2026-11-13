@@ -24,7 +24,7 @@ func (s *questLoseWeaponLegacyServer54CC40) DelayedDelete(item *server.Object) {
 }
 
 func TestQuestLoseWeapon54CC40NativeCGoRoundTrip(t *testing.T) {
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	outer := &questLoseWeaponLegacyServer54CC40{native: s}
 	oldServer, oldCanUse := GetServer, Nox_xxx_playerClassCanUseItem_57B3D0

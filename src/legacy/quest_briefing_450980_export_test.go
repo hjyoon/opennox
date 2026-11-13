@@ -15,7 +15,7 @@ import (
 )
 
 func TestQuestStageBriefing450980CEntryFullPointerAndSignedScalars(t *testing.T) {
-	packet, free := alloc.Make([]byte{0xf0, 0x0d}, 69)
+	packet, free := alloc.MakeHigh([]byte{0xf0, 0x0d}, 69)
 	t.Cleanup(free)
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(&packet[0])) <= math.MaxUint32 {
 		t.Fatalf("packet=%p", &packet[0])
@@ -43,8 +43,8 @@ func TestQuestStageBriefing450980CEntryFullPointerAndSignedScalars(t *testing.T)
 }
 
 func TestQuestStageBriefing450980NativePacketCStorageAndFallback(t *testing.T) {
-	image, freeImage := alloc.Malloc(8)
-	text, freeText := alloc.Malloc(8)
+	image, freeImage := alloc.MallocHigh(8)
+	text, freeText := alloc.MallocHigh(8)
 	t.Cleanup(freeImage)
 	t.Cleanup(freeText)
 	imageSlot, textSlot := memmap.PtrPtr(0x5D4594, 832460), memmap.PtrPtr(0x5D4594, 832464)
@@ -67,7 +67,7 @@ func TestQuestStageBriefing450980NativePacketCStorageAndFallback(t *testing.T) {
 		{key: strings.Repeat("x", 80), flags: 0x80, show: -1},
 		{key: "Description", flags: 0, show: 1, mutate: true},
 	} {
-		packet, free := alloc.Make([]byte{0xf0, 0x0d}, max(69, 38+len(tc.key)))
+		packet, free := alloc.MakeHigh([]byte{0xf0, 0x0d}, max(69, 38+len(tc.key)))
 		t.Cleanup(free)
 		copy(packet[5:], "StageImage")
 		copy(packet[37:], tc.key)

@@ -63,7 +63,7 @@ func luaCompatGuardNew(t *testing.T) *luaCompatGuardFixture {
 	f.sounds, free = alloc.NewHigh([18]uint32{})
 	t.Cleanup(free)
 	f.sounds[17] = uint32(sound.SoundAnchorCast)
-	id, freeID := alloc.CString("lua_guard_target")
+	id, freeID := alloc.CStringHigh("lua_guard_target")
 	t.Cleanup(freeID)
 	f.unit.IDPtr, f.unit.UpdateData = unsafe.Pointer(id), unsafe.Pointer(f.update)
 	f.unit.ObjClass, f.unit.ObjFlags = object.ClassMonster, object.FlagEnabled

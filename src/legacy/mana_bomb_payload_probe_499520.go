@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <string.h>
 #include "client__draw__fx.h"
@@ -16,29 +17,31 @@ typedef struct {
 
 static nox_mana_bomb_probe_result nox_mana_bomb_probe_499520(
  const int16_t* path, uint16_t angle, uint8_t reverse, uint8_t fade, uint8_t mode, uint8_t fill) {
- nox_drawable dr;
- memset(&dr, fill, sizeof(dr));
- dr.field_92 = &dr;
+ nox_drawable* dr = nox_native_fixture_calloc_high(1, sizeof(*dr));
+ if (!dr) abort();
+ memset(dr, fill, sizeof(*dr));
+ dr->field_92 = dr;
  nox_drawable before;
- memcpy(&before, &dr, sizeof(dr));
- nox_client_mana_bomb_orb_set_payload_499520(&dr, path, angle, reverse, fade, mode);
+ memcpy(&before, dr, sizeof(*dr));
+ nox_client_mana_bomb_orb_set_payload_499520(dr, path, angle, reverse, fade, mode);
  nox_mana_bomb_probe_result out = {0};
- memcpy(out.effect, &dr.union_u32[0], sizeof(out.effect));
- out.field127 = dr.field_127;
- out.address = (uintptr_t)&dr;
- out.callback = dr.field_116 == (void*)sub_4CA720;
+ memcpy(out.effect, &dr->union_u32[0], sizeof(out.effect));
+ out.field127 = dr->field_127;
+ out.address = (uintptr_t)dr;
+ out.callback = dr->field_116 == (void*)sub_4CA720;
  out.canary = 1;
  const unsigned char* a = (const unsigned char*)&before;
- const unsigned char* b = (const unsigned char*)&dr;
- size_t payload = (const unsigned char*)&dr.union_u32[0] - b;
- size_t callback = (const unsigned char*)&dr.field_116 - b;
- size_t marker = (const unsigned char*)&dr.field_127 - b;
- for (size_t i = 0; i < sizeof(dr); ++i) {
+ const unsigned char* b = (const unsigned char*)dr;
+ size_t payload = (const unsigned char*)&dr->union_u32[0] - b;
+ size_t callback = (const unsigned char*)&dr->field_116 - b;
+ size_t marker = (const unsigned char*)&dr->field_127 - b;
+ for (size_t i = 0; i < sizeof(*dr); ++i) {
   if ((i >= payload && i < payload + 15) ||
-      (i >= callback && i < callback + sizeof(dr.field_116)) ||
+      (i >= callback && i < callback + sizeof(dr->field_116)) ||
       (i >= marker && i < marker + 2)) continue;
   if (a[i] != b[i]) out.canary = 0;
  }
+ nox_native_fixture_free_high(dr);
  return out;
 }
 */

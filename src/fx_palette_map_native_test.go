@@ -101,20 +101,20 @@ func TestFXPaletteActualMagicTailFrames4B5E10(t *testing.T) {
 		return
 	}
 	original := fxPaletteOriginal199(t)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
 	s.SetTickRate(60)
 	s.SetFrame(100)
 	s.Rand.Logic.Reset(93)
 	s.Rand.Other.Reset(17)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(4)
 	t.Cleanup(cl.Objs.Free)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	d, freeData := noxrender.NewRenderData()
+	d, freeData := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeData)
 	r.SetData(d)
 	pix := noximage.NewImage16(image.Rect(0, 0, 144, 144))
@@ -123,7 +123,7 @@ func TestFXPaletteActualMagicTailFrames4B5E10(t *testing.T) {
 	oldClient, oldServer := noxClient, noxServer
 	noxClient, noxServer = c, c.srv
 	t.Cleanup(func() { noxClient, noxServer = oldClient, oldServer })
-	vp, freeVP := alloc.New(noxrender.Viewport{})
+	vp, freeVP := alloc.NewHigh(noxrender.Viewport{})
 	t.Cleanup(freeVP)
 	vp.World, vp.Screen = image.Rect(100, 200, 228, 328), image.Rect(8, 9, 136, 137)
 	vp.Size = pix.Size()

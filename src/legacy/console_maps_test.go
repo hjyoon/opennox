@@ -15,7 +15,7 @@ func TestConsoleMapNamesUseNativeListLinksAndBoundedNames(t *testing.T) {
 	head.next, head.prev, head.head = head, head, head
 	names := []string{"war03b", "con02a", "012345678901"}
 	for _, name := range names {
-		mp, free := alloc.New(Nox_map_list_item{})
+		mp, free := alloc.NewHigh(Nox_map_list_item{})
 		t.Cleanup(free)
 		copy(mp.Name[:], name)
 		it := (*nativeListItem)(unsafe.Pointer(mp))

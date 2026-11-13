@@ -109,10 +109,10 @@ func destroyOnceType48EA70(t *testing.T, c *Client, kind uint32, delay byte) *cl
 		raw = binary.LittleEndian.AppendUint32(raw, id)
 	}
 	raw = append(raw, 0)
-	buffer, _ := alloc.CloneSlice(raw)
+	buffer, _ := alloc.CloneSliceHigh(raw)
 	f := binfile.NewMemFile(unsafe.Pointer(&buffer[0]), len(buffer))
 	defer f.Free()
-	scratch, free := alloc.Make([]byte{}, 256)
+	scratch, free := alloc.MakeHigh([]byte{}, 256)
 	defer free()
 	if err := c.Things.ReadType(f, scratch); err != nil || len(f.Data()) != 0 {
 		t.Fatalf("real registered AnimateDraw parser failed: %v unread=%d", err, len(f.Data()))
@@ -155,11 +155,11 @@ func TestDestroyOnceNative48EA70HeadlessV5(t *testing.T) {
 	}
 	t.Chdir(t.TempDir())
 	destroyOnceBag48EA70(t)
-	handles.Init()
+	handles.InitHigh()
 	t.Cleanup(handles.Release)
-	s := server.New(nil, nil, strman.New())
+	s := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(s.Close)
-	cl := client.NewClient(nil, nil, s)
+	cl := client.NewClientHigh(nil, nil, s)
 	t.Cleanup(cl.Close)
 	t.Cleanup(func() { alloc.FreePtr(cl.Viewport().C()) })
 	cl.Objs.InitHigh(8)
@@ -168,7 +168,7 @@ func TestDestroyOnceNative48EA70HeadlessV5(t *testing.T) {
 	t.Cleanup(cl.Things.Nox_things_free_44C580_B)
 	r := cl.Render()
 	t.Cleanup(r.Part.Free)
-	draw, freeDraw := noxrender.NewRenderData()
+	draw, freeDraw := noxrender.NewRenderDataHigh()
 	t.Cleanup(freeDraw)
 	r.SetData(draw)
 	pix := noximage.NewImage16(image.Rect(0, 0, 64, 64))
@@ -181,7 +181,7 @@ func TestDestroyOnceNative48EA70HeadlessV5(t *testing.T) {
 	// The real image callback interpolates ambient lighting into C-owned
 	// storage. Initialize the missing renderer context, not packet flags,
 	// frame inputs or expected pixels.
-	c.tiles.lightsOutBuf, _ = alloc.Make([]uint32{}, 6)
+	c.tiles.lightsOutBuf, _ = alloc.MakeHigh([]uint32{}, 6)
 	t.Cleanup(func() { alloc.FreeSlice(c.tiles.lightsOutBuf) })
 	for i := 0; i < 3; i++ {
 		c.tiles.lightsOutBuf[i] = 255

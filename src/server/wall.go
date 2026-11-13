@@ -35,6 +35,9 @@ type serverWalls struct {
 	freeList *Wall   // TODO: just allocate dynamically
 	byPos    []*Wall // index is wallArrayInd
 	indexY   []*Wall // TODO: replace the maps index with map[[2]int]*Wall when we can prove no access to NextByY24 is made
+	// Explicit high-address fixtures share one foreign owner. A separate
+	// Windows mapping for every wall makes repeated world setup prohibitively slow.
+	highStorage []Wall
 
 	breakableList *BreakableWall
 
@@ -178,13 +181,22 @@ func (s *serverWalls) init(highAddresses bool) int {
 		return 0
 	}
 	s.head = nil
-	for i := 0; i < wallsPerBucket*WallGridSize; i++ {
-		ptr, _ := serverNativeNew(highAddresses, Wall{})
-		if ptr == nil {
-			return 0
+	if highAddresses {
+		s.highStorage, _ = alloc.MakeHigh([]Wall{}, wallsPerBucket*WallGridSize)
+		for i := range s.highStorage {
+			ptr := &s.highStorage[i]
+			ptr.Next20 = s.freeList
+			s.freeList = ptr
 		}
-		ptr.Next20 = s.freeList
-		s.freeList = ptr
+	} else {
+		for i := 0; i < wallsPerBucket*WallGridSize; i++ {
+			ptr, _ := alloc.New(Wall{})
+			if ptr == nil {
+				return 0
+			}
+			ptr.Next20 = s.freeList
+			s.freeList = ptr
+		}
 	}
 	s.Reset()
 	return 1
@@ -215,17 +227,23 @@ func (s *serverWalls) Reset() {
 }
 
 func (s *serverWalls) Free() {
-	for i := 0; i < wallsPerBucket*WallGridSize; i++ {
+	if s.highStorage != nil {
+		alloc.FreeSlice(s.highStorage)
+		s.highStorage = nil
+		s.head = nil
+	} else {
+		for i := 0; i < wallsPerBucket*WallGridSize; i++ {
+			var next *Wall
+			for ptr := s.byPos[i]; ptr != nil; ptr = next {
+				next = ptr.NextByPos16
+				alloc.Free(ptr)
+			}
+		}
 		var next *Wall
-		for ptr := s.byPos[i]; ptr != nil; ptr = next {
-			next = ptr.NextByPos16
+		for ptr := s.freeList; ptr != nil; ptr = next {
+			next = ptr.Next20
 			alloc.Free(ptr)
 		}
-	}
-	var next *Wall
-	for ptr := s.freeList; ptr != nil; ptr = next {
-		next = ptr.Next20
-		alloc.Free(ptr)
 	}
 	s.freeList = nil
 

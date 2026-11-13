@@ -4,6 +4,8 @@ import (
 	"image"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func TestWallNativeAllocatorPolicies(t *testing.T) {
@@ -58,9 +60,31 @@ func TestWallNativeAllocatorPolicies(t *testing.T) {
 			if walls.GetWallAtGrid(position) != nil || walls.head != nil {
 				t.Fatal("wall survived reset")
 			}
+			recycled := walls.CreateAtGrid(position)
+			if recycled == nil {
+				t.Fatal("reset lost the wall pool")
+			}
+			walls.DeleteAtGrid(position)
+			replacement := image.Pt(18, 20)
+			if got := walls.CreateAtGrid(replacement); got != recycled || walls.GetWallAtGrid(position) != nil || walls.GetWallAtGrid(replacement) != recycled {
+				t.Fatal("deleted wall was not reused through the native indexes")
+			}
+			var poolOwner unsafe.Pointer
+			if high {
+				poolOwner = unsafe.Pointer(unsafe.SliceData(walls.highStorage))
+				if poolOwner == nil {
+					t.Fatal("high wall pool has no foreign owner")
+				}
+			} else if walls.highStorage != nil {
+				t.Fatal("ordinary wall allocation inherited the fixture policy")
+			}
+			// Keep an indexed live wall and free-list entries alive until teardown.
 			walls.Free()
-			if walls.byPos != nil || walls.indexY != nil || walls.freeList != nil {
+			if walls.byPos != nil || walls.indexY != nil || walls.freeList != nil || walls.highStorage != nil {
 				t.Fatal("released wall storage retained an owner")
+			}
+			if poolOwner != nil && alloc.TryFreePtr(poolOwner) {
+				t.Fatal("released wall pool remained registered")
 			}
 		})
 	}

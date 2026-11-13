@@ -400,9 +400,8 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 	if handled {
 		return
 	}
-	if unsafe.Sizeof(uintptr(0)) == 4 {
-		C.nox_xxx_diePlayer_54D2B0(asObjectC(unit))
-	}
+	// The public C entry shares this native implementation; never recurse
+	// into it as a PE32 fallback on an unhandled/invalid owner.
 }
 
 //export nox_xxx_diePlayer_54D2B0_go

@@ -1,0 +1,2440 @@
+{
+  "schema": "opennox-game5-native-source-map-v1",
+  "base_revision": "2c9e7e7dab9b14c9ce81b712cd576079b18dc546",
+  "scope": "Literal src/legacy/GAME5.c; split GAME5_2.c remains separately scoped",
+  "incoming_bytes": 186152,
+  "incoming_sha256": "139e2ecb53f8d53cd4d147a1ea7e6bf2a15ea4ec5adf24401887bb64ad276801",
+  "literal_unique_names": 157,
+  "same_name_Go_exports": 139,
+  "private_or_renamed_names": 18,
+  "previously_active_C_functions": 101,
+  "current_active_C_functions": 0,
+  "new_control_or_queue_algorithms": 23,
+  "public_names_bound_to_existing_Go_algorithms": 72,
+  "private_strike_helpers_connected_to_existing_Go_owners": 6,
+  "rows": [
+    {
+      "name": "nox_xxx_BuildWaypointPath_547F70",
+      "incoming_definitions": [
+        {
+          "line": 1316,
+          "bytes": 2049,
+          "sha256": "074ac612072d3928411b68438a7a06e8f2cbbdce3c6825bfa0f1129240be6b55"
+        }
+      ],
+      "classification": "private BFS helper",
+      "owner": {
+        "path": "src/server/monster_move_path_50d2a0.go",
+        "symbol": "monsterBuildWaypointPath547F70"
+      }
+    },
+    {
+      "name": "nox_xxx_allocHitArray_5486D0",
+      "incoming_definitions": [
+        {
+          "line": 1596,
+          "bytes": 394,
+          "sha256": "ce760b01317956d358635ecd78834c1ce75608ac3d67b7959320971a0bddecdd"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 84
+      }
+    },
+    {
+      "name": "nox_xxx_collSysAddCollision_548630",
+      "incoming_definitions": [
+        {
+          "line": 1569,
+          "bytes": 798,
+          "sha256": "bb5b5e69f5b76428c8e8531155f92f5e18b07dacb0c91b0c38c872435368820f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 57
+      }
+    },
+    {
+      "name": "nox_xxx_collideTrigger_54FCD0",
+      "incoming_definitions": [
+        {
+          "line": 5273,
+          "bytes": 141,
+          "sha256": "e4e5340f1d35b16599fb5c732e721958752871043e3646c0a29558e6621f46b5"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 62
+      }
+    },
+    {
+      "name": "nox_xxx_collideTrigger_54FCD0_pe32",
+      "incoming_definitions": [
+        {
+          "line": 5278,
+          "bytes": 981,
+          "sha256": "c5077007e596c837241a1ed21877456bc0da6a31c144a8ce2884e18ef39ed75b"
+        }
+      ],
+      "classification": "already retired PE32 clone",
+      "owner": {
+        "path": "src/legacy/trigger_collide_54fcd0.go",
+        "symbol": "nox_xxx_collideTrigger_54FCD0_go"
+      }
+    },
+    {
+      "name": "nox_xxx_collide_548740",
+      "incoming_definitions": [
+        {
+          "line": 1608,
+          "bytes": 1047,
+          "sha256": "ea938a5dfd430176aa3230ad0183a40e16826f3ef890a3977ec9c8f8b4931664"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 97
+      }
+    },
+    {
+      "name": "nox_xxx_collisionCheckCircleCircle_550D00",
+      "incoming_definitions": [
+        {
+          "line": 5725,
+          "bytes": 162,
+          "sha256": "4a569520a78edc3e9646123178c3dad33c2733ee10d154b4108130873d11cb7f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 89
+      }
+    },
+    {
+      "name": "nox_xxx_createArrowTrapProjectile_54FA80",
+      "incoming_definitions": [
+        {
+          "line": 5188,
+          "bytes": 1581,
+          "sha256": "03a7bbb8fcff82b68759dd9920949f7376f55ecec982f2ce532e88be0e2b5bd4"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skull_raw_native_54f9a0_export.go",
+        "line": 76
+      }
+    },
+    {
+      "name": "nox_xxx_createFnAnim_54CA50",
+      "incoming_definitions": [
+        {
+          "line": 3741,
+          "bytes": 95,
+          "sha256": "5d7a9205ac27011651680d442bffbdf04f0dfb7ceb920f33870d807406a45b9d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 86
+      }
+    },
+    {
+      "name": "nox_xxx_createFnObelisk_54CA10",
+      "incoming_definitions": [
+        {
+          "line": 3732,
+          "bytes": 190,
+          "sha256": "eecb7870dda3c1606176265a7d30adc33cf513614d3967966934fabfe5a2dac4"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 80
+      }
+    },
+    {
+      "name": "nox_xxx_createMonsterGen_54CA90",
+      "incoming_definitions": [
+        {
+          "line": 3758,
+          "bytes": 224,
+          "sha256": "cc407f06824cfd04bcdc1ecdfa84b7636182189b79793cce766a43ea1756e6f4"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 96
+      }
+    },
+    {
+      "name": "nox_xxx_createRewardMarker_54CAC0",
+      "incoming_definitions": [
+        {
+          "line": 3771,
+          "bytes": 168,
+          "sha256": "eed6fd065b264126820ac5578bb2594bf3587d50ff82c64971e36c7a08e2a896"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 103
+      }
+    },
+    {
+      "name": "nox_xxx_createSpark_54FD80",
+      "incoming_definitions": [
+        {
+          "line": 5323,
+          "bytes": 1521,
+          "sha256": "ebc33b5f13699e28d3355a876cc3a48c1914b54157531e6a3763c2560b5ce63b"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 141
+      }
+    },
+    {
+      "name": "nox_xxx_createTrigger_54CA60",
+      "incoming_definitions": [
+        {
+          "line": 3744,
+          "bytes": 238,
+          "sha256": "3792ae26fb17415e17141101c80edbaa2db9fca43a8b6c16171b4e0bb334478e"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 89
+      }
+    },
+    {
+      "name": "nox_xxx_createWeapon_54C710",
+      "incoming_definitions": [
+        {
+          "line": 3656,
+          "bytes": 2461,
+          "sha256": "d06a53c9c489d8fcb252d11fc006cf95156cef99fb9620fb414484d7fc12a6de"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 74
+      }
+    },
+    {
+      "name": "nox_xxx_dieBoulder_54E4B0",
+      "incoming_definitions": [
+        {
+          "line": 4569,
+          "bytes": 1557,
+          "sha256": "7b41ad1ff0de78e2dc3de8b7f1327d4e7005e6cb3210873ecf345838fe766e90"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/special_death_native_54e460_export.go",
+        "line": 158
+      }
+    },
+    {
+      "name": "nox_xxx_dieCreateObject_54E010",
+      "incoming_definitions": [
+        {
+          "line": 4499,
+          "bytes": 419,
+          "sha256": "4425848fe483fec839d26d40465abc8c41c5e1919ac9325360e8b40c66a6b413"
+        }
+      ],
+      "classification": "renamed native death registry",
+      "owner": {
+        "path": "src/legacy/object_death.go",
+        "symbol": "nox_xxx_dieCreateObject_54E010_go"
+      }
+    },
+    {
+      "name": "nox_xxx_dieGameBall_54E620",
+      "incoming_definitions": [
+        {
+          "line": 4624,
+          "bytes": 65,
+          "sha256": "bcbd1e4a22d5f64b2168049276b391d7fa45d23bb2b085b823191179f2bcb4f0"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game_ball_lifecycle_417f50_export.go",
+        "line": 32
+      }
+    },
+    {
+      "name": "nox_xxx_dieImpEgg_54CAE0",
+      "incoming_definitions": [
+        {
+          "line": 3782,
+          "bytes": 212,
+          "sha256": "c05ee68a2ff040bc15766aa6822b0fc77d0ee0453853156baed3e6da1e26ed60"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/simple_polyp_death_native_54cae0_export.go",
+        "line": 63
+      }
+    },
+    {
+      "name": "nox_xxx_dieMarker_54E460",
+      "incoming_definitions": [
+        {
+          "line": 4541,
+          "bytes": 501,
+          "sha256": "a576289cfe9652ade4ea8fe4722dd8bc9b77d06aa0c512bcc719e75cad317424"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/special_death_native_54e460_export.go",
+        "line": 153
+      }
+    },
+    {
+      "name": "nox_xxx_dieMonsterGen_54E630",
+      "incoming_definitions": [
+        {
+          "line": 4629,
+          "bytes": 790,
+          "sha256": "f222cb20d07905945dd85cb73679d76cf369d228c0f8be2b86fed42a45a3c842"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/special_death_native_54e460_export.go",
+        "line": 163
+      }
+    },
+    {
+      "name": "nox_xxx_diePlayer_54D2B0",
+      "incoming_definitions": [
+        {
+          "line": 4247,
+          "bytes": 6015,
+          "sha256": "57ff00ae2c04520d1cfb38c7c41a56727d13d4b1e443a50b8c7cd64d1e717539"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 110
+      }
+    },
+    {
+      "name": "nox_xxx_diePolyp_54CB10",
+      "incoming_definitions": [
+        {
+          "line": 3795,
+          "bytes": 675,
+          "sha256": "00f1f4c8bc8f9851bd564d863be18dc2396ef5ee8c7c56c971e7d4e786ef8e82"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/simple_polyp_death_native_54cae0_export.go",
+        "line": 68
+      }
+    },
+    {
+      "name": "nox_xxx_diePotion_54CBB0",
+      "incoming_definitions": [
+        {
+          "line": 3820,
+          "bytes": 118,
+          "sha256": "8eccfec64e5d0aa0e0e8201f5567963b2444728950c0ea4e205cb149a3720320"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/simple_polyp_death_native_54cae0_export.go",
+        "line": 73
+      }
+    },
+    {
+      "name": "nox_xxx_dieSpawnObject_54E070",
+      "incoming_definitions": [
+        {
+          "line": 4517,
+          "bytes": 491,
+          "sha256": "c4c5098d5064fa31455c739312e8e42db89aad55d8dae2c51d4d8c9277f680e9"
+        }
+      ],
+      "classification": "renamed native death registry; registry ignores low-word return",
+      "owner": {
+        "path": "src/legacy/object_death.go",
+        "symbol": "nox_xxx_dieSpawnObject_54E070_go"
+      }
+    },
+    {
+      "name": "nox_xxx_findObjectAtCursor_54AF40",
+      "incoming_definitions": [
+        {
+          "line": 2859,
+          "bytes": 485,
+          "sha256": "cb905c04cf218033d6bbf07ab86916f0472eb7c5f92a1bef8a4f40f637d6ae36"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_cursor_entries.go",
+        "line": 23
+      }
+    },
+    {
+      "name": "nox_xxx_mgenSetCreaturePos_54ED50",
+      "incoming_definitions": [
+        {
+          "line": 4880,
+          "bytes": 1670,
+          "sha256": "c19b9d9d8758ff38eaa9080df426a9ef18d3c46d4957778ea70fc048de32bdd5"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 160
+      }
+    },
+    {
+      "name": "nox_xxx_mobActionEscort_546430",
+      "incoming_definitions": [
+        {
+          "line": 570,
+          "bytes": 2254,
+          "sha256": "5ed104bcc4a2ae8c58ffffdaf0e88fc4b15b7f3c564bad239208f7d24f41397c"
+        }
+      ],
+      "classification": "renamed native AI dispatch",
+      "owner": {
+        "path": "src/server/monster_action_escort_546430.go",
+        "symbol": "MonsterActionEscort546430"
+      }
+    },
+    {
+      "name": "nox_xxx_mobActionRoam_5457E0",
+      "incoming_definitions": [
+        {
+          "line": 246,
+          "bytes": 3920,
+          "sha256": "8cc94b20f2127c3f67ad8163f488d2d3b8585a587547a34f93b9021d0b36615b"
+        }
+      ],
+      "classification": "renamed native AI dispatch",
+      "owner": {
+        "path": "src/server/monster_action_roam_5457e0.go",
+        "symbol": "MonsterActionRoam5457E0"
+      }
+    },
+    {
+      "name": "nox_xxx_mobAction_5469B0",
+      "incoming_definitions": [
+        {
+          "line": 767,
+          "bytes": 641,
+          "sha256": "a130b486ed2f663c0459c23b257a8d81c9bdec0cd86ebf4c0a4219615c96e07e"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_idle_sound_native_5469b0_export.go",
+        "line": 29
+      }
+    },
+    {
+      "name": "nox_xxx_mobGeneratorPick_54EBA0",
+      "incoming_definitions": [
+        {
+          "line": 4811,
+          "bytes": 1929,
+          "sha256": "fb2490a29825d5594a38867d02ad9cce17e53f57bd050c1314b423713315a69f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 152
+      }
+    },
+    {
+      "name": "nox_xxx_mobGeneratorSpawn_54F070",
+      "incoming_definitions": [
+        {
+          "line": 5010,
+          "bytes": 2848,
+          "sha256": "213689442098ec4d938449cbfd49fe002f31bb79c0334a8d3af9e0b0b05ccff0"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 176
+      }
+    },
+    {
+      "name": "nox_xxx_mobRetreatCheckEdibles_5455E0",
+      "incoming_definitions": [
+        {
+          "line": 128,
+          "bytes": 1144,
+          "sha256": "c643346f8cf49e22b595950a4ac04c430341494893e1ff0048a3da4799647a14"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_edibles_native_544a00_export.go",
+        "line": 38
+      }
+    },
+    {
+      "name": "nox_xxx_monsterAttackAreaDamage_549860",
+      "incoming_definitions": [
+        {
+          "line": 2236,
+          "bytes": 1282,
+          "sha256": "78efe003284bf734d67bb40ddc58ba3581c989257cfb9ba0fcd5255800451ba8"
+        }
+      ],
+      "classification": "private Golem area closure",
+      "owner": {
+        "path": "src/server/monster_strike_special_549220.go",
+        "symbol": "monsterStrikeSpecial549220"
+      }
+    },
+    {
+      "name": "nox_xxx_monsterAutoSpells_54C0C0",
+      "incoming_definitions": [
+        {
+          "line": 3530,
+          "bytes": 4459,
+          "sha256": "54a6896ede1e2bbf274c8b45b1d9d7ab94224af63ec95ea2fef6d1f2c3f0582c"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 69
+      }
+    },
+    {
+      "name": "nox_xxx_monsterCanCast2_5455B0",
+      "incoming_definitions": [
+        {
+          "line": 121,
+          "bytes": 145,
+          "sha256": "d499b63789dc630f513afea4e81643e353bcf0c580d8a53160f453c502a12c4a"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_retreat_predicates_native_545520_export.go",
+        "line": 34
+      }
+    },
+    {
+      "name": "nox_xxx_monsterCanResumeAttack_545520",
+      "incoming_definitions": [
+        {
+          "line": 97,
+          "bytes": 278,
+          "sha256": "628cbe3e7e71dd066088b4cd15c59d12e1be49e5022ff76228bbe1ce68844bbb"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_retreat_predicates_native_545520_export.go",
+        "line": 18
+      }
+    },
+    {
+      "name": "nox_xxx_monsterCheckDodgeables_547C50",
+      "incoming_definitions": [
+        {
+          "line": 1177,
+          "bytes": 1435,
+          "sha256": "347b76c601c9d1d93abbf7b1526308dfe0f0d2df2b03fc3888f234b549be2eef"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_dodgeables_native_547c50_export.go",
+        "line": 44
+      }
+    },
+    {
+      "name": "nox_xxx_monsterDeadTroll_54A270",
+      "incoming_definitions": [
+        {
+          "line": 2608,
+          "bytes": 664,
+          "sha256": "514447e354924a3396dd5d7a636bb9eeed9b232430fd26f89ee322b2f80ee167"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/troll_death_native_54a270_export.go",
+        "line": 52
+      }
+    },
+    {
+      "name": "nox_xxx_monsterGetObjEscortName_546600",
+      "incoming_definitions": [
+        {
+          "line": 653,
+          "bytes": 940,
+          "sha256": "8102139364b594f154e2b588787a9af1095703a31d6af3cfc9c993081b81f0ea"
+        }
+      ],
+      "classification": "private helper",
+      "owner": {
+        "path": "src/server/monster_action_escort_546430.go",
+        "symbol": "monsterGetObjEscortName546600"
+      }
+    },
+    {
+      "name": "nox_xxx_monsterLoadDeadFn_549180",
+      "incoming_definitions": [
+        {
+          "line": 1929,
+          "bytes": 611,
+          "sha256": "0dd5a3b71354b14760420f91041f2514f58a150f1a5dcd1c6efe99cf03c0eccc"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 55
+      }
+    },
+    {
+      "name": "nox_xxx_monsterLoadDieFn_5490E0",
+      "incoming_definitions": [
+        {
+          "line": 1899,
+          "bytes": 610,
+          "sha256": "e207a58410d1a610f45577a5600423774023c7435b113ff3ef733bd54cf00445"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 46
+      }
+    },
+    {
+      "name": "nox_xxx_monsterLoadStrikeFn_549040",
+      "incoming_definitions": [
+        {
+          "line": 1869,
+          "bytes": 613,
+          "sha256": "02cd6d69a9187f802cc35f4f018a50068ccc8d3a0f7d46aa60b2e328f150e403"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 37
+      }
+    },
+    {
+      "name": "nox_xxx_monsterLookAtDamager_5466B0",
+      "incoming_definitions": [
+        {
+          "line": 697,
+          "bytes": 249,
+          "sha256": "f9d575fc69e9fbfbab4e7c67355e35f9add36f90831ccc4e5ed1166f986ab712"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_reactive_native_545da0_export.go",
+        "line": 34
+      }
+    },
+    {
+      "name": "nox_xxx_monsterMainAIFn_547210",
+      "incoming_definitions": [
+        {
+          "line": 817,
+          "bytes": 11588,
+          "sha256": "efa9876019e00439dec223d6314a0c6d4526b12d9f669f82bb69b1538f096354"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 64
+      }
+    },
+    {
+      "name": "nox_xxx_monsterPickMeleeTarget_549440",
+      "incoming_definitions": [
+        {
+          "line": 2059,
+          "bytes": 737,
+          "sha256": "afed2d9ccddb4e659a8f5513d4d5d7c64fec4d792a1464270743b2a0a182a1b7"
+        }
+      ],
+      "classification": "private target helper",
+      "owner": {
+        "path": "src/server/monster_action_melee_532130.go",
+        "symbol": "monsterPickMeleeTarget549440"
+      }
+    },
+    {
+      "name": "nox_xxx_monsterPopAttackActions_5471B0",
+      "incoming_definitions": [
+        {
+          "line": 792,
+          "bytes": 373,
+          "sha256": "4b4fc037a74bd5d3be58beb8db17fcbe017f894864157b4297ef76dc2b4af732"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_pop_attacks_native_5471b0_export.go",
+        "line": 14
+      }
+    },
+    {
+      "name": "nox_xxx_monsterRoamDeadEnd_545BB0",
+      "incoming_definitions": [
+        {
+          "line": 424,
+          "bytes": 841,
+          "sha256": "032d0f094cb96aa23bbd3a79db1362a90ba08373a26d3f5bd582de922f373e87"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_waypoint_native_545b00_export.go",
+        "line": 58
+      }
+    },
+    {
+      "name": "nox_xxx_netNotifyPlayerDied_54DF00",
+      "incoming_definitions": [
+        {
+          "line": 4485,
+          "bytes": 270,
+          "sha256": "0e47f045d428b0f662456c128f44c17d7f5476142ed061aa771dd631045934ad"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 133
+      }
+    },
+    {
+      "name": "nox_xxx_playerCursorScanFn_54AFB0",
+      "incoming_definitions": [
+        {
+          "line": 2872,
+          "bytes": 4067,
+          "sha256": "1d6c3c539c73964072f898c9c33359e2f912ea604d4986acd564a6831cd4b706"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_cursor_entries.go",
+        "line": 80
+      }
+    },
+    {
+      "name": "nox_xxx_playerHandleElimDeath_54D7A0",
+      "incoming_definitions": [
+        {
+          "line": 4451,
+          "bytes": 517,
+          "sha256": "065b8549fdfe7fa1548f317f78c04cda2e0480fc2e040c78212c0e75998dc1fd"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 118
+      }
+    },
+    {
+      "name": "nox_xxx_playerHandleKotrDeath_54DC40",
+      "incoming_definitions": [
+        {
+          "line": 4474,
+          "bytes": 519,
+          "sha256": "17a85865eb24f8f577d56a25c7cb1d77e8aa8db7ce1b98c9d42bb3aa273e6ccd"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 128
+      }
+    },
+    {
+      "name": "nox_xxx_playerUpdateScore_54D980",
+      "incoming_definitions": [
+        {
+          "line": 4461,
+          "bytes": 600,
+          "sha256": "aaef94ba6f6f98e4bf547ea2aabbb5ad653cd2665fbee364f57ebd9b1e3ca579"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 123
+      }
+    },
+    {
+      "name": "nox_xxx_script_forcedialog_548CD0",
+      "incoming_definitions": [
+        {
+          "line": 1840,
+          "bytes": 538,
+          "sha256": "8d22f67586c547a87217d719a209e60a00427a3d2f948e81ccfd747644e99bb7"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 309
+      }
+    },
+    {
+      "name": "nox_xxx_sendEquakeAfterGolem_549800",
+      "incoming_definitions": [
+        {
+          "line": 2219,
+          "bytes": 591,
+          "sha256": "f72e4afa321b8f0490f4de245472e641679629f324346bfc1b3f987bdfd11a9e"
+        }
+      ],
+      "classification": "private shared Golem tail retaining Mech mode",
+      "owner": {
+        "path": "src/server/monster_strike_special_549220.go",
+        "symbol": "monsterStrikeSpecial549220"
+      }
+    },
+    {
+      "name": "nox_xxx_strikeBomber_549BB0",
+      "incoming_definitions": [
+        {
+          "line": 2383,
+          "bytes": 47,
+          "sha256": "58bb983925f705ae2152074c1ded87879727a48d2f5e93b73b8fc953915302d1"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 54
+      }
+    },
+    {
+      "name": "nox_xxx_strikeGhost_549A60",
+      "incoming_definitions": [
+        {
+          "line": 2325,
+          "bytes": 1612,
+          "sha256": "aa287371d107f35cd2e8b3d65421e80e357f0b3f71a1f0cb2f6415fc94b8e579"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 49
+      }
+    },
+    {
+      "name": "nox_xxx_strikeMechGolem_549960",
+      "incoming_definitions": [
+        {
+          "line": 2279,
+          "bytes": 136,
+          "sha256": "b3393b107cd8d4f2548a83c9ebe8dca4bb621225e24c9571bb7661eac37d3e9d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 39
+      }
+    },
+    {
+      "name": "nox_xxx_strikeMonsterDefault_549380",
+      "incoming_definitions": [
+        {
+          "line": 2021,
+          "bytes": 1014,
+          "sha256": "a1e1670a2ea7e77c7673d162bf244d0d890842a65ad3e61cd10e7c7589397a7a"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 19
+      }
+    },
+    {
+      "name": "nox_xxx_strikeOgre_549220",
+      "incoming_definitions": [
+        {
+          "line": 1959,
+          "bytes": 503,
+          "sha256": "b7348e4b5435dc4ffb3d7b40f875a7e80aef986b5ce9dbce2771356de47878db"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 14
+      }
+    },
+    {
+      "name": "nox_xxx_strikeScorpion_5495B0",
+      "incoming_definitions": [
+        {
+          "line": 2112,
+          "bytes": 1115,
+          "sha256": "0f988cf362cb681a62e85edb6da547f782f003081fcae6ec78379d3ab671adc8"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 24
+      }
+    },
+    {
+      "name": "nox_xxx_strikeSpider_549BC0",
+      "incoming_definitions": [
+        {
+          "line": 2386,
+          "bytes": 1079,
+          "sha256": "0110ded9bc031cb80d5c804d8b37e283d3192502e79b9d7fc5816627879def60"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 57
+      }
+    },
+    {
+      "name": "nox_xxx_strikeSpittingSpider_549CA0",
+      "incoming_definitions": [
+        {
+          "line": 2426,
+          "bytes": 1087,
+          "sha256": "8f1e346fee3617550b35e54b8dd0424c89d65df13b46b8467c82295093b4fa38"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 62
+      }
+    },
+    {
+      "name": "nox_xxx_strikeStoneGolem_5497E0",
+      "incoming_definitions": [
+        {
+          "line": 2213,
+          "bytes": 137,
+          "sha256": "f8d4843cc1994755d3685c6226862104286c431adb685a069d234003afe5a5f8"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 34
+      }
+    },
+    {
+      "name": "nox_xxx_strikeVileZombie_549700",
+      "incoming_definitions": [
+        {
+          "line": 2172,
+          "bytes": 1115,
+          "sha256": "9d3fc58c889d0f019e833cf832f8fd75f4fa30b94d41f541ca860c0aa8a789e6"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 29
+      }
+    },
+    {
+      "name": "nox_xxx_strikeWasp_549980",
+      "incoming_definitions": [
+        {
+          "line": 2285,
+          "bytes": 1093,
+          "sha256": "66f6da07a8d9f70b0935e0abfb8192ff055e5749c61f4f8d80fc73b8edf21beb"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_strike_exports.go",
+        "line": 44
+      }
+    },
+    {
+      "name": "nox_xxx_unitCreatureCopyUC_54F2B0",
+      "incoming_definitions": [
+        {
+          "line": 5097,
+          "bytes": 1098,
+          "sha256": "104c5e62ea7c0bd95c5389ea021a96b8157a3841b470774077c26e7080c6ebab"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 181
+      }
+    },
+    {
+      "name": "nox_xxx_unitIsAttackReachable_54FC50",
+      "incoming_definitions": [
+        {
+          "line": 5260,
+          "bytes": 370,
+          "sha256": "324678190363900a2b97970173b6c2eda1bb28328a984b3a683ddfb3417a7f34"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skull_raw_native_54f9a0_export.go",
+        "line": 91
+      }
+    },
+    {
+      "name": "nox_xxx_updateMonsterGenerator_54E930",
+      "incoming_definitions": [
+        {
+          "line": 4694,
+          "bytes": 3605,
+          "sha256": "095c70be5474688d2b10fad376da5fcb30c6b648db7b7b5069f49ae933200418"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 146
+      }
+    },
+    {
+      "name": "nox_xxx_updateShootingTrap_54F9A0",
+      "incoming_definitions": [
+        {
+          "line": 5141,
+          "bytes": 1120,
+          "sha256": "120f605214b3d16c65d880d26539877338828331edfb8bf5e7581a515fcba0e3"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skull_raw_native_54f9a0_export.go",
+        "line": 71
+      }
+    },
+    {
+      "name": "sub_545580",
+      "incoming_definitions": [
+        {
+          "line": 111,
+          "bytes": 180,
+          "sha256": "d30870b4f8959afafdbf408368e086384af78777b3ec3315ff52400a9d17813a"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_retreat_predicates_native_545520_export.go",
+        "line": 26
+      }
+    },
+    {
+      "name": "sub_5456D0",
+      "incoming_definitions": [
+        {
+          "line": 182,
+          "bytes": 897,
+          "sha256": "42f7a6f6fc9560fc6a6e505556fcd17bece704e9bea903c55f1adbea84e6050a"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_retreat_master_native_5456d0_export.go",
+        "line": 17
+      }
+    },
+    {
+      "name": "sub_545790",
+      "incoming_definitions": [
+        {
+          "line": 218,
+          "bytes": 244,
+          "sha256": "8a76ab54ba705820b79c38de94ae808f45a75631026dff5d019844e4145c1a92"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_lifecycle_native_545790_export.go",
+        "line": 16
+      }
+    },
+    {
+      "name": "sub_5457C0",
+      "incoming_definitions": [
+        {
+          "line": 233,
+          "bytes": 160,
+          "sha256": "c35784053ce5008145bdb09aca5c261b4d257b7a49e15f5ab813d14b6e5fd6e4"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_lifecycle_native_545790_export.go",
+        "line": 21
+      }
+    },
+    {
+      "name": "sub_545B00",
+      "incoming_definitions": [
+        {
+          "line": 381,
+          "bytes": 409,
+          "sha256": "2098aef9cd157fd3f88e120f532be0e235953765e48f97ef3009488db4c9289f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_waypoint_native_545b00_export.go",
+        "line": 37
+      }
+    },
+    {
+      "name": "sub_545B60",
+      "incoming_definitions": [
+        {
+          "line": 402,
+          "bytes": 370,
+          "sha256": "a532fb936843586943503b9b7d474df97118b182188d4ab8b6b2178aa207a3ce"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_waypoint_native_545b00_export.go",
+        "line": 42
+      }
+    },
+    {
+      "name": "sub_545C60",
+      "incoming_definitions": [
+        {
+          "line": 452,
+          "bytes": 1453,
+          "sha256": "8a6f17bc310400516ede35be82cd826a5abb169e8d8783d0d40992849c9b77a9"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_waypoint_native_545b00_export.go",
+        "line": 52
+      }
+    },
+    {
+      "name": "sub_545DA0",
+      "incoming_definitions": [
+        {
+          "line": 537,
+          "bytes": 567,
+          "sha256": "d4cff1729aae0220ef5315b467325e53ed7c175e5b376bd1b661443099f80056"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_reactive_native_545da0_export.go",
+        "line": 29
+      }
+    },
+    {
+      "name": "sub_5466F0",
+      "incoming_definitions": [
+        {
+          "line": 715,
+          "bytes": 1278,
+          "sha256": "93aacd48bdb17986c4fc625891f881e21fac7aa0d2a4b51fc09b7ca8f88d09e3"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_interesting_native_5466f0_export.go",
+        "line": 32
+      }
+    },
+    {
+      "name": "sub_547DB0",
+      "incoming_definitions": [
+        {
+          "line": 1240,
+          "bytes": 1093,
+          "sha256": "17628c8fb04515a4810dbfffe6a46ac49a5bcab2c92a9ffb5f9a58836be69ad8"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/point_shape_native_547db0_export.go",
+        "line": 16
+      }
+    },
+    {
+      "name": "sub_547EE0",
+      "incoming_definitions": [
+        {
+          "line": 1282,
+          "bytes": 106,
+          "sha256": "3c810ed53a64b111c1278c3dff13aea2b81315a1df7b3bdc9b2ad84638d7bb2d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_roam_waypoint_native_545b00_export.go",
+        "line": 47
+      }
+    },
+    {
+      "name": "sub_547F10",
+      "incoming_definitions": [
+        {
+          "line": 1289,
+          "bytes": 140,
+          "sha256": "2993a0465d8c47ac513472c9bde7903cfbd380087631b2a83e8e0466d47aa0e9"
+        }
+      ],
+      "classification": "private status owner/read/reset",
+      "owner": {
+        "path": "src/server/monster_action_move_to_5443f0.go",
+        "symbol": "waypointPathStatus547F70"
+      }
+    },
+    {
+      "name": "sub_547F20",
+      "incoming_definitions": [
+        {
+          "line": 1298,
+          "bytes": 397,
+          "sha256": "16366fc35a3a68f25478815a4d6c5086a3f9eb76c9a3bb3ff4cc688a96caf906"
+        }
+      ],
+      "classification": "private native path helper",
+      "owner": {
+        "path": "src/server/monster_move_path_50d2a0.go",
+        "symbol": "monsterBuildMoveWaypointPath50D2A0"
+      }
+    },
+    {
+      "name": "sub_548100",
+      "incoming_definitions": [
+        {
+          "line": 1406,
+          "bytes": 688,
+          "sha256": "e68237f1d79adaf754285a5e248e577b24691d3b2dccb044f0f67715f5859381"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 125
+      }
+    },
+    {
+      "name": "sub_5481C0",
+      "incoming_definitions": [
+        {
+          "line": 1426,
+          "bytes": 364,
+          "sha256": "b27cac12fd8ca5ba5fc456a70a3131dda0d0d5b0a09a2de5bab7b636fcc37490"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 144
+      }
+    },
+    {
+      "name": "sub_548220",
+      "incoming_definitions": [
+        {
+          "line": 1442,
+          "bytes": 1425,
+          "sha256": "b51f5aca8d03192970101ae0a4293365e8eef1cb846665fd48986ba565ce68fa"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 162
+      }
+    },
+    {
+      "name": "sub_548360",
+      "incoming_definitions": [
+        {
+          "line": 1493,
+          "bytes": 2410,
+          "sha256": "a67ca40c11964357c50b66907395bafa3f00546032543c12394f29c34841365b"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 202
+      }
+    },
+    {
+      "name": "sub_5485B0",
+      "incoming_definitions": [
+        {
+          "line": 1566,
+          "bytes": 84,
+          "sha256": "3e87d070128b892d19fca5e6ca03d01f8cd70c1effaf77c23609a1c908c7a413"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 10
+      }
+    },
+    {
+      "name": "sub_548830",
+      "incoming_definitions": [
+        {
+          "line": 1646,
+          "bytes": 381,
+          "sha256": "9dfaec72c6fd20c74a48eef5e05529bd06a53b6dbc39d7e167af90e59c146208"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 258
+      }
+    },
+    {
+      "name": "sub_548860",
+      "incoming_definitions": [
+        {
+          "line": 1663,
+          "bytes": 335,
+          "sha256": "cdc64fd3e661610a30b55f820ee22f55a1737ba68c3f0137c90bcccafc843854"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 263
+      }
+    },
+    {
+      "name": "sub_5488B0",
+      "incoming_definitions": [
+        {
+          "line": 1679,
+          "bytes": 3875,
+          "sha256": "4e3534886501cfa82c6e949cca2d221b2cacf7a4f187d9eedeb3507aff8e9cb3"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 13
+      }
+    },
+    {
+      "name": "sub_548B60",
+      "incoming_definitions": [
+        {
+          "line": 1793,
+          "bytes": 1328,
+          "sha256": "d56bf378f6fd047ffe81a2fae44494d0f3da221e4c2a2137073836d26ae70c85"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 271
+      }
+    },
+    {
+      "name": "sub_549270",
+      "incoming_definitions": [
+        {
+          "line": 1975,
+          "bytes": 1375,
+          "sha256": "a3a0a8776c3bb02325b28fbe86f24b5d06494df5b6467cc3ff68847b4c3d3c94"
+        }
+      ],
+      "classification": "private Ogre area closure",
+      "owner": {
+        "path": "src/server/monster_strike_special_549220.go",
+        "symbol": "monsterStrikeSpecial549220"
+      }
+    },
+    {
+      "name": "sub_5494C0",
+      "incoming_definitions": [
+        {
+          "line": 2082,
+          "bytes": 958,
+          "sha256": "656241c7f56630d7482cda09bac4e1a88db522354c77e46e728909a39133ea41"
+        }
+      ],
+      "classification": "private native target-selection closure",
+      "owner": {
+        "path": "src/server/monster_action_melee_532130.go",
+        "symbol": "monsterPickMeleeTarget549440"
+      }
+    },
+    {
+      "name": "sub_549690",
+      "incoming_definitions": [
+        {
+          "line": 2153,
+          "bytes": 442,
+          "sha256": "8917526d323a4275052c5a0c15c4dc9c8157240965e3217813fd58aabd8774a8"
+        }
+      ],
+      "classification": "private poison helper",
+      "owner": {
+        "path": "src/server/monster_strike_special_549220.go",
+        "symbol": "monsterStrikePoison549690"
+      }
+    },
+    {
+      "name": "sub_549D80",
+      "incoming_definitions": [
+        {
+          "line": 2467,
+          "bytes": 402,
+          "sha256": "e727b20a1f9b9348a16068e23c0e7b2cc67e35c87be1a8d6edd4529c01971ea0"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_death_explosion_native_549d80_export.go",
+        "line": 72
+      }
+    },
+    {
+      "name": "sub_549E00",
+      "incoming_definitions": [
+        {
+          "line": 2483,
+          "bytes": 331,
+          "sha256": "0a2a66d3b850f52f7bba480d398a9f0a544d1b6633f444ab9fd6f6e915d6c792"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_death_explosion_native_549d80_export.go",
+        "line": 77
+      }
+    },
+    {
+      "name": "sub_549E70",
+      "incoming_definitions": [
+        {
+          "line": 2496,
+          "bytes": 101,
+          "sha256": "f461d762c48da132bea08d324810d7baf730113da261c4151a0ae979b75d7e1f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_death_explosion_native_549d80_export.go",
+        "line": 82
+      }
+    },
+    {
+      "name": "sub_549E90",
+      "incoming_definitions": [
+        {
+          "line": 2505,
+          "bytes": 1170,
+          "sha256": "c085eaeb24730d531f3812976bffcc1a8613ec1bc13f7cfc292c473c5652eab1"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/golem_death_native_549e90_export.go",
+        "line": 124
+      }
+    },
+    {
+      "name": "sub_549FA0",
+      "incoming_definitions": [
+        {
+          "line": 2546,
+          "bytes": 1596,
+          "sha256": "8025d5a07e61b8c43a484c53310099a82c4e65398040b73eaf71ff9ea908eb22"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/golem_death_native_549e90_export.go",
+        "line": 129
+      }
+    },
+    {
+      "name": "sub_54A250",
+      "incoming_definitions": [
+        {
+          "line": 2599,
+          "bytes": 101,
+          "sha256": "dd0e10a958b6814817b2499ac6c6c0de94262c0778001b256055b833199e11fe"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/monster_death_explosion_native_549d80_export.go",
+        "line": 87
+      }
+    },
+    {
+      "name": "sub_54A310",
+      "incoming_definitions": [
+        {
+          "line": 2634,
+          "bytes": 293,
+          "sha256": "f496594527633c346d7c6422b363438efd0bf61bb779d10e0185654e9d116381"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skeleton_death_native_54a310_export.go",
+        "line": 134
+      }
+    },
+    {
+      "name": "sub_54A390",
+      "incoming_definitions": [
+        {
+          "line": 2650,
+          "bytes": 1537,
+          "sha256": "b44d9dc76e5f6b60e10518a8eec905025a2cff5b8737adda824b8d83e5ca5381"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skeleton_death_native_54a310_export.go",
+        "line": 139
+      }
+    },
+    {
+      "name": "sub_54A4C0",
+      "incoming_definitions": [
+        {
+          "line": 2691,
+          "bytes": 2538,
+          "sha256": "7afa276d9bfb06a52bfc323b0a435a66762c696ed6267f1a2d481a0b0de76b11"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skeleton_death_native_54a310_export.go",
+        "line": 144
+      }
+    },
+    {
+      "name": "sub_54A750",
+      "incoming_definitions": [
+        {
+          "line": 2768,
+          "bytes": 292,
+          "sha256": "e57d4e4553b7417b8caef10bae9156e22fbcc26c64c72fb5dc9c260219138e80"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skeleton_death_native_54a310_export.go",
+        "line": 149
+      }
+    },
+    {
+      "name": "sub_54A7D0",
+      "incoming_definitions": [
+        {
+          "line": 2787,
+          "bytes": 276,
+          "sha256": "abd3028eba5e11cb892dcf76650520bf6628ad4ad2fcad47a9d0e2bb4e49a9f8"
+        },
+        {
+          "line": 2841,
+          "bytes": 87,
+          "sha256": "aa4e1f62504291448f607f68cb3ce4b341729aefaa6fb90c924237fb4af61686"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 16
+      }
+    },
+    {
+      "name": "sub_54A850",
+      "incoming_definitions": [
+        {
+          "line": 2802,
+          "bytes": 150,
+          "sha256": "3b29d68c184febab86f935d63c8ed89a32c3f327998242dfec4773495269b766"
+        },
+        {
+          "line": 2842,
+          "bytes": 87,
+          "sha256": "4339b6afc0a1406a008c492628c9bbac904b4496f9656b3283ba58fc49c953ab"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 19
+      }
+    },
+    {
+      "name": "sub_54A890",
+      "incoming_definitions": [
+        {
+          "line": 2810,
+          "bytes": 235,
+          "sha256": "8e7cfec8eace3b353176288b0062449b788c62bb1e5ddf472a3cc8f8df36591f"
+        },
+        {
+          "line": 2843,
+          "bytes": 87,
+          "sha256": "da51cdc82d38623f2bfd2ef1e3b4e53f964978bff0e5e0b0993c8d0dd5f01f53"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 22
+      }
+    },
+    {
+      "name": "sub_54A900",
+      "incoming_definitions": [
+        {
+          "line": 2825,
+          "bytes": 156,
+          "sha256": "465f08a4e56e14049f3571d3126b30906108a77c15fe448ed83f94484994af4a"
+        },
+        {
+          "line": 2844,
+          "bytes": 87,
+          "sha256": "a6fa2ecca57bf47e39687c91a92dbcbd404ae7a315038ee46f3b15869070bb16"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 25
+      }
+    },
+    {
+      "name": "sub_54A950",
+      "incoming_definitions": [
+        {
+          "line": 2833,
+          "bytes": 136,
+          "sha256": "b5d919715e63b18ee8058799360c100e6ac0ad0460fe4b39ea9c869891181372"
+        },
+        {
+          "line": 2845,
+          "bytes": 87,
+          "sha256": "b4738ca562de63643fe236bc244d42ac464e0603e5697a0f4b3291e45e72bc69"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 28
+      }
+    },
+    {
+      "name": "sub_54A990",
+      "incoming_definitions": [
+        {
+          "line": 2850,
+          "bytes": 137,
+          "sha256": "30bfd88089d7791d347206e4dddebe786acd644d9c1b2483ddf6378a1c66b207"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 31
+      }
+    },
+    {
+      "name": "sub_54AD50",
+      "incoming_definitions": [
+        {
+          "line": 2854,
+          "bytes": 112,
+          "sha256": "4d3b0ea206a79f9d8fb1d10cae4d77ea5f50cc61886660163043d2902b587995"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 36
+      }
+    },
+    {
+      "name": "sub_54B2D0",
+      "incoming_definitions": [
+        {
+          "line": 2987,
+          "bytes": 5146,
+          "sha256": "6ff81f95d9df9cc09558bb8b922ea1772389d9e5921c5106889e102024fd7959"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 199
+      }
+    },
+    {
+      "name": "sub_54B810",
+      "incoming_definitions": [
+        {
+          "line": 3234,
+          "bytes": 2932,
+          "sha256": "30249c17a6623eec698ccc33dca5e4679683ca7c88fde11d369a20426ed4a84d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 107
+      }
+    },
+    {
+      "name": "sub_54BA60",
+      "incoming_definitions": [
+        {
+          "line": 3324,
+          "bytes": 1152,
+          "sha256": "8744c8efaae38659ee0297c75ce553dfc5e94a6ca02658ed221b2d0d68824a7d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 66
+      }
+    },
+    {
+      "name": "sub_54BB20",
+      "incoming_definitions": [
+        {
+          "line": 3360,
+          "bytes": 2621,
+          "sha256": "4232909a8ffff7dc5abb6645827a05d7435b0f37db53b345c97f75af97d0862d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 148
+      }
+    },
+    {
+      "name": "sub_54BD90",
+      "incoming_definitions": [
+        {
+          "line": 3436,
+          "bytes": 1551,
+          "sha256": "2d88454fc76d5ada4956b8fc32a99d7f8b4fbc5b2cf81b7422efaef05408134c"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 189
+      }
+    },
+    {
+      "name": "sub_54BF20",
+      "incoming_definitions": [
+        {
+          "line": 3482,
+          "bytes": 1607,
+          "sha256": "3e02384c97530428c48e504b0dcaeb129f47ffde939b0e2107c2697a43d84f3c"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_prefab_entries.go",
+        "line": 194
+      }
+    },
+    {
+      "name": "sub_54C950",
+      "incoming_definitions": [
+        {
+          "line": 3714,
+          "bytes": 571,
+          "sha256": "0c6375ef526cecd71faadf974c76bea654feaa6ac281a5c6a30a2cad1d401e1e"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 77
+      }
+    },
+    {
+      "name": "sub_54CBD0",
+      "incoming_definitions": [
+        {
+          "line": 3828,
+          "bytes": 679,
+          "sha256": "77ef736db0f3117a06e93099c8cd90c4e6ad559d7e257d651c62842e31bbd20c"
+        },
+        {
+          "line": 3850,
+          "bytes": 84,
+          "sha256": "f28108086ce9f4db6bab2f169cef2e34fca7a6e680ae6d9db73b92d1474c1486"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 41
+      }
+    },
+    {
+      "name": "sub_54CC40",
+      "incoming_definitions": [
+        {
+          "line": 3854,
+          "bytes": 1353,
+          "sha256": "6f9ee0bcccf2a61a7655c9b223d1316f80519778eddfae486abeb21bf06bb06f"
+        },
+        {
+          "line": 3921,
+          "bytes": 87,
+          "sha256": "aa1ad278a403bab25b46218f51ea1a141ed978b572fa7560936316816bbc2968"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 44
+      }
+    },
+    {
+      "name": "sub_54CD30",
+      "incoming_definitions": [
+        {
+          "line": 3925,
+          "bytes": 917,
+          "sha256": "c6cbad1a7ec543e17549a22637404d799f7ce4451c03084319cd4c9ad3ecb95b"
+        },
+        {
+          "line": 3965,
+          "bytes": 86,
+          "sha256": "d6d33cb4cb6fe4cd8b16ea5609bef441cc4eca90498488fdd9f436b3759532bf"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 47
+      }
+    },
+    {
+      "name": "sub_54CE00",
+      "incoming_definitions": [
+        {
+          "line": 3969,
+          "bytes": 1077,
+          "sha256": "5c4015cfcaf01e7c4d2ba364e893466c3cccd39f54b3acf4b58ee66a9e995056"
+        },
+        {
+          "line": 4023,
+          "bytes": 86,
+          "sha256": "816cd510c8577602a3163465db58a20a9128005b6b3b37f4c438cd9fc3d3b976"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 50
+      }
+    },
+    {
+      "name": "sub_54CEE0",
+      "incoming_definitions": [
+        {
+          "line": 4027,
+          "bytes": 979,
+          "sha256": "b33fe74511a06ad16bc80f91187a0eec788c3ea74f5fb43409bdc72c96d7c65f"
+        },
+        {
+          "line": 4077,
+          "bytes": 86,
+          "sha256": "a08d14aed1281a3d7d6bcbe1a0836f8bc8a98d955b9820278eef8fa1cdf6f238"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 53
+      }
+    },
+    {
+      "name": "sub_54CFB0",
+      "incoming_definitions": [
+        {
+          "line": 4081,
+          "bytes": 1026,
+          "sha256": "2374d44ab3b3498495a76da3f5043e6cc16815d9a122d1865422648098bf95e7"
+        },
+        {
+          "line": 4134,
+          "bytes": 95,
+          "sha256": "79c8204be2bc9517286f954e7e2c54ee3a91443bd1aea66ae8bd63d92c625ed7"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 56
+      }
+    },
+    {
+      "name": "sub_54D080",
+      "incoming_definitions": [
+        {
+          "line": 4138,
+          "bytes": 2562,
+          "sha256": "d9bb99eb94e5698746c06dec867531a9714a4bd5abc80ab1e3dd5ca618ce915f"
+        },
+        {
+          "line": 4244,
+          "bytes": 85,
+          "sha256": "1ace04d5ad042fddd43c7dc23904bfaba35bb5138d15bd32038771bd32586bf7"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 59
+      }
+    },
+    {
+      "name": "sub_54E6F0",
+      "incoming_definitions": [
+        {
+          "line": 4657,
+          "bytes": 238,
+          "sha256": "7a94b3b5943fd704e66b2a2161114e3266d0141cb026a9279be24ae08430fc0d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 344
+      }
+    },
+    {
+      "name": "sub_54E730",
+      "incoming_definitions": [
+        {
+          "line": 4666,
+          "bytes": 893,
+          "sha256": "1eda333c9533b80c1830b0fbedd360057b6820bc1cb9d0f9709851d86f8eb1ad"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 321
+      }
+    },
+    {
+      "name": "sub_54EF00",
+      "incoming_definitions": [
+        {
+          "line": 4939,
+          "bytes": 311,
+          "sha256": "4bb083984c23829d7978374e4eef273d9232f5ed261ee8d36837000afca44d5d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/point_shape_native_547db0_export.go",
+        "line": 35
+      }
+    },
+    {
+      "name": "sub_54EF60",
+      "incoming_definitions": [
+        {
+          "line": 4952,
+          "bytes": 233,
+          "sha256": "0cd2c7fe6dad2ec19d964bcdfe5df0d24f65e5696c6ce06ed6c31de9148f4db4"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/point_shape_native_547db0_export.go",
+        "line": 41
+      }
+    },
+    {
+      "name": "sub_54EF90",
+      "incoming_definitions": [
+        {
+          "line": 4966,
+          "bytes": 998,
+          "sha256": "0d0745572057d752581e68bf3af8e17e70b33fe27bc1a751f01593d0059c90aa"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_lifecycle_exports.go",
+        "line": 168
+      }
+    },
+    {
+      "name": "sub_54FBB0",
+      "incoming_definitions": [
+        {
+          "line": 5232,
+          "bytes": 219,
+          "sha256": "180e3f8e4ba659809a3374a22b9c8603a822fe8744ad38d6df121fa5347f3b5f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skull_raw_native_54f9a0_export.go",
+        "line": 81
+      }
+    },
+    {
+      "name": "sub_54FBF0",
+      "incoming_definitions": [
+        {
+          "line": 5245,
+          "bytes": 418,
+          "sha256": "faa578d033097d4bf3a443ec0ccffe46f16ed762f93b1132006c0bd371cef333"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/skull_raw_native_54f9a0_export.go",
+        "line": 86
+      }
+    },
+    {
+      "name": "sub_54FEF0",
+      "incoming_definitions": [
+        {
+          "line": 5392,
+          "bytes": 58,
+          "sha256": "cf8dc20427ec665a09092124e3cbad715345d695854908109517d021a30f6908"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 67
+      }
+    },
+    {
+      "name": "sub_54FFC0",
+      "incoming_definitions": [
+        {
+          "line": 5396,
+          "bytes": 78,
+          "sha256": "086ca7d8d92a88f3642c932310f163974ef974ce4d8b30c0017e5ae06b288d10"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 70
+      }
+    },
+    {
+      "name": "sub_550280",
+      "incoming_definitions": [
+        {
+          "line": 5400,
+          "bytes": 140,
+          "sha256": "cfe8769c1754a6b0d1e4112cc003b85fed0c4479cd47f5dc49b9b1d8bbe83eeb"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 73
+      }
+    },
+    {
+      "name": "sub_5502F0",
+      "incoming_definitions": [
+        {
+          "line": 5404,
+          "bytes": 140,
+          "sha256": "d494168b0627504111ab9121de12b0adfa34b7892a8f1482e48dc2309dca5979"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 78
+      }
+    },
+    {
+      "name": "sub_550380",
+      "incoming_definitions": [
+        {
+          "line": 5408,
+          "bytes": 92,
+          "sha256": "42460c610917052977064e0185beb95741040cc4318a898079671b928a4cd7ad"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 83
+      }
+    },
+    {
+      "name": "sub_550480",
+      "incoming_definitions": [
+        {
+          "line": 5411,
+          "bytes": 251,
+          "sha256": "f099dcddd6420da7250a1be2aa2be3b7e2c87fb42099f54a1f44dac274a3b0af"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 352
+      }
+    },
+    {
+      "name": "sub_5504B0",
+      "incoming_definitions": [
+        {
+          "line": 5424,
+          "bytes": 58,
+          "sha256": "49d8aee4ab66c15be7b48a32c2214f69cf6f1496cfb1c089911b5943f05a941f"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 86
+      }
+    },
+    {
+      "name": "sub_550580",
+      "incoming_definitions": [
+        {
+          "line": 5427,
+          "bytes": 1681,
+          "sha256": "d7f9c1801a238ad7fa9d211c1368daeb829792169b59be3c5cae30bdbab3ab73"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 20
+      }
+    },
+    {
+      "name": "sub_550760",
+      "incoming_definitions": [
+        {
+          "line": 5486,
+          "bytes": 3148,
+          "sha256": "f32a08c97d4da3394a609e2911ef4a37936e528aeffc4409febd40f37ae39191"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 29
+      }
+    },
+    {
+      "name": "sub_550A10",
+      "incoming_definitions": [
+        {
+          "line": 5591,
+          "bytes": 3172,
+          "sha256": "5fa2b2342cedacde33e1e976715ecdbabe4e00b87d945d109126ab1046423da7"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 34
+      }
+    },
+    {
+      "name": "sub_550CB0",
+      "incoming_definitions": [
+        {
+          "line": 5698,
+          "bytes": 394,
+          "sha256": "16de4571c62a7760490687c69969557a2cde1216d3c464259d729e1598a0920d"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 39
+      }
+    },
+    {
+      "name": "sub_550F80",
+      "incoming_definitions": [
+        {
+          "line": 5729,
+          "bytes": 92,
+          "sha256": "324abb36f569393da3e3e549de44800f4fa91c6610b02e3ba7ca761c280e1f40"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 94
+      }
+    },
+    {
+      "name": "sub_551250",
+      "incoming_definitions": [
+        {
+          "line": 5733,
+          "bytes": 108,
+          "sha256": "1dfeda9fc3fc36777f731884dd409c8c73e190e67a5d41c4e453d584407ffbf9"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 97
+      }
+    },
+    {
+      "name": "sub_551250_pe32",
+      "incoming_definitions": [
+        {
+          "line": 5736,
+          "bytes": 5200,
+          "sha256": "7da68ce7ca38127d687ab6ea9f2f0bc5065bc138bae126fa4a47c7042ce9b931"
+        }
+      ],
+      "classification": "already retired PE32 clone",
+      "owner": {
+        "path": "src/server/door_box_collision_551250.go",
+        "symbol": "DoorBoxCollision551250"
+      }
+    },
+    {
+      "name": "sub_5516A0",
+      "incoming_definitions": [
+        {
+          "line": 5898,
+          "bytes": 841,
+          "sha256": "a4f79420a0d1942eb84f0dff393d8f49e5875a2d413258382171b79b441ffac2"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 44
+      }
+    },
+    {
+      "name": "sub_551780",
+      "incoming_definitions": [
+        {
+          "line": 5944,
+          "bytes": 624,
+          "sha256": "8ef91c105dd15853bf3b8fa5239219b2057da9dd7bb3bd1f48330a365b09fefb"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 56
+      }
+    },
+    {
+      "name": "sub_551870",
+      "incoming_definitions": [
+        {
+          "line": 5977,
+          "bytes": 624,
+          "sha256": "2996b610f44a0baa64a4b0fd1f8396f753a1c15c6d09d01cd3a0409f1e0ebce5"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 65
+      }
+    },
+    {
+      "name": "sub_551960",
+      "incoming_definitions": [
+        {
+          "line": 6010,
+          "bytes": 1122,
+          "sha256": "3df4d6a54d46c734a128aec1c4a32b081f70ebed3f3b03692dbfc817e7da617e"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 74
+      }
+    },
+    {
+      "name": "sub_551A90",
+      "incoming_definitions": [
+        {
+          "line": 6054,
+          "bytes": 205,
+          "sha256": "ca4cb319e824225ed2fca75ec16795d588c484092d54736d62ceb931acdc8b3e"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_geometry_entries.go",
+        "line": 83
+      }
+    },
+    {
+      "name": "sub_551AE0",
+      "incoming_definitions": [
+        {
+          "line": 6061,
+          "bytes": 143,
+          "sha256": "42234f6dde8ab8df0ee19cc8bda5a8a34814d815fbee09150627c0c2a4002dcd"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 102
+      }
+    },
+    {
+      "name": "sub_551AE0_pe32",
+      "incoming_definitions": [
+        {
+          "line": 6066,
+          "bytes": 1180,
+          "sha256": "f0ae9bf2e3e4bed471fe1397135d9c669a8ec5e4b3819f19f064c52b1ef1fb66"
+        }
+      ],
+      "classification": "already retired PE32 clone",
+      "owner": {
+        "path": "src/server/elevator_collision_551ae0.go",
+        "symbol": "ElevatorCollision551AE0"
+      }
+    },
+    {
+      "name": "sub_551BF0",
+      "incoming_definitions": [
+        {
+          "line": 6101,
+          "bytes": 358,
+          "sha256": "6a68988205949d2ad0043dd20fb89854b7c96a9d163795b272ee76d6cc1b999a"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_collision_entries.go",
+        "line": 361
+      }
+    },
+    {
+      "name": "sub_551C40",
+      "incoming_definitions": [
+        {
+          "line": 6111,
+          "bytes": 99,
+          "sha256": "86350c22604eb419286be590f327914b56fa3c5b6027dc3a4e04c4479f237dee"
+        }
+      ],
+      "classification": "native Go public export",
+      "owner": {
+        "path": "src/legacy/game5_native_abi.go",
+        "line": 107
+      }
+    },
+    {
+      "name": "sub_551C40_pe32",
+      "incoming_definitions": [
+        {
+          "line": 6116,
+          "bytes": 1781,
+          "sha256": "0a3db4b7db2f61e3db6f8487a806cca04103205e2081174ac5d91cfbffb5e965"
+        }
+      ],
+      "classification": "already retired PE32 clone",
+      "owner": {
+        "path": "src/server/elevator_shaft_collision_551c40.go",
+        "symbol": "ElevatorShaftCollision551C40"
+      }
+    }
+  ],
+  "notes": [
+    "All incoming bytes, including nested guards and previous native wrappers, remain exact inside one outer #if 0.",
+    "The first broad lexical inventory also counted if/switch/while; its 160 raw names were static triage only. Correct literal unique names:157.",
+    "Counts are source connections and ABI closure, not measured branch coverage, new algorithm count or whole-game percentage.",
+    "CPP inventory covers C translation units; cgo preambles and runtime conditions require separate inspection.",
+    "Original CPU equivalence for all new control paths is not asserted. Existing qualified numeric kernels are reused.",
+    "Public segment/rectangle intersection preserves the original nonpositive-limit no-buffer-access branch, including nil inputs."
+  ]
+}

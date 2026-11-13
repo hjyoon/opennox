@@ -1,3 +1,4 @@
+#if 0 // Exact incoming GAME5 payload; native Go entries live in game5_* units.
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
@@ -6168,3 +6169,5 @@ void sub_551C40_pe32(int a1, int a2) {
 	}
 }
 #endif
+
+#endif // Exact incoming GAME5 payload.

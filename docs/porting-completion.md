@@ -55,6 +55,83 @@ completion requirements.
 
 ## Current findings
 
+### GAME1–GAME5 main-file closure, 2026-11-14
+
+This batch closes the literal `GAME1.c`, `GAME2.c`, `GAME3.c`, `GAME4.c`
+and `GAME5.c` files. GAME1 retains six typed, Go-backed C ABI forwarders;
+GAME2 through GAME5 contain no active original C function definitions.
+The matching split files (`GAME1_1.c` through `GAME5_2.c`) are separately
+inventoried and remain outside this five-file closure. Whole-game completion
+and the nine campaign final audits remain open.
+
+GAME5 preserves all 186,152 incoming bytes inside one outer `#if 0`:
+SHA-256 `139e2ecb53f8d53cd4d147a1ea7e6bf2a15ea4ec5adf24401887bb64ad276801`.
+The corrected literal inventory has 157 names: 139 public Go exports and
+18 private or renamed native integrations, including four already retired
+PE32 clones. Its 101 previously active C functions now connect to 23 Go
+control/queue implementations, 72 existing native public handlers and six
+existing private strike helpers. These are source connections rather than
+new algorithms, branch coverage, or a whole-game percentage. The full mapping
+is retained in `docs/game5-native-source-map-20261114.json`.
+
+Native pointer fields now cover definition callbacks, collision buckets and
+ordered hits, door rotation queues, cursor selection, generator operations,
+creation/death/score entries and prefab connectors. The fixed-width room
+records retain their 32-bit registry tokens. Packet widths and scalar float
+bits remain fixed. The pointer-free wall table is copied verbatim to its own
+C data owner. Twelve unused PE32-only declarations were removed after the
+active-C/Go reference audit. The AI and player-death public C entries now
+share their Go handlers on both widths, removing the obsolete 32-bit fallback
+that would recurse into the new entry.
+
+Actual C-call tests require high native owners and check complete creation
+buffers, callback identities, collision deduplication/callback ordering/live
+normal reloads, door wrap/stop/queue semantics, geometry output guards and
+nonpositive-limit no-read behavior, projected cursor geometry, secret-wall
+state/audio, eleven strike names, all four prefab sides, angled connectors,
+reverse adjacency and occupied-room rollback. Golden vector inputs and expected outputs remain unchanged; fixture
+allocation and wiring changes are recorded separately. Original-CPU equivalence for every
+new control path, all failure-EAX residues, malformed overlapping buffers and
+allocation failure is not asserted. The unused death/generator return word is
+explicitly zero; invalid-side and missing-owner handling are native policies.
+
+The inherited high-address fixture work was preserved byte for byte across
+all 513 incoming files, then reviewed and committed separately. Scoped drawing
+and mapgen owners retain ordinary production allocation by default. A real
+cross-owner map-record cleanup mismatch was fixed, and a Windows/386
+out-of-range pointer-witness comparison was guarded at preprocessing time.
+The before control fails under `-Werror`; corrected 386 and amd64 controls pass.
+No golden data or expected output was changed.
+
+The first broad macOS attempt is retained as failed: Apple ASan deadlocked
+before even an empty program entered `main`, and the map-record ownership
+assertion exposed the separate cleanup bug. A sampled empty-program stack
+shows recursive ASan initialization through the system loader. The workspace
+now contains digest-verified upstream LLVM 23.1.5 compiler/runtime inputs;
+only instrumented C fixtures select that complete matching toolchain. Engine
+and ordinary C reference builds retain Apple clang. Startup, heap overflow and
+undefined-behavior controls prove the sanitizer checks remain active. The
+failed attempt to mix Apple instrumentation with an upstream runtime is also
+retained; its ABI mismatch was never bypassed.
+
+The second overbroad attempt is explicitly interrupted and uncredited, after
+760,300 passing events: two independent unchanged default-damage oracle roots
+require 4,152 supervised processes. The final common-suite commands name
+`-skip '^TestRawDefaultDamageNative(Go|C)Original4E0B30$'`; all other roots,
+including the changed Go-heap/WORD controls, run in both profiles. This scope
+must not be described as an unfiltered full-suite pass.
+
+Both macOS ARM64 / Go 1.27.3 common-suite profiles pass 835,179 test
+terminal events with 22 declared runtime skips and three passing package mains
+each. The strict profile actually enables `cgocheck2`, `highres` and
+`-d=checkptr=2`. Each actual main is retained before execution. Both profiles
+share the same 9,119-file source lease, SHA-256 `6bcbfa5048224ca4cb7a830be1553dda48c330da7257146e7061d34a047d34c8`; neither
+reports a changed input or compiler warning. These results explicitly retain
+the two-root exclusion above.
+
+Clean product/E2E and exact implementation-CI results are pending at this
+implementation checkpoint and will be recorded after execution.
+
 ### GAME4 native implementation and local validation, 2026-11-10
 
 The exact `GAME4.c` baseline retains its complete 140,091 bytes inside one

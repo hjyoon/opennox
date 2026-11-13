@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-// Compile the actual production body and wall layout. Only lookup and audio
-// services are intercepted; the secret record comes from the production header.
+// Compile the retained C reference and wall layout. The production entry now
+// runs Go; this reference still checks its original field and audio contract.
 func TestSecretWallTouch548100NativeBody(t *testing.T) {
 	source, err := os.ReadFile("GAME5.c")
 	if err != nil {

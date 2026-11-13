@@ -121,7 +121,8 @@ require 4,152 supervised processes. The final common-suite commands name
 including the changed Go-heap/WORD controls, run in both profiles. This scope
 must not be described as an unfiltered full-suite pass.
 
-Both macOS ARM64 / Go 1.27.3 common-suite profiles pass 835,179 test
+Before the wall-owner follow-up, both macOS ARM64 / Go 1.27.3 common-suite
+profiles pass 835,179 test
 terminal events with 22 declared runtime skips and three passing package mains
 each. The strict profile actually enables `cgocheck2`, `highres` and
 `-d=checkptr=2`. Each actual main is retained before execution. Both profiles
@@ -129,8 +130,88 @@ share the same 9,119-file source lease, SHA-256 `6bcbfa5048224ca4cb7a830be1553dd
 reports a changed input or compiler warning. These results explicitly retain
 the two-root exclusion above.
 
-Clean product/E2E and exact implementation-CI results are pending at this
-implementation checkpoint and will be recorded after execution.
+The final engine revision is `f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd`,
+after the GAME5 implementation commit `87e663480`. Both were pushed to the
+explicitly requested `origin/port/go1.26-multiarch` target; the pinned compiler
+is Go 1.27.3. Frozen results: `docs/game1-5-native-validation-20261114.json`.
+
+The first exact-code Windows/amd64 gate built and verified its product, then
+reached the unchanged 20-minute root/legacy package deadlines. Its stacks and
+timings identify repeated high-address wall setup: each 65,536-wall pool
+requested a separate Windows mapping per wall, and the wall-policy test took
+115.46 seconds. The follow-up retains every wall and every high-pointer
+assertion, stores the fixture walls in one foreign-owned array, and frees its
+base once alongside the two index owners. Ordinary production wall allocation
+is unchanged. Reset/deletion/reuse and teardown with both live and free walls
+are checked. The same policy test now reports 0.06 seconds. No timeout was
+raised, scenario removed, or expected oracle result changed.
+
+Both final macOS common-suite profiles pass 835,179 test terminal events,
+22 declared runtime skips and all three package mains, with zero warnings.
+The strict configuration actually uses `cgocheck2`, `highres` and
+`-d=checkptr=2`. The explicit two-root exclusion stated above remains. Both
+profiles retain an unchanged 9,118-file source lease with SHA-256
+`a36a0084b4c521c4de1f0ba2da1937a38fb91d7daeffdcd6897b45ba3b1aa707`.
+The focused normal/strict owner and public-C checks each pass 71 terminal
+events and three package mains. Actual executed mains and their before-exec
+records remain preserved.
+
+Four fresh ARM64 products (`opennox`, `opennox-hd`, `opennox-server`,
+`opennox-server-hd`) have clean `f7a0ee0cd` VCS metadata, pass verification and
+help execution, and retain their exact pre-execution hashes. All four builds
+report zero compiler warnings. On the exact same source, all six native jobs
+pass in the [Linux four-product run](https://github.com/hjyoon/opennox/actions/runs/43475707344)
+and [Windows amd64/386 run](https://github.com/hjyoon/opennox/actions/runs/43475707412).
+The six job logs contain zero compiler warnings. Every complete CI ZIP,
+including products and test mains, is saved locally and its GitHub digest
+verified.
+
+| Native CI configuration | Passing test terminal events | Declared test skips | Package terminals |
+| --- | ---: | ---: | --- |
+| Linux/amd64 client and client-hd, each | 818,205 | 56 | 40 pass, 21 skip |
+| Linux/amd64 server and server-hd, each | 812,094 | 7 | 36 pass, 22 skip |
+| Windows/amd64 server | 810,079 | 11 | 3 pass |
+| Windows/386 server | 790,349 | 94 | 3 pass |
+
+The Linux ordinary server also passes 133,405 default-link damage events
+across three package mains. Every expected package has a terminal result;
+these counts are evidence multiplicities, not coverage percentages.
+
+The final products pass eight unchanged normal/HD AI, death, ambient and
+shop-audio scenarios. AI supplies 44 sustained three-attack configurations
+per profile. Ambient checks audit all 54 stock Amb types. Both profiles also
+pass an ordinary-clock, localhost-only exchange between two independent game
+processes: eight initial chat submissions, four received peer messages, one
+host reply, cancellation and empty-input handling, including Korean/Chinese
+and IME input. All four chat processes exit naturally. OpenAL null-device
+queues prove positive gain and complete buffer consumption for the sound
+checks; physical audible output is not credited.
+
+The unchanged public Save/Load PNG comparison remains failed. Its current
+324,117-pixel difference is reproduced by the clean immediate parent
+`a435f27db`; that parent's and the GAME5 product's actual images match every
+one of 786,432 pixels. The older October 20 product reproduces the earlier
+943-pixel difference. Separate diagnostic copies change only labels feeding
+logs and screenshot filenames, retaining every original input, timing,
+overwrite/refusal, exact state, fresh-process reload and movement assertion.
+These normal/HD functional runs pass and capture observational images;
+they receive no original-golden pass credit. All four final live/fresh capture
+images match the previous product with zero differing pixels. Original PNGs
+remain untouched.
+
+The supplied installation lacked `video.bag` and `video8.bag` before work
+started. Two matching preserved copies were found; GAME.EXE and both video
+indices match the supplied installation. Only the missing bags are supplied
+through independent snapshots in the isolated validation input. Existing
+`thing.bin`, `modifier.bin`, localization, maps and personal Save files are
+preserved. The final 4,649-file installation/Save manifest and all 387 tracked
+E2E input/golden files retain their original hashes, and all four products
+retain their hashes after execution. Failed launches, PNG diffs, timeout
+mains and before controls remain preserved. Completed duplicate executables
+keep their paths through verified hardlinks; four completed large raw event
+logs have fully verified gzip archives and explicit restoration records.
+Reconstructable compiler caches were cleared separately. No whole-game,
+split-file, nine-cell campaign-final-audit or 100-percent claim is added.
 
 ### GAME4 native implementation and local validation, 2026-11-10
 

@@ -1,0 +1,477 @@
+{
+  "schema": "opennox-main-game1-5-qualification-v1",
+  "source_revision": "f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+  "implementation_revision": "87e663480a9828d3aa161de1cb304f11f252bc55",
+  "fixture_foundation_revision": "a435f27dbee0c56c88a08e6a668193f388589281",
+  "pushed_ref": "refs/heads/port/go1.26-multiarch",
+  "toolchain": "go1.27.3",
+  "scope": {
+    "literal_main_files": [
+      "GAME1.c",
+      "GAME2.c",
+      "GAME3.c",
+      "GAME4.c",
+      "GAME5.c"
+    ],
+    "active_original_C_algorithms": 0,
+    "GAME1_typed_Go_ABI_forwarders": 6,
+    "split_files_remain": 13,
+    "whole_game_100_percent": false,
+    "campaign": "Warrior/Conjurer/Wizard chapters1-3; all nine final audits remain open; chapter4+ excluded"
+  },
+  "game5": {
+    "incoming_bytes": 186152,
+    "incoming_sha256": "139e2ecb53f8d53cd4d147a1ea7e6bf2a15ea4ec5adf24401887bb64ad276801",
+    "source_map_sha256": "3d0ec3e7d958fc3487cc601fd12c730cc31751d98ebe6332213f158852368cc6",
+    "literal_names": 157,
+    "same_name_Go_exports": 139,
+    "private_or_renamed": 18,
+    "previously_active_C_functions": 101,
+    "new_control_or_queue_algorithms": 23,
+    "public_bindings_to_existing_native_handlers": 72,
+    "private_strike_integrations": 6
+  },
+  "macOS": {
+    "architecture": "arm64",
+    "normal": {
+      "exit_code": 0,
+      "elapsed_seconds": 815.993,
+      "tests": {
+        "pass": 835179,
+        "skip": 22
+      },
+      "packages": {
+        "pass": 3
+      },
+      "first_failures": [],
+      "failure_count": 0,
+      "skips": [
+        "TestNativeAmbientVoiceOwnership45A9B0",
+        "TestNativeAmbientPublicCPlayback45A9B0",
+        "TestNativeAudioEffectsEnabled",
+        "TestNativeAudioEffectsEnabledChild",
+        "TestNativeAudioEffectsEventLimit",
+        "TestNativeAudioEffectsEventLimitChild",
+        "TestNativeAudioEffectsLiveService",
+        "TestNativeAudioEffectsLiveServiceChild",
+        "TestNativeAudioEffectsLiveVolume",
+        "TestNativeAudioEffectsLiveVolumeChild",
+        "TestOptionsStretchConfigChild",
+        "TestOptionsAuditFXObserverChild",
+        "TestGame2AudioBridgeActiveParsersAndShutdown",
+        "TestGame2AudioBridgeActiveParsersAndShutdownChild",
+        "TestNativeNetworkAudioPlayback",
+        "TestNativeNetworkAudioPlaybackChild",
+        "TestOptionsConfigStockDefaultReset",
+        "TestOptionsConfigChild",
+        "TestVideoModeTransitionsHeadlessChild",
+        "TestMonsterBinOracleFile",
+        "TestObjectsVelocityOriginalX87NaNLoad5118A0",
+        "TestSentryGlobeNativeX87Endpoint510E60"
+      ],
+      "warning_count": 0,
+      "first_warnings": [],
+      "changed_source_paths": [],
+      "source_files": 9118
+    },
+    "strict": {
+      "exit_code": 0,
+      "elapsed_seconds": 893.994,
+      "tests": {
+        "pass": 835179,
+        "skip": 22
+      },
+      "packages": {
+        "pass": 3
+      },
+      "first_failures": [],
+      "failure_count": 0,
+      "skips": [
+        "TestNativeAmbientVoiceOwnership45A9B0",
+        "TestNativeAmbientPublicCPlayback45A9B0",
+        "TestNativeAudioEffectsEnabled",
+        "TestNativeAudioEffectsEnabledChild",
+        "TestNativeAudioEffectsEventLimit",
+        "TestNativeAudioEffectsEventLimitChild",
+        "TestNativeAudioEffectsLiveService",
+        "TestNativeAudioEffectsLiveServiceChild",
+        "TestNativeAudioEffectsLiveVolume",
+        "TestNativeAudioEffectsLiveVolumeChild",
+        "TestOptionsStretchConfigChild",
+        "TestOptionsAuditFXObserverChild",
+        "TestGame2AudioBridgeActiveParsersAndShutdown",
+        "TestGame2AudioBridgeActiveParsersAndShutdownChild",
+        "TestNativeNetworkAudioPlayback",
+        "TestNativeNetworkAudioPlaybackChild",
+        "TestOptionsConfigStockDefaultReset",
+        "TestOptionsConfigChild",
+        "TestVideoModeTransitionsHeadlessChild",
+        "TestMonsterBinOracleFile",
+        "TestObjectsVelocityOriginalX87NaNLoad5118A0",
+        "TestSentryGlobeNativeX87Endpoint510E60"
+      ],
+      "warning_count": 0,
+      "first_warnings": [],
+      "changed_source_paths": [],
+      "source_files": 9118
+    },
+    "strict_flags": [
+      "GOEXPERIMENT=cgocheck2",
+      "-tags=highres",
+      "-gcflags=all=-d=checkptr=2"
+    ],
+    "explicit_excluded_roots": [
+      "TestRawDefaultDamageNativeGoOriginal4E0B30",
+      "TestRawDefaultDamageNativeCOriginal4E0B30"
+    ],
+    "source_lease_inputs": 9118,
+    "source_lease_sha256": "a36a0084b4c521c4de1f0ba2da1937a38fb91d7daeffdcd6897b45ba3b1aa707",
+    "products": [
+      {
+        "name": "opennox",
+        "bytes": 69847826,
+        "sha256": "aebb62504ac78d99fbed72dd181c34624d7edfe31fe3d46e400d1d288c292084"
+      },
+      {
+        "name": "opennox-hd",
+        "bytes": 69946898,
+        "sha256": "7271745ead7a4061912db315936e10e5c4649a44b6ca7dc69859d00e7af40307"
+      },
+      {
+        "name": "opennox-server",
+        "bytes": 66443394,
+        "sha256": "23f504e3ed881e022c9652115a4075a086acd41e520fbcacedf7ef3f87a0ef69"
+      },
+      {
+        "name": "opennox-server-hd",
+        "bytes": 66542466,
+        "sha256": "aa1cefbea9f4e23c3781dc699270b4a9cc01acb958bc2037f3a0a33c588afc58"
+      }
+    ],
+    "product_build": {
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 546.773,
+      "warnings": 0
+    },
+    "product_verification": {
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.606,
+      "warnings": 0
+    }
+  },
+  "runtime": {
+    "core_scenarios": [
+      {
+        "profile": "normal",
+        "scenario": "host-game-ai-sustained-attack",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 138.086,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-game-player-death",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 49.504,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-game-ambient-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 115.298,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-shop-equipped-weapon-sale-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 116.339,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-ai-sustained-attack",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 138.067,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-player-death",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 49.367,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-ambient-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 108.889,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-shop-equipped-weapon-sale-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 116.21,
+        "warnings": 0
+      }
+    ],
+    "independent_UDP_chat": [
+      {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+        "product_sha256": "aebb62504ac78d99fbed72dd181c34624d7edfe31fe3d46e400d1d288c292084",
+        "elapsed_seconds": 291.646,
+        "forced_processes": []
+      },
+      {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+        "product_sha256": "7271745ead7a4061912db315936e10e5c4649a44b6ca7dc69859d00e7af40307",
+        "elapsed_seconds": 293.119,
+        "forced_processes": []
+      }
+    ],
+    "functional_Save_Load_diagnostics": [
+      {
+        "profile": "normal",
+        "pixel_golden_pass": false,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 51.92,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "pixel_golden_pass": false,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 48.716,
+        "warnings": 0
+      }
+    ],
+    "original_Save_Load_PNG_test": "failed and retained; no original expected image changed",
+    "initial_current_vs_original_pixels": 324117,
+    "immediate_parent_vs_initial_current_pixels": 0,
+    "followup_vs_initial_current_capture_pixels": [
+      {
+        "profile": "normal",
+        "image": "diagnostic_capture_only_-_campaign_manual_save_restored_player.png",
+        "differing_pixels": 0,
+        "before_pixel_sha256": "54933e3b66034ce5356b82d796ba73e85057a48e578648858ddbed651bcf90db",
+        "after_pixel_sha256": "54933e3b66034ce5356b82d796ba73e85057a48e578648858ddbed651bcf90db"
+      },
+      {
+        "profile": "normal",
+        "image": "diagnostic_capture_only_-_campaign_manual_save_restored_in_fresh_process.png",
+        "differing_pixels": 0,
+        "before_pixel_sha256": "20804cd9170d62a5fcf8b4e33b7d926b27954bfb2665f237604cd59a5ea3986e",
+        "after_pixel_sha256": "20804cd9170d62a5fcf8b4e33b7d926b27954bfb2665f237604cd59a5ea3986e"
+      },
+      {
+        "profile": "highres",
+        "image": "diagnostic_capture_only_-_campaign_manual_save_restored_player.png",
+        "differing_pixels": 0,
+        "before_pixel_sha256": "54933e3b66034ce5356b82d796ba73e85057a48e578648858ddbed651bcf90db",
+        "after_pixel_sha256": "54933e3b66034ce5356b82d796ba73e85057a48e578648858ddbed651bcf90db"
+      },
+      {
+        "profile": "highres",
+        "image": "diagnostic_capture_only_-_campaign_manual_save_restored_in_fresh_process.png",
+        "differing_pixels": 0,
+        "before_pixel_sha256": "20804cd9170d62a5fcf8b4e33b7d926b27954bfb2665f237604cd59a5ea3986e",
+        "after_pixel_sha256": "20804cd9170d62a5fcf8b4e33b7d926b27954bfb2665f237604cd59a5ea3986e"
+      }
+    ],
+    "audio": "Native OpenAL with null driver; buffer submission/gain/consumption proved, physical audible output not credited"
+  },
+  "windows_wall_owner_fix": {
+    "before_run": 43467551535,
+    "before_source": "87e663480a9828d3aa161de1cb304f11f252bc55",
+    "before_failure": "root/legacy reached unchanged 20-minute package deadline while repeated InitHigh mapped individual walls",
+    "wall_count": 65536,
+    "wall_and_index_foreign_owners_after": 3,
+    "ordinary_production_allocation_unchanged": true,
+    "policy_test_elapsed_before_seconds": 115.46,
+    "policy_test_elapsed_after_seconds": 0.06,
+    "timeouts_or_corpus_exclusions_changed": false
+  },
+  "CI": [
+    {
+      "name": "opennox-server-windows-386",
+      "run_id": 43475707412,
+      "artifact_id": 14064411372,
+      "archive_bytes": 155134161,
+      "archive_sha256": "58916a800de00e0103dcea2c3284b7d74c60721762078f43df69524cf5aadaae",
+      "test_actions": {
+        "skip": 94,
+        "pass": 790349
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": []
+    },
+    {
+      "name": "opennox-server-windows-amd64",
+      "run_id": 43475707412,
+      "artifact_id": 14063598795,
+      "archive_bytes": 160347695,
+      "archive_sha256": "fc3b61c7c47b7ed95ccd9916f08f8974c3f624273a12570ad16c5ea0bab5e41d",
+      "test_actions": {
+        "pass": 810079,
+        "skip": 11
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": []
+    },
+    {
+      "name": "linux-amd64-opennox-hd-f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+      "run_id": 43475707344,
+      "artifact_id": 14064915428,
+      "archive_bytes": 209639635,
+      "archive_sha256": "cf618deda4e4810c905f2570f25432a155c42facc9a82c0aeea6f87f3fc707b8",
+      "test_actions": {
+        "pass": 818205,
+        "skip": 56
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": []
+    },
+    {
+      "name": "linux-amd64-opennox-server-hd-f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+      "run_id": 43475707344,
+      "artifact_id": 14064525154,
+      "archive_bytes": 196256867,
+      "archive_sha256": "c47efc701acf394748e061d5bb885e46358ab79d35e0b51b9d0923b4094a412d",
+      "test_actions": {
+        "pass": 812094,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": []
+    },
+    {
+      "name": "linux-amd64-opennox-f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+      "run_id": 43475707344,
+      "artifact_id": 14063847999,
+      "archive_bytes": 209660812,
+      "archive_sha256": "a997b5063572a8e072f8fe2302477207eec4de47d72a378197691f86fc3091b9",
+      "test_actions": {
+        "pass": 818205,
+        "skip": 56
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": []
+    },
+    {
+      "name": "linux-amd64-opennox-server-f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+      "run_id": 43475707344,
+      "artifact_id": 14063409277,
+      "archive_bytes": 252090403,
+      "archive_sha256": "7d8a07faa1305dc50b581b69d3d65d230a059d54bb90617434e109ad4b01d3e4",
+      "test_actions": {
+        "pass": 812094,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "test_exit_code": 0,
+      "missing_packages": [],
+      "failures": [],
+      "default_link_damage": {
+        "test_buildmode": "default",
+        "MALLOC_MMAP_THRESHOLD_": "0",
+        "test_actions": {
+          "pass": 133405
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "exit_code": 0
+      }
+    }
+  ],
+  "preservation": {
+    "source_revision": "f7a0ee0cd9c6a83f2151c698b51aaaab5d74c7fd",
+    "original_asset_file_count_before": 4649,
+    "original_asset_file_count_after": 4649,
+    "original_asset_or_Save_changes": [],
+    "tracked_E2E_input_and_golden_files": 387,
+    "tracked_E2E_input_or_golden_changes": [],
+    "product_executables": 4,
+    "product_changes_after_execution": [],
+    "source_lease_inputs": 9118,
+    "source_changes_after_qualification": [],
+    "added_nonignored_source_paths": []
+  },
+  "evidence_root": "tmp/opennox-r344-20261020/game1-5-native-completion-20261114-v1",
+  "limitations": [
+    "No full original-CPU/branch/fault-EAX proof for every new path",
+    "Original public Save/Load PNG comparisons remain failed",
+    "Separate split/support C files and full game/campaign completion remain open"
+  ]
+}

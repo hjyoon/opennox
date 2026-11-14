@@ -454,7 +454,12 @@ func nox_xxx_playerAttackNPCUseWeaponNative_538960(owner, weapon *nox_object_t) 
 }
 
 func playerAttackNativeEntry538960(unit *server.Object) int {
-	return int(C.nox_xxx_playerAttackNative_538960(asObjectC(unit)))
+	return int(C.nox_xxx_playerAttack_538960(asObjectC(unit)))
+}
+
+//export nox_xxx_playerAttack_538960
+func nox_xxx_playerAttack_538960(unit *nox_object_t) C.int {
+	return C.int(playerAttackNativeData538960(asObjectS(unit)))
 }
 
 func playerAttackWarcryStunnable538960(target *server.Object) bool {

@@ -1784,6 +1784,7 @@ finish:
 
 //----- (00538960) --------------------------------------------------------
 void nox_xxx_castCounterSpell_52BBB0(int a1, int a2, int a3, int a4);
+#if 0 // Public entry now shares the native Go dispatch on both pointer widths.
 int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	if (sizeof(void*) > sizeof(uint32_t)) {
 		return nox_xxx_playerAttackNative_538960(a1p);
@@ -2371,6 +2372,8 @@ LABEL_159:
 	}
 	return v72 < v77;
 }
+#endif
+
 // 539AF2: variable 'v76' is possibly undefined
 
 //----- (00539B90) --------------------------------------------------------

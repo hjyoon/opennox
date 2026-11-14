@@ -60,6 +60,24 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Unreachable edit-field cleanup, 2026-11-15
+
+The existing edit-event C entry returns directly to Go on every architecture.
+Its unreachable decoded tail and the key helper referenced only from that
+code are now archived in place. All 3,301 original bytes remain available;
+removing only the new guards reconstructs the complete incoming C file.
+The public entry has identical compiled instructions before and after for
+ARM64 and x86_64, in normal and combined highres/server configurations.
+
+Existing C widget callbacks, committed text, IME and chat checks pass 46 tests
+and three packages in each normal and highres/cgocheck2/checkptr=2 profile,
+with zero warnings and unchanged source leases. This cleanup adds no new
+Go-port credit: the cumulative split-entry count remains 119. The current
+inventory is 1,967 active C definitions and 2,372 narrow-cast review
+candidates in 261 functions. Full-platform qualification remains the separate
+`cd62abc6d` public-entry batch below. Evidence and scope are recorded in
+`docs/split-unreachable-native-progress-20261115.json`.
+
 ### GAME5_2 public native entries, 2026-11-15
 
 The chat restriction and wall-reflection public C entries now share the typed

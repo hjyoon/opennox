@@ -1,0 +1,81 @@
+{
+  "utc": "2026-11-14T16:18:26.597361+00:00",
+  "scope": "Unreachable GUI C source cleanup; existing unconditional native Go bridge is unchanged. No new Go port credit or full-platform/runtime requalification claim.",
+  "base_revision": "ff2fc7491710b2ceb9102f0565f2757370e1d193",
+  "source_file": "src/legacy/GAME2_2.c",
+  "incoming_sha256": "c1433fe0d2a343ff7ced0ae0a0868f6acefc8079c2c01e37ec3737112a56b9cd",
+  "outgoing_sha256": "626321d12a12c4ffba6968e04d3dac3ff68fd4a290903292d10908a037bcbefb",
+  "whole_incoming_C_file_reconstructed": true,
+  "archived_original_bytes": 3301,
+  "archived_regions": [
+    {
+      "kind": "unreferenced_key_helper",
+      "begin": 165041,
+      "end": 167246,
+      "original_bytes": 2205,
+      "original_sha256": "228d60b22520612f6b97bd7a5d9114fda4f545a2d946f133a6b17df0aac37d66"
+    },
+    {
+      "kind": "unreachable_edit_tail",
+      "begin": 168083,
+      "end": 169179,
+      "original_bytes": 1096,
+      "original_sha256": "a3a095f8ce8d75a5ab8a1f030da4dc275905c222199e02d015414550598ce09b"
+    }
+  ],
+  "public_instructions_identical_profiles": [
+    "arm64 normal",
+    "arm64 highres-server",
+    "x86_64 normal",
+    "x86_64 highres-server"
+  ],
+  "normal": {
+    "changed_source_paths": [],
+    "source_files": 9152,
+    "source_lease_sha256": "88cf6d4a025c5395b10dba0b9ee0b384373f63cba590a5eff3a7ca710f4824d2",
+    "exit_code": 0,
+    "elapsed_seconds": 384.848,
+    "test_actions": {
+      "pass": 46
+    },
+    "package_actions": {
+      "pass": 3
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "strict_highres_cgocheck2_checkptr2": {
+    "changed_source_paths": [],
+    "source_files": 9152,
+    "source_lease_sha256": "88cf6d4a025c5395b10dba0b9ee0b384373f63cba590a5eff3a7ca710f4824d2",
+    "exit_code": 0,
+    "elapsed_seconds": 384.848,
+    "test_actions": {
+      "pass": 46
+    },
+    "package_actions": {
+      "pass": 3
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "new_Go_entries": 0,
+  "cumulative_new_Go_entries": 119,
+  "inventory": {
+    "active_C_definitions": 1967,
+    "narrow_cast_review_candidates": 2372,
+    "candidate_functions": 261,
+    "all_pointer_integer_casts": 2659
+  },
+  "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-unreachable-native-20261115-v1",
+  "full_platform_qualified_engine_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "next_stage": "ROOT/split-bitstream-native-20261115-v1"
+}

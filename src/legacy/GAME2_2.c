@@ -5235,6 +5235,7 @@ int sub_487D60(int a1) {
 
 
 //----- (00487D70) --------------------------------------------------------
+#if 0 // Archived: only called by the unreachable edit tail below.
 int nox_xxx_wndEditProc_487D70_key(uint32_t* a1, int v4, int a3, int a4) {
 	switch (a3) {
 	case 1:
@@ -5338,6 +5339,8 @@ int nox_xxx_wndEditProc_487D70_key(uint32_t* a1, int v4, int a3, int a4) {
 	*(uint16_t*)(v4 + 2 * (unsigned short)++*(uint16_t*)(v4 + 1052)) = 0;
 	return 1;
 }
+#endif
+
 extern uintptr_t nox_xxx_wndEditProc_487D70_go(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
 extern uintptr_t nox_xxx_wndEditProcPre_488710_go(nox_window* win, unsigned int event, uintptr_t a3,
 													  uintptr_t a4);
@@ -5350,6 +5353,7 @@ int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, uintptr_t a3, uintptr_t 
 	// below indexes it as a PE32 uint32_t array, so delegate to the Go widget
 	// implementation before any legacy layout access.
 	return (int)nox_xxx_wndEditProc_487D70_go(a1p, a2, a3, a4);
+#if 0 // Archived: the unconditional native Go return above handles every build.
 
 	uint32_t* a1 = (uint32_t*)a1p;
 	int v4;  // esi
@@ -5403,6 +5407,7 @@ int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, uintptr_t a3, uintptr_t 
 	default:
 		return 0;
 	}
+#endif
 }
 
 //----- (00488160) --------------------------------------------------------

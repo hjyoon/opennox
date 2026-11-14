@@ -62,8 +62,8 @@ records retain their historical branch information.
 
 ### Split GAME audio owners: native family, 2026-11-14
 
-The next split-file batch moves 74 original entries to Go: two ordinary-context
-stop/destroy wrappers in GAME1_2, the last two GAME1_3 audio entries, 42
+This qualified split-file batch moves 74 original entries to Go: two
+ordinary-context stop/destroy wrappers in GAME1_2, the last two GAME1_3 audio entries, 42
 GAME2_2 bank/buffer/device/context entries, and 28 GAME3_1 pool/cache/voice
 entries. The original 26,889 body bytes remain archived in place. Removing only
 the new guards reconstructs all four incoming C files byte for byte.
@@ -88,18 +88,68 @@ order/alignment, retained-cache eviction and the connected cache-to-producer
 buffer pump. Actual file/index/WAV-override calls pass through the public C
 bank entries with foreign native owners and high opaque FILE handles.
 
-Both macOS normal and highres strict focused profiles pass **751 tests,
-two fixture-dependent runtime skips and three packages, with zero warnings**.
-Strict enables `cgocheck2` and `checkptr=2`. All 9,142 source inputs remain
-unchanged during both runs, with shared lease SHA-256
-`7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245`.
+The qualified engine is `6352a8bfd7ca845a225d3522f2160e1c18a52db2`,
+pushed to `origin/port/go1.27-multiarch`. Both macOS normal and highres strict
+focused profiles pass **759 tests, two fixture-dependent runtime skips and
+three packages, with zero compiler warnings**. Strict enables `cgocheck2`
+and `checkptr=2`. All 9,145 source inputs remain unchanged during both runs,
+with shared lease SHA-256
+`ff8e7166633caf37cefa192e43686ecb1624f4a0af1aeb22822f341ba29e111f`.
+The common profile passes **836,575 tests, 22 runtime skips and three
+packages** with zero warnings. Its explicit selector excludes
+`TestRawDefaultDamageNativeGoOriginal4E0B30` and
+`TestRawDefaultDamageNativeCOriginal4E0B30`; this is not an unfiltered suite
+claim. Linux separately passes 133,405 default-link damage checks.
 Real OpenAL mono and stereo each queue and process 68 ADPCM buffers through
 the native C entry names and deliver EOS exactly once. Playback uses the
 explicit OpenAL null output driver; this is not a perceptual audio assessment.
-The Linux audio workflow now includes these legacy tests and retains all
-three compiled test mains.
+Actual default C class/method calls also create a native driver and sample,
+play both buffer-format and context-format fallback streams, refresh, pause,
+stop through EOS and release all sample sources. Linux audio requires all
+seven lifecycle, three source-playback and three default-method terminal PASS
+records and retains its three executables in both profiles.
 
-This batch still needs clean products, product E2E and platform CI qualification.
+The initial `6c25cafd9` full-platform runs exposed a clock initialization
+regression in four unchanged packet tests. A retained macOS executable
+reproduces it: blob data binding initialized a timer before its clock was
+bound. Native global allocation is now independent of timer initialization;
+first audio use or explicit audio setup initializes the master group once.
+All six initial failed full-platform archives, their two passing audio
+archives and all eight passing fixed-engine archives remain SHA-verified.
+
+Clean macOS client, HD client, server and HD server products pass build,
+metadata and help checks with zero warnings. Normal/HD AI, death, all 54
+ambient-sound cases and equipped-weapon sale/repurchase pass eight product
+E2E runs. Both functional Save/Load diagnostics pass while retaining the
+inherited public pixel-golden failure. Both independent host/peer chat
+profiles pass eight own submissions, four received peer messages, one host
+reply, two cancellations and two empty entries, with natural exits.
+
+| Fixed-engine CI profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 819,595 each | 57 each |
+| Linux amd64 server / HD | 813,484 each | 7 each |
+| Windows amd64 server | 811,469 | 11 |
+| Windows 386 server | 791,739 | 94 |
+| Linux actual audio normal / strict | 886 each | 7 each |
+
+All eight jobs pass with zero compiler warnings. Linux tests every package
+for each product; the server also passes the separate default-link check.
+The full archives, source revisions, job logs and exact retained executable
+counts are audited in
+`ROOT/split-audio-native-20261114-v1/qualified-audio-batch-v1.json`.
+The original 4,649 asset/Save files and 387 tracked E2E inputs remain unchanged.
+Completed large logs are preserved by verified lossless compression;
+only the inactive Go build cache was cleared, preserving modules and programs.
+
+The next GAME5_2 public-entry batch has two original C pointer crashes and
+3,036 sealed original-CPU cases across 109 unchanged instruction bytes,
+including the original flag check without services. No port credit is
+assigned yet. The crashes use standalone unchanged C bodies; the integrated
+game already has typed Go callers for these operations. Three packed-light
+shadows have no active references in the relevant translation units; their
+native Drawable replacements remain in use.
+
 Native handling rejects invalid pool sizes and context indices; discarded
 mixed pointer/status residues are nil. A malformed WAV override without a
 usable fmt record falls back to the selected bag stream instead of reading

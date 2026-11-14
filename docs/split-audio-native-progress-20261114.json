@@ -1,7 +1,7 @@
 {
   "scope": "74-entry native audio family in the 13 split GAME files; all 13 and whole-game port remain incomplete",
   "base_HEAD": "06d7a03ae4a8c1178115ce352ba48908d100fe4a",
-  "code_revision": null,
+  "code_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
   "git": {
     "local_branch": "port/go1.27-multiarch",
     "push_target": "origin/port/go1.27-multiarch",
@@ -703,12 +703,12 @@
   "local_validation": {
     "normal": {
       "changed_source_paths": [],
-      "source_files": 9142,
-      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "source_files": 9145,
+      "source_lease_sha256": "ff8e7166633caf37cefa192e43686ecb1624f4a0af1aeb22822f341ba29e111f",
       "exit_code": 0,
-      "elapsed_seconds": 331.377,
+      "elapsed_seconds": 379.422,
       "test_actions": {
-        "pass": 751,
+        "pass": 759,
         "skip": 2
       },
       "package_actions": {
@@ -721,12 +721,12 @@
     },
     "strict": {
       "changed_source_paths": [],
-      "source_files": 9142,
-      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "source_files": 9145,
+      "source_lease_sha256": "ff8e7166633caf37cefa192e43686ecb1624f4a0af1aeb22822f341ba29e111f",
       "exit_code": 0,
-      "elapsed_seconds": 386.896,
+      "elapsed_seconds": 436.755,
       "test_actions": {
-        "pass": 751,
+        "pass": 759,
         "skip": 2
       },
       "package_actions": {
@@ -746,7 +746,52 @@
       "TestAudioDecode/dialog",
       "TestAudioDecode/music"
     ],
-    "unfiltered_full_suite_claim": false
+    "unfiltered_full_suite_claim": false,
+    "common": {
+      "exit_code": 0,
+      "elapsed_seconds": 969.742,
+      "tests": {
+        "pass": 836575,
+        "skip": 22
+      },
+      "packages": {
+        "pass": 3
+      },
+      "first_failures": [],
+      "failure_count": 0,
+      "skips": [
+        "TestNativeAmbientVoiceOwnership45A9B0",
+        "TestNativeAmbientPublicCPlayback45A9B0",
+        "TestNativeAudioEffectsEnabled",
+        "TestNativeAudioEffectsEnabledChild",
+        "TestNativeAudioEffectsEventLimit",
+        "TestNativeAudioEffectsEventLimitChild",
+        "TestNativeAudioEffectsLiveService",
+        "TestNativeAudioEffectsLiveServiceChild",
+        "TestNativeAudioEffectsLiveVolume",
+        "TestNativeAudioEffectsLiveVolumeChild",
+        "TestOptionsStretchConfigChild",
+        "TestOptionsAuditFXObserverChild",
+        "TestGame2AudioBridgeActiveParsersAndShutdown",
+        "TestGame2AudioBridgeActiveParsersAndShutdownChild",
+        "TestNativeNetworkAudioPlayback",
+        "TestNativeNetworkAudioPlaybackChild",
+        "TestOptionsConfigStockDefaultReset",
+        "TestOptionsConfigChild",
+        "TestVideoModeTransitionsHeadlessChild",
+        "TestMonsterBinOracleFile",
+        "TestObjectsVelocityOriginalX87NaNLoad5118A0",
+        "TestSentryGlobeNativeX87Endpoint510E60"
+      ],
+      "warning_count": 0,
+      "first_warnings": [],
+      "changed_source_paths": [],
+      "source_files": 9145
+    },
+    "common_excluded_roots": [
+      "TestRawDefaultDamageNativeGoOriginal4E0B30",
+      "TestRawDefaultDamageNativeCOriginal4E0B30"
+    ]
   },
   "real_OpenAL": {
     "profiles": [
@@ -760,15 +805,15 @@
     "queued_and_processed_buffers_per_case": 68,
     "EOS_callbacks_per_case": 1,
     "driver": "OpenAL Soft null output, real decoding/queue/processing",
-    "high_native_handles_on_64_bit": true
+    "high_native_handles_on_64_bit": true,
+    "default_C_method_cases": [
+      "buffer-format",
+      "context-format fallback"
+    ],
+    "default_C_method_scope": "Actual default class/method table creates a high driver, source/sample and scratch buffers; plays, refreshes, pauses, stops once through EOS and destroys without retained sample sources."
   },
-  "CI_workflow": "Linux native audio now checks legacy source owners and preserves all three compiled test mains.",
-  "remaining_qualification": [
-    "clean four-product builds",
-    "product E2E",
-    "Linux and Windows CI",
-    "Linux native audio normal/strict CI"
-  ],
+  "CI_workflow": "Linux native audio requires seven lifecycle, three source-playback and three default-method terminal PASS records, and retains all three test executables in normal and strict profiles.",
+  "remaining_qualification": [],
   "current_inventory": [
     {
       "file": "src/legacy/GAME1_1.c",
@@ -896,5 +941,374 @@
   "whole_game_100_percent": false,
   "campaign_scope": "Warrior/Conjurer/Wizard chapters 1-3 only; chapter 4+ excluded",
   "nine_campaign_final_audits": "OPEN",
-  "inherited_public_SaveLoad_pixel_golden_pass": false
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "initial_port_revision": "6c25cafd9ef23937a4f7c30404d4300b93e32433",
+  "qualification": {
+    "engine_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
+    "qualified_UTC": "2026-11-14T14:54:07.395062+00:00",
+    "full_record": "ROOT/split-audio-native-20261114-v1/qualified-audio-batch-v1.json",
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox",
+        "bytes": 69968930,
+        "sha256": "e5232fddad0a8132e840bbb05bd582509da883cddf35486c29d71d641ecf64f9",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-hd",
+        "bytes": 70100994,
+        "sha256": "52a108fddf9a6da21ce8115b085e1813db6bdefca1cde7680b48b354a20bc4bc",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server",
+        "bytes": 66568402,
+        "sha256": "8ee21b793ff4cff4c96ecf90e4d5a901dc014b6b2b60d90edfe257ee558f660c",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server-hd",
+        "bytes": 66683986,
+        "sha256": "e7590eff53b54c5d87d0ed10d8bf86295f09918a141f6da8ebb45f79142dafba",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      }
+    ],
+    "core_product_E2E": [
+      {
+        "profile": "normal",
+        "scenario": "host-game-ai-sustained-attack",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 129.883,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-game-player-death",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 49.296,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-game-ambient-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 115.604,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-shop-equipped-weapon-sale-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 115.842,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-ai-sustained-attack",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 130.669,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-player-death",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 49.296,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-ambient-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 115.501,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-shop-equipped-weapon-sale-audio",
+        "audio": "openal",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 115.795,
+        "warnings": 0
+      }
+    ],
+    "functional_SaveLoad": [
+      {
+        "profile": "normal",
+        "pixel_golden_pass": false,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 44.702,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "pixel_golden_pass": false,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 45.058,
+        "warnings": 0
+      }
+    ],
+    "independent_peer_chat": {
+      "normal": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
+        "product_sha256": "e5232fddad0a8132e840bbb05bd582509da883cddf35486c29d71d641ecf64f9",
+        "elapsed_seconds": 286.558,
+        "forced_processes": []
+      },
+      "highres": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
+        "product_sha256": "52a108fddf9a6da21ce8115b085e1813db6bdefca1cde7680b48b354a20bc4bc",
+        "elapsed_seconds": 287.424,
+        "forced_processes": []
+      }
+    },
+    "CI": [
+      {
+        "profile": "Linux amd64 client",
+        "job_id": 132476800184,
+        "run_id": 43604725257,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604725257",
+        "artifact_id": 14118279375,
+        "bytes": 210003308,
+        "sha256": "1192c7a5c6d3b073c41495931c7afb51878e6b56ac52add4de3a072f19ac4a3c",
+        "compiled_test_mains": 40,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 819595,
+          "skip": 57
+        },
+        "package_actions": {
+          "pass": 40,
+          "skip": 21
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Linux amd64 client HD",
+        "job_id": 132476799636,
+        "run_id": 43604725257,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604725257",
+        "artifact_id": 14118213597,
+        "bytes": 209589142,
+        "sha256": "7a33a414dbb227e09b98c5a0ab78e35d739f6937e50672935a6ca29eafff37ea",
+        "compiled_test_mains": 40,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 819595,
+          "skip": 57
+        },
+        "package_actions": {
+          "pass": 40,
+          "skip": 21
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Linux amd64 server",
+        "job_id": 132476799870,
+        "run_id": 43604725257,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604725257",
+        "artifact_id": 14119235100,
+        "bytes": 253305839,
+        "sha256": "f46ab526289b64feea7a7ae3fe8261e8d3c7dabe65bdbd19772e255b823420a6",
+        "compiled_test_mains": 36,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 813484,
+          "skip": 7
+        },
+        "package_actions": {
+          "pass": 36,
+          "skip": 22
+        },
+        "default_link_damage": {
+          "test_buildmode": "default",
+          "MALLOC_MMAP_THRESHOLD_": "0",
+          "test_actions": {
+            "pass": 133405
+          },
+          "package_actions": {
+            "github.com/opennox/opennox/v1": "pass",
+            "github.com/opennox/opennox/v1/server": "pass",
+            "github.com/opennox/opennox/v1/legacy": "pass"
+          },
+          "exit_code": 0
+        }
+      },
+      {
+        "profile": "Linux amd64 server HD",
+        "job_id": 132476799847,
+        "run_id": 43604725257,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604725257",
+        "artifact_id": 14118745069,
+        "bytes": 197251224,
+        "sha256": "b721270d9c83e5941ded4e8985e729ad13b544dd583475c669f60c404a6ffbf3",
+        "compiled_test_mains": 36,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 813484,
+          "skip": 7
+        },
+        "package_actions": {
+          "pass": 36,
+          "skip": 22
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Windows amd64 server",
+        "job_id": 132476703860,
+        "run_id": 43604694222,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604694222",
+        "artifact_id": 14117839019,
+        "bytes": 160256532,
+        "sha256": "acd50e0d72cf9d13915040b5f1332a23e8720a961e754c60e6235ba7922556ae",
+        "compiled_test_mains": 3,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 811469,
+          "skip": 11
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Windows 386 server",
+        "job_id": 132476703248,
+        "run_id": 43604694222,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604694222",
+        "artifact_id": 14118452118,
+        "bytes": 155481630,
+        "sha256": "e6b32b275f7306b858a44654fee8b06ffb76d64cc45266502879d0cc004eee4d",
+        "compiled_test_mains": 3,
+        "warning_count": 0,
+        "test_actions": {
+          "skip": 94,
+          "pass": 791739
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Linux native audio normal",
+        "job_id": 132476703500,
+        "run_id": 43604694279,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604694279",
+        "artifact_id": 14117813917,
+        "bytes": 107263220,
+        "sha256": "e82601c8e05bec512e27f6850b7884b07d6c8cd315297c8a371bf8c734fec62c",
+        "compiled_test_mains": 3,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 886,
+          "skip": 7
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass",
+          "github.com/opennox/opennox/v1/legacy/client/audio/ail": "pass"
+        },
+        "default_link_damage": null
+      },
+      {
+        "profile": "Linux native audio strict",
+        "job_id": 132476703856,
+        "run_id": 43604694279,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43604694279",
+        "artifact_id": 14117413472,
+        "bytes": 76617698,
+        "sha256": "d09b6185aab2deb8d17d6a0d32e60306cd2d0c52744a3965ae50060c5a977fec",
+        "compiled_test_mains": 3,
+        "warning_count": 0,
+        "test_actions": {
+          "pass": 886,
+          "skip": 7
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass",
+          "github.com/opennox/opennox/v1/legacy/client/audio/ail": "pass"
+        },
+        "default_link_damage": null
+      }
+    ],
+    "compiler_warnings": 0,
+    "initial_failed_CI_record": "ROOT/split-audio-native-20261114-v1/initial-eight-ci-artifact-audit-v1.json"
+  },
+  "initialization_regression": {
+    "initial_revision": "6c25cafd9ef23937a4f7c30404d4300b93e32433",
+    "before_control": "ROOT/split-audio-native-20261114-v1/blob-init-before-v1/summary.json",
+    "failed_full_platform_jobs": 6,
+    "failed_existing_packet_tests": 4,
+    "cause": "InitBlobData allocated the native global and read timer.PlatformTicks before clock binding.",
+    "fix": "Allocate/bind the native global without timers; initialize its master group once on first audio use or explicit AudioInitNative.",
+    "fixed_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
+    "initial_failures_retained": true
+  },
+  "preservation": {
+    "original_asset_and_Save_files": 4649,
+    "original_changes": [],
+    "tracked_E2E_files": 387,
+    "tracked_E2E_changes": [],
+    "products_before_and_after_execution": 8,
+    "product_changes": [],
+    "full_record": "ROOT/split-audio-native-20261114-v1/final-input-and-product-preservation-v1.json",
+    "CI_archives_retained_and_SHA_verified": 16,
+    "completed_logs_losslessly_compressed": 4,
+    "build_cache_only_cleanup": "ROOT/split-audio-native-20261114-v1/completed-build-cache-cleanup-v2/summary.json",
+    "module_cache_and_executables_preserved": true
+  },
+  "next_stage": {
+    "root": "ROOT/split-game5-public-native-20261114-v1",
+    "native_port_started": false,
+    "original_C_pointer_crashes": 2,
+    "original_CPU_cases": 3036,
+    "original_instruction_bytes": 109,
+    "declared_services": [],
+    "fixture_sha256": "a11e503153189392a24411186cc875b9bd6dec8e0b2f4923d618d7fdab27e339",
+    "fixture_gzip_sha256": "c963174d95c46a4128671035082c2a2ee2bec88514ab5cd3699539015f188bba",
+    "unused_light_shadow_review": "ROOT/split-audio-native-20261114-v1/next-light-shadow-review-v1/review.json",
+    "unused_light_shadows_retired": 0
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME files: six fully qualified native batches, prior edit cleanup, then a closed26-function WOL component archived with focused macOS checks passed. Product/platform qualification pending. GAME1_3 alone has zero active original C definitions.",
+  "scope": "13 split GAME C files: six qualified incremental native batches, unreachable edit cleanup and closed WOL component retirement. GAME1_3 alone has zero active original C definitions; the other twelve and whole-game completion remain partial.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -361,15 +361,15 @@
   "current_focused_validation": {
     "normal": {
       "changed_source_paths": [],
-      "source_files": 9171,
-      "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+      "source_files": 9172,
+      "source_lease_sha256": "25ef999dd3987a065a61a661bf9fed99185f347324eb25ae3a4f1259adb68d8d",
       "exit_code": 0,
-      "elapsed_seconds": 28.336,
+      "elapsed_seconds": 191.658,
       "test_actions": {
-        "pass": 5273
+        "pass": 44842
       },
       "package_actions": {
-        "pass": 2
+        "pass": 1
       },
       "failure_count": 0,
       "first_failures": [],
@@ -378,15 +378,15 @@
     },
     "strict": {
       "changed_source_paths": [],
-      "source_files": 9171,
-      "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+      "source_files": 9172,
+      "source_lease_sha256": "25ef999dd3987a065a61a661bf9fed99185f347324eb25ae3a4f1259adb68d8d",
       "exit_code": 0,
-      "elapsed_seconds": 12.382,
+      "elapsed_seconds": 191.658,
       "test_actions": {
-        "pass": 5273
+        "pass": 44842
       },
       "package_actions": {
-        "pass": 2
+        "pass": 1
       },
       "failure_count": 0,
       "first_failures": [],
@@ -398,7 +398,7 @@
   "remaining_in_GAME1_3": [],
   "remaining_qualification": [],
   "whole_game_100_percent": false,
-  "qualified_engine_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+  "qualified_engine_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
   "current_active_total": 1932,
   "current_active_functions": {
     "GAME1_1.c": 181,
@@ -558,13 +558,13 @@
   "qualification": [
     {
       "profile": "Linux amd64 client",
-      "run_id": 43631865318,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631865318",
-      "job_id": 132560034255,
-      "artifact_id": 14129670086,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14129670086-36bdd4e9c.zip",
-      "sha256": "1ecbcd67d9c4119aab1c46cdcb827133fb602ffe401dfc0ce46931046a8be40f",
-      "bytes": 211928959,
+      "run_id": 43635229118,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635229118",
+      "job_id": 132570454332,
+      "artifact_id": 14130465764,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14130465764-2a0e95cf4.zip",
+      "sha256": "45f0dbc25478b1a97cf40b0fb085d0dc97b2af7f5c811013c6976f5200795e79",
+      "bytes": 211507099,
       "source_revision_verified": true,
       "compiled_package_executables": 40,
       "test_actions": {
@@ -577,9 +577,12 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14129670086,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "1ecbcd67d9c4119aab1c46cdcb827133fb602ffe401dfc0ce46931046a8be40f",
+        "artifact_id": 14130465764,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "45f0dbc25478b1a97cf40b0fb085d0dc97b2af7f5c811013c6976f5200795e79",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -603,7 +606,10 @@
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeDefinitionWire": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -612,20 +618,20 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 898868369,
+        "decompressed_bytes_scanned": 898866052,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 client HD",
-      "run_id": 43631865318,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631865318",
-      "job_id": 132560034571,
-      "artifact_id": 14129600224,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14129600224-36bdd4e9c.zip",
-      "sha256": "72c698edcd7e7bea7b15993c7f554fe103b6e9050209e6e1d53397832f4fe816",
-      "bytes": 211957962,
+      "run_id": 43635229118,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635229118",
+      "job_id": 132570454577,
+      "artifact_id": 14130258561,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14130258561-2a0e95cf4.zip",
+      "sha256": "cc465898440c5159a02642ca74c73db178c9dfec1621d26e776099e8d073c725",
+      "bytes": 211586287,
       "source_revision_verified": true,
       "compiled_package_executables": 40,
       "test_actions": {
@@ -638,9 +644,12 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14129600224,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "72c698edcd7e7bea7b15993c7f554fe103b6e9050209e6e1d53397832f4fe816",
+        "artifact_id": 14130258561,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "cc465898440c5159a02642ca74c73db178c9dfec1621d26e776099e8d073c725",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -664,7 +673,10 @@
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeDefinitionWire": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -673,20 +685,20 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 898866856,
+        "decompressed_bytes_scanned": 898866285,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 server",
-      "run_id": 43631865318,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631865318",
-      "job_id": 132560034492,
-      "artifact_id": 14129490881,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14129490881-36bdd4e9c.zip",
-      "sha256": "b3bd05b56c2ce1a8bfda57bf42fd16ee6d880a7c97302d57bf84fe31788058d6",
-      "bytes": 255466532,
+      "run_id": 43635229118,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635229118",
+      "job_id": 132570454585,
+      "artifact_id": 14131090728,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14131090728-2a0e95cf4.zip",
+      "sha256": "34c1a15e98932b8f9bfb1568a727b1b6278dd9e5601d3aea64f337d09d796b25",
+      "bytes": 255395779,
       "source_revision_verified": true,
       "compiled_package_executables": 36,
       "test_actions": {
@@ -711,9 +723,12 @@
         "exit_code": 0
       },
       "native_matrix": {
-        "artifact_id": 14129490881,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "b3bd05b56c2ce1a8bfda57bf42fd16ee6d880a7c97302d57bf84fe31788058d6",
+        "artifact_id": 14131090728,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "34c1a15e98932b8f9bfb1568a727b1b6278dd9e5601d3aea64f337d09d796b25",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -737,7 +752,10 @@
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeDefinitionWire": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -746,20 +764,20 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 891195112,
+        "decompressed_bytes_scanned": 891196330,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 server HD",
-      "run_id": 43631865318,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631865318",
-      "job_id": 132560034553,
-      "artifact_id": 14129315661,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14129315661-36bdd4e9c.zip",
-      "sha256": "d200f5330ccc3de46758de5352f22b8684e2b9035bc74affbdd069ff28e8574e",
-      "bytes": 199266604,
+      "run_id": 43635229118,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635229118",
+      "job_id": 132570454576,
+      "artifact_id": 14130178200,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14130178200-2a0e95cf4.zip",
+      "sha256": "3199dc3b3a4fdc8341a0ea3aeb95116525a2d164b4084ee90ebb406d18de61a7",
+      "bytes": 198477792,
       "source_revision_verified": true,
       "compiled_package_executables": 36,
       "test_actions": {
@@ -772,9 +790,12 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14129315661,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "d200f5330ccc3de46758de5352f22b8684e2b9035bc74affbdd069ff28e8574e",
+        "artifact_id": 14130178200,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "3199dc3b3a4fdc8341a0ea3aeb95116525a2d164b4084ee90ebb406d18de61a7",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -798,7 +819,10 @@
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeDefinitionWire": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -807,20 +831,20 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 891194314,
+        "decompressed_bytes_scanned": 891194589,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Windows amd64 server",
-      "run_id": 43631841160,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631841160",
-      "job_id": 132559953009,
-      "artifact_id": 14128249525,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14128249525-36bdd4e9c.zip",
-      "sha256": "5334f928429d9f5a317dca93f314c91c10be6f9c4508f58a3f1d223f22c03864",
-      "bytes": 161690836,
+      "run_id": 43635192007,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635192007",
+      "job_id": 132570338524,
+      "artifact_id": 14130044489,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14130044489-2a0e95cf4.zip",
+      "sha256": "0052d45b7f6ae5a34253c7008ed6b1f0c26a1ea1df1c7c33a729a0e2b8552c82",
+      "bytes": 162429439,
       "source_revision_verified": true,
       "compiled_package_executables": 3,
       "test_actions": {
@@ -834,9 +858,12 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14128249525,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "5334f928429d9f5a317dca93f314c91c10be6f9c4508f58a3f1d223f22c03864",
+        "artifact_id": 14130044489,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "0052d45b7f6ae5a34253c7008ed6b1f0c26a1ea1df1c7c33a729a0e2b8552c82",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -860,7 +887,10 @@
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeDefinitionWire": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -869,20 +899,20 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 884935105,
+        "decompressed_bytes_scanned": 884936972,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Windows 386 server",
-      "run_id": 43631841160,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43631841160",
-      "job_id": 132559953221,
-      "artifact_id": 14128049600,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/ci-14128049600-36bdd4e9c.zip",
-      "sha256": "4cc67d4d5ebec3e60bf41d1607ee8a5fd488a30ab74e4b111e07c96aca3d20a5",
-      "bytes": 155851811,
+      "run_id": 43635192007,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43635192007",
+      "job_id": 132570338845,
+      "artifact_id": 14129488863,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/ci-14129488863-2a0e95cf4.zip",
+      "sha256": "578be192e47178fcee140db5c06ba882e37204086f0c7c7b1d1caa92f2161036",
+      "bytes": 155785817,
       "source_revision_verified": true,
       "compiled_package_executables": 3,
       "test_actions": {
@@ -896,9 +926,12 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14128049600,
-        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-        "archive_sha256": "4cc67d4d5ebec3e60bf41d1607ee8a5fd488a30ab74e4b111e07c96aca3d20a5",
+        "artifact_id": 14129488863,
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38",
+        "archive_sha256": "578be192e47178fcee140db5c06ba882e37204086f0c7c7b1d1caa92f2161036",
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
         "marker_movable_C_matrix_actions": {
           "pass": 5189
         },
@@ -919,7 +952,10 @@
           "TestGame5PublicNativeOriginalCABI": "pass",
           "TestMonsterActionNamesNativeOriginalCABI": "pass",
           "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
-          "TestPlayerMarkerMovableNativeOriginalCABI": "pass"
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
@@ -928,7 +964,7 @@
           "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 861355699,
+        "decompressed_bytes_scanned": 861358493,
         "scope": "The1,728 unchanged-original marker/movability cases execute through public C at three foreign placements, with full native return pointers, independently checked C/Go layouts, opposite-result old-offset decoys on64-bit and whole owner/canary preservation. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
       },
       "compiler_warnings": 0
@@ -968,7 +1004,7 @@
   },
   "remaining_work": [
     "Continue the other 12 split-file native owners/callbacks; the inventory includes already-native C and Go forwarders.",
-    "Finish closed-WOL component product/platform qualification, then continue reachable native-pointer/callback ports across the remaining twelve split files.",
+    "Port the prepared NPC voice-setter/name-lookup family with its dependent52AD10 wire consumer. Preserve native Object/update/soundset pointers and current Go-owned names, including32-bit serialization behavior; complete the wire-entry original reference before implementation.",
     "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
     "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
   ],
@@ -988,7 +1024,7 @@
     "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
     "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
   },
-  "new_Go_entries_scope": "130 qualified implemented split Go entries. Closed WOL26-function retirement adds zero Go port credit; product/platform qualification of the source cleanup is pending.",
+  "new_Go_entries_scope": "130 qualified implemented split Go entries through the Player-marker/Object-movability batch. The26-function closed WOL cleanup retires193 cast-review candidates and adds zero Go port credit.",
   "cumulative_new_Go_entry_count": 130,
   "prepared_next_audio_baseline_status": "The prepared baseline is now consumed by the native audio follow-up; see latest_progress_document.",
   "first_batch_qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
@@ -1378,7 +1414,7 @@
   "audio_batch_qualified_engine_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
   "audio_batch_progress_document": "docs/split-audio-native-progress-20261114.json",
   "latest_source_cleanup_document": "docs/split-unreachable-native-progress-20261115.json",
-  "latest_fully_qualified_progress_document": "docs/split-player-marker-movable-native-progress-20261115.json",
+  "latest_fully_qualified_progress_document": "docs/split-wol-unused-cleanup-progress-20261115.json",
   "prepared_next_action_names_baseline": {
     "evidence_root": "ROOT/split-monster-action-names-native-20261115-v1",
     "cases": 1014,
@@ -1412,6 +1448,20 @@
     "new_Go_port_credit": 0,
     "scope": "Read-only source-reference and retained-product symbol review. Actual code retirement/native implementation and validation remain future work.",
     "source_retirement_applied": true,
-    "qualification_complete": false
+    "qualification_complete": true,
+    "engine_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+  },
+  "latest_Go_entry_engine_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+  "prepared_next_soundset_baseline": {
+    "evidence_root": "ROOT/split-soundset-native-entry-20261115-v1",
+    "original_cases": 3467,
+    "original_instruction_bytes": 137,
+    "declared_services": [],
+    "standalone_controls": 6,
+    "standalone_truncated_value": 1,
+    "standalone_SIGSEGVs": 4,
+    "source_port_started": false,
+    "dependent_wire_entry_original_execution_complete": false,
+    "scope": "Two original leaf functions sealed; current Go metadata/foreign numeric-data ownership and public52AD10 wire entry require a coupled review before porting."
   }
 }

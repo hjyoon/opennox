@@ -62,37 +62,75 @@ records retain their historical branch information.
 
 ### Closed legacy WOL component cleanup, 2026-11-15
 
-A closed component of 26 old WOL tagged-packet C functions is now archived
-in GAME1_2.c and GAME5_2.c. All 27,054 original body bytes remain; removing
-only the new guards reconstructs both whole incoming C files. Active
-packet envelope/compression/scramble, bitstream and map-TOC owners remain
-unchanged. This cleanup adds no new Go port credit.
+A closed component of 26 old WOL tagged-packet C functions is archived in
+GAME1_2.c and GAME5_2.c. All 27,054 original body bytes remain; removing only
+new guards reconstructs both whole incoming C files. Active native packet
+envelope/compression/scramble, bitstream and map-TOC owners remain unchanged.
+This cleanup adds zero new Go port credit.
 
 The active Clang AST finds no incoming split-function references. All 193
-raw references in both production C files lie in selected bodies or
-comments; source-wide searches identify only public declarations and four
-independent standalone fixture definitions outside those bodies. The four
-stubs remain unchanged. No constructed legacy-name lookup is found in the
-additional source search. All 26 symbols are still present in each of the
-four retained pre-cleanup macOS products; post-build symbol checks remain
-pending. This is a source-reference review, without an arbitrary
-third-party-plugin compatibility claim.
+raw references in both production C files lie inside selected bodies or
+comments. Source-wide searches identify only declarations and four
+independent standalone fixture definitions outside those bodies; the four
+stubs remain unchanged. The additional source search finds no constructed
+legacy-name lookup. The review makes no arbitrary third-party-plugin
+compatibility claim.
 
 Normal and highres/cgocheck2/checkptr=2 focused checks each pass 44,842 tests
-and one package with zero warnings. Ten packet-helper checks cover the
-actual current C envelope, compression and scramble bodies plus six
-intentional original fault boundaries. Another 27,281 bitstream, 5,189
-marker/movability, 3,249 action-name/wire and 9,113 public chat/reflection
-checks remain passing. Existing tests, original fixtures and goldens are
-unchanged.
+and one package with zero compiler warnings. Ten packet-helper checks cover
+the actual current C envelope, compression and scramble bodies, existing
+RLE byte comparisons and six intentional original fault boundaries.
+Another 27,281 bitstream, 5,189 marker/movability, 3,249 action-name/wire
+and 9,113 public chat/reflection checks pass. Existing test/fixture/E2E
+inputs (4,693 checked files) and all three retained C helper bodies are
+byte-identical. The shared 9,172-input lease is
+`25ef999dd3987a065a61a661bf9fed99185f347324eb25ae3a4f1259adb68d8d`.
+
+The qualified cleanup engine is `2a0e95cf425eac71c58f1be6fc20d78b5d658c38`, pushed to
+`origin/port/go1.27-multiarch`. Four clean macOS client/HD/server/server-HD
+products pass build, metadata and help with zero compiler warnings.
+Each removes all 26 reviewed C symbols and retains the three native packet
+helper symbols. Normal/HD projectile FX and physical Urchin/Pixie combat
+pass four E2E runs. Both functional SaveLoad diagnostics load a private save
+in a fresh process and verify physical movement. The inherited public pixel
+comparison remains open; no golden is promoted. Both independent host/peer
+chat profiles pass eight submissions, four received peer messages, one
+reply, two cancellations and two empty entries; all processes exit naturally.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 864,427 each | 57 each |
+| Linux amd64 server / HD | 858,316 each | 7 each |
+| Windows amd64 server | 856,301 | 11 |
+| Windows 386 server | 836,368 | 94 |
+
+All six jobs have zero compiler warnings. Complete SHA-verified ZIPs retain
+40/40/36/36/3/3 test executables and raw traces. Each confirms ten packet
+helper checks, 5,189 marker/movability C checks, 3,046 action-name C checks,
+27,281 bitstream checks, 9,113 earlier public chat/reflection checks and
+independent x87 controls. The five 64-bit profiles also retain 203 definition
+wire checks. Linux server separately passes 133,405 default-link damage
+checks. Audited evidence is in
+`ROOT/split-wol-unused-cleanup-20261115-v1/qualified-wol-component-cleanup-v1.json`.
+
+Original assets/Save (4,649 files), 387 tracked E2E inputs and 28 checked
+old/current products remain unchanged. Two completed duplicate test copies
+retain 136,132,580 bytes through independent APFS copy-on-write files.
+Final inactive-cache cleanup verifies 72 retained programs before and after;
+module data, original C programs, failures, complete CI ZIPs and products
+remain preserved.
 
 The inventory now contains 1,932 active C definitions and 2,151 narrow-cast
-review candidates in 236 functions. The 26 retired definitions account for 193
-review casts in 16 functions. These are review findings, including safe C
-and scalar tokens, without a completion denominator. The qualified split
-Go-entry count remains 130; clean products, runtime/CI qualification,
-the remaining twelve files, all nine final chapter 1-3 campaign audits and
-the inherited public SaveLoad pixel comparison remain open. Details are in
+review candidates in 236 functions. The 26 retired definitions account
+for 193 review casts in 16 functions. Counts include safe C and scalar
+tokens and supply no completion denominator. Qualified split Go entries
+remain 130. Next NPC sound-set setter/lookup data is sealed from all 137
+original instruction bytes and 3,467 cases without services, alongside six
+standalone controls, one truncated high value and four SIGSEGVs. Native
+Go name ownership and the dependent public 52AD10 wire entry need coupled
+review and further original execution before that source port. The other
+twelve files, all nine final chapter 1-3 audits and the public SaveLoad pixel
+comparison remain open. Details are in
 `docs/split-wol-unused-cleanup-progress-20261115.json`.
 
 ### Native Player markers and Object movability, 2026-11-15

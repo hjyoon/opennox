@@ -60,6 +60,35 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster action names, 2026-11-15
+
+Four GAME4_3 action-name algorithms now execute shared portable Go code.
+Selected default names accept only IDLE, GUARD, ROAM and ESCORT; other IDs
+return ACTION_INVALID. Full names preserve the empty slot39 and NULL outside
+0..71. The two lookups retain distinct39/72 limits and38/0 fallbacks. Two C
+thunks preserve const input contracts. All 1,197 original C body bytes remain
+archived, and removing the new guards/bridges reconstructs the entire C file.
+
+The unchanged original CPU run covers all 260 instruction bytes and 1,014
+cases without services, including its inlined comparisons. A standalone
+incoming-C harness observes two malformed merged pointers and two high-input
+SIGSEGV cases using the sealed packed table, with three passing controls.
+This describes the bounded harness, without inferring runtime blob state.
+
+Normal and highres/cgocheck2/checkptr=2 focused checks each pass 6,226 tests
+and two packages with zero warnings. All 9,166 inputs retain the same source
+lease. Actual C calls run original cases at three foreign placements;
+202 encrypted/XOR definition-write cases verify original selected names,
+write boundaries and checksums. Existing stack, definition and monster-tail
+checks pass. Live 64-bit writers and readers share these kernels.
+
+The cumulative implemented split-entry count is 128. The inventory contains
+1,960 active C definitions and 2,348 narrow-cast review candidates in 254
+functions, including safe C and ABI thunks. It supplies no completion
+denominator. Clean products, runtime checks and Linux/Windows qualification
+are pending. Evidence and scope are in
+`docs/split-monster-action-names-native-progress-20261115.json`.
+
 ### Native bit cursors and seven-bit encoder, 2026-11-15
 
 Five GAME1_1 public C entries now execute Go implementations. The buffer

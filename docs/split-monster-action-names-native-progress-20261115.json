@@ -1,0 +1,632 @@
+{
+  "utc": "2026-11-14T18:47:15.922070+00:00",
+  "scope": "Four original GAME4_3 action-name algorithms now share portable Go code. Two C thunks retain const input contracts. The live64-bit definition writer uses selected-only default names; stack serialization and readers share the original empty slot39.",
+  "base_revision": "78d4264fddacb2f6bba8da999491c7a20749bf98",
+  "code_revision": null,
+  "qualification_complete": false,
+  "new_Go_entries": [
+    "sub_5345B0",
+    "nox_xxx_actionNByNameMB_5345F0",
+    "sub_534650",
+    "nox_xxx_actionByName_534670"
+  ],
+  "new_Go_entry_count": 4,
+  "cumulative_implemented_split_Go_entries": 128,
+  "previous_full_platform_qualified_engine_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+  "original_CPU": {
+    "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "generator_sha256": "2cc95d1a0bff12095ab315e2097603e8e28fd4c4cd11b0e79b8fed66132a1b1e",
+    "fixture_sha256": "bcc58b1bfc5ef069886cba104017de5cc69cd835b00631f5e0ca58dffa96da2e",
+    "fixture_gzip_sha256": "7236449e4178f8361cbf1a4c2be7aa9e35ece7544af6325880775ece45ad2929",
+    "fixture_bytes": 98501,
+    "cases": 1014,
+    "kinds": {
+      "selected_name": 101,
+      "name": 101,
+      "action_by_name": 406,
+      "by_name": 406
+    },
+    "declared_services": [],
+    "python": "3.12.11 (main, Sep  2 2025, 16:01:33) [Clang 17.0.0 (clang-1700.0.13.5)]",
+    "unicorn": "2.1.4",
+    "scope": "Execute four unchanged action-name functions and their original data.\n\nThere are no substituted services: both string comparisons are inlined in\nGAME.EXE. The PE loader's zero-filled virtual data contains the empty string\nat action index39. This corpus describes that initial unmodified data state;\nit does not infer arbitrary later writes to the BSS byte.\n",
+    "names": [
+      {
+        "index": 0,
+        "pointer": 6057996,
+        "text": "ACTION_IDLE"
+      },
+      {
+        "index": 1,
+        "pointer": 6058008,
+        "text": "ACTION_WAIT"
+      },
+      {
+        "index": 2,
+        "pointer": 6058020,
+        "text": "ACTION_WAIT_RELATIVE"
+      },
+      {
+        "index": 3,
+        "pointer": 6058044,
+        "text": "ACTION_ESCORT"
+      },
+      {
+        "index": 4,
+        "pointer": 6058060,
+        "text": "ACTION_GUARD"
+      },
+      {
+        "index": 5,
+        "pointer": 6058076,
+        "text": "ACTION_HUNT"
+      },
+      {
+        "index": 6,
+        "pointer": 6058088,
+        "text": "ACTION_RETREAT"
+      },
+      {
+        "index": 7,
+        "pointer": 6058104,
+        "text": "ACTION_MOVE_TO"
+      },
+      {
+        "index": 8,
+        "pointer": 6058120,
+        "text": "ACTION_FAR_MOVE_TO"
+      },
+      {
+        "index": 9,
+        "pointer": 6058140,
+        "text": "ACTION_DODGE"
+      },
+      {
+        "index": 10,
+        "pointer": 6058156,
+        "text": "ACTION_ROAM"
+      },
+      {
+        "index": 11,
+        "pointer": 6058168,
+        "text": "ACTION_PICKUP_OBJECT"
+      },
+      {
+        "index": 12,
+        "pointer": 6058192,
+        "text": "ACTION_DROP_OBJECT"
+      },
+      {
+        "index": 13,
+        "pointer": 6058212,
+        "text": "ACTION_FIND_OBJECT"
+      },
+      {
+        "index": 14,
+        "pointer": 6058232,
+        "text": "ACTION_RETREAT_TO_MASTER"
+      },
+      {
+        "index": 15,
+        "pointer": 6058260,
+        "text": "ACTION_FIGHT"
+      },
+      {
+        "index": 16,
+        "pointer": 6058276,
+        "text": "ACTION_MELEE_ATTACK"
+      },
+      {
+        "index": 17,
+        "pointer": 6058296,
+        "text": "ACTION_MISSILE_ATTACK"
+      },
+      {
+        "index": 18,
+        "pointer": 6058320,
+        "text": "ACTION_CAST_SPELL_ON_OBJECT"
+      },
+      {
+        "index": 19,
+        "pointer": 6058348,
+        "text": "ACTION_CAST_SPELL_ON_LOCATION"
+      },
+      {
+        "index": 20,
+        "pointer": 6058380,
+        "text": "ACTION_CAST_DURATION_SPELL"
+      },
+      {
+        "index": 21,
+        "pointer": 6058408,
+        "text": "ACTION_BLOCK_ATTACK"
+      },
+      {
+        "index": 22,
+        "pointer": 6058428,
+        "text": "ACTION_BLOCK_FINISH"
+      },
+      {
+        "index": 23,
+        "pointer": 6058448,
+        "text": "ACTION_WEAPON_BLOCK"
+      },
+      {
+        "index": 24,
+        "pointer": 6058468,
+        "text": "ACTION_FLEE"
+      },
+      {
+        "index": 25,
+        "pointer": 6058480,
+        "text": "ACTION_FACE_LOCATION"
+      },
+      {
+        "index": 26,
+        "pointer": 6058504,
+        "text": "ACTION_FACE_OBJECT"
+      },
+      {
+        "index": 27,
+        "pointer": 6058524,
+        "text": "ACTION_FACE_ANGLE"
+      },
+      {
+        "index": 28,
+        "pointer": 6058544,
+        "text": "ACTION_SET_ANGLE"
+      },
+      {
+        "index": 29,
+        "pointer": 6058564,
+        "text": "ACTION_RANDOM_WALK"
+      },
+      {
+        "index": 30,
+        "pointer": 6058584,
+        "text": "ACTION_DYING"
+      },
+      {
+        "index": 31,
+        "pointer": 6058600,
+        "text": "ACTION_DEAD"
+      },
+      {
+        "index": 32,
+        "pointer": 6058612,
+        "text": "ACTION_REPORT"
+      },
+      {
+        "index": 33,
+        "pointer": 6058628,
+        "text": "ACTION_MORPH_INTO_CHEST"
+      },
+      {
+        "index": 34,
+        "pointer": 6058652,
+        "text": "ACTION_MORPH_BACK_TO_SELF"
+      },
+      {
+        "index": 35,
+        "pointer": 6058680,
+        "text": "ACTION_GET_UP"
+      },
+      {
+        "index": 36,
+        "pointer": 6058696,
+        "text": "ACTION_CONFUSED"
+      },
+      {
+        "index": 37,
+        "pointer": 6058712,
+        "text": "ACTION_MOVE_TO_HOME"
+      },
+      {
+        "index": 38,
+        "pointer": 6058732,
+        "text": "ACTION_INVALID"
+      },
+      {
+        "index": 39,
+        "pointer": 8601168,
+        "text": ""
+      },
+      {
+        "index": 40,
+        "pointer": 6058748,
+        "text": "DEPENDENCY_OR"
+      },
+      {
+        "index": 41,
+        "pointer": 6058764,
+        "text": "DEPENDENCY_TIME"
+      },
+      {
+        "index": 42,
+        "pointer": 6058780,
+        "text": "DEPENDENCY_ALIVE"
+      },
+      {
+        "index": 43,
+        "pointer": 6058800,
+        "text": "DEPENDENCY_UNDER_ATTACK"
+      },
+      {
+        "index": 44,
+        "pointer": 6058824,
+        "text": "DEPENDENCY_NOT_UNDER_ATTACK"
+      },
+      {
+        "index": 45,
+        "pointer": 6058852,
+        "text": "DEPENDENCY_CAN_SEE"
+      },
+      {
+        "index": 46,
+        "pointer": 6058872,
+        "text": "DEPENDENCY_CANNOT_SEE"
+      },
+      {
+        "index": 47,
+        "pointer": 6058896,
+        "text": "DEPENDENCY_BLOCKED_LINE_OF_FIRE"
+      },
+      {
+        "index": 48,
+        "pointer": 6058928,
+        "text": "DEPENDENCY_OBJECT_AT_VISIBLE_LOCATION"
+      },
+      {
+        "index": 49,
+        "pointer": 6058968,
+        "text": "DEPENDENCY_OBJECT_FARTHER_THAN"
+      },
+      {
+        "index": 50,
+        "pointer": 6059000,
+        "text": "DEPENDENCY_OBJECT_CLOSER_THAN"
+      },
+      {
+        "index": 51,
+        "pointer": 6059032,
+        "text": "DEPENDENCY_LOCATION_FARTHER_THAN"
+      },
+      {
+        "index": 52,
+        "pointer": 6059068,
+        "text": "DEPENDENCY_LOCATION_CLOSER_THAN"
+      },
+      {
+        "index": 53,
+        "pointer": 6059100,
+        "text": "DEPENDENCY_VISIBLE_ENEMY"
+      },
+      {
+        "index": 54,
+        "pointer": 6059128,
+        "text": "DEPENDENCY_VISIBLE_FRIEND"
+      },
+      {
+        "index": 55,
+        "pointer": 6059156,
+        "text": "DEPENDENCY_VISIBLE_FOOD"
+      },
+      {
+        "index": 56,
+        "pointer": 6059180,
+        "text": "DEPENDENCY_NO_VISIBLE_ENEMY"
+      },
+      {
+        "index": 57,
+        "pointer": 6059208,
+        "text": "DEPENDENCY_NO_VISIBLE_FRIEND"
+      },
+      {
+        "index": 58,
+        "pointer": 6059240,
+        "text": "DEPENDENCY_NO_VISIBLE_FOOD"
+      },
+      {
+        "index": 59,
+        "pointer": 6059268,
+        "text": "DEPENDENCY_NO_INTERESTING_SOUND"
+      },
+      {
+        "index": 60,
+        "pointer": 6059300,
+        "text": "DEPENDENCY_NO_NEW_ENEMY"
+      },
+      {
+        "index": 61,
+        "pointer": 6059324,
+        "text": "DEPENDENCY_UNINTERRUPTABLE"
+      },
+      {
+        "index": 62,
+        "pointer": 6059352,
+        "text": "DEPENDENCY_IS_ENCHANTED"
+      },
+      {
+        "index": 63,
+        "pointer": 6059376,
+        "text": "DEPENDENCY_ENEMY_CLOSER_THAN"
+      },
+      {
+        "index": 64,
+        "pointer": 6059408,
+        "text": "DEPENDENCY_NOT_HEALTHY"
+      },
+      {
+        "index": 65,
+        "pointer": 6059432,
+        "text": "DEPENDENCY_WAIT_FOR_STAMINA"
+      },
+      {
+        "index": 66,
+        "pointer": 6059460,
+        "text": "DEPENDENCY_ENEMY_FARTHER_THAN"
+      },
+      {
+        "index": 67,
+        "pointer": 6059492,
+        "text": "DEPENDENCY_UNDER_CURSOR"
+      },
+      {
+        "index": 68,
+        "pointer": 6059516,
+        "text": "DEPENDENCY_NOT_CORNERED"
+      },
+      {
+        "index": 69,
+        "pointer": 6059540,
+        "text": "DEPENDENCY_LOCATION_IS_SAFE"
+      },
+      {
+        "index": 70,
+        "pointer": 6059568,
+        "text": "DEPENDENCY_NOT_FRUSTRATED"
+      },
+      {
+        "index": 71,
+        "pointer": 6059596,
+        "text": "DEPENDENCY_NOT_MOVED"
+      }
+    ],
+    "selected_action_ids": [
+      0,
+      4,
+      10,
+      3
+    ],
+    "table_sha256": "d4f0fa5aa7b1503a3c8886ce6b1ba2e6936d483bacc863dd147186cba4c184ca",
+    "regions": {
+      "selected_name": {
+        "start": "0x5345b0",
+        "end": "0x5345e2",
+        "mapped_bytes": 50,
+        "sha256": "3e8ef610da2eab836b0b3755a26debd743db79f42ff38b2fb1ef54fa4b1d1a7d",
+        "executed_bytes": 50,
+        "executed_instructions": 17
+      },
+      "action_by_name": {
+        "start": "0x5345f0",
+        "end": "0x53464d",
+        "mapped_bytes": 93,
+        "sha256": "64ed47e0bbb1cffe4c2a57155e6dd6405a5b053ac999713531a95b0e86639ca2",
+        "executed_bytes": 93,
+        "executed_instructions": 45
+      },
+      "name": {
+        "start": "0x534650",
+        "end": "0x53466b",
+        "mapped_bytes": 27,
+        "sha256": "612b5a213327d9a9f028a9994146dea5db7a074899566dc7bc96a70fb05b58d7",
+        "executed_bytes": 27,
+        "executed_instructions": 11
+      },
+      "by_name": {
+        "start": "0x534670",
+        "end": "0x5346ca",
+        "mapped_bytes": 90,
+        "sha256": "92810b504cbdbdf0afcbd3f9be1e0084e9e6f20b51c076f77ecaae59005b048a",
+        "executed_bytes": 90,
+        "executed_instructions": 45
+      }
+    }
+  },
+  "original_C_before": {
+    "utc": "2026-11-14T18:34:14.005680+00:00",
+    "source_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4",
+    "functions": [
+      {
+        "name": "sub_5345B0",
+        "begin": 17296,
+        "end": 17749,
+        "bytes": 453,
+        "sha256": "05dc96429ef16356d849f54cb87b5355d6714049dbd7f77296ffe357d4f6f17a"
+      },
+      {
+        "name": "nox_xxx_actionNByNameMB_5345F0",
+        "begin": 17827,
+        "end": 18117,
+        "bytes": 290,
+        "sha256": "0f23a38c5ced656f5f1c89435f24b991adad60c99ae4cae8762726454db881d2"
+      },
+      {
+        "name": "sub_534650",
+        "begin": 18195,
+        "end": 18363,
+        "bytes": 168,
+        "sha256": "35cc80fb08377d48106ddd76f039cce419818d5f984975ec0b4dbf5538c0e9f7"
+      },
+      {
+        "name": "nox_xxx_actionByName_534670",
+        "begin": 18441,
+        "end": 18727,
+        "bytes": 286,
+        "sha256": "3ffc8a76ce048bbb6c70bf147e9835052604a31727b1586e1f99f22b5a965b9b"
+      }
+    ],
+    "executable_sha256": "17a94395f846468c302bd94e523004dd1eb860c9a084ece0ad08660612289d9c",
+    "table_sha256": "d4f0fa5aa7b1503a3c8886ce6b1ba2e6936d483bacc863dd147186cba4c184ca",
+    "command": [
+      "/usr/bin/clang",
+      "-O2",
+      "-g",
+      "-fno-strict-aliasing",
+      "-fno-strict-overflow",
+      "-Wno-pointer-to-int-cast",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/original-c-before-v1/unchanged-original-functions.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/original-c-before-v1/unchanged-original-functions"
+    ],
+    "cases": [
+      {
+        "mode": "null-control",
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "mode": "native-control-short",
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "mode": "native-control-all",
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "mode": "packed-name",
+        "exit_code": 0,
+        "output": "5c7018005c700c"
+      },
+      {
+        "mode": "packed-selected",
+        "exit_code": 0,
+        "output": "5c7018005c700c"
+      },
+      {
+        "mode": "packed-short",
+        "exit_code": -11,
+        "output": ""
+      },
+      {
+        "mode": "packed-all",
+        "exit_code": -11,
+        "output": ""
+      }
+    ],
+    "compiler_warnings": 0,
+    "scope": "Standalone unchanged incoming C bodies with the sealed original 304-byte PE32 table. Two getters combine adjacent DWORD addresses into one malformed native pointer; two high-input lookups fault while reading that table. A NULL-range control and two first-slot native-pointer controls pass. The getMemAt dependency resolves only this bounded table; this is not an integrated product crash or a claim about arbitrary runtime blob hydration."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-14T18:35:02.820803+00:00",
+    "source_file": "src/legacy/GAME4_3.c",
+    "incoming_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4",
+    "outgoing_sha256": "af4684e443fdb62912bcd158f6a38be88076adba409802902751fed5bcdecaf0",
+    "reconstructed_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4",
+    "whole_incoming_file_reconstructed": true,
+    "original_body_bytes": 1197,
+    "regions": [
+      {
+        "name": "nox_xxx_actionByName_534670",
+        "begin": 18441,
+        "end": 18727,
+        "bytes": 286,
+        "sha256": "3ffc8a76ce048bbb6c70bf147e9835052604a31727b1586e1f99f22b5a965b9b",
+        "prefix": "#if 0 // Native action names: monster_action_names_exports_5345b0.go:nox_xxx_actionByName_534670\n",
+        "suffix": "\n#endif\n"
+      },
+      {
+        "name": "sub_534650",
+        "begin": 18195,
+        "end": 18363,
+        "bytes": 168,
+        "sha256": "35cc80fb08377d48106ddd76f039cce419818d5f984975ec0b4dbf5538c0e9f7",
+        "prefix": "#if 0 // Native action names: monster_action_names_exports_5345b0.go:sub_534650\n",
+        "suffix": "\n#endif\n"
+      },
+      {
+        "name": "nox_xxx_actionNByNameMB_5345F0",
+        "begin": 17827,
+        "end": 18117,
+        "bytes": 290,
+        "sha256": "0f23a38c5ced656f5f1c89435f24b991adad60c99ae4cae8762726454db881d2",
+        "prefix": "#if 0 // Native action names: monster_action_names_exports_5345b0.go:nox_xxx_actionNByNameMB_5345F0\n",
+        "suffix": "\n#endif\n"
+      },
+      {
+        "name": "sub_5345B0",
+        "begin": 17296,
+        "end": 17749,
+        "bytes": 453,
+        "sha256": "05dc96429ef16356d849f54cb87b5355d6714049dbd7f77296ffe357d4f6f17a",
+        "prefix": "#if 0 // Native action names: monster_action_names_exports_5345b0.go:sub_5345B0\n",
+        "suffix": "\n#endif\n"
+      }
+    ],
+    "new_bridge": "\n// Native action-name lookup bridges retain the public const input contract.\nextern int nox_monster_action_name_lookup_native_5345F0(char* name, int limit, int fallback);\nint nox_xxx_actionNByNameMB_5345F0(const char* name) {\n\treturn nox_monster_action_name_lookup_native_5345F0((char*)name, 39, 38);\n}\nint nox_xxx_actionByName_534670(const char* name) {\n\treturn nox_monster_action_name_lookup_native_5345F0((char*)name, 72, 0);\n}\n",
+    "C_const_bridges": 2,
+    "Go_algorithms": 4
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9166,
+      "source_lease_sha256": "1dbf531c6fb7e5a2597729d3381e66ed060820dcd64a60bb4069ff93768ef5d3",
+      "exit_code": 0,
+      "elapsed_seconds": 169.874,
+      "test_actions": {
+        "pass": 6226
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_highres_cgocheck2_checkptr2": {
+      "changed_source_paths": [],
+      "source_files": 9166,
+      "source_lease_sha256": "1dbf531c6fb7e5a2597729d3381e66ed060820dcd64a60bb4069ff93768ef5d3",
+      "exit_code": 0,
+      "elapsed_seconds": 170.089,
+      "test_actions": {
+        "pass": 6226
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "C_matrix_cases": 1014,
+  "C_matrix_foreign_placements": 3,
+  "C_matrix_terminal_passes": 3046,
+  "live_definition_wire_checks": 202,
+  "inventory": {
+    "active_C_definitions": 1960,
+    "all_pointer_integer_casts": 2635,
+    "narrow_cast_review_candidates": 2348,
+    "candidate_functions": 254
+  },
+  "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1",
+  "remaining_qualification": [
+    "Clean macOS four-product builds/metadata/help",
+    "Normal/HD core E2E, functional SaveLoad diagnostics and independent host/peer chat",
+    "Linux amd64 four profiles plus Windows amd64/386; retain full archives and logs",
+    "Final preservation/source audit and qualified documentation"
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "next_prepared_original_baseline": "ROOT/split-player-marker-movable-native-20261115-v1/original-cpu-v1/proof.json;54 unchanged bytes,1728cases,0services;no source port yet"
+}

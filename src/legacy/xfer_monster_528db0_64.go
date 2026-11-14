@@ -457,7 +457,7 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 			*p = uint32(id)
 		}
 	}
-	actionName := ai.ActionType(ud.AIAction340).String()
+	actionName := monsterSelectedActionNameNative5345B0(ud.AIAction340)
 	if cf.ReadOnly() {
 		actionName = ""
 	}
@@ -723,7 +723,10 @@ func monsterXferAIStackItem52A440(cf *cryptfile.CryptFile, item *server.AIStackI
 	actionName := ai.ActionType(item.Action).String()
 	// Slot 39 is unnamed in the original wire table. Keep String's
 	// diagnostic spelling separate from the serialized action name.
-	if cf.ReadOnly() || item.Action == 39 {
+	if name, ok := monsterActionNameNative534650(item.Action); ok {
+		actionName = name
+	}
+	if cf.ReadOnly() {
 		actionName = ""
 	}
 	var err error
@@ -1396,16 +1399,6 @@ func monsterObjectByNetCode528DB0(srv *server.Server, code uint32) *server.Objec
 		return nil
 	}
 	return srv.ObjectByNetCode(int(code))
-}
-
-func monsterActionByName528DB0(name string, limit int, fallback ai.ActionType) ai.ActionType {
-	for i := 0; i < limit; i++ {
-		action := ai.ActionType(i)
-		if action.String() == name {
-			return action
-		}
-	}
-	return fallback
 }
 
 func monsterShiftFrame528DB0(value uint32, delta int32) uint32 {

@@ -458,6 +458,7 @@ int sub_5341D0(int a1) {
 // Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (005345B0) --------------------------------------------------------
+#if 0 // Native action names: monster_action_names_exports_5345b0.go:sub_5345B0
 char* sub_5345B0(int a1) {
 	unsigned char* v1; // ecx
 	int v2;            // eax
@@ -482,8 +483,11 @@ char* sub_5345B0(int a1) {
 		}
 	}
 }
+#endif
+
 
 //----- (005345F0) --------------------------------------------------------
+#if 0 // Native action names: monster_action_names_exports_5345b0.go:nox_xxx_actionNByNameMB_5345F0
 int nox_xxx_actionNByNameMB_5345F0(const char* a1) {
 	int v1;          // ebp
 	const char** v2; // edi
@@ -499,8 +503,11 @@ int nox_xxx_actionNByNameMB_5345F0(const char* a1) {
 	}
 	return v1;
 }
+#endif
+
 
 //----- (00534650) --------------------------------------------------------
+#if 0 // Native action names: monster_action_names_exports_5345b0.go:sub_534650
 char* sub_534650(int a1) {
 	int v1; // eax
 
@@ -512,8 +519,11 @@ char* sub_534650(int a1) {
 	}
 	return *(char**)getMemAt(0x587000, 261768 + 4 * v1);
 }
+#endif
+
 
 //----- (00534670) --------------------------------------------------------
+#if 0 // Native action names: monster_action_names_exports_5345b0.go:nox_xxx_actionByName_534670
 int nox_xxx_actionByName_534670(const char* a1) {
 	int v1;          // ebp
 	const char** v2; // edi
@@ -528,6 +538,17 @@ int nox_xxx_actionByName_534670(const char* a1) {
 		}
 	}
 	return v1;
+}
+#endif
+
+
+// Native action-name lookup bridges retain the public const input contract.
+extern int nox_monster_action_name_lookup_native_5345F0(char* name, int limit, int fallback);
+int nox_xxx_actionNByNameMB_5345F0(const char* name) {
+	return nox_monster_action_name_lookup_native_5345F0((char*)name, 39, 38);
+}
+int nox_xxx_actionByName_534670(const char* name) {
+	return nox_monster_action_name_lookup_native_5345F0((char*)name, 72, 0);
 }
 
 //----- (00534710) --------------------------------------------------------

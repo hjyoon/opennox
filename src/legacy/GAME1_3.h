@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME1_3
 
 #include "defs.h"
+#include "audio_source_native.h"
 
 void nox_client_xxx_switchChatMap_43B510();
 int sub_43B6D0();
@@ -55,16 +56,15 @@ int sub_43EA20(void* a1);
 int sub_43EC10();
 int sub_43EC30(void* a1);
 int sub_43ECB0(void* a1);
-int sub_43ED00(uint32_t* a1);
-int sub_43EE00(void* a1);
+int sub_43ED00(void* a1);
 int sub_43EFD0(void* a1);
 int sub_43F010(void* a1);
 int sub_43F030(int a1);
 int sub_43F050();
-int sub_43F060(uint32_t* a1);
+int sub_43F060(void* a1);
 int sub_43F0D0();
 int sub_43F0E0(uint32_t* a1);
-int sub_43F130();
+uintptr_t sub_43F130();
 int nox_xxx_guiFontHeightMB_43F320(void* a1);
 void* nox_xxx_guiFontPtrByName_43F360(char* a1);
 void nox_draw_enableTextSmoothing_43F670(int a1);

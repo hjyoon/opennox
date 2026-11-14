@@ -1,0 +1,900 @@
+{
+  "scope": "74-entry native audio family in the 13 split GAME files; all 13 and whole-game port remain incomplete",
+  "base_HEAD": "06d7a03ae4a8c1178115ce352ba48908d100fe4a",
+  "code_revision": null,
+  "git": {
+    "local_branch": "port/go1.27-multiarch",
+    "push_target": "origin/port/go1.27-multiarch",
+    "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
+    "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
+  },
+  "stage": "ROOT/split-audio-native-20261114-v1",
+  "source_map": [
+    {
+      "name": "sub_43EDB0",
+      "file": "src/legacy/GAME1_3.c",
+      "owner": "src/legacy/audio_source_native.go:sub_43EDB0",
+      "original_body_bytes": 301,
+      "original_body_sha256": "36c8fd18553c5b5e967794588015246fa0d1c260a2dc5df40fcd18b96746c522"
+    },
+    {
+      "name": "sub_43EE00",
+      "file": "src/legacy/GAME1_3.c",
+      "owner": "src/legacy/audio_source_native.go:sub_43EE00",
+      "original_body_bytes": 2595,
+      "original_body_sha256": "cc4cdf43cace5b12c02c5103f91d3b89ba1ecc1c4212b7169eee0e256e22045b"
+    },
+    {
+      "name": "sub_4866D0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4866D0",
+      "original_body_bytes": 62,
+      "original_body_sha256": "c4e48deb0c4e20668df59a09d8f94ba455fb76984ed0e2cdd8401abe8ef230b5"
+    },
+    {
+      "name": "sub_486A10",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_486A10",
+      "original_body_bytes": 329,
+      "original_body_sha256": "e80c0200de3745d2f4bcff420f492b79ec71b62d08d0bfd8392be5594158616b"
+    },
+    {
+      "name": "sub_486AA0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_486AA0",
+      "original_body_bytes": 364,
+      "original_body_sha256": "ec0baf82252fabc70fe6576906332d579ead267a31d26d8c0312d6172db9e075"
+    },
+    {
+      "name": "sub_486B60",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_486B60",
+      "original_body_bytes": 2097,
+      "original_body_sha256": "76232c1b0016cc30fee205925d1356f33eb931ebef7fcca2c18932873deed99c"
+    },
+    {
+      "name": "sub_486DB0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_486DB0",
+      "original_body_bytes": 407,
+      "original_body_sha256": "83b939e9a478b72709fec0d0dd1f58f3d8e72145145e027749a7f2016bef0596"
+    },
+    {
+      "name": "sub_486E00",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_486E00",
+      "original_body_bytes": 213,
+      "original_body_sha256": "d79514665a3f314e9ca0ea4494221290c6791edf5998367860092f3e3b145c00"
+    },
+    {
+      "name": "sub_486E30",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_486E30",
+      "original_body_bytes": 315,
+      "original_body_sha256": "b46c4582d9348aa1d78b9f7244df6694a8a13420ad58df9d54aa04bc911c1bfd"
+    },
+    {
+      "name": "sub_486E90",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_486E90",
+      "original_body_bytes": 387,
+      "original_body_sha256": "45f9216a71a727554157d9904818cd5fe998426e44b023cab3989414f368d0f8"
+    },
+    {
+      "name": "sub_486FA0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_486FA0",
+      "original_body_bytes": 379,
+      "original_body_sha256": "d5ab5bc3172307cce917419e7e3e7163970367db6dc048b1f127f878aa5f9242"
+    },
+    {
+      "name": "sub_486FE0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_486FE0",
+      "original_body_bytes": 250,
+      "original_body_sha256": "759c2c124ede5c19380515d583744432dc15d8f93018ab2c9f2e1c93db00eaa9"
+    },
+    {
+      "name": "sub_487030",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487030",
+      "original_body_bytes": 166,
+      "original_body_sha256": "622f603f10e310227176127f56b25c29fd297694e472db8cc7033dca9a445774"
+    },
+    {
+      "name": "sub_487050",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487050",
+      "original_body_bytes": 97,
+      "original_body_sha256": "4ca1f236ee4de37e9f74b935552b4e4ad0e24eb7cb95c624f95784d501da6eb8"
+    },
+    {
+      "name": "sub_487070",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487070",
+      "original_body_bytes": 123,
+      "original_body_sha256": "c598e2dbe896d4f211f58ba846ed8c194bca415424536a5e2e49db60d601fe3c"
+    },
+    {
+      "name": "sub_487090",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487090",
+      "original_body_bytes": 69,
+      "original_body_sha256": "83fd496a5785c44096300dee5476df2653e850eae1e7df758787571f5bd1e816"
+    },
+    {
+      "name": "sub_4870A0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4870A0",
+      "original_body_bytes": 209,
+      "original_body_sha256": "c864551d5d113ee462d193b2cffa0e743723ba8bb2130aadf7dbaf27d5ed8919"
+    },
+    {
+      "name": "sub_4870E0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4870E0",
+      "original_body_bytes": 163,
+      "original_body_sha256": "80de0b24feab5372c6f7539d547a816c32865e0b7d16e087fe8aa354afb57c97"
+    },
+    {
+      "name": "sub_487100",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487100",
+      "original_body_bytes": 106,
+      "original_body_sha256": "da8ab33773f1f49807a3e0182e1df5630b81002793f05e2603c787d852fea2ae"
+    },
+    {
+      "name": "sub_487150",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487150_go",
+      "original_body_bytes": 433,
+      "original_body_sha256": "97e9ddbbd5f3aabb3a0acba6bd63533ecb4d1a647e7057f66515ca6d89204243"
+    },
+    {
+      "name": "sub_4871C0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4871C0_go",
+      "original_body_bytes": 723,
+      "original_body_sha256": "0a27b314f2145cd6c7e024006076e53571e936984563c260bdb163f739d74c78"
+    },
+    {
+      "name": "sub_4872C0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4872C0",
+      "original_body_bytes": 428,
+      "original_body_sha256": "58b5342e8da45d75ddecc83fdadceae6bc8f75b2f99ddb873e3db757ddb476c4"
+    },
+    {
+      "name": "sub_487310",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487310",
+      "original_body_bytes": 396,
+      "original_body_sha256": "0766e4cf4742f9be1c47f1164298541b119a18e9387af13fb2a537c15d0c51e6"
+    },
+    {
+      "name": "sub_487360",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487360",
+      "original_body_bytes": 387,
+      "original_body_sha256": "ff01c7c031d5ce790c3f93d6fcbc3ab97abd6a28dac2038928f71e74ebb39879"
+    },
+    {
+      "name": "sub_4873C0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4873C0",
+      "original_body_bytes": 2184,
+      "original_body_sha256": "3f19fb3efacd7231bde9003bae1142c3c82da76cf4ccb708338f540e9a3bb3a3"
+    },
+    {
+      "name": "sub_487590",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487590_go",
+      "original_body_bytes": 131,
+      "original_body_sha256": "c3ff947a023c800a021ba67812437774f7114a22a4571e28d783bcfa2508aee2"
+    },
+    {
+      "name": "sub_4875B0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4875B0",
+      "original_body_bytes": 177,
+      "original_body_sha256": "40972110ad78a16a6e057aa94f3a1a9c4503de251df673ef77776902f326bf01"
+    },
+    {
+      "name": "sub_4875D0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4875D0",
+      "original_body_bytes": 106,
+      "original_body_sha256": "62621c67f66fd3723aa4cb4ae72971a59d3ce427873ab892bfcc2d069f0b1d93"
+    },
+    {
+      "name": "sub_4875F0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4875F0",
+      "original_body_bytes": 508,
+      "original_body_sha256": "eb55c7d965c4c5e1d69a36394fa3ded35ad41916a7792b67764ed8f2d6bc2059"
+    },
+    {
+      "name": "sub_487680",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487680",
+      "original_body_bytes": 84,
+      "original_body_sha256": "741e945081b3755232593be94cba206448f888e161a1f9344d2c1b7b462c4404"
+    },
+    {
+      "name": "sub_4876A0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4876A0",
+      "original_body_bytes": 421,
+      "original_body_sha256": "3a2b6fde0cde6346d0ba343dd83664b0843613e9587a75514a8717f1de342e3f"
+    },
+    {
+      "name": "sub_487750",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487750",
+      "original_body_bytes": 231,
+      "original_body_sha256": "77abd8d1843f14e080eb40c83d1236c037f942f0f9d64468a4283f7d07dac859"
+    },
+    {
+      "name": "sub_487790",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487790",
+      "original_body_bytes": 184,
+      "original_body_sha256": "870a9fdb4565b4cb64e1c66d36ab95e57dcfdd57f514fca4c0bdbd879d6cc4cc"
+    },
+    {
+      "name": "sub_4877D0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4877D0",
+      "original_body_bytes": 159,
+      "original_body_sha256": "59baff25dec701eed67c485f66619d438e49a10a03782b5809e9bdaade9ab478"
+    },
+    {
+      "name": "sub_4877F0",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_4877F0",
+      "original_body_bytes": 106,
+      "original_body_sha256": "4e8830552e68a6f01c2ae1c7fa08c9e4e227fcc23f14532a6a9ef443758bab3b"
+    },
+    {
+      "name": "sub_487810",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487810",
+      "original_body_bytes": 965,
+      "original_body_sha256": "908cf471253ec0bea214ce03db34555c0b80e97b1c9e6f55075b3fde08e82a53"
+    },
+    {
+      "name": "sub_487910",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487910",
+      "original_body_bytes": 280,
+      "original_body_sha256": "213a5af12577627ae4686492f1f689543d36936893e22e129c1234bd06254c1d"
+    },
+    {
+      "name": "sub_487970",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487970",
+      "original_body_bytes": 376,
+      "original_body_sha256": "f3d370ea4ff63c35cfda8ac681579f337188229e8af478f76c15cbd2f8631d32"
+    },
+    {
+      "name": "sub_487C30",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487C30",
+      "original_body_bytes": 118,
+      "original_body_sha256": "f21b211b029cafc973e17eacb01fb211df5365a6b8c1a837edfa9c3337071c65"
+    },
+    {
+      "name": "sub_487C50",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487C50",
+      "original_body_bytes": 206,
+      "original_body_sha256": "813ffcc758994849397822a1ab43b0ed904e65d4f3e76b48e6d6eb1e7b1a1c18"
+    },
+    {
+      "name": "sub_487C80",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487C80",
+      "original_body_bytes": 81,
+      "original_body_sha256": "28c593fd5408c6cad851fd57e858f84f9c02eebf82fa044da31c127848ac79bf"
+    },
+    {
+      "name": "sub_487D00",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487D00",
+      "original_body_bytes": 205,
+      "original_body_sha256": "32d85ca4d221d297fc8e6c13e8d5050f8a1202ed683260f94634915d63dd9d5f"
+    },
+    {
+      "name": "sub_487D30",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487D30",
+      "original_body_bytes": 161,
+      "original_body_sha256": "6f03a70424b6790d59d89f0f9c52a4783f50074c93714ffb8ea198a50c10efa7"
+    },
+    {
+      "name": "sub_487D60",
+      "file": "src/legacy/GAME2_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_487D60",
+      "original_body_bytes": 105,
+      "original_body_sha256": "b7662f6cc8f434119026a3600abdac73649cbc650bd2acb5d0f1630b25aa06d7"
+    },
+    {
+      "name": "sub_4BD280",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD280",
+      "original_body_bytes": 423,
+      "original_body_sha256": "b1683eb5da9013a4718ad12bb6577cc487af07c4b61c4d656922bdbfe9902afc"
+    },
+    {
+      "name": "sub_4BD2D0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD2D0",
+      "original_body_bytes": 45,
+      "original_body_sha256": "0544d478e856431edb8e0d67a6fe8f7767b6b2d5c9d15b67946cf86301926a1b"
+    },
+    {
+      "name": "sub_4BD2E0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD2E0",
+      "original_body_bytes": 189,
+      "original_body_sha256": "8f60cebf3b5336966121a7cf2017db899257ff059b11670e7eea87e8e9277749"
+    },
+    {
+      "name": "sub_4BD300",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD300",
+      "original_body_bytes": 139,
+      "original_body_sha256": "3e1b2f6f7db7232f365e550c67af6872fadaa14f82582a0d81d5ef8ec35c394e"
+    },
+    {
+      "name": "sub_4BD340",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD340",
+      "original_body_bytes": 331,
+      "original_body_sha256": "79f287e77d2c127bf672127f181d551795a55af55921de8fec7b4ae2a889c0b6"
+    },
+    {
+      "name": "sub_4BD3C0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD3C0",
+      "original_body_bytes": 341,
+      "original_body_sha256": "a2ec13f378d74c6736c4715297971886b722efb7c083bfd889583c9f3b66e880"
+    },
+    {
+      "name": "sub_4BD420",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD420",
+      "original_body_bytes": 303,
+      "original_body_sha256": "d4eedf059736aa5f7ba67c6a4c6abdc550985275a10054bf628fa5e036c0b2a0"
+    },
+    {
+      "name": "sub_4BD470",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD470",
+      "original_body_bytes": 1600,
+      "original_body_sha256": "e04c4c9d73ca82262f9ab4073948c890167275c3b1d38a744f05cbf390b346c3"
+    },
+    {
+      "name": "sub_4BD600",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD600",
+      "original_body_bytes": 207,
+      "original_body_sha256": "9cca6c5b017c54de1a2e7122eb2b73c4697001e5da73c66eeb7e8c06df9bd4f6"
+    },
+    {
+      "name": "sub_4BD650",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD650",
+      "original_body_bytes": 103,
+      "original_body_sha256": "d16c77dcd2291c1b0ae9ddab969915221ddf72028f86e3d92f4d2bc13e7c25c9"
+    },
+    {
+      "name": "sub_4BD660",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD660",
+      "original_body_bytes": 184,
+      "original_body_sha256": "b02a0bd1453f0c3945fdea2ef22868363e6472dd3dbbd8f18d98d1b9d7e9db40"
+    },
+    {
+      "name": "sub_4BD680",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD680",
+      "original_body_bytes": 56,
+      "original_body_sha256": "515383a6cdcd536b03fc9ef96a5bd9bbb403ab7b02644de74e3d7147daabe73f"
+    },
+    {
+      "name": "sub_4BD690",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD690",
+      "original_body_bytes": 492,
+      "original_body_sha256": "de4362f09c7242045541634b6e7fe1b68a89167fb833762465499d081d0ca70b"
+    },
+    {
+      "name": "sub_4BD710",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_cache_native.go:sub_4BD710",
+      "original_body_bytes": 42,
+      "original_body_sha256": "e46fb2e3ed6939dddc43ee66c9bd1cd6ce06a1d96a42c76a432a96ff14ef3efb"
+    },
+    {
+      "name": "sub_4BD720",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD720",
+      "original_body_bytes": 362,
+      "original_body_sha256": "09a339e99980354eb33a2ee4afa19a6463be2142135233389f04195036235780"
+    },
+    {
+      "name": "sub_4BD7A0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD7A0",
+      "original_body_bytes": 107,
+      "original_body_sha256": "bd649c79ced617b88d80c62b212417beef1f48270b62d9d1ce0b623c9e9fd954"
+    },
+    {
+      "name": "sub_4BD7C0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD7C0",
+      "original_body_bytes": 353,
+      "original_body_sha256": "b96a57220db721d5517ea188e1da759b34bb65603c8fe12ff0bd1e061a8779d0"
+    },
+    {
+      "name": "sub_4BD840",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD840",
+      "original_body_bytes": 646,
+      "original_body_sha256": "38d53652a8dfd8bd89ffac716043e178204b4ff340c56d2f7cf09944277713e1"
+    },
+    {
+      "name": "sub_4BD8C0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD8C0",
+      "original_body_bytes": 682,
+      "original_body_sha256": "9d4723a2ecfc3b1d1a9c2059894078f3bdd2340ff16b9118513fe667bf2345e0"
+    },
+    {
+      "name": "sub_4BD940",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD940",
+      "original_body_bytes": 408,
+      "original_body_sha256": "af401aea108bfa0c62450cda324f5d575cfb0b6ff1f096c8a96fd4b7144938f2"
+    },
+    {
+      "name": "sub_4BD9B0",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BD9B0",
+      "original_body_bytes": 330,
+      "original_body_sha256": "2870e4b777cde809bdaf6e7326fa7a3b3de0dd9ae7db28cf6faccab31d9420e8"
+    },
+    {
+      "name": "sub_4BDA60",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDA60",
+      "original_body_bytes": 102,
+      "original_body_sha256": "ee837678a1ff62ab2c1f1181162c3f96c968e3b92c67d5cb7f0e0526bd8a3623"
+    },
+    {
+      "name": "sub_4BDA80",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDA80",
+      "original_body_bytes": 310,
+      "original_body_sha256": "2429912044a1fc48894b05b0cc7caced8fbc2fe8b61c7f77baa040cf7630c051"
+    },
+    {
+      "name": "sub_4BDB20",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDB20",
+      "original_body_bytes": 111,
+      "original_body_sha256": "e86ecef3cf037bf7bf6abf72c9d7b13810f84771380dcc68b3203faa6965d98c"
+    },
+    {
+      "name": "sub_4BDB30",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDB30",
+      "original_body_bytes": 116,
+      "original_body_sha256": "8a0ddd12d4f54cde0db34c6a581366ce8a3afb57ae35a809a45f94fdbb296305"
+    },
+    {
+      "name": "sub_4BDB40",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDB40",
+      "original_body_bytes": 349,
+      "original_body_sha256": "598385b1dc7ee56a7bdf9ffcedd89fa9237cf99332081a1649199b7047880e4e"
+    },
+    {
+      "name": "sub_4BDB90",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDB90",
+      "original_body_bytes": 435,
+      "original_body_sha256": "18eed60b6557624e034361864a4194478171e16a4e3598d0e2e83396eee9ee33"
+    },
+    {
+      "name": "sub_4BDC00",
+      "file": "src/legacy/GAME3_1.c",
+      "owner": "src/legacy/audio_source_native.go:sub_4BDC00",
+      "original_body_bytes": 131,
+      "original_body_sha256": "13990c684ffef7d1ff89c801b01412258f870c78d8a6def4cf1c1dc39d4c7e0a"
+    },
+    {
+      "name": "sub_431270",
+      "file": "src/legacy/GAME1_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_431270",
+      "original_body_bytes": 114,
+      "original_body_sha256": "e87c3cd5d4c637cbe06343868ed3bfafbfcf8b8a46e7aaca23d68d3cf9ffab8b"
+    },
+    {
+      "name": "sub_431290",
+      "file": "src/legacy/GAME1_2.c",
+      "owner": "src/legacy/audio_context_native.go:sub_431290",
+      "original_body_bytes": 91,
+      "original_body_sha256": "4d5ed99a08ad0952302dd247e7cc83d4004197a301aed781679f7dfb33faf6e3"
+    }
+  ],
+  "archive": {
+    "archived_functions": 74,
+    "archived_bytes": 26889,
+    "whole_C_files_reconstructed_exactly": [
+      "src/legacy/GAME1_2.c",
+      "src/legacy/GAME1_3.c",
+      "src/legacy/GAME2_2.c",
+      "src/legacy/GAME3_1.c"
+    ],
+    "original_assets_modified": false
+  },
+  "private_native_owners": [
+    "class",
+    "method table",
+    "device",
+    "context",
+    "voice",
+    "buffer",
+    "chunk",
+    "cache",
+    "pool",
+    "global owner"
+  ],
+  "additional_ABI_fixes": [
+    "The selected FILE handle at old bank offset +280 is a native pointer.",
+    "The public sub_43F130 driver getter returns uintptr_t without truncation.",
+    "Three C bridges preserve const-qualified format inputs."
+  ],
+  "original_CPU_baselines": {
+    "pump_EOS": {
+      "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+      "cases": 82,
+      "fixture_sha256": "1e744e85304d3b2b805fbdaa2eb18c1a10bbac46af63c0cfa026845bd57454ee",
+      "services": {
+        "userdata": 4,
+        "finish": 1,
+        "ready": 162,
+        "refill": 71,
+        "restart": 41,
+        "load": 84
+      },
+      "regions": {
+        "end": {
+          "start": "0x43edb0",
+          "end": "0x43eddf",
+          "bytes": 47,
+          "sha256": "a66a305e890a9f715f4793f91bf47dee4ee9273edebfa21b9745b773922237ad",
+          "executed_instructions": 16,
+          "executed_bytes": 47
+        },
+        "pump": {
+          "start": "0x43ee00",
+          "end": "0x43efc8",
+          "bytes": 456,
+          "sha256": "bb048ebccbb3c4ed2076c559352a490087f1f6db12a0827d727d42f325c375a4",
+          "executed_instructions": 141,
+          "executed_bytes": 456
+        }
+      },
+      "scope": "Run unchanged PE32 audio completion and buffer-pump code with Miles services.\n\nOnly the three Miles imports and the source refill/restart/end callbacks are\ndeclared services. Buffer selection, copy/defer decisions, arithmetic, pointer\nadvancement, EOF state and rereads execute the original x86 instructions.\n"
+    },
+    "producers": {
+      "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+      "cases": 116,
+      "fixture_sha256": "5107e51e65ffca0f556d894a2e0a5ecbf6e568b5f6c6bdbfa4d0bbb394f4e1a7",
+      "services": {
+        "custom_refill": 8,
+        "custom_restart": 15,
+        "method_restart": 27,
+        "timer_init": 14,
+        "custom_end": 7,
+        "custom_stop": 7,
+        "method_stop": 10,
+        "timer_update": 6,
+        "mix": 6,
+        "method_play": 6
+      },
+      "scope": "Execute unchanged PE32 audio producers; method/timer services are explicit.\n\nThe source fields, list traversal, arithmetic, branches and state writes run\nGAME.EXE instructions. Timer/mix dependencies are recorded opaque services;\nthis corpus does not claim timer bytes or allocator/IO equivalence.\n",
+      "regions": {
+        "refill": {
+          "start": "0x4bd8c0",
+          "end": "0x4bd940",
+          "mapped_bytes": 128,
+          "sha256": "3a8ccb461cd5fcd0e06800b6800d2c95d66b788d0dabff468f9b8f58a4598017",
+          "executed_bytes": 118,
+          "executed_instructions": 41
+        },
+        "restart": {
+          "start": "0x4bd940",
+          "end": "0x4bd9b0",
+          "mapped_bytes": 112,
+          "sha256": "def831c5aa8226f6a96f298ed2aa23a0bfddadbf42292723f174591ea5981862",
+          "executed_bytes": 102,
+          "executed_instructions": 34
+        },
+        "end": {
+          "start": "0x4bd9b0",
+          "end": "0x4bda60",
+          "mapped_bytes": 176,
+          "sha256": "92d399b3699a3980dc255a8126259c1f3165305536d193bf54924d8096aaace5",
+          "executed_bytes": 67,
+          "executed_instructions": 22
+        },
+        "stop": {
+          "start": "0x4bda80",
+          "end": "0x4bdb20",
+          "mapped_bytes": 160,
+          "sha256": "3515fa95e55c85a99f523f10e24d8b779fc071e8d060b59b817c72f70a3ad551",
+          "executed_bytes": 52,
+          "executed_instructions": 17
+        },
+        "set_flag": {
+          "start": "0x4bdb20",
+          "end": "0x4bdb30",
+          "mapped_bytes": 16,
+          "sha256": "1c816d1230029b69c185b642165c8009a70f9421b2a48df1506de1fe7b21f61f",
+          "executed_bytes": 14,
+          "executed_instructions": 5
+        },
+        "clear_flag": {
+          "start": "0x4bdb30",
+          "end": "0x4bdb40",
+          "mapped_bytes": 16,
+          "sha256": "18cdf3123c2c887fff340cd0e42f9569eabd545921c0aede43d270cdc1790c26",
+          "executed_bytes": 14,
+          "executed_instructions": 5
+        },
+        "play": {
+          "start": "0x4bdb40",
+          "end": "0x4bdb90",
+          "mapped_bytes": 80,
+          "sha256": "167ef042ef2d4d1de8d43e478e70cd23d2e2fb814e57a5a5b21b0ed4e87d5902",
+          "executed_bytes": 78,
+          "executed_instructions": 29
+        },
+        "select": {
+          "start": "0x4bdb90",
+          "end": "0x4bdc00",
+          "mapped_bytes": 112,
+          "sha256": "bddcc0bd9784b4628994b14d15360459621e694779ddfa8c12eb13d5918c914c",
+          "executed_bytes": 104,
+          "executed_instructions": 31
+        },
+        "priority": {
+          "start": "0x4bdc00",
+          "end": "0x4bdc10",
+          "mapped_bytes": 16,
+          "sha256": "10ea17dea4796f19816571dbe4ac190882f34e50326607c604aa203fad9c2ef2",
+          "executed_bytes": 13,
+          "executed_instructions": 5
+        },
+        "list_next": {
+          "start": "0x425940",
+          "end": "0x425960",
+          "mapped_bytes": 32,
+          "sha256": "c76858f002196becac7ab6ba455b514b907992442386e5e7b6ae3d9554b9c04f",
+          "executed_bytes": 18,
+          "executed_instructions": 8
+        },
+        "buffer_first": {
+          "start": "0x487c80",
+          "end": "0x487ca0",
+          "mapped_bytes": 32,
+          "sha256": "16c8bb95cde3b3ca3e8f25abe7a4602c0fc1627eb90aa414912bcc8795c17191",
+          "executed_bytes": 17,
+          "executed_instructions": 6
+        }
+      }
+    },
+    "comparison": "Unchanged expected JSON; each of 198 original cases compared through public C names in three foreign owner placements."
+  },
+  "local_validation": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9142,
+      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "exit_code": 0,
+      "elapsed_seconds": 331.377,
+      "test_actions": {
+        "pass": 751,
+        "skip": 2
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict": {
+      "changed_source_paths": [],
+      "source_files": 9142,
+      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "exit_code": 0,
+      "elapsed_seconds": 386.896,
+      "test_actions": {
+        "pass": 751,
+        "skip": 2
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_flags": [
+      "GOEXPERIMENT=cgocheck2",
+      "highres",
+      "-gcflags=all=-d=checkptr=2"
+    ],
+    "runtime_skips": [
+      "TestAudioDecode/dialog",
+      "TestAudioDecode/music"
+    ],
+    "unfiltered_full_suite_claim": false
+  },
+  "real_OpenAL": {
+    "profiles": [
+      "normal",
+      "strict highres"
+    ],
+    "cases": [
+      "mono",
+      "stereo"
+    ],
+    "queued_and_processed_buffers_per_case": 68,
+    "EOS_callbacks_per_case": 1,
+    "driver": "OpenAL Soft null output, real decoding/queue/processing",
+    "high_native_handles_on_64_bit": true
+  },
+  "CI_workflow": "Linux native audio now checks legacy source owners and preserves all three compiled test mains.",
+  "remaining_qualification": [
+    "clean four-product builds",
+    "product E2E",
+    "Linux and Windows CI",
+    "Linux native audio normal/strict CI"
+  ],
+  "current_inventory": [
+    {
+      "file": "src/legacy/GAME1_1.c",
+      "active_functions": 187,
+      "pointer_integer_casts": 157,
+      "narrow_pointer_casts": 154,
+      "functions_with_narrow_casts": 36,
+      "source_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634"
+    },
+    {
+      "file": "src/legacy/GAME1_2.c",
+      "active_functions": 122,
+      "pointer_integer_casts": 352,
+      "narrow_pointer_casts": 330,
+      "functions_with_narrow_casts": 27,
+      "source_sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6"
+    },
+    {
+      "file": "src/legacy/GAME1_3.c",
+      "active_functions": 0,
+      "pointer_integer_casts": 0,
+      "narrow_pointer_casts": 0,
+      "functions_with_narrow_casts": 0,
+      "source_sha256": "61ee6cbbb45995559a3c0432398e5897e84f2625759dacb29872a8968e8c196f"
+    },
+    {
+      "file": "src/legacy/GAME2_1.c",
+      "active_functions": 235,
+      "pointer_integer_casts": 68,
+      "narrow_pointer_casts": 14,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "c78602c3acb0aa8513a631d9f7bbbda1abbe18a3e1f2e3da44dd3b9114a63312"
+    },
+    {
+      "file": "src/legacy/GAME2_2.c",
+      "active_functions": 106,
+      "pointer_integer_casts": 111,
+      "narrow_pointer_casts": 103,
+      "functions_with_narrow_casts": 10,
+      "source_sha256": "35b173552e159096da109ad8e8392e70c53479ad6b0d6afd159c7258a0083570"
+    },
+    {
+      "file": "src/legacy/GAME2_3.c",
+      "active_functions": 134,
+      "pointer_integer_casts": 54,
+      "narrow_pointer_casts": 41,
+      "functions_with_narrow_casts": 8,
+      "source_sha256": "03a0e2ffefcf44278abef0b7ff5121ec1424421965a42d3a70ff4d85d4a12e3e"
+    },
+    {
+      "file": "src/legacy/GAME3_1.c",
+      "active_functions": 160,
+      "pointer_integer_casts": 67,
+      "narrow_pointer_casts": 23,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "5a0cb487ab101f00adb217a13805f34bd1dbf9f22c8707e31d477deda9fccc80"
+    },
+    {
+      "file": "src/legacy/GAME3_2.c",
+      "active_functions": 260,
+      "pointer_integer_casts": 287,
+      "narrow_pointer_casts": 255,
+      "functions_with_narrow_casts": 37,
+      "source_sha256": "8008391bd16fbc789e1b97a2a8282e5e2d6f83bdcaf91721b792b56262eb370c"
+    },
+    {
+      "file": "src/legacy/GAME3_3.c",
+      "active_functions": 81,
+      "pointer_integer_casts": 246,
+      "narrow_pointer_casts": 216,
+      "functions_with_narrow_casts": 10,
+      "source_sha256": "d9d2ae3c4d154998d8771b688a56499412e8ced00e1226d0000bd07ad6836fd7"
+    },
+    {
+      "file": "src/legacy/GAME4_1.c",
+      "active_functions": 105,
+      "pointer_integer_casts": 513,
+      "narrow_pointer_casts": 493,
+      "functions_with_narrow_casts": 46,
+      "source_sha256": "951fda5258539e6678341c830552c0551e9d6c76e9f3570335ccdfca66f800a4"
+    },
+    {
+      "file": "src/legacy/GAME4_2.c",
+      "active_functions": 337,
+      "pointer_integer_casts": 418,
+      "narrow_pointer_casts": 387,
+      "functions_with_narrow_casts": 38,
+      "source_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a"
+    },
+    {
+      "file": "src/legacy/GAME4_3.c",
+      "active_functions": 165,
+      "pointer_integer_casts": 399,
+      "narrow_pointer_casts": 373,
+      "functions_with_narrow_casts": 35,
+      "source_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4"
+    },
+    {
+      "file": "src/legacy/GAME5_2.c",
+      "active_functions": 81,
+      "pointer_integer_casts": 34,
+      "narrow_pointer_casts": 30,
+      "functions_with_narrow_casts": 11,
+      "source_sha256": "71bdc8ec50d833aa212657d34914a15341f8cbc68c5ef0f25c1f3fe343cea025"
+    }
+  ],
+  "counts": {
+    "active_C_definitions": 1973,
+    "all_pointer_integer_casts": 2706,
+    "narrow_cast_candidates": 2419,
+    "functions_with_narrow_cast_candidates": 268
+  },
+  "inventory_limit": "These active definitions include native C and Go forwarders. Cast candidates require semantic review and are not an unported-function denominator.",
+  "GAME1_3_active_original_C_functions": 0,
+  "limits": [
+    "The producer oracle declares timer/mix and method services; original allocator, file-I/O and timer-byte equivalence is not claimed.",
+    "Invalid pool sizes and native context indices return nil instead of the original undefined access.",
+    "Pool slots align to native pointers; the cache preserves original slot counts for its legacy byte-budget argument.",
+    "Discarded mixed pointer/status residues from sub_4876A0/sub_487970 return nil.",
+    "Malformed WAV overrides without a usable fmt record retain the selected bag stream instead of uninitialized C fmt locals.",
+    "The new private layouts are not overlays of the old packed records or method tables.",
+    "OpenAL null-output playback does not establish perceptual audible fidelity or full long-session coverage."
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "campaign_scope": "Warrior/Conjurer/Wizard chapters 1-3 only; chapter 4+ excluded",
+  "nine_campaign_final_audits": "OPEN",
+  "inherited_public_SaveLoad_pixel_golden_pass": false
+}

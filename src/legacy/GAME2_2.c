@@ -4337,9 +4337,13 @@ int sub_486640(void* a1p, int a2) {
 #endif
 
 //----- (004866D0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4866D0
 int sub_4866D0(uint32_t* a1, int a2) { return *a1 + 36 * a2; }
+#endif
+
 
 //----- (00486A10) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_486A10
 unsigned int sub_486A10(int a1, void* a2) {
 	void* v2;            // eax
 	unsigned int result; // eax
@@ -4352,8 +4356,11 @@ unsigned int sub_486A10(int a1, void* a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486AA0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_486AA0
 int sub_486AA0(uint32_t* a1, int a2, uint32_t* a3) {
 	uint32_t* v3; // eax
 	int result;   // eax
@@ -4374,8 +4381,11 @@ int sub_486AA0(uint32_t* a1, int a2, uint32_t* a3) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486B60) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_486B60
 int sub_486B60(int a1, int a2) {
 	int v2;       // ebp
 	FILE* v3;     // eax
@@ -4457,8 +4467,11 @@ LABEL_18:
 	*(uint32_t*)(a1 + 280) = v10;
 	return 1;
 }
+#endif
+
 
 //----- (00486DB0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_486DB0
 signed int sub_486DB0(int a1, char* a2, signed int a3) {
 	signed int result; // eax
 	signed int v4;     // eax
@@ -4476,8 +4489,11 @@ signed int sub_486DB0(int a1, char* a2, signed int a3) {
 	*(uint32_t*)(a1 + 284) -= result;
 	return result;
 }
+#endif
+
 
 //----- (00486E00) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_486E00
 FILE* sub_486E00(int a1) {
 	FILE* result; // eax
 
@@ -4490,8 +4506,11 @@ FILE* sub_486E00(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486E30) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_486E30
 int sub_486E30(int a1, uint32_t* a2) {
 	int result; // eax
 
@@ -4506,8 +4525,11 @@ int sub_486E30(int a1, uint32_t* a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486E90) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_486E90
 int sub_486E90(int a1) {
 	int v1;     // esi
 	int result; // eax
@@ -4524,8 +4546,11 @@ int sub_486E90(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486FA0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_486FA0
 uint32_t* sub_486FA0(int a1) {
 	uint32_t* result; // eax
 	uint32_t* v2;     // edi
@@ -4545,8 +4570,11 @@ uint32_t* sub_486FA0(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00486FE0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_486FE0
 uint32_t* sub_486FE0(int a1) {
 	uint32_t* v1; // esi
 
@@ -4563,28 +4591,43 @@ uint32_t* sub_486FE0(int a1) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (00487030) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487030
 void sub_487030(void* lpMem) {
 	(*(void (**)(void*))(*((uint32_t*)lpMem + 3) + 24))(lpMem);
 	*(uint32_t*)(*((uint32_t*)lpMem + 3) + 12) &= 0xFFFFFFFE;
 	free(lpMem);
 }
+#endif
+
 
 //----- (00487050) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487050
 void sub_487050(uint32_t* a1) { nox_common_list_append_4258E0(*(int*)&dword_587000_155144, a1); }
+#endif
+
 
 //----- (00487070) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487070
 void sub_487070(void* lpMem) {
 	sub_487090((uint32_t**)lpMem);
 	sub_487030(lpMem);
 	*getMemU32Ptr(0x5D4594, 1193332) = 0;
 }
+#endif
+
 
 //----- (00487090) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487090
 void sub_487090(uint32_t** a1) { nox_common_list_remove_425920(a1); }
+#endif
+
 
 //----- (004870A0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4870A0
 void sub_4870A0() {
 	int* v1; // edi
 	int* v2; // esi
@@ -4599,8 +4642,11 @@ void sub_4870A0() {
 		} while (v2);
 	}
 }
+#endif
+
 
 //----- (004870E0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4870E0
 int* sub_4870E0(int* a1) {
 	int* result; // eax
 
@@ -4608,16 +4654,22 @@ int* sub_4870E0(int* a1) {
 	*a1 = (int)result;
 	return result;
 }
+#endif
+
 
 //----- (00487100) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487100
 int* sub_487100(int** a1) {
 	if (*a1) {
 		*a1 = nox_common_list_getNextSafe_4258A0(*a1);
 	}
 	return *a1;
 }
+#endif
+
 
 //----- (00487150) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487150_go
 uint32_t* sub_487150(int a1, const void* a2) {
 	int v2;       // edi
 	uint32_t* v3; // esi
@@ -4645,8 +4697,11 @@ uint32_t* sub_487150(int a1, const void* a2) {
 	++v3[4];
 	return v3;
 }
+#endif
+
 
 //----- (004871C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4871C0_go
 uint32_t* sub_4871C0(int a1, int a2, const void* a3) {
 	int v3;       // ebp
 	uint32_t* v4; // esi
@@ -4686,9 +4741,12 @@ uint32_t* sub_4871C0(int a1, int a2, const void* a3) {
 	}
 	return 0;
 }
+#endif
+
 // 487CF0: using guessed type void  nullsub_10(uint32_t);
 
 //----- (004872C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4872C0
 void sub_4872C0(void* lpMem) {
 	int v1; // eax
 	int v2; // ecx
@@ -4704,8 +4762,11 @@ void sub_4872C0(void* lpMem) {
 	}
 	free(lpMem);
 }
+#endif
+
 
 //----- (00487310) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487310
 int sub_487310(uint32_t* a1) {
 	int result; // eax
 
@@ -4718,8 +4779,11 @@ int sub_487310(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487360) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487360
 int* sub_487360(int a1, int** a2, int* a3) {
 	int* result; // eax
 	int i;       // esi
@@ -4743,8 +4807,11 @@ int* sub_487360(int a1, int** a2, int* a3) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004873C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4873C0
 int sub_4873C0(int a3) {
 	int v1;           // esi
 	long long v3;     // rax
@@ -4822,8 +4889,11 @@ int sub_4873C0(int a3) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (00487590) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487590_go
 int sub_487590(int a1, const void* a2) {
 	int result; // eax
 
@@ -4831,8 +4901,11 @@ int sub_487590(int a1, const void* a2) {
 	memcpy((void*)(a1 + 60), a2, 0x1Cu);
 	return result;
 }
+#endif
+
 
 //----- (004875B0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4875B0
 int* sub_4875B0(int* a1) {
 	int* result; // eax
 
@@ -4840,16 +4913,22 @@ int* sub_4875B0(int* a1) {
 	*a1 = (int)result;
 	return result;
 }
+#endif
+
 
 //----- (004875D0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4875D0
 int* sub_4875D0(int** a1) {
 	if (*a1) {
 		*a1 = nox_common_list_getNextSafe_4258A0(*a1);
 	}
 	return *a1;
 }
+#endif
+
 
 //----- (004875F0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4875F0
 int sub_4875F0() {
 	int* v0;    // edi
 	int* v1;    // esi
@@ -4872,14 +4951,20 @@ int sub_4875F0() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487680) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487680
 void sub_487680(void* lpMem) {
 	sub_4876A0((uint32_t**)lpMem);
 	sub_4872C0(lpMem);
 }
+#endif
+
 
 //----- (004876A0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4876A0
 void* sub_4876A0(uint32_t** a1) {
 	void* result; // eax
 
@@ -4893,8 +4978,11 @@ void* sub_4876A0(uint32_t** a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487750) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487750
 uint32_t* sub_487750(int a1) {
 	uint32_t* v1; // eax
 	uint32_t* v2; // esi
@@ -4910,8 +4998,11 @@ uint32_t* sub_487750(int a1) {
 	sub_486E30(a1, v1);
 	return v2;
 }
+#endif
+
 
 //----- (00487790) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487790
 int sub_487790(int a1, int a2) {
 	int v2; // esi
 	int v3; // edi
@@ -4926,8 +5017,11 @@ int sub_487790(int a1, int a2) {
 	}
 	return v2;
 }
+#endif
+
 
 //----- (004877D0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4877D0
 int* sub_4877D0(int a1, int* a2) {
 	int* result; // eax
 
@@ -4935,16 +5029,22 @@ int* sub_4877D0(int a1, int* a2) {
 	*a2 = (int)result;
 	return result;
 }
+#endif
+
 
 //----- (004877F0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_4877F0
 int* sub_4877F0(int** a1) {
 	if (*a1) {
 		*a1 = nox_common_list_getNextSafe_4258A0(*a1);
 	}
 	return *a1;
 }
+#endif
+
 
 //----- (00487810) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487810
 int* sub_487810(int a1, int a2) {
 	unsigned int v2; // esi
 	int v3;          // edi
@@ -4996,8 +5096,11 @@ int* sub_487810(int a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487910) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487910
 int sub_487910(int a1, int a2) {
 	int* v2; // edi
 	int v3;  // ebx
@@ -5017,8 +5120,11 @@ int sub_487910(int a1, int a2) {
 	} while (v4);
 	return 0;
 }
+#endif
+
 
 //----- (00487970) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487970
 int* sub_487970(int a1, int a2) {
 	int* result; // eax
 	int* v3;     // edi
@@ -5040,8 +5146,11 @@ int* sub_487970(int a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487C30) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487C30
 void sub_487C30(uint32_t* a1) {
 	*a1 = 0;
 	a1[1] = 0;
@@ -5049,8 +5158,11 @@ void sub_487C30(uint32_t* a1) {
 	a1[6] = 0;
 	nox_common_list_clear_425760(a1 + 2);
 }
+#endif
+
 
 //----- (00487C50) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487C50
 int sub_487C50(int a1, uint32_t* a2) {
 	int result; // eax
 
@@ -5060,11 +5172,17 @@ int sub_487C50(int a1, uint32_t* a2) {
 	a2[5] = a1;
 	return result;
 }
+#endif
+
 
 //----- (00487C80) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487C80
 int sub_487C80(int a1) { return nox_common_list_getNext_425940((int*)(a1 + 8)); }
+#endif
+
 
 //----- (00487D00) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487D00
 int sub_487D00(uint32_t* a1) {
 	int v1;     // edx
 	int result; // eax
@@ -5078,8 +5196,11 @@ int sub_487D00(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00487D30) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487D30
 uint32_t* sub_487D30(uint32_t* a1, int a2, int a3) {
 	uint32_t* result; // eax
 
@@ -5089,8 +5210,11 @@ uint32_t* sub_487D30(uint32_t* a1, int a2, int a3) {
 	a1[5] = 0;
 	return result;
 }
+#endif
+
 
 //----- (00487D60) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_context_native.go:sub_487D60
 int sub_487D60(int a1) {
 	int result; // eax
 
@@ -5098,6 +5222,8 @@ int sub_487D60(int a1) {
 	*(uint32_t*)(a1 + 20) = 0;
 	return result;
 }
+#endif
+
 
 //----- (00487D70) --------------------------------------------------------
 int nox_xxx_wndEditProc_487D70_key(uint32_t* a1, int v4, int a3, int a4) {

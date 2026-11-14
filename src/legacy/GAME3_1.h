@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_1
 
 #include "defs.h"
+#include "audio_source_native.h"
 #include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
 
@@ -14,34 +15,6 @@ void sub_4BA670(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_prepareLightningEffects_4BAB30();
 void* sub_4BC720(nox_drawable* dr);
 int nox_xxx_updDrawMonsterGen_4BC920();
-uint32_t* sub_4BD280(int a1, int a2);
-void sub_4BD2D0(void* lpMem);
-uint32_t* sub_4BD2E0(uint32_t** a1);
-int sub_4BD300(uint32_t* a1, int a2);
-uint32_t* sub_4BD340(int a1, int a2, int a3, int a4);
-void sub_4BD3C0(void* lpMem);
-uint32_t* sub_4BD420(int a1, int a2);
-uint32_t* sub_4BD470(uint32_t** a1, int a2);
-int sub_4BD600(int a1);
-int sub_4BD650(int a1);
-int sub_4BD660(int a1);
-int sub_4BD680(int a1);
-int sub_4BD690(int a1);
-int sub_4BD710(int a1);
-uint32_t* sub_4BD720(int a1);
-void sub_4BD7A0(void* lpMem);
-uint32_t* sub_4BD7C0(uint32_t* a1);
-void sub_4BD840(int a3);
-int sub_4BD8C0(int a1);
-int sub_4BD940(int a1);
-int sub_4BD9B0(uint32_t* a2);
-void sub_4BDA60(void* lpMem);
-int sub_4BDA80(int a1);
-int sub_4BDB20(int a1);
-int sub_4BDB30(int a1);
-int sub_4BDB40(int a2);
-void sub_4BDB90(uint32_t* a1, uint32_t* a2);
-int sub_4BDC00(int a1);
 int nox_xxx_loadAdvancedWnd_4BDC10(int* a1);
 int sub_4BDC70(int* a1);
 int sub_4BDD10(void);

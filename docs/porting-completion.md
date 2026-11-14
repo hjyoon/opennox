@@ -55,6 +55,59 @@ completion requirements.
 
 ## Current findings
 
+The current local branch and push target are both **port/go1.27-multiarch**.
+The user's latest correction supersedes the older go1.26 push instructions.
+Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
+records retain their historical branch information.
+
+### Split GAME audio owners: native family, 2026-11-14
+
+The next split-file batch moves 74 original entries to Go: two ordinary-context
+stop/destroy wrappers in GAME1_2, the last two GAME1_3 audio entries, 42
+GAME2_2 bank/buffer/device/context entries, and 28 GAME3_1 pool/cache/voice
+entries. The original 26,889 body bytes remain archived in place. Removing only
+the new guards reconstructs all four incoming C files byte for byte.
+GAME1_3 now has no active original C function definitions. The other 12 split
+files remain partial; this does not establish whole-game completion.
+
+Private native owners replace the packed class, method, device, context, voice,
+buffer, chunk, cache and free-list layouts. Native cursor pointers no longer
+overlap the old +300 length field, and callbacks carry complete C pointers.
+The file bank's selected FILE handle is now a pointer, and the public driver
+getter returns `uintptr_t`. Three small C bridges retain const format inputs.
+The ordinary production allocator remains unchanged.
+
+The preserved GAME.EXE supplies 82 pump/EOS cases and 116 producer cases.
+Their expected fixtures are copied unchanged; three independent foreign
+placements compare actual public C calls, service order, pointer roles,
+payload hashes, scalar wrap, full owner write sets and canaries. The producer
+oracle declares timer/mix and method dependencies explicitly; it does not
+claim original allocator, file-I/O or timer-byte equivalence. Native contract
+checks also cover class/context/voice rollback, reuse and teardown, pool LIFO
+order/alignment, retained-cache eviction and the connected cache-to-producer
+buffer pump. Actual file/index/WAV-override calls pass through the public C
+bank entries with foreign native owners and high opaque FILE handles.
+
+Both macOS normal and highres strict focused profiles pass **751 tests,
+two fixture-dependent runtime skips and three packages, with zero warnings**.
+Strict enables `cgocheck2` and `checkptr=2`. All 9,142 source inputs remain
+unchanged during both runs, with shared lease SHA-256
+`7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245`.
+Real OpenAL mono and stereo each queue and process 68 ADPCM buffers through
+the native C entry names and deliver EOS exactly once. Playback uses the
+explicit OpenAL null output driver; this is not a perceptual audio assessment.
+The Linux audio workflow now includes these legacy tests and retains all
+three compiled test mains.
+
+This batch still needs clean products, product E2E and platform CI qualification.
+Native handling rejects invalid pool sizes and context indices; discarded
+mixed pointer/status residues are nil. A malformed WAV override without a
+usable fmt record falls back to the selected bag stream instead of reading
+uninitialized C locals. These policies and the complete source map are recorded
+in `docs/split-audio-native-progress-20261114.json`. All nine chapter 1–3 final
+campaign audits and the inherited public SaveLoad pixel-golden discrepancy
+remain open; chapter 4 and later gameplay remain excluded.
+
 ### Split GAME C files: qualified first native batch, 2026-11-14
 
 The 13 split files contain 2,093 incoming active C definitions after excluding
@@ -126,11 +179,11 @@ remaining bugs or unported functions. All 4,649 original asset/Save files,
 hashes. Only reconstructable, completed build-cache/object data was removed;
 executables and complete validation/failure evidence are preserved.
 
-The two GAME1_3 audio completion/refill functions remain open. Their next
-baseline executes 503 unchanged GAME.EXE bytes over 82 sealed cases. Porting
-them also requires the GAME3_1 producer layout: its old pointer at +296 overlaps
-the scalar at +300 if naively widened. This baseline is preparation, not native
-port credit. All 13 split files remain partially ported. The source map and
+At this first batch boundary, the two GAME1_3 audio completion/refill functions
+remained open. The 503-byte, 82-case original-CPU baseline prepared the native
+audio follow-up above, including the GAME3_1 producer layout whose old +296
+pointer overlaps the +300 scalar if naively widened. This first batch alone
+did not complete any split file. Its source map and
 exact qualification limits are in `docs/split-game-native-progress-20261114.json`;
 complete records are under verification ROOT
 `split-game-native-completion-20261114-v1/final-qualification-v1.json`.

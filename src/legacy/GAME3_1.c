@@ -366,6 +366,7 @@ int nox_xxx_updDrawMonsterGen_4BC920() { return 1; }
 // 4BCABD: variable 'v4' is possibly undefined
 
 //----- (004BD280) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD280
 uint32_t* sub_4BD280(int a1, int a2) {
 	int v2;           // esi
 	uint32_t* result; // eax
@@ -389,11 +390,17 @@ uint32_t* sub_4BD280(int a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BD2D0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD2D0
 void sub_4BD2D0(void* lpMem) { free(lpMem); }
+#endif
+
 
 //----- (004BD2E0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD2E0
 uint32_t* sub_4BD2E0(uint32_t** a1) {
 	uint32_t* result; // eax
 	uint32_t* v2;     // edx
@@ -406,8 +413,11 @@ uint32_t* sub_4BD2E0(uint32_t** a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BD300) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD300
 int sub_4BD300(uint32_t* a1, int a2) {
 	int result; // eax
 
@@ -416,8 +426,11 @@ int sub_4BD300(uint32_t* a1, int a2) {
 	*a1 = a2 - 4;
 	return result;
 }
+#endif
+
 
 //----- (004BD340) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD340
 uint32_t* sub_4BD340(int a1, int a2, int a3, int a4) {
 	uint32_t* v4; // esi
 
@@ -434,8 +447,11 @@ uint32_t* sub_4BD340(int a1, int a2, int a3, int a4) {
 	sub_4BD3C0(v4);
 	return 0;
 }
+#endif
+
 
 //----- (004BD3C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD3C0
 void sub_4BD3C0(void* lpMem) {
 	int i; // eax
 
@@ -450,8 +466,11 @@ void sub_4BD3C0(void* lpMem) {
 	}
 	free(lpMem);
 }
+#endif
+
 
 //----- (004BD420) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD420
 uint32_t* sub_4BD420(int a1, int a2) {
 	uint32_t* result; // eax
 
@@ -467,8 +486,11 @@ uint32_t* sub_4BD420(int a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BD470) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD470
 uint32_t* sub_4BD470(uint32_t** a1, int a2) {
 	uint32_t* v2;  // eax
 	uint32_t* v3;  // edi
@@ -549,9 +571,12 @@ uint32_t* sub_4BD470(uint32_t** a1, int a2) {
 		v6 = v10;
 	}
 }
+#endif
+
 // 487CF0: using guessed type void  nullsub_10(uint32_t);
 
 //----- (004BD600) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD600
 int sub_4BD600(int a1) {
 	int v1; // esi
 
@@ -568,8 +593,11 @@ int sub_4BD600(int a1) {
 	sub_4BD690(v1);
 	return 1;
 }
+#endif
+
 
 //----- (004BD650) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD650
 int sub_4BD650(int a1) {
 	int result; // eax
 
@@ -577,8 +605,11 @@ int sub_4BD650(int a1) {
 	++*(uint32_t*)(a1 + 12);
 	return result;
 }
+#endif
+
 
 //----- (004BD660) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD660
 int sub_4BD660(int a1) {
 	int result; // eax
 
@@ -589,11 +620,17 @@ int sub_4BD660(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BD680) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD680
 int sub_4BD680(int a1) { return *(uint32_t*)(a1 + 12); }
+#endif
+
 
 //----- (004BD690) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD690
 int sub_4BD690(int a1) {
 	uint32_t** i; // esi
 
@@ -609,12 +646,18 @@ int sub_4BD690(int a1) {
 	nullsub_9(a1 + 24);
 	return sub_4BD300(*(uint32_t**)(*(uint32_t*)(a1 + 52) + 8), a1);
 }
+#endif
+
 // 487CA0: using guessed type void  nullsub_9(uint32_t);
 
 //----- (004BD710) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD710
 int sub_4BD710(int a1) { return a1 + 24; }
+#endif
+
 
 //----- (004BD720) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD720
 uint32_t* sub_4BD720(int a1) {
 	uint32_t* v1; // esi
 
@@ -634,14 +677,20 @@ uint32_t* sub_4BD720(int a1) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (004BD7A0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD7A0
 void sub_4BD7A0(void* lpMem) {
 	(*(void (**)(void*))(*((uint32_t*)lpMem + 43) + 8))(lpMem);
 	free(lpMem);
 }
+#endif
+
 
 //----- (004BD7C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD7C0
 uint32_t* sub_4BD7C0(uint32_t* a1) {
 	uint32_t* result; // eax
 
@@ -661,8 +710,11 @@ uint32_t* sub_4BD7C0(uint32_t* a1) {
 	a1[72] = 0;
 	return result;
 }
+#endif
+
 
 //----- (004BD840) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD840
 void sub_4BD840(int a3) {
 	int v1;           // ebp
 	unsigned int* v2; // edi
@@ -688,8 +740,11 @@ void sub_4BD840(int a3) {
 		 sub_486570(v2, *(uint32_t**)(v1 + 184));
 	}
 }
+#endif
+
 
 //----- (004BD8C0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD8C0
 int sub_4BD8C0(int a1) {
 	int (*v1)(int); // eax
 	int result;     // eax
@@ -721,8 +776,11 @@ int sub_4BD8C0(int a1) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (004BD940) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD940
 int sub_4BD940(int a1) {
 	void (*v1)(int); // eax
 
@@ -743,8 +801,11 @@ int sub_4BD940(int a1) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (004BD9B0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BD9B0
 int sub_4BD9B0(uint32_t* a2) {
 	int v1;               // eax
 	int (*v2)(uint32_t*); // eax
@@ -764,15 +825,21 @@ int sub_4BD9B0(uint32_t* a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BDA60) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDA60
 void sub_4BDA60(void* lpMem) {
 	sub_4BDA80((int)lpMem);
 	sub_486E90((int)lpMem);
 	sub_4BD7A0(lpMem);
 }
+#endif
+
 
 //----- (004BDA80) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDA80
 int sub_4BDA80(int a1) {
 	int result = 0;      // eax
 	int (*result2)(int); // eax
@@ -787,8 +854,11 @@ int sub_4BDA80(int a1) {
 	*(uint32_t*)(a1 + 288) = 0;
 	return result;
 }
+#endif
+
 
 //----- (004BDB20) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDB20
 int sub_4BDB20(int a1) {
 	int result; // eax
 
@@ -796,8 +866,11 @@ int sub_4BDB20(int a1) {
 	*(uint32_t*)(a1 + 124) |= 0x10u;
 	return result;
 }
+#endif
+
 
 //----- (004BDB30) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDB30
 int sub_4BDB30(int a1) {
 	int result; // eax
 
@@ -805,8 +878,11 @@ int sub_4BDB30(int a1) {
 	*(uint32_t*)(a1 + 124) &= 0xFFFFFFEF;
 	return result;
 }
+#endif
+
 
 //----- (004BDB40) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDB40
 int sub_4BDB40(int a2) {
 	int result; // eax
 
@@ -824,8 +900,11 @@ int sub_4BDB40(int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004BDB90) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDB90
 void sub_4BDB90(uint32_t* a1, uint32_t* a2) {
 	int v2;       // eax
 	int v3;       // eax
@@ -851,8 +930,11 @@ void sub_4BDB90(uint32_t* a1, uint32_t* a2) {
 		}
 	}
 }
+#endif
+
 
 //----- (004BDC00) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_4BDC00
 int sub_4BDC00(int a1) {
 	int result; // eax
 
@@ -861,6 +943,8 @@ int sub_4BDC00(int a1) {
 	*(uint32_t*)(a1 + 4) = 0;
 	return result;
 }
+#endif
+
 
 //----- (004BDC10) --------------------------------------------------------
 int nox_xxx_loadAdvancedWnd_4BDC10(int* a1) {

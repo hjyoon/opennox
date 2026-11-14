@@ -10,6 +10,8 @@ on:
       - src/legacy/client/audio/**
       - src/audio_*.go
       - src/ambient_*.go
+      - src/legacy/audio_*native*
+      - src/legacy/testdata/audio_*original*.json
 
 permissions:
   contents: read
@@ -96,14 +98,15 @@ jobs:
             args=(-tags=highres -gcflags=all=-d=checkptr=2)
           fi
           set +e
-          "$test_go" test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeNetworkAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
+          mkdir -p "$AUDIO_REPORT/compiled-test-mains"
+          "$test_go" test "${args[@]}" -o="$AUDIO_REPORT/compiled-test-mains" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeNetworkAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
           status=$?
           set -e
           echo "$status" > "$AUDIO_REPORT/test.exit"
           python3 - "$AUDIO_REPORT" <<'PY'
           import collections, json, pathlib, sys
           root = pathlib.Path(sys.argv[1])
-          counts, packages, lifecycle = collections.Counter(), {}, {}
+          counts, packages, lifecycle, source = collections.Counter(), {}, {}, {}
           for line in (root/'test.jsonl').open():
               e = json.loads(line)
               if e.get('Action') not in ('pass', 'skip', 'fail'):
@@ -113,13 +116,16 @@ jobs:
                   counts[e['Action']] += 1
                   if name.startswith(('TestOpenALSampleReuseDoesNotDecodePreviousFormat', 'TestOpenALSampleCompletesOnlySubmittedBuffers', 'TestOpenALSampleReadySlotAfterDrain')):
                       lifecycle[name] = e['Action']
+                  if name == 'TestAudioSourceNativeOpenAL' or name.startswith('TestAudioSourceNativeOpenAL/'):
+                      source[name] = e['Action']
               else:
                   packages[e['Package']] = e['Action']
-          summary = dict(exit_code=int((root/'test.exit').read_text()), test_actions=dict(counts), package_actions=packages, sample_lifecycle=lifecycle)
+          summary = dict(exit_code=int((root/'test.exit').read_text()), test_actions=dict(counts), package_actions=packages, sample_lifecycle=lifecycle, native_source_playback=source)
           (root/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
           print(json.dumps(summary, indent=2))
           assert len(lifecycle) == 7 and set(lifecycle.values()) == {'pass'}
-          assert len(packages) == 2 and set(packages.values()) == {'pass'}
+          assert len(source) == 3 and set(source.values()) == {'pass'}
+          assert len(packages) == 3 and set(packages.values()) == {'pass'}
           PY
           exit "$status"
       - uses: actions/upload-artifact@v7.0.2

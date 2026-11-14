@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME2_2
 
 #include "defs.h"
+#include "audio_source_native.h"
 
 // GAME.EXE stores the shop inventory at 0x006E0920 as 10 rows by 6
 // columns. Its PE32 cell is 140 bytes: drawable, count, 32 net codes,
@@ -148,48 +149,6 @@ int sub_486550(void* a1);
 void sub_486570(void* a1, void* a2);
 void sub_486620(void* a1);
 int sub_486640(void* a1, int a2);
-int sub_4866D0(uint32_t* a1, int a2);
-unsigned int sub_486A10(int a1, void* a2);
-int sub_486AA0(uint32_t* a1, int a2, uint32_t* a3);
-int sub_486B60(int a1, int a2);
-signed int sub_486DB0(int a1, char* a2, signed int a3);
-FILE* sub_486E00(int a1);
-int sub_486E30(int a1, uint32_t* a2);
-int sub_486E90(int a1);
-uint32_t* sub_486FA0(int a1);
-uint32_t* sub_486FE0(int a1);
-void sub_487030(void* lpMem);
-void sub_487050(uint32_t* a1);
-void sub_487070(void* lpMem);
-void sub_487090(uint32_t** a1);
-void sub_4870A0();
-int* sub_4870E0(int* a1);
-int* sub_487100(int** a1);
-uint32_t* sub_487150(int a1, const void* a2);
-uint32_t* sub_4871C0(int a1, int a2, const void* a3);
-void sub_4872C0(void* lpMem);
-int sub_487310(uint32_t* a1);
-int* sub_487360(int a1, int** a2, int* a3);
-int sub_4873C0(int a3);
-int sub_487590(int a1, const void* a2);
-int* sub_4875B0(int* a1);
-int* sub_4875D0(int** a1);
-int sub_4875F0();
-void sub_487680(void* lpMem);
-void* sub_4876A0(uint32_t** a1);
-uint32_t* sub_487750(int a1);
-int sub_487790(int a1, int a2);
-int* sub_4877D0(int a1, int* a2);
-int* sub_4877F0(int** a1);
-int* sub_487810(int a1, int a2);
-int sub_487910(int a1, int a2);
-int* sub_487970(int a1, int a2);
-void sub_487C30(uint32_t* a1);
-int sub_487C50(int a1, uint32_t* a2);
-int sub_487C80(int a1);
-int sub_487D00(uint32_t* a1);
-uint32_t* sub_487D30(uint32_t* a1, int a2, int a3);
-int sub_487D60(int a1);
 int nox_xxx_wndEditProc_487D70(nox_window* a1, int a2, uintptr_t a3, uintptr_t a4);
 int nox_xxx_wndEditDrawNoImage_488160(nox_window* win, nox_window_data* draw);
 nox_window* nox_gui_newEntryField_488500(nox_window* parent, int flags, int x, int y, int width, int height,

@@ -15,7 +15,6 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/legacy/timer"
 )
 
@@ -32,21 +31,16 @@ var (
 )
 
 func sub_43EFD0(a1 unsafe.Pointer) int {
-	s := *(**legacy.AudioSample)(unsafe.Add(a1, 272))
+	s := (*legacy.AudioVoiceNative)(a1).Sample
 	s.Smp.End()
-	if s.Flag7 == 0 {
-		ptr := s.Field1
-		fptr := (*unsafe.Pointer)(unsafe.Add(ptr, 284))
-		ccall.CallVoidPtr(*fptr, ptr)
-		s.Flag7 = 1
-	}
+	legacy.AudioSampleFinishNative(s)
 	return 0
 }
 
 func sub_43EC30(a1 unsafe.Pointer) int {
 	smp := audioDev.AllocateSample()
 	s, _ := alloc.New(legacy.AudioSample{})
-	*(*unsafe.Pointer)(unsafe.Add(a1, 272)) = unsafe.Pointer(s)
+	(*legacy.AudioVoiceNative)(a1).Sample = s
 	s.Dev = audioDev
 	s.Field1 = a1
 	s.Smp = smp
@@ -62,7 +56,8 @@ func sub_43EC30(a1 unsafe.Pointer) int {
 }
 
 func sub_43ECB0(a1 unsafe.Pointer) int {
-	p := *(**legacy.AudioSample)(unsafe.Add(a1, 272))
+	v := (*legacy.AudioVoiceNative)(a1)
+	p := v.Sample
 	if p.Smp != 0 {
 		p.Smp.Release()
 	}
@@ -73,6 +68,7 @@ func sub_43ECB0(a1 unsafe.Pointer) int {
 		alloc.Free(p2)
 	}
 	alloc.Free(p)
+	v.Sample = nil
 	return 0
 }
 
@@ -81,7 +77,7 @@ func sub_43E940(a1 unsafe.Pointer) int {
 		return -2147221504 // 0x80040000
 	}
 	if a1 != nil {
-		*(*uint32)(unsafe.Add(a1, 20)) = 1
+		(*legacy.AudioDeviceNative)(a1).Limit = 1
 	}
 	return 0
 }
@@ -156,13 +152,14 @@ func noxAudioServe() { // sub_43F1A0
 func sub_43EA20(a1 unsafe.Pointer) int {
 	//char v2[16]; // [esp+4h] [ebp-10h]
 
-	v2 := sub_43EA90(unsafe.Add(a1, 60))
+	ctx := (*legacy.AudioContextNative)(a1)
+	v2 := sub_43EA90(unsafe.Pointer(&ctx.Format60[0]))
 	audioDev = sub_43EAD0(v2)
 	if audioDev == 0 {
 		return -2147221504 // 0x80040000
 	}
 	*memmap.PtrInt32(0x587000, 93948) = 0
-	*(*uint32)(unsafe.Add(a1, 196)) = 24
+	ctx.Limit = 24
 	return 0
 }
 
@@ -207,20 +204,20 @@ func sub_43F130() ail.Driver {
 }
 
 func sub_43ED00(a1p unsafe.Pointer) int {
-	a1 := unsafe.Slice((*uint32)(a1p), 73)
-	s := *(**legacy.AudioSample)(unsafe.Pointer(&a1[68]))
+	v := (*legacy.AudioVoiceNative)(a1p)
+	s := v.Sample
 	smp := s.Smp
 	smp.Init()
-	s.Field4 = *(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(uintptr(a1[72])), 20))
+	s.Field4 = unsafe.Pointer(v.Buffer.Format)
 	if s.Field4 == nil {
-		s.Field4 = unsafe.Pointer(uintptr(a1[33]) + 60)
+		s.Field4 = unsafe.Pointer(&v.Context.Format60[0])
 	}
 	v3 := int32(legacy.Sub_43F0E0(s.Field4))
 	smp.SetType(v3, 0)
 	if *(*uint32)(unsafe.Add(s.Field4, 4)) == 2 {
 		smp.SetADPCMBlockSize(*(*uint32)(unsafe.Add(s.Field4, 24)))
 	}
-	sub_43F060(unsafe.Pointer(&a1[0]))
+	sub_43F060(a1p)
 	s.Flag7 = 0
 	s.Field3 = 0
 	smp.RegisterEOBCallback(func() {
@@ -235,13 +232,13 @@ func sub_43ED00(a1p unsafe.Pointer) int {
 }
 
 func sub_43F060(a1p unsafe.Pointer) int {
-	a1 := unsafe.Slice((*uint32)(unsafe.Pointer(a1p)), 69)
-	s := *(**legacy.AudioSample)(unsafe.Pointer(&a1[68]))
+	v := (*legacy.AudioVoiceNative)(a1p)
+	s := v.Sample
 	smp := s.Smp
-	smp.SetVolume(int((127 * (a1[45] >> 16)) >> 14))
-	smp.SetPan(int((127 * (a1[61] >> 16)) >> 14))
+	smp.SetVolume(int((127 * (v.Mixed.Timers[0].Current >> 16)) >> 14))
+	smp.SetPan(int((127 * (v.Mixed.Timers[2].Current >> 16)) >> 14))
 	p2 := s.Field4
-	v2 := legacy.Sub_486640(unsafe.Pointer(&a1[44]), int(*(*uint32)(unsafe.Add(p2, 8))))
+	v2 := legacy.Sub_486640(unsafe.Pointer(&v.Mixed), int(*(*uint32)(unsafe.Add(p2, 8))))
 	smp.SetPlaybackRate(v2)
 	return 0
 }
@@ -320,29 +317,18 @@ func shutdownNativeAudio() {
 }
 
 func sub_486F30() int {
-	nox_common_list_clear_425760(legacy.Get_dword_587000_155144())
-	nox_common_list_clear_425760(unsafe.Add(legacy.Get_dword_587000_155144(), 12))
-	*(*uint32)(unsafe.Add(legacy.Get_dword_587000_155144(), 24)) = 0
-	*memmap.PtrPtr(0x5D4594, 1193340) = unsafe.Add(legacy.Get_dword_587000_155144(), 32)
-	(*timer.TimerGroup)(unsafe.Add(legacy.Get_dword_587000_155144(), 32)).Init()
+	legacy.AudioInitNative()
 	dword_5d4594_1193336 = 1
 	return 0
 }
 
 func sub_486EF0() {
 	if dword_5d4594_1193336 != 0 {
-		if *(*uint32)(unsafe.Add(legacy.Get_dword_587000_155144(), 24)) == 0 {
-			v1 := *(*unsafe.Pointer)(unsafe.Add(legacy.Get_dword_587000_155144(), 12))
-			for it := unsafe.Add(legacy.Get_dword_587000_155144(), 12); v1 != it; v1 = *(*unsafe.Pointer)(v1) {
-				if (*(*int32)(unsafe.Add(v1, 4*3)) & 2) == 0 {
-					ccall.CallVoidPtr(*(*unsafe.Pointer)(unsafe.Add(v1, 4*54)), v1)
-				}
-			}
-		}
+		legacy.AudioServeNative()
 	}
 }
 
-const audioStructXxxNativeSize = 288 + 6*(unsafe.Sizeof(uintptr(0))-4)
+const audioStructXxxNativeSize = 288 + 8*(unsafe.Sizeof(uintptr(0))-4)
 
 var _ = [1]struct{}{}[audioStructXxxNativeSize-unsafe.Sizeof(audioStructXxx{})]
 
@@ -353,7 +339,7 @@ type audioStructXxx struct {
 	bagfile268 *legacy.FILE // 67, 268
 	field272   *legacy.FILE // 68, 272
 	field276   uint32       // 69, 276
-	field280   uint32       // 70, 280
+	field280   *legacy.FILE // selected native bag/override handle (PE32 +280)
 	field284   uint32       // 71, 284
 }
 

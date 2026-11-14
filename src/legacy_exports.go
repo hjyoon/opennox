@@ -170,6 +170,12 @@ func init() {
 	legacy.Sub_43F060 = sub_43F060
 	legacy.Sub_43EC30 = sub_43EC30
 	legacy.Sub_43ECB0 = sub_43ECB0
+	legacy.AudioBankRecordNative = audioBankRecordNative
+	legacy.AudioBankLookupNative = audioBankLookupNative
+	legacy.AudioBankSelectNative = audioBankSelectNative
+	legacy.AudioBankReadNative = audioBankReadNative
+	legacy.AudioBankCloseReadNative = audioBankCloseReadNative
+	legacy.AudioBankRemainingNative = audioBankRemainingNative
 	legacy.Nox_xxx_updateSprings_5113A0 = nox_xxx_updateSprings_5113A0
 	legacy.Nox_xxx_unitIsUnitTT_4E7C80 = nox_xxx_unitIsUnitTT_4E7C80
 	legacy.Nox_xxx_inventoryCountObjects_4E7D30 = nox_xxx_inventoryCountObjects_4E7D30

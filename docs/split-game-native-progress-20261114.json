@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME C files; first incremental batch qualified, all 13 are NOT fully ported.",
+  "scope": "13 split GAME C files; first qualified batch plus native audio follow-up; all 13 remain incomplete.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -359,35 +359,71 @@
     ]
   },
   "current_focused_validation": {
-    "exit_code": 0,
-    "elapsed_seconds": 145.849,
-    "test_actions": {
-      "pass": 939
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9142,
+      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "exit_code": 0,
+      "elapsed_seconds": 331.377,
+      "test_actions": {
+        "pass": 751,
+        "skip": 2
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
     },
-    "package_actions": {
-      "pass": 1
+    "strict": {
+      "changed_source_paths": [],
+      "source_files": 9142,
+      "source_lease_sha256": "7f68b33f8de46349209bbfa294099209e4ba4af45a452d10f81594408f04c245",
+      "exit_code": 0,
+      "elapsed_seconds": 386.896,
+      "test_actions": {
+        "pass": 751,
+        "skip": 2
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
     },
-    "failure_count": 0,
-    "first_failures": [],
-    "warning_count": 0,
-    "first_warnings": []
+    "strict_flags": [
+      "GOEXPERIMENT=cgocheck2",
+      "highres",
+      "-gcflags=all=-d=checkptr=2"
+    ],
+    "runtime_skips": [
+      "TestAudioDecode/dialog",
+      "TestAudioDecode/music"
+    ],
+    "unfiltered_full_suite_claim": false
   },
-  "remaining_in_GAME1_3": [
-    "sub_43EDB0",
-    "sub_43EE00"
+  "remaining_in_GAME1_3": [],
+  "remaining_qualification": [
+    "clean four-product builds",
+    "product E2E",
+    "Linux and Windows CI",
+    "Linux native audio normal/strict CI"
   ],
-  "remaining_qualification": [],
   "whole_game_100_percent": false,
   "qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
-  "current_active_total": 2047,
+  "current_active_total": 1973,
   "current_active_functions": {
     "GAME1_1.c": 187,
-    "GAME1_2.c": 124,
-    "GAME1_3.c": 2,
+    "GAME1_2.c": 122,
+    "GAME1_3.c": 0,
     "GAME2_1.c": 235,
-    "GAME2_2.c": 148,
+    "GAME2_2.c": 106,
     "GAME2_3.c": 134,
-    "GAME3_1.c": 188,
+    "GAME3_1.c": 160,
     "GAME3_2.c": 260,
     "GAME3_3.c": 81,
     "GAME4_1.c": 105,
@@ -406,19 +442,19 @@
     },
     {
       "file": "src/legacy/GAME1_2.c",
-      "active_functions": 124,
-      "pointer_integer_casts": 353,
-      "narrow_pointer_casts": 331,
-      "functions_with_narrow_casts": 28,
-      "source_sha256": "acf27f1f9a8aa8853ce1adbfc2c4bea3167a3e5046726d217f23bda7d355bdad"
+      "active_functions": 122,
+      "pointer_integer_casts": 352,
+      "narrow_pointer_casts": 330,
+      "functions_with_narrow_casts": 27,
+      "source_sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6"
     },
     {
       "file": "src/legacy/GAME1_3.c",
-      "active_functions": 2,
-      "pointer_integer_casts": 32,
-      "narrow_pointer_casts": 32,
-      "functions_with_narrow_casts": 2,
-      "source_sha256": "75651722f9152f0d1a7ee76754d5ce41ffeff86e3fc207e714e579927d1ddaa0"
+      "active_functions": 0,
+      "pointer_integer_casts": 0,
+      "narrow_pointer_casts": 0,
+      "functions_with_narrow_casts": 0,
+      "source_sha256": "61ee6cbbb45995559a3c0432398e5897e84f2625759dacb29872a8968e8c196f"
     },
     {
       "file": "src/legacy/GAME2_1.c",
@@ -430,11 +466,11 @@
     },
     {
       "file": "src/legacy/GAME2_2.c",
-      "active_functions": 148,
-      "pointer_integer_casts": 270,
-      "narrow_pointer_casts": 262,
-      "functions_with_narrow_casts": 37,
-      "source_sha256": "a4400b263c561bfe0e6b7cc5806b00e64543f4d1eabc458016ebb09a0c19f00c"
+      "active_functions": 106,
+      "pointer_integer_casts": 111,
+      "narrow_pointer_casts": 103,
+      "functions_with_narrow_casts": 10,
+      "source_sha256": "35b173552e159096da109ad8e8392e70c53479ad6b0d6afd159c7258a0083570"
     },
     {
       "file": "src/legacy/GAME2_3.c",
@@ -446,11 +482,11 @@
     },
     {
       "file": "src/legacy/GAME3_1.c",
-      "active_functions": 188,
-      "pointer_integer_casts": 185,
-      "narrow_pointer_casts": 141,
-      "functions_with_narrow_casts": 30,
-      "source_sha256": "8e35d2664dc9a1767cc865f03bf348b01cec3f9bc536a0f5165680e9d750050b"
+      "active_functions": 160,
+      "pointer_integer_casts": 67,
+      "narrow_pointer_casts": 23,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "5a0cb487ab101f00adb217a13805f34bd1dbf9f22c8707e31d477deda9fccc80"
     },
     {
       "file": "src/legacy/GAME3_2.c",
@@ -503,9 +539,9 @@
   ],
   "inventory_limit": "Definition counts include native C and Go forwarders; they are not an unported-function denominator. Narrow casts include scalar tokens and need semantic review; candidate counts are not proven bugs or completion percentages.",
   "casts_needing_semantic_review": {
-    "narrow_pointer_integer_casts": 2729,
-    "functions_with_narrow_casts": 323,
-    "all_pointer_integer_casts": 3016
+    "narrow_pointer_integer_casts": 2419,
+    "functions_with_narrow_casts": 268,
+    "all_pointer_integer_casts": 2706
   },
   "new_public_native_dispatch_entries": [
     {
@@ -536,7 +572,7 @@
     "C_reference": "The extractor explicitly unwraps only the two known archive guards; the preserved original bodies and unchanged corpus run under -Werror."
   },
   "qualification": {
-    "status": "passed for this incremental batch",
+    "status": "Passed for the first 43-entry/public-attack batch at qualified_engine_revision; follow-up qualification is recorded separately.",
     "record": "ROOT/split-game-native-completion-20261114-v1/final-qualification-v1.json",
     "local_common": {
       "normal": {
@@ -894,18 +930,28 @@
     "scope": "Run unchanged PE32 audio completion and buffer-pump code with Miles services.\n\nOnly the three Miles imports and the source refill/restart/end callbacks are\ndeclared services. Buffer selection, copy/defer decisions, arithmetic, pointer\nadvancement, EOF state and rereads execute the original x86 instructions.\n"
   },
   "remaining_work": [
-    "sub_43EDB0 / sub_43EE00 and their GAME3_1 producer/callback layouts; the PE32 +296 pointer overlaps the +300 scalar if simply widened.",
-    "Continue classifying and porting the other split-file native owners/callbacks.",
+    "Continue the other 12 split-file native owners/callbacks; the inventory includes already-native C and Go forwarders.",
+    "Complete clean products/E2E and cross-platform qualification for the native audio follow-up.",
     "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
     "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
   ],
   "limits": [
     "774 scalar/text cases execute unmodified incoming C with declared services, not original GAME.EXE instructions.",
-    "The separate 82-case audio original-CPU baseline prepares future work; it supplies no native-port credit yet.",
+    "At the first batch boundary, the separate 82-case audio original-CPU baseline prepares future work; it supplies no native-port credit yet.",
     "Native backdrop destruction returns nil; callers discard the old pointer/status residue. Invalid clip limits stop at empty and dynamic MOTD buffers avoid the old local overflow.",
     "Byte widening and the custom formatter %S behavior are retained; width/precision are ignored as in the original formatter.",
     "OpenAL queue and bounded E2E checks do not establish perceptual audible fidelity or full long-session/network/gameplay coverage."
   ],
   "all_13_split_files_ported": false,
-  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only"
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only",
+  "latest_progress_document": "docs/split-audio-native-progress-20261114.json",
+  "current_git": {
+    "local_branch": "port/go1.27-multiarch",
+    "push_target": "origin/port/go1.27-multiarch",
+    "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
+    "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
+  },
+  "new_Go_entries_scope": "First qualified batch (43 entries); another 74 entries are catalogued in latest_progress_document.",
+  "cumulative_new_Go_entry_count": 117,
+  "prepared_next_audio_baseline_status": "The prepared baseline is now consumed by the native audio follow-up; see latest_progress_document."
 }

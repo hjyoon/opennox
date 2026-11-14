@@ -392,6 +392,7 @@ int sub_43E8C0(int a1) {
 
 
 //----- (0043EDB0) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_43EDB0
 void sub_43EDB0(HSAMPLE a1) {
 	int v1;     // eax
 	int v2;     // esi
@@ -405,8 +406,11 @@ void sub_43EDB0(HSAMPLE a1) {
 		*(uint32_t*)(v2 + 28) = 1;
 	}
 }
+#endif
+
 
 //----- (0043EE00) --------------------------------------------------------
+#if 0 // Native audio owner: src/legacy/audio_source_native.go:sub_43EE00
 int sub_43EE00(void* a1p) {
 	int a1 = a1p;
 	int v1;           // esi
@@ -528,6 +532,8 @@ int sub_43EE00(void* a1p) {
 		v1 = a1;
 	}
 }
+#endif
+
 // 43EF03: variable 'v22' is possibly undefined
 // 5813C4: using guessed type int AIL_load_sample_buffer(uint32_t, uint32_t, uint32_t, uint32_t);
 // 5813C8: using guessed type int AIL_sample_buffer_ready(uint32_t);

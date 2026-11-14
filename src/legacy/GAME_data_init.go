@@ -147,6 +147,7 @@ func InitBlobData() {
 	})
 	initMusic()
 	initDialog()
+	initAudioNativeGlobal()
 }
 
 func Get_nox_xxx_updDrawDBall_4CDF80() unsafe.Pointer {

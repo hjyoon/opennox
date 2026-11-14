@@ -11,7 +11,7 @@ void sub_43E910(int a1);
 void sub_43E8E0(int a1);
 void sub_43EDB0(HSAMPLE a1);
 int sub_43EE00(void* a1);
-int sub_43F060(uint32_t* a1);
+int sub_43F060(void* a1);
 int sub_43F0E0(uint32_t* a1);
 char* sub_413890();
 int sub_486640(void* a1, int a2);
@@ -163,7 +163,7 @@ func AIL_sample_user_data(s C.HSAMPLE) unsafe.Pointer {
 
 //export sub_43F010
 func sub_43F010(a1 unsafe.Pointer) C.int {
-	p := *(**AudioSample)(unsafe.Add(a1, 272))
+	p := (*AudioVoiceNative)(a1).Sample
 	p.Smp.Stop()
 	return 0
 }
@@ -194,13 +194,13 @@ func sub_43EC10() C.int {
 }
 
 //export sub_43F130
-func sub_43F130() C.int {
-	return C.int(Sub_43F130())
+func sub_43F130() C.uintptr_t {
+	return C.uintptr_t(Sub_43F130())
 }
 
 //export sub_43ED00
-func sub_43ED00(a1p *C.uint32_t) C.int {
-	return C.int(Sub_43ED00(unsafe.Pointer(a1p)))
+func sub_43ED00(a1p unsafe.Pointer) C.int {
+	return C.int(Sub_43ED00(a1p))
 }
 
 //export sub_43D6A0
@@ -224,8 +224,8 @@ func sub_44D660(a1 *C.char) C.int {
 }
 
 //export sub_43F060
-func sub_43F060(a1p *C.uint32_t) C.int {
-	return C.int(Sub_43F060(unsafe.Pointer(a1p)))
+func sub_43F060(a1p unsafe.Pointer) C.int {
+	return C.int(Sub_43F060(a1p))
 }
 
 //export sub_43EC30
@@ -403,20 +403,20 @@ func Sub_451850(a1 unsafe.Pointer, a2 unsafe.Pointer) {
 	C.sub_451850(a1, a2)
 }
 
-func Sub_486FA0(a1 int) {
-	C.sub_486FA0(C.int(a1))
+func Sub_486FA0(a1 unsafe.Pointer) {
+	C.sub_486FA0(a1)
 }
 
 func Sub_487D00(a1 unsafe.Pointer) {
-	C.sub_487D00((*C.uint)(a1))
+	C.sub_487D00((*C.uint32_t)(a1))
 }
 
 func Sub_487150(a1 int, a2 unsafe.Pointer) unsafe.Pointer {
-	return unsafe.Pointer(C.sub_487150(C.int(a1), a2))
+	return C.sub_487150(C.int(a1), a2)
 }
 
 func Sub_487790(a1 unsafe.Pointer, a2 int) int {
-	return int(C.sub_487790(C.int(uintptr(a1)), C.int(a2)))
+	return int(C.sub_487790(a1, C.int(a2)))
 }
 
 //export sub_44D8F0

@@ -1,8 +1,8 @@
 {
   "utc": "2026-11-14T16:28:07.140425+00:00",
-  "scope": "Five original GAME1_1 bit-cursor and seven-bit encoder public C entries ported to Go. Source callers are an archived GAME1.c path and an if(0) WOL branch in GAME1_2.c; direct public-C tests prove the ABI. No shipping runtime use or campaign credit is inferred.",
+  "scope": "Five original GAME1_1 public bit-cursor/encoder entries now execute Go. macOS focused normal/strict, four clean products, four core E2E runs, two independent chat profiles and six full-platform CI jobs pass. The source encoder callers are archived GAME1.c or constant-if(0) WOL code; public-C tests establish the ABI and E2E supplies broader regression evidence.",
   "base_revision": "6463f54948309f48b36ae1fb69a500ebd30986f0",
-  "code_revision": null,
+  "code_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
   "implemented_Go_entries": [
     "sub_4254A0",
     "sub_4254C0",
@@ -13,7 +13,7 @@
   "new_Go_entry_count": 5,
   "cumulative_implemented_split_Go_entries": 124,
   "previous_full_platform_qualified_engine_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
-  "qualification_complete": false,
+  "qualification_complete": true,
   "native_layout": "Buffer pointer followed by byte bit index; sizeof 8 on 32-bit and16 on64-bit; return pointer complete. x86 masked shift counts and uint8 index wrap preserved.",
   "original_CPU": {
     "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
@@ -255,7 +255,7 @@
       "warning_count": 0,
       "first_warnings": []
     },
-    "strict_highres_cgocheck2_checkptr2": {
+    "strict": {
       "changed_source_paths": [],
       "source_files": 9159,
       "source_lease_sha256": "62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f",
@@ -282,14 +282,538 @@
   },
   "inventory_limit": "Clang AST casts include safe pointers, wrappers and scalar tokens. Counts are review candidates, not proven crashes or a completion denominator.",
   "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1",
-  "remaining_qualification": [
-    "Clean macOS client/HD/server/server-HD products, metadata/help and hash retention",
-    "Normal/HD product E2E and independent localhost host/peer chat regressions",
-    "Linux amd64 four product profiles and Windows amd64/386 native CI; full archives and logs retained",
-    "Final source/input/product preservation audit and qualified documentation"
-  ],
+  "remaining_qualification": [],
   "all_13_split_files_ported": false,
   "whole_game_100_percent": false,
   "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3; chapter4+ excluded",
-  "inherited_public_SaveLoad_pixel_golden_pass": false
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "qualified_UTC": "2026-11-14T16:58:27.950048+00:00",
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox",
+      "bytes": 69969970,
+      "sha256": "3041403a42e1cfcf45c114ab4f14e2ced3ca2a8e4c077783f2e2cabfb766de77",
+      "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-hd",
+      "bytes": 70118546,
+      "sha256": "5b456f405cf495032a3809adb6f9a081db7dd769cbbc4d0d598aa3083423ef86",
+      "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server",
+      "bytes": 66519858,
+      "sha256": "f98a018489ac58bbf45bef04aa40eaa3f13925ade167baf62e3c969864398a59",
+      "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server-hd",
+      "bytes": 66684978,
+      "sha256": "b599609a90316cf2d1341acbc7755eafc06a04f7e1c77c11b968f0b94a459c2d",
+      "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+    }
+  ],
+  "product_E2E": [
+    {
+      "profile": "normal",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.846,
+      "warnings": 0
+    },
+    {
+      "profile": "normal",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 47.319,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.397,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 47.985,
+      "warnings": 0
+    }
+  ],
+  "independent_peer_chat": {
+    "normal": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "8c31e686071b59f35994bfecd42906daa90165cc",
+      "product_sha256": "3041403a42e1cfcf45c114ab4f14e2ced3ca2a8e4c077783f2e2cabfb766de77",
+      "elapsed_seconds": 288.358,
+      "forced_processes": []
+    },
+    "highres": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "8c31e686071b59f35994bfecd42906daa90165cc",
+      "product_sha256": "5b456f405cf495032a3809adb6f9a081db7dd769cbbc4d0d598aa3083423ef86",
+      "elapsed_seconds": 288.336,
+      "forced_processes": []
+    }
+  },
+  "CI": [
+    {
+      "profile": "Linux amd64 client",
+      "run_id": 43615817151,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
+      "job_id": 132510524403,
+      "artifact_id": 14122448846,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122448846-8c31e6860.zip",
+      "sha256": "809454469e1ddfed10894c344857ddad26e83dc0af8aec362505335d152f1621",
+      "bytes": 211266853,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 855989,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14122448846,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "809454469e1ddfed10894c344857ddad26e83dc0af8aec362505335d152f1621",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 454006191,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 client HD",
+      "run_id": 43615817151,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
+      "job_id": 132510524617,
+      "artifact_id": 14122754619,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122754619-8c31e6860.zip",
+      "sha256": "86b331386552344ef99afa2839930579091448d0350ca89bfbc0e41158614b5d",
+      "bytes": 211888959,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 855989,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14122754619,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "86b331386552344ef99afa2839930579091448d0350ca89bfbc0e41158614b5d",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 454007060,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server",
+      "run_id": 43615817151,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
+      "job_id": 132510524605,
+      "artifact_id": 14122629190,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122629190-8c31e6860.zip",
+      "sha256": "3582a5a75be95a4835e909feca45b4732906f5651d30a1bcf741a83e7d28faad",
+      "bytes": 254617235,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 849878,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": {
+        "test_buildmode": "default",
+        "MALLOC_MMAP_THRESHOLD_": "0",
+        "test_actions": {
+          "pass": 133405
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "exit_code": 0
+      },
+      "native_matrix": {
+        "artifact_id": 14122629190,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "3582a5a75be95a4835e909feca45b4732906f5651d30a1bcf741a83e7d28faad",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 448021657,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server HD",
+      "run_id": 43615817151,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
+      "job_id": 132510524646,
+      "artifact_id": 14122623558,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122623558-8c31e6860.zip",
+      "sha256": "9f6a90bba1bfdb4b5bab3b540dd020f935ab80f5a358fbddf6645234dd8c9b95",
+      "bytes": 198516753,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 849878,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14122623558,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "9f6a90bba1bfdb4b5bab3b540dd020f935ab80f5a358fbddf6645234dd8c9b95",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 448022303,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows amd64 server",
+      "run_id": 43615789491,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615789491",
+      "job_id": 132510432410,
+      "artifact_id": 14122124174,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122124174-8c31e6860.zip",
+      "sha256": "000d7ee4cad530f7bacbab8438e2e3ed05266850c819a6b652055ffab1f840b7",
+      "bytes": 161207946,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "pass": 847863,
+        "skip": 11
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14122124174,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "000d7ee4cad530f7bacbab8438e2e3ed05266850c819a6b652055ffab1f840b7",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 673475281,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows 386 server",
+      "run_id": 43615789491,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43615789491",
+      "job_id": 132510431962,
+      "artifact_id": 14122693380,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122693380-8c31e6860.zip",
+      "sha256": "1a950e6a78ec48f4986cb55375d64b4fbab72f3c882c03b04d35b6c535ed6e0d",
+      "bytes": 156477327,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "skip": 94,
+        "pass": 828133
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14122693380,
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+        "archive_sha256": "1a950e6a78ec48f4986cb55375d64b4fbab72f3c882c03b04d35b6c535ed6e0d",
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 660337289,
+        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    }
+  ],
+  "preservation": {
+    "utc": "2026-11-14T16:44:09.050871+00:00",
+    "original_files": 4649,
+    "original_asset_and_Save_changes": [],
+    "added_original_files": [],
+    "tracked_e2e_files": 387,
+    "tracked_e2e_changes": [],
+    "asset_reference": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/original-assets-and-saves-reference-v1.json",
+    "asset_reference_sha256": "f34078714beee59e643e4348e3fe56d0326ab2c378961f3514dbb241ef979b38",
+    "e2e_reference": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/focused-public-normal-v2/source-lease-before.json",
+    "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+    "source_status": "",
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985330,
+        "sha256": "3ba86ef2efb2198efb8bee7f866bc31fbbc2eedde0ef258aa0568c8396e4cb81",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70084434,
+        "sha256": "5c76bd6acd99caebb76a83133b33eb1238b5c47f57db70fb55ec9fba79a66869",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66568322,
+        "sha256": "2ae63a3e24c53ef4b15484d9e39aa76f7a079bfa40d536ad29ddf409da41f52a",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66683906,
+        "sha256": "2d962789c7e864dc3a40d7a395f83b59ae787ad1a8cf5321ddc6398325c99769",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox",
+        "bytes": 69968930,
+        "sha256": "e5232fddad0a8132e840bbb05bd582509da883cddf35486c29d71d641ecf64f9",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-hd",
+        "bytes": 70100994,
+        "sha256": "52a108fddf9a6da21ce8115b085e1813db6bdefca1cde7680b48b354a20bc4bc",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server",
+        "bytes": 66568402,
+        "sha256": "8ee21b793ff4cff4c96ecf90e4d5a901dc014b6b2b60d90edfe257ee558f660c",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server-hd",
+        "bytes": 66683986,
+        "sha256": "e7590eff53b54c5d87d0ed10d8bf86295f09918a141f6da8ebb45f79142dafba",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985874,
+        "sha256": "710fd6239e76453e9f2c100f3b04abc369a518afafd72786063a82aa259c2789",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70101458,
+        "sha256": "d32701ba5261358763f2831840c350ad268f59951b87cdc37733d59f9d017cdf",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66585362,
+        "sha256": "df74b94052d7b43365b457eca43b6feb98f24f09cc3275f86437e6d4d0b1ab11",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66684434,
+        "sha256": "4e79ee7f677208fde6974b0609912904b84af0ab7d1e0ebd2189a0556006923a",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox",
+        "bytes": 69969970,
+        "sha256": "3041403a42e1cfcf45c114ab4f14e2ced3ca2a8e4c077783f2e2cabfb766de77",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70118546,
+        "sha256": "5b456f405cf495032a3809adb6f9a081db7dd769cbbc4d0d598aa3083423ef86",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66519858,
+        "sha256": "f98a018489ac58bbf45bef04aa40eaa3f13925ade167baf62e3c969864398a59",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66684978,
+        "sha256": "b599609a90316cf2d1341acbc7755eafc06a04f7e1c77c11b968f0b94a459c2d",
+        "unchanged": true
+      }
+    ],
+    "sealed_baseline_files_unchanged": true,
+    "copied_original_fixture_unchanged": true
+  },
+  "copy_on_write_cleanup": {
+    "utc": "2026-11-14T16:28:47.860644+00:00",
+    "completed_copies": 6,
+    "logical_bytes_preserved": 392260956,
+    "physical_available_before": 2846720000,
+    "physical_available_after": 3239936000,
+    "elapsed_seconds": 0.955,
+    "all_original_paths_preserved": true,
+    "products_and_active_stage_untouched": true,
+    "skipped": []
+  },
+  "inactive_build_cache_cleanup": {
+    "utc": "2026-11-14T16:44:13.265819+00:00",
+    "exit_code": 0,
+    "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "cache_KiB_before": 3170704,
+    "cache_KiB_after": 8,
+    "retained_files_SHA_verified": 40,
+    "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+    "elapsed_seconds": 3.203,
+    "scope": "Only the inactive dedicated Go build cache is regenerated. Module cache, products, test executables, original C programs, CI ZIPs, failures, assets and Save are preserved. All forty selected retained programs have identical size and SHA before and after."
+  },
+  "qualification_record": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/qualified-bitstream-entries-v1.json",
+  "next_prepared_baseline": "ROOT/split-monster-action-names-native-20261115-v1/prepared-baseline-v1.json; four complete original functions,260 instruction bytes,1014 cases,no services; no source port yet.",
+  "reproduction_setup_failures_preserved": [
+    "original-c-before-v1 AST macro-location error before compilation",
+    "original-c-before-v2 ARM64 private small-PAGEZERO executables killed before main",
+    "original-c-before-v3 read-next index255 was a passing wrap control; v4 uses index0 for the high failure"
+  ]
 }

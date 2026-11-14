@@ -67,21 +67,56 @@ pointer and bit index use a native cursor layout: eight bytes on 32-bit and
 sixteen on 64-bit. Initializers retain complete pointers; byte rollover,
 masked x86 shift counts, returned char bits and overlapping buffers match
 the unchanged original instructions. All 1,421 incoming C body bytes remain
-archived, and the complete incoming C file reconstructs exactly.
+archived, and removing only the new guards reconstructs the entire C file.
 
 The sealed GAME.EXE run executes all 291 original instruction bytes with
 no service substitutions for 9,092 cases. Four standalone low-address
-controls pass; all five original high-address C cases fail with SIGSEGV in
-the amd64/Rosetta reproduction. Normal and highres/cgocheck2/checkptr=2
-checks each pass 27,327 tests and three packages with zero warnings. All
-9,159 source inputs retain the same lease through both runs.
+controls pass; all five original high-address cases have SIGSEGV
+reproductions in the amd64/Rosetta harness. Initial probe setup failures and
+passing controls remain retained. Normal and highres/cgocheck2/checkptr=2
+focused checks each pass 27,327 tests and three packages with zero warnings.
+All 9,159 source inputs retain the shared lease
+`62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f`.
 
-The remaining source callers are in archived GAME1.c or the constant
-`if (0)` WOL branch in GAME1_2.c. Direct public-C calls establish the ABI;
-product E2E will supply broader regression evidence. Clean products and
-Linux/Windows qualification are pending. The cumulative implemented split
-entry count is 124, with 1,962 active C definitions and 2,354 narrow-cast
-review candidates in 257 functions. Details and pending checks are in
+The qualified engine is `8c31e686071b59f35994bfecd42906daa90165cc`,
+pushed to `origin/port/go1.27-multiarch`. Four clean macOS client, HD client,
+server and HD server products pass build, metadata and help checks with zero
+warnings. Normal/HD projectile FX and physical Urchin/Pixie combat pass
+four E2E runs. Both independent host/peer chat profiles pass eight own
+submissions, four received peer messages, one reply, two cancellations and
+two empty entries; all processes exit naturally.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 855,989 each | 57 each |
+| Linux amd64 server / HD | 849,878 each | 7 each |
+| Windows amd64 server | 847,863 | 11 |
+| Windows 386 server | 828,133 | 94 |
+
+All six jobs have zero compiler warnings. Full SHA-verified archives retain
+40/40/36/36/3/3 compiled package executables. Each independently confirms
+27,281 new bitstream C-matrix checks, 9,113 prior public chat/reflection
+checks, and the native x87 comparison and FLD probe passing. The Linux server
+also passes 133,405 separate default-link damage checks. Audited results are
+in `ROOT/split-bitstream-native-20261115-v1/qualified-bitstream-entries-v1.json`.
+
+The encoder's remaining source callers are in archived GAME1.c or the
+constant `if (0)` WOL branch in GAME1_2.c. Direct public-C calls establish
+its ABI; product E2E supplies broader regression evidence. Original
+assets/Save (4,649 files), 387 tracked E2E inputs and sixteen checked
+old/current products are unchanged. Twelve completed duplicate test copies
+retain every path and all 784,251,592 bytes through independent APFS
+copy-on-write files. The inactive build cache was cleared after checking
+forty retained programs; module data, failures and executables remain.
+
+The cumulative qualified split-entry count is 124. The current inventory
+has 1,962 active C definitions and 2,354 narrow-cast review candidates in
+257 functions, including safe C, forwarders and scalar tokens. It supplies
+no completion denominator. Original comparison data for the next four
+action-name entries is sealed: 260 unchanged instruction bytes and 1,014
+cases without services. That next source port, the other twelve files,
+all nine final campaign audits and the public SaveLoad pixel comparison
+remain open. Details are in
 `docs/split-bitstream-native-progress-20261115.json`.
 
 ### Unreachable edit-field cleanup, 2026-11-15
@@ -96,10 +131,14 @@ ARM64 and x86_64, in normal and combined highres/server configurations.
 Existing C widget callbacks, committed text, IME and chat checks pass 46 tests
 and three packages in each normal and highres/cgocheck2/checkptr=2 profile,
 with zero warnings and unchanged source leases. This cleanup adds no new
-Go-port credit: the cumulative split-entry count remains 119. The current
-inventory is 1,967 active C definitions and 2,372 narrow-cast review
-candidates in 261 functions. Full-platform qualification remains the separate
-`cd62abc6d` public-entry batch below. Evidence and scope are recorded in
+Go-port credit: this cleanup retains the then-current split-entry count of
+119. Its automatic Windows amd64/386 full root/server/legacy checks also
+pass with zero compiler warnings; both archives and logs retain the native
+widget C terminal results. The inventory after this cleanup has 1,967
+active C definitions and 2,372 narrow-cast review
+candidates in 261 functions. The preceding public-entry platform record
+is the `cd62abc6d` batch below. Subsequent bitstream qualification above
+covers the combined source at `8c31e6860`. Evidence and scope are recorded in
 `docs/split-unreachable-native-progress-20261115.json`.
 
 ### GAME5_2 public native entries, 2026-11-15

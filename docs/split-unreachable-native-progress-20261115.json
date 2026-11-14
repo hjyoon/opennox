@@ -77,5 +77,73 @@
   "whole_game_100_percent": false,
   "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
   "inherited_public_SaveLoad_pixel_golden_pass": false,
-  "next_stage": "ROOT/split-bitstream-native-20261115-v1"
+  "next_stage": "ROOT/split-bitstream-native-20261115-v1",
+  "Windows_CI": [
+    {
+      "profile": "Windows amd64",
+      "run_id": 43614967640,
+      "job_id": 132507917492,
+      "artifact_id": 14122346483,
+      "source_revision": "6463f54948309f48b36ae1fb69a500ebd30986f0",
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-unreachable-native-20261115-v1/ci-14122346483-6463f5494.zip",
+      "bytes": 160780690,
+      "sha256": "5bb7bf70fda16953d04305f0bb1e8b4c7a020e361b3c036b76400a746b3ea534",
+      "test_actions": {
+        "pass": 820582,
+        "skip": 11
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "compiled_executables": 3,
+      "compiler_warnings": 0,
+      "native_widget_terminals": {
+        "TestEditEventCallbackPreservesNativeWindowPointer": "pass",
+        "TestListBoxCallbacksPreserveNativePointers": "pass",
+        "TestInputConfigCallbacksPreserveNativeWindowPointer": "pass"
+      }
+    },
+    {
+      "profile": "Windows 386",
+      "run_id": 43614967640,
+      "job_id": 132507917678,
+      "artifact_id": 14122016569,
+      "source_revision": "6463f54948309f48b36ae1fb69a500ebd30986f0",
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-unreachable-native-20261115-v1/ci-14122016569-6463f5494.zip",
+      "bytes": 154233756,
+      "sha256": "d0b7abeebcf01d9716bd537244788358189dedf6e097b306ba4e88ad240e25ac",
+      "test_actions": {
+        "skip": 94,
+        "pass": 800852
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "compiled_executables": 3,
+      "compiler_warnings": 0,
+      "native_widget_terminals": {
+        "TestEditEventCallbackPreservesNativeWindowPointer": "pass",
+        "TestListBoxCallbacksPreserveNativePointers": "pass",
+        "TestInputConfigCallbacksPreserveNativeWindowPointer": "pass"
+      }
+    }
+  ],
+  "Windows_CI_scope": "Automatic amd64/386 full root/server/legacy checks for cleanup6463f5494. Both full archives/logs retained and native widget C terminals pass; no Linux requalification or new Go port credit.",
+  "copy_on_write_cleanup": {
+    "utc": "2026-11-14T16:19:41.263719+00:00",
+    "completed_copies": 6,
+    "logical_bytes_preserved": 391990636,
+    "physical_available_before": 4218880000,
+    "physical_available_after": 4628480000,
+    "elapsed_seconds": 0.918,
+    "all_original_paths_preserved": true,
+    "products_and_active_stage_untouched": true,
+    "skipped": []
+  },
+  "subsequent_combined_full_platform_engine_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+  "subsequent_combined_full_platform_evidence": "ROOT/split-bitstream-native-20261115-v1/qualified-bitstream-entries-v1.json"
 }

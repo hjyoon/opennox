@@ -10513,6 +10513,7 @@ short nox_xxx_equakeDamage_52DEC0(int a1, int a2) {
 #endif
 
 //----- (0052E020) --------------------------------------------------------
+#if 0 // Native pointers and field layout: player_marker_movable_native_exports.go:nox_xxx_isObjectMovable_52E020
 unsigned int nox_xxx_isObjectMovable_52E020(int a1) {
 	unsigned int result; // eax
 
@@ -10523,6 +10524,8 @@ unsigned int nox_xxx_isObjectMovable_52E020(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (0052E040) --------------------------------------------------------
 extern void nox_xxx_mapPushUnitsAround_native_52E040(void*, float, float, float, nox_object_t*, uintptr_t, uintptr_t);

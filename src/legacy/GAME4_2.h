@@ -309,7 +309,7 @@ int sub_52DD50(int a1, int a2, int a3, int a4, void* a5);
 int nox_xxx_castEquake_52DE40(int a1, int a2, int a3, int a4, int a5, int a6);
 short nox_xxx_equakeDamage_52DEC0(int a1, int a2);
 void nox_xxx_objectApplyForce_52DF80(float* vec, nox_object_t* obj, float force);
-unsigned int nox_xxx_isObjectMovable_52E020(int a1);
+unsigned int nox_xxx_isObjectMovable_52E020(nox_object_t* obj);
 #include "map_push_units_52e040.h"
 #include "spell_drain_mana_native_52e210.h"
 #include "spell_energy_bolt_native_52e820.h"

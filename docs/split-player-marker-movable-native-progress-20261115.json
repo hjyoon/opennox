@@ -1,0 +1,312 @@
+{
+  "utc": "2026-11-14T19:22:58.906497+00:00",
+  "scope": "Two original GAME1_1/GAME4_2 public C entries now share existing typed Go Player.Sub422140 and Object.IsMovable methods. Native pointer arguments, the complete Player return and widened structure field layouts are verified. No active product caller is claimed for these old C symbols; live Go methods already existed and remain unchanged.",
+  "base_revision": "60fd2fe7b7789f9bce61e2b55702afe21c44e86e",
+  "code_revision": null,
+  "qualification_complete": false,
+  "new_Go_entries": [
+    "sub_422140",
+    "nox_xxx_isObjectMovable_52E020"
+  ],
+  "new_Go_entry_count": 2,
+  "cumulative_implemented_split_Go_entries": 130,
+  "previous_full_platform_qualified_engine_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+  "original_CPU": {
+    "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "fixture_sha256": "63a4ec9a905d9c5e84ae22c13cf60af9e2bb29fb2a0c7e0715a9117006cba7fd",
+    "fixture_gzip_sha256": "902272844dc78d13dc412bc69d43242fab006da5e920551bd80612ae384f93ed",
+    "generator_sha256": "bb4a799b0296cda40fdc2e4025bca4b33f63422a85d98e9307ed161b0a4bd46e",
+    "cases": 1728,
+    "kinds": {
+      "marker": 128,
+      "movable": 1600
+    },
+    "declared_services": [],
+    "python": "3.12.11 (main, Sep  2 2025, 16:01:33) [Clang 17.0.0 (clang-1700.0.13.5)]",
+    "unicorn": "2.1.4",
+    "scope": "Unchanged player polygon reset and object-mobility predicates.\n\nThe complete two original functions execute without services. Player memory\nand return-pointer roles are recorded separately from native layout offsets.\nMovability covers every single flag/class bit, all blocked-mask combinations\nand deterministic mixed full-width values. NULL is valid only for reset.\n",
+    "regions": {
+      "marker": {
+        "start": "0x422140",
+        "end": "0x42215a",
+        "mapped_bytes": 26,
+        "sha256": "1ada255a24513ae1c76b0288e22b543375aa1f5e4f0d0f728c68d54855b71539",
+        "executed_bytes": 26,
+        "executed_instructions": 7
+      },
+      "movable": {
+        "start": "0x52e020",
+        "end": "0x52e03c",
+        "mapped_bytes": 28,
+        "sha256": "df6643a1f4d2a530c36b04c631bef3a1f44e484484553e3bbc9af419ce5e9dc9",
+        "executed_bytes": 28,
+        "executed_instructions": 10
+      }
+    }
+  },
+  "original_C_before": {
+    "utc": "2026-11-14T18:50:15.967005+00:00",
+    "functions": [
+      {
+        "file": "src/legacy/GAME1_1.c",
+        "name": "sub_422140",
+        "begin": 105569,
+        "end": 105740,
+        "bytes": 171,
+        "source_sha256": "9d967baf5c2729fbb91e3c8f22a7a55dd71743dfa3be491ce57b5f25b4ff98aa",
+        "body_sha256": "8c19a14c212642a084e79bcf45d911d47917bab982fdda815f95c480ac6daf92"
+      },
+      {
+        "file": "src/legacy/GAME4_2.c",
+        "name": "nox_xxx_isObjectMovable_52E020",
+        "begin": 312652,
+        "end": 312879,
+        "bytes": 227,
+        "source_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a",
+        "body_sha256": "c4d367a04f9cde2db066e2a1f74ed305302ca733264168890504dec76636f0bd"
+      }
+    ],
+    "executable_sha256": "c64ffcb13530f0ea7562c4d3e26dffd8dd8c9c2fecb1ae257923b0428ff6a006",
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-O2",
+      "-g",
+      "-fno-strict-aliasing",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast",
+      "-Wl,-pagezero_size,0x10000",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/original-c-before-v1/unchanged-original-functions.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/original-c-before-v1/unchanged-original-functions"
+    ],
+    "cases": [
+      {
+        "mode": "nil-marker-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "marker-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "movable-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "movable-blocked-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "movable-immobile-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "marker-high",
+        "exit_code": -11
+      },
+      {
+        "mode": "movable-high",
+        "exit_code": -11
+      }
+    ],
+    "compiler_warnings": 0,
+    "scope": "Standalone unchanged incoming C bodies under amd64/Rosetta. PE32 data offsets are used deliberately for the low-address controls. Five nil/low controls pass, while two high pointer arguments fault after the original int conversion. The future native-layout comparison is separate; this is not an integrated product crash."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-14T19:17:03.697179+00:00",
+    "original_body_bytes": 398,
+    "files": [
+      {
+        "file": "src/legacy/GAME1_1.c",
+        "name": "sub_422140",
+        "begin": 105569,
+        "end": 105740,
+        "bytes": 171,
+        "source_sha256": "9d967baf5c2729fbb91e3c8f22a7a55dd71743dfa3be491ce57b5f25b4ff98aa",
+        "body_sha256": "8c19a14c212642a084e79bcf45d911d47917bab982fdda815f95c480ac6daf92",
+        "outgoing_sha256": "00a6a795f3fe24e6cc3c09e051dba7efc0f08dcda92cbe76f3964398c9820503",
+        "reconstructed_sha256": "9d967baf5c2729fbb91e3c8f22a7a55dd71743dfa3be491ce57b5f25b4ff98aa",
+        "whole_incoming_file_reconstructed": true,
+        "prefix": "#if 0 // Native pointers and field layout: player_marker_movable_native_exports.go:sub_422140\n",
+        "suffix": "\n#endif\n"
+      },
+      {
+        "file": "src/legacy/GAME4_2.c",
+        "name": "nox_xxx_isObjectMovable_52E020",
+        "begin": 312652,
+        "end": 312879,
+        "bytes": 227,
+        "source_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a",
+        "body_sha256": "c4d367a04f9cde2db066e2a1f74ed305302ca733264168890504dec76636f0bd",
+        "outgoing_sha256": "2244bf0f562386bfa8dd0660da4f2a4bae0a2e0b59ccd8353a0b7ec0aa3d6b12",
+        "reconstructed_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a",
+        "whole_incoming_file_reconstructed": true,
+        "prefix": "#if 0 // Native pointers and field layout: player_marker_movable_native_exports.go:nox_xxx_isObjectMovable_52E020\n",
+        "suffix": "\n#endif\n"
+      }
+    ],
+    "whole_incoming_files_reconstructed": true,
+    "typed_public_headers": [
+      "nox_playerInfo* sub_422140(nox_playerInfo*)",
+      "unsigned int nox_xxx_isObjectMovable_52E020(nox_object_t*)"
+    ],
+    "shared_Go_methods": [
+      "server.Player.Sub422140",
+      "server.Object.IsMovable"
+    ],
+    "archived_only_caller": "sub_4EF660 in server__system__server.c; no active product caller is claimed for these old public entries"
+  },
+  "initial_build_storage_failures": {
+    "utc": "2026-11-14T19:22:03.123922+00:00",
+    "failures": [
+      {
+        "label": "focused-marker-movable-normal-v1",
+        "summary": {
+          "changed_source_paths": [],
+          "source_files": 9171,
+          "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+          "exit_code": 1,
+          "elapsed_seconds": 195.511,
+          "test_actions": {},
+          "package_actions": {
+            "fail": 2
+          },
+          "failure_count": 3,
+          "first_failures": [
+            "clang: error: linker command failed with exit code 1 (use -v to see invocation)\n",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/server"
+          ],
+          "warning_count": 0,
+          "first_warnings": []
+        },
+        "stage": "compiler/linker; no runtime tests executed",
+        "cause": "temporary storage exhausted"
+      },
+      {
+        "label": "focused-marker-movable-strict-v1",
+        "summary": {
+          "changed_source_paths": [],
+          "source_files": 9171,
+          "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+          "exit_code": 1,
+          "elapsed_seconds": 199.687,
+          "test_actions": {},
+          "package_actions": {
+            "fail": 2
+          },
+          "failure_count": 3,
+          "first_failures": [
+            "clang: error: linker command failed with exit code 1 (use -v to see invocation)\n",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/server"
+          ],
+          "warning_count": 0,
+          "first_warnings": []
+        },
+        "stage": "compiler/linker; no runtime tests executed",
+        "cause": "temporary storage exhausted"
+      }
+    ],
+    "source_fix_required": false,
+    "remediation": "396 terminated compiler package archives cleared;83381 other temporary files remain SHA-identical; all generated programs and source retained"
+  },
+  "inactive_temp_package_cleanup": {
+    "utc": "2026-11-14T19:21:18.759054+00:00",
+    "removed_reproducible_package_archives": 396,
+    "logical_bytes_removed": 3627161420,
+    "all_other_temporary_files_SHA_verified": 83381,
+    "free_bytes_before": 1007616000,
+    "free_bytes_after": 4628480000,
+    "elapsed_seconds": 7.78,
+    "programs_or_sources_removed": 0,
+    "current_build_directories_touched": 0,
+    "scope": "No source, executable, validation/failure record, asset, Save or CI ZIP was removed. Only selected stale static package cache archives were cleared."
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9171,
+      "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+      "exit_code": 0,
+      "elapsed_seconds": 28.336,
+      "test_actions": {
+        "pass": 5273
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_highres_cgocheck2_checkptr2": {
+      "changed_source_paths": [],
+      "source_files": 9171,
+      "source_lease_sha256": "44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa",
+      "exit_code": 0,
+      "elapsed_seconds": 12.382,
+      "test_actions": {
+        "pass": 5273
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "C_matrix_cases": 1728,
+  "C_matrix_foreign_placements": 3,
+  "C_matrix_terminal_passes": 5189,
+  "native_layouts": {
+    "Player_size_32_64": [
+      4828,
+      6160
+    ],
+    "Player_local_marker_32_64": [
+      3660,
+      4956
+    ],
+    "Player_current_marker_32_64": [
+      3664,
+      4960
+    ],
+    "C_Object_prefix_size_32_64": [
+      772,
+      912
+    ],
+    "Object_class_32_64": [
+      8,
+      12
+    ],
+    "Object_flags_32_64": [
+      16,
+      20
+    ]
+  },
+  "field_decoys": "At64-bit placements, old PE32 marker fields are unchanged decoys; PE32 Object class/flags decoys predict the opposite movable result. Whole native owners and canaries are checked.",
+  "inventory": {
+    "active_C_definitions": 1958,
+    "all_pointer_integer_casts": 2631,
+    "narrow_cast_review_candidates": 2344,
+    "candidate_functions": 252
+  },
+  "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1",
+  "remaining_qualification": [
+    "Clean macOS four-product builds/metadata/help",
+    "Normal/HD core E2E, functional SaveLoad diagnostics and independent host/peer chat",
+    "Linux amd64 four profiles plus Windows amd64/386 with full archives/logs",
+    "Final preservation/source audit and qualified documentation"
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false
+}

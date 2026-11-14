@@ -60,6 +60,38 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Player markers and Object movability, 2026-11-15
+
+Two GAME1_1/GAME4_2 public C entries now share the existing typed Go
+Player.Sub422140 and Object.IsMovable methods. The marker reset takes and
+returns a complete Player pointer, including the original NULL control.
+Movability takes a native Object pointer and preserves the exact class and
+flag predicates. Both old C bodies, 398 bytes total, remain archived;
+removing only the new guards reconstructs each entire incoming C file.
+
+Original CPU execution covers all 54 unchanged instruction bytes in 1,728
+cases without services. The unchanged incoming C has two standalone
+high-address SIGSEGV reproductions under amd64/Rosetta and five passing
+NULL/low controls. These are bounded harness results; these old public
+symbols have no active product callers identified, and the live Go methods
+already existed before this port.
+
+Direct public-C checks run all cases at three foreign placements, returning
+complete pointers, matching native Player marker offsets 4,956/4,960 and
+Object class/flags offsets 12/20 on64-bit, and preserving all nonoutput
+bytes and canaries. Deliberate old-offset decoys detect an argument-only
+widening. Normal and highres/cgocheck2/checkptr=2 focused checks each pass
+5,273 tests and two packages with zero compiler warnings.
+Existing Player reset, respawn and remote-audio layout/state checks pass.
+
+The cumulative implemented split-entry count is130. The inventory contains
+1,958 active C definitions and2,344 narrow-cast review candidates in252
+functions, including safe C and ABI thunks. It provides no completion
+denominator. Clean products and Linux/Windows qualification remain pending;
+all nine final chapter1-3 campaign audits and the inherited public SaveLoad
+pixel comparison remain open. Details are in
+`docs/split-player-marker-movable-native-progress-20261115.json`.
+
 ### Native monster action names, 2026-11-15
 
 Four GAME4_3 action-name algorithms now execute shared portable Go code.

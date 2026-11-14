@@ -3729,6 +3729,7 @@ void nox_xxx_monsterPolygonEnter_421FF0(nox_object_t* a1p) {
 }
 
 //----- (00422140) --------------------------------------------------------
+#if 0 // Native pointers and field layout: player_marker_movable_native_exports.go:sub_422140
 int sub_422140(int a1) {
 	int result; // eax
 
@@ -3739,6 +3740,8 @@ int sub_422140(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00422160) --------------------------------------------------------
 nox_tile_list_node_t* nox_xxx_tileListAddNewSubtile_422160(int a1, int a2, int a3, int a4) {

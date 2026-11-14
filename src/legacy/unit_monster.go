@@ -3,7 +3,6 @@ package legacy
 /*
 #include "defs.h"
 void* nox_xxx_monsterDefByTT_517560(int a1);
-void* nox_xxx_getDefaultSoundSet_424350(const char* a1);
 short nox_xxx_monsterAutoSpells_54C0C0(nox_object_t* a1p);
 */
 import "C"

@@ -4550,6 +4550,7 @@ const char** nox_xxx_getDefaultSoundSet_424350(const char* a1) {
 
 
 //----- (00424CB0) --------------------------------------------------------
+#if 0 // Native buff count/iteration: buff_iteration_native_exports.go
 char sub_424CB0(int a1) {
 	char v1;           // bl
 	int v2;            // esi
@@ -4570,8 +4571,11 @@ char sub_424CB0(int a1) {
 	} while (v2 < *(int*)&dword_587000_66116);
 	return v1;
 }
+#endif
+
 
 //----- (00424D00) --------------------------------------------------------
+#if 0 // Native buff count/iteration: buff_iteration_native_exports.go
 int sub_424D00() {
 	int result; // eax
 
@@ -4582,8 +4586,11 @@ int sub_424D00() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00424D20) --------------------------------------------------------
+#if 0 // Native buff count/iteration: buff_iteration_native_exports.go
 int sub_424D20(int a1) {
 	int v1;           // eax
 	unsigned char* i; // edx
@@ -4599,6 +4606,8 @@ int sub_424D20(int a1) {
 	}
 	return *getMemU32Ptr(0x587000, 66004 + 4 * v1);
 }
+#endif
+
 
 //----- (00424D80) --------------------------------------------------------
 int nox_xxx_abilityNameToN_424D80(const char* a1) {

@@ -1543,7 +1543,7 @@ func playerEnchantmentReadRuntime41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 
 func playerEnchantIDs41B9C0() []server.EnchantID {
 	var out []server.EnchantID
-	for ind := int(C.sub_424D00()); ind != -1; ind = int(C.sub_424D20(C.int(ind))) {
+	for ind := buffIterationFirstNative424D00(); ind != -1; ind = buffIterationNextNative424D20(ind) {
 		if ind >= 0 && ind < 32 {
 			out = append(out, server.EnchantID(ind))
 		}

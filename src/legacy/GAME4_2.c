@@ -8661,7 +8661,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 	if ((short)v13 > 2 || (short)v13 <= 0) {
 		return 0;
 	}
-	LOBYTE(v16) = sub_424CB0((int)a1);
+	LOBYTE(v16) = sub_424CB0((nox_object_t*)a1);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v16, 1u);
 	if (nox_crypt_IsReadOnly()) {
 		v5 = 0;

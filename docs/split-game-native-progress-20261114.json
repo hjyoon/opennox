@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME C files: three qualified incremental native batches and unreachable edit cleanup; GAME1_3 has zero active original C definitions, other twelve and whole-game completion remain partial.",
+  "scope": "13 split GAME C files: three fully qualified batches, unreachable edit cleanup, and five new bitstream entries with macOS focused checks passed; remaining product/platform qualification pending. GAME1_3 has no active original C definitions, other twelve and whole-game completion remain partial.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -404,9 +404,9 @@
   "remaining_qualification": [],
   "whole_game_100_percent": false,
   "qualified_engine_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
-  "current_active_total": 1967,
+  "current_active_total": 1962,
   "current_active_functions": {
-    "GAME1_1.c": 187,
+    "GAME1_1.c": 182,
     "GAME1_2.c": 122,
     "GAME1_3.c": 0,
     "GAME2_1.c": 235,
@@ -423,11 +423,11 @@
   "current_inventory": [
     {
       "file": "src/legacy/GAME1_1.c",
-      "active_functions": 187,
-      "pointer_integer_casts": 157,
-      "narrow_pointer_casts": 154,
-      "functions_with_narrow_casts": 36,
-      "source_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634"
+      "active_functions": 182,
+      "pointer_integer_casts": 139,
+      "narrow_pointer_casts": 136,
+      "functions_with_narrow_casts": 32,
+      "source_sha256": "9d967baf5c2729fbb91e3c8f22a7a55dd71743dfa3be491ce57b5f25b4ff98aa"
     },
     {
       "file": "src/legacy/GAME1_2.c",
@@ -528,9 +528,9 @@
   ],
   "inventory_limit": "Definition counts include native C and Go forwarders; they are not an unported-function denominator. Narrow casts include scalar tokens and need semantic review; candidate counts are not proven bugs or completion percentages.",
   "casts_needing_semantic_review": {
-    "narrow_pointer_integer_casts": 2372,
-    "functions_with_narrow_casts": 261,
-    "all_pointer_integer_casts": 2659
+    "narrow_pointer_integer_casts": 2354,
+    "functions_with_narrow_casts": 257,
+    "all_pointer_integer_casts": 2641
   },
   "new_public_native_dispatch_entries": [
     {
@@ -938,7 +938,7 @@
   },
   "remaining_work": [
     "Continue the other 12 split-file native owners/callbacks; the inventory includes already-native C and Go forwarders.",
-    "Port the five packed bit-cursor/7-bit encoder entries in GAME1_1. A sealed unchanged-GAME.EXE corpus covers 9,092 cases and all 291 original instruction bytes; baseline source and high-address reproductions are retained before porting.",
+    "Finish product/platform qualification for five bit-cursor/encoder entries, then continue native C owners/callbacks. The prior public-entry batch remains the latest full-platform qualified engine.",
     "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
     "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
   ],
@@ -951,15 +951,15 @@
   ],
   "all_13_split_files_ported": false,
   "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only",
-  "latest_progress_document": "docs/split-game5-public-native-progress-20261115.json",
+  "latest_progress_document": "docs/split-bitstream-native-progress-20261115.json",
   "current_git": {
     "local_branch": "port/go1.27-multiarch",
     "push_target": "origin/port/go1.27-multiarch",
     "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
     "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
   },
-  "new_Go_entries_scope": "First qualified batch:43; audio follow-up:74; public chat/reflection follow-up:2; total119. Unreachable edit cleanup adds no Go port credit.",
-  "cumulative_new_Go_entry_count": 119,
+  "new_Go_entries_scope": "First43 + audio74 + public chat/reflection2 + bit cursors/encoder5 =124 implemented entries. Final five product/platform qualification pending; unreachable edit cleanup has no new port credit.",
+  "cumulative_new_Go_entry_count": 124,
   "prepared_next_audio_baseline_status": "The prepared baseline is now consumed by the native audio follow-up; see latest_progress_document.",
   "first_batch_qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
   "first_batch_qualification": {
@@ -1347,5 +1347,6 @@
   "current_common_validation_engine_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
   "audio_batch_qualified_engine_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
   "audio_batch_progress_document": "docs/split-audio-native-progress-20261114.json",
-  "latest_source_cleanup_document": "docs/split-unreachable-native-progress-20261115.json"
+  "latest_source_cleanup_document": "docs/split-unreachable-native-progress-20261115.json",
+  "latest_fully_qualified_progress_document": "docs/split-game5-public-native-progress-20261115.json"
 }

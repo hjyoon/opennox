@@ -4612,13 +4612,17 @@ int nox_xxx_abilityNameToN_424D80(const char* a1) {
 // 424F00: using guessed type char var_100[256];
 
 //----- (004254A0) --------------------------------------------------------
+#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_4254A0
 int sub_4254A0(int a1, uint8_t* a2) {
 	*(uint32_t*)a1 = a2;
 	*(uint8_t*)(a1 + 4) = 0;
 	return *a2 & 1;
 }
+#endif
+
 
 //----- (004254C0) --------------------------------------------------------
+#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_4254C0
 bool sub_4254C0(unsigned char** a1) {
 	char v1;           // cl
 	unsigned char* v2; // ecx
@@ -4632,8 +4636,11 @@ bool sub_4254C0(unsigned char** a1) {
 	}
 	return ((1 << *((uint8_t*)a1 + 4)) & **a1) > 0;
 }
+#endif
+
 
 //----- (00425500) --------------------------------------------------------
+#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425500
 uint8_t* sub_425500(int a1, uint8_t* a2, char a3) {
 	uint8_t* result; // eax
 
@@ -4643,8 +4650,11 @@ uint8_t* sub_425500(int a1, uint8_t* a2, char a3) {
 	*a2 = a3;
 	return result;
 }
+#endif
+
 
 //----- (00425520) --------------------------------------------------------
+#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425520
 char sub_425520(int a1, char a2) {
 	char v2;     // cl
 	uint8_t* v3; // ecx
@@ -4662,8 +4672,11 @@ char sub_425520(int a1, char a2) {
 	**(uint8_t**)a1 |= result;
 	return result;
 }
+#endif
+
 
 //----- (00425550) --------------------------------------------------------
+#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425550
 int sub_425550(uint8_t* a1, uint8_t* a2, int a3) {
 	int v3;     // edi
 	int v4;     // esi
@@ -4692,6 +4705,8 @@ int sub_425550(uint8_t* a1, uint8_t* a2, int a3) {
 	} while (v6);
 	return v3;
 }
+#endif
+
 
 //----- (00425760) --------------------------------------------------------
 void nox_common_list_clear_425760(nox_list_item_t* list) {

@@ -4,6 +4,7 @@
 #include "common__savegame.h"
 #include "defs.h"
 #include "common__system__team.h"
+#include "bitstream_native_4254a0.h"
 
 void* sub_421430();
 void sub_418800(wchar2_t* a1, wchar2_t* a2, int a3);
@@ -152,11 +153,6 @@ nox_video_bag_image_t* nox_xxx_spellGetAbilityIcon_425310(int a1, int a2);
 int nox_xxx_bookFirstKnownAbil_425330();
 int nox_xxx_bookNextKnownAbil_425350(int a1);
 int sub_425450(int a1);
-int sub_4254A0(int a1, uint8_t* a2);
-bool sub_4254C0(unsigned char** a1);
-uint8_t* sub_425500(int a1, uint8_t* a2, char a3);
-char sub_425520(int a1, char a2);
-int sub_425550(uint8_t* a1, uint8_t* a2, int a3);
 void nox_common_list_clear_425760(nox_list_item_t* list);
 void* sub_425770(void* a1);
 int sub_425790(int* a1, uint32_t* a2);

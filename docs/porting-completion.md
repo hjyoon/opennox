@@ -60,6 +60,30 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native bit cursors and seven-bit encoder, 2026-11-15
+
+Five GAME1_1 public C entries now execute Go implementations. The buffer
+pointer and bit index use a native cursor layout: eight bytes on 32-bit and
+sixteen on 64-bit. Initializers retain complete pointers; byte rollover,
+masked x86 shift counts, returned char bits and overlapping buffers match
+the unchanged original instructions. All 1,421 incoming C body bytes remain
+archived, and the complete incoming C file reconstructs exactly.
+
+The sealed GAME.EXE run executes all 291 original instruction bytes with
+no service substitutions for 9,092 cases. Four standalone low-address
+controls pass; all five original high-address C cases fail with SIGSEGV in
+the amd64/Rosetta reproduction. Normal and highres/cgocheck2/checkptr=2
+checks each pass 27,327 tests and three packages with zero warnings. All
+9,159 source inputs retain the same lease through both runs.
+
+The remaining source callers are in archived GAME1.c or the constant
+`if (0)` WOL branch in GAME1_2.c. Direct public-C calls establish the ABI;
+product E2E will supply broader regression evidence. Clean products and
+Linux/Windows qualification are pending. The cumulative implemented split
+entry count is 124, with 1,962 active C definitions and 2,354 narrow-cast
+review candidates in 257 functions. Details and pending checks are in
+`docs/split-bitstream-native-progress-20261115.json`.
+
 ### Unreachable edit-field cleanup, 2026-11-15
 
 The existing edit-event C entry returns directly to Go on every architecture.

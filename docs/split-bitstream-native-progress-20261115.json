@@ -1,0 +1,295 @@
+{
+  "utc": "2026-11-14T16:28:07.140425+00:00",
+  "scope": "Five original GAME1_1 bit-cursor and seven-bit encoder public C entries ported to Go. Source callers are an archived GAME1.c path and an if(0) WOL branch in GAME1_2.c; direct public-C tests prove the ABI. No shipping runtime use or campaign credit is inferred.",
+  "base_revision": "6463f54948309f48b36ae1fb69a500ebd30986f0",
+  "code_revision": null,
+  "implemented_Go_entries": [
+    "sub_4254A0",
+    "sub_4254C0",
+    "sub_425500",
+    "sub_425520",
+    "sub_425550"
+  ],
+  "new_Go_entry_count": 5,
+  "cumulative_implemented_split_Go_entries": 124,
+  "previous_full_platform_qualified_engine_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+  "qualification_complete": false,
+  "native_layout": "Buffer pointer followed by byte bit index; sizeof 8 on 32-bit and16 on64-bit; return pointer complete. x86 masked shift counts and uint8 index wrap preserved.",
+  "original_CPU": {
+    "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "fixture_sha256": "d267d8bfc89696d1d41b1b49a3feb5dd1170827278fce5a9d8e650dd27031b42",
+    "fixture_gzip_sha256": "a3c3f71917af1e966cbf191a2767520821e4c0a36bf66c56378e4c5cc1201d72",
+    "fixture_bytes": 3730901,
+    "generator_sha256": "be4df6a7982583957604cff6eae943defc005e0094a32b223a496a815ed5c3e2",
+    "python": "3.12.11 (main, Sep  2 2025, 16:01:33) [Clang 17.0.0 (clang-1700.0.13.5)]",
+    "unicorn": "2.1.4",
+    "cases": 9092,
+    "kinds": {
+      "read_init": 24,
+      "read_next": 2048,
+      "write_init": 192,
+      "write_next": 6144,
+      "encode": 684
+    },
+    "declared_services": [],
+    "scope": "Unchanged GAME.EXE bit cursors and seven-bit encoder, with no services.\n\nThe five complete instruction ranges are executed together. Scalar cases\ncover every stored cursor index, including byte wrap and x86 shift counts.\nEncoding covers positive input lengths, including the live 552-bit callers,\nand independent, equal and overlapping input/output buffers.\n",
+    "regions": {
+      "read_init": {
+        "start": "0x4254a0",
+        "end": "0x4254b4",
+        "mapped_bytes": 20,
+        "sha256": "7bef3d4ea0537ce703fc33906703f81cce0c458ace198da4f2a34abfb805bbf1",
+        "executed_bytes": 20,
+        "executed_instructions": 7
+      },
+      "read_next": {
+        "start": "0x4254c0",
+        "end": "0x4254f7",
+        "mapped_bytes": 55,
+        "sha256": "6efc35db8d0188790997a074854ea9de6fc08e90ab4eeb8c4154de36d91a1ec5",
+        "executed_bytes": 55,
+        "executed_instructions": 21
+      },
+      "write_init": {
+        "start": "0x425500",
+        "end": "0x425515",
+        "mapped_bytes": 21,
+        "sha256": "e4ebd3f16c5fdf3e20b8d9f4ab3304e448d7c6995142c9afbe12d95328ccbeef",
+        "executed_bytes": 21,
+        "executed_instructions": 7
+      },
+      "write_next": {
+        "start": "0x425520",
+        "end": "0x42554f",
+        "mapped_bytes": 47,
+        "sha256": "0fb8995b41fbe4b777d689def37a48685f2b8f95a1ff2866db5672bf4ada83d5",
+        "executed_bytes": 47,
+        "executed_instructions": 19
+      },
+      "encode": {
+        "start": "0x425550",
+        "end": "0x4255e4",
+        "mapped_bytes": 148,
+        "sha256": "12fa52667be42ff064560b598408f3c1b0301a633f50a4ae8fdd7c7706a85a64",
+        "executed_bytes": 148,
+        "executed_instructions": 60
+      }
+    }
+  },
+  "original_C_before": {
+    "utc": "2026-11-14T16:17:54.098317+00:00",
+    "source_file": "src/legacy/GAME1_1.c",
+    "source_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634",
+    "functions": [
+      {
+        "name": "sub_4254A0",
+        "begin": 130553,
+        "end": 130657,
+        "bytes": 104,
+        "sha256": "b00efc522647ae962f389a1b684fb5f81fa79032dc6bf65bb814a4bb532e6b37"
+      },
+      {
+        "name": "sub_4254C0",
+        "begin": 130735,
+        "end": 131009,
+        "bytes": 274,
+        "sha256": "408e165142c0f7dd7e4af5c5e2a5ab9100030f31010d3d45d90ff1ae46ef4829"
+      },
+      {
+        "name": "sub_425500",
+        "begin": 131087,
+        "end": 131255,
+        "bytes": 168,
+        "sha256": "1f66b8eefe757e253e73a4d546edfc0391474729b7144a0bda935268730156c6"
+      },
+      {
+        "name": "sub_425520",
+        "begin": 131333,
+        "end": 131675,
+        "bytes": 342,
+        "sha256": "02d4f42871af5538cfbca0c2092adf9625f456953fe3522175131b4df076be04"
+      },
+      {
+        "name": "sub_425550",
+        "begin": 131753,
+        "end": 132286,
+        "bytes": 533,
+        "sha256": "f0d6fc1946927d5610cc4f2db58ed5b4a883bba1e496a52fca94c2c985319264"
+      }
+    ],
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-O2",
+      "-g",
+      "-fsigned-char",
+      "-fno-strict-aliasing",
+      "-fno-strict-overflow",
+      "-Wno-int-conversion",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast",
+      "-Wl,-pagezero_size,0x10000",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/original-c-before-v4/unchanged-original-functions.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/original-c-before-v4/unchanged-original-functions"
+    ],
+    "executable_sha256": "d7e64353b28251bef81583421b44bed205a05fffddd45254f7e966eb2d5cfe8a",
+    "cases": [
+      {
+        "mode": "read-init-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "write-init-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "read-next-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "write-next-low",
+        "exit_code": 0
+      },
+      {
+        "mode": "read-init-high",
+        "exit_code": -11
+      },
+      {
+        "mode": "write-init-high",
+        "exit_code": -11
+      },
+      {
+        "mode": "read-next-high",
+        "exit_code": -11
+      },
+      {
+        "mode": "write-next-high",
+        "exit_code": -11
+      },
+      {
+        "mode": "encode-high",
+        "exit_code": -11
+      }
+    ],
+    "compiler_warnings": 0,
+    "execution": [
+      "/usr/bin/arch",
+      "-x86_64",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/original-c-before-v4/unchanged-original-functions"
+    ],
+    "scope": "Standalone unchanged incoming C bodies, compiled as amd64 and executed through Rosetta. Four low-address controls include index-255 wrap for the mixed-width cursor step, and all five high-address cases. The encoder necessarily uses its original packed local stack cursors. Not an integrated game crash claim."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-14T16:21:25.711369+00:00",
+    "source_file": "src/legacy/GAME1_1.c",
+    "incoming_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634",
+    "outgoing_sha256": "9d967baf5c2729fbb91e3c8f22a7a55dd71743dfa3be491ce57b5f25b4ff98aa",
+    "reconstructed_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634",
+    "whole_incoming_file_reconstructed": true,
+    "original_body_bytes": 1421,
+    "regions": [
+      {
+        "name": "sub_425550",
+        "bytes": 533,
+        "sha256": "f0d6fc1946927d5610cc4f2db58ed5b4a883bba1e496a52fca94c2c985319264",
+        "prefix": "#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425550\n",
+        "suffix": "\n#endif\n",
+        "begin": 131753,
+        "end": 132286
+      },
+      {
+        "name": "sub_425520",
+        "bytes": 342,
+        "sha256": "02d4f42871af5538cfbca0c2092adf9625f456953fe3522175131b4df076be04",
+        "prefix": "#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425520\n",
+        "suffix": "\n#endif\n",
+        "begin": 131333,
+        "end": 131675
+      },
+      {
+        "name": "sub_425500",
+        "bytes": 168,
+        "sha256": "1f66b8eefe757e253e73a4d546edfc0391474729b7144a0bda935268730156c6",
+        "prefix": "#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_425500\n",
+        "suffix": "\n#endif\n",
+        "begin": 131087,
+        "end": 131255
+      },
+      {
+        "name": "sub_4254C0",
+        "bytes": 274,
+        "sha256": "408e165142c0f7dd7e4af5c5e2a5ab9100030f31010d3d45d90ff1ae46ef4829",
+        "prefix": "#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_4254C0\n",
+        "suffix": "\n#endif\n",
+        "begin": 130735,
+        "end": 131009
+      },
+      {
+        "name": "sub_4254A0",
+        "bytes": 104,
+        "sha256": "b00efc522647ae962f389a1b684fb5f81fa79032dc6bf65bb814a4bb532e6b37",
+        "prefix": "#if 0 // Native bit cursor: bitstream_exports_4254a0.go:sub_4254A0\n",
+        "suffix": "\n#endif\n",
+        "begin": 130553,
+        "end": 130657
+      }
+    ]
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9159,
+      "source_lease_sha256": "62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f",
+      "exit_code": 0,
+      "elapsed_seconds": 333.301,
+      "test_actions": {
+        "pass": 27327
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_highres_cgocheck2_checkptr2": {
+      "changed_source_paths": [],
+      "source_files": 9159,
+      "source_lease_sha256": "62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f",
+      "exit_code": 0,
+      "elapsed_seconds": 333.302,
+      "test_actions": {
+        "pass": 27327
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "inventory": {
+    "active_C_definitions": 1962,
+    "narrow_cast_review_candidates": 2354,
+    "candidate_functions": 257,
+    "all_pointer_integer_casts": 2641
+  },
+  "inventory_limit": "Clang AST casts include safe pointers, wrappers and scalar tokens. Counts are review candidates, not proven crashes or a completion denominator.",
+  "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1",
+  "remaining_qualification": [
+    "Clean macOS client/HD/server/server-HD products, metadata/help and hash retention",
+    "Normal/HD product E2E and independent localhost host/peer chat regressions",
+    "Linux amd64 four product profiles and Windows amd64/386 native CI; full archives and logs retained",
+    "Final source/input/product preservation audit and qualified documentation"
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false
+}

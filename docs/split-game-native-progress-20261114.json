@@ -1,0 +1,381 @@
+{
+  "scope": "13 split GAME C files; incremental native port, not complete.",
+  "incoming_active_functions": {
+    "GAME1_1.c": 187,
+    "GAME1_2.c": 124,
+    "GAME1_3.c": 45,
+    "GAME2_1.c": 235,
+    "GAME2_2.c": 150,
+    "GAME2_3.c": 134,
+    "GAME3_1.c": 188,
+    "GAME3_2.c": 260,
+    "GAME3_3.c": 81,
+    "GAME4_1.c": 105,
+    "GAME4_2.c": 337,
+    "GAME4_3.c": 166,
+    "GAME5_2.c": 81
+  },
+  "incoming_active_total": 2093,
+  "new_Go_entries": [
+    {
+      "name": "nox_xxx_xferSetBuffer_446520",
+      "original_body_sha256": "13961f904821283e4373b605dc247a70e1dc56e66faeb68b10c96a28cc61b8b1",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_xferSetBuffer_446520",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_xferGetBuffer_446520",
+      "original_body_sha256": "2c71505b53d70f5484ca93be6020d522ab987146c44e9f2940903916316250d3",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_xferGetBuffer_446520",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_client_xxx_switchChatMap_43B510",
+      "original_body_sha256": "94c2bb32a379e6298cde35454a03314ddde6c56bb7a76331f29e6cbd2f12855f",
+      "owner": "src/legacy/game1_split_native.go:nox_client_xxx_switchChatMap_43B510",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43B6D0",
+      "original_body_sha256": "b48e6f17b64126b945ec7159b21af73836d4dd3a2c4e7cc071179bf1224cdd3f",
+      "owner": "src/legacy/game1_split_native.go:sub_43B6D0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43BC10",
+      "original_body_sha256": "a8a22aaa6e4f4081d863b2edcb45d4937c4f64ab9216aae3ef28dc8c265a46db",
+      "owner": "src/legacy/game1_split_native.go:sub_43BC10",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_sprintAddrPort_43BC80",
+      "original_body_sha256": "6c00e427bed800fd9b346324d02d703ce271ce6d5c8ccdd7e3a25f858586e8a9",
+      "owner": "src/legacy/game1_split_native.go:nox_sprintAddrPort_43BC80_go",
+      "public_C_edge": "src/legacy/game1_split_abi.c"
+    },
+    {
+      "name": "sub_43BDB0",
+      "original_body_sha256": "e3409680344eca26399216ed2720e0dc239370926183f869cb315a82c425bd17",
+      "owner": "src/legacy/game1_split_native.go:sub_43BDB0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43C650",
+      "original_body_sha256": "4b535bc19b23f9b2b580f19795618bb92151c71fb31be6b189b3ac1e52b81e20",
+      "owner": "src/legacy/game1_split_native.go:sub_43C650",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43CEB0",
+      "original_body_sha256": "3590cb8801b59575501a0fbd7adc1799d07a96d80ade8d9efe8cce092235353c",
+      "owner": "src/legacy/game1_split_native.go:sub_43CEB0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DA80",
+      "original_body_sha256": "8c6e7466d1c4af3103226d0447519d0e6c72d24be49922db2adf0c39a2e97a7d",
+      "owner": "src/legacy/game1_split_native.go:sub_43DA80",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DAD0",
+      "original_body_sha256": "45c70f872beabd35df05e768644b33c49f44d6466136bd0b56ebe64fd766cc11",
+      "owner": "src/legacy/game1_split_native.go:sub_43DAD0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DB20",
+      "original_body_sha256": "03c93879df25ceddabd8a14a51fcc205e8ebde27dd52ef962b4588d2f5bcf2a7",
+      "owner": "src/legacy/game1_split_native.go:sub_43DB20",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DB30",
+      "original_body_sha256": "69ceac305ba0ad4b3c174d38f4d2fdc0691efac6d2db61dbf7667a21e42a28fa",
+      "owner": "src/legacy/game1_split_native.go:sub_43DB30",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DB40",
+      "original_body_sha256": "1b5cc189b5624c7e3b81d25981d378f8be7cad5aa75434487953efe69f978817",
+      "owner": "src/legacy/game1_split_native.go:sub_43DB40",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DB60",
+      "original_body_sha256": "f92c59f1a1ae5506272fe3e7fd4cc22a0c22871853409340c0be89c118a51a7a",
+      "owner": "src/legacy/game1_split_native.go:sub_43DB60",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DBA0",
+      "original_body_sha256": "9759b7deca2a8cbcf931ba4e8678013a1487d9c5f7f4db219a89b21b8bf85ede",
+      "owner": "src/legacy/game1_split_native.go:sub_43DBA0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DC00",
+      "original_body_sha256": "db02dc951afc83c2ec4c94e234f295ad0deb5ce43e5da1e5484a61c6144aa9c0",
+      "owner": "src/legacy/game1_split_native.go:sub_43DC00",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DC10",
+      "original_body_sha256": "88026952ba9b2c536987cddf445fbeba117ef5e3aad8b9b40774ced28343445a",
+      "owner": "src/legacy/game1_split_native.go:sub_43DC10",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43DC30",
+      "original_body_sha256": "ad541ae36fed6b3dc3211d4c0164c6b588485881b49af061ecbd4924f07eb6af",
+      "owner": "src/legacy/game1_split_native.go:sub_43DC30",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_gui_43E1A0",
+      "original_body_sha256": "1fc1cff53fb527463eb8deaf4c7c88379afb6fff8305e65b1a6f85b5ef5f7f60",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_gui_43E1A0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43E8C0",
+      "original_body_sha256": "13cc6748d6b9b981fd84b142633fc8473297f0c16330727144d4af68e33aeb48",
+      "owner": "src/legacy/game1_split_native.go:sub_43E8C0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_43F0E0",
+      "original_body_sha256": "0c6389e45d8c8909151263256ff7ad1c6203557a74b81cf903a9bd8fc9a9ea80",
+      "owner": "src/legacy/game1_split_native.go:sub_43F0E0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_4417E0",
+      "original_body_sha256": "306eb1439bd96f7ab0c2118f18d54461ee0fc4d08369840d31abbecbf1ffe778",
+      "owner": "src/legacy/game1_split_native.go:sub_4417E0_go",
+      "public_C_edge": "src/legacy/game1_split_abi.c"
+    },
+    {
+      "name": "sub_445450",
+      "original_body_sha256": "d38eaccf2dc47c00e9e111af4beef812e805686812a975be1a8678228e18ddd0",
+      "owner": "src/legacy/game1_split_native.go:sub_445450",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_drawMessageLines_445530",
+      "original_body_sha256": "c15a8e3f137bf85b59a9204930b42f4242fbab07c694c7812316275d1888d3cb",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_drawMessageLines_445530",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_guiChatMode_4456E0",
+      "original_body_sha256": "f7dba5cfda12c29aee13e722a2a870d9bc492ed150d61e0149a874b31d7499df",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_guiChatMode_4456E0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_guiChatShowHide_445730",
+      "original_body_sha256": "522caea9ba0dcd1e5e46ae01e0b64a2beb7c974e4f4a2e14ea83602a9584aa37",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_guiChatShowHide_445730",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_445770",
+      "original_body_sha256": "712278f065b5b88ddc7823e284de5d2fb34160cdc3094ebd5bbf5cb3488d3569",
+      "owner": "src/legacy/game1_split_native.go:sub_445770",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_quitDialogYes_445B20",
+      "original_body_sha256": "56f0b83325241bce878fa239cc3a432858a980ffe0751f1149ec1e55c93c395d",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_quitDialogYes_445B20",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_quitDialogNo_445B30",
+      "original_body_sha256": "e2a858d85054777b0eec3da804d801b4e25871d09c8f7fd8fb5177d5832768a5",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_quitDialogNo_445B30",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_445BA0",
+      "original_body_sha256": "60dca9bc8ee00667c4a6ba8339975ae456cba6dc30303944539ca0b9d99bf6eb",
+      "owner": "src/legacy/game1_split_native.go:sub_445BA0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_445C20",
+      "original_body_sha256": "a7ca065b9b6c0f6dc422b62f6f637df38baebed97fd1f5bd46594539d0fb051f",
+      "owner": "src/legacy/game1_split_native.go:sub_445C20",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_445FF0",
+      "original_body_sha256": "809466a2e76f3df4b4da20b79aea5419aeed4015322f71319b0046ecdd7c7975",
+      "owner": "src/legacy/game1_split_native.go:sub_445FF0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_gui_xxx_check_446360",
+      "original_body_sha256": "ce90f78258ab0d25d741cd7d3760892678fc56afc02594db3c6cca6d8936d563",
+      "owner": "src/legacy/game1_split_native.go:nox_gui_xxx_check_446360",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_motd_4463E0",
+      "original_body_sha256": "1b257b0e354dbf8edfc1e149b8241efdb1a4fd659a7808cc2247e3625a0b497e",
+      "owner": "src/legacy/game1_split_native.go:nox_motd_4463E0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_446490",
+      "original_body_sha256": "82a8555312144165a995b2c5c8612706b724ca27b28a5707c48e7705035ec17a",
+      "owner": "src/legacy/game1_split_native.go:sub_446490_go",
+      "public_C_edge": "src/legacy/game1_split_abi.c"
+    },
+    {
+      "name": "nox_xxx_guiMotdLoad_4465C0",
+      "original_body_sha256": "f477ade5770a74baac0ecdb45a2f927cb62466c6c9204579a369380d6e2d4ed2",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_guiMotdLoad_4465C0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_4466C0",
+      "original_body_sha256": "c918afa49b274b424ef7f8de6ebeae4185f2e6be5749c30010dfe8d38cfeb9bb",
+      "owner": "src/legacy/game1_split_native.go:sub_4466C0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_4466F0",
+      "original_body_sha256": "798e0e6f161f1363c61895e380c4de735bb88e760669c1400221bfb63326b837",
+      "owner": "src/legacy/game1_split_native.go:sub_4466F0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_motdAddSomeTextMB_446730",
+      "original_body_sha256": "ea60cfad802c692e93ee0e7b76abaf2a2a1681857a8ed26ac51e3d8733a44138",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_motdAddSomeTextMB_446730_go",
+      "public_C_edge": "src/legacy/game1_split_abi.c"
+    },
+    {
+      "name": "sub_446780",
+      "original_body_sha256": "a54043c7898584d4ef6aa85c65580309a0920296ad4f0635c7dc88792a0683d5",
+      "owner": "src/legacy/game1_split_native.go:sub_446780",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "nox_xxx_motd_4467F0",
+      "original_body_sha256": "1b41e7ebb80e97ffc40f335519afc0f50abf9b00887c1062651c6b5a2dc54cd6",
+      "owner": "src/legacy/game1_split_native.go:nox_xxx_motd_4467F0",
+      "public_C_edge": "cgo export"
+    },
+    {
+      "name": "sub_446950",
+      "original_body_sha256": "158faae507e1844193df49b1415e26a713268f03ff36f366dbc905dbc84d4aa7",
+      "owner": "src/legacy/game1_split_native.go:sub_446950",
+      "public_C_edge": "cgo export"
+    }
+  ],
+  "retired_orphan_C_functions": [
+    {
+      "name": "sub_4831C0",
+      "source_sha256": "7a7934bc27a40589b0a349633f6738c6cdeb1573da4e2e62c9e9d3ed804e4562",
+      "bytes": 29652,
+      "active_uses_in_clang_translation_unit": 0,
+      "replacement": "nox_tileBufferCopy_481490 / nox_tileBufferFill_481500 used by native sub_481450 and sub_481770; only callers were already archived."
+    },
+    {
+      "name": "sub_484450",
+      "source_sha256": "f367ee80fb33e84588de834c834f704725fffbef55801a268e8aacc958b95a82",
+      "bytes": 18274,
+      "active_uses_in_clang_translation_unit": 0,
+      "replacement": "nox_tileBufferCopy_481490 / nox_tileBufferFill_481500 used by native sub_481450 and sub_481770; only callers were already archived."
+    }
+  ],
+  "original_corpora": [
+    {
+      "source_sha256": "b070c622cf84c5d7e2d50b3976a3b9105b73b7b97b720a9a39e54606cdb49914",
+      "functions": {
+        "sub_43C650": "4b535bc19b23f9b2b580f19795618bb92151c71fb31be6b189b3ac1e52b81e20",
+        "sub_43CEB0": "3590cb8801b59575501a0fbd7adc1799d07a96d80ade8d9efe8cce092235353c",
+        "sub_43F0E0": "0c6389e45d8c8909151263256ff7ad1c6203557a74b81cf903a9bd8fc9a9ea80",
+        "sub_4466F0": "798e0e6f161f1363c61895e380c4de735bb88e760669c1400221bfb63326b837"
+      },
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-fwrapv",
+        "-fno-strict-aliasing",
+        "-Wall",
+        "-Wextra",
+        "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/scalar-original-v1/original.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/scalar-original-v1/original"
+      ],
+      "program_sha256": "f49d055f5f86277e49ed2afb70b47c45d06bd811b9545f598028326ee6a3d83b",
+      "fixture_sha256": "8817f42d4bf16ddd609c598cc72f4fa6ccb42918a348570bb8806120c79da8d9",
+      "cases": 588,
+      "scope": "Unmodified incoming C function bodies, standalone deterministic dependency inputs; not GAME.EXE CPU execution."
+    },
+    {
+      "source_sha256": "b070c622cf84c5d7e2d50b3976a3b9105b73b7b97b720a9a39e54606cdb49914",
+      "functions": {
+        "sub_43BC10": "a8a22aaa6e4f4081d863b2edcb45d4937c4f64ab9216aae3ef28dc8c265a46db",
+        "sub_4417E0": "306eb1439bd96f7ab0c2118f18d54461ee0fc4d08369840d31abbecbf1ffe778"
+      },
+      "fixture_sha256": "646f4ed9ca81b95a64791ee43c929602eb20d49446ffcb90ef55640ae58df072",
+      "cases": 186,
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-fshort-wchar",
+        "-fsigned-char",
+        "-O2",
+        "-I",
+        "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy",
+        "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/text-original-v1/original.c",
+        "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy/noxstring.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/text-original-v1/original"
+      ],
+      "scope": "Unmodified incoming C with actual noxstring formatter and deterministic width service; not original GAME.EXE CPU execution."
+    }
+  ],
+  "initial_pointer_reproductions": {
+    "source_sha256": "b070c622cf84c5d7e2d50b3976a3b9105b73b7b97b720a9a39e54606cdb49914",
+    "scope": "Unmodified incoming C function bodies with standalone foreign native pointer dependencies.",
+    "results": [
+      {
+        "mode": "gui",
+        "exit_code": -11,
+        "stderr": "foreign_address=0x10307d9f0\ntruncated_global=0307d9f0\n"
+      },
+      {
+        "mode": "audio",
+        "exit_code": -11,
+        "stderr": "foreign_address=0x104ded9f0\n"
+      }
+    ]
+  },
+  "current_focused_validation": {
+    "exit_code": 0,
+    "elapsed_seconds": 145.369,
+    "test_actions": {
+      "pass": 779
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "remaining_in_GAME1_3": [
+    "sub_43EDB0",
+    "sub_43EE00"
+  ],
+  "remaining_qualification": "strict, scoped common suites, products/E2E and Linux/Windows CI pending for this batch",
+  "whole_game_100_percent": false
+}

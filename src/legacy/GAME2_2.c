@@ -2801,6 +2801,7 @@ static int nox_xxx_tileDrawImplLegacy_4826A0(nox_draw_viewport_t* vp) {
 // 4828A6: variable 'v10' is possibly undefined
 
 //----- (004831C0) --------------------------------------------------------
+#if 0 // Retired orphan sub_4831C0: native tileBuffer Copy/Fill own the active paths.
 short sub_4831C0(int a1, int a2) {
 	int v2;       // edx
 	int v3;       // edi
@@ -3449,8 +3450,11 @@ short sub_4831C0(int a1, int a2) {
 	*(uint16_t*)(v2 + v46 + 46) = *(uint16_t*)(a1 + 2114);
 	return result;
 }
+#endif
+
 
 //----- (00484450) --------------------------------------------------------
+#if 0 // Retired orphan sub_484450: native tileBuffer Copy/Fill own the active paths.
 int sub_484450(int a1, int a2) {
 	int result; // eax
 	int v3;     // edx
@@ -4099,6 +4103,8 @@ int sub_484450(int a1, int a2) {
 	*(uint16_t*)(v3 + v47 + 46) = a1;
 	return result;
 }
+#endif
+
 
 //----- (00484BE0) --------------------------------------------------------
 uint32_t* nox_xxx_spriteChangeLightColor_484BE0(uint32_t* a1, int a2, int a3, int a4) {

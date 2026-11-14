@@ -124,8 +124,6 @@ void nox_xxx_drawNoEdges_4818F0(int2* pos, nox_tile_list_node_t* edge);
 void nox_xxx_tileCallDrawEdges_481BF0(int2* pos, nox_tile_list_node_t* edges);
 int nox_xxx_tileCheckRedrawMB_482570(nox_draw_viewport_t* vp);
 int nox_xxx_tileDrawImpl_4826A0(nox_draw_viewport_t* vp);
-short sub_4831C0(int a1, int a2);
-int sub_484450(int a1, int a2);
 uint32_t* nox_xxx_spriteChangeLightColor_484BE0(uint32_t* a1, int a2, int a3, int a4);
 long long sub_484C00(int a1, int a2);
 long long nox_xxx_spriteChangeLightSize_484C30(int a1, int a2);

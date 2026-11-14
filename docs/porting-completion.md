@@ -55,6 +55,37 @@ completion requirements.
 
 ## Current findings
 
+### Split GAME C files: first native entries, 2026-11-14
+
+The 13 split files contain 2,093 incoming active C definitions after excluding
+11 control statements accidentally counted by the old regular expression.
+This is an inventory of definitions, including native C and Go forwarders,
+rather than an unported-function denominator or a completion percentage.
+
+The first incremental batch moves 43 GAME1_3 entries to Go: transfer buffers,
+GUI windows, timing, music stacks, text and MOTD. Four small C edges retain
+const-qualified inputs or the historical mixed pointer/status return ABI.
+The backdrop owner is a native window pointer and window colors use typed
+fields. Invalid string clipping limits stop at the empty string. MOTD and
+suffix formatting preserve the existing byte-to-WORD conversion. Original
+function bodies are archived in place and all 13 incoming sources/headers
+are separately preserved in the verification ROOT.
+
+Two orphaned tile expansion functions in GAME2_2 are archived after verifying
+that their only callers were already disabled. The active native Copy/Fill
+paths remain. Their 47,926 original bytes are preserved; retiring these
+shadows is recorded separately from the new Go algorithms.
+
+The unmodified incoming C supplies 774 sealed scalar/text cases. The focused
+C ABI suite passes 779 tests with zero compiler warnings. Before porting, the
+original backdrop and audio-end bodies independently faulted on foreign
+addresses above 4 GiB. The backdrop now passes native pointer/field/canary
+checks; the two GAME1_3 audio completion/refill functions remain open.
+Strict/common/platform/product qualification for this batch is pending.
+The source map and exact limits are in
+`docs/split-game-native-progress-20261114.json`. Whole-game completion and all
+nine campaign final audits remain open.
+
 ### GAME1–GAME5 main-file closure, 2026-11-14
 
 This batch closes the literal `GAME1.c`, `GAME2.c`, `GAME3.c`, `GAME4.c`

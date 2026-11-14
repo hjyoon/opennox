@@ -36,7 +36,7 @@
 #include "operators.h"
 
 extern uint32_t dword_5d4594_815748;
-extern uint32_t dword_5d4594_816412;
+extern nox_window* dword_5d4594_816412;
 extern uint32_t dword_5d4594_825736;
 extern void* dword_5d4594_826036;
 extern nox_window* dword_5d4594_826032;
@@ -66,24 +66,31 @@ uint32_t dword_5d4594_816376 = 0;
 // The original executable stored transfer-buffer pointers in adjacent PE32
 // dwords. Keep the buffers in native-width storage so 64-bit builds do not
 // truncate them or overwrite the following length/status fields.
-static void* nox_xfer_buffers_446520[2] = {0};
+// Native transfer-buffer owner: game1TransferBuffers in game1_split_native.go.
 
+#if 0 // Ported to game1_split_native.go: nox_xxx_xferSetBuffer_446520
 void nox_xxx_xferSetBuffer_446520(int ind, void* ptr) {
 	if ((unsigned int)ind < 2) {
 		nox_xfer_buffers_446520[ind] = ptr;
 	}
 }
+#endif
 
+
+#if 0 // Ported to game1_split_native.go: nox_xxx_xferGetBuffer_446520
 void* nox_xxx_xferGetBuffer_446520(int ind) {
 	if ((unsigned int)ind < 2) {
 		return nox_xfer_buffers_446520[ind];
 	}
 	return 0;
 }
+#endif
+
 
 //----- (0043B510) --------------------------------------------------------
 void nox_client_gui_set_flag_815132(int v);
 char* nox_client_getChatMap_49FF40(short* a1);
+#if 0 // Ported to game1_split_native.go: nox_client_xxx_switchChatMap_43B510
 void nox_client_xxx_switchChatMap_43B510() {
 	short v0;     // ax
 	char* result; // eax
@@ -118,12 +125,18 @@ void nox_client_xxx_switchChatMap_43B510() {
 		*((uint16_t*)result + 26) = v5;
 	}
 }
+#endif
+
 // 43B510: using guessed type char var_50[80];
 
 //----- (0043B6D0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43B6D0
 int sub_43B6D0() { return dword_5d4594_815044; }
+#endif
+
 
 //----- (0043BC10) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43BC10
 unsigned short* sub_43BC10(wchar2_t* a1, unsigned char a2) {
 	const size_t a1_len = nox_wcslen(a1);
 	wchar2_t* a1_last_char = &a1[a1_len];
@@ -137,16 +150,25 @@ unsigned short* sub_43BC10(wchar2_t* a1, unsigned char a2) {
 
 	return a1;
 }
+#endif
+
 
 //----- (0043BC80) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_sprintAddrPort_43BC80
 int nox_sprintAddrPort_43BC80(const char* addr, unsigned short port, char* dst) {
 	return nox_sprintf(dst, "%s:%d", addr, port);
 }
+#endif
+
 
 //----- (0043BDB0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43BDB0
 int sub_43BDB0() { return *getMemU32Ptr(0x5D4594, 815092); }
+#endif
+
 
 //----- (0043C650) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43C650
 int sub_43C650() {
 	long long v0;    // kr00_8
 	unsigned int v1; // eax
@@ -169,8 +191,11 @@ int sub_43C650() {
 	++dword_5d4594_815748;
 	return result;
 }
+#endif
+
 
 //----- (0043CEB0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43CEB0
 void sub_43CEB0() {
 	unsigned int v1;           // esi
 	unsigned int v2;           // edi
@@ -210,9 +235,12 @@ void sub_43CEB0() {
 	long long v0a = __PAIR64__(v3, v6) / v4;
 	*getMemU64Ptr(0x587000, 91880) = v0a;
 }
+#endif
+
 // 43CFA0: variable 'v1' is possibly undefined
 
 //----- (0043DA80) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DA80
 int sub_43DA80() {
 	int result; // eax
 
@@ -226,19 +254,28 @@ int sub_43DA80() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (0043DAD0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DAD0
 void sub_43DAD0() {
 	if (dword_5d4594_816368 > 0) {
 		sub_43D9E0((int4*)getMemAt(0x5D4594, 815772 + 16 * (--dword_5d4594_816368 + 6 * dword_5d4594_816372)));
 	}
 	dword_5d4594_816368 = 0;
 }
+#endif
+
 
 //----- (0043DB20) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DB20
 int sub_43DB20() { return dword_5d4594_816368; }
+#endif
+
 
 //----- (0043DB30) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DB30
 int sub_43DB30(int a1) {
 	int result; // eax
 
@@ -246,11 +283,17 @@ int sub_43DB30(int a1) {
 	dword_5d4594_816368 = a1;
 	return result;
 }
+#endif
+
 
 //----- (0043DB40) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DB40
 char* sub_43DB40(int a1) { return (char*)getMemAt(0x5D4594, 815772 + 16 * (a1 + 6 * dword_5d4594_816372)); }
+#endif
+
 
 //----- (0043DB60) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DB60
 int sub_43DB60() {
 	int result; // eax
 	int v1;     // eax
@@ -270,8 +313,11 @@ int sub_43DB60() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (0043DBA0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DBA0
 void sub_43DBA0() {
 	int v1; // eax
 	if (dword_5d4594_816372 > 0) {
@@ -283,11 +329,17 @@ void sub_43DBA0() {
 		dword_5d4594_816372 = 0;
 	}
 }
+#endif
+
 
 //----- (0043DC00) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DC00
 void sub_43DC00() { dword_587000_93156 = 0; }
+#endif
+
 
 //----- (0043DC10) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DC10
 int sub_43DC10() {
 	int result; // eax
 
@@ -297,11 +349,17 @@ int sub_43DC10() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (0043DC30) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43DC30
 int sub_43DC30() { return dword_587000_93156; }
+#endif
+
 
 //----- (0043E1A0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_gui_43E1A0
 uint32_t* nox_xxx_gui_43E1A0(int a1) {
 	uint32_t* result; // eax
 
@@ -318,8 +376,11 @@ uint32_t* nox_xxx_gui_43E1A0(int a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (0043E8C0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43E8C0
 int sub_43E8C0(int a1) {
 	int result; // eax
 
@@ -327,6 +388,8 @@ int sub_43E8C0(int a1) {
 	*getMemU32Ptr(0x5D4594, 816408) = a1;
 	return result;
 }
+#endif
+
 
 //----- (0043EDB0) --------------------------------------------------------
 void sub_43EDB0(HSAMPLE a1) {
@@ -470,6 +533,7 @@ int sub_43EE00(void* a1p) {
 // 5813C8: using guessed type int AIL_sample_buffer_ready(uint32_t);
 
 //----- (0043F0E0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_43F0E0
 int sub_43F0E0(uint32_t* a1) {
 	int v1;     // ecx
 	int result; // eax
@@ -491,8 +555,11 @@ int sub_43F0E0(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004417E0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_4417E0
 void sub_4417E0(wchar2_t* a1, const char* a2) {
 	unsigned char v2; // dl
 	char* v3;         // edi
@@ -509,9 +576,12 @@ void sub_4417E0(wchar2_t* a1, const char* a2) {
 		nox_wcscat(a1, v5);
 	}
 }
+#endif
+
 // 4417E0: using guessed type char var_C0[64];
 
 //----- (00445450) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_445450
 wchar2_t* sub_445450() {
 	unsigned char* v0; // esi
 	wchar2_t* result;   // eax
@@ -527,8 +597,11 @@ wchar2_t* sub_445450() {
 	dword_5d4594_825736 = 0;
 	return result;
 }
+#endif
+
 
 //----- (00445530) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_drawMessageLines_445530
 int nox_xxx_drawMessageLines_445530() {
 	int v1;             // ebp
 	int v2;             // eax
@@ -590,8 +663,11 @@ int nox_xxx_drawMessageLines_445530() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004456E0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_guiChatMode_4456E0
 int nox_xxx_guiChatMode_4456E0(nox_window* win, void* draw) {
 	unsigned int x;
 	unsigned int y;
@@ -601,11 +677,17 @@ int nox_xxx_guiChatMode_4456E0(nox_window* win, void* draw) {
 	nox_client_drawImageAt_47D2C0(win->draw_data.bg_image, x + win->draw_data.img_px, y + win->draw_data.img_py);
 	return 1;
 }
+#endif
+
 
 //----- (00445730) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_guiChatShowHide_445730
 int nox_xxx_guiChatShowHide_445730(int a1) { return nox_window_set_hidden(dword_5d4594_825744, a1); }
+#endif
+
 
 //----- (00445770) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_445770
 int sub_445770() {
 	int result; // eax
 
@@ -613,32 +695,47 @@ int sub_445770() {
 	dword_5d4594_825744 = 0;
 	return result;
 }
+#endif
+
 
 // 445B20: using guessed type int nox_xxx_quitDialogYes_445B20();
 
 //----- (00445B20) --------------------------------------------------------
 // Microsoft VisualC 2-14/net runtime
+#if 0 // Ported to game1_split_native.go: nox_xxx_quitDialogYes_445B20
 void nox_xxx_quitDialogYes_445B20() {
 	nox_client_quit_4460C0();
 	sub_445C40();
 }
+#endif
+
 // 445B20: using guessed type int nox_xxx_quitDialogYes_445B20();
 
 //----- (00445B30) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_quitDialogNo_445B30
 int nox_xxx_quitDialogNo_445B30() { return nox_xxx_wndSetCaptureMain_46ADC0(nox_wnd_quitMenu_825760); }
+#endif
+
 
 //----- (00445BA0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_445BA0
 void sub_445BA0() { sub_413A00(0); }
+#endif
+
 
 //----- (00445C20) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_445C20
 void sub_445C20() {
 	int v = nox_xxx_wndGetFlags_46ADA0(nox_wnd_quitMenu_825760);
 	if (!(v & 0x10)) {
 		sub_445C40();
 	}
 }
+#endif
+
 
 //----- (00445FF0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_445FF0
 uint32_t* sub_445FF0() {
 	int i;            // esi
 	uint32_t* result; // eax
@@ -654,8 +751,11 @@ uint32_t* sub_445FF0() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00446360) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_gui_xxx_check_446360
 unsigned int nox_gui_xxx_check_446360() {
 	unsigned int result; // eax
 
@@ -666,8 +766,11 @@ unsigned int nox_gui_xxx_check_446360() {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004463E0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_motd_4463E0
 int nox_motd_4463E0(int a1) {
 	FILE* result; // eax
 	FILE* v2;     // edi
@@ -690,8 +793,11 @@ int nox_motd_4463E0(int a1) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (00446490) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_446490
 void* sub_446490(int a1) {
 	void* result; // eax
 
@@ -704,8 +810,11 @@ void* sub_446490(int a1) {
 	*getMemU32Ptr(0x5D4594, 826040 + 4 * (uint32_t)a1) = 0;
 	return result;
 }
+#endif
+
 
 //----- (004465C0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_guiMotdLoad_4465C0
 nox_window* nox_xxx_guiMotdLoad_4465C0() {
 	dword_5d4594_826028 = nox_new_window_from_file("motd.wnd", sub_4466C0);
 	if (!dword_5d4594_826028) {
@@ -735,8 +844,11 @@ nox_window* nox_xxx_guiMotdLoad_4465C0() {
 	list->field_8 = up;
 	return dword_5d4594_826028;
 }
+#endif
+
 
 //----- (004466C0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_4466C0
 int sub_4466C0(int a1, int a2, int a3, int a4) {
 	if (a2 == 16391) {
 		nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
@@ -744,8 +856,11 @@ int sub_4466C0(int a1, int a2, int a3, int a4) {
 	}
 	return 0;
 }
+#endif
+
 
 //----- (004466F0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_4466F0
 char* sub_4466F0(char* a1, uint8_t* a2) {
 	char* v2;     // edx
 	char* v3;     // eax
@@ -781,8 +896,11 @@ char* sub_4466F0(char* a1, uint8_t* a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00446730) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_motdAddSomeTextMB_446730
 uint8_t* nox_xxx_motdAddSomeTextMB_446730(uint8_t* a1) {
 	uint8_t* result; // eax
 	wchar2_t v2[256]; // [esp+0h] [ebp-200h]
@@ -794,8 +912,11 @@ uint8_t* nox_xxx_motdAddSomeTextMB_446730(uint8_t* a1) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00446780) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_446780
 int sub_446780() {
 	if (wndIsShown_nox_xxx_wndIsShown_46ACC0(dword_5d4594_826028)) {
 		return 0;
@@ -807,8 +928,11 @@ int sub_446780() {
 	nox_window_call_field_94(dword_5d4594_826032, 16399, 0, 0);
 	return 1;
 }
+#endif
+
 
 //----- (004467F0) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: nox_xxx_motd_4467F0
 void nox_xxx_motd_4467F0() {
 	unsigned int result; // eax
 	nox_window* v1;      // eax
@@ -863,6 +987,10 @@ void nox_xxx_motd_4467F0() {
 		}
 	}
 }
+#endif
+
 
 //----- (00446950) --------------------------------------------------------
+#if 0 // Ported to game1_split_native.go: sub_446950
 int sub_446950() { return dword_5d4594_826028 && !(nox_xxx_wndGetFlags_46ADA0(dword_5d4594_826028) & 0x10); }
+#endif

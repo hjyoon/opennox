@@ -2038,7 +2038,10 @@ int sub_57F2A0(float2* a1, int a2, int a3) {
 
 void nullsub_10(uint32_t a1) {}
 
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CC50
 int sub_42CC50(void** this) { return sub_42C770(this); }
+#endif
+
 
 int nox_xxx_j_inventoryNameSignInit_467460(void) { return nox_xxx_inventoryNameSignInit_4671E0(); }
 

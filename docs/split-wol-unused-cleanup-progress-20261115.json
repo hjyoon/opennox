@@ -1,0 +1,5014 @@
+{
+  "utc": "2026-11-14T20:00:30.938211+00:00",
+  "scope": "Archive a closed26-function internal WOL packet C component. Whole raw source references stay inside selected bodies/comments; four independent fixture stubs remain unchanged. Existing typed packet/compression/scrambler and map TOC helpers stay active. This cleanup adds zero Go port credit.",
+  "base_revision": "5c8f12f50534bbeccd170190777cd57dfad8caac",
+  "code_revision": null,
+  "qualification_complete": false,
+  "retired_C_definitions": 26,
+  "archived_original_C_body_bytes": 27054,
+  "retired_narrow_cast_review_candidates": 193,
+  "retired_candidate_functions": 16,
+  "new_Go_entry_count": 0,
+  "cumulative_implemented_split_Go_entries": 130,
+  "previous_full_platform_qualified_engine_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+  "source_reference_audit": {
+    "utc": "2026-11-14T19:26:36.746032+00:00",
+    "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+    "scope": "Read-only candidate retirement audit. No C body or declaration changed. These26 WOL tagged-packet C definitions form a closed source-reference component; retained envelope/scramble helpers are outside the component. Actual removal still needs a before/after object/product review and qualification.",
+    "definitions": {
+      "sub_428810": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 14259,
+        "end": 14628,
+        "bytes": 369,
+        "sha256": "3af517508bfe834f640a9007fb6e1802577f9aa441422364656fb7d5a2dff491",
+        "type": "int (int, int)"
+      },
+      "sub_428890": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 14706,
+        "end": 15033,
+        "bytes": 327,
+        "sha256": "86916d4e6a13364eb8412fcacfda30764c95058ffe6809f50ddd96431782a179",
+        "type": "int (short *)"
+      },
+      "sub_42ADA0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 61022,
+        "end": 74255,
+        "bytes": 13233,
+        "sha256": "0e25b10ded2513c1ef4e91be7bbfe8e020f7c803c8f167ab42967f96cfd4f60f",
+        "type": "uint16_t *(int, int, short, unsigned int *)"
+      },
+      "sub_42B810": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 74333,
+        "end": 80603,
+        "bytes": 6270,
+        "sha256": "9b8caf6f07ac29ea5dd63618f50316cdbb0ffbd7ff2907e83cfd9d1c665e844c",
+        "type": "uint16_t *(short *, unsigned int *)"
+      },
+      "sub_42BCE0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 80681,
+        "end": 80935,
+        "bytes": 254,
+        "sha256": "5e873bf9aee81042d8cd638661fa10d2663589bf085a0a7a5822e89a65b152ae",
+        "type": "int (uint32_t *, char *, char)"
+      },
+      "sub_42BD50": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 81013,
+        "end": 81267,
+        "bytes": 254,
+        "sha256": "bd801e124fc03e9bfef82a724e54d228a88c7e0ca100d8deeb171569235804d5",
+        "type": "int (uint32_t *, char *, char)"
+      },
+      "sub_42BDC0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 81345,
+        "end": 81599,
+        "bytes": 254,
+        "sha256": "3533c547ccd9a6cd8fe9e1b4d5ad16c520015bad01ef77826362ae149d1c7947",
+        "type": "int (uint32_t *, char *, char)"
+      },
+      "sub_42BE30": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 81677,
+        "end": 81938,
+        "bytes": 261,
+        "sha256": "b72babb64268b231862b27a92afb84d5a475bbc94af73188483fd1f93036841c",
+        "type": "int (uint32_t *, char *, const char *)"
+      },
+      "sub_42BEA0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 82016,
+        "end": 82300,
+        "bytes": 284,
+        "sha256": "838067ddf1d393ca3be8ada7369fe9c3a85890af835d956509e5743b35d1d864",
+        "type": "int (uint32_t *, char *, const void *, unsigned short)"
+      },
+      "sub_42C330": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 82378,
+        "end": 82611,
+        "bytes": 233,
+        "sha256": "fa7bd4d57fbdafc81a75bfef5212fe24b367ac3d69b45f00432b427b092b5d4f",
+        "type": "void (uint32_t *)"
+      },
+      "sub_42C360": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 82745,
+        "end": 82887,
+        "bytes": 142,
+        "sha256": "960bc1083f53f50782b5beaad3b0f40eed7058a07571c5c058bbc79ecb32bcfb",
+        "type": "int (uint32_t *, int)"
+      },
+      "sub_42C480": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 82965,
+        "end": 83960,
+        "bytes": 995,
+        "sha256": "4e010dd937b7ee3219441840c60bc1a09ece67d38b442799efb87b43bf473590",
+        "type": "uint16_t *(uint32_t *, unsigned int *)"
+      },
+      "sub_42C770": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 84038,
+        "end": 84306,
+        "bytes": 268,
+        "sha256": "5bd8897fea07400229a427aaf3f2b6531e03d6059b0fef71f8005697ddf2d7df",
+        "type": "int (void **)"
+      },
+      "sub_42C7F0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 84384,
+        "end": 84536,
+        "bytes": 152,
+        "sha256": "75b2d44b81ad4aa5a1051cc68def7da24565db2ddb77dd48051daa62fcc1d99f",
+        "type": "int (int, char *, char)"
+      },
+      "sub_42C820": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 84614,
+        "end": 84766,
+        "bytes": 152,
+        "sha256": "4b0da660f84b58912550139945daabfd471d1af445c903736d6b309badc1add8",
+        "type": "int (int, char *, char)"
+      },
+      "sub_42C8B0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 84844,
+        "end": 84996,
+        "bytes": 152,
+        "sha256": "1a3caa24d784542b9a4175c475a02315b0348e4f6ce7f60949ff56e48b201de6",
+        "type": "int (int, char *, char)"
+      },
+      "sub_42C8E0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 85074,
+        "end": 85233,
+        "bytes": 159,
+        "sha256": "ccf3e6cd49e87c7395ec5aa21f970d02ed1b693e2c685d9aa526d5b996093d60",
+        "type": "int (int, char *, const char *)"
+      },
+      "sub_42C910": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 85311,
+        "end": 85493,
+        "bytes": 182,
+        "sha256": "accf371bcbd8c86b1992194212b272a47964e603608412ca683beb462dd1d90e",
+        "type": "int (int, char *, const void *, unsigned short)"
+      },
+      "sub_42C9A0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 85571,
+        "end": 85950,
+        "bytes": 379,
+        "sha256": "7bcf7b2fe7192109aa9935a8971d4d110dadf08860b64811c9bbf4feb596abc8",
+        "type": "char *(void **, char *, char)"
+      },
+      "sub_42CA00": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 86028,
+        "end": 86423,
+        "bytes": 395,
+        "sha256": "022785de46743a858bb5b1b0e20af2df5f8ee0cd035ab0738b9cc529e6126985",
+        "type": "char *(void **, char *, char)"
+      },
+      "sub_42CB20": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 86501,
+        "end": 86896,
+        "bytes": 395,
+        "sha256": "0a25cd1c7a0ec71cb8a5c2e4d738d2662c93d91fa01cc95af58139477ddbec16",
+        "type": "char *(void **, char *, char)"
+      },
+      "sub_42CB80": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 86974,
+        "end": 87427,
+        "bytes": 453,
+        "sha256": "3b852924c3e56286a1389fd647dde486bb3a61f03642856051e2f4ce626f2df8",
+        "type": "char *(void **, char *, const char *)"
+      },
+      "sub_42CBF0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 87505,
+        "end": 87904,
+        "bytes": 399,
+        "sha256": "d7b072c4d697f00b3b166e361f62deb9e3ca0a69332510236c0b87ef9d39e95e",
+        "type": "void *(void **, char *, const void *, unsigned short)"
+      },
+      "sub_42CC70": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 87982,
+        "end": 88530,
+        "bytes": 548,
+        "sha256": "234deb5c19e9461f5dc9173b100de9dc93e4151d473a704247d38aa32620fa38",
+        "type": "uint16_t (int)"
+      },
+      "sub_42CCE0": {
+        "file": "src/legacy/GAME1_2.c",
+        "begin": 88608,
+        "end": 89096,
+        "bytes": 488,
+        "sha256": "c3ad701bf5c3cd7b5da100717995dca41c9f35b650ccb776c065a05c4f447602",
+        "type": "short (uint16_t *)"
+      },
+      "sub_42CC50": {
+        "file": "src/legacy/GAME5_2.c",
+        "begin": 50990,
+        "end": 51046,
+        "bytes": 56,
+        "sha256": "8bf89ab27d3fc721401ee4968c9889b5ebfcb179846366bbb6e468077225473e",
+        "type": "int (void **)"
+      }
+    },
+    "internal_references": [
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_428810",
+        "target": "sub_42ADA0",
+        "range": {
+          "begin": {
+            "offset": 14402,
+            "col": 7,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 14402,
+            "col": 7,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_428890",
+        "target": "sub_42B810",
+        "range": {
+          "begin": {
+            "offset": 14844,
+            "col": 7,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 14844,
+            "col": 7,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 64690,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64690,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 64747,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64747,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 64841,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64841,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 64899,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64899,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 64997,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64997,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65057,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65057,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 65155,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65155,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65215,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65215,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 65313,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65313,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65374,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65374,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 65472,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65472,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65532,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65532,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 65630,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65630,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65690,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65690,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 65788,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65788,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 65849,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65849,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 65947,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 65947,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66007,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66007,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 66105,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66105,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66165,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66165,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 66263,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66263,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66323,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66323,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 66421,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66421,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66481,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66481,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 66579,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66579,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66640,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66640,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 66738,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66738,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66799,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66799,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 66897,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66897,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 66958,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 66958,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 67026,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67026,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67105,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67105,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 67173,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67173,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67253,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67253,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 67351,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67351,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67411,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67411,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 67509,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67509,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67569,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67569,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 67667,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67667,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67727,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67727,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 67825,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67825,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 67885,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67885,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 67983,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 67983,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68044,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68044,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 68142,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68142,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68203,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68203,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 68301,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68301,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68362,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68362,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 68460,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68460,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68520,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68520,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 68618,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68618,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68678,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68678,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 68746,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68746,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68804,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68804,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 68902,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68902,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 68963,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 68963,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 69097,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69097,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69159,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69159,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 69230,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69230,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69292,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69292,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C820",
+        "range": {
+          "begin": {
+            "offset": 69363,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69363,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69426,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69426,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69465,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69465,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 69651,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69651,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69715,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69715,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 69786,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69786,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 69848,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69848,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C820",
+        "range": {
+          "begin": {
+            "offset": 69949,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69949,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 70039,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70039,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 70339,
+            "col": 11,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70339,
+            "col": 11,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 70407,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70407,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 70636,
+            "col": 11,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70636,
+            "col": 11,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 70704,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70704,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 70936,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 70936,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 71006,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71006,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 71235,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71235,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 71306,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71306,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 71535,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71535,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 71606,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71606,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 71840,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71840,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 71911,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 71911,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 72140,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72140,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 72211,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72211,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C910",
+        "range": {
+          "begin": {
+            "offset": 72372,
+            "col": 11,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72372,
+            "col": 11,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 72446,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72446,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 72486,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72486,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BDC0",
+        "range": {
+          "begin": {
+            "offset": 72564,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72564,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BCE0",
+        "range": {
+          "begin": {
+            "offset": 72622,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72622,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BD50",
+        "range": {
+          "begin": {
+            "offset": 72653,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72653,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BE30",
+        "range": {
+          "begin": {
+            "offset": 72900,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 72900,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BDC0",
+        "range": {
+          "begin": {
+            "offset": 73077,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73077,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BDC0",
+        "range": {
+          "begin": {
+            "offset": 73252,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73252,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BCE0",
+        "range": {
+          "begin": {
+            "offset": 73427,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73427,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BCE0",
+        "range": {
+          "begin": {
+            "offset": 73597,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73597,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BDC0",
+        "range": {
+          "begin": {
+            "offset": 73767,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73767,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BCE0",
+        "range": {
+          "begin": {
+            "offset": 73942,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 73942,
+            "col": 4,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42BEA0",
+        "range": {
+          "begin": {
+            "offset": 74092,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 74092,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C480",
+        "range": {
+          "begin": {
+            "offset": 74199,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 74199,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42ADA0",
+        "target": "sub_42C330",
+        "range": {
+          "begin": {
+            "offset": 74222,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 74222,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 76057,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76057,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76114,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76114,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 76205,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76205,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76262,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76262,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 76356,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76356,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76415,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76415,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 76482,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76482,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76559,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76559,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 76626,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76626,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76704,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76704,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 76800,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76800,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 76860,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76860,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 76956,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 76956,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 77016,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77016,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C820",
+        "range": {
+          "begin": {
+            "offset": 77095,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77095,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 77181,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77181,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 77285,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77285,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 77345,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77345,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 77623,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77623,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 77687,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77687,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 77910,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77910,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 77974,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 77974,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 78192,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78192,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 78256,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78256,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 78479,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78479,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 78543,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78543,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 78766,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78766,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 78830,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 78830,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 79053,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79053,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 79117,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79117,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 79340,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79340,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 79404,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79404,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 79627,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79627,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 79691,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79691,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 79914,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79914,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 79978,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79978,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 80201,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80201,
+            "col": 10,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 80265,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80265,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42BDC0",
+        "range": {
+          "begin": {
+            "offset": 80358,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80358,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C480",
+        "range": {
+          "begin": {
+            "offset": 80514,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80514,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42B810",
+        "target": "sub_42C330",
+        "range": {
+          "begin": {
+            "offset": 80572,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80572,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BCE0",
+        "target": "sub_42C7F0",
+        "range": {
+          "begin": {
+            "offset": 80854,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80854,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BCE0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 80914,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 80914,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BD50",
+        "target": "sub_42C820",
+        "range": {
+          "begin": {
+            "offset": 81186,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81186,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BD50",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 81246,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81246,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BDC0",
+        "target": "sub_42C8B0",
+        "range": {
+          "begin": {
+            "offset": 81518,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81518,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BDC0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 81578,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81578,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BE30",
+        "target": "sub_42C8E0",
+        "range": {
+          "begin": {
+            "offset": 81857,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81857,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BE30",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 81917,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 81917,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BEA0",
+        "target": "sub_42C910",
+        "range": {
+          "begin": {
+            "offset": 82215,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 82215,
+            "col": 8,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42BEA0",
+        "target": "sub_42C360",
+        "range": {
+          "begin": {
+            "offset": 82279,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 82279,
+            "col": 9,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C330",
+        "target": "sub_42CC50",
+        "range": {
+          "begin": {
+            "offset": 82544,
+            "col": 5,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 82544,
+            "col": 5,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C480",
+        "target": "sub_42CC70",
+        "range": {
+          "begin": {
+            "offset": 83596,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 83596,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C480",
+        "target": "sub_42CCE0",
+        "range": {
+          "begin": {
+            "offset": 83875,
+            "col": 3,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 83875,
+            "col": 3,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C7F0",
+        "target": "sub_42C9A0",
+        "range": {
+          "begin": {
+            "offset": 84489,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 84489,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C820",
+        "target": "sub_42CA00",
+        "range": {
+          "begin": {
+            "offset": 84719,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 84719,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C8B0",
+        "target": "sub_42CB20",
+        "range": {
+          "begin": {
+            "offset": 84949,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 84949,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C8E0",
+        "target": "sub_42CB80",
+        "range": {
+          "begin": {
+            "offset": 85186,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 85186,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C910",
+        "target": "sub_42CBF0",
+        "range": {
+          "begin": {
+            "offset": 85442,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 85442,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42C9A0",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 85711,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 85711,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42CA00",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 86168,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 86168,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42CB20",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 86641,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 86641,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42CB80",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 87156,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 87156,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "caller": "sub_42CBF0",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 87671,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 87671,
+            "col": 2,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "caller": "sub_42CC50",
+        "target": "sub_42C770",
+        "range": {
+          "begin": {
+            "offset": 51027,
+            "col": 38,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 51027,
+            "col": 38,
+            "tokLen": 10
+          }
+        }
+      }
+    ],
+    "incoming_active_split_references": [],
+    "outside_raw_source_references": [],
+    "independent_fixture": {
+      "path": "src/legacy/testdata/stats_packet_envelope_42a8b0_test.c",
+      "sha256": "3deb60f473ce23bff5d36b96fdbe5a4dbe74c452d02f31281e226cf6ec3900fb",
+      "definitions": [
+        "src/legacy/testdata/stats_packet_envelope_42a8b0_test.c:146:int sub_42C910(int node, char* name, const void* data, unsigned short size) {",
+        "src/legacy/testdata/stats_packet_envelope_42a8b0_test.c:151:int sub_42C360(void* packet, int node) { (void)packet; (void)node; abort(); }",
+        "src/legacy/testdata/stats_packet_envelope_42a8b0_test.c:152:void sub_42C330(void* packet) { (void)packet; }",
+        "src/legacy/testdata/stats_packet_envelope_42a8b0_test.c:153:uint16_t* sub_42C480(void* packet, unsigned int* size) { (void)packet; (void)size; abort(); }"
+      ],
+      "scope": "Independent test-executable support stubs, not references to production C symbols. Preserve unchanged."
+    },
+    "sources": [
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "bytes": 116186,
+        "sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6"
+      },
+      {
+        "file": "src/legacy/GAME1_2.h",
+        "bytes": 6693,
+        "sha256": "f80730c0617598ce7eb8ee50d8f82aab9942a704ccc1fc9092b44c5844a48663"
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "bytes": 51468,
+        "sha256": "ca4337e2b3e4343c9e34617d47bf34b47d498665d430c949bc06a5f9dcfe0113"
+      },
+      {
+        "file": "src/legacy/GAME5_2.h",
+        "bytes": 4668,
+        "sha256": "c26be6ef3238f0aea01d61cbdf2d95e87512078e3641076aa10e48656c72cbe5"
+      }
+    ],
+    "retirement_started": false,
+    "new_Go_port_credit": 0,
+    "excluded_retained_support": [
+      "sub_42A8B0",
+      "sub_42AC50",
+      "all five already-native bitstream entries",
+      "active map TOC sub_42C2E0/sub_42C300/sub_42C310"
+    ]
+  },
+  "whole_source_reference_containment": {
+    "utc": "2026-11-14T19:38:00.795276+00:00",
+    "scope": "Whole raw C references inside both production source files are confined to the selected component bodies or comments. This supplements the active macOS AST and detects potential platform-conditional callers outside that component. Headers only declare the APIs; four standalone test stubs remain independent.",
+    "references": 193,
+    "outside_body_or_comment_references": [],
+    "rows": [
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 515,
+        "target": "sub_428810",
+        "owner": "sub_428810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 521,
+        "target": "sub_42ADA0",
+        "owner": "sub_428810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 533,
+        "target": "sub_428890",
+        "owner": "sub_428890",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 539,
+        "target": "sub_42B810",
+        "owner": "sub_428890",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2048,
+        "target": "sub_42ADA0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2182,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2186,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2190,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2194,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2198,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2202,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2206,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2210,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2214,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2218,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2222,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2226,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2230,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2234,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2238,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2242,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2246,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2250,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2254,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2258,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2262,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2266,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2270,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2274,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2278,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2282,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2286,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2290,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2294,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2298,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2301,
+        "target": "sub_42C8E0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2305,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2308,
+        "target": "sub_42C8E0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2312,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2316,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2320,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2324,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2328,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2332,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2336,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2340,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2344,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2348,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2352,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2356,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2360,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2364,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2368,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2372,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2376,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2380,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2384,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2387,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2391,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2395,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2399,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2405,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2409,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2412,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2416,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2419,
+        "target": "sub_42C820",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2420,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2423,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2431,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2435,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2438,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2442,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2446,
+        "target": "sub_42C820",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2450,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2457,
+        "target": "sub_42C8E0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2461,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2466,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2470,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2475,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2479,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2484,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2488,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2493,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2497,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2502,
+        "target": "sub_42C8B0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2506,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2511,
+        "target": "sub_42C7F0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2515,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2521,
+        "target": "sub_42C910",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2522,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2525,
+        "target": "sub_42C360",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2529,
+        "target": "sub_42BDC0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2530,
+        "target": "sub_42BCE0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2531,
+        "target": "sub_42BD50",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2535,
+        "target": "sub_42BE30",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2537,
+        "target": "sub_42BDC0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2539,
+        "target": "sub_42BDC0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2541,
+        "target": "sub_42BCE0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2543,
+        "target": "sub_42BCE0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2545,
+        "target": "sub_42BDC0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2547,
+        "target": "sub_42BCE0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2550,
+        "target": "sub_42BEA0",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2553,
+        "target": "sub_42C480",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2554,
+        "target": "sub_42C330",
+        "owner": "sub_42ADA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2559,
+        "target": "sub_42B810",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2627,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2631,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2635,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2639,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2643,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2647,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2650,
+        "target": "sub_42C8E0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2654,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2657,
+        "target": "sub_42C8E0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2661,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2665,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2669,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2673,
+        "target": "sub_42C7F0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2677,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2681,
+        "target": "sub_42C820",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2685,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2689,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2693,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2700,
+        "target": "sub_42C8E0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2704,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2709,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2713,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2718,
+        "target": "sub_42C7F0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2722,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2727,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2731,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2736,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2740,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2745,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2749,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2754,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2758,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2763,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2767,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2772,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2776,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2781,
+        "target": "sub_42C8B0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2785,
+        "target": "sub_42C360",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2787,
+        "target": "sub_42BDC0",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2790,
+        "target": "sub_42C480",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2792,
+        "target": "sub_42C330",
+        "owner": "sub_42B810",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2797,
+        "target": "sub_42BCE0",
+        "owner": "sub_42BCE0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2805,
+        "target": "sub_42C7F0",
+        "owner": "sub_42BCE0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2809,
+        "target": "sub_42C360",
+        "owner": "sub_42BCE0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2813,
+        "target": "sub_42BD50",
+        "owner": "sub_42BD50",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2821,
+        "target": "sub_42C820",
+        "owner": "sub_42BD50",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2825,
+        "target": "sub_42C360",
+        "owner": "sub_42BD50",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2829,
+        "target": "sub_42BDC0",
+        "owner": "sub_42BDC0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2837,
+        "target": "sub_42C8B0",
+        "owner": "sub_42BDC0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2841,
+        "target": "sub_42C360",
+        "owner": "sub_42BDC0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2845,
+        "target": "sub_42BE30",
+        "owner": "sub_42BE30",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2853,
+        "target": "sub_42C8E0",
+        "owner": "sub_42BE30",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2857,
+        "target": "sub_42C360",
+        "owner": "sub_42BE30",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2861,
+        "target": "sub_42BEA0",
+        "owner": "sub_42BEA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2869,
+        "target": "sub_42C910",
+        "owner": "sub_42BEA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2873,
+        "target": "sub_42C360",
+        "owner": "sub_42BEA0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2877,
+        "target": "sub_42C330",
+        "owner": "sub_42C330",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2886,
+        "target": "sub_42CC50",
+        "owner": "sub_42C330",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2893,
+        "target": "sub_42CC50",
+        "owner": null,
+        "comment": true
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2896,
+        "target": "sub_42C360",
+        "owner": "sub_42C360",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2906,
+        "target": "sub_42C480",
+        "owner": "sub_42C480",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2932,
+        "target": "sub_42CC70",
+        "owner": "sub_42C480",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2939,
+        "target": "sub_42CCE0",
+        "owner": "sub_42C480",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2946,
+        "target": "sub_42C770",
+        "owner": "sub_42C770",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2962,
+        "target": "sub_42C7F0",
+        "owner": "sub_42C7F0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2967,
+        "target": "sub_42C9A0",
+        "owner": "sub_42C7F0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2972,
+        "target": "sub_42C820",
+        "owner": "sub_42C820",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2977,
+        "target": "sub_42CA00",
+        "owner": "sub_42C820",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2982,
+        "target": "sub_42C8B0",
+        "owner": "sub_42C8B0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2987,
+        "target": "sub_42CB20",
+        "owner": "sub_42C8B0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2992,
+        "target": "sub_42C8E0",
+        "owner": "sub_42C8E0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 2997,
+        "target": "sub_42CB80",
+        "owner": "sub_42C8E0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3002,
+        "target": "sub_42C910",
+        "owner": "sub_42C910",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3007,
+        "target": "sub_42CBF0",
+        "owner": "sub_42C910",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3012,
+        "target": "sub_42C9A0",
+        "owner": "sub_42C9A0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3018,
+        "target": "sub_42C770",
+        "owner": "sub_42C9A0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3031,
+        "target": "sub_42CA00",
+        "owner": "sub_42CA00",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3037,
+        "target": "sub_42C770",
+        "owner": "sub_42CA00",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3051,
+        "target": "sub_42CB20",
+        "owner": "sub_42CB20",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3057,
+        "target": "sub_42C770",
+        "owner": "sub_42CB20",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3071,
+        "target": "sub_42CB80",
+        "owner": "sub_42CB80",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3078,
+        "target": "sub_42C770",
+        "owner": "sub_42CB80",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3092,
+        "target": "sub_42CBF0",
+        "owner": "sub_42CBF0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3098,
+        "target": "sub_42C770",
+        "owner": "sub_42CBF0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3111,
+        "target": "sub_42CC70",
+        "owner": "sub_42CC70",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "line": 3139,
+        "target": "sub_42CCE0",
+        "owner": "sub_42CCE0",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "line": 2041,
+        "target": "sub_42CC50",
+        "owner": "sub_42CC50",
+        "comment": false
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "line": 2041,
+        "target": "sub_42C770",
+        "owner": "sub_42CC50",
+        "comment": false
+      }
+    ]
+  },
+  "dynamic_name_lookup_review": {
+    "utc": "2026-11-14T19:56:21.963585+00:00",
+    "query": [
+      "rg",
+      "-n",
+      "dlsym|GetProcAddress|sub_%",
+      "src",
+      "-g",
+      "*.go",
+      "-g",
+      "*.c",
+      "-g",
+      "*.h"
+    ],
+    "result": [
+      "src/third_party/go-openal/openal/wrapper.h:28:// void* alGetProcAddress( const ALchar* fname );"
+    ],
+    "scope": "Additional raw-source search. The sole match is an unrelated OpenAL declaration comment; this search finds no constructed legacy sub_ name lookup. It supplements the full reference containment proof and is not an arbitrary third-party-plugin compatibility claim."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-14T19:54:56.979438+00:00",
+    "base_revision": "5c8f12f50534bbeccd170190777cd57dfad8caac",
+    "previous_fully_qualified_engine": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+    "source_reference_audit_unchanged": true,
+    "independent_fixture_unchanged": true,
+    "selected_definitions": 26,
+    "selected_source_body_bytes": 27054,
+    "narrow_cast_review_candidates_retired": 193,
+    "new_Go_port_credit": 0,
+    "scope": "Retire the closed internal old WOL C component only. Existing typed envelope/scramble, bitstream and map-TOC implementations stay active. Full before/after product symbols, focused original-reference regression and full platform qualification follow.",
+    "whole_incoming_files_reconstructed": true,
+    "archived_source_body_bytes": 27054,
+    "retired_C_definitions": 26,
+    "changed_source_files": [
+      "src/legacy/GAME1_2.c",
+      "src/legacy/GAME5_2.c"
+    ],
+    "archive_files": [
+      {
+        "file": "src/legacy/GAME1_2.c",
+        "incoming_sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6",
+        "pending_sha256": "20599c6a211731b40327c4fd2c6f9c8e5296d2e72680db57fdf10bcf2b13e378",
+        "whole_incoming_file_reconstructed": true,
+        "functions": 25,
+        "original_body_bytes": 26998,
+        "guards": [
+          {
+            "name": "sub_42CCE0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CCE0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 88608,
+            "end": 89096,
+            "bytes": 488,
+            "sha256": "c3ad701bf5c3cd7b5da100717995dca41c9f35b650ccb776c065a05c4f447602",
+            "type": "short (uint16_t *)"
+          },
+          {
+            "name": "sub_42CC70",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CC70\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 87982,
+            "end": 88530,
+            "bytes": 548,
+            "sha256": "234deb5c19e9461f5dc9173b100de9dc93e4151d473a704247d38aa32620fa38",
+            "type": "uint16_t (int)"
+          },
+          {
+            "name": "sub_42CBF0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CBF0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 87505,
+            "end": 87904,
+            "bytes": 399,
+            "sha256": "d7b072c4d697f00b3b166e361f62deb9e3ca0a69332510236c0b87ef9d39e95e",
+            "type": "void *(void **, char *, const void *, unsigned short)"
+          },
+          {
+            "name": "sub_42CB80",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CB80\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 86974,
+            "end": 87427,
+            "bytes": 453,
+            "sha256": "3b852924c3e56286a1389fd647dde486bb3a61f03642856051e2f4ce626f2df8",
+            "type": "char *(void **, char *, const char *)"
+          },
+          {
+            "name": "sub_42CB20",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CB20\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 86501,
+            "end": 86896,
+            "bytes": 395,
+            "sha256": "0a25cd1c7a0ec71cb8a5c2e4d738d2662c93d91fa01cc95af58139477ddbec16",
+            "type": "char *(void **, char *, char)"
+          },
+          {
+            "name": "sub_42CA00",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CA00\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 86028,
+            "end": 86423,
+            "bytes": 395,
+            "sha256": "022785de46743a858bb5b1b0e20af2df5f8ee0cd035ab0738b9cc529e6126985",
+            "type": "char *(void **, char *, char)"
+          },
+          {
+            "name": "sub_42C9A0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C9A0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 85571,
+            "end": 85950,
+            "bytes": 379,
+            "sha256": "7bcf7b2fe7192109aa9935a8971d4d110dadf08860b64811c9bbf4feb596abc8",
+            "type": "char *(void **, char *, char)"
+          },
+          {
+            "name": "sub_42C910",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C910\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 85311,
+            "end": 85493,
+            "bytes": 182,
+            "sha256": "accf371bcbd8c86b1992194212b272a47964e603608412ca683beb462dd1d90e",
+            "type": "int (int, char *, const void *, unsigned short)"
+          },
+          {
+            "name": "sub_42C8E0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C8E0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 85074,
+            "end": 85233,
+            "bytes": 159,
+            "sha256": "ccf3e6cd49e87c7395ec5aa21f970d02ed1b693e2c685d9aa526d5b996093d60",
+            "type": "int (int, char *, const char *)"
+          },
+          {
+            "name": "sub_42C8B0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C8B0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 84844,
+            "end": 84996,
+            "bytes": 152,
+            "sha256": "1a3caa24d784542b9a4175c475a02315b0348e4f6ce7f60949ff56e48b201de6",
+            "type": "int (int, char *, char)"
+          },
+          {
+            "name": "sub_42C820",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C820\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 84614,
+            "end": 84766,
+            "bytes": 152,
+            "sha256": "4b0da660f84b58912550139945daabfd471d1af445c903736d6b309badc1add8",
+            "type": "int (int, char *, char)"
+          },
+          {
+            "name": "sub_42C7F0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C7F0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 84384,
+            "end": 84536,
+            "bytes": 152,
+            "sha256": "75b2d44b81ad4aa5a1051cc68def7da24565db2ddb77dd48051daa62fcc1d99f",
+            "type": "int (int, char *, char)"
+          },
+          {
+            "name": "sub_42C770",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C770\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 84038,
+            "end": 84306,
+            "bytes": 268,
+            "sha256": "5bd8897fea07400229a427aaf3f2b6531e03d6059b0fef71f8005697ddf2d7df",
+            "type": "int (void **)"
+          },
+          {
+            "name": "sub_42C480",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C480\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 82965,
+            "end": 83960,
+            "bytes": 995,
+            "sha256": "4e010dd937b7ee3219441840c60bc1a09ece67d38b442799efb87b43bf473590",
+            "type": "uint16_t *(uint32_t *, unsigned int *)"
+          },
+          {
+            "name": "sub_42C360",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C360\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 82745,
+            "end": 82887,
+            "bytes": 142,
+            "sha256": "960bc1083f53f50782b5beaad3b0f40eed7058a07571c5c058bbc79ecb32bcfb",
+            "type": "int (uint32_t *, int)"
+          },
+          {
+            "name": "sub_42C330",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C330\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 82378,
+            "end": 82611,
+            "bytes": 233,
+            "sha256": "fa7bd4d57fbdafc81a75bfef5212fe24b367ac3d69b45f00432b427b092b5d4f",
+            "type": "void (uint32_t *)"
+          },
+          {
+            "name": "sub_42BEA0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BEA0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 82016,
+            "end": 82300,
+            "bytes": 284,
+            "sha256": "838067ddf1d393ca3be8ada7369fe9c3a85890af835d956509e5743b35d1d864",
+            "type": "int (uint32_t *, char *, const void *, unsigned short)"
+          },
+          {
+            "name": "sub_42BE30",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BE30\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 81677,
+            "end": 81938,
+            "bytes": 261,
+            "sha256": "b72babb64268b231862b27a92afb84d5a475bbc94af73188483fd1f93036841c",
+            "type": "int (uint32_t *, char *, const char *)"
+          },
+          {
+            "name": "sub_42BDC0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BDC0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 81345,
+            "end": 81599,
+            "bytes": 254,
+            "sha256": "3533c547ccd9a6cd8fe9e1b4d5ad16c520015bad01ef77826362ae149d1c7947",
+            "type": "int (uint32_t *, char *, char)"
+          },
+          {
+            "name": "sub_42BD50",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BD50\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 81013,
+            "end": 81267,
+            "bytes": 254,
+            "sha256": "bd801e124fc03e9bfef82a724e54d228a88c7e0ca100d8deeb171569235804d5",
+            "type": "int (uint32_t *, char *, char)"
+          },
+          {
+            "name": "sub_42BCE0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BCE0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 80681,
+            "end": 80935,
+            "bytes": 254,
+            "sha256": "5e873bf9aee81042d8cd638661fa10d2663589bf085a0a7a5822e89a65b152ae",
+            "type": "int (uint32_t *, char *, char)"
+          },
+          {
+            "name": "sub_42B810",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42B810\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 74333,
+            "end": 80603,
+            "bytes": 6270,
+            "sha256": "9b8caf6f07ac29ea5dd63618f50316cdbb0ffbd7ff2907e83cfd9d1c665e844c",
+            "type": "uint16_t *(short *, unsigned int *)"
+          },
+          {
+            "name": "sub_42ADA0",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42ADA0\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 61022,
+            "end": 74255,
+            "bytes": 13233,
+            "sha256": "0e25b10ded2513c1ef4e91be7bbfe8e020f7c803c8f167ab42967f96cfd4f60f",
+            "type": "uint16_t *(int, int, short, unsigned int *)"
+          },
+          {
+            "name": "sub_428890",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_428890\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 14706,
+            "end": 15033,
+            "bytes": 327,
+            "sha256": "86916d4e6a13364eb8412fcacfda30764c95058ffe6809f50ddd96431782a179",
+            "type": "int (short *)"
+          },
+          {
+            "name": "sub_428810",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_428810\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME1_2.c",
+            "begin": 14259,
+            "end": 14628,
+            "bytes": 369,
+            "sha256": "3af517508bfe834f640a9007fb6e1802577f9aa441422364656fb7d5a2dff491",
+            "type": "int (int, int)"
+          }
+        ]
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "incoming_sha256": "ca4337e2b3e4343c9e34617d47bf34b47d498665d430c949bc06a5f9dcfe0113",
+        "pending_sha256": "1192ff3c49dd7e2af5c23d51ba17b8ed9a68f4eebaa8e516830e71057baf58ff",
+        "whole_incoming_file_reconstructed": true,
+        "functions": 1,
+        "original_body_bytes": 56,
+        "guards": [
+          {
+            "name": "sub_42CC50",
+            "prefix": "#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CC50\n",
+            "suffix": "\n#endif\n",
+            "file": "src/legacy/GAME5_2.c",
+            "begin": 50990,
+            "end": 51046,
+            "bytes": 56,
+            "sha256": "8bf89ab27d3fc721401ee4968c9889b5ebfcb179846366bbb6e468077225473e",
+            "type": "int (void **)"
+          }
+        ]
+      }
+    ],
+    "retirement_source_applied": true
+  },
+  "current_qualified_products_before": {
+    "utc": "2026-11-14T19:57:16.792982+00:00",
+    "scope": "Read-only global-symbol review of four retained qualified S7 macOS products; source call-graph and future before/after code reviews are separate.",
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox",
+        "sha256": "f5d344e3962d9e288ba7fac3ea32a0e074e0c6f3b2c834706993a480097318e7",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+        "candidate_global_symbols": [
+          "00000001011b61fc T _sub_428810",
+          "00000001011b872c T _sub_428890",
+          "00000001011b62f0 T _sub_42ADA0",
+          "00000001011b87f0 T _sub_42B810",
+          "00000001011bd29c T _sub_42BCE0",
+          "00000001011bd368 T _sub_42BD50",
+          "00000001011bd1d0 T _sub_42BDC0",
+          "00000001011bd434 T _sub_42BE30",
+          "00000001011bd518 T _sub_42BEA0",
+          "00000001011bd810 T _sub_42C330",
+          "00000001011bcf10 T _sub_42C360",
+          "00000001011bd5f8 T _sub_42C480",
+          "00000001011bd940 T _sub_42C770",
+          "00000001011bcf2c T _sub_42C7F0",
+          "00000001011bd07c T _sub_42C820",
+          "00000001011bce74 T _sub_42C8B0",
+          "00000001011bcfc8 T _sub_42C8E0",
+          "00000001011bd118 T _sub_42C910",
+          "00000001011bd990 T _sub_42C9A0",
+          "00000001011bda18 T _sub_42CA00",
+          "00000001011bdaa0 T _sub_42CB20",
+          "00000001011bdb28 T _sub_42CB80",
+          "00000001011bdbd0 T _sub_42CBF0",
+          "0000000101216f10 T _sub_42CC50",
+          "00000001011bd84c T _sub_42CC70",
+          "00000001011bd8d4 T _sub_42CCE0"
+        ],
+        "nm_stderr": ""
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-hd",
+        "sha256": "c005b33cefae453da56d9d61e2a2dce18200e2333ee8e3b220a838baba0ee84c",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+        "candidate_global_symbols": [
+          "00000001011b621c T _sub_428810",
+          "00000001011b874c T _sub_428890",
+          "00000001011b6310 T _sub_42ADA0",
+          "00000001011b8810 T _sub_42B810",
+          "00000001011bd2bc T _sub_42BCE0",
+          "00000001011bd388 T _sub_42BD50",
+          "00000001011bd1f0 T _sub_42BDC0",
+          "00000001011bd454 T _sub_42BE30",
+          "00000001011bd538 T _sub_42BEA0",
+          "00000001011bd830 T _sub_42C330",
+          "00000001011bcf30 T _sub_42C360",
+          "00000001011bd618 T _sub_42C480",
+          "00000001011bd960 T _sub_42C770",
+          "00000001011bcf4c T _sub_42C7F0",
+          "00000001011bd09c T _sub_42C820",
+          "00000001011bce94 T _sub_42C8B0",
+          "00000001011bcfe8 T _sub_42C8E0",
+          "00000001011bd138 T _sub_42C910",
+          "00000001011bd9b0 T _sub_42C9A0",
+          "00000001011bda38 T _sub_42CA00",
+          "00000001011bdac0 T _sub_42CB20",
+          "00000001011bdb48 T _sub_42CB80",
+          "00000001011bdbf0 T _sub_42CBF0",
+          "0000000101216f30 T _sub_42CC50",
+          "00000001011bd86c T _sub_42CC70",
+          "00000001011bd8f4 T _sub_42CCE0"
+        ],
+        "nm_stderr": ""
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server",
+        "sha256": "6a9141656b7ea6c3681cf6e4f7ec912684b7363bc085ac93c260a116a658609b",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+        "candidate_global_symbols": [
+          "0000000101113658 T _sub_428810",
+          "0000000101115b88 T _sub_428890",
+          "000000010111374c T _sub_42ADA0",
+          "0000000101115c4c T _sub_42B810",
+          "000000010111a6f8 T _sub_42BCE0",
+          "000000010111a7c4 T _sub_42BD50",
+          "000000010111a62c T _sub_42BDC0",
+          "000000010111a890 T _sub_42BE30",
+          "000000010111a974 T _sub_42BEA0",
+          "000000010111ac6c T _sub_42C330",
+          "000000010111a36c T _sub_42C360",
+          "000000010111aa54 T _sub_42C480",
+          "000000010111ad9c T _sub_42C770",
+          "000000010111a388 T _sub_42C7F0",
+          "000000010111a4d8 T _sub_42C820",
+          "000000010111a2d0 T _sub_42C8B0",
+          "000000010111a424 T _sub_42C8E0",
+          "000000010111a574 T _sub_42C910",
+          "000000010111adec T _sub_42C9A0",
+          "000000010111ae74 T _sub_42CA00",
+          "000000010111aefc T _sub_42CB20",
+          "000000010111af84 T _sub_42CB80",
+          "000000010111b02c T _sub_42CBF0",
+          "0000000101174360 T _sub_42CC50",
+          "000000010111aca8 T _sub_42CC70",
+          "000000010111ad30 T _sub_42CCE0"
+        ],
+        "nm_stderr": ""
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server-hd",
+        "sha256": "eb6a88632bb3236507ea8d68e9d710e98c6b5822af5b7db8ee5504a8ae6059b2",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
+        "candidate_global_symbols": [
+          "0000000101113678 T _sub_428810",
+          "0000000101115ba8 T _sub_428890",
+          "000000010111376c T _sub_42ADA0",
+          "0000000101115c6c T _sub_42B810",
+          "000000010111a718 T _sub_42BCE0",
+          "000000010111a7e4 T _sub_42BD50",
+          "000000010111a64c T _sub_42BDC0",
+          "000000010111a8b0 T _sub_42BE30",
+          "000000010111a994 T _sub_42BEA0",
+          "000000010111ac8c T _sub_42C330",
+          "000000010111a38c T _sub_42C360",
+          "000000010111aa74 T _sub_42C480",
+          "000000010111adbc T _sub_42C770",
+          "000000010111a3a8 T _sub_42C7F0",
+          "000000010111a4f8 T _sub_42C820",
+          "000000010111a2f0 T _sub_42C8B0",
+          "000000010111a444 T _sub_42C8E0",
+          "000000010111a594 T _sub_42C910",
+          "000000010111ae0c T _sub_42C9A0",
+          "000000010111ae94 T _sub_42CA00",
+          "000000010111af1c T _sub_42CB20",
+          "000000010111afa4 T _sub_42CB80",
+          "000000010111b04c T _sub_42CBF0",
+          "0000000101174380 T _sub_42CC50",
+          "000000010111acc8 T _sub_42CC70",
+          "000000010111ad50 T _sub_42CCE0"
+        ],
+        "nm_stderr": ""
+      }
+    ]
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9172,
+      "source_lease_sha256": "25ef999dd3987a065a61a661bf9fed99185f347324eb25ae3a4f1259adb68d8d",
+      "exit_code": 0,
+      "elapsed_seconds": 191.658,
+      "test_actions": {
+        "pass": 44842
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_highres_cgocheck2_checkptr2": {
+      "changed_source_paths": [],
+      "source_files": 9172,
+      "source_lease_sha256": "25ef999dd3987a065a61a661bf9fed99185f347324eb25ae3a4f1259adb68d8d",
+      "exit_code": 0,
+      "elapsed_seconds": 191.658,
+      "test_actions": {
+        "pass": 44842
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "protected_regression_tests": {
+    "normal": {
+      "bitstream": 27281,
+      "public_chat_reflection": 9113,
+      "action_names_and_wire": 3249,
+      "marker_movable": 5189,
+      "packet_helpers": 10
+    },
+    "strict": {
+      "bitstream": 27281,
+      "public_chat_reflection": 9113,
+      "action_names_and_wire": 3249,
+      "marker_movable": 5189,
+      "packet_helpers": 10
+    }
+  },
+  "inventory": {
+    "active_C_definitions": 1932,
+    "all_pointer_integer_casts": 2438,
+    "narrow_cast_review_candidates": 2151,
+    "candidate_functions": 236
+  },
+  "evidence_root": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1",
+  "remaining_qualification": [
+    "Clean macOS four-product builds/metadata/help and26-symbol absence verification",
+    "Normal/HD core E2E, functional SaveLoad diagnostics and independent host/peer chat",
+    "Linux amd64 four profiles plus Windows amd64/386 with full archives/logs",
+    "Final preservation/source audit and qualified documentation"
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false
+}

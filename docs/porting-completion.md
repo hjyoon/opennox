@@ -60,6 +60,41 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Closed legacy WOL component cleanup, 2026-11-15
+
+A closed component of 26 old WOL tagged-packet C functions is now archived
+in GAME1_2.c and GAME5_2.c. All 27,054 original body bytes remain; removing
+only the new guards reconstructs both whole incoming C files. Active
+packet envelope/compression/scramble, bitstream and map-TOC owners remain
+unchanged. This cleanup adds no new Go port credit.
+
+The active Clang AST finds no incoming split-function references. All 193
+raw references in both production C files lie in selected bodies or
+comments; source-wide searches identify only public declarations and four
+independent standalone fixture definitions outside those bodies. The four
+stubs remain unchanged. No constructed legacy-name lookup is found in the
+additional source search. All 26 symbols are still present in each of the
+four retained pre-cleanup macOS products; post-build symbol checks remain
+pending. This is a source-reference review, without an arbitrary
+third-party-plugin compatibility claim.
+
+Normal and highres/cgocheck2/checkptr=2 focused checks each pass 44,842 tests
+and one package with zero warnings. Ten packet-helper checks cover the
+actual current C envelope, compression and scramble bodies plus six
+intentional original fault boundaries. Another 27,281 bitstream, 5,189
+marker/movability, 3,249 action-name/wire and 9,113 public chat/reflection
+checks remain passing. Existing tests, original fixtures and goldens are
+unchanged.
+
+The inventory now contains 1,932 active C definitions and 2,151 narrow-cast
+review candidates in 236 functions. The 26 retired definitions account for 193
+review casts in 16 functions. These are review findings, including safe C
+and scalar tokens, without a completion denominator. The qualified split
+Go-entry count remains 130; clean products, runtime/CI qualification,
+the remaining twelve files, all nine final chapter 1-3 campaign audits and
+the inherited public SaveLoad pixel comparison remain open. Details are in
+`docs/split-wol-unused-cleanup-progress-20261115.json`.
+
 ### Native Player markers and Object movability, 2026-11-15
 
 Two GAME1_1/GAME4_2 public C entries now share the existing typed Go

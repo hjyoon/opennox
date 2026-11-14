@@ -512,6 +512,7 @@ char* sub_4285C0(short* a1) {
 }
 
 //----- (00428810) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_428810
 int sub_428810(int a1, int a2) {
 	uint16_t* v2; // esi
 	uint16_t* v3; // edi
@@ -528,8 +529,11 @@ int sub_428810(int a1, int a2) {
 	free(v3);
 	return v4;
 }
+#endif
+
 
 //----- (00428890) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_428890
 int sub_428890(short* a1) {
 	uint16_t* v1; // esi
 	uint16_t* v2; // edi
@@ -546,6 +550,8 @@ int sub_428890(short* a1) {
 	free(v2);
 	return v3;
 }
+#endif
+
 
 //----- (004289D0) --------------------------------------------------------
 void* sub_4289D0(void** a1) {
@@ -2045,6 +2051,7 @@ uint8_t* sub_42AC50(uint8_t* a1, size_t* a2) {
 }
 
 //----- (0042ADA0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42ADA0
 uint16_t* sub_42ADA0(int a1, int a2, short a3, unsigned int* a4) {
 	int v4;           // esi
 	int v5;           // edi
@@ -2554,8 +2561,11 @@ uint16_t* sub_42ADA0(int a1, int a2, short a3, unsigned int* a4) {
 	sub_42C330(v118);
 	return v115;
 }
+#endif
+
 
 //----- (0042B810) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42B810
 uint16_t* sub_42B810(short* a1, unsigned int* a2) {
 	short* v2;       // esi
 	int v3;          // edi
@@ -2792,8 +2802,11 @@ uint16_t* sub_42B810(short* a1, unsigned int* a2) {
 	sub_42C330(v59);
 	return v57;
 }
+#endif
+
 
 //----- (0042BCE0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BCE0
 int sub_42BCE0(uint32_t* this, char* a2, char a3) {
 	uint32_t* v3; // esi
 	void* v4;     // eax
@@ -2808,8 +2821,11 @@ int sub_42BCE0(uint32_t* this, char* a2, char a3) {
 	}
 	return sub_42C360(v3, v5);
 }
+#endif
+
 
 //----- (0042BD50) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BD50
 int sub_42BD50(uint32_t* this, char* a2, char a3) {
 	uint32_t* v3; // esi
 	void* v4;     // eax
@@ -2824,8 +2840,11 @@ int sub_42BD50(uint32_t* this, char* a2, char a3) {
 	}
 	return sub_42C360(v3, v5);
 }
+#endif
+
 
 //----- (0042BDC0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BDC0
 int sub_42BDC0(uint32_t* this, char* a2, char a3) {
 	uint32_t* v3; // esi
 	void* v4;     // eax
@@ -2840,8 +2859,11 @@ int sub_42BDC0(uint32_t* this, char* a2, char a3) {
 	}
 	return sub_42C360(v3, v5);
 }
+#endif
+
 
 //----- (0042BE30) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BE30
 int sub_42BE30(uint32_t* this, char* a2, const char* a3) {
 	uint32_t* v3; // esi
 	void* v4;     // eax
@@ -2856,8 +2878,11 @@ int sub_42BE30(uint32_t* this, char* a2, const char* a3) {
 	}
 	return sub_42C360(v3, v5);
 }
+#endif
+
 
 //----- (0042BEA0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42BEA0
 int sub_42BEA0(uint32_t* this, char* a2, const void* a3, unsigned short a4) {
 	uint32_t* v4; // esi
 	void* v5;     // eax
@@ -2872,8 +2897,11 @@ int sub_42BEA0(uint32_t* this, char* a2, const void* a3, unsigned short a4) {
 	}
 	return sub_42C360(v4, v6);
 }
+#endif
+
 
 //----- (0042C330) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C330
 void sub_42C330(uint32_t* this) {
 	uint32_t* v1; // esi
 	uint32_t* v2; // edi
@@ -2890,9 +2918,12 @@ void sub_42C330(uint32_t* this) {
 		} while (v2);
 	}
 }
+#endif
+
 // 42CC50: using guessed type int sub_42CC50(uint32_t);
 
 //----- (0042C360) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C360
 int sub_42C360(uint32_t* this, int a2) {
 	int result; // eax
 
@@ -2901,8 +2932,11 @@ int sub_42C360(uint32_t* this, int a2) {
 	this[1] = a2;
 	return result;
 }
+#endif
+
 
 //----- (0042C480) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C480
 uint16_t* sub_42C480(uint32_t* this, unsigned int* a2) {
 	uint32_t* v2;    // ebx
 	int i;           // eax
@@ -2941,8 +2975,11 @@ uint16_t* sub_42C480(uint32_t* this, unsigned int* a2) {
 	} while (v6);
 	return v5;
 }
+#endif
+
 
 //----- (0042C770) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C770
 int sub_42C770(void** this) {
 	void** v1;  // ebx
 	int result; // eax
@@ -2957,8 +2994,11 @@ int sub_42C770(void** this) {
 	v1[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042C7F0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C7F0
 int sub_42C7F0(int this, char* a2, char a3) {
 	int v3; // esi
 
@@ -2967,8 +3007,11 @@ int sub_42C7F0(int this, char* a2, char a3) {
 	sub_42C9A0((void**)this, a2, a3);
 	return v3;
 }
+#endif
+
 
 //----- (0042C820) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C820
 int sub_42C820(int this, char* a2, char a3) {
 	int v3; // esi
 
@@ -2977,8 +3020,11 @@ int sub_42C820(int this, char* a2, char a3) {
 	sub_42CA00((void**)this, a2, a3);
 	return v3;
 }
+#endif
+
 
 //----- (0042C8B0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C8B0
 int sub_42C8B0(int this, char* a2, char a3) {
 	int v3; // esi
 
@@ -2987,8 +3033,11 @@ int sub_42C8B0(int this, char* a2, char a3) {
 	sub_42CB20((void**)this, a2, a3);
 	return v3;
 }
+#endif
+
 
 //----- (0042C8E0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C8E0
 int sub_42C8E0(int this, char* a2, const char* a3) {
 	int v3; // esi
 
@@ -2997,8 +3046,11 @@ int sub_42C8E0(int this, char* a2, const char* a3) {
 	sub_42CB80((void**)this, a2, a3);
 	return v3;
 }
+#endif
+
 
 //----- (0042C910) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C910
 int sub_42C910(int this, char* a2, const void* a3, unsigned short a4) {
 	int v4; // esi
 
@@ -3007,8 +3059,11 @@ int sub_42C910(int this, char* a2, const void* a3, unsigned short a4) {
 	sub_42CBF0((void**)this, a2, a3, a4);
 	return v4;
 }
+#endif
+
 
 //----- (0042C9A0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42C9A0
 char* sub_42C9A0(void** this, char* a2, char a3) {
 	void** v3;       // ebx
 	char* result;    // eax
@@ -3026,8 +3081,11 @@ char* sub_42C9A0(void** this, char* a2, char a3) {
 	v3[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042CA00) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CA00
 char* sub_42CA00(void** this, char* a2, char a3) {
 	void** v3;       // ebx
 	char* result;    // eax
@@ -3046,8 +3104,11 @@ char* sub_42CA00(void** this, char* a2, char a3) {
 	v3[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042CB20) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CB20
 char* sub_42CB20(void** this, char* a2, char a3) {
 	void** v3;       // ebx
 	char* result;    // eax
@@ -3066,8 +3127,11 @@ char* sub_42CB20(void** this, char* a2, char a3) {
 	v3[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042CB80) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CB80
 char* sub_42CB80(void** this, char* a2, const char* a3) {
 	void** v3;         // ebx
 	unsigned int v4;   // kr08_4
@@ -3087,8 +3151,11 @@ char* sub_42CB80(void** this, char* a2, const char* a3) {
 	v3[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042CBF0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CBF0
 void* sub_42CBF0(void** this, char* a2, const void* a3, unsigned short a4) {
 	void** v4;       // ebx
 	void* result;    // eax
@@ -3106,8 +3173,11 @@ void* sub_42CBF0(void** this, char* a2, const void* a3, unsigned short a4) {
 	v4[3] = 0;
 	return result;
 }
+#endif
+
 
 //----- (0042CC70) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CC70
 uint16_t sub_42CC70(int this) {
 	int v1;          // esi
 	uint16_t v2;     // ax
@@ -3134,8 +3204,11 @@ uint16_t sub_42CC70(int this) {
 	*(uint16_t*)(v1 + 6) = result;
 	return result;
 }
+#endif
+
 
 //----- (0042CCE0) --------------------------------------------------------
+#if 0 // Closed legacy WOL component: see split-wol-unused-cleanup-20261115-v1 review; sub_42CCE0
 short sub_42CCE0(uint16_t* this) {
 	uint16_t* v1; // esi
 	uint16_t v2;  // ax
@@ -3164,6 +3237,8 @@ short sub_42CCE0(uint16_t* this) {
 	}
 	return v4;
 }
+#endif
+
 
 //----- (0042EB90) --------------------------------------------------------
 int sub_42EB90(int a1) {

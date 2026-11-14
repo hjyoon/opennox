@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME C files: six qualified incremental native batches and unreachable edit cleanup. GAME1_3 alone has zero active original C definitions; the other twelve and whole-game completion remain partial.",
+  "scope": "13 split GAME files: six fully qualified native batches, prior edit cleanup, then a closed26-function WOL component archived with focused macOS checks passed. Product/platform qualification pending. GAME1_3 alone has zero active original C definitions.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -399,10 +399,10 @@
   "remaining_qualification": [],
   "whole_game_100_percent": false,
   "qualified_engine_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b",
-  "current_active_total": 1958,
+  "current_active_total": 1932,
   "current_active_functions": {
     "GAME1_1.c": 181,
-    "GAME1_2.c": 122,
+    "GAME1_2.c": 97,
     "GAME1_3.c": 0,
     "GAME2_1.c": 235,
     "GAME2_2.c": 102,
@@ -413,7 +413,7 @@
     "GAME4_1.c": 105,
     "GAME4_2.c": 336,
     "GAME4_3.c": 163,
-    "GAME5_2.c": 79
+    "GAME5_2.c": 78
   },
   "current_inventory": [
     {
@@ -426,11 +426,11 @@
     },
     {
       "file": "src/legacy/GAME1_2.c",
-      "active_functions": 122,
-      "pointer_integer_casts": 352,
-      "narrow_pointer_casts": 330,
-      "functions_with_narrow_casts": 27,
-      "source_sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6"
+      "active_functions": 97,
+      "pointer_integer_casts": 159,
+      "narrow_pointer_casts": 137,
+      "functions_with_narrow_casts": 11,
+      "source_sha256": "20599c6a211731b40327c4fd2c6f9c8e5296d2e72680db57fdf10bcf2b13e378"
     },
     {
       "file": "src/legacy/GAME1_3.c",
@@ -514,18 +514,18 @@
     },
     {
       "file": "src/legacy/GAME5_2.c",
-      "active_functions": 79,
+      "active_functions": 78,
       "pointer_integer_casts": 25,
       "narrow_pointer_casts": 21,
       "functions_with_narrow_casts": 9,
-      "source_sha256": "ca4337e2b3e4343c9e34617d47bf34b47d498665d430c949bc06a5f9dcfe0113"
+      "source_sha256": "1192ff3c49dd7e2af5c23d51ba17b8ed9a68f4eebaa8e516830e71057baf58ff"
     }
   ],
   "inventory_limit": "Definition counts include native C and Go forwarders; they are not an unported-function denominator. Narrow casts include scalar tokens and need semantic review; candidate counts are not proven bugs or completion percentages.",
   "casts_needing_semantic_review": {
-    "narrow_pointer_integer_casts": 2344,
-    "functions_with_narrow_casts": 252,
-    "all_pointer_integer_casts": 2631
+    "narrow_pointer_integer_casts": 2151,
+    "functions_with_narrow_casts": 236,
+    "all_pointer_integer_casts": 2438
   },
   "new_public_native_dispatch_entries": [
     {
@@ -968,7 +968,7 @@
   },
   "remaining_work": [
     "Continue the other 12 split-file native owners/callbacks; the inventory includes already-native C and Go forwarders.",
-    "Review and implement the prepared26-function WOL component cleanup/native ownership work, then continue reachable pointer and callback ports across the other twelve split files. The read-only review adds no Go port credit.",
+    "Finish closed-WOL component product/platform qualification, then continue reachable native-pointer/callback ports across the remaining twelve split files.",
     "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
     "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
   ],
@@ -981,14 +981,14 @@
   ],
   "all_13_split_files_ported": false,
   "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only",
-  "latest_progress_document": "docs/split-player-marker-movable-native-progress-20261115.json",
+  "latest_progress_document": "docs/split-wol-unused-cleanup-progress-20261115.json",
   "current_git": {
     "local_branch": "port/go1.27-multiarch",
     "push_target": "origin/port/go1.27-multiarch",
     "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
     "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
   },
-  "new_Go_entries_scope": "First43 + audio74 + public chat/reflection2 + bit cursors/encoder5 + action names4 + Player markers/Object movability2 =130 qualified implemented entries. Const C thunks and safe native C remain; unreachable edit cleanup adds no port credit.",
+  "new_Go_entries_scope": "130 qualified implemented split Go entries. Closed WOL26-function retirement adds zero Go port credit; product/platform qualification of the source cleanup is pending.",
   "cumulative_new_Go_entry_count": 130,
   "prepared_next_audio_baseline_status": "The prepared baseline is now consumed by the native audio follow-up; see latest_progress_document.",
   "first_batch_qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
@@ -1408,8 +1408,10 @@
     "incoming_active_split_references": 0,
     "independent_fixture_stub_definitions_preserved": 4,
     "four_prior_macOS_products_still_contain_all_symbols": true,
-    "retirement_started": false,
+    "retirement_started": true,
     "new_Go_port_credit": 0,
-    "scope": "Read-only source-reference and retained-product symbol review. Actual code retirement/native implementation and validation remain future work."
+    "scope": "Read-only source-reference and retained-product symbol review. Actual code retirement/native implementation and validation remain future work.",
+    "source_retirement_applied": true,
+    "qualification_complete": false
   }
 }

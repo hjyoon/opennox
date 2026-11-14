@@ -82,17 +82,39 @@ Normal and highres/cgocheck2/checkptr=2 focused checks each pass 9,131 tests
 and three packages with zero warnings. All 9,151 inputs remain unchanged
 through both runs, shared lease
 `098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce`.
-Clean products, product E2E and six platform jobs are still pending for this
-batch; the previous audio qualification below remains the latest completed
-engine boundary.
+The qualified engine is `cd62abc6d811d76851ae0d613a12619f58121478`,
+pushed to `origin/port/go1.27-multiarch`. Clean macOS client, HD client,
+server and HD server products pass build, metadata and help checks with
+zero warnings. Normal/HD projectile FX and physical Urchin/Pixie combat
+pass four product E2E runs. Both independent host/peer chat profiles pass
+eight own submissions, four received peer messages, one host reply, two
+cancellations and two empty entries, with natural exits.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 828,708 each | 57 each |
+| Linux amd64 server / HD | 822,597 each | 7 each |
+| Windows amd64 server | 820,582 | 11 |
+| Windows 386 server | 800,852 | 94 |
+
+All six jobs and their full SHA-verified archives pass with zero compiler
+warnings. Each archive independently confirms 9,113 public-C matrix checks,
+the native x87 cross-reference enabled and the existing FLD probe passing.
+The server also passes 133,405 separate default-link damage checks. The
+complete audited record is
+`ROOT/split-game5-public-native-20261114-v1/qualified-public-entries-v1.json`.
 
 Three original packed-light shadows have no active references in the audited
 translation units and are now archived. Their existing native Drawable
 replacements remain in use. This is separate from the two new Go entries.
 Removing only the five new guards reconstructs both incoming C files exactly.
 Completed test copies were converted to independent APFS copy-on-write files:
-78 paths and all 6,771,717,628 bytes keep their original hashes and metadata.
-Assets, Save, products, archives and active executables remain preserved.
+90 paths and all 8,012,596,884 bytes retain their SHA-256 hashes. The inactive
+build cache was then cleared after verifying 38 retained files; modules,
+assets, Save, products, archives and executables remain preserved. The
+original 4,649 asset/Save files, 387 tracked E2E inputs and twelve checked
+old/current products have no changes. The inherited public SaveLoad pixel
+comparison remains open; no golden or existing input was promoted.
 
 The comparable inventory now has 1,968 active C definitions and 2,404 narrow
 cast candidates across 263 functions. Definitions include native C and Go

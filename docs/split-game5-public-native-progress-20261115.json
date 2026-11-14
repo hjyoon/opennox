@@ -1,7 +1,7 @@
 {
   "scope": "Two GAME5_2 public C entries now use native Go paths; three unused packed-light shadows retired separately. Other twelve split files and whole-game completion remain partial.",
   "base_HEAD": "028620c931f8bc05628b776c057af4d7923a62e1",
-  "code_revision": null,
+  "code_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
   "git": {
     "local_branch": "port/go1.27-multiarch",
     "push_target": "origin/port/go1.27-multiarch",
@@ -378,14 +378,405 @@
     "products_and_active_stage_untouched": true,
     "skipped": []
   },
-  "remaining_qualification": [
-    "clean four-product builds",
-    "normal/HD projectile/pixie product E2E",
-    "normal/HD independent peer chat",
-    "Linux four-product and Windows amd64/386 CI including native x87 reference"
-  ],
+  "remaining_qualification": [],
   "all_13_split_files_ported": false,
   "whole_game_100_percent": false,
   "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only; chapter 4+ excluded",
-  "inherited_public_SaveLoad_pixel_golden_pass": false
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "qualification_complete": true,
+  "qualification": {
+    "engine_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+    "qualified_UTC": "2026-11-14T16:02:50.885931+00:00",
+    "full_record": "ROOT/split-game5-public-native-20261114-v1/qualified-public-entries-v1.json",
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985874,
+        "sha256": "710fd6239e76453e9f2c100f3b04abc369a518afafd72786063a82aa259c2789",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70101458,
+        "sha256": "d32701ba5261358763f2831840c350ad268f59951b87cdc37733d59f9d017cdf",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66585362,
+        "sha256": "df74b94052d7b43365b457eca43b6feb98f24f09cc3275f86437e6d4d0b1ab11",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66684434,
+        "sha256": "4e79ee7f677208fde6974b0609912904b84af0ab7d1e0ebd2189a0556006923a",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      }
+    ],
+    "product_E2E": [
+      {
+        "profile": "normal",
+        "scenario": "host-game-projectile-fx",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 48.666,
+        "warnings": 0
+      },
+      {
+        "profile": "normal",
+        "scenario": "host-game-urchin-pixie-swarm",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 50.256,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-projectile-fx",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 48.658,
+        "warnings": 0
+      },
+      {
+        "profile": "highres",
+        "scenario": "host-game-urchin-pixie-swarm",
+        "audio": "mock",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 50.265,
+        "warnings": 0
+      }
+    ],
+    "independent_peer_chat": {
+      "normal": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "cd62abc6d811d76851ae0d613a12619f58121478",
+        "product_sha256": "710fd6239e76453e9f2c100f3b04abc369a518afafd72786063a82aa259c2789",
+        "elapsed_seconds": 288.508,
+        "forced_processes": []
+      },
+      "highres": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "cd62abc6d811d76851ae0d613a12619f58121478",
+        "product_sha256": "d32701ba5261358763f2831840c350ad268f59951b87cdc37733d59f9d017cdf",
+        "elapsed_seconds": 290.278,
+        "forced_processes": []
+      }
+    },
+    "CI": [
+      {
+        "profile": "Linux amd64 client",
+        "job_id": 132492305716,
+        "run_id": 43609862313,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609862313",
+        "artifact_id": 14120117872,
+        "sha256": "61158b25df1c5e5b7f62b1a6c28abf375ad72f19202cf52bac81c91ea2123ed1",
+        "bytes": 209986926,
+        "compiled_package_executables": 40,
+        "test_actions": {
+          "pass": 828708,
+          "skip": 57
+        },
+        "package_actions": {
+          "pass": 40,
+          "skip": 21
+        },
+        "default_link_damage": null,
+        "native_matrix": {
+          "artifact_id": 14120117872,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "61158b25df1c5e5b7f62b1a6c28abf375ad72f19202cf52bac81c91ea2123ed1",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 428542482,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      },
+      {
+        "profile": "Linux amd64 client HD",
+        "job_id": 132492305318,
+        "run_id": 43609862313,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609862313",
+        "artifact_id": 14119968999,
+        "sha256": "7d6f7980727793c30421921de8e0550c52d899e5801b3f1e7ceb9824842ec792",
+        "bytes": 210359764,
+        "compiled_package_executables": 40,
+        "test_actions": {
+          "pass": 828708,
+          "skip": 57
+        },
+        "package_actions": {
+          "pass": 40,
+          "skip": 21
+        },
+        "default_link_damage": null,
+        "native_matrix": {
+          "artifact_id": 14119968999,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "7d6f7980727793c30421921de8e0550c52d899e5801b3f1e7ceb9824842ec792",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 428542393,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      },
+      {
+        "profile": "Linux amd64 server",
+        "job_id": 132492305491,
+        "run_id": 43609862313,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609862313",
+        "artifact_id": 14120184270,
+        "sha256": "5aaffd72304cc0e1b33ad5f3eaa86044b9d98696b3daec32e23e6bd275c2f0b7",
+        "bytes": 253773062,
+        "compiled_package_executables": 36,
+        "test_actions": {
+          "pass": 822597,
+          "skip": 7
+        },
+        "package_actions": {
+          "pass": 36,
+          "skip": 22
+        },
+        "default_link_damage": {
+          "test_buildmode": "default",
+          "MALLOC_MMAP_THRESHOLD_": "0",
+          "test_actions": {
+            "pass": 133405
+          },
+          "package_actions": {
+            "github.com/opennox/opennox/v1": "pass",
+            "github.com/opennox/opennox/v1/server": "pass",
+            "github.com/opennox/opennox/v1/legacy": "pass"
+          },
+          "exit_code": 0
+        },
+        "native_matrix": {
+          "artifact_id": 14120184270,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "5aaffd72304cc0e1b33ad5f3eaa86044b9d98696b3daec32e23e6bd275c2f0b7",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 422559134,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      },
+      {
+        "profile": "Linux amd64 server HD",
+        "job_id": 132492305543,
+        "run_id": 43609862313,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609862313",
+        "artifact_id": 14120083076,
+        "sha256": "bc9141c44d1d97b2618bb6ff9fa87dd07772b5ed5ae51301f3d0df384590787e",
+        "bytes": 197320876,
+        "compiled_package_executables": 36,
+        "test_actions": {
+          "pass": 822597,
+          "skip": 7
+        },
+        "package_actions": {
+          "pass": 36,
+          "skip": 22
+        },
+        "default_link_damage": null,
+        "native_matrix": {
+          "artifact_id": 14120083076,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "bc9141c44d1d97b2618bb6ff9fa87dd07772b5ed5ae51301f3d0df384590787e",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 422559076,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      },
+      {
+        "profile": "Windows amd64 server",
+        "job_id": 132492219435,
+        "run_id": 43609835806,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609835806",
+        "artifact_id": 14119354853,
+        "sha256": "4cb3e6828a764b92780c375a20f50511360a595c5f1e83c8fbe42d06e089a2e8",
+        "bytes": 160511954,
+        "compiled_package_executables": 3,
+        "test_actions": {
+          "pass": 820582,
+          "skip": 11
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "default_link_damage": null,
+        "native_matrix": {
+          "artifact_id": 14119354853,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "4cb3e6828a764b92780c375a20f50511360a595c5f1e83c8fbe42d06e089a2e8",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 648230540,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      },
+      {
+        "profile": "Windows 386 server",
+        "job_id": 132492219559,
+        "run_id": 43609835806,
+        "url": "https://github.com/hjyoon/opennox/actions/runs/43609835806",
+        "artifact_id": 14120197268,
+        "sha256": "063a3ffbd89b9907638a4dba4e635e53f11403505f603483b7da5377f8f99eea",
+        "bytes": 154906138,
+        "compiled_package_executables": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 800852
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "default_link_damage": null,
+        "native_matrix": {
+          "artifact_id": 14120197268,
+          "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478",
+          "archive_sha256": "063a3ffbd89b9907638a4dba4e635e53f11403505f603483b7da5377f8f99eea",
+          "public_C_matrix_actions": {
+            "pass": 9113
+          },
+          "terminal_tests": {
+            "TestGame5PublicNativePlayerLayoutCABI": "pass",
+            "TestGame5PublicNativeOriginalCABI": "pass"
+          },
+          "native_x87_log": [
+            "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          ],
+          "existing_independent_FLD_probe": "pass",
+          "bytes_scanned": 635087086,
+          "scope": "Every public C original case runs at three foreign placements; amd64/386 also execute the independent x87 sequence for every reflection row. The existing native FLD signaling-NaN control passes separately."
+        },
+        "compiler_warnings": 0
+      }
+    ],
+    "compiler_warnings": 0
+  },
+  "cleanup_records": [
+    {
+      "utc": "2026-11-14T15:06:43.350288+00:00",
+      "completed_copies": 78,
+      "logical_bytes_preserved": 6771717628,
+      "physical_available_before": 313753600,
+      "physical_available_after": 6758400000,
+      "elapsed_seconds": 22.55,
+      "all_original_paths_preserved": true,
+      "products_and_active_stage_untouched": true,
+      "skipped": []
+    },
+    {
+      "utc": "2026-11-14T15:50:40.167946+00:00",
+      "completed_copies": 12,
+      "logical_bytes_preserved": 1240879256,
+      "physical_available_before": 2052096000,
+      "physical_available_after": 3293184000,
+      "elapsed_seconds": 3.38,
+      "all_original_paths_preserved": true,
+      "products_and_active_stage_untouched": true,
+      "skipped": []
+    }
+  ],
+  "inactive_build_cache_cleanup": {
+    "utc": "2026-11-14T15:51:34.444230+00:00",
+    "exit_code": 0,
+    "before": "3683732\t/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "after": "8\t/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "preserved_programs_verified": 38,
+    "elapsed_seconds": 4.263
+  },
+  "preservation": {
+    "original_asset_and_Save_files": 4649,
+    "original_changes": [],
+    "tracked_E2E_files": 387,
+    "tracked_E2E_changes": [],
+    "old_and_current_products_checked": 12,
+    "product_changes": [],
+    "full_record": "ROOT/split-game5-public-native-20261114-v1/final-input-and-product-preservation-v1.json",
+    "all_six_CI_full_archives_SHA_verified": true,
+    "initial_fidelity_failures_and_executables_preserved": true
+  },
+  "next_cleanup": {
+    "stage": "ROOT/split-unreachable-native-20261115-v1",
+    "read_only": true,
+    "unreachable_tails": 1,
+    "tail_bytes": 1096,
+    "new_Go_port_credit": 0,
+    "instruction": "Preserve the unconditional native bridge; archive its unreachable decoded tail only after checking references. Verify the private key helper has no caller outside that tail."
+  }
 }

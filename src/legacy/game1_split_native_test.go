@@ -18,7 +18,7 @@ import (
 
 func g1sIsolate(t *testing.T) {
 	t.Helper()
-	var words [7]uint32
+	var words [9]uint32
 	for i := range words {
 		words[i] = g1sWord(i, 0, false)
 	}

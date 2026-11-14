@@ -9,6 +9,8 @@ extern uint32_t dword_5d4594_816368, dword_5d4594_816372, dword_5d4594_816376;
 extern uint32_t dword_587000_93156;
 extern nox_window* dword_5d4594_816412;
 extern uint32_t nox_color_black_2650656;
+extern uint32_t nox_color_white_2523948, dword_5d4594_825736;
+extern int nox_win_width;
 static uint32_t* g1s_word(int slot) {
  switch(slot) {
  case 0:return &dword_5d4594_815748;
@@ -17,6 +19,8 @@ static uint32_t* g1s_word(int slot) {
  case 3:return &dword_5d4594_816372;
  case 4:return &dword_5d4594_816376;
  case 5:return &dword_587000_93156;
+ case 7:return &nox_color_white_2523948;
+ case 8:return &dword_5d4594_825736;
  default:return &nox_color_black_2650656;
  }
 }
@@ -37,6 +41,7 @@ static int g1s_call(int op,int value,void* data) {
  case 12:return sub_43DC10();
  case 13:return sub_43DC30();
  case 14:return sub_43E8C0(value);
+ case 15:return nox_xxx_drawMessageLines_445530();
  default:return -12345;
  }
 }
@@ -88,4 +93,10 @@ func g1sSwapBackdrop(p unsafe.Pointer) unsafe.Pointer {
 func g1sBackdrop() unsafe.Pointer { return unsafe.Pointer(C.dword_5d4594_816412) }
 func g1sFormat(addr string, port uint16, dst unsafe.Pointer) int32 {
 	return int32(C.nox_sprintAddrPort_43BC80(internCStr(addr), C.ushort(port), (*C.char)(dst)))
+}
+
+func g1sSwapWidth(value int32) int32 {
+	old := C.nox_win_width
+	C.nox_win_width = C.int(value)
+	return int32(old)
 }

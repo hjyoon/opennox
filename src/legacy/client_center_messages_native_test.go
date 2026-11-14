@@ -133,6 +133,19 @@ func clientCenterMessages202(t *testing.T, mode string) {
 	}
 	_, tail, _ := strings.Cut(string(source), first)
 	body, _, _ := strings.Cut(tail, last)
+	// These exact incoming bodies now supply the archived C reference. The
+	// live C -> Go entries are checked against the same complete rows below.
+	for _, name := range []string{"sub_445450", "nox_xxx_drawMessageLines_445530"} {
+		marker := "#if 0 // Ported to game1_split_native.go: " + name + "\n"
+		if strings.Count(body, marker) != 1 {
+			t.Fatal("ambiguous archived HUD reference", name)
+		}
+		body = strings.Replace(body, marker, "", 1)
+	}
+	if strings.Count(body, "\n#endif\n") != 2 {
+		t.Fatal("unexpected archived HUD boundaries")
+	}
+	body = strings.ReplaceAll(body, "\n#endif\n", "\n")
 	fixture, err := os.ReadFile("testdata/client_center_messages_test.c")
 	if err != nil {
 		t.Fatal(err)
@@ -156,6 +169,7 @@ func clientCenterMessages202(t *testing.T, mode string) {
 	} else {
 		t.Log(strings.TrimSpace(string(out)))
 	}
+	g1sCompareCenterNative(t, mode, input.Bytes())
 }
 
 func TestClientCenterClear445450NativeOriginal(t *testing.T) { clientCenterMessages202(t, "clear") }

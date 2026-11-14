@@ -53,6 +53,13 @@ type game1SplitHooks struct {
 	NewBackdrop   func() *nox_window
 	DestroyWindow func(*nox_window) int32
 	StringWidth   func(*wchar2_t) int32
+	CenterMemory  func(uintptr, uintptr) unsafe.Pointer
+	CopyText      func(*wchar2_t, *wchar2_t) *wchar2_t
+	Viewport      func() (int32, int32)
+	TextColor     func(uint32)
+	DrawText      func(*wchar2_t, int32, int32) int32
+	FontHeight    func() int32
+	Frame         func() uint32
 }
 
 var game1SplitTestHooks *game1SplitHooks
@@ -325,9 +332,15 @@ func game1ByteWide(text string) ([]uint16, func()) {
 func sub_445450() *wchar2_t {
 	var result *wchar2_t
 	for i := uintptr(0); i < 3; i++ {
-		result = C.nox_wcscpy((*wchar2_t)(memmap.PtrOff(0x5D4594, 823804+644*i)), (*wchar2_t)(memmap.PtrOff(0x5D4594, 825740)))
-		*memmap.PtrUint32(0x5D4594, 824440+644*i) = 0
-		*memmap.PtrUint8(0x5D4594, 824444+644*i) = 0
+		dst := (*wchar2_t)(game1CenterMemory(0x5D4594, 823804+644*i))
+		src := (*wchar2_t)(game1CenterMemory(0x5D4594, 825740))
+		if h := game1SplitTestHooks; h != nil && h.CopyText != nil {
+			result = h.CopyText(dst, src)
+		} else {
+			result = C.nox_wcscpy(dst, src)
+		}
+		*(*uint32)(game1CenterMemory(0x5D4594, 824440+644*i)) = 0
+		*(*byte)(game1CenterMemory(0x5D4594, 824444+644*i)) = 0
 	}
 	C.dword_5d4594_825736 = 0
 	return result
@@ -335,30 +348,31 @@ func sub_445450() *wchar2_t {
 
 //export nox_xxx_drawMessageLines_445530
 func nox_xxx_drawMessageLines_445530() C.int {
-	r := C.nox_draw_getViewport_437250()
-	y := C.int(3*r.height/4 + r.y1 - 15)
+	height, top := game1CenterViewport()
+	y := 3*height/4 + top - 15
 	index := uint32(C.dword_5d4594_825736)
 	result := C.int(0)
 	for line := 0; line < 3; line++ {
-		result = C.int(C.gameFrame())
-		if memmap.Uint32(0x5D4594, 824440+uintptr(644*index)) < uint32(C.gameFrame()) {
+		result = C.int(game1CenterFrame())
+		if *(*uint32)(game1CenterMemory(0x5D4594, 824440+uintptr(644*index))) < game1CenterFrame() {
 			break
 		}
-		C.nox_xxx_drawSetTextColor_434390(C.int(C.nox_color_black_2650656))
-		text := (*wchar2_t)(memmap.PtrOff(0x5D4594, 823804+uintptr(644*index)))
-		var width C.int
-		C.nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
-		x := (C.nox_win_width - width) / 2
+		game1CenterColor(uint32(C.nox_color_black_2650656))
+		text := (*wchar2_t)(game1CenterMemory(0x5D4594, 823804+uintptr(644*index)))
+		width := game1CenterWidth(text)
+		x := (int32(C.nox_win_width) - width) / 2
 		for shadow := uintptr(0); shadow < 4; shadow++ {
-			C.nox_xxx_drawString_43F6E0(nil, text, x+C.int(memmap.Uint32(0x587000, 107848+8*shadow)), y+C.int(memmap.Uint32(0x587000, 107852+8*shadow)))
+			sx := *(*int32)(game1CenterMemory(0x587000, 107848+8*shadow))
+			sy := *(*int32)(game1CenterMemory(0x587000, 107852+8*shadow))
+			game1CenterDraw(text, x+sx, y+sy)
 		}
-		color := C.nox_color_white_2523948
+		color := uint32(C.nox_color_white_2523948)
 		if line != 0 {
-			color = C.uint32_t(memmap.Uint32(0x5D4594, 2597996))
+			color = *(*uint32)(game1CenterMemory(0x5D4594, 2597996))
 		}
-		C.nox_xxx_drawSetTextColor_434390(C.int(color))
-		C.nox_xxx_drawString_43F6E0(nil, text, x, y)
-		y -= 4 + C.nox_xxx_guiFontHeightMB_43F320(nil)
+		game1CenterColor(color)
+		game1CenterDraw(text, x, y)
+		y -= 4 + game1CenterFontHeight()
 		result = C.int(index)
 		if index == 0 {
 			index = 2
@@ -367,6 +381,54 @@ func nox_xxx_drawMessageLines_445530() C.int {
 		}
 	}
 	return result
+}
+
+func game1CenterMemory(base, off uintptr) unsafe.Pointer {
+	if h := game1SplitTestHooks; h != nil && h.CenterMemory != nil {
+		return h.CenterMemory(base, off)
+	}
+	return memmap.PtrOff(base, off)
+}
+func game1CenterViewport() (int32, int32) {
+	if h := game1SplitTestHooks; h != nil && h.Viewport != nil {
+		return h.Viewport()
+	}
+	r := C.nox_draw_getViewport_437250()
+	return int32(r.height), int32(r.y1)
+}
+func game1CenterFrame() uint32 {
+	if h := game1SplitTestHooks; h != nil && h.Frame != nil {
+		return h.Frame()
+	}
+	return uint32(C.gameFrame())
+}
+func game1CenterColor(color uint32) {
+	if h := game1SplitTestHooks; h != nil && h.TextColor != nil {
+		h.TextColor(color)
+		return
+	}
+	C.nox_xxx_drawSetTextColor_434390(C.int(color))
+}
+func game1CenterWidth(text *wchar2_t) int32 {
+	if h := game1SplitTestHooks; h != nil && h.StringWidth != nil {
+		return h.StringWidth(text)
+	}
+	var width C.int
+	C.nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
+	return int32(width)
+}
+func game1CenterDraw(text *wchar2_t, x, y int32) {
+	if h := game1SplitTestHooks; h != nil && h.DrawText != nil {
+		h.DrawText(text, x, y)
+		return
+	}
+	C.nox_xxx_drawString_43F6E0(nil, text, C.int(x), C.int(y))
+}
+func game1CenterFontHeight() int32 {
+	if h := game1SplitTestHooks; h != nil && h.FontHeight != nil {
+		return h.FontHeight()
+	}
+	return int32(C.nox_xxx_guiFontHeightMB_43F320(nil))
 }
 
 //export nox_xxx_guiChatMode_4456E0

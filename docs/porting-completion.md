@@ -55,7 +55,7 @@ completion requirements.
 
 ## Current findings
 
-### Split GAME C files: first native entries, 2026-11-14
+### Split GAME C files: qualified first native batch, 2026-11-14
 
 The 13 split files contain 2,093 incoming active C definitions after excluding
 11 control statements accidentally counted by the old regular expression.
@@ -76,15 +76,66 @@ that their only callers were already disabled. The active native Copy/Fill
 paths remain. Their 47,926 original bytes are preserved; retiring these
 shadows is recorded separately from the new Go algorithms.
 
-The unmodified incoming C supplies 774 sealed scalar/text cases. The focused
-C ABI suite passes 779 tests with zero compiler warnings. Before porting, the
-original backdrop and audio-end bodies independently faulted on foreign
-addresses above 4 GiB. The backdrop now passes native pointer/field/canary
-checks; the two GAME1_3 audio completion/refill functions remain open.
-Strict/common/platform/product qualification for this batch is pending.
-The source map and exact limits are in
-`docs/split-game-native-progress-20261114.json`. Whole-game completion and all
-nine campaign final audits remain open.
+The public GAME4_3 player-attack entry now shares the existing native dispatch
+and typed player/NPC C kernels on both pointer widths. Its 20,098-byte original
+body is archived in place. Actual C-call attack fixtures use the public entry.
+A mixed typedef/unsigned-int declaration of the GUI status global was also
+normalized to `uint32_t` after the first Linux cgo build exposed the mismatch.
+
+The unmodified incoming C supplies 774 sealed scalar/text cases. HUD tests
+retain the complete original 297-row corpus and now compare the live C-to-Go
+entry over three foreign owners, five placements and three fill patterns:
+13,365 native clear/draw cases, including high-address owners on 64-bit hosts.
+The archived C reference still compiles under `-Werror`; two known archive
+guards are explicitly unwrapped by its extractor. Scalar coordinate arithmetic
+retains 32-bit wrap behavior. Before porting, the original backdrop and
+audio-end bodies independently faulted on foreign addresses above 4 GiB.
+The backdrop now passes native pointer/field/canary checks.
+
+Engine `03a6a63ae526e1a902d22d401e88a5d00e66095a` passes both macOS common
+profiles with **835,958 PASS, 22 runtime SKIP, three passing packages and zero
+compiler warnings each**. The strict profile enables `cgocheck2`, highres and
+`checkptr=2`. Both explicitly exclude the two unchanged default-damage oracle
+roots matching `^TestRawDefaultDamageNative(Go|C)Original4E0B30$`; this is not
+an unfiltered full-suite pass. The Linux server default-link lane separately
+passes 133,405 tests in three packages. The final focused C ABI run passes
+939 tests with zero compiler warnings.
+
+All four clean ARM64 products build, report the qualified source revision and
+pass help checks with zero warnings. All six CI jobs pass with zero compiler
+warnings: four Linux amd64 configurations in
+[run 43586954806](https://github.com/hjyoon/opennox/actions/runs/43586954806),
+and Windows amd64/386 servers in
+[run 43586878417](https://github.com/hjyoon/opennox/actions/runs/43586878417).
+Every complete artifact ZIP is retained locally and its GitHub digest verified.
+Earlier failed CI artifacts, logs and local failure results are also retained.
+
+Both normal/HD products pass the eight core E2E runs: sustained AI attacks,
+player death, all 54 stock Amb sounds through actual OpenAL buffers, and
+equipped-item shop sale/repurchase audio. Owned two-process UDP chat passes
+under ordinary time in both profiles, with all four processes exiting
+naturally. Both functional Save/Load diagnostics pass. Their four screenshots
+are byte-identical to the previous qualified engine; the inherited public
+SaveLoad pixel-golden discrepancy remains open and no golden was changed.
+
+The final source audit records 2,047 active split C definitions. Clang finds
+2,729 narrow pointer/integer casts in 323 functions needing semantic review;
+these candidates include scalar tokens and do not constitute a count of
+remaining bugs or unported functions. All 4,649 original asset/Save files,
+387 tracked E2E input/golden files and four final products retain their recorded
+hashes. Only reconstructable, completed build-cache/object data was removed;
+executables and complete validation/failure evidence are preserved.
+
+The two GAME1_3 audio completion/refill functions remain open. Their next
+baseline executes 503 unchanged GAME.EXE bytes over 82 sealed cases. Porting
+them also requires the GAME3_1 producer layout: its old pointer at +296 overlaps
+the scalar at +300 if naively widened. This baseline is preparation, not native
+port credit. All 13 split files remain partially ported. The source map and
+exact qualification limits are in `docs/split-game-native-progress-20261114.json`;
+complete records are under verification ROOT
+`split-game-native-completion-20261114-v1/final-qualification-v1.json`.
+Whole-game completion and all nine chapter 1–3 campaign final audits remain
+open; chapter 4 and later gameplay remain excluded.
 
 ### GAME1–GAME5 main-file closure, 2026-11-14
 

@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME C files; incremental native port, not complete.",
+  "scope": "13 split GAME C files; first incremental batch qualified, all 13 are NOT fully ported.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -360,9 +360,9 @@
   },
   "current_focused_validation": {
     "exit_code": 0,
-    "elapsed_seconds": 145.369,
+    "elapsed_seconds": 145.849,
     "test_actions": {
-      "pass": 779
+      "pass": 939
     },
     "package_actions": {
       "pass": 1
@@ -376,6 +376,536 @@
     "sub_43EDB0",
     "sub_43EE00"
   ],
-  "remaining_qualification": "strict, scoped common suites, products/E2E and Linux/Windows CI pending for this batch",
-  "whole_game_100_percent": false
+  "remaining_qualification": [],
+  "whole_game_100_percent": false,
+  "qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+  "current_active_total": 2047,
+  "current_active_functions": {
+    "GAME1_1.c": 187,
+    "GAME1_2.c": 124,
+    "GAME1_3.c": 2,
+    "GAME2_1.c": 235,
+    "GAME2_2.c": 148,
+    "GAME2_3.c": 134,
+    "GAME3_1.c": 188,
+    "GAME3_2.c": 260,
+    "GAME3_3.c": 81,
+    "GAME4_1.c": 105,
+    "GAME4_2.c": 337,
+    "GAME4_3.c": 165,
+    "GAME5_2.c": 81
+  },
+  "current_inventory": [
+    {
+      "file": "src/legacy/GAME1_1.c",
+      "active_functions": 187,
+      "pointer_integer_casts": 157,
+      "narrow_pointer_casts": 154,
+      "functions_with_narrow_casts": 36,
+      "source_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634"
+    },
+    {
+      "file": "src/legacy/GAME1_2.c",
+      "active_functions": 124,
+      "pointer_integer_casts": 353,
+      "narrow_pointer_casts": 331,
+      "functions_with_narrow_casts": 28,
+      "source_sha256": "acf27f1f9a8aa8853ce1adbfc2c4bea3167a3e5046726d217f23bda7d355bdad"
+    },
+    {
+      "file": "src/legacy/GAME1_3.c",
+      "active_functions": 2,
+      "pointer_integer_casts": 32,
+      "narrow_pointer_casts": 32,
+      "functions_with_narrow_casts": 2,
+      "source_sha256": "75651722f9152f0d1a7ee76754d5ce41ffeff86e3fc207e714e579927d1ddaa0"
+    },
+    {
+      "file": "src/legacy/GAME2_1.c",
+      "active_functions": 235,
+      "pointer_integer_casts": 68,
+      "narrow_pointer_casts": 14,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "c78602c3acb0aa8513a631d9f7bbbda1abbe18a3e1f2e3da44dd3b9114a63312"
+    },
+    {
+      "file": "src/legacy/GAME2_2.c",
+      "active_functions": 148,
+      "pointer_integer_casts": 270,
+      "narrow_pointer_casts": 262,
+      "functions_with_narrow_casts": 37,
+      "source_sha256": "a4400b263c561bfe0e6b7cc5806b00e64543f4d1eabc458016ebb09a0c19f00c"
+    },
+    {
+      "file": "src/legacy/GAME2_3.c",
+      "active_functions": 134,
+      "pointer_integer_casts": 54,
+      "narrow_pointer_casts": 41,
+      "functions_with_narrow_casts": 8,
+      "source_sha256": "03a0e2ffefcf44278abef0b7ff5121ec1424421965a42d3a70ff4d85d4a12e3e"
+    },
+    {
+      "file": "src/legacy/GAME3_1.c",
+      "active_functions": 188,
+      "pointer_integer_casts": 185,
+      "narrow_pointer_casts": 141,
+      "functions_with_narrow_casts": 30,
+      "source_sha256": "8e35d2664dc9a1767cc865f03bf348b01cec3f9bc536a0f5165680e9d750050b"
+    },
+    {
+      "file": "src/legacy/GAME3_2.c",
+      "active_functions": 260,
+      "pointer_integer_casts": 287,
+      "narrow_pointer_casts": 255,
+      "functions_with_narrow_casts": 37,
+      "source_sha256": "8008391bd16fbc789e1b97a2a8282e5e2d6f83bdcaf91721b792b56262eb370c"
+    },
+    {
+      "file": "src/legacy/GAME3_3.c",
+      "active_functions": 81,
+      "pointer_integer_casts": 246,
+      "narrow_pointer_casts": 216,
+      "functions_with_narrow_casts": 10,
+      "source_sha256": "d9d2ae3c4d154998d8771b688a56499412e8ced00e1226d0000bd07ad6836fd7"
+    },
+    {
+      "file": "src/legacy/GAME4_1.c",
+      "active_functions": 105,
+      "pointer_integer_casts": 513,
+      "narrow_pointer_casts": 493,
+      "functions_with_narrow_casts": 46,
+      "source_sha256": "951fda5258539e6678341c830552c0551e9d6c76e9f3570335ccdfca66f800a4"
+    },
+    {
+      "file": "src/legacy/GAME4_2.c",
+      "active_functions": 337,
+      "pointer_integer_casts": 418,
+      "narrow_pointer_casts": 387,
+      "functions_with_narrow_casts": 38,
+      "source_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a"
+    },
+    {
+      "file": "src/legacy/GAME4_3.c",
+      "active_functions": 165,
+      "pointer_integer_casts": 399,
+      "narrow_pointer_casts": 373,
+      "functions_with_narrow_casts": 35,
+      "source_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4"
+    },
+    {
+      "file": "src/legacy/GAME5_2.c",
+      "active_functions": 81,
+      "pointer_integer_casts": 34,
+      "narrow_pointer_casts": 30,
+      "functions_with_narrow_casts": 11,
+      "source_sha256": "71bdc8ec50d833aa212657d34914a15341f8cbc68c5ef0f25c1f3fe343cea025"
+    }
+  ],
+  "inventory_limit": "Definition counts include native C and Go forwarders; they are not an unported-function denominator. Narrow casts include scalar tokens and need semantic review; candidate counts are not proven bugs or completion percentages.",
+  "casts_needing_semantic_review": {
+    "narrow_pointer_integer_casts": 2729,
+    "functions_with_narrow_casts": 323,
+    "all_pointer_integer_casts": 3016
+  },
+  "new_public_native_dispatch_entries": [
+    {
+      "name": "nox_xxx_playerAttack_538960",
+      "incoming_sha256": "3f8886450478573518ad30995b69f652141b12876d8f1ba58dea14a3db8ec572",
+      "archived_body_sha256": "64f1c916ed8f413457411cda870478568503b7edf6496776b6e50d3bd735b9dc",
+      "archived_body_bytes": 20098,
+      "owner": "src/legacy/object_update.go:nox_xxx_playerAttack_538960 → playerAttackNativeData538960 → existing typed native C player/NPC kernels",
+      "behavior": "The same native dispatch now owns the public C entry on both pointer widths. Existing attack C ABI fixtures call the public entry; the separate Native entry remains available.",
+      "validation": "Qualified public-C-entry fixtures, common/strict suites and six CI jobs at 03a6a63ae526e1a902d22d401e88a5d00e66095a; see qualification below."
+    }
+  ],
+  "retired_shadow_bytes": 47926,
+  "archived_public_attack_body_bytes": 20098,
+  "supporting_ABI_fix": "Use uint32_t consistently for dword_5d4594_815044; mixed typedef/unsigned-int declarations broke Linux cgo before correction. Native window owner dword_5d4594_816412 is nox_window*, with typed color fields.",
+  "live_HUD_original_comparison": {
+    "original_corpus_rows": 297,
+    "foreign_owners": 3,
+    "placements": 5,
+    "fill_patterns": 3,
+    "clear_cases": 405,
+    "draw_cases": 12960,
+    "total_cases": 13365,
+    "actual_public_C_entry": true,
+    "high_address_owners_on_64_bit": true,
+    "original_corpus_unchanged": true,
+    "coordinates": "int32 wrap semantics",
+    "C_reference": "The extractor explicitly unwraps only the two known archive guards; the preserved original bodies and unchanged corpus run under -Werror."
+  },
+  "qualification": {
+    "status": "passed for this incremental batch",
+    "record": "ROOT/split-game-native-completion-20261114-v1/final-qualification-v1.json",
+    "local_common": {
+      "normal": {
+        "exit_code": 0,
+        "elapsed_seconds": 984.196,
+        "tests": {
+          "pass": 835958,
+          "skip": 22
+        },
+        "packages": {
+          "pass": 3
+        },
+        "first_failures": [],
+        "failure_count": 0,
+        "skips": [
+          "TestNativeAmbientVoiceOwnership45A9B0",
+          "TestNativeAmbientPublicCPlayback45A9B0",
+          "TestNativeAudioEffectsEnabled",
+          "TestNativeAudioEffectsEnabledChild",
+          "TestNativeAudioEffectsEventLimit",
+          "TestNativeAudioEffectsEventLimitChild",
+          "TestNativeAudioEffectsLiveService",
+          "TestNativeAudioEffectsLiveServiceChild",
+          "TestNativeAudioEffectsLiveVolume",
+          "TestNativeAudioEffectsLiveVolumeChild",
+          "TestOptionsStretchConfigChild",
+          "TestOptionsAuditFXObserverChild",
+          "TestGame2AudioBridgeActiveParsersAndShutdown",
+          "TestGame2AudioBridgeActiveParsersAndShutdownChild",
+          "TestNativeNetworkAudioPlayback",
+          "TestNativeNetworkAudioPlaybackChild",
+          "TestOptionsConfigStockDefaultReset",
+          "TestOptionsConfigChild",
+          "TestVideoModeTransitionsHeadlessChild",
+          "TestMonsterBinOracleFile",
+          "TestObjectsVelocityOriginalX87NaNLoad5118A0",
+          "TestSentryGlobeNativeX87Endpoint510E60"
+        ],
+        "warning_count": 0,
+        "first_warnings": [],
+        "changed_source_paths": [],
+        "source_files": 9127
+      },
+      "strict": {
+        "exit_code": 0,
+        "elapsed_seconds": 1236.508,
+        "tests": {
+          "pass": 835958,
+          "skip": 22
+        },
+        "packages": {
+          "pass": 3
+        },
+        "first_failures": [],
+        "failure_count": 0,
+        "skips": [
+          "TestNativeAmbientVoiceOwnership45A9B0",
+          "TestNativeAmbientPublicCPlayback45A9B0",
+          "TestNativeAudioEffectsEnabled",
+          "TestNativeAudioEffectsEnabledChild",
+          "TestNativeAudioEffectsEventLimit",
+          "TestNativeAudioEffectsEventLimitChild",
+          "TestNativeAudioEffectsLiveService",
+          "TestNativeAudioEffectsLiveServiceChild",
+          "TestNativeAudioEffectsLiveVolume",
+          "TestNativeAudioEffectsLiveVolumeChild",
+          "TestOptionsStretchConfigChild",
+          "TestOptionsAuditFXObserverChild",
+          "TestGame2AudioBridgeActiveParsersAndShutdown",
+          "TestGame2AudioBridgeActiveParsersAndShutdownChild",
+          "TestNativeNetworkAudioPlayback",
+          "TestNativeNetworkAudioPlaybackChild",
+          "TestOptionsConfigStockDefaultReset",
+          "TestOptionsConfigChild",
+          "TestVideoModeTransitionsHeadlessChild",
+          "TestMonsterBinOracleFile",
+          "TestObjectsVelocityOriginalX87NaNLoad5118A0",
+          "TestSentryGlobeNativeX87Endpoint510E60"
+        ],
+        "warning_count": 0,
+        "first_warnings": [],
+        "changed_source_paths": [],
+        "source_files": 9127
+      },
+      "strict_flags": [
+        "GOEXPERIMENT=cgocheck2",
+        "highres",
+        "-gcflags=all=-d=checkptr=2"
+      ],
+      "explicitly_excluded_Darwin_roots": "^TestRawDefaultDamageNative(Go|C)Original4E0B30$",
+      "unfiltered_full_suite_claim": false
+    },
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/products-v3/opennox",
+        "bytes": 69858034,
+        "sha256": "dc56bbc8ec0126e1677e9997af4342a28ea8b741544ffa9c3b177e232180c33e"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/products-v3/opennox-hd",
+        "bytes": 69990130,
+        "sha256": "fdfde2b7a267422212d8d97eea717570763b49851483aba269016f8ca03ca521"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/products-v3/opennox-server",
+        "bytes": 66470226,
+        "sha256": "055f32a3534ed74558c27460376a58d3971a1411637cda9601393b2350ab98b8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game-native-completion-20261114-v1/products-v3/opennox-server-hd",
+        "bytes": 66569298,
+        "sha256": "96503c4134f330500223da5bf90a9731c6b5babe40473664b98b538ecd9b1548"
+      }
+    ],
+    "CI_runs": [
+      "https://github.com/hjyoon/opennox/actions/runs/43586954806",
+      "https://github.com/hjyoon/opennox/actions/runs/43586878417"
+    ],
+    "CI_jobs": [
+      {
+        "artifact": "final-linux-amd64-opennox-hd.zip",
+        "artifact_id": 14111850509,
+        "artifact_sha256": "36af6f6627553d24f66bd1948758d13eaadd2e71aa668307d9fcbb229effb093",
+        "artifact_bytes": 209364779,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "pass": 818984,
+          "skip": 56
+        },
+        "packages": {
+          "pass": 40,
+          "skip": 21
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [],
+        "job_log": "final-ci-Linux-amd64-opennox-hd-132423413889.log"
+      },
+      {
+        "artifact": "final-linux-amd64-opennox-server-hd.zip",
+        "artifact_id": 14111785369,
+        "artifact_sha256": "00546123d56bda89e176757f712a8a82c022bb0d582597e81670f29b8f00543b",
+        "artifact_bytes": 196366508,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "pass": 812873,
+          "skip": 7
+        },
+        "packages": {
+          "pass": 36,
+          "skip": 22
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [],
+        "job_log": "final-ci-Linux-amd64-opennox-server-hd-132423414086.log"
+      },
+      {
+        "artifact": "final-linux-amd64-opennox-server.zip",
+        "artifact_id": 14111666052,
+        "artifact_sha256": "efb8ad0a5ba0beb673a049ae5a8be80303fb9ad3f3f62a6ad6cd1a2a7fb70181",
+        "artifact_bytes": 252252106,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "pass": 812873,
+          "skip": 7
+        },
+        "packages": {
+          "pass": 36,
+          "skip": 22
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [
+          "default-link-damage-binaries/b001/v1.test",
+          "default-link-damage-binaries/b514/server.test",
+          "default-link-damage-binaries/b525/legacy.test",
+          "default-link-damage-binaries.json",
+          "default-link-damage-summary.json",
+          "default-link-damage-work-directory.json",
+          "default-link-damage.exit",
+          "default-link-damage.jsonl",
+          "default-link-damage.stderr.log"
+        ],
+        "job_log": "final-ci-Linux-amd64-opennox-server-132423414062.log"
+      },
+      {
+        "artifact": "final-linux-amd64-opennox.zip",
+        "artifact_id": 14111592404,
+        "artifact_sha256": "018c5f149a8b6887c8beda573a0cbe17e50669494a040eb36d5ab7a15b421f65",
+        "artifact_bytes": 210088510,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "pass": 818984,
+          "skip": 56
+        },
+        "packages": {
+          "pass": 40,
+          "skip": 21
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [],
+        "job_log": "final-ci-Linux-amd64-opennox-132423414055.log"
+      },
+      {
+        "artifact": "final-opennox-server-windows-386.zip",
+        "artifact_id": 14111400867,
+        "artifact_sha256": "dc0b4c9c51ef69b54576b2ed3f0a325d8ce9d830d9bbd9342b24db631643d122",
+        "artifact_bytes": 154449263,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "skip": 94,
+          "pass": 791128
+        },
+        "packages": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [],
+        "job_log": "final-ci-Windows-386-server-132423182720.log"
+      },
+      {
+        "artifact": "final-opennox-server-windows-amd64.zip",
+        "artifact_id": 14111875627,
+        "artifact_sha256": "5ddb2189ced9bc709c5719688f81af637240c90dde6a567b0c7ce1de8c63d9b7",
+        "artifact_bytes": 161006187,
+        "source_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+        "tests": {
+          "pass": 810858,
+          "skip": 11
+        },
+        "packages": {
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "warning_count": 0,
+        "missing_packages": [],
+        "unfinished_tests": [],
+        "default_link_damage_files": [],
+        "job_log": "final-ci-Windows-amd64-server-132423182584.log"
+      }
+    ],
+    "linux_default_link_damage": {
+      "test_buildmode": "default",
+      "MALLOC_MMAP_THRESHOLD_": "0",
+      "test_actions": {
+        "pass": 133405
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "exit_code": 0
+    },
+    "core_E2E": {
+      "passed_runs": 8,
+      "profiles": [
+        "normal",
+        "highres"
+      ],
+      "scenarios": [
+        "sustained AI attack",
+        "player death",
+        "all 54 stock Amb sounds with actual OpenAL buffers",
+        "equipped-item shop sale and repurchase with actual OpenAL buffers"
+      ]
+    },
+    "real_two_process_chat": {
+      "passed_profiles": [
+        "normal",
+        "highres"
+      ],
+      "ordinary_time": true,
+      "processes_exited_naturally": 4,
+      "forced_processes": [],
+      "per_profile": {
+        "own_submissions": 8,
+        "peer_received": 4,
+        "host_reply": 1,
+        "cancelled": 2,
+        "empty": 2
+      }
+    },
+    "functional_SaveLoad": {
+      "passed_profiles": [
+        "normal",
+        "highres"
+      ],
+      "original_functional_assertions_preserved": true,
+      "diagnostic_only_screenshot_labels": true,
+      "screenshots_byte_identical_to_previous_engine": 4,
+      "previous_engine": "f7a0ee0cd",
+      "public_pixel_golden_pass": false,
+      "goldens_changed": false,
+      "limit": "The inherited public fresh-load pixel-golden discrepancy remains open."
+    },
+    "preserved_failed_CI_artifacts": 12,
+    "preservation": {
+      "engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
+      "original_assets_and_Save_files": 4649,
+      "original_changes": [],
+      "tracked_e2e_input_and_golden_files": 387,
+      "tracked_e2e_changes": [],
+      "qualified_source_files": 9127,
+      "source_lease_sha256": "d8503336e4a3e650384f590adcca08eef135b16d879f317b0505df941781b285",
+      "changed_qualified_sources": [],
+      "final_products": 4,
+      "product_changes": [],
+      "active_split_C_functions": 2047,
+      "narrow_cast_candidates": 2729,
+      "functions_needing_semantic_cast_review": 323
+    }
+  },
+  "prepared_next_audio_baseline": {
+    "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "cases": 82,
+    "fixture_sha256": "1e744e85304d3b2b805fbdaa2eb18c1a10bbac46af63c0cfa026845bd57454ee",
+    "services": {
+      "userdata": 4,
+      "finish": 1,
+      "ready": 162,
+      "refill": 71,
+      "restart": 41,
+      "load": 84
+    },
+    "regions": {
+      "end": {
+        "start": "0x43edb0",
+        "end": "0x43eddf",
+        "bytes": 47,
+        "sha256": "a66a305e890a9f715f4793f91bf47dee4ee9273edebfa21b9745b773922237ad",
+        "executed_instructions": 16,
+        "executed_bytes": 47
+      },
+      "pump": {
+        "start": "0x43ee00",
+        "end": "0x43efc8",
+        "bytes": 456,
+        "sha256": "bb048ebccbb3c4ed2076c559352a490087f1f6db12a0827d727d42f325c375a4",
+        "executed_instructions": 141,
+        "executed_bytes": 456
+      }
+    },
+    "scope": "Run unchanged PE32 audio completion and buffer-pump code with Miles services.\n\nOnly the three Miles imports and the source refill/restart/end callbacks are\ndeclared services. Buffer selection, copy/defer decisions, arithmetic, pointer\nadvancement, EOF state and rereads execute the original x86 instructions.\n"
+  },
+  "remaining_work": [
+    "sub_43EDB0 / sub_43EE00 and their GAME3_1 producer/callback layouts; the PE32 +296 pointer overlaps the +300 scalar if simply widened.",
+    "Continue classifying and porting the other split-file native owners/callbacks.",
+    "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
+    "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
+  ],
+  "limits": [
+    "774 scalar/text cases execute unmodified incoming C with declared services, not original GAME.EXE instructions.",
+    "The separate 82-case audio original-CPU baseline prepares future work; it supplies no native-port credit yet.",
+    "Native backdrop destruction returns nil; callers discard the old pointer/status residue. Invalid clip limits stop at empty and dynamic MOTD buffers avoid the old local overflow.",
+    "Byte widening and the custom formatter %S behavior are retained; width/precision are ignored as in the original formatter.",
+    "OpenAL queue and bounded E2E checks do not establish perceptual audible fidelity or full long-session/network/gameplay coverage."
+  ],
+  "all_13_split_files_ported": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only"
 }

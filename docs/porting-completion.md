@@ -60,6 +60,95 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native sound-set parser and field setter, 2026-11-15
+
+The qualified source/runtime engine is
+`4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8`, pushed to
+`origin/port/go1.27-multiarch`. Public field setter 4240F0 and parser
+424170 now use Go. The cumulative qualified split-file count is **138 Go
+entries**. All repository-owned C implementation remains the migration goal;
+original C references and required ABI/data ownership need explicit review.
+
+The field setter takes a native opaque data pointer and const field name.
+Its table keeps the original eight-byte name-token/offset stride, with native
+name pointers in the existing sidecar. Numeric sound data stays 84 bytes;
+Go metadata owns names, head and next links, including hidden duplicates.
+Old DWORD head storage and pointer slots are contradictory decoys in tests.
+The existing production Go loader shares name adoption and field updates
+while retaining its deferred file cleanup. The public legacy parser retains
+its original service/error-return contract and partial records.
+
+The corrected original reference v2 covers 1,998 cases and 439 unchanged
+instruction bytes: 1,470 setter cases with no substituted service and 528
+parser cases with seven declared token-level boundaries. Allocation traces
+are explicitly normalized for Go name/link ownership; other service order
+and results remain exact. This is not original encrypted-I/O or lexical
+scanner execution. Actual C callers separately exercise encrypted files and
+the existing token reader, plus default C services and the production Go
+loader. All 1,317 original C body bytes remain archived and reconstruct the
+whole incoming C file. Four standalone controls, three SIGSEGVs and two
+pointer-value losses remain bounded representation evidence.
+
+Initial reference v1 incorrectly cleared 512 bytes of field-table storage,
+overwriting the adjacent original END literal. The first independent public-C
+comparison detected it. V2 clears only the declared 152 bytes and asserts
+the original END bytes before/after every case; the Go implementation did
+not change for this correction. The invalid v1 fixture, failed program,
+exact source overlay and logs remain retained. A later real-file test omitted
+the opaque-handle bank initialization; both failed normal/strict programs
+and their exact shared source are also retained. The corrected fixture uses
+the existing isolated high-handle initialization/cleanup pattern.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed 80,446
+  focused checks on the identical 9,192-input lease
+  `1a14138786488cb751266e7a611abf110444315081f7c820b951d03d420e9918`.
+- All four macOS products passed build, metadata, help and nine public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles, with natural exits.
+- Linux CI `43651632194`: client/HD each 900,024 PASS plus 57 skips;
+  server/HD each 893,913 PASS plus 7 skips. The server also passed 133,405
+  default-link damage checks.
+- Windows CI `43651587076`: amd64 891,898 PASS plus 11 skips;
+  386 871,965 PASS plus 94 skips. Every profile passed 5,999 public-C
+  parser/field checks, 400 real encrypted-file checks, five default-service
+  checks and one GC/public-lookup check, alongside all prior native controls.
+
+Six complete SHA-verified CI ZIPs retain 158 actual test executables, raw
+traces, summaries and decoded job logs. All 9,186 incoming repository files
+were checked: only the four intended existing source files changed; 4,700
+existing test/fixture/E2E inputs stayed identical. Original assets and personal
+Save (4,649 files), 387 tracked E2E inputs and 40 checked product versions
+remain unchanged. Final cache cleanup verified 296 selected program paths
+before/after and cleaned only the inactive dedicated cache: 2,352,460 KiB
+to 8 KiB. Transparent compression preserved all 380,865,356 bytes of five
+completed test logs, with paths, hashes, modes and modification times intact.
+
+The same 13-file review now has 1,924 active original C definitions and
+2,424 pointer/integer casts, with 2,137 narrow review candidates in 230
+functions. These counts include safe scalar tokens and glue. The repository
+still has 637 tracked C files in the same broad path categories, including
+416 test/validation and 221 runtime/build files. Counts do not establish an
+unported denominator, runtime reachability or a completion percentage.
+
+The next prepared group is named-bitmask parser 423930 and setter 4239C0:
+1,435 cases, 223 original instruction bytes, 667 original C source bytes,
+nine incoming source snapshots and a 43-file seal. The whole original PE
+image stays unchanged in every CPU case. Four standalone controls and two
+signed-char index-overflow SIGSEGVs are retained. The original setter uses
+a full 32-bit index; the current C char loop differs. An active monster
+definition caller also passes a packed four-byte pointer table, requiring
+an explicit owner adapter alongside the generic native-array ABI. This
+preparation adds no Go credit and makes no integrated crash claim.
+
+Evidence: `docs/split-soundset-parser-native-progress-20261115.json`,
+ROOT `split-soundset-parser-native-20261115-v1/`, and next
+`split-named-bitmask-native-20261115-v1/prepared-baseline-v1.json`.
+**All-C migration and overall 100% remain open.** All nine final chapter 1-3
+audits and the inherited failed public SaveLoad pixel golden remain open;
+functional diagnostics do not promote that golden.
+
 ### Native buff iteration and whole-C scope, 2026-11-15
 
 The qualified engine is `e20577673e22eab1181a58bc5ec3f12f2d8c98da`,

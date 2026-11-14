@@ -1,0 +1,1482 @@
+{
+  "qualified_UTC": "2026-11-14T23:42:38.503725+00:00",
+  "engine_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+  "push_target": "origin/port/go1.27-multiarch",
+  "goal": "Port all repository-owned C implementation, including files beyond the13original splits; preserve independent C references and review required ABI/data ownership. Counts are not a completion denominator.",
+  "new_Go_entries": 2,
+  "cumulative_implemented_split_Go_entries": 138,
+  "original_CPU": {
+    "scope": "Execute complete unchanged sound-set field setter and parser instructions.\n\nThe field setter uses no substituted services. The parser declares seven\nboundaries: open, key, token reader, sound lookup, calloc, malloc and close.\nThis is a token-level reference, not an execution of original encrypted I/O\nor original lexical tokenization. Error-path missing close calls are retained.\n",
+    "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "generator_sha256": "8675322d831d8cfe831cff62ab91c7f392f0542f10d12fe08792314518b9a53d",
+    "fixture_sha256": "b860a1a8bc97158a96e05ab068afcedb6db7e3b3ec713e90689ca192aa91b558",
+    "fixture_gzip_sha256": "ab319c82ad0a2f4d176605df105eb5f06a697d73a2638bac9d7a298b197c682b",
+    "cases": 1998,
+    "kinds": {
+      "field_setter": 1470,
+      "parser": 528
+    },
+    "declared_parser_services": {
+      "0x408cc0": "open",
+      "0x408d40": "key",
+      "0x409470": "token",
+      "0x40af50": "sound",
+      "0x4041d0": "calloc",
+      "0x403560": "malloc",
+      "0x408d90": "close"
+    },
+    "declared_field_setter_services": [],
+    "stock_fields": [
+      [
+        "LISTEN_SOUND",
+        4
+      ],
+      [
+        "TAUNT_SOUND",
+        8
+      ],
+      [
+        "THREATEN_SOUND",
+        12
+      ],
+      [
+        "IDLE_SOUND",
+        16
+      ],
+      [
+        "ENGAGE_SOUND",
+        20
+      ],
+      [
+        "MELEE_ATTACK_INIT_SOUND",
+        24
+      ],
+      [
+        "MELEE_ATTACK_SOUND",
+        28
+      ],
+      [
+        "MELEE_ATTACK_HITTING_SOUND",
+        32
+      ],
+      [
+        "MELEE_ATTACK_MISSING_SOUND",
+        36
+      ],
+      [
+        "MISSILE_ATTACK_INIT_SOUND",
+        40
+      ],
+      [
+        "MISSILE_ATTACK_SOUND",
+        44
+      ],
+      [
+        "FLEE_SOUND",
+        48
+      ],
+      [
+        "RETREAT_SOUND",
+        52
+      ],
+      [
+        "SPELL_INIT_SOUND",
+        56
+      ],
+      [
+        "DIE_SOUND",
+        60
+      ],
+      [
+        "INJURED_SOUND",
+        64
+      ],
+      [
+        "RECOGNIZE_SOUND",
+        68
+      ],
+      [
+        "MOVE_SOUND",
+        72
+      ]
+    ],
+    "python": "3.12.11 (main, Sep  2 2025, 16:01:33) [Clang 17.0.0 (clang-1700.0.13.5)]",
+    "unicorn": "2.1.4",
+    "regions": {
+      "field_setter": {
+        "start": "0x4240f0",
+        "end": "0x424166",
+        "bytes": 118,
+        "sha256": "40a54fbf3fad560dc2d0b416ed87a2f63c0e2beb4326302b5c5cb1bbf373b376",
+        "executed_bytes": 118,
+        "executed_instructions": 52
+      },
+      "parser": {
+        "start": "0x424170",
+        "end": "0x4242b1",
+        "bytes": 321,
+        "sha256": "307070e615182c4eac499ba2b6882c6c8f74d489ab5c468b1879a7ea10aaa94b",
+        "executed_bytes": 321,
+        "executed_instructions": 117
+      }
+    },
+    "original_END_literal_address": "0x596ea0",
+    "original_END_literal_hex": "454e4400",
+    "field_table_hydration_bytes": 152,
+    "original_END_literal_preserved_every_case": true,
+    "source_port_started": true,
+    "new_Go_credit": 0
+  },
+  "original_C_before": {
+    "utc": "2026-11-14T22:09:56.353473+00:00",
+    "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da",
+    "source_sha256": "66a65bab9d4925f1f91ad36ca7e193f4f63937b692277fac6fa87235c732fbeb",
+    "original_bodies": [
+      {
+        "name": "sub_4240F0",
+        "begin": 126900,
+        "end": 127374,
+        "bytes": 474,
+        "sha256": "3582468fb368d767b17b793f95ca8dacf739a875affcb76272c0a64a50bc2495"
+      },
+      {
+        "name": "nox_xxx_parseSoundSetBin_424170",
+        "begin": 127452,
+        "end": 128295,
+        "bytes": 843,
+        "sha256": "3d75e9ef1d60d2b05919b4a41e2f94cd7f3e435aa264436480e400e5583d59b7"
+      }
+    ],
+    "source_bytes": 1317,
+    "program_sha256": "ff18cfb28ee832e5abdc96f9d7aa4a0218be7eefb24ced4617701493b555654b",
+    "executable_sha256": "838184d3f5e470c8b61e26628e6d6f40c8e85033e9fbf3d1145b5c7f974752ad",
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-O2",
+      "-g",
+      "-fsigned-char",
+      "-fno-strict-aliasing",
+      "-fno-strict-overflow",
+      "-Wno-int-conversion",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast",
+      "-Wl,-pagezero_size,0x10000",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/original-c-before-v2/unchanged-original-functions.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/original-c-before-v2/unchanged-original-functions"
+    ],
+    "cases": [
+      {
+        "mode": "field-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "parser-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "parser-open-failure-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "parser-key-failure-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "packed-first-name-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "field-high-data-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "parser-high-record-field-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "parser-high-record-value-loss",
+        "exit_code": 0
+      },
+      {
+        "mode": "parser-high-name-value-loss",
+        "exit_code": 0
+      }
+    ],
+    "standalone_controls": 4,
+    "standalone_SIGSEGVs": 3,
+    "standalone_observable_pointer_losses": 2,
+    "declared_standalone_services": [
+      "packed memory table and explicitly hybrid first pointer for bounded controls",
+      "file open/key/token/sound/close",
+      "controlled zeroed record/name allocation"
+    ],
+    "compiler_warnings": 0,
+    "scope": "Unchanged incoming C bodies in a bounded amd64/Rosetta harness. Four controls, three SIGSEGVs and two independently observed32bit pointer losses. These are representation reproductions, not integrated game crashes. The hybrid table control is deliberately synthetic. Original439-byte CPU token-level reference independently retains original service traces, including missing error-path close calls. No source port or Go credit."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-14T23:00:36.632027+00:00",
+    "archived_original_body_bytes": 1317,
+    "whole_incoming_GAME1_1_reconstructed": true,
+    "incoming_repository_files_checked": 9186,
+    "allowed_changed_existing_sources": [
+      "src/legacy/GAME1_1.c",
+      "src/legacy/GAME1_1.h",
+      "src/legacy/audio_ail.go",
+      "src/legacy/soundset.go"
+    ],
+    "all_other_existing_files_unchanged": true,
+    "existing_tests_fixtures_E2E_checked": 4700,
+    "protected_selector": "*_test.go, */testdata/*, scripts/e2e/*; all other existing files separately checked too",
+    "changed_existing_tests_fixtures_E2E": [],
+    "v1_original_reference_and_failed_source_preserved": true,
+    "valid_original_reference": "original-cpu-v2",
+    "original_END_literal_preserved_every_case": true,
+    "whole_game_100_percent": false
+  },
+  "original_reference_v1_hydration_failure": {
+    "utc": "2026-11-14T22:54:39.834256+00:00",
+    "original_reference_v1": "original-cpu-v1",
+    "failed_test": "focused-parser-normal-v1",
+    "root_cause": "The v1 preparation cleared512bytes starting0x596cc0 for a19-entry packed field table. This overwrote the original END literal at0x596ea0,480bytes from table start. The439instruction bytes stayed unchanged, but parser control data was corrupted. The first public-C comparison detected the error; v1 is invalid as a parser behavior oracle and is retained as failure evidence.",
+    "correction": "The v2 generator clears only19*8=152declared table bytes and asserts the original END\\0 bytes before and after every case. It re-executes the same unchanged original instructions and keeps all declared service boundaries. No original fixture, failed program, asset or source snapshot is overwritten.",
+    "source_overlay": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/failed-focused-parser-normal-v1-source",
+    "new_qualified_Go_credit": 0
+  },
+  "real_file_initialization_failure": {
+    "utc": "2026-11-14T23:02:06.768703+00:00",
+    "runs": [
+      "focused-parser-normal-v2",
+      "focused-parser-strict-v1"
+    ],
+    "original_public_C_comparison": "all1998cases through3foreign placements passed",
+    "reason": "The real-file test omitted initialization of the existing opaque file-handle bank. NewFileHandle panicked with call Init first. The same existing test pattern isolates files.byHandle, uses handles.InitHigh, closes owned files, restores the old registry and releases the fixture bank.",
+    "preserved_source_overlay": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/failed-focused-parser-normal-v2-source",
+    "production_parser_change_required": false,
+    "new_Go_credit": 0
+  },
+  "corrected_reference_seal": {
+    "scope": "Re-executed original reference after preserving the invalidv1hydration failure. Production port unchanged; this seal supersedes only the v1CPU behavior oracle, not historical failure records.",
+    "original_cases": 1998,
+    "instruction_bytes": 439,
+    "original_END_literal_preserved": true,
+    "files": [
+      {
+        "path": "original-parser-and-fields-v2.py",
+        "bytes": 9248,
+        "sha256": "8675322d831d8cfe831cff62ab91c7f392f0542f10d12fe08792314518b9a53d"
+      },
+      {
+        "path": "original-cpu-v2/fixture.json",
+        "bytes": 1589594,
+        "sha256": "b860a1a8bc97158a96e05ab068afcedb6db7e3b3ec713e90689ca192aa91b558"
+      },
+      {
+        "path": "original-cpu-v2/fixture.json.gz",
+        "bytes": 17224,
+        "sha256": "ab319c82ad0a2f4d176605df105eb5f06a697d73a2638bac9d7a298b197c682b"
+      },
+      {
+        "path": "original-cpu-v2/proof.json",
+        "bytes": 2827,
+        "sha256": "6af2f829091b174018da4ebe17862a749ea46333756e82f0f0ffb7d8e24ddf7c"
+      },
+      {
+        "path": "original-parser-reference-v1-hydration-failure.json",
+        "bytes": 1040,
+        "sha256": "946be9dfdbd8298154b4c57c3f2744d3ac28edb1fe7ab535fd2d1912a9989f0a"
+      }
+    ]
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9192,
+      "source_lease_sha256": "1a14138786488cb751266e7a611abf110444315081f7c820b951d03d420e9918",
+      "exit_code": 0,
+      "elapsed_seconds": 162.557,
+      "test_actions": {
+        "pass": 80446
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict": {
+      "changed_source_paths": [],
+      "source_files": 9192,
+      "source_lease_sha256": "1a14138786488cb751266e7a611abf110444315081f7c820b951d03d420e9918",
+      "exit_code": 0,
+      "elapsed_seconds": 162.461,
+      "test_actions": {
+        "pass": 80446
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "product_symbol_review": {
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox",
+        "sha256": "10f84ae2977b9aa9620c52dd814543cd2f0d534825137734fcfa009b6a2bd13d",
+        "native_public_symbols": {
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-hd",
+        "sha256": "657cb2c4e95968cfa5059f339c68dadc3908311ead0de1de9012bbe6be26490b",
+        "native_public_symbols": {
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server",
+        "sha256": "78dcf6ae81e506145e35a08e969c528c8ff73097f0fd24f407a274295495480a",
+        "native_public_symbols": {
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server-hd",
+        "sha256": "7c9dcabefb4e2d20d68b3f0408d6dfe36b9ec653acbcf252cafa05f6e7f84a81",
+        "native_public_symbols": {
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      }
+    ],
+    "all_native_entries_present": true,
+    "scope": "Public symbols and native public Go exports present in all4 products; unchanged-old C bodies separately archived/reconstructed, and actual public C calls covered by original-reference tests. Symbol presence alone is not runtime coverage."
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox",
+      "bytes": 69989618,
+      "sha256": "10f84ae2977b9aa9620c52dd814543cd2f0d534825137734fcfa009b6a2bd13d",
+      "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-hd",
+      "bytes": 70105170,
+      "sha256": "657cb2c4e95968cfa5059f339c68dadc3908311ead0de1de9012bbe6be26490b",
+      "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server",
+      "bytes": 66539538,
+      "sha256": "78dcf6ae81e506145e35a08e969c528c8ff73097f0fd24f407a274295495480a",
+      "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server-hd",
+      "bytes": 66671634,
+      "sha256": "7c9dcabefb4e2d20d68b3f0408d6dfe36b9ec653acbcf252cafa05f6e7f84a81",
+      "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+    }
+  ],
+  "product_E2E": [
+    {
+      "profile": "normal",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.071,
+      "warnings": 0
+    },
+    {
+      "profile": "normal",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.613,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 45.482,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.364,
+      "warnings": 0
+    }
+  ],
+  "functional_SaveLoad": [
+    {
+      "profile": "normal",
+      "pixel_golden_pass": false,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.852,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "pixel_golden_pass": false,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 46.204,
+      "warnings": 0
+    }
+  ],
+  "independent_peer_chat": {
+    "normal": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+      "product_sha256": "10f84ae2977b9aa9620c52dd814543cd2f0d534825137734fcfa009b6a2bd13d",
+      "elapsed_seconds": 287.844,
+      "forced_processes": []
+    },
+    "highres": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+      "product_sha256": "657cb2c4e95968cfa5059f339c68dadc3908311ead0de1de9012bbe6be26490b",
+      "elapsed_seconds": 287.838,
+      "forced_processes": []
+    }
+  },
+  "CI": [
+    {
+      "profile": "Linux amd64 client",
+      "run_id": 43651632194,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651632194",
+      "job_id": 132621169530,
+      "artifact_id": 14136967153,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14136967153-4fa2468a8.zip",
+      "sha256": "409e2ed1e18fbd25e75c5225ad0452473e34038d7814487f56506701714e5481",
+      "bytes": 213887320,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 900024,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14136967153,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "409e2ed1e18fbd25e75c5225ad0452473e34038d7814487f56506701714e5481",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 932148143,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 client HD",
+      "run_id": 43651632194,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651632194",
+      "job_id": 132621169375,
+      "artifact_id": 14136996142,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14136996142-4fa2468a8.zip",
+      "sha256": "5c135a54c38fdf69a7c42b49f8b4415d2d16ffebff8bdf1abfe4ac4f6b830f7b",
+      "bytes": 213145561,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 900024,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14136996142,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "5c135a54c38fdf69a7c42b49f8b4415d2d16ffebff8bdf1abfe4ac4f6b830f7b",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 932147121,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server",
+      "run_id": 43651632194,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651632194",
+      "job_id": 132621169353,
+      "artifact_id": 14137240201,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14137240201-4fa2468a8.zip",
+      "sha256": "289ed3d63e17134629f49c5c637701a2ad3491da203c59e222948c53bd4bbdcd",
+      "bytes": 256263885,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 893913,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": {
+        "test_buildmode": "default",
+        "MALLOC_MMAP_THRESHOLD_": "0",
+        "test_actions": {
+          "pass": 133405
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "exit_code": 0
+      },
+      "native_matrix": {
+        "artifact_id": 14137240201,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "289ed3d63e17134629f49c5c637701a2ad3491da203c59e222948c53bd4bbdcd",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 924476436,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server HD",
+      "run_id": 43651632194,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651632194",
+      "job_id": 132621169102,
+      "artifact_id": 14136906050,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14136906050-4fa2468a8.zip",
+      "sha256": "4915bce48795539f4643e165ac14228ecb96e8d44263f869ce52d96b4773f572",
+      "bytes": 200347827,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 893913,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14136906050,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "4915bce48795539f4643e165ac14228ecb96e8d44263f869ce52d96b4773f572",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 924476561,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows amd64 server",
+      "run_id": 43651587076,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651587076",
+      "job_id": 132621028018,
+      "artifact_id": 14136543612,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14136543612-4fa2468a8.zip",
+      "sha256": "5e6d7cedd8e651ab90f777177d3b108b7a58b8b971e87217247cd69b9d73be81",
+      "bytes": 162547868,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "pass": 891898,
+        "skip": 11
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14136543612,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "5e6d7cedd8e651ab90f777177d3b108b7a58b8b971e87217247cd69b9d73be81",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 917924335,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows386 server",
+      "run_id": 43651587076,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43651587076",
+      "job_id": 132621027768,
+      "artifact_id": 14136727238,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/ci-14136727238-4fa2468a8.zip",
+      "sha256": "eaa9d3812d0442a03a5fa0adc28d5dad3506850d08c75c1a6db9a4d631817549",
+      "bytes": 157794849,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "skip": 94,
+        "pass": 871965
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14136727238,
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+        "archive_sha256": "eaa9d3812d0442a03a5fa0adc28d5dad3506850d08c75c1a6db9a4d631817549",
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {},
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 894363805,
+        "scope": "Two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    }
+  ],
+  "preservation": {
+    "utc": "2026-11-14T23:26:05.306864+00:00",
+    "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+    "source_status": "",
+    "original_files": 4649,
+    "original_asset_and_Save_changes": [],
+    "added_original_files": [],
+    "tracked_e2e_files": 387,
+    "tracked_e2e_changes": [],
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985330,
+        "sha256": "3ba86ef2efb2198efb8bee7f866bc31fbbc2eedde0ef258aa0568c8396e4cb81"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70084434,
+        "sha256": "5c76bd6acd99caebb76a83133b33eb1238b5c47f57db70fb55ec9fba79a66869"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66568322,
+        "sha256": "2ae63a3e24c53ef4b15484d9e39aa76f7a079bfa40d536ad29ddf409da41f52a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66683906,
+        "sha256": "2d962789c7e864dc3a40d7a395f83b59ae787ad1a8cf5321ddc6398325c99769"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox",
+        "bytes": 69968930,
+        "sha256": "e5232fddad0a8132e840bbb05bd582509da883cddf35486c29d71d641ecf64f9",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-hd",
+        "bytes": 70100994,
+        "sha256": "52a108fddf9a6da21ce8115b085e1813db6bdefca1cde7680b48b354a20bc4bc",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server",
+        "bytes": 66568402,
+        "sha256": "8ee21b793ff4cff4c96ecf90e4d5a901dc014b6b2b60d90edfe257ee558f660c",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server-hd",
+        "bytes": 66683986,
+        "sha256": "e7590eff53b54c5d87d0ed10d8bf86295f09918a141f6da8ebb45f79142dafba",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985874,
+        "sha256": "710fd6239e76453e9f2c100f3b04abc369a518afafd72786063a82aa259c2789",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70101458,
+        "sha256": "d32701ba5261358763f2831840c350ad268f59951b87cdc37733d59f9d017cdf",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66585362,
+        "sha256": "df74b94052d7b43365b457eca43b6feb98f24f09cc3275f86437e6d4d0b1ab11",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66684434,
+        "sha256": "4e79ee7f677208fde6974b0609912904b84af0ab7d1e0ebd2189a0556006923a",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox",
+        "bytes": 69969970,
+        "sha256": "3041403a42e1cfcf45c114ab4f14e2ced3ca2a8e4c077783f2e2cabfb766de77",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70118546,
+        "sha256": "5b456f405cf495032a3809adb6f9a081db7dd769cbbc4d0d598aa3083423ef86",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66519858,
+        "sha256": "f98a018489ac58bbf45bef04aa40eaa3f13925ade167baf62e3c969864398a59",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66684978,
+        "sha256": "b599609a90316cf2d1341acbc7755eafc06a04f7e1c77c11b968f0b94a459c2d",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox",
+        "bytes": 70003874,
+        "sha256": "9dfe3fad0514250cb8eb7285223e02621b752d8bded15be3b34ebadcb1c59bb8",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70119490,
+        "sha256": "3eb02acb6a9d068ad4d9b469cebda72c8f83650d570a8cf5de9e0ecb6d4d1413",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66570306,
+        "sha256": "62661f16793c9808bdfe189467e25b99438abc3815db98f8a98232311d7e5170",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66685890,
+        "sha256": "0cd2b9bc0d413b5985fa25072014b13d41a681da42f70d584c7ba9e4d57a2b34",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox",
+        "bytes": 70004562,
+        "sha256": "f5d344e3962d9e288ba7fac3ea32a0e074e0c6f3b2c834706993a480097318e7",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70103634,
+        "sha256": "c005b33cefae453da56d9d61e2a2dce18200e2333ee8e3b220a838baba0ee84c",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66587506,
+        "sha256": "6a9141656b7ea6c3681cf6e4f7ec912684b7363bc085ac93c260a116a658609b",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66686578,
+        "sha256": "eb6a88632bb3236507ea8d68e9d710e98c6b5822af5b7db8ee5504a8ae6059b2",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox",
+        "bytes": 69937330,
+        "sha256": "8ef3bc019e8c6ce59ae91c7de78f1ace890f3459670c99d1180e5bc36fc4f4aa",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70069442,
+        "sha256": "f16d636a736143fe733b9bc5d97dc8691c8a2e3dadc93335d23eee24231e87d3",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-server",
+        "bytes": 66503762,
+        "sha256": "4de1e4e2a73b752361aa60383b2a18394cc8b83a4e8e2f274c2bf2e860b071e8",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66668882,
+        "sha256": "3b02325639badb2c47091c1ca76f635da2c4d7fc9220c8d568b0303a3c372667",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox",
+        "bytes": 69971538,
+        "sha256": "361536faafd0064ec2d54ae34f1ae096abb0819c774d81ba500cbdbb6dc3246c",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70087122,
+        "sha256": "ad99c17b051cb062fe38894f9c65ab6d51f14251fa291d24bfbd77035705e6b7",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-server",
+        "bytes": 66554450,
+        "sha256": "e30c5b811ee860880d4006bf1d9ea8a30339587889c9d1e811ab0c52cb8f0d90",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66653522,
+        "sha256": "3311d41d13871198315153cc361fec6c591eb6d70780425c20556eada78cf7f4",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox",
+        "bytes": 69972018,
+        "sha256": "5796b37561fb955e5c679f1cb6d8eace73712b4b1adba0ade94a43b7cc5d786b",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70104082,
+        "sha256": "a95809898cc738f1b683a5f82847f462c0ef4c8d49feeaa3a5471b378beedbf1",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66538402,
+        "sha256": "d921bb29b993b0ed2bfe527269cd72e4c88485fe723150e33703431276f997e2",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66653986,
+        "sha256": "58e88ab1ed13dcbbe2f35b0b8241c2c365d8c0dce3bd94c04fb8bf5f409b531c",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox",
+        "bytes": 69989618,
+        "sha256": "10f84ae2977b9aa9620c52dd814543cd2f0d534825137734fcfa009b6a2bd13d",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70105170,
+        "sha256": "657cb2c4e95968cfa5059f339c68dadc3908311ead0de1de9012bbe6be26490b",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66539538,
+        "sha256": "78dcf6ae81e506145e35a08e969c528c8ff73097f0fd24f407a274295495480a",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66671634,
+        "sha256": "7c9dcabefb4e2d20d68b3f0408d6dfe36b9ec653acbcf252cafa05f6e7f84a81",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      }
+    ],
+    "asset_reference_sha256": "f34078714beee59e643e4348e3fe56d0326ab2c378961f3514dbb241ef979b38",
+    "e2e_reference_sha256": "098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce",
+    "sealed_baselines_unchanged": true,
+    "original_fixtures_unchanged": true
+  },
+  "completed_log_compression": {
+    "utc": "2026-11-14T23:11:54.287084+00:00",
+    "completed_logs": 5,
+    "logical_bytes_preserved": 380865356,
+    "all_paths_bytes_modes_times_and_noncompression_attributes_preserved": true,
+    "available_before": 1224581120,
+    "available_after": 1600778240,
+    "elapsed_seconds": 2.460097000002861,
+    "scope": "Transparent filesystem compression of five completed test stdout logs only. Failures and successes retain every byte and path. Active builds, cache entries, programs, source, assets,Save and ZIPs were untouched."
+  },
+  "inactive_build_cache_cleanup": {
+    "utc": "2026-11-14T23:27:23.274895+00:00",
+    "exit_code": 0,
+    "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8",
+    "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "cache_KiB_before": 2352460,
+    "cache_KiB_after": 8,
+    "retained_programs_SHA_verified": 296,
+    "elapsed_seconds": 21.739938791986788,
+    "scope": "Only inactive dedicated build cache cleaned. All selected historical and current programs,40 products, original C reproductions and compression pilots retain their paths and bytes. Modules, assets,Save, failures and CI ZIPs preserved."
+  },
+  "caller_scope": "Public field setter4240F0 uses a native opaque data pointer and const field name; table remains packed8byte name/offset entries with native name sidecars. Public parser424170 uses the already-ported real binfile/token-reader services and Go-owned names/head/next, preserving numeric84byte data. Name/link allocation traces are explicitly normalized; all other captured service order/results remain exact. The public entry retains original key/unknown-field early returns and partial nodes. Existing production Go loader keeps its deferred cleanup and shares only name adoption/field update helpers. Real encrypted token streams and unmocked default C/Go loaders pass; GC/public const lookup retains hidden duplicate names. No arbitrary lexical/encrypted-I/O original-executable coverage is claimed for the token-level CPU fixture. Existing failed public SaveLoad pixel golden is not promoted.",
+  "inventory": {
+    "active_C_definitions": 1924,
+    "all_pointer_integer_casts": 2424,
+    "narrow_cast_review_candidates": 2137,
+    "candidate_functions": 230,
+    "scope": "Same original13-file eligibility; review inventory, not completion denominator."
+  },
+  "pointer_width_review_index": {
+    "path": "pointer-width-review-index-v1.json",
+    "sha256": "c767614c8b793741dd640211828029ee4c6d9fc5dce1df2c0ea25cc74d6c99cb",
+    "functions": 230,
+    "narrow_candidates": 2137,
+    "functions_referencing_Go_exports": 149,
+    "functions_with_lexical_product_Go_C_reference": 37,
+    "reachability_or_completion_claim": false
+  },
+  "all_13_split_files_ported": false,
+  "all_repository_C_implementation_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "committed_C_source_inventory": {
+    "path": "all-owned-C-source-inventory-v1.json",
+    "sha256": "0cc4bd27c9522ebd01dbdda6a761fb4128574eab458d1c00d6b94932c291f932",
+    "tracked_paths": 637,
+    "present_paths": 637,
+    "categories": {
+      "runtime_or_build_source": 221,
+      "test_or_validation_source": 416
+    },
+    "active_or_unported_count_claim": false
+  },
+  "next_prepared_baseline": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-named-bitmask-native-20261115-v1/prepared-baseline-v1.json",
+    "sha256": "583bbcb3a5961a449d272728666b717e92c6b3d843c65adc849e57fc88da3845",
+    "sealed_files": 43,
+    "incoming_source_files": 9,
+    "original_cases": 1435,
+    "original_instruction_bytes": 223,
+    "original_C_body_bytes": 667,
+    "standalone_controls": 4,
+    "standalone_char_index_SIGSEGVs": 2,
+    "source_port_started": false,
+    "new_Go_credit": 0
+  }
+}

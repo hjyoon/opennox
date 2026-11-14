@@ -4119,6 +4119,8 @@ uint32_t* nox_xxx_spriteChangeLightColor_484BE0(uint32_t* a1, int a2, int a3, in
 }
 
 //----- (00484C00) --------------------------------------------------------
+// Preserved original: unused packed-light shadow; native Drawable light methods already own live calls.
+#if 0
 long long sub_484C00(int a1, int a2) {
 	long long result; // rax
 
@@ -4127,8 +4129,11 @@ long long sub_484C00(int a1, int a2) {
 	*(uint32_t*)(a1 + 32) = 0;
 	return result;
 }
+#endif
 
 //----- (00484C30) --------------------------------------------------------
+// Preserved original: unused packed-light shadow; native Drawable light methods already own live calls.
+#if 0
 long long nox_xxx_spriteChangeLightSize_484C30(int a1, int a2) {
 	long long result; // rax
 
@@ -4136,6 +4141,7 @@ long long nox_xxx_spriteChangeLightSize_484C30(int a1, int a2) {
 	*(uint16_t*)(a1 + 30) = result;
 	return result;
 }
+#endif
 
 //----- (00484CE0) --------------------------------------------------------
 int sub_484CE0(void* a1, float a2) {
@@ -4152,6 +4158,8 @@ int sub_484CE0(void* a1, float a2) {
 }
 
 //----- (00484D70) --------------------------------------------------------
+// Preserved original: unused packed-light shadow; native Drawable light methods already own live calls.
+#if 0
 int nox_xxx_spriteChangeIntensity_484D70_light_intensity(int a1, float a2) {
 	int result; // eax
 
@@ -4164,6 +4172,7 @@ int nox_xxx_spriteChangeIntensity_484D70_light_intensity(int a1, float a2) {
 	*(uint32_t*)(a1 + 8) = result;
 	return result;
 }
+#endif
 
 // Native-width Drawable variants. The original entry points above receive a
 // pointer to the packed PE32 light block. Native Drawables widen Go int-backed

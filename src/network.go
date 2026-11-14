@@ -401,13 +401,7 @@ func nox_xxx_netTestHighBit_578B70(v uint16) bool    { return (v>>15)&1 != 0 }
 func nox_xxx_netClearHighBit_578B30(v uint16) uint16 { return v & 0x7FFF }
 
 func nox_xxx_playerCantTalkMB_57A160(pl *server.Player) bool {
-	if pl == nil {
-		return false
-	}
-	if !noxflags.HasGame(noxflags.GameClient) {
-		return false
-	}
-	return (pl.Field3680>>3)&0x1 != 0
+	return server.PlayerCantTalkNative57A160(pl)
 }
 
 func sub_43C6E0() int {

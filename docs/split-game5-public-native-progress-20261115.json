@@ -1,0 +1,391 @@
+{
+  "scope": "Two GAME5_2 public C entries now use native Go paths; three unused packed-light shadows retired separately. Other twelve split files and whole-game completion remain partial.",
+  "base_HEAD": "028620c931f8bc05628b776c057af4d7923a62e1",
+  "code_revision": null,
+  "git": {
+    "local_branch": "port/go1.27-multiarch",
+    "push_target": "origin/port/go1.27-multiarch",
+    "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch"
+  },
+  "stage": "ROOT/split-game5-public-native-20261114-v1",
+  "new_Go_entries": [
+    {
+      "name": "nox_xxx_playerCanTalkMB_57A160",
+      "owner": "src/legacy/game5_public_native.go \u2192 server.PlayerCantTalkNative57A160",
+      "ABI": "nox_playerInfo*; native Field3680 and GameClient gate shared with the live network path"
+    },
+    {
+      "name": "nox_xxx_collideReflect_57B810",
+      "owner": "src/legacy/game5_public_native.go \u2192 server.ReflectVelocityNative57B810",
+      "ABI": "float* normal/velocity and full float* return; shared with all existing wall-reflection callers"
+    }
+  ],
+  "archive": {
+    "entries": [
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "symbol": "nox_xxx_playerCanTalkMB_57A160",
+        "bytes": 208,
+        "sha256": "c44489cb870fa1ff671fbbb9a5b24b0f4b4f1b90226530cdf14243f8da51410e",
+        "kind": "native Go public entry in game5_public_native.go"
+      },
+      {
+        "file": "src/legacy/GAME5_2.c",
+        "symbol": "nox_xxx_collideReflect_57B810",
+        "bytes": 356,
+        "sha256": "66cdc0a248109e6d14c5fd9a1de412ffc88302f07f02d18cc48d081b7daf990b",
+        "kind": "native Go public entry in game5_public_native.go"
+      },
+      {
+        "file": "src/legacy/GAME2_2.c",
+        "symbol": "sub_484C00",
+        "bytes": 256,
+        "sha256": "365b2dbaa27aa4ed329b6dd8725ebcc8112c78103b9aaa69257ffa900329dae6",
+        "kind": "unused packed-light shadow; native Drawable light methods already own live calls"
+      },
+      {
+        "file": "src/legacy/GAME2_2.c",
+        "symbol": "nox_xxx_spriteChangeLightSize_484C30",
+        "bytes": 254,
+        "sha256": "1987b60462ec7b89ea66fa0a99dca74150c95dd8c6e584c536c9decd43ccd0bf",
+        "kind": "unused packed-light shadow; native Drawable light methods already own live calls"
+      },
+      {
+        "file": "src/legacy/GAME2_2.c",
+        "symbol": "nox_xxx_spriteChangeIntensity_484D70_light_intensity",
+        "bytes": 336,
+        "sha256": "148e78f1b70f28b0dff3464e96f50cab34a3849bd9b87c602f8a107dde13bd40",
+        "kind": "unused packed-light shadow; native Drawable light methods already own live calls"
+      }
+    ],
+    "original_C_files_reconstructed_exactly": true,
+    "new_Go_entries": 2,
+    "retired_shadows": 3
+  },
+  "original_pointer_reproductions": {
+    "utc": "2026-11-14T14:44:32.049646+00:00",
+    "command": [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-fwrapv",
+      "-fno-inline",
+      "-Wno-int-to-pointer-cast",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/original-c-before-v1/original.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/original-c-before-v1/original-c-before"
+    ],
+    "source_sha256": "f4fc31394829b7311c4347f3bdd1975ed3e554a81136ea67c29ce6c78a09a510",
+    "binary_sha256": "da4ea630675e6af62260d0ec5a5eb413fbac1b086840ee7ff1bab16799dfbe2d",
+    "original_bodies": {
+      "nox_xxx_playerCanTalkMB_57A160": {
+        "bytes": 208,
+        "sha256": "c44489cb870fa1ff671fbbb9a5b24b0f4b4f1b90226530cdf14243f8da51410e"
+      },
+      "nox_xxx_collideReflect_57B810": {
+        "bytes": 356,
+        "sha256": "66cdc0a248109e6d14c5fd9a1de412ffc88302f07f02d18cc48d081b7daf990b"
+      }
+    },
+    "results": [
+      {
+        "mode": 0,
+        "name": "nil-player-control",
+        "exit_code": 0,
+        "elapsed_seconds": 0.429,
+        "stderr": "owner=0x1014419f0 velocity=0x101441a70 truncated_owner=014419f0 truncated_velocity=01441a70\n"
+      },
+      {
+        "mode": 1,
+        "name": "game-flag-off-control",
+        "exit_code": 0,
+        "elapsed_seconds": 0.009,
+        "stderr": "owner=0x1033b19f0 velocity=0x1033b1a70 truncated_owner=033b19f0 truncated_velocity=033b1a70\n"
+      },
+      {
+        "mode": 2,
+        "name": "high-player-pointer-before",
+        "exit_code": -11,
+        "elapsed_seconds": 0.006,
+        "stderr": "owner=0x102bc99f0 velocity=0x102bc9a70 truncated_owner=02bc99f0 truncated_velocity=02bc9a70\n"
+      },
+      {
+        "mode": 3,
+        "name": "high-velocity-pointer-before",
+        "exit_code": -11,
+        "elapsed_seconds": 0.006,
+        "stderr": "owner=0x1033b59f0 velocity=0x1033b5a70 truncated_owner=033b59f0 truncated_velocity=033b5a70\n"
+      }
+    ],
+    "scope": "Unmodified incoming C entry bodies in a standalone native executable. The game flag check is a declared Boolean service. This establishes pointer truncation in the original C bodies, not execution of the integrated game path."
+  },
+  "original_CPU": {
+    "game_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "cases": 3036,
+    "kinds": {
+      "chat": 96,
+      "reflect": 2940
+    },
+    "fixture_sha256": "a11e503153189392a24411186cc875b9bd6dec8e0b2f4923d618d7fdab27e339",
+    "fixture_gzip_sha256": "c963174d95c46a4128671035082c2a2ee2bec88514ab5cd3699539015f188bba",
+    "fixture_bytes": 805956,
+    "python": "3.12.11 (main, Sep  2 2025, 16:01:33) [Clang 17.0.0 (clang-1700.0.13.5)]",
+    "unicorn": "2.1.4",
+    "declared_services": [],
+    "scope": "Execute unchanged GAME.EXE chat gating, wall reflection and game flag checks.\n\nNo services or generated expected-value implementation are used. The complete\nthree instruction ranges remain unchanged. Includes aliasing, signed zero,\nbinary32 underflow, infinities and quiet/signaling NaN payloads.\n",
+    "regions": {
+      "chat": {
+        "start": "0x57a160",
+        "end": "0x57a189",
+        "mapped_bytes": 41,
+        "sha256": "8c1e74c4d6c14a5e081cf36a116e0f814f46903957a2eba4b131788a7b7f4786",
+        "executed_bytes": 41,
+        "executed_instructions": 17
+      },
+      "reflect": {
+        "start": "0x57b810",
+        "end": "0x57b842",
+        "mapped_bytes": 50,
+        "sha256": "3e09f8a09f7bae33c239130efacdcd7d335cdad0bcbe93bd3b84906ae3a7f9c1",
+        "executed_bytes": 50,
+        "executed_instructions": 19
+      },
+      "game_flags": {
+        "start": "0x40a5c0",
+        "end": "0x40a5d2",
+        "mapped_bytes": 18,
+        "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
+        "executed_bytes": 18,
+        "executed_instructions": 7
+      }
+    }
+  },
+  "native_x87_reference": {
+    "utc": "2026-11-14T15:11:03.288990+00:00",
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-fno-strict-aliasing",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/native-x87-reflect-reference-v1.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/native-x87-reference-v1/native-x87-reflect-reference"
+    ],
+    "execution": [
+      "/usr/bin/arch",
+      "-x86_64",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/native-x87-reference-v1/native-x87-reflect-reference"
+    ],
+    "source_sha256": "c5417d6d98b0abfa973d2f0ca5075e5040b1f9e69ba2707c04b485e9877aa5ea",
+    "binary_sha256": "96db013def847cdf4bb2e674875ef1bb8d916346a5aba270407eaff9273202ac",
+    "input_sha256": "539b5ea72d05a85029127f75a4e97abe3038d8216bb984e862d15884ee7450da",
+    "output_sha256": "f001bc63749d59ddf728e601480eaf7dba86b304016f37ab30237ce075dc4f91",
+    "sidecar_sha256": "18993f065813ffc73ca4449d2a6082a058e2519e75ae1b6a4556c36c3ab063e4",
+    "sidecar_gzip_sha256": "892a522a900ecda2b94cfdf421c66e671e4635ec86bd13f784633e8762d907e5",
+    "original_fixture_sha256": "a11e503153189392a24411186cc875b9bd6dec8e0b2f4923d618d7fdab27e339",
+    "native_reflect_cases": 2940,
+    "original_agreement_cases": 2415,
+    "signaling_NaN_disagreement_cases": 525,
+    "corrected_output_words": {
+      "3": 488,
+      "2": 69
+    },
+    "scope": "Native amd64 x87 instruction sequence with ABI-adapted pointers, executed through Rosetta. Original sealed Unicorn fixture remains unchanged. Every disagreement is solely FLD/FSTP quieting signaling NaNs; all control flow, other payload bits, aliasing, normal/owner bytes agree.",
+    "compiler_warnings": 0
+  },
+  "actual_native_C_fixture_cross_check": {
+    "cases": 2940,
+    "output_sha256": "51a9e959b5da021894f2d467b984e58f1e3acc0a5ea3ee9ebd4f30b2b0253ac0",
+    "source_sha256": "c58ca2f8fb819754e5ec943d1fca60608880331c2a4898c1765fc725fb20a70e",
+    "fixture_function_sha256": "c59c7bffec6123534ba27c7f35cf66b313fa7976e64c06e38e92c42b15cafe9a",
+    "binary_sha256": "128fcef7d60a96b2e47a84e28c61cedf449d7b7eea4c18482732466369c436e6",
+    "all_native_rows_match": true,
+    "scope": "Unmodified actual C fixture x87 function, with its saved/restored x87 environment and original PC53/toward-zero control, executed as amd64 through Rosetta; agrees with the separately sealed PC64/nearest native instruction reference.",
+    "compiler_warnings": 0
+  },
+  "original_fixture_policy": "The initial sealed 3036-case Unicorn fixture remains byte-identical. An independently sealed native x87 sidecar supplies only 525 signaling-NaN quiet-bit differences, matching the existing project probe for the known Unicorn 2.1.4 FLD limitation. All 3036 cases run at all three foreign placements; no exclusions or golden replacement.",
+  "native_x86_CI_policy": "On amd64/386 the exact public C matrix also executes the separate x87/MOV sequence with saved/restored control state and compares all 2940 reflection cases against both sealed references.",
+  "local_validation": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9151,
+      "source_lease_sha256": "098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce",
+      "exit_code": 0,
+      "elapsed_seconds": 317.608,
+      "test_actions": {
+        "pass": 9131
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict": {
+      "changed_source_paths": [],
+      "source_files": 9151,
+      "source_lease_sha256": "098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce",
+      "exit_code": 0,
+      "elapsed_seconds": 316.995,
+      "test_actions": {
+        "pass": 9131
+      },
+      "package_actions": {
+        "pass": 3
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict_flags": [
+      "highres",
+      "cgocheck2",
+      "checkptr=2"
+    ],
+    "unfiltered_full_suite_claim": false
+  },
+  "current_inventory": [
+    {
+      "file": "src/legacy/GAME1_1.c",
+      "active_functions": 187,
+      "pointer_integer_casts": 157,
+      "narrow_pointer_casts": 154,
+      "functions_with_narrow_casts": 36,
+      "source_sha256": "86ad3978cf0ffd51485af9e80f7c417467d429c95fdbea59506136218d051634"
+    },
+    {
+      "file": "src/legacy/GAME1_2.c",
+      "active_functions": 122,
+      "pointer_integer_casts": 352,
+      "narrow_pointer_casts": 330,
+      "functions_with_narrow_casts": 27,
+      "source_sha256": "b8a8f7f8dbba9528731ae20e8f55ffcc1b5ba36c729b69315a2642567c0de9f6"
+    },
+    {
+      "file": "src/legacy/GAME1_3.c",
+      "active_functions": 0,
+      "pointer_integer_casts": 0,
+      "narrow_pointer_casts": 0,
+      "functions_with_narrow_casts": 0,
+      "source_sha256": "61ee6cbbb45995559a3c0432398e5897e84f2625759dacb29872a8968e8c196f"
+    },
+    {
+      "file": "src/legacy/GAME2_1.c",
+      "active_functions": 235,
+      "pointer_integer_casts": 68,
+      "narrow_pointer_casts": 14,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "c78602c3acb0aa8513a631d9f7bbbda1abbe18a3e1f2e3da44dd3b9114a63312"
+    },
+    {
+      "file": "src/legacy/GAME2_2.c",
+      "active_functions": 103,
+      "pointer_integer_casts": 105,
+      "narrow_pointer_casts": 97,
+      "functions_with_narrow_casts": 7,
+      "source_sha256": "c1433fe0d2a343ff7ced0ae0a0868f6acefc8079c2c01e37ec3737112a56b9cd"
+    },
+    {
+      "file": "src/legacy/GAME2_3.c",
+      "active_functions": 134,
+      "pointer_integer_casts": 54,
+      "narrow_pointer_casts": 41,
+      "functions_with_narrow_casts": 8,
+      "source_sha256": "03a0e2ffefcf44278abef0b7ff5121ec1424421965a42d3a70ff4d85d4a12e3e"
+    },
+    {
+      "file": "src/legacy/GAME3_1.c",
+      "active_functions": 160,
+      "pointer_integer_casts": 67,
+      "narrow_pointer_casts": 23,
+      "functions_with_narrow_casts": 5,
+      "source_sha256": "5a0cb487ab101f00adb217a13805f34bd1dbf9f22c8707e31d477deda9fccc80"
+    },
+    {
+      "file": "src/legacy/GAME3_2.c",
+      "active_functions": 260,
+      "pointer_integer_casts": 287,
+      "narrow_pointer_casts": 255,
+      "functions_with_narrow_casts": 37,
+      "source_sha256": "8008391bd16fbc789e1b97a2a8282e5e2d6f83bdcaf91721b792b56262eb370c"
+    },
+    {
+      "file": "src/legacy/GAME3_3.c",
+      "active_functions": 81,
+      "pointer_integer_casts": 246,
+      "narrow_pointer_casts": 216,
+      "functions_with_narrow_casts": 10,
+      "source_sha256": "d9d2ae3c4d154998d8771b688a56499412e8ced00e1226d0000bd07ad6836fd7"
+    },
+    {
+      "file": "src/legacy/GAME4_1.c",
+      "active_functions": 105,
+      "pointer_integer_casts": 513,
+      "narrow_pointer_casts": 493,
+      "functions_with_narrow_casts": 46,
+      "source_sha256": "951fda5258539e6678341c830552c0551e9d6c76e9f3570335ccdfca66f800a4"
+    },
+    {
+      "file": "src/legacy/GAME4_2.c",
+      "active_functions": 337,
+      "pointer_integer_casts": 418,
+      "narrow_pointer_casts": 387,
+      "functions_with_narrow_casts": 38,
+      "source_sha256": "6e162edff2dd4cb2dd730009df5a5543126b139f41e73f440c78eb2ed536e17a"
+    },
+    {
+      "file": "src/legacy/GAME4_3.c",
+      "active_functions": 165,
+      "pointer_integer_casts": 399,
+      "narrow_pointer_casts": 373,
+      "functions_with_narrow_casts": 35,
+      "source_sha256": "a9f3373c3633b796004a02207765d800e4cfdaaada053503540742222c7ed3c4"
+    },
+    {
+      "file": "src/legacy/GAME5_2.c",
+      "active_functions": 79,
+      "pointer_integer_casts": 25,
+      "narrow_pointer_casts": 21,
+      "functions_with_narrow_casts": 9,
+      "source_sha256": "ca4337e2b3e4343c9e34617d47bf34b47d498665d430c949bc06a5f9dcfe0113"
+    }
+  ],
+  "counts": {
+    "active_C_definitions": 1968,
+    "all_pointer_integer_casts": 2691,
+    "narrow_cast_candidates": 2404,
+    "functions_with_narrow_cast_candidates": 263
+  },
+  "inventory_limit": "Comparable inventory using the same canonical narrow integer types as the qualified audio batch; candidates need semantic review, not an unported denominator.",
+  "cleanup": {
+    "utc": "2026-11-14T15:06:43.350288+00:00",
+    "completed_copies": 78,
+    "logical_bytes_preserved": 6771717628,
+    "physical_available_before": 313753600,
+    "physical_available_after": 6758400000,
+    "elapsed_seconds": 22.55,
+    "all_original_paths_preserved": true,
+    "products_and_active_stage_untouched": true,
+    "skipped": []
+  },
+  "remaining_qualification": [
+    "clean four-product builds",
+    "normal/HD projectile/pixie product E2E",
+    "normal/HD independent peer chat",
+    "Linux four-product and Windows amd64/386 CI including native x87 reference"
+  ],
+  "all_13_split_files_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters 1-3 only; chapter 4+ excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false
+}

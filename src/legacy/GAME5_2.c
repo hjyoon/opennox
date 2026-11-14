@@ -955,6 +955,8 @@ nox_waypoint_t* sub_579E70() {
 int sub_579EE0(nox_waypoint_t* a1, unsigned char a2) { return a1 && (a2 & a1->flags_2) != 0; }
 
 //----- (0057A160) --------------------------------------------------------
+// Preserved original: native Go public entry in game5_public_native.go.
+#if 0
 int nox_xxx_playerCanTalkMB_57A160(int a1) {
 	int result; // eax
 
@@ -965,6 +967,7 @@ int nox_xxx_playerCanTalkMB_57A160(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0057A1B0) --------------------------------------------------------
 char* sub_57A1B0(short a1) {
@@ -1533,6 +1536,8 @@ int sub_57B450(nox_drawable* a1p) {
 }
 
 //----- (0057B810) --------------------------------------------------------
+// Preserved original: native Go public entry in game5_public_native.go.
+#if 0
 int nox_xxx_collideReflect_57B810(float* a1, int a2) {
 	int result; // eax
 	double v3;  // st7
@@ -1550,6 +1555,7 @@ int nox_xxx_collideReflect_57B810(float* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0057B850) --------------------------------------------------------
 extern int nox_xxx_map_57B850_go(float2* source, float* shape, float2* target);

@@ -60,6 +60,48 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### GAME5_2 public native entries, 2026-11-15
+
+The chat restriction and wall-reflection public C entries now share the typed
+Go implementation used by the live network and projectile paths. The player
+argument is a native player pointer and reads its expanded Field3680 layout.
+Reflection accepts native normal/velocity pointers and returns the complete
+velocity pointer. Both unchanged incoming C bodies have high-pointer SIGSEGV
+reproductions with passing nil/flag-off controls.
+
+The sealed GAME.EXE run executes 109 unchanged bytes, including the original
+flag check, for 3,036 cases without service substitutions. An independent
+amd64 x87 sequence cross-checks all 2,940 reflection rows. Its 525 differences
+are solely signaling-NaN quiet bits: Unicorn 2.1.4 has the FLD limitation
+already covered by this project's existing x87 probe. The initial fixture
+and failures remain unchanged. A separately sealed native sidecar supplies
+these bits; no rows are excluded. Actual x86 CI also runs the independent
+x87 sequence inside the public C matrix.
+
+Normal and highres/cgocheck2/checkptr=2 focused checks each pass 9,131 tests
+and three packages with zero warnings. All 9,151 inputs remain unchanged
+through both runs, shared lease
+`098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce`.
+Clean products, product E2E and six platform jobs are still pending for this
+batch; the previous audio qualification below remains the latest completed
+engine boundary.
+
+Three original packed-light shadows have no active references in the audited
+translation units and are now archived. Their existing native Drawable
+replacements remain in use. This is separate from the two new Go entries.
+Removing only the five new guards reconstructs both incoming C files exactly.
+Completed test copies were converted to independent APFS copy-on-write files:
+78 paths and all 6,771,717,628 bytes keep their original hashes and metadata.
+Assets, Save, products, archives and active executables remain preserved.
+
+The comparable inventory now has 1,968 active C definitions and 2,404 narrow
+cast candidates across 263 functions. Definitions include native C and Go
+forwarders; these counts are not a completion denominator. Both incremental
+source maps, the x87 limit, initial failures and cleanup records are in
+`docs/split-game5-public-native-progress-20261115.json`. The remaining twelve
+files, whole-game completion, nine final chapter audits and the inherited
+SaveLoad pixel comparison remain open.
+
 ### Split GAME audio owners: native family, 2026-11-14
 
 This qualified split-file batch moves 74 original entries to Go: two

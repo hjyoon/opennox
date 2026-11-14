@@ -33,16 +33,7 @@ type spellProjectileNativeDeps4E9500 struct {
 // used by the nil-other branch. The product is evaluated without a binary32
 // spill, matching the x87 compare in GAME.EXE.
 func spellProjectileWallReflect57B810(collision *types.Pointf, projectile *Object) {
-	x, y := projectile.VelVec.X, projectile.VelVec.Y
-	// FCOMP followed by TEST AH,0x41 takes the swap path for a negative
-	// product, either signed zero, or an unordered (NaN) comparison.
-	if !(float64(collision.Y)*float64(collision.X) > 0) {
-		projectile.VelVec.X = y
-		projectile.VelVec.Y = x
-		return
-	}
-	projectile.VelVec.X = -y
-	projectile.VelVec.Y = -x
+	ReflectVelocityNative57B810(collision, &projectile.VelVec)
 }
 
 // spellProjectileReflect4E0A70 is the native-pointer implementation of the

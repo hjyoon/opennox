@@ -60,6 +60,96 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native buff iteration and whole-C scope, 2026-11-15
+
+The qualified engine is `e20577673e22eab1181a58bc5ec3f12f2d8c98da`,
+pushed to `origin/port/go1.27-multiarch`. Three more public C entries now
+use Go: buff count 424CB0, first EnchantID 424D00 and next EnchantID 424D20.
+The cumulative qualified count for the split-file work is **136 Go entries**.
+The user's current goal covers **all repository-owned C implementation**,
+including files outside the original 13 split files. Original C verification
+fixtures remain preserved; required ABI glue needs explicit review.
+
+The buff count retains the separate live C scalar `dword_587000_66116`.
+It is not the similarly addressed raw memory blob. The table at
+`587000+66000` remains packed DWORD EnchantIDs, with the original stock
+order and signed 32-bit iterator tokens. Native Object pointers reach the
+existing exact bit test without integer truncation. Independent layout
+checks use Buffs offsets 344/340 on 64/32-bit targets, with contradictory
+old-offset and raw-count decoys. Player-save iteration now calls the Go
+kernels directly. The const NPC lookup bridge file was removed using a
+direct Cgo export with a const-char typedef; its public ABI and existing
+checks remain intact. That cleanup adds **zero** business-port credit.
+
+The sealed original reference executes 3,339 cases over 181 unchanged
+instruction bytes with no substituted services. This includes 146 bytes
+for the three new entries and 35 bytes for the already-ported buff-test
+control. All 895 original C body bytes remain archived, and reversing
+only the documented guards/caller alias reconstructs the incoming C files.
+The standalone unchanged-C baseline preserves four controls and one
+high-address SIGSEGV; it is bounded pointer-width evidence.
+
+The following qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed 74,041
+  focused checks. Both use the same 9,185-input lease
+  `cdee364965f587af5721a2f10daf7cd37f00e8300d9153e7bf0e67d120fd841e`.
+- All four macOS products built and passed metadata/help/symbol checks.
+  Normal/HD passed four core E2E scenarios, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles. Chat covers
+  Enter submission, independent peer receipt, host reply, cancel and empty
+  input; all processes exited naturally.
+- Linux run `43645429832` passed all four product jobs: client/HD each
+  893,619 PASS plus 57 skips; server/HD each 887,508 PASS plus 7 skips.
+  The server also passed 133,405 default-link damage checks.
+- Windows run `43645405193` passed amd64 with 885,493 PASS plus 11 skips,
+  and 386 with 865,560 PASS plus 94 skips. Every platform passed the new
+  10,022 public-C buff checks and 28 player-save ordering checks, alongside
+  the prior NPC voice, packet, marker, action, bitstream, public-entry and
+  independent x87 controls.
+
+All six complete CI ZIPs have verified SHA-256, source revision, test
+summaries and 158 retained test executables. Existing 4,698 protected
+tests/fixtures/E2E inputs, 4,649 original files including personal Save,
+387 tracked E2E inputs and 36 selected product versions remain unchanged.
+The final cache audit verified 280 selected program paths before/after
+cleaning only the inactive dedicated build cache (1,672,952 KiB to 8 KiB).
+Transparent filesystem compression preserved all 235 selected completed
+test paths, bytes, modes, times and execution/signature controls while
+freeing about 3.6 GiB. Initial compression-inspection failures are retained.
+
+The same original 13-file review now has 1,926 active original C
+definitions and 2,429 pointer/integer casts, with 2,142 narrow-cast review
+candidates in 232 functions. Only GAME1_3.c has zero active original
+definitions; the other 12 split files remain partial. These are review
+counts, including safe scalar tokens and C glue, not a completion denominator.
+
+The broader source inventory has 637 present C files: 416 in the
+test/validation path category and 221 in a broad runtime/build category.
+That second category also includes third-party OpenAL, C reference code,
+global storage and ABI wrappers. A native ARM64 syntax review covers all
+219 legacy-category files; OpenAL uses its existing include path and the
+x87 reference uses its required x86 architecture. The active legacy index
+locates 2,650 bounded function bodies and ten macro invocations. It does
+not classify all of them as unported or prove runtime reachability. Initial
+audit-context and macro-count failures remain preserved.
+
+The next two C entries, sound-set field setter 4240F0 and parser 424170,
+have a sealed preparation baseline with 1,998 original cases, 439 unchanged
+instruction bytes, 1,317 original C source bytes and 15 incoming source
+snapshots. Setter comparison substitutes no services; parser comparison
+declares seven token-level services and retains original error-path traces.
+Four standalone controls, three SIGSEGVs and two pointer losses are retained.
+No source migration or Go credit is claimed for this preparation.
+
+Evidence: `docs/split-buff-iteration-native-progress-20261115.json` and
+verification ROOT `split-buff-iteration-native-20261115-v1/`;
+`all-runtime-C-definition-index-v1.json` expands the source review, and
+`split-soundset-parser-native-20261115-v1/prepared-baseline-v1.json` seals
+the next group. **All-C migration and overall 100% remain open.** All nine
+final class/chapter audits remain open. The inherited failed public
+SaveLoad pixel golden is not promoted by functional diagnostics.
+
 ### Native NPC voice entries, 2026-11-15
 
 The qualified engine is `81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce`,

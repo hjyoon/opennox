@@ -1,5 +1,5 @@
 {
-  "scope": "13 split GAME files: four qualified batches and edit cleanup, then four action-name algorithms with macOS focused checks passed; product/platform qualification pending. GAME1_3 has no active original C definitions; other twelve and whole-game completion remain partial.",
+  "scope": "13 split GAME C files: five qualified incremental native batches and unreachable edit cleanup. GAME1_3 has zero active original C definitions; the other twelve and whole-game completion remain partial.",
   "incoming_active_functions": {
     "GAME1_1.c": 187,
     "GAME1_2.c": 124,
@@ -361,15 +361,15 @@
   "current_focused_validation": {
     "normal": {
       "changed_source_paths": [],
-      "source_files": 9159,
-      "source_lease_sha256": "62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f",
+      "source_files": 9166,
+      "source_lease_sha256": "1dbf531c6fb7e5a2597729d3381e66ed060820dcd64a60bb4069ff93768ef5d3",
       "exit_code": 0,
-      "elapsed_seconds": 333.301,
+      "elapsed_seconds": 169.874,
       "test_actions": {
-        "pass": 27327
+        "pass": 6226
       },
       "package_actions": {
-        "pass": 3
+        "pass": 2
       },
       "failure_count": 0,
       "first_failures": [],
@@ -378,15 +378,15 @@
     },
     "strict": {
       "changed_source_paths": [],
-      "source_files": 9159,
-      "source_lease_sha256": "62e1b57bf8b743f8b35a6780589f77ae8e30611bb2ebefc06d1146448dbb377f",
+      "source_files": 9166,
+      "source_lease_sha256": "1dbf531c6fb7e5a2597729d3381e66ed060820dcd64a60bb4069ff93768ef5d3",
       "exit_code": 0,
-      "elapsed_seconds": 333.302,
+      "elapsed_seconds": 170.089,
       "test_actions": {
-        "pass": 27327
+        "pass": 6226
       },
       "package_actions": {
-        "pass": 3
+        "pass": 2
       },
       "failure_count": 0,
       "first_failures": [],
@@ -398,7 +398,7 @@
   "remaining_in_GAME1_3": [],
   "remaining_qualification": [],
   "whole_game_100_percent": false,
-  "qualified_engine_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
+  "qualified_engine_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
   "current_active_total": 1960,
   "current_active_functions": {
     "GAME1_1.c": 182,
@@ -558,17 +558,17 @@
   "qualification": [
     {
       "profile": "Linux amd64 client",
-      "run_id": 43615817151,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
-      "job_id": 132510524403,
-      "artifact_id": 14122448846,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122448846-8c31e6860.zip",
-      "sha256": "809454469e1ddfed10894c344857ddad26e83dc0af8aec362505335d152f1621",
-      "bytes": 211266853,
+      "run_id": 43628605260,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628605260",
+      "job_id": 132549975214,
+      "artifact_id": 14127858259,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14127858259-d3e03dd68.zip",
+      "sha256": "712d3a87516b072fa5d66512e354984d3de1ea51eea6344cd315fc8a283a9f56",
+      "bytes": 212073326,
       "source_revision_verified": true,
       "compiled_package_executables": 40,
       "test_actions": {
-        "pass": 855989,
+        "pass": 859238,
         "skip": 57
       },
       "package_actions": {
@@ -577,9 +577,15 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14122448846,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "809454469e1ddfed10894c344857ddad26e83dc0af8aec362505335d152f1621",
+        "artifact_id": 14127858259,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "712d3a87516b072fa5d66512e354984d3de1ea51eea6344cd315fc8a283a9f56",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -590,31 +596,34 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 454006191,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 893792121,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 client HD",
-      "run_id": 43615817151,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
-      "job_id": 132510524617,
-      "artifact_id": 14122754619,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122754619-8c31e6860.zip",
-      "sha256": "86b331386552344ef99afa2839930579091448d0350ca89bfbc0e41158614b5d",
-      "bytes": 211888959,
+      "run_id": 43628605260,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628605260",
+      "job_id": 132549975213,
+      "artifact_id": 14128132162,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14128132162-d3e03dd68.zip",
+      "sha256": "ab9c11b1aa369e6e57318f506725ed0c3ecddebad4accd36ee7e4820edd97736",
+      "bytes": 211686929,
       "source_revision_verified": true,
       "compiled_package_executables": 40,
       "test_actions": {
-        "pass": 855989,
+        "pass": 859238,
         "skip": 57
       },
       "package_actions": {
@@ -623,9 +632,15 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14122754619,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "86b331386552344ef99afa2839930579091448d0350ca89bfbc0e41158614b5d",
+        "artifact_id": 14128132162,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "ab9c11b1aa369e6e57318f506725ed0c3ecddebad4accd36ee7e4820edd97736",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -636,31 +651,34 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 454007060,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 893791833,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 server",
-      "run_id": 43615817151,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
-      "job_id": 132510524605,
-      "artifact_id": 14122629190,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122629190-8c31e6860.zip",
-      "sha256": "3582a5a75be95a4835e909feca45b4732906f5651d30a1bcf741a83e7d28faad",
-      "bytes": 254617235,
+      "run_id": 43628605260,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628605260",
+      "job_id": 132549975266,
+      "artifact_id": 14127368727,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14127368727-d3e03dd68.zip",
+      "sha256": "c4d357d5f942f71545874f78aa6cf371547b5e25826cdcd394782eb5de8cbb2d",
+      "bytes": 254801389,
       "source_revision_verified": true,
       "compiled_package_executables": 36,
       "test_actions": {
-        "pass": 849878,
+        "pass": 853127,
         "skip": 7
       },
       "package_actions": {
@@ -681,9 +699,15 @@
         "exit_code": 0
       },
       "native_matrix": {
-        "artifact_id": 14122629190,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "3582a5a75be95a4835e909feca45b4732906f5651d30a1bcf741a83e7d28faad",
+        "artifact_id": 14127368727,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "c4d357d5f942f71545874f78aa6cf371547b5e25826cdcd394782eb5de8cbb2d",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -694,31 +718,34 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 448021657,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 886119996,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Linux amd64 server HD",
-      "run_id": 43615817151,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615817151",
-      "job_id": 132510524646,
-      "artifact_id": 14122623558,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122623558-8c31e6860.zip",
-      "sha256": "9f6a90bba1bfdb4b5bab3b540dd020f935ab80f5a358fbddf6645234dd8c9b95",
-      "bytes": 198516753,
+      "run_id": 43628605260,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628605260",
+      "job_id": 132549974981,
+      "artifact_id": 14127562266,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14127562266-d3e03dd68.zip",
+      "sha256": "bdd022ee211c95bee15a0a01ace16c28b8b1940c7992279f3f9004c8a56d46b8",
+      "bytes": 198639069,
       "source_revision_verified": true,
       "compiled_package_executables": 36,
       "test_actions": {
-        "pass": 849878,
+        "pass": 853127,
         "skip": 7
       },
       "package_actions": {
@@ -727,9 +754,15 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14122623558,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "9f6a90bba1bfdb4b5bab3b540dd020f935ab80f5a358fbddf6645234dd8c9b95",
+        "artifact_id": 14127562266,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "bdd022ee211c95bee15a0a01ace16c28b8b1940c7992279f3f9004c8a56d46b8",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -740,31 +773,34 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 448022303,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 886119677,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Windows amd64 server",
-      "run_id": 43615789491,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615789491",
-      "job_id": 132510432410,
-      "artifact_id": 14122124174,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122124174-8c31e6860.zip",
-      "sha256": "000d7ee4cad530f7bacbab8438e2e3ed05266850c819a6b652055ffab1f840b7",
-      "bytes": 161207946,
+      "run_id": 43628575184,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628575184",
+      "job_id": 132549877296,
+      "artifact_id": 14127577297,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14127577297-d3e03dd68.zip",
+      "sha256": "fbb5c2035a7701a85d3f0e7ea5a63a6482452e72d0d516815b879eae4765ba0b",
+      "bytes": 162322434,
       "source_revision_verified": true,
       "compiled_package_executables": 3,
       "test_actions": {
-        "pass": 847863,
+        "pass": 851112,
         "skip": 11
       },
       "package_actions": {
@@ -774,9 +810,15 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14122124174,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "000d7ee4cad530f7bacbab8438e2e3ed05266850c819a6b652055ffab1f840b7",
+        "artifact_id": 14127577297,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "fbb5c2035a7701a85d3f0e7ea5a63a6482452e72d0d516815b879eae4765ba0b",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -787,32 +829,35 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 673475281,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 879901370,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     },
     {
       "profile": "Windows 386 server",
-      "run_id": 43615789491,
-      "url": "https://github.com/hjyoon/opennox/actions/runs/43615789491",
-      "job_id": 132510431962,
-      "artifact_id": 14122693380,
-      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/ci-14122693380-8c31e6860.zip",
-      "sha256": "1a950e6a78ec48f4986cb55375d64b4fbab72f3c882c03b04d35b6c535ed6e0d",
-      "bytes": 156477327,
+      "run_id": 43628575184,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43628575184",
+      "job_id": 132549877562,
+      "artifact_id": 14127796409,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/ci-14127796409-d3e03dd68.zip",
+      "sha256": "20bf01048a8e70352a1c44c23dc1fdb95be9933c5c7e66c4dbdda1d45bdc37da",
+      "bytes": 155673393,
       "source_revision_verified": true,
       "compiled_package_executables": 3,
       "test_actions": {
         "skip": 94,
-        "pass": 828133
+        "pass": 831179
       },
       "package_actions": {
         "github.com/opennox/opennox/v1/server": "pass",
@@ -821,9 +866,13 @@
       },
       "default_link_damage": null,
       "native_matrix": {
-        "artifact_id": 14122693380,
-        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc",
-        "archive_sha256": "1a950e6a78ec48f4986cb55375d64b4fbab72f3c882c03b04d35b6c535ed6e0d",
+        "artifact_id": 14127796409,
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968",
+        "archive_sha256": "20bf01048a8e70352a1c44c23dc1fdb95be9933c5c7e66c4dbdda1d45bdc37da",
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {},
         "bitstream_C_matrix_actions": {
           "pass": 27281
         },
@@ -834,15 +883,17 @@
           "TestBitstreamNativeCursorLayoutCABI": "pass",
           "TestBitstreamNativeOriginalCABI": "pass",
           "TestGame5PublicNativePlayerLayoutCABI": "pass",
-          "TestGame5PublicNativeOriginalCABI": "pass"
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass"
         },
         "reference_logs": [
           "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
-          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true"
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0"
         ],
         "existing_independent_FLD_probe": "pass",
-        "decompressed_bytes_scanned": 660337289,
-        "scope": "All 9,092 unchanged-original bitstream cases run at three foreign native placements, with native cursor layout and whole owner/canary checks. Prior chat/reflection and independent x87 controls remain passing. Whole raw test trace and executables remain retained in the verified ZIP."
+        "decompressed_bytes_scanned": 856332254,
+        "scope": "The 1,014 unchanged-original action-name cases execute through public C at three foreign placements. Native getter identity and input/canary immutability are checked. On64-bit, 202 actual definition-file/checksum cases and their parent pass. The64-only definition writer is absent on386; original C32 behavior remains. Prior bitstream/public/x87 checks pass. Full raw test traces and executables stay in the SHA-verified ZIP."
       },
       "compiler_warnings": 0
     }
@@ -881,7 +932,7 @@
   },
   "remaining_work": [
     "Continue the other 12 split-file native owners/callbacks; the inventory includes already-native C and Go forwarders.",
-    "Finish action-name qualification, then port the prepared player-marker/mobility public entries using the54-byte,1728-case original baseline.",
+    "Port the prepared GAME1_1 player polygon-marker reset and GAME4_2 object-movability entries. Preserve complete pointers and verify native class/flags and player-marker field offsets against original54bytes/1728cases.",
     "The inherited public SaveLoad pixel-golden discrepancy and wider runtime feature coverage.",
     "All nine Warrior/Conjurer/Wizard chapter 1-3 final campaign audits; chapter 4+ excluded."
   ],
@@ -901,7 +952,7 @@
     "push_command": "git push origin HEAD:refs/heads/port/go1.27-multiarch",
     "instruction": "Latest explicit user correction supersedes historical go1.26 push instructions."
   },
-  "new_Go_entries_scope": "43+74+2+5+4=128 implemented entries; final four product/platform qualification pending. Const C thunks remain; edit cleanup adds no port credit.",
+  "new_Go_entries_scope": "First43 + audio74 + public chat/reflection2 + bit cursors/encoder5 + action names4 =128 qualified implemented entries. Two action-name C const thunks remain; unreachable edit cleanup adds no port credit.",
   "cumulative_new_Go_entry_count": 128,
   "prepared_next_audio_baseline_status": "The prepared baseline is now consumed by the native audio follow-up; see latest_progress_document.",
   "first_batch_qualified_engine_revision": "03a6a63ae526e1a902d22d401e88a5d00e66095a",
@@ -1291,13 +1342,25 @@
   "audio_batch_qualified_engine_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2",
   "audio_batch_progress_document": "docs/split-audio-native-progress-20261114.json",
   "latest_source_cleanup_document": "docs/split-unreachable-native-progress-20261115.json",
-  "latest_fully_qualified_progress_document": "docs/split-bitstream-native-progress-20261115.json",
+  "latest_fully_qualified_progress_document": "docs/split-monster-action-names-native-progress-20261115.json",
   "prepared_next_action_names_baseline": {
     "evidence_root": "ROOT/split-monster-action-names-native-20261115-v1",
     "cases": 1014,
     "unchanged_original_instruction_bytes": 260,
     "declared_services": [],
+    "source_port_started": true,
+    "scope": "Four entries qualified. The sealed original baseline remains unchanged.",
+    "qualification_complete": true,
+    "engine_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+  },
+  "prepared_next_player_marker_movable_baseline": {
+    "evidence_root": "ROOT/split-player-marker-movable-native-20261115-v1",
+    "cases": 1728,
+    "unchanged_original_instruction_bytes": 54,
+    "declared_services": [],
+    "standalone_controls": 5,
+    "standalone_high_address_SIGSEGVs": 2,
     "source_port_started": false,
-    "scope": "Original four-function reference prepared; no new Go port credit."
+    "scope": "Original two-function reference sealed; native object/player field layouts need verification before source port."
   }
 }

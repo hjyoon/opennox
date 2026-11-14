@@ -64,29 +64,70 @@ records retain their historical branch information.
 
 Four GAME4_3 action-name algorithms now execute shared portable Go code.
 Selected default names accept only IDLE, GUARD, ROAM and ESCORT; other IDs
-return ACTION_INVALID. Full names preserve the empty slot39 and NULL outside
-0..71. The two lookups retain distinct39/72 limits and38/0 fallbacks. Two C
-thunks preserve const input contracts. All 1,197 original C body bytes remain
-archived, and removing the new guards/bridges reconstructs the entire C file.
+return ACTION_INVALID. Full names preserve the non-NULL empty slot39 and
+NULL outside0..71. The two lookups retain distinct39/72 limits and38/0
+fallbacks. Two C thunks preserve const input contracts. All 1,197 original
+C body bytes remain archived; removing only new guards/bridges reconstructs
+the entire incoming C file.
 
 The unchanged original CPU run covers all 260 instruction bytes and 1,014
 cases without services, including its inlined comparisons. A standalone
 incoming-C harness observes two malformed merged pointers and two high-input
-SIGSEGV cases using the sealed packed table, with three passing controls.
-This describes the bounded harness, without inferring runtime blob state.
+SIGSEGVs using the sealed packed table, with three passing controls.
+This is bounded harness evidence; arbitrary runtime blob state is outside
+its scope.
 
 Normal and highres/cgocheck2/checkptr=2 focused checks each pass 6,226 tests
-and two packages with zero warnings. All 9,166 inputs retain the same source
-lease. Actual C calls run original cases at three foreign placements;
-202 encrypted/XOR definition-write cases verify original selected names,
-write boundaries and checksums. Existing stack, definition and monster-tail
-checks pass. Live 64-bit writers and readers share these kernels.
+and two packages with zero warnings. All 9,166 inputs retain the same lease
+`1dbf531c6fb7e5a2597729d3381e66ed060820dcd64a60bb4069ff93768ef5d3`.
+Actual public C calls run all original cases at three foreign input
+placements, checking full stable getter pointers and read-only inputs with
+canaries. Ordinary interned return strings retain their allocator behavior;
+high-address coverage applies to foreign lookup inputs. Another 202
+encrypted/XOR definition-write cases verify original selected names,
+wire boundaries and checksums. Live 64-bit definition and stack writers
+and readers share these kernels; the existing 386 path remains.
 
-The cumulative implemented split-entry count is 128. The inventory contains
+The qualified engine is `d3e03dd68538f8b7bc1daca1eaacd1b57e148968`, pushed to
+`origin/port/go1.27-multiarch`. Four clean macOS client/HD/server/server-HD
+products pass build, metadata and help with zero compiler warnings.
+Normal/HD projectile FX and physical Urchin/Pixie combat pass four E2E runs.
+Both functional SaveLoad diagnostics load a real private save in a fresh
+process and verify physical player movement. These diagnostics retain the
+failed public pixel comparison as open and promote no golden.
+Both independent host/peer chat profiles pass eight submissions, four
+received peer messages, one reply, two cancellations and two empty entries;
+all game processes exit naturally.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 859,238 each | 57 each |
+| Linux amd64 server / HD | 853,127 each | 7 each |
+| Windows amd64 server | 851,112 | 11 |
+| Windows 386 server | 831,179 | 94 |
+
+All six jobs have zero compiler warnings; complete SHA-verified ZIPs retain
+40/40/36/36/3/3 test executables and raw traces. Each passes 3,046 new action-name
+C checks, 27,281 prior bitstream checks, 9,113 prior public chat/reflection
+checks, and independent x87 controls. All five 64-bit profiles also pass 203
+new definition-wire checks; that writer is 64-bit-only. Linux server also
+passes 133,405 default-link damage checks. Audited evidence is in
+`ROOT/split-monster-action-names-native-20261115-v1/qualified-action-name-entries-v1.json`.
+
+Original assets/Save (4,649 files), 387 tracked E2E inputs and 20 checked
+old/current products remain unchanged. Four completed duplicate test copies
+retain all 147,646,712 bytes through independent APFS copy-on-write files.
+The inactive dedicated build cache was cleared after checking 52 retained
+programs. Module data, failures, full CI archives and all executables remain.
+
+The cumulative qualified split-entry count is 128. The inventory contains
 1,960 active C definitions and 2,348 narrow-cast review candidates in 254
-functions, including safe C and ABI thunks. It supplies no completion
-denominator. Clean products, runtime checks and Linux/Windows qualification
-are pending. Evidence and scope are in
+functions, including safe C and ABI thunks; it provides no completion
+denominator. The next player-marker/movability baseline is sealed with 54
+original instruction bytes, 1,728 cases, five standalone controls and two
+high-address SIGSEGVs. That source port, the other twelve split files,
+all nine final campaign audits and the inherited public SaveLoad pixel
+comparison remain open. Details are in
 `docs/split-monster-action-names-native-progress-20261115.json`.
 
 ### Native bit cursors and seven-bit encoder, 2026-11-15

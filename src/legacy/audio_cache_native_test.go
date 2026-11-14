@@ -40,6 +40,7 @@ func asnOwnedFixture(t *testing.T) (*asnArena, map[unsafe.Pointer]bool) {
 	audioGlobalOwner.Devices.init()
 	audioGlobalOwner.Contexts.init()
 	audioGlobalOwner.Group.Init()
+	audioGlobalOwner.GroupInitialized = 1
 	t.Cleanup(func() {
 		audioNativeAllocationService, audioNativeReleaseService, audioGlobalOwner = oldAlloc, oldFree, oldGlobal
 		audioSourceTestServices, audioNativeFixtureCallbackService = oldSvc, oldCb
@@ -54,6 +55,34 @@ func asnOwnedFixture(t *testing.T) (*asnArena, map[unsafe.Pointer]bool) {
 		}
 	})
 	return a, owners
+}
+
+func TestAudioSourceNativeGlobalAllocationBeforeClock(t *testing.T) {
+	_, _ = asnOwnedFixture(t)
+	previous, previousClock, previousLegacyClock := audioGlobalOwner, timer.PlatformTicks, PlatformTicks
+	audioGlobalOwner, timer.PlatformTicks, PlatformTicks = nil, nil, nil
+	var owner *audioGlobalNative
+	defer func() {
+		audioGlobalOwner, timer.PlatformTicks, PlatformTicks = previous, previousClock, previousLegacyClock
+		if owner != nil {
+			audioNativeFree(unsafe.Pointer(owner))
+		}
+	}()
+	owner = audioNativeGlobal()
+	if owner.Devices.first() != nil || owner.Contexts.first() != nil || owner.GroupInitialized != 0 || owner.Group != (timer.TimerGroup{}) {
+		t.Fatal("allocation/data binding must not initialize the audio clock")
+	}
+	calls := 0
+	timer.PlatformTicks = func() uint64 { calls++; return 0x100000047 }
+	if audioNativeMasterGroup() != &owner.Group || owner.GroupInitialized != 1 || calls == 0 {
+		t.Fatal("first audio use must initialize its native master group")
+	}
+	owner.Group.Timers[0].SetRaw(0x1000)
+	owner.Group.Timers[0].Update()
+	before := calls
+	if audioNativeMasterGroup() != &owner.Group || owner.Group.Timers[0].Current != 0x10000000 || calls != before {
+		t.Fatal("later voices must retain the configured master gain and clock state")
+	}
 }
 
 func TestAudioSourceNativePoolCABI(t *testing.T) {

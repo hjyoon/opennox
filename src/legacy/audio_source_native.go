@@ -141,6 +141,7 @@ type audioGlobalNative struct {
 	Devices, Contexts audioNativeLink
 	Busy              int32
 	Group             timer.TimerGroup
+	GroupInitialized  uint32
 }
 
 func audioNativeCall(f unsafe.Pointer, p unsafe.Pointer) int32 {
@@ -301,7 +302,7 @@ func sub_4BD7C0(p unsafe.Pointer) unsafe.Pointer {
 	v.OnRefill, v.OnRestart, v.OnEnd, v.UserData = nil, nil, nil, nil
 	v.Kind = 1
 	v.Flags, v.Repeat, v.Priority = 0, 0, 0
-	v.Master = &audioNativeGlobal().Group
+	v.Master = audioNativeMasterGroup()
 	v.OwnerGroup = nil
 	v.Group.Init()
 	v.Buffer = nil

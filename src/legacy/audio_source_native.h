@@ -99,6 +99,7 @@ typedef struct audio_native_global {
     audio_native_link devices, contexts;
     int32_t busy;
     game2_audio_group group;
+    uint32_t group_initialized;
 } audio_native_global;
 typedef struct audio_native_sample {
     uintptr_t driver;

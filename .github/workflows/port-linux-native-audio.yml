@@ -93,9 +93,9 @@ jobs:
           fi
           test "$("$test_go" env GOEXPERIMENT)" = "$expected_experiment"
           "$test_go" env -json GOVERSION GOOS GOARCH GOEXPERIMENT CGO_ENABLED > "$AUDIO_REPORT/test-go-environment.json"
-          args=()
+          args=(-tags=nox_audio_methods_fixture)
           if [[ "$AUDIO_PROFILE" == strict ]]; then
-            args=(-tags=highres -gcflags=all=-d=checkptr=2)
+            args=(-tags=highres,nox_audio_methods_fixture -gcflags=all=-d=checkptr=2)
           fi
           set +e
           mkdir -p "$AUDIO_REPORT/compiled-test-mains"
@@ -106,7 +106,7 @@ jobs:
           python3 - "$AUDIO_REPORT" <<'PY'
           import collections, json, pathlib, sys
           root = pathlib.Path(sys.argv[1])
-          counts, packages, lifecycle, source = collections.Counter(), {}, {}, {}
+          counts, packages, lifecycle, source, methods = collections.Counter(), {}, {}, {}, {}
           for line in (root/'test.jsonl').open():
               e = json.loads(line)
               if e.get('Action') not in ('pass', 'skip', 'fail'):
@@ -118,13 +118,16 @@ jobs:
                       lifecycle[name] = e['Action']
                   if name == 'TestAudioSourceNativeOpenAL' or name.startswith('TestAudioSourceNativeOpenAL/'):
                       source[name] = e['Action']
+                  if name == 'TestAudioDefaultMethodsNativeCABI' or name.startswith('TestAudioDefaultMethodsNativeCABI/'):
+                      methods[name] = e['Action']
               else:
                   packages[e['Package']] = e['Action']
-          summary = dict(exit_code=int((root/'test.exit').read_text()), test_actions=dict(counts), package_actions=packages, sample_lifecycle=lifecycle, native_source_playback=source)
+          summary = dict(exit_code=int((root/'test.exit').read_text()), test_actions=dict(counts), package_actions=packages, sample_lifecycle=lifecycle, native_source_playback=source, native_default_methods=methods)
           (root/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
           print(json.dumps(summary, indent=2))
           assert len(lifecycle) == 7 and set(lifecycle.values()) == {'pass'}
           assert len(source) == 3 and set(source.values()) == {'pass'}
+          assert len(methods) == 3 and set(methods.values()) == {'pass'}
           assert len(packages) == 3 and set(packages.values()) == {'pass'}
           PY
           exit "$status"

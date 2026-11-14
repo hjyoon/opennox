@@ -12,6 +12,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/timer"
 )
 
 var audioGlobalOwner *audioGlobalNative
@@ -36,9 +37,17 @@ func audioNativeGlobal() *audioGlobalNative {
 		audioGlobalOwner = (*audioGlobalNative)(audioNativeAlloc(unsafe.Sizeof(audioGlobalNative{})))
 		audioGlobalOwner.Devices.init()
 		audioGlobalOwner.Contexts.init()
-		audioGlobalOwner.Group.Init()
 	}
 	return audioGlobalOwner
+}
+
+func audioNativeMasterGroup() *timer.TimerGroup {
+	g := audioNativeGlobal()
+	if g.GroupInitialized == 0 {
+		g.Group.Init()
+		g.GroupInitialized = 1
+	}
+	return &g.Group
 }
 
 // The blob's old 128-byte DWORD/list record is no longer a native owner.
@@ -51,6 +60,7 @@ func AudioInitNative() {
 	g.Contexts.init()
 	g.Busy = 0
 	g.Group.Init()
+	g.GroupInitialized = 1
 	initAudioNativeGlobal()
 }
 

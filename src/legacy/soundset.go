@@ -130,3 +130,23 @@ func getDefaultSoundSet(name string) unsafe.Pointer {
 	}
 	return nil
 }
+
+// Names stay in Go ownership; the foreign 84-byte record holds packed sound
+// IDs and must never be dereferenced as a native char**. The list also retains
+// records hidden by a later definition of the same name.
+func soundSetName(data unsafe.Pointer) string {
+	if data == nil {
+		return ""
+	}
+	for rec := soundSetHead; rec != nil; rec = rec.next {
+		if rec.data == data {
+			return rec.name
+		}
+	}
+	for name, rec := range soundSetByName {
+		if rec != nil && rec.data == data {
+			return name
+		}
+	}
+	return ""
+}

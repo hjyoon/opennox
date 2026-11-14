@@ -4508,6 +4508,7 @@ int nox_xxx_parseSoundSetBin_424170(char* a1) {
 }
 
 //----- (00424320) --------------------------------------------------------
+#if 0 // Native NPC voice: npc_voice_native_exports.go
 int nox_xxx_setNPCVoiceSet_424320(int a1, int a2) {
 	int result; // eax
 
@@ -4522,8 +4523,11 @@ int nox_xxx_setNPCVoiceSet_424320(int a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (00424350) --------------------------------------------------------
+#if 0 // Native NPC voice: npc_voice_native_exports.go
 const char** nox_xxx_getDefaultSoundSet_424350(const char* a1) {
 	int v1; // edi
 
@@ -4542,6 +4546,8 @@ const char** nox_xxx_getDefaultSoundSet_424350(const char* a1) {
 	}
 	return (const char**)v1;
 }
+#endif
+
 
 //----- (00424CB0) --------------------------------------------------------
 char sub_424CB0(int a1) {

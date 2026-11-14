@@ -1198,7 +1198,7 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 func monsterXferVoice528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData) error {
 	name := ""
 	if !cf.ReadOnly() {
-		name = monsterSoundSetName528DB0(ud.SoundSet122)
+		name = soundSetName(ud.SoundSet122)
 	}
 	name, err := monsterRWOptionalString8(cf, name, ud.SoundSet122 != nil)
 	if err != nil {
@@ -1208,18 +1208,6 @@ func monsterXferVoice528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateDat
 		ud.SoundSet122 = getDefaultSoundSet(name)
 	}
 	return nil
-}
-
-func monsterSoundSetName528DB0(data unsafe.Pointer) string {
-	if data == nil {
-		return ""
-	}
-	for name, rec := range soundSetByName {
-		if rec != nil && rec.data == data {
-			return name
-		}
-	}
-	return ""
 }
 
 func monsterXferBuffs52AAB0(cf *cryptfile.CryptFile, obj *server.Object) error {

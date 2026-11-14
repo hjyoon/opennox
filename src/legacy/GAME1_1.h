@@ -135,8 +135,8 @@ int set_one_bitmask_flag_by_name_4239C0(char* name, uint32_t* bitmask, const cha
 int sub_4240F0(int a1, const char* a2, int a3);
 int nox_xxx_parseSoundSetBin_424170(char* a1);
 void* nox_xxx_monsterGetSoundSet_424300(nox_object_t* a1);
-int nox_xxx_setNPCVoiceSet_424320(int a1, int a2);
-const char** nox_xxx_getDefaultSoundSet_424350(const char* a1);
+int nox_xxx_setNPCVoiceSet_424320(nox_object_t* obj, void* sound_set);
+void* nox_xxx_getDefaultSoundSet_424350(const char* name);
 void* nox_xxx_updateSpellRelated_424830(void* a1, int a2);
 int nox_xxx_enchantByName_424880(char* a1);
 char* nox_xxx_getEnchantName_4248F0(int a1);

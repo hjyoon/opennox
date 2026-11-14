@@ -8125,13 +8125,13 @@ LABEL_137:
 		} while (v28 < 6u);
 	}
 	if ((short)v45 >= 55 && *(uint8_t*)(a1 + 12) & 0x20) {
-		nox_xxx_readNPCVoiceSet_52AD10(a1);
+		nox_xxx_readNPCVoiceSet_52AD10(a1p);
 	}
 	if (!((short)v45 < 62 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0((uint32_t*)a1)) != 0)) {
 		return result;
 	}
 	if ((short)v45 >= 63 && *(uint32_t*)(a1 + 12) & 0x80000) {
-		nox_xxx_readNPCVoiceSet_52AD10(a1);
+		nox_xxx_readNPCVoiceSet_52AD10(a1p);
 	}
 	if ((short)v45 >= 64) {
 		LOBYTE(v47) = *(uint8_t*)(a1 + 540);
@@ -8731,6 +8731,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 #endif
 
 //----- (0052AD10) --------------------------------------------------------
+#if 0 // Native NPC voice: npc_voice_native_exports.go
 size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {
 	const char** v1; // eax
 	const char** v2; // esi
@@ -8760,6 +8761,8 @@ size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {
 	}
 	return result;
 }
+#endif
+
 // 52AD10: using guessed type char var_100[256];
 
 //----- (0052ADE0) --------------------------------------------------------
@@ -9160,7 +9163,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v35 + 28), 4u);
 	}
 	if ((short)v44 >= 52) {
-		nox_xxx_readNPCVoiceSet_52AD10(v35);
+		nox_xxx_readNPCVoiceSet_52AD10(a1p);
 	}
 	if (!((short)v44 < 61 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0((uint32_t*)v35)) != 0)) {
 		return result;

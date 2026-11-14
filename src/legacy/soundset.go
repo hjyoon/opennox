@@ -44,9 +44,7 @@ func parseSoundSetBin(path string) error {
 			return nil
 		}
 		data, _ := alloc.Malloc(soundSetRecordSize)
-		rec := &soundSetRecord{name: name, data: data, next: soundSetHead}
-		soundSetHead = rec
-		soundSetByName[name] = rec
+		addSoundSetRecord(name, data)
 
 		for {
 			field, ok := readSoundSetToken(r)
@@ -57,13 +55,26 @@ func parseSoundSetBin(path string) error {
 			if !ok {
 				break
 			}
-			off, ok := soundSetFieldOffset(field)
-			if !ok {
+			if !setSoundSetField(data, field, uint32(sound.ByName(soundName))) {
 				return fmt.Errorf("unknown sound-set field %q", field)
 			}
-			*(*uint32)(unsafe.Add(data, off)) = uint32(sound.ByName(soundName))
 		}
 	}
+}
+
+func addSoundSetRecord(name string, data unsafe.Pointer) {
+	rec := &soundSetRecord{name: name, data: data, next: soundSetHead}
+	soundSetHead = rec
+	soundSetByName[name] = rec
+}
+
+func setSoundSetField(data unsafe.Pointer, field string, value uint32) bool {
+	off, ok := soundSetFieldOffset(field)
+	if !ok {
+		return false
+	}
+	*(*uint32)(unsafe.Add(data, off)) = value
+	return true
 }
 
 func readSoundSetToken(r *bufio.Reader) (string, bool) {

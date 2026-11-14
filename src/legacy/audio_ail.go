@@ -15,7 +15,6 @@ int sub_43F060(void* a1);
 int sub_43F0E0(uint32_t* a1);
 char* sub_413890();
 int sub_486640(void* a1, int a2);
-int nox_xxx_parseSoundSetBin_424170(char* a1);
 
 extern void* dword_587000_127004;
 extern uint32_t dword_5d4594_816376;

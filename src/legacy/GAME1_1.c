@@ -4449,6 +4449,7 @@ int set_one_bitmask_flag_by_name_4239C0(char* name, uint32_t* bitmask, const cha
 }
 
 //----- (004240F0) --------------------------------------------------------
+#if 0 // Native sound-set parsing: soundset_parser_native_exports.go
 int sub_4240F0(int a1, const char* a2, int a3) {
 	const char* v3;    // esi
 	int v4;            // ebp
@@ -4471,8 +4472,11 @@ int sub_4240F0(int a1, const char* a2, int a3) {
 	*(uint32_t*)(*getMemU32Ptr(0x587000, 64708 + 8 * v4) + a1) = a3;
 	return 1;
 }
+#endif
+
 
 //----- (00424170) --------------------------------------------------------
+#if 0 // Native sound-set parsing: soundset_parser_native_exports.go
 int nox_xxx_parseSoundSetBin_424170(char* a1) {
 	FILE* v2;     // ebp
 	uint32_t* v3; // ebx
@@ -4506,6 +4510,8 @@ int nox_xxx_parseSoundSetBin_424170(char* a1) {
 	nox_binfile_close_408D90(v2);
 	return 1;
 }
+#endif
+
 
 //----- (00424320) --------------------------------------------------------
 #if 0 // Native NPC voice: npc_voice_native_exports.go

@@ -729,7 +729,7 @@ extern int dword_587000_87412;
 extern unsigned int dword_5d4594_527988;
 extern unsigned int nox_client_connError_814552;
 extern nox_window* dword_5d4594_815004;
-extern unsigned int dword_5d4594_815044;
+extern uint32_t dword_5d4594_815044;
 extern nox_window* nox_wol_wnd_world_814980;
 extern unsigned int nox_wol_server_result_cnt_815088;
 extern int dword_5d4594_815104;

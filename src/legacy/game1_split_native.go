@@ -21,7 +21,7 @@ void nox_client_gui_set_flag_815132(int v);
 char* nox_client_getChatMap_49FF40(short* pos);
 void nox_xxx_setMouseBounds_430A70(int x1, int x2, int y1, int y2);
 int nox_xxx_isQuest_4D6F50(void);
-extern unsigned int dword_5d4594_815044;
+extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_815748;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372, dword_5d4594_816376;
 extern uint32_t dword_587000_93156, dword_5d4594_825736;

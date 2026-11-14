@@ -4,7 +4,7 @@ package legacy
 #include "GAME1_3.h"
 #include <stddef.h>
 extern uint32_t dword_5d4594_815748;
-extern unsigned int dword_5d4594_815044;
+extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372, dword_5d4594_816376;
 extern uint32_t dword_587000_93156;
 extern nox_window* dword_5d4594_816412;

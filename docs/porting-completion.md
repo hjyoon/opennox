@@ -67,29 +67,75 @@ Player.Sub422140 and Object.IsMovable methods. The marker reset takes and
 returns a complete Player pointer, including the original NULL control.
 Movability takes a native Object pointer and preserves the exact class and
 flag predicates. Both old C bodies, 398 bytes total, remain archived;
-removing only the new guards reconstructs each entire incoming C file.
+removing only new guards reconstructs each entire incoming C file.
 
 Original CPU execution covers all 54 unchanged instruction bytes in 1,728
 cases without services. The unchanged incoming C has two standalone
 high-address SIGSEGV reproductions under amd64/Rosetta and five passing
-NULL/low controls. These are bounded harness results; these old public
-symbols have no active product callers identified, and the live Go methods
-already existed before this port.
+NULL/low controls. These are bounded harness results. No active product
+callers are identified for these old C symbols; live Go methods already
+existed and remain unchanged.
 
-Direct public-C checks run all cases at three foreign placements, returning
-complete pointers, matching native Player marker offsets 4,956/4,960 and
-Object class/flags offsets 12/20 on64-bit, and preserving all nonoutput
-bytes and canaries. Deliberate old-offset decoys detect an argument-only
-widening. Normal and highres/cgocheck2/checkptr=2 focused checks each pass
-5,273 tests and two packages with zero compiler warnings.
+Direct public-C checks run every original case at three foreign placements,
+returning complete pointers and matching native Player marker offsets
+4,956/4,960 and Object class/flags offsets 12/20 on 64-bit. Opposite-result
+old-offset decoys detect argument-only widening; every nonoutput byte and
+canary is preserved. Normal and highres/cgocheck2/checkptr=2 focused checks
+each pass 5,273 tests and two packages with zero compiler warnings.
+The shared 9,171-input lease is
+`44c6f5d9882ac68735a164e77620e309554ace7c792da6a27db41a3e4df87eaa`.
 Existing Player reset, respawn and remote-audio layout/state checks pass.
 
-The cumulative implemented split-entry count is130. The inventory contains
-1,958 active C definitions and2,344 narrow-cast review candidates in252
-functions, including safe C and ABI thunks. It provides no completion
-denominator. Clean products and Linux/Windows qualification remain pending;
-all nine final chapter1-3 campaign audits and the inherited public SaveLoad
-pixel comparison remain open. Details are in
+The first two local builds exhausted temporary space before any test ran.
+Both logs remain retained. Clearing 396 terminated Go compiler package
+archives recovers 3,627,161,420 logical bytes; all 83,381 other temporary files,
+including sources and programs, remain SHA-identical. Retrying the same
+unchanged source lease passes both profiles. Four completed duplicate test
+copies retain 380,591,656 bytes through independent APFS copy-on-write files.
+
+The qualified engine is `36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b`, pushed to
+`origin/port/go1.27-multiarch`. Four clean macOS client/HD/server/server-HD
+products pass build, metadata and help with zero compiler warnings.
+Normal/HD projectile FX and physical Urchin/Pixie combat pass four E2E runs.
+Both functional SaveLoad diagnostics load a real private save in a fresh
+process and verify physical movement. The inherited failed public pixel
+comparison remains open; these diagnostics promote no golden. Both
+independent host/peer chat profiles pass eight submissions, four received
+peer messages, one reply, two cancellations and two empty entries; all
+processes exit naturally.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 864,427 each | 57 each |
+| Linux amd64 server / HD | 858,316 each | 7 each |
+| Windows amd64 server | 856,301 | 11 |
+| Windows 386 server | 836,368 | 94 |
+
+All six jobs have zero compiler warnings. Full SHA-verified ZIPs retain
+40/40/36/36/3/3 test executables and complete traces. Every profile confirms
+5,189 new marker/movability C checks, 3,046 action-name C checks, 27,281
+bitstream checks, 9,113 earlier public chat/reflection checks and independent
+x87 controls. Five 64-bit profiles also pass 203 existing definition-wire
+checks; that writer is 64-bit-only. Linux server also passes 133,405 separate
+default-link damage checks. Audited evidence is in
+`ROOT/split-player-marker-movable-native-20261115-v1/qualified-marker-movable-entries-v1.json`.
+
+Original assets/Save (4,649 files), 387 tracked E2E inputs and 24 checked
+old/current products remain unchanged. Final inactive-cache cleanup checks
+64 retained programs before and after; module data, original C programs,
+failures, complete CI ZIPs and all products remain.
+
+The cumulative qualified split-entry count is 130. The inventory contains
+1,958 active C definitions and 2,344 narrow-cast review candidates in 252
+functions, including safe C and ABI thunks; it provides no completion
+denominator. A read-only audit identifies a closed 26-function WOL packet
+component with 27,054 source bytes and no incoming active split references;
+four independent fixture stub definitions remain explicitly preserved.
+Its symbols are still present in all four reviewed prior macOS products,
+and actual retirement/native work has not started. That review adds no Go
+port credit. The other twelve split files, all nine final chapter 1-3
+campaign audits and the inherited public SaveLoad pixel comparison remain
+open. Details are in
 `docs/split-player-marker-movable-native-progress-20261115.json`.
 
 ### Native monster action names, 2026-11-15

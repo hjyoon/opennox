@@ -60,6 +60,101 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native NPC voice entries, 2026-11-15
+
+The qualified engine is `81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce`,
+pushed to `origin/port/go1.27-multiarch`. Three public C entries now use Go:
+the NPC voice setter 424320, const name lookup 424350 and voice transfer
+52AD10. Object and sound-data pointers retain their full native width.
+On 64-bit targets the class/update/sound-pointer fields use offsets
+12/872/568, with independent C/Go layout checks and old-offset decoys.
+
+The foreign sound record remains 84 bytes of packed DWORD sound IDs.
+Names stay in Go-owned records, including definitions hidden by a duplicate
+name. The new C transfer obtains names from that ownership rather than
+dereferencing the numeric data as char**. The existing 64-bit transfer
+reuses the portable name lookup. Three original 32-bit transfer call sites
+now pass their typed Object aliases. The old C parser 424170 and field
+setter 4240F0 remain review candidates; current production loading already
+uses the existing Go parser. This batch does not qualify those old routines
+or arbitrary external C-parser ownership.
+
+The sealed reference executes 5,073 cases from 376 unchanged original
+instruction bytes: 137 bytes for setter/lookup and 239 bytes for the public
+transfer plus the existing getter control. Only the wire reference replaces
+the file service at 426AC0; the leaf reference has no services. Tests retain
+byte-length wrap, NULL versus present-empty writes, per-call CRC and service
+return routing. The four standalone high-pointer SIGSEGVs, one truncated
+opaque value and six controls remain preserved. All 1,541 old C body bytes
+remain archived; removing the new guards and reversing only three typed
+caller aliases reconstructs both whole incoming C files.
+
+Normal and highres/cgocheck2/checkptr=2 macOS focused checks each pass
+63,991 tests with zero compiler warnings. Both use the same 9,180-input
+lease, `97b4ef627c149621348ad4c59fe868e6088d76760cc1907da4aa4c609f59edb3`.
+The new checks include 14,319 public C checks, 4,822 original service
+transcript checks and a GC/name-ownership check. Actual public C calls use
+three foreign placements above 4GiB on 64-bit targets, preserve all owner
+canaries, and compare complete plain/encrypted/XOR files and checksum
+headers. Two initial test-harness errors involving raw-file flush and the
+container footer are retained with their failed binaries and logs; the
+original fixtures and production implementation were unchanged for those
+test corrections.
+
+Four clean macOS client/HD/server/server-HD products pass build, metadata,
+help and native symbol checks with zero warnings. Normal/HD projectile FX
+and Urchin/Pixie combat pass four E2E runs. Two functional SaveLoad
+diagnostics verify a fresh-process load and movement; the inherited public
+pixel golden remains open. Both independent host/peer chat profiles pass
+eight submissions, four received messages, one reply, two cancellations
+and two empty entries, and all processes exit naturally.
+
+| Qualified platform profile | Passed tests | Runtime skips |
+| --- | ---: | ---: |
+| Linux amd64 client / HD | 883,569 each | 57 each |
+| Linux amd64 server / HD | 877,458 each | 7 each |
+| Windows amd64 server | 875,443 | 11 |
+| Windows 386 server | 855,510 | 94 |
+
+All six CI jobs pass with zero compiler warnings. Complete SHA-verified
+ZIPs retain 40/40/36/36/3/3 test executables and raw traces. Every profile
+confirms the new 14,319 public C, 4,822 service and one ownership checks,
+plus the protected packet helpers, marker/movability, action names,
+bitstream, public chat/reflection and x87 controls. The five 64-bit
+profiles also retain 203 definition-wire checks. Linux server separately
+passes 133,405 default-link damage checks. Full audited evidence is
+`ROOT/split-soundset-native-entry-20261115-v1/qualified-npc-voice-entries-v1.json`.
+
+Original assets/Save (4,649 files), 387 tracked E2E inputs, 4,695 existing
+test/fixture/E2E files and 32 checked old/current products remain unchanged.
+Independent APFS clones preserve 225 historical and ten current completed
+test paths. Final cache cleanup verifies 269 selected programs before and
+after and only clears the inactive dedicated build cache; modules,
+original C programs, failures, products and complete CI ZIPs are retained.
+
+Qualified split Go entries increase from 130 to 133. The same original
+split-function inventory now has 1,929 active C definitions, 2,430 total
+pointer/integer casts and 2,143 narrow-cast review candidates in 233
+functions. The read-only review index identifies 151 functions referencing
+existing Go exports and 37 with lexical product Go/C references; these
+hints prove neither remaining bugs nor dead code and give no completion
+denominator. Only GAME1_3.c has zero active original definitions; the
+other twelve split files remain partial. All nine final chapter 1-3 audits
+and the public SaveLoad pixel comparison remain open. Overall 100% has not
+been achieved.
+
+The next prepared batch is
+`ROOT/split-buff-iteration-native-20261115-v1/prepared-baseline-v1.json`:
+counter 424CB0 and first/next iterators 424D00/424D20. Its reference covers
+3,339 cases and 181 original instruction bytes without services, including
+the existing buff-test control. The 895 incoming C body bytes, four
+standalone controls and one high-object SIGSEGV are preserved. The separate
+C count global and packed scalar table have explicit ownership notes.
+Source porting has not started and no credit is added for this preparation.
+Details are in `docs/split-npc-voice-native-progress-20261115.json`.
+
+The older checkpoints below retain their historical counts and next-step notes.
+
 ### Closed legacy WOL component cleanup, 2026-11-15
 
 A closed component of 26 old WOL tagged-packet C functions is archived in

@@ -5966,6 +5966,7 @@ void nox_xxx_mobMayHealThis_5412A0(float* a1, int a2) {
 }
 
 //----- (00541300) --------------------------------------------------------
+#if 0 // Native monster cast: monster_cast_native_exports.go
 char nox_xxx_mobCast_541300(int a1, uint32_t* a2, int a3) {
 	int v3; // edi
 	int v4; // eax
@@ -5988,8 +5989,10 @@ char nox_xxx_mobCast_541300(int a1, uint32_t* a2, int a3) {
 	}
 	return v4;
 }
+#endif
 
 //----- (005413B0) --------------------------------------------------------
+#if 0 // Native monster cast: monster_cast_native_exports.go
 char nox_xxx_mobActionCast_5413B0(nox_object_t* a1p, int a2) {
 	uint32_t* a1 = a1p;
 	int v2;    // ecx
@@ -6032,8 +6035,10 @@ char nox_xxx_mobActionCast_5413B0(nox_object_t* a1p, int a2) {
 	}
 	return v4;
 }
+#endif
 
 //----- (00541490) --------------------------------------------------------
+#if 0 // Native monster cast: monster_cast_native_exports.go
 void nox_xxx_mobCastRandomRecoil_541490(int a1, float* a2, float2* a3) {
 	double v3; // st7
 	float v4;  // [esp+4h] [ebp-14h]
@@ -6050,6 +6055,7 @@ void nox_xxx_mobCastRandomRecoil_541490(int a1, float* a2, float2* a3) {
 	a3->field_0 = nox_common_randomFloat_416030(-60.0, 60.0) * v6 + a3->field_0;
 	a3->field_4 = nox_common_randomFloat_416030(-60.0, 60.0) * v6 + a3->field_4;
 }
+#endif
 
 //----- (00542BF0) --------------------------------------------------------
 void* nox_objectTypeGetXfer(char* id);

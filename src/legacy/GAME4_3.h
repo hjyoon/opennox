@@ -8,6 +8,7 @@
 #include "secondary_weapon_53ab90.h"
 #include "player_respawn_4f7ef0.h"
 #include "unit_order_533900.h"
+#include "spell_accept_4fd400.h"
 
 #include "spell_chain_lightning_52f820.h"
 #include "spell_tag_native_530160.h"
@@ -254,9 +255,9 @@ int nox_xxx_monsterCastOffensive_540F20(int a1, int a2);
 int nox_xxx_mobCastRelated_541050(int a1);
 int nox_xxx_mobHealSomeone_5411A0(nox_object_t* a3);
 void nox_xxx_mobMayHealThis_5412A0(float* a1, int a2);
-char nox_xxx_mobCast_541300(int a1, uint32_t* a2, int a3);
+char nox_xxx_mobCast_541300(int spell_id, nox_object_t* unit, nox_spell_accept_arg_t* arg);
 char nox_xxx_mobActionCast_5413B0(nox_object_t* a1, int a2);
-void nox_xxx_mobCastRandomRecoil_541490(int a1, float* a2, float2* a3);
+void nox_xxx_mobCastRandomRecoil_541490(nox_object_t* unit, nox_object_t* target, float2* out);
 // GAME.EXE 00542BF0..00543109 is restored by the Go callback-name qualifier.
 // Object-list nodes, objects, names, and waypoints remain native-width.
 char* sub_542BF0(int32_t a1, int32_t a2, int32_t a3);

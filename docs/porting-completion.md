@@ -60,6 +60,115 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster-generator damage entry, 2026-11-15
+
+The qualified source/runtime engine is `74c8490f1c281feb56f136b20a04f4a28d43103d`,
+pushed to `origin/port/go1.27-multiarch`. The public C entry
+`nox_xxx_damageMonsterGen_4E27D0` and the registered production Go damage
+callback now share native Object, HealthData, update and ScriptCallback links.
+The full signed-dword C result is retained; Object.CallDamage observes its
+existing Boolean contract. The cumulative qualified split-file count is
+**172 Go entries**. **All-C migration and overall 100% remain open.**
+
+The implementation caches the entry-time generator update, preserves live
+health/status reads across services, and keeps unsigned frame wraparound.
+Each original FX operation, normalization, threshold spill and conversion uses
+PC53/ToZero. A PointFX call can retain the target's actual position owner or
+use a distinct temporary. The old five-int C declaration and PE32 offsets are
+inactive. The existing typed server API and its compatibility tests remain
+unchanged and are counted separately from the new raw entry.
+
+Independent pre-port execution covers all **468 original root bytes**,
+58 normalization bytes, the 17-byte float-to-int helper, 17 double-to-float
+bytes and 319 startup/control bytes establishing `0xe3f`. The **1,230 cases**
+include threshold extrema, signed scalar boundaries, owner aliases, ordered
+service mutations and live/cached link differences. Exactly the original
+four-byte frame global is seeded per case; all other image bytes remain
+stock, and the entire seeded image is verified after each case. Heap changes
+are limited to declared service mutations. Saved registers, caller redzones,
+FP control and TOP are preserved. Two caller words are original compiler
+temporaries for threshold maximum and saved return; native pointers are not
+corrupted to reproduce those physical PE32 spills.
+
+The original Script call has three arguments. The explicit native event 23
+belongs to the existing callback API adapter; it is not claimed as a fourth
+argument observed in the original instructions. Gameplay services are declared
+observation boundaries. The finite corpus does not establish exhaustive x87,
+signaling-NaN or full-gameplay equivalence.
+
+Standalone unchanged-C reproduction retains the exact **2,189-byte body**:
+three controls, three SIGSEGVs and three pointer identity/layout observations.
+Actual native object cases and packed PE32 identity controls are distinguished.
+These are bounded standalone reproductions, not integrated-game crash claims.
+Reversing only the guard, prototype and registered Go callback reconstructs
+the entire incoming C, header and Go source files.
+
+The actual default-provider check found a wire mismatch: at `(1.5, -1.5)`,
+the previous Go binding emitted coordinates `(2, -2)` while the unchanged
+public C helper emitted `(1, -1)`. The new caller-specific binding uses signed
+DWORD truncation and the existing network sender. All **27 actual C wire
+controls** pass, including signed-DWORD limits, low-word wrap and char fields.
+The failed-before program, complete source overlay and logs remain preserved.
+The older typed packet API and old golden results are unchanged. The still
+active raw C point-effect helper receives no extra C-entry credit here.
+
+A separate post-implementation original extension supplies **48 cases** while
+retaining the complete original 1,230-case prefix byte-for-byte. These drive
+**144 real default compositions** through public C, typed C callbacks and the
+registered Go route. Actual frame/HP, DefaultDamage's Invulnerable guard,
+status/sync updates, NetList emission, unchanged C packet controls and queued
+GeneratorHurt sound 1001 run without a runtime override. HP remains unchanged
+in this slice, so Script dispatch is outside its executed scope; the main
+reference matrix checks its cached native link separately.
+
+All final qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **128,714**
+  checks on the identical 9,246-input source lease
+  `86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35`.
+  The new group has 11,083 checks, with whole 64 KiB foreign-arena canaries
+  across three routes and three placements. Existing server compatibility
+  checks remain distinct.
+- All four macOS products passed build, metadata, help and 48 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent chat profiles with natural host/peer exits.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43702428623` and Windows CI `43702329812` passed all six profiles,
+  the new group and every prior qualified matrix. Six SHA-verified ZIPs retain
+  158 actual test mains. Complete warning review covers 20 files and
+  6,019,806,581 uncompressed bytes, with zero warnings. An initial local record
+  parser lacked combined metadata while Linux was running; its failed logs
+  remain retained. Separate parser outputs resumed against preserved metadata
+  and unchanged ZIPs. No CI test execution was repeated for that setup error.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox-hd | 948,082 | 57 |
+| linux-amd64-opennox | 948,082 | 57 |
+| linux-amd64-opennox-server | 941,971 | 7 |
+| linux-amd64-opennox-server-hd | 941,971 | 7 |
+| opennox-server-windows-amd64 | 939,956 | 11 |
+| opennox-server-windows-386 | 920,023 | 94 |
+
+All 4,726 pre-existing protected tests/fixtures, 387 E2E inputs, 4,649 original
+asset/personal Save files, 72 prior products and 20 additional historical
+candidates remain unchanged. All failed results and actual executable versions
+remain retained. Cache cleanup verified 426 program paths between local
+variants, 428 before products and 432 after runtime completion; only the
+dedicated inactive cache was cleared. Completed test binaries and 12 closed
+validation logs were transparently compressed with logical bytes, paths and
+metadata preserved. Modules, assets, Save and evidence ZIPs were preserved.
+
+The refreshed 13-file AST has 1,890 active original definitions, 2,313 pointer/
+integer casts and 2,032 narrow candidates in 215 functions. All 207 legacy C
+files compiled in the broader audit: 2,580 main-source definitions, 14 unresolved
+macros and 3,121 casts. The 629 tracked C paths include 416 test/reference and
+213 broad runtime/build files. These are inventories, not a completion
+denominator. Nine final class/chapter audits remain open; chapter 4+ is excluded.
+
+Machine-readable evidence: `docs/split-generator-damage-native-progress-20261115.json`;
+full retained qualification: `ROOT/split-generator-damage-native-20261115-v1/qualified-generator-damage-entry-v1.json`.
+
 ### Native monster direction entry, 2026-11-15
 
 The qualified source/runtime engine is `649d4499c6651a99386212d64c4466c59f6c8253`,

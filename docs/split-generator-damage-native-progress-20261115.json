@@ -1,0 +1,477 @@
+{
+  "utc": "2026-11-15T10:42:37.482358+00:00",
+  "source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d",
+  "preceding_qualification": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-direction-native-20261115-v1/qualified-monster-direction-entry-v1.json",
+    "sha256": "dbdb8f46eba5f40134591d7ea8afceb7231a9c6e61cec9de3a9859d64cb736cb",
+    "qualified_entries": 171
+  },
+  "qualified_entries": 1,
+  "cumulative_qualified_split_Go_entries": 172,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "entries": [
+    "nox_xxx_damageMonsterGen_4E27D0"
+  ],
+  "source_lease": {
+    "files": 9246,
+    "sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35"
+  },
+  "original": {
+    "preport_cases": 1230,
+    "postport_default_cases": 48,
+    "preport_prefix_byte_identical": true,
+    "root_bytes": 468,
+    "normalize_bytes": 58,
+    "float_to_int_bytes": 17,
+    "double_to_float_bytes": 17,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "frame_global_input": {
+      "address": "0x84ea04",
+      "bytes": 4,
+      "original_stock_bytes": "00000000",
+      "rule": "Only this4byte global is seeded percase; unchanged seeded image checked after everycase; instructions/constants remain stock"
+    },
+    "whole_seeded_image_unchanged": true,
+    "instructions_and_constants_unchanged": true,
+    "whole_heap_only_declared_service_mutations": true,
+    "caller_compiler_locals": "Incoming target word at+4 may hold threshold maximum and weapon word at+12 may hold saved default return, matching original compiler spills; all other caller words/redzones exact. No native pointer mutation implied",
+    "script_boundary": "Original instruction call has3args block/source/target; event23 belongs to existing native service binding, not an observed original fourth argument",
+    "original_C_body_bytes": 2189,
+    "whole_incoming_C_header_Go_reconstructed": true,
+    "raw_preport_fixture_sha256": "28a4d6c6a77b092066bf4474af49c987e306aee46c74d0c235b2dc85e83348ff",
+    "gzip_preport_fixture_sha256": "72700654d9c174a572bb197f3cb91a4ac2510a6854aae7bd60f5eaffe43bd1ad",
+    "raw_default_fixture_sha256": "0670c655b42f818112e7989c24819f1ba83ca91871311f8736388ccafde46960",
+    "gzip_default_fixture_sha256": "d4dc933fbbad2563311f33d56b312741ab057a9880d29c30c9756ee42d792699",
+    "scope": "Finite coordinates and threshold extrema, bounded original root/normalize/converters. External gameplay services explicitly substituted; not exhaustive x87/SNaN or full gameplay. C int result preserved separately from production bool observation. Originalscriptcall3args versus existing native event23 API binding."
+  },
+  "C_before": {
+    "controls": 3,
+    "standalone_SIGSEGVs": 3,
+    "native_layout_or_pointer_identity_observations": 3,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "total": 11083,
+    "original_cases": 1230,
+    "routes": [
+      "actual public C",
+      "typed C callback",
+      "registered Object.CallDamage Go"
+    ],
+    "foreign_placements": 3,
+    "whole_foreign_arena_bytes": 65536,
+    "actual_default_compositions": 144,
+    "actual_C_wire_controls": 27,
+    "existing_server_compatibility_tests_per_CI": 3,
+    "default_scope": "Actual frame/HP/DefaultDamage Invulnerable guard/status+sync/NetList/queuedSound1001. HP remains unchanged, so Script is not executed in this default slice; original main matrix observes its cached pointer through a declared service boundary."
+  },
+  "normal": {
+    "changed_source_paths": [],
+    "source_files": 9246,
+    "source_lease_sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35",
+    "exit_code": 0,
+    "elapsed_seconds": 17.412,
+    "test_actions": {
+      "pass": 128714
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "strict": {
+    "changed_source_paths": [],
+    "source_files": 9246,
+    "source_lease_sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35",
+    "exit_code": 0,
+    "elapsed_seconds": 192.674,
+    "test_actions": {
+      "pass": 128714
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/products-v1/opennox",
+      "bytes": 70064338,
+      "sha256": "3a62a815bfdeb3c1d2d28913044c6880bb6b2adf1d6d62a28337ff75eafb8566",
+      "source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/products-v1/opennox-hd",
+      "bytes": 70163378,
+      "sha256": "1193a827cbf48c7ac2d9a796e38d7e685aca2f6ff4e1559a7babfa591601adf0",
+      "source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/products-v1/opennox-server",
+      "bytes": 66647266,
+      "sha256": "cc81d774d607dd9f8fa2fbfa2393e8c644ebe387718c7c75abec37ff2c99a7a2",
+      "source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/products-v1/opennox-server-hd",
+      "bytes": 66746338,
+      "sha256": "baf7a32e73633430c0a938666ca1e5a35744b3f3b9c288ec539abff794dd27b1",
+      "source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d"
+    }
+  ],
+  "native_public_control_symbols_per_product": 48,
+  "runtime_profiles": {
+    "normal": {
+      "core": [
+        {
+          "profile": "normal",
+          "scenario": "host-game-projectile-fx",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.269,
+          "warnings": 0
+        },
+        {
+          "profile": "normal",
+          "scenario": "host-game-urchin-pixie-swarm",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 44.478,
+          "warnings": 0
+        }
+      ],
+      "functional_save": [
+        {
+          "profile": "normal",
+          "pixel_golden_pass": false,
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.178,
+          "warnings": 0
+        }
+      ],
+      "independent_chat": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "product_sha256": "3a62a815bfdeb3c1d2d28913044c6880bb6b2adf1d6d62a28337ff75eafb8566",
+        "elapsed_seconds": 288.514,
+        "forced_processes": []
+      }
+    },
+    "highres": {
+      "core": [
+        {
+          "profile": "highres",
+          "scenario": "host-game-projectile-fx",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 46.918,
+          "warnings": 0
+        },
+        {
+          "profile": "highres",
+          "scenario": "host-game-urchin-pixie-swarm",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 44.514,
+          "warnings": 0
+        }
+      ],
+      "functional_save": [
+        {
+          "profile": "highres",
+          "pixel_golden_pass": false,
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 46.864,
+          "warnings": 0
+        }
+      ],
+      "independent_chat": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "product_sha256": "1193a827cbf48c7ac2d9a796e38d7e685aca2f6ff4e1559a7babfa591601adf0",
+        "elapsed_seconds": 288.604,
+        "forced_processes": []
+      }
+    }
+  },
+  "ci": {
+    "runs": [
+      43702428623,
+      43702329812
+    ],
+    "jobs": [
+      {
+        "id": 132776250171,
+        "name": "Linux/amd64 opennox-server-hd",
+        "conclusion": "success"
+      },
+      {
+        "id": 132776250364,
+        "name": "Linux/amd64 opennox-server",
+        "conclusion": "success"
+      },
+      {
+        "id": 132776250390,
+        "name": "Linux/amd64 opennox",
+        "conclusion": "success"
+      },
+      {
+        "id": 132776250499,
+        "name": "Linux/amd64 opennox-hd",
+        "conclusion": "success"
+      },
+      {
+        "id": 132775952831,
+        "name": "Windows/amd64 server",
+        "conclusion": "success"
+      },
+      {
+        "id": 132775953108,
+        "name": "Windows/386 server",
+        "conclusion": "success"
+      }
+    ],
+    "archives": [
+      {
+        "artifact_id": 14158215803,
+        "name": "linux-amd64-opennox-hd-74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14158215803-linux-hd.zip",
+        "bytes": 216673832,
+        "sha256": "e4ed504e9302adec8a0c2829c4c0c0c83af128f3befd2aa7cb740c4ff32c1e7c",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 948082,
+          "skip": 57
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14158215803-v1.json"
+      },
+      {
+        "artifact_id": 14158156475,
+        "name": "linux-amd64-opennox-74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14158156475-linux-client.zip",
+        "bytes": 217006005,
+        "sha256": "6201f4cc6a99cc72d2203d8009a5183324fd0e4a313ebef7ddfeaef67e5fce32",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 948082,
+          "skip": 57
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14158156475-v1.json"
+      },
+      {
+        "artifact_id": 14157537526,
+        "name": "linux-amd64-opennox-server-74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14157537526-linux-server.zip",
+        "bytes": 260559848,
+        "sha256": "3a86ff5e553f533d9ea9bb158d104f78933a98e528de1ed0c98955ad857b45d3",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 941971,
+          "skip": 7
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14157537526-v1.json"
+      },
+      {
+        "artifact_id": 14157457846,
+        "name": "linux-amd64-opennox-server-hd-74c8490f1c281feb56f136b20a04f4a28d43103d",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14157457846-linux-server-hd.zip",
+        "bytes": 203621006,
+        "sha256": "92a2aa4b3d9242d23ee647af2192af139419fea7512d9ec97f903d889a9f2b37",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 941971,
+          "skip": 7
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14157457846-v1.json"
+      },
+      {
+        "artifact_id": 14157805183,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14157805183-windows-amd64.zip",
+        "bytes": 164990096,
+        "sha256": "f4630e1b71c9a8f6f2407c1160ff11ca66cddbe9c48bc99c21c344ea77941ace",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 939956,
+          "skip": 11
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14157805183-v1.json"
+      },
+      {
+        "artifact_id": 14156864965,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/ci-14156864965-windows-386.zip",
+        "bytes": 159389237,
+        "sha256": "666d33d9812f3651257eab87eab25fe64d13421df05335b162e8da60c9a706ad",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 920023
+        },
+        "native_matrix": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/monster-direction-CI-matrix-14156864965-v1.json"
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6019806581,
+    "existing_Windows_supervision_checks": [
+      {
+        "job_id": 132775952831,
+        "name": "Windows/amd64 server",
+        "actual_supervision_tests": 8,
+        "actual_native_sharing_lock_tests": 2,
+        "scope": "Real locked-reader replacement retries until release; persistent native lock raises by deadline with old and pending JSON preserved. Existing exit-status/streams/timeout/binary-preservation checks also pass."
+      },
+      {
+        "job_id": 132775953108,
+        "name": "Windows/386 server",
+        "actual_supervision_tests": 8,
+        "actual_native_sharing_lock_tests": 2,
+        "scope": "Real locked-reader replacement retries until release; persistent native lock raises by deadline with old and pending JSON preserved. Existing exit-status/streams/timeout/binary-preservation checks also pass."
+      }
+    ],
+    "initial_parser_metadata_failure_retained": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-generator-damage-native-20261115-v1/CI-matrix-initial-metadata-missing-v1.json",
+    "CI_test_execution_repeated_for_parser_failure": false
+  },
+  "wire_binding_fix": {
+    "before": "actual defaultf01a0200feff versus unchanged Cf01a0100ffff at1.5,-1.5",
+    "after": "caller-specific signed-DWORD truncation, six-byte serialization and existing network emission",
+    "old_typed_API_and_original_goldens_unchanged": true,
+    "failed_before_program_source_logs_retained": true,
+    "additional_C_entry_credit": 0
+  },
+  "preservation": {
+    "existing_protected_inputs": 4726,
+    "tracked_e2e_files": 387,
+    "original_asset_and_Save_files": 4649,
+    "prior_products": 72,
+    "new_products": 4,
+    "additional_historical_products": 20,
+    "changed_inputs": [],
+    "preport_sealed_paths": 50,
+    "sealed_reference_and_failure_paths": 81,
+    "between_local_variants_cache_cleanup": {
+      "utc": "2026-11-15T10:09:17.903995+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+      "cache_KiB_before": 1002324,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 426,
+      "source_lease_sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35",
+      "elapsed_seconds": 30.664494041004218,
+      "scope": "Only inactive dedicated build cache after normal gate ends and before strict begins; previous418programs plus all current actual mains remain retained. Actual test binaries transparently compressed with identical logical bytes,metadata/signatures. Modules, products,assets/Save,source,failed results/evidence ZIPs untouched."
+    },
+    "pre_product_cache_cleanup": {
+      "utc": "2026-11-15T10:19:59.509182+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+      "cache_KiB_before": 499020,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 428,
+      "source_lease_sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35",
+      "elapsed_seconds": 29.849754208989907,
+      "scope": "Only inactive dedicated build cache after both final local gates end and before products begin; previous418programs plus all current actual mains remain retained. Actual test binaries transparently compressed with identical logical bytes,metadata/signatures. Modules, products,assets/Save,source,failed results/evidence ZIPs untouched."
+    },
+    "post_product_cache_cleanup": {
+      "utc": "2026-11-15T10:40:35.535404+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+      "cache_KiB_before": 951304,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 432,
+      "elapsed_seconds": 31.472377291996963,
+      "source_lease_sha256": "86bb9b0b16854d5b7119f31692dcdb5802d094a6517c0272ba113c94420d7a35",
+      "scope": "Only dedicated inactive Go build cache, after all final products and both runtime profiles are terminal. Includes previous428programs and current4products; current-stage original-C probe is already in the anchor. No local compiler may be live. Modules, all products/test programs,assets/Save,source,failures,evidence ZIPs unchanged."
+    },
+    "transparent_test_program_compression": [
+      {
+        "utc": "2026-11-15T10:08:18.975014+00:00",
+        "scope": "Preserve completed test programs using transparent filesystem compression.\n\nEvery original path, logical byte, mode, timestamps and noncompression\nextended attribute is retained. Identical binaries share independent APFS\nclones of one compressed owner. Source assets/Save, products, ZIPs, modules,\nactive tests and original C reproduction programs are outside this selection.\n",
+        "program_paths_preserved": 8,
+        "unique_programs": 3,
+        "logical_bytes_preserved": 545784240,
+        "available_before": 435150848,
+        "available_after": 888999936,
+        "elapsed_seconds": 3.0118319160246756,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_program_paths_and_bytes_preserved": true
+      },
+      {
+        "utc": "2026-11-15T10:19:01.379284+00:00",
+        "scope": "Preserve completed test programs using transparent filesystem compression.\n\nEvery original path, logical byte, mode, timestamps and noncompression\nextended attribute is retained. Identical binaries share independent APFS\nclones of one compressed owner. Source assets/Save, products, ZIPs, modules,\nactive tests and original C reproduction programs are outside this selection.\n",
+        "program_paths_preserved": 2,
+        "unique_programs": 1,
+        "logical_bytes_preserved": 143934724,
+        "available_before": 2071158784,
+        "available_after": 2180808704,
+        "elapsed_seconds": 0.6784931670117658,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_program_paths_and_bytes_preserved": true
+      }
+    ],
+    "transparent_closed_log_compression": {
+      "utc": "2026-11-15T10:18:34.600702+00:00",
+      "scope": "Preserve closed validation logs using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only reviewed terminal test logs older than1hour are selected.\nExecutables, source, assets/Save, modules and evidence ZIPs are excluded.\n",
+      "log_paths_preserved": 12,
+      "unique_logs": 12,
+      "logical_bytes_preserved": 1115425159,
+      "available_before": 1018998784,
+      "available_after": 2071773184,
+      "elapsed_seconds": 6.498263958026655,
+      "pilot_SHA_codesign_and_execution_pass": true,
+      "all_log_paths_and_bytes_preserved": true
+    }
+  },
+  "inventory": {
+    "tracked_C_files": 629,
+    "categories": {
+      "runtime_or_build_source": 213,
+      "test_or_validation_source": 416
+    },
+    "split_original_definitions": 1890,
+    "split_pointer_integer_casts": 2313,
+    "narrow_candidates": 2032,
+    "functions_with_narrow_candidates": 215,
+    "broad_source_files": 207,
+    "broad_main_source_definitions": 2580,
+    "unresolved_macros": 14,
+    "broad_pointer_integer_casts": 3121,
+    "completion_denominator": false,
+    "audit_source_revision": "74c8490f1c281feb56f136b20a04f4a28d43103d"
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "inherited_public_SaveLoad_pixel_golden": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  }
+}

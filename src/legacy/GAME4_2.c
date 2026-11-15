@@ -3977,6 +3977,8 @@ int nox_xxx_netSendVampFx_523270(char a1, short* a2, short a3) {
 }
 
 //----- (00523530) --------------------------------------------------------
+// Native-width entry: predict_linear_native.go. Preserve the incoming body.
+#if 0
 int nox_xxx_netClientPredictLinear_523530(int a1) {
 	short v1;      // ax
 	double v2;     // st7
@@ -4021,6 +4023,7 @@ int nox_xxx_netClientPredictLinear_523530(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (005235F0) --------------------------------------------------------
 void nox_xxx_mapGenSetFlags_5235F0(char a1) {
@@ -10188,7 +10191,7 @@ int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object
 					v17 = *((uint32_t*)v9 + 2) | 0x40000000;
 					v9[28] = 0.0;
 					*((uint32_t*)v9 + 2) = v17;
-					nox_xxx_netClientPredictLinear_523530((int)v9);
+					nox_xxx_netClientPredictLinear_523530((nox_object_t*)v9);
 				} else {
 					nox_xxx_delayedDeleteObject_4E5CC0((int)v9);
 				}

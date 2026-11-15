@@ -22,7 +22,7 @@ func monsterCastDefaultRuntime541300() server.MonsterCastRuntime541300 {
 		},
 		Voice: Nox_xxx_monsterGetSoundSet_424300,
 		Audio: func(id uint32, unit *server.Object) {
-			GetServer().S().Audio.EventObj(sound.ID(id), unit, 0, 0)
+			GetServer().S().Audio.EventObj(sound.ID(int32(id)), unit, 0, 0)
 		},
 		RandomFloat: func(min, max float32) float64 {
 			return GetServer().S().RandomFloat416030(min, max)

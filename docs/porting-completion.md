@@ -60,9 +60,118 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native point-effect packet entries, 2026-11-15
+
+The qualified source/runtime engine is
+`533bb07596c4488345c61b3d9b2ef99ce7ef1f81`, pushed to
+`origin/port/go1.27-multiarch`. Four public C entries now execute Go:
+`nox_xxx_netSendPointFx_522FF0`, `sub_523150`,
+`nox_xxx_netSparkExplosionFx_5231B0` and
+`nox_xxx_sendGeneratorBreakFX_523200`. The cumulative qualified split-file
+count is **176 Go entries**. **All-C migration and overall 100% remain open.**
+
+The native point owner, char fields and 5/6/6/7-byte packet formats remain
+intact. Signed-DWORD truncation retains integer-indefinite for invalid input
+and then the original low WORD. The three current C int-return contracts
+forward the full signed dword from the sender; generator break keeps its
+void contract. Packet storage belongs to each call and remains independent
+across nested calls. The default binding uses the existing viewport and
+NetList sender, which consumes and copies packets synchronously. Existing
+typed server compatibility APIs and their golden results remain unchanged.
+
+Pre-port execution covers all **279 original root bytes**, the 17-byte
+converter and 319 startup/control bytes establishing `0xe3f`. The **2,628
+cases**, 657 per root, include signed zero, subnormal, finite conversion
+boundaries, overflow, infinity, qNaN/sNaN input bits, char bytes, declared
+sender returns and sender-time point writes. The entire original PE image
+remains unchanged. Heap writes are limited to the declared sender mutations;
+saved registers, caller words/redzones, FP control and TOP are checked.
+Only downstream Send is substituted. Raw original EAX dataflow is recorded
+separately from source-language return contracts; no defined return value is
+invented for the void entry. These bounded cases do not claim original
+network implementation execution or exhaustive host FP-environment parity.
+
+The exact **1,244-byte incoming C bodies** and guarded C converter also pass
+eight native ARM64 controls with full high-address point identity, packet
+bytes, sender-time writes and owner canaries. Their incoming point ABI was
+already native-width; **no pointer defect or crash is claimed** for these
+four entries. Two guard removals reconstruct the entire incoming GAME4_2.c.
+
+The preceding generator-damage wire test retains an independent C control.
+Before public `sub_523150` moved to Go, its exact incoming body and guarded
+C converter were frozen privately with symbol-only renames. Its existing
+fixture calls that C control. Old test sources and golden files remain
+byte-identical; this avoids silently comparing the Go implementation with
+itself. The private reference copy receives no extra port credit.
+
+All final qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **152,370**
+  checks on the identical 9,252-input source lease
+  `38fb69a9837f092ed4393e93076fbfa55009c4cfa97c724d669d10174cc9b4e9`.
+  The new group has 23,656 checks: all 2,628 original cases through public C,
+  typed C callbacks and production Go at three foreign placements with whole
+  64 KiB canaries. Three nested-call routes and 2,412 real default network
+  compositions verify packet ownership and actual NetList emission.
+- All four macOS products passed build, metadata, help and 52 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent chat profiles with natural host/peer exits.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43707960385` and Windows CI `43707939621` passed all six
+  profiles, the new group and every
+  prior qualified matrix. Six SHA-verified ZIPs retain 158 actual test mains.
+  Complete warning review covers 20 files and
+  6,160,650,688 uncompressed bytes, with zero
+  warnings. Existing eight Windows supervision tests per architecture pass.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox-server | 965,627 | 7 |
+| linux-amd64-opennox-server-hd | 965,627 | 7 |
+| linux-amd64-opennox | 971,738 | 57 |
+| linux-amd64-opennox-hd | 971,738 | 57 |
+| opennox-server-windows-386 | 943,679 | 94 |
+| opennox-server-windows-amd64 | 963,612 | 11 |
+
+The first macOS product build stopped at Go linking because the disk was
+full; its failed logs and output directory remain retained. A later HD-server
+strip step also ran out of space; both failure results remain retained.
+The three successful v2 products were preserved and cloned
+byte-identically into the final v3 set. Only the last HD-server link was
+retried after product compression, using the existing cache. Inactive cache
+cleanup between completed variants verified every retained executable SHA
+before and after cleanup. Source, toolchain and build options were unchanged.
+The three preserved v2 products and four final v3 paths retain four unique
+product binaries. Closed test logs and products were transparently compressed
+while retaining paths, logical bytes,
+metadata and signatures; product help execution also matches before/after.
+
+The first independent-chat driver still referenced the absent failed-v1
+product manifest and stopped before game execution. Its failed logs remain
+retained. Separate chat-only retries use the final v3 wrapper and unchanged
+assertions; passed core and functional-Save runs were retained without repeat.
+
+All 4,730 pre-existing protected tests/fixtures, 387 E2E inputs, 4,649 original
+asset/personal Save files, 76 prior products and 20 additional historical
+candidates remain unchanged. Every actual new executable version and all
+failure results remain preserved. Modules, assets and Save were excluded
+from cleanup.
+
+The refreshed inventory has 629 tracked C paths: 416 test/reference and 213
+runtime/build sources. All 207 legacy translation units compile; the active
+main-source audit finds 2,576 functions, 14 unresolved macro definitions and
+3,121 pointer/integer casts. The 13 split files retain 1,886 active original
+definitions, 2,313 pointer/integer casts and 2,032 narrow-cast review
+candidates across 215 functions. These inventories are review inputs, not a
+measured completion denominator. The nine chapter 1–3 final audits and public
+Save/Load pixel golden remain open; chapter 4+ remains excluded.
+
+Machine evidence: [split-point-fx-native-progress-20261115.json](split-point-fx-native-progress-20261115.json).
+Full qualification and retained artifacts: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/qualified-point-fx-entries-v1.json`.
+
 ### Native monster-generator damage entry, 2026-11-15
 
-The qualified source/runtime engine is `74c8490f1c281feb56f136b20a04f4a28d43103d`,
+The preceding qualified source/runtime engine was `74c8490f1c281feb56f136b20a04f4a28d43103d`,
 pushed to `origin/port/go1.27-multiarch`. The public C entry
 `nox_xxx_damageMonsterGen_4E27D0` and the registered production Go damage
 callback now share native Object, HealthData, update and ScriptCallback links.

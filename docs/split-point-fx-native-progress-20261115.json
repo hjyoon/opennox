@@ -1,0 +1,384 @@
+{
+  "source_revision": "533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+  "qualification_path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/qualified-point-fx-entries-v1.json",
+  "qualification_sha256": "21554ed82ef184095bbf1400c129e22e9bc25aa3e3a59cc0ff0742dacaad25d9",
+  "qualified_entries": [
+    "nox_xxx_netSendPointFx_522FF0",
+    "sub_523150",
+    "nox_xxx_netSparkExplosionFx_5231B0",
+    "nox_xxx_sendGeneratorBreakFX_523200"
+  ],
+  "qualified_entries_added": 4,
+  "cumulative_qualified_split_Go_entries": 176,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "original": {
+    "cases": 2628,
+    "cases_per_root": 657,
+    "root_bytes": 279,
+    "converter_bytes": 17,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "whole_original_PE_image_unchanged": true,
+    "heap_only_declared_send_mutations": true,
+    "callee_saved_registers_caller_words_redzones_FP_control_TOP_preserved": true,
+    "raw_eax_dataflow_separate_from_C_source_return_contract": true,
+    "void_break_defined_return_claim": false,
+    "raw_fixture_sha256": "e1e0c9ec249515b3dcfb18e4295252215e4c00838a436b4eb8e65ee33cb651bf",
+    "gzip_fixture_sha256": "1788dbb7acec8af91b1140311e5a67500ee6155ab1edd0ca0c03424191832054",
+    "C_body_bytes": 1244,
+    "scope": "Bounded original CPU roots+converter, whole image unchanged, downstream Send is an explicit observation boundary; no original network/full game execution claim. Includes finite bounds, signed zero/subnormal/Inf/qNaN/sNaN input bits, char bytes and declared return/write behavior; no exhaustive host floating-point-environment claim."
+  },
+  "C_before": {
+    "native_ARM64_controls": 8,
+    "pointer_crashes": 0,
+    "existing_point_ABI_already_native": true,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "total": 23656,
+    "original_cases": 2628,
+    "routes": [
+      "actual public C",
+      "typed C callback",
+      "production Go"
+    ],
+    "foreign_placements": 3,
+    "whole_foreign_arena_bytes": 65536,
+    "real_default_network_compositions": 2412,
+    "nested_packet_ownership_routes": 3
+  },
+  "old_C_wire_control": {
+    "source_revision": "c283b909935784c9a61c4244191cebf1c4cb6d07",
+    "frozen_root_sha256": "0c97b82eb40f3f1dad821d1674e393827713cca6ada9f7047c82bf2d270881fa",
+    "frozen_guarded_converter_sha256": "30ac83d17639b26c9bb8785ead1d83df35b356b35a81e67d9006e82d9843bbed",
+    "only_symbol_renames": true,
+    "old_tests_and_goldens_unchanged": true,
+    "additional_port_credit": 0
+  },
+  "normal": {
+    "changed_source_paths": [],
+    "source_files": 9252,
+    "source_lease_sha256": "38fb69a9837f092ed4393e93076fbfa55009c4cfa97c724d669d10174cc9b4e9",
+    "exit_code": 0,
+    "elapsed_seconds": 17.078,
+    "test_actions": {
+      "pass": 152370
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "strict": {
+    "changed_source_paths": [],
+    "source_files": 9252,
+    "source_lease_sha256": "38fb69a9837f092ed4393e93076fbfa55009c4cfa97c724d669d10174cc9b4e9",
+    "exit_code": 0,
+    "elapsed_seconds": 194.348,
+    "test_actions": {
+      "pass": 152370
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v3/opennox",
+      "bytes": 70065778,
+      "sha256": "d2ea1548ebddd7a9d39521f0979448078d82d2b1054b6feea279449b34bb372d",
+      "source_revision": "533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+      "preserved_original_product": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v2/opennox"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v3/opennox-hd",
+      "bytes": 70164818,
+      "sha256": "ef9c73aa2536d3f0532589389432aa0423908c962e1bd6565c4ab199d220ec17",
+      "source_revision": "533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+      "preserved_original_product": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v2/opennox-hd"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v3/opennox-server",
+      "bytes": 66681714,
+      "sha256": "9292bc5a281c809698b1784c5cc5aac452cb7769fd624ef38468d33a41ce4be5",
+      "source_revision": "533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+      "preserved_original_product": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v2/opennox-server"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/products-v3/opennox-server-hd",
+      "bytes": 66747762,
+      "sha256": "757cd9d89758e407f90e60c48b44fb0ff0e43d8876ccb61e16851690619964f1",
+      "source_revision": "533bb07596c4488345c61b3d9b2ef99ce7ef1f81"
+    }
+  ],
+  "native_public_control_symbols_per_product": 52,
+  "ci": {
+    "runs": [
+      43707960385,
+      43707939621
+    ],
+    "archives": [
+      {
+        "artifact_id": 14160185557,
+        "name": "linux-amd64-opennox-server-533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14160185557-linux-amd64-opennox-server-533bb07596c4488345c61b3d9b2ef99ce7ef1f81.zip",
+        "bytes": 261645418,
+        "sha256": "c5d1ba2406673aefa8206cf8e7aff2e739baabac56289d6509a56ce75ba48f22",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 965627,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14159544854,
+        "name": "linux-amd64-opennox-server-hd-533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14159544854-linux-amd64-opennox-server-hd-533bb07596c4488345c61b3d9b2ef99ce7ef1f81.zip",
+        "bytes": 205218508,
+        "sha256": "d0da927278b7cc0b721c40c9080ec638ff984f2eb6664b9476916fd5c760bd7a",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 965627,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14159443940,
+        "name": "linux-amd64-opennox-533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14159443940-linux-amd64-opennox-533bb07596c4488345c61b3d9b2ef99ce7ef1f81.zip",
+        "bytes": 218215826,
+        "sha256": "68aff50f7651f5e1d881d24a62fcda92c8665fb833da7fcb27c0b069191eaa7a",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 971738,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14159324697,
+        "name": "linux-amd64-opennox-hd-533bb07596c4488345c61b3d9b2ef99ce7ef1f81",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14159324697-linux-amd64-opennox-hd-533bb07596c4488345c61b3d9b2ef99ce7ef1f81.zip",
+        "bytes": 217436548,
+        "sha256": "a3f32b5b41ec6e2e1d8fce4b18e1eb7db5ec8c4cd4a16bbb4b8aac996572d757",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 971738,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14159174723,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14159174723-opennox-server-windows-386.zip",
+        "bytes": 160192519,
+        "sha256": "e63caa4138f74aa6de2e7dd563631b1e3324b59f6958d96c2e88727f078fc160",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 943679
+        }
+      },
+      {
+        "artifact_id": 14159049842,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-point-fx-native-20261115-v1/ci-14159049842-opennox-server-windows-amd64.zip",
+        "bytes": 165821704,
+        "sha256": "08074339541179648314f8faf6e761f0570b6472a6b5f995e09891a438c7ecad",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 963612,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6160650688,
+    "existing_Windows_supervision_tests_per_arch": 8
+  },
+  "preservation": {
+    "existing_protected_inputs": 4730,
+    "tracked_E2E_files": 387,
+    "original_asset_and_Save_files": 4649,
+    "prior_products": 76,
+    "new_products": 4,
+    "additional_preserved_same_source_product_paths": 3,
+    "additional_historical_products": 20,
+    "changed_inputs": [],
+    "preport_sealed_paths": 50,
+    "cache_cleanups": {
+      "between-local-variants": {
+        "utc": "2026-11-15T11:16:19.159777+00:00",
+        "exit_code": 0,
+        "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+        "cache_KiB_before": 485204,
+        "cache_KiB_after": 8,
+        "retained_programs_SHA_verified": 437,
+        "elapsed_seconds": 30.14846770899021,
+        "scope": "Only inactive task-owned build cache removed after terminal test/runtime evidence. Actual executable paths and bytes remain preserved; closed test mains transparently compressed with unchanged logical bytes and metadata/signatures. Module cache, original assets/Save, failure results and CI archives untouched."
+      },
+      "pre-products": {
+        "utc": "2026-11-15T11:21:28.673511+00:00",
+        "exit_code": 0,
+        "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+        "cache_KiB_before": 499408,
+        "cache_KiB_after": 8,
+        "retained_programs_SHA_verified": 439,
+        "elapsed_seconds": 30.81713529198896,
+        "scope": "Only inactive task-owned build cache removed after terminal test/runtime evidence. Actual executable paths and bytes remain preserved; closed test mains transparently compressed with unchanged logical bytes and metadata/signatures. Module cache, original assets/Save, failure results and CI archives untouched."
+      },
+      "post-products": {
+        "utc": "2026-11-15T11:55:38.736715+00:00",
+        "exit_code": 0,
+        "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+        "cache_KiB_before": 8,
+        "cache_KiB_after": 8,
+        "retained_programs_SHA_verified": 446,
+        "elapsed_seconds": 29.786195874999976,
+        "scope": "Only inactive task-owned build cache removed after terminal test/runtime evidence. Actual executable paths and bytes remain preserved; closed test mains transparently compressed with unchanged logical bytes and metadata/signatures. Module cache, original assets/Save, failure results and CI archives untouched."
+      }
+    },
+    "transparent_compressions": {
+      "completed-product-compression-v1": {
+        "utc": "2026-11-15T11:09:54.294313+00:00",
+        "scope": "Retain closed Mac products using transparent filesystem compression.\n\nAll logical bytes, original paths, mode, mtime, noncompression attributes,\nstrict signatures and actual help execution outputs must be preserved.\nOriginal assets/Save, modules, CI ZIPs and validation/failure evidence are\nexcluded. An actual compressed product-copy execution pilot is required.\n",
+        "program_paths_preserved": 4,
+        "unique_programs": 4,
+        "logical_bytes_preserved": 273621320,
+        "available_before": 1187840000,
+        "available_after": 1404928000,
+        "elapsed_seconds": 5.6951706249965355,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_program_paths_and_bytes_preserved": true,
+        "all_product_help_stdout_stderr_and_exit_codes_identical": true,
+        "all_product_strict_signatures_verified": true
+      },
+      "completed-large-log-compression-v1": {
+        "utc": "2026-11-15T11:12:18.692542+00:00",
+        "scope": "Preserve closed validation logs using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only reviewed terminal test logs older than1hour are selected.\nExecutables, source, assets/Save, modules and evidence ZIPs are excluded.\n",
+        "log_paths_preserved": 3,
+        "unique_logs": 3,
+        "logical_bytes_preserved": 156693588,
+        "available_before": 976150528,
+        "available_after": 1125208064,
+        "elapsed_seconds": 1.3317255410074722,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_log_paths_and_bytes_preserved": true
+      },
+      "additional-closed-log-compression-v1": {
+        "utc": "2026-11-15T11:17:31.665410+00:00",
+        "scope": "Preserve closed validation logs using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only reviewed terminal test logs older than1hour are selected.\nExecutables, source, assets/Save, modules and evidence ZIPs are excluded.\n",
+        "log_paths_preserved": 5,
+        "unique_logs": 5,
+        "logical_bytes_preserved": 150835375,
+        "available_before": 934539264,
+        "available_after": 1077145600,
+        "elapsed_seconds": 1.5850812080025207,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_log_paths_and_bytes_preserved": true
+      },
+      "final-product-compression-v1": {
+        "utc": "2026-11-15T11:53:59.993541+00:00",
+        "scope": "Retain closed Mac products using transparent filesystem compression.\n\nAll logical bytes, original paths, mode, mtime, noncompression attributes,\nstrict signatures and actual help execution outputs must be preserved.\nOriginal assets/Save, modules, CI ZIPs and validation/failure evidence are\nexcluded. An actual compressed product-copy execution pilot is required.\n",
+        "program_paths_preserved": 1,
+        "unique_programs": 1,
+        "logical_bytes_preserved": 66747762,
+        "available_before": 1034850304,
+        "available_after": 1045991424,
+        "elapsed_seconds": 1.6972364580142312,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_program_paths_and_bytes_preserved": true,
+        "all_product_help_stdout_stderr_and_exit_codes_identical": true,
+        "all_product_strict_signatures_verified": true
+      },
+      "final-closed-log-compression-v1": {
+        "utc": "2026-11-15T11:25:31.325038+00:00",
+        "scope": "Preserve closed validation logs using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only reviewed terminal current-stage test logs are selected; lsof verifies no open handles before compression.\nExecutables, source, assets/Save, modules and evidence ZIPs are excluded.\n",
+        "log_paths_preserved": 3,
+        "unique_logs": 3,
+        "logical_bytes_preserved": 331440999,
+        "available_before": 809652224,
+        "available_after": 1124007936,
+        "elapsed_seconds": 2.9369352500070818,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_log_paths_and_bytes_preserved": true
+      },
+      "intermediate-product-compression-v1": {
+        "utc": "2026-11-15T11:38:37.582864+00:00",
+        "scope": "Retain closed Mac products using transparent filesystem compression.\n\nAll logical bytes, original paths, mode, mtime, noncompression attributes,\nstrict signatures and actual help execution outputs must be preserved.\nOriginal assets/Save, modules, CI ZIPs and validation/failure evidence are\nexcluded. An actual compressed product-copy execution pilot is required.\n",
+        "program_paths_preserved": 3,
+        "unique_programs": 3,
+        "logical_bytes_preserved": 206912310,
+        "available_before": 942080000,
+        "available_after": 1040384000,
+        "elapsed_seconds": 5.549841875006678,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_program_paths_and_bytes_preserved": true,
+        "all_product_help_stdout_stderr_and_exit_codes_identical": true,
+        "all_product_strict_signatures_verified": true
+      },
+      "older-closed-log-compression-v1": {
+        "utc": "2026-11-15T11:27:28.019972+00:00",
+        "scope": "Preserve closed validation logs using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only reviewed terminal test logs older than1hour are selected.\nExecutables, source, assets/Save, modules and evidence ZIPs are excluded.\n",
+        "log_paths_preserved": 5,
+        "unique_logs": 5,
+        "logical_bytes_preserved": 16461961,
+        "available_before": 1608859648,
+        "available_after": 1624776704,
+        "elapsed_seconds": 0.2944870420033112,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_log_paths_and_bytes_preserved": true
+      },
+      "closed-original-fixture-compression-v1": {
+        "utc": "2026-11-15T11:51:49.882214+00:00",
+        "scope": "Preserve closed original-reference fixture JSON using transparent filesystem compression.\nAll logical bytes, paths, mode, mtime and noncompression attributes remain\nunchanged. Only original fixture JSON older than1hour with exact SHA already recorded in a completed proof is selected.\nExecutables, repository source/assets/Save, modules and evidence ZIPs are excluded; raw original-reference JSON retains the same path and exact SHA.\n",
+        "log_paths_preserved": 10,
+        "unique_logs": 8,
+        "logical_bytes_preserved": 29535218,
+        "available_before": 1395179520,
+        "available_after": 1423597568,
+        "elapsed_seconds": 0.404318916000193,
+        "pilot_SHA_codesign_and_execution_pass": true,
+        "all_log_paths_and_bytes_preserved": true
+      }
+    }
+  },
+  "inventory": {
+    "tracked_C_files": 629,
+    "categories": {
+      "runtime_or_build_source": 213,
+      "test_or_validation_source": 416
+    },
+    "split_original_definitions": 1886,
+    "split_pointer_integer_casts": 2313,
+    "narrow_candidates": 2032,
+    "functions_with_narrow_candidates": 215,
+    "broad_source_files": 207,
+    "broad_main_source_definitions": 2576,
+    "unresolved_macros": 14,
+    "broad_pointer_integer_casts": 3121,
+    "completion_denominator": false
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "inherited_public_SaveLoad_pixel_golden": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  },
+  "qualification_driver_retries": {
+    "product_v1_storage_failure": "product-build-storage-failure-and-retry-v1.json",
+    "product_v2_HD_strip_storage_failure": "second-product-storage-failure-v1.json",
+    "chat_manifest_setup_failure": "independent-chat-wrapper-setup-failure-v1.json",
+    "final_products_directory": "products-v3",
+    "passed_core_and_Save_runs_retained_without_repeat": true
+  }
+}

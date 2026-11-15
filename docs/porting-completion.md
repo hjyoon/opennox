@@ -60,6 +60,95 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster direction entry, 2026-11-15
+
+The qualified source/runtime engine is `649d4499c6651a99386212d64c4466c59f6c8253`,
+pushed to `origin/port/go1.27-multiarch`. The public C entry
+`nox_xxx_mobCalcDir_533CC0` now takes native Object and Pointf pointers and
+shares the existing directed-rounding Go implementation with its typed C
+callback and default monster-cast provider. Its nil-unit gate leaves the point
+unread. The old `int` object argument and PE32 field offsets are inactive.
+The cumulative qualified split-file count is **171 Go entries**.
+**All-C migration and overall 100% remain open.**
+
+The independent pre-port reference executes all **57 original root bytes**,
+65 of 80 angle-helper bytes, the 17-byte converter and 319 startup/control
+bytes establishing PC53/ToZero (`0xe3f`). Its **623 cases** cover coordinate
+grids, 512 half-bin ring points, nil-unit gates and points overlapping live
+position, velocity and direction words. The entire original image remains
+unchanged. Heap changes are limited to the exact two-byte direction field;
+callee-saved registers, caller words/redzones, FP control and TOP are checked.
+This finite corpus does not establish exhaustive FPATAN, signaling-NaN or
+extended-exponent fidelity. Raw void EAX is retained without a defined-result
+claim. Helper execution supplies no additional C-entry credit.
+
+Standalone pre-port reproduction retains the exact **238-byte C body** and
+incoming `void(int,float*)` callback type: three controls, one native-pointer
+SIGSEGV, one valid high pointer becoming false nil, and one low native-layout
+observation. These are bounded standalone reproductions. Reversing only the
+new guard/comment and prototype reconstructs the entire incoming C and header.
+All 44 pre-port evidence paths remain SHA-verified after the preceding
+documentation-only revision. The original reference execution was not repeated.
+
+The new group passes **5,618 checks** across actual public C, typed C function
+pointers and the default production Go provider at three foreign placements.
+Each case checks the entire 64 KiB native arena using independently measured
+C field offsets. An initial new observer incorrectly equated the complete
+Go Object size with its shared C prefix: Go appends two private native handles.
+That failed source/program/result remains retained; only the new observer
+was corrected. All original cases and prior casting checks already passed.
+Existing tests, golden data and arithmetic implementation were unchanged.
+
+The preceding Windows JSON report-sharing failure is fixed in `fb6827be1`.
+Atomic replacement retries only native Windows errors 5/32/33 for at most
+two seconds. Readers keep the complete old record during the wait; a persistent
+lock raises and preserves both old and pending records. Windows amd64 and 386
+each passed all eight supervision tests, including two tests using an actual
+locked reader. The earlier failed preflight remains preserved separately.
+
+All final qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **117,631**
+  checks on the identical 9,238-input source lease
+  `0314afab2fca0321fe706c58abf81158efd1000acae83b4fb99f2c446aa72ce6`.
+- All four macOS products passed build, metadata, help and 47 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles with natural exits.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43696272934` and Windows CI `43696257237` passed all six profiles,
+  the new direction group and every prior qualified matrix. Six SHA-verified
+  ZIPs retain 158 actual test mains. Complete build/test warning review covers
+  20 files and 5,940,334,641 uncompressed bytes, with zero warnings.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox-server | 930,888 | 7 |
+| linux-amd64-opennox-server-hd | 930,888 | 7 |
+| linux-amd64-opennox-hd | 936,999 | 57 |
+| linux-amd64-opennox | 936,999 | 57 |
+| opennox-server-windows-386 | 908,940 | 94 |
+| opennox-server-windows-amd64 | 928,873 | 11 |
+
+All 4,724 pre-existing protected tests/fixtures, 387 E2E inputs, 4,649 original
+asset/personal Save files, 68 prior products and 20 additional historical
+candidates remain unchanged. Failed results and original programs remain.
+Two transparent compression passes preserve 15 completed test-program paths,
+logical bytes, paths, metadata and signatures. Dedicated inactive cache
+cleanup verified 413 program paths before products and 418 after all runtime
+profiles ended; both caches ended at 8 KiB. Modules, products, assets, Save
+and evidence ZIPs were preserved. The initial sandbox denial of process
+inspection stopped before cleaning; its report and authorized resume remain.
+
+The refreshed 13-file AST has 1,891 active original definitions, 2,342 pointer/
+integer casts and 2,058 narrow candidates in 216 functions. All 207 legacy C
+files compiled in the broader audit: 2,581 main-source definitions, 14 unresolved
+macros and 3,150 casts. The 629 tracked C paths still include 416 test/reference
+and 213 broad runtime/build files. These are inventories, not a completion
+denominator. Nine final class/chapter audits remain open; chapter 4+ is excluded.
+
+Machine-readable evidence: `docs/split-monster-direction-native-progress-20261115.json`;
+full retained qualification: `ROOT/split-monster-direction-native-20261115-v1/qualified-monster-direction-entry-v1.json`.
+
 ### Native monster casting callbacks, 2026-11-15
 
 The qualified source/runtime engine is `58bf63e2e211ce6809ce9ae69a7307a101c80063`, pushed to

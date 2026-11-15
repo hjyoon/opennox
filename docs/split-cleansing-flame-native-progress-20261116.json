@@ -1,0 +1,216 @@
+{
+  "source_revision": "70852ff7fe08b852187654d212d5996e8251e8ea",
+  "qualified_entries": 1,
+  "cumulative_qualified_split_Go_entries": 178,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "entries": [
+    "nox_xxx_spellCastCleansingFlame_52D5C0"
+  ],
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/qualified-cleansing-flame-entry-v1.json",
+    "sha256": "0018c9333241a59c515d5837745debc88730f13cef5bbc04683413f38f147f6e"
+  },
+  "source_lease": {
+    "files": 9266,
+    "sha256": "d01523745038803fea528e8a60fdb0e34a1c784f3686f3b57f20bdcd49ff05d1"
+  },
+  "original": {
+    "cases": 66,
+    "root_bytes": 732,
+    "startup_bytes": 319,
+    "transcript_events": 29403,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 57,
+    "independent_rational_FP_comparison": true,
+    "fixture_sha256": "07b6bb201f8947cd7b065c03f81c7561543fea812a0c856a7a14e7ca129fd413",
+    "fixture_gzip_sha256": "177dad1f9d98a8b466fbab21a4800248c7cc139466c00d1d9588eeecb329ac76",
+    "image_writes_only_ten_cache_words_and_declared_service_mutations": true,
+    "whole_heap_checked_each_service_and_return": true,
+    "caller_second_recipient_scratch_and_level_overwrites_explicit": true,
+    "scope": "Bounded unchanged root/startup with declared external services and finite arithmetic corpus; The child prediction has prior qualification; the existing native update binding is reused as a declared service without new credit."
+  },
+  "C_before": {
+    "architecture": "x86_64 via Rosetta on ARM64 host",
+    "original_C_body_bytes": 3631,
+    "packed_low_controls": 2,
+    "native_pointer_SIGBUS_faults": 4,
+    "low_native_layout_omissions": 1,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "total": 706,
+    "original_cases": 66,
+    "routes": [
+      "actual public C",
+      "typed C callback",
+      "production Go"
+    ],
+    "foreign_placements": [
+      0,
+      64,
+      512
+    ],
+    "whole_arena_bytes": 65536,
+    "actual_default_owned_guard_compositions": 90,
+    "pointer_and_signed_DWORD_forwarding_compositions": 18,
+    "existing_typed_server_passes": 198,
+    "existing_legacy_passes": 2
+  },
+  "normal_passes": 161278,
+  "strict_passes": 161278,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 55,
+  "CI": {
+    "runs": [
+      43737229581,
+      43737174679
+    ],
+    "archives": [
+      {
+        "artifact_id": 14172026280,
+        "name": "linux-amd64-opennox-server-70852ff7fe08b852187654d212d5996e8251e8ea",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14172026280-linux-amd64-opennox-server-70852ff7fe08b852187654d212d5996e8251e8ea.zip",
+        "bytes": 264886274,
+        "sha256": "6b1f6f0772147faaa09775fc2870aec75b20a7373b7284850d58bf14a43e5a16",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 974533,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14171334921,
+        "name": "linux-amd64-opennox-hd-70852ff7fe08b852187654d212d5996e8251e8ea",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14171334921-linux-amd64-opennox-hd-70852ff7fe08b852187654d212d5996e8251e8ea.zip",
+        "bytes": 219651698,
+        "sha256": "bb85d9fa2a28ff94d0cf0de08ad7488bcd1a73c3f80d011acc00aa4b37a71199",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 980644,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14171082663,
+        "name": "linux-amd64-opennox-70852ff7fe08b852187654d212d5996e8251e8ea",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14171082663-linux-amd64-opennox-70852ff7fe08b852187654d212d5996e8251e8ea.zip",
+        "bytes": 218865147,
+        "sha256": "460e5de1306a9f799510751a3e1264c33eb2c96030cc314e1ee5ba4d5bb0eec9",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 980644,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14170998863,
+        "name": "linux-amd64-opennox-server-hd-70852ff7fe08b852187654d212d5996e8251e8ea",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14170998863-linux-amd64-opennox-server-hd-70852ff7fe08b852187654d212d5996e8251e8ea.zip",
+        "bytes": 205835798,
+        "sha256": "db1a07eb6148808186f6a3753669b1a4ccd5ec217132ab7662b9952268cdfede",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 974533,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14171566573,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14171566573-opennox-server-windows-386.zip",
+        "bytes": 162421336,
+        "sha256": "07e556116a438e70d69136cb966e2b849736120ad670bc988d4f9cb9b2ff3ab6",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 952585
+        }
+      },
+      {
+        "artifact_id": 14171318523,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/ci-14171318523-opennox-server-windows-amd64.zip",
+        "bytes": 168135775,
+        "sha256": "24ca94c2a27cd2b92d96b3bfc609ed6e5ab75baa990c2ad186152a65ab5bb069",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 972518,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6211614297,
+    "matrix_directory": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/CI-matrix-review-v1"
+  },
+  "preservation": {
+    "old_protected_tests_fixtures": 4735,
+    "tracked_E2E_files": 387,
+    "original_asset_and_Save_files": 4649,
+    "retained_local_program_paths": 484,
+    "all_existing_typed_tests_and_original_wire_oracles_unchanged": true,
+    "cache_cleanup": {
+      "utc": "2026-11-15T17:06:02.764183+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/cache",
+      "cache_KiB_before": 501668,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 484,
+      "scope": "Only inactive dedicated product compilation cache removed after all4products/help checks and both completed runtime profiles. No module-cache, source, original asset/Save, retained program, CI ZIP or failure-result deletion."
+    },
+    "closed_test_log_compression": {
+      "status": "PASS",
+      "records": [
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/focused-cleansing-flame-v1/stdout.log",
+          "bytes": 8683181,
+          "sha256": "51c04828ed8a4cdc37bf859c45170bdbae12c1a965bf8ad577e3411d99f54ba6",
+          "mode": 420,
+          "mtime_ns": 1794760532552169786,
+          "blocks_before": 16960,
+          "blocks_after": 784
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/cleansing-native-normal-v1/stdout.log",
+          "bytes": 162384852,
+          "sha256": "b60b2106124716162db02129d0dc08c767c5856ade1f24233790dde8d06f5d1a",
+          "mode": 420,
+          "mtime_ns": 1794760747469390147,
+          "blocks_before": 317160,
+          "blocks_after": 14688
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/cleansing-native-strict-v1/stdout.log",
+          "bytes": 162385921,
+          "sha256": "2e57d74676494f3aba85a4aad64db6c8162dad0bb88da37eb411f1f0fc5b65a5",
+          "mode": 420,
+          "mtime_ns": 1794761038513482276,
+          "blocks_before": 317168,
+          "blocks_after": 14736
+        }
+      ],
+      "logical_bytes": 333453954,
+      "allocated_bytes_recovered": 317992960,
+      "all_paths_bytes_modes_mtimes_noncompression_attributes_preserved": true,
+      "scope": "Closed passing test logs only, system LZFSE transparent compression with complete kernel read SHA checks. No executable or failed evidence removed."
+    }
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; passing functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  },
+  "next_readonly_target": {
+    "stage": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-shower-native-20261116-v1",
+    "entry": "nox_xxx_castMeteorShower_52D8A0",
+    "original_disassembly_bytes": 291,
+    "CPU_cases": 0,
+    "source_port_started": false
+  }
+}

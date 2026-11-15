@@ -60,14 +60,93 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native CleansingFlame cast entry, 2026-11-16
+
+The qualified engine is `70852ff7fe08b852187654d212d5996e8251e8ea`, pushed to
+`origin/port/go1.27-multiarch`. The public C entry
+`nox_xxx_spellCastCleansingFlame_52D5C0` now calls Go with native Object and
+argument pointers. The cumulative qualified split-file count is **178 Go
+entries**. **All-C migration and overall 100% remain open.**
+
+The cast keeps the original owned-list traversal, live DWORD cache reads,
+48 attempts, separate PC53 operations and binary32 spills toward zero,
+signed level arithmetic, DWORD timer wrapping, service order and complete update callback
+pointer. The third object receives priority messages; the fourth owns the
+flames. The argument remains unused. The existing typed server API and all
+its tests are retained through an adapter. Normalizing hook names reconstructs
+the exact previous typed algorithm. The existing `53D510` native update binding
+is reused without new entry credit; prediction retains its separate S22 proof.
+
+The pre-port reference executes all **732 original root bytes** and **319
+startup bytes**, establishing `0xe3f`, across **66 cases**. An independent
+rational model matches **29,403 events**, including cache, direction and
+FPS/frame read order. The complete mapped image is checked at return; writes
+are limited to ten cache DWORDs and declared service mutations. The whole
+heap is checked at every service and return, allowing only exact flame-field
+and declared service writes. Saved registers, caller redzones and FP control/TOP
+are checked. Original second/recipient argument slots serve as vector scratch,
+and the level slot may be overwritten; immutable caller argument words are
+not claimed. External services remain explicit boundaries, and the arithmetic
+corpus is finite.
+
+The unchanged **3,631-byte C body** remains inactive in GAME4_2.c. Removing
+its guard reconstructs the complete incoming C file; removing one declaration
+reconstructs the incoming header. Two packed-low C controls match original
+return values and service counts. Four high native pointer cases raise SIGBUS,
+and one valid low native object misses its owned-list match. These are
+standalone **x86_64/Rosetta** observations on the ARM64 host, with no integrated
+game-crash or ARM64 C-before success claim. All failed initial setups remain
+retained.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS normal and highres/cgocheck2/checkptr2 each passed **161,278** native
+  regression checks on the same **9,266-input** source lease
+  `d01523745038803fea528e8a60fdb0e34a1c784f3686f3b57f20bdcd49ff05d1`.
+  The new group has **706** checks: 66 original
+  cases through three entry routes at three foreign placements, 90 actual
+  default owned-guard compositions, 18 native argument/signed-DWORD cases and
+  four top-level checks. Complete 64 KiB arenas and the native callback identity
+  are checked. All **198** existing typed server checks pass unchanged; only
+  the new native test file gained later default/ABI coverage after that focus.
+- All four default-toolchain ARM64 products passed build, metadata, help and
+  **55** public/control symbol checks. Normal/HD passed four core E2E cases,
+  two functional Save/Load diagnostics and two ordinary-clock independent UDP
+  chat profiles. Each chat profile proves eight submissions, four independently
+  received peer messages and a host reply, with both processes exiting zero
+  and no forced termination. Functional diagnostics do not promote the inherited
+  public Save/Load pixel failure.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43737229581) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43737174679) passed
+  all six profiles, the new group and every prior qualified native matrix.
+  Six SHA-verified ZIPs retain **158 actual test mains**. Complete warning
+  review covers **20 files** and **6,211,614,297 uncompressed
+  bytes**, with **zero warnings**. Existing Windows supervision checks and
+  Windows/386 GC-pressure replay also pass.
+
+All **4,735** previous protected tests/fixtures, **387** E2E files, **4,649**
+original asset/Save files and **484** local program paths retain their bytes.
+Inactive dedicated build caches were cleaned after completed gates. Three
+closed test logs use system transparent compression, preserving paths, bytes,
+mode, timestamps and other attributes, and recovering about 303 MiB. Original
+assets, Save, failed results and executable versions were preserved.
+
+All nine final Warrior/Conjurer/Wizard chapter 1–3 audits remain open, as does
+the public Save/Load pixel failure. Chapter 4 and later remain excluded.
+The next read-only target is `nox_xxx_castMeteorShower_52D8A0`: its 291-byte
+original span is disassembled, with no original CPU cases, native C controls,
+source port or new credit yet.
+
+Full qualification: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/qualified-cleansing-flame-entry-v1.json` (SHA-256 `0018c9333241a59c515d5837745debc88730f13cef5bbc04683413f38f147f6e`).
+
 ### Native linear-prediction entry, 2026-11-16
 
-The qualified source/runtime engine is
+The preceding linear-prediction checkpoint uses engine
 `71db0c07b910f4ed97f6fd6af3eb77b2ac96b724`, pushed to
 `origin/port/go1.27-multiarch`. The public C entry
 `nox_xxx_netClientPredictLinear_523530` now executes Go with a native Object
 argument and native unit/update/player links. The cumulative qualified
-split-file count is **177 Go entries**. **All-C migration and overall 100%
+split-file count at that checkpoint was **177 Go entries**. **All-C migration and overall 100%
 remain open.**
 
 The fourteen-byte packet preserves the existing typed algorithm: live reads
@@ -78,13 +157,13 @@ call owns its packet. The existing typed server API and its unchanged tests
 remain compatible. Independent C layout checks cover the shared Object and
 player-update prefixes and every field used by the native entry.
 
-The active CleansingFlame caller now passes its native pointer expression.
-The fourth test route reproduces that exact expression; it does **not**
-execute or qualify the whole CleansingFlame parent. That parent retains
-separate PE32 ownership assumptions and remains a next migration target.
-The exact 1,241-byte incoming C body remains inactive in GAME4_2.c. Removing
-its guard and reversing the one caller-expression change reconstructs the
-whole incoming C file; reversing the prototype change reconstructs its header.
+At this preceding checkpoint, only the CleansingFlame caller expression
+changed to a native pointer. The fourth route reproduced that expression
+without executing the whole parent; the separate parent qualification is
+recorded above. The exact 1,241-byte prediction body remains inactive in
+GAME4_2.c. At that checkpoint, removing its guard and reversing the caller
+change reconstructed the incoming C file; reversing the prototype change
+reconstructed its header.
 
 The sealed pre-port reference executes **191 original root bytes**, the
 39-byte qword converter and 319 startup/control bytes establishing `0xe3f`.

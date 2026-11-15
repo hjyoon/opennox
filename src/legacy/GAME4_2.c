@@ -9576,6 +9576,7 @@ int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6) {
 }
 
 //----- (0052C790) --------------------------------------------------------
+#if 0 // Native Fireball: fireball_native_exports.go
 int nox_xxx_castFireball_52C790(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;     // ebx
 	float* v7;  // esi
@@ -9636,6 +9637,7 @@ int nox_xxx_castFireball_52C790(int a1, int a2, int a3, int a4, int a5, int a6) 
 	nox_xxx_aud_501960(v17, v8, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052CA80) --------------------------------------------------------
 // Retired: the public Mark selector uses native Go pointers. Keep the

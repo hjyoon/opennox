@@ -1,0 +1,2320 @@
+{
+  "qualified_UTC": "2026-11-15T01:57:04.800012+00:00",
+  "engine_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+  "push_target": "origin/port/go1.27-multiarch",
+  "goal": "All repository-owned C implementation, including beyond13splits. Preserve independent original references and review required ABI/data ownership; counts are not a completion denominator.",
+  "new_Go_entries": 12,
+  "cumulative_implemented_split_Go_entries": 152,
+  "original_CPU": {
+    "scope": "Unchanged original intrusive-list instructions, with no service substitution.\n\nValid bounded intrusive-list owners are private PE32 heap storage. Sorted-list\ntag slots carry signed scalar keys; sentinel self tags carry pointer identity.\nThe original executable image is immutable in every case. Invalid/null owners\noutside original entry guards are not assigned invented successful results.\n",
+    "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "generator_sha256": "5fbd5da0a64183f6bd9068b4f336585440baffba3667ef06d4fab341ef19d15f",
+    "fixture_sha256": "2f15b036f9b37d63180a4132570c1954df6df8f7bf45d0f11996aa5344586792",
+    "fixture_gzip_sha256": "3067c68649caf7ce365d8f25d35ec93311b58d814520585befd59b5fc054735d",
+    "cases": 723,
+    "kinds": {
+      "clear": 36,
+      "init": 36,
+      "first_safe": 63,
+      "next_safe": 63,
+      "next": 35,
+      "previous": 28,
+      "at_index": 77,
+      "insert_before": 28,
+      "insert_after": 28,
+      "remove": 35,
+      "insert_ascending": 147,
+      "insert_descending": 147
+    },
+    "declared_services": [],
+    "whole_original_PE_image_preserved_every_case": true,
+    "original_graph_owner_bytes": 384,
+    "regions": {
+      "clear": {
+        "start": "0x425760",
+        "end": "0x42576d",
+        "bytes": 13,
+        "sha256": "ddd70dcb60d342f1876a264fc873fcd893fcdf35f529bef0ead758524eeed83f",
+        "executed_bytes": 13,
+        "executed_instructions": 5
+      },
+      "init": {
+        "start": "0x425770",
+        "end": "0x425781",
+        "bytes": 17,
+        "sha256": "5b2ee9cad8d9825bb0ea7a71762af170b8b5eb33061da31c31b2764ac1b7d9ed",
+        "executed_bytes": 17,
+        "executed_instructions": 5
+      },
+      "insert_ascending": {
+        "start": "0x425790",
+        "end": "0x4257e3",
+        "bytes": 83,
+        "sha256": "f7827d4014bd8fd1214cee4087f9fc91f2d427423d19e840c9cc95d889627c2b",
+        "executed_bytes": 83,
+        "executed_instructions": 41
+      },
+      "insert_descending": {
+        "start": "0x4257f0",
+        "end": "0x425839",
+        "bytes": 73,
+        "sha256": "9fb170e159bf1843be60bc223500a016651da80f7b972fb29f6be7050218c958",
+        "executed_bytes": 73,
+        "executed_instructions": 34
+      },
+      "first_safe": {
+        "start": "0x425890",
+        "end": "0x42589e",
+        "bytes": 14,
+        "sha256": "7faa1db22e07e77509131e2af01e08abf74fcc16ce721f9593b8e1b431db76a2",
+        "executed_bytes": 14,
+        "executed_instructions": 5
+      },
+      "next_safe": {
+        "start": "0x4258a0",
+        "end": "0x4258b3",
+        "bytes": 19,
+        "sha256": "2caa612a6e3d773f9533edc80d4dff2d071b8440afb3f3c6f54bc8b3024d0d6d",
+        "executed_bytes": 19,
+        "executed_instructions": 8
+      },
+      "at_index": {
+        "start": "0x4258c0",
+        "end": "0x4258e0",
+        "bytes": 32,
+        "sha256": "84bb938464463290d43ffd4f22bde0cb9ae400b75b5b01a602833024d9105d61",
+        "executed_bytes": 32,
+        "executed_instructions": 16
+      },
+      "insert_before": {
+        "start": "0x4258e0",
+        "end": "0x4258f9",
+        "bytes": 25,
+        "sha256": "eb4fb0ade24e334c37b8f82c8d0a2ce2502a22d3ea02483057027e9d12e33ee8",
+        "executed_bytes": 25,
+        "executed_instructions": 9
+      },
+      "insert_after": {
+        "start": "0x425900",
+        "end": "0x425917",
+        "bytes": 23,
+        "sha256": "b9aa262fef37c67104d08c093dbc549c9e1ed5cfd918ee385dd7be3e04f738c4",
+        "executed_bytes": 23,
+        "executed_instructions": 9
+      },
+      "remove": {
+        "start": "0x425920",
+        "end": "0x425939",
+        "bytes": 25,
+        "sha256": "dd36599e04064cc8c4e33a2a2d46a74f103b363c6f9a0432dbd7c4a248058c36",
+        "executed_bytes": 25,
+        "executed_instructions": 10
+      },
+      "next": {
+        "start": "0x425940",
+        "end": "0x425952",
+        "bytes": 18,
+        "sha256": "0b2545a8c8a673541625d24aa4a3f173a4da13bf30e1cb45868ea6c5ad9d8c8a",
+        "executed_bytes": 18,
+        "executed_instructions": 8
+      },
+      "previous": {
+        "start": "0x425960",
+        "end": "0x425973",
+        "bytes": 19,
+        "sha256": "7d253033f587813ee32cf87f1e9447707cd1c100a29eb61105c29bebe7e19f62",
+        "executed_bytes": 19,
+        "executed_instructions": 8
+      }
+    },
+    "scope_limits": [
+      "Valid bounded circular owners and detached initialized items; invalid raw owner faults not assigned successful output.",
+      "Sorted scalar keys and sentinel identity are distinct logical slots; native packed-owner adapters still require review.",
+      "Current C nil/partial-link remove and append exceptions are compatibility behavior outside the original reference."
+    ],
+    "source_port_started": false,
+    "new_Go_credit": 0
+  },
+  "original_C_before": {
+    "utc": "2026-11-15T00:38:37.896888+00:00",
+    "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da",
+    "source_sha256": "78ac4af46c47a5d8465bc0aa5cb6b7df63c37bc14920e5e4447c7194db374c22",
+    "original_bodies": [
+      {
+        "name": "nox_common_list_clear_425760",
+        "begin": 133502,
+        "end": 133631,
+        "bytes": 129,
+        "sha256": "a8cde3d62331c8b3af164b87fdc263c24f4c5a71531e25e43c5b843231ac49ba"
+      },
+      {
+        "name": "sub_425770",
+        "begin": 133709,
+        "end": 133840,
+        "bytes": 131,
+        "sha256": "9385e707a1a4e4eb86466689feb87ae57e651ddd8ba68d09fd05316a0151e116"
+      },
+      {
+        "name": "sub_425790",
+        "begin": 133918,
+        "end": 134375,
+        "bytes": 457,
+        "sha256": "f7a14a71dc5a0fbf323f2b177dd73f80e7d7a87c3d6339859855898ba5342dd8"
+      },
+      {
+        "name": "sub_4257F0",
+        "begin": 134453,
+        "end": 134856,
+        "bytes": 403,
+        "sha256": "6f415310b555e165a8fa56bd75562673de07e0c0e49d4a2e61e9dcc552616ceb"
+      },
+      {
+        "name": "nox_common_list_getFirstSafe_425890",
+        "begin": 134934,
+        "end": 135063,
+        "bytes": 129,
+        "sha256": "891f87dfcf873be783ff68fbec76b2b74cb3c17ed67b84742f1aa65c82fd5638"
+      },
+      {
+        "name": "nox_common_list_getNextSafe_4258A0",
+        "begin": 135141,
+        "end": 135294,
+        "bytes": 153,
+        "sha256": "34e755099575b41178d539f4a8bb6ea902ab4226097f4821f638c92266482006"
+      },
+      {
+        "name": "sub_4258C0",
+        "begin": 135372,
+        "end": 135726,
+        "bytes": 354,
+        "sha256": "7b43ad6c7267c4553104ee1a0cfdaffda3d19d423a5b8119886562954dbc48ba"
+      },
+      {
+        "name": "nox_common_list_append_4258E0",
+        "begin": 135804,
+        "end": 136392,
+        "bytes": 588,
+        "sha256": "f60a3505cda6061e0865798af3ed6a612b8e30f8851b5430756a9e65bbf7c38f"
+      },
+      {
+        "name": "sub_425900",
+        "begin": 136470,
+        "end": 136744,
+        "bytes": 274,
+        "sha256": "5b376a35702873df4f7ab254869013df70e318d577c0cbad6f012e54848475ee"
+      },
+      {
+        "name": "nox_common_list_remove_425920",
+        "begin": 136822,
+        "end": 137080,
+        "bytes": 258,
+        "sha256": "6eb8558ae0f90c67d25ee6d896ba9ba69d2e2b7625cb8c453c6ed41bb6d2da40"
+      },
+      {
+        "name": "nox_common_list_getNext_425940",
+        "begin": 137158,
+        "end": 137329,
+        "bytes": 171,
+        "sha256": "8e384d62713807be610792101bc805eaec83925f4de50644ad2928b721993e57"
+      },
+      {
+        "name": "sub_425960",
+        "begin": 137407,
+        "end": 137532,
+        "bytes": 125,
+        "sha256": "474f9fd07f6b9f04cd93e3530ee7e47c693e79e8295bce22687d5e55a3ad5338"
+      }
+    ],
+    "source_bytes": 3172,
+    "program_sha256": "35fdfcf7f229140e2b2cfd57c74099b4744bc8f0d377bdacd26f32b4248a5446",
+    "executable_sha256": "1916e56f9539fec807389cb74489677a5ea8682a4f44477cb6c1e687edeef5c0",
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-O2",
+      "-g",
+      "-fno-strict-aliasing",
+      "-fno-strict-overflow",
+      "-Wno-int-conversion",
+      "-Wno-incompatible-pointer-types",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast",
+      "-Wl,-pagezero_size,0x10000",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/original-c-before-v1/unchanged-original-functions.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/original-c-before-v1/unchanged-original-functions"
+    ],
+    "cases": [
+      {
+        "mode": "common-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "common-high-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "index-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "previous-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "ascending-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "descending-low-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "index-high-pointer-loss",
+        "exit_code": 0
+      },
+      {
+        "mode": "index-high-chain-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "previous-high-owner-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "ascending-high-owner-fault",
+        "exit_code": -11
+      },
+      {
+        "mode": "descending-high-owner-fault",
+        "exit_code": -11
+      }
+    ],
+    "standalone_controls": 6,
+    "standalone_pointer_losses": 1,
+    "standalone_SIGSEGVs": 4,
+    "diagnostic_suppressions_for_unchanged_legacy_source": [
+      "-Wno-int-conversion",
+      "-Wno-incompatible-pointer-types",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast"
+    ],
+    "scope": "Exact current C bodies in a bounded native-width fixture. Common already-native operations pass low/high controls; index traversal loses a pointer then faults, reverse owner and sorted insert casts fault at high addresses. These do not establish active or integrated game reachability. Legacy incompatible-pointer diagnostics are suppressed only to compile the unchanged before-code; this is not a product-warning reduction or port credit."
+  },
+  "archive_preservation": {
+    "utc": "2026-11-15T01:17:04.640397+00:00",
+    "archived_original_body_bytes": 3172,
+    "whole_incoming_GAME1_1_reconstructed": true,
+    "whole_incoming_header_reconstructed": true,
+    "whole_incoming_maps_wrapper_reconstructed": true,
+    "incoming_repository_files_checked": 9195,
+    "allowed_changed_existing_sources": [
+      "src/legacy/GAME1_1.c",
+      "src/legacy/GAME1_1.h",
+      "src/legacy/maps_list.go"
+    ],
+    "retired_C_files": 2,
+    "retired_paths": [
+      "src/legacy/server__object__pickdrop__pickup.c",
+      "src/legacy/server__xfer__savegame__savegame.c"
+    ],
+    "all_retired_source_bytes_preserved": true,
+    "all_other_existing_files_unchanged": true,
+    "existing_tests_fixtures_E2E_checked": 4706,
+    "changed_existing_tests_fixtures_E2E": [],
+    "additional_Go_credit_for_empty_cleanup": 0
+  },
+  "reference_seal": {
+    "utc": "2026-11-15T00:39:44.642386+00:00",
+    "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da",
+    "original_cases": 723,
+    "original_instruction_bytes": 361,
+    "original_C_body_bytes": 3172,
+    "declared_services": [],
+    "whole_original_PE_image_preserved_every_case": true,
+    "incoming_source_files": 9,
+    "standalone_controls": 6,
+    "standalone_pointer_losses": 1,
+    "standalone_SIGSEGVs": 4,
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "files": [
+      {
+        "path": "implementation-ownership-notes-v1.json",
+        "bytes": 4829,
+        "sha256": "83da41dd44c3a2db0af4000179f2ca1954435e825c14dde2cb22ed31ac993068"
+      },
+      {
+        "path": "incoming-source/src/common/memmap/memmap.go",
+        "bytes": 9143,
+        "sha256": "691584c350f932443df46865ce53c4321d8ea5f98c80c5ce53161557f544a365"
+      },
+      {
+        "path": "incoming-source/src/legacy/GAME1_1.c",
+        "bytes": 160749,
+        "sha256": "78ac4af46c47a5d8465bc0aa5cb6b7df63c37bc14920e5e4447c7194db374c22"
+      },
+      {
+        "path": "incoming-source/src/legacy/GAME1_1.h",
+        "bytes": 9094,
+        "sha256": "7c67f956f7374880898d1b189c24a232fa41f5ff2950ebe8c8b13ca1e2178c9d"
+      },
+      {
+        "path": "incoming-source/src/legacy/GAME3_1.c",
+        "bytes": 152753,
+        "sha256": "5a0cb487ab101f00adb217a13805f34bd1dbf9f22c8707e31d477deda9fccc80"
+      },
+      {
+        "path": "incoming-source/src/legacy/GAME4_1.c",
+        "bytes": 136726,
+        "sha256": "7fa3bae2281ff77696f8724b084dbe465e4c1e375f6d7aa92f80cf2e29ee3b24"
+      },
+      {
+        "path": "incoming-source/src/legacy/audio_cache_native.go",
+        "bytes": 7373,
+        "sha256": "18bca641b7724914b2b00139292b9797fe017b74e452535b371452e30482ea1f"
+      },
+      {
+        "path": "incoming-source/src/legacy/defs.h",
+        "bytes": 82798,
+        "sha256": "cf35ef76e40047fc31046eb8b2ddca73cf4c2813f7f8a26c7927237c436d0c19"
+      },
+      {
+        "path": "incoming-source/src/legacy/maps_list.go",
+        "bytes": 2003,
+        "sha256": "a5709679a6df87fef78fdb84f58d145a134a06f816c40bcf99222f6ac89dabc9"
+      },
+      {
+        "path": "incoming-source/src/legacy/quest_player_identity_509c30.go",
+        "bytes": 2406,
+        "sha256": "e5189c6b2d4f64af8eaffb010133742fede22690c2a78545275b53639af7aa3a"
+      },
+      {
+        "path": "incoming-source-manifest-v1.json",
+        "bytes": 1528,
+        "sha256": "7cc6473ff8b48628b946f3f331cd8c067acd801c75c30afa4d22d44f33364d45"
+      },
+      {
+        "path": "initial-original-retry-directory-failure-v1.json",
+        "bytes": 408,
+        "sha256": "3e1a9ff7cbc8fe07dfab0c1eb65bb18d63df3993f7330eff8126518a79d17d1f"
+      },
+      {
+        "path": "initial-original-run-sandbox-failure-v1.json",
+        "bytes": 768,
+        "sha256": "9c2ae0f3b8ed8f3fd2640698ccc26a0765c5991d9093ffdfb3cc31fd85d57053"
+      },
+      {
+        "path": "original-c-before-v1/ascending-high-owner-fault.stderr.log",
+        "bytes": 107,
+        "sha256": "c3d06894f9a2fb18a67ea9eae269f2da14c0e06240c8c6aa08bdcf595f6a5567"
+      },
+      {
+        "path": "original-c-before-v1/ascending-high-owner-fault.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/ascending-low-control.stderr.log",
+        "bytes": 98,
+        "sha256": "e84cc52881de58b440f6505dee11827c613b882b86ca11e36e1016119d62f2e7"
+      },
+      {
+        "path": "original-c-before-v1/ascending-low-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/build.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/build.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/common-high-control.stderr.log",
+        "bytes": 100,
+        "sha256": "3e03879972dbe4086e874e08e7296065e095d59a6a47b73abf986e0941495250"
+      },
+      {
+        "path": "original-c-before-v1/common-high-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/common-low-control.stderr.log",
+        "bytes": 95,
+        "sha256": "37d5e0c60da986a5be7c325a848754472a93c2eca8e9b427ca10cd60141eeee5"
+      },
+      {
+        "path": "original-c-before-v1/common-low-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/descending-high-owner-fault.stderr.log",
+        "bytes": 108,
+        "sha256": "225013be1495632e037a6a49271c326361a22c6e66ad967110a44035077a6079"
+      },
+      {
+        "path": "original-c-before-v1/descending-high-owner-fault.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/descending-low-control.stderr.log",
+        "bytes": 99,
+        "sha256": "b0f602d8513f0dd11b59e30bc904a7c038bd63dfe7eb77729a293c522bad671c"
+      },
+      {
+        "path": "original-c-before-v1/descending-low-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/index-high-chain-fault.stderr.log",
+        "bytes": 103,
+        "sha256": "9c417b376b8063c97f34a3d71db2c827606f5181caa876e8ea14e5c41bd1f46c"
+      },
+      {
+        "path": "original-c-before-v1/index-high-chain-fault.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/index-high-pointer-loss.stderr.log",
+        "bytes": 147,
+        "sha256": "0058370cbab96a38bf244decf418795b389dbcb201f6d6a72298c5613d0438ed"
+      },
+      {
+        "path": "original-c-before-v1/index-high-pointer-loss.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/index-low-control.stderr.log",
+        "bytes": 94,
+        "sha256": "d4e9898dbc9672103c8f76e83fbaf0a602c4ce5b3428e2fd262b915eb64acc3d"
+      },
+      {
+        "path": "original-c-before-v1/index-low-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/previous-high-owner-fault.stderr.log",
+        "bytes": 106,
+        "sha256": "548ec0d0e77113d77dc6800fa2d4e6ae7d7906a4628b4ae3325170c2618d6319"
+      },
+      {
+        "path": "original-c-before-v1/previous-high-owner-fault.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/previous-low-control.stderr.log",
+        "bytes": 140,
+        "sha256": "46514bc4e97a5901c9290560019c5fa497e3a83012167e0c734bab584361e894"
+      },
+      {
+        "path": "original-c-before-v1/previous-low-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "original-c-before-v1/proof.json",
+        "bytes": 5006,
+        "sha256": "29213eb18af4e3f4a5ca54f88d9c3b8882f277c950db4e00ca063838163c5515"
+      },
+      {
+        "path": "original-c-before-v1/unchanged-original-functions",
+        "bytes": 10592,
+        "sha256": "1916e56f9539fec807389cb74489677a5ea8682a4f44477cb6c1e687edeef5c0"
+      },
+      {
+        "path": "original-c-before-v1/unchanged-original-functions.c",
+        "bytes": 6354,
+        "sha256": "35fdfcf7f229140e2b2cfd57c74099b4744bc8f0d377bdacd26f32b4248a5446"
+      },
+      {
+        "path": "original-c-before-v1/unchanged-original-functions.dSYM/Contents/Info.plist",
+        "bytes": 657,
+        "sha256": "2420fcca068d0f78e56d377e9c1bb3795e9f3f8adffeafdf79b431e9b1eec469"
+      },
+      {
+        "path": "original-c-before-v1/unchanged-original-functions.dSYM/Contents/Resources/DWARF/unchanged-original-functions",
+        "bytes": 19700,
+        "sha256": "8235ece9f35d0c5347479155d6bc0cd8e388d3f99c714ac55a7e94b6d59cc5bd"
+      },
+      {
+        "path": "original-c-before-v1/unchanged-original-functions.dSYM/Contents/Resources/Relocations/x86_64/unchanged-original-functions.yml",
+        "bytes": 229,
+        "sha256": "58768de1383209db9c599720015f960c1319734a3f6ffcde59a4b03a0b6c6091"
+      },
+      {
+        "path": "original-cpu-v2/fixture.json",
+        "bytes": 2290013,
+        "sha256": "2f15b036f9b37d63180a4132570c1954df6df8f7bf45d0f11996aa5344586792"
+      },
+      {
+        "path": "original-cpu-v2/fixture.json.gz",
+        "bytes": 28462,
+        "sha256": "3067c68649caf7ce365d8f25d35ec93311b58d814520585befd59b5fc054735d"
+      },
+      {
+        "path": "original-cpu-v2/proof.json",
+        "bytes": 4570,
+        "sha256": "0674433239a1a2a919ba6f28a97ecf660b4cee397bbc0ec5e4050bc46746a6bb"
+      },
+      {
+        "path": "original-list-v1.py",
+        "bytes": 8174,
+        "sha256": "a2b083ef2d9a13cbd306489f2abf04587c14f8ac85e0971e47163bf17c773516"
+      },
+      {
+        "path": "original-list-v2.py",
+        "bytes": 8174,
+        "sha256": "5fbd5da0a64183f6bd9068b4f336585440baffba3667ef06d4fab341ef19d15f"
+      },
+      {
+        "path": "read-only-disassembly-v1/425760.asm.txt",
+        "bytes": 388,
+        "sha256": "879598335a3fcd6f7da0626048fb34be18be14f10a5c978c07dc1d684bdbcc24"
+      },
+      {
+        "path": "read-only-disassembly-v1/425760.bin",
+        "bytes": 16,
+        "sha256": "af4168ea9d9b78b6c2ac99fb18045e9de62ee19a09638ce38d467456ab07a0f7"
+      },
+      {
+        "path": "read-only-disassembly-v1/425770.asm.txt",
+        "bytes": 830,
+        "sha256": "e3218732fa14f7ce6b56fd23d38fa36a0db5765ab6be7e52ce92ef1b94512f76"
+      },
+      {
+        "path": "read-only-disassembly-v1/425770.bin",
+        "bytes": 32,
+        "sha256": "569ecbae56b2a10f18f872d2fe70aa5f49f16adfc1f828f9c7970d74bf36480c"
+      },
+      {
+        "path": "read-only-disassembly-v1/425790.asm.txt",
+        "bytes": 2291,
+        "sha256": "adaafd0776bb8b66f6c54a09663faf74b660a89a17b52a7620fc9b348947d1aa"
+      },
+      {
+        "path": "read-only-disassembly-v1/425790.bin",
+        "bytes": 96,
+        "sha256": "8f05a1ecae454ecd7851fe7ba06b65cbe2838b4c5a4e37cbe582dab2107dbe57"
+      },
+      {
+        "path": "read-only-disassembly-v1/4257f0.asm.txt",
+        "bytes": 3797,
+        "sha256": "85c5fe36991844fbb46720d05715081484efd05c706a6fe0a93840c3bf6e62dc"
+      },
+      {
+        "path": "read-only-disassembly-v1/4257f0.bin",
+        "bytes": 160,
+        "sha256": "07c1eddcb815c94b7f94ca9df5c0f0eb57db1777821103250cbac00574bc0488"
+      },
+      {
+        "path": "read-only-disassembly-v1/425890.asm.txt",
+        "bytes": 302,
+        "sha256": "bef9e7961af019ecfd7ebe03c8118a50c2b153dedaa7a1641ee509c7ba6d6f2f"
+      },
+      {
+        "path": "read-only-disassembly-v1/425890.bin",
+        "bytes": 16,
+        "sha256": "32f858244ed38bda5725f7db6616a2a6425e822b44663524bb5d1b7b497e0ddf"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258a0.asm.txt",
+        "bytes": 837,
+        "sha256": "23ca1a8b14f281bb38dd55eb12990e6855e60ca15414ccee12f3aab6c4965190"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258a0.bin",
+        "bytes": 32,
+        "sha256": "fb20fcec6b89e48808ae2ca0c8158509416ab9facd5a2a34eace88f6a987f007"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258c0.asm.txt",
+        "bytes": 755,
+        "sha256": "d0de8fa9b4513b3add60947ea74d324c761aa51acf1211399148d1db1121efd9"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258c0.bin",
+        "bytes": 32,
+        "sha256": "84bb938464463290d43ffd4f22bde0cb9ae400b75b5b01a602833024d9105d61"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258e0.asm.txt",
+        "bytes": 776,
+        "sha256": "fb188eda96febde2a34b14ddc5042c734aeb6e7c3fe997ab6e1212affeaa4cd0"
+      },
+      {
+        "path": "read-only-disassembly-v1/4258e0.bin",
+        "bytes": 32,
+        "sha256": "abaae3252b2f8e2f6238eb39e51590d3da4be0ac06df713a6561dcb1a7b3d9af"
+      },
+      {
+        "path": "read-only-disassembly-v1/425900.asm.txt",
+        "bytes": 842,
+        "sha256": "42613aef07601102c948c19cacbbe5f708f42d0ec9b7e33202e6ee8689ab7b2f"
+      },
+      {
+        "path": "read-only-disassembly-v1/425900.bin",
+        "bytes": 32,
+        "sha256": "8c8ee752d285f417ab7cebe0822869203b4b73e1c12db5161f5fb01f1ad9907b"
+      },
+      {
+        "path": "read-only-disassembly-v1/425920.asm.txt",
+        "bytes": 829,
+        "sha256": "1c75f79acff7b8af8a02079c3d2a031764efe9845d1deb98c61e83f1dce3858e"
+      },
+      {
+        "path": "read-only-disassembly-v1/425920.bin",
+        "bytes": 32,
+        "sha256": "cbc0b166f760aa1d33ad2be3b5caf3c6fdd5d857f9b937e7e38268852975bc80"
+      },
+      {
+        "path": "read-only-disassembly-v1/425940.asm.txt",
+        "bytes": 914,
+        "sha256": "c7bbfa91c46eb4f432b86c2cf66fb22301a5e0d9854cc38f8d23e91613d6d3e1"
+      },
+      {
+        "path": "read-only-disassembly-v1/425940.bin",
+        "bytes": 32,
+        "sha256": "c76858f002196becac7ab6ba455b514b907992442386e5e7b6ae3d9554b9c04f"
+      },
+      {
+        "path": "read-only-disassembly-v1/425960.asm.txt",
+        "bytes": 876,
+        "sha256": "3a6508dbe98c44b2c196e13b03bb7820d5f844cd46dbc267e3d9a1e347098ae6"
+      },
+      {
+        "path": "read-only-disassembly-v1/425960.bin",
+        "bytes": 32,
+        "sha256": "983c04963627f11746d277a2de13ef8c296c67f88163479b229e04048d5c2c16"
+      },
+      {
+        "path": "read-only-disassembly-v1/proof.json",
+        "bytes": 2445,
+        "sha256": "269d003a1555cd5c48aa2f012f28743ce8c7d599a4fe7123e0bb69315e555e23"
+      },
+      {
+        "path": "reproduce-original-c-v1.py",
+        "bytes": 6396,
+        "sha256": "024b29f743251e0014cd6e1ffde04f078cef4731c5f5eb333804d73c200f6b49"
+      },
+      {
+        "path": "seal-preport-baseline-v1.py",
+        "bytes": 6201,
+        "sha256": "3589b3a484f8e9ba5b50c402f13706c812a4df361d26304569ab78e430471f71"
+      }
+    ]
+  },
+  "original_execution_initial_failures": [
+    {
+      "utc": "2026-11-15T00:35:24.956142+00:00",
+      "command": [
+        "/usr/bin/env",
+        "PYTHONPATH=/Users/ghost/codex-sandbox/cache/opennox-native-oracle-py312-v1/lib/python3.12/site-packages",
+        "/Users/ghost/.pyenv/versions/3.12.11/bin/python3",
+        "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/original-list-v1.py"
+      ],
+      "exit_code": 132,
+      "output": "",
+      "generator_sha256": "a2b083ef2d9a13cbd306489f2abf04587c14f8ac85e0971e47163bf17c773516",
+      "original_CPU_fixture_created": true,
+      "scope": "Initial sandboxed Unicorn import/launch terminated before any original-reference fixture or source port. Reason not yet diagnosed; retain status and retry same generator in authorized native execution environment."
+    },
+    {
+      "exit_code": 1,
+      "error": "FileExistsError at original-cpu-v1 mkdir during same-generator authorized native retry; initial directory retained",
+      "original_generator_sha256": "a2b083ef2d9a13cbd306489f2abf04587c14f8ac85e0971e47163bf17c773516",
+      "retry_generator_sha256": "5fbd5da0a64183f6bd9068b4f336585440baffba3667ef06d4fab341ef19d15f",
+      "only_retry_difference": "Output directory original-cpu-v2"
+    }
+  ],
+  "intermediate_source_overlay": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/intermediate-focused-list-v1-source/manifest.json",
+    "sha256": "cd14d589746e7887ac8f64ea034c20b7c5c5145d7f2f2cc800badc9846195414"
+  },
+  "macOS": {
+    "normal": {
+      "changed_source_paths": [],
+      "source_files": 9198,
+      "source_lease_sha256": "0ffa9720fa9f205b9e1d441c9818b257670d095c4de4877a3776400b26bba8b0",
+      "exit_code": 0,
+      "elapsed_seconds": 168.69,
+      "test_actions": {
+        "pass": 92724
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "strict": {
+      "changed_source_paths": [],
+      "source_files": 9198,
+      "source_lease_sha256": "0ffa9720fa9f205b9e1d441c9818b257670d095c4de4877a3776400b26bba8b0",
+      "exit_code": 0,
+      "elapsed_seconds": 171.322,
+      "test_actions": {
+        "pass": 92724
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "unfiltered_full_suite_claim": false
+  },
+  "product_symbol_review": {
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox",
+        "sha256": "d4db50e7756033d3d6a645244775209e11fa23a684c13ba16ee1fd5bc11e4aa9",
+        "native_public_symbols": {
+          "nox_common_list_clear_425760": true,
+          "sub_425770": true,
+          "sub_425790": true,
+          "sub_4257F0": true,
+          "nox_common_list_getFirstSafe_425890": true,
+          "nox_common_list_getNextSafe_4258A0": true,
+          "sub_4258C0": true,
+          "nox_common_list_append_4258E0": true,
+          "sub_425900": true,
+          "nox_common_list_remove_425920": true,
+          "nox_common_list_getNext_425940": true,
+          "sub_425960": true,
+          "set_bitmask_flags_from_plus_separated_names_423930": true,
+          "set_one_bitmask_flag_by_name_4239C0": true,
+          "nox_native_parseMonsterFlags_423930": true,
+          "sub_416770": true,
+          "sub_409B50": true,
+          "nox_xxx_clientAskInfoMb_4BF050": true,
+          "nox_thing_monster_gen_draw": true,
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-hd",
+        "sha256": "f7cea28d7e3907d497ef36d0c604a6c54a2c0489ff1cbfe7c184898eed5f06f9",
+        "native_public_symbols": {
+          "nox_common_list_clear_425760": true,
+          "sub_425770": true,
+          "sub_425790": true,
+          "sub_4257F0": true,
+          "nox_common_list_getFirstSafe_425890": true,
+          "nox_common_list_getNextSafe_4258A0": true,
+          "sub_4258C0": true,
+          "nox_common_list_append_4258E0": true,
+          "sub_425900": true,
+          "nox_common_list_remove_425920": true,
+          "nox_common_list_getNext_425940": true,
+          "sub_425960": true,
+          "set_bitmask_flags_from_plus_separated_names_423930": true,
+          "set_one_bitmask_flag_by_name_4239C0": true,
+          "nox_native_parseMonsterFlags_423930": true,
+          "sub_416770": true,
+          "sub_409B50": true,
+          "nox_xxx_clientAskInfoMb_4BF050": true,
+          "nox_thing_monster_gen_draw": true,
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server",
+        "sha256": "1f077335d5a8c180cd0cb4d00786ebcadbcb047a5edd5ba7d548ffc3cd0af1d2",
+        "native_public_symbols": {
+          "nox_common_list_clear_425760": true,
+          "sub_425770": true,
+          "sub_425790": true,
+          "sub_4257F0": true,
+          "nox_common_list_getFirstSafe_425890": true,
+          "nox_common_list_getNextSafe_4258A0": true,
+          "sub_4258C0": true,
+          "nox_common_list_append_4258E0": true,
+          "sub_425900": true,
+          "nox_common_list_remove_425920": true,
+          "nox_common_list_getNext_425940": true,
+          "sub_425960": true,
+          "set_bitmask_flags_from_plus_separated_names_423930": true,
+          "set_one_bitmask_flag_by_name_4239C0": true,
+          "nox_native_parseMonsterFlags_423930": true,
+          "sub_416770": true,
+          "sub_409B50": true,
+          "nox_xxx_clientAskInfoMb_4BF050": true,
+          "nox_thing_monster_gen_draw": true,
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server-hd",
+        "sha256": "5098ce32aecc9ff6c553cf738e6de2ed020a9ea73a6af1c96db90ca79ad816df",
+        "native_public_symbols": {
+          "nox_common_list_clear_425760": true,
+          "sub_425770": true,
+          "sub_425790": true,
+          "sub_4257F0": true,
+          "nox_common_list_getFirstSafe_425890": true,
+          "nox_common_list_getNextSafe_4258A0": true,
+          "sub_4258C0": true,
+          "nox_common_list_append_4258E0": true,
+          "sub_425900": true,
+          "nox_common_list_remove_425920": true,
+          "nox_common_list_getNext_425940": true,
+          "sub_425960": true,
+          "set_bitmask_flags_from_plus_separated_names_423930": true,
+          "set_one_bitmask_flag_by_name_4239C0": true,
+          "nox_native_parseMonsterFlags_423930": true,
+          "sub_416770": true,
+          "sub_409B50": true,
+          "nox_xxx_clientAskInfoMb_4BF050": true,
+          "nox_thing_monster_gen_draw": true,
+          "sub_4240F0": true,
+          "nox_xxx_parseSoundSetBin_424170": true,
+          "sub_424CB0": true,
+          "sub_424D00": true,
+          "sub_424D20": true,
+          "nox_xxx_setNPCVoiceSet_424320": true,
+          "nox_xxx_getDefaultSoundSet_424350": true,
+          "nox_xxx_readNPCVoiceSet_52AD10": true,
+          "nox_xxx_monsterGetSoundSet_424300": true
+        }
+      }
+    ],
+    "all_native_entries_present": true,
+    "scope": "Public symbols and native public Go exports present in all4 products; unchanged-old C bodies separately archived/reconstructed, and actual public C calls covered by original-reference tests. Symbol presence alone is not runtime coverage."
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox",
+      "bytes": 69975954,
+      "sha256": "d4db50e7756033d3d6a645244775209e11fa23a684c13ba16ee1fd5bc11e4aa9",
+      "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-hd",
+      "bytes": 70091538,
+      "sha256": "f7cea28d7e3907d497ef36d0c604a6c54a2c0489ff1cbfe7c184898eed5f06f9",
+      "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server",
+      "bytes": 66591922,
+      "sha256": "1f077335d5a8c180cd0cb4d00786ebcadbcb047a5edd5ba7d548ffc3cd0af1d2",
+      "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server-hd",
+      "bytes": 66707506,
+      "sha256": "5098ce32aecc9ff6c553cf738e6de2ed020a9ea73a6af1c96db90ca79ad816df",
+      "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+    }
+  ],
+  "product_E2E": [
+    {
+      "profile": "normal",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 47.847,
+      "warnings": 0
+    },
+    {
+      "profile": "normal",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 49.091,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-projectile-fx",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 48.557,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "scenario": "host-game-urchin-pixie-swarm",
+      "audio": "mock",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 49.145,
+      "warnings": 0
+    }
+  ],
+  "functional_SaveLoad": [
+    {
+      "profile": "normal",
+      "pixel_golden_pass": false,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 49.301,
+      "warnings": 0
+    },
+    {
+      "profile": "highres",
+      "pixel_golden_pass": false,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 49.343,
+      "warnings": 0
+    }
+  ],
+  "independent_peer_chat": {
+    "normal": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+      "product_sha256": "d4db50e7756033d3d6a645244775209e11fa23a684c13ba16ee1fd5bc11e4aa9",
+      "elapsed_seconds": 290.487,
+      "forced_processes": []
+    },
+    "highres": {
+      "status": "passed",
+      "host_exit": 0,
+      "peer_exit": 0,
+      "own_chat_submissions": 8,
+      "independently_received_peer_messages": 4,
+      "received_host_reply": 1,
+      "cancelled_chats": 2,
+      "empty_chats": 2,
+      "source": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+      "product_sha256": "f7cea28d7e3907d497ef36d0c604a6c54a2c0489ff1cbfe7c184898eed5f06f9",
+      "elapsed_seconds": 290.487,
+      "forced_processes": []
+    }
+  },
+  "CI": [
+    {
+      "profile": "Linux amd64 client",
+      "run_id": 43662533059,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662533059",
+      "job_id": 132654774409,
+      "artifact_id": 14141191549,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14141191549-8f672b681.zip",
+      "sha256": "ab0eff17e31e9b797f63bcbe66c881ae3e889d3edf51b273116c98517264c44d",
+      "bytes": 214125464,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 912093,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14141191549,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "ab0eff17e31e9b797f63bcbe66c881ae3e889d3edf51b273116c98517264c44d",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 943448614,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 client HD",
+      "run_id": 43662533059,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662533059",
+      "job_id": 132654774329,
+      "artifact_id": 14140739889,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14140739889-8f672b681.zip",
+      "sha256": "1313d425cee6e9c7528f3ccf1a964e3e65878a7d98e609cf9fc66f4b8a966d20",
+      "bytes": 213831253,
+      "source_revision_verified": true,
+      "compiled_package_executables": 40,
+      "test_actions": {
+        "pass": 912093,
+        "skip": 57
+      },
+      "package_actions": {
+        "pass": 40,
+        "skip": 21
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14140739889,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "1313d425cee6e9c7528f3ccf1a964e3e65878a7d98e609cf9fc66f4b8a966d20",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 943449630,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server",
+      "run_id": 43662533059,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662533059",
+      "job_id": 132654774368,
+      "artifact_id": 14141196835,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14141196835-8f672b681.zip",
+      "sha256": "9578da48ed07f44b4ed3cda9760ea8236d361e39873dd9c00869654814d1f166",
+      "bytes": 257677643,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 905982,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": {
+        "test_buildmode": "default",
+        "MALLOC_MMAP_THRESHOLD_": "0",
+        "test_actions": {
+          "pass": 133405
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "pass",
+          "github.com/opennox/opennox/v1/server": "pass",
+          "github.com/opennox/opennox/v1/legacy": "pass"
+        },
+        "exit_code": 0
+      },
+      "native_matrix": {
+        "artifact_id": 14141196835,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "9578da48ed07f44b4ed3cda9760ea8236d361e39873dd9c00869654814d1f166",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 935774947,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Linux amd64 server HD",
+      "run_id": 43662533059,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662533059",
+      "job_id": 132654774236,
+      "artifact_id": 14141107046,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14141107046-8f672b681.zip",
+      "sha256": "fb6f5a5b14d0beef8694ef3f348293df63a3fc7dcd9c27cc10cc0f0bedb4bd83",
+      "bytes": 201232676,
+      "source_revision_verified": true,
+      "compiled_package_executables": 36,
+      "test_actions": {
+        "pass": 905982,
+        "skip": 7
+      },
+      "package_actions": {
+        "pass": 36,
+        "skip": 22
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14141107046,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "fb6f5a5b14d0beef8694ef3f348293df63a3fc7dcd9c27cc10cc0f0bedb4bd83",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 935775656,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows amd64 server",
+      "run_id": 43662481216,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662481216",
+      "job_id": 132654606569,
+      "artifact_id": 14140809177,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14140809177-8f672b681.zip",
+      "sha256": "79ef0f91c4962ccdc70861e6b09d94dfbbd6f3b9f11e5da027fbdb6c70d1386d",
+      "bytes": 163011772,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "pass": 903967,
+        "skip": 11
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14140809177,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "79ef0f91c4962ccdc70861e6b09d94dfbbd6f3b9f11e5da027fbdb6c70d1386d",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {
+          "pass": 203
+        },
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestMonsterActionNamesNativeDefinitionWire": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 929132292,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    },
+    {
+      "profile": "Windows386 server",
+      "run_id": 43662481216,
+      "url": "https://github.com/hjyoon/opennox/actions/runs/43662481216",
+      "job_id": 132654606233,
+      "artifact_id": 14141038843,
+      "archive": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/ci-14141038843-8f672b681.zip",
+      "sha256": "d9b0e64dd92bc90b49c4c799979fc07cb282c6fa866d9b716086223fd1b9a79f",
+      "bytes": 158313827,
+      "source_revision_verified": true,
+      "compiled_package_executables": 3,
+      "test_actions": {
+        "skip": 94,
+        "pass": 884034
+      },
+      "package_actions": {
+        "github.com/opennox/opennox/v1/server": "pass",
+        "github.com/opennox/opennox/v1": "pass",
+        "github.com/opennox/opennox/v1/legacy": "pass"
+      },
+      "default_link_damage": null,
+      "native_matrix": {
+        "artifact_id": 14141038843,
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+        "archive_sha256": "d9b0e64dd92bc90b49c4c799979fc07cb282c6fa866d9b716086223fd1b9a79f",
+        "intrusive_list_C_actions": {
+          "pass": 2174
+        },
+        "intrusive_list_compatibility_actions": {
+          "pass": 19
+        },
+        "intrusive_list_map_actions": {
+          "pass": 4
+        },
+        "intrusive_list_abort_actions": {
+          "pass": 4
+        },
+        "named_bitmask_C_actions": {
+          "pass": 4805
+        },
+        "named_bitmask_default_actions": {
+          "pass": 4804
+        },
+        "named_bitmask_packed_owner_actions": {
+          "pass": 259
+        },
+        "soundset_parser_C_actions": {
+          "pass": 5999
+        },
+        "soundset_parser_file_actions": {
+          "pass": 400
+        },
+        "soundset_parser_default_actions": {
+          "pass": 5
+        },
+        "soundset_parser_ownership_actions": {
+          "pass": 1
+        },
+        "buff_iteration_C_actions": {
+          "pass": 10022
+        },
+        "buff_iteration_save_actions": {
+          "pass": 28
+        },
+        "npc_voice_public_C_actions": {
+          "pass": 14319
+        },
+        "npc_voice_service_actions": {
+          "pass": 4822
+        },
+        "npc_voice_ownership_actions": {
+          "pass": 1
+        },
+        "protected_packet_helper_actions": {
+          "pass": 10
+        },
+        "marker_movable_C_matrix_actions": {
+          "pass": 5189
+        },
+        "action_name_C_matrix_actions": {
+          "pass": 3046
+        },
+        "action_name_wire_actions": {},
+        "bitstream_C_matrix_actions": {
+          "pass": 27281
+        },
+        "prior_public_C_matrix_actions": {
+          "pass": 9113
+        },
+        "terminal_tests": {
+          "TestBitstreamNativeCursorLayoutCABI": "pass",
+          "TestBitstreamNativeOriginalCABI": "pass",
+          "TestBuffIterationNativeLayoutCABI": "pass",
+          "TestBuffIterationNativeOriginalCABI": "pass",
+          "TestBuffIterationNativePlayerSaveOrder": "pass",
+          "TestGame5PublicNativePlayerLayoutCABI": "pass",
+          "TestGame5PublicNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeLayoutCABI": "pass",
+          "TestIntrusiveListNativeOriginalCABI": "pass",
+          "TestIntrusiveListNativeCompatibilityCABI": "pass",
+          "TestIntrusiveListNativeMapListCABI": "pass",
+          "TestIntrusiveListNativeAbortCABI": "pass",
+          "TestMonsterActionNamesNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeLayoutCABI": "pass",
+          "TestNamedBitmaskNativeOriginalCABI": "pass",
+          "TestNamedBitmaskNativeDefaultCABI": "pass",
+          "TestNamedBitmaskNativePackedMonsterOwnerCABI": "pass",
+          "TestNPCVoiceNativeLayoutCABI": "pass",
+          "TestNPCVoiceNativeOriginalCABI": "pass",
+          "TestNPCVoiceNativeOriginalWireService": "pass",
+          "TestNPCVoiceNativePublicCryptFileCABI": "pass",
+          "TestNPCVoiceNativeNameOwnership": "pass",
+          "TestPlayerMarkerMovableNativeLayoutCABI": "pass",
+          "TestPlayerMarkerMovableNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePackedCABI": "pass",
+          "TestSoundSetParserNativeOriginalCABI": "pass",
+          "TestSoundSetParserNativePublicEncryptedFileCABI": "pass",
+          "TestSoundSetParserNativeOwnedNamesGC": "pass",
+          "TestSoundSetParserNativeDefaultServices": "pass",
+          "TestStatsPacketEnvelope42A8B0NativeBody": "pass",
+          "TestStatsPacketRLE42A970ByteComparisons": "pass",
+          "TestStatsPacketScramble42AC50NativeBody": "pass"
+        },
+        "reference_logs": [
+          "bitstream_native_4254a0_test.go:81: unchanged original cases=9092, instruction bytes=291, declared services=0",
+          "game5_public_native_test.go:132: sealed original cases=3036; independent x87 NaN cases=525; local x87 cross-check=true",
+          "intrusive_list_native_test.go:233: unchanged original intrusive-list cases=723, instruction bytes=361, declared services=0; whole original PE image immutable; actual C calls/native links/scalar sort keys/whole graph canaries",
+          "monster_action_names_native_5345b0_test.go:69: unchanged original action-name cases=1014, instruction bytes=260, declared services=0",
+          "player_marker_movable_native_test.go:101: unchanged original player-marker/movability cases=1728, instruction bytes=54, declared services=0"
+        ],
+        "existing_independent_FLD_probe": "pass",
+        "decompressed_bytes_scanned": 905573390,
+        "scope": "Twelve common intrusive-list entries execute actual public C against723sealed unchanged-original cases/361instruction bytes, with no substituted services and the whole original PE image immutable.2174original/layout checks include3foreign owner placements, exact original write-derived whole graphs and native tag canaries.19explicit current-compatibility checks,4actual C/native Go map-owner checks and4same-CRT abort checks pass. Native next/previous pointers and scalar signed32bit sorting tags are distinct. Packed private player-name/list owners4259C0+remain outside this generic-list port and require an explicit owner migration. Two symbol-free include/comment C units were retired separately without extra business-port credit. Prior two public named-bitmask entries compare1600sealed unchanged-original cases/223instruction bytes through actual C in three foreign placements with exact declared libc transcripts and whole-owner checks.4805original/layout C checks,4804real libc checks and259packed stock-monster table checks pass on each architecture. Generic constchar** uses native stride; active monster-definition caller uses explicit packed-DWORD native-sidecar adapter. C forwarders/empty translation units retired separately, with zero extra business-port credit. Initial stock-owner initialization failures and exact source overlays remain retained. Prior two public sound-set entries compare1998original v2 cases/439unchanged instruction bytes through actual C in3foreign placements. The native packed field table and84byte numeric record remain fixed; Go owns names/links. Original allocation traces are explicitly normalized only for name/link ownership. Original END literal stays intact in every case.5999public-C checks,400real encrypted-file checks,5default-service/production-Go checks and1GC/public lookup check pass. Invalidv1hydration and later handle-initialization failures stay preserved. Prior buff count/iteration entries compare3339 unchanged-original cases through actual public C in three foreign placements.10022C checks and28native player-save order checks verify the separate C scalar owner, packed DWORD table, Buffs344/340 offsets, nil behavior and original token order. The former const C lookup bridge is replaced by a direct const-typedef Go export. Prior NPC voice entries compare sealed5073 original cases. Public C checks total14319, service-transcript checks4822, and name ownership/GC1 on all architectures. Full cryptfile comparisons retain original call CRC and exact container footers. Native object/voice fields, three foreign placements, const lookup and whole canaries are checked. Prior1728 marker/movability cases retain their native controls. Prior action names, bitstream, public chat/reflection and x87 checks pass. The definition-wire writer remains64-bit-only. Full raw test traces and executables stay in the verified ZIP."
+      },
+      "compiler_warnings": 0
+    }
+  ],
+  "preservation": {
+    "utc": "2026-11-15T01:42:08.955066+00:00",
+    "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+    "source_status": "",
+    "original_files": 4649,
+    "original_asset_and_Save_changes": [],
+    "added_original_files": [],
+    "tracked_e2e_files": 387,
+    "tracked_e2e_changes": [],
+    "products": [
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985330,
+        "sha256": "3ba86ef2efb2198efb8bee7f866bc31fbbc2eedde0ef258aa0568c8396e4cb81"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70084434,
+        "sha256": "5c76bd6acd99caebb76a83133b33eb1238b5c47f57db70fb55ec9fba79a66869"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66568322,
+        "sha256": "2ae63a3e24c53ef4b15484d9e39aa76f7a079bfa40d536ad29ddf409da41f52a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66683906,
+        "sha256": "2d962789c7e864dc3a40d7a395f83b59ae787ad1a8cf5321ddc6398325c99769"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox",
+        "bytes": 69968930,
+        "sha256": "e5232fddad0a8132e840bbb05bd582509da883cddf35486c29d71d641ecf64f9",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-hd",
+        "bytes": 70100994,
+        "sha256": "52a108fddf9a6da21ce8115b085e1813db6bdefca1cde7680b48b354a20bc4bc",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server",
+        "bytes": 66568402,
+        "sha256": "8ee21b793ff4cff4c96ecf90e4d5a901dc014b6b2b60d90edfe257ee558f660c",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-audio-native-20261114-v1/products-v2/opennox-server-hd",
+        "bytes": 66683986,
+        "sha256": "e7590eff53b54c5d87d0ed10d8bf86295f09918a141f6da8ebb45f79142dafba",
+        "source_revision": "6352a8bfd7ca845a225d3522f2160e1c18a52db2"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox",
+        "bytes": 69985874,
+        "sha256": "710fd6239e76453e9f2c100f3b04abc369a518afafd72786063a82aa259c2789",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-hd",
+        "bytes": 70101458,
+        "sha256": "d32701ba5261358763f2831840c350ad268f59951b87cdc37733d59f9d017cdf",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server",
+        "bytes": 66585362,
+        "sha256": "df74b94052d7b43365b457eca43b6feb98f24f09cc3275f86437e6d4d0b1ab11",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-game5-public-native-20261114-v1/products-v1/opennox-server-hd",
+        "bytes": 66684434,
+        "sha256": "4e79ee7f677208fde6974b0609912904b84af0ab7d1e0ebd2189a0556006923a",
+        "source_revision": "cd62abc6d811d76851ae0d613a12619f58121478"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox",
+        "bytes": 69969970,
+        "sha256": "3041403a42e1cfcf45c114ab4f14e2ced3ca2a8e4c077783f2e2cabfb766de77",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70118546,
+        "sha256": "5b456f405cf495032a3809adb6f9a081db7dd769cbbc4d0d598aa3083423ef86",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66519858,
+        "sha256": "f98a018489ac58bbf45bef04aa40eaa3f13925ade167baf62e3c969864398a59",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-bitstream-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66684978,
+        "sha256": "b599609a90316cf2d1341acbc7755eafc06a04f7e1c77c11b968f0b94a459c2d",
+        "source_revision": "8c31e686071b59f35994bfecd42906daa90165cc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox",
+        "bytes": 70003874,
+        "sha256": "9dfe3fad0514250cb8eb7285223e02621b752d8bded15be3b34ebadcb1c59bb8",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70119490,
+        "sha256": "3eb02acb6a9d068ad4d9b469cebda72c8f83650d570a8cf5de9e0ecb6d4d1413",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66570306,
+        "sha256": "62661f16793c9808bdfe189467e25b99438abc3815db98f8a98232311d7e5170",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-monster-action-names-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66685890,
+        "sha256": "0cd2b9bc0d413b5985fa25072014b13d41a681da42f70d584c7ba9e4d57a2b34",
+        "source_revision": "d3e03dd68538f8b7bc1daca1eaacd1b57e148968"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox",
+        "bytes": 70004562,
+        "sha256": "f5d344e3962d9e288ba7fac3ea32a0e074e0c6f3b2c834706993a480097318e7",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70103634,
+        "sha256": "c005b33cefae453da56d9d61e2a2dce18200e2333ee8e3b220a838baba0ee84c",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66587506,
+        "sha256": "6a9141656b7ea6c3681cf6e4f7ec912684b7363bc085ac93c260a116a658609b",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-player-marker-movable-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66686578,
+        "sha256": "eb6a88632bb3236507ea8d68e9d710e98c6b5822af5b7db8ee5504a8ae6059b2",
+        "source_revision": "36bdd4e9c36a8e68ba8b6f8436499969cd02fa1b"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox",
+        "bytes": 69937330,
+        "sha256": "8ef3bc019e8c6ce59ae91c7de78f1ace890f3459670c99d1180e5bc36fc4f4aa",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70069442,
+        "sha256": "f16d636a736143fe733b9bc5d97dc8691c8a2e3dadc93335d23eee24231e87d3",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-server",
+        "bytes": 66503762,
+        "sha256": "4de1e4e2a73b752361aa60383b2a18394cc8b83a4e8e2f274c2bf2e860b071e8",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-wol-unused-cleanup-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66668882,
+        "sha256": "3b02325639badb2c47091c1ca76f635da2c4d7fc9220c8d568b0303a3c372667",
+        "source_revision": "2a0e95cf425eac71c58f1be6fc20d78b5d658c38"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox",
+        "bytes": 69971538,
+        "sha256": "361536faafd0064ec2d54ae34f1ae096abb0819c774d81ba500cbdbb6dc3246c",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70087122,
+        "sha256": "ad99c17b051cb062fe38894f9c65ab6d51f14251fa291d24bfbd77035705e6b7",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-server",
+        "bytes": 66554450,
+        "sha256": "e30c5b811ee860880d4006bf1d9ea8a30339587889c9d1e811ab0c52cb8f0d90",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-native-entry-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66653522,
+        "sha256": "3311d41d13871198315153cc361fec6c591eb6d70780425c20556eada78cf7f4",
+        "source_revision": "81f734e9e7e04cc3c501687fa4bd69ea57e7a8ce"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox",
+        "bytes": 69972018,
+        "sha256": "5796b37561fb955e5c679f1cb6d8eace73712b4b1adba0ade94a43b7cc5d786b",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70104082,
+        "sha256": "a95809898cc738f1b683a5f82847f462c0ef4c8d49feeaa3a5471b378beedbf1",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66538402,
+        "sha256": "d921bb29b993b0ed2bfe527269cd72e4c88485fe723150e33703431276f997e2",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-buff-iteration-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66653986,
+        "sha256": "58e88ab1ed13dcbbe2f35b0b8241c2c365d8c0dce3bd94c04fb8bf5f409b531c",
+        "source_revision": "e20577673e22eab1181a58bc5ec3f12f2d8c98da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox",
+        "bytes": 69989618,
+        "sha256": "10f84ae2977b9aa9620c52dd814543cd2f0d534825137734fcfa009b6a2bd13d",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70105170,
+        "sha256": "657cb2c4e95968cfa5059f339c68dadc3908311ead0de1de9012bbe6be26490b",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66539538,
+        "sha256": "78dcf6ae81e506145e35a08e969c528c8ff73097f0fd24f407a274295495480a",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-soundset-parser-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66671634,
+        "sha256": "7c9dcabefb4e2d20d68b3f0408d6dfe36b9ec653acbcf252cafa05f6e7f84a81",
+        "source_revision": "4fa2468a88aa09a60dcdedaef2eda1f8f086b9f8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-named-bitmask-native-20261115-v1/products-v1/opennox",
+        "bytes": 69991298,
+        "sha256": "1958170e6dc6e0ce826f011666e47dcd5d4af768d30f0a6e8e4ffcff5f74ffe3",
+        "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-named-bitmask-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70123426,
+        "sha256": "4b1bf49a54088d761db44af2fe97a24db0491ab1910ab078d0c5d2c8a9857b5a",
+        "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-named-bitmask-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66557698,
+        "sha256": "8a2f85cf4f4d69e21b3eed9de98969527b3ce8963cd5f58fb55a84e38f490a7b",
+        "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-named-bitmask-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66656786,
+        "sha256": "080f2005697825fb630982c9b9073478e8d871dd88ae4efddd9cb77ed73cd39f",
+        "source_revision": "c50a8ae4e8814f20888c5b5a88dac6a76828d4da"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox",
+        "bytes": 69975954,
+        "sha256": "d4db50e7756033d3d6a645244775209e11fa23a684c13ba16ee1fd5bc11e4aa9",
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-hd",
+        "bytes": 70091538,
+        "sha256": "f7cea28d7e3907d497ef36d0c604a6c54a2c0489ff1cbfe7c184898eed5f06f9",
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server",
+        "bytes": 66591922,
+        "sha256": "1f077335d5a8c180cd0cb4d00786ebcadbcb047a5edd5ba7d548ffc3cd0af1d2",
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-intrusive-list-native-20261115-v1/products-v1/opennox-server-hd",
+        "bytes": 66707506,
+        "sha256": "5098ce32aecc9ff6c553cf738e6de2ed020a9ea73a6af1c96db90ca79ad816df",
+        "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf"
+      }
+    ],
+    "asset_reference_sha256": "f34078714beee59e643e4348e3fe56d0326ab2c378961f3514dbb241ef979b38",
+    "e2e_reference_sha256": "098c5fa3d6e94bf3d736c8d9c2c5980736133852b60744f6bc35817852608bce",
+    "sealed_baselines_unchanged": true,
+    "original_fixtures_unchanged": true
+  },
+  "transparent_completed_evidence_compression": {
+    "intermediate-test-log-compression-v1": {
+      "utc": "2026-11-15T01:13:00.953296+00:00",
+      "completed_logs": 2,
+      "logical_bytes_preserved": 175799760,
+      "all_paths_bytes_modes_times_and_noncompression_attributes_preserved": true,
+      "available_before": 1548288000,
+      "available_after": 1716224000,
+      "elapsed_seconds": 0.8487734590016771,
+      "scope": "Transparent filesystem compression of two completed intermediate test stdout logs only. Failures and successes retain every byte and path. Active builds, cache entries, programs, source, assets,Save and ZIPs were untouched."
+    },
+    "intermediate-test-program-compression-v1": {
+      "utc": "2026-11-15T01:13:02.398776+00:00",
+      "scope": "Preserve completed test programs using transparent filesystem compression.\n\nEvery original path, logical byte, mode, timestamps and noncompression\nextended attribute is retained. Identical binaries share independent APFS\nclones of one compressed owner. Source assets/Save, products, ZIPs, modules,\nactive tests and original C reproduction programs are outside this selection.\n",
+      "program_paths_preserved": 4,
+      "unique_programs": 2,
+      "logical_bytes_preserved": 275023976,
+      "available_before": 1716224000,
+      "available_after": 1921024000,
+      "elapsed_seconds": 1.4195611250179354,
+      "pilot_SHA_codesign_and_execution_pass": true,
+      "all_program_paths_and_bytes_preserved": true
+    },
+    "previous-product-compression-v1": {
+      "utc": "2026-11-15T01:13:07.657372+00:00",
+      "scope": "Preserve completed product executables with transparent filesystem compression.\n\nAll selected product paths, logical bytes, modes, mtimes and noncompression\nattributes stay intact. Whole SHA and codesign statuses are checked before/after;\nall4product --help executions run both before and after compression. Original\nassets/Save, active programs, source, ZIPs and modules are outside selection.\n",
+      "program_paths_preserved": 4,
+      "unique_programs": 4,
+      "logical_bytes_preserved": 273329208,
+      "available_before": 1921024000,
+      "available_after": 2048000000,
+      "elapsed_seconds": 5.232866459002253,
+      "pilot_SHA_codesign_and_execution_pass": true,
+      "all_program_paths_and_bytes_preserved": true
+    }
+  },
+  "post_test_build_cache_cleanup": {
+    "utc": "2026-11-15T01:19:24.621927+00:00",
+    "exit_code": 0,
+    "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+    "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "cache_KiB_before": 1425884,
+    "cache_KiB_after": 8,
+    "retained_programs_SHA_verified": 9,
+    "elapsed_seconds": 1.5812971249979455,
+    "scope": "Only inactive dedicated Go build cache after completed tests. Nine current retained test/C-before program paths verified before/after. Modules, source, assets,Save, all programs, failures, ZIPs and older products are untouched. Frees test-variant cache for the upcoming cold product build."
+  },
+  "inactive_build_cache_cleanup": {
+    "utc": "2026-11-15T01:43:16.511506+00:00",
+    "exit_code": 0,
+    "source_revision": "8f672b68130c598e83bf473ccefc40e150ec41bf",
+    "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+    "cache_KiB_before": 949032,
+    "cache_KiB_after": 8,
+    "retained_programs_SHA_verified": 322,
+    "elapsed_seconds": 23.731659582990687,
+    "scope": "Only inactive dedicated build cache cleaned. All selected historical and current programs,48 products, original C reproductions and compression pilots retain their paths and bytes. Modules, assets,Save, failures and CI ZIPs preserved."
+  },
+  "caller_scope": "Twelve public list entries now execute Go. Native next/previous links use full host pointer width; sentinel/scalar third-slot bits use uintptr outside Go pointer scanning. Signed32bit sort keys remain distinct from pointer identity and preserve the upper native-slot canary. Index and reverse traversal return native pointers. Public reverse ABI is explicit native pointer. Original service-free graph writes define full expected owners in three foreign placements. Existing nil/partial remove and before-insert compatibility behavior is tested separately; nil before-insert inputs abort through the same CRT. Actual native map-list C storage and payloads verify C/Go composition, while the existing Go initializer shares the same kernel. Private packed player-record/list owners4259C0+remain a separate required migration; no claim that those packed layouts are fixed.",
+  "cleanup_scope": "Two includes/comment-only translation units had no global symbols/constructors and were retired with all exact bytes retained. No extra business-port credit.",
+  "inventory": {
+    "active_C_definitions": 1910,
+    "all_pointer_integer_casts": 2407,
+    "narrow_cast_review_candidates": 2120,
+    "candidate_functions": 226,
+    "functions_referencing_Go_exports": 151,
+    "functions_with_lexical_product_Go_C_reference": 37,
+    "scope": "Same13split files, native macOS active AST. Semantic review hints; no reachability, bug, remaining-algorithm or completion denominator."
+  },
+  "pointer_width_review_index": {
+    "path": "pointer-width-review-index-v1.json",
+    "sha256": "c51391ffbe4f3dd3ff6d0d74b76e9e3fb48e1ba635dc402e5a0615b3dda34d68",
+    "functions": 226,
+    "narrow_candidates": 2120,
+    "functions_referencing_Go_exports": 151,
+    "functions_with_lexical_product_Go_C_reference": 37,
+    "reachability_or_completion_claim": false
+  },
+  "committed_C_source_inventory": {
+    "path": "all-owned-C-source-inventory-v1.json",
+    "sha256": "29bae082f9704ed66cc7b9f37b19b3a66d88a0de84972a3cb5e45e81252e441e",
+    "tracked_paths": 629,
+    "present_paths": 629,
+    "categories": {
+      "runtime_or_build_source": 213,
+      "test_or_validation_source": 416
+    },
+    "active_or_unported_count_claim": false
+  },
+  "expanded_read_only_legacy_source_inventory": {
+    "path": "all-legacy-active-C-audit-v1/inventory.json",
+    "sha256": "50c125a8a22efc60091238d09c5e9f26960f42bac9e77f9905ba865e25770b8a",
+    "source_files": 207,
+    "macOS_compiler_successes": 207,
+    "main_source_definitions": 2600,
+    "unresolved_macro_definitions": 14,
+    "pointer_integer_casts": 3215,
+    "profile_limits": "macOS ARM64, NOX_CGO, real active main-source function bodies. Platform-specific disabled code, globals, header inline definitions, macros and other directories require separate classification. Compiler diagnostics are retained; suppressions match the existing read-only split audit and do not change product flags.",
+    "new_Go_credit": 0,
+    "completion_denominator": false
+  },
+  "all_13_split_files_ported": false,
+  "all_repository_C_implementation_ported": false,
+  "whole_game_100_percent": false,
+  "nine_campaign_final_audits": "OPEN; Warrior/Conjurer/Wizard chapters1-3 only; chapter4+excluded",
+  "inherited_public_SaveLoad_pixel_golden_pass": false,
+  "next_prepared_baseline": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-private-player-record-list-native-20261115-v1/prepared-baseline-v2.json",
+    "sha256": "80ff79e0652ff083e4afdee34dec7bcd441d25269f6ddcda453df00c2564b0b3",
+    "sealed_files": 105,
+    "original_cases": 54,
+    "original_instruction_bytes": 655,
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "original_operation_cases": 2808,
+    "original_C_body_bytes": 2529,
+    "preferred_C_before": "original-c-before-v2/proof.json",
+    "current_notes": "implementation-ownership-notes-v2.json",
+    "name_termination_contract_review": "OPEN; StrCopy16 does not guarantee termination at capacity; do not infer a9unit production bound."
+  },
+  "next_preparation_name_bound_correction": {
+    "utc": "2026-11-15T01:55:53.189481+00:00",
+    "initial_seal_sha256": "8fd06fa9a31d4065226082877eb34e6781712177c76a3e0b6801b4765fa84e35",
+    "initial_notes_sha256": "55ada5e4e532ccaf3666ac1fa61d6118ffcc2fd4e4da6ff3558faffa2296ff75",
+    "cause": "V1notes inferred a9unit bound from the10unit Field2072 array without checking StrCopy16 termination behavior.",
+    "actual_source": "StrCopy16 copies up to the complete destination length and adds NUL only when n<len(dst). A filled10unit array is not guaranteed terminated.",
+    "corrected_contract": "No9unit production limit is proven. Review upstream input limits, ResetInd and adjacent Field2092 state before assigning a production bound. Original54sequences through11units remain unchanged and retained;11is coverage, not a proven API limit.",
+    "allocation_string_source": {
+      "file": "src/legacy/common/alloc/string_u16.go",
+      "bytes": 3791,
+      "sha256": "51e0d0fa6e2531348547687283cab330ed3cbc7f100869576ac1d896b46a701f"
+    },
+    "original_CPU_and_C_before_unchanged": true,
+    "Go_source_port_started": false,
+    "new_Go_credit": 0
+  },
+  "qualification_metadata_correction": {
+    "previous_qualification": "qualified-intrusive-list-entries-v1.json",
+    "previous_qualification_sha256": "33cc11b77d5a385d5172d69e56a84045fe7e0e2b8f477d5c92408e6764fe6bef",
+    "scope": "All original source/build/test/product/E2E/CI qualification is unchanged and reverified. Only the next preparation reference selects corrected v2 notes/seal. V1records are retained, including the mistaken9unit inference."
+  }
+}

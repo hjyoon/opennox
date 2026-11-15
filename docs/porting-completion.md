@@ -60,6 +60,119 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native common intrusive lists, 2026-11-15
+
+The qualified source/runtime engine is
+`8f672b68130c598e83bf473ccefc40e150ec41bf`, pushed to
+`origin/port/go1.27-multiarch`. All 12 common intrusive-list entries from
+425760 through 425960 now execute Go. The cumulative qualified split-file
+count is **152 Go entries**. All repository-owned C implementation remains
+the goal, including code beyond the original 13 split files.
+
+Next and previous links retain native pointer width. The third slot may hold
+a sentinel identity or a signed 32-bit sort key, so Go stores its bits as
+uintptr outside the pointer map. Scalar keys use the original 32-bit field;
+the rest of the native-width slot remains intact. Index and reverse traversal
+return full native pointers; the reverse public ABI now states that pointer
+contract. The existing Go map-record initializer shares the same kernel.
+
+The sealed reference executes 723 cases over all 361 unchanged instruction
+bytes with no substituted service. Every original PE image byte stays
+unchanged in every case. Actual public C calls compare all expected graph
+writes and whole-owner canaries in three foreign placements, including
+signed-key extremes/ties and negative/out-of-range indices. Current explicit
+nil/partial-link compatibility guards are verified separately from the
+original valid-owner reference. Nil before-insert inputs terminate through
+the same CRT abort as an independent direct control. Actual C operations
+on the native global map-list owner preserve bounded names and all map data.
+
+All 3,172 incoming C body bytes remain archived. Reversing only the guards,
+the reverse prototype and the shared initializer change reconstructs the
+whole incoming C file, header and map-wrapper file. One standalone before-code
+fixture retains six controls, one actual pointer-value loss and four
+high-address SIGSEGVs. These remain bounded representation evidence rather
+than an integrated game-crash or reachability claim.
+
+Two additional C units contained only includes/comments and had no global
+symbols or constructor sections. Their exact bytes and object evidence were
+retained before retirement. This cleanup earns **zero extra business-port
+credit**. No existing test, fixture or E2E input was relaxed.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **92,724**
+  focused checks on the identical 9,198-input lease
+  `0ffa9720fa9f205b9e1d441c9818b257670d095c4de4877a3776400b26bba8b0`.
+  New checks comprise 2,174 original/layout C checks, 19 compatibility checks,
+  four native map-list checks and four same-CRT abort checks. The previous
+  90,522 focused controls and one existing map-consumer check also pass.
+- All four macOS products passed build, metadata, help and 28 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles, with natural exits.
+- Linux CI `43662533059`: client/HD each 912,093 PASS plus 57 skips;
+  server/HD each 905,982 PASS plus 7 skips. The server also passed 133,405
+  default-link damage checks.
+- Windows CI `43662481216`: amd64 903,967 PASS plus 11 skips;
+  386 884,034 PASS plus 94 skips. All six profiles passed every new list
+  group and every prior qualified native matrix.
+
+The intermediate normal/strict programs passed 92,720 checks before the
+shared-initializer cleanup, actual-map integration check and two empty-unit
+retirements. Their exact source overlay, both programs and logs remain
+retained. The final pair passed the complete 92,724 checks without source
+changes or warnings. Six complete SHA-verified CI ZIPs retain 158 actual test
+executables, raw traces, decoded job logs and the native abort child logs.
+
+All 9,195 incoming repository paths were reviewed: three existing sources
+changed and two empty C files were retired. All 4,706 existing test/fixture/
+E2E inputs remained identical. Original assets and personal Save (4,649
+files), 387 tracked E2E inputs and 48 product versions remain unchanged.
+The post-test cleanup verified nine current program paths, then cleared only
+the inactive dedicated cache from 1,425,884 KiB to 8 KiB. Final cleanup
+verified 322 selected historical/current
+program paths and cleared 949,032 KiB to 8 KiB.
+Modules, products, test mains, failures and ZIPs remain retained. Transparent
+compression preserved two completed logs, four intermediate test-program
+paths and four prior products; every selected path, byte, mode and mtime is
+unchanged. Those four products passed help before and after compression.
+
+The same 13-file AST review now has 1,910 active original C definitions and
+2,407 pointer/integer casts, with 2,120 narrow review candidates in 226
+functions. The broader read-only macOS review compiled all 207 current
+src/legacy C files and found 2,600 main-source definitions, 14 unresolved
+macro definitions and 3,215 pointer/integer casts. The tracked C inventory
+is **629 files**: 416 test/validation and 213 broad runtime/build sources,
+including dependency, reference, storage and glue. These counts establish
+neither a remaining-algorithm denominator nor a completion percentage.
+
+The next prepared family is the 11 private player-record/list entries
+4259C0 through 425BE0. Its packed 12-byte root shares storage with a nearby
+flag, and its parent/child allocations are 52/16 bytes; this common-list
+port does not fix those private owners. Independent preparation retains
+54 sequences and 2,808 operations over 655 unchanged instruction bytes:
+487 private-entry bytes, 131 common-list bytes and 37 raw UTF16-copy bytes.
+Only declared malloc/free services are substituted. The original 16-byte
+root/flag owner may change; every other PE byte remains unchanged after
+every operation. One native-layout control, four representation observations
+and three real-append SIGSEGVs remain bounded before-code evidence.
+
+The first next-batch notes incorrectly inferred a nine-unit name limit from
+the ten-unit Field2072 array. Actual StrCopy16 does not add NUL at capacity.
+Corrected preparation v2 preserves all 54 sequences, including ten/eleven-unit
+overlap cases, and leaves caller termination/adjacent-field review explicitly
+open. Initial notes/seal remain retained; the CPU and C-body references did
+not change. A warning in the new standalone host copy shim was corrected
+with explicit empty braces in C-before-v2; all original C bodies and the
+warning-bearing v1 executable/logs remain preserved. Preparation earns no
+Go credit and no private-owner source port has started.
+
+Evidence: `docs/split-intrusive-list-native-progress-20261115.json`, ROOT
+`split-intrusive-list-native-20261115-v1/qualified-intrusive-list-entries-v2.json`
+and `split-private-player-record-list-native-20261115-v1/prepared-baseline-v2.json`.
+**All-C migration and overall 100% remain open.** All nine final chapter 1-3
+audits and the inherited failed public SaveLoad pixel golden remain open;
+functional diagnostics do not promote that golden. Chapter 4+ stays excluded.
+
 ### Native named bitmasks and C forwarder retirement, 2026-11-15
 
 The qualified source/runtime engine is

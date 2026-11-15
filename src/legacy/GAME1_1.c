@@ -4739,13 +4739,17 @@ int sub_425550(uint8_t* a1, uint8_t* a2, int a3) {
 
 
 //----- (00425760) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 void nox_common_list_clear_425760(nox_list_item_t* list) {
 	list->field_0 = list;
 	list->field_1 = list;
 	list->field_2 = list;
 }
+#endif
+
 
 //----- (00425770) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 void* sub_425770(void* a1p) {
 	nox_list_item_t* a1 = a1p;
 
@@ -4754,8 +4758,11 @@ void* sub_425770(void* a1p) {
 	a1->field_2 = NULL;
 	return a1;
 }
+#endif
+
 
 //----- (00425790) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 int sub_425790(int* a1, uint32_t* a2) {
 	int v2;     // esi
 	int v3;     // ebx
@@ -4779,8 +4786,11 @@ int sub_425790(int* a1, uint32_t* a2) {
 	nox_common_list_append_4258E0((int)v4, a2);
 	return v2;
 }
+#endif
+
 
 //----- (004257F0) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 void sub_4257F0(int* a1, uint32_t* a2) {
 	int v2;  // esi
 	int* v3; // eax
@@ -4800,21 +4810,30 @@ void sub_4257F0(int* a1, uint32_t* a2) {
 	}
 	nox_common_list_append_4258E0((int)v3, a2);
 }
+#endif
+
 
 //----- (00425890) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 nox_list_item_t* nox_common_list_getFirstSafe_425890(nox_list_item_t* list) {
 	return nox_common_list_getNextSafe_4258A0(list);
 }
+#endif
+
 
 //----- (004258A0) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 nox_list_item_t* nox_common_list_getNextSafe_4258A0(nox_list_item_t* list) {
 	if (!list) {
 		return 0;
 	}
 	return nox_common_list_getNext_425940(list);
 }
+#endif
+
 
 //----- (004258C0) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 uint32_t* sub_4258C0(uint32_t** a1, int a2) {
 	uint32_t* result; // eax
 	int v3;           // edx
@@ -4837,8 +4856,11 @@ uint32_t* sub_4258C0(uint32_t** a1, int a2) {
 	}
 	return result;
 }
+#endif
+
 
 //----- (004258E0) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 void nox_common_list_append_4258E0(nox_list_item_t* list, nox_list_item_t* cur) {
 	if (!list || !cur) {
 		abort();
@@ -4861,8 +4883,11 @@ void nox_common_list_append_4258E0(nox_list_item_t* list, nox_list_item_t* cur) 
 		it->field_0 = cur;
 	}
 }
+#endif
+
 
 //----- (00425900) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 uint32_t* sub_425900(uint32_t* a1, uint32_t* a2) {
 	nox_list_item_t* list = (nox_list_item_t*)a1;
 	nox_list_item_t* cur = (nox_list_item_t*)a2;
@@ -4872,8 +4897,11 @@ uint32_t* sub_425900(uint32_t* a1, uint32_t* a2) {
 	cur->field_0->field_1 = cur;
 	return (uint32_t*)cur;
 }
+#endif
+
 
 //----- (00425920) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 void nox_common_list_remove_425920(void* a1p) {
 	nox_list_item_t* cur = a1p;
 	if (!cur || !cur->field_0 || !cur->field_1) {
@@ -4884,8 +4912,11 @@ void nox_common_list_remove_425920(void* a1p) {
 	cur->field_0 = cur;
 	cur->field_1 = cur;
 }
+#endif
+
 
 //----- (00425940) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 nox_list_item_t* nox_common_list_getNext_425940(nox_list_item_t* list) {
 	nox_list_item_t* it = list->field_0;
 	if (it && it == it->field_2) {
@@ -4893,11 +4924,16 @@ nox_list_item_t* nox_common_list_getNext_425940(nox_list_item_t* list) {
 	}
 	return it;
 }
+#endif
+
 
 //----- (00425960) --------------------------------------------------------
+#if 0 // Native intrusive list: intrusive_list_native_exports.go
 int sub_425960(int a1) {
 	return *(uint32_t*)(*(uint32_t*)(a1 + 4) + 8) != *(uint32_t*)(a1 + 4) ? *(uint32_t*)(a1 + 4) : 0;
 }
+#endif
+
 
 //----- (004259C0) --------------------------------------------------------
 void sub_4259C0() {

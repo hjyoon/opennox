@@ -43,10 +43,7 @@ func Nox_common_maplist_add_4D0760(p *Nox_map_list_item) {
 }
 
 func Sub_425770(p *Nox_map_list_item) {
-	it := (*nativeListItem)(unsafe.Pointer(p))
-	it.next = it
-	it.prev = it
-	it.head = nil
+	intrusiveListInit425770((*intrusiveListNode425760)(unsafe.Pointer(p)))
 }
 
 func noxCommonMaplistFreeNative() {

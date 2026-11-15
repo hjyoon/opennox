@@ -60,6 +60,111 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native resource spell callbacks, 2026-11-15
+
+The qualified source/runtime engine is `7f02c1ffb8cc3cfba116d240e19dccee79aa80e1`, pushed to
+`origin/port/go1.27-multiarch`. Restore Health 52BF20, Restore Mana 52BF50
+and Lesser Heal 52DD50 now share Go implementations with their actual public
+C exports and production Go callers. The cumulative qualified split-file
+count is **166 Go entries**. **All-C migration and overall 100% remain open.**
+
+All three exports use the existing shared callback's exact six-argument
+type. Object, Player, update-data and SpellAcceptArg pointers retain their
+native widths. Restore Health and Mana reload the target for audio after
+their resource helper. Mana preserves the zero-extended maximum word in the
+complete DWORD argument slot. Lesser Heal preserves low-word HP comparison,
+the full cost return slot before the recharge callee's signed-word conversion,
+live class/update/Player reads after balance lookup, and the audio object
+captured after HP adjustment but before sound lookup. Both original binary32
+spills retain startup ToZero behavior without changing host FP state.
+
+The independent bounded reference executes all **351 unchanged spell bytes**
+and the original **17-byte integer converter**, with a separately traced
+319-byte original startup/control-selection path establishing control word
+0xe3f. The 354 cases include service mutations of live targets, class/owner
+references and multipliers. Only declared world/resource/audio services are
+substituted; three class-multiplier float owners are explicit PE input
+exceptions. Every other original image byte, whole heap, caller words outside
+the declared Lesser Heal float spill, callee-saved registers and FP control
+are checked. This is bounded original execution, not the whole stock game.
+
+The initial comparison preserves a six-input signaling-NaN mismatch. A
+read-only return observer rejected the first service-return hypothesis:
+the returned bits were unchanged. Independent x87 FLD64/spill/multiply and
+integer-conversion instructions instead establish six stored-NaN corrections
+for Unicorn's load/conversion fidelity boundary. All 261 integer results agree;
+255 binary32 results agree unchanged. Raw original fixtures, all failed logs
+and their exact source/programs remain intact. A separate sealed x87 sidecar
+supplies only those six spill expectations. All 261 arithmetic inputs execute
+again with actual x87 instructions on every x86 CI target. No production
+arithmetic or old golden was changed to imitate the emulator discrepancy.
+The later observer report's inherited pre-port phase annotation is explicitly
+corrected in `reference-calibration-v1.json`; it is not pre-port evidence.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **105,947**
+  checks on the identical 9,213-input lease
+  `921674c2a51e273c87af05eee93224d83966a7ca7b7d4d55d8ce1f71f859851b`.
+  The new group has 3,197 original/layout checks across direct public C,
+  unchanged shared C callback and production Go calls, each at three foreign
+  placements. One additional parent check executes 30 real compositions with
+  HP/mana setters, protection, balance/spell/AUD loading and audio collection.
+- All four macOS products passed build, metadata, help and 42 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat runs, with natural exits.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43676677202` and Windows CI `43676633815` passed all six profiles,
+  the new native-resource group and all prior qualified native matrices.
+  Complete SHA-verified ZIPs retain 158 actual test mains and raw JSON;
+  decoded compiler/job logs remain preserved.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox-server | 919,205 | 7 |
+| linux-amd64-opennox-hd | 925,316 | 57 |
+| linux-amd64-opennox | 925,316 | 57 |
+| linux-amd64-opennox-server-hd | 919,205 | 7 |
+| opennox-server-windows-386 | 897,257 | 94 |
+| opennox-server-windows-amd64 | 917,190 | 11 |
+
+All 1,859 original C body bytes remain archived. Reversing only the three
+guards, header signatures and Go-wrapper replacements reconstructs every
+byte of the incoming C, header and Go files. Pre-port standalone controls
+retain three low-address controls, four high-pointer/false-nil/identity
+observations and one actual class-dereference SIGSEGV. These are bounded
+reproductions, not an integrated game-crash claim. The initial linker failure
+from exhausted disk space also remains retained.
+
+All 4,710 existing protected test/fixture/E2E inputs, 4,649 original asset
+and personal Save files, 387 tracked E2E inputs and all prior/current product
+versions remain unchanged. Transparent compression preserves selected closed
+evidence and test-data bytes, paths and metadata; completed program compression
+also verifies signatures. Failures, original C programs, CI ZIPs and modules
+remain retained. Only inactive disposable build cache is eligible for clearing.
+Cache cleanup verified 367 selected program paths before and after reducing
+the inactive dedicated cache from 1,825,828 KiB to 8 KiB.
+
+The same 13-file AST now contains 1,896 active original definitions and
+2,384 pointer/integer casts, including 2,099 narrow candidates in 221
+functions. The broader macOS audit compiled all 207 legacy C files:
+2,586 main-source definitions, 14 unresolved macro definitions and 3,192
+pointer/integer casts. The tracked C inventory remains 629 files: 416
+validation/reference and 213 broad runtime/build sources. These are review
+inventories, not an unported-algorithm denominator or completion percentage.
+
+The next prepared candidate is Fireball 52C790. Read-only control-flow
+review separates its actual 312-byte root from adjacent spell entries in the
+earlier 752-byte inspected region. Its old native C body still narrows live
+object pointers and uses PE32 projectile offsets. No Fireball original
+execution, crash reproduction or new Go credit is included in this checkpoint.
+The nine final campaign audits remain open, within chapters 1 through 3 only.
+
+Evidence root:
+`/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-resource-spell-native-20261115-v1`.
+Machine-readable checkpoint:
+`docs/split-resource-spell-native-progress-20261115.json`.
+
 ### Native private player record lists, 2026-11-15
 
 The qualified source/runtime engine is

@@ -60,6 +60,108 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native named bitmasks and C forwarder retirement, 2026-11-15
+
+The qualified source/runtime engine is
+`c50a8ae4e8814f20888c5b5a88dac6a76828d4da`, pushed to
+`origin/port/go1.27-multiarch`. Public named-bitmask parser 423930 and
+setter 4239C0 now use Go. The cumulative qualified split-file count is
+**140 Go entries**. All repository-owned C implementation remains the goal.
+
+The generic public array keeps native pointer stride. The active monster
+definition C caller now uses an explicit adapter for its packed four-byte
+name table at 587000+247536, whose original 22 name pointers live in native
+sidecars. The original full 32-bit setter index and x86 shift modulo 32 are
+preserved; the incoming C signed-char loop overflow is corrected. Parser
+semantics retain the uppercase four-byte NULL prefix, plus-only tokenization,
+first case-insensitive match, OR into the existing mask and void return.
+Foreign scratch storage and a locked OS thread preserve libc strtok lifetime
+and CRT thread-local continuation across Cgo calls.
+
+The independent v2 reference adds the actual stock names to v1: 1,600 cases
+(940 setter, 660 parser) execute all 223 unchanged instruction bytes. The
+whole original PE image remains unchanged in every case. Three declared
+ASCII libc boundaries retain exact service transcripts; this does not claim
+full NLS or inputs longer than the original 255-byte pre-NUL contract.
+Both valid references remain sealed. All 667 incoming C body bytes remain
+archived; reversing the guards and one caller alias reconstructs both full
+incoming C files. Four standalone controls and two signed-char index SIGSEGVs
+are preserved as bounded before-code evidence.
+
+Four already-Go public entries now export directly, preserving their ABI:
+banned-list addition 416770, configuration loading 409B50, client-info request
+4BF050 and monster-generator draw 4BC750. Const-character typedefs retain
+const signatures. Four forwarding C files, two empty C units and one obsolete
+private header were retired with exact incoming bytes preserved. The empty
+units had no global symbols or constructor section. This cleanup earns
+**zero additional business-port credit**. All four products contain the 16
+required public/control symbols and omit the five obsolete private helpers.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed 90,522
+  focused checks on the identical 9,194-input lease
+  `277a31666e5b5d984f56f83ca045211747002414be0445628fdff6792a2f73a2`.
+  New coverage includes 4,805 original/layout C checks, 4,804 real-libc checks
+  and 259 packed-owner checks. The selected suite also retains 208 existing
+  bridge regressions and every prior focused control.
+- All four macOS products passed build, metadata, help and symbol checks.
+  Normal/HD passed four core E2E runs, two functional Save/Load diagnostics
+  and two independent host/peer chat profiles, with natural process exits.
+- Linux CI `43658183154`: client/HD each 909,892 PASS plus 57 skips;
+  server/HD each 903,781 PASS plus 7 skips. The server also passed 133,405
+  default-link damage checks.
+- Windows CI `43657964283`: amd64 901,766 PASS plus 11 skips;
+  386 881,833 PASS plus 94 skips. Every profile passed all three new native
+  bitmask groups, with the prior native matrices unchanged.
+
+The first normal/strict test runs passed the generic comparisons but found
+no stock name sidecars: unit tests do not run blobdata.Init. Test setup now
+hydrates only the shipped immutable stock bytes and original name offsets,
+then restores the entire owner and sidecars. Production code did not change
+for that correction. Both failed mains, logs and their exact source overlay
+remain retained. No existing test or golden was relaxed.
+
+Six complete SHA-verified CI ZIPs retain 158 actual test executables, raw
+traces, summaries and decoded job logs. All 9,193 incoming repository files
+were reviewed: only the seven intended existing sources and seven retired
+paths changed. All 4,702 existing test/fixture/E2E inputs remained identical.
+Original assets and personal Save (4,649 files), 387 tracked E2E inputs and
+44 checked product versions remain unchanged. Final cleanup verified
+310 selected program paths before/after
+and cleaned only the inactive dedicated cache:
+2,137,572 KiB to 8 KiB.
+Transparent compression retained every selected path, byte, mode and mtime:
+40 older products, 22 completed test-program paths and 23 completed logs.
+Products also passed help execution before and after compression.
+
+The same 13-file review now has 1,922 active original C definitions and
+2,424 pointer/integer casts, with 2,137 narrow review candidates in 230
+functions. The broader read-only macOS audit compiled all 209 C sources in
+src/legacy and identified 2,612 main-source definitions, 14 unresolved macro
+definitions and 3,232 pointer/integer casts. That broader profile excludes
+globals and disabled platform code; its initial bool macro-range parsing
+failure and corrected audit script are retained. Neither inventory measures
+remaining algorithms, reachability, defects or a completion percentage.
+The tracked C inventory is now **631 files**: 416 test/validation sources and
+215 broad runtime/build sources, including dependency, reference and glue.
+
+The next sealed group has 12 common intrusive-list entries, 723 original
+cases, 361 unchanged instruction bytes with no substituted service, and
+3,172 unchanged C body bytes. Nine incoming source owners are snapshotted.
+Six standalone controls, one actual pointer-value loss and four high-address
+SIGSEGVs are retained. This is not an integrated-crash or reachability claim.
+Native list links, scalar sort keys, explicit current compatibility guards
+and packed private owner storage need separate handling. Preparation earns
+no Go credit and the source port has not started.
+
+Evidence: `docs/split-named-bitmask-native-progress-20261115.json`, ROOT
+`split-named-bitmask-native-20261115-v1/`, and next
+`split-intrusive-list-native-20261115-v1/prepared-baseline-v1.json`.
+**All-C migration and overall 100% remain open.** All nine final chapter 1-3
+audits and the inherited failed public SaveLoad pixel golden remain open;
+functional diagnostics do not promote that golden. Chapter 4+ stays excluded.
+
 ### Native sound-set parser and field setter, 2026-11-15
 
 The qualified source/runtime engine is

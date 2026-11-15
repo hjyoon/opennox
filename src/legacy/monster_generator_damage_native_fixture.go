@@ -24,6 +24,25 @@ static int generator_damage_call_C(int callback,nox_object_t* unit,nox_object_t*
  if(callback){generator_damage_callback_C f=nox_xxx_damageMonsterGen_4E27D0;return f(unit,source,weapon,damage,typ);}
  return nox_xxx_damageMonsterGen_4E27D0(unit,source,weapon,damage,typ);
 }
+// Independent pre-port C wire control, frozen at c283b909935784c9a61c4244191cebf1c4cb6d07.
+// Only root/converter symbols are renamed; production exports may now move to Go.
+static int generator_damage_float2int_frozen_419A70(float a1) {
+	// Original419A70 returns integer-indefinite for invalid signed-DWORD input.
+	// Native ARM64 conversion otherwise saturates or returns zero for NaN.
+	if (!(a1 >= -2147483648.0f && a1 < 2147483648.0f)) {
+		return INT32_MIN;
+	}
+	return (int)a1;
+}
+static int generator_damage_point_fx_frozen_523150(char a1, char a2, float* a3) {
+	char v4[6]; // [esp+4h] [ebp-8h]
+
+	v4[0] = a1;
+	v4[1] = a2;
+	*(uint16_t*)&v4[2] = generator_damage_float2int_frozen_419A70(*a3);
+	*(uint16_t*)&v4[4] = generator_damage_float2int_frozen_419A70(a3[1]);
+	return nox_xxx_netSendFxAllCli_523030((float2*)a3, v4, 6);
+}
 */
 import "C"
 import "unsafe"
@@ -44,7 +63,7 @@ func generatorDamageBindC(unit *server.Object) {
 }
 
 func generatorDamagePointFXExistingC(op, subtype byte, point *types.Pointf) {
-	C.sub_523150(C.char(op), C.char(subtype), (*C.float)(unsafe.Pointer(point)))
+	C.generator_damage_point_fx_frozen_523150(C.char(op), C.char(subtype), (*C.float)(unsafe.Pointer(point)))
 }
 
 func generatorDamageActualCall(route int, unit, source, weapon *server.Object, damage, typ int32) int32 {

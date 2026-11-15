@@ -3888,6 +3888,8 @@ unsigned char* nox_xxx_mapGenTryNextRoom_522F40(uint32_t* a1) {
 }
 
 //----- (00522FF0) --------------------------------------------------------
+// Ported to point_fx_native.go; retained as an inactive source reference.
+#if 0
 int nox_xxx_netSendPointFx_522FF0(char a1, float2* a2) {
 	short v2;    // ax
 	float v3;    // edx
@@ -3900,6 +3902,7 @@ int nox_xxx_netSendPointFx_522FF0(char a1, float2* a2) {
 	*(uint16_t*)&a2a[3] = nox_float2int(v3);
 	return nox_xxx_netSendFxAllCli_523030(a2, a2a, 5);
 }
+#endif
 
 //----- (00523030) --------------------------------------------------------
 int nox_xxx_netSendFxAllCli_523030(float2* a1, const void* a2, int a3) {
@@ -3907,6 +3910,8 @@ int nox_xxx_netSendFxAllCli_523030(float2* a1, const void* a2, int a3) {
 }
 
 //----- (00523150) --------------------------------------------------------
+// Ported to point_fx_native.go; retained as inactive source references.
+#if 0
 int sub_523150(char a1, char a2, float* a3) {
 	char v4[6]; // [esp+4h] [ebp-8h]
 
@@ -3947,6 +3952,7 @@ void nox_xxx_sendGeneratorBreakFX_523200(float* a1, char a2) {
 	v5[6] = a2;
 	nox_xxx_netSendFxAllCli_523030((float2*)a1, v5, 7);
 }
+#endif
 
 //----- (00523270) --------------------------------------------------------
 int nox_xxx_netSendVampFx_523270(char a1, short* a2, short a3) {

@@ -517,7 +517,7 @@ func Sub_52BEB0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcc
 }
 
 func Sub_52DD50(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.sub_52DD50, spellID, a2, a3, a4, sa, lvl)
+	return int(resourceLesserHeal52DD50(int32(spellID), a2, a3, sa, resourceSpellDepsForCall52BF20()))
 }
 
 func Nox_xxx_castLock_52CE90(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
@@ -557,11 +557,11 @@ func Nox_xxx_castPush_52C000(spellID spell.ID, a2, a3, a4 *server.Object, sa *se
 }
 
 func Nox_xxx_castSpellWinkORrestoreHealth_52BF20(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castSpellWinkORrestoreHealth_52BF20, spellID, a2, a3, a4, sa, lvl)
+	return int(resourceRestoreHealth52BF20(sa, resourceSpellDepsForCall52BF20()))
 }
 
 func Sub_52BF50(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.sub_52BF50, spellID, a2, a3, a4, sa, lvl)
+	return int(resourceRestoreMana52BF50(sa, resourceSpellDepsForCall52BF20()))
 }
 
 func Nox_xxx_useShock_52C5A0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

@@ -9343,6 +9343,7 @@ int sub_52BEB0(int a1, int a2, int a3, int a4) {
 }
 
 //----- (0052BF20) --------------------------------------------------------
+#if 0 // Native resource spells: resource_spells_native_exports.go
 int nox_xxx_castSpellWinkORrestoreHealth_52BF20(int a1, int a2, int a3, int a4, int* a5) {
 	int result; // eax
 
@@ -9354,8 +9355,10 @@ int nox_xxx_castSpellWinkORrestoreHealth_52BF20(int a1, int a2, int a3, int a4, 
 	}
 	return result;
 }
+#endif
 
 //----- (0052BF50) --------------------------------------------------------
+#if 0 // Native resource spells: resource_spells_native_exports.go
 int sub_52BF50(int a1, int a2, int a3, int a4, int* a5) {
 	int result; // eax
 
@@ -9369,6 +9372,7 @@ int sub_52BF50(int a1, int a2, int a3, int a4, int* a5) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052BFA0) --------------------------------------------------------
 int nox_xxx_castPull_52BFA0(int a1, int a2, int a3, int a4, int a5, int a6) {
@@ -10416,6 +10420,7 @@ int nox_xxx_spellArachna_52DC80(int a1, int a2, int a3, int a4, int a5) {
 }
 
 //----- (0052DD50) --------------------------------------------------------
+#if 0 // Native resource spells: resource_spells_native_exports.go
 int sub_52DD50(int a1, int a2, int a3, int a4, void* a5) {
 	void* v5;   // edi
 	int v6;     // esi
@@ -10464,6 +10469,7 @@ int sub_52DD50(int a1, int a2, int a3, int a4, void* a5) {
 	nox_xxx_aud_501960(v13, v14, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052DE40) --------------------------------------------------------
 #if 0

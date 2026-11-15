@@ -9572,6 +9572,7 @@ int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6) {
 #endif
 
 //----- (0052C720) --------------------------------------------------------
+#if 0 // Native Poison cast: poison_cast_native_entry.go
 int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	int result; // eax
 
@@ -9583,6 +9584,7 @@ int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052C790) --------------------------------------------------------
 #if 0 // Native Fireball: fireball_native_exports.go

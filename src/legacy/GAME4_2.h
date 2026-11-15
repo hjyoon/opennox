@@ -289,7 +289,7 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5);
 int nox_xxx_castConfuse_52C1E0(int a1, void* a2, nox_object_t* a3, nox_object_t* a4, void* a5, int a6);
 int nox_xxx_castStun_52C2C0(int a1, void* a2, nox_object_t* a3, nox_object_t* a4, void* a5, int a6);
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6);
+int nox_xxx_castPoison_52C720(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster, void* arg, int level);
 int nox_xxx_castFireball_52C790(int spell_id, void* second, nox_object_t* caster, nox_object_t* firing, void* arg, int level);
 int sub_52CA80(int a1, int a2, int a3, int a4);
 int sub_52CBD0(int a1, int a2, int a3, int a4);

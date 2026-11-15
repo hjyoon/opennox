@@ -1,0 +1,375 @@
+{
+  "source_revision": "71db0c07b910f4ed97f6fd6af3eb77b2ac96b724",
+  "qualification_path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/qualified-predict-linear-entry-v1.json",
+  "qualification_sha256": "9a246a3275692587e00d780fe47068184e26c4b680dc4f784c29192861e2b78f",
+  "qualified_entries": [
+    "nox_xxx_netClientPredictLinear_523530"
+  ],
+  "qualified_entries_added": 1,
+  "cumulative_qualified_split_Go_entries": 177,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "original": {
+    "cases": 683,
+    "root_bytes": 191,
+    "qword_helper_bytes": 39,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "whole_original_PE_image_unchanged": true,
+    "heap_only_declared_service_mutations": true,
+    "callee_saved_registers_caller_redzones_FP_control_TOP_preserved": true,
+    "raw_fixture_sha256": "81e4d079f8ba0d350f4abb7ecb4cd203fb3f5b552d7c60c8ca0f05d7bf283f10",
+    "gzip_fixture_sha256": "aeed38dc906ce27c739b99fea5c4692f074009181dffedd72df80940f026ea91",
+    "C_body_bytes": 1241,
+    "scope": "Bounded unchanged original prediction root/qword helper; net-code/player traversal/enqueue services are explicit observation boundaries. No whole original game/network execution or exhaustive host FP-environment claim."
+  },
+  "postport_default_reference": {
+    "cases": 48,
+    "preport_683_prefix_unchanged": true,
+    "source_port_already_started": true,
+    "original_net_code_helper_executed_bytes": 55,
+    "original_net_code_nil_return_bytes_not_executed": 3,
+    "raw_fixture_sha256": "ca4c75c13196bf35d63814bc4467effc502190ed360d38ac979ad66055792dc9",
+    "gzip_fixture_sha256": "f4d05b629ea4dec73a2b5626976a3db8095fed70b2aa45d2f65405adcf16d3de"
+  },
+  "C_before": {
+    "architecture": "x86_64 via Rosetta on ARM64 host",
+    "packed_low_controls": 1,
+    "standalone_SIGBUSs": 2,
+    "standalone_SIGSEGVs": 1,
+    "native_ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false,
+    "all_failed_initial_probes_retained": true
+  },
+  "native_checks": {
+    "total": 8200,
+    "original_cases": 683,
+    "routes": [
+      "actual public C",
+      "typed C callback",
+      "production Go",
+      "matching active CleansingFlame caller expression"
+    ],
+    "foreign_placements": [
+      0,
+      64,
+      512
+    ],
+    "whole_foreign_arena_bytes": 65536,
+    "real_default_network_compositions": 192,
+    "nested_packet_ownership_routes": 4,
+    "full_cleansing_flame_parent_port_or_execution_claim": false,
+    "additional_caller_entry_credit": 0
+  },
+  "focused": {
+    "changed_source_paths": [],
+    "source_files": 9259,
+    "source_lease_sha256": "3f9278a5dced4e97e64f9e47c1b3f003860d081b99e32690b79d4e93558755d9",
+    "exit_code": 0,
+    "elapsed_seconds": 150.298,
+    "test_actions": {
+      "pass": 8200
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "normal": {
+    "changed_source_paths": [],
+    "source_files": 9259,
+    "source_lease_sha256": "3f9278a5dced4e97e64f9e47c1b3f003860d081b99e32690b79d4e93558755d9",
+    "exit_code": 0,
+    "elapsed_seconds": 16.62,
+    "test_actions": {
+      "pass": 160570
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "strict": {
+    "changed_source_paths": [],
+    "source_files": 9259,
+    "source_lease_sha256": "3f9278a5dced4e97e64f9e47c1b3f003860d081b99e32690b79d4e93558755d9",
+    "exit_code": 0,
+    "elapsed_seconds": 194.685,
+    "test_actions": {
+      "pass": 160570
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "existing_typed_server": {
+    "changed_source_paths": [],
+    "source_files": 9259,
+    "source_lease_sha256": "3f9278a5dced4e97e64f9e47c1b3f003860d081b99e32690b79d4e93558755d9",
+    "exit_code": 0,
+    "elapsed_seconds": 5.222,
+    "test_actions": {
+      "pass": 16
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox",
+      "bytes": 70099698,
+      "sha256": "9e49c32bf688dcf1b910171ad0ac79cffb28abf5ba20bc1f40e36d7bc3560c86",
+      "source_revision": "71db0c07b910f4ed97f6fd6af3eb77b2ac96b724"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-hd",
+      "bytes": 70215314,
+      "sha256": "78240b9e7e697ebdc5611cb8eedf73d7c5a978dc30ef8c5d6d0eb1e4a3d27cce",
+      "source_revision": "71db0c07b910f4ed97f6fd6af3eb77b2ac96b724"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-server",
+      "bytes": 66649602,
+      "sha256": "a686f447dd9649c644f1ae4e0a55dc4881bfbb3605c7d6ee5999d6ae0066b563",
+      "source_revision": "71db0c07b910f4ed97f6fd6af3eb77b2ac96b724"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-server-hd",
+      "bytes": 66798194,
+      "sha256": "f95acbde328579230504f22ccc750d9d3f66c685c5eb0a139dd9ab78b0f56655",
+      "source_revision": "71db0c07b910f4ed97f6fd6af3eb77b2ac96b724"
+    }
+  ],
+  "native_public_control_symbols_per_product": 53,
+  "ci": {
+    "runs": [
+      43726272282,
+      43726152733
+    ],
+    "archives": [
+      {
+        "artifact_id": 14167700461,
+        "name": "linux-amd64-opennox-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14167700461-linux-amd64-opennox-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724.zip",
+        "bytes": 218363333,
+        "sha256": "85397966c60af04829eb4e2dea2b3e7225685cde7c43543cd2390aaab1bac9e2",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 979938,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14167625016,
+        "name": "linux-amd64-opennox-hd-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14167625016-linux-amd64-opennox-hd-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724.zip",
+        "bytes": 218178650,
+        "sha256": "915ab0da94f9dbbda125bad0e8f3a968606d893ecb1e1cfa611a4ca20083d08a",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 979938,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14167425679,
+        "name": "linux-amd64-opennox-server-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14167425679-linux-amd64-opennox-server-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724.zip",
+        "bytes": 262284744,
+        "sha256": "0fd2097c39e70fc722ef83e7d629157724db3f1df68bef08f7b766230e34ef67",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 973827,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14166714289,
+        "name": "linux-amd64-opennox-server-hd-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14166714289-linux-amd64-opennox-server-hd-71db0c07b910f4ed97f6fd6af3eb77b2ac96b724.zip",
+        "bytes": 205268090,
+        "sha256": "b2b996a11ba997598a05f72232b713d03ef17ce7b56911faf803883b84147aa4",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 973827,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14166459171,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14166459171-opennox-server-windows-386.zip",
+        "bytes": 160470630,
+        "sha256": "cb5b9eb63a4c8677eb4153410b9c9d2a444d4cee8ede5fbb80da960dd0b3788a",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 951879
+        }
+      },
+      {
+        "artifact_id": 14166289819,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/ci-14166289819-opennox-server-windows-amd64.zip",
+        "bytes": 166066690,
+        "sha256": "c4d4661d32cab94a6b3e2658800b8674baaa399af32c262ba368e4a9345e6e1d",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 971812,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6207340587,
+    "existing_Windows_supervision_tests_per_arch": 8,
+    "matrix_directory": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/CI-matrix-review-v3"
+  },
+  "preservation": {
+    "existing_protected_inputs": 4732,
+    "tracked_E2E_files": 387,
+    "original_asset_and_Save_files": 4649,
+    "prior_products": 83,
+    "additional_historical_products": 20,
+    "current_products": 4,
+    "retained_program_paths": 471,
+    "preport_sealed_paths": 78,
+    "changed_inputs": [],
+    "product_cache_cleanup": {
+      "utc": "2026-11-15T15:31:20.130496+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+      "cache_KiB_before": 501604,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 471,
+      "scope": "Only inactive dedicated product compilation cache removed after all4products/help checks and both completed runtime profiles. No module-cache, source, original asset/Save, retained program, CI ZIP or failure-result deletion."
+    },
+    "transparent_compression": {
+      "status": "PASS",
+      "paths": 5,
+      "records": [
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox",
+          "bytes": 70099698,
+          "sha256": "9e49c32bf688dcf1b910171ad0ac79cffb28abf5ba20bc1f40e36d7bc3560c86",
+          "mode": 493,
+          "mtime_ns": 1794755082384783335,
+          "reused_initial_same_byte_encoding": true,
+          "original_mtime_restored_and_verified": true,
+          "codesign_before_after": 0,
+          "help_before_after_exit": 0,
+          "help_outputs_equal": true
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-hd",
+          "bytes": 70215314,
+          "sha256": "78240b9e7e697ebdc5611cb8eedf73d7c5a978dc30ef8c5d6d0eb1e4a3d27cce",
+          "mode": 493,
+          "mtime_ns": 1794755299461501742,
+          "blocks_before": 137144,
+          "blocks_after": 69736,
+          "codesign_before_after": 0,
+          "help_before_after_exit": 0,
+          "help_outputs_equal": true
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-server",
+          "bytes": 66649602,
+          "sha256": "a686f447dd9649c644f1ae4e0a55dc4881bfbb3605c7d6ee5999d6ae0066b563",
+          "mode": 493,
+          "mtime_ns": 1794755499703220479,
+          "blocks_before": 130176,
+          "blocks_after": 66056,
+          "codesign_before_after": 0,
+          "help_before_after_exit": 0,
+          "help_outputs_equal": true
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/products-v2/opennox-server-hd",
+          "bytes": 66798194,
+          "sha256": "f95acbde328579230504f22ccc750d9d3f66c685c5eb0a139dd9ab78b0f56655",
+          "mode": 493,
+          "mtime_ns": 1794755707366118774,
+          "blocks_before": 130472,
+          "blocks_after": 66056,
+          "codesign_before_after": 0,
+          "help_before_after_exit": 0,
+          "help_outputs_equal": true
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/predict-linear-strict-v1/stdout.log",
+          "bytes": 161666595,
+          "sha256": "ddeed0807482df2b8c4b5c0fb8b85cc81f49bb2cd05d870e0994d6e6172b26f8",
+          "mode": 420,
+          "mtime_ns": 1794753649569824959,
+          "blocks_before": 315760,
+          "blocks_after": 14664
+        }
+      ],
+      "free_before": 3207569408,
+      "free_after": 3462873088,
+      "all_original_paths_bytes_modes_mtimes_and_noncompression_attributes_preserved": true,
+      "all_product_signatures_and_help_verified": true
+    },
+    "mtime_finalization_correction": "compressed-file-mtime-finalization-failure-and-restoration-v1.json"
+  },
+  "inventory": {
+    "tracked_C_files": 629,
+    "categories": {
+      "runtime_or_build_source": 213,
+      "test_or_validation_source": 416
+    },
+    "broad_source_files": 207,
+    "broad_main_source_definitions": 2575,
+    "unresolved_macros": 14,
+    "broad_pointer_integer_casts": 3106,
+    "split_original_definitions": 1885,
+    "split_pointer_integer_casts": 2298,
+    "narrow_candidates": 2017,
+    "functions_with_narrow_candidates": 214,
+    "completion_denominator": false
+  },
+  "retained_nonqualifying_attempts": {
+    "initial_focus": "initial-focus-failures-v1.json",
+    "failed_native_default_test_candidate": "failed-focused-v4-source/manifest.json",
+    "broader_unprepared_package": "broader-package-unprepared-harness-failures-v1.json",
+    "broader_full_package_qualified": false,
+    "server_final_RAM_copy_failure": "existing-predict-linear-server-controls-v1/summary.json",
+    "product_initial_TMPDIR_failure": "product-runner-initial-directory-setup-failure-v1.json",
+    "CI_initial_missing_metadata": "CI-review-initial-metadata-setup-failure-v1.json",
+    "CI_isolated_missing_sidecar": "CI-review-sidecar-alias-setup-failure-v2.json",
+    "all_original_paths_and_results_retained": true
+  },
+  "storage": {
+    "recovery": "storage-recovery-v1/space-confirmed-after-cache-prune-v1.json",
+    "peak_observed_available_GiB": 4.3,
+    "local_exact_Docker_cache_ids": [
+      "tvw24v32c9v398ba7jeslfy13",
+      "utplpnpyd4wjg3a1l6kbuacbb"
+    ],
+    "images_containers_volumes_unchanged": true
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "inherited_public_SaveLoad_pixel_golden": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  }
+}

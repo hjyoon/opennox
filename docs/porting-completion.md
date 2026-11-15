@@ -60,9 +60,124 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
-### Native point-effect packet entries, 2026-11-15
+### Native linear-prediction entry, 2026-11-16
 
 The qualified source/runtime engine is
+`71db0c07b910f4ed97f6fd6af3eb77b2ac96b724`, pushed to
+`origin/port/go1.27-multiarch`. The public C entry
+`nox_xxx_netClientPredictLinear_523530` now executes Go with a native Object
+argument and native unit/update/player links. The cumulative qualified
+split-file count is **177 Go entries**. **All-C migration and overall 100%
+remain open.**
+
+The fourteen-byte packet preserves the existing typed algorithm: live reads
+after the net-code service, a complete snapshot before player enumeration,
+signed-qword truncation followed by the original low WORD/BYTE fields, live
+recipient links and the terminating null-pointer int result of zero. Each
+call owns its packet. The existing typed server API and its unchanged tests
+remain compatible. Independent C layout checks cover the shared Object and
+player-update prefixes and every field used by the native entry.
+
+The active CleansingFlame caller now passes its native pointer expression.
+The fourth test route reproduces that exact expression; it does **not**
+execute or qualify the whole CleansingFlame parent. That parent retains
+separate PE32 ownership assumptions and remains a next migration target.
+The exact 1,241-byte incoming C body remains inactive in GAME4_2.c. Removing
+its guard and reversing the one caller-expression change reconstructs the
+whole incoming C file; reversing the prototype change reconstructs its header.
+
+The sealed pre-port reference executes **191 original root bytes**, the
+39-byte qword converter and 319 startup/control bytes establishing `0xe3f`.
+Its **683 cases** check exact packets, source/recipient aliases, live
+unit/update/player links and declared service mutations. The entire original
+PE image stays unchanged, and the heap, caller words/redzones, saved registers,
+FP control and TOP are checked at service boundaries and return. Net-code,
+player traversal and enqueue remain explicit observation boundaries; this is
+bounded original execution rather than whole original gameplay.
+
+A separately labelled post-port extension reuses all 683 sealed rows without
+change and executes **48 new default-context cases**, including 55 of the
+58-byte original net-code helper. Its three nil-return bytes are not executed.
+These new rows are not presented as pre-port-sealed data. The actual default
+Go composition uses C-initialized native fields, real net-code and player
+traversal, an inactive-player gap and copied NetList packets.
+
+The pre-port C reproduction runs **x86_64 through Rosetta on the ARM64 host**:
+one explicitly owned packed-low control passes, two guarded native-pointer
+cases raise SIGBUS, and one low-address native-layout case raises SIGSEGV.
+These are standalone observations, with no integrated-game crash or successful
+ARM64 C-before claim. Failed initial ARM64/probe setups remain retained.
+
+All final qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **160,570**
+  native regression checks on the identical 9,259-input source lease
+  `3f9278a5dced4e97e64f9e47c1b3f003860d081b99e32690b79d4e93558755d9`.
+  The new group contributes **8,200** checks: 683 original cases through four
+  routes at three foreign placements with whole 64 KiB canaries, four nested
+  packet-ownership routes and **192** real default network compositions.
+  All **16** existing typed server compatibility checks pass unchanged.
+- All four default-toolchain macOS products passed build, metadata, help and
+  **53** native/control symbol checks. Normal/HD passed four core E2E cases,
+  two functional Save/Load diagnostics and two ordinary-clock independent
+  UDP chat profiles. Both host/peer pairs exit zero without forced termination.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43726272282` and Windows CI `43726152733` passed all six profiles,
+  the new group and every prior qualified native matrix. Six SHA-verified ZIPs
+  retain **158 actual test mains**. Complete warning review covers **20 files**
+  and **6,207,340,587 uncompressed bytes**, with **zero warnings**. All eight
+  existing Windows supervision tests per architecture pass.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox | 979,938 | 57 |
+| linux-amd64-opennox-hd | 979,938 | 57 |
+| linux-amd64-opennox-server | 973,827 | 7 |
+| linux-amd64-opennox-server-hd | 973,827 | 7 |
+| opennox-server-windows-amd64 | 971,812 | 11 |
+| opennox-server-windows-386 | 951,879 | 94 |
+
+A broader local package invocation omitted the separate legacy
+`INITIAL_ARTIFACTS` and prebuilt-worker setup. Its 13 existing top-level
+groups fail their setup requirements, accounting for 4,166 failed actions;
+that invocation is **not** qualified as a passing full-package run. The whole
+log and compiled program remain retained. Initial focused/default-test,
+final-output-copy, product-runner and CI-review setup failures also remain
+recorded separately from the final passing gates. No passed CI job was rerun.
+
+All **4,732** pre-existing protected tests/fixtures, **387** E2E inputs,
+**4,649** original asset/personal Save files, **83** prior product paths and
+**20** additional historical products retain their hashes. The current
+preservation inventory verifies **471** executable paths, including all four
+new products. Existing independent C wire controls remain unchanged.
+
+Storage recovery preserved those inputs and results. Identical old/current
+module-cache files share APFS extents while retaining their paths, content
+and metadata. Completed download caches and two exact unused private local
+Docker build-cache records were removed; Docker image, container and volume
+inventories remain unchanged. Actual available space reached about 4.3 GiB,
+with about 3.2 GiB remaining after this batch. The inactive dedicated product
+compile cache returns to 8 KiB. Closed logs and products remain readable at
+their original paths with unchanged bytes, modes and timestamps; signatures
+and help output match before/after compression. A timestamp-finalization
+order check caught an initial metadata difference, which was restored and
+reverified without changing executable bytes.
+
+The refreshed inventory has **629 tracked C paths**: 416 test/reference and
+213 runtime/build sources. All **207** legacy translation units compile.
+The active main-source audit finds **2,575 functions**, 14 unresolved macro
+definitions and **3,106 pointer/integer casts**. The 13 split files retain
+**1,885 active original definitions**, **2,298 casts** and **2,017 narrow-cast
+review candidates across 214 functions**. These are ownership-review inputs,
+not a measured completion denominator. The nine chapter 1-3 final audits and
+the public Save/Load pixel golden remain open; chapter 4+ stays excluded.
+
+Machine evidence: [split-predict-linear-native-progress-20261116.json](split-predict-linear-native-progress-20261116.json).
+Full qualification and retained artifacts: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-predict-linear-native-20261115-v1/qualified-predict-linear-entry-v1.json`.
+
+### Native point-effect packet entries, 2026-11-15
+
+The preceding qualified source/runtime engine was
 `533bb07596c4488345c61b3d9b2ef99ce7ef1f81`, pushed to
 `origin/port/go1.27-multiarch`. Four public C entries now execute Go:
 `nox_xxx_netSendPointFx_522FF0`, `sub_523150`,

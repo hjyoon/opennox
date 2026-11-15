@@ -5,7 +5,10 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 import unittest
+from unittest import mock
 
 
 SCRIPTS = Path(__file__).resolve().parents[1]
@@ -17,6 +20,75 @@ def load_collector():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def load_wrapper():
+    spec = importlib.util.spec_from_file_location("test_binary_wrapper", WRAPPER)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@unittest.skipUnless(os.name == "nt", "native Windows file-sharing semantics")
+class TestWindowsRecordReplacement(unittest.TestCase):
+    def test_locked_reader_keeps_old_record_until_atomic_replacement_succeeds(self):
+        wrapper = load_wrapper()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "record.json"
+            wrapper.write_json(path, {"phase": "before"})
+            blocked = threading.Event()
+            errors = []
+            sharing_errors = []
+            replace = os.replace
+
+            def observe_replace(source, target):
+                try:
+                    replace(source, target)
+                except OSError as error:
+                    sharing_errors.append(getattr(error, "winerror", None))
+                    blocked.set()
+                    raise
+
+            def publish():
+                try:
+                    wrapper.write_json(path, {"phase": "after"})
+                except BaseException as error:
+                    errors.append(error)
+
+            with mock.patch.object(wrapper.os, "replace", side_effect=observe_replace):
+                with path.open("rb") as reader:
+                    writer = threading.Thread(target=publish)
+                    writer.start()
+                    try:
+                        self.assertTrue(blocked.wait(5), "real Windows replacement did not encounter the reader lock")
+                        self.assertEqual(json.load(reader), {"phase": "before"})
+                    finally:
+                        # Release the actual reader before waiting for publication.
+                        reader.close()
+                        writer.join(5)
+                self.assertFalse(writer.is_alive(), "record publisher did not finish")
+            self.assertTrue(sharing_errors)
+            self.assertTrue(all(code in (5, 32, 33) for code in sharing_errors), sharing_errors)
+            self.assertEqual(errors, [])
+            self.assertEqual(json.loads(path.read_text()), {"phase": "after"})
+            self.assertEqual(list(path.parent.glob("*.tmp")), [])
+
+    def test_persistent_reader_lock_raises_with_old_and_pending_records_preserved(self):
+        wrapper = load_wrapper()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "record.json"
+            wrapper.write_json(path, {"phase": "before"})
+            with path.open("rb") as reader:
+                started = time.monotonic()
+                with self.assertRaises(OSError) as raised:
+                    wrapper.write_json(path, {"phase": "after"})
+                self.assertIn(raised.exception.winerror, (5, 32, 33))
+                self.assertLess(time.monotonic() - started, 5, "persistent sharing lock must remain bounded")
+                self.assertEqual(json.load(reader), {"phase": "before"})
+            self.assertEqual(json.loads(path.read_text()), {"phase": "before"})
+            pending = list(path.parent.glob("*.tmp"))
+            self.assertEqual(len(pending), 1)
+            self.assertEqual(json.loads(pending[0].read_text()), {"phase": "after"})
 
 
 class TestPreExecutionPreservation(unittest.TestCase):

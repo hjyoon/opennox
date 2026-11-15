@@ -28,7 +28,18 @@ def write_json(path, value):
         stream.write("\n")
         stream.flush()
         os.fsync(stream.fileno())
-    os.replace(temporary, path)
+    # Windows readers opened without FILE_SHARE_DELETE briefly prevent an
+    # atomic replacement. Keep the old complete record visible while waiting.
+    deadline = time.monotonic() + 2
+    while True:
+        try:
+            os.replace(temporary, path)
+            return
+        except OSError as error:
+            remaining = deadline - time.monotonic()
+            if os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33) or remaining <= 0:
+                raise
+            time.sleep(min(0.01, remaining))
 
 
 def stop_process_tree(process):

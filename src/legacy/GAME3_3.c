@@ -810,6 +810,8 @@ int nox_xxx_damageBlackPowder_4E2560(int a1, int a2, int a3, int a4, int a5) {
 #endif
 
 //----- (004E27D0) --------------------------------------------------------
+// Native-width entry: monster_generator_damage_native.go.
+#if 0
 int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;             // ebp
 	int v7;             // edi
@@ -872,6 +874,7 @@ int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 	}
 	return v17;
 }
+#endif
 
 //----- (004E3CA0) --------------------------------------------------------
 double sub_4E3CA0() { return *getMemFloatPtr(0x587000, 202024); }

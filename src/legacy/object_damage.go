@@ -92,21 +92,7 @@ func init() {
 		) != 0
 	})
 	server.RegisterObjectDamageGo("MonsterGeneratorDamage", C.nox_xxx_damageMonsterGen_4E27D0, func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
-		legacyServer := GetServer()
-		s := legacyServer.S()
-		return server.MonsterGeneratorDamage4E27D0(target, source, weapon, damage, typ, server.MonsterGeneratorDamageRuntime4E27D0{
-			Frame: s.Frame,
-			PointFX: func(op, subtype byte, pos types.Pointf) {
-				s.Nox_xxx_netSendPointFx2_523150(op, subtype, pos)
-			},
-			Audio: func(id int, object *server.Object) {
-				s.Audio.EventObj(sound.ID(id), object, 0, 0)
-			},
-			Script: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
-				legacyServer.NoxScriptC().ScriptCallback(block, caller, trigger, event)
-			},
-			Default: defaultDamageCallNative4E0B30,
-		})
+		return Nox_xxx_damageMonsterGen_4E27D0(target, source, weapon, damage, int32(typ)) != 0
 	})
 
 	server.RegisterObjectDamageSound("DefaultDamageSound", C.nox_xxx_soundDefaultDamageSound_532E20)

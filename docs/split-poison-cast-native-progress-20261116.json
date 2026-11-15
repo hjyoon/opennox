@@ -1,0 +1,268 @@
+{
+  "source_revision": "013e7773f11d17a34a7968d88a18c560a6bdf830",
+  "entries": [
+    "nox_xxx_castPoison_52C720"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 180,
+  "cumulative_qualified_split_Go_entries": 181,
+  "implemented_split_Go_entries": 183,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9286,
+    "sha256": "ff40263a06adf429844f35cb08322ef934b3a73d251ff7a1fd8d267f65daa979"
+  },
+  "original": {
+    "cases": 53,
+    "service_events": 94,
+    "root_bytes": 48,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 70,
+    "preport_source_revision": "22701e629e661c2613ff7b5a9c0884838e114afa",
+    "whole_image_and_heap_service_and_return_checks": true,
+    "caller_register_and_FP_checks": true,
+    "nil_argument_fault_checked": true,
+    "target_reload_observed": true,
+    "independent_model_equal": true,
+    "fixture_sha256": "642e42f0173a1ee6f2a4ce3cf5aaa7c3cb635546dce9743204f3306f7faac960",
+    "fixture_gzip_sha256": "68f94cbd02b6ba3e111d89d653f2e33907513f1c3b0330c7fcefd894a4e86764",
+    "scope": "All48 original cast bytes execute. Activation and player attribution are declared service boundaries. Synthetic signed returns and target-reload mutations are boundary controls, not stock gameplay claims."
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "original_C_body_bytes": 287,
+    "matching_packed_and_native_argument_controls": 8,
+    "high_pointer_SIGBUS": 2,
+    "valid_nonnull_high_target_lowword_zero_omission": 1,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 532
+    },
+    "existing_typed_server_test_actions": {
+      "pass": 51
+    },
+    "existing_legacy_tests": {
+      "pass": 4
+    },
+    "terminal_tests": {
+      "TestPoisonNativeLayout": "pass",
+      "TestPoisonNativeOriginal": "pass",
+      "TestPoisonNativePublicPointers": "pass",
+      "TestPoisonNativeDefaultBindings": "pass"
+    },
+    "existing_typed_server_roots": {
+      "TestPoisonCastSignedLevelsAndIgnoredActivationResult52C720": "pass",
+      "TestPoisonCastTargetReloadAndFaultPrefixes52C720": "pass",
+      "TestPoisonCastNativePointersAndLiveArgument52C720": "pass",
+      "TestPoisonCastNilTargetsAndReloadedNil52C720": "pass",
+      "TestPoisonCastServerUsesExistingStateAndAudio52C720": "pass",
+      "TestPoisonCastNativeArgumentLayout52C720": "pass"
+    },
+    "checks_per_route_and_placement": {
+      "route0/place0": 53,
+      "route0/place64": 53,
+      "route0/place512": 53,
+      "route1/place0": 53,
+      "route1/place64": 53,
+      "route1/place512": 53,
+      "route2/place0": 53,
+      "route2/place64": 53,
+      "route2/place512": 53
+    },
+    "original_case_occurrences": {
+      "ordinary": 9,
+      "signed-level--2147483648": 9,
+      "signed-level--7": 9,
+      "signed-level--1": 9,
+      "signed-level-0": 9,
+      "signed-level-1": 9,
+      "signed-level-3": 9,
+      "signed-level-2147483647": 9,
+      "nil-target-level--2147483648": 9,
+      "nil-target-level--1": 9,
+      "nil-target-level-0": 9,
+      "nil-target-level-3": 9,
+      "nil-target-level-2147483647": 9,
+      "ignored-activation-0x0": 9,
+      "ignored-attribution-0x0": 9,
+      "ignored-activation-0x1": 9,
+      "ignored-attribution-0x1": 9,
+      "ignored-activation-0x7fffffff": 9,
+      "ignored-attribution-0x7fffffff": 9,
+      "ignored-activation-0x80000000": 9,
+      "ignored-attribution-0x80000000": 9,
+      "ignored-activation-0xffffffff": 9,
+      "ignored-attribution-0xffffffff": 9,
+      "owner--1": 9,
+      "owner-0": 9,
+      "owner-1": 9,
+      "owner-2": 9,
+      "owner-3": 9,
+      "owner-5": 9,
+      "target-0": 9,
+      "target-1": 9,
+      "target-2": 9,
+      "target-3": 9,
+      "target-4": 9,
+      "target-5": 9,
+      "argument-one": 9,
+      "activation-reloads-target--1": 9,
+      "activation-reloads-target-0": 9,
+      "activation-reloads-target-1": 9,
+      "activation-reloads-target-2": 9,
+      "activation-reloads-target-3": 9,
+      "activation-reloads-target-5": 9,
+      "activation-mutates-unused-object-fields": 9,
+      "activation-mutates-unused-position": 9,
+      "attribution-mutates-live-argument": 9,
+      "unused-id--2147483648": 9,
+      "unused-id--1": 9,
+      "unused-id-0": 9,
+      "unused-id-1": 9,
+      "unused-id-2147483647": 9,
+      "unused-second-and-caster-nil": 9,
+      "all-object-arguments-alias": 9,
+      "nil-argument-first-read-fault": 9
+    },
+    "actual_default_compositions": 36,
+    "pointer_signed_scalar_forwarding_compositions": 15,
+    "original_CPU_cases": 53,
+    "original_service_events": 94,
+    "original_root_bytes": 48,
+    "original_startup_bytes": 319,
+    "nil_argument_original_fault_cases": 1
+  },
+  "ci": {
+    "runs": [
+      43769684681,
+      43769687781
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "archives": [
+      {
+        "artifact_id": 14184585378,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14184585378-opennox-server-windows-amd64.zip",
+        "bytes": 167543020,
+        "sha256": "6ca37837e64a953b8df0841cf68e6fb95ea3c183fd7b9ec5b5c7e1fbf0c646f4",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 975272,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14183379096,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14183379096-opennox-server-windows-386.zip",
+        "bytes": 160986924,
+        "sha256": "cbf5d8b7acfbf0baf59c6bc06ffa9a9207365f06529cee82bbd2f95a0d27b5fc",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 955339
+        }
+      },
+      {
+        "artifact_id": 14184721766,
+        "name": "linux-amd64-opennox-server-013e7773f11d17a34a7968d88a18c560a6bdf830",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14184721766-linux-amd64-opennox-server-013e7773f11d17a34a7968d88a18c560a6bdf830.zip",
+        "bytes": 265263857,
+        "sha256": "6f53f03577ca957beaaf00f4a40f04d87e880725a8740b0a11e5e8f6cbf8c061",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 977287,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14184660553,
+        "name": "linux-amd64-opennox-013e7773f11d17a34a7968d88a18c560a6bdf830",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14184660553-linux-amd64-opennox-013e7773f11d17a34a7968d88a18c560a6bdf830.zip",
+        "bytes": 219522427,
+        "sha256": "8134bfe54c740d31551f969c786f720262a9a94af053b7d77990a644dc2e2e3a",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 983398,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14184268613,
+        "name": "linux-amd64-opennox-hd-013e7773f11d17a34a7968d88a18c560a6bdf830",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14184268613-linux-amd64-opennox-hd-013e7773f11d17a34a7968d88a18c560a6bdf830.zip",
+        "bytes": 219110163,
+        "sha256": "b2d9e5f9faf5a41dd8c60a4fcee39b9980195aa60074e249beaa89f24b432e1d",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 983398,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14184178345,
+        "name": "linux-amd64-opennox-server-hd-013e7773f11d17a34a7968d88a18c560a6bdf830",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/ci-14184178345-linux-amd64-opennox-server-hd-013e7773f11d17a34a7968d88a18c560a6bdf830.zip",
+        "bytes": 206204695,
+        "sha256": "974591b160dac9a1ee22f1a7000b4b5cd365d8d31b18a8e88db48edeb8d158d6",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 977287,
+          "skip": 7
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6228063094,
+    "all_previous_native_matrices_pass": true,
+    "current_or_historical_GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "protected_existing_tests_fixtures": 4744,
+    "tracked_E2E_inputs": 387,
+    "all_existing_typed_algorithms_and_tests_unchanged": true,
+    "numeric_corrections": [],
+    "whole_incoming_C_and_header_reconstruct": true,
+    "original_asset_and_Save_files": 4649,
+    "retained_current_program_paths": 63,
+    "current_program_manifest": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/current-program-retention-before-cache-cleanup-v1.json",
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1950672,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 63,
+      "all_current_program_SHA_verified": true,
+      "historical_missing_paths": "491 paths recorded missing; no recreation or preservation claim",
+      "all_current_build_test_runtime_drivers_terminal": true
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded. Historical versions and S25 lost reference records are not claimed recovered or preserved. Continue authorized work without blocking on backup search."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Historical ordinary failures remain unexplained. Current passes are not a cause or repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit"
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/qualified-poison-cast-entry-v1.json",
+    "sha256": "5f3d12b43804804e697b11be04ceef9f983d155a769635f75e1acdeca491769a"
+  },
+  "normal_passes": 164064,
+  "strict_passes": 164064,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 60
+}

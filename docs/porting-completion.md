@@ -60,6 +60,86 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Poison public C entry, 2026-11-16
+
+Engine `013e7773f11d17a34a7968d88a18c560a6bdf830` is committed and pushed to
+`origin/port/go1.27-multiarch`. The public C entry
+`nox_xxx_castPoison_52C720` now forwards full native object and acceptance
+pointers to the existing Go implementation. It preserves the signed level in
+both activation arguments, ignores the activation return, and reloads the
+accepted target before player attribution. A nil target returns zero.
+The original nil-argument read faults; it is not converted into silent success.
+Existing typed algorithms, attribution/activation bindings and tests remain
+unchanged, with no numerical correction or extra entry credit.
+
+There are **183 implemented split-file Go entries** and **181 with complete
+recorded qualification**. The two preceding Arachnaphobia/trace entries still
+lack their deleted original seals and receive no additional recorded credit.
+**All-C migration and overall 100% remain open.**
+
+Before source edits, a new **70-path seal** preserves **53 original CPU
+cases**, **94 service events**, all **48 cast bytes** and **319 startup bytes**
+using control word `0xe3f`. The independent model matches complete state,
+services and target-load/fault observations. The whole mapped image and 64 KiB
+heap are checked at service/return boundaries, together with caller redzones,
+saved registers and FP control/TOP. Activation and attribution are declared
+service boundaries; synthetic callback mutations are not stock gameplay.
+
+The exact **287-byte original C body** remains inactive. Removing its single
+guard reconstructs the whole incoming C file; reversing one prototype
+reconstructs the header. Eight standalone packed/native-argument controls match
+the original. Two high-pointer controls raise SIGBUS, while a valid nonnull
+high target whose low word is zero is wrongly treated as nil. These are
+x86_64/Rosetta controls, without an ARM64 C-before success or full-game crash
+claim.
+
+All current qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **164,064** identities on
+  the same **9,286-input** lease
+  `ff40263a06adf429844f35cb08322ef934b3a73d251ff7a1fd8d267f65daa979`.
+  The focused run passes **587**: 532 new native checks, 51 existing server
+  checks and four existing legacy checks. Actual public C, typed C callbacks
+  and direct Go each exercise every original case at three foreign placements,
+  plus native pointer/signed scalar controls and 36 actual default-backend
+  compositions, with whole-arena canaries.
+- Four ARM64 products pass build, metadata, help and **60** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics and
+  two ordinary-clock independent UDP chat profiles. Each chat profile proves
+  eight submissions, four received peer messages and one host reply; both
+  processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43769687781)
+  passes all four profiles and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43769684681)
+  passes amd64/386, all on the first attempt. Six SHA-verified ZIPs retain
+  **158 actual test mains**, all new native identities and every previous
+  qualified native matrix. Windows supervision and the 386 GC-pressure replay
+  pass. Complete warning review scans **20 files / 6,228,063,094 uncompressed
+  bytes** and finds zero warnings.
+
+All **4,744** preceding protected tests/fixtures and **4,649** original
+asset/personal Save files retain their hashes. All **63 current program paths**
+remain intact after clearing the inactive dedicated build cache from
+1,950,672 KiB to 8 KiB. Deleted historical executables and S25 reference
+records remain explicitly recorded as missing; backup searches do not block
+authorized work.
+
+The first runtime attempts remain failed and preserved because the installed
+asset directory lacks video.bag/video8.bag. New private runtime inputs recover
+the exact stock files after confirming matching original indexes. Original
+assets, personal Save, products and scenario assertions are unchanged.
+Dependency-cache, C-before and CI-extractor setup failures also remain
+separate from passing results.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, unexplained historical Windows GC failure and the two lost S25
+seals remain open. Current successful runs do not establish a GC repair.
+Chapter 4 and later remain excluded. The next native-pointer review targets
+the still-active Pull/Push C entries at `52BFA0` and `52C000`.
+
+Machine evidence: [split-poison-cast-native-progress-20261116.json](split-poison-cast-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/qualified-poison-cast-entry-v1.json` (SHA-256 `5f3d12b43804804e697b11be04ceef9f983d155a769635f75e1acdeca491769a`).
+
 ### Arachnaphobia and trace C entries, functional checks and record loss, 2026-11-16
 
 Engine `3ec0160e12fd7f455fb0991a65508961e694382a` implements public C exports
@@ -71,7 +151,7 @@ C wrapper was already pointer-safe. Both original C bodies remain inactive
 and byte-exact: 1,078 and 91 bytes. The preceding typed algorithms and their
 tests are retained, with no numerical correction.
 
-There are now **182 implemented split-file Go entries**. The last complete
+That checkpoint has **182 implemented split-file Go entries**. Its last complete
 recorded qualification remains **180**; these two entries receive **no additional
 fully recorded qualification credit** while their lost reference records are
 unrecovered. **All-C migration and overall 100% remain open.**
@@ -128,10 +208,8 @@ raw decoded job logs, comparison matrices, scripts and RAM copies. No deletion
 is relabelled as successful preservation. Future validation uses an artifacts
 directory outside the actively cleaned tmp ROOT.
 
-The next C target is `nox_xxx_castPoison_52C720`. Its 287-byte C body loads
-the target through a truncating integer; the original span is 48 bytes.
-A fresh original CPU/model/C-before reference and preport seal will precede
-its migration. All nine final Warrior/Conjurer/Wizard chapter 1–3 audits,
+The next C target at that checkpoint was `nox_xxx_castPoison_52C720`;
+its separately sealed migration is qualified above. All nine final Warrior/Conjurer/Wizard chapter 1–3 audits,
 the public Save/Load pixel failure, unexplained Windows GC failure and current
 reference-record recovery remain open. Chapter 4 and later remain excluded.
 

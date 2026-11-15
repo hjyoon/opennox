@@ -22,7 +22,8 @@ func (s *Server) monsterCastRandomFloat541490(runtime MonsterActionCastRuntime54
 }
 
 // MonsterActionCast5413B0 follows the original cast-frame gate and builds the
-// native-width SpellAcceptArg. On PE32 the legacy caller still uses the C path.
+// native-width SpellAcceptArg. The public legacy action uses the separately
+// qualified MonsterActionCastNative5413B0 implementation on every architecture.
 func (s *Server) MonsterActionCast5413B0(unit *Object, mode int, runtime MonsterActionCastRuntime5413B0) {
 	if unit == nil || unit.UpdateData == nil {
 		return

@@ -12,7 +12,7 @@ func monsterCastDefaultRuntime541300() server.MonsterCastRuntime541300 {
 	return server.MonsterCastRuntime541300{
 		MorphTo:   (*server.Object).MorphPlayerBotToPlayer4FAAF0,
 		MorphFrom: (*server.Object).MorphPlayerBotFromPlayer4FAAC0,
-		Direction: server.MonsterCastDirection533CC0,
+		Direction: Nox_xxx_mobCalcDir_533CC0,
 		Cast:      Nox_xxx_castSpellByUser_4FDD20,
 		Buff: func(unit *server.Object, buff int32) int32 {
 			if unit.HasEnchant(server.EnchantID(buff)) {

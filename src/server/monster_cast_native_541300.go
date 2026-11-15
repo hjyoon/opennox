@@ -96,8 +96,8 @@ func MonsterCastRandomRecoilNative541490(unit, target *Object, out *types.Pointf
 	out.Y = experienceSpill32TowardZero(objectForceAdd53_52DF80(noiseY, objectForceMemory32_52DF80(out.Y)))
 }
 
-// MonsterCastDirection533CC0 binds the existing direction service without
-// passing a native Object through its still-retained PE32 C declaration.
+// MonsterCastDirection533CC0 implements the original direction entry with
+// native Object and point links. A nil unit leaves the point unread.
 func MonsterCastDirection533CC0(unit *Object, pos *types.Pointf) {
 	if unit != nil {
 		x := experienceSpill32TowardZero(objectForceSub53_52DF80(float64(pos.X), objectForceMemory32_52DF80(unit.PosVec.X)))

@@ -336,6 +336,8 @@ void nox_xxx_enactUnitOrder_5339A0(int source, int unit, int orderId) {
 #endif
 
 //----- (00533CC0) --------------------------------------------------------
+// Native-width implementation: server.MonsterCastDirection533CC0.
+#if 0
 void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {
 	float2 v2; // [esp+4h] [ebp-8h]
 
@@ -345,6 +347,7 @@ void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {
 		*(uint16_t*)(a1 + 126) = nox_xxx_math_509ED0(&v2);
 	}
 }
+#endif
 
 //----- (00533D00) --------------------------------------------------------
 // Native-width implementation: server/monster_NPC_animation_native_533d00.go.

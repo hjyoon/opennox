@@ -1,0 +1,1218 @@
+{
+  "utc": "2026-11-15T21:36:46.839855+00:00",
+  "source_revision": "3ec0160e12fd7f455fb0991a65508961e694382a",
+  "implemented_entries": [
+    "nox_xxx_spellArachna_52DC80",
+    "nox_xxx_traceRay_5374B0"
+  ],
+  "new_Go_entries_implemented": 2,
+  "cumulative_implemented_split_Go_entries": 182,
+  "new_fully_recorded_qualification_credit": 0,
+  "cumulative_fully_recorded_qualified_split_Go_entries": 180,
+  "current_batch_qualification": "OPEN: original preport seals and local raw result/product files removed during user disk cleanup",
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "preceding_qualified_checkpoint": {
+    "tracked_path": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/docs/split-meteor-cast-native-progress-20261116.json",
+    "qualification_sha256": "08b8e512c573ec4555ad207227e978c45251f802c3b0c8ec9b2355ff2c8c1745"
+  },
+  "previously_verified_local_gates": {
+    "normal_passes": 163528,
+    "strict_passes": 163528,
+    "source_inputs": 9281,
+    "source_lease_sha256": "4fd9795cb025a85288084af706fd739e371b4e77d1e6202fa914f845f9f3db59",
+    "focus_passes": 827,
+    "native_checks": 769,
+    "parent": 604,
+    "child": 165,
+    "existing_server_checks": 36,
+    "existing_legacy_checks": 22,
+    "compiler_warnings": 0,
+    "products": 4,
+    "public_symbols": 59,
+    "core_E2E": 4,
+    "functional_Save_diagnostics": 2,
+    "independent_UDP_chat": 2,
+    "verification_transcript": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/final-qualification-driver-v1/stdout.log",
+    "verification_driver_exit": 1,
+    "raw_local_records_now_incomplete": true
+  },
+  "original_references": {
+    "parent_cases": 62,
+    "parent_events": 274,
+    "parent_bytes": 197,
+    "actual_child_bytes": 20,
+    "startup_bytes": 319,
+    "standalone_child_cases": 16,
+    "first_parent_seal_paths": 67,
+    "first_child_seal_paths": 63,
+    "seal_files_now_unavailable": true,
+    "committed_canonical_goldens": [
+      {
+        "path": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy/testdata/arachnaphobia_original_52dc80_v1.json.gz",
+        "gzip_sha256": "d7ac9805a115f6ebd2418dcd8d198b52f7b2e25d49b5650b7106bcb00f0ead8e",
+        "plain_sha256": "d0d0fe4dc0354072270cea3bb55fe992e72ce96aea12c4e87a730bd023384ce8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy/testdata/trace_ray9_original_5374b0_v1.json.gz",
+        "gzip_sha256": "7219ace93c56863b06630657065e28c4eeb09a529acbd247d320c026f74b018b",
+        "plain_sha256": "e43dd3d411a1515b1516a87f99b4ff72faf504cb71469e924611b089dc16bd1d"
+      }
+    ],
+    "scope": "These original/seal values were verified by the retained finalizer transcript before cleanup. The missing original proof/seal files are not reconstructed or claimed retained here."
+  },
+  "ci": {
+    "runs": [
+      {
+        "id": 43758513837,
+        "name": "Porting Linux native checkpoint",
+        "node_id": "WFR_kwLOQm9xk88AAAAKMDXurQ",
+        "head_branch": "port/go1.27-multiarch",
+        "head_sha": "3ec0160e12fd7f455fb0991a65508961e694382a",
+        "path": ".github/workflows/port-linux-native.yml",
+        "display_title": "Porting Linux native checkpoint",
+        "run_number": 183,
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "workflow_id": 397594953,
+        "check_suite_id": 118467934180,
+        "check_suite_node_id": "CS_kwDOQm9xk88AAAAblT035A",
+        "url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837",
+        "html_url": "https://github.com/hjyoon/opennox/actions/runs/43758513837",
+        "pull_requests": [],
+        "created_at": "2026-11-15T20:31:04Z",
+        "updated_at": "2026-11-15T20:52:46Z",
+        "actor": {
+          "login": "hjyoon",
+          "id": 16138767,
+          "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+          "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hjyoon",
+          "html_url": "https://github.com/hjyoon",
+          "followers_url": "https://api.github.com/users/hjyoon/followers",
+          "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+          "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+          "repos_url": "https://api.github.com/users/hjyoon/repos",
+          "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "run_attempt": 1,
+        "referenced_workflows": [],
+        "run_started_at": "2026-11-15T20:31:04Z",
+        "triggering_actor": {
+          "login": "hjyoon",
+          "id": 16138767,
+          "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+          "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hjyoon",
+          "html_url": "https://github.com/hjyoon",
+          "followers_url": "https://api.github.com/users/hjyoon/followers",
+          "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+          "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+          "repos_url": "https://api.github.com/users/hjyoon/repos",
+          "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "jobs_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837/jobs",
+        "logs_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837/logs",
+        "check_suite_url": "https://api.github.com/repos/hjyoon/opennox/check-suites/118467934180",
+        "artifacts_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837/artifacts",
+        "cancel_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837/cancel",
+        "rerun_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758513837/rerun",
+        "previous_attempt_url": null,
+        "workflow_url": "https://api.github.com/repos/hjyoon/opennox/actions/workflows/397594953",
+        "head_commit": {
+          "id": "3ec0160e12fd7f455fb0991a65508961e694382a",
+          "tree_id": "1fa766a777fae784e38217da1011cb68211f128f",
+          "message": "Port Arachnaphobia and trace C entries through native Go\n\nReplace the five-int Arachnaphobia entry with full native object/argument pointers and move the remaining flags9 trace wrapper into Go. Preserve both exact C bodies, live cache/argument/update/player reads, five-argument C ABI and the existing typed Go algorithm. The trace wrapper calls the existing Go map service directly and preserves raw pointers, null outputs and signed-DWORD results.\n\nCompare62 sealed original cast cases and16 standalone original trace controls through three entry routes and three foreign placements, with actual default map compositions. All4740 existing protected tests/fixtures remain unchanged. Final normal and highres/cgocheck2/checkptr2 each pass163528 regressions with zero warnings; 769 new native checks and36 existing server checks pass. Full product/runtime/CI qualification follows separately.",
+          "timestamp": "2026-11-15T20:29:42Z",
+          "author": {
+            "name": "Hyojeon Yoon",
+            "email": "hjyoon@kakao.com"
+          },
+          "committer": {
+            "name": "Hyojeon Yoon",
+            "email": "hjyoon@kakao.com"
+          }
+        },
+        "repository": {
+          "id": 1114599827,
+          "node_id": "R_kgDOQm9xkw",
+          "name": "opennox",
+          "full_name": "hjyoon/opennox",
+          "private": false,
+          "owner": {
+            "login": "hjyoon",
+            "id": 16138767,
+            "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+            "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hjyoon",
+            "html_url": "https://github.com/hjyoon",
+            "followers_url": "https://api.github.com/users/hjyoon/followers",
+            "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+            "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+            "repos_url": "https://api.github.com/users/hjyoon/repos",
+            "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/hjyoon/opennox",
+          "description": "OpenNox main repository.",
+          "fork": true,
+          "url": "https://api.github.com/repos/hjyoon/opennox",
+          "forks_url": "https://api.github.com/repos/hjyoon/opennox/forks",
+          "keys_url": "https://api.github.com/repos/hjyoon/opennox/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/hjyoon/opennox/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/hjyoon/opennox/teams",
+          "hooks_url": "https://api.github.com/repos/hjyoon/opennox/hooks",
+          "issue_events_url": "https://api.github.com/repos/hjyoon/opennox/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/hjyoon/opennox/events",
+          "assignees_url": "https://api.github.com/repos/hjyoon/opennox/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/hjyoon/opennox/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/hjyoon/opennox/tags",
+          "blobs_url": "https://api.github.com/repos/hjyoon/opennox/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/hjyoon/opennox/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/hjyoon/opennox/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/hjyoon/opennox/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/hjyoon/opennox/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/hjyoon/opennox/languages",
+          "stargazers_url": "https://api.github.com/repos/hjyoon/opennox/stargazers",
+          "contributors_url": "https://api.github.com/repos/hjyoon/opennox/contributors",
+          "subscribers_url": "https://api.github.com/repos/hjyoon/opennox/subscribers",
+          "subscription_url": "https://api.github.com/repos/hjyoon/opennox/subscription",
+          "commits_url": "https://api.github.com/repos/hjyoon/opennox/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/hjyoon/opennox/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/hjyoon/opennox/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/hjyoon/opennox/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/hjyoon/opennox/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/hjyoon/opennox/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/hjyoon/opennox/merges",
+          "archive_url": "https://api.github.com/repos/hjyoon/opennox/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/hjyoon/opennox/downloads",
+          "issues_url": "https://api.github.com/repos/hjyoon/opennox/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/hjyoon/opennox/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/hjyoon/opennox/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/hjyoon/opennox/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/hjyoon/opennox/labels{/name}",
+          "releases_url": "https://api.github.com/repos/hjyoon/opennox/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/hjyoon/opennox/deployments"
+        },
+        "head_repository": {
+          "id": 1114599827,
+          "node_id": "R_kgDOQm9xkw",
+          "name": "opennox",
+          "full_name": "hjyoon/opennox",
+          "private": false,
+          "owner": {
+            "login": "hjyoon",
+            "id": 16138767,
+            "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+            "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hjyoon",
+            "html_url": "https://github.com/hjyoon",
+            "followers_url": "https://api.github.com/users/hjyoon/followers",
+            "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+            "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+            "repos_url": "https://api.github.com/users/hjyoon/repos",
+            "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/hjyoon/opennox",
+          "description": "OpenNox main repository.",
+          "fork": true,
+          "url": "https://api.github.com/repos/hjyoon/opennox",
+          "forks_url": "https://api.github.com/repos/hjyoon/opennox/forks",
+          "keys_url": "https://api.github.com/repos/hjyoon/opennox/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/hjyoon/opennox/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/hjyoon/opennox/teams",
+          "hooks_url": "https://api.github.com/repos/hjyoon/opennox/hooks",
+          "issue_events_url": "https://api.github.com/repos/hjyoon/opennox/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/hjyoon/opennox/events",
+          "assignees_url": "https://api.github.com/repos/hjyoon/opennox/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/hjyoon/opennox/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/hjyoon/opennox/tags",
+          "blobs_url": "https://api.github.com/repos/hjyoon/opennox/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/hjyoon/opennox/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/hjyoon/opennox/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/hjyoon/opennox/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/hjyoon/opennox/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/hjyoon/opennox/languages",
+          "stargazers_url": "https://api.github.com/repos/hjyoon/opennox/stargazers",
+          "contributors_url": "https://api.github.com/repos/hjyoon/opennox/contributors",
+          "subscribers_url": "https://api.github.com/repos/hjyoon/opennox/subscribers",
+          "subscription_url": "https://api.github.com/repos/hjyoon/opennox/subscription",
+          "commits_url": "https://api.github.com/repos/hjyoon/opennox/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/hjyoon/opennox/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/hjyoon/opennox/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/hjyoon/opennox/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/hjyoon/opennox/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/hjyoon/opennox/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/hjyoon/opennox/merges",
+          "archive_url": "https://api.github.com/repos/hjyoon/opennox/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/hjyoon/opennox/downloads",
+          "issues_url": "https://api.github.com/repos/hjyoon/opennox/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/hjyoon/opennox/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/hjyoon/opennox/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/hjyoon/opennox/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/hjyoon/opennox/labels{/name}",
+          "releases_url": "https://api.github.com/repos/hjyoon/opennox/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/hjyoon/opennox/deployments"
+        }
+      },
+      {
+        "id": 43758382232,
+        "name": "Porting Windows native gate",
+        "node_id": "WFR_kwLOQm9xk88AAAAKMDPsmA",
+        "head_branch": "port/go1.27-multiarch",
+        "head_sha": "3ec0160e12fd7f455fb0991a65508961e694382a",
+        "path": ".github/workflows/port-windows-native.yml",
+        "display_title": "Port Arachnaphobia and trace C entries through native Go",
+        "run_number": 1485,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "workflow_id": 357167808,
+        "check_suite_id": 118467598197,
+        "check_suite_node_id": "CS_kwDOQm9xk88AAAAblTgXdQ",
+        "url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232",
+        "html_url": "https://github.com/hjyoon/opennox/actions/runs/43758382232",
+        "pull_requests": [],
+        "created_at": "2026-11-15T20:29:47Z",
+        "updated_at": "2026-11-15T21:10:36Z",
+        "actor": {
+          "login": "hjyoon",
+          "id": 16138767,
+          "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+          "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hjyoon",
+          "html_url": "https://github.com/hjyoon",
+          "followers_url": "https://api.github.com/users/hjyoon/followers",
+          "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+          "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+          "repos_url": "https://api.github.com/users/hjyoon/repos",
+          "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "run_attempt": 2,
+        "referenced_workflows": [],
+        "run_started_at": "2026-11-15T20:51:54Z",
+        "triggering_actor": {
+          "login": "hjyoon",
+          "id": 16138767,
+          "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+          "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hjyoon",
+          "html_url": "https://github.com/hjyoon",
+          "followers_url": "https://api.github.com/users/hjyoon/followers",
+          "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+          "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+          "repos_url": "https://api.github.com/users/hjyoon/repos",
+          "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "jobs_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/jobs",
+        "logs_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/logs",
+        "check_suite_url": "https://api.github.com/repos/hjyoon/opennox/check-suites/118467598197",
+        "artifacts_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/artifacts",
+        "cancel_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/cancel",
+        "rerun_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/rerun",
+        "previous_attempt_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43758382232/attempts/1",
+        "workflow_url": "https://api.github.com/repos/hjyoon/opennox/actions/workflows/357167808",
+        "head_commit": {
+          "id": "3ec0160e12fd7f455fb0991a65508961e694382a",
+          "tree_id": "1fa766a777fae784e38217da1011cb68211f128f",
+          "message": "Port Arachnaphobia and trace C entries through native Go\n\nReplace the five-int Arachnaphobia entry with full native object/argument pointers and move the remaining flags9 trace wrapper into Go. Preserve both exact C bodies, live cache/argument/update/player reads, five-argument C ABI and the existing typed Go algorithm. The trace wrapper calls the existing Go map service directly and preserves raw pointers, null outputs and signed-DWORD results.\n\nCompare62 sealed original cast cases and16 standalone original trace controls through three entry routes and three foreign placements, with actual default map compositions. All4740 existing protected tests/fixtures remain unchanged. Final normal and highres/cgocheck2/checkptr2 each pass163528 regressions with zero warnings; 769 new native checks and36 existing server checks pass. Full product/runtime/CI qualification follows separately.",
+          "timestamp": "2026-11-15T20:29:42Z",
+          "author": {
+            "name": "Hyojeon Yoon",
+            "email": "hjyoon@kakao.com"
+          },
+          "committer": {
+            "name": "Hyojeon Yoon",
+            "email": "hjyoon@kakao.com"
+          }
+        },
+        "repository": {
+          "id": 1114599827,
+          "node_id": "R_kgDOQm9xkw",
+          "name": "opennox",
+          "full_name": "hjyoon/opennox",
+          "private": false,
+          "owner": {
+            "login": "hjyoon",
+            "id": 16138767,
+            "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+            "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hjyoon",
+            "html_url": "https://github.com/hjyoon",
+            "followers_url": "https://api.github.com/users/hjyoon/followers",
+            "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+            "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+            "repos_url": "https://api.github.com/users/hjyoon/repos",
+            "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/hjyoon/opennox",
+          "description": "OpenNox main repository.",
+          "fork": true,
+          "url": "https://api.github.com/repos/hjyoon/opennox",
+          "forks_url": "https://api.github.com/repos/hjyoon/opennox/forks",
+          "keys_url": "https://api.github.com/repos/hjyoon/opennox/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/hjyoon/opennox/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/hjyoon/opennox/teams",
+          "hooks_url": "https://api.github.com/repos/hjyoon/opennox/hooks",
+          "issue_events_url": "https://api.github.com/repos/hjyoon/opennox/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/hjyoon/opennox/events",
+          "assignees_url": "https://api.github.com/repos/hjyoon/opennox/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/hjyoon/opennox/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/hjyoon/opennox/tags",
+          "blobs_url": "https://api.github.com/repos/hjyoon/opennox/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/hjyoon/opennox/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/hjyoon/opennox/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/hjyoon/opennox/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/hjyoon/opennox/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/hjyoon/opennox/languages",
+          "stargazers_url": "https://api.github.com/repos/hjyoon/opennox/stargazers",
+          "contributors_url": "https://api.github.com/repos/hjyoon/opennox/contributors",
+          "subscribers_url": "https://api.github.com/repos/hjyoon/opennox/subscribers",
+          "subscription_url": "https://api.github.com/repos/hjyoon/opennox/subscription",
+          "commits_url": "https://api.github.com/repos/hjyoon/opennox/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/hjyoon/opennox/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/hjyoon/opennox/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/hjyoon/opennox/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/hjyoon/opennox/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/hjyoon/opennox/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/hjyoon/opennox/merges",
+          "archive_url": "https://api.github.com/repos/hjyoon/opennox/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/hjyoon/opennox/downloads",
+          "issues_url": "https://api.github.com/repos/hjyoon/opennox/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/hjyoon/opennox/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/hjyoon/opennox/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/hjyoon/opennox/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/hjyoon/opennox/labels{/name}",
+          "releases_url": "https://api.github.com/repos/hjyoon/opennox/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/hjyoon/opennox/deployments"
+        },
+        "head_repository": {
+          "id": 1114599827,
+          "node_id": "R_kgDOQm9xkw",
+          "name": "opennox",
+          "full_name": "hjyoon/opennox",
+          "private": false,
+          "owner": {
+            "login": "hjyoon",
+            "id": 16138767,
+            "node_id": "MDQ6VXNlcjE2MTM4NzY3",
+            "avatar_url": "https://avatars.githubusercontent.com/u/16138767?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hjyoon",
+            "html_url": "https://github.com/hjyoon",
+            "followers_url": "https://api.github.com/users/hjyoon/followers",
+            "following_url": "https://api.github.com/users/hjyoon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hjyoon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hjyoon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hjyoon/subscriptions",
+            "organizations_url": "https://api.github.com/users/hjyoon/orgs",
+            "repos_url": "https://api.github.com/users/hjyoon/repos",
+            "events_url": "https://api.github.com/users/hjyoon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hjyoon/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/hjyoon/opennox",
+          "description": "OpenNox main repository.",
+          "fork": true,
+          "url": "https://api.github.com/repos/hjyoon/opennox",
+          "forks_url": "https://api.github.com/repos/hjyoon/opennox/forks",
+          "keys_url": "https://api.github.com/repos/hjyoon/opennox/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/hjyoon/opennox/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/hjyoon/opennox/teams",
+          "hooks_url": "https://api.github.com/repos/hjyoon/opennox/hooks",
+          "issue_events_url": "https://api.github.com/repos/hjyoon/opennox/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/hjyoon/opennox/events",
+          "assignees_url": "https://api.github.com/repos/hjyoon/opennox/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/hjyoon/opennox/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/hjyoon/opennox/tags",
+          "blobs_url": "https://api.github.com/repos/hjyoon/opennox/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/hjyoon/opennox/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/hjyoon/opennox/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/hjyoon/opennox/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/hjyoon/opennox/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/hjyoon/opennox/languages",
+          "stargazers_url": "https://api.github.com/repos/hjyoon/opennox/stargazers",
+          "contributors_url": "https://api.github.com/repos/hjyoon/opennox/contributors",
+          "subscribers_url": "https://api.github.com/repos/hjyoon/opennox/subscribers",
+          "subscription_url": "https://api.github.com/repos/hjyoon/opennox/subscription",
+          "commits_url": "https://api.github.com/repos/hjyoon/opennox/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/hjyoon/opennox/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/hjyoon/opennox/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/hjyoon/opennox/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/hjyoon/opennox/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/hjyoon/opennox/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/hjyoon/opennox/merges",
+          "archive_url": "https://api.github.com/repos/hjyoon/opennox/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/hjyoon/opennox/downloads",
+          "issues_url": "https://api.github.com/repos/hjyoon/opennox/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/hjyoon/opennox/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/hjyoon/opennox/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/hjyoon/opennox/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/hjyoon/opennox/labels{/name}",
+          "releases_url": "https://api.github.com/repos/hjyoon/opennox/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/hjyoon/opennox/deployments"
+        }
+      }
+    ],
+    "actual_jobs": [
+      {
+        "id": 132947818219,
+        "name": "Linux/amd64 opennox",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758513837,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132947818490,
+        "name": "Linux/amd64 opennox-server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758513837,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132947818571,
+        "name": "Linux/amd64 opennox-server-hd",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758513837,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132947818711,
+        "name": "Linux/amd64 opennox-hd",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758513837,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132953807452,
+        "name": "Windows/amd64 server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758382232,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install maintained UCRT compilers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Probe Windows/386 cgo toolchain",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6
+          },
+          {
+            "name": "Verify pre-execution retention and independent deadlines",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Build server product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Verify product and run help",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify native foreign allocation ownership",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Test root, server, and legacy packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Retain actual test executables after interrupted suites",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Replay exact Windows/386 Skeleton and Golem references under GC pressure",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 13
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          }
+        ]
+      },
+      {
+        "id": 132947427854,
+        "name": "Windows/386 server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43758382232,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install maintained UCRT compilers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Probe Windows/386 cgo toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Verify pre-execution retention and independent deadlines",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Build server product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Verify product and run help",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify native foreign allocation ownership",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Test root, server, and legacy packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Retain actual test executables after interrupted suites",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Replay exact Windows/386 Skeleton and Golem references under GC pressure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          }
+        ]
+      }
+    ],
+    "archives": [
+      {
+        "artifact_id": 14179957342,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14179957342-linux-amd64-opennox-hd-3ec0160e12fd7f455fb0991a65508961e694382a.zip",
+        "bytes": 219069654,
+        "sha256": "bc4295b76cb84674b6c3af19b92df0efe3465ebc260c7ca4262c61f1018cb824",
+        "actual_test_mains": 40,
+        "test_actions": {
+          "pass": 982866,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14179437886,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14179437886-linux-amd64-opennox-server-hd-3ec0160e12fd7f455fb0991a65508961e694382a.zip",
+        "bytes": 206447259,
+        "sha256": "2f7faf27775c577b0a2e1fe133fe1f064bc7d1d532355cb57d9cc427b0e425ef",
+        "actual_test_mains": 36,
+        "test_actions": {
+          "pass": 976755,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14179264333,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14179264333-linux-amd64-opennox-3ec0160e12fd7f455fb0991a65508961e694382a.zip",
+        "bytes": 219499517,
+        "sha256": "7059eab5eb9c5e30f32cfa2771914501ad5ef6a4d83385fde38e8420a29ffda4",
+        "actual_test_mains": 40,
+        "test_actions": {
+          "pass": 982866,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14178874939,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14178874939-linux-amd64-opennox-server-3ec0160e12fd7f455fb0991a65508961e694382a.zip",
+        "bytes": 264226656,
+        "sha256": "3cf5a0667114b90ddefa82070c34005479ba0afa1a33207a6ada6cdf62460eac",
+        "actual_test_mains": 36,
+        "test_actions": {
+          "pass": 976755,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14180961723,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14180961723-opennox-server-windows-amd64.zip",
+        "bytes": 168347538,
+        "sha256": "65401b07efcbd8ebc51d5ec4b53d19fa3d2265fa025a053e98c442518e9105e1",
+        "actual_test_mains": 3,
+        "test_actions": {
+          "pass": 974740,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14179343642,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-14179343642-opennox-server-windows-386.zip",
+        "bytes": 162655209,
+        "sha256": "113b07ad7c89c4126f8b65b539563332a309f342b644d905b7af02eaecea1443",
+        "actual_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 954807
+        }
+      }
+    ],
+    "actual_successful_test_mains": 158,
+    "all_new_and_previous_native_matrices_pass": true,
+    "warning_files": 42,
+    "uncompressed_warning_scan_bytes": 7510324067,
+    "compiler_warnings": 0,
+    "Windows_first_amd64": "FAILED/preserved",
+    "single_amd64_retry": "PASS",
+    "passed_386_reexecuted": false,
+    "GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "snapshot": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1",
+    "snapshot_manifest": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/snapshot-manifest-v1.json",
+    "historical_absent_program_paths": 491,
+    "historical_absent_unique_versions": 284,
+    "historical_paths_not_required_for_next_port": true,
+    "user_instruction": "\uc0ad\uc81c\ud588\uc73c\ub2c8 \ub204\ub77d\uc744 \uae30\ub85d\ud558\uace0 \uacc4\uc18d",
+    "user_cleanup_still_in_progress": true,
+    "some_backup_expected_but_path_unspecified": true,
+    "exact_RAM_copies_protected": [
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-predict-linear-strict-v1/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-predict-linear-strict-v1/legacy.test",
+        "bytes": 72308962,
+        "sha256": "6986562043aed7edceb1a3117dd046dcc1c21b858bec35103d23ff9b96a47210"
+      },
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-predict-linear-normal-v2/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-predict-linear-normal-v2/legacy.test",
+        "bytes": 68598466,
+        "sha256": "ad761465868ac77c1b272cd19f1cf3c92b01197ffc5dbcab893b53e9866e524d"
+      },
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-predict-linear-normal-v1/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-predict-linear-normal-v1/legacy.test",
+        "bytes": 68598466,
+        "sha256": "ad761465868ac77c1b272cd19f1cf3c92b01197ffc5dbcab893b53e9866e524d"
+      },
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-focused-predict-linear-v5/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-focused-predict-linear-v5/legacy.test",
+        "bytes": 68598466,
+        "sha256": "ad761465868ac77c1b272cd19f1cf3c92b01197ffc5dbcab893b53e9866e524d"
+      },
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-focused-predict-linear-v4/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-focused-predict-linear-v4/legacy.test",
+        "bytes": 68598466,
+        "sha256": "439136c0750e16752fde8570d21f469fb946375c378530269851cf4bce9f679a"
+      },
+      {
+        "original_RAM_path": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/test-output-focused-predict-linear-v3/legacy.test",
+        "preserved_path": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/RAM/test-output-focused-predict-linear-v3/legacy.test",
+        "bytes": 68546146,
+        "sha256": "f1f7917144ef697dd28cb995022f6050bcbbb528e7f56fa6460d7f766bc79ab0"
+      }
+    ],
+    "current_batch_record_loss": true,
+    "record_loss_not_relabelled_as_success": true,
+    "new_validation_root_outside_tmp": true
+  },
+  "retained_failed_and_partial_records": {
+    "first_Windows_attempt": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/ci-first-Windows-attempt-completed-v1.json",
+    "exact_PE_partial_replay": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/exact-failed-Windows-PE-replay-review-v1.json",
+    "final_preservation_audit": "/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/S25/final-qualification-driver-v1/summary.json"
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open",
+    "Windows_GC": "unexplained first failure",
+    "historical_record_recovery": "OPEN/nonblocking",
+    "current_batch_record_recovery_and_full_qualification": "OPEN",
+    "chapter4plus": "excluded"
+  },
+  "next_target": {
+    "entry": "nox_xxx_castPoison_52C720",
+    "source_port_started": false,
+    "plan": "Fresh original CPU/model/C-before and preport seal in artifacts, then native C export migration"
+  },
+  "protected_checkpoint_sha256": "1a677f90b6ffac8e521cb393553834a9da243d3b6ce4af1df0068d1f116b90a5"
+}

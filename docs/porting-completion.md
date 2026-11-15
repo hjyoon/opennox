@@ -60,13 +60,91 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Arachnaphobia and trace C entries, functional checks and record loss, 2026-11-16
+
+Engine `3ec0160e12fd7f455fb0991a65508961e694382a` implements public C exports
+`nox_xxx_spellArachna_52DC80` and `nox_xxx_traceRay_5374B0` in Go.
+The former retains complete native object/acceptance pointers and the original
+five-argument C signature. The trace wrapper forwards its raw vector, null
+outputs and flags 9 through the existing ordinary Go binding. Its preceding
+C wrapper was already pointer-safe. Both original C bodies remain inactive
+and byte-exact: 1,078 and 91 bytes. The preceding typed algorithms and their
+tests are retained, with no numerical correction.
+
+There are now **182 implemented split-file Go entries**. The last complete
+recorded qualification remains **180**; these two entries receive **no additional
+fully recorded qualification credit** while their lost reference records are
+unrecovered. **All-C migration and overall 100% remain open.**
+
+Before disk cleanup, the finalizer verified both independent original
+references/seals, the complete local matrices, all four products and both
+runtime profiles. Its retained stdout records those successful checks before
+the final preservation audit fails on an absent older executable. The local
+normal and highres/cgocheck2/checkptr2 matrices each passed **163,528** identities
+on the 9,281-input lease
+`4fd9795cb025a85288084af706fd739e371b4e77d1e6202fa914f845f9f3db59`.
+The focused run passed 827: 769 new native checks (604 parent, 165 child),
+36 preceding server and 22 legacy checks. Four products passed 59 symbol
+checks; normal/HD passed four core E2E cases, two functional Save/Load
+diagnostics and two independent ordinary-clock UDP chat profiles.
+
+The originally verified CPU evidence comprises 62 parent cases/274 events,
+197 parent bytes, the actual 20-byte trace wrapper and 319 startup bytes,
+plus 16 standalone child service-boundary controls. The first parent/child
+seals covered 67/63 paths. Those seal/proof files and local raw result/product
+files subsequently disappear during the user's continuing disk cleanup.
+The canonical original fixture GZIPs remain committed and match their original
+hashes. Missing records are not regenerated under their old identities or
+claimed preserved.
+
+[Linux CI](https://github.com/hjyoon/opennox/actions/runs/43758513837) passes
+all four profiles. [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43758382232)
+finishes with both profiles passing after one failed-only amd64 retry; the
+original successful 386 execution is carried forward. Six SHA-verified
+successful archives preserve **158 actual test mains**. Every new native
+identity and every preceding qualified native matrix passes in all six
+archives. Complete warning review covers **42 files** and
+**7,510,324,067 uncompressed bytes**, with **zero warnings**, including the first
+failed amd64 archive/log and the separate exact-PE diagnostic.
+
+The first Windows amd64 attempt remains failed/preserved: root and legacy
+report GC free-object fatals, while server exits with an access violation.
+The unchanged-source retry passes. The
+[exact-PE diagnostic](https://github.com/hjyoon/opennox/actions/runs/43760327506)
+passes root/server full replays and six focused ordinary/GC controls.
+Its full legacy replay fails three old fixture setup checks because the
+absolute retained-artifact-directory environment is absent. That replay
+remains partial; later passes do not establish the first GC failure's cause
+or repair.
+
+The preservation audit initially finds **491 absent older program paths**,
+representing 284 unique versions. Workspace/archive searches preserve four
+exact versions through six surviving RAM copies. The user explicitly directs
+the work to record the deletions and continue; these historical programs are
+not required for the next port. Cleanup also removes current batch records.
+A separate snapshot outside the validation tmp ROOT preserves **2,399 still
+available files / 2,016,601,439 logical bytes**, including current CI archives,
+raw decoded job logs, comparison matrices, scripts and RAM copies. No deletion
+is relabelled as successful preservation. Future validation uses an artifacts
+directory outside the actively cleaned tmp ROOT.
+
+The next C target is `nox_xxx_castPoison_52C720`. Its 287-byte C body loads
+the target through a truncating integer; the original span is 48 bytes.
+A fresh original CPU/model/C-before reference and preport seal will precede
+its migration. All nine final Warrior/Conjurer/Wizard chapter 1–3 audits,
+the public Save/Load pixel failure, unexplained Windows GC failure and current
+reference-record recovery remain open. Chapter 4 and later remain excluded.
+
+Protected checkpoint: `/Users/ghost/codex-sandbox/artifacts/opennox-s25-live-preservation-20261116-v1/arachnaphobia-trace-functional-checkpoint-20261116-v1.json` (SHA-256 `1a677f90b6ffac8e521cb393553834a9da243d3b6ce4af1df0068d1f116b90a5`).
+
 ### Native Meteor and MeteorShower cast entries, 2026-11-16
 
-The qualified engine is `d40a296e892333cf0429b7c3c0752338d10eb294`, pushed to
+The last fully recorded Meteor qualification uses engine
+`d40a296e892333cf0429b7c3c0752338d10eb294`, pushed to
 `origin/port/go1.27-multiarch`. The public C entries
 `nox_xxx_castMeteorShower_52D8A0` and `nox_xxx_castMeteor_52D9D0` now enter Go
 with complete native Object and acceptance pointers. The cumulative qualified
-split-file count is **180 Go entries**. **All-C migration and overall 100%
+split-file count at that checkpoint was **180 Go entries**. **All-C migration and overall 100%
 remain open.**
 
 Both casts preserve live cache, owner, argument, update-data and player reads,
@@ -146,9 +224,9 @@ failed results and executable versions were preserved.
 
 All nine final Warrior/Conjurer/Wizard chapter 1–3 audits and the public
 Save/Load pixel failure remain open. Chapter 4 and later remain excluded.
-The next read-only target is `nox_xxx_spellArachna_52DC80`: its exact 1,078-byte
-C body and 197-byte original span are preserved, with no original CPU cases,
-source port or new credit yet.
+At that checkpoint the next read-only target was
+`nox_xxx_spellArachna_52DC80`. Its implemented C export and subsequent
+record-loss status are described above.
 
 Full qualification: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/qualified-meteor-cast-entries-v1.json` (SHA-256 `08b8e512c573ec4555ad207227e978c45251f802c3b0c8ec9b2355ff2c8c1745`).
 

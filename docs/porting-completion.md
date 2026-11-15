@@ -60,6 +60,91 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Fireball callback, 2026-11-15
+
+The qualified source/runtime engine is `10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0`, pushed to
+`origin/port/go1.27-multiarch`. Fireball 52C790 now uses Go through its
+actual six-argument public C export, the unchanged shared C callback and the
+production Go caller. The cumulative qualified split-file count is **167 Go
+entries**. **All-C migration and overall 100% remain open.**
+
+The fourth argument retains the firing Object pointer at native width.
+Projectile identity, fields and allocation results also retain native width;
+the stock type-name table intentionally keeps its packed four-byte PE slots.
+The implementation preserves live field reloads after world services, both
+direction stores before sound lookup, the audio owner and original binary32
+spill order under startup ToZero/53-bit arithmetic. It does not change host
+floating-point state or copy original caller-stack temporaries into a native
+SpellAcceptArg.
+
+The bounded reference executes all **312 unchanged Fireball bytes**, with
+319 separately traced original startup/control bytes establishing 0xe3f.
+All original image bytes, stock type names and the 2,048-byte direction table
+remain immutable. It checks the whole heap, caller words outside the two
+declared float temporaries, saved registers and FP stack/control. The initial
+213 cases were sealed before implementation. Thirty additional cases use
+actual definition speed 72/32 and positive map coordinates; the complete
+213-case prefix remains byte-identical. These later inputs are explicitly
+post-implementation reference extension. This finite corpus does not establish
+signaling-NaN or extended-exponent behavior or whole stock-game execution.
+
+Pre-port standalone reproduction retains the exact 1,964-byte incoming C
+body and unchanged shared callback: two controls, two actual high-firing-
+pointer SIGSEGVs and two projectile identity/native-layout corruption
+observations. These are bounded reproductions, not integrated game crashes.
+Reversing only the C guard, header prototype and Go-wrapper replacement
+reconstructs the complete incoming C, header and Go files. All 59 original
+pre-port sealed paths and all 89 extended reference paths remain unchanged.
+Initial helper/build failures and their source overlays remain retained.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **108,148**
+  checks on the identical 9,223-input lease
+  `fc2e8c59b8a3c63da9c35d20b65deff1ff39f7d8b0ceb440bc4c6a94410205d9`.
+  The new group has 2,200 native checks, including one parent executing 45
+  real type/allocation/map/balance/spell/AUD/audio compositions. The earlier
+  packed-type compatibility check also passes. All three call routes run
+  against three foreign memory placements with full-object/unused-argument
+  canaries. World placement is the declared default-composition observation
+  boundary; that check does not substitute the other default services.
+- All four macOS products passed build, metadata, help and 43 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles with natural exits.
+  Functional Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43683820642` and Windows CI `43683500666` passed all six profiles,
+  the new Fireball group and prior qualified native matrices. SHA-verified
+  ZIPs retain 158 actual test mains and complete raw JSON. The compiler-warning
+  scan examined 5,874,887,622 uncompressed log/JSON bytes with zero warnings.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox-server | 921,405 | 7 |
+| linux-amd64-opennox | 927,516 | 57 |
+| linux-amd64-opennox-hd | 927,516 | 57 |
+| linux-amd64-opennox-server-hd | 921,405 | 7 |
+| opennox-server-windows-amd64 | 919,390 | 11 |
+| opennox-server-windows-386 | 899,457 | 94 |
+
+All 4,714 existing protected test/fixture/E2E inputs, 4,649 original asset
+and personal Save files, 387 tracked E2E inputs, 56 prior products, four new
+products and 20 additional historical product candidates remain unchanged.
+Only the inactive dedicated Go build cache was cleared: 1,913,224 KiB to
+8 KiB, with 376 retained program paths SHA-verified before and after.
+Modules, source, assets, Save, evidence, failed results and executables remain.
+
+The refreshed 13-file AST has 1,895 active original definitions and 2,367
+pointer/integer casts, including 2,082 narrow candidates in 220 functions.
+All 207 legacy C files compile in the broader read-only audit, which finds
+2,585 main-source definitions, 14 unresolved macros and 3,175 casts. The
+tracked 629 C paths include 416 test/reference files and 213 broad runtime/
+build files. These inventories are not a completion denominator. The next
+review targets 541300, 5413B0 and 541490: remaining raw monster-cast C entries
+and their native-width object, AI-stack and spell-argument links.
+
+Machine-readable evidence: `docs/split-fireball-native-progress-20261115.json`;
+full retained qualification: `ROOT/split-fireball-native-20261115-v1/qualified-fireball-entry-v1.json`.
+
 ### Native resource spell callbacks, 2026-11-15
 
 The qualified source/runtime engine is `7f02c1ffb8cc3cfba116d240e19dccee79aa80e1`, pushed to

@@ -1,0 +1,1461 @@
+{
+  "utc": "2026-11-15T06:37:31.060769+00:00",
+  "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+  "qualified_entries": 1,
+  "cumulative_qualified_split_Go_entries": 167,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "entries": [
+    "nox_xxx_castFireball_52C790"
+  ],
+  "source_lease": {
+    "files": 9223,
+    "sha256": "fc2e8c59b8a3c63da9c35d20b65deff1ff39f7d8b0ceb440bc4c6a94410205d9"
+  },
+  "original": {
+    "cases": 243,
+    "preport_cases": 213,
+    "preport_prefix_byte_identical": true,
+    "spell_instruction_bytes": 312,
+    "original_startup_executed_bytes": 319,
+    "control_word": "0xe3f",
+    "declared_services": {
+      "0x4e3810": 243,
+      "0x535250": 228,
+      "0x4daa50": 228,
+      "0x419d70": 228,
+      "0x424800": 228,
+      "0x501960": 228
+    },
+    "whole_original_image_unchanged": true,
+    "whole_incoming_C_header_Go_reconstructed": true,
+    "original_C_body_bytes": 1964,
+    "stock_direction_table_bytes": 2048,
+    "reference_extension_phase": "Thirty additional inputs after implementation;213 pre-port expected rows unchanged",
+    "fidelity_scope": "Finite corpus; SNaN and x87 extended-exponent limits remain explicit boundaries"
+  },
+  "C_before": {
+    "controls": 2,
+    "standalone_SIGSEGVs": 2,
+    "projectile_identity_and_layout_observations": 2,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "original_layout_and_stock": 2199,
+    "real_default_parent_checks": 1,
+    "real_default_composition_cases": 45,
+    "native_total": 2200,
+    "prior_packed_type_compatibility_checks": 1,
+    "total": 2201
+  },
+  "normal": {
+    "changed_source_paths": [],
+    "source_files": 9223,
+    "source_lease_sha256": "fc2e8c59b8a3c63da9c35d20b65deff1ff39f7d8b0ceb440bc4c6a94410205d9",
+    "exit_code": 0,
+    "elapsed_seconds": 13.277,
+    "test_actions": {
+      "pass": 108148
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "strict": {
+    "changed_source_paths": [],
+    "source_files": 9223,
+    "source_lease_sha256": "fc2e8c59b8a3c63da9c35d20b65deff1ff39f7d8b0ceb440bc4c6a94410205d9",
+    "exit_code": 0,
+    "elapsed_seconds": 185.161,
+    "test_actions": {
+      "pass": 108148
+    },
+    "package_actions": {
+      "pass": 1
+    },
+    "failure_count": 0,
+    "first_failures": [],
+    "warning_count": 0,
+    "first_warnings": []
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/products-v1/opennox",
+      "bytes": 70063842,
+      "sha256": "8363e7f7b2f8fb02102a5f6619a2f66b1da57fc2aee1a01472db18b00b7a627a",
+      "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/products-v1/opennox-hd",
+      "bytes": 70162914,
+      "sha256": "5fd3d89754e8fed2a5b11b4fba146683a0422e3e3464eb97a0ee92c3c204775f",
+      "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/products-v1/opennox-server",
+      "bytes": 66630274,
+      "sha256": "1b4a7c7aa1133ad85c351ff7c8431ed3f41ec4d659dcfa409639159d8d4b2c2e",
+      "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/products-v1/opennox-server-hd",
+      "bytes": 66745858,
+      "sha256": "77a80c68206558a292a4cac76724f3624c17954fb986ae8aa6b7f2085388d3d4",
+      "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0"
+    }
+  ],
+  "native_public_control_symbols_per_product": 43,
+  "runtime_profiles": {
+    "normal": {
+      "core": [
+        {
+          "profile": "normal",
+          "scenario": "host-game-projectile-fx",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.968,
+          "warnings": 0
+        },
+        {
+          "profile": "normal",
+          "scenario": "host-game-urchin-pixie-swarm",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 48.23,
+          "warnings": 0
+        }
+      ],
+      "functional_save": [
+        {
+          "profile": "normal",
+          "pixel_golden_pass": false,
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.496,
+          "warnings": 0
+        }
+      ],
+      "independent_chat": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "product_sha256": "8363e7f7b2f8fb02102a5f6619a2f66b1da57fc2aee1a01472db18b00b7a627a",
+        "elapsed_seconds": 288.954,
+        "forced_processes": []
+      }
+    },
+    "highres": {
+      "core": [
+        {
+          "profile": "highres",
+          "scenario": "host-game-projectile-fx",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.52,
+          "warnings": 0
+        },
+        {
+          "profile": "highres",
+          "scenario": "host-game-urchin-pixie-swarm",
+          "audio": "mock",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.99,
+          "warnings": 0
+        }
+      ],
+      "functional_save": [
+        {
+          "profile": "highres",
+          "pixel_golden_pass": false,
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_seconds": 47.019,
+          "warnings": 0
+        }
+      ],
+      "independent_chat": {
+        "status": "passed",
+        "host_exit": 0,
+        "peer_exit": 0,
+        "own_chat_submissions": 8,
+        "independently_received_peer_messages": 4,
+        "received_host_reply": 1,
+        "cancelled_chats": 2,
+        "empty_chats": 2,
+        "source": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "product_sha256": "5fd3d89754e8fed2a5b11b4fba146683a0422e3e3464eb97a0ee92c3c204775f",
+        "elapsed_seconds": 289.787,
+        "forced_processes": []
+      }
+    }
+  },
+  "ci": {
+    "runs": [
+      43683820642,
+      43683500666
+    ],
+    "jobs": [
+      {
+        "id": 132719955501,
+        "name": "Linux/amd64 opennox",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683820642,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132719955741,
+        "name": "Linux/amd64 opennox-server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683820642,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132719955761,
+        "name": "Linux/amd64 opennox-hd",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683820642,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132719955762,
+        "name": "Linux/amd64 opennox-server-hd",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683820642,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install native client libraries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify native toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Build and verify native product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Test every package for the product variant",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Check damage through the default product link mode",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 132718987249,
+        "name": "Windows/386 server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683500666,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install maintained UCRT compilers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Probe Windows/386 cgo toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Verify pre-execution retention and independent deadlines",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Build server product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Verify product and run help",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify native foreign allocation ownership",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Test root, server, and legacy packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Retain actual test executables after interrupted suites",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Replay exact Windows/386 Skeleton and Golem references under GC pressure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          }
+        ]
+      },
+      {
+        "id": 132718987432,
+        "name": "Windows/amd64 server",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 43683500666,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install maintained UCRT compilers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Probe Windows/386 cgo toolchain",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6
+          },
+          {
+            "name": "Verify pre-execution retention and independent deadlines",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Build server product",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Verify product and run help",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify native foreign allocation ownership",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Test root, server, and legacy packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Retain actual test executables after interrupted suites",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Replay exact Windows/386 Skeleton and Golem references under GC pressure",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 13
+          },
+          {
+            "name": "Run actions/upload-artifact@v7.0.2",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Post Run actions/setup-go@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          }
+        ]
+      }
+    ],
+    "archives": [
+      {
+        "artifact_id": 14150320593,
+        "name": "linux-amd64-opennox-server-10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14150320593-linux-server.zip",
+        "bytes": 258635604,
+        "sha256": "11ad9b750aea1e977965fef94a1417c4fbb17c56457d21a724a84dabf20adc27",
+        "retained_test_mains": 36,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "pass": 921405,
+            "skip": 7
+          },
+          "package_actions": {
+            "pass": 36,
+            "skip": 22
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "terminal_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "missing_packages": [],
+          "failures": []
+        }
+      },
+      {
+        "artifact_id": 14150245252,
+        "name": "linux-amd64-opennox-10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14150245252-linux-client.zip",
+        "bytes": 214934633,
+        "sha256": "4224472a178f32a5bb2a1b5a9c04a0173903780144aeec23bcf0941c1cf2be95",
+        "retained_test_mains": 40,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "pass": 927516,
+            "skip": 57
+          },
+          "package_actions": {
+            "pass": 40,
+            "skip": 21
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxmovie",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/noxmovie",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "terminal_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxmovie",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/noxmovie",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "missing_packages": [],
+          "failures": []
+        }
+      },
+      {
+        "artifact_id": 14150071159,
+        "name": "linux-amd64-opennox-hd-10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14150071159-linux-client-hd.zip",
+        "bytes": 214962214,
+        "sha256": "6284c44ea2ccf5f814fa8e5fc2938061b64d2f7eea94dc7897ea690b5329461d",
+        "retained_test_mains": 40,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "pass": 927516,
+            "skip": 57
+          },
+          "package_actions": {
+            "pass": 40,
+            "skip": 21
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxmovie",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/noxmovie",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "terminal_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxmovie",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/noxmovie",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "missing_packages": [],
+          "failures": []
+        }
+      },
+      {
+        "artifact_id": 14149664908,
+        "name": "linux-amd64-opennox-server-hd-10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14149664908-linux-server-hd.zip",
+        "bytes": 202341078,
+        "sha256": "e3f264aeff96ced98573f0b2dea33df6159b26f3fd3f117c69c4c70200c12037",
+        "retained_test_mains": 36,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "pass": 921405,
+            "skip": 7
+          },
+          "package_actions": {
+            "pass": 36,
+            "skip": 22
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "terminal_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/client",
+            "github.com/opennox/opennox/v1/client/gui",
+            "github.com/opennox/opennox/v1/client/input",
+            "github.com/opennox/opennox/v1/client/noxrender",
+            "github.com/opennox/opennox/v1/client/render",
+            "github.com/opennox/opennox/v1/client/seat/headless",
+            "github.com/opennox/opennox/v1/cmd/opennox",
+            "github.com/opennox/opennox/v1/cmd/opennox-server",
+            "github.com/opennox/opennox/v1/common/discover",
+            "github.com/opennox/opennox/v1/common/flags",
+            "github.com/opennox/opennox/v1/common/gsync",
+            "github.com/opennox/opennox/v1/common/memmap",
+            "github.com/opennox/opennox/v1/common/memmap/nox",
+            "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+            "github.com/opennox/opennox/v1/common/ntype",
+            "github.com/opennox/opennox/v1/common/serial",
+            "github.com/opennox/opennox/v1/common/sound",
+            "github.com/opennox/opennox/v1/common/unit/ai",
+            "github.com/opennox/opennox/v1/internal/binfile",
+            "github.com/opennox/opennox/v1/internal/blobs",
+            "github.com/opennox/opennox/v1/internal/callgraph",
+            "github.com/opennox/opennox/v1/internal/cgoabi",
+            "github.com/opennox/opennox/v1/internal/cryptfile",
+            "github.com/opennox/opennox/v1/internal/exportpkg",
+            "github.com/opennox/opennox/v1/internal/layoutaudit",
+            "github.com/opennox/opennox/v1/internal/mainmenu",
+            "github.com/opennox/opennox/v1/internal/nativelayout",
+            "github.com/opennox/opennox/v1/internal/netlist",
+            "github.com/opennox/opennox/v1/internal/netstr",
+            "github.com/opennox/opennox/v1/internal/noxbuild",
+            "github.com/opennox/opennox/v1/internal/noxfactor",
+            "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+            "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+            "github.com/opennox/opennox/v1/internal/noxoracle",
+            "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+            "github.com/opennox/opennox/v1/internal/noxscriptwire",
+            "github.com/opennox/opennox/v1/internal/offalign",
+            "github.com/opennox/opennox/v1/internal/oracletest",
+            "github.com/opennox/opennox/v1/internal/porttest",
+            "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+            "github.com/opennox/opennox/v1/internal/vers",
+            "github.com/opennox/opennox/v1/internal/vers/git",
+            "github.com/opennox/opennox/v1/internal/version",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+            "github.com/opennox/opennox/v1/legacy/cnxz",
+            "github.com/opennox/opennox/v1/legacy/common/alloc",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+            "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+            "github.com/opennox/opennox/v1/legacy/common/ccall",
+            "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+            "github.com/opennox/opennox/v1/legacy/dialog",
+            "github.com/opennox/opennox/v1/legacy/music",
+            "github.com/opennox/opennox/v1/legacy/timer",
+            "github.com/opennox/opennox/v1/server",
+            "github.com/opennox/opennox/v1/server/netlib",
+            "github.com/opennox/opennox/v1/server/noxscript"
+          ],
+          "missing_packages": [],
+          "failures": []
+        }
+      },
+      {
+        "artifact_id": 14149304942,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14149304942-windows-amd64.zip",
+        "bytes": 164063784,
+        "sha256": "8d4bf9aab9e03559d847ffb1275970057efef86259b199f310bc0a63667284b7",
+        "retained_test_mains": 3,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "pass": 919390,
+            "skip": 11
+          },
+          "package_actions": {
+            "github.com/opennox/opennox/v1/server": "pass",
+            "github.com/opennox/opennox/v1": "pass",
+            "github.com/opennox/opennox/v1/legacy": "pass"
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/server"
+          ],
+          "missing_packages": [],
+          "unexpected_packages": [],
+          "unfinished_tests": [],
+          "failures": [],
+          "build_failures": [],
+          "build_warnings": [],
+          "raw_JSON_bytes": 946687072,
+          "raw_JSON_sha256": "29f29da111a0343a728c60d336346f0c2480844948ccd47bd9daca27c1954c40"
+        }
+      },
+      {
+        "artifact_id": 14148969028,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-fireball-native-20261115-v1/ci-14148969028-windows-386.zip",
+        "bytes": 158346086,
+        "sha256": "297ba178aad212580b3ee0053514fafe62f99d9a722f5be0d9aa5578f18cf221",
+        "retained_test_mains": 3,
+        "summary": {
+          "test_exit_code": 0,
+          "test_actions": {
+            "skip": 94,
+            "pass": 899457
+          },
+          "package_actions": {
+            "github.com/opennox/opennox/v1/server": "pass",
+            "github.com/opennox/opennox/v1": "pass",
+            "github.com/opennox/opennox/v1/legacy": "pass"
+          },
+          "expected_packages": [
+            "github.com/opennox/opennox/v1",
+            "github.com/opennox/opennox/v1/legacy",
+            "github.com/opennox/opennox/v1/server"
+          ],
+          "missing_packages": [],
+          "unexpected_packages": [],
+          "unfinished_tests": [],
+          "failures": [],
+          "build_failures": [],
+          "build_warnings": [],
+          "raw_JSON_bytes": 923115505,
+          "raw_JSON_sha256": "da5736790c3fc2f0d20ba5141dc10cb14243f1139ea82b22e2128acbd09efedb"
+        }
+      }
+    ],
+    "compiler_warnings": 0,
+    "uncompressed_warning_scan_bytes": 5874887622
+  },
+  "preservation": {
+    "original_asset_and_Save_files": 4649,
+    "existing_protected_inputs": 4714,
+    "tracked_e2e_files": 387,
+    "original_asset_Save_or_existing_test_changes": [],
+    "prior_products": 56,
+    "new_products": 4,
+    "additional_historical_products": 20,
+    "preport_sealed_paths": 59,
+    "sealed_reference_paths": 89,
+    "initial_failures_retained": [
+      "initial-C-before-helper-visibility-failure-v1.json",
+      "focused-fireball-v1/summary.json",
+      "focused-fireball-v2/summary.json"
+    ],
+    "build_cache_cleanup": {
+      "utc": "2026-11-15T06:36:26.925959+00:00",
+      "exit_code": 0,
+      "source_revision": "10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0",
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/build",
+      "cache_KiB_before": 1913224,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 376,
+      "elapsed_seconds": 27.512352457997622,
+      "scope": "Only inactive dedicated Go build cache after completed tests. All selected historical/current test, before-code and product program paths verified before/after. Runtime products use retained executables independently of the inactive build cache. Modules, source, assets,Save, all programs, failures, ZIPs and older products are untouched. Frees completed product-build cache for complete CI artifact retention; no active compiler allowed."
+    }
+  },
+  "inventory": {
+    "tracked_C_files": 629,
+    "categories": {
+      "runtime_or_build_source": 213,
+      "test_or_validation_source": 416
+    },
+    "split_original_definitions": 1895,
+    "split_pointer_integer_casts": 2367,
+    "narrow_candidates": 2082,
+    "functions_with_narrow_candidates": 220,
+    "broad_source_files": 207,
+    "broad_main_source_definitions": 2585,
+    "unresolved_macros": 14,
+    "broad_pointer_integer_casts": 3175,
+    "completion_denominator": false
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "inherited_public_SaveLoad_pixel_golden": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  }
+}

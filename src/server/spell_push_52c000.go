@@ -12,12 +12,12 @@ type pushCastDeps52C000 struct {
 }
 
 // pushCast52C000 restores GAME.EXE 0052C000..0052C05D. The signed DWORD
-// level multiplies the balance value before a binary32 spill. The origin is
+// level multiplies the balance value at PC53/ToZero before a binary32 ToZero spill. The origin is
 // the caster's live PosVec, not the accepted target or the audio owner's
 // position. Do not materialize caster +56: native PosVec is at +60 on wide
 // hosts. The original neither clamps the level nor rejects an empty push.
 func pushCast52C000(id int32, owner, caster *Object, level int32, h pushCastDeps52C000) int32 {
-	force := float32(h.balance("PushPowerCoeff") * float64(level))
+	force := pullPushForce52BFA0(h.balance("PushPowerCoeff"), level, false)
 	h.pushUnits(caster.PosVec, 600, 10, force, nil, 0, 0)
 	h.castAudio(id, owner)
 	return 1

@@ -41,7 +41,7 @@ func TestPushCastNativePointersLiveOriginAndOrder52C000(t *testing.T) {
 		},
 		pushUnits: func(origin types.Pointf, outer, inner, force float32, source *Object, callback, callbackArg int) {
 			events = append(events, "push")
-			if origin != types.Ptf(123.5, -456.25) || outer != 600 || inner != 10 || math.Float32bits(force) != 0x40400001 ||
+			if origin != types.Ptf(123.5, -456.25) || outer != 600 || inner != 10 || math.Float32bits(force) != 0x40400000 ||
 				source != nil || callback != 0 || callbackArg != 0 {
 				t.Fatalf("push=%v/%g/%g/%#x/%p/%d/%d", origin, outer, inner, math.Float32bits(force), source, callback, callbackArg)
 			}
@@ -78,7 +78,7 @@ func TestPushCastSignedLevelAndBinary32Spill52C000(t *testing.T) {
 						}
 					},
 				})
-				want := float32(coefficient * float64(level))
+				want := pullPushOriginalForce52BFA0(t, 1, coefficient, level)
 				if got != 1 || pushes != 1 || audio != 1 ||
 					(!math.IsNaN(float64(want)) && math.Float32bits(gotForce) != math.Float32bits(want)) ||
 					(math.IsNaN(float64(want)) && !math.IsNaN(float64(gotForce))) {

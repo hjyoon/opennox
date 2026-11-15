@@ -9384,6 +9384,7 @@ int sub_52BF50(int a1, int a2, int a3, int a4, int* a5) {
 #endif
 
 //----- (0052BFA0) --------------------------------------------------------
+#if 0 // Native Pull cast: pull_push_native_entry.go
 int nox_xxx_castPull_52BFA0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;   // eax
 	float v8; // [esp+0h] [ebp-10h]
@@ -9394,8 +9395,10 @@ int nox_xxx_castPull_52BFA0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	nox_xxx_aud_501960(v6, a3, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052C000) --------------------------------------------------------
+#if 0 // Native Push cast: pull_push_native_entry.go
 int nox_xxx_castPush_52C000(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;   // eax
 	float v8; // [esp+18h] [ebp+18h]
@@ -9406,6 +9409,7 @@ int nox_xxx_castPush_52C000(int a1, int a2, int a3, int a4, int a5, int a6) {
 	nox_xxx_aud_501960(v6, a3, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052C060) --------------------------------------------------------
 int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {

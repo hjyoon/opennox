@@ -12,12 +12,12 @@ type pullCastDeps52BFA0 struct {
 }
 
 // pullCast52BFA0 restores GAME.EXE 0052BFA0..0052BFFD. Multiply the balance
-// by the signed DWORD level, negate (FCHS), then spill to binary32, preserving
+// by the signed DWORD level at PC53/ToZero, negate (FCHS), then spill toward zero, preserving
 // negative zero. The origin is the caster's live native PosVec, not the
 // acceptance target or the audio owner's position. No level/force clamp or
 // silent nil-caster success existed in the original.
 func pullCast52BFA0(id int32, owner, caster *Object, level int32, h pullCastDeps52BFA0) int32 {
-	force := float32(-(h.balance("PullPowerCoeff") * float64(level)))
+	force := pullPushForce52BFA0(h.balance("PullPowerCoeff"), level, true)
 	h.pushUnits(caster.PosVec, 600, 10, force, nil, 0, 0)
 	h.castAudio(id, owner)
 	return 1

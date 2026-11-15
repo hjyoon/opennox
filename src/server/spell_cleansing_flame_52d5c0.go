@@ -3,7 +3,6 @@ package server
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
@@ -44,78 +43,26 @@ func cleansingFlameCacheOffset52D5C0(slot int32) uintptr {
 // priority-message recipient, the fourth owns each flame, and the argument
 // is unused. Do not add caster/argument guards or clamp the original level.
 func cleansingFlameCast52D5C0(id int32, second, recipient, caster *Object, level int32, h cleansingFlameCastDeps52D5C0) int32 {
-	if h.loadCache(0) == 0 {
-		for slot, name := range [10]string{
-			"SmallFlameCleanse", "SmallFlameCleanse", "MediumFlameCleanse", "FlameCleanse", "LargeFlameCleanse",
-			"SmallBlueFlameCleanse", "SmallBlueFlameCleanse", "MediumBlueFlameCleanse", "BlueFlameCleanse", "LargeBlueFlameCleanse",
-		} {
-			h.storeCache(int32(slot), h.lookupType(name))
-		}
-	}
-	if second != nil {
-		for owned := second.Field129; owned != nil; owned = owned.Field128 {
-			kind := uint32(owned.TypeInd)
-			for slot := int32(0); slot < 10; slot++ {
-				if kind == h.loadCache(slot) {
-					h.priorityMsg(recipient, "plyrspel.c:TooManySpells", 0)
-					return 0
-				}
-			}
-		}
-	}
-	base := int32(5)
-	if id == 10 {
-		base = 0
-	}
-	if !h.hasGameFlag(2048) {
-		level = 4
-	}
-	for remaining := 48; remaining != 0; remaining-- {
-		power := level - h.random(0, 1)
-		if power < 1 {
-			continue
-		}
-		flame := h.newObject(h.loadCache(base + power - 1))
-		if flame == nil {
-			continue
-		}
-		direction := int16(h.random(0, 255))
-		radius := float64(flame.Shape.Circle.R)
-		flame.Direction1 = Dir16(direction)
-		fromX := caster.PosVec.X
-		distance := monsterMoveToRunAddChop53_544434(radius, float64(caster.Shape.Circle.R))
-		distance = monsterMoveToRunAddChop53_544434(distance, 4)
-		vector := h.directionVector(direction)
-		// Keep the original separate FMUL, FADD and binary32 ToZero spill;
-		// ARM64 must not contract this sequence into a fused multiply-add.
-		x := monsterMoveForceMulChop53_50D4FE(distance, float64(vector.X))
-		fromY := caster.PosVec.Y
-		x = monsterMoveToRunAddChop53_544434(x, float64(caster.PosVec.X))
-		y := monsterMoveForceMulChop53_50D4FE(distance, float64(vector.Y))
-		y = monsterMoveToRunAddChop53_544434(y, float64(caster.PosVec.Y))
-		position := types.Ptf(float32(monsterMoveToRunSpill544440(x)), float32(monsterMoveToRunSpill544440(y)))
-		if !h.traceRay(types.Ptf(fromX, fromY), position, MapTraceFlags(65)) {
-			h.delayedDelete(flame)
-			continue
-		}
-		h.createAt(flame, caster, position)
-		flame.Direction2 = flame.Direction1
-		flame.VelVec.X = float32(monsterMoveToRunSpill544440(float64(vector.X) * 4))
-		flame.VelVec.Y = float32(monsterMoveToRunSpill544440(float64(vector.Y) * 4))
-		fps := h.fps()
-		duration := h.random(int32(3*fps), int32(6*fps))
-		flame.Field34 = h.frame() + uint32(duration)
-		flame.Pos39 = caster.PosVec
-		flame.Update = h.updateCallback
-		h.addUpdatable(flame)
-		class := flame.ObjClass | object.ClassClientPredict
-		flame.Float28 = 0
-		flame.ObjClass = class
-		h.predictLinear(flame)
-	}
-	castSound := h.castSound(id)
-	h.audio(castSound, caster, 0, 0)
-	return 1
+	return CleansingFlameNative52D5C0(id, second, recipient, caster, level, CleansingFlameNativeRuntime52D5C0{
+		LoadCache:       h.loadCache,
+		StoreCache:      h.storeCache,
+		LookupType:      h.lookupType,
+		PriorityMsg:     h.priorityMsg,
+		HasGameFlag:     h.hasGameFlag,
+		Random:          h.random,
+		NewObject:       h.newObject,
+		DirectionVector: h.directionVector,
+		TraceRay:        h.traceRay,
+		CreateAt:        h.createAt,
+		DelayedDelete:   h.delayedDelete,
+		Fps:             h.fps,
+		Frame:           h.frame,
+		UpdateCallback:  h.updateCallback,
+		AddUpdatable:    h.addUpdatable,
+		PredictLinear:   h.predictLinear,
+		CastSound:       h.castSound,
+		Audio:           h.audio,
+	})
 }
 
 type CleansingFlameCastRuntime52D5C0 struct {

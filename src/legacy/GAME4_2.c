@@ -10100,6 +10100,7 @@ int nox_xxx_castFist_52D3C0(int a1, int a2, int a3, int a4, int a5, int a6) {
 #endif
 
 //----- (0052D5C0) --------------------------------------------------------
+#if 0 // Original PE32 body retained; native entry is in cleansing_flame_native.go.
 int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6) {
 	int a2 = a2p;
 	int a3 = a3p;
@@ -10203,6 +10204,7 @@ int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object
 	nox_xxx_aud_501960(v18, a4, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052D8A0) --------------------------------------------------------
 int nox_xxx_castMeteorShower_52D8A0(int a1, int a2, int a3, int a4, int a5, int a6) {

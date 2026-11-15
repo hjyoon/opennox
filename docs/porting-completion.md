@@ -60,6 +60,113 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native private player record lists, 2026-11-15
+
+The qualified source/runtime engine is
+`95ef0d2de61f57da20bcad2ca424a670d3dc07c4`, pushed to
+`origin/port/go1.27-multiarch`. All 11 private player-record/list entries
+4259C0 through 425BE0 now execute Go. The cumulative qualified split-file
+count is **163 Go entries**. **All-C migration and overall 100% remain open.**
+
+A process-lifetime foreign root replaces the packed 12-byte list head;
+the adjacent raw 32-bit initialization flag retains its own storage and
+nonzero values. Parent/child owners use native links: 80/32 bytes on 64-bit,
+52/16 on 32-bit. Name code units and numeric IDs stay fixed-width. The sole
+old direct payload consumer, team setup 418840, now shares the native C
+layout and retains its full team pointer. Its remaining C body receives no
+extra Go-port credit. Public entry signatures and decoded-C pointer returns
+remain intact; return values are computed before releasing their owners.
+
+The independent reference executes 63 sequences and 3,276 operations over
+655 unchanged original instruction bytes. Only declared malloc/free services
+are replaced. The original root/flag 16-byte owner may change; every other
+PE byte, input string and allocation redzone stays unchanged after every
+operation. The prior 54-sequence prefix remains byte-identical. Supplied
+allocation fills 0/A5/3C are legal reference-provider states; the production
+allocator retains the decoded C's zeroed allocation behavior.
+
+Actual Players.ResetInd and StrCopy16 execution resolves the previous name
+termination question. A full ten-unit Field2072 is followed by Active=1 and
+zero padding, so the original raw copy includes an eleventh unit 1 before
+NUL. The new reference includes this input and preserves the original
+name/ID overlap. Raw UTF16, including unpaired surrogates, never passes
+through a Go string. This is not a new general length/validity guarantee for
+arbitrary raw C inputs; the packet decoder independently reads five units.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **102,749**
+  checks on the identical 9,205-input lease
+  `1c12128014d90ff408b6fa75910df97234c8639c0c07d768c924ba51748b60f2`.
+  New checks comprise 10,019 original/layout C checks in three foreign
+  placements, four real default-allocation/lifecycle checks, one full native
+  Player-field check and one high-address typed team-payload check.
+- All four macOS products passed build, metadata, help and 39 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional
+  Save/Load diagnostics and two corrected independent host/peer chat runs;
+  every game process exited naturally.
+- Linux CI `43668924481` and Windows CI `43668895526` passed all six profiles,
+  every new private-list group and the previous qualified native matrices.
+  Six complete SHA-verified ZIPs retain 158 actual test mains, raw JSON and
+  fixture evidence; decoded job logs are preserved.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox | 922,118 | 57 |
+| linux-amd64-opennox-hd | 922,118 | 57 |
+| linux-amd64-opennox-server | 916,007 | 7 |
+| linux-amd64-opennox-server-hd | 916,007 | 7 |
+| opennox-server-windows-386 | 894,059 | 94 |
+| opennox-server-windows-amd64 | 913,992 | 11 |
+
+All 2,529 original private-entry C body bytes remain archived. Reversing
+only their guards and the native typed payload access reconstructs the whole
+incoming C file. Before-code controls, representation observations and three
+standalone append SIGSEGVs remain preserved as bounded evidence, without
+claiming an integrated game crash.
+
+Initial extraction/helper API errors, the sandbox JIT launch failure and a
+strict link failure caused by exhausted disk space remain retained. The
+same strict source/profile passed after lossless inactive-cache compression.
+Both initial chat exchanges reached their assertions and natural exits, but
+a new receipt helper used the wrong commit metadata field; their failed
+receipts remain failed. Fresh chat-only runs with that single field read
+corrected passed in separate directories. The initial CI parser key error
+and its script remain retained; the corrected parser reads the unchanged
+ZIP bytes with all previous and new assertions intact. No old test, golden
+or runtime assertion was weakened.
+
+All 4,708 existing protected test/fixture/E2E inputs,
+original assets and personal Save (4,649 files), 387 tracked E2E inputs and
+all prior/current product versions remain unchanged. Cache cleanup verified
+355 selected program paths before and after clearing only the inactive
+product-build cache from 949,708 KiB to 8 KiB. Earlier cleanup separately
+verified nine current program paths. Transparent compression retains all
+selected paths, bytes, modes, mtimes and noncompression attributes; all 24
+selected older products passed help before and after compression. Failures,
+modules, original C reproductions and CI ZIPs remain retained.
+
+The same 13-file AST now contains 1,899 active original definitions and
+2,400 pointer/integer casts, including 2,113 narrow candidates in 224
+functions. The broader macOS audit compiled all 207 legacy C files:
+2,589 main-source definitions, 14 unresolved macro definitions and 3,208
+pointer/integer casts. The tracked C inventory remains 629 files: 416
+validation/reference and 213 broad runtime/build sources. These are review
+inventories, not a remaining-algorithm denominator or completion percentage.
+
+Next, read-only preparation covers health restore 52BF20, mana restore
+52BF50 and Lesser Heal 52DD50. Nineteen sealed files retain source/callback
+contracts and 351 unchanged original instruction bytes. Original execution,
+before-code reproduction and native source migration remain pending; this
+preparation earns zero Go credit.
+
+Evidence: `docs/split-private-player-record-list-native-progress-20261115.json`,
+ROOT `split-private-player-record-list-native-20261115-v1/qualified-private-player-record-entries-v1.json`
+and `split-resource-spell-native-20261115-v1/prepared-read-only-baseline-v1.json`.
+All nine final chapter 1-3 audits and the inherited failed public SaveLoad
+pixel golden remain open; functional diagnostics do not promote it.
+Chapter 4+ remains excluded.
+
 ### Native common intrusive lists, 2026-11-15
 
 The qualified source/runtime engine is

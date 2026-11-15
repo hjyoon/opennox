@@ -10207,6 +10207,7 @@ int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object
 #endif
 
 //----- (0052D8A0) --------------------------------------------------------
+#if 0 // Original PE32 body retained; native entry is in meteor_cast_native.go.
 int nox_xxx_castMeteorShower_52D8A0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;        // esi
 	int v7;        // edi
@@ -10258,8 +10259,10 @@ int nox_xxx_castMeteorShower_52D8A0(int a1, int a2, int a3, int a4, int a5, int 
 	}
 	return result;
 }
+#endif
 
 //----- (0052D9D0) --------------------------------------------------------
+#if 0 // Original PE32 body retained; native entry is in meteor_cast_native.go.
 int nox_xxx_castMeteor_52D9D0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;        // eax
 	int v7;        // ecx
@@ -10336,6 +10339,7 @@ LABEL_6:
 	}
 	return result;
 }
+#endif
 
 //----- (0052DB60) --------------------------------------------------------
 // Native-width implementation: server/spell_toxic_cloud_52db60.go, selected

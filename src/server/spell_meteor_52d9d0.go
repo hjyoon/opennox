@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
@@ -33,46 +32,22 @@ type meteorCastDeps52D9D0 struct {
 // and flags retain their original DWORD widths. The second object argument
 // and SpellAcceptArg.Obj are deliberately unused by the original.
 func meteorCast52D9D0(id int32, owner, caster *Object, arg *SpellAcceptArg, level int32, h meteorCastDeps52D9D0) int32 {
-	kind := h.loadCache()
-	if kind == 0 {
-		kind = h.lookupType("Meteor")
-		h.storeCache(kind)
-	}
-	// The original keeps the full cached DWORD in EAX throughout this walk;
-	// the object TypeInd is zero-extended, not the cache truncated to a WORD.
-	for owned := owner.Field129; owned != nil; owned = owned.Field128 {
-		if uint32(owned.TypeInd) == kind {
-			h.priorityMsg(owner, "ExecSpel.c:TooManyMeteors", 0)
-			return 0
-		}
-	}
-	from, to := caster.PosVec, arg.Pos
-	flags := MapTraceFlags(73)
-	if h.hasGameFlag(2048) {
-		flags = 9
-	}
-	if !h.traceRay(from, to, flags) {
-		if caster.ObjClass.Has(object.ClassPlayer) {
-			player := (*PlayerUpdateData)(caster.UpdateData).Player
-			h.inform(player.PlayerInd, 0, 2)
-		}
-		return 0
-	}
-	// Unlike the owned-list comparison, allocation reloads the live cache.
-	meteor := h.newObject(h.loadCache())
-	if meteor != nil {
-		data := (*MeteorUpdateData)(meteor.UpdateData)
-		// 0052DAE8 spills the balance result to binary32 before FISTP.
-		data.Damage = spellDurationRoundNearestEven(float32(h.balance("MeteorDamage", level-1)))
-		h.createAt(meteor, owner, arg.Pos)
-		meteor.Field5 |= 0x20
-		h.raise(meteor, 255)
-		meteor.Field27 = float32(-h.speed("MeteorSpeed"))
-		castSound := h.castSound(id)
-		h.audio(castSound, arg.Pos, 0, 0)
-	}
-	// Allocation failure still reports success in the original.
-	return 1
+	return MeteorNative52D9D0(id, owner, caster, arg, level, MeteorNativeRuntime52D9D0{
+		LoadCache:   h.loadCache,
+		StoreCache:  h.storeCache,
+		LookupType:  h.lookupType,
+		PriorityMsg: h.priorityMsg,
+		HasGameFlag: h.hasGameFlag,
+		TraceRay:    h.traceRay,
+		NewObject:   h.newObject,
+		Balance:     h.balance,
+		CreateAt:    h.createAt,
+		Raise:       h.raise,
+		Speed:       h.speed,
+		CastSound:   h.castSound,
+		Audio:       h.audio,
+		Inform:      h.inform,
+	})
 }
 
 // MeteorCastRuntime52D9D0 binds the original C-owned cache DWORD and ordinary

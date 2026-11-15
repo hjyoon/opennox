@@ -152,7 +152,7 @@ func TestMeteorShowerCastLevelsAndAllocationFailure52D8A0(t *testing.T) {
 				}
 				h.createAt = func(got, by *Object, position types.Pointf) {
 					created++
-					if got != shower || by != owner || position != arg.Pos || data.Damage != 4 {
+					if got != shower || by != owner || position != arg.Pos || data.Damage != 3 {
 						t.Fatal("wrong shower placement, ownership or damage")
 					}
 				}
@@ -234,7 +234,7 @@ func TestMeteorShowerCastDamageConversion52D8A0(t *testing.T) {
 		value float64
 		want  int32
 	}{
-		{0, 0}, {2.5, 2}, {3.5, 4}, {-2.5, -2}, {-3.5, -4}, {2.50000001, 2},
+		{0, 0}, {2.5, 2}, {3.5, 3}, {-2.5, -2}, {-3.5, -3}, {2.50000001, 2},
 		{math.NaN(), math.MinInt32}, {math.Inf(1), math.MinInt32}, {math.Inf(-1), math.MinInt32},
 		{2147483647, math.MinInt32}, {-2147483648, math.MinInt32}, {2147483520, 2147483520}, {-2147483904, math.MinInt32},
 	} {

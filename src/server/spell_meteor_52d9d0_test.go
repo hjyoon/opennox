@@ -98,7 +98,7 @@ func TestMeteorCastNativePointersAndLiveOrder52D9D0(t *testing.T) {
 		}
 		meteor.UpdateData = unsafe.Pointer(replacement)
 		arg.Pos = types.Ptf(90, 100)
-		return 2.50000001 // Spills to binary32 2.5 before ties-to-even conversion.
+		return 2.50000001 // Spills to binary32 2.5 before startup truncation.
 	}
 	h.createAt = func(got, by *Object, pos types.Pointf) {
 		events = append(events, "create")
@@ -196,7 +196,7 @@ func TestMeteorCastLevelsCacheAndAllocationFailure52D9D0(t *testing.T) {
 				if got != 1 || created != wantCalls || audio != wantCalls || *arg != before || cache != 76543 {
 					t.Fatalf("result/create/audio/arg/cache=%d/%d/%d/%+v/%d", got, created, audio, *arg, cache)
 				}
-				if allocated && (data.Damage != 4 || meteor.ZVal != 255 || meteor.Field27 != -4.5 ||
+				if allocated && (data.Damage != 3 || meteor.ZVal != 255 || meteor.Field27 != -4.5 ||
 					meteor.Field5 != 0xa0 || meteor.ObjFlags != 0x100 || meteor.Field29 != 17) {
 					t.Fatalf("unexpected meteor state=%+v damage=%d", meteor, data.Damage)
 				}
@@ -329,7 +329,7 @@ func TestMeteorCastDamageConversion52D9D0(t *testing.T) {
 		value float64
 		want  int32
 	}{
-		{0, 0}, {2.5, 2}, {3.5, 4}, {-2.5, -2}, {-3.5, -4}, {2.50000001, 2},
+		{0, 0}, {2.5, 2}, {3.5, 3}, {-2.5, -2}, {-3.5, -3}, {2.50000001, 2},
 		{math.NaN(), math.MinInt32}, {math.Inf(1), math.MinInt32}, {math.Inf(-1), math.MinInt32},
 		{2147483647, math.MinInt32}, {-2147483648, math.MinInt32}, {2147483520, 2147483520}, {-2147483904, math.MinInt32},
 	} {

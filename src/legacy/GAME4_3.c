@@ -773,7 +773,9 @@ int sub_536E80(char* a1, int* a2) {
 #endif
 
 //----- (005374B0) --------------------------------------------------------
+#if 0 // Original C wrapper retained; native entry is in trace_ray9_native.go.
 int nox_xxx_traceRay_5374B0(float4* a1) { return nox_xxx_mapTraceRay_535250(a1, 0, 0, 9); }
+#endif
 
 //----- (00537580) --------------------------------------------------------
 extern int nox_pending_collision_contains_native_537580(nox_object_t*);

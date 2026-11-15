@@ -10396,6 +10396,7 @@ int nox_xxx_castToxicCloud_52DB60(int a1, int a2, int a3, int a4, int a5) {
 #endif
 
 //----- (0052DC80) --------------------------------------------------------
+#if 0 // Original PE32 body retained; native entry is in arachnaphobia_native.go.
 int nox_xxx_spellArachna_52DC80(int a1, int a2, int a3, int a4, int a5) {
 	int v5;        // esi
 	int v6;        // edi
@@ -10435,6 +10436,7 @@ int nox_xxx_spellArachna_52DC80(int a1, int a2, int a3, int a4, int a5) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052DD50) --------------------------------------------------------
 #if 0 // Native resource spells: resource_spells_native_exports.go

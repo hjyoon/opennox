@@ -305,7 +305,7 @@ int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object
 int nox_xxx_castMeteorShower_52D8A0(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster, void* arg, int level);
 int nox_xxx_castMeteor_52D9D0(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster, void* arg, int level);
 int nox_xxx_castToxicCloud_52DB60(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_spellArachna_52DC80(int a1, int a2, int a3, int a4, int a5);
+int nox_xxx_spellArachna_52DC80(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster, void* arg);
 int sub_52DD50(int spell_id, void* second, nox_object_t* caster, nox_object_t* fourth, void* arg, int level);
 int nox_xxx_castEquake_52DE40(int a1, int a2, int a3, int a4, int a5, int a6);
 short nox_xxx_equakeDamage_52DEC0(int a1, int a2);

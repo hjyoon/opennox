@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -22,25 +21,15 @@ type arachnaphobiaCastDeps52DC80 struct {
 // argument and Player pointers must not pass through the five-int C entry.
 // The original does not use spell ID, second object, argument Obj or level.
 func arachnaphobiaCast52DC80(owner, caster *Object, arg *SpellAcceptArg, h arachnaphobiaCastDeps52DC80) int32 {
-	if h.loadCache() == 0 {
-		h.storeCache(h.lookupType("ArachnaphobiaFocus"))
-	}
-	from, to := caster.PosVec, arg.Pos
-	if !h.traceRay(from, to, MapTraceFlags(9)) {
-		// 0052DCD6 reads the live class AFTER trace, then follows the live
-		// player-update/player pointers. There is no sound on either branch.
-		if caster.ObjClass.Has(object.ClassPlayer) {
-			player := (*PlayerUpdateData)(caster.UpdateData).Player
-			h.inform(player.PlayerInd, 0, 2)
-		}
-		return 0
-	}
-	// 0052DD10 reloads the cache after trace; 0052DD22/25 read the live
-	// argument coordinates after allocation. Even allocation failure is 1.
-	if focus := h.newObject(h.loadCache()); focus != nil {
-		h.createAt(focus, owner, arg.Pos)
-	}
-	return 1
+	return ArachnaphobiaNative52DC80(owner, caster, arg, ArachnaphobiaNativeRuntime52DC80{
+		LoadCache:  h.loadCache,
+		StoreCache: h.storeCache,
+		LookupType: h.lookupType,
+		TraceRay:   h.traceRay,
+		NewObject:  h.newObject,
+		CreateAt:   h.createAt,
+		Inform:     h.inform,
+	})
 }
 
 type ArachnaphobiaCastRuntime52DC80 struct {

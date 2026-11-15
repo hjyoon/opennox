@@ -60,6 +60,118 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster casting callbacks, 2026-11-15
+
+The qualified source/runtime engine is `58bf63e2e211ce6809ce9ae69a7307a101c80063`, pushed to
+`origin/port/go1.27-multiarch`. The original C entries 541300 (direct cast),
+5413B0 (cast action) and 541490 (random recoil) now share native Go code with
+their public C exports and production Go callers on every architecture. The
+cumulative qualified split-file count is **170 Go entries**. **All-C migration
+and overall 100% remain open.**
+
+Object, cached MonsterUpdateData, AI-stack target and SpellAcceptArg links
+retain native width. The direct cast rereads BOT flags on the cached record
+after the cast. The action retains its original head while services change
+the live stack, reloads the spell after recoil/buff calls, compares the full
+definition frame and preserves signed-dword mode and buff results. Recoil
+preserves PC53/ToZero operation/store order and live loads across RNG, including
+outputs overlapping target position or velocity. The earlier architecture
+branch into old PE32 C is removed from the production action caller.
+
+The independent pre-port reference executes all **511 unchanged root bytes**
+in 428 cases, plus 319 original startup/control bytes establishing 0xe3f.
+All original image bytes, saved registers, caller words outside the declared
+recoil float temporary, FP control/TOP and heap/output canaries are checked.
+The direct cast's low-byte result is compared; action and recoil are observed
+for effects by their production callers. Raw architectural EAX remains
+retained without claiming a defined action/void return.
+
+A separate post-implementation extension adds 44 default-provider cases.
+The complete original 428-case prefix stays byte-identical. These cases
+execute 57 direction bytes, 65 of the angle helper's 80 bytes, the 17-byte
+converter and 74 of the RNG helper's 81 bytes against its unchanged 16,384-byte
+stock table. Exactly the original four-byte RNG cursor is an input/write
+exception for these additional cases; all other image bytes remain immutable.
+The copied v3 generator's inherited general image annotation is explicitly
+qualified by `reference-extension-scope-v1.json`. The corpus is finite and
+does not establish exhaustive FPATAN, signaling-NaN or extended-exponent fidelity.
+Helper execution supplies no additional C-entry credit.
+
+Standalone pre-port C reproduction retains all 2,370 incoming body bytes:
+three controls, four actual native-pointer SIGSEGVs and two pointer identity/
+layout observations. This is bounded reproduction, not an integrated-game
+crash claim. Reversing only the three guards, header declarations and Go action
+wrapper reconstructs the entire incoming C, header and Go files. All 68
+pre-port paths and 103 extended reference paths remain SHA-verified, including
+the original stage where execution took place and its failed helper attempts.
+
+The first composition attempt exposed a real caller-specific rounding
+difference: default nearest-even direction 245 versus original gameplay
+ToZero direction 244. The new binding uses directed arithmetic and the
+truncating converter. A later actual-C queued-event comparison exposed a
+signed-ID boundary: 0x80000000 reached the old default Go callback as positive
+2147483648, while the unchanged public C audio entry queued -2147483648.
+The default now sign-extends int32 before converting to sound.ID. Six boundary
+values and full native owner/kind/code identity are checked without indexing
+invalid sound data. Old golden results and existing tests were unchanged.
+
+All final qualification gates passed with zero compiler warnings:
+
+- macOS ARM64 normal and highres/cgocheck2/checkptr2 each passed **112,013**
+  checks on the identical 9,233-input lease
+  `9ce3af105cfe663e6dbf2fe9618f82caf74bb02a244e8a62759e0355642ba92e`.
+  The group has 3,865 checks across actual public C, typed C callback and
+  production Go routes at three foreign placements, with complete native
+  arena canaries and ordered service mutations. One parent executes 132 real
+  default compositions: morph, direction, RNG, buff, voice/audio, spell power
+  and 4FDD20 dispatch run; spell acceptance is the observation boundary.
+- All four macOS products passed build, metadata, help and 46 public/control
+  symbol checks. Normal/HD passed four core E2E runs, two functional Save/Load
+  diagnostics and two independent host/peer chat profiles with natural exits.
+  The initial missing chat product descriptor stopped setup before any peer
+  process; its logs remain retained and only chat was resumed. Functional
+  Save/Load does not promote the inherited public pixel failure.
+- Linux CI `43691231096` and Windows CI `43691197898` passed all six final
+  profiles, the new native group and every prior qualified matrix. SHA-verified
+  ZIPs retain 158 actual test mains and complete raw JSON. The first Windows
+  386 preflight failed on a Windows JSON-record sharing lock before OpenNox
+  tests began. Its full log and ZIP remain preserved; the same commit was
+  retried with unchanged tests. That retry does not claim the report publisher's
+  sharing-lock issue is fixed; it remains a follow-up infrastructure item.
+
+| CI profile | PASS | Skip |
+| --- | ---: | ---: |
+| linux-amd64-opennox | 931,381 | 57 |
+| linux-amd64-opennox-server-hd | 925,270 | 7 |
+| linux-amd64-opennox-server | 925,270 | 7 |
+| linux-amd64-opennox-hd | 931,381 | 57 |
+| opennox-server-windows-386 | 903,322 | 94 |
+| opennox-server-windows-amd64 | 923,255 | 11 |
+
+The initial native candidate `e7e3250a0` and its six passing CI profiles,
+158 test mains and four products remain preserved separately. Final validation
+uses the corrected 58bf63e2e engine. The 4,719 original protected inputs and
+4,724 prior-candidate protected test/fixture/E2E inputs are unchanged, as are
+4,649 original asset/personal Save files, 387 tracked E2E inputs, 64 prior
+products and 20 additional historical candidates. All failed results remain.
+Twenty closed test program paths were transparently compressed with logical
+bytes, paths, metadata and signatures preserved. Dedicated inactive cache
+cleanup verified 399 retained program paths before/after reducing 3,112,144 KiB
+to 8 KiB. After all products and runtime profiles finished, another cleanup
+verified 404 retained program paths while reducing 950,804 KiB to 8 KiB.
+Modules, assets, Save, products and evidence were preserved.
+
+The 13-file AST contains 1,892 active original definitions and 2,345 pointer/
+integer casts, with 2,061 narrow candidates in 217 functions. The broader
+audit compiled all 207 legacy C files: 2,582 main-source definitions, 14
+unresolved macros and 3,153 casts. All 1,147 C/header inputs were rechecked
+unchanged after the Go-only audio correction, so the earlier audit revision
+is explicit. The 629 tracked C paths include 416 test/reference and 213 broad
+runtime/build files. These are inventories, not a completion denominator.
+
+Machine-readable evidence: `docs/split-monster-cast-native-progress-20261115.json`;
+full retained qualification: `ROOT/split-monster-cast-native-20261115-v2/qualified-monster-cast-entries-v1.json`.
+
 ### Native Fireball callback, 2026-11-15
 
 The qualified source/runtime engine is `10f8d948e73c5bbe3002d6f5f695b2ae6ec708b0`, pushed to

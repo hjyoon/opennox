@@ -1,0 +1,255 @@
+{
+  "source_revision": "d40a296e892333cf0429b7c3c0752338d10eb294",
+  "qualified_entries": 2,
+  "cumulative_qualified_split_Go_entries": 180,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "entries": [
+    "nox_xxx_castMeteorShower_52D8A0",
+    "nox_xxx_castMeteor_52D9D0"
+  ],
+  "source_lease": {
+    "files": 9272,
+    "sha256": "528af87e2c7ebc8bd0eb7706520eca2bfe2803cbce0b6c8c1f681d11f916c7ff"
+  },
+  "original": {
+    "cases": 146,
+    "cases_per_root": {
+      "0": 70,
+      "1": 76
+    },
+    "root_bytes": 685,
+    "helper_bytes": 103,
+    "startup_bytes": 319,
+    "transcript_events": 1401,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 94,
+    "independent_comparison": true,
+    "fixture_sha256": "d53f5f8245f02e32bc97aaa2110f5172e1204561502842392e8ac828a6f883fd",
+    "fixture_gzip_sha256": "523a45b59c9c640d4e1234fff89faf7dc32257058813244d76c753ed3812e754",
+    "whole_image_heap_caller_register_FP_checks": true,
+    "actual_binary32_game_data_getters_executed": true,
+    "scope": "Bounded original cast/getter/converter/startup execution with declared world/type/trace/audio/map services; complete mapped image and heap checks at observation boundaries. The default shared game-data service remains a boundary; synthetic negative-index owned records do not claim stock gameplay. Existing53D5A0 binding reused without extra entry credit."
+  },
+  "C_before": {
+    "architecture": "x86_64 via Rosetta on ARM64 host",
+    "original_C_body_bytes": 3580,
+    "packed_low_controls": 5,
+    "native_pointer_or_layout_faults": 10,
+    "SIGBUS": 8,
+    "SIGSEGV": 2,
+    "low_native_player_layout_omissions": 2,
+    "explicit_high_allocation_PE32_shadow_update_link_controls": 2,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false
+  },
+  "native_checks": {
+    "total": 1453,
+    "original_cases": 146,
+    "routes": [
+      "actual public C",
+      "typed C callback",
+      "production Go"
+    ],
+    "foreign_placements": [
+      0,
+      64,
+      512
+    ],
+    "whole_arena_bytes": 65536,
+    "actual_default_owned_guard_compositions": 27,
+    "actual_default_blocked_trace_compositions": 72,
+    "pointer_and_signed_DWORD_forwarding_compositions": 36,
+    "existing_typed_server_passes": 111,
+    "existing_legacy_passes": 6,
+    "player_record_bytes": 6160,
+    "player_stride_bytes": 8192
+  },
+  "ci": {
+    "runs": [
+      43749574452,
+      43749506053
+    ],
+    "archives": [
+      {
+        "artifact_id": 14176720627,
+        "name": "linux-amd64-opennox-server-hd-d40a296e892333cf0429b7c3c0752338d10eb294",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14176720627-linux-amd64-opennox-server-hd-d40a296e892333cf0429b7c3c0752338d10eb294.zip",
+        "bytes": 205965624,
+        "sha256": "5fa21d004ed8917b52d29e9b9a7956769e305f4d606a1db9326813a678d37eca",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 975986,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14175962852,
+        "name": "linux-amd64-opennox-server-d40a296e892333cf0429b7c3c0752338d10eb294",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14175962852-linux-amd64-opennox-server-d40a296e892333cf0429b7c3c0752338d10eb294.zip",
+        "bytes": 264139428,
+        "sha256": "2badd8854de1f7558f7e429027dab54fbb0c9aae9a0e0ddf1d8f43488f65cd0d",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 975986,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14175813615,
+        "name": "linux-amd64-opennox-hd-d40a296e892333cf0429b7c3c0752338d10eb294",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14175813615-linux-amd64-opennox-hd-d40a296e892333cf0429b7c3c0752338d10eb294.zip",
+        "bytes": 219193700,
+        "sha256": "58333b980d07b39c61c2f5d91c3f3773644527bb74e40cd509ebe3209b586436",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 982097,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14175474304,
+        "name": "linux-amd64-opennox-d40a296e892333cf0429b7c3c0752338d10eb294",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14175474304-linux-amd64-opennox-d40a296e892333cf0429b7c3c0752338d10eb294.zip",
+        "bytes": 218978050,
+        "sha256": "77c9af185674fe36ad273964a2bfbaf4c6f80eada79c3326a5458844f5014412",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 982097,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14176811154,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14176811154-opennox-server-windows-386.zip",
+        "bytes": 162121210,
+        "sha256": "c3d7ae0e226df7b631fe80efe3e82677fe7e7735f07bc1427b7acb62329726de",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 954038
+        }
+      },
+      {
+        "artifact_id": 14176452295,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/ci-14176452295-opennox-server-windows-amd64.zip",
+        "bytes": 168269623,
+        "sha256": "8dd55e2b8c67ece85f923e20b3855120ca8198c7cd39fcd9ac556fc1ba13e90d",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 973971,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6220577678,
+    "matrix_directory": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/CI-matrix-review-v1"
+  },
+  "preservation": {
+    "original_protected_tests_fixtures": 4738,
+    "byte_identical_protected_tests_fixtures": 4736,
+    "original_corrected_numeric_tests_archived": 2,
+    "numeric_corrections": [
+      {
+        "path": "src/server/spell_meteor_52d9d0_test.go",
+        "old_sha256": "9b9e44e00afb36a37094b4e15fa740b4fcef9eda742259196f20e74490821f0f",
+        "new_sha256": "890ff7f2cb7f7c15ea3a72073ce1b8647129f4901090579547a3e38ddfa910b2",
+        "changes": "Only +3.5/-3.5 numeric expectations contradicted by sealed original CW0xe3f execution, and one old conversion comment. Original sources, failed candidate programs and failure logs retained."
+      },
+      {
+        "path": "src/server/spell_meteor_shower_52d8a0_test.go",
+        "old_sha256": "87ee6c73847ddad90b403960de9993f5c087df66b64e451b4f6827ca4b494c05",
+        "new_sha256": "f82d518534a62f29e1e5e64d3e26c9335fa29785bba6bf099ddfc4e1433db910",
+        "changes": "Only +3.5/-3.5 numeric expectations contradicted by sealed original CW0xe3f execution, and one old conversion comment. Original sources, failed candidate programs and failure logs retained."
+      }
+    ],
+    "tracked_E2E_files": 387,
+    "original_asset_and_Save_files": 4649,
+    "retained_local_program_paths": 501,
+    "RAM_noncache_paths": 12,
+    "global_rounding_and_frozen_private_C_wire_controls_unchanged": true,
+    "cache_cleanup": {
+      "utc": "2026-11-15T19:13:42.374061+00:00",
+      "exit_code": 0,
+      "cache": "/Users/ghost/codex-sandbox/cache/opennox-go1273/ram-build-20261115-v1/cache",
+      "cache_KiB_before": 501732,
+      "cache_KiB_after": 8,
+      "retained_programs_SHA_verified": 501,
+      "scope": "Only inactive dedicated product compilation cache removed after all4products/help checks and both completed runtime profiles. No module-cache, source, original asset/Save, retained program, CI ZIP or failure-result deletion."
+    },
+    "reviewed_unused_Docker_cache_cleanup": {
+      "exit_code": 0,
+      "seconds": 3.4003082499839365,
+      "selected_cache_records": 69,
+      "available_before": 1461362688,
+      "available_after": 1461137408,
+      "images_unchanged": 73,
+      "containers_unchanged": 38,
+      "volumes_unchanged": 252,
+      "OpenNox_assets_Save_records_programs_modules_untouched": true
+    },
+    "closed_test_log_compression": {
+      "status": "PASS",
+      "records": [
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/focus-native-v2/stdout.log",
+          "bytes": 1621611,
+          "sha256": "2deac891078340c0b1359bdaf935f27087eafadefd5158b7315e991f95dc7715",
+          "mode": 420,
+          "mtime_ns": 1794768557719698817,
+          "blocks_before": 3168,
+          "blocks_after": 168
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/meteor-native-normal-v1/stdout.log",
+          "bytes": 163897891,
+          "sha256": "94fa0900b63653c7609f6d6ffca6b4be5fc41bb203d4712116830af0bcc30313",
+          "mode": 420,
+          "mtime_ns": 1794768596962035010,
+          "blocks_before": 320120,
+          "blocks_after": 14824
+        },
+        {
+          "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/meteor-native-strict-v1/stdout.log",
+          "bytes": 163899965,
+          "sha256": "d936d647e295d31a0e5de0e9206f866b1f661558b3583aae074cdd5440390786",
+          "mode": 420,
+          "mtime_ns": 1794768878633454692,
+          "blocks_before": 320120,
+          "blocks_after": 14872
+        }
+      ],
+      "logical_bytes": 329419467,
+      "allocated_bytes_recovered": 314134528,
+      "all_paths_bytes_modes_mtimes_noncompression_attributes_preserved": true,
+      "scope": "Closed passing test logs only, system LZFSE transparent compression with complete kernel read SHA checks. No executable or failed evidence removed."
+    }
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; passing functional diagnostics do not promote it",
+    "chapter4plus": "excluded"
+  },
+  "next_readonly_target": {
+    "stage": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-arachnaphobia-native-20261116-v1",
+    "entry": "nox_xxx_spellArachna_52DC80",
+    "original_disassembly_bytes": 197,
+    "CPU_cases": 0,
+    "source_port_started": false
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/qualified-meteor-cast-entries-v1.json",
+    "sha256": "08b8e512c573ec4555ad207227e978c45251f802c3b0c8ec9b2355ff2c8c1745"
+  },
+  "normal_passes": 162737,
+  "strict_passes": 162737,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 57
+}

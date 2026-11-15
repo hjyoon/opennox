@@ -60,13 +60,106 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Meteor and MeteorShower cast entries, 2026-11-16
+
+The qualified engine is `d40a296e892333cf0429b7c3c0752338d10eb294`, pushed to
+`origin/port/go1.27-multiarch`. The public C entries
+`nox_xxx_castMeteorShower_52D8A0` and `nox_xxx_castMeteor_52D9D0` now enter Go
+with complete native Object and acceptance pointers. The cumulative qualified
+split-file count is **180 Go entries**. **All-C migration and overall 100%
+remain open.**
+
+Both casts preserve live cache, owner, argument, update-data and player reads,
+service order and original signed-DWORD level wrapping. Meteor compares the
+full cached DWORD with the owned object's zero-extended WORD type, captures
+the damage record before the balance call, and retains the live placement,
+flags, height, velocity and position-audio reads. MeteorShower keeps its
+separate owner-attached audio. Allocation failure still returns success.
+The existing native `53D5A0` update binding receives no additional entry credit.
+
+The old typed algorithms are retained through adapters with one independently
+proved numerical correction: actual startup `0xe3f` FISTP converts 3.5 to 3
+and -3.5 to -3. Both old helpers used nearest-even. Only these two cast cores
+now use the existing signed-DWORD truncation helper. Two test files receive
+only the contradicted numerical expectations and one conversion comment;
+their old versions and failing programs/results remain archived. The global
+nearest-even helper and independent private C wire controls are unchanged.
+
+Before source edits, **146 original CPU cases** execute all **685 root bytes**,
+**103 getter/converter bytes** and **319 startup bytes**. An independent model
+matches **1,401 events** and all input/output state hashes. The complete mapped
+image is checked at each return; the whole heap is checked at service/getter
+boundaries and return. Only declared service mutations, the two cache DWORDs,
+damage and Meteor flags/velocity writes are allowed. Saved registers, caller
+redzones and FP control/TOP are checked; original inform-argument slot writes
+are explicit. The actual original getters consume owned binary32 records.
+World, type, trace, audio and map lookup remain declared service boundaries;
+synthetic signed-index records do not establish stock gameplay equivalence.
+
+Both exact C bodies, totaling **3,580 bytes**, remain inactive in GAME4_2.c.
+Removing two guards reconstructs the whole incoming C file; reversing two
+declarations reconstructs its header. Five packed-low C controls match original
+returns, service counts and selected fields. Ten native pointer/layout controls
+raise eight SIGBUS and two SIGSEGV faults; two low native player layouts omit
+the inform call. Two explicitly labelled high-allocation controls supply
+PE32 shadow update links to reach the truncated placement argument. These are
+standalone **x86_64/Rosetta** observations, without an ARM64 C-before success
+or integrated-game crash claim.
+
+All qualification gates passed with zero compiler warnings:
+
+- macOS normal and highres/cgocheck2/checkptr2 each pass **162,737** native
+  regression checks on the same **9,272-input** source lease
+  `528af87e2c7ebc8bd0eb7706520eca2bfe2803cbce0b6c8c1f681d11f916c7ff`. The new group has **1,453** identities:
+  146 original cases through three routes at three foreign placements,
+  27 real default owned guards, 72 ordinary blocked traces, 36 native pointer
+  and signed-DWORD forwarding cases, and four top-level checks. All 64 KiB
+  arenas retain canaries. The corrected player stride is 8,192 bytes for the
+  actual 6,160-byte native record. All **111** existing typed server checks and
+  **six** existing legacy checks pass; initial stride and numeric failures are
+  retained separately.
+- All four default-toolchain ARM64 products pass build, metadata, help and
+  **57** public/control symbol checks. Normal/HD pass four core E2E cases,
+  two functional Save/Load diagnostics and two ordinary-clock independent UDP
+  chat profiles. Each chat profile proves eight submissions, four independently
+  received peer messages and a host reply; both processes exit zero with no
+  forced termination. Functional diagnostics do not promote the inherited
+  public Save/Load pixel failure.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43749574452) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43749506053) pass
+  all six profiles, the new identities and every prior qualified native matrix.
+  Six SHA-verified ZIPs retain **158 actual test mains**. Complete warning review
+  covers **20 files** and **6,220,577,678 uncompressed bytes**,
+  with zero warnings. Windows supervision and Windows/386 GC-pressure replay
+  also pass.
+
+Of **4,738** previous protected tests/fixtures, **4,736** remain byte-identical;
+the two original-qualified numerical corrections retain their old sources.
+All **387** E2E inputs, **4,649** original asset/Save files, **501** local
+program paths and twelve RAM noncache files retain their bytes. Inactive
+dedicated build caches were cleaned after completed gates. Three closed passing
+logs use transparent system compression with their paths, bytes, permissions,
+modification times and other attributes preserved. Sixty-nine reviewed
+unused private Docker cache records reclaimed 4.536 GB logically; all 73
+images, 38 containers and 252 volumes remain unchanged. Original assets, Save,
+failed results and executable versions were preserved.
+
+All nine final Warrior/Conjurer/Wizard chapter 1–3 audits and the public
+Save/Load pixel failure remain open. Chapter 4 and later remain excluded.
+The next read-only target is `nox_xxx_spellArachna_52DC80`: its exact 1,078-byte
+C body and 197-byte original span are preserved, with no original CPU cases,
+source port or new credit yet.
+
+Full qualification: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-meteor-cast-native-20261116-v1/qualified-meteor-cast-entries-v1.json` (SHA-256 `08b8e512c573ec4555ad207227e978c45251f802c3b0c8ec9b2355ff2c8c1745`).
+
 ### Native CleansingFlame cast entry, 2026-11-16
 
-The qualified engine is `70852ff7fe08b852187654d212d5996e8251e8ea`, pushed to
+The preceding CleansingFlame checkpoint uses engine
+`70852ff7fe08b852187654d212d5996e8251e8ea`, pushed to
 `origin/port/go1.27-multiarch`. The public C entry
 `nox_xxx_spellCastCleansingFlame_52D5C0` now calls Go with native Object and
-argument pointers. The cumulative qualified split-file count is **178 Go
-entries**. **All-C migration and overall 100% remain open.**
+argument pointers. The cumulative qualified split-file count at that checkpoint
+was **178 Go entries**. **All-C migration and overall 100% remain open.**
 
 The cast keeps the original owned-list traversal, live DWORD cache reads,
 48 attempts, separate PC53 operations and binary32 spills toward zero,
@@ -133,9 +226,10 @@ assets, Save, failed results and executable versions were preserved.
 
 All nine final Warrior/Conjurer/Wizard chapter 1–3 audits remain open, as does
 the public Save/Load pixel failure. Chapter 4 and later remain excluded.
-The next read-only target is `nox_xxx_castMeteorShower_52D8A0`: its 291-byte
-original span is disassembled, with no original CPU cases, native C controls,
-source port or new credit yet.
+At that checkpoint, the next read-only target was
+`nox_xxx_castMeteorShower_52D8A0`: its original span was disassembled, with no
+original CPU cases, native C controls, source port or new credit yet. Both
+Meteor cast entries are separately qualified above.
 
 Full qualification: `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/split-cleansing-flame-native-20261116-v1/qualified-cleansing-flame-entry-v1.json` (SHA-256 `0018c9333241a59c515d5837745debc88730f13cef5bbc04683413f38f147f6e`).
 

@@ -4421,6 +4421,7 @@ int nox_xxx_tile_422C10(int a1, void* region) {
 }
 
 //----- (00423930) --------------------------------------------------------
+#if 0 // Native named bitmasks: named_bitmask_native_exports.go
 void set_bitmask_flags_from_plus_separated_names_423930(const char* input, uint32_t* bitmask,
 														const char** allowed_names) {
 	char input_copy[256];
@@ -4435,8 +4436,11 @@ void set_bitmask_flags_from_plus_separated_names_423930(const char* input, uint3
 		cur_value = strtok(0, "+");
 	}
 }
+#endif
+
 
 //----- (004239C0) --------------------------------------------------------
+#if 0 // Native named bitmasks: named_bitmask_native_exports.go
 int set_one_bitmask_flag_by_name_4239C0(char* name, uint32_t* bitmask, const char** allowed_names) {
 	for (char i = 0; allowed_names[i]; ++i) {
 		if (!nox_strcmpi(allowed_names[i], name)) {
@@ -4447,6 +4451,8 @@ int set_one_bitmask_flag_by_name_4239C0(char* name, uint32_t* bitmask, const cha
 
 	return 0;
 }
+#endif
+
 
 //----- (004240F0) --------------------------------------------------------
 #if 0 // Native sound-set parsing: soundset_parser_native_exports.go

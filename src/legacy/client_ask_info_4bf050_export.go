@@ -70,7 +70,7 @@ var clientAskInfoDepsFactory4BF050 = func() clientAskInfoDeps4BF050 {
 	}
 }
 
-//export nox_xxx_clientAskInfoMb_native_4BF050
-func nox_xxx_clientAskInfoMb_native_4BF050(dr *nox_drawable) *wchar2_t {
+//export nox_xxx_clientAskInfoMb_4BF050
+func nox_xxx_clientAskInfoMb_4BF050(dr *nox_drawable) *wchar2_t {
 	return (*wchar2_t)(unsafe.Pointer(clientAskInfoNative4BF050(asDrawable(dr), clientAskInfoDepsFactory4BF050())))
 }

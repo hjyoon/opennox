@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME1.h"
+typedef const char nox_access_serial_char;
 */
 import "C"
 import "unsafe"
@@ -38,9 +39,9 @@ func nox_access_banned_serial_416900(entry *C.nox_access_banned_entry_t) *C.char
 //export sub_416720
 func sub_416720() { sub416720Native() }
 
-//export nox_native_access_add_banned_416770
-func nox_native_access_add_banned_416770(minutes C.int, name *C.wchar2_t, serial unsafe.Pointer) *C.int {
-	return (*C.int)(sub416770Native(int32(minutes), unsafe.Pointer(name), serial))
+//export sub_416770
+func sub_416770(minutes C.int, name *C.wchar2_t, serial *C.nox_access_serial_char) *C.int {
+	return (*C.int)(sub416770Native(int32(minutes), unsafe.Pointer(name), unsafe.Pointer(serial)))
 }
 
 //export sub_416820

@@ -1,0 +1,32 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "table_offset": 247536,
+  "pointer_offsets": [
+    247936,
+    247956,
+    247964,
+    247976,
+    247988,
+    247996,
+    248012,
+    248032,
+    248044,
+    248052,
+    248060,
+    248076,
+    248092,
+    248108,
+    248116,
+    248124,
+    248136,
+    248148,
+    248152,
+    248160,
+    248168,
+    248180
+  ],
+  "string_offset": 247936,
+  "string_bytes": 256,
+  "string_sha256": "066611039c08b3d904f530718dc512f87d1c222a0b8141ffe27da3088aa76d8b",
+  "source": "Original GAME.EXE pointer table and string bytes; shipped blob bytes independently equal the original region."
+}

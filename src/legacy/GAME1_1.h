@@ -132,6 +132,7 @@ int nox_server_mapRWFloorMap_422230(void* region);
 unsigned char nox_xxx_tileReadOne_422A40(int version, uint32_t* fields, nox_tile_list_node_t** head);
 int nox_xxx_tile_422C10(int a1, void* region);
 int set_one_bitmask_flag_by_name_4239C0(char* name, uint32_t* bitmask, const char** allowed_names);
+void nox_native_parseMonsterFlags_423930(const char* input, uint32_t* bitmask);
 int sub_4240F0(void* data, const char* field, int value);
 int nox_xxx_parseSoundSetBin_424170(char* a1);
 void* nox_xxx_monsterGetSoundSet_424300(nox_object_t* a1);

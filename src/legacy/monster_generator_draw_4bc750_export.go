@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "monster_generator_draw_4bc750.h"
 #include "client__draw__mgendraw.h"
 #include "client__draw__parse__parse.h"
 */
@@ -85,8 +84,8 @@ func DrawMonsterGenerator4BC750(vp *noxrender.Viewport, dr *client.Drawable) int
 	return monsterGeneratorDrawCall4BC750(vp, dr)
 }
 
-//export nox_client_monsterGeneratorDraw_native_4BC750
-func nox_client_monsterGeneratorDraw_native_4BC750(vp *C.nox_draw_viewport_t, dr *C.nox_drawable) C.int {
+//export nox_thing_monster_gen_draw
+func nox_thing_monster_gen_draw(vp *C.int, dr *C.nox_drawable) C.int {
 	return C.int(monsterGeneratorDrawCall4BC750((*noxrender.Viewport)(unsafe.Pointer(vp)), (*client.Drawable)(unsafe.Pointer(dr))))
 }
 

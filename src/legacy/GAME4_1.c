@@ -4022,8 +4022,7 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 		case 6:
 			v9 = 0;
 			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
-			set_bitmask_flags_from_plus_separated_names_423930(
-				v10, (uint32_t*)&v9, (const char**)getMemAt(0x587000, 247536));
+			nox_native_parseMonsterFlags_423930(v10, (uint32_t*)&v9);
 			*(uint16_t*)v6 = v9;
 			continue;
 		case 7:

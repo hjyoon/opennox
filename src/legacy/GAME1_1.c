@@ -10,6 +10,7 @@
 
 #include "GAME1.h"
 #include "GAME1_1.h"
+#include "private_player_records_native.h"
 #include "GAME1_2.h"
 #include "GAME1_3.h"
 #include "GAME2.h"
@@ -156,15 +157,16 @@ int nox_xxx_unused_418840() {
 	HIBYTE(v3) |= 0x80u;
 	*((uint16_t*)v2 + 26) = v3;
 	for (i = sub_425A50(); i; i = sub_425A60(i)) {
+		nox_private_player_record_t* record = (nox_private_player_record_t*)i;
 		if (v0 >= (unsigned char)v1[52]) {
 			break;
 		}
 		v5 = nox_xxx_teamCreate_4186D0(0);
-		i[9] = (int)v5;
+		record->team = v5;
 		if (v5) {
-			sub_418800((wchar2_t*)v5, (wchar2_t*)i + 6, 0);
-			sub_418830((nox_team_t*)v5, i[8]);
-			sub_4184D0((wchar2_t*)i[9]);
+			sub_418800((wchar2_t*)v5, record->name, 0);
+			sub_418830((nox_team_t*)v5, record->id);
+			sub_4184D0((wchar2_t*)record->team);
 			++v0;
 			for (j = nox_xxx_getFirstPlayerUnit_4DA7C0(); j; j = nox_xxx_getNextPlayerUnit_4DA7F0(j)) {
 				v7 = *(uint32_t**)(*(uint32_t*)(j + 748) + 276);
@@ -174,8 +176,8 @@ int nox_xxx_unused_418840() {
 					if (!(v8 & 1) || v8 & 0x20) {
 						v9 = v7[517];
 						if (v9) {
-							if (v9 == i[8]) {
-								nox_xxx_createAtImpl_4191D0(*(uint8_t*)(i[9] + 57), j + 48, 1, *(uint32_t*)(j + 36), 0);
+							if (v9 == record->id) {
+								nox_xxx_createAtImpl_4191D0(*((uint8_t*)record->team + 57), j + 48, 1, *(uint32_t*)(j + 36), 0);
 							}
 						}
 					}
@@ -4936,14 +4938,17 @@ int sub_425960(int a1) {
 
 
 //----- (004259C0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 void sub_4259C0() {
 	if (!*getMemU32Ptr(0x5D4594, 599472)) {
 		nox_common_list_clear_425760(getMemAt(0x5D4594, 599460));
 		*getMemU32Ptr(0x5D4594, 599472) = 1;
 	}
 }
+#endif
 
 //----- (004259F0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_4259F0() {
 	int* result; // eax
 	int* v1;     // ebx
@@ -4972,14 +4977,20 @@ int* sub_4259F0() {
 	}
 	return result;
 }
+#endif
 
 //----- (00425A50) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_425A50() { return nox_common_list_getFirstSafe_425890(getMemIntPtr(0x5D4594, 599460)); }
+#endif
 
 //----- (00425A60) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_425A60(int* a1) { return nox_common_list_getNextSafe_4258A0(a1); }
+#endif
 
 //----- (00425A70) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_425A70(int a1) {
 	int* result; // eax
 
@@ -4995,8 +5006,10 @@ int* sub_425A70(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00425AA0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int sub_425AA0(int a1) {
 	int* v1; // eax
 
@@ -5012,8 +5025,10 @@ int sub_425AA0(int a1) {
 	}
 	return 1;
 }
+#endif
 
 //----- (00425AD0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 wchar2_t* sub_425AD0(int a1, wchar2_t* a2) {
 	wchar2_t* v2; // esi
 
@@ -5029,8 +5044,10 @@ wchar2_t* sub_425AD0(int a1, wchar2_t* a2) {
 	}
 	return v2;
 }
+#endif
 
 //----- (00425B30) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 void sub_425B30(void* a1, int a2) {
 	uint32_t* v2; // eax
 	uint32_t* v3; // esi
@@ -5041,8 +5058,10 @@ void sub_425B30(void* a1, int a2) {
 	sub_425770(v2);
 	nox_common_list_append_4258E0((int)a1 + 40, v3);
 }
+#endif
 
 //----- (00425B60) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 char* sub_425B60(void* lpMem, int a2) {
 	int* v2;      // esi
 	char* result; // eax
@@ -5066,15 +5085,20 @@ LABEL_6:
 	}
 	return result;
 }
+#endif
 
 //----- (00425BC0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_425BC0(void* a1) {
 	// A record's embedded children header is a required member, not an optional list pointer.
 	return (int*)nox_common_list_getNext_425940((nox_list_item_t*)((char*)a1 + 40));
 }
+#endif
 
 //----- (00425BE0) --------------------------------------------------------
+#if 0 // Native private player records: private_player_records_native_exports.go
 int* sub_425BE0(int* a1) { return nox_common_list_getNextSafe_4258A0(a1); }
+#endif
 
 //----- (00425BF0) --------------------------------------------------------
 int nox_xxx_countObserverPlayers_425BF0() {

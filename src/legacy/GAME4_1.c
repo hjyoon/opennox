@@ -2616,6 +2616,7 @@ int sub_50FF90(int a1, int a2, int a3) {
 }
 
 //----- (0050FFE0) --------------------------------------------------------
+#if 0 // Restored by trade_item_lookup_native_entry.go.
 uint32_t* sub_50FFE0(uint32_t* a1, int a2) {
 	uint32_t* result; // eax
 
@@ -2631,6 +2632,7 @@ uint32_t* sub_50FFE0(uint32_t* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (00510000) --------------------------------------------------------
 void sub_510000(int a1) {

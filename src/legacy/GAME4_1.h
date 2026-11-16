@@ -72,7 +72,7 @@ int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2);
 int sub_50FD20(void* session, nox_object_t* owner);
 int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2);
 int sub_50FF90(int a1, int a2, int a3);
-uint32_t* sub_50FFE0(uint32_t* a1, int a2);
+void* sub_50FFE0(void* head, int code);
 void sub_510000(int a1);
 int nox_xxx_getSomeShopData_5103A0(int a1, int a2);
 int sub_5103F0(int a1, int a2);

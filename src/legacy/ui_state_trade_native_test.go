@@ -151,28 +151,31 @@ func TestUIStateTradeNativeValue(t *testing.T) {
 						}
 						return owners[i]
 					}
-					session.Field8 = owner(c.Input.FirstIndex)
-					session.Field48, session.Field52 = golds[0], golds[1]
-					session.Field32, session.Field36 = nil, nil
+					uiStateTradeStorePointer(unsafe.Pointer(&session.Field8), unsafe.Pointer(owner(c.Input.FirstIndex)))
+					uiStateTradeStorePointer(unsafe.Pointer(&session.Field48), unsafe.Pointer(golds[0]))
+					uiStateTradeStorePointer(unsafe.Pointer(&session.Field52), unsafe.Pointer(golds[1]))
+					uiStateTradeStorePointer(unsafe.Pointer(&session.Field32), nil)
+					uiStateTradeStorePointer(unsafe.Pointer(&session.Field36), nil)
 					for i, node := range nodes {
-						node.Cost4, node.Field8 = c.Input.Costs[i], nil
+						node.Cost4 = c.Input.Costs[i]
+						uiStateTradeStorePointer(unsafe.Pointer(&node.Field8), nil)
 					}
 					for side, chain := range c.Input.Chains {
-						golds[side].InitData = unsafe.Pointer(data[side])
+						uiStateTradeStorePointer(unsafe.Pointer(&golds[side].InitData), unsafe.Pointer(data[side]))
 						*data[side] = c.Input.Gold[side]
 						for at, i := range chain {
 							if i < 0 || i >= len(nodes) {
 								t.Fatal("unowned canonical node", i)
 							}
 							if at+1 < len(chain) {
-								nodes[i].Field8 = nodes[chain[at+1]]
+								uiStateTradeStorePointer(unsafe.Pointer(&nodes[i].Field8), unsafe.Pointer(nodes[chain[at+1]]))
 							}
 						}
 						if len(chain) > 0 {
 							if side == 0 {
-								session.Field32 = nodes[chain[0]]
+								uiStateTradeStorePointer(unsafe.Pointer(&session.Field32), unsafe.Pointer(nodes[chain[0]]))
 							} else {
-								session.Field36 = nodes[chain[0]]
+								uiStateTradeStorePointer(unsafe.Pointer(&session.Field36), unsafe.Pointer(nodes[chain[0]]))
 							}
 						}
 					}

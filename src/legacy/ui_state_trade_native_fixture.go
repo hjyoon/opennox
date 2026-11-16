@@ -57,6 +57,8 @@ case 13:return sub_47A260();
 default:return 0;}}
 
 #include <stddef.h>
+#include <string.h>
+static void ui_trade_pointer_store_C(void* field, void* value) { memcpy(field, &value, sizeof(value)); }
 typedef struct ui_trade_item_C{nox_object_t*item;uint32_t cost;struct ui_trade_item_C*next,*prev;}ui_trade_item_C;
 typedef struct ui_trade_session_C{uint32_t f0,f4;nox_object_t*first,*second;uint32_t f16;ui_trade_item_C*f20;uint32_t f24,f28;ui_trade_item_C*headA,*headB;uint32_t valueA,valueB;nox_object_t*goldA,*goldB;struct ui_trade_session_C*prev,*next;}ui_trade_session_C;
 typedef int(*ui_trade_callback_C)(void*,nox_object_t*);
@@ -76,6 +78,12 @@ import (
 func uiStateTradeLayoutC() (out [14]uintptr) {
 	C.ui_trade_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
+}
+
+// Seeded foreign fields can contain bits that look like stale Go pointers.
+// Populate them in C so Go's deletion barrier does not shade the old canary.
+func uiStateTradeStorePointer(field, value unsafe.Pointer) {
+	C.ui_trade_pointer_store_C(field, value)
 }
 func uiStateWordGet(i int) uint32    { return uint32(C.ui_word_get_C(C.uint(i))) }
 func uiStateWordSet(i int, v uint32) { C.ui_word_set_C(C.uint(i), C.uint32_t(v)) }

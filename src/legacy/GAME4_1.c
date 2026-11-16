@@ -2322,6 +2322,7 @@ int sub_50F6E0(int a1) {
 }
 
 //----- (0050F720) --------------------------------------------------------
+#if 0 // Restored by trade_packet_native_entry.go.
 int sub_50F720(int a1, uint32_t* a2) {
 	int v2;  // edx
 	int v3;  // edi
@@ -2349,6 +2350,7 @@ int sub_50F720(int a1, uint32_t* a2) {
 	}
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &a1, 3, 0, 1);
 }
+#endif
 
 //----- (0050F790) --------------------------------------------------------
 void sub_50F790(int a1, int a2, int* a3) {
@@ -2387,6 +2389,7 @@ uint32_t* sub_50F7F0(int a1, int a2) {
 #endif
 
 //----- (0050FA00) --------------------------------------------------------
+#if 0 // Restored by trade_packet_native_entry.go.
 int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2) {
 	int v2;      // edx
 	int v3;      // esi
@@ -2420,6 +2423,7 @@ int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2) {
 	}
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v7, 14, 0, 1);
 }
+#endif
 
 //----- (0050FB90) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
@@ -2605,6 +2609,7 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 }
 
 //----- (0050FF90) --------------------------------------------------------
+#if 0 // Restored by trade_packet_native_entry.go.
 int sub_50FF90(int a1, int a2, int a3) {
 	int v4; // ecx
 	int v6; // [esp+0h] [ebp-4h]
@@ -2614,6 +2619,7 @@ int sub_50FF90(int a1, int a2, int a3) {
 	LOWORD(v6) = 1481;
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &v6, 4, 0, 1);
 }
+#endif
 
 //----- (0050FFE0) --------------------------------------------------------
 #if 0 // Restored by trade_item_lookup_native_entry.go.

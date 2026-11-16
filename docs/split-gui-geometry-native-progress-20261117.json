@@ -1,0 +1,1435 @@
+{
+  "source_revision": "f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+  "entries": [
+    "sub_46AE10",
+    "nox_xxx_pointInRect_4281F0",
+    "sub_428220",
+    "sub_4739E0",
+    "sub_473A10"
+  ],
+  "qualified_entries": 5,
+  "preceding_fully_recorded_qualified_entries": 266,
+  "cumulative_qualified_split_Go_entries": 271,
+  "implemented_split_Go_entries": 273,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9393,
+    "sha256": "24fe97180525fba4b046a5ea021eafffc20bc051a1d1e574cc38ee6817115577"
+  },
+  "qualified_source_binding": {
+    "source_revision": "f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+    "source_tree": "1b50c22c5be67d9dc856b79258961e853a13c342",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-gui-geometry-qualify-20261117",
+    "source_lease_sha256": "24fe97180525fba4b046a5ea021eafffc20bc051a1d1e574cc38ee6817115577",
+    "all9393_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "cases": 4874,
+    "root_bytes": 239,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 116,
+    "proof": {
+      "utc": "2026-11-16T20:04:37.301341+00:00",
+      "observation_source_revision": "0875dffc692992d88cc97bedffb511da7add2d13",
+      "entries": [
+        "sub_46AE10",
+        "nox_xxx_pointInRect_4281F0",
+        "sub_428220",
+        "sub_4739E0",
+        "sub_473A10"
+      ],
+      "cases": 4874,
+      "cases_by_entry": {
+        "sub_46AE10": 1032,
+        "nox_xxx_pointInRect_4281F0": 704,
+        "sub_428220": 2442,
+        "sub_4739E0": 348,
+        "sub_473A10": 348
+      },
+      "original_root_bytes": 239,
+      "root_bytes_by_entry": {
+        "sub_46AE10": 33,
+        "nox_xxx_pointInRect_4281F0": 48,
+        "sub_428220": 66,
+        "sub_4739E0": 46,
+        "sub_473A10": 46
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_original_image_readonly_and_whole64KiB_heap_except_exact_original_write_ledger_checked": true,
+      "caller_arguments_redzones_saved_registers_FP_checked": true,
+      "all_FPU_comparison_paths_leave_stack_balanced": true,
+      "original_nullable_Window_pointer_return_retained": true,
+      "Go_facade_normalized_boolean_separate": true,
+      "coherent_fixed32_aliases_and_late_Point_Y_return_observed": true,
+      "stock_upper_float_unordered_acceptance_not_replaced_by_modern_IEEE_le": true,
+      "precase_contract_sha256": "82333c586a64fe6d85f079a45b8b80b6d69a449ac807b32492b45dc3ffcb9d5c",
+      "fixture_sha256": "3b7631e099974f0d304c29c117cb5015f1f5399bb0cc5e2e8364962021861e79",
+      "fixture_gzip_sha256": "98e77764cc95e8e73b33340c8dda769c6305d8cf11f102d0ca8b07c8f266cf53",
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Original executable only. Five Window/geometry roots with exact declared returns, ordered RAM writes and coherent fixed32 aliases. Native viewport projection, current C differences, Go compatibility and bounded actual DoorDraw path remain pending. No completed source port or parent migration credit."
+    },
+    "independent_model": {
+      "utc": "2026-11-16T20:08:25.277923+00:00",
+      "cases": 4874,
+      "cases_by_entry": {
+        "sub_46AE10": 1032,
+        "nox_xxx_pointInRect_4281F0": 704,
+        "sub_428220": 2442,
+        "sub_4739E0": 348,
+        "sub_473A10": 348
+      },
+      "input_only_model": true,
+      "whole_final_words_and_ordered_store_ledger_and_declared_returns_equal": true,
+      "upper_unordered_float_true_cases": 8,
+      "late_alias_or_seeded_Point_Y_return_cases": 348,
+      "fixture_sha256": "3b7631e099974f0d304c29c117cb5015f1f5399bb0cc5e2e8364962021861e79",
+      "fixture_gzip_sha256": "98e77764cc95e8e73b33340c8dda769c6305d8cf11f102d0ca8b07c8f266cf53",
+      "precase_contract_sha256": "82333c586a64fe6d85f079a45b8b80b6d69a449ac807b32492b45dc3ffcb9d5c",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-16T20:11:25.128504+00:00",
+    "cases": 5570,
+    "original_cases": 4874,
+    "packed_and_Window_facade_controls": 4874,
+    "packed_and_facade_matching_original": 4779,
+    "divergences_by_kind": {
+      "stock_upper_unordered_float": 8,
+      "actual_native_viewport_with_declared_Point_aliases": 696,
+      "actual_C_partial_Point_alias_order": 87
+    },
+    "other_divergences": 0,
+    "all_original_C_function_bodies_unchanged": true,
+    "actual_architecture": "macOS ARM64",
+    "compiler_warnings": 0,
+    "ABI": {
+      "kind": "ABI",
+      "window": 524371906560,
+      "window_size": 528,
+      "window_Field0_offset": 64,
+      "viewport_size": 104,
+      "point_size": 8,
+      "rect_size": 16,
+      "float_point_size": 8,
+      "float_rect_size": 16
+    },
+    "whole64KiB_graph_except_declared_Field0_or_fixed32_output_bytes_checked": true,
+    "Window_C_boolean_compatibility_separate_from_stock_pointer_role": true,
+    "bounded_actual_DoorDraw_coordinate_controls": 8,
+    "bounded_actual_DoorDraw_coordinate_failures": 8,
+    "declared_Door_services": [
+      "quest-flag true",
+      "preloaded four opaque images",
+      "lighting buffer",
+      "ignored color service arguments",
+      "captured image XY",
+      "unused parser allocation"
+    ],
+    "Door_color_upperbits_and_full_parent_equivalence_uncredited": true,
+    "original_fixture_or_contract_changed": false,
+    "initial_analyzer_failure": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-gui-geometry-original-review-v1/reproduce-original-C-before-v1.py",
+      "sha256": "e7bd9a23881c2bccba58e6885bb399292e47f2b64296f16f31f8a5f94f12f5cc",
+      "failure": "AssertionError at line104: analyzer expected only float differences in packed controls;87 point_y alias-order differences also observed",
+      "actual_program_already_completed_exit_zero": true,
+      "retained": true
+    },
+    "analyzer_v2_scope": "Classify additional unchanged-C alias divergence from preserved raw outputs; no source, build flag, binary, original expected value, case, or predeclared alias domain changes. No program reexecution.",
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "fixture_sha256": "3b7631e099974f0d304c29c117cb5015f1f5399bb0cc5e2e8364962021861e79",
+    "raw_results_sha256": "a86ff7005f26adb3afe8250b141a65df40fb29a893e7d8c4beb218740b939937",
+    "executable_sha256": "a24f9a5bf475e9f38aa7013cfea46bd2fc5c7a1490b1ef9a3c1094ebd5b865bc",
+    "program_sha256": "3ba36d6f5d14d61237f11bf46db6b20173ef4ffb16be4ac8964b8ddbe7b5952c",
+    "door_actual_body_sha256": "73a16d1f1bff551ce2c57c9f2baf3c9ae89935d8ff8fa1042387f2e4a5934198",
+    "original_C_bytes": 1041
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "predeclared_projection": {
+      "utc": "2026-11-16T20:00:56.908203+00:00",
+      "source_revision": "0875dffc692992d88cc97bedffb511da7add2d13",
+      "entries": [
+        "sub_46AE10",
+        "nox_xxx_pointInRect_4281F0",
+        "sub_428220",
+        "sub_4739E0",
+        "sub_473A10"
+      ],
+      "original_root_bytes": 239,
+      "child_services": [],
+      "original_owner_domain": {
+        "window": "Nullable Window; valid nonnil owner changes ONLY its draw-data Field0 word at original offset36. Any nonzero signed32 enabled argument sets bit1(mask2), zero clears it. Return is the same original Window pointer, not boolean.",
+        "predicates": "Valid nonnil fixed32 Point/Rect owners. Inclusive signed integer bounds, no inversion normalization. Float32 lower comparisons reject unordered values; the stock x87 upper comparison accepts unordered values because TEST AH,0x41 checks C0/C3 without excluding C2. Point or lower-bound NaN fails; upper-bound NaN can pass. Infinities, signed zeros and normal/subnormal values are explicit.",
+        "transforms": "Valid nonnil thirteen-word PE32 viewport, Point32 input and two-word output. All inputs/output words fixed32; X is stored first, then viewport Y words and Point.Y are loaded, then Y is stored. Return is that late signed32 Point.Y load."
+      },
+      "seeded_memory": {
+        "heap": "0x21000000/64KiB",
+        "viewport_offset": 4096,
+        "point_offset": 8192,
+        "bounds_offset": 12288,
+        "output_offset": 16384,
+        "window_offset": 20480,
+        "window_Field0_offset": 36,
+        "seed_order": [
+          "window Field0",
+          "13 viewport words",
+          "point words",
+          "bounds words",
+          "output words"
+        ],
+        "unused_bytes": "Deterministic whole64KiB canaries; exact byte snapshot after ordered seeding"
+      },
+      "alias_domain": {
+        "predicates": "Point/bounds disjoint, or point at bounds+0/+4/+8; all owners use compatible fixed32 fields. Seeding order defines coherent overlapped input words.",
+        "transforms": "Output disjoint, identical to Point, at Point+4, or Point-4. These coherent fixed32 aliases expose the late Point.Y load and ordered stores.",
+        "viewport_alias": "Viewport/output aliases are excluded from the native owner domain because viewport coordinates widen to intptr_t while Point32/output stay fixed32. Actual active DoorDraw parent uses distinct viewport and local Point32/output owners. No heterogeneous-layout reinterpretation equivalence is claimed."
+      },
+      "native_projection": {
+        "window": "Existing gui.Window/native nox_window. Mutate DrawData().Field0 only; recursive Window.SetEnabled/Window.Flags is not the original operation.",
+        "viewport": "Existing noxrender.Viewport and nox_draw_viewport_t have13 native words (104bytes on64bit). Original coordinate words project by signed32 extension to coordinate fields; Field10/11 zero-extend to uintptr_t. Public transforms must use the native typed owner; fixed32 output wraps mod2^32. Preserve Point/output alias order.",
+        "geometry": "Existing C int2/int4/float2/float4 remain fixed32 contiguous fields; no layout widening or inclusive-to-exclusive conversion.",
+        "compatibility": "Current C sub46AE10 returns int0/1; stock raw return is nullable Window pointer. Keep existing Go g2qStyle int32 zero/one contract by explicit normalization after the typed public C entry. Test-hook bypass remains byte-identical and uncredited as a native fallback."
+      },
+      "before_controls": "Compile all1041 unchanged C bytes on actual ARM64. Compare packed coordinate controls and actual104-byte native viewport controls separately, plus the existing Window boolean facade. Preserve any original compiler warnings. Four textual Vortex coordinate calls are inactive; one actual DoorDraw C parent receives vp.C() through Drawable.Draw.",
+      "parent_integration": "Before/after bounded actual DoorDraw C-body probe with declared image/lighting/color services, all4frame orientations and silver/gold choices. Check transformed image coordinates and readonly viewport/Drawable only; no full DoorDraw migration, image registration, color-upper-bit, allocator or lifetime credit.",
+      "predefined_generation": {
+        "seed": "0x46ae10",
+        "scalars": "Signed32 extremes,0,1,2,-1,all32one-hot/complement bits,20deterministic random words.",
+        "window": "Each scalar Field0 x enabled{0,1,2,INTMAX,INTMIN,-1} x nil/nonnil owner.",
+        "integer": "All signed boundary point pairs against normal/degenerate/inverted/extreme rectangles, deterministic random cases and all declared point/bounds aliases.",
+        "float": "Raw IEEE32 zero/sign/one/subnormal/normal/extreme/infinity/quiet-and-signaling-NaN values against normal/degenerate/inverted/infinite bounds; NaN in each of6operand positions.",
+        "transforms": "Each scalar context x both directions x all4declared aliases plus actual DoorDraw coordinate vectors. Original and independent model use identical ordered initial words, never original outputs."
+      },
+      "original_execution_pending": true,
+      "independent_model_pending": true,
+      "actual_C_before_pending": true,
+      "current_full_ABI_and_source_seal_pending": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "before_case_amendment": {
+        "previous_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-gui-geometry-original-review-v1/precase-domain-and-ABI-review-v1.json",
+        "previous_sha256": "1edf6595aca9b902d854a7e1498853dcc50113a28b3ea49737f5b36a619f8943",
+        "reason": "Initial domain prose assumed modern IEEE <= for every operand. Exact stock FCOMP/FNSTSW/TEST AH,0x41 accepts unordered upper comparisons; this is corrected before any original cases or outputs exist.",
+        "original_instruction_evidence": [
+          [
+            "0x42822e",
+            "ah, 1"
+          ],
+          [
+            "0x42823a",
+            "ah, 0x41"
+          ],
+          [
+            "0x428247",
+            "ah, 1"
+          ],
+          [
+            "0x428254",
+            "ah, 0x41"
+          ]
+        ],
+        "original_rows_or_expected_outputs_changed": false,
+        "source_port_started": false
+      }
+    },
+    "active_C_calls": [
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_xxx_polygonIsPlayerInPolygon_4217B0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a1, (int4*)getMemAt(0x5D4594, 552316 + 140 * a2))",
+        "caller_body_AST_sha256": "b7d8c4d4e7031484cfe13c770ec5a7aab0228c82c721e8ebd8a5d6b425904846"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_xxx_polygonIsPlayerInPolygon_4217B0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a1, (int4*)(i + 8))",
+        "caller_body_AST_sha256": "b7d8c4d4e7031484cfe13c770ec5a7aab0228c82c721e8ebd8a5d6b425904846"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_421F10",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)(v2 + 88))",
+        "caller_body_AST_sha256": "382cb6cd98eaef073fcb092c90715ef204140a0ff2f1aff337fb4ad6e99a2692"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_421F10",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)(i + 8))",
+        "caller_body_AST_sha256": "382cb6cd98eaef073fcb092c90715ef204140a0ff2f1aff337fb4ad6e99a2692"
+      },
+      {
+        "entry": "sub_46AE10",
+        "caller": "sub_461010",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (nox_window *, int)",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [
+          "nox_window *",
+          "int"
+        ],
+        "source_call": "sub_46AE10(dword_5d4594_1049500, 0)",
+        "caller_body_AST_sha256": "b709f1e8b48b4387466ac1a7db7e968b1ab9eedc87343c050eb97afd8313092c"
+      },
+      {
+        "entry": "sub_46AE10",
+        "caller": "sub_461060",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (nox_window *, int)",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [
+          "nox_window *",
+          "int"
+        ],
+        "source_call": "sub_46AE10(dword_5d4594_1049500, 1)",
+        "caller_body_AST_sha256": "51ddf3aeb9674df297abd1c217225bcb893452c110e1a2b0efdb60f75eb84742"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_xxx_clientTradeMB_4657E0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "be9be154b9d4981a5be27778529dc5d269c51556c07246055528e57f677844e5"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4658A0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "b7ec5ea7a7f647146cb59bd540264d049c40c8a1540b570b97b4bc8fa3ecbbe6"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4658A0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136368))",
+        "caller_body_AST_sha256": "b7ec5ea7a7f647146cb59bd540264d049c40c8a1540b570b97b4bc8fa3ecbbe6"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4658A0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "b7ec5ea7a7f647146cb59bd540264d049c40c8a1540b570b97b4bc8fa3ecbbe6"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_465990",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v6, (int4*)getMemAt(0x587000, 136192 + 16 * v2))",
+        "caller_body_AST_sha256": "c59d9d9d509e5ff1f685d792e83d36df23ac51aba38a0d0423f27fff6851f956"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_client_invAlterWeapon_4672C0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)getMemAt(0x5D4594, 1062572),\n\t\t\t\t\t\t\t\t\t (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "742d98df46c553b0dc3b1d380bb60c36f22b9416c89335c687a7c5def7c44424"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_478650",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v5, (int4*)getMemAt(0x5D4594, 1098380))",
+        "caller_body_AST_sha256": "726d42912ed79d7b7c0234641f72b2121a6c66347f41193f42fc7acbfa1fb5b9"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_479880",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)getMemAt(0x5D4594, 1098380))",
+        "caller_body_AST_sha256": "6578b276e80e998dbe23bff73de88c42823c673f915f5b6a1bca250c69065599"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4798A0",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "UnaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)point, (int4*)getMemAt(0x5D4594, 1098380))",
+        "caller_body_AST_sha256": "adbfdcd76e3cfa8cfff1121f649be24964f014ad9dddd2daef8664bc6d3b3bee"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)a1, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_48E000",
+        "source": "src/legacy/GAME2_3.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0((int2*)&a1->field_8, &v11)",
+        "caller_body_AST_sha256": "4617c983064f6fd035d40672f45aec37267ee5bda433b3d3c8d2955b1f397728"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4C0910",
+        "source": "src/legacy/GAME3_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a1, &v10)",
+        "caller_body_AST_sha256": "86003f8c5429d174f681eb6b5139cb6136585d5b1fa56ce552f408b8064c7827"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4C11E0",
+        "source": "src/legacy/GAME3_1.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a1, &v10)",
+        "caller_body_AST_sha256": "db0d4e5ab00dbee39c29f362f44171949f86645635635552a8cf8b81f428d366"
+      },
+      {
+        "entry": "sub_428220",
+        "caller": "sub_50D960",
+        "source": "src/legacy/GAME4_1.c",
+        "callee_type": "int (float2 *, float4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "float2 *",
+          "float4 *"
+        ],
+        "source_call": "sub_428220((float2*)(*v3 + 56), &a2)",
+        "caller_body_AST_sha256": "b6ca91a01457e4f6c67326ac8f4e4c31cc8ef90509a7c32d4fe9eef765d0619d"
+      },
+      {
+        "entry": "sub_428220",
+        "caller": "sub_50DE80",
+        "source": "src/legacy/GAME4_1.c",
+        "callee_type": "int (float2 *, float4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "float2 *",
+          "float4 *"
+        ],
+        "source_call": "sub_428220((float2*)a2, &a2a)",
+        "caller_body_AST_sha256": "c7b1c28a8bb82514472a7c62ddde1fd49ae3dc013ea6ee2c8d53bb54ca8eec0f"
+      },
+      {
+        "entry": "sub_4739E0",
+        "caller": "nox_thing_door_draw",
+        "source": "src/legacy/client__draw__doordraw.c",
+        "callee_type": "int (uint32_t *, int2 *, int2 *)",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [
+          "uint32_t *",
+          "int2 *",
+          "int2 *"
+        ],
+        "source_call": "sub_4739E0(a1, &pos, &a3)",
+        "caller_body_AST_sha256": "8b56e1d9d9fe25d501bd87f2ada8d06d5b13ab971750f4ddbff715ebfdba8e85"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4627F0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v74, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "f66d7ecca4a5a0cbe0905743d04e9d115a1a0b34b068677e68b866a177f668a5"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4627F0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v74, (int4*)getMemAt(0x587000, 136368))",
+        "caller_body_AST_sha256": "f66d7ecca4a5a0cbe0905743d04e9d115a1a0b34b068677e68b866a177f668a5"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4627F0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v74, (int4*)getMemAt(0x587000, 136368))",
+        "caller_body_AST_sha256": "f66d7ecca4a5a0cbe0905743d04e9d115a1a0b34b068677e68b866a177f668a5"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_4627F0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v74, (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "f66d7ecca4a5a0cbe0905743d04e9d115a1a0b34b068677e68b866a177f668a5"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136384))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136400))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136384))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136400))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136368))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136384))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136400))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136384))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136400))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136384))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v56, (int4*)getMemAt(0x587000, 136400))",
+        "caller_body_AST_sha256": "f1636e6d81a93c47e193ad2459427b8123cff44afc5f5b050af5643c2485d655"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_466660",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136336))",
+        "caller_body_AST_sha256": "6261289720c119392f5dcd5b01d1e1fc8203d0cb8ab213623e991cf8a2a68f15"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_466660",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136368))",
+        "caller_body_AST_sha256": "6261289720c119392f5dcd5b01d1e1fc8203d0cb8ab213623e991cf8a2a68f15"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "sub_466660",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136352))",
+        "caller_body_AST_sha256": "6261289720c119392f5dcd5b01d1e1fc8203d0cb8ab213623e991cf8a2a68f15"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_xxx_inventroryOnHovewerSub_4667E0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v15, (int4*)getMemAt(0x5D4594, 1049812))",
+        "caller_body_AST_sha256": "cc6dda4c519efeb83361433c483b5fe80bd16eb5079d251cc2a6eb03e3593430"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "caller": "nox_xxx_inventroryOnHovewerSub_4667E0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int2 *, int4 *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int2 *",
+          "int4 *"
+        ],
+        "source_call": "nox_xxx_pointInRect_4281F0(&v15, (int4*)getMemAt(0x5D4594, 1049828))",
+        "caller_body_AST_sha256": "cc6dda4c519efeb83361433c483b5fe80bd16eb5079d251cc2a6eb03e3593430"
+      }
+    ],
+    "active_Go_calls": [
+      {
+        "entry": "sub_46AE10",
+        "source": "src/legacy/game2_quickbar_native.go",
+        "line": 238,
+        "text": "return int32(C.sub_46AE10(w, C.int(on)))"
+      },
+      {
+        "entry": "nox_xxx_pointInRect_4281F0",
+        "source": "src/legacy/game2_quickbar_native.go",
+        "line": 1399,
+        "text": "return C.nox_xxx_pointInRect_4281F0(&point, (*C.int4)(memmap.PtrOff(0x587000, 133656))) != 0"
+      }
+    ],
+    "all58_C_parent_bodies_retained_except_DoorDraw_viewport_type": true,
+    "Go_g2qStyle_native_fallback_only_normalizes_pointer_to_boolean": true,
+    "hook_bypass_and_native_viewport_producer_and_shared_layouts_unchanged": true,
+    "whole_incoming_C_bodies_and_headers_reconstructed": true,
+    "product_NOX_CGO_old_C_definitions_absent": {
+      "source_revision": "f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+      "entries": [
+        "sub_46AE10",
+        "nox_xxx_pointInRect_4281F0",
+        "sub_428220",
+        "sub_4739E0",
+        "sub_473A10"
+      ],
+      "product_C_definitions_absent": true,
+      "bounded_DoorDraw_parent_C_definition_retained": true,
+      "files": [
+        {
+          "source": "src/legacy/GAME1_2.c",
+          "source_sha256": "212c46e1a084aa0308491523b19377c7a53e2337a9319ceeb8171b253650a558",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-gui-geometry-qualify-20261117/src/legacy/GAME1_2.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "f91c85670843a5b5c8d1f21f345ea762ea2963c3cc2a8d1319d3475aa421da7d",
+          "AST_gzip_sha256": "8ea57ed0ea825662b7ac37a71b9ee97d8b338ba5f12401e0b0106a6174db80a7",
+          "all_five_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        },
+        {
+          "source": "src/legacy/GAME2_1.c",
+          "source_sha256": "66b8b9ffe350eeaac0dcc427ba02aa8d2c91d93904698be6190a284e685cb229",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-gui-geometry-qualify-20261117/src/legacy/GAME2_1.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "63164bbba4bb9e16a391f8f114c0fe5d1eb98e01b7c6b476e498f41b33c638ea",
+          "AST_gzip_sha256": "2bf89642041e4ee8f3c624e916b7dbc3e77da8ac24fc1493b8cea3c5a2ea713e",
+          "all_five_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        },
+        {
+          "source": "src/legacy/client__draw__doordraw.c",
+          "source_sha256": "65e457c2b69087344e9dd5fef4837b3e9b1708451bdcf295b878f5a8f6968316",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-gui-geometry-qualify-20261117/src/legacy/client__draw__doordraw.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "53c51331aa3fbdd0b7901c8ffff886b850472e886d8bf9981116df1a7eb9fae9",
+          "AST_gzip_sha256": "dd9140d897e9b06efceed16bb0a6789e216d954c4eaaadb251dd84750cba5750",
+          "all_five_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        }
+      ]
+    }
+  },
+  "ci": {
+    "runs": [
+      43950238296,
+      43950146371
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14269296130,
+        "name": "linux-amd64-opennox-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14269296130-linux-amd64-opennox-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58.zip",
+        "bytes": 235724221,
+        "sha256": "76ee584243080ad1fed78cf091ef669bdcb503826056004b79a679437705213a",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1260232,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14269027525,
+        "name": "linux-amd64-opennox-server-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14269027525-linux-amd64-opennox-server-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58.zip",
+        "bytes": 223794474,
+        "sha256": "7db32dcce5f3e8199fe39084986c461cb53ab7d1c690c4765112096e7c35d2b4",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1254121,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14266864568,
+        "name": "linux-amd64-opennox-server-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14266864568-linux-amd64-opennox-server-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58.zip",
+        "bytes": 284670295,
+        "sha256": "dba0029b52aaa183bdda97d71e1a20ed1e2c33c7cfdf8c1ccf7df50bc86bd6ef",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1254121,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14266324764,
+        "name": "linux-amd64-opennox-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14266324764-linux-amd64-opennox-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58.zip",
+        "bytes": 235734296,
+        "sha256": "77aafac4dd2dfc5c181d30621b1021e801abca87fbd5f72cdbea66ffd03a58a5",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1260232,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14267834388,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14267834388-opennox-server-windows-386.zip",
+        "bytes": 173596445,
+        "sha256": "3b4e0a31adde409ccbbb1925793528ce811e592cc2e8ab31f6f68723ba309693",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1232173
+        }
+      },
+      {
+        "artifact_id": 14266863993,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/ci-14266863993-opennox-server-windows-amd64.zip",
+        "bytes": 178985818,
+        "sha256": "460c305dbf613feb2c37e6d1aa41e4ea28b6713f1e4c505090eb91ee8f16cdd4",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1252106,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 8052182727,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 29,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14269296130,
+        "name": "linux-amd64-opennox-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "preceding_artifact": 14263140864,
+        "preceding_passes": 1213217,
+        "current_passes": 1260232,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14269027525,
+        "name": "linux-amd64-opennox-server-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "preceding_artifact": 14260693685,
+        "preceding_passes": 1207106,
+        "current_passes": 1254121,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14266864568,
+        "name": "linux-amd64-opennox-server-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "preceding_artifact": 14262352090,
+        "preceding_passes": 1207106,
+        "current_passes": 1254121,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14266324764,
+        "name": "linux-amd64-opennox-hd-f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+        "preceding_artifact": 14261911564,
+        "preceding_passes": 1213217,
+        "current_passes": 1260232,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14267834388,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14262312157,
+        "preceding_passes": 1185158,
+        "current_passes": 1232173,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 94
+      },
+      {
+        "artifact_id": 14266863993,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14260981412,
+        "preceding_passes": 1205091,
+        "current_passes": 1252106,
+        "new_native_pass_events": 47015,
+        "skips_unchanged": true,
+        "skip_events": 11
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_GUI_geometry_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4782,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME1_2.c",
+        "src/legacy/GAME2_1.c",
+        "src/legacy/GAME2_1.h",
+        "src/legacy/client__draw__doordraw.c",
+        "src/legacy/client__draw__doordraw.h",
+        "src/legacy/game2_quickbar_native.go"
+      ],
+      "new_files": [
+        "src/legacy/gui_geometry_native.go",
+        "src/legacy/gui_geometry_native_entry.go",
+        "src/legacy/gui_geometry_native_fixture.go",
+        "src/legacy/gui_geometry_native_test.go",
+        "src/legacy/testdata/gui_geometry_original_v1.json.gz"
+      ],
+      "whole_incoming_C_bodies_and_headers_reconstructed": true,
+      "all58_C_parent_bodies_preserved_except_DoorDraw_viewport_type": true,
+      "Go_g2qStyle_only_native_fallback_normalization_hook_bypass_unchanged": true,
+      "shared_Window_viewport_and_fixed32_geometry_layouts_and_native_Drawable_producer_unchanged": true,
+      "original_CPU_rows_without_expectation_changes": 4874,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 273,
+      "fully_recorded_entries": 266,
+      "new_entries_pending_qualification": 5,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 37,
+    "retained_preceding_S42_program_paths": 39,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1716160,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 37,
+      "all_current_program_SHA_verified": true,
+      "preceding_S42_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "current_local_checks_first_attempts_pass": true,
+    "C_before_initial_analyzer_failure": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-gui-geometry-original-review-v1/reproduce-original-C-before-v1.py",
+      "sha256": "e7bd9a23881c2bccba58e6885bb399292e47f2b64296f16f31f8a5f94f12f5cc",
+      "failure": "AssertionError at line104: analyzer expected only float differences in packed controls;87 point_y alias-order differences also observed",
+      "actual_program_already_completed_exit_zero": true,
+      "retained": true
+    },
+    "initial_assumption_repaired_without_program_reexecution_or_fixture_changes": true,
+    "original_C_before_warning_count": 0,
+    "ported_product_and_CI_compiler_warnings": 0,
+    "preceding_S41_failed_layout_program_paths": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/compiled-test-mains/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/test-binaries/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/compiled-test-mains/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/test-binaries/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      }
+    ],
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "current_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v7",
+    "source_revision": "f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+    "files": 207,
+    "ordinary_own_C_definitions": 2472,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2486,
+    "pointer_integer_cast_functions_including_manual": 451,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v6",
+    "source_revision": "f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+    "files": 207,
+    "ordinary_own_C_definitions": 2477,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2491,
+    "pointer_integer_cast_functions_including_manual": 451,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "existing_C_parents": "58 active C calls audited; parent bodies remain except necessary DoorDraw viewport type; no new parent migration credit.",
+    "original_owner_domain": "Nullable valid Window, fixed32 Point/Rect and existing native13-word viewport. Coherent fixed32 aliases are covered. Heterogeneous viewport/output aliases, invalid owners, color-upperbits, allocator or lifetime equivalence uncredited.",
+    "actual_DoorDraw": "Before8 native-coordinate failures; after48 bounded actual-C-body direct/callback checks pass. Image/lighting/color services declared; full DoorDraw migration uncredited.",
+    "all_C_denominator": "OPEN; own-file ARM64 AST includes native bridges, platform implementations and references. Header/inc/Cgo preambles and other architectures/tags remain outside this inventory."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 47015
+    },
+    "native_roots": {
+      "TestGuiGeometryNativeLayout": "pass",
+      "TestGuiGeometryNativeOriginal": "pass",
+      "TestGuiGeometryNativeStyleFacade": "pass",
+      "TestGuiGeometryNativeStyleHook": "pass",
+      "TestGuiGeometryNativeDoorDraw": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 4874,
+      "route0/place64": 4874,
+      "route0/place512": 4874,
+      "route1/place0": 4874,
+      "route1/place64": 4874,
+      "route1/place512": 4874,
+      "route2/place0": 4874,
+      "route2/place64": 4874,
+      "route2/place512": 4874
+    },
+    "original_entry_checks": {
+      "sub_46AE10": 9288,
+      "nox_xxx_pointInRect_4281F0": 6336,
+      "sub_428220": 21978,
+      "sub_4739E0": 3132,
+      "sub_473A10": 3132
+    },
+    "bounded_actual_DoorDraw_controls": 48,
+    "original_cases": 4874,
+    "original_instruction_bytes": 239,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 25,
+    "full_native_nullable_Window_identity_and_Field0_only": true,
+    "stock_upper_unordered_float_semantics_preserved": true,
+    "typed_native_viewport_and_fixed32_ordered_alias_sensitive_output_and_return": true,
+    "whole64KiB_native_owner_graph_checked": true,
+    "Go_compatibility_boolean_fallback_and_hook_bypass_preserved": true,
+    "DoorDraw_parent_migration_or_color_upperbits_uncredited": true
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/qualified-gui-geometry-entries-v1.json",
+    "sha256": "39e7cd8afab20e5932307c283e53d274894bdd9fe3ce4d9bee8363a8f84f1aa5"
+  },
+  "normal_passes": 440296,
+  "strict_passes": 440296,
+  "focused_passes": 47015,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 150
+}

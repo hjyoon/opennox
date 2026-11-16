@@ -60,6 +60,107 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Window draw-state and geometry C entries, 2026-11-17
+
+Engine `f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58` is committed and pushed to
+`origin/port/go1.27-multiarch`. Five public C entries now execute in Go:
+`sub_46AE10`, `nox_xxx_pointInRect_4281F0`, `sub_428220`,
+`sub_4739E0` and `sub_473A10`.
+
+The transform entries and the active DoorDraw C parent now accept the
+existing typed native viewport. On ARM64 this owner has thirteen native
+words and occupies 104 bytes; indexing it as packed uint32 words read the
+wrong fields. The actual unchanged DoorDraw body reproduced eight wrong
+lock-image coordinates before the port; all 48 bounded direct/callback
+controls now pass across four orientations, two metals and three foreign
+placements. Declared image, lighting and color services isolate this
+coordinate path. Full DoorDraw migration and color upper bits are uncredited.
+
+The Window entry returns the original nullable full native Window pointer
+and changes only draw-data Field0 mask2. The existing Go quickbar facade
+still returns int32 zero/one, with its arbitrary test-hook return bypass
+unchanged. Integer bounds remain inclusive and signed32. Float bounds retain
+the stock x87 unordered-upper comparison behavior. Both transforms keep
+fixed32 wrapping outputs and load Point.Y after the X store, including
+coherent overlapping Point/output owners. Heterogeneous viewport/output
+aliases are outside the declared native owner domain.
+
+There are **273 C entries implemented in Go** and **271 with complete
+recorded qualification**. Two S25 entries with deleted original seals remain
+uncredited. **All-C migration and overall 100% remain open.** Nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, the public Save/Load pixel failure
+and other historical Windows memory/GC causes remain open. Chapter 4 and
+later are excluded.
+
+A **116-path pre-port seal** preserves **4,874 original CPU/model cases**,
+all **239 root bytes**, **319 startup bytes** and `0xe3f` FP state, with no
+child services. Every static root instruction is covered. An independent
+input-only model matches all declared returns, exact pointer roles, final
+words and ordered writes. The whole original image and 64 KiB heap,
+arguments, redzones, saved registers and FP state are checked.
+
+The **1,041 unchanged C bytes** run on actual **macOS ARM64**. Of 4,874
+packed/facade controls, **4,779** match: eight differ at stock unordered
+float upper bounds and 87 at partially overlapping Point/output reads.
+All **696 actual native viewport controls** differ, and all eight bounded
+actual DoorDraw controls show wrong coordinates. The initial C comparator
+expected only float differences in packed controls and failed; its source
+and raw successful program output are retained. A second analyzer classifies
+the additional alias differences without rerunning the program or changing
+any input, original result, compiler flag or binary.
+
+Qualification passes:
+
+- **47,015** focused identities include all original rows through actual
+  public C, a volatile C callback and direct Go at three foreign placements,
+  3,096 original Window facade controls, 48 bounded actual DoorDraw controls
+  and five roots. **25** C/Go layout fields are checked. The whole 64 KiB
+  owner graph admits only the original native Field0 or fixed32 output writes.
+- Normal and highres/cgocheck2/checkptr2 each pass **440,296** identical
+  terminal identities and multiplicities on the first attempt. Every prior
+  **393,281** identity remains; the increment equals the full focus. Both
+  use the same **9,393-input** lease `24fe97180525fba4b046a5ea021eafffc20bc051a1d1e574cc38ee6817115577`,
+  preserved byte for byte in a clean detached worktree.
+- Four default Apple compiler ARM64 products pass metadata/help and
+  **150** native/control symbol checks with zero warnings. Normal/HD each
+  pass two core E2E cases, one functional Save/Load diagnostic and independent
+  ordinary-clock UDP chat. Each chat proves eight submissions, four peer
+  messages and one host reply, with both processes exiting zero without force.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43950238296) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43950146371) pass
+  all six profiles on their first attempts. Six verified ZIPs retain **158
+  actual test mains**, all **29** native reader chains, the exact full-suite
+  increment and unchanged skip identities. Full warning review scans
+  **22 files / 8,052,182,727
+  uncompressed bytes**, with zero warnings. The existing Windows/386 UI
+  GOGC10 replay remains; it does not select this new family.
+
+All **4,782 existing protected tests/fixtures** remain byte-identical.
+Removing five guards and reversing the three root declarations, DoorDraw
+viewport annotation and quickbar fallback reconstructs all incoming modified
+files. The audit records **58 active C call sites**; parent algorithms,
+shared Window/viewport/fixed32 layouts and the actual Drawable viewport
+producer remain. Product ASTs prove the five old C definitions are absent
+and the typed DoorDraw C parent remains. No additional parent, allocator or
+lifetime migration is credited.
+
+All **4,649 original asset/personal Save files** retain their hashes.
+All **37 current program paths**, 39 preceding S42 paths,
+four failed S41 paths, 37 failed-source S39 paths and 11 failed S34 paths
+remain after the closed dedicated cache returns from
+**1,716,160 KiB to 8 KiB**. Historical user deletions
+remain recorded and nonblocking. Fresh analysis of **207 selected C files**
+records **2,472 ordinary definitions plus
+14 classified macros = 2,486**,
+with 451 functions containing pointer/integer casts and zero
+unclassified own-definition locations. These include native bridges,
+platform implementations and retained references; they do not establish
+the remaining unported denominator. Header/inc algorithms, Cgo preambles,
+optional tags, other architectures and team/map-monster owners remain open.
+
+Machine evidence: [split-gui-geometry-native-progress-20261117.json](split-gui-geometry-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-geometry-native-v1/qualified-gui-geometry-entries-v1.json` (SHA-256 `39e7cd8afab20e5932307c283e53d274894bdd9fe3ce4d9bee8363a8f84f1aa5`).
+
 ### Native Object accessors, trace pointer and flags C entries, 2026-11-17
 
 Engine `f17aac7dcf5ba4495282270e46fc91223ea2e0a4` is committed and pushed to

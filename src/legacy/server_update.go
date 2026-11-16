@@ -17,6 +17,7 @@ func objectNeedSyncC(obj *server.Object) {
 }
 
 func objectStatusMaskC(obj *server.Object, val1, val2 uint32, set bool) {
+	defer pinObjectForC(obj)()
 	var cset C.int
 	if set {
 		cset = 1

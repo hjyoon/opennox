@@ -217,7 +217,7 @@ int sub_53E430(nox_object_t* owner, nox_object_t* item, int a3, int a4);
 int nox_xxx_NPCEquipArmor_53E520(nox_object_t* owner, nox_object_t* item);
 void sub_53E600(nox_object_t* owner);
 int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int a3, int a4);
-nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, nox_object_t* item);
+nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const nox_object_t* item);
 int nox_xxx_pickupArmor_53E7F0(nox_object_t* owner, nox_object_t* item, int a3, int a4);
 void nox_xxx_objectSetArmorValue(nox_object_t* owner, float value);
 void sub_53EAE0(nox_object_t* item);

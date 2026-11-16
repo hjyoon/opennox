@@ -4,6 +4,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "GAME5_2.h"
+typedef const nox_object_t object_field_const_object_t;
 typedef struct object_field_action_C {uint32_t action;uintptr_t args[4];uint32_t field5;} object_field_action_C;
 typedef struct object_field_update_C {
  uint8_t fixed300[300];void* waypoints[16];uint32_t fields91_102[12];uint16_t health103[32];
@@ -13,8 +14,8 @@ typedef struct object_field_update_C {
 typedef int(*object_field_AI_callback_C)(nox_object_t*);
 typedef void(*object_field_sync_callback_C)(nox_object_t*);
 typedef int*(*object_field_mask_callback_C)(nox_object_t*,int,int,int);
-typedef uint32_t(*object_field_buffs_callback_C)(nox_object_t*);
-typedef nox_object_t*(*object_field_armor_callback_C)(nox_object_t*,nox_object_t*);
+typedef uint32_t(*object_field_buffs_callback_C)(const nox_object_t*);
+typedef nox_object_t*(*object_field_armor_callback_C)(nox_object_t*,const nox_object_t*);
 typedef unsigned int(*object_field_code_callback_C)(nox_drawable*);
 typedef int(*object_field_clear_callback_C)(uint32_t);
 typedef unsigned int(*object_field_bit_callback_C)(unsigned int);
@@ -124,9 +125,9 @@ func objectFieldNativeCall(route, index int, owner, item, drawable unsafe.Pointe
 	case 2:
 		return 0, unsafe.Pointer(sub_4E4500(o, C.int(value), C.int(mask), C.int(mode)))
 	case 3:
-		return uint32(nox_xxx_objectGetBuffs_4E4A80(o)), nil
+		return uint32(nox_xxx_objectGetBuffs_4E4A80((*C.object_field_const_object_t)(owner))), nil
 	case 4:
-		return 0, unsafe.Pointer(nox_xxx_armorHaveSameSubclass_53E7B0(o, it))
+		return 0, unsafe.Pointer(nox_xxx_armorHaveSameSubclass_53E7B0(o, (*C.object_field_const_object_t)(item)))
 	case 5:
 		return uint32(nox_xxx_netGetUnitCodeCli_578B00(dr)), nil
 	case 6:

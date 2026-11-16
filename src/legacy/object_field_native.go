@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
@@ -46,4 +47,12 @@ func objectFieldDrawableCode578B00(drawable *client.Drawable) uint32 {
 		code |= 0x8000
 	}
 	return code
+}
+
+// Keep a Go-owned receiver pinned until its complete C call has returned.
+// Pinner ignores foreign C owners; the callback keeps its typed pointer result.
+func pinObjectForC(owner *server.Object) func() {
+	var pin runtime.Pinner
+	pin.Pin(owner)
+	return pin.Unpin
 }

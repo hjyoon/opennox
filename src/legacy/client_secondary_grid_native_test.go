@@ -8,8 +8,10 @@ import (
 	"testing"
 )
 
-// Compile the complete live selector, marker reset, code encoder and sender.
-// Only grid placement and the final network sink are fixture services.
+// Compile the live C selector, marker reset and sender with the retained
+// original C encoder service. TestObjectFieldNativeOriginal separately checks
+// the current Go encoder through its actual C, callback and Go entry paths.
+// Grid placement and the final network sink remain fixture services.
 func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 	t.Helper()
 	program, err := os.ReadFile("testdata/client_secondary_grid_test.c")
@@ -33,6 +35,15 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 		}
 		_, body, _ := strings.Cut(string(source), part.start)
 		body, _, _ = strings.Cut(body, part.end)
+		if part.marker == "// CODE_BODY" {
+			const guard = "#if 0 // Restored by object_field_native_entry.go.\n"
+			prefix, retained, ok := strings.Cut(body, guard)
+			retained = strings.TrimRight(retained, " \t\r\n")
+			if !ok || strings.Trim(prefix, "- \t\r\n") != "" || !strings.HasSuffix(retained, "\n#endif") {
+				t.Fatal("missing complete retained original C encoder service")
+			}
+			body = prefix + strings.TrimSuffix(retained, "\n#endif") + "\n"
+		}
 		program = []byte(strings.Replace(string(program), part.marker, "//"+body, 1))
 	}
 	compiler := strings.Fields(os.Getenv("CC"))

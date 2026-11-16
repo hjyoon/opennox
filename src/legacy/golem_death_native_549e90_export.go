@@ -94,7 +94,7 @@ func golemDeathRuntime549E90() server.GolemDeathRuntime549E90 {
 			return 0
 		},
 		Raise: func(o *server.Object, height float32) uint32 {
-			C.nox_xxx_unitRaise_4E46F0(asObjectC(o), C.float(height))
+			objectRaiseC(o, height)
 			return 0
 		},
 		Force: func(origin server.GolemOrigin549E90, o *server.Object, force float32) uint32 {

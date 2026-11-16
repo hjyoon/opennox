@@ -22,6 +22,7 @@ func questHealthScaleRuntime4E3DD0() server.QuestHealthScaleRuntime4E3DD0 {
 		StoreHealthScale: func(value float32) { C.sub_4E40C0(C.float(value)) },
 		HealthScale:      func() float64 { return float64(C.sub_4E40F0()) },
 		SetHP: func(obj *server.Object, value uint16) int32 {
+			defer pinObjectForC(obj)()
 			return int32(C.nox_xxx_unitSetHP_4E4560(asObjectC(obj), C.ushort(value)))
 		},
 	}

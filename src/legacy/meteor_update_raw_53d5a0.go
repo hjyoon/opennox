@@ -35,7 +35,7 @@ var meteorShowerRawRuntime53D5A0 = func() server.MeteorShowerRawRuntime53D5A0 {
 		CreateAt: func(o, owner *server.Object, p types.Pointf) {
 			C.nox_xxx_createAt_4DAA50(asObjectC(o), asObjectC(owner), C.float(p.X), C.float(p.Y))
 		},
-		Raise:         func(o *server.Object, z float32) { C.nox_xxx_unitRaise_4E46F0(asObjectC(o), C.float(z)) },
+		Raise:         func(o *server.Object, z float32) { objectRaiseC(o, z) },
 		DelayedDelete: func(o *server.Object) { GetServer().DelayedDelete(o) },
 	}
 }

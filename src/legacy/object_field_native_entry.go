@@ -4,6 +4,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "GAME5_2.h"
+typedef const nox_object_t object_field_const_object_t;
 */
 import "C"
 
@@ -29,13 +30,13 @@ func sub_4E4500(owner *C.nox_object_t, value, mask, mode C.int) *C.int {
 }
 
 //export nox_xxx_objectGetBuffs_4E4A80
-func nox_xxx_objectGetBuffs_4E4A80(owner *C.nox_object_t) C.uint {
-	return C.uint(asObjectS((*nox_object_t)(owner)).Buffs)
+func nox_xxx_objectGetBuffs_4E4A80(owner *C.object_field_const_object_t) C.uint {
+	return C.uint(asObjectS((*nox_object_t)(unsafe.Pointer(owner))).Buffs)
 }
 
 //export nox_xxx_armorHaveSameSubclass_53E7B0
-func nox_xxx_armorHaveSameSubclass_53E7B0(owner, item *C.nox_object_t) *C.nox_object_t {
-	return (*C.nox_object_t)(asObjectC(objectFieldSameArmor53E7B0(asObjectS((*nox_object_t)(owner)), asObjectS((*nox_object_t)(item)))))
+func nox_xxx_armorHaveSameSubclass_53E7B0(owner *C.nox_object_t, item *C.object_field_const_object_t) *C.nox_object_t {
+	return (*C.nox_object_t)(asObjectC(objectFieldSameArmor53E7B0(asObjectS((*nox_object_t)(owner)), asObjectS((*nox_object_t)(unsafe.Pointer(item))))))
 }
 
 //export nox_xxx_netGetUnitCodeCli_578B00

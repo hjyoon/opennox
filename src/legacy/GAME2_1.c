@@ -627,6 +627,7 @@ nox_drawable* sub_4615C0() {
 }
 
 //----- (00461600) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 nox_drawable* sub_461600(int thing_type) {
 	for (size_t slot = 0; slot < 9; slot++) {
 		for (nox_drawable* drawable = (nox_drawable*)array_5D4594_1049872[slot]; drawable;
@@ -638,6 +639,7 @@ nox_drawable* sub_461600(int thing_type) {
 	}
 	return NULL;
 }
+#endif
 
 //----- (00461630) --------------------------------------------------------
 int nox_xxx_send2ServInvenFail_461630(short a1) {
@@ -648,6 +650,7 @@ int nox_xxx_send2ServInvenFail_461630(short a1) {
 }
 
 //----- (00461930) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 int sub_461930() {
 	for (size_t slot = 0; slot < 9; slot++) {
 		for (nox_drawable* drawable = (nox_drawable*)array_5D4594_1049872[slot]; drawable;
@@ -659,6 +662,7 @@ int sub_461930() {
 	}
 	return 0;
 }
+#endif
 
 //----- (00461970) --------------------------------------------------------
 nox_inventory_cell_t* sub_461970(int net_code, int thing_type) {
@@ -1422,7 +1426,9 @@ int sub_464770(int a1, int a2, unsigned int a3) {
 }
 
 //----- (00464B40) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 int sub_464B40(int a1, int a2) { return a1 >= 0 && a1 < 4 && a2 >= 0 && a2 < 21; }
+#endif
 
 //----- (00464B70) --------------------------------------------------------
 int nox_xxx_clientDequip_464B70(nox_drawable* drawable) {
@@ -2339,14 +2345,18 @@ int sub_467650() {
 }
 
 //----- (00467680) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 void sub_467680() {
 	if (dword_5d4594_1049864 == 6) {
 		dword_5d4594_1049864 = 0;
 	}
 }
+#endif
 
 //----- (004676A0) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 nox_window* nox_xxx_wndGetHandle_4676A0() { return dword_5d4594_1062452; }
+#endif
 
 //----- (004676D0) --------------------------------------------------------
 nox_drawable* sub_4676D0(int net_code) {
@@ -2375,10 +2385,12 @@ int sub_467700(int a1) {
 }
 
 //----- (00467740) --------------------------------------------------------
+#if 0 // Restored by inventory_state_native_entry.go.
 int sub_467740(int a1) {
 	dword_5d4594_1062488 = a1;
 	return a1;
 }
+#endif
 
 //----- (00467810) --------------------------------------------------------
 int sub_467810(int a1, int a2) {

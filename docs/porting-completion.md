@@ -60,6 +60,101 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Window position, image and font C entries, 2026-11-17
+
+Engine `2a7a583576925d57a2ef6cabf06b0ac38231ea3b` is committed and pushed to
+`origin/port/go1.27-multiarch`. Five public C entries now execute in Go:
+`nox_xxx_wndSetOffsetMB_46AE40`, `nox_xxx_wndSetIcon_46AE60`,
+`nox_xxx_wndSetIconLit_46AEA0`, `sub_46AEC0` and `sub_46AF40`.
+The offset entry returns the same nullable **full native Window pointer**.
+The existing C declaration returned int and discarded its upper bits.
+All existing active C and Go calls ignore that result; their bodies remain.
+
+There are **254 C entries implemented in Go** and **252 with complete
+recorded qualification** at this checkpoint. Two implemented S25 entries
+with deleted original seals remain uncredited. **All-C migration and overall
+100% remain open.** Nine final Warrior/Conjurer/Wizard chapter 1–3 audits,
+the public Save/Load pixel failure and other historical Windows memory/GC
+causes remain open. Chapter 4 and later remain excluded.
+
+A **105-path pre-port seal** preserves **2,418 original CPU/model cases**,
+all **111 root bytes**, **319 startup bytes** and `0xe3f` FP state, with no
+child services. Every static instruction is covered. An independent
+input-only model matches the original returns, Window/font pointer roles,
+all seven final field words and ordered writes. Complete original image and
+64 KiB heap, caller arguments, redzones, saved registers and FP state remain
+checked. Nullable owners, signed32 coordinate boundaries and distinct
+nullable image/font identities are explicit before case generation.
+
+The unchanged **712-byte C bodies** run on actual **macOS ARM64** native
+Window/WindowData layouts. **2,325** complete controls match the original.
+The other **93** retain actual high native Window return truncation at the
+old int declaration; all field effects and whole-graph canaries still match.
+The pre-port executable, exact program, inputs and raw outputs remain sealed.
+No crash or invalid-owner behavior is inferred from the return-bit difference.
+
+Qualification passes:
+
+- **21,764** focus identities: every original row through actual public C,
+  a volatile C callback and direct Go, at three foreign placements, plus two
+  roots. **20** C/Go layout checks cover complete Window/WindowData sizes,
+  offsets, signed native coordinates, pointer fields and the typed return
+  ABI. Original signed32 x/y values extend into native image.Point/intptr_t;
+  image and font identities retain their complete native width. The entire
+  64 KiB graph admits only the original native write projection.
+- Normal and highres/cgocheck2/checkptr2 each pass **333,013** identical
+  terminal identities and multiplicities. All preceding **311,249** remain;
+  the increment exactly equals the new focus. Both use the same
+  **9,374-input** lease `02cff9e9611223cb5c415cf60e52652050a53fa7837af0bac77d2f28b0d6de07`.
+  A clean detached worktree preserves every compilation input byte for byte.
+- All four default Apple compiler ARM64 products pass metadata/help and
+  **131** native/control symbol checks. Normal/HD pass four core E2E cases,
+  two functional Save/Load diagnostics and independent ordinary-clock UDP
+  chat. Each chat proves eight submissions, four peer messages and one host
+  reply; both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43913854681) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43913739800)
+  pass all six profiles on their first attempts. Six verified ZIPs retain
+  **158 actual test mains**, all **26** native matrix readers, the exact
+  full-suite increment and unchanged skip identities. Complete warning
+  review scans **22 files / 7,340,594,717
+  uncompressed bytes**, with zero warnings. The existing Windows/386 UI
+  GOGC10 replay remains; it does not select this new family.
+
+All **4,776 protected tests/fixtures** remain byte-identical. Reversing five
+guards reconstructs the complete incoming C file; reversing only the offset
+return declaration reconstructs its header. All **96 active C parent bodies**
+and the existing Go callers remain unchanged. Shared Window/WindowData,
+opaque image/font representations and the S36 foreign pointer-copy primitive
+remain unchanged. The native setters copy pointer identities into C-owned
+fields without applying Go deletion barriers to their previous contents.
+Parent migration, invalid owners, image registration and allocator/lifetime
+equivalence are not claimed. `sub_46AE10` stays deferred: its original pointer
+return and existing normalized-boolean compatibility need separate migration.
+
+The current source has a fresh default ARM64 build selection and lossless
+AST inventory for all **207 selected C files**: **2,491
+ordinary own definitions plus 14 classified macro definitions
+= 2,505**, with **454
+functions containing pointer/integer casts** and zero unclassified own
+definition locations. This includes bridges, platform implementations and
+retained references; it does not establish an unported-algorithm denominator.
+Header/inc algorithms, Cgo preambles, optional tags and non-ARM64 branches
+still require classification. The two initial offline inventory queries and
+their outputs remain retained. Only exact already-pinned analysis-tool
+dependencies were cached; go.mod/go.sum and all source bytes remain unchanged.
+
+All **4,649 original asset/personal Save files** retain their hashes. All
+**37 current program paths**, **41 preceding S39 paths**,
+37 failed-source S39 paths and 11 failed S34 paths remain after the closed
+dedicated cache returns from **1,709,920 KiB to 8 KiB**.
+An initial cleanup-helper label preflight stopped before invoking Go cache
+cleaning; its failed helper and record remain. Historical user deletions,
+two lost S25 seals, Team and map-monster-list owner families remain open.
+
+Machine evidence: [split-window-field-native-progress-20261117.json](split-window-field-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-window-field-native-v1/qualified-window-field-entries-v1.json` (SHA-256 `4649efea20f2b29584cb0fac18a87a33420f76be84bfdd9d888a2901a2ac1898`).
+
 ### Native Object, AI, inventory and Drawable field C entries, 2026-11-17
 
 Engine `97eb6afe0c675613a55bc07c5bfce0cb983b31f5` is committed and pushed to

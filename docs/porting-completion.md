@@ -60,6 +60,93 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Pull and Push public C entries, 2026-11-16
+
+Engine `c696e7fb57cf842f411e8a526cff0fe4d5b2dc01` is committed and pushed to
+`origin/port/go1.27-multiarch`. Public C entries
+`nox_xxx_castPull_52BFA0` and `nox_xxx_castPush_52C000` now forward
+full native object/acceptance pointers and signed-DWORD levels through Go.
+The caster's native position replaces PE32 caster +56; the wide-host position
+is at +60. Balance, live position, radial force and owner-attached audio retain
+their original order. Unused object/acceptance arguments retain their ABI.
+
+There are **185 implemented split-file Go entries** and **183 with complete
+recorded qualification**. The two Arachnaphobia/trace entries whose original
+seals were deleted remain open and receive no additional recorded credit.
+**All-C migration and overall 100% remain open.**
+
+Before source edits, a **95-path seal** preserves **566 original CPU cases**
+(283 per cast), **2,264 service events**, all **188 cast bytes** and
+**319 startup bytes** under control word `0xe3f`. An independent exact
+rational/identity model matches every observed state, service and caller write.
+Whole mapped-image/64 KiB heap, caller redzones, callee-saved registers and
+FP control/TOP are checked. Push's original caller-level scratch overwrite is
+explicit reference metadata, without a native caller-write claim.
+Balance/radial/audio remain declared service boundaries; the balance return
+uses an explicit owned FLD/RET shim. Synthetic nonfinite and signed controls
+are not stock gameplay. The CPU reference uses valid owned casters.
+
+The unchanged **726-byte C bodies** remain inactive. Removing two guards
+reconstructs the whole incoming C file; reversing two prototypes reconstructs
+its header. Ten packed controls match original force, audio, return and signed
+level observations. Four high native pointer controls fault, and two low
+native records expose the old position-offset mismatch. These are standalone
+x86_64/Rosetta observations, without an ARM64 C-before or full-game crash claim.
+
+The original execution also disproves the preceding Go nearest-even force
+calculation in **102 cases**. For example, 1.00000004 times 3 spills to exactly
+3.0 under original ToZero. Only the two cast force expressions now use the
+existing PC53/ToZero and x87 NaN helpers, followed by a ToZero binary32 store.
+Finite extended-exponent overflow preserves the original finite store.
+Global arithmetic helpers and ordinary legacy adapters remain unchanged.
+Two old test files change only contradicted force expectations; every old
+case, label and count remains. Both packages consume the identical sealed
+original reference. The first failed comparison, thirteen candidate source
+paths, actual failed test mains and complete outputs remain preserved.
+
+All current qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **169,232** identities on
+  the same **9,295-input** lease
+  `27bbf845a55d9ac6048f349705135e065e293cf2f770cd7601b36a1d6194a39e`.
+  Focused checks pass **5,884**: 5,164 native identities, 567 independent
+  original force checks, 149 preceding server checks and four legacy checks.
+  Three actual public C/typed C/direct Go routes exercise every original case
+  at three foreign placements, plus 30 signed/pointer controls and 36 actual
+  balance/native radial compositions, with whole-arena canaries.
+- Four ARM64 products pass build, metadata, help and **62** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics and
+  two ordinary-clock independent UDP chat profiles. Each chat profile proves
+  eight submissions, four received peer messages and one host reply; both
+  processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43775828952)
+  passes all four profiles and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43775683040)
+  passes amd64/386, all on the first attempt. Six SHA-verified ZIPs retain
+  **158 actual test mains**, all current identities and every preceding
+  qualified native matrix. Windows supervision and 386 GC-pressure replay
+  pass. Complete warning review scans **20 files /
+  6,264,831,179 uncompressed bytes**, with zero warnings.
+
+All **4,744** other preceding protected tests/fixtures and **4,649** original
+asset/personal Save files retain their hashes. All **43 current program paths**
+and the preceding **63 S26 paths** remain intact after clearing the closed
+dedicated build cache to 8 KiB. The user-deleted historical executables and S25
+reference records remain explicitly missing and nonblocking. Restricted
+Unicorn cache-probe failures and their native macOS reports are retained;
+approved native probe execution recovers the original CPU reference before
+source edits. Runtime inputs use private copies of the previously verified
+stock video bags/indexes, with original assets and personal Save untouched.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, unexplained historical Windows GC failure and two lost S25
+seals remain open. Current passes do not establish a GC repair. Chapter 4 and
+later remain excluded. The next native-pointer review targets the active
+Fumble entry at `52C060`.
+
+Machine evidence: [split-pull-push-native-progress-20261116.json](split-pull-push-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/qualified-pull-push-cast-entries-v1.json` (SHA-256 `5b44e98d606cb4a40e2d37ce19ddc5f30421bdc4e9f7c64aa070ba89bcc45dac`).
+
 ### Native Poison public C entry, 2026-11-16
 
 Engine `013e7773f11d17a34a7968d88a18c560a6bdf830` is committed and pushed to
@@ -72,8 +159,8 @@ The original nil-argument read faults; it is not converted into silent success.
 Existing typed algorithms, attribution/activation bindings and tests remain
 unchanged, with no numerical correction or extra entry credit.
 
-There are **183 implemented split-file Go entries** and **181 with complete
-recorded qualification**. The two preceding Arachnaphobia/trace entries still
+At that checkpoint there are **183 implemented split-file Go entries** and
+**181 with complete recorded qualification**. The two preceding Arachnaphobia/trace entries still
 lack their deleted original seals and receive no additional recorded credit.
 **All-C migration and overall 100% remain open.**
 
@@ -134,8 +221,8 @@ separate from passing results.
 The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
 pixel failure, unexplained historical Windows GC failure and the two lost S25
 seals remain open. Current successful runs do not establish a GC repair.
-Chapter 4 and later remain excluded. The next native-pointer review targets
-the still-active Pull/Push C entries at `52BFA0` and `52C000`.
+Chapter 4 and later remain excluded. At that checkpoint the next C targets
+were Pull/Push; their separately sealed qualification appears above.
 
 Machine evidence: [split-poison-cast-native-progress-20261116.json](split-poison-cast-native-progress-20261116.json).
 Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/qualified-poison-cast-entry-v1.json` (SHA-256 `5f3d12b43804804e697b11be04ceef9f983d155a769635f75e1acdeca491769a`).

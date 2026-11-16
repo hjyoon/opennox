@@ -1,0 +1,236 @@
+{
+  "source_revision": "c696e7fb57cf842f411e8a526cff0fe4d5b2dc01",
+  "entries": [
+    "nox_xxx_castPull_52BFA0",
+    "nox_xxx_castPush_52C000"
+  ],
+  "qualified_entries": 2,
+  "preceding_fully_recorded_qualified_entries": 181,
+  "cumulative_qualified_split_Go_entries": 183,
+  "implemented_split_Go_entries": 185,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9295,
+    "sha256": "27bbf845a55d9ac6048f349705135e065e293cf2f770cd7601b36a1d6194a39e"
+  },
+  "original": {
+    "cases": 566,
+    "cases_per_cast": 283,
+    "service_events": 2264,
+    "root_bytes": 188,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 95,
+    "whole_image_and_heap_checks": true,
+    "caller_redzones_callee_saved_registers_FP_control_TOP_checked": true,
+    "Push_caller_level_scratch_overwrite_explicit": true,
+    "independent_exact_rational_model_equal": true,
+    "fixture_sha256": "cc1f7ed74c0e41f1fc729f0555b642c86cabbfa16cd303283dece417ac670b89",
+    "fixture_gzip_sha256": "d5304b3b03c61e9ec103ee4df9b034d04cee2265ceb042ab1053d33ca50272d7",
+    "scope": "All188 original cast bytes execute. Balance binary64 return uses an explicitly declared owned FLD/RET shim. Balance/radial/audio are service boundaries, not original getter/radial/audio body claims. Synthetic nonfinite/signed boundary values are not stock gameplay. Only valid owned casters are in this CPU reference. Push PE32 caller-level scratch store is metadata, not a native C ABI caller-write claim."
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "original_C_body_bytes": 726,
+    "matching_packed_controls": 10,
+    "high_native_pointer_faults": 4,
+    "low_native_position_layout_mismatches": 2,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false
+  },
+  "numeric_correction": {
+    "original_cases": 566,
+    "original_service_events": 2264,
+    "original_preport_sealed_paths": 95,
+    "original_mismatching_numeric_cases_before_fix": 102,
+    "native_route_failed_subcases": 918,
+    "server_force_failed_subcases": 102,
+    "failed_native_root": 1,
+    "failed_server_reference_root": 1,
+    "candidate_source_paths_preserved": 13,
+    "first_failed_programs_and_raw_results_preserved": true,
+    "scope": "Only Pull/Push use original PC53/ToZero multiplication and ToZero binary32 spill, including explicit x87 NaN rules and finite extended-exponent overflow. Expected numeric values come from sealed original CPU data, never from the replacement arithmetic."
+  },
+  "ci": {
+    "runs": [
+      43775828952,
+      43775683040
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "archives": [
+      {
+        "artifact_id": 14187475592,
+        "name": "linux-amd64-opennox-server-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14187475592-linux-amd64-opennox-server-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01.zip",
+        "bytes": 265186598,
+        "sha256": "e72c814eae438039cc083e4b58f576123e6341bbb6bd91c3ba90d988ee554e6f",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 983018,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14187370933,
+        "name": "linux-amd64-opennox-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14187370933-linux-amd64-opennox-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01.zip",
+        "bytes": 219947628,
+        "sha256": "3ba6795a6bb53aecca61b5d48c2006c08a2630b688521b3ae5ad8243d466fdab",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 989129,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14186887549,
+        "name": "linux-amd64-opennox-hd-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14186887549-linux-amd64-opennox-hd-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01.zip",
+        "bytes": 219415083,
+        "sha256": "e1923f735151b8335b20844ce257c719a5568937747a8992641d5718971069e0",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 989129,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14186154813,
+        "name": "linux-amd64-opennox-server-hd-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14186154813-linux-amd64-opennox-server-hd-c696e7fb57cf842f411e8a526cff0fe4d5b2dc01.zip",
+        "bytes": 206405813,
+        "sha256": "fd04c4ae55f5119fc7b89a09b6ded56b4c2ac94984f4cc9c756c55df8270e990",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 983018,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14187205489,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14187205489-opennox-server-windows-amd64.zip",
+        "bytes": 168658928,
+        "sha256": "7bee77b63d62aa01d8ff664b250a1933d49b1ffb0686ad28e6931cfe8e92530c",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 981003,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14185709664,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/ci-14185709664-opennox-server-windows-386.zip",
+        "bytes": 161928728,
+        "sha256": "6b708e9f4262e69b7255e7bbf5c545a518dd360ef09aaf28ae1a307c6a9e0cae",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 961070
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6264831179,
+    "all_previous_native_matrices_pass": true,
+    "current_or_historical_GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "protected_existing_tests_fixtures": 4746,
+    "unchanged_protected_inputs": 4744,
+    "changed_original_qualified_numeric_expectation_files": 2,
+    "all_original_test_cases_labels_counts_unchanged": true,
+    "tracked_E2E_inputs": 387,
+    "original_asset_and_Save_files": 4649,
+    "original_C_body_bytes": 726,
+    "whole_incoming_C_and_header_reconstruct": true,
+    "retained_current_program_paths": 43,
+    "retained_preceding_S26_program_paths": 63,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 2491488,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 43,
+      "all_current_program_SHA_verified": true,
+      "preceding_S26_program_paths_SHA_verified": 63,
+      "critical_products_and_executed_test_mains_verified": 10,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded and nonblocking. Lost historical versions and S25 reference seals are not claimed recovered or preserved."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Historical ordinary failures remain unexplained. Current passes are not a cause or repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 5164
+    },
+    "existing_typed_server_test_actions": {
+      "pass": 149
+    },
+    "independent_original_force_server_test_actions": {
+      "pass": 567
+    },
+    "existing_legacy_test_actions": {
+      "pass": 4
+    },
+    "native_roots": {
+      "TestPullPushNativeLayout": "pass",
+      "TestPullPushNativeOriginal": "pass",
+      "TestPullPushNativePublicPointers": "pass",
+      "TestPullPushNativeDefaultBindings": "pass"
+    },
+    "typed_server_roots": {
+      "TestPullCastNativePointersLiveOriginAndOrder52BFA0": "pass",
+      "TestPullCastSignedLevelNegationAndBinary32Spill52BFA0": "pass",
+      "TestPullCastServerBalanceAndOwnerAudio52BFA0": "pass",
+      "TestPullCastUnusedArgumentsAndMissingCaster52BFA0": "pass",
+      "TestPullCastNativePositionLayout52BFA0": "pass",
+      "TestPushCastNativePointersLiveOriginAndOrder52C000": "pass",
+      "TestPushCastSignedLevelAndBinary32Spill52C000": "pass",
+      "TestPushCastServerBalanceAndOwnerAudio52C000": "pass",
+      "TestPushCastUnusedArgumentsAndMissingCaster52C000": "pass",
+      "TestPushCastNativePositionLayout52C000": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 566,
+      "route0/place64": 566,
+      "route0/place512": 566,
+      "route1/place0": 566,
+      "route1/place64": 566,
+      "route1/place512": 566,
+      "route2/place0": 566,
+      "route2/place64": 566,
+      "route2/place512": 566
+    },
+    "pointer_and_signed_scalar_compositions": 30,
+    "actual_default_balance_and_native_radial_compositions": 36,
+    "original_cases": 566,
+    "original_service_events": 2264,
+    "original_root_bytes": 188,
+    "original_startup_bytes": 319
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/qualified-pull-push-cast-entries-v1.json",
+    "sha256": "5b44e98d606cb4a40e2d37ce19ddc5f30421bdc4e9f7c64aa070ba89bcc45dac"
+  },
+  "normal_passes": 169232,
+  "strict_passes": 169232,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 62
+}

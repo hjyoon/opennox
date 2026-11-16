@@ -35,10 +35,12 @@ func sub_41FBE0(first, second **C.global_record_const_char_t) C.int {
 		return 0
 	}
 	offset := uint32(531660) + 24*uint32(C.dword_587000_60044)
-	*first = (*C.global_record_const_char_t)(memmap.PtrOff(0x5D4594, uintptr(offset)))
+	// These C-owned output slots may be uninitialized. A Go pointer write
+	// barrier would interpret their old bytes as Go heap references.
+	*(*uintptr)(unsafe.Pointer(first)) = uintptr(memmap.PtrOff(0x5D4594, uintptr(offset)))
 	// The stock entry reloads the selected index after its first store.
 	offset = uint32(531670) + 24*uint32(C.dword_587000_60044)
-	*second = (*C.global_record_const_char_t)(memmap.PtrOff(0x5D4594, uintptr(offset)))
+	*(*uintptr)(unsafe.Pointer(second)) = uintptr(memmap.PtrOff(0x5D4594, uintptr(offset)))
 	return 1
 }
 

@@ -250,6 +250,14 @@ jobs:
             throw 'Incomplete exact-PE Skeleton/Golem/trade original replay'
           }
 
+      - name: Replay exact Windows/386 global record references under GC pressure
+        if: matrix.arch == '386'
+        working-directory: src
+        shell: pwsh
+        run: |
+          python ../scripts/replay-global-record-native-pe.py --report "../build/windows-$env:TARGET_ARCH"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:

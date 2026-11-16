@@ -60,6 +60,103 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native trade packet public C entries, 2026-11-16
+
+Engine `5cbdcfb1fb92ff532bd9ba982123ba444dadb1c8` is committed and pushed to
+`origin/port/go1.27-multiarch`. `sub_50F720`,
+`nox_xxx_tradeP2PUpdStuff_50FA00` and `sub_50FF90` now traverse native
+recipient, player-update, player, session, Gold and item pointers in Go.
+Status and remove packets reuse the unchanged server builders; balance
+also preserves the original merchant delta and uint32 subtraction wrap.
+The network service receives the unsigned player index, exact packet,
+nil related object and disconnect flag 1; its signed int32 return survives
+the public C and callback ABIs. The remove entry never reads its unused
+second argument.
+
+There are **208 implemented split-file Go entries** and **206 with complete
+recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.** Entry
+totals do not establish the all-C denominator.
+
+A **60-path preport seal** preserves **508 original CPU/model cases**
+(172 status, 245 balance, 91 remove), all **399 procedure bytes** and
+**319 startup bytes** under `0xe3f`. The sole declared boundary is
+`nox_xxx_netSendPacket1_4E5390`; its implementation is not executed by the
+original CPU proof. Exact service packets, arguments and EAX returns match
+an independent input-only model. Whole image/64 KiB heap, caller redzones,
+saved registers and FP state remain checked. Status includes aliased owners
+and nonparticipants. Balance covers valid participants, player/NPC classes
+and uint32 wrap; the original nonparticipant uninitialized-stack payload is
+outside this contract. Remove covers every net-code bit/complement and
+ignores the original second word.
+
+The unchanged **1,668-byte C bodies** remain archived. Their standalone
+x86_64/Rosetta diagnostic reproduces all **508** packet/return controls
+and two high session arguments. Those session controls explicitly use
+PE32-position fields with a native-width, zero-extended InitData pointer;
+they are hybrid controls, not complete native objects. Four independent
+actual native high Object arguments pass typed precontrol then fault after
+the recipient/item int arguments lose high bits. The first pure packed32
+balance control also remains: after 150 passing status cases, the existing
+native-width InitData expression reads the following canary word as high
+pointer bits. Both C executable versions and all outputs remain preserved.
+These diagnostics do not claim an integrated gameplay crash or ARM64
+execution of the old C bodies.
+
+Final qualification passes:
+
+- **4,574** focus identities: all 508 original cases through actual C,
+  typed callback and direct Go at three high foreign placements, plus
+  layout/root checks. Exact packets, service returns and the complete
+  64 KiB owner are checked. All seeded foreign pointer stores use the
+  existing C memcpy helper.
+- Normal and highres/cgocheck2/checkptr2 each pass **198,566** identical
+  terminal identities/multiplicities on the **9,338-input** lease
+  `91bf18dcc69a926dd3b0b4a6c828fefc925cec9b93cb7e03a9b4e277255946b2`.
+  All preceding 193,992 identities remain; all additions equal focus.
+  All **4,764** preceding protected inputs and other preceding source
+  outside the exact three C guards/prototypes remain byte-identical.
+- Four ARM64 products pass default-compiler builds, metadata, help and
+  **85** symbol checks. Normal/HD pass four core E2E cases, two functional
+  Save/Load diagnostics and two ordinary-clock independent UDP chat profiles.
+  Each chat proves eight submissions, four peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43846777923) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43846597043)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six SHA-verified ZIPs retain **158 actual test mains** and the complete
+  new/prior native matrices. Existing Windows/386 GOGC10 checks remain;
+  this batch adds no new selection to that replay. Complete warning review
+  covers **22 files /
+  6,448,750,256 uncompressed bytes**, zero warnings.
+
+The first new layout root incorrectly equated full Go Object/PlayerUpdateData
+sizes to their C prefix types. All 4,572 packet cases passed; focus and
+normal/strict failed only that layout root. Eleven program paths from that attempt,
+all seven source versions and outputs remain retained. The correction
+compares the C size with the exact end of the final shared Go field,
+retaining all 31 layout equalities, Go extension bounds and full allocation
+stride checks. Packet expectations, all original inputs, the complete
+packet test body and production implementations remain unchanged.
+
+Twelve calls remain in three PE32 C parents. Their int session arguments,
+pointer locals, original offsets and float-transported item pointers remain
+explicit limitations; these leaf ports do not make the parents native.
+Reversing only the guards/prototypes reconstructs the complete incoming
+C file/header, including every unchanged caller site.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths**,
+the preceding **39 S33 paths** and **11 paths from the failed S34 attempt** remain after
+clearing only the closed dedicated cache from
+**2,189,520 KiB to 8 KiB**.
+Historical deletions, lost S25 seals, nine final chapter 1–3 audits,
+public Save/Load pixel failure and other historical Windows memory/GC
+causes remain open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-trade-packet-native-progress-20261116.json](split-trade-packet-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-packets-native-v2/qualified-trade-packet-entries-v1.json` (SHA-256 `8ca663ccd8f9e59bcbeb99eac0e0956cf1271f7aaa5373fcb143181c7f29afc8`).
+
 ### Native trade-item lookup public C entry, 2026-11-16
 
 Engine `d2be9ee33ffc5ecda4a50534891078558b59910c` is committed and pushed to
@@ -71,8 +168,8 @@ validates its session and skips nil items. A separate full32 P2P lookup also
 skips nil items. Both helpers and all other server trade logic remain unchanged;
 the original leaf's valid-node contract has no nil-item guard.
 
-There are **205 implemented split-file Go entries** and **203 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
+At that checkpoint there are **205 implemented split-file Go entries**
+and **203 with complete recorded qualification**. Two implemented entries with deleted S25 original
 seals remain open. **All-C migration and overall 100% remain open.** These
 entry totals do not establish the all-C denominator.
 

@@ -1,0 +1,2258 @@
+{
+  "source_revision": "1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+  "entries": [
+    "sub_461600",
+    "sub_461930",
+    "sub_464B40",
+    "sub_467680",
+    "nox_xxx_wndGetHandle_4676A0",
+    "sub_467740",
+    "nox_xxx_inventoryGetFirst_4E7980"
+  ],
+  "qualified_entries": 7,
+  "preceding_fully_recorded_qualified_entries": 252,
+  "cumulative_qualified_split_Go_entries": 259,
+  "implemented_split_Go_entries": 261,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9381,
+    "sha256": "2e00186ce9a3a7c630e56790d72358afd6f1e4a1718f5b62fe97ab30ae71fb2c"
+  },
+  "qualified_source_binding": {
+    "source_revision": "1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+    "source_tree": "3eac9569004121930ccb11d4a2cf03e86f750903",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-inventory-state-qualify-20261117",
+    "source_lease_sha256": "2e00186ce9a3a7c630e56790d72358afd6f1e4a1718f5b62fe97ab30ae71fb2c",
+    "all9381_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "cases": 4916,
+    "root_bytes": 176,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 133,
+    "proof": {
+      "utc": "2026-11-16T17:29:26.843408+00:00",
+      "observation_source_revision": "6c03424fa14edaf4cf1ddb86a5f05a8b0eeacb55",
+      "entries": [
+        "sub_461600",
+        "sub_461930",
+        "sub_464B40",
+        "sub_467680",
+        "nox_xxx_wndGetHandle_4676A0",
+        "sub_467740",
+        "nox_xxx_inventoryGetFirst_4E7980"
+      ],
+      "cases": 4916,
+      "cases_by_entry": {
+        "sub_467680": 94,
+        "sub_467740": 94,
+        "nox_xxx_inventoryGetFirst_4E7980": 282,
+        "sub_461600": 2547,
+        "sub_461930": 1701,
+        "nox_xxx_wndGetHandle_4676A0": 2,
+        "sub_464B40": 196
+      },
+      "original_root_bytes": 176,
+      "root_bytes_by_entry": {
+        "sub_467680": 20,
+        "sub_467740": 10,
+        "nox_xxx_inventoryGetFirst_4E7980": 11,
+        "sub_461600": 44,
+        "sub_461930": 50,
+        "nox_xxx_wndGetHandle_4676A0": 6,
+        "sub_464B40": 35
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_image_except_exact_four_byte_global_writes_and_whole64KiB_heap_checked": true,
+      "caller_arguments_redzones_saved_registers_FP_checked": true,
+      "void_reset_EAX_residue_uncredited": true,
+      "original_inventory_heads": "0x6d4aa4",
+      "original_Drawable_type_offset": 108,
+      "original_Drawable_class_offset": 112,
+      "original_Drawable_next_offset": 368,
+      "original_nodes": [
+        553652224,
+        553653248,
+        553654272,
+        553655296,
+        553656320,
+        553657344,
+        553658368,
+        553659392,
+        553660416,
+        553661440,
+        553662464,
+        553663488
+      ],
+      "original_owner": 553680896,
+      "original_item_roles": [
+        0,
+        553684992,
+        553689088
+      ],
+      "original_window": 553697280,
+      "precase_contract_sha256": "392fc1d1bde400c4dbb7de8a7c56579315ea5d01a19bf29eee3483d2994d749d",
+      "fixture_sha256": "5053285a0dc7a1ed6d8f4530cf60e258dd1b053ca8d29106a2f32093b5befeec",
+      "fixture_gzip_sha256": "69308b39e1ab752c319515c636d83975286630876261d8f5b7c7c36163c73294",
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Original executable only. Coherent acyclic nine-head Drawable graphs, exact first identities and class mask, signed grid bounds, scalar global reset/store, nullable window and valid nonnil Object inventory owner. No native projection, C-before equivalence or completed port credit."
+    },
+    "independent_model": {
+      "utc": "2026-11-16T17:30:28.164860+00:00",
+      "cases": 4916,
+      "cases_by_entry": {
+        "sub_467680": 94,
+        "sub_467740": 94,
+        "nox_xxx_inventoryGetFirst_4E7980": 282,
+        "sub_461600": 2547,
+        "sub_461930": 1701,
+        "nox_xxx_wndGetHandle_4676A0": 2,
+        "sub_464B40": 196
+      },
+      "all_original_returns_pointer_roles_final_words_and_ordered_writes_equal": true,
+      "input_only_model": true,
+      "original_fixture_sha256": "5053285a0dc7a1ed6d8f4530cf60e258dd1b053ca8d29106a2f32093b5befeec",
+      "void_reset_EAX_residue_uncredited": true,
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Expected values derive only from each input and fixed PE32 role geometry, never from original outputs. Native projection and unchanged-C comparison remain pending."
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-16T17:33:09.582823+00:00",
+    "cases": 4916,
+    "matching_original_cases": 4916,
+    "original_divergences": 0,
+    "original_C_bytes": 977,
+    "all_original_C_function_bodies_unchanged": true,
+    "actual_architecture": "macOS ARM64",
+    "processes": 1,
+    "compile_warnings": 0,
+    "actual_high_native_Drawable_Object_Window_and_9pointer_slot_owners": true,
+    "whole64KiB_heap_and_all9_head_slots_and_unrelated_globals_checked": true,
+    "void_reset_EAX_residue_uncredited": true,
+    "executable_sha256": "af06cb8c3fa6a5c8f86d1ea2de01b024ef4b7c83d4de669865eefa8d5d9a1fb6",
+    "program_sha256": "83d9a085409fe39b818e259a03cf87a377c021f4f1fd9b09f59323884c266332",
+    "raw_results_sha256": "fc24a5b97be373a8ce133220e3c044e5d8f169131164237d561450804c771aa6",
+    "ABI": {
+      "kind": "ABI",
+      "drawable_size": 688,
+      "object_size": 912,
+      "node0": 535604236288,
+      "item0": 535604269056,
+      "item1": 535604273152,
+      "window": 535604281344
+    },
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Actual unchanged C already preserves native pointers and all4916 original controls. No pointer-truncation, native crash, allocation/lifetime or parent migration repair is invented. Go port and full pre-port baseline remain pending."
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "projection": {
+      "traversal": "Read all nine existing native pointer slots in order; use Drawable.TypeIDVal, ObjClass mask0x01001000 and NextPtr. Preserve first matching native identity and readonly graphs.",
+      "scalar": "Keep exact signed32 grid bounds, state equality6/conditional clear and full32 setter argument/store/return on existing shared owners.",
+      "window": "Return the existing nullable full native shared Window; preserve its slot and representation.",
+      "first_item": "Reuse the existing unconditional-load generic objectInventoryFirst4E7980 and native Object.InvFirstItem. server.Object.FirstItem has a nil guard and is not substituted for the original unguarded root.",
+      "C_reference": "The existing standalone caller fixture includes object_inventory_4e7980.c. Guard only its original first-item definition with !NOX_CGO so standalone controls remain byte-identical; normal Cgo products always define NOX_CGO and bind the Go export. The product C route and volatile callback are independently tested against every sealed original row.",
+      "parents": "Record source and AST of every active parent/owner reference; no parent transport, lifetime or allocator migration credit.",
+      "original_numeric_or_existing_expectation_corrections": []
+    },
+    "active_C_calls": [
+      {
+        "entry": "sub_461600",
+        "caller": "sub_464770",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(sub_415840(4))",
+        "caller_body_AST_sha256": "0c56d782935d92b558bc76bedf8c93084accb3d580d7674c867757a90f76043f"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "sub_464770",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(sub_415840(8))",
+        "caller_body_AST_sha256": "0c56d782935d92b558bc76bedf8c93084accb3d580d7674c867757a90f76043f"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_4658A0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40(*(int*)&dword_5d4594_1049796_inventory_click_column_index,\n\t\t\t\t\t\t\t   *(int*)&dword_5d4594_1049800_inventory_click_row_index)",
+        "caller_body_AST_sha256": "538a2c7801252c5c1cfb3c3ead7756ab426b57db0104cd4ffabfc8a8df167897"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "nox_client_invAlterWeapon_4672C0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(sub_415840(2))",
+        "caller_body_AST_sha256": "4f271d8e9470f69557f2aaf32b3a67dadbf727cdfa207c3b81bcb506aa0d1fe6"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "nox_client_invAlterWeapon_4672C0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(sub_415840(mask))",
+        "caller_body_AST_sha256": "4f271d8e9470f69557f2aaf32b3a67dadbf727cdfa207c3b81bcb506aa0d1fe6"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "sub_4678D0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(sub_415840(mask))",
+        "caller_body_AST_sha256": "2227811bef72dcd6ddceb88aa6f8ba90062996392cb57363094bf14221111fc1"
+      },
+      {
+        "entry": "nox_xxx_wndGetHandle_4676A0",
+        "caller": "sub_467CD0",
+        "source": "src/legacy/GAME2_1.c",
+        "callee_type": "nox_window *()",
+        "parent_kind": "CallExpr",
+        "argument_types": [],
+        "source_call": "nox_xxx_wndGetHandle_4676A0()",
+        "caller_body_AST_sha256": "6105f1885d107cae76fc6d783dd6ee31e38b6625e260475783445d0ab606b9ff"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_478040",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "3bdd1efbc38b1acd86de670ea0a241ee23d91bf97a26ae30301999e625a24d4f"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_478480",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "b61cfe5f712be316ce8ec0ef5aeafb058e6c2c442395e01c7f47a0b6ed6aed24"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_478480",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "b61cfe5f712be316ce8ec0ef5aeafb058e6c2c442395e01c7f47a0b6ed6aed24"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_479280",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "04323ffe456778c350ed6b34f7207d45f8a067cb53046d49052cc68332c158e1"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_4795A0",
+        "source": "src/legacy/GAME2_2.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "4d586abb0d159eb16b3ccc8f8772c2c511ecc8d577f81b8e05ad5f382fa5ad29"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "sub_4BF9F0",
+        "source": "src/legacy/GAME3_1.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(a2)",
+        "caller_body_AST_sha256": "cf09bc28b20d41fe6cfb239af240a36d321d5601699de21b5bf4135d50fe2554"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetFirst_4E7980",
+        "caller": "nox_xxx_playerReportAnything_4D9900",
+        "source": "src/legacy/GAME3_2.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetFirst_4E7980(v1)",
+        "caller_body_AST_sha256": "325f1da3fba0ba05c166932598a1a6efee66b982aeea2334b5bfc9e36e75ce26"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetFirst_4E7980",
+        "caller": "nox_xxx_playerReportAnything_4D9900",
+        "source": "src/legacy/GAME3_2.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetFirst_4E7980(v1)",
+        "caller_body_AST_sha256": "325f1da3fba0ba05c166932598a1a6efee66b982aeea2334b5bfc9e36e75ce26"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetFirst_4E7980",
+        "caller": "sub_50E210",
+        "source": "src/legacy/GAME4_1.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetFirst_4E7980(a1)",
+        "caller_body_AST_sha256": "2b03a39d860d4b1f52014042c8964490f5214b9ed0d801a5ade9c1f5d7ca1cd7"
+      },
+      {
+        "entry": "sub_461930",
+        "caller": "sub_4617C0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int ()",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [],
+        "source_call": "sub_461930()",
+        "caller_body_AST_sha256": "ce8e911efdb3beb14531853508eaf4dea2c5e29e091685772523b3a9f90e5f46"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_4649B0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "UnaryOperator",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40(column, row)",
+        "caller_body_AST_sha256": "d7f86e6f23de22d915123843e53a02401215ab9c2b9b1210394f44c5aebce1d7"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "UnaryOperator",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40(v9, v10)",
+        "caller_body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40(v16, v17)",
+        "caller_body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "UnaryOperator",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40((v56.field_0 - 314) / 50, (dword_5d4594_1062512 + v56.field_4 - 13) / 50)",
+        "caller_body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "entry": "sub_464B40",
+        "caller": "sub_466660",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "callee_type": "int (int, int)",
+        "parent_kind": "IfStmt",
+        "argument_types": [
+          "int",
+          "int"
+        ],
+        "source_call": "sub_464B40(v8, v9)",
+        "caller_body_AST_sha256": "06fa079c0e4f942172c57004273f554ab83dce1fc2519fe2bdb68ae54051e93d"
+      },
+      {
+        "entry": "sub_461600",
+        "caller": "sub_4710B0",
+        "source": "src/legacy/client__gui__guimeter.c",
+        "callee_type": "nox_drawable *(int)",
+        "parent_kind": "VarDecl",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_461600(v3)",
+        "caller_body_AST_sha256": "91eaea5094d752d1fe6be643783e8b54b24d5a4ed59cdf0a3d5c5b4950e1e580"
+      },
+      {
+        "entry": "sub_467680",
+        "caller": "sub_479740",
+        "source": "src/legacy/client__gui__guishop.c",
+        "callee_type": "void ()",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [],
+        "source_call": "sub_467680()",
+        "caller_body_AST_sha256": "743b7434ffe23afffc3954c6b19137cbc96b6207b472101620c46970ba06ef0d"
+      },
+      {
+        "entry": "sub_467740",
+        "caller": "nox_xxx_netOnPacketRecvCli_48EA70_switch",
+        "source": "src/legacy/client__network__cdecode.c",
+        "callee_type": "int (int)",
+        "parent_kind": "CompoundStmt",
+        "argument_types": [
+          "int"
+        ],
+        "source_call": "sub_467740(v293)",
+        "caller_body_AST_sha256": "ad72e245919fb6f399cee9fffa09faa64d9cb4c04fa5ddcc5b7b3e5f2d0fcc1d"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetFirst_4E7980",
+        "caller": "nox_script_StartupScreen_516600_A",
+        "source": "src/legacy/server__script__builtin.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetFirst_4E7980(unit)",
+        "caller_body_AST_sha256": "1e6a7c04a25453231a681173218e1d74464ada875f4e3f391e327656f1babf8c"
+      }
+    ],
+    "active_owner_references": [
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4615C0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 18522,
+            "col": 40,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 18522,
+            "col": 40,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "1726a6b4cf88dd50ed07c456230d2e838c4e0793143e58dfce96ac7b368f7c75"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4615C0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 18717,
+            "col": 24,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 18717,
+            "col": 24,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "1726a6b4cf88dd50ed07c456230d2e838c4e0793143e58dfce96ac7b368f7c75"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_461600",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 18954,
+            "col": 48,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 18954,
+            "col": 48,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "92722e7375867b23efa30758f484bd979d5b49a6db76d59772573afa1c8b9484"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_461930",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 19576,
+            "col": 48,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 19576,
+            "col": 48,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "562cc99f4836acbadf49f73c006d741483155aefffb7ff71c9c0bce9cb792be2"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_461F90",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 25596,
+            "col": 48,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 25596,
+            "col": 48,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "cfd5e119fe853b94f84aacec479a5bfe8cbff10b17c3d0248471515c90603793"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_461F90",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 25899,
+            "col": 5,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 25899,
+            "col": 5,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "cfd5e119fe853b94f84aacec479a5bfe8cbff10b17c3d0248471515c90603793"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4623E0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 27732,
+            "col": 37,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 27732,
+            "col": 37,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "b2b084b1930a97f6883511422966ab765d17e2fdecab5b7013714ef3af2baa51"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4623E0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 28127,
+            "col": 37,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 28127,
+            "col": 37,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "b2b084b1930a97f6883511422966ab765d17e2fdecab5b7013714ef3af2baa51"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4623E0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 28618,
+            "col": 42,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 28618,
+            "col": 42,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "b2b084b1930a97f6883511422966ab765d17e2fdecab5b7013714ef3af2baa51"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4623E0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 28732,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 28732,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "b2b084b1930a97f6883511422966ab765d17e2fdecab5b7013714ef3af2baa51"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_4625D0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 30314,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 30314,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "5ba47ea0729f876796f35b6bd9549a5e09cc127b4e96055a596ee4c003f14ae4"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "nox_xxx_inventoryDrawAllMB_463430",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 36193,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 36193,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "a784c5e7c4180ed8996c0dfee83fc76b331553ec25e0b08ff42b8f805ea95fea"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "nox_xxx_guiDrawInventoryTray_4643B0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 39109,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 39109,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "12eebc6ad3da303c233eade56ccb8b5bdcb41bdcdd7aaf248456514f4c277a62"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "nox_xxx_guiDrawInventoryTray_4643B0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 40869,
+            "col": 32,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 40869,
+            "col": 32,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "12eebc6ad3da303c233eade56ccb8b5bdcb41bdcdd7aaf248456514f4c277a62"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "nox_xxx_guiDrawInventoryTray_4643B0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 41505,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41505,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "12eebc6ad3da303c233eade56ccb8b5bdcb41bdcdd7aaf248456514f4c277a62"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464770",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 42696,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 42696,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "0c56d782935d92b558bc76bedf8c93084accb3d580d7674c867757a90f76043f"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4658A0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 48838,
+            "col": 55,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 48838,
+            "col": 55,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "538a2c7801252c5c1cfb3c3ead7756ab426b57db0104cd4ffabfc8a8df167897"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_465990",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 50263,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 50263,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "353bd399a811425cd976d63f38d142d6a4c2786d6d87fe47381143545349f2b8"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_465990",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 50363,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 50363,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "353bd399a811425cd976d63f38d142d6a4c2786d6d87fe47381143545349f2b8"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_465990",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 50394,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 50394,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "353bd399a811425cd976d63f38d142d6a4c2786d6d87fe47381143545349f2b8"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_465CA0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 52086,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 52086,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "881aa812b1b7757427b08b5531af0cbafc6d27ac47fa376ddd1a72509383401e"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 54635,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 54635,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 54707,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 54707,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 54772,
+            "col": 27,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 54772,
+            "col": 27,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 54849,
+            "col": 22,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 54849,
+            "col": 22,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 55078,
+            "col": 40,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 55078,
+            "col": 40,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndCreateInventoryMB_465E00",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 55383,
+            "col": 48,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 55383,
+            "col": 48,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bef8644b147dd98a4ac8a2959876330d58e643cabbe0aae7ed5f486a222b104"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_466220",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 59745,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 59745,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3b5c223554f57f3152f171fb67e6013584dd0d9df10ff24bf4bea1d4f57cf883"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_466220",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 61125,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 61125,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3b5c223554f57f3152f171fb67e6013584dd0d9df10ff24bf4bea1d4f57cf883"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_466220",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 61534,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 61534,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3b5c223554f57f3152f171fb67e6013584dd0d9df10ff24bf4bea1d4f57cf883"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467650",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 76677,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 76677,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "137c03fa52a3a192acb8d961428219bcd5f3472eddd56936b8fdf93dd80c28d5"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467680",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 76928,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 76928,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "95510f9143c05f00d3183fe7c125b198390a51160d264c4976279d822c1f28dd"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467680",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 76959,
+            "col": 3,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 76959,
+            "col": 3,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "95510f9143c05f00d3183fe7c125b198390a51160d264c4976279d822c1f28dd"
+      },
+      {
+        "owner": "dword_5d4594_1062452",
+        "owner_type": "nox_window *",
+        "function": "nox_xxx_wndGetHandle_4676A0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 77118,
+            "col": 52,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 77118,
+            "col": 52,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "3bd9ccc503e6081fb2c6a4c7633a373137d0e2a632d19585c5629f87efaf33a0"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "sub_467740",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 78011,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 78011,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "b314d327fc37811dc4168bb5c59ee9c736dc76b342697e8247d8ebb65edb2547"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467980",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 81034,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 81034,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "979e7849df811a279c9ef34be072af5efa12673b21b0a1c03f03dfc2febc7980"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "sub_467980",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 81100,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 81100,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "979e7849df811a279c9ef34be072af5efa12673b21b0a1c03f03dfc2febc7980"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_467980",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "spellingLoc": {
+              "offset": 81134,
+              "col": 9,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          },
+          "end": {
+            "spellingLoc": {
+              "offset": 81134,
+              "col": 9,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          }
+        },
+        "body_AST_sha256": "979e7849df811a279c9ef34be072af5efa12673b21b0a1c03f03dfc2febc7980"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_467980",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ParenExpr",
+        "range": {
+          "begin": {
+            "spellingLoc": {
+              "offset": 81166,
+              "col": 41,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          },
+          "end": {
+            "spellingLoc": {
+              "offset": 81166,
+              "col": 41,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          }
+        },
+        "body_AST_sha256": "979e7849df811a279c9ef34be072af5efa12673b21b0a1c03f03dfc2febc7980"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_467980",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "spellingLoc": {
+              "offset": 81134,
+              "col": 9,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          },
+          "end": {
+            "spellingLoc": {
+              "offset": 81134,
+              "col": 9,
+              "tokLen": 20
+            },
+            "expansionLoc": {
+              "offset": 81127,
+              "col": 2,
+              "tokLen": 6,
+              "isMacroArgExpansion": true
+            }
+          }
+        },
+        "body_AST_sha256": "979e7849df811a279c9ef34be072af5efa12673b21b0a1c03f03dfc2febc7980"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467C10",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 84093,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 84093,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "f96a7fd00f95ee175a90cc9be1a3c845d8c26ea1bb62acb28d5fb87a8473f419"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_467C10",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 84267,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 84267,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "f96a7fd00f95ee175a90cc9be1a3c845d8c26ea1bb62acb28d5fb87a8473f419"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_467CD0",
+        "source": "src/legacy/GAME2_1.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 86196,
+            "col": 51,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 86196,
+            "col": 51,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "6105f1885d107cae76fc6d783dd6ee31e38b6625e260475783445d0ab606b9ff"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "sub_462040",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 9034,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 9034,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "23055079e70600c197be8543097def92339adce11c3c9af25545cfb7ed0f70f5"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "sub_462040",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 9116,
+            "col": 59,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 9116,
+            "col": 59,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "23055079e70600c197be8543097def92339adce11c3c9af25545cfb7ed0f70f5"
+      },
+      {
+        "owner": "dword_5d4594_1062488",
+        "owner_type": "uint32_t",
+        "function": "sub_462040",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 9906,
+            "col": 3,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 9906,
+            "col": 3,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "23055079e70600c197be8543097def92339adce11c3c9af25545cfb7ed0f70f5"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_462740",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 11054,
+            "col": 2,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 11054,
+            "col": 2,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "2f03347a412e3e0d9c50acbe0805b96920be4784afdd448115edf758308299da"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_4649B0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 36417,
+            "col": 48,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 36417,
+            "col": 48,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "d7f86e6f23de22d915123843e53a02401215ab9c2b9b1210394f44c5aebce1d7"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 38365,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 38365,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 39175,
+            "col": 14,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 39175,
+            "col": 14,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 40880,
+            "col": 43,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 40880,
+            "col": 43,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 41107,
+            "col": 10,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41107,
+            "col": 10,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 41296,
+            "col": 43,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41296,
+            "col": 43,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 41363,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41363,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 41561,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41561,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 41920,
+            "col": 6,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 41920,
+            "col": 6,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "BinaryOperator",
+        "range": {
+          "begin": {
+            "offset": 42237,
+            "col": 4,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 42237,
+            "col": 4,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 48557,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 48557,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 48796,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 48796,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 48956,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 48956,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 49300,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 49300,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 49460,
+            "col": 8,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 49460,
+            "col": 8,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "dword_5d4594_1049864",
+        "owner_type": "uint32_t",
+        "function": "sub_464BD0",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 49658,
+            "col": 7,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 49658,
+            "col": 7,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "ea30b594e5216424422a998efa8236637e0af59adb086450f3b61ee79274069a"
+      },
+      {
+        "owner": "array_5D4594_1049872",
+        "owner_type": "uintptr_t[9]",
+        "function": "sub_466660",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "parent_kind": "ImplicitCastExpr",
+        "range": {
+          "begin": {
+            "offset": 53807,
+            "col": 21,
+            "tokLen": 20
+          },
+          "end": {
+            "offset": 53807,
+            "col": 21,
+            "tokLen": 20
+          }
+        },
+        "body_AST_sha256": "06fa079c0e4f942172c57004273f554ab83dce1fc2519fe2bdb68ae54051e93d"
+      }
+    ],
+    "all26_active_C_parent_bodies_and_existing_Go_callers_unchanged": true,
+    "all64_owner_reference_parent_bodies_unchanged": true,
+    "whole_two_incoming_C_files_reconstructed": true,
+    "all_headers_and_public_prototypes_unchanged": true,
+    "existing_Drawable_Object_Window_layouts_shared_slot_producers_generic_first_accessor_and_S36_pointer_copy_unchanged": true,
+    "product_NOX_CGO_old_C_definitions_absent": {
+      "source_revision": "1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+      "entries": [
+        "sub_461600",
+        "sub_461930",
+        "sub_464B40",
+        "sub_467680",
+        "nox_xxx_wndGetHandle_4676A0",
+        "sub_467740",
+        "nox_xxx_inventoryGetFirst_4E7980"
+      ],
+      "product_C_definitions_absent": true,
+      "unchanged_next_item_C_definition_retained": true,
+      "files": [
+        {
+          "source": "src/legacy/GAME2_1.c",
+          "source_sha256": "e09c6dbf5bb417da4f23e1b94d6771915d3c031fa057339086a74d48ac4cf819",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-inventory-state-qualify-20261117/src/legacy/GAME2_1.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "9f6b3f89c4462fcca5619923effeffb28a96440137687449a7c8a70475e350bf",
+          "AST_gzip_sha256": "5c7fc7bf8d9f5607e5c86c1f7966d95bd4ddef633be18d0f72ed6b9200e97e15",
+          "all_seven_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        },
+        {
+          "source": "src/legacy/object_inventory_4e7980.c",
+          "source_sha256": "ba305e91a97075fc66d53ec7d1b83cb477a8ba88cd17f37a535222045e5de126",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-inventory-state-qualify-20261117/src/legacy/object_inventory_4e7980.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "f8aa19e6236713e252abb9ac7259fa3dbd9ef9c8a818b0c5b2d1f0811ab6e486",
+          "AST_gzip_sha256": "e8bb3106a9046deb27be6898b480febb0af8939c6f16df80b1f8db89890d8d9a",
+          "all_seven_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        }
+      ]
+    },
+    "existing_standalone_C_reference": {
+      "utc": "2026-11-16T17:59:02.327653+00:00",
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy/testdata/object_inventory_4e7980_caller_test.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/existing-standalone-C-reference-v1/inventory-caller-reference"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "compiler_warnings": 0,
+      "fixture_sha256": "5e11bc478887bbc97f7e6c40b2f2ab257161b9df19d395861850d1a54ef754db",
+      "executable_sha256": "059737290c993957aa368caadc614073614217ab062afff6f207e590eeaddbd9",
+      "old_fixture_unchanged": true,
+      "reference_mode": "No NOX_CGO definition; exact retained C first-item service and unchanged next-item body.",
+      "product_mode": "Cgo defines NOX_CGO; public first-item symbol is implemented in Go and independently covered by4916 original rows through actual C/callback/Go."
+    }
+  },
+  "ci": {
+    "runs": [
+      43927461947,
+      43927377473
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14259060317,
+        "name": "linux-amd64-opennox-server-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14259060317-linux-amd64-opennox-server-1e37f38f4331f3f4a85d828e69f6ce87d47ca355.zip",
+        "bytes": 280228075,
+        "sha256": "4cb5f1cfa09d2e22c53877772eebc14b0deff87379c965b35d908b9b5f61e1db",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1191084,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14258975246,
+        "name": "linux-amd64-opennox-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14258975246-linux-amd64-opennox-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355.zip",
+        "bytes": 232087213,
+        "sha256": "6b48da4fe6b09d7c725fecab3ccf24c28bce247248f2047532b2afd30a40c634",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1197195,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14258915403,
+        "name": "linux-amd64-opennox-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14258915403-linux-amd64-opennox-1e37f38f4331f3f4a85d828e69f6ce87d47ca355.zip",
+        "bytes": 232071130,
+        "sha256": "a0bc8d7da3ca704f8d829610a52c0106ceb6f4b7668e5b5fad208a0e34dfd017",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1197195,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14257598527,
+        "name": "linux-amd64-opennox-server-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14257598527-linux-amd64-opennox-server-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355.zip",
+        "bytes": 219065085,
+        "sha256": "fa4e07817f5ee101811e5ec819766dcf51fb81a3a58ca06888adb366425e3d65",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1191084,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14257639277,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14257639277-opennox-server-windows-amd64.zip",
+        "bytes": 177812402,
+        "sha256": "4c7a733c393152b54c629b6cde6f25aaec0f770b62cb76a466dc9af70914b47e",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1189069,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14256174967,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/ci-14256174967-opennox-server-windows-386.zip",
+        "bytes": 170937358,
+        "sha256": "73dc3fcd23bde8024fc67024059c0b239ac167a22affa3aa65f477e239a55597",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1169136
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 7633248282,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 27,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14259060317,
+        "name": "linux-amd64-opennox-server-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "preceding_artifact": 14253380530,
+        "preceding_passes": 1146838,
+        "current_passes": 1191084,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14258975246,
+        "name": "linux-amd64-opennox-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "preceding_artifact": 14250946233,
+        "preceding_passes": 1152949,
+        "current_passes": 1197195,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14258915403,
+        "name": "linux-amd64-opennox-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "preceding_artifact": 14251291496,
+        "preceding_passes": 1152949,
+        "current_passes": 1197195,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14257598527,
+        "name": "linux-amd64-opennox-server-hd-1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+        "preceding_artifact": 14252361165,
+        "preceding_passes": 1146838,
+        "current_passes": 1191084,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14257639277,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14250336416,
+        "preceding_passes": 1144823,
+        "current_passes": 1189069,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14256174967,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14252125661,
+        "preceding_passes": 1124890,
+        "current_passes": 1169136,
+        "new_native_pass_events": 44246,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_inventory_state_tests_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4778,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME2_1.c",
+        "src/legacy/object_inventory_4e7980.c"
+      ],
+      "new_files": [
+        "src/legacy/inventory_state_native.go",
+        "src/legacy/inventory_state_native_entry.go",
+        "src/legacy/inventory_state_native_fixture.go",
+        "src/legacy/inventory_state_native_test.go",
+        "src/legacy/testdata/inventory_state_original_v1.json.gz"
+      ],
+      "whole_two_incoming_C_files_reconstructed": true,
+      "all_headers_and_public_prototypes_unchanged": true,
+      "all26_active_C_parent_bodies_and_existing_Go_callers_unchanged": true,
+      "all64_active_shared_owner_reference_parent_bodies_unchanged": true,
+      "existing_Drawable_Object_Window_layouts_and_shared_slot_producers_unchanged": true,
+      "existing_generic_unconditional_first_item_load_reused_unchanged": true,
+      "existing_S36_scalar_slot_and_foreign_pointer_copy_unchanged": true,
+      "standalone_first_item_reference": "!NOX_CGO retains the exact original C first accessor for the existing standalone caller fixture; product Cgo always defines NOX_CGO and uses the Go export.",
+      "original_CPU_rows_without_expectation_changes": 4916,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 261,
+      "fully_recorded_entries": 252,
+      "new_entries_pending_qualification": 7,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 45,
+    "retained_preceding_S40_program_paths": 37,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 2194472,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 45,
+      "all_current_program_SHA_verified": true,
+      "preceding_S40_program_paths_SHA_verified": 37,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "initial_layout_assertion_failed": true,
+    "failed_focus_passes": 44245,
+    "failed_full_strict_passes": 377258,
+    "failure": "New test initially compared whole Go Drawable including existing clientHandle to the smaller shared C prefix.",
+    "layout_repair": {
+      "changed_only_new_layout_assertions": true,
+      "previous_failed_source_lease": "1e54af6a7b41c044d4926ed5ac1cfb8fb31c7a30739cc8ee306f65230a2aed70",
+      "changed_file": "src/legacy/inventory_state_native_test.go",
+      "previous_sha256": "9bdfcc762d10fc2a0c66254bdd5355e9754a851c60d590460d6efe5d35e2a5cb",
+      "current_sha256": "c48330f4d62850d9eb16a3e98013d299e22796c95d54bf4f80af56e3dc34dd74",
+      "unchanged_product_or_fixture_inputs": [
+        "src/legacy/GAME2_1.c",
+        "src/legacy/object_inventory_4e7980.c",
+        "src/legacy/inventory_state_native.go",
+        "src/legacy/inventory_state_native_entry.go",
+        "src/legacy/inventory_state_native_fixture.go",
+        "src/legacy/testdata/inventory_state_original_v1.json.gz"
+      ],
+      "derivation": "Native aligned prefix ending at Field_127; total Go size additionally includes the existing clientHandle uintptr. Same rule as untouched TestGame3MapSpriteCABIAndRetainedCurrentC.",
+      "original_4916_rows_and_expected_outputs_changed": false,
+      "new_case_assertions_or_field_results_retuned": false,
+      "all4778_preexisting_protected_inputs_unchanged": true
+    },
+    "repair_scope": "Only new layout assertion; exact aligned C prefix and separate Go clientHandle extension. Existing tests, fixture, original expected rows and product algorithm unchanged.",
+    "failed_program_paths": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/compiled-test-mains/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/test-binaries/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/compiled-test-mains/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/test-binaries/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      }
+    ],
+    "subset_strict_v2_passes": 111732,
+    "full_strict_credit_from_v3_only": true,
+    "retention_preflight": {
+      "initial_expected_path_count": 6,
+      "actual_verified_path_count": 4,
+      "unique_actual_programs": 2,
+      "reason": "Each execution supervisor retains two byte-identical permanent copies; Go cleans its temporary build path after execution.",
+      "all_existing_programs_and_failure_logs_preserved": true,
+      "pre_execution_provenance_SHA_matches": true
+    },
+    "qualification_helper_accounting_repair": {
+      "reason": "The retained Go JSON summary counts one failing leaf and its failing package, so failure_count is2 while test_actions.fail is1. Qualification helper v1 incorrectly required failure_count1.",
+      "actual_failed_test": "TestInventoryStateNativeLayout",
+      "actual_failed_package": "github.com/opennox/opennox/v1/legacy",
+      "failed_attempts_unchanged": true,
+      "original_expectations_product_source_and_tests_unchanged": true,
+      "old_helper_and_actual_failed_preflight_logs_retained": true,
+      "failed_preflight_exit": {
+        "command": [
+          "/Users/ghost/.pyenv/versions/3.12.11/bin/python3",
+          "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/run-final-local-preflight-v1.py"
+        ],
+        "exit_code": 1,
+        "utc": "2026-11-16T18:22:32.570313+00:00",
+        "elapsed_seconds": 2.4844852079986595
+      },
+      "repair": "Require exact leaf count1, package count1, aggregate2, both failure identities, exit1 and failed source lease; preserve original helper v1."
+    },
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v5",
+    "source_revision": "2a7a583576925d57a2ef6cabf06b0ac38231ea3b",
+    "files": 207,
+    "ordinary_own_C_definitions": 2491,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2505,
+    "pointer_integer_cast_functions_including_manual": 454,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "existing_C_parents": "26 unchanged active C parent bodies and64 shared owner references remain; no parent migration credit.",
+    "original_owner_domain": "Coherent acyclic nine-head native Drawable graph, valid nonnil Object inventory owner, nullable item/Window; no invalid-owner or allocator/lifetime equivalence claim.",
+    "C_before": "All4916 unchanged C native controls already match; no invented pointer-cut or crash repair.",
+    "deferred_sub46AE10": "Original pointer return/current normalized boolean compatibility requires separate parent/transport migration.",
+    "deferred_pointer_roots": "Team membership and map-monster native owner migration remain open.",
+    "all_C_denominator": "OPEN; predecessor own-file ARM64 AST includes bridges, platform implementations and references. Header/inc/Cgo preambles/other architecture branches remain unclassified."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 44246
+    },
+    "native_roots": {
+      "TestInventoryStateNativeLayout": "pass",
+      "TestInventoryStateNativeOriginal": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 4916,
+      "route0/place64": 4916,
+      "route0/place512": 4916,
+      "route1/place0": 4916,
+      "route1/place64": 4916,
+      "route1/place512": 4916,
+      "route2/place0": 4916,
+      "route2/place64": 4916,
+      "route2/place512": 4916
+    },
+    "original_entry_checks": {
+      "sub_467680": 846,
+      "sub_467740": 846,
+      "nox_xxx_inventoryGetFirst_4E7980": 2538,
+      "sub_461600": 22923,
+      "sub_461930": 15309,
+      "nox_xxx_wndGetHandle_4676A0": 18,
+      "sub_464B40": 1764
+    },
+    "original_cases": 4916,
+    "original_instruction_bytes": 176,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 20,
+    "original_scalar_returns_and_full_native_Drawable_Object_Window_roles_equal": true,
+    "whole64KiB_inventory_graph_and_all9_native_head_slots_and_Window_slot_unchanged": true,
+    "exact_original_global_state_write_projection_only": true,
+    "all_signed32_grid_bounds_and_full32_type_class_setter_bits_equal": true,
+    "full_native_Drawable_NextPtr_and_Object_InvFirstItem": true,
+    "shared_C_Drawable_prefix_and_Go_clientHandle_extension_separately_checked": true,
+    "void_reset_EAX_residue_uncredited": true,
+    "all26_active_C_parent_bodies_and_existing_Go_callers_unchanged": true,
+    "all64_shared_owner_reference_parent_bodies_unchanged": true,
+    "all_headers_prototypes_shared_layouts_existing_generic_first_load_and_S36_slots_unchanged": true,
+    "standalone_original_C_first_reference_preserved_without_NOX_CGO": true,
+    "scope": "All4916 sealed original rows through actual public C/volatile callback/direct Go at three foreign placements. Exact first Drawable/Object/Window identities, full32 scalar bits and readonly whole64KiB graph plus nine native shared heads and Window slot. Only original global reset/store ledger is projected. Existing C already matches native controls; no invented pointer-cut repair or parent/lifetime migration claim. First-item owner is valid nonnil; original unconditional load is retained."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/qualified-inventory-state-entries-v1.json",
+    "sha256": "a8ecad0a1d296ee8fbfc499d3c0f58a03b193e2a84bfc1b7ffe2ad0da4ae6542"
+  },
+  "normal_passes": 377259,
+  "strict_passes": 377259,
+  "focused_passes": 44246,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 138
+}

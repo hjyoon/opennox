@@ -232,6 +232,7 @@ int sub_428170(void* a1p, int4* a2) {
 }
 
 //----- (004281F0) --------------------------------------------------------
+#if 0 // Restored by gui_geometry_native_entry.go.
 int nox_xxx_pointInRect_4281F0(int2* a1, int4* a2) {
 	int v2;      // ecx
 	bool result; // al
@@ -245,12 +246,15 @@ int nox_xxx_pointInRect_4281F0(int2* a1, int4* a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (00428220) --------------------------------------------------------
+#if 0 // Restored by gui_geometry_native_entry.go.
 int sub_428220(float2* a1, float4* a2) {
 	return a1->field_0 >= (double)a2->field_0 && a1->field_0 <= (double)a2->field_8 &&
 		   a1->field_4 >= (double)a2->field_4 && a1->field_4 <= (double)a2->field_C;
 }
+#endif
 
 //----- (00428270) --------------------------------------------------------
 static double nox_shape_box_add_chop53_428270(double a, double b) {

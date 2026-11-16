@@ -10,7 +10,7 @@
 #include "operators.h"
 
 //----- (004BC9E0) --------------------------------------------------------
-int nox_thing_door_draw(uint32_t* a1, nox_drawable* dr) {
+int nox_thing_door_draw(nox_draw_viewport_t* a1, nox_drawable* dr) {
 	uint8_t* v2; // edi
 	int v3;      // eax
 	int v4;      // edx

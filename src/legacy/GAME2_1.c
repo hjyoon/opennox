@@ -2867,6 +2867,7 @@ int nox_xxx_wndRetNULL_46A8A0() { return 0; }
 int nox_xxx_wndRetNULL_0_46A8B0() { return 0; }
 
 //----- (0046AE10) --------------------------------------------------------
+#if 0 // Restored by gui_geometry_native_entry.go.
 int sub_46AE10(nox_window* win, int enabled) {
 	if (!win) {
 		return 0;
@@ -2878,6 +2879,7 @@ int sub_46AE10(nox_window* win, int enabled) {
 	}
 	return 1;
 }
+#endif
 
 //----- (0046AE40) --------------------------------------------------------
 #if 0 // Restored by window_field_native_entry.go.
@@ -5040,6 +5042,7 @@ void nox_xxx____setargv_11_473920() { *getMemU32Ptr(0x5D4594, 1096520) = 1; }
 // sub_473960 (00473960) is implemented in client_status_animations_473960.go.
 
 //----- (004739E0) --------------------------------------------------------
+#if 0 // Restored by gui_geometry_native_entry.go.
 int sub_4739E0(uint32_t* a1, int2* a2, int2* a3) {
 	int result; // eax
 
@@ -5048,8 +5051,10 @@ int sub_4739E0(uint32_t* a1, int2* a2, int2* a3) {
 	a3->field_4 = result + a1[1] - a1[5];
 	return result;
 }
+#endif
 
 //----- (00473A10) --------------------------------------------------------
+#if 0 // Restored by gui_geometry_native_entry.go.
 int sub_473A10(uint32_t* a1, int2* a2, uint32_t* a3) {
 	int result; // eax
 
@@ -5058,6 +5063,7 @@ int sub_473A10(uint32_t* a1, int2* a2, uint32_t* a3) {
 	a3[1] = result + a1[5] - a1[1];
 	return result;
 }
+#endif
 
 //----- (00473C10) --------------------------------------------------------
 uint32_t nox_xxx_wallFlags(int i);

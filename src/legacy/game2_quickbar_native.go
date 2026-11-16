@@ -235,7 +235,10 @@ func g2qStyle(w *C.nox_window, on int32) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.Style != nil {
 		return h.Style(unsafe.Pointer(w), on)
 	}
-	return int32(C.sub_46AE10(w, C.int(on)))
+	if C.sub_46AE10(w, C.int(on)) != nil {
+		return 1
+	}
+	return 0
 }
 func g2qFlags(spell uint32, mask uint32) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.SpellFlags != nil {

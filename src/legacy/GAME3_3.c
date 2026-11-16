@@ -1064,11 +1064,14 @@ FILE* sub_4E43F0(char* a1) {
 }
 
 //----- (004E44F0) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 void nox_xxx_unitNeedSync_4E44F0(nox_object_t* obj) {
 	obj->field_38 = -1;
 }
+#endif
 
 //----- (004E4500) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 int* sub_4E4500(nox_object_t* obj, int a2, int a3, int a4) {
 	int v4;          // ecx
 	uint32_t* result; // eax
@@ -1093,6 +1096,7 @@ int* sub_4E4500(nox_object_t* obj, int a2, int a3, int a4) {
 	} while (v4 < 32);
 	return (int*)result;
 }
+#endif
 
 //----- (004E4560) --------------------------------------------------------
 int nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount) {
@@ -1227,7 +1231,9 @@ uintptr_t nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* obj, const nox_modifier
 double nox_xxx_objectGetMass_4E4A70(const nox_object_t* obj) { return obj->mass; }
 
 //----- (004E4A80) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 uint32_t nox_xxx_objectGetBuffs_4E4A80(const nox_object_t* obj) { return obj->buffs; }
+#endif
 
 //----- (004E4A90) --------------------------------------------------------
 int* nox_xxx_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, const nox_color3_t* color) {

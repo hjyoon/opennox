@@ -62,7 +62,7 @@ void sub_56FF00(int a1);
 int sub_56FF80(int a1, int a2);
 unsigned int nox_xxx_netGetUnitCodeServ_578AC0(nox_object_t* item);
 unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr);
-int nox_xxx_netClearHighBit_578B30(short a1);
+int nox_xxx_netClearHighBit_578B30(uint32_t a1);
 int nox_xxx_packetDynamicUnitCode_578B40(int a1);
 unsigned int nox_xxx_netTestHighBit_578B70(unsigned int a1);
 char* nox_xxx_GetEndgameDialog_578D80();

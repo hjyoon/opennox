@@ -4817,6 +4817,7 @@ int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int
 }
 
 //----- (0053E7B0) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const nox_object_t* item) {
 	for (nox_object_t* it = owner->inv_first_item; it; it = it->inv_next_item) {
 		if ((it->obj_flags & 0x100) && (it->obj_class & 0x2000000) && it->obj_subclass == item->obj_subclass) {
@@ -4825,6 +4826,7 @@ nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const no
 	}
 	return NULL;
 }
+#endif
 
 //----- (0053E7F0) --------------------------------------------------------
 static int nox_modifier_attrs_have_any_53E7F0(const nox_modifier_attrs_t* attrs) {
@@ -5552,12 +5554,14 @@ int nox_xxx_castPixies_540440(int a1, int a2, int a3, int a4, int a5, int a6) {
 }
 
 //----- (005408A0) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 int sub_5408A0(int a1) {
 	int v1; // ecx
 
 	v1 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 24 * (*(char*)(*(uint32_t*)(a1 + 748) + 544) + 23));
 	return v1 >= 18 && v1 <= 20;
 }
+#endif
 
 //----- (005408D0) --------------------------------------------------------
 int nox_xxx_mobCastInversion_5408D0(int a1) {

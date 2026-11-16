@@ -895,6 +895,7 @@ int sub_56FF80(int a1, int a2) {
 }
 
 //----- (00578B00) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr) {
 	unsigned int result; // eax
 
@@ -910,9 +911,12 @@ unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (00578B30) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 int nox_xxx_netClearHighBit_578B30(short a1) { return a1 & 0x7FFF; }
+#endif
 
 //----- (00578B40) --------------------------------------------------------
 int nox_xxx_packetDynamicUnitCode_578B40(int a1) {
@@ -933,7 +937,9 @@ int nox_xxx_packetDynamicUnitCode_578B40(int a1) {
 }
 
 //----- (00578B70) --------------------------------------------------------
+#if 0 // Restored by object_field_native_entry.go.
 unsigned int nox_xxx_netTestHighBit_578B70(unsigned int a1) { return (a1 >> 15) & 1; }
+#endif
 
 //----- (00579870) --------------------------------------------------------
 // Ported to Go in waypoint.go so the native WpNext field is used on every

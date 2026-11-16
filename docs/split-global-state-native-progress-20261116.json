@@ -1,0 +1,1256 @@
+{
+  "source_revision": "9853b02a07eb3a20f11752de688f28bc7018d32b",
+  "entries": [
+    "nox_xxx_clientIsObserver_4372E0",
+    "sub_467590",
+    "sub_4678B0",
+    "sub_460D40",
+    "sub_4678C0",
+    "sub_4BFD30",
+    "sub_4C12C0",
+    "sub_479870",
+    "sub_49C810",
+    "sub_49CB40",
+    "sub_4C5050",
+    "sub_481410",
+    "sub_51D0E0",
+    "nox_client_mapZoomIn_4724E0",
+    "nox_client_mapZoomOut_472500",
+    "sub_470CC0",
+    "sub_470CD0"
+  ],
+  "qualified_entries": 17,
+  "preceding_fully_recorded_qualified_entries": 209,
+  "cumulative_qualified_split_Go_entries": 226,
+  "implemented_split_Go_entries": 228,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9350,
+    "sha256": "bde8b9a9c1458e86f246917050d2caa110430dda240c42484ad14f2d905fa301"
+  },
+  "original": {
+    "cases": 2926,
+    "root_bytes": 257,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 134,
+    "proof": {
+      "utc": "2026-11-16T12:05:00.895378+00:00",
+      "observation_source_revision": "a4a83fda7516df474d9b63830d251328bf421ad8",
+      "entries": [
+        "nox_xxx_clientIsObserver_4372E0",
+        "sub_467590",
+        "sub_4678B0",
+        "sub_460D40",
+        "sub_4678C0",
+        "sub_4BFD30",
+        "sub_4C12C0",
+        "sub_479870",
+        "sub_49C810",
+        "sub_49CB40",
+        "sub_4C5050",
+        "sub_481410",
+        "sub_51D0E0",
+        "nox_client_mapZoomIn_4724E0",
+        "nox_client_mapZoomOut_472500",
+        "sub_470CC0",
+        "sub_470CD0"
+      ],
+      "cases": 2926,
+      "cases_by_entry": {
+        "nox_xxx_clientIsObserver_4372E0": 883,
+        "sub_467590": 257,
+        "sub_4678B0": 120,
+        "sub_460D40": 119,
+        "sub_4678C0": 119,
+        "sub_4BFD30": 119,
+        "sub_4C12C0": 119,
+        "sub_479870": 119,
+        "sub_49C810": 119,
+        "sub_49CB40": 119,
+        "sub_4C5050": 119,
+        "sub_481410": 119,
+        "sub_51D0E0": 119,
+        "nox_client_mapZoomIn_4724E0": 119,
+        "nox_client_mapZoomOut_472500": 119,
+        "sub_470CC0": 119,
+        "sub_470CD0": 119
+      },
+      "original_root_bytes": 257,
+      "root_bytes_by_entry": {
+        "nox_xxx_clientIsObserver_4372E0": 36,
+        "sub_467590": 23,
+        "sub_4678B0": 16,
+        "sub_460D40": 14,
+        "sub_4678C0": 6,
+        "sub_4BFD30": 6,
+        "sub_4C12C0": 6,
+        "sub_479870": 15,
+        "sub_49C810": 14,
+        "sub_49CB40": 14,
+        "sub_4C5050": 11,
+        "sub_481410": 11,
+        "sub_51D0E0": 11,
+        "nox_client_mapZoomIn_4724E0": 31,
+        "nox_client_mapZoomOut_472500": 31,
+        "sub_470CC0": 6,
+        "sub_470CD0": 6
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_image_except_exact_global_word_heap_caller_redzones_saved_registers_FP_checked": true,
+      "root_heap_writes": 0,
+      "void_EAX_residue_not_credited": true,
+      "fixture_sha256": "9b909bb0d714d15af0976eeaa56694b2d82e56c19ef0237c224983d631679d0f",
+      "fixture_gzip_sha256": "451b71b00abd252308077ea1ff1ec939a8a90f2ecd7d7460894ef248e540e4d8",
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Original executable only. Full32 active word, signed8 level, nullable PE32 player/inventory pointers, bit patterns and signed wrap/clamp boundaries. Roots10..14 may write only their declared single4byte global; full image final difference checked against that exact ledger. No child services, native projection or qualification claim."
+    },
+    "independent_model": {
+      "cases": 2926,
+      "cases_by_entry": {
+        "nox_xxx_clientIsObserver_4372E0": 883,
+        "sub_467590": 257,
+        "sub_4678B0": 120,
+        "sub_460D40": 119,
+        "sub_4678C0": 119,
+        "sub_4BFD30": 119,
+        "sub_4C12C0": 119,
+        "sub_479870": 119,
+        "sub_49C810": 119,
+        "sub_49CB40": 119,
+        "sub_4C5050": 119,
+        "sub_481410": 119,
+        "sub_51D0E0": 119,
+        "nox_client_mapZoomIn_4724E0": 119,
+        "nox_client_mapZoomOut_472500": 119,
+        "sub_470CC0": 119,
+        "sub_470CD0": 119
+      },
+      "all_original_results_and_exact_global_write_traces_equal": true,
+      "independent_input_only_model": true,
+      "whole32bit_active_word_and_signed8_level": true,
+      "zoom_signed32_compare_after_modulo32_add_subtract": true,
+      "void_EAX_not_compared": true,
+      "no_emulator_or_candidate_imports": true,
+      "fixture_sha256": "9b909bb0d714d15af0976eeaa56694b2d82e56c19ef0237c224983d631679d0f",
+      "fixture_gzip_sha256": "451b71b00abd252308077ea1ff1ec939a8a90f2ecd7d7460894ef248e540e4d8",
+      "source_port_started": false,
+      "new_Go_credit": 0
+    }
+  },
+  "C_before": {
+    "architecture": "native Darwin ARM64 Apple clang",
+    "entries": [
+      "nox_xxx_clientIsObserver_4372E0",
+      "sub_467590",
+      "sub_4678B0",
+      "sub_460D40",
+      "sub_4678C0",
+      "sub_4BFD30",
+      "sub_4C12C0",
+      "sub_479870",
+      "sub_49C810",
+      "sub_49CB40",
+      "sub_4C5050",
+      "sub_481410",
+      "sub_51D0E0",
+      "nox_client_mapZoomIn_4724E0",
+      "nox_client_mapZoomOut_472500",
+      "sub_470CC0",
+      "sub_470CD0"
+    ],
+    "original_C_bytes": 1589,
+    "cases": 2926,
+    "processes": 1,
+    "matching_original_cases": 2730,
+    "original_divergences": 196,
+    "divergences_by_entry": {
+      "nox_xxx_clientIsObserver_4372E0": 24,
+      "sub_467590": 128,
+      "nox_client_mapZoomOut_472500": 44
+    },
+    "all_cases_match_independent_current_C_semantics": true,
+    "actual_high_native_player_inventory_and_UI_pointer_controls_pass": true,
+    "existing_pointer_loads_already_native_no_truncation_claim": true,
+    "native_mapgen_pointer_extension_cleared": true,
+    "whole_heap_windows_and_unrelated_globals_preserved": true,
+    "program_sha256": "e548de55529bf109010320227043325db123e3dfd043857ff894f696894bedd9",
+    "executable_sha256": "e967925d8f32a705f25c1703ba98aad8c1f3d1aa07e242cbe2da5cf4dde6fd73",
+    "raw_results_sha256": "2b0f7cebb8df6500d02ca9a55dfc39327cf8b9addf2a9b84bdeb1b7db04541df",
+    "compile_warnings": 0,
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Unchanged C bodies executed on actual native layout. Three bounded decompilation differences are retained: original32bit active equality vs C low8, signed8 original level vs C uint8, signed32 original zoom-out clamp vs C uint32. No fabricated pointer-cut fault. Native mapgen pointer is an existing projection extension absent from the one-word PE32 root."
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "all_C_inventory": {
+    "source_revision": "9853b02a07eb3a20f11752de688f28bc7018d32b",
+    "physical_repository_C_files": 629,
+    "ten_product_build_profiles": true,
+    "selected_default_ARM64_C_files": 207,
+    "active_own_C_definitions_including_macro_and_native_bridges": 2531,
+    "classified_own_macro_definitions": 14,
+    "unclassified_own_definition_locations": 0,
+    "pointer_integer_cast_functions": 465,
+    "remaining_unported_or_original_function_denominator_established": false,
+    "new_Go_credit": 0,
+    "references": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/catalog-v1.json",
+        "bytes": 317024,
+        "sha256": "9c77e3d610d3be340a281059b48a1b128716a2979523477406b2634fa3bed5a8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/committed-source-binding-v1.json",
+        "bytes": 499,
+        "sha256": "0509f6b2663c77db8eb7f85716b14effe40ef7e4a7a345044b2d8e1c6201944e"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/unselected-files-followup-v1.json",
+        "bytes": 2171,
+        "sha256": "947b8232e2a90d35f8d302d02f1cd81aa645bd86dbdb4740a2b038ddc2ed80bc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v1/active-native-C-audit-v1.json",
+        "bytes": 31741,
+        "sha256": "066a2103b6e2629c240928cde69468bb24fa8bb204fd9cad6b6eff2ac4cae609"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v1/macro-classification-v1.json",
+        "bytes": 11199,
+        "sha256": "412a1e32dcf0d20a4d3cf41ccece9207d0788b62d9b70ed20f81a50f1082815d"
+      }
+    ],
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These2531 own source definitions include native bridges and adapters and are not2531 unported algorithms. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "ABI": {
+    "projection": {
+      "observer": "Read original32bit active word at native Active field plus its three explicit reserved bytes; no PE32 native offset assumption.",
+      "level": "Sign extend original8bit level despite shared uint8 field storage; preserve all256 bit patterns.",
+      "inventory": "Existing shared uintptr pointer and native C inventory field offset; already correct width before port.",
+      "UI_boolean": "Existing full-width nox_window pointers remain pointer slots; zero/nonzero only, no narrowing.",
+      "window_values": "Two uint32 scalar fields after native pointer; not pointers themselves.",
+      "mapgen_reset": "Original single legacy uint32 word reset plus existing native last-waypoint pointer projection. C supplies static pointer address only; Go decides both clears. No claim that original has two fields.",
+      "zoom": "Modulo32 subtract/add then signed32 lower/upper comparison; original trace can write intermediate and clamp. Native contract is final shared word, since no service/callback/concurrent execution occurs inside roots.",
+      "unchanged_C_differences_recorded": true,
+      "unchanged_C_native_pointer_faults": 0
+    },
+    "active_C_calls": [
+      {
+        "entry": "sub_467590",
+        "caller": "nox_xxx_parseFileInfoData_41C3B0",
+        "caller_type": "int (int)",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME1_1.c",
+        "range": {
+          "begin": {
+            "offset": 64322,
+            "col": 35,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 64333,
+            "col": 46,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_49CB40",
+        "caller": "sub_436550",
+        "caller_type": "int ()",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME1_2.c",
+        "range": {
+          "begin": {
+            "offset": 101104,
+            "col": 52,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 101115,
+            "col": 63,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_49C810",
+        "caller": "sub_436550",
+        "caller_type": "int ()",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME1_2.c",
+        "range": {
+          "begin": {
+            "offset": 101120,
+            "col": 68,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 101131,
+            "col": 79,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_460D40",
+        "caller": "nox_xxx_cliPrepareGameplay1_460E60",
+        "caller_type": "int ()",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 9624,
+            "line": 275,
+            "col": 6,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 9635,
+            "col": 17,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4BFD30",
+        "caller": "nox_xxx_inventoryDrawAllMB_463430",
+        "caller_type": "int (nox_window *, nox_window_data *)",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 35330,
+            "col": 49,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 35341,
+            "col": 60,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4C12C0",
+        "caller": "sub_465CD0",
+        "caller_type": "void (int2 *, uint32_t, uint32_t, uint32_t, uint32_t)",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 52757,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 52768,
+            "col": 21,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_470CD0",
+        "caller": "sub_46FFD0",
+        "caller_type": "unsigned char ()",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 111527,
+            "col": 16,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 111538,
+            "col": 27,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_470CC0",
+        "caller": "sub_46FFD0",
+        "caller_type": "unsigned char ()",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 111587,
+            "col": 47,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 111598,
+            "col": 58,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "nox_xxx_clientIsObserver_4372E0",
+        "caller": "nox_xxx_drawHealthManaBar_471C00",
+        "caller_type": "int (nox_window *, nox_window_data *)",
+        "callee_type": "int ()",
+        "source": "src/legacy/GAME2_1.c",
+        "range": {
+          "begin": {
+            "offset": 130308,
+            "col": 6,
+            "tokLen": 31
+          },
+          "end": {
+            "offset": 130340,
+            "col": 38,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_481410",
+        "caller": "nox_xxx_tileDrawMB_481C20_A",
+        "caller_type": "void (nox_draw_viewport_t *, int)",
+        "callee_type": "void ()",
+        "source": "src/legacy/GAME2_2.c",
+        "range": {
+          "begin": {
+            "offset": 75882,
+            "line": 2393,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 75893,
+            "col": 13,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_481410",
+        "caller": "nox_xxx_tileDrawMB_481C20_B",
+        "caller_type": "void (nox_draw_viewport_t *, int)",
+        "callee_type": "void ()",
+        "source": "src/legacy/GAME2_2.c",
+        "range": {
+          "begin": {
+            "offset": 79123,
+            "line": 2498,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79134,
+            "col": 13,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_481410",
+        "caller": "nox_xxx_tileDrawImpl_4826A0",
+        "caller_type": "int (nox_draw_viewport_t *)",
+        "callee_type": "void ()",
+        "source": "src/legacy/GAME2_2.c",
+        "range": {
+          "begin": {
+            "offset": 82807,
+            "line": 2641,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 82818,
+            "col": 13,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4C5050",
+        "caller": "nox_xxx_spriteDeleteSomeList_49C4B0",
+        "caller_type": "void ()",
+        "callee_type": "void ()",
+        "source": "src/legacy/GAME2_3.c",
+        "range": {
+          "begin": {
+            "offset": 79767,
+            "line": 2697,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 79778,
+            "col": 13,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_51D0E0",
+        "caller": "sub_4D39F0",
+        "caller_type": "int (const char *)",
+        "callee_type": "void ()",
+        "source": "src/legacy/GAME3_2.c",
+        "range": {
+          "begin": {
+            "offset": 39788,
+            "line": 1304,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 39799,
+            "col": 13,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_479870",
+        "caller": "sub_4627F0",
+        "caller_type": "uintptr_t (uint32_t *)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 14517,
+            "col": 8,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 14528,
+            "col": 19,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_470CC0",
+        "caller": "nox_client_makePlayerStatsDlg_463880",
+        "caller_type": "void (int *)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 27733,
+            "col": 13,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 27744,
+            "col": 24,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_470CC0",
+        "caller": "nox_client_makePlayerStatsDlg_463880",
+        "caller_type": "void (int *)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 28368,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 28379,
+            "col": 23,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_479870",
+        "caller": "sub_464BD0",
+        "caller_type": "int (nox_window *, int, uintptr_t, uintptr_t)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 39012,
+            "line": 1050,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 39023,
+            "col": 20,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4C12C0",
+        "caller": "sub_464BD0",
+        "caller_type": "int (nox_window *, int, uintptr_t, uintptr_t)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 42710,
+            "col": 10,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 42721,
+            "col": 21,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4C12C0",
+        "caller": "sub_464BD0",
+        "caller_type": "int (nox_window *, int, uintptr_t, uintptr_t)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 43623,
+            "col": 17,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 43634,
+            "col": 28,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4C12C0",
+        "caller": "sub_464BD0",
+        "caller_type": "int (nox_window *, int, uintptr_t, uintptr_t)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 44248,
+            "col": 9,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 44259,
+            "col": 20,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_4BFD30",
+        "caller": "nox_xxx_inventroryOnHovewerSub_4667E0",
+        "caller_type": "int (int, int, unsigned int)",
+        "callee_type": "int ()",
+        "source": "src/legacy/client__gui__guiinv.c",
+        "range": {
+          "begin": {
+            "offset": 55610,
+            "col": 18,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 55621,
+            "col": 29,
+            "tokLen": 1
+          }
+        }
+      }
+    ],
+    "all_headers_and_22_C_calls_unchanged": true,
+    "whole32_active_word_signed8_level_signed32_zoom_proven_by_original": true,
+    "static_waypoint_helper_is_address_only": true,
+    "existing_native_waypoint_pointer_projection_preserved": true,
+    "shared_C_globals_stay_authoritative": true,
+    "all_unrelated_native_state_and_foreign_owners_unchanged": true,
+    "volatile_C_function_pointer_callback_executed": true
+  },
+  "ci": {
+    "runs": [
+      43865493023,
+      43865414480
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14226692555,
+        "name": "linux-amd64-opennox-server-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14226692555-linux-amd64-opennox-server-9853b02a07eb3a20f11752de688f28bc7018d32b.zip",
+        "bytes": 268243853,
+        "sha256": "7554a7dcfba487d76b4a351367ea5e939da08305ff10df5cb4d1db0be9e3e33c",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1046470,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14226657134,
+        "name": "linux-amd64-opennox-server-hd-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14226657134-linux-amd64-opennox-server-hd-9853b02a07eb3a20f11752de688f28bc7018d32b.zip",
+        "bytes": 210100134,
+        "sha256": "98c1adcb4964bced4f23fcc466367209a33f9b4245f681498926e1e9633856dc",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1046470,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14226502291,
+        "name": "linux-amd64-opennox-hd-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14226502291-linux-amd64-opennox-hd-9853b02a07eb3a20f11752de688f28bc7018d32b.zip",
+        "bytes": 222663231,
+        "sha256": "19edfffed605b79354fda51e0d5d694d45fce96dc75ac88fd0e1e48a6f02c3c6",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1052581,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14225339918,
+        "name": "linux-amd64-opennox-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14225339918-linux-amd64-opennox-9853b02a07eb3a20f11752de688f28bc7018d32b.zip",
+        "bytes": 223242328,
+        "sha256": "7bb4c85257a5608f8176f04c38713cb9035d247b2dc03de135b9195b9862114a",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1052581,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14226920196,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14226920196-opennox-server-windows-386.zip",
+        "bytes": 165343482,
+        "sha256": "86ff21a64939a9b6a4f1dc2ff94e1bc59ed6ba771952585940e7fee2165d9c4c",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1024522
+        }
+      },
+      {
+        "artifact_id": 14225728288,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/ci-14225728288-opennox-server-windows-amd64.zip",
+        "bytes": 169713932,
+        "sha256": "e1144c66e155f9052c37dbd967fa2337f4869e473927051aa55698c3e51cde6b",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1044455,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 6664168701,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14226692555,
+        "name": "linux-amd64-opennox-server-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "preceding_artifact": 14222527106,
+        "preceding_passes": 1020134,
+        "current_passes": 1046470,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14226657134,
+        "name": "linux-amd64-opennox-server-hd-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "preceding_artifact": 14222630515,
+        "preceding_passes": 1020134,
+        "current_passes": 1046470,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14226502291,
+        "name": "linux-amd64-opennox-hd-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "preceding_artifact": 14220294799,
+        "preceding_passes": 1026245,
+        "current_passes": 1052581,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14225339918,
+        "name": "linux-amd64-opennox-9853b02a07eb3a20f11752de688f28bc7018d32b",
+        "preceding_artifact": 14222221373,
+        "preceding_passes": 1026245,
+        "current_passes": 1052581,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14226920196,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14221961565,
+        "preceding_passes": 998186,
+        "current_passes": 1024522,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 94
+      },
+      {
+        "artifact_id": 14225728288,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14222670982,
+        "preceding_passes": 1018119,
+        "current_passes": 1044455,
+        "new_native_pass_events": 26336,
+        "skips_unchanged": true,
+        "skip_events": 11
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_global_tests_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4768,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME1_2.c",
+        "src/legacy/GAME2_1.c",
+        "src/legacy/GAME2_2.c",
+        "src/legacy/GAME2_3.c",
+        "src/legacy/GAME3_1.c",
+        "src/legacy/GAME4_1.c"
+      ],
+      "new_files": [
+        "src/legacy/global_state_native.go",
+        "src/legacy/global_state_native_entry.go",
+        "src/legacy/global_state_native_fixture.go",
+        "src/legacy/global_state_native_test.go",
+        "src/legacy/testdata/global_state_original_v1.json.gz"
+      ],
+      "whole_six_incoming_C_files_reconstructed": true,
+      "all_headers_unchanged": true,
+      "existing_parent_bodies_and_22_C_calls_unchanged": true,
+      "original_fixture_unchanged": true,
+      "original_proven_semantic_fixes": [
+        "32bit active equality",
+        "signed8 level",
+        "signed32 zoom-out comparison"
+      ],
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 228,
+      "fully_recorded_entries": 209,
+      "new_entries_pending_qualification": 17,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S35_program_paths": 37,
+    "retained_failed_S34_program_paths": 11,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1706044,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S35_program_paths_SHA_verified": 37,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S34_program_paths_SHA_verified": 11
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "CI_readonly_reader_link_correction": {
+      "utc": "2026-11-16T12:39:17.678960+00:00",
+      "artifact_id": 14225728288,
+      "reason": "Missing sibling .zip.verified.json link in matrix working directory. First original-prefix parse reached oldest artifact-metadata reader and failed FileNotFoundError; original test outputs and product passed.",
+      "first_analysis_exit_code": 1,
+      "product_CI_failure": false,
+      "no_source_test_fixture_or_parser_change": true,
+      "all_first_analysis_logs_retained": true,
+      "files": [
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/prior-CI-matrix-14225728288-retry-v2-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/prior-CI-matrix-14225728288-retry-v2-stderr.log",
+          "bytes": 1355,
+          "sha256": "56815307840ac8b5ac6c865ea61486c73352d6dfdb9e4253e75381d8d5519769"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14225728288-batch-driver-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/global-state-CI-matrix-14225728288-batch-driver-stderr.log",
+          "bytes": 1265,
+          "sha256": "ad0a9d4f160643f631b51aa9e1be251b938c3b07ac30eb558e91b1534f944053"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-packets-CI-matrix-14225728288-stderr.log",
+          "bytes": 828,
+          "sha256": "1d1f2ea062cf5681d7306d363b8c274351e9b92e3d068cb31032091fa9053f6b"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/meteor-cast-CI-matrix-14225728288-stderr.log",
+          "bytes": 816,
+          "sha256": "148cc98fbfd66dfb3d2509409c50ca5c7d53b889a5842ea1bc6e918dd0ae2464"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/npc-equipment-CI-matrix-14225728288-stderr.log",
+          "bytes": 812,
+          "sha256": "0f3732008d84c2b229457a50a9b9c294e362fd270d0b21ba55ff06f08cc92da1"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/inversion-CI-matrix-14225728288-stderr.log",
+          "bytes": 798,
+          "sha256": "132c4f6866369da4aeabb4718bf191ce941fcbaed9289e96133309b6cd791ff8"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-notify-item-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/fumble-CI-matrix-14225728288-stderr.log",
+          "bytes": 805,
+          "sha256": "9a99241b7ab58debe127fd4376ca3868720af43aea7fd0adcc4f619593be1841"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/cleansing-flame-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-item-lookup-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/predict-linear-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/pull-push-CI-matrix-14225728288-stderr.log",
+          "bytes": 802,
+          "sha256": "b3f6d148f22ef822a820b34865be6aa34adbc64e94ed009e9dba6802ef71f662"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/direction-CI-matrix-14225728288-retry-v2-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/direction-CI-matrix-14225728288-retry-v2-stderr.log",
+          "bytes": 1227,
+          "sha256": "9edc9b1f3f9b58875f5b65ae7b3df9ed3faef95bb303129b9790a3eec3abc767"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/arachnaphobia-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/fireball-CI-matrix-14225728288-retry-v2-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/fireball-CI-matrix-14225728288-retry-v2-stderr.log",
+          "bytes": 1190,
+          "sha256": "5e2de50dccad3eac8e2cceeaf4f478f0aded67801ddf8e17f4136f951eb55aeb"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/generator-damage-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/generator-damage-CI-matrix-14225728288-stderr.log",
+          "bytes": 1229,
+          "sha256": "50e0b2dfb084608f8cb47c6082e70c32e82dd76a1e590cef3089f509b0e1588a"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/point-fx-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/point-fx-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/poison-cast-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/ui-trade-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/monster-cast-CI-matrix-14225728288-retry-v2-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/monster-cast-CI-matrix-14225728288-retry-v2-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/burn-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/burn-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/resource-CI-matrix-14225728288-retry-v2-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/resource-CI-matrix-14225728288-retry-v2-stderr.log",
+          "bytes": 799,
+          "sha256": "c93cfd711fcf3ecdf7dc2a2ca7989944a5f8c4bd73fbbb3b4bae59cae793fa22"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-packets-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/npc-equipment-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/meteor-cast-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/prior-CI-matrix-14225728288-retry-v2-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/prior-CI-matrix-14225728288-retry-v2-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14225728288-batch-driver-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/global-state-CI-matrix-14225728288-batch-driver-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-notify-item-CI-matrix-14225728288-stderr.log",
+          "bytes": 1242,
+          "sha256": "9585b3ffb6c6b31e339044d0f89eab2ac4beacaf3e1019fa1006e27e93b5dfbf"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/fumble-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/inversion-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/pull-push-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/trade-item-lookup-CI-matrix-14225728288-stderr.log",
+          "bytes": 814,
+          "sha256": "aa706dc0efcf5f3b7bf9416104f582548e1c49ca92470067d7c5c6d3d4db0c3a"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/cleansing-flame-CI-matrix-14225728288-stderr.log",
+          "bytes": 824,
+          "sha256": "7548b737960c98b1e02c7d4ed9c47a45ce8851e843171f6fc697bd343c261488"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/predict-linear-CI-matrix-14225728288-stderr.log",
+          "bytes": 805,
+          "sha256": "f0ea62a6b5ea33a22ee61b90605b3c6383ae78c2ad2cf940e47f5151041df421"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/poison-cast-CI-matrix-14225728288-stderr.log",
+          "bytes": 813,
+          "sha256": "e8e2ba88c320eb4614b4d355cbf0ac7b7a101855f9bd33e46afdebae8e5716af"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/point-fx-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/point-fx-CI-matrix-14225728288-stderr.log",
+          "bytes": 1210,
+          "sha256": "b214dff282f038801d46d480b4cbeba589aaada054482fa139889c76bc83beda"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/monster-cast-CI-matrix-14225728288-retry-v2-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/monster-cast-CI-matrix-14225728288-retry-v2-stderr.log",
+          "bytes": 1194,
+          "sha256": "4ceb2d0f81f56a23f6bfef88b6c0c49b31fcf1d361e9a514b940336494ecad60"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/resource-CI-matrix-14225728288-retry-v2-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/resource-CI-matrix-14225728288-retry-v2-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/burn-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/burn-CI-matrix-14225728288-stderr.log",
+          "bytes": 797,
+          "sha256": "4af24573a3b6451dce3edd1cf4c2a3f6eb50115a39094ab3f83a13039a3fcca6"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/ui-trade-CI-matrix-14225728288-stderr.log",
+          "bytes": 815,
+          "sha256": "8cedc742052e91da80612b2be753c18cae70d221b20418aacabd7129f7b9ed27"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/direction-CI-matrix-14225728288-retry-v2-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/direction-CI-matrix-14225728288-retry-v2-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14225728288-stderr.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/arachnaphobia-CI-matrix-14225728288-stderr.log",
+          "bytes": 810,
+          "sha256": "7305b137eed3616defe828d26b62266c371ff411b27a01f68e704c067a111c1e"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/generator-damage-CI-matrix-14225728288-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/generator-damage-CI-matrix-14225728288-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "original_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-review-v1/fireball-CI-matrix-14225728288-retry-v2-stdout.log",
+          "retained_path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/CI-matrix-first-reader-link-attempt-v1/fireball-CI-matrix-14225728288-retry-v2-stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "no_product_CI_or_test_rerun_for_reader_correction": true,
+    "first_original_review": {
+      "failed_assertion": "expected divergence entry set {0,1,14}",
+      "observed_divergences": {
+        "sub_467590": 128,
+        "nox_client_mapZoomOut_472500": 44
+      },
+      "reason": "Initial active-word inputs omitted high reserved bits combined with low byte1; original/C controls completed without fault. Add targeted original cases before port, retaining all first2895cases and outputs.",
+      "source_unchanged": true,
+      "first_CPU_model_cases": 2895,
+      "first_C_program_preserved": true
+    },
+    "first2895_original_cases_and_all_their_outputs_byte_equal_in_final_fixture": true,
+    "added_original_cases_before_source_port": 31,
+    "source_original_inputs_and_expectations_unchanged_after_seal": true,
+    "all_preceding_actual_failed_programs_retained": true
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical native memory/GC failures remain open; no blanket repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit",
+    "existing_C_parents": "22 unchanged call sites and their parents remain outside complete native caller qualification",
+    "all_C_denominator": "OPEN; entry totals and split-file AST inventory do not establish complete remaining coverage"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 26336
+    },
+    "native_roots": {
+      "TestGlobalStateNativeLayout": "pass",
+      "TestGlobalStateNativeOriginal": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 2926,
+      "route0/place64": 2926,
+      "route0/place512": 2926,
+      "route1/place0": 2926,
+      "route1/place64": 2926,
+      "route1/place512": 2926,
+      "route2/place0": 2926,
+      "route2/place64": 2926,
+      "route2/place512": 2926
+    },
+    "original_entry_checks": {
+      "nox_xxx_clientIsObserver_4372E0": 7947,
+      "sub_467590": 2313,
+      "sub_4678B0": 1080,
+      "sub_460D40": 1071,
+      "sub_4678C0": 1071,
+      "sub_4BFD30": 1071,
+      "sub_4C12C0": 1071,
+      "sub_479870": 1071,
+      "sub_49C810": 1071,
+      "sub_49CB40": 1071,
+      "sub_4C5050": 1071,
+      "sub_481410": 1071,
+      "sub_51D0E0": 1071,
+      "nox_client_mapZoomIn_4724E0": 1071,
+      "nox_client_mapZoomOut_472500": 1071,
+      "sub_470CC0": 1071,
+      "sub_470CD0": 1071
+    },
+    "original_cases": 2926,
+    "original_instruction_bytes": 257,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "original_int32_returns_and_final_global_words_equal": true,
+    "void_EAX_residue_not_compared": true,
+    "full_native_player_inventory_UI_and_static_waypoint_slots": true,
+    "C_Go_layout_fields": 17,
+    "whole64KiB_foreign_owner_and_seven_windows_unchanged": true,
+    "unrelated_shared_global_bytes_unchanged": true,
+    "seeded_foreign_pointer_initialization_uses_C_stores": true,
+    "original32_active_signed8_level_and_signed32_zoom_restored": true,
+    "existing_native_waypoint_projection_also_cleared": true,
+    "all22_C_parent_calls_and_headers_unchanged": true,
+    "scope": "All2926 sealed original inputs through actual C, volatile indirect callback and direct Go at three native high placements.32bit uses native owners without skipping. Exact final global state and returns, all unrelated shared slots, whole64KiB owner and seven windows checked. Original intermediate zoom stores are recorded by originalCPU; final state is the native contract. No original service or full caller/gameplay coverage claim."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/qualified-global-state-entries-v1.json",
+    "sha256": "7cc8fa0e4153d6dc13e759b04a43cebabf5e94082f466904aa45adcf01e110f5"
+  },
+  "normal_passes": 232645,
+  "strict_passes": 232645,
+  "focused_passes": 26336,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 105
+}

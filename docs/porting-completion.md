@@ -60,6 +60,102 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native shared global and player-state C entries, 2026-11-16
+
+Engine `9853b02a07eb3a20f11752de688f28bc7018d32b` is committed and pushed to
+`origin/port/go1.27-multiarch`. Seventeen C entries now execute in Go:
+observer/player level, alternate inventory value, three UI-presence checks,
+five scalar/window-value readers, shop-state equality, three resets and
+both minimap zoom steps. Existing shared C globals remain authoritative.
+All headers and **22 C call sites** remain unchanged; reversing the
+seventeen guards and one address-only static-waypoint bridge reconstructs
+all six incoming C files. Caller bodies are outside this leaf qualification.
+
+There are **228 C entries implemented in Go** and **226 with complete
+recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.** These
+entry totals do not establish the all-C denominator.
+
+A repository-wide catalog records **629 physical C files** across ten
+product build profiles. The default ARM64 selection contains **207 C
+files** and **2,531 own-source definitions**, including native bridges and
+14 explicitly classified macro definitions. This is an inventory, not a
+remaining-unported count. Included header/inc algorithms, Cgo preambles,
+optional tags and other architecture branches still need denominator work.
+
+Before edits, a **134-path seal** preserves **2,926 original CPU/model
+cases**, all **257 procedure bytes**, **319 startup bytes** and `0xe3f`
+FP state. No service or child procedure is replaced. Original roots can
+write only their declared four-byte global, and whole-image differences,
+heap, caller redzones, saved registers and FP state are checked. Void EAX
+residue is excluded. The independent input-only model matches every return,
+exact original write trace and final global word.
+
+The unchanged **1,589-byte C bodies** also run on actual macOS ARM64 native
+layouts and high player, inventory and UI pointers. **2,730** cases match;
+**196** recorded differences identify three decompilation errors: the
+original compares all 32 bits of the active word (24 differences), sign
+extends the level byte (128), and uses signed32 comparison after wrapping
+the zoom-out addition (44). Go restores these original operations. The
+existing C pointer loads already keep their native width; this batch
+records no pointer-truncation crash.
+
+Final qualification passes:
+
+- **26,336** focus identities: every original input through actual C,
+  a volatile indirect C callback and direct Go at three native placements,
+  plus two roots. Whole 64 KiB owners, all seven window records and unrelated
+  shared globals retain their bytes. All 17 C/Go layout checks pass.
+  Pointer fields are seeded through C copies without Go deletion barriers.
+- The observer locates its original four-byte active span through the native
+  Player field and reserved bytes. Inventory/window values use their native
+  field locations. The waypoint reset preserves its existing full-width
+  pointer projection alongside the single legacy word present in the
+  original executable. Zoom checks preserve modulo32 arithmetic and signed
+  boundaries; the native observable contract is the final shared word.
+- Normal and highres/cgocheck2/checkptr2 each pass **232,645** identical
+  terminal identities/multiplicities on the **9,350-input** lease
+  `bde8b9a9c1458e86f246917050d2caa110430dda240c42484ad14f2d905fa301`.
+  All preceding **206,309** identities and all **4,768** protected inputs
+  remain unchanged. Added identities equal the entire new focus.
+- Four ARM64 products pass default Apple compiler builds, metadata, help
+  and **105** symbol checks. Normal/HD pass four core E2E cases, two
+  functional Save/Load diagnostics and two ordinary-clock independent UDP
+  chat profiles. Each chat proves eight submissions, four peer messages
+  and one host reply; both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43865493023) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43865414480)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six verified ZIPs retain **158 actual test mains**, all new and preceding
+  native matrices, the full-suite increment and unchanged skip identities.
+  Existing Windows/386 GOGC10 replay is retained; these new tests are not
+  selected by that replay. Complete warning review covers
+  **22 files / 6,664,168,701
+  uncompressed bytes**, with zero warnings.
+
+The first original-only review retained 2,895 inputs. Its C comparison
+assertion exposed a missing targeted active-word input; 31 original cases
+were added before any port. Every preceding input and original output
+remains equal. Both original-review versions, the failed reader result
+and its program remain preserved. No sealed expectation or prior test is
+rewritten to fit the Go implementation.
+
+A first read-only CI analysis also retained a missing metadata-link error;
+adding the verified ZIP metadata link fixes the reader without changing
+its assertions or rerunning any product test or successful CI job.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths**,
+**37 preceding S35 paths** and **11 paths from the earlier failed S34
+attempt** remain after clearing only the closed dedicated cache from
+**1,706,044 KiB to 8 KiB**. Historical deletions,
+lost S25 seals, nine final chapter 1–3 audits, public Save/Load pixel failure
+and other historical Windows memory/GC causes remain open. Chapter 4 and
+later remain excluded.
+
+Machine evidence: [split-global-state-native-progress-20261116.json](split-global-state-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-state-native-v1/qualified-global-state-entries-v1.json` (SHA-256 `7cc8fa0e4153d6dc13e759b04a43cebabf5e94082f466904aa45adcf01e110f5`).
+
 ### Native trade notification and item packet public C entries, 2026-11-16
 
 Engine `75ed0d63fa8bc1101b11d664912aa2ee8e8683c6` is committed and pushed to
@@ -71,9 +167,9 @@ builder and all three use the preceding native send adapter. Original
 signed int32 cost/return bit patterns remain intact; the unused session
 argument is opaque and never read.
 
-There are **211 C entries implemented in Go** and **209 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
-seals remain open. **All-C migration and overall 100% remain open.** Entry
+At that checkpoint, **211 C entries were implemented in Go** and
+**209 had complete recorded qualification**. Two implemented entries with
+deleted S25 original seals remain open. **All-C migration and overall 100% remain open.** Entry
 totals do not establish the all-C denominator.
 
 Before edits, a **49-path seal** preserves **860 original CPU/model cases**

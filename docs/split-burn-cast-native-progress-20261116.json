@@ -1,0 +1,318 @@
+{
+  "source_revision": "0b369c59a89efebdde795aadd8510ed404e740d7",
+  "entries": [
+    "nox_xxx_castBurn_52C3E0"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 184,
+  "cumulative_qualified_split_Go_entries": 185,
+  "implemented_split_Go_entries": 187,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9307,
+    "sha256": "ba039428663a43b8475bdb9e7edb8814fdc1d6a618e3c4e47d321c8b59c3d3c1"
+  },
+  "original": {
+    "cases": 145,
+    "service_events": 1200,
+    "root_bytes": 322,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 70,
+    "whole_image_and_heap_checks": true,
+    "root_image_writes_only_two_cache_DWORDs": true,
+    "root_heap_writes_none": true,
+    "blocked_player_caller_argument_scratch_explicit": true,
+    "caller_redzones_callee_saved_registers_FP_control_TOP_checked": true,
+    "two_player_chain_fault_prefixes_checked": true,
+    "live_position_and_cache_reload_order_checked": true,
+    "converter_bytes": 17,
+    "trace_wrapper_bytes": 20,
+    "independent_exact_rational_numeric_model_equal": true,
+    "independent_model_equal": true,
+    "fixture_sha256": "2719a30f035d50d2c9e0ddb5f2cdb569b86289502b31900be151e42dc94c1b1e",
+    "fixture_gzip_sha256": "6a929ab3dfc0fef0168b0ec4a34edce3daa695074d0f7b22c045817cca36c4c7",
+    "scope": "All322 original cast bytes,17 original converter bytes and20 original trace-wrapper bytes execute. The trace wrapper discards the extra original caller parameter and supplies flags9. Lookup/maptrace/object/create/balance/decay/spark/audio/inform remain declared service boundaries. Balance uses an owned binary64 FLD/RET shim. Blocked-player caller argument scratch is original reference metadata, not a native caller-write requirement. Synthetic mutations are boundary controls."
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "original_C_body_bytes": 1681,
+    "matching_packed_controls": 7,
+    "high_native_pointer_faults": 3,
+    "low_native_object_and_acceptance_layout_mismatches": 1,
+    "nonnull_high_argument_zero_lowword_omissions": 1,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false,
+    "scope": "Exact1681 incoming C bytes with actual native object/acceptance/trace/create/decay/spark/audio headers. Seven selected PE32 packed controls match original return/cache/service arguments. Native caster/argument/flame controls verify real native records before call; their lowwords address an inaccessible guard. Valid high nonnull argument with zero lowword is omitted. All three64KiB arenas and cache guards unchanged on normal return except two DWORD caches. Standalone x86_64/Rosetta; no ARM64 C-before/full-game crash claim. Packed controls use the bounded2.50000001 duration only; no C-before x87-wide numeric equivalence claim."
+  },
+  "numeric_corrections": [],
+  "ABI": {
+    "original_C_arguments": 5,
+    "direct_Go_selector_arguments": 6,
+    "C_supplies_unused_Go_level": 0,
+    "direct_Go_signed_level_forwarded": true
+  },
+  "ci": {
+    "runs": [
+      43789080752,
+      43789022927
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": false,
+    "first_attempt_passed_profiles": 5,
+    "failed_only_amd64_retry_count": 1,
+    "successful_jobs_rerun": 0,
+    "original_Windows386_result_reused": true,
+    "first_failed_amd64": {
+      "job_id": 133043003767,
+      "artifact_id": 14192120583,
+      "archive": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14192120583-opennox-server-windows-amd64-first-failed.zip",
+      "sha256": "44368feb170da0060f041602ac651a0f4b2ce785fe1456bfb85d0f80f23bf02a",
+      "bytes": 146555481,
+      "retained_actual_test_mains": 3,
+      "summary": {
+        "test_exit_code": 1,
+        "test_actions": {
+          "pass": 232782,
+          "skip": 1
+        },
+        "package_actions": {
+          "github.com/opennox/opennox/v1": "fail",
+          "github.com/opennox/opennox/v1/server": "fail",
+          "github.com/opennox/opennox/v1/legacy": "fail"
+        },
+        "expected_packages": [
+          "github.com/opennox/opennox/v1",
+          "github.com/opennox/opennox/v1/legacy",
+          "github.com/opennox/opennox/v1/server"
+        ],
+        "missing_packages": [],
+        "unexpected_packages": [],
+        "unfinished_tests": [
+          [
+            "github.com/opennox/opennox/v1",
+            "TestPlayerReportItemEnchantmentNative4D99A7AllBytePairs"
+          ],
+          [
+            "github.com/opennox/opennox/v1/legacy",
+            "TestBitstreamNativeOriginalCABI"
+          ],
+          [
+            "github.com/opennox/opennox/v1/legacy",
+            "TestBitstreamNativeOriginalCABI/placement-8"
+          ],
+          [
+            "github.com/opennox/opennox/v1/server",
+            "TestSpecialDeathCachedCallbackGC54E460"
+          ],
+          [
+            "github.com/opennox/opennox/v1/server",
+            "TestSpecialDeathCachedCallbackGC54E460/nil-data"
+          ]
+        ],
+        "failures": [
+          {
+            "Time": "2026-11-16T02:03:10.986577Z",
+            "Action": "fail",
+            "Package": "github.com/opennox/opennox/v1",
+            "Elapsed": 80.958
+          },
+          {
+            "Time": "2026-11-16T02:03:30.6953438Z",
+            "Action": "fail",
+            "Package": "github.com/opennox/opennox/v1/server",
+            "Elapsed": 100.667
+          },
+          {
+            "Time": "2026-11-16T02:04:34.1917045Z",
+            "Action": "fail",
+            "Package": "github.com/opennox/opennox/v1/legacy",
+            "Elapsed": 7.064
+          }
+        ],
+        "build_failures": [],
+        "build_warnings": [],
+        "raw_JSON_bytes": 246781317,
+        "raw_JSON_sha256": "72b96c7726303059a49927a6ffe1eac2315826e4b17cc5760206e54c49b85787"
+      },
+      "root_bad_Go_heap_pointer": true,
+      "server_marked_free_object": true,
+      "legacy_map_hash_memory_fault": true,
+      "Burn_terminal_test_actions": 0,
+      "cause_or_repair_claim": false
+    },
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14192710380,
+        "name": "linux-amd64-opennox-0b369c59a89efebdde795aadd8510ed404e740d7",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14192710380-linux-amd64-opennox-0b369c59a89efebdde795aadd8510ed404e740d7.zip",
+        "bytes": 219717461,
+        "sha256": "ed08ad5a8f0d94f587d33ac429a0906f2ec8e5fb9e3875238a17e0f054d37d91",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 991849,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14192530429,
+        "name": "linux-amd64-opennox-hd-0b369c59a89efebdde795aadd8510ed404e740d7",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14192530429-linux-amd64-opennox-hd-0b369c59a89efebdde795aadd8510ed404e740d7.zip",
+        "bytes": 219623366,
+        "sha256": "6e460ee950be3e114b02cfd24076aea58626a92a44b31e22ccc3c2f86d179d26",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 991849,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14192337730,
+        "name": "linux-amd64-opennox-server-0b369c59a89efebdde795aadd8510ed404e740d7",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14192337730-linux-amd64-opennox-server-0b369c59a89efebdde795aadd8510ed404e740d7.zip",
+        "bytes": 265482245,
+        "sha256": "5db53d1ab1231069546c949646a9328f55b3d1507023d6dd8518835a00cf3a2d",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 985738,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14191908586,
+        "name": "linux-amd64-opennox-server-hd-0b369c59a89efebdde795aadd8510ed404e740d7",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14191908586-linux-amd64-opennox-server-hd-0b369c59a89efebdde795aadd8510ed404e740d7.zip",
+        "bytes": 206645327,
+        "sha256": "e185767f69a91c652b694683403f1fe01f601ab4d8d96b9515793259c325f8e6",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 985738,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14192603881,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14192603881-opennox-server-windows-amd64-retry.zip",
+        "bytes": 166992505,
+        "sha256": "5c5f820c43e1523a69c76c9d5bb6ac5271e6b38974ff48fdcec4a088307afa78",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 983723,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14191894898,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/ci-14191894898-opennox-server-windows-386.zip",
+        "bytes": 163165228,
+        "sha256": "d50ece16339ce567ea56feb1207b9e4cc25f84ef2da6c76878b3d003d17c36f7",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 963790
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 23,
+    "uncompressed_warning_scan_bytes": 6527337202,
+    "all_previous_native_matrices_pass": true,
+    "current_or_historical_GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "protected_existing_tests_fixtures": 4752,
+    "all_existing_typed_algorithms_ordinary_bindings_tests_unchanged": true,
+    "tracked_E2E_inputs": 387,
+    "original_asset_and_Save_files": 4649,
+    "original_C_body_bytes": 1681,
+    "whole_incoming_C_and_header_reconstruct": true,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S28_program_paths": 39,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1954800,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S28_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 8,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded and nonblocking. Lost historical versions and S25 reference seals are not claimed recovered or preserved."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Current and historical ordinary Windows native memory failures remain unexplained. The retained first amd64 failure is not superseded by its failed-only retry. Current passes are not a cause or repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 1351
+    },
+    "existing_typed_server_test_actions": {
+      "pass": 66
+    },
+    "existing_legacy_test_actions": {
+      "pass": 34
+    },
+    "native_roots": {
+      "TestBurnNativeLayout": "pass",
+      "TestBurnNativeOriginal": "pass",
+      "TestBurnNativePublicPointers": "pass",
+      "TestBurnNativeDefaultBindings": "pass"
+    },
+    "typed_server_roots": {
+      "TestBurnCastNativePointersLiveOrder52C3E0": "pass",
+      "TestBurnCastCacheAndAllocation52C3E0": "pass",
+      "TestBurnCastBlockedLivePlayer52C3E0": "pass",
+      "TestBurnCastNilGuardsAfterCache52C3E0": "pass",
+      "TestBurnCastDurationSpillAndChop52C3E0": "pass",
+      "TestBurnCastMissingGlyphAndFlameRetry52C3E0": "pass",
+      "TestBurnCastBlockedPlayerFaultPrefix52C3E0": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 145,
+      "route0/place64": 145,
+      "route0/place512": 145,
+      "route1/place0": 145,
+      "route1/place64": 145,
+      "route1/place512": 145,
+      "route2/place0": 145,
+      "route2/place64": 145,
+      "route2/place512": 145
+    },
+    "pointer_and_signed_scalar_compositions": 15,
+    "actual_default_cached_nil_guard_compositions": 27,
+    "original_cases": 145,
+    "original_service_events": 1200,
+    "original_root_bytes": 322,
+    "original_converter_bytes": 17,
+    "original_trace_wrapper_bytes": 20,
+    "original_startup_bytes": 319,
+    "original_nil_read_fault_cases": 2,
+    "original_C_argument_count": 5,
+    "Go_selector_extra_unused_level": 6,
+    "Scope": "Actual5arg public C,typed Ccallback,direct6arg Go. C supplies unused Go level0;direct Go forwards its signed level. Whole64KiB owners, full native object/argument/player links and two cache states, declared callback mutations and original nil fault prefixes. Original17byte converter and20byte trace wrapper execute. Blocked-player caller scratch is original metadata, not a native caller-write claim. Actual cached nil-guard compositions do not claim full stock object/physics child coverage."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/qualified-burn-cast-entry-v1.json",
+    "sha256": "83db61f1f739042fc12d981da7cb2557227924fbb883c2a53f531aafa37cc461"
+  },
+  "normal_passes": 171988,
+  "strict_passes": 171988,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 64
+}

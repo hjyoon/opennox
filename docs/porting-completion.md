@@ -60,6 +60,95 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Burn public C entry, 2026-11-16
+
+Engine `0b369c59a89efebdde795aadd8510ed404e740d7` is committed and pushed to
+`origin/port/go1.27-multiarch`. The public
+`nox_xxx_castBurn_52C3E0` entry now forwards full native object and
+acceptance pointers to the existing Go implementation. Its original C ABI
+has **five arguments**. The direct Go selector retains its sixth, unused
+signed level; the C export supplies zero.
+
+There are **187 implemented split-file Go entries** and **185 with complete
+recorded qualification**. The two Arachnaphobia/trace entries whose original
+seals were deleted remain open and receive no additional recorded credit.
+**All-C migration and overall 100% remain open.**
+
+Before source edits, a **70-path seal** preserves **145 original CPU cases**
+and **1,200 service events**, all **322 cast bytes**, the **17-byte original
+float-to-integer converter**, the **20-byte original trace wrapper** and
+**319 startup bytes** under control word `0xe3f`. An independent
+identity/state and exact rational binary32 ToZero/integer model matches all
+observations. Whole mapped-image/64 KiB heap, caller redzones, saved registers
+and FP control/TOP are checked. Two player-chain nil-read fault prefixes
+are preserved. The original blocked-player caller-argument scratch write
+is reference metadata, without a native caller-write requirement.
+The trace wrapper supplies flags 9 and discards the extra original caller
+parameter. Object creation, map tracing, lookup, balance, decay, spark,
+audio and notification remain declared service boundaries; the balance
+return uses an explicit owned binary64 FLD/RET shim.
+
+The unchanged **1,681-byte C body** remains inactive. Removing its guard
+reconstructs the whole incoming C file; reversing its prototype reconstructs
+the header. Seven packed controls match the selected original contract.
+Three high native pointer controls fault, covering caster, acceptance record
+and newly allocated flame. A low native composition exposes old object and
+acceptance position offsets. A valid high argument with a zero low word is
+incorrectly omitted. These are standalone x86_64/Rosetta observations, without
+an ARM64 C-before or full-game crash claim. Existing typed algorithms,
+ordinary bindings and all **4,752 preceding protected tests/fixtures**
+remain byte-identical. No numerical correction was required.
+
+All final qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **171,988** identities on
+  the same **9,307-input** lease
+  `ba039428663a43b8475bdb9e7edb8814fdc1d6a618e3c4e47d321c8b59c3d3c1`.
+  Focused checks pass **1,451**: 1,351 native identities, 66 existing server
+  identities and 34 existing legacy identities. Public C, typed C callback
+  and direct Go execute all 145 original cases at three foreign placements,
+  plus 15 signed/pointer controls and 27 actual cached nil-guard compositions.
+  All observed object/argument/player-chain fields have independently checked
+  C/Go offsets and widths, with whole-owner canaries. The bounded default
+  compositions do not establish full stock creation or physics coverage.
+- Four ARM64 products pass build, metadata, help and **64** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics
+  and two ordinary-clock independent UDP chat profiles. Each chat profile
+  proves eight submissions, four received peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43789080752)
+  passes all four profiles on their first attempt.
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43789022927)
+  passes 386 on its first attempt and amd64 after one failed-only retry.
+  The first amd64 gate fails in all three packages: root reports a bad Go
+  heap pointer, server a marked-free object and legacy a map-hash memory
+  fault. It reaches no terminal Burn identities. The first failed ZIP,
+  full outputs and **three actual failed test mains** remain preserved;
+  the failure is not superseded by the retry. No successful job is rerun;
+  the copied 386 success row retains its original runner and timestamps.
+  Six SHA-verified passing ZIPs retain **158 actual test mains**, every
+  current identity and all preceding native matrices. Complete warning
+  review includes failed outputs: **23 files /
+  6,527,337,202 uncompressed bytes**, zero warnings.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths** and the preceding **39 S28 paths** remain
+intact after clearing the closed dedicated build cache from **1,954,800 KiB
+to 8 KiB**. Original inputs, failed results and executable versions remain
+preserved. Historical user-deleted executables and S25 records remain
+explicitly missing and nonblocking. Private runtime assets preserve the
+verified stock video bags/indexes. Runtime preparation passes on its first
+attempt with original scenarios, assertions and timing unchanged.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, current and historical Windows native memory failures and
+two lost S25 seals remain open. A passing retry establishes no memory-error
+cause or repair. Chapter 4 and later remain excluded. The next native-pointer
+review targets the active Inversion entry at `52BEB0`.
+
+Machine evidence: [split-burn-cast-native-progress-20261116.json](split-burn-cast-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/qualified-burn-cast-entry-v1.json` (SHA-256 `83db61f1f739042fc12d981da7cb2557227924fbb883c2a53f531aafa37cc461`).
+
 ### Native Fumble public C entry, 2026-11-16
 
 Engine `72e7fae69c9b66fa1859c957023f271e7e548679` is committed and pushed to
@@ -69,8 +158,8 @@ acceptance pointers to the existing Go implementation. Its original C ABI
 has **five arguments**. The existing direct Go selector retains its sixth,
 unused signed level; the C export supplies zero for that level.
 
-There are **186 implemented split-file Go entries** and **184 with complete
-recorded qualification**. The two Arachnaphobia/trace entries whose original
+At that checkpoint there are **186 implemented split-file Go entries** and
+**184 with complete recorded qualification**. The two Arachnaphobia/trace entries whose original
 seals were deleted remain open and receive no additional recorded credit.
 **All-C migration and overall 100% remain open.**
 
@@ -138,8 +227,8 @@ assertions, timing or products.
 The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
 pixel failure, unexplained historical Windows GC failure and two lost S25
 seals remain open. Current passes do not establish a GC repair. Chapter 4
-and later remain excluded. The next native-pointer review targets the
-active Burn entry at `52C3E0`.
+and later remain excluded. At that checkpoint the next C target was Burn;
+its separately sealed qualification appears above.
 
 Machine evidence: [split-fumble-cast-native-progress-20261116.json](split-fumble-cast-native-progress-20261116.json).
 Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/qualified-fumble-cast-entry-v1.json` (SHA-256 `d509f74f3b3d3ff806ef0972a3dbde6e14de3c2704a2dcb1a592c5cce5ff7bf5`).

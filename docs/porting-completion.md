@@ -60,6 +60,112 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Object, AI, inventory and Drawable field C entries, 2026-11-17
+
+Engine `97eb6afe0c675613a55bc07c5bfce0cb983b31f5` is committed and pushed to
+`origin/port/go1.27-multiarch`. Eight public C entries now execute in Go:
+`sub_5408A0`, `nox_xxx_unitNeedSync_4E44F0`, `sub_4E4500`,
+`nox_xxx_objectGetBuffs_4E4A80`, `nox_xxx_armorHaveSameSubclass_53E7B0`,
+`nox_xxx_netGetUnitCodeCli_578B00`, `nox_xxx_netClearHighBit_578B30` and
+`nox_xxx_netTestHighBit_578B70`.
+
+At this checkpoint, **249 C entries were implemented in Go** and
+**247 had complete recorded qualification**. Two implemented S25 entries
+with deleted original seals remain uncredited. **All-C migration and
+overall 100% remain open.** The historical 207-file / 2,524-definition
+audit includes bridges and does not establish a current unported denominator.
+Header/inc algorithms, Cgo preambles, optional tags and architecture branches
+still need classification.
+
+A **133-path pre-port seal** preserves **5,080 original CPU/model cases**,
+all **288 root bytes**, **319 startup bytes** and `0xe3f` FP state, without
+child services. Every static root instruction is covered. The independent
+input-only model matches original scalar returns, native-mapped pointer
+roles, all final words and ordered writes. Complete image and 64 KiB graph,
+caller arguments, redzones, saved registers and FP state remain checked.
+The native domain includes AI head -1 through 23, exact full32 subclasses,
+32 status words, nullable Drawable, unsigned code bound 0x8000 and class
+mask 0x20400000. Empty AI head -1 projects to the existing named Field132;
+valid stack slots use native pointer-dependent stride.
+
+The unchanged **1,576-byte C bodies** were compiled and executed on x86_64
+under Rosetta before porting. The **2,575 AI controls use the packed PE32
+layout**; the other **2,505 controls use actual native layouts**.
+**4,960** controls match the original;
+**120** ClearHighBit controls retain the existing short-argument loss of
+original bits 16–31. One actual high native AI pointer reaches the old int
+argument and faults. Both processes, inputs and executable remain retained.
+The fixed ABI accepts a native Object pointer for AI and a full32 argument
+for ClearHighBit, clearing only bit15. Canonical wire16 callers preserve
+their result. This C-before evidence is an x86_64 execution, not an ARM64
+C-before execution claim.
+
+Qualification passes:
+
+- **45,722** focus identities: every sealed original row through actual C,
+  a volatile C callback and direct Go at three foreign placements, plus two
+  roots. **35** C/Go layout checks cover the Object prefix, signed AI head,
+  all 24 action slots, empty Field132, inventory links, Drawable and typed
+  full native pointer returns. The entire 64 KiB graph admits only the
+  original scalar write projection. Void NeedSync EAX residue is uncredited.
+- Normal and highres/cgocheck2/checkptr2 each pass **311,249** identical
+  terminal identities and multiplicities. All preceding **265,527** remain;
+  the increment exactly equals the new focus. Both compile on the same
+  **9,368-input** lease `1802c19b6152f0beb08b389f1e675d744941e2bc66c2c796cd5145a07d0dce8c`.
+  A clean detached worktree retains every compilation input byte for byte.
+- All four default Apple compiler ARM64 products pass metadata/help and
+  **126** native/control symbol checks. Normal/HD pass four core E2E cases,
+  two functional Save/Load diagnostics and independent ordinary-clock UDP
+  chat. Each chat proves eight submissions, four peer messages and one host
+  reply, with both processes exiting zero and no forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43907683919) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43907444312)
+  pass all six profiles on the repaired source. Six verified ZIPs retain
+  **158 actual test mains**, all **25** native matrix readers, the exact
+  full-suite increment and unchanged skip identities. Complete warning
+  review scans **22 files / 7,192,598,741
+  uncompressed bytes**, with zero warnings. Existing Windows/386 UI GOGC10
+  replay remains; this new family is not selected by that replay.
+
+The first source `f1aec2e88779c3c03f9cbb819b52d94bb3f7753e` failed
+all six CI profiles. Those six official ZIPs, **158 actual test mains** and
+complete job logs remain preserved. The repair restores the original const
+buff-owner/armor-item ABI using Cgo const typedefs, and pins Go-owned Object
+receivers until each complete C call returns. Pins are released on return;
+the status-mask callback keeps its typed native pointer result and Cgo checks.
+The standalone secondary-grid C test unwraps only the exact retained original
+encoder guard. Its original assertions, C fixture and numeric expectations
+remain unchanged. All **56** existing affected integration checks pass.
+No successful job was rerun and no original expectation was retuned.
+
+All **4,773** other protected inputs remain byte-identical. Reversing only
+that test helper's scope comment and guard extraction reconstructs the
+remaining protected test exactly. Reversing guards reconstructs all three
+incoming C files; reversing the two argument declarations reconstructs the
+changed headers. All **147 active C parent bodies**, shared Object/AI/
+Drawable layouts, existing NeedSync/status-mask algorithms and S36 foreign
+pointer-copy helper remain unchanged. Those C parents retain their existing
+transport; this leaf qualification does not make them native.
+
+An additional broad local package invocation omitted the separate reviewed
+worker/INITIAL_ARTIFACTS setup. Its **4,166 failed actions in 13 unchanged
+groups** match the previously documented setup requirement. The complete
+failure and actual program are retained; it is **not** a passing full-package
+qualification. Original asset/personal Save **4,649 files** retain their
+hashes. All **41 current program paths**,
+37 preceding S38 paths, 37 failed-source S39 paths and 11 failed S34 paths
+remain after the closed dedicated cache returns from
+**1,708,988 KiB to 8 KiB**.
+
+Historical user deletions, two lost S25 seals, nine final class/chapter 1–3
+audits, public Save/Load pixel failure, other historical Windows memory/GC
+causes, Team and map-monster-list owner migration remain open. Chapter 4 and
+later remain excluded. No invalid-owner or allocator/lifetime equivalence
+is claimed.
+
+Machine evidence: [split-object-field-native-progress-20261117.json](split-object-field-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-field-native-v2/qualified-object-field-entries-v2.json` (SHA-256 `67dabd71f483768c6c3f51999a305e88724d585593fdddd96f26a652e197b158`).
+
 ### Native GUI health, mana and color state C entries, 2026-11-16
 
 Engine `826bd8c59aff82399f353653e604725f519eac08` is committed and pushed to

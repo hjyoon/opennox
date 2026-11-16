@@ -9478,6 +9478,7 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 #endif
 
 //----- (0052C3E0) --------------------------------------------------------
+#if 0 // Native Burn cast: burn_cast_native_entry.go
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;     // eax
 	int v6;     // ebp
@@ -9540,6 +9541,7 @@ LABEL_12:
 	nox_xxx_audCreate_501A30(v16, (float2*)(v6 + 4), 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052C5A0) --------------------------------------------------------
 // Native-width implementation: server/cast_shock_52c5a0.go and the typed

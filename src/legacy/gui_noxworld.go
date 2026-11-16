@@ -230,7 +230,7 @@ func Sub_438770() bool {
 }
 
 func Sub_43AF80() int {
-	return int(C.sub_43AF80())
+	return int(sub_43AF80())
 }
 
 func Sub_4379C0() {

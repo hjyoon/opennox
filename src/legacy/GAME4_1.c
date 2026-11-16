@@ -2506,6 +2506,7 @@ uint32_t* sub_50FB90(uint32_t* a1) {
 #endif
 
 //----- (0050FD20) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_50FD20(uint32_t* a1, int a2) {
 	int v2;     // edx
 	int v3;     // ecx
@@ -2525,6 +2526,7 @@ int sub_50FD20(uint32_t* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050FE20) --------------------------------------------------------
 int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {

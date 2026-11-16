@@ -134,7 +134,7 @@ func Nox_xxx_guiSpell_460650() int {
 	return int(C.nox_xxx_guiSpell_460650())
 }
 func Sub_4611A0() int {
-	return int(C.sub_4611A0())
+	return int(sub_4611A0())
 }
 func Sub_467CD0() {
 	C.sub_467CD0()

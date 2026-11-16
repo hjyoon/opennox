@@ -510,5 +510,5 @@ func inventoryTradeNetCodeContract() (first, second uint32) {
 }
 
 func Nox_client_gold_4674A0() uint32 {
-	return uint32(C.sub_4674A0())
+	return uint32(sub_4674A0())
 }

@@ -200,19 +200,19 @@ func Nox_xxx_clientIsObserver_4372E0() int {
 	return int(C.nox_xxx_clientIsObserver_4372E0())
 }
 func Sub_4675B0() int {
-	return int(C.sub_4675B0())
+	return int(sub_4675B0())
 }
 func Sub_479590() int {
-	return int(C.sub_479590())
+	return int(sub_479590())
 }
 func Sub_478030() int {
-	return int(C.sub_478030())
+	return int(sub_478030())
 }
 func Sub_47A260() int {
-	return int(C.sub_47A260())
+	return int(sub_47A260())
 }
 func Nox_xxx_cursor_430B00() int {
-	return int(C.nox_xxx_cursor_430B00())
+	return int(nox_xxx_cursor_430B00())
 }
 func Sub_45D9B0() int {
 	return int(C.sub_45D9B0())

@@ -396,7 +396,9 @@ int sub_461160(int a1) {
 }
 
 //----- (004611A0) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_4611A0() { return dword_5d4594_1047932; }
+#endif
 
 //----- (004611B0) --------------------------------------------------------
 int sub_4611B0() {
@@ -2244,7 +2246,9 @@ int sub_467490(int a1) {
 }
 
 //----- (004674A0) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_4674A0() { return dword_5d4594_1062552; }
+#endif
 
 //----- (004674B0) --------------------------------------------------------
 void nox_window_set_visible_unk5(int visible) {
@@ -2295,7 +2299,9 @@ int sub_467590() {
 }
 
 //----- (004675B0) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_4675B0() { return dword_5d4594_1049864; }
+#endif
 
 //----- (004675E0) --------------------------------------------------------
 short sub_4675E0(int net_code, short field_73_1, short field_73_2) {
@@ -2676,7 +2682,9 @@ void nox_client_chatStart_46A430(int a1) {
 }
 
 //----- (0046A4A0) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_46A4A0() { return dword_5d4594_1064868; }
+#endif
 
 //----- (0046A4B0) --------------------------------------------------------
 size_t nox_xxx_cmdSayDo_46A4B0(wchar2_t* a1, int a2) {
@@ -3597,7 +3605,9 @@ int sub_470680() {
 int sub_4706A0() { return dword_5d4594_1090048 && dword_5d4594_1090120; }
 
 //----- (00470A90) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int nox_xxx_playerGet_470A90() { return dword_5d4594_1096252; }
+#endif
 
 //----- (00470AA0) --------------------------------------------------------
 void nox_xxx_cliShowHideTubes_470AA0(int a1) {

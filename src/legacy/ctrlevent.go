@@ -237,7 +237,7 @@ func Sub_554300() uint32 {
 	return uint32(C.sub_554300())
 }
 func Nox_client_mousePriKey_430AF0() int {
-	return int(C.nox_client_mousePriKey_430AF0())
+	return int(nox_client_mousePriKey_430AF0())
 }
 func Sub_42EB90(a1 int) {
 	C.sub_42EB90(C.int(a1))

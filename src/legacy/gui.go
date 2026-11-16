@@ -125,7 +125,7 @@ func sub_46B120(a1, a2 *nox_window) int32 {
 }
 
 func Sub_46A4A0() int {
-	return int(C.sub_46A4A0())
+	return int(sub_46A4A0())
 }
 
 func Sub_470C40(v int) int {

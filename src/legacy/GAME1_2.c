@@ -3286,10 +3286,14 @@ int sub_430AA0(int a1) {
 }
 
 //----- (00430AF0) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int nox_client_mousePriKey_430AF0() { return dword_5d4594_805820; }
+#endif
 
 //----- (00430B00) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int nox_xxx_cursor_430B00() { return nox_xxx_useAudio_587000_80772; }
+#endif
 
 //----- (00430B10) --------------------------------------------------------
 void nox_client_setMousePos_430B10(int x, int y) { nox_client_changeMousePos_430A00(x, y, true); }
@@ -4139,13 +4143,19 @@ char* sub_43AA70() {
 }
 
 //----- (0043AF30) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_43AF30() { return dword_5d4594_815052; }
+#endif
 
 //----- (0043AF40) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_43AF40() { return nox_game_createOrJoin_815048; }
+#endif
 
 //----- (0043AF80) --------------------------------------------------------
+#if 0 // Restored by ui_state_trade_native.go.
 int sub_43AF80() { return dword_5d4594_814548; }
+#endif
 
 //----- (0043AF90) --------------------------------------------------------
 int sub_43AF90(int a1) {

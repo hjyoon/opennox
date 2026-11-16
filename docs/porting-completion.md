@@ -60,6 +60,99 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native NPC equipment public C entry, 2026-11-16
+
+Engine `1fadafb07fb6c691e6156fb1133a23d300771979` is committed and pushed to
+`origin/port/go1.27-multiarch`. The public one-argument `sub_52BA70`
+entry now accepts a full native object pointer and follows native inventory
+links. The existing `npcNormalizeEquipped52BA70` comment and function body
+move unchanged from the amd64/arm64 file to common Go, including 386.
+Only one trailing blank line is normalized. Its original two-handed weapon
+and shield conflict rules remain. The returning original cases all return
+zero, which the C export retains. The existing PE32 NPC transfer caller
+gains only an explicit native pointer cast; no other transfer logic changes.
+
+There are **189 implemented split-file Go entries** and **187 with complete
+recorded qualification**. Two implemented Arachnaphobia/trace entries with
+deleted original seals remain open. **All-C migration and overall 100%
+remain open.** These entry totals do not supply the all-C denominator.
+
+Before source edits, an **83-path seal** preserves **1,233 original CPU
+cases**, all **117 procedure bytes** and **319 startup bytes** under control
+word `0xe3f`. There are no child services. An independent uint32 class,
+subclass, equipped-bit and linked-order model matches complete final fields,
+ordered flags writes and returns. Whole mapped-image/64 KiB heap, caller
+redzones, saved registers and FP control/TOP are checked. The domain covers
+acyclic inventories, nil/empty/single inventories, owner-as-item links,
+class/subclass/flags bit controls and deterministic random compositions.
+
+The exact **752-byte C body** remains inactive. Removing its guard,
+reversing the public prototype and the one caller cast reconstructs the
+complete incoming C file/header. Reinserting the archived helper reconstructs
+the whole old 64-bit Go file. All **4,758** preceding protected tests and
+fixtures remain byte-identical. No numerical or expectation correction occurs.
+
+Six unchanged packed C controls match selected original final fields and
+returns. A valid high native owner faults after truncation. A separate
+explicit mixed-layout diagnostic stores a full foreign first-link at the old
+PE32 slot and faults on its narrowed load; it is not a native object-layout
+composition. Low native records omit required changes, as does a valid high
+owner with a zero low word. Three 64 KiB arena canaries allow only observed
+flags writes. Native class/subclass/flags offsets are 12/16/20, next 528 and
+first 544; the original offsets are 8/12/16, 496 and 504. These are
+standalone x86_64/Rosetta observations, without ARM64 C-before or integrated
+game-crash claims.
+
+All final qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **183,840** identical
+  terminal identities/multiplicities on the **9,321-input** lease
+  `dfc63d0844b0a6fe78a86681452edc7754f7129e3cbc3a3c97560f1911166f80`.
+  All preceding 172,738 selected identities remain. All 11,102 added
+  identities equal the corrected focused run: 11,099 native identities
+  and three preceding helper identities. Actual public C, typed C callback
+  and unchanged Go execute every original case at three foreign placements,
+  preserving every nonoutput byte in the whole owner. Original ordered
+  writes are model-checked; native store order is not separately instrumented.
+  The existing helper test remains 64-bit-only; Windows/386 executes every
+  new native case with the shared helper and records zero old-helper events.
+- Four ARM64 products pass build, metadata, help and **66** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics
+  and two ordinary-clock independent UDP chat profiles. Each chat profile
+  proves eight submissions, four received peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43807399037)
+  and [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43807219469)
+  qualify all four Linux products and Windows amd64/386.
+  All six profiles pass on their first attempt.
+  Six SHA-verified passing ZIPs retain **158 actual test mains**, every
+  current identity and all preceding native matrices. Complete warning
+  review covers **20 files /
+  6,354,789,423 uncompressed bytes**, zero warnings.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths** and
+the preceding **45 S30 paths** remain intact after clearing only the closed
+dedicated cache from **1,699,448 KiB to 8 KiB**.
+Original inputs, failed results and executable versions remain preserved.
+Historical user-deleted executables and S25 records remain explicitly
+missing and nonblocking. Private stock video bags and matching indexes remain
+verified against their originals.
+
+Preparation failures remain recorded: an initial baseline count mistook a
+modified document for a new file; standalone C compilation omitted the
+original `operators.h` before adding that unchanged header; the first focused
+filter selected only three old-helper identities. The corrected selector
+then executes all 11,102 identities on the same source and expectations.
+Earlier logs and actual test mains remain; the limited run earns no new credit.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, current/historical Windows native memory failure causes and
+two lost S25 seals remain open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-npc-equipment-native-progress-20261116.json](split-npc-equipment-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-npc-equipment-native-v1/qualified-npc-equipment-entry-v1.json` (SHA-256 `102c8584671eee09b3c084e48e8fdb81915ec1eb6183bff1a5488ddf0933a21f`).
+
 ### Native Inversion public C entry, 2026-11-16
 
 Engine `e9b929040fc4c709c8852f964faefb21d0dc496d` is committed and pushed to
@@ -68,8 +161,8 @@ forwards full native object pointers to the Go selector. Its original C ABI
 has **four arguments**. Acceptance and level exist only in the six-argument
 Go selector; the C export supplies nil and zero, and direct Go retains both.
 
-There are **188 implemented split-file Go entries** and **186 with complete
-recorded qualification**. Two implemented Arachnaphobia/trace entries with
+At that checkpoint there are **188 implemented split-file Go entries** and
+**186 with complete recorded qualification**. Two implemented Arachnaphobia/trace entries with
 deleted original seals remain open. **All-C migration and overall 100%
 remain open.** These entry counts are not a complete C-file denominator.
 

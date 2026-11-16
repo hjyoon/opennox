@@ -60,6 +60,94 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native trade notification and item packet public C entries, 2026-11-16
+
+Engine `75ed0d63fa8bc1101b11d664912aa2ee8e8683c6` is committed and pushed to
+`origin/port/go1.27-multiarch`. `nox_xxx_sendEndTradeMsg_50F560`,
+`sub_50F6E0` and `sub_50FAE0` now use native recipient, offering-object,
+player, item and modifier pointers. They preserve the exact C9/02, C9/07
+and 15-byte C9/04 packets. The item entry reuses the unchanged server
+builder and all three use the preceding native send adapter. Original
+signed int32 cost/return bit patterns remain intact; the unused session
+argument is opaque and never read.
+
+There are **211 C entries implemented in Go** and **209 with complete
+recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.** Entry
+totals do not establish the all-C denominator.
+
+Before edits, a **49-path seal** preserves **860 original CPU/model cases**
+(256/256/348), all **276 procedure bytes** and **319 startup bytes** under
+`0xe3f`. Only the declared network service is replaced; its implementation
+is not executed by the original CPU proof. An independent input-only model
+matches every packet, unsigned player index, related-object/disconnect flag
+and EAX return. Both notification roots cover all 256 player-index bytes.
+Item cases cover all class and modifier-index bits/complements, nullable
+modifier slots, low16 type/net-code fields and uint32 costs. Whole image,
+64 KiB heap, caller redzones, saved registers and FP state remain checked.
+
+The unchanged **1,262-byte C bodies** remain archived. All **860** packed
+controls match original events and returns. Four actual native high Object
+arguments fault after the old int arguments narrow. A distinct high offering
+Object sharing the low word of a low recipient also produces a false
+own-offer flag, with all other packet bytes and return unchanged. The
+**865** standalone x86_64/Rosetta processes preserve all three 64 KiB arenas
+on return. These observations do not claim ARM64 execution of the old C
+or a full-game crash.
+
+Final qualification passes:
+
+- **7,743** focus identities: 860 original cases through actual C, typed
+  callback and direct Go at three high foreign placements, plus three roots.
+  The owner-identity root makes three additional calls using a sealed
+  distinct-owner event. On 64-bit targets, two owned 64 KiB ends are
+  committed four GiB apart with matching low words; the intervening address
+  space is reserved only, without fixed mappings. On 32-bit targets the
+  same root checks distinct native owners without skipping. Both complete
+  owners remain unchanged and the false own-offer flag is eliminated.
+- **31** independent C/Go layout checks retain exact shared prefixes,
+  Go extension/allocation bounds, native modifier-pointer stride and index
+  offset. Seeded foreign pointer fields use the existing C memcpy stores.
+  Original inputs, expected packets and preceding tests remain unchanged.
+- Normal and highres/cgocheck2/checkptr2 each pass **206,309** identical
+  terminal identities/multiplicities on the **9,344-input** lease
+  `0ed50630a3f8254731170f82e1fe5af2a01e17298400e699f21011ca75aaaa2f`.
+  All preceding 198,566 identities remain; all additions equal focus.
+  All **4,766** preceding protected inputs remain byte-identical.
+- Four ARM64 products pass default-compiler builds, metadata, help and
+  **88** symbol checks. Normal/HD pass four core E2E cases, two functional
+  Save/Load diagnostics and two ordinary-clock independent UDP chat profiles.
+  Each chat proves eight submissions, four peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43855740654) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43855539555)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six verified ZIPs retain **158 actual test mains**, all new and preceding
+  native matrices and unchanged skip identities. Existing Windows/386
+  GOGC10 checks remain; this batch adds no new selection to that replay.
+  Complete warning review covers **22 files /
+  6,497,769,262 uncompressed bytes**, zero warnings.
+
+Six calls remain in legacy C parents with int-based pointer transport.
+These leaf ports do not make those parents native. Two existing prototypes
+become typed pointer interfaces; the item entry gains an explicit prototype
+because its original definition preceded its only same-file callers.
+Reversing just those declarations and three guards reconstructs both
+complete incoming C files and the complete header.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **37 current program paths**,
+the preceding **39 S34 paths** and **11 paths from its earlier failed attempt**
+remain after clearing only the closed dedicated cache from
+**1,702,300 KiB to 8 KiB**. Retained verification and
+cleanup-preflight helper corrections change no product source, test or
+original expectation. Historical deletions, lost S25 seals, nine final chapter 1–3
+audits, public Save/Load pixel failure and other historical Windows memory/GC
+causes remain open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-trade-notify-item-native-progress-20261116.json](split-trade-notify-item-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/qualified-trade-notify-item-entries-v1.json` (SHA-256 `d80e692cc6dae7611d615af4b0a922064080ee443510aa1bf2fdafe3414e61f8`).
+
 ### Native trade packet public C entries, 2026-11-16
 
 Engine `5cbdcfb1fb92ff532bd9ba982123ba444dadb1c8` is committed and pushed to
@@ -73,8 +161,8 @@ nil related object and disconnect flag 1; its signed int32 return survives
 the public C and callback ABIs. The remove entry never reads its unused
 second argument.
 
-There are **208 implemented split-file Go entries** and **206 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
+At that checkpoint there are **208 implemented split-file Go entries**
+and **206 with complete recorded qualification**. Two implemented entries with deleted S25 original
 seals remain open. **All-C migration and overall 100% remain open.** Entry
 totals do not establish the all-C denominator.
 

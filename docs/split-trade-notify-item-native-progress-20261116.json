@@ -1,0 +1,541 @@
+{
+  "source_revision": "75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+  "entries": [
+    "nox_xxx_sendEndTradeMsg_50F560",
+    "sub_50F6E0",
+    "sub_50FAE0"
+  ],
+  "qualified_entries": 3,
+  "preceding_fully_recorded_qualified_entries": 206,
+  "cumulative_qualified_split_Go_entries": 209,
+  "implemented_split_Go_entries": 211,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9344,
+    "sha256": "0ed50630a3f8254731170f82e1fe5af2a01e17298400e699f21011ca75aaaa2f"
+  },
+  "original": {
+    "cases": 860,
+    "root_bytes": 276,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 49,
+    "proof": {
+      "utc": "2026-11-16T10:25:01.787292+00:00",
+      "observation_source_revision": "5cbdcfb1fb92ff532bd9ba982123ba444dadb1c8",
+      "entries": [
+        "nox_xxx_sendEndTradeMsg_50F560",
+        "sub_50F6E0",
+        "sub_50FAE0"
+      ],
+      "cases": 860,
+      "cases_by_entry": {
+        "nox_xxx_sendEndTradeMsg_50F560": 256,
+        "sub_50F6E0": 256,
+        "sub_50FAE0": 348
+      },
+      "original_root_bytes": 276,
+      "root_bytes_by_entry": {
+        "nox_xxx_sendEndTradeMsg_50F560": 56,
+        "sub_50F6E0": 56,
+        "sub_50FAE0": 164
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [
+        "nox_xxx_netSendPacket1_4E5390"
+      ],
+      "network_service_implementation_executed": false,
+      "all_static_root_instructions_covered": true,
+      "whole_image_heap_caller_redzones_saved_registers_FP_checked": true,
+      "root_heap_writes": 0,
+      "fixture_sha256": "4673c69abfcb692c948079aeac8c764d7cce3ff7e5eba46ac42d141a4a88f0b7",
+      "fixture_gzip_sha256": "ad421f1dd206fd446faf21ece6a0065d54e02f963da53c6b794ec670a0e11fd9",
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Early original-only proof during S34 qualification. Both two-byte notification roots cover every unsigned player index; offered-item root covers full pointer identity roles, low16 type/netcode, all32 class bits/complements, uint32 cost, four nullable modifier pointers and low8 modifier indices. The unused session word is never read. Network implementation is replaced only at its declared boundary; no native, preport-seal or qualification claim."
+    },
+    "independent_model": {
+      "cases": 860,
+      "cases_by_entry": {
+        "nox_xxx_sendEndTradeMsg_50F560": 256,
+        "sub_50F6E0": 256,
+        "sub_50FAE0": 348
+      },
+      "all_original_packets_arguments_and_int32_returns_equal": true,
+      "independent_model_has_no_emulator_or_candidate_imports": true,
+      "every_unsigned_player_index_in_both_notification_roots": true,
+      "all32_item_class_bits_complements_and_modifier_index_bits": true,
+      "four_nullable_modifier_pointers_and_low8_wire_indices": true,
+      "full_uint32_cost_low16_type_and_netcode": true,
+      "unused_session_never_read": true,
+      "fixture_sha256": "4673c69abfcb692c948079aeac8c764d7cce3ff7e5eba46ac42d141a4a88f0b7",
+      "fixture_gzip_sha256": "ad421f1dd206fd446faf21ece6a0065d54e02f963da53c6b794ec670a0e11fd9",
+      "original_root_bytes": 276,
+      "network_service_implementation_not_executed": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Independent algebraic two/15byte packet model compared with every original CPU service event. No original input or expectation recalculation, native implementation, fresh whole-source preport seal, C-before result or qualification."
+    }
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "entries": [
+      "nox_xxx_sendEndTradeMsg_50F560",
+      "sub_50F6E0",
+      "sub_50FAE0"
+    ],
+    "original_C_bytes": 1262,
+    "matching_packed_controls": 860,
+    "actual_native_high_recipient_entry_faults": 3,
+    "actual_native_high_item_argument_faults": 1,
+    "actual_native_high_offering_owner_identity_loss": 1,
+    "whole_three_arenas_unchanged_on_return": true,
+    "processes": 865,
+    "program_sha256": "60b4973a8151fd59779a68c2d19aaffce03a585af7c1cb52ce74d4888b304f17",
+    "executable_sha256": "c84a83f5089d962b7448893d21a442434b66257ac1e477fdeb82ca43059de593",
+    "raw_results_sha256": "5d92db6f0e68a8e7082604fb8dd2dea30897ede7e9e6dd67892dfaa74ea9b9b0",
+    "compile_warnings": 0,
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Unchanged1262-byte C definitions. All860 packed32 controls match original packets/arguments/int32 returns after relocation and preserve three64KiB arenas. Four actual native high Object arguments pass typed precontrol then fault after old int arguments narrow. A separate real high offering Object sharing the low word of a low recipient returns a false own-offer flag; all other bytes and return match. No ARM64 old-C or integrated gameplay claim."
+  },
+  "original_numeric_or_packet_expectation_corrections": [],
+  "ABI": {
+    "native_recipient_offering_update_player_item_modifier_pointers": true,
+    "int32_cost_and_network_return_bit_patterns_preserved": true,
+    "unused_item_argument_never_dereferenced": true,
+    "existing_server_item_builder_and_shared_S34_send_adapter_unchanged": true,
+    "network_service_is_declared_boundary": true,
+    "network_service_implementation_executed_by_original_CPU": false,
+    "explicit_new_sub50FAE0_prototype": true,
+    "active_C_calls": [
+      {
+        "entry": "nox_xxx_sendEndTradeMsg_50F560",
+        "caller": "nox_xxx_shopExit_50F4C0",
+        "caller_type": "void (uint32_t *)",
+        "callee_type": "int (int)",
+        "source": "src/legacy/GAME4_1.c",
+        "range": {
+          "begin": {
+            "offset": 60963,
+            "line": 2223,
+            "col": 3,
+            "tokLen": 30
+          },
+          "end": {
+            "offset": 60996,
+            "col": 36,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "nox_xxx_sendEndTradeMsg_50F560",
+        "caller": "nox_xxx_shopExit_50F4C0",
+        "caller_type": "void (uint32_t *)",
+        "callee_type": "int (int)",
+        "source": "src/legacy/GAME4_1.c",
+        "range": {
+          "begin": {
+            "offset": 61025,
+            "line": 2226,
+            "col": 3,
+            "tokLen": 30
+          },
+          "end": {
+            "offset": 61061,
+            "col": 39,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_50F6E0",
+        "caller": "nox_xxx_tradeAccept_50F5A0",
+        "caller_type": "void (int, int)",
+        "callee_type": "int (int)",
+        "source": "src/legacy/GAME4_1.c",
+        "range": {
+          "begin": {
+            "offset": 62891,
+            "line": 2288,
+            "col": 5,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 62904,
+            "col": 18,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_50F6E0",
+        "caller": "nox_xxx_tradeAccept_50F5A0",
+        "caller_type": "void (int, int)",
+        "callee_type": "int (int)",
+        "source": "src/legacy/GAME4_1.c",
+        "range": {
+          "begin": {
+            "offset": 62923,
+            "line": 2290,
+            "col": 5,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 62955,
+            "col": 37,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_50FAE0",
+        "caller": "nox_xxx_tradeP2PAddOffer2_50F820_trade",
+        "caller_type": "int (int, int, float)",
+        "callee_type": "int (int, int, int, int, int)",
+        "source": "src/legacy/server__system__trade.c",
+        "range": {
+          "begin": {
+            "offset": 12813,
+            "line": 497,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 12864,
+            "col": 55,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_50FAE0",
+        "caller": "nox_xxx_tradeP2PAddOffer2_50F820_trade",
+        "caller_type": "int (int, int, float)",
+        "callee_type": "int (int, int, int, int, int)",
+        "source": "src/legacy/server__system__trade.c",
+        "range": {
+          "begin": {
+            "offset": 13047,
+            "line": 503,
+            "col": 4,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 13099,
+            "col": 56,
+            "tokLen": 1
+          }
+        }
+      }
+    ],
+    "existing_PE32_parents_remain_outside_native_leaf_contract": true,
+    "same_low32_owner_identity": {
+      "routes": 3,
+      "sealed_original_distinct_owner_event_reused": true,
+      "pointer64_owned_sparse_reservation": true,
+      "gap_bytes": 4294967296,
+      "committed_ends_bytes": 131072,
+      "no_fixed_mapping": true,
+      "pointer32_distinct_native_control_without_skip": true,
+      "whole_two64KiB_regions_unchanged": true
+    }
+  },
+  "ci": {
+    "runs": [
+      43855740654,
+      43855539555
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14222630515,
+        "name": "linux-amd64-opennox-server-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14222630515-linux-amd64-opennox-server-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6.zip",
+        "bytes": 208404537,
+        "sha256": "2e884e026628eca84ae14f642c311f13c1d6beda46d456e8a3ca015b201f88b2",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1020134,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14222527106,
+        "name": "linux-amd64-opennox-server-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14222527106-linux-amd64-opennox-server-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6.zip",
+        "bytes": 267437672,
+        "sha256": "ea095e46769971d30ffef804cf60c77c3c66398d3d546fcc9906aa7b5d17579f",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1020134,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14222221373,
+        "name": "linux-amd64-opennox-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14222221373-linux-amd64-opennox-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6.zip",
+        "bytes": 221440273,
+        "sha256": "8c97ab103f8b8ec35ed91b6e66857782ad36478eff2d05019324c186229cca88",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1026245,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14220294799,
+        "name": "linux-amd64-opennox-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14220294799-linux-amd64-opennox-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6.zip",
+        "bytes": 221427196,
+        "sha256": "0dd5ecc95476268abc43372a86476097d711ba4e3f855cd20448151a61ed0e11",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1026245,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14222670982,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14222670982-opennox-server-windows-amd64.zip",
+        "bytes": 170089709,
+        "sha256": "344778804c415d5bb514190bc2fcf04a72b0c346a978afa778cc187028b6a70c",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1018119,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14221961565,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/ci-14221961565-opennox-server-windows-386.zip",
+        "bytes": 163812070,
+        "sha256": "a02b528f93537b5e54f7c12c4fb4b343207ce3d2b8d05ea29145c734051e0394",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 998186
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 6497769262,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14222630515,
+        "name": "linux-amd64-opennox-server-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "preceding_artifact": 14217470805,
+        "preceding_passes": 1012391,
+        "current_passes": 1020134,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14222527106,
+        "name": "linux-amd64-opennox-server-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "preceding_artifact": 14216334129,
+        "preceding_passes": 1012391,
+        "current_passes": 1020134,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14222221373,
+        "name": "linux-amd64-opennox-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "preceding_artifact": 14217127504,
+        "preceding_passes": 1018502,
+        "current_passes": 1026245,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14220294799,
+        "name": "linux-amd64-opennox-hd-75ed0d63fa8bc1101b11d664912aa2ee8e8683c6",
+        "preceding_artifact": 14216418967,
+        "preceding_passes": 1018502,
+        "current_passes": 1026245,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14222670982,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14215703928,
+        "preceding_passes": 1010376,
+        "current_passes": 1018119,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14221961565,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14217286074,
+        "preceding_passes": 990443,
+        "current_passes": 998186,
+        "new_native_pass_events": 7743,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_notify_item_tests_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4766,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME4_1.c",
+        "src/legacy/GAME4_1.h",
+        "src/legacy/server__system__trade.c"
+      ],
+      "new_files": [
+        "src/legacy/trade_notify_item_native.go",
+        "src/legacy/trade_notify_item_native_entry.go",
+        "src/legacy/trade_notify_item_native_fixture.go",
+        "src/legacy/trade_notify_item_native_test.go",
+        "src/legacy/testdata/trade_notify_item_original_v1.json.gz"
+      ],
+      "whole_two_incoming_C_files_reconstructed": true,
+      "whole_incoming_header_reconstructed": true,
+      "new_sub50FAE0_prototype_explicitly_added": true,
+      "existing_PE32_parent_bodies_byte_identical": true,
+      "all6_active_C_calls_unchanged": true,
+      "existing_server_item_builder_and_shared_S34_network_adapter_unchanged": true,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 211,
+      "fully_recorded_entries": 206,
+      "new_entries_pending_qualification": 3,
+      "overall_100_percent": false,
+      "scope": "Three exact original guards in two C files, two native prototype updates and one newly explicit item prototype. All4766 preceding protected inputs/all other preceding source unchanged. Original860-case fixture copied without recalculation. Tests additionally cover the original distinct-owner case on two native high addresses sharing a low word through actual C/callback/direct Go. The64bit pair reserves virtual address space but commits only two64KiB ends;32bit uses distinct native records without skipping the root. No original C parent/lifecycle claim."
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 37,
+    "retained_preceding_S34_program_paths": 39,
+    "retained_failed_S34_program_paths": 11,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1702300,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 37,
+      "all_current_program_SHA_verified": true,
+      "preceding_S34_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "preceding_S34_failed_program_paths_SHA_verified": 11
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "verifier_escaped_newline": {
+      "script": "finalizer-local-and-source-escaped-guard-attempt-v1.pypart",
+      "stage": "readonly verifier preparation",
+      "exit_code": 1,
+      "failed_assertion": "count of original C guard bytes",
+      "reason": "The new verification script spelled a literal backslash-n instead of the actual newline in its guard/prototype byte strings.",
+      "fix": "Use newline byte escapes in the verification script. Archived first script retained. No repository source, test, original input, packet expectation or executable changed.",
+      "native_test_gates_remain_passed": true,
+      "new_qualification_credit": 0
+    },
+    "source_original_inputs_and_packet_expectations_unchanged": true,
+    "all_preceding_actual_failed_programs_retained": true,
+    "cache_preflight_path": {
+      "first_attempt": "clean-closed-build-cache-preflight-attempt-v1.py",
+      "exit_code": 1,
+      "phase": "pre-cleanup preservation preflight",
+      "reason": "A broad stage-name replacement incorrectly pointed the eleven prior S34 program references at the current S35 directory.",
+      "cleanup_not_started": true,
+      "existing_current_program_inventory_retained": true,
+      "fix": "Use the original S34 failed-attempt directory and verify the existing current inventory before proceeding. No program, source, original asset or Save is deleted.",
+      "new_qualification_credit": 0
+    }
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical native memory/GC failures remain open; no blanket repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit",
+    "existing_PE32_trade_parents": "Six unchanged calls retain narrowed owners/session/item transport; leaf ports do not make parents native",
+    "original_item_domain": "Valid nonnil item/init-data records; additional server-builder guards outside that original domain are not an equivalence claim",
+    "all_C_denominator": "OPEN; entry totals and defaultARM64 split-file AST inventory do not establish complete remaining coverage"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 7743
+    },
+    "native_roots": {
+      "TestTradeNotifyItemNativeLayout": "pass",
+      "TestTradeNotifyItemNativeOriginal": "pass",
+      "TestTradeNotifyItemNativeOwnerIdentity": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 860,
+      "route0/place64": 860,
+      "route0/place512": 860,
+      "route1/place0": 860,
+      "route1/place64": 860,
+      "route1/place512": 860,
+      "route2/place0": 860,
+      "route2/place64": 860,
+      "route2/place512": 860
+    },
+    "original_entry_checks": {
+      "nox_xxx_sendEndTradeMsg_50F560": 2304,
+      "sub_50F6E0": 2304,
+      "sub_50FAE0": 3132
+    },
+    "original_cases": 860,
+    "original_instruction_bytes": 276,
+    "original_startup_bytes": 319,
+    "declared_services": [
+      "nox_xxx_netSendPacket1_4E5390"
+    ],
+    "network_service_implementation_executed": false,
+    "original_packets_indices_flags_and_int32_returns_equal": true,
+    "full_native_recipient_offering_update_player_item_modifier_pointers": true,
+    "C_Go_layout_fields": 31,
+    "whole64KiB_foreign_owner_unchanged": true,
+    "seeded_foreign_pointer_initialization_uses_C_stores": true,
+    "additional_owner_identity_routes": 3,
+    "same_low32_distinct_native_owner_pair_required_on_pointer64": true,
+    "pointer32_distinct_owner_control_without_skip": true,
+    "existing_server_item_builder_shared_send_adapter_and6_C_parent_calls_unchanged": true,
+    "scope": "860 original CPU packet/service/return cases through actual C/callback/direct Go at three high placements. Three additional owner-identity calls reuse a sealed original distinct-owner event;64bit owners occupy two committed64KiB ends of an owned sparse reservation fourGiB apart,32bit controls use distinct native records. Full memory snapshots remain checked. No native PE32 parent or original network service implementation claim."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-notify-item-native-v1/qualified-trade-notify-item-entries-v1.json",
+    "sha256": "d80e692cc6dae7611d615af4b0a922064080ee443510aa1bf2fdafe3414e61f8"
+  },
+  "normal_passes": 206309,
+  "strict_passes": 206309,
+  "focused_passes": 7743,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 88
+}

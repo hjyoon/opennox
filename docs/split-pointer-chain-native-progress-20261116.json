@@ -1,0 +1,1901 @@
+{
+  "source_revision": "513e5cc937822177211447872d6290a1a49efc71",
+  "entries": [
+    "nox_xxx_tradeSetPlayer_50F370",
+    "sub_50F490",
+    "sub_4D60E0",
+    "sub_4D6170",
+    "sub_510DE0",
+    "nox_xxx_changeScore_4D8E90",
+    "nox_xxx_playerSubLessons_4D8EC0"
+  ],
+  "qualified_entries": 7,
+  "preceding_fully_recorded_qualified_entries": 226,
+  "cumulative_qualified_split_Go_entries": 233,
+  "implemented_split_Go_entries": 235,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9357,
+    "sha256": "4a877143a7f9aaf75470d55c93fcfe1ebd2698d69cd6eafc5a751704adb5d606"
+  },
+  "original": {
+    "cases": 2037,
+    "all_original_cases_retained": 2349,
+    "root_bytes": 329,
+    "all_original_root_bytes_retained": 384,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 87,
+    "proof": {
+      "utc": "2026-11-16T12:57:25.403318+00:00",
+      "observation_source_revision": "4ef87d75c54e2e4f3206fb009ed17e8dddc99441",
+      "entries": [
+        "nox_xxx_tradeSetPlayer_50F370",
+        "sub_50F490",
+        "sub_4D60E0",
+        "sub_4D6170",
+        "sub_510DE0",
+        "nox_xxx_changeScore_4D8E90",
+        "nox_xxx_playerSubLessons_4D8EC0"
+      ],
+      "cases": 2037,
+      "cases_by_entry": {
+        "nox_xxx_tradeSetPlayer_50F370": 282,
+        "sub_50F490": 282,
+        "sub_4D60E0": 376,
+        "sub_4D6170": 189,
+        "nox_xxx_changeScore_4D8E90": 376,
+        "nox_xxx_playerSubLessons_4D8EC0": 376,
+        "sub_510DE0": 156
+      },
+      "original_root_bytes": 329,
+      "root_bytes_by_entry": {
+        "nox_xxx_tradeSetPlayer_50F370": 35,
+        "sub_50F490": 47,
+        "sub_4D60E0": 68,
+        "sub_4D6170": 58,
+        "sub_510DE0": 51,
+        "nox_xxx_changeScore_4D8E90": 35,
+        "nox_xxx_playerSubLessons_4D8EC0": 35
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_image_heap_except_exact_declared_words_caller_redzones_saved_registers_FP_checked": true,
+      "only_declared4byte_heap_stores": true,
+      "full_uint32_class_flags_counters_lessons_codes": true,
+      "nonnull_pointer_outputs_are_PE32_roles_not_native_width_proof": true,
+      "fixture_sha256": "5b6ec3d7c85bcfedab14e067a7338ba6728899403c4b6b44231736cc9ccb8f7f",
+      "fixture_gzip_sha256": "2ce2a72f821998c56c2ca847820b8fc1b5ae6b070c9df4883353daf31c174bf0",
+      "independent_model_pending": false,
+      "native_producer_layout_and_caller_ABI_pending": true,
+      "C_before_pending": false,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Original-only10-root CPU execution. Return bits, all ordered heap writes and complete memory ledger retained; player update/trade/list roles are packed PE32. No child services or native implementations are executed. Native valid-owner projection, actual high-pointer C controls and fresh whole-source seal remain required.",
+      "selection_scope": "All cases of seven complete roots selected by audited owner/layout contract; original full10-root2349-case fixture retained unchanged. Team sidecar and map monster-pointer producers are deferred without native credit."
+    },
+    "independent_model": {
+      "cases": 2037,
+      "cases_by_entry": {
+        "nox_xxx_tradeSetPlayer_50F370": 282,
+        "sub_50F490": 282,
+        "sub_4D60E0": 376,
+        "sub_4D6170": 189,
+        "nox_xxx_changeScore_4D8E90": 376,
+        "nox_xxx_playerSubLessons_4D8EC0": 376,
+        "sub_510DE0": 156
+      },
+      "all_original_int32_and_PE32_pointer_returns_equal": true,
+      "all_ordered_exact_heap_write_events_equal": true,
+      "independent_input_only_model": true,
+      "no_emulator_or_candidate_imports": true,
+      "full_uint32_class_flags_lessons_counters_and_codes": true,
+      "first_match_nil_links_and_trade_identity_roles": true,
+      "pointer_return_bits_are_original_roles_not_native_layout_qualification": true,
+      "fixture_sha256": "5b6ec3d7c85bcfedab14e067a7338ba6728899403c4b6b44231736cc9ccb8f7f",
+      "fixture_gzip_sha256": "2ce2a72f821998c56c2ca847820b8fc1b5ae6b070c9df4883353daf31c174bf0",
+      "native_producer_layout_and_caller_ABI_pending": false,
+      "C_before_pending": false,
+      "fresh_whole_source_baseline_pending": false,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "all_selected_rows_and_outputs_byte_equal_to_full_original": true
+    }
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "entries": [
+      "nox_xxx_tradeSetPlayer_50F370",
+      "sub_50F490",
+      "sub_4D60E0",
+      "sub_4D6170",
+      "sub_510DE0",
+      "nox_xxx_changeScore_4D8E90",
+      "nox_xxx_playerSubLessons_4D8EC0"
+    ],
+    "original_C_bytes": 1922,
+    "original_control_cases": 2037,
+    "pure_packed32_controls": 1223,
+    "explicit_hybrid_zero_extended_pointer_controls": 814,
+    "hybrid_entries": [
+      "sub_50F490",
+      "sub_4D60E0",
+      "sub_510DE0"
+    ],
+    "all_controls_match_original_returns_and_final_declared_words": true,
+    "whole_two64KiB_arenas_except_declared_words_preserved_on_return": true,
+    "actual_native_high_Object_int_argument_faults": 7,
+    "native_high_graph_precontrol_uses_actual_C_Object_PlayerUpdate_Player_and_native_Trade_prefixes": true,
+    "processes": 8,
+    "compile_warnings": 0,
+    "program_sha256": "1c84a58698d0cd20f17ff6b2457fbe977cf94332fbb4ee41f4d0dcd95d0dc1b4",
+    "executable_sha256": "0f0eb1da936ae01f5bc0aeb3fa3d0d61606bac15cf37e5adb88e078e597aa8ee",
+    "raw_results_sha256": "86383ff2d9aa7bfef07a1339e0b3490cf98c2ef975005d5e7383cf3adb88d695",
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Unchanged seven C definitions. Original controls relocate packed records; three entries require explicitly declared hybrid zero-extended8byte pointer reads at PE32 positions. Full two-arena memory ledger checked on return. Seven real high native Object graphs pass typed field precontrol then int arguments narrow into a protected alias. No ARM64 old-C, full native low-owner composition, complete caller, original service or full-game claim. Native producer/layout/caller audit and fresh whole-source seal remain pending."
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "projection": {
+      "Object": "Use existing native Object class/flags/UpdateData fields; whole C shared prefix endsScriptPickup and Go has two EXT handles.",
+      "PlayerUpdate": "Use native Player and Trade70 fields; C shared prefix/Go Quest extension remain distinct.",
+      "Trade": "Existing native TradeSession Field0/Field20 and TradeItem Item0/Field8. No allocator/registry/lifetime or legacy parent migration claim.",
+      "Player": "Use named Go Lessons/Field4792 and existing RecordMonsterKilled scalar method; add a separate Player method for private field4652/field4692 stores under exact gate1. No Player layout change.",
+      "returns": "Pointer-valued original EAX represented as full native session/object/update/player/item pointers; nil and branch-dependent owner roles retained. Existing int-return prototypes for clear/kill/lookup/score become typed pointer returns; numeric int32 delta/code ABI unchanged.",
+      "foreign_pointer_store": "Reuse preceding production globalStateNativeStorePointer C memcpy primitive for C-owned Trade70; no Go deletion barrier over arbitrary previous foreign canary.",
+      "lookup": "Reuse unchanged game4TradeFindItem50FFE0 full32 valid-node lookup and return Item0. Nil session/head handled before traversal; valid item records only.",
+      "deferred": "Team+44/ObjectTeam+0 require separate native membership maps, not wider loads at PE32 words. Map50DE60 compares Object identities and needs native148byte-class producer/global/link migration; no native credit.",
+      "source_ownership": "C before controls and projection intentionally separated;1223purepacked+814hybrid/7realhigh intargfaults. Whole incoming parents and C caller sites remain unchanged and outside native leaf coverage."
+    },
+    "active_C_calls": [
+      {
+        "entry": "sub_50F490",
+        "caller": "nox_xxx_shopExit_50F4C0",
+        "caller_type": "void (uint32_t *)",
+        "callee_type": "int (uint32_t *, int)",
+        "translation_unit": "src/legacy/GAME4_1.c",
+        "caller_loc": {
+          "offset": 60642,
+          "line": 2208,
+          "col": 6,
+          "tokLen": 23
+        },
+        "range": {
+          "begin": {
+            "offset": 60732,
+            "line": 2213,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 60752,
+            "col": 22,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "sub_50F490",
+        "caller": "nox_xxx_shopExit_50F4C0",
+        "caller_type": "void (uint32_t *)",
+        "callee_type": "int (uint32_t *, int)",
+        "translation_unit": "src/legacy/GAME4_1.c",
+        "caller_loc": {
+          "offset": 60642,
+          "line": 2208,
+          "col": 6,
+          "tokLen": 23
+        },
+        "range": {
+          "begin": {
+            "offset": 60756,
+            "line": 2214,
+            "col": 2,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 60776,
+            "col": 22,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "nox_xxx_tradeSetPlayer_50F370",
+        "caller": "nox_xxx_servShopStart_50EF10_trade",
+        "caller_type": "uint32_t *(int, int)",
+        "callee_type": "uint32_t *(uint32_t *, int)",
+        "translation_unit": "src/legacy/server__system__trade.c",
+        "caller_loc": {
+          "offset": 8852,
+          "line": 337,
+          "col": 11,
+          "tokLen": 34
+        },
+        "range": {
+          "begin": {
+            "offset": 10361,
+            "line": 398,
+            "col": 2,
+            "tokLen": 29
+          },
+          "end": {
+            "offset": 10397,
+            "col": 38,
+            "tokLen": 1
+          }
+        }
+      },
+      {
+        "entry": "nox_xxx_tradeSetPlayer_50F370",
+        "caller": "nox_xxx_servShopStart_50EF10_trade",
+        "caller_type": "uint32_t *(int, int)",
+        "callee_type": "uint32_t *(uint32_t *, int)",
+        "translation_unit": "src/legacy/server__system__trade.c",
+        "caller_loc": {
+          "offset": 8852,
+          "line": 337,
+          "col": 11,
+          "tokLen": 34
+        },
+        "range": {
+          "begin": {
+            "offset": 10401,
+            "line": 399,
+            "col": 2,
+            "tokLen": 29
+          },
+          "end": {
+            "offset": 10437,
+            "col": 38,
+            "tokLen": 1
+          }
+        }
+      }
+    ],
+    "all4_active_C_call_sites_and_parent_bodies_unchanged": true,
+    "whole3_C_files_and2_headers_reconstructed": true,
+    "six_native_prototypes_and_one_explicit_attach_declaration": true,
+    "all_Object_arguments_and_pointer_valued_returns_native_width": true,
+    "int32_delta_code_and_uint32_scalar_store_bits_preserved": true,
+    "Player_layout_and_existing_RecordMonsterKilled_and_S33_lookup_and_S36_C_pointer_copy_unchanged": true,
+    "new_Player_method_uses_named_private_counter_and_flag_fields": true,
+    "additional_session_identity_routes": 3,
+    "session_pair64_has_equal_low32_and_owned_sparse4GiB_gap": true,
+    "session_pair32_distinct_native_control_without_skip": true,
+    "deferred_team_and_map_head_projections": {
+      "utc": "2026-11-16T13:03:46.602596+00:00",
+      "original_CPU_model_cases": 2349,
+      "initial_CPU_fixture_unchanged": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "ready_for_C_before_entries": [
+        "nox_xxx_tradeSetPlayer_50F370",
+        "sub_50F490",
+        "sub_4D60E0",
+        "sub_4D6170",
+        "sub_510DE0",
+        "nox_xxx_changeScore_4D8E90",
+        "nox_xxx_playerSubLessons_4D8EC0"
+      ],
+      "deferred_originally_executed_entries": {
+        "nox_xxx_teamCheckSmth_418C60": "Original Team+44 is a member-head pointer word; current Team retains PE32 zero words and uses a separate native membership chain. Preserve raw original bits but do not classify them as native scalar values. Audit membership producers and use native sidecar APIs before port.",
+        "sub_418C70": "Original ObjectTeam+0 is a next-member pointer word. Current native membership links are separate from PE32 words; reading8bytes at old field0 would be an invalid projection. Audit together with Team getter.",
+        "sub_50DE60": "Producer passes *v3 Object pointers as query and record.first word. codes/query in early CPU rows are raw original comparison bits, not numerical NetCode IDs. The original uint32 head and148byte record class/link140/144 need a complete native producer/allocation/global-head audit before port."
+      },
+      "source_references": [
+        {
+          "path": "src/server/team.go",
+          "sha256": "88416bc0f28d1f5a3c8b6346bab77e25b682ca572c453d1da3515cda07ab4572"
+        },
+        {
+          "path": "src/legacy/common__system__team.h",
+          "sha256": "fe352c9f6093e03e4e5c81ee429ec5ff6b4a65a451feaf83a897914c935190d8"
+        },
+        {
+          "path": "src/legacy/GAME4_1.c",
+          "sha256": "e3820d54ab2c10ea2f1bcd3eed7d4350bf2d1557b3eebf749305e5c3c5500c97"
+        },
+        {
+          "path": "src/legacy/vardefs.c",
+          "sha256": "059e0584abb609c92274edfcaba499ed82496f83b54ea30004ff1b0b041503cf"
+        }
+      ],
+      "scope": "Read-only contract correction after producer/caller inspection. All2349 original inputs/output bits remain sealed as executed; no scalar or pointer-role native equivalence is promoted for the deferred three. Seven object/trade entries proceed to unchanged C controls; native caller ABI and fresh baseline remain pending."
+    }
+  },
+  "ci": {
+    "runs": [
+      43877769800,
+      43877630450
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14232950247,
+        "name": "linux-amd64-opennox-server-513e5cc937822177211447872d6290a1a49efc71",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14232950247-linux-amd64-opennox-server-513e5cc937822177211447872d6290a1a49efc71.zip",
+        "bytes": 269149986,
+        "sha256": "8181ce60000a969f932e2081431e31886ae18ebe10676a8eeb39cec1b89080c1",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1064806,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14232760690,
+        "name": "linux-amd64-opennox-hd-513e5cc937822177211447872d6290a1a49efc71",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14232760690-linux-amd64-opennox-hd-513e5cc937822177211447872d6290a1a49efc71.zip",
+        "bytes": 223610386,
+        "sha256": "b8c73ce8fd06d50852c0cadbb1f98841d5104224bd624dbb3a3f91820444ae32",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1070917,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14232236667,
+        "name": "linux-amd64-opennox-513e5cc937822177211447872d6290a1a49efc71",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14232236667-linux-amd64-opennox-513e5cc937822177211447872d6290a1a49efc71.zip",
+        "bytes": 223552030,
+        "sha256": "033a9b7209ab272dc608b9e7c067dab2eed9c158ebba35728dce1bb11e7ea28f",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1070917,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14231598340,
+        "name": "linux-amd64-opennox-server-hd-513e5cc937822177211447872d6290a1a49efc71",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14231598340-linux-amd64-opennox-server-hd-513e5cc937822177211447872d6290a1a49efc71.zip",
+        "bytes": 210581902,
+        "sha256": "e1790b2fcd042451c7e8a059b4d63a48fe00f31ea7748861e159f52a8e087f6b",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1064806,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14233205164,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14233205164-opennox-server-windows-amd64.zip",
+        "bytes": 171539581,
+        "sha256": "38d801d340deff854db59acc3fa44f879f364de0ff72b4b11c62ac8c0db0b6ef",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1062791,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14232365504,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/ci-14232365504-opennox-server-windows-386.zip",
+        "bytes": 164793007,
+        "sha256": "29eefd4d990e9d5f00563ec5095bedba7e0fd955f4bdf49cc8cd89cb94e691d0",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1042858
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 6786197833,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14232950247,
+        "name": "linux-amd64-opennox-server-513e5cc937822177211447872d6290a1a49efc71",
+        "preceding_artifact": 14226692555,
+        "preceding_passes": 1046470,
+        "current_passes": 1064806,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14232760690,
+        "name": "linux-amd64-opennox-hd-513e5cc937822177211447872d6290a1a49efc71",
+        "preceding_artifact": 14226502291,
+        "preceding_passes": 1052581,
+        "current_passes": 1070917,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14232236667,
+        "name": "linux-amd64-opennox-513e5cc937822177211447872d6290a1a49efc71",
+        "preceding_artifact": 14225339918,
+        "preceding_passes": 1052581,
+        "current_passes": 1070917,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14231598340,
+        "name": "linux-amd64-opennox-server-hd-513e5cc937822177211447872d6290a1a49efc71",
+        "preceding_artifact": 14226657134,
+        "preceding_passes": 1046470,
+        "current_passes": 1064806,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14233205164,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14225728288,
+        "preceding_passes": 1044455,
+        "current_passes": 1062791,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14232365504,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14226920196,
+        "preceding_passes": 1024522,
+        "current_passes": 1042858,
+        "new_native_pass_events": 18336,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_pointer_chain_tests_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4770,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME3_2.c",
+        "src/legacy/GAME3_2.h",
+        "src/legacy/GAME4_1.c",
+        "src/legacy/GAME4_1.h",
+        "src/legacy/server__system__trade.c"
+      ],
+      "new_files": [
+        "src/legacy/pointer_chain_native.go",
+        "src/legacy/pointer_chain_native_entry.go",
+        "src/legacy/pointer_chain_native_fixture.go",
+        "src/legacy/pointer_chain_native_test.go",
+        "src/legacy/testdata/pointer_chain_original_v1.json.gz",
+        "src/server/player_guarded_stat_4d60e0.go"
+      ],
+      "whole_three_incoming_C_files_reconstructed": true,
+      "whole_two_incoming_headers_reconstructed": true,
+      "six_native_prototype_updates": true,
+      "one_explicit_new_attach_prototype": true,
+      "four_active_C_calls_and_parent_bodies_unchanged": true,
+      "existing_server_Player_layout_and_RecordMonsterKilled_and_S33_full32_lookup_and_S36_C_pointer_store_unchanged": true,
+      "original_CPU_rows_selected_without_expectation_changes": 2037,
+      "deferred_original_CPU_rows_retained": 312,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 235,
+      "fully_recorded_entries": 226,
+      "new_entries_pending_qualification": 7,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 37,
+    "retained_preceding_S36_program_paths": 39,
+    "retained_failed_S34_program_paths": 11,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1704492,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 37,
+      "all_current_program_SHA_verified": true,
+      "preceding_S36_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S34_program_paths_SHA_verified": 11
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "all10_original_CPU_model_cases_and_outputs_unchanged": true,
+    "selected7_full_entry_rows_without_case_retuning": true,
+    "deferred3_original_case_rows": 312,
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "preceding_readonly_all_C_inventory": {
+    "source_revision": "9853b02a07eb3a20f11752de688f28bc7018d32b",
+    "physical_repository_C_files": 629,
+    "ten_product_build_profiles": true,
+    "selected_default_ARM64_C_files": 207,
+    "active_own_C_definitions_including_macro_and_native_bridges": 2531,
+    "classified_own_macro_definitions": 14,
+    "unclassified_own_definition_locations": 0,
+    "pointer_integer_cast_functions": 465,
+    "remaining_unported_or_original_function_denominator_established": false,
+    "new_Go_credit": 0,
+    "references": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/catalog-v1.json",
+        "bytes": 317024,
+        "sha256": "9c77e3d610d3be340a281059b48a1b128716a2979523477406b2634fa3bed5a8"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/committed-source-binding-v1.json",
+        "bytes": 499,
+        "sha256": "0509f6b2663c77db8eb7f85716b14effe40ef7e4a7a345044b2d8e1c6201944e"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-build-selection-v1/unselected-files-followup-v1.json",
+        "bytes": 2171,
+        "sha256": "947b8232e2a90d35f8d302d02f1cd81aa645bd86dbdb4740a2b038ddc2ed80bc"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v1/active-native-C-audit-v1.json",
+        "bytes": 31741,
+        "sha256": "066a2103b6e2629c240928cde69468bb24fa8bb204fd9cad6b6eff2ac4cae609"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v1/macro-classification-v1.json",
+        "bytes": 11199,
+        "sha256": "412a1e32dcf0d20a4d3cf41ccece9207d0788b62d9b70ed20f81a50f1082815d"
+      }
+    ],
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These2531 own source definitions include native bridges and adapters and are not2531 unported algorithms. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "current_readonly_all_C_inventory": {
+    "utc": "2026-11-16T14:05:28.734494+00:00",
+    "source_revision": "513e5cc937822177211447872d6290a1a49efc71",
+    "source_files": 207,
+    "ordinary_own_C_definitions": 2510,
+    "manually_classified_macro_definitions": 14,
+    "own_C_definition_total": 2524,
+    "pointer_integer_cast_functions_including_manual": 458,
+    "remaining_unclassified_own_definition_locations": 0,
+    "new_Go_credit": 0,
+    "remaining_unported_denominator_established": false,
+    "inventory_reference": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v2/active-native-C-audit-v1.json",
+      "sha256": "7bdc2b548b659153ffdca09871a0e76fe0693f8c69e55023d466f18a65f884ef"
+    },
+    "macro_reference": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v2/macro-classification-v1.json",
+      "sha256": "d39507764e61c353109b0b704c51f0593e09ae2051f10d299b384b0844018ac8"
+    },
+    "all207_current_source_and_lossless_AST_hashes_verified": true,
+    "records": [
+      {
+        "source": "src/legacy/GAME1.c",
+        "source_sha256": "773dcaca769141757075f4b660150b449c457de9bb43f5a3fbc5ee97376db40c",
+        "AST_gzip_sha256": "83ba7ef81d335466123bdbac3f530f7b0468eae27c1cedd6dc4bfa11ac80862e",
+        "AST_sha256": "c5220123a74077a7082a0abf43b57e49c204ef7a85466384480bf1f0ee2ffbfe"
+      },
+      {
+        "source": "src/legacy/GAME1_1.c",
+        "source_sha256": "70c38be4cc1ab1d6986b03705f1947183ca4c4d260d6f01598868754362987be",
+        "AST_gzip_sha256": "5b2c06f30c9c0e6e7f749412485254b2fc4bac1bce4657d6c5563e0af2c1c814",
+        "AST_sha256": "5ac127e20f03d938dec42365b1b121db70590d43f91f9027b5def36a22d73249"
+      },
+      {
+        "source": "src/legacy/GAME1_2.c",
+        "source_sha256": "07018e41654e24f2750c74394cf7b08573627c650b364e60919790d86343fe02",
+        "AST_gzip_sha256": "f99a7653cf3c7d57bbf81ba5957d43327e66ec9ef91161276dc337c0bd401ed6",
+        "AST_sha256": "87e545fb7f1b51faab1a73aee209a5f361895d421dcbdba09d77a5c543fe5a6d"
+      },
+      {
+        "source": "src/legacy/GAME1_3.c",
+        "source_sha256": "61ee6cbbb45995559a3c0432398e5897e84f2625759dacb29872a8968e8c196f",
+        "AST_gzip_sha256": "9d057eb8b9b618932309eeb54547ca3cac2e41d29a9892f820ecad1fe621d8f5",
+        "AST_sha256": "87ccf6346b247f78008b04dc02889835a759b98269ac328b82e5d83b54d2a3be"
+      },
+      {
+        "source": "src/legacy/GAME2.c",
+        "source_sha256": "bb69096833696631c40249faf7c5da629dbad9b0767a28a8b406b2c8fde35403",
+        "AST_gzip_sha256": "10dac198c7e88f686a67f4f0e4ea4080185f70789c58ea4bdeb374d768dcc58b",
+        "AST_sha256": "a1aa9c6f870421eda3ecf5136756f68be3b9d970a10675b85506b16d71f78fb0"
+      },
+      {
+        "source": "src/legacy/GAME2_1.c",
+        "source_sha256": "96b595a17ee00a5c202849af8d6acea192f8440edef02ffedd83d3ad16082e27",
+        "AST_gzip_sha256": "321b90b556343a2c67acc056b6a4b2996448ae4169e68b2035e0816d208d7ff3",
+        "AST_sha256": "5376872c561d38b55735b8ebea8c57b5e121b7482133234df2f494d1686de0ab"
+      },
+      {
+        "source": "src/legacy/GAME2_2.c",
+        "source_sha256": "2c3c7c778a27ccb87a574310a8810be2aad680628d5445fae41f31dca42ebbae",
+        "AST_gzip_sha256": "80cc5bd46fcb266e2b9b3f355f7909e48b7313640bfb217bd63230ae37e08fbb",
+        "AST_sha256": "8d043facae51e3afc7538ae508c111fb8a22cfa03747a47ba9572d83a1ecbb90"
+      },
+      {
+        "source": "src/legacy/GAME2_3.c",
+        "source_sha256": "f6c191170ef79d93228a664508fbc405a592a3ea736d1209df4f375825df6ce2",
+        "AST_gzip_sha256": "8a5eda6dc56c25ebbd43efdb2f11ee100dfefe9ce833c42dd1fe51a700550372",
+        "AST_sha256": "0d37cb0e15b41018514427943f1025830aa075864dcaffadaa83ec28937b3b87"
+      },
+      {
+        "source": "src/legacy/GAME3.c",
+        "source_sha256": "638e648071f5a89d0d38c20e429985a80f991f5225d92389f4e30f1f7da32fac",
+        "AST_gzip_sha256": "52ef720b24d4dace1edb2b45d109fc2c6800070efde90e77de27692a00327ff0",
+        "AST_sha256": "4c78b63d25c4ded08975fe26c591e4719a52c43fd1c99c0f31a36c250cf0590d"
+      },
+      {
+        "source": "src/legacy/GAME3_1.c",
+        "source_sha256": "f1c1d441e83a7cbacd2bfd559d1546764c0e9f734a719b235a829308d77cc101",
+        "AST_gzip_sha256": "56c8d9378531178a679187aecf4cdbe76c2a030389a50f3576631a06c9d3788e",
+        "AST_sha256": "d6fa268c84621ebc54982c0c07517f2435a3764fa766a0a1bd718c8451b13674"
+      },
+      {
+        "source": "src/legacy/GAME3_2.c",
+        "source_sha256": "aa746229d28595a96d19092b21f90a319d45bbc20b3cd4228c85f90e4ad569c6",
+        "AST_gzip_sha256": "9f7765bb8b6fbcb90b78137f9cb7871623f35e8890e59f8d01bc49f66bd212bf",
+        "AST_sha256": "0e5dffca2f1583d3dcebeb0eea635f47892812c242aa07948b0517f7eca14239"
+      },
+      {
+        "source": "src/legacy/GAME3_3.c",
+        "source_sha256": "2fc15b8460fa9e2951ea5250adba64b52e9bf20d1247393af1a0a94ad4810923",
+        "AST_gzip_sha256": "67ed09b3dcb3436aeb4ec042e09eb1f99b5c1dcaf5d270a63c157c754cbd4cb5",
+        "AST_sha256": "cbc9968016e92f407f0ec20571348b419787a6da2ad841648e290f8b78d2224a"
+      },
+      {
+        "source": "src/legacy/GAME4.c",
+        "source_sha256": "a0d2cedbe9bda3efc1815eb983eb569b360dd613b9632c80e215fc6550b137c1",
+        "AST_gzip_sha256": "06a7bb5c732975ab67ab16cf7d3b3c7398f4ef53379737e4fb8de4b9c9fcad24",
+        "AST_sha256": "c371c70e3bc68fa92bda6c3e356b7e6181b27fbe31ccc560ff02a2f4c96c93b3"
+      },
+      {
+        "source": "src/legacy/GAME4_1.c",
+        "source_sha256": "9a1b1f86b86d767dda0154d778328b22f0678f9bacce3bdf85e5628930818f71",
+        "AST_gzip_sha256": "e12ebd2693e16ef89ebcbb51d315ae04044b2820f2b67258caa92acd38557868",
+        "AST_sha256": "d1535ad522a584d2ed8835a92678c10257204d7bc9f5e57947c22af06f5ff6fe"
+      },
+      {
+        "source": "src/legacy/GAME4_2.c",
+        "source_sha256": "75cc5f067c465479e08d7a270a11cc38d2bf743a8dd735774e2ea3694fadd81e",
+        "AST_gzip_sha256": "a8ea90d22f8b8ebee85657ad5cccaf4b86fc17bb4d1adb2d6e5ab250b0f60238",
+        "AST_sha256": "c1d4be5975816b950b84a2f5c1dd03b3ffb99b0ef00709156620c3e1438ccc9b"
+      },
+      {
+        "source": "src/legacy/GAME4_3.c",
+        "source_sha256": "0cdc78600fca1b285cf9f2e48f99d2062dd9706cd32c9ef741fc88a346d7ea30",
+        "AST_gzip_sha256": "ee4bc8478be8f304757a2c71a6ccf59abfac4ceeace22c7aaf38438277506005",
+        "AST_sha256": "f32f495e6cbf13b515ad15d1505ef6e36a617950bc15ae340e3ef575bd4b62c2"
+      },
+      {
+        "source": "src/legacy/GAME5.c",
+        "source_sha256": "501870f1beb75b1701e40e572a401224ba95eead022343ebb68cdf0dd77d2b26",
+        "AST_gzip_sha256": "00892053723842a296d2e461dfc7cad23d6f1795a9a4d86e8d47574b8d564050",
+        "AST_sha256": "25b8868d6b1e0010ad97cc0d0fe097b2d77615af3cb3e600328f2501b87d06d7"
+      },
+      {
+        "source": "src/legacy/GAME5_2.c",
+        "source_sha256": "1192ff3c49dd7e2af5c23d51ba17b8ed9a68f4eebaa8e516830e71057baf58ff",
+        "AST_gzip_sha256": "9859035c0ddd212156792ba6bf87beca8807ea98ffda632ea39382209630117f",
+        "AST_sha256": "9c2c5a088bd52215aaaab884f2b6e269c0a87fc2b114fe170953dab942d5ef10"
+      },
+      {
+        "source": "src/legacy/GameEx.c",
+        "source_sha256": "0c105c3bef7c6f6303213de32573ed798637056f13d6d275289647b4b9707cba",
+        "AST_gzip_sha256": "0d077f9821b12f88e7cafa9a301a727e7c1dd394e71be5d1e205df5f12d366c1",
+        "AST_sha256": "6cd7c2a39bc14947ad88e7420c14343d5b6dd7d53417606e880271bc91852708"
+      },
+      {
+        "source": "src/legacy/MixPatch.c",
+        "source_sha256": "5e6638bb8b075fb9e0e9477f7867b600f22bfffdadff3b566fb822694534e737",
+        "AST_gzip_sha256": "fe5357da33b56c3a8303b3eec3e005cff3bd6876cb91ce26eb62cd6c243c6368",
+        "AST_sha256": "faad654044cd418863af3b88036fbce4e86d5d5154f1afd637dbd613d84b5f56"
+      },
+      {
+        "source": "src/legacy/audio_event_collide_4eaad0_parse.c",
+        "source_sha256": "c9c8b1d6f335e694aa603a82c9987e41ac539fbc77e8091839eba230059544e0",
+        "AST_gzip_sha256": "39404751ceeb40a23f4136e4ef2e07dda0e60a18c5934317014931413232ca69",
+        "AST_sha256": "1e0eab179a97bb8d4e3092f5cd4de2f9f5352d956373e21c6fdb120383fab772"
+      },
+      {
+        "source": "src/legacy/audio_source_native.c",
+        "source_sha256": "c626638bb969757160aed1ca60057df8130eb450e153e3dffd090329f55a39f6",
+        "AST_gzip_sha256": "50f6b67442f02d980f9f29b7780d4cb9692d4aea7a6b81edc254ebdd1cc361be",
+        "AST_sha256": "8c427246de17a22755770e323ae1f3439ceee0b644fdf7bc08089269a7be373d"
+      },
+      {
+        "source": "src/legacy/cgo_blobs.c",
+        "source_sha256": "8f7f0519a62b0f7eb268e4642b6a8c7c236abf8edbcd6e47cdf4552b209b64a2",
+        "AST_gzip_sha256": "9414b88757640ad37103de0c2f96b93ce27d00b2370839368df52b6752127093",
+        "AST_sha256": "531061e5c23dda18a69146185dcbb9058f42b3569c88505fe45e35949a7bcace"
+      },
+      {
+        "source": "src/legacy/cgo_fs.c",
+        "source_sha256": "2d927f20f834379e708466e65ba6c7289996fba25ac26f13e889e255979ea318",
+        "AST_gzip_sha256": "a572456e216e3b553a11e69c28dd1215dbf378e48b3665c8262372f4e8f8fc6b",
+        "AST_sha256": "5e543af17be934fd09844178b9079dc123db1129ed42780a53c8fb58bf183777"
+      },
+      {
+        "source": "src/legacy/client/audio/ail/audio_openal.c",
+        "source_sha256": "f5cf118de22a45ff1cebe9f74b2ca460ec1508547faf3b6603f4a1f317ff9b74",
+        "AST_gzip_sha256": "92db6aabc9a47482caaf9fd1605ecd4fc0d2c743acda08d21c13116a19121881",
+        "AST_sha256": "57ca2237a35c57d4f29a53a0b45cfac786a7f3441bdaead9a691788aa1fafafe"
+      },
+      {
+        "source": "src/legacy/client__audio__audevent.c",
+        "source_sha256": "edd4c99cadcd16a4462a2ca8db712089a01efe69dbc45978fb48ea62835020ad",
+        "AST_gzip_sha256": "44b9523224e1d17942cdc870b51fe3272e55bff2010e521e0513b87f57c468e9",
+        "AST_sha256": "6ec122df3eb03665fd0a37d88bfed00008627121e13ba21dd179fa3fca26a827"
+      },
+      {
+        "source": "src/legacy/client__draw__animdraw.c",
+        "source_sha256": "bfaf8d0ba8f9304abb2448eb210229cff2f6a136f9f2e2fd05ba872b7ce7ba34",
+        "AST_gzip_sha256": "65b464d06e1f26f185a842d89d091dd017bb062e62fa39a449e8323ff48f4b58",
+        "AST_sha256": "31f5faa3b751b513a0e6f668836a8d8272156f29c488b5d1bee98c88e7818e5f"
+      },
+      {
+        "source": "src/legacy/client__draw__armordraw.c",
+        "source_sha256": "43dbb6d63cba1f427a1dba25104da0f06ba715b95c1e8f806b5d6fbd942c07f8",
+        "AST_gzip_sha256": "a90c4cb7e4caf31053bb188f626d3bfd8464b570feedd8caeec4a635035d4432",
+        "AST_sha256": "7c67297c84fd805d5057f3ca9edc08bbb2efff611e21f2ea703125efca6eb928"
+      },
+      {
+        "source": "src/legacy/client__draw__arrowdraw.c",
+        "source_sha256": "049dfd672ca5dc57204f3ea81e9cdb7f3c494ab329231efe764ae34b4e0e3d39",
+        "AST_gzip_sha256": "4db862247e5c69a3cb3246eec74730222396ae8ccda0a8f802eac34c1450f195",
+        "AST_sha256": "82916ecaad097f3a934f63cef3c3be84937cbe3a0c92b631c17f90feb3c69ac0"
+      },
+      {
+        "source": "src/legacy/client__draw__basedraw.c",
+        "source_sha256": "0730bc3c872209e7a00c5faf2cd94582ac2ffd6f2542510044e331ded131345d",
+        "AST_gzip_sha256": "2a87ca3b48891cb6aeb49c7cabbab95cf7d70029355ba0ea87a7ad54d71bd284",
+        "AST_sha256": "9bc85e724cbf97b8bcd697961dfe2bbae129aa8677779f61b2c65e51d03d5af0"
+      },
+      {
+        "source": "src/legacy/client__draw__boulderdraw.c",
+        "source_sha256": "cdf29436bdd3d4733fd36d5cec2282b74e4ad9ab0688a0e2a130f2b40f683ff0",
+        "AST_gzip_sha256": "40a58a2212a3eb0a04157d28f2cc6d0ee6018e62899a44de542e4def752814a8",
+        "AST_sha256": "abffd44a77f54524f79fd536333af5cd0a442f1d347574978ce52d4bd45710e5"
+      },
+      {
+        "source": "src/legacy/client__draw__bubbledraw.c",
+        "source_sha256": "d903df84c485327ec65b752ac16212bf6a3412d9b64588e15c1adccd8c51dbbd",
+        "AST_gzip_sha256": "07edbe35092fd022d5deb278f128b2b800d4cfaffd9272ec239e044398ff3a3c",
+        "AST_sha256": "b2bd818bd0c6b0d500597957aa2e2ad64f7a0aec6cfe8246c7ff792aae6e6112"
+      },
+      {
+        "source": "src/legacy/client__draw__canidraw.c",
+        "source_sha256": "88993ed726a5c9ee1c12f224b3f3d2a2172d0c6947d83b58ab0158feda265a4f",
+        "AST_gzip_sha256": "a183b8503332dc80f6695c60e41802ffce72a6f1dce0da03ace653a5b9dce434",
+        "AST_sha256": "67bb4330e10b7c072fa7897a0a38686fab6d5159d51925d197906076e5b0f157"
+      },
+      {
+        "source": "src/legacy/client__draw__doordraw.c",
+        "source_sha256": "73a16d1f1bff551ce2c57c9f2baf3c9ae89935d8ff8fa1042387f2e4a5934198",
+        "AST_gzip_sha256": "abaabc51f96025e2c6aea139adce85e0737e3a9405c542055e273b6df5f63e0c",
+        "AST_sha256": "41fa8080e1c072873a619776a3a3fddea2c7020f6f259383317ce3782c0d8d33"
+      },
+      {
+        "source": "src/legacy/client__draw__drawrays.c",
+        "source_sha256": "60e28513b537c6e7c6f7b997ff61741972f80754e51ada90662abb21c9cd0756",
+        "AST_gzip_sha256": "b287a113e7419ea9865bd478938c98113677fb941ea793e1127432e9042c1237",
+        "AST_sha256": "7b3a0f40cac4d5043bb45d274aafb5e23675f3230b0f8e8f42981497acbe0c27"
+      },
+      {
+        "source": "src/legacy/client__draw__flagdraw.c",
+        "source_sha256": "d5db4c7a376fc7f20d9ee3c7a68e79b04b69f1720b1079a50325fb305e99c2c1",
+        "AST_gzip_sha256": "29bc3eba6ae6cec6adf1e6fceb5b82f511f89c866cac561c66bcdcd79a322069",
+        "AST_sha256": "fb14ad551fcb708edb0f13aab4ff1131a1fedf4223b1f798a1eaf2554987f171"
+      },
+      {
+        "source": "src/legacy/client__draw__fx.c",
+        "source_sha256": "d62e1253e5fab76bf8cd2c3145ed71f34f5a6b98f3a2807ae62c7dfc78228780",
+        "AST_gzip_sha256": "a7ce4c8a131a6b59fb5779916c4b2d3550b62087d142d5bf5b0d1cae2829f0ef",
+        "AST_sha256": "0d90b3e4e36b1749af57bc2a706aa59296d259145c3780353d9eb7c6de40e15f"
+      },
+      {
+        "source": "src/legacy/client__draw__glowdraw.c",
+        "source_sha256": "fe6ffa3d888f9cbb6c51d4287130de6d1e592dc4b51881ee7be931c554e54962",
+        "AST_gzip_sha256": "1c29f00a137daf1e0d6b2c4656fbf41c3725c8c32cb3f5ea51b66f8865cf9727",
+        "AST_sha256": "a8e98172622ba572917825d0395b593bfd83fa28ecb163b36a7a35263c70ed72"
+      },
+      {
+        "source": "src/legacy/client__draw__glyphdraw.c",
+        "source_sha256": "c8ab679d33760df58310290fb02813ddf372bb87d732b646b2f04e30522b5fd2",
+        "AST_gzip_sha256": "1fc942e3081aa3eec42233c61abe6bc48aa3660d2a1599a9a3b817534ebd5c5c",
+        "AST_sha256": "70d62bcf5b3d773f6cdfa09354918fcc4042baffb0795d32b18c85d4740d3e73"
+      },
+      {
+        "source": "src/legacy/client__draw__harpoondraw.c",
+        "source_sha256": "d1e9c8739227934f93e84062b35c4165e63069cdff844c1eda6e2c5a0d136f50",
+        "AST_gzip_sha256": "6742f1ecf36abd6cbadd652f9de6fbe25cd148806580314bac7b20bb58280897",
+        "AST_sha256": "10fdaf0ca9c1efeda461f944330642908b8e14d0e8e89dd68f9fd4f3ee5f7fb5"
+      },
+      {
+        "source": "src/legacy/client__draw__lightning.c",
+        "source_sha256": "2c892c632053f9b8dc50a17589214db704f9516ebc37b1f46615a98bb25bebb5",
+        "AST_gzip_sha256": "b6676227f3bb777a7e2413c94b98c1a4d06ce5b937e05276c64f2aedaef2a16e",
+        "AST_sha256": "6f8195af1c5575fde85fffebfdf2e0fb6c7251417587930c059bd6a44fa2e400"
+      },
+      {
+        "source": "src/legacy/client__draw__lvupdraw.c",
+        "source_sha256": "bb06bf9cdbe7f4bcbbb50428ac778fde1d582425fe0b3f6c44595802a37b8ec5",
+        "AST_gzip_sha256": "20e4fbb065fc7efb089e0fb13fe31f6062b498947792a1bf6b64a5ba2f6e59c4",
+        "AST_sha256": "f08847ecc93c33b729c79f2c314811527e6c28af33898d229ca6eed1a1c298c7"
+      },
+      {
+        "source": "src/legacy/client__draw__magicdrw.c",
+        "source_sha256": "cbf15fd1c856d41f264b4fcead54da3f9fbfa42dd919b84cf2ef9cc8fbbdc5cd",
+        "AST_gzip_sha256": "5606d91cfe73832f58918084d9942acea94d1bea7703310f05d302d5a7fbfd78",
+        "AST_sha256": "7b1fe85279f9190d88ce8160e84458c1cb1f30207a9702038506a9003e9f7c59"
+      },
+      {
+        "source": "src/legacy/client__draw__maidendraw.c",
+        "source_sha256": "80f8a0eed6eb29fabf17ecfe81e7de376195de9b32fb0e76f4046436d6a7b967",
+        "AST_gzip_sha256": "3bf6a39c067e8627351051d5ecdd362f404749423551b48b0779fb70236d89d8",
+        "AST_sha256": "9cbb699bba6a254204c8a68430271bb0de70f4eae63453e449ade53b2d4e9815"
+      },
+      {
+        "source": "src/legacy/client__draw__parse__parse.c",
+        "source_sha256": "2ebfcd9267189b44ac15eabe9e22f5d184b462b51d0c6f6506a5ae272a4447dc",
+        "AST_gzip_sha256": "e596a5c48bfb0a9b38a7a19607cb58e4e0916d0c8c9e8cfe26232ece7c424670",
+        "AST_sha256": "9b98d7993f7f64e407e9beb47e1efdb0c3afac1c8f5b2800b68a42b7787705e2"
+      },
+      {
+        "source": "src/legacy/client__draw__partrain.c",
+        "source_sha256": "3108c093800ad6fec1fb7cc9cd77f52a1829ac4d6f61de9f7df0ee081f6d56f6",
+        "AST_gzip_sha256": "61b7b1496922c4f51b8e871f9801fee6cd799b7043ab70dc9ab8b1e74d7a6527",
+        "AST_sha256": "9d6acd173e1518ba176092d1fd6b8a9d28f8633c532d1b710fe70e2cc311a372"
+      },
+      {
+        "source": "src/legacy/client__draw__partscrn.c",
+        "source_sha256": "392280dd73b0f024656d820c034a089c611cc3e9b9cab6899e20036bc9d9da79",
+        "AST_gzip_sha256": "0cc716f643a4ef90cb0e85d82a3f6d25c084e944ca6011d1a60755406f0c8984",
+        "AST_sha256": "7d5ef5bae6a94a31f53d41285a464b657b7e0c6acf0969325202e1f10bceb29e"
+      },
+      {
+        "source": "src/legacy/client__draw__plasma.c",
+        "source_sha256": "617d4f5a90029810dd7bbeb84d314be89a444eb678299ee3846e5165d33ae9e9",
+        "AST_gzip_sha256": "0c409c0716efde8df4c5a5a6b241d91ea688283b3307fdb00e9be9b058f6d1c0",
+        "AST_sha256": "df97c79cb01f91b5666117f95ca8a0600d298fd0af00b33d0ce074f150377527"
+      },
+      {
+        "source": "src/legacy/client__draw__playerdraw.c",
+        "source_sha256": "f7fdb56c4b85d0f5625db50d0797834e06dbd87843b196f187b14f50c13aac17",
+        "AST_gzip_sha256": "612969017569ed718a8cdca77f30b3d31a76cc8f846c084a1730f8d4ecf74d3c",
+        "AST_sha256": "71537bc70e07d511daef2f59d5bc33f4fb850a835a5e3767ee24dd1349e68c6d"
+      },
+      {
+        "source": "src/legacy/client__draw__powderdraw.c",
+        "source_sha256": "a763472a7387e62396e5ed1b50269b776ec0e19f71bee1ef3c3150dcb941ee50",
+        "AST_gzip_sha256": "0b6f20d0cf3dd88738c32c430dd6f4a8862167a97f5acda0b2c9d953ec0e844c",
+        "AST_sha256": "3c1482c41476bbb30c49268c5cde3ac20897c6e2fe144f0e48d90301c7b617dc"
+      },
+      {
+        "source": "src/legacy/client__draw__pressureplatedraw.c",
+        "source_sha256": "e55d490704315d8c0220d6641cad6e4bcc52b4dd3a3fc4d31725ebb6ca56836d",
+        "AST_gzip_sha256": "671d129cc37cf07968c09d70582b3ae15b433cb5dfc04a711145372a04f2421c",
+        "AST_sha256": "1e6c8fa8b2be78214efd049694e0d6bf16ba2583a0565af2672fb68aa13044af"
+      },
+      {
+        "source": "src/legacy/client__draw__slavedraw.c",
+        "source_sha256": "264b8064ff48309f8ffe55c9ed2a496d95464fe0ed98f55b9ea8cc98140f4f53",
+        "AST_gzip_sha256": "03ac77f024ffc16ac17ec3fe2c02721a7a4032b982fdc69effd2377d45badd1c",
+        "AST_sha256": "1701d40d247bc0983d367d6a972ca63e2bcd16aacdba78ac33d259bafe0c2f26"
+      },
+      {
+        "source": "src/legacy/client__draw__spiderspitdraw.c",
+        "source_sha256": "c2c5d3fc1497134f286228c3a79805c4fef7079c3af431050c153211640576be",
+        "AST_gzip_sha256": "3dd3adbff0e0664a2e3020c3bca0b2a7cd4fe2b28b98e87d0f877fe68d187d0b",
+        "AST_sha256": "0790b17394b8bea58899742c386f17f08103c2be36cb771dc96aeb5bfb4564d8"
+      },
+      {
+        "source": "src/legacy/client__draw__staticdraw.c",
+        "source_sha256": "1b2366301cfff681a7d1d22aca7073f830ee02fed7cd823f30d01ccf53ef4d18",
+        "AST_gzip_sha256": "2139b3526e6e58f9c87ae5747c4ab3ab9d108c5ad0baedf859e2781011e7b6a2",
+        "AST_sha256": "ffe04b31bc2a095ccecb4164f12864a197c5c918779ccc993092be85e999125d"
+      },
+      {
+        "source": "src/legacy/client__draw__summondraw.c",
+        "source_sha256": "8b65ff4b7d7cdce8abb903bc6cd7ece23ca9bd33a59d0cb82d395d797a51a534",
+        "AST_gzip_sha256": "e2672e9ab7cb544018125a67c088cbc31b4eaa28fcb67b616a740f2cdff51581",
+        "AST_sha256": "397a7a2c5a3bb56234f8a506c70b63f7b6a2af64533bd17ecf8820605645fd49"
+      },
+      {
+        "source": "src/legacy/client__draw__triggerdraw.c",
+        "source_sha256": "67db21467132155053cc4151adbee37f2fb63c9b615f8eb850b89a0edb30d976",
+        "AST_gzip_sha256": "6a434cf0aa4b44c1ea533bdbb14a95e6dfdec8c8b0b8a20844270ec014121b24",
+        "AST_sha256": "58866a2e854bab99da465ea6dcd56da415b3901004dce6442a18a72ee57c4f69"
+      },
+      {
+        "source": "src/legacy/client__draw__udeddraw.c",
+        "source_sha256": "8eaa431520c32dd6b6f9bc2ebfaa35c18ae4c52e9cf741c7c72b41d6833ff318",
+        "AST_gzip_sha256": "3aa75ad89d7a165fecdfaa688e49b839f453d7308fd668ae938a40236772d2e6",
+        "AST_sha256": "294308510b4640c81c210ba46c42347b298683a64dc13f25941b0ee8c3d2e8af"
+      },
+      {
+        "source": "src/legacy/client__draw__vortexdraw.c",
+        "source_sha256": "9c4af591cb26c1570b1f1accd971fbc4d12b578f5d00ef2ecba1b751570a3e80",
+        "AST_gzip_sha256": "2fc0e1e79f487f1332a2c6a97481fba7a6b0155524676a9d9388081c656ca96f",
+        "AST_sha256": "10ae4a48d5dd9df0a7342c12b593953e013935acd1b3416e98a82ea20890dec5"
+      },
+      {
+        "source": "src/legacy/client__draw__weapondraw.c",
+        "source_sha256": "b84f4b1f64687af391092cd0ecec4f12074de0408c2089982fb13c69a874e3ba",
+        "AST_gzip_sha256": "80f933bcbd409614a474c9ba486c98f1eb1a84d961b3954d6fcaf94d56326efd",
+        "AST_sha256": "6cf6abbfa4a6b7e37bfc92c42397c801ee0ff1a4a1ff323d1e9d9a1514a98825"
+      },
+      {
+        "source": "src/legacy/client__drawable__drawdb.c",
+        "source_sha256": "a0bde7597d609e92122e2667323326a9b783f0bf2b1ea3495725cb1a661c7342",
+        "AST_gzip_sha256": "0035e5e64b6db0deb59dfa296211c72df5da5f8cad981bbd30adcf7b75aefaf8",
+        "AST_sha256": "f1f8d0ae6418e6f2ebd7badf5fd11192fd45c95402be537ff8987ba44cc8cd68"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__charmup.c",
+        "source_sha256": "45fc4a9e453897371c116f47e9b1dcf1e82e8df0975de744546dc9e8f4cf2da9",
+        "AST_gzip_sha256": "16a058c02db43a01ac53cb19e8c9b90352c43b8d94538c410e9733773f693233",
+        "AST_sha256": "5050ee0cf0ae751248d7d4cc638ce0229ed97faf21699a139a52a6eb1c9c1fa6"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__cloud.c",
+        "source_sha256": "e911c075ae60375f4c7f69d12dfcf05bdaed65e93e8b3ff796352d6211f2ad94",
+        "AST_gzip_sha256": "2f656a6f2d3255f43bbcd23c156e612e8c74aca1b262f76ca7bb49783c243d0e",
+        "AST_sha256": "4a7d27861d42ee9ab360f78b6e7ef9520d016e3195841412fb1b3c14c612d457"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__dball.c",
+        "source_sha256": "5879fc6ece95ad30822d6ff77259f315496bda6dd4969b756a3d4cbe930869ea",
+        "AST_gzip_sha256": "4e2a496a3fc55323ed058c076f0a039c7adde63ef0368de6ef101dd9b6be610e",
+        "AST_sha256": "b30c2b0f1fdb4d7d2f832e53fea054f599afbbddae95d1ed55aa9c6d245b6ea0"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__drainup.c",
+        "source_sha256": "811df730aabb84bf2841c10b8b0f8839b854f60d88abf787c6ca29fcf35f171a",
+        "AST_gzip_sha256": "c36bec306672b76af5b7096eadd45e1ad516ccb88fdcba78c5e7d963bcf1486a",
+        "AST_sha256": "45d31f7b184440aef5d91967fd8eb3a1b49a86bea86104f509c9bd3528575309"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__fireball.c",
+        "source_sha256": "67fb51fe55a4979854027591c3601bb996c2c29b9e9d68544a57661994ea7f90",
+        "AST_gzip_sha256": "aa541317912f988166aa99cc72d69ea9e137fa851393610812b83b482fa8cde5",
+        "AST_sha256": "411ebd79d5d8ee901c6ee61b2564948561311fe86995fadc75be5f58e2e3b262"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__healup.c",
+        "source_sha256": "4542b7b9940f212c4d63441c6a202b25a127b241dcf2a7fe656c619568cbd74d",
+        "AST_gzip_sha256": "18db154ac1cd9333f729f29d36ea0d12bb7ae1d175eda5c4b696bf5aef4206cd",
+        "AST_sha256": "08e260e32445686e4e795e6219ababbd9876356059d8ca13b84d3a4310e05b5b"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__manabomb.c",
+        "source_sha256": "aa01537904e49a113864a0aabe8d94bd7a6cf06bb0331140ac3b86ccaa850d28",
+        "AST_gzip_sha256": "8aad61f9e174ace0e202d0a6940d681ce66756c291399aaadae2d23f26698e97",
+        "AST_sha256": "dbe5fbdd28c50f66a6911ade8d10a87ac658e09c1f8b5f40fc8208a445c1d0d8"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__mmislup.c",
+        "source_sha256": "1b86d2a6228446a4614b551beb84505ed4c4a74068e7ffba02065fd218aa641c",
+        "AST_gzip_sha256": "bfebee34a1792aa422ea1e01320dcd9d82eac38c26dfbbb12e475a84f65124b7",
+        "AST_sha256": "1a738612a22a6994aec5c4541f48f9a944963c90fd4c88fe140f32b4a59bae41"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__mtailup.c",
+        "source_sha256": "fa62916a693793c77fd99faecf95b6a93f1c82c321e99bb232b79cd3ccc208ba",
+        "AST_gzip_sha256": "ef6b7822e26e693b8629553407d83e7be257c497f2a04585c70ace1756fe40eb",
+        "AST_sha256": "73caf30953b3d98a80d8394c5ce8ce3145764b032558a35fb8dc6b92663340b1"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__sparklup.c",
+        "source_sha256": "d2f418b8c26e00d5e27e7dc75247fddefd28a2e179e16df58bc1d26a16e621f6",
+        "AST_gzip_sha256": "ee2eacac724e3ef5bfb476ece54587019a0d5e55a37e6e1cd876de1f23586c3a",
+        "AST_sha256": "028a160d35f8c9973466a06e435bfac63715a7a7637bc3b4105918950455ccdf"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__telwake.c",
+        "source_sha256": "99e7778661290c3b8c814c676cd6b7b897c023e38a80b9c4dfb3108603b5ca6b",
+        "AST_gzip_sha256": "2076db967a7916cbc42a76ae1d393ec49dc3f0eabc870412fbf7d33a12545364",
+        "AST_sha256": "bb125ac17eaf01fdd1f534665d2ca6042283b0cd1f31ad8301a3638805fc1542"
+      },
+      {
+        "source": "src/legacy/client__drawable__update__vortexup.c",
+        "source_sha256": "4fae74182ec865a3843d9b7b5b7ebf3f4967426e367f9426dfdd47fe3689a76c",
+        "AST_gzip_sha256": "0c10ebde306e7485361d2258c54e1822c5bcad9445a33f1a98b8cd4c5bf880a3",
+        "AST_sha256": "5c33dc6e95b83753394867fcd04b65e7d7b9e587c30e1cf50910aeb54a4f2ec0"
+      },
+      {
+        "source": "src/legacy/client__gui__chathelp.c",
+        "source_sha256": "857ea4e7f37c2e9af5daeb4a1e14c71b3950f9948c60f195bc05b4d75d2550c3",
+        "AST_gzip_sha256": "13a1705cf796c415b938c7fad650de8161459c2d96b6a20c5c7374e58978f8bb",
+        "AST_sha256": "876e03607b74c6b23d22ba437f72856311f1e97f9880da86d26070f4b2616652"
+      },
+      {
+        "source": "src/legacy/client__gui__chaticon.c",
+        "source_sha256": "0dad02a98e361f554f6d7f56391023170cf21c744dc3f2c9306219ca1f3416e4",
+        "AST_gzip_sha256": "f803546d6e078f9373062b0fdcfae18bda1a0f6f11a9aa5012ba99bee4d5161e",
+        "AST_sha256": "a026a16ffd91c2788c352928cff3adac9e7e1d7e2b1db298b15f6e273c837520"
+      },
+      {
+        "source": "src/legacy/client__gui__conntype.c",
+        "source_sha256": "59a0c9c50af134ff655d4317ee5829c3785da0488204bc56e52bd9f08a34da10",
+        "AST_gzip_sha256": "96bf437dd93caa8583d98f4191cf0b1a47fa43e95986ee34a076d767607222e5",
+        "AST_sha256": "0205d023265d01b6325dae4b57509853dd15102ec06cd4d4dbbbff2f0c57395a"
+      },
+      {
+        "source": "src/legacy/client__gui__gadgets__listbox.c",
+        "source_sha256": "d1568f500b41d10d340f2408553632dd84275c2f87ed34963e93dc5d6bc6e9b5",
+        "AST_gzip_sha256": "62f7f29714c8b268aa1f14c251dcf135c2db93d006322c50cc6c3b69cb7bd65b",
+        "AST_sha256": "f67de13e3e05651067c2a7c47cbc76ccb12320f7ecefbb9ae70c40e10e2c0abf"
+      },
+      {
+        "source": "src/legacy/client__gui__gamewin__gamewin.c",
+        "source_sha256": "4acb8a26db1b529209b2535419fd2bc66fa09c4a3781f580855c85076d88ab6f",
+        "AST_gzip_sha256": "188a4b20d66ce7494d9f6d488b4f9bfdbb70ca7e4151258a87f9ae859499ce8d",
+        "AST_sha256": "5afcb23044ed5c48e1cf7c47090174b0ace8bc9d67fee06a8ee667db34a5c8af"
+      },
+      {
+        "source": "src/legacy/client__gui__gui_ctf.c",
+        "source_sha256": "17ef96d5455c8da35dd752a04a6e7f71a4d0a5973d9d3698bb4ced7ec264d272",
+        "AST_gzip_sha256": "2bbe07c3162420bb7431ab1ccb7390039a2f2e33d38a587ac7a0e138f0ade010",
+        "AST_sha256": "a0ea5d5e5eb9699dfd8529be2f4da97675ec33ed6cacefca30a0bdaf36d40628"
+      },
+      {
+        "source": "src/legacy/client__gui__guibook.c",
+        "source_sha256": "46b3db3282e2614d47b14a0267fc6e4c5f75cd507c4df67ec81272b71de8a1ce",
+        "AST_gzip_sha256": "8fc1efa9680bc17e90b2c71d349817ceb3673efc79af173479bf7e0576a47add",
+        "AST_sha256": "6eae7dd7732bc12d004f32530ebc4368d1b004cb2ddca2f601e5652beda6f0fa"
+      },
+      {
+        "source": "src/legacy/client__gui__guibrief.c",
+        "source_sha256": "d4c17667caa816d614e0d1f3abeff5a468992026a9d4f361cba45569f791e38a",
+        "AST_gzip_sha256": "199a58c3adad3b909ec0e1d0c68568c0a8f180f3f5dc9ea63453002754719504",
+        "AST_sha256": "1acbe805f9f90a20b32d8d75b45f93dfa8a3cb70eecb262024fcc7fa781bd6ba"
+      },
+      {
+        "source": "src/legacy/client__gui__guifb.c",
+        "source_sha256": "62672f41581f1bbe22f2db1a5166ede935067cf7ebd3a1fd01274a23502ead8b",
+        "AST_gzip_sha256": "dedca984d6012df8090ecc7268e007863d5af784f1c5ed97ffa559f0ebe1189d",
+        "AST_sha256": "a710bc14a51d266f04c6c207a003977fe1829252228ea8fd4ac2e325da5dd679"
+      },
+      {
+        "source": "src/legacy/client__gui__guigen.c",
+        "source_sha256": "e4b809fabf5b1c499e5512429b026a4409021f1007cb4bcc47f021bc69935d78",
+        "AST_gzip_sha256": "89433b38b5dc6773309337467dbbbbcf5b8d1236cb392b125d38d33a8efb13ba",
+        "AST_sha256": "c004879012171930d4470d2ec8c3b1b8c64ac6a898bf5bf13334638741c26350"
+      },
+      {
+        "source": "src/legacy/client__gui__guiggovr.c",
+        "source_sha256": "71d103675d8d6964cffba90276d6a511ee268f7874728d4e5312e70fbdee9d2b",
+        "AST_gzip_sha256": "13520792c60dbbf6e7cf7e46ba74ebe669ba0269e786c013819e02e35bf38c48",
+        "AST_sha256": "9a9e413de3ff39b8db93aca0a61952e7b62cab59d40f83dfe544c8b6283752d4"
+      },
+      {
+        "source": "src/legacy/client__gui__guiinput.c",
+        "source_sha256": "f46a4e25277d57bf9673e8b519cbdfed770480a4910dc2711f0c936b42a92073",
+        "AST_gzip_sha256": "5bd0e26eea844fc66d939421182a9be0d9fa8f6d46aac93a2ddf57fd0f2f2a85",
+        "AST_sha256": "14685e05981ce571e9a73f307d8719c006a3c29d81110aa5c5d9d1f70353b362"
+      },
+      {
+        "source": "src/legacy/client__gui__guiinv.c",
+        "source_sha256": "349ffa30b1b2d36daa64e11f34e02e386aea3bd03d96783e5318c280b6147770",
+        "AST_gzip_sha256": "69a631e8b5b0e96d4219eb0fd8d00c2fbe195b9001cbf582f8310e74f11f6e15",
+        "AST_sha256": "90fee4e7d0ce5ebf966e194333dcd41939f1efff2ecbed800d84846700f78811"
+      },
+      {
+        "source": "src/legacy/client__gui__guijourn.c",
+        "source_sha256": "33004b2c14a7f549f83ee55f0e2184ed24a8e387653f31382dbe8ec95db33f45",
+        "AST_gzip_sha256": "3301b31dea699d0c9685f8742b22abe1134155e848fd70eb3945d8b113b5e120",
+        "AST_sha256": "1e5bf96301a893a3e31910162027a9454110a2937307077849aed9b413d04cc3"
+      },
+      {
+        "source": "src/legacy/client__gui__guimeter.c",
+        "source_sha256": "86a585b57d7aee644a283728691563ff63e8faf50bf650f8f89665eee4f4b918",
+        "AST_gzip_sha256": "a7b6e283a459afe92639fc052aa55ddb9df030f4442d215fd2e69e5047d4d866",
+        "AST_sha256": "0efe9c4ca765d5358856b068e5681188d79997fff072fd664d1236d7d5468958"
+      },
+      {
+        "source": "src/legacy/client__gui__guimsg.c",
+        "source_sha256": "6c170afee5c579a19c02bc418832ec216f80998843b179f0609b77396807ff9a",
+        "AST_gzip_sha256": "ec9fafdb92390c3eb039932f5bd5c549f0d4160989508e9bb9c3adae0392d20d",
+        "AST_sha256": "71ad2d7b6cd9a15526ae8172b73f13a02815d4084193164ffc83ef9953ebfb10"
+      },
+      {
+        "source": "src/legacy/client__gui__guiobs.c",
+        "source_sha256": "d2fb78f26f3bc3b6e7d2cfc39f9ff6649bf9d135d7a1ae455d127121029f16ee",
+        "AST_gzip_sha256": "efd113bbe77b789885d3ee3981faf6eeadc70c177d9f36204d5fdcf82da592b3",
+        "AST_sha256": "7e41b7674db9a567b86ffb980bc56c1fdd550c0b6b7a98a55da9c4018de06860"
+      },
+      {
+        "source": "src/legacy/client__gui__guiquit.c",
+        "source_sha256": "7c9f09075d4b69ef6de70c78663c2282f330e9b3c1273d66a9b2bcd1600deb23",
+        "AST_gzip_sha256": "eda40e68cd34aeadc7f43ec80f7d1d180d72fc9013d1d1393eb4c8630b38e06c",
+        "AST_sha256": "f28c881963327b6598ea0efc5eebbbc31efede53083b438d46c90abb1de275b0"
+      },
+      {
+        "source": "src/legacy/client__gui__guirank.c",
+        "source_sha256": "fc487eaae1dd4448469d3fe62a8129a9903aad4f3cbae88637b53416e48b5a2c",
+        "AST_gzip_sha256": "3fae53ba5d22ef641ddc8b3eae9443747dff95031ff08e6d3a5e6a3fd2401c8f",
+        "AST_sha256": "b52e94f867299f9c6f9cc66cbd9393d5dfc038847b3ddc9d5d97281b1161eb2c"
+      },
+      {
+        "source": "src/legacy/client__gui__guishop.c",
+        "source_sha256": "5d073ff16a856bccb7ee4979e747d2b7d6aa73e5726bd3f324f4b40384efb4f4",
+        "AST_gzip_sha256": "a13df6adf040e182146e6940fa5e9bc353352d9e9bcba9f76657a1312946387b",
+        "AST_sha256": "1969270b20d9a1ff7049ac82755d00b0d77656a5be81c8321f61bb1ab2a725eb"
+      },
+      {
+        "source": "src/legacy/client__gui__guispell.c",
+        "source_sha256": "a824b400f2e825032efcfcd4ae9997faf08277f4888ff1019a8422586d76d47a",
+        "AST_gzip_sha256": "1a014f3665136188381ef261401c7cdc6b322d6f72bb0e1f14d43146df999d6e",
+        "AST_sha256": "d80a070b0159f07cdc0b911992b0d3d3fd0672a06b448dca7fa95165cc99dbdc"
+      },
+      {
+        "source": "src/legacy/client__gui__guisumn.c",
+        "source_sha256": "ff64853934cac113f63c44aba73c9766cf7f36e63973fa0cb22ef3dee34c0835",
+        "AST_gzip_sha256": "077daa652e0da598a89bdb72248c6b93ecc71a928feb072c4011a432d2a81a92",
+        "AST_sha256": "30c26ea76fc9bdb61bdef4c3f82df6825e5c0773b8fde77c22a8b796f909b47b"
+      },
+      {
+        "source": "src/legacy/client__gui__guitrade.c",
+        "source_sha256": "4a07cf7b9e150d4064a240bdb0c8b10735ac57165dc543eb426f669a4b9820cd",
+        "AST_gzip_sha256": "c1a4f542dacf5d36d6434781e9866d12451389ec67402832b8a769aad202b502",
+        "AST_sha256": "24d3ca582852aac2aff5966e5aa11cdd318f7f2ca04a1f2bd12dac8bdac6dc04"
+      },
+      {
+        "source": "src/legacy/client__gui__guivote.c",
+        "source_sha256": "339376122c2aedf6906684908f0854eea10e147b4fd833a333afb77b34e65be9",
+        "AST_gzip_sha256": "1e01047e67d95df2874809102421dddc5159a3eeee3a698d95e0e60f4087b8a0",
+        "AST_sha256": "023c91d1026e4c4d0bf6958fa8046332b1a09368a23190571c168188a139a8e2"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__access.c",
+        "source_sha256": "f03309fc5564427dbd4c81d51fbd8b785b4c0ab2be87a8e2252a8eada9284a12",
+        "AST_gzip_sha256": "6374d0a9bde117e8359a0aa292de3cf0e6baab7f6de3ce8fb8f833f4605f7f8c",
+        "AST_sha256": "fbac02866e97a102d0aa9be55360941e48c7a88e901e51b40f040200694d0449"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__advserv.c",
+        "source_sha256": "954cc31b3714b1c37af7026efa293d57d691a846ce1a1f4b8a33588477d8a3cd",
+        "AST_gzip_sha256": "9df6e2936a340c129b82f26a3f128a1001d0c448c8fe9ed16b7aee2d7e84b84f",
+        "AST_sha256": "1ced7ada47fc4e31b2f7ead0b286e62619726e774eef6eb2646ae16985204217"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__general.c",
+        "source_sha256": "d6b41947f2d9daa40b092af2e32f5496e3bbdbaff663d76e8edf41248d221334",
+        "AST_gzip_sha256": "c18f92f418b2aefe347d6943def029ac2cc0a48bf445b3aa9f6091eb1687db5f",
+        "AST_sha256": "b6b1ef18bed742503457bfda53040779248c26c54a07a77245f78cf09ad2b825"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__guiserv.c",
+        "source_sha256": "9dafa4caf1eb9cfec9e623ac4b5b6d3b22d389d366ea30793aea33c208d733fc",
+        "AST_gzip_sha256": "e53ca8948e6097c75ca5f7a57037d8e8ac6253980f5d30a09dc373f0f7216c41",
+        "AST_sha256": "57a205c2fb26df3729b1bec55a47405bea60ccb394a0056eef2a807cc6569cff"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__objlst.c",
+        "source_sha256": "3ff7f2d0212147f8d51f362ce28fc872415c477fb0ee74a0f6ecaceb1cb9f3c0",
+        "AST_gzip_sha256": "e093f31ef2184c89702363fad5391bb6269024914575f3eaa27b278a00a8f2fe",
+        "AST_sha256": "e1f2d39a5281d4b185e09a6ff645f5d6d5bc5b9912d38eba88d67b1f156af23d"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__playrlst.c",
+        "source_sha256": "384c554756032c23b0349ab6e713ae403dd39541be7e202b0660d2ab7373eefb",
+        "AST_gzip_sha256": "62f30eca7b7da4d5f43a45cc65351f8ccf1ba45e01fd9d8fe18dd96a467edd0d",
+        "AST_sha256": "abe00b0e0d9ccaf387c5b918a465599d3418bc0a03283a8160b97f1635f26cf5"
+      },
+      {
+        "source": "src/legacy/client__gui__servopts__spelllst.c",
+        "source_sha256": "4953af55bef27f81c7d0676cc0b52fde2afacbe3e48e2ce47e3bbd765e22622f",
+        "AST_gzip_sha256": "5e2d1f62f98a3ff8f77aee65f8e47c72b2d61bebba20c4e2ff444b4a307cbb2a",
+        "AST_sha256": "7904ffb5ca4c37d71239ad41e2ef8caae600d545e47c44add2a46424ede047ba"
+      },
+      {
+        "source": "src/legacy/client__gui__window.c",
+        "source_sha256": "f0f034d259fd7777a9b7f0f953cd306925cef5fb9a73f3eba0c875944778587e",
+        "AST_gzip_sha256": "6322e0ab907cbb2e6c84736f39ef93500b1d880c8f24d9e8584dc8399f039996",
+        "AST_sha256": "565ab8aeb41d04d11d573db26dfce15dbf02f48e31091728b06c328ea2a1ab73"
+      },
+      {
+        "source": "src/legacy/client__io__win95__focus.c",
+        "source_sha256": "6eae736cec449ee7db7ac586877bc796ba819b14ae81756b9f714454c75189f0",
+        "AST_gzip_sha256": "6aa8fc1ee10287a990002669c973fb19fa89e39dd358727d3f8be1ad5588e55e",
+        "AST_sha256": "b9b1dbe2b8acb17314a4973f066722b983ff4e9305a9b0d4c7713eceedaa4065"
+      },
+      {
+        "source": "src/legacy/client__network__cdecode.c",
+        "source_sha256": "49c5c8a1bbe7328c1a3e3a8809b8e8b037a47141e0da288b2ef3e5cd66c9ba55",
+        "AST_gzip_sha256": "803bdc795c91d05753a2b2c8f1a0a8536f5b26a45bc36565c072b19f7831f16c",
+        "AST_sha256": "8860be8571444ae6fe8a5a0c63ee094db026dbe4f58b8129782d400bdd4563c7"
+      },
+      {
+        "source": "src/legacy/client__network__deathmsg.c",
+        "source_sha256": "d5bb65fe5a1d2894081c1261ee4310a2c2353b9ad97c9d3674f3ed32c69659d0",
+        "AST_gzip_sha256": "ad585758e73640fccd1e22b4dbaf71c4fe3a4295dd8b3dd9301d196d0640da2c",
+        "AST_sha256": "69afb162e3269e088354c17071a86cf6ab27972e891ce15c675b079bc312a832"
+      },
+      {
+        "source": "src/legacy/client__network__inform.c",
+        "source_sha256": "1dacbf7623479061978cae190178a143b3676fb74b618bbfc276d3fcfd099e6f",
+        "AST_gzip_sha256": "86338186ad6282d916e366fe3732e9ce1aacc189f10bc56995e11775351d05ca",
+        "AST_sha256": "605272551b2aa5e6a8957718e43e74dcf062f6d2b1da19de1443ca71c4b68768"
+      },
+      {
+        "source": "src/legacy/client__shell__inputcfg__inputcfg.c",
+        "source_sha256": "97a1af8e33d84724b27b3541eed8bf8c1602483a5356d85436df63d8e6ae375c",
+        "AST_gzip_sha256": "2062b933f2b84d22c883c0b99a00913a0b15de5eb0fca66a5a8d19e188efeadb",
+        "AST_sha256": "3cd43d0209094445334dc05a3addd4bc97490cf15fea6fa06c00497169ab526c"
+      },
+      {
+        "source": "src/legacy/client__shell__mainmenu.c",
+        "source_sha256": "2f040643b682dff71f6500385634d212485c0549d1e0a41f61d1292c8521f8f7",
+        "AST_gzip_sha256": "ac1e697405a9688264dacb0454d4fe37b192afd1fd4655ca7b5810e0c829f0d8",
+        "AST_sha256": "5f9a31fd0143a01f9b9fa0001137aebeb58be62364223918d46d36b06c5fce32"
+      },
+      {
+        "source": "src/legacy/client__shell__noxworld.c",
+        "source_sha256": "5f20fee15fc1e3854589c41e8f496a63767fc717ed716967ed0de340cafbf7d9",
+        "AST_gzip_sha256": "1a9b15dfc8d47bac6cd70506a582ad325ce6259f1fd87f3314f3345a8a339db9",
+        "AST_sha256": "b8b9a8f7422b5aaddae3f743b40d8808577efc428ac5cb88472c3506988cb18f"
+      },
+      {
+        "source": "src/legacy/client__shell__options.c",
+        "source_sha256": "42d779764cd17c56294664938db2cd3c500461a4d4e205dcb66bf556f04669f1",
+        "AST_gzip_sha256": "53c01b0be84d9fbf3e4f9021ee55d1e7cf8d27a147a3a9a2dc75913462ca41dd",
+        "AST_sha256": "775c390612d1f1312e84e7d3dcdf85ae8c59cec9a69e59119ea929d802e8a337"
+      },
+      {
+        "source": "src/legacy/client__shell__selclass.c",
+        "source_sha256": "4958999d27b25c7ddd65bd997b1b01f6e71d1f40d4f7f2587a2d1c9d93a646f7",
+        "AST_gzip_sha256": "d7219d583838a32fa1a53c8152db1f1e9de903f25d555a161f85e8f7cd6b86b0",
+        "AST_sha256": "684f8649eb7b69e95c7db6cd681bdd496c9ccf460cb5cce4074e87964d95312c"
+      },
+      {
+        "source": "src/legacy/client__shell__selcolor.c",
+        "source_sha256": "517f2793ab2c894a4bf5cc7c9054a42a047f574b75b8a5ea6c70c989a1d1c5c1",
+        "AST_gzip_sha256": "c1660baee9e33fa94a2b3b112db1ec25c47a7510972e81cc939dd6bbcfefb34d",
+        "AST_sha256": "c7b4916c80f7d1b28a8180dd75346ec6f19cd79ad098d0abead3fa61555b4cc9"
+      },
+      {
+        "source": "src/legacy/client__system__client.c",
+        "source_sha256": "a85cfcb4d6dfefdf34b957dea4a53899d87657f8d8324e5d912de781fabf8ba7",
+        "AST_gzip_sha256": "6fda03bec9b17a25a66d4c8ddb8de21a2a1c2cf7f8a2954ed09104c5510bb04a",
+        "AST_sha256": "1d73d42fc53c9bef9ab9b34b135c3b18b9d6f95e7454eca34634819a07987f35"
+      },
+      {
+        "source": "src/legacy/client__system__parsecmd.c",
+        "source_sha256": "9b5dc24092d1231bb46f03d57c3c13c6f93af97b49e075efe6d46bb088d184c2",
+        "AST_gzip_sha256": "9304d2d09efe8b0aa83b62a34467787e4967f03e559055491f1a064a2a14fedf",
+        "AST_sha256": "574cc773a975a62f66394fe9655442be62beed3478894b4b7701c68ec9eced38"
+      },
+      {
+        "source": "src/legacy/common__gamemech__pausefx.c",
+        "source_sha256": "555358a40d509ebe732d29c1dfc198479bcfaf28b9636ec69f0bf60a871060ad",
+        "AST_gzip_sha256": "088b0dee2dbe528d1719cb0818364310e3a360bac6e3cc4865c5071f1a11935f",
+        "AST_sha256": "a068423e25d612ed31110354b25346f199addbd8331015f464f1966123042572"
+      },
+      {
+        "source": "src/legacy/common__log.c",
+        "source_sha256": "569151e8a6c75cd061cb06d203fedd67c034553b84ea63d19c2e86a2a88dddf6",
+        "AST_gzip_sha256": "2173ed3cd7bc14cf73f663de39a65e323a26436745b27315fa036c65c7b3c415",
+        "AST_sha256": "ff6343b40ccf95bac2be9ed8ca536fc582f4f9d57c31b5224a51ae3f8e9890a7"
+      },
+      {
+        "source": "src/legacy/common__magic__comguide.c",
+        "source_sha256": "998b00d2cdac7696e014991c5b1d8ba751f83f65b7ef5191d2bc9d48e86d287a",
+        "AST_gzip_sha256": "e5d3a7e09222298e7660213ae28d721a9964efe8d01894233f17ae48ba2a2215",
+        "AST_sha256": "7d4b5b692bd11149ba4b88a854535616f107f0103a2f21ab51bc3a784952b356"
+      },
+      {
+        "source": "src/legacy/common__object__armrlook.c",
+        "source_sha256": "ffcb715a17ef1440f3fb69cdc243f340f3ccb90f450093c403d2520371f8ed6d",
+        "AST_gzip_sha256": "7b35a879057dbd9857f4345b16af21df961783e218b2e0be40527d54753de9d0",
+        "AST_sha256": "a17b3ab4ec1096a26bfa361065fb7b0f04866e0cb60cdeada11f15c06a354e10"
+      },
+      {
+        "source": "src/legacy/common__object__modifier.c",
+        "source_sha256": "1a6b01491c96f33a311812f2db34f509b4cafe94f4349e0b7a80e57d15ec4acf",
+        "AST_gzip_sha256": "6ec27a1406fbf8e1a595c37ffb67bbcd7bfe853bfdbf0f8d4063874b5f747a08",
+        "AST_sha256": "490932d6727c151a90dcd902e8ebf2feebe3bf2c96405df8f044902aff800ab2"
+      },
+      {
+        "source": "src/legacy/common__object__weaplook.c",
+        "source_sha256": "79a6b7c4572b1a638a5337eeda141c1f4c1cfe5664794a5f26493fc322a52baa",
+        "AST_gzip_sha256": "66b0c852b529e3541097aa01ada4aa2ee17117c7cd55c67cfc9c2fb7d8ad9c91",
+        "AST_sha256": "790af31c61774bb0df90c73ebe5a878fdaea77a2eae2380fd499487773e258fe"
+      },
+      {
+        "source": "src/legacy/common__system__settings.c",
+        "source_sha256": "b859fd4f4f86e14eb022b271883174dceb30a2eae7c2a463b75993bc347cacec",
+        "AST_gzip_sha256": "5e433c0b3efe93987ea37539b18cd6070603472b755fe76d9079ac3f90aead8f",
+        "AST_sha256": "a57f7053e0d2bba29efb0806ba7890f5d7c044f1bd9f2a0d5be9a0f69f3b14ae"
+      },
+      {
+        "source": "src/legacy/common__system__team.c",
+        "source_sha256": "9db30b23a64eb06a8647f2e2e6910ea1d8abf5d3fae2820dcccf6005df0f4305",
+        "AST_gzip_sha256": "1107ca6cc41b687127927e3a8845e9b859858b7f1a14f781c1f3e73e13362ad1",
+        "AST_sha256": "7aba0b109f3bd1b05923f8175b74dd7785028acf692acc3f2667c6b25836e075"
+      },
+      {
+        "source": "src/legacy/compat.c",
+        "source_sha256": "c5e119d3b40e7c4873a8ab779ba2965d8a970f618b8cebf2c45fff134a703eed",
+        "AST_gzip_sha256": "f804b7e3c7814bd5680fa005298622de79da0d8a79aee200044ee8e78f3f5131",
+        "AST_sha256": "c6dbc6ba4164efa0d4462ed42198a107f1600f63fb18b28b717ea3d4ec1db90e"
+      },
+      {
+        "source": "src/legacy/damage_collide_4e9430_parse.c",
+        "source_sha256": "f0b80efa3e4f66ccb557d2b59e7ce30167e01191619e2d0db52f48d242f448e7",
+        "AST_gzip_sha256": "c6c1f7570a3990eb58540ca4c823765c55548dc7792afef3ad3e6814e7a79cfa",
+        "AST_sha256": "43981b7f956bf8239ac7fdade9aa66af48f3f64381ca10add7669033993a5805"
+      },
+      {
+        "source": "src/legacy/draw_allocation.c",
+        "source_sha256": "fae8ca6ecc08ed2138db73cae089c5118bd9696e763163571d6d4526f4034594",
+        "AST_gzip_sha256": "24404ec03c2f3eb608d60f23d74516ec909c1a541ab8bdd5d8f4104a34e90f09",
+        "AST_sha256": "4332af2920b6d0aeff042ae6e60029a5cb107998abca2fa60daa65f6cf39d42e"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4eed30.c",
+        "source_sha256": "36a895b89da61ff35a9b944dbea419f434b87eb48ffe8bd06dd98ef392ffab6c",
+        "AST_gzip_sha256": "ad6bfd75eaff9fedd3a5d2c7451f47253e581f9087a7e22e6ebab7941ebe53d9",
+        "AST_sha256": "da933decc33761a5aee6abb9efba6b1f35a210962468fc22af233e1ad5805e83"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4ef560.c",
+        "source_sha256": "49b9853e21a574602d6fdc91747254fb6161cdbdb6d9ac783da82159d280c8d6",
+        "AST_gzip_sha256": "b27694d7ba308790dd99e3c617231c90f22c346589581e4b85757421d816d728",
+        "AST_sha256": "3c886a1639c37384b0a40ba3cab8464eb19124c1e0001d99fae92220a52f25dc"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4ef570.c",
+        "source_sha256": "d3923cb2de6d4197d5e57521d098102467d31daea522e7c23816726ddb11fac1",
+        "AST_gzip_sha256": "49d14a835d88fa10868664f3d8566ec6280e8806eac8aa182f80b29b9a352240",
+        "AST_sha256": "1c4c094cf260106f7bd617c0f1c02f8a39a1101f195f62f5f481f22f8a180b60"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4f0630.c",
+        "source_sha256": "9ee4012c327d52d91f334417136f31248067ad486304325cfe4f04b3edaa0e80",
+        "AST_gzip_sha256": "0ca8408e15b8d4a5d5ab0490748cf32486efa0049be72e27387b2fe30ffc5308",
+        "AST_sha256": "eaaedbbd9e70ab8168da2179c314dd6c0750f8427cf55c1b5690fcc7f94c378b"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4f3e20.c",
+        "source_sha256": "130603ac2ec40c7dcc2b24abd28dc0311cc06b4df3d450feab1c3bbf95777410",
+        "AST_gzip_sha256": "2efc69d5bb7b75a3149aca1ea4e1514c71b130bd04b7f24c69fbd33e9c3d0d6f",
+        "AST_sha256": "9b90921a34cf57230fec78948478e68b1d750c586edfb287731398665a373ea6"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4f78d0.c",
+        "source_sha256": "89ccb20dbab162d245d31597f7a65d1dc2803ab7c6acc43f405b25948f4cf68a",
+        "AST_gzip_sha256": "5b6330d55812ee712069892ead7385098adb22216108b693bb096168b180e3e9",
+        "AST_sha256": "fd2e75d3d8c513ae7996d10d703b2c4180ab3123bcbfe735e05bf7c48cebf81b"
+      },
+      {
+        "source": "src/legacy/fixed_rng_seed_4fb940.c",
+        "source_sha256": "e0791b0ebfa741ea624217e94b3b1688a904f53e876920c4fdd71e5480c33d10",
+        "AST_gzip_sha256": "3f8d5b2ceee4abf307a663db72afb95c043e66b1de3d1fc3d718da93343c5f64",
+        "AST_sha256": "89f87414eddab77121a0d96583520f1e63172ae6bb98f6faf3278b371bc3b6c7"
+      },
+      {
+        "source": "src/legacy/game1_split_abi.c",
+        "source_sha256": "82d1bfe71965fa6a947e269a10b8fc766cd2973e9a6521eabfcb5b26db5da57d",
+        "AST_gzip_sha256": "14cee890fffcbea803ec56e727b51dc58fe7878409659f13dff613be65426275",
+        "AST_sha256": "03fdcc979db704664cd9ecc4cfe9fc73f7a751839cfbb1baf7689bcfcba91022"
+      },
+      {
+        "source": "src/legacy/game2_book_abi.c",
+        "source_sha256": "26c40d345d7ea7b5a6acdc4e7805a1e176e54f7a2a15303ce321089b9ff37eed",
+        "AST_gzip_sha256": "8d39e21df91071c3e1e1f5fb0221c3470a282b7a1953997c49619d891011ed79",
+        "AST_sha256": "e10cfbc1f6246d929f642a5a725c6fe0cc23eea94a25ebfac194c8fd827f3de2"
+      },
+      {
+        "source": "src/legacy/game2_briefing_abi.c",
+        "source_sha256": "21c759369a2a027efaea14398ea89e3e67fe469d0429692b18297868b442aeff",
+        "AST_gzip_sha256": "c6f61a36b9e5947d91deeaf13cf97152912db6e25b2e6de561c64fc6a4ed4f83",
+        "AST_sha256": "fdcb024f077aa88fdbe6daba5404bca0d5eef9d4eb9574f6a213788bf11c7c04"
+      },
+      {
+        "source": "src/legacy/game2_native_data.c",
+        "source_sha256": "059b59fd79c3a3e173f9246c044ab2eb6e7100cc3720435417d9daa40f5a07fd",
+        "AST_gzip_sha256": "b09187265900791e34cc8dfae135376c6b4fdabac0e8d1493e65cdcdb9e66948",
+        "AST_sha256": "663d2021d4aa2ceb4db44e48bd6a4cc9a58faddc655aee90db71a1aed3ddbfae"
+      },
+      {
+        "source": "src/legacy/game2_quickbar_abi.c",
+        "source_sha256": "19d5fb2e7d8be4a5eb7319529bd561d1aebbe09b93605368703cf72d908ff2d4",
+        "AST_gzip_sha256": "351d1eb281db8d40730d29f49aeca66fe4ca45516a86e33de617d2cfc2382636",
+        "AST_sha256": "500da491dbf2b5585193f06999cd6156b1eeb781981a435972dcc1aabeb2d89d"
+      },
+      {
+        "source": "src/legacy/game2_server_abi.c",
+        "source_sha256": "c6bb6fefcee9c506361dc67984626a5f948a707f2d9b1ab9f1b545eb4b53308d",
+        "AST_gzip_sha256": "05826123b5c9ff7c5a0d3fb2beb67b486c0fd4da4ec95abfc3625568d3893c37",
+        "AST_sha256": "55eaf8e905d80da20df1915c403adff6a1375c77d8de14dbfcf4813057ae8c00"
+      },
+      {
+        "source": "src/legacy/game2_server_reference.c",
+        "source_sha256": "33e070db159e970e7959a594b53edc31ba0e8fe3ca28178fbb245dc1f23825c0",
+        "AST_gzip_sha256": "b52a248bab1ea84e7336a17aac0880d469e403c508a315fdf4619aec32064d50",
+        "AST_sha256": "4cbd022ff4f7df63b2d0b20998b498937f8f9ec2ad47045633c1322ac073ff8a"
+      },
+      {
+        "source": "src/legacy/game3_class_config_options_abi.c",
+        "source_sha256": "66b750070d3efe1c6a0b1572872d548b2988d77921067e28612e3b382daca46c",
+        "AST_gzip_sha256": "d557fbfda4e26aa6023f64e3a9c747c8407efeaef4a6a981c4c3ede69db668cd",
+        "AST_sha256": "2d7741d6456cb31ac6f215cb4d8ba626d55f5df6b2273fca56e2f97a7f3161a4"
+      },
+      {
+        "source": "src/legacy/game3_map_effect_abi.c",
+        "source_sha256": "d89d608a70644e5193a59f29948ad0522b1b7c74e8a4b6f572b91893d7b27aea",
+        "AST_gzip_sha256": "032df314833d3cdd6600765065025d3d07f03a3f01e09fd6e548883f77b9635d",
+        "AST_sha256": "2fb832a960d1d8b64116ea357a05378b35440d25ca53b5909e87eb907a7bade8"
+      },
+      {
+        "source": "src/legacy/game3_native_data.c",
+        "source_sha256": "efe98c33225aedac0a4a978ecb8d9d779be36e3abfb9cd1daf3db66c160be568",
+        "AST_gzip_sha256": "e1e1e3f9f2ba9448b6a80ca817d035f5fff9465f1f490e97d29b61a62c2ec7b0",
+        "AST_sha256": "8f34459e6a8610641b5bd581558fd1cf57a207b607b20ee39dab063ff3a92a03"
+      },
+      {
+        "source": "src/legacy/game3_widgets_abi.c",
+        "source_sha256": "d29591cc42e5a378817d17688139fc718bd9356b332ac5172986d16a1dd99a52",
+        "AST_gzip_sha256": "45a440e382e78eb4ee3efe572b75e442f08ef6cc68eb3b0e850c52b60b42b205",
+        "AST_sha256": "5e458e5d24224138363fae5eb942537bec9a32482f50333da4b34f162e78c032"
+      },
+      {
+        "source": "src/legacy/game4_gold_consumers_abi.c",
+        "source_sha256": "7774859e1797e32adecccc39ec635a31f2067375d80c24cbb0ee2f095b4bc64a",
+        "AST_gzip_sha256": "97d0e668c7a6cded7bbf49b0e898d35071102c6cb917792be5c7115ae0191644",
+        "AST_sha256": "05262affb43e7e9cc59c85c0f6dab22b001fd9c6bb6a36f7cf980b283dfa5f40"
+      },
+      {
+        "source": "src/legacy/game4_map_archive_abi.c",
+        "source_sha256": "7ce4ae436db43abb21f2e958b6dab507e58d63e946f22f35bd342f8bc196479e",
+        "AST_gzip_sha256": "1fcabec905623eceeed49d406b8186ee716a33fb7ed96dc01d725dcd94ee3332",
+        "AST_sha256": "540cf45c59d346c0a2887f43a1d9f5bd48c9fcab91f877d0e39ed67b3a693589"
+      },
+      {
+        "source": "src/legacy/game4_native_data.c",
+        "source_sha256": "7dd0af71688208e4c27e0cbb245366701fe53dd85efb63aa04e0447b1e3ad294",
+        "AST_gzip_sha256": "36ec1dc59b8cf7335c05d0aa29173c487287be72e28f8081d34aae98688003ee",
+        "AST_sha256": "2c5887c8609034267115ecd0278e9cd9f35b573fd2b475938a2af7e1cfb11efa"
+      },
+      {
+        "source": "src/legacy/game4_player_abi.c",
+        "source_sha256": "7cc63814c412b09025d2a00dd7debe4fe66561323c6e8953300b9f9471e3bf73",
+        "AST_gzip_sha256": "acfcef1bb6caa5cd468af4b691ebe17519b136393a937abbb4849d051aa44efd",
+        "AST_sha256": "c494d0105efa6a8119893a27485a8900ec0917953564c77a1f4f8175c9f7c05c"
+      },
+      {
+        "source": "src/legacy/game5_wall_data.c",
+        "source_sha256": "0cb1fc2451248e2d688c4fee2e050b7699f7cfd9a5a4bafde5e8240b07e23d65",
+        "AST_gzip_sha256": "0b89e25d77bda79e7a843ea010684d98cc9ee727420a5569df160249e2d6dc90",
+        "AST_sha256": "e74709117703c6f8fb1f86fe69ce197c3c792d5f7123136b6b051346301200db"
+      },
+      {
+        "source": "src/legacy/gui_cgo.c",
+        "source_sha256": "35e2d0916984539f674650a77d879671aab688bf8f3eb545773bb9c62b712340",
+        "AST_gzip_sha256": "02322caf364db81aaf3795bbd1076b70b01a06a8a97da790b7e7f5b53d424f70",
+        "AST_sha256": "150c5600552bae56789b501b3cfae01c3391e3de42614a06411fce2673381050"
+      },
+      {
+        "source": "src/legacy/item_apply_disengage_4f3030.c",
+        "source_sha256": "8f5e7fb2f98274298d50f9b88b5829abc36ff6ebe97fdd7a3b644645a1c1e2e3",
+        "AST_gzip_sha256": "3265cd63643f5e4b861d057dd39f446692fcd6887ab54c5fc11490351db42bc3",
+        "AST_sha256": "2d772196ffc1e7b9fb1e52d03da84e62f034ee09257b51bdb50e053001c6ee52"
+      },
+      {
+        "source": "src/legacy/mana_drain_collide_4e9490_parse.c",
+        "source_sha256": "1e031a1a7ef84d8baa5a009c6d957f8a71219b2339fc56811fa607cbf6db5644",
+        "AST_gzip_sha256": "04f32cc5cea392b2f1a6189c4379548c62d14825cd5df8446b41aa3379f09f7c",
+        "AST_sha256": "f88a6a6fff63c01ff4b00c7fbdfa87c0d45052a78d0fe62afae6c6324a2e19e4"
+      },
+      {
+        "source": "src/legacy/map_object_list_5048a0.c",
+        "source_sha256": "6656daf82d4c7a0721812ebb011021097c777071562209047e5fc01724a904b7",
+        "AST_gzip_sha256": "752d6c297c26012eb9c5dd0289619c0b098934227b632d5ecc1123355c19918a",
+        "AST_sha256": "c44c22213a783db95ec80bb4169607521dfaa5d5d879f87a5d5766ffc02ba3b7"
+      },
+      {
+        "source": "src/legacy/map_radial_damage_4e25b0.c",
+        "source_sha256": "a46c4c07fbc6a357123ea76e3a62120d4d305bd36c5d248e8846510429dd2d9c",
+        "AST_gzip_sha256": "3e860059fe93cfd154948f16b94b03d42563d14423bf22bfe8248f192b88b9af",
+        "AST_sha256": "a8be10b724a0a289f0075da33617042c8ca8efdbae055fea17e2065ed5cf150e"
+      },
+      {
+        "source": "src/legacy/map_temp_lists_503f40.c",
+        "source_sha256": "9688cda4eb80f2194d7e920b8cca0e0e676aa72a41f4cef79c456d0bc063c01b",
+        "AST_gzip_sha256": "0e04320aa1442085e5c55413f61cdffe8e6e0ab475be4e44e701abc2c96c7c35",
+        "AST_sha256": "0e1c62d94734a9f97bd498d67598f7731240f4a6cdd565351d06a93674f8ff2c"
+      },
+      {
+        "source": "src/legacy/mapgen_legacy_ptr.c",
+        "source_sha256": "ffb8988b0453052bc4ccf8e4b007b9f781e8a35607fdf827347908ece39e316e",
+        "AST_gzip_sha256": "89f633c2e7a0991ed9e8290e668c44f034fccbb77f5243aeef95cd8002c0fab2",
+        "AST_sha256": "b6edf630a28c9339672d4b3a5179eb7d88b41a9c51c3b0c8e421e43a93041eb4"
+      },
+      {
+        "source": "src/legacy/memfile.c",
+        "source_sha256": "4cb4f818f702b339a188ded4553aceb050730e24782eda17de0fb282d5161655",
+        "AST_gzip_sha256": "f8045d03de393b1f87e5566874c59c5b7206a69302c2b247d0138e83e2942352",
+        "AST_sha256": "49bf9d28c82b722b926ae0567cf32b4635b0dded498577eba92fe145a08aab31"
+      },
+      {
+        "source": "src/legacy/memmap.c",
+        "source_sha256": "dd0500fb4c6395ac11f40161c6425e17f153eaa48da828e80a84ad8f69393546",
+        "AST_gzip_sha256": "ef8fc8c86d375bf4162fd38f5305cb7ffd828686b0c6c1ab1fb87a9fa07f75d6",
+        "AST_sha256": "ea1a4f68cf6745143cf3f2cd2cb152479099b059ec8d1813262f3dd3ba440b5a"
+      },
+      {
+        "source": "src/legacy/minimap_monster_iterator_50aae0.c",
+        "source_sha256": "0fe42f6adae2e7c2c8a3dc0fedfede8b778f462bd90bdc766767abc1496fbf08",
+        "AST_gzip_sha256": "25dbb19a279246940fd66dea9b8f22a57ed06a21203f6cd4fc1843e8d5141479",
+        "AST_sha256": "0c9ff881f526c21c84a792261337f98f139a630c338f8bde8cd8c33e580387e1"
+      },
+      {
+        "source": "src/legacy/monster_arrow_collide_4eb800_parse.c",
+        "source_sha256": "d99a6131ff63c85fd9259ecbbdfe7661c3de3ac5e0ea1d3858db0c672fbb6241",
+        "AST_gzip_sha256": "5842e20871750af32ecaba5e3f85155d315609b9342f570b9214e96801fe218e",
+        "AST_sha256": "99f087bbca413bead30c0389bebc2099c23a9ed9e718be966596031ca8f8f917"
+      },
+      {
+        "source": "src/legacy/network_line_message_4d9eb0.c",
+        "source_sha256": "36bb9a3af153f0a3540a4bc8c26de1ac79cc849dd431990778cb69702e63403c",
+        "AST_gzip_sha256": "b1f58f8a7ec0cb557138ba929b13add47236ad109dfbae29a1ac3462f56ecc05",
+        "AST_sha256": "f9f5347740b6d20c02c5df1d6b19e435c44f6a1211263d1109e36e1daf0a505b"
+      },
+      {
+        "source": "src/legacy/noxstring.c",
+        "source_sha256": "fd0e569e96404deefb80f4c3de3507a32c1fcb06ce325a48abf436b2e51d84f0",
+        "AST_gzip_sha256": "b467d7bc47ea12724e1c41f89ae6f0fe4b44abc8b0a92e8c6371a1e97cb7a66d",
+        "AST_sha256": "6b1aa37b7fe1f84633cfac3ffc1e7ba7f09df33a9b9edc794fd029ab8c89a501"
+      },
+      {
+        "source": "src/legacy/object_barrel_4e7470_caller.c",
+        "source_sha256": "7223f3fe1f7f252864599c6facc38987e28966f3a34bdc790a2861a66233497a",
+        "AST_gzip_sha256": "84e084ec46f5164c5c075f2b5833174287300db53c968740a36f1e3ae1be35a9",
+        "AST_sha256": "a4e5d89b9a6c04a576cd92f1c5aa0022689061862aed7ee80fda457553d96061"
+      },
+      {
+        "source": "src/legacy/object_collide_noop_4e87a0.c",
+        "source_sha256": "94f60d399e89808992e53ff1d603f5b076d4d5197b458d1c7a66dfb2afe379df",
+        "AST_gzip_sha256": "8a84a4ee8a025d4482209807e1e593d6708b6ed2f88e4b434ed5264b7e2d2758",
+        "AST_sha256": "023d1d23381103ef517b0a17444fbb1d72c05d197390ec355d32784541e57fd9"
+      },
+      {
+        "source": "src/legacy/object_collider_4e7290.c",
+        "source_sha256": "cb2b4cac54f2e84588b9f67a6c1e6497e1e282657082e94fc7b9099c83e485fb",
+        "AST_gzip_sha256": "40461c8678e25ece4268361c23aff8ff3909251bb990fdb42b4d80a8c64bbf5f",
+        "AST_sha256": "80706cee215bb25e56d57dc87da935303c62b3b79fe05a6097496206f459b80e"
+      },
+      {
+        "source": "src/legacy/object_inventory_4e7980.c",
+        "source_sha256": "324f04da2c587f12b0334ba7252ee36ad925e2a59abbd507a4f0d4a465e8ffd0",
+        "AST_gzip_sha256": "bb4b0978f44c75c856c438f4208f15bb6ccbd601630e715efb8883b0f8e571cd",
+        "AST_sha256": "d7729f14e970bc305429a917e9d944eb6b9c4c4b63dbd6cb7c2141f9dec28eab"
+      },
+      {
+        "source": "src/legacy/object_is_player_4e7bc0.c",
+        "source_sha256": "06e0a30cf6e38ab810b2427832f74c8c671e2550e687a38b0d5f4addbcf60434",
+        "AST_gzip_sha256": "95ac9242ec647892f4ade8981d4f76e1ee7c61c49785ab3329b4552ede2c2af4",
+        "AST_sha256": "ce073cc3346066de7e6fab1f5ec7fe7f681313a631a80861660c613074a4538e"
+      },
+      {
+        "source": "src/legacy/objects_velocity_5118a0.c",
+        "source_sha256": "fa3397b890e8d2d91f64a2daf5ac1d78847b7cdbaf61630c010b31b5060429ed",
+        "AST_gzip_sha256": "07dc7ff90ad914ef789dec0eed41a3814178bc3ccacf72b616366f467c76cb7d",
+        "AST_sha256": "5198e83a63ce9a6362c0eba78a5609b295de7247ff1f331a28953f931fdcbf9d"
+      },
+      {
+        "source": "src/legacy/player_handle_elim_death_54d7a0.c",
+        "source_sha256": "9d1c53e35a5b2c04a7f5051b308a53ec0476d51f6bb207f9bd1a973621dec823",
+        "AST_gzip_sha256": "69b59292c87649520b0eb1f1581a61972f3833af78af2c61ee9dd67e2af1e579",
+        "AST_sha256": "78a702247501d0c1540dfe5a898d5abd8ba1898e02c920b2af2e64d8c37538fe"
+      },
+      {
+        "source": "src/legacy/player_handle_kotr_death_54dc40.c",
+        "source_sha256": "4d1c22d61182653660a3af38d19c725388abf48cf1c7a449f35331e298fb028c",
+        "AST_gzip_sha256": "fdf4b319c6d25b50659f579f789cd68a00154d19876536245d003523a807c9d0",
+        "AST_sha256": "f885ee582cb9002a5a09ae4f095c9b718a51ca35e2188bd4bf5195c7467e4cbc"
+      },
+      {
+        "source": "src/legacy/player_try_dequip_4f2fb0.c",
+        "source_sha256": "1ec5c8c9b67209b6997c6a5b75b1b9ab2fa55feb321bca9b432865c57d1f7ae5",
+        "AST_gzip_sha256": "404ae31b77dc89ec4928d800c66c1b343ebaa0487126d8c84aa433ce3efd179c",
+        "AST_sha256": "7e2324f85bb6f5409bf2556454950650936a40cf53d256540a5178b0c1b32693"
+      },
+      {
+        "source": "src/legacy/player_update_score_54d980.c",
+        "source_sha256": "9fabfeb59d2990fe8ffff07b0366ac57a86f6cf309c95d9671e96ce5c2e11570",
+        "AST_gzip_sha256": "bdbc0174a8632ae9fb531b87078e1979a142fc4366f766f141d51676c8450e88",
+        "AST_sha256": "4abf42852cd17de757e8181f006e0ab01da98a3b3f70efacb37b188b0bb91538"
+      },
+      {
+        "source": "src/legacy/quest_map_buffer_4e8e50.c",
+        "source_sha256": "6e6df46f3b583aa23a16f5670054b0248a45297ceb9c76643af53b5aa5c6aa08",
+        "AST_gzip_sha256": "e9fe152459462e59f4c80fb7fb9a6be7a25496fb63faa1869310bbf6e588606a",
+        "AST_sha256": "6af18324cb35e20523b5ef0a3bb58c19bba39a6da91758294858a8328027640f"
+      },
+      {
+        "source": "src/legacy/quest_win_screen_450770.c",
+        "source_sha256": "54d24288ffc2d2627310e55ca2aeed96ea9017cbdf6ee4b6e7b51b5b98298b8c",
+        "AST_gzip_sha256": "7b2dcfe9c398b0b234dba9633b4e9455dc17ceb9a2f978ed942a0bd1195697fa",
+        "AST_sha256": "5aada0d75b9418b8bd67a935f6ecda9e040e818cfcd5c34f8597b9b767a50cb6"
+      },
+      {
+        "source": "src/legacy/raw_default_damage_native_bridge_4e0b30.c",
+        "source_sha256": "4367897e915a1c3f66abd0d9979636b953fcd3d6bcda092af7fa9a90e70486f2",
+        "AST_gzip_sha256": "ca9a32abbf4f83c615a5e9d8d726dce71d639ab5154d4bfde7407839a1557711",
+        "AST_sha256": "5b870c9e04c6abceb2b2c57cc5b0a6fa15d28a6d9281eeac91e11b608d4ca132"
+      },
+      {
+        "source": "src/legacy/readonly_bindings.c",
+        "source_sha256": "0fa9186c04191844de3d4ad85d8b113004c5c7e5401845ed0aab43b3950ef9d0",
+        "AST_gzip_sha256": "a8f0f76cf376972ed5335c2512e53821ba1ec039f0f3956cc285b06c25a752a8",
+        "AST_sha256": "dd4222fe046c360bb8517ca2e86ff215b45e097851a1dd7ba0f6aaad9b713f1a"
+      },
+      {
+        "source": "src/legacy/server__ability__ability.c",
+        "source_sha256": "0df97fd1b42411e9ad55fb39da202b444ed80ea4f610d6c9c560de029f42d459",
+        "AST_gzip_sha256": "de5e60fc561f9bb1c414bc1c00e1e981afd5a36b00f00628a1e6e78d57ca0ba2",
+        "AST_sha256": "28d5bd0f84bc189f87c7da14384c59c19e7bc8c241bf27fbc89788859c3863e0"
+      },
+      {
+        "source": "src/legacy/server__dbase__objdb.c",
+        "source_sha256": "216ff1dd1e9be6e4d55a3211e145f563e8390e3ccebf7b1401f201ed5914e84c",
+        "AST_gzip_sha256": "bc58aaed3abfd64d8cc8341387098356f0f8a1f48e004de52c8b707891041d5b",
+        "AST_sha256": "c26ec4b3dd376af53c416b02ea87fe68742686badd7f2a286623dcf30bc95c6b"
+      },
+      {
+        "source": "src/legacy/server__gamemech__explevel.c",
+        "source_sha256": "f24aa36a8088112f2184d542c573713152fe316105b5daafc3131e1917ba26fb",
+        "AST_gzip_sha256": "1b5fd6b806c9fbbbe26f03c492bc6715c72483cb83fb2e0746651a90fa4a1749",
+        "AST_sha256": "74243dc010fe9c015c9040a232efe7fad6c903a6e74560bd55cf674c32ac2fd2"
+      },
+      {
+        "source": "src/legacy/server__magic__plyrgide.c",
+        "source_sha256": "ab9b0f579f627606981dd2cc6b9e42ae6686a7f9025320bdb604245f6761c2dc",
+        "AST_gzip_sha256": "5e1503956d0b007cc586a7ffdb91128ec121c5975d815255f73ac12f7f263e97",
+        "AST_sha256": "5b5acfd3a0be0cd2976889f365c5918f56ac6625ba21834659bfa021dcdc90d3"
+      },
+      {
+        "source": "src/legacy/server__magic__plyrspel.c",
+        "source_sha256": "51c89e5f54c578fcbe4fc29949a919fbda4c6d7fcb45b30db9a3a4b42806a258",
+        "AST_gzip_sha256": "2f945bb9e67cb722048846e89964741296fd41defcc7fef0a7ef716c0ea93315",
+        "AST_sha256": "2a6324c0b5ca7395a18ff82fb7a0c6b0975975ea1f42c9f298936dd4de69e835"
+      },
+      {
+        "source": "src/legacy/server__mapgen__generate__populate.c",
+        "source_sha256": "45e9f13ca17404a256cf49fc7502022a205aa09c630d75802defd8971ad79e23",
+        "AST_gzip_sha256": "cd2feea7801865ca79bc45db11c6ba39ebe6e91f6ab2c92649a3840da0529419",
+        "AST_sha256": "f5c50d0e83c3b82eb6dc2ec302038800467386bfb1117770bf3b66d826f6a593"
+      },
+      {
+        "source": "src/legacy/server__network__sdecode.c",
+        "source_sha256": "52a6ce86f2cfb9af73dadc509e59ae0f1ab1f9ddbbe4b4a635ac55a3e63f1090",
+        "AST_gzip_sha256": "7ceebd73a8a0e757b3693604a35018bf91b85b191da6df09f122bfb83ff11574",
+        "AST_sha256": "7544db6a81b0ec9a304ffd93ec9fc22c389beb4162eff0b17e5c85152fa01888"
+      },
+      {
+        "source": "src/legacy/server__object__die__die.c",
+        "source_sha256": "91a7fb1c64197986fdabf265a29a897ae25544097e771753be0caddf2421b7d9",
+        "AST_gzip_sha256": "1adc4a6a94533aba9166cd42a017dc40c349898ab60e64edfccefd8421184759",
+        "AST_sha256": "f3cf8c0e1dc269fcf79f411ca662e3074e0ba2c7550b3181f755f5c8ba09ee2e"
+      },
+      {
+        "source": "src/legacy/server__object__health.c",
+        "source_sha256": "f3905d996fb93f1f19281e737738c356293c2691ee7b788d5b6b6f6268caae16",
+        "AST_gzip_sha256": "656c320a9a9841f450afb3bf69a81b8bf7e4a6246a508d1dad8e666f3f5b89fa",
+        "AST_sha256": "36d8246b5b5c637bb3557f4ef20b2bb49dd02c56e65f0a10af3796eb86e6eb1f"
+      },
+      {
+        "source": "src/legacy/server__script__builtin.c",
+        "source_sha256": "613a9debc841550cd33d3e3af37c6d25e7d62c2ae398934709e41a58a20c0830",
+        "AST_gzip_sha256": "c76d3ddd8d045455364a1792363dde8b3d1f958587f932efb6821d294f647c83",
+        "AST_sha256": "17f8f7ce57617b19ddda64054ac6f9532aa80124dc4a71c87a20a201add9ba87"
+      },
+      {
+        "source": "src/legacy/server__script__file.c",
+        "source_sha256": "24a20b227e9b23c9c9bad336d311fd025f5af74934c4c6a5b207e53e76e7223c",
+        "AST_gzip_sha256": "c01f8a4581449fb5fc63ca812dfc0be1e16b79263d371a579216aa91f32856f8",
+        "AST_sha256": "41804d55a524705eafe130f4e280354d4de91187e35e02b174ff587d50d25015"
+      },
+      {
+        "source": "src/legacy/server__system__cscrfunc.c",
+        "source_sha256": "f67d0194f63e49e3b1a1df2ea1f0da1eb9ec2c921e028381cc59c8604300775e",
+        "AST_gzip_sha256": "3af83a2da06e494f9301e1275d6501fb8aa83b1bf234539c3c26ace781f47bc6",
+        "AST_sha256": "866b28f64572fe754dbfbfcb9a14d6638ac9aa403a4c6e1dea22015594259e19"
+      },
+      {
+        "source": "src/legacy/server__system__server.c",
+        "source_sha256": "2bbafe1ebb17b2642d92e9bc3aa026250e619f01397deb580e2a6a77115ee6b9",
+        "AST_gzip_sha256": "8841a291c6857620a59d4308446f034159c2a8001e9b58e6ed4f9785a95ec9b9",
+        "AST_sha256": "38abf97fe85ea76fbddfbf785f0fe4aaedd5b13503351a9aa433af1601eb1b8c"
+      },
+      {
+        "source": "src/legacy/server__system__trade.c",
+        "source_sha256": "d3f26bf6d6d27e3a80c0558fbcba9ccb1fcbf744aa7dfd2bc3fe16c03db7c833",
+        "AST_gzip_sha256": "a052eacc5f7e528f6decc399531548a4f5ec97b89272bf13d72a1e7f639a3ecb",
+        "AST_sha256": "4cbff8c8e3bdf493f3c948aed221816d865aa597d6324cabb2c668884e4e13a2"
+      },
+      {
+        "source": "src/legacy/spark_explosion_collide_4e9ac0_parse.c",
+        "source_sha256": "55609aca29122ea50eb0fcf496a0c010236ec472a44bb4b305a33d8c443defed",
+        "AST_gzip_sha256": "bf140444b73ec7f6bdec2876065cf1fbd1aff2d9a85fb52b68d47c0e2671c07b",
+        "AST_sha256": "910966f07fc9480a063b5d8b06bc2acc39f7f7c4211b6a83c6eb0d2aafb07433"
+      },
+      {
+        "source": "src/legacy/startup_pause_compare_413f60.c",
+        "source_sha256": "083e6084a6543f1f45291b0b7db913f09b4f341bb42064b17173bf455a5dfa36",
+        "AST_gzip_sha256": "ce0b46c3f5250be072b6669d7e5445f202c39b6e30749f23462882311cee65e4",
+        "AST_sha256": "82794d985f9e154403f97f521815ec18d92db1453bcc5f1559107346527d134b"
+      },
+      {
+        "source": "src/legacy/stats_bulk_native.c",
+        "source_sha256": "67d3e3c0e74f5ffa55df8c61087ef4c97de62fbf876ffb51626f901e62f654d8",
+        "AST_gzip_sha256": "63feabcce809ef4e8f061a3a62b537fd0b543835b346b2d5893f0b4d6824084b",
+        "AST_sha256": "6313d58c8edac62dc2e2fa27ab58534dcce934a460431e34d9c9460d2ea84942"
+      },
+      {
+        "source": "src/legacy/stats_end_native.c",
+        "source_sha256": "7d6bf42a7d3b9043d27ab9d81d8a87a055ff4cfc21f930a9205665ed945cdd01",
+        "AST_gzip_sha256": "f67f0f066e01f29a9b1092ca20e6fa1d1b27eb319aef6f4d485c17dc333d7998",
+        "AST_sha256": "e391c9d5f5a41fadb99c9944edb6b7d2f018a2fa5708565ae764ec4514c2ab6f"
+      },
+      {
+        "source": "src/legacy/stats_start_native.c",
+        "source_sha256": "7effab6ec6957838f44c4a4ffa355c0b79fbffa264bc6a1969150faa62137685",
+        "AST_gzip_sha256": "dc68259bab7b49779f02d5131b2eb32fae163166432a304faa064742bc6967f7",
+        "AST_sha256": "7d2dec4cbe0daa9ee896df91e3d99d19d9716bf4a1661e1f71220f231f21bf6e"
+      },
+      {
+        "source": "src/legacy/team_flags_4185b0.c",
+        "source_sha256": "5d44ab4cbe6166391d394630f990b602edc44fbafdae8fdb08be805fd15b0a3c",
+        "AST_gzip_sha256": "85691489a8d95836b01db25a1f72f4eaedc404702facd5be7112d5958f88512a",
+        "AST_sha256": "fbed15dbb640ee4f522b3e6a472a64d21670f3e55fb1a8565389ad383fce6a1f"
+      },
+      {
+        "source": "src/legacy/thing_parsers_reference_411540.c",
+        "source_sha256": "540587bbdd0cedf9da38de91b8d0e4e996b133e58d477395e2aa815e80222f99",
+        "AST_gzip_sha256": "d9e679f6bbb3bf3ff65d127a45d483810bbe0aad99420e1a967863a20552f55d",
+        "AST_sha256": "c647ebd995f2e9ff5528cbeb6a3b502f41ded74cb0cc45046c34cbaa718fb5cb"
+      },
+      {
+        "source": "src/legacy/unit_count_slaves_4e7cf0.c",
+        "source_sha256": "ec58cc2b2a25f84a336e957a806695b3cefde84dd7e48eded0fc28161ae75e5f",
+        "AST_gzip_sha256": "ce7c5f07309b3ce36ccd28373bfa1ca82769ac154a418a2ec525f1592cc3b21c",
+        "AST_sha256": "fe4e6573d1bd4a7d76fb6de7cee18bdf59941796b537479a3eab444a830f7c7c"
+      },
+      {
+        "source": "src/legacy/unit_freeze_gate_4e79b0.c",
+        "source_sha256": "e4ac97b0e3e91da40e0a84d087dad1fe3adb9c895477324a4014fd822a872ce8",
+        "AST_gzip_sha256": "8db4daa184c86bf86a03679f658725d3ff7f7214f6ed759813f7403108c87ec4",
+        "AST_sha256": "8c9633bb2870f75cfac06f0540247f02389d385c3b8cb2935187c68c66105e6b"
+      },
+      {
+        "source": "src/legacy/unit_inventory_contains_equivalent_4e7ec0.c",
+        "source_sha256": "6a5060557ff84c1574d23e4a8c2682c67e299d375360d7831276edade38eb7db",
+        "AST_gzip_sha256": "0dc8434cce0236908513ee77ad323819af7cdb358a743eb0d92120d077188cec",
+        "AST_sha256": "7ba1f9dabd1fda4663b597b1046c87300d7c8f5ddf4acead743a52d23eb63e5c"
+      },
+      {
+        "source": "src/legacy/unit_item_equivalent_4e7de0.c",
+        "source_sha256": "d82e6367e14de1fbd07c00e8e04f1e96e223c204050f52a8c581c86be7f39f3c",
+        "AST_gzip_sha256": "5582e79c6967bff5d7770317138290b94bb788bc81c72e4ff2d51a35f100146d",
+        "AST_sha256": "7a827e2cb264e0fa161f045e2ab6c4c15d8791a600189e77caa7bab6fa242952"
+      },
+      {
+        "source": "src/legacy/unit_owned_type_4e7be0.c",
+        "source_sha256": "b9359ff60c131ece026a3ea3fd8568dcdb3e38a88cab193cab8fe171dfd72210",
+        "AST_gzip_sha256": "18d03ad74cd2bd850488e562b85e0278575031a7d8ab53371155169752997930",
+        "AST_sha256": "9d417b6b40c85cece05e20c291e25df672d1996efe82c164a304280a306e10c8"
+      },
+      {
+        "source": "src/legacy/vardefs.c",
+        "source_sha256": "059e0584abb609c92274edfcaba499ed82496f83b54ea30004ff1b0b041503cf",
+        "AST_gzip_sha256": "a108ca186fadbe9ce320d8bd7f7fe2e7a22644b3819e58d3cd0c1e4eb0757bc8",
+        "AST_sha256": "c29fb0571dfcbee5d5824c0b8f87b3b0abfe67838a5dbe8f00a8a4e5eb3f5b99"
+      },
+      {
+        "source": "src/legacy/vote_5066d0.c",
+        "source_sha256": "4c2a439ca7db2cc96470a097d4457a2a8961d365e0fd40968871080bb7f14bcb",
+        "AST_gzip_sha256": "667a40b70622c5f24cf082b926d17d5c9769c485da599a8f053c7dc66da90053",
+        "AST_sha256": "32f99682875015f3ff0b2db92b31f0fa8a690a6523a8683dbad0e0bc3c46764b"
+      },
+      {
+        "source": "src/legacy/wall_reflect_collide_4e9d80_parse.c",
+        "source_sha256": "679a79e22261727f5e23747eb0757344b6530daef3825562a97a02ce900408be",
+        "AST_gzip_sha256": "5511d29ad5d0b10681f8a5dee4a0b5c925a6804a63a435e709893fd20659f0ce",
+        "AST_sha256": "e14b3ee77240e4eed86ff2ad4e5dde989147b9945be18e6d0410fdde359d483e"
+      },
+      {
+        "source": "src/legacy/world_player_reference_40a830.c",
+        "source_sha256": "364fd0befd71710e140d6cdb3a691f3d0c8c1a96b7a3227832dc845858c16d4c",
+        "AST_gzip_sha256": "10ad648f7ebffff9047668fd19710c0e153c979353dde5de7c7bccd04e0fdc29",
+        "AST_sha256": "fd90a5ef9faf24e81195b93771cf3b9a795dd190995cb43af621055074ebdabe"
+      }
+    ],
+    "scope": "Current default macOS ARM64 selected own-source C bodies only. This includes C native bridges and address/data adapters. Header/inc algorithms, Cgo preambles, optional tags, other architecture branches and external-module C are not covered. Casts include deliberate wire/token conversions. No remaining-unported count or overall completion percentage is established. The preceding 629-physical-file catalog is historical and is not rebound to these changed source bytes."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical native memory/GC failures remain open; no blanket repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit",
+    "existing_C_parents": "Four unchanged active C calls retain legacy parent transport; native leaf ABI does not make their parents native",
+    "original_owner_domain": "Valid initialized native Object/update/Player/session/item records except the original nil Object guard in4D6170; no claim for invalid nonnil child pointers",
+    "deferred_original_roots": "Team head/next need native membership projection; map monster-list query is Object identity and needs native producer/allocation/head/link migration",
+    "all_C_denominator": "OPEN; preceding629-file/2531-own-definition catalog is historical and includes bridges. Current header/inc/Cgo preambles/other architecture branches still need classification."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 18336
+    },
+    "native_roots": {
+      "TestPointerChainNativeLayout": "pass",
+      "TestPointerChainNativeOriginal": "pass",
+      "TestPointerChainNativeSessionIdentity": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 2037,
+      "route0/place64": 2037,
+      "route0/place512": 2037,
+      "route1/place0": 2037,
+      "route1/place64": 2037,
+      "route1/place512": 2037,
+      "route2/place0": 2037,
+      "route2/place64": 2037,
+      "route2/place512": 2037
+    },
+    "original_entry_checks": {
+      "nox_xxx_tradeSetPlayer_50F370": 2538,
+      "sub_50F490": 2538,
+      "sub_4D60E0": 3384,
+      "sub_4D6170": 1701,
+      "nox_xxx_changeScore_4D8E90": 3384,
+      "nox_xxx_playerSubLessons_4D8EC0": 3384,
+      "sub_510DE0": 1404
+    },
+    "original_cases": 2037,
+    "original_instruction_bytes": 329,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "original_pointer_returns_and_native_store_projection_equal": true,
+    "full_native_Object_PlayerUpdate_Player_TradeSession_TradeItem_pointers": true,
+    "C_Go_layout_fields": 38,
+    "whole64KiB_owner_except_exact_original_native_word_projection_checked": true,
+    "second_whole_foreign_owner_unchanged": true,
+    "seeded_foreign_pointer_initialization_and_Trade70_stores_use_C_memcpy": true,
+    "additional_distinct_session_identity_routes": 3,
+    "pointer64_equal_low32_distinct_sessions_without_fixed_mapping": true,
+    "pointer32_distinct_native_session_control_without_skip": true,
+    "existing_RecordMonsterKilled_full32_lookup_and_pointer_copy_unchanged": true,
+    "all4_active_C_calls_and_parents_unchanged": true,
+    "scope": "All2037 original rows through actual C/volatile callback/direct Go at3 native placements. Original PE32 return roles map to full native pointers; only projected original store bytes may change. Three extra distinct-session calls reuse one sealed original row;64bit owns a sparse4GiB pair with only two64KiB committed ends,32bit keeps distinct native owners. Deferred original Team/map-head functions receive no credit; parent/lifetime/allocator migration remains outside scope."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/qualified-pointer-chain-entries-v1.json",
+    "sha256": "c5fcb4907cc248baa437ad41489f9907393752073d24b341b272213e5ec2789e"
+  },
+  "normal_passes": 250981,
+  "strict_passes": 250981,
+  "focused_passes": 18336,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 112
+}

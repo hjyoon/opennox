@@ -60,6 +60,118 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native object and trade pointer-chain C entries, 2026-11-16
+
+Engine `513e5cc937822177211447872d6290a1a49efc71` is committed and pushed to
+`origin/port/go1.27-multiarch`. Seven public C entries now execute in Go:
+`nox_xxx_tradeSetPlayer_50F370`, `sub_50F490`, `sub_4D60E0`,
+`sub_4D6170`, `sub_510DE0`, `nox_xxx_changeScore_4D8E90` and
+`nox_xxx_playerSubLessons_4D8EC0`. Object arguments and pointer-valued
+returns keep their full native width. Session, PlayerUpdate, Player,
+TradeItem and Object links use existing native fields instead of PE32
+offsets. Signed32 delta/code arguments and uint32 counter/store bits remain.
+
+There are **235 C entries implemented in Go** and **233 with complete
+recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.**
+The preceding whole-C catalog remains historical: its 629 physical files
+and 2,531 own-source definitions include native bridges and do not provide
+a remaining-unported denominator. A fresh read-only audit of the current
+207 default ARM64 selected C files verifies all source and lossless AST
+hashes. It identifies **2,524 own-source definitions**, including 14 macro
+definitions and native C bridges, and **458 functions with pointer/integer
+casts**. Those casts include intentional wire and token conversions; these
+counts do not establish the unported denominator. Header/inc algorithms,
+Cgo preambles, optional tags and other architecture branches still need
+classification.
+
+Before edits, an **87-path seal** preserves **2,037 original CPU/model
+cases**, all **329 selected procedure bytes**, **319 startup bytes** and
+`0xe3f` FP state. All **2,349 cases / 384 bytes** from the initial ten
+procedures remain separately archived. Seven complete root case sets are
+selected without changing any original input or expected return/store.
+No child service is replaced. The independent input-only model matches
+every pointer/int32 return bit pattern and ordered four-byte heap write.
+Whole image, exact heap-write ledger, caller redzones, saved registers and
+FP state remain checked.
+
+The unchanged **1,922-byte C bodies** run through **2,037 controls**:
+**1,223 pure packed32** and **814 explicitly identified hybrid controls**.
+Detach, guarded statistics and lookup contain native eight-byte pointer
+loads at PE32 positions; those controls zero the following high word.
+They do not establish a complete pure-packed or native owner composition.
+All controls match original returns and final declared words while
+preserving both complete 64 KiB arenas outside those words.
+Seven actual high native Object/update/Player/trade-prefix graphs pass
+typed precontrol, then the old int arguments narrow into a protected alias
+and fault. These **eight standalone x86_64/Rosetta processes** establish
+the bounded argument failures; no old-C ARM64 or full-game crash is claimed.
+
+Final qualification passes:
+
+- **18,336** focus identities: every selected original case through actual
+  C, a volatile indirect C callback and direct Go at three native placements,
+  plus three roots. **38** C/Go layout checks include exact shared prefixes,
+  native pointer fields and private Player counter/flag offsets. Only the
+  original writes projected into native fields may change either owner.
+- The identity root makes three extra calls using an unchanged original
+  distinct-session row. On 64-bit targets, the two native sessions have
+  equal low words and a four GiB gap in an owned sparse reservation with
+  only two 64 KiB ends committed, without fixed mappings. On 32-bit targets
+  distinct native sessions are checked without skipping. Detach preserves
+  another session even when its low word matches the argument session.
+- Attach/detach reuse the existing C pointer-copy primitive for foreign
+  Trade70 stores. Guarded statistics use named Go Player fields without
+  changing its layout. Kill accounting and full32 valid-node lookup reuse
+  unchanged preceding helpers. Original nil Object handling, destroyed
+  guards, exact gate equality and counter/lesson wrapping remain.
+- Normal and highres/cgocheck2/checkptr2 each pass **250,981** identical
+  terminal identities/multiplicities on the **9,357-input** lease
+  `4a877143a7f9aaf75470d55c93fcfe1ebd2698d69cd6eafc5a751704adb5d606`.
+  All preceding **232,645** identities and **4,770** protected inputs
+  remain unchanged. Added identities equal the entire new focus.
+- Four ARM64 products pass default Apple compiler builds, metadata, help
+  and **112** symbol checks. Normal/HD pass four core E2E cases, two
+  functional Save/Load diagnostics and two ordinary-clock independent UDP
+  chat profiles. Each chat proves eight submissions, four peer messages
+  and one host reply; both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43877769800) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43877630450)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six verified ZIPs retain **158 actual test mains**, all new and preceding
+  native matrices, the full-suite increment and unchanged skip identities.
+  Existing Windows/386 GOGC10 replay is retained; the new pointer-chain
+  family is not selected by that replay. Complete warning review covers
+  **22 files / 6,786,197,833
+  uncompressed bytes**, with zero warnings.
+
+Reversing seven guards, six native prototype updates and one newly explicit
+attach declaration reconstructs all **three incoming C files and two
+headers**. Four active C score-call sites retain their complete parent
+bodies and existing transport; native leaf arguments do not make these
+parents native. The contract uses valid initialized native child records,
+apart from the original nil Object case in `sub_4D6170`. It does not claim
+invalid-pointer behavior, allocator/lifetime migration or complete callers.
+
+The three deferred original roots retain all **312** cases. Team+44 and
+ObjectTeam+0 were member pointers whose modern native membership lives in
+separate maps, so widening the old words would be an incorrect projection.
+Map lookup `sub_50DE60` compares Object identities and still needs its
+148-byte allocation class, global head and links migrated together.
+These deferred roots receive no new native qualification credit.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **37 current program paths**,
+**39 preceding S36 paths** and **11 paths from the earlier failed S34
+attempt** remain after clearing only the closed dedicated cache from
+**1,704,492 KiB to 8 KiB**. Historical deletions,
+lost S25 seals, nine final chapter 1–3 audits, public Save/Load pixel failure
+and other historical Windows memory/GC causes remain open. Chapter 4 and
+later remain excluded.
+
+Machine evidence: [split-pointer-chain-native-progress-20261116.json](split-pointer-chain-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pointer-chain-native-v1/qualified-pointer-chain-entries-v1.json` (SHA-256 `c5fcb4907cc248baa437ad41489f9907393752073d24b341b272213e5ec2789e`).
+
 ### Native shared global and player-state C entries, 2026-11-16
 
 Engine `9853b02a07eb3a20f11752de688f28bc7018d32b` is committed and pushed to
@@ -71,8 +183,8 @@ All headers and **22 C call sites** remain unchanged; reversing the
 seventeen guards and one address-only static-waypoint bridge reconstructs
 all six incoming C files. Caller bodies are outside this leaf qualification.
 
-There are **228 C entries implemented in Go** and **226 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
+At that checkpoint, **228 C entries were implemented in Go** and
+**226 had complete recorded qualification**. Two implemented entries with deleted S25 original
 seals remain open. **All-C migration and overall 100% remain open.** These
 entry totals do not establish the all-C denominator.
 

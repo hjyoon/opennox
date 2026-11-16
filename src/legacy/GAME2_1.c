@@ -3665,6 +3665,7 @@ unsigned char* nox_xxx_guiHealthManaColorInit_470B00() {
 }
 
 //----- (00470C40) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int sub_470C40(int a1) {
 	int result; // eax
 
@@ -3680,8 +3681,10 @@ int sub_470C40(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00470C80) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int nox_xxx_cliSetTotalHealth_470C80(int a1, int a2) {
 	int result; // eax
 
@@ -3694,8 +3697,10 @@ int nox_xxx_cliSetTotalHealth_470C80(int a1, int a2) {
 	dword_5d4594_1096260 = 32;
 	return result;
 }
+#endif
 
 //----- (00470CB0) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int sub_470CB0(int a1) {
 	int result; // eax
 
@@ -3703,6 +3708,7 @@ int sub_470CB0(int a1) {
 	nox_windows_arr_1093036[0].field_1 = a1;
 	return result;
 }
+#endif
 
 //----- (00470CC0) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
@@ -3715,6 +3721,7 @@ int sub_470CD0() { return nox_windows_arr_1093036[0].field_2; }
 #endif
 
 //----- (00470CE0) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int nox_xxx_cliSetManaAndMax_470CE0(int a1, int a2) {
 	int result; // eax
 
@@ -3727,8 +3734,10 @@ int nox_xxx_cliSetManaAndMax_470CE0(int a1, int a2) {
 	dword_5d4594_1096260 = 32;
 	return result;
 }
+#endif
 
 //----- (00470D10) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int nox_xxx_cliSetMana_470D10(int a1) {
 	int result; // eax
 
@@ -3736,6 +3745,7 @@ int nox_xxx_cliSetMana_470D10(int a1) {
 	nox_windows_arr_1093036[1].field_1 = a1;
 	return result;
 }
+#endif
 
 //----- (00470D20) --------------------------------------------------------
 int sub_470D20(int a1, int a2) {
@@ -3771,7 +3781,9 @@ int sub_470D90(int a1, int a2) {
 }
 
 //----- (00470DD0) --------------------------------------------------------
+#if 0 // Restored by gui_bar_state_native_entry.go.
 int nox_xxx_cliGetMana_470DD0() { return nox_windows_arr_1093036[1].field_1; }
+#endif
 
 //----- (00470DE0) --------------------------------------------------------
 int sub_470DE0() {

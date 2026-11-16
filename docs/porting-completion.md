@@ -60,6 +60,97 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native GUI health, mana and color state C entries, 2026-11-16
+
+Engine `826bd8c59aff82399f353653e604725f519eac08` is committed and pushed to
+`origin/port/go1.27-multiarch`. Six public C entries now execute in Go:
+`sub_470C40`, `nox_xxx_cliSetTotalHealth_470C80`, `sub_470CB0`,
+`nox_xxx_cliSetManaAndMax_470CE0`, `nox_xxx_cliSetMana_470D10` and
+`nox_xxx_cliGetMana_470DD0`. They retain the shared native Player pointer,
+existing PlayerInfo maximum-field accessors, seven native window records
+and original scalar owners. All argument/return int32 bit patterns remain.
+
+At this checkpoint, **241 C entries were implemented in Go** and
+**239 had complete recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.**
+The preceding 207-file / 2,524-definition audit belongs to source
+`513e5cc937822177211447872d6290a1a49efc71`. It includes C bridges and
+address adapters and does not provide a current unported denominator.
+Header/inc algorithms, Cgo preambles, optional tags and other architecture
+branches still need classification.
+
+The exact tested commit is also frozen in a clean detached worktree. All
+**9,363** captured compilation inputs match that snapshot byte for byte.
+This permits later porting work while this source-bound CI is queued; the
+original tests, products, assertions and outputs remain unchanged.
+
+Before edits, a **72-path seal** preserves **1,616 original CPU/model
+cases**, all **175 root bytes**, **319 startup bytes** and `0xe3f` FP state.
+There are no child services. The independent input-only model matches every
+return, all fourteen final state words and ordered four-byte write roles
+and values. Complete image and 64 KiB heap comparison admits only those
+exact writes; caller arguments, redzones and saved registers remain checked.
+All static root instructions are covered, including both color branches,
+nil/non-nil Player and distinct unaligned health/mana maximum fields.
+
+The unchanged **1,411-byte C bodies** already match all **1,616** original
+cases on actual ARM64 Player/window layouts, with zero compiler warnings.
+High native Player addresses, complete 64 KiB owner and all seven windows
+are checked outside declared scalar writes. Existing C pointer reads already
+have native width. This batch preserves that behavior while moving the
+algorithms to Go; it does not claim a new pointer-truncation crash repair.
+
+Final qualification passes:
+
+- **14,546** focus identities: every original row through actual C, a volatile
+  indirect C callback and direct Go at three native placements, plus two
+  roots. **17** C/Go layout checks verify full Player size, PlayerInfo fields,
+  exact four-byte widths and pointer-dependent window offsets/stride.
+  All fourteen original final words, the complete Player owner, seven
+  windows and shared Player pointer remain checked. Only the original
+  scalar writes projected into native fields may change their owners.
+- Normal and highres/cgocheck2/checkptr2 each pass **265,527** identical
+  terminal identities/multiplicities on the **9,363-input** lease
+  `80713270ba15ea4d5a0dfea010febfadb0ea34b1223676b4a61aa734c720685a`.
+  All preceding **250,981** identities and **4,772** protected inputs
+  remain unchanged; the complete new focus accounts for the increment.
+- Four default Apple compiler ARM64 products pass metadata/help and
+  **118** symbol checks. Normal/HD pass four core E2E cases, two functional
+  Save/Load diagnostics and two ordinary-clock independent UDP chat profiles.
+  Each chat proves eight submissions, four peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43885687919) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43885540802)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six verified ZIPs retain **158 actual test mains**, all 24 native matrix
+  readers, the full-suite increment and unchanged skip identities. Existing
+  Windows/386 UI GOGC10 replay remains; this new family is not selected by
+  that replay. Complete warning review covers **22
+  files / 6,887,429,534 uncompressed bytes**,
+  with zero warnings.
+
+Reversing six guards reconstructs the complete incoming `GAME2_1.c`.
+All headers, prototypes, eight active C call sites and their parent bodies
+remain unchanged. The native leaf qualification does not make those
+parents native. Existing Player/PlayerInfo layouts, field accessors and
+S36 shared pointer-copy primitive also remain unchanged. The owner domain
+uses a valid initialized Player when its shared pointer is nonnil; no
+invalid-pointer or allocator/lifetime equivalence is claimed.
+
+Candidate-filter and list-parser preparation errors are retained separately;
+they ran no product or test and changed no original expectation. All
+**4,649** original asset/personal Save files retain their hashes. All
+**37 current program paths**, **37
+preceding S37 paths** and **11 failed S34 paths** remain after clearing only
+the closed dedicated cache from **1,705,668 KiB to
+8 KiB**. Historical user deletions, two lost S25 seals, nine final chapter
+1–3 audits, public Save/Load pixel failure, other historical Windows memory/
+GC causes, Team membership and map-monster-list pointer families remain
+open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-gui-bar-state-native-progress-20261116.json](split-gui-bar-state-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-gui-bar-state-native-v1/qualified-gui-bar-state-entries-v1.json` (SHA-256 `c7bc269b4fc3d5579f083d9f005ef9c1bfe18300f6fff0bca925bdd5bb5411d3`).
+
 ### Native object and trade pointer-chain C entries, 2026-11-16
 
 Engine `513e5cc937822177211447872d6290a1a49efc71` is committed and pushed to
@@ -71,8 +162,8 @@ returns keep their full native width. Session, PlayerUpdate, Player,
 TradeItem and Object links use existing native fields instead of PE32
 offsets. Signed32 delta/code arguments and uint32 counter/store bits remain.
 
-There are **235 C entries implemented in Go** and **233 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
+At that checkpoint, **235 C entries were implemented in Go** and
+**233 had complete recorded qualification**. Two implemented entries with deleted S25 original
 seals remain open. **All-C migration and overall 100% remain open.**
 The preceding whole-C catalog remains historical: its 629 physical files
 and 2,531 own-source definitions include native bridges and do not provide

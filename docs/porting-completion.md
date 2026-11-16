@@ -60,6 +60,104 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Drawable queue predicate C entries, 2026-11-17
+
+Engine `c4f40b5e1b764b428025170893591ec5d25fe7e6` is committed and pushed to
+`origin/port/go1.27-multiarch`. Four public C entries now execute in Go:
+`nox_xxx_sprite_4756E0_drawable`, `nox_xxx_sprite_475740_drawable`,
+`nox_xxx_sprite_4757A0_drawable` and `sub_4757D0_drawable`.
+
+The original overlay C entry narrows its owner to int and faults on a valid
+high native owner. The world C entry indexes native fields as packed uint32
+words, producing 4,150 different results in the before-port controls. The
+renderer already used four Go predicates. Those same bodies now live in
+the client package and serve both the renderer adapters and public C exports.
+Signatures and the static-function identity argument are the only body
+adaptations. Headers, native Drawable layouts, function-pointer producers,
+four legacy Go wrappers, the renderer dispatcher, queues and visibility
+logic remain byte-identical. No active C callers/references were found for
+these four roots, so this is not evidence of a newly observed gameplay crash.
+
+There are **277 C entries implemented in Go** and **275 with complete
+recorded qualification**. Two S25 entries with deleted original seals remain
+uncredited. **All-C migration and overall 100% remain open.** Nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, the public Save/Load pixel failure
+and other historical Windows memory/GC causes remain open. Chapter 4 and
+later are excluded.
+
+The **118-path pre-port seal** preserves **13,460 original CPU/model
+contexts**, **53,840 root calls**, all **262 root bytes**, **319 startup
+bytes** and `0xe3f` FP state, without child services. All root instructions
+are covered. An independent input-only bit-set model matches every declared
+result and function identity. The original image, whole 64 KiB owner,
+arguments, redzones, saved registers and FP state are checked. Callbacks are
+compared only; valid nonnil Drawable owners form the original domain. Go nil
+handling is preserved as an existing extension, without nil-owner equivalence
+credit or allocator, callback-invocation or lifetime migration credit.
+
+The **1,604 unchanged C bytes** retain actual ARM64 controls: **40,380**
+safe-entry results, including all 26,920 back/front matches and 9,310 world
+matches, plus the 4,150 world differences. A separate overlay process faults
+with SIGSEGV. The first ARM64 low-pagezero packed diagnostic was killed before
+main; its binary and empty output are retained and it receives no equivalence
+credit. A separate Rosetta x86_64 executable matches all **26,920** packed
+overlay/world controls. Successful native controls were not rerun. Each of
+the three before-port executables retains four original compiler warnings;
+production compiler flags are unchanged.
+
+Qualification passes:
+
+- Public C, volatile C callback and direct Go cover every original context
+  at three placements: **121,140 vector leaves / 484,560 scalar checks**.
+  **13 C/Go layout checks** distinguish the native prefix from the existing
+  Go clientHandle extension. Whole-owner read-only checks include decoys at
+  old packed offsets. Existing-wrapper and renderer tests each add 161,520
+  scalar checks; the original 1,280-case golden and root queue unit remain.
+- Focus passes **121,143** events. Normal and highres/cgocheck2/checkptr2
+  each pass **561,439** identical terminal identities and multiplicities,
+  retaining every prior 440,296 identity. Renderer/golden normal and strict
+  each pass **1,283** events across two packages. All actual tests pass on
+  their first attempts with zero warnings and share the **9,402-input**
+  lease `387cdc3dc70b306f70fe57ff66e15d6dcc2b152f086e0b9221548c589e02ca3d`.
+- Four default Apple compiler ARM64 products pass metadata/help and **154**
+  native/control symbol checks with zero warnings. Normal/HD each pass two
+  core E2E cases, one functional Save/Load diagnostic and ordinary UDP chat.
+  Each chat proves eight submissions, four independently received peer
+  messages and one host reply; both processes exit zero without force.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43966095910) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43965828438) pass
+  all six profiles on their first attempts. Six official verified ZIPs retain
+  **158 actual test mains** and all **30** source-bound reader chains. Exact
+  new full-suite increments are 121,144 client / 121,142 server, with unchanged
+  skips. Full warning review scans **22 files /
+  8,788,639,966 uncompressed bytes**, finding zero
+  warnings. The existing Windows/386 UI GOGC10 replay remains; it does not
+  select this new family and grants no new GC-repair credit.
+
+All **4,784 existing protected tests/fixtures** remain byte-identical. Source
+reconstruction verifies the four C guards and four moved Go predicate bodies;
+product ASTs prove the four old C definitions are absent. Helper preparation,
+preflight and early-metadata failures remain recorded; their repairs change
+no source test, fixture, original result or existing expectation.
+
+All **4,649 original asset/personal Save files** retain their hashes. All
+**49 current program paths**, 37 preceding S43 paths,
+four failed S41 paths, 37 failed-source S39 paths and 11 failed S34 paths remain
+after the closed dedicated cache returns from **2,331,032
+KiB to 8 KiB**. Historical user deletions remain recorded and nonblocking.
+Fresh analysis of **207 selected C files** records **2,468
+ordinary definitions plus 14 classified
+macros = 2,482**, with 450 functions
+containing pointer/integer casts. Width triage records 323 pointer-to-narrow,
+2,023 narrow-to-pointer and 585 native-width sites; the HANDLE -1 sentinel is
+resolved from exact AST. These counts include bridges, platform implementations
+and references and establish neither a defect count nor the unported denominator.
+Header/inc algorithms, Cgo preambles, optional tags, other architectures and
+team/map-monster owners remain open.
+
+Machine evidence: [split-drawable-predicate-native-progress-20261117.json](split-drawable-predicate-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/qualified-drawable-predicate-entries-v1.json` (SHA-256 `6903445c7d2c555614fc1c4e4ae38ed5de4c1facbad08b03f8b48d53f08a0deb`).
+
 ### Native Window draw-state and geometry C entries, 2026-11-17
 
 Engine `f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58` is committed and pushed to

@@ -1,0 +1,881 @@
+{
+  "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+  "entries": [
+    "nox_xxx_sprite_4756E0_drawable",
+    "nox_xxx_sprite_475740_drawable",
+    "nox_xxx_sprite_4757A0_drawable",
+    "sub_4757D0_drawable"
+  ],
+  "qualified_entries": 4,
+  "preceding_fully_recorded_qualified_entries": 271,
+  "cumulative_qualified_split_Go_entries": 275,
+  "implemented_split_Go_entries": 277,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9402,
+    "sha256": "387cdc3dc70b306f70fe57ff66e15d6dcc2b152f086e0b9221548c589e02ca3d"
+  },
+  "qualified_source_binding": {
+    "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+    "source_tree": "5481860a4222b272d2c23957b82eca3818536325",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-drawable-predicates-qualify-20261117",
+    "source_lease_sha256": "387cdc3dc70b306f70fe57ff66e15d6dcc2b152f086e0b9221548c589e02ca3d",
+    "all9402_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "contexts": 13460,
+    "root_calls": 53840,
+    "root_bytes": 262,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 118,
+    "proof": {
+      "utc": "2026-11-16T21:18:05.404199+00:00",
+      "observation_source_revision": "1928acd124da21bcdbeefbabbe9471b2928cd3b5",
+      "entries": [
+        "nox_xxx_sprite_4756E0_drawable",
+        "nox_xxx_sprite_475740_drawable",
+        "nox_xxx_sprite_4757A0_drawable",
+        "sub_4757D0_drawable"
+      ],
+      "cases": 13460,
+      "original_root_calls": 53840,
+      "original_root_bytes": 262,
+      "root_bytes_by_entry": {
+        "nox_xxx_sprite_4756E0_drawable": 82,
+        "nox_xxx_sprite_475740_drawable": 84,
+        "nox_xxx_sprite_4757A0_drawable": 40,
+        "sub_4757D0_drawable": 56
+      },
+      "return_counts": {
+        "nox_xxx_sprite_4756E0_drawable": {
+          "0": 13270,
+          "1": 190
+        },
+        "nox_xxx_sprite_475740_drawable": {
+          "0": 11078,
+          "1": 2382
+        },
+        "nox_xxx_sprite_4757A0_drawable": {
+          "0": 11988,
+          "1": 1472
+        },
+        "sub_4757D0_drawable": {
+          "0": 10984,
+          "1": 2476
+        }
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_original_image_readonly_via_RX_protection_and_write_hook_and_final_snapshot": true,
+      "whole64KiB_heap_readonly_checked_after_every_entry": true,
+      "caller_arguments_redzones_saved_registers_and_complete_FP_status_tag_control_checked": true,
+      "callbacks_only_compared_never_executed": true,
+      "callback_roles": [
+        {
+          "name": "nil",
+          "original_pointer": 0,
+          "native_symbol": null
+        },
+        {
+          "name": "static",
+          "original_pointer": 4967456,
+          "native_symbol": "nox_thing_static_draw"
+        },
+        {
+          "name": "random",
+          "original_pointer": 4967520,
+          "native_symbol": "nox_thing_static_random_draw"
+        },
+        {
+          "name": "animate",
+          "original_pointer": 4963680,
+          "native_symbol": "nox_thing_animate_draw"
+        },
+        {
+          "name": "animate_state",
+          "original_pointer": 4964112,
+          "native_symbol": "nox_thing_animate_state_draw"
+        }
+      ],
+      "precase_contract_sha256": "24122755d4441703d3975593855ad006df94f038371dad63d2843e6d8cf59f7c",
+      "input_sha256": "dcf2ca9a51a346e0e87e956b2c59c9855084d890616daa862d1d8df652c36295",
+      "readonly_image_sha256": "66eb0df5e37c97beb6c9b68fafa5a1d966cd4271347bd6c3453215684ff1a1c5",
+      "fixture_sha256": "42804bc165c42671e4743f0f3ac57191e333909ab6082178bf486d638dd87fb0",
+      "fixture_gzip_sha256": "ac7e72f17a75dbd38c1e49fcc8504a1a8f0181e3e776ab25137dc320569d204b",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Four original PE32 queue predicates, valid nonnil Drawable and five opaque nullable draw-function identities. All53840 exact int returns and readonly owners checked. Native C controls, independent model, parent/caller/layout/source seal and Go port remain pending."
+    },
+    "independent_model": {
+      "utc": "2026-11-16T21:19:52.661679+00:00",
+      "cases": 13460,
+      "original_root_calls": 53840,
+      "input_only_model": true,
+      "all_four_exact_declared_returns_function_roles_and_final_words_equal": true,
+      "whole_owner_readonly_write_ledger_equal": true,
+      "model_uses_bit_sets_and_original_identity_classes": true,
+      "original_fixture_sha256": "42804bc165c42671e4743f0f3ac57191e333909ab6082178bf486d638dd87fb0",
+      "original_fixture_gzip_sha256": "ac7e72f17a75dbd38c1e49fcc8504a1a8f0181e3e776ab25137dc320569d204b",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-16T21:24:10.831775+00:00",
+    "contexts": 13460,
+    "original_C_bytes": 1604,
+    "original_bodies_unchanged": true,
+    "actual_native_architecture": "macOS ARM64",
+    "packed_control_architecture": "macOS Rosetta x86_64",
+    "native_controls": 40380,
+    "packed_PE32_controls": 26920,
+    "matching_by_mode_and_entry": {
+      "native-safe-entry0": 13460,
+      "native-safe-entry1": 13460,
+      "native-safe-entry3": 9310,
+      "packed-Rosetta-entry2": 13460,
+      "packed-Rosetta-entry3": 13460
+    },
+    "native_world_stride_divergences": 4150,
+    "actual_native_overlay_pointer_truncation_faults": 1,
+    "actual_native_fault_process": {
+      "command": [
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-native",
+        "fault"
+      ],
+      "exit_code": -11,
+      "executable_sha256": "ec1ee9781ef55bcc61241105331b501011b449d6d1cc070b18e701e7fa158331",
+      "stdout_sha256": "1d4f4eabff104d73ecdb27e4ec0c9e68970f7f60410330a7e2f40de47a0c8eb0",
+      "processes": 1
+    },
+    "actual_native_fault_input": {
+      "name": "truth-f036-c00-cb1",
+      "flags": 16448,
+      "class": 0,
+      "callback": 1,
+      "callback_name": "static",
+      "decoys": [
+        3671871395,
+        2439501144,
+        3497002833
+      ]
+    },
+    "whole64KiB_graph_readonly_checked_after_every_nonfault_entry": true,
+    "native_and_packed_controls_have_separate_executables": true,
+    "packed_pagezero_flag_not_applied_to_native_or_products": true,
+    "native_full_pointer_roles": {
+      "kind": "ABI",
+      "mode": "native-safe",
+      "owner": 529233088512,
+      "pointer_bytes": 8,
+      "Drawable_prefix_bytes": 688,
+      "class_offset": 124,
+      "flags_offset": 132,
+      "draw_offset": 328,
+      "role_pointers": [
+        0,
+        4377380248,
+        4377380256,
+        4377380264,
+        4377380272
+      ]
+    },
+    "packed_layout_ABI": {
+      "kind": "ABI",
+      "mode": "packed",
+      "owner": 553652224,
+      "pointer_bytes": 8,
+      "Drawable_prefix_bytes": 688,
+      "class_offset": 124,
+      "flags_offset": 132,
+      "draw_offset": 328,
+      "role_pointers": [
+        0,
+        77616560,
+        77616576,
+        77616592,
+        77616608
+      ]
+    },
+    "unrelated_divergences": 0,
+    "binaries": [
+      {
+        "profile": "native",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-native",
+        "bytes": 365976,
+        "sha256": "ec1ee9781ef55bcc61241105331b501011b449d6d1cc070b18e701e7fa158331",
+        "compiler_warnings": 4
+      },
+      {
+        "profile": "packed",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-packed",
+        "bytes": 365976,
+        "sha256": "54a3f1d095ff67d1d90a7fc3c8618a54376d139ac453e4a8d5ea27578570011b",
+        "compiler_warnings": 4
+      },
+      {
+        "profile": "packed-Rosetta-x86_64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-packed-x86_64",
+        "bytes": 338400,
+        "sha256": "545438ead36079e47523efaf7523e38ff62f8bb1e88c43621b933446fa0b8e61",
+        "compiler_warnings": 4
+      }
+    ],
+    "source_sha256": "b7db960c6066a8cb1e61fc65b17d65db2a4c5d121699956b7c5d8cbe3408d960",
+    "failed_ARM64_packed_before_main_preserved": true,
+    "failed_ARM64_packed_exit": {
+      "command": [
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-packed",
+        "packed"
+      ],
+      "exit_code": -9,
+      "executable_sha256": "54a3f1d095ff67d1d90a7fc3c8618a54376d139ac453e4a8d5ea27578570011b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "processes": 1
+    },
+    "native_safe_success_not_rerun": true,
+    "platform_accounting_amendment": {
+      "utc": "2026-11-16T21:24:09.002633+00:00",
+      "precase_contract_unchanged": true,
+      "precase_contract_sha256": "24122755d4441703d3975593855ad006df94f038371dad63d2843e6d8cf59f7c",
+      "reason": "ARM64 low-pagezero packed diagnostic was killed before main(SIGKILL/empty stdout). Its executable and all compile/run records remain. Native-safe controls already succeeded and are not rerun. Packed-only controls continue with an x86_64 Rosetta executable; native ARM64 first/front/world/fault evidence stays separate. This changes control platform accounting, never original inputs/results, owner domain, production flags or C bodies.",
+      "failed_packed_program": {
+        "profile": "packed",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-packed",
+        "bytes": 365976,
+        "sha256": "54a3f1d095ff67d1d90a7fc3c8618a54376d139ac453e4a8d5ea27578570011b",
+        "compiler_warnings": 4
+      },
+      "failed_packed_exit": {
+        "command": [
+          "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-drawable-predicates-original-review-v1/original-review-v2/original-C-before-v1/unchanged-drawable-predicates-packed",
+          "packed"
+        ],
+        "exit_code": -9,
+        "executable_sha256": "54a3f1d095ff67d1d90a7fc3c8618a54376d139ac453e4a8d5ea27578570011b",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes": 1
+      },
+      "original_fixture_sha256": "42804bc165c42671e4743f0f3ac57191e333909ab6082178bf486d638dd87fb0",
+      "source_port_started": false,
+      "new_Go_credit": 0
+    },
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "All26920 typed ARM64 back/front controls and all26920 Rosetta packed raw-offset overlay/world controls match stock. ARM64 world raw-index controls expose layout differences; one valid-high-native overlay owner crashes at the unchanged pointer-to-int body. ARM64 packed diagnostic SIGKILL before main is not predicate or packed-equivalence evidence. Native callback stubs are identities only and never invoked. No active renderer crash, callback invocation, allocator or lifetime migration claim."
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "predeclared_projection": {
+      "utc": "2026-11-16T21:16:01.768583+00:00",
+      "source_revision": "1928acd124da21bcdbeefbabbe9471b2928cd3b5",
+      "entries": [
+        "nox_xxx_sprite_4756E0_drawable",
+        "nox_xxx_sprite_475740_drawable",
+        "nox_xxx_sprite_4757A0_drawable",
+        "sub_4757D0_drawable"
+      ],
+      "original_C_bytes": 1604,
+      "original_root_bytes": 262,
+      "declared_child_services": [],
+      "owner_domain": "Valid nonnil Drawable owner. DrawFuncPtr is an opaque nullable function identity, compared only, never invoked. ObjClass/ObjFlags remain full uint32. Invalid owners and callback invocation/lifetimes are not claimed.",
+      "original_offsets": {
+        "owner": 4096,
+        "ObjClass": 112,
+        "ObjFlags": 120,
+        "DrawFuncPtr": 300
+      },
+      "callback_roles": [
+        {
+          "name": "nil",
+          "original_pointer": 0,
+          "native_symbol": null
+        },
+        {
+          "name": "static",
+          "original_pointer": 4967456,
+          "native_symbol": "nox_thing_static_draw"
+        },
+        {
+          "name": "random",
+          "original_pointer": 4967520,
+          "native_symbol": "nox_thing_static_random_draw"
+        },
+        {
+          "name": "animate",
+          "original_pointer": 4963680,
+          "native_symbol": "nox_thing_animate_draw"
+        },
+        {
+          "name": "animate_state",
+          "original_pointer": 4964112,
+          "native_symbol": "nox_thing_animate_state_draw"
+        }
+      ],
+      "callback_role_evidence": {
+        "parser": "nox_things_animate_state_draw_parse",
+        "parser_address": "0x44bd90",
+        "original_Thing_DrawFunc_offset": "0x58",
+        "store": {
+          "address": "0x44be71",
+          "bytes": "c7405810bf4b00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x58], 0x4bbf10"
+        },
+        "animate_state_draw": "0x4bbf10",
+        "parser_executed": false,
+        "child_services_or_parser_migration_credit": false
+      },
+      "original_returns": "Four exact normalized int32 zero/one results, in declared entry order; whole owner heap readonly for every entry.",
+      "native_projection": "Use existing client.Drawable ObjClass/ObjFlags/DrawFuncPtr and unchanged C nox_drawable shared prefix. Full native function identity via existing static/random/animate/animate-state symbol getters; no uint32 owner indexing. C prefix and existing Go-only clientHandle are checked separately.",
+      "ordered_seeding": [
+        "64KiB deterministic canary",
+        "three independent raw32 decoys at owner+112/+120/+300",
+        "logical ObjClass/ObjFlags/native DrawFuncPtr using their correct declared layout"
+      ],
+      "decoy_scope": "Original PE32 decoys coincide with logical words and are overwritten by final logical seeds; native layouts retain decoys as independent canaries. Their generation depends only on input PRNG, never original outputs.",
+      "predefined_generation": {
+        "seed": "0x4756e0",
+        "meaningful_flag_bits": [
+          0,
+          3,
+          6,
+          11,
+          12,
+          14,
+          24
+        ],
+        "meaningful_class_bits": [
+          13,
+          22,
+          23,
+          31
+        ],
+        "exhaustive_flag_class_contexts": 2048,
+        "scalar_values": "0,1,2,INTMAX,INTMIN,-1,all32 one-hot/complement values,20 deterministic random words; deduplicated86 scalars",
+        "scalar_contexts_per_value": 6,
+        "extra_random_flag_class_contexts": 128,
+        "callback_roles": 5,
+        "expected_contexts": 13460,
+        "each_context_runs_all_four_entries": true
+      },
+      "C_before": "Compile1604 unchanged C bytes on actual ARM64. Native typed first/front controls; native fixed-array world controls; one actual high-native overlay pointer-truncation fault in an isolated retained process. Separate packed-PE32 low-address controls for the two original raw-offset entries; any pagezero linker option belongs only to that packed diagnostic executable, never the actual-native control/product. Preserve original compiler diagnostics; no production warning flags change.",
+      "existing_Go_reuse": "Move four current root-package native predicate algorithms to shared client functions; preserve root helper signatures and native/static identity logic with minimal adapters. Export original C entries through those same functions. Existing legacy Go wrappers/1280 golden rows/root helper tests remain unchanged. Test actual public C/volatile callback/direct Go/existing legacy wrapper paths and actual root renderer helper adapters.",
+      "compatibility": "Existing root Go nil guard is retained but not original nil-owner equivalence credit. Exact C prototypes remain int(nox_drawable*). No allocator/lifetime/full queue dispatcher migration credit.",
+      "original_CPU_model_and_C_before_pending": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "original_expected_rows_exist": false
+    },
+    "active_C_calls": [],
+    "existing_Go_C_wrappers": [
+      {
+        "entry": "nox_xxx_sprite_4756E0_drawable",
+        "source": "src/legacy/client_draw.go",
+        "line": 371,
+        "text": "return int(C.nox_xxx_sprite_4756E0_drawable((*nox_drawable)(dr.C())))"
+      },
+      {
+        "entry": "nox_xxx_sprite_475740_drawable",
+        "source": "src/legacy/client_draw.go",
+        "line": 374,
+        "text": "return int(C.nox_xxx_sprite_475740_drawable((*nox_drawable)(dr.C())))"
+      },
+      {
+        "entry": "nox_xxx_sprite_4757A0_drawable",
+        "source": "src/legacy/client_draw.go",
+        "line": 377,
+        "text": "return int(C.nox_xxx_sprite_4757A0_drawable((*nox_drawable)(dr.C())))"
+      },
+      {
+        "entry": "sub_4757D0_drawable",
+        "source": "src/legacy/client_draw.go",
+        "line": 380,
+        "text": "return int(C.sub_4757D0_drawable((*nox_drawable)(dr.C())))"
+      }
+    ],
+    "existing_Go_renderer_helpers": [
+      {
+        "entry": "nox_xxx_sprite_4756E0_drawable",
+        "helper": "spriteBackWallQueueNative4756E0",
+        "source": "src/client_draw.go",
+        "sha256": "bc0a1ec3ea7448e95c1860b49aaefe73c8de709570437c57dd1439056c672289",
+        "bytes": 461,
+        "native_renderer_producer": "Client.nox_xxx_spriteAddQueue_475560_draw uses all four predicates before queue append/visibility logic"
+      },
+      {
+        "entry": "nox_xxx_sprite_475740_drawable",
+        "helper": "spriteFrontQueueNative475740",
+        "source": "src/client_draw.go",
+        "sha256": "ae62c24446d901a6e4f6372b2a7a88e003544b84ab1887f9eb8d9c10883cc428",
+        "bytes": 482,
+        "native_renderer_producer": "Client.nox_xxx_spriteAddQueue_475560_draw uses all four predicates before queue append/visibility logic"
+      },
+      {
+        "entry": "nox_xxx_sprite_4757A0_drawable",
+        "helper": "spriteOverlayQueueNative4757A0",
+        "source": "src/client_draw.go",
+        "sha256": "30c75b238a6adf657f7d646d7bc4268b46e739ada9ded52db77fa380cc686473",
+        "bytes": 220,
+        "native_renderer_producer": "Client.nox_xxx_spriteAddQueue_475560_draw uses all four predicates before queue append/visibility logic"
+      },
+      {
+        "entry": "sub_4757D0_drawable",
+        "helper": "spriteWorldQueueNative4757D0",
+        "source": "src/client_draw.go",
+        "sha256": "7b7dca8aeb8c9744717f57cd961c71027677fb60d8590424415940a01812607e",
+        "bytes": 271,
+        "native_renderer_producer": "Client.nox_xxx_spriteAddQueue_475560_draw uses all four predicates before queue append/visibility logic"
+      }
+    ],
+    "all_C_prototypes_and_headers_and_shared_Drawable_layouts_and_pointer_producers_unchanged": true,
+    "original_four_existing_Go_predicate_bodies_reused_with_only_signature_and_static_identity_argument_changes": true,
+    "whole_incoming_C_and_root_Go_files_reconstructed": true,
+    "renderer_dispatcher_queues_visibility_and_existing_Go_wrappers_unchanged": true,
+    "product_NOX_CGO_old_C_definitions_absent": {
+      "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+      "entries": [
+        "nox_xxx_sprite_4756E0_drawable",
+        "nox_xxx_sprite_475740_drawable",
+        "nox_xxx_sprite_4757A0_drawable",
+        "sub_4757D0_drawable"
+      ],
+      "product_C_definitions_absent": true,
+      "files": [
+        {
+          "source": "src/legacy/GAME2_1.c",
+          "source_sha256": "f530fe16ee27ea87e1ba964c3c443c36650ff2af592c0b68f79a2f79ec0e9a40",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-drawable-predicates-qualify-20261117/src/legacy/GAME2_1.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "8b29db76104fa5408b8986d3655c8d78bb5edded706d6665f6deeb00961ea0eb",
+          "AST_gzip_sha256": "8cc2a9858f5bbd12e456b183c7d627aaeec3f59dac3aca58857b82427ec20b0b",
+          "all_four_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        }
+      ]
+    }
+  },
+  "ci": {
+    "runs": [
+      43966095910,
+      43965828438
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14277969113,
+        "name": "linux-amd64-opennox-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14277969113-linux-amd64-opennox.zip",
+        "bytes": 242511134,
+        "sha256": "46aa3c26f5694029824aaeacbff13840dfc0137015000f05641922bd806101a2",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1381376,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14276974467,
+        "name": "linux-amd64-opennox-hd-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14276974467-linux-amd64-opennox-hd.zip",
+        "bytes": 241846131,
+        "sha256": "a43a5c54048310c216a547f88a1fb17d99b4efe0c5ba08e79aa8fe8466dd4a2f",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1381376,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14276748002,
+        "name": "linux-amd64-opennox-server-hd-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14276748002-linux-amd64-opennox-server-hd.zip",
+        "bytes": 228422042,
+        "sha256": "044bdd7568659b52643a64492a5b741371d4ec4c95600df1bf4bd46d6adb29eb",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1375263,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14276273472,
+        "name": "linux-amd64-opennox-server-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14276273472-linux-amd64-opennox-server.zip",
+        "bytes": 290765791,
+        "sha256": "dbb6d56cd2e73fd1c03e5401adfc77841fa0212950e5b5710e95af67252f483e",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1375263,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14277937893,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14277937893-opennox-server-windows-386.zip",
+        "bytes": 177283080,
+        "sha256": "c49cfb7eacfe776f13e57be4f7c9eab844967b459546a5d5ca55f3be79253c6e",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1353315
+        }
+      },
+      {
+        "artifact_id": 14277817808,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/ci-14277817808-opennox-server-windows-amd64.zip",
+        "bytes": 182531047,
+        "sha256": "1cf623922fea05f68d43ccf43aa10cbc6ded7a80eac0d93583cdba55027ac07c",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1373248,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 8788639966,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 30,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14277969113,
+        "name": "linux-amd64-opennox-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "profile": "client",
+        "preceding_artifact": 14269296130,
+        "preceding_passes": 1260232,
+        "current_passes": 1381376,
+        "new_native_pass_events": 121144,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 2,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14276974467,
+        "name": "linux-amd64-opennox-hd-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "profile": "client",
+        "preceding_artifact": 14266324764,
+        "preceding_passes": 1260232,
+        "current_passes": 1381376,
+        "new_native_pass_events": 121144,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 2,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14276748002,
+        "name": "linux-amd64-opennox-server-hd-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "profile": "server",
+        "preceding_artifact": 14269027525,
+        "preceding_passes": 1254121,
+        "current_passes": 1375263,
+        "new_native_pass_events": 121142,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 0,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14276273472,
+        "name": "linux-amd64-opennox-server-c4f40b5e1b764b428025170893591ec5d25fe7e6",
+        "profile": "server",
+        "preceding_artifact": 14266864568,
+        "preceding_passes": 1254121,
+        "current_passes": 1375263,
+        "new_native_pass_events": 121142,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 0,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14277937893,
+        "name": "opennox-server-windows-386",
+        "profile": "server",
+        "preceding_artifact": 14267834388,
+        "preceding_passes": 1232173,
+        "current_passes": 1353315,
+        "new_native_pass_events": 121142,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 0,
+        "skips_unchanged": true,
+        "skip_events": 94
+      },
+      {
+        "artifact_id": 14277817808,
+        "name": "opennox-server-windows-amd64",
+        "profile": "server",
+        "preceding_artifact": 14266863993,
+        "preceding_passes": 1252106,
+        "current_passes": 1373248,
+        "new_native_pass_events": 121142,
+        "primary_family_new_passes": 121142,
+        "client_existing_wrapper_and_renderer_original_additions": 0,
+        "skips_unchanged": true,
+        "skip_events": 11
+      }
+    ],
+    "client_new_native_pass_events": 121144,
+    "server_new_native_pass_events": 121142,
+    "existing1280_original_golden_and_root_queue_unit_retained_in_client_profiles": true,
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_Drawable_family_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4784,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/client_draw.go",
+        "src/legacy/GAME2_1.c"
+      ],
+      "new_files": [
+        "src/client/drawable_queue.go",
+        "src/legacy/drawable_predicate_native_entry.go",
+        "src/legacy/drawable_predicate_native_fixture.go",
+        "src/legacy/drawable_predicate_native_test.go",
+        "src/legacy/drawable_predicate_native_wrapper_test.go",
+        "src/legacy/testdata/drawable_predicate_original_v1.json.gz",
+        "src/client_draw_queue_original_native_test.go",
+        "src/testdata/drawable_predicate_original_v1.json.gz"
+      ],
+      "whole_incoming_C_file_and_root_Go_file_reconstructed": true,
+      "existing_four_Go_predicate_algorithms_moved_byte_identically_except_signatures_and_static_identity_argument": true,
+      "root_helper_signatures_nil_and_static_identity_classification_preserved": true,
+      "all_headers_shared_Drawable_layouts_producers_and_existing_legacy_Go_wrappers_unchanged": true,
+      "existing1280_original_comparison_fixture_and_tests_unchanged": true,
+      "original_CPU_contexts_without_expectation_changes": 13460,
+      "original_CPU_root_calls": 53840,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 277,
+      "fully_recorded_entries": 271,
+      "new_entries_pending_qualification": 4,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 49,
+    "retained_preceding_S43_program_paths": 37,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 2331032,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 49,
+      "all_current_program_SHA_verified": true,
+      "preceding_S43_program_paths_SHA_verified": 37,
+      "critical_products_and_executed_test_mains_verified": 11,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "all_actual_local_tests_first_attempts_pass": true,
+    "original_native_overlay_fault_retained": true,
+    "ARM64_packed_before_main_failure_and_program_retained": true,
+    "packed_control_moved_to_Rosetta_without_native_safe_rerun": true,
+    "original_C_before_compiler_warnings_per_executable": 4,
+    "ported_product_and_CI_compiler_warnings": 0,
+    "helper_preparation_failures_retained": [
+      {
+        "utc": "2026-11-16T21:37:53.016621+00:00",
+        "failed_helper_sha256": "23954bb8792573e063def7eea9b2edbd7324f5d420633dcc36708204856e70f6",
+        "failure": "Expected shared-Go signature generator omitted its bool return type at line23; source-preservation assertion27 failed before any test/build wrapper or preservation record was created.",
+        "source_or_original_expected_rows_changed": false,
+        "actual_Go_compilation_started": false
+      },
+      {
+        "utc": "2026-11-16T21:50:23.907453+00:00",
+        "helper_sha256": "ce9d03d52834db2ac5e94150f87cac84f8b1363f9cf7916b592aa04f8f35d628",
+        "failure": "Exclusive-copy helper found run-driver-recorded-v1.py already retained by pre-port seal. No product build/runtime began. Resume by requiring exact byte identity for preexisting helper files, preserving the sealed copy.",
+        "source_tests_or_original_results_changed": false
+      },
+      {
+        "utc": "2026-11-16T22:16:37.492362+00:00",
+        "failed_preflight": "source-local-preflight-observed-v1.exit.json",
+        "cause": "Review helper expected root binary opennox.test; existing Go preserve driver names module-v1 binary v1.test. Actual tests had passed unchanged.",
+        "fixed_root_binary_name": "v1.test",
+        "inherited_geometry_key_namespace_corrected_before_first_full_gate": true,
+        "source_tests_fixtures_or_expectations_changed": false,
+        "extra_wrapper_launch_failure": "source-local-preflight-observed-v2.exit.json",
+        "extra_wrapper_launch_cause": "Caller redundantly supplied python executable to helper which already prepends sys.executable; interpreter rejected reading executable before validation began.",
+        "successful_preflight": "source-local-preflight-observed-v3.exit.json"
+      },
+      {
+        "utc": "2026-11-16T22:19:34.992343+00:00",
+        "record": "CI-first-matrix-observed-v1.exit.json",
+        "cause": "Before any ZIP test stream review, missing source-code-revision symlink. Canonical metadata helper normally creates it only after all6 jobs complete; early review needs same link now.",
+        "source_metadata_link_verified": true,
+        "failed_logs_preserved": true,
+        "successful_CI_jobs_rerun": 0,
+        "source_tests_expectations_unchanged": true
+      }
+    ],
+    "helper_repairs_changed_no_source_tests_or_original_results": true,
+    "preceding_S41_failed_layout_program_paths": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/compiled-test-mains/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/test-binaries/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/compiled-test-mains/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/test-binaries/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      }
+    ],
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "current_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v8",
+    "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+    "files": 207,
+    "ordinary_own_C_definitions": 2468,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2482,
+    "pointer_integer_cast_functions_including_manual": 450,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "current_direct_pointer_width_triage": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v8/direct-pointer-width-classification-v2.json",
+    "sha256": "1e1a276d777e8e23347ccc3a8bb34bcab6e0f154c1454c5c317f6e4bfe295371",
+    "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+    "functions": 450,
+    "direct_cast_sites": {
+      "pointer_to_narrow_integral": 323,
+      "narrow_integral_to_pointer": 2023,
+      "native_or_wider_integral_transport": 585
+    },
+    "functions_by_direct_category": {
+      "pointer_to_narrow_integral": 104,
+      "narrow_integral_to_pointer": 227,
+      "native_or_wider_integral_transport": 237
+    },
+    "scope": "Type-width triage only. Narrow conversions can be intentional wire IDs, scalar payloads, callback tags or legacy-token resolution. Native-width conversions can contain nested earlier/later narrowing; this direct-node report does not perform complete dataflow analysis. Macros lacking captured input type stay unknown. Other architectures, optional tags, header/inc algorithms and Cgo preambles remain outside. Original execution, native owner/caller audit and actual before/after paths are required before any defect or completed-port credit. The one macro-renamed function whose input type was absent from the first table is resolved from its retained exact AST: (HANDLE)-1. Original v1 is retained."
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v7",
+    "source_revision": "f5943d0b0d88b69b030f9d99df50f6e9cb4f7c58",
+    "files": 207,
+    "ordinary_own_C_definitions": 2472,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2486,
+    "pointer_integer_cast_functions_including_manual": 451,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "native_fault_scope": "Original overlay C root fails on one valid high native diagnostic owner; zero active C parent calls remain. Renderer already used Go selectors before this migration; no newly observed active gameplay crash claim.",
+    "original_owner_domain": "Valid nonnil Drawable, full32class/flags, nullable opaque function identities; callbacks never invoked. Go nil handling preserved as an existing extension, not original nil-owner equivalence.",
+    "parent_scope": "Four existing Go renderer helper adapters and four existing legacy wrappers are original-vector checked; full dispatcher, visibility, allocator and lifetime migration remain uncredited.",
+    "packed_scope": "Packed controls execute only on Rosetta x86_64. ARM64 packed binary failed before main and is never credited as equivalence.",
+    "all_C_denominator": "OPEN; own-file ARM64 AST includes bridges/platform/reference implementations and excludes header/inc/Cgo preambles and other architecture/tag branches."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 121143
+    },
+    "native_roots": {
+      "TestDrawablePredicateNativeLayout": "pass",
+      "TestDrawablePredicateNativeOriginal": "pass",
+      "TestDrawablePredicateNativeWrapper": "pass"
+    },
+    "profile": "legacy-local",
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 13460,
+      "route0/place64": 13460,
+      "route0/place512": 13460,
+      "route1/place0": 13460,
+      "route1/place64": 13460,
+      "route1/place512": 13460,
+      "route2/place0": 13460,
+      "route2/place64": 13460,
+      "route2/place512": 13460
+    },
+    "original_contexts": 13460,
+    "original_root_calls": 53840,
+    "original_instruction_bytes": 262,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 13,
+    "primary_native_scalar_checks": 484560,
+    "existing_wrapper_scalar_checks": 161520,
+    "actual_renderer_helper_scalar_checks": 0,
+    "existing1280_original_golden_checks_retained": 0,
+    "existing_root_queue_unit_pass": null,
+    "all_original_int_returns_and_full_native_function_roles_equal": true,
+    "whole64KiB_readonly_native_owner_and_decoys_and_Go_extension_checked": true,
+    "existing_four_Go_predicate_algorithms_reused": true,
+    "headers_and_legacy_Go_wrappers_and_native_DrawFunc_producers_unchanged": true,
+    "invalid_owner_callback_invocation_and_full_queue_dispatch_migration_uncredited": true
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-drawable-predicates-native-v1/qualified-drawable-predicate-entries-v1.json",
+    "sha256": "6903445c7d2c555614fc1c4e4ae38ed5de4c1facbad08b03f8b48d53f08a0deb"
+  },
+  "normal_passes": 561439,
+  "strict_passes": 561439,
+  "focused_passes": 121143,
+  "renderer_normal_passes": 1283,
+  "renderer_strict_passes": 1283,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 154
+}

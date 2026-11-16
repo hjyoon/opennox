@@ -4739,11 +4739,17 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
 
 static nox_waypoint_t* nox_mapgen_last_waypoint_51D120;
 
+void* nox_mapgen_last_waypoint_slot_native_51D0E0(void) {
+	return &nox_mapgen_last_waypoint_51D120;
+}
+
 //----- (0051D0E0) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 void sub_51D0E0() {
 	nox_mapgen_last_waypoint_51D120 = NULL;
 	dword_5d4594_2487244 = 0;
 }
+#endif
 
 //----- (0051D0F0) --------------------------------------------------------
 int sub_51D0F0(char a1) {

@@ -3649,6 +3649,7 @@ int nox_xxx_playerAnimCheck_4372B0() {
 }
 
 //----- (004372E0) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int nox_xxx_clientIsObserver_4372E0() {
 	int result; // eax
 	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
@@ -3660,6 +3661,7 @@ int nox_xxx_clientIsObserver_4372E0() {
 	}
 	return result;
 }
+#endif
 
 //----- (00437320) --------------------------------------------------------
 int sub_437320(nox_gui_server_ent_t* server) {

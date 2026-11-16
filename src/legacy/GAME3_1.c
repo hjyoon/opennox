@@ -1849,7 +1849,9 @@ void sub_4BFD10() {
 }
 
 //----- (004BFD30) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int sub_4BFD30() { return dword_5d4594_1319056; }
+#endif
 
 enum {
 	NOX_ITEM_AMOUNT_IMAGE_BASE,
@@ -2516,7 +2518,9 @@ int nox_xxx_closeP2PTradeWnd_4C12A0() {
 }
 
 //----- (004C12C0) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int sub_4C12C0() { return dword_5d4594_1320964; }
+#endif
 
 //----- (004C12D0) --------------------------------------------------------
 int nox_xxx_showP2PTradeWnd_4C12D0() {
@@ -4289,7 +4293,9 @@ int sub_4C5020(const uint8_t* data) {
 }
 
 //----- (004C5050) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 void sub_4C5050() { dword_5d4594_1321800 = 0; }
+#endif
 
 //----- (004C5060) --------------------------------------------------------
 int sub_498C20(int2* a1, int2* a2, int a3);

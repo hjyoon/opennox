@@ -1292,7 +1292,9 @@ int sub_479840(short a1) {
 }
 
 //----- (00479870) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int sub_479870() { return dword_5d4594_1098628 == 2; }
+#endif
 
 //----- (00479880) --------------------------------------------------------
 bool sub_479880(uint32_t* a1) { return nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)getMemAt(0x5D4594, 1098380)); }
@@ -1869,7 +1871,9 @@ int* nox_xxx_edgeDraw_480EF0(nox_video_bag_image_t* image, int a2, int a3, int* 
 }
 
 //----- (00481410) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 void sub_481410() { nox_xxx_waypointCounterMB_587000_154948 = -1; }
+#endif
 
 //----- (004815E0) --------------------------------------------------------
 static size_t nox_tileBufferSize_481430(void) {

@@ -2788,7 +2788,9 @@ int sub_49C7A0() {
 }
 
 //----- (0049C810) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int sub_49C810() { return dword_5d4594_1305680 != 0; }
+#endif
 
 //----- (0049CA60) --------------------------------------------------------
 int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg) {
@@ -2820,7 +2822,9 @@ int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t even
 }
 
 //----- (0049CB40) --------------------------------------------------------
+#if 0 // Restored by global_state_native_entry.go.
 int sub_49CB40() { return dword_5d4594_1305684 != 0; }
+#endif
 
 // Most probably borders with alpha
 //----- (0049CD30) --------------------------------------------------------

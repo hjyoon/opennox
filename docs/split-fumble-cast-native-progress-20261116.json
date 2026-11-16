@@ -1,0 +1,232 @@
+{
+  "source_revision": "72e7fae69c9b66fa1859c957023f271e7e548679",
+  "entries": [
+    "nox_xxx_castFumble_52C060"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 183,
+  "cumulative_qualified_split_Go_entries": 184,
+  "implemented_split_Go_entries": 186,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9301,
+    "sha256": "bfccb20e42ad9dd69c6fa21644cbdf0ea463104afe010171eb9c9c7180c5e849"
+  },
+  "original": {
+    "cases": 146,
+    "service_events": 1123,
+    "root_bytes": 292,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 63,
+    "whole_image_and_heap_checks": true,
+    "root_image_write_only_cache_DWORD": true,
+    "root_heap_and_caller_writes_none": true,
+    "caller_redzones_callee_saved_registers_FP_control_TOP_checked": true,
+    "three_nil_fault_prefixes_checked": true,
+    "cache_target_loads_and_callback_reloads_observed": true,
+    "independent_model_equal": true,
+    "fixture_sha256": "bbd8a1ef0f312cdbc6d2f1208fe006eb4094ad0cb542155b7f04b2d2f23cafe9",
+    "fixture_gzip_sha256": "941806e05d365e79b1b4868eab084b5a261787f0053e32cd505f68d016ba4648",
+    "scope": "All292 original cast bytes execute. Inventory/drop/lookup/force/clear-owner/audio are declared service boundaries, not full child-body gameplay equivalence. Synthetic callback mutations and signed scalar returns are explicit boundary controls."
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "original_C_body_bytes": 1756,
+    "matching_packed_objects_and_native_acceptance_controls": 6,
+    "high_native_pointer_faults": 2,
+    "low_native_layout_mismatches": 1,
+    "nonnull_high_zero_lowword_omissions": 1,
+    "ARM64_C_before_success_claim": false,
+    "integrated_game_crash_claim": false,
+    "scope": "Exact unchanged incoming C body with actual native object/acceptance/inventory/force/audio declarations. Six selected packed-PE32-object/native-acceptance controls match original return/cache/service arguments; unused acceptance positions are native and no raw PE32 state/read-transcript equality is claimed. Native-record profiles validate full native headers/links before the old call. High target/caster lowwords address an inaccessible guard; zero-lowword valid target is omitted. All three64KiB owners and cache guard bytes remain unchanged on normal return, excluding the declared cache DWORD. Service returns/callback bodies are declared boundaries. No ARM64 C-before or full-game crash claim."
+  },
+  "numeric_corrections": [],
+  "ABI": {
+    "original_C_arguments": 5,
+    "direct_Go_selector_arguments": 6,
+    "C_supplies_unused_Go_level": 0,
+    "direct_Go_signed_level_forwarded": true
+  },
+  "ci": {
+    "runs": [
+      43783547829,
+      43783408971
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "archives": [
+      {
+        "artifact_id": 14190382068,
+        "name": "linux-amd64-opennox-hd-72e7fae69c9b66fa1859c957023f271e7e548679",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14190382068-linux-amd64-opennox-hd-72e7fae69c9b66fa1859c957023f271e7e548679.zip",
+        "bytes": 220353055,
+        "sha256": "7cc736fa7cc02239439b484150e4739cb4ddee9a9cdf23d2e27e2a6ff3961999",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 990498,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14190041401,
+        "name": "linux-amd64-opennox-server-hd-72e7fae69c9b66fa1859c957023f271e7e548679",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14190041401-linux-amd64-opennox-server-hd-72e7fae69c9b66fa1859c957023f271e7e548679.zip",
+        "bytes": 206528814,
+        "sha256": "f426d4978abfd2ad1b36892cb3119101f839a21ab02b05e9e16842fd89c14e79",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 984387,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14189739587,
+        "name": "linux-amd64-opennox-server-72e7fae69c9b66fa1859c957023f271e7e548679",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14189739587-linux-amd64-opennox-server-72e7fae69c9b66fa1859c957023f271e7e548679.zip",
+        "bytes": 264874904,
+        "sha256": "6e64936eb0d4a6f513c91502b3c8e5acc860650f987173e31b08b3e5f4b29776",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 984387,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14189009412,
+        "name": "linux-amd64-opennox-72e7fae69c9b66fa1859c957023f271e7e548679",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14189009412-linux-amd64-opennox-72e7fae69c9b66fa1859c957023f271e7e548679.zip",
+        "bytes": 219553754,
+        "sha256": "915284c7fd9b954dfd8e6d6cc443d2cb45b33d2428cce7f7a2426f9351ef97c4",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 990498,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14189995931,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14189995931-opennox-server-windows-386.zip",
+        "bytes": 161339283,
+        "sha256": "545cb3fdc45950a4cf957963bd5c78f973fbb4013a927201500a29fce71e64fe",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 962439,
+          "skip": 94
+        }
+      },
+      {
+        "artifact_id": 14189459217,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/ci-14189459217-opennox-server-windows-amd64.zip",
+        "bytes": 167739473,
+        "sha256": "76b959457e954720f8b6f47e522c002db3c302fb4f8612156019a09fd9dc0029",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 982372,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6272976095,
+    "all_previous_native_matrices_pass": true,
+    "current_or_historical_GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "protected_existing_tests_fixtures": 4750,
+    "all_existing_typed_algorithms_ordinary_bindings_tests_unchanged": true,
+    "tracked_E2E_inputs": 387,
+    "original_asset_and_Save_files": 4649,
+    "original_C_body_bytes": 1756,
+    "whole_incoming_C_and_header_reconstruct": true,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S27_program_paths": 43,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1953952,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S27_program_paths_SHA_verified": 43,
+      "critical_products_and_executed_test_mains_verified": 8,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded and nonblocking. Lost historical versions and S25 reference seals are not claimed recovered or preserved."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Historical ordinary failures remain unexplained. Current passes are not a cause or repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 1369
+    },
+    "existing_typed_server_test_actions": {
+      "pass": 218
+    },
+    "existing_legacy_test_actions": {
+      "pass": 2
+    },
+    "native_roots": {
+      "TestFumbleNativeLayout": "pass",
+      "TestFumbleNativeOriginal": "pass",
+      "TestFumbleNativePublicPointers": "pass",
+      "TestFumbleNativeDefaultBindings": "pass"
+    },
+    "typed_server_roots": {
+      "TestFumbleCastTargetBranches52C060": "pass",
+      "TestFumbleCastEquippedItemPredicate52C060": "pass",
+      "TestFumbleCastNativeInventorySavedNextAndLiveTarget52C060": "pass",
+      "TestFumbleCastLiveOwnedTargetAndBallOrder52C060": "pass",
+      "TestFumbleCastWholeTypeCacheAndZeroRetry52C060": "pass",
+      "TestFumbleCastOrdinaryTargetReloadAfterDrop52C060": "pass",
+      "TestFumbleCastNilArgumentsAndOriginalFaultPrefix52C060": "pass",
+      "TestFumbleCastServiceFaultPrefixes52C060": "pass",
+      "TestFumbleCastServerNativeCacheOwnerAndEffectAudio52C060": "pass",
+      "TestFumbleCastNativeObjectAndArgumentLayouts52C060": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 146,
+      "route0/place64": 146,
+      "route0/place512": 146,
+      "route1/place0": 146,
+      "route1/place64": 146,
+      "route1/place512": 146,
+      "route2/place0": 146,
+      "route2/place64": 146,
+      "route2/place512": 146
+    },
+    "pointer_and_signed_scalar_compositions": 15,
+    "actual_default_nil_protected_empty_inventory_compositions": 36,
+    "original_cases": 146,
+    "original_service_events": 1123,
+    "original_root_bytes": 292,
+    "original_startup_bytes": 319,
+    "original_nil_read_fault_cases": 3,
+    "original_C_argument_count": 5,
+    "Go_selector_extra_unused_level": 6,
+    "Scope": "Actual5arg public C,typed Ccallback,direct6arg Go. C supplies unused Go level0;direct Go forwards its signed level. Whole64KiB owners, full native inventory/owned links/cache state, declared callback mutations and original nil fault prefixes. By-value force origins compare unique live owned position bit patterns. Default nil/protected/empty-player cache compositions do not claim full stock inventory/physics service coverage."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/qualified-fumble-cast-entry-v1.json",
+    "sha256": "d509f74f3b3d3ff806ef0972a3dbde6e14de3c2704a2dcb1a592c5cce5ff7bf5"
+  },
+  "normal_passes": 170603,
+  "strict_passes": 170603,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 63
+}

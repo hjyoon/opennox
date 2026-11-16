@@ -60,6 +60,90 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Fumble public C entry, 2026-11-16
+
+Engine `72e7fae69c9b66fa1859c957023f271e7e548679` is committed and pushed to
+`origin/port/go1.27-multiarch`. The public
+`nox_xxx_castFumble_52C060` entry now forwards full native object and
+acceptance pointers to the existing Go implementation. Its original C ABI
+has **five arguments**. The existing direct Go selector retains its sixth,
+unused signed level; the C export supplies zero for that level.
+
+There are **186 implemented split-file Go entries** and **184 with complete
+recorded qualification**. The two Arachnaphobia/trace entries whose original
+seals were deleted remain open and receive no additional recorded credit.
+**All-C migration and overall 100% remain open.**
+
+Before source edits, a **63-path seal** preserves **146 original CPU cases**,
+**1,123 service events**, all **292 cast bytes** and **319 startup bytes**
+under control word `0xe3f`. An independent identity/word-state model
+matches return values, services, state, cache/target reads and cache writes.
+Whole mapped-image/64 KiB heap, caller redzones, callee-saved registers and
+FP control/TOP are checked. Three nil-read fault prefixes are preserved.
+Inventory successor capture, live target reloads, the full DWORD GameBall
+type cache, ownership clearing and effect-target capture retain their order.
+Inventory/drop/lookup/force/owner/audio are declared service boundaries;
+synthetic callback mutations are controls, without full child-body gameplay
+equivalence claims.
+
+The unchanged **1,756-byte C body** remains inactive. Removing its guard
+reconstructs the whole incoming C file; reversing its prototype reconstructs
+the header. Six packed-object/native-acceptance controls match the selected
+original return/cache/service contract. Two high native pointer controls
+fault, one low native record exposes the old class/position layout mismatch,
+and one valid high target with a zero low word is incorrectly omitted.
+These are standalone x86_64/Rosetta observations, without an ARM64 C-before
+or full-game crash claim. Existing typed algorithms, ordinary bindings and
+all **4,750 preceding protected tests/fixtures** remain byte-identical.
+No numerical correction was required.
+
+All current qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **170,603** identities on
+  the same **9,301-input** lease
+  `bfccb20e42ad9dd69c6fa21644cbdf0ea463104afe010171eb9c9c7180c5e849`.
+  Focused checks pass **1,589**: 1,369 native identities, 218 existing
+  server identities and two existing legacy checks. Actual public C,
+  typed C callback and direct Go routes execute every original case at
+  three foreign placements, plus 15 signed/pointer forwarding controls and
+  36 actual nil/protected/empty-player default compositions. Full 64 KiB
+  owner canaries and native inventory/owned links are checked. The bounded
+  default compositions do not establish complete stock inventory/physics
+  service coverage.
+- Four ARM64 products pass build, metadata, help and **63** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics
+  and two ordinary-clock independent UDP chat profiles. Each chat profile
+  proves eight submissions, four received peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43783547829)
+  passes all four profiles and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43783408971)
+  passes amd64/386, all on the first attempt. Six SHA-verified ZIPs retain
+  **158 actual test mains**, all current identities and every preceding
+  native matrix. Windows supervision and 386 GC-pressure replay pass.
+  Complete warning review scans **20 files /
+  6,272,976,095 uncompressed bytes**, with zero warnings.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths** and the preceding **43 S27 paths** remain
+intact after clearing the closed dedicated build cache to 8 KiB. Historical
+user-deleted executables and S25 records remain explicitly missing and
+nonblocking. Private runtime assets preserve the previously verified stock
+video bags/indexes. The first runtime preparation stopped on a port
+substitution assertion before product execution; its original script and
+partial inputs remain. The corrected preparer reuses verified inputs and
+changes port constants in a single pass without changing scenarios,
+assertions, timing or products.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, unexplained historical Windows GC failure and two lost S25
+seals remain open. Current passes do not establish a GC repair. Chapter 4
+and later remain excluded. The next native-pointer review targets the
+active Burn entry at `52C3E0`.
+
+Machine evidence: [split-fumble-cast-native-progress-20261116.json](split-fumble-cast-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-fumble-cast-native-v1/qualified-fumble-cast-entry-v1.json` (SHA-256 `d509f74f3b3d3ff806ef0972a3dbde6e14de3c2704a2dcb1a592c5cce5ff7bf5`).
+
 ### Native Pull and Push public C entries, 2026-11-16
 
 Engine `c696e7fb57cf842f411e8a526cff0fe4d5b2dc01` is committed and pushed to
@@ -70,8 +154,8 @@ The caster's native position replaces PE32 caster +56; the wide-host position
 is at +60. Balance, live position, radial force and owner-attached audio retain
 their original order. Unused object/acceptance arguments retain their ABI.
 
-There are **185 implemented split-file Go entries** and **183 with complete
-recorded qualification**. The two Arachnaphobia/trace entries whose original
+At that checkpoint there are **185 implemented split-file Go entries** and
+**183 with complete recorded qualification**. The two Arachnaphobia/trace entries whose original
 seals were deleted remain open and receive no additional recorded credit.
 **All-C migration and overall 100% remain open.**
 
@@ -141,8 +225,8 @@ stock video bags/indexes, with original assets and personal Save untouched.
 The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
 pixel failure, unexplained historical Windows GC failure and two lost S25
 seals remain open. Current passes do not establish a GC repair. Chapter 4 and
-later remain excluded. The next native-pointer review targets the active
-Fumble entry at `52C060`.
+later remain excluded. At that checkpoint the next C target was Fumble;
+its separately sealed qualification appears above.
 
 Machine evidence: [split-pull-push-native-progress-20261116.json](split-pull-push-native-progress-20261116.json).
 Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-pull-push-native-v1/qualified-pull-push-cast-entries-v1.json` (SHA-256 `5b44e98d606cb4a40e2d37ce19ddc5f30421bdc4e9f7c64aa070ba89bcc45dac`).

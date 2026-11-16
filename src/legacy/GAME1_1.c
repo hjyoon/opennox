@@ -2727,16 +2727,21 @@ int sub_41F800(const char* a1) {
 }
 
 //----- (0041FA40) --------------------------------------------------------
+#if 0 // Restored by global_record_native_entry.go.
 char* sub_41FA40() { return (char*)getMemAt(0x5D4594, 534756); }
+#endif
 
 //----- (0041FA50) --------------------------------------------------------
+#if 0 // Restored by global_record_native_entry.go.
 void sub_41FA50(const char* a1) {
 	if (a1) {
 		strcpy((char*)getMemAt(0x5D4594, 534756), a1);
 	}
 }
+#endif
 
 //----- (0041FBE0) --------------------------------------------------------
+#if 0 // Restored by global_record_native_entry.go.
 int sub_41FBE0(uint32_t* a1, uint32_t* a2) {
 	int result; // eax
 
@@ -2748,6 +2753,7 @@ int sub_41FBE0(uint32_t* a1, uint32_t* a2) {
 	*a2 = getMemAt(0x5D4594, 531670 + 24 * dword_587000_60044);
 	return result;
 }
+#endif
 
 //----- (0041FDE0) --------------------------------------------------------
 int nox_xxx_officialStringCmp_41FDE0() {
@@ -2776,10 +2782,14 @@ int nox_xxx_officialStringCmp_41FDE0() {
 }
 
 //----- (004200E0) --------------------------------------------------------
+#if 0 // Restored by global_record_native_entry.go.
 int sub_4200E0() { return *getMemU32Ptr(0x587000, 60072); }
+#endif
 
 //----- (00420100) --------------------------------------------------------
+#if 0 // Restored by global_record_native_entry.go.
 int sub_420100() { return *getMemU32Ptr(0x587000, 60072) >> 8; }
+#endif
 
 //----- (00420230) --------------------------------------------------------
 int sub_420230(char* a1, uint16_t* a2) {

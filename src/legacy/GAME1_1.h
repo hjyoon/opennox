@@ -83,7 +83,7 @@ uint32_t* sub_41F790(const char* a1);
 int sub_41F800(const char* a1);
 char* sub_41FA40();
 void sub_41FA50(const char* a1);
-int sub_41FBE0(uint32_t* a1, uint32_t* a2);
+int sub_41FBE0(const char** a1, const char** a2);
 int nox_xxx_officialStringCmp_41FDE0();
 int sub_4200E0();
 int sub_420100();

@@ -9412,6 +9412,7 @@ int nox_xxx_castPush_52C000(int a1, int a2, int a3, int a4, int a5, int a6) {
 #endif
 
 //----- (0052C060) --------------------------------------------------------
+#if 0 // Native Fumble cast: fumble_cast_native_entry.go
 int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 	int result; // eax
 	int v6;     // ecx
@@ -9474,6 +9475,7 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052C3E0) --------------------------------------------------------
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5) {

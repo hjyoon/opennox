@@ -60,6 +60,105 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Object accessors, trace pointer and flags C entries, 2026-11-17
+
+Engine `f17aac7dcf5ba4495282270e46fc91223ea2e0a4` is committed and pushed to
+`origin/port/go1.27-multiarch`. Seven public C entries now execute in Go:
+`nox_xxx_objectGetNetCode_4E4C00`, `nox_xxx_objectGetTypeInd_4E4C10`,
+`nox_object_getInitData_4E4C30`, `nox_xxx_objectGetID_4E4C80`,
+`nox_xxx_inventoryGetNext_4E7990`, `sub_537760` and `sub_53B300`.
+The trace entry now returns the same nullable **full native Point32 pointer**
+through `int2*`; the old unsigned-int declaration discarded its upper bits.
+The existing eight active C parent bodies and Go wrappers remain unchanged.
+All four textual trace calls are inactive retained references; this change
+claims no actual native crash or active parent failure.
+
+There are **268 C entries implemented in Go** and **266 with complete
+recorded qualification**. Two S25 entries with deleted original seals remain
+uncredited. **All-C migration and overall 100% remain open.** Nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, the public Save/Load pixel failure
+and other historical Windows memory/GC causes remain open. Chapter 4 and
+later remain excluded.
+
+A **117-path pre-port seal** preserves **1,780 original CPU/model cases**,
+all **126 root bytes**, **319 startup bytes** and `0xe3f` FP state, with no
+child services. Every static root instruction is covered. The independent
+input-only model matches declared scalar returns, exact pointer roles,
+final owner/global words and ordered writes. The complete original image
+and 64 KiB heap, arguments, redzones, saved registers and FP state are checked.
+The flags entry declares char: only its low eight return bits are credited,
+while every final ObjFlags bit remains checked. Upper EAX residue is retained.
+
+The unchanged **868-byte C bodies** run on actual **macOS ARM64** native
+layouts. **1,691** complete controls match the original. The other **89**
+lose actual high native trace-return bits at the old unsigned-int declaration;
+all field effects and whole-graph canaries still match. The original compiler
+warning from that cast remains in the sealed pre-port record. Returned
+truncated addresses are compared without dereferencing them. No original
+program, expected value or failed record is rewritten.
+
+Qualification passes:
+
+- **16,022** focused identities: every original row through actual public
+  C, a volatile C callback and direct Go, at three foreign placements, plus
+  two roots. **20** C/Go layout checks cover native Object and Point32 fields,
+  offsets and declared widths. The nullable init/const ID/next/trace roles
+  retain all native pointer bits. The whole 64 KiB foreign graph admits
+  only the original ObjFlags word projection; shared coordinates and
+  readiness remain unchanged. ID and init pointers are opaque and unread.
+- Normal and highres/cgocheck2/checkptr2 each pass **393,281** identical
+  terminal identities and multiplicities, on their first attempts. All
+  preceding **377,259** remain; the increment exactly equals the focus.
+  Both use the same **9,387-input** lease
+  `d4fb7c8c1e2524c4492703ea814c6e4f7c2e122aafa9252fb002254499ffe2ff`. A clean detached worktree preserves every
+  compilation input byte for byte.
+- Four default Apple compiler ARM64 products pass metadata/help and
+  **145** native/control symbol checks, with zero warnings. Normal/HD pass
+  four core E2E cases, two functional Save/Load diagnostics and independent
+  ordinary-clock UDP chat. Each chat proves eight submissions, four peer
+  messages and one host reply; both processes exit zero without force.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43935156433) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43935066024)
+  pass all six profiles on their first attempts. Six verified ZIPs retain
+  **158 actual test mains**, all **28** native reader chains, the exact full
+  suite increment and unchanged skip identities. Complete warning review
+  scans **22 files / 7,738,992,665
+  uncompressed bytes**, with zero warnings. The existing Windows/386 UI
+  GOGC10 replay remains; it does not select this new family.
+
+All **4,780 protected tests/fixtures** remain byte-identical. Removing seven
+guards and reversing only the trace return declaration reconstructs all
+three incoming C files and the complete header. All other headers, four
+const Object inputs, const ID return, shared layouts and pointer producers
+remain. The next accessor reuses its existing generic nil guard; the flags
+entry reuses the unchanged registered `server.LoopAndDamageUpdate53B300`
+method and returns its original low-byte result. Other caller/dispatch,
+allocator and lifetime migration receives no credit.
+
+Product `NOX_CGO` ASTs prove all seven old C definitions are absent from
+the three translation units. Both old first/next definitions remain for
+the unchanged standalone C caller fixture without `NOX_CGO`; it compiles
+and passes independently with zero warnings. That reference result supplies
+no Go product-path credit by itself.
+
+All **4,649 original asset/personal Save files** retain their hashes. All
+**39 current program paths**, **45 preceding S41 paths**,
+four failed S41 paths, 37 failed-source S39 paths and 11 failed S34 paths
+remain after the closed dedicated cache returns from
+**1,713,820 KiB to 8 KiB**. Historical user deletions
+remain recorded and nonblocking. A fresh current-source selection and AST
+inventory covers all **207 selected C files**: **2,477 ordinary
+own definitions plus 14 classified macros = 2,491**,
+with **451 functions containing pointer/integer casts** and zero
+unclassified own-definition locations. These include bridges, platform
+implementations and retained references; they do not establish an unported
+denominator or count every cast as a defect. Header/inc algorithms, Cgo
+preambles, optional tags and other architectures still need classification.
+Team/map-monster owners and `sub_46AE10` parent/transport migration remain open.
+
+Machine evidence: [split-object-trace-native-progress-20261117.json](split-object-trace-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/qualified-object-trace-entries-v1.json` (SHA-256 `f7fee95ab57d5d62c952e65edab8e5311385260a181454c8ce7cf382728f6d24`).
+
 ### Native inventory query, state and first-item C entries, 2026-11-17
 
 Engine `1e37f38f4331f3f4a85d828e69f6ce87d47ca355` is committed and pushed to

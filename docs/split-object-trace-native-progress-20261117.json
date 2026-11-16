@@ -1,0 +1,741 @@
+{
+  "source_revision": "f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+  "entries": [
+    "nox_xxx_objectGetNetCode_4E4C00",
+    "nox_xxx_objectGetTypeInd_4E4C10",
+    "nox_object_getInitData_4E4C30",
+    "nox_xxx_objectGetID_4E4C80",
+    "nox_xxx_inventoryGetNext_4E7990",
+    "sub_537760",
+    "sub_53B300"
+  ],
+  "qualified_entries": 7,
+  "preceding_fully_recorded_qualified_entries": 259,
+  "cumulative_qualified_split_Go_entries": 266,
+  "implemented_split_Go_entries": 268,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9387,
+    "sha256": "d4fb7c8c1e2524c4492703ea814c6e4f7c2e122aafa9252fb002254499ffe2ff"
+  },
+  "qualified_source_binding": {
+    "source_revision": "f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+    "source_tree": "01197dae3f3663b7f19444a8ed1d440d3ba6e1cd",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-object-trace-qualify-20261117",
+    "source_lease_sha256": "d4fb7c8c1e2524c4492703ea814c6e4f7c2e122aafa9252fb002254499ffe2ff",
+    "all9387_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "cases": 1780,
+    "root_bytes": 126,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 117,
+    "proof": {
+      "utc": "2026-11-16T18:34:12.882826+00:00",
+      "observation_source_revision": "1e37f38f4331f3f4a85d828e69f6ce87d47ca355",
+      "entries": [
+        "nox_xxx_objectGetNetCode_4E4C00",
+        "nox_xxx_objectGetTypeInd_4E4C10",
+        "nox_object_getInitData_4E4C30",
+        "nox_xxx_objectGetID_4E4C80",
+        "nox_xxx_inventoryGetNext_4E7990",
+        "sub_537760",
+        "sub_53B300"
+      ],
+      "cases": 1780,
+      "cases_by_entry": {
+        "nox_xxx_objectGetNetCode_4E4C00": 180,
+        "nox_xxx_objectGetTypeInd_4E4C10": 180,
+        "sub_537760": 90,
+        "sub_53B300": 1114,
+        "nox_object_getInitData_4E4C30": 72,
+        "nox_xxx_objectGetID_4E4C80": 72,
+        "nox_xxx_inventoryGetNext_4E7990": 72
+      },
+      "original_root_bytes": 126,
+      "root_bytes_by_entry": {
+        "nox_xxx_objectGetNetCode_4E4C00": 15,
+        "nox_xxx_objectGetTypeInd_4E4C10": 20,
+        "sub_537760": 15,
+        "sub_53B300": 26,
+        "nox_object_getInitData_4E4C30": 18,
+        "nox_xxx_objectGetID_4E4C80": 14,
+        "nox_xxx_inventoryGetNext_4E7990": 18
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_original_image_readonly_and_whole64KiB_heap_except_exact_ObjFlags_word_checked": true,
+      "caller_arguments_redzones_saved_registers_FP_checked": true,
+      "declared_char_return_low8_only_EAX_upper24_uncredited": true,
+      "original_owner": 553652224,
+      "original_pointer_roles": {
+        "id": [
+          0,
+          553672704,
+          553676800
+        ],
+        "init": [
+          0,
+          553680896,
+          553684992
+        ],
+        "next": [
+          0,
+          553689088,
+          553693184
+        ]
+      },
+      "original_trace_point": 8601272,
+      "original_trace_ready": 8601280,
+      "precase_contract_sha256": "bc7b5791415c453acc2b7723c6fa6a04d768fc189f9d645592d1e55d38d16af7",
+      "fixture_sha256": "3d255fba0c080112c4cc6a036be1121e7a523bb89bc942e2621aea7987bc4217",
+      "fixture_gzip_sha256": "061282c31e0413e3e12e52506147cb8e85d73ddd09844b822c4bc1dd928a911e",
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Original executable only. Exact nullable Object accessors, native-role candidates, conditional trace-point address and full32 Object flag effects; no native C-before or completed Go credit. No string dereference, allocator/lifetime or active parent crash claim."
+    },
+    "independent_model": {
+      "utc": "2026-11-16T18:36:14.794399+00:00",
+      "cases": 1780,
+      "cases_by_entry": {
+        "nox_xxx_objectGetNetCode_4E4C00": 180,
+        "nox_xxx_objectGetTypeInd_4E4C10": 180,
+        "sub_537760": 90,
+        "sub_53B300": 1114,
+        "nox_object_getInitData_4E4C30": 72,
+        "nox_xxx_objectGetID_4E4C80": 72,
+        "nox_xxx_inventoryGetNext_4E7990": 72
+      },
+      "input_only_model": true,
+      "all_original_declared_returns_pointer_roles_final_words_and_ordered_writes_equal": true,
+      "declared_char_low8_return_only_EAX_upper24_uncredited": true,
+      "original_fixture_sha256": "3d255fba0c080112c4cc6a036be1121e7a523bb89bc942e2621aea7987bc4217",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Expected rows derive only from each predefined input and fixed original PE32 owner/pointer geometry. Raw original char EAX residue is retained but unscored. Actual native C-before, current source/ABI seal and Go port remain pending."
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-16T18:40:28.528902+00:00",
+    "cases": 1780,
+    "matching_original_cases": 1691,
+    "native_trace_pointer_return_truncations": 89,
+    "other_divergences": 0,
+    "original_C_bytes": 868,
+    "all_original_C_function_bodies_unchanged": true,
+    "actual_architecture": "macOS ARM64",
+    "processes": 1,
+    "compile_warnings": 1,
+    "actual_high_native_Object_and_all_opaque_Next_and_trace_roles": true,
+    "whole64KiB_foreign_graph_except_exact_ObjFlags_projection_and_readiness_checked": true,
+    "declared_char_low8_return_only_EAX_upper24_uncredited": true,
+    "executable_sha256": "d79c0f01d2fad9d7aac2aa471e465a965162a2dedff1c7bec51f0c1d7b2bdda1",
+    "program_sha256": "93b1098eae824db11b0c47420eedc0afa38d5249377399ba6ec530a5454a2e3c",
+    "raw_results_sha256": "d4f0e464797183619194473e7aa0b2e81e7644a97fa5808c807cab4852bf4eda",
+    "ABI": {
+      "kind": "ABI",
+      "owner": 508265762816,
+      "id0": 508265783296,
+      "id1": 508265787392,
+      "init0": 508265791488,
+      "init1": 508265795584,
+      "next0": 508265799680,
+      "next1": 508265803776,
+      "trace": 508265807872,
+      "object_size": 912,
+      "offsets": [
+        0,
+        8,
+        20,
+        40,
+        528,
+        760
+      ]
+    },
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Actual unchanged C matches1691 controls;89 nonzero-readiness controls lose high native trace return bits at unsigned-int declaration. All owner/global effects and canaries still match. Returned truncated pointers are compared without dereferencing; no actual native crash, active C parent failure or allocator/lifetime repair is claimed. Full current source/ABI seal and Go port remain pending."
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "projection": {
+      "accessors": "Retain explicit original nil guards and full32 NetCode/zero-extended uint16 TypeInd. Return exact nullable full native InitData, const IDPtr and InvNextItem identities without dereferencing opaque data.",
+      "trace": "Return the original nullable Point32 role from existing native memmap offset2488612 based on full32 shared readiness word. Change only sub537760 declaration from unsigned int to int2*; its four textual GAME3_3.c calls are inactive references. No active parent crash or parent migration credit.",
+      "flags": "Reuse unchanged server.LoopAndDamageUpdate53B300 for full32 ObjFlags. Public C char return preserves low8 only; original upper EAX bits are uncredited.",
+      "const": "Preserve all four const Object prototypes and const char ID return via C typedefs in exported entry preamble; do not drop qualifiers.",
+      "C_reference": "Guard only existing next-item C body with !NOX_CGO. Existing first guard remains unchanged. The original standalone first/next caller fixture remains byte-identical; public C/volatile callback/direct Go product routes are independently compared against all original rows.",
+      "parents": "All other source bytes, existing generic next accessor, Object/Point32 layouts, shared pointer owners/producers, Go wrappers and registered Go update method stay unchanged. Record every current active C call and global readiness owner reference.",
+      "original_numeric_or_existing_expectation_corrections": []
+    },
+    "active_C_calls": [
+      {
+        "entry": "nox_xxx_inventoryGetNext_4E7990",
+        "caller": "nox_xxx_playerReportAnything_4D9900",
+        "source": "src/legacy/GAME3_2.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetNext_4E7990(v10)",
+        "caller_body_AST_sha256": "e101ac1ed83ef528c739ce846807f30d61855b552de748bc4a3d4e9ddd676144"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetNext_4E7990",
+        "caller": "nox_xxx_playerReportAnything_4D9900",
+        "source": "src/legacy/GAME3_2.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetNext_4E7990(v13)",
+        "caller_body_AST_sha256": "e101ac1ed83ef528c739ce846807f30d61855b552de748bc4a3d4e9ddd676144"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetNext_4E7990",
+        "caller": "sub_50E210",
+        "source": "src/legacy/GAME4_1.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetNext_4E7990(v3)",
+        "caller_body_AST_sha256": "bc1074496d38548902a1b8e2e947081537db16f5d68cc90dd3bd55bc4c2f43df"
+      },
+      {
+        "entry": "nox_xxx_objectGetNetCode_4E4C00",
+        "caller": "sub_56FB60",
+        "source": "src/legacy/GAME5_2.c",
+        "callee_type": "uint32_t (const nox_object_t *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "const nox_object_t *"
+        ],
+        "source_call": "nox_xxx_objectGetNetCode_4E4C00(item)",
+        "caller_body_AST_sha256": "9b190a9c90dd773aaf2c263bf3c586dc0549c697e0995d7c32ff284ab957a317"
+      },
+      {
+        "entry": "nox_xxx_objectGetTypeInd_4E4C10",
+        "caller": "sub_56FB60",
+        "source": "src/legacy/GAME5_2.c",
+        "callee_type": "uint16_t (const nox_object_t *)",
+        "parent_kind": "ImplicitCastExpr",
+        "argument_types": [
+          "const nox_object_t *"
+        ],
+        "source_call": "nox_xxx_objectGetTypeInd_4E4C10(item)",
+        "caller_body_AST_sha256": "9b190a9c90dd773aaf2c263bf3c586dc0549c697e0995d7c32ff284ab957a317"
+      },
+      {
+        "entry": "nox_object_getInitData_4E4C30",
+        "caller": "sub_56FB60",
+        "source": "src/legacy/GAME5_2.c",
+        "callee_type": "void *(const nox_object_t *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "const nox_object_t *"
+        ],
+        "source_call": "nox_object_getInitData_4E4C30(item)",
+        "caller_body_AST_sha256": "9b190a9c90dd773aaf2c263bf3c586dc0549c697e0995d7c32ff284ab957a317"
+      },
+      {
+        "entry": "nox_xxx_objectGetID_4E4C80",
+        "caller": "sub_56FB60",
+        "source": "src/legacy/GAME5_2.c",
+        "callee_type": "const char *(const nox_object_t *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "const nox_object_t *"
+        ],
+        "source_call": "nox_xxx_objectGetID_4E4C80(item)",
+        "caller_body_AST_sha256": "9b190a9c90dd773aaf2c263bf3c586dc0549c697e0995d7c32ff284ab957a317"
+      },
+      {
+        "entry": "nox_xxx_inventoryGetNext_4E7990",
+        "caller": "nox_script_StartupScreen_516600_A",
+        "source": "src/legacy/server__script__builtin.c",
+        "callee_type": "nox_object_t *(nox_object_t *)",
+        "parent_kind": "BinaryOperator",
+        "argument_types": [
+          "nox_object_t *"
+        ],
+        "source_call": "nox_xxx_inventoryGetNext_4E7990(item)",
+        "caller_body_AST_sha256": "25743d1fb0ac5d42e04d1e64c3fe8cb99565e9c3b9776ad2736765d25cc497e6"
+      }
+    ],
+    "active_Go_calls": [
+      {
+        "entry": "nox_xxx_objectGetNetCode_4E4C00",
+        "source": "src/legacy/object.go",
+        "line": 764,
+        "text": "return uint32(C.nox_xxx_objectGetNetCode_4E4C00(asObjectC(obj)))"
+      },
+      {
+        "entry": "nox_xxx_objectGetTypeInd_4E4C10",
+        "source": "src/legacy/object.go",
+        "line": 767,
+        "text": "return uint16(C.nox_xxx_objectGetTypeInd_4E4C10(asObjectC(obj)))"
+      },
+      {
+        "entry": "nox_object_getInitData_4E4C30",
+        "source": "src/legacy/object.go",
+        "line": 770,
+        "text": "return C.nox_object_getInitData_4E4C30(asObjectC(obj))"
+      },
+      {
+        "entry": "nox_xxx_objectGetID_4E4C80",
+        "source": "src/legacy/object.go",
+        "line": 776,
+        "text": "return unsafe.Pointer(C.nox_xxx_objectGetID_4E4C80(asObjectC(obj)))"
+      }
+    ],
+    "all8_active_C_parent_bodies_and_existing_Go_wrappers_unchanged": true,
+    "shared_readiness_reference_unchanged": true,
+    "whole_three_incoming_C_files_and_one_header_reconstructed": true,
+    "only_header_change": "sub537760 unsigned int -> int2*; zero current active C calls, four inactive textual references",
+    "other_const_Object_inputs_const_ID_return_layouts_pointer_producers_generic_next_and_registered_server_LoopAndDamage_unchanged": true,
+    "product_NOX_CGO_old_C_definitions_absent": {
+      "source_revision": "f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+      "entries": [
+        "nox_xxx_objectGetNetCode_4E4C00",
+        "nox_xxx_objectGetTypeInd_4E4C10",
+        "nox_object_getInitData_4E4C30",
+        "nox_xxx_objectGetID_4E4C80",
+        "nox_xxx_inventoryGetNext_4E7990",
+        "sub_537760",
+        "sub_53B300"
+      ],
+      "product_C_definitions_absent": true,
+      "both_first_and_next_C_definitions_absent_from_product": true,
+      "files": [
+        {
+          "source": "src/legacy/GAME3_3.c",
+          "source_sha256": "5942ab7aca943139ceaa9203c6547fcd7c5652d39557a259f6ddfbe84c590f99",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-object-trace-qualify-20261117/src/legacy/GAME3_3.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "7fdff798b219a4967c692096531483d86186a9a0d8c18bca4c51486638927a80",
+          "AST_gzip_sha256": "6ad814f09140e36914f064ad5a4f60d26516c00465714340098ca79675d1e865",
+          "all_seven_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        },
+        {
+          "source": "src/legacy/GAME4_3.c",
+          "source_sha256": "5408d6690665f54d2786df2c9d12407a63c1e6e366f00569765da693b04aec88",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-object-trace-qualify-20261117/src/legacy/GAME4_3.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "8c9d5b0deb072f39711948b37dac575c6b90f164c6add5fcb60fb9de75c84ef4",
+          "AST_gzip_sha256": "89af6633fa157e12e1a37d27a52c36412465580d1b5c3542c8182432f5133023",
+          "all_seven_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        },
+        {
+          "source": "src/legacy/object_inventory_4e7980.c",
+          "source_sha256": "82f6e32405c2ff77cfebab2aa17e792e7e22b0def2d499882420511291cbe720",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-object-trace-qualify-20261117/src/legacy/object_inventory_4e7980.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "0d7e551d9cd0f93cfb6c5fadd9f30b3bd7587536f8afcbea4fd5e854dd6f385a",
+          "AST_gzip_sha256": "8b680c24af82699d9454eccf25f5b3a7ea1d06db5e407049bdb90503a80f05c0",
+          "all_seven_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true
+        }
+      ]
+    },
+    "existing_standalone_C_reference": {
+      "utc": "2026-11-16T18:57:38.854723+00:00",
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy/testdata/object_inventory_4e7980_caller_test.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/existing-standalone-C-reference-v1/inventory-caller-reference"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "compiler_warnings": 0,
+      "fixture_sha256": "5e11bc478887bbc97f7e6c40b2f2ab257161b9df19d395861850d1a54ef754db",
+      "executable_sha256": "43e8d4278210428a26e9b57e3ba8201a7925429f6e9f355a3ff769043b26257a",
+      "old_fixture_unchanged": true,
+      "reference_mode": "No NOX_CGO; both exact retained C first and next bodies available. S41 first guard unchanged; only S42 next guard added.",
+      "product_mode": "Cgo defines NOX_CGO and binds Go exports; product next route must independently pass1780 original rows and all native gates."
+    }
+  },
+  "ci": {
+    "runs": [
+      43935156433,
+      43935066024
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14263140864,
+        "name": "linux-amd64-opennox-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14263140864-linux-amd64-opennox-f17aac7dcf5ba4495282270e46fc91223ea2e0a4.zip",
+        "bytes": 233498625,
+        "sha256": "2c94586072632d87bc63ac6431f6c6b2ea34a31c75518ac26f1af792adc0cc37",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1213217,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14262352090,
+        "name": "linux-amd64-opennox-server-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14262352090-linux-amd64-opennox-server-f17aac7dcf5ba4495282270e46fc91223ea2e0a4.zip",
+        "bytes": 281887143,
+        "sha256": "c2343f5ab1a8efe5f1e41eb422a8fb4a3657f6b3335039cf007537ab897a71c2",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1207106,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14261911564,
+        "name": "linux-amd64-opennox-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14261911564-linux-amd64-opennox-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4.zip",
+        "bytes": 232928782,
+        "sha256": "914ae6660a17b190078890ede34103323a8e5274b54c7e8a07eeb98557820ee2",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1213217,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14260693685,
+        "name": "linux-amd64-opennox-server-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14260693685-linux-amd64-opennox-server-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4.zip",
+        "bytes": 219898706,
+        "sha256": "208f1714d24ce50b4d615b5f4885ce6546602749ffcd7dc8fd9401f9fc90870a",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1207106,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14262312157,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14262312157-opennox-server-windows-386.zip",
+        "bytes": 172876119,
+        "sha256": "97a95599b14ccbed77621f4c1b6e76409bd33b7b5e26b27fec5360f4381e28b8",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1185158
+        }
+      },
+      {
+        "artifact_id": 14260981412,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/ci-14260981412-opennox-server-windows-amd64.zip",
+        "bytes": 177161329,
+        "sha256": "624ff37800457c7aa04a28429f3a2662d5331fee7c1ea221e4b771263e928a33",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1205091,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 7738992665,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 28,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14263140864,
+        "name": "linux-amd64-opennox-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "preceding_artifact": 14258915403,
+        "preceding_passes": 1197195,
+        "current_passes": 1213217,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14262352090,
+        "name": "linux-amd64-opennox-server-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "preceding_artifact": 14259060317,
+        "preceding_passes": 1191084,
+        "current_passes": 1207106,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14261911564,
+        "name": "linux-amd64-opennox-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "preceding_artifact": 14258975246,
+        "preceding_passes": 1197195,
+        "current_passes": 1213217,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14260693685,
+        "name": "linux-amd64-opennox-server-hd-f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+        "preceding_artifact": 14257598527,
+        "preceding_passes": 1191084,
+        "current_passes": 1207106,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14262312157,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14256174967,
+        "preceding_passes": 1169136,
+        "current_passes": 1185158,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 94
+      },
+      {
+        "artifact_id": 14260981412,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14257639277,
+        "preceding_passes": 1189069,
+        "current_passes": 1205091,
+        "new_native_pass_events": 16022,
+        "skips_unchanged": true,
+        "skip_events": 11
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_Object_trace_tests_selected_by_that_GOGC10_replay": false,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4780,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/GAME3_3.c",
+        "src/legacy/GAME4_3.c",
+        "src/legacy/GAME4_3.h",
+        "src/legacy/object_inventory_4e7980.c"
+      ],
+      "new_files": [
+        "src/legacy/object_trace_native.go",
+        "src/legacy/object_trace_native_entry.go",
+        "src/legacy/object_trace_native_fixture.go",
+        "src/legacy/object_trace_native_test.go",
+        "src/legacy/testdata/object_trace_original_v1.json.gz"
+      ],
+      "whole_three_incoming_C_files_and_one_header_reconstructed": true,
+      "only_public_prototype_change": "sub537760 unsigned int -> int2*; four textual callers inactive, no active call",
+      "all8_active_C_parent_bodies_and_existing_Go_wrappers_unchanged": true,
+      "all_readiness_owner_reference_bodies_unchanged": true,
+      "all_other_headers_const_Object_inputs_and_const_ID_return_unchanged": true,
+      "existing_Object_Point32_layouts_shared_slot_producers_generic_next_load_and_registered_server_LoopAndDamage_unchanged": true,
+      "standalone_next_item_reference": "!NOX_CGO preserves exact next body alongside unchanged S41 first guard. Normal Cgo products define NOX_CGO and use the Go exports.",
+      "original_CPU_rows_without_expectation_changes": 1780,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 268,
+      "fully_recorded_entries": 259,
+      "new_entries_pending_qualification": 7,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S41_program_paths": 45,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1713820,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S41_program_paths_SHA_verified": 45,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "current_local_checks_first_attempts_pass": true,
+    "original_C_before_warning": 1,
+    "original_C_before_warning_retained": true,
+    "ported_product_and_CI_compiler_warnings": 0,
+    "preceding_S41_failed_layout_program_paths": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/compiled-test-mains/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/test-binaries/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/compiled-test-mains/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/test-binaries/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      }
+    ],
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "current_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v6",
+    "source_revision": "f17aac7dcf5ba4495282270e46fc91223ea2e0a4",
+    "files": 207,
+    "ordinary_own_C_definitions": 2477,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2491,
+    "pointer_integer_cast_functions_including_manual": 451,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v5",
+    "source_revision": "2a7a583576925d57a2ef6cabf06b0ac38231ea3b",
+    "files": 207,
+    "ordinary_own_C_definitions": 2491,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2505,
+    "pointer_integer_cast_functions_including_manual": 454,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "existing_C_parents": "Eight unchanged active C parent bodies and existing Go wrappers remain; no parent migration credit.",
+    "original_owner_domain": "Nullable accessor owners and opaque pointer roles; nonnil flags owner; fixed existing shared Point32/readiness. No invalid-owner, string content/dereference, allocator or lifetime equivalence claim.",
+    "trace_repair": "89 actual high native pointer-return truncations repaired. Four textual old C callers inactive; no actual native crash or active parent failure claimed.",
+    "declared_char_return": "Only low8 declared char result is credited; original upper EAX bits remain uncredited.",
+    "deferred_sub46AE10": "Original pointer return/current normalized boolean compatibility requires separate parent/transport migration.",
+    "deferred_pointer_roots": "Team membership and map-monster native owner migration remain open.",
+    "all_C_denominator": "OPEN; predecessor own-file ARM64 AST includes bridges, platform implementations and references. Header/inc/Cgo preambles/other architecture branches remain unclassified."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 16022
+    },
+    "native_roots": {
+      "TestObjectTraceNativeLayout": "pass",
+      "TestObjectTraceNativeOriginal": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 1780,
+      "route0/place64": 1780,
+      "route0/place512": 1780,
+      "route1/place0": 1780,
+      "route1/place64": 1780,
+      "route1/place512": 1780,
+      "route2/place0": 1780,
+      "route2/place64": 1780,
+      "route2/place512": 1780
+    },
+    "original_entry_checks": {
+      "nox_xxx_objectGetNetCode_4E4C00": 1620,
+      "nox_xxx_objectGetTypeInd_4E4C10": 1620,
+      "sub_537760": 810,
+      "sub_53B300": 10026,
+      "nox_object_getInitData_4E4C30": 648,
+      "nox_xxx_objectGetID_4E4C80": 648,
+      "nox_xxx_inventoryGetNext_4E7990": 648
+    },
+    "original_cases": 1780,
+    "original_instruction_bytes": 126,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 20,
+    "original_declared_scalar_returns_and_full_native_ID_Init_Next_Point_roles_equal": true,
+    "whole64KiB_Object_and_opaque_graph_except_exact_original_ObjFlags_word_projection_checked": true,
+    "full_native_Point32_return_and_both_coordinate_words_and_readiness_unchanged": true,
+    "all32_flags_preserved_except_original_bit6_rule_selected_by_bit24": true,
+    "declared_char_low8_only_original_EAX_upper24_uncredited": true,
+    "all_original_null_guards_and_const_qualifiers_preserved": true,
+    "all8_active_C_parent_bodies_and_existing_Go_wrappers_unchanged": true,
+    "existing_generic_next_accessor_and_registered_server_LoopAndDamage_method_unchanged": true,
+    "shared_Object_and_Point32_layouts_and_pointer_owner_producers_unchanged": true,
+    "standalone_original_C_first_and_next_reference_preserved_without_NOX_CGO": true,
+    "scope": "All1780 sealed original rows through actual public C/volatile callback/direct Go at three foreign placements. Full32 NetCode, zero-extended16 TypeInd, nullable InitData/const ID/Next and typed native Point32 identities, exact low8 char return and full32 ObjFlags effects. Whole64KiB foreign owner and opaque graph plus shared Point32/readiness checked. Four textual old trace callers are inactive; no active-parent crash, string dereference, allocator/lifetime or parent-migration claim."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-object-trace-native-v1/qualified-object-trace-entries-v1.json",
+    "sha256": "f7fee95ab57d5d62c952e65edab8e5311385260a181454c8ce7cf382728f6d24"
+  },
+  "normal_passes": 393281,
+  "strict_passes": 393281,
+  "focused_passes": 16022,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 145
+}

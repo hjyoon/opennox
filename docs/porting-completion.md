@@ -60,6 +60,88 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native trade-item lookup public C entry, 2026-11-16
+
+Engine `d2be9ee33ffc5ecda4a50534891078558b59910c` is committed and pushed to
+`origin/port/go1.27-multiarch`. `sub_50FFE0` now reads native TradeItem
+object/next links and the native Object net-code field in Go, preserving the
+first matching item, nil-head return and the complete uint32 key. Native
+argument/return pointers remain opaque in C. The existing uint16 wire lookup
+validates its session and skips nil items. A separate full32 P2P lookup also
+skips nil items. Both helpers and all other server trade logic remain unchanged;
+the original leaf's valid-node contract has no nil-item guard.
+
+There are **205 implemented split-file Go entries** and **203 with complete
+recorded qualification**. Two implemented entries with deleted S25 original
+seals remain open. **All-C migration and overall 100% remain open.** These
+entry totals do not establish the all-C denominator.
+
+Before source edits, a **66-path seal** retains **291 original CPU cases**,
+all **29 procedure bytes** and **319 startup bytes** under `0xe3f`, without
+child services. The independent input-only model matches every original
+return identity and word. The domain includes nil/acyclic lists, duplicate
+first matches, all 32 key bits/complements and deterministic random orders.
+Whole image/heap, caller redzones, saved registers and FP control/TOP remain
+checked. Early CPU/model evidence is reused after verifying the unchanged
+code, C body, headers and layout inputs against the fresh whole-source lease.
+
+The unchanged **244-byte C body** remains archived. Six packed controls match
+original logical identities after relocation. A high head/first-found return
+control succeeds: those widths were already native in old C. A real high
+native object child faults after its narrowed load. A separate high next
+link at the PE32 slot is explicitly a mixed-layout width control. Valid low
+native records separately omit matches through net-code offset 40 versus 36
+and next offset 16 versus 8. These are standalone x86_64/Rosetta observations,
+without an ARM64 C-before or integrated gameplay-crash claim.
+
+Final qualification passes:
+
+- Focus: **2,621** identities, including all 291 original cases on actual C,
+  typed C callback and direct Go paths at three foreign placements, plus two
+  root/layout checks. Each query preserves the complete 64 KiB owner and
+  returns the full native node identity. Seeded foreign pointer preparation
+  uses the existing C stores, preserving the canaries without Go barriers.
+- Normal and highres/cgocheck2/checkptr2: **193,992** identical terminal
+  identities/multiplicities on the **9,332-input** lease
+  `a81aba3a60eb435b582d824332afb9b4109f0da8452428dedd04ff706d1ee1fb`.
+  All preceding 191,371 selected identities remain; all added identities
+  equal the focused run. All **4,762** preceding protected inputs remain
+  byte-identical, without numeric or expectation corrections.
+- Four ARM64 products pass default-compiler builds, metadata, help and
+  **82** symbol checks. Normal/HD pass four core E2E cases, two functional
+  Save/Load diagnostics and two ordinary-clock independent UDP chat profiles.
+  Each chat proves eight submissions, four peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43837557181) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43837436436)
+  qualify all six profiles. All six profiles pass on their first attempt.
+  Six verified ZIPs retain **158 actual test mains**, all new identities and
+  all preceding native matrices. Existing exact Windows/386 GOGC10
+  Skeleton/Golem/UI-trade checks remain. Complete warning review covers
+  **22 files /
+  6,417,949,082 uncompressed bytes**, zero warnings.
+
+Two calls remain in `nox_xxx_tradeP2PAddOfferMB_50FE20`. Its int session
+argument and narrowed result local remain an explicit unported limitation;
+this leaf does not claim to make the parent native. Removing the guard and
+reversing one prototype reconstructs the complete incoming C file/header,
+including both unchanged caller sites. The initial standalone precontrol
+pointer-comparison warning and executable remain recorded; an explicit
+void-pointer comparison removes the warning without suppression or changes
+to original code, inputs or assertions.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **39 current program paths** and
+the preceding **39 S32 paths** remain after clearing only the closed
+dedicated cache from **1,700,852 KiB to 8 KiB**.
+Historical user deletions, lost S25 seals and the earlier cancelled-run
+publication gap remain recorded. The nine final chapter 1–3 audits, public
+Save/Load pixel failure, other historical Windows memory/GC causes and
+remaining C parents stay open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-trade-item-lookup-native-progress-20261116.json](split-trade-item-lookup-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/qualified-trade-item-lookup-entry-v1.json` (SHA-256 `e7ef2e93d17aa906bc6a68e8f63f3673537710123dfe4d96dfba2d7cf8364498`).
+
 ### Native UI state and trade-value public C entries, 2026-11-16
 
 Engine `b7835503915c816136197bc974ca64a7923609ce` is committed and pushed to
@@ -72,8 +154,8 @@ session/owner pointers and uses the unchanged native trade-value helper,
 including owner identity, linked item costs and uint32 wrapping. Its old C
 callers were already archived and remain unchanged.
 
-There are **204 implemented split-file Go entries** and **202 with complete
-recorded qualification**. Two implemented entries with deleted S25 original
+At that checkpoint there are **204 implemented split-file Go entries**
+and **202 with complete recorded qualification**. Two implemented entries with deleted S25 original
 seals remain open. **All-C migration and overall 100% remain open.** These
 entry totals do not establish the all-C denominator.
 

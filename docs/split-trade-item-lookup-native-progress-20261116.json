@@ -1,0 +1,432 @@
+{
+  "source_revision": "d2be9ee33ffc5ecda4a50534891078558b59910c",
+  "entries": [
+    "sub_50FFE0"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 202,
+  "cumulative_qualified_split_Go_entries": 203,
+  "implemented_split_Go_entries": 205,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9332,
+    "sha256": "a81aba3a60eb435b582d824332afb9b4109f0da8452428dedd04ff706d1ee1fb"
+  },
+  "original": {
+    "cases": 291,
+    "root_bytes": 29,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 66,
+    "proof": {
+      "utc": "2026-11-16T07:54:55.127408+00:00",
+      "entry": "sub_50FFE0",
+      "observation_source_revision": "b7835503915c816136197bc974ca64a7923609ce",
+      "original_C_bytes": 244,
+      "original_C_sha256": "0d954a2d4cd07f3dc14c9b4e2ce0bffd8a59c8dd4ec6060442f0916b94969442",
+      "original_root_bytes": 29,
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "cases": 291,
+      "declared_services": [],
+      "all_static_instructions_covered": true,
+      "whole_image_heap_caller_saved_registers_FP_checked": true,
+      "root_heap_writes": 0,
+      "fixture_sha256": "7f5c0673ad0bd829a585bbe4e168e23f8452fc8e52288ea80587f3231b722922",
+      "fixture_gzip_sha256": "984463bd2661f1023db7207a6bd9e2e63dd1ee190fd2ef6cd9fcfc4f1a8983ad",
+      "candidate_port_started": false,
+      "new_Go_credit": 0,
+      "scope": "Early original-only candidate evidence while S32 qualifies. Full32bit object net-code comparisons, nil head, ordered acyclic lists, duplicate first match, all32key bits/complements and deterministic random cases. Not a fresh whole-source preport baseline, native test or qualified entry. C-before/native layout/caller audit/final preport seal still required."
+    },
+    "independent_model": {
+      "cases": 291,
+      "all_original_return_identities_and_words_equal": true,
+      "independent_abstract_first_matching_uint32_key_model": true,
+      "fixture_sha256": "7f5c0673ad0bd829a585bbe4e168e23f8452fc8e52288ea80587f3231b722922",
+      "new_Go_credit": 0,
+      "candidate_port_started": false
+    }
+  },
+  "C_before": {
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "entry": "sub_50FFE0",
+    "original_C_bytes": 244,
+    "original_C_sha256": "0d954a2d4cd07f3dc14c9b4e2ce0bffd8a59c8dd4ec6060442f0916b94969442",
+    "program_sha256": "567ccd5520fdae601108f25b29b2811ae8bed23f458256c687cb9c87656752a1",
+    "executable_sha256": "824592e90fb211647231abd5cd65468933d9033bc08fe561240cc67eecfd3866",
+    "matching_packed_controls": 6,
+    "full_high_head_first_found_return_control": 1,
+    "actual_native_high_object_child_faults": 1,
+    "explicit_mixed_packed_high_next_child_faults": 1,
+    "low_native_netcode_offset_omissions": 1,
+    "low_native_next_offset_omissions": 1,
+    "whole_two_arenas_unchanged_on_return": true,
+    "results": [
+      {
+        "mode": "packed-first",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "packed-last",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "packed-missing",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "packed-nil",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "packed-duplicate-first",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "packed-high-key",
+        "exit_code": 0,
+        "matching_original_logical_return": true
+      },
+      {
+        "mode": "high-head-first-found-control",
+        "exit_code": 0,
+        "original_C_head_and_first_found_return_do_not_narrow": true
+      },
+      {
+        "mode": "native-high-object-child",
+        "exit_code": -10
+      },
+      {
+        "mode": "mixed-packed-high-next-child",
+        "exit_code": -10
+      },
+      {
+        "mode": "native-low-netcode-offset",
+        "exit_code": 0,
+        "native_record_offset_omission": true
+      },
+      {
+        "mode": "native-low-next-offset",
+        "exit_code": 0,
+        "native_record_offset_omission": true
+      }
+    ],
+    "source_port_started": false,
+    "new_Go_credit": 0,
+    "scope": "Unchanged244-byte C definition. Six packed controls match original logical node identities after relocation. Native head argument and first-found head return already retain high bits. Actual native high Item0 loses its high bits and faults. A separate full foreign next link stored at the PE32 slot is an explicit mixed-layout width diagnostic. Valid low native records separately miss native net-code40 versus original36 and native next16 versus original8. No full-game crash or ARM64 C-before claim."
+  },
+  "numeric_corrections": [],
+  "ABI": {
+    "opaque_native_head_and_return": true,
+    "old_C_head_and_first_found_return_already_preserved_native_width": true,
+    "nested_object_and_next_links_and_netcode_offsets_repaired": true,
+    "full_uint32_key_comparison": true,
+    "existing_uint16_wire_helper_unchanged": true,
+    "active_C_calls": [
+      {
+        "caller": "nox_xxx_tradeP2PAddOfferMB_50FE20",
+        "type": "uint32_t *(uint32_t *, int)",
+        "range": {
+          "begin": {
+            "offset": 69161,
+            "col": 14,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69161,
+            "col": 14,
+            "tokLen": 10
+          }
+        }
+      },
+      {
+        "caller": "nox_xxx_tradeP2PAddOfferMB_50FE20",
+        "type": "uint32_t *(uint32_t *, int)",
+        "range": {
+          "begin": {
+            "offset": 69263,
+            "col": 12,
+            "tokLen": 10
+          },
+          "end": {
+            "offset": 69263,
+            "col": 12,
+            "tokLen": 10
+          }
+        }
+      }
+    ],
+    "existing_PE32_parent_remains_outside_native_leaf_contract": true,
+    "additional_existing_full32_P2P_helper_review": {
+      "path": "src/server/trade_p2p_50ef10.go",
+      "sha256": "b09321c54cb908bc2bfad73cc8dafbd0b1ba74e5369cd10161670dff4f24baca",
+      "existing_full32_helper": "tradeP2PFindOffer50FFE0",
+      "difference": "Existing full32 P2P helper skips nil Item0; original29byte procedure has no such null-item guard. Existing wire helper separately narrows to uint16. Both existing helpers remain unchanged; new legacy leaf preserves its original valid-record contract.",
+      "existing_parent": "Server.RemoveP2PTradeOfferNative50FE20",
+      "parent_difference": "Native session registry validation, P2P participant domain, nil checks and service/unlink order differ from the full original C procedure including merchant branches. It cannot be used as an unexplained exact-C adapter.",
+      "existing_helpers_and_parent_byte_identical": true,
+      "correction_to_previous_audit": "Earlier audit identified wire helper; this adds the separate full32 P2P helper without changing its original nonnil-contract conclusion.",
+      "new_port_credit": 0
+    }
+  },
+  "ci": {
+    "runs": [
+      43837557181,
+      43837436436
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14213445510,
+        "name": "linux-amd64-opennox-server-hd-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14213445510-linux-amd64-opennox-server-hd-d2be9ee33ffc5ecda4a50534891078558b59910c.zip",
+        "bytes": 208628318,
+        "sha256": "49e14b52eab8c64ea96539abab54e23c609491774033c560d157efcde168fe00",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1007817,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14213137597,
+        "name": "linux-amd64-opennox-server-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14213137597-linux-amd64-opennox-server-d2be9ee33ffc5ecda4a50534891078558b59910c.zip",
+        "bytes": 267028639,
+        "sha256": "747c72e5ba9053f96666bb603007c1dcaa6ff5dc26c4e7bf50a1bfaf9fa1c617",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1007817,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14212648013,
+        "name": "linux-amd64-opennox-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14212648013-linux-amd64-opennox-d2be9ee33ffc5ecda4a50534891078558b59910c.zip",
+        "bytes": 221236135,
+        "sha256": "f38e89147fb7112c0f4c3f1960200d30e984edaa1936e5907fabb06a0c677686",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1013928,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14212078377,
+        "name": "linux-amd64-opennox-hd-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14212078377-linux-amd64-opennox-hd-d2be9ee33ffc5ecda4a50534891078558b59910c.zip",
+        "bytes": 220919153,
+        "sha256": "4e78c82ffbc1fb0e70e2fc46dbe3d512995a3b06359076310106243a110a4f44",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1013928,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14213430018,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14213430018-opennox-server-windows-amd64.zip",
+        "bytes": 169665484,
+        "sha256": "ff8d46a2f96af4dd979661b8d220ce7f75989c397d2eee559ea5ede6faf8530b",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1005802,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14212961215,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/ci-14212961215-opennox-server-windows-386.zip",
+        "bytes": 164122222,
+        "sha256": "8308c89bd00e51cf7d42d4b765d1c0554bcf43c37a8da4290bc57dfa213516d2",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 985869
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 6417949082,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14213445510,
+        "name": "linux-amd64-opennox-server-hd-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "preceding_artifact": 14206378445,
+        "preceding_passes": 1005196,
+        "current_passes": 1007817,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14213137597,
+        "name": "linux-amd64-opennox-server-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "preceding_artifact": 14207530613,
+        "preceding_passes": 1005196,
+        "current_passes": 1007817,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14212648013,
+        "name": "linux-amd64-opennox-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "preceding_artifact": 14207326165,
+        "preceding_passes": 1011307,
+        "current_passes": 1013928,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14212078377,
+        "name": "linux-amd64-opennox-hd-d2be9ee33ffc5ecda4a50534891078558b59910c",
+        "preceding_artifact": 14206764398,
+        "preceding_passes": 1011307,
+        "current_passes": 1013928,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14213430018,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14205849328,
+        "preceding_passes": 1003181,
+        "current_passes": 1005802,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14212961215,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14206722941,
+        "preceding_passes": 983248,
+        "current_passes": 985869,
+        "new_native_pass_events": 2621,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_tests_fixtures": 4762,
+      "all_protected_inputs_unchanged": true,
+      "changed_existing_paths": [
+        "src/legacy/GAME4_1.c",
+        "src/legacy/GAME4_1.h"
+      ],
+      "whole_incoming_C_reconstructed": true,
+      "whole_incoming_header_reconstructed": true,
+      "existing_wire_lookup_helper_and_all_server_trade_logic_unchanged": true,
+      "active_PE32_parent_body_byte_identical": true,
+      "caller_32bit_limitation_remains": true,
+      "numeric_or_existing_expectation_corrections": [],
+      "new_source_fixture_files": 5,
+      "scope": "Only archived244-byte C body and opaque native head/return declaration change existing files. All new native setup pointer stores use existing C memcpy binding, preserving canaries without Go deletion barriers."
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S32_program_paths": 39,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1700852,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S32_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "prior_cancelled_Win386_publication_gap": "Retained in previous S32 qualification; no recovery or old execution success claim"
+  },
+  "retained_attempts": {
+    "C_before_control_comparison_warning": {
+      "driver_exit_code": 1,
+      "compiler_exit_code": 0,
+      "compiler_warnings": 1,
+      "executable_created": true,
+      "executable_run": false,
+      "scope": "Own native precontrol compared struct pointer with byte pointer; original C body was unchanged and was not the warning source.",
+      "correction": "Cast the control pointer to void* for comparison. No warning suppression, input, original code or assertion change.",
+      "original_warning_log": "original-C-before-v1/compile.stderr.log"
+    },
+    "original_inputs_assertions_and_executable_versions_retained": true
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical native memory/GC failures remain open; no blanket repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit",
+    "existing_PE32_trade_parent": "nox_xxx_tradeP2PAddOfferMB_50FE20 still has int session and narrowed result local; this leaf does not claim its native contract",
+    "all_C_denominator": "OPEN; neither entry totals nor defaultARM64 split-file AST inventory establish complete remaining coverage"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 2621
+    },
+    "native_roots": {
+      "TestTradeItemLookupNativeLayout": "pass",
+      "TestTradeItemLookupNativeOriginal": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 291,
+      "route0/place64": 291,
+      "route0/place512": 291,
+      "route1/place0": 291,
+      "route1/place64": 291,
+      "route1/place512": 291,
+      "route2/place0": 291,
+      "route2/place64": 291,
+      "route2/place512": 291
+    },
+    "original_cases": 291,
+    "original_instruction_bytes": 29,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "full_native_object_next_and_return_pointers": true,
+    "full32bit_key_and_netcode_first_match": true,
+    "whole64KiB_foreign_owner_unchanged": true,
+    "C_Go_field_layout_checked": true,
+    "seeded_foreign_pointer_initialization_uses_C_stores": true,
+    "existing_wire_helper_and_PE32_parent_unchanged": true,
+    "scope": "Actual public C, typed callback and direct Go compare all291 original first-match identities at three foreign placements. Nil head, duplicates, every32key bit/complement and deterministic acyclic lists. Existing C head/first return were already native-width; object/next loads and field offsets are repaired. No native execution claim for the unchanged PE32 int-session parent."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-trade-item-lookup-native-v1/qualified-trade-item-lookup-entry-v1.json",
+    "sha256": "e7ef2e93d17aa906bc6a68e8f63f3673537710123dfe4d96dfba2d7cf8364498"
+  },
+  "normal_passes": 193992,
+  "strict_passes": 193992,
+  "focused_passes": 2621,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 82
+}

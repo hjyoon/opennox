@@ -2868,6 +2868,7 @@ int sub_46AE10(nox_window* win, int enabled) {
 }
 
 //----- (0046AE40) --------------------------------------------------------
+#if 0 // Restored by window_field_native_entry.go.
 int nox_xxx_wndSetOffsetMB_46AE40(nox_window* win, int x, int y) {
 	if (win) {
 		win->draw_data.img_px = x;
@@ -2875,8 +2876,10 @@ int nox_xxx_wndSetOffsetMB_46AE40(nox_window* win, int x, int y) {
 	}
 	return (intptr_t)win;
 }
+#endif
 
 //----- (0046AE60) --------------------------------------------------------
+#if 0 // Restored by window_field_native_entry.go.
 int nox_xxx_wndSetIcon_46AE60(nox_window* win, nox_video_bag_image_t* image) {
 	if (!win) {
 		return -2;
@@ -2884,8 +2887,10 @@ int nox_xxx_wndSetIcon_46AE60(nox_window* win, nox_video_bag_image_t* image) {
 	win->draw_data.bg_image = image;
 	return 0;
 }
+#endif
 
 //----- (0046AEA0) --------------------------------------------------------
+#if 0 // Restored by window_field_native_entry.go.
 int nox_xxx_wndSetIconLit_46AEA0(nox_window* win, nox_video_bag_image_t* image) {
 	if (!win) {
 		return -2;
@@ -2893,8 +2898,10 @@ int nox_xxx_wndSetIconLit_46AEA0(nox_window* win, nox_video_bag_image_t* image) 
 	win->draw_data.hl_image = image;
 	return 0;
 }
+#endif
 
 //----- (0046AEC0) --------------------------------------------------------
+#if 0 // Restored by window_field_native_entry.go.
 int sub_46AEC0(nox_window* win, nox_video_bag_image_t* image) {
 	if (!win) {
 		return -2;
@@ -2902,6 +2909,7 @@ int sub_46AEC0(nox_window* win, nox_video_bag_image_t* image) {
 	win->draw_data.sel_image = image;
 	return 0;
 }
+#endif
 
 //----- (0046AEE0) --------------------------------------------------------
 int sub_46AEE0(nox_window* win, const wchar2_t* text) {
@@ -2928,12 +2936,14 @@ wchar2_t* sub_46AF00(nox_window* win) {
 }
 
 //----- (0046AF40) --------------------------------------------------------
+#if 0 // Restored by window_field_native_entry.go.
 void* sub_46AF40(nox_window* win) {
 	if (!win) {
 		return NULL;
 	}
 	return win->draw_data.font;
 }
+#endif
 
 //----- (0046AF80) --------------------------------------------------------
 int nox_gui_windowCopyDrawData_46AF80(nox_window* win, const void* p) {

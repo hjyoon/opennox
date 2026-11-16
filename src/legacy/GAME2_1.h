@@ -145,7 +145,7 @@ int sub_46A860();
 int nox_xxx_wndRetNULL_46A8A0();
 int nox_xxx_wndRetNULL_0_46A8B0();
 int sub_46AE10(nox_window* win, int enabled);
-int nox_xxx_wndSetOffsetMB_46AE40(nox_window* win, int x, int y);
+nox_window* nox_xxx_wndSetOffsetMB_46AE40(nox_window* win, int x, int y);
 int nox_xxx_wndSetIcon_46AE60(nox_window* win, nox_video_bag_image_t* image);
 int nox_xxx_wndSetIconLit_46AEA0(nox_window* win, nox_video_bag_image_t* image);
 int sub_46AEC0(nox_window* win, nox_video_bag_image_t* image);

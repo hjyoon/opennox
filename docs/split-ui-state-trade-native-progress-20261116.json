@@ -1,0 +1,1779 @@
+{
+  "source_revision": "b7835503915c816136197bc974ca64a7923609ce",
+  "entries": [
+    "sub_41E2F0",
+    "nox_client_mousePriKey_430AF0",
+    "nox_xxx_cursor_430B00",
+    "sub_43AF30",
+    "sub_43AF40",
+    "sub_43AF80",
+    "sub_4611A0",
+    "sub_4674A0",
+    "sub_4675B0",
+    "sub_46A4A0",
+    "nox_xxx_playerGet_470A90",
+    "sub_478030",
+    "sub_479590",
+    "sub_47A260",
+    "sub_50FD20"
+  ],
+  "qualified_entries": 15,
+  "preceding_fully_recorded_qualified_entries": 187,
+  "cumulative_qualified_split_Go_entries": 202,
+  "implemented_split_Go_entries": 204,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9326,
+    "sha256": "d0fef02e71844e3b9cb7f7821c06ef517a03b97d746f1c079dc1994ac3a8d568"
+  },
+  "original": {
+    "cases": 1630,
+    "root_bytes": 146,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 131,
+    "proof": {
+      "utc": "2026-11-16T06:28:47.491839+00:00",
+      "entries": 15,
+      "cases": 1630,
+      "getter_cases": 1414,
+      "trade_cases": 216,
+      "fault_cases": 8,
+      "original_root_bytes": 146,
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "whole_image_heap_caller_redzones_saved_registers_FP_checked": true,
+      "root_writes": 0,
+      "all_static_original_instructions_covered": true,
+      "fixture_sha256": "96ba57fbfa0842f8cce4b36ed82b21649a231b2bda459cbef0b2f29ea22aa0e5",
+      "fixture_gzip_sha256": "a0aacd9a9784b31760d8d8e50f20a3229167688ba1caecac54267c58b2068454",
+      "generator_sha256": "0b082d4405ca3c03c41ff8b92d05c7d456ab99ba399703fa1a098ee7abc1ff83",
+      "source_port_started": false,
+      "new_Go_credit": 0
+    },
+    "independent_model": {
+      "cases": 1630,
+      "entries": 15,
+      "per_entry": {
+        "sub_41E2F0": 101,
+        "nox_client_mousePriKey_430AF0": 101,
+        "nox_xxx_cursor_430B00": 101,
+        "sub_43AF30": 101,
+        "sub_43AF40": 101,
+        "sub_43AF80": 101,
+        "sub_4611A0": 101,
+        "sub_4674A0": 101,
+        "sub_4675B0": 101,
+        "sub_46A4A0": 101,
+        "nox_xxx_playerGet_470A90": 101,
+        "sub_478030": 101,
+        "sub_479590": 101,
+        "sub_47A260": 101,
+        "sub_50FD20": 216
+      },
+      "fault_cases": 8,
+      "fault_prefixes": [
+        "fault-session-owner0",
+        "fault-session-owner1",
+        "fault-gold-owner0",
+        "fault-gold-owner1",
+        "fault-data-owner0",
+        "fault-data-owner1",
+        "fault-node-owner0",
+        "fault-node-owner1"
+      ],
+      "all_return_words_and_fault_prefixes_equal": true,
+      "original_instruction_bytes": 146,
+      "child_services": [],
+      "fixture_sha256": "96ba57fbfa0842f8cce4b36ed82b21649a231b2bda459cbef0b2f29ea22aa0e5",
+      "scope": "Independent input-only scalar and abstract linked-list model, with no executable Go or decompiled C dependency.",
+      "new_Go_credit": 0
+    },
+    "original_fault_prefixes_CPU_only": 8
+  },
+  "C_before": {
+    "utc": "2026-11-16T06:31:17.603923+00:00",
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "original_C_bytes": 1093,
+    "getters_matching_original": 1414,
+    "trade_field_offset_controls": 3,
+    "native_width_data_pointer_control": 1,
+    "old_C_gold_and_node_narrow_link_faults": 2,
+    "explicit_source_narrowed_data_link_fault_control": 1,
+    "explicit_mixed_native_owner_identity_loss": 1,
+    "whole_two_arenas_unchanged_on_return": true,
+    "executable_sha256": "9b02dbeed88f81b1b78a39640678d015f91630b076c2b1c58c2cf36b9edfc564",
+    "program_sha256": "8825982f12d11436af42d7c8acd370345fe2c0548453b5f5d183fefbaf0a6113",
+    "results": [
+      {
+        "mode": "getters",
+        "exit_code": 0
+      },
+      {
+        "mode": "control-first",
+        "exit_code": 0
+      },
+      {
+        "mode": "control-second",
+        "exit_code": 0
+      },
+      {
+        "mode": "control-empty",
+        "exit_code": 0
+      },
+      {
+        "mode": "native-width-data-control",
+        "exit_code": 0
+      },
+      {
+        "mode": "high-gold-link",
+        "exit_code": -10
+      },
+      {
+        "mode": "high-data-link",
+        "exit_code": -10
+      },
+      {
+        "mode": "high-node-link",
+        "exit_code": -10
+      },
+      {
+        "mode": "owner-lowword-collision",
+        "exit_code": 0
+      }
+    ],
+    "scope": "Exact fifteen incoming C definitions. Trade controls use PE32 offsets with native-width init-data loads at original offset692, matching this compiled decompilation. Gold and node PE32 slots hold lowwords of foreign pointers and the old C loses their high bits. A separate explicitly source-narrowed data diagnostic faults; its full native-width data control succeeds, so the data load itself is not credited as a C narrowing defect. Owner collision stores a full first owner at the PE32 slot and supplies another valid pointer with the same low32; mixed-layout width diagnostic, not a complete native TradeSession. No integrated game or ARM64 C-before claim.",
+    "source_port_started": false,
+    "new_Go_credit": 0
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 7531
+    },
+    "native_roots": {
+      "TestUIStateTradeNativeLayout": "pass",
+      "TestUIStateTradeNativeWords": "pass",
+      "TestUIStateTradeNativeValue": "pass"
+    },
+    "getter_groups": {
+      "sub_41E2F0/route0": 101,
+      "sub_41E2F0/route1": 101,
+      "sub_41E2F0/route2": 101,
+      "sub_41E2F0/route3": 101,
+      "nox_client_mousePriKey_430AF0/route0": 101,
+      "nox_client_mousePriKey_430AF0/route1": 101,
+      "nox_client_mousePriKey_430AF0/route2": 101,
+      "nox_client_mousePriKey_430AF0/route3": 101,
+      "nox_xxx_cursor_430B00/route0": 101,
+      "nox_xxx_cursor_430B00/route1": 101,
+      "nox_xxx_cursor_430B00/route2": 101,
+      "nox_xxx_cursor_430B00/route3": 101,
+      "sub_43AF30/route0": 101,
+      "sub_43AF30/route1": 101,
+      "sub_43AF30/route2": 101,
+      "sub_43AF30/route3": 101,
+      "sub_43AF40/route0": 101,
+      "sub_43AF40/route1": 101,
+      "sub_43AF40/route2": 101,
+      "sub_43AF40/route3": 101,
+      "sub_43AF80/route0": 101,
+      "sub_43AF80/route1": 101,
+      "sub_43AF80/route2": 101,
+      "sub_43AF80/route3": 101,
+      "sub_4611A0/route0": 101,
+      "sub_4611A0/route1": 101,
+      "sub_4611A0/route2": 101,
+      "sub_4611A0/route3": 101,
+      "sub_4674A0/route0": 101,
+      "sub_4674A0/route1": 101,
+      "sub_4674A0/route2": 101,
+      "sub_4674A0/route3": 101,
+      "sub_4675B0/route0": 101,
+      "sub_4675B0/route1": 101,
+      "sub_4675B0/route2": 101,
+      "sub_4675B0/route3": 101,
+      "sub_46A4A0/route0": 101,
+      "sub_46A4A0/route1": 101,
+      "sub_46A4A0/route2": 101,
+      "sub_46A4A0/route3": 101,
+      "nox_xxx_playerGet_470A90/route0": 101,
+      "nox_xxx_playerGet_470A90/route1": 101,
+      "nox_xxx_playerGet_470A90/route2": 101,
+      "nox_xxx_playerGet_470A90/route3": 101,
+      "sub_478030/route0": 101,
+      "sub_478030/route1": 101,
+      "sub_478030/route2": 101,
+      "sub_478030/route3": 101,
+      "sub_479590/route0": 101,
+      "sub_479590/route1": 101,
+      "sub_479590/route2": 101,
+      "sub_479590/route3": 101,
+      "sub_47A260/route0": 101,
+      "sub_47A260/route1": 101,
+      "sub_47A260/route2": 101,
+      "sub_47A260/route3": 101
+    },
+    "getter_original_cases": 1414,
+    "getter_checks": 5656,
+    "trade_groups": {
+      "route0/place0": 208,
+      "route0/place64": 208,
+      "route0/place512": 208,
+      "route1/place0": 208,
+      "route1/place64": 208,
+      "route1/place512": 208,
+      "route2/place0": 208,
+      "route2/place64": 208,
+      "route2/place512": 208
+    },
+    "trade_original_valid_cases": 208,
+    "trade_checks": 1872,
+    "original_CPU_cases": 1630,
+    "original_CPU_only_fault_prefixes": 8,
+    "original_instruction_bytes": 146,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "whole64KiB_trade_owner_unchanged": true,
+    "all_four_getter_routes_and_public_conversion_semantics": true,
+    "all_native_layout_checks": true,
+    "existing_arithmetic_and4760protected_inputs_unchanged": true
+  },
+  "numeric_corrections": [],
+  "ABI": {
+    "scalar_getters": 14,
+    "scalar_C_return_bits": 32,
+    "shared_C_globals_retained": true,
+    "three_direct_global_Go_wrappers_unchanged": true,
+    "eleven_C_call_Go_wrappers_keep_existing_conversions": true,
+    "trade_original_C_arguments": 2,
+    "trade_native_pointer_arguments": 2,
+    "trade_uint32_wrap_and_existing_helper_unchanged": true,
+    "active_trade_C_callers": 0,
+    "archived_trade_C_callers_unchanged": true
+  },
+  "ci": {
+    "runs": [
+      43825363528,
+      43825137272
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14207530613,
+        "name": "linux-amd64-opennox-server-b7835503915c816136197bc974ca64a7923609ce",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14207530613-linux-amd64-opennox-server-b7835503915c816136197bc974ca64a7923609ce.zip",
+        "bytes": 266059307,
+        "sha256": "256010a0d119baaaa03fd707194ad76da935b33c859d365a78f68f675b6c92a6",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1005196,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14207326165,
+        "name": "linux-amd64-opennox-b7835503915c816136197bc974ca64a7923609ce",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14207326165-linux-amd64-opennox-b7835503915c816136197bc974ca64a7923609ce.zip",
+        "bytes": 220677625,
+        "sha256": "19cdc2bf0c509db062deea794a8918e7fcc094022c1e059ecad6886298d6b31b",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1011307,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14206764398,
+        "name": "linux-amd64-opennox-hd-b7835503915c816136197bc974ca64a7923609ce",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14206764398-linux-amd64-opennox-hd-b7835503915c816136197bc974ca64a7923609ce.zip",
+        "bytes": 221121750,
+        "sha256": "aef93ebb0f56d712c2b9070cc5799b5d89b8a0323664cd3167a583980a4b83d5",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1011307,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14206378445,
+        "name": "linux-amd64-opennox-server-hd-b7835503915c816136197bc974ca64a7923609ce",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14206378445-linux-amd64-opennox-server-hd-b7835503915c816136197bc974ca64a7923609ce.zip",
+        "bytes": 207633401,
+        "sha256": "e188d725c2bbdfc8342e427a2603bba293996926ec29b9fbf1ac536ffb6e3ad9",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1005196,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14206722941,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14206722941-opennox-server-windows-386.zip",
+        "bytes": 163555121,
+        "sha256": "62c4fe42e91737fefe59b31e1d3556712415d4cd57d2100f0d60005b4a9e7a0a",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 983248,
+          "skip": 94
+        }
+      },
+      {
+        "artifact_id": 14205849328,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/ci-14205849328-opennox-server-windows-amd64.zip",
+        "bytes": 168424678,
+        "sha256": "1b29f021795ab90c9a20f9d05e1df7764cdbd9af07aa3139efc5b036a6f03401",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1003181,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 22,
+    "uncompressed_warning_scan_bytes": 6402781557,
+    "all_previous_native_matrices_pass": true,
+    "Windows386_exact_PE_GOGC10_trade_replay_leaves": 18720,
+    "Windows386_exact_PE_GOGC10_trade_replay_roots": 10,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14207530613,
+        "name": "linux-amd64-opennox-server-b7835503915c816136197bc974ca64a7923609ce",
+        "preceding_artifact": 14199363135,
+        "preceding_passes": 997665,
+        "current_passes": 1005196,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14207326165,
+        "name": "linux-amd64-opennox-b7835503915c816136197bc974ca64a7923609ce",
+        "preceding_artifact": 14199896012,
+        "preceding_passes": 1003776,
+        "current_passes": 1011307,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14206764398,
+        "name": "linux-amd64-opennox-hd-b7835503915c816136197bc974ca64a7923609ce",
+        "preceding_artifact": 14200150671,
+        "preceding_passes": 1003776,
+        "current_passes": 1011307,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14206378445,
+        "name": "linux-amd64-opennox-server-hd-b7835503915c816136197bc974ca64a7923609ce",
+        "preceding_artifact": 14199617685,
+        "preceding_passes": 997665,
+        "current_passes": 1005196,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14206722941,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14198804094,
+        "preceding_passes": 975717,
+        "current_passes": 983248,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 94
+      },
+      {
+        "artifact_id": 14205849328,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14199313132,
+        "preceding_passes": 995650,
+        "current_passes": 1003181,
+        "new_native_pass_events": 7531,
+        "skips_unchanged": true,
+        "skip_events": 11
+      }
+    ],
+    "current_or_historical_engine_GC_cause_or_repair_claim": false,
+    "fixture_pointer_preparation_hazard_corrected": true
+  },
+  "preservation": {
+    "source": {
+      "utc": "2026-11-16T06:36:17.062146+00:00",
+      "protected_existing_tests_fixtures_unchanged": 4760,
+      "archived_C_definitions_reconstruct_full_files": true,
+      "old_header_reconstructs": true,
+      "existing_trade_arithmetic_unchanged": true,
+      "three_direct_global_Go_wrappers_unchanged": true,
+      "eleven_C_call_wrappers_only_remove_C_roundtrip": true,
+      "archived_C_bytes": 1093,
+      "entry_count": 15,
+      "numeric_or_existing_expectation_corrections": 0,
+      "all_C_callers_of_trade_leaf_already_archived": true,
+      "scope": "Only fifteen archival guards, one native two-pointer header declaration, eleven direct Go call changes and four new Go/fixture files. No active caller adjustment or old test modification."
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 39,
+    "retained_preceding_S31_program_paths": 39,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 3496048,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S31_program_paths_SHA_verified": 39,
+      "prior_obsolete_attempt_programs_SHA_verified": true,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded/nonblocking; no recovery claim for lost versions/S25seals"
+  },
+  "retained_attempts": {
+    "first_CGo_declaration_build_failure": {
+      "first_focus_exit": 1,
+      "tests_executed": 0,
+      "compiler_warnings": 0,
+      "error": "cgo: inconsistent definitions for C.dword_5d4594_814548",
+      "cause": "New uint32_t spelling differed from existing CGo unsigned int declaration of the same shared global.",
+      "correction": "Match existing unsigned int spellings for four affected shared globals in new Go preambles; underlying authoritative C globals remain uint32_t. No incoming source, reference, algorithm, prior tests or expected value changed.",
+      "original_log": "focus-native-v1/stdout.log"
+    },
+    "C_before_v1_and_v2_both_retained": true,
+    "fixture_pointer_correction": {
+      "all4760preceding_protected_inputs_unchanged": true,
+      "new_test_only_pointer_preparation_changes_reconstruct_exact_incoming_test": true,
+      "every_case_name_input_assertion_expected_word_and_canary_unchanged": true,
+      "original_fixture_sha256": "a0aacd9a9784b31760d8d8e50f20a3229167688ba1caecac54267c58b2068454",
+      "pinned_Go_document_sha256": "5216ba162c16830487023a4f3b6d57a7a3787d6610127724346d1d2304267d71",
+      "foreign_pointer_store": "native-width C memcpy; no Go deletion barrier over seed bits",
+      "ordinary_new_test_counts_unchanged": 7531,
+      "added_Win386_exact_PE_GOGC10_trade_leaves": 18720,
+      "added_Win386_exact_PE_GOGC10_trade_roots": 10,
+      "no_original_Skeleton_or_Golem_check_removed": true,
+      "historical_other_GC_causes": "OPEN; no blanket cause or repair claim"
+    },
+    "fixture_failure": {
+      "source_revision": "fa87b021f8a9ae377f39dd269c0c0e93b44d184e",
+      "files": {
+        "src/legacy/ui_state_trade_native_test.go": {
+          "bytes": 6296,
+          "sha256": "eb36d251aa1a26fa48e5e352b3a0bfc71d816faa9574e9833a6c42649f097fb1"
+        },
+        "src/legacy/ui_state_trade_native_fixture.go": {
+          "bytes": 6751,
+          "sha256": "fd0ea10cdfcbeef2243dd0faa155df124bd60e48bfcc7edcd2b03fe35b728061"
+        },
+        ".github/workflows/port-windows-native.yml": {
+          "bytes": 12840,
+          "sha256": "ee46446d247dee5c7e949f146a6381e1b7d8eebf1e30b7af0ec342c87c4a00fa"
+        }
+      },
+      "failed_artifact": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14205122738-opennox-server-windows-386.zip",
+      "failed_archive_sha256": "21ba69bfd868a955275743311a6486fda908a499da51fcee91d000c0dea54fd5",
+      "failed_actual_PE_sha256": "30cca9472444429fec260a42b4f5f2a95014ea1fd90104492fccc45109092b96",
+      "observed_bad_pointer": "0x402102e3",
+      "matching_original_canary": "seed at foreign session offset48",
+      "stack": "runtime.wbBufFlush1 -> fmt buffer -> TestUIStateTradeNativeValue at next T.Run",
+      "pinned_Go_document": "/Users/ghost/.goenv/versions/1.27.3/src/cmd/cgo/doc.go:431",
+      "scope": "New fixture pointer preparation writes seeded foreign fields through Go write barriers. Correct only preparation using native C memcpy stores; keep seed, canonical inputs, assertions and executable algorithm unchanged. Historical other Windows GC causes remain open.",
+      "all_local_previous_build_tests_runtime_closed_before_edit": true
+    },
+    "prior_port_attempt": {
+      "previous_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1",
+      "previous_code_revision": "ef01c8f4a3f935ff440766825948158c104b20d9",
+      "previous_mac_normal_strict_passes": 191371,
+      "previous_focused_passes": 7531,
+      "previous_Linux_run": 43818728511,
+      "previous_Windows_run": 43818680499,
+      "fix": "New C helper supplies full authoritative global addresses only; actual uint32 loads and signed32 conversion stay in Go. No shared global is referenced as a Go C.variable, avoiding platform-specific CGo typedef identity. Trade helper, C ABI, native fixture, input fixture, new and all prior tests are unchanged.",
+      "original_preport_131_file_seal_copied_and_SHA_verified": true,
+      "old_owned_builds_closed_before_edit": true,
+      "previous_qualification_not_credited": true,
+      "new_fully_recorded_credit": 0
+    },
+    "prior_attempt_retention": {
+      "previous_stages": [
+        {
+          "stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1",
+          "archives": [
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-14203403947-linux-amd64-opennox-hd-ef01c8f4a3f935ff440766825948158c104b20d9.zip",
+              "bytes": 663,
+              "sha256": "76fb08187fce84b860947af4568818812c106217bce98dbe6f4077b5174fda2d",
+              "actual_test_mains": 0,
+              "summaries": {}
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-14203573855-linux-amd64-opennox-ef01c8f4a3f935ff440766825948158c104b20d9.zip",
+              "bytes": 663,
+              "sha256": "a5479bec77df24f74d4c4bd7d44b0c8b55460cb6395426a1de840571b28d73ed",
+              "actual_test_mains": 0,
+              "summaries": {}
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-14203861783-linux-amd64-opennox-server-ef01c8f4a3f935ff440766825948158c104b20d9.zip",
+              "bytes": 663,
+              "sha256": "a2717e282c1673c249023cef5d08dced88f46b175e242fa24388be110a6b14e2",
+              "actual_test_mains": 0,
+              "summaries": {}
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-14203925928-linux-amd64-opennox-server-hd-ef01c8f4a3f935ff440766825948158c104b20d9.zip",
+              "bytes": 663,
+              "sha256": "71781dc1e96ad0afeeae3e19a6c48e994cd7f078d59ae97db3d063600ae52c6b",
+              "actual_test_mains": 0,
+              "summaries": {}
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-14204320709-opennox-server-windows-amd64.zip",
+              "bytes": 167512339,
+              "sha256": "4454e8c1f6bc001aab68423f14b9de4480d6a2eb9628a3cda9fb9ae4c790a3c0",
+              "actual_test_mains": 3,
+              "summaries": {
+                "allocator-controls/alloc/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "928f59faffc3a0185b61db558bd07bd0c0c98a562e53d60ebe323799057ea93b",
+                  "binary_sha256_after": "928f59faffc3a0185b61db558bd07bd0c0c98a562e53d60ebe323799057ea93b",
+                  "required_controls_passed": {
+                    "TestHighAllocationOwnershipAndRealloc": true,
+                    "TestHighFixtureTypedFramesAndClassOwnership": true,
+                    "TestHighAllocationRejectsInvalidExtents": true
+                  }
+                },
+                "allocator-controls/handles/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "9b1e443a68168d9e4d72466cf485b7207d9c0358fff00b2845739b30bb8a43ff",
+                  "binary_sha256_after": "9b1e443a68168d9e4d72466cf485b7207d9c0358fff00b2845739b30bb8a43ff",
+                  "required_controls_passed": {
+                    "TestHighOpaqueFixtureBank": true
+                  }
+                },
+                "allocator-controls/memguard/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "db80fa75b67d8439989836b611dee862ecb949991d152b4bfb8c0831331a8636",
+                  "binary_sha256_after": "db80fa75b67d8439989836b611dee862ecb949991d152b4bfb8c0831331a8636",
+                  "required_controls_passed": {
+                    "TestNewPage": true,
+                    "TestNewHighPageProtection": true
+                  }
+                },
+                "native-fixture-artifacts/four-timers-native-3995882688/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-2221994115/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-3639612405/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1003181,
+                    "skip": 11
+                  },
+                  "package_actions": {
+                    "github.com/opennox/opennox/v1/server": "pass",
+                    "github.com/opennox/opennox/v1": "pass",
+                    "github.com/opennox/opennox/v1/legacy": "pass"
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/server"
+                  ],
+                  "missing_packages": [],
+                  "unexpected_packages": [],
+                  "unfinished_tests": [],
+                  "failures": [],
+                  "build_failures": [],
+                  "build_warnings": [],
+                  "raw_JSON_bytes": 1033340088,
+                  "raw_JSON_sha256": "f35b58d2492c7a02e9477cbf1a9f540df69da26d32386f06b91940b5c2414f10"
+                }
+              }
+            }
+          ],
+          "decoded_job_logs": [
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-job-133136468243.log",
+              "bytes": 76399,
+              "sha256": "eaa4c4b7cbc253494f245f1cb6c8d10996c5a815a712b61803b99431923e7e9c"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-job-133136890524.log",
+              "bytes": 99605,
+              "sha256": "1e80acc2e0afbe6a9faf3cff139634d86ef8ff5a14f1aeddcf2d9a50f97e17bd"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-job-133136890812.log",
+              "bytes": 99691,
+              "sha256": "a92187ab7b51cc4dbff17c753d359840d77f2c5a9f7c570bfbcbaa679f428003"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-job-133136890832.log",
+              "bytes": 101672,
+              "sha256": "671472f5b65d3e76c1ccb181772cec946d97fc78789ac25d0b142f33345afa09"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v1/ci-job-133136890858.log",
+              "bytes": 100780,
+              "sha256": "6c0ced9cc2d1e43d35895dcbe2b33ce6dc5ad5a63bb519494ffba24b41b9c6cd"
+            }
+          ]
+        },
+        {
+          "stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2",
+          "archives": [
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14204139232-opennox-server-windows-amd64.zip",
+              "bytes": 169551124,
+              "sha256": "f5c43eb88645553b84248acf91ab723e49ca70655ee6dec30bae034602c452d5",
+              "actual_test_mains": 3,
+              "summaries": {
+                "allocator-controls/alloc/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "a3e0c26cae1ebbc46b3f983af3631243ddbbe05e366a90548fc53858d4d850f9",
+                  "binary_sha256_after": "a3e0c26cae1ebbc46b3f983af3631243ddbbe05e366a90548fc53858d4d850f9",
+                  "required_controls_passed": {
+                    "TestHighAllocationOwnershipAndRealloc": true,
+                    "TestHighFixtureTypedFramesAndClassOwnership": true,
+                    "TestHighAllocationRejectsInvalidExtents": true
+                  }
+                },
+                "allocator-controls/handles/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "9b1e443a68168d9e4d72466cf485b7207d9c0358fff00b2845739b30bb8a43ff",
+                  "binary_sha256_after": "9b1e443a68168d9e4d72466cf485b7207d9c0358fff00b2845739b30bb8a43ff",
+                  "required_controls_passed": {
+                    "TestHighOpaqueFixtureBank": true
+                  }
+                },
+                "allocator-controls/memguard/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "amd64",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "db80fa75b67d8439989836b611dee862ecb949991d152b4bfb8c0831331a8636",
+                  "binary_sha256_after": "db80fa75b67d8439989836b611dee862ecb949991d152b4bfb8c0831331a8636",
+                  "required_controls_passed": {
+                    "TestNewPage": true,
+                    "TestNewHighPageProtection": true
+                  }
+                },
+                "native-fixture-artifacts/four-timers-native-3021948407/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-1841555953/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-2605053252/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1003181,
+                    "skip": 11
+                  },
+                  "package_actions": {
+                    "github.com/opennox/opennox/v1/server": "pass",
+                    "github.com/opennox/opennox/v1": "pass",
+                    "github.com/opennox/opennox/v1/legacy": "pass"
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/server"
+                  ],
+                  "missing_packages": [],
+                  "unexpected_packages": [],
+                  "unfinished_tests": [],
+                  "failures": [],
+                  "build_failures": [],
+                  "build_warnings": [],
+                  "raw_JSON_bytes": 1033365888,
+                  "raw_JSON_sha256": "a1df0b3f67f2187afc08b33b157d2d4b18f5bb51826dfbb174ab4e6c4678eeb3"
+                }
+              }
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14204838794-linux-amd64-opennox-fa87b021f8a9ae377f39dd269c0c0e93b44d184e.zip",
+              "bytes": 221510131,
+              "sha256": "7f3f464a0bb7cf03dd0e6d76ef6e18a5484f8d477adf95ab83d53d9ddc5bca7f",
+              "actual_test_mains": 40,
+              "summaries": {
+                "native-fixture-artifacts/four-timers-native-2439119293/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-3719593479/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-3841200114/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1011307,
+                    "skip": 57
+                  },
+                  "package_actions": {
+                    "pass": 40,
+                    "skip": 21
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxmovie",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/noxmovie",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "terminal_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxmovie",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/noxmovie",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "missing_packages": [],
+                  "failures": []
+                }
+              }
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14204848582-linux-amd64-opennox-server-hd-fa87b021f8a9ae377f39dd269c0c0e93b44d184e.zip",
+              "bytes": 208071370,
+              "sha256": "f5cb540ac309560550e35b09c7140c8240eef8f97e2f715d12bd05e02db7910a",
+              "actual_test_mains": 36,
+              "summaries": {
+                "native-fixture-artifacts/four-timers-native-728496832/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-1782821883/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-497523968/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1005196,
+                    "skip": 7
+                  },
+                  "package_actions": {
+                    "pass": 36,
+                    "skip": 22
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "terminal_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "missing_packages": [],
+                  "failures": []
+                }
+              }
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14205122738-opennox-server-windows-386.zip",
+              "bytes": 163032859,
+              "sha256": "21ba69bfd868a955275743311a6486fda908a499da51fcee91d000c0dea54fd5",
+              "actual_test_mains": 3,
+              "summaries": {
+                "allocator-controls/alloc/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "386",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "cfbcc7e24374e3b293745c4e7409f3e5ec5c43456c1a5b3f5e7caec949ee3b12",
+                  "binary_sha256_after": "cfbcc7e24374e3b293745c4e7409f3e5ec5c43456c1a5b3f5e7caec949ee3b12",
+                  "required_controls_passed": {
+                    "TestHighAllocationOwnershipAndRealloc": true,
+                    "TestHighFixtureTypedFramesAndClassOwnership": true,
+                    "TestHighAllocationRejectsInvalidExtents": true
+                  }
+                },
+                "allocator-controls/handles/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "386",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "39fc16f6e3ee5cd4fa84c797575370aa880a16323560dedf24f6f12ca643217e",
+                  "binary_sha256_after": "39fc16f6e3ee5cd4fa84c797575370aa880a16323560dedf24f6f12ca643217e",
+                  "required_controls_passed": {
+                    "TestHighOpaqueFixtureBank": true
+                  }
+                },
+                "allocator-controls/memguard/summary.json": {
+                  "profile": "normal",
+                  "target": {
+                    "CGO_ENABLED": "1",
+                    "GOARCH": "386",
+                    "GOEXPERIMENT": "",
+                    "GOOS": "windows",
+                    "GOVERSION": "go1.27.3"
+                  },
+                  "exit_code": 0,
+                  "binary_sha256_before": "6b637a01edf143fc599da169b1f4c058525d968d62a26113a112454271b76d61",
+                  "binary_sha256_after": "6b637a01edf143fc599da169b1f4c058525d968d62a26113a112454271b76d61",
+                  "required_controls_passed": {
+                    "TestNewPage": true,
+                    "TestNewHighPageProtection": true
+                  }
+                },
+                "native-fixture-artifacts/four-timers-native-515130285/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-1750333482/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-3234787682/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "summary.json": {
+                  "test_exit_code": 1,
+                  "test_actions": {
+                    "skip": 91,
+                    "pass": 975971
+                  },
+                  "package_actions": {
+                    "github.com/opennox/opennox/v1/server": "pass",
+                    "github.com/opennox/opennox/v1": "pass",
+                    "github.com/opennox/opennox/v1/legacy": "fail"
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/server"
+                  ],
+                  "missing_packages": [],
+                  "unexpected_packages": [],
+                  "unfinished_tests": [
+                    [
+                      "github.com/opennox/opennox/v1/legacy",
+                      "TestUIStateTradeNativeValue"
+                    ]
+                  ],
+                  "failures": [
+                    {
+                      "Time": "2026-11-16T07:16:17.1414291Z",
+                      "Action": "fail",
+                      "Package": "github.com/opennox/opennox/v1/legacy",
+                      "Elapsed": 426.611
+                    }
+                  ],
+                  "build_failures": [],
+                  "build_warnings": [],
+                  "raw_JSON_bytes": 1002439551,
+                  "raw_JSON_sha256": "1520a298697b4e73a953612576bf5857497d14c6ec9315b05c1aaca8229a8448"
+                }
+              }
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14205146329-linux-amd64-opennox-server-fa87b021f8a9ae377f39dd269c0c0e93b44d184e.zip",
+              "bytes": 266104094,
+              "sha256": "07768538591bf114d3ac5614d7ca1db53ad8ce896b79879bf691c0effbb215ff",
+              "actual_test_mains": 36,
+              "summaries": {
+                "default-link-damage-summary.json": {
+                  "test_buildmode": "default",
+                  "MALLOC_MMAP_THRESHOLD_": "0",
+                  "test_actions": {
+                    "pass": 133405
+                  },
+                  "package_actions": {
+                    "github.com/opennox/opennox/v1": "pass",
+                    "github.com/opennox/opennox/v1/server": "pass",
+                    "github.com/opennox/opennox/v1/legacy": "pass"
+                  },
+                  "exit_code": 0
+                },
+                "native-fixture-artifacts/four-timers-native-2660320967/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-2310126468/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-2747696539/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1005196,
+                    "skip": 7
+                  },
+                  "package_actions": {
+                    "pass": 36,
+                    "skip": 22
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "terminal_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "missing_packages": [],
+                  "failures": []
+                }
+              }
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-14205375757-linux-amd64-opennox-hd-fa87b021f8a9ae377f39dd269c0c0e93b44d184e.zip",
+              "bytes": 220678969,
+              "sha256": "0367b9292b7485e8c32514ce7aff0b3992a447679d89e82ca11cf6f50a7f0379",
+              "actual_test_mains": 40,
+              "summaries": {
+                "native-fixture-artifacts/four-timers-native-3713841828/actual-four-timers-summary.json": {
+                  "actual_full_buffer_bytes": 140,
+                  "actual_input_mutations": 56,
+                  "actual_service_packets": 4888,
+                  "declared_field_bytes": 42,
+                  "input_fixture_sha256": "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e",
+                  "inputs": 1123,
+                  "native_Go_C_calls": 2246,
+                  "native_physical_ECX_EDX_stack_FP_equivalence": false,
+                  "new_original_execution": 0,
+                  "original_CW_comparisons": 4492,
+                  "original_helper_opcode_credit": 0,
+                  "packed_blob_canary_bytes": 98,
+                  "reference_fixture_sha256": "f8065153a575ba5df6c4b43db3738830a5e948676d45fc3a4d708744f6082374",
+                  "schema": "opennox-four-timers-native-actual-summary-v1"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-1577712069/actual-six-leaves-summary.json": {
+                  "A180_Go_and_C_native_calls": 1179648,
+                  "A180_configurations": 9,
+                  "A180_inputs_each": 65536,
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "actual_native_calls": 1180680,
+                  "new_GAME_EXE_CPU_execution": 0,
+                  "old_C_reference_stdout_sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63",
+                  "scalar_Go_and_C_native_calls": 1032,
+                  "scalar_cases": 516,
+                  "scope": "immutable106B PE static facts and compiled exact preserved old C7 reference; no new original opcode execution or physical original stack/FPU claim"
+                },
+                "native-fixture-artifacts/game1-six-leaves-old-C-222038092/actual-settings-scalar-summary.json": {
+                  "C_executable_preserved_before_first_EXEC": true,
+                  "E090_void_return_compared": false,
+                  "actual_separate_C_global": true,
+                  "cases": 112,
+                  "native_calls": 224,
+                  "new_original_CPU_execution": 0,
+                  "old_C_stdout_sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2",
+                  "scope": "75B static PE and compiled exact preserved C6; portable C stable clock data only; PE-order controls reported separately; no original stack/FPU or incoming caller-body credit",
+                  "whole_state_bytes_each": 104
+                },
+                "summary.json": {
+                  "test_exit_code": 0,
+                  "test_actions": {
+                    "pass": 1011307,
+                    "skip": 57
+                  },
+                  "package_actions": {
+                    "pass": 40,
+                    "skip": 21
+                  },
+                  "expected_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxmovie",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/noxmovie",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "terminal_packages": [
+                    "github.com/opennox/opennox/v1",
+                    "github.com/opennox/opennox/v1/client",
+                    "github.com/opennox/opennox/v1/client/gui",
+                    "github.com/opennox/opennox/v1/client/input",
+                    "github.com/opennox/opennox/v1/client/noxmovie",
+                    "github.com/opennox/opennox/v1/client/noxrender",
+                    "github.com/opennox/opennox/v1/client/render",
+                    "github.com/opennox/opennox/v1/client/seat/headless",
+                    "github.com/opennox/opennox/v1/cmd/noxmovie",
+                    "github.com/opennox/opennox/v1/cmd/opennox",
+                    "github.com/opennox/opennox/v1/cmd/opennox-server",
+                    "github.com/opennox/opennox/v1/common/discover",
+                    "github.com/opennox/opennox/v1/common/flags",
+                    "github.com/opennox/opennox/v1/common/gsync",
+                    "github.com/opennox/opennox/v1/common/memmap",
+                    "github.com/opennox/opennox/v1/common/memmap/nox",
+                    "github.com/opennox/opennox/v1/common/memmap/nox/blobdata",
+                    "github.com/opennox/opennox/v1/common/ntype",
+                    "github.com/opennox/opennox/v1/common/serial",
+                    "github.com/opennox/opennox/v1/common/sound",
+                    "github.com/opennox/opennox/v1/common/unit/ai",
+                    "github.com/opennox/opennox/v1/internal/binfile",
+                    "github.com/opennox/opennox/v1/internal/blobs",
+                    "github.com/opennox/opennox/v1/internal/callgraph",
+                    "github.com/opennox/opennox/v1/internal/cgoabi",
+                    "github.com/opennox/opennox/v1/internal/cryptfile",
+                    "github.com/opennox/opennox/v1/internal/exportpkg",
+                    "github.com/opennox/opennox/v1/internal/layoutaudit",
+                    "github.com/opennox/opennox/v1/internal/mainmenu",
+                    "github.com/opennox/opennox/v1/internal/nativelayout",
+                    "github.com/opennox/opennox/v1/internal/netlist",
+                    "github.com/opennox/opennox/v1/internal/netstr",
+                    "github.com/opennox/opennox/v1/internal/noxbuild",
+                    "github.com/opennox/opennox/v1/internal/noxfactor",
+                    "github.com/opennox/opennox/v1/internal/noxfactor/c2gotok",
+                    "github.com/opennox/opennox/v1/internal/noxgroupwalk",
+                    "github.com/opennox/opennox/v1/internal/noxoracle",
+                    "github.com/opennox/opennox/v1/internal/noxscriptqueue",
+                    "github.com/opennox/opennox/v1/internal/noxscriptwire",
+                    "github.com/opennox/opennox/v1/internal/npcdrawprobe",
+                    "github.com/opennox/opennox/v1/internal/offalign",
+                    "github.com/opennox/opennox/v1/internal/oracletest",
+                    "github.com/opennox/opennox/v1/internal/porttest",
+                    "github.com/opennox/opennox/v1/internal/porttest/chainlightning",
+                    "github.com/opennox/opennox/v1/internal/vers",
+                    "github.com/opennox/opennox/v1/internal/vers/git",
+                    "github.com/opennox/opennox/v1/internal/version",
+                    "github.com/opennox/opennox/v1/legacy",
+                    "github.com/opennox/opennox/v1/legacy/client/audio/ail",
+                    "github.com/opennox/opennox/v1/legacy/cnxz",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/handles",
+                    "github.com/opennox/opennox/v1/legacy/common/alloc/memguard",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall",
+                    "github.com/opennox/opennox/v1/legacy/common/ccall/callgen",
+                    "github.com/opennox/opennox/v1/legacy/dialog",
+                    "github.com/opennox/opennox/v1/legacy/music",
+                    "github.com/opennox/opennox/v1/legacy/timer",
+                    "github.com/opennox/opennox/v1/server",
+                    "github.com/opennox/opennox/v1/server/netlib",
+                    "github.com/opennox/opennox/v1/server/noxscript"
+                  ],
+                  "missing_packages": [],
+                  "failures": []
+                }
+              }
+            }
+          ],
+          "decoded_job_logs": [
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141756892.log",
+              "bytes": 878277,
+              "sha256": "655cdbbec5190285e281955e7fc7db6ee152843e4495e30ef2d44dd46b3065a9"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141757202.log",
+              "bytes": 77529,
+              "sha256": "aabfee488cd5cfc8228cabd35a92674e38cc427ac9ab3d302f479703abfbc2d2"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141973283.log",
+              "bytes": 120215,
+              "sha256": "0afb7922539737a5c3a07b81da25fd02b1b14023a2d4b4c6ad3745b90f968936"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141973549.log",
+              "bytes": 123246,
+              "sha256": "c6a52a6236e3c4b00392f409e8dda133fa8ed74786af26c09ce78c16c9eb8357"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141973678.log",
+              "bytes": 117110,
+              "sha256": "b4da7ce2e53f642892d6f32b42b2e85d19960b72ee057a2a1e52a8996267f6c7"
+            },
+            {
+              "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v2/ci-job-133141973979.log",
+              "bytes": 120529,
+              "sha256": "fb26d9e6fc8c295ba74a9d4f47092838abf1a6ba526a52340b5431d6fe53ce11"
+            }
+          ]
+        }
+      ],
+      "retained_previous_local_program_paths": 75,
+      "previous_failed_actual_Win386_PE_sha256": "30cca9472444429fec260a42b4f5f2a95014ea1fd90104492fccc45109092b96",
+      "earliest_cancelled_386_publication_gap": {
+        "run_id": 43818680499,
+        "job_id": 133136468502,
+        "source_revision": "ef01c8f4a3f935ff440766825948158c104b20d9",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "started_at": "2026-11-16T06:43:06Z",
+        "completed_at": "2026-11-16T08:18:06Z",
+        "uploaded_Windows386_bundle": false,
+        "job_log_error": "404 BlobNotFound",
+        "run_log_archive": "Only Windows/amd64 members are present; saved exact18413-byte response ZIP SHA234b4807135cd58e7398f51137b71dadd27e46e60053ab41b3cb275f66d5c0a5.",
+        "unavailable": "Original Windows/386 product/test binaries and raw execution output were not published; which test mains built/started and the original execution result are unknown. No recovery or original-run success claim.",
+        "qualification_credit": 0,
+        "cause": "Unknown; do not attribute this cancelled execution to the separate observed fa87 fixture GC failure."
+      },
+      "old_actual_versions_not_rebuilt_or_substituted": true,
+      "current_final_source_all6_first_pass": true,
+      "all_original_inputs_and_original_seals_retained": true
+    },
+    "C_before_full_width_data_control_separates_injected_narrowing": true,
+    "original_inputs_and_all_prior_assertions_retained": true
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical native memory/GC failures remain unexplained. The new seeded foreign-pointer fixture hazard has a specific preparation fix and exact-PE replay evidence; no blanket engine repair claim.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit",
+    "all_C_denominator": "OPEN; defaultARM64 split-file AST inventory includes native bridges and excludes32bit-only branches/other files; not a remaining-port denominator"
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-ui-state-trade-leaves-native-v3/qualified-ui-state-trade-entries-v1.json",
+    "sha256": "a072c4d08f82e6f6455c55872d7e0b52be06f7bbbc8dfd92a77855fb8426ae2d"
+  },
+  "normal_passes": 191371,
+  "strict_passes": 191371,
+  "focused_passes": 7531,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 81
+}

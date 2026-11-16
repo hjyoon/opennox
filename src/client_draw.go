@@ -627,10 +627,8 @@ func spriteBackWallQueueNative4756E0(dr *client.Drawable) bool {
 	if dr == nil || dr.DrawFuncPtr == nil {
 		return false
 	}
-	flags := uint32(dr.ObjFlags)
-	class := uint32(dr.ObjClass)
 	staticDraw := dr.DrawFuncPtr == legacy.Get_nox_thing_static_draw() || dr.DrawFuncPtr == legacy.Get_nox_thing_static_random_draw()
-	return flags&0x1000 == 0 && flags&1 != 0 && staticDraw && class&0x80800000 == 0 && (flags&0x48 != 0 || class&0x400000 != 0) && flags&0x800 == 0
+	return client.DrawableBackWallQueue(dr, staticDraw)
 }
 
 func spriteFrontQueueNative475740(dr *client.Drawable) bool {
@@ -641,26 +639,16 @@ func spriteFrontQueueNative475740(dr *client.Drawable) bool {
 	if flags&0x1000 != 0 || flags&1 == 0 {
 		return false
 	}
-	class := uint32(dr.ObjClass)
 	staticDraw := dr.DrawFuncPtr == legacy.Get_nox_thing_static_draw() || dr.DrawFuncPtr == legacy.Get_nox_thing_static_random_draw()
-	return !(staticDraw && class&0x80800000 == 0 && flags&0x800 == 0 && (flags&0x48 != 0 || class&0x400000 != 0))
+	return client.DrawableFrontQueue(dr, staticDraw)
 }
 
 func spriteOverlayQueueNative4757A0(dr *client.Drawable) bool {
-	if dr == nil || dr.DrawFuncPtr == nil {
-		return false
-	}
-	flags := uint32(dr.ObjFlags)
-	return flags&0x1000 == 0 && flags&0x4000 != 0 && flags&0x40 != 0
+	return client.DrawableOverlayQueue(dr)
 }
 
 func spriteWorldQueueNative4757D0(dr *client.Drawable) bool {
-	if dr == nil || dr.DrawFuncPtr == nil {
-		return false
-	}
-	flags := uint32(dr.ObjFlags)
-	class := uint32(dr.ObjClass)
-	return flags&1 == 0 && (class&0x2000 == 0 || flags&0x1000000 != 0) && flags&0x1000 == 0
+	return client.DrawableWorldQueue(dr)
 }
 
 func (c *Client) nox_xxx_drawAllMB_475810_draw_A(vp *noxrender.Viewport) {

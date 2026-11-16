@@ -5547,6 +5547,7 @@ int sub_474B40(nox_drawable* dr) {
 }
 
 //----- (004756E0) --------------------------------------------------------
+#if 0 // Restored by drawable_predicate_native_entry.go.
 int nox_xxx_sprite_4756E0_drawable(nox_drawable* dr) {
 	int result;           // eax
 	int (*v2)(uint32_t*, nox_drawable*); // esi
@@ -5565,8 +5566,10 @@ int nox_xxx_sprite_4756E0_drawable(nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (00475740) --------------------------------------------------------
+#if 0 // Restored by drawable_predicate_native_entry.go.
 int nox_xxx_sprite_475740_drawable(nox_drawable* dr) {
 	int result;           // eax
 	int (*v2)(uint32_t*, nox_drawable*); // edx
@@ -5590,8 +5593,10 @@ int nox_xxx_sprite_475740_drawable(nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (004757A0) --------------------------------------------------------
+#if 0 // Restored by drawable_predicate_native_entry.go.
 int nox_xxx_sprite_4757A0_drawable(nox_drawable* dr) {
 	int a1 = dr;
 	int result; // eax
@@ -5610,8 +5615,10 @@ int nox_xxx_sprite_4757A0_drawable(nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (004757D0) --------------------------------------------------------
+#if 0 // Restored by drawable_predicate_native_entry.go.
 int sub_4757D0_drawable(nox_drawable* dr) {
 	uint32_t* a1 = dr;
 	int result; // eax
@@ -5626,6 +5633,7 @@ int sub_4757D0_drawable(nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 int nox_xxx_drawAllMB_475810_draw_B(nox_draw_viewport_t* vp) {
 	int v10 = 1;

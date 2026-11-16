@@ -9218,7 +9218,7 @@ LABEL_170:
 LABEL_156:
 	if (!*(uint32_t*)(v35 + 136) || nox_crypt_IsReadOnly() != 1 ||
 		(result = nox_xxx_xfer_4F3E30(v44, v35, *(uint32_t*)(v35 + 136))) != 0) {
-		sub_52BA70(v35);
+		sub_52BA70((nox_object_t*)v35);
 		if (nox_crypt_IsReadOnly() == 1) {
 			if (nox_common_gameFlags_check_40A5C0(1)) {
 				for (k = *(uint32_t**)(v35 + 504); k; k = (uint32_t*)k[124]) {
@@ -9249,6 +9249,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* obj) { return nox_xxx_XFerNPC_native_52
 #endif
 
 //----- (0052BA70) --------------------------------------------------------
+#if 0 // Native NPC equipment: npc_equipment_native_entry.go
 int sub_52BA70(int a1) {
 	int result; // eax
 	int v2;     // edi
@@ -9284,6 +9285,7 @@ int sub_52BA70(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052BAF0) --------------------------------------------------------
 int sub_52BAF0(int a1) {

@@ -2235,6 +2235,7 @@ void nox_xxx_shopExit_50F4C0(uint32_t* a1) {
 }
 
 //----- (0050F560) --------------------------------------------------------
+#if 0 // Restored by trade_notify_item_native_entry.go.
 int nox_xxx_sendEndTradeMsg_50F560(int a1) {
 	int v2;   // edx
 	short v4; // [esp+0h] [ebp-2h]
@@ -2243,6 +2244,7 @@ int nox_xxx_sendEndTradeMsg_50F560(int a1) {
 	v4 = 713;
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), &v4, 2, 0, 1);
 }
+#endif
 
 //----- (0050F5A0) --------------------------------------------------------
 void nox_xxx_tradeAccept_50F5A0(int a1, int a2) {
@@ -2312,6 +2314,7 @@ int sub_50F6B0(int a1) {
 }
 
 //----- (0050F6E0) --------------------------------------------------------
+#if 0 // Restored by trade_notify_item_native_entry.go.
 int sub_50F6E0(int a1) {
 	int v2;   // edx
 	short v4; // [esp+0h] [ebp-2h]
@@ -2320,6 +2323,7 @@ int sub_50F6E0(int a1) {
 	v4 = 1993;
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), &v4, 2, 0, 1);
 }
+#endif
 
 //----- (0050F720) --------------------------------------------------------
 #if 0 // Restored by trade_packet_native_entry.go.

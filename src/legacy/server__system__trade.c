@@ -159,6 +159,7 @@ uint32_t* nox_xxx_tradeSetPlayer_50F370(uint32_t* a1, int a2) {
 }
 
 //----- (0050FAE0) --------------------------------------------------------
+#if 0 // Restored by trade_notify_item_native_entry.go.
 int sub_50FAE0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;       // esi
 	short v6;     // dx
@@ -191,6 +192,7 @@ int sub_50FAE0(int a1, int a2, int a3, int a4, int a5) {
 	}
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), v11, 15, 0, 1);
 }
+#endif
 
 //----- (0050FD60) --------------------------------------------------------
 int sub_50FD60(uint32_t* a1, int a2) {

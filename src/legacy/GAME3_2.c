@@ -2807,6 +2807,7 @@ int sub_4D60B0() {
 }
 
 //----- (004D60E0) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 uint32_t* sub_4D60E0(int a1) {
 	uint32_t* result; // eax
 	int v2;           // ecx
@@ -2823,6 +2824,7 @@ uint32_t* sub_4D60E0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004D6130) --------------------------------------------------------
 #if 0
@@ -2847,6 +2849,7 @@ uintptr_t nox_server_questRecordDeath_native_4D6130(nox_object_t* unit);
 uintptr_t sub_4D6130(nox_object_t* unit) { return nox_server_questRecordDeath_native_4D6130(unit); }
 
 //----- (004D6170) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 int sub_4D6170(int a1) {
 	int result; // eax
 	int v2;     // eax
@@ -2862,6 +2865,7 @@ int sub_4D6170(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004D61B0) --------------------------------------------------------
 #if 0 // Restored by server/generator_credit_raw_4d61b0.go at native width.
@@ -4029,6 +4033,7 @@ void nox_xxx_playerIncrementElimDeath_4D8D40(int a1) {
 }
 
 //----- (004D8E90) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 int nox_xxx_changeScore_4D8E90(int a1, int a2) {
 	int result; // eax
 
@@ -4039,8 +4044,10 @@ int nox_xxx_changeScore_4D8E90(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004D8EC0) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 int nox_xxx_playerSubLessons_4D8EC0(int a1, int a2) {
 	int result; // eax
 
@@ -4051,6 +4058,7 @@ int nox_xxx_playerSubLessons_4D8EC0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004D8EF0) --------------------------------------------------------
 int nox_xxx_netReportLesson_4D8EF0(nox_object_t* a1p) {

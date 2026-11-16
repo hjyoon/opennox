@@ -147,6 +147,7 @@ int nox_xxx_servSendShopItems_50F280(int a1, int a2) {
 }
 
 //----- (0050F370) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 uint32_t* nox_xxx_tradeSetPlayer_50F370(uint32_t* a1, int a2) {
 	uint32_t* result; // eax
 
@@ -157,6 +158,7 @@ uint32_t* nox_xxx_tradeSetPlayer_50F370(uint32_t* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050FAE0) --------------------------------------------------------
 #if 0 // Restored by trade_notify_item_native_entry.go.

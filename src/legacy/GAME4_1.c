@@ -2190,6 +2190,7 @@ int sub_50F450(int a1) {
 }
 
 //----- (0050F490) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 int sub_50F490(uint32_t* a1, int a2) {
 	int result; // eax
 
@@ -2203,6 +2204,7 @@ int sub_50F490(uint32_t* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050F4C0) --------------------------------------------------------
 void nox_xxx_shopExit_50F4C0(uint32_t* a1) {
@@ -2901,6 +2903,7 @@ void nox_xxx_shopCancelSession_510DC0(void* a1p) {
 }
 
 //----- (00510DE0) --------------------------------------------------------
+#if 0 // Restored by pointer_chain_native_entry.go.
 int sub_510DE0(int a1, int a2) {
 	int v2;       // eax
 	uint32_t* v3; // eax
@@ -2921,6 +2924,7 @@ int sub_510DE0(int a1, int a2) {
 	}
 	return *v3;
 }
+#endif
 
 //----- (00510E20) --------------------------------------------------------
 extern int sub_510E20_go(int player_index);

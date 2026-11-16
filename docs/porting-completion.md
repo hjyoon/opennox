@@ -60,6 +60,105 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native Inversion public C entry, 2026-11-16
+
+Engine `e9b929040fc4c709c8852f964faefb21d0dc496d` is committed and pushed to
+`origin/port/go1.27-multiarch`. The public `sub_52BEB0` entry now
+forwards full native object pointers to the Go selector. Its original C ABI
+has **four arguments**. Acceptance and level exist only in the six-argument
+Go selector; the C export supplies nil and zero, and direct Go retains both.
+
+There are **188 implemented split-file Go entries** and **186 with complete
+recorded qualification**. Two implemented Arachnaphobia/trace entries with
+deleted original seals remain open. **All-C migration and overall 100%
+remain open.** These entry counts are not a complete C-file denominator.
+
+Before edits, a **95-path seal** preserves **79 original CPU cases** and
+**466 service events**, all **76 cast bytes**, the **30-byte actual
+nil-caster enumeration fault prefix** and **319 startup bytes** under
+control word `0xe3f`. An independent identity/state and exact rational
+binary32 ToZero model matches every observation. Whole mapped-image/64 KiB
+heap, caller redzones, saved registers and FP control/TOP are checked.
+Balance, enumeration, ownership and audio child bodies remain declared
+service boundaries. Two nil-caster fault prefixes are retained.
+
+An initial software x87 balance-return loader mishandles positive signaling
+NaNs. Its CPU results and structured model mismatch remain preserved.
+A separate native x86_64/Rosetta FLD/FSTP control establishes sign/payload
+quieting. Before the final seal or any source edit, only the owned service
+return loader changes to a verified extended return. The same 79 inputs,
+original 76+30 bytes and independent model arithmetic remain. This is an
+oracle boundary correction, without a claim about the original getter body
+or stock balance NaNs.
+
+The exact **330-byte C body** remains inactive. Removing its guard and
+reversing its prototype reconstruct the complete incoming C file/header.
+Six packed/native-missile controls match selected original services.
+Two high-pointer controls fault, a low native caster exposes legacy position
+offsets, and a valid high owner with a zero low word becomes nil. These are
+standalone x86_64/Rosetta observations, without an ARM64 C-before or full-game
+crash claim; the owner fault includes a declared child owner-read control.
+
+Actual C/Go comparison first preserves **72 failed terminal events**
+(70 leaves plus two parents), all from seven finite range spills. The Go
+range expression now uses the existing unchanged local ToZero helper.
+Exactly two old expectation expressions in one test file read independently
+sealed original words. For example, original `100.000004` spills to
+`0x42c80000`; the former nearest conversion produced `0x42c80001`.
+All preceding inputs, cases, labels, assertions and canaries remain;
+**4,753 of 4,754** protected files are byte-identical. No host FP state changes.
+The first candidate, raw failures and actual failed test mains are retained.
+
+All final qualification gates pass with zero compiler warnings:
+
+- Normal and highres/cgocheck2/checkptr2 each pass **172,738** identical
+  terminal identities/multiplicities on the **9,315-input** lease
+  `a5066622bc5b066c1dc05d36dfaadedc7773952aaef3c280b7425b63d736ae98`.
+  All preceding 171,988 selected identities remain and 750 are added.
+  Focused execution passes **2,510** identities: 748 native Inversion,
+  14 existing typed server, 80 original numeric server, two existing
+  legacy selector and 1,666 preceding inventory identities. Public C,
+  typed C callback and direct Go execute all 79 reference cases at three
+  foreign placements, plus 15 pointer/signed controls and 18 actual native
+  zero-radius map/owner compositions. Observed fields have independent
+  C/Go layout checks and whole-owner canaries. Child map geometry and
+  stock ownership logic are outside those bounded compositions.
+- Four ARM64 products pass build, metadata, help and **65** symbol checks.
+  Normal/HD pass four core E2E cases, two functional Save/Load diagnostics
+  and two ordinary-clock independent UDP chat profiles. Each chat profile
+  proves eight submissions, four received peer messages and one host reply;
+  both processes exit zero without forced termination.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43801838630)
+  and [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43801760601)
+  qualify all four Linux products and Windows amd64/386.
+  All six profiles pass on their first attempt.
+  Six SHA-verified passing ZIPs retain **158 actual test mains**, every
+  current identity and all preceding native matrices. Complete warning
+  review covers **20 files /
+  6,285,353,927 uncompressed bytes**, zero warnings.
+
+All **4,649** original asset/personal Save files retain their hashes.
+All **45 current program paths** and
+the preceding **39 S29 paths** remain intact after clearing only the closed
+dedicated cache from **2,495,444 KiB to 8 KiB**.
+Original inputs, failed results and executable versions remain preserved.
+Historical user-deleted executables and S25 records remain explicitly
+missing and nonblocking; private video bags and matching indexes remain
+verified against the stock copies.
+
+The separately pushed retained-Windows replay harness fix `afa9595a2` gives
+each replay an absolute fixture output directory. Its nine retained-binary
+rows pass, including 983,723 full-suite passes and 11 skips, with 47 fixture
+files and three native C executables. It changes no engine source and
+establishes no cause or repair for the original memory failures.
+
+The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
+pixel failure, current/historical Windows native memory failure causes and
+two lost S25 seals remain open. Chapter 4 and later remain excluded.
+
+Machine evidence: [split-inversion-cast-native-progress-20261116.json](split-inversion-cast-native-progress-20261116.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/qualified-inversion-cast-entry-v1.json` (SHA-256 `da024eba8760894e0ffba7f8ba3bb1fb58dffc4261a3ac2f5661f4e3b75cbd69`).
+
 ### Native Burn public C entry, 2026-11-16
 
 Engine `0b369c59a89efebdde795aadd8510ed404e740d7` is committed and pushed to
@@ -69,8 +168,8 @@ acceptance pointers to the existing Go implementation. Its original C ABI
 has **five arguments**. The direct Go selector retains its sixth, unused
 signed level; the C export supplies zero.
 
-There are **187 implemented split-file Go entries** and **185 with complete
-recorded qualification**. The two Arachnaphobia/trace entries whose original
+At that checkpoint there are **187 implemented split-file Go entries** and
+**185 with complete recorded qualification**. The two Arachnaphobia/trace entries whose original
 seals were deleted remain open and receive no additional recorded credit.
 **All-C migration and overall 100% remain open.**
 
@@ -143,8 +242,8 @@ attempt with original scenarios, assertions and timing unchanged.
 The nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load
 pixel failure, current and historical Windows native memory failures and
 two lost S25 seals remain open. A passing retry establishes no memory-error
-cause or repair. Chapter 4 and later remain excluded. The next native-pointer
-review targets the active Inversion entry at `52BEB0`.
+cause or repair. Chapter 4 and later remain excluded. At that checkpoint the next C target
+was Inversion; its separately sealed qualification appears above.
 
 Machine evidence: [split-burn-cast-native-progress-20261116.json](split-burn-cast-native-progress-20261116.json).
 Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-burn-cast-native-v1/qualified-burn-cast-entry-v1.json` (SHA-256 `83db61f1f739042fc12d981da7cb2557227924fbb883c2a53f531aafa37cc461`).

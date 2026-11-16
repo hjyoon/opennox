@@ -1,0 +1,475 @@
+{
+  "source_revision": "e9b929040fc4c709c8852f964faefb21d0dc496d",
+  "entries": [
+    "sub_52BEB0"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 185,
+  "cumulative_qualified_split_Go_entries": 186,
+  "implemented_split_Go_entries": 188,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9315,
+    "sha256": "a5066622bc5b066c1dc05d36dfaadedc7773952aaef3c280b7425b63d736ae98"
+  },
+  "original": {
+    "cases": 79,
+    "service_events": 466,
+    "root_bytes": 76,
+    "nil_caster_enumeration_prefix_bytes": 30,
+    "startup_bytes": 319,
+    "control_word": "0xe3f",
+    "preport_sealed_paths": 95,
+    "proof": {
+      "utc": "2026-11-16T03:20:23.405905+00:00",
+      "source_revision": "afa9595a284cdfe5bbd27478fe31f70960781a23",
+      "cases": 79,
+      "service_events": 466,
+      "fault_cases": 2,
+      "original_root_bytes": 76,
+      "original_nil_caster_enumeration_prefix_bytes": 30,
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "whole_image_heap_checked_each_service_and_return": true,
+      "root_image_heap_and_caller_writes_none": true,
+      "caller_redzones_callee_saved_registers_FP_control_TOP_checked": true,
+      "actual_binary32_spill_words_observed": true,
+      "original_callback_address_and_captured_owner_checked": true,
+      "native_verified_SNaN_service_loader": true,
+      "native_loader_control": "x87-balance-return-native-v1/proof.json",
+      "prior_Unicorn_loader_mismatch_preserved": true,
+      "fixture_sha256": "9027a202f77f366bc2e61716708d5f2a509b131f5bd685d0741a75e77f912eb2",
+      "fixture_gzip_sha256": "09ef7b359c4b988988f2a4ceb472375e432d0f1ab89f1f3f1fea2e50eac38ead",
+      "generator_sha256": "8a80b1da99bad8204b511dd3b2af66eff1d5d72ae7116199e377bfb0fa9f9322",
+      "source_port_started": false,
+      "preport_final_seal_complete": false,
+      "new_Go_credit": 0,
+      "scope": "Execute all76 original Inversion bytes and startup319; nil-caster cases execute30 actual enumeration-prefix bytes to the invalid origin read. Balance/enumeration/ownership/audio are declared service boundaries."
+    },
+    "independent_model": {
+      "utc": "2026-11-16T03:20:57.455860+00:00",
+      "cases": 79,
+      "service_events": 466,
+      "fault_cases": 2,
+      "all_input_output_service_state_spill_words_and_fault_prefixes_equal": true,
+      "independent_exact_rational_binary32_ToZero_equal": true,
+      "callback_sequence_captured_owner_and_final_caster_audio_equal": true,
+      "nearest_even_projection_disagreements": 7,
+      "fixture_sha256": "9027a202f77f366bc2e61716708d5f2a509b131f5bd685d0741a75e77f912eb2",
+      "independent_model_sha256": "650995a0e92985bf5c4f4139e1ac7940ffe9fed8e9765858bea1241c5f89d035",
+      "source_port_started": false,
+      "preport_final_seal_complete": false,
+      "new_Go_credit": 0,
+      "scope": "Independent identity/state and exact rational binary32 ToZero model, compared with actual recorded spill words and service arguments. No Go/C implementation is read."
+    },
+    "service_loader_native_control": {
+      "host_architecture": "arm64",
+      "architecture": "x86_64/Rosetta",
+      "control_word": "0xe3f",
+      "direct_FLD64_FSTP32": true,
+      "command": [
+        "/usr/bin/clang",
+        "-arch",
+        "x86_64",
+        "-O0",
+        "-g",
+        "x87-balance-return-native-v1.c",
+        "-o",
+        "x87-balance-return-native-v1/native-probe"
+      ],
+      "executable_sha256": "fa432081410485e6151371dc8ed5eb85078518dd81c434f84cd6559d1f868ecc",
+      "observations": [
+        {
+          "input": "7ff0000000000001",
+          "binary32": "7fc00000",
+          "status": "0001"
+        },
+        {
+          "input": "fff0000000000001",
+          "binary32": "ffc00000",
+          "status": "0001"
+        },
+        {
+          "input": "7ff8000000000000",
+          "binary32": "7fc00000",
+          "status": "0000"
+        },
+        {
+          "input": "7ff8000000000001",
+          "binary32": "7fc00000",
+          "status": "0000"
+        },
+        {
+          "input": "fff8000000000001",
+          "binary32": "ffc00000",
+          "status": "0000"
+        },
+        {
+          "input": "7ff8123456789abc",
+          "binary32": "7fc091a2",
+          "status": "0000"
+        },
+        {
+          "input": "fff8123456789abc",
+          "binary32": "ffc091a2",
+          "status": "0000"
+        },
+        {
+          "input": "4059000010c6f7a1",
+          "binary32": "42c80000",
+          "status": "0020"
+        }
+      ],
+      "scope": "Independent native x87 FLD/FSTP control for the declared balance-return shim. This does not execute original GAME.EXE bytes or change production/model/CPU records."
+    },
+    "oracle_loader_correction": {
+      "original_driver_sha256": "b973ca74bcbc0b8f4242c84ccd98d5b3dcdd884ccbcafdc4c2670aa694ad079f",
+      "replacement_driver_sha256": "8a80b1da99bad8204b511dd3b2af66eff1d5d72ae7116199e377bfb0fa9f9322",
+      "scope": "Original76+30bytes, all79 inputs, cases and assertions unchanged. Only synthetic binary64 balance-return loader corrects Unicorn FLD64 SNaN canonicalization using native-verified quiet extended80 return plus masked invalid flag. Original CPUv1/modelv1 mismatch and native control are preserved. This is an oracle service-boundary correction before final seal or source edits, not a gameplay repair."
+    },
+    "scope": "Execute all76 original Inversion bytes and startup319; nil-caster cases execute30 actual enumeration-prefix bytes to the invalid origin read. Balance/enumeration/ownership/audio are declared service boundaries."
+  },
+  "C_before": {
+    "utc": "2026-11-16T03:27:34.574763+00:00",
+    "entry": "sub_52BEB0",
+    "original_C_body_bytes": 330,
+    "original_C_body_sha256": "ba81fea626a3cb03df0c812ba8867163e7a0002ea6a4b7723355ed2fcd07d841",
+    "program_sha256": "1126fbc23c78190c7cce4afabd1e2b1f3628bc9d16f11858f1574c90435e08de",
+    "executable_sha256": "539ff8acc3f7fbe68410404b5f36f4192ad3049251bbc66defa0d5ebab08a9f3",
+    "host_architecture": "arm64",
+    "executable_MachO_CPU": "x86_64",
+    "architecture": "x86_64/Rosetta on ARM64 host",
+    "command": [
+      "/usr/bin/clang",
+      "-arch",
+      "x86_64",
+      "-Wl,-pagezero_size,0x10000",
+      "-O0",
+      "-g",
+      "-fno-strict-aliasing",
+      "-Wno-int-conversion",
+      "-Wno-incompatible-pointer-types",
+      "-Wno-pointer-to-int-cast",
+      "-Wno-int-to-pointer-cast",
+      "-I",
+      "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020/src/legacy",
+      "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/original-C-before-v1/unchanged-inversion.c",
+      "-o",
+      "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/original-C-before-v1/unchanged-inversion"
+    ],
+    "matching_packed_and_high_native_missile_controls": 6,
+    "high_native_pointer_faults": 2,
+    "low_native_position_layout_mismatches": 1,
+    "nonnull_high_zero_lowword_owner_loss": 1,
+    "results": [
+      {
+        "mode": "packed-ordinary",
+        "exit_code": 0,
+        "stdout_sha256": "5d59a319d3914c7f0eb457ad4cbbd2f6dedf4ac8f668586791158025461fc45a",
+        "stderr_sha256": "cc8588c0903d4e81b0dd78191c2acf3a54aa3b32187488131dbd0dc6c1b34f26",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "packed-empty",
+        "exit_code": 0,
+        "stdout_sha256": "07b80039ba518978a886d26b9d140f9bbba4a86e099497c1f1f1f915b3b4ddd1",
+        "stderr_sha256": "beab62d31a69cb93a72501f67960457be351de38b046ebebf23c8d14da47657c",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "packed-nil-owner",
+        "exit_code": 0,
+        "stdout_sha256": "afc5fe3593ae4542041b2257cb76676ffd87e236e06da9ef91caa041c5690002",
+        "stderr_sha256": "d6cedbfb6b2e5381d8c5cdb4a8174c1082f84f9d1e0fe6543fa03517d3b89f66",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "packed-nil-second",
+        "exit_code": 0,
+        "stdout_sha256": "5d59a319d3914c7f0eb457ad4cbbd2f6dedf4ac8f668586791158025461fc45a",
+        "stderr_sha256": "bc73aa7d150af42a474b6cf363b8b1ed277b4c17769935993858a0b6e48b64fc",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "signed-min-id",
+        "exit_code": 0,
+        "stdout_sha256": "e4685035b0d7afb733d0d9750e318107f0b54a69b7225178bbd6da42aa3ed22d",
+        "stderr_sha256": "80223642074b2dd2e34a340a33d354053dacb0f50bcb18435cdc5c0210cfca3f",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "high-native-missile",
+        "exit_code": 0,
+        "stdout_sha256": "5d59a319d3914c7f0eb457ad4cbbd2f6dedf4ac8f668586791158025461fc45a",
+        "stderr_sha256": "3fd0b050a600da36469ec7a4b7d3489c0ae36f7423d4bbee708a4fd97b248e19",
+        "original_return_and_selected_service_arguments_equal": true
+      },
+      {
+        "mode": "high-native-caster",
+        "exit_code": -10,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "91b8f8c1fe9d96573c456475c96a1d92555c80f8b7bb15f042655247899788bf"
+      },
+      {
+        "mode": "high-native-owner",
+        "exit_code": -10,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "0ee4907a9983f77d27102494f8dae1e751d7a12c531a772cabe54f492e749414"
+      },
+      {
+        "mode": "low-native-layout",
+        "exit_code": 0,
+        "stdout_sha256": "d7cdcec4500fb2926d2edc779ab61b6b123a2d9ce5100db5071053f97dc48f15",
+        "stderr_sha256": "48636ccff19e03b5e3b940a754449e14f0133718c93f1e3a47cd678c81bee07f",
+        "native_caster_position_layout_mismatch": true
+      },
+      {
+        "mode": "high-native-owner-lowword-zero",
+        "exit_code": 0,
+        "stdout_sha256": "afc5fe3593ae4542041b2257cb76676ffd87e236e06da9ef91caa041c5690002",
+        "stderr_sha256": "1db6dadaca8bc7c9a9c00fb5e5e80274d518edb50b1abac7210e635c4177ff88",
+        "valid_nonnull_high_owner_truncated_to_nil": true
+      }
+    ],
+    "source_port_started": false,
+    "preport_final_seal_complete": false,
+    "new_Go_credit": 0,
+    "scope": "Exact330 incoming C bytes with real native balance/enumeration/ownership/audio declarations. Six selected packed/native-missile controls match projected original services/return at exact radius50. Native controls verify records before call; high caster origin faults and declared child owner-read control faults show truncation. A valid high owner whose lowword is zero becomes nil. Three64KiB owners unchanged on normal return. Standalone x86_64/Rosetta; no ARM64 C-before/full-game crash or broad C-before numeric equivalence claim."
+  },
+  "numeric_corrections": [
+    {
+      "path": "src/server/spell_inversion_52beb0.go",
+      "expression": "one binary64-to-binary32 range spill",
+      "original_CW": "0xe3f",
+      "rounding": "toward zero",
+      "helper": "experienceSpill32TowardZero",
+      "helper_unchanged": true,
+      "first_failed_focus_retained": true
+    }
+  ],
+  "ABI": {
+    "original_C_arguments": 4,
+    "direct_Go_selector_arguments": 6,
+    "C_supplies_unused_acceptance": null,
+    "C_supplies_unused_Go_level": 0,
+    "direct_Go_acceptance_and_signed_level_forwarded": true
+  },
+  "ci": {
+    "runs": [
+      43801838630,
+      43801760601
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14198080177,
+        "name": "linux-amd64-opennox-hd-e9b929040fc4c709c8852f964faefb21d0dc496d",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14198080177-linux-amd64-opennox-hd-e9b929040fc4c709c8852f964faefb21d0dc496d.zip",
+        "bytes": 220532768,
+        "sha256": "1973a3319a6b203b4776a87182fc2822f8aed84ec96eab90df3aa5eaedbcd060",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 992677,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14197970125,
+        "name": "linux-amd64-opennox-server-hd-e9b929040fc4c709c8852f964faefb21d0dc496d",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14197970125-linux-amd64-opennox-server-hd-e9b929040fc4c709c8852f964faefb21d0dc496d.zip",
+        "bytes": 207477178,
+        "sha256": "f6351427056fbb75f77f29d96586ecf86de1292c7177c3988bc84f38984f3ee5",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 986566,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14196594419,
+        "name": "linux-amd64-opennox-e9b929040fc4c709c8852f964faefb21d0dc496d",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14196594419-linux-amd64-opennox-e9b929040fc4c709c8852f964faefb21d0dc496d.zip",
+        "bytes": 220162937,
+        "sha256": "4aeb00c219bb9b2529c9584b4b8b6dbb57ef2a83c749513c86d41dcf35ff219c",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 992677,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14196539857,
+        "name": "linux-amd64-opennox-server-e9b929040fc4c709c8852f964faefb21d0dc496d",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14196539857-linux-amd64-opennox-server-e9b929040fc4c709c8852f964faefb21d0dc496d.zip",
+        "bytes": 265677989,
+        "sha256": "7c27871b3967a89f5cffd908dfb79907186f3cb3f0fc7f787c7362ae220e327b",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 986566,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14197337537,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14197337537-opennox-server-windows-amd64.zip",
+        "bytes": 167907843,
+        "sha256": "10eebb3ae91da729978a5b3b5e4b4da68526c2be7119937332e5d2505ce3ccfa",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 984551,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14196858459,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/ci-14196858459-opennox-server-windows-386.zip",
+        "bytes": 163267806,
+        "sha256": "24847ffe701deaa645d1de197d26cb7bdc3bbf208c22dab82baed433494723d6",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 964618
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 20,
+    "uncompressed_warning_scan_bytes": 6285353927,
+    "all_previous_native_matrices_pass": true,
+    "current_or_historical_GC_cause_or_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "changed_existing_paths": [
+        "src/legacy/GAME4_2.c",
+        "src/legacy/GAME4_2.h",
+        "src/server/spell_inversion_52beb0.go",
+        "src/server/spell_inversion_52beb0_test.go"
+      ],
+      "protected_existing_tests_fixtures": 4754,
+      "protected_inputs_byte_unchanged": 4753,
+      "only_modified_protected_input": "src/server/spell_inversion_52beb0_test.go",
+      "old_inputs_cases_labels_assertions_and_canaries_unchanged": true,
+      "old_expectation_replacements": 2,
+      "old_expectation_source": "independently sealed original CPU v2 words; not the helper under test",
+      "whole_incoming_C_reconstructed": true,
+      "whole_header_reconstructed": true,
+      "all_other_existing_algorithms_and_bindings_unchanged": true,
+      "numeric_corrections": [
+        {
+          "path": "src/server/spell_inversion_52beb0.go",
+          "expression": "one binary64-to-binary32 range spill",
+          "original_CW": "0xe3f",
+          "rounding": "toward zero",
+          "helper": "experienceSpill32TowardZero",
+          "helper_unchanged": true,
+          "first_failed_focus_retained": true
+        }
+      ],
+      "original_C_argument_count": 4,
+      "direct_Go_selector_argument_count": 6,
+      "C_supplies_Go_acceptance_nil_and_level_zero": true,
+      "identical_original_fixture_consumers": true,
+      "source_port_not_yet_qualified": true,
+      "new_Go_credit": 0
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 45,
+    "retained_preceding_S29_program_paths": 39,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 2495444,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 45,
+      "all_current_program_SHA_verified": true,
+      "preceding_S29_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 10,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim"
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_missing_records": "User deletion explicitly recorded/nonblocking; lost versions and S25seals not claimed recovered"
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostics do not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Current/historical memory failures remain unexplained. Retained-output replay harness fix and passing tests do not establish cause or repair.",
+    "S25_original_seals": "OPEN/lost; two implemented entries receive no fully recorded qualification credit"
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 748
+    },
+    "existing_typed_server_test_actions": {
+      "pass": 14
+    },
+    "new_original_numeric_reference_test_actions": {
+      "pass": 80
+    },
+    "existing_legacy_test_actions": {
+      "pass": 2
+    },
+    "native_roots": {
+      "TestInversionNativeLayout": "pass",
+      "TestInversionNativeOriginal": "pass",
+      "TestInversionNativePublicPointers": "pass",
+      "TestInversionNativeDefaultBindings": "pass"
+    },
+    "typed_server_roots": {
+      "TestInversionCast52BEB0NativePointersLiveOriginAndOrder": "pass",
+      "TestInversionCast52BEB0Binary32RangeAndEmptyEnumeration": "pass",
+      "TestInversionCast52BEB0ServerRangeMapBoundaryAndCasterAudio": "pass",
+      "TestInversionCast52BEB0MissingCasterFaultAfterBalance": "pass"
+    },
+    "legacy_roots": {
+      "TestInversionCastGoEntryNativePositionAndOwner52BEB0": "pass",
+      "TestInversionCastGoDispatch52BEB0PreservesAllArguments": "pass"
+    },
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 79,
+      "route0/place64": 79,
+      "route0/place512": 79,
+      "route1/place0": 79,
+      "route1/place64": 79,
+      "route1/place512": 79,
+      "route2/place0": 79,
+      "route2/place64": 79,
+      "route2/place512": 79
+    },
+    "pointer_and_signed_scalar_compositions": 15,
+    "actual_default_native_map_owner_compositions": 18,
+    "original_cases": 79,
+    "original_service_events": 466,
+    "original_root_bytes": 76,
+    "original_nil_caster_enumeration_prefix_bytes": 30,
+    "original_startup_bytes": 319,
+    "original_nil_read_fault_cases": 2,
+    "original_C_argument_count": 4,
+    "direct_Go_selector_arguments": 6,
+    "C_supplies_acceptance_nil_and_level_zero": true,
+    "scope": "Actual four-argument public C,typed C callback and six-argument direct Go execute independently sealed original-reference cases at three foreign placements. Whole64KiB canaries and live native positions/owner/audio order. Native map compositions use actual zero-radius enumeration and declared ownership callback. Original76 cast bytes and30 nil-caster enumeration-prefix bytes execute; child service bodies remain declared boundaries. Range spill uses original startup ToZero; original fixture service SNaN loader is separately verified against native x87."
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inversion-cast-native-v1/qualified-inversion-cast-entry-v1.json",
+    "sha256": "da024eba8760894e0ffba7f8ba3bb1fb58dffc4261a3ac2f5661f4e3b75cbd69"
+  },
+  "normal_passes": 172738,
+  "strict_passes": 172738,
+  "focused_passes": 2510,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 65
+}

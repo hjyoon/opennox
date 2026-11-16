@@ -806,7 +806,9 @@ extern uintptr_t nox_pending_collision_next_native_537750(nox_object_t*);
 nox_object_t* sub_537750(nox_object_t* object) { return (nox_object_t*)nox_pending_collision_next_native_537750(object); }
 
 //----- (00537760) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 unsigned int sub_537760() { return dword_5d4594_2488620 != 0 ? (unsigned int)getMemAt(0x5D4594, 2488612) : 0; }
+#endif
 
 //----- (00537AF0) --------------------------------------------------------
 #if UINTPTR_MAX > UINT32_MAX
@@ -3332,6 +3334,7 @@ char nox_xxx_updateTrigger_53B1B0(int a1) {
 #endif
 
 //----- (0053B300) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 char sub_53B300(nox_object_t* obj) {
 	uint32_t flags = obj->obj_flags;
 	if (flags & UINT32_C(0x1000000)) {
@@ -3342,6 +3345,7 @@ char sub_53B300(nox_object_t* obj) {
 	obj->obj_flags = flags;
 	return (char)flags;
 }
+#endif
 
 //----- (0053B320) --------------------------------------------------------
 char nox_xxx_updateSwitch_53B320(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(2, unit); }

@@ -8,9 +8,11 @@ nox_object_t* nox_xxx_inventoryGetFirst_4E7980(nox_object_t* obj) {
 #endif
 
 //----- (004E7990) --------------------------------------------------------
+#if !defined(NOX_CGO) // Standalone C reference; product entry is object_trace_native_entry.go.
 nox_object_t* nox_xxx_inventoryGetNext_4E7990(nox_object_t* obj) {
 	if (obj) {
 		return obj->inv_next_item;
 	}
 	return NULL;
 }
+#endif

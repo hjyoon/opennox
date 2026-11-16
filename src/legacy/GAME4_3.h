@@ -108,7 +108,7 @@ void sub_5375A0(nox_object_t* a1);
 char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* a1);
 nox_object_t* sub_537740();
 nox_object_t* sub_537750(nox_object_t* a1);
-unsigned int sub_537760();
+int2* sub_537760(void);
 void nox_xxx_sMakeScorch_537AF0(float* a1, int a2);
 int nox_xxx_scorchInit_537BD0();
 int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4);

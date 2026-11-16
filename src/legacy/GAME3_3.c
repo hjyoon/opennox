@@ -1248,16 +1248,24 @@ int* nox_xxx_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, 
 }
 
 //----- (004E4C00) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 uint32_t nox_xxx_objectGetNetCode_4E4C00(const nox_object_t* item) { return item ? item->net_code : 0; }
+#endif
 
 //----- (004E4C10) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 uint16_t nox_xxx_objectGetTypeInd_4E4C10(const nox_object_t* item) { return item ? item->typ_ind : 0; }
+#endif
 
 //----- (004E4C30) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 void* nox_object_getInitData_4E4C30(const nox_object_t* item) { return item ? item->init_data : NULL; }
+#endif
 
 //----- (004E4C80) --------------------------------------------------------
+#if 0 // Restored by object_trace_native_entry.go.
 const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item) { return item ? item->id : NULL; }
+#endif
 
 //----- (004E4DC0) --------------------------------------------------------
 void sub_4E4DC0(void) { nox_platform_srand(UINT32_C(0x1429)); }

@@ -33,7 +33,7 @@ func TestInversionCast52BEB0NativePointersLiveOriginAndOrder(t *testing.T) {
 		},
 		eachMissile: func(origin types.Pointf, radius float32, visit func(*Object) bool) {
 			events = append(events, "query")
-			if origin != caster.PosVec || math.Float32bits(radius) != 0x42c80001 {
+			if origin != caster.PosVec || math.Float32bits(radius) != inversionOriginalRangeBits52BEB0(t, 100.000004) {
 				t.Fatal("query did not use live native caster position and final binary32 range")
 			}
 			if !visit(first) || !visit(second) {
@@ -76,7 +76,7 @@ func TestInversionCast52BEB0Binary32RangeAndEmptyEnumeration(t *testing.T) {
 				balance: func(string) float64 { return radius },
 				eachMissile: func(_ types.Pointf, got float32, _ func(*Object) bool) {
 					queries++
-					if !math.IsNaN(radius) && math.Float32bits(got) != math.Float32bits(float32(radius)) || math.IsNaN(radius) && !math.IsNaN(float64(got)) {
+					if !math.IsNaN(radius) && math.Float32bits(got) != inversionOriginalRangeBits52BEB0(t, radius) || math.IsNaN(radius) && !math.IsNaN(float64(got)) {
 						t.Fatal("range spill was clamped or rounded differently")
 					}
 				},

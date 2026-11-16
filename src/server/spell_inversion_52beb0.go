@@ -19,7 +19,8 @@ type inversionCastDeps52BEB0 struct {
 // not to the potentially different callback owner. No level scaling or
 // silent missing-caster success existed in the original.
 func inversionCast52BEB0(id int32, owner, caster *Object, h inversionCastDeps52BEB0) int32 {
-	radius := float32(h.balance("InversionRange"))
+	// The original FSTP uses startup rounding toward zero (CW 0xe3f).
+	radius := experienceSpill32TowardZero(h.balance("InversionRange"))
 	h.eachMissile(caster.PosVec, radius, func(missile *Object) bool {
 		h.changeOwner(missile, owner)
 		return true

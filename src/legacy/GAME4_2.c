@@ -9340,6 +9340,7 @@ int sub_52BAF0(int a1) {
 }
 
 //----- (0052BEB0) --------------------------------------------------------
+#if 0 // Native Inversion cast: inversion_native_entry.go
 int sub_52BEB0(int a1, int a2, int a3, int a4) {
 	int v4;   // eax
 	float v6; // [esp+0h] [ebp-10h]
@@ -9350,6 +9351,7 @@ int sub_52BEB0(int a1, int a2, int a3, int a4) {
 	nox_xxx_aud_501960(v4, a4, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052BF20) --------------------------------------------------------
 #if 0 // Native resource spells: resource_spells_native_exports.go

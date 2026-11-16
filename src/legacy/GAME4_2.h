@@ -280,7 +280,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1);
 int sub_52BA70(int a1);
 int sub_52BAF0(int a1);
 void nox_xxx_changeOwner_52BE40(nox_object_t* a1, nox_object_t* a2);
-int sub_52BEB0(int a1, int a2, int a3, int a4);
+int sub_52BEB0(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster);
 int nox_xxx_castSpellWinkORrestoreHealth_52BF20(int spell_id, void* second, nox_object_t* caster, nox_object_t* fourth, void* arg, int level);
 int sub_52BF50(int spell_id, void* second, nox_object_t* caster, nox_object_t* fourth, void* arg, int level);
 int nox_xxx_castPull_52BFA0(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster, void* arg, int level);

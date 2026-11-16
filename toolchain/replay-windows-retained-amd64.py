@@ -89,7 +89,10 @@ def replay(task):
     args = ["go", "tool", "test2json", "-t", "-p", "github.com/opennox/opennox/v1" +
             ("/" + package_dir if package_dir else ""), str(executable),
             "-test.v=test2json", "-test.count=" + str(count), "-test.timeout=15m", "-test.run=" + pattern]
-    env = dict(environment, GOGC=gc, GODEBUG=debug)
+    fixture_artifacts = report / "native-fixture-artifacts" / label
+    fixture_artifacts.mkdir(parents=True)
+    env = dict(environment, GOGC=gc, GODEBUG=debug,
+               OPENNOX_LOCAL_TEST_ARTIFACTS=str(fixture_artifacts))
     with (report / (label + ".jsonl")).open("xb") as out, (report / (label + ".stderr.log")).open("xb") as err:
         try:
             result = subprocess.run(args, cwd=Path("src") / package_dir, env=env,
@@ -115,7 +118,8 @@ def replay(task):
             if any(word in output for word in ["fatal error:", "unexpected return pc", "runtime: s.allocCount="]):
                 faults.append(event)
     row = dict(label=label, args=args, exit_code=code, actions=dict(actions),
-               unfinished_tests=sorted(unfinished), fault_prefixes=faults, GOGC=gc, GODEBUG=debug)
+               unfinished_tests=sorted(unfinished), fault_prefixes=faults, GOGC=gc, GODEBUG=debug,
+               native_fixture_artifacts=str(fixture_artifacts))
     (report / (label + ".summary.json")).write_text(json.dumps(row, indent=2))
     print(json.dumps(row), flush=True)
     return row

@@ -311,6 +311,16 @@ jobs:
           python ../scripts/replay-team-predicate-native-pe.py --report "../build/windows-$env:TARGET_ARCH"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Replay exact Windows/386 retreat references under GC pressure
+        if: matrix.arch == '386'
+        working-directory: src
+        shell: pwsh
+        env:
+          GOARCH: '386'
+        run: |
+          python ../scripts/replay-monster-retreat-native-pe.py --report "../build/windows-$env:TARGET_ARCH"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:

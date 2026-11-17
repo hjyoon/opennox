@@ -176,7 +176,13 @@ func monsterActionRetreat545440(unit *Object, hooks monsterActionRetreatHooks545
 			if flee := hooks.push(ai.ACTION_FLEE); flee != nil {
 				// Push may invoke Cancel. Reload from the entry-cached update,
 				// only after acceptance, preserving the raw position DWORDs.
-				flee.SetArgs(update.CurrentEnemy.PosVec, uint32(0))
+				enemy := update.CurrentEnemy
+				if enemy == nil {
+					// Preserve the original fault and completed effects without
+					// relying on Windows to translate a hardware access violation.
+					panic("00545440: nil enemy at accepted FLEE payload")
+				}
+				flee.SetArgs(enemy.PosVec, uint32(0))
 			}
 		}
 		return

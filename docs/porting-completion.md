@@ -60,6 +60,95 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster spawn registry C entries, 2026-11-18
+
+Engine `6287bf88af9053be4ddf4bb0fc810fe37296c112` is committed and pushed to
+`origin/port/go1.27-multiarch`. All **16** entries in the spawn component at
+`0050D780..0050E210` now share the native server registry: initialization,
+reset/free, scheduling, distance and screen cleanup, placement/counting,
+registration, raw prepend/unlink and monster deletion. Thirteen public C
+entries export Go implementations; three typed C pointer transports use
+private native-width Cgo return slots. The old 12/148-byte C allocation
+classes and DWORD heads no longer own this component.
+
+The port also restores collision-surface distance, original ToZero float
+spills and integer conversion, double-precision distance accumulation,
+original pairwise record swaps and player selection. It preserves the
+cadence return value, null-Glyph inventory callback, eager Glyph lookup and
+cached-next inventory deletion. Scratch owners remain pinned while C can
+query them. Raw unlink preserves its pointer return and detached edges;
+reset/free/reinit also clear detached owned backreferences before unpinning.
+The existing Go cleanup policy and type-table cache lifetime remain valid.
+
+A **167-path preport seal** binds 9,456 incoming source inputs and 4,808
+protected existing inputs. Original PE execution and independent models agree
+for **528 inputs / 988 root calls**, checking complete 64-KiB owners,
+156-byte globals, service order, returns and caller guards. Executed stock
+code comprises **2,669 root bytes plus the 17-byte converter**. The retained
+windows also contain 132 alignment NOPs and an unselected 47-byte comparator;
+those bytes receive no execution or port credit.
+
+Unchanged native C controls retain **22 actual read faults**, two allocation
+class pointer truncations and two PE32 numeric-class diagnostics. The class
+diagnostics are separate from a valid ARM64 Object layout test. All failed
+preparations, binaries, model/observer corrections and comparisons remain.
+Original allocator internals, noncanonical zombie returns, invalid owners,
+released-byte equality and complete original-world execution are uncredited.
+Existing native Go reset/free/Close safety differs explicitly from the PE32
+provider, which leaves stale object bytes after dropping its classes.
+
+Final-source validation passes with zero compiler warnings:
+
+- Ordinary and `cgocheck2`/`checkptr=2` focus each pass **1,008** events.
+  Native C raw-link checks replay 129 original cases through two routes and
+  three foreign placements; 169 native Go screen cases compare service order
+  and 190 released scratch records' numeric values.
+- Normal and strict/highres legacy regression each pass **684,943** events.
+  All prior 684,140 identities and multiplicities remain, with 803 new legacy
+  events; 174 additional server events are checked separately. Existing tests,
+  assertions, fixtures and E2E inputs remain byte-identical. The 9,467-input
+  final tree differs from the 9,466-input focus tree only by the additive CI
+  script and workflow step; all compilation inputs agree.
+- Four default Apple compiler ARM64 products pass metadata/help and **191**
+  symbol checks. Both normal/HD core E2E, functional Save/Load and independent
+  UDP chat pass. Each chat profile verifies eight submissions, four peer
+  messages and one reply, with zero exit codes and no forced termination. Initial
+  chat wrappers failed before game launch at the nested sandbox boundary;
+  identical products, drivers and assertions pass with the existing
+  localhost-only profile under the required launch permission.
+- Linux run **44157343350** and Windows run **44157086088** pass all six
+  profiles on their first attempts. Six official ZIP digests, **158** retained
+  test mains and **40 families × 6 profiles = 240** reports are verified.
+  Each profile retains all previous skips and adds exactly 977 pass events.
+  All **42** complete warning streams, totaling **9,561,848,595 bytes**, contain
+  zero compiler warnings. Completed partial-reader artifact bindings match
+  final official metadata; successful readers were not rerun.
+- The exact retained Windows/386 primary legacy PE
+  `4600347441d9ce026674ce0c58626d864043782d4c6a5ac8d5cc00d12f70ab72`
+  passes **2,409** events under `GOGC=10`, without rebuilding or patching.
+  All previous GC replay families also pass. This executes the native port,
+  separately from the original GAME.EXE oracle.
+
+Fresh ASTs cover all 207 selected C files: **2,441 ordinary + 14 macro = 2,455**
+own definitions, 435 cast-bearing functions, 297 pointer-to-narrow sites,
+1,875 narrow-to-pointer sites, 586 native-width sites and zero unknown direct
+widths. This inventory includes transports and diagnostic code and is **not**
+a remaining-unported denominator. Other tags, architectures, headers and Cgo
+preambles remain outside that denominator.
+
+Original assets and personal Save retain all **4,649** file hashes. All 57
+current program paths, two external before-control twins and 52 immediate
+prior program paths are SHA-verified. Only the inactive dedicated cache was
+cleaned: **3,841,228 KiB → 8 KiB**. Records, failures, products, ZIPs, offline
+modules and RAM remain preserved; historical user-deleted paths are
+nonblocking. Public Save/Load pixel comparison and the nine final campaign
+audits remain open. The ledger stays **284 implemented / 282 fully recorded**:
+this closes 16 C boundaries with zero duplicate original algorithm credit.
+**Overall 100% remains open.**
+
+Qualification: `split-monster-spawn-registry-native-v1/qualified-monster-spawn-registry-C-entries-v1.json`,
+SHA-256 `9deac7c63a0386852706012e20b1663f001ff4fe999c8de104cd62c565414e5a`.
+
 ### Native monster spawn link lifetime, 2026-11-18
 
 Engine `81d0da61e6038199c41fc9994e305d7ad042198a` is committed and pushed to

@@ -2,6 +2,7 @@ package server
 
 import (
 	"math"
+	"runtime"
 	"sort"
 
 	"github.com/opennox/libs/object"
@@ -20,6 +21,25 @@ type MonsterSpawnLink struct {
 type monsterSpawnState50D780 struct {
 	head        *MonsterSpawnLink
 	initialized bool
+	pins        map[*MonsterSpawnLink]*runtime.Pinner
+}
+
+// Native MonsterUpdateData records retain Go links through Field549. Keep each
+// link pinned until its native backreference and neighboring links are cleared.
+func (s *Server) pinMonsterSpawnLink50E030(link *MonsterSpawnLink) {
+	if s.monsterSpawns50D780.pins == nil {
+		s.monsterSpawns50D780.pins = make(map[*MonsterSpawnLink]*runtime.Pinner)
+	}
+	pin := new(runtime.Pinner)
+	pin.Pin(link)
+	s.monsterSpawns50D780.pins[link] = pin
+}
+
+func (s *Server) unpinMonsterSpawnLink50E140(link *MonsterSpawnLink) {
+	if pin := s.monsterSpawns50D780.pins[link]; pin != nil {
+		pin.Unpin()
+		delete(s.monsterSpawns50D780.pins, link)
+	}
 }
 
 // MonsterSpawnDeleteRuntime50E210 supplies the outer-server delayed-delete
@@ -64,6 +84,11 @@ func (s *Server) MonsterSpawnReset50D7E0() {
 		link = next
 	}
 	s.monsterSpawns50D780.head = nil
+	// A remaining older link can still refer to an already cleared newer link.
+	// Release pins only after all native backreferences and list edges are gone.
+	for link := range s.monsterSpawns50D780.pins {
+		s.unpinMonsterSpawnLink50E140(link)
+	}
 }
 
 // MonsterSpawnFree50D820 releases the logical session allocator.
@@ -99,6 +124,7 @@ func (s *Server) MonsterSpawnRegister50E030(generator, spawned *Object, runtime 
 		return true
 	}
 	link := &MonsterSpawnLink{Object: spawned, Older: s.monsterSpawns50D780.head}
+	s.pinMonsterSpawnLink50E030(link)
 	if link.Older != nil {
 		link.Older.Newer = link
 	}
@@ -144,6 +170,7 @@ func (s *Server) MonsterSpawnCleanup50E140(obj *Object) {
 		s.unlinkMonsterSpawn50E1B0(link)
 		link.Object = nil
 		update.Field549 = nil
+		s.unpinMonsterSpawnLink50E140(link)
 	}
 }
 

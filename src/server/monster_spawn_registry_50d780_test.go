@@ -20,6 +20,7 @@ func monsterSpawnTestMonster50D780(subclass object.SubClass) (*Object, *MonsterU
 
 func TestMonsterSpawnRegistry50D780NativeLinksAndCleanup(t *testing.T) {
 	s := new(Server)
+	defer s.MonsterSpawnFree50D820()
 	s.MonsterSpawnInit50D780()
 	generator, generatorData := monsterSpawnTestGenerator50D780(0)
 	first, firstData := monsterSpawnTestMonster50D780(0)
@@ -74,6 +75,7 @@ func TestMonsterSpawnRegister50E030RequiresSessionAllocator(t *testing.T) {
 
 func TestMonsterSpawnRegister50E030BuildsBomberGlyph(t *testing.T) {
 	s := new(Server)
+	defer s.MonsterSpawnFree50D820()
 	s.MonsterSpawnInit50D780()
 	generator, _ := monsterSpawnTestGenerator50D780(0)
 	spawned, update := monsterSpawnTestMonster50D780(object.SubClass(object.MonsterBomber))
@@ -107,6 +109,7 @@ func TestMonsterSpawnRegister50E030BuildsBomberGlyph(t *testing.T) {
 
 func TestMonsterSpawnTick50D890CachesNextAcrossImmediateCleanup(t *testing.T) {
 	s := new(Server)
+	defer s.MonsterSpawnFree50D820()
 	s.SetTickRate(30)
 	s.SetFrame(150)
 	s.MonsterSpawnInit50D780()

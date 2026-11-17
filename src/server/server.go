@@ -180,6 +180,7 @@ type Server struct {
 }
 
 func (s *Server) Close() {
+	s.MonsterSpawnFree50D820()
 	s.tradeNative.free()
 	s.secondaryWeapons53AB90 = nil
 	s.Players.free()

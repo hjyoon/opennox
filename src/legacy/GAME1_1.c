@@ -401,14 +401,18 @@ int sub_4190F0(wchar2_t* a1) {
 }
 
 //----- (00419130) --------------------------------------------------------
+#if 0 // Restored by team_predicate_native_entry.go.
 int nox_xxx_servObjectHasTeam_419130(nox_object_team_t* value) {
 	return value && value->id != 0;
 }
+#endif
 
 //----- (00419150) --------------------------------------------------------
+#if 0 // Restored by team_predicate_native_entry.go.
 int nox_xxx_servCompareTeams_419150(nox_object_team_t* first, nox_object_team_t* second) {
 	return first && second && first->id != 0 && second->id != 0 && first->id == second->id;
 }
+#endif
 
 //----- (00419180) --------------------------------------------------------
 int nox_xxx_teamCompare2_419180(nox_object_team_t* value, unsigned char id) {

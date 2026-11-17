@@ -1003,6 +1003,22 @@ int nox_xxx_creatureSetMovePath_50D5A0(int a1) {
 }
 #endif
 
+// Native-width public pointer transports; storage belongs to the Go server.
+extern uintptr_t nox_server_spawn_find_native_50DE60(nox_object_t* object);
+extern uintptr_t nox_server_spawn_prepend_native_50E110(nox_monster_spawn_link* link);
+extern uintptr_t nox_server_spawn_unlink_native_50E1B0(nox_monster_spawn_link* link);
+nox_monster_spawn_screen* sub_50DE60(nox_object_t* object) {
+    return (nox_monster_spawn_screen*)nox_server_spawn_find_native_50DE60(object);
+}
+nox_monster_spawn_link* sub_50E110(nox_monster_spawn_link* link) {
+    return (nox_monster_spawn_link*)nox_server_spawn_prepend_native_50E110(link);
+}
+nox_monster_spawn_link* sub_50E1B0(nox_monster_spawn_link* link) {
+    return (nox_monster_spawn_link*)nox_server_spawn_unlink_native_50E1B0(link);
+}
+// PE32 SpawnClass/MonsterListClass bodies are retained as provenance only.
+// All sixteen entries now use monster_spawn_registry_native_entry.go.
+#if 0
 //----- (0050D780) --------------------------------------------------------
 int nox_xxx_allocMonsterRelatedArrays_50D780() {
 	int result; // eax
@@ -1552,6 +1568,8 @@ void sub_50E210(nox_object_t* a1p) {
 	}
 	sub_50E140(a1);
 }
+
+#endif
 
 //----- (0050E2A0) --------------------------------------------------------
 // Oracle provenance only: the PE32 TradeSession/TradeItem allocation-class

@@ -708,6 +708,8 @@ void nox_xxx_voteUptate_506F30() {
 }
 #endif
 
+// Native server cadence and scalar return: monster_spawn_registry_native_entry.go.
+#if 0
 //----- (0050D890) --------------------------------------------------------
 unsigned int sub_50D890() {
 	unsigned int result; // eax
@@ -721,6 +723,8 @@ unsigned int sub_50D890() {
 	}
 	return result;
 }
+
+#endif
 
 //----- (0051A1F0) --------------------------------------------------------
 extern void nox_xxx_questTheme_native_51A1F0(int group);

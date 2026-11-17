@@ -8,6 +8,7 @@
 #include "match_state_5096f0.h"
 #include "unit_follow_5158c0.h"
 #include "unit_idle_515820.h"
+#include "monster_spawn_registry_50d780.h"
 
 int nox_xxx_xferDirectionToAngle_509E00(uint32_t* a1);
 int nox_xxx_xferIndexedDirection_509E20(int a1, int2* a2);
@@ -37,21 +38,6 @@ int sub_50D2A0(int a1, int a2);
 int sub_50D2E0(int a1);
 int nox_xxx_creatureActuallyMove_50D3B0(float* a1);
 int nox_xxx_creatureSetMovePath_50D5A0(int a1);
-int nox_xxx_allocMonsterRelatedArrays_50D780();
-void sub_50D7E0();
-void sub_50D820();
-void sub_50D8D0();
-int sub_50D960();
-int sub_50DE10();
-uint32_t* sub_50DE60(int a1);
-int sub_50DE80(int a1, float* a2);
-void sub_50DFB0(float* a1, int a2);
-int sub_50E030(int a1, uint32_t* a2);
-int sub_50E110(int a1);
-void sub_50E140(int a1);
-int sub_50E1B0(int a1);
-void sub_50E1E0(int object);
-void sub_50E210(nox_object_t* a1);
 int nox_xxx_shopGetItemCost_50E3D0(int a1, int a2, float a3);
 int sub_50E820(int a1, int a2);
 uint32_t* nox_xxx_createShopStruct_50E870();

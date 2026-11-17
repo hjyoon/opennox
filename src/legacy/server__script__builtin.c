@@ -37,6 +37,7 @@ int dword_5d4594_2386848 = 0;
 unsigned int dword_5d4594_2386852 = 0;
 
 //----- (00512E80) --------------------------------------------------------
+#if 0 // Restored by wide_script_pointer_native_entry.go.
 int sub_512E80(wchar2_t* a1) {
 	int v1; // eax
 
@@ -47,6 +48,7 @@ int sub_512E80(wchar2_t* a1) {
 	}
 	return v1 - 1;
 }
+#endif
 
 //----- (00513B00) --------------------------------------------------------
 #if 0

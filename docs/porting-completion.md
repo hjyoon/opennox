@@ -60,6 +60,105 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native team predicate C exports and retreat fault boundary, 2026-11-17
+
+Engine `02f5372889d218cd1afd5f074dc177e877dea829` is committed and pushed to
+`origin/port/go1.27-multiarch`. Public C entries
+`nox_xxx_servObjectHasTeam_419130` and `nox_xxx_servCompareTeams_419150`
+delegate to existing Go `ObjectTeam.Has` and `SameAs` methods. The fixed
+eight-byte record, ID byte at offset four, opaque first uint32 word, public
+C types, twelve active own-C calls and four Go-to-C calls remain unchanged.
+Parent pointer conversions and ordered membership remain separate work.
+
+These algorithms already existed and were catalogued. This qualifies
+**two existing C export migrations**, with **zero new original algorithm
+credit**. The ledger stays **284 implemented / 282 fully recorded**; the two
+lost S25 seals remain uncredited.
+
+An **87-path preport seal** fixes 4,078 input-only vectors, 65 root bytes,
+319 startup bytes and the `0xe3f` control state. Original CPU and independent
+model agree on complete returns, ordered reads, whole original owners and
+caller preservation, with all 65 bytes executed and no child services or
+writes. Twenty-five legacy x87/SSE registers remain unchanged. Incoming
+typed C bodies also pass **24,468 actual ARM64 calls**. They already accepted
+high pointers; no new truncation crash is claimed for these two predicates.
+The declared pair domain is not all 65,536 possible ID pairs.
+
+The first source `465cbcce6` passes five CI profiles and fails Windows/386
+in `TestMonsterRetreatOriginalNative545440/nil-enemy-fault-1463`, with native
+exit `0xc0000005`, no panic text and no captured initial fault PC. All six
+first-source ZIPs and 158 actual mains remain SHA verified. The retreat
+function's 752 machine bytes equal the preceding successful PE; new legacy
+exports are absent from the server PE. Retained exact-PE single/family and
+full-package ordinary/debug runs pass. Their observed expected nil read is
+address `0x38`, image RVA `0x61ed91`. The initial OS/GC cause remains unproved.
+
+The corrected retreat boundary reloads the enemy after accepted FLEE and
+raises an explicit Go panic when nil, before payload reads or writes.
+Completed effects and the original fault remain; valid-enemy and rejected
+FLEE paths are unchanged. All **1,465 existing original vectors**, four
+fault expectations, tests, expected values, event order and memory guards
+remain byte-identical. Hardware exception identity and concrete panic type
+are uncredited. This is not a whole-engine Windows memory/GC repair claim.
+
+Qualification passes:
+
+- Final-source focus **38,172** (team 36,704 plus retreat 1,468), legacy
+  normal/strict **684,081** each, and retreat server normal/strict **1,468**
+  each pass with zero warnings. All prior legacy identities and multiplicities
+  remain; the server tests are recorded separately. A pre-CI-tooling focused
+  preflight is retained. The final **9,434-input lease** is
+  `0328ae32a6880a26ba0b5ec1338c0e8013bfcd7d5c7ca529b32f0f8f6bf07b5b`.
+- Four default Apple compiler ARM64 products pass metadata/help and **166**
+  public/control symbols without warnings. Normal/HD each pass two core E2E
+  cases, functional Save/Load and ordinary independent UDP chat with eight
+  submissions, four peer messages and one host reply. All processes exit zero
+  without force. All **4,649** original asset/personal Save hashes remain.
+  The separate public Save/Load pixel failure stays open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44046997744)
+  and [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44046774848)
+  pass all six corrected-source profiles on their first attempts. Six official
+  ZIPs retain **158** individually SHA-verified mains and **36** native reader
+  bindings. Full-suite counts and skip identities match the complete preceding
+  records. Full warning review scans **34 files / 9,555,033,893
+  bytes**, with zero warnings. The first reader attempt omitted an existing
+  683-case fixture link; all failed outputs remain, and the retry restores only
+  that exact resource with unchanged reader programs and official ZIPs.
+- The exact primary Windows/386 legacy PE passes team **110,112** terminal
+  events and the primary server PE passes retreat **4,404** at `GOGC=10`
+  across three repetitions, without rebuild or patch. Earlier UI/global/
+  inventory/cache/NPC GC replays pass. New public C and Cgo int-return
+  predicate exports have zero pointer write barriers.
+- The same corrected primary server PE runs all **1,465** original retreat
+  contexts and four fault expectations under the Windows debugger: **1,466**
+  exact terminal identities pass, with **zero access violations** and only
+  two initial loader breakpoints. Actual emitted code contains the Go panic
+  call. No process/thread memory or PE bytes are changed.
+
+All **46** current program paths, 41 first-source S49 paths and the retained
+prior successful/failed programs are SHA verified. The inactive dedicated
+cache is cleaned from **2,253,672 KiB to 8 KiB**.
+Originals, Save, failures, products, ZIPs, offline modules and RAM records
+remain. Completed temporary observer workflows are archived with SHA and
+removed; the cleaned repository tree exactly matches the qualified engine.
+
+Fresh Go selection contains **207 C files**. All **1,149** C/header/include/
+assembly inputs equal the retained v15 AST inputs. Its **2,456 ordinary +
+14 macro = 2,470 definitions**, 445 cast functions and 319/2,012/585 direct
+cast sites are unchanged. This reuses the exact existing AST through an
+input-equivalence record; a new AST is not claimed. Bridges/platform/reference
+code are included, so this is **not an unported-algorithm denominator**.
+
+All-C migration, its denominator and overall 100% remain **open**. Nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load pixel failure,
+other historical Windows memory/GC causes, ordered membership and native
+owner migrations remain open. Chapter 4+ is excluded. Invalid-owner fault
+parity, physical register/FP parity, concurrency and allocator/lifetime
+migration remain uncredited. Historical 491 user-deleted paths remain
+documented and nonblocking.
+
+Qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2/qualified-team-predicate-C-entries-v2.json` (SHA-256 `0fe2fb22cd1e8d5344e64a26dc55fa5c17bb039572b3eb26c3810e3cbe4aaa3b`).
+
 ### Native cache list C entry pointers, 2026-11-17
 
 Engine `f758f41e252007d4fa59b9f9878d3d6076fe60c7` is committed and pushed to

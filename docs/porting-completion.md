@@ -60,6 +60,87 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native cache list C entry pointers, 2026-11-17
+
+Engine `f758f41e252007d4fa59b9f9878d3d6076fe60c7` is committed and pushed to
+`origin/port/go1.27-multiarch`. The C public entries `sub_4ECDE0` and
+`sub_4ECE10` now take and return full native pointers and delegate to the
+existing ordered Go algorithms. The original C node type and static cache
+owner remain. C field `next` is the original logical previous link; C field
+`prev` is the logical next link. Every C-owned pointer store uses `uintptr`
+on both widths. Repeated reads and alias-sensitive store order are preserved.
+
+These original algorithms were already catalogued and implemented. This
+batch qualifies **two existing C export migrations**, with **zero new original
+algorithm credit**. The ledger remains **284 implemented / 282 fully recorded**;
+the two lost S25 seals remain uncredited. The current source has no literal
+or direct own-C callers of these exports; historical C parents are retired.
+External consumers and complete indirect reachability are not claimed.
+
+Before editing source, a **68-path seal** fixed 2,992 inputs, original expected
+results, 89 root bytes, 319 startup bytes and `0xe3f` FP state. Stock CPU and
+independent input-only model agree on all cases with no child services, full
+instruction coverage, ordered writes, complete two 64 KiB owners and caller
+state. A cached-link control disagrees in 95 prepend and one remove case.
+The byte-identical 637-byte old C bodies fault on actual ARM64 high arguments,
+once per entry. Signal-safe diagnostics record SIGSEGV and controlled exit
+83. These are two representative controls, not 2,992 old-C comparisons or
+newly observed active gameplay crashes. The executable, records and eleven
+original-control compiler warnings remain preserved.
+
+The first source revision `9a353d5af` passed five CI profiles and failed Windows/386 in the existing NPC fixture during GC. Its reported pointer `0x3819fadb` exactly matches the fixture pattern at placement 64 plus the native32 first-item field at 504. The actual failed PE has three deletion-barrier paths loading these old C words. This revision initializes those C slots through `uintptr`, preserving the full original test by exact reconstruction. All six first-source archives, 158 actual test mains and failure logs remain SHA verified. The corrected exact primary PE passes **33,297 NPC terminal events** at `GOGC=10` across three repetitions, with **3 to 0** emitted setup write barriers. The 1,233 original vectors and production NPC algorithm are unchanged.
+
+Qualification passes:
+
+- Focus **38,030** (cache list 26,931 plus NPC equipment 11,099), normal **647,377**, and highres/cgocheck2/checkptr2
+  **647,377** events pass on their first attempts, with zero warnings. All
+  preceding 647,377 selected identities and multiplicities remain. The
+  9,427-input lease is `1ecf3954ae2363206c322eeeb38127ad8e0d5ff44ba78dd4970932c94dcfea56`; 4,794 prior protected inputs and all prior algorithm/catalogue files remain byte-identical. The one NPC fixture change reconstructs the complete old test by reversing only its C-slot store representation; inputs, expected values, routes, placements, guards and assertions are unchanged.
+- Three routes and three placements cover **26,928 primary calls**, whole
+  projected C owners, opaque tails, guards and 128 canonical C pointer reads
+  after each call. A 32-call sequence uses the actual static C cache, its
+  52 pointer cells and sixteen opaque values. Fourteen layout fields agree.
+- All four default Apple compiler ARM64 products pass metadata/help and
+  **164** public/control symbols without warnings. Normal/HD each pass two
+  core E2E cases, functional Save/Load and ordinary independent UDP chat
+  with eight submissions, four peer messages and one host reply. Processes
+  exit zero without force. All 4,649 original asset/personal Save hashes
+  remain unchanged. The public Save/Load pixel failure stays open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44026007020)
+  and [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44025945339)
+  pass all six corrected-source profiles on their first attempts. Six official ZIPs retain
+  158 individually SHA-verified test mains and **34** source-bound native
+  reader chains, exact 26,931-event increments and unchanged skip identities.
+  Full warning review scans **30 files / 9,327,501,426
+  bytes**, with zero warnings.
+- The exact primary Windows/386 PE passes **80,793** new-family terminal
+  events under `GOGC=10` across three repetitions without rebuild or patch.
+  All eight emitted C-owned store closures have zero Go write barriers.
+  Cgo pointer-result and Go closure-capture barriers remain legitimate.
+  Actual current-source generated C zeroes both return slots before Go callbacks;
+  both actual Windows/386 public wrappers zero their stack+8 result slot
+  before `crosscall2`. Earlier UI/global/inventory GC replays remain covered.
+
+All 35 current program paths, 40 first-source S48 paths, 39 S47, 38 S46, 39 S45 and the
+retained failed S45/S41/S39/S34 programs are SHA verified. Only the inactive
+dedicated build cache is cleaned (1,727,284 KiB to 8 KiB).
+Originals, failures, products, offline modules and RAM records are preserved.
+
+Fresh default ARM64 own-C inventory: **207 files, 2,458 ordinary + 14 macro =
+2,472 definitions**, 445 functions with pointer/integer casts and zero unknown
+definition locations. Direct casts include 319 pointer-to-narrow, 2,012
+narrow-to-pointer and 585 native-width sites. These include bridges/platform/
+reference code and are not a remaining-unported denominator. Headers/inc,
+Cgo preambles and other architecture/tag paths remain outside this inventory.
+
+All-C migration, its denominator and overall 100% remain **open**. Nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load pixel failure and
+other historical Windows memory/GC causes remain open; chapter 4+ is excluded.
+Invalid-owner fault parity, arbitrary scalar-pointer aliases, Go-heap
+pointees, concurrency and allocator/lifetime migration remain uncredited.
+
+Qualification SHA-256: `aa7a7b3be2ae35548ea1df72ddd59867bb308e09456c39ad4a0a6f9034326de6`.
+
 ### Native inventory lookup pointers and stock bounds, 2026-11-17
 
 Engine `c3d77494d8deabd3be091232f0dcd1e1a1f806aa` is committed and pushed to

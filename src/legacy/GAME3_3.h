@@ -475,8 +475,8 @@ int sub_4ECBD0(nox_object_t* obj);
 // no decoded caller, jump, or stored function pointer, so no declaration or
 // CGo export is invented.
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);
-int sub_4ECDE0(uint32_t* a1, int a2);
-int sub_4ECE10(uint32_t* a1, int a2);
+nox_dblLinkedList* sub_4ECDE0(nox_dblLinkedList** list, nox_dblLinkedList* entry);
+nox_dblLinkedList* sub_4ECE10(nox_dblLinkedList** list, nox_dblLinkedList* entry);
 // GAME.EXE 004ECF10 is restored by object_by_script_id_4ecf10.go. Nine
 // decoded callers remain in C and use this signed-ID/native-pointer export.
 nox_object_t* sub_4ECF10(int32_t script_id);

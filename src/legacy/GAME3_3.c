@@ -3795,6 +3795,7 @@ int nox_server_netCodeCache_lookupObj_4ECD90(int a1) {
 #endif
 
 //----- (004ECDE0) --------------------------------------------------------
+#if 0 // Restored by cache_list_native_entry.go.
 int sub_4ECDE0(uint32_t* a1, int a2) {
 	int result; // eax
 
@@ -3809,8 +3810,10 @@ int sub_4ECDE0(uint32_t* a1, int a2) {
 	*a1 = a2;
 	return result;
 }
+#endif
 
 //----- (004ECE10) --------------------------------------------------------
+#if 0 // Restored by cache_list_native_entry.go.
 int sub_4ECE10(uint32_t* a1, int a2) {
 	int result; // eax
 	int v3;     // ecx
@@ -3832,6 +3835,7 @@ int sub_4ECE10(uint32_t* a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 // Historical GAME.EXE 004ECE50 body. The sole original caller 004ECD90 is
 // Go-owned and initializes the native-pointer cache directly.

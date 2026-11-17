@@ -124,9 +124,7 @@ int nox_xxx_wndClearFlag_46AD80(nox_window* win, int flags) {
 }
 
 //----- (0046ADA0) --------------------------------------------------------
-int nox_xxx_wndGetFlags_46ADA0(nox_window* win) {
-	return win ? win->flags : -2;
-}
+// Native public entry: flag_predicate_native_entry.go.
 
 //----- (0046B250) --------------------------------------------------------
 int nox_window_is_child(nox_window* a1, nox_window* a2) {

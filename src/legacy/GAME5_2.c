@@ -958,7 +958,7 @@ nox_waypoint_t* sub_579E70() {
 }
 
 //----- (00579EE0) --------------------------------------------------------
-int sub_579EE0(nox_waypoint_t* a1, unsigned char a2) { return a1 && (a2 & a1->flags_2) != 0; }
+// Native public entry: flag_predicate_native_entry.go.
 
 //----- (0057A160) --------------------------------------------------------
 // Preserved original: native Go public entry in game5_public_native.go.

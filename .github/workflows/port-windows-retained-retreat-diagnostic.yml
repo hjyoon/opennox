@@ -13,10 +13,14 @@ permissions:
 jobs:
   retained:
     runs-on: windows-2025
-    timeout-minutes: 20
+    timeout-minutes: 55
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       GOARCH: '386'
+      GOOS: windows
+      CGO_ENABLED: '1'
+      CGO_CFLAGS_ALLOW: -f.*
+      CGO_CFLAGS: -O2 -g
       GOEXPERIMENT: ''
     steps:
       - uses: actions/checkout@v7.0.1
@@ -24,6 +28,26 @@ jobs:
           ref: 465cbcce604d6d74a61aa2d1e6cbfb8181163cf0
           path: retained-source
           persist-credentials: false
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: retained-source/src/go.mod
+          cache: false
+
+      - name: Restore the original toolchain for existing fixture child programs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $name = 'llvm-mingw-20261020-ucrt-x86_64'
+          $archive = Join-Path $env:RUNNER_TEMP "$name.zip"
+          Invoke-WebRequest "https://github.com/mstorsjo/llvm-mingw/releases/download/20261020/$name.zip" -OutFile $archive
+          if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLower() -ne 'fd5462b7f5d93b2ff981fcd3f9c7e427e47f3203c64ea91c27bcc444eebd74cd') { throw 'Compiler archive hash mismatch' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $env:RUNNER_TEMP
+          $bin = Join-Path (Join-Path $env:RUNNER_TEMP $name) 'bin'
+          $bin >> $env:GITHUB_PATH
+          "CC=$(Join-Path $bin 'i686-w64-mingw32-clang.exe')" >> $env:GITHUB_ENV
+          "CXX=$(Join-Path $bin 'i686-w64-mingw32-clang++.exe')" >> $env:GITHUB_ENV
+          'GOTOOLCHAIN=local' >> $env:GITHUB_ENV
 
       - name: Restore and verify the unchanged failed primary artifact
         shell: python
@@ -105,23 +129,28 @@ jobs:
                   return {n:hex(v)for n,v in zip(names,struct.unpack_from('<12I',buffer.raw,156))}
               finally:k.CloseHandle(handle)
           results=[]
-          selectors=[('single-fault',r'^TestMonsterRetreatOriginalNative545440$/^nil-enemy-fault-1463$'),('whole-family',r'^TestMonsterRetreatOriginalNative545440$')]
+          # Single-case/family ordinary and debugger runs passed in the first
+          # retained diagnostic. Observe the complete failed package context.
+          selectors=[('whole-package','')]
           for label,selector in selectors:
               for debug in [False,True]:
                   folder=out/(label+('-debug'if debug else'-ordinary'));folder.mkdir()
-                  command=[str(binary),'-test.v','-test.count=1','-test.timeout=3m','-test.run='+selector]
+                  command=[str(binary),'-test.paniconexit0','-test.v=test2json','-test.count=1','-test.timeout=20m0s']
+                  if selector:command+=['-test.run='+selector]
                   intent=dict(command=command,cwd=str(repo/'src/server'),exact_PE_sha256=before,rebuilt=False,debugger=debug,thread_or_process_memory_modified=False)
                   (folder/'intent.json').write_text(json.dumps(intent,indent=2)+'\n')
                   events=[];start=time.monotonic();timed=False;image_base=None;loader_breaks=set()
                   pe=binary.read_bytes();image_size=struct.unpack_from('<I',pe,struct.unpack_from('<I',pe,0x3c)[0]+24+56)[0]
                   with(folder/'stdout.log').open('xb')as stdout,(folder/'stderr.log').open('xb')as stderr:
-                      child=subprocess.Popen(command,cwd=repo/'src/server',stdout=stdout,stderr=stderr,creationflags=2 if debug else 0,env=dict(os.environ,GOEXPERIMENT=''))
+                      child_env=dict(os.environ,GOEXPERIMENT='',OPENNOX_LOCAL_TEST_ARTIFACTS=str(folder/'native-fixture-artifacts'))
+                      (folder/'native-fixture-artifacts').mkdir()
+                      child=subprocess.Popen(command,cwd=repo/'src/server',stdout=stdout,stderr=stderr,creationflags=2 if debug else 0,env=child_env)
                       if not debug:
-                          try:code=child.wait(timeout=210)
+                          try:code=child.wait(timeout=1260)
                           except subprocess.TimeoutExpired:timed=True;child.kill();code=child.wait()
                       else:
                           while True:
-                              if time.monotonic()-start>210:timed=True;child.kill()
+                              if time.monotonic()-start>1260:timed=True;child.kill()
                               event=DebugEvent()
                               if not k.WaitForDebugEvent(C.byref(event),1000):
                                   if C.get_last_error()==121:continue
@@ -150,13 +179,6 @@ jobs:
                   (folder/'summary.json').write_text(json.dumps(result,indent=2)+'\n');results.append(result)
                   print(json.dumps(dict(label=folder.name,exit_code=code,timed_out=timed,exceptions=len(result['exception_events']))),flush=True)
           (out/'retreat-diagnostic-summary.json').write_text(json.dumps(results,indent=2)+'\n')
-
-      - name: Replay the exact primary legacy PE against team vectors under GC
-        shell: pwsh
-        working-directory: retained-source
-        run: |
-          python scripts/replay-team-predicate-native-pe.py --report ../diagnostic/primary
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - uses: actions/upload-artifact@v7.0.2
         if: always()

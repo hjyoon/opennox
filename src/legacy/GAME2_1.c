@@ -798,6 +798,7 @@ nox_inventory_cell_t* sub_461E60(nox_inventory_cell_t* cell, uint32_t stack_inde
 }
 
 //----- (00461EF0) --------------------------------------------------------
+#if 0 // Restored by inventory_lookup_native_entry.go.
 nox_inventory_cell_t* nox_inventory_find_cell_native_461EF0(int net_code, uint32_t* stack_index) {
 	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT; row++) {
 		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
@@ -816,7 +817,9 @@ nox_inventory_cell_t* nox_inventory_find_cell_native_461EF0(int net_code, uint32
 	}
 	return NULL;
 }
+#endif
 
+#if 0 // Restored by inventory_lookup_native_entry.go.
 char* sub_461EF0(int a1) {
 	int row_idx = 0;
 	do {
@@ -842,6 +845,7 @@ char* sub_461EF0(int a1) {
 
 	return 0;
 }
+#endif
 
 //----- (00461F90) --------------------------------------------------------
 nox_drawable* sub_461F90(int net_code) {

@@ -60,6 +60,112 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native script UTF-16 pointer insertion, 2026-11-17
+
+Engine `4e47b6258734be6850449cb040488c2703ab79e6` is committed and pushed to
+`origin/port/go1.27-multiarch`. `sub_512E80` now executes in Go and stores full
+native UTF-16 pointers. Its public C ABI remains `int (wchar2_t*)`.
+
+The original packed table retains its **1,024 four-byte cells**. On 64-bit
+builds the existing canonical `memmap.PtrPtr` side slots hold native pointers;
+the packed blob bytes remain unchanged. On 32-bit builds the original C cells
+receive native uintptr stores, avoiding Go deletion barriers on old C bytes.
+The original extracted C counter remains separate from its unused raw blob
+shadow. The signed `<1024` guard, modulo32 address/counter arithmetic,
+pointer-before-counter order and signed return retain stock behavior.
+
+The existing `Sub_512E80` wrapper, C UTF-16 producer and ignored free function
+are unchanged. Counter-only reset retains old cells until overwritten. The
+existing C canonical pointer reader returns the full native pointer; its slot
+identity remains stable. This entry does not dereference or free its argument.
+Unknown generic-reader dataflow, full VM parent migration, concurrency and
+allocator/lifetime migration remain uncredited.
+
+There are **283 C entries implemented in Go** and **281 with complete recorded
+qualification**. Two S25 entries with deleted original seals remain uncredited.
+**All-C migration and overall 100% remain open.** The nine final chapter 1–3
+audits, public Save/Load pixel failure and other historical Windows memory/GC
+causes remain open. Chapter 4 and later are excluded.
+
+The **108-path pre-port seal** preserves **1,820 original CPU/model contexts**,
+all **31 root bytes**, **319 startup bytes**, `0xe3f` FP state and no child
+services. Every root instruction is covered. Whole original image, table and
+counter owners, two 64 KiB pointee owners, ordered writes, arguments, redzones,
+saved registers and FP state are checked. The independent input-only model
+matches all returns, counter values, pointer roles and complete owners.
+There are 1,631 inserts, 189 saturated calls, 147 valid signed-negative address
+aliases and 405 NULL inserts. The original CPU harness first stopped because
+only the first of two table pages was writable. That failed script/process is
+retained; only page coverage changed before the complete successful run.
+Inputs and original expected results were never retuned. An early archive-reader
+copy omitted a prior original-data symlink; its failed logs remain untouched.
+The corrected reader directory restores that same data and changes no test
+or original expectation.
+
+The **237-byte unchanged C body**, executed on actual ARM64 high allocations,
+reproduces **1,226 pointer truncations**. All 1,820 returns/counter results and
+whole owners otherwise match. Its executable and one original compiler
+warning remain archived. The successful C control process was not rerun.
+
+Qualification passes:
+
+- **16,384** focused events cover public C calls, volatile C callbacks and
+  direct Go at three foreign placements. The 16,380 primary calls check all
+  1,024 canonical cells, the complete 44,881-byte packed blob, the 64 KiB raw
+  counter shadow and both full pointee owners plus placement guards after each
+  call. Ten C/Go layout checks verify the ABI and shared owners. Six existing
+  UTF-16 wrapper controls include Korean, surrogate pairs and embedded NUL;
+  54 composed calls check saturation, NULL replacement, counter-only reset and
+  reinsertion. Production ownership behavior is unchanged.
+- Normal and highres/cgocheck2/checkptr2 each pass **587,619** exact terminal
+  identities and multiplicities on their first attempts, retaining all prior
+  **571,235**. The increment equals the complete focus. All three local gates
+  share the **9,413-input** lease `8639cadad44396b441c95a827144b5597fb9b3987ec32e79b0ad625b89d07903` and a clean
+  frozen source worktree. All **4,791 prior protected inputs** are unchanged.
+- Four default Apple compiler ARM64 products pass metadata/help and **160**
+  native/control symbols with zero warnings. Normal/HD each pass two core E2E
+  cases, a functional Save/Load diagnostic and independent ordinary UDP chat.
+  Each chat verifies eight submissions, four peer messages and one host reply;
+  both processes exit zero without force. The Save/Load pixel failure is open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/43992992875) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/43992973182) pass all
+  six native profiles on their first attempts. Six verified official ZIPs
+  preserve **158 actual test mains** and **32** source-bound reader chains.
+  Every full-suite increment is **16,384**, with unchanged skip identities.
+  Complete warning review scans **24 files /
+  8,946,015,917 uncompressed bytes**, finding zero
+  warnings. The exact primary Windows/386 PE contains no Go write-barrier
+  calls in the emitted root and Cgo export path. This family has no additional
+  GOGC10 replay claim; the existing Skeleton/Golem/trade and GlobalRecord
+  replays remain independently verified. The optional manual-replay job is
+  explicitly retained as skipped and is outside the six native profiles.
+
+Reversing the single C definition guard reconstructs the complete incoming
+file. All other incoming files, headers, C globals, layouts, producers and
+caller/reset bodies retain their hashes. Product preprocessing proves the
+old C function body is absent and its original C counter remains. The declared
+domain covers all logical cells, signed positive saturation, valid negative
+address aliases and nullable opaque C pointers into two 64 KiB owners.
+Other effective addresses, heterogeneous aliases and Go-heap pointees remain
+uncredited. No new active gameplay crash is claimed from the static caller
+search, which finds the existing Go wrapper and no syntactic C parent.
+
+All **4,649 original asset/personal Save files** retain their hashes. All
+**38 current program paths**, 39 prior
+S45 paths, 46 failed S45v1 paths and the earlier failed S41/S39/S34 programs
+remain after the inactive dedicated cache returns from
+**1,720,336 KiB to 8 KiB**. Historical user deletions remain
+recorded and nonblocking. Fresh **207-file** C analysis records 2,462 ordinary
+definitions plus 14 macros = **2,476**, 448 functions with pointer/integer
+casts and zero unclassified own locations. Direct width triage finds 320
+pointer-to-narrow, 2,023 narrow-to-pointer and 585 native-width sites. These
+include bridges/platform/reference code and establish no unported denominator.
+Header/inc algorithms, Cgo preambles, optional tags, other architectures and
+team/map-monster owners remain open.
+
+Machine evidence: [split-wide-script-pointer-native-progress-20261117.json](split-wide-script-pointer-native-progress-20261117.json).
+Full qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/qualified-wide-script-pointer-entry-v1.json` (SHA-256 `b287b0d86158573657ddfb7a45c87f8851ef0ea1e86c5565fb930f6e914f27f5`).
+
 ### Native global string and selected-record pointer outputs, 2026-11-17
 
 Engine `74e6ff82c61c36c5842230f0f4e3486f0f3daac3` is committed and pushed to

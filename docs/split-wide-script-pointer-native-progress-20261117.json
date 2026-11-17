@@ -1,0 +1,1436 @@
+{
+  "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+  "entries": [
+    "sub_512E80"
+  ],
+  "qualified_entries": 1,
+  "preceding_fully_recorded_qualified_entries": 280,
+  "cumulative_qualified_split_Go_entries": 281,
+  "implemented_split_Go_entries": 283,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9413,
+    "sha256": "8639cadad44396b441c95a827144b5597fb9b3987ec32e79b0ad625b89d07903"
+  },
+  "qualified_source_binding": {
+    "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+    "source_tree": "658da863ff12ffe595cec7640af96ac4543a7988",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-wide-script-pointer-qualify-20261117-v1",
+    "source_lease_sha256": "8639cadad44396b441c95a827144b5597fb9b3987ec32e79b0ad625b89d07903",
+    "all9413_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "contexts": 1820,
+    "root_calls": 1820,
+    "root_bytes": 31,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 108,
+    "proof": {
+      "utc": "2026-11-17T00:44:55.730025+00:00",
+      "preport_source_revision": "4f44b2d5205bbe31c520b011331c7149e090f523",
+      "entry": "sub_512E80",
+      "cases": 1820,
+      "original_root_calls": 1820,
+      "original_root_bytes": 31,
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "exact_table_then_counter_write_ledger_retained": true,
+      "whole_original_image_checked_except_exact_declared_setup_and_write_projection": true,
+      "whole64KiB_table_and_counter_owners_and_two64KiB_foreign_owners_checked": true,
+      "caller_arguments_redzones_saved_registers_and_complete_FP_state_checked": true,
+      "paths": {
+        "insert": 1631,
+        "saturated": 189
+      },
+      "precase_contract_sha256": "55a9242010b7191399a72d21123a60c509c261dbd34af75bd4db9320d04b6924",
+      "input_sha256": "3c270e3de1a950a2b879f6ca6633857e3e311210f9e451e9f746bda4b72fb369",
+      "fixture_sha256": "f13b38d7a891c6cb6e2de8ef0442b55c0c81351d986cc41c05ce48d9c6c6e311",
+      "fixture_gzip_sha256": "94797777584c082da5c2913a06703e298fc653a9f98974b495c3f6c4a85ca6d8",
+      "source_port_started": false,
+      "original_expected_rows_modified": false,
+      "new_Go_credit": 0
+    },
+    "independent_model": {
+      "utc": "2026-11-17T00:45:40.271397+00:00",
+      "cases": 1820,
+      "root_calls": 1820,
+      "input_only_model": true,
+      "model": "Signed integer comparison and finite modulo32 address/counter arithmetic. Build complete input byte owners and1024 original pointer roles from declared inputs, then compare all returns, counter values, ordered pointer/counter writes and whole-owner SHA values. No source port or observed output used to compute expected results.",
+      "all_declared_returns_counter_values_pointer_roles_and_ordered_writes_equal": true,
+      "whole64KiB_table_and_counter_and_two64KiB_foreign_owners_equal": true,
+      "insert_contexts": 1631,
+      "saturated_contexts": 189,
+      "signed_negative_valid_pointer_alias_inserts": 147,
+      "nullable_inserts": 405,
+      "fixture_sha256": "f13b38d7a891c6cb6e2de8ef0442b55c0c81351d986cc41c05ce48d9c6c6e311",
+      "fixture_gzip_sha256": "94797777584c082da5c2913a06703e298fc653a9f98974b495c3f6c4a85ca6d8",
+      "input_sha256": "3c270e3de1a950a2b879f6ca6633857e3e311210f9e451e9f746bda4b72fb369",
+      "precase_contract_sha256": "55a9242010b7191399a72d21123a60c509c261dbd34af75bd4db9320d04b6924",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-17T00:46:42.790582+00:00",
+    "architecture": "macOS ARM64",
+    "original_C_bytes": 237,
+    "contexts": 1820,
+    "root_calls": 1820,
+    "actual_high_native_owners": true,
+    "original_body_unchanged": true,
+    "matching_return_and_counter_contexts": 1820,
+    "native_pointer_truncation_contexts": 1226,
+    "insert_contexts": 1631,
+    "saturated_contexts": 189,
+    "unrelated_divergences": 0,
+    "whole64KiB_table_and_two64KiB_foreign_owners_checked": true,
+    "successful_control_process_rerun": false,
+    "compiler_warnings": 1,
+    "binary": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/original-review-v1/original-C-before-v1/unchanged-wide-script-pointer-ARM64-v1",
+      "bytes": 84552,
+      "sha256": "7196511433a3f58d716bf5b6cdbdf3dc5f5cba9e113aad998a6f16a490b33097"
+    },
+    "compile": {
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-fno-strict-aliasing",
+        "-fno-strict-overflow",
+        "-fsigned-char",
+        "-Wno-error=int-conversion",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/original-review-v1/original-C-before-v1/actual-native-control-v1.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/original-review-v1/original-C-before-v1/unchanged-wide-script-pointer-ARM64-v1"
+      ],
+      "exit_code": 0,
+      "compiler_warnings": 1,
+      "binary_sha256": "7196511433a3f58d716bf5b6cdbdf3dc5f5cba9e113aad998a6f16a490b33097"
+    },
+    "process": {
+      "command": [
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/original-review-v1/original-C-before-v1/unchanged-wide-script-pointer-ARM64-v1"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "7196511433a3f58d716bf5b6cdbdf3dc5f5cba9e113aad998a6f16a490b33097",
+      "stdout_sha256": "2000d6fa2162896192cda257ce0e9cc1440b2af05736570e93117d7a39ab175e"
+    },
+    "ABI": {
+      "kind": "ABI",
+      "table_owner": 518571163648,
+      "foreign_owner": 518571294720,
+      "pointer_bytes": 8,
+      "contexts": 1820
+    }
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "predeclared_projection": {
+      "utc": "2026-11-17T00:40:24.722695+00:00",
+      "source_revision": "4f44b2d5205bbe31c520b011331c7149e090f523",
+      "preceding_qualified_engine": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+      "entries": [
+        "sub_512E80"
+      ],
+      "original_root_bytes": 31,
+      "original_C_bytes": 237,
+      "declared_child_services": [],
+      "precase_record_before_input_vectors": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "original_addresses": {
+        "counter": 7712288,
+        "table": 9938752,
+        "table_cells": 1024,
+        "table_stride": 4
+      },
+      "native_projection": {
+        "counter": "Existing extracted C uint32 dword_5d4594_1599628; raw original blob shadow is a decoy, never the state owner.",
+        "table": "Existing canonical memmap.PtrPtr(0x973f18,26664+4*count modulo2^32). On32bit use the original packed4-byte pointer cell; on64bit use its stable native pointer side slot and preserve every packed blob byte. All logical1024 pointer cells and neighboring decoys are checked.",
+        "guard_return": "Exact signed32 counter <1024. Store path writes pointer before incrementing counter modulo2^32; signed32 return is post-counter minus1 modulo2^32. Saturated path leaves all state unchanged and returns count minus1 modulo2^32.",
+        "lifetime": "Nullable opaque pointers owned by C allocations. Root never dereferences or frees pointee. Existing CWString C UTF16 producer and intentionally ignored free function remain unchanged. No lifetime or allocator migration credit.",
+        "slot_ownership": "64bit canonical Go side slots must contain initialized nil or valid C pointers. 32bit packed C cells may start with arbitrary bytes; avoid Go pointer deletion barriers on those C-owned words.",
+        "reset": "Existing noxScript.Reset sets extracted counter0 without clearing table. Preserve old canonical pointer cells until overwritten. No global ResetPointerSlots during ordinary reset or test cases."
+      },
+      "valid_domain": {
+        "normal_counter": [
+          0,
+          1023
+        ],
+        "saturated_signed_positive_counter": [
+          1024,
+          2147483647
+        ],
+        "negative_counter_address_aliases": "0x80000000+k and0xc0000000+k, k0..1023: signed guard stores and32-bit scaled address wraps into the same valid logical table cells.",
+        "pointer_roles": [
+          "null",
+          "C-owner-A-start",
+          "C-owner-A-offset",
+          "C-owner-B-offset"
+        ],
+        "sequences": [
+          "isolated insert",
+          "last-valid then saturated insert",
+          "existing counter-only reset then overwrite",
+          "same pointer reinsertion",
+          "NULL pointer replacement"
+        ],
+        "checked_owners": "Whole44881-byte packed blob, all1024 canonical pointer cells, whole64KiB foreign pointee owners, extracted counter and unrelated raw counter shadow. Whole original image/caller/redzones/register/FP state under exact declared setup/write projection."
+      },
+      "uncredited": [
+        "out-of-blob effective addresses",
+        "negative indices mapping outside the logical1024 pointer cells",
+        "heterogeneous scalar/pointer aliasing",
+        "Go-heap pointees",
+        "concurrent mutation",
+        "full VM parent migration",
+        "unknown generic-reader dataflow",
+        "out-of-domain memory fault parity"
+      ],
+      "caller_audit": "Existing Go Sub_512E80 -> CWString -> C entry; NoxScriptNS.Unused5e localizes CScrFunc.c. Literal table address/offset has only the C writer in current searches. Generic blob/table reader completeness remains uncredited; canonical getMemPtr/mem_getPtrValue is preserved.",
+      "ownership_review_reference": "reader-lifetime-and-shadow-projection-observations-v1.json",
+      "independent_model": "Compute signed guard, modulo32 address/counter arithmetic, exact ordered pointer/counter writes and complete owners from inputs only; compare with original CPU before any source edit.",
+      "required_before_source_edit": [
+        "original CPU vectors and full instruction coverage",
+        "independent input-only model",
+        "unchanged237-byte C body on actual ARM64 high allocations",
+        "full fresh preport evidence seal"
+      ]
+    },
+    "public_C_ABI_unchanged": true,
+    "syntactic_C_callers": 0,
+    "existing_Go_C_wrappers": 1,
+    "all4791_existing_protected_inputs_unchanged": true,
+    "whole_incoming_C_file_reconstructed": true,
+    "existing_C_counter_and_packed_table_stride_and_wrapper_UTF16_producer_and_counter_reset_unchanged": true,
+    "canonical_native_pointer_storage": "Existing canonical memmap.PtrPtr(0x973f18,26664+4*count modulo2^32). On32bit use the original packed4-byte pointer cell; on64bit use its stable native pointer side slot and preserve every packed blob byte. All logical1024 pointer cells and neighboring decoys are checked.",
+    "packed32_C_pointer_store_has_no_Go_deletion_barrier": true,
+    "initialized64bit_Go_side_slot_uses_Go_pointer_assignment": true,
+    "product_NOX_CGO_old_C_definition_absent": {
+      "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+      "entries": [
+        "sub_512E80"
+      ],
+      "product_C_definitions_absent": true,
+      "existing_extracted_C_counter_retained": true,
+      "source": "src/legacy/server__script__builtin.c",
+      "source_sha256": "b736f5f67ade977d584c88b1f86d573781c5f99a0d8e7f17ba817c00e4fec121",
+      "command": [
+        "/usr/bin/clang",
+        "-fsyntax-only",
+        "-Xclang",
+        "-ast-dump=json",
+        "-fshort-wchar",
+        "-fno-strict-aliasing",
+        "-fno-strict-overflow",
+        "-fsigned-char",
+        "-DNOX_CGO",
+        "-Wno-everything",
+        "/Users/ghost/codex-sandbox/worktrees/opennox-wide-script-pointer-qualify-20261117-v1/src/legacy/server__script__builtin.c"
+      ],
+      "AST_sha256": "aaae9135cf0c5192a1109fa2c0ed02b23ad08e5ca1527f1740fa6c94acedfcfe",
+      "AST_gzip_sha256": "433b22142f12de0e2313c840e7f08a95b29b8ac3fca8ce5b1492542b49fe5989"
+    }
+  },
+  "ci": {
+    "runs": [
+      43992992875,
+      43992973182
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": true,
+    "archives": [
+      {
+        "artifact_id": 14290700178,
+        "name": "linux-amd64-opennox-hd-4e47b6258734be6850449cb040488c2703ab79e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14290700178-linux-amd64-opennox-hd-4e47b6258734be6850449cb040488c2703ab79e6.zip",
+        "bytes": 244363110,
+        "sha256": "60232be5000451031a10de6605e6eb3387cd58b3dca8471b76bb3aa447fe4238",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1407556,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14289916396,
+        "name": "linux-amd64-opennox-server-hd-4e47b6258734be6850449cb040488c2703ab79e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14289916396-linux-amd64-opennox-server-hd-4e47b6258734be6850449cb040488c2703ab79e6.zip",
+        "bytes": 230284162,
+        "sha256": "b6af3c082348ce1ce563f5c88c55e874f6a3c6ad69738a4fa804fadb98eeab77",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1401443,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14289836956,
+        "name": "linux-amd64-opennox-server-4e47b6258734be6850449cb040488c2703ab79e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14289836956-linux-amd64-opennox-server-4e47b6258734be6850449cb040488c2703ab79e6.zip",
+        "bytes": 293333125,
+        "sha256": "66e872877013be89716f0ec1d659cc7428b7a2e78a676d939a51c03633067bd9",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1401443,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14288924719,
+        "name": "linux-amd64-opennox-4e47b6258734be6850449cb040488c2703ab79e6",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14288924719-linux-amd64-opennox-4e47b6258734be6850449cb040488c2703ab79e6.zip",
+        "bytes": 244395625,
+        "sha256": "f00b32f13b0817e1810dbdbe4948072184b48e2630dd5fa53d4a14dd2c6dd8ba",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1407556,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14289416744,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14289416744-opennox-server-windows-amd64.zip",
+        "bytes": 184065633,
+        "sha256": "515dfde3806a78991be6c1d34edb3865e4ff77e2bd9fba8b782af8477948eed7",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1399428,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14288994063,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/ci-14288994063-opennox-server-windows-386.zip",
+        "bytes": 180248524,
+        "sha256": "dba4d325d008a14a01f71b6cfb022973adb2dba4ae40f666872d734560716038",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1379495
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 24,
+    "uncompressed_warning_scan_bytes": 8946015917,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 32,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14290700178,
+        "name": "linux-amd64-opennox-hd-4e47b6258734be6850449cb040488c2703ab79e6",
+        "profile": "client",
+        "preceding_artifact": 14284443633,
+        "preceding_passes": 1391172,
+        "current_passes": 1407556,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14289916396,
+        "name": "linux-amd64-opennox-server-hd-4e47b6258734be6850449cb040488c2703ab79e6",
+        "profile": "server",
+        "preceding_artifact": 14285865635,
+        "preceding_passes": 1385059,
+        "current_passes": 1401443,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14289836956,
+        "name": "linux-amd64-opennox-server-4e47b6258734be6850449cb040488c2703ab79e6",
+        "profile": "server",
+        "preceding_artifact": 14284478668,
+        "preceding_passes": 1385059,
+        "current_passes": 1401443,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14288924719,
+        "name": "linux-amd64-opennox-4e47b6258734be6850449cb040488c2703ab79e6",
+        "profile": "client",
+        "preceding_artifact": 14284499617,
+        "preceding_passes": 1391172,
+        "current_passes": 1407556,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14289416744,
+        "name": "opennox-server-windows-amd64",
+        "profile": "server",
+        "preceding_artifact": 14285735642,
+        "preceding_passes": 1383044,
+        "current_passes": 1399428,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14288994063,
+        "name": "opennox-server-windows-386",
+        "profile": "server",
+        "preceding_artifact": 14285451935,
+        "preceding_passes": 1363111,
+        "current_passes": 1379495,
+        "new_native_pass_events": 16384,
+        "primary_family_new_passes": 16384,
+        "existing_UTF16_wrapper_and_counter_reset_trace_included": true,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "new_native_pass_events_per_profile": 16384,
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "existing_GlobalRecord_GOGC10_replay_retained": true,
+    "new_WideScriptPointer_family_GOGC10_replay_claim": false,
+    "skipped_optional_manual_replay_job_retained": [
+      {
+        "id": 133737954658,
+        "run_id": 43992973182,
+        "workflow_name": "Porting Windows native gate",
+        "head_branch": "port/go1.27-multiarch",
+        "run_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/43992973182",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOQm9xk88AAAAfI2c9Yg",
+        "head_sha": "4e47b6258734be6850449cb040488c2703ab79e6",
+        "url": "https://api.github.com/repos/hjyoon/opennox/actions/jobs/133737954658",
+        "html_url": "https://github.com/hjyoon/opennox/actions/runs/43992973182/job/133737954658",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-17T01:06:26Z",
+        "started_at": "2026-11-17T01:06:26Z",
+        "completed_at": "2026-11-17T01:06:26Z",
+        "name": "Windows/386 retained global record GC replay",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/hjyoon/opennox/check-runs/133737954658",
+        "labels": [
+          "windows-2025"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ],
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4791,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_files_unchanged": true,
+      "existing_modified_files": [
+        "src/legacy/server__script__builtin.c"
+      ],
+      "new_files": [
+        "src/legacy/wide_script_pointer_native_entry.go",
+        "src/legacy/wide_script_pointer_native_fixture.go",
+        "src/legacy/wide_script_pointer_native_test.go",
+        "src/legacy/testdata/wide_script_pointer_original_v1.json.gz"
+      ],
+      "whole_incoming_C_file_reconstructed": true,
+      "public_C_ABI_unchanged": true,
+      "extracted_C_counter_and_raw_shadow_and_packed_table_layout_and_existing_UTF16_producer_wrapper_and_counter_reset_unchanged": true,
+      "original_CPU_contexts": 1820,
+      "original_root_bytes": 31,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "source_port_started": true,
+      "implemented_entries": 283,
+      "fully_recorded_entries": 280,
+      "new_entries_pending_qualification": 1,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 38,
+    "retained_preceding_S45_program_paths": 39,
+    "retained_failed_S45v1_program_paths": 46,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1720336,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 38,
+      "all_current_program_SHA_verified": true,
+      "preceding_S45_program_paths_SHA_verified": 39,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37,
+      "retained_failed_S45v1_program_paths_SHA_verified": 46
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "all_actual_local_tests_first_attempts_pass": true,
+    "original_CPU_first_attempt_pass": false,
+    "failed_original_CPU_protection_setup_retained": true,
+    "original_C_before_first_process_pass": true,
+    "successful_original_C_control_process_not_rerun": true,
+    "actual_original_native_C_differences_retained": true,
+    "original_C_before_compiler_warnings": 1,
+    "ported_product_and_CI_compiler_warnings": 0,
+    "helper_preparation_failures_retained": [
+      {
+        "utc": "2026-11-17T00:43:13.206414+00:00",
+        "failures": [
+          {
+            "stage": "copy driver",
+            "error": "FileNotFoundError: relative Path dot parent did not select absolute sibling; no files changed"
+          },
+          {
+            "stage": "launch driver",
+            "exit_code": 2,
+            "error": "driver absent; original CPU never started"
+          }
+        ],
+        "repair": "Resolve task directory before parent lookup; copy existing driver bytes unchanged.",
+        "original_CPU_started_by_failed_commands": false,
+        "source_files_changed": false
+      },
+      {
+        "utc": "2026-11-17T00:44:25.626327+00:00",
+        "failure": "UC_ERR_WRITE_PROT: the4096-byte table at0x97a740 crosses into page0x97b000; only its first page was writable.",
+        "repair": "Cover both pages that intersect the original4096-byte table. The write hook still admits only table cells and the4-byte counter.",
+        "inferred_first_unwritable_cell": 560,
+        "input_or_original_expected_values_changed": false,
+        "stock_code_or_port_source_changed": false,
+        "failed_original_execution_not_promoted": true,
+        "retained": [
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/failed-original-CPU-table-page-protection-v1/original-CPU-observed-v1.exit.json",
+            "bytes": 333,
+            "sha256": "1aa39e760047b67a16cdfe49305be7c1f49ab8133445c48715d07ed3d7f07cfd"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/failed-original-CPU-table-page-protection-v1/original-CPU-observed-v1.stderr.log",
+            "bytes": 621,
+            "sha256": "492a595d92f299b196c0215ea5a0d5bb5424cd26bd88814f618fcc79c38dcb36"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/failed-original-CPU-table-page-protection-v1/original-CPU-observed-v1.stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-wide-script-pointer-original-review-v1/failed-original-CPU-table-page-protection-v1/run-original-CPU-v1.py",
+            "bytes": 7023,
+            "sha256": "1e87e66d3c6067436038300a8e0ca23bab2d92d7a0bcf98d81dad39c35a54711"
+          }
+        ]
+      },
+      {
+        "utc": "2026-11-17T01:36:32.939788+00:00",
+        "failure": "Missing original-cpu-v1/fixture.json symlink in a helper-only directory clone; both early readers stopped at unchanged PredictLinear reader. No reader JSON had been published.",
+        "failed_reader_directory": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1",
+        "failed_artifact_ids": [
+          14289916396,
+          14289416744
+        ],
+        "original_failed_files_retained": [
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14289416744-stderr.log",
+            "bytes": 824,
+            "sha256": "d45fd7b487885da47474b1e69c979fe62784a1a5d934a56776c5d7497deef519"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14289916396-stderr.log",
+            "bytes": 824,
+            "sha256": "7c492ee791e27880b8db38748efc7b4dc4a8a38c595b59ff92cc6f42ae52c739"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/arachnaphobia-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/burn-CI-matrix-14289416744-stderr.log",
+            "bytes": 811,
+            "sha256": "bff840b9ecba3b4560fc446bfe42cfdbc813e07aa380a16659b5d621fd92f780"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/burn-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/burn-CI-matrix-14289916396-stderr.log",
+            "bytes": 811,
+            "sha256": "732902c56f08438001498dd9569531f51c7b039d56dd2506c7ad0580f251d31c"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/burn-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14289416744-stderr.log",
+            "bytes": 838,
+            "sha256": "3c0d65079bdc03752c477e2c4f9af58cac18f5a102e4787da06f654fb8c81e7d"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14289916396-stderr.log",
+            "bytes": 838,
+            "sha256": "0c6716555ff26b19ef760df6a64f5d0462ba042501aa82624aa0c366657d8c58"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/cleansing-flame-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/drawable-predicate-CI-matrix-14289416744-stderr.log",
+            "bytes": 1250,
+            "sha256": "fc6f72398d38dea901baf9d4821333108ee20d1f584594caacaa0d9be84b7bd2"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/drawable-predicate-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/drawable-predicate-CI-matrix-14289916396-stderr.log",
+            "bytes": 1250,
+            "sha256": "d46697242fdac84612101427fc310e84dc3fa373141a15b70b17ae7a8b3c59fb"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/drawable-predicate-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-arachnaphobia-CI-matrix-v2.py",
+            "bytes": 6282,
+            "sha256": "03546aafde5bca98d0e73b5039f2f3bf685135cc9105c9f138c3d303f13904c6"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-burn-CI-matrix-v1.py",
+            "bytes": 5605,
+            "sha256": "81af7387af5f176ccbaa5f918f2d49aa3087f7b2abe040bac9780919db67ab76"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-cleansing-flame-CI-matrix-v1.py",
+            "bytes": 5420,
+            "sha256": "81fb5f346eb14fc3f6eb2c13e502f26abe228737880617c598b57f6437f1b0fd"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-drawable-predicate-CI-matrix-v1.py",
+            "bytes": 6225,
+            "sha256": "840f7231d67309c67d17d13fe0204f5b89ec22a3575ad968361b3bfbbdfde73b"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-fireball-CI-matrix-v2.py",
+            "bytes": 3159,
+            "sha256": "31bd59cdca1d36f3789c32e328b49b0e9bf95d80e43e8dde4cdf8d52de7a6806"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-fumble-CI-matrix-v1.py",
+            "bytes": 5575,
+            "sha256": "10021ab717ea259cd4db6d5a236d6fd1815b9e5cabd75cb6cfcee087402226b8"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-generator-damage-CI-matrix-v2.py",
+            "bytes": 4350,
+            "sha256": "283dc68c939407b2a59cf02150c162a16567f29dc9efc119985283816d4a0824"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-global-record-CI-matrix-v1.py",
+            "bytes": 4961,
+            "sha256": "9cf235672829870caaeb9fae628676fa012a4fc7166d3a494b3c2be4ae9f0bfb"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-global-state-CI-matrix-v1.py",
+            "bytes": 4614,
+            "sha256": "61f8209558a1cd00f30722453f03d552e45a6c0118c5d177e54545a097b9fc4b"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-gui-bar-state-CI-matrix-v1.py",
+            "bytes": 4676,
+            "sha256": "f57dde4e3b0efc061a65844b473bb4aff1d83be8fe0e396f90eaa3ac826daa54"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-gui-geometry-CI-matrix-v1.py",
+            "bytes": 5184,
+            "sha256": "687a50184de5e94bbb8d98c79564fb8881311c23177e0e5a4e9a7c9d9b9fafac"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-inventory-state-CI-matrix-v1.py",
+            "bytes": 5084,
+            "sha256": "5dd7c9ab919ee97c63c64183698f5890014fbc08e2c00cddccdd2b93c9379558"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-inversion-CI-matrix-v1.py",
+            "bytes": 7067,
+            "sha256": "c22b06f5eda7b32c91bc54941eb4067e8ca7a58e7d25d0e5b18fd36cd9e65625"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-meteor-cast-CI-matrix-v1.py",
+            "bytes": 5970,
+            "sha256": "e0f6ff7d8d24e380cd6755afc8c044fd1303e15827de4e067bfe90ecb8a05ea2"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-monster-cast-CI-matrix-v2.py",
+            "bytes": 3298,
+            "sha256": "ae001e27e54905c0bb8359e907ac06febf3cd9114664916c477e9ab85d445df0"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-monster-direction-CI-matrix-v2.py",
+            "bytes": 2629,
+            "sha256": "16509a4c35ad4a7b9de53e4c7228589f85a2b6d6f31d97677c06bd2f8b85a94b"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-npc-equipment-CI-matrix-v1.py",
+            "bytes": 4728,
+            "sha256": "6473c187106d6edf9dae9090aa4a86a9357726d0615ccf614461fdfcffcd5c58"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-npc-equipment-CI-matrix-v2.py",
+            "bytes": 4766,
+            "sha256": "3632a435963e5b4ab397f18442059e5db582ee37645b5e791175643e4c64235e"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-object-field-CI-matrix-v1.py",
+            "bytes": 5141,
+            "sha256": "209f6a4f7b493c286fc02da45d2e3bcced06d1b86251f369d4dcbb1990407964"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-object-trace-CI-matrix-v1.py",
+            "bytes": 5084,
+            "sha256": "88d727caaac7dde92edfc1c780051062a778180ab690ae6727c3cef594266110"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-point-fx-CI-matrix-v1.py",
+            "bytes": 3875,
+            "sha256": "df345c2606bfd3782d080f8a5797aa9f5015c4474461186e89a2bdc8e07c211f"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-pointer-chain-CI-matrix-v1.py",
+            "bytes": 4830,
+            "sha256": "f6d4d645edf8d23246233f2d6db677d7222816ad46a5da9466e55447b084e987"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-poison-CI-matrix-v3.py",
+            "bytes": 5154,
+            "sha256": "13653f82ca13418c0f4c9c2926d319f13c02b33a34b7d1e554ebf89bbd0fd1ac"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-predict-linear-CI-matrix-v1.py",
+            "bytes": 4795,
+            "sha256": "3806adb10d99fb86ac610c40275a94e6a36210f4c640d396d92625df60925f49"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-prior-native-CI-matrix-v2.py",
+            "bytes": 15531,
+            "sha256": "6ee7d6f30e27e2af3f13be3197cb246a8aba37447024d8213858293c9a634442"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-pull-push-CI-matrix-v1.py",
+            "bytes": 6149,
+            "sha256": "e6701a44f3fa3739be363fce961cff2ec66d8b55df05dd502b1f07e57d3e7708"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-resource-CI-matrix-v2.py",
+            "bytes": 3123,
+            "sha256": "8493adf1acdb6b68275d16127a5006bfa81f26dd369bb5a0ba5f44d30c50d880"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-trade-item-lookup-CI-matrix-v1.py",
+            "bytes": 4005,
+            "sha256": "8e05af829e120b12f4659a963e7ca2b93ce6aebabf67a3a7328d01be63094b76"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-trade-notify-item-CI-matrix-v1.py",
+            "bytes": 4732,
+            "sha256": "6bee5eb9623853e6acb025d336efba5b9da2a58589d5297ea962ec423c8dc021"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-trade-packets-CI-matrix-v1.py",
+            "bytes": 4610,
+            "sha256": "ae8c42d0aae63d7838ed1b763791fcaa8d56edeff9e5ed00eabb6b2f9d46c43a"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-ui-trade-CI-matrix-v1.py",
+            "bytes": 4366,
+            "sha256": "bc5eac29331fd70d4d5e03aa543f123d0bebb515efe69b0d47a9096eb2b92202"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-wide-script-pointer-CI-matrix-v1.py",
+            "bytes": 4431,
+            "sha256": "6ecdee16f0613c99d5bc7952ae5c986b9f9aae62c0a7444c0a810d18fd04bd3c"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/extract-window-field-CI-matrix-v1.py",
+            "bytes": 4797,
+            "sha256": "2a98ed8abaac0457642c763f1b6278a9e0d54075881e3673caf6a1775b2df797"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14289416744-stderr.log",
+            "bytes": 819,
+            "sha256": "6805deea751f413d958512f03d2bb2bd17568e54a6362f63b490d3eeb655a6fc"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14289916396-stderr.log",
+            "bytes": 819,
+            "sha256": "cd9ab39ede3d57a798dac53273d09f62240e1fb7bd7fcebbc30cdc12f0acbeff"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/fumble-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-record-CI-matrix-14289416744-stderr.log",
+            "bytes": 1287,
+            "sha256": "c4c17d7dc74e5332feb7ce4647c580d4d27e46595134e09e0fd739df52af1e0f"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-record-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-record-CI-matrix-14289916396-stderr.log",
+            "bytes": 1287,
+            "sha256": "c5c7fd0e7eaea532bf19aee428be032b3a3dc20e4872d8aa7e479d166bd83982"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-record-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14289416744-stderr.log",
+            "bytes": 1279,
+            "sha256": "b0b5088156abf6474c189ed39b9e446fc35e4a238762ef7e0d421f2b9a89ea72"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14289916396-stderr.log",
+            "bytes": 1279,
+            "sha256": "c466676785bd68064e2b1bc4b7ddc0c8ba515f1773c2e5cff2d2b945b1e9faf8"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/global-state-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-bar-state-CI-matrix-14289416744-stderr.log",
+            "bytes": 1252,
+            "sha256": "fab82978f6307a300a1b0b2f4df9426ac9276eb8c7cf575bd8ad0d9dbe8bcc51"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-bar-state-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-bar-state-CI-matrix-14289916396-stderr.log",
+            "bytes": 1252,
+            "sha256": "1ac77deb5f2d73ae4e0278e4449629db3c0160ec0b30a90e74bb83e0cf377f36"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-bar-state-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-geometry-CI-matrix-14289416744-stderr.log",
+            "bytes": 1244,
+            "sha256": "41d2010e14769c85aef72304d8e6474891f74506ddd91d939e6a1d4166a34f89"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-geometry-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-geometry-CI-matrix-14289916396-stderr.log",
+            "bytes": 1244,
+            "sha256": "c50695af4d45aacd7544bc0f7cbd50ec2efd137bc17fc5f22be3ac514c85a448"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/gui-geometry-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inventory-state-CI-matrix-14289416744-stderr.log",
+            "bytes": 1247,
+            "sha256": "39476db1f8ba433571bfc2a314b72dde85f580e18f5e84748ed7fa755632d59a"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inventory-state-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inventory-state-CI-matrix-14289916396-stderr.log",
+            "bytes": 1247,
+            "sha256": "2403271d61b00d643e591ed4b7faf43d84bc8d2ae2309b1fd608d9b7514085a2"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inventory-state-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14289416744-stderr.log",
+            "bytes": 812,
+            "sha256": "497d949286a98274e231c7a9816a85590bb857e0b837941614a8aa25843e713a"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14289916396-stderr.log",
+            "bytes": 812,
+            "sha256": "4f75976ed99a3cbe55a83d2f6bbd5549b78f650defcde66d150cce0dd705b514"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/inversion-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14289416744-stderr.log",
+            "bytes": 830,
+            "sha256": "741f4eaf4244262b735bd082d6c81f7a353694562a976e6ca696ed09e2389e98"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14289916396-stderr.log",
+            "bytes": 830,
+            "sha256": "6b9637a5c7206213e6ed6ebdd53175b8a68697c9d7f01b89363001116e319f9c"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/meteor-cast-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14289416744-stderr.log",
+            "bytes": 826,
+            "sha256": "9fbde59c0bb687415671aaf148c903e48402e955565a996abebb3ad719885cfb"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14289916396-stderr.log",
+            "bytes": 826,
+            "sha256": "04cec0c4f08f9011e8adcff6b598f75df6c5c4b8029894be7e5d2f5ccfc8ce9b"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/npc-equipment-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-field-CI-matrix-14289416744-stderr.log",
+            "bytes": 1251,
+            "sha256": "3d467af0a2e4ee9f933a99bf7a3927b443040fd8c857e6e6ad39ff6a134d5117"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-field-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-field-CI-matrix-14289916396-stderr.log",
+            "bytes": 1251,
+            "sha256": "a243dcfa50f58d6d75b4692332e6ff8603630832d468156ff11f94c372d490ce"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-field-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-trace-CI-matrix-14289416744-stderr.log",
+            "bytes": 1265,
+            "sha256": "6fe49ea25e4ec785e379b2239d3d867eaf5c7163cf527243a5e59843cd578091"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-trace-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-trace-CI-matrix-14289916396-stderr.log",
+            "bytes": 1265,
+            "sha256": "7d77619d4cd2c89ab71fd9c6fcb4177157e39457ce97bee9e222615d7867e025"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/object-trace-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pointer-chain-CI-matrix-14289416744-stderr.log",
+            "bytes": 1245,
+            "sha256": "9564e3642f0fdd2fe15314921c2984c15bee8e0790f5bc744a61378e577b7f53"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pointer-chain-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pointer-chain-CI-matrix-14289916396-stderr.log",
+            "bytes": 1245,
+            "sha256": "83d22554ec6f46ef0392edf0a4cf85421ecb1f4d0925910cd0d71a9e40bf19b7"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pointer-chain-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14289416744-stderr.log",
+            "bytes": 827,
+            "sha256": "5f2187f48593e9112f80c79f182424ceeaf940e9c84eb67487fb7529837eb817"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14289916396-stderr.log",
+            "bytes": 827,
+            "sha256": "8216bde1bf8bb60bf62e05c17f99e87bb70919464a9f0aad7437f9c2bda2bc1e"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/poison-cast-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14289416744-stderr.log",
+            "bytes": 1051,
+            "sha256": "772e29fe955d5059771541ac7812104e0b1d937c78f2224314eb030229389c83"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14289916396-stderr.log",
+            "bytes": 1051,
+            "sha256": "772e29fe955d5059771541ac7812104e0b1d937c78f2224314eb030229389c83"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/predict-linear-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14289416744-stderr.log",
+            "bytes": 816,
+            "sha256": "2e28c3fac69c21fafe3b37632e803cf2422956c305020d21b1624dba11642ee8"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14289916396-stderr.log",
+            "bytes": 816,
+            "sha256": "93d1f4ff2f4e16185b6bb582257011be3e354b0db8d049fb0ab2479ae4919823"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/pull-push-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/run-CI-matrix-review-v1.py",
+            "bytes": 961,
+            "sha256": "3477f4a50f8662e223765fd369f526eb6408ecdc4dd14dc6bea6924130a6b4b5"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14289416744-stderr.log",
+            "bytes": 828,
+            "sha256": "b4ecca9b3f11fd35ba6fec60b8ffa0a81d14d5a8caa1b146fb4dc84cae7be4d2"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14289916396-stderr.log",
+            "bytes": 828,
+            "sha256": "4ae81d6aeb98b76a85c06e101970516687758ded146af4868e0019be3ac1bab7"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-item-lookup-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14289416744-stderr.log",
+            "bytes": 1256,
+            "sha256": "63376b5480f59f87bb9bde7ceea784befa3cda826bec740d7781395d849ee9ca"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14289916396-stderr.log",
+            "bytes": 1256,
+            "sha256": "8da983e445d64a1032ebf5c4d8d01166963a9be7832ffeddeea3030799ac4592"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-notify-item-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14289416744-stderr.log",
+            "bytes": 842,
+            "sha256": "213539aa4c6b5d12092a5f6900b97de1e979bfc35e485881f4fb9cf2288c6c86"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14289916396-stderr.log",
+            "bytes": 842,
+            "sha256": "dc43ccb058807c49ebcbc81d65ffe32d483c7399dfe2fc2fd3d14c784c2d4134"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/trade-packets-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14289416744-stderr.log",
+            "bytes": 829,
+            "sha256": "ee2b07a5483ab93827526a80003130ea3d8769a778d14fd1da0c4c79e45252ce"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14289916396-stderr.log",
+            "bytes": 829,
+            "sha256": "f0fdf4be5c348c3cd7771a6c607b85de97d4fd71fbd75452fd496f161a642394"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/ui-trade-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/wide-script-pointer-CI-matrix-14289416744-early-two-batch-driver-stderr.log",
+            "bytes": 1258,
+            "sha256": "153123cebdc0f54c1526a9c2ef4b98edd71f9c96b4118beb4d01bccb67177f2d"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/wide-script-pointer-CI-matrix-14289416744-early-two-batch-driver-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/wide-script-pointer-CI-matrix-14289916396-early-two-batch-driver-stderr.log",
+            "bytes": 1258,
+            "sha256": "74f622ffb536332ddad549f7de2840ca73de81df1e2854619a2d221a0bdb766a"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/wide-script-pointer-CI-matrix-14289916396-early-two-batch-driver-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/window-field-CI-matrix-14289416744-stderr.log",
+            "bytes": 1244,
+            "sha256": "e862cfbaf38fbe5f7fbe947996f54eee0ed2f7d229f1feab10b684b3929d4339"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/window-field-CI-matrix-14289416744-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/window-field-CI-matrix-14289916396-stderr.log",
+            "bytes": 1244,
+            "sha256": "fe135e29e77c943bb284933fae1345553d32aed6cf8f786f4d462eb17e7f37d7"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/CI-matrix-review-v1/window-field-CI-matrix-14289916396-stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "repair": "New CI-matrix-review-v2 with identical reader scripts and inherited original resource symlinks. Source/tests/original expected values and official ZIPs unchanged.",
+        "resources": [
+          {
+            "name": "original-cpu-v1",
+            "target": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-poison-cast-native-v1/prior-fixture-references/split-predict-linear-native-20261115-v1/original-cpu-v1"
+          }
+        ],
+        "source_or_test_changes": false,
+        "native_test_or_CI_jobs_rerun": false
+      },
+      {
+        "utc": "2026-11-17T01:52:06.668313+00:00",
+        "failure": "Final qualification expected a historical helper filename runtime-preparation-observed-exit-v1.json; this batch records runtime-preparation-observed-v1.exit.json.",
+        "repair": "Version2 reads the actual unchanged recorded exit metadata. No result, expected value, source or test changes; original failed version1 script/stdout/stderr/exit remain intact.",
+        "actual_metadata": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/runtime-preparation-observed-v1.exit.json",
+        "actual_metadata_sha256": "299ee48d766e31e71de309b88e1f0b80238724960f6710ae60b6337b5f46d2a7",
+        "native_tests_or_CI_jobs_rerun": false,
+        "failed_files": [
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/finalize-wide-script-pointer-qualification-v1.py",
+            "bytes": 34113,
+            "sha256": "9f4b802b9ff228fb16608575f1f92c8df1590b82558839bb62d9c146be0196cf"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/final-qualification-observed-v1.stdout.log",
+            "bytes": 148,
+            "sha256": "3f8c37e84f6cbd61362bae0325f921fe0eb10a2af020670b7219140aab749888"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/final-qualification-observed-v1.stderr.log",
+            "bytes": 1582,
+            "sha256": "ba6759e797e087ff520795b9c9d05994c837e1725db31ac23fd3f13199472d61"
+          },
+          {
+            "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/final-qualification-observed-v1.exit.json",
+            "bytes": 349,
+            "sha256": "7c32226b27f1de41a3f392f4183878c8ecd0c64e252a124432c5b4c78385f913"
+          }
+        ]
+      }
+    ],
+    "helper_repairs_changed_no_source_tests_or_original_results": true,
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "compiled_Windows386_C_slot_store_proof": {
+    "utc": "2026-11-17T01:32:30.063719+00:00",
+    "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+    "artifact_id": 14288994063,
+    "primary_PE": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/compiled-Windows386-primary-v1/legacy.test.exe",
+      "bytes": 95961600,
+      "sha256": "bc913013d0c7bd951e18538165b99a70c704f88aaa21547f601996e288741515"
+    },
+    "functions": [
+      {
+        "symbol": "__cgoexp_44408709927d_sub_512E80",
+        "start": "0x1272710",
+        "stop": "0x1272750",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/compiled-Windows386-primary-v1/root-0-llvm-objdump.stdout.log",
+        "bytes": 1794,
+        "sha256": "7f33e558901c77f8fbd1133da14d1c8c68bbed7e96ac78f3857c436d53b69eb2",
+        "Go_write_barrier_calls": 0
+      },
+      {
+        "symbol": "github.com/opennox/opennox/v1/legacy.sub_512E80",
+        "start": "0xefeb10",
+        "stop": "0xefeb80",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/compiled-Windows386-primary-v1/root-1-llvm-objdump.stdout.log",
+        "bytes": 2753,
+        "sha256": "ccd28bd26062265e0f99dab6776fcc04438dff1740238ca213bc5e70cb165fa6",
+        "Go_write_barrier_calls": 0
+      }
+    ],
+    "standalone_Go_root_present": true,
+    "actual_Cgo_export_path_and_emitted_root_have_zero_Go_write_barriers": true,
+    "original_primary_PE_rebuilt_or_changed": false,
+    "new_family_GOGC10_replay_claim": false,
+    "scope": "Exact primary Windows386 PE. Inspect the emitted Go root and its Cgo export wrapper, allowing the compiler to inline the root into that wrapper. Packed C output stores shade no prior slot bytes. This is not a whole-engine GC repair or an additional GC replay."
+  },
+  "current_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v11",
+    "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+    "source_files": 207,
+    "ordinary_own_C_definitions": 2462,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2476,
+    "pointer_integer_cast_functions": 448,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "current_direct_pointer_width_triage": {
+    "utc": "2026-11-17T01:10:39.820672+00:00",
+    "source_revision": "4e47b6258734be6850449cb040488c2703ab79e6",
+    "profile": "Only current default DarwinARM64 LP64 C-file AST. Pointer width64. Fixed integer widths derive from Clang desugared spelling; enum/unknown types remain unclassified.",
+    "source_files": 207,
+    "functions_with_any_pointer_integer_cast": 448,
+    "direct_cast_sites": {
+      "pointer_to_narrow_integral": 320,
+      "narrow_integral_to_pointer": 2023,
+      "native_or_wider_integral_transport": 585
+    },
+    "functions_by_direct_category": {
+      "pointer_to_narrow_integral": 102,
+      "narrow_integral_to_pointer": 227,
+      "native_or_wider_integral_transport": 237
+    },
+    "unclassified_integral_type_spellings": {},
+    "confirmed_new_defects": 0,
+    "new_Go_credit": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Type-width triage only. Narrow conversions can be intentional wire IDs, scalar payloads, callback tags or legacy-token resolution. Native-width conversions can contain nested earlier/later narrowing; this direct-node report does not perform complete dataflow analysis. Macros lacking captured input type stay unknown. Other architectures, optional tags, header/inc algorithms and Cgo preambles remain outside. Original execution, native owner/caller audit and actual before/after paths are required before any defect or completed-port credit. The one macro-renamed function whose input type was absent from the first table is resolved from its retained exact AST: (HANDLE)-1. Original v1 is retained.",
+    "resolved_macro_type_from_exact_AST": {
+      "source": "src/legacy/compat.c",
+      "function": "compatFindFirstFileA",
+      "integral_type": "int",
+      "integral_bits": 32,
+      "expression": "-1",
+      "target": "HANDLE/void*",
+      "intent": "invalid-handle sentinel"
+    },
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v11/direct-pointer-width-classification-v2.json",
+    "sha256": "33c9e05a8a5bd98c42657ac0486418df44128c7a999c4acfae42b0b043142bce"
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v10",
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "files": 207,
+    "ordinary_own_C_definitions": 2463,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2477,
+    "pointer_integer_cast_functions_including_manual": 449,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open;functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open. New family passes ordinary primary386 suite and actual root/Cgo export assembly has zero Go write-barrier calls; no extra new-family GOGC10 replay claimed.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "pointer_scope": "Original table cells keep4-byte stride. Native64 canonical side slots retain full nullable C wchar pointers without widening the packed blob. Native32 C slots receive uintptr stores without shading old words. Existing C canonical reader and unchanged UTF16 Go producer/reset setter are checked; unknown generic-reader dataflow, full VM parent migration and allocator/lifetime migration are uncredited.",
+    "domain": "All1024 logical cells;positive signed saturation counts;valid signed-negative address aliases0x80000000+k and0xc0000000+k, k0..1023;nullable opaque pointers into two64KiB C owners;initialized64bit canonical cells contain valid C/nil pointers. Other effective addresses, heterogeneous aliases, Go-heap input pointers and concurrent mutation remain uncredited.",
+    "all_C_denominator": "OPEN; own-file ARM64 AST includes bridges/platform/reference implementations and excludes header/inc/Cgo preambles and other architecture/tag branches."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 16384
+    },
+    "native_roots": {
+      "TestWideScriptPointerNativeLayout": "pass",
+      "TestWideScriptPointerNativeOriginal": "pass",
+      "TestWideScriptPointerNativeWrapper": "pass",
+      "TestWideScriptPointerNativeCounterReset": "pass"
+    },
+    "original_contexts": 1820,
+    "original_root_calls": 1820,
+    "original_instruction_bytes": 31,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 10,
+    "primary_native_root_checks": 16380,
+    "canonical_pointer_cell_checks": 16773120,
+    "existing_Go_UTF16_wrapper_checks": 6,
+    "composed_counter_reset_trace_root_calls": 54,
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 1820,
+      "route0/place64": 1820,
+      "route0/place512": 1820,
+      "route1/place0": 1820,
+      "route1/place64": 1820,
+      "route1/place512": 1820,
+      "route2/place0": 1820,
+      "route2/place64": 1820,
+      "route2/place512": 1820
+    },
+    "all_original_signed32_returns_counters_and_full_native_pointer_roles_equal": true,
+    "whole44881_packed_blob_64KiB_counter_shadow_and_two64KiB_pointees_plus_placement_guards_checked": true,
+    "all1024_canonical_pointer_cells_checked_after_every_entry": true,
+    "signed_negative_valid_address_aliases_and_original_saturation_preserved": true,
+    "existing_C_canonical_reader_and_stable_native_side_slot_identity_checked": true,
+    "existing_UTF16_C_producer_and_counter_only_reset_and_retained_cells_checked": true,
+    "public_C_ABI_and_original_packed4byte_stride_and_extracted_counter_owner_preserved": true,
+    "generic_reader_dataflow_full_VM_parent_and_allocator_lifetime_migration_uncredited": true,
+    "new_family_GOGC10_replay_not_claimed": true
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-wide-script-pointer-native-v1/qualified-wide-script-pointer-entry-v1.json",
+    "sha256": "b287b0d86158573657ddfb7a45c87f8851ef0ea1e86c5565fb930f6e914f27f5"
+  },
+  "normal_passes": 587619,
+  "strict_passes": 587619,
+  "focused_passes": 16384,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 160
+}

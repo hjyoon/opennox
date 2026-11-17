@@ -1,0 +1,2793 @@
+{
+  "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+  "entries": [
+    "sub_41FA40",
+    "sub_41FA50",
+    "sub_41FBE0",
+    "sub_4200E0",
+    "sub_420100"
+  ],
+  "qualified_entries": 5,
+  "preceding_fully_recorded_qualified_entries": 275,
+  "cumulative_qualified_split_Go_entries": 280,
+  "implemented_split_Go_entries": 282,
+  "implemented_S25_entries_with_lost_original_seals": 2,
+  "all_C_migration_complete": false,
+  "overall_100_percent": false,
+  "source_lease": {
+    "files": 9408,
+    "sha256": "80437c385179f2c0b917cf2ce98c1d325832590890d1e22fca558fa5c3292848"
+  },
+  "qualified_source_binding": {
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "source_tree": "4e04ba67b222b92e8a944a6637157bcdedc40d4a",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-global-record-qualify-20261117-v2",
+    "source_lease_sha256": "80437c385179f2c0b917cf2ce98c1d325832590890d1e22fca558fa5c3292848",
+    "all9408_original_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "original": {
+    "contexts": 1088,
+    "root_calls": 5440,
+    "root_bytes": 122,
+    "startup_bytes": 319,
+    "preport_sealed_paths": 93,
+    "proof": {
+      "utc": "2026-11-16T22:41:53.286061+00:00",
+      "observation_source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+      "preport_source_revision": "de1407a8effad480cb446dba8cfab909faec983c",
+      "entries": [
+        "sub_41FA40",
+        "sub_41FA50",
+        "sub_41FBE0",
+        "sub_4200E0",
+        "sub_420100"
+      ],
+      "cases": 1088,
+      "original_root_calls": 5440,
+      "original_root_bytes": 122,
+      "root_bytes_by_entry": {
+        "sub_41FA40": 6,
+        "sub_41FA50": 45,
+        "sub_41FBE0": 56,
+        "sub_4200E0": 6,
+        "sub_420100": 9
+      },
+      "startup_bytes": 319,
+      "control_word": "0xe3f",
+      "declared_services": [],
+      "all_static_root_instructions_covered": true,
+      "whole_original_image_checked_except_exact_declared_input_setup_and_write_projection": true,
+      "whole64KiB_global_and_whole64KiB_foreign_owner_checked_after_every_entry": true,
+      "instruction_write_hook_restricts_string_and_pointer_output_projection": true,
+      "caller_arguments_redzones_saved_registers_and_complete_FP_status_tag_control_checked": true,
+      "void_setter_EAX_residue_uncredited": true,
+      "return_counts": {
+        "sub_41FA40": {
+          "6647416": 1088
+        },
+        "sub_41FA50": {
+          "None": 1088
+        },
+        "sub_41FBE0": {
+          "0": 29,
+          "1": 1059
+        },
+        "sub_4200E0": {
+          "0": 8,
+          "1": 16,
+          "127": 8,
+          "128": 16,
+          "255": 8,
+          "256": 16,
+          "257": 8,
+          "2147483392": 8,
+          "2147483647": 15,
+          "2147483648": 15,
+          "2147483649": 8,
+          "4294967040": 8,
+          "4294967295": 8,
+          "2": 8,
+          "4": 8,
+          "8": 8,
+          "16": 8,
+          "32": 8,
+          "64": 8,
+          "512": 8,
+          "1024": 8,
+          "2048": 7,
+          "4096": 7,
+          "8192": 7,
+          "16384": 7,
+          "32768": 7,
+          "65536": 7,
+          "131072": 7,
+          "262144": 7,
+          "524288": 7,
+          "1048576": 7,
+          "2097152": 7,
+          "4194304": 7,
+          "8388608": 7,
+          "16777216": 7,
+          "33554432": 7,
+          "67108864": 7,
+          "134217728": 7,
+          "268435456": 7,
+          "536870912": 7,
+          "1073741824": 7,
+          "4294967294": 7,
+          "4294967293": 7,
+          "4294967291": 7,
+          "4294967287": 7,
+          "4294967279": 7,
+          "4294967263": 7,
+          "4294967231": 7,
+          "4294967167": 7,
+          "4294967039": 7,
+          "4294966783": 7,
+          "4294966271": 7,
+          "4294965247": 7,
+          "4294963199": 7,
+          "4294959103": 7,
+          "4294950911": 7,
+          "4294934527": 7,
+          "4294901759": 7,
+          "4294836223": 7,
+          "4294705151": 7,
+          "4294443007": 7,
+          "4293918719": 7,
+          "4292870143": 7,
+          "4290772991": 7,
+          "4286578687": 7,
+          "4278190079": 7,
+          "4261412863": 7,
+          "4227858431": 7,
+          "4160749567": 7,
+          "4026531839": 7,
+          "3758096383": 7,
+          "3221225471": 7,
+          "1285123693": 7,
+          "2956583986": 7,
+          "2388495843": 7,
+          "4236903050": 7,
+          "2689617725": 7,
+          "808918731": 7,
+          "94125763": 7,
+          "2795816613": 7,
+          "3043446258": 7,
+          "2604551281": 7,
+          "2382413771": 7,
+          "2055093938": 7,
+          "1652771112": 7,
+          "3187960929": 7,
+          "3281176566": 7,
+          "2076798960": 7,
+          "2867489386": 7,
+          "2584705267": 7,
+          "1273663160": 7,
+          "3898343380": 7,
+          "580866061": 6,
+          "3903165770": 6,
+          "1423859689": 6,
+          "970277825": 6,
+          "3924376235": 6,
+          "1200326909": 6,
+          "1175261724": 6,
+          "1384774559": 6,
+          "3683187613": 6,
+          "410430892": 6,
+          "2813570268": 6,
+          "2248561632": 6,
+          "2411875463": 6,
+          "946958083": 6,
+          "1970963621": 6,
+          "2140021144": 6,
+          "3004118677": 6,
+          "2368659235": 6,
+          "3870610374": 6,
+          "3836125820": 6,
+          "1747695415": 6,
+          "443557030": 6,
+          "2643520575": 6,
+          "1708116354": 6,
+          "1298274519": 6,
+          "53202365": 6,
+          "2354049466": 6,
+          "1156380576": 6,
+          "2720756693": 6,
+          "3274449049": 6,
+          "3066773340": 6,
+          "917711610": 6,
+          "2600354615": 6,
+          "1240041338": 6,
+          "3303835631": 6,
+          "2587340846": 6,
+          "1549922061": 6,
+          "943840660": 5,
+          "2283847586": 5,
+          "3950002879": 5,
+          "1769683336": 5,
+          "1875366002": 5,
+          "2933346006": 5,
+          "647216635": 5,
+          "1092331372": 1,
+          "2844358590": 1,
+          "461335889": 1,
+          "255361494": 1,
+          "1465539762": 1,
+          "2734993565": 1,
+          "3591718106": 1,
+          "1700019167": 1,
+          "3881814738": 1,
+          "177186193": 1,
+          "648033892": 1,
+          "2377645228": 1,
+          "1479074481": 1,
+          "3893108483": 1,
+          "825423026": 1,
+          "623130098": 1,
+          "3824074583": 1,
+          "108890785": 1,
+          "2774345442": 1,
+          "1622910283": 1,
+          "2220907364": 1,
+          "3169365761": 1,
+          "4099513774": 1,
+          "2046242422": 1,
+          "900345051": 1,
+          "2625243412": 1,
+          "2921232244": 1,
+          "3710366424": 1,
+          "67695284": 1,
+          "2887021135": 1,
+          "3130849534": 1,
+          "1951352335": 1,
+          "3573865950": 1,
+          "2614288709": 1,
+          "1899919886": 1,
+          "3548466568": 1,
+          "4265204256": 1,
+          "1267886151": 1,
+          "3991857948": 1,
+          "2753669735": 1,
+          "2028706180": 1,
+          "3291548139": 1,
+          "326568231": 1,
+          "304163314": 1,
+          "3298086514": 1,
+          "319487020": 1,
+          "1498994795": 1,
+          "864265322": 1,
+          "148007059": 1,
+          "2284021822": 1,
+          "1951811246": 1,
+          "881357466": 1,
+          "970826483": 1,
+          "3025822951": 1,
+          "804231562": 1,
+          "4214377704": 1,
+          "4287617677": 1,
+          "2479956909": 1,
+          "123236507": 1,
+          "687157563": 1,
+          "3998008722": 1,
+          "3724957778": 1,
+          "1128603065": 1,
+          "388131952": 1,
+          "3288357980": 1,
+          "3594649550": 1,
+          "3053960674": 1,
+          "3949879592": 1,
+          "4131474780": 1,
+          "343617215": 1,
+          "1873603399": 1,
+          "683986558": 1,
+          "3601952534": 1,
+          "699353084": 1,
+          "2179974152": 1,
+          "2970138151": 1,
+          "3635069834": 1,
+          "3727460084": 1,
+          "2230559860": 1,
+          "2609678617": 1,
+          "597477265": 1,
+          "315220125": 1,
+          "589594317": 1,
+          "1431664227": 1,
+          "1121541806": 1,
+          "2923105177": 1,
+          "1581374815": 1,
+          "71178862": 1,
+          "118309408": 1,
+          "3824357820": 1,
+          "4201151663": 1,
+          "334864108": 1,
+          "2424596174": 1,
+          "3795679091": 1,
+          "1690837508": 1,
+          "389978934": 1,
+          "2753517523": 1,
+          "2884213834": 1,
+          "3208204136": 1,
+          "382093525": 1,
+          "1986861506": 1,
+          "2082919174": 1,
+          "3633821215": 1,
+          "1562324842": 1,
+          "4002461811": 1,
+          "768114682": 1,
+          "3106806689": 1,
+          "515386780": 1,
+          "2172064187": 1,
+          "589382133": 1,
+          "945120329": 1,
+          "3781829898": 1,
+          "2768012765": 1,
+          "4198221151": 1,
+          "1175195634": 1,
+          "797944437": 1,
+          "2632390027": 1,
+          "1339290112": 1,
+          "131217187": 1,
+          "1168453861": 1,
+          "1962199750": 1,
+          "907189890": 1,
+          "4130104868": 1,
+          "799873775": 1,
+          "115050389": 1,
+          "1851638882": 1,
+          "3000913418": 1,
+          "2187186551": 1
+        },
+        "sub_420100": {
+          "0": 104,
+          "1": 24,
+          "8388607": 23,
+          "4286578688": 23,
+          "4294967295": 72,
+          "2": 8,
+          "4": 8,
+          "8": 7,
+          "16": 7,
+          "32": 7,
+          "64": 7,
+          "128": 7,
+          "256": 7,
+          "512": 7,
+          "1024": 7,
+          "2048": 7,
+          "4096": 7,
+          "8192": 7,
+          "16384": 7,
+          "32768": 7,
+          "65536": 7,
+          "131072": 7,
+          "262144": 7,
+          "524288": 7,
+          "1048576": 7,
+          "2097152": 7,
+          "4194304": 7,
+          "4294967294": 7,
+          "4294967293": 7,
+          "4294967291": 7,
+          "4294967287": 7,
+          "4294967279": 7,
+          "4294967263": 7,
+          "4294967231": 7,
+          "4294967167": 7,
+          "4294967039": 7,
+          "4294966783": 7,
+          "4294966271": 7,
+          "4294965247": 7,
+          "4294963199": 7,
+          "4294959103": 7,
+          "4294950911": 7,
+          "4294934527": 7,
+          "4294901759": 7,
+          "4294836223": 7,
+          "4294705151": 7,
+          "4294443007": 7,
+          "4293918719": 7,
+          "4292870143": 7,
+          "4290772991": 7,
+          "5020014": 7,
+          "4289739236": 7,
+          "4287520141": 7,
+          "4294740482": 7,
+          "4288696399": 7,
+          "3159838": 7,
+          "367678": 7,
+          "4289111238": 7,
+          "4290078541": 7,
+          "4288364108": 7,
+          "4287496383": 7,
+          "8027710": 7,
+          "6456137": 7,
+          "4290643052": 7,
+          "4291007175": 7,
+          "8112495": 7,
+          "4289391210": 7,
+          "4288286584": 7,
+          "4975246": 7,
+          "4293417983": 7,
+          "2269008": 6,
+          "4293436821": 6,
+          "5561951": 6,
+          "3790147": 6,
+          "4293519674": 6,
+          "4688776": 6,
+          "4590866": 6,
+          "5409275": 6,
+          "4292577531": 6,
+          "1603245": 6,
+          "4289180588": 6,
+          "4286973523": 6,
+          "4287611468": 6,
+          "3699055": 6,
+          "7699076": 6,
+          "8359457": 6,
+          "4289924918": 6,
+          "4287442655": 6,
+          "4293309651": 6,
+          "4293174946": 6,
+          "6826935": 6,
+          "1732644": 6,
+          "4288516332": 6,
+          "6672329": 6,
+          "5071384": 6,
+          "207821": 6,
+          "4287385585": 6,
+          "4517111": 6,
+          "4288818035": 6,
+          "4290980896": 6,
+          "4290169663": 6,
+          "3584810": 6,
+          "4288347715": 6,
+          "4843911": 6,
+          "4291095687": 6,
+          "4288296880": 6,
+          "6054383": 6,
+          "3686877": 5,
+          "4287111359": 5,
+          "4293619778": 5,
+          "6912825": 5,
+          "7325648": 5,
+          "4289648462": 5,
+          "2528189": 5,
+          "4266919": 1,
+          "4289300855": 1,
+          "1802093": 1,
+          "997505": 1,
+          "5724764": 1,
+          "4288873648": 1,
+          "4292220228": 1,
+          "6640699": 1,
+          "4293353418": 1,
+          "692133": 1,
+          "2531382": 1,
+          "4287477756": 1,
+          "5777634": 1,
+          "4293397535": 1,
+          "3224308": 1,
+          "2434101": 1,
+          "4293127871": 1,
+          "425354": 1,
+          "4289027366": 1,
+          "6339493": 1,
+          "4286865499": 1,
+          "4290570415": 1,
+          "4294203805": 1,
+          "7993134": 1,
+          "3516972": 1,
+          "4288444937": 1,
+          "4289601143": 1,
+          "4292683698": 1,
+          "264434": 1,
+          "4289467506": 1,
+          "4290419960": 1,
+          "7622470": 1,
+          "4292150493": 1,
+          "4288402145": 1,
+          "7421562": 1,
+          "4292051277": 1,
+          "4294851034": 1,
+          "4952680": 1,
+          "4293783275": 1,
+          "4288946602": 1,
+          "7924633": 1,
+          "4291047689": 1,
+          "1275657": 1,
+          "1188137": 1,
+          "4291073230": 1,
+          "1247996": 1,
+          "5855448": 1,
+          "3376036": 1,
+          "578152": 1,
+          "4287112040": 1,
+          "7624262": 1,
+          "3442802": 1,
+          "3792290": 1,
+          "4290009700": 1,
+          "3141529": 1,
+          "4294652492": 1,
+          "4294938586": 1,
+          "4287877411": 1,
+          "481392": 1,
+          "2684209": 1,
+          "4293807301": 1,
+          "4292740696": 1,
+          "4408605": 1,
+          "1516140": 1,
+          "4291035228": 1,
+          "4292231679": 1,
+          "4290119613": 1,
+          "4293619297": 1,
+          "4294328653": 1,
+          "1342254": 1,
+          "7318763": 1,
+          "2671822": 1,
+          "4292260207": 1,
+          "2731847": 1,
+          "4286705604": 1,
+          "4289792182": 1,
+          "4292389571": 1,
+          "4292750470": 1,
+          "4286903204": 1,
+          "4288384137": 1,
+          "2333895": 1,
+          "1231328": 1,
+          "2303102": 1,
+          "5592438": 1,
+          "4381022": 1,
+          "4289608459": 1,
+          "6177245": 1,
+          "278042": 1,
+          "462146": 1,
+          "4293128977": 1,
+          "4294600828": 1,
+          "1308062": 1,
+          "4287661158": 1,
+          "4293016951": 1,
+          "6604834": 1,
+          "1523355": 1,
+          "4288946007": 1,
+          "4289456540": 1,
+          "4290722127": 1,
+          "1492552": 1,
+          "7761177": 1,
+          "8136403": 1,
+          "4292384694": 1,
+          "6102831": 1,
+          "4293824696": 1,
+          "3000447": 1,
+          "4290326043": 1,
+          "2013229": 1,
+          "4286674705": 1,
+          "2302273": 1,
+          "3691876": 1,
+          "4292962853": 1,
+          "4289002629": 1,
+          "4294589381": 1,
+          "4590607": 1,
+          "3116970": 1,
+          "4288472853": 1,
+          "5231602": 1,
+          "512567": 1,
+          "4564272": 1,
+          "7664842": 1,
+          "3543710": 1,
+          "4294323302": 1,
+          "3124506": 1,
+          "449415": 1,
+          "7232964": 1,
+          "4289912398": 1,
+          "4286733777": 1
+        }
+      },
+      "precase_contract_sha256": "2dc8ccf0befebe94902ad44bbcc713063403e021ee13bb94fce5c22c731f36c9",
+      "input_sha256": "df0badb0a429ed08470c4a00eab44632684c6dc368c23f1f471b4ac284bf7128",
+      "fixture_sha256": "52aae2490398d507e2d1b79f1953756617ee29d672f15d54e147243f82c876f1",
+      "fixture_gzip_sha256": "d5e527a06bf8e0126b4258d0563010675120a8f6235c21e3ade6bac60cfc8fef",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0
+    },
+    "independent_model": {
+      "utc": "2026-11-16T22:43:59.381190+00:00",
+      "cases": 1088,
+      "original_root_calls": 5440,
+      "input_only_model": true,
+      "model": "Raw byte owner construction, finite selected address arithmetic and signed integer floor division by256. No source port or original expected values used to compute model outputs. Compare all original declared returns, pointer roles, exact final byte owners and ordered copy/output writes.",
+      "all_five_declared_returns_pointer_roles_and_exact_byte_owners_equal": true,
+      "whole64KiB_global_and_whole64KiB_foreign_owner_SHA_equal": true,
+      "ordered_inline_copy_chunks_and_two_pointer_stores_equal": true,
+      "original_void_setter_EAX_residue_uncredited": true,
+      "input_sha256": "df0badb0a429ed08470c4a00eab44632684c6dc368c23f1f471b4ac284bf7128",
+      "precase_contract_sha256": "2dc8ccf0befebe94902ad44bbcc713063403e021ee13bb94fce5c22c731f36c9",
+      "fixture_sha256": "52aae2490398d507e2d1b79f1953756617ee29d672f15d54e147243f82c876f1",
+      "fixture_gzip_sha256": "d5e527a06bf8e0126b4258d0563010675120a8f6235c21e3ade6bac60cfc8fef",
+      "original_expected_rows_modified": false,
+      "source_port_started": false,
+      "new_Go_credit": 0
+    }
+  },
+  "C_before": {
+    "utc": "2026-11-16T22:45:31.340784+00:00",
+    "contexts": 1088,
+    "original_C_bytes": 559,
+    "root_calls": 5440,
+    "architecture": "macOS ARM64",
+    "actual_high_native_owners": true,
+    "native_pointer_output_truncation_contexts": 1059,
+    "stock_arithmetic_vs_C_logical_shift_contexts": 532,
+    "matching_declared_root_outcomes": 3849,
+    "unrelated_divergences": 0,
+    "whole64KiB_global_and_foreign_owners_checked_after_every_entry": true,
+    "original_bodies_unchanged": true,
+    "successful_control_process_rerun": false,
+    "compiler_warnings": 2,
+    "binary": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-global-pointer-outputs-original-review-v1/original-review-v1/original-C-before-v1/unchanged-global-record-ARM64-v1",
+      "bytes": 250704,
+      "sha256": "a389efd930562751229131be027de258d5dea1e12210d016ff32a8b6b9e57f4a"
+    },
+    "compile": {
+      "command": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-fno-strict-aliasing",
+        "-fno-strict-overflow",
+        "-fsigned-char",
+        "-Wno-error=int-conversion",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-global-pointer-outputs-original-review-v1/original-review-v1/original-C-before-v1/actual-native-control-v1.c",
+        "-o",
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-global-pointer-outputs-original-review-v1/original-review-v1/original-C-before-v1/unchanged-global-record-ARM64-v1"
+      ],
+      "exit_code": 0,
+      "compiler_warnings": 2,
+      "binary_sha256": "a389efd930562751229131be027de258d5dea1e12210d016ff32a8b6b9e57f4a"
+    },
+    "process": {
+      "command": [
+        "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/native-global-pointer-outputs-original-review-v1/original-review-v1/original-C-before-v1/unchanged-global-record-ARM64-v1"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "a389efd930562751229131be027de258d5dea1e12210d016ff32a8b6b9e57f4a",
+      "stdout_sha256": "b226df4fe11ba25a82c9088ddec30425ff2725c46e0d51192e0b128cacc9065f"
+    },
+    "ABI": {
+      "kind": "ABI",
+      "global_owner": 500439187456,
+      "foreign_owner": 500439252992,
+      "pointer_bytes": 8,
+      "contexts": 1088
+    },
+    "void_setter_EAX_residue_uncredited": true
+  },
+  "original_numeric_or_existing_expectation_corrections": [],
+  "ABI": {
+    "predeclared_projection": {
+      "utc": "2026-11-16T22:38:43.226744+00:00",
+      "source_revision": "de1407a8effad480cb446dba8cfab909faec983c",
+      "observation_engine": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+      "entries": [
+        "sub_41FA40",
+        "sub_41FA50",
+        "sub_41FBE0",
+        "sub_4200E0",
+        "sub_420100"
+      ],
+      "original_root_bytes": 122,
+      "original_C_bytes": 559,
+      "declared_child_services": [],
+      "global_addresses": {
+        "selected_index": 5855884,
+        "state_word": 5855912,
+        "records": 6644320,
+        "record_stride": 24,
+        "record_first_field": 0,
+        "record_second_field": 10,
+        "string_buffer": 6647416
+      },
+      "native_projection": {
+        "selected_index": "Existing extracted C uint32 dword_587000_60044 remains the owner and reset/default sentinel0xffffffff; direct access, not an unrelated blob shadow.",
+        "state_word": "Existing fixed32 blob0x587000+60072; scalar owner/layout unchanged.",
+        "records": "Existing contiguous packed24-byte records at blob0x5d4594+531660; char pointers become full native addresses into the same byte owner. Record payload/layout unchanged.",
+        "string_buffer": "Existing contiguous char bytes at blob0x5d4594+534756. Neighbor extracted scalar534808 remains outside declared string writes.",
+        "pointer_outputs": "Change uint32_t* outputs to const char** in C definition/prototype and shared Go export. Existing actual parent already passes const char* slots. Each native store is pointer-width; aliasing identical slots preserves last second-field pointer.",
+        "return_ABI": "41FA40 returns mutable char* full identity;41FA50 isvoid(EAXresidue uncredited);41FBE0 int32 0/1;4200E0 returns exact signed32 bit pattern;420100 uses stock arithmetic signed32 SAR8."
+      },
+      "valid_domain": {
+        "selected_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          4294967295
+        ],
+        "selected_index_scope": "Bounded diagnostic addressable records0..128 plus original -1 sentinel. Does not establish all game-level valid account indices; no out-of-blob pointer arithmetic credit.",
+        "source_strings": "NULL, or readable NUL-terminated byte strings length0..51 whose source is disjoint from destination, plus exact self identity. Destination len+1 remains before actual extracted scalar534808. No UTF8 normalization; bytes1..255 exact.",
+        "source_destination_overlap": "Other overlapping strings excluded from this strcpy-compatible domain; no memmove equivalence claim.",
+        "state_words": "All32bits, signed boundaries, onehot/complements, low8 variation and deterministic random values.",
+        "output_slots": "For selected!=-1, both valid aligned pointer slots in a foreign native64KiB owner; distinct/adjacent/swapped/or identical slots. For sentinel, either/both NULL also valid because ignored.",
+        "output_alias_exclusions": "No native pointer-slot aliases with fixed32 selected-index/state scalar, packed record/string byte owners, caller stack or code; heterogeneous owner aliases excluded before vectors.",
+        "concurrency": "Single-threaded stable selected state; no callback/allocator/lifetime action inside five roots."
+      },
+      "whole_owner_obligations": [
+        "Whole original image checked except exactly input-setup state and original inline-copy byte projection; write hook restricts all instruction writes.",
+        "Whole64KiB global record/string owner and whole64KiB foreign source/output owner checked after each root; native pointer output projection alone changes widths.",
+        "Original pointer roles, exact scalar returns and void-aware outputs independently modeled; output store order retained, old offset/upper-half canaries retained.",
+        "Caller args/redzones/saved regs/complete FP startup state checked;122root+319startup bytes; all static rootinstructions covered."
+      ],
+      "caller_scope": "Fresh syntactic AST call/ref sites classified separately from literal-if0 paths, disabled old GAME bodies and runtime reachability. Actual officialStringCmp parent pointer-slot call checked as bounded C seam; its remaining packed owner dependencies not migrated/credited.",
+      "precase_record_before_input_vectors": true,
+      "original_CPU_model_C_before_pending": true,
+      "source_port_started": false,
+      "new_Go_credit": 0,
+      "overall100": false
+    },
+    "syntactic_C_calls": [
+      {
+        "entry": "sub_41FA40",
+        "caller": "sub_41D650",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "char *()",
+        "caller_body_AST_sha256": "0a07c9b39cfc836cf4e94bd0a752cae6c9de77bc2dea83c5f9a7f3e8ad54b7cf",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D670",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "1e2387e53add8a712deff027d12f8e08394a034bceef3ca18e0b0960ff2b87a7",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "6aca6cda4740b88dbe37375ee4b50c170895da0be64f6b36b67914e8238dff24",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "6aca6cda4740b88dbe37375ee4b50c170895da0be64f6b36b67914e8238dff24",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "6aca6cda4740b88dbe37375ee4b50c170895da0be64f6b36b67914e8238dff24",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_41FBE0",
+        "caller": "nox_xxx_officialStringCmp_41FDE0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int (uint32_t *, uint32_t *)",
+        "caller_body_AST_sha256": "d18b72a4d404347b3219e30d1c8ad04115460ec5659bc5afd41f361bda362314",
+        "inside_literal_if0": false,
+        "argument_types": [
+          "uint32_t *",
+          "uint32_t *"
+        ],
+        "argument_expression_types": [
+          [
+            "uint32_t *",
+            "const char **",
+            "const char *"
+          ],
+          [
+            "uint32_t *",
+            "const char **",
+            "const char *"
+          ]
+        ]
+      },
+      {
+        "entry": "sub_41FA50",
+        "caller": "nox_xxx_officialStringCmp_41FDE0",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "void (const char *)",
+        "caller_body_AST_sha256": "d18b72a4d404347b3219e30d1c8ad04115460ec5659bc5afd41f361bda362314",
+        "inside_literal_if0": false,
+        "argument_types": [
+          "const char *"
+        ],
+        "argument_expression_types": [
+          [
+            "const char *",
+            "const char *"
+          ]
+        ]
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_426150",
+        "source": "src/legacy/GAME1_1.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "c4a283d65da4e8add59cbe5d4b284649c2b25ed76c52a133a242890f9ec9ddf5",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_41FA40",
+        "caller": "sub_43AA70",
+        "source": "src/legacy/GAME1_2.c",
+        "callee_type": "char *()",
+        "caller_body_AST_sha256": "bf8823888f29f4c79fffd6849c9a47771e0d7e14887f0900092e8ed19e178eb1",
+        "inside_literal_if0": true,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_420100",
+        "caller": "sub_43AA70",
+        "source": "src/legacy/GAME1_2.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "bf8823888f29f4c79fffd6849c9a47771e0d7e14887f0900092e8ed19e178eb1",
+        "inside_literal_if0": true,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_426060",
+        "source": "src/legacy/server__system__server.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "c4c9237e896460fbde62da5b61cc31fb90de6fb63278df0ca7330c445cb30bcc",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "nox_stats_start_header_native",
+        "source": "src/legacy/stats_start_native.c",
+        "callee_type": "int ()",
+        "caller_body_AST_sha256": "253b05e7b5f1d73c2ba9556b96cbe2a2b9ebb717c3dada2c690e3e51b7d90948",
+        "inside_literal_if0": false,
+        "argument_types": [],
+        "argument_expression_types": []
+      }
+    ],
+    "syntactic_C_references": [
+      {
+        "entry": "sub_41FA40",
+        "caller": "sub_41D650",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "char *()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D670",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_41D6C0",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_41FBE0",
+        "caller": "nox_xxx_officialStringCmp_41FDE0",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int (uint32_t *, uint32_t *)",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_41FA50",
+        "caller": "nox_xxx_officialStringCmp_41FDE0",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "void (const char *)",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_426150",
+        "source": "src/legacy/GAME1_1.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_41FA40",
+        "caller": "sub_43AA70",
+        "source": "src/legacy/GAME1_2.c",
+        "type": "char *()",
+        "inside_literal_if0": true
+      },
+      {
+        "entry": "sub_420100",
+        "caller": "sub_43AA70",
+        "source": "src/legacy/GAME1_2.c",
+        "type": "int ()",
+        "inside_literal_if0": true
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "sub_426060",
+        "source": "src/legacy/server__system__server.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      },
+      {
+        "entry": "sub_4200E0",
+        "caller": "nox_stats_start_header_native",
+        "source": "src/legacy/stats_start_native.c",
+        "type": "int ()",
+        "inside_literal_if0": false
+      }
+    ],
+    "existing_Go_C_wrappers": [
+      {
+        "entry": "sub_41FA40",
+        "source": "src/legacy/gameloop.go",
+        "line": 141,
+        "text": "return GoString(C.sub_41FA40())"
+      }
+    ],
+    "only_C_prototype_change": "sub41FBE0 outputs uint32_t* to const char**; original actual parent already has constchar* slots.",
+    "C_owned_outputs_written_as_native_uintptr_bits_without_Go_write_barrier": true,
+    "all4791_initial_failed_source_tests_and_fixtures_unchanged": true,
+    "all_C_caller_bodies_and_native_fixed32_globals_and_record_string_owners_and_existing_Go_wrapper_unchanged": true,
+    "whole_incoming_C_and_header_files_reconstructed": true,
+    "selected_index_keeps_original_extracted_C_owner_and_minus1_guard": true,
+    "stock_arithmetic_signed32_shift_preserved": true,
+    "void_setter_EAX_residue_uncredited": true,
+    "bounded_actual_C_parent": {
+      "source": "src/legacy/GAME1_1.c",
+      "parent": "nox_xxx_officialStringCmp_41FDE0",
+      "bytes": 606,
+      "sha256": "460322966b287dd9fe294c9b6454288f83deb37316d5648aec9600cb25acd2d6",
+      "copied_body_byte_identical": true,
+      "declared_bounded_services": {
+        "mem_getPtr": "private108-byte scratch only",
+        "sub_4207E0": "return0, countcalls",
+        "flag_services": "abort ifcalled"
+      },
+      "parent_migration_credit": false
+    },
+    "product_NOX_CGO_old_C_definitions_absent": {
+      "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+      "entries": [
+        "sub_41FA40",
+        "sub_41FA50",
+        "sub_41FBE0",
+        "sub_4200E0",
+        "sub_420100"
+      ],
+      "product_C_definitions_absent": true,
+      "files": [
+        {
+          "source": "src/legacy/GAME1_1.c",
+          "source_sha256": "e120cb54816339f2caed9b8aafc9497ab7ae40c5cb91e22037ddfc8ef92843d4",
+          "command": [
+            "/usr/bin/clang",
+            "-fsyntax-only",
+            "-Xclang",
+            "-ast-dump=json",
+            "-fshort-wchar",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fsigned-char",
+            "-DNOX_CGO",
+            "-Wno-everything",
+            "/Users/ghost/codex-sandbox/worktrees/opennox-global-record-qualify-20261117-v2/src/legacy/GAME1_1.c"
+          ],
+          "exit_code": 0,
+          "AST_sha256": "ec9146db91e9de7c0947b8e16857a4bdd25aab0639a445e2b824b1e656efc019",
+          "AST_gzip_sha256": "bb3bbc3b18e2ea200be2455feece344319946daf9505bfbc4f29dc7e612bbd2f",
+          "all_five_original_C_definitions_absent_from_product_NOX_CGO_translation_unit": true,
+          "actual_C_parent_retains_native_const_char_pointer_output_call": true
+        }
+      ]
+    }
+  },
+  "ci": {
+    "runs": [
+      43983309876,
+      43983188516
+    ],
+    "all_profiles": 6,
+    "all_first_attempts_pass": false,
+    "corrected_source_all_first_attempts_pass": false,
+    "successful_jobs_rerun": 0,
+    "all_profiles_final_success": false,
+    "all_native_profiles_qualified": true,
+    "corrected_source_primary_suites_first_attempt_pass": true,
+    "primary_workflow_conclusions": [
+      "success",
+      "failure"
+    ],
+    "unstarted_GC_replay_harness_failure_retained": true,
+    "supplemental_exact_primary_PE_GC_replay": {
+      "utc": "2026-11-17T00:30:19.825702+00:00",
+      "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+      "harness_revision": "68b39a47a947eb3b399cc39cef81d5b3b1e59508",
+      "run_id": 43987556070,
+      "job_id": 133719523488,
+      "artifact_id": 14286440866,
+      "primary_artifact_id": 14285451935,
+      "exact_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+      "all_original_archive_members_byte_identical": [
+        {
+          "member": "allocator-controls/alloc/alloc.test.exe",
+          "bytes": 12273664,
+          "sha256": "adccb637fe08cd28c84945ca25dea6b0fed2709debe169881426a8c1a3848399"
+        },
+        {
+          "member": "allocator-controls/alloc/binary-before-execution.json",
+          "bytes": 137,
+          "sha256": "c74c53548af1934861fa92af957116dc3ee9d5adfcd4551182d5e4c600310cbf"
+        },
+        {
+          "member": "allocator-controls/alloc/build.stderr.log",
+          "bytes": 215,
+          "sha256": "a2e0b924cdcd5dea912c13e960d3770cb27715cfdcf313316781c27410ac7700"
+        },
+        {
+          "member": "allocator-controls/alloc/build.stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/alloc/intent.json",
+          "bytes": 359,
+          "sha256": "f646c5a2d1a748d0887070bcb8516178fc6f3d2eed154ecb012d50ad4984ecf0"
+        },
+        {
+          "member": "allocator-controls/alloc/summary.json",
+          "bytes": 585,
+          "sha256": "4e404c1d30a0999fd63aea3c493bf16011059b995fca49af87979f6370977494"
+        },
+        {
+          "member": "allocator-controls/alloc/test.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/alloc/test.stdout.log",
+          "bytes": 2223,
+          "sha256": "079fb7987b349ef485e35991725ec7be81a5842a476486128fd389f28de3b46a"
+        },
+        {
+          "member": "allocator-controls/handles/binary-before-execution.json",
+          "bytes": 138,
+          "sha256": "c3402d5de9c814c7d6700f3b7c2b8ebb359ac0bbf580b0cdcbe50cddc2f5cef8"
+        },
+        {
+          "member": "allocator-controls/handles/build.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/handles/build.stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/handles/handles.test.exe",
+          "bytes": 4803584,
+          "sha256": "39fc16f6e3ee5cd4fa84c797575370aa880a16323560dedf24f6f12ca643217e"
+        },
+        {
+          "member": "allocator-controls/handles/intent.json",
+          "bytes": 371,
+          "sha256": "01edd350400067b1a1f117e6c9adf75b301198cde29d437f821c9aff1775a522"
+        },
+        {
+          "member": "allocator-controls/handles/summary.json",
+          "bytes": 461,
+          "sha256": "6ac6283c85f848e5fc345a92f354c044baea1313c6df293a5c570078c79a4fe1"
+        },
+        {
+          "member": "allocator-controls/handles/test.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/handles/test.stdout.log",
+          "bytes": 333,
+          "sha256": "82e4d41bb7d1a84889b563594c9db1d73641bf8f30e4adedb70c04adb878fc6b"
+        },
+        {
+          "member": "allocator-controls/memguard/binary-before-execution.json",
+          "bytes": 139,
+          "sha256": "ea6b7c1dbb073542d3cffa602b2903099326b183fe69bfa3d140c1e7269a2c4d"
+        },
+        {
+          "member": "allocator-controls/memguard/build.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/memguard/build.stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/memguard/intent.json",
+          "bytes": 374,
+          "sha256": "f355da80302a6d5f6dcf93be2c9cd236d09becad598e8f7ae9d2bcdd092340f9"
+        },
+        {
+          "member": "allocator-controls/memguard/summary.json",
+          "bytes": 487,
+          "sha256": "f7e1557b0dec10e898cfe98097a5adf3b33c9e1d671bf64ac3f21cffb3cdb8cb"
+        },
+        {
+          "member": "allocator-controls/memguard/memguard.test.exe",
+          "bytes": 4793856,
+          "sha256": "6b637a01edf143fc599da169b1f4c058525d968d62a26113a112454271b76d61"
+        },
+        {
+          "member": "allocator-controls/memguard/test.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "allocator-controls/memguard/test.stdout.log",
+          "bytes": 137,
+          "sha256": "1f1c087b3c5b5f70ce52377d6febb56409cb518eadb7292a2a4005d398cba3b3"
+        },
+        {
+          "member": "compiler-profile.json",
+          "bytes": 161,
+          "sha256": "f5055f864c6e73591bec2e983f6454bc24505d4f8038e008d08712bb5101db6d"
+        },
+        {
+          "member": "compiler-version.txt",
+          "bytes": 312,
+          "sha256": "f702993c112df720648733417b57ab22a710b043358f30bef356a0e04c74ad08"
+        },
+        {
+          "member": "expected-packages.txt",
+          "bytes": 107,
+          "sha256": "6bdeb177178eb17748d45eef6ba917da40c3344e7b9f6b514a4b2302d417be38"
+        },
+        {
+          "member": "go-driver-records/go.EXE.864d254d07df4b32a4b5c834fe42825d.json",
+          "bytes": 1462,
+          "sha256": "3c7264da7bcdc4f101fbd60240e2beff1636d95eca24d0bf95c40e85e6e8de43"
+        },
+        {
+          "member": "native-fixture-artifacts/fireball-defaults-2726297780/gamedata.yml",
+          "bytes": 46,
+          "sha256": "d9f349567fff154979de3c1ec7ca83eb8cbcefabae5fd5030bb33c8d370c921f"
+        },
+        {
+          "member": "native-fixture-artifacts/fireball-defaults-2726297780/spells.yml",
+          "bytes": 56,
+          "sha256": "3f38cd1eaf6cef43b3cfdc869f7772caa822913c893e08fa8ac16d6f96863d87"
+        },
+        {
+          "member": "native-fixture-artifacts/four-timers-native-1049227943/actual-four-timers-native.jsonl",
+          "bytes": 3063741,
+          "sha256": "7fe34b947a05b0605aa504d8d784029cda7f6df8d6c2df94f8b0dacfa27328ea"
+        },
+        {
+          "member": "native-fixture-artifacts/four-timers-native-1049227943/actual-four-timers-summary.json",
+          "bytes": 628,
+          "sha256": "dcf4aecef9bb8e1ba9213ae451874ffe91f2c2e354e152d20b03df3ab41e54f7"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-C-before-first-EXEC.json",
+          "bytes": 734,
+          "sha256": "b87fb864ace9424d507fdbd316e7698eb120b9e6e5f592c94635ab10e6905422"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-native-scalar-results.jsonl",
+          "bytes": 959940,
+          "sha256": "20e2664049d1d3dbfcd3ec3625385cb9fd5abdafbb14d76cbf956b0445cc50ff"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-six-leaves-summary.json",
+          "bytes": 549,
+          "sha256": "6d9d762e1055056396b8f1eabaab59819572fb4252401d3b35201858435bfdb4"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.stdout.bin",
+          "bytes": 678576,
+          "sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.Wait.json",
+          "bytes": 522,
+          "sha256": "2ef3aea117a579ccd7e7685614bee53cf403606944cc43f14421d5fd177c1029"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/compile.combined.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/compile.Wait.json",
+          "bytes": 887,
+          "sha256": "cc1300cee906f348c779b9f3d7e8724f105ad232730c5987ec1a80712d794a7f"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/input.bin",
+          "bytes": 91098,
+          "sha256": "b26da128fab786e6be0f89e3c99337f44653270e27c9ff6f021f21c0c4885d46"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-before-first-EXEC.zip",
+          "bytes": 28852,
+          "sha256": "ad4d62688766920c8c66fe6a935199750ed7aeec9e00b18cd449702ebebff587"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-PREEXEC-byte-verified.json",
+          "bytes": 917,
+          "sha256": "e11d50fb32da0c1b731e66d0c5bd41965878802c8c0122e733db9b730267c54f"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-six-leaves.exe",
+          "bytes": 59392,
+          "sha256": "d0f18c6b06fa2463bff724dadaca29a8eeac54c96a9433a11636a0c8266b58b3"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/source.c",
+          "bytes": 4186,
+          "sha256": "058b7526e9c50f918e38377b247499ed9a1ccf70aec9a8ff6f73770a13bb1b6a"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-C-before-first-EXEC.json",
+          "bytes": 735,
+          "sha256": "9062430984fe92775fc4317d5db0c2467d85b76d7c908aa97f76d6defd569921"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-settings-scalar-results.jsonl",
+          "bytes": 257724,
+          "sha256": "08e7b71bd590a0df6b5a0e8dbcea0dbb4e4c8c8eaafaaeb22cb34477bb912d5c"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-settings-scalar-summary.json",
+          "bytes": 517,
+          "sha256": "5cb0e2ed19a7f4dc6c5ff29e3d60a143503c7fe47eaad6dded43c8c9673ef191"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.stdout.bin",
+          "bytes": 12096,
+          "sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.Wait.json",
+          "bytes": 522,
+          "sha256": "0e691b01318934c7121e579e059c01ef341243c992db690e2a681f140f8ea782"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/compile.combined.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/compile.Wait.json",
+          "bytes": 888,
+          "sha256": "abbe2300636eeaa2b5225e7a9832c0403fecb2184690f98e1ab5ad2aadbee4f7"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/input.bin",
+          "bytes": 13448,
+          "sha256": "88bd5c76db489bcc24d99474e10c5b322b5688bc8f5eca27d6c58b3762697df2"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-before-first-EXEC.zip",
+          "bytes": 30812,
+          "sha256": "24a92af9df49b1fa9defd41926e2223e65a75cbc96c30bd90786027c427c8fe4"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-PREEXEC-byte-verified.json",
+          "bytes": 917,
+          "sha256": "f37585b7f1b2a0d5be67f25c7861b90049dd246bd9c98c3a397a20b06bdc3326"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-six-leaves.exe",
+          "bytes": 58880,
+          "sha256": "ba767fd44329ae93cd1b23e2cbaa848ceb9760fcb509a7ae2f66a2638487a5c4"
+        },
+        {
+          "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/source.c",
+          "bytes": 2877,
+          "sha256": "cd6a252532026944ab3002e7a26218f7cea913fe123a930e5337c4da02f4c38f"
+        },
+        {
+          "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/both-nil.log",
+          "bytes": 81,
+          "sha256": "90f982ca237f712f0bf872fd7ac6cacf69fbcef1cb879b7c172c323315274b90"
+        },
+        {
+          "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/direct-CRT-control.log",
+          "bytes": 91,
+          "sha256": "f024b2482f19f643a19a5d1c6b3b4500c7df14956cf3c8bcff4d0a9fe454f6fb"
+        },
+        {
+          "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/nil-head.log",
+          "bytes": 81,
+          "sha256": "0fd84e19efae111799e8183939602421234e7929fc75f594ac1c2f252feb7d6a"
+        },
+        {
+          "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/nil-item.log",
+          "bytes": 81,
+          "sha256": "f61c6c94f2d496e4a4696797aa6df84fad60edf2cab4f8b04494c0ab3d2671cb"
+        },
+        {
+          "member": "native-fixture-artifacts/monster-cast-defaults-3544710602/spells.yml",
+          "bytes": 26,
+          "sha256": "1c6f08e53231bed39b4a6bc906d4272fac6eaad6e93fbecb56bf72dade05c330"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/actual-C-executable-PREEXEC.json",
+          "bytes": 1116,
+          "sha256": "dce605044a13c134c5de890501d8586105cfcbaca2baa3ad29dd4a5acd1f68bd"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/input.bin",
+          "bytes": 7832,
+          "sha256": "a17af257ac97987969bcc3effb21131c750d49a7233ee48ac9213052f423abf1"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/mode.combined.log",
+          "bytes": 60,
+          "sha256": "f4734d2113af5fc136e17a88c710d89dde20fdd4d22d5b18413a040f32f266af"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/mode.Wait.json",
+          "bytes": 277,
+          "sha256": "a72117562a15e8da86bcb044363d659040fc17c04658d9b2422fe94923d9ed0d"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/network-tables-native.exe",
+          "bytes": 60928,
+          "sha256": "b6e10d5ba670d2147cd9f8733d81cfb66f51b4ac3a8470d05e2d572c1f5a4f6a"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/rate.combined.log",
+          "bytes": 59,
+          "sha256": "02f2f5c0ae2beca05f163e64ea16421089d95c19b78504347ca0711545aad9dd"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/rate.Wait.json",
+          "bytes": 277,
+          "sha256": "8f46c63091eb6f1b072a056bb11497b5c21106168249a6d171c14ed6d3b5e177"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/settings.combined.log",
+          "bytes": 64,
+          "sha256": "aeecb4c4637896c6c58024e27f9871d4887dbb82e2ec2dc07af121ea7b10eda9"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/settings.Wait.json",
+          "bytes": 281,
+          "sha256": "39670ccc303c4d7a418926980fd01be5555da803df5692b5be024450e66ffb0d"
+        },
+        {
+          "member": "native-fixture-artifacts/network-tables-native-2833353144/source.c",
+          "bytes": 5029,
+          "sha256": "37c4ced5f2632557dcc59495d223103e459741ee6e14d43e508bce379ca16713"
+        },
+        {
+          "member": "native-fixture-artifacts/resource-spell-defaults-3598430700/gamedata.yml",
+          "bytes": 24,
+          "sha256": "5f8152f81856943a044d0c354e80d3a17c6ed83cacf9847dabb00aba50b548db"
+        },
+        {
+          "member": "native-fixture-artifacts/resource-spell-defaults-3598430700/spells.yml",
+          "bytes": 71,
+          "sha256": "714f36066333de123330a44bc7c88ef1b77e9e96a0188c7f9823d02bdf03ece3"
+        },
+        {
+          "member": "opennox-server.exe",
+          "bytes": 93137408,
+          "sha256": "854be2a3149b7ec80153354e35684e453f1aa3340aecc39c2589476ad28e5a9c"
+        },
+        {
+          "member": "skeleton-original-GOGC10/native.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "member": "skeleton-original-GOGC10/native.stdout.log",
+          "bytes": 5266305,
+          "sha256": "e48e380396bfd198c2ff41e6dd3f5bbc6079ae113a67c4895a106a73c2dbaeaa"
+        },
+        {
+          "member": "skeleton-original-GOGC10/summary.json",
+          "bytes": 674,
+          "sha256": "c4e7dbfebc7c39d4b594d7e79e4ccd806e7729d62e62f93c358236484069b9d8"
+        },
+        {
+          "member": "source-revision.txt",
+          "bytes": 42,
+          "sha256": "ab99e4b40407992ec393a07004b3ead01b79feb6afbd2de327bb7134a4019fc5"
+        },
+        {
+          "member": "summary.json",
+          "bytes": 710,
+          "sha256": "14eb72d79b9063545436c31c30fb4e2146c1805cebaa4c52ac406af0f76e92da"
+        },
+        {
+          "member": "test-binaries/legacy.test.exe",
+          "bytes": 95504384,
+          "sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a"
+        },
+        {
+          "member": "test-binaries/server.test.exe",
+          "bytes": 140942848,
+          "sha256": "0c56db9f21fc25b519bfc1d46aade8944f7cb06a8501e60ce04991ad8a0ac1bc"
+        },
+        {
+          "member": "test-binaries/v1.test.exe",
+          "bytes": 142024704,
+          "sha256": "3f59608ea57e5efe8578d574616f97dcee25d2ea40183485d8438a44ade6dce3"
+        },
+        {
+          "member": "test-binaries.json",
+          "bytes": 450,
+          "sha256": "6ec6167fb6b860eabacebaead598908801530f2163b72ff346d40ff6de96ebb7"
+        },
+        {
+          "member": "test-binary-records/legacy.test.exe.c20dadc17cd14d86af786df5b66d5c4a.json",
+          "bytes": 1307,
+          "sha256": "2cd24df98b69482df8e994a080de80147a37ad85be8fa73d654f50e007ee89bb"
+        },
+        {
+          "member": "test-binary-records/server.test.exe.44c9f112c8bf44149593dd2520e412ae.json",
+          "bytes": 1308,
+          "sha256": "d723dc1885ef379fc2e7761c8257ef239c31f4baa09af2c9610597f346c788d5"
+        },
+        {
+          "member": "test-binary-records/v1.test.exe.317acc3852a846709dda75b0ae9d7fe1.json",
+          "bytes": 1276,
+          "sha256": "d4c3d7ecbb3af8bef934ea52fc2bfdfa2d9866c1feb668f613b50d85d394ad5c"
+        },
+        {
+          "member": "test-command.json",
+          "bytes": 1088,
+          "sha256": "d069f6867b8e8313c314555473da32532ff00ccefa4239ede6d9b40714cc3115"
+        },
+        {
+          "member": "test-preservation-status.json",
+          "bytes": 262,
+          "sha256": "b2d89ffa3d672f64aa00574e23aa59704a6d2a43ae425387bc82bbafac6fe221"
+        },
+        {
+          "member": "test-supervisor-events/go.EXE.864d254d07df4b32a4b5c834fe42825d.jsonl",
+          "bytes": 36165,
+          "sha256": "4a3dc291af462a9a5e6c77b7c096d0a439d0161f289106757f7054cfe7d9b0f2"
+        },
+        {
+          "member": "test-supervisor-events/legacy.test.exe.c20dadc17cd14d86af786df5b66d5c4a.jsonl",
+          "bytes": 19176,
+          "sha256": "6019cbffb6869a09b9f1d3c4c683eab5537f4fc0b5b3ee6a5807e14e354bf830"
+        },
+        {
+          "member": "test-supervisor-events/server.test.exe.44c9f112c8bf44149593dd2520e412ae.jsonl",
+          "bytes": 7923,
+          "sha256": "e8d5bc69575aeaec7eb6b579a93a28a94bc7c791b03f1be5a2dcb3159c702b53"
+        },
+        {
+          "member": "test-work-directory.json",
+          "bytes": 189,
+          "sha256": "b82d8c1cc3dbec158888818f8846f8ea9506f5e9157200fd56bdb43470d68d0e"
+        },
+        {
+          "member": "test.exit",
+          "bytes": 3,
+          "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+        },
+        {
+          "member": "test-supervisor-events/v1.test.exe.317acc3852a846709dda75b0ae9d7fe1.jsonl",
+          "bytes": 14267,
+          "sha256": "3f7d59c1198b81854831da99f67b9d4e932e18a646f65dff1b80cc1a9d2f1eee"
+        },
+        {
+          "member": "test.jsonl",
+          "bytes": 1414861700,
+          "sha256": "6cba4210a7fa7d3820f11bc7286c63efa67eb8ffb83ecc6d8def67579adc1819"
+        },
+        {
+          "member": "test.stderr.log",
+          "bytes": 96,
+          "sha256": "fae2ecc71766651a3c381baa48c351d861b50f7906619a7907aa6e608a81173b"
+        }
+      ],
+      "only_five_additive_replay_evidence_members": true,
+      "exact_terminal_identities_and_multiplicities_independently_verified": true,
+      "summary": {
+        "utc": "2026-11-17T00:26:24.828892+00:00",
+        "source": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\replay-windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestGlobalRecordNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+        "rebuilt": false,
+        "original_contexts": 1088,
+        "expected_terminal_events": 29388,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+        "test_actions": {
+          "pass": 29388
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "33de76d79124b0fec7dceba2fd751613cfe1e9d680a354b52cc4f8f88340d50e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_harness_failure_retained": true,
+      "original_replay_did_not_start": true,
+      "original_workflow_conclusion": "failure",
+      "supplemental_workflow_conclusion": "success",
+      "successful_primary_jobs_rerun": false,
+      "primary_PE_rebuilt": false,
+      "supplemental_archive": {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14286440866-windows-386-global-record-retained-replay.zip",
+        "bytes": 179098673,
+        "sha256": "d8ab3cbe33b0908c26202ca2d9fffcb78a45eaf72a977cfcaf5cbf0ccd7ebceb"
+      },
+      "scope": "Supplementary GC execution of the exact successful primary PE. Original workflow failure remains failure; no compiler or primary test was rerun."
+    },
+    "archives": [
+      {
+        "artifact_id": 14285865635,
+        "name": "linux-amd64-opennox-server-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14285865635-linux-amd64-opennox-server-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3.zip",
+        "bytes": 229761137,
+        "sha256": "c4136df0defae31481169272f3376bf524c8ad3f64bd7ad29e51aac4f4959aca",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1385059,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14284499617,
+        "name": "linux-amd64-opennox-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14284499617-linux-amd64-opennox-74e6ff82c61c36c5842230f0f4e3486f0f3daac3.zip",
+        "bytes": 243347521,
+        "sha256": "9071c489ce3718e49131dbaa5005896b30d46dc10d55bb554a7a55fd572a1a5d",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1391172,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14284478668,
+        "name": "linux-amd64-opennox-server-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14284478668-linux-amd64-opennox-server-74e6ff82c61c36c5842230f0f4e3486f0f3daac3.zip",
+        "bytes": 291777710,
+        "sha256": "3be80eca9b1cf2081d9304125ea5a56142f110af6f5e82936efdc1e3d47ef81a",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1385059,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14284443633,
+        "name": "linux-amd64-opennox-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14284443633-linux-amd64-opennox-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3.zip",
+        "bytes": 242561600,
+        "sha256": "479cfc8152e2bcb8ca548fd922d0d60140c83a313a27262b74afc719202df885",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1391172,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14285735642,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14285735642-opennox-server-windows-amd64.zip",
+        "bytes": 184610338,
+        "sha256": "4c155996e52e0f898b74eda37b86191c922241ba8c8339f6498b353a6569fa2a",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1383044,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14285451935,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14285451935-opennox-server-windows-386.zip",
+        "bytes": 178925064,
+        "sha256": "fddbb0195ffea90dc402bd937c7782a990d8d3935a8616d08fab23374d7dcfd5",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1363111
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "failed_archives": [],
+    "compiler_warnings": 0,
+    "warning_review_files": 25,
+    "uncompressed_warning_scan_bytes": 8850104941,
+    "all_previous_native_matrices_pass": true,
+    "native_matrix_readers": 31,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14285865635,
+        "name": "linux-amd64-opennox-server-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "profile": "server",
+        "preceding_artifact": 14276748002,
+        "preceding_passes": 1375263,
+        "current_passes": 1385059,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14284499617,
+        "name": "linux-amd64-opennox-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "profile": "client",
+        "preceding_artifact": 14277969113,
+        "preceding_passes": 1381376,
+        "current_passes": 1391172,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14284478668,
+        "name": "linux-amd64-opennox-server-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "profile": "server",
+        "preceding_artifact": 14276273472,
+        "preceding_passes": 1375263,
+        "current_passes": 1385059,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 7
+      },
+      {
+        "artifact_id": 14284443633,
+        "name": "linux-amd64-opennox-hd-74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+        "profile": "client",
+        "preceding_artifact": 14276974467,
+        "preceding_passes": 1381376,
+        "current_passes": 1391172,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 57
+      },
+      {
+        "artifact_id": 14285735642,
+        "name": "opennox-server-windows-amd64",
+        "profile": "server",
+        "preceding_artifact": 14277817808,
+        "preceding_passes": 1373248,
+        "current_passes": 1383044,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 11
+      },
+      {
+        "artifact_id": 14285451935,
+        "name": "opennox-server-windows-386",
+        "profile": "server",
+        "preceding_artifact": 14277937893,
+        "preceding_passes": 1353315,
+        "current_passes": 1363111,
+        "new_native_pass_events": 9796,
+        "primary_family_new_passes": 9796,
+        "existing_wrapper_and_bounded_C_parent_included": true,
+        "skips_unchanged": true,
+        "skip_events": 94
+      }
+    ],
+    "new_native_pass_events_per_profile": 9796,
+    "existing_Windows386_UI_GOGC10_replay_retained": true,
+    "new_GlobalRecord_family_selected_by_existing_UI_GOGC10_replay": false,
+    "new_GlobalRecord_exact_primary_PE_GOGC10_replay": true,
+    "historical_engine_GC_repair_claim": false
+  },
+  "preservation": {
+    "source": {
+      "protected_existing_inputs": 4789,
+      "all_protected_inputs_unchanged": true,
+      "all_other_incoming_source_files_unchanged": true,
+      "existing_modified_files": [
+        ".github/workflows/port-windows-native.yml",
+        "src/legacy/GAME1_1.c",
+        "src/legacy/GAME1_1.h"
+      ],
+      "new_files": [
+        "src/legacy/global_record_native_entry.go",
+        "src/legacy/global_record_native_fixture.go",
+        "src/legacy/global_record_native_test.go",
+        "src/legacy/testdata/global_record_original_v1.json.gz",
+        "scripts/replay-global-record-native-pe.py"
+      ],
+      "whole_incoming_C_and_header_files_reconstructed": true,
+      "only_C_ABI_change": "sub41FBE0 uint32_t* outputs to const char**; actual parent already uses constchar* slots.",
+      "all_C_caller_bodies_shared_scalar_and_record_and_string_layouts_and_existing_Go_wrapper_unchanged": true,
+      "bounded_actual_C_parent_body_bytes": 606,
+      "bounded_C_parent_copy_byte_identical": true,
+      "selected_index_keeps_existing_extracted_C_variable_and_original_minus1_guard": true,
+      "stock_signed32_arithmetic_shift_restored": true,
+      "original_CPU_contexts_without_expectation_changes": 1088,
+      "original_CPU_root_calls": 5440,
+      "original_numeric_or_existing_expectation_corrections": [],
+      "failed_source_all4791_protected_inputs_unchanged": true,
+      "only_Go_correction_is_native_pointer_bits_store_without_Go_barrier_in_C_owned_slots": true,
+      "existing_Skeleton_Golem_trade_GOGC10_workflow_block_unchanged": true,
+      "new_independent_exact_PE_GlobalRecord_GOGC10_replay": true,
+      "source_port_started": true,
+      "implemented_entries": 282,
+      "fully_recorded_entries": 275,
+      "new_entries_pending_qualification": 5,
+      "overall_100_percent": false
+    },
+    "original_asset_and_Save_files": 4649,
+    "tracked_E2E_inputs": 387,
+    "retained_current_program_paths": 39,
+    "retained_failed_S45v1_program_paths": 46,
+    "retained_preceding_S44_program_paths": 49,
+    "retained_failed_S34_program_paths": 11,
+    "retained_failed_S39v1_program_paths": 37,
+    "retained_failed_S41_program_paths": 4,
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1718952,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 39,
+      "all_current_program_SHA_verified": true,
+      "preceding_S44_program_paths_SHA_verified": 49,
+      "critical_products_and_executed_test_mains_verified": 7,
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "historical_missing_paths": "491 historical user deletions recorded/nonblocking; no recovery claim",
+      "retained_failed_S41_program_paths_SHA_verified": 4,
+      "retained_failed_S34_program_paths_SHA_verified": 11,
+      "retained_failed_S39v1_program_paths_SHA_verified": 37,
+      "retained_failed_S45v1_program_paths_SHA_verified": 46
+    },
+    "historical_missing_paths": 491,
+    "historical_unique_missing_versions": 284
+  },
+  "retained_attempts": {
+    "all_actual_local_tests_first_attempts_pass": true,
+    "actual_original_native_C_differences_retained": true,
+    "original_C_before_compiler_warnings": 2,
+    "ported_product_and_CI_compiler_warnings": 0,
+    "successful_original_C_control_process_not_rerun": true,
+    "helper_preparation_failures_retained": [
+      {
+        "utc": "2026-11-16T23:13:43.184093+00:00",
+        "command": [
+          "python3",
+          "discover-native-CI-runs-v1.py"
+        ],
+        "exit_code": 1,
+        "exception": "IndexError: list index out of range at label=sys.argv[1]",
+        "cause": "Caller omitted required discovery label. Failure occurred before any GitHub API query or workflow mutation.",
+        "source_or_test_or_fixture_changes": false,
+        "workflow_rerun": false
+      },
+      {
+        "utc": "2026-11-16T23:16:07.904337+00:00",
+        "command": [
+          "python3",
+          "prepare-final-qualification-v1.py"
+        ],
+        "exit_code": 1,
+        "exception": "SyntaxError: unmatched closing parenthesis in assembled qualification footer, line195",
+        "failure_before_final_script_write": true,
+        "retained_original_helper": "qualification-footer-v1.failed-extra-parenthesis.py.txt",
+        "source_or_tests_or_fixtures_changed": false,
+        "CI_jobs_rerun": false
+      }
+    ],
+    "helper_repairs_changed_no_source_tests_or_original_results": true,
+    "preceding_S41_failed_layout_program_paths": [
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/compiled-test-mains/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/focus-native-v1/test-binaries/legacy.test",
+        "bytes": 73371858,
+        "sha256": "80744f140dbb0eb47be39cd26a6416fdae293993abf5f28acccf956331c18fe6"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/compiled-test-mains/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      },
+      {
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-inventory-state-native-v1/inventory-state-native-strict-v1/test-binaries/legacy.test",
+        "bytes": 77197938,
+        "sha256": "592eac1dbc5764df36e4ed9cc26cefd8e95f5e94344f0c348426328e13a4927a"
+      }
+    ],
+    "all_preceding_failed_programs_and_records_retained": true
+  },
+  "retained_initial_failed_source": {
+    "utc": "2026-11-16T23:57:55.166645+00:00",
+    "source_revision": "7f0c8581797b0841ffbcddb6658dfc00c14c0b44",
+    "qualification_status": "FAILED/unqualified",
+    "native_CI_jobs": 6,
+    "successful_jobs": 5,
+    "failed_jobs": 1,
+    "all_run_attempts_one": true,
+    "successful_jobs_rerun": 0,
+    "archives": [
+      {
+        "id": 14283305631,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14283305631-linux-amd64-opennox-server-hd-7f0c8581797b0841ffbcddb6658dfc00c14c0b44.zip",
+        "bytes": 229793984,
+        "sha256": "4cd5b8c696a26455507e87a0e62a12445ab23de372e89a77c769f3a958baed90",
+        "actual_test_mains": 36,
+        "original_success": true
+      },
+      {
+        "id": 14282952684,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14282952684-linux-amd64-opennox-7f0c8581797b0841ffbcddb6658dfc00c14c0b44.zip",
+        "bytes": 242533023,
+        "sha256": "d1a0afd801b48d476935cca7ba9240c2eb5f5e138779f3f87354ed6022d6f95c",
+        "actual_test_mains": 40,
+        "original_success": true
+      },
+      {
+        "id": 14282352169,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14282352169-linux-amd64-opennox-server-7f0c8581797b0841ffbcddb6658dfc00c14c0b44.zip",
+        "bytes": 291769848,
+        "sha256": "f24c6fce4326b34ebde7f556cb56fb35340dec9a38ce9e413824c3cb28fa4ff8",
+        "actual_test_mains": 36,
+        "original_success": true
+      },
+      {
+        "id": 14282107605,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14282107605-linux-amd64-opennox-hd-7f0c8581797b0841ffbcddb6658dfc00c14c0b44.zip",
+        "bytes": 242510031,
+        "sha256": "51c74bf66855c744543217416bd498621e2bdb82dfc077c564b8317877adb70a",
+        "actual_test_mains": 40,
+        "original_success": true
+      },
+      {
+        "id": 14283151832,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14283151832-opennox-server-windows-amd64.zip",
+        "bytes": 184613294,
+        "sha256": "3fb16cac1aff8e68f7a20c13980eb4a6c35a07af38d2afdbef5135492991716a",
+        "actual_test_mains": 3,
+        "original_success": true
+      },
+      {
+        "id": 14281219066,
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/ci-14281219066-failed-opennox-server-windows-386.zip",
+        "bytes": 154306204,
+        "sha256": "133d3047d2fededc5f9244456b25999cc5a5d486a3feb20fbcd2a06a143c3e60",
+        "actual_test_mains": 3,
+        "original_success": false
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "retained_actual_program_paths": 46,
+    "all_program_SHA_verified": true,
+    "decoded_job_logs": 6,
+    "complete_warning_files": 20,
+    "compiler_warnings": 0,
+    "failed_gc_pointer": 553375409,
+    "actual_failed_primary_legacy_PE_sha256": "020a71f170304903a17b8cfd57b5158929a415c6089f4d0df3cbc9b83c7f44fd",
+    "actual_failed_PE_has_two_C_output_Go_write_barriers": true,
+    "original_inputs_and_tests_or_fixtures_retuned": false,
+    "all_failure_records_and_raw_PE_bytes_retained": true
+  },
+  "native_C_output_store_GC_correction": {
+    "utc": "2026-11-17T00:31:05.594319+00:00",
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "initial_failed_source_revision": "7f0c8581797b0841ffbcddb6658dfc00c14c0b44",
+    "initial_failed_primary_PE_sha256": "020a71f170304903a17b8cfd57b5158929a415c6089f4d0df3cbc9b83c7f44fd",
+    "corrected_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+    "initial_failed_source_Windows386_root_Go_write_barriers": 2,
+    "corrected_Windows386_root_Go_write_barriers": 0,
+    "initial_disassembly": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v1/failed-Windows386-primary-v1/sub41FBE0-llvm-objdump.stdout.log",
+      "sha256": "8906c21b4a291ff3911657dc8b3d107a121e03cad510f6c862300d75b9533c48"
+    },
+    "corrected_disassembly": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/corrected-Windows386-primary-v1/sub41FBE0-llvm-objdump.stdout.log",
+      "sha256": "0070f89329135e4f8cc810bc0b46b534e28e80e9027bd46a24628279adf91077"
+    },
+    "corrected_PE": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/corrected-Windows386-primary-v1/legacy.test.exe",
+      "bytes": 95504384,
+      "sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a"
+    },
+    "function": "github.com/opennox/opennox/v1/legacy.sub_41FBE0",
+    "function_start": "0xe9d550",
+    "function_stop": "0xe9d610",
+    "same_original_vectors_and_test_sources": true,
+    "GC_replay": {
+      "utc": "2026-11-17T00:26:24.828892+00:00",
+      "source": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+      "command": [
+        "D:\\a\\opennox\\opennox\\build\\replay-windows-386\\test-binaries\\legacy.test.exe",
+        "-test.v",
+        "-test.count=3",
+        "-test.timeout=8m",
+        "-test.run=^TestGlobalRecordNative"
+      ],
+      "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+      "GOGC": 10,
+      "repetitions": 3,
+      "exact_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+      "rebuilt": false,
+      "original_contexts": 1088,
+      "expected_terminal_events": 29388,
+      "native_exit_code": 0,
+      "timed_out": false,
+      "PE_hash_after_replay": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+      "test_actions": {
+        "pass": 29388
+      },
+      "exact_original_terminal_identities_and_multiplicities_equal": true,
+      "missing_terminal_events": 0,
+      "extra_terminal_events": 0,
+      "unfinished_tests": [],
+      "stdout_sha256": "33de76d79124b0fec7dceba2fd751613cfe1e9d680a354b52cc4f8f88340d50e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scope": "Actual primary Windows/386 PE bytes from official artifact. Old root reads/shades two prior C-slot words; corrected root has no Go write-barrier calls. Exact same original tests/vectors also pass three times under GOGC10. No general engine memory/GC repair claim."
+  },
+  "qualification_harness": {
+    "utc": "2026-11-17T00:25:35.215227+00:00",
+    "engine_source": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "unchanged_compile_and_test_inputs": 9407,
+    "changed_paths": [
+      ".github/workflows/port-windows-native.yml"
+    ],
+    "correction": "GOARCH=386 for the additive GC replay; optional manual replay of the exact retained primary PE without rebuilding.",
+    "original_primary_suites_unchanged": true,
+    "old_Skeleton_Golem_trade_replay_unchanged": true,
+    "successful_jobs_rerun": false,
+    "initial_GC_replay_started": false,
+    "initial_harness_error": "KeyError: 'GOARCH'",
+    "primary_artifact_id": 14285451935,
+    "primary_archive_sha256": "fddbb0195ffea90dc402bd937c7782a990d8d3935a8616d08fab23374d7dcfd5",
+    "primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+    "harness_revision": "68b39a47a947eb3b399cc39cef81d5b3b1e59508"
+  },
+  "retained_PE_GC_supplement": {
+    "utc": "2026-11-17T00:30:19.825702+00:00",
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "harness_revision": "68b39a47a947eb3b399cc39cef81d5b3b1e59508",
+    "run_id": 43987556070,
+    "job_id": 133719523488,
+    "artifact_id": 14286440866,
+    "primary_artifact_id": 14285451935,
+    "exact_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+    "all_original_archive_members_byte_identical": [
+      {
+        "member": "allocator-controls/alloc/alloc.test.exe",
+        "bytes": 12273664,
+        "sha256": "adccb637fe08cd28c84945ca25dea6b0fed2709debe169881426a8c1a3848399"
+      },
+      {
+        "member": "allocator-controls/alloc/binary-before-execution.json",
+        "bytes": 137,
+        "sha256": "c74c53548af1934861fa92af957116dc3ee9d5adfcd4551182d5e4c600310cbf"
+      },
+      {
+        "member": "allocator-controls/alloc/build.stderr.log",
+        "bytes": 215,
+        "sha256": "a2e0b924cdcd5dea912c13e960d3770cb27715cfdcf313316781c27410ac7700"
+      },
+      {
+        "member": "allocator-controls/alloc/build.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/alloc/intent.json",
+        "bytes": 359,
+        "sha256": "f646c5a2d1a748d0887070bcb8516178fc6f3d2eed154ecb012d50ad4984ecf0"
+      },
+      {
+        "member": "allocator-controls/alloc/summary.json",
+        "bytes": 585,
+        "sha256": "4e404c1d30a0999fd63aea3c493bf16011059b995fca49af87979f6370977494"
+      },
+      {
+        "member": "allocator-controls/alloc/test.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/alloc/test.stdout.log",
+        "bytes": 2223,
+        "sha256": "079fb7987b349ef485e35991725ec7be81a5842a476486128fd389f28de3b46a"
+      },
+      {
+        "member": "allocator-controls/handles/binary-before-execution.json",
+        "bytes": 138,
+        "sha256": "c3402d5de9c814c7d6700f3b7c2b8ebb359ac0bbf580b0cdcbe50cddc2f5cef8"
+      },
+      {
+        "member": "allocator-controls/handles/build.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/handles/build.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/handles/handles.test.exe",
+        "bytes": 4803584,
+        "sha256": "39fc16f6e3ee5cd4fa84c797575370aa880a16323560dedf24f6f12ca643217e"
+      },
+      {
+        "member": "allocator-controls/handles/intent.json",
+        "bytes": 371,
+        "sha256": "01edd350400067b1a1f117e6c9adf75b301198cde29d437f821c9aff1775a522"
+      },
+      {
+        "member": "allocator-controls/handles/summary.json",
+        "bytes": 461,
+        "sha256": "6ac6283c85f848e5fc345a92f354c044baea1313c6df293a5c570078c79a4fe1"
+      },
+      {
+        "member": "allocator-controls/handles/test.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/handles/test.stdout.log",
+        "bytes": 333,
+        "sha256": "82e4d41bb7d1a84889b563594c9db1d73641bf8f30e4adedb70c04adb878fc6b"
+      },
+      {
+        "member": "allocator-controls/memguard/binary-before-execution.json",
+        "bytes": 139,
+        "sha256": "ea6b7c1dbb073542d3cffa602b2903099326b183fe69bfa3d140c1e7269a2c4d"
+      },
+      {
+        "member": "allocator-controls/memguard/build.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/memguard/build.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/memguard/intent.json",
+        "bytes": 374,
+        "sha256": "f355da80302a6d5f6dcf93be2c9cd236d09becad598e8f7ae9d2bcdd092340f9"
+      },
+      {
+        "member": "allocator-controls/memguard/summary.json",
+        "bytes": 487,
+        "sha256": "f7e1557b0dec10e898cfe98097a5adf3b33c9e1d671bf64ac3f21cffb3cdb8cb"
+      },
+      {
+        "member": "allocator-controls/memguard/memguard.test.exe",
+        "bytes": 4793856,
+        "sha256": "6b637a01edf143fc599da169b1f4c058525d968d62a26113a112454271b76d61"
+      },
+      {
+        "member": "allocator-controls/memguard/test.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "allocator-controls/memguard/test.stdout.log",
+        "bytes": 137,
+        "sha256": "1f1c087b3c5b5f70ce52377d6febb56409cb518eadb7292a2a4005d398cba3b3"
+      },
+      {
+        "member": "compiler-profile.json",
+        "bytes": 161,
+        "sha256": "f5055f864c6e73591bec2e983f6454bc24505d4f8038e008d08712bb5101db6d"
+      },
+      {
+        "member": "compiler-version.txt",
+        "bytes": 312,
+        "sha256": "f702993c112df720648733417b57ab22a710b043358f30bef356a0e04c74ad08"
+      },
+      {
+        "member": "expected-packages.txt",
+        "bytes": 107,
+        "sha256": "6bdeb177178eb17748d45eef6ba917da40c3344e7b9f6b514a4b2302d417be38"
+      },
+      {
+        "member": "go-driver-records/go.EXE.864d254d07df4b32a4b5c834fe42825d.json",
+        "bytes": 1462,
+        "sha256": "3c7264da7bcdc4f101fbd60240e2beff1636d95eca24d0bf95c40e85e6e8de43"
+      },
+      {
+        "member": "native-fixture-artifacts/fireball-defaults-2726297780/gamedata.yml",
+        "bytes": 46,
+        "sha256": "d9f349567fff154979de3c1ec7ca83eb8cbcefabae5fd5030bb33c8d370c921f"
+      },
+      {
+        "member": "native-fixture-artifacts/fireball-defaults-2726297780/spells.yml",
+        "bytes": 56,
+        "sha256": "3f38cd1eaf6cef43b3cfdc869f7772caa822913c893e08fa8ac16d6f96863d87"
+      },
+      {
+        "member": "native-fixture-artifacts/four-timers-native-1049227943/actual-four-timers-native.jsonl",
+        "bytes": 3063741,
+        "sha256": "7fe34b947a05b0605aa504d8d784029cda7f6df8d6c2df94f8b0dacfa27328ea"
+      },
+      {
+        "member": "native-fixture-artifacts/four-timers-native-1049227943/actual-four-timers-summary.json",
+        "bytes": 628,
+        "sha256": "dcf4aecef9bb8e1ba9213ae451874ffe91f2c2e354e152d20b03df3ab41e54f7"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-C-before-first-EXEC.json",
+        "bytes": 734,
+        "sha256": "b87fb864ace9424d507fdbd316e7698eb120b9e6e5f592c94635ab10e6905422"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-native-scalar-results.jsonl",
+        "bytes": 959940,
+        "sha256": "20e2664049d1d3dbfcd3ec3625385cb9fd5abdafbb14d76cbf956b0445cc50ff"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual-six-leaves-summary.json",
+        "bytes": 549,
+        "sha256": "6d9d762e1055056396b8f1eabaab59819572fb4252401d3b35201858435bfdb4"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.stdout.bin",
+        "bytes": 678576,
+        "sha256": "47a085bae9aa99ddb65bc86c822bda20cb93688c771a7735af33b9cd35644b63"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/actual.Wait.json",
+        "bytes": 522,
+        "sha256": "2ef3aea117a579ccd7e7685614bee53cf403606944cc43f14421d5fd177c1029"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/compile.combined.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/compile.Wait.json",
+        "bytes": 887,
+        "sha256": "cc1300cee906f348c779b9f3d7e8724f105ad232730c5987ec1a80712d794a7f"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/input.bin",
+        "bytes": 91098,
+        "sha256": "b26da128fab786e6be0f89e3c99337f44653270e27c9ff6f021f21c0c4885d46"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-before-first-EXEC.zip",
+        "bytes": 28852,
+        "sha256": "ad4d62688766920c8c66fe6a935199750ed7aeec9e00b18cd449702ebebff587"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-PREEXEC-byte-verified.json",
+        "bytes": 917,
+        "sha256": "e11d50fb32da0c1b731e66d0c5bd41965878802c8c0122e733db9b730267c54f"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/old-C-six-leaves.exe",
+        "bytes": 59392,
+        "sha256": "d0f18c6b06fa2463bff724dadaca29a8eeac54c96a9433a11636a0c8266b58b3"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-192029995/source.c",
+        "bytes": 4186,
+        "sha256": "058b7526e9c50f918e38377b247499ed9a1ccf70aec9a8ff6f73770a13bb1b6a"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-C-before-first-EXEC.json",
+        "bytes": 735,
+        "sha256": "9062430984fe92775fc4317d5db0c2467d85b76d7c908aa97f76d6defd569921"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-settings-scalar-results.jsonl",
+        "bytes": 257724,
+        "sha256": "08e7b71bd590a0df6b5a0e8dbcea0dbb4e4c8c8eaafaaeb22cb34477bb912d5c"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual-settings-scalar-summary.json",
+        "bytes": 517,
+        "sha256": "5cb0e2ed19a7f4dc6c5ff29e3d60a143503c7fe47eaad6dded43c8c9673ef191"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.stdout.bin",
+        "bytes": 12096,
+        "sha256": "9ad28563befaf4b3a7b8ec25de3decc06f7073836cbbd4496932d4e00deae2d2"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/actual.Wait.json",
+        "bytes": 522,
+        "sha256": "0e691b01318934c7121e579e059c01ef341243c992db690e2a681f140f8ea782"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/compile.combined.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/compile.Wait.json",
+        "bytes": 888,
+        "sha256": "abbe2300636eeaa2b5225e7a9832c0403fecb2184690f98e1ab5ad2aadbee4f7"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/input.bin",
+        "bytes": 13448,
+        "sha256": "88bd5c76db489bcc24d99474e10c5b322b5688bc8f5eca27d6c58b3762697df2"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-before-first-EXEC.zip",
+        "bytes": 30812,
+        "sha256": "24a92af9df49b1fa9defd41926e2223e65a75cbc96c30bd90786027c427c8fe4"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-PREEXEC-byte-verified.json",
+        "bytes": 917,
+        "sha256": "f37585b7f1b2a0d5be67f25c7861b90049dd246bd9c98c3a397a20b06bdc3326"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/old-C-six-leaves.exe",
+        "bytes": 58880,
+        "sha256": "ba767fd44329ae93cd1b23e2cbaa848ceb9760fcb509a7ae2f66a2638487a5c4"
+      },
+      {
+        "member": "native-fixture-artifacts/game1-six-leaves-old-C-2070433794/source.c",
+        "bytes": 2877,
+        "sha256": "cd6a252532026944ab3002e7a26218f7cea913fe123a930e5337c4da02f4c38f"
+      },
+      {
+        "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/both-nil.log",
+        "bytes": 81,
+        "sha256": "90f982ca237f712f0bf872fd7ac6cacf69fbcef1cb879b7c172c323315274b90"
+      },
+      {
+        "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/direct-CRT-control.log",
+        "bytes": 91,
+        "sha256": "f024b2482f19f643a19a5d1c6b3b4500c7df14956cf3c8bcff4d0a9fe454f6fb"
+      },
+      {
+        "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/nil-head.log",
+        "bytes": 81,
+        "sha256": "0fd84e19efae111799e8183939602421234e7929fc75f594ac1c2f252feb7d6a"
+      },
+      {
+        "member": "native-fixture-artifacts/intrusive-list-native-abort-1896594894/nil-item.log",
+        "bytes": 81,
+        "sha256": "f61c6c94f2d496e4a4696797aa6df84fad60edf2cab4f8b04494c0ab3d2671cb"
+      },
+      {
+        "member": "native-fixture-artifacts/monster-cast-defaults-3544710602/spells.yml",
+        "bytes": 26,
+        "sha256": "1c6f08e53231bed39b4a6bc906d4272fac6eaad6e93fbecb56bf72dade05c330"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/actual-C-executable-PREEXEC.json",
+        "bytes": 1116,
+        "sha256": "dce605044a13c134c5de890501d8586105cfcbaca2baa3ad29dd4a5acd1f68bd"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/input.bin",
+        "bytes": 7832,
+        "sha256": "a17af257ac97987969bcc3effb21131c750d49a7233ee48ac9213052f423abf1"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/mode.combined.log",
+        "bytes": 60,
+        "sha256": "f4734d2113af5fc136e17a88c710d89dde20fdd4d22d5b18413a040f32f266af"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/mode.Wait.json",
+        "bytes": 277,
+        "sha256": "a72117562a15e8da86bcb044363d659040fc17c04658d9b2422fe94923d9ed0d"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/network-tables-native.exe",
+        "bytes": 60928,
+        "sha256": "b6e10d5ba670d2147cd9f8733d81cfb66f51b4ac3a8470d05e2d572c1f5a4f6a"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/rate.combined.log",
+        "bytes": 59,
+        "sha256": "02f2f5c0ae2beca05f163e64ea16421089d95c19b78504347ca0711545aad9dd"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/rate.Wait.json",
+        "bytes": 277,
+        "sha256": "8f46c63091eb6f1b072a056bb11497b5c21106168249a6d171c14ed6d3b5e177"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/settings.combined.log",
+        "bytes": 64,
+        "sha256": "aeecb4c4637896c6c58024e27f9871d4887dbb82e2ec2dc07af121ea7b10eda9"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/settings.Wait.json",
+        "bytes": 281,
+        "sha256": "39670ccc303c4d7a418926980fd01be5555da803df5692b5be024450e66ffb0d"
+      },
+      {
+        "member": "native-fixture-artifacts/network-tables-native-2833353144/source.c",
+        "bytes": 5029,
+        "sha256": "37c4ced5f2632557dcc59495d223103e459741ee6e14d43e508bce379ca16713"
+      },
+      {
+        "member": "native-fixture-artifacts/resource-spell-defaults-3598430700/gamedata.yml",
+        "bytes": 24,
+        "sha256": "5f8152f81856943a044d0c354e80d3a17c6ed83cacf9847dabb00aba50b548db"
+      },
+      {
+        "member": "native-fixture-artifacts/resource-spell-defaults-3598430700/spells.yml",
+        "bytes": 71,
+        "sha256": "714f36066333de123330a44bc7c88ef1b77e9e96a0188c7f9823d02bdf03ece3"
+      },
+      {
+        "member": "opennox-server.exe",
+        "bytes": 93137408,
+        "sha256": "854be2a3149b7ec80153354e35684e453f1aa3340aecc39c2589476ad28e5a9c"
+      },
+      {
+        "member": "skeleton-original-GOGC10/native.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "member": "skeleton-original-GOGC10/native.stdout.log",
+        "bytes": 5266305,
+        "sha256": "e48e380396bfd198c2ff41e6dd3f5bbc6079ae113a67c4895a106a73c2dbaeaa"
+      },
+      {
+        "member": "skeleton-original-GOGC10/summary.json",
+        "bytes": 674,
+        "sha256": "c4e7dbfebc7c39d4b594d7e79e4ccd806e7729d62e62f93c358236484069b9d8"
+      },
+      {
+        "member": "source-revision.txt",
+        "bytes": 42,
+        "sha256": "ab99e4b40407992ec393a07004b3ead01b79feb6afbd2de327bb7134a4019fc5"
+      },
+      {
+        "member": "summary.json",
+        "bytes": 710,
+        "sha256": "14eb72d79b9063545436c31c30fb4e2146c1805cebaa4c52ac406af0f76e92da"
+      },
+      {
+        "member": "test-binaries/legacy.test.exe",
+        "bytes": 95504384,
+        "sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a"
+      },
+      {
+        "member": "test-binaries/server.test.exe",
+        "bytes": 140942848,
+        "sha256": "0c56db9f21fc25b519bfc1d46aade8944f7cb06a8501e60ce04991ad8a0ac1bc"
+      },
+      {
+        "member": "test-binaries/v1.test.exe",
+        "bytes": 142024704,
+        "sha256": "3f59608ea57e5efe8578d574616f97dcee25d2ea40183485d8438a44ade6dce3"
+      },
+      {
+        "member": "test-binaries.json",
+        "bytes": 450,
+        "sha256": "6ec6167fb6b860eabacebaead598908801530f2163b72ff346d40ff6de96ebb7"
+      },
+      {
+        "member": "test-binary-records/legacy.test.exe.c20dadc17cd14d86af786df5b66d5c4a.json",
+        "bytes": 1307,
+        "sha256": "2cd24df98b69482df8e994a080de80147a37ad85be8fa73d654f50e007ee89bb"
+      },
+      {
+        "member": "test-binary-records/server.test.exe.44c9f112c8bf44149593dd2520e412ae.json",
+        "bytes": 1308,
+        "sha256": "d723dc1885ef379fc2e7761c8257ef239c31f4baa09af2c9610597f346c788d5"
+      },
+      {
+        "member": "test-binary-records/v1.test.exe.317acc3852a846709dda75b0ae9d7fe1.json",
+        "bytes": 1276,
+        "sha256": "d4c3d7ecbb3af8bef934ea52fc2bfdfa2d9866c1feb668f613b50d85d394ad5c"
+      },
+      {
+        "member": "test-command.json",
+        "bytes": 1088,
+        "sha256": "d069f6867b8e8313c314555473da32532ff00ccefa4239ede6d9b40714cc3115"
+      },
+      {
+        "member": "test-preservation-status.json",
+        "bytes": 262,
+        "sha256": "b2d89ffa3d672f64aa00574e23aa59704a6d2a43ae425387bc82bbafac6fe221"
+      },
+      {
+        "member": "test-supervisor-events/go.EXE.864d254d07df4b32a4b5c834fe42825d.jsonl",
+        "bytes": 36165,
+        "sha256": "4a3dc291af462a9a5e6c77b7c096d0a439d0161f289106757f7054cfe7d9b0f2"
+      },
+      {
+        "member": "test-supervisor-events/legacy.test.exe.c20dadc17cd14d86af786df5b66d5c4a.jsonl",
+        "bytes": 19176,
+        "sha256": "6019cbffb6869a09b9f1d3c4c683eab5537f4fc0b5b3ee6a5807e14e354bf830"
+      },
+      {
+        "member": "test-supervisor-events/server.test.exe.44c9f112c8bf44149593dd2520e412ae.jsonl",
+        "bytes": 7923,
+        "sha256": "e8d5bc69575aeaec7eb6b579a93a28a94bc7c791b03f1be5a2dcb3159c702b53"
+      },
+      {
+        "member": "test-work-directory.json",
+        "bytes": 189,
+        "sha256": "b82d8c1cc3dbec158888818f8846f8ea9506f5e9157200fd56bdb43470d68d0e"
+      },
+      {
+        "member": "test.exit",
+        "bytes": 3,
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+      },
+      {
+        "member": "test-supervisor-events/v1.test.exe.317acc3852a846709dda75b0ae9d7fe1.jsonl",
+        "bytes": 14267,
+        "sha256": "3f7d59c1198b81854831da99f67b9d4e932e18a646f65dff1b80cc1a9d2f1eee"
+      },
+      {
+        "member": "test.jsonl",
+        "bytes": 1414861700,
+        "sha256": "6cba4210a7fa7d3820f11bc7286c63efa67eb8ffb83ecc6d8def67579adc1819"
+      },
+      {
+        "member": "test.stderr.log",
+        "bytes": 96,
+        "sha256": "fae2ecc71766651a3c381baa48c351d861b50f7906619a7907aa6e608a81173b"
+      }
+    ],
+    "only_five_additive_replay_evidence_members": true,
+    "exact_terminal_identities_and_multiplicities_independently_verified": true,
+    "summary": {
+      "utc": "2026-11-17T00:26:24.828892+00:00",
+      "source": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+      "command": [
+        "D:\\a\\opennox\\opennox\\build\\replay-windows-386\\test-binaries\\legacy.test.exe",
+        "-test.v",
+        "-test.count=3",
+        "-test.timeout=8m",
+        "-test.run=^TestGlobalRecordNative"
+      ],
+      "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+      "GOGC": 10,
+      "repetitions": 3,
+      "exact_primary_PE_sha256": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+      "rebuilt": false,
+      "original_contexts": 1088,
+      "expected_terminal_events": 29388,
+      "native_exit_code": 0,
+      "timed_out": false,
+      "PE_hash_after_replay": "31d9048cdd1e358831db98ce76e23bedc1dd75120c20c6ee69ec97d9f9cb959a",
+      "test_actions": {
+        "pass": 29388
+      },
+      "exact_original_terminal_identities_and_multiplicities_equal": true,
+      "missing_terminal_events": 0,
+      "extra_terminal_events": 0,
+      "unfinished_tests": [],
+      "stdout_sha256": "33de76d79124b0fec7dceba2fd751613cfe1e9d680a354b52cc4f8f88340d50e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original_harness_failure_retained": true,
+    "original_replay_did_not_start": true,
+    "original_workflow_conclusion": "failure",
+    "supplemental_workflow_conclusion": "success",
+    "successful_primary_jobs_rerun": false,
+    "primary_PE_rebuilt": false,
+    "supplemental_archive": {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/ci-14286440866-windows-386-global-record-retained-replay.zip",
+      "bytes": 179098673,
+      "sha256": "d8ab3cbe33b0908c26202ca2d9fffcb78a45eaf72a977cfcaf5cbf0ccd7ebceb"
+    },
+    "scope": "Supplementary GC execution of the exact successful primary PE. Original workflow failure remains failure; no compiler or primary test was rerun."
+  },
+  "current_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v10",
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "files": 207,
+    "ordinary_own_C_definitions": 2463,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2477,
+    "pointer_integer_cast_functions_including_manual": 449,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "current_direct_pointer_width_triage": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v10/direct-pointer-width-classification-v2.json",
+    "sha256": "a00dc6703267cca45b532c81c733753da733610bbb83cae4228e15a54dd3ddd0",
+    "source_revision": "74e6ff82c61c36c5842230f0f4e3486f0f3daac3",
+    "functions": 449,
+    "direct_cast_sites": {
+      "pointer_to_narrow_integral": 321,
+      "narrow_integral_to_pointer": 2023,
+      "native_or_wider_integral_transport": 585
+    },
+    "functions_by_direct_category": {
+      "pointer_to_narrow_integral": 103,
+      "narrow_integral_to_pointer": 227,
+      "native_or_wider_integral_transport": 237
+    },
+    "scope": "Type-width triage only. Narrow conversions can be intentional wire IDs, scalar payloads, callback tags or legacy-token resolution. Native-width conversions can contain nested earlier/later narrowing; this direct-node report does not perform complete dataflow analysis. Macros lacking captured input type stay unknown. Other architectures, optional tags, header/inc algorithms and Cgo preambles remain outside. Original execution, native owner/caller audit and actual before/after paths are required before any defect or completed-port credit. The one macro-renamed function whose input type was absent from the first table is resolved from its retained exact AST: (HANDLE)-1. Original v1 is retained."
+  },
+  "preceding_readonly_all_C_inventory": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v8",
+    "source_revision": "c4f40b5e1b764b428025170893591ec5d25fe7e6",
+    "files": 207,
+    "ordinary_own_C_definitions": 2468,
+    "manually_classified_own_macro_definitions": 14,
+    "own_C_definition_total": 2482,
+    "pointer_integer_cast_functions_including_manual": 450,
+    "remaining_unclassified_own_definition_locations": 0,
+    "remaining_unported_denominator_established": false,
+    "scope": "Location/name classification only. Macro-generated address wrappers, platform implementations and retained diagnostic C are visible explicitly. These own source definitions include native bridges and adapters and are not an unported-algorithm count. Included header/inc bodies, inline Cgo preambles, optional tags and non-ARM64 branches remain outside this own-file inventory. No original behavior, native correctness or completion percentage is inferred from a name or classification."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only",
+    "nine_final_chapter_audits": "OPEN",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "chapter4plus": "excluded",
+    "Windows_GC": "Other historical memory/GC causes remain open.",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "pointer_scope": "Initial Go typed pointer stores caused actual Windows386 GC failure by shading uninitialized C-slot canaries; corrected native uintptr stores avoid Go barriers in C-owned output slots, confirmed in actual PE assembly and repeated original checks under GOGC10. Actual high-native original C outputs fail on1059 contexts; fixed32 slots now carry full native char pointers. Actual officialStringCmp C parent slot-call is bounded checked with NULL owner/scratch services; remaining packed-owner dependencies and full parent migration uncredited.",
+    "shift_scope": "Stock420100 SAR8 differs from current unsigned C in532 contexts. Its two syntactic call references are in a literal-if0 block; no newly observed active gameplay failure claim.",
+    "domain": "Selected diagnostic indices0..128 plus -1 sentinel; valid aligned native pointer outputs, same/disjoint/adjacent slots; nullable byte strings length0..51, disjoint or exact self; all32state bits. Other string overlaps, out-of-blob pointer results, heterogeneous pointer/scalar aliases, concurrent state mutations and allocator/lifetime migration remain uncredited.",
+    "all_C_denominator": "OPEN; own-file ARM64 AST includes bridges/platform/reference implementations and excludes header/inc/Cgo preambles and other architecture/tag branches."
+  },
+  "native_checks": {
+    "native_test_actions": {
+      "pass": 9796
+    },
+    "native_roots": {
+      "TestGlobalRecordNativeLayout": "pass",
+      "TestGlobalRecordNativeOriginal": "pass",
+      "TestGlobalRecordNativeWrapper": "pass",
+      "TestGlobalRecordNativeBoundedCParent": "pass"
+    },
+    "original_contexts": 1088,
+    "original_root_calls": 5440,
+    "original_instruction_bytes": 122,
+    "original_startup_bytes": 319,
+    "declared_services": [],
+    "C_Go_layout_fields": 13,
+    "primary_native_root_checks": 48960,
+    "existing_Go_wrapper_checks": 3264,
+    "bounded_actual_C_parent_checks": 3264,
+    "original_checks_per_route_and_placement": {
+      "route0/place0": 1088,
+      "route0/place64": 1088,
+      "route0/place512": 1088,
+      "route1/place0": 1088,
+      "route1/place64": 1088,
+      "route1/place512": 1088,
+      "route2/place0": 1088,
+      "route2/place64": 1088,
+      "route2/place512": 1088
+    },
+    "all_declared_original_returns_and_full_native_pointer_output_roles_equal": true,
+    "whole64KiB_global_and_foreign_owners_and_scalar_guards_checked_after_every_root": true,
+    "original_pointer_output_alias_store_order_preserved": true,
+    "stock_signed32_arithmetic_shift_and_original_minus1_guard_preserved": true,
+    "existing_Go_wrapper_and_actual_C_parent_typed_output_slots_checked": true,
+    "void_setter_EAX_residue_and_other_string_overlap_and_full_parent_migration_uncredited": true
+  },
+  "qualification_reference": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-global-record-native-v2/qualified-global-record-entries-v1.json",
+    "sha256": "7851c3625dcc35bed3fb91207d9b3e72e8d93d2e1ec0d4a2a2f7e61dde6ceef9"
+  },
+  "normal_passes": 571235,
+  "strict_passes": 571235,
+  "focused_passes": 9796,
+  "compiler_warnings": 0,
+  "products": 4,
+  "native_public_control_symbols_per_product": 159
+}

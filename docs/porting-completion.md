@@ -60,6 +60,104 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native inventory lookup pointers and stock bounds, 2026-11-17
+
+Engine `c3d77494d8deabd3be091232f0dcd1e1a1f806aa` is committed and pushed to
+`origin/port/go1.27-multiarch`. The original-address `sub_461EF0` and the
+existing typed helper `nox_inventory_find_cell_native_461EF0` now execute in Go.
+The helper is part of the same original search algorithm and receives no
+separate original-entry credit. Both public C ABIs, the extracted C grid,
+native cell structure and all 14 current typed C call sites are unchanged.
+
+Stock searches exactly **21 rows × 4 columns**, in logical row-major order.
+The incoming compatibility body also visited an extra row; the Go search uses
+the stock 84-cell bound. On a hit, the compatibility entry publishes the
+index before the full native cell pointer and returns the same packed result
+owner. On a miss it returns NULL and retains the previous pair. The typed
+helper returns a full cell pointer and writes its optional index only on a
+hit. Native32 uses a uintptr store into the original C word; native64 uses the
+existing canonical pointer slot while preserving packed pointer bytes.
+
+There are **284 C entries implemented in Go** and **282 with complete recorded
+qualification**. Two deleted S25 original seals remain uncredited. **All-C
+migration, its denominator and overall 100% remain open.** The nine final
+Warrior/Conjurer/Wizard chapter 1–3 audits, public Save/Load pixel failure and
+other historical Windows memory/GC causes remain open. Chapter 4+ is excluded.
+
+The **91-path pre-port seal** preserves **3,647 stock CPU/model contexts**, all
+150 root bytes, 319 startup bytes, `0xe3f` FP state and no child services.
+Every instruction, complete original owners, caller state, visit order,
+comparison counts and index-before-pointer writes are checked. The independent
+input-only model matches 3,456 hits and 191 misses. Inputs and original
+expected results were fixed before porting and were never retuned.
+
+The unchanged **1,412 C bytes** reproduce **3,456 pointer truncations** and
+**36 extra-cell false hits** on actual ARM64 high allocations. The existing
+typed C helper matches all original contexts. The extra-cell control uses an
+isolated 85-cell allocation; it never reads beyond the product's 84-cell grid.
+This compatibility defect is not presented as a newly observed active gameplay
+crash. The successful control process, executable and one original compiler
+warning remain archived. A Python syntax repair preceded C compilation and
+execution; its earlier script is retained. The first Windows disassembly
+reader stopped on differing leading-underscore symbol labels; its failed
+files remain. Normalizing those labels changed no source, PE or test result
+and required no native rerun. The first CI reader also matched an existing
+server test sharing the new family prefix. Package scoping fixes only that
+reader; its failed files remain, with no native tests or CI jobs rerun. The
+final manifest verifier also needed Unix-relative and Windows-basename path
+schemas; both earlier verifier failures remain, with all 158 binary SHA
+checks preserved and no execution changes.
+
+Qualification passes:
+
+- Focus **32,827**, normal **620,446**, and highres/cgocheck2/checkptr2
+  **620,446** events all pass on their first attempts, with zero warnings.
+  All prior 587,619 selected results remain. The 9,419-input source lease is
+  `ec9370479c0cdd1bc15fbeffd1e43882975c0c09da01dbcf0099208ab0cd0555`; all 4,793 prior protected inputs are unchanged.
+- Three call routes and three placements exercise **98,469** primary legacy/
+  typed/NULL-output calls, whole native grid and 64 KiB global/foreign owners,
+  guards, 17 layout fields and the existing canonical C reader. The unchanged
+  287-byte bounded C parent adds **10,941** calls. Composed hit/miss checks
+  retain the published pair. Full parent and allocator migration are uncredited.
+- Four default Apple compiler ARM64 products pass metadata/help and **162**
+  public/control symbols without warnings. Normal/HD each pass two core E2E
+  cases, a functional Save/Load diagnostic and independent ordinary UDP chat
+  with eight submissions, four peer messages and one host reply. Both chat
+  processes exit zero without force. All 4,649 original asset/personal Save
+  hashes remain unchanged; the public pixel failure stays open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44007200815)
+  and [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44007196509)
+  pass all six native profiles on their first attempts. Six official ZIPs
+  preserve **158 actual test mains**, **33** source-bound reader chains,
+  exact 32,827-event suite increments and unchanged skips. Complete warning
+  review scans **26 files / 9,154,020,687 bytes**
+  and finds zero warnings.
+- The exact primary Windows/386 PE passes **98,481** new-family terminal
+  events under `GOGC=10` across three repetitions, without rebuild or patch.
+  Its emitted legacy Go root has zero Go write-barrier calls for the C-owned
+  packed pointer store. Pointer-return Cgo wrappers can legitimately contain
+  barriers; the pinned generator and actual generated C initialize their
+  result slots to zero before crossing into Go. Earlier UI/global-record GC
+  replays remain covered. This does not claim a whole-engine GC repair.
+
+The current **39 program paths**, 38 preceding S46 paths,
+39 preceding S45 paths and retained failed S45/S41/S39/S34 programs are SHA
+verified. Only the inactive dedicated build cache was cleaned
+(1,722,896 KiB → 8 KiB).
+Originals, failures, products, offline modules and RAM records are preserved.
+
+Fresh default ARM64 audit: **207 C files**, **2,460 ordinary + 14 macro =
+2,474 own C definitions**, **447** functions with pointer/integer casts and
+zero unclassified definitions. Direct casts include 319 pointer-to-narrow,
+2,023 narrow-to-pointer and 585 native-width sites. This inventory includes
+bridges/platform/reference implementations and is not an unported denominator.
+Headers/inc, Cgo preambles and other architecture/tag paths remain outside it.
+Counts 0–32 and diagnostic scalar-tail counts 33–36 are qualified; counts
+37–255 across native pointer fields, unknown packed-result readers, aliases,
+out-of-grid faults and concurrent mutation remain uncredited.
+
+Qualification SHA-256: `7b007ff764bcc7f8c5dafde24e56274d74acb41d74496aa0653dc52a8128436d`.
+
 ### Native script UTF-16 pointer insertion, 2026-11-17
 
 Engine `4e47b6258734be6850449cb040488c2703ab79e6` is committed and pushed to

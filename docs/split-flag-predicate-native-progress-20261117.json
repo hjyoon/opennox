@@ -1,0 +1,954 @@
+{
+  "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+  "qualified_C_export_migrations": 2,
+  "new_original_algorithm_credit": 0,
+  "implemented_split_Go_entries": 284,
+  "cumulative_qualified_split_Go_entries": 282,
+  "overall_100_percent": false,
+  "source_binding": {
+    "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+    "source_tree": "d03db879ba6a8c95b2e91156d5538e33caa52046",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-flag-predicate-qualify-20261117-v1",
+    "source_lease_sha256": "2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf",
+    "source_files": 9441,
+    "all_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020"
+  },
+  "local_gates": {
+    "flag-predicate-focus-v1": {
+      "changed_source_paths": [],
+      "source_files": 9441,
+      "source_lease_sha256": "2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf",
+      "exit_code": 0,
+      "elapsed_seconds": 304.273,
+      "test_actions": {
+        "pass": 11
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "flag-predicate-native-normal-v1": {
+      "changed_source_paths": [],
+      "source_files": 9441,
+      "source_lease_sha256": "2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf",
+      "exit_code": 0,
+      "elapsed_seconds": 141.579,
+      "test_actions": {
+        "pass": 684092
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "flag-predicate-native-strict-v1": {
+      "changed_source_paths": [],
+      "source_files": 9441,
+      "source_lease_sha256": "2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf",
+      "exit_code": 0,
+      "elapsed_seconds": 565.323,
+      "test_actions": {
+        "pass": 684092
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    }
+  },
+  "local_identities": {
+    "utc": "2026-11-17T10:04:08.760302+00:00",
+    "legacy_normal_and_strict_exact_terminal_identities_equal": true,
+    "all684081_prior_identities_and_multiplicities_unchanged": true,
+    "new_terminal_identities": [
+      "TestFlagPredicateNativeLayout",
+      "TestFlagPredicateNativeOriginal",
+      "TestFlagPredicateNativeOriginal/route0/place100",
+      "TestFlagPredicateNativeOriginal/route0/place2000",
+      "TestFlagPredicateNativeOriginal/route0/place8000",
+      "TestFlagPredicateNativeOriginal/route1/place100",
+      "TestFlagPredicateNativeOriginal/route1/place2000",
+      "TestFlagPredicateNativeOriginal/route1/place8000",
+      "TestFlagPredicateNativeOriginal/route2/place100",
+      "TestFlagPredicateNativeOriginal/route2/place2000",
+      "TestFlagPredicateNativeOriginal/route2/place8000"
+    ],
+    "new_terminal_events": 11,
+    "native_calls_within_new_family_per_run": 595062,
+    "actual_C_calls_per_run": 396708,
+    "pass_events": 684092,
+    "no_original_or_existing_test_expectation_changes": true
+  },
+  "original_CPU_contexts": 66118,
+  "original_root_bytes": 41,
+  "actual_C_before_calls": 396708,
+  "original_nil_fault_parity_credited": false,
+  "compatibility_cases": 256,
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/products-v1/opennox",
+      "bytes": 70321154,
+      "sha256": "58398ea54c9238c6feb0a8cc4611f8e590c9c9eba75984021077160614c36c61",
+      "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/products-v1/opennox-hd",
+      "bytes": 70436690,
+      "sha256": "62f77e685b5b8165ef7e253092af72498241b30d20ef3dd38c2b6347af975d2b",
+      "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/products-v1/opennox-server",
+      "bytes": 66904466,
+      "sha256": "3ebe0906e3cb8c87f6dcbe6845e46fd1d7b22a4ed5b9a22f6cb1510f9f496665",
+      "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/products-v1/opennox-server-hd",
+      "bytes": 67036562,
+      "sha256": "0f3711d532a600828f1146ccde940063d9b7056538e404dadc8ea6c4852cf116",
+      "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385"
+    }
+  ],
+  "native_public_control_symbols_per_product": 168,
+  "ci": {
+    "runs": [
+      44059779154,
+      44059749823
+    ],
+    "all_profiles": 6,
+    "all_source_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "archives": [
+      {
+        "artifact_id": 14319350182,
+        "name": "linux-amd64-opennox-server-hd-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14319350182-linux-amd64-opennox-server-hd-184dbc532eb0d72c313b53d8413a2ad073a89385.zip",
+        "bytes": 241633765,
+        "sha256": "0fd16e067648a271e9ec7935fdc4b7c340a5b6e6da0af20bb2b9c0a1de5921a0",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1497916,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14318568958,
+        "name": "linux-amd64-opennox-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14318568958-linux-amd64-opennox-184dbc532eb0d72c313b53d8413a2ad073a89385.zip",
+        "bytes": 256352596,
+        "sha256": "aa88f64ab9aefcc972502725c3a9ee1d6077ad7484c4ef78e8b3651c9c3f775e",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1504029,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14318363780,
+        "name": "linux-amd64-opennox-hd-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14318363780-linux-amd64-opennox-hd-184dbc532eb0d72c313b53d8413a2ad073a89385.zip",
+        "bytes": 255068944,
+        "sha256": "81ff203db7b9b80a8cebf407c52383759d02f9d79fad1134cad216ce3b815c40",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1504029,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14318174406,
+        "name": "linux-amd64-opennox-server-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14318174406-linux-amd64-opennox-server-184dbc532eb0d72c313b53d8413a2ad073a89385.zip",
+        "bytes": 311751560,
+        "sha256": "b3012b926b585a9e52f6e2fc942c3ba9c26b00216558edd9f7e5ed015e3ff6d4",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1497916,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14319251136,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14319251136-opennox-server-windows-386.zip",
+        "bytes": 189922799,
+        "sha256": "2791b8efa197fe7c8b3144ebd71f9db98a8b1dbfac06f404cf64b756c44e779b",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1475968
+        }
+      },
+      {
+        "artifact_id": 14318507110,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/ci-14318507110-opennox-server-windows-amd64.zip",
+        "bytes": 194234853,
+        "sha256": "90063c9ebd7deba647196991d0b84c8524aa75a53993e7719c313f53a44a58a2",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1495901,
+          "skip": 11
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 36,
+    "uncompressed_warning_scan_bytes": 9555109200,
+    "native_matrix_readers": 37,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14319350182,
+        "name": "linux-amd64-opennox-server-hd-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "preceding_artifact": 14312693116,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1497905,
+        "current_passes": 1497916,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 7,
+        "all37_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14318568958,
+        "name": "linux-amd64-opennox-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "preceding_artifact": 14312808288,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1504018,
+        "current_passes": 1504029,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 57,
+        "all37_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14318363780,
+        "name": "linux-amd64-opennox-hd-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "preceding_artifact": 14314076139,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1504018,
+        "current_passes": 1504029,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 57,
+        "all37_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14318174406,
+        "name": "linux-amd64-opennox-server-184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "preceding_artifact": 14313551387,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1497905,
+        "current_passes": 1497916,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 7,
+        "all37_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14319251136,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14313856742,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1475957,
+        "current_passes": 1475968,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 94,
+        "all37_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14318507110,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14312468754,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-predicates-native-v2",
+        "preceding_passes": 1495890,
+        "current_passes": 1495901,
+        "expected_increment": 11,
+        "actual_increment": 11,
+        "existing_skips_unchanged": true,
+        "skip_events": 11,
+        "all37_native_original_reader_families_required_separately": true
+      }
+    ],
+    "primary_new_family_terminal_events_per_profile": 11,
+    "native_new_family_calls_per_profile": 595062,
+    "actual_C_calls_per_profile": 396708,
+    "exact_primary_PE_GOGC10_replays": {
+      "global-record": {
+        "utc": "2026-11-17T10:07:20.195465+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestGlobalRecordNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 1088,
+        "expected_terminal_events": 29388,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 29388
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "a7dc96e313baa161b515319641ea1dc6a1b094f6f3c43143e8ede4659ba72cb6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "inventory-lookup": {
+        "utc": "2026-11-17T10:07:27.535359+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestInventoryLookupNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 3647,
+        "expected_terminal_events": 98481,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 98481
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "67c6a857c6a9d68f755fef0575c8ae55229bf855890253a42bf5cf42c2fceb48",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cache-list": {
+        "utc": "2026-11-17T10:09:15.005332+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestCacheListNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 2992,
+        "expected_terminal_events": 80793,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 80793
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "53eae73df1eb784848b2f395a5ac902c3389a864156138b50ce26688674889f0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "npc-equipment": {
+        "utc": "2026-11-17T10:10:35.878825+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestNPCEquipmentNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 1233,
+        "expected_terminal_events": 33297,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 33297
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "0a83739cfad9435c1d1451f3372f210bdad06a250668982885b92dbeec44e06c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "team-predicate": {
+        "utc": "2026-11-17T10:10:38.297375+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestTeamPredicateNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 4078,
+        "expected_terminal_events": 110112,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 110112
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "147d143b12d208cca120fabbf648e724d33e66c7a9677d1d09b80cb17e79a953",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "monster-retreat": {
+        "utc": "2026-11-17T10:10:54.862756+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\server.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^(TestMonsterRetreatOriginalNative545440|TestMonsterActionRetreat545440NilEnemyFaultPreservesCompletedPrefix|TestMonsterActionRetreat545440RejectedFleeSkipsEnemyRead)$"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\server",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "636e6819c3607e72d82afb9de3550a9e5d096fd54b9b2187eaf77bb889290fa9",
+        "rebuilt": false,
+        "original_contexts": 1465,
+        "original_nil_enemy_faults": 4,
+        "expected_terminal_events": 4404,
+        "original_inputs_and_expectations_unchanged": true,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "636e6819c3607e72d82afb9de3550a9e5d096fd54b9b2187eaf77bb889290fa9",
+        "test_actions": {
+          "pass": 4404
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "db8fc5be8402590c6d543897c674b1dbe6e5fec551233ac341452ead5945a819",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "flag-predicate": {
+        "utc": "2026-11-17T10:10:56.304888+00:00",
+        "source": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestFlagPredicateNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "rebuilt": false,
+        "original_contexts": 66118,
+        "original_nil_fault_contexts": 256,
+        "separate_incoming_C_nil_compatibility_contexts": 256,
+        "original_nil_fault_parity_credited": false,
+        "native_calls_per_repetition": 595062,
+        "expected_terminal_events": 33,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "33319f997a93fd9b5a6ec17148cd7032f7655a61793559495b0d01288360b047",
+        "test_actions": {
+          "pass": 33
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "f4bfbd1d4c27410712863cf8246719e28d1c5e5517a4f42464a9daa15f0fa2be",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "existing_UI_GOGC10_replay_retained": true,
+    "skipped_optional_manual_replay_job_retained": [
+      {
+        "id": 133958235059,
+        "run_id": 44059749823,
+        "workflow_name": "Porting Windows native gate",
+        "head_branch": "port/go1.27-multiarch",
+        "run_url": "https://api.github.com/repos/hjyoon/opennox/actions/runs/44059749823",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOQm9xk88AAAAfMIhzsw",
+        "head_sha": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+        "url": "https://api.github.com/repos/hjyoon/opennox/actions/jobs/133958235059",
+        "html_url": "https://github.com/hjyoon/opennox/actions/runs/44059749823/job/133958235059",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-17T09:53:43Z",
+        "started_at": "2026-11-17T09:53:43Z",
+        "completed_at": "2026-11-17T09:53:43Z",
+        "name": "Windows/386 retained global record GC replay",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/hjyoon/opennox/check-runs/133958235059",
+        "labels": [
+          "windows-2025"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  },
+  "preservation": {
+    "original_assets_and_personal_Save_files": 4649,
+    "retained_current_program_paths": 38,
+    "retained_prior_program_stages": [
+      {
+        "stage": "split-team-predicates-native-v2",
+        "programs": 46
+      },
+      {
+        "stage": "split-team-predicates-native-v1",
+        "programs": 41
+      },
+      {
+        "stage": "split-cache-list-native-v2",
+        "programs": 35
+      },
+      {
+        "stage": "split-cache-list-native-v1",
+        "programs": 40
+      },
+      {
+        "stage": "split-inventory-lookup-native-v1",
+        "programs": 39
+      },
+      {
+        "stage": "split-wide-script-pointer-native-v1",
+        "programs": 38
+      },
+      {
+        "stage": "split-global-record-native-v2",
+        "programs": 39
+      },
+      {
+        "stage": "split-global-record-native-v1",
+        "programs": 46
+      },
+      {
+        "stage": "split-inventory-state-native-v1/failed-layout-assertion-v1",
+        "programs": 4
+      },
+      {
+        "stage": "split-object-field-native-v1",
+        "programs": 37
+      },
+      {
+        "stage": "split-trade-packets-native-v1",
+        "programs": 11
+      }
+    ],
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 1740008,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 38,
+      "all_current_program_SHA_verified": true,
+      "critical_products_and_test_mains_verified": 8,
+      "prior_program_stages_SHA_verified": [
+        {
+          "stage": "split-team-predicates-native-v2",
+          "programs": 46
+        },
+        {
+          "stage": "split-team-predicates-native-v1",
+          "programs": 41
+        },
+        {
+          "stage": "split-cache-list-native-v2",
+          "programs": 35
+        },
+        {
+          "stage": "split-cache-list-native-v1",
+          "programs": 40
+        },
+        {
+          "stage": "split-inventory-lookup-native-v1",
+          "programs": 39
+        },
+        {
+          "stage": "split-wide-script-pointer-native-v1",
+          "programs": 38
+        },
+        {
+          "stage": "split-global-record-native-v2",
+          "programs": 39
+        },
+        {
+          "stage": "split-global-record-native-v1",
+          "programs": 46
+        },
+        {
+          "stage": "split-inventory-state-native-v1/failed-layout-assertion-v1",
+          "programs": 4
+        },
+        {
+          "stage": "split-object-field-native-v1",
+          "programs": 37
+        },
+        {
+          "stage": "split-trade-packets-native-v1",
+          "programs": 11
+        }
+      ],
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "originals_Save_ZIPs_modules_and_RAM_untouched": true,
+      "historical_missing_paths": "491 user deletions/284versions recorded and nonblocking"
+    },
+    "all_original_CPU_model_C_before_and_failed_logs_preserved": true,
+    "historical_user_deleted_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_loss_nonblocking": true
+  },
+  "C_inventory": {
+    "utc": "2026-11-17T09:55:17.706893+00:00",
+    "source_revision": "184dbc532eb0d72c313b53d8413a2ad073a89385",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-flag-predicate-qualify-20261117-v1",
+    "source_lease_sha256": "2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf",
+    "fresh_Go_selection_command": [
+      "/Users/ghost/.goenv/versions/1.27.3/bin/go",
+      "list",
+      "-e",
+      "-json",
+      "./..."
+    ],
+    "selected_C_files": 207,
+    "selected_files": [
+      "src/legacy/GAME1.c",
+      "src/legacy/GAME1_1.c",
+      "src/legacy/GAME1_2.c",
+      "src/legacy/GAME1_3.c",
+      "src/legacy/GAME2.c",
+      "src/legacy/GAME2_1.c",
+      "src/legacy/GAME2_2.c",
+      "src/legacy/GAME2_3.c",
+      "src/legacy/GAME3.c",
+      "src/legacy/GAME3_1.c",
+      "src/legacy/GAME3_2.c",
+      "src/legacy/GAME3_3.c",
+      "src/legacy/GAME4.c",
+      "src/legacy/GAME4_1.c",
+      "src/legacy/GAME4_2.c",
+      "src/legacy/GAME4_3.c",
+      "src/legacy/GAME5.c",
+      "src/legacy/GAME5_2.c",
+      "src/legacy/GameEx.c",
+      "src/legacy/MixPatch.c",
+      "src/legacy/audio_event_collide_4eaad0_parse.c",
+      "src/legacy/audio_source_native.c",
+      "src/legacy/cgo_blobs.c",
+      "src/legacy/cgo_fs.c",
+      "src/legacy/client/audio/ail/audio_openal.c",
+      "src/legacy/client__audio__audevent.c",
+      "src/legacy/client__draw__animdraw.c",
+      "src/legacy/client__draw__armordraw.c",
+      "src/legacy/client__draw__arrowdraw.c",
+      "src/legacy/client__draw__basedraw.c",
+      "src/legacy/client__draw__boulderdraw.c",
+      "src/legacy/client__draw__bubbledraw.c",
+      "src/legacy/client__draw__canidraw.c",
+      "src/legacy/client__draw__doordraw.c",
+      "src/legacy/client__draw__drawrays.c",
+      "src/legacy/client__draw__flagdraw.c",
+      "src/legacy/client__draw__fx.c",
+      "src/legacy/client__draw__glowdraw.c",
+      "src/legacy/client__draw__glyphdraw.c",
+      "src/legacy/client__draw__harpoondraw.c",
+      "src/legacy/client__draw__lightning.c",
+      "src/legacy/client__draw__lvupdraw.c",
+      "src/legacy/client__draw__magicdrw.c",
+      "src/legacy/client__draw__maidendraw.c",
+      "src/legacy/client__draw__parse__parse.c",
+      "src/legacy/client__draw__partrain.c",
+      "src/legacy/client__draw__partscrn.c",
+      "src/legacy/client__draw__plasma.c",
+      "src/legacy/client__draw__playerdraw.c",
+      "src/legacy/client__draw__powderdraw.c",
+      "src/legacy/client__draw__pressureplatedraw.c",
+      "src/legacy/client__draw__slavedraw.c",
+      "src/legacy/client__draw__spiderspitdraw.c",
+      "src/legacy/client__draw__staticdraw.c",
+      "src/legacy/client__draw__summondraw.c",
+      "src/legacy/client__draw__triggerdraw.c",
+      "src/legacy/client__draw__udeddraw.c",
+      "src/legacy/client__draw__vortexdraw.c",
+      "src/legacy/client__draw__weapondraw.c",
+      "src/legacy/client__drawable__drawdb.c",
+      "src/legacy/client__drawable__update__charmup.c",
+      "src/legacy/client__drawable__update__cloud.c",
+      "src/legacy/client__drawable__update__dball.c",
+      "src/legacy/client__drawable__update__drainup.c",
+      "src/legacy/client__drawable__update__fireball.c",
+      "src/legacy/client__drawable__update__healup.c",
+      "src/legacy/client__drawable__update__manabomb.c",
+      "src/legacy/client__drawable__update__mmislup.c",
+      "src/legacy/client__drawable__update__mtailup.c",
+      "src/legacy/client__drawable__update__sparklup.c",
+      "src/legacy/client__drawable__update__telwake.c",
+      "src/legacy/client__drawable__update__vortexup.c",
+      "src/legacy/client__gui__chathelp.c",
+      "src/legacy/client__gui__chaticon.c",
+      "src/legacy/client__gui__conntype.c",
+      "src/legacy/client__gui__gadgets__listbox.c",
+      "src/legacy/client__gui__gamewin__gamewin.c",
+      "src/legacy/client__gui__gui_ctf.c",
+      "src/legacy/client__gui__guibook.c",
+      "src/legacy/client__gui__guibrief.c",
+      "src/legacy/client__gui__guifb.c",
+      "src/legacy/client__gui__guigen.c",
+      "src/legacy/client__gui__guiggovr.c",
+      "src/legacy/client__gui__guiinput.c",
+      "src/legacy/client__gui__guiinv.c",
+      "src/legacy/client__gui__guijourn.c",
+      "src/legacy/client__gui__guimeter.c",
+      "src/legacy/client__gui__guimsg.c",
+      "src/legacy/client__gui__guiobs.c",
+      "src/legacy/client__gui__guiquit.c",
+      "src/legacy/client__gui__guirank.c",
+      "src/legacy/client__gui__guishop.c",
+      "src/legacy/client__gui__guispell.c",
+      "src/legacy/client__gui__guisumn.c",
+      "src/legacy/client__gui__guitrade.c",
+      "src/legacy/client__gui__guivote.c",
+      "src/legacy/client__gui__servopts__access.c",
+      "src/legacy/client__gui__servopts__advserv.c",
+      "src/legacy/client__gui__servopts__general.c",
+      "src/legacy/client__gui__servopts__guiserv.c",
+      "src/legacy/client__gui__servopts__objlst.c",
+      "src/legacy/client__gui__servopts__playrlst.c",
+      "src/legacy/client__gui__servopts__spelllst.c",
+      "src/legacy/client__gui__window.c",
+      "src/legacy/client__io__win95__focus.c",
+      "src/legacy/client__network__cdecode.c",
+      "src/legacy/client__network__deathmsg.c",
+      "src/legacy/client__network__inform.c",
+      "src/legacy/client__shell__inputcfg__inputcfg.c",
+      "src/legacy/client__shell__mainmenu.c",
+      "src/legacy/client__shell__noxworld.c",
+      "src/legacy/client__shell__options.c",
+      "src/legacy/client__shell__selclass.c",
+      "src/legacy/client__shell__selcolor.c",
+      "src/legacy/client__system__client.c",
+      "src/legacy/client__system__parsecmd.c",
+      "src/legacy/common__gamemech__pausefx.c",
+      "src/legacy/common__log.c",
+      "src/legacy/common__magic__comguide.c",
+      "src/legacy/common__object__armrlook.c",
+      "src/legacy/common__object__modifier.c",
+      "src/legacy/common__object__weaplook.c",
+      "src/legacy/common__system__settings.c",
+      "src/legacy/common__system__team.c",
+      "src/legacy/compat.c",
+      "src/legacy/damage_collide_4e9430_parse.c",
+      "src/legacy/draw_allocation.c",
+      "src/legacy/fixed_rng_seed_4eed30.c",
+      "src/legacy/fixed_rng_seed_4ef560.c",
+      "src/legacy/fixed_rng_seed_4ef570.c",
+      "src/legacy/fixed_rng_seed_4f0630.c",
+      "src/legacy/fixed_rng_seed_4f3e20.c",
+      "src/legacy/fixed_rng_seed_4f78d0.c",
+      "src/legacy/fixed_rng_seed_4fb940.c",
+      "src/legacy/game1_split_abi.c",
+      "src/legacy/game2_book_abi.c",
+      "src/legacy/game2_briefing_abi.c",
+      "src/legacy/game2_native_data.c",
+      "src/legacy/game2_quickbar_abi.c",
+      "src/legacy/game2_server_abi.c",
+      "src/legacy/game2_server_reference.c",
+      "src/legacy/game3_class_config_options_abi.c",
+      "src/legacy/game3_map_effect_abi.c",
+      "src/legacy/game3_native_data.c",
+      "src/legacy/game3_widgets_abi.c",
+      "src/legacy/game4_gold_consumers_abi.c",
+      "src/legacy/game4_map_archive_abi.c",
+      "src/legacy/game4_native_data.c",
+      "src/legacy/game4_player_abi.c",
+      "src/legacy/game5_wall_data.c",
+      "src/legacy/gui_cgo.c",
+      "src/legacy/item_apply_disengage_4f3030.c",
+      "src/legacy/mana_drain_collide_4e9490_parse.c",
+      "src/legacy/map_object_list_5048a0.c",
+      "src/legacy/map_radial_damage_4e25b0.c",
+      "src/legacy/map_temp_lists_503f40.c",
+      "src/legacy/mapgen_legacy_ptr.c",
+      "src/legacy/memfile.c",
+      "src/legacy/memmap.c",
+      "src/legacy/minimap_monster_iterator_50aae0.c",
+      "src/legacy/monster_arrow_collide_4eb800_parse.c",
+      "src/legacy/network_line_message_4d9eb0.c",
+      "src/legacy/noxstring.c",
+      "src/legacy/object_barrel_4e7470_caller.c",
+      "src/legacy/object_collide_noop_4e87a0.c",
+      "src/legacy/object_collider_4e7290.c",
+      "src/legacy/object_inventory_4e7980.c",
+      "src/legacy/object_is_player_4e7bc0.c",
+      "src/legacy/objects_velocity_5118a0.c",
+      "src/legacy/player_handle_elim_death_54d7a0.c",
+      "src/legacy/player_handle_kotr_death_54dc40.c",
+      "src/legacy/player_try_dequip_4f2fb0.c",
+      "src/legacy/player_update_score_54d980.c",
+      "src/legacy/quest_map_buffer_4e8e50.c",
+      "src/legacy/quest_win_screen_450770.c",
+      "src/legacy/raw_default_damage_native_bridge_4e0b30.c",
+      "src/legacy/readonly_bindings.c",
+      "src/legacy/server__ability__ability.c",
+      "src/legacy/server__dbase__objdb.c",
+      "src/legacy/server__gamemech__explevel.c",
+      "src/legacy/server__magic__plyrgide.c",
+      "src/legacy/server__magic__plyrspel.c",
+      "src/legacy/server__mapgen__generate__populate.c",
+      "src/legacy/server__network__sdecode.c",
+      "src/legacy/server__object__die__die.c",
+      "src/legacy/server__object__health.c",
+      "src/legacy/server__script__builtin.c",
+      "src/legacy/server__script__file.c",
+      "src/legacy/server__system__cscrfunc.c",
+      "src/legacy/server__system__server.c",
+      "src/legacy/server__system__trade.c",
+      "src/legacy/spark_explosion_collide_4e9ac0_parse.c",
+      "src/legacy/startup_pause_compare_413f60.c",
+      "src/legacy/stats_bulk_native.c",
+      "src/legacy/stats_end_native.c",
+      "src/legacy/stats_start_native.c",
+      "src/legacy/team_flags_4185b0.c",
+      "src/legacy/thing_parsers_reference_411540.c",
+      "src/legacy/unit_count_slaves_4e7cf0.c",
+      "src/legacy/unit_freeze_gate_4e79b0.c",
+      "src/legacy/unit_inventory_contains_equivalent_4e7ec0.c",
+      "src/legacy/unit_item_equivalent_4e7de0.c",
+      "src/legacy/unit_owned_type_4e7be0.c",
+      "src/legacy/vardefs.c",
+      "src/legacy/vote_5066d0.c",
+      "src/legacy/wall_reflect_collide_4e9d80_parse.c",
+      "src/legacy/world_player_reference_40a830.c"
+    ],
+    "C_family_inputs_verified": 1149,
+    "C_family_inputs_unchanged": 1147,
+    "changed_C_inputs": [
+      "src/legacy/GAME5_2.c",
+      "src/legacy/client__gui__window.c"
+    ],
+    "new_AST_translation_units": [
+      {
+        "source": "src/legacy/client__gui__window.c",
+        "removed_C_body": "nox_xxx_wndGetFlags_46ADA0",
+        "remaining_own_function_types_verified": 12,
+        "fresh_AST_sha256": "f93b3aac2a92f23a8e01bea97cecaefc6fa71572c286418dc823cb5719fe21d1",
+        "source_sha256": "428733f6071d131648e5b16f51003ef8a07c3650a46fad22015f6e9a2575ee18",
+        "command": [
+          "/usr/bin/clang",
+          "-fsyntax-only",
+          "-Xclang",
+          "-ast-dump=json",
+          "-fshort-wchar",
+          "-fno-strict-aliasing",
+          "-fno-strict-overflow",
+          "-fsigned-char",
+          "-DNOX_CGO",
+          "-Wno-everything",
+          "/Users/ghost/codex-sandbox/worktrees/opennox-flag-predicate-qualify-20261117-v1/src/legacy/client__gui__window.c"
+        ]
+      },
+      {
+        "source": "src/legacy/GAME5_2.c",
+        "removed_C_body": "sub_579EE0",
+        "remaining_own_function_types_verified": 74,
+        "fresh_AST_sha256": "8d5c79ce44adf5710158864fac5396357eb4f4ebd1073a0af09f777e28c978f9",
+        "source_sha256": "95fe6d0a69f01ce23481c40195588b974331f8854fa00b4b8fe840ff572d6b80",
+        "command": [
+          "/usr/bin/clang",
+          "-fsyntax-only",
+          "-Xclang",
+          "-ast-dump=json",
+          "-fshort-wchar",
+          "-fno-strict-aliasing",
+          "-fno-strict-overflow",
+          "-fsigned-char",
+          "-DNOX_CGO",
+          "-Wno-everything",
+          "/Users/ghost/codex-sandbox/worktrees/opennox-flag-predicate-qualify-20261117-v1/src/legacy/GAME5_2.c"
+        ]
+      }
+    ],
+    "unchanged_own_C_translation_units": 205,
+    "prior_inventory": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v15",
+    "prior_macro_classification_SHA256": "f95bdce2da20d201a7e179094b2302a87e47058adecc2e27cb61d83ae826f13a",
+    "prior_pointer_width_classification_SHA256": "a3d829daba0f2831a490f2fe446c9e1fe91a1355c94517b290d58cd7368b7a4a",
+    "own_C_definitions": 2468,
+    "ordinary_C_definitions": 2454,
+    "macro_C_definitions": 14,
+    "pointer_integer_cast_functions": 445,
+    "ptr_to_narrow_sites": 319,
+    "narrow_to_ptr_sites": 2012,
+    "native_width_sites": 585,
+    "unknown_direct_cast_sites": 0,
+    "all_C_denominator": "OPEN",
+    "new_original_algorithm_credit": 0,
+    "scope": "Fresh207-file selection and two changed native ASTs. Exact1147 unchanged C/header/inc/assembly inputs and205 unchanged own-C TUs reuse retainedv15 results. Only two cast-free C bodies removed. Cgo preambles/other tag and architecture inventories remain incomplete; no all-C unported denominator is claimed."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3 only; nine final chapter audits OPEN",
+    "chapter4plus": "excluded",
+    "public_SaveLoad_pixel": "FAILED/open; functional diagnostic does not promote it",
+    "S25_original_seals": "Two deleted original seals remain uncredited.",
+    "Windows_memory_GC": "Earlier OS/GC causes remain unproved; this pure field-reader migration is not a whole-engine repair.",
+    "pointer_scope": "Public native pointer types unchanged. Existing one active own-C call and seven Go-C calls byte-identical. Parent integer/pointer transport,ordered membership,spawn/trade allocators and complete indirect reachability remain separate.",
+    "domain": "Window326 declared contexts,not all2^32 flag patterns. Waypoint all65536 nonnil byteflag-mask pairs;256 original nil faults at0x1dd contrasted with existing C nil return0. Incoming public C compatibility is preserved separately; nil original-fault parity UNCR. Physical native registers/FP,arbitrary invalid owners,concurrency and allocator/lifetime migration uncredited.",
+    "all_C_denominator": "OPEN. Fresh207Cselection,1149Cfamilyinputs and two changed ASTs reuse205 unchanged TUs.2468Cdefinitions/445castfunctions are not an unported denominator. Cgo preambles/other architecture and tag inventories incomplete."
+  },
+  "qualification_record": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/qualified-flag-predicate-C-entries-v1.json",
+  "qualification_sha256": "57831f9f08eee466e6bc7d7f4c97fa97d6b328b3f0491585307f266d2487a365"
+}

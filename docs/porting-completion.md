@@ -60,6 +60,87 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native window flags and waypoint mask C exports, 2026-11-17
+
+Engine `184dbc532eb0d72c313b53d8413a2ad073a89385` is committed and pushed to
+`origin/port/go1.27-multiarch`. Public C entries
+`nox_xxx_wndGetFlags_46ADA0` and `sub_579EE0` now execute Go field readers.
+The window entry preserves nil `-2` and raw flags for destroyed windows;
+the existing `Window.GetFlags` has different nil/dead behavior. The waypoint
+entry preserves the incoming C nil guard and delegates nonnil masks to the
+existing `Waypoint.HasFlag2Mask`. Public headers, the active own-C call and
+seven Go-to-C calls remain byte-identical. No allocator or parent pointer
+conversion is included in this batch.
+
+This qualifies **two existing C export migrations**, with **zero new
+original algorithm credit**. The ledger remains **284 implemented / 282
+fully recorded**. Two lost S25 original seals remain uncredited.
+
+A **66-path preport seal** records 9,435 incoming source files and 4,799
+protected existing inputs. The original CPU executes all **41 root bytes**,
+319 startup bytes and control state `0xe3f` across **66,118 declared inputs**:
+326 window contexts, all 65,536 nonnil byte flag/mask pairs and 256 nil
+waypoint masks. Input-only model returns/faults, ordered reads, whole 64-KiB
+owners/caller memory and 25 original FP/SSE registers agree; there are no
+entry writes or child services. Negative controls detect wrong offsets.
+
+Original `579EE0` faults at `0x1dd` for nil. Incoming C explicitly returns
+zero, so those 256 compatibility controls are recorded separately and
+**nil original-fault parity is uncredited**. Unchanged typed ARM64 C passes
+**396,708 actual calls** before editing, with full guard owners and pointers
+above 4 GiB. These entries already accepted native pointers; no newly fixed
+truncation crash is claimed. Waypoint Flags2 moves from original offset
+477 to native ARM64 offset 737, through the current structure field.
+
+Final-source verification passes with zero warnings:
+
+- Focus **11 terminal events** execute **595,062 calls** across direct C,
+  volatile C function pointers and Go, at three owner placements. The 256
+  nil compatibility cases remain separate from original return parity.
+- Normal and strict legacy regression each pass **684,092** events. All
+  preceding **684,081** identities/multiplicities remain; the eleven grouped
+  new events are the only additions. The **9,441-input lease** is
+  `2bee037b152f60ae0b28f5c83ef5f64bc538c35c74bcc043637f23a493b401bf`.
+- Four default Apple compiler ARM64 products pass metadata/help and **168**
+  native/control symbols. Normal/HD each pass core E2E twice, functional
+  Save/Load and independent ordinary UDP chat (eight submissions, four peer
+  messages, one host reply), with zero exits and no force. All **4,649**
+  original asset/personal Save hashes remain. Public Save/Load pixel failure
+  stays open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44059779154) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44059749823)
+  pass all six profiles on their first attempts. Six official ZIPs preserve
+  **158** individually SHA-verified actual test mains and **37** native
+  reader families per profile. Full-suite counts increase only by eleven;
+  skip identities remain. Complete warning review scans **36 files /
+  9,555,109,200 bytes**, with zero warnings.
+- The exact primary Windows/386 PE passes **33 terminal events** under
+  `GOGC=10`: three repetitions execute **1,785,186 native calls**, without
+  rebuild or patch. Prior GC families remain passing. Two public C exports
+  and two Cgo scalar-return wrappers have zero pointer write barriers.
+
+All **38** current program paths and retained previous successful/failed
+programs are SHA verified. Only the inactive dedicated build cache is
+cleaned, **1,740,008 KiB to 8 KiB**. Originals, Save,
+products, failures, official ZIPs, offline modules and RAM records remain.
+
+Fresh Go selection remains **207 C files**. Of **1,149** C/header/include/
+assembly inputs, 1,147 are unchanged and two remove only the migrated bodies.
+Two fresh changed ASTs and 205 retained unchanged translation units yield
+**2,454 ordinary + 14 macro = 2,468 own-C definitions**. The 445 cast
+functions and 319/2,012/585 direct cast-site counts remain. These totals
+include bridges/platform/reference code and are **not an unported-algorithm
+denominator**; Cgo preambles and other architecture/tag paths remain open.
+
+Overall all-C 100%, the denominator, nine final Warrior/Conjurer/Wizard
+chapter 1–3 audits, public Save/Load pixel failure and previous Windows
+memory/GC causes remain open. Chapter 4+ is excluded. Arbitrary invalid
+owners, native physical register/FP parity, concurrency, ordered membership
+and complete spawn/trade allocator lifetime migration remain uncredited.
+Historical 491 user-deleted paths remain documented and nonblocking.
+
+Qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-native-flag-predicates-v1/qualified-flag-predicate-C-entries-v1.json` (SHA-256 `57831f9f08eee466e6bc7d7f4c97fa97d6b328b3f0491585307f266d2487a365`).
+
 ### Native team predicate C exports and retreat fault boundary, 2026-11-17
 
 Engine `02f5372889d218cd1afd5f074dc177e877dea829` is committed and pushed to

@@ -60,6 +60,103 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native ordered team membership C entries, 2026-11-18
+
+Engine `d61ae46ed8958b1d12bb8bf0e85dee105ed86d9f` is committed and pushed to
+`origin/port/go1.27-multiarch`. Public entries
+`nox_xxx_teamCheckSmth_418C60` and `sub_418C70` now accept typed native
+Team/ObjectTeam pointers and return the ordered native head/next member.
+Private Cgo bridges return `uintptr_t`. Go maintains head, next and previous
+links with membership ownership, preserving prepend, move and unlink order.
+Detach-all, reset and close clear these links before native Team storage is
+released. The fixed eight-byte ObjectTeam and PE32 Team head/link words
+remain unchanged; native pointers are retained in Go-owned maps.
+
+This qualifies **two existing C export migrations** and **zero new original
+algorithm credit**. The ledger remains **284 implemented / 282 fully
+recorded**. Overall all-C 100% and the nine final class/chapter audits remain
+open; chapter 4+ is excluded.
+
+A **159-path preport seal** preserves 9,442 incoming source inputs and 4,801
+protected existing inputs. Before editing, unchanged ARM64 C executes
+**4,176 actual calls** with owners above 4 GiB: 2,220 return correctly,
+**1,044 fault on truncated Team arguments** and **912 truncate next pointers**.
+The functional result is explicitly **FAIL**, with zero unrelated
+divergences or compiler warnings. Earlier preparation failures and every
+control executable/log are retained.
+
+The original CPU and an input-only model agree on all **25 getter bytes**
+and **2,088 queries / 261 ordered graphs**, including nil. Whole 64-KiB
+owners/caller memory and original FP/SSE state remain unchanged. A separate
+**7,439-case selected original attach/detach audit** agrees on 5,680 ordered
+writes and all declared child snapshots. This proves selected prepend/unlink
+and publication ordering, without claiming full parent UI/network, return
+or count parity. In particular, original detach does not decrement the
+public count, whereas incoming Go has separately preserved compatibility
+rules.
+
+An incoming native owner baseline freezes **1,044 lifecycle scenarios /
+14,877 observations**, including raw/deferred counts, IDs, whole Team/node
+owners, ID fallback, reset/reuse and actual close. The unchanged input-only
+model and post-port standalone replay match that trace byte for byte.
+Final integrated tests execute both Go methods and existing C attach/detach
+adapters. Original query and incoming owner fixtures remain unchanged.
+
+Final-source checks pass with zero warnings:
+
+- Focus **22 terminal events** execute **554,364 getter calls**, including
+  **369,576 actual C calls**, using direct C, volatile C function pointers
+  and private Go exports. Both native owner routes execute all lifecycle
+  cases; high addresses and complete foreign guards are checked.
+- Normal and strict legacy regression each pass **684,114** events. The
+  preceding 684,092 identities/multiplicities remain; the 22 grouped new
+  events are the only additions. All **9,449** source inputs are bound by
+  lease `2312edf47c66c653d91bc3ece576c6bf876a4a4720241f411d48c6ad4c547871`.
+- Four default Apple compiler ARM64 products pass metadata/help and **172**
+  native/control symbol checks. Normal/HD core E2E, functional Save/Load and
+  independent ordinary UDP chat pass with zero exits and no force. Each
+  chat run verifies eight submissions, four inbound peer messages and one
+  reply. All **4,649** original assets/personal Save hashes remain unchanged.
+  The separate public Save/Load pixel failure remains open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44120094072) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44120010180)
+  pass all six profiles on their first attempts. Six official ZIPs preserve
+  **158** individually SHA-verified actual test mains and **38** native
+  reader families per profile. Full-suite counts increase only by 22;
+  skip identities remain. Complete warning review scans **38 streams /
+  9,555,202,332 bytes**, with zero warnings.
+- The exact primary Windows/386 PE passes **66 terminal events** under
+  `GOGC=10`, executing **1,663,092 getter calls** in three repetitions
+  without rebuild or patch. Prior GC families remain passing. Compiled
+  inspection verifies 8 emitted getter/bridge
+  functions with zero Go pointer write barriers. Existing parent typed
+  pointer return adapters remain unchanged; no whole-engine GC repair is
+  claimed.
+
+The public C header changed, so all **207** selected ARM64 C translation
+units receive fresh ASTs. Classification records **2,454 ordinary + 14 macro
+= 2,468 own-C definitions**, 445 cast functions, 319 pointer-to-narrow sites,
+**2,010 narrow-to-pointer sites** and **587 native-width sites**, with zero
+unknown direct widths. These include bridges, adapters and reference code;
+they are not an unported-algorithm denominator. Header/include algorithms,
+Cgo preambles and other architecture/tag profiles remain to be inventoried.
+
+All **46** current program paths and retained earlier successful/failed
+programs are SHA verified. Only the inactive dedicated build cache is
+cleaned, **2,043,204 KiB to 8 KiB**. Originals, Save,
+products, failures, official ZIPs, offline modules and RAM records remain.
+Historical 491 user-deleted paths remain documented and nonblocking.
+A separate read-only native monster-owner control passes in ordinary mode
+and fails under `cgocheck2` at `MonsterSpawnRegister50E030`: an unpinned
+Go link is stored into foreign MonsterUpdateData.Field549. Both actual
+executables and the failure trace are preserved for the next fix. The
+selected team regression suites do not cover that separate owner path.
+Monster spawn/trade native allocator ownership and broader Windows memory/GC
+causes remain open. Arbitrary invalid owners, native physical FP/register
+parity and concurrency are uncredited.
+
+Qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1/qualified-team-membership-C-entries-v1.json` (SHA-256 `9541af6293c81398342faf96711ae12ac733b13f0e09dfe6bf685fa91017a94b`).
+
 ### Native window flags and waypoint mask C exports, 2026-11-17
 
 Engine `184dbc532eb0d72c313b53d8413a2ad073a89385` is committed and pushed to

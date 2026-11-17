@@ -60,6 +60,93 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native monster spawn link lifetime, 2026-11-18
+
+Engine `81d0da61e6038199c41fc9994e305d7ad042198a` is committed and pushed to
+`origin/port/go1.27-multiarch`. Existing Go monster registration stored a Go
+MonsterSpawnLink in foreign MonsterUpdateData.Field549. With real native
+Object/update owners above 4 GiB, `cgocheck2` aborted at that store with
+`unpinned Go pointer stored into non-Go memory` (native exit 2).
+
+Each link is now pinned before publication. Individual cleanup removes its
+native backreference and neighbor edges before releasing the pin. Reset
+clears the entire graph before releasing any pins, and generic Server.Close
+frees registry ownership before other native storage. The outer server's
+existing reset/free path remains idempotent. Three existing tests add
+cleanup defers; all prior inputs, assertions and golden values remain.
+
+This is a prerequisite **native owner lifetime fix**, with **zero C export
+migrations and zero new original algorithm credit**. The ledger remains
+**284 implemented / 282 fully recorded**. Old C SpawnClass/MonsterList
+allocators and entrypoint integer transport still need migration. Original
+PE algorithm equivalence is uncredited for this ownership-only change.
+
+A **63-path final preport seal** records 9,450 incoming source inputs and
+4,805 protected existing inputs. Both preparation errors (an incorrect test
+count and active observer-log capture) remain preserved; the final seal is
+`prepared-baseline-v2.json`, bound independently before source changes.
+
+The same standalone source that failed before now passes ordinary and
+strict execution with exit zero, including a real GC while the foreign
+backreference is live. Both before/after modes retain two executable copies.
+An input-only model fixes **24 cases / 268 events**, with six programs,
+four orders, nil/duplicate controls and wrapping counters. Three foreign
+placements execute **72 cases / 804 observations / 13,164 actual C reads**.
+Whole 64-KiB owners and C/Go link layouts agree. Only four close-live cases
+(12 events) differ from incoming behavior, through the declared correction
+that generic Close releases owned contributions, references and pins;
+unrelated base counter values remain.
+
+Final-source checks pass with zero warnings:
+
+- Focus ordinary/strict each pass **32** events: all five prior tests plus
+  26 native contract events and one server pin-owner test. The 9,454-input
+  focus tree differs from final source only by the additive CI script/step;
+  all Go/C/fixture inputs are identical.
+- Normal and strict legacy regression each pass **684,140** events; all
+  prior 684,114 identities/multiplicities remain and the 26 native events
+  are the only additions. The final **9,455-input lease** is
+  `0cf6cf0ea32638df8ec1d42f5ec9a1576a8c48cc7fea5c4e09581526201000f5`.
+- Four default Apple compiler ARM64 products pass metadata/help and **172**
+  native/control symbol checks. Both normal/HD pass core E2E twice,
+  functional Save/Load and ordinary independent UDP chat (eight submissions,
+  four inbound messages, one reply), with zero exits and no force. All
+  **4,649** original asset/personal Save hashes remain unchanged. The
+  separate public Save/Load pixel failure stays open.
+- [Linux CI](https://github.com/hjyoon/opennox/actions/runs/44135043671) and
+  [Windows CI](https://github.com/hjyoon/opennox/actions/runs/44134741337)
+  pass all six profiles on first attempts. Six official ZIPs retain **158**
+  individually SHA-verified actual test mains and **39** native reader
+  families per profile. CI counts increase only by 27, including the server
+  test; skip identities remain. Complete warning review covers **40 streams /
+  9,555,393,618 bytes**, with zero warnings.
+- The exact primary Windows/386 legacy PE passes **78 terminal events**
+  under `GOGC=10`, with **39,492 actual C reads** over three repetitions,
+  without rebuild or patch. Prior GC families remain passing. Normal Go
+  writes in the pin-owner map still use ordinary Go barriers; no whole-engine
+  GC repair is claimed.
+
+Fresh selection remains **207 own-C files** and all **1,149** C/header/
+include/assembly inputs are byte-identical to the complete preceding AST
+inventory. The 2,454 ordinary + 14 macro definitions and 445 cast-function
+classification remain. Five new static test-only Cgo reference functions
+are listed separately; the broader header/Cgo/architecture denominator is
+still open. These counts are not unported algorithm totals.
+
+All **52** current program paths and earlier successful/failed programs
+are SHA verified. Only the inactive dedicated cache is cleaned,
+**3,408,932 KiB to 8 KiB**. Originals, Save, products,
+failures, official ZIPs, offline modules and RAM records remain. Historical
+491 user-deleted paths remain documented and nonblocking.
+
+All-C 100%, nine final Warrior/Conjurer/Wizard chapter 1–3 audits, public
+Save/Load pixel validation and older Windows memory/GC causes remain open;
+chapter 4+ is excluded. Native tests cover managed ClassMonster records with
+valid owned lifetimes and separate Go-owned controls. Arbitrary external
+class/data mutations, dangling foreign owners and concurrency are uncredited.
+
+Qualification: `/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/qualified-monster-spawn-owner-lifetime-v1.json` (SHA-256 `237c36585c77558232876972689de07ff3bebd4cc039689a6216560b7d68a2a6`).
+
 ### Native ordered team membership C entries, 2026-11-18
 
 Engine `d61ae46ed8958b1d12bb8bf0e85dee105ed86d9f` is committed and pushed to

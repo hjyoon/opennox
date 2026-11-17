@@ -1,0 +1,1082 @@
+{
+  "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a",
+  "qualified_owner_lifetime_fix": true,
+  "qualified_C_export_migrations": 0,
+  "new_original_algorithm_credit": 0,
+  "implemented_split_Go_entries": 284,
+  "cumulative_qualified_split_Go_entries": 282,
+  "overall_100_percent": false,
+  "source_binding": {
+    "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a",
+    "source_tree": "a4000d3409943014644a41f4f5143693270c86b9",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-monster-spawn-owner-qualify-20261118-v1",
+    "source_files": 9455,
+    "source_lease_sha256": "0cf6cf0ea32638df8ec1d42f5ec9a1576a8c48cc7fea5c4e09581526201000f5",
+    "all_compilation_inputs_and_snapshot_inputs_equal": true,
+    "actual_compilation_worktree": "/Users/ghost/codex-sandbox/worktrees/opennox-r344-20261020",
+    "focus_go_C_and_fixture_inputs_equal": true,
+    "focus_only_noncompiling_CI_files_differ": true
+  },
+  "preport_seal": {
+    "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/prepared-baseline-v2.json",
+    "sha256": "17b12bc9416ec57b49a48e704df28fb15c11e2af12447fca00f0fe1b94bf264a",
+    "paths": 63,
+    "incoming_source_inputs": 9450,
+    "protected_existing_inputs": 4805
+  },
+  "input_only_model": {
+    "utc": "2026-11-17T16:53:13.672533+00:00",
+    "cases": 24,
+    "events": 268,
+    "programs": [
+      "ordered-cleanup",
+      "duplicate-and-nil",
+      "reset-and-reuse",
+      "reinit-live",
+      "free-and-reinit",
+      "close-live"
+    ],
+    "placements": [
+      0,
+      256,
+      1024
+    ],
+    "native_owned_node_count": 4,
+    "generators": 2,
+    "foreign_owner_bytes": 65536,
+    "fixture_sha256": "98cb6560f8d7f85ee33265ac285d536e4edf60d00047b9588a73c9114d0c9766",
+    "fixture_gzip_sha256": "7b03f41957a40c62151e6cbea82ba876528a58d574a997ee7c064466402911b6",
+    "source_program_sha256": "9826329cd50233d205ab4a48cc365d4678ddf56cf8472ddc86e2aa6879a0751c",
+    "target_vs_incoming_changes": [
+      {
+        "case": "close-live-order0",
+        "events": [
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "case": "close-live-order1",
+        "events": [
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "case": "close-live-order2",
+        "events": [
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "case": "close-live-order3",
+        "events": [
+          6,
+          7,
+          8
+        ]
+      }
+    ],
+    "all_preclose_algorithm_counts_links_and_returns_equal": true,
+    "only_declared_Close_policy_changes": true,
+    "predeclared_Close_policy": "Before generic Server.Close releases native storage, clear all registry backreferences/counts and release all pins; allocator inactive afterwards; second Close idempotent",
+    "model": "Input-only lists and counters; no compiled product imports or output-derived expectations",
+    "existing_go_owned_controls_require_cleanup_after_pin_lifetime_is_introduced": true,
+    "original_PE_equivalence_claim": false,
+    "new_original_algorithm_credit": 0,
+    "source_port_started": false
+  },
+  "source_preservation": {
+    "all4804_other_protected_inputs_byte_identical": true,
+    "existing_test_changes": "Exactly3 cleanup defers; all original inputs/assertions/goldens unchanged",
+    "public_C_entry_bodies_and_layouts_unchanged": true
+  },
+  "local_gates": {
+    "owner-focus-normal-v1": {
+      "changed_source_paths": [],
+      "source_files": 9454,
+      "source_lease_sha256": "046d0371fb4e4824c192e11ffd85b44323fe5f57e0a51593bd4190de262c1a64",
+      "exit_code": 0,
+      "elapsed_seconds": 205.233,
+      "test_actions": {
+        "pass": 32
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "monster-spawn-owner-native-normal-v1": {
+      "changed_source_paths": [],
+      "source_files": 9455,
+      "source_lease_sha256": "0cf6cf0ea32638df8ec1d42f5ec9a1576a8c48cc7fea5c4e09581526201000f5",
+      "exit_code": 0,
+      "elapsed_seconds": 76.226,
+      "test_actions": {
+        "pass": 684140
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "owner-focus-strict-v1": {
+      "changed_source_paths": [],
+      "source_files": 9454,
+      "source_lease_sha256": "046d0371fb4e4824c192e11ffd85b44323fe5f57e0a51593bd4190de262c1a64",
+      "exit_code": 0,
+      "elapsed_seconds": 204.286,
+      "test_actions": {
+        "pass": 32
+      },
+      "package_actions": {
+        "pass": 2
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    },
+    "monster-spawn-owner-native-strict-v1": {
+      "changed_source_paths": [],
+      "source_files": 9455,
+      "source_lease_sha256": "0cf6cf0ea32638df8ec1d42f5ec9a1576a8c48cc7fea5c4e09581526201000f5",
+      "exit_code": 0,
+      "elapsed_seconds": 89.125,
+      "test_actions": {
+        "pass": 684140
+      },
+      "package_actions": {
+        "pass": 1
+      },
+      "failure_count": 0,
+      "first_failures": [],
+      "warning_count": 0,
+      "first_warnings": []
+    }
+  },
+  "local_identities": {
+    "utc": "2026-11-17T17:25:00.343467+00:00",
+    "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a",
+    "legacy_normal_and_strict_exact_terminal_identities_equal": true,
+    "all684114_prior_identities_and_multiplicities_unchanged": true,
+    "new_terminal_identities": [
+      "TestMonsterSpawnOwnerNativeContract",
+      "TestMonsterSpawnOwnerNativeContract/close-live",
+      "TestMonsterSpawnOwnerNativeContract/close-live/place0",
+      "TestMonsterSpawnOwnerNativeContract/close-live/place1024",
+      "TestMonsterSpawnOwnerNativeContract/close-live/place256",
+      "TestMonsterSpawnOwnerNativeContract/duplicate-and-nil",
+      "TestMonsterSpawnOwnerNativeContract/duplicate-and-nil/place0",
+      "TestMonsterSpawnOwnerNativeContract/duplicate-and-nil/place1024",
+      "TestMonsterSpawnOwnerNativeContract/duplicate-and-nil/place256",
+      "TestMonsterSpawnOwnerNativeContract/free-and-reinit",
+      "TestMonsterSpawnOwnerNativeContract/free-and-reinit/place0",
+      "TestMonsterSpawnOwnerNativeContract/free-and-reinit/place1024",
+      "TestMonsterSpawnOwnerNativeContract/free-and-reinit/place256",
+      "TestMonsterSpawnOwnerNativeContract/ordered-cleanup",
+      "TestMonsterSpawnOwnerNativeContract/ordered-cleanup/place0",
+      "TestMonsterSpawnOwnerNativeContract/ordered-cleanup/place1024",
+      "TestMonsterSpawnOwnerNativeContract/ordered-cleanup/place256",
+      "TestMonsterSpawnOwnerNativeContract/reinit-live",
+      "TestMonsterSpawnOwnerNativeContract/reinit-live/place0",
+      "TestMonsterSpawnOwnerNativeContract/reinit-live/place1024",
+      "TestMonsterSpawnOwnerNativeContract/reinit-live/place256",
+      "TestMonsterSpawnOwnerNativeContract/reset-and-reuse",
+      "TestMonsterSpawnOwnerNativeContract/reset-and-reuse/place0",
+      "TestMonsterSpawnOwnerNativeContract/reset-and-reuse/place1024",
+      "TestMonsterSpawnOwnerNativeContract/reset-and-reuse/place256",
+      "TestMonsterSpawnOwnerNativeLayout"
+    ],
+    "legacy_new_terminal_events": 26,
+    "separate_new_server_pin_root": 1,
+    "all_package_native_family_new_terminal_events": 27,
+    "actual_C_getter_reads_per_run": 13164,
+    "pass_events": 684140,
+    "original_inputs_and_assertions_and_golden_values_unchanged": true,
+    "existing_test_lifetime_cleanup_defers_added": 3
+  },
+  "products": [
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/products-v1/opennox",
+      "bytes": 70356082,
+      "sha256": "9c1277b04684e74b8802fe38911ab8f0ec379f478edbc38a5a38dc19aaf305e8",
+      "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/products-v1/opennox-hd",
+      "bytes": 70471634,
+      "sha256": "7ac401a006fba55edc23508b3985ce83063383131808730546de7f946a5a2b20",
+      "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/products-v1/opennox-server",
+      "bytes": 66922898,
+      "sha256": "fe4900a1df9f51d7cda0f009113952b4be1551ee93ceaceb6b1e01da83da5223",
+      "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a"
+    },
+    {
+      "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/products-v1/opennox-server-hd",
+      "bytes": 67038466,
+      "sha256": "0739d99943e5886e2a34a5f73b0b922f98d2bb191cc47ab99a36755b1e0fd9ce",
+      "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a"
+    }
+  ],
+  "ci": {
+    "utc": "2026-11-17T17:48:34.211961+00:00",
+    "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a",
+    "runs": [
+      44135043671,
+      44134741337
+    ],
+    "all_profiles": 6,
+    "all_source_first_attempts_pass": true,
+    "successful_jobs_rerun": 0,
+    "archives": [
+      {
+        "artifact_id": 14353037368,
+        "name": "linux-amd64-opennox-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14353037368-linux-amd64-opennox-81d0da61e6038199c41fc9994e305d7ad042198a.zip",
+        "bytes": 255853271,
+        "sha256": "5af71f879cecd1cd2a6c2c682d72d617c0deba8c22920aba35ae28f0d11645d1",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1504078,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14352897819,
+        "name": "linux-amd64-opennox-hd-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14352897819-linux-amd64-opennox-hd-81d0da61e6038199c41fc9994e305d7ad042198a.zip",
+        "bytes": 255695841,
+        "sha256": "45330cfb9227c909687db3e2bd5709e0d702d0a4c4dabb3ae1e27b874532d037",
+        "retained_test_mains": 40,
+        "test_actions": {
+          "pass": 1504078,
+          "skip": 57
+        }
+      },
+      {
+        "artifact_id": 14352323853,
+        "name": "linux-amd64-opennox-server-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14352323853-linux-amd64-opennox-server-81d0da61e6038199c41fc9994e305d7ad042198a.zip",
+        "bytes": 312953098,
+        "sha256": "d8589a4b180b402cf74c45d986b5f7093ef2dba96bfb26ad5037e465d9690a2d",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1497965,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14351654772,
+        "name": "linux-amd64-opennox-server-hd-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14351654772-linux-amd64-opennox-server-hd-81d0da61e6038199c41fc9994e305d7ad042198a.zip",
+        "bytes": 242236252,
+        "sha256": "e89b91885d774c8dbd538ef07ea21825168f5c7842ecff3e9af146d83f432315",
+        "retained_test_mains": 36,
+        "test_actions": {
+          "pass": 1497965,
+          "skip": 7
+        }
+      },
+      {
+        "artifact_id": 14354025815,
+        "name": "opennox-server-windows-amd64",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14354025815-opennox-server-windows-amd64.zip",
+        "bytes": 196300821,
+        "sha256": "04705df83053b0e3da76b69c0a69d99cb722b1a1bbb75321c4c310b8680f912a",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "pass": 1495950,
+          "skip": 11
+        }
+      },
+      {
+        "artifact_id": 14353901494,
+        "name": "opennox-server-windows-386",
+        "path": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/ci-14353901494-opennox-server-windows-386.zip",
+        "bytes": 191825452,
+        "sha256": "0ec1322813a639d4ac99a3e7356eee0fea8fcb810f5f2781724363affb89d8fe",
+        "retained_test_mains": 3,
+        "test_actions": {
+          "skip": 94,
+          "pass": 1476017
+        }
+      }
+    ],
+    "retained_actual_test_mains": 158,
+    "compiler_warnings": 0,
+    "warning_review_files": 40,
+    "uncompressed_warning_scan_bytes": 9555393618,
+    "native_matrix_readers": 39,
+    "all_previous_native_matrices_pass": true,
+    "full_suite_regression": [
+      {
+        "artifact_id": 14353037368,
+        "name": "linux-amd64-opennox-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "preceding_artifact": 14345933212,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1504051,
+        "current_passes": 1504078,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 57,
+        "all39_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14352897819,
+        "name": "linux-amd64-opennox-hd-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "preceding_artifact": 14347225543,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1504051,
+        "current_passes": 1504078,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 57,
+        "all39_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14352323853,
+        "name": "linux-amd64-opennox-server-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "preceding_artifact": 14346448164,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1497938,
+        "current_passes": 1497965,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 7,
+        "all39_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14351654772,
+        "name": "linux-amd64-opennox-server-hd-81d0da61e6038199c41fc9994e305d7ad042198a",
+        "preceding_artifact": 14345467863,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1497938,
+        "current_passes": 1497965,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 7,
+        "all39_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14354025815,
+        "name": "opennox-server-windows-amd64",
+        "preceding_artifact": 14347135339,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1495923,
+        "current_passes": 1495950,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 11,
+        "all39_native_original_reader_families_required_separately": true
+      },
+      {
+        "artifact_id": 14353901494,
+        "name": "opennox-server-windows-386",
+        "preceding_artifact": 14345984789,
+        "preceding_stage": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-team-membership-native-v1",
+        "preceding_passes": 1475990,
+        "current_passes": 1476017,
+        "expected_increment": 27,
+        "actual_increment": 27,
+        "existing_skips_unchanged": true,
+        "skip_events": 94,
+        "all39_native_original_reader_families_required_separately": true
+      }
+    ],
+    "primary_new_family_terminal_events_per_profile": 27,
+    "actual_C_getter_reads_per_profile": 13164,
+    "exact_primary_PE_GOGC10_replays": {
+      "global-record": {
+        "utc": "2026-11-17T17:32:22.651234+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestGlobalRecordNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 1088,
+        "expected_terminal_events": 29388,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 29388
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "52d03ae935485455a27d6c68b0f1c983aefdc188a2c8a9dd0a85fdc7b1b1721d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "inventory-lookup": {
+        "utc": "2026-11-17T17:32:33.467231+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestInventoryLookupNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 3647,
+        "expected_terminal_events": 98481,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 98481
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "4587145d0d6fcfc28d5e32cf4722a24dc86c5d3bc486e4bb41247704a084bbba",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cache-list": {
+        "utc": "2026-11-17T17:35:09.000665+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestCacheListNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 2992,
+        "expected_terminal_events": 80793,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 80793
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "ca79b6e788ebb21c51f9d91e1a926e2771fc33311942a7b75962511b9afc45d1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "npc-equipment": {
+        "utc": "2026-11-17T17:37:07.503827+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestNPCEquipmentNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 1233,
+        "expected_terminal_events": 33297,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 33297
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "bfa39adb82bc8a63b85c0428c87e95348755c71d62dbc677968934f6bc6f3d4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "team-predicate": {
+        "utc": "2026-11-17T17:37:10.411162+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestTeamPredicateNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 4078,
+        "expected_terminal_events": 110112,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 110112
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "531b01a11274bca3066ec2f190c0e0a6cf6e358bde4a40f384a89ca69bc165ab",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "monster-retreat": {
+        "utc": "2026-11-17T17:37:33.132492+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\server.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^(TestMonsterRetreatOriginalNative545440|TestMonsterActionRetreat545440NilEnemyFaultPreservesCompletedPrefix|TestMonsterActionRetreat545440RejectedFleeSkipsEnemyRead)$"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\server",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "4af96b54635c9665602035daf51caabff6b0b04399b2ac40675bf8b351570de3",
+        "rebuilt": false,
+        "original_contexts": 1465,
+        "original_nil_enemy_faults": 4,
+        "expected_terminal_events": 4404,
+        "original_inputs_and_expectations_unchanged": true,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "4af96b54635c9665602035daf51caabff6b0b04399b2ac40675bf8b351570de3",
+        "test_actions": {
+          "pass": 4404
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "8bec740c57a3b468c0d5fa25d76acff7a43b0411469713bd826f03ffc0bc7cc2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "flag-predicate": {
+        "utc": "2026-11-17T17:37:34.857486+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestFlagPredicateNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_contexts": 66118,
+        "original_nil_fault_contexts": 256,
+        "separate_incoming_C_nil_compatibility_contexts": 256,
+        "original_nil_fault_parity_credited": false,
+        "native_calls_per_repetition": 595062,
+        "expected_terminal_events": 33,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 33
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "996a04d9818286fbabdc874e9e3a763ac99db4e36bcdfec1910bf85437bc69c7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "team-membership": {
+        "utc": "2026-11-17T17:37:45.928692+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestTeamMembershipNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "original_query_contexts": 2088,
+        "incoming_owner_cases": 1044,
+        "incoming_owner_observations": 14877,
+        "native_calls_per_repetition": 554364,
+        "actual_C_calls_per_repetition": 369576,
+        "executed_owner_cases_per_repetition": 2088,
+        "owner_observations_per_repetition": 29754,
+        "expected_terminal_events": 66,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 66
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "773a4cd99281b9b11b13e4abfd53de93b2187896a252f73d9f781cec8ddf6f03",
+        "stderr_sha256": "b4be04e78063844568476ad4f2954f302d3abf64796514b96f84c7062a7b1ffd"
+      },
+      "monster-spawn-owner": {
+        "utc": "2026-11-17T17:38:50.864631+00:00",
+        "source": "81d0da61e6038199c41fc9994e305d7ad042198a",
+        "command": [
+          "D:\\a\\opennox\\opennox\\build\\windows-386\\test-binaries\\legacy.test.exe",
+          "-test.v",
+          "-test.count=3",
+          "-test.timeout=8m",
+          "-test.run=^TestMonsterSpawnOwnerNative"
+        ],
+        "cwd": "D:\\a\\opennox\\opennox\\src\\legacy",
+        "GOGC": 10,
+        "repetitions": 3,
+        "exact_primary_PE_sha256": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "rebuilt": false,
+        "contract_cases": 24,
+        "foreign_owner_cases_per_repetition": 72,
+        "owner_observations_per_repetition": 804,
+        "actual_C_getter_reads_per_repetition": 13164,
+        "expected_terminal_events": 78,
+        "original_PE_equivalence_claim": false,
+        "new_original_algorithm_credit": 0,
+        "native_exit_code": 0,
+        "timed_out": false,
+        "PE_hash_after_replay": "6df66661682f69e8c3db73799c3d686db107da63a0a5f18ac8f36d6a34561b5f",
+        "test_actions": {
+          "pass": 78
+        },
+        "exact_original_terminal_identities_and_multiplicities_equal": true,
+        "missing_terminal_events": 0,
+        "extra_terminal_events": 0,
+        "unfinished_tests": [],
+        "stdout_sha256": "46807f916582e2b1f83ad9416dd6e300f87cdb29d0e584ad74dc661714ef1977",
+        "stderr_sha256": "6390cdb0daf7cdf4938f566baed6fea8125af0c72e7be1e31463ffa2f3035a12"
+      }
+    },
+    "existing_UI_GOGC10_replay_retained": true
+  },
+  "preservation": {
+    "original_assets_and_personal_Save_files": 4649,
+    "retained_current_program_paths": 52,
+    "retained_prior_program_stages": [
+      {
+        "stage": "split-team-membership-native-v1",
+        "programs": 46
+      },
+      {
+        "stage": "split-native-flag-predicates-v1",
+        "programs": 38
+      },
+      {
+        "stage": "split-team-predicates-native-v2",
+        "programs": 46
+      },
+      {
+        "stage": "split-team-predicates-native-v1",
+        "programs": 41
+      },
+      {
+        "stage": "split-cache-list-native-v2",
+        "programs": 35
+      },
+      {
+        "stage": "split-cache-list-native-v1",
+        "programs": 40
+      },
+      {
+        "stage": "split-inventory-lookup-native-v1",
+        "programs": 39
+      },
+      {
+        "stage": "split-wide-script-pointer-native-v1",
+        "programs": 38
+      },
+      {
+        "stage": "split-global-record-native-v2",
+        "programs": 39
+      },
+      {
+        "stage": "split-global-record-native-v1",
+        "programs": 46
+      },
+      {
+        "stage": "split-inventory-state-native-v1/failed-layout-assertion-v1",
+        "programs": 4
+      },
+      {
+        "stage": "split-object-field-native-v1",
+        "programs": 37
+      },
+      {
+        "stage": "split-trade-packets-native-v1",
+        "programs": 11
+      }
+    ],
+    "cache_cleanup": {
+      "exit_code": 0,
+      "cache_KiB_before": 3408932,
+      "cache_KiB_after": 8,
+      "retained_current_program_paths": 52,
+      "all_current_program_SHA_verified": true,
+      "critical_products_and_test_mains_verified": 14,
+      "prior_program_stages_SHA_verified": [
+        {
+          "stage": "split-team-membership-native-v1",
+          "programs": 46
+        },
+        {
+          "stage": "split-native-flag-predicates-v1",
+          "programs": 38
+        },
+        {
+          "stage": "split-team-predicates-native-v2",
+          "programs": 46
+        },
+        {
+          "stage": "split-team-predicates-native-v1",
+          "programs": 41
+        },
+        {
+          "stage": "split-cache-list-native-v2",
+          "programs": 35
+        },
+        {
+          "stage": "split-cache-list-native-v1",
+          "programs": 40
+        },
+        {
+          "stage": "split-inventory-lookup-native-v1",
+          "programs": 39
+        },
+        {
+          "stage": "split-wide-script-pointer-native-v1",
+          "programs": 38
+        },
+        {
+          "stage": "split-global-record-native-v2",
+          "programs": 39
+        },
+        {
+          "stage": "split-global-record-native-v1",
+          "programs": 46
+        },
+        {
+          "stage": "split-inventory-state-native-v1/failed-layout-assertion-v1",
+          "programs": 4
+        },
+        {
+          "stage": "split-object-field-native-v1",
+          "programs": 37
+        },
+        {
+          "stage": "split-trade-packets-native-v1",
+          "programs": 11
+        }
+      ],
+      "all_local_build_test_runtime_drivers_terminal": true,
+      "originals_Save_ZIPs_modules_and_RAM_untouched": true,
+      "historical_missing_paths": "491 user deletions/284versions recorded and nonblocking"
+    },
+    "historical_user_deleted_paths": 491,
+    "historical_unique_missing_versions": 284,
+    "historical_loss_nonblocking": true
+  },
+  "C_inventory": {
+    "utc": "2026-11-17T17:19:40.223393+00:00",
+    "source_revision": "81d0da61e6038199c41fc9994e305d7ad042198a",
+    "snapshot": "/Users/ghost/codex-sandbox/worktrees/opennox-monster-spawn-owner-qualify-20261118-v1",
+    "source_lease_sha256": "0cf6cf0ea32638df8ec1d42f5ec9a1576a8c48cc7fea5c4e09581526201000f5",
+    "fresh_Go_selection_command": [
+      "/Users/ghost/.goenv/versions/1.27.3/bin/go",
+      "list",
+      "-e",
+      "-json",
+      "./..."
+    ],
+    "selected_C_files": 207,
+    "selected_files": [
+      "src/legacy/GAME1.c",
+      "src/legacy/GAME1_1.c",
+      "src/legacy/GAME1_2.c",
+      "src/legacy/GAME1_3.c",
+      "src/legacy/GAME2.c",
+      "src/legacy/GAME2_1.c",
+      "src/legacy/GAME2_2.c",
+      "src/legacy/GAME2_3.c",
+      "src/legacy/GAME3.c",
+      "src/legacy/GAME3_1.c",
+      "src/legacy/GAME3_2.c",
+      "src/legacy/GAME3_3.c",
+      "src/legacy/GAME4.c",
+      "src/legacy/GAME4_1.c",
+      "src/legacy/GAME4_2.c",
+      "src/legacy/GAME4_3.c",
+      "src/legacy/GAME5.c",
+      "src/legacy/GAME5_2.c",
+      "src/legacy/GameEx.c",
+      "src/legacy/MixPatch.c",
+      "src/legacy/audio_event_collide_4eaad0_parse.c",
+      "src/legacy/audio_source_native.c",
+      "src/legacy/cgo_blobs.c",
+      "src/legacy/cgo_fs.c",
+      "src/legacy/client/audio/ail/audio_openal.c",
+      "src/legacy/client__audio__audevent.c",
+      "src/legacy/client__draw__animdraw.c",
+      "src/legacy/client__draw__armordraw.c",
+      "src/legacy/client__draw__arrowdraw.c",
+      "src/legacy/client__draw__basedraw.c",
+      "src/legacy/client__draw__boulderdraw.c",
+      "src/legacy/client__draw__bubbledraw.c",
+      "src/legacy/client__draw__canidraw.c",
+      "src/legacy/client__draw__doordraw.c",
+      "src/legacy/client__draw__drawrays.c",
+      "src/legacy/client__draw__flagdraw.c",
+      "src/legacy/client__draw__fx.c",
+      "src/legacy/client__draw__glowdraw.c",
+      "src/legacy/client__draw__glyphdraw.c",
+      "src/legacy/client__draw__harpoondraw.c",
+      "src/legacy/client__draw__lightning.c",
+      "src/legacy/client__draw__lvupdraw.c",
+      "src/legacy/client__draw__magicdrw.c",
+      "src/legacy/client__draw__maidendraw.c",
+      "src/legacy/client__draw__parse__parse.c",
+      "src/legacy/client__draw__partrain.c",
+      "src/legacy/client__draw__partscrn.c",
+      "src/legacy/client__draw__plasma.c",
+      "src/legacy/client__draw__playerdraw.c",
+      "src/legacy/client__draw__powderdraw.c",
+      "src/legacy/client__draw__pressureplatedraw.c",
+      "src/legacy/client__draw__slavedraw.c",
+      "src/legacy/client__draw__spiderspitdraw.c",
+      "src/legacy/client__draw__staticdraw.c",
+      "src/legacy/client__draw__summondraw.c",
+      "src/legacy/client__draw__triggerdraw.c",
+      "src/legacy/client__draw__udeddraw.c",
+      "src/legacy/client__draw__vortexdraw.c",
+      "src/legacy/client__draw__weapondraw.c",
+      "src/legacy/client__drawable__drawdb.c",
+      "src/legacy/client__drawable__update__charmup.c",
+      "src/legacy/client__drawable__update__cloud.c",
+      "src/legacy/client__drawable__update__dball.c",
+      "src/legacy/client__drawable__update__drainup.c",
+      "src/legacy/client__drawable__update__fireball.c",
+      "src/legacy/client__drawable__update__healup.c",
+      "src/legacy/client__drawable__update__manabomb.c",
+      "src/legacy/client__drawable__update__mmislup.c",
+      "src/legacy/client__drawable__update__mtailup.c",
+      "src/legacy/client__drawable__update__sparklup.c",
+      "src/legacy/client__drawable__update__telwake.c",
+      "src/legacy/client__drawable__update__vortexup.c",
+      "src/legacy/client__gui__chathelp.c",
+      "src/legacy/client__gui__chaticon.c",
+      "src/legacy/client__gui__conntype.c",
+      "src/legacy/client__gui__gadgets__listbox.c",
+      "src/legacy/client__gui__gamewin__gamewin.c",
+      "src/legacy/client__gui__gui_ctf.c",
+      "src/legacy/client__gui__guibook.c",
+      "src/legacy/client__gui__guibrief.c",
+      "src/legacy/client__gui__guifb.c",
+      "src/legacy/client__gui__guigen.c",
+      "src/legacy/client__gui__guiggovr.c",
+      "src/legacy/client__gui__guiinput.c",
+      "src/legacy/client__gui__guiinv.c",
+      "src/legacy/client__gui__guijourn.c",
+      "src/legacy/client__gui__guimeter.c",
+      "src/legacy/client__gui__guimsg.c",
+      "src/legacy/client__gui__guiobs.c",
+      "src/legacy/client__gui__guiquit.c",
+      "src/legacy/client__gui__guirank.c",
+      "src/legacy/client__gui__guishop.c",
+      "src/legacy/client__gui__guispell.c",
+      "src/legacy/client__gui__guisumn.c",
+      "src/legacy/client__gui__guitrade.c",
+      "src/legacy/client__gui__guivote.c",
+      "src/legacy/client__gui__servopts__access.c",
+      "src/legacy/client__gui__servopts__advserv.c",
+      "src/legacy/client__gui__servopts__general.c",
+      "src/legacy/client__gui__servopts__guiserv.c",
+      "src/legacy/client__gui__servopts__objlst.c",
+      "src/legacy/client__gui__servopts__playrlst.c",
+      "src/legacy/client__gui__servopts__spelllst.c",
+      "src/legacy/client__gui__window.c",
+      "src/legacy/client__io__win95__focus.c",
+      "src/legacy/client__network__cdecode.c",
+      "src/legacy/client__network__deathmsg.c",
+      "src/legacy/client__network__inform.c",
+      "src/legacy/client__shell__inputcfg__inputcfg.c",
+      "src/legacy/client__shell__mainmenu.c",
+      "src/legacy/client__shell__noxworld.c",
+      "src/legacy/client__shell__options.c",
+      "src/legacy/client__shell__selclass.c",
+      "src/legacy/client__shell__selcolor.c",
+      "src/legacy/client__system__client.c",
+      "src/legacy/client__system__parsecmd.c",
+      "src/legacy/common__gamemech__pausefx.c",
+      "src/legacy/common__log.c",
+      "src/legacy/common__magic__comguide.c",
+      "src/legacy/common__object__armrlook.c",
+      "src/legacy/common__object__modifier.c",
+      "src/legacy/common__object__weaplook.c",
+      "src/legacy/common__system__settings.c",
+      "src/legacy/common__system__team.c",
+      "src/legacy/compat.c",
+      "src/legacy/damage_collide_4e9430_parse.c",
+      "src/legacy/draw_allocation.c",
+      "src/legacy/fixed_rng_seed_4eed30.c",
+      "src/legacy/fixed_rng_seed_4ef560.c",
+      "src/legacy/fixed_rng_seed_4ef570.c",
+      "src/legacy/fixed_rng_seed_4f0630.c",
+      "src/legacy/fixed_rng_seed_4f3e20.c",
+      "src/legacy/fixed_rng_seed_4f78d0.c",
+      "src/legacy/fixed_rng_seed_4fb940.c",
+      "src/legacy/game1_split_abi.c",
+      "src/legacy/game2_book_abi.c",
+      "src/legacy/game2_briefing_abi.c",
+      "src/legacy/game2_native_data.c",
+      "src/legacy/game2_quickbar_abi.c",
+      "src/legacy/game2_server_abi.c",
+      "src/legacy/game2_server_reference.c",
+      "src/legacy/game3_class_config_options_abi.c",
+      "src/legacy/game3_map_effect_abi.c",
+      "src/legacy/game3_native_data.c",
+      "src/legacy/game3_widgets_abi.c",
+      "src/legacy/game4_gold_consumers_abi.c",
+      "src/legacy/game4_map_archive_abi.c",
+      "src/legacy/game4_native_data.c",
+      "src/legacy/game4_player_abi.c",
+      "src/legacy/game5_wall_data.c",
+      "src/legacy/gui_cgo.c",
+      "src/legacy/item_apply_disengage_4f3030.c",
+      "src/legacy/mana_drain_collide_4e9490_parse.c",
+      "src/legacy/map_object_list_5048a0.c",
+      "src/legacy/map_radial_damage_4e25b0.c",
+      "src/legacy/map_temp_lists_503f40.c",
+      "src/legacy/mapgen_legacy_ptr.c",
+      "src/legacy/memfile.c",
+      "src/legacy/memmap.c",
+      "src/legacy/minimap_monster_iterator_50aae0.c",
+      "src/legacy/monster_arrow_collide_4eb800_parse.c",
+      "src/legacy/network_line_message_4d9eb0.c",
+      "src/legacy/noxstring.c",
+      "src/legacy/object_barrel_4e7470_caller.c",
+      "src/legacy/object_collide_noop_4e87a0.c",
+      "src/legacy/object_collider_4e7290.c",
+      "src/legacy/object_inventory_4e7980.c",
+      "src/legacy/object_is_player_4e7bc0.c",
+      "src/legacy/objects_velocity_5118a0.c",
+      "src/legacy/player_handle_elim_death_54d7a0.c",
+      "src/legacy/player_handle_kotr_death_54dc40.c",
+      "src/legacy/player_try_dequip_4f2fb0.c",
+      "src/legacy/player_update_score_54d980.c",
+      "src/legacy/quest_map_buffer_4e8e50.c",
+      "src/legacy/quest_win_screen_450770.c",
+      "src/legacy/raw_default_damage_native_bridge_4e0b30.c",
+      "src/legacy/readonly_bindings.c",
+      "src/legacy/server__ability__ability.c",
+      "src/legacy/server__dbase__objdb.c",
+      "src/legacy/server__gamemech__explevel.c",
+      "src/legacy/server__magic__plyrgide.c",
+      "src/legacy/server__magic__plyrspel.c",
+      "src/legacy/server__mapgen__generate__populate.c",
+      "src/legacy/server__network__sdecode.c",
+      "src/legacy/server__object__die__die.c",
+      "src/legacy/server__object__health.c",
+      "src/legacy/server__script__builtin.c",
+      "src/legacy/server__script__file.c",
+      "src/legacy/server__system__cscrfunc.c",
+      "src/legacy/server__system__server.c",
+      "src/legacy/server__system__trade.c",
+      "src/legacy/spark_explosion_collide_4e9ac0_parse.c",
+      "src/legacy/startup_pause_compare_413f60.c",
+      "src/legacy/stats_bulk_native.c",
+      "src/legacy/stats_end_native.c",
+      "src/legacy/stats_start_native.c",
+      "src/legacy/team_flags_4185b0.c",
+      "src/legacy/thing_parsers_reference_411540.c",
+      "src/legacy/unit_count_slaves_4e7cf0.c",
+      "src/legacy/unit_freeze_gate_4e79b0.c",
+      "src/legacy/unit_inventory_contains_equivalent_4e7ec0.c",
+      "src/legacy/unit_item_equivalent_4e7de0.c",
+      "src/legacy/unit_owned_type_4e7be0.c",
+      "src/legacy/vardefs.c",
+      "src/legacy/vote_5066d0.c",
+      "src/legacy/wall_reflect_collide_4e9d80_parse.c",
+      "src/legacy/world_player_reference_40a830.c"
+    ],
+    "C_family_inputs_verified": 1149,
+    "C_family_inputs_unchanged": 1149,
+    "changed_C_inputs": [],
+    "prior_full_AST": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/all-C-active-native-audit-v16",
+    "fresh_AST_translation_units": 0,
+    "exact_unchanged_translation_units_reused": 207,
+    "ordinary_C_definitions": 2454,
+    "macro_C_definitions": 14,
+    "own_C_definitions": 2468,
+    "pointer_integer_cast_functions": 445,
+    "ptr_to_narrow_sites": 319,
+    "narrow_to_ptr_sites": 2010,
+    "native_width_sites": 587,
+    "unknown_direct_cast_sites": 0,
+    "new_Cgo_preamble": {
+      "path": "src/legacy/monster_spawn_owner_native_fixture.go",
+      "sha256": "0d27d68a95548f674d2a05e0e28d7f75dd35a57f344c1f69c74e222822548f4c",
+      "role": "Five static test reference readers/layout assertions, compiled and executed by native owner tests; no migrated production algorithm"
+    },
+    "new_original_algorithm_credit": 0,
+    "all_C_denominator": "OPEN",
+    "scope": "Fresh207-file Go selection and1149 byte-identical own-C/header/include/assembly inputs reuse the complete S51/v16 AST. New test-only Cgo preamble is listed separately. Broader Cgo/header and other architecture/tag inventories remain incomplete; this is not an unported count."
+  },
+  "open_scope": {
+    "campaign": "Warrior/Conjurer/Wizard chapters1..3; nine final audits OPEN;chapter4+excluded",
+    "public_SaveLoad_pixel": "FAILED/open",
+    "remaining_C_spawn_entries": "Old SpawnClass12B/MonsterList148B C allocator/entrypoint/caller migration remains pending; this Go lifetime prerequisite does not qualify a C algorithm",
+    "native_domain": "Managed ClassMonster Object/MonsterUpdateData with valid native-owned lifetimes and separate existing Go-owned controls; arbitrary externally mutated object classes/data, dangling foreign owners and concurrency uncredited",
+    "Close_policy": "Declared correction: release owned contributions/backreferences/pins before generic Server.Close; preserves preexisting unrelated byte counters and wrap",
+    "original_PE_equivalence": "Not executed/credited for this ownership-only fix",
+    "S25_original_seals": "Two deleted seals remain uncredited",
+    "all_C_denominator": "OPEN; exact207 own-C AST reuse and one new test Cgo preamble listed separately; broader headers/Cgo/arch/tag inventory pending",
+    "Windows_GC": "No whole-engine GC repair claim; exact retained primaryPE lifetime tests and older families are qualified separately"
+  },
+  "qualification_record": "/Users/ghost/codex-sandbox/artifacts/opennox-c-native-20261116-continuation/split-monster-spawn-owner-lifetime-native-v1/qualified-monster-spawn-owner-lifetime-v1.json",
+  "qualification_sha256": "237c36585c77558232876972689de07ff3bebd4cc039689a6216560b7d68a2a6"
+}

@@ -31,6 +31,12 @@ type npcEquipmentNativeCase struct {
 	Return uint32 `json:"return_u32"`
 }
 
+func npcEquipmentNativeStore(slot **server.Object, value *server.Object) {
+	// The fixture fills these C-owned slots with arbitrary bytes before setup.
+	// Do not let Go's deletion barrier interpret the previous bytes as pointers.
+	*(*uintptr)(unsafe.Pointer(slot)) = uintptr(unsafe.Pointer(value))
+}
+
 func TestNPCEquipmentNativeLayout(t *testing.T) {
 	var obj server.Object
 	want := [14]uintptr{unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(obj), unsafe.Offsetof(obj.ObjClass), unsafe.Offsetof(obj.ObjSubClass), unsafe.Offsetof(obj.ObjFlags), unsafe.Offsetof(obj.InvNextItem), unsafe.Offsetof(obj.InvFirstItem), unsafe.Sizeof(obj.ObjClass), unsafe.Sizeof(obj.ObjSubClass), unsafe.Sizeof(obj.ObjFlags), unsafe.Sizeof(obj.InvNextItem), unsafe.Sizeof(obj.InvFirstItem), unsafe.Alignof(obj), unsafe.Sizeof(uintptr(0))}
@@ -80,14 +86,15 @@ func TestNPCEquipmentNativeOriginal(t *testing.T) {
 						for j, value := range c.Input.Fields[i] {
 							binary.LittleEndian.PutUint32(raw[base+int(offsets[j]):], value)
 						}
-						obj.InvFirstItem, obj.InvNextItem = nil, nil
+						npcEquipmentNativeStore(&obj.InvFirstItem, nil)
+						npcEquipmentNativeStore(&obj.InvNextItem, nil)
 					}
 					if len(c.Input.Chain) > 0 {
-						objects[6].InvFirstItem = objects[c.Input.Chain[0]]
+						npcEquipmentNativeStore(&objects[6].InvFirstItem, objects[c.Input.Chain[0]])
 					}
 					for at, slot := range c.Input.Chain {
 						if at+1 < len(c.Input.Chain) {
-							objects[slot].InvNextItem = objects[c.Input.Chain[at+1]]
+							npcEquipmentNativeStore(&objects[slot].InvNextItem, objects[c.Input.Chain[at+1]])
 						}
 					}
 					if words() != c.Before || c.Before != c.Input.Fields {

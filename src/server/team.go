@@ -32,8 +32,11 @@ type serverTeams struct {
 	// Team.field_44 was the head and ObjectTeam.Field0 was next. Keep those
 	// ABI fields intact for map/save compatibility and retain native pointers
 	// here instead.
-	members    map[*Team]map[*ObjectTeam]struct{}
-	membership map[*ObjectTeam]*Team
+	members     map[*Team]map[*ObjectTeam]struct{}
+	membership  map[*ObjectTeam]*Team
+	memberHeads map[*Team]*ObjectTeam
+	memberNext  map[*ObjectTeam]*ObjectTeam
+	memberPrev  map[*ObjectTeam]*ObjectTeam
 
 	onCreateOrRemove []func()
 }
@@ -72,9 +75,17 @@ func (s *serverTeams) init(sm *strman.StringManager, pr console.Printer) {
 	s.teamFlags = make(map[*Team]*Object)
 	s.members = make(map[*Team]map[*ObjectTeam]struct{})
 	s.membership = make(map[*ObjectTeam]*Team)
+	s.memberHeads = make(map[*Team]*ObjectTeam)
+	s.memberNext = make(map[*ObjectTeam]*ObjectTeam)
+	s.memberPrev = make(map[*ObjectTeam]*ObjectTeam)
 }
 
 func (s *serverTeams) free() {
+	clear(s.memberHeads)
+	clear(s.memberNext)
+	clear(s.memberPrev)
+	clear(s.members)
+	clear(s.membership)
 	if s.freeNative != nil {
 		s.freeNative()
 		s.freeNative = nil
@@ -151,6 +162,9 @@ func (s *serverTeams) Reset() {
 	clear(s.teamFlags)
 	clear(s.members)
 	clear(s.membership)
+	clear(s.memberHeads)
+	clear(s.memberNext)
+	clear(s.memberPrev)
 	for i := 0; i < len(s.Arr); i++ {
 		s.Arr[i] = Team{}
 	}
@@ -171,6 +185,47 @@ func (s *serverTeams) ensureMembership() {
 	if s.membership == nil {
 		s.membership = make(map[*ObjectTeam]*Team)
 	}
+	if s.memberHeads == nil {
+		s.memberHeads = make(map[*Team]*ObjectTeam)
+	}
+	if s.memberNext == nil {
+		s.memberNext = make(map[*ObjectTeam]*ObjectTeam)
+	}
+	if s.memberPrev == nil {
+		s.memberPrev = make(map[*ObjectTeam]*ObjectTeam)
+	}
+}
+
+// FirstObjectTeam preserves the list head returned by GAME.EXE 00418C60.
+func (s *serverTeams) FirstObjectTeam(team *Team) *ObjectTeam {
+	return s.memberHeads[team]
+}
+
+// NextObjectTeam preserves 00418C70 without reading the fixed PE32 link word.
+func (s *serverTeams) NextObjectTeam(value *ObjectTeam) *ObjectTeam {
+	return s.memberNext[value]
+}
+
+func (s *serverTeams) unlinkObjectTeam(team *Team, value *ObjectTeam) {
+	previous, next := s.memberPrev[value], s.memberNext[value]
+	if previous != nil {
+		s.memberNext[previous] = next
+	} else if s.memberHeads[team] == value {
+		if next == nil {
+			delete(s.memberHeads, team)
+		} else {
+			s.memberHeads[team] = next
+		}
+	}
+	if next != nil {
+		if previous == nil {
+			delete(s.memberPrev, next)
+		} else {
+			s.memberPrev[next] = previous
+		}
+	}
+	delete(s.memberNext, value)
+	delete(s.memberPrev, value)
 }
 
 // LinkObject records native team membership without placing a native pointer
@@ -201,6 +256,13 @@ func (s *serverTeams) LinkObject(value *ObjectTeam, id TeamID) *Team {
 	}
 	set[value] = struct{}{}
 	s.membership[value] = tm
+	head := s.memberHeads[tm]
+	s.memberNext[value] = head
+	delete(s.memberPrev, value)
+	if head != nil {
+		s.memberPrev[head] = value
+	}
+	s.memberHeads[tm] = value
 	value.Field0 = 0
 	value.ID = tm.ID()
 	tm.field_44 = 0
@@ -246,6 +308,7 @@ func (s *serverTeams) DetachObject(value *ObjectTeam) *Team {
 		tm = s.ByID(value.ID)
 	}
 	if tm != nil {
+		s.unlinkObjectTeam(tm, value)
 		if set := s.members[tm]; set != nil {
 			delete(set, value)
 			if len(set) == 0 {
@@ -272,10 +335,13 @@ func (s *serverTeams) DetachAllObjects(tm *Team) {
 	s.ensureMembership()
 	for value := range s.members[tm] {
 		delete(s.membership, value)
+		delete(s.memberNext, value)
+		delete(s.memberPrev, value)
 		value.Field0 = 0
 		value.ID = 0
 	}
 	delete(s.members, tm)
+	delete(s.memberHeads, tm)
 	tm.field_44 = 0
 	tm.field_48 = 0
 }

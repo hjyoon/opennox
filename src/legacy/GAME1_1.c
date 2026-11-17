@@ -268,25 +268,15 @@ int sub_418BC0(nox_team_t* team) {
 }
 
 //----- (00418C60) --------------------------------------------------------
-int nox_xxx_teamCheckSmth_418C60(int a1) {
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		result = *(uint32_t*)(a1 + 44);
-	}
-	return result;
+extern uintptr_t nox_server_team_first_member_native(nox_team_t* team);
+nox_object_team_t* nox_xxx_teamCheckSmth_418C60(nox_team_t* team) {
+	return (nox_object_team_t*)nox_server_team_first_member_native(team);
 }
 
 //----- (00418C70) --------------------------------------------------------
-uint32_t* sub_418C70(uint32_t* a1) {
-	uint32_t* result; // eax
-
-	result = a1;
-	if (a1) {
-		result = (uint32_t*)*a1;
-	}
-	return result;
+extern uintptr_t nox_server_team_next_member_native(nox_object_team_t* value);
+nox_object_team_t* sub_418C70(nox_object_team_t* value) {
+	return (nox_object_team_t*)nox_server_team_next_member_native(value);
 }
 
 //----- (00418C80) --------------------------------------------------------

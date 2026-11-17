@@ -331,6 +331,16 @@ jobs:
           python ../scripts/replay-flag-predicate-native-pe.py --report "../build/windows-$env:TARGET_ARCH"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Replay exact Windows/386 team membership pointers under GC pressure
+        if: matrix.arch == '386'
+        working-directory: src
+        shell: pwsh
+        env:
+          GOARCH: '386'
+        run: |
+          python ../scripts/replay-team-membership-native-pe.py --report "../build/windows-$env:TARGET_ARCH"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:

@@ -17,7 +17,7 @@ var winConnection4AA270 *connectionScreen4AA270
 
 // Original 59C56C was extracted from the blob; keep its primary mode in
 // Go-owned storage, separately from the legacy WOL predicate at 85B7B0.
-var connectionMode43AF50 uint32
+var connectionMode43AF50 uint32 = 2
 
 // Go owns callbacks and UI services; only native C function pointers are
 // stored in the C-allocated animation records.

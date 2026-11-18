@@ -9,7 +9,6 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -227,8 +226,8 @@ func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
 			s.playerStatsReportNative4D8990(playerInd, unit)
 		},
 	})
-	// GAME.EXE 0043AF70 reads the reporting mode. Its startup value is 2.
-	if memmap.Uint32(0x587000, 87404) == 1 {
+	// GAME.EXE 0043AF70 reads the primary connection mode.
+	if connectionMode43AF50 == 1 {
 		legacy.ReportPlayerVitalsThrottled528030(s.Server, unit)
 		return
 	}

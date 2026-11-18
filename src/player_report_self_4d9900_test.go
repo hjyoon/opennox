@@ -9,8 +9,8 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -66,11 +66,12 @@ func TestPlayerReportSelfNative4D9900RetainsOuterNilAndClassGates(t *testing.T) 
 }
 
 func TestPlayerReportSelfNative4D9900SelectsOriginalVitalsMode(t *testing.T) {
-	mode := memmap.PtrT[uint32](0x587000, 87404)
-	oldMode, oldFlags := *mode, noxflags.GetGame()
+	oldMode, oldFlags := connectionMode43AF50, noxflags.GetGame()
+	oldWOL := legacy.Get_dword_5d4594_2650652()
 	noxflags.ResetGame()
 	t.Cleanup(func() {
-		*mode = oldMode
+		connectionSetMode43AF50(int(oldMode))
+		legacy.Set_dword_5d4594_2650652(oldWOL)
 		noxflags.ResetGame()
 		noxflags.SetGame(oldFlags)
 	})
@@ -100,12 +101,12 @@ func TestPlayerReportSelfNative4D9900SelectsOriginalVitalsMode(t *testing.T) {
 		packets++
 		return -1
 	}
-	*mode = 1
+	connectionSetMode43AF50(1)
 	s.playerReportSelfNative4D9900(unit)
 	if packets != 0 || update.Field2_1 != 4 {
 		t.Fatalf("mode 1 produced %d packets and cached %d, want zero packets and 4", packets, update.Field2_1)
 	}
-	*mode = 2
+	connectionSetMode43AF50(2)
 	s.playerReportSelfNative4D9900(unit)
 	if packets != 1 || update.Field2_1 != 5 {
 		t.Fatalf("startup mode produced %d packets and cached %d, want one packet and 5", packets, update.Field2_1)

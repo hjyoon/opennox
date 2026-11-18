@@ -61,8 +61,8 @@ end with DEAD and native HP0. This case enables `require_monster_health_zero`;
 missing health, flags alone or a healthy process exit cannot pass it. Current
 HP33 from the historical Save is retained; the maxima32/98 match complete
 unchanged original execution with the observed level3 Wizard inputs and its
-actual PC53/ToZero startup mode. The scenario waits600 ordinary
-frames after combat to recover while retaining MP at least40 before Save.
+actual PC53/ToZero startup mode. The scenario allows 1,800 ordinary
+frames of passive recovery after combat and requires at least 40 MP before Save.
 
 For an observation-only stat regression, use `wizard3-player-stat-audit.json`
 with the MagicMissile case's successful combat-cleared Save. Its 28 steps
@@ -74,9 +74,10 @@ Keep its failed stat-only replay as evidence rather than reusing it as the
 safe observation source. The original-input fixture independently reproduces
 the maxima; the historical current HP33 is not changed by this test.
 
-The Swap case uses its own earlier earned checkpoint, before the barred-room
-escape. Run it with `--suite scripts/e2e/campaign/wizard2-swap-escape.json`
-and that Save. Its native position requirement rejects an uneventful cast or
+The Swap case uses the earned SwapBook separated-input checkpoint
+`wizard2-current-world-flame-quest-port-original-SwapBook-separated-input-v1096-normal`.
+Run the suite with the `runtime-data/Save` directory from that checkpoint.
+Its native position requirement rejects an uneventful cast or
 a Save that already starts outside the room. The quickbar input observer copies
 both original positions once per frame; the verifier requires the pinned pair
 to exchange positions between adjacent frames after the actual F key input.

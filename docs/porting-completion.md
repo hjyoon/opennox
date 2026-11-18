@@ -133,6 +133,16 @@ The reports are under `attack-trace-public-native-v1`,
 in the November 18 verification root. The product and runtime checks verify
 all 4,649 original asset and Save hashes.
 
+On `7270ef8c1344c39c717bae3ccb59e580befb3a2d`, the fresh chapter 1 start
+scenarios for Warrior, Conjurer and Wizard all pass in both display profiles.
+An ordinary-clock Wizard 2 replay from the earned v1096 checkpoint confirms
+the reciprocal Swap, full mana and a living manual Save. An ordinary-clock
+Wizard 3 replay confirms the original cellar Swordsman reaches zero HP.
+The 1,800-frame recovery restores mana to 47 and the player writes a living
+manual Save. The replay preserves the source Saves, assets and products.
+The earlier comparison with the v193 Swap Save and the shorter Wizard 3
+recovery remains recorded in `melee-replay-observers-ARM64-v2`.
+
 ### Attack modifier and ADPCM entries, 2026-11-19
 
 Engine `5c65c39a62c07c7a7b2711606fbba7345440c0cd` ports the public

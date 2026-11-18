@@ -146,7 +146,7 @@ var (
 
 func decodeADPCMMono(out []int16, data []byte) []int16 {
 	predictor := int16(data[0]) | (int16(data[1]) << 8)
-	index := int(data[2])
+	index := satindex(int(data[2]))
 
 	out = append(out, predictor)
 	for i := 4; i < len(data); i++ {
@@ -203,9 +203,9 @@ func satindex(x int) int {
 
 func decodeADPCMStereo(out []int16, data []byte) []int16 {
 	lpredictor := int16(data[0]) | (int16(data[1]) << 8)
-	lindex := int(data[2])
+	lindex := satindex(int(data[2]))
 	rpredictor := int16(data[4]) | (int16(data[5]) << 8)
-	rindex := int(data[6])
+	rindex := satindex(int(data[6]))
 
 	out = append(out, lpredictor, rpredictor)
 	for i := 8; i < len(data); i += 8 {

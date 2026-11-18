@@ -117,12 +117,15 @@ func TestOpenALSampleReuseDoesNotDecodePreviousFormat(t *testing.T) {
 	if old.source.BuffersQueued() != 0 {
 		t.Fatal("reinitialization retained old hardware buffers")
 	}
+	if old.buffers[0].buf != nil || old.buffers[1].buf != nil {
+		t.Fatal("reinitialization retained old encoded blocks")
+	}
 	if ready := voice.BufferReady(); ready != 0 {
 		t.Fatal("first new buffer")
 	}
 	voice.LoadBuffer(0, sampleReuseADPCM(t, newStereo, 1))
-	// Before the fix this reaches decodeNibble index147 for mono->stereo,
-	// exactly matching the reported crash. No recover/clamping hides it.
+	// A stale mono block has 147 in byte six, where stereo stores its
+	// right-channel index. The empty-slot assertion keeps this a queue test.
 	driver.get().doWork()
 	if delta := driver.PlaybackStats().SampleBuffersQueued - queued; delta != 1 {
 		t.Fatalf("new generation submitted%d blocks, want only its one new block", delta)
@@ -134,6 +137,34 @@ func TestOpenALSampleReuseDoesNotDecodePreviousFormat(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Logf("reuse=%s native=%+v; old queue discarded, new block decoded in its declared format", mode, driver.PlaybackStats())
+}
+
+func TestOpenALSampleWithInvalidADPCMHeader(t *testing.T) {
+	driver := openPlaybackTestDriver(t)
+	voice := driver.AllocateSample()
+	if voice == 0 {
+		t.Fatal("native sample")
+	}
+	defer voice.Release()
+	voice.Init()
+	voice.SetType(7, 0)
+	voice.SetADPCMBlockSize(1024)
+	voice.SetPlaybackRate(22050)
+	voice.SetVolume(0)
+	block := sampleReuseADPCM(t, true, 1)
+	block[6] = 147
+	if ready := voice.BufferReady(); ready != 0 {
+		t.Fatalf("initial ready slot = %d, want 0", ready)
+	}
+	before := driver.PlaybackStats().SampleBuffersQueued
+	voice.LoadBuffer(0, block)
+	driver.get().doWork()
+	if after := driver.PlaybackStats().SampleBuffersQueued; after != before+1 {
+		t.Fatalf("native sample queued %d additional blocks, want 1", after-before)
+	}
+	if err := openal.Err(); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestOpenALSampleCompletesOnlySubmittedBuffers(t *testing.T) {

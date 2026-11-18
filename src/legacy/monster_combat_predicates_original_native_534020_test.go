@@ -146,6 +146,9 @@ func TestMonsterCombatPredicatesOriginalActualC534020(t *testing.T) {
 		}
 	}
 	unit, update, def, vec := &ug.Value, &udg.Value, &dg.Value, &vg.Value
+	clearForeignFixtureRecord(unit)
+	clearForeignFixtureRecord(update)
+	clearForeignFixtureRecord(def)
 	controlOnly := os.Getenv("NOX_PREDICATE_REFERENCE_CONTROL_ONLY") == "true"
 	entries := make(map[uint32]int)
 	for _, row := range reference.Rows {

@@ -265,6 +265,9 @@ func TestScriptRaiseZombieNativeOriginal(t *testing.T) {
 						for i := range buffer {
 							buffer[i] = byte(int(c.Input.Seed) + 17*i + 3*(i>>8))
 						}
+						clearForeignFixtureRecord(unit)
+						clearForeignFixtureRecord(updates[0])
+						clearForeignFixtureRecord(updates[1])
 						scriptRaiseZombieRun(t, c, route, unit, updates, buffer, unitOffset, updateOffsets)
 					})
 				}

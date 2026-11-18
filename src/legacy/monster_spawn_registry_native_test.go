@@ -76,6 +76,12 @@ func newMonsterSpawnNativeOwner(t *testing.T, place int) *monsterSpawnNativeOwne
 	return o
 }
 
+// Clear canary bytes in foreign storage before assigning Go pointer fields.
+// The write barrier can otherwise interpret the old bytes as heap pointers.
+func clearForeignFixtureRecord[T any](value *T) {
+	clear(unsafe.Slice((*byte)(unsafe.Pointer(value)), unsafe.Sizeof(*value)))
+}
+
 func (o *monsterSpawnNativeOwner) seed(seed byte, base uint8) {
 	for i := range o.bytes {
 		o.bytes[i] = 0xd7
@@ -83,17 +89,21 @@ func (o *monsterSpawnNativeOwner) seed(seed byte, base uint8) {
 	for i := 0; i < 65536; i++ {
 		o.bytes[32+i] = byte(int(seed) + 17*i + 3*(i>>8))
 	}
+	clearForeignFixtureRecord(o.genData)
+	clearForeignFixtureRecord(o.generator)
 	*o.genData = server.MonsterGenUpdateData{ActiveCount: base}
 	*o.generator = server.Object{ObjClass: object.ClassMonsterGenerator, UpdateData: unsafe.Pointer(o.genData)}
 	for i, obj := range o.objects {
-		*o.updates[i] = server.MonsterUpdateData{}
+		clearForeignFixtureRecord(o.updates[i])
+		clearForeignFixtureRecord(obj)
+		clearForeignFixtureRecord(o.links[i])
 		*obj = server.Object{ObjClass: object.ClassMonster, TypeInd: 99, UpdateData: unsafe.Pointer(o.updates[i])}
 		*o.links[i] = server.MonsterSpawnLink{Object: obj}
 		if monsterSpawnRegistryNativeObjectData(unsafe.Pointer(obj)) != uintptr(unsafe.Pointer(o.updates[i])) {
 			o.t.Fatal("C Object update pointer differs")
 		}
 	}
-	*o.links[4] = server.MonsterSpawnLink{}
+	clearForeignFixtureRecord(o.links[4])
 	o.outer.deleted = nil
 }
 

@@ -79,10 +79,18 @@ func TestPlayerReportSelfNative4D9900SelectsOriginalVitalsMode(t *testing.T) {
 	native.SetTickRate(30)
 	native.SetFrame(100)
 	s := &Server{Server: native}
-	unit := &server.Object{ObjClass: object.ClassPlayer, HealthData: &server.HealthData{Cur: 5, Max: 100}}
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
+	t.Cleanup(freeHealth)
+	*health = server.HealthData{Cur: 5, Max: 100}
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	t.Cleanup(freeUnit)
+	unit.ObjClass, unit.HealthData = object.ClassPlayer, health
 	player := native.Players.ByIndRaw(5)
 	player.Active, player.PlayerInd, player.PlayerUnit, player.HealthReportFrame = 1, 5, unit, 100
-	update := &server.PlayerUpdateData{Player: player, Field2_1: 4}
+	defer func() { player.PlayerUnit = nil }()
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	t.Cleanup(freeUpdate)
+	update.Player, update.Field2_1 = player, 4
 	unit.UpdateData = unsafe.Pointer(update)
 	packets := 0
 	native.NetSendPacketXxx = func(index int, payload []byte, related *server.Object, remove, sequence int) int {
@@ -95,11 +103,11 @@ func TestPlayerReportSelfNative4D9900SelectsOriginalVitalsMode(t *testing.T) {
 	*mode = 1
 	s.playerReportSelfNative4D9900(unit)
 	if packets != 0 || update.Field2_1 != 4 {
-		t.Fatal("mode 1 reported a change below the stock threshold")
+		t.Fatalf("mode 1 produced %d packets and cached %d, want zero packets and 4", packets, update.Field2_1)
 	}
 	*mode = 2
 	s.playerReportSelfNative4D9900(unit)
 	if packets != 1 || update.Field2_1 != 5 {
-		t.Fatal("stock startup mode did not report the immediate change")
+		t.Fatalf("startup mode produced %d packets and cached %d, want one packet and 5", packets, update.Field2_1)
 	}
 }

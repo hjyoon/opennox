@@ -60,6 +60,20 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Retired C NXZ build inputs, 2026-11-18
+
+The Go compressor and decoder now supply the NXZ package under every build
+tag. The three unused C references moved byte-for-byte into
+`src/legacy/cnxz/testdata/legacy-c`. On Windows/386 the historical
+`nxz_legacy_c` tag previously selected these files in a Go-only package and
+failed package loading. Default, historical tag and server plus historical
+tag now select the same Go files successfully. The tagged Windows/386 test
+PE builds. macOS ARM64 passes both directions for all 50 stock map pairs
+and the portable round-trip test, with 103 total pass events.
+
+Qualification: `legacy-nxz-reference-retirement-v1/qualification-v1.json`,
+SHA-256 `8ae1f3c53f3ee059f719a93c6d0522071a10d415701fbf0a7a279dda548c7cdc`.
+
 ### Native script zombie raise C entry, 2026-11-18
 
 Engine `2b049d62ecf28963d475dfeec10fd73b75df10c6` is pushed to

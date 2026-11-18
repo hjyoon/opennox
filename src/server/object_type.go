@@ -144,6 +144,8 @@ type serverObjTypes struct {
 		projectileSmallFist537770  uint32
 		projectileMediumFist537770 uint32
 		projectileLargeFist537770  uint32
+
+		scorch scorchTypeCache537BD0
 	}
 
 	ClientTypeByID func(id string) int
@@ -521,6 +523,7 @@ func (s *Server) FreeObjectTypes() {
 }
 
 func (s *serverObjTypes) Free() {
+	s.fast.scorch = scorchTypeCache537BD0{}
 	if s.first == nil && s.byID != nil {
 		return
 	}

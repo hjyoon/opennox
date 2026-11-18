@@ -110,7 +110,7 @@ nox_object_t* sub_537740();
 nox_object_t* sub_537750(nox_object_t* a1);
 int2* sub_537760(void);
 void nox_xxx_sMakeScorch_537AF0(float* a1, int a2);
-int nox_xxx_scorchInit_537BD0();
+int nox_xxx_scorchInit_537BD0(void);
 int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4);
 int nox_xxx_playerTraceAttack_538330(int a1, int a2);
 void sub_538510(int a1, int a2);

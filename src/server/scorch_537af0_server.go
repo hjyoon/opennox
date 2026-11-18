@@ -13,14 +13,19 @@ type MakeScorchRuntime537AF0 struct {
 	CreateObjectAt func(*Object, *Object, types.Pointf)
 }
 
+func (s *Server) ScorchInit537BD0() int {
+	return s.Types.fast.scorch.initialize(s.Types.IndByID)
+}
+
 // MakeScorch537AF0 creates one of the original three floor scorch objects and
 // gives it the original mode-dependent lifetime.
 func (s *Server) MakeScorch537AF0(pos types.Pointf, kind int, runtime MakeScorchRuntime537AF0) {
 	if runtime.CreateObjectAt == nil {
 		return
 	}
-	makeScorch537AF0(pos, kind, makeScorchHooks537AF0[*Object]{
-		newObject: s.NewObjectByTypeID,
+	makeScorch537AF0(pos, kind, &s.Types.fast.scorch, makeScorchHooks537AF0[*Object]{
+		typeIndex: s.Types.IndByID,
+		newObject: s.NewObjectByTypeInd,
 		createObjectAt: func(obj *Object, pos types.Pointf) {
 			runtime.CreateObjectAt(obj, nil, pos)
 		},

@@ -810,17 +810,8 @@ unsigned int sub_537760() { return dword_5d4594_2488620 != 0 ? (unsigned int)get
 #endif
 
 //----- (00537AF0) --------------------------------------------------------
-#if UINTPTR_MAX > UINT32_MAX
-extern void nox_xxx_sMakeScorch_native_537AF0(void* pos, int kind);
-#endif
-
+#if 0 // PE32 reference. Both entries use the Go-owned type cache.
 void nox_xxx_sMakeScorch_537AF0(float* a1, int a2) {
-#if UINTPTR_MAX > UINT32_MAX
-	// The original cache overlays three native pointer slots with 32-bit type
-	// IDs. Keep the PE32 implementation on 32-bit hosts and route wide-host C
-	// callers through the native-width server implementation.
-	nox_xxx_sMakeScorch_native_537AF0(a1, a2);
-#else
 	uint32_t* result; // eax
 	uint32_t* v3;     // esi
 	int v4;           // eax
@@ -857,7 +848,6 @@ void nox_xxx_sMakeScorch_537AF0(float* a1, int a2) {
 		}
 		nox_xxx_unitSetDecayTime_511660(v3, gameFPS() * v4);
 	}
-#endif
 }
 
 //----- (00537BD0) --------------------------------------------------------
@@ -871,6 +861,7 @@ int nox_xxx_scorchInit_537BD0() {
 	*getMemU32Ptr(0x5D4594, 2488636) = 1;
 	return result;
 }
+#endif
 
 //----- (00538290) --------------------------------------------------------
 int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4) {

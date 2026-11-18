@@ -10,8 +10,22 @@ var scorchTypeIDs537AF0 = [...]string{
 	"ScorchMarkFloorLargeB",
 }
 
+type scorchTypeCache537BD0 struct {
+	ready uint32
+	ids   [len(scorchTypeIDs537AF0)]uint32
+}
+
+func (cache *scorchTypeCache537BD0) initialize(typeIndex func(string) int) int {
+	for i, name := range scorchTypeIDs537AF0 {
+		cache.ids[i] = uint32(typeIndex(name))
+	}
+	cache.ready = 1
+	return int(cache.ids[len(cache.ids)-1])
+}
+
 type makeScorchHooks537AF0[O comparable] struct {
-	newObject      func(string) O
+	typeIndex      func(string) int
+	newObject      func(int) O
 	createObjectAt func(O, types.Pointf)
 	gameFlag       func(uint32) int32
 	randomInt      func(int, int) int
@@ -19,19 +33,18 @@ type makeScorchHooks537AF0[O comparable] struct {
 	setDecay       func(O, uint32)
 }
 
-// makeScorch537AF0 preserves GAME.EXE 00537AF0 without using the original
-// PE32 type-ID cache. The three cache entries map directly to stable object
-// type names, which also avoids overlapping native pointers with 32-bit IDs
-// in the legacy memory blob on 64-bit hosts.
-func makeScorch537AF0[O comparable](pos types.Pointf, kind int, hooks makeScorchHooks537AF0[O]) {
-	if kind < 0 || kind >= len(scorchTypeIDs537AF0) {
+func makeScorch537AF0[O comparable](pos types.Pointf, kind int, cache *scorchTypeCache537BD0, hooks makeScorchHooks537AF0[O]) {
+	if cache.ready == 0 {
+		cache.initialize(hooks.typeIndex)
+	}
+	if uint(kind) >= uint(len(cache.ids)) {
 		return
 	}
 	// The original indexes a one-element table with Random(0, 0). It still
 	// advances the deterministic logic RNG, so retain that otherwise redundant
 	// call before allocating the object.
 	_ = hooks.randomInt(0, 0)
-	obj := hooks.newObject(scorchTypeIDs537AF0[kind])
+	obj := hooks.newObject(int(cache.ids[kind]))
 	var zero O
 	if obj == zero {
 		return

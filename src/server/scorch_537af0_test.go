@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/opennox/libs/types"
@@ -15,12 +16,16 @@ type makeScorchTestWorld537AF0 struct {
 	fps     uint32
 	seconds int
 	events  []string
+	cache   scorchTypeCache537BD0
 }
 
 func (w *makeScorchTestWorld537AF0) hooks() makeScorchHooks537AF0[string] {
 	return makeScorchHooks537AF0[string]{
-		newObject: func(typeID string) string {
-			w.events = append(w.events, "new:"+typeID)
+		typeIndex: func(name string) int {
+			return slices.Index(scorchTypeIDs537AF0[:], name) + 1
+		},
+		newObject: func(ind int) string {
+			w.events = append(w.events, "new:"+scorchTypeIDs537AF0[ind-1])
 			return w.object
 		},
 		createObjectAt: func(obj string, pos types.Pointf) {
@@ -51,7 +56,7 @@ func TestMakeScorch537AF0TypeAndNormalLifetime(t *testing.T) {
 	for kind, typeID := range scorchTypeIDs537AF0 {
 		t.Run(typeID, func(t *testing.T) {
 			w := &makeScorchTestWorld537AF0{object: "scorch", fps: 30, seconds: 17}
-			makeScorch537AF0(types.Ptf(12.5, 34.25), kind, w.hooks())
+			makeScorch537AF0(types.Ptf(12.5, 34.25), kind, &w.cache, w.hooks())
 			want := []string{
 				"random:0:0",
 				"new:" + typeID,
@@ -75,7 +80,7 @@ func TestMakeScorch537AF0QuestLifetimeAndUint32Wrap(t *testing.T) {
 		fps:     math.MaxUint32,
 		seconds: 8,
 	}
-	makeScorch537AF0(types.Pointf{}, 0, w.hooks())
+	makeScorch537AF0(types.Pointf{}, 0, &w.cache, w.hooks())
 	want := []string{
 		"random:0:0",
 		"new:ScorchMarkFloorSmallA",
@@ -93,14 +98,14 @@ func TestMakeScorch537AF0QuestLifetimeAndUint32Wrap(t *testing.T) {
 func TestMakeScorch537AF0RejectsInvalidKindAndHandlesMissingType(t *testing.T) {
 	for _, kind := range []int{-1, len(scorchTypeIDs537AF0)} {
 		w := &makeScorchTestWorld537AF0{object: "scorch"}
-		makeScorch537AF0(types.Pointf{}, kind, w.hooks())
+		makeScorch537AF0(types.Pointf{}, kind, &w.cache, w.hooks())
 		if len(w.events) != 0 {
 			t.Fatalf("kind %d events = %v, want none", kind, w.events)
 		}
 	}
 
 	w := &makeScorchTestWorld537AF0{}
-	makeScorch537AF0(types.Pointf{}, 1, w.hooks())
+	makeScorch537AF0(types.Pointf{}, 1, &w.cache, w.hooks())
 	want := []string{"random:0:0", "new:ScorchMarkFloorMediumA"}
 	if !reflect.DeepEqual(w.events, want) {
 		t.Fatalf("missing-type events = %v, want %v", w.events, want)

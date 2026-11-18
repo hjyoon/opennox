@@ -822,23 +822,38 @@ func (s *Server) openShopNative50E8F0(playerUnit, merchant *server.Object) *serv
 		return nil
 	}
 	quest := noxflags.HasGame(noxflags.GameModeQuest)
-	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, playerUnit.UpdateDataPlayer().Player.Index())
-	if !reused {
-		var complete bool
-		if quest {
-			_, complete = s.Server.LoadQuestShopItemsNative50E970(session, server.QuestShopItemLoadRuntime50E970{
-				CurrentQuestStage: func() int32 { return int32(s.nox_game_getQuestStage_4E3CC0()) },
-				AnkhCutoffStage:   float32(s.Server.Balance.Float("ShopAnkhCutoffStage")),
-				DelayedDelete:     s.DelayedDelete,
-			})
-		} else {
-			_, complete = s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())
+	playerIndex := -1
+	if quest {
+		if !playerUnit.Class().Has(object.ClassPlayer) {
+			return nil
 		}
-		if !complete {
-			netstr.Log.Printf("SERVER SHOP: merchant %q inventory generation was incomplete", merchant.ID())
+		update := playerUnit.UpdateDataPlayer()
+		if update == nil || update.Player == nil {
+			return nil
 		}
+		playerIndex = update.Player.Index()
+	}
+	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, playerIndex)
+	if !reused && !s.loadShopItemsNative50E970(session) {
+		netstr.Log.Printf("SERVER SHOP: merchant %q inventory generation was incomplete", merchant.ID())
 	}
 	return session
+}
+
+func (s *Server) loadShopItemsNative50E970(session *server.TradeSession) bool {
+	if !s.Server.IsTradeSessionNative(session) {
+		return false
+	}
+	if noxflags.HasGame(noxflags.GameModeQuest) {
+		_, complete := s.Server.LoadQuestShopItemsNative50E970(session, server.QuestShopItemLoadRuntime50E970{
+			CurrentQuestStage: func() int32 { return int32(s.nox_game_getQuestStage_4E3CC0()) },
+			AnkhCutoffStage:   float32(s.Server.Balance.Float("ShopAnkhCutoffStage")),
+			DelayedDelete:     s.DelayedDelete,
+		})
+		return complete
+	}
+	_, complete := s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())
+	return complete
 }
 
 // shopExitNative50F4C0 is the native-width half of the original shop-exit

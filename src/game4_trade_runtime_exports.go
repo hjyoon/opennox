@@ -29,6 +29,14 @@ func (s *Server) Game4TradeStartNative50EF10(starter, target *server.Object) *se
 	return s.tradeStartNative50EF10(starter, target)
 }
 
+func (s *Server) Game4ShopOpenNative50E8F0(player, merchant *server.Object) *server.TradeSession {
+	return s.openShopNative50E8F0(player, merchant)
+}
+
+func (s *Server) Game4ShopLoadNative50E970(session *server.TradeSession) {
+	s.loadShopItemsNative50E970(session)
+}
+
 // Game4TradePacketNative handles one MSG_TRADE packet. onPacketOp never calls
 // the C decoder, so a C-to-Go handoff cannot recurse back into its old case.
 func (s *Server) Game4TradePacketNative(unit *server.Object, packet []byte) int {

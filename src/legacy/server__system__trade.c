@@ -56,6 +56,7 @@ int sub_50E7A0(uint32_t* a1, int a2) {
 #endif
 
 //----- (0050E8F0) --------------------------------------------------------
+#if 0 // Restored by shop_constructor_native_entry.go.
 uint32_t* nox_xxx_createPlayerShopSession_50E8F0(int a1, int a2) {
 	int v2;           // ebx
 	int v3;           // eax
@@ -82,6 +83,7 @@ uint32_t* nox_xxx_createPlayerShopSession_50E8F0(int a1, int a2) {
 	}
 	return v4;
 }
+#endif
 
 //----- (0050F0F0) --------------------------------------------------------
 #if 0 // Restored by trade_start_packet_native_entry.go.

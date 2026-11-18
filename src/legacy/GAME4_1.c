@@ -1811,6 +1811,7 @@ int sub_50E820(int a1, int a2) {
 #endif
 
 //----- (0050E870) --------------------------------------------------------
+#if 0 // Restored by shop_constructor_native_entry.go.
 uint32_t* nox_xxx_createShopStruct_50E870() {
 	uint32_t* v0; // eax
 	uint32_t* v1; // esi
@@ -1839,8 +1840,10 @@ uint32_t* nox_xxx_createShopStruct_50E870() {
 	dword_5d4594_2386500 = v1;
 	return v1;
 }
+#endif
 
 //----- (0050E970) --------------------------------------------------------
+#if 0 // Restored by shop_constructor_native_entry.go.
 void nox_xxx_loadShopItems_50E970(int a1) {
 	void* session = (void*)(uintptr_t)(uint32_t)a1;
 	int v2;                // eax
@@ -2065,6 +2068,8 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 		}
 	}
 }
+
+#endif
 
 //----- (0050EE00) --------------------------------------------------------
 #if 0 // Restored by shop_insertion_native_entry.go.

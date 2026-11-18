@@ -60,6 +60,25 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native trade start dispatch, 2026-11-18
+
+Engine `b6ce991bb1a8cac406372e2cc15ddba12cd763c7` ports the `50EF10`
+C entry. The C entry and Go packet handler pass native object and session
+pointers through the same dispatcher. The dispatcher preserves the busy
+results, both shop orientations, ordered setup packets and stock before
+the Coop freeze. It checks allocation identity after a queue call that
+can synchronously release a session.
+
+The 54 stock cases execute 471 dispatcher bytes and 35 bytes of the
+stock participant setter. The unchanged ARM64 C body faults in both
+direct and indirect calls at its first truncated participant read.
+Both macOS profiles pass 16,541 focused events with zero compiler
+warnings. These checks include the two C call routes and a release
+during the first send. The local qualification in
+`opennox-verification/20261118-trade/trade-start-dispatch-v1/local-trade-start-dispatch-C-qualification-v1.json`
+has SHA-256 `4d85816695b85bd3f8ed9458c3ab31de2dc9a7ce3d4340776c860fcd92223e76`.
+Linux run `44291839322` and Windows run `44291724977` qualify this source.
+
 ### Native shop close, 2026-11-18
 
 Engine `7d203f719db2256737a45262c771dd0ee362236f` ports the `50F4C0`
@@ -78,13 +97,29 @@ macOS normal and strict each pass 16,427 targeted test events with
 zero compiler warnings. Linux run `44268087145` and Windows run
 `44267896842` pass all six jobs.
 
-The first ARM64 build passed all four product, metadata and help
-checks. Cleanup outside the porting process removed that batch's
-products, local tests and qualification receipt. The original
-fixture and committed code survived. Recovery is tracked in the
-workspace at `opennox-verification/20261118-trade/shop-exit-recovery-v1`.
-The missing local qualification had SHA-256
-`21302ce13eb591012858ad2e4bc8c8bf22a9ba8d029e1b6c9642537d4dfdc7b2`.
+The first ARM64 build passed all four product, metadata and help checks.
+Cleanup outside the porting process removed its products, local tests and
+qualification receipt. The retained stock fixture and source enabled a
+fresh exact-revision build and replay. Both test profiles reproduce
+16,427 passes. The four ARM64 products pass 212 symbol checks, and four
+OpenAL null-device scenarios check purchase, sale and shop close. All
+4,649 original asset and Save hashes match.
+
+The recovery directory is
+`opennox-verification/20261118-trade/shop-exit-recovery-v1`. macOS
+qualification `qualified-macOS-shop-close-products-v1.json` has SHA-256
+`2f395b106e06c02d3ffd2db93f0e45957cead6920d19e710aa774b6de04287f7`.
+The six official archives and job logs are retained there with 158 test
+executables and 12 Windows/386 GC replays. CI qualification
+`qualified-shop-close-CI-v1.json` has SHA-256
+`17c1103dc49159da584b58ed584f7162f633cc69b1808a7295eed8be8eca28da`.
+
+On both ARM64 client profiles, the public warrior manual Save/Load
+scenarios restore the player and verify movement. The original PNG
+comparisons still report 324,117 different live-load pixels and
+323,053 different fresh-load pixels by exact RGB channel equality.
+A one-pixel horizontal alignment removes most of the world-view
+differences. The original PNGs are retained.
 
 ### Native shop and trade start packets, 2026-11-18
 

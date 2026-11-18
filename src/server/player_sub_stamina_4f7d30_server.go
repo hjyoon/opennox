@@ -11,19 +11,16 @@ type playerSubStaminaReportNativeDeps4D8800 struct {
 }
 
 func playerSubStaminaReportNative4D8800(
-	playerIndex uint8,
+	playerIndex int32,
 	unit *Object,
 	deps playerSubStaminaReportNativeDeps4D8800,
-) {
-	// GAME.EXE 004D8800 returns the packet sender's value, but its restored
-	// stamina callers deliberately ignore it. Keep only the observable
-	// class/update reads and send side effect at this private boundary.
-	if uint8(unit.ObjClass)&uint8(playerSubStaminaPlayerClass4F7D30) == 0 {
-		return
+) (int32, bool) {
+	if unit == nil || uint8(unit.ObjClass)&uint8(playerSubStaminaPlayerClass4F7D30) == 0 || unit.UpdateData == nil {
+		return 0, false
 	}
 	update := (*PlayerUpdateData)(unit.UpdateData)
 	packet := [2]byte{byte(netmsg.MSG_REPORT_STAMINA), update.Stamina}
-	_ = deps.sendReliable(int32(playerIndex), packet, nil, 1)
+	return deps.sendReliable(playerIndex, packet, nil, 1), true
 }
 
 func playerSubStaminaNative4F7D30(
@@ -71,13 +68,17 @@ func playerSubStaminaNative4F7D30(
 	})
 }
 
+func (s *Server) NetReportStamina4D8800(recipient int32, unit *Object) (int32, bool) {
+	return playerSubStaminaReportNative4D8800(recipient, unit, playerSubStaminaReportNativeDeps4D8800{
+		sendReliable: func(recipient int32, packet [2]byte, related *Object, remove int32) int32 {
+			return int32(s.NetSendPacketXxx1(int(recipient), packet[:], related, int(remove)))
+		},
+	})
+}
+
 func playerStaminaReportServer4D8800(s *Server) func(uint8, *Object) {
-	return func(playerIndex uint8, unit *Object) {
-		playerSubStaminaReportNative4D8800(playerIndex, unit, playerSubStaminaReportNativeDeps4D8800{
-			sendReliable: func(recipient int32, packet [2]byte, related *Object, remove int32) int32 {
-				return int32(s.NetSendPacketXxx1(int(recipient), packet[:], related, int(remove)))
-			},
-		})
+	return func(recipient uint8, unit *Object) {
+		s.NetReportStamina4D8800(int32(recipient), unit)
 	}
 }
 

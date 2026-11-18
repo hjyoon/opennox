@@ -11,10 +11,14 @@ func (s *Server) PlayerItemEnchantmentReport4D99A7(unit *Object, update *PlayerU
 		return
 	}
 	recipient := int(player.PlayerInd)
-	packet := [2]byte{91, byte(unit.Field110)}
-	s.NetSendPacketXxx0(recipient, packet[:], nil, 1)
+	s.NetReportItemEnchantment4D8840(recipient, unit)
 
 	player = update.Player
 	current = byte(unit.Field110)
 	player.Field2172 = current
+}
+
+func (s *Server) NetReportItemEnchantment4D8840(recipient int, unit *Object) int {
+	packet := [2]byte{91, byte(unit.Field110)}
+	return s.NetSendPacketXxx0(recipient, packet[:], nil, 1)
 }

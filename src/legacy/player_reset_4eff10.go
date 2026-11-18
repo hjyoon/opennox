@@ -45,7 +45,7 @@ func playerResetRuntime4EFF10() server.PlayerResetRuntime4EFF10 {
 			_ = netReportTotalHealthNative4D85C0(s, playerInd, unit)
 		},
 		ReportTotalMana: func(playerInd uint8, unit *server.Object) {
-			netReportTotalManaNative4D88C0(s, playerInd, unit)
+			NetReportTotalManaNative4D88C0(s, playerInd, unit)
 		},
 	}
 }

@@ -10,14 +10,24 @@ func goldReportNative4D8870(
 	recipient int32,
 	unit *Object,
 	deps playerGoldReportNativeDeps4D996D,
-) {
-	if uint8(unit.ObjClass)&playerGoldReportClassLow4D9900 == 0 {
-		return
+) (int32, bool) {
+	if unit == nil || uint8(unit.ObjClass)&playerGoldReportClassLow4D9900 == 0 {
+		return 0, false
 	}
 	update := (*PlayerUpdateData)(unit.UpdateData)
-	player := update.Player
-	packet := BuildShopGoldReportPacket4D8870(player.GoldVal)
-	deps.sendReliable(recipient, packet, nil, 1)
+	if update == nil || update.Player == nil {
+		return 0, false
+	}
+	packet := BuildShopGoldReportPacket4D8870(update.Player.GoldVal)
+	return deps.sendReliable(recipient, packet, nil, 1), true
+}
+
+func (s *Server) sendGoldReport4D8870(recipient int32, packet [ShopGoldReportPacketSize4D8870]byte, related *Object, remove int32) int32 {
+	return int32(s.NetSendPacketXxx0(int(recipient), packet[:], related, int(remove)))
+}
+
+func (s *Server) NetReportGold4D8870(recipient int32, unit *Object) (int32, bool) {
+	return goldReportNative4D8870(recipient, unit, playerGoldReportNativeDeps4D996D{sendReliable: s.sendGoldReport4D8870})
 }
 
 func playerGoldReportNative4D996D(
@@ -60,8 +70,6 @@ func (s *Server) PlayerGoldReportSync4D9900(unit *Object) {
 	}
 	update := (*PlayerUpdateData)(unit.UpdateData)
 	playerGoldReportNative4D996D(unit, update, playerGoldReportNativeDeps4D996D{
-		sendReliable: func(recipient int32, packet [ShopGoldReportPacketSize4D8870]byte, related *Object, remove int32) int32 {
-			return int32(s.NetSendPacketXxx0(int(recipient), packet[:], related, int(remove)))
-		},
+		sendReliable: s.sendGoldReport4D8870,
 	})
 }

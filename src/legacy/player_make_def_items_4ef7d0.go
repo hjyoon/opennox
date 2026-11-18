@@ -8,48 +8,9 @@ int sub_4CFE00(void);
 import "C"
 
 import (
-	"encoding/binary"
-
-	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
-
-func netReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *server.Object) {
-	update := (*server.PlayerUpdateData)(unit.UpdateData)
-	if uint8(unit.ObjClass)&0x04 == 0 || update != nil && update.Player.PlayerClass() == 0 {
-		return
-	}
-	var packet [7]byte
-	packet[0] = byte(netmsg.MSG_REPORT_TOTAL_MANA)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(unit)))
-	binary.LittleEndian.PutUint16(packet[3:], update.ManaCur)
-	binary.LittleEndian.PutUint16(packet[5:], update.ManaMax)
-	sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
-}
-
-// NetReportTotalManaNative4D88C0 exposes the native-width implementation to
-// the restored player-stat reporting path.
-func NetReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *server.Object) {
-	netReportTotalManaNative4D88C0(s, playerInd, unit)
-}
-
-// NetReportManaNative4D8930 sends GAME.EXE's five-byte current-mana report
-// without narrowing the native Object or PlayerUpdateData pointers to int.
-func NetReportManaNative4D8930(s *server.Server, playerInd uint8, unit *server.Object) int {
-	if unit == nil || uint8(unit.ObjClass)&0x04 == 0 || unit.UpdateData == nil {
-		return 0
-	}
-	update := (*server.PlayerUpdateData)(unit.UpdateData)
-	if update.Player == nil || update.Player.PlayerClass() == 0 {
-		return 0
-	}
-	var packet [5]byte
-	packet[0] = byte(netmsg.MSG_REPORT_MANA)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(unit)))
-	binary.LittleEndian.PutUint16(packet[3:], update.ManaCur)
-	return sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
-}
 
 func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 	outer := GetServer()
@@ -70,7 +31,7 @@ func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 			_ = netReportTotalHealthNative4D85C0(s, playerInd, unit)
 		},
 		ReportTotalMana: func(playerInd uint8, unit *server.Object) {
-			netReportTotalManaNative4D88C0(s, playerInd, unit)
+			NetReportTotalManaNative4D88C0(s, playerInd, unit)
 		},
 		SendRespawn: func(unit *server.Object, keepItems uint8) uint8 {
 			return uint8(s.NetSendPlayerRespawn4EFC30(unit, keepItems))

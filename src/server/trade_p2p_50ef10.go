@@ -7,8 +7,6 @@ import (
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const (
@@ -79,6 +77,10 @@ func BuildTradeP2PStartPacket50F1A0(name string) [TradeP2PStartPacketSize50F1A0]
 
 func BuildTradeP2PClosePacket50F450() [TradeP2PClosePacketSize50F450]byte {
 	return [TradeP2PClosePacketSize50F450]byte{byte(netmsg.MSG_TRADE), 0x01}
+}
+
+func BuildTradeContinuePacket50F6E0() [2]byte {
+	return [2]byte{byte(netmsg.MSG_TRADE), 0x07}
 }
 
 func BuildTradeP2PStatusPacket50F720(session *TradeSession, recipient *Object) [TradeP2PStatusPacketSize50F720]byte {
@@ -355,16 +357,28 @@ func tradeP2PAddGold50F3A0(owner, gold *Object, runtime TradeP2PRuntime50F3A0) {
 // Gold amounts, clears both player links, emits C9/01, and releases the native
 // session. Ownership is checked before any session field is dereferenced.
 func (s *Server) CancelP2PTradeNative50F3A0(session *TradeSession, runtime TradeP2PRuntime50F3A0) bool {
-	if _, ok := s.nativeP2PSession50F3A0(session); !ok {
+	state, ok := s.nativeP2PSession50F3A0(session)
+	if !ok {
 		return false
 	}
 	tradeP2PReturnList50F3A0(session.Field8, session.Field32, runtime)
 	tradeP2PAddGold50F3A0(session.Field8, session.Field48, runtime)
 	tradeP2PReturnList50F3A0(session.Field12, session.Field36, runtime)
 	tradeP2PAddGold50F3A0(session.Field12, session.Field52, runtime)
+	return s.closeTradeNative50F3A0(session, state, runtime)
+}
+
+func (s *Server) closeTradeNative50F3A0(session *TradeSession, state *nativeTradeSessionAllocation, runtime TradeP2PRuntime50F3A0) bool {
+	if s.tradeNative.sessions[session] != state {
+		return false
+	}
 	closePacket := BuildTradeP2PClosePacket50F450()
-	tradeP2PSendClose50F450(runtime, session.Field8, closePacket[:])
-	tradeP2PSendClose50F450(runtime, session.Field12, closePacket[:])
+	for _, participant := range [...]*Object{session.Field8, session.Field12} {
+		tradeP2PSendClose50F450(runtime, participant, closePacket[:])
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
+	}
 	tradeP2PClearPlayer50F490(session, session.Field8)
 	tradeP2PClearPlayer50F490(session, session.Field12)
 	session.Field0 = 0
@@ -410,7 +424,7 @@ func (s *Server) addP2POfferNode50F820(session *TradeSession, item *Object, cost
 	if !ok || item == nil {
 		return nil
 	}
-	node, freeNode := alloc.New(TradeItem{})
+	node, freeNode := serverNativeNew(s.tradeNative.highAddresses, TradeItem{})
 	node.Item0 = item
 	node.Cost4 = cost
 	head := &session.Field36
@@ -549,26 +563,42 @@ func (s *Server) RemoveP2PTradeOfferNative50FE20(
 	return true
 }
 
-func (s *Server) transferP2POfferList50F790(session *TradeSession, recipient *Object, head **TradeItem, runtime TradeP2PRuntime50F3A0) {
+// TransferTradeOfferNative50F790 moves the items while retaining the offer
+// nodes. The accepting transaction releases both chains after paying Gold.
+func (s *Server) TransferTradeOfferNative50F790(session *TradeSession, recipient *Object, head *TradeItem, runtime TradeP2PRuntime50F3A0) bool {
 	state := s.tradeNative.sessions[session]
-	for node := *head; node != nil; {
-		next := node.Field8
-		if runtime.PutInventory != nil && node.Item0 != nil {
-			runtime.PutInventory(recipient, node.Item0)
+	if state == nil || recipient == nil {
+		return false
+	}
+	for node := head; node != nil; node = node.Field8 {
+		if _, live := state.items[node]; !live {
+			return false
 		}
-		if allocation, ok := state.items[node]; ok {
-			delete(state.items, node)
-			if allocation.freeNode != nil {
-				allocation.freeNode()
+		if recipient.Class().Has(object.ClassPlayer) {
+			if runtime.PutInventory != nil && node.Item0 != nil {
+				runtime.PutInventory(recipient, node.Item0)
+			}
+		} else if stock := s.AddShopItemNative50EE00(session, node.Item0); stock != nil {
+			player := session.Field8
+			if !player.Class().Has(object.ClassPlayer) {
+				player = session.Field12
+			}
+			if _, _, ok := tradeP2PPlayer50EF10(player); ok {
+				s.SendShopItemNative50F2B0(player, stock)
 			}
 		}
-		node = next
+		// Inventory and packet callbacks can release the session or this node.
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
+		if _, live := state.items[node]; !live {
+			return false
+		}
 	}
-	*head = nil
+	return true
 }
 
-// AcceptP2PTradeNative50F5A0 marks the accepting side, reports both flags,
-// and atomically swaps the two offer lists once both players accept.
+// AcceptP2PTradeNative50F5A0 accepts a request from an attached P2P player.
 func (s *Server) AcceptP2PTradeNative50F5A0(
 	session *TradeSession,
 	acceptingPlayer *Object,
@@ -577,24 +607,53 @@ func (s *Server) AcceptP2PTradeNative50F5A0(
 	if _, ok := s.nativeP2PSession50F3A0(session); !ok {
 		return false
 	}
+	if acceptingPlayer != session.Field8 && acceptingPlayer != session.Field12 {
+		return false
+	}
+	return s.AcceptTradeNative50F5A0(session, acceptingPlayer, runtime)
+}
+
+// AcceptTradeNative50F5A0 reports both flags, settles each side's offer,
+// and refreshes the shop or closes the transaction after settlement.
+func (s *Server) AcceptTradeNative50F5A0(session *TradeSession, acceptingPlayer *Object, runtime TradeP2PRuntime50F3A0) bool {
+	state := s.tradeNative.sessions[session]
+	if state == nil || acceptingPlayer == nil {
+		return false
+	}
 	if session.Field8 == acceptingPlayer {
 		session.Field24 = 1
 	} else if session.Field12 == acceptingPlayer {
 		session.Field28 = 1
-	} else {
-		return false
 	}
 	for _, recipient := range [...]*Object{session.Field8, session.Field12} {
 		status := BuildTradeP2PStatusPacket50F720(session, recipient)
 		tradeP2PSend50F3A0(runtime, recipient, status[:])
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
 	}
 	if session.Field24 != 1 || session.Field28 != 1 {
 		return true
 	}
-	s.transferP2POfferList50F790(session, session.Field12, &session.Field32, runtime)
-	s.transferP2POfferList50F790(session, session.Field8, &session.Field36, runtime)
-	tradeP2PAddGold50F3A0(session.Field12, session.Field48, runtime)
-	tradeP2PAddGold50F3A0(session.Field8, session.Field52, runtime)
+	if !s.TransferTradeOfferNative50F790(session, session.Field12, session.Field32, runtime) ||
+		!s.TransferTradeOfferNative50F790(session, session.Field8, session.Field36, runtime) {
+		return false
+	}
+	for _, offer := range [...]struct {
+		recipient *Object
+		gold      *Object
+	}{{session.Field12, session.Field48}, {session.Field8, session.Field52}} {
+		if runtime.AddGold != nil && offer.recipient.Class().Has(object.ClassPlayer) && offer.gold != nil && offer.gold.InitData != nil {
+			runtime.AddGold(offer.recipient, offer.gold.InitDataGold().Amount)
+			if s.tradeNative.sessions[session] != state {
+				return false
+			}
+		}
+	}
+	state.releaseItemList(session.Field32, false)
+	session.Field32 = nil
+	state.releaseItemList(session.Field36, false)
+	session.Field36 = nil
 	if session.Field48 != nil && session.Field48.InitData != nil {
 		session.Field48.InitDataGold().Amount = 0
 	}
@@ -603,5 +662,14 @@ func (s *Server) AcceptP2PTradeNative50F5A0(
 	}
 	session.Field40 = 0
 	session.Field44 = 0
-	return s.CancelP2PTradeNative50F3A0(session, runtime)
+	if session.Field16 == 1 {
+		player := session.Field8
+		if !player.Class().Has(object.ClassPlayer) {
+			player = session.Field12
+		}
+		packet := BuildTradeContinuePacket50F6E0()
+		tradeP2PSend50F3A0(runtime, player, packet[:])
+		return s.tradeNative.sessions[session] == state
+	}
+	return s.closeTradeNative50F3A0(session, state, runtime)
 }

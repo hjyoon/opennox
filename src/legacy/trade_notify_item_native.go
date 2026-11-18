@@ -12,7 +12,7 @@ func tradeNotifyEnd50F560(recipient *server.Object) int32 {
 }
 
 func tradeNotifyContinue50F6E0(recipient *server.Object) int32 {
-	packet := [2]byte{0xc9, 0x07}
+	packet := server.BuildTradeContinuePacket50F6E0()
 	return tradePacketSendNative(recipient, packet[:])
 }
 

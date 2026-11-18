@@ -2282,6 +2282,7 @@ int nox_xxx_sendEndTradeMsg_50F560(int a1) {
 #endif
 
 //----- (0050F5A0) --------------------------------------------------------
+#if 0 // Restored by trade_offer_transfer_native_entry.go.
 void nox_xxx_tradeAccept_50F5A0(int a1, int a2) {
 	int v2; // eax
 	int v3; // eax
@@ -2331,6 +2332,7 @@ void nox_xxx_tradeAccept_50F5A0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (0050F6B0) --------------------------------------------------------
 #if 0 // Restored by trade_release_native_entry.go.
@@ -2394,6 +2396,7 @@ int sub_50F720(int a1, uint32_t* a2) {
 #endif
 
 //----- (0050F790) --------------------------------------------------------
+#if 0 // Restored by trade_offer_transfer_native_entry.go.
 void sub_50F790(int a1, int a2, int* a3) {
 	int* i;    // esi
 	void* v4; // eax
@@ -2416,6 +2419,7 @@ void sub_50F790(int a1, int a2, int* a3) {
 		}
 	}
 }
+#endif
 
 //----- (0050F7F0) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.

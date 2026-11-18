@@ -21,6 +21,23 @@ const (
 
 type TradeP2PStartResult50EF10 uint8
 
+func (s *Server) SendTradeStartNative50F1A0(recipient *Object, session *TradeSession) int {
+	other := session.Field12
+	if recipient != session.Field8 {
+		other = session.Field8
+	}
+	var name string
+	if other.Class().Has(object.ClassPlayer) {
+		name = other.UpdateDataPlayer().Player.Name()
+	} else {
+		// Both original object-name branches resolve the second participant.
+		name = s.ShopObjectName4E39F0(session.Field12)
+	}
+	packet := BuildTradeP2PStartPacket50F1A0(name)
+	update := (*PlayerUpdateData)(recipient.UpdateData)
+	return s.NetSendPacketXxx1(int(update.Player.PlayerInd), packet[:], nil, 1)
+}
+
 const (
 	TradeP2PStartInvalid50EF10 TradeP2PStartResult50EF10 = iota
 	TradeP2PStartStarterBusy50EF10

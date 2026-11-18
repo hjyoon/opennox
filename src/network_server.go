@@ -846,13 +846,7 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 	session.Field4 = s.Frame()
 	update.Trade70 = session
 
-	idata := merchant.InitDataShopkeeper()
-	packet := server.BuildShopStartPacket50F0F0(
-		merchant.TypeInd,
-		s.Server.ShopObjectName4E39F0(merchant),
-		idata.ShopText[:],
-	)
-	s.NetSendPacketXxx1(update.Player.Index(), packet[:], nil, 1)
+	s.Server.SendShopStartNative50F0F0(session)
 	s.Server.SendShopItemsNative50F280(playerUnit, session)
 	if shopMovementFrozen50EF10(noxflags.GetGame()) {
 		legacy.Nox_xxx_unitFreeze_4E79C0(playerUnit, 0)

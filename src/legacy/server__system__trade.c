@@ -84,6 +84,7 @@ uint32_t* nox_xxx_createPlayerShopSession_50E8F0(int a1, int a2) {
 }
 
 //----- (0050F0F0) --------------------------------------------------------
+#if 0 // Restored by trade_start_packet_native_entry.go.
 int sub_50F0F0(int a1, int a2) {
 	int v2;      // ebx
 	int v3;      // ebp
@@ -106,8 +107,10 @@ int sub_50F0F0(int a1, int a2) {
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(v3 + 748) + 276) + 2064), v6,
 										 86, 0, 1);
 }
+#endif
 
 //----- (0050F1A0) --------------------------------------------------------
+#if 0 // Restored by trade_start_packet_native_entry.go.
 int sub_50F1A0(int a1, int a2) {
 	int v2;      // eax
 	int v3;      // esi
@@ -136,6 +139,7 @@ int sub_50F1A0(int a1, int a2) {
 	*(uint16_t*)&v8[50] = 0;
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v8, 52, 0, 1);
 }
+#endif
 
 //----- (0050F280) --------------------------------------------------------
 #if 0 // Restored by shop_stock_native_entry.go.
@@ -411,17 +415,17 @@ LABEL_18:
 	v10 = *(uint8_t*)(a1 + 8);
 	if (v9[4]) {
 		if (v10 & 4) {
-			sub_50F0F0(a1, (int)v9);
+			sub_50F0F0((nox_object_t*)(uintptr_t)(uint32_t)a1, v9);
 		}
 		if (*(uint8_t*)(a2 + 8) & 4) {
-			sub_50F0F0(a2, (int)v9);
+			sub_50F0F0((nox_object_t*)(uintptr_t)(uint32_t)a2, v9);
 		}
 	} else {
 		if (v10 & 4) {
-			sub_50F1A0(a1, (int)v9);
+			sub_50F1A0((nox_object_t*)(uintptr_t)(uint32_t)a1, v9);
 		}
 		if (*(uint8_t*)(a2 + 8) & 4) {
-			sub_50F1A0(a2, (int)v9);
+			sub_50F1A0((nox_object_t*)(uintptr_t)(uint32_t)a2, v9);
 		}
 	}
 	if (v9[4]) {

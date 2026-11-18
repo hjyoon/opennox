@@ -1422,6 +1422,17 @@ func (s *Server) ShopObjectName4E39F0(obj *Object) string {
 	return s.Strings().GetStringInFile(strman.ID(key), "C:\\NoxPost\\src\\Server\\DBase\\objdb.c")
 }
 
+func (s *Server) SendShopStartNative50F0F0(session *TradeSession) int {
+	merchant, recipient := session.Field8, session.Field12
+	if merchant.Class().Has(object.ClassPlayer) {
+		merchant, recipient = recipient, merchant
+	}
+	data := merchant.InitDataShopkeeper()
+	packet := BuildShopStartPacket50F0F0(merchant.TypeInd, s.ShopObjectName4E39F0(merchant), data.ShopText[:])
+	update := (*PlayerUpdateData)(recipient.UpdateData)
+	return s.NetSendPacketXxx1(int(update.Player.PlayerInd), packet[:], nil, 1)
+}
+
 // BuildShopStartPacket50F0F0 constructs the original 86-byte C9/0D packet:
 // merchant type, 24 UTF-16LE name code units plus terminator, and a bounded
 // 32-byte shop-text C string.

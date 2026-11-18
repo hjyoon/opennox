@@ -567,32 +567,8 @@ func Sub_4E5BF0(a1 bool) {
 	cleanupObjectsForMapLoadRuntime_4E5BF0(bool2int(a1))
 }
 
-//export nox_xxx_shopCancelSession_510DC0_go
-func nox_xxx_shopCancelSession_510DC0_go(session unsafe.Pointer) C.int {
-	if session == nil || GetServer == nil {
-		return 0
-	}
-	s := GetServer()
-	if s == nil || !s.ShopCancelSessionNative510DC0((*server.TradeSession)(session)) {
-		return 0
-	}
-	return 1
-}
-
 func Nox_xxx_shopCancelSession_510DC0(a1 *server.TradeSession) {
 	C.nox_xxx_shopCancelSession_510DC0(unsafe.Pointer(a1))
-}
-
-//export sub_510E20_go
-func sub_510E20_go(playerIndex C.int) C.int {
-	if GetServer == nil {
-		return 0
-	}
-	s := GetServer()
-	if s == nil || !s.ClearQuestShopSessionNative510E20(int(playerIndex)) {
-		return 0
-	}
-	return 1
 }
 
 func Sub_510E20(playerIndex int) {

@@ -11,7 +11,6 @@ import (
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -35,7 +34,7 @@ func nox_xxx_shopExit_50F4C0(ptr unsafe.Pointer) {
 		return
 	}
 	if notified && index >= 0 && index < 32 && noxflags.HasGame(noxflags.GameModeQuest) {
-		*memmap.PtrT[uint32](0x5D4594, 2386364+4*uintptr(index)) = uint32(uintptr(ptr))
+		*questShopSessionSlotPE32(index) = ptr
 		return
 	}
 	sub_510000(ptr)

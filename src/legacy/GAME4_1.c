@@ -2933,6 +2933,7 @@ void sub_510D10(int* a1, int a2, int a3, unsigned int a4) {
 #endif
 
 //----- (00510DC0) --------------------------------------------------------
+#if 0 // Restored by trade_cancel_cache_native_entry.go.
 extern int nox_xxx_shopCancelSession_510DC0_go(void* session);
 
 void nox_xxx_shopCancelSession_510DC0(void* a1p) {
@@ -2952,6 +2953,7 @@ void nox_xxx_shopCancelSession_510DC0(void* a1p) {
 		sub_50F3A0(a1);
 	}
 }
+#endif
 
 //----- (00510DE0) --------------------------------------------------------
 #if 0 // Restored by pointer_chain_native_entry.go.
@@ -2978,6 +2980,7 @@ int sub_510DE0(int a1, int a2) {
 #endif
 
 //----- (00510E20) --------------------------------------------------------
+#if 0 // Restored by trade_cancel_cache_native_entry.go.
 extern int sub_510E20_go(int player_index);
 
 void sub_510E20(int a1) {
@@ -2998,6 +3001,7 @@ void sub_510E20(int a1) {
 	}
 	*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1) = 0;
 }
+#endif
 
 //----- (00510E50) --------------------------------------------------------
 extern nox_object_t* nox_sentry_cluster_native(int kind,nox_object_t* source,nox_sentry_ray_context* context,int index);

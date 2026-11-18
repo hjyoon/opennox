@@ -38,7 +38,6 @@
 #include "server__script__script.h"
 
 extern uint32_t dword_5d4594_2488620;
-extern uint32_t dword_5d4594_2488656;
 extern uint32_t dword_5d4594_3835360;
 extern uint32_t dword_5d4594_2488728;
 extern uint32_t dword_5d4594_2489436;
@@ -48,13 +47,11 @@ extern uint32_t dword_5d4594_2487932;
 extern uint32_t nox_xxx_lightningOwner_5d4594_2487900;
 extern uint32_t dword_587000_261388;
 extern uint32_t dword_5d4594_2488608;
-extern uint32_t dword_5d4594_2488652;
 extern uint32_t dword_5d4594_3835348;
 extern uint32_t dword_5d4594_3835352;
 extern uint32_t nox_xxx_lightningClosestTargetDistance_5d4594_2487912;
 extern uint32_t dword_5d4594_3835356;
 extern uint32_t dword_5d4594_2487248;
-extern uint32_t dword_5d4594_2488660;
 extern uint64_t qword_581450_10176;
 extern uint64_t qword_581450_9512;
 extern uint64_t qword_581450_9544;
@@ -906,6 +903,7 @@ int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4) {
 #endif
 
 //----- (00538330) --------------------------------------------------------
+#if 0 // Original PE32 trace and candidate bodies. Native calls use Go.
 int nox_xxx_playerTraceAttack_538330(int a1, int a2) {
 	int v2;    // ebp
 	int v3;    // eax
@@ -1115,6 +1113,8 @@ void sub_5386A0(int a3, int a2) {
 	}
 }
 
+#endif
+
 //----- (00538840) --------------------------------------------------------
 #if 0 // PE32 reference. The public entry is implemented in Go.
 int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
@@ -1142,166 +1142,6 @@ int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
 	return result;
 }
 #endif
-
-typedef struct nox_player_attack_info_native_t {
-	float damage;
-	uint8_t damage_type;
-	uint8_t reserved_5[3];
-	float radius;
-	nox_object_t* owner;
-	float pos_x;
-	float pos_y;
-	uint32_t field_24;
-	nox_object_t* weapon;
-	uint8_t field_32;
-} nox_player_attack_info_native_t;
-
-typedef struct nox_player_attack_scan_native_t {
-	float2 center;
-	float radius;
-	void (*callback)(nox_object_t*, void*);
-	void* data;
-} nox_player_attack_scan_native_t;
-
-typedef struct nox_player_attack_select_native_t {
-	nox_object_t* attacker;
-	float distance;
-	nox_object_t* closest;
-} nox_player_attack_select_native_t;
-
-typedef struct nox_player_attack_trace_native_t {
-	nox_player_attack_info_native_t* attack;
-	int damaged;
-	nox_object_t* target;
-} nox_player_attack_trace_native_t;
-
-static void nox_xxx_playerAttackScanCandidate_538960(nox_object_t* candidate, void* data) {
-	nox_player_attack_scan_native_t* scan = data;
-	if (!candidate || !scan) {
-		return;
-	}
-
-	float penetration;
-	float2 normal;
-	if (candidate->shape.kind == NOX_SHAPE_CIRCLE) {
-		float dx = scan->center.field_0 - candidate->x;
-		float dy = scan->center.field_4 - candidate->y;
-		penetration = scan->radius -
-			(sqrtf(dx * dx + dy * dy) - candidate->shape.circle_r);
-	} else if (candidate->shape.kind == NOX_SHAPE_BOX) {
-		penetration = sub_54A990(&scan->center, scan->radius, candidate, &normal);
-	} else {
-		float dx = scan->center.field_0 - candidate->x;
-		float dy = scan->center.field_4 - candidate->y;
-		penetration = scan->radius - sqrtf(dx * dx + dy * dy);
-	}
-	if (penetration > 0.0f) {
-		scan->callback(candidate, scan->data);
-	}
-}
-
-static void nox_xxx_playerAttackScanCircle_538960(
-	float2* center, float radius, void (*callback)(nox_object_t*, void*), void* data) {
-	extern void nox_xxx_playerAttackScanCircleNative_518040(float2*, float, void*, void*);
-	nox_xxx_playerAttackScanCircleNative_518040(center, radius, (void*)callback, data);
-}
-
-static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, void* data) {
-	nox_player_attack_trace_native_t* trace = data;
-	nox_player_attack_info_native_t* attack = trace ? trace->attack : 0;
-	if (!target || !attack || !attack->owner || target == attack->owner) {
-		return;
-	}
-	nox_object_t* owner = attack->owner;
-	if (!(nox_server_testTwoPointsAndDirection_4E6E50(
-			(float2*)&owner->x, owner->direction1, (float2*)&target->x) & attack->field_32)) {
-		return;
-	}
-	if ((target->obj_flags & 0x8040) || (!attack->field_24 && (target->obj_flags & 8))) {
-		return;
-	}
-	if (target->material != 0x4000) {
-		trace->damaged = 1;
-	}
-	float4 ray = {
-		.field_0 = owner->x,
-		.field_4 = owner->y,
-		.field_8 = target->x,
-		.field_C = target->y,
-	};
-	if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 5)) {
-		return;
-	}
-	if (attack->weapon && attack->weapon->init_data) {
-		nox_xxx_playerPreAttackEffects_538290(target, owner, attack->weapon, attack);
-	}
-	if (target->func_damage) {
-		nox_object_call_damage_native(target, owner, attack->weapon,
-			(int32_t)(attack->damage + 0.5f), attack->damage_type);
-	}
-	if (nox_common_gameFlags_check_40A5C0(2048) && (owner->obj_class & 4) &&
-		!(target->obj_class & 2) && target->health_data &&
-		*((uint16_t*)((uint8_t*)target->health_data + 4)) &&
-		!(target->obj_flags & 0x8020)) {
-		nox_xxx_netSendPointFx_522FF0((char)0x8B, (float2*)&target->x);
-	}
-}
-
-static void nox_xxx_playerAttackSelectCandidate_538960(nox_object_t* candidate, void* data) {
-	extern void nox_xxx_playerAttackSelectCandidateNative_5386A0(
-		nox_object_t*, nox_object_t*, float*, nox_object_t**);
-	nox_player_attack_select_native_t* select = data;
-	if (!select) {
-		return;
-	}
-	nox_xxx_playerAttackSelectCandidateNative_5386A0(
-		candidate, select->attacker, &select->distance, &select->closest);
-}
-
-static int nox_xxx_playerTraceAttackNative_538330(
-	nox_object_t* attacker, nox_player_attack_info_native_t* attack) {
-	if (!attacker || !attack) {
-		return 0;
-	}
-	nox_player_attack_trace_native_t trace = {.attack = attack};
-	float wall_padding = 0.0f;
-	if (attack->weapon && (attack->weapon->obj_subclass & 0x4000)) {
-		float2 center = {.field_0 = attack->pos_x, .field_4 = attack->pos_y};
-		nox_xxx_playerAttackScanCircle_538960(
-			&center, attack->radius, nox_xxx_playerAttackDamageCandidate_538960, &trace);
-		wall_padding = 25.0f;
-	} else {
-		nox_player_attack_select_native_t select = {
-			.attacker = attacker,
-			.distance = attack->radius,
-		};
-		nox_xxx_playerAttackScanCircle_538960((float2*)&attacker->x, attack->radius,
-			nox_xxx_playerAttackSelectCandidate_538960, &select);
-		if (select.closest) {
-			trace.target = select.closest;
-			nox_xxx_playerAttackDamageCandidate_538960(select.closest, &trace);
-		}
-	}
-
-	float radius = attack->radius + wall_padding;
-	int4 rect = {
-		.field_0 = nox_float2int(attack->pos_x - radius) / 23,
-		.field_4 = nox_float2int(attack->pos_y - radius) / 23,
-		.field_8 = nox_float2int(attack->pos_x + radius) / 23,
-		.field_C = nox_float2int(attack->pos_y + radius) / 23,
-	};
-	nox_object_t* wall_source = attack->weapon ? attack->weapon : attacker;
-	nox_xxx_mapDamageToWalls_534FC0(&rect, &attack->pos_x, radius,
-		(int32_t)(attack->damage + 0.5f), attack->damage_type, wall_source);
-	if (attack->weapon && trace.damaged) {
-		float item_damage =
-			(float)(nox_xxx_gamedataGetFloat_419D40("ItemDamagePercentage") * attack->damage);
-		nox_xxx_playerDamageWeapon_4E1560(
-			attack->weapon, attack->owner, trace.target, trace.target,
-			item_damage, attack->damage_type);
-	}
-	return trace.damaged;
-}
 
 static void nox_xxx_playerAttackWeaponHitNative_538960(
 	nox_object_t* unit, nox_object_t* weapon, nox_modifier_t* modifier,

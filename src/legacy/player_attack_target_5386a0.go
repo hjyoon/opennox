@@ -21,14 +21,17 @@ func nox_xxx_playerAttackSelectCandidateNative_5386A0(candidate, attacker *nox_o
 	s := GetServer().S()
 	chosen := asObjectS(*closest)
 	server.PlayerAttackSelectCandidate5386A0(asObjectS(candidate), asObjectS(attacker), (*float32)(unsafe.Pointer(distance)), &chosen,
-		server.PlayerAttackTargetRuntime5386A0{
-			IsEnemy: s.IsEnemyTo, CanInteract: s.CanInteract,
-			Direction: func(direction server.Dir16) types.Pointf {
-				// The original sign-extends the full WORD, not its low byte.
-				offset := uintptr(int(int16(direction)) * 8)
-				return types.Ptf(memmap.Float32(0x587000, 194136+offset), memmap.Float32(0x587000, 194140+offset))
-			},
-			Box: circleBoxCollisionNative54A990,
-		})
+		playerAttackTargetRuntime5386A0(s))
 	*closest = asObjectC(chosen)
+}
+
+func playerAttackTargetRuntime5386A0(s *server.Server) server.PlayerAttackTargetRuntime5386A0 {
+	return server.PlayerAttackTargetRuntime5386A0{
+		IsEnemy: s.IsEnemyTo, CanInteract: s.CanInteract,
+		Direction: func(direction server.Dir16) types.Pointf {
+			offset := uintptr(int(int16(direction)) * 8)
+			return types.Ptf(memmap.Float32(0x587000, 194136+offset), memmap.Float32(0x587000, 194140+offset))
+		},
+		Box: circleBoxCollisionNative54A990,
+	}
 }

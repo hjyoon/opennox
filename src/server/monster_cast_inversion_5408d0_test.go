@@ -44,15 +44,15 @@ func newMonsterInversionTestWorld5408D0(t *testing.T) *monsterInversionTestWorld
 	}
 }
 
-func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) monsterCastInversionHooks5408D0 {
+func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) MonsterCastInversionRuntime5408D0 {
 	t.Helper()
-	return monsterCastInversionHooks5408D0{
-		frame: func() uint32 { w.events = append(w.events, "frame"); return w.frame },
-		balance: func(key string) float64 {
+	return MonsterCastInversionRuntime5408D0{
+		Frame: func() uint32 { w.events = append(w.events, "frame"); return w.frame },
+		Balance: func(key string) float64 {
 			w.events = append(w.events, "balance:"+key)
 			return 100.000001
 		},
-		eachMissile: func(pos types.Pointf, radius float32, visit func(*Object) bool) {
+		EachMissile: func(pos types.Pointf, radius float32, visit func(*Object) bool) {
 			w.events = append(w.events, "query")
 			if pos != w.unit.PosVec || math.Float32bits(radius) != math.Float32bits(50) {
 				t.Fatal("wrong query position or binary32 range spill")
@@ -63,9 +63,9 @@ func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) monsterCastInversi
 				}
 			}
 		},
-		loadThreat:  func() uint32 { w.events = append(w.events, "load-threat"); return w.flag },
-		storeThreat: func(flag uint32) { w.events = append(w.events, fmt.Sprint("store-threat:", flag)); w.flag = flag },
-		spellAllowed: func(id spell.ID) bool {
+		LoadThreat:  func() uint32 { w.events = append(w.events, "load-threat"); return w.flag },
+		StoreThreat: func(flag uint32) { w.events = append(w.events, fmt.Sprint("store-threat:", flag)); w.flag = flag },
+		SpellAllowed: func(id spell.ID) bool {
 			w.events = append(w.events, fmt.Sprintf("allowed:%d", int(id)))
 			if id == 3 {
 				return false
@@ -73,7 +73,7 @@ func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) monsterCastInversi
 			w.candidates = append(w.candidates, id)
 			return true
 		},
-		random: func(min, max int) int {
+		Random: func(min, max int) int {
 			w.events = append(w.events, fmt.Sprintf("rng:%d:%d", min, max))
 			w.randomCalls++
 			if w.randomCalls == 1 {
@@ -84,7 +84,7 @@ func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) monsterCastInversi
 			}
 			return max
 		},
-		cast: func(unit *Object, id spell.ID, target *Object) {
+		Cast: func(unit *Object, id spell.ID, target *Object) {
 			w.events = append(w.events, fmt.Sprintf("cast:%d", int(id)))
 			if unit != w.unit || target != w.unit {
 				t.Fatal("inversion is not a native self-cast")
@@ -98,7 +98,7 @@ func (w *monsterInversionTestWorld5408D0) hooks(t *testing.T) monsterCastInversi
 
 func TestMonsterCastInversion5408D0ExactCallOrderAndFullSpellSpan(t *testing.T) {
 	w := newMonsterInversionTestWorld5408D0(t)
-	if !monsterCastInversion5408D0(w.unit, w.hooks(t)) {
+	if !MonsterCastInversionNative5408D0(w.unit, w.hooks(t)) {
 		t.Fatal("eligible spell was not selected")
 	}
 	want := []string{"frame", "store-threat:0", "balance:InversionRange", "query", "store-threat:1", "load-threat",
@@ -117,7 +117,7 @@ func TestMonsterCastInversion5408D0CachedUpdateLiveBoundsAndPostRNGFrame(t *test
 		w.frame = 1000
 	}
 	w.afterCooldown = func() { w.frame = math.MaxUint32 - 7 }
-	if !monsterCastInversion5408D0(w.unit, w.hooks(t)) {
+	if !MonsterCastInversionNative5408D0(w.unit, w.hooks(t)) {
 		t.Fatal("cast was not selected")
 	}
 	if w.update.Field363 != 65527 || replacement.Field363 != 0 ||
@@ -151,7 +151,7 @@ func TestMonsterCastInversion5408D0ExactEarlyGates(t *testing.T) {
 			w := newMonsterInversionTestWorld5408D0(t)
 			tc.setup(w)
 			before := *w.update
-			if monsterCastInversion5408D0(w.unit, w.hooks(t)) || !reflect.DeepEqual(w.events, tc.want) || w.flag != 77 || *w.update != before {
+			if MonsterCastInversionNative5408D0(w.unit, w.hooks(t)) || !reflect.DeepEqual(w.events, tc.want) || w.flag != 77 || *w.update != before {
 				t.Fatalf("early gate changed state: events=%q flag=%d", w.events, w.flag)
 			}
 		})
@@ -179,10 +179,10 @@ func TestMonsterCastInversion5408D0InertThreatAndSpellSetsDoNotConsumeRNG(t *tes
 				}
 				wantFlag = 1
 			case "spell denied":
-				h.spellAllowed = func(spell.ID) bool { return false }
+				h.SpellAllowed = func(spell.ID) bool { return false }
 				wantFlag = 1
 			}
-			if monsterCastInversion5408D0(w.unit, h) || w.randomCalls != 0 || w.flag != wantFlag || w.update.Field363 != 90 {
+			if MonsterCastInversionNative5408D0(w.unit, h) || w.randomCalls != 0 || w.flag != wantFlag || w.update.Field363 != 90 {
 				t.Fatalf("inert selector consumed work: events=%q flag=%d", w.events, w.flag)
 			}
 		})
@@ -203,7 +203,7 @@ func TestMonsterCastInversion5408D0DoesNotOwnAntiMagicOrWholeStackGate(t *testin
 			case "deadline equality":
 				w.update.Field363 = w.frame
 			}
-			if !monsterCastInversion5408D0(w.unit, w.hooks(t)) {
+			if !MonsterCastInversionNative5408D0(w.unit, w.hooks(t)) {
 				t.Fatal("selector applied a gate absent from 005408D0")
 			}
 		})
@@ -265,7 +265,7 @@ func TestMonsterUnitIsMagicMissile540B60ExactResidualAndFaultGates(t *testing.T)
 func TestMonsterCastInversion5408D0ContinuesEnumerationAfterMatchingMissile(t *testing.T) {
 	w := newMonsterInversionTestWorld5408D0(t)
 	w.missiles = append(w.missiles, w.missiles[0], &Object{ObjClass: object.ClassMissile})
-	if !monsterCastInversion5408D0(w.unit, w.hooks(t)) {
+	if !MonsterCastInversionNative5408D0(w.unit, w.hooks(t)) {
 		t.Fatal("targeted missiles were not found")
 	}
 	count := 0

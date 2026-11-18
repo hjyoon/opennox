@@ -767,7 +767,8 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 	count uint8,
 	runtime ShopBuyRuntime5100C0,
 ) int {
-	if session == nil || !s.IsTradeSessionNative(session) || count == 0 {
+	allocation := s.tradeNative.sessions[session]
+	if allocation == nil || count == 0 {
 		return 0
 	}
 	player, ok := shopPlayer5108D0(playerUnit)
@@ -777,7 +778,8 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 	update := (*PlayerUpdateData)(playerUnit.UpdateData)
 	startingGold := player.GoldVal
 	purchasedCount := 0
-	for purchasedCount < int(count) {
+	// A synchronous report can close the shop and recycle its address.
+	for purchasedCount < int(count) && s.tradeNative.sessions[session] == allocation {
 		var node *TradeItem
 		for it := session.Field20; it != nil; it = it.Field8 {
 			if it.Item0 != nil && it.Item0.TypeInd == typeInd {

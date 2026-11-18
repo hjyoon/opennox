@@ -75,6 +75,69 @@ func TestShopRemovalNativeSendMayReleaseSession(t *testing.T) {
 	}
 }
 
+func TestBuyShopItemsByTypeNative510640StopsAfterRemovalReplacesSession(t *testing.T) {
+	srv := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
+	player := nativeTradeTestValue(t, Player{GoldVal: 100})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	unit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
+	init := nativeTradeTestValue(t, ShopkeeperInitData{BuyMultiplier: 1})
+	init.Count = 1
+	init.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(init)})
+	session := srv.NewShopSessionNative50E8F0(unit, merchant)
+	allocation := srv.tradeNative.sessions[session]
+	freeSession := allocation.freeSession
+	allocation.freeSession = func() {}
+	defer freeSession()
+	defer srv.ReleaseTradeSessionNative510000(session)
+	update.Trade70 = session
+	first := nativeTradeTestValue(t, Object{TypeInd: 7, NetCode: 123, Worth: 40})
+	second := nativeTradeTestValue(t, Object{TypeInd: 7, NetCode: 124, Worth: 50})
+	addTestNativeTradeItem(t, srv, session, first, 40)
+	addTestNativeTradeItem(t, srv, session, second, 50)
+	replacement := nativeTradeTestValue(t, Object{TypeInd: 7, NetCode: 600, Worth: 30})
+	var moved, removed, goldReports int
+	got := srv.BuyShopItemsByTypeNative510640(unit, session, 7, 2, ShopBuyRuntime5100C0{
+		PutInventory: func(recipient, item *Object) {
+			if recipient != unit || item != first {
+				t.Fatal("the old request bought an item from the replacement session")
+			}
+			moved++
+		},
+		SendItemRemoved: func(recipient *Player, item *Object) {
+			if recipient != player || item != first || update.Trade70 != session {
+				t.Fatal("unexpected removal report")
+			}
+			removed++
+			update.Trade70 = nil
+			if !srv.ReleaseTradeSessionNative510000(session) {
+				t.Fatal("session teardown during removal report failed")
+			}
+			// Simulate immediate reuse of the address by a different session.
+			*session = TradeSession{Field8: unit, Field12: merchant, Field16: 1}
+			srv.tradeNative.sessions[session] = &nativeTradeSessionAllocation{
+				freeSession: func() {},
+				items:       make(map[*TradeItem]nativeTradeItemAllocation),
+			}
+			srv.tradeNative.head = session
+			update.Trade70 = session
+			addTestNativeTradeItem(t, srv, session, replacement, 30)
+		},
+		ReportGold: func(recipient *Player, owner *Object) {
+			if recipient != player || owner != unit || recipient.GoldVal != 60 {
+				t.Fatal("completed purchase was charged incorrectly")
+			}
+			goldReports++
+		},
+	})
+	if got != 1 || moved != 1 || removed != 1 || goldReports != 1 {
+		t.Fatalf("completed %d purchases with %d moved, %d removed, %d gold reports", got, moved, removed, goldReports)
+	}
+	if !srv.IsTradeSessionNative(session) || session.Field20 == nil || session.Field20.Item0 != replacement {
+		t.Fatal("the replacement session lost its inventory")
+	}
+}
+
 func TestShopkeeperInitDataLayout50E970(t *testing.T) {
 	if got := unsafe.Sizeof(ShopkeeperItemDefinition{}); got != 28 {
 		t.Fatalf("shop item definition size = %d, want 28", got)

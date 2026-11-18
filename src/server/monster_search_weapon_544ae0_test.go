@@ -25,6 +25,8 @@ func TestMonsterSearchWeapon544AE0OriginalSelection(t *testing.T) {
 			case "binary32-best-spill":
 				first.PosVec = types.Ptf(1, 0.0003)
 				second.PosVec = types.Ptf(1, 0.00034)
+				// The stock x87 control word spills the first distance to exactly 1.
+				want = first
 			case "NaN-last":
 				second.PosVec.X = float32(math.NaN())
 			case "NaN-middle":

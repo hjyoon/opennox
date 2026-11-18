@@ -6815,6 +6815,7 @@ char sub_544950(int a1) { return nox_xxx_mobActionMoveTo_5443F0(a1); }
 #endif
 
 //----- (005449D0) --------------------------------------------------------
+#if 0 // PE32 reference. The Go entry returns the native action record.
 int* nox_xxx_mobActionHunt_5449D0(int a1) {
 	int* result; // eax
 
@@ -6826,6 +6827,7 @@ int* nox_xxx_mobActionHunt_5449D0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00544A00) --------------------------------------------------------
 #if 0 // Native entries live in monster_edibles_native_544a00_export.go.
@@ -6866,6 +6868,7 @@ void nox_xxx_mobSearchEdible2_544A40(int a1, int a2) {
 #endif
 
 //----- (00544AE0) --------------------------------------------------------
+#if 0 // PE32 references. Native Go owns the search and its candidate callback.
 int sub_544AE0(int a1, float a2) {
 	*getMemU32Ptr(0x5D4594, 2489440) = 0;
 	*getMemU32Ptr(0x5D4594, 2489448) = 1259902592;
@@ -6890,6 +6893,7 @@ void sub_544B20(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (00544B90) --------------------------------------------------------
 #if 0 // Restored by item_use_monster_pickup_native_entry.go.

@@ -277,11 +277,11 @@ int nox_xxx_tileSubtile_544310(float2* a1);
 char nox_xxx_mobActionMoveTo_5443F0(int a1);
 char nox_xxx_mobActionFlee_544760(int a1);
 char sub_544950(int a1);
-int* nox_xxx_mobActionHunt_5449D0(int a1);
+int* nox_xxx_mobActionHunt_5449D0(nox_object_t* unit);
 nox_object_t* nox_xxx_mobSearchEdible_544A00(nox_object_t* a1, float a2);
 void nox_xxx_mobSearchEdible2_544A40(nox_object_t* a1, nox_object_t* a2);
-int sub_544AE0(int a1, float a2);
-void sub_544B20(int a1, int a2);
+nox_object_t* sub_544AE0(nox_object_t* unit, float radius);
+void sub_544B20(nox_object_t* item, nox_object_t* unit);
 char nox_xxx_mobActionPickupObject_544B90(nox_object_t* unit);
 #include "monster_dying_start_native_544c40.h"
 #include "monster_dying_end_native_544ca0.h"

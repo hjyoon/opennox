@@ -60,6 +60,81 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native merchant stock definitions, 2026-11-19
+
+Engine `7076abd54868bf3f8be70b1a71690ee6699a4183` ports `510320`,
+`5103A0` and `5103F0`. The stock index selects the merchant in
+either participant position and finds the first matching definition.
+The matcher uses the native item and the type and modifier IDs in the
+fixed-width definition. Book matching compares the spell or ability
+byte or the creature name. Purchase decrements that first record and
+moves subsequent records when its quantity reaches zero. The copy
+preserves the bytes beyond the reduced active count.
+
+Original x86 execution covers 282 cases and all 124 decrement, 79
+index and 243 match bytes. Direct and indirect C calls match all 282
+cases and verify the complete 1,724-byte shop owner. Normal and strict
+each pass 20,701 focused test events with zero compiler warnings. The
+initial strict legacy and server packages pass 20,281 events before
+disk exhaustion interrupts the root package link. The root-only retry
+passes the remaining 420 events. Both runs are retained.
+
+The local receipt
+`opennox-verification/20261118-trade/trade-stock-definition-native-v1/local-shop-definition-C-qualification-v1.json`
+has SHA-256 `3ca22f95cf2441632379ac40d1fbf8da54fa3db4f18525e0d82fb3634a7dffb3`.
+Linux run `44342038740` and Windows run `44341957690` track this source.
+
+### Native shop pricing and sale quote, 2026-11-19
+
+Engines `19c259505730b7ba5abf82832db2d4a0e9fcfdc3` and
+`3a9a36ba877af7527e4696a439887a7d3edb5a3c` port `50E3D0` and
+`5109C0`. Pricing uses a native object pointer at the C entry and the
+original startup x87 control word `0xe3f` for arithmetic, binary32
+stores and integer conversion. The sale quote uses the full inventory
+code, applies the Quest-item and glyph gates in stock order, and
+sends the original eight-byte C9/1D packet. The Go packet path shares
+the pricing and quote logic.
+
+The original CPU runs cover 576 prices using all 972 root and 17
+conversion bytes, plus 96 sale quotes across all 284 root bytes. Nine
+additional exact cases verify the old fractional-price assertions and
+the real Fireball Staff repair inputs. The first focused build exposed
+the old sale-quote C call and the initial full suite exposed the older
+nearest-even expectations. Both outcomes are retained. Four
+asserted numbers across three tests were corrected against the
+supplemental stock run. Normal and strict each pass 20,136 focused
+test events with zero compiler warnings.
+
+Four ARM64 products pass build, metadata, help and 224 symbol checks.
+Four OpenAL null-device sale scenarios and two Fireball Staff repair
+scenarios pass. Both display profiles verify prices 510, 599 and 597,
+full charge and durability restoration, and matching balances. All
+4,649 original asset and Save hashes match. The macOS receipt
+`opennox-verification/20261118-trade/trade-pricing-native-v1/qualified-macOS-trade-pricing-products-v1.json`
+has SHA-256 `3839bdf4fa44c4b513c7ad9d724f2462c2e08f0bb95127c23d691fe1c4559cf2`.
+Linux run `44338062022` and Windows run `44337998540` track the exact
+qualified source.
+
+### Native shop repair quote, 2026-11-18
+
+Engine `c05e3a10aa17ae5987b85646c910edbb0bbd973b` ports `5108D0`.
+The C entry uses a full network code, checks charge and durability,
+sends the original eight-byte C9/1F quote and routes the original
+rejection sound. The original x86 run covers 144 cases and 232 root
+bytes. Mac normal and strict each pass 18,790 focused test events
+with zero compiler warnings.
+
+Four ARM64 products pass 222 symbol checks. Four OpenAL null-device
+sale scenarios and two Fireball Staff repair scenarios pass, with
+all 4,649 original asset and Save hashes verified. The macOS and
+staff receipts have SHA-256
+`3d73ca88d8f7e3aa8fd55c398cf22360f22ab92531cb494ebeffbb02beb1e44d`
+and `98b979602d3d642bce2ab6f8222ac39e63a6f42e214897711b1d7da76fde3568`.
+Linux run `44330965368` and Windows run `44330846045` pass six jobs.
+The six ZIPs contain 158 test mains and 12 Windows/386 GC replays.
+The CI receipt has SHA-256
+`d16b9b166a6b2489d50cbba359b5496f5b2ccc607b6485361ceb3ed015942636`.
+
 ### Native removal of one trade offer, 2026-11-18
 
 Engine `87874b5338cf413acba79201b5678910cf6a77f1` ports `50FE20`.
@@ -77,6 +152,12 @@ and strict each pass 18,501 focused events with zero compiler warnings.
 The local receipt
 `opennox-verification/20261118-trade/trade-offer-removal-native-v1/local-trade-offer-removal-C-qualification-v1.json`
 has SHA-256 `8b47dc8efcdb42b0150f8cf5d8fbaf4fa7cbfa001dcb943a94e71a71135cae4b`.
+Four ARM64 products pass 221 symbol checks and four OpenAL
+null-device scenarios. All 4,649 asset and Save hashes match.
+Linux run `44327356553` and Windows run `44327156293` pass six jobs.
+Six retained archives verify 158 test mains and 12 Windows/386 GC
+replays. The CI receipt has SHA-256
+`e94f7e877981e00ab81943a077e1e277bbc9054b3d2f9de7dfc8c72fe58b62a0`.
 
 ### Native trade offer registration and limits, 2026-11-18
 
@@ -100,6 +181,11 @@ remain retained. Four ARM64 products pass metadata, help and 220
 symbol checks. The local receipt
 `opennox-verification/20261118-trade/trade-offer-list-native-v1/local-trade-offer-add-C-qualification-v1.json`
 has SHA-256 `cd28da84b4be410798ddefdf48f98ced6d5f8a8cdf7815ae8c0180dd5469ceaa`.
+Four OpenAL null-device scenarios pass and all 4,649 asset and
+Save hashes match. Linux run `44324942085` and Windows run
+`44324745697` pass six jobs. Six retained archives verify 158 test
+mains and 12 Windows/386 GC replays. The CI receipt has SHA-256
+`34172c8e265fcfaf3fd5a9efe07a37e5d2bdaf88c91bb56446ba9b02b58c3f9c`.
 
 ### Native trade acceptance and item transfer, 2026-11-18
 

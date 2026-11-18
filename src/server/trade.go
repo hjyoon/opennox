@@ -163,6 +163,28 @@ type nativeTradeSessionAllocation struct {
 	items       map[*TradeItem]nativeTradeItemAllocation
 }
 
+func (allocation nativeTradeItemAllocation) release(releaseObject bool) {
+	if releaseObject && allocation.freeObject != nil {
+		allocation.freeObject()
+	}
+	if allocation.freeNode != nil {
+		allocation.freeNode()
+	}
+}
+
+func (state *nativeTradeSessionAllocation) releaseItemList(head *TradeItem, releaseObjects bool) {
+	for node := head; node != nil; {
+		allocation, ok := state.items[node]
+		if !ok {
+			return
+		}
+		next := node.Field8
+		delete(state.items, node)
+		allocation.release(releaseObjects)
+		node = next
+	}
+}
+
 type serverTradeNativeState struct {
 	highAddresses    bool
 	sessions         map[*TradeSession]*nativeTradeSessionAllocation
@@ -202,19 +224,18 @@ func (t *serverTradeNativeState) release(session *TradeSession) bool {
 		}
 	}
 	delete(t.sessions, session)
-	for item, allocation := range state.items {
-		delete(state.items, item)
-		if allocation.freeObject != nil {
-			allocation.freeObject()
-		}
-		if allocation.freeNode != nil {
-			allocation.freeNode()
-		}
-	}
+	state.releaseItemList(session.Field20, true)
 	for _, free := range state.freeGold {
 		if free != nil {
 			free()
 		}
+	}
+	state.releaseItemList(session.Field32, false)
+	state.releaseItemList(session.Field36, false)
+	// Construction can register an allocation before it is linked.
+	for item, allocation := range state.items {
+		delete(state.items, item)
+		allocation.release(true)
 	}
 	if next := session.Field56; next != nil {
 		next.Field60 = session.Field60
@@ -402,6 +423,27 @@ func (s *Server) IsTradeSessionNative(session *TradeSession) bool {
 // native-width trade subsystem. It is deliberately safe for legacy sessions.
 func (s *Server) ReleaseTradeSessionNative510000(session *TradeSession) bool {
 	return s.tradeNative.release(session)
+}
+
+// ReleaseTradeOfferNodesNative50F6B0 detaches and releases a native offer
+// list. The objects remain with the code that transfers the player inventory.
+func (s *Server) ReleaseTradeOfferNodesNative50F6B0(head *TradeItem) bool {
+	if head == nil {
+		return true
+	}
+	for session, state := range s.tradeNative.sessions {
+		switch head {
+		case session.Field32:
+			session.Field32 = nil
+		case session.Field36:
+			session.Field36 = nil
+		default:
+			continue
+		}
+		state.releaseItemList(head, false)
+		return true
+	}
+	return false
 }
 
 type shopItemCategory50EEC0 struct {

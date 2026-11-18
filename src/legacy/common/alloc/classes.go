@@ -379,6 +379,11 @@ func (al *Class) NewObject() unsafe.Pointer {
 	return obj.ptr
 }
 
+// HasActiveObject reports whether p is a live allocation in this class.
+func (al *Class) HasActiveObject(p unsafe.Pointer) bool {
+	return al != nil && al.active.Contains(al.byPtr[p])
+}
+
 func (al *Class) FreeObjectFirst(p unsafe.Pointer) {
 	if p == nil {
 		return

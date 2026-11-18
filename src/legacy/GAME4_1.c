@@ -2258,7 +2258,7 @@ void nox_xxx_shopExit_50F4C0(uint32_t* a1) {
 		*getMemU32Ptr(0x5D4594, 2386364 + 4 * *(unsigned char*)(*(uint32_t*)(*(uint32_t*)(v3 + 748) + 276) + 2064)) =
 			a1;
 	} else {
-		sub_510000((int)a1);
+		sub_510000(a1);
 	}
 }
 
@@ -2301,10 +2301,10 @@ void nox_xxx_tradeAccept_50F5A0(int a1, int a2) {
 		sub_50F790(a1, *(uint32_t*)(a1 + 8), *(int**)(a1 + 36));
 		sub_50F7F0(*(uint32_t*)(a1 + 12), *(uint32_t*)(a1 + 48));
 		sub_50F7F0(*(uint32_t*)(a1 + 8), *(uint32_t*)(a1 + 52));
-		sub_50F6B0(*(uint32_t*)(a1 + 32));
+		sub_50F6B0((void*)(uintptr_t)*(uint32_t*)(a1 + 32));
 		v7 = *(uint32_t*)(a1 + 36);
 		*(uint32_t*)(a1 + 32) = 0;
-		sub_50F6B0(v7);
+		sub_50F6B0((void*)(uintptr_t)(uint32_t)v7);
 		v4 = *(uint32_t*)(a1 + 48);
 		*(uint32_t*)(a1 + 36) = 0;
 		**(uint32_t**)(v4 + 692) = 0;
@@ -2326,6 +2326,7 @@ void nox_xxx_tradeAccept_50F5A0(int a1, int a2) {
 }
 
 //----- (0050F6B0) --------------------------------------------------------
+#if 0 // Restored by trade_release_native_entry.go.
 int sub_50F6B0(int a1) {
 	int result; // eax
 	int v2;     // esi
@@ -2340,6 +2341,7 @@ int sub_50F6B0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050F6E0) --------------------------------------------------------
 #if 0 // Restored by trade_notify_item_native_entry.go.
@@ -2675,6 +2677,7 @@ uint32_t* sub_50FFE0(uint32_t* a1, int a2) {
 #endif
 
 //----- (00510000) --------------------------------------------------------
+#if 0 // Restored by trade_release_native_entry.go.
 void sub_510000(int a1) {
 	int* v1; // esi
 	int* v2; // ebx
@@ -2707,6 +2710,7 @@ void sub_510000(int a1) {
 	}
 	nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_tradeSession_2386492, (uint64_t*)a1);
 }
+#endif
 
 //----- (005103A0) --------------------------------------------------------
 int nox_xxx_getSomeShopData_5103A0(int a1, int a2) {
@@ -2971,7 +2975,7 @@ void sub_510E20(int a1) {
 		return;
 	}
 	if (*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1)) {
-		sub_510000(*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1));
+		sub_510000((void*)(uintptr_t)*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1));
 	}
 	*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1) = 0;
 }

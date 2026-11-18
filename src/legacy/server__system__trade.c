@@ -1,3 +1,4 @@
+#include "server__system__trade.h"
 #include "server__dbase__objdb.h"
 
 #include "GAME1.h"
@@ -137,6 +138,7 @@ int sub_50F1A0(int a1, int a2) {
 }
 
 //----- (0050F280) --------------------------------------------------------
+#if 0 // Restored by shop_stock_native_entry.go.
 int nox_xxx_servSendShopItems_50F280(int a1, int a2) {
 	int result;  // eax
 	uint32_t* i; // esi
@@ -147,6 +149,7 @@ int nox_xxx_servSendShopItems_50F280(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050F370) --------------------------------------------------------
 #if 0 // Restored by pointer_chain_native_entry.go.
@@ -424,9 +427,9 @@ LABEL_18:
 	if (v9[4]) {
 		v11 = v9[2];
 		if (*(uint8_t*)(v11 + 8) & 4) {
-			nox_xxx_servSendShopItems_50F280(v11, (int)v9);
+			nox_xxx_servSendShopItems_50F280((nox_object_t*)(uintptr_t)(uint32_t)v11, v9);
 		} else {
-			nox_xxx_servSendShopItems_50F280(v9[3], (int)v9);
+			nox_xxx_servSendShopItems_50F280((nox_object_t*)(uintptr_t)v9[3], v9);
 		}
 		if (v9[4] && nox_common_gameFlags_check_40A5C0(2048)) {
 			v12 = v9[2];

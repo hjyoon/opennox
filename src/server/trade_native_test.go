@@ -673,8 +673,8 @@ func TestBuildShopItemPacket50F2B0(t *testing.T) {
 	if got := binary.LittleEndian.Uint32(packet[6:10]); got != 0xaabbccdd {
 		t.Fatalf("cost = %#x, want 0xaabbccdd", got)
 	}
-	if got := binary.LittleEndian.Uint32(packet[10:14]); got != 0x33441122 {
-		t.Fatalf("health dword = %#x, want 0x33441122", got)
+	if got := binary.LittleEndian.Uint32(packet[10:14]); got != 0x1122 {
+		t.Fatalf("zero-extended current health = %#x, want 0x1122", got)
 	}
 	if got := packet[14:18]; got[0] != 0xff || got[1] != 0xff || got[2] != 0xff || got[3] != 0xff {
 		t.Fatalf("plain modifiers = % x, want ff ff ff ff", got)
@@ -700,6 +700,32 @@ func TestBuildShopItemPacketModifierIDs50F2B0(t *testing.T) {
 	want := [4]byte{1, 17, 128, 255}
 	if got := [4]byte(packet[14:18]); got != want {
 		t.Fatalf("modifier IDs = %v, want %v", got, want)
+	}
+}
+
+func TestSendShopItemsNative50F280StopsAfterSessionReplacement(t *testing.T) {
+	recipient := &Object{
+		ObjClass:   object.ClassPlayer,
+		UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: &Player{PlayerInd: 3}}),
+	}
+	second := &TradeItem{Item0: &Object{TypeInd: 2}}
+	first := &TradeItem{Item0: &Object{TypeInd: 1}, Field8: second}
+	session := &TradeSession{Field20: first}
+	s := &Server{}
+	s.tradeNative.init()
+	s.tradeNative.sessions[session] = &nativeTradeSessionAllocation{}
+
+	calls := 0
+	s.NetSendPacketXxx = func(index int, packet []byte, _ *Object, _, _ int) int {
+		calls++
+		if index != 3 || calls != 1 || binary.LittleEndian.Uint16(packet[2:4]) != 1 {
+			t.Fatalf("unexpected stock send %d to %d: %x", calls, index, packet)
+		}
+		s.tradeNative.sessions[session] = &nativeTradeSessionAllocation{}
+		return 27
+	}
+	if got := s.SendShopItemsNative50F280(recipient, session); got != 27 || calls != 1 {
+		t.Fatalf("stock send result %d, calls %d", got, calls)
 	}
 }
 

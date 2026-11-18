@@ -2118,6 +2118,7 @@ float* nox_xxx_addItemToShopSession_50EE00(int a1, float a2) {
 }
 
 //----- (0050EEC0) --------------------------------------------------------
+#if 0 // Restored by shop_stock_native_entry.go.
 int sub_50EEC0(uint32_t* a1) {
 	int v1;            // ecx
 	int v2;            // eax
@@ -2136,8 +2137,10 @@ int sub_50EEC0(uint32_t* a1) {
 	} while (v1);
 	return a1[1] | (v2 << 24);
 }
+#endif
 
 //----- (0050F2B0) --------------------------------------------------------
+#if 0 // Restored by shop_stock_native_entry.go.
 int sub_50F2B0(int a1, uint32_t* a2) {
 	int v2;             // eax
 	int v3;             // ecx
@@ -2176,6 +2179,7 @@ int sub_50F2B0(int a1, uint32_t* a2) {
 	}
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), v9, 18, 0, 1);
 }
+#endif
 
 //----- (0050F3A0) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.
@@ -2394,9 +2398,9 @@ void sub_50F790(int a1, int a2, int* a3) {
 			if (v4) {
 				v5 = *(uint32_t*)(a1 + 8);
 				if (*(uint8_t*)(v5 + 8) & 4) {
-					sub_50F2B0(v5, v4);
+					sub_50F2B0((nox_object_t*)(uintptr_t)(uint32_t)v5, v4);
 				} else {
-					sub_50F2B0(*(uint32_t*)(a1 + 12), v4);
+					sub_50F2B0((nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 12), v4);
 				}
 			}
 		}
@@ -2592,7 +2596,7 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 			if (!(*(uint8_t*)(v6 + 8) & 4)) {
 				v6 = *(uint32_t*)(a1 + 12);
 			}
-			sub_50F2B0(v6, v5);
+			sub_50F2B0((nox_object_t*)(uintptr_t)(uint32_t)v6, v5);
 		}
 	}
 	v7 = v2[2];

@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"strings"
 	"unicode/utf16"
+	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
@@ -408,9 +409,8 @@ type shopItemCategory50EEC0 struct {
 	subclass uint32
 }
 
-// shopItemCategories50EEC0 is the exact seven-row table at GAME.EXE
-// 00583C90..00583CC7. The first class word is loaded as an immediate by
-// 0050EEC0; the remaining class/subclass pairs are consecutive data words.
+// shopItemCategories50EEC0 is the seven-row class and subclass table
+// at GAME.EXE 00583C90..00583CC7.
 var shopItemCategories50EEC0 = [...]shopItemCategory50EEC0{
 	{class: object.ClassWeapon | object.ClassWand},
 	{class: object.ClassArmor},
@@ -438,9 +438,13 @@ func shopItemSortKey50EEC0(item *Object, cost uint32) uint32 {
 	return cost | category<<24
 }
 
+func (node *TradeItem) ShopSortKey50EEC0() uint32 {
+	return shopItemSortKey50EEC0(node.Item0, node.Cost4)
+}
+
 func insertShopItem50EE00(head **TradeItem, item *TradeItem) {
-	key := shopItemSortKey50EEC0(item.Item0, item.Cost4)
-	if *head == nil || key <= shopItemSortKey50EEC0((*head).Item0, (*head).Cost4) {
+	key := item.ShopSortKey50EEC0()
+	if *head == nil || key <= (*head).ShopSortKey50EEC0() {
 		item.Field8 = *head
 		if item.Field8 != nil {
 			item.Field8.Field12 = item
@@ -449,7 +453,7 @@ func insertShopItem50EE00(head **TradeItem, item *TradeItem) {
 		return
 	}
 	prev := *head
-	for prev.Field8 != nil && key > shopItemSortKey50EEC0(prev.Field8.Item0, prev.Field8.Cost4) {
+	for prev.Field8 != nil && key > prev.Field8.ShopSortKey50EEC0() {
 		prev = prev.Field8
 	}
 	item.Field8 = prev.Field8
@@ -1232,8 +1236,8 @@ func (s *Server) LoadRegularShopItemsNative50E970(
 }
 
 // BuildShopItemPacket50F2B0 constructs the exact 18-byte C9/08 merchant-item
-// packet: type, object net code, cost, the first health dword, and four
-// modifier IDs (or FF for an unmodified item).
+// packet with type, object net code, cost, zero-extended current health and
+// four modifier IDs (FF for an empty slot).
 func BuildShopItemPacket50F2B0(item *Object, cost uint32) [ShopItemPacketSize50F2B0]byte {
 	var packet [ShopItemPacketSize50F2B0]byte
 	packet[0] = byte(netmsg.MSG_TRADE)
@@ -1248,8 +1252,7 @@ func BuildShopItemPacket50F2B0(item *Object, cost uint32) [ShopItemPacketSize50F
 	binary.LittleEndian.PutUint16(packet[4:6], uint16(item.NetCode))
 	binary.LittleEndian.PutUint32(packet[6:10], cost)
 	if health := item.HealthData; health != nil {
-		binary.LittleEndian.PutUint16(packet[10:12], health.Cur)
-		binary.LittleEndian.PutUint16(packet[12:14], health.Field2)
+		binary.LittleEndian.PutUint32(packet[10:14], uint32(health.Cur))
 	}
 	for i := 14; i < len(packet); i++ {
 		packet[i] = 0xff
@@ -1262,6 +1265,29 @@ func BuildShopItemPacket50F2B0(item *Object, cost uint32) [ShopItemPacketSize50F
 		}
 	}
 	return packet
+}
+
+func (s *Server) SendShopItemNative50F2B0(recipient *Object, node *TradeItem) int {
+	packet := BuildShopItemPacket50F2B0(node.Item0, node.Cost4)
+	update := (*PlayerUpdateData)(recipient.UpdateData)
+	return s.NetSendPacketXxx1(int(update.Player.PlayerInd), packet[:], nil, 1)
+}
+
+// SendShopItemsNative50F280 sends the linked stock in order. The original
+// returns the session address for empty stock and the last queue result
+// otherwise.
+func (s *Server) SendShopItemsNative50F280(recipient *Object, session *TradeSession) uintptr {
+	result := uintptr(unsafe.Pointer(session))
+	owner := s.tradeNative.sessions[session]
+	for node := session.Field20; node != nil; node = node.Field8 {
+		result = uintptr(uint32(s.SendShopItemNative50F2B0(recipient, node)))
+		// Queue pressure can synchronously disconnect a player and release the
+		// session. Its allocation may already have been reused.
+		if owner != nil && s.tradeNative.sessions[session] != owner {
+			break
+		}
+	}
+	return result
 }
 
 func BuildShopItemRemovePacket50E820(item *Object) [ShopItemRemovePacketSize50E820]byte {

@@ -137,8 +137,7 @@ func (s *Server) LoadQuestShopItemsNative50E970(
 		if item == nil {
 			return false
 		}
-		cost, ok := s.shopItemBuyCost50E3D0(session, item)
-		if !ok || s.addShopItemNative50EE00(session, item, cost) == nil {
+		if s.AddShopItemNative50EE00(session, item) == nil {
 			s.Objs.FreeObject(item)
 			return false
 		}

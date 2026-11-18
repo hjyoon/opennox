@@ -43,7 +43,7 @@ int nox_xxx_shopGetItemCost_50E3D0(int a1, int a2, float a3);
 int sub_50E820(nox_object_t* recipient, nox_object_t* item);
 uint32_t* nox_xxx_createShopStruct_50E870();
 void nox_xxx_loadShopItems_50E970(int a1);
-float* nox_xxx_addItemToShopSession_50EE00(int a1, float a2);
+void* nox_xxx_addItemToShopSession_50EE00(void* session, nox_object_t* item);
 int sub_50EEC0(void* node);
 int sub_50F2B0(nox_object_t* recipient, void* node);
 int sub_50F450(nox_object_t* recipient);

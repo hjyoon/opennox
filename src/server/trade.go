@@ -464,18 +464,28 @@ func insertShopItem50EE00(head **TradeItem, item *TradeItem) {
 	item.Field12 = prev
 }
 
-// addShopItemNative50EE00 owns item until it is detached by a completed
-// purchase or the session is released. Insertion uses the complete original
-// category-and-price key and keeps newest-first ordering for equal keys.
-func (s *Server) addShopItemNative50EE00(session *TradeSession, item *Object, cost uint32) *TradeItem {
+// InsertShopItem50EE00 links a freshly allocated node. Equal sort keys go
+// before existing nodes with the same key.
+func (session *TradeSession) InsertShopItem50EE00(node *TradeItem) {
+	insertShopItem50EE00(&session.Field20, node)
+}
+
+// AddShopItemNative50EE00 takes ownership of item after pricing and insertion
+// succeed. The caller retains ownership if it returns nil.
+func (s *Server) AddShopItemNative50EE00(session *TradeSession, item *Object) *TradeItem {
 	state := s.tradeNative.sessions[session]
 	if state == nil || item == nil {
 		return nil
 	}
 	node, freeNode := serverNativeNew(s.tradeNative.highAddresses, TradeItem{})
 	node.Item0 = item
+	cost, ok := s.shopItemBuyCost50E3D0(session, item)
+	if !ok || s.tradeNative.sessions[session] != state {
+		freeNode()
+		return nil
+	}
 	node.Cost4 = cost
-	insertShopItem50EE00(&session.Field20, node)
+	session.InsertShopItem50EE00(node)
 	state.items[node] = nativeTradeItemAllocation{
 		freeNode: freeNode,
 		freeObject: func() {
@@ -1218,13 +1228,7 @@ func (s *Server) LoadRegularShopItemsNative50E970(
 				complete = false
 				continue
 			}
-			cost, ok := s.shopItemBuyCost50E3D0(session, item)
-			if !ok {
-				s.Objs.FreeObject(item)
-				complete = false
-				continue
-			}
-			if s.addShopItemNative50EE00(session, item, cost) == nil {
+			if s.AddShopItemNative50EE00(session, item) == nil {
 				s.Objs.FreeObject(item)
 				complete = false
 				continue

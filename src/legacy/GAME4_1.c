@@ -1842,7 +1842,7 @@ uint32_t* nox_xxx_createShopStruct_50E870() {
 
 //----- (0050E970) --------------------------------------------------------
 void nox_xxx_loadShopItems_50E970(int a1) {
-	int v1;                // edi
+	void* session = (void*)(uintptr_t)(uint32_t)a1;
 	int v2;                // eax
 	int v3;                // esi
 	unsigned int v4;       // esi
@@ -1887,7 +1887,6 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 	uint8_t* v43;          // [esp+20h] [ebp-18h]
 	nox_modifier_attrs_t v44;
 
-	v1 = a1;
 	v2 = *(uint32_t*)(a1 + 8);
 	if (v2 && *(uint8_t*)(v2 + 8) & 2 && *(uint8_t*)(v2 + 12) & 8 ||
 		(v2 = *(uint32_t*)(a1 + 12)) != 0 && *(uint8_t*)(v2 + 8) & 2 && *(uint8_t*)(v2 + 12) & 8) {
@@ -1898,7 +1897,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 			if (nox_game_getQuestStage_4E3CC0() < v4) {
 				v5 = nox_xxx_newObjectByTypeID_4E3810("AnkhTradable");
 				if (v5) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v5);
+					nox_xxx_addItemToShopSession_50EE00(session, (nox_object_t*)v5);
 				}
 			}
 			if (*getMemU32Ptr(0x587000, 234816)) {
@@ -1907,7 +1906,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 				do {
 					v8 = nox_xxx_newObjectByTypeID_4E3810(*v6);
 					if (v8) {
-						nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v8);
+						nox_xxx_addItemToShopSession_50EE00(session, (nox_object_t*)v8);
 					}
 					v9 = *((uint32_t*)v7 + 1);
 					v7 += 4;
@@ -1923,93 +1922,93 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 				v14 = v13 + 2;
 				v15 = nox_server_rewardgen_activateMarker_4F0720(v11, v13 + 2);
 				if (v15) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v15);
+					nox_xxx_addItemToShopSession_50EE00(session, v15);
 				}
 				*v12 = 8;
 				v16 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v16) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v16);
+					nox_xxx_addItemToShopSession_50EE00(session, v16);
 				}
 				*v12 = 8;
 				v17 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v17) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v17);
+					nox_xxx_addItemToShopSession_50EE00(session, v17);
 				}
 				*v12 = 8;
 				v18 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v18) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v18);
+					nox_xxx_addItemToShopSession_50EE00(session, v18);
 				}
 				*v12 = 16;
 				v19 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v19) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v19);
+					nox_xxx_addItemToShopSession_50EE00(session, v19);
 				}
 				*v12 = 16;
 				v20 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v20) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v20);
+					nox_xxx_addItemToShopSession_50EE00(session, v20);
 				}
 				*v12 = 16;
 				v21 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v21) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v21);
+					nox_xxx_addItemToShopSession_50EE00(session, v21);
 				}
 				*v12 = 16;
 				v22 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v22) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v22);
+					nox_xxx_addItemToShopSession_50EE00(session, v22);
 				}
 				*v12 = 1;
 				v23 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v23) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v23);
+					nox_xxx_addItemToShopSession_50EE00(session, v23);
 				}
 				*v12 = 1;
 				v24 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v24) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v24);
+					nox_xxx_addItemToShopSession_50EE00(session, v24);
 				}
 				*v12 = 1;
 				v25 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v25) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v25);
+					nox_xxx_addItemToShopSession_50EE00(session, v25);
 				}
 				*v12 = 1;
 				v26 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v26) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v26);
+					nox_xxx_addItemToShopSession_50EE00(session, v26);
 				}
 				*v12 = 1;
 				v27 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v27) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v27);
+					nox_xxx_addItemToShopSession_50EE00(session, v27);
 				}
 				*v12 = 1;
 				v28 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v28) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v28);
+					nox_xxx_addItemToShopSession_50EE00(session, v28);
 				}
 				*v12 = 4;
 				v29 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v29) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v29);
+					nox_xxx_addItemToShopSession_50EE00(session, v29);
 				}
 				*v12 = 4;
 				v30 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v30) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v30);
+					nox_xxx_addItemToShopSession_50EE00(session, v30);
 				}
 				*v12 = 4;
 				v31 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 				if (v31) {
-					nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v31);
+					nox_xxx_addItemToShopSession_50EE00(session, v31);
 				}
 				if (nox_common_randomInt_415FA0(0, 100) > 90) {
 					*v12 = 2;
 					v32 = nox_server_rewardgen_activateMarker_4F0720(v11, v14);
 					if (v32) {
-						nox_xxx_addItemToShopSession_50EE00(a1, *(float*)&v32);
+						nox_xxx_addItemToShopSession_50EE00(session, v32);
 					}
 				}
 				nox_xxx_delayedDeleteObject_4E5CC0(v11);
@@ -2050,10 +2049,9 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 											strcpy(*(char**)(v36 + 736),
 												   (const char*)nox_xxx_getUnitNameByThingType_4E3A80(
 													   *((uint32_t*)v34 + 1)));
-											v1 = a1;
 											v33 = v43;
 										}
-										nox_xxx_addItemToShopSession_50EE00(v1, *(float*)&v36);
+										nox_xxx_addItemToShopSession_50EE00(session, (nox_object_t*)(uintptr_t)(uint32_t)v36);
 									}
 									++v41;
 								} while (v41 < *v34);
@@ -2069,6 +2067,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 }
 
 //----- (0050EE00) --------------------------------------------------------
+#if 0 // Restored by shop_insertion_native_entry.go.
 float* nox_xxx_addItemToShopSession_50EE00(int a1, float a2) {
 	float* result;   // eax
 	float* v3;       // esi
@@ -2116,6 +2115,7 @@ float* nox_xxx_addItemToShopSession_50EE00(int a1, float a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050EEC0) --------------------------------------------------------
 #if 0 // Restored by shop_stock_native_entry.go.
@@ -2387,14 +2387,15 @@ int sub_50F720(int a1, uint32_t* a2) {
 //----- (0050F790) --------------------------------------------------------
 void sub_50F790(int a1, int a2, int* a3) {
 	int* i;    // esi
-	float* v4; // eax
+	void* v4; // eax
 	int v5;    // ecx
 
 	for (i = a3; i; i = (int*)i[2]) {
 		if (*(uint8_t*)(a2 + 8) & 4) {
 			nox_xxx_inventoryPutImpl_4F3070(a2, *i, 1);
 		} else {
-			v4 = nox_xxx_addItemToShopSession_50EE00(a1, *(float*)i);
+			v4 = nox_xxx_addItemToShopSession_50EE00(
+				(void*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)*i);
 			if (v4) {
 				v5 = *(uint32_t*)(a1 + 8);
 				if (*(uint8_t*)(v5 + 8) & 4) {
@@ -2569,7 +2570,7 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 	int* v2;    // edi
 	int v3;     // ebp
 	int result; // eax
-	float* v5;  // eax
+	void* v5;  // eax
 	int v6;     // ecx
 	int v7;     // eax
 	int v8;     // eax
@@ -2590,7 +2591,8 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 	if (*(uint8_t*)(v3 + 8) & 4) {
 		nox_xxx_inventoryPutImpl_4F3070(v3, *v2, 1);
 	} else {
-		v5 = nox_xxx_addItemToShopSession_50EE00(a1, *(float*)v2);
+		v5 = nox_xxx_addItemToShopSession_50EE00(
+			(void*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)*v2);
 		if (v5) {
 			v6 = *(uint32_t*)(a1 + 8);
 			if (!(*(uint8_t*)(v6 + 8) & 4)) {

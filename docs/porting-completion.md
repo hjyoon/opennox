@@ -82,6 +82,37 @@ Their SHA-256 values are
 `3c95f74ee2bceceef4e45f246586897c7929ec0b233057f55ec2592c26a50cf9`
 and `0d429fd70d418e5365143549322169d669c3ea6aaf8ebc16f26a6ecdb1229780`.
 
+### NPC weapon and equipment entries, 2026-11-19
+
+Engine `f953d9780da58a691e35ff06ebb420efd84112f9` ports `53A030`,
+`53A0F0`, `53A2C0` and `53A3D0` to typed Go C exports. The Windows
+386 NPC transfer uses the same public declarations. Default macOS ARM64
+preprocessing reduces the active bodies in `GAME4_3.c` from 149 to 145.
+Original execution covers 596 bytes across 121 cases. Normal and
+cgocheck2 ARM64 checks each pass 34,168 focused events.
+
+Four ARM64 products pass build metadata, help and 251 symbol checks
+each. Ten OpenAL Soft null-output runs verify equipment colors,
+weapon pickup and drop, projectile FX, and equipped-weapon sales in
+normal and HD. Each sale run reports two submissions of the original
+effect 307 with positive gain and native buffers queued. Both display
+profiles render the stock Warrior chapter 1 FireKnightGuard4's
+equipment. All 4,649 original asset and Save hashes match.
+
+Linux run `44374254270` passes all four products, and Windows amd64
+passes run `44374115513`. Its 386 job fails in the earlier guarded team
+test when a write barrier processes the fill word `0x5a5a5a5a`.
+Commit `5265781bb1c6ac4bb7d049f6196146c776552753` initializes three
+pointer slots as native words in the C-owned fixture. Three ARM64
+passes with `GOGC=10` produce 1,065 events. Windows verification
+continues in run `44380457557`.
+
+The ARM64 receipt
+`opennox-verification/20261118-trade/npc-weapon-equip-public-native-v1/qualified-NPC-equipment-ARM64-runtime-v1.json`
+has SHA-256 `51b84374cdb008d6e39bbb7a459164ab8c198edaab389831498396d159c6b1bf`.
+That directory also retains the initial disk failures and the original
+Windows 386 failure archive `14461925806`.
+
 ### Native monster hunt and weapon search, 2026-11-19
 
 Engine `137f49a61c85e1dbb0fc8b0789a7954f4753e13c` ports
@@ -107,6 +138,12 @@ expectation remain in the receipt directory.
 The local receipt
 `opennox-verification/20261118-trade/monster-hunt-weapon-search-native-v1/local-hunt-weapon-C-qualification-v1.json`
 has SHA-256 `f6f62155f3b84bad498aae95e222bef5bd735fdefc58b150cfa41916ff516984`.
+
+After the connection-mode correction, Linux run `44368615652` passes
+all four products. Windows run `44368524029` passes amd64 in its first
+attempt. The first 386 job stops during an older inversion inventory
+memory test. The exact-source retry passes in job `135054415196`.
+The first failure archive `14461531847` remains in the receipt directory.
 
 ### Native vitals and the connection mode, 2026-11-19
 

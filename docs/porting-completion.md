@@ -82,6 +82,44 @@ Their SHA-256 values are
 `3c95f74ee2bceceef4e45f246586897c7929ec0b233057f55ec2592c26a50cf9`
 and `0d429fd70d418e5365143549322169d669c3ea6aaf8ebc16f26a6ecdb1229780`.
 
+### Direct Go exports for legacy public entries, 2026-11-19
+
+Engine `939d7e46d0c2401d43e79d428fe938042a012948` replaces 20 C
+forwarders across eight files with direct Go exports. The generated C
+declarations retain the public const qualifiers. Clang validates the
+declarations with warnings treated as errors. The default ARM64 AST
+shows the 20 forwarders removed, including the complete
+`game2_briefing_abi.c` and `game3_widgets_abi.c` units.
+
+The related ARM64 suites pass 1,168 events. Four ARM64 products build
+without warnings and pass metadata, help and 273 public symbol checks.
+Each product omits the 20 retired private aliases. Six OpenAL Soft
+null-output scenarios pass across normal and HD. Both profiles verify
+the stock catalog of 54 Amb types, continuous and random-delay playback
+for the two controlled emitters, and cleanup after range exit and
+drawable deletion. Both also verify effect 307 for equipped-weapon
+sales and health gain in the Greater Heal duration check.
+
+All 4,649 original asset and Save hashes match. The retained receipt
+`opennox-verification/20261118-trade/const-qualified-public-bridges-v1/qualified-const-public-C-ARM64-runtime-v1.json`
+has SHA-256 `56a981051ef232e6e84ade8b5fa6d473b30d30d887fadc62041585609ef2a114`.
+
+### Monster heal selection and callback, 2026-11-19
+
+Engine `739788a1d608d0cb04f9a6fd3c5a5eb53995a3b5` ports `5411A0`
+and `5412A0`. The C entries use typed object pointers and Go owns the
+selected target. The scan still uses the original x87 precision and
+toward-zero stores for its search rectangle. Default ARM64
+preprocessing reduces the active bodies in `GAME4_3.c` from 145 to 143.
+
+All 335 original bytes execute across 272 cases. The ARM64 server
+suite passes 277 events. The legacy suite passes 45,725 events across
+the direct and indirect C calls and the existing object-field controls.
+The first server link exhausts disk. Its successful retry uses temporary
+RAM storage for compiler scratch and retains the exact test binary on
+persistent storage. The original-execution and native checks are in
+`opennox-verification/20261118-trade/monster-heal-public-native-v1`.
+
 ### NPC weapon and equipment entries, 2026-11-19
 
 Engine `f953d9780da58a691e35ff06ebb420efd84112f9` ports `53A030`,

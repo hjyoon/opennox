@@ -60,6 +60,51 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native object visibility and chat C entries, 2026-11-18
+
+Engine `e342aac18a258e96e2ef8947496d23296fd72d9b` is pushed to
+`origin/port/go1.27-multiarch`. The four `GAME4_2.c` entries `528A60`,
+`528A90`, `528BD0` and `528D60` now build visibility, shadow, monster command
+and clear-chat packets using native object and player pointers. They
+preserve packet widths, signed x87 coordinate conversion, recipient order,
+the queue return and the nonplayer source pointer. The monster command
+entry retains a typed C transport for its `const char*` parameter.
+
+The stock GAME.EXE reference covers 92 inputs and all 470 root bytes plus
+the 39-byte x87 converter. Unchanged C reports four high-address read faults
+and two successful visibility controls. The reference cases cover valid
+owners, single recipients, empty and populated fanout and NUL-terminated
+commands that fit the original buffer.
+
+- macOS ARM64 normal and strict/highres each pass 583 focused events with
+  zero compiler warnings. This includes 560 new events. Four products pass
+  metadata, help and 197 symbol checks each.
+- Both client products pass Conjurer Charm and independent UDP chat. Each
+  chat verifies eight submissions, four independent peer messages, one
+  reply, two cancelled chats and two empty submissions. Both processes
+  exit normally in each profile.
+- Both client products pass single-item, grouped and equipped-item sale
+  checks with stock sound 307, positive gain and native OpenAL buffer
+  submission. The equipped-item scenario also verifies processing of all
+  four buffers for the purchase sound. These runs used the OpenAL null
+  output device. The initial mock-audio launch failure is retained.
+- Linux run **44230016085** and Windows run **44229965763** pass their six
+  jobs on the first attempt. All six official ZIPs and 158 test mains are
+  retained. Each profile adds the 560 events and retains the preceding
+  terminal test identities and skip counts with the existing address-name
+  normalization. The six job logs and 68 archived warning streams contain
+  zero compiler warnings. The 12 existing Windows/386 GC replays pass on
+  the exact primary test binary.
+
+The 4,649 original asset and Save hashes match after runtime. Nine local
+programs were verified before and after cleaning the inactive dedicated
+cache, from 2,269,560 KiB to 8 KiB. The original-algorithm ledger remains
+284 implemented and 282 fully recorded. The remaining C implementation
+count, nine final campaign audits and public Save/Load pixel check are open.
+
+Qualification: `split-outbound-object-and-chat-native-v1/qualified-outbound-object-chat-C-entries-v1.json`,
+SHA-256 `6050aff9785b212fe1fdad48e6289ca38361954839c4260a245a319cc7f78d81`.
+
 ### Retired C NXZ build inputs, 2026-11-18
 
 The Go compressor and decoder now supply the NXZ package under every build

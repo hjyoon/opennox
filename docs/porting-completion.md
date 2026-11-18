@@ -90,6 +90,37 @@ definitions. There are 385 bodies with pointer and integer casts.
 The updated selection and AST are in
 `opennox-verification/20261118-trade/whole-C-inventory-3333e137-v1`.
 
+At `1743dd8f2c3e63ef33531caa80620b163c76d24d`, an exact ARM64 census of the
+13 split GAME files records 1,702 active named C bodies. Of those, 238
+contain pointer-to-integer or integer-to-pointer conversions. The census
+also identifies 156 one-statement forwards to Go exports. The five
+monolithic GAME files have zero active bodies. File counts, symbols and
+source digests are in `split-C-inventory-1743dd8-v1/inventory-v1.json`.
+
+### Bow and crossbow public entries, 2026-11-19
+
+Engine `b3ce502f7735204cbae22a33b0dd498abd05f3c6` ports the public
+`539BD0`, `539D80` and `539F40` entries to Go. The C declarations carry
+typed owner, weapon, quiver and projectile pointers. Launch flags use a
+32-bit scalar. The original callers discard the projectile routine's
+return register. The Go implementation preserves original x87 position
+and velocity spills, cached ammunition, live facing and modifier order.
+
+The original 964 code bytes execute in 87 sealed cases. Actual indirect
+C calls match all cases at native pointer width. ARM64 normal and
+cgocheck2 each pass 187 tests with zero warnings. `GAME4_3.c` falls
+from 122 to 119 active ARM64 bodies.
+
+Normal and HD clients build without warnings and verify 291 public
+symbols. All four OpenAL E2E runs pass. Both clients fire three bow
+arrows and three crossbow bolts. Each shot consumes one charge and
+reports damage attributed to its projectile. The runtime comparison
+checks all 4,649 original asset and Save hashes.
+
+The records are in `bow-crossbow-public-native-v1`. Native results
+are in `qualified-bow-crossbow-ARM64-v1.json`, and the four game
+replays are in `qualified-bow-crossbow-ARM64-runtime-v1.json`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack
@@ -126,7 +157,8 @@ preserves both native addresses and the original removed sentinel. The
 replayed original queue yields 887 conditions, 5,353 calls and four separate
 fault probes. It matches the stored corpora byte for byte. On ARM64, normal
 and cgocheck2 each pass 2,971 tests and report the same platform skip.
-`GAME4_3.c` falls from 129 to 122 active ARM64 C bodies.
+`GAME4_3.c` falls from 129 to 122 active ARM64 C bodies. Linux run
+`44399033421` and Windows run `44398882124` pass all six required jobs.
 
 The reports are under `attack-trace-public-native-v1`,
 `pending-collision-public-native-v1` and `melee-replay-observers-ARM64-v2`

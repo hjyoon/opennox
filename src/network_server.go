@@ -627,8 +627,7 @@ func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
 		DelayedDelete:   s.DelayedDelete,
 		ProtectGold:     legacy.Nox_xxx_protectGoldDelta_56F920,
 		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
-			packet := server.BuildShopSellQuotePacket5109C0(item, cost)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+			s.Server.SendShopSellQuoteNative5109C0(player, item, cost)
 		},
 		ReportGold: func(player *server.Player, _ *server.Object) {
 			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)

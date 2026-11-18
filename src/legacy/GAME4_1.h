@@ -39,7 +39,7 @@ int sub_50D2A0(int a1, int a2);
 int sub_50D2E0(int a1);
 int nox_xxx_creatureActuallyMove_50D3B0(float* a1);
 int nox_xxx_creatureSetMovePath_50D5A0(int a1);
-int nox_xxx_shopGetItemCost_50E3D0(int a1, int a2, float a3);
+int nox_xxx_shopGetItemCost_50E3D0(int mode, void* session, nox_object_t* item);
 int sub_50E820(nox_object_t* recipient, nox_object_t* item);
 void* nox_xxx_createShopStruct_50E870(void);
 void nox_xxx_loadShopItems_50E970(void* session);

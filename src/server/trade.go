@@ -946,17 +946,18 @@ func shopSellCandidate5109C0(
 	s *Server,
 	playerUnit *Object,
 	session *TradeSession,
-	netCode uint16,
+	netCode uint32,
 	runtime ShopSellRuntime5109C0,
+	requireShop bool,
 ) (*Player, *Object, uint32, ShopSellResult5109C0) {
-	if session == nil || !s.IsTradeSessionNative(session) {
+	if requireShop && !s.IsTradeSessionNative(session) {
 		return nil, nil, 0, ShopSellUnsupported5109C0
 	}
 	player, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
 		return nil, nil, 0, ShopSellUnsupported5109C0
 	}
-	item := s.findInventoryItemByNetCode5108D0(playerUnit, uint32(netCode))
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
 	if item == nil {
 		return player, nil, 0, ShopSellNoItem5109C0
 	}
@@ -978,11 +979,14 @@ func shopSellCandidate5109C0(
 		}
 		return player, item, 0, ShopSellGlyph5109C0
 	}
-	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
-	if !ok {
+	if requireShop && session.Field16 == 0 {
 		return player, item, 0, ShopSellUnsupported5109C0
 	}
-	return player, item, cost, ShopSellQuoted5109C0
+	price, ok := shopItemCostNative50E3D0(session, item, shopPriceSell50E3D0, 0, s.shopItemCostRuntime50E3D0())
+	if !ok || (requireShop && price < 0) {
+		return player, item, 0, ShopSellUnsupported5109C0
+	}
+	return player, item, uint32(price), ShopSellQuoted5109C0
 }
 
 // QuoteShopSellNative5109C0 restores the C9/1C request and C9/1D response
@@ -993,7 +997,19 @@ func (s *Server) QuoteShopSellNative5109C0(
 	netCode uint16,
 	runtime ShopSellRuntime5109C0,
 ) ShopSellResult5109C0 {
-	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime)
+	return s.quoteShopSell5109C0(playerUnit, session, uint32(netCode), runtime, true)
+}
+
+func (s *Server) QuoteShopSellByCodeNative5109C0(
+	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopSellRuntime5109C0,
+) ShopSellResult5109C0 {
+	return s.quoteShopSell5109C0(playerUnit, session, netCode, runtime, false)
+}
+
+func (s *Server) quoteShopSell5109C0(
+	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopSellRuntime5109C0, requireShop bool,
+) ShopSellResult5109C0 {
+	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime, requireShop)
 	if result != ShopSellQuoted5109C0 {
 		return result
 	}
@@ -1002,6 +1018,11 @@ func (s *Server) QuoteShopSellNative5109C0(
 	}
 	runtime.SendQuote(player, item, cost)
 	return ShopSellQuoted5109C0
+}
+
+func (s *Server) SendShopSellQuoteNative5109C0(player *Player, item *Object, cost uint32) int {
+	packet := BuildShopSellQuotePacket5109C0(item, cost)
+	return s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
 }
 
 // SellShopItemNative510BE0 restores the C9/18 single-item completion path.
@@ -1013,7 +1034,7 @@ func (s *Server) SellShopItemNative510BE0(
 	netCode uint16,
 	runtime ShopSellRuntime5109C0,
 ) ShopSellResult5109C0 {
-	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime)
+	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, uint32(netCode), runtime, true)
 	if result != ShopSellQuoted5109C0 {
 		return result
 	}

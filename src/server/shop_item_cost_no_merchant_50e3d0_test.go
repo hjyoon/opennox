@@ -32,7 +32,7 @@ func testShopItemCostRuntime50E3D0(quest bool) shopItemCostRuntime50E3D0 {
 			}
 			return 321
 		},
-		objectWorth: func(id string) (int32, bool) {
+		objectWorth: func(id string) (uint32, bool) {
 			if id == "Bear" {
 				return 80, true
 			}

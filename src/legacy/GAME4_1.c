@@ -1641,6 +1641,7 @@ int sub_50E360() {
 #endif
 
 //----- (0050E3D0) --------------------------------------------------------
+#if 0 // Restored by shop_price_native_entry.go.
 int nox_objectTypeGetWorth(char* a1);
 int nox_xxx_shopGetItemCost_50E3D0(int a1, int a2, float a3) {
 	float v3;            // ebp
@@ -1796,6 +1797,7 @@ LABEL_64:
 	}
 	return nox_float2int(v31);
 }
+#endif
 
 //----- (0050E820) --------------------------------------------------------
 #if 0 // Restored by shop_removal_native_entry.go.

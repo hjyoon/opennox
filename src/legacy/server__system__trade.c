@@ -759,6 +759,7 @@ float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 #endif
 
 //----- (005109C0) --------------------------------------------------------
+#if 0 // Restored by shop_sale_quote_native_entry.go.
 uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3) {
 	int v3;           // ebx
 	int v4;           // esi
@@ -800,6 +801,7 @@ uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (00510BE0) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.

@@ -16,7 +16,7 @@ type shopItemCostRuntime50E3D0 struct {
 	quest       bool
 	balance     func(string) float32
 	spellPrice  func(uint8) uint16
-	objectWorth func(string) (int32, bool)
+	objectWorth func(string) (uint32, bool)
 	objectType  func(string) (uint16, bool)
 }
 
@@ -34,7 +34,7 @@ func (rt shopItemCostRuntime50E3D0) spellPriceValue(ind uint8) uint16 {
 	return rt.spellPrice(ind)
 }
 
-func (rt shopItemCostRuntime50E3D0) objectWorthValue(id string) (int32, bool) {
+func (rt shopItemCostRuntime50E3D0) objectWorthValue(id string) (uint32, bool) {
 	if rt.objectWorth == nil {
 		return 0, false
 	}
@@ -62,12 +62,12 @@ func (s *Server) shopItemCostRuntime50E3D0() shopItemCostRuntime50E3D0 {
 		spellPrice: func(ind uint8) uint16 {
 			return uint16(s.Spells.Price(spell.ID(ind)))
 		},
-		objectWorth: func(id string) (int32, bool) {
+		objectWorth: func(id string) (uint32, bool) {
 			typ := s.Types.ByID(id)
 			if typ == nil {
 				return 0, false
 			}
-			return int32(typ.Worth), true
+			return uint32(typ.Worth), true
 		},
 		objectType: func(id string) (uint16, bool) {
 			typ := s.Types.ByID(id)
@@ -80,8 +80,8 @@ func (s *Server) shopItemCostRuntime50E3D0() shopItemCostRuntime50E3D0 {
 }
 
 // shopItemCostNative50E3D0 is the pointer-width-safe implementation of
-// GAME.EXE 0050E3D0. Each assignment to the original float locals is rounded
-// to binary32, while expressions use float64 to model the x87 intermediates.
+// GAME.EXE 0050E3D0. The startup x87 mode rounds both the 53-bit operations
+// and stores to binary32 toward zero.
 func shopItemCostNative50E3D0(
 	session *TradeSession,
 	item *Object,
@@ -105,9 +105,10 @@ func shopItemCostNative50E3D0(
 		shop = merchant.InitDataShopkeeper()
 	}
 
-	// The source first converts the unsigned worth to an x87 value and spills
-	// it to a float local. Values above 2^24 intentionally lose low bits here.
-	price := float32(item.Worth)
+	store32 := experienceSpill32TowardZero
+	add53, mul53 := experienceAdd53TowardZero, experienceMul53TowardZero
+	div53 := monsterMoveForceDivChop53_50D581
+	price := store32(float64(item.Worth))
 	class := item.Class()
 	subclass := uint32(item.SubClass())
 
@@ -115,11 +116,11 @@ func shopItemCostNative50E3D0(
 		if subclass&1 != 0 && item.UseData.Ptr != nil {
 			price = float32(rt.spellPriceValue(item.UseData.AsSpellReward().Spell))
 		} else if subclass&2 != 0 && item.UseData.Ptr != nil {
-			if worth, ok := rt.objectWorthValue(item.UseData.AsFieldGuide().Creature()); ok && worth >= 0 {
-				price = float32(worth)
+			if worth, ok := rt.objectWorthValue(item.UseData.AsFieldGuide().Creature()); ok {
+				price = store32(float64(worth))
 			}
 			if rt.quest {
-				price = float32(float64(rt.balanceValue("QuestGuideWorthMultiplier")) * float64(price))
+				price = store32(mul53(float64(rt.balanceValue("QuestGuideWorthMultiplier")), float64(price)))
 			}
 		}
 	}
@@ -129,11 +130,11 @@ func shopItemCostNative50E3D0(
 			if modifier == nil {
 				continue
 			}
-			value := float32(modifier.Price20)
+			value := float64(store32(float64(modifier.Price20)))
 			if rt.quest {
-				value = float32(float64(rt.balanceValue("QuestModifierWorthMultiplier")) * float64(value))
+				value = mul53(float64(rt.balanceValue("QuestModifierWorthMultiplier")), value)
 			}
-			price = float32(float64(price) + float64(value))
+			price = store32(add53(float64(price), value))
 		}
 	}
 
@@ -147,35 +148,39 @@ func shopItemCostNative50E3D0(
 			if rt.quest {
 				key = "DefaultAmmoAmountQuest"
 			}
-			defaultAmount := questInventoryRoundFloat32ToInt32_4F2C30(rt.balanceValue(key))
+			defaultAmount := netFXTruncateSignedDWORD419A70(rt.balanceValue(key))
 			if int32(ammo.Charge1) > defaultAmount {
-				perShot := float32(float64(price) / float64(defaultAmount))
-				price = float32(float64(int32(ammo.Charge1)-defaultAmount)*float64(perShot) + float64(price))
+				perShot := store32(div53(float64(price), float64(defaultAmount)))
+				extra := mul53(float64(int32(ammo.Charge1)-defaultAmount), float64(perShot))
+				price = store32(add53(extra, float64(price)))
 			} else {
-				price = float32(float64(ammo.Charge1) / float64(defaultAmount) * float64(price))
+				ratio := div53(float64(ammo.Charge1), float64(defaultAmount))
+				price = store32(mul53(ratio, float64(price)))
 			}
 		}
 	} else if class.Has(object.ClassWand) && subclass&0x047f0000 != 0 && item.UseData.Ptr != nil {
 		wand := item.UseData.AsWand()
 		if wand.MaxCharge != 0 {
-			price = float32(float64(wand.Charge) / float64(wand.MaxCharge) * float64(price))
+			ratio := div53(float64(wand.Charge), float64(wand.MaxCharge))
+			price = store32(mul53(ratio, float64(price)))
 		}
 	}
 
 	if shop != nil && mode != shopPriceSell50E3D0 {
-		price = float32(float64(price) * float64(shop.BuyMultiplier))
-		fullPrice = float32(float64(fullPrice) * float64(shop.BuyMultiplier))
+		price = store32(mul53(float64(price), float64(shop.BuyMultiplier)))
+		fullPrice = store32(mul53(float64(fullPrice), float64(shop.BuyMultiplier)))
 	}
 	if health := item.HealthData; health != nil && health.Max != 0 {
-		price = float32(float64(health.Cur) / float64(health.Max) * float64(price))
+		ratio := div53(float64(health.Cur), float64(health.Max))
+		price = store32(mul53(ratio, float64(price)))
 	}
 	if shop != nil && mode == shopPriceSell50E3D0 && !rt.isGem(item.TypeInd) {
 		multiplier := shop.SellMultiplier
 		if rt.quest {
 			multiplier = rt.balanceValue("QuestSellMultiplier")
 		}
-		price = float32(float64(multiplier) * float64(price))
-		fullPrice = float32(float64(multiplier) * float64(fullPrice))
+		price = store32(mul53(float64(multiplier), float64(price)))
+		fullPrice = store32(mul53(float64(multiplier), float64(fullPrice)))
 	}
 
 	if rt.quest && mode == shopPriceSell50E3D0 && class.HasAny(shopQuestUsedClassMask50E3D0) &&
@@ -186,25 +191,42 @@ func shopItemCostNative50E3D0(
 		// The negated comparison deliberately turns NaN into the minimum price.
 		price = 1
 	}
-	if fullPrice < 1 {
+	if !(fullPrice >= 1) {
 		fullPrice = 1
 	}
 	if mode == shopPriceRepair50E3D0 {
-		price = float32(float64(repairCoefficient) * (float64(fullPrice) - float64(price)))
-		if price < 1 {
+		difference := add53(float64(fullPrice), -float64(price))
+		calculated := mul53(float64(repairCoefficient), difference)
+		price = store32(calculated)
+		if !(calculated >= 1) {
 			price = 1
 		}
 	}
-	return questInventoryRoundFloat32ToInt32_4F2C30(price), true
+	return netFXTruncateSignedDWORD419A70(price), true
+}
+
+// ShopItemCostByModeNative50E3D0 prices the item for the public C entry and
+// the retained PE32 pool path.
+func (s *Server) ShopItemCostByModeNative50E3D0(mode int32, session *TradeSession, item *Object) int32 {
+	priceMode := shopPriceBuy50E3D0
+	var coefficient float32
+	switch mode {
+	case 0:
+		priceMode = shopPriceSell50E3D0
+	case 2:
+		priceMode = shopPriceRepair50E3D0
+		coefficient = float32(s.Balance.Float("RepairCoefficient"))
+	}
+	cost, ok := shopItemCostNative50E3D0(session, item, priceMode, coefficient, s.shopItemCostRuntime50E3D0())
+	if !ok {
+		return 1
+	}
+	return cost
 }
 
 // ShopItemCostNoMerchant50E3D0 is the mode=1, nil-session path called by
 // 00513B00. Unlike the PE32 C routine, it never reinterprets an Object pointer
 // as a float32 argument.
 func (s *Server) ShopItemCostNoMerchant50E3D0(item *Object) int32 {
-	cost, ok := shopItemCostNative50E3D0(nil, item, shopPriceBuy50E3D0, 0, s.shopItemCostRuntime50E3D0())
-	if !ok {
-		return 1
-	}
-	return cost
+	return s.ShopItemCostByModeNative50E3D0(1, nil, item)
 }

@@ -38,14 +38,14 @@ func (s *Server) PlayerQuestKeysReport4D9A3F(unit *Object, update *PlayerUpdateD
 				update.QuestPlayerFlagsB[index] = value
 			}
 		},
-		report: s.questKeyReport4D9DF0,
+		report: s.QuestKeyReport4D9DF0,
 	})
 }
 
-// questKeyReport4D9DF0 preserves 004D9DF0/004D9E30's reliable five-byte
+// QuestKeyReport4D9DF0 preserves 004D9DF0/004D9E30's reliable five-byte
 // F0/22 and F0/23 senders. NetCode is the original object's low +36 WORD,
 // not a synthesized net code, and the signed send result is returned intact.
-func (s *Server) questKeyReport4D9DF0(recipient int32, unit *Object, kind int, presence uint8) int32 {
+func (s *Server) QuestKeyReport4D9DF0(recipient int32, unit *Object, kind int, presence uint8) int32 {
 	code := uint16(unit.NetCode)
 	packet := [5]byte{0xf0, byte(22 + kind), presence}
 	binary.LittleEndian.PutUint16(packet[3:], code)

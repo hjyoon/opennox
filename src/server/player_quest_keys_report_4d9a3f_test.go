@@ -321,7 +321,7 @@ func TestQuestKeyReport4D9DF0WireAndSignedResult(t *testing.T) {
 						}
 						return int(result)
 					}
-					if got := s.questKeyReport4D9DF0(recipient, unit, kind, byte(presence)); got != result || calls != 1 {
+					if got := s.QuestKeyReport4D9DF0(recipient, unit, kind, byte(presence)); got != result || calls != 1 {
 						t.Fatalf("return=%d want=%d calls=%d", got, result, calls)
 					}
 				}

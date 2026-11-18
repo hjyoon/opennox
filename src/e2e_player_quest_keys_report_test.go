@@ -142,7 +142,7 @@ func TestE2EPlayerQuestKeysReportDoesNotSupplyKeyOrPacketResults(t *testing.T) {
 			"UpdateData": true, "Player": true, "PlayerInd": true, "NetCode": true, "NetCodeVal": true,
 		}
 		forbiddenCalls := map[string]bool{
-			"PlayerQuestKeysReport4D9A3F": true, "questKeyReport4D9DF0": true, "NetSendPacketXxx0": true, "NetSendPacketXxx": true,
+			"PlayerQuestKeysReport4D9A3F": true, "QuestKeyReport4D9DF0": true, "NetSendPacketXxx0": true, "NetSendPacketXxx": true,
 			"ClientSetPlayerNetCode": true, "SetFlags": true, "SetGame": true, "UnsetGame": true,
 			"Sub_4ED0C0": true, "DelayedDelete": true, "Delete": true, "Nox_xxx_inventoryPutImpl_4F3070": true,
 			"Nox_xxx_playerRespawnItem_4EF750": true, "Uint8Ptr": true, "Uint32Ptr": true, "PtrOff": true, "PtrT": true,

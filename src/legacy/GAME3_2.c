@@ -4205,6 +4205,7 @@ int nox_xxx_netReportAcquireCreature_4D91A0(int a1, nox_object_t* a2p) {
 }
 
 //----- (004D9200) --------------------------------------------------------
+#if 0 // PE32 reference. The packet is sent by the native-width Go entry.
 int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
 	int v4; // [esp+0h] [ebp-4h]
 
@@ -4215,6 +4216,7 @@ int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
 	}
 	return nox_xxx_netSendPacket1_4E5390(a1, &v4, 3, 0, 1);
 }
+#endif
 
 //----- (004D9250) --------------------------------------------------------
 int nox_xxx_netMonitorCreature_4D9250(int a1, nox_object_t* a2) {
@@ -4446,6 +4448,7 @@ int nox_xxx_netMsgFadeBeginPlayer(int pl, int a1, int a2) {
 }
 
 //----- (004D9900) --------------------------------------------------------
+#if 0 // PE32 reference. The native entry shares the Go player-object sender.
 void nox_xxx_playerReportAnything_4D9900(int a1) {
 	int v1;        // ebp
 	int v2;        // esi
@@ -4562,6 +4565,7 @@ void nox_xxx_playerReportAnything_4D9900(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004D9CF0) --------------------------------------------------------
 int sub_4D9CF0(int a1) {
@@ -4598,6 +4602,7 @@ int sub_4D9D60(int a1, nox_object_t* unit) {
 }
 
 //----- (004D9DF0) --------------------------------------------------------
+#if 0 // PE32 references. Both key packets share the Go implementation.
 int sub_4D9DF0(int a1, int a2, char a3) {
 	char v4[5]; // [esp+0h] [ebp-8h]
 
@@ -4618,6 +4623,7 @@ int sub_4D9E30(int a1, int a2, char a3) {
 	v4[2] = a3;
 	return nox_xxx_netSendPacket0_4E5420(a1, v4, 5, 0, 1);
 }
+#endif
 
 //----- (004D9E70) --------------------------------------------------------
 int nox_xxx_netGauntlet_4D9E70(int a1) {

@@ -773,34 +773,6 @@ int sub_536E80(char* a1, int* a2) {
 int nox_xxx_traceRay_5374B0(float4* a1) { return nox_xxx_mapTraceRay_535250(a1, 0, 0, 9); }
 #endif
 
-//----- (00537580) --------------------------------------------------------
-extern int nox_pending_collision_contains_native_537580(nox_object_t*);
-int sub_537580(nox_object_t* object) { return nox_pending_collision_contains_native_537580(object); }
-
-//----- (00537590) --------------------------------------------------------
-extern int nox_pending_collision_empty_native_537590(void);
-int sub_537590(void) { return nox_pending_collision_empty_native_537590(); }
-
-//----- (005375A0) --------------------------------------------------------
-extern void nox_pending_collision_remove_native_5375A0(nox_object_t*);
-void sub_5375A0(nox_object_t* object) { nox_pending_collision_remove_native_5375A0(object); }
-
-//----- (00537610) --------------------------------------------------------
-extern char nox_pending_collision_enqueue_native_537610(nox_object_t*);
-char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* object) { return nox_pending_collision_enqueue_native_537610(object); }
-
-//----- (00537700) --------------------------------------------------------
-extern nox_object_t* nox_pending_collision_pop_native_537700(void);
-nox_object_t* sub_537700(void) { return nox_pending_collision_pop_native_537700(); }
-
-//----- (00537740) --------------------------------------------------------
-extern nox_object_t* nox_pending_collision_head_native_537740(void);
-nox_object_t* sub_537740(void) { return nox_pending_collision_head_native_537740(); }
-
-//----- (00537750) --------------------------------------------------------
-extern uintptr_t nox_pending_collision_next_native_537750(nox_object_t*);
-nox_object_t* sub_537750(nox_object_t* object) { return (nox_object_t*)nox_pending_collision_next_native_537750(object); }
-
 //----- (00537760) --------------------------------------------------------
 #if 0 // Restored by object_trace_native_entry.go.
 unsigned int sub_537760() { return dword_5d4594_2488620 != 0 ? (unsigned int)getMemAt(0x5D4594, 2488612) : 0; }

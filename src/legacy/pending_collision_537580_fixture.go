@@ -1,19 +1,24 @@
 package legacy
 
 /*
-#include "defs.h"
 #include "GAME4_3.h"
-nox_object_t* sub_537700(void);
-int sub_537590(void);
 extern uint32_t dword_5d4594_2488604;
 extern uint32_t dword_5d4594_2488608;
-static inline uintptr_t nox_pending_fixture_next_word(nox_object_t* o) { return (uintptr_t)sub_537750(o); }
+
+typedef uintptr_t (*pending_fixture_next_fn)(nox_object_t*);
+_Static_assert(_Generic(&sub_537750, pending_fixture_next_fn: 1, default: 0), "collision next return word ABI");
+
+static inline uintptr_t nox_pending_fixture_next_word(nox_object_t* o) {
+	pending_fixture_next_fn volatile next = sub_537750;
+	return next(o);
+}
 */
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/server"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
 )
 
 var pendingProbeLookup537610 func(string) uint32

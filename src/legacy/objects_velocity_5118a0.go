@@ -24,10 +24,13 @@ var objectsVelocityRuntime5118A0 = defaultObjectsVelocityRuntime5118A0
 
 func defaultObjectsVelocityRuntime5118A0() server.ObjectsVelocityRuntime5118A0 {
 	return server.ObjectsVelocityRuntime5118A0{
-		Cache:   (*[10]uint32)(unsafe.Pointer(memmap.PtrUint32(0x5D4594, 2386580))),
-		Lookup:  func(name string) int32 { return int32(GetServer().S().Types.IndByID(name)) },
-		First:   func() *server.Object { return asObjectS(C.sub_537740()) },
-		Next:    func(o *server.Object) *server.Object { return asObjectS(C.sub_537750(asObjectC(o))) },
+		Cache:  (*[10]uint32)(unsafe.Pointer(memmap.PtrUint32(0x5D4594, 2386580))),
+		Lookup: func(name string) int32 { return int32(GetServer().S().Types.IndByID(name)) },
+		First:  pendingCollisionQueue537580.Head,
+		Next: func(o *server.Object) *server.Object {
+			next, _ := pendingCollisionQueue537580.Next(o)
+			return next
+		},
 		Prepare: func(o *server.Object) { C.sub_5481C0(asObjectC(o)) },
 		Springs: func() { C.nox_xxx_updateSprings_5113A0() },
 		Action: func(o *server.Object, action int32) int32 {

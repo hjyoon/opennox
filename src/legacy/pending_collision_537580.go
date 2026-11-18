@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include "defs.h"
+#include "GAME4_3.h"
 #include "fist_collide_4eadf0.h"
 #include "undead_killer_collide_4ebd40.h"
 extern uint32_t dword_5d4594_2488604;
@@ -10,8 +10,9 @@ extern uint32_t dword_5d4594_2488608;
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/server"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
 )
 
 var pendingCollisionQueue537580 server.PendingCollisionQueue537580
@@ -38,44 +39,44 @@ func pendingCollisionEnqueue537610(o *server.Object) byte {
 	return result
 }
 
-//export nox_pending_collision_contains_native_537580
-func nox_pending_collision_contains_native_537580(o *nox_object_t) C.int {
+//export sub_537580
+func sub_537580(o *nox_object_t) C.int {
 	return C.int(pendingCollisionQueue537580.Contains(asObjectS(o)))
 }
 
-//export nox_pending_collision_empty_native_537590
-func nox_pending_collision_empty_native_537590() C.int {
+//export sub_537590
+func sub_537590() C.int {
 	if pendingCollisionQueue537580.Empty() {
 		return 1
 	}
 	return 0
 }
 
-//export nox_pending_collision_remove_native_5375A0
-func nox_pending_collision_remove_native_5375A0(o *nox_object_t) {
+//export sub_5375A0
+func sub_5375A0(o *nox_object_t) {
 	pendingCollisionQueue537580.Remove(asObjectS(o))
 	pendingCollisionSync537580()
 }
 
-//export nox_pending_collision_enqueue_native_537610
-func nox_pending_collision_enqueue_native_537610(o *nox_object_t) C.char {
+//export nox_xxx_unitHasCollideOrUpdateFn_537610
+func nox_xxx_unitHasCollideOrUpdateFn_537610(o *nox_object_t) C.char {
 	return C.char(pendingCollisionEnqueue537610(asObjectS(o)))
 }
 
-//export nox_pending_collision_pop_native_537700
-func nox_pending_collision_pop_native_537700() *nox_object_t {
+//export sub_537700
+func sub_537700() *nox_object_t {
 	o := pendingCollisionQueue537580.Pop()
 	pendingCollisionSync537580()
 	return asObjectC(o)
 }
 
-//export nox_pending_collision_head_native_537740
-func nox_pending_collision_head_native_537740() *nox_object_t {
+//export sub_537740
+func sub_537740() *nox_object_t {
 	return asObjectC(pendingCollisionQueue537580.Head())
 }
 
-//export nox_pending_collision_next_native_537750
-func nox_pending_collision_next_native_537750(o *nox_object_t) C.uintptr_t {
+//export sub_537750
+func sub_537750(o *nox_object_t) C.uintptr_t {
 	if o == nil {
 		return 0
 	}

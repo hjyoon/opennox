@@ -82,6 +82,67 @@ Their SHA-256 values are
 `3c95f74ee2bceceef4e45f246586897c7929ec0b233057f55ec2592c26a50cf9`
 and `0d429fd70d418e5365143549322169d669c3ea6aaf8ebc16f26a6ecdb1229780`.
 
+The same twelve profiles at `3333e13729e5878b081ddce252a1f6db3233509a`
+select 206 of 627 tracked C files. The default ARM64 profile selects
+205 files, with 2,359 active bodies in 163 files and 14 unclassified
+definitions. There are 385 bodies with pointer and integer casts.
+`GAME1.c` through `GAME5.c` have zero active bodies in this profile.
+The updated selection and AST are in
+`opennox-verification/20261118-trade/whole-C-inventory-3333e137-v1`.
+
+### Attack modifier and ADPCM entries, 2026-11-19
+
+Engine `5c65c39a62c07c7a7b2711606fbba7345440c0cd` ports the public
+pre-hit and item attack entries `538290` and `538840` to typed Go
+exports. The native weapon hit paths call the same Go logic.
+`GAME4_3.c` loses the two old public bodies and two duplicate C
+modifier loops, taking its default ARM64 count from 141 to 137.
+All 232 original bytes execute across 89 cases. The focused normal
+and cgocheck2 suites each pass 460 events, including direct and
+indirect C calls that invoke an actual damage modifier.
+
+The four ARM64 products build without warnings, and each passes
+273 prior symbol checks plus four new ones. Eight OpenAL Soft
+null-output runs pass in normal and HD. Both clients complete two
+hammer attacks with attributed damage, quake and one sound per strike.
+Both complete five scripted Meteor levels and the animated NPC cast.
+The Amb catalog, its two controlled emitters and equipped-weapon
+sale effect 307 also pass in each display profile.
+
+The runtime receipt
+`opennox-verification/20261118-trade/attack-modifier-public-native-v1/qualified-attack-modifier-ARM64-runtime-v1.json`
+has SHA-256 `ef2e8c511772551f76417c6bb00e6bbf9023d196035ee68b0cccaab1e52b2c22`.
+All 4,649 original asset and Save hashes match.
+
+Audio commit `582277195401b61a5a8a7d0588c122d2911547b0` clamps the
+initial mono and stereo ADPCM step indices before the first table
+lookup. The retained native OpenAL reproduction feeds a 1,024-byte
+stereo block with right index 147 into the actual sample work loop.
+The pre-fix loop panics on the 89-entry table. The repaired loop
+queues the block. The regression for format-changing voice reuse
+checks both encoded buffer slots after reinitialization.
+
+The normal and cgocheck2 audio suites each pass 90 events, including
+the actual OpenAL queue and seeks on unchanged stock chapter 1 music.
+The full stock bank plays all 1,780 samples and processes all 44,663
+queued buffers. Both bank inputs retain their original digests.
+The reproduction and successful runs are in
+`opennox-verification/20261118-trade/adpcm-block-header-v1`.
+
+### Scorch entries and type cache, 2026-11-19
+
+Engine `3333e13729e5878b081ddce252a1f6db3233509a` ports `537AF0`
+and `537BD0` on both pointer widths. Go stores the three type IDs
+and the original readiness flag together. The initializer still
+runs before dispatch when the type cache is cold. The lookup order
+also holds for an unsupported Scorch kind.
+
+The original runs cover 280 bytes across 64 cases and 68 executions.
+The default ARM64 count in `GAME4_3.c` falls from 143 to 141.
+The normal and cgocheck2 suites pass 5,446 and 6,614 events,
+respectively. The records are in
+`opennox-verification/20261118-trade/scorch-public-native-v1`.
+
 ### Direct Go exports for legacy public entries, 2026-11-19
 
 Engine `939d7e46d0c2401d43e79d428fe938042a012948` replaces 20 C
@@ -99,6 +160,8 @@ the stock catalog of 54 Amb types, continuous and random-delay playback
 for the two controlled emitters, and cleanup after range exit and
 drawable deletion. Both also verify effect 307 for equipped-weapon
 sales and health gain in the Greater Heal duration check.
+All four Linux jobs pass run `44384816780`. Both Windows jobs pass
+run `44384340946`.
 
 All 4,649 original asset and Save hashes match. The retained receipt
 `opennox-verification/20261118-trade/const-qualified-public-bridges-v1/qualified-const-public-C-ARM64-runtime-v1.json`
@@ -119,6 +182,8 @@ The first server link exhausts disk. Its successful retry uses temporary
 RAM storage for compiler scratch and retains the exact test binary on
 persistent storage. The original-execution and native checks are in
 `opennox-verification/20261118-trade/monster-heal-public-native-v1`.
+All four Linux jobs pass run `44381462075`. Both Windows jobs pass
+run `44381352864`.
 
 ### NPC weapon and equipment entries, 2026-11-19
 
@@ -142,8 +207,9 @@ passes run `44374115513`. Its 386 job fails in the earlier guarded team
 test when a write barrier processes the fill word `0x5a5a5a5a`.
 Commit `5265781bb1c6ac4bb7d049f6196146c776552753` initializes three
 pointer slots as native words in the C-owned fixture. Three ARM64
-passes with `GOGC=10` produce 1,065 events. Windows verification
-continues in run `44380457557`.
+passes with `GOGC=10` produce 1,065 events. Both Windows jobs pass
+run `44380457557`. The exact successful 386 archive `14465531167`
+matches the published digest.
 
 The ARM64 receipt
 `opennox-verification/20261118-trade/npc-weapon-equip-public-native-v1/qualified-NPC-equipment-ARM64-runtime-v1.json`

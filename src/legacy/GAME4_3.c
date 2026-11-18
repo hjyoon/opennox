@@ -580,28 +580,6 @@ int nox_xxx_unitIsMimic_534840(nox_object_t* a1) {
 	return a1->typ_ind == v1;
 }
 
-//----- (00534950) --------------------------------------------------------
-extern void nox_xxx_monsterMimicCheckMorph_native_534950(nox_object_t* obj);
-void nox_xxx_monsterMimicCheckMorph_534950(nox_object_t* a1p) {
-	nox_xxx_monsterMimicCheckMorph_native_534950(a1p);
-}
-
-//----- (00534A10) --------------------------------------------------------
-extern int nox_unit_is_plant_native_534A10(nox_object_t*);
-int nox_xxx_unitIsPlant_534A10(nox_object_t* unit) { return nox_unit_is_plant_native_534A10(unit); }
-
-//----- (00534A40) --------------------------------------------------------
-extern int nox_unit_is_zombie_native_534A40(nox_object_t*);
-int nox_xxx_unitIsZombie_534A40(nox_object_t* unit) { return nox_unit_is_zombie_native_534A40(unit); }
-
-//----- (00534A90) --------------------------------------------------------
-extern char nox_mob_get_up_native_534A90(nox_object_t*);
-char nox_xxx_mobActionGetUp_534A90(nox_object_t* unit) { return nox_mob_get_up_native_534A90(unit); }
-
-//----- (00534AB0) --------------------------------------------------------
-extern uint32_t nox_mob_raise_zombie_native_534AB0(nox_object_t*);
-unsigned int nox_xxx_mobRaiseZombie_534AB0(nox_object_t* unit) { return nox_mob_raise_zombie_native_534AB0(unit); }
-
 //----- (005361B0) --------------------------------------------------------
 int sub_5361B0(char* a1, void* a2) {
 	uint8_t* data = (uint8_t*)a2;
@@ -2962,42 +2940,6 @@ char nox_xxx_updateSwitch_53B320(uint32_t* a1) {
 }
 #endif
 
-//----- (0053B380) --------------------------------------------------------
-extern char nox_xxx_updateElevatorShaft_53B380_go(nox_object_t* unit);
-char nox_xxx_updateElevatorShaft_53B380(nox_object_t* unit) {
-    return nox_xxx_updateElevatorShaft_53B380_go(unit);
-}
-
-//----- (0053B410) --------------------------------------------------------
-extern void nox_xxx_fnElevatorShaft_53B410_go(nox_object_t* candidate, nox_object_t* shaft);
-void nox_xxx_fnElevatorShaft_53B410(nox_object_t* candidate, nox_object_t* shaft) {
-    nox_xxx_fnElevatorShaft_53B410_go(candidate, shaft);
-}
-
-//----- (0053B490) --------------------------------------------------------
-extern void nox_xxx_elevatorAud_53B490_go(nox_object_t* unit, int upward);
-void nox_xxx_elevatorAud_53B490(nox_object_t* unit, int upward) {
-    nox_xxx_elevatorAud_53B490_go(unit, upward);
-}
-
-//----- (0053B5D0) --------------------------------------------------------
-extern void nox_xxx_updateElevator_53B5D0_go(nox_object_t* unit);
-void nox_xxx_updateElevator_53B5D0(nox_object_t* unit) {
-    nox_xxx_updateElevator_53B5D0_go(unit);
-}
-
-//----- (0053B750) --------------------------------------------------------
-extern void nox_xxx_elevatorFn_53B750_go(nox_object_t* candidate, nox_object_t* elevator);
-void nox_xxx_elevatorFn_53B750(nox_object_t* candidate, nox_object_t* elevator) {
-    nox_xxx_elevatorFn_53B750_go(candidate, elevator);
-}
-
-//----- (0053B860) --------------------------------------------------------
-extern void nox_xxx_updatePhantomPlayer_53B860_go(nox_object_t* source);
-void nox_xxx_updatePhantomPlayer_53B860(nox_object_t* source) {
-    nox_xxx_updatePhantomPlayer_53B860_go(source);
-}
-
 //----- (0053B8F0) --------------------------------------------------------
 #if 0 // ABI32 provenance: production registration uses the typed Go callback.
 void nox_xxx_updateLifetime_53B8F0(int unit) {
@@ -3347,30 +3289,6 @@ void sub_53C240(float* a1, int arg4) {
 
 #endif
 
-//----- (0053C520) --------------------------------------------------------
-extern int nox_xxx_rechargeItem_53C520_go(nox_object_t* item, int amount);
-int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount) {
-	return nox_xxx_rechargeItem_53C520_go(item, amount);
-}
-
-//----- (0053C580) --------------------------------------------------------
-extern intptr_t nox_xxx_updateObelisk_53C580_go(nox_object_t* obelisk);
-intptr_t nox_xxx_updateObelisk_53C580(nox_object_t* obelisk) {
-	return nox_xxx_updateObelisk_53C580_go(obelisk);
-}
-
-//----- (0053C940) --------------------------------------------------------
-extern int nox_xxx_getRechargeRate_53C940_go(nox_object_t* item);
-int nox_xxx_getRechargeRate_53C940(nox_object_t* item) {
-	return nox_xxx_getRechargeRate_53C940_go(item);
-}
-
-//----- (0053C9A0) --------------------------------------------------------
-extern void nox_xxx_updateBlackPowderBarrel_53C9A0_go(nox_object_t* source);
-void nox_xxx_updateBlackPowderBarrel_53C9A0(nox_object_t* source) {
-	nox_xxx_updateBlackPowderBarrel_53C9A0_go(source);
-}
-
 //----- (0053CB60) --------------------------------------------------------
 #if 0 // ABI32 provenance: production registration uses the typed Go callback.
 void nox_xxx_updateOneSecondDie_53CB60(int a1) {
@@ -3433,12 +3351,6 @@ void nox_xxx_updateSelfDestruct_53CC90(int a1) {
 	}
 }
 #endif
-
-//----- (0053CCB0) --------------------------------------------------------
-extern void nox_xxx_updateBlackPowderBurn_53CCB0_go(nox_object_t* source);
-void nox_xxx_updateBlackPowderBurn_53CCB0(nox_object_t* source) {
-	nox_xxx_updateBlackPowderBurn_53CCB0_go(source);
-}
 
 //----- (0053D220) --------------------------------------------------------
 void nox_xxx_updateDeathBallFragment_53D220(nox_object_t* source) {

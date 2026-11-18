@@ -41,21 +41,21 @@ func obeliskUpdateCall53C580(obelisk *server.Object) {
 	GetServer().S().ObeliskUpdate53C580(obelisk, obeliskUpdateRuntime53C580())
 }
 
-//export nox_xxx_rechargeItem_53C520_go
-func nox_xxx_rechargeItem_53C520_go(item *nox_object_t, amount C.int) C.int {
+//export nox_xxx_rechargeItem_53C520
+func nox_xxx_rechargeItem_53C520(item *nox_object_t, amount C.int) C.int {
 	if server.ObeliskRechargeItem53C520(asObjectS(item), int32(amount)) {
 		return 1
 	}
 	return 0
 }
 
-//export nox_xxx_updateObelisk_53C580_go
-func nox_xxx_updateObelisk_53C580_go(obelisk *nox_object_t) C.intptr_t {
+//export nox_xxx_updateObelisk_53C580
+func nox_xxx_updateObelisk_53C580(obelisk *nox_object_t) C.intptr_t {
 	return C.intptr_t(GetServer().S().ObeliskUpdate53C580(asObjectS(obelisk), obeliskUpdateRuntime53C580()))
 }
 
-//export nox_xxx_getRechargeRate_53C940_go
-func nox_xxx_getRechargeRate_53C940_go(item *nox_object_t) C.int {
+//export nox_xxx_getRechargeRate_53C940
+func nox_xxx_getRechargeRate_53C940(item *nox_object_t) C.int {
 	return C.int(GetServer().S().ObeliskRechargeRate53C940(asObjectS(item), obeliskUpdateRuntime53C580()))
 }
 

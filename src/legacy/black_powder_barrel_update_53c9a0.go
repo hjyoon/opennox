@@ -13,8 +13,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_updateBlackPowderBarrel_53C9A0_go
-func nox_xxx_updateBlackPowderBarrel_53C9A0_go(source *nox_object_t) {
+//export nox_xxx_updateBlackPowderBarrel_53C9A0
+func nox_xxx_updateBlackPowderBarrel_53C9A0(source *nox_object_t) {
 	blackPowderBarrelUpdateCall53C9A0(asObjectS(source))
 }
 

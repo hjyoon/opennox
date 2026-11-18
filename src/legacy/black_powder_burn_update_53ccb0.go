@@ -12,8 +12,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_updateBlackPowderBurn_53CCB0_go
-func nox_xxx_updateBlackPowderBurn_53CCB0_go(source *nox_object_t) {
+//export nox_xxx_updateBlackPowderBurn_53CCB0
+func nox_xxx_updateBlackPowderBurn_53CCB0(source *nox_object_t) {
 	blackPowderBurnUpdateCall53CCB0(asObjectS(source))
 }
 

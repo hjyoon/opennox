@@ -12,8 +12,8 @@ var mimicCheckMorphCall534950 = func(obj *server.Object) {
 	GetServer().S().MimicCheckMorph534950(obj)
 }
 
-//export nox_xxx_monsterMimicCheckMorph_native_534950
-func nox_xxx_monsterMimicCheckMorph_native_534950(obj *C.nox_object_t) {
+//export nox_xxx_monsterMimicCheckMorph_534950
+func nox_xxx_monsterMimicCheckMorph_534950(obj *C.nox_object_t) {
 	mimicCheckMorphCall534950(asObjectS((*nox_object_t)(obj)))
 }
 

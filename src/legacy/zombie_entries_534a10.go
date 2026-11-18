@@ -29,22 +29,22 @@ var zombieEntryRaise534AB0 = func() server.MonsterRaiseZombieRawRuntime534AB0 {
 	}
 }
 
-//export nox_unit_is_plant_native_534A10
-func nox_unit_is_plant_native_534A10(unit *nox_object_t) C.int {
+//export nox_xxx_unitIsPlant_534A10
+func nox_xxx_unitIsPlant_534A10(unit *nox_object_t) C.int {
 	return C.int(server.UnitIsPlant534A10(asObjectS(unit), zombieEntryTypes534A10()))
 }
 
-//export nox_unit_is_zombie_native_534A40
-func nox_unit_is_zombie_native_534A40(unit *nox_object_t) C.int {
+//export nox_xxx_unitIsZombie_534A40
+func nox_xxx_unitIsZombie_534A40(unit *nox_object_t) C.int {
 	return C.int(server.UnitIsZombie534A40(asObjectS(unit), zombieEntryTypes534A10()))
 }
 
-//export nox_mob_get_up_native_534A90
-func nox_mob_get_up_native_534A90(unit *nox_object_t) C.char {
+//export nox_xxx_mobActionGetUp_534A90
+func nox_xxx_mobActionGetUp_534A90(unit *nox_object_t) C.char {
 	return C.char(server.MonsterActionGetUpRaw534A90(asObjectS(unit), zombieEntryPop534A90))
 }
 
-//export nox_mob_raise_zombie_native_534AB0
-func nox_mob_raise_zombie_native_534AB0(unit *nox_object_t) C.uint32_t {
+//export nox_xxx_mobRaiseZombie_534AB0
+func nox_xxx_mobRaiseZombie_534AB0(unit *nox_object_t) C.uint32_t {
 	return C.uint32_t(server.MonsterRaiseZombieRaw534AB0(asObjectS(unit), zombieEntryRaise534AB0()))
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/things"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -84,6 +85,8 @@ func TestShopInsertionPE32PoolOwnership50EE00(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 4 {
 		t.Skip("fixed-width trade pool runs on 32-bit hosts")
 	}
+	handles.Init()
+	t.Cleanup(handles.Release)
 	oldFlags := noxflags.GetGame()
 	noxflags.UnsetGame(noxflags.GameModeQuest)
 	t.Cleanup(func() { noxflags.SetGame(oldFlags) })

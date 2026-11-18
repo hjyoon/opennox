@@ -7,6 +7,7 @@ import (
 
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -60,6 +61,8 @@ func TestTradeReleasePE32Pools510000(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 4 {
 		t.Skip("fixed-width trade pools run on 32-bit hosts")
 	}
+	handles.Init()
+	t.Cleanup(handles.Release)
 	sessions := alloc.NewClass("TestTradeReleaseSessions", unsafe.Sizeof(server.TradeSession{}), 2)
 	defer sessions.Free()
 	items := alloc.NewClass("TestTradeReleaseItems", unsafe.Sizeof(server.TradeItem{}), 3)

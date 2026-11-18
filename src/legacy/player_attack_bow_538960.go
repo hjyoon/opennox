@@ -46,15 +46,14 @@ var playerAttackBowRuntimeFactory538960 = func() playerAttackBowRuntime538960 {
 // GAME.EXE 00539D80 caches the quiver use record before tracing/creation,
 // and consumes a charge even if allocation fails after a successful trace.
 func playerAttackBowShoot2_539D80(owner, quiver, weapon *server.Object, flags uint32, h playerAttackBowRuntime538960) {
-	distance := float64(owner.Shape.Circle.R) + 4
+	radius := owner.Shape.Circle.R
 	var ammo *server.AmmoUseData
 	if quiver != nil {
 		ammo = (*server.AmmoUseData)(quiver.UseData.Ptr)
 	}
 	direction := h.Direction(owner.Direction1)
 	from := owner.PosVec
-	dx, dy := distance*float64(direction.X), distance*float64(direction.Y)
-	spawn := types.Ptf(float32(dx+float64(from.X)), float32(dy+float64(from.Y)))
+	spawn := server.PlayerAttackBowSpawn539D80(from, radius, direction)
 	if !h.Trace(from, spawn, server.MapTraceFlags(5)) {
 		return
 	}
@@ -72,8 +71,8 @@ func playerAttackBowShoot2_539D80(owner, quiver, weapon *server.Object, flags ui
 			h.ApplyModifierAttrs(projectile, (*server.ModifierInitData)(quiver.InitData))
 		}
 		playerAttackProjectileApplyEffects539F40(owner, weapon, projectile, h.playerAttackProjectileRuntime538960)
-		projectile.VelVec.X = h.Direction(owner.Direction1).X * projectile.SpeedCur
-		projectile.VelVec.Y = h.Direction(owner.Direction1).Y * projectile.SpeedCur
+		projectile.VelVec.X = server.PlayerAttackBowVelocity539D80(h.Direction(owner.Direction1).X, projectile.SpeedCur)
+		projectile.VelVec.Y = server.PlayerAttackBowVelocity539D80(h.Direction(owner.Direction1).Y, projectile.SpeedCur)
 		projectile.Direction1, projectile.Direction2 = owner.Direction1, owner.Direction1
 	}
 	if quiver != nil && ammo.Field2 == 0 && owner.Class().Has(object.ClassPlayer) {
@@ -177,4 +176,29 @@ func playerAttackBowNative538960(owner, weapon *server.Object, update *server.Pl
 func nox_xxx_playerAttackBowNative_538960(cowner, cweapon *nox_object_t, cupdate *C.nox_player_update_data_t, equipment C.uint32_t, previous C.uint8_t) C.int {
 	return C.int(playerAttackBowNative538960(asObjectS(cowner), asObjectS(cweapon),
 		(*server.PlayerUpdateData)(unsafe.Pointer(cupdate)), uint32(equipment), uint8(previous), playerAttackBowRuntimeFactory538960()))
+}
+
+//export nox_xxx_shootBowCrossbow1_539BD0
+func nox_xxx_shootBowCrossbow1_539BD0(owner, weapon *nox_object_t) C.int {
+	if owner == nil || weapon == nil {
+		return 0
+	}
+	return C.int(playerAttackBowShoot1_539BD0(asObjectS(owner), asObjectS(weapon), playerAttackBowRuntimeFactory538960()))
+}
+
+//export nox_xxx_shootBowCrossbow2_539D80
+func nox_xxx_shootBowCrossbow2_539D80(owner, quiver, weapon *nox_object_t, flags C.uint32_t) {
+	if owner == nil || weapon == nil {
+		return
+	}
+	playerAttackBowShoot2_539D80(asObjectS(owner), asObjectS(quiver), asObjectS(weapon), uint32(flags), playerAttackBowRuntimeFactory538960())
+}
+
+//export nox_xxx_shootApplyEffects_539F40
+func nox_xxx_shootApplyEffects_539F40(owner, weapon, projectile *nox_object_t) C.int {
+	if owner == nil || weapon == nil || projectile == nil {
+		return 0
+	}
+	playerAttackProjectileApplyEffects539F40(asObjectS(owner), asObjectS(weapon), asObjectS(projectile), playerAttackProjectileRuntimeFactory538960())
+	return 0
 }

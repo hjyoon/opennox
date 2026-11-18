@@ -60,6 +60,32 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native shop close, 2026-11-18
+
+Engine `7d203f719db2256737a45262c771dd0ee362236f` ports the `50F4C0`
+C entry and shares the same close routine with the Go packet handler.
+It clears the two matching participant links before unfreezing the
+selected player and queuing `C9/02`. A Quest close replaces only the
+player's cache slot. A displaced session remains in the native session
+list until normal release or shutdown. The closing allocation is checked
+again after notification so a replacement at the same address keeps
+its own lifetime.
+
+The 54 original cases execute 260 bytes across the close routine and
+its two original helpers. Two ARM64 calls to the unchanged C body
+reproduce the truncated participant read at the detach boundary.
+macOS normal and strict each pass 16,427 targeted test events with
+zero compiler warnings. Linux run `44268087145` and Windows run
+`44267896842` pass all six jobs.
+
+The first ARM64 build passed all four product, metadata and help
+checks. Cleanup outside the porting process removed that batch's
+products, local tests and qualification receipt. The original
+fixture and committed code survived. Recovery is tracked in the
+workspace at `opennox-verification/20261118-trade/shop-exit-recovery-v1`.
+The missing local qualification had SHA-256
+`21302ce13eb591012858ad2e4bc8c8bf22a9ba8d029e1b6c9642537d4dfdc7b2`.
+
 ### Native shop and trade start packets, 2026-11-18
 
 Engine `d297011d636289696a6dd26e8a01bfed274bda48` ports the `50F0F0`
@@ -72,8 +98,16 @@ The 80 original cases execute 382 root bytes and 98 bytes of the stock
 wide-string copy helpers. Four unchanged ARM64 C calls reproduce
 session-pointer truncation. Normal and strict each pass 16,366 focused
 events, including 163 start-packet events, with zero compiler warnings.
-Exact-source product checks, Linux run `44253884016` and Windows run
-`44253695933` are in progress.
+Four ARM64 products pass the build, metadata, help and 211 symbol checks.
+Four normal and HD scenarios verify sale sound 307 and purchase
+buffer processing through OpenAL's null output. The 4,649 original
+asset and Save files match their pre-run hashes.
+
+Linux run `44253884016` and Windows run `44253695933` pass all six jobs.
+The verified archives retain 158 exact test executables and all twelve
+Windows/386 GC replays. The combined receipt
+`trade-start-packet-native-v1/qualified-trade-start-packet-C-entries-v1.json`
+has SHA-256 `a86da3fb12af0d41abb6b91f05eb41c1080310cfa10be5aab81996bd1ad72cd5`.
 
 Local qualification `trade-start-packet-native-v1/local-trade-start-packet-C-qualification-v1.json`
 has SHA-256 `ac9e5ec4047e1537e9d1bc1fecd3fc72a109c07a25c658ca712596cd8a5ead1f`.
@@ -96,6 +130,12 @@ jobs. Windows run `44249918611` retains the earlier insertion fixture
 initialization failure. Commit `5163943ecdde7a475f1bd039489d95610ef52254`
 initializes handle storage in both PE32 fixtures and passes both
 Windows native jobs in run `44251161069`.
+
+All six archives and job logs are retained, including the failed
+Windows/386 artifact `14404625929`. The five passing archives retain
+155 exact test executables. The combined receipt
+`trade-session-release-native-v1/trade-release-qualification-with-Windows-386-fixture-failure-v1.json`
+has SHA-256 `3f2b8bdd754f02d85d243e2118166235ff22027917bda1549255a1ab5d8b3f03`.
 
 Local qualification `trade-session-release-native-v1/local-trade-release-C-qualification-v1.json`
 has SHA-256 `2a77c423eeda6ee450166d19023e0d80655f9bd7b753a388cef28d91f3e24d34`.

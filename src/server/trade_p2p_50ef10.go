@@ -427,15 +427,14 @@ func resetTradeOfferApproval(session *TradeSession) {
 	}
 }
 
-func (s *Server) notifyTradeOfferNative50F820(session *TradeSession, state *nativeTradeSessionAllocation, offeringPlayer, item *Object, cost uint32, runtime TradeP2PRuntime50F3A0) bool {
+func (s *Server) notifyTradeOfferChange(session *TradeSession, state *nativeTradeSessionAllocation, runtime TradeP2PRuntime50F3A0, update func(*Object) []byte) bool {
 	for _, recipient := range [...]*Object{session.Field8, session.Field12} {
 		balance := BuildTradeP2PBalancePacket50FA00(session, recipient)
 		tradeP2PSend50F3A0(runtime, recipient, balance[:])
 		if s.tradeNative.sessions[session] != state {
 			return false
 		}
-		itemPacket := BuildTradeP2PItemPacket50FAE0(recipient, offeringPlayer, item, cost)
-		tradeP2PSend50F3A0(runtime, recipient, itemPacket[:])
+		tradeP2PSend50F3A0(runtime, recipient, update(recipient))
 		if s.tradeNative.sessions[session] != state {
 			return false
 		}
@@ -504,7 +503,10 @@ func (s *Server) AddTradeOfferNative50F820(
 		}
 	}
 	resetTradeOfferApproval(session)
-	return s.notifyTradeOfferNative50F820(session, state, offeringPlayer, item, cost, runtime)
+	return s.notifyTradeOfferChange(session, state, runtime, func(recipient *Object) []byte {
+		packet := BuildTradeP2PItemPacket50FAE0(recipient, offeringPlayer, item, cost)
+		return packet[:]
+	})
 }
 
 func tradeP2PFindOffer50FFE0(head *TradeItem, netCode uint32) *TradeItem {
@@ -514,36 +516,6 @@ func tradeP2PFindOffer50FFE0(head *TradeItem, netCode uint32) *TradeItem {
 		}
 	}
 	return nil
-}
-
-func (s *Server) unlinkP2POffer50FE20(session *TradeSession, node *TradeItem, first bool) bool {
-	state, ok := s.nativeP2PSession50F3A0(session)
-	if !ok {
-		return false
-	}
-	allocation, ok := state.items[node]
-	if !ok {
-		return false
-	}
-	head := &session.Field36
-	if first {
-		head = &session.Field32
-	}
-	if node.Field8 != nil {
-		node.Field8.Field12 = node.Field12
-	}
-	if node.Field12 != nil {
-		node.Field12.Field8 = node.Field8
-	} else if *head == node {
-		*head = node.Field8
-	} else {
-		return false
-	}
-	delete(state.items, node)
-	if allocation.freeNode != nil {
-		allocation.freeNode()
-	}
-	return true
 }
 
 // RemoveP2PTradeOfferNative50FE20 returns the selected Object to its original
@@ -556,35 +528,80 @@ func (s *Server) RemoveP2PTradeOfferNative50FE20(
 	if _, ok := s.nativeP2PSession50F3A0(session); !ok {
 		return false
 	}
-	first := true
-	node := tradeP2PFindOffer50FFE0(session.Field32, netCode)
-	owner := session.Field8
-	if node == nil {
-		first = false
-		node = tradeP2PFindOffer50FFE0(session.Field36, netCode)
-		owner = session.Field12
+	return s.RemoveTradeOfferNative50FE20(session, netCode, runtime, nil)
+}
+
+// RemoveTradeOfferNative50FE20 returns the first matching offer to inventory
+// or stock. It reprices the remaining offers before sending the removal.
+func (s *Server) RemoveTradeOfferNative50FE20(session *TradeSession, netCode uint32, runtime TradeP2PRuntime50F3A0, reprice func(*TradeSession)) bool {
+	state := s.tradeNative.sessions[session]
+	if state == nil {
+		return false
 	}
+	head, owner := &session.Field32, session.Field8
+	node := tradeP2PFindOffer50FFE0(*head, netCode)
 	if node == nil {
+		head, owner = &session.Field36, session.Field12
+		node = tradeP2PFindOffer50FFE0(*head, netCode)
+	}
+	if _, live := state.items[node]; !live || owner == nil {
 		return false
 	}
 	item := node.Item0
-	if runtime.PutInventory != nil && item != nil {
-		runtime.PutInventory(owner, item)
-	}
-	if !s.unlinkP2POffer50FE20(session, node, first) {
+	s.transferTradeItem50F790(session, owner, item, runtime)
+	if s.tradeNative.sessions[session] != state {
 		return false
 	}
-	session.Field24 = 0
-	session.Field28 = 0
-	for _, recipient := range [...]*Object{session.Field8, session.Field12} {
-		balance := BuildTradeP2PBalancePacket50FA00(session, recipient)
-		tradeP2PSend50F3A0(runtime, recipient, balance[:])
-		removed := BuildTradeP2PRemovePacket50FF90(item)
-		tradeP2PSend50F3A0(runtime, recipient, removed[:])
-		status := BuildTradeP2PStatusPacket50F720(session, recipient)
-		tradeP2PSend50F3A0(runtime, recipient, status[:])
+	allocation, live := state.items[node]
+	if !live {
+		return false
 	}
-	return true
+	if node.Field8 != nil {
+		node.Field8.Field12 = node.Field12
+	}
+	if node.Field12 != nil {
+		node.Field12.Field8 = node.Field8
+	}
+	if *head == node {
+		*head = node.Field8
+	}
+	// The node stays allocated through the removal notifications. If a
+	// callback releases the session, its allocation owns the cleanup.
+	defer func() {
+		if s.tradeNative.sessions[session] == state {
+			delete(state.items, node)
+			allocation.release(false)
+		}
+	}()
+	if reprice != nil {
+		reprice(session)
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
+	}
+	resetTradeOfferApproval(session)
+	return s.notifyTradeOfferChange(session, state, runtime, func(*Object) []byte {
+		packet := BuildTradeP2PRemovePacket50FF90(item)
+		return packet[:]
+	})
+}
+
+func (s *Server) transferTradeItem50F790(session *TradeSession, recipient, item *Object, runtime TradeP2PRuntime50F3A0) {
+	if recipient.Class().Has(object.ClassPlayer) {
+		if runtime.PutInventory != nil && item != nil {
+			runtime.PutInventory(recipient, item)
+		}
+		return
+	}
+	if stock := s.AddShopItemNative50EE00(session, item); stock != nil {
+		player := session.Field8
+		if !player.Class().Has(object.ClassPlayer) {
+			player = session.Field12
+		}
+		if _, _, ok := tradeP2PPlayer50EF10(player); ok {
+			s.SendShopItemNative50F2B0(player, stock)
+		}
+	}
 }
 
 // TransferTradeOfferNative50F790 moves the items while retaining the offer
@@ -598,19 +615,7 @@ func (s *Server) TransferTradeOfferNative50F790(session *TradeSession, recipient
 		if _, live := state.items[node]; !live {
 			return false
 		}
-		if recipient.Class().Has(object.ClassPlayer) {
-			if runtime.PutInventory != nil && node.Item0 != nil {
-				runtime.PutInventory(recipient, node.Item0)
-			}
-		} else if stock := s.AddShopItemNative50EE00(session, node.Item0); stock != nil {
-			player := session.Field8
-			if !player.Class().Has(object.ClassPlayer) {
-				player = session.Field12
-			}
-			if _, _, ok := tradeP2PPlayer50EF10(player); ok {
-				s.SendShopItemNative50F2B0(player, stock)
-			}
-		}
+		s.transferTradeItem50F790(session, recipient, node.Item0, runtime)
 		// Inventory and packet callbacks can release the session or this node.
 		if s.tradeNative.sessions[session] != state {
 			return false

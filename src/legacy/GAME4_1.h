@@ -59,7 +59,7 @@ void sub_50F790(void* session, nox_object_t* recipient, void* head);
 int nox_xxx_tradeP2PUpdStuff_50FA00(nox_object_t* recipient, void* session);
 int sub_50FAE0(nox_object_t* recipient, nox_object_t* offering, void* unused_session, nox_object_t* item, int cost);
 int sub_50FD20(void* session, nox_object_t* owner);
-int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2);
+int nox_xxx_tradeP2PAddOfferMB_50FE20(void* session, uint32_t code);
 int sub_50FF90(nox_object_t* recipient, void* unused_session, nox_object_t* item);
 void* sub_50FFE0(void* head, int code);
 void sub_510000(void* session);

@@ -2579,6 +2579,7 @@ int sub_50FD20(uint32_t* a1, int a2) {
 #endif
 
 //----- (0050FE20) --------------------------------------------------------
+#if 0 // Restored by trade_offer_remove_native_entry.go.
 int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 	int* v2;    // edi
 	int v3;     // ebp
@@ -2654,6 +2655,7 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 	nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_tradeItems_2386496, v2);
 	return 1;
 }
+#endif
 
 //----- (0050FF90) --------------------------------------------------------
 #if 0 // Restored by trade_packet_native_entry.go.

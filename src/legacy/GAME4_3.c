@@ -2649,14 +2649,17 @@ int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner) {
 	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
 }
 
+//----- (0053A030) --------------------------------------------------------
+#if 0 // The public native entry now calls the Go equipment implementation.
 extern int nox_xxx_equipWeaponNPC_native_53A030(nox_object_t* owner, nox_object_t* item);
 
-//----- (0053A030) --------------------------------------------------------
 int nox_xxx_equipWeaponNPC_53A030(nox_object_t* owner, nox_object_t* item) {
 	return nox_xxx_equipWeaponNPC_native_53A030(owner, item);
 }
+#endif
 
 //----- (0053A0F0) --------------------------------------------------------
+#if 0 // Retained reference for dequipEquippedQuiver53A0F0.
 void sub_53A0F0(nox_object_t* owner, int report, int broadcast) {
 	if (!owner) {
 		return;
@@ -2668,6 +2671,7 @@ void sub_53A0F0(nox_object_t* owner, int report, int broadcast) {
 		}
 	}
 }
+#endif
 
 //----- (0053A140) --------------------------------------------------------
 int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, int report, int broadcast) {
@@ -2739,6 +2743,7 @@ int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, i
 }
 
 //----- (0053A2C0) --------------------------------------------------------
+#if 0 // PE32 reference. The public Go entry takes native equipment pointers.
 int nox_xxx_NPCEquipWeapon_53A2C0(int a1, nox_object_t* item) {
 	int v2;     // ebp
 	int result; // eax
@@ -2805,8 +2810,10 @@ LABEL_22:
 	}
 	return 1;
 }
+#endif
 
 //----- (0053A3D0) --------------------------------------------------------
+#if 0 // Retained reference for dequipEquippedShields53A3D0.
 void sub_53A3D0(nox_object_t* owner) {
 	if (!owner) {
 		return;
@@ -2818,6 +2825,7 @@ void sub_53A3D0(nox_object_t* owner) {
 		}
 	}
 }
+#endif
 
 //----- (0053A420) --------------------------------------------------------
 int nox_xxx_playerEquipWeapon_53A420(nox_object_t* owner, nox_object_t* item, int report, int play_sound) {
@@ -2829,7 +2837,7 @@ int nox_xxx_playerEquipWeapon_53A420(nox_object_t* owner, nox_object_t* item, in
 		return 0;
 	}
 	if (owner->obj_class & 2) {
-		return nox_xxx_NPCEquipWeapon_native_53A2C0(owner, item);
+		return nox_xxx_NPCEquipWeapon_53A2C0(owner, item);
 	}
 	if (!(owner->obj_class & 4)) {
 		return 0;

@@ -9237,7 +9237,7 @@ LABEL_156:
 						v42 = k[2];
 						k[4] &= 0xFFFFFEFF;
 						if (v42 & 0x1001000) {
-							nox_xxx_NPCEquipWeapon_53A2C0(v35, (int)k);
+							nox_xxx_NPCEquipWeapon_53A2C0((nox_object_t*)(uintptr_t)v35, (nox_object_t*)k);
 						} else {
 							nox_xxx_NPCEquipArmor_53E520(v35, k);
 						}

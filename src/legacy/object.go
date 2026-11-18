@@ -428,10 +428,9 @@ func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.
 	asObjectS(obj).SetNPCItemEquipFlags(asObjectS(item), equipped == 1, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 }
 
-//export nox_xxx_equipWeaponNPC_native_53A030
-func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
-	owner, item := asObjectS(cowner), asObjectS(citem)
-	return C.int(npcWeaponDequipNative53A030(owner, item))
+//export nox_xxx_equipWeaponNPC_53A030
+func nox_xxx_equipWeaponNPC_53A030(owner, item *nox_object_t) C.int {
+	return C.int(npcWeaponDequipNative53A030(asObjectS(owner), asObjectS(item)))
 }
 
 func npcWeaponDequipNative53A030(owner, item *server.Object) int {
@@ -455,7 +454,7 @@ func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 		owner.SetNPCItemEquipFlags(item, false, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 	}
 	if uint32(item.ObjSubClass)&0xC != 0 {
-		C.sub_53A0F0(asObjectC(owner), 1, 1)
+		dequipEquippedQuiver53A0F0(owner, 1, 1)
 	}
 	if uint32(item.ObjSubClass)&2 == 0 {
 		owner.SetNPCWeaponForMeleeUpdate532130(update, nil)
@@ -490,7 +489,7 @@ func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 	update := owner.UpdateDataMonster()
 	update.Field517 &^= 0xff
 	if uint32(item.ObjSubClass)&0xC == 0 {
-		C.sub_53A0F0(asObjectC(owner), 1, 1)
+		dequipEquippedQuiver53A0F0(owner, 1, 1)
 	}
 	// Original 0053A330 reloads after quiver-dequip callbacks.
 	newSubclass := uint32(item.ObjSubClass)
@@ -516,14 +515,48 @@ func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 	}
 	Nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner)
 	if objectNPCWeaponEquipFlags(item)&0x7FFE40C != 0 {
-		C.sub_53A3D0(asObjectC(owner))
+		dequipEquippedShields53A3D0(owner)
 	}
 	return 1
 }
 
-//export nox_xxx_NPCEquipWeapon_native_53A2C0
-func nox_xxx_NPCEquipWeapon_native_53A2C0(cowner, citem *nox_object_t) C.int {
-	return C.int(npcWeaponEquipNative53A2C0(asObjectS(cowner), asObjectS(citem)))
+//export nox_xxx_NPCEquipWeapon_53A2C0
+func nox_xxx_NPCEquipWeapon_53A2C0(owner, item *nox_object_t) C.int {
+	return C.int(npcWeaponEquipNative53A2C0(asObjectS(owner), asObjectS(item)))
+}
+
+//export sub_53A0F0
+func sub_53A0F0(owner *nox_object_t, report, broadcast C.int) {
+	dequipEquippedQuiver53A0F0(asObjectS(owner), report, broadcast)
+}
+
+func dequipEquippedQuiver53A0F0(owner *server.Object, report, broadcast C.int) {
+	if owner == nil {
+		return
+	}
+	for item := owner.InvFirstItem; item != nil; item = item.InvNextItem {
+		if item.Flags().Has(object.FlagEquipped) && nox_xxx_weaponInventoryEquipFlags_415820(asObjectC(item)) == 2 {
+			C.nox_xxx_playerDequipWeapon_53A140(asObjectC(owner), asObjectC(item), report, broadcast)
+			return
+		}
+	}
+}
+
+//export sub_53A3D0
+func sub_53A3D0(owner *nox_object_t) {
+	dequipEquippedShields53A3D0(asObjectS(owner))
+}
+
+func dequipEquippedShields53A3D0(owner *server.Object) {
+	if owner == nil {
+		return
+	}
+	for item := owner.InvFirstItem; item != nil; item = item.InvNextItem {
+		if item.Class().Has(object.ClassArmor) && item.Flags().Has(object.FlagEquipped) &&
+			nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectC(item))&0x3000000 != 0 {
+			C.sub_53E430(asObjectC(owner), asObjectC(item), 1, 1)
+		}
+	}
 }
 
 func playerEquipWeaponNativeCall53A420(owner, item *server.Object) int {

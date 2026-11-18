@@ -7657,6 +7657,7 @@ void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* object) {
 }
 
 //----- (00528A60) --------------------------------------------------------
+#if 0 // Restored by outbound_object_chat_native.go.
 int nox_xxx_netObjectOutOfSight_528A60(int a1, uint32_t* a2) {
 	char v4[3]; // [esp+0h] [ebp-4h]
 	v4[0] = 50;
@@ -7727,6 +7728,13 @@ int nox_xxx_destroyEveryChatMB_528D60() {
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
 	return result;
+}
+#endif
+
+extern uintptr_t nox_server_monster_cmd_send_native_528BD0(nox_object_t*, nox_object_t*, char*, short);
+
+uintptr_t nox_xxx_monsterCmdSend_528BD0(nox_object_t* unit, nox_object_t* source, const char* command, short duration) {
+	return nox_server_monster_cmd_send_native_528BD0(unit, source, (char*)command, duration);
 }
 
 //----- (00528DB0) --------------------------------------------------------

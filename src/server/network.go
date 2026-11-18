@@ -436,9 +436,7 @@ func (s *Server) Nox_xxx_netKillChat_528D00(who *Object) {
 // every connected player unit. Iterating Player values avoids the 32-bit
 // PlayerUpdateData and Player pointer walk used by the legacy routine.
 func (s *Server) DestroyEveryChat528D60() {
-	var buf [3]byte
-	buf[0] = byte(netmsg.MSG_CHAT_KILL)
-	binary.LittleEndian.PutUint16(buf[1:], 0xDEAD)
+	buf := clearChatPacket528D60()
 	for _, pl := range s.Players.List() {
 		if pl.PlayerUnit == nil {
 			continue
@@ -484,17 +482,13 @@ func (s *Server) Nox_xxx_netSendFlagStatus_4D95A0(
 }
 
 func (s *Server) Nox_xxx_netObjectOutOfSight_528A60(ind int, obj *Object) int {
-	var buf [3]byte
-	buf[0] = byte(netmsg.MSG_OBJECT_OUT_OF_SIGHT)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(obj)))
-	return s.NetSendPacketXxx0(ind, buf[:3], nil, 1)
+	buf := visibilityPacket528A60(netmsg.MSG_OBJECT_OUT_OF_SIGHT, uint16(s.GetUnitNetCode(obj)))
+	return s.NetSendPacketXxx0(ind, buf[:], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netObjectInShadows_528A90(ind int, obj *Object) int {
-	var buf [3]byte
-	buf[0] = byte(netmsg.MSG_OBJECT_IN_SHADOWS)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(obj)))
-	return s.NetSendPacketXxx0(ind, buf[:3], nil, 1)
+	buf := visibilityPacket528A60(netmsg.MSG_OBJECT_IN_SHADOWS, uint16(s.GetUnitNetCode(obj)))
+	return s.NetSendPacketXxx0(ind, buf[:], nil, 1)
 }
 
 func (s *Server) Nox_xxx_wallSendDestroyed_4DF0A0(wl *Wall, a2 int) {

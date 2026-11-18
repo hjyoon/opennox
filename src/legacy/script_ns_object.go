@@ -4,7 +4,6 @@ package legacy
 #include "defs.h"
 #include "script_raise_zombie_516d00.h"
 
-int nox_xxx_destroyEveryChatMB_528D60();
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1);
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
 int sub_467B00(int type_id, int amount);

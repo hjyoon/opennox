@@ -261,10 +261,10 @@ void nox_server_monster_see_enemy_native(nox_object_t* monster, nox_object_t* ta
 int nox_server_monster_remove_seen_native(nox_object_t* monster, nox_object_t* target);
 int nox_server_monster_has_seen_native(nox_object_t* monster, nox_object_t* target);
 void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* a1);
-int nox_xxx_netObjectOutOfSight_528A60(int a1, uint32_t* a2);
-int nox_xxx_netObjectInShadows_528A90(int a1, uint32_t* a2);
-int nox_xxx_monsterCmdSend_528BD0(int unit, int source, const char* command, short a4);
-int nox_xxx_destroyEveryChatMB_528D60();
+int nox_xxx_netObjectOutOfSight_528A60(int recipient, nox_object_t* object);
+int nox_xxx_netObjectInShadows_528A90(int recipient, nox_object_t* object);
+uintptr_t nox_xxx_monsterCmdSend_528BD0(nox_object_t* unit, nox_object_t* source, const char* command, short duration);
+int nox_xxx_destroyEveryChatMB_528D60(void);
 int nox_xxx_XFerMonster_528DB0(nox_object_t* a1);
 void nox_xxx_monsterOnSpawnSpellcaster_529BC0(int a1);
 int nox_xxx_XFer_ActionData_529CE0(int a1);

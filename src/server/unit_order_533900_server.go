@@ -1,15 +1,12 @@
 package server
 
 import (
-	"encoding/binary"
 	"unsafe"
 
-	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/common/unit/ai"
-	"github.com/opennox/opennox/v1/internal/netlist"
 )
 
 // UnitOrderRuntime533900 owns the three legacy services that cannot live in
@@ -22,25 +19,7 @@ type UnitOrderRuntime533900 struct {
 }
 
 func (s *Server) monsterCommandSend528BD0(unit, source *Object, command string, arg int16) {
-	packet := make([]byte, len(command)+12)
-	packet[0] = byte(netmsg.MSG_TEXT_MESSAGE)
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(s.GetUnitNetCode(unit)))
-	packet[3] = 8
-	binary.LittleEndian.PutUint16(packet[4:6], uint16(int64(unit.PosVec.X)))
-	binary.LittleEndian.PutUint16(packet[6:8], uint16(int64(unit.PosVec.Y)))
-	packet[8] = byte(len(command) + 1)
-	binary.LittleEndian.PutUint16(packet[9:11], uint16(arg))
-	copy(packet[11:], command)
-	packet = packet[:int(packet[8])+11]
-	if source != nil {
-		if uint8(source.ObjClass)&unitOrderPlayerClass533900 != 0 {
-			s.NetList.AddToMsgListCli(source.UpdateDataPlayer().Player.PlayerIndex(), netlist.Kind1, packet)
-		}
-		return
-	}
-	for playerUnit := s.Players.FirstUnit(); playerUnit != nil; playerUnit = s.Players.NextUnit(playerUnit) {
-		s.NetList.AddToMsgListCli(playerUnit.UpdateDataPlayer().Player.PlayerIndex(), netlist.Kind1, packet)
-	}
+	MonsterCommandSendRaw528BD0(unit, source, command, arg, s.OutboundObjectChatRuntime())
 }
 
 func (s *Server) playUnitOrderSound5339A0(unit *Object) {

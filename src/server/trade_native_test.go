@@ -39,6 +39,42 @@ func addTestNativeTradeItem(t *testing.T, s *Server, session *TradeSession, item
 	return node
 }
 
+func TestShopRemovalNativeSendMayReleaseSession(t *testing.T) {
+	srv := &Server{}
+	player := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer})
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster})
+	item := nativeTradeTestValue(t, Object{NetCode: 123})
+	remaining := nativeTradeTestValue(t, Object{NetCode: 124})
+	session := srv.NewShopSessionNative50E8F0(player, merchant)
+	defer srv.ReleaseTradeSessionNative510000(session)
+	node := addTestNativeTradeItem(t, srv, session, item, 20)
+	other := addTestNativeTradeItem(t, srv, session, remaining, 21)
+	state := srv.tradeNative.sessions[session]
+	allocation := state.items[node]
+	freeNode := allocation.freeNode
+	nodeFreed, remainingFreed := 0, 0
+	allocation.freeNode = func() { nodeFreed++; freeNode() }
+	allocation.freeObject = func() { t.Fatal("session released the buyer's item") }
+	state.items[node] = allocation
+	allocation = state.items[other]
+	allocation.freeObject = func() { remainingFreed++ }
+	state.items[other] = allocation
+
+	if !srv.DetachShopItemNative50E7A0(session, item, func(recipient, removed *Object) {
+		if recipient != player || removed != item || session.Field20 != other || other.Field12 != nil || nodeFreed != 0 {
+			t.Fatal("shop removal callback got the wrong owners or list state")
+		}
+		if !srv.ReleaseTradeSessionNative510000(session) || nodeFreed != 0 || remainingFreed != 1 {
+			t.Fatal("session release took ownership of the detached node")
+		}
+	}) {
+		t.Fatal("shop removal failed")
+	}
+	if nodeFreed != 1 || remainingFreed != 1 || item.NetCode != 123 || srv.IsTradeSessionNative(session) {
+		t.Fatal("trade ownership after the send is inconsistent")
+	}
+}
+
 func TestShopkeeperInitDataLayout50E970(t *testing.T) {
 	if got := unsafe.Sizeof(ShopkeeperItemDefinition{}); got != 28 {
 		t.Fatalf("shop item definition size = %d, want 28", got)

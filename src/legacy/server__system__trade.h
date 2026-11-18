@@ -4,6 +4,8 @@
 #include "defs.h"
 #include "game4_gold_consumers.h"
 
+int sub_50E7A0(void* session, nox_object_t* item);
+int sub_5104F0(nox_object_t* recipient, short amount);
 uint32_t* nox_xxx_servShopStart_50EF10_trade(int a1, int a2);
 int nox_xxx_tradeP2PAddOffer2_50F820_trade(int, int, float); // idb
 uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3);

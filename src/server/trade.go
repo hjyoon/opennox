@@ -579,23 +579,47 @@ func (s *Server) detachNativeTradeItem50E7A0(session *TradeSession, node *TradeI
 	if !ok {
 		return false
 	}
+	if node.Field12 == nil && session.Field20 != node {
+		return false
+	}
 	if next := node.Field8; next != nil {
 		next.Field12 = node.Field12
 	}
 	if prev := node.Field12; prev != nil {
 		prev.Field8 = node.Field8
-	} else if session.Field20 == node {
+	}
+	if session.Field20 == node {
 		session.Field20 = node.Field8
-	} else {
-		return false
 	}
 	item := node.Item0
+	// A synchronous send may close the session. Transfer ownership before
+	// calling it so teardown sees only the items that remain in the shop.
+	delete(state.items, node)
+	defer allocation.freeNode()
 	if notify != nil {
 		notify(item)
 	}
-	delete(state.items, node)
-	allocation.freeNode()
 	return true
+}
+
+// DetachShopItemNative50E7A0 removes the first entry with the given object
+// identity and reports it to the player participant before releasing the node.
+func (s *Server) DetachShopItemNative50E7A0(session *TradeSession, item *Object, notify func(*Object, *Object)) bool {
+	if !s.IsTradeSessionNative(session) {
+		return false
+	}
+	for node := session.Field20; node != nil; node = node.Field8 {
+		if node.Item0 == item {
+			return s.detachNativeTradeItem50E7A0(session, node, func(removed *Object) {
+				recipient := session.Field8
+				if !recipient.Class().Has(object.ClassPlayer) {
+					recipient = session.Field12
+				}
+				notify(recipient, removed)
+			})
+		}
+	}
+	return false
 }
 
 func shopBuyLimitViolation5100C0(

@@ -1798,6 +1798,7 @@ LABEL_64:
 }
 
 //----- (0050E820) --------------------------------------------------------
+#if 0 // Restored by shop_removal_native_entry.go.
 int sub_50E820(int a1, int a2) {
 	int v3; // ecx
 	int v5; // [esp+0h] [ebp-4h]
@@ -1807,6 +1808,7 @@ int sub_50E820(int a1, int a2) {
 	LOWORD(v5) = 2505;
 	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), &v5, 4, 0, 1);
 }
+#endif
 
 //----- (0050E870) --------------------------------------------------------
 uint32_t* nox_xxx_createShopStruct_50E870() {
@@ -2198,6 +2200,7 @@ void sub_50F3A0(uint32_t* a1) {
 #endif
 
 //----- (0050F450) --------------------------------------------------------
+#if 0 // Restored by shop_removal_native_entry.go.
 int sub_50F450(int a1) {
 	int v2;     // edx
 	char v4[2]; // [esp+0h] [ebp-2h]
@@ -2206,6 +2209,7 @@ int sub_50F450(int a1) {
 	*(uint16_t*)v4 = 457;
 	return nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), v4, 2, 0, 1);
 }
+#endif
 
 //----- (0050F490) --------------------------------------------------------
 #if 0 // Restored by pointer_chain_native_entry.go.

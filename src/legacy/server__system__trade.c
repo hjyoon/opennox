@@ -16,6 +16,7 @@ extern uint32_t dword_5d4594_2386560;
 extern void* nox_alloc_tradeItems_2386496;
 
 //----- (0050E7A0) --------------------------------------------------------
+#if 0 // Restored by shop_removal_native_entry.go.
 int sub_50E7A0(uint32_t* a1, int a2) {
 	int* v2; // esi
 	int v4;  // eax
@@ -51,6 +52,7 @@ int sub_50E7A0(uint32_t* a1, int a2) {
 	nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_tradeItems_2386496, v2);
 	return 1;
 }
+#endif
 
 //----- (0050E8F0) --------------------------------------------------------
 uint32_t* nox_xxx_createPlayerShopSession_50E8F0(int a1, int a2) {
@@ -291,6 +293,7 @@ void sub_510320(int a1, int a2) {
 }
 
 //----- (005104F0) --------------------------------------------------------
+#if 0 // Restored by shop_removal_native_entry.go.
 int sub_5104F0(int a1, short a2) {
 	int v2;     // eax
 	char v4[4]; // [esp+0h] [ebp-4h]
@@ -301,6 +304,7 @@ int sub_5104F0(int a1, short a2) {
 	v4[1] = 27;
 	return nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), v4, 4, 0, 1);
 }
+#endif
 
 //----- (00510540) --------------------------------------------------------
 int sub_510540(int a1) {

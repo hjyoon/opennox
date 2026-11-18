@@ -3792,6 +3792,7 @@ int sub_516570() {
 }
 
 //----- (00516D00) --------------------------------------------------------
+#if 0 // Restored by script_raise_zombie_516d00.go with native fields and a native-width mixed return.
 unsigned int sub_516D00(nox_object_t* a1p) {
 	int a1 = a1p;
 	unsigned int result; // eax
@@ -3807,6 +3808,7 @@ unsigned int sub_516D00(nox_object_t* a1p) {
 	}
 	return result;
 }
+#endif
 
 //----- (00516EE0) --------------------------------------------------------
 #if 0 // Restored by pending_owns_516ee0.go with native-width list storage.

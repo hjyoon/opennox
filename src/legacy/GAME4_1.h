@@ -9,6 +9,7 @@
 #include "unit_follow_5158c0.h"
 #include "unit_idle_515820.h"
 #include "monster_spawn_registry_50d780.h"
+#include "script_raise_zombie_516d00.h"
 
 int nox_xxx_xferDirectionToAngle_509E00(uint32_t* a1);
 int nox_xxx_xferIndexedDirection_509E20(int a1, int2* a2);
@@ -89,7 +90,6 @@ void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1, void* a2);
 void nox_xxx_unitHunt_5157A0(nox_object_t* obj);
 void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1, nox_object_t* a2);
 void sub_516090(nox_object_t* a1, uint32_t a2);
-unsigned int sub_516D00(nox_object_t* a1);
 int nox_xxx_allocPendingOwnsArray_516EE0();
 int sub_516F10();
 void sub_516F30();

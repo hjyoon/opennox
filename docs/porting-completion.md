@@ -60,6 +60,113 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### C build selection audit, 2026-11-19
+
+At `7076abd54868bf3f8be70b1a71690ee6699a4183`, Git tracks 629 C files.
+The twelve audited build profiles select 208 of them. The 421 other
+files comprise 419 test fixtures, the separately built OpenAL wrapper
+and the separately built x87 oracle.
+
+Default macOS ARM64 selects 207 files. Its Clang AST inventory finds
+2,407 active function bodies and 14 unclassified macro-generated
+definitions. Of the 207 files, 41 have no active body defined in
+the file, including `GAME5.c` and `server__system__trade.c`. Functions
+with pointer and integer casts number 401. The inventory includes
+ABI bridges, platform support and intentional scalar conversions.
+A whole-C porting denominator still requires implementation
+classification across the build profiles.
+
+The selection and AST records are in
+`opennox-verification/20261118-trade/whole-C-inventory-7076abd-v1`.
+Their SHA-256 values are
+`3c95f74ee2bceceef4e45f246586897c7929ec0b233057f55ec2592c26a50cf9`
+and `0d429fd70d418e5365143549322169d669c3ea6aaf8ebc16f26a6ecdb1229780`.
+
+### Native player self-report and key packets, 2026-11-19
+
+Engine `b8334639ed7a6ab975941a3dd066649b9240dfdb` ports `4D9900`,
+`4D9DF0`, `4D9E30` and `4D9200`. All four C entries accept native
+object pointers. The self-report entry shares the Go player-object
+sender. The packet entries preserve the stock wire bytes, signed
+queue results and original low network-code words.
+
+Original execution covers 96 self-report cases across 795 routine
+bytes and the six-byte mode reader. Direct and indirect C tests match
+the nil and class gates, pass the complete native address to the
+report callback and verify one dispatch. The three packet senders
+match all 420 original cases with both C calling forms. Normal and
+strict cgo checks each pass 22,204 focused events with zero compiler
+warnings. Disk exhaustion interrupted the initial strict root link
+after 21,784 legacy and server events. The root-only strict retry
+passes the remaining 420 events.
+Linux run `44356445418` and Windows run `44356257736` track this source.
+
+The local receipt
+`opennox-verification/20261118-trade/player-self-report-native-v1/local-player-report-C-qualification-v1.json`
+has SHA-256 `8e7014aa8d9292c7820b243ab1963e174a27bbc26090addf21d6d5aef7d01853`.
+
+### Native item use and monster pickup, 2026-11-19
+
+Engine `bd160ed564cf011b0808cee6b5978cb5da092601` ports `53F8E0`
+and `544B90`. The item callback receives both native object addresses
+and returns its 32-bit result. Monster pickup shares the Go action
+implementation and its x87 distance behavior.
+
+Original execution covers 216 cases and all 71 item-use and 139
+monster-pickup bytes. Direct and indirect C calls cover 20 supported
+item-use inputs and 72 pickup rejection and pop inputs. The focused
+normal and strict suites each pass 21,170 events with zero compiler
+warnings. The same compiler check reports three format warnings in
+`GAME4_3.c` before the correction and zero afterward. Linux run
+`44353686595` and Windows run `44353465803` track this source.
+
+All four ARM64 products pass metadata, help and 231 symbol checks.
+Disk exhaustion interrupts the first high-resolution server build.
+The targeted retry succeeds and the other three binaries retain
+their recorded hashes. All 4,649 original asset and Save hashes
+match before running the OpenAL scenarios.
+
+The local receipt
+`opennox-verification/20261118-trade/item-use-monster-pickup-native-v1/local-item-use-pickup-C-qualification-v1.json`
+has SHA-256 `b23d5930b2ae7dfc8d2bda7004617e599b4d66a45d80451847c45a157d04c33b`.
+
+### Music shutdown with virtual E2E time, 2026-11-19
+
+Engine `e09963951cf8bce61a61c31dc5bd2da51f71006d` closes pending
+music during virtual-time shutdown. Before the fix, both display
+profiles passed the stock Conjurer chapter 2 Mystic shop assertions
+and timed out in music cleanup when the virtual clock stopped. The
+original stereo ADPCM music passes the OpenAL playback test after
+the fixture receives the filename expected by the test.
+
+Both ARM64 display profiles now exit zero in ordinary and virtual
+time after the Mystic scenario. The Wasp guide costs 100 gold,
+reduces the balance from 10,000 to 9,900 and remains absent from stock
+after reopening. The test reaches the stock merchant through a
+diagnostic map switch. All 4,649 original asset and Save hashes match.
+The receipt
+`opennox-verification/20261118-trade/virtual-e2e-music-shutdown-v1/qualified-virtual-music-shutdown-v1.json`
+has SHA-256 `aeb4a4fe937c86812ae6b6f322b303e73ca58d1c3f75e1b78f685df93f62db64`.
+
+### Native trade cancellation and Quest cache, 2026-11-19
+
+Engine `5ea481a5216fc8d7f72a2c6b2706938f015e8fce` ports `510DC0`
+and `510E20`. The entries route registered trade and Quest cache
+owners through the shared Go cancellation and release paths. The
+386 fallback accesses the original pool and pointer slot with their
+native types. Normal and strict cgo checks each pass 20,984 events
+with zero compiler warnings. The ARM64 products pass 229 symbol
+checks and four OpenAL null-device sale scenarios.
+
+Linux run `44346612740` succeeds and Windows/386 passes in run
+`44346427225`. Windows/amd64 attempt 1 stops in three test packages.
+The exact failed ZIP, log and runtime stack excerpts are retained.
+The Windows/amd64 retry request starts attempt 2 on the same revision.
+
+The macOS receipt
+`opennox-verification/20261118-trade/trade-cancel-cache-native-v1/qualified-macOS-trade-cancel-cache-products-v1.json`
+has SHA-256 `21dae554d8a3a4ae6a68f50b8f9f2059303c390b69c4d5aa2fa876ceb7929561`.
+
 ### Native merchant stock definitions, 2026-11-19
 
 Engine `7076abd54868bf3f8be70b1a71690ee6699a4183` ports `510320`,
@@ -82,7 +189,15 @@ passes the remaining 420 events. Both runs are retained.
 The local receipt
 `opennox-verification/20261118-trade/trade-stock-definition-native-v1/local-shop-definition-C-qualification-v1.json`
 has SHA-256 `3ca22f95cf2441632379ac40d1fbf8da54fa3db4f18525e0d82fb3634a7dffb3`.
-Linux run `44342038740` and Windows run `44341957690` track this source.
+Four ARM64 products pass 227 symbol checks and four OpenAL null-device
+sale scenarios. Both ordinary-time Conjurer chapter 2 Mystic scenarios
+complete the Wasp guide purchase and reopen with the correct stock.
+Both virtual-time attempts reproduce the shutdown issue described above.
+
+All six jobs from Linux run `44342038740` and Windows run
+`44341957690` succeed. The six original archives contain 158 test
+mains and 12 Windows/386 GC replays. The CI receipt has SHA-256
+`c318264c70f48599d995f9eceb32b1ee093a6b7b1752b8b252e0dc2c6c6f72b2`.
 
 ### Native shop pricing and sale quote, 2026-11-19
 
@@ -112,8 +227,10 @@ full charge and durability restoration, and matching balances. All
 4,649 original asset and Save hashes match. The macOS receipt
 `opennox-verification/20261118-trade/trade-pricing-native-v1/qualified-macOS-trade-pricing-products-v1.json`
 has SHA-256 `3839bdf4fa44c4b513c7ad9d724f2462c2e08f0bb95127c23d691fe1c4559cf2`.
-Linux run `44338062022` and Windows run `44337998540` track the exact
-qualified source.
+Linux run `44338062022` and Windows run `44337998540` pass all six
+jobs. The original archives contain 158 test mains and 12 Windows/386
+GC replays. The CI receipt has SHA-256
+`a36d97c4a8ed048ffbdb348b345ab0f1d7dcae180711c64217628a4bd438adcd`.
 
 ### Native shop repair quote, 2026-11-18
 

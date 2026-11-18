@@ -684,7 +684,7 @@ int sub_5364E0(char* a1, void* a2) {
 
 //----- (00536550) --------------------------------------------------------
 int sub_536550(char* a1, uint32_t* a2) {
-	sscanf(a1, "%f %f", a2, a2 + 2);
+	sscanf(a1, "%f %f", (float*)a2, (float*)(a2 + 2));
 	a2[1] = *a2;
 	return 1;
 }
@@ -722,7 +722,7 @@ int sub_536600(char* a1, int32_t* a2) {
 int sub_536B40(char* a1, void* a2) {
 	char v3[64]; // [esp+4h] [ebp-40h]
 
-	sscanf(a1, "%s %s", a2, v3);
+	sscanf(a1, "%s %s", (char*)a2, v3);
 	*(uint32_t*)((uint8_t*)a2 + 128) = nox_xxx_utilFindSound_40AF50(v3);
 	return 1;
 }
@@ -5303,6 +5303,7 @@ int sub_53F830(int a1, int a2) {
 #endif
 
 //----- (0053F8E0) --------------------------------------------------------
+#if 0 // Restored by item_use_monster_pickup_native_entry.go.
 int nox_xxx_useByNetCode_53F8E0(int a1, int a2) {
 	int result; // eax
 
@@ -5318,6 +5319,7 @@ int nox_xxx_useByNetCode_53F8E0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 // GAME.EXE 0053F930 is restored by field_guide_use_53f930_export.go. Keep the
 // ABI32 transcription as oracle provenance; registered use callbacks and C
@@ -6890,6 +6892,7 @@ void sub_544B20(int a1, int a2) {
 }
 
 //----- (00544B90) --------------------------------------------------------
+#if 0 // Restored by item_use_monster_pickup_native_entry.go.
 char nox_xxx_mobActionPickupObject_544B90(int a1) {
 	int v1;    // ecx
 	int v2;    // edi
@@ -6916,3 +6919,4 @@ char nox_xxx_mobActionPickupObject_544B90(int a1) {
 	}
 	return nox_xxx_monsterPopAction_50A160(a1);
 }
+#endif

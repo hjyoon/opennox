@@ -284,9 +284,8 @@ func (t *serverTradeNativeState) cacheQuestShopSession(playerIndex int, session 
 	if _, ok := t.sessions[session]; !ok {
 		return false
 	}
-	if old := t.questShopSession[playerIndex]; old != nil && old != session {
-		t.release(old)
-	}
+	// The stock close replaces only this slot. Any displaced session stays
+	// linked until its owner releases it or trade shutdown clears the list.
 	t.questShopSession[playerIndex] = session
 	return true
 }

@@ -2233,6 +2233,7 @@ int sub_50F490(uint32_t* a1, int a2) {
 #endif
 
 //----- (0050F4C0) --------------------------------------------------------
+#if 0 // Restored by trade_shop_exit_native_entry.go.
 void nox_xxx_shopExit_50F4C0(uint32_t* a1) {
 	int v1; // eax
 	int v2; // eax
@@ -2261,6 +2262,7 @@ void nox_xxx_shopExit_50F4C0(uint32_t* a1) {
 		sub_510000(a1);
 	}
 }
+#endif
 
 //----- (0050F560) --------------------------------------------------------
 #if 0 // Restored by trade_notify_item_native_entry.go.

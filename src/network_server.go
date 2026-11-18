@@ -859,45 +859,7 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 // exact client close acknowledgement, and either caches the session in Quest
 // mode or reclaims it in other modes.
 func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
-	if session == nil {
-		return
-	}
-	release := true
-	defer func() {
-		if release {
-			s.Server.ReleaseTradeSessionNative510000(session)
-		}
-	}()
-	clearPlayer := func(unit *server.Object) {
-		if unit == nil || !unit.Class().Has(object.ClassPlayer) {
-			return
-		}
-		update := unit.UpdateDataPlayer()
-		if update.Trade70 == session {
-			update.Trade70 = nil
-		}
-	}
-	clearPlayer(session.Field8)
-	clearPlayer(session.Field12)
-	session.Field0 = 0
-
-	playerUnit := session.Field8
-	if playerUnit == nil || !playerUnit.Class().Has(object.ClassPlayer) {
-		playerUnit = session.Field12
-	}
-	if playerUnit == nil || !playerUnit.Class().Has(object.ClassPlayer) {
-		return
-	}
-	legacy.Nox_xxx_unitUnFreeze_4E7A60(playerUnit, 0)
-	player := playerUnit.UpdateDataPlayer().Player
-	if player == nil {
-		return
-	}
-	packet := [...]byte{byte(netmsg.MSG_TRADE), 0x02}
-	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
-	if noxflags.HasGame(noxflags.GameModeQuest) && s.Server.CacheQuestShopSessionNative50F4C0(player.Index(), session) {
-		release = false
-	}
+	s.Server.CloseShopNative50F4C0(session, legacy.Nox_xxx_unitUnFreeze_4E7A60)
 }
 
 // ShopCancelSessionNative510DC0 handles sessions owned by the native-width

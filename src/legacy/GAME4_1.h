@@ -49,7 +49,7 @@ int sub_50F2B0(nox_object_t* recipient, void* node);
 int sub_50F450(nox_object_t* recipient);
 uint32_t* nox_xxx_tradeSetPlayer_50F370(uint32_t* session, nox_object_t* owner);
 void* sub_50F490(uint32_t* session, nox_object_t* owner);
-void nox_xxx_shopExit_50F4C0(uint32_t* a1);
+void nox_xxx_shopExit_50F4C0(void* session);
 int nox_xxx_sendEndTradeMsg_50F560(nox_object_t* recipient);
 void nox_xxx_tradeAccept_50F5A0(int a1, int a2);
 int sub_50F6B0(void* head);

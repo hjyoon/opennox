@@ -60,6 +60,67 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native shop and trade start packets, 2026-11-18
+
+Engine `d297011d636289696a6dd26e8a01bfed274bda48` ports the `50F0F0`
+and `50F1A0` C entries. Shop and trade packets preserve the recipient,
+queue return, UTF-16 name and wire length. The original object-name
+fallback uses the second participant. Go initializes the byte positions
+that the original packet left unwritten to zero.
+
+The 80 original cases execute 382 root bytes and 98 bytes of the stock
+wide-string copy helpers. Four unchanged ARM64 C calls reproduce
+session-pointer truncation. Normal and strict each pass 16,366 focused
+events, including 163 start-packet events, with zero compiler warnings.
+Exact-source product checks, Linux run `44253884016` and Windows run
+`44253695933` are in progress.
+
+Local qualification `trade-start-packet-native-v1/local-trade-start-packet-C-qualification-v1.json`
+has SHA-256 `ac9e5ec4047e1537e9d1bc1fecd3fc72a109c07a25c658ca712596cd8a5ead1f`.
+
+### Native trade session and offer-node release, 2026-11-18
+
+`f329d1ea9218f71cc6f556b2b2f187b7d202d8d9` ports `50F6B0` and
+`510000`. Native release follows stock order for shop items, Gold
+objects, offer nodes and session links. A valid PE32 session and each
+of its nodes are reclaimed from their own legacy pools. The original
+fixture covers 72 cases and 183 instruction bytes. Four unchanged
+ARM64 C calls fault after narrowing the supplied pointers. The older
+Go release order differs in 50 cases. All 60 original release-order
+cases now pass in both macOS profiles. Each passes 16,203 focused
+events, with the two PE32-only fixtures deferred to Windows/386.
+
+Four ARM64 products pass build, metadata, help and 209 symbol checks
+with zero compiler warnings. Linux run `44250157971` passes all four
+jobs. Windows run `44249918611` retains the earlier insertion fixture
+initialization failure. Commit `5163943ecdde7a475f1bd039489d95610ef52254`
+initializes handle storage in both PE32 fixtures and passes both
+Windows native jobs in run `44251161069`.
+
+Local qualification `trade-session-release-native-v1/local-trade-release-C-qualification-v1.json`
+has SHA-256 `2a77c423eeda6ee450166d19023e0d80655f9bd7b753a388cef28d91f3e24d34`.
+
+### Native shop item insertion, 2026-11-18
+
+`3c2ba54a2a6c3f5b17e95b4c006afb6590e4a4fa` ports `50EE00` with native
+session, item and node pointers. Existing PE32 sessions keep their pool
+ownership and original price entry. The 56 original cases verify
+allocation before pricing, null on pool exhaustion and newest-first
+insertion for equal keys. Both macOS profiles pass 16,139 focused events
+with zero compiler warnings. All four ARM64 products pass 207 symbol
+checks. Normal and HD pass all four OpenAL purchase and sale scenarios,
+with all 4,649 original asset and Save hashes preserved.
+
+Linux run `44247189286` passes all four jobs. In Windows run
+`44246974805`, amd64 passes and the 386 pool test panics when creating
+its first class handle without fixture initialization. The failure
+occurs before the insertion calls. Official ZIP `14403485410` contains
+the exact failed legacy PE. The corrected fixtures pass Windows run
+`44251161069`.
+
+Local product qualification `trade-shop-stock-insertion-native-v1/qualified-macOS-shop-insertion-products-v1.json`
+has SHA-256 `369dfc89a06664da1167cd67b061b6b925f5bf810aa33a841d9be45f70a07424`.
+
 ### Native shop stock C entries, 2026-11-18
 
 Engine `a961844b89317f6d53c8fc066a25be941e74e7ab` ports `50EEC0`,
@@ -76,12 +137,15 @@ high-address truncation on ARM64. The corrected C and Go paths pass
 16,136 focused events each in normal and strict/highres, including 213
 stock events through direct and indirect C calls and one session ownership
 regression. Both builds report zero compiler warnings. The first build
-and fixture failures are retained. Exact-source product and cross-platform
-checks are in progress under Linux run `44244648607` and Windows run
-`44244490068`.
+and fixture failures are retained. Four ARM64 products pass 206 symbol
+checks and four purchase and sale scenarios pass on OpenAL's null device.
+Linux run `44244648607` and Windows run `44244490068` pass all six
+first-attempt jobs. The six official archives, six job logs and 158
+test mains are retained. All 12 GC replays pass on the retained 386
+test mains.
 
-Local qualification `trade-shop-stock-packet-order-native-v1/local-stock-C-qualification-v1.json`
-has SHA-256 `40a2e262eb119f6ce46eae89f6927510800563a6a90a9c21b1e207c715031e0d`.
+Qualification `trade-shop-stock-packet-order-native-v1/qualified-shop-stock-packet-order-C-entries-v1.json`
+has SHA-256 `6cd78678711abbb034fda22d31987352dd9de13f417fd4c13149bddf22ed5541`.
 
 ### Quest shop stock generation at startup, 2026-11-18
 

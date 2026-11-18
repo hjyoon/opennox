@@ -23,19 +23,14 @@ func e2eMagicMissileUnitMode(level int, direction string) (fromNPC, ok bool) {
 	return fromNPC, ok && (level >= 1 && level <= 5 || fromNPC && level == 0)
 }
 
-// Independent expected-value calculation for case 7's binary32 armor/carry
-// spill, round-to-even and positive minimum, then DefaultDamage's fire minimum.
+// Case 7 spills armor and carry to binary32 and truncates damage toward zero.
+// DefaultDamage then applies the fire minimum.
 func e2eMagicMissileDamage(raw int32, armor, carry float32) (int32, float32) {
-	accumulated := float32((1-float64(armor))*float64(raw)) + carry
-	effective := int32(math.RoundToEven(float64(accumulated)))
-	next := accumulated - float32(effective)
-	if raw > 0 && effective == 0 {
-		effective = 1
-	}
+	effective, next := e2eExpectedArmorCarry(raw, armor, carry)
 	if effective == 0 {
 		effective = 1
 	}
-	return effective, next
+	return effective, math.Float32frombits(next)
 }
 
 func e2eMagicMissileSplash(raw int32, radius float32, from, to types.Pointf) (int32, bool) {

@@ -21,8 +21,10 @@ func TestE2EMagicMissileDamageRoundingAndSplash(t *testing.T) {
 		next         uint32
 	}{
 		{9, 0.5, 0, 4, math.Float32bits(0.5)},
-		{11, 0.5, 0, 6, math.Float32bits(-0.5)},
-		{9, 0.5, 0.4, 5, math.Float32bits(float32(4.5) + float32(0.4) - 5)},
+		{11, 0.5, 0, 5, 0x3f000000},
+		{9, 0.5, 0.4, 4, 0x3f666660},
+		{8, math.Float32frombits(0x3e6b851d), 0, 6, 0x3e23d700},
+		{8, math.Float32frombits(0x3e6b851d), math.Float32frombits(0x3e23d700), 6, 0x3ea3d700},
 		{1, 1, 0, 1, 0},
 		{0, 0, 0, 1, 0},
 		{-9, 0.5, 0, -4, math.Float32bits(-0.5)},

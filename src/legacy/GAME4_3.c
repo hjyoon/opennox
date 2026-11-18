@@ -43,7 +43,6 @@ extern uint32_t dword_5d4594_3835360;
 extern uint32_t dword_5d4594_2488728;
 extern uint32_t dword_5d4594_2489436;
 extern uint32_t dword_5d4594_2488724;
-extern uint32_t dword_5d4594_2489160;
 extern uint32_t dword_5d4594_2488720;
 extern uint32_t dword_5d4594_2487932;
 extern uint32_t nox_xxx_lightningOwner_5d4594_2487900;
@@ -5926,6 +5925,7 @@ LABEL_17:
 // 541050: using guessed type int var_224[137];
 
 //----- (005411A0) --------------------------------------------------------
+#if 0 // PE32 references. Native Go holds the heal target and owns the scan.
 int nox_xxx_mobHealSomeone_5411A0(nox_object_t* a3p) {
 	int a3 = a3p;
 	int v1;            // edi
@@ -5987,6 +5987,7 @@ void nox_xxx_mobMayHealThis_5412A0(float* a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (00541300) --------------------------------------------------------
 #if 0 // Native monster cast: monster_cast_native_exports.go

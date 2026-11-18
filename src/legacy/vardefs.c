@@ -520,7 +520,6 @@ uint32_t dword_5d4594_831260 = 0;
 nox_window* dword_5d4594_1049516 = 0;
 nox_window* dword_5d4594_1090292 = 0;
 uint32_t dword_5d4594_527660 = 0;
-uint32_t dword_5d4594_2489160 = 0;
 uint32_t dword_5d4594_1522968 = 0;
 uint32_t dword_5d4594_2490508 = 0;
 uint32_t dword_5d4594_1316456 = 0;

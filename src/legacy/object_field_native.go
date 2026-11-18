@@ -10,15 +10,7 @@ import (
 
 func objectFieldMonsterAction5408A0(owner *server.Object) int32 {
 	data := (*server.MonsterUpdateData)(owner.UpdateData)
-	var action uint32
-	if data.AIStackInd == -1 {
-		// The original empty-head read addresses Field132 before the PE32
-		// stack. Keep that named field separate from native stack indexing.
-		action = data.Field132
-	} else {
-		action = data.AIStack[data.AIStackInd].Action
-	}
-	if action >= 18 && action <= 20 {
+	if data.IsCasting5408A0() {
 		return 1
 	}
 	return 0

@@ -1,4 +1,4 @@
-package opennox
+package server
 
 import (
 	"math"
@@ -7,21 +7,19 @@ import (
 
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
-
-	"github.com/opennox/opennox/v1/server"
 )
 
-func newPixieCastTestObject() *server.Object {
-	return &server.Object{UpdateData: unsafe.Pointer(new(server.PixieUpdateData))}
+func newPixieCastTestObject() *Object {
+	return &Object{UpdateData: unsafe.Pointer(new(PixieUpdateData))}
 }
 
 func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
-	owner := &server.Object{}
-	target := &server.Object{}
-	caster := &server.Object{PosVec: types.Ptf(100, 200)}
+	owner := &Object{}
+	target := &Object{}
+	caster := &Object{PosVec: types.Ptf(100, 200)}
 	caster.Shape.Circle.R = 6
-	pixies := []*server.Object{newPixieCastTestObject(), newPixieCastTestObject()}
-	created := make([]*server.Object, 0, len(pixies))
+	pixies := []*Object{newPixieCastTestObject(), newPixieCastTestObject()}
+	created := make([]*Object, 0, len(pixies))
 	positions := make([]types.Pointf, 0, len(pixies))
 	directions := []int{0, 64, 128}
 	lifetimes := []int{30, 90}
@@ -29,21 +27,21 @@ func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
 	traceCalls := 0
 	audioCalls := 0
 
-	got := castPixiesNative540440(spell.SPELL_PIXIE_SWARM, owner, caster, 2, pixieCastHooks540440{
-		pixieType: func() int { return 77 },
-		countOwned: func(gotOwner *server.Object, typeInd int32) int {
+	got := CastPixiesNative540440(spell.SPELL_PIXIE_SWARM, owner, caster, 2, PixieCastRuntime540440{
+		PixieType: func() int { return 77 },
+		CountOwned: func(gotOwner *Object, typeInd int32) int32 {
 			if gotOwner != owner || typeInd != 77 {
 				t.Fatalf("countOwned(%p, %d), want (%p, 77)", gotOwner, typeInd, owner)
 			}
 			return 0
 		},
-		desired: func(levelIndex int) int {
+		Desired: func(levelIndex int) float64 {
 			if levelIndex != 1 {
 				t.Fatalf("level index = %d, want 1", levelIndex)
 			}
 			return 3
 		},
-		randomInt: func(min, max int) int {
+		RandomInt: func(min, max int) int {
 			switch {
 			case min == 0 && max == 255:
 				value := directions[directionIndex]
@@ -58,17 +56,21 @@ func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
 				return 0
 			}
 		},
-		traceRay: func(from, to types.Pointf) bool {
+		Direction: func(dir uint8) types.Pointf {
+			x, y := SinCosDir(dir)
+			return types.Ptf(x, y)
+		},
+		TraceRay: func(from, to types.Pointf) bool {
 			if from != caster.PosVec {
 				t.Fatalf("trace origin = %v, want %v", from, caster.PosVec)
 			}
 			traceCalls++
 			return traceCalls != 2
 		},
-		newPixie: func() *server.Object {
+		NewPixie: func() *Object {
 			return pixies[len(created)]
 		},
-		createAt: func(pixie, gotOwner *server.Object, pos types.Pointf) {
+		CreateAt: func(pixie, gotOwner *Object, pos types.Pointf) {
 			if gotOwner != owner {
 				t.Fatalf("create owner = %p, want %p", gotOwner, owner)
 			}
@@ -77,15 +79,15 @@ func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
 			created = append(created, pixie)
 			positions = append(positions, pos)
 		},
-		findTarget: func(pixie, gotOwner *server.Object) *server.Object {
+		FindTarget: func(pixie, gotOwner *Object) *Object {
 			if gotOwner != owner || pixie != pixies[len(created)-1] {
 				t.Fatalf("findTarget(%p, %p) after create %#v", pixie, gotOwner, created)
 			}
 			return target
 		},
-		frame:    func() uint32 { return 100 },
-		tickRate: func() uint32 { return 30 },
-		playCastAud: func(spellID spell.ID, gotCaster *server.Object) {
+		Frame:    func() uint32 { return 100 },
+		TickRate: func() uint32 { return 30 },
+		PlayCastAudio: func(spellID spell.ID, gotCaster *Object) {
 			audioCalls++
 			if spellID != spell.SPELL_PIXIE_SWARM || gotCaster != caster {
 				t.Fatalf("audio = (%d, %p), want (%d, %p)", spellID, gotCaster, spell.SPELL_PIXIE_SWARM, caster)
@@ -99,10 +101,10 @@ func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
 		t.Fatalf("cast calls = trace:%d create:%d audio:%d, want 3/2/1", traceCalls, len(created), audioCalls)
 	}
 
-	wantDirections := []server.Dir16{0, 128}
+	wantDirections := []Dir16{0, 128}
 	wantLifetimes := []uint32{100 + 30*30, 100 + 30*90}
 	for i, pixie := range created {
-		cosine, sine := server.SinCosDir(byte(wantDirections[i]))
+		cosine, sine := SinCosDir(byte(wantDirections[i]))
 		wantPos := caster.PosVec.Add(types.Ptf(10*cosine, 10*sine))
 		if math.Abs(float64(positions[i].X-wantPos.X)) > 0.0001 || math.Abs(float64(positions[i].Y-wantPos.Y)) > 0.0001 {
 			t.Errorf("pixie %d position = %v, want %v", i, positions[i], wantPos)
@@ -123,17 +125,17 @@ func TestCastPixiesNative540440CreatesMissingPixies(t *testing.T) {
 }
 
 func TestCastPixiesNative540440AtCapDoesNothing(t *testing.T) {
-	owner, caster := &server.Object{}, &server.Object{}
+	owner, caster := &Object{}, &Object{}
 	called := false
-	got := castPixiesNative540440(spell.SPELL_PIXIE_SWARM, owner, caster, 1, pixieCastHooks540440{
-		pixieType:  func() int { return 5 },
-		countOwned: func(*server.Object, int32) int { return 2 },
-		desired:    func(int) int { return 2 },
-		randomInt: func(int, int) int {
+	got := CastPixiesNative540440(spell.SPELL_PIXIE_SWARM, owner, caster, 1, PixieCastRuntime540440{
+		PixieType:  func() int { return 5 },
+		CountOwned: func(*Object, int32) int32 { return 2 },
+		Desired:    func(int) float64 { return 2 },
+		RandomInt: func(int, int) int {
 			called = true
 			return 0
 		},
-		playCastAud: func(spell.ID, *server.Object) { called = true },
+		PlayCastAudio: func(spell.ID, *Object) { called = true },
 	})
 	if got != 1 || called {
 		t.Fatalf("at-cap cast = result:%d side-effects:%t, want 1/false", got, called)
@@ -141,10 +143,10 @@ func TestCastPixiesNative540440AtCapDoesNothing(t *testing.T) {
 }
 
 func TestCastPixiesNative540440RejectsNilObjects(t *testing.T) {
-	if got := castPixiesNative540440(spell.SPELL_PIXIE_SWARM, nil, &server.Object{}, 1, pixieCastHooks540440{}); got != 0 {
+	if got := CastPixiesNative540440(spell.SPELL_PIXIE_SWARM, nil, &Object{}, 1, PixieCastRuntime540440{}); got != 0 {
 		t.Fatalf("nil-owner result = %d, want 0", got)
 	}
-	if got := castPixiesNative540440(spell.SPELL_PIXIE_SWARM, &server.Object{}, nil, 1, pixieCastHooks540440{}); got != 0 {
+	if got := CastPixiesNative540440(spell.SPELL_PIXIE_SWARM, &Object{}, nil, 1, PixieCastRuntime540440{}); got != 0 {
 		t.Fatalf("nil-caster result = %d, want 0", got)
 	}
 }

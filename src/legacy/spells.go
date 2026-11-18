@@ -540,8 +540,8 @@ func Nox_xxx_castMeteorShower_52D8A0(spellID spell.ID, a2, a3, a4 *server.Object
 	return meteorShowerCastCall52D8A0(spellID, a2, a3, a4, sa, lvl)
 }
 
-func Nox_xxx_castPixies_540440(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castPixies_540440, spellID, a2, a3, a4, sa, lvl)
+func Nox_xxx_castPixies_540440(spellID spell.ID, _ *server.Object, owner, caster *server.Object, _ *server.SpellAcceptArg, level int) int {
+	return CastPixies540440(GetServer(), spellID, owner, caster, level)
 }
 
 func Nox_xxx_castPoison_52C720(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

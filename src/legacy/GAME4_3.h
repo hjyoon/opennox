@@ -255,7 +255,7 @@ int32_t sub_53F930(nox_object_t* owner, nox_object_t* item);
 int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t* owner, nox_object_t* item);
 int32_t nox_xxx_useAbilityReward_53FAE0(nox_object_t* owner, nox_object_t* item);
 void nox_xxx_createCorpse_53FCA0();
-int nox_xxx_castPixies_540440(int a1, int a2, int a3, int a4, int a5, int a6);
+int nox_xxx_castPixies_540440(int spell, nox_object_t* source, nox_object_t* owner, nox_object_t* caster, nox_spell_accept_arg_t* args, int level);
 nox_object_t* nox_xxx_spellFlySearchTarget_540610(float2* a1, nox_object_t* a2, int a3, float a4, int a5, nox_object_t* a6);
 int sub_5408A0(nox_object_t* owner);
 int nox_xxx_mobCastInversion_5408D0(int a1);

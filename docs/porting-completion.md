@@ -60,6 +60,47 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native removal of one trade offer, 2026-11-18
+
+Engine `87874b5338cf413acba79201b5678910cf6a77f1` ports `50FE20`.
+It searches the first and second offers by the full network code,
+restores the selected item to inventory or stock, updates both list
+links and reprices before sending the balance, remove and status
+packets. The removed record stays allocated through those callbacks.
+The ordinary P2P packet handler shares this routine.
+
+The original executable covers 360 cases across 354 removal bytes and
+29 lookup bytes. Direct and indirect C calls cover 270 cases with a
+player participant, including matching codes on both sides, invalid
+codes, and the original node lifetime through notification. Normal
+and strict each pass 18,501 focused events with zero compiler warnings.
+The local receipt
+`opennox-verification/20261118-trade/trade-offer-removal-native-v1/local-trade-offer-removal-C-qualification-v1.json`
+has SHA-256 `8b47dc8efcdb42b0150f8cf5d8fbaf4fa7cbfa001dcb943a94e71a71135cae4b`.
+
+### Native trade offer registration and limits, 2026-11-18
+
+Engine `26da98b122cfabdfbfb1de1baecb4d4e55e29a56` ports `50F820`
+and `50FD60`. It preserves the four-type offer limit, prepends the
+new node before repricing, applies the original merchant approval
+comparison, and shares the unsigned balance-packet builder across
+both shop orientations and two-player trades.
+
+The original x86 runs cover 240 registration cases and 462 eligibility
+cases. Direct and indirect C ABI checks exercise every eligibility case
+and 150 registration cases with the native heap allocator and actual
+native pricing. The fixed PE32 pool exhaustion cases remain recorded
+against the original instructions.
+
+Normal and strict each pass 17,959 focused test events with zero
+compiler warnings. In the first normal run, the legacy and server
+packages passed before disk exhaustion interrupted the root package's
+link. The root-only rerun passed 420 events and the initial results
+remain retained. Four ARM64 products pass metadata, help and 220
+symbol checks. The local receipt
+`opennox-verification/20261118-trade/trade-offer-list-native-v1/local-trade-offer-add-C-qualification-v1.json`
+has SHA-256 `cd28da84b4be410798ddefdf48f98ced6d5f8a8cdf7815ae8c0180dd5469ceaa`.
+
 ### Native trade acceptance and item transfer, 2026-11-18
 
 Engine `d7e654592a8ac973e4492b306b9f235fccd791fd` ports the `50F5A0`
@@ -81,6 +122,13 @@ warnings. The local receipt
 `opennox-verification/20261118-trade/trade-offer-transfer-native-v1/local-trade-offer-C-qualification-v1.json`
 has SHA-256 `6fd0be0350446478f0b4951aa988125fe21ca9527eff36234c0e14af16d92135`.
 The four ARM64 products pass metadata, help and 218 symbol checks.
+Four OpenAL null-device scenarios pass and all 4,649 original asset and
+Save hashes match. The macOS product qualification has SHA-256
+`4aba8efd6112056d0d980a80e9186f5a9dc840ad8b141ebeaf63452cdf9884ae`.
+Linux run `44319519000` and Windows run `44319165651` pass all six
+jobs. The six retained archives contain 158 test executables and 12
+Windows/386 GC replays. The CI receipt has SHA-256
+`f779f97b35b03503ea29c3b2114a3d3bbab7a4a897162de5fb8c84104977f6fc`.
 
 ### Native shop construction and stock loading, 2026-11-18
 

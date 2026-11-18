@@ -9,7 +9,7 @@ void sub_495B50(nox_drawable_fx* a1);
 int sub_4523D0(void* a1);
 void sub_495FC0(nox_drawable_fx* a1, nox_drawable* a2);
 int sub_49C520(nox_drawable* a1);
-void sub_45A9B0(nox_drawable* a1, nox_drawable* a2);
+#include "audio_ambient_native_45a9b0.h"
 int nox_xxx_unitSpriteCheckAlly_4951F0(int a1);
 void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind);
 static void go_nox_drawable_call_sprite_func(void(* fnc)(nox_drawable*, void*), nox_drawable* dr, void* arg) {

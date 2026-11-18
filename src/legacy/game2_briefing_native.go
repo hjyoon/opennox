@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include <math.h>
 #include "audio_ambient_native_45a9b0.h"
 #include <stdio.h>
@@ -506,10 +507,10 @@ func sub_450750() C.uchar { return C.uchar(memmap.Uint8(0x5D4594, 831252)) }
 //export sub_450760
 func sub_450760(value C.char) C.char { *memmap.PtrUint8(0x5D4594, 831252) = byte(value); return value }
 
-//export nox_game2_quest_score_compare_native
-func nox_game2_quest_score_compare_native(a, b unsafe.Pointer) C.int {
-	x := (*C.nox_quest_stats_row_450770)(a).score
-	y := (*C.nox_quest_stats_row_450770)(b).score
+//export sub_450960
+func sub_450960(a, b *C.nox_cgo_const_void) C.int {
+	x := (*C.nox_quest_stats_row_450770)(unsafe.Pointer(a)).score
+	y := (*C.nox_quest_stats_row_450770)(unsafe.Pointer(b)).score
 	if x == y {
 		return 0
 	}

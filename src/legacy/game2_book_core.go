@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include "game2_book_native.h"
 */
 import "C"
@@ -67,15 +68,15 @@ func nox_client_localPlayerHasFlags30(flags C.uint32_t) C.int {
 	return 0
 }
 
-//export game2_book_compare
-func game2_book_compare(a, b unsafe.Pointer) C.int {
-	id2 := C.int(*(*uint32)(b)) // The original reads argument 2 before argument 1.
+//export nox_xxx_guiSpellSortFn_45ABC0
+func nox_xxx_guiSpellSortFn_45ABC0(a, b *C.nox_cgo_const_void) C.int {
+	id2 := C.int(*(*uint32)(unsafe.Pointer(b))) // The original reads argument 2 before argument 1.
 	var s1, s2 *C.wchar2_t
 	if C.dword_5d4594_1046868 == 1 {
-		s1 = C.nox_xxx_guiCreatureGetName_427240(C.int(*(*uint32)(a)))
+		s1 = C.nox_xxx_guiCreatureGetName_427240(C.int(*(*uint32)(unsafe.Pointer(a))))
 		s2 = C.nox_xxx_guiCreatureGetName_427240(id2)
 	} else {
-		id1 := C.int(*(*uint32)(a))
+		id1 := C.int(*(*uint32)(unsafe.Pointer(a)))
 		if game2PlayerClass(C.game2_book_player()) != 0 {
 			s1 = C.nox_xxx_spellTitle_424930(id1)
 			s2 = C.nox_xxx_spellTitle_424930(id2)

@@ -1,7 +1,9 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include "game3_widgets_native.h"
+typedef const nox_gui_server_ent_t nox_const_gui_server_ent;
 */
 import "C"
 
@@ -24,8 +26,8 @@ func game3NearbyDistance(xy *uint32, x, y int16, radius float64) bool {
 	return math.Sqrt(dy*dy+dx*dx) <= radius
 }
 
-//export nox_game3_distance_go
-func nox_game3_distance_go(xy *C.uint32_t, s *C.nox_gui_server_ent_t) C.int {
+//export sub_4A2560
+func sub_4A2560(xy *C.nox_cgo_const_uint32, s *C.nox_const_gui_server_ent) C.int {
 	if xy == nil || s == nil {
 		return 0
 	}
@@ -43,7 +45,7 @@ func nox_game3_distance_go(xy *C.uint32_t, s *C.nox_gui_server_ent_t) C.int {
 func sub_4A25C0(xy *C.uint32_t, head *C.nox_list_item_t) C.int {
 	var count uint32
 	for it := C.nox_common_list_getFirstSafe_425890(head); it != nil; it = C.nox_common_list_getNextSafe_4258A0(it) {
-		if nox_game3_distance_go(xy, C.nox_game3_server_record(it)) != 0 {
+		if sub_4A2560(xy, C.nox_game3_server_record(it)) != 0 {
 			count++
 		}
 	}
@@ -55,7 +57,7 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 	C.dword_5d4594_1307720 = 0
 	for it := C.nox_common_list_getFirstSafe_425890(head); it != nil; it = C.nox_common_list_getNextSafe_4258A0(it) {
 		s := C.nox_game3_server_record(it)
-		if nox_game3_distance_go(xy, s) != 0 && int(C.dword_5d4594_1307720) < len(game3NearbyServers) {
+		if sub_4A2560(xy, s) != 0 && int(C.dword_5d4594_1307720) < len(game3NearbyServers) {
 			game3NearbyServers[int(C.dword_5d4594_1307720)] = s
 			C.dword_5d4594_1307720++
 		}

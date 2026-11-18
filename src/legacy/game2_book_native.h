@@ -60,7 +60,6 @@ static void game2_book_reward_scalar(uintptr_t token, int id, int extra) {
 
 // Public mixed pointer/tag ABIs stay in root-owned thin C adapters. The private
 // Go exports return words, so Go never manufactures unsafe.Pointer(1/2/3/4).
-int game2_book_compare(void* a, void* b);
 int nox_xxx_book_45BD30(nox_window* win, nox_window_data* draw);
 uintptr_t game2_book_forward_word(uintptr_t kind, int id, int2* pos);
 void game2_book_ability_reward(int id, uintptr_t notify, int extra);

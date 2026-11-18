@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include "game2_server_bridge.h"
 */
 import "C"
@@ -12,12 +13,12 @@ import (
 func g2ServerAt(p *C.char, off uintptr) unsafe.Pointer { return unsafe.Add(unsafe.Pointer(p), off) }
 func g2ServerMode(p *C.char) uint16                    { return *(*uint16)(g2ServerAt(p, 52)) }
 
-//export nox_game2_server_limits_457460
-func nox_game2_server_limits_457460(p unsafe.Pointer) C.int {
-	g2ServerIntText(C.dword_5d4594_1046516, int32(*(*uint16)(unsafe.Add(p, 54))), 0)
+//export sub_457460
+func sub_457460(p *C.nox_cgo_const_char) C.int {
+	g2ServerIntText(C.dword_5d4594_1046516, int32(*(*uint16)(g2ServerAt(p, 54))), 0)
 	buf, free := g2ServerTemp(16)
 	defer free()
-	C.nox_itow(C.int(*(*byte)(unsafe.Add(p, 56))), (*C.wchar2_t)(unsafe.Pointer(&buf[0])), 10)
+	C.nox_itow(C.int(*(*byte)(g2ServerAt(p, 56))), (*C.wchar2_t)(unsafe.Pointer(&buf[0])), 10)
 	return C.int(g2ServerText(C.dword_5d4594_1046520, 16414, unsafe.Pointer(&buf[0]), 0))
 }
 
@@ -81,7 +82,7 @@ func sub_457B60(input *C.char) C.int {
 		C.sub_46ACE0(C.dword_5d4594_1046492, 10141, 10141, 1)
 		data = input
 		C.nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
-		nox_game2_server_limits_457460(unsafe.Pointer(input))
+		sub_457460(input)
 	}
 	if bool(C.nox_xxx_CheckGameplayFlags_417DA0(2)) {
 		g2ServerChild(C.dword_5d4594_1046508, 10331).draw_data.field_0 |= 4
@@ -404,7 +405,7 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 //export sub_459C30
 func sub_459C30() C.int {
 	data := C.nox_xxx_cliGamedataGet_416590(1)
-	nox_game2_server_copySpells_453F70(unsafe.Add(unsafe.Pointer(data), 24))
+	sub_453F70((*C.nox_cgo_const_void)(g2ServerAt(data, 24)))
 	sub_4535E0((*C.int)(unsafe.Add(unsafe.Pointer(data), 44)))
 	sub_4535F0(C.int(*(*uint32)(unsafe.Add(unsafe.Pointer(data), 48))))
 	if C.dword_5d4594_1046492 == nil {
@@ -413,7 +414,7 @@ func sub_459C30() C.int {
 	C.sub_459880(data)
 	C.sub_4BDF70((*C.int)(unsafe.Pointer(data)))
 	C.nox_client_guiserv_updateMapList_458230(C.int(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))), data, false)
-	nox_game2_server_limits_457460(unsafe.Pointer(data))
+	sub_457460(data)
 	name := C.nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))))
 	return C.int(g2ServerText(g2ServerChild(C.dword_5d4594_1046492, 10119), 16385, unsafe.Pointer(name), 0))
 }

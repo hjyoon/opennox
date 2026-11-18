@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "game3_widgets_native.h"
+typedef const nox_scrollListBox_data nox_const_scroll_list_data;
 */
 import "C"
 
@@ -46,8 +47,8 @@ func nox_xxx_wndListBoxFirstVisible(w *C.nox_window) C.int {
 	return C.int(game3ListFirst(game3ListData(w)))
 }
 
-//export nox_game3_first_data_go
-func nox_game3_first_data_go(d *C.nox_scrollListBox_data) C.int {
+//export sub_4A4800
+func sub_4A4800(d *C.nox_const_scroll_list_data) C.int {
 	return C.int(game3ListFirst((*gui.ScrollListBoxData)(unsafe.Pointer(d))))
 }
 

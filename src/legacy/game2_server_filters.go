@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include "game2_server_bridge.h"
 */
 import "C"
@@ -260,9 +261,9 @@ func sub_453B80(w *C.nox_window, d *C.nox_window_data) C.int {
 	return g2ServerDrawBackground(w, d, true)
 }
 
-//export nox_game2_server_copySpells_453F70
-func nox_game2_server_copySpells_453F70(p unsafe.Pointer) {
-	copy(unsafe.Slice((*byte)(g2ServerMem(1045488)), 20), unsafe.Slice((*byte)(p), 20))
+//export sub_453F70
+func sub_453F70(p *C.nox_cgo_const_void) {
+	copy(unsafe.Slice((*byte)(g2ServerMem(1045488)), 20), unsafe.Slice((*byte)(unsafe.Pointer(p)), 20))
 }
 
 //export sub_453F90
@@ -281,11 +282,11 @@ func sub_453FA0(p unsafe.Pointer, index, set C.int) C.int {
 	return C.int(^mask)
 }
 
-//export nox_game2_server_spellBit_454000
-func nox_game2_server_spellBit_454000(p unsafe.Pointer, index C.int) C.int {
+//export sub_454000
+func sub_454000(p *C.nox_cgo_const_void, index C.int) C.int {
 	word := uint32(int32(index)/32) & 255
 	mask := uint32(1) << uint(uint32(index)&31)
-	return g2ServerBool(*(*uint32)(unsafe.Add(p, uintptr(word)*4))&mask != 0)
+	return g2ServerBool(*(*uint32)(unsafe.Add(unsafe.Pointer(p), uintptr(word)*4))&mask != 0)
 }
 
 //export sub_454040
@@ -304,11 +305,11 @@ func sub_454040(p *C.uint32_t) {
 	}
 }
 
-//export nox_game2_server_applySpells_4540E0
-func nox_game2_server_applySpells_4540E0(p unsafe.Pointer) C.int {
+//export sub_4540E0
+func sub_4540E0(p *C.nox_cgo_const_void) C.int {
 	var result C.int
 	for i := 1; i < 137; i++ {
-		if nox_game2_server_spellBit_454000(p, C.int(i)) != 0 {
+		if sub_454000(p, C.int(i)) != 0 {
 			result = g2ServerBool(bool(C.nox_xxx_spellEnable_424B90(C.int(i))))
 		} else {
 			result = g2ServerBool(bool(C.nox_xxx_spellDisable_424BB0(C.int(i))))
@@ -339,7 +340,7 @@ func sub_454120() C.int {
 		} else {
 			g2ServerHidden(box, true)
 		}
-		if spell != 0 && nox_game2_server_spellBit_454000(g2ServerMem(1045488), spell) != 0 {
+		if spell != 0 && sub_454000((*C.nox_cgo_const_void)(g2ServerMem(1045488)), spell) != 0 {
 			box.draw_data.field_0 |= 4
 		} else {
 			box.draw_data.field_0 &^= 4

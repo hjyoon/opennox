@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include <stdlib.h>
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -133,8 +134,8 @@ func sub_43BC10(text *wchar2_t, limit C.uchar) *C.ushort {
 	}
 }
 
-//export nox_sprintAddrPort_43BC80_go
-func nox_sprintAddrPort_43BC80_go(addr *C.char, port C.ushort, dst *C.char) C.int {
+//export nox_sprintAddrPort_43BC80
+func nox_sprintAddrPort_43BC80(addr *C.nox_cgo_const_char, port C.ushort, dst *C.char) C.int {
 	s := fmt.Sprintf("%s:%d", GoString(addr), uint16(port))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(dst)), len(s)+1), s)
 	*(*byte)(unsafe.Add(unsafe.Pointer(dst), len(s))) = 0
@@ -303,8 +304,8 @@ func sub_43F0E0(raw *C.uint32_t) C.int {
 	return result
 }
 
-//export sub_4417E0_go
-func sub_4417E0_go(dst *wchar2_t, name *C.char) {
+//export sub_4417E0
+func sub_4417E0(dst *wchar2_t, name *C.nox_cgo_const_char) {
 	if dst == nil || name == nil {
 		return
 	}

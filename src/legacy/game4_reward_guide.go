@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include <string.h>
 #include "GAME4.h"
 #include "GAME3_3.h"
@@ -53,8 +54,8 @@ func nox_xxx_netSendRewardNotify_4FAD50(unit *C.nox_object_t, kind C.int, target
 	return C.int(game4RewardServices().send(int(u.Player.PlayerInd), packet[:]))
 }
 
-//export nox_game4_reward_string_go
-func nox_game4_reward_string_go(unit *C.nox_object_t, name *C.char, flags C.char) {
+//export sub_4FADD0
+func sub_4FADD0(unit *C.nox_object_t, name *C.nox_cgo_const_char, flags C.char) {
 	o := asObjectS(unit)
 	if o == nil || uint8(o.ObjClass)&uint8(object.ClassPlayer) == 0 || name == nil || o.UpdateData == nil {
 		return

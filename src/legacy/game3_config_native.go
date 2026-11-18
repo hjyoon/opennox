@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include <stdlib.h>
 #include <string.h>
 #include <wctype.h>
@@ -31,23 +32,23 @@ func game3ConfigCopy(s *C.char, off uintptr, limit int) C.int {
 	return 1
 }
 
-//export game3_config_copy_4A7A80
-func game3_config_copy_4A7A80(s *C.char) C.int { return game3ConfigCopy(s, 1308644, -1) }
+//export sub_4A7A80
+func sub_4A7A80(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308644, -1) }
 
-//export game3_config_copy_4A7AC0
-func game3_config_copy_4A7AC0(s *C.char) C.int { return game3ConfigCopy(s, 1308172, -1) }
+//export sub_4A7AC0
+func sub_4A7AC0(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308172, -1) }
 
-//export game3_config_copy_4A7B00
-func game3_config_copy_4A7B00(s *C.char) C.int { return game3ConfigCopy(s, 1308352, -1) }
+//export sub_4A7B00
+func sub_4A7B00(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308352, -1) }
 
-//export game3_config_copy_4A7BC0
-func game3_config_copy_4A7BC0(s *C.char) C.int { return game3ConfigCopy(s, 1308324, -1) }
+//export sub_4A7BC0
+func sub_4A7BC0(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308324, -1) }
 
-//export game3_config_copy_4A7C00
-func game3_config_copy_4A7C00(s *C.char) C.int { return game3ConfigCopy(s, 1308364, -1) }
+//export sub_4A7C00
+func sub_4A7C00(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308364, -1) }
 
-//export game3_config_copy_4A7D00
-func game3_config_copy_4A7D00(s *C.char) C.int { return game3ConfigCopy(s, 1308192, 128) }
+//export sub_4A7D00
+func sub_4A7D00(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308192, 128) }
 
 //export sub_4A7A60
 func sub_4A7A60(v C.int) C.int { C.dword_587000_171388 = C.uint32_t(v); return v }

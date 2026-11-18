@@ -3,9 +3,6 @@
 // Preserve the old public pointer/tag return ABIs without making a scalar into
 // a Go pointer. These adapters contain no book algorithm and never dereference
 // the returned word. Native addresses returned by Go retain their full width.
-int nox_xxx_guiSpellSortFn_45ABC0(const void* a, const void* b) {
-    return game2_book_compare((void*)a, (void*)b);
-}
 int* nox_xxx_bookSetForward_45D200(int* kind, int id, int2* pos) {
     return (int*)(uintptr_t)game2_book_forward_word((uintptr_t)kind, id, pos);
 }

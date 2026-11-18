@@ -1,11 +1,13 @@
 package legacy
 
 /*
+#include "cgo_const.h"
 #include <stdint.h>
 #include "GAME4.h"
 #include "GAME3_2.h"
 #include "GAME1_2.h"
 #include "game4_map_archive.h"
+typedef const float2 nox_const_float2;
 
 extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_1599476;
@@ -38,14 +40,12 @@ func nox_mapgenClearPendingScriptIDs_503B30(first *C.nox_object_t) {
 	}
 }
 
-//export game4MapBuildPlaceBounds
-func game4MapBuildPlaceBounds(atRaw, fixedRaw, recordRaw, cornersRaw, boundsRaw unsafe.Pointer) {
-	at := (*C.float2)(atRaw)
-	fixedAt := (*C.float2)(fixedRaw)
-	record := unsafe.Slice((*byte)(recordRaw), game4MapRecordBytes)
+//export nox_mapgenBuildPlaceBounds_503B30
+func nox_mapgenBuildPlaceBounds_503B30(at, fixedAt *C.nox_const_float2, recordRaw *C.nox_cgo_const_void, cornerBuffer *C.int32_t, bounds *C.int4) {
+	record := unsafe.Slice((*byte)(unsafe.Pointer(recordRaw)), game4MapRecordBytes)
 	width := math.Float32frombits(binary.LittleEndian.Uint32(record[64:]))
 	height := math.Float32frombits(binary.LittleEndian.Uint32(record[68:]))
-	corners := unsafe.Slice((*int32)(cornersRaw), 8)
+	corners := unsafe.Slice((*int32)(unsafe.Pointer(cornerBuffer)), 8)
 	var corner, fixed C.float2
 
 	corners[2] = game4MapTruncQwordLow(float64(fixedAt.field_0))
@@ -66,8 +66,8 @@ func game4MapBuildPlaceBounds(atRaw, fixedRaw, recordRaw, cornersRaw, boundsRaw 
 	corners[7] = game4MapTruncQwordLow(float64(fixed.field_4))
 	// These existing external routines retain their actual read/write order,
 	// including a caller that aliases the rectangle with the corner array.
-	C.sub_4D3C80((*C.uint32_t)(cornersRaw))
-	C.sub_428170(cornersRaw, (*C.int4)(boundsRaw))
+	C.sub_4D3C80((*C.uint32_t)(unsafe.Pointer(cornerBuffer)))
+	C.sub_428170(unsafe.Pointer(cornerBuffer), bounds)
 }
 
 //export nox_mapgenPlaceOffset_503B30
@@ -92,16 +92,16 @@ func nox_mapgenFixCoordsNative_503B30(x, y C.float, fixedX, fixedY *C.float) C.i
 	return 1
 }
 
-//export game4MapPlaceGeometry
-func game4MapPlaceGeometry(x, y, fixedX, fixedY C.float, record unsafe.Pointer, originX, originY C.int32_t, bounds, delta *C.int32_t) C.int {
+//export nox_mapgenPlaceGeometryNative_503B30
+func nox_mapgenPlaceGeometryNative_503B30(x, y, fixedX, fixedY C.float, record *C.nox_cgo_const_void, originX, originY C.int32_t, bounds, delta *C.int32_t) C.int {
 	if record == nil || bounds == nil || delta == nil {
 		return 0
 	}
 	at := C.float2{field_0: x, field_4: y}
 	fixed := C.float2{field_0: fixedX, field_4: fixedY}
-	var corners [8]int32
+	var corners [8]C.int32_t
 	var rectangle C.int4
-	game4MapBuildPlaceBounds(unsafe.Pointer(&at), unsafe.Pointer(&fixed), record, unsafe.Pointer(&corners[0]), unsafe.Pointer(&rectangle))
+	nox_mapgenBuildPlaceBounds_503B30(&at, &fixed, record, &corners[0], &rectangle)
 	// Match memcpy before the delta stores, including overlapping outputs.
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(bounds)), 16), unsafe.Slice((*byte)(unsafe.Pointer(&rectangle)), 16))
 	out := unsafe.Slice(delta, 2)

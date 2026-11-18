@@ -62,7 +62,7 @@ nox_playerInfo* nox_common_playerInfoGetFirst_416EA0(void) { return NULL; }
 nox_playerInfo* nox_common_playerInfoGetNext_416EE0(nox_playerInfo* p) { abort(); }
 void nox_xxx_netMarkMinimapObject_417190(int index, nox_object_t* object, unsigned arg) { abort(); }
 int nox_xxx_netSendSimpleObject2_4DF360(int index, nox_object_t* object) { abort(); }
-int nox_xxx_netSendTeam_4D8670(int index, uint32_t* object) { abort(); }
+int nox_xxx_netSendTeam_4D8670(int index, nox_object_t* object) { abort(); }
 int nox_xxx_servMinimapRevealFlag_4DE380(int index) { assert(index == player_index); return 0; }
 void sub_4DF2E0(int index) { assert(index == player_index); }
 int sub_40AA70(nox_playerInfo* p) { abort(); }

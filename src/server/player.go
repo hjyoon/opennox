@@ -683,7 +683,9 @@ type Player struct {
 	GoldVal             uint32 // 541, 2164
 	Field2168           uint32 // 542, 2168
 	Field2172           byte   // 543, 2172
-	_                   [11]byte
+	_                   [3]byte
+	HealthReportFrame   uint32 // 544, 2176
+	ManaReportFrame     uint32 // 545, 2180
 	StatsReportPending  byte
 	info                [97]byte         // 2185
 	Field2282           uint16           // 2282

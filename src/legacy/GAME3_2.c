@@ -3646,6 +3646,7 @@ int nox_xxx_netReportUnitCurrentHP_4D8620(int a1, uint32_t* a2) {
 #endif
 
 //----- (004D8670) --------------------------------------------------------
+#if 0 // PE32 reference. The native Go senders use typed Object and Player records.
 int nox_xxx_netSendTeam_4D8670(int a1, uint32_t* a2) {
 	int result;         // eax
 	short v3;           // ax
@@ -3690,6 +3691,7 @@ char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004D8760) --------------------------------------------------------
 short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3) {
@@ -5168,8 +5170,8 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 				nox_xxx_netMarkMinimapObject_417190(i->playerInd, v2->playerUnit, 1);
 				nox_xxx_netSendSimpleObject2_4DF360(i->playerInd, v2->playerUnit);
 				if (nox_common_gameFlags_check_40A5C0(4096)) {
-					nox_xxx_netSendTeam_4D8670(i->playerInd, (uint32_t*)v2->playerUnit);
-					nox_xxx_netSendTeam_4D8670(v1, (uint32_t*)i->playerUnit);
+					nox_xxx_netSendTeam_4D8670(i->playerInd, v2->playerUnit);
+					nox_xxx_netSendTeam_4D8670(v1, i->playerUnit);
 				}
 			}
 		}

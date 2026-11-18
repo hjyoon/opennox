@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -62,4 +63,43 @@ func TestPlayerReportSelfNative4D9900RetainsOuterNilAndClassGates(t *testing.T) 
 	s := &Server{}
 	s.playerReportSelfNative4D9900(nil)
 	s.playerReportSelfNative4D9900(&server.Object{ObjClass: object.ClassMonster})
+}
+
+func TestPlayerReportSelfNative4D9900SelectsOriginalVitalsMode(t *testing.T) {
+	mode := memmap.PtrT[uint32](0x587000, 87404)
+	oldMode, oldFlags := *mode, noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		*mode = oldMode
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+	native := server.NewHigh(nil, nil, strman.New())
+	t.Cleanup(native.Close)
+	native.SetTickRate(30)
+	native.SetFrame(100)
+	s := &Server{Server: native}
+	unit := &server.Object{ObjClass: object.ClassPlayer, HealthData: &server.HealthData{Cur: 5, Max: 100}}
+	player := native.Players.ByIndRaw(5)
+	player.Active, player.PlayerInd, player.PlayerUnit, player.HealthReportFrame = 1, 5, unit, 100
+	update := &server.PlayerUpdateData{Player: player, Field2_1: 4}
+	unit.UpdateData = unsafe.Pointer(update)
+	packets := 0
+	native.NetSendPacketXxx = func(index int, payload []byte, related *server.Object, remove, sequence int) int {
+		if index != 5 || !reflect.DeepEqual(payload, []byte{0x43, 5, 0}) || related != nil || remove != 1 || sequence != 1 {
+			t.Fatal("unexpected health report")
+		}
+		packets++
+		return -1
+	}
+	*mode = 1
+	s.playerReportSelfNative4D9900(unit)
+	if packets != 0 || update.Field2_1 != 4 {
+		t.Fatal("mode 1 reported a change below the stock threshold")
+	}
+	*mode = 2
+	s.playerReportSelfNative4D9900(unit)
+	if packets != 1 || update.Field2_1 != 5 {
+		t.Fatal("stock startup mode did not report the immediate change")
+	}
 }

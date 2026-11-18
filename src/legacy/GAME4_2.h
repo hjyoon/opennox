@@ -239,7 +239,7 @@ int nox_xxx_mapGenOrientObj_527C60(int a1, int a2);
 int nox_mapgenOrientObjNative_527C60(nox_object_t* object, int direction);
 int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2);
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1, nox_object_t* a2);
-short sub_528030(int a1);
+short sub_528030(nox_object_t* unit);
 int nox_xxx_checkIsKillable_528190(nox_object_t* a1);
 int nox_xxx_frameCounterSetCopyToNextFrame_5281D0();
 int nox_xxx_frameCounterSetCopy_5281E0();

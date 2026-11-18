@@ -7145,6 +7145,7 @@ int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p) 
 #endif
 
 //----- (00528030) --------------------------------------------------------
+#if 0 // PE32 reference. Native Go uses typed health, update and player records.
 short sub_528030(int a1) {
 	int v1;             // ebp
 	int v2;             // esi
@@ -7190,6 +7191,7 @@ short sub_528030(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (00528190) --------------------------------------------------------
 #if 0 // Retained PE32 body; public native entry is implemented in Go.

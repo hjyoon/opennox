@@ -9,6 +9,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -177,18 +178,9 @@ func (s *Server) playerHealthReportNative4D86E0(playerInd byte, unit *server.Obj
 		return
 	}
 	health := unit.HealthData
-	var packet [3]byte
-	packet[0] = byte(netmsg.MSG_REPORT_PLAYER_HEALTH)
-	binary.LittleEndian.PutUint16(packet[1:], health.Cur)
-	s.Server.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
-
+	s.Server.NetSendPlayerHealth4D86E0(int(playerInd), health.Cur)
 	if noxflags.HasGame(noxflags.GameModeQuest) && health.Max != 0 {
-		var teamPacket [5]byte
-		teamPacket[0] = 0xc4
-		teamPacket[1] = 12
-		binary.LittleEndian.PutUint16(teamPacket[2:], uint16(s.Server.GetUnitNetCode(unit)))
-		teamPacket[4] = byte(100 * uint32(health.Cur) / uint32(health.Max))
-		s.Server.NetSendPacketXxx1(int(playerInd)|0x80, teamPacket[:], nil, 1)
+		s.Server.NetSendTeamHealth4D8670(int(playerInd)|0x80, unit)
 	}
 }
 
@@ -235,6 +227,11 @@ func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
 			s.playerStatsReportNative4D8990(playerInd, unit)
 		},
 	})
+	// GAME.EXE 0043AF70 reads the reporting mode. Its startup value is 2.
+	if memmap.Uint32(0x587000, 87404) == 1 {
+		legacy.ReportPlayerVitalsThrottled528030(s.Server, unit)
+		return
+	}
 	playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
 		legacy.NetReportManaNative4D8930(s.Server, playerInd, unit)
 	})

@@ -73,7 +73,7 @@ int sub_4D9CF0(int index) { abort(); }
 int sub_4D6000(nox_object_t* p) { abort(); }
 void nox_xxx_netMarkMinimapObject_417190(int index,nox_object_t* p,unsigned arg) { abort(); }
 int nox_xxx_netSendSimpleObject2_4DF360(int index,nox_object_t* p) { abort(); }
-int nox_xxx_netSendTeam_4D8670(int index,uint32_t* p) { abort(); }
+int nox_xxx_netSendTeam_4D8670(int index,nox_object_t* p) { abort(); }
 nox_object_t* nox_xxx_getFirstPlayerUnit_4DA7C0(void) { abort(); }
 nox_object_t* nox_xxx_getNextPlayerUnit_4DA7F0(const nox_object_t* p) { abort(); }
 int sub_4D9D20(int index,nox_object_t* p) { abort(); }

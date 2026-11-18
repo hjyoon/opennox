@@ -52,12 +52,15 @@ func TestRemainingTeamEntries4183C0FrozenOriginal(t *testing.T) {
 							b[i] = guard
 						}
 					}
+					// The fixture banks live in C memory. Store pointer words without
+					// passing the previous guard bytes to the Go write barrier.
 					for i, v := range row.Teams {
 						teams[i].IDVal = server.TeamID(v.ID)
-						teams[i].Field_72 = nil
+						var flag uintptr
 						if v.Flag != 0 {
-							teams[i].Field_72 = unsafe.Pointer(&flags[i])
+							flag = uintptr(unsafe.Pointer(&flags[i]))
 						}
+						*(*uintptr)(unsafe.Pointer(&teams[i].Field_72)) = flag
 						flags[i].PosVec.X = math.Float32frombits(v.X)
 						flags[i].PosVec.Y = math.Float32frombits(v.Y)
 					}
@@ -66,11 +69,12 @@ func TestRemainingTeamEntries4183C0FrozenOriginal(t *testing.T) {
 						units[i].PosVec.Y = math.Float32frombits(v.Y)
 						units[i].TeamVal.ID = server.TeamID(v.Team)
 						units[i].NetCode = v.Code
-						units[i].UpdateData = nil
+						var update uintptr
 						if v.Update != 0 {
-							units[i].UpdateData = unsafe.Pointer(&updates[i])
+							update = uintptr(unsafe.Pointer(&updates[i]))
 						}
-						updates[i].Player = &players[i]
+						*(*uintptr)(unsafe.Pointer(&units[i].UpdateData)) = update
+						*(*uintptr)(unsafe.Pointer(&updates[i].Player)) = uintptr(unsafe.Pointer(&players[i]))
 						players[i].NetCodeVal = v.Code
 						players[i].Field3680 = v.Status
 					}

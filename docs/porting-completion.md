@@ -60,6 +60,58 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native script zombie raise C entry, 2026-11-18
+
+Engine `2b049d62ecf28963d475dfeec10fd73b75df10c6` is pushed to
+`origin/port/go1.27-multiarch`. The public `GAME4_1.c` entry `sub_516D00`
+now uses a native `nox_object_t*` and returns `uintptr_t`. Nonraising calls
+return the full object pointer. Dead monsters clear the typed StayDead
+status before calling the existing `534AB0` child and return its original
+32-bit result zero-extended. The live C boundary retains its nil return of
+zero. The stock PE32 root faults on the initial update read for nil. The
+existing Go script bool path keeps its current semantics.
+
+The retained GAME.EXE fixture contains **296 observations over 54 executed
+root bytes** and matches the same input-only model. The model, inputs,
+expectations and observations match their pre-loss hashes. The historical
+preport seal was removed during external workspace cleanup and is unavailable.
+A newly recorded control from the exact unchanged parent C body retains
+**18 high-address read faults** and two successful nil controls.
+
+- macOS ARM64 normal and strict/highres pass **687,965** and **686,740**
+  test events respectively. All strict identities occur in normal and the
+  new family adds 1,797 events. Four products pass metadata, help and 192
+  symbol checks each. Normal and HD each pass the three core gameplay E2E
+  scenarios, functional Save/Load and independent UDP chat.
+- Linux run **44224310929** and Windows run **44224266176** pass all six
+  native jobs on attempt one. Six official ZIP digests and 158 exact test
+  mains are retained. Each profile adds the 1,797 new events while retaining
+  the prior terminal identity multiset and skip counts. The two unchanged
+  diagnostics whose names contain runtime addresses are compared with their
+  nonzero address suffixes normalized. All six complete job logs and 68
+  artifact warning streams contain zero compiler warnings.
+- The primary Windows/386 `legacy.test.exe` reaches **5,391** matching
+  script-zombie events at `GOGC=10` over three repetitions. Its SHA-256 is
+  `28f481a0ff6a5853b978a56a1b595c3c4b3c410cef6a2c369008bfb4a62313d1`
+  before and after replay. No rebuild or patch was used.
+- The 207 default C translation units contain 2,454 own definitions and
+  434 functions with pointer/integer casts. The width audit reports 296
+  pointer-to-narrow, 1,870 narrow-to-pointer and 586 native-width sites.
+  A separate selection inventory covers all five base and thirteen split
+  GAME files and identifies 211 project C files across the inspected build
+  profiles. The optional Windows/386 NXZ-tagged package reports a Cgo file
+  selection error. Conditional bodies, included code and boundary roles
+  still require review before these inventories can establish a denominator.
+
+All 4,649 original asset and Save hashes and 37 local program paths match.
+The inactive dedicated cache was cleaned from 1,582,272 KiB to 8 KiB. The
+ledger remains **284 implemented / 282 fully recorded**. The nine final
+campaign audits, public Save/Load pixel comparison and overall completion
+remain open.
+
+Qualification: `split-script-raise-zombie-native-v1/qualified-script-zombie-C-entry-v1.json`,
+SHA-256 `15c6ad8595eecf3901e0725e21ae4ed10c6c176202a8f1c0e2b66fa670a196c6`.
+
 ### Native monster spawn registry C entries, 2026-11-18
 
 Engine `6287bf88af9053be4ddf4bb0fc810fe37296c112` is committed and pushed to

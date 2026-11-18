@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/binary"
+	"slices"
 	"unicode/utf16"
 	"unsafe"
 
@@ -118,11 +119,15 @@ func BuildTradeP2PBalancePacket50FA00(session *TradeSession, recipient *Object) 
 	}
 	if session.Field8 == recipient {
 		binary.LittleEndian.PutUint32(packet[2:6], tradeP2PGoldAmount50FA00(session.Field48))
-		// Both participants are players, so GAME.EXE deliberately reports a
-		// zero price delta here rather than balancing either private Gold item.
+		if !session.Field12.Class().Has(object.ClassPlayer) {
+			binary.LittleEndian.PutUint32(packet[6:10], session.Field44-session.Field40)
+		}
 		binary.LittleEndian.PutUint32(packet[10:14], tradeP2PGoldAmount50FA00(session.Field52))
 	} else if session.Field12 == recipient {
 		binary.LittleEndian.PutUint32(packet[2:6], tradeP2PGoldAmount50FA00(session.Field52))
+		if !session.Field8.Class().Has(object.ClassPlayer) {
+			binary.LittleEndian.PutUint32(packet[6:10], session.Field40-session.Field44)
+		}
 		binary.LittleEndian.PutUint32(packet[10:14], tradeP2PGoldAmount50FA00(session.Field48))
 	}
 	return packet
@@ -385,102 +390,121 @@ func (s *Server) closeTradeNative50F3A0(session *TradeSession, state *nativeTrad
 	return s.ReleaseTradeSessionNative510000(session)
 }
 
-func tradeP2PCanAddOffer50FD60(head *TradeItem, item *Object) bool {
+// TradeOfferItemAllowed50FD60 applies the four-type offer limit. A plain
+// item may reuse an existing type even when all four slots are occupied.
+func TradeOfferItemAllowed50FD60(head *TradeItem, item *Object) bool {
 	if item == nil {
 		return false
 	}
 	var types [4]uint16
 	unique := 0
 	for node := head; node != nil; node = node.Field8 {
-		if node.Item0 == nil {
+		if node.Item0 == nil || node.Item0.TypeInd == 0 {
 			continue
 		}
 		typeInd := node.Item0.TypeInd
-		found := false
-		for i := 0; i < unique; i++ {
-			if types[i] == typeInd {
-				found = true
-				break
-			}
+		if slices.Contains(types[:unique], typeInd) {
+			continue
 		}
-		if !found && unique < len(types) {
-			types[unique] = typeInd
-			unique++
+		if unique == len(types) {
+			return false
 		}
+		types[unique] = typeInd
+		unique++
 	}
-	if unique == 0 {
-		return true
-	}
-	for i := 0; i < unique; i++ {
-		if types[i] == item.TypeInd && !item.Class().HasAny(shopModifierClassMask50E3D0) {
-			return true
-		}
-	}
-	return unique < len(types)
+	return unique < len(types) ||
+		(slices.Contains(types[:], item.TypeInd) && !item.Class().HasAny(shopModifierClassMask50E3D0))
 }
 
-func (s *Server) addP2POfferNode50F820(session *TradeSession, item *Object, cost uint32, first bool) *TradeItem {
-	state, ok := s.nativeP2PSession50F3A0(session)
-	if !ok || item == nil {
-		return nil
+func resetTradeOfferApproval(session *TradeSession) {
+	session.Field24, session.Field28 = 0, 0
+	firstPlayer := session.Field8.Class().Has(object.ClassPlayer)
+	if !firstPlayer && session.Field40 <= session.Field44 {
+		session.Field24 = 1
 	}
-	node, freeNode := serverNativeNew(s.tradeNative.highAddresses, TradeItem{})
-	node.Item0 = item
-	node.Cost4 = cost
-	head := &session.Field36
-	if first {
-		head = &session.Field32
+	if firstPlayer && !session.Field12.Class().Has(object.ClassPlayer) && session.Field44 <= session.Field40 {
+		session.Field28 = 1
 	}
-	node.Field8 = *head
-	if node.Field8 != nil {
-		node.Field8.Field12 = node
-	}
-	*head = node
-	state.items[node] = nativeTradeItemAllocation{freeNode: freeNode}
-	return node
 }
 
-func tradeP2PNotifyOffer50F820(session *TradeSession, offeringPlayer, item *Object, cost uint32, runtime TradeP2PRuntime50F3A0) {
+func (s *Server) notifyTradeOfferNative50F820(session *TradeSession, state *nativeTradeSessionAllocation, offeringPlayer, item *Object, cost uint32, runtime TradeP2PRuntime50F3A0) bool {
 	for _, recipient := range [...]*Object{session.Field8, session.Field12} {
 		balance := BuildTradeP2PBalancePacket50FA00(session, recipient)
 		tradeP2PSend50F3A0(runtime, recipient, balance[:])
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
 		itemPacket := BuildTradeP2PItemPacket50FAE0(recipient, offeringPlayer, item, cost)
 		tradeP2PSend50F3A0(runtime, recipient, itemPacket[:])
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
 		status := BuildTradeP2PStatusPacket50F720(session, recipient)
 		tradeP2PSend50F3A0(runtime, recipient, status[:])
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
 	}
+	return true
 }
 
 // AddP2PTradeOfferNative50F820 links an inventory Object into the correct
-// native offer list. The caller detaches the item only when this returns true,
-// matching the decoder's original operation order.
+// native P2P offer list. The decoder detaches the item after a successful add.
 func (s *Server) AddP2PTradeOfferNative50F820(
 	session *TradeSession,
 	offeringPlayer, item *Object,
 	runtime TradeP2PRuntime50F3A0,
 ) bool {
-	if _, ok := s.nativeP2PSession50F3A0(session); !ok || item == nil {
+	if _, ok := s.nativeP2PSession50F3A0(session); !ok {
 		return false
 	}
-	first := session.Field8 == offeringPlayer
-	if !first && session.Field12 != offeringPlayer {
+	return s.AddTradeOfferNative50F820(session, offeringPlayer, item, runtime, nil)
+}
+
+// AddTradeOfferNative50F820 adds the offered Object, updates approval after
+// pricing, and queues the balance, item and status packets for each player.
+func (s *Server) AddTradeOfferNative50F820(
+	session *TradeSession,
+	offeringPlayer, item *Object,
+	runtime TradeP2PRuntime50F3A0,
+	reprice func(*TradeSession),
+) bool {
+	state := s.tradeNative.sessions[session]
+	if state == nil || offeringPlayer == nil || item == nil {
 		return false
 	}
-	head := session.Field36
-	if first {
-		head = session.Field32
-	}
-	if !tradeP2PCanAddOffer50FD60(head, item) {
+	var head **TradeItem
+	switch offeringPlayer {
+	case session.Field8:
+		head = &session.Field32
+	case session.Field12:
+		head = &session.Field36
+	default:
 		return false
 	}
-	cost := uint32(s.ShopItemCostNoMerchant50E3D0(item))
-	if s.addP2POfferNode50F820(session, item, cost, first) == nil {
+	if !TradeOfferItemAllowed50FD60(*head, item) {
 		return false
 	}
-	session.Field24 = 0
-	session.Field28 = 0
-	tradeP2PNotifyOffer50F820(session, offeringPlayer, item, cost, runtime)
-	return true
+	price, ok := shopItemCostNative50E3D0(session, item, shopPriceBuy50E3D0, 0, s.shopItemCostRuntime50E3D0())
+	if !ok {
+		return false
+	}
+	cost := uint32(price)
+	node, freeNode := serverNativeNew(s.tradeNative.highAddresses, TradeItem{})
+	node.Item0, node.Cost4, node.Field8 = item, cost, *head
+	if node.Field8 != nil {
+		node.Field8.Field12 = node
+	}
+	*head = node
+	state.items[node] = nativeTradeItemAllocation{freeNode: freeNode}
+	if reprice != nil {
+		reprice(session)
+		if s.tradeNative.sessions[session] != state {
+			return false
+		}
+	}
+	resetTradeOfferApproval(session)
+	return s.notifyTradeOfferNative50F820(session, state, offeringPlayer, item, cost, runtime)
 }
 
 func tradeP2PFindOffer50FFE0(head *TradeItem, netCode uint32) *TradeItem {

@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"encoding/binary"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/server"
@@ -25,24 +24,8 @@ func tradePacketStatus50F720(recipient *server.Object, session *server.TradeSess
 	return tradePacketSendNative(recipient, packet[:])
 }
 
-// The existing P2P builder has a zero delta for two players. This entry also
-// preserves the original merchant branches and uint32 subtraction wrapping.
-// Its original contract requires a participant and initialized Gold records.
 func tradePacketBalance50FA00(recipient *server.Object, session *server.TradeSession) int32 {
-	packet := [14]byte{0xc9, 0x06}
-	if session.Field8 == recipient {
-		binary.LittleEndian.PutUint32(packet[2:6], session.Field48.InitDataGold().Amount)
-		if uint32(session.Field12.ObjClass)&4 == 0 {
-			binary.LittleEndian.PutUint32(packet[6:10], session.Field44-session.Field40)
-		}
-		binary.LittleEndian.PutUint32(packet[10:14], session.Field52.InitDataGold().Amount)
-	} else if session.Field12 == recipient {
-		binary.LittleEndian.PutUint32(packet[2:6], session.Field52.InitDataGold().Amount)
-		if uint32(session.Field8.ObjClass)&4 == 0 {
-			binary.LittleEndian.PutUint32(packet[6:10], session.Field40-session.Field44)
-		}
-		binary.LittleEndian.PutUint32(packet[10:14], session.Field48.InitDataGold().Amount)
-	}
+	packet := server.BuildTradeP2PBalancePacket50FA00(session, recipient)
 	return tradePacketSendNative(recipient, packet[:])
 }
 

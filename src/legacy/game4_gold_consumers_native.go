@@ -33,15 +33,16 @@ type game4TradeRuntimeProvider interface {
 // A scoped test override supplies actual server transaction services, never
 // substitute gold/transaction algorithms. Tests restore it before returning.
 type game4TradeServices struct {
-	world  *server.Server
-	p2p    func() server.TradeP2PRuntime50F3A0
-	buy    func() server.ShopBuyRuntime5100C0
-	sell   func() server.ShopSellRuntime5109C0
-	repair func() server.ShopRepairRuntime5108D0
-	packet func(*server.Object, []byte) int
-	start  func(starter, target *server.Object) *server.TradeSession
-	open   func(player, merchant *server.Object) *server.TradeSession
-	load   func(session *server.TradeSession)
+	world   *server.Server
+	p2p     func() server.TradeP2PRuntime50F3A0
+	buy     func() server.ShopBuyRuntime5100C0
+	sell    func() server.ShopSellRuntime5109C0
+	repair  func() server.ShopRepairRuntime5108D0
+	packet  func(*server.Object, []byte) int
+	start   func(starter, target *server.Object) *server.TradeSession
+	open    func(player, merchant *server.Object) *server.TradeSession
+	load    func(session *server.TradeSession)
+	reprice func(session *server.TradeSession)
 }
 
 var game4TradeServicesForTest *game4TradeServices
@@ -62,6 +63,9 @@ func game4TradeRuntime() game4TradeServices {
 		start: provider.Game4TradeStartNative50EF10,
 		open:  provider.Game4ShopOpenNative50E8F0,
 		load:  provider.Game4ShopLoadNative50E970,
+		reprice: func(session *server.TradeSession) {
+			game4TradeReprice50FB90(session)
+		},
 	}
 }
 

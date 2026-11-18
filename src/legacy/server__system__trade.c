@@ -208,6 +208,7 @@ int sub_50FAE0(int a1, int a2, int a3, int a4, int a5) {
 #endif
 
 //----- (0050FD60) --------------------------------------------------------
+#if 0 // Restored by trade_offer_add_native_entry.go.
 int sub_50FD60(uint32_t* a1, int a2) {
 	uint32_t* v2;    // esi
 	unsigned int v3; // edi
@@ -263,6 +264,7 @@ int sub_50FD60(uint32_t* a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (00510320) --------------------------------------------------------
 void sub_510320(int a1, int a2) {
@@ -451,6 +453,7 @@ LABEL_18:
 #endif
 
 //----- (0050F820) --------------------------------------------------------
+#if 0 // Restored by trade_offer_add_native_entry.go.
 int nox_xxx_tradeP2PAddOffer2_50F820_trade(int a1, int a2, float a3) {
 	float v3;    // ebx
 	int result;  // eax
@@ -541,6 +544,7 @@ int nox_xxx_tradeP2PAddOffer2_50F820_trade(int a1, int a2, float a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (005100C0) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.

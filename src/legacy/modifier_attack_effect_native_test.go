@@ -117,3 +117,37 @@ func TestPlayerPreAttackEffects538290NativeCallback(t *testing.T) {
 		t.Fatalf("native pre-hit record = %+v, want damage 18 with unchanged source", attack)
 	}
 }
+
+func TestPublicAttackModifierEffectsNativeC(t *testing.T) {
+	playerVitalReportWorld(t)
+	callback := modifierDamageMultiplierPointer4E04C0()
+	mod := game4ConsumerValue(t, server.ModifierEff{
+		Attack40:       server.ModifierEffFnc{Valf: 1.5, Fnc: callback},
+		AttackPreHit52: server.ModifierEffFnc{Fnc: callback},
+	})
+	bank := game4ConsumerValue(t, server.ModifierInitData{Modifiers: [4]*server.ModifierEff{mod, mod, mod, mod}})
+	weapon := game4ConsumerValue(t, server.Object{InitData: unsafe.Pointer(bank)})
+	owner := game4ConsumerValue(t, server.Object{})
+	target := game4ConsumerValue(t, server.Object{})
+	attack := game4ConsumerValue(t, server.ArrowAttackData{Damage: 8, Owner: owner, Source: weapon})
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for _, ptr := range []unsafe.Pointer{mod.C(), unsafe.Pointer(bank), weapon.CObj(), owner.CObj(), target.CObj(), unsafe.Pointer(attack)} {
+			if uintptr(ptr) <= math.MaxUint32 {
+				t.Fatalf("expected native high pointer, got %p", ptr)
+			}
+		}
+	}
+	for _, indirect := range []bool{false, true} {
+		attack.Damage = 8
+		if result := callItemAttackEffectC538840(indirect, weapon, owner, unsafe.Pointer(attack)); result != 0 || attack.Damage != 40.5 {
+			t.Fatalf("item effect indirect=%t result=%d damage=%v", indirect, result, attack.Damage)
+		}
+		attack.Damage = 8
+		if result := callPreHitEffectC538290(indirect, target, owner, weapon, unsafe.Pointer(attack)); result != 0 || attack.Damage != 18 {
+			t.Fatalf("pre-hit indirect=%t result=%d damage=%v", indirect, result, attack.Damage)
+		}
+		if attack.Owner != owner || attack.Source != weapon {
+			t.Fatal("attack record pointers changed")
+		}
+	}
+}

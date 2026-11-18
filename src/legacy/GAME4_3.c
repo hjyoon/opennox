@@ -864,6 +864,7 @@ int nox_xxx_scorchInit_537BD0() {
 #endif
 
 //----- (00538290) --------------------------------------------------------
+#if 0 // PE32 reference. The public entry is implemented in Go.
 int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4) {
 	int result;                          // eax
 	int v5;                              // esi
@@ -902,6 +903,7 @@ int nox_xxx_playerPreAttackEffects_538290(int a1, int a2, int a3, int a4) {
 	}
 	return result;
 }
+#endif
 
 //----- (00538330) --------------------------------------------------------
 int nox_xxx_playerTraceAttack_538330(int a1, int a2) {
@@ -1012,8 +1014,11 @@ void sub_538510(int a1, int a2) {
 							v12.field_8 = v7;
 							v12.field_C = v5;
 							if (nox_xxx_mapTraceRay_535250(&v12, 0, 0, 5)) {
-								nox_xxx_playerPreAttackEffects_538290(a1, *(uint32_t*)(a2 + 12), *(uint32_t*)(a2 + 28),
-																	  a2);
+								nox_xxx_playerPreAttackEffects_538290(
+									(nox_object_t*)(uintptr_t)(uint32_t)a1,
+									(nox_object_t*)(uintptr_t)*(uint32_t*)(a2 + 12),
+									(nox_object_t*)(uintptr_t)*(uint32_t*)(a2 + 28),
+									(void*)(uintptr_t)(uint32_t)a2);
 								(*(void (**)(int, uint32_t, uint32_t, uint32_t, uint32_t))(a1 + 716))(
 									a1, *(uint32_t*)(a2 + 12), *(uint32_t*)(a2 + 28), (long long)(*(float*)a2 + 0.5),
 									*(unsigned char*)(a2 + 4));
@@ -1111,6 +1116,7 @@ void sub_5386A0(int a3, int a2) {
 }
 
 //----- (00538840) --------------------------------------------------------
+#if 0 // PE32 reference. The public entry is implemented in Go.
 int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
 	int v3;                                   // edi
 	int* v4;                                  // esi
@@ -1135,6 +1141,7 @@ int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
 	} while (v8);
 	return result;
 }
+#endif
 
 typedef struct nox_player_attack_info_native_t {
 	float damage;
@@ -1168,9 +1175,6 @@ typedef struct nox_player_attack_trace_native_t {
 	nox_object_t* target;
 } nox_player_attack_trace_native_t;
 
-typedef void (*nox_player_attack_effect_native_t)(
-	void*, nox_object_t*, nox_object_t*, nox_object_t*, void*);
-
 static void nox_xxx_playerAttackScanCandidate_538960(nox_object_t* candidate, void* data) {
 	nox_player_attack_scan_native_t* scan = data;
 	if (!candidate || !scan) {
@@ -1202,44 +1206,6 @@ static void nox_xxx_playerAttackScanCircle_538960(
 	nox_xxx_playerAttackScanCircleNative_518040(center, radius, (void*)callback, data);
 }
 
-static void nox_xxx_playerAttackApplyEffects_538960(
-	nox_object_t* weapon, nox_object_t* owner, nox_player_attack_info_native_t* attack) {
-	if (!weapon || !weapon->init_data) {
-		return;
-	}
-	nox_modifier_attrs_t* attrs = weapon->init_data;
-	for (int i = 0; i < 4; ++i) {
-		void* effect = attrs->modifiers[i];
-		void* callback = nox_modifier_effect_getAttackFunc(effect);
-		if (callback) {
-			((nox_player_attack_effect_native_t)callback)(effect, weapon, owner, 0, attack);
-		}
-	}
-}
-
-static void nox_xxx_playerPreAttackEffectsNative_538290(
-	nox_object_t* target, nox_object_t* owner, nox_object_t* weapon,
-	nox_player_attack_info_native_t* attack) {
-	if (!weapon || !weapon->init_data) {
-		return;
-	}
-	if (!nox_xxx_CheckGameplayFlags_417DA0(1) && owner && (owner->obj_class & 6) &&
-		!nox_xxx_unitIsEnemyTo_5330C0(owner, target)) {
-		return;
-	}
-	if (nox_xxx_testUnitBuffs_4FF350(target, 23) || nox_xxx_testUnitBuffs_4FF350(target, 27)) {
-		return;
-	}
-	nox_modifier_attrs_t* attrs = weapon->init_data;
-	for (int i = 2; i < 4; ++i) {
-		void* effect = attrs->modifiers[i];
-		void* callback = nox_modifier_effect_getPreHitFunc(effect);
-		if (callback) {
-			((nox_player_attack_effect_native_t)callback)(effect, weapon, owner, target, attack);
-		}
-	}
-}
-
 static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, void* data) {
 	nox_player_attack_trace_native_t* trace = data;
 	nox_player_attack_info_native_t* attack = trace ? trace->attack : 0;
@@ -1266,7 +1232,9 @@ static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, voi
 	if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 5)) {
 		return;
 	}
-	nox_xxx_playerPreAttackEffectsNative_538290(target, owner, attack->weapon, attack);
+	if (attack->weapon && attack->weapon->init_data) {
+		nox_xxx_playerPreAttackEffects_538290(target, owner, attack->weapon, attack);
+	}
 	if (target->func_damage) {
 		nox_object_call_damage_native(target, owner, attack->weapon,
 			(int32_t)(attack->damage + 0.5f), attack->damage_type);
@@ -1349,7 +1317,9 @@ static void nox_xxx_playerAttackWeaponHitNative_538960(
 		.weapon = weapon,
 		.field_32 = 1,
 	};
-	nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+	if (weapon && weapon->init_data) {
+		nox_xxx_itemApplyAttackEffect_538840(weapon, unit, &attack);
+	}
 	if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
 		nox_xxx_aud_501960(sound, unit, 0, 0);
 	}
@@ -1369,7 +1339,9 @@ static void nox_xxx_playerAttackWarHammerHitNative_538960(
 		.weapon = weapon,
 		.field_32 = 1,
 	};
-	nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+	if (weapon && weapon->init_data) {
+		nox_xxx_itemApplyAttackEffect_538840(weapon, unit, &attack);
+	}
 	nox_xxx_playerTraceAttackNative_538330(unit, &attack);
 	// Original 0053976E -> FSTPS -> 00419A70 FISTPL: round the
 	// binary32 product in the active rounding mode, not C-cast truncation.
@@ -1785,7 +1757,9 @@ int nox_xxx_playerAttackNativeData_538960(
 				.weapon = weapon,
 				.field_32 = 1,
 			};
-			nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+			if (weapon && weapon->init_data) {
+				nox_xxx_itemApplyAttackEffect_538840(weapon, unit, &attack);
+			}
 			if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
 				nox_xxx_aud_501960(sound, unit, 0, 0);
 			}

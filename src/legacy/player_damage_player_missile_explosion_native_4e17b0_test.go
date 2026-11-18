@@ -32,19 +32,22 @@ func TestPlayerDamagePlayerMissileExplosionNativeCallback4E17B0(t *testing.T) {
 			missile := &server.Object{TypeInd: 697, ObjClass: object.ClassMissile, ObjOwner: npc, PrevPos: types.Ptf(23, 9)}
 			pin.Pin(missile)
 			source, weapon := npc, missile
+			raw, wantHP, wantCarry := int32(8), uint16(196), math.Float32bits(0.25)
 			if splash {
 				source, weapon = missile, nil
+				ud.Field57, ud.Field21 = 0x3e6b851d, 0x3f4cccc0
+				raw, wantHP, wantCarry = 7, 194, 0x3e428f20
 			}
 			wantMarker, wantType := uint32(1), uint32(missile.TypeInd)
 			if splash {
 				wantMarker, wantType = 2, 7
 			}
-			if !objectDamageDispatchCallNative(target, source, weapon, 8, object.DamageExplosion) || target.HealthData.Cur != 196 ||
+			if !objectDamageDispatchCallNative(target, source, weapon, raw, object.DamageExplosion) || target.HealthData.Cur != wantHP ||
 				target.Field38 != math.MaxUint32 || target.Obj130 != missile || target.Pos132 != missile.PrevPos || target.Field131 != 7 || target.Frame134 != 1400 ||
-				ud.Field76 != wantMarker || ud.Field75 != wantType || ud.Field21 != math.Float32bits(0.25) {
+				ud.Field76 != wantMarker || ud.Field75 != wantType || ud.Field21 != wantCarry {
 				t.Fatalf("C->PlayerDamage->DefaultDamage EXPLOSION HP=%d sync=%x source=%p marker=%d/%d carry=%#x", target.HealthData.Cur, target.Field38, target.Obj130, ud.Field76, ud.Field75, ud.Field21)
 			}
-			t.Logf("C->PlayerDamage->DefaultDamage->UnitSetHP: NPC=%p target=%p missile=%p HP=200->196", npc, target, missile)
+			t.Logf("C->PlayerDamage->DefaultDamage->UnitSetHP: NPC=%p target=%p missile=%p HP=200->%d", npc, target, missile, wantHP)
 			runtime.KeepAlive(target)
 			runtime.KeepAlive(npc)
 			runtime.KeepAlive(missile)

@@ -19,7 +19,7 @@ func TestPlayerDamageNative4E17B0PlayerMissileExplosionArmorAndGod(t *testing.T)
 					r := damageFlameRuntime4E17B0(t, 0.5)
 					damageMeleeArmorRuntime4E17B0(&r, armor, 0.5)
 					r.GodMode = func() bool {
-						if armor.HealthData.Cur != 21 || math.Abs(float64(math.Float32frombits(target.UpdateDataPlayer().Field21))+0.1) > 0.000001 {
+						if armor.HealthData.Cur != 20 || target.UpdateDataPlayer().Field21 != 0x3f666660 {
 							t.Fatal("GodMode precedes armor wear or fractional carry")
 						}
 						return god
@@ -36,7 +36,7 @@ func TestPlayerDamageNative4E17B0PlayerMissileExplosionArmorAndGod(t *testing.T)
 					if god {
 						wantHP = 200
 					}
-					if target.HealthData.Cur != wantHP || armor.HealthData.Cur != 21 || marker != wantMarker || kind != wantKind || math.Abs(float64(carry)+0.1) > 0.000001 {
+					if target.HealthData.Cur != wantHP || armor.HealthData.Cur != 20 || marker != wantMarker || kind != wantKind || math.Float32bits(carry) != 0x3f666660 {
 						t.Fatalf("HP=%d armor=%d marker=%d/%d carry=%g", target.HealthData.Cur, armor.HealthData.Cur, marker, kind, carry)
 					}
 					if !god && (target.Obj130 != missile || target.Pos132 != missile.PrevPos || target.Field131 != 7 || target.Frame134 != 1400) {

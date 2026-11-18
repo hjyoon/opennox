@@ -1,10 +1,6 @@
 package server
 
-import (
-	"math"
-
-	"github.com/opennox/libs/object"
-)
+import "github.com/opennox/libs/object"
 
 // BoomCollide sends a distinct Magic Missile and its owning unit for the
 // direct hit; MapDamageUnits sends the missile with a nil weapon for splash.
@@ -42,27 +38,16 @@ func playerDamageMissileExplosionTail4E17B0(
 	if target.UpdateData == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing live missile EXPLOSION update", target, source, weapon, damage, typ)
 	}
-	var carry *uint32
-	if target.Class().Has(object.ClassPlayer) {
-		carry = &target.UpdateDataPlayer().Field21
-	} else if target.Class().Has(object.ClassMonster) {
-		carry = &target.UpdateDataMonster().Field1
-	}
-	scaled := float32((1.0 - float64(armorValue)) * float64(damage))
-	accumulated := scaled
-	if carry != nil {
-		accumulated += math.Float32frombits(*carry)
-	}
-	effective := playerDamageRound4E17B0(accumulated)
 	if runtime.playerPrefix == nil {
 		*marker = 0
 		if weapon != nil && source != weapon {
 			*marker, *markerType = 1, uint32(weapon.TypeInd)
 		}
 	}
-	if carry != nil {
-		*carry = math.Float32bits(accumulated - float32(effective))
-	}
+	factor := experienceAdd53TowardZero(1, -float64(armorValue))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+	var effective int32
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 	if *marker == 0 {
 		*marker, *markerType = 2, uint32(typ)
@@ -78,7 +63,8 @@ func playerDamageMissileExplosionTail4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing live missile EXPLOSION quest scale", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

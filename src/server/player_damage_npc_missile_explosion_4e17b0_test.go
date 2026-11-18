@@ -18,7 +18,7 @@ func TestPlayerDamageNative4E17B0NPCMissileExplosionArmor(t *testing.T) {
 				t.Run(fmt.Sprintf("player-source-%t/splash-%t/protected-%t", fromPlayer, splash, protected), func(t *testing.T) {
 					target, source, weapon, missile := damageExplosionFixture4E17B0(t, fromPlayer, false, splash)
 					armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
-					protection, wantHP := float64(0), uint16(195)
+					protection, wantHP := float64(0), uint16(196)
 					if protected {
 						protection, wantHP = 0.5, 198
 					}
@@ -33,8 +33,8 @@ func TestPlayerDamageNative4E17B0NPCMissileExplosionArmor(t *testing.T) {
 					if splash {
 						wantMarker, wantKind = 2, 7
 					}
-					if target.HealthData.Cur != wantHP || armor.HealthData.Cur != 21 || marker != wantMarker || kind != wantKind ||
-						math.Abs(float64(carry)+0.1) > 0.000001 || target.Obj130 != missile || target.Pos132 != missile.PrevPos || target.Field131 != 7 || target.Frame134 != 1400 {
+					if target.HealthData.Cur != wantHP || armor.HealthData.Cur != 20 || marker != wantMarker || kind != wantKind ||
+						math.Float32bits(carry) != 0x3f666660 || target.Obj130 != missile || target.Pos132 != missile.PrevPos || target.Field131 != 7 || target.Frame134 != 1400 {
 						t.Fatalf("HP=%d armor=%d marker=%d/%d carry=%g source=%p", target.HealthData.Cur, armor.HealthData.Cur, marker, kind, carry, target.Obj130)
 					}
 					if !target.UpdateDataMonster().StatusFlags.Has(object.MonStatusInjured | object.MonStatusOnFire) {
@@ -90,8 +90,8 @@ func damageExplosionCachedLiveOrder4E17B0(t *testing.T, toPlayer bool) {
 	}
 	quest := false
 	r.DamageArmor = func(item, s, w *Object, amount int32, typ object.DamageType) bool {
-		if item != armor || s != source || w != weapon || amount != 4 || typ != object.DamageExplosion ||
-			*cachedMarker != 1 || *cachedType != uint32(weapon.TypeInd) || *oldCarry != math.Float32bits(0.4) || *liveCarry != math.Float32bits(-0.25) {
+		if item != armor || s != source || w != weapon || amount != 5 || typ != object.DamageExplosion ||
+			*cachedMarker != 1 || *cachedType != uint32(weapon.TypeInd) || *oldCarry != math.Float32bits(0.4) || *liveCarry != math.Float32bits(0.75) {
 			t.Fatalf("cached/live wear=%d marker=%d/%d carry=%#x/%#x", amount, *cachedMarker, *cachedType, *oldCarry, *liveCarry)
 		}
 		events = append(events, "armor")
@@ -143,13 +143,14 @@ func damageExplosionRounding4E17B0(t *testing.T, toPlayer bool) {
 		wantCarry         uint32
 	}{
 		{9, 4, 0.5, 0, math.Float32bits(0.5)},
-		{11, 6, 0.5, 0, math.Float32bits(-0.5)},
+		{11, 5, 0.5, 0, math.Float32bits(0.5)},
 		{-9, -4, 0.5, 0, math.Float32bits(-0.5)},
 		{1, 1, 1, 0, 0},
 		{0, 0, 0.5, 0, 0},
-		{3, 3, 0.1, 0, 0xbe999998},
+		{3, 2, 0.1, 0, 0x3f333330},
 		{9, 7, 0.2, 0, 0x3e4cccc0},
-		{3, 2, 0.4, 0, 0xbe4cccd0},
+		{3, 1, 0.4, 0, 0x3f4ccccc},
+		{7, 6, math.Float32frombits(0x3e6b851d), math.Float32frombits(0x3f4cccc0), 0x3e428f20},
 	} {
 		t.Run(fmt.Sprintf("%d/%g", tc.damage, tc.armor), func(t *testing.T) {
 			target, source, weapon, _ := damageExplosionFixture4E17B0(t, !toPlayer, toPlayer, true)

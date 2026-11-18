@@ -267,6 +267,7 @@ int sub_50FD60(uint32_t* a1, int a2) {
 #endif
 
 //----- (00510320) --------------------------------------------------------
+#if 0 // Restored by shop_definition_native_entry.go.
 void sub_510320(int a1, int a2) {
 	int v2;      // ecx
 	uint8_t* v3; // ebp
@@ -302,6 +303,7 @@ void sub_510320(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (005104F0) --------------------------------------------------------
 #if 0 // Restored by shop_removal_native_entry.go.

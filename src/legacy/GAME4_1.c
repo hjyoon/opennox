@@ -2728,6 +2728,7 @@ void sub_510000(int a1) {
 #endif
 
 //----- (005103A0) --------------------------------------------------------
+#if 0 // Restored by shop_definition_native_entry.go.
 int nox_xxx_getSomeShopData_5103A0(int a1, int a2) {
 	int v2;      // eax
 	uint8_t* v3; // edi
@@ -2794,6 +2795,7 @@ int sub_5103F0(int a1, int a2) {
 	}
 	return v2;
 }
+#endif
 
 //----- (005108D0) --------------------------------------------------------
 #if 0 // Restored by shop_repair_quote_native_entry.go.

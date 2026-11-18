@@ -548,7 +548,9 @@ func (s *Server) findNativeTradeItem5100C0(session *TradeSession, netCode uint16
 	return nil
 }
 
-func (s *Server) shopDefinitionMatchesItem5103F0(item *Object, def *ShopkeeperItemDefinition) bool {
+// ShopDefinitionMatchesItemNative5103F0 compares a live object with the
+// type and modifier IDs in a fixed-width shop definition.
+func (s *Server) ShopDefinitionMatchesItemNative5103F0(item *Object, def *ShopkeeperItemDefinition) bool {
 	if item == nil || def == nil || def.TypeInd != uint32(item.TypeInd) {
 		return false
 	}
@@ -587,35 +589,51 @@ func (s *Server) shopDefinitionMatchesItem5103F0(item *Object, def *ShopkeeperIt
 	return typ != nil && item.UseDataFieldGuide().Creature() == typ.ID()
 }
 
-func (s *Server) decrementShopDefinition510320(session *TradeSession, item *Object) {
-	if session == nil || item == nil {
-		return
+func shopDefinitions5103A0(session *TradeSession) (*ShopkeeperInitData, []ShopkeeperItemDefinition) {
+	if session == nil {
+		return nil, nil
 	}
 	merchant := session.Field8
-	if merchant != nil && merchant.Class().Has(object.ClassPlayer) {
+	if merchant.Class().Has(object.ClassPlayer) {
 		merchant = session.Field12
 	}
 	if merchant == nil || merchant.InitData == nil {
-		return
+		return nil, nil
 	}
 	idata := merchant.InitDataShopkeeper()
-	count := int(idata.Count)
-	if count > len(idata.Items) {
-		count = len(idata.Items)
+	return idata, idata.Items[:min(int(idata.Count), len(idata.Items))]
+}
+
+func (s *Server) indexShopDefinition5103A0(items []ShopkeeperItemDefinition, item *Object) int {
+	for i := range items {
+		if s.ShopDefinitionMatchesItemNative5103F0(item, &items[i]) {
+			return i
+		}
 	}
-	for i := 0; i < count; i++ {
-		def := &idata.Items[i]
-		if !s.shopDefinitionMatchesItem5103F0(item, def) {
-			continue
-		}
-		def.Count--
-		if def.Count != 0 {
-			return
-		}
-		copy(idata.Items[i:count-1], idata.Items[i+1:count])
-		idata.Items[count-1] = ShopkeeperItemDefinition{}
-		idata.Count--
+	return -1
+}
+
+// IndexShopDefinitionNative5103A0 finds the first matching merchant record.
+func (s *Server) IndexShopDefinitionNative5103A0(session *TradeSession, item *Object) int {
+	_, items := shopDefinitions5103A0(session)
+	return s.indexShopDefinition5103A0(items, item)
+}
+
+// DecrementShopDefinitionNative510320 removes a depleted record from the
+// active stock, retaining the original bytes beyond the new count.
+func (s *Server) DecrementShopDefinitionNative510320(session *TradeSession, item *Object) {
+	if item == nil {
 		return
+	}
+	idata, items := shopDefinitions5103A0(session)
+	i := s.indexShopDefinition5103A0(items, item)
+	if i < 0 {
+		return
+	}
+	items[i].Count--
+	if items[i].Count == 0 {
+		copy(items[i:], items[i+1:])
+		idata.Count--
 	}
 }
 
@@ -795,7 +813,7 @@ func (s *Server) BuyShopItemNative5100C0(
 		}
 		runtime.CallPickup(playerUnit, purchased)
 	}
-	s.decrementShopDefinition510320(session, item)
+	s.DecrementShopDefinitionNative510320(session, item)
 	if !persistent {
 		if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
 			if runtime.SendItemRemoved != nil {
@@ -882,7 +900,7 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 			}
 			runtime.PutInventory(playerUnit, purchased)
 		}
-		s.decrementShopDefinition510320(session, item)
+		s.DecrementShopDefinitionNative510320(session, item)
 		if !persistent {
 			if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
 				if runtime.SendItemRemoved != nil {

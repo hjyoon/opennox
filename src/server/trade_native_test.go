@@ -570,11 +570,11 @@ func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
 	}}
 	weapon := &Object{TypeInd: 11, ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(attrs)}
 	weaponDef := ShopkeeperItemDefinition{TypeInd: 11, ModifierSlots: [4]uint32{slot0, 0, slot7, 0}}
-	if !s.shopDefinitionMatchesItem5103F0(weapon, &weaponDef) {
+	if !s.ShopDefinitionMatchesItemNative5103F0(weapon, &weaponDef) {
 		t.Fatal("matching modifier-bearing weapon definition was rejected")
 	}
 	weaponDef.ModifierSlots[2] = slot0
-	if s.shopDefinitionMatchesItem5103F0(weapon, &weaponDef) {
+	if s.ShopDefinitionMatchesItemNative5103F0(weapon, &weaponDef) {
 		t.Fatal("mismatched modifier-bearing weapon definition was accepted")
 	}
 
@@ -585,8 +585,8 @@ func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
 		ObjSubClass: object.SubClass(object.BookSpell),
 		UseData:     UseDataPtr{Ptr: unsafe.Pointer(spellData)},
 	}
-	if !s.shopDefinitionMatchesItem5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 9}) ||
-		s.shopDefinitionMatchesItem5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 8}) {
+	if !s.ShopDefinitionMatchesItemNative5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 9}) ||
+		s.ShopDefinitionMatchesItemNative5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 8}) {
 		t.Fatal("spell reward parameter matching is not exact")
 	}
 
@@ -597,8 +597,8 @@ func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
 		ObjSubClass: object.SubClass(object.BookAbility),
 		UseData:     UseDataPtr{Ptr: unsafe.Pointer(abilityData)},
 	}
-	if !s.shopDefinitionMatchesItem5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 4}) ||
-		s.shopDefinitionMatchesItem5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 3}) {
+	if !s.ShopDefinitionMatchesItemNative5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 4}) ||
+		s.ShopDefinitionMatchesItemNative5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 3}) {
 		t.Fatal("ability reward parameter matching is not exact")
 	}
 
@@ -610,8 +610,8 @@ func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
 		ObjSubClass: object.SubClass(object.BookFieldGuide),
 		UseData:     UseDataPtr{Ptr: unsafe.Pointer(guideData)},
 	}
-	if !s.shopDefinitionMatchesItem5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 5}) ||
-		s.shopDefinitionMatchesItem5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 4}) {
+	if !s.ShopDefinitionMatchesItemNative5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 5}) ||
+		s.ShopDefinitionMatchesItemNative5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 4}) {
 		t.Fatal("field guide creature matching is not exact")
 	}
 }

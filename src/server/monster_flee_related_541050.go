@@ -30,7 +30,7 @@ func monsterFleeCastRelated541050(unit *Object, hooks monsterFightSpellHooks540B
 		return false
 	}
 	for _, id := range candidates {
-		if monsterFightHasSpellEnchant540CE0(unit, id) {
+		if MonsterHasSpellEnchant540CE0(unit, id) {
 			return false
 		}
 	}

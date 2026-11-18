@@ -38,11 +38,11 @@ func monsterFightSpellFlag540B90(update *MonsterUpdateData, id spell.ID) uint32 
 	return unsafe.Slice(&update.Field373, SpellsMax-1)[int(id)-1]
 }
 
-func monsterFightSpellIsSummon540D20(id spell.ID) bool {
+func MonsterSpellIsSummon540D20(id spell.ID) bool {
 	return id >= monsterFightFirstSummonSpell540D20 && id <= monsterFightLastSummonSpell540D20
 }
 
-func monsterFightHasSpellEnchant540CE0(unit *Object, id spell.ID) bool {
+func MonsterHasSpellEnchant540CE0(unit *Object, id spell.ID) bool {
 	for enchant := EnchantID(0); enchant < 32; enchant++ {
 		if enchant.Spell() == id {
 			return unit.HasEnchant(enchant)
@@ -96,7 +96,7 @@ func monsterFightBuffSelf540B90(unit *Object, hooks monsterFightSpellHooks540B90
 		return false
 	}
 	for _, id := range candidates {
-		if monsterFightHasSpellEnchant540CE0(unit, id) {
+		if MonsterHasSpellEnchant540CE0(unit, id) {
 			return false
 		}
 	}
@@ -146,14 +146,14 @@ func monsterFightCastRelated540D90(unit, target *Object, hooks monsterFightSpell
 	}
 	allSummons := true
 	for _, id := range candidates {
-		if !monsterFightSpellIsSummon540D20(id) {
+		if !MonsterSpellIsSummon540D20(id) {
 			allSummons = false
 			break
 		}
 	}
 	for {
 		id := candidates[hooks.random(0, len(candidates)-1)]
-		if monsterFightSpellIsSummon540D20(id) {
+		if MonsterSpellIsSummon540D20(id) {
 			if hooks.activeSummon(unit) {
 				if allSummons {
 					return false

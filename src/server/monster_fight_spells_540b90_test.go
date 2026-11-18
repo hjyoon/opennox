@@ -51,7 +51,7 @@ func TestMonsterFightSpellIsSummon540D20InclusiveBounds(t *testing.T) {
 		{id: 115, want: false},
 		{id: spell.SPELL_SUMMON_CREATURE, want: false},
 	} {
-		if got := monsterFightSpellIsSummon540D20(tc.id); got != tc.want {
+		if got := MonsterSpellIsSummon540D20(tc.id); got != tc.want {
 			t.Errorf("spell %d summon = %t, want %t", tc.id, got, tc.want)
 		}
 	}

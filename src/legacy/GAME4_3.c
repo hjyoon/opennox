@@ -5082,7 +5082,7 @@ int nox_xxx_monsterBuffSelf_540B90(int a1) {
 		v7 = v12;
 		while (1) {
 			v8 = a1;
-			if (sub_540CE0(a1, *v7)) {
+			if (sub_540CE0((nox_object_t*)(uintptr_t)(uint32_t)a1, *v7)) {
 				return 0;
 			}
 			++v6;
@@ -5101,44 +5101,6 @@ LABEL_17:
 	return 1;
 }
 // 540B90: using guessed type int var_224[137];
-
-//----- (00540CE0) --------------------------------------------------------
-int sub_540CE0(int a1, int a2) {
-	int i;      // esi
-	int result; // eax
-
-	for (i = 0; i < 32; ++i) {
-		if (nox_xxx_getEnchantSpell_424920(i) == a2) {
-			break;
-		}
-	}
-	if (i == 32) {
-		result = 0;
-	} else {
-		result = nox_xxx_testUnitBuffs_4FF350(a1, i);
-	}
-	return result;
-}
-
-//----- (00540D20) --------------------------------------------------------
-int sub_540D20(int a1) { return a1 >= 75 && a1 <= 114; }
-
-//----- (00540D40) --------------------------------------------------------
-int sub_540D40(int a1) {
-	int v1; // esi
-
-	v1 = nox_xxx_spellCastedFirst_4FE930();
-	if (!v1) {
-		return 0;
-	}
-	while (!sub_540D20(*(uint32_t*)(v1 + 4)) || *(uint32_t*)(v1 + 16) != a1) {
-		v1 = nox_xxx_spellCastedNext_4FE940(v1);
-		if (!v1) {
-			return 0;
-		}
-	}
-	return 1;
-}
 
 //----- (00540D90) --------------------------------------------------------
 int nox_xxx_mobCastRelated2_540D90(int a1, int a2) {
@@ -5181,7 +5143,7 @@ int nox_xxx_mobCastRelated2_540D90(int a1, int a2) {
 					v7 = nox_common_randomInt_415FA0(0, v2 - 1);
 					v8 = v13[v7];
 					if (sub_540D20(v13[v7])) {
-						if (sub_540D40(a1)) {
+						if (sub_540D40((nox_object_t*)(uintptr_t)(uint32_t)a1)) {
 							if (v11) {
 								return 0;
 							}
@@ -5297,7 +5259,7 @@ int nox_xxx_mobCastRelated_541050(int a1) {
 		v7 = v12;
 		while (1) {
 			v8 = a1;
-			if (sub_540CE0(a1, *v7)) {
+			if (sub_540CE0((nox_object_t*)(uintptr_t)(uint32_t)a1, *v7)) {
 				return 0;
 			}
 			++v6;

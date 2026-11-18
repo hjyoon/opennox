@@ -82,6 +82,80 @@ Their SHA-256 values are
 `3c95f74ee2bceceef4e45f246586897c7929ec0b233057f55ec2592c26a50cf9`
 and `0d429fd70d418e5365143549322169d669c3ea6aaf8ebc16f26a6ecdb1229780`.
 
+### Native monster hunt and weapon search, 2026-11-19
+
+Engine `137f49a61c85e1dbb0fc8b0789a7954f4753e13c` ports
+`5449D0`, `544AE0` and `544B20`. Hunt returns the live ROAM action
+record. The weapon search and its callback keep the winner at native
+pointer width and share the stock x87 distance and binary32 store
+with the Go action. Default macOS ARM64 preprocessing reports 152
+active bodies in `GAME4_3.c` before this change and 149 afterward.
+
+Original execution covers all 209 routine bytes across 240 cases.
+A second original run exercises the two candidates from the prior
+binary32-store test. Startup control word `0xe3f` retains the first
+candidate. The nearest-rounding control selects the second. The test
+keeps its inputs and now expects the startup result.
+
+Normal and cgocheck2 focused suites each pass 22,966 events, including
+direct and indirect C calls with native records. The first normal
+root link and two strict links exhaust disk during compilation or
+linking. The normal root retry and successful serial strict runs
+omit test DWARF. The failure logs and the previous rounding test
+expectation remain in the receipt directory.
+
+The local receipt
+`opennox-verification/20261118-trade/monster-hunt-weapon-search-native-v1/local-hunt-weapon-C-qualification-v1.json`
+has SHA-256 `f6f62155f3b84bad498aae95e222bef5bd735fdefc58b150cfa41916ff516984`.
+
+### Native vitals and the connection mode, 2026-11-19
+
+Engine `322f828b4643c1c77ca4d4e14b1349a469ad471b` ports
+`4D8670`, `4D86E0` and `528030`. Health senders accept native
+object and player records. The throttled path preserves the stock
+packet widths, health and mana caches, and frame thresholds.
+Original execution covers 551 bytes across 272 cases. The final
+foreign-memory fixture in `134cd60b4999cf9c3bc398966c014e3de09c7556`
+passes 22,751 focused events in each macOS profile.
+
+Linux runs `44360894262` and `44362536230` report failures. The
+GAME1 server-HD archive and a macOS reproduction identify
+`TestCodeStatic` rejecting the raw access to the registered word at
+`0059C56C`. Original execution verifies the 30-byte setter and reader
+pair at `43AF50` and `43AF70` across eight mode values and the startup
+mode 2. The WOL predicate is set only for mode 1.
+
+Engine `42891b8a1e1a2bb7e59b5f19908af39437ea8b07` reads the existing
+Go-owned connection mode from the report path and initializes it to
+2. The report test drives the real connection setter. The macOS
+cgocheck2 root and memmap suites pass 450 focused events, including
+the previously failing static check.
+
+The earlier macOS vitals receipt
+`opennox-verification/20261118-trade/player-vital-throttled-native-v1/local-player-vitals-C-qualification-v1.json`
+has SHA-256 `39e1b463e6e174e1cb79b505c17bd15d9d2fbe9489e89f43674cf1a2260f80dc`.
+
+### Public GAME1 C entries, 2026-11-19
+
+Engine `55a86d9e1e85efee45006404fa3d416a76effef7` moves
+`4117E0`, `413420`, `4174F0`, `417680`, `417AA0` and `417B80`
+into Go with their C argument types. The item report keeps the
+read-only byte pointer type. The default macOS ARM64 Clang AST
+shows six active function bodies in `GAME1.c` before the port and
+zero afterward. The unit still supplies its native data definitions.
+
+The normal and cgocheck2 suites each pass 22,754 focused events with
+zero compiler warnings. All four ARM64 products pass metadata,
+help and 244 symbol checks. Ten normal and HD OpenAL null-output
+scenarios pass, covering equipment colors, the player enchantment
+and armor reports, Quest key reports, and the stock Warrior chapter 1
+FireKnightGuard4 equipment. All 4,649 original asset and Save
+hashes match after the runs.
+
+The product and runtime receipt
+`opennox-verification/20261118-trade/game1-public-entry-bridges-v1/qualified-GAME1-public-entry-ARM64-runtime-v1.json`
+has SHA-256 `8140bde5858cee20b7fcfba4b1b32c986c300e36b372bf2d12ab497b3096046e`.
+
 ### Native player self-report and key packets, 2026-11-19
 
 Engine `b8334639ed7a6ab975941a3dd066649b9240dfdb` ports `4D9900`,
@@ -99,7 +173,8 @@ strict cgo checks each pass 22,204 focused events with zero compiler
 warnings. Disk exhaustion interrupted the initial strict root link
 after 21,784 legacy and server events. The root-only strict retry
 passes the remaining 420 events.
-Linux run `44356445418` and Windows run `44356257736` track this source.
+All four Linux jobs in `44356445418` and both Windows jobs in
+`44356257736` succeed on this source.
 
 The local receipt
 `opennox-verification/20261118-trade/player-self-report-native-v1/local-player-report-C-qualification-v1.json`
@@ -118,13 +193,25 @@ item-use inputs and 72 pickup rejection and pop inputs. The focused
 normal and strict suites each pass 21,170 events with zero compiler
 warnings. The same compiler check reports three format warnings in
 `GAME4_3.c` before the correction and zero afterward. Linux run
-`44353686595` and Windows run `44353465803` track this source.
+`44353686595` and Windows run `44353465803` pass all six jobs.
 
 All four ARM64 products pass metadata, help and 231 symbol checks.
 Disk exhaustion interrupts the first high-resolution server build.
 The targeted retry succeeds and the other three binaries retain
 their recorded hashes. All 4,649 original asset and Save hashes
 match before running the OpenAL scenarios.
+
+The normal and HD products pass six OpenAL runtime scenarios for
+item use, pickup, periodic RETREAT food selection and the Conjurer
+chapter 2 Mystic shop. A passive Troll case reaches the same
+600-tick timeout on the parent and this revision in both profiles.
+Each profile matches 240 normalized frames. The high-resolution
+shop retry succeeds on a free port after the first run cannot bind.
+These runs preserve the existing tracked RETREAT action after arrival.
+
+The bounded runtime receipt
+`opennox-verification/20261118-trade/item-use-monster-pickup-native-v1/item-use-pickup-bounded-macOS-runtime-v1.json`
+has SHA-256 `aa90e32afeeccff1fcc5bb4ce80e5b37486eb14add5839d55db0a6d8093af637`.
 
 The local receipt
 `opennox-verification/20261118-trade/item-use-monster-pickup-native-v1/local-item-use-pickup-C-qualification-v1.json`
@@ -161,7 +248,11 @@ checks and four OpenAL null-device sale scenarios.
 Linux run `44346612740` succeeds and Windows/386 passes in run
 `44346427225`. Windows/amd64 attempt 1 stops in three test packages.
 The exact failed ZIP, log and runtime stack excerpts are retained.
-The Windows/amd64 retry request starts attempt 2 on the same revision.
+The targeted Windows/amd64 job succeeds in attempt 2 on the same
+revision. The original Windows/386 success stays in the qualification
+record. Both Windows archives and the Linux server-HD archive have
+been downloaded and checked against their exact revisions and test
+identities.
 
 The macOS receipt
 `opennox-verification/20261118-trade/trade-cancel-cache-native-v1/qualified-macOS-trade-cancel-cache-products-v1.json`

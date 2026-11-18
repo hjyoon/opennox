@@ -52,8 +52,8 @@ func asPlayerS(p *nox_playerInfo) *server.Player {
 	return (*server.Player)(unsafe.Pointer(p))
 }
 
-//export nox_server_needPlayerStatus_4174F0
-func nox_server_needPlayerStatus_4174F0(player *nox_playerInfo, mask C.int) C.int {
+//export nox_xxx_netNeedTimestampStatus_4174F0
+func nox_xxx_netNeedTimestampStatus_4174F0(player *nox_playerInfo, mask C.int) C.int {
 	return C.int(GetServer().S().NeedPlayerStatus4174F0(asPlayerS(player), uint32(mask)))
 }
 

@@ -11,7 +11,6 @@ package legacy
 #include "GAME4.h"
 extern uint32_t nox_tile_def_cnt;
 extern uint32_t dword_5d4594_251572;
-int32_t nox_xxx_checkFacade_native_4117E0(char* name);
 int nox_free_tile_defs();
 int sub_485F30();
 */
@@ -57,12 +56,12 @@ func sub_42BFE0() { Sub_42BFE0() }
 //export sub_4E3AD0
 func sub_4E3AD0(ind_cgo int32) int32 { ind := int(ind_cgo); return int32(Sub_4E3AD0(ind)) }
 
-//export nox_xxx_checkFacade_native_4117E0
-func nox_xxx_checkFacade_native_4117E0(name *C.char) int32 {
-	if name == nil {
+//export nox_xxx_checkFacade_4117E0
+func nox_xxx_checkFacade_4117E0(tile *C.nox_tileDef_t) C.int {
+	if tile == nil {
 		return 0
 	}
-	want := alloc.GoString((*byte)(unsafe.Pointer(name)))
+	want := alloc.GoString((*byte)(unsafe.Pointer(&tile.name[0])))
 	for off := uintptr(26488); ; off += 4 {
 		p := *memmap.PtrPtr(0x587000, off)
 		if p == nil {

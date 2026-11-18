@@ -1,15 +1,11 @@
 package legacy
 
 /*
-#include <stdint.h>
+#include "GAME1.h"
 */
 import "C"
 
-import (
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/server"
-)
+import "github.com/opennox/opennox/v1/server"
 
 func dispatchClientPlayerRespawn417680(
 	player *server.Player,
@@ -19,10 +15,10 @@ func dispatchClientPlayerRespawn417680(
 	respawn(player, equipmentMask)
 }
 
-//export nox_xxx_cliPlayerRespawn_native_417680
-func nox_xxx_cliPlayerRespawn_native_417680(player unsafe.Pointer, equipmentMask C.uint8_t) {
+//export nox_xxx_cliPlayerRespawn_417680
+func nox_xxx_cliPlayerRespawn_417680(player *nox_playerInfo, equipmentMask C.uint8_t) {
 	dispatchClientPlayerRespawn417680(
-		(*server.Player)(player),
+		asPlayerS(player),
 		uint8(equipmentMask),
 		GetServer().S().ClientPlayerRespawn417680,
 	)

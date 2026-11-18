@@ -38,8 +38,8 @@ var itemEnchantmentIconCall413420 = func(flag byte) unsafe.Pointer {
 	return itemEnchantmentIcon413420(flag, itemEnchantmentIconNativeHooks413420())
 }
 
-//export nox_item_enchantment_icon_native_413420
-func nox_item_enchantment_icon_native_413420(flag C.uchar) *nox_video_bag_image_t {
+//export sub_413420
+func sub_413420(flag C.char) *nox_video_bag_image_t {
 	return (*nox_video_bag_image_t)(itemEnchantmentIconCall413420(byte(flag)))
 }
 

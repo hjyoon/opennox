@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include <stdint.h>
+#include "GAME1.h"
 */
 import "C"
 
@@ -19,8 +19,8 @@ func clientDequipPlayerNative417B80(player *server.Player, opcode byte, itemType
 	return server.ClientDequipPlayerNative417B80(player, opcode == 84, itemType)
 }
 
-//export nox_xxx_clientEquipPlayer_native_417AA0
-func nox_xxx_clientEquipPlayer_native_417AA0(opcode C.uint8_t, playerID C.int, itemType C.uint32_t, modifierIDs *C.uint8_t) unsafe.Pointer {
+//export nox_xxx_clientEquipWeaponArmor_417AA0
+func nox_xxx_clientEquipWeaponArmor_417AA0(opcode C.uint8_t, playerID C.int, itemType C.uint32_t, modifierIDs C.nox_equipment_modifier_ids) *nox_playerInfo {
 	player := GetServer().S().Players.ByID(int(playerID))
 	if player == nil {
 		return nil
@@ -34,14 +34,14 @@ func nox_xxx_clientEquipPlayer_native_417AA0(opcode C.uint8_t, playerID C.int, i
 			}
 		}
 	}
-	return clientEquipPlayerNative417AA0(player, byte(opcode), uint32(itemType), modifiers).C()
+	return (*nox_playerInfo)(clientEquipPlayerNative417AA0(player, byte(opcode), uint32(itemType), modifiers).C())
 }
 
-//export nox_xxx_clientDequipPlayer_native_417B80
-func nox_xxx_clientDequipPlayer_native_417B80(opcode C.uint8_t, playerID C.int, itemType C.uint32_t) unsafe.Pointer {
+//export sub_417B80
+func sub_417B80(opcode C.uint8_t, playerID C.int, itemType C.uint32_t) *nox_playerInfo {
 	player := GetServer().S().Players.ByID(int(playerID))
 	if player == nil {
 		return nil
 	}
-	return clientDequipPlayerNative417B80(player, byte(opcode), uint32(itemType)).C()
+	return (*nox_playerInfo)(clientDequipPlayerNative417B80(player, byte(opcode), uint32(itemType)).C())
 }

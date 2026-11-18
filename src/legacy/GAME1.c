@@ -1215,9 +1215,11 @@ int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {
 // 411540: using guessed type char var_20[32];
 
 //----- (004117E0) --------------------------------------------------------
+#if 0 // The native Go entry owns the public tile-pointer ABI.
 int nox_xxx_checkFacade_4117E0(nox_tileDef_t* tile) {
 	return nox_xxx_checkFacade_native_4117E0(&tile->name[0]);
 }
+#endif
 
 //----- (00411850) --------------------------------------------------------
 #if 0 // Exact former C body; native Go non-sub entry owns this symbol.
@@ -1349,10 +1351,12 @@ int sub_4133D0(nox_object_t* a1p) {
 #endif
 
 //----- (00413420) --------------------------------------------------------
+#if 0 // The native Go entry accepts the original char argument directly.
 extern nox_video_bag_image_t* nox_item_enchantment_icon_native_413420(uint8_t flag);
 nox_video_bag_image_t* sub_413420(char a1) {
 	return nox_item_enchantment_icon_native_413420((uint8_t)a1);
 }
+#endif
 
 //----- (004134D0) --------------------------------------------------------
 #if 0 // Original C body retained; native Go entry uses the unchanged public ABI.
@@ -2444,9 +2448,11 @@ char* nox_xxx_netMarkMinimapForAll_4174B0(nox_object_t* a1, int a2) {
 #endif // native non-sub port
 
 //----- (004174F0) --------------------------------------------------------
+#if 0 // The native Go status entry accepts nox_playerInfo directly.
 int nox_xxx_netNeedTimestampStatus_4174F0(nox_playerInfo* a1p, int a2) {
 	return nox_server_needPlayerStatus_4174F0(a1p, a2);
 }
+#endif
 
 //----- (00417530) --------------------------------------------------------
 #if 0 // Exact former C body; native Go non-sub entry owns this symbol.
@@ -2517,6 +2523,7 @@ int nox_xxx_netReportPlayerStatus_417630(nox_playerInfo* pl) {
 #endif // native non-sub port
 
 //----- (00417680) --------------------------------------------------------
+#if 0 // The native Go entries own the public respawn and equipment ABIs.
 extern void nox_xxx_cliPlayerRespawn_native_417680(void* player, uint8_t equipment_mask);
 void nox_xxx_cliPlayerRespawn_417680(nox_playerInfo* player, uint8_t equipment_mask) {
 	nox_xxx_cliPlayerRespawn_native_417680(player, equipment_mask);
@@ -2539,6 +2546,7 @@ extern void* nox_xxx_clientDequipPlayer_native_417B80(uint8_t opcode, int player
 nox_playerInfo* sub_417B80(uint8_t opcode, int player_net_code, uint32_t item_type) {
 	return (nox_playerInfo*)nox_xxx_clientDequipPlayer_native_417B80(opcode, player_net_code, item_type);
 }
+#endif
 
 //----- (00417CF0) --------------------------------------------------------
 #if 0 // Exact former C body; native Go algorithm through unchanged public ABI.

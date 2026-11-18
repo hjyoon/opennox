@@ -15,6 +15,11 @@ func netFXTruncateSignedDWORD419A70(value float32) int32 {
 	return int32(value)
 }
 
+// X87TruncateSignedDWORD419A70 applies the stock startup FISTP conversion.
+func X87TruncateSignedDWORD419A70(value float32) int32 {
+	return netFXTruncateSignedDWORD419A70(value)
+}
+
 // netFXPointSignedDWORD419A70 preserves the original signed-DWORD endpoints
 // used by both the ray packet fields and its viewport filter.
 func netFXPointSignedDWORD419A70(pos types.Pointf) types.Point {

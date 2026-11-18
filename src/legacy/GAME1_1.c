@@ -3678,60 +3678,6 @@ unsigned char* sub_421F10(int* a1, int a2) {
 // 421F64: variable 'v3' is possibly undefined
 // 421FBE: variable 'v7' is possibly undefined
 
-//----- (00421FF0) --------------------------------------------------------
-void nox_xxx_monsterPolygonEnter_421FF0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int* v1;           // ebp
-	int v2;            // eax
-	float v3;          // ecx
-	uint32_t* v4;      // eax
-	int v5;            // ecx
-	uint32_t* v6;      // edi
-	int v7;            // ecx
-	int v8;            // ecx
-	unsigned char* v9; // eax
-	int2 v10;          // [esp+Ch] [ebp-8h]
-
-	v1 = *(int**)(a1 + 748);
-	if (a1 && *(uint8_t*)(a1 + 8) & 2 &&
-		(*v1 == -559023410 || *(float*)(a1 + 56) != *(float*)(a1 + 72) || *(float*)(a1 + 60) != *(float*)(a1 + 76))) {
-		v2 = nox_float2int(*(float*)(a1 + 56));
-		v3 = *(float*)(a1 + 60);
-		v10.field_0 = v2;
-		v10.field_4 = nox_float2int(v3);
-		if (*v1 == -559023410) {
-			v4 = nox_xxx_polygonIsPlayerInPolygon_4217B0(&v10, 0);
-		} else {
-			v4 = sub_421F10(&v10.field_0, *v1);
-		}
-		v5 = *v1;
-		v6 = v4;
-		if (v4) {
-			if (v5 != v4[20]) {
-				if (v5 != -559023410) {
-					if (v5) {
-						v7 = 35 * v5;
-						if (*getMemIntPtr(0x5D4594, 552352 + 4 * v7) != -1) {
-							nox_xxx_scriptCallByEventBlock_502490(getMemIntPtr(0x5D4594, 552348 + 4 * v7), a1, 0, 26);
-						}
-					}
-					if (v6[29] != -1) {
-						nox_xxx_scriptCallByEventBlock_502490(v6 + 28, a1, 0, 25);
-					}
-				}
-				*v1 = v6[20];
-			}
-		} else if (v5 && v5 != -559023410) {
-			v8 = 35 * v5;
-			v9 = getMemAt(0x5D4594, 552228 + 4 * v8);
-			if (*getMemU32Ptr(0x5D4594, 552312 + 4 * v8) && *((int*)v9 + 31) != -1) {
-				nox_xxx_scriptCallByEventBlock_502490((int*)v9 + 30, a1, 0, 24);
-			}
-			*v1 = 0;
-		}
-	}
-}
-
 //----- (00422140) --------------------------------------------------------
 #if 0 // Native pointers and field layout: player_marker_movable_native_exports.go:sub_422140
 int sub_422140(int a1) {

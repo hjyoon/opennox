@@ -1,18 +1,16 @@
-package opennox
+package legacy
 
 import (
 	"testing"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/types"
 
-	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
 type monsterPolygonCallback421FF0 struct {
-	polygon *legacy.Nox_player_polygon_check_data
+	polygon *Nox_player_polygon_check_data
 	word    int
 	event   server.ScriptEventType
 }
@@ -26,19 +24,19 @@ func monsterPolygonTestUnit421FF0(current uint32) *server.Object {
 }
 
 func TestMonsterPolygonEnterNative421FF0Initial(t *testing.T) {
-	unit := monsterPolygonTestUnit421FF0(playerPolygonUninitialized421C70)
-	polygon := &legacy.Nox_player_polygon_check_data{}
+	unit := monsterPolygonTestUnit421FF0(monsterPolygonUninitialized421FF0)
+	polygon := &Nox_player_polygon_check_data{}
 	polygon.Field_0[20] = 7
 	var callbacks []monsterPolygonCallback421FF0
-	monsterPolygonEnterNative421FF0(unit, monsterPolygonHooks421FF0{
-		find: func(_ types.Pointf, previous uint32) *legacy.Nox_player_polygon_check_data {
-			if previous != playerPolygonUninitialized421C70 {
+	MonsterPolygonTransition421FF0(unit, MonsterPolygonRuntime421FF0{
+		Find: func(_ [2]int32, previous uint32) *Nox_player_polygon_check_data {
+			if previous != monsterPolygonUninitialized421FF0 {
 				t.Fatalf("previous = %#x", previous)
 			}
 			return polygon
 		},
-		byID: func(uint32) *legacy.Nox_player_polygon_check_data { return nil },
-		callback: func(p *legacy.Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
+		ByID: func(uint32) *Nox_player_polygon_check_data { return nil },
+		Callback: func(p *Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
 			callbacks = append(callbacks, monsterPolygonCallback421FF0{polygon: p, word: word, event: event})
 		},
 	})
@@ -53,21 +51,21 @@ func TestMonsterPolygonEnterNative421FF0Initial(t *testing.T) {
 func TestMonsterPolygonEnterNative421FF0Transition(t *testing.T) {
 	unit := monsterPolygonTestUnit421FF0(2)
 	unit.PosVec.X = 2
-	old := &legacy.Nox_player_polygon_check_data{}
+	old := &Nox_player_polygon_check_data{}
 	old.Field_0[31] = 1
-	next := &legacy.Nox_player_polygon_check_data{}
+	next := &Nox_player_polygon_check_data{}
 	next.Field_0[20] = 3
 	next.Field_0[29] = 1
 	var callbacks []monsterPolygonCallback421FF0
-	monsterPolygonEnterNative421FF0(unit, monsterPolygonHooks421FF0{
-		find: func(types.Pointf, uint32) *legacy.Nox_player_polygon_check_data { return next },
-		byID: func(id uint32) *legacy.Nox_player_polygon_check_data {
+	MonsterPolygonTransition421FF0(unit, MonsterPolygonRuntime421FF0{
+		Find: func([2]int32, uint32) *Nox_player_polygon_check_data { return next },
+		ByID: func(id uint32) *Nox_player_polygon_check_data {
 			if id == 2 {
 				return old
 			}
 			return nil
 		},
-		callback: func(p *legacy.Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
+		Callback: func(p *Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
 			callbacks = append(callbacks, monsterPolygonCallback421FF0{polygon: p, word: word, event: event})
 		},
 	})
@@ -91,14 +89,14 @@ func TestMonsterPolygonEnterNative421FF0Transition(t *testing.T) {
 func TestMonsterPolygonEnterNative421FF0Exit(t *testing.T) {
 	unit := monsterPolygonTestUnit421FF0(4)
 	unit.PosVec.Y = 1
-	old := &legacy.Nox_player_polygon_check_data{}
+	old := &Nox_player_polygon_check_data{}
 	old.Field_0[21] = 1
 	old.Field_0[31] = 1
 	var callbacks []monsterPolygonCallback421FF0
-	monsterPolygonEnterNative421FF0(unit, monsterPolygonHooks421FF0{
-		find: func(types.Pointf, uint32) *legacy.Nox_player_polygon_check_data { return nil },
-		byID: func(uint32) *legacy.Nox_player_polygon_check_data { return old },
-		callback: func(p *legacy.Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
+	MonsterPolygonTransition421FF0(unit, MonsterPolygonRuntime421FF0{
+		Find: func([2]int32, uint32) *Nox_player_polygon_check_data { return nil },
+		ByID: func(uint32) *Nox_player_polygon_check_data { return old },
+		Callback: func(p *Nox_player_polygon_check_data, word int, _ *server.Object, event server.ScriptEventType) {
 			callbacks = append(callbacks, monsterPolygonCallback421FF0{polygon: p, word: word, event: event})
 		},
 	})

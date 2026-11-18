@@ -669,8 +669,7 @@ func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {
 		SetHealth:         legacy.Nox_xxx_unitSetHP_4E4560,
 		ProtectGold:       legacy.Nox_xxx_protectGoldDelta_56F920,
 		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
-			packet := server.BuildShopRepairQuotePacket5108D0(item, cost)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+			s.Server.SendShopRepairQuoteNative5108D0(player, item, cost)
 		},
 		ReportHealth: func(player *server.Player, item *server.Object) {
 			packet := server.BuildShopItemHealthPacket4D87A0(item)

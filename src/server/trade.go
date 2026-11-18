@@ -898,14 +898,12 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 	return purchasedCount
 }
 
-func (s *Server) findInventoryItemByNetCode5108D0(playerUnit *Object, netCode uint16) *Object {
+func (s *Server) findInventoryItemByNetCode5108D0(playerUnit *Object, netCode uint32) *Object {
 	if playerUnit == nil {
 		return nil
 	}
 	for item := playerUnit.InvFirstItem; item != nil; item = item.InvNextItem {
-		// GAME.EXE compares the full object NetCode dword against the
-		// zero-extended uint16 request. Do not accept a matching low half.
-		if item.NetCode == uint32(netCode) {
+		if item.NetCode == netCode {
 			return item
 		}
 	}
@@ -958,7 +956,7 @@ func shopSellCandidate5109C0(
 	if !ok {
 		return nil, nil, 0, ShopSellUnsupported5109C0
 	}
-	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, uint32(netCode))
 	if item == nil {
 		return player, nil, 0, ShopSellNoItem5109C0
 	}
@@ -1104,9 +1102,23 @@ func (s *Server) QuoteShopRepairNative5108D0(
 	netCode uint16,
 	runtime ShopRepairRuntime5108D0,
 ) ShopRepairResult5108D0 {
-	if session == nil || !s.IsTradeSessionNative(session) {
+	if !s.IsTradeSessionNative(session) {
 		return ShopRepairUnsupported5108D0
 	}
+	return s.quoteShopRepair5108D0(playerUnit, session, uint32(netCode), runtime, true)
+}
+
+// QuoteShopRepairByCodeNative5108D0 accepts the full code used by the C
+// entry. A nil session prices the repair without a merchant multiplier.
+func (s *Server) QuoteShopRepairByCodeNative5108D0(
+	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopRepairRuntime5108D0,
+) ShopRepairResult5108D0 {
+	return s.quoteShopRepair5108D0(playerUnit, session, netCode, runtime, false)
+}
+
+func (s *Server) quoteShopRepair5108D0(
+	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopRepairRuntime5108D0, requireShop bool,
+) ShopRepairResult5108D0 {
 	player, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
 		return ShopRepairUnsupported5108D0
@@ -1124,12 +1136,20 @@ func (s *Server) QuoteShopRepairNative5108D0(
 		}
 		return ShopRepairNotDamaged5108D0
 	}
-	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
-	if !ok || runtime.SendQuote == nil {
+	if (requireShop && session.Field16 == 0) || runtime.SendQuote == nil {
 		return ShopRepairUnsupported5108D0
 	}
-	runtime.SendQuote(player, item, cost)
+	price, ok := shopItemCostNative50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient, s.shopItemCostRuntime50E3D0())
+	if !ok || (requireShop && price < 0) {
+		return ShopRepairUnsupported5108D0
+	}
+	runtime.SendQuote(player, item, uint32(price))
 	return ShopRepairQuoted5108D0
+}
+
+func (s *Server) SendShopRepairQuoteNative5108D0(player *Player, item *Object, cost uint32) int {
+	packet := BuildShopRepairQuotePacket5108D0(item, cost)
+	return s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
 }
 
 // RepairShopItemNative510AE0 restores the C9/1A single-item completion path
@@ -1148,7 +1168,7 @@ func (s *Server) RepairShopItemNative510AE0(
 	if !ok {
 		return ShopRepairUnsupported5108D0
 	}
-	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, uint32(netCode))
 	if item == nil {
 		return ShopRepairNoItem5108D0
 	}

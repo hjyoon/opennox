@@ -2794,6 +2794,7 @@ int sub_5103F0(int a1, int a2) {
 }
 
 //----- (005108D0) --------------------------------------------------------
+#if 0 // Restored by shop_repair_quote_native_entry.go.
 uint32_t* sub_5108D0(int a1, int a2, int a3) {
 	int v3;           // edi
 	uint32_t* result; // eax
@@ -2841,6 +2842,7 @@ uint32_t* sub_5108D0(int a1, int a2, int a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (00510AE0) --------------------------------------------------------
 #if 0 // Exact pre-native GAME4 gold consumer body; implementation is in Go.

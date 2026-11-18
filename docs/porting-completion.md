@@ -60,6 +60,51 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native trade acceptance and item transfer, 2026-11-18
+
+Engine `d7e654592a8ac973e4492b306b9f235fccd791fd` ports the `50F5A0`
+and `50F790` C entries. The C entries use native object, session and
+item-list pointers. Acceptance reports both flags, transfers both
+offers, pays Gold to the opposite player, releases both chains and
+clears the balances before refreshing the shop or closing the trade.
+The Go packet handler uses the same settlement routine for P2P trades.
+
+The original x86 runs execute 257 acceptance bytes and 95 transfer
+bytes across 120 and 48 cases, respectively. Four calls to the prior
+ARM64 C bodies reproduce pointer truncation. The direct and indirect
+C ABI tests replay 48 transfer cases and 45 acceptance cases that use
+the session combinations produced by player and shop trades. The
+tests represent rejected child insertion with an empty item. The
+original pool-allocation controls remain recorded in the x86 run.
+Both macOS profiles pass 16,733 focused test events with zero compiler
+warnings. The local receipt
+`opennox-verification/20261118-trade/trade-offer-transfer-native-v1/local-trade-offer-C-qualification-v1.json`
+has SHA-256 `6fd0be0350446478f0b4951aa988125fe21ca9527eff36234c0e14af16d92135`.
+The four ARM64 products pass metadata, help and 218 symbol checks.
+
+### Native shop construction and stock loading, 2026-11-18
+
+Engine `76fe9e146d5fa026e5de04f342f47ac8a8004a85` ports `50E870`,
+`50E8F0` and `50E970`. Allocation creates two distinct Gold objects
+and links the native session. Regular shops share the native stock
+loader. A Quest cache hit reuses its stock. The three C symbols pass
+direct and indirect calls for construction, both shop orientations,
+Quest cache reuse and standalone partial Quest stock loading.
+
+The macOS normal and strict profiles each pass 16,544 focused events
+with zero compiler warnings. Four ARM64 products pass 216 symbol checks
+and four OpenAL null-device scenarios. All 4,649 original asset and
+Save hashes match. Linux run `44295224934` and Windows run
+`44295111607` pass all six jobs. The six exact archives retain 158 test
+executables and 12 Windows/386 GC replays.
+
+The evidence directory is
+`opennox-verification/20261118-trade/shop-constructors-stock-v1`.
+The macOS product qualification has SHA-256
+`09855f20a5ed45334a56635d68a7a82ab8c2a0f060e1b21b1663d10619518bd8`.
+`qualified-shop-constructors-CI-v1.json` has SHA-256
+`6d8acbf58a1b06e021ec264f4d122960617d8f97787580d787712b9496a46209`.
+
 ### Native trade start dispatch, 2026-11-18
 
 Engine `b6ce991bb1a8cac406372e2cc15ddba12cd763c7` ports the `50EF10`
@@ -77,7 +122,12 @@ warnings. These checks include the two C call routes and a release
 during the first send. The local qualification in
 `opennox-verification/20261118-trade/trade-start-dispatch-v1/local-trade-start-dispatch-C-qualification-v1.json`
 has SHA-256 `4d85816695b85bd3f8ed9458c3ab31de2dc9a7ce3d4340776c860fcd92223e76`.
-Linux run `44291839322` and Windows run `44291724977` qualify this source.
+Four ARM64 products pass 213 symbol checks and four OpenAL null-device
+scenarios. Linux run `44291839322` and Windows run `44291724977` pass
+all six jobs. The six exact archives retain 158 test executables and
+12 Windows/386 GC replays. The same directory holds
+`qualified-trade-start-dispatch-CI-v1.json` with SHA-256
+`a8bc809c4d7e40e8dc036ab950d8834f8ff6f98159b12d72ac0d1c08407862eb`.
 
 ### Native shop close, 2026-11-18
 
@@ -120,6 +170,15 @@ comparisons still report 324,117 different live-load pixels and
 323,053 different fresh-load pixels by exact RGB channel equality.
 A one-pixel horizontal alignment removes most of the world-view
 differences. The original PNGs are retained.
+
+An isolated fresh-load build used the prior nearest-even rounding in the
+client position packet. With the same private Save and player position
+`(4543.992, 1983.225)`, the horizontal camera coordinate changed from
+`4543` to `4544` and the exact RGB difference fell from 323,053 to
+4,248 pixels. Production still uses the original packet's truncation.
+The literal PNG comparison still fails. The diagnostic receipt
+`opennox-verification/20261118-trade/save-load-camera-control-v1/fresh-camera-rounding-control-v1.json`
+has SHA-256 `11452b8068f6b74432f362b92b197dc6272cc0b78036b3eadf770c511782e541`.
 
 ### Native shop and trade start packets, 2026-11-18
 

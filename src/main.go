@@ -573,17 +573,18 @@ func sub_43DCC0() {
 		return
 	}
 	legacy.Sub_43D990()
+	if env.IsE2EVirtualTime() {
+		// The virtual clock stops at the final quit event. Close the stream
+		// so teardown can finish with a fade still pending.
+		legacy.MusicModule.Sub_43D650()
+		legacy.Set_dword_5d4594_816348(0)
+		return
+	}
 	for legacy.Get_dword_5d4594_816348() != 0 {
 		if legacy.Get_dword_5d4594_816348() == 3 {
 			legacy.MusicModule.Sub_43D650()
 			legacy.Set_dword_5d4594_816348(0)
 		}
 		noxClient.sub4312C0()
-		if env.IsE2EVirtualTime() {
-			// The deterministic E2E clock no longer advances once the quit
-			// step completes, so the throttled client update above cannot
-			// finish the pending music state transition on its own.
-			legacy.MusicModule.Update()
-		}
 	}
 }

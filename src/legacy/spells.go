@@ -461,18 +461,18 @@ func SpellShieldDestroyNative52F670(sp *server.DurSpell) int32 {
 	return int32(shieldDestroyNative52F670(sp, shieldNativeDeps()))
 }
 
-//export nox_xxx_castShield1_native_52F5A0
-func nox_xxx_castShield1_native_52F5A0(sp unsafe.Pointer) C.int {
+//export nox_xxx_castShield1_52F5A0
+func nox_xxx_castShield1_52F5A0(sp unsafe.Pointer) C.int {
 	return C.int(SpellShieldCreateNative52F5A0((*server.DurSpell)(sp)))
 }
 
-//export sub_52F650_native
-func sub_52F650_native(sp unsafe.Pointer) C.int {
+//export sub_52F650
+func sub_52F650(sp unsafe.Pointer) C.int {
 	return C.int(SpellShieldUpdateNative52F650((*server.DurSpell)(sp)))
 }
 
-//export sub_52F670_native
-func sub_52F670_native(sp unsafe.Pointer) C.int {
+//export sub_52F670
+func sub_52F670(sp unsafe.Pointer) C.int {
 	return C.int(SpellShieldDestroyNative52F670((*server.DurSpell)(sp)))
 }
 

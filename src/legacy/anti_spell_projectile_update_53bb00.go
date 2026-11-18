@@ -42,12 +42,12 @@ func antiSpellProjectileUpdateCall53BB00(missile *server.Object) {
 	server.AntiSpellProjectileUpdate53BB00(missile, antiSpellProjectileRuntime53BB00())
 }
 
-//export nox_anti_spell_update_native_53BB00
-func nox_anti_spell_update_native_53BB00(missile *nox_object_t) {
+//export nox_xxx_updateAntiSpellProj_53BB00
+func nox_xxx_updateAntiSpellProj_53BB00(missile *nox_object_t) {
 	server.AntiSpellProjectileRaw53BB00(asObjectS(missile), antiSpellProjectileRuntime53BB00())
 }
 
-//export nox_anti_spell_candidate_native_53BD10
-func nox_anti_spell_candidate_native_53BD10(candidate, missile *nox_object_t) {
+//export sub_53BD10
+func sub_53BD10(candidate, missile *nox_object_t) {
 	server.AntiSpellCandidateRaw53BD10(asObjectS(candidate), asObjectS(missile), antiSpellProjectileRuntime53BB00())
 }

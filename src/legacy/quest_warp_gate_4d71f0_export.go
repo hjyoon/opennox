@@ -86,8 +86,8 @@ func nox_xxx_questExitTimeout_native_4D71F0() C.uint {
 	return C.uint(GetServer().S().QuestExitTimeout4D71F0(questWarpGateRuntime4D71F0()))
 }
 
-//export nox_xxx_questLeaveWarpGate_native_4D7480
-func nox_xxx_questLeaveWarpGate_native_4D7480(obj *nox_object_t) {
+//export sub_4D7480
+func sub_4D7480(obj *nox_object_t) {
 	Sub_4D7480(asObjectS(obj))
 }
 

@@ -10580,29 +10580,15 @@ unsigned int nox_xxx_isObjectMovable_52E020(int a1) {
 
 
 //----- (0052E040) --------------------------------------------------------
-extern void nox_xxx_mapPushUnitsAround_native_52E040(void*, float, float, float, nox_object_t*, uintptr_t, uintptr_t);
-void nox_xxx_mapPushUnitsAround_52E040(void* origin, float outer, float inner, float force, nox_object_t* source, uintptr_t callback, uintptr_t arg) {
-	nox_xxx_mapPushUnitsAround_native_52E040(origin, outer, inner, force, source, callback, arg);
-}
 
 //----- (0052E0E0) --------------------------------------------------------
-extern void nox_xxx_unitPushAroundFn_native_52E0E0(nox_object_t*, nox_map_push_args_52E0E0*);
-void nox_xxx_unitPushAroundFn_52E0E0(nox_object_t* candidate, nox_map_push_args_52E0E0* args) {
-	nox_xxx_unitPushAroundFn_native_52E0E0(candidate, args);
-}
 
-extern int nox_xxx_castShield1_native_52F5A0(void* spell);
-extern int sub_52F650_native(void* spell);
-extern int sub_52F670_native(void* spell);
 
 //----- (0052F5A0) --------------------------------------------------------
-int nox_xxx_castShield1_52F5A0(void* a1) { return nox_xxx_castShield1_native_52F5A0(a1); }
 
 //----- (0052F650) --------------------------------------------------------
-int sub_52F650(void* a1) { return sub_52F650_native(a1); }
 
 //----- (0052F670) --------------------------------------------------------
-int sub_52F670(void* a1) { return sub_52F670_native(a1); }
 
 //----- (0052F690) --------------------------------------------------------
 void nox_xxx_unitShield_52F690(int a1, int a2) {

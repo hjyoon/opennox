@@ -2570,12 +2570,7 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 }
 
 //----- (0053A9C0) --------------------------------------------------------
-extern int nox_xxx_sendMsgOblivionPickup_53A9C0_go(
-	nox_object_t* owner, nox_object_t* item, int report, int equip_report);
 
-int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
-	return nox_xxx_sendMsgOblivionPickup_53A9C0_go(owner, item, report, equip_report);
-}
 
 //----- (0053AAB0) --------------------------------------------------------
 void sub_53AAB0(nox_object_t* item) {
@@ -2958,28 +2953,12 @@ void nox_xxx_updateLifetime_53B8F0(int unit) {
 #endif
 
 //----- (0053B940) --------------------------------------------------------
-extern void nox_spell_fly_update_native_53B940(nox_object_t* missile);
-void nox_xxx_spellFlyUpdate_53B940(nox_object_t* missile) {
- nox_spell_fly_update_native_53B940(missile);
-}
 
 //----- (0053BB00) --------------------------------------------------------
-extern void nox_anti_spell_update_native_53BB00(nox_object_t* missile);
-void nox_xxx_updateAntiSpellProj_53BB00(nox_object_t* missile) {
- nox_anti_spell_update_native_53BB00(missile);
-}
 
 //----- (0053BD10) --------------------------------------------------------
-extern void nox_anti_spell_candidate_native_53BD10(nox_object_t* candidate, nox_object_t* missile);
-void sub_53BD10(nox_object_t* candidate, nox_object_t* missile) {
- nox_anti_spell_candidate_native_53BD10(candidate, missile);
-}
 
 //----- (0053BDA0) --------------------------------------------------------
-extern int nox_magic_missile_update_native_53BDA0(nox_object_t* missile);
-int nox_xxx_updateMagicMissile_53BDA0(nox_object_t* missile) {
- return nox_magic_missile_update_native_53BDA0(missile);
-}
 
 // GAME.EXE 0053BEF0..0053C15B is retained as PE32 provenance. Live symbols
 // are native-width Go exports in pentagram_update_53bef0_export.go; the raw
@@ -3108,15 +3087,7 @@ void sub_53C140(nox_object_t* unit, void* destination) {
 #endif
 
 //----- (0053C160) --------------------------------------------------------
-extern void nox_blow_update_native_53C160(nox_object_t* source);
-void nox_xxx_updateBlow_53C160(nox_object_t* source) {
-	nox_blow_update_native_53C160(source);
-}
 
-extern void nox_blow_candidate_native_53C240(nox_object_t* candidate, nox_object_t* source);
-void sub_53C240(nox_object_t* candidate, nox_object_t* source) {
-	nox_blow_candidate_native_53C240(candidate, source);
-}
 
 #if 0 // ABI32 provenance: active entries use native pointers and Go arithmetic.
 void nox_xxx_updateBlow_53C160(int a3) {
@@ -3937,8 +3908,6 @@ int nox_xxx_updateFlag_53DDF0(nox_object_t* flag) {
 #endif
 
 //----- (0053DE80) --------------------------------------------------------
-extern void nox_trapdoor_update_native_53de80(nox_object_t* source);
-void nox_xxx_updateTrapDoor_53DE80(nox_object_t* source) { nox_trapdoor_update_native_53de80(source); }
 #if 0 // Original PE32 body retained as provenance; typed native entry above.
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {
 	int v1;      // edi
@@ -4057,8 +4026,6 @@ void nox_xxx_updateGameBall_53DF40(int a3) {
 #endif
 
 //----- (0053E190) --------------------------------------------------------
-extern void nox_undead_killer_update_native_53e190(nox_object_t* source);
-void nox_xxx_updateUndeadKiller_53E190(nox_object_t* source) { nox_undead_killer_update_native_53e190(source); }
 #if 0 // Original PE32 body retained as provenance; typed native entry above.
 void nox_xxx_updateUndeadKiller_53E190(int a1) {
 	int v1; // eax

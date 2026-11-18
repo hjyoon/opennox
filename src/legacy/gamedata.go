@@ -445,8 +445,8 @@ func nox_xxx_monsterList_517520_go() C.int {
 	return C.int(nox_xxx_monsterList_517520_native())
 }
 
-//export nox_xxx_monsterDefByTT_517560_go
-func nox_xxx_monsterDefByTT_517560_go(typ C.int) unsafe.Pointer {
+//export nox_xxx_monsterDefByTT_517560
+func nox_xxx_monsterDefByTT_517560(typ C.int) unsafe.Pointer {
 	return unsafe.Pointer(nox_xxx_monsterDefByTT_517560_native(int(typ)))
 }
 

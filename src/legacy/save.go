@@ -106,8 +106,8 @@ func Sub_41A590(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	return playerAttribReadRuntime41A590(cf, u, pinfo)
 }
 
-//export nox_xxx_playerAttribRead_native_41A590
-func nox_xxx_playerAttribRead_native_41A590(unit, info unsafe.Pointer) C.int {
+//export sub_41A590
+func sub_41A590(unit, info unsafe.Pointer) C.int {
 	err := playerAttribReadRuntime41A590(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),

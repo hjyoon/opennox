@@ -26,8 +26,8 @@ func pickupOblivionExportCall53A9C0(
 	))
 }
 
-//export nox_xxx_sendMsgOblivionPickup_53A9C0_go
-func nox_xxx_sendMsgOblivionPickup_53A9C0_go(
+//export nox_xxx_sendMsgOblivionPickup_53A9C0
+func nox_xxx_sendMsgOblivionPickup_53A9C0(
 	owner, item *C.nox_object_t,
 	arg3, arg4 C.int,
 ) C.int {

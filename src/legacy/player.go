@@ -359,8 +359,8 @@ func Get_dword_5d4594_1046492() unsafe.Pointer {
 	return unsafe.Pointer(C.dword_5d4594_1046492)
 }
 
-//export nox_xxx_playerInitColors_461460_go
-func nox_xxx_playerInitColors_461460_go(pl *nox_playerInfo) {
+//export nox_xxx_playerInitColors_461460
+func nox_xxx_playerInitColors_461460(pl *nox_playerInfo) {
 	asPlayerS(pl).InitColors()
 }
 

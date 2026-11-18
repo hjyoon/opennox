@@ -42,16 +42,16 @@ func Nox_xxx_mapPushUnitsAroundPtr52E040(pos *types.Pointf, outer, inner, force 
 	mapPushUnitsAroundCall52E040(pos, outer, inner, force, source, callback, arg)
 }
 
-//export nox_xxx_mapPushUnitsAround_native_52E040
-func nox_xxx_mapPushUnitsAround_native_52E040(pos unsafe.Pointer, outer, inner, force C.float, source *nox_object_t, callback, arg C.uintptr_t) {
+//export nox_xxx_mapPushUnitsAround_52E040
+func nox_xxx_mapPushUnitsAround_52E040(pos unsafe.Pointer, outer, inner, force C.float, source *nox_object_t, callback, arg C.uintptr_t) {
 	if pos == nil {
 		return
 	}
 	mapPushUnitsAroundCall52E040((*types.Pointf)(pos), float32(outer), float32(inner), float32(force), asObjectS(source), int(uintptr(callback)), int(uintptr(arg)))
 }
 
-//export nox_xxx_unitPushAroundFn_native_52E0E0
-func nox_xxx_unitPushAroundFn_native_52E0E0(candidate *nox_object_t, args *C.nox_map_push_args_52E0E0) {
+//export nox_xxx_unitPushAroundFn_52E0E0
+func nox_xxx_unitPushAroundFn_52E0E0(candidate *nox_object_t, args *C.nox_map_push_args_52E0E0) {
 	if candidate == nil || args == nil || args.origin == nil {
 		return
 	}

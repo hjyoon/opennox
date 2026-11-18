@@ -21,7 +21,7 @@ func questRecordDeathBridge4D6130(unit *server.Object) uintptr {
 	return uintptr(C.sub_4D6130((*C.nox_object_t)(unsafe.Pointer(unit))))
 }
 
-//export nox_server_questRecordDeath_native_4D6130
-func nox_server_questRecordDeath_native_4D6130(unit *nox_object_t) C.uintptr_t {
+//export sub_4D6130
+func sub_4D6130(unit *nox_object_t) C.uintptr_t {
 	return C.uintptr_t(uintptr(questRecordDeathCall4D6130(asObjectS(unit))))
 }

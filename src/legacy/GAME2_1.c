@@ -82,7 +82,6 @@ extern nox_window* dword_5d4594_1064860;
 extern uint32_t dword_5d4594_1096252;
 extern void* dword_5d4594_1064864;
 extern uint32_t dword_587000_136184;
-extern void nox_xxx_playerInitColors_461460_go(nox_playerInfo* pl);
 extern nox_window* dword_5d4594_1049532;
 extern uint32_t dword_5d4594_1049484;
 extern uint32_t dword_5d4594_1062516;
@@ -575,9 +574,6 @@ int sub_461440(int a1) {
 int sub_461450() { return *getMemU32Ptr(0x5D4594, 1049688); }
 
 //----- (00461460) --------------------------------------------------------
-void nox_xxx_playerInitColors_461460(nox_playerInfo* pl) {
-	nox_xxx_playerInitColors_461460_go(pl);
-}
 
 //----- (00461520) --------------------------------------------------------
 char* sub_461520() {

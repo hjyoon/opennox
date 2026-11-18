@@ -3005,13 +3005,11 @@ void sub_510E20(int a1) {
 
 //----- (00510E50) --------------------------------------------------------
 extern nox_object_t* nox_sentry_cluster_native(int kind,nox_object_t* source,nox_sentry_ray_context* context,int index);
-extern int nox_sentry_packet_native(int index,nox_object_t* source);
 void sub_510E50() { nox_sentry_cluster_native(3, 0, 0, 0); }
 void nox_xxx_updateSentryGlobe_510E60(nox_object_t* source) { nox_sentry_cluster_native(0, source, 0, 0); }
 nox_object_t* nox_xxx_sentryUpdateList_510FD0(nox_object_t* source) { return nox_sentry_cluster_native(1, source, 0, 0); }
 void nox_xxx_sentry_511020(nox_object_t* candidate,nox_sentry_ray_context* context) { nox_sentry_cluster_native(2, candidate, context, 0); }
 void sub_511100(int index) { nox_sentry_cluster_native(4, 0, 0, index); }
-int sub_511250(int index,nox_object_t* source) { return nox_sentry_packet_native(index, source); }
 #if 0 // Original PE32 bodies retained; all active entries share the native list.
 void sub_510E50() { dword_5d4594_2386564 = 0; }
 
@@ -3941,7 +3939,6 @@ void sub_516FC0() {
 extern int nox_xxx_loadMonsterBin_517010_go(void);
 extern void* nox_xxx_monsterListFree_5174F0_go(void);
 extern int nox_xxx_monsterList_517520_go(void);
-extern void* nox_xxx_monsterDefByTT_517560_go(int typ);
 
 //----- (00517010) --------------------------------------------------------
 int nox_xxx_loadMonsterBin_517010() {
@@ -4142,9 +4139,6 @@ int nox_xxx_monsterList_517520() {
 }
 
 //----- (00517560) --------------------------------------------------------
-void* nox_xxx_monsterDefByTT_517560(int a1) {
-	return nox_xxx_monsterDefByTT_517560_go(a1);
-}
 
 //----- (00518040) --------------------------------------------------------
 int sub_518040(int arg0, float a2, int arg8, int a4) {
@@ -4661,10 +4655,6 @@ int sub_519710(void* a1) {
 #endif
 
 //----- (0051A500) --------------------------------------------------------
-extern int nox_xxx_questGeneratorType_native_51A500(nox_object_t* object);
-int sub_51A500(nox_object_t* object) {
-	return nox_xxx_questGeneratorType_native_51A500(object);
-}
 
 //----- (0051A550) --------------------------------------------------------
 extern char* nox_xxx_questGeneratorTypesInit_native_51A550(void);

@@ -42,7 +42,7 @@ func magicMissileUpdateCall53BDA0(missile *server.Object) {
 	server.MagicMissileUpdate53BDA0(missile, runtime)
 }
 
-//export nox_magic_missile_update_native_53BDA0
-func nox_magic_missile_update_native_53BDA0(missile *nox_object_t) C.int {
+//export nox_xxx_updateMagicMissile_53BDA0
+func nox_xxx_updateMagicMissile_53BDA0(missile *nox_object_t) C.int {
 	return C.int(server.MagicMissileUpdateRaw53BDA0(asObjectS(missile), magicMissileUpdateRuntime53BDA0()))
 }

@@ -1564,8 +1564,6 @@ int nox_xxx_collideReflect_57B810(float* a1, int a2) {
 #endif
 
 //----- (0057B850) --------------------------------------------------------
-extern int nox_xxx_map_57B850_go(float2* source, float* shape, float2* target);
-int nox_xxx_map_57B850(float2* a1, float* a2, float2* a3) { return nox_xxx_map_57B850_go(a1, a2, a3); }
 
 //----- (0057B920) --------------------------------------------------------
 int sub_57B920(void* a1) {

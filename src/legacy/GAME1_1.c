@@ -988,11 +988,7 @@ LABEL_20:
 }
 #endif
 
-extern int nox_xxx_playerAttribRead_native_41A590(void* unit, void* info);
 
-int sub_41A590(void* unit, void* info) {
-	return nox_xxx_playerAttribRead_native_41A590(unit, info);
-}
 
 //----- (0041AA30) --------------------------------------------------------
 #if 0 // Restored by player_save_native.go with native-width player links.

@@ -74,8 +74,8 @@ func Sub_4D6000(a1 *server.Object) {
 	})
 }
 
-//export nox_xxx_resetQuestPlayer_native_4D6000
-func nox_xxx_resetQuestPlayer_native_4D6000(a1 *nox_object_t) C.int {
+//export sub_4D6000
+func sub_4D6000(a1 *nox_object_t) C.int {
 	obj := asObjectS(a1)
 	Sub_4D6000(obj)
 	return C.int(bool2int(obj != nil))
@@ -97,13 +97,13 @@ func nox_xxx_resetQuestPlayers_native_4D60B0() C.int {
 	return C.int(resetQuestPlayers4D60B0())
 }
 
-//export nox_xxx_questPlayerScore_native_4D6540
-func nox_xxx_questPlayerScore_native_4D6540(ind C.int) C.uint {
+//export sub_4D6540
+func sub_4D6540(ind C.int) C.uint {
 	return C.uint(GetServer().S().QuestPlayerScore4D6540(ntype.PlayerInd(ind), questStatsExponent4D66E0()))
 }
 
-//export nox_xxx_questScore_native_4D66E0
-func nox_xxx_questScore_native_4D66E0(generators, secrets, monsters, stage C.uint) C.int {
+//export sub_4D66E0
+func sub_4D66E0(generators, secrets, monsters, stage C.uint) C.int {
 	return C.int(int32(server.QuestScore4D66E0(
 		uint32(generators),
 		uint32(secrets),
@@ -121,8 +121,8 @@ func sendQuestStats4D6770(ind ntype.PlayerInd) int {
 	)
 }
 
-//export nox_xxx_sendQuestStats_native_4D6770
-func nox_xxx_sendQuestStats_native_4D6770(ind C.int) C.int {
+//export sub_4D6770
+func sub_4D6770(ind C.int) C.int {
 	return C.int(sendQuestStats4D6770(ntype.PlayerInd(ind)))
 }
 func Sub_4D9D20(a1 int, a2 *server.Object) {

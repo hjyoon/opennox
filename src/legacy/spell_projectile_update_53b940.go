@@ -36,7 +36,7 @@ func spellProjectileUpdateCall53B940(missile *server.Object) {
 	server.SpellProjectileUpdate53B940(missile, spellProjectileUpdateRuntime53B940())
 }
 
-//export nox_spell_fly_update_native_53B940
-func nox_spell_fly_update_native_53B940(missile *nox_object_t) {
+//export nox_xxx_spellFlyUpdate_53B940
+func nox_xxx_spellFlyUpdate_53B940(missile *nox_object_t) {
 	server.SpellProjectileUpdateRaw53B940(asObjectS(missile), spellProjectileUpdateRuntime53B940())
 }

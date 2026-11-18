@@ -35,7 +35,7 @@ func nox_sentry_cluster_native(kind C.int, source *nox_object_t, context *C.nox_
 	return nil
 }
 
-//export nox_sentry_packet_native
-func nox_sentry_packet_native(index C.int, source *nox_object_t) C.int {
+//export sub_511250
+func sub_511250(index C.int, source *nox_object_t) C.int {
 	return C.int(server.SentryGlobePacketRaw511250(int32(index), asObjectS(source), sentryGlobeRawRuntime510E60().Packet))
 }

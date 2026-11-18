@@ -29,12 +29,12 @@ var undeadKillerUpdateRawRuntime53E190 = func() server.UndeadKillerUpdateRawRunt
 	}
 }
 
-//export nox_trapdoor_update_native_53de80
-func nox_trapdoor_update_native_53de80(source *nox_object_t) {
+//export nox_xxx_updateTrapDoor_53DE80
+func nox_xxx_updateTrapDoor_53DE80(source *nox_object_t) {
 	server.TrapDoorUpdateRaw53DE80(asObjectS(source), trapDoorUpdateRawRuntime53DE80())
 }
 
-//export nox_undead_killer_update_native_53e190
-func nox_undead_killer_update_native_53e190(source *nox_object_t) {
+//export nox_xxx_updateUndeadKiller_53E190
+func nox_xxx_updateUndeadKiller_53E190(source *nox_object_t) {
 	server.UndeadKillerUpdateRaw53E190(asObjectS(source), undeadKillerUpdateRawRuntime53E190())
 }

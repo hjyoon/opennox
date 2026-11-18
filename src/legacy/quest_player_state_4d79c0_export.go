@@ -55,13 +55,13 @@ func questPlayerStateClear4D7B40() int32 {
 	return s.QuestPlayerStateClear4D7B40(questPlayerStateRuntime4D79C0())
 }
 
-//export nox_xxx_questPlayerStateRemove_native_4D79C0
-func nox_xxx_questPlayerStateRemove_native_4D79C0(unit *nox_object_t) C.int {
+//export sub_4D79C0
+func sub_4D79C0(unit *nox_object_t) C.int {
 	return C.int(questPlayerStateRemove4D79C0(asObjectS(unit)))
 }
 
-//export nox_xxx_questPlayerStateMark_native_4D7A60
-func nox_xxx_questPlayerStateMark_native_4D7A60(index C.int) C.int {
+//export sub_4D7A60
+func sub_4D7A60(index C.int) C.int {
 	return C.int(questPlayerStateMark4D7A60(int(index)))
 }
 
@@ -75,14 +75,14 @@ func nox_xxx_questPlayerStateClear_native_4D7B40() C.int {
 	return C.int(questPlayerStateClear4D7B40())
 }
 
-//export nox_xxx_netSendInterestingId_native_4D7BE0
-func nox_xxx_netSendInterestingId_native_4D7BE0(unit *nox_object_t) C.int {
+//export nox_xxx_netSendInterestingId_4D7BE0
+func nox_xxx_netSendInterestingId_4D7BE0(unit *nox_object_t) C.int {
 	GetServer().S().NetSendInterestingIDOff(asObjectS(unit))
 	return 0
 }
 
-//export nox_xxx_playerInterestingReset_native_4D7E50
-func nox_xxx_playerInterestingReset_native_4D7E50(unit *nox_object_t) C.int {
+//export sub_4D7E50
+func sub_4D7E50(unit *nox_object_t) C.int {
 	GetServer().S().Sub_4D7E50(asObjectS(unit))
 	return 0
 }
@@ -93,7 +93,7 @@ func nox_xxx_playersInterestingReset_native_4D7EA0() C.int {
 	return 0
 }
 
-//export nox_xxx_questNotifyPlayer_native_4D9D20
-func nox_xxx_questNotifyPlayer_native_4D9D20(recipient C.int, unit *nox_object_t) C.int {
+//export sub_4D9D20
+func sub_4D9D20(recipient C.int, unit *nox_object_t) C.int {
 	return C.int(GetServer().S().QuestNotifyPlayer4D9D20(int(recipient), asObjectS(unit)))
 }

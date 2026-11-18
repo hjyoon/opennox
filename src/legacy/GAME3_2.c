@@ -2779,11 +2779,7 @@ int sub_4D6000(nox_object_t* a1p) {
 }
 #endif
 
-extern int nox_xxx_resetQuestPlayer_native_4D6000(nox_object_t* unit);
 
-int sub_4D6000(nox_object_t* unit) {
-	return nox_xxx_resetQuestPlayer_native_4D6000(unit);
-}
 
 //----- (004D60B0) --------------------------------------------------------
 #if 0 // Restored by server/exit_collide_4e9090_server.go at native width.
@@ -2845,8 +2841,6 @@ uintptr_t sub_4D6130(nox_object_t* unit) {
 	return result;
 }
 #endif
-uintptr_t nox_server_questRecordDeath_native_4D6130(nox_object_t* unit);
-uintptr_t sub_4D6130(nox_object_t* unit) { return nox_server_questRecordDeath_native_4D6130(unit); }
 
 //----- (004D6170) --------------------------------------------------------
 #if 0 // Restored by pointer_chain_native_entry.go.
@@ -3000,21 +2994,9 @@ int sub_4D6770(int a1) {
 }
 #endif
 
-extern unsigned int nox_xxx_questPlayerScore_native_4D6540(int player_index);
-extern int nox_xxx_questScore_native_4D66E0(unsigned int generators, unsigned int secrets, unsigned int monsters, unsigned int stage);
-extern int nox_xxx_sendQuestStats_native_4D6770(int recipient);
 
-unsigned int sub_4D6540(int player_index) {
-	return nox_xxx_questPlayerScore_native_4D6540(player_index);
-}
 
-int sub_4D66E0(unsigned int generators, unsigned int secrets, unsigned int monsters, unsigned int stage) {
-	return nox_xxx_questScore_native_4D66E0(generators, secrets, monsters, stage);
-}
 
-int sub_4D6770(int recipient) {
-	return nox_xxx_sendQuestStats_native_4D6770(recipient);
-}
 
 //----- (004D6880) --------------------------------------------------------
 int sub_4D6880(int a1, int a2) {
@@ -3188,10 +3170,6 @@ int sub_4D7450(int a1, short a2) {
 }
 
 //----- (004D7480) --------------------------------------------------------
-extern void nox_xxx_questLeaveWarpGate_native_4D7480(nox_object_t* obj);
-void sub_4D7480(nox_object_t* a1p) {
-	nox_xxx_questLeaveWarpGate_native_4D7480(a1p);
-}
 
 //----- (004D7520) --------------------------------------------------------
 extern unsigned char nox_xxx_questWarpEnabled_native_4D7520(int enabled);
@@ -3371,21 +3349,11 @@ int sub_4D7EA0() {
 }
 #endif
 
-extern int nox_xxx_questPlayerStateRemove_native_4D79C0(nox_object_t* unit);
-extern int nox_xxx_questPlayerStateMark_native_4D7A60(int index);
 extern int nox_xxx_questPlayerStateExpire_native_4D7A80(void);
 extern int nox_xxx_questPlayerStateClear_native_4D7B40(void);
-extern int nox_xxx_netSendInterestingId_native_4D7BE0(nox_object_t* unit);
-extern int nox_xxx_playerInterestingReset_native_4D7E50(nox_object_t* unit);
 extern int nox_xxx_playersInterestingReset_native_4D7EA0(void);
 
-int sub_4D79C0(nox_object_t* unit) {
-	return nox_xxx_questPlayerStateRemove_native_4D79C0(unit);
-}
 
-int sub_4D7A60(int index) {
-	return nox_xxx_questPlayerStateMark_native_4D7A60(index);
-}
 
 int sub_4D7A80() {
 	return nox_xxx_questPlayerStateExpire_native_4D7A80();
@@ -3395,13 +3363,7 @@ int sub_4D7B40() {
 	return nox_xxx_questPlayerStateClear_native_4D7B40();
 }
 
-int nox_xxx_netSendInterestingId_4D7BE0(nox_object_t* unit) {
-	return nox_xxx_netSendInterestingId_native_4D7BE0(unit);
-}
 
-int sub_4D7E50(nox_object_t* unit) {
-	return nox_xxx_playerInterestingReset_native_4D7E50(unit);
-}
 
 int sub_4D7EA0() {
 	return nox_xxx_playersInterestingReset_native_4D7EA0();
@@ -4592,11 +4554,7 @@ int sub_4D9D20(int a1, nox_object_t* a2p) {
 }
 #endif
 
-extern int nox_xxx_questNotifyPlayer_native_4D9D20(int recipient, nox_object_t* unit);
 
-int sub_4D9D20(int recipient, nox_object_t* unit) {
-	return nox_xxx_questNotifyPlayer_native_4D9D20(recipient, unit);
-}
 
 //----- (004D9D60) --------------------------------------------------------
 int sub_4D9D60(int a1, nox_object_t* unit) {

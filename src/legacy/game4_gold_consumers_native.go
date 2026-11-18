@@ -25,6 +25,7 @@ type game4TradeRuntimeProvider interface {
 	Game4ShopSellRuntime() server.ShopSellRuntime5109C0
 	Game4ShopRepairRuntime() server.ShopRepairRuntime5108D0
 	Game4TradePacketNative(*server.Object, []byte) int
+	Game4TradeStartNative50EF10(starter, target *server.Object) *server.TradeSession
 }
 
 // A scoped test override supplies actual server transaction services, never
@@ -36,6 +37,7 @@ type game4TradeServices struct {
 	sell   func() server.ShopSellRuntime5109C0
 	repair func() server.ShopRepairRuntime5108D0
 	packet func(*server.Object, []byte) int
+	start  func(starter, target *server.Object) *server.TradeSession
 }
 
 var game4TradeServicesForTest *game4TradeServices
@@ -53,6 +55,7 @@ func game4TradeRuntime() game4TradeServices {
 		world: root.S(), p2p: provider.Game4TradeP2PRuntime,
 		buy: provider.Game4ShopBuyRuntime, sell: provider.Game4ShopSellRuntime,
 		repair: provider.Game4ShopRepairRuntime, packet: provider.Game4TradePacketNative,
+		start: provider.Game4TradeStartNative50EF10,
 	}
 }
 

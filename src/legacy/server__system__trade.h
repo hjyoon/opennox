@@ -11,7 +11,7 @@ int sub_5105D0(nox_object_t* item);
 int sub_50F0F0(nox_object_t* recipient, void* session);
 int sub_50F1A0(nox_object_t* recipient, void* session);
 uintptr_t nox_xxx_servSendShopItems_50F280(nox_object_t* recipient, void* session);
-uint32_t* nox_xxx_servShopStart_50EF10_trade(int a1, int a2);
+void* nox_xxx_servShopStart_50EF10_trade(nox_object_t* starter, nox_object_t* target);
 int nox_xxx_tradeP2PAddOffer2_50F820_trade(int, int, float); // idb
 uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3);
 

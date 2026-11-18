@@ -349,6 +349,7 @@ int sub_5105D0(int a1) {
 #endif
 
 //----- (0050EF10) --------------------------------------------------------
+#if 0 // Restored by trade_start_packet_native_entry.go.
 uint32_t* nox_xxx_servShopStart_50EF10_trade(int a1, int a2) {
 	int v2;           // edx
 	int v3;           // eax
@@ -445,6 +446,7 @@ LABEL_18:
 	}
 	return v9;
 }
+#endif
 
 //----- (0050F820) --------------------------------------------------------
 int nox_xxx_tradeP2PAddOffer2_50F820_trade(int a1, int a2, float a3) {

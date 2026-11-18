@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/binary"
 	"unicode/utf16"
+	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
@@ -22,6 +23,12 @@ const (
 type TradeP2PStartResult50EF10 uint8
 
 func (s *Server) SendTradeStartNative50F1A0(recipient *Object, session *TradeSession) int {
+	packet := s.tradeStartPacket50F1A0(recipient, session)
+	update := (*PlayerUpdateData)(recipient.UpdateData)
+	return s.NetSendPacketXxx1(int(update.Player.PlayerInd), packet[:], nil, 1)
+}
+
+func (s *Server) tradeStartPacket50F1A0(recipient *Object, session *TradeSession) [TradeP2PStartPacketSize50F1A0]byte {
 	other := session.Field12
 	if recipient != session.Field8 {
 		other = session.Field8
@@ -33,9 +40,7 @@ func (s *Server) SendTradeStartNative50F1A0(recipient *Object, session *TradeSes
 		// Both original object-name branches resolve the second participant.
 		name = s.ShopObjectName4E39F0(session.Field12)
 	}
-	packet := BuildTradeP2PStartPacket50F1A0(name)
-	update := (*PlayerUpdateData)(recipient.UpdateData)
-	return s.NetSendPacketXxx1(int(update.Player.PlayerInd), packet[:], nil, 1)
+	return BuildTradeP2PStartPacket50F1A0(name)
 }
 
 const (
@@ -172,43 +177,121 @@ func (s *Server) StartP2PTradeNative50EF10(
 	frame uint32,
 	send func(*Player, []byte),
 ) (*TradeSession, TradeP2PStartResult50EF10) {
-	starterUpdate, starterPlayer, ok := tradeP2PPlayer50EF10(starter)
-	if !ok {
+	if starter == other || !starter.Class().Has(object.ClassPlayer) || !other.Class().Has(object.ClassPlayer) {
 		return nil, TradeP2PStartInvalid50EF10
 	}
-	otherUpdate, otherPlayer, ok := tradeP2PPlayer50EF10(other)
-	if !ok || starter == other {
+	var sendStart func(*Object, *TradeSession)
+	if send != nil {
+		sendStart = func(recipient *Object, session *TradeSession) {
+			packet := s.tradeStartPacket50F1A0(recipient, session)
+			send(recipient.UpdateDataPlayer().Player, packet[:])
+		}
+	}
+	return s.startTradeNative50EF10(starter, other, frame, nil, sendStart)
+}
+
+// StartTradeNative50EF10 starts the selected shop or trade, queues its stock,
+// and applies the caller's movement rule after the packets have been sent.
+func (s *Server) StartTradeNative50EF10(
+	starter, other *Object,
+	frame uint32,
+	openShop func(player, merchant *Object) *TradeSession,
+	freezeShopPlayer func(*Object),
+) (*TradeSession, TradeP2PStartResult50EF10) {
+	session, result := s.startTradeNative50EF10(starter, other, frame, openShop, func(recipient *Object, session *TradeSession) {
+		if session.Field16 != 0 {
+			s.SendShopStartNative50F0F0(session)
+		} else {
+			s.SendTradeStartNative50F1A0(recipient, session)
+		}
+	})
+	if session == nil || session.Field16 == 0 {
+		return session, result
+	}
+	owner := s.tradeNative.sessions[session]
+	player := session.Field8
+	if !player.Class().Has(object.ClassPlayer) {
+		player = session.Field12
+	}
+	s.SendShopItemsNative50F280(player, session)
+	if s.tradeNative.sessions[session] != owner {
+		return nil, result
+	}
+	if session.Field16 != 0 && freezeShopPlayer != nil {
+		freezeShopPlayer(player)
+		if s.tradeNative.sessions[session] != owner {
+			return nil, result
+		}
+	}
+	return session, result
+}
+
+func (s *Server) startTradeNative50EF10(
+	starter, other *Object,
+	frame uint32,
+	openShop func(player, merchant *Object) *TradeSession,
+	sendStart func(*Object, *TradeSession),
+) (*TradeSession, TradeP2PStartResult50EF10) {
+	if starter == nil || other == nil {
 		return nil, TradeP2PStartInvalid50EF10
 	}
-	if active := starterUpdate.Trade70; active != nil {
+	starterPlayer, otherPlayer := starter.Class().Has(object.ClassPlayer), other.Class().Has(object.ClassPlayer)
+	starterUpdate, _, _ := tradeP2PPlayer50EF10(starter)
+	otherUpdate, _, _ := tradeP2PPlayer50EF10(other)
+	if starterPlayer && starterUpdate == nil || otherPlayer && otherUpdate == nil {
+		return nil, TradeP2PStartInvalid50EF10
+	}
+	if starterUpdate != nil && starterUpdate.Trade70 != nil {
+		active := starterUpdate.Trade70
 		// The original start routine quietly ignores another request for the
 		// participant already attached to this session. Only a different
 		// target produces StarterAlreadyTrading feedback.
-		if s.IsTradeSessionNative(active) && active.Field12 == other {
+		// On PE32, an existing slot can also refer to a legacy pool session.
+		if (s.IsTradeSessionNative(active) || unsafe.Sizeof(uintptr(0)) == 4) && active.Field12 == other {
 			return nil, TradeP2PStartSamePartner50EF10
 		}
 		return nil, TradeP2PStartStarterBusy50EF10
 	}
-	if otherUpdate.Trade70 != nil {
+	if otherUpdate != nil && otherUpdate.Trade70 != nil {
 		return nil, TradeP2PStartOtherBusy50EF10
 	}
 
-	session := s.NewTradeSessionNative50E870()
-	if session == nil {
+	var session *TradeSession
+	if starterPlayer != otherPlayer {
+		if openShop == nil {
+			return nil, TradeP2PStartInvalid50EF10
+		}
+		player, merchant := starter, other
+		if otherPlayer {
+			player, merchant = other, starter
+		}
+		session = openShop(player, merchant)
+	} else {
+		session = s.NewTradeSessionNative50E870()
+		session.Field8, session.Field12 = starter, other
+	}
+	owner := s.tradeNative.sessions[session]
+	if owner == nil {
 		return nil, TradeP2PStartInvalid50EF10
 	}
 	session.Field0 = 1
 	session.Field4 = frame
-	session.Field8 = starter
-	session.Field12 = other
-	session.Field16 = 0
-	starterUpdate.Trade70 = session
-	otherUpdate.Trade70 = session
-	if send != nil {
-		starterPacket := BuildTradeP2PStartPacket50F1A0(otherPlayer.Name())
-		send(starterPlayer, starterPacket[:])
-		otherPacket := BuildTradeP2PStartPacket50F1A0(starterPlayer.Name())
-		send(otherPlayer, otherPacket[:])
+	if starterUpdate != nil {
+		starterUpdate.Trade70 = session
+	}
+	if otherUpdate != nil {
+		otherUpdate.Trade70 = session
+	}
+	if sendStart != nil {
+		for _, unit := range [...]*Object{starter, other} {
+			if !unit.Class().Has(object.ClassPlayer) {
+				continue
+			}
+			sendStart(unit, session)
+			if s.tradeNative.sessions[session] != owner {
+				return nil, TradeP2PStartComplete50EF10
+			}
+		}
 	}
 	return session, TradeP2PStartComplete50EF10
 }

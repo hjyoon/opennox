@@ -758,25 +758,30 @@ func (s *Server) tradeP2PRuntime50F3A0() server.TradeP2PRuntime50F3A0 {
 }
 
 func (s *Server) tradeStartNative50EF10(starter, target *server.Object) *server.TradeSession {
-	if target != nil && target.Class().Has(object.ClassPlayer) {
-		session, result := s.Server.StartP2PTradeNative50EF10(
-			starter, target, s.Frame(), s.tradeP2PRuntime50F3A0().Send,
-		)
-		otherName := ""
-		if target.UpdateData != nil {
-			if player := target.UpdateDataPlayer().Player; player != nil {
-				otherName = player.Name()
-			}
+	session, result := s.Server.StartTradeNative50EF10(starter, target, s.Frame(), s.openShopNative50E8F0, func(player *server.Object) {
+		if shopMovementFrozen50EF10(noxflags.GetGame()) {
+			legacy.Nox_xxx_unitFreeze_4E79C0(player, 0)
 		}
-		message := tradeP2PStartFailureMessage50EF10(result, otherName, func(key string) string {
-			return s.Strings().GetStringInFile(strman.ID(key), "C:\\NoxPost\\src\\Server\\System\\Trade.c")
-		})
-		if message != "" {
-			legacy.Nox_xxx_netSendLineMessage_4D9EB0(starter, message)
-		}
+	})
+	// A successful queue operation can disconnect a participant. Only the
+	// pre-allocation busy outcomes need the actors for a line message.
+	if result != server.TradeP2PStartStarterBusy50EF10 && result != server.TradeP2PStartOtherBusy50EF10 {
 		return session
 	}
-	return s.shopStartNative50EF10(starter, target)
+	if !starter.Class().Has(object.ClassPlayer) {
+		return session
+	}
+	otherName := ""
+	if result == server.TradeP2PStartOtherBusy50EF10 {
+		otherName = target.UpdateDataPlayer().Player.Name()
+	}
+	message := tradeP2PStartFailureMessage50EF10(result, otherName, func(key string) string {
+		return s.Strings().GetStringInFile(strman.ID(key), "C:\\NoxPost\\src\\Server\\System\\Trade.c")
+	})
+	if message != "" {
+		legacy.Nox_xxx_netSendLineMessage_4D9EB0(starter, message)
+	}
+	return session
 }
 
 func tradeP2PStartFailureMessage50EF10(
@@ -810,23 +815,14 @@ func (s *Server) tradeExitNative50F4C0(session *server.TradeSession) {
 	s.shopExitNative50F4C0(session)
 }
 
-// shopStartNative50EF10 creates the player/shopkeeper half of the original
-// trade session without using the 64-byte PE32 allocator. Quest sessions are
-// reused with their existing inventory. Fresh regular/Coop sessions use the
-// map-definition branch of 0050E970, while fresh Quest sessions use its exact
-// fixed-item and reward-marker generation sequence.
-func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
-	if playerUnit == nil || merchant == nil ||
-		!playerUnit.Class().Has(object.ClassPlayer) ||
-		!merchant.SubClass().AsMonster().Has(object.MonsterShopkeeper) {
-		return nil
-	}
-	update := playerUnit.UpdateDataPlayer()
-	if update.Player == nil || update.Trade70 != nil {
+// openShopNative50E8F0 reopens a Quest cache entry or generates stock for a
+// new player and merchant session using the original 50E970 item rules.
+func (s *Server) openShopNative50E8F0(playerUnit, merchant *server.Object) *server.TradeSession {
+	if !merchant.SubClass().AsMonster().Has(object.MonsterShopkeeper) || merchant.InitData == nil {
 		return nil
 	}
 	quest := noxflags.HasGame(noxflags.GameModeQuest)
-	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, update.Player.Index())
+	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, playerUnit.UpdateDataPlayer().Player.Index())
 	if !reused {
 		var complete bool
 		if quest {
@@ -841,15 +837,6 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 		if !complete {
 			netstr.Log.Printf("SERVER SHOP: merchant %q inventory generation was incomplete", merchant.ID())
 		}
-	}
-	session.Field0 = 1
-	session.Field4 = s.Frame()
-	update.Trade70 = session
-
-	s.Server.SendShopStartNative50F0F0(session)
-	s.Server.SendShopItemsNative50F280(playerUnit, session)
-	if shopMovementFrozen50EF10(noxflags.GetGame()) {
-		legacy.Nox_xxx_unitFreeze_4E79C0(playerUnit, 0)
 	}
 	return session
 }

@@ -55,7 +55,7 @@ func TestLoadQuestShopItems50E970ExactSequence(t *testing.T) {
 	var categories []uint32
 	var events []string
 	rewardIndex := 0
-	loaded, complete := loadQuestShopItems50E970(7, 8, questShopItemLoadHooks50E970{
+	loaded, complete := loadQuestShopItems50E970(func() int32 { return 7 }, 8, questShopItemLoadHooks50E970{
 		newObject: func(typeID string) *Object {
 			created = append(created, typeID)
 			if typeID == questShopMarkerType50E970 {
@@ -140,7 +140,7 @@ func TestLoadQuestShopItems50E970BonusThresholdAndStageWrap(t *testing.T) {
 			var categories []uint32
 			var stages []uint32
 			deletes := 0
-			loaded, complete := loadQuestShopItems50E970(-1, -1, questShopItemLoadHooks50E970{
+			loaded, complete := loadQuestShopItems50E970(func() int32 { return -1 }, -1, questShopItemLoadHooks50E970{
 				newObject: func(typeID string) *Object {
 					if typeID == questShopMarkerType50E970 {
 						return marker
@@ -172,6 +172,14 @@ func TestLoadQuestShopItems50E970BonusThresholdAndStageWrap(t *testing.T) {
 	}
 }
 
+// This converter retains the independently tested nearest-mode control.
+func questShopRoundFloat32ToInt32_50E970(value float32) int32 {
+	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
+		return math.MinInt32
+	}
+	return int32(math.RoundToEven(float64(value)))
+}
+
 func TestQuestShopRoundFloat32ToInt32_50E970(t *testing.T) {
 	tests := []struct {
 		value float32
@@ -199,7 +207,7 @@ func TestLoadQuestShopItems50E970FailureAndNilRewardSemantics(t *testing.T) {
 	data := &RewardMarkerInitData{}
 	addCalls := 0
 	rewardCalls := 0
-	loaded, complete := loadQuestShopItems50E970(1, 1, questShopItemLoadHooks50E970{
+	loaded, complete := loadQuestShopItems50E970(func() int32 { return 1 }, 1, questShopItemLoadHooks50E970{
 		newObject: func(typeID string) *Object {
 			if typeID == questShopMarkerType50E970 {
 				return marker

@@ -1,10 +1,6 @@
 package server
 
-import (
-	"math"
-
-	"github.com/opennox/libs/object"
-)
+import "github.com/opennox/libs/object"
 
 const (
 	questShopAnkhType50E970   = "AnkhTradable"
@@ -44,9 +40,10 @@ var questShopRewardCategories50E970 = [...]uint32{
 // QuestShopItemLoadRuntime50E970 supplies the state that lives in the outer
 // game server. Generated item and marker pointers stay native-width.
 type QuestShopItemLoadRuntime50E970 struct {
-	QuestStage      int32
-	AnkhCutoffStage float32
-	DelayedDelete   func(*Object)
+	QuestStage        int32
+	CurrentQuestStage func() int32
+	AnkhCutoffStage   float32
+	DelayedDelete     func(*Object)
 }
 
 type questShopItemLoadHooks50E970 struct {
@@ -58,22 +55,14 @@ type questShopItemLoadHooks50E970 struct {
 	delayedDelete  func(*Object)
 }
 
-// questShopRoundFloat32ToInt32_50E970 models nox_float2int at 00419A70:
-// x87 round-to-nearest-even and INT32_MIN for invalid or out-of-range values.
-func questShopRoundFloat32ToInt32_50E970(value float32) int32 {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
-}
-
 // loadQuestShopItems50E970 is the pointer-width-independent control flow of
 // the Quest half of GAME.EXE 0050E970. A nil reward is a valid generator
 // result and is skipped exactly like the original; failures to create a fixed
 // item, own a created item, or construct the temporary marker make complete
 // false while allowing the remaining original sequence to run.
 func loadQuestShopItems50E970(
-	stage, ankhCutoff int32,
+	currentStage func() int32,
+	ankhCutoff int32,
 	hooks questShopItemLoadHooks50E970,
 ) (loaded int, complete bool) {
 	if hooks.newObject == nil || hooks.addItem == nil || hooks.markerData == nil ||
@@ -89,7 +78,7 @@ func loadQuestShopItems50E970(
 		}
 		loaded++
 	}
-	if uint32(stage) < uint32(ankhCutoff) {
+	if uint32(currentStage()) < uint32(ankhCutoff) {
 		addType(questShopAnkhType50E970)
 	}
 	for _, typeID := range questShopBonusItemTypes50E970 {
@@ -105,7 +94,7 @@ func loadQuestShopItems50E970(
 	if data == nil {
 		return loaded, false
 	}
-	rewardStage := uint32(stage) + 2
+	rewardStage := uint32(currentStage()) + 2
 	addReward := func(category uint32) {
 		data.CategoryMask = category
 		item := hooks.activateReward(marker, rewardStage)
@@ -155,9 +144,13 @@ func (s *Server) LoadQuestShopItemsNative50E970(
 		}
 		return true
 	}
+	currentStage := runtime.CurrentQuestStage
+	if currentStage == nil {
+		currentStage = func() int32 { return runtime.QuestStage }
+	}
 	return loadQuestShopItems50E970(
-		runtime.QuestStage,
-		questShopRoundFloat32ToInt32_50E970(runtime.AnkhCutoffStage),
+		currentStage,
+		netFXTruncateSignedDWORD419A70(runtime.AnkhCutoffStage),
 		questShopItemLoadHooks50E970{
 			newObject: s.NewObjectByTypeID,
 			addItem:   addItem,

@@ -831,9 +831,9 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 		var complete bool
 		if quest {
 			_, complete = s.Server.LoadQuestShopItemsNative50E970(session, server.QuestShopItemLoadRuntime50E970{
-				QuestStage:      int32(s.nox_game_getQuestStage_4E3CC0()),
-				AnkhCutoffStage: float32(s.Server.Balance.Float("ShopAnkhCutoffStage")),
-				DelayedDelete:   s.DelayedDelete,
+				CurrentQuestStage: func() int32 { return int32(s.nox_game_getQuestStage_4E3CC0()) },
+				AnkhCutoffStage:   float32(s.Server.Balance.Float("ShopAnkhCutoffStage")),
+				DelayedDelete:     s.DelayedDelete,
 			})
 		} else {
 			_, complete = s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())

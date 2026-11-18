@@ -71,8 +71,8 @@ func TestShopRepairWandQuote5108D0(t *testing.T) {
 					quotes++
 					want := uint32(25)
 					if tc.charge == 0 {
-						// The current-value floor is 1; FISTP nearest-even rounds 99.5 to 100.
-						want = 100
+						// The current value floors to 1. Startup x87 truncates 99.5 to 99.
+						want = 99
 					}
 					if p != unit.UpdateDataPlayer().Player || got != item || cost != want {
 						t.Fatalf("quote = %p/%p/%d, want player/item/%d", p, got, cost, want)
@@ -102,7 +102,7 @@ func TestShopRepairWandCompletion510AE0(t *testing.T) {
 		cost     uint32
 	}{
 		{"charge only", 100, 3, 75, 25},
-		{"empty", 100, 0, 0, 100},
+		{"empty", 100, 0, 0, 99},
 		{"durability and charges", 50, 3, 75, 62},
 		{"durability only", 50, 4, 100, 50},
 	} {

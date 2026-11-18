@@ -492,12 +492,12 @@ func TestShopItemBuyCost50E3D0(t *testing.T) {
 	health := &HealthData{Cur: 1, Max: 2}
 	item := &Object{Worth: 101, HealthData: health}
 	s := &Server{tradeNative: serverTradeNativeState{highAddresses: true}}
-	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 76 {
-		t.Fatalf("simple health-adjusted cost = %d, %t, want 76, true", got, ok)
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 75 {
+		t.Fatalf("simple health-adjusted cost = %d, %t, want 75, true", got, ok)
 	}
 	health.Cur = health.Max
-	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 152 {
-		t.Fatalf("round-to-even full cost = %d, %t, want 152, true", got, ok)
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 151 {
+		t.Fatalf("full cost with truncation = %d, %t, want 151, true", got, ok)
 	}
 	idata.BuyMultiplier = 0
 	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 1 {

@@ -90,6 +90,49 @@ definitions. There are 385 bodies with pointer and integer casts.
 The updated selection and AST are in
 `opennox-verification/20261118-trade/whole-C-inventory-3333e137-v1`.
 
+### Attack trace and collision queue entries, 2026-11-19
+
+Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack
+trace `538330`, candidate damage `538510`, and target selection `5386A0`.
+Their Go records keep owner, weapon and selected target at native width.
+The live attack entry has local traversal state. The public callbacks share
+the original scratch and reload the attack record across modifier callbacks.
+The port preserves original wall bounds, damage conversion, and the
+animation-25 unarmed shove.
+
+The original trace and damage candidate exercise 86 cases, including the two
+x87 conversion helpers. The target selector reuses its existing stock corpus.
+Direct and indirect C calls also exercise high pointers, native record layout,
+the spatial index and damage callbacks. ARM64 records 481 normal and 482
+cgocheck2 passes with zero warnings. `GAME4_3.c` falls from 137 to 129 active
+ARM64 bodies. All four ARM64 product variants build and pass metadata, help,
+and 281 symbol checks. Linux run `44394558483` and Windows run `44394510267`
+pass their four and two required jobs, respectively.
+
+Normal and HD hammer and wooden staff scenarios complete with live damage.
+The earlier fixed-aim unarmed inputs fail against the moving spider after the
+original shove is restored. The ordinary mouse inputs in
+`7270ef8c1344c39c717bae3ccb59e580befb3a2d` follow the live spider. Its HP
+reaches zero and the Warrior survives in both profiles. The same commit
+corrects the GreatSword observer to use the original toward-zero wear and
+fractional carry. Both clients complete 21 GreatSword cases each, covering
+front and rear Fireballs in both directions and a naturally animated NPC
+cast. The earlier observer failures and baseline replays are retained.
+
+Engine `45414c3b0eb2ba24cee462733b7c41ffebf647c9` makes the seven pending
+collision entries direct Go exports. Velocity traversal reads the typed
+queue links. The C ABI carries the next-link result as `uintptr_t`, which
+preserves both native addresses and the original removed sentinel. The
+replayed original queue yields 887 conditions, 5,353 calls and four separate
+fault probes. It matches the stored corpora byte for byte. On ARM64, normal
+and cgocheck2 each pass 2,971 tests and report the same platform skip.
+`GAME4_3.c` falls from 129 to 122 active ARM64 C bodies.
+
+The reports are under `attack-trace-public-native-v1`,
+`pending-collision-public-native-v1` and `melee-replay-observers-ARM64-v2`
+in the November 18 verification root. The product and runtime checks verify
+all 4,649 original asset and Save hashes.
+
 ### Attack modifier and ADPCM entries, 2026-11-19
 
 Engine `5c65c39a62c07c7a7b2711606fbba7345440c0cd` ports the public

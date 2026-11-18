@@ -60,6 +60,108 @@ The user's latest correction supersedes the older go1.26 push instructions.
 Use `git push origin HEAD:refs/heads/port/go1.27-multiarch`; older verification
 records retain their historical branch information.
 
+### Native shop stock C entries, 2026-11-18
+
+Engine `a961844b89317f6d53c8fc066a25be941e74e7ab` ports `50EEC0`,
+`50F280` and `50F2B0`. The shop uses typed stock and object pointers for
+item ranking, stock traversal and the 18-byte C9/08 packet. The packet
+zero-extends the current 16-bit health. The empty list returns the full
+session address. Nonempty lists preserve send order and the last 32-bit
+queue result. Native lists stop when a send releases or replaces their
+original session allocation.
+
+The stock reference covers 105 cases, all 288 instruction bytes and 60
+bytes of the original sort table. Six unchanged C calls reproduced
+high-address truncation on ARM64. The corrected C and Go paths pass
+16,136 focused events each in normal and strict/highres, including 213
+stock events through direct and indirect C calls and one session ownership
+regression. Both builds report zero compiler warnings. The first build
+and fixture failures are retained. Exact-source product and cross-platform
+checks are in progress under Linux run `44244648607` and Windows run
+`44244490068`.
+
+Local qualification `trade-shop-stock-packet-order-native-v1/local-stock-C-qualification-v1.json`
+has SHA-256 `40a2e262eb119f6ce46eae89f6927510800563a6a90a9c21b1e207c715031e0d`.
+
+### Quest shop stock generation at startup, 2026-11-18
+
+Engine `e218e02d0177fa249ac47fe87c6245015155efac` follows the original
+x87 startup mode for the Ankh cutoff and reads the Quest stage again
+after creating the reward marker. The unchanged regression previously
+generated an extra Ankh at stage 3 with cutoff 3.5. Eighteen original CPU
+cases cover startup and the separate nearest-rounding control. Normal
+and strict ARM64 each pass 37 server tests and 46 root trade tests with
+zero compiler warnings. Windows run `44241545480` passes both native jobs.
+The original `50E970` C entry remains part of the trade ownership work.
+
+Local qualification `trade-quest-stock-startup-native-v1/quest-shop-startup-qualification-v1.json`
+has SHA-256 `aacd4637661df62ced4a9c513f9013436b82aff3f12fc837c916dc93bd1a580b`.
+
+### Shop session ownership and GC replay, 2026-11-18
+
+`31c3065043003ce53ccc4966d5992168cc132790` keeps bulk purchases bound to
+the original session allocation when a synchronous callback closes the
+shop and a new session reuses its address. Its exact before-and-after test
+preserves the original single purchase and the replacement shop's stock.
+`5092726d2dca93f209a91c983215de439e6343b7` initializes pointer-containing
+foreign test records before typed stores. The earlier failure occurred
+when a Go write barrier interpreted bytes from a fixture canary as a
+pointer. Existing case identities, expected data and surrounding canaries
+are preserved.
+
+- macOS ARM64 normal and strict each pass 43,308 focused `GOGC=10`
+  events over three repetitions. Four products pass build, metadata,
+  help and 203 symbol checks with zero compiler warnings.
+- Both client products pass the grouped and equipped-item shop sale
+  scenarios on OpenAL's null device. The runs verify sale sound 307
+  with positive gain and the equipped-item scenario verifies full
+  purchase audio buffer processing. All 4,649 original asset and Save
+  hashes match.
+- Linux run `44238980953` and Windows run `44238865130` pass all six
+  native jobs on the first attempt. The six official ZIPs contain 158
+  test mains. All 12 Windows/386 GC replays pass on the corresponding
+  retained native test mains. The exact primary legacy PE passes 2,409
+  spawn registry and 5,391 zombie regeneration events. The older failed
+  PE and its logs are retained.
+
+Qualification `trade-shop-native-owner-lifecycle-v1/qualified-trade-session-owner-corrections-v1.json`
+has SHA-256 `75f081d3e79f8d898743a4b3102cec0f96dedfa8fbaa7467eb9c63fe9612c780`.
+
+### Quest shop item classification C entries, 2026-11-18
+
+`8c3c506cbb27ab4b722b1b6172b0574bef3250dc` ports `510540` and `5105D0`
+with native object pointers. Both cache groups and the Diamond sentinel
+lookup order follow the stock reference. The 102 original cases execute
+244 instruction bytes. Unchanged C controls reproduce four high-address
+failures. Normal and strict ARM64 each pass 12,780 focused events, including
+207 new events, with zero compiler warnings. All four products pass 203
+native symbol checks. Linux run `44236955263` and Windows run `44236422604`
+pass all six first-attempt jobs. Six official archives retain 158 test
+mains and 12 successful Windows/386 GC replays.
+
+Qualification `trade-quest-item-classification-native-v1/qualified-quest-shop-type-C-entries-v1.json`
+has SHA-256 `84dec9f3c961d09f938b56772113c0037bb8c92e40844ef1418458fc55096bd6`.
+
+### Shop item removal and trade packet C entries, 2026-11-18
+
+`78fbe6b7ff8547f7771543901ee1a674ec669493` ports `50E7A0`, `50E820`,
+`50F450` and `5104F0`. Shop removal transfers item ownership before
+sending its notification and releases the unlinked node once. The 124
+original cases execute 311 instruction bytes. Normal and strict ARM64
+each pass 12,581 legacy and 61 server focus events with zero compiler
+warnings. Four products pass 201 native symbol checks and four purchase
+and sale scenarios pass on OpenAL's null device. All 4,649 original
+asset and Save hashes match.
+
+Linux run `44233977742` passes four jobs. In Windows run `44233910332`,
+amd64 and the 386 primary tests pass. The 386 monster-spawn GC replay
+exits 2 and the subsequent zombie replay is skipped. Official ZIP
+`14397397186` preserves the failed PE and the complete job log. The
+six official archives and their 158 native test mains are retained.
+
+Qualification `trade-shop-removal-and-packet-native-v1/shop-removal-qualification-with-Windows-386-failure-v1.json`
+has SHA-256 `bff07129fbcc96777c7a1f0f73654575dd250ac9ec9e135ff4717861dafb9fb1`.
+
 ### Native object visibility and chat C entries, 2026-11-18
 
 Engine `e342aac18a258e96e2ef8947496d23296fd72d9b` is pushed to

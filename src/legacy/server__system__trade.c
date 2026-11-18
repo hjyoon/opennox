@@ -307,6 +307,7 @@ int sub_5104F0(int a1, short a2) {
 #endif
 
 //----- (00510540) --------------------------------------------------------
+#if 0 // Restored by shop_item_type_native_entry.go.
 int sub_510540(int a1) {
 	if (!nox_common_gameFlags_check_40A5C0(4096)) {
 		return 1;
@@ -338,6 +339,7 @@ int sub_5105D0(int a1) {
 	return (unsigned short)v1 == *getMemU32Ptr(0x5D4594, 2386536) || v1 == *getMemU32Ptr(0x5D4594, 2386540) ||
 		   v1 == *getMemU32Ptr(0x5D4594, 2386544);
 }
+#endif
 
 //----- (0050EF10) --------------------------------------------------------
 uint32_t* nox_xxx_servShopStart_50EF10_trade(int a1, int a2) {

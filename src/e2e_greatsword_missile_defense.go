@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"math/big"
 	"strings"
 
 	"github.com/opennox/libs/client/seat"
@@ -15,6 +16,19 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
+
+// The original records a binary32 carry and truncates item wear under the
+// startup x87 mode. Use independent arithmetic to check the observed result.
+func e2eGreatSwordExpectedWear(percent float64, damage int32, carry float32) (int32, uint32) {
+	x87 := new(big.Float).SetPrec(53).SetMode(big.ToZero)
+	spill := new(big.Float).SetPrec(24).SetMode(big.ToZero)
+	x87.Mul(big.NewFloat(percent), big.NewFloat(float64(damage)))
+	x87.Add(spill.Set(x87), big.NewFloat(float64(carry)))
+	wear, _ := spill.Set(x87).Int64()
+	x87.Sub(spill, big.NewFloat(float64(wear)))
+	remaining, _ := spill.Set(x87).Float32()
+	return int32(wear), math.Float32bits(remaining)
+}
 
 func e2eGreatSwordMissileMode(level int, mode string) (fromNPC, front, ok bool) {
 	direction, facing, found := strings.Cut(mode, "/")
@@ -214,10 +228,9 @@ func (f *e2eGreatSwordMissileFixture) complete() bool {
 		if e2eFistInWorld(f.projectile, f.wire, f.script) || noxClient.Objs.ByNetCode(uint16(f.wire)) != nil {
 			return false
 		}
-		amount := float32(f.percent*float64(f.damage)) + f.swordCarry
-		wear := int32(math.RoundToEven(float64(amount)))
+		wear, remaining := e2eGreatSwordExpectedWear(f.percent, f.damage, f.swordCarry)
 		if wear <= 0 || wear >= int32(f.swordHP) || f.sword.HealthData.Cur != f.swordHP-uint16(wear) ||
-			f.sword.UpdateDataWeaponArmor().Field0 != math.Float32bits(amount-float32(wear)) ||
+			f.sword.UpdateDataWeaponArmor().Field0 != remaining ||
 			f.target.HealthData.Cur != f.health || !f.held() {
 			e2eError(fmt.Errorf("GreatSword real HP/wear mismatch: target=%d/%d sword=%d/%d wear=%d",
 				f.target.HealthData.Cur, f.health, f.swordHP, f.sword.HealthData.Cur, wear))

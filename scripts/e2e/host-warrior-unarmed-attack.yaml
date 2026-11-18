@@ -96,48 +96,78 @@ steps:
     name: publish spider to client
   - action: assert-monster-encounter
     name: verify hostile spider encounter
-  - action: move
-    x: 542
-    y: 384
-    name: aim at hostile spider
-  - action: melee
-    ang: 0.5
-    name: unarmed strike one
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike two
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike three
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike four
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike five
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike six
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike seven
-  - action: wait
-    dt: 12
-  - action: melee
-    ang: 0.5
-    name: unarmed strike eight
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 0
+    name: unarmed strike 1 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 2 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 3 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 4 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 5 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 6 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 7 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 8 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 9 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 10 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 11 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 12 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 13 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 14 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 15 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 16 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 17 at the live spider
+  - action: strike-nearest-monster
+    item: Spider
+    dt: 15
+    name: unarmed strike 18 at the live spider
   - action: wait-monster-dead
     name: verify unarmed attacks killed the spider
   - action: quit

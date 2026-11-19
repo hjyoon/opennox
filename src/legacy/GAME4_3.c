@@ -93,66 +93,7 @@ int* sub_531D50(nox_object_t* unit, nox_object_t* target) {
 // 531E20/531E90 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (00531EC0) --------------------------------------------------------
-char nox_xxx_mobActionFight_531EC0(int a1) {
-	int v1;    // esi
-	int v2;    // ebx
-	int* v3;   // eax
-	float* v4; // ebp
-	double v5; // st7
-	double v6; // st6
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = v1 + 24 * (*(char*)(v1 + 544) + 23);
-	if (gameFrame() - *(uint32_t*)(v1 + 24 * (*(char*)(v1 + 544) + 23) + 12) >
-		(unsigned int)(10 * gameFPS())) {
-		LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		return (char)v3;
-	}
-	if (*(uint32_t*)(v1 + 1196)) {
-		*(uint32_t*)(v2 + 12) = gameFrame();
-		if (nox_xxx_checkIsKillable_528190(*(uint32_t*)(v1 + 1196))) {
-			if (nox_xxx_testUnitBuffs_4FF350(a1, 29) ||
-				(v3 = (int*)nox_xxx_monsterBuffSelf_540B90((nox_object_t*)(uintptr_t)(uint32_t)a1)) == 0 &&
-					(v3 = (int*)nox_xxx_monsterCastOffensive_540F20((nox_object_t*)(uintptr_t)(uint32_t)a1,
-						(nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 1196))) == 0) {
-				LOBYTE(v3) = (uintptr_t)nox_xxx_TODOsomeCallingMeleeAttack_531B40(
-					(nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 1196));
-			}
-			return (char)v3;
-		}
-		LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		return (char)v3;
-	}
-	if (sub_534710(a1)) {
-		LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		return (char)v3;
-	}
-	v4 = (float*)(v2 + 4);
-	*getMemU32Ptr(0x5D4594, 2487944) = 0;
-	nox_xxx_unitsGetInCircle_517F90((float2*)(v2 + 4), 30.0, sub_532040, v1);
-	if (*getMemU32Ptr(0x5D4594, 2487944)) {
-		nox_xxx_monsterPopAction_50A160(a1);
-		v3 = *(int**)(v1 + 1200);
-		if (*(int**)(v1 + 392) == v3) {
-			*(uint32_t*)(v1 + 388) = 0;
-		}
-	} else {
-		v5 = *v4 - *(float*)(a1 + 56);
-		v6 = *(float*)(v2 + 8) - *(float*)(a1 + 60);
-		if (v6 * v6 + v5 * v5 < 64.0) {
-			LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-			return (char)v3;
-		}
-		nox_xxx_monsterPushAction_50A260(a1, 56);
-		v3 = nox_xxx_monsterPushAction_50A260(a1, 7);
-		if (v3) {
-			v3[1] = *(uint32_t*)v4;
-			v3[2] = *(uint32_t*)(v2 + 8);
-			v3[3] = 0;
-		}
-	}
-	return (char)v3;
-}
+// Native-width implementation: monster_fight_action_531ec0_export.go.
 
 //----- (00532040) --------------------------------------------------------
 // Native-width implementation: monster_fight_dead_target_native_532040_export.go.

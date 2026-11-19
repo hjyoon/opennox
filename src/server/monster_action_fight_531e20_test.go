@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"testing"
 	"unsafe"
 
@@ -381,5 +382,91 @@ func TestMonsterActionFight531EC0RejectsMissingNativeServiceBeforeMutation(t *te
 	}
 	if update.AIStack[0] != before || len(events) != 0 || len(pushed) != 0 {
 		t.Fatalf("rejected branch mutated state: %#v/%v/%v", update.AIStack[0], events, pushed)
+	}
+}
+
+func TestMonsterActionFightStockRetainsSingleFrameRead(t *testing.T) {
+	unit := fightMonsterTestObject531E20(t)
+	update := unit.UpdateDataMonster()
+	update.CurrentEnemy = &Object{HealthData: &HealthData{Max: 1}}
+	update.AIStack[0].Args[2] = 350
+	var events []ai.ActionType
+	var pushed []*AIStackItem
+	hooks := fightHooks531EC0(450, &events, &pushed)
+	calls := 0
+	hooks.frame = func() uint32 {
+		calls++
+		return uint32(449 + calls)
+	}
+	if !monsterActionFight531EC0(unit, hooks) {
+		t.Fatal("the fight action was not handled")
+	}
+	if frame := update.AIStack[0].ArgU32(2); calls != 1 || frame != 450 {
+		t.Fatalf("frame reads=%d, timestamp=%d; want one read with timestamp 450", calls, frame)
+	}
+	if len(events) != 1 || events[0] != ai.ACTION_INVALID {
+		t.Fatalf("dead-enemy actions = %v, want one pop", events)
+	}
+}
+
+func TestMonsterActionFightStockRetainsDistanceWords(t *testing.T) {
+	cases := []struct {
+		name        string
+		actor       types.Pointf
+		remembered  types.Pointf
+		queryResult *types.Pointf
+		pop         bool
+	}{
+		{
+			name:       "near diagonal",
+			remembered: types.Ptf(7.999999523162842, 0.0027000000700354576),
+			pop:        true,
+		},
+		{
+			name:       "far diagonal",
+			remembered: types.Ptf(7.999999523162842, 0.00279999990016222),
+		},
+		{
+			name:       "unordered displacement",
+			remembered: types.Ptf(math.Float32frombits(0x7fc00001), 0),
+			pop:        true,
+		},
+		{
+			name:        "query changes the remembered position",
+			actor:       types.Ptf(20, 40),
+			remembered:  types.Ptf(28, 40),
+			queryResult: &types.Pointf{X: 20, Y: 40},
+			pop:         true,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			unit := fightMonsterTestObject531E20(t)
+			unit.PosVec = tc.actor
+			head := unit.UpdateDataMonster().AIStackHead()
+			head.SetArgs(tc.remembered, uint32(350))
+			var events []ai.ActionType
+			var pushed []*AIStackItem
+			hooks := fightHooks531EC0(450, &events, &pushed)
+			if tc.queryResult != nil {
+				hooks.findDeadTarget = func(got types.Pointf, _ uint32) bool {
+					if got != tc.remembered {
+						t.Fatalf("initial query position=%v, want %v", got, tc.remembered)
+					}
+					head.SetArgs(*tc.queryResult, uint32(350))
+					return false
+				}
+			}
+			if !monsterActionFight531EC0(unit, hooks) {
+				t.Fatal("the fight action was not handled")
+			}
+			if tc.pop {
+				if len(events) != 1 || events[0] != ai.ACTION_INVALID {
+					t.Fatalf("actions=%v, want one pop", events)
+				}
+			} else if len(events) != 2 || events[0] != ai.DEPENDENCY_NO_VISIBLE_ENEMY || events[1] != ai.ACTION_MOVE_TO {
+				t.Fatalf("actions=%v, want visibility dependency and move", events)
+			}
+		})
 	}
 }

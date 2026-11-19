@@ -209,68 +209,70 @@ func monsterFightKillable528190(target *Object) bool {
 	return ObjectKillableNative528190(target) != 0
 }
 
-// monsterActionFight531EC0 restores the complete pointer-bearing FIGHT loop.
-// It returns false before mutation when a required native service is absent;
-// a fully bound call never needs the original PE32 fallback.
-func monsterActionFight531EC0(unit *Object, hooks monsterActionFightHooks531EC0) bool {
+// monsterActionFightResult531EC0 handles one FIGHT action and retains the
+// low byte returned by the original C entry.
+func monsterActionFightResult531EC0(unit *Object, hooks monsterActionFightHooks531EC0) (byte, bool) {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) ||
 		hooks.frame == nil || hooks.tickRate == nil || hooks.buffSelf == nil ||
 		hooks.castOffensive == nil || hooks.castRelated == nil || hooks.distance == nil ||
 		hooks.push == nil || hooks.pop == nil {
-		return false
+		return 0, false
 	}
 	update := unit.UpdateDataMonster()
 	head := update.AIStackHead()
 	if head == nil || head.Type() != ai.ACTION_FIGHT {
-		return false
+		return 0, false
 	}
 
-	if hooks.frame()-head.ArgU32(2) > 10*hooks.tickRate() {
-		hooks.pop()
-		return true
+	frame := hooks.frame()
+	if frame-head.ArgU32(2) > 10*hooks.tickRate() {
+		return byte(hooks.pop()), true
 	}
-	if update.CurrentEnemy != nil {
-		head.Args[2] = uintptr(hooks.frame())
-		target := update.CurrentEnemy
+	if target := update.CurrentEnemy; target != nil {
+		head.Args[2] = uintptr(frame)
 		if !monsterFightKillable528190(target) {
-			hooks.pop()
-			return true
+			return byte(hooks.pop()), true
 		}
 		if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) {
-			if hooks.buffSelf(unit) {
-				return true
-			}
-			if hooks.castOffensive(unit, update.CurrentEnemy) {
-				return true
+			if hooks.buffSelf(unit) || hooks.castOffensive(unit, update.CurrentEnemy) {
+				return 1, true
 			}
 		}
-		monsterFightSelectAttack531B40(unit, update.CurrentEnemy, hooks)
-		return true
+		return byte(monsterFightSelectAttack531B40(unit, update.CurrentEnemy, hooks)), true
 	}
 
 	if monsterFightHoldPosition534710(unit) {
-		hooks.pop()
-		return true
+		return byte(hooks.pop()), true
 	}
-	remembered := head.ArgPos(0)
-	if hooks.findDeadTarget != nil && hooks.findDeadTarget(remembered, update.Field300) {
+	if hooks.findDeadTarget != nil && hooks.findDeadTarget(head.ArgPos(0), update.Field300) {
 		hooks.pop()
-		if update.Field98 == update.Field300 {
+		mark := update.Field300
+		if update.Field98 == mark {
 			update.Field97 = 0
 		}
-		return true
+		return byte(mark), true
 	}
-	delta := remembered.Sub(unit.PosVec)
-	if float64(delta.X*delta.X+delta.Y*delta.Y) < 64.0 {
-		hooks.pop()
-		return true
+
+	// The original keeps both deltas and squares in the x87 registers.
+	// Its FCOMP checks C0, so less and unordered both end the action.
+	remembered := head.ArgPos(0)
+	dx := monsterMoveToRunAddChop53_544434(float64(remembered.X), -float64(unit.PosVec.X))
+	dy := monsterMoveToRunAddChop53_544434(float64(remembered.Y), -float64(unit.PosVec.Y))
+	square := monsterMoveToRunAddChop53_544434(monsterMoveToRunSquareChop53_544434(dy), monsterMoveToRunSquareChop53_544434(dx))
+	if !(square >= 64) {
+		return byte(hooks.pop()), true
 	}
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
 	item := hooks.push(ai.ACTION_MOVE_TO)
 	if item != nil {
 		item.SetArgs(head.ArgPos(0), uint32(0))
 	}
-	return true
+	return byte(uintptr(unsafe.Pointer(item))), true
+}
+
+func monsterActionFight531EC0(unit *Object, hooks monsterActionFightHooks531EC0) bool {
+	_, handled := monsterActionFightResult531EC0(unit, hooks)
+	return handled
 }
 
 // MonsterActionFightRuntime531EC0 supplies root-level services used by the
@@ -280,12 +282,22 @@ type MonsterActionFightRuntime531EC0 struct {
 	CanSummon func(*Object, int) bool
 }
 
-// MonsterActionFight531EC0 binds the complete restored FIGHT branch to the
-// live spell registry, duration list, logic RNG, object index, and action
-// stack while preserving native-width pointers throughout.
+// MonsterActionFight531EC0 binds the complete FIGHT branch to the live spell
+// registry, duration list, logic RNG, object index and action stack.
 func (s *Server) MonsterActionFight531EC0(unit *Object, runtime MonsterActionFightRuntime531EC0) bool {
+	_, handled := s.monsterActionFight531EC0(unit, runtime)
+	return handled
+}
+
+// MonsterActionFightResult531EC0 returns the original char result for C callers.
+func (s *Server) MonsterActionFightResult531EC0(unit *Object, runtime MonsterActionFightRuntime531EC0) byte {
+	result, _ := s.monsterActionFight531EC0(unit, runtime)
+	return result
+}
+
+func (s *Server) monsterActionFight531EC0(unit *Object, runtime MonsterActionFightRuntime531EC0) (byte, bool) {
 	spellHooks := s.monsterFightSpellHooks540B90(runtime.CanSummon)
-	return monsterActionFight531EC0(unit, monsterActionFightHooks531EC0{
+	return monsterActionFightResult531EC0(unit, monsterActionFightHooks531EC0{
 		frame:    s.Frame,
 		tickRate: s.TickRate,
 		findDeadTarget: func(pos types.Pointf, netCode uint32) bool {

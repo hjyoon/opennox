@@ -1085,81 +1085,6 @@ int sub_4E5450(
 		recipient, payload, payload_size, related_object, remove_if_disconnected);
 }
 
-//----- (004E54D0) --------------------------------------------------------
-void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index) {
-	nox_object_t* const related_object = nox_server_getImportantRelatedObject_4E5030(packet);
-	if (related_object) {
-		const uint8_t message_type = packet->payload[0];
-		if (message_type == 0x31 || message_type == 0x32 || message_type == 0x33) {
-			related_object->field_37 &= ~client_mask;
-		}
-	}
-	const uint32_t active_recipients = dword_5d4594_2649712 & packet->recipient_mask;
-	if (packet->recipient == -1) {
-		packet->acknowledged_mask |= client_mask;
-		if ((active_recipients & packet->acknowledged_mask) == active_recipients) {
-			sub_4E4FC0(packet);
-		}
-		return;
-	}
-	const uint8_t recipient = (uint8_t)packet->recipient;
-	if ((recipient & 0x80u) != 0) {
-		// The original instruction masks the variable shift count to five bits.
-		const uint32_t excluded = UINT32_C(1) << (recipient & 31);
-		packet->acknowledged_mask |= client_mask;
-		if ((active_recipients & ~excluded & packet->acknowledged_mask) ==
-			(active_recipients & ~excluded)) {
-			sub_4E4FC0(packet);
-		}
-		return;
-	}
-	if (recipient == player_index) {
-		sub_4E4FC0(packet);
-	}
-}
-
-//----- (004E55A0) --------------------------------------------------------
-int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame) {
-	const uint32_t client_mask = UINT32_C(1) << (player_index & 31);
-	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
-	if (packet) {
-		do {
-			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			if (packet->last_send_frame[player_index] == frame) {
-				sub_4E54D0(client_mask, packet, player_index);
-			}
-			packet = next;
-		} while (packet);
-	}
-	return 0;
-}
-
-//----- (004E55F0) --------------------------------------------------------
-int sub_4E55F0(uint8_t player_index) {
-	// The original instruction masks the variable shift count to five bits.
-	const uint32_t client_mask = UINT32_C(1) << (player_index & 31);
-	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
-	if (packet) {
-		do {
-			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			sub_4E54D0(client_mask, packet, player_index);
-			packet = next;
-		} while (packet);
-	}
-	return 0;
-}
-
-//----- (004E5630) --------------------------------------------------------
-uint32_t sub_4E5630(
-	uint8_t player_index, uint32_t* threshold, uint32_t* resend_interval, uint32_t* resends_per_update) {
-	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
-	const nox_important_rate_control_t* const rate = &(*rates)[player_index];
-	*threshold = rate->threshold;
-	*resend_interval = rate->resend_interval;
-	*resends_per_update = rate->resends_per_update;
-	return UINT32_C(12) * player_index;
-}
-
 //----- (004E5670) --------------------------------------------------------
 uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index) {
 	const uint32_t client_mask = UINT32_C(1) << (player_index & UINT8_C(31));
@@ -1320,16 +1245,6 @@ void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind) {
 			nox_server_importantRateAdjust_4E5770(player_index);
 		}
 	}
-}
-
-//----- (004E5A90) --------------------------------------------------------
-uint32_t nox_xxx_importantFreeSlots_4E5A90(void) {
-	uint32_t packet_count = 0;
-	for (nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80(); packet;
-		 packet = nox_server_getImportantNext_4E4F80(packet)) {
-		++packet_count;
-	}
-	return dword_5d4594_1565520 - packet_count;
 }
 
 //----- (004E5AB0) --------------------------------------------------------

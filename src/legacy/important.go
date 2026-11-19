@@ -187,13 +187,14 @@ func cleanupImportantPlayerPacketsC(playerIndex uint8) int {
 }
 
 func Sub_4E5630(playerIndex ntype.PlayerInd) (offset, threshold, resendInterval, resendsPerUpdate uint32) {
-	var cThreshold C.uint32_t
-	var cResendInterval C.uint32_t
-	var cResendsPerUpdate C.uint32_t
-	offset = uint32(C.sub_4E5630(
-		C.uint8_t(playerIndex), &cThreshold, &cResendInterval, &cResendsPerUpdate,
+	offset = readImportantRateControlC(uint8(playerIndex), &threshold, &resendInterval, &resendsPerUpdate)
+	return offset, threshold, resendInterval, resendsPerUpdate
+}
+
+func readImportantRateControlC(playerIndex uint8, threshold, interval, resends *uint32) uint32 {
+	return uint32(C.sub_4E5630(
+		C.uint8_t(playerIndex), (*C.uint32_t)(threshold), (*C.uint32_t)(interval), (*C.uint32_t)(resends),
 	))
-	return offset, uint32(cThreshold), uint32(cResendInterval), uint32(cResendsPerUpdate)
 }
 
 func adjustImportantRateC(playerIndex uint8) uint32 {

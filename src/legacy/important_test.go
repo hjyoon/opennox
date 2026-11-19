@@ -364,6 +364,26 @@ func TestImportantRateControlReadMatchesGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestImportantRateControlReadUsesLiveAliasedBytes(t *testing.T) {
+	records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+	const index = 15
+	rate := &records[index]
+	saved := *rate
+	t.Cleanup(func() { *rate = saved })
+	*rate = importantRateControl{
+		ResendsPerUpdate: 0xee, ResendInterval: 0xa6, UpdateRate: 0xa5, Reserved3: 0xa7,
+		Threshold: 0x81208765, LowerThreshold: 0xfedc1234,
+	}
+	var interval, resends uint32
+	word := (*uint32)(unsafe.Pointer(rate))
+	if got := readImportantRateControlC(index, word, &interval, &resends); got != 12*index {
+		t.Fatalf("rate offset = %d, want %d", got, 12*index)
+	}
+	if *word != 0x81208765 || interval != 0x87 || resends != 0x65 {
+		t.Fatalf("aliased threshold/interval/resends = %08x/%02x/%02x", *word, interval, resends)
+	}
+}
+
 func TestImportantRateAdjustmentMatchesGAMEEXEContract(t *testing.T) {
 	handles.InitHigh()
 	t.Cleanup(handles.Release)

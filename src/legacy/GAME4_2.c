@@ -355,12 +355,6 @@ static void nox_mapgenFreeDecorDefinitionList(uintptr_t ref) {
 	}
 }
 
-static void nox_mapgenApplyChoiceNative_521FE0(
-	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref);
-static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
-	char* name, uintptr_t list_ref, int count);
-static nox_object_t* nox_mapgenAttachInventoryNative_522300(
-	nox_object_t* holder, nox_object_t* item);
 static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
 	nox_mapgen_decor_definition_legacy* definition, FILE* file);
 static int nox_mapgenReadDecorFillNative_51FEC0(
@@ -3027,30 +3021,7 @@ uint32_t* sub_521C10(int a1) {
 }
 
 //----- (00521C60) --------------------------------------------------------
-uint32_t* nox_mapgenFindForeachChoicesNative_521C60(uintptr_t foreach_ref, uint16_t type_id) {
-	for (nox_mapgen_foreach_legacy* entry = nox_mapgenForeachResolve(foreach_ref); entry;
-		 entry = nox_mapgenForeachResolve(entry->next_token)) {
-		if (entry->type_id == type_id) {
-			return nox_mapgenChoiceResolve(entry->choices_token);
-		}
-	}
-	return NULL;
-}
-
-void nox_mapgenApplyForeachNative_521C60(uint8_t* theme, uintptr_t foreach_ref) {
-	for (nox_object_t* object = sub_504980(); object; object = sub_5049C0(object)) {
-		uint32_t* choices = nox_mapgenFindForeachChoicesNative_521C60(foreach_ref, object->typ_ind);
-		if (choices) {
-			nox_mapgenApplyChoiceNative_521FE0(theme, object, (uintptr_t)choices);
-		}
-	}
-}
-
-int nox_xxx_mapgen_521C60(int a1, int a2) {
-	nox_mapgenApplyForeachNative_521C60(
-		(uint8_t*)(uintptr_t)(uint32_t)a1, (uintptr_t)(uint32_t)a2);
-	return 0;
-}
+// Native-width implementation: mapgen_choice_inventory_public.go.
 
 //----- (00521CB0) --------------------------------------------------------
 int nox_mapgenPlaceDecorObjectNative_521CB0(
@@ -3176,63 +3147,13 @@ int sub_521F10(int a1, float* a2) {
 }
 
 //----- (00521FE0) --------------------------------------------------------
-static void nox_mapgenApplyChoiceNative_521FE0(
-	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref) {
-	uint32_t* choice = nox_mapgenChoiceResolve(choices_ref);
-	if (!choice || !theme || !holder) {
-		return;
-	}
-	int roll = nox_xxx_mapGenRandFunc_526AC0(1, 100);
-	while (choice) {
-		roll -= (int)choice[0];
-		if (roll <= 0) {
-			break;
-		}
-		choice = nox_mapgenChoiceNextNative_520380((uintptr_t)choice);
-	}
-	if (!choice) {
-		return;
-	}
-
-	char* entry = (char*)(choice + 2);
-	for (uint32_t i = 0; i < choice[NOX_MAPGEN_CHOICE_COUNT_INDEX]; ++i, entry += 64) {
-		nox_object_t* item = NULL;
-		switch (*((uint32_t*)entry - 1)) {
-		case 0:
-			item = nox_xxx_newObjectByTypeID_4E3810(entry);
-			break;
-		case 3:
-			item = nox_mapgenMakeEnchantedItemNative_5221A0(
-				entry, *(uint32_t*)(theme + 1100), *(uint32_t*)(theme + 1104));
-			break;
-		case 4:
-			item = nox_mapgenMakeEnchantedItemNative_5221A0(
-				entry, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
-			break;
-		case 5:
-			item = nox_xxx_mapGenMakeSpellbook_5220E0(theme, entry);
-			break;
-		default:
-			break;
-		}
-		if (item) {
-			nox_mapgenAttachInventoryNative_522300(holder, item);
-		}
-	}
-}
-
-void nox_xxx_mapgen_521FE0(int a1, int a2, uint32_t* a3) {
-	nox_mapgenApplyChoiceNative_521FE0(
-		(uint8_t*)(uintptr_t)(uint32_t)a1,
-		(nox_object_t*)(uintptr_t)(uint32_t)a2,
-		(uintptr_t)a3);
-}
+// Native-width implementation: mapgen_choice_inventory_public.go.
 
 //----- (005220E0) --------------------------------------------------------
 // Native-width implementation: mapgen_spellbook_public.go.
 
 //----- (005221A0) --------------------------------------------------------
-static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
+nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
 	char* name, uintptr_t list_ref, int count) {
 	char* definition = (char*)nox_mapgenLegacyPtrResolve(list_ref);
 	char* object_name = name;
@@ -3292,22 +3213,7 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 }
 
 //----- (00522300) --------------------------------------------------------
-static nox_object_t* nox_mapgenAttachInventoryNative_522300(
-	nox_object_t* holder, nox_object_t* item) {
-	item->field_125 = NULL;
-	item->inv_next_item = holder->inv_first_item;
-	if (holder->inv_first_item) {
-		holder->inv_first_item->field_125 = item;
-	}
-	holder->inv_first_item = item;
-	item->inv_holder = holder;
-	return item;
-}
-
-uint32_t* sub_522300(int a1, uint32_t* a2) {
-	return (uint32_t*)nox_mapgenAttachInventoryNative_522300(
-		(nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)a2);
-}
+// Native-width implementation: mapgen_choice_inventory_public.go.
 
 static int nox_mapgenFindFreePointNative_5226D0(uint8_t* room, float scale, float2* point) {
 	if (!room || !point) {
@@ -3370,7 +3276,7 @@ static void* nox_mapgenPopulateDecorEntryNative_5224B0(
 		for (int i = 0; i < count; ++i) {
 			nox_object_t* object = nox_mapgenMakeMonsterInRoomNative_522810(room, entry->name);
 			if (object) {
-				nox_mapgenApplyChoiceNative_521FE0(theme, object, entry->choices_token);
+				nox_xxx_mapgen_521FE0(theme, object, entry->choices_token);
 				result = object;
 			}
 		}

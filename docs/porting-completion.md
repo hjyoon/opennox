@@ -882,8 +882,9 @@ profiles select 206 of 627 tracked C files. The release receipt
 has SHA-256 `ce7cfd58f42a9d69f30755135dfc368c7b443ab5f3d980a391bf64734eb4c754`.
 Windows `44532334712` passes amd64 and 386. Linux `44532347484`
 passes three products on attempt one. The remaining server job
-encounters HTTP 503 during OpenAL package installation and is
-retried at the same source revision. The first job log is archived.
+encounters HTTP 503 during OpenAL package installation. Attempt two
+retries that job at the same revision and passes all four products.
+The first job log is archived.
 
 ### Monster spell selection entries, 2026-11-19
 
@@ -921,7 +922,44 @@ macro-generated definitions. Twelve profiles select 206 of 627
 tracked C files. The release receipt
 `monster-spell-selection-native-20261119-v1/monster-spell-selection-release-v1.json`
 has SHA-256 `8ffb8aee23a5e0f34214ef8c30dd0e6c73012455cb09190228209b356fe22e7c`.
-Linux `44538755532` and Windows `44538755798` track the exact revision.
+Linux `44538755532` passes all four products and Windows `44538755798`
+passes amd64 and 386 at the exact revision.
+
+### Monster fight update entry, 2026-11-19
+
+Engine `7ceba5dc57c115787e8dcd64f6ee455146d75a80` ports `531EC0`
+from `GAME4_3.c`. Its public C signature takes a native object
+pointer and returns the original low byte. Live AI and the C entry
+share the Go implementation. It reads the action frame once,
+preserves the live remembered position and target IDs across the
+original service boundaries, and retains the x87 distance comparison.
+
+The 369-byte GAME.EXE body executes 168 stock cases. Go service
+composition covers all 168, substituting real pointers for the
+eight deliberately unaligned stub attack-return samples. Twelve
+additional actual C calls cover high-address objects, signed char
+returns, native movement and pursuit, dead-target marks, and spell
+scheduling. Normal ARM64 and cgocheck2 each pass 5,963 checks without
+warnings. Four old behavior mismatches and the first storage-interrupted
+test and campaign copy are retained.
+
+Both clients build warning-free and verify 500 public and 142
+retired symbols. The normal client defeats the original Wizard III
+cellar Swordsman with Magic Missile. HD observes WarCry silence and
+natural expiry on the living Warrior III crypt caster. Both
+ordinary-clock replays write living Saves. The campaign archives
+retain generated files and record exact stock inputs. All 4,649
+original asset and Save hashes match.
+
+The i386 `GAME4_3.c` audit records 82 to 81 active bodies. The
+split GAME files retain 1,481 active bodies, including 172 with
+pointer and integer conversions. Default ARM64 records 2,115 named
+bodies, 309 with pointer and integer conversions, and 14
+macro-generated definitions. Twelve profiles select 206 of 627
+tracked C files. The release receipt
+`monster-fight-action-entry-native-20261119-v1/monster-fight-action-release-v1.json`
+has SHA-256 `58dd5eeb56f9dad7d3ff4fb727fee1ca46a92a01482910407e2289ded1f078ee`.
+Linux `44543980619` and Windows `44543980574` track this revision.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

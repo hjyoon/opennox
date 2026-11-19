@@ -457,7 +457,7 @@ comparison covers all 384 precision cases. Actual ARM64 C calls match
 modes pass 235 checks without warnings. The first strict run hit a
 disk-space limit while creating map-generation test directories. The
 same source revision passes after disk space is recovered. Linux
-`44471490588` and Windows `44471485892` track cross-platform verification.
+`44471490588` and Windows `44471485892` pass all six required jobs.
 
 Both ARM64 clients build without warnings and verify 437 public and 113
 retired symbols. The normal client passes FlagBall charge and player
@@ -485,13 +485,55 @@ automatic spell setup. Both ARM64 modes match all 400 cases via the
 C entry and via the Go path. The 30 cases with absent health records
 preserve the remaining initialization when the original skips the HP write.
 Both modes pass 6,249 checks without warnings. Linux `44473685287` and
-Windows `44473681655` track cross-platform verification.
+Windows `44473681655` pass all six required jobs.
 
 The default ARM64 split GAME inventory has 1,541 active C bodies,
 including 198 containing pointer and integer casts. The whole-C migration
 and final nine-cell campaign audit remain open. The exact comparison and
 test executables are in `monster-spawn-spellcaster-native-v1` under
 `opennox-verification/20261118-trade`.
+
+### Winner packets and saved-map rule paths, 2026-11-19
+
+Engine `1fb806bd4f8691c4751c064ef0593113a03636a0` moves all four
+match-winner packet entries out of `GAME3_2.c`. The public entries use
+typed unit and team pointers and the shared reliable eight-byte packet
+sender. The original comparison verifies 522 packet emissions and 54
+full-width non-player pointer returns. A nil FlagBall team uses the
+existing Go tie encoding. Both ARM64 modes pass 650 checks without
+warnings. The split GAME inventory has 1,537 active bodies, including
+194 with pointer and integer conversions. Linux `44476138745` and
+Windows `44476133971` track the cross-platform jobs.
+
+Engine `9679ed02c2dd891b131fe6a533da0df9ff480e17` moves the rule path
+loader `4D0550` and current map rule name `57A950` to Go strings.
+The previous ARM64 product aborted in `4D0550` when loading an earned
+Warrior III Save from a nested path. Both ARM64 modes pass 43 checks,
+including 32 cases executed on stock code and long paths through the
+actual C entries. Normal and HD products build without warnings,
+retain 444 public symbols, and verify 113 retired symbols.
+
+Both products load that same Save, move and write a living manual Save
+at 49 HP with zero poison. The normal product also passes the original
+crypt route from the recovered, previously qualified cemetery Save.
+The living Shaman receives WarCry silence, the effect expires, and the
+Warrior writes a living Save at 12 HP with zero poison. A separate run
+from a newly generated cemetery Save loads successfully and ends
+with player death above the lift before entering the crypt. The failed
+run, original abort report and all 4,649 original asset and Save
+hash checks are retained. Linux `44479268166` and Windows
+`44479192750` track cross-platform verification of this engine.
+
+The twelve build profiles at `9679ed02c2dd891b131fe6a533da0df9ff480e17`
+select 206 of 627 tracked C files. Default ARM64 selects 205 files with
+2,170 named active bodies and 14 macro-generated definitions. Of the
+332 bodies with pointer and integer conversions, 194 are in the 1,535
+active split GAME bodies. The whole-C migration and final nine-cell
+campaign audit remain open.
+
+The records are under `opennox-verification/20261118-trade` in
+`winner-packets-public-native-v1`, `map-rule-paths-native-v1` and
+`whole-C-inventory-9679ed02-v1`.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

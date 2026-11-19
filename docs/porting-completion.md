@@ -1024,7 +1024,42 @@ macro-generated definitions. Twelve profiles select 206 of 627
 tracked C files. The release receipt
 `mapgen-spellbook-native-20261119-v1/mapgen-spellbook-release-v1.json`
 has SHA-256 `e5b9a3c4a0e0e11c297a707778ff4b0ba3faff1c2e4aa111d584041456ddd178`.
-Linux `44554979477` and Windows `44554979969` track this revision.
+Linux `44554979477` passes all four products and Windows `44554979969`
+passes amd64 and 386 at this revision.
+
+### Map generator token and comment entries, 2026-11-20
+
+Engine `a13877fdc86b52fe749b85c4088f86f50899563d` ports `51E540`,
+`51E570` and `51E630` from `GAME4_2.c`. The exports preserve the
+native `FILE*` and output-buffer ABI. The Go readers preserve comment
+skip status, directive dispatch, line counter wrap and the partial
+buffer left at EOF.
+
+The 282 GAME.EXE bytes execute 1,904 calls across 672 cases. Normal
+ARM64 and cgocheck2 each pass 687 checks with zero warnings. The
+actual C tests use high-address file handles and buffers, plain and
+encrypted binfiles, conditional recursion and guarded output. The
+first run and its archived executable record a source extraction
+failure fixed by restoring the original C address marker.
+
+Both ARM64 clients build without warnings and verify 506 public and
+144 retired symbols. The ordinary-clock Warrior I run verifies
+music, dialogue and effects through the headless OpenAL backend,
+including after pause and resume. The HD Wizard I run verifies five
+book award defaults through the server packet path. Mouse target
+changes for Haste and Protection from Fire survive repeat awards.
+Both runs preserve generated chapter 1 autosaves and the 4,649
+original asset and Save hashes.
+
+The i386 `GAME4_2.c` audit records 280 to 277 active bodies. The
+thirteen split GAME files contain 1,473 active bodies, 168 with
+pointer and integer conversions. Default ARM64 records 2,107 named
+active bodies, 305 with pointer and integer conversions, and 14
+macro-generated definitions. Twelve profiles select 206 of 627
+tracked C files. The release receipt
+`mapgen-token-reader-native-20261120-v1/mapgen-token-reader-release-v1.json`
+has SHA-256 `ebfc21ab094a480648458f8cfb533b9ecf0db5ef751ed5c7c84a7aa0f5fb3fc3`.
+Linux `44578203972` and Windows `44578205863` track this revision.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

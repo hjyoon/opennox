@@ -8259,11 +8259,11 @@ LABEL_67:
 	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 544), 1u);
 	v6 = 0;
 	if ((signed char)*(uint8_t*)(v1 + 544) >= 0) {
-		v18 = v1 + 552;
+		uint8_t* action = (uint8_t*)(v1 + 552);
 		do {
-			sub_52A440(a1, v18, v3);
+			sub_52A440(a1, action, v3);
 			++v6;
-			v18 += 24;
+			action += 24;
 		} while (v6 <= *(char*)(v1 + 544));
 	}
 	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 1129), 1u);
@@ -8388,103 +8388,10 @@ LABEL_67:
 // 529CE0: using guessed type char var_100[256];
 
 //----- (0052A420) --------------------------------------------------------
-int nox_xxx_AssignIfGreater_52A420(int* a1, int a2) {
-	int result; // eax
-
-	result = a2 + *a1;
-	if (result >= 1) {
-		*a1 = result;
-	} else {
-		*a1 = 1;
-	}
-	return result;
-}
+// Implemented in Go.
 
 //----- (0052A440) --------------------------------------------------------
-int sub_52A440(int a1, int a2, int a3) {
-	int v3;        // eax
-	int v4;        // edi
-	int* v5;       // esi
-	int result;    // eax
-	size_t v7;     // [esp-4h] [ebp-120h]
-	int v8;        // [esp+10h] [ebp-10Ch]
-	int v9;        // [esp+14h] [ebp-108h]
-	int v10;       // [esp+18h] [ebp-104h]
-	char v11[256]; // [esp+1Ch] [ebp-100h]
-
-	strcpy(v11, sub_534650(*(uint32_t*)a2));
-	LOBYTE(v10) = strlen(v11);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 1u);
-	nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v11, (unsigned char)v10);
-	v11[(unsigned char)v10] = 0;
-	v3 = nox_xxx_actionByName_534670(v11);
-	*(uint32_t*)a2 = v3;
-	LOBYTE(v8) = getMemByte(0x587000, 255604 + 16 * v3);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 1u);
-	v4 = 0;
-	if ((unsigned char)v8 > 0u) {
-		v5 = (int*)(a2 + 4);
-		while (1) {
-			result = *getMemU32Ptr(0x587000, 255608 + 4 * (v4 + 4 * *(uint32_t*)a2));
-			switch (result) {
-			case 0:
-				v7 = 8;
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v5, v7);
-				break;
-			case 1:
-				if (nox_crypt_IsReadOnly()) {
-					v7 = 4;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v5, v7);
-					break;
-				}
-				if (*v5) {
-					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(*v5 + 44), 4u);
-				} else {
-					v9 = 0;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&v9, 4u);
-				}
-				break;
-			case 2:
-				if (nox_crypt_IsReadOnly()) {
-					v7 = 4;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v5, v7);
-					break;
-				}
-				if (*v5) {
-					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)*v5, 4u);
-				} else {
-					v9 = 0;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&v9, 4u);
-				}
-				break;
-			case 3:
-			case 4:
-			case 6:
-				v7 = 4;
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v5, v7);
-				break;
-			case 5:
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v5, 4u);
-				if (nox_crypt_IsReadOnly() == 1) {
-					nox_xxx_AssignIfGreater_52A420(v5, a3);
-				}
-				break;
-			case 7:
-				v7 = 1;
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v5, v7);
-				break;
-			default:
-				return result;
-			}
-			++v4;
-			v5 += 2;
-			if (v4 >= (unsigned char)v8) {
-				return nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(a2 + 20), 4u);
-			}
-		}
-	}
-	return nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(a2 + 20), 4u);
-}
+// Implemented in Go.
 // 52A440: using guessed type char var_100[256];
 
 // 64-bit monster and NPC transfers use the native Go implementations below.

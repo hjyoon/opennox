@@ -1355,9 +1355,5 @@ func monsterObjectByNetCode528DB0(srv *server.Server, code uint32) *server.Objec
 }
 
 func monsterShiftFrame528DB0(value uint32, delta int32) uint32 {
-	shifted := int32(value + uint32(delta))
-	if shifted < 1 {
-		return 1
-	}
-	return uint32(shifted)
+	return uint32(max(shiftedMonsterActionFrame(value, delta), 1))
 }

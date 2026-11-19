@@ -261,7 +261,7 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1);
 void nox_xxx_monsterOnSpawnSpellcaster_529BC0(nox_object_t* unit);
 int nox_xxx_XFer_ActionData_529CE0(int a1);
 int nox_xxx_AssignIfGreater_52A420(int* a1, int a2);
-int sub_52A440(int a1, int a2, int a3);
+int sub_52A440(int context, void* action, int frame_delta);
 void nox_xxx_XFer_WriteShopItem_52A5F0(void* a1);
 void nox_xxx_XFer_ReadShopItem_52A840(void* a1, int a2);
 #if UINTPTR_MAX == UINT32_MAX

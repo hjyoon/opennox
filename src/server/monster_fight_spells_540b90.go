@@ -102,7 +102,8 @@ func monsterFightBuffSelf540B90(unit *Object, hooks monsterFightSpellHooks540B90
 	}
 	id := candidates[hooks.random(0, len(candidates)-1)]
 	hooks.cast(unit, id, unit)
-	update.Field365 = hooks.frame() + uint32(hooks.random(int(update.Field364_0), int(update.Field364_2)))
+	cooldown := hooks.random(int(update.Field364_0), int(update.Field364_2))
+	update.Field365 = hooks.frame() + uint32(cooldown)
 	return true
 }
 
@@ -122,7 +123,8 @@ func monsterFightCastOffensive540F20(unit, target *Object, hooks monsterFightSpe
 	}
 	id := candidates[hooks.random(0, len(candidates)-1)]
 	hooks.cast(unit, id, target)
-	update.Field367 = hooks.frame() + uint32(hooks.random(int(update.Field366_0), int(update.Field366_2)))
+	cooldown := hooks.random(int(update.Field366_0), int(update.Field366_2))
+	update.Field367 = hooks.frame() + uint32(cooldown)
 	return true
 }
 
@@ -168,7 +170,8 @@ func monsterFightCastRelated540D90(unit, target *Object, hooks monsterFightSpell
 			}
 		}
 		hooks.cast(unit, id, target)
-		update.Field369 = hooks.frame() + uint32(hooks.random(int(update.Field368_0), int(update.Field368_2)))
+		cooldown := hooks.random(int(update.Field368_0), int(update.Field368_2))
+		update.Field369 = hooks.frame() + uint32(cooldown)
 		return true
 	}
 }

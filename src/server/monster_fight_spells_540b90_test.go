@@ -138,6 +138,7 @@ func TestMonsterFightBuffSelf540B90SelectionCooldownAndCachedUpdate(t *testing.T
 				if min != 11 || max != 13 {
 					t.Fatalf("cooldown bounds = %d..%d", min, max)
 				}
+				frames[1] += 3
 				return 12
 			default:
 				t.Fatalf("unexpected RNG call %d", randomInd)
@@ -154,7 +155,7 @@ func TestMonsterFightBuffSelf540B90SelectionCooldownAndCachedUpdate(t *testing.T
 	if !monsterFightBuffSelf540B90(unit, hooks) {
 		t.Fatal("self spell was not selected")
 	}
-	if update.Field365 != 152 || replacement.Field365 != 0 || frameInd != 2 || randomInd != 2 {
+	if update.Field365 != 155 || replacement.Field365 != 0 || frameInd != 2 || randomInd != 2 {
 		t.Fatalf("cooldown/cache/calls = %d/%d/%d/%d", update.Field365, replacement.Field365, frameInd, randomInd)
 	}
 	unit.UpdateData = unsafe.Pointer(update)
@@ -188,6 +189,7 @@ func TestMonsterFightCastOffensive540F20TargetAndCooldown(t *testing.T) {
 			if min != 7 || max != 9 {
 				t.Fatalf("cooldown bounds = %d..%d", min, max)
 			}
+			frames[1] += 3
 			return 8
 		},
 		cast: func(gotUnit *Object, id spell.ID, gotTarget *Object) {
@@ -198,7 +200,7 @@ func TestMonsterFightCastOffensive540F20TargetAndCooldown(t *testing.T) {
 	}) {
 		t.Fatal("offensive spell was not selected")
 	}
-	if update.Field367 != 118 || frameInd != 2 || randomInd != 2 {
+	if update.Field367 != 121 || frameInd != 2 || randomInd != 2 {
 		t.Fatalf("cooldown/calls = %d/%d/%d", update.Field367, frameInd, randomInd)
 	}
 }
@@ -228,8 +230,11 @@ func TestMonsterFightCastRelated540D90RerollsRejectedSummon(t *testing.T) {
 			if randomInd < 3 && (min != 0 || max != 1) {
 				t.Fatalf("selection bounds = %d..%d", min, max)
 			}
-			if randomInd == 3 && (min != 5 || max != 7) {
-				t.Fatalf("cooldown bounds = %d..%d", min, max)
+			if randomInd == 3 {
+				if min != 5 || max != 7 {
+					t.Fatalf("cooldown bounds = %d..%d", min, max)
+				}
+				frames[1] += 3
 			}
 			return v
 		},
@@ -252,7 +257,7 @@ func TestMonsterFightCastRelated540D90RerollsRejectedSummon(t *testing.T) {
 	}) {
 		t.Fatal("related spell was not selected")
 	}
-	if activeCalls != 1 || randomInd != 3 || frameInd != 2 || update.Field369 != 126 {
+	if activeCalls != 1 || randomInd != 3 || frameInd != 2 || update.Field369 != 129 {
 		t.Fatalf("active/RNG/frame/cooldown = %d/%d/%d/%d", activeCalls, randomInd, frameInd, update.Field369)
 	}
 }

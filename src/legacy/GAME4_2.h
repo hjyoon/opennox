@@ -266,7 +266,7 @@ int nox_xxx_netObjectInShadows_528A90(int recipient, nox_object_t* object);
 uintptr_t nox_xxx_monsterCmdSend_528BD0(nox_object_t* unit, nox_object_t* source, const char* command, short duration);
 int nox_xxx_destroyEveryChatMB_528D60(void);
 int nox_xxx_XFerMonster_528DB0(nox_object_t* a1);
-void nox_xxx_monsterOnSpawnSpellcaster_529BC0(int a1);
+void nox_xxx_monsterOnSpawnSpellcaster_529BC0(nox_object_t* unit);
 int nox_xxx_XFer_ActionData_529CE0(int a1);
 int nox_xxx_AssignIfGreater_52A420(int* a1, int a2);
 int sub_52A440(int a1, int a2, int a3);

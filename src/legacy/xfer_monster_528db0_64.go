@@ -216,7 +216,7 @@ func xferMonsterNative528DB0(cf *cryptfile.CryptFile, obj *server.Object) error 
 	}
 	if cf.ReadOnly() {
 		if noxflags.HasGame(noxflags.GameFlag22) || !Nox_xxx_gameIsSwitchToSolo_4DB240() {
-			monsterOnSpawnNative529BC0(obj)
+			monsterOnSpawnNative529BC0(obj, obj.Server)
 		}
 		monsterEnsureGlyph528DB0(obj)
 	}
@@ -1292,41 +1292,6 @@ func monsterFindDurSpell528DB0(obj *server.Object, spellID uint32) *server.DurSp
 		}
 	}
 	return nil
-}
-
-func monsterOnSpawnNative529BC0(obj *server.Object) {
-	if obj == nil || obj.HealthData == nil {
-		return
-	}
-	ud := obj.UpdateDataMonster()
-	def := Nox_xxx_monsterDefByTT_517560(int(obj.TypeInd))
-	if def == nil {
-		return
-	}
-	if byte(ud.Field361>>8) == 0 {
-		health := uint16(def.Health68)
-		obj.HealthData.Cur = health
-		obj.HealthData.Field2 = health
-		obj.HealthData.Max = health
-	}
-	if byte(ud.Field361) == 1 {
-		ud.StatusFlags = def.StatusFlags92
-	} else {
-		const mutable = object.MonsterStatus((1<<22)-1) &^ object.MonsterStatus(0x19c40)
-		ud.StatusFlags = ud.StatusFlags&^mutable | def.StatusFlags92&mutable
-	}
-	if ud.StatusFlags&0x20 == 0 {
-		ud.StatusFlags &^= 0x1800
-	}
-	if byte(ud.Field335) == 1 {
-		ud.RetreatLevel = def.RetreatRatio80
-	}
-	if byte(ud.Field337) == 1 {
-		ud.ResumeLevel = def.ResumeRatio84
-	}
-	if byte(ud.Field509) == 1 {
-		obj.Server().MonsterAutoSpells54C0C0(obj)
-	}
 }
 
 func monsterEnsureGlyph528DB0(obj *server.Object) {

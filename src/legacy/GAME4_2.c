@@ -8178,7 +8178,7 @@ LABEL_171:
 	}
 	if (nox_crypt_IsReadOnly() == 1) {
 		if (nox_common_gameFlags_check_40A5C0(0x200000) || !nox_xxx_gameIsSwitchToSolo_4DB240()) {
-			nox_xxx_monsterOnSpawnSpellcaster_529BC0(a1);
+			nox_xxx_monsterOnSpawnSpellcaster_529BC0(a1p);
 		}
 		if (nox_crypt_IsReadOnly() == 1) {
 			if (*(uint8_t*)(a1 + 8) & 2) {
@@ -8240,59 +8240,7 @@ extern int32_t nox_xxx_XFerMonster_native_528DB0(nox_object_t* obj);
 int nox_xxx_XFerMonster_528DB0(nox_object_t* obj) { return nox_xxx_XFerMonster_native_528DB0(obj); }
 #endif
 
-//----- (00529BC0) --------------------------------------------------------
-void nox_xxx_monsterOnSpawnSpellcaster_529BC0(int a1) {
-	int v1;       // esi
-	uint32_t* v2; // eax
-	int i;        // ecx
-	int v4;       // edx
-	int v5;       // edi
-	int v6;       // edi
-	int v7;       // ecx
-
-	if (a1) {
-		v1 = *(uint32_t*)(a1 + 748);
-		v2 = nox_xxx_monsterDefByTT_517560(*(unsigned short*)(a1 + 4));
-		if (v2) {
-			if (!*(uint8_t*)(v1 + 1445)) {
-				**(uint16_t**)(a1 + 556) = *((uint16_t*)v2 + 34);
-				*(uint16_t*)(*(uint32_t*)(a1 + 556) + 4) = *((uint16_t*)v2 + 34);
-				*(uint16_t*)(*(uint32_t*)(a1 + 556) + 2) = *((uint16_t*)v2 + 34);
-			}
-			if (*(uint8_t*)(v1 + 1444) == 1) {
-				*(uint32_t*)(v1 + 1440) = v2[23];
-			} else {
-				for (i = 0; i < 22; ++i) {
-					v4 = 1 << i;
-					if (!((1 << i) & 0x19C40)) {
-						v5 = *(uint32_t*)(v1 + 1440);
-						if (v5 & v4 && !(v4 & v2[23])) {
-							*(uint32_t*)(v1 + 1440) = v5 & ~v4;
-						}
-						v6 = *(uint32_t*)(v1 + 1440);
-						if (!(v6 & v4) && v4 & v2[23]) {
-							*(uint32_t*)(v1 + 1440) = v4 | v6;
-						}
-					}
-				}
-			}
-			v7 = *(uint32_t*)(v1 + 1440);
-			if (!(v7 & 0x20)) {
-				BYTE1(v7) &= 0xE7u;
-				*(uint32_t*)(v1 + 1440) = v7;
-			}
-			if (*(uint8_t*)(v1 + 1340) == 1) {
-				*(uint32_t*)(v1 + 1336) = v2[20];
-			}
-			if (*(uint8_t*)(v1 + 1348) == 1) {
-				*(uint32_t*)(v1 + 1344) = v2[21];
-			}
-			if (*(uint8_t*)(v1 + 2036) == 1) {
-				nox_xxx_monsterAutoSpells_54C0C0(a1);
-			}
-		}
-	}
-}
+// GAME.EXE 00529BC0 uses the Go spellcaster initialization entry.
 
 //----- (00529CE0) --------------------------------------------------------
 nox_waypoint_t* sub_579C80(unsigned int a1);

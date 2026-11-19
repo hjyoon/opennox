@@ -191,12 +191,7 @@ func chakramCollideServerDeps4EAF00(
 			velocity.Y = -x
 		},
 		randomReflect: func(source *Object) {
-			chakramRandomReflectNative4EB3E0(source, chakramRandomReflectNativeDeps4EB3E0{
-				randomInt: func(minimum, maximum int32) int32 {
-					return int32(s.Rand.Logic.IntClamp(int(minimum), int(maximum)))
-				},
-				moveUpdate: runtime.MoveUpdate,
-			})
+			s.ChakramRandomReflect4EB3E0(source, runtime.MoveUpdate)
 		},
 		tracePoint: func() (int32, int32, bool) {
 			point := runtime.TraceHitPoint()

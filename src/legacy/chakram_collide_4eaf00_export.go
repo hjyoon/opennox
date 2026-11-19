@@ -2,7 +2,10 @@ package legacy
 
 /*
 #include "chakram_collide_4eaf00.h"
+#include "GAME3_3.h"
 #include "GAME4_3.h"
+_Static_assert(_Generic(&sub_4EB3E0, void (*)(nox_object_t*): 1, default: 0),
+	"native Chakram reflection pointer ABI");
 */
 import "C"
 
@@ -75,4 +78,13 @@ func nox_xxx_collideChakram_4EAF00(
 		asObjectS((*nox_object_t)(target)),
 		unsafe.Pointer(collision),
 	)
+}
+
+//export sub_4EB3E0
+func sub_4EB3E0(obj *C.nox_object_t) {
+	GetServer().S().ChakramRandomReflect4EB3E0(asObjectS((*nox_object_t)(obj)), Nox_xxx_moveUpdateSpecial_517970)
+}
+
+func chakramRandomReflectCallC4EB3E0(obj *server.Object) {
+	C.sub_4EB3E0(asObjectC(obj))
 }

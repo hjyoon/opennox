@@ -426,7 +426,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EAF00 is declared by chakram_collide_4eaf00.h.
 nox_object_t* sub_4EB250(nox_object_t* a1);
 void sub_4EB340(nox_object_t* a1, float2* a2);
-void sub_4EB3E0(int a1);
+void sub_4EB3E0(nox_object_t* obj);
 // GAME.EXE 004EB490 is declared by arrow_collide_4eb490.h.
 // GAME.EXE 004EB6A0 is declared by harpoon_collide_4eb6a0.h.
 // GAME.EXE 004EB800 is declared by monster_arrow_collide_4eb800.h.

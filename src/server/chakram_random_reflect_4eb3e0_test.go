@@ -32,11 +32,10 @@ func TestChakramRandomReflectNative4EB3E0RotationAndMoveOrder(t *testing.T) {
 			}
 		},
 	})
-	direction := uint8(directionFromVector509ED0(3, 4) + 128)
-	cosine, sine := SinCosDir(direction)
+	// GAME.EXE 004EB3E0, startup x87 control word 0x0e7f, direction 166.
 	wantVelocity := types.Pointf{
-		X: float32(float64(float32(5)) * float64(cosine)),
-		Y: float32(float64(float32(5)) * float64(sine)),
+		X: math.Float32frombits(0xc03e9fb0),
+		Y: math.Float32frombits(0xc0808361),
 	}
 	if obj.VelVec != wantVelocity || moveCalls != 1 {
 		t.Fatalf("result = (velocity %+v, moves %d), want (%+v, 1)", obj.VelVec, moveCalls, wantVelocity)

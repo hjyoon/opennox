@@ -2419,42 +2419,6 @@ void sub_4EB340(float* a1, int a2) {
 
 #endif
 
-//----- (004EB3E0) --------------------------------------------------------
-void sub_4EB3E0(int a1) {
-	int v1;     // esi
-	float* v2;  // edi
-	int v3;     // ebx
-	int v4;     // eax
-	int v5;     // ecx
-	double v6;  // st7
-	int v7;     // eax
-	float2* v8; // [esp-4h] [ebp-10h]
-	float v9;   // [esp+10h] [ebp+4h]
-
-	v1 = a1;
-	v2 = (float*)(a1 + 80);
-	v8 = (float2*)(a1 + 80);
-	v9 = sqrt(*(float*)(a1 + 80) * *(float*)(a1 + 80) + *(float*)(a1 + 84) * *(float*)(a1 + 84));
-	v3 = nox_xxx_math_509ED0(v8);
-	v4 = nox_common_randomInt_415FA0(-64, 64) + v3 + 128;
-	if (v4 < 0) {
-		v4 += (unsigned int)(255 - v4) >> 8 << 8;
-	}
-	if (v4 >= 256) {
-		v4 += -256 * ((unsigned int)v4 >> 8);
-	}
-	v5 = *(uint32_t*)(v1 + 76);
-	*v2 = v9 * *getMemFloatPtr(0x587000, 194136 + 8 * v4);
-	v6 = v9 * *getMemFloatPtr(0x587000, 194140 + 8 * v4);
-	v7 = *(uint32_t*)(v1 + 72);
-	*(uint32_t*)(v1 + 68) = v5;
-	*(uint32_t*)(v1 + 64) = v7;
-	*(uint32_t*)(v1 + 56) = v7;
-	*(float*)(v1 + 84) = v6;
-	*(uint32_t*)(v1 + 60) = v5;
-	nox_xxx_moveUpdateSpecial_517970(v1);
-}
-
 //----- (004EB490) --------------------------------------------------------
 #if 0 // Restored by arrow_collide_4eb490_export.go; retained as ABI32 provenance.
 void nox_xxx_collideArrow_4EB490(int a1, int a2) {

@@ -536,6 +536,11 @@ The second dies when enemies catch up during a natural recovery pause.
 Both runs preserve the seed and the failure records. The recovered
 cemetery route above remains the completed WarCry run.
 
+A fresh-Save replay on `ab2e7c061a229dce4ba90f5b0039978116ecb919`
+reaches the same lower elevator and dies shortly after the early
+WarCry input. The seed, the original product and the failed replay
+are preserved.
+
 The twelve build profiles at `9679ed02c2dd891b131fe6a533da0df9ff480e17`
 select 206 of 627 tracked C files. Default ARM64 selects 205 files with
 2,170 named active bodies and 14 macro-generated definitions. Of the
@@ -635,6 +640,40 @@ bodies, including 190 with pointer and integer conversions. The
 records are in `team-base-and-player-mask-native-v1` and
 `whole-C-inventory-ab2e7c061-v1`. Cross-platform runs are Linux
 `44497264281` and Windows `44497216851`.
+
+The HD product also completes the original Warrior III crypt route
+from the recovered cemetery Save. The Shaman remains at 40 HP through
+the level-five WarCry silence and its natural expiry. The Warrior
+writes a living manual Save at 2 HP with zero poison. The source
+Save hashes and exact HD product hash match after the replay.
+
+### Map generation room coordinates, 2026-11-19
+
+Engine `329305438ea43d61c5418a48c428b6554afa3e30` ports four
+`GAME4_2.c` entries for grid rounding `520DF0`, room bounds `521850`,
+room position `521880` and direction checks `521AA0`. The two room
+updates return the same record at native pointer width. The port
+preserves the original rounding mode and overlapping source reads.
+
+Both ARM64 modes pass 1,144 checks without warnings. The checks
+compare 768 original cases through the actual C entries, including
+nine controls for the room address comparison. The initial build
+with a stale prefab declaration and the first fixture run with
+uninitialized input buffers are retained alongside the passing runs.
+
+Both clients build without warnings, verify 479 public and 140
+retired symbols, and pass live Quest replays. The normal client
+reaches stage two in `g_lotd` at full health. The HD client verifies
+key presence and original drop restrictions before reaching stage
+two in `g_crypts` at full health. All 4,649 original asset and Save
+hashes match. Linux `44501643198` and Windows `44501638585` track
+cross-platform verification.
+
+The default ARM64 inventory contains 2,135 named active C bodies and
+14 macro-generated definitions. The split GAME files contain 1,500
+active bodies, including 188 with pointer and integer conversions.
+The records are in `mapgen-room-coordinate-entries-native-v1` and
+`whole-C-inventory-329305438-v1`.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

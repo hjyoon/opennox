@@ -1,11 +1,6 @@
 package legacy
 
-import (
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/server"
-)
+import "github.com/opennox/opennox/v1/server"
 
 func monsterResolveXferRefs528DB0(obj *server.Object) {
 	if obj == nil || obj.UpdateData == nil {
@@ -31,27 +26,8 @@ func applyMonsterXferRefs528DB0(obj *server.Object, refs *server.MonsterActionRe
 		}
 	}
 	ud.CurrentEnemy = srv.ObjectByScriptID4ECF10(refs.Current)
-	if int32(obj.ObjFlags) >= 0 && ud.AIStackInd >= 0 {
-		for i := 0; i <= int(ud.AIStackInd); i++ {
-			item := &ud.AIStack[i]
-			action := int(item.Action)
-			if action < 0 || action >= 72 {
-				continue
-			}
-			argCount := int(memmap.Uint8(0x587000, uintptr(255604+16*action)))
-			if argCount > 2 {
-				argCount = 2
-			}
-			for j := 0; j < argCount; j++ {
-				slot := 2 * j
-				switch memmap.Uint32(0x587000, uintptr(255608+4*(j+4*action))) {
-				case 1:
-					item.Args[slot] = uintptr(unsafe.Pointer(srv.ObjectByScriptID4ECF10(refs.AIObjects[i][j])))
-				case 2:
-					item.Args[slot] = uintptr(unsafe.Pointer(srv.WPs.ByInd(int(refs.AIWaypoints[i][j]))))
-				}
-			}
-		}
+	if int32(obj.ObjFlags) >= 0 {
+		resolveMonsterActionRefs52BAF0(obj, refs)
 	}
 	if target := srv.ObjectByScriptID4ECF10(refs.Field98); target != nil {
 		ud.Field98 = target.NetCode

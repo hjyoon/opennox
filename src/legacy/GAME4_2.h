@@ -268,7 +268,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(nox_object_t* obj);
 size_t nox_xxx_readNPCVoiceSet_52AD10(nox_object_t* obj);
 int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1);
 int sub_52BA70(nox_object_t* obj);
-int sub_52BAF0(int a1);
+void* sub_52BAF0(nox_object_t* obj);
 void nox_xxx_changeOwner_52BE40(nox_object_t* a1, nox_object_t* a2);
 int sub_52BEB0(int id, nox_object_t* second, nox_object_t* owner, nox_object_t* caster);
 int nox_xxx_castSpellWinkORrestoreHealth_52BF20(int spell_id, void* second, nox_object_t* caster, nox_object_t* fourth, void* arg, int level);

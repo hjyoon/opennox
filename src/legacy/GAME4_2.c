@@ -8708,60 +8708,6 @@ int sub_52BA70(int a1) {
 }
 #endif
 
-//----- (0052BAF0) --------------------------------------------------------
-int sub_52BAF0(int a1) {
-	int v1;       // eax
-	int result;   // eax
-	uint32_t* v3; // ebx
-	int v4;       // edi
-	int v5;       // ebp
-	int* v6;      // esi
-	int v7;       // [esp+0h] [ebp-4h]
-	int v8;       // [esp+8h] [ebp+4h]
-
-	v1 = a1;
-	v8 = 0;
-	result = *(uint32_t*)(v1 + 748);
-	v7 = result;
-	if (*(uint8_t*)(result + 544) & 0x80) {
-		return result;
-	}
-	v3 = (uint32_t*)(result + 552);
-	do {
-		v4 = 0;
-		v5 = *getMemU32Ptr(0x587000, 255604 + 16 * *v3);
-		if (v5 <= 0) {
-			goto LABEL_14;
-		}
-		v6 = (int*)(v3 + 1);
-		do {
-			if (*getMemU32Ptr(0x587000, 255608 + 4 * (v4 + 4 * *v3)) == 1) {
-				if (*v6) {
-					*v6 = sub_4ECF10(*v6);
-					goto LABEL_12;
-				}
-			} else {
-				if (*getMemU32Ptr(0x587000, 255608 + 4 * (v4 + 4 * *v3)) != 2) {
-					goto LABEL_12;
-				}
-				if (*v6) {
-					*v6 = nox_server_getWaypointById_579C40(*v6);
-					goto LABEL_12;
-				}
-			}
-			*v6 = 0;
-		LABEL_12:
-			++v4;
-			v6 += 2;
-		} while (v4 < v5);
-		result = v7;
-	LABEL_14:
-		v3 += 6;
-		++v8;
-	} while (v8 <= *(char*)(result + 544));
-	return result;
-}
-
 //----- (0052BEB0) --------------------------------------------------------
 #if 0 // Native Inversion cast: inversion_native_entry.go
 int sub_52BEB0(int a1, int a2, int a3, int a4) {

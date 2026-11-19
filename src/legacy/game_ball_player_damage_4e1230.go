@@ -1,5 +1,10 @@
 package legacy
 
+/*
+#include "GAME3_2.h"
+*/
+import "C"
+
 import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/server"
@@ -20,4 +25,10 @@ func gameBallPlayerDamageRuntime4E1230(s *server.Server) server.GameBallPlayerDa
 		ChangeTeam: teamServices.ChangeTeam,
 		CreateTeam: teamServices.CreateTeam,
 	}
+}
+
+//export nox_xxx_gameballOnPlayerDamage_4E1230
+func nox_xxx_gameballOnPlayerDamage_4E1230(source, target *nox_object_t, damage C.int) {
+	s := GetServer().S()
+	s.GameBallOnPlayerDamage4E1230(asObjectS(source), asObjectS(target), int32(damage), gameBallPlayerDamageRuntime4E1230(s))
 }

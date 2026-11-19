@@ -11,6 +11,7 @@ import (
 )
 
 func TestSpellProjectileReflect4E0A70OriginalSpillsAndCopies(t *testing.T) {
+	// GAME.EXE uses 0x0e3f during gameplay.
 	projectile := &Object{
 		PosVec:     types.Ptf(10.25, -3.5),
 		PrevPos:    types.Ptf(math.Float32frombits(0x7fc12345), math.Float32frombits(0x80000000)),
@@ -20,10 +21,10 @@ func TestSpellProjectileReflect4E0A70OriginalSpillsAndCopies(t *testing.T) {
 	}
 	other := &Object{PosVec: types.Ptf(-2.75, 4.25)}
 	spellProjectileReflect4E0A70(projectile, other)
-	if got, want := math.Float32bits(projectile.VelVec.X), uint32(0xc0a0224a); got != want {
+	if got, want := math.Float32bits(projectile.VelVec.X), uint32(0xc0a02249); got != want {
 		t.Fatalf("velocity X bits = %#08x, want %#08x", got, want)
 	}
-	if got, want := math.Float32bits(projectile.VelVec.Y), uint32(0x4092c8b8); got != want {
+	if got, want := math.Float32bits(projectile.VelVec.Y), uint32(0x4092c8b7); got != want {
 		t.Fatalf("velocity Y bits = %#08x, want %#08x", got, want)
 	}
 	if projectile.Direction1 != 72 {

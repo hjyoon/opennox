@@ -175,7 +175,7 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 			if (nox_server_testTwoPointsAndDirection_4E6E50((float2*)(v5 + 56), *(short*)(v5 + 124),
 															(float2*)(v9 + 56)) &
 				1) {
-				nox_xxx_projectileReflect_4E0A70(v9, v5);
+				nox_xxx_projectileReflect_4E0A70((nox_object_t*)(intptr_t)v9, (nox_object_t*)(intptr_t)v5);
 				if (!(*(uint8_t*)(v9 + 12) & 0x40)) {
 					nox_xxx_unitClearOwner_4EC300(v9);
 					nox_xxx_unitSetOwner_4EC290(v5, v9);
@@ -266,7 +266,7 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 							goto LABEL_120;
 						}
 						if (*(uint8_t*)(v9 + 8) & 1) {
-							nox_xxx_projectileReflect_4E0A70(v9, v5);
+							nox_xxx_projectileReflect_4E0A70((nox_object_t*)(intptr_t)v9, (nox_object_t*)(intptr_t)v5);
 							if (*(uint8_t*)(v9 + 8) & 1) {
 								if (!(*(uint8_t*)(v9 + 12) & 2)) {
 									nox_xxx_unitClearOwner_4EC300(v9);
@@ -327,7 +327,7 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 			if (LODWORD(a5) != 9 && LODWORD(a5) != 17) { // Blocking
 				nox_xxx_aud_501960(878, v5, 0, 0);
 				if ((*(uint8_t*)(v9 + 8) & 1) && (!(*(uint8_t*)(v9 + 12) & 0x70))) {
-					nox_xxx_projectileReflect_4E0A70(v9, v5);
+					nox_xxx_projectileReflect_4E0A70((nox_object_t*)(intptr_t)v9, (nox_object_t*)(intptr_t)v5);
 					if ((*(uint8_t*)(v9 + 8) & 1) && (!(*(uint8_t*)(v9 + 12) & 2))) {
 						nox_xxx_unitClearOwner_4EC300(v9);
 						nox_xxx_unitSetOwner_4EC290(v5, v9);

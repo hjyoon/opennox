@@ -301,9 +301,9 @@ void nox_xxx_lightngEffect_4E06F0(void* effect, nox_object_t* weapon, nox_object
 int32_t nox_xxx_itemCheckReadinessEffect_4E0960(nox_object_t* item);
 nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile);
 int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1);
-int nox_xxx_projectileReflect_4E0A70(int a1, int a2);
+nox_object_t* nox_xxx_projectileReflect_4E0A70(nox_object_t* projectile, nox_object_t* other);
 int32_t nox_xxx_damageDefaultProc_4E0B30(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int32_t damage, int32_t typ);
-void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3);
+void nox_xxx_gameballOnPlayerDamage_4E1230(nox_object_t* source, nox_object_t* target, int damage);
 int32_t sub_4E1400(nox_object_t* source, nox_object_t* weapon);
 int32_t sub_4E1470(nox_object_t* weapon);
 int sub_4E14A0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type);

@@ -6025,43 +6025,7 @@ int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1) {
 	return v1;
 }
 
-//----- (004E0A70) --------------------------------------------------------
-int nox_xxx_projectileReflect_4E0A70(int a1, int a2) {
-	int result; // eax
-	double v3;  // st7
-	double v4;  // st6
-	short v5;   // cx
-	double v6;  // st5
-	double v7;  // st6
-	int v8;     // edx
-	float v9;   // [esp+0h] [ebp-10h]
-	float v10;  // [esp+4h] [ebp-Ch]
-	float v11;  // [esp+8h] [ebp-8h]
-	float v12;  // [esp+8h] [ebp-8h]
-	float v13;  // [esp+14h] [ebp+4h]
-
-	result = a1;
-	v3 = *(float*)(a1 + 56) - *(float*)(a2 + 56);
-	v4 = *(float*)(a1 + 60) - *(float*)(a2 + 60);
-	*(uint16_t*)(a1 + 124) += 128;
-	v5 = *(uint16_t*)(a1 + 124);
-	v11 = -v4;
-	v13 = sqrt(v4 * v4 + v3 * v3) + 0.1;
-	v6 = (v4 * *(float*)(result + 84) + v3 * *(float*)(result + 80)) / v13;
-	v9 = v6 * v3 / v13;
-	v10 = v6 * v4 / v13;
-	v7 = (v11 * *(float*)(result + 80) + v3 * *(float*)(result + 84)) / v13;
-	v12 = v7 * v11 / v13;
-	*(float*)(result + 80) = v12 - v9;
-	*(float*)(result + 84) = v3 * v7 / v13 - v10;
-	if (v5 >= 256) {
-		*(uint16_t*)(result + 124) = v5 - 256;
-	}
-	v8 = *(uint32_t*)(result + 76);
-	*(uint32_t*)(result + 64) = *(uint32_t*)(result + 72);
-	*(uint32_t*)(result + 68) = v8;
-	return result;
-}
+// Projectile reflection at GAME.EXE 004E0A70 uses a typed Go entry.
 
 //----- (004E0B30) --------------------------------------------------------
 #if 0 // Preserved PE32 body; native pointer entry is in raw_default_damage_export_4e0b30.go.
@@ -6385,44 +6349,7 @@ LABEL_137:
 }
 #endif
 
-//----- (004E1230) --------------------------------------------------------
-void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3) {
-	int v3;   // eax
-	int v4;   // esi
-	char* v5; // eax
-
-	if (*(uint8_t*)(a2 + 8) & 4 && a3 >= 30) {
-		v3 = *getMemU32Ptr(0x5D4594, 1563316);
-		if (!*getMemU32Ptr(0x5D4594, 1563316)) {
-			v3 = nox_xxx_getNameId_4E3AA0("GameBall");
-			*getMemU32Ptr(0x5D4594, 1563316) = v3;
-		}
-		v4 = *(uint32_t*)(a2 + 516);
-		if (v4) {
-			while (*(unsigned short*)(v4 + 4) != v3) {
-				v4 = *(uint32_t*)(v4 + 512);
-				if (!v4) {
-					return;
-				}
-			}
-			*(uint32_t*)(v4 + 16) &= 0xFFFFFFBF;
-			nox_xxx_objectApplyForce_52DF80(a2 + 56, v4, 30.0);
-			nox_xxx_unitClearOwner_4EC300(v4);
-			sub_4EB9B0(
-				(nox_object_t*)(uintptr_t)(uint32_t)v4,
-				(nox_object_t*)(uintptr_t)(uint32_t)a2);
-			if (nox_xxx_servObjectHasTeam_419130(v4 + 48)) {
-				v5 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a1 + 52));
-				if (v5) {
-					sub_4196D0(v4 + 48, (int)v5, *(uint32_t*)(v4 + 36), 0);
-				}
-			} else {
-				nox_xxx_createAtImpl_4191D0(*(uint8_t*)(a1 + 52), v4 + 48, 1, *(uint32_t*)(v4 + 36), 0);
-			}
-			nox_xxx_aud_501960(926, a2, 0, 0);
-		}
-	}
-}
+// GameBall damage at GAME.EXE 004E1230 uses a typed Go entry.
 
 //----- (004E1320) --------------------------------------------------------
 #if 0 // Restored from sealed GAME.EXE 004E1320 in item_defend_effects_4e1320_export.go.

@@ -1,7 +1,6 @@
 package server
 
 import (
-	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/spell"
@@ -36,26 +35,31 @@ func spellProjectileWallReflect57B810(collision *types.Pointf, projectile *Objec
 	ReflectVelocityNative57B810(collision, &projectile.VelVec)
 }
 
-// spellProjectileReflect4E0A70 is the native-pointer implementation of the
-// reflect helper called by GAME.EXE 004E9500. Explicit binary32 spills mirror
-// FSTP sites in the original x87 instruction stream.
+// spellProjectileReflect4E0A70 keeps the original separate x87 operations
+// and binary32 stores. Gameplay uses 53-bit precision and rounding toward zero.
 func spellProjectileReflect4E0A70(projectile, other *Object) {
-	dx := float64(projectile.PosVec.X) - float64(other.PosVec.X)
-	dy := float64(projectile.PosVec.Y) - float64(other.PosVec.Y)
+	load := objectForceMemory32_52DF80
+	store := experienceSpill32TowardZero
+	add, subtract := objectForceAdd53_52DF80, objectForceSub53_52DF80
+	multiply, divide := objectForceMul53_52DF80, objectForceDiv53_52DF80
+	dx := subtract(load(projectile.PosVec.X), load(other.PosVec.X))
+	dy := subtract(load(projectile.PosVec.Y), load(other.PosVec.Y))
 	direction := projectile.Direction1 + 128
 	projectile.Direction1 = direction
 
-	negativeY := float32(-dy)
-	denominator := float32(math.Sqrt(dy*dy+dx*dx) + float64(float32(0.1)))
-	denominator64 := float64(denominator)
-	projection := (dy*float64(projectile.VelVec.Y) + dx*float64(projectile.VelVec.X)) / denominator64
-	parallelX := float32(projection * dx / denominator64)
-	parallelY := float32(projection * dy / denominator64)
-	orthogonal := (float64(negativeY)*float64(projectile.VelVec.X) + dx*float64(projectile.VelVec.Y)) / denominator64
-	orthogonalX := float32(orthogonal * float64(negativeY) / denominator64)
-	orthogonalY := orthogonal * dx / denominator64
-	projectile.VelVec.X = float32(float64(orthogonalX) - float64(parallelX))
-	projectile.VelVec.Y = float32(orthogonalY - float64(parallelY))
+	negativeY := load(store(-dy))
+	squared := add(multiply(dy, dy), multiply(dx, dx))
+	length := monsterMoveForceSqrtChop53_50D50C(squared)
+	denominator := load(store(add(length, float64(float32(0.1)))))
+	velocityX, velocityY := load(projectile.VelVec.X), load(projectile.VelVec.Y)
+	projection := divide(add(multiply(dy, velocityY), multiply(dx, velocityX)), denominator)
+	parallelX := load(store(divide(multiply(projection, dx), denominator)))
+	parallelY := load(store(divide(multiply(projection, dy), denominator)))
+	orthogonal := divide(add(multiply(negativeY, velocityX), multiply(dx, velocityY)), denominator)
+	orthogonalX := load(store(divide(multiply(orthogonal, negativeY), denominator)))
+	orthogonalY := divide(multiply(dx, orthogonal), denominator)
+	projectile.VelVec.X = store(subtract(orthogonalX, parallelX))
+	projectile.VelVec.Y = store(subtract(orthogonalY, parallelY))
 
 	if int16(direction) >= 256 {
 		projectile.Direction1 = direction - 256

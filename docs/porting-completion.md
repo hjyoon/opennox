@@ -503,7 +503,7 @@ full-width non-player pointer returns. A nil FlagBall team uses the
 existing Go tie encoding. Both ARM64 modes pass 650 checks without
 warnings. The split GAME inventory has 1,537 active bodies, including
 194 with pointer and integer conversions. Linux `44476138745` and
-Windows `44476133971` track the cross-platform jobs.
+Windows `44476133971` pass all six required jobs.
 
 Engine `9679ed02c2dd891b131fe6a533da0df9ff480e17` moves the rule path
 loader `4D0550` and current map rule name `57A950` to Go strings.
@@ -522,7 +522,13 @@ from a newly generated cemetery Save loads successfully and ends
 with player death above the lift before entering the crypt. The failed
 run, original abort report and all 4,649 original asset and Save
 hash checks are retained. Linux `44479268166` and Windows
-`44479192750` track cross-platform verification of this engine.
+`44479192750` pass all six required jobs for this engine.
+
+A read-only replay of the new cemetery Save holds position at the
+original shaft through the next descent. The native elevator and shaft
+links remain reciprocal. At frame 436, the Warrior reaches the original
+lower elevator at 11 HP. The complete fresh-Save WarCry route still
+needs a living finish.
 
 The twelve build profiles at `9679ed02c2dd891b131fe6a533da0df9ff480e17`
 select 206 of 627 tracked C files. Default ARM64 selects 205 files with
@@ -534,6 +540,35 @@ campaign audit remain open.
 The records are under `opennox-verification/20261118-trade` in
 `winner-packets-public-native-v1`, `map-rule-paths-native-v1` and
 `whole-C-inventory-9679ed02-v1`.
+
+### Quest and pending-owner public entries, 2026-11-19
+
+Engine `e80e250c6a831dc773e1362837ce792270cba27e` removes 16
+one-statement C forwarders from `GAME3_2.c` and `GAME4_1.c`.
+Existing Go implementations export the public names directly for
+quest map and warp state, pending ownership, monster definitions and
+quest generator types. The default ARM64 split inventory has 1,519
+active C bodies, including 194 with pointer and integer conversions.
+
+Both ARM64 modes pass 104 targeted checks. A separate run of each
+archived executable also passes against the original `monster.bin`.
+Strict verification passes after moving compiler scratch to a RAM
+volume. The earlier disk-space failure is retained. Normal and HD
+products build without warnings and verify 460 public and 129
+retired symbols.
+
+The normal product verifies the Conjurer III Captain dialogue and a
+living manual Save at 29 HP and 85 mana. The HD product verifies an
+earned Wizard II Swap and a full-health Save. It reloads that exact
+Save, defeats both original spiders, recovers and saves at 20 HP,
+50 mana and zero poison. The first escape run took one point of
+damage before the menu opened. The initial recovery route missed one
+spider. Both failures are retained alongside the passing inputs.
+All 4,649 protected original asset and Save hashes match.
+
+The records are in `quest-and-pending-owner-forwarders-native-v1`.
+Linux `44484057023` and Windows `44483903518` track the exact
+cross-platform jobs.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

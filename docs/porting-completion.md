@@ -383,8 +383,7 @@ and amd64 and 386 Windows. The 386 packet still occupies 416 bytes and
 keeps its original pointer field offsets. Each ARM64 mode passes
 65,861 checks and records the 20 synthetic skips. Both clients build
 without warnings and verify 413 public and 110 retired symbols. Linux
-`44462730447` passes all four required jobs. Windows verification is
-tracked under run `44462726649`.
+`44462730447` and Windows `44462726649` pass all six required jobs.
 
 Both exact ARM64 clients pass chat and sale replays with the OpenAL Soft
 null output driver. The standard-resolution Conjurer III replay loads
@@ -401,7 +400,8 @@ difficulty, unordered clamps, and the three actual CRT streams.
 Two difficulty inputs exposed incorrect binary32 curve stores for
 both damage and health. The Go implementation applies the original
 round-toward-zero stores. Both ARM64 modes pass 2,024 checks and emit
-zero warnings.
+zero warnings. Linux `44465181005` and Windows `44465177677` pass all
+six required jobs.
 
 The twelve profiles at that engine select 206 of 627 tracked C files.
 The default ARM64 selection contains 205 C files with 2,185 named
@@ -418,12 +418,53 @@ including signed and aliased damage and the four-byte effect packet.
 Actual C calls verify native object, duration, damage and position
 addresses above 4 GiB. Both ARM64 modes pass 3,418 checks without
 warnings. The default ARM64 split GAME inventory has 1,547 active
-C bodies, including 204 with pointer and integer casts. The whole-C
-migration and the final nine campaign cell audits remain open.
+C bodies, including 204 with pointer and integer casts.
+
+Both ARM64 clients build without warnings, retain 432 public symbols,
+and verify 113 retired symbols. Both pass the Shield and spider-block
+scenarios, the `Amb` and door OpenAL replay, and fresh chapter I runs
+for Warrior, Conjurer and Wizard. The normal client also loads the
+earned Wiz03b lift-return Save, defeats the original Swordsman, and
+writes a living manual Save with 33 HP, 47 mana and zero poison.
+The input data and Save hashes match before and after the runs.
 
 Records are under `opennox-verification/20261118-trade` in
 `important-storage-native-v1`, `quest-parameters-and-crt-seeds-native-v1`,
 `whole-C-inventory-b8053883-v1` and `shield-damage-and-fx-entries-native-v1`.
+
+### Projectile reflection, GameBall and elemental protection, 2026-11-19
+
+Engine `d4b9389772c3e540aacd1775206c1b8b9e0397c8` moves projectile
+reflection `4E0A70` and GameBall damage `4E1230` out of `GAME3_2.c`.
+The original comparison covers 688 gameplay reflections, 976 GameBall
+damage cases and 18 alternate rounding controls. Using the original x87
+rounding resolves 593 reflection discrepancies. Both ARM64 modes pass
+1,732 checks, including the C entries and OpenAL regressions for invalid
+ADPCM step indices and sample reuse. The 18 alternate controls are
+skipped in the gameplay comparison.
+
+Commit `795867c3d0906e7f66a9bc2f49366a1cc62a1dd0` fixes the map-generation
+test after Shield's C body was removed. The test extracts its own C
+definition. The old extraction error is retained from Linux `44466245583`
+and Windows `44466241043`. The local rendering, headless and editor
+checks pass. Cross-platform verification runs are Linux `44469423530`
+and Windows `44469419381`.
+
+Engine `05c59ce6af00ff122e1d855dc033017fa5bd11e7` ports the fire,
+electricity and poison protection entries to typed objects. The original
+comparison covers all 384 precision cases. Actual ARM64 C calls match
+96 gameplay inputs and leave caller-owned memory intact. Both ARM64
+modes pass 235 checks without warnings. The first strict run hit a
+disk-space limit while creating map-generation test directories. The
+same source revision passes after disk space is recovered. Linux
+`44471490588` and Windows `44471485892` track cross-platform verification.
+
+The default ARM64 split GAME inventory has 1,542 active C bodies,
+including 199 containing pointer and integer casts. The whole-C migration
+and final nine-cell campaign audit remain open. The records are in
+`projectile-reflect-and-gameball-native-v1` and
+`elemental-protection-public-native-v1` under
+`opennox-verification/20261118-trade`.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

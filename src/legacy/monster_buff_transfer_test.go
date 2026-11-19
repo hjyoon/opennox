@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"encoding/binary"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,6 +12,14 @@ import (
 )
 
 func TestMonsterBuffTransferUsesOriginalOrder(t *testing.T) {
+	// The package test starts without the engine's original data blob.
+	order := [...]uint32{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+		16, 17, 18, 19, 20, 21, 22, 24, 25, 27, 29, 26, 23, 0}
+	count, table, _ := buffIterationPreserveOwners(t)
+	*count = uint32(len(order))
+	for index, id := range order {
+		binary.LittleEndian.PutUint32(table[4*index:], id)
+	}
 	obj := &server.Object{Buffs: 1<<server.ENCHANT_INVISIBLE |
 		1<<server.ENCHANT_INVULNERABLE | 1<<server.ENCHANT_CHARMING |
 		1<<server.ENCHANT_CROWN | 1<<server.ENCHANT_SNEAK}

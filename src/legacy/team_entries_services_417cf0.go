@@ -43,6 +43,6 @@ var teamEntriesDefaults417CF0 = teamEntriesRuntime417CF0{
 	Alloc:   func(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) },
 	Free:    func(p unsafe.Pointer) { C.free(p) },
 	Send: func(p unsafe.Pointer, n int) {
-		C.nox_xxx_netSendPacket1_4E5390(159, p, C.int(n), nil, 1)
+		C.nox_xxx_netSendPacket1_4E5390(159, C.nox_important_payload_t(p), C.int(n), nil, 1)
 	},
 }

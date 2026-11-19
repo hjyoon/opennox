@@ -27,7 +27,7 @@ func secretWallPacketRuntime4DF120() server.SecretWallPacketRuntime4DF120 {
 			return (*server.Object)(unsafe.Pointer(C.nox_xxx_getNextPlayerUnit_4DA7F0((*C.nox_object_t)(unsafe.Pointer(unit)))))
 		},
 		Send: func(recipient int, packet []byte, related *server.Object, remove int) int {
-			return int(C.nox_xxx_netSendPacket0_4E5420(C.int(recipient), unsafe.Pointer(unsafe.SliceData(packet)), C.int(len(packet)), (*C.nox_object_t)(unsafe.Pointer(related)), C.int(remove)))
+			return int(C.nox_xxx_netSendPacket0_4E5420(C.int(recipient), C.nox_important_payload_t(unsafe.Pointer(unsafe.SliceData(packet))), C.int(len(packet)), (*C.nox_object_t)(unsafe.Pointer(related)), C.int(remove)))
 		},
 	}
 }

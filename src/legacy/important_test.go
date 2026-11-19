@@ -1392,6 +1392,48 @@ func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
 			t.Error("reused single packet has non-nil links")
 		}
 	})
+
+	t.Run("kick-already-released-oldest-packet", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantRecipientMaskC(1)
+		pool := alloc.NewClassHigh("important-kick-recovery", importantPacketSizeC(), 1)
+		setImportantAllocClassC(pool.UPtr())
+		oldest := pool.NewObject()
+		if oldest == nil {
+			t.Fatal("failed to allocate the oldest packet")
+		}
+		(*importantPacketLegacy)(oldest).CreatedFrame = 7
+		setImportantNativeListC(oldest, oldest)
+		gameFrameHook = func() uint32 { return 11 }
+
+		player := new(server.Player)
+		lookup := importantPlayerByIndHook
+		importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+			if ind != 0 {
+				t.Fatalf("rate kick looked up player %d, want 0", ind)
+			}
+			return player
+		}
+		t.Cleanup(func() { importantPlayerByIndHook = lookup })
+
+		if result := sendImportantPacketC(0, []byte{0x44}, nil, 0, false); result != 1 {
+			t.Fatalf("queue result = %d, want 1", result)
+		}
+		first, last := importantNativeListC()
+		record := (*importantPacketLegacy)(oldest)
+		if first != oldest || last != oldest || !pool.HasActiveObject(oldest) ||
+			importantPacketNextC(oldest) != nil || importantPacketPrevC(oldest) != nil ||
+			record.CreatedFrame != 11 || record.Payload[0] != 0x44 {
+			t.Fatalf("replacement packet is inconsistent: head %p, tail %p, record %p, frame %d, payload %#x",
+				first, last, oldest, record.CreatedFrame, record.Payload[0])
+		}
+		if player.Field3680&importantRateKickStatus == 0 {
+			t.Fatal("player did not receive the rate-kick status")
+		}
+		if unexpected := pool.NewObject(); unexpected != nil {
+			t.Fatalf("the reused packet is also in the free list: %p", unexpected)
+		}
+	})
 }
 
 func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {

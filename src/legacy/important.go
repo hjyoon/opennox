@@ -30,7 +30,7 @@ var (
 		return memmap.Uint32(0x587000, 4728)
 	}
 	importantPlayerPacketCleanupHook = func(ind uint8) {
-		C.sub_4E55F0(C.uint8_t(ind))
+		sub_4E55F0(C.uint8_t(ind))
 	}
 	importantGameHostHook = func() bool {
 		return noxflags.HasGame(noxflags.GameHost)
@@ -45,8 +45,8 @@ var (
 
 const importantRateKickStatus = uint32(0x80)
 
-//export nox_server_playerKickDueToRate_4E5360
-func nox_server_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
+//export nox_xxx_playerKickDueToRate_4E5360
+func nox_xxx_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
 	ind := ntype.PlayerInd(playerIndex)
 	player := importantPlayerByIndHook(ind)
 	if player == nil {
@@ -57,11 +57,6 @@ func nox_server_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
 	// The original calls 0x004174F0 with 0x80. That mask cannot enter its
 	// 0x423 reporting branch, so its exact return is the GameHost check.
 	return C.int(bool2int(importantGameHostHook()))
-}
-
-//export nox_server_importantPlayerLookup_4E5670
-func nox_server_importantPlayerLookup_4E5670(playerIndex C.uint8_t) {
-	importantPlayerByIndHook(ntype.PlayerInd(playerIndex))
 }
 
 //export nox_server_importantRateGet_4E5670
@@ -239,7 +234,7 @@ func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Po
 		sequence = 1
 	}
 	return int(C.nox_xxx_netSendPacket_4E5030(
-		C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject),
+		C.int(recipient), C.nox_important_payload_t(data), C.int(len(payload)), (*C.nox_object_t)(relatedObject),
 		C.int(removeIfDisconnected), sequence,
 	))
 }
@@ -260,15 +255,15 @@ func sendImportantPacketWrapperC(recipient int, payload []byte, relatedObject un
 	switch kind {
 	case importantPacketSequenceEnabled:
 		return int(C.nox_xxx_netSendPacket1_4E5390(
-			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+			C.int(recipient), C.nox_important_payload_t(data), C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 		))
 	case importantPacketReplaceExisting:
 		return int(C.sub_4E5450(
-			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+			C.int(recipient), C.nox_important_payload_t(data), C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 		))
 	case importantPacketSequenceDisabled:
 		return int(C.nox_xxx_netSendPacket0_4E5420(
-			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+			C.int(recipient), C.nox_important_payload_t(data), C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 		))
 	default:
 		panic("invalid important-packet wrapper kind")

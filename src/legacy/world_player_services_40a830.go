@@ -52,7 +52,7 @@ var worldPlayerDefaults40A830 = worldPlayerRuntime40A830{
 	TimerStart:  func() { sub40A250Native() },
 	TimerSet:    sub40A1F0Native,
 	Send: func(recipient int32, packet []byte) int32 {
-		result := int32(C.nox_xxx_netSendPacket1_4E5390(C.int(recipient), unsafe.Pointer(&packet[0]), C.int(len(packet)), nil, 0))
+		result := int32(C.nox_xxx_netSendPacket1_4E5390(C.int(recipient), C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 0))
 		runtime.KeepAlive(packet)
 		return result
 	},

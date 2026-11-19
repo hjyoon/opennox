@@ -8,6 +8,7 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3.h"
 #include "GAME3_2.h"
+#include "GAME3_3.h"
 #include "GAME4_2.h"
 #include "GAME5.h"
 #include "GAME5_2.h"
@@ -31,14 +32,7 @@ int sub_43C650();
 int sub_467CA0();
 void* sub_49BB80(char a1);
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
-int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame);
-int nox_xxx_netClientSend2_4E53C0(
-	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
-	int remove_if_disconnected);
 void* nox_xxx_spriteGetMB_476F80();
-int nox_xxx_netSendPacket_4E5030(
-	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
-	int remove_if_disconnected, char sequence_enabled);
 int nox_xxx_netOnPacketRecvCli_48EA70(int a1, unsigned char* data, int sz);
 static intptr_t nox_xxx_netSendLineMessage_go(nox_object_t* a1, wchar2_t* str) {
 	return nox_xxx_netSendLineMessage_4D9EB0(a1, str);
@@ -180,7 +174,7 @@ func Nox_xxx_netSendPacket_4E5030(
 		payload = unsafe.Pointer(&b[0])
 	}
 	return int(C.nox_xxx_netSendPacket_4E5030(
-		C.int(recipient), payload, C.int(len(buf)), asObjectC(relatedObject),
+		C.int(recipient), C.nox_important_payload_t(payload), C.int(len(buf)), asObjectC(relatedObject),
 		C.int(removeIfDisconnected), C.char(sequenceEnabled),
 	))
 }
@@ -267,7 +261,7 @@ func Nox_xxx_netClientSend2_4E53C0(
 		payload = unsafe.Pointer(&data[0])
 	}
 	return int(C.nox_xxx_netClientSend2_4E53C0(
-		C.int(recipient), payload, C.int(len(buf)), asObjectC(relatedObject), C.int(removeIfDisconnected),
+		C.int(recipient), C.nox_important_payload_t(payload), C.int(len(buf)), asObjectC(relatedObject), C.int(removeIfDisconnected),
 	))
 }
 func Sub_57B920(a1 unsafe.Pointer) {

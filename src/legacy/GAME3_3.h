@@ -278,30 +278,29 @@ int sub_4E4F30(int a1);
 int nox_xxx_playerResetImportantCtr_4E4F40(int a1);
 int sub_4E4F80(void);
 void sub_4E4FC0(nox_important_packet_t* packet);
+typedef const void* nox_important_payload_t;
 int nox_xxx_netSendPacket_4E5030(
-	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int recipient, nox_important_payload_t payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected, char sequence_enabled);
-int nox_xxx_importantCheckRate_4E52B0();
-int nox_server_playerKickDueToRate_4E5360(int player_index);
+int nox_xxx_importantCheckRate_4E52B0(void);
 int nox_xxx_playerKickDueToRate_4E5360(int player_index);
 int nox_xxx_netSendPacket1_4E5390(
-	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int recipient, nox_important_payload_t payload, int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 int nox_xxx_netClientSend2_4E53C0(
-	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int recipient, nox_important_payload_t payload, int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 int nox_xxx_netSendPacket0_4E5420(
-	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int recipient, nox_important_payload_t payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 int sub_4E5450(
-	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int recipient, nox_important_payload_t payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index);
 int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame);
 int sub_4E55F0(uint8_t player_index);
 uint32_t sub_4E5630(
 	uint8_t player_index, uint32_t* threshold, uint32_t* resend_interval, uint32_t* resends_per_update);
-void nox_server_importantPlayerLookup_4E5670(uint8_t player_index);
 uint32_t nox_server_importantRateGet_4E5670(void);
 uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index);
 int nox_server_importantShouldProcess_4E5770(uint8_t player_index);

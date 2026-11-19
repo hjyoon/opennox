@@ -26,7 +26,7 @@ var spriteUpdateRuntimeNative518AE0 = func() server.SpriteUpdateNativeRuntime518
 		},
 		ElevatorLink: (*server.Object).ElevatorLinkFor,
 		Important: func(player int32, packet [4]byte, _ int32, reliable int32) int32 {
-			return int32(C.nox_xxx_netSendPacket1_4E5390(C.int(player), unsafe.Pointer(&packet[0]), C.int(len(packet)), nil, C.int(reliable)))
+			return int32(C.nox_xxx_netSendPacket1_4E5390(C.int(player), C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, C.int(reliable)))
 		},
 		Queue: func(player, kind int32, packet [4]byte) int32 {
 			return int32(C.nox_netlist_addToMsgListCli_40EBC0(C.int(player), C.int(kind), (*C.uchar)(unsafe.Pointer(&packet[0])), C.int(len(packet))))

@@ -55,7 +55,7 @@ func game4VoteSend(recipient int32, packet []byte) int32 {
 	if game4VotePacketObserver != nil {
 		return game4VotePacketObserver(recipient, packet)
 	}
-	result := C.nox_xxx_netSendPacket1_4E5390(C.int(recipient), unsafe.Pointer(&packet[0]), C.int(len(packet)), nil, 1)
+	result := C.nox_xxx_netSendPacket1_4E5390(C.int(recipient), C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 1)
 	runtime.KeepAlive(packet)
 	return int32(result)
 }

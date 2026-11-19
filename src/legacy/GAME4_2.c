@@ -8034,7 +8034,7 @@ LABEL_137:
 	if ((short)v45 >= 55 && *(uint8_t*)(a1 + 12) & 0x20) {
 		nox_xxx_readNPCVoiceSet_52AD10(a1p);
 	}
-	if (!((short)v45 < 62 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0((uint32_t*)a1)) != 0)) {
+	if (!((short)v45 < 62 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0(a1p)) != 0)) {
 		return result;
 	}
 	if ((short)v45 >= 63 && *(uint32_t*)(a1 + 12) & 0x80000) {
@@ -8158,103 +8158,7 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* obj) { return nox_xxx_XFerMonster_n
 // Implemented in Go.
 // 52A440: using guessed type char var_100[256];
 
-// 64-bit monster and NPC transfers use the native Go implementations below.
-// Keep this ABI32 helper only for the original 32-bit transfer bodies: its
-// local argument record stores object pointers in four-byte slots.
-#if UINTPTR_MAX == UINT32_MAX
-//----- (0052AAB0) --------------------------------------------------------
-int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
-	int v1;   // ebp
-	char* v2; // ebx
-	void* v3; // eax
-	int v5;   // ebx
-	int v6;   // edi
-	int v7;   // ecx
-	int v8;   // eax
-	void* v9; // eax
-	int v10;  // [esp-4h] [ebp-138h]
-	int v11;  // [esp+10h] [ebp-124h]
-	int v12;  // [esp+14h] [ebp-120h]
-	int v13;  // [esp+18h] [ebp-11Ch]
-	int v14;  // [esp+1Ch] [ebp-118h]
-	int v15;  // [esp+20h] [ebp-114h]
-	int v16;  // [esp+24h] [ebp-110h]
-	int v17[3];
-	char v20[256]; // [esp+34h] [ebp-100h]
-
-	v13 = 2;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v13, 2u);
-	if ((short)v13 > 2 || (short)v13 <= 0) {
-		return 0;
-	}
-	LOBYTE(v16) = sub_424CB0((nox_object_t*)a1);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v16, 1u);
-	if (nox_crypt_IsReadOnly()) {
-		v5 = 0;
-		if (!(uint8_t)v16) {
-			return 1;
-		}
-		while (1) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v20, (unsigned char)v11);
-			v20[(unsigned char)v11] = 0;
-			v6 = nox_xxx_enchantByName_424880(v20);
-			if (v6 == -1) {
-				break;
-			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v14, 4u);
-			v7 = a1[15];
-			v17[1] = a1[14];
-			v10 = (unsigned char)v15;
-			v17[0] = a1;
-			v17[2] = v7;
-			v8 = nox_xxx_getEnchantSpell_424920(v6);
-			nox_xxx_spellAccept_4FD400(v8, (int)a1, a1, (int)a1, v17, v10);
-			*((uint16_t*)a1 + v6 + 172) = v14;
-			if (v6 == 26 && (short)v13 >= 2) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 4u);
-				v9 = sub_4FF2D0(51, (nox_object_t*)a1);
-				if (v9) {
-					*(uint32_t*)((uint8_t*)v9 + 72) = v12;
-				}
-			}
-			if (++v5 >= (unsigned char)v16) {
-				return 1;
-			}
-		}
-		return 0;
-	}
-	v1 = sub_424D00();
-	if (v1 == -1) {
-		return 1;
-	}
-	do {
-		if (nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, v1)) {
-			v2 = nox_xxx_getEnchantName_4248F0(v1);
-			LOBYTE(v11) = strlen(v2);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2, (unsigned char)v11);
-			LOBYTE(v15) = nox_xxx_buffGetPower_4FF570((nox_object_t*)a1, v1);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
-			v14 = nox_xxx_unitGetBuffTimer_4FF550((nox_object_t*)a1, v1);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v14, 4u);
-			if (v1 == 26) {
-				v3 = sub_4FF2D0(51, (nox_object_t*)a1);
-				if (v3) {
-					v12 = *(uint32_t*)((uint8_t*)v3 + 72);
-				} else {
-					v12 = 100;
-				}
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 4u);
-			}
-		}
-		v1 = sub_424D20(v1);
-	} while (v1 != -1);
-	return 1;
-}
-// 52AAB0: using guessed type char var_100[256];
-#endif
+// GAME.EXE 0052AAB0 uses the Go monster buff entry.
 
 //----- (0052AD10) --------------------------------------------------------
 #if 0 // Native NPC voice: npc_voice_native_exports.go
@@ -8691,7 +8595,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 	if ((short)v44 >= 52) {
 		nox_xxx_readNPCVoiceSet_52AD10(a1p);
 	}
-	if (!((short)v44 < 61 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0((uint32_t*)v35)) != 0)) {
+	if (!((short)v44 < 61 || (result = nox_xxx_XFer_ReadMonsterBuffs_52AAB0(a1p)) != 0)) {
 		return result;
 	}
 	if ((short)v44 < 62) {

@@ -11,7 +11,6 @@ import "C"
 
 import (
 	"fmt"
-	"math/bits"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -700,90 +699,6 @@ func monsterXferVoice528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateDat
 	}
 	if cf.ReadOnly() {
 		ud.SoundSet122 = getDefaultSoundSet(name)
-	}
-	return nil
-}
-
-func monsterXferBuffs52AAB0(cf *cryptfile.CryptFile, obj *server.Object) error {
-	version, err := monsterRWU16(cf, 2)
-	if err != nil {
-		return fmt.Errorf("buff version: %w", err)
-	}
-	if version == 0 || version > 2 {
-		return fmt.Errorf("unsupported buff version %d", version)
-	}
-	count := byte(bits.OnesCount32(obj.Buffs))
-	if count, err = monsterRWU8(cf, count); err != nil {
-		return fmt.Errorf("buff count: %w", err)
-	}
-	if count > 32 {
-		return fmt.Errorf("buff count %d exceeds 32", count)
-	}
-	if cf.ReadOnly() {
-		for i := byte(0); i < count; i++ {
-			name, e := monsterRWString8(cf, "")
-			if e != nil {
-				return fmt.Errorf("buff[%d] name: %w", i, e)
-			}
-			enc, ok := server.ParseEnchant(name)
-			if !ok {
-				return fmt.Errorf("buff[%d] has unknown name %q", i, name)
-			}
-			power, e := monsterRWU8(cf, 0)
-			if e != nil {
-				return fmt.Errorf("buff[%d] power: %w", i, e)
-			}
-			duration, e := monsterRWU32(cf, 0)
-			if e != nil {
-				return fmt.Errorf("buff[%d] duration: %w", i, e)
-			}
-			arg := server.SpellAcceptArg{Obj: obj, Pos: obj.Pos()}
-			GetServer().Nox_xxx_spellAccept4FD400(enc.Spell(), obj, obj, obj, &arg, int(power))
-			obj.BuffsDur[enc] = uint16(duration)
-			obj.BuffsPower[enc] = power
-			if enc == server.ENCHANT_SHIELD && version >= 2 {
-				extra, e := monsterRWU32(cf, 100)
-				if e != nil {
-					return fmt.Errorf("buff[%d] shield duration: %w", i, e)
-				}
-				if dur := monsterFindDurSpell528DB0(obj, 51); dur != nil {
-					dur.Field72 = int32(extra)
-				}
-			}
-		}
-		return nil
-	}
-	for enc := server.EnchantID(0); enc < 32; enc++ {
-		if !obj.HasEnchant(enc) {
-			continue
-		}
-		if _, err = monsterRWString8(cf, enc.String()); err != nil {
-			return err
-		}
-		if _, err = monsterRWU8(cf, byte(obj.EnchantPower(enc))); err != nil {
-			return err
-		}
-		if _, err = monsterRWU32(cf, uint32(obj.EnchantDur(enc))); err != nil {
-			return err
-		}
-		if enc == server.ENCHANT_SHIELD {
-			extra := uint32(100)
-			if dur := monsterFindDurSpell528DB0(obj, 51); dur != nil {
-				extra = uint32(dur.Field72)
-			}
-			if _, err = monsterRWU32(cf, extra); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func monsterFindDurSpell528DB0(obj *server.Object, spellID uint32) *server.DurSpell {
-	for it := obj.Server().Spells.Dur.List; it != nil; it = it.Next {
-		if it.Flags88&1 == 0 && it.Spell == spellID && it.Target48 == obj {
-			return it
-		}
 	}
 	return nil
 }

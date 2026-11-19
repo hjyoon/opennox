@@ -379,7 +379,8 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 						}
 						v30 = nox_xxx_gamedataGetFloat_419D40("ItemDamageFromBlockPercentage");
 						v47 = v30 * (double)a4;
-						sub_4E22A0(v5, a2, a3, 1024, v47, v27);
+						sub_4E22A0((nox_object_t*)(uintptr_t)(uint32_t)v5, (nox_object_t*)(uintptr_t)(uint32_t)a2,
+							(nox_object_t*)(uintptr_t)(uint32_t)a3, 1024, v47, v27);
 						return 0;
 					}
 				} else {
@@ -413,7 +414,8 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 				}
 				v32 = nox_xxx_gamedataGetFloat_419D40("ItemDamageFromBlockPercentage");
 				v48 = v32 * (double)a4;
-				sub_4E22A0(v5, a2, a3, 134184960, v48, v27);
+				sub_4E22A0((nox_object_t*)(uintptr_t)(uint32_t)v5, (nox_object_t*)(uintptr_t)(uint32_t)a2,
+					(nox_object_t*)(uintptr_t)(uint32_t)a3, 134184960, v48, v27);
 				return 0;
 			}
 		M_LABEL_78:
@@ -429,7 +431,8 @@ int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 				}
 				v26 = nox_xxx_gamedataGetFloat_419D40("ItemDamageFromBlockPercentage");
 				v46 = v26 * (double)a4;
-				sub_4E2330(v5, a2, a3, 2, v46, v25);
+				sub_4E2330((nox_object_t*)(uintptr_t)(uint32_t)v5, (nox_object_t*)(uintptr_t)(uint32_t)a2,
+					(nox_object_t*)(uintptr_t)(uint32_t)a3, 2, v46, v25);
 				return 0;
 			}
 		}
@@ -521,7 +524,7 @@ LABEL_120:
 		break;
 	case 9:
 	case 0x11:
-		v35 = sub_4E2220(v5);
+		v35 = sub_4E2220((nox_object_t*)(uintptr_t)(uint32_t)v5);
 		v49 = v35 * (double)a4;
 		nox_xxx_playerDecrementHPMana_4E20F0((nox_object_t*)(uintptr_t)(uint32_t)v5, &a1, v49);
 		v33 = a4;
@@ -609,101 +612,6 @@ void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5) 
 	}
 }
 #endif
-
-//----- (004E2220) --------------------------------------------------------
-double sub_4E2220(int a1) {
-	int v1;    // esi
-	int v2;    // eax
-	double v3; // st7
-	float v5;  // [esp+4h] [ebp-4h]
-
-	v5 = 1.0;
-	v1 = *(uint32_t*)(a1 + 504);
-	if (!v1) {
-		return 1.0;
-	}
-	do {
-		if (*(uint32_t*)(v1 + 8) & 0x2000000) {
-			if (*(uint8_t*)(v1 + 24) & 0x10) {
-				v2 = *(uint32_t*)(v1 + 16);
-				if (v2 & 0x100) {
-					if (!sub_4133D0(v1)) {
-						if (*(uint32_t*)(v1 + 12) & 0x2000000) {
-							v3 = *getMemFloatPtr(0x587000, 201108);
-						} else {
-							// This retained caller still carries a PE32 word; its loop is not a native-pointer port.
-							v3 = sub_415BD0((nox_object_t*)(uintptr_t)(uint32_t)v1);
-						}
-						v5 = v3 + v5;
-					}
-				}
-			}
-		}
-		v1 = *(uint32_t*)(v1 + 496);
-	} while (v1);
-	return v5;
-}
-
-//----- (004E22A0) --------------------------------------------------------
-int sub_4E22A0(int a1, int a2, int a3, int a4, float a5, int a6) {
-	uint32_t* i; // esi
-	int v7;      // eax
-
-	for (i = *(uint32_t**)(a1 + 504); i; i = (uint32_t*)i[124]) {
-		if (i[4] & 0x100 && a4 & i[3]) {
-			break;
-		}
-	}
-	v7 = a3;
-	if (!a3) {
-		v7 = a2;
-	}
-	nox_xxx_playerDamageWeapon_4E1560((nox_object_t*)i,
-		(nox_object_t*)(uintptr_t)(uint32_t)a1,
-		(nox_object_t*)(uintptr_t)(uint32_t)a2,
-		(nox_object_t*)(uintptr_t)(uint32_t)v7, a5, a6);
-	if (!(i[4] & 0x20)) {
-		return 0;
-	}
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		nox_xxx_playerSetState_4FA020((uint32_t*)a1, 13);
-	} else {
-		nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return 1;
-}
-
-//----- (004E2330) --------------------------------------------------------
-int sub_4E2330(int a1, int a2, int a3, int a4, float a5, int a6) {
-	uint32_t* i; // esi
-	int v7;      // eax
-
-	for (i = *(uint32_t**)(a1 + 504); i; i = (uint32_t*)i[124]) {
-		if (i[4] & 0x100 && a4 & i[3]) {
-			break;
-		}
-	}
-	v7 = a3;
-	if (!a3) {
-		v7 = a2;
-	}
-	nox_xxx_equipDamage_4E16D0((nox_object_t*)i,
-		(nox_object_t*)(uintptr_t)(uint32_t)a1,
-		(nox_object_t*)(uintptr_t)(uint32_t)a2,
-		(nox_object_t*)(uintptr_t)(uint32_t)v7, a5, a6);
-	if (i == 0) {
-		return 0;
-	}
-	if (!(i[4] & 0x20)) {
-		return 0;
-	}
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		nox_xxx_playerSetState_4FA020((uint32_t*)a1, 13);
-	} else {
-		nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return 1;
-}
 
 //----- (004E23C0) --------------------------------------------------------
 #if 0 // Exact PE32 transcription retained; native pointer caller exported from Go.

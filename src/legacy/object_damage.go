@@ -21,7 +21,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -104,11 +103,6 @@ func electricProtectionCall4DFF40(s *server.Server, target *server.Object) float
 	return s.ElectricProtection4DFF40(target, server.ElectricProtectionRuntime4DFF40{
 		ElectricProtectEngage: C.nox_xxx_buff_4DFD80,
 	})
-}
-
-func playerDamageElectricArmorScale4E2220(s *server.Server, target *server.Object) float32 {
-	return server.PlayerDamageElectricArmorScale4E2220(target, *memmap.PtrFloat32(0x587000, 201108),
-		s.Modif.Nox_xxx_equipClothFindDefByTT413270)
 }
 
 func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorldRuntime4E0B30 {

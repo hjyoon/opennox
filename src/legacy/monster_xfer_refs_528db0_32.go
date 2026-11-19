@@ -9,27 +9,23 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// monsterResolveXferRefs528DB0 converts the temporary PE32 pointer slots used
-// by the original 32-bit transfer routine into fixed-width IDs before sharing
-// the typed resolver with native-width targets.
-func monsterResolveXferRefs528DB0(obj *server.Object) {
-	if obj == nil || obj.UpdateData == nil {
-		return
-	}
+// resolveLegacyMonsterRefs528DB0 converts the temporary PE32 slots used by
+// legacy 32-bit loaders that did not provide typed action references.
+func resolveLegacyMonsterRefs528DB0(obj *server.Object) {
 	ud := obj.UpdateDataMonster()
-	refs := new(monsterXferRefs528DB0)
-	for i := 0; i < int(ud.Field282_1) && i < len(refs.seen); i++ {
-		refs.seen[i] = int32(uintptr(unsafe.Pointer(ud.SeenEnemies[i])))
+	refs := new(server.MonsterActionRefs)
+	for i := 0; i < int(ud.Field282_1) && i < len(refs.Seen); i++ {
+		refs.Seen[i] = int32(uintptr(unsafe.Pointer(ud.SeenEnemies[i])))
 	}
-	refs.current = int32(uintptr(unsafe.Pointer(ud.CurrentEnemy)))
-	refs.field98 = int32(ud.Field98)
-	refs.field300 = int32(ud.Field300)
-	refs.preferred = int32(uintptr(unsafe.Pointer(ud.PreferredEnemy)))
-	for i := 0; i < int(ud.Field543_0) && i < len(refs.field535); i++ {
-		refs.field535[i] = int32(ud.Field535[i])
+	refs.Current = int32(uintptr(unsafe.Pointer(ud.CurrentEnemy)))
+	refs.Field98 = int32(ud.Field98)
+	refs.Field300 = int32(ud.Field300)
+	refs.Preferred = int32(uintptr(unsafe.Pointer(ud.PreferredEnemy)))
+	for i := 0; i < int(ud.Field543_0) && i < len(refs.Field535); i++ {
+		refs.Field535[i] = int32(ud.Field535[i])
 	}
 	if int32(obj.ObjFlags) >= 0 && ud.AIStackInd >= 0 {
-		for i := 0; i <= int(ud.AIStackInd) && i < len(refs.aiObjects); i++ {
+		for i := 0; i <= int(ud.AIStackInd) && i < len(refs.AIObjects); i++ {
 			item := &ud.AIStack[i]
 			action := int(item.Action)
 			if action < 0 || action >= 72 {
@@ -43,9 +39,9 @@ func monsterResolveXferRefs528DB0(obj *server.Object) {
 				slot := 2 * j
 				switch memmap.Uint32(0x587000, uintptr(255608+4*(j+4*action))) {
 				case 1:
-					refs.aiObjects[i][j] = int32(item.Args[slot])
+					refs.AIObjects[i][j] = int32(item.Args[slot])
 				case 2:
-					refs.aiWPs[i][j] = uint32(item.Args[slot])
+					refs.AIWaypoints[i][j] = uint32(item.Args[slot])
 				}
 			}
 		}

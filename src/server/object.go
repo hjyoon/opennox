@@ -643,6 +643,8 @@ type ObjectExt struct {
 	moverWaypoint5  *Waypoint
 	moverTarget     *Object
 
+	monsterActionRefs *MonsterActionRefs
+
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32
 	HealthFraction      float32 // float fraction of health; 0 <= v < 1

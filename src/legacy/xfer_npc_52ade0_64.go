@@ -36,6 +36,9 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 	if cf == nil || obj == nil || obj.UpdateData == nil {
 		return fmt.Errorf("missing crypt file, object, or NPC update data")
 	}
+	if cf.ReadOnly() {
+		obj.TakeMonsterActionRefs()
+	}
 	ud := obj.UpdateDataMonster()
 	savedField34 := obj.Field34
 
@@ -78,8 +81,8 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 		return fmt.Errorf("NPC definition: %w", err)
 	}
 
-	refs := new(monsterXferRefs528DB0)
-	if err := monsterXferActionData529CE0(cf, obj, refs); err != nil {
+	refs := new(server.MonsterActionRefs)
+	if err := monsterXferActionData529CE0(cf, obj, refs, false); err != nil {
 		return err
 	}
 	if err := npcXferTail52ADE0(cf, obj, int(version)); err != nil {
@@ -96,9 +99,7 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 		npcRestoreEquipped52ADE0(obj)
 	}
 	if cf.ReadOnly() {
-		monsterXferPending528DB0.Lock()
-		monsterXferPending528DB0.m[obj] = refs
-		monsterXferPending528DB0.Unlock()
+		obj.StoreMonsterActionRefs(refs)
 	}
 	obj.Field34 = savedField34
 	return nil

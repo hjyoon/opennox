@@ -4,24 +4,18 @@ package legacy
 #include <stdint.h>
 #include "GAME4.h"
 #include "GAME5_2.h"
-// Convert the mixed CRC/pointer result before it crosses into Go. A small
-// opaque token must never become a pointer-shaped Go GC root.
-static uintptr_t game4_protection_delta_word(uint32_t token, int32_t delta) {
-	return (uintptr_t)sub_56F920((int32_t)token, delta);
-}
 */
 import "C"
 
 import "github.com/opennox/opennox/v1/server"
 
-// These return uintptr because protection may return either an opaque CRC word
-// or an actual native allocation. Only the C ABI adapter casts it to uint32_t*.
+// The legacy caller consumes a scalar protection result in a pointer-sized return slot.
 //
 //export nox_game4_player_gold_add_go
 func nox_game4_player_gold_add_go(unit *C.nox_object_t, delta C.int) C.uintptr_t {
 	var result C.uintptr_t
 	_ = playerInventoryAddGoldNative41AC30(asObjectS(unit), uint32(delta), func(token uint32, amount int32) {
-		result = C.game4_protection_delta_word(C.uint32_t(token), C.int32_t(amount))
+		result = C.uintptr_t(sub_56F920(C.int(token), C.int(amount)))
 	})
 	return result
 }
@@ -30,7 +24,7 @@ func nox_game4_player_gold_add_go(unit *C.nox_object_t, delta C.int) C.uintptr_t
 func nox_game4_player_gold_sub_go(unit *C.nox_object_t, amount C.uint) C.uintptr_t {
 	var result C.uintptr_t
 	_ = playerInventorySubGoldNative41AC30(asObjectS(unit), uint32(amount), func(token uint32, delta int32) {
-		result = C.game4_protection_delta_word(C.uint32_t(token), C.int32_t(delta))
+		result = C.uintptr_t(sub_56F920(C.int(token), C.int(delta)))
 	})
 	return result
 }

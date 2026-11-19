@@ -8,27 +8,9 @@
 #include "GAME5_2.h"
 #include "common__gamemech__pausefx.h"
 #include "common__strman.h"
-extern uint32_t dword_5d4594_2516328;
-extern uint32_t dword_5d4594_2516348;
 
 //----- (0056F980) --------------------------------------------------------
-uint32_t* sub_56F980(int a1, unsigned char a2) {
-	uint32_t* result; // eax
-	int v3;           // ecx
-
-	result = (uint32_t*)a1;
-	if (a1 >= 657757279) {
-		result = sub_56F590(a1);
-		if (result) {
-			dword_5d4594_2516328 ^= result[1];
-			v3 = dword_5d4594_2516348 ^ (a2 + (dword_5d4594_2516348 ^ result[1]));
-			result[1] = v3;
-			dword_5d4594_2516328 ^= v3;
-			result = (uint32_t*)nox_xxx_protectData_56F5C0();
-		}
-	}
-	return result;
-}
+// The protected value update is implemented in Go.
 
 // GAME.EXE 004EF2E0 is restored by experience_level_update_4ef2e0.go. Keep
 // the raw ABI32 body only as provenance; active callers use the native-width

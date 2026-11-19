@@ -4,8 +4,8 @@ package legacy
 #include <stddef.h>
 #include <stdint.h>
 
-uint32_t* sub_56F780(int token, int value);
-uint32_t* nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
+int32_t sub_56F780(int token, int value);
+int32_t nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
 size_t nox_wcslen(const uint16_t* value);
 int sub_56FB00(int* value, unsigned int size, int token);
 

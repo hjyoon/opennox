@@ -3,7 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 
-uint32_t* sub_56F920(int token, int delta);
+int32_t sub_56F920(int token, int delta);
 
 static inline void nox_playerUnitInit_protectGold_4EFE80(
 		uint32_t token, int32_t delta) {

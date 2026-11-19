@@ -5,7 +5,7 @@ package legacy
 
 #include "server__gamemech__explevel.h"
 
-uint32_t* sub_56F980(int token, unsigned char level);
+int32_t sub_56F980(int token, unsigned char level);
 
 static inline void nox_experienceLevelProtect_4EF2E0(
 		uint32_t token, uint8_t level) {

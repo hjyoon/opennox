@@ -23,16 +23,6 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 )
 
-// The PE x87 helper truncates to a signed qword and consumes its low dword.
-// Invalid FISTP produces INT64_MIN, whose low dword is zero. Keep the upper
-// bound exclusive: float64(MaxInt64) itself rounds up to 2^63.
-func game4MapTruncQwordLow(value float64) int32 {
-	if math.IsNaN(value) || math.IsInf(value, 0) || value < -0x1p63 || value >= 0x1p63 {
-		return 0
-	}
-	return int32(uint32(int64(value)))
-}
-
 //export nox_mapgenClearPendingScriptIDs_503B30
 func nox_mapgenClearPendingScriptIDs_503B30(first *C.nox_object_t) {
 	for obj := asObjectS(first); obj != nil; obj = obj.ObjNext {
@@ -48,22 +38,22 @@ func nox_mapgenBuildPlaceBounds_503B30(at, fixedAt *C.nox_const_float2, recordRa
 	corners := unsafe.Slice((*int32)(unsafe.Pointer(cornerBuffer)), 8)
 	var corner, fixed C.float2
 
-	corners[2] = game4MapTruncQwordLow(float64(fixedAt.field_0))
-	corners[3] = game4MapTruncQwordLow(float64(fixedAt.field_4))
+	corners[2] = x87TruncQwordLow(float64(fixedAt.field_0))
+	corners[3] = x87TruncQwordLow(float64(fixedAt.field_4))
 	corner.field_0 = C.float(width + float32(at.field_0))
 	corner.field_4 = C.float(height + float32(at.field_4))
 	C.nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed)
-	corners[4] = game4MapTruncQwordLow(float64(fixed.field_0))
-	corners[5] = game4MapTruncQwordLow(float64(fixed.field_4))
+	corners[4] = x87TruncQwordLow(float64(fixed.field_0))
+	corners[5] = x87TruncQwordLow(float64(fixed.field_4))
 	corner.field_4 = at.field_4
 	C.nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed)
-	corners[0] = game4MapTruncQwordLow(float64(fixed.field_0))
-	corners[1] = game4MapTruncQwordLow(float64(fixed.field_4))
+	corners[0] = x87TruncQwordLow(float64(fixed.field_0))
+	corners[1] = x87TruncQwordLow(float64(fixed.field_4))
 	corner.field_0 = at.field_0
 	corner.field_4 = C.float(height + float32(at.field_4))
 	C.nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed)
-	corners[6] = game4MapTruncQwordLow(float64(fixed.field_0))
-	corners[7] = game4MapTruncQwordLow(float64(fixed.field_4))
+	corners[6] = x87TruncQwordLow(float64(fixed.field_0))
+	corners[7] = x87TruncQwordLow(float64(fixed.field_4))
 	// These existing external routines retain their actual read/write order,
 	// including a caller that aliases the rectangle with the corner array.
 	C.sub_4D3C80((*C.uint32_t)(unsafe.Pointer(cornerBuffer)))
@@ -72,7 +62,7 @@ func nox_mapgenBuildPlaceBounds_503B30(at, fixedAt *C.nox_const_float2, recordRa
 
 //export nox_mapgenPlaceOffset_503B30
 func nox_mapgenPlaceOffset_503B30(coordinate C.float, origin C.int32_t) C.int32_t {
-	return C.int32_t(game4MapTruncQwordLow(float64(coordinate) - float64(origin)))
+	return C.int32_t(x87TruncQwordLow(float64(coordinate) - float64(origin)))
 }
 
 //export nox_mapgenWallSpan_503B30

@@ -7,7 +7,7 @@ package legacy
 
 typedef uint16_t wchar2_t;
 
-uint32_t* sub_56FA40(int token, float award);
+int32_t sub_56FA40(int token, float award);
 intptr_t nox_xxx_netSendLineMessage_4D9EB0(nox_object_t* unit, wchar2_t* message, ...);
 
 static inline void nox_directExperienceProtect_4EF3A0(

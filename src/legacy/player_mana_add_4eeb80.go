@@ -3,15 +3,15 @@ package legacy
 /*
 #include <stdint.h>
 
-uint32_t* nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
-uint32_t* nox_xxx_protectMana_56F9E0(int token, short delta);
+int32_t nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
+int32_t nox_xxx_protectMana_56F9E0(int token, short delta);
 
 static inline void nox_playerManaAdd_protectMana(int token, short delta) {
 	(void)nox_xxx_protectMana_56F9E0(token, delta);
 }
 
 static inline uint16_t nox_playerManaAdd_protectMaximum(int token, unsigned short value) {
-	return (uint16_t)(uintptr_t)nox_xxx_protectPlayerHPMana_56F870(token, value);
+	return (uint16_t)nox_xxx_protectPlayerHPMana_56F870(token, value);
 }
 */
 import "C"

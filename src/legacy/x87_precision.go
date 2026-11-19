@@ -23,3 +23,13 @@ func storeFloat32TowardZero(value float64) float32 {
 	}
 	return narrow
 }
+
+// The PE x87 helper truncates to a signed qword and consumes its low dword.
+// Invalid FISTP produces INT64_MIN, whose low dword is zero. Keep the upper
+// bound exclusive: float64(MaxInt64) itself rounds up to 2^63.
+func x87TruncQwordLow(value float64) int32 {
+	if math.IsNaN(value) || math.IsInf(value, 0) || value < -0x1p63 || value >= 0x1p63 {
+		return 0
+	}
+	return int32(uint32(int64(value)))
+}

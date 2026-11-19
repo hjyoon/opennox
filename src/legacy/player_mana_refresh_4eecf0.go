@@ -3,7 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 
-uint32_t* nox_xxx_protectMana_56F9E0(int token, short delta);
+int32_t nox_xxx_protectMana_56F9E0(int token, short delta);
 
 static inline uintptr_t nox_playerManaRefresh_protectMana(int token, int16_t delta) {
 	return (uintptr_t)nox_xxx_protectMana_56F9E0(token, (short)delta);

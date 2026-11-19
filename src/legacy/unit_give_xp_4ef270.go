@@ -5,7 +5,7 @@ package legacy
 
 #include "server__object__health.h"
 
-uint32_t* sub_56FA40(int token, float award);
+int32_t sub_56FA40(int token, float award);
 
 static inline void nox_unitGiveXPProtect_4EF270(
 		uint32_t token, float award) {

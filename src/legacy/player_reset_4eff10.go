@@ -5,7 +5,7 @@ package legacy
 
 typedef struct nox_object_t nox_object_t;
 
-uint32_t* nox_xxx_protectPlayerHPMana_56F870(int token, uint16_t value);
+int32_t nox_xxx_protectPlayerHPMana_56F870(int token, uint16_t value);
 
 static inline void nox_playerReset_protectMana_4EFF10(
 		uint32_t token, uint16_t value) {

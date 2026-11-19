@@ -3,7 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 
-uint32_t* sub_56F820(int token, unsigned char level);
+int32_t sub_56F820(int token, unsigned char level);
 
 static inline void nox_playerSyncLevel_protect_4EF140(
 		uint32_t token, uint8_t level) {

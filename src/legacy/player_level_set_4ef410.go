@@ -3,8 +3,8 @@ package legacy
 /*
 #include <stdint.h>
 
-uint32_t* sub_56F8C0(int token, float value);
-uint32_t* sub_56F820(int token, unsigned char level);
+int32_t sub_56F8C0(int token, float value);
+int32_t sub_56F820(int token, unsigned char level);
 void* nox_xxx_book_45DBE0(void* kind, int ability, int index);
 
 static inline void nox_playerLevelSet_protectExperience_4EF410(

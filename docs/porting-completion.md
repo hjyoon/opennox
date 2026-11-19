@@ -90,6 +90,14 @@ definitions. There are 385 bodies with pointer and integer casts.
 The updated selection and AST are in
 `opennox-verification/20261118-trade/whole-C-inventory-3333e137-v1`.
 
+At `a7a83c8dfa879d5eb98461045e2b4df2a8f87971`, the same twelve
+profiles select 206 of 627 tracked C files. Default ARM64 selects
+205 files, with 2,272 named bodies across 163 files and 363 bodies
+containing pointer and integer conversions. The 14 additional names
+are ten memory-map accessors, three POSIX file-search compatibility
+functions, and one retained server-list reference function. The raw
+selection and AST records are in `whole-C-inventory-a7a83c8d-v1`.
+
 At `1743dd8f2c3e63ef33531caa80620b163c76d24d`, an exact ARM64 census of the
 13 split GAME files records 1,702 active named C bodies. Of those, 238
 contain pointer-to-integer or integer-to-pointer conversions. The census
@@ -181,6 +189,45 @@ casts. The records are in `vital-reports-and-missile-carry-native-v1`.
 The original status-report comparison is in
 `player-vital-report-public-native-v1`.
 
+### Native player reports and damage entries, 2026-11-19
+
+Engine `a7a83c8dfa879d5eb98461045e2b4df2a8f87971` moves six public
+player and item reports to typed Go entries. The comparison covers
+114 packet and status cases, 36 durability cases, seven original
+faults and 55,790 original item-health bucket executions. Both
+ARM64 modes pass 66,805 legacy and seven root checks with zero
+warnings. Linux run `44430013221` passes all four variants.
+Windows run `44429837891` passes the 386 suite and its required GC
+replays. Its amd64 product builds, then sustained tests report
+access violations and a GC pointer to a free object. The local
+Windows archive retains the three exact failing test executables.
+
+Engine `4d31f15a98a17b61abd07e7a4fc9054e40191fc5` ports BallDamage,
+WeaponDamage and ArmorDamage. The comparison covers 245 original
+cases and one original fault. On ARM64, the 140 legacy and 267
+server checks pass in each mode without warnings, including the
+registered C callback identities and native pointer records above
+4 GiB. The report is in `item-armor-damage-public-native-v1`.
+
+Engine `2d65a402faaebb5335f3358f0372a21b6e908a22` exposes
+PlayerDamage and both equipment durability helpers with typed
+C arguments. The previous PlayerDamage C body is available only
+at 32 bits for the existing fallback. ARM64 ordinary and
+`cgocheck2` runs each pass 121,569 focused checks. Both ARM64
+clients build without warnings and verify 362 public symbols.
+The source, test executables and product certificates are in
+`player-damage-public-native-v1`.
+
+Engine `ae1e266ae0eeee1820d7447dd12374e5b228d74d` ports the
+`4E20F0` damage carry entry with a typed object and signed
+output pointer. The C comparison uses 704 original x87 results
+and tests a live alias between the output and object class.
+Both ARM64 modes pass 2,767 checks with zero warnings. The
+13 split GAME files have 1,630 active ARM64 C bodies, including
+221 with pointer and integer conversions. The records are in
+`player-damage-carry-public-native-v1`. The whole-C migration
+and the final class and chapter audits remain open.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack
@@ -234,6 +281,20 @@ The 1,800-frame recovery restores mana to 47 and the player writes a living
 manual Save. The replay preserves the source Saves, assets and products.
 The earlier comparison with the v193 Swap Save and the shorter Wizard 3
 recovery remains recorded in `melee-replay-observers-ARM64-v2`.
+
+On `9da870447cbfadc2dcfb5bb2fa47704cb8674662`, Wizard 2 again
+completes the reciprocal Swap from the earned v1096 Save. The
+audit checks the object accepted by the original Swap duration
+and both adjacent positions. Wizard 3 loads the earned v516
+Save and uses Magic Missile on the original Wiz03b Swordsman,
+who reaches zero HP and the dead flag before the Wizard writes
+a living manual Save. The HD product also loads the earned
+Con03a v908 Conjurer Save and advances the Captain's two
+dialogs by actual mouse input. The quest completion message
+appears, the original script state advances from 1 to 3 and
+the new manual Save records a living player with 29 HP and
+85 mana. The run stays on Con03a. These three replays are in
+`vital-reports-and-missile-carry-native-v1`.
 
 ### Attack modifier and ADPCM entries, 2026-11-19
 

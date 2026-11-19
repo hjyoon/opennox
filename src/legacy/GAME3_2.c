@@ -690,60 +690,7 @@ int nox_xxx_interesting_xfer_4D0010(uint32_t* a1, int a2) {
 	return (int)nox_xxx_interesting_xfer_native_4D0010(a1, (int32_t)a2);
 }
 
-//----- (004D0550) --------------------------------------------------------
-int sub_4D0550(char* a1) {
-	int result;       // eax
-	unsigned int v2;  // kr08_4
-	char v3;          // cl
-	int v4;           // edx
-	unsigned char v5; // al
-	char* v6;         // edi
-	char* v7;         // edi
-	unsigned char v8; // cl
-	unsigned char v9; // [esp+4h] [ebp-104h]
-	char v10[256];    // [esp+8h] [ebp-100h]
-
-	result = 0;
-	if (a1) {
-		v10[0] = 0;
-		strncat(v10, a1, 256-1);
-		v10[strlen(v10)-4] = 0;
-		v2 = strlen(v10) + 1;
-		v3 = v2 - 1;
-		v9 = v2 - 1;
-		if ((uint8_t)v2 != 1) {
-			while (v10[v9] != 92) {
-				v9 = --v3;
-				if (!v3) {
-					goto LABEL_7;
-				}
-			}
-			v10[v9 + 1] = 0;
-		}
-	LABEL_7:
-		v4 = *getMemU32Ptr(0x587000, 191752);
-		v5 = getMemByte(0x587000, 191756);
-		v6 = &v10[strlen(v10)];
-		*(uint32_t*)v6 = *getMemU32Ptr(0x587000, 191748);
-		*((uint32_t*)v6 + 1) = v4;
-		v6[8] = v5;
-		if (!sub_4D0670(v10)) {
-			v10[0] = 0;
-			strncat(v10, a1, 256-1);
-			v10[strlen(v10)-4] = 0;
-			v7 = &v10[strlen(v10) + 1];
-			v8 = getMemByte(0x587000, 191764);
-			*(uint32_t*)--v7 = *getMemU32Ptr(0x587000, 191760);
-			v7[4] = v8;
-			sub_4D0670(v10);
-		}
-		if (0) {
-			sub_4D0670((char*)getMemAt(0x587000, 191768));
-		}
-		result = 1;
-	}
-	return result;
-}
+// GAME.EXE 004D0550 builds map rule paths in Go.
 
 //----- (004D0670) --------------------------------------------------------
 int sub_4D0670(char* a1) {

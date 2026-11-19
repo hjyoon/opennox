@@ -1256,17 +1256,7 @@ int sub_57A620(unsigned char a1, const wchar2_t** a2, char* a3, int a4) {
 	return 0;
 }
 
-//----- (0057A950) --------------------------------------------------------
-int sub_57A950(char* a1) {
-	char v2[256]; // [esp+Ch] [ebp-100h]
-
-	strcpy(v2, "maps\\");
-	strncat(v2, a1, 256 - 6);
-	v2[strlen(v2) - 4] = 0;
-	strncat(v2, "\\", 256 - 4);
-	strcat(v2, a1);
-	return sub_4D0550(v2);
-}
+// GAME.EXE 0057A950 builds the current map rule path in Go.
 
 //----- (0057A9F0) --------------------------------------------------------
 int sub_57A9F0(const char* a1, const char* a2) {

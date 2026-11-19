@@ -35,3 +35,10 @@ func nox_xxx_spellBuffOff_4FF5B0(unit *C.nox_object_t, buff C.int32_t) C.int32_t
 		int32(buff),
 	))
 }
+
+//export sub_5341D0
+func sub_5341D0(unit *C.nox_object_t) C.int {
+	obj := asObjectS((*nox_object_t)(unit))
+	spellBuffOffExportImpl4FF5B0(obj, int32(server.ENCHANT_INVISIBLE))
+	return C.int(spellBuffOffExportImpl4FF5B0(obj, int32(server.ENCHANT_INVULNERABLE)))
+}

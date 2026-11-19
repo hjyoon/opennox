@@ -54,7 +54,7 @@ int sub_534020(nox_object_t* a1);
 #include "monster_move_audio_native_534030.h"
 int sub_534120(nox_object_t* a1, float2* a2);
 void nox_ai_debug_printf_5341A0(char* a1, ...);
-int sub_5341D0(int a1);
+int sub_5341D0(nox_object_t* unit);
 int nox_xxx_monsterCanMelee_534220(nox_object_t* a1);
 int nox_xxx_monsterCanShoot_534280(nox_object_t* a1);
 int nox_xxx_monsterHasShield_5342C0(nox_object_t* a1);

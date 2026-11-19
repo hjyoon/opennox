@@ -360,10 +360,7 @@ void nox_ai_debug_printf_5341A0(char* a1, ...) {
 }
 
 //----- (005341D0) --------------------------------------------------------
-int sub_5341D0(int a1) {
-	nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 0);
-	return nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 23);
-}
+// Native-width implementation: spell_buff_off_4ff5b0_export.go.
 
 //----- (00534220) --------------------------------------------------------
 // Native-width implementation: server/monster_combat_predicates_534020.go.

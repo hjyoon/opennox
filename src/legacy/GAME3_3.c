@@ -64,10 +64,6 @@ extern uint32_t dword_5d4594_1565512;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int gameex_flags;
 
-enum {
-	NOX_IMPORTANT_PLAYER_COUNT = 32,
-};
-
 static nox_alloc_class* nox_alloc_important_1565508;
 static nox_important_packet_t* nox_important_first_1565512;
 static nox_important_packet_t* nox_important_last_1565516;
@@ -899,119 +895,6 @@ void sub_4E4DC0(void) { nox_platform_srand(UINT32_C(0x1429)); }
 
 //----- (004E4DD0) --------------------------------------------------------
 void sub_4E4DD0(void) { nox_platform_srand(UINT32_C(0x490)); }
-
-static void nox_server_writeImportantLE16_4E5770(uint8_t* dst, uint16_t value) {
-	dst[0] = (uint8_t)value;
-	dst[1] = (uint8_t)(value >> 8);
-}
-
-static void nox_server_writeImportantLE32_4E5770(uint8_t* dst, uint32_t value) {
-	dst[0] = (uint8_t)value;
-	dst[1] = (uint8_t)(value >> 8);
-	dst[2] = (uint8_t)(value >> 16);
-	dst[3] = (uint8_t)(value >> 24);
-}
-
-//----- (004E5770) --------------------------------------------------------
-void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind) {
-	const uint32_t client_mask = UINT32_C(1) << (player_index & UINT8_C(31));
-	if (!nox_server_importantShouldProcess_4E5770(player_index)) {
-		return;
-	}
-
-	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
-	nox_important_rate_control_t* const rate = &(*rates)[player_index];
-	int32_t resent_count = 0;
-	int header_pending = 1;
-	for (nox_important_packet_t* packet = nox_server_getImportantLast_4E4F80(); packet;) {
-		nox_important_packet_t* const prev = nox_server_getImportantPrev_4E4F80(packet);
-		nox_object_t* related_object = nox_server_getImportantRelatedObject_4E5030(packet);
-		if (related_object && (related_object->obj_flags & UINT32_C(0x20))) {
-			nox_server_setImportantRelatedObject_4E5030(packet, NULL);
-			related_object = NULL;
-		}
-
-		if (packet->acknowledged_mask & client_mask) {
-			packet = prev;
-			continue;
-		}
-		const int8_t recipient = packet->recipient;
-		if ((recipient >= 0 && (uint8_t)recipient != player_index) ||
-			(recipient < -1 && player_index == ((uint8_t)recipient & UINT8_C(0x7f)))) {
-			packet = prev;
-			continue;
-		}
-
-		if ((related_object && !(related_object->field_37 & client_mask)) ||
-			(packet->remove_if_disconnected && !(dword_5d4594_2649712 & client_mask))) {
-			sub_4E54D0(client_mask, packet, player_index);
-			return;
-		}
-
-		if (packet->sent_mask & client_mask) {
-			if (packet->retry_delay[player_index] != 0) {
-				--packet->retry_delay[player_index];
-				packet = prev;
-				continue;
-			}
-			if (resent_count >= rate->resends_per_update) {
-				packet = prev;
-				continue;
-			}
-			packet->sent_mask &= ~client_mask;
-			packet->send_count = (uint8_t)(packet->send_count + UINT8_C(1));
-			++resent_count;
-		}
-
-		if (header_pending) {
-			uint8_t header[5] = {UINT8_C(0xaa), 0, 0, 0, 0};
-			uint32_t header_size = 1;
-			if (message_kind == 0 || player_index == UINT8_C(31)) {
-				nox_server_writeImportantLE32_4E5770(&header[1], gameFrame());
-				header_size = 5;
-			}
-			if (!nox_server_importantSend_4E5770(player_index, message_kind, header, header_size)) {
-				return;
-			}
-			header_pending = 0;
-		}
-
-		int sent;
-		if (packet->sequence_enabled) {
-			uint8_t* const message = getMemAt(0x5D4594, 1564964);
-			message[0] = UINT8_C(0xcc);
-			nox_server_writeImportantLE16_4E5770(&message[1], packet->sequence[player_index]);
-			message[3] = packet->payload_size;
-			memcpy(&message[4], packet->payload, packet->payload_size);
-			sent = nox_server_importantSend_4E5770(
-				player_index, message_kind, message, (uint32_t)packet->payload_size + UINT32_C(4));
-		} else {
-			sent = nox_server_importantSend_4E5770(
-				player_index, message_kind, packet->payload, packet->payload_size);
-		}
-		if (sent) {
-			packet->sent_mask |= client_mask;
-			const uint32_t update_rate = nox_server_importantRateGet_4E5670();
-			const uint32_t resend_interval = rate->resend_interval;
-			const uint32_t fps = gameFPS();
-			packet->retry_delay[player_index] = (uint8_t)((fps * resend_interval) / update_rate);
-			packet->last_send_frame[player_index] = gameFrame();
-			if (nox_server_importantReplayRead_4E5770()) {
-				sub_4E54D0(client_mask, packet, player_index);
-			}
-		}
-		packet = prev;
-	}
-
-	if (nox_server_importantGameHost_4E5770()) {
-		const uint32_t frame = gameFrame();
-		const uint32_t resend_interval = rate->resend_interval;
-		const uint32_t period = gameFPS() * resend_interval;
-		if (frame % period == 0) {
-			nox_server_importantRateAdjust_4E5770(player_index);
-		}
-	}
-}
 
 //----- (004E5AB0) --------------------------------------------------------
 void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }

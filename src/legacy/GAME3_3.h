@@ -301,14 +301,7 @@ int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame);
 int sub_4E55F0(uint8_t player_index);
 uint32_t sub_4E5630(
 	uint8_t player_index, uint32_t* threshold, uint32_t* resend_interval, uint32_t* resends_per_update);
-uint32_t nox_server_importantRateGet_4E5670(void);
 uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index);
-int nox_server_importantShouldProcess_4E5770(uint8_t player_index);
-int nox_server_importantSend_4E5770(
-	uint8_t player_index, int message_kind, uint8_t* data, uint32_t size);
-int nox_server_importantReplayRead_4E5770(void);
-int nox_server_importantGameHost_4E5770(void);
-void nox_server_importantRateAdjust_4E5770(uint8_t player_index);
 void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind);
 uint32_t nox_xxx_importantFreeSlots_4E5A90(void);
 void nox_xxx_noop_4E5AB0(const void* unused);

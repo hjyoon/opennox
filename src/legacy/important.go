@@ -39,7 +39,7 @@ var (
 		return noxflags.HasEngine(noxflags.EngineReplayRead)
 	}
 	importantRateAdjustHook = func(ind uint8) {
-		adjustImportantRateC(ind)
+		nox_xxx_importantCheckRate2_4E5670(C.uint8_t(ind))
 	}
 )
 
@@ -57,35 +57,6 @@ func nox_xxx_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
 	// The original calls 0x004174F0 with 0x80. That mask cannot enter its
 	// 0x423 reporting branch, so its exact return is the GameHost check.
 	return C.int(bool2int(importantGameHostHook()))
-}
-
-//export nox_server_importantRateGet_4E5670
-func nox_server_importantRateGet_4E5670() C.uint32_t {
-	return C.uint32_t(importantRateGetHook())
-}
-
-//export nox_server_importantShouldProcess_4E5770
-func nox_server_importantShouldProcess_4E5770(playerIndex C.uint8_t) C.int {
-	player := importantPlayerByIndHook(ntype.PlayerInd(playerIndex))
-	if player == nil || !importantGameHostHook() {
-		return 1
-	}
-	return C.int(bool2int(player.Field3680&0x10 != 0))
-}
-
-//export nox_server_importantReplayRead_4E5770
-func nox_server_importantReplayRead_4E5770() C.int {
-	return C.int(bool2int(importantReplayReadHook()))
-}
-
-//export nox_server_importantGameHost_4E5770
-func nox_server_importantGameHost_4E5770() C.int {
-	return C.int(bool2int(importantGameHostHook()))
-}
-
-//export nox_server_importantRateAdjust_4E5770
-func nox_server_importantRateAdjust_4E5770(playerIndex C.uint8_t) {
-	importantRateAdjustHook(uint8(playerIndex))
 }
 
 func importantAllocClassC() unsafe.Pointer {

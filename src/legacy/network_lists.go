@@ -2,11 +2,11 @@ package legacy
 
 /*
 #include "defs.h"
+#include "GAME3_3.h"
 extern uint32_t dword_5d4594_2650652;
 int nox_xxx_netOnPacketRecvCli_48EA70(int a1, unsigned char* data, int sz);
 int sub_48D660();
 int sub_4DF9B0(void* a1, void* a2, void* a3, int a4);
-void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind);
 */
 import "C"
 import (
@@ -43,12 +43,6 @@ func nox_netlist_clientSendWrap_40ECA0(ind1_cgo, ind2_cgo int32, buf *C.uchar, s
 	ind2 := int(ind2_cgo)
 	sz := int(sz_cgo)
 	return int32(bool2int(GetServer().S().NetList.ClientSend0(ntype.PlayerInd(ind1), netlist.Kind(ind2), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz), GetNetPlayerBufSize())))
-}
-
-//export nox_server_importantSend_4E5770
-func nox_server_importantSend_4E5770(playerIndex C.uint8_t, messageKind C.int, data *C.uint8_t, size C.uint32_t) C.int {
-	buf := unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))
-	return C.int(bool2int(importantNetSendHook(uint8(playerIndex), int(messageKind), buf)))
 }
 
 //export nox_netlist_addToMsgListSrv_40EF40

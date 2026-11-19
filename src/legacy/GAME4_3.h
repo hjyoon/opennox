@@ -154,7 +154,7 @@ int nox_xxx_playerAttackBowNative_538960(
 void nox_xxx_playerAttackWarcryNative_538960(nox_object_t* unit);
 void nox_xxx_playerAttackBerserkNative_538960(nox_object_t* unit);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);
-short nox_xxx_warcryStunMonsters_539B90(int a1, int a2);
+void nox_xxx_warcryStunMonsters_539B90(void* target, void* source);
 int nox_xxx_shootBowCrossbow1_539BD0(nox_object_t* owner, nox_object_t* weapon);
 void nox_xxx_shootBowCrossbow2_539D80(nox_object_t* owner, nox_object_t* quiver, nox_object_t* weapon, uint32_t flags);
 int nox_xxx_shootApplyEffects_539F40(nox_object_t* owner, nox_object_t* weapon, nox_object_t* projectile);

@@ -14,6 +14,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -998,5 +999,38 @@ func TestPlayerAttackWarcryStunnable538960MatchesOriginalMask(t *testing.T) {
 		if playerAttackWarcryStunnable538960(target) {
 			t.Fatalf("%s target passed the original Warcry mask", name)
 		}
+	}
+}
+
+func TestPlayerAttackWarcryStunPublicC539B90(t *testing.T) {
+	target, freeTarget := alloc.NewHigh(server.Object{})
+	source, freeSource := alloc.NewHigh(server.Object{})
+	defer freeTarget()
+	defer freeSource()
+	*target = server.Object{
+		ObjClass:    object.ClassMonster | object.ClassClientPersist,
+		ObjSubClass: object.SubClass(object.MonsterWarcryStun),
+		ObjFlags:    object.FlagActive,
+	}
+	*source = server.Object{}
+	if unsafe.Sizeof(uintptr(0)) == 8 &&
+		(uintptr(unsafe.Pointer(target)) <= math.MaxUint32 || uintptr(unsafe.Pointer(source)) <= math.MaxUint32) {
+		t.Fatalf("the two C callback arguments must be native addresses above 4 GiB: %p and %p", target, source)
+	}
+	want := *target
+	old := buffApplyExportImpl4FF380
+	t.Cleanup(func() { buffApplyExportImpl4FF380 = old })
+	calls := 0
+	buffApplyExportImpl4FF380 = func(got *server.Object, enchant int32, duration int16, power int8) {
+		calls++
+		if got != target || enchant != int32(server.ENCHANT_HELD) || duration != 90 || power != 3 {
+			t.Fatalf("original stun arguments differ: %p, %d, %d, %d", got, enchant, duration, power)
+		}
+	}
+	playerAttackWarcryStunCallC539B90(target, nil)
+	playerAttackWarcryStunCallC539B90(nil, source)
+	playerAttackWarcryStunCallC539B90(target, source)
+	if calls != 1 || *target != want {
+		t.Fatalf("stun callback count = %d, target unchanged = %t", calls, *target == want)
 	}
 }

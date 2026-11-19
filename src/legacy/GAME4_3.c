@@ -2158,23 +2158,6 @@ LABEL_159:
 
 // 539AF2: variable 'v76' is possibly undefined
 
-//----- (00539B90) --------------------------------------------------------
-short nox_xxx_warcryStunMonsters_539B90(int a1, int a2) {
-	short result; // ax
-
-	result = a2;
-	if (a2) {
-		result = a1;
-		if (a1) {
-			if (*(uint8_t*)(a1 + 8) & 2 && *(uint32_t*)(a1 + 12) & 0x20000 && !(*(uint32_t*)(a1 + 16) & 0x8020)) {
-				nox_xxx_buffApplyTo_4FF380(
-					(nox_object_t*)(uintptr_t)(uint32_t)a1, 5, 90, 3);
-			}
-		}
-	}
-	return result;
-}
-
 //----- (00539FB0) --------------------------------------------------------
 int sub_539FB0(nox_object_t* owner) {
 	nox_object_t* item = owner ? owner->inv_first_item : NULL;

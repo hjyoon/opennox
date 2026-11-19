@@ -21,6 +21,8 @@ void nox_xxx_updateOneSecondDie_53CB60_go(nox_object_t* source);
 void nox_xxx_updateExpire_53DB00_go(nox_object_t* source);
 static int nox_call_objectType_parseUpdate_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 void nox_xxx___mkgmtime_538280(nox_object_t* a1);
+_Static_assert(_Generic(&nox_xxx_warcryStunMonsters_539B90, void (*)(void*, void*): 1, default: 0),
+	"Warcry uses the native map enumeration callback ABI");
 */
 import "C"
 import (
@@ -469,6 +471,21 @@ func playerAttackWarcryStunnable538960(target *server.Object) bool {
 		!target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
 }
 
+func playerAttackWarcryStun539B90(target, source *server.Object, apply func(*server.Object, int32, int16, int8)) {
+	if source != nil && playerAttackWarcryStunnable538960(target) {
+		apply(target, int32(server.ENCHANT_HELD), 90, 3)
+	}
+}
+
+//export nox_xxx_warcryStunMonsters_539B90
+func nox_xxx_warcryStunMonsters_539B90(target, source unsafe.Pointer) {
+	playerAttackWarcryStun539B90((*server.Object)(target), (*server.Object)(source), buffApplyExportImpl4FF380)
+}
+
+func playerAttackWarcryStunCallC539B90(target, source *server.Object) {
+	C.nox_xxx_warcryStunMonsters_539B90(unsafe.Pointer(target), unsafe.Pointer(source))
+}
+
 func playerAttackWarcryNative538960(unit *server.Object) {
 	if unit == nil {
 		return
@@ -477,9 +494,7 @@ func playerAttackWarcryNative538960(unit *server.Object) {
 	pos := unit.Pos()
 	srv.Nox_xxx_earthquakeSend_4D9110(pos, 15)
 	srv.Map.EachObjInCircle(pos, 300, func(target *server.Object) bool {
-		if playerAttackWarcryStunnable538960(target) {
-			Nox_xxx_buffApplyTo_4FF380(target, server.ENCHANT_HELD, 90, 3)
-		}
+		playerAttackWarcryStun539B90(target, unit, buffApplyLegacy4FF380)
 		return true
 	})
 	Nox_xxx_castCounterSpell_52BBB0(spell.SPELL_COUNTERSPELL, unit, unit, unit, nil, 0)

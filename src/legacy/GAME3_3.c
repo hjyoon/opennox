@@ -909,37 +909,6 @@ int sub_4E4390(FILE* a1) {
 	return 1;
 }
 
-//----- (004E43F0) --------------------------------------------------------
-FILE* sub_4E43F0(char* a1) {
-	FILE* result; // eax
-	FILE* v2;     // edi
-	nox_access_banned_entry_t* i;  // esi
-	nox_access_allowed_entry_t* j; // esi
-
-	result = nox_fs_create_text(a1);
-	v2 = result;
-	if (result) {
-		nox_fs_fprintf(result, "%s\n", getMemAt(0x587000, 202212));
-		for (i = sub_416900(); i; i = sub_416910(i)) {
-			if (!i->expires_at_ms) {
-				nox_fs_fprintf(v2, "%S\n", i->name);
-				if (i->serial[0]) {
-					nox_fs_fprintf(v2, "%s\n", i->serial);
-				} else {
-					nox_fs_fprintf(v2, "0\n");
-				}
-			}
-		}
-		nox_fs_fprintf(v2, "\n%s\n", getMemAt(0x587000, 202228));
-		for (j = sub_4168E0(); j; j = sub_4168F0(j)) {
-			nox_fs_fprintf(v2, "%S\n", j->name);
-		}
-		nox_fs_close(v2);
-		result = (FILE*)1;
-	}
-	return result;
-}
-
 //----- (004E44F0) --------------------------------------------------------
 #if 0 // Restored by object_field_native_entry.go.
 void nox_xxx_unitNeedSync_4E44F0(nox_object_t* obj) {

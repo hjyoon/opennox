@@ -10,7 +10,6 @@ package legacy
 extern nox_list_item_t nox_access_allowed_list_4168E0;
 extern nox_list_item_t nox_access_banned_list_416900;
 static void* access_list_config_416720(void) { return getMemAt(0x587000,54280); }
-static void access_list_save_416720(void) { sub_4E43F0("ban.txt"); }
 static void access_list_layout_416720(size_t* a) {
     a[0]=sizeof(nox_list_item_t);a[1]=sizeof(nox_access_allowed_entry_t);a[2]=sizeof(nox_access_banned_entry_t);
     a[3]=offsetof(nox_access_allowed_entry_t,name);a[4]=offsetof(nox_access_banned_entry_t,expires_at_ms);a[5]=offsetof(nox_access_banned_entry_t,serial);
@@ -52,7 +51,19 @@ func accessListNativeDefaultLoad416720(p unsafe.Pointer) int32 {
 	runtime.KeepAlive(p)
 	return v
 }
-func accessListNativeDefaultSave416720() { C.access_list_save_416720() }
+func accessListNativeDefaultSave416720() { saveAccessList4E43F0("ban.txt") }
+
+//export sub_4E43F0
+func sub_4E43F0(path *C.char) C.int {
+	return C.int(bool2int(saveAccessList4E43F0(GoString(path))))
+}
+
+func accessListSaveC4E43F0(path string) int {
+	p := CString(path)
+	defer C.free(unsafe.Pointer(p))
+	return int(C.sub_4E43F0(p))
+}
+
 func accessListNativeCLayout416720() [6]uintptr {
 	var a [6]C.size_t
 	C.access_list_layout_416720(&a[0])

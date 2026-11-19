@@ -5,7 +5,7 @@ package legacy
 */
 import "C"
 
-//export nox_xxx_questCanJoin_native_4E4100
-func nox_xxx_questCanJoin_native_4E4100() C.uint {
-	return C.uint(GetServer().S().QuestCanJoin4E4100())
+//export sub_4E4100
+func sub_4E4100() C.int {
+	return C.int(GetServer().S().QuestCanJoin4E4100())
 }

@@ -657,86 +657,7 @@ int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 }
 #endif
 
-//----- (004E3CA0) --------------------------------------------------------
-double sub_4E3CA0() { return *getMemFloatPtr(0x587000, 202024); }
-
-//----- (004E3CB0) --------------------------------------------------------
-int sub_4E3CB0(float a1) {
-	int result; // eax
-
-	result = LODWORD(a1);
-	*getMemFloatPtr(0x587000, 202024) = a1;
-	return result;
-}
-
-//----- (004E3CC0) --------------------------------------------------------
-int nox_game_getQuestStage_4E3CC0() { return *getMemU32Ptr(0x587000, 202028); }
-
-//----- (004E3CD0) --------------------------------------------------------
-void nox_game_setQuestStage_4E3CD0(int a1) { *getMemU32Ptr(0x587000, 202028) = a1; }
-
-//----- (004E3CE0) --------------------------------------------------------
-extern int nox_xxx_questPlayerCount_native_4E3CE0(void);
-int nox_xxx_player_4E3CE0() {
-	return nox_xxx_questPlayerCount_native_4E3CE0();
-}
-
-//----- (004E3D50) --------------------------------------------------------
-int sub_4E3D50() {
-	int v0;   // esi
-	float v2; // [esp+0h] [ebp-8h]
-
-	if (!*getMemU32Ptr(0x5D4594, 1563928)) {
-		*getMemFloatPtr(0x5D4594, 1563912) = nox_xxx_gamedataGetFloat_419D40("PlayerDifficultyDelta");
-		*getMemU32Ptr(0x5D4594, 1563928) = 1;
-	}
-	v0 = nox_xxx_player_4E3CE0();
-	v2 = (double)(unsigned int)nox_game_getQuestStage_4E3CC0() *
-		 ((double)(v0 - 1) * *getMemFloatPtr(0x5D4594, 1563912) + 1.0);
-	return sub_4E3CB0(v2);
-}
-
-//----- (004E3DD0) --------------------------------------------------------
-extern short nox_xxx_questHealthScale_native_4E3DD0(void);
-short sub_4E3DD0() {
-	return nox_xxx_questHealthScale_native_4E3DD0();
-}
-
-//----- (004E4080) --------------------------------------------------------
-void sub_4E4080(float a1) {
-	double v1; // st7
-
-	v1 = nox_xxx_gamedataGetFloat_419D40("PlayerDamageCap");
-	if (a1 <= v1) {
-		*getMemFloatPtr(0x587000, 202032) = a1;
-	} else {
-		*getMemFloatPtr(0x587000, 202032) = v1;
-	}
-}
-
-//----- (004E40B0) --------------------------------------------------------
-double sub_4E40B0() { return *getMemFloatPtr(0x587000, 202032); }
-
-//----- (004E40C0) --------------------------------------------------------
-void sub_4E40C0(float a1) {
-	double v1; // st7
-
-	v1 = nox_xxx_gamedataGetFloat_419D40("SystemHealthCap");
-	if (a1 <= v1) {
-		*getMemFloatPtr(0x587000, 202036) = a1;
-	} else {
-		*getMemFloatPtr(0x587000, 202036) = v1;
-	}
-}
-
-//----- (004E40F0) --------------------------------------------------------
-double sub_4E40F0() { return *getMemFloatPtr(0x587000, 202036); }
-
-//----- (004E4100) --------------------------------------------------------
-extern unsigned int nox_xxx_questCanJoin_native_4E4100(void);
-int sub_4E4100() {
-	return (int)nox_xxx_questCanJoin_native_4E4100();
-}
+// Quest parameters and eligibility at 004E3CA0–004E4100 use Go exports.
 
 //----- (004E44F0) --------------------------------------------------------
 #if 0 // Restored by object_field_native_entry.go.
@@ -798,17 +719,7 @@ void* nox_object_getInitData_4E4C30(const nox_object_t* item) { return item ? it
 const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item) { return item ? item->id : NULL; }
 #endif
 
-//----- (004E4DC0) --------------------------------------------------------
-void sub_4E4DC0(void) { nox_platform_srand(UINT32_C(0x1429)); }
-
-//----- (004E4DD0) --------------------------------------------------------
-void sub_4E4DD0(void) { nox_platform_srand(UINT32_C(0x490)); }
-
-//----- (004E5AB0) --------------------------------------------------------
-void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
-
-//----- (004E5AC0) --------------------------------------------------------
-void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
+// CRT seed and no-op entries use Go exports in quest_parameters_4e3ca0_export.go.
 
 // GAME.EXE 004E8AC0 is restored by door_collide_4e8ac0_export.go.
 

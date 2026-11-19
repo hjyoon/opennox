@@ -33,8 +33,8 @@ var questHealthScaleCall4E3DD0 = func() int16 {
 	return GetServer().S().QuestHealthScale4E3DD0(questHealthScaleRuntime4E3DD0())
 }
 
-//export nox_xxx_questHealthScale_native_4E3DD0
-func nox_xxx_questHealthScale_native_4E3DD0() C.short {
+//export sub_4E3DD0
+func sub_4E3DD0() C.short {
 	return C.short(questHealthScaleCall4E3DD0())
 }
 

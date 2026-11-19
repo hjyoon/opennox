@@ -227,7 +227,7 @@ func importantFreeSlotsC() uint32 {
 }
 
 func importantNoopC(p unsafe.Pointer) {
-	C.nox_xxx_noop_4E5AB0(p)
+	C.nox_xxx_noop_4E5AB0(C.nox_important_payload_t(p))
 }
 
 func checkImportantRateC() int {

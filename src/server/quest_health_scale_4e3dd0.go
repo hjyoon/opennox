@@ -61,13 +61,15 @@ func questHealthScale4E3DD0[O, D comparable, H, T, U any](h questHealthScaleHook
 		h.storeCache(questHealthHealthCoeff4E3DD0, h.balanceFloat("SystemHealthDiffCoeff"))
 		h.storeReady(1)
 	}
-	// Separate 53-bit operations prohibit FMA and premature binary32 rounding.
-	delta := logicRandomFloatSub64_416030(h.difficulty(), 1)
-	product := logicRandomFloatMul64_416030(delta, float64(h.loadCache(questHealthDamageCoeff4E3DD0)))
-	h.storeDamageScale(float32(logicRandomFloatAdd64_416030(product, float64(h.loadCache(questHealthDamageInit4E3DD0)))))
-	delta = logicRandomFloatSub64_416030(h.difficulty(), 1)
-	product = logicRandomFloatMul64_416030(delta, float64(h.loadCache(questHealthHealthCoeff4E3DD0)))
-	h.storeHealthScale(float32(logicRandomFloatAdd64_416030(product, float64(h.loadCache(questHealthHealthInit4E3DD0)))))
+	// Each x87 operation rounds toward zero, including the binary32 store.
+	curve := func(base, coefficient questHealthCache4E3DD0) float32 {
+		delta := objectForceSub53_52DF80(h.difficulty(), 1)
+		product := objectForceMul53_52DF80(delta, objectForceMemory32_52DF80(h.loadCache(coefficient)))
+		sum := objectForceAdd53_52DF80(product, objectForceMemory32_52DF80(h.loadCache(base)))
+		return experienceSpill32TowardZero(sum)
+	}
+	h.storeDamageScale(curve(questHealthDamageInit4E3DD0, questHealthDamageCoeff4E3DD0))
+	h.storeHealthScale(curve(questHealthHealthInit4E3DD0, questHealthHealthCoeff4E3DD0))
 
 	var zero O
 	var zeroDefinition D

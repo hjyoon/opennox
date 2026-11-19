@@ -403,3 +403,16 @@ func TestQuestHealthScale4E3DD0ObservableFaultPrefixes(t *testing.T) {
 		}
 	}
 }
+
+func TestQuestHealthScale4E3DD0RoundsCurvesTowardZero(t *testing.T) {
+	fixture := newQuestHealthTest4E3DD0(0)
+	fixture.first = nil
+	fixture.difficulty = float64(math.Float32frombits(0x3f7fffff))
+	fixture.cache = [4]float32{1.5, 2.25, 0.25, 0.5}
+	questHealthScale4E3DD0(fixture.hooks())
+	// GAME.EXE gameplay x87 control word 0x0e3f.
+	damage, health := math.Float32bits(fixture.damageScale), math.Float32bits(fixture.hpScale)
+	if damage != 0x3fbfffff || health != 0x400fffff {
+		t.Fatalf("damage and health scale bits = %08x/%08x, want 3fbfffff/400fffff", damage, health)
+	}
+}

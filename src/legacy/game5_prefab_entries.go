@@ -1,14 +1,8 @@
 package legacy
 
 /*
-#include "defs.h"
+#include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
-float* nox_mapgenMakeHallStructNative_523E30(int, int, int);
-int nox_xxx_mapGenSetRoomPos_521880(uint32_t*, float2*);
-void* nox_mapgenRoomAtNative_521200(uint8_t*);
-int nox_xxx_mapGenAddNewRoom_521730(uint32_t*);
-int nox_mapgenRoomLinkBothNative_521A70(uint8_t*, uint8_t*, int);
-void sub_521A10(void*);
 */
 import "C"
 

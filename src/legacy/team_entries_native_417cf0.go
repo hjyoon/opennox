@@ -82,20 +82,6 @@ func sub418390Native() int32 {
 	return 1
 }
 
-// Explicit conversions separate the original x87 operations and inhibit
-// contraction. Match gameplay precision53/chop without changing thread state.
-//
-//go:noinline
-func teamEntriesAddChop53_4183C0(a, b float64) float64 {
-	sum := float64(a + b)
-	vb := float64(sum - a)
-	err := float64(float64(a-float64(sum-vb)) + float64(b-vb))
-	if sum > 0 && err < 0 || sum < 0 && err > 0 {
-		return math.Nextafter(sum, 0)
-	}
-	return sum
-}
-
 //go:noinline
 func teamEntriesSquareChop53_4183C0(value float64) float64 {
 	square := float64(value * value)
@@ -103,14 +89,6 @@ func teamEntriesSquareChop53_4183C0(value float64) float64 {
 		return math.Nextafter(square, 0)
 	}
 	return square
-}
-
-func teamEntriesSpillChop32_4183C0(value float64) float32 {
-	narrow := float32(value)
-	if math.Abs(float64(narrow)) > math.Abs(value) {
-		narrow = math.Nextafter32(narrow, 0)
-	}
-	return narrow
 }
 
 func sub4183C0Native() int32 {
@@ -132,12 +110,12 @@ func sub4183C0Native() int32 {
 			if flag == nil {
 				continue
 			}
-			dy := teamEntriesAddChop53_4183C0(float64(flag.PosVec.Y), -float64(unit.PosVec.Y))
-			dx := teamEntriesAddChop53_4183C0(float64(flag.PosVec.X), -float64(unit.PosVec.X))
-			distance := teamEntriesAddChop53_4183C0(teamEntriesSquareChop53_4183C0(dy), teamEntriesSquareChop53_4183C0(dx))
+			dy := addFloat64TowardZero(float64(flag.PosVec.Y), -float64(unit.PosVec.Y))
+			dx := addFloat64TowardZero(float64(flag.PosVec.X), -float64(unit.PosVec.X))
+			distance := addFloat64TowardZero(teamEntriesSquareChop53_4183C0(dy), teamEntriesSquareChop53_4183C0(dx))
 			// Original FCOM C0 admits less OR unordered, not just ordered less.
 			if !(distance >= float64(best)) {
-				best = teamEntriesSpillChop32_4183C0(distance)
+				best = storeFloat32TowardZero(distance)
 				nearest = team
 			}
 		}

@@ -2358,26 +2358,7 @@ uint32_t* sub_520D50(uint32_t* a1) {
 }
 
 //----- (00520DF0) --------------------------------------------------------
-long long nox_xxx_mapGenRoundFloatToPtr_520DF0(float2* a1, uint32_t* a2) {
-	double v2;        // st7
-	double v3;        // st7
-	long long result; // rax
-
-	if (a1->field_0 >= 0.0) {
-		v2 = 0.5;
-	} else {
-		v2 = -0.5;
-	}
-	*a2 = (long long)(a1->field_0 * 0.030743772 + v2);
-	if (a1->field_4 >= 0.0) {
-		v3 = 0.5;
-	} else {
-		v3 = -0.5;
-	}
-	result = (long long)(a1->field_4 * 0.030743772 + v3);
-	a2[1] = result;
-	return result;
-}
+// GAME.EXE 00520DF0 is implemented in Go.
 
 //----- (00520E60) --------------------------------------------------------
 void* sub_520E60(int2* a1) {
@@ -2842,25 +2823,10 @@ int sub_521820(int a1, int a2) {
 }
 
 //----- (00521850) --------------------------------------------------------
-int nox_xxx_mapGenUpdateRoomRect_521850(uint8_t* a1) {
-	double v2;  // st7
-	int v3;     // edx
-
-	v2 = *(float*)(a1 + 28) + *(float*)(a1 + 20);
-	v3 = *(uint32_t*)(a1 + 24);
-	*(uint32_t*)(a1 + 36) = *(uint32_t*)(a1 + 20);
-	*(uint32_t*)(a1 + 40) = v3;
-	*(float*)(a1 + 44) = v2;
-	*(float*)(a1 + 48) = *(float*)(a1 + 32) + *(float*)(a1 + 24);
-	return (int)(uint32_t)(uintptr_t)a1;
-}
+// GAME.EXE 00521850 is implemented in Go.
 
 //----- (00521880) --------------------------------------------------------
-int nox_xxx_mapGenSetRoomPos_521880(uint32_t* a1, float2* a2) {
-	*(float2*)(a1 + 5) = *a2;
-	nox_xxx_mapGenRoundFloatToPtr_520DF0(a2, a1 + 1);
-	return nox_xxx_mapGenUpdateRoomRect_521850((uint8_t*)a1);
-}
+// GAME.EXE 00521880 is implemented in Go.
 
 int nox_mapgenRoomHasTypeOneNeighborNative_5218B0(uint8_t* room, int direction) {
 	if (!room || direction < 0 || direction >= 4) {
@@ -3013,35 +2979,7 @@ int sub_521A70(int a1, int a2, int a3) {
 }
 
 //----- (00521AA0) --------------------------------------------------------
-int sub_521AA0(uint32_t* a1, int a2) {
-	int v2;     // eax
-
-	if (*a1 == 1) {
-		return 0;
-	}
-	switch (*a1) {
-	case 2:
-		v2 = 1;
-		break;
-	case 3:
-		v2 = 0;
-		break;
-	case 4:
-		v2 = 3;
-		break;
-	case 5:
-		v2 = 2;
-		break;
-	default:
-		v2 = (int)a1;
-		break;
-	}
-	if (a2 != v2) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
+// GAME.EXE 00521AA0 is implemented in Go.
 
 //----- (00521B00) --------------------------------------------------------
 double nox_mapgenRoomRandPosXNative_521B00(const uint8_t* room, const uint8_t* child) {

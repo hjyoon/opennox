@@ -61,7 +61,7 @@ func nox_xxx_netSendPacket_4E5030(
 	destination := unsafe.Slice((*byte)(unsafe.Pointer(&packet.payload[0])), int(size))
 	copy(destination, unsafe.Slice((*byte)(unsafe.Pointer(payload)), int(size)))
 	packet.payload_size = C.uint8_t(size)
-	C.nox_server_setImportantRelatedObject_4E5030(packet, related)
+	setImportantRelatedObject(packet, related)
 	packet.recipient = C.int8_t(recipient)
 	packet.remove_if_disconnected = C.uint32_t(removeIfDisconnected)
 	packet.sequence_enabled = C.uint8_t(sequenceEnabled)
@@ -92,15 +92,15 @@ func nox_xxx_netSendPacket_4E5030(
 		}
 	}
 
-	first := C.nox_server_getImportantFirst_4E4F80()
-	C.nox_server_setImportantPrev_4E4F80(packet, nil)
-	C.nox_server_setImportantNext_4E4F80(packet, first)
+	first := importantQueue.first
+	setImportantPrev(packet, nil)
+	setImportantNext(packet, first)
 	if first == nil {
-		C.nox_server_setImportantLast_4E4F80(packet)
+		setImportantLast(packet)
 	} else {
-		C.nox_server_setImportantPrev_4E4F80(first, packet)
+		setImportantPrev(first, packet)
 	}
-	C.nox_server_setImportantFirst_4E4F80(packet)
+	setImportantFirst(packet)
 	return 1
 }
 
@@ -111,7 +111,7 @@ func nox_xxx_importantCheckRate_4E52B0() C.int {
 	var playerCounts [len(importantPacketC{}.sequence)]uint16
 	kickIndex := -1
 	var mostPackets uint16
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; packet = C.nox_server_getImportantNext_4E4F80(packet) {
+	for packet := importantQueue.first; packet != nil; packet = packet.next {
 		if index := uint8(packet.recipient); index < uint8(len(playerCounts)-1) {
 			playerCounts[index]++
 			if playerCounts[index] > mostPackets {
@@ -175,8 +175,8 @@ func sub_4E5450(
 		return 0
 	}
 	kind := *(*C.uint8_t)(unsafe.Pointer(payload))
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; {
-		next := C.nox_server_getImportantNext_4E4F80(packet)
+	for packet := importantQueue.first; packet != nil; {
+		next := packet.next
 		if kind == packet.payload[0] {
 			if recipient == 0xff || recipient&0x80 != 0 {
 				sub_4E4FC0(packet)
@@ -199,7 +199,7 @@ func nox_xxx_importantCheckRate2_4E5670(playerIndex C.uint8_t) C.uint32_t {
 	clientMask := C.uint32_t(1) << playerIndex
 	var pending int32
 	importantPlayerByIndHook(ntype.PlayerInd(playerIndex))
-	for packet := C.nox_server_getImportantLast_4E4F80(); packet != nil; packet = C.nox_server_getImportantPrev_4E4F80(packet) {
+	for packet := importantQueue.last; packet != nil; packet = packet.prev {
 		if packet.acknowledged_mask&clientMask != 0 {
 			continue
 		}

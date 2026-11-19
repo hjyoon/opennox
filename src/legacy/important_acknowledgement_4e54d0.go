@@ -7,7 +7,7 @@ import "C"
 
 //export sub_4E54D0
 func sub_4E54D0(clientMask C.uint32_t, packet *C.nox_important_packet_t, playerIndex C.int) {
-	if related := C.nox_server_getImportantRelatedObject_4E5030(packet); related != nil {
+	if related := packet.related_object; related != nil {
 		kind := packet.payload[0]
 		if kind >= 0x31 && kind <= 0x33 {
 			asObjectS(related).Field37 &^= uint32(clientMask)
@@ -36,9 +36,9 @@ func nox_net_importantACK_4E55A0(playerIndex C.uint8_t, frame C.uint32_t) C.int 
 		return 0
 	}
 	mask := C.uint32_t(1) << (playerIndex & 31)
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; {
+	for packet := importantQueue.first; packet != nil; {
 		matches := packet.last_send_frame[playerIndex] == frame
-		next := C.nox_server_getImportantNext_4E4F80(packet)
+		next := packet.next
 		if matches {
 			sub_4E54D0(mask, packet, C.int(playerIndex))
 		}
@@ -50,8 +50,8 @@ func nox_net_importantACK_4E55A0(playerIndex C.uint8_t, frame C.uint32_t) C.int 
 //export sub_4E55F0
 func sub_4E55F0(playerIndex C.uint8_t) C.int {
 	mask := C.uint32_t(1) << (playerIndex & 31)
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; {
-		next := C.nox_server_getImportantNext_4E4F80(packet)
+	for packet := importantQueue.first; packet != nil; {
+		next := packet.next
 		sub_4E54D0(mask, packet, C.int(playerIndex))
 		packet = next
 	}
@@ -70,7 +70,7 @@ func sub_4E5630(playerIndex C.uint8_t, threshold, interval, resends *C.uint32_t)
 //export nox_xxx_importantFreeSlots_4E5A90
 func nox_xxx_importantFreeSlots_4E5A90() C.uint32_t {
 	var count uint32
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; packet = C.nox_server_getImportantNext_4E4F80(packet) {
+	for packet := importantQueue.first; packet != nil; packet = packet.next {
 		count++
 	}
 	return C.uint32_t(importantCapacityC() - count)

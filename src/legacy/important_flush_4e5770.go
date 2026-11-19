@@ -30,11 +30,11 @@ func nox_xxx_netImportant_4E5770(index C.uint8_t, messageKind C.int) {
 	var resent int
 	headerPending := true
 	var prev *importantPacketC
-	for packet := C.nox_server_getImportantLast_4E4F80(); packet != nil; packet = prev {
-		prev = C.nox_server_getImportantPrev_4E4F80(packet)
-		related := asObjectS(C.nox_server_getImportantRelatedObject_4E5030(packet))
+	for packet := importantQueue.last; packet != nil; packet = prev {
+		prev = packet.prev
+		related := asObjectS(packet.related_object)
 		if related != nil && related.Flags().Has(object.FlagDestroyed) {
-			C.nox_server_setImportantRelatedObject_4E5030(packet, nil)
+			setImportantRelatedObject(packet, nil)
 			related = nil
 		}
 

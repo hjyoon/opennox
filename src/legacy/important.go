@@ -22,6 +22,11 @@ import (
 
 type importantPacketC = C.nox_important_packet_t
 
+var importantQueue struct {
+	pool        *C.nox_alloc_class
+	first, last *importantPacketC
+}
+
 var (
 	importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
 		return GetServer().S().Players.ByInd(ind)
@@ -60,11 +65,60 @@ func nox_xxx_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
 }
 
 func importantAllocClassC() unsafe.Pointer {
-	return unsafe.Pointer(C.nox_server_getImportantAllocClass_4E4DE0())
+	return unsafe.Pointer(importantQueue.pool)
 }
 
 func setImportantAllocClassC(p unsafe.Pointer) {
-	C.nox_server_setImportantAllocClass_4E4DE0((*C.nox_alloc_class)(p))
+	importantQueue.pool = (*C.nox_alloc_class)(p)
+	writeImportantABISlot(memmap.PtrT[C.uint32_t](0x5D4594, 1565508), p)
+}
+
+func writeImportantABISlot(slot *C.uint32_t, pointer unsafe.Pointer) {
+	if unsafe.Sizeof(pointer) == 4 {
+		*(*unsafe.Pointer)(unsafe.Pointer(slot)) = pointer
+	} else {
+		*slot = 0
+	}
+}
+
+func setImportantFirst(packet *importantPacketC) {
+	importantQueue.first = packet
+	writeImportantABISlot(&C.dword_5d4594_1565512, unsafe.Pointer(packet))
+}
+
+func setImportantLast(packet *importantPacketC) {
+	importantQueue.last = packet
+	writeImportantABISlot(&C.dword_5d4594_1565516, unsafe.Pointer(packet))
+}
+
+type importantLegacyPointers struct {
+	related, next, prev uint32
+}
+
+func importantLegacySlots(packet *importantPacketC) *importantLegacyPointers {
+	const offset = unsafe.Offsetof(importantPacketC{}.reserved_402) + unsafe.Sizeof(importantPacketC{}.reserved_402)
+	return (*importantLegacyPointers)(unsafe.Add(unsafe.Pointer(packet), offset))
+}
+
+func setImportantRelatedObject(packet *importantPacketC, object *nox_object_t) {
+	if unsafe.Sizeof(object) > 4 {
+		importantLegacySlots(packet).related = 0
+	}
+	packet.related_object = object
+}
+
+func setImportantNext(packet, next *importantPacketC) {
+	if unsafe.Sizeof(next) > 4 {
+		importantLegacySlots(packet).next = 0
+	}
+	packet.next = next
+}
+
+func setImportantPrev(packet, prev *importantPacketC) {
+	if unsafe.Sizeof(prev) > 4 {
+		importantLegacySlots(packet).prev = 0
+	}
+	packet.prev = prev
 }
 
 func importantListHeadsC() (first, last uint32) {
@@ -97,39 +151,36 @@ func importantPacketSizeC() uintptr {
 }
 
 func importantNativeListC() (first, last unsafe.Pointer) {
-	return unsafe.Pointer(C.nox_server_getImportantFirst_4E4F80()),
-		unsafe.Pointer(C.nox_server_getImportantLast_4E4F80())
+	return unsafe.Pointer(importantQueue.first), unsafe.Pointer(importantQueue.last)
 }
 
 func setImportantNativeListC(first, last unsafe.Pointer) {
-	C.nox_server_setImportantFirst_4E4F80((*C.nox_important_packet_t)(first))
-	C.nox_server_setImportantLast_4E4F80((*C.nox_important_packet_t)(last))
+	setImportantFirst((*importantPacketC)(first))
+	setImportantLast((*importantPacketC)(last))
 }
 
 func importantPacketRelatedObjectC(packet unsafe.Pointer) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_server_getImportantRelatedObject_4E5030((*C.nox_important_packet_t)(packet)))
+	return unsafe.Pointer((*importantPacketC)(packet).related_object)
 }
 
 func setImportantPacketRelatedObjectC(packet, object unsafe.Pointer) {
-	C.nox_server_setImportantRelatedObject_4E5030(
-		(*C.nox_important_packet_t)(packet), (*C.nox_object_t)(object),
-	)
+	setImportantRelatedObject((*importantPacketC)(packet), (*nox_object_t)(object))
 }
 
 func importantPacketNextC(packet unsafe.Pointer) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_server_getImportantNext_4E4F80((*C.nox_important_packet_t)(packet)))
+	return unsafe.Pointer((*importantPacketC)(packet).next)
 }
 
 func importantPacketPrevC(packet unsafe.Pointer) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_server_getImportantPrev_4E4F80((*C.nox_important_packet_t)(packet)))
+	return unsafe.Pointer((*importantPacketC)(packet).prev)
 }
 
 func setImportantPacketNextC(packet, next unsafe.Pointer) {
-	C.nox_server_setImportantNext_4E4F80((*C.nox_important_packet_t)(packet), (*C.nox_important_packet_t)(next))
+	setImportantNext((*importantPacketC)(packet), (*importantPacketC)(next))
 }
 
 func setImportantPacketPrevC(packet, prev unsafe.Pointer) {
-	C.nox_server_setImportantPrev_4E4F80((*C.nox_important_packet_t)(packet), (*C.nox_important_packet_t)(prev))
+	setImportantPrev((*importantPacketC)(packet), (*importantPacketC)(prev))
 }
 
 func cleanupImportantPacketsC() int {

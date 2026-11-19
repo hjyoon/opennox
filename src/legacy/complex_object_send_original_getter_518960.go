@@ -46,7 +46,7 @@ func complexObjectDirectionC518960(direction int32, out *server.IndexedDirection
 }
 
 func complexObjectTakeImportantPacketC518960() (int32, []byte) {
-	packet := C.nox_server_getImportantFirst_4E4F80()
+	packet := importantQueue.first
 	if packet == nil {
 		return 0, nil
 	}

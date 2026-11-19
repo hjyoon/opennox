@@ -205,14 +205,14 @@ typedef struct nox_important_packet {
 	uint8_t payload[150];
 	uint8_t payload_size;
 	uint8_t reserved_402[2];
+#if UINTPTR_MAX > UINT32_MAX
 	uint32_t legacy_related_object;
 	uint32_t legacy_next;
 	uint32_t legacy_prev;
-#if UINTPTR_MAX > UINT32_MAX
-	nox_object_t* native_related_object;
-	struct nox_important_packet* native_next;
-	struct nox_important_packet* native_prev;
 #endif
+	nox_object_t* related_object;
+	struct nox_important_packet* next;
+	struct nox_important_packet* prev;
 } nox_important_packet_t;
 _Static_assert(offsetof(nox_important_packet_t, created_frame) == 0,
 	"wrong offset of nox_important_packet_t.created_frame");
@@ -240,36 +240,30 @@ _Static_assert(offsetof(nox_important_packet_t, payload) == 251,
 	"wrong offset of nox_important_packet_t.payload");
 _Static_assert(offsetof(nox_important_packet_t, payload_size) == 401,
 	"wrong offset of nox_important_packet_t.payload_size");
+#if UINTPTR_MAX == UINT32_MAX
+_Static_assert(offsetof(nox_important_packet_t, related_object) == 404,
+	"wrong 32-bit offset of nox_important_packet_t.related_object");
+_Static_assert(offsetof(nox_important_packet_t, next) == 408,
+	"wrong 32-bit offset of nox_important_packet_t.next");
+_Static_assert(offsetof(nox_important_packet_t, prev) == 412,
+	"wrong 32-bit offset of nox_important_packet_t.prev");
+_Static_assert(sizeof(nox_important_packet_t) == 416, "wrong 32-bit size of nox_important_packet_t");
+#else
 _Static_assert(offsetof(nox_important_packet_t, legacy_related_object) == 404,
 	"wrong offset of nox_important_packet_t.legacy_related_object");
 _Static_assert(offsetof(nox_important_packet_t, legacy_next) == 408,
 	"wrong offset of nox_important_packet_t.legacy_next");
 _Static_assert(offsetof(nox_important_packet_t, legacy_prev) == 412,
 	"wrong offset of nox_important_packet_t.legacy_prev");
-#if UINTPTR_MAX == UINT32_MAX
-_Static_assert(sizeof(nox_important_packet_t) == 416, "wrong 32-bit size of nox_important_packet_t");
-#else
-_Static_assert(offsetof(nox_important_packet_t, native_related_object) == 416,
-	"wrong offset of nox_important_packet_t.native_related_object");
-_Static_assert(offsetof(nox_important_packet_t, native_next) == 424,
-	"wrong offset of nox_important_packet_t.native_next");
-_Static_assert(offsetof(nox_important_packet_t, native_prev) == 432,
-	"wrong offset of nox_important_packet_t.native_prev");
+_Static_assert(offsetof(nox_important_packet_t, related_object) == 416,
+	"wrong 64-bit offset of nox_important_packet_t.related_object");
+_Static_assert(offsetof(nox_important_packet_t, next) == 424,
+	"wrong 64-bit offset of nox_important_packet_t.next");
+_Static_assert(offsetof(nox_important_packet_t, prev) == 432,
+	"wrong 64-bit offset of nox_important_packet_t.prev");
 _Static_assert(sizeof(nox_important_packet_t) == 440, "wrong 64-bit size of nox_important_packet_t");
 #endif
 
-nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void);
-void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc);
-nox_important_packet_t* nox_server_getImportantFirst_4E4F80(void);
-nox_important_packet_t* nox_server_getImportantLast_4E4F80(void);
-void nox_server_setImportantFirst_4E4F80(nox_important_packet_t* packet);
-void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet);
-nox_object_t* nox_server_getImportantRelatedObject_4E5030(const nox_important_packet_t* packet);
-void nox_server_setImportantRelatedObject_4E5030(nox_important_packet_t* packet, nox_object_t* object);
-nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet);
-nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet);
-void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next);
-void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* prev);
 int sub_4E4DE0(void);
 int sub_4E4E50(int a1);
 int sub_4E4ED0(void);

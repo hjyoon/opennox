@@ -47,9 +47,7 @@ extern uint32_t dword_5d4594_1568308;
 extern uint32_t dword_5d4594_1567988;
 extern uint32_t dword_5d4594_1565628;
 extern uint32_t dword_5d4594_1565632;
-extern uint32_t dword_5d4594_1565520;
 extern uint32_t nox_server_needInitNetCodeCache;
-extern uint32_t dword_5d4594_1565516;
 extern uint32_t dword_5d4594_1567928;
 extern void* nox_alloc_respawn_1568020;
 extern uint32_t dword_5d4594_1565616;
@@ -60,98 +58,8 @@ extern uint64_t qword_581450_10256;
 extern uint64_t qword_5d4594_1567940;
 extern uint64_t qword_581450_9544;
 extern nox_respawn_record_t* dword_5d4594_1568024;
-extern uint32_t dword_5d4594_1565512;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int gameex_flags;
-
-static nox_alloc_class* nox_alloc_important_1565508;
-static nox_important_packet_t* nox_important_first_1565512;
-static nox_important_packet_t* nox_important_last_1565516;
-
-nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void) { return nox_alloc_important_1565508; }
-
-void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc) {
-	nox_alloc_important_1565508 = alloc;
-#if UINTPTR_MAX == UINT32_MAX
-	*getMemU32Ptr(0x5D4594, 1565508) = (uint32_t)(uintptr_t)alloc;
-#else
-	// The original ABI slot cannot hold a native 64-bit pointer.
-	*getMemU32Ptr(0x5D4594, 1565508) = 0;
-#endif
-}
-
-nox_important_packet_t* nox_server_getImportantFirst_4E4F80(void) { return nox_important_first_1565512; }
-
-nox_important_packet_t* nox_server_getImportantLast_4E4F80(void) { return nox_important_last_1565516; }
-
-void nox_server_setImportantFirst_4E4F80(nox_important_packet_t* packet) {
-	nox_important_first_1565512 = packet;
-#if UINTPTR_MAX == UINT32_MAX
-	dword_5d4594_1565512 = (uint32_t)(uintptr_t)packet;
-#else
-	dword_5d4594_1565512 = 0;
-#endif
-}
-
-void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet) {
-	nox_important_last_1565516 = packet;
-#if UINTPTR_MAX == UINT32_MAX
-	dword_5d4594_1565516 = (uint32_t)(uintptr_t)packet;
-#else
-	dword_5d4594_1565516 = 0;
-#endif
-}
-
-nox_object_t* nox_server_getImportantRelatedObject_4E5030(const nox_important_packet_t* packet) {
-#if UINTPTR_MAX == UINT32_MAX
-	return (nox_object_t*)(uintptr_t)packet->legacy_related_object;
-#else
-	return packet->native_related_object;
-#endif
-}
-
-void nox_server_setImportantRelatedObject_4E5030(nox_important_packet_t* packet, nox_object_t* object) {
-#if UINTPTR_MAX == UINT32_MAX
-	packet->legacy_related_object = (uint32_t)(uintptr_t)object;
-#else
-	packet->legacy_related_object = 0;
-	packet->native_related_object = object;
-#endif
-}
-
-nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet) {
-#if UINTPTR_MAX == UINT32_MAX
-	return (nox_important_packet_t*)(uintptr_t)packet->legacy_next;
-#else
-	return packet->native_next;
-#endif
-}
-
-nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet) {
-#if UINTPTR_MAX == UINT32_MAX
-	return (nox_important_packet_t*)(uintptr_t)packet->legacy_prev;
-#else
-	return packet->native_prev;
-#endif
-}
-
-void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next) {
-#if UINTPTR_MAX == UINT32_MAX
-	packet->legacy_next = (uint32_t)(uintptr_t)next;
-#else
-	packet->legacy_next = 0;
-	packet->native_next = next;
-#endif
-}
-
-void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* prev) {
-#if UINTPTR_MAX == UINT32_MAX
-	packet->legacy_prev = (uint32_t)(uintptr_t)prev;
-#else
-	packet->legacy_prev = 0;
-	packet->native_prev = prev;
-#endif
-}
 
 //----- (004E17B0) --------------------------------------------------------
 #if UINTPTR_MAX == UINT32_MAX

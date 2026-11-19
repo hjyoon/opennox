@@ -21,15 +21,15 @@ func importantCounters4E4ED0() *C.nox_important_player_counters_t {
 
 //export sub_4E4DE0
 func sub_4E4DE0() C.int {
-	if pool := C.nox_server_getImportantAllocClass_4E4DE0(); pool != nil {
+	if pool := importantQueue.pool; pool != nil {
 		nox_free_alloc_class(pool)
 	}
-	C.nox_server_setImportantAllocClass_4E4DE0(nil)
+	setImportantAllocClassC(nil)
 	sub_4E4ED0()
 	rates := importantRates4E4E50()
 	clear(rates[:])
-	C.nox_server_setImportantFirst_4E4F80(nil)
-	C.nox_server_setImportantLast_4E4F80(nil)
+	setImportantFirst(nil)
+	setImportantLast(nil)
 	return initializeImportantRates4E4EF0(rates)
 }
 
@@ -91,9 +91,9 @@ func nox_xxx_playerResetImportantCtr_4E4F40(index C.int) C.int {
 
 //export sub_4E4F80
 func sub_4E4F80() C.int {
-	for packet := C.nox_server_getImportantFirst_4E4F80(); packet != nil; {
+	for packet := importantQueue.first; packet != nil; {
 		kind := packet.payload[0]
-		next := C.nox_server_getImportantNext_4E4F80(packet)
+		next := packet.next
 		if kind >= 0x31 && kind <= 0x33 {
 			sub_4E4FC0(packet)
 		}
@@ -104,17 +104,17 @@ func sub_4E4F80() C.int {
 
 //export sub_4E4FC0
 func sub_4E4FC0(packet *C.nox_important_packet_t) {
-	prev := C.nox_server_getImportantPrev_4E4F80(packet)
-	next := C.nox_server_getImportantNext_4E4F80(packet)
+	prev := packet.prev
+	next := packet.next
 	if prev != nil {
-		C.nox_server_setImportantNext_4E4F80(prev, next)
+		setImportantNext(prev, next)
 	} else {
-		C.nox_server_setImportantFirst_4E4F80(next)
+		setImportantFirst(next)
 	}
 	if next != nil {
-		C.nox_server_setImportantPrev_4E4F80(next, prev)
+		setImportantPrev(next, prev)
 	} else {
-		C.nox_server_setImportantLast_4E4F80(prev)
+		setImportantLast(prev)
 	}
-	nox_alloc_class_free_obj_first(C.nox_server_getImportantAllocClass_4E4DE0(), unsafe.Pointer(packet))
+	nox_alloc_class_free_obj_first(importantQueue.pool, unsafe.Pointer(packet))
 }

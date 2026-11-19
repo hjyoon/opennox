@@ -44,6 +44,35 @@ type importantPacketLegacy struct {
 	LegacyPrev           uint32
 }
 
+func TestImportantPacketNativeLinksClearOnlyTheirLegacySlots(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("the legacy pointer placeholders exist on 64-bit builds")
+	}
+	packet, freePacket := alloc.MallocHigh(importantPacketSizeC())
+	defer freePacket()
+	next, freeNext := alloc.MallocHigh(importantPacketSizeC())
+	defer freeNext()
+	prev, freePrev := alloc.MallocHigh(importantPacketSizeC())
+	defer freePrev()
+	related, freeRelated := alloc.MallocHigh(unsafe.Sizeof(server.Object{}))
+	defer freeRelated()
+	record := (*importantPacketLegacy)(packet)
+	record.LegacyRelatedObject, record.LegacyNext, record.LegacyPrev = 0x1234, 0x2345, 0x3456
+	setImportantPacketRelatedObjectC(packet, related)
+	if record.LegacyRelatedObject != 0 || record.LegacyNext != 0x2345 || record.LegacyPrev != 0x3456 {
+		t.Fatal("setting the related object changed the wrong legacy words")
+	}
+	setImportantPacketNextC(packet, next)
+	if record.LegacyNext != 0 || record.LegacyPrev != 0x3456 {
+		t.Fatal("setting the successor changed the wrong legacy words")
+	}
+	setImportantPacketPrevC(packet, prev)
+	if record.LegacyPrev != 0 || importantPacketRelatedObjectC(packet) != related ||
+		importantPacketNextC(packet) != next || importantPacketPrevC(packet) != prev {
+		t.Fatal("typed native links did not retain their full pointer width")
+	}
+}
+
 func preserveImportantPacketState(t *testing.T) {
 	t.Helper()
 	oldFrameHook := gameFrameHook

@@ -700,8 +700,8 @@ The default ARM64 inventory contains 2,126 named active C bodies and
 14 macro-generated definitions. The split GAME files contain 1,492
 active bodies, including 180 with pointer and integer conversions.
 The records are in `player-stat-protection-native-v1` and
-`whole-C-inventory-2641e02cf-v1`. Windows `44505557589` passes both
-required jobs. Linux `44505562766` tracks the four Linux profiles.
+`whole-C-inventory-2641e02cf-v1`. Linux `44505562766` and Windows
+`44505557589` pass all six required jobs.
 
 ### Monster action stack transfer and deadlines, 2026-11-19
 
@@ -731,8 +731,46 @@ macro-generated definitions. The split GAME files contain 1,490
 active bodies, including 179 with pointer and integer conversions.
 The records are in `monster-action-data-transfer-native-v1` and
 `whole-C-inventory-cda2b27fc-v1`. Linux `44509637793` and Windows
-`44509632529` track cross-platform verification. The outer
-`529CE0` action-data transfer body remains in the C inventory.
+`44509632529` pass all six required jobs.
+
+### Monster action-data transfer and older Save alignment, 2026-11-19
+
+Engine `8c308d720a545e40affae78f20af060b0ddc4d43` ports
+`GAME4_2.c` entry `529CE0`. The remaining 32-bit monster and NPC
+loaders pass native object pointers to the shared Go transfer. The
+transfer keeps script IDs and waypoint indices at their original
+widths until map restore resolves them. The server releases pending
+references when objects are freed or inventory loading fails.
+
+The reader consumes the original four-byte compatibility field in
+versions 1 and 2. Grouped coordinates and paths preserve the original
+checksum calls. Tests compare all 120 stock reads through the C entry,
+including rejected version 5 and the following field. Both the C
+entry and the native Go path match 24 original version-4 writes.
+Normal and strict ARM64 each pass 6,513 checks without warnings.
+The initial fixture setup error, disk-full interruption, and failed
+pre-port comparisons remain in the verification records.
+
+Both clients build without warnings and verify 491 public and 140
+retired symbols. Each client loads the earned Wizard III Save,
+defeats the original cellar Swordsman with Magic Missile, and writes
+a new living Save. The five Warrior III ordinary-clock attempts on
+the two candidate revisions ended in player death. One attempt used
+an earlier WarCry input and a return position from a passing control.
+Two ordinary controls on the previous product completed the original
+input.
+The virtual comparison matches all 35 movement events and the
+player's health observations on both products through the same
+death. A current ordinary-clock Warrior III survivor is still open.
+All 4,649 original asset and Save hashes match.
+
+The default ARM64 inventory contains 2,123 named active C bodies,
+including 315 with pointer and integer conversions, and 14
+macro-generated definitions. The split GAME files contain 1,489
+active bodies, including 178 with pointer and integer conversions.
+The records are in `monster-action-data-versions-native-v2` and
+`whole-C-inventory-8c308d720-v1`. Linux `44517778881` and Windows
+`44517774519` track cross-platform verification.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

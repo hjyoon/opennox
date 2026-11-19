@@ -24,24 +24,18 @@ func teamWinnerPacket5099B0(op netmsg.Op, teamID uint16, arg uint8, frame uint32
 	return packet
 }
 
-func (s *Server) teamHighScoreSendFlagBall5099B0(team *Team) int32 {
-	packet := teamWinnerPacket5099B0(
-		netmsg.MSG_REPORT_FLAG_BALL_WINNER,
-		teamWinnerID5099B0(team, 0),
-		0,
-		s.Frame(),
-	)
+// SendMatchWinner publishes the original eight-byte reliable winner report.
+func (s *Server) SendMatchWinner(op netmsg.Op, code uint16, arg uint8, frame uint32) int32 {
+	packet := teamWinnerPacket5099B0(op, code, arg, frame)
 	return int32(s.NetSendPacketXxx1(255, packet[:], nil, 1))
 }
 
+func (s *Server) teamHighScoreSendFlagBall5099B0(team *Team) int32 {
+	return s.SendMatchWinner(netmsg.MSG_REPORT_FLAG_BALL_WINNER, teamWinnerID5099B0(team, 0), 0, s.Frame())
+}
+
 func (s *Server) teamHighScoreSendFlag5099B0(team *Team, arg uint8) int32 {
-	packet := teamWinnerPacket5099B0(
-		netmsg.MSG_REPORT_FLAG_WINNER,
-		teamWinnerID5099B0(team, ^uint16(0)),
-		arg,
-		s.Frame(),
-	)
-	return int32(s.NetSendPacketXxx1(255, packet[:], nil, 1))
+	return s.SendMatchWinner(netmsg.MSG_REPORT_FLAG_WINNER, teamWinnerID5099B0(team, ^uint16(0)), arg, s.Frame())
 }
 
 func teamHighScoreWinnerNative5099B0(

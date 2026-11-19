@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_2
 
 #include "defs.h"
+#include "common__system__team.h"
 #include "unit_adjust_hp_4ee460.h"
 #include "item_defend_effects_4e1320.h"
 #include "item_pre_damage_4e13b0.h"
@@ -161,10 +162,10 @@ int nox_xxx_netReportArmorVal_4D8A30(int player_index, int armor_bits);
 intptr_t nox_xxx_netReportPickup_4D8A60(int player_index, nox_object_t* item);
 intptr_t nox_xxx_netReportModifiablePickup_4D8AD0(int player_index, nox_object_t* item);
 int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object);
-intptr_t nox_xxx_netSendDMWinner_4D8B90(intptr_t a1, char a2);
-int nox_xxx_netSendDMTeamWinner_4D8BF0(intptr_t a1, char a2);
-int nox_xxx_netFlagballWinner_4D8C40(int a1);
-int nox_xxx_netFlagWinner_4D8C40_4D8C80(int a1, char a2);
+intptr_t nox_xxx_netSendDMWinner_4D8B90(nox_object_t* unit, char arg);
+int nox_xxx_netSendDMTeamWinner_4D8BF0(nox_team_t* team, char arg);
+int nox_xxx_netFlagballWinner_4D8C40(nox_team_t* team);
+int nox_xxx_netFlagWinner_4D8C40_4D8C80(nox_team_t* team, char arg);
 int nox_xxx_scavengerHuntReport_4D8CD0(int a1);
 void nox_xxx_playerIncrementElimDeath_4D8D40(int a1);
 void* nox_xxx_changeScore_4D8E90(nox_object_t* owner, int delta);

@@ -3523,72 +3523,7 @@ int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object) {
 	return nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 0);
 }
 
-//----- (004D8B90) --------------------------------------------------------
-intptr_t nox_xxx_netSendDMWinner_4D8B90(intptr_t a1, char a2) {
-	char v3[8]; // [esp+0h] [ebp-8h]
-
-	if (a1) {
-		nox_object_t* unit = (nox_object_t*)a1;
-		if (!(unit->obj_class & 4)) {
-			return a1;
-		}
-		v3[0] = 88;
-		uint16_t code = nox_xxx_netGetUnitCodeServ_578AC0(unit);
-		memcpy(&v3[1], &code, sizeof(code));
-	} else {
-		v3[0] = 88;
-		v3[1] = 0;
-		v3[2] = 0;
-	}
-	v3[3] = a2;
-	uint32_t frame = gameFrame();
-	memcpy(&v3[4], &frame, sizeof(frame));
-	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
-}
-
-//----- (004D8BF0) --------------------------------------------------------
-int nox_xxx_netSendDMTeamWinner_4D8BF0(intptr_t a1, char a2) {
-	char v3[8]; // [esp+0h] [ebp-8h]
-
-	v3[0] = 89;
-	uint16_t code = 0;
-	if (a1) {
-		code = ((nox_team_t*)a1)->field_57;
-	}
-	memcpy(&v3[1], &code, sizeof(code));
-	v3[3] = a2;
-	uint32_t frame = gameFrame();
-	memcpy(&v3[4], &frame, sizeof(frame));
-	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
-}
-
-//----- (004D8C40) --------------------------------------------------------
-int nox_xxx_netFlagballWinner_4D8C40(int a1) {
-	short v1;   // cx
-	char v3[8]; // [esp+0h] [ebp-8h]
-
-	v1 = *(unsigned char*)(a1 + 57);
-	v3[0] = 86;
-	*(uint16_t*)&v3[1] = v1;
-	v3[3] = 0;
-	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
-}
-
-//----- (004D8C80) --------------------------------------------------------
-int nox_xxx_netFlagWinner_4D8C40_4D8C80(int a1, char a2) {
-	char v3[8]; // [esp+0h] [ebp-8h]
-
-	v3[0] = 87;
-	if (a1) {
-		*(uint16_t*)&v3[1] = *(unsigned char*)(a1 + 57);
-	} else {
-		*(uint16_t*)&v3[1] = -1;
-	}
-	v3[3] = a2;
-	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
-}
+// GAME.EXE 004D8B90 through 004D8C80 use Go winner report entries.
 
 //----- (004D8CD0) --------------------------------------------------------
 int nox_xxx_scavengerHuntReport_4D8CD0(int a1) {

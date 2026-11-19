@@ -6199,9 +6199,6 @@ long long sub_526260(uint8_t* a1, float* a2) {
 }
 
 //----- (005262F0) --------------------------------------------------------
-int sub_5262F0(uint8_t* theme, uint8_t* prefab) {
-	return nox_mapgenAnalyzePrefabNative_5262F0(theme, prefab);
-}
 
 uint8_t* nox_mapgenClosestRoomsNative_526550(uint8_t* prefab, int direction) {
 	uint8_t* candidates[6] = {0};
@@ -7580,34 +7577,6 @@ int sub_528990(nox_object_t* a1) {
 
 nox_object_t* nox_xxx_getFirstUpdatableObject_4DA8A0(void);
 nox_object_t* nox_xxx_getNextUpdatableObject_4DA8B0(nox_object_t* obj);
-
-void nox_xxx_unitUpdateSightMB_5281F0(nox_object_t* monster) {
-	nox_server_unit_update_sight_native(monster);
-}
-
-int nox_xxx_aiLostSight_528560(nox_object_t* monster, int index) {
-	return nox_server_ai_lost_sight_native(monster, index);
-}
-
-void sub_528610(nox_object_t* monster) {
-	nox_server_monster_select_enemy_native(monster);
-}
-
-void nox_xxx_monsterUpdateSeenEnemies_5286D0(nox_object_t* candidate, nox_object_t* monster) {
-	nox_server_monster_update_seen_native(candidate, monster);
-}
-
-void nox_xxx_monsterVisionSeeEnemy_5287B0(nox_object_t* monster, nox_object_t* target) {
-	nox_server_monster_see_enemy_native(monster, target);
-}
-
-int sub_528910(nox_object_t* monster, nox_object_t* target) {
-	return nox_server_monster_remove_seen_native(monster, target);
-}
-
-int sub_528950(nox_object_t* monster, nox_object_t* target) {
-	return nox_server_monster_has_seen_native(monster, target);
-}
 
 int sub_528990(nox_object_t* target) {
 	nox_object_t* monster = nox_xxx_getFirstUpdatableObject_4DA8A0();

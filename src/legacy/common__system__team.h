@@ -45,7 +45,6 @@ wchar2_t* nox_server_teamTitle_418C20(int a1);
 uint32_t nox_xxx_materialGetTeamColor_418D50(nox_team_t* a1);
 void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3, int a4, int a5);
 int nox_server_team_attach_object_native(nox_object_team_t* value, unsigned char id);
-int nox_server_team_contains_object_native(nox_object_team_t* value, unsigned char id);
 nox_team_t* nox_server_team_detach_object_native(nox_object_team_t* value);
 int nox_server_teamsResetYyy_417D00();
 int nox_server_teamsZzz_419030(int a1);

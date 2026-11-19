@@ -1754,8 +1754,8 @@ func (obj *Object) Sub547DB0(p *types.Pointf) bool {
 	return obj.PointInShapeNative547DB0(p)
 }
 
-func (s *Server) Sub4DE4D0(a1 int) {
-	bit := uint32(1) << a1
+func (s *Server) Sub4DE4D0(index int) {
+	bit := uint32(1) << (uint32(index) & 31)
 	for it := s.Objs.First(); it != nil; it = it.Next() {
 		it.Field38 |= bit
 		if (it.ObjFlags&0x20) == 0 && (it.ObjClass&0x20400006) == 0 {

@@ -133,7 +133,6 @@ void sub_538510(nox_object_t* candidate, nox_player_attack_info_native_t* attack
 void sub_5386A0(nox_object_t* candidate, nox_object_t* attacker);
 int nox_xxx_itemApplyAttackEffect_538840(nox_object_t* weapon, nox_object_t* owner, void* attack);
 int nox_xxx_playerAttackNative_538960(nox_object_t* a1);
-int nox_xxx_playerAttackNativeDispatch_538960(nox_object_t* a1);
 int nox_xxx_playerAttackNativeData_538960(
 	nox_object_t* unit, nox_player_update_data_t* update, nox_playerInfo* player);
 int nox_xxx_playerAttackNativeNPCData_538960(

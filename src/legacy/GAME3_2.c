@@ -850,9 +850,6 @@ FILE* nox_xxx_loadMapCycle_4D0A30() {
 int sub_4D0C70(int a1) { return *getMemU32Ptr(0x587000, 191836 + 8 * a1); }
 
 //----- (004D0C80) --------------------------------------------------------
-int sub_4D0C80(char* a1) {
-	return sub_4D0C80_native(a1);
-}
 
 //----- (004D0CC0) --------------------------------------------------------
 void sub_4D0CC0(char* a1) {
@@ -3640,38 +3637,7 @@ int nox_xxx_netSendUnMonitorCrea_4D92A0(int a1, uint32_t* a2) {
 	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 1);
 }
 
-//----- (004D92D0) --------------------------------------------------------
-int nox_xxx_netReportTeamBase_4D92D0(int a1, int a2) {
-	int result; // eax
-	int v3;     // edi
-	int v4;     // eax
-	int v5;     // edx
-	char v6[7]; // [esp+8h] [ebp-8h]
-
-	result = *getMemU32Ptr(0x5D4594, 1556320);
-	v3 = *(uint32_t*)(a2 + 692);
-	if (!*getMemU32Ptr(0x5D4594, 1556320)) {
-		result = nox_xxx_getNameId_4E3AA0("TeamBase");
-		*getMemU32Ptr(0x5D4594, 1556320) = result;
-	}
-	if (*(uint32_t*)(a2 + 8) & 0x13001000 || *(unsigned short*)(a2 + 4) == result) {
-		v6[0] = 103;
-		*(uint16_t*)&v6[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
-		v4 = 0;
-		v5 = v3;
-		do {
-			if (*(uint32_t*)v5) {
-				v6[v4 + 3] = *(uint8_t*)(*(uint32_t*)v5 + 4);
-			} else {
-				v6[v4 + 3] = -1;
-			}
-			++v4;
-			v5 += 4;
-		} while (v4 < 4);
-		result = nox_xxx_netSendPacket0_4E5420(a1, v6, 7, 0, 1);
-	}
-	return result;
-}
+// GAME.EXE 004D92D0 uses a native Go entry.
 
 //----- (004D9360) --------------------------------------------------------
 int nox_xxx_netReportStatsSpeed_4D9360(int a1, nox_object_t* a2, char a3, int a4) {
@@ -4655,22 +4621,7 @@ void sub_4DE410(int a1) {
 	}
 }
 
-//----- (004DE4D0) --------------------------------------------------------
-int sub_4DE4D0(char a1) {
-	int v1;     // esi
-	int result; // eax
-	char v3;    // cl
-
-	v1 = 1 << a1;
-	for (result = nox_server_getFirstObject_4DA790(); result; result = nox_server_getNextObject_4DA7A0(result)) {
-		v3 = *(uint8_t*)(result + 16);
-		*(uint32_t*)(result + 152) |= v1;
-		if (!(v3 & 0x20) && !(*(uint32_t*)(result + 8) & 0x20400006)) {
-			*(uint32_t*)(result + 148) &= ~v1;
-		}
-	}
-	return result;
-}
+// GAME.EXE 004DE4D0 uses a native Go entry.
 
 //----- (004DE7C0) --------------------------------------------------------
 void nox_script_event_playerLeave(nox_playerInfo* pl);

@@ -1337,10 +1337,6 @@ finish:
 	return current_frame < frame_count;
 }
 
-int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
-	return nox_xxx_playerAttackNativeDispatch_538960(unit);
-}
-
 int nox_xxx_playerAttackNativeData_538960(
 	nox_object_t* unit, nox_player_update_data_t* update, nox_playerInfo* player) {
 	if (!unit || !update || !player) {

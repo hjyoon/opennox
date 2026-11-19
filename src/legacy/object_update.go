@@ -521,8 +521,8 @@ func nox_xxx_playerAttackBerserkNative_538960(unit *nox_object_t) {
 	playerAttackBerserkNative538960(asObjectS(unit))
 }
 
-//export nox_xxx_playerAttackNativeDispatch_538960
-func nox_xxx_playerAttackNativeDispatch_538960(unit *nox_object_t) C.int {
+//export nox_xxx_playerAttackNative_538960
+func nox_xxx_playerAttackNative_538960(unit *nox_object_t) C.int {
 	return C.int(playerAttackNativeData538960(asObjectS(unit)))
 }
 

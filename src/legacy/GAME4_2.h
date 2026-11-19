@@ -205,7 +205,6 @@ int nox_xxx_mapGen_InPrefab1_525D20(uint8_t* theme);
 void sub_525DF0(uint8_t* theme);
 int nox_xxx_mapGenPrefabMkRoom_526100(uint8_t* theme, uint8_t* prefab);
 long long sub_526260(uint8_t* room, float* output);
-int nox_mapgenAnalyzePrefabNative_5262F0(uint8_t* theme, uint8_t* prefab);
 int sub_5262F0(uint8_t* theme, uint8_t* prefab);
 uint8_t* nox_mapgenClosestRoomsNative_526550(uint8_t* prefab, int direction);
 int sub_526550(int a1, int a2);
@@ -253,13 +252,6 @@ int sub_528950(nox_object_t* a1, nox_object_t* a2);
 int sub_528990(nox_object_t* a1);
 
 // Native-width Go bridges for the Win32 monster sight-memory cluster.
-void nox_server_unit_update_sight_native(nox_object_t* monster);
-int nox_server_ai_lost_sight_native(nox_object_t* monster, int index);
-void nox_server_monster_select_enemy_native(nox_object_t* monster);
-void nox_server_monster_update_seen_native(nox_object_t* candidate, nox_object_t* monster);
-void nox_server_monster_see_enemy_native(nox_object_t* monster, nox_object_t* target);
-int nox_server_monster_remove_seen_native(nox_object_t* monster, nox_object_t* target);
-int nox_server_monster_has_seen_native(nox_object_t* monster, nox_object_t* target);
 void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* a1);
 int nox_xxx_netObjectOutOfSight_528A60(int recipient, nox_object_t* object);
 int nox_xxx_netObjectInShadows_528A90(int recipient, nox_object_t* object);

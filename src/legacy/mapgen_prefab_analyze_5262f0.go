@@ -274,8 +274,8 @@ var mapgenPrefabAnalyzeEntry5262F0 = func(theme, prefab unsafe.Pointer) bool {
 	return mapgenAnalyzePrefabWithDeps5262F0(mapgenPrefabRuntimeDeps5262F0(theme, prefab))
 }
 
-//export nox_mapgenAnalyzePrefabNative_5262F0
-func nox_mapgenAnalyzePrefabNative_5262F0(theme, prefab *C.uint8_t) C.int {
+//export sub_5262F0
+func sub_5262F0(theme, prefab *C.uint8_t) C.int {
 	if theme == nil || prefab == nil {
 		return 0
 	}

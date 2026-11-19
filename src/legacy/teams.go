@@ -100,8 +100,8 @@ func nox_server_team_attach_object_native(value *C.nox_object_team_t, id C.uchar
 	return 1
 }
 
-//export nox_server_team_contains_object_native
-func nox_server_team_contains_object_native(value *C.nox_object_team_t, id C.uchar) C.int {
+//export nox_xxx_teamCompare2_419180
+func nox_xxx_teamCompare2_419180(value *C.nox_object_team_t, id C.uchar) C.int {
 	if value != nil && GetServer().S().Teams.ContainsObject(
 		(*server.ObjectTeam)(unsafe.Pointer(value)), server.TeamID(id),
 	) {

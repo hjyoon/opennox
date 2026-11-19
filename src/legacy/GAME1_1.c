@@ -405,9 +405,6 @@ int nox_xxx_servCompareTeams_419150(nox_object_team_t* first, nox_object_team_t*
 #endif
 
 //----- (00419180) --------------------------------------------------------
-int nox_xxx_teamCompare2_419180(nox_object_team_t* value, unsigned char id) {
-	return nox_server_team_contains_object_native(value, id);
-}
 
 //----- (00419570) --------------------------------------------------------
 void nox_xxx_netChangeTeamMb_419570(nox_object_team_t* value, int net_code) {

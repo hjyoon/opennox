@@ -923,33 +923,33 @@ func monsterUpdateSightNative5281F0(monster *server.Object) {
 	}
 }
 
-//export nox_server_unit_update_sight_native
-func nox_server_unit_update_sight_native(monster *nox_object_t) {
+//export nox_xxx_unitUpdateSightMB_5281F0
+func nox_xxx_unitUpdateSightMB_5281F0(monster *nox_object_t) {
 	monsterUpdateSightNative5281F0(asObjectS(monster))
 }
 
-//export nox_server_ai_lost_sight_native
-func nox_server_ai_lost_sight_native(monster *nox_object_t, index C.int) C.int {
+//export nox_xxx_aiLostSight_528560
+func nox_xxx_aiLostSight_528560(monster *nox_object_t, index C.int) C.int {
 	return C.int(bool2int(monsterLostSightNative528560(asObjectS(monster), int(index))))
 }
 
-//export nox_server_monster_select_enemy_native
-func nox_server_monster_select_enemy_native(monster *nox_object_t) {
+//export sub_528610
+func sub_528610(monster *nox_object_t) {
 	monsterSelectEnemyNative528610(asObjectS(monster))
 }
 
-//export nox_server_monster_update_seen_native
-func nox_server_monster_update_seen_native(candidate, monster *nox_object_t) {
+//export nox_xxx_monsterUpdateSeenEnemies_5286D0
+func nox_xxx_monsterUpdateSeenEnemies_5286D0(candidate, monster *nox_object_t) {
 	monsterUpdateSeenNative5286D0(asObjectS(candidate), asObjectS(monster))
 }
 
-//export nox_server_monster_see_enemy_native
-func nox_server_monster_see_enemy_native(monster, target *nox_object_t) {
+//export nox_xxx_monsterVisionSeeEnemy_5287B0
+func nox_xxx_monsterVisionSeeEnemy_5287B0(monster, target *nox_object_t) {
 	monsterSeeEnemyNative5287B0(asObjectS(monster), asObjectS(target))
 }
 
-//export nox_server_monster_remove_seen_native
-func nox_server_monster_remove_seen_native(monster, target *nox_object_t) C.int {
+//export sub_528910
+func sub_528910(monster, target *nox_object_t) C.int {
 	obj := asObjectS(monster)
 	targ := asObjectS(target)
 	if obj == nil || targ == nil || !obj.Class().Has(object.ClassMonster) {
@@ -959,8 +959,8 @@ func nox_server_monster_remove_seen_native(monster, target *nox_object_t) C.int 
 	return C.int(bool2int(monsterLostSightNative528560(obj, index)))
 }
 
-//export nox_server_monster_has_seen_native
-func nox_server_monster_has_seen_native(monster, target *nox_object_t) C.int {
+//export sub_528950
+func sub_528950(monster, target *nox_object_t) C.int {
 	obj := asObjectS(monster)
 	if obj == nil || target == nil || !obj.Class().Has(object.ClassMonster) {
 		return 0

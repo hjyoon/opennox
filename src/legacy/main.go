@@ -82,8 +82,8 @@ func Nox_xxx_loadMapCycle_4D0A30() {
 	C.nox_xxx_loadMapCycle_4D0A30()
 }
 
-//export sub_4D0C80_native
-func sub_4D0C80_native(line *C.char) int32 {
+//export sub_4D0C80
+func sub_4D0C80(line *C.char) int32 {
 	if line == nil {
 		return -1
 	}

@@ -87,26 +87,9 @@ func (s *Server) netReportUnitHeightNative4D9020(ind ntype.PlayerInd, obj *serve
 }
 
 func (s *Server) netReportTeamBaseNative4D92D0(ind ntype.PlayerInd, obj *server.Object) {
-	const eligible = object.ClassFlag | object.ClassWeapon | object.ClassArmor | object.ClassWand
-	if !obj.Class().HasAny(eligible) && int(obj.TypeInd) != s.Types.IndByID("TeamBase") {
-		return
-	}
-	var packet [7]byte
-	packet[0] = byte(netmsg.MSG_REPORT_MODIFIER)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
-	if obj.InitData != nil {
-		for i, mod := range obj.InitDataModifier().Modifiers {
-			packet[i+3] = 0xff
-			if mod != nil {
-				packet[i+3] = byte(mod.Index())
-			}
-		}
-	} else {
-		for i := 3; i < len(packet); i++ {
-			packet[i] = 0xff
-		}
-	}
-	s.NetSendPacketXxx0(int(ind), packet[:], nil, 1)
+	attrs := obj.InitDataModifier()
+	teamBaseType := int32(s.Types.IndByID("TeamBase"))
+	s.S().SendTeamBaseModifierReport4D92D0(int(ind), obj, attrs, teamBaseType)
 }
 
 type netEquipPacketHooks4D82F0 struct {

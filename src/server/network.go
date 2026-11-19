@@ -793,7 +793,7 @@ func (s *Server) NetReportExperience(u *Object) { // sub_4D81A0
 	ud := u.UpdateDataPlayer()
 	var buf [5]byte
 	buf[0] = byte(netmsg.MSG_REPORT_EXPERIENCE)
-	binary.LittleEndian.PutUint32(buf[1:], uint32(u.Experience))
+	binary.LittleEndian.PutUint32(buf[1:], uint32(x87TruncSignedQwordLow566DCC(float64(u.Experience))))
 	s.NetSendPacketXxx0(int(ud.Player.PlayerInd), buf[:5], nil, 1)
 }
 func (s *Server) Nox_xxx_netReportAnimFrame_4D81F0(a1 int, a2 *Object) int {
@@ -803,7 +803,7 @@ func (s *Server) Nox_xxx_netReportAnimFrame_4D81F0(a1 int, a2 *Object) int {
 	binary.LittleEndian.PutUint32(buf[3:], a2.Field33)
 	return s.NetSendPacketXxx0(a1, buf[:7], nil, 1)
 }
-func (s *Server) nox_xxx_netReportXStatus_4D8230(a1 int, a2 *Object) int {
+func (s *Server) Nox_xxx_netReportXStatus_4D8230(a1 int, a2 *Object) int {
 	var buf [7]byte
 	buf[0] = byte(netmsg.MSG_REPORT_X_STATUS)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(a2)))

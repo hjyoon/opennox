@@ -3387,52 +3387,6 @@ int nox_xxx_netNotifyRate_4D7F10(int a1) {
 	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
 }
 
-//----- (004D7F40) --------------------------------------------------------
-int nox_xxx_netReportObjectPoison_4D7F40(int a1, uint32_t* a2, char a3) {
-	int v3; // esi
-
-	v3 = *(uint32_t*)(a1 + 748);
-	LOBYTE(a1) = -38;
-	*(uint16_t*)((char*)&a1 + 1) = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	HIBYTE(a1) = a3;
-	return nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), &a1, 4, 0, 1);
-}
-
-//----- (004D81A0) --------------------------------------------------------
-void sub_4D81A0(int a1) {
-	double v1;  // st7
-	int v2;     // ecx
-	char v3[5]; // [esp+4h] [ebp-8h]
-
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v1 = *(float*)(a1 + 28);
-		v3[0] = 110;
-		v2 = *(uint32_t*)(a1 + 748);
-		*(uint32_t*)&v3[1] = (long long)v1;
-		nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), v3, 5, 0, 1);
-	}
-}
-
-//----- (004D81F0) --------------------------------------------------------
-int nox_xxx_netReportAnimFrame_4D81F0(int a1, uint32_t* a2) {
-	char v3[7]; // [esp+4h] [ebp-8h]
-
-	v3[0] = 107;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	*(uint32_t*)&v3[3] = a2[33];
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 7, 0, 1);
-}
-
-//----- (004D8230) --------------------------------------------------------
-int nox_xxx_netReportXStatus_4D8230(int a1, uint32_t* a2) {
-	char v3[7]; // [esp+4h] [ebp-8h]
-
-	v3[0] = 101;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	*(uint32_t*)&v3[3] = a2[5];
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 7, 0, 1);
-}
-
 //----- (004D85C0) --------------------------------------------------------
 int nox_xxx_netReportTotalHealth_4D85C0(int a1, nox_object_t* a2) {
 	int result;   // eax

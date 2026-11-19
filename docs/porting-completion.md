@@ -447,8 +447,8 @@ Commit `795867c3d0906e7f66a9bc2f49366a1cc62a1dd0` fixes the map-generation
 test after Shield's C body was removed. The test extracts its own C
 definition. The old extraction error is retained from Linux `44466245583`
 and Windows `44466241043`. The local rendering, headless and editor
-checks pass. Cross-platform verification runs are Linux `44469423530`
-and Windows `44469419381`.
+checks pass. Linux `44469423530` and Windows `44469419381` pass all
+six required jobs on the fixed source.
 
 Engine `05c59ce6af00ff122e1d855dc033017fa5bd11e7` ports the fire,
 electricity and poison protection entries to typed objects. The original
@@ -459,11 +459,38 @@ disk-space limit while creating map-generation test directories. The
 same source revision passes after disk space is recovered. Linux
 `44471490588` and Windows `44471485892` track cross-platform verification.
 
-The default ARM64 split GAME inventory has 1,542 active C bodies,
-including 199 containing pointer and integer casts. The whole-C migration
-and final nine-cell campaign audit remain open. The records are in
-`projectile-reflect-and-gameball-native-v1` and
-`elemental-protection-public-native-v1` under
+Both ARM64 clients build without warnings and verify 437 public and 113
+retired symbols. The normal client passes FlagBall charge and player
+poison replays. The HD client passes Inversion, Chain Lightning and
+Fireball replays. All 4,649 protected original asset and Save hashes
+match after execution. The records are in
+`projectile-reflect-and-gameball-native-v1` and `elemental-protection-public-native-v1` under
+`opennox-verification/20261118-trade`.
+
+The twelve-profile census at `05c59ce6af00ff122e1d855dc033017fa5bd11e7`
+selects 206 of 627 tracked C files. The default ARM64 profile selects
+205, with 2,177 named active bodies and 14 macro-generated definitions.
+The default profile has 337 bodies containing pointer and integer
+conversions, including 199 across the 1,542 split GAME bodies. The
+five monolithic GAME files have zero default ARM64 bodies. The census
+is in `whole-C-inventory-05c59ce6-v1`.
+
+### Monster spellcaster initialization, 2026-11-19
+
+Engine `fc58d74f165f0ffbe25d509e52832995fa1001c0` moves the spellcaster
+spawn entry out of `GAME4_2.c`. The active 386 monster loader passes a
+typed object to the same implementation that serves 64-bit map loads.
+The 400-case comparison executes the original definition lookup and
+automatic spell setup. Both ARM64 modes match all 400 cases via the
+C entry and via the Go path. The 30 cases with absent health records
+preserve the remaining initialization when the original skips the HP write.
+Both modes pass 6,249 checks without warnings. Linux `44473685287` and
+Windows `44473681655` track cross-platform verification.
+
+The default ARM64 split GAME inventory has 1,541 active C bodies,
+including 198 containing pointer and integer casts. The whole-C migration
+and final nine-cell campaign audit remain open. The exact comparison and
+test executables are in `monster-spawn-spellcaster-native-v1` under
 `opennox-verification/20261118-trade`.
 
 ### Attack trace and collision queue entries, 2026-11-19

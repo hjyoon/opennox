@@ -530,6 +530,12 @@ links remain reciprocal. At frame 436, the Warrior reaches the original
 lower elevator at 11 HP. The complete fresh-Save WarCry route still
 needs a living finish.
 
+Two further runs from the new cemetery Save reach the lower elevator.
+The first dies near three Urchins along the approach to the Shaman.
+The second dies when enemies catch up during a natural recovery pause.
+Both runs preserve the seed and the failure records. The recovered
+cemetery route above remains the completed WarCry run.
+
 The twelve build profiles at `9679ed02c2dd891b131fe6a533da0df9ff480e17`
 select 206 of 627 tracked C files. Default ARM64 selects 205 files with
 2,170 named active bodies and 14 macro-generated definitions. Of the
@@ -595,7 +601,40 @@ match after execution.
 The default ARM64 split inventory has 1,517 active C bodies, including
 192 with pointer and integer conversions. The proof is in
 `scavenger-and-elim-death-native-v1`. Linux `44490112468` and Windows
-`44490015490` track cross-platform verification.
+`44490015490` pass all six required jobs.
+
+### Team base reports and player synchronization masks, 2026-11-19
+
+Engine `ab2e7c061a229dce4ba90f5b0039978116ecb919` moves the TeamBase
+packet entry `4D92D0` and the player synchronization mask `4DE4D0`
+to Go. The port retains team type lookup and cache behavior, the send
+result, and the original five-bit shift count. It also removes 11 C
+forwarders for AI visibility, map generation, map-cycle mode lookup,
+team comparison and player attack.
+
+The stock execution covers 384 team reports and 256 mask cases. All
+team reports match the shared Go service, and 202 exercise the actual
+C entry and its cache. All 256 masks exercise the actual C entry with
+native object addresses. Both ARM64 modes pass 884 checks without
+warnings. The initial test runner failure and the recovered pinned
+supervisor are retained in the record.
+
+Both clients build without warnings and verify 475 public symbols and
+140 retired symbols. The normal product passes 44 host AI sustained
+attack scenarios. The HD product passes the F1 console, F2 macro,
+and file log checks. The first normal replay reached all 44 assertions
+before its runner deadline. The first HD replay truncated the command
+for the log path to the console input limit of 127 characters. The
+reruns use a longer deadline and a shorter console path, respectively.
+The earlier outcomes and truncated log file are retained, and all
+4,649 protected original asset and Save hashes match.
+
+The default ARM64 inventory contains 2,139 named active C bodies and
+14 macro-generated definitions. There are 1,504 active split GAME
+bodies, including 190 with pointer and integer conversions. The
+records are in `team-base-and-player-mask-native-v1` and
+`whole-C-inventory-ab2e7c061-v1`. Cross-platform runs are Linux
+`44497264281` and Windows `44497216851`.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

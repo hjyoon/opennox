@@ -844,7 +844,7 @@ select 206 of 627 tracked C files. The release receipt
 `monster-action-reference-rebind-native-v1/monster-action-reference-rebind-release-v1.json`
 has SHA-256 `70e6e0421afd0179c4ddcdf59df6faa34a49943b8db98e39b56e8a35485c20db`.
 Linux `44526516014` passes all four exact product jobs. Windows
-`44526502362` passes amd64 and tracks the 386 job.
+`44526502362` passes both amd64 and 386.
 
 ### Older monster and NPC Save loaders, 2026-11-19
 
@@ -880,8 +880,48 @@ conversions, and 14 macro-generated definitions. Twelve audited
 profiles select 206 of 627 tracked C files. The release receipt
 `monster-npc-outer-transfer-stock-20261119-v1/monster-npc-outer-transfer-release-v1.json`
 has SHA-256 `ce7cfd58f42a9d69f30755135dfc368c7b443ab5f3d980a391bf64734eb4c754`.
-Linux `44532347484` and Windows `44532334712` track exact
-cross-platform verification.
+Windows `44532334712` passes amd64 and 386. Linux `44532347484`
+passes three products on attempt one. The remaining server job
+encounters HTTP 503 during OpenAL package installation and is
+retried at the same source revision. The first job log is archived.
+
+### Monster spell selection entries, 2026-11-19
+
+Engine `64cc42c294426d14ce3d5a3d7642a933632f1a23` moves four compiled
+`GAME4_3.c` entries into the live Go selectors. Self buffs
+`540B90`, targeted and summon selection `540D90`, offensive
+selection `540F20` and flee-related self casts `541050` receive
+native object pointers. The three shared fight selectors now draw
+the original cooldown delay before reading the live frame.
+
+The four original bodies total 1,335 bytes and execute 606 cases.
+Direct C calls with high-address objects match 580 stock cases,
+including all tested individual spell IDs and eligibility gates.
+Both ordinary and strict ARM64 checks pass 6,361 cases without
+warnings. The previous cooldown mismatch and the first strict link
+failure are retained. The strict retry uses the same code after
+reclaiming regenerable cache entries.
+
+Both ARM64 clients build without warnings and verify 499 public
+and 142 retired symbols. In ordinary-clock multiplayer the normal
+client verifies six natural Inversion casts, reflected projectiles,
+attributed damage and client health. HD verifies four naturally
+triggered RETREAT self casts with native targeting, server and
+client buffs, and a cast sound event. The first disk-interrupted
+replay and rejected compressed copy are archived. The verified
+product copies retain the exact executable bytes, and the runtime
+archive retains generated files with an inventory of stock inputs.
+All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_3.c` audit records 86 to 82 active definitions.
+The ARM64 split files have 1,482 active bodies, including 173 with
+pointer and integer conversions. Default ARM64 records 2,116 named
+active C bodies, 310 with pointer and integer conversions, and 14
+macro-generated definitions. Twelve profiles select 206 of 627
+tracked C files. The release receipt
+`monster-spell-selection-native-20261119-v1/monster-spell-selection-release-v1.json`
+has SHA-256 `8ffb8aee23a5e0f34214ef8c30dd0e6c73012455cb09190228209b356fe22e7c`.
+Linux `44538755532` and Windows `44538755798` track the exact revision.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

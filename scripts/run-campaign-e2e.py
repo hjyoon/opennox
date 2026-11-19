@@ -405,21 +405,65 @@ def required_swap_pairs(samples, log, requirements):
         return (isinstance(value, list) and len(value) == 2
                 and all(type(v) in (int, float) and math.isfinite(v) for v in value))
 
-    traces = []
+    def words(row, names):
+        return all(type(row.get(name)) is int and 0 <= row[name] <= 0xffffffff for name in names)
+
+    def identity(row):
+        return row['wire'], row['extent'], row['script_id'], row['key']
+
+    def input_identity(row):
+        return row['input_wire'], row['input_extent'], row['input_script_id'], row['key']
+
+    def reciprocal(before, after, requirement):
+        tolerance = requirement['tolerance']
+        return (math.dist(before['player'], after['player']) >= requirement['minimum_distance']
+                and math.dist(before['player'], after['target']) <= tolerance
+                and math.dist(before['target'], after['player']) <= tolerance)
+
+    def continued_motion(tail, before, after, final, requirement, track_target=True):
+        # Movement after the exchange must stay on the observed trajectory.
+        if not point(final) or any(identity(row) != identity(tail[0]) or row['cast_frame'] != after['cast_frame']
+                                   or not row['key_queued'] for row in tail):
+            return None
+        steps = list(zip(tail, tail[1:]))
+        if any((right['frame'] - left['frame']) & 0xffffffff != 1 for left, right in steps):
+            return None
+        player_step = max((math.dist(left['player'], right['player']) for left, right in steps), default=0)
+        target_step = (max((math.dist(left['target'], right['target']) for left, right in steps), default=0)
+                       if track_target else None)
+        tolerance = requirement['tolerance']
+        final_step = math.dist(final, tail[-1]['player'])
+        displacement = math.dist(final, before['player'])
+        final_from_exchange = math.dist(final, after['player'])
+        if (player_step > tolerance or (target_step is not None and target_step > tolerance)
+                or final_step > tolerance or displacement < requirement['minimum_distance']
+                or final_from_exchange > displacement):
+            return None
+        return {'samples': len(tail), 'last': tail[-1], 'maximum_player_frame_step': player_step,
+                'maximum_target_frame_step': target_step, 'final_distance_from_last_trace': final_step,
+                'final_distance_from_exchange': final_from_exchange}
+
+    traces, accepted = [], []
     malformed = False
     for line in log.splitlines():
-        if 'MONSTER QUICKBAR POSITION: ' not in line:
+        native = 'MONSTER QUICKBAR SWAP TARGET: ' in line
+        marker = 'MONSTER QUICKBAR SWAP TARGET: ' if native else 'MONSTER QUICKBAR POSITION: '
+        if marker not in line:
             continue
         try:
-            row = json.loads(line.split('MONSTER QUICKBAR POSITION: ', 1)[1])
+            row = json.loads(line.split(marker, 1)[1])
             valid = (isinstance(row, dict) and point(row.get('player')) and point(row.get('target'))
-                     and all(type(row.get(k)) is int and 0 <= row[k] <= 0xffffffff
-                             for k in ('frame', 'cast_frame', 'player_script_id', 'script_id', 'extent', 'wire', 'key'))
-                     and type(row.get('key_queued')) is bool)
+                     and words(row, ('frame', 'cast_frame', 'player_script_id', 'script_id', 'extent', 'wire', 'key')))
+            if native:
+                valid = (valid and words(row, ('duration_id', 'created_frame', 'trigger_frame', 'input_wire',
+                                                'input_extent', 'input_script_id', 'type_index', 'spell'))
+                         and row['spell'] == 115 and row['wire'] > 0 and row['input_wire'] > 0 and row['type_index'] > 0)
+            else:
+                valid = valid and type(row.get('key_queued')) is bool
         except (ValueError, TypeError):
             valid = False
         if valid:
-            traces.append(row)
+            (accepted if native else traces).append(row)
         else:
             malformed = True
     actual_inputs = {(int(wire, 16), int(extent), int(ident), int(key))
@@ -444,40 +488,45 @@ def required_swap_pairs(samples, log, requirements):
         exchange = None
         motion = None
         for index, (before, after) in enumerate(zip(rows, rows[1:])):
-            identity = lambda v: (v['wire'], v['extent'], v['script_id'], v['key'])
-            tolerance = requirement['tolerance']
             if ((after['frame'] - before['frame']) & 0xffffffff == 1
                     and before['cast_frame'] == after['cast_frame'] and identity(before) == identity(after)
                     and before['script_id'] in alive_ids and before['key'] == requirement['key']
                     and before['key_queued'] and after['key_queued']
                     and identity(after) in actual_inputs
-                    and math.dist(before['player'], after['player']) >= requirement['minimum_distance']
-                    and math.dist(before['player'], after['target']) <= tolerance
-                    and math.dist(before['target'], after['player']) <= tolerance
-                    and point(final_point)):
-                # Swap preserves ordinary movement. Bind the final position to
-                # the whole observed trajectory, rather than requiring all
-                # subsequent physics to stay within one frame's tolerance.
-                tail = rows[index + 1:]
-                if any(identity(row) != identity(after) or row['cast_frame'] != after['cast_frame']
-                       or not row['key_queued'] for row in tail):
+                    and reciprocal(before, after, requirement)):
+                motion = continued_motion(rows[index + 1:], before, after, final_point, requirement)
+                if motion:
+                    exchange = {'before': before, 'after': after}
+                    break
+        if exchange is None:
+            # The duration can resolve to a different live target after a
+            # queued input. Require the accepted target's reciprocal movement
+            # and an independent input trace for the same cast and frames.
+            native = [row for row in accepted if row['player_script_id'] == player_id]
+            matches = []
+            for before, after in zip(native, native[1:]):
+                same_cast = ('cast_frame', 'duration_id', 'created_frame', 'trigger_frame', 'type_index')
+                if (any(before[name] != after[name] for name in same_cast)
+                        or identity(before) != identity(after) or input_identity(before) != input_identity(after)
+                        or before['frame'] != before['trigger_frame']
+                        or (after['frame'] - before['frame']) & 0xffffffff != 1
+                        or not (((before['created_frame'] - before['cast_frame']) & 0xffffffff)
+                                <= ((before['trigger_frame'] - before['cast_frame']) & 0xffffffff) < 120)
+                        or after['script_id'] not in alive_ids or after['input_script_id'] not in alive_ids
+                        or after['script_id'] == after['input_script_id'] or after['key'] != requirement['key']
+                        or input_identity(after) not in actual_inputs or not reciprocal(before, after, requirement)):
                     continue
-                steps = list(zip(tail, tail[1:]))
-                if any((right['frame'] - left['frame']) & 0xffffffff != 1 for left, right in steps):
-                    continue
-                player_step = max((math.dist(left['player'], right['player']) for left, right in steps), default=0)
-                target_step = max((math.dist(left['target'], right['target']) for left, right in steps), default=0)
-                if (player_step > tolerance or target_step > tolerance
-                        or math.dist(final_point, tail[-1]['player']) > tolerance
-                        or math.dist(final_point, before['player']) < requirement['minimum_distance']
-                        or math.dist(final_point, after['player']) > math.dist(final_point, before['player'])):
-                    continue
-                exchange = {'before': before, 'after': after}
-                motion = {'samples': len(tail), 'last': tail[-1],
-                          'maximum_player_frame_step': player_step, 'maximum_target_frame_step': target_step,
-                          'final_distance_from_last_trace': math.dist(final_point, tail[-1]['player']),
-                          'final_distance_from_exchange': math.dist(final_point, after['player'])}
-                break
+                for index, (aim_before, aim_after) in enumerate(zip(rows, rows[1:])):
+                    if any(aim['frame'] != row['frame'] or aim['cast_frame'] != row['cast_frame']
+                           or aim['player'] != row['player'] or identity(aim) != input_identity(row)
+                           or not aim['key_queued']
+                           for aim, row in ((aim_before, before), (aim_after, after))):
+                        continue
+                    follow = continued_motion(rows[index + 1:], before, after, final_point, requirement, track_target=False)
+                    if follow:
+                        matches.append(({'before': before, 'after': after, 'observation': 'native-duration'}, follow))
+            if len(matches) == 1:
+                exchange, motion = matches[0]
         selected_id = exchange['after']['script_id'] if exchange else None
         pairs.append(dict(requirement, initial_alive_target_script_ids=sorted(alive_ids), selected_target_script_id=selected_id, initial_player_position=initial_point,
                           initial_player_matches=bool(starts_inside), position_exchange=exchange, post_swap_motion=motion,

@@ -153,6 +153,43 @@ class NativeSwapEvidenceTests(unittest.TestCase):
         rows[1]['script_id'] = 2
         self.assertFalse(self.check(rows, samples, actual)['passed'])
 
+    def native_resolution(self):
+        aimed = copy.deepcopy(self.rows)
+        aimed[1]['target'] = [40, 20]
+        resolution = [dict(row, duration_id=7, spell=115, created_frame=99, trigger_frame=100, type_index=1356,
+                           input_wire=19, input_extent=17, input_script_id=2,
+                           wire=13, extent=0, script_id=3)
+                      for row in aimed]
+        resolution[0]['target'] = [42, 22]
+        resolution[1]['target'] = [0, 0]
+        return aimed, resolution
+
+    def check_native_resolution(self, aimed, resolution, actual=None):
+        log = self.log(aimed, actual) + '\n' + '\n'.join(
+            'MONSTER QUICKBAR SWAP TARGET: ' + json.dumps(row) for row in resolution)
+        return runner.required_swap_pairs(self.samples, log, self.required)
+
+    def test_native_resolution_accepts_the_other_living_original_target(self):
+        aimed, resolution = self.native_resolution()
+        self.assertFalse(self.check(aimed)['passed'])
+        result = self.check_native_resolution(aimed, resolution)
+        self.assertTrue(result['passed'])
+        pair = result['pairs'][0]
+        self.assertEqual(pair['selected_target_script_id'], 3)
+        self.assertEqual(pair['position_exchange']['observation'], 'native-duration')
+
+    def test_native_resolution_requires_same_duration_actual_input_and_both_positions(self):
+        for changed in ({'duration_id': 8}, {'script_id': 4}, {'spell': 114}, {'input_wire': 29},
+                        {'target': [40, 20]}, {'frame': 102}, {'player': [39, 23]}):
+            aimed, resolution = self.native_resolution()
+            resolution[1].update(changed)
+            with self.subTest(changed=changed):
+                self.assertFalse(self.check_native_resolution(aimed, resolution)['passed'])
+        aimed, resolution = self.native_resolution()
+        self.assertFalse(self.check_native_resolution(aimed, resolution, actual='')['passed'])
+        aimed[1]['key_queued'] = False
+        self.assertFalse(self.check_native_resolution(aimed, resolution)['passed'])
+
 
 if __name__ == '__main__':
     unittest.main()

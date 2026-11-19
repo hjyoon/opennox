@@ -6769,35 +6769,6 @@ int sub_4E1470(int a1) {
 }
 #endif
 
-//----- (004E14A0) --------------------------------------------------------
-int sub_4E14A0() { return 0; }
-
-//----- (004E14B0) --------------------------------------------------------
-int sub_4E14B0(int a1, int a2, int a3, int a4, int a5) {
-	int result; // eax
-
-	if (a1 && *(uint32_t*)(a1 + 8) & 0x1001000 && (*(uint32_t*)(a1 + 492) || a5 == 12)) {
-		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, a4, a5);
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
-//----- (004E1500) --------------------------------------------------------
-int nox_xxx_damageArmor_4E1500(int a1, int a2, int a3, int a4, int a5) {
-	int v5;     // eax
-	int result; // eax
-
-	if (*(uint32_t*)(a1 + 8) & 0x2000000 && (*(uint32_t*)(a1 + 492) || a5 == 12) &&
-		(a5 != 2 || !(*(uint8_t*)(a1 + 24) & 0x10) ? (v5 = a4) : (v5 = 2 * a4), v5)) {
-		result = nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v5, a5);
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
 //----- (004E1560) --------------------------------------------------------
 void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {

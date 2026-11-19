@@ -305,9 +305,9 @@ int32_t nox_xxx_damageDefaultProc_4E0B30(nox_object_t* target, nox_object_t* sou
 void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3);
 int32_t sub_4E1400(nox_object_t* source, nox_object_t* weapon);
 int32_t sub_4E1470(nox_object_t* weapon);
-int sub_4E14A0();
-int sub_4E14B0(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_damageArmor_4E1500(int a1, int a2, int a3, int a4, int a5);
+int sub_4E14A0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type);
+int sub_4E14B0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type);
+int nox_xxx_damageArmor_4E1500(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type);
 void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
 void nox_xxx_playerDamageWeapon_4E1560_go(nox_object_t* item, nox_object_t* owner,

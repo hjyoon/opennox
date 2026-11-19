@@ -769,8 +769,45 @@ including 315 with pointer and integer conversions, and 14
 macro-generated definitions. The split GAME files contain 1,489
 active bodies, including 178 with pointer and integer conversions.
 The records are in `monster-action-data-versions-native-v2` and
-`whole-C-inventory-8c308d720-v1`. Linux `44517778881` and Windows
-`44517774519` track cross-platform verification.
+`whole-C-inventory-8c308d720-v1`. Windows `44517774519` passes the
+amd64 and 386 server jobs. Linux `44517778881` tracks the four product
+jobs.
+
+### Monster buff transfer and original Save order, 2026-11-19
+
+Engine `e3262182cb704aba84d86ecf7186db18a3061764` ports
+`GAME4_2.c` entry `52AAB0` to the shared native-width Go transfer.
+The Save writer follows the original 29-entry buff iterator.
+The reader preserves the duration restores and the version-2 shield
+field. Before the port, 67 of 98 ARM64 native writes differed from
+the original count or ordering.
+
+The original executable supplies 298 comparisons, covering version-1
+and version-2 reads, version-2 writes, and rejected inputs. Normal
+and strict ARM64 each pass 10,557 checks without warnings, including
+the real C entry and stream checksum comparisons. The first test
+build failed on a declaration guarded by pointer width. The next
+standalone test stopped in buff iteration until the fixture
+initialized the original table. The failed binary, logs, and a
+lossless archive of the interrupted output are retained.
+
+Both products build without warnings and verify 492 public and 140
+retired symbols. HD completes the live shield damage check and
+loads the original Warrior I map to playable movement. The normal
+product completes the original Conjurer III Captain's two
+dialogues and writes a living Save. All 4,649 protected original
+asset and Save hashes match. The release manifest
+`monster-buff-transfer-native-v2/monster-buff-transfer-release-v1.json`
+has SHA-256 `d6a19fb9b808da85a960805340e8f20fafa0bd483fe0d458d1362af1b1aac95f`.
+
+The i386 `GAME4_2.c` audit records 288 to 287 active bodies and
+confirms the new `nox_object_t *` declaration. The default ARM64
+inventory records 2,123 named active C bodies, 315 with pointer and
+integer conversions, and 14 macro-generated definitions. The split
+GAME files contain 1,489 active bodies, including 178 with pointer
+and integer conversions. Exact source receipts are in
+`monster-buff-transfer-native-v2`. Linux `44522311008` and Windows
+`44522261676` track cross-platform verification.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

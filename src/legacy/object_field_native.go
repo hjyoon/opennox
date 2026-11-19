@@ -18,6 +18,10 @@ func objectFieldMonsterAction5408A0(owner *server.Object) int32 {
 
 func objectFieldMask1404E4500(owner *server.Object, value, mask uint32, set bool) unsafe.Pointer {
 	owner.Sub_4E4500(value, mask, set)
+	return objectSyncFieldsEnd4E4500(owner)
+}
+
+func objectSyncFieldsEnd4E4500(owner *server.Object) unsafe.Pointer {
 	return unsafe.Add(unsafe.Pointer(&owner.Field140[0]), unsafe.Sizeof(owner.Field140))
 }
 

@@ -29,6 +29,25 @@ func sub_4E4500(owner *C.nox_object_t, value, mask, mode C.int) *C.int {
 	return (*C.int)(objectFieldMask1404E4500(asObjectS((*nox_object_t)(owner)), uint32(value), uint32(mask), mode != 0))
 }
 
+//export nox_xxx_unitSetOnOff_4E4670
+func nox_xxx_unitSetOnOff_4E4670(ptr *nox_object_t, enabled C.int) *C.int {
+	obj := asObjectS(ptr)
+	obj.SetOnOff(enabled != 0)
+	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
+}
+
+//export nox_xxx_unitRaise_4E46F0
+func nox_xxx_unitRaise_4E46F0(ptr *nox_object_t, z C.float) {
+	asObjectS(ptr).Raise(float32(z))
+}
+
+//export nox_xxx_servMarkObjAnimFrame_4E4880
+func nox_xxx_servMarkObjAnimFrame_4E4880(ptr *nox_object_t, frame C.int) *C.int {
+	obj := asObjectS(ptr)
+	obj.MarkAnimFrame(uint32(frame))
+	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
+}
+
 //export nox_xxx_objectGetBuffs_4E4A80
 func nox_xxx_objectGetBuffs_4E4A80(owner *C.object_field_const_object_t) C.uint {
 	return C.uint(asObjectS((*nox_object_t)(unsafe.Pointer(owner))).Buffs)

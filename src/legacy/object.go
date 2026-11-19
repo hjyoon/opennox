@@ -763,9 +763,10 @@ func objectRaiseC(a1 *server.Object, a2 float32) {
 	defer pinObjectForC(a1)()
 	C.nox_xxx_unitRaise_4E46F0(asObjectC(a1), C.float(a2))
 }
-func objectMarkAnimFrameC(obj *server.Object, frame uint32) {
+func objectMarkAnimFrameC(obj *server.Object, frame uint32) uintptr {
 	defer pinObjectForC(obj)()
-	C.nox_xxx_servMarkObjAnimFrame_4E4880(asObjectC(obj), C.int(frame))
+	end := C.nox_xxx_servMarkObjAnimFrame_4E4880(asObjectC(obj), C.int(frame))
+	return uintptr(unsafe.Pointer(end)) - uintptr(unsafe.Pointer(obj))
 }
 func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
 	defer pinObjectForC(obj)()

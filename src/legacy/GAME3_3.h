@@ -145,7 +145,7 @@ int sub_4E4390(FILE* a1);
 FILE* sub_4E43F0(char* a1);
 void nox_xxx_unitNeedSync_4E44F0(nox_object_t* a1);
 int* sub_4E4500(nox_object_t* a1, int a2, int a3, int a4);
-int nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount);
+intptr_t nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount);
 int* nox_xxx_unitSetOnOff_4E4670(nox_object_t* obj, int enabled);
 void nox_xxx_unitRaise_4E46F0(nox_object_t* obj, float a2);
 void nox_xxx_unitUnsetXStatus_4E4780(nox_object_t* a1, unsigned int a2);

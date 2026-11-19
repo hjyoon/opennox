@@ -23,7 +23,8 @@ func questHealthScaleRuntime4E3DD0() server.QuestHealthScaleRuntime4E3DD0 {
 		HealthScale:      func() float64 { return float64(C.sub_4E40F0()) },
 		SetHP: func(obj *server.Object, value uint16) int32 {
 			defer pinObjectForC(obj)()
-			return int32(C.nox_xxx_unitSetHP_4E4560(asObjectC(obj), C.ushort(value)))
+			// Quest scaling observes only the low WORD of the setter result.
+			return int32(uint16(C.nox_xxx_unitSetHP_4E4560(asObjectC(obj), C.ushort(value))))
 		},
 	}
 }

@@ -604,7 +604,11 @@ func TestObjectMarkAnimFrameCMatchesGo(t *testing.T) {
 	want := *got
 	want.MarkAnimFrame(0xFEDCBA98)
 
-	objectMarkAnimFrameC(got, 0xFEDCBA98)
+	resultOffset := objectMarkAnimFrameC(got, 0xFEDCBA98)
+	wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+	if resultOffset != wantOffset {
+		t.Errorf("return offset: C = %d, want %d", resultOffset, wantOffset)
+	}
 	if got.Field33 != want.Field33 || got.Field38 != want.Field38 {
 		t.Errorf("frame/sync: C = (%#08x, %#08x), Go = (%#08x, %#08x)", got.Field33, got.Field38, want.Field33, want.Field38)
 	}

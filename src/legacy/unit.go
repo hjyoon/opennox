@@ -52,9 +52,8 @@ func nox_xxx_teleportToMB_4E7190(a1 *nox_object_t, pos *C.float2) {
 		Nox_xxx_unitMove_4E7010(obj, AsPointf(unsafe.Pointer(pos)))
 	})
 }
-func Nox_xxx_unitSetHP_4E4560(a1 *server.Object, a2 uint16) {
-	defer pinObjectForC(a1)()
-	C.nox_xxx_unitSetHP_4E4560(asObjectC(a1), C.ushort(a2))
+func Nox_xxx_unitSetHP_4E4560(obj *server.Object, amount uint16) {
+	unitSetHPNative4E4560(obj, amount)
 }
 func Nox_xxx_mobInformOwnerHP_4EE4C0(a1 *server.Object) {
 	mobInformOwnerHPCall4EE4C0(a1)

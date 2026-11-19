@@ -257,14 +257,19 @@
       "name": "real map merchant field guide sale quote"
     },
     {
+      "action": "check-shop-audio",
+      "mode": 2,
+      "name": "arm the original merchant sale effect"
+    },
+    {
       "action": "click-item-amount-accept",
       "name": "accept real map merchant FieldGuide sale"
     },
     {
       "action": "check-shop-audio",
-      "mode": 1,
-      "count": 2,
-      "name": "real map merchant sale hardware playback"
+      "mode": 3,
+      "count": 1,
+      "name": "verify the original merchant sale effect reaches OpenAL"
     },
     {
       "action": "wait",

@@ -666,8 +666,8 @@ retired symbols, and pass live Quest replays. The normal client
 reaches stage two in `g_lotd` at full health. The HD client verifies
 key presence and original drop restrictions before reaching stage
 two in `g_crypts` at full health. All 4,649 original asset and Save
-hashes match. Linux `44501643198` and Windows `44501638585` track
-cross-platform verification.
+hashes match. Linux `44501643198` and Windows `44501638585` pass all
+six required jobs.
 
 The default ARM64 inventory contains 2,135 named active C bodies and
 14 macro-generated definitions. The split GAME files contain 1,500
@@ -700,8 +700,39 @@ The default ARM64 inventory contains 2,126 named active C bodies and
 14 macro-generated definitions. The split GAME files contain 1,492
 active bodies, including 180 with pointer and integer conversions.
 The records are in `player-stat-protection-native-v1` and
-`whole-C-inventory-2641e02cf-v1`. Linux `44505562766` and Windows
-`44505557589` track cross-platform verification.
+`whole-C-inventory-2641e02cf-v1`. Windows `44505557589` passes both
+required jobs. Linux `44505562766` tracks the four Linux profiles.
+
+### Monster action stack transfer and deadlines, 2026-11-19
+
+Engine `cda2b27fcba09687cf11cf66804d516a8237fc38` ports the
+`GAME4_2.c` deadline entry `52A420` and action stack item transfer
+`52A440`. The deadline keeps the original signed frame shift and
+minimum stored value. The transfer takes a native record pointer.
+It serializes object script IDs and waypoint indices at their
+original 32-bit widths and preserves the original CRC item boundaries.
+
+Both ARM64 modes pass 6,329 checks without warnings. The actual C
+entries match 768 original deadline cases and 576 original stack
+transfers across all 72 action IDs. Both clients build without
+warnings and verify 490 public and 140 retired symbols.
+
+The normal client completes the original Conjurer III Captain's two
+dialogues and writes a living Save at 29 HP. The HD client completes
+Wizard II Swap with reciprocal position changes, then reloads the
+earned Save and writes a new living Save. The first HD attempt
+recorded the game's line-of-sight rejection as the spider moved.
+The successful replay uses the same product, seed, and original input.
+All 4,649 protected original asset and Save hashes match.
+
+The default ARM64 inventory contains 2,124 named active C bodies,
+including 316 with pointer and integer conversions, and 14
+macro-generated definitions. The split GAME files contain 1,490
+active bodies, including 179 with pointer and integer conversions.
+The records are in `monster-action-data-transfer-native-v1` and
+`whole-C-inventory-cda2b27fc-v1`. Linux `44509637793` and Windows
+`44509632529` track cross-platform verification. The outer
+`529CE0` action-data transfer body remains in the C inventory.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

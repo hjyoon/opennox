@@ -120,6 +120,66 @@ checks all 4,649 original asset and Save hashes.
 The records are in `bow-crossbow-public-native-v1`. Native results
 are in `qualified-bow-crossbow-ARM64-v1.json`, and the four game
 replays are in `qualified-bow-crossbow-ARM64-runtime-v1.json`.
+Linux run `44402672343` and Windows run `44402581407` pass all
+six required jobs.
+
+### Pixies, spell queries, and monster transitions, 2026-11-19
+
+Engine `e17fe93a4aceeb5e3ce91841664f7e32a58c0b18` ports the Pixie
+cast entry `540440`. Forty-four original cases cover both native
+pointer arguments and the position converter. Ordinary and HD
+ARM64 replays find the live Pixie's assigned owner and target.
+The Pixie reduces the target's health from 40 to 24 in both replays.
+Linux run `44409316089` and Windows run `44409316427` pass all
+required jobs. The records are in `pixie-cast-public-native-v1`.
+
+Engine `df0f4a69b615c19b2bb6e1ba3847bdd5da0d67bf` removes 47
+forwarding bodies and ports spell-unit, duration, and owner queries
+`540CE0`, `540D20`, and `540D40`. Both ARM64 modes pass 29,631 tests
+with one intentional skip, including 305 original query cases.
+Linux run `44413670212` and Windows run `44413672058` pass all
+required jobs. The records are in `direct-export-and-spell-query-native-v1`.
+
+Engine `4bfa487d75a3aaa0f7e7c1d18f6509692fa4b85a` ports monster
+Inversion and missile filtering at `5408D0` and `540B60`. Both ARM64
+modes pass 394 tests, including 31 original C calls. Normal and HD
+OpenAL replays verify autonomous Inversion, return hits, zombie
+revival, and the Warrior chapter 1 elevator round trip. Linux run
+`44416035441` and Windows run `44416036121` pass all required jobs.
+The records are in `monster-inversion-public-native-v1`.
+
+Engine `1294de45162aff12e326392ac301422bac34b94f` ports monster polygon
+entry `421FF0`. Both ARM64 modes pass 42 tests and build without
+warnings. The C comparison exercises 35 original transitions and two
+defensive null cases. It checks callback ordering, live polygon IDs,
+the cached update pointer, and the original x87 point conversion.
+Linux run `44421486256` and Windows run `44421423234` pass all
+required jobs. The records are in `monster-polygon-public-native-v1`.
+
+### Player status reports and Magic Missile precision, 2026-11-19
+
+Engine `9da870447cbfadc2dcfb5bb2fa47704cb8674662` ports stamina,
+item enchantment, gold, total mana, and current mana reports at
+`4D8800`, `4D8840`, `4D8870`, `4D88C0`, and `4D8930`. The
+C entry points take typed unit pointers and preserve full-width
+returns on the original report gates. The comparison covers 132
+stock results, including the live replacement of queued mana reports.
+
+The same engine fixes the Magic Missile explosion armor calculation
+and its replay observer. The original direct and splash comparison
+executes 864 cases across the startup and nearest control words.
+For the reproduced splash, the updated engine preserves the original
+remainder `0x3e428f20`. Each exact ARM64 client completes 11 OpenAL
+groups with 44 hits, including an autonomous NPC cast and server and
+client health verification. Both clients build without warnings and
+verify 350 public symbols. The server package passes 217,175 tests in
+each ARM64 mode. The strict legacy run passes 3,498 focused tests.
+
+An exact ARM64 census of the 13 split GAME files records 1,643 active
+named C bodies at this engine, with 227 containing pointer and integer
+casts. The records are in `vital-reports-and-missile-carry-native-v1`.
+The original status-report comparison is in
+`player-vital-report-public-native-v1`.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

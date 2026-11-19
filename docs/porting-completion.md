@@ -319,6 +319,112 @@ describe the compiled source inventory. The whole-C migration and final
 nine-cell campaign audit remain open. The records are in
 `whole-C-inventory-1e6ccf73-v1` and `important-lifecycle-native-v1`.
 
+### Typed important packet and player report entries, 2026-11-19
+
+Engine `91e6a4c847d9b0da90ce635efb65757ee53c4c45` ports the five
+acknowledgement, rate and free-slot entries. The original comparison covers
+2,868 cases including aliased output writes and the packet release order.
+Both ARM64 modes pass 3,049 checks without compiler warnings. Linux
+`44451408587` and Windows `44451314577` pass all six required jobs.
+Both clients pass local English, Korean and IME Enter-chat replays. Both
+profiles also play Wizard II from the earned Swap reload through the two
+original spider encounters, let poison expire, and produce a living manual
+Save at HP 20 and mana 50.
+
+Engine `b0fa7c53902916b0ea12cec4fc6849eb001438d6` moves eight packet send
+and rate-control entries to Go. Actual C calls match 1,656 regular stock
+cases and pass two stale-release regressions. Both ARM64 runs report 1,841
+passes and 20 skips for synthetic original-service boundaries. Linux
+`44455400750` and Windows `44455264321` pass all six required jobs.
+
+Engine `4e21e32607c0af5dd94fea79f9307ae133637be9` ports the retry and flush
+entry. The comparison covers 880 regular stock cases and three division
+boundaries. Both ARM64 modes pass 1,012 checks without compiler warnings.
+Linux `44456008697` and Windows `44455884516` pass all six required jobs.
+Both clients build and verify 403 public symbols. Both pass Enter chat,
+quantity sales, equipped weapon sales and ordinary Conjurer Mystic sales.
+Native OpenAL submits the original sale effect 307 with positive gain and
+queued audio buffers using the null output driver. The current HD Conjurer
+III Captain route produces a living manual Save at HP 29 and mana 85.
+
+Engine `03232515a2927ff9e1960e0bbadfebb62a2c9c1a` ports six equipment,
+charge and NPC reports from `GAME3_2.c`. The typed contracts preserve a
+native pointer or integer status at the caller boundary. The original
+comparator uses actual Bow and MedievalPants flag entries and passes 408
+native cases. Both ARM64 modes pass 573 checks and skip 152 structural
+fault or synthetic service-only cases. The initial compiler and NPC class
+fixture failures are retained. Linux `44458437438` and Windows
+`44458329497` pass all six required jobs. The following product build
+includes this engine.
+
+Engine `6eea2a0f12b5df446878c1bfa87c4f39a523cd8d` ports four player
+reports from `GAME3_2.c`. The experience packet preserves the low
+32 bits of the truncated signed x87 result. Both ARM64 modes pass 753
+checks, including 528 stock comparisons. Both products build without
+warnings and verify 413 public symbols. The 13 split GAME files have
+1,578 active named C bodies in the default ARM64 profile, with 207 bodies
+containing integer-pointer casts. Linux `44459771789` and Windows
+`44459767792` pass all six required jobs. Both exact ARM64 clients pass
+Enter chat, quantity and equipped weapon sales, and the real Conjurer
+Mystic sale. The initial HD run stopped when the disk filled during an
+audit frame. The same executable passes the rerun after cache cleanup.
+
+Records are under `opennox-verification/20261118-trade` in
+`important-acknowledgement-native-v1`, `important-queue-native-v1`,
+`important-flush-native-v1`, `equipment-reports-native-v1` and
+`player-state-report-entries-native-v1`.
+
+### Native packet storage, quest scalars and Shield entries, 2026-11-19
+
+Engine `fdbbe8da3318664fc247c3d7c381ecd0c6a8e08e` moves important packet
+links and queue storage into typed Go fields and retires twelve internal
+C accessors. The pointer layout checks pass for ARM64 macOS, amd64 Linux
+and amd64 and 386 Windows. The 386 packet still occupies 416 bytes and
+keeps its original pointer field offsets. Each ARM64 mode passes
+65,861 checks and records the 20 synthetic skips. Both clients build
+without warnings and verify 413 public and 110 retired symbols. Linux
+`44462730447` passes all four required jobs. Windows verification is
+tracked under run `44462726649`.
+
+Both exact ARM64 clients pass chat and sale replays with the OpenAL Soft
+null output driver. The standard-resolution Conjurer III replay loads
+the earned Con03a Save, reaches both original Captain stories, completes
+the journal check and writes a fresh living manual Save with 29 HP,
+85 mana and zero poison. The input assets, Save and product are
+unchanged. The first HD build's disk-space failure remains in the
+verification directory beside the successful retry.
+
+Engine `b8053883d04a32074401b40e2585ea28800d1adb` moves sixteen
+quest, CRT seed and no-op entries from `GAME3_3.c`. The original
+comparison covers 1,788 cases, including unsigned stages, cached
+difficulty, unordered clamps, and the three actual CRT streams.
+Two difficulty inputs exposed incorrect binary32 curve stores for
+both damage and health. The Go implementation applies the original
+round-toward-zero stores. Both ARM64 modes pass 2,024 checks and emit
+zero warnings.
+
+The twelve profiles at that engine select 206 of 627 tracked C files.
+The default ARM64 selection contains 205 C files with 2,185 named
+definitions, 14 definitions requiring macro classification and 345
+bodies containing pointer and integer casts. Its 13 split GAME files
+contain 1,550 active C bodies. Default ARM64 has zero active C bodies
+in `GAME3_3.c`. The 32-bit build still contains the conditional
+PlayerDamage fallback in that file.
+
+Engine `2fe92608d35ecb34bb87e7887a4a449f3c360c44` ports Shield
+duration consumption, damage reduction and the hit-effect packet
+from `GAME4_2.c`. The original comparison covers 3,404 cases,
+including signed and aliased damage and the four-byte effect packet.
+Actual C calls verify native object, duration, damage and position
+addresses above 4 GiB. Both ARM64 modes pass 3,418 checks without
+warnings. The default ARM64 split GAME inventory has 1,547 active
+C bodies, including 204 with pointer and integer casts. The whole-C
+migration and the final nine campaign cell audits remain open.
+
+Records are under `opennox-verification/20261118-trade` in
+`important-storage-native-v1`, `quest-parameters-and-crt-seeds-native-v1`,
+`whole-C-inventory-b8053883-v1` and `shield-damage-and-fx-entries-native-v1`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

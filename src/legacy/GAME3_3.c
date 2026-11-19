@@ -975,56 +975,10 @@ int* sub_4E4500(nox_object_t* obj, int a2, int a3, int a4) {
 }
 #endif
 
-//----- (004E48F0) --------------------------------------------------------
-int* nox_xxx_setUnitBuffFlags_4E48F0(nox_object_t* obj, unsigned int flags) {
-	nox_server_setUnitBuffFlags_4E48F0(obj, flags);
-	return (int*)(obj->field_140 + 32);
-}
-
-//----- (004E4990) --------------------------------------------------------
-uintptr_t nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* obj, const nox_modifier_attrs_t* attrs) {
-	const bool forced = (obj->obj_class & UINT32_C(0x1000)) != 0 &&
-						(obj->obj_subclass & UINT32_C(0x047F0000)) != 0;
-	if (!forced) {
-		bool has_modifiers = false;
-		for (size_t i = 0; i < 4; ++i) {
-			has_modifiers = has_modifiers || attrs->modifiers[i] != NULL;
-		}
-		if (!has_modifiers) {
-			return (uintptr_t)&attrs->field_16;
-		}
-	}
-
-	uint32_t* const team_base_cache = getMemU32Ptr(0x5D4594, 1564960);
-	if (*team_base_cache == 0) {
-		*team_base_cache = (uint32_t)nox_xxx_getNameId_4E3AA0("TeamBase");
-	}
-	const uint32_t team_base = *team_base_cache;
-	if (!nox_server_setModifierAttrs_4E4990(obj, (nox_modifier_attrs_t*)attrs, team_base)) {
-		return (uintptr_t)team_base;
-	}
-	return (uintptr_t)(obj->field_140 + 32);
-}
-
-//----- (004E4A70) --------------------------------------------------------
-double nox_xxx_objectGetMass_4E4A70(const nox_object_t* obj) { return obj->mass; }
-
 //----- (004E4A80) --------------------------------------------------------
 #if 0 // Restored by object_field_native_entry.go.
 uint32_t nox_xxx_objectGetBuffs_4E4A80(const nox_object_t* obj) { return obj->buffs; }
 #endif
-
-//----- (004E4A90) --------------------------------------------------------
-int* nox_xxx_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, const nox_color3_t* color) {
-	nox_server_setNPCColor_4E4A90(obj, index, (nox_color3_t*)color);
-	return (int*)(obj->field_140 + 32);
-}
-
-//----- (004E4B20) --------------------------------------------------------
-int* nox_xxx_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, int equipped) {
-	nox_server_npcSetItemEquipFlags_4E4B20(obj, item, equipped);
-	return (int*)(obj->field_140 + 32);
-}
 
 //----- (004E4C00) --------------------------------------------------------
 #if 0 // Restored by object_trace_native_entry.go.

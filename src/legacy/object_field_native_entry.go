@@ -5,13 +5,19 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 typedef const nox_object_t object_field_const_object_t;
+typedef const nox_modifier_attrs_t object_field_const_attrs_t;
+typedef const nox_color3_t object_field_const_color_t;
 */
 import "C"
 
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/object"
+
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/server"
 )
 
 //export sub_5408A0
@@ -48,9 +54,65 @@ func nox_xxx_servMarkObjAnimFrame_4E4880(ptr *nox_object_t, frame C.int) *C.int 
 	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
 }
 
+//export nox_xxx_setUnitBuffFlags_4E48F0
+func nox_xxx_setUnitBuffFlags_4E48F0(ptr *nox_object_t, flags C.uint) *C.int {
+	obj := asObjectS(ptr)
+	obj.SetBuffFlags(uint32(flags), func(player *server.Player, value uint32) {
+		Nox_xxx_playerResetProtectionCRC_56F7D0(player.ProtUnitBuffs, int(value))
+	})
+	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
+}
+
+//export nox_xxx_modifSetItemAttrs_4E4990
+func nox_xxx_modifSetItemAttrs_4E4990(ptr *nox_object_t, attrPtr *C.object_field_const_attrs_t) C.uintptr_t {
+	obj := asObjectS(ptr)
+	attrs := (*server.ModifierInitData)(unsafe.Pointer(attrPtr))
+	forced := obj.Class().Has(object.ClassWand) && uint32(obj.SubClass())&0x047f0000 != 0
+	if !forced {
+		var hasModifiers bool
+		for _, modifier := range attrs.Modifiers {
+			if modifier != nil {
+				hasModifiers = true
+			}
+		}
+		if !hasModifiers {
+			return C.uintptr_t(uintptr(unsafe.Pointer(&attrs.Field16)))
+		}
+	}
+	cache := memmap.PtrUint32(0x5D4594, 1564960)
+	if *cache == 0 {
+		*cache = uint32(GetServer().S().Types.IndByID("TeamBase"))
+	}
+	teamBase := *cache
+	if !obj.SetModifierAttrs(attrs, teamBase) {
+		return C.uintptr_t(teamBase)
+	}
+	return C.uintptr_t(uintptr(objectSyncFieldsEnd4E4500(obj)))
+}
+
+//export nox_xxx_objectGetMass_4E4A70
+func nox_xxx_objectGetMass_4E4A70(ptr *C.object_field_const_object_t) C.double {
+	obj := asObjectS((*nox_object_t)(unsafe.Pointer(ptr)))
+	return C.double(obj.Mass)
+}
+
 //export nox_xxx_objectGetBuffs_4E4A80
 func nox_xxx_objectGetBuffs_4E4A80(owner *C.object_field_const_object_t) C.uint {
 	return C.uint(asObjectS((*nox_object_t)(unsafe.Pointer(owner))).Buffs)
+}
+
+//export nox_xxx_setNPCColor_4E4A90
+func nox_xxx_setNPCColor_4E4A90(ptr *nox_object_t, index C.uchar, color *C.object_field_const_color_t) *C.int {
+	obj := asObjectS(ptr)
+	obj.Nox_xxx_setNPCColor_4E4A90(byte(index), (*server.Color3)(unsafe.Pointer(color)))
+	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
+}
+
+//export nox_xxx_npcSetItemEquipFlags_4E4B20
+func nox_xxx_npcSetItemEquipFlags_4E4B20(ptr, item *nox_object_t, equipped C.int) *C.int {
+	obj := asObjectS(ptr)
+	obj.SetNPCItemEquipFlags(asObjectS(item), equipped == 1, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
+	return (*C.int)(objectSyncFieldsEnd4E4500(obj))
 }
 
 //export nox_xxx_armorHaveSameSubclass_53E7B0

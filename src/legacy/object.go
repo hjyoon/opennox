@@ -418,16 +418,6 @@ func nox_set_server_objects_4DA3E0(list *nox_object_t) {
 	GetServer().S().Objs.SetObjects(asObjectS(list))
 }
 
-//export nox_server_setNPCColor_4E4A90
-func nox_server_setNPCColor_4E4A90(obj *nox_object_t, index byte, color *C.nox_color3_t) {
-	asObjectS(obj).Nox_xxx_setNPCColor_4E4A90(index, (*server.Color3)(unsafe.Pointer(color)))
-}
-
-//export nox_server_npcSetItemEquipFlags_4E4B20
-func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.int) {
-	asObjectS(obj).SetNPCItemEquipFlags(asObjectS(item), equipped == 1, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
-}
-
 //export nox_xxx_equipWeaponNPC_53A030
 func nox_xxx_equipWeaponNPC_53A030(owner, item *nox_object_t) C.int {
 	return C.int(npcWeaponDequipNative53A030(asObjectS(owner), asObjectS(item)))
@@ -600,19 +590,6 @@ func nox_xxx_unitUnsetXStatus_4E4780(a1 *nox_object_t, a2 uint32) {
 	asObjectS(a1).UnsetXStatus(a2)
 }
 
-//export nox_server_setUnitBuffFlags_4E48F0
-func nox_server_setUnitBuffFlags_4E48F0(a1 *nox_object_t, flags uint32) {
-	asObjectS(a1).SetBuffFlags(flags, func(pl *server.Player, flags uint32) {
-		Nox_xxx_playerResetProtectionCRC_56F7D0(pl.ProtUnitBuffs, int(flags))
-	})
-}
-
-//export nox_server_setModifierAttrs_4E4990
-func nox_server_setModifierAttrs_4E4990(obj *nox_object_t, attrs *C.nox_modifier_attrs_t, teamBase C.uint) C.int {
-	applied := asObjectS(obj).SetModifierAttrs((*server.ModifierInitData)(unsafe.Pointer(attrs)), uint32(teamBase))
-	return C.int(bool2int(applied))
-}
-
 //export nox_xxx_playerSetState_4FA020
 func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2_cgo int32) int32 {
 	a2 := int(a2_cgo)
@@ -777,15 +754,18 @@ func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
 	return uintptr(C.nox_test_unitSetOnOff_resultOffset(asObjectC(obj), cenabled))
 }
 func objectSetBuffFlagsC(obj *server.Object, flags uint32) uintptr {
+	defer pinObjectForC(obj)()
 	return uintptr(C.nox_test_setUnitBuffFlags_resultOffset(asObjectC(obj), C.uint(flags)))
 }
 func objectSetModifierAttrsC(obj *server.Object, attrs *server.ModifierInitData, teamBase uint32) uintptr {
 	return uintptr(C.nox_test_modifSetItemAttrs_result(asObjectC(obj), (*C.nox_modifier_attrs_t)(unsafe.Pointer(attrs)), C.uint32_t(teamBase)))
 }
 func objectSetNPCColorC(obj *server.Object, index byte, color *server.Color3) uintptr {
+	defer pinObjectForC(obj)()
 	return uintptr(C.nox_test_setNPCColor_resultOffset(asObjectC(obj), C.uchar(index), (*C.nox_color3_t)(unsafe.Pointer(color))))
 }
 func objectSetNPCItemEquipFlagsC(obj, item *server.Object, equipped int) uintptr {
+	defer pinObjectForC(obj)()
 	return uintptr(C.nox_test_npcSetItemEquipFlags_resultOffset(asObjectC(obj), asObjectC(item), C.int(equipped)))
 }
 func objectMassC(obj *server.Object) float64 {

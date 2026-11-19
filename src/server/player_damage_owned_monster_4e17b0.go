@@ -186,7 +186,7 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 		}
 		// The original startup CW applies to every branch here. Keep the
 		// binary32 spill and reload the live carry after electric callbacks.
-		playerDamageCarry4E20F0(target, &effective, scaled)
+		PlayerDamageCarry4E20F0(target, &effective, scaled)
 		if !electric {
 			wear = damage - effective
 		}

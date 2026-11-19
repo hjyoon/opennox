@@ -6,10 +6,10 @@ import (
 	"github.com/opennox/libs/object"
 )
 
-// playerDamageCarry4E20F0 preserves the original binary32 spill before FISTP
+// PlayerDamageCarry4E20F0 preserves the original binary32 spill before FISTP
 // and the live player-before-monster carry accesses. The startup control word
 // rounds arithmetic, stores and signed-DWORD conversion toward zero.
-func playerDamageCarry4E20F0(target *Object, output *int32, amount float32) {
+func PlayerDamageCarry4E20F0(target *Object, output *int32, amount float32) {
 	if target == nil || output == nil {
 		return
 	}

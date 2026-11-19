@@ -645,7 +645,7 @@ func playerDamageMonster4E17B0(
 		factor := experienceAdd53TowardZero(1, -float64(armorValue))
 		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
 		var effective int32
-		playerDamageCarry4E20F0(target, &effective, scaled)
+		PlayerDamageCarry4E20F0(target, &effective, scaled)
 		playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 		if update.Field547 == 0 {
 			update.Field547, update.Field546 = 2, uint32(typ)
@@ -924,7 +924,7 @@ func playerDamageMonster4E17B0(
 	// it after the callback and binary32 spill, just like 004E20F0.
 	var effective int32
 	if electric {
-		playerDamageCarry4E20F0(target, &effective, scaled)
+		PlayerDamageCarry4E20F0(target, &effective, scaled)
 	} else {
 		live := target.UpdateDataMonster()
 		var carry float32
@@ -1000,7 +1000,7 @@ func playerDamageElectricPlayer4E17B0(
 	// 004E20F0 reloads the live carry after ElectricArmorScale, not from
 	// the cached marker base. 004E2180 similarly reloads live armor data.
 	var effective int32
-	playerDamageCarry4E20F0(target, &effective, scaled)
+	PlayerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage, typ, runtime)
 	if target.Class().Has(object.ClassPlayer) && update.Field76 == 0 {
 		update.Field76 = 2

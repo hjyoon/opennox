@@ -47,7 +47,7 @@ func playerDamageMissileExplosionTail4E17B0(
 	factor := experienceAdd53TowardZero(1, -float64(armorValue))
 	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
 	var effective int32
-	playerDamageCarry4E20F0(target, &effective, scaled)
+	PlayerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 	if *marker == 0 {
 		*marker, *markerType = 2, uint32(typ)

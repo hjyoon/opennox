@@ -164,7 +164,7 @@ func playerDamageArmedExplosion4E17B0(
 	factor := experienceAdd53TowardZero(1, -float64(absorption))
 	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
 	var effective int32
-	playerDamageCarry4E20F0(target, &effective, scaled)
+	PlayerDamageCarry4E20F0(target, &effective, scaled)
 	if !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported live armed EXPLOSION armor durability")
 	}

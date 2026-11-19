@@ -59,7 +59,7 @@ func playerDamageNPCEnvironment4E17B0(
 	if typ == object.DamageImpale {
 		scale := experienceAdd53TowardZero(1, -float64(absorption))
 		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(scale, float64(damage)))
-		playerDamageCarry4E20F0(target, &effective, scaled)
+		PlayerDamageCarry4E20F0(target, &effective, scaled)
 		wear = damage - effective
 	}
 	playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)

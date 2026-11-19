@@ -104,7 +104,7 @@ func TestPlayerDamageCarryPrecisionOriginal4E20F0Native(t *testing.T) {
 			if c.TargetNil {
 				target = nil
 			}
-			playerDamageCarry4E20F0(target, out, math.Float32frombits(c.Amount))
+			PlayerDamageCarry4E20F0(target, out, math.Float32frombits(c.Amount))
 			if binary.LittleEndian.Uint32(output[4:8]) != c.ExpectedOutput || monster.Field1 != c.ExpectedMonster || player.Field21 != c.ExpectedPlayer {
 				t.Fatalf("actual native carry output/monster/player=%08x/%08x/%08x want=%08x/%08x/%08x", binary.LittleEndian.Uint32(output[4:8]), monster.Field1, player.Field21, c.ExpectedOutput, c.ExpectedMonster, c.ExpectedPlayer)
 			}

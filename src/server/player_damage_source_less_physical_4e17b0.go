@@ -130,7 +130,7 @@ func playerDamageSourceLessSwitch4E17B0(target *Object, damage int32, typ object
 		if carry == nil {
 			return reject("unsupported live source-less carry record")
 		}
-		playerDamageCarry4E20F0(target, &effective, scaled)
+		PlayerDamageCarry4E20F0(target, &effective, scaled)
 		if physical {
 			wear = damage - effective
 		} // Electric cases wear armor with the original signed amount.

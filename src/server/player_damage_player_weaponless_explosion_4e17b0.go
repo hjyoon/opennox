@@ -170,7 +170,7 @@ func playerDamagePlayerWeaponlessExplosionTail4E17B0(
 	var effective int32
 	factor := experienceAdd53TowardZero(1, -float64(absorption))
 	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
-	playerDamageCarry4E20F0(target, &effective, scaled)
+	PlayerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, nil, damage-effective, typ, r)
 	if target.Class().Has(object.ClassPlayer) {
 		if update.Field76 == 0 {

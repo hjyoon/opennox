@@ -443,7 +443,7 @@ LABEL_120:
 	case 0xA:
 	case 0xB:
 		v51 = (1.0 - v53) * (double)a4;
-		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v51);
+		nox_xxx_playerDecrementHPMana_4E20F0((nox_object_t*)(uintptr_t)(uint32_t)v5, &a1, v51);
 		v33 = a4;
 		v42 = a5;
 		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
@@ -482,7 +482,7 @@ LABEL_120:
 		break;
 	case 2:
 		v50 = (1.0 - v53 * 0.5) * (double)a4;
-		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v50);
+		nox_xxx_playerDecrementHPMana_4E20F0((nox_object_t*)(uintptr_t)(uint32_t)v5, &a1, v50);
 		v33 = a4;
 		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
 			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
@@ -523,7 +523,7 @@ LABEL_120:
 	case 0x11:
 		v35 = sub_4E2220(v5);
 		v49 = v35 * (double)a4;
-		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v49);
+		nox_xxx_playerDecrementHPMana_4E20F0((nox_object_t*)(uintptr_t)(uint32_t)v5, &a1, v49);
 		v33 = a4;
 		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
 			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
@@ -568,40 +568,6 @@ LABEL_120:
 }
 
 #endif
-
-//----- (004E20F0) --------------------------------------------------------
-void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3) {
-	int v3;    // esi
-	int v4;    // eax
-	double v5; // st7
-	int v6;    // eax
-	int v7;    // eax
-	int v8;    // [esp+Ch] [ebp+4h]
-
-	v3 = a1;
-	if (a1 && a2) {
-		v4 = *(uint32_t*)(a1 + 8);
-		if (v4 & 4) {
-			v5 = a3 + *(float*)(*(uint32_t*)(a1 + 748) + 84);
-		} else {
-			if (!(v4 & 2)) {
-				goto LABEL_8;
-			}
-			v5 = a3 + *(float*)(*(uint32_t*)(a1 + 748) + 4);
-		}
-		a3 = v5;
-	LABEL_8:
-		v6 = nox_float2int(a3);
-		v8 = v6;
-		*(uint32_t*)a2 = v6;
-		v7 = *(uint32_t*)(v3 + 8);
-		if (v7 & 4) {
-			*(float*)(*(uint32_t*)(v3 + 748) + 84) = a3 - (double)v8;
-		} else if (v7 & 2) {
-			*(float*)(*(uint32_t*)(v3 + 748) + 4) = a3 - (double)v8;
-		}
-	}
-}
 
 //----- (004E2180) --------------------------------------------------------
 #if 0 // Restored by player_damage_items_4e2180_export.go; retained as PE32 provenance.

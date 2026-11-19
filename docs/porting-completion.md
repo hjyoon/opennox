@@ -805,10 +805,10 @@ inventory records 2,123 named active C bodies, 315 with pointer and
 integer conversions, and 14 macro-generated definitions. The split
 GAME files contain 1,489 active bodies, including 178 with pointer
 and integer conversions. Exact source receipts are in
-`monster-buff-transfer-native-v2`. Windows `44522261676` passes
-the amd64 and 386 server jobs. In Linux run `44522311008`, the
-Ubuntu package mirror returned HTTP 503 while installing dependencies
-for two jobs. The full job logs are retained.
+`monster-buff-transfer-native-v2`. Windows `44522261676` and
+Linux `44522311008` pass all six required jobs. The second Linux
+attempt reruns the two jobs that encountered Ubuntu package
+mirror HTTP 503. The first attempt's job logs are retained.
 
 ### Monster action pointer restoration, 2026-11-19
 
@@ -843,8 +843,45 @@ and 14 macro-generated definitions. The twelve audited profiles
 select 206 of 627 tracked C files. The release receipt
 `monster-action-reference-rebind-native-v1/monster-action-reference-rebind-release-v1.json`
 has SHA-256 `70e6e0421afd0179c4ddcdf59df6faa34a49943b8db98e39b56e8a35485c20db`.
-Linux `44526516014` and Windows `44526502362` track the
-exact engine.
+Linux `44526516014` passes all four exact product jobs. Windows
+`44526502362` passes amd64 and tracks the 386 job.
+
+### Older monster and NPC Save loaders, 2026-11-19
+
+Engine `cca08583bcb130c02989d08dd34462fc29fb0511` ports the two
+remaining pointer-width loader branches in `GAME4_2.c`. The
+public C names `528DB0` and `52ADE0` now enter the same Go code
+on each supported architecture. The two original version-40
+streams were rejected by the prior ARM64 build.
+
+The original outer loaders execute 213 cases. The actual ARM64
+C entries match 205 composed read streams, including old callback
+formats, version boundaries, grouped direction checksums, and
+rejected versions. The comparison checks the following field
+and restored state. The 256 original direction executions
+supply serialized vectors. The first fixture used an out-of-domain
+vector. The next fixture needed an initialized file-handle bank
+for old script records. Those failures and the RAM linker
+interruption are retained. The unchanged-source retry passes
+11,926 checks in each ARM64 mode with zero warnings.
+
+Both products build without warnings and verify 495 public
+and 142 retired symbols. The normal client completes the original
+Conjurer III Captain's two dialogues and writes a living Save.
+HD completes Wizard II Swap, then reloads the earned Save and
+writes a new one at 20 HP. All 4,649 original asset and Save
+hashes match.
+
+The i386 `GAME4_2.c` audit records 286 to 284 active bodies.
+The ARM64 split GAME audit records 1,486 active bodies, including
+177 with pointer and integer conversions. The default profile
+records 2,120 named active C bodies, 314 with pointer and integer
+conversions, and 14 macro-generated definitions. Twelve audited
+profiles select 206 of 627 tracked C files. The release receipt
+`monster-npc-outer-transfer-stock-20261119-v1/monster-npc-outer-transfer-release-v1.json`
+has SHA-256 `ce7cfd58f42a9d69f30755135dfc368c7b443ab5f3d980a391bf64734eb4c754`.
+Linux `44532347484` and Windows `44532334712` track exact
+cross-platform verification.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

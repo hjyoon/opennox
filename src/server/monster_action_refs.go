@@ -14,15 +14,15 @@ type MonsterActionRefs struct {
 }
 
 func (obj *Object) StoreMonsterActionRefs(refs *MonsterActionRefs) {
-	obj.SetExt().monsterActionRefs = refs
+	obj.Server().Objs.monsterActionRefs.Store(obj, refs)
 }
 
 func (obj *Object) TakeMonsterActionRefs() *MonsterActionRefs {
-	ext := obj.GetExt()
-	if ext == nil {
+	srv := obj.Server()
+	if srv == nil {
 		return nil
 	}
-	refs := ext.monsterActionRefs
-	ext.monsterActionRefs = nil
+	value, _ := srv.Objs.monsterActionRefs.LoadAndDelete(obj)
+	refs, _ := value.(*MonsterActionRefs)
 	return refs
 }

@@ -191,21 +191,18 @@ func xferMonsterNative528DB0(cf *cryptfile.CryptFile, obj *server.Object) error 
 		return err
 	}
 
-	if obj.Field34 != 0 {
-		if cf.ReadOnly() {
+	if cf.ReadOnly() {
+		obj.StoreMonsterActionRefs(refs)
+		if obj.Field34 != 0 {
 			if err := monsterXferInventory4F3E30(cf, obj, int(version), obj.Field34); err != nil {
+				obj.TakeMonsterActionRefs()
 				return err
 			}
 		}
-	}
-	if cf.ReadOnly() {
 		if noxflags.HasGame(noxflags.GameFlag22) || !Nox_xxx_gameIsSwitchToSolo_4DB240() {
 			monsterOnSpawnNative529BC0(obj, obj.Server)
 		}
 		monsterEnsureGlyph528DB0(obj)
-	}
-	if cf.ReadOnly() {
-		obj.StoreMonsterActionRefs(refs)
 	}
 	obj.Field34 = savedField34
 	return nil

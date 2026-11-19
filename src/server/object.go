@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"math"
 	"strings"
+	"sync"
 	"time"
 	"unsafe"
 
@@ -145,6 +146,8 @@ type serverObjects struct {
 	lastScriptID    ObjectScriptID
 	PendingActions  []func()
 	netCodeCache    objectNetCodeCache4ECCB0
+
+	monsterActionRefs sync.Map // *Object to *MonsterActionRefs
 
 	XFerInvLight  unsafe.Pointer
 	DefaultPickup PickupFunc
@@ -297,6 +300,7 @@ func (s *serverObjects) newNativeMemory(size uintptr) unsafe.Pointer {
 }
 
 func (s *serverObjects) FreeObjects() {
+	s.monsterActionRefs.Clear()
 	s.alloc.Free()
 }
 
@@ -353,6 +357,7 @@ func (s *serverObjects) FreeObject(obj *Object) int {
 		obj.UpdateData = nil
 	}
 	obj.Server().Map.releaseIndexState(obj)
+	s.monsterActionRefs.Delete(obj)
 	if obj.objectHandle != 0 {
 		delete(s.ext, obj.objectHandle)
 		obj.objectHandle = 0
@@ -642,8 +647,6 @@ type ObjectExt struct {
 	moverWaypoint3  *Waypoint
 	moverWaypoint5  *Waypoint
 	moverTarget     *Object
-
-	monsterActionRefs *MonsterActionRefs
 
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32

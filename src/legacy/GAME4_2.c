@@ -684,79 +684,8 @@ int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
 }
 
 //----- (0051E540) --------------------------------------------------------
-int nox_xxx_mapGenReadLine_51E540(FILE* a1, uint8_t* a2) {
-	int result; // eax
-
-	result = sub_51E570(a1, a2);
-	if (result) {
-		result = sub_51E670(a1) != 0;
-	}
-	return result;
-}
-
-//----- (0051E570) --------------------------------------------------------
-int sub_51E570(FILE* a1, uint8_t* a2) {
-	uint8_t* v2;          // ebx
-	int v3;               // ecx
-	int v4;               // edi
-	int v5;               // ebp
-	int v6;               // eax
-	uint16_t CharType[2]; // [esp+10h] [ebp-4h]
-
-	v2 = a2;
-	v3 = 0;
-	*(uint32_t*)CharType = 0;
-	v4 = 1;
-	do {
-		while (1) {
-			v5 = v3;
-			nox_binfile_fread_408E40((char*)CharType, 1, 1, a1);
-			if (nox_binfile_lastErr_409370(a1) == -1) {
-				return 0;
-			}
-			v3 = *(uint32_t*)CharType;
-			if (*(uint32_t*)CharType == 10) {
-				++*getMemU32Ptr(0x5D4594, 2487520);
-			}
-			v6 = isspace(CharType[0]);
-			if (v6) {
-				break;
-			}
-			v4 = 0;
-			if (v3 != 47 || v5 != 47) {
-				*v2++ = v3;
-			} else {
-				sub_51E630(a1);
-				v2 = a2;
-				v3 = *(uint32_t*)CharType;
-				v4 = 1;
-			}
-		}
-	} while (v4);
-	*v2 = 0;
-	return 1;
-}
-
-//----- (0051E630) --------------------------------------------------------
-int sub_51E630(FILE* a1) {
-	FILE* v1;   // esi
-	int result; // eax
-
-	v1 = a1;
-	while (1) {
-		LOBYTE(a1) = 0;
-		nox_binfile_fread_408E40((char*)&a1, 1, 1, v1);
-		result = nox_binfile_lastErr_409370(v1);
-		if (result == -1) {
-			break;
-		}
-		if ((uint8_t)a1 == 10) {
-			++*getMemU32Ptr(0x5D4594, 2487520);
-			return result;
-		}
-	}
-	return result;
-}
+// Token reading and comment skipping at 51E540, 51E570 and 51E630
+// are implemented in mapgen_token_reader_public.go.
 
 //----- (0051E670) --------------------------------------------------------
 int sub_51E670(FILE* a1) {

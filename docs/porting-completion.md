@@ -638,8 +638,8 @@ The default ARM64 inventory contains 2,139 named active C bodies and
 14 macro-generated definitions. There are 1,504 active split GAME
 bodies, including 190 with pointer and integer conversions. The
 records are in `team-base-and-player-mask-native-v1` and
-`whole-C-inventory-ab2e7c061-v1`. Cross-platform runs are Linux
-`44497264281` and Windows `44497216851`.
+`whole-C-inventory-ab2e7c061-v1`. Linux `44497264281` and Windows
+`44497216851` pass all six required jobs.
 
 The HD product also completes the original Warrior III crypt route
 from the recovered cemetery Save. The Shaman remains at 40 HP through
@@ -674,6 +674,34 @@ The default ARM64 inventory contains 2,135 named active C bodies and
 active bodies, including 188 with pointer and integer conversions.
 The records are in `mapgen-room-coordinate-entries-native-v1` and
 `whole-C-inventory-329305438-v1`.
+
+### Player stat protection entries, 2026-11-19
+
+Engine `2641e02cfa07d78c8e714b32b6ffc1b4dce17a25` ports eight
+`GAME5_2.c` entries and the experience-level entry `56F980`.
+The ABI uses 32-bit integers for tokens and results. Record access
+uses native pointers. Health, mana, gold, level and experience retain
+their original widths, checksum updates, key rotation and rounding.
+
+Both ARM64 modes pass 2,098 checks without warnings. The actual C
+entries match 1,728 original cases with 864 key rotations. There
+are 1,512 cases with lists above the 32-bit address range. Both
+clients build without warnings and verify 488 public and 140 retired
+symbols. The initial build ran out of temporary RAM space during
+DWARF linking. Its report remains with the passing builds.
+
+The normal product confirms two sale sounds during the quantity and
+single-item sales. The HD product confirms two during equipped-weapon
+sales. Both queue the original sound 307 through OpenAL with positive
+gain and the null output driver. All 4,649 protected original asset
+and Save hashes match after the replays.
+
+The default ARM64 inventory contains 2,126 named active C bodies and
+14 macro-generated definitions. The split GAME files contain 1,492
+active bodies, including 180 with pointer and integer conversions.
+The records are in `player-stat-protection-native-v1` and
+`whole-C-inventory-2641e02cf-v1`. Linux `44505562766` and Windows
+`44505557589` track cross-platform verification.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

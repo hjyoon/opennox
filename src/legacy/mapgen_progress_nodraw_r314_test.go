@@ -18,11 +18,12 @@ func TestMapgenProgressNoRenderingR314(t *testing.T) {
 	}
 	text := strings.ReplaceAll(string(source), "\r\n", "\n")
 	const start = "void nox_xxx_mapGenSetFlags_5235F0(char a1) {"
-	const end = "//----- (00523670)"
-	if strings.Count(text, start) != 1 || strings.Count(text, end) != 1 {
-		t.Fatal("complete map-generation progress boundaries are not unique")
+	if strings.Count(text, start) != 1 {
+		t.Fatal("complete map-generation progress definition is not unique")
 	}
 	_, tail, _ := strings.Cut(text, start)
+	// The top-level closing brace is unindented.
+	const end = "\n}\n"
 	body, _, ok := strings.Cut(tail, end)
 	if !ok {
 		t.Fatal("complete map-generation progress end is absent")
@@ -35,7 +36,7 @@ func TestMapgenProgressNoRenderingR314(t *testing.T) {
 	if strings.Count(string(fixture), marker) != 1 {
 		t.Fatal("complete progress insertion marker is not unique")
 	}
-	program := strings.Replace(string(fixture), marker, start+body, 1)
+	program := strings.Replace(string(fixture), marker, start+body+end, 1)
 	for _, mode := range []struct {
 		name  string
 		flags []string

@@ -204,3 +204,19 @@ func TestPlayerDamageNative4E17B0AppliesShieldReduction(t *testing.T) {
 		t.Fatalf("shielded player damages=%v, want [2]", damages)
 	}
 }
+
+func TestSpellShieldReduceDamage52F710LoadsDamageBeforeHP(t *testing.T) {
+	damage := int32(5)
+	target := &Object{}
+	var consumed int32
+	SpellShieldReduceDamage52F710(target, &damage, object.DamageBlade, nil, SpellShieldReduceDamageRuntime52F710{
+		CurrentHP: func(*Object) uint16 {
+			damage = 50
+			return 10
+		},
+		ShieldDamage: func(_ *Object, amount int32) { consumed = amount },
+	})
+	if damage != 2 || consumed != 2 {
+		t.Fatalf("pending damage=%d and Shield consumption=%d, want 2 and 2", damage, consumed)
+	}
+}

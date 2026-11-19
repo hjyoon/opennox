@@ -1,27 +1,38 @@
 package legacy
 
+/*
+#include "GAME4_2.h"
+*/
+import "C"
+
 import (
-	"encoding/binary"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
 
-func spellShieldFXNative523670(s *server.Server, target, source *server.Object) {
-	if s == nil || target == nil {
+//export nox_xxx_netSendShieldFx_523670
+func nox_xxx_netSendShieldFx_523670(target *nox_object_t, sourcePos *C.float2) C.int {
+	GetServer().S().SendShieldFX523670(asObjectS(target), (*types.Pointf)(unsafe.Pointer(sourcePos)))
+	return 0
+}
+
+//export nox_xxx_unitShield_52F690
+func nox_xxx_unitShield_52F690(target *nox_object_t, amount C.int32_t) {
+	spellShieldDamageNative52F690(GetServer().S(), asObjectS(target), int32(amount))
+}
+
+//export nox_xxx_unitShieldReduceDamage_52F710
+func nox_xxx_unitShieldReduceDamage_52F710(target *nox_object_t, damage *C.int32_t, typ C.int, source *nox_object_t) {
+	if target == nil || damage == nil {
 		return
 	}
-	var packet [4]byte
-	packet[0] = 0x80
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(s.GetUnitNetCode(target)))
-	direction := int(target.Direction1)
-	if source != nil {
-		direction = Nox_xxx_math_509ED0(target.PosVec.Sub(source.PosVec))
-	}
-	packet[3] = byte(Nox_xxx_math_509EA0(direction))
-	s.Nox_xxx_netSendFxAllCli_523030(target.PosVec, packet[:])
+	spellShieldReduceDamageNative52F710(GetServer().S(), asObjectS(target), (*int32)(damage),
+		object.DamageType(typ), asObjectS(source))
 }
 
 func spellShieldDamageNative52F690(s *server.Server, target *server.Object, amount int32) {
@@ -49,7 +60,13 @@ func spellShieldReduceDamageNative52F710(
 			Audio: func(id int, object *server.Object) {
 				s.Audio.EventObj(sound.ID(id), object, 0, 0)
 			},
-			ShieldFX:  func(target, source *server.Object) { spellShieldFXNative523670(s, target, source) },
+			ShieldFX: func(target, source *server.Object) {
+				var sourcePos *types.Pointf
+				if source != nil {
+					sourcePos = &source.PosVec
+				}
+				s.SendShieldFX523670(target, sourcePos)
+			},
 			CurrentHP: server.UnitGetHP4EE780,
 			SetHP:     Nox_xxx_unitSetHP_4E4560,
 			ShieldDamage: func(target *server.Object, amount int32) {

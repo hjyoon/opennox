@@ -81,11 +81,11 @@ func SpellShieldReduceDamage52F710(
 		runtime.ShieldFX(target, source)
 	}
 
+	incoming := *damage
 	currentHP := UnitGetHP4EE780(target)
 	if runtime.CurrentHP != nil {
 		currentHP = runtime.CurrentHP(target)
 	}
-	incoming := *damage
 	if int32(currentHP) > incoming {
 		reduced := incoming / 2
 		if reduced == 0 {

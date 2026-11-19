@@ -133,7 +133,7 @@ void nox_xxx_sendGeneratorBreakFX_523200(float* a1, char a2);
 int nox_xxx_netSendVampFx_523270(char a1, short* a2, short a3);
 int nox_xxx_netClientPredictLinear_523530(nox_object_t* obj);
 void nox_xxx_mapGenSetFlags_5235F0(char a1);
-int nox_xxx_netSendShieldFx_523670(int a1, float* a2);
+int nox_xxx_netSendShieldFx_523670(nox_object_t* target, float2* source_pos);
 int nox_xxx_sendSummonStartFX_5236F0(short a1, float* a2, char a3, short a4, short a5);
 int nox_xxx_sendSummonCancelFX_523760(short a1);
 void nox_xxx_sendGeneratorSpawnFX_523830(int4* a1, short a2);
@@ -321,8 +321,8 @@ unsigned int nox_xxx_isObjectMovable_52E020(nox_object_t* obj);
 int nox_xxx_castShield1_52F5A0(void* a1);
 int sub_52F650(void* a1);
 int sub_52F670(void* a1);
-void nox_xxx_unitShield_52F690(int a1, int a2);
-void nox_xxx_unitShieldReduceDamage_52F710(int a1, int* a2, int a3, int a4);
+void nox_xxx_unitShield_52F690(nox_object_t* target, int32_t amount);
+void nox_xxx_unitShieldReduceDamage_52F710(nox_object_t* target, int32_t* damage, int damage_type, nox_object_t* source);
 #include "spell_chain_lightning_52f820.h"
 
 #endif // NOX_PORT_GAME4_2

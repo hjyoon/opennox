@@ -4051,26 +4051,7 @@ void nox_xxx_mapGenSetFlags_5235F0(char a1) {
 	}
 }
 
-//----- (00523670) --------------------------------------------------------
-int nox_xxx_netSendShieldFx_523670(int a1, float* a2) {
-	char v2;    // al
-	int v3;     // eax
-	char v5[4]; // [esp+4h] [ebp-Ch]
-	float2 v6;  // [esp+8h] [ebp-8h]
-
-	v5[0] = -128;
-	*(uint16_t*)&v5[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a1);
-	if (a2) {
-		v6.field_0 = *(float*)(a1 + 56) - *a2;
-		v6.field_4 = *(float*)(a1 + 60) - a2[1];
-		v3 = nox_xxx_math_509ED0(&v6);
-		v2 = nox_xxx_math_509EA0(v3);
-	} else {
-		v2 = nox_xxx_math_509EA0(*(short*)(a1 + 124));
-	}
-	v5[3] = v2;
-	return nox_xxx_netSendFxAllCli_523030((float2*)(a1 + 56), v5, 4);
-}
+// GAME.EXE 00523670 uses the Go Shield effect entry.
 
 //----- (005236F0) --------------------------------------------------------
 int nox_xxx_sendSummonStartFX_5236F0(short a1, float* a2, char a3, short a4, short a5) {
@@ -10590,71 +10571,4 @@ unsigned int nox_xxx_isObjectMovable_52E020(int a1) {
 
 //----- (0052F670) --------------------------------------------------------
 
-//----- (0052F690) --------------------------------------------------------
-void nox_xxx_unitShield_52F690(int a1, int a2) {
-	uint32_t* v2; // eax
-	int v3;       // ecx
-
-	v2 = (uint32_t*)nox_xxx_spellCastedFirst_4FE930();
-	if (v2) {
-		while (v2[12] != a1 || v2[1] != 51) {
-			v2 = (uint32_t*)nox_xxx_spellCastedNext_4FE940(v2);
-			if (!v2) {
-				nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 26);
-				return;
-			}
-		}
-		v3 = v2[12];
-		if (v3) {
-			if (*(uint32_t*)(v3 + 16) & 0x8020) {
-				nox_xxx_spellCancelSpellDo_4FE9D0(v2);
-			} else if ((int)v2[18] - a2 > 0) {
-				v2[18] -= a2;
-			} else {
-				nox_xxx_spellCancelSpellDo_4FE9D0(v2);
-			}
-		} else {
-			nox_xxx_spellCancelSpellDo_4FE9D0(v2);
-		}
-	} else {
-		nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 26);
-	}
-}
-
-//----- (0052F710) --------------------------------------------------------
-void nox_xxx_unitShieldReduceDamage_52F710(int a1, int* a2, int a3, int a4) {
-	int v4; // edi
-	int v5; // eax
-
-	if (a1 && a2) {
-		nox_xxx_aud_501960(131, a1, 0, 0);
-		if (a4) {
-			nox_xxx_netSendShieldFx_523670(a1, (float*)(a4 + 56));
-		} else {
-			nox_xxx_netSendShieldFx_523670(a1, 0);
-		}
-		v4 = *a2;
-		if ((unsigned short)nox_xxx_unitGetHP_4EE780(a1) > v4) {
-			*a2 = v4 / 2;
-			if (!(v4 / 2)) {
-				*a2 = 1;
-			}
-			nox_xxx_unitShield_52F690(a1, *a2);
-		} else {
-			if (*(uint8_t*)(a1 + 8) & 4 && (v5 = *(uint32_t*)(a1 + 748), !*(uint8_t*)(*(uint32_t*)(v5 + 276) + 2251)) &&
-				*(uint8_t*)(v5 + 88) == 16 && a4 &&
-				nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a1 + 56), *(short*)(a1 + 124),
-															(float2*)(a4 + 72)) &
-					1) {
-				*a2 = 1;
-			} else {
-				nox_xxx_unitSetHP_4E4560(a1, 2u);
-				*a2 = 0;
-			}
-			nox_xxx_unitShield_52F690(a1, 999999);
-			*(uint32_t*)(a1 + 520) = a4;
-			*(uint32_t*)(a1 + 524) = a3;
-			*(uint32_t*)(a1 + 536) = gameFrame();
-		}
-	}
-}
+// GAME.EXE 0052F690 and 0052F710 use Go exports in spell_shield_damage_52f690.go.

@@ -148,17 +148,17 @@ int nox_xxx_netReportDequip_4D8590(int a1, const nox_object_t* object);
 int nox_xxx_netReportTotalHealth_4D85C0(int a1, nox_object_t* a2);
 int nox_xxx_netSendTeam_4D8670(int recipient, nox_object_t* unit);
 uintptr_t nox_xxx_netSendPlrHealthToTeam_4D86E0(int recipient);
-short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3);
-int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item);
+short nox_xxx_netReportHealthDelta_4D8760(int player_index, short unit_code, short delta);
+intptr_t nox_xxx_itemReportHealth_4D87A0(int player_index, nox_object_t* item);
 intptr_t nox_xxx_netReportStamina_4D8800(int player_index, nox_object_t* unit);
 int sub_4D8840(int player_index, nox_object_t* unit);
 intptr_t sub_4D8870(int player_index, nox_object_t* unit);
 intptr_t nox_xxx_netReportTotalMana_4D88C0(int player_index, nox_object_t* unit);
 intptr_t nox_xxx_netReportMana_4D8930(int player_index, nox_object_t* unit);
-char nox_xxx_servSendStats_4D8990(int a1, int a2, char a3);
-int nox_xxx_netReportArmorVal_4D8A30(int a1, int a2);
-int nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item);
-int nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item);
+char nox_xxx_servSendStats_4D8990(int player_index, nox_object_t* unit, char level);
+int nox_xxx_netReportArmorVal_4D8A30(int player_index, int armor_bits);
+intptr_t nox_xxx_netReportPickup_4D8A60(int player_index, nox_object_t* item);
+intptr_t nox_xxx_netReportModifiablePickup_4D8AD0(int player_index, nox_object_t* item);
 int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object);
 intptr_t nox_xxx_netSendDMWinner_4D8B90(intptr_t a1, char a2);
 int nox_xxx_netSendDMTeamWinner_4D8BF0(intptr_t a1, char a2);
@@ -312,7 +312,7 @@ void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
 void nox_xxx_playerDamageWeapon_4E1560_go(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
-int nox_xxx_itemDestroyed_4E1650(int a1, uint32_t* a2, unsigned short a3, unsigned short a4);
+intptr_t nox_xxx_itemDestroyed_4E1650(int player_index, nox_object_t* item, unsigned short before, unsigned short after);
 void nox_xxx_equipDamage_4E16D0(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
 void nox_xxx_equipDamage_4E16D0_go(nox_object_t* item, nox_object_t* owner,

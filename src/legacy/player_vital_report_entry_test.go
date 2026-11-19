@@ -171,7 +171,8 @@ func TestVitalReportEntryGuardsMissingRecords(t *testing.T) {
 	oldServer := GetServer
 	t.Cleanup(func() { GetServer = oldServer })
 	GetServer = func() Server { return host }
-	unit, release := alloc.NewHigh(server.Object{ObjClass: object.ClassPlayer})
+	unit, release := alloc.NewHigh(server.Object{})
+	unit.ObjClass = object.ClassPlayer
 	t.Cleanup(release)
 	for entry := range 5 {
 		if got := callVitalReportEntry(entry, 6, nil); got != 0 {

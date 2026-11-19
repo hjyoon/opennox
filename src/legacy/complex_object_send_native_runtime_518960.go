@@ -21,10 +21,8 @@ import (
 
 var complexObjectSendRuntimeNative518960 = func() server.ComplexObjectSendNativeRuntime518960 {
 	return server.ComplexObjectSendNativeRuntime518960{
-		Frame: func() uint32 { return GetServer().S().Frame() },
-		ReportHealth: func(player int32, code uint16, delta int16) {
-			C.nox_xxx_netReportHealthDelta_4D8760(C.int(player), C.short(code), C.short(delta))
-		},
+		Frame:        func() uint32 { return GetServer().S().Frame() },
+		ReportHealth: PlayerSendHealthDeltaNative4D8760,
 		UnitCode: func(unit *server.Object) uint32 {
 			return uint32(C.nox_xxx_netGetUnitCodeServ_578AC0(asObjectC(unit)))
 		},

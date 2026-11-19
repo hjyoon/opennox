@@ -55,7 +55,11 @@ func asObjectP(p unsafe.Pointer) *Object {
 }
 
 func (s *Server) GetUnitNetCode(p Obj) int {
-	obj := ToObject(p)
+	return ObjectNetCode(ToObject(p))
+}
+
+// ObjectNetCode returns the unit's encoded wire identifier.
+func ObjectNetCode(obj *Object) int {
 	if obj == nil {
 		return 0
 	}

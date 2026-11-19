@@ -150,7 +150,7 @@ func TestPlayerStatsPacketNative4D8990UsesNamedNativeFields(t *testing.T) {
 		CarryCapacity: 0x1234,
 		UpdateData:    unsafe.Pointer(update),
 	}
-	packet, ok := playerStatsPacketNative4D8990(unit, func(got *server.Object) int {
+	packet, ok := server.BuildPlayerStatsReport4D8990(unit, func(got *server.Object) int {
 		if got != unit {
 			t.Fatalf("net-code object = %p, want %p", got, unit)
 		}
@@ -187,7 +187,7 @@ func TestPlayerStatsPacketNative4D8990RejectsInvalidObjects(t *testing.T) {
 		{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&server.PlayerUpdateData{Player: &server.Player{}})},
 	}
 	for i, unit := range invalid {
-		if _, ok := playerStatsPacketNative4D8990(unit, netCode); ok {
+		if _, ok := server.BuildPlayerStatsReport4D8990(unit, netCode); ok {
 			t.Fatalf("invalid object %d produced a stats packet", i)
 		}
 	}

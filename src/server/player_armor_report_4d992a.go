@@ -15,8 +15,13 @@ func (s *Server) PlayerArmorReport4D992A(update *PlayerUpdateData) {
 	if current == previous || math.IsNaN(float64(current)) || math.IsNaN(float64(previous)) {
 		return
 	}
-	packet := [5]byte{73}
-	binary.LittleEndian.PutUint32(packet[1:], bits)
+	packet := BuildArmorValueReport4D8A30(bits)
 	s.NetSendPacketXxx0(int(update.Player.PlayerInd), packet[:], nil, 1)
 	update.Field58 = update.Field57
+}
+
+func BuildArmorValueReport4D8A30(bits uint32) [5]byte {
+	packet := [5]byte{73}
+	binary.LittleEndian.PutUint32(packet[1:], bits)
+	return packet
 }

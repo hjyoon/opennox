@@ -25,7 +25,7 @@ func nox_xxx_netPlayerObjSend_518C30(recipient, unit *C.nox_object_t, stream, he
 }
 
 func PlayerSendHealthDeltaNative4D8760(index int32, code uint16, delta int16) {
-	C.nox_xxx_netReportHealthDelta_4D8760(C.int(index), C.short(code), C.short(delta))
+	netReportHealthDelta4D8760(int(index), code, delta)
 }
 
 func PlayerSendFloatToIntNative419A70(value float32) int32 {

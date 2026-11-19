@@ -43,7 +43,6 @@ extern uint32_t dword_5d4594_2516380;
 extern uint32_t dword_5d4594_2516372;
 extern uint32_t dword_5d4594_2523764;
 extern uint32_t dword_5d4594_2516356;
-extern uint64_t qword_581450_9544;
 extern void* dword_5d4594_2516344;
 extern uint32_t dword_5d4594_2516328;
 extern uint32_t dword_5d4594_2516348;
@@ -1474,30 +1473,6 @@ void sub_57B0A0() {
 //----- (0057B180) --------------------------------------------------------
 long long nox_xxx___Getcvt_57B180() { return *getMemU64Ptr(0x5D4594, 2523788); }
 #endif
-
-//----- (0057B190) --------------------------------------------------------
-int sub_57B190(unsigned short a1, unsigned short a2) {
-	int result; // eax
-	double v3;  // st7
-	double v4;  // st6
-
-	if (!a2) {
-		return 4;
-	}
-	if (a1 == a2) {
-		return 0;
-	}
-	v3 = (double)a1;
-	v4 = (double)a2;
-	if (v3 >= v4 * *(double*)&qword_581450_9544) {
-		return 1;
-	}
-	result = 2;
-	if (v3 < v4 * *getMemDoublePtr(0x581450, 9608)) {
-		result = 3;
-	}
-	return result;
-}
 
 //----- (0057B3D0) --------------------------------------------------------
 int nox_cheat_allowall = 0;

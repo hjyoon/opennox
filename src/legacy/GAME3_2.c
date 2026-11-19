@@ -3655,75 +3655,8 @@ char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1) {
 }
 #endif
 
-//----- (004D8760) --------------------------------------------------------
-short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3) {
-	short result; // ax
-	char v4[5];   // [esp+0h] [ebp-8h]
-
-	result = a3;
-	if (a3 < 0) {
-		*(uint16_t*)&v4[3] = a3;
-		v4[0] = 66;
-		*(uint16_t*)&v4[1] = a2;
-		result = nox_xxx_netSendPacket0_4E5420(a1, v4, 5, 0, 1);
-	}
-	return result;
-}
-
-//----- (004D87A0) --------------------------------------------------------
-int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item) {
-	char v4[7];   // [esp+4h] [ebp-8h]
-
-	uint16_t* health = item->health_data;
-	if (health && health[2]) {
-		v4[0] = 68;
-		*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
-		*(uint16_t*)&v4[3] = health[0];
-		*(uint16_t*)&v4[5] = health[2];
-		return nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 0);
-	}
-	return 0;
-}
-
-//----- (004D8990) --------------------------------------------------------
-char nox_xxx_servSendStats_4D8990(int a1, int a2, char a3) {
-	char result; // al
-	int v4;      // edi
-	short v5;    // ax
-	int v6;      // ecx
-	short v7;    // ax
-	char v8[14]; // [esp+8h] [ebp-10h]
-
-	result = *(uint8_t*)(a2 + 8);
-	v4 = *(uint32_t*)(a2 + 748);
-	if (result & 4) {
-		v8[0] = 72;
-		v5 = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
-		v6 = *(uint32_t*)(a2 + 556);
-		*(uint16_t*)&v8[1] = v5;
-		*(uint16_t*)&v8[5] = *(uint16_t*)(v4 + 8);
-		v7 = *(uint16_t*)(a2 + 490);
-		*(uint16_t*)&v8[3] = *(uint16_t*)(v6 + 4);
-		*(uint16_t*)&v8[7] = v7;
-		*(uint16_t*)&v8[9] = *(uint16_t*)(*(uint32_t*)(v4 + 276) + 2235);
-		*(uint16_t*)&v8[11] = *(uint16_t*)(*(uint32_t*)(v4 + 276) + 2239);
-		v8[13] = a3;
-		result = nox_xxx_netSendPacket0_4E5420(a1, v8, 14, 0, 1);
-	}
-	return result;
-}
-
-//----- (004D8A30) --------------------------------------------------------
-int nox_xxx_netReportArmorVal_4D8A30(int a1, int a2) {
-	char v3[5]; // [esp+0h] [ebp-8h]
-
-	v3[0] = 73;
-	*(uint32_t*)&v3[1] = a2;
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 5, 0, 1);
-}
-
 //----- (004D8A60) --------------------------------------------------------
-int nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
+intptr_t nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
 	short v3;   // ax
 	short v4;   // cx
 	char v5[5]; // [esp+4h] [ebp-8h]
@@ -3741,7 +3674,7 @@ int nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
 }
 
 //----- (004D8AD0) --------------------------------------------------------
-int nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
+intptr_t nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
 	char v6[9]; // [esp+8h] [ebp-Ch]
 
 	v6[0] = 76;
@@ -6869,26 +6802,6 @@ int nox_xxx_damageArmor_4E1500(int a1, int a2, int a3, int a4, int a5) {
 void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {
 	nox_xxx_playerDamageWeapon_4E1560_go(item, owner, source, effective, amount, damage_type);
-}
-
-//----- (004E1650) --------------------------------------------------------
-int nox_xxx_itemDestroyed_4E1650(int a1, uint32_t* a2, unsigned short a3, unsigned short a4) {
-	int result; // eax
-	int v5;     // edi
-
-	result = a2[139];
-	if (result) {
-		if (nox_common_gameFlags_check_40A5C0(2048)) {
-			result = nox_xxx_itemReportHealth_4D87A0(a1, a2);
-		} else {
-			v5 = sub_57B190(a3, *(uint16_t*)(a2[139] + 4));
-			result = sub_57B190(a4, *(uint16_t*)(a2[139] + 4));
-			if (v5 != result) {
-				result = nox_xxx_itemReportHealth_4D87A0(a1, a2);
-			}
-		}
-	}
-	return result;
 }
 
 //----- (004E16D0) --------------------------------------------------------

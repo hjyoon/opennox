@@ -437,8 +437,7 @@ func (f *playerSendFixture518C30) runtime() server.PlayerObjectSendRuntime518C30
 		Frame: func() uint32 { value := f.s.Frame(); f.frames = append(f.frames, value); return value },
 		HealthDelta: func(index int32, code uint16, delta int16) {
 			f.event("health_delta", []any{uint32(index), int16(code), delta}, nil, nil)
-			// This is the actual unchanged portable native C4D8760 child,
-			// not a duplicate of its packet-producing implementation.
+			// Exercise the real C ABI entry and the important-packet queue.
 			first, _ := importantNativeListC()
 			if first != nil {
 				f.t.Fatal("health queue not empty before actual Cchild")

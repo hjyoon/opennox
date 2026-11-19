@@ -251,9 +251,7 @@ func reportItemHealthNative4E1650(s *server.Server, owner, item *server.Object, 
 	if player == nil || s.NetSendPacketXxx == nil {
 		return
 	}
-	if !noxflags.HasGame(noxflags.GameModeCoop) &&
-		C.sub_57B190(C.ushort(before), C.ushort(item.HealthData.Max)) ==
-			C.sub_57B190(C.ushort(after), C.ushort(item.HealthData.Max)) {
+	if _, report := itemHealthReportDecision4E1650(item, before, after); !report {
 		return
 	}
 	packet := server.BuildShopItemHealthPacket4D87A0(item)

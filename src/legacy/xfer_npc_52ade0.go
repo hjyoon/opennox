@@ -1,5 +1,3 @@
-//go:build amd64 || arm64
-
 package legacy
 
 /*
@@ -19,8 +17,8 @@ import (
 
 const npcXferVersion52ADE0 = 62
 
-//export nox_xxx_XFerNPC_native_52ADE0
-func nox_xxx_XFerNPC_native_52ADE0(objC *nox_object_t) int32 {
+//export nox_xxx_XFerNPC_52ADE0
+func nox_xxx_XFerNPC_52ADE0(objC *nox_object_t) C.int {
 	obj := asObjectS(objC)
 	if err := xferNPCNative52ADE0(cryptfile.Global(), obj); err != nil {
 		mapLog.Printf("nox_xxx_XFerNPC_52ADE0: %v", err)
@@ -31,7 +29,6 @@ func nox_xxx_XFerNPC_native_52ADE0(objC *nox_object_t) int32 {
 
 // xferNPCNative52ADE0 preserves the GAME.EXE byte stream while keeping every
 // live Object, MonsterUpdateData and inventory link at the host pointer width.
-// The original PE32 implementation remains active on 32-bit builds.
 func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 	if cf == nil || obj == nil || obj.UpdateData == nil {
 		return fmt.Errorf("missing crypt file, object, or NPC update data")
@@ -42,18 +39,13 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 	ud := obj.UpdateDataMonster()
 	savedField34 := obj.Field34
 
-	version, err := monsterRWU16(cf, npcXferVersion52ADE0)
+	versionWord, err := monsterRWU16(cf, npcXferVersion52ADE0)
 	if err != nil {
 		return fmt.Errorf("version: %w", err)
 	}
+	version := int(int16(versionWord))
 	if version > npcXferVersion52ADE0 {
 		return fmt.Errorf("unsupported version %d", version)
-	}
-	// Contemporary Nox maps use version 62. Older formats have several
-	// different fixed-width branches; the untouched PE32 implementation keeps
-	// supporting those on 32-bit targets until each old stream is recovered.
-	if version < 50 {
-		return fmt.Errorf("NPC transfer version %d still requires the PE32 path", version)
 	}
 
 	if cf.ReadOnly() {
@@ -62,34 +54,35 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 			ud.StatusFlags = ud.MonsterDef.StatusFlags92
 		}
 	}
-	if Nox_xxx_mapReadWriteObjData_4F4530(obj, int(version)) == 0 {
+	if objectMapReadWriteNative4F4530(cf, obj, int32(version)) == 0 {
 		return fmt.Errorf("base object transfer failed")
 	}
-	if err := monsterXferDirection528DB0(cf, obj); err != nil {
+	if err := monsterXferDirectionAndCallbacks528DB0(cf, obj, version, true); err != nil {
 		return err
-	}
-	if err := monsterXferCallbacks528DB0(cf, obj); err != nil {
-		return err
-	}
-	if _, err := monsterRWU32(cf, 0); err != nil {
-		return fmt.Errorf("direction scratch: %w", err)
 	}
 	if err := npcXferColors52ADE0(cf, obj); err != nil {
 		return err
 	}
-	if err := monsterXferDefinitionCommon528DB0(cf, ud, obj.HealthData, int(version), true); err != nil {
+	if cf.ReadOnly() && version == 31 {
+		if err := npcXferVersion31Spells52ADE0(cf); err != nil {
+			return err
+		}
+	}
+	if err := monsterXferDefinitionCommon528DB0(cf, ud, obj.HealthData, version, true); err != nil {
 		return fmt.Errorf("NPC definition: %w", err)
 	}
 
 	refs := new(server.MonsterActionRefs)
-	if err := monsterXferActionData529CE0(cf, obj, refs, false); err != nil {
-		return err
+	if version >= 41 {
+		if err := monsterXferActionData529CE0(cf, obj, refs, false); err != nil {
+			return err
+		}
 	}
-	if err := npcXferTail52ADE0(cf, obj, int(version)); err != nil {
+	if err := npcXferTail52ADE0(cf, obj, version); err != nil {
 		return err
 	}
 	if obj.Field34 != 0 && cf.ReadOnly() {
-		if err := monsterXferInventory4F3E30(cf, obj, int(version), obj.Field34); err != nil {
+		if err := monsterXferInventory4F3E30(cf, obj, version, obj.Field34); err != nil {
 			return err
 		}
 	}
@@ -102,6 +95,27 @@ func xferNPCNative52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 		obj.StoreMonsterActionRefs(refs)
 	}
 	obj.Field34 = savedField34
+	return nil
+}
+
+func npcXferVersion31Spells52ADE0(cf *cryptfile.CryptFile) error {
+	if _, err := monsterRWU16(cf, 0); err != nil {
+		return fmt.Errorf("version 31 NPC spell prefix: %w", err)
+	}
+	count, err := monsterRWU8(cf, 0)
+	if err != nil {
+		return fmt.Errorf("version 31 NPC spell count: %w", err)
+	}
+	for i := 0; i < int(count); i++ {
+		if _, err := monsterRWString8(cf, ""); err != nil {
+			return fmt.Errorf("version 31 NPC spell[%d] name: %w", i, err)
+		}
+		for j := 0; j < 2; j++ {
+			if _, err := monsterRWU8(cf, 0); err != nil {
+				return fmt.Errorf("version 31 NPC spell[%d] byte %d: %w", i, j, err)
+			}
+		}
+	}
 	return nil
 }
 
@@ -123,31 +137,48 @@ func npcXferColors52ADE0(cf *cryptfile.CryptFile, obj *server.Object) error {
 
 func npcXferTail52ADE0(cf *cryptfile.CryptFile, obj *server.Object, version int) error {
 	ud := obj.UpdateDataMonster()
-	if obj.HealthData == nil {
-		return fmt.Errorf("NPC has no health data")
-	}
 	var err error
 
 	field361High := byte(ud.Field361 >> 8)
-	if field361High, err = monsterRWU8(cf, field361High); err != nil {
-		return fmt.Errorf("field361 high byte: %w", err)
+	if version >= 42 {
+		if field361High, err = monsterRWU8(cf, field361High); err != nil {
+			return fmt.Errorf("field361 high byte: %w", err)
+		}
+		ud.Field361 = ud.Field361&0xffff00ff | uint32(field361High)<<8
 	}
-	ud.Field361 = ud.Field361&0xffff00ff | uint32(field361High)<<8
-	if ud.Field0, err = monsterRWU32(cf, ud.Field0); err != nil {
-		return fmt.Errorf("field0: %w", err)
+	if version >= 44 {
+		if ud.Field0, err = monsterRWU32(cf, ud.Field0); err != nil {
+			return fmt.Errorf("field0: %w", err)
+		}
 	}
-	healthMax, err := monsterRWU32(cf, uint32(obj.HealthData.Max))
-	if err != nil {
-		return fmt.Errorf("maximum health: %w", err)
+	health := obj.HealthData
+	if version >= 45 {
+		var maximum uint32
+		if health != nil {
+			maximum = uint32(health.Max)
+		}
+		maximum, err = monsterRWU32(cf, maximum)
+		if err != nil {
+			return fmt.Errorf("maximum health: %w", err)
+		}
+		if health != nil {
+			health.Max = uint16(maximum)
+		}
 	}
-	obj.HealthData.Max = uint16(healthMax)
-	subclassFlags, err := monsterRWU32(cf, uint32(obj.ObjSubClass)&0x180)
-	if err != nil {
-		return fmt.Errorf("NPC subclass flags: %w", err)
+	if version >= 46 {
+		subclassFlags, err := monsterRWU32(cf, uint32(obj.ObjSubClass)&0x180)
+		if err != nil {
+			return fmt.Errorf("NPC subclass flags: %w", err)
+		}
+		obj.ObjSubClass |= object.SubClass(subclassFlags)
 	}
-	obj.ObjSubClass |= object.SubClass(subclassFlags)
-	if obj.HealthData.Cur, err = monsterRWU16(cf, obj.HealthData.Cur); err != nil {
-		return fmt.Errorf("health: %w", err)
+	if version >= 48 {
+		if health == nil {
+			return fmt.Errorf("NPC has no health data")
+		}
+		if health.Cur, err = monsterRWU16(cf, health.Cur); err != nil {
+			return fmt.Errorf("health: %w", err)
+		}
 	}
 	// GAME.EXE 0052B8DA..0052B965 gates each later field separately.
 	// In particular, version-60 Kalen ends after voice, before buffs/poison.

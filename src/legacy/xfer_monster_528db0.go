@@ -1,5 +1,3 @@
-//go:build amd64 || arm64
-
 package legacy
 
 /*
@@ -10,7 +8,9 @@ package legacy
 import "C"
 
 import (
+	"encoding/binary"
 	"fmt"
+	"io"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -134,8 +134,8 @@ func monsterShopModifierName528DB0(slot uint32, modifierName func(int) (string, 
 	return name, nil
 }
 
-//export nox_xxx_XFerMonster_native_528DB0
-func nox_xxx_XFerMonster_native_528DB0(objC *nox_object_t) int32 {
+//export nox_xxx_XFerMonster_528DB0
+func nox_xxx_XFerMonster_528DB0(objC *nox_object_t) C.int {
 	obj := asObjectS(objC)
 	if err := xferMonsterNative528DB0(cryptfile.Global(), obj); err != nil {
 		mapLog.Printf("nox_xxx_XFerMonster_528DB0: %v", err)
@@ -155,45 +155,36 @@ func xferMonsterNative528DB0(cf *cryptfile.CryptFile, obj *server.Object) error 
 	refs := new(server.MonsterActionRefs)
 	savedField34 := obj.Field34
 
-	version, err := monsterRWU16(cf, monsterXferVersion528DB0)
+	versionWord, err := monsterRWU16(cf, monsterXferVersion528DB0)
 	if err != nil {
 		return fmt.Errorf("version: %w", err)
 	}
+	version := int(int16(versionWord))
 	if version > monsterXferVersion528DB0 {
 		return fmt.Errorf("unsupported version %d", version)
 	}
-	// The native object base reader is pointer-width safe from object version
-	// 61 onward. Contemporary maps use monster transfer version 64; retaining
-	// the original C implementation on 32-bit targets preserves older maps.
-	if version < 41 {
-		return fmt.Errorf("monster transfer version %d still requires the PE32 path", version)
-	}
-	if Nox_xxx_mapReadWriteObjData_4F4530(obj, int(version)) == 0 {
+	if objectMapReadWriteNative4F4530(cf, obj, int32(version)) == 0 {
 		return fmt.Errorf("base object transfer failed")
 	}
-	if err := monsterXferDirection528DB0(cf, obj); err != nil {
+	if err := monsterXferDirectionAndCallbacks528DB0(cf, obj, version, false); err != nil {
 		return err
 	}
-	if err := monsterXferCallbacks528DB0(cf, obj); err != nil {
+	if err := monsterXferDefinition528DB0(cf, ud, version); err != nil {
 		return err
 	}
-	if _, err := monsterRWU32(cf, 0); err != nil { // legacy direction scratch value
-		return fmt.Errorf("direction scratch: %w", err)
+	if version >= 41 {
+		if err := monsterXferActionData529CE0(cf, obj, refs, false); err != nil {
+			return err
+		}
 	}
-	if err := monsterXferDefinition528DB0(cf, ud, int(version)); err != nil {
-		return err
-	}
-	if err := monsterXferActionData529CE0(cf, obj, refs, false); err != nil {
-		return err
-	}
-	if err := monsterXferTail528DB0(cf, obj, int(version)); err != nil {
+	if err := monsterXferTail528DB0(cf, obj, version); err != nil {
 		return err
 	}
 
 	if cf.ReadOnly() {
 		obj.StoreMonsterActionRefs(refs)
 		if obj.Field34 != 0 {
-			if err := monsterXferInventory4F3E30(cf, obj, int(version), obj.Field34); err != nil {
+			if err := monsterXferInventory4F3E30(cf, obj, version, obj.Field34); err != nil {
 				obj.TakeMonsterActionRefs()
 				return err
 			}
@@ -207,57 +198,46 @@ func xferMonsterNative528DB0(cf *cryptfile.CryptFile, obj *server.Object) error 
 	return nil
 }
 
-func monsterXferDirection528DB0(cf *cryptfile.CryptFile, obj *server.Object) error {
-	var dir [2]uint32
+func monsterXferDirectionAndCallbacks528DB0(cf *cryptfile.CryptFile, obj *server.Object, version int, npc bool) error {
+	var direction [8]byte
 	if !cf.ReadOnly() {
 		var indexed server.IndexedDirectionVector509E20
 		server.IndexedDirection509E20(int32(obj.Direction1), &indexed)
-		dir[0] = uint32(indexed.X)
-		dir[1] = uint32(indexed.Y)
+		binary.LittleEndian.PutUint32(direction[0:4], uint32(indexed.X))
+		binary.LittleEndian.PutUint32(direction[4:8], uint32(indexed.Y))
 	}
-	for i := range dir {
-		v, err := monsterRWU32(cf, dir[i])
-		if err != nil {
-			return fmt.Errorf("direction[%d]: %w", i, err)
-		}
-		dir[i] = v
+	// The original transfers the two direction components as one CRC item.
+	if err := monsterRWBytes528DB0(cf, direction[:]); err != nil {
+		return fmt.Errorf("direction: %w", err)
+	}
+	if err := monsterXferCallbacks528DB0(cf, obj, version, npc); err != nil {
+		return err
 	}
 	if cf.ReadOnly() {
 		angle := server.Dir16(server.DirectionToAngle509E00(&server.DirectionInitData{
-			X: int32(dir[0]),
-			Y: int32(dir[1]),
+			X: int32(binary.LittleEndian.Uint32(direction[0:4])),
+			Y: int32(binary.LittleEndian.Uint32(direction[4:8])),
 		}))
 		obj.Direction1 = angle
 		obj.Direction2 = angle
 	}
+	if npc || !cf.ReadOnly() || version >= 11 {
+		if _, err := monsterRWU32(cf, 0); err != nil {
+			return fmt.Errorf("direction scratch: %w", err)
+		}
+	}
 	return nil
 }
 
-func monsterXferCallbacks528DB0(cf *cryptfile.CryptFile, obj *server.Object) error {
+func monsterXferCallbacks528DB0(cf *cryptfile.CryptFile, obj *server.Object, version int, npc bool) error {
 	ud := obj.UpdateDataMonster()
-	callbacks := []struct {
+	callbacks := [...]struct {
 		name string
 		cb   *server.ScriptCallback
 		off  uintptr
 	}{
 		{"enemy sighted", &ud.ScriptEnemySighted, 640},
 		{"death", &ud.ScriptDeath, 896},
-	}
-	for _, it := range callbacks {
-		if err := monsterXferScriptCallback528DB0(obj, it.cb, it.off); err != nil {
-			return fmt.Errorf("%s callback: %w", it.name, err)
-		}
-	}
-	low, err := monsterRWU16(cf, uint16(ud.Field305))
-	if err != nil {
-		return fmt.Errorf("callback field305: %w", err)
-	}
-	ud.Field305 = ud.Field305&0xffff0000 | uint32(low)
-	callbacks = []struct {
-		name string
-		cb   *server.ScriptCallback
-		off  uintptr
-	}{
 		{"looking for enemy", &ud.ScriptLookingForEnemy, 768},
 		{"change focus", &ud.ScriptChangeFocus, 1024},
 		{"is hit", &ud.ScriptIsHit, 1152},
@@ -267,20 +247,42 @@ func monsterXferCallbacks528DB0(cf *cryptfile.CryptFile, obj *server.Object) err
 		{"end waypoint", &ud.ScriptEndOfWaypoint, 1664},
 		{"lost enemy", &ud.ScriptLostEnemy, 1792},
 	}
-	for _, it := range callbacks {
-		if err := monsterXferScriptCallback528DB0(obj, it.cb, it.off); err != nil {
+	expanded, lostEnemy := 31, 52
+	if npc {
+		expanded, lostEnemy = 32, 50
+	}
+	count := 3
+	if version >= expanded {
+		count = 9
+	}
+	if version >= lostEnemy {
+		count = len(callbacks)
+	}
+	for i, it := range callbacks[:count] {
+		if i == 2 {
+			low, err := monsterRWU16(cf, uint16(ud.Field305))
+			if err != nil {
+				return fmt.Errorf("callback field305: %w", err)
+			}
+			ud.Field305 = ud.Field305&0xffff0000 | uint32(low)
+		}
+		if !npc && version < 3 {
+			scriptCallbackInitRuntime4F5540(it.cb)
+			continue
+		}
+		if err := monsterXferScriptCallback528DB0(cf, obj, it.cb, it.off); err != nil {
 			return fmt.Errorf("%s callback: %w", it.name, err)
 		}
 	}
 	return nil
 }
 
-func monsterXferScriptCallback528DB0(obj *server.Object, cb *server.ScriptCallback, contextOff uintptr) error {
+func monsterXferScriptCallback528DB0(cf *cryptfile.CryptFile, obj *server.Object, cb *server.ScriptCallback, contextOff uintptr) error {
 	var context unsafe.Pointer
 	if obj.Field189 != nil {
 		context = unsafe.Add(obj.Field189, contextOff)
 	}
-	if scriptHandlerXferRuntime4F5580(cb, context) == 0 {
+	if scriptHandlerXferNative4F5580(cb, context, scriptHandlerXferRuntimeDeps4F5580(cf)) == 0 {
 		return fmt.Errorf("script handler transfer failed")
 	}
 	return nil
@@ -291,13 +293,29 @@ func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpda
 }
 
 func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData, health *server.HealthData, version int, npc bool) error {
+	definitionVersion, wideStatusVersion, pairWordVersion := 31, 51, 46
+	timingVersion, extendedTimingVersion, actionNameVersion := 32, 33, 34
+	if npc {
+		definitionVersion, wideStatusVersion, pairWordVersion = 32, 49, 47
+		timingVersion, extendedTimingVersion, actionNameVersion = 33, 34, 35
+	}
+	if version < definitionVersion {
+		return nil
+	}
 	var err error
 	if b, e := monsterRWU8(cf, byte(ud.Field333)); e != nil {
 		return fmt.Errorf("field333: %w", e)
 	} else {
 		ud.Field333 = ud.Field333&0xffffff00 | uint32(b)
 	}
-	status, err := monsterRWU32(cf, uint32(ud.StatusFlags))
+	var status uint32
+	if version >= wideStatusVersion {
+		status, err = monsterRWU32(cf, uint32(ud.StatusFlags))
+	} else {
+		var word uint16
+		word, err = monsterRWU16(cf, uint16(ud.StatusFlags))
+		status = uint32(word)
+	}
 	if err != nil {
 		return fmt.Errorf("status: %w", err)
 	}
@@ -316,17 +334,31 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 		}
 	}
 	if npc {
-		if health == nil {
-			return fmt.Errorf("NPC has no health data")
+		var current uint16
+		if health != nil {
+			current = health.Cur
 		}
-		if health.Cur, err = monsterRWU16(cf, health.Cur); err != nil {
+		current, err = monsterRWU16(cf, current)
+		if err != nil {
 			return fmt.Errorf("NPC definition health: %w", err)
+		}
+		if health != nil {
+			health.Cur = current
+		}
+	} else if version < 33 {
+		if err := cf.Seek(2, io.SeekCurrent); err != nil {
+			return fmt.Errorf("legacy monster definition gap: %w", err)
 		}
 	}
 	if ud.Aggression, err = monsterRWF32(cf, ud.Aggression); err != nil {
 		return fmt.Errorf("aggression: %w", err)
 	}
 	ud.Aggression2 = ud.Aggression
+	if version < actionNameVersion {
+		if ud.AIAction340, err = monsterRWU32(cf, ud.AIAction340); err != nil {
+			return fmt.Errorf("legacy AI action: %w", err)
+		}
+	}
 
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(&ud.Field341)), 76)
 	name, err := monsterRWString8(cf, cStringBytes528DB0(buf))
@@ -337,7 +369,81 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 		setCStringBytes528DB0(buf, name)
 	}
 
+	if err := monsterXferDefinitionSpells528DB0(cf, ud, version); err != nil {
+		return err
+	}
+	pairs := [...][2]*uint16{
+		{&ud.Field362_0, &ud.Field362_2},
+		{&ud.Field364_0, &ud.Field364_2},
+		{&ud.Field366_0, &ud.Field366_2},
+		{&ud.Field368_0, &ud.Field368_2},
+		{&ud.Field370_0, &ud.Field370_2},
+	}
+	for i, pair := range pairs {
+		for j, field := range pair {
+			if version >= pairWordVersion {
+				*field, err = monsterRWU16(cf, *field)
+			} else {
+				var low byte
+				low, err = monsterRWU8(cf, byte(*field))
+				*field = uint16(low)
+			}
+			if err != nil {
+				return fmt.Errorf("definition pair[%d][%d]: %w", i, j, err)
+			}
+		}
+		if version < extendedTimingVersion {
+			if _, err := monsterRWU32(cf, 0); err != nil {
+				return fmt.Errorf("legacy definition pair[%d] scratch: %w", i, err)
+			}
+		}
+	}
+	if version >= timingVersion {
+		if ud.Field329, err = monsterRWF32(cf, ud.Field329); err != nil {
+			return fmt.Errorf("field329: %w", err)
+		}
+	}
+	if version >= extendedTimingVersion {
+		if err := monsterXferDefinitionTimings528DB0(cf, ud, version, npc); err != nil {
+			return err
+		}
+	}
+	if version >= actionNameVersion {
+		actionName := ""
+		if !cf.ReadOnly() {
+			actionName = monsterSelectedActionNameNative5345B0(ud.AIAction340)
+		}
+		actionName, err = monsterRWString8(cf, actionName)
+		if err != nil {
+			return fmt.Errorf("AI action: %w", err)
+		}
+		if cf.ReadOnly() {
+			ud.AIAction340 = uint32(monsterActionByName528DB0(actionName, 39, ai.ACTION_INVALID))
+		}
+	}
+	return nil
+}
+
+func monsterXferDefinitionSpells528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData, version int) error {
 	spells := unsafe.Slice(&ud.Field372, server.SpellsMax)
+	if version < 34 {
+		var data [4 * server.SpellsMax]byte
+		if !cf.ReadOnly() {
+			for i, value := range spells {
+				binary.LittleEndian.PutUint32(data[4*i:], value)
+			}
+		}
+		if err := monsterRWBytes528DB0(cf, data[:]); err != nil {
+			return fmt.Errorf("legacy spell table: %w", err)
+		}
+		if cf.ReadOnly() {
+			for i := range spells {
+				spells[i] = binary.LittleEndian.Uint32(data[4*i:])
+			}
+		}
+		return nil
+	}
+	var err error
 	if cf.ReadOnly() {
 		clear(spells)
 	}
@@ -388,23 +494,11 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 		}
 	}
 
-	pairs := [][2]*uint16{
-		{&ud.Field362_0, &ud.Field362_2},
-		{&ud.Field364_0, &ud.Field364_2},
-		{&ud.Field366_0, &ud.Field366_2},
-		{&ud.Field368_0, &ud.Field368_2},
-		{&ud.Field370_0, &ud.Field370_2},
-	}
-	for i := range pairs {
-		for j := range pairs[i] {
-			if *pairs[i][j], err = monsterRWU16(cf, *pairs[i][j]); err != nil {
-				return fmt.Errorf("definition pair[%d][%d]: %w", i, j, err)
-			}
-		}
-	}
-	if ud.Field329, err = monsterRWF32(cf, ud.Field329); err != nil {
-		return fmt.Errorf("field329: %w", err)
-	}
+	return nil
+}
+
+func monsterXferDefinitionTimings528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData, version int, npc bool) error {
+	var err error
 	if ud.Field510, err = monsterRWU32(cf, ud.Field510); err != nil {
 		return fmt.Errorf("field510: %w", err)
 	}
@@ -421,8 +515,23 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 	if ud.Field330, err = monsterRWF32(cf, ud.Field330); err != nil {
 		return fmt.Errorf("field330: %w", err)
 	}
+	if version < 42 {
+		enabled, e := monsterRWU16(cf, 0)
+		if e != nil {
+			return fmt.Errorf("legacy monster availability: %w", e)
+		}
+		if enabled == 0 {
+			ud.Field361 = ud.Field361&0xffff00ff | 0x100
+		}
+	}
 	spellIDs := []*uint32{&ud.Field511, &ud.Field512, &ud.Field513}
 	for i, p := range spellIDs {
+		if !npc && version < 53 {
+			if *p, err = monsterRWU32(cf, *p); err != nil {
+				return fmt.Errorf("legacy auto spell[%d]: %w", i, err)
+			}
+			continue
+		}
 		cur := ""
 		if !cf.ReadOnly() {
 			// The original name table includes SPELL_INVALID at index zero.
@@ -440,18 +549,6 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 			*p = uint32(id)
 		}
 	}
-	actionName := monsterSelectedActionNameNative5345B0(ud.AIAction340)
-	if cf.ReadOnly() {
-		actionName = ""
-	}
-	actionName, err = monsterRWString8(cf, actionName)
-	if err != nil {
-		return fmt.Errorf("AI action: %w", err)
-	}
-	if cf.ReadOnly() {
-		ud.AIAction340 = uint32(monsterActionByName528DB0(actionName, 39, ai.ACTION_INVALID))
-	}
-	_ = version
 	return nil
 }
 
@@ -459,58 +556,62 @@ func monsterXferTail528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 	ud := obj.UpdateDataMonster()
 	var err error
 	field361High := byte(ud.Field361 >> 8)
-	if field361High, err = monsterRWU8(cf, field361High); err != nil {
-		return fmt.Errorf("field361 high byte: %w", err)
+	if version >= 42 {
+		if field361High, err = monsterRWU8(cf, field361High); err != nil {
+			return fmt.Errorf("field361 high byte: %w", err)
+		}
+		ud.Field361 = ud.Field361&0xffff00ff | uint32(field361High)<<8
 	}
-	ud.Field361 = ud.Field361&0xffff00ff | uint32(field361High)<<8
-	if obj.MonsterClass().Has(object.MonsterShopkeeper) {
+	if version >= 43 && obj.MonsterClass().Has(object.MonsterShopkeeper) {
 		if err := monsterXferShop528DB0(cf, obj, version); err != nil {
 			return err
 		}
 	}
-	if ud.Field0, err = monsterRWU32(cf, ud.Field0); err != nil {
-		return fmt.Errorf("field0: %w", err)
-	}
-	serializedFlags, err := monsterRWU32(cf, uint32(obj.ObjSubClass)&0x180)
-	if err != nil {
-		return fmt.Errorf("monster subclass flags: %w", err)
-	}
-	obj.ObjSubClass |= object.SubClass(serializedFlags)
-	if obj.HealthData == nil {
-		return fmt.Errorf("monster has no health data")
-	}
-	if obj.HealthData.Cur, err = monsterRWU16(cf, obj.HealthData.Cur); err != nil {
-		return fmt.Errorf("health: %w", err)
-	}
-	for _, it := range []struct {
-		name string
-		p    *uint32
-	}{
-		{"field337", &ud.Field337},
-		{"field335", &ud.Field335},
-		{"field361", &ud.Field361},
-		{"field509", &ud.Field509},
-	} {
-		b, e := monsterRWU8(cf, byte(*it.p))
-		if e != nil {
-			return fmt.Errorf("%s low byte: %w", it.name, e)
+	if version >= 44 {
+		if ud.Field0, err = monsterRWU32(cf, ud.Field0); err != nil {
+			return fmt.Errorf("field0: %w", err)
 		}
-		*it.p = *it.p&0xffffff00 | uint32(b)
 	}
-	if obj.MonsterClass().Has(object.MonsterFemaleNPC) {
-		for i := range ud.Color {
-			cl := ud.Color[i]
-			buf := []byte{cl.R, cl.G, cl.B}
-			if err := monsterRWBytes528DB0(cf, buf); err != nil {
-				return fmt.Errorf("NPC color[%d]: %w", i, err)
-			}
-			if cf.ReadOnly() {
-				cl = server.Color3{R: buf[0], G: buf[1], B: buf[2]}
-				obj.Nox_xxx_setNPCColor_4E4A90(byte(i), &cl)
-			}
+	if version >= 45 {
+		serializedFlags, err := monsterRWU32(cf, uint32(obj.ObjSubClass)&0x180)
+		if err != nil {
+			return fmt.Errorf("monster subclass flags: %w", err)
 		}
-		if err := monsterXferVoice528DB0(cf, ud); err != nil {
-			return fmt.Errorf("female NPC voice: %w", err)
+		obj.ObjSubClass |= object.SubClass(serializedFlags)
+	}
+	if version >= 49 {
+		if obj.HealthData == nil {
+			return fmt.Errorf("monster has no health data")
+		}
+		if obj.HealthData.Cur, err = monsterRWU16(cf, obj.HealthData.Cur); err != nil {
+			return fmt.Errorf("health: %w", err)
+		}
+	}
+	if version >= 51 {
+		for _, it := range []struct {
+			name string
+			p    *uint32
+		}{
+			{"field337", &ud.Field337},
+			{"field335", &ud.Field335},
+			{"field361", &ud.Field361},
+			{"field509", &ud.Field509},
+		} {
+			b, e := monsterRWU8(cf, byte(*it.p))
+			if e != nil {
+				return fmt.Errorf("%s low byte: %w", it.name, e)
+			}
+			*it.p = *it.p&0xffffff00 | uint32(b)
+		}
+	}
+	if version >= 54 && obj.MonsterClass().Has(object.MonsterFemaleNPC) {
+		if err := npcXferColors52ADE0(cf, obj); err != nil {
+			return err
+		}
+		if version >= 55 {
+			if err := monsterXferVoice528DB0(cf, ud); err != nil {
+				return fmt.Errorf("female NPC voice: %w", err)
+			}
 		}
 	}
 	// These fields were appended in different record versions. Reading them
@@ -541,8 +642,10 @@ func monsterXferTail528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 		// GAME.EXE 00529A3D and 00529A49 clear health offsets 4 and 0:
 		// Max and Cur, not the previous-health word at offset 2. Leaving
 		// Max nonzero makes invulnerable female NPCs retreat and eat food.
-		obj.HealthData.Max = 0
-		obj.HealthData.Cur = 0
+		if obj.HealthData == nil {
+			return fmt.Errorf("dormant monster has no health data")
+		}
+		obj.HealthData.Max, obj.HealthData.Cur = 0, 0
 	}
 	if obj.ObjFlags&0x8000 != 0 && !obj.Server().IsZombie(obj) {
 		obj.ObjFlags |= 0x40
@@ -552,27 +655,35 @@ func monsterXferTail528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 
 func monsterXferShop528DB0(cf *cryptfile.CryptFile, obj *server.Object, version int) error {
 	if obj.InitData == nil {
+		if version < 48 {
+			_, err := monsterRWU8(cf, 0)
+			return err
+		}
 		return fmt.Errorf("shopkeeper has no init data")
 	}
 	shop := obj.InitDataShopkeeper()
 	var err error
-	if shop.BuyMultiplier, err = monsterRWF32(cf, shop.BuyMultiplier); err != nil {
-		return fmt.Errorf("shop buy multiplier: %w", err)
+	if version >= 50 {
+		if shop.BuyMultiplier, err = monsterRWF32(cf, shop.BuyMultiplier); err != nil {
+			return fmt.Errorf("shop buy multiplier: %w", err)
+		}
 	}
 	if version >= 61 {
 		if shop.SellMultiplier, err = monsterRWF32(cf, shop.SellMultiplier); err != nil {
 			return fmt.Errorf("shop sell multiplier: %w", err)
 		}
 	}
-	text, err := monsterRWString8(cf, cStringBytes528DB0(shop.ShopText[:]))
-	if err != nil {
-		return fmt.Errorf("shop text: %w", err)
-	}
-	if len(text) >= len(shop.ShopText) {
-		return fmt.Errorf("shop text length %d exceeds %d", len(text), len(shop.ShopText)-1)
-	}
-	if cf.ReadOnly() {
-		setCStringBytes528DB0(shop.ShopText[:], text)
+	if version >= 48 {
+		text, err := monsterRWString8(cf, cStringBytes528DB0(shop.ShopText[:]))
+		if err != nil {
+			return fmt.Errorf("shop text: %w", err)
+		}
+		if len(text) >= len(shop.ShopText) {
+			return fmt.Errorf("shop text length %d exceeds %d", len(text), len(shop.ShopText)-1)
+		}
+		if cf.ReadOnly() {
+			setCStringBytes528DB0(shop.ShopText[:], text)
+		}
 	}
 	if shop.Count, err = monsterRWU8(cf, shop.Count); err != nil {
 		return fmt.Errorf("shop item count: %w", err)

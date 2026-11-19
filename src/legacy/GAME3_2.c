@@ -6768,15 +6768,3 @@ int sub_4E1470(int a1) {
 	return result;
 }
 #endif
-
-//----- (004E1560) --------------------------------------------------------
-void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
-	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {
-	nox_xxx_playerDamageWeapon_4E1560_go(item, owner, source, effective, amount, damage_type);
-}
-
-//----- (004E16D0) --------------------------------------------------------
-void nox_xxx_equipDamage_4E16D0(nox_object_t* item, nox_object_t* owner,
-	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {
-	nox_xxx_equipDamage_4E16D0_go(item, owner, source, effective, amount, damage_type);
-}

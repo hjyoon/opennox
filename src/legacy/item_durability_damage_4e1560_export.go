@@ -137,8 +137,8 @@ func itemDurabilityCanApplyDefendNative4E1560(effect *server.ModifierEff) bool {
 		unsafe.Sizeof(uintptr(0)) == 4
 }
 
-//export nox_xxx_playerDamageWeapon_4E1560_go
-func nox_xxx_playerDamageWeapon_4E1560_go(
+//export nox_xxx_playerDamageWeapon_4E1560
+func nox_xxx_playerDamageWeapon_4E1560(
 	itemp, ownerp, sourcep, effectivep *nox_object_t,
 	amount C.float,
 	typ C.int,
@@ -149,8 +149,8 @@ func nox_xxx_playerDamageWeapon_4E1560_go(
 	)
 }
 
-//export nox_xxx_equipDamage_4E16D0_go
-func nox_xxx_equipDamage_4E16D0_go(
+//export nox_xxx_equipDamage_4E16D0
+func nox_xxx_equipDamage_4E16D0(
 	itemp, ownerp, sourcep, effectivep *nox_object_t,
 	amount C.float,
 	typ C.int,

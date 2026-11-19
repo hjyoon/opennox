@@ -158,7 +158,8 @@ void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_impo
 }
 
 //----- (004E17B0) --------------------------------------------------------
-int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5) {
+#if UINTPTR_MAX == UINT32_MAX
+int nox_server_playerDamagePE32_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;           // esi
 	int v6;           // eax
 	int v8;           // eax
@@ -565,6 +566,8 @@ LABEL_120:
 	}
 	return nox_xxx_damageDefaultProc_4E0B30((nox_object_t*)(uintptr_t)(uint32_t)v5, (nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3, v45, SLODWORD(a5));
 }
+
+#endif
 
 //----- (004E20F0) --------------------------------------------------------
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3) {

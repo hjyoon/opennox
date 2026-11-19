@@ -7,8 +7,6 @@ package legacy
 #include "GAME5_2.h"
 int nox_xxx_soundPlayerDamageSound_5328B0(nox_object_t* a1, nox_object_t* a2);
 double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item);
-int nox_server_handler_PlayerDamage_4E17B0_go(nox_object_t* target, nox_object_t* source,
-	nox_object_t* weapon, int damage, int damage_type);
 int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int damage, int damage_type);
 */
@@ -53,8 +51,8 @@ func init() {
 			Default: defaultDamageCallNative4E0B30,
 		})
 	})
-	server.RegisterObjectDamageGo("PlayerDamage", C.nox_server_handler_PlayerDamage_4E17B0_go, func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
-		return nox_server_handler_PlayerDamage_4E17B0_go(
+	server.RegisterObjectDamageGo("PlayerDamage", C.nox_server_handler_PlayerDamage_4E17B0, func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+		return nox_server_handler_PlayerDamage_4E17B0(
 			asObjectC(target), asObjectC(source), asObjectC(weapon), C.int(damage), C.int(typ),
 		) != 0
 	})
@@ -240,8 +238,8 @@ func reportItemHealthNative4E1650(s *server.Server, owner, item *server.Object, 
 	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
 }
 
-//export nox_server_handler_PlayerDamage_4E17B0_go
-func nox_server_handler_PlayerDamage_4E17B0_go(
+//export nox_server_handler_PlayerDamage_4E17B0
+func nox_server_handler_PlayerDamage_4E17B0(
 	targetp, sourcep, weaponp *nox_object_t,
 	damage C.int,
 	damageType C.int,
@@ -393,13 +391,7 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		return C.int(bool2int(result))
 	}
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		return C.int(C.nox_server_handler_PlayerDamage_4E17B0(
-			C.int(uintptr(unsafe.Pointer(targetp))),
-			C.int(uintptr(unsafe.Pointer(sourcep))),
-			C.int(uintptr(unsafe.Pointer(weaponp))),
-			damage,
-			damageType,
-		))
+		return C.int(playerDamageLegacy32Call4E17B0(targetp, sourcep, weaponp, int32(damage), int32(damageType)))
 	}
 	return 0
 }

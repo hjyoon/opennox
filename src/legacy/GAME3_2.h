@@ -310,12 +310,8 @@ int sub_4E14B0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon,
 int nox_xxx_damageArmor_4E1500(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type);
 void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
-void nox_xxx_playerDamageWeapon_4E1560_go(nox_object_t* item, nox_object_t* owner,
-	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
 intptr_t nox_xxx_itemDestroyed_4E1650(int player_index, nox_object_t* item, unsigned short before, unsigned short after);
 void nox_xxx_equipDamage_4E16D0(nox_object_t* item, nox_object_t* owner,
-	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
-void nox_xxx_equipDamage_4E16D0_go(nox_object_t* item, nox_object_t* owner,
 	nox_object_t* source, nox_object_t* effective, float amount, int damage_type);
 
 #endif // NOX_PORT_GAME3_2

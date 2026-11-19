@@ -96,7 +96,11 @@
 #include "random_reachable_point_4ed970.h"
 #include "unit_adjust_hp_4ee460.h"
 
-int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
+int nox_server_handler_PlayerDamage_4E17B0(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int damage, int damage_type);
+#if UINTPTR_MAX == UINT32_MAX
+int nox_server_playerDamagePE32_4E17B0(int target, int source, int weapon, int damage, int damage_type);
+#endif
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);
 double sub_4E2220(int a1);
 int sub_4E22A0(int a1, int a2, int a3, int a4, float a5, int a6);

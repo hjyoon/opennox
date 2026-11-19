@@ -959,7 +959,8 @@ macro-generated definitions. Twelve profiles select 206 of 627
 tracked C files. The release receipt
 `monster-fight-action-entry-native-20261119-v1/monster-fight-action-release-v1.json`
 has SHA-256 `58dd5eeb56f9dad7d3ff4fb727fee1ca46a92a01482910407e2289ded1f078ee`.
-Linux `44543980619` and Windows `44543980574` track this revision.
+Linux `44543980619` passes all four products and Windows `44543980574`
+passes amd64 and 386 at this revision.
 
 ### Monster dual buff removal entry, 2026-11-19
 
@@ -989,7 +990,41 @@ and integer conversions, and 14 macro-generated definitions. Twelve
 profiles select 206 of 627 tracked C files. The release receipt
 `monster-clear-buff-entry-native-20261119-v1/monster-clear-buff-release-v1.json`
 has SHA-256 `f05a0aed8754ea773314dd19c08b5071a49c69bc5d5e3eb32f0bac34cee04f0e`.
-Linux `44548378317` and Windows `44548378589` track this revision.
+Linux `44548378317` passes all four products and Windows `44548378589`
+passes amd64 and 386 at this revision.
+
+### Map generator spellbook entries, 2026-11-20
+
+Engine `29705b7d06c1b8fa199479f4bc3da78c5abc5f3e` ports `5220E0`
+and `527DB0` from `GAME4_2.c`. Both original entries accept native
+pointers from the live inventory and decoration-placement paths. The
+Go port preserves the byte spell ID, releases rejected allocations,
+and accesses the current spell count and use data after the original
+calls that can change them.
+
+The two GAME.EXE bodies total 246 bytes and execute 140 controlled
+cases. ARM64 normal and cgocheck2 each pass 142 checks without
+warnings, including actual C calls with high-address theme, object and
+use data. The pre-port spell-count difference and the first build that
+identified an unmigrated placement caller are retained.
+
+Both clients build warning-free and verify 503 public and 144 retired
+symbols. The normal product picks up, drops and reacquires the same
+spellbook through the mouse and network inventory path. The HD product
+enters Quest stage 2 through an original exit, closes the captured
+briefing through mouse input, and verifies live movement in stage 2.
+The initial HD run that reached stage 2 with the briefing still active
+is retained. All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 284 to 280 active bodies. The
+thirteen split GAME files contain 1,476 active bodies, including 169
+with pointer and integer conversions. Default ARM64 records 2,110
+named active bodies, 306 with pointer and integer conversions, and 14
+macro-generated definitions. Twelve profiles select 206 of 627
+tracked C files. The release receipt
+`mapgen-spellbook-native-20261119-v1/mapgen-spellbook-release-v1.json`
+has SHA-256 `e5b9a3c4a0e0e11c297a707778ff4b0ba3faff1c2e4aa111d584041456ddd178`.
+Linux `44554979477` and Windows `44554979969` track this revision.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

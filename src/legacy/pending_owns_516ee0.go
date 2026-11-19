@@ -88,21 +88,21 @@ func resolvePendingOwnsRuntime516FC0() {
 	resolvePendingOwns516FC0(pendingOwns516EE0.take(), srv.ObjectByScriptID4ECF10, srv.ObjSetOwner)
 }
 
-//export nox_xxx_pendingOwnAlloc_native_516EE0
-func nox_xxx_pendingOwnAlloc_native_516EE0() C.int {
+//export nox_xxx_allocPendingOwnsArray_516EE0
+func nox_xxx_allocPendingOwnsArray_516EE0() C.int {
 	if pendingOwns516EE0.alloc() {
 		return 1
 	}
 	return 0
 }
 
-//export nox_xxx_pendingOwnFree_native_516F10
-func nox_xxx_pendingOwnFree_native_516F10() C.int {
+//export sub_516F10
+func sub_516F10() C.int {
 	return C.int(pendingOwns516EE0.free())
 }
 
-//export nox_xxx_pendingOwnClear_native_516F30
-func nox_xxx_pendingOwnClear_native_516F30() {
+//export sub_516F30
+func sub_516F30() {
 	pendingOwns516EE0.clear()
 }
 
@@ -114,7 +114,7 @@ func nox_xxx_pendingOwnAdd_native_516F90(ownerScriptID, ownedScriptID C.int) C.i
 	return 0
 }
 
-//export nox_xxx_pendingOwnResolve_native_516FC0
-func nox_xxx_pendingOwnResolve_native_516FC0() {
+//export sub_516FC0
+func sub_516FC0() {
 	resolvePendingOwnsRuntime516FC0()
 }

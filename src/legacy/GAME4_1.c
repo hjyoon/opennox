@@ -3905,23 +3905,7 @@ void sub_516FC0() {
 }
 #endif
 
-extern int nox_xxx_pendingOwnAlloc_native_516EE0(void);
-extern int nox_xxx_pendingOwnFree_native_516F10(void);
-extern void nox_xxx_pendingOwnClear_native_516F30(void);
 extern int nox_xxx_pendingOwnAdd_native_516F90(int owner_script_id, int owned_script_id);
-extern void nox_xxx_pendingOwnResolve_native_516FC0(void);
-
-int nox_xxx_allocPendingOwnsArray_516EE0() {
-	return nox_xxx_pendingOwnAlloc_native_516EE0();
-}
-
-int sub_516F10() {
-	return nox_xxx_pendingOwnFree_native_516F10();
-}
-
-void sub_516F30() {
-	nox_xxx_pendingOwnClear_native_516F30();
-}
 
 uint32_t* sub_516F90(int owner_script_id, int owned_script_id) {
 	if (!nox_xxx_pendingOwnAdd_native_516F90(owner_script_id, owned_script_id)) {
@@ -3932,18 +3916,7 @@ uint32_t* sub_516F90(int owner_script_id, int owned_script_id) {
 	return (uint32_t*)(uintptr_t)1;
 }
 
-void sub_516FC0() {
-	nox_xxx_pendingOwnResolve_native_516FC0();
-}
-
-extern int nox_xxx_loadMonsterBin_517010_go(void);
-extern void* nox_xxx_monsterListFree_5174F0_go(void);
-extern int nox_xxx_monsterList_517520_go(void);
-
 //----- (00517010) --------------------------------------------------------
-int nox_xxx_loadMonsterBin_517010() {
-	return nox_xxx_loadMonsterBin_517010_go();
-}
 
 //----- (00517090) --------------------------------------------------------
 int nox_xxx_readStr_517090(FILE* a1, uint8_t* a2) {
@@ -4129,14 +4102,8 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 }
 
 //----- (005174F0) --------------------------------------------------------
-uint32_t* nox_xxx_monsterListFree_5174F0() {
-	return (uint32_t*)nox_xxx_monsterListFree_5174F0_go();
-}
 
 //----- (00517520) --------------------------------------------------------
-int nox_xxx_monsterList_517520() {
-	return nox_xxx_monsterList_517520_go();
-}
 
 //----- (00517560) --------------------------------------------------------
 
@@ -4657,10 +4624,6 @@ int sub_519710(void* a1) {
 //----- (0051A500) --------------------------------------------------------
 
 //----- (0051A550) --------------------------------------------------------
-extern char* nox_xxx_questGeneratorTypesInit_native_51A550(void);
-char* sub_51A550() {
-	return nox_xxx_questGeneratorTypesInit_native_51A550();
-}
 
 //----- (0051A5A0) --------------------------------------------------------
 void* nox_xxx_objectTypeByIndHealthData(int a1);

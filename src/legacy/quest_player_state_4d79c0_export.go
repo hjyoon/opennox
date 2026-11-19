@@ -65,13 +65,13 @@ func sub_4D7A60(index C.int) C.int {
 	return C.int(questPlayerStateMark4D7A60(int(index)))
 }
 
-//export nox_xxx_questPlayerStateExpire_native_4D7A80
-func nox_xxx_questPlayerStateExpire_native_4D7A80() C.int {
+//export sub_4D7A80
+func sub_4D7A80() C.int {
 	return C.int(questPlayerStateExpire4D7A80())
 }
 
-//export nox_xxx_questPlayerStateClear_native_4D7B40
-func nox_xxx_questPlayerStateClear_native_4D7B40() C.int {
+//export sub_4D7B40
+func sub_4D7B40() C.int {
 	return C.int(questPlayerStateClear4D7B40())
 }
 
@@ -87,8 +87,8 @@ func sub_4D7E50(unit *nox_object_t) C.int {
 	return 0
 }
 
-//export nox_xxx_playersInterestingReset_native_4D7EA0
-func nox_xxx_playersInterestingReset_native_4D7EA0() C.int {
+//export sub_4D7EA0
+func sub_4D7EA0() C.int {
 	GetServer().S().Sub_4D7EA0()
 	return 0
 }

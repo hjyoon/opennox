@@ -92,8 +92,8 @@ func resetQuestPlayers4D60B0() int {
 	return 0
 }
 
-//export nox_xxx_resetQuestPlayers_native_4D60B0
-func nox_xxx_resetQuestPlayers_native_4D60B0() C.int {
+//export sub_4D60B0
+func sub_4D60B0() C.int {
 	return C.int(resetQuestPlayers4D60B0())
 }
 

@@ -429,19 +429,19 @@ func nox_xxx_monsterDefByTT_517560_native(typ int) *server.MonsterDef {
 	return loadedMonsterDefs.findByType(uint32(typ))
 }
 
-//export nox_xxx_loadMonsterBin_517010_go
-func nox_xxx_loadMonsterBin_517010_go() C.int {
+//export nox_xxx_loadMonsterBin_517010
+func nox_xxx_loadMonsterBin_517010() C.int {
 	return C.int(Nox_xxx_loadMonsterBin_517010())
 }
 
-//export nox_xxx_monsterListFree_5174F0_go
-func nox_xxx_monsterListFree_5174F0_go() unsafe.Pointer {
+//export nox_xxx_monsterListFree_5174F0
+func nox_xxx_monsterListFree_5174F0() *C.uint32_t {
 	nox_xxx_monsterListFree_5174F0_native()
 	return nil
 }
 
-//export nox_xxx_monsterList_517520_go
-func nox_xxx_monsterList_517520_go() C.int {
+//export nox_xxx_monsterList_517520
+func nox_xxx_monsterList_517520() C.int {
 	return C.int(nox_xxx_monsterList_517520_native())
 }
 

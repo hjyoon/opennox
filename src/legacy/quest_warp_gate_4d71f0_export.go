@@ -81,8 +81,8 @@ func Nox_server_checkWarpGate_4D7600() {
 	GetServer().S().QuestCheckWarpGate4D7600(questWarpGateRuntime4D71F0())
 }
 
-//export nox_xxx_questExitTimeout_native_4D71F0
-func nox_xxx_questExitTimeout_native_4D71F0() C.uint {
+//export sub_4D71F0
+func sub_4D71F0() C.uint {
 	return C.uint(GetServer().S().QuestExitTimeout4D71F0(questWarpGateRuntime4D71F0()))
 }
 
@@ -99,7 +99,7 @@ func nox_xxx_questWarpEnabled_native_4D7520(enabled C.int) C.uchar {
 	))
 }
 
-//export nox_xxx_questCheckWarpGate_native_4D7600
-func nox_xxx_questCheckWarpGate_native_4D7600() {
+//export nox_server_checkWarpGate_4D7600
+func nox_server_checkWarpGate_4D7600() {
 	Nox_server_checkWarpGate_4D7600()
 }

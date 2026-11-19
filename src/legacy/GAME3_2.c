@@ -1004,11 +1004,6 @@ void sub_4D0F30() {
 }
 
 //----- (004D0F60) --------------------------------------------------------
-extern char* nox_server_questMapFile_native_4D0F60(void);
-char* nox_xxx_getQuestMapFile_4D0F60() // quest setup 2
-{
-	return nox_server_questMapFile_native_4D0F60();
-}
 
 // GAME.EXE stores this remote-console authorization list in a 12-byte PE32
 // sentinel, immediately followed by its initialization flag. Use a native
@@ -2743,12 +2738,6 @@ int sub_4D60B0() {
 }
 #endif
 
-extern int nox_xxx_resetQuestPlayers_native_4D60B0(void);
-
-int sub_4D60B0() {
-	return nox_xxx_resetQuestPlayers_native_4D60B0();
-}
-
 //----- (004D60E0) --------------------------------------------------------
 #if 0 // Restored by pointer_chain_native_entry.go.
 uint32_t* sub_4D60E0(int a1) {
@@ -3067,10 +3056,6 @@ int sub_4D71E0(int a1) {
 
 //----- (004D71F0) --------------------------------------------------------
 void sub_4D72B0(int a1);
-extern unsigned int nox_xxx_questExitTimeout_native_4D71F0(void);
-unsigned int sub_4D71F0() {
-	return nox_xxx_questExitTimeout_native_4D71F0();
-}
 
 //----- (004D7280) --------------------------------------------------------
 int sub_4D7280(int a1, char a2) {
@@ -3137,10 +3122,6 @@ int sub_4D75F0(int a1) {
 }
 
 //----- (004D7600) --------------------------------------------------------
-extern void nox_xxx_questCheckWarpGate_native_4D7600(void);
-void nox_server_checkWarpGate_4D7600() {
-	nox_xxx_questCheckWarpGate_native_4D7600();
-}
 
 //----- (004D76E0) --------------------------------------------------------
 int sub_4D76E0(int a1) {
@@ -3295,26 +3276,6 @@ int sub_4D7EA0() {
 	return result;
 }
 #endif
-
-extern int nox_xxx_questPlayerStateExpire_native_4D7A80(void);
-extern int nox_xxx_questPlayerStateClear_native_4D7B40(void);
-extern int nox_xxx_playersInterestingReset_native_4D7EA0(void);
-
-
-
-int sub_4D7A80() {
-	return nox_xxx_questPlayerStateExpire_native_4D7A80();
-}
-
-int sub_4D7B40() {
-	return nox_xxx_questPlayerStateClear_native_4D7B40();
-}
-
-
-
-int sub_4D7EA0() {
-	return nox_xxx_playersInterestingReset_native_4D7EA0();
-}
 
 //----- (004D7EE0) --------------------------------------------------------
 int nox_xxx_netCreatureCmd_4D7EE0(int player, char orderType) {
@@ -4084,9 +4045,6 @@ int sub_4D9D20(int a1, nox_object_t* a2p) {
 
 
 //----- (004D9D60) --------------------------------------------------------
-int sub_4D9D60(int a1, nox_object_t* unit) {
-	return nox_server_questLivesReport_native_4D9D60(a1, unit);
-}
 
 //----- (004D9DF0) --------------------------------------------------------
 #if 0 // PE32 references. Both key packets share the Go implementation.

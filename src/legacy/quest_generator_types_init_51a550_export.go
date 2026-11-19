@@ -6,8 +6,8 @@ package legacy
 import "C"
 import "unsafe"
 
-//export nox_xxx_questGeneratorTypesInit_native_51A550
-func nox_xxx_questGeneratorTypesInit_native_51A550() *C.char {
+//export sub_51A550
+func sub_51A550() *C.char {
 	return (*C.char)(unsafe.Pointer(questGeneratorTypesInitNative51A550(questGeneratorTypesInitDepsFactory51A550())))
 }
 

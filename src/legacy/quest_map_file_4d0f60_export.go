@@ -46,7 +46,7 @@ var questMapFileCall4D0F60 = func() unsafe.Pointer {
 	})
 }
 
-//export nox_server_questMapFile_native_4D0F60
-func nox_server_questMapFile_native_4D0F60() *C.char {
+//export nox_xxx_getQuestMapFile_4D0F60
+func nox_xxx_getQuestMapFile_4D0F60() *C.char {
 	return (*C.char)(questMapFileCall4D0F60())
 }

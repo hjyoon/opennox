@@ -10,8 +10,8 @@ import "C"
 
 import "github.com/opennox/opennox/v1/server"
 
-//export nox_server_questLivesReport_native_4D9D60
-func nox_server_questLivesReport_native_4D9D60(recipient C.int, unit *nox_object_t) C.int {
+//export sub_4D9D60
+func sub_4D9D60(recipient C.int, unit *nox_object_t) C.int {
 	return C.int(GetServer().S().QuestLivesReport4D9D60(int32(recipient), asObjectS(unit)))
 }
 

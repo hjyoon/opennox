@@ -37,21 +37,21 @@ func scavengerReportNative4D8CD0(
 	})
 }
 
-func scavengerReportServerDeps4D8CD0(s *Server) scavengerReportNativeDeps4D8CD0 {
-	return scavengerReportNativeDeps4D8CD0{
-		unitCode: func(obj *Object) uint32 {
-			return uint32(s.GetUnitNetCode(obj))
-		},
-		sendPacket: func(recipient int32, packet [7]byte, related *Object, remove int32) int32 {
-			return int32(s.NetSendPacketXxx0(int(recipient), packet[:], related, int(remove)))
-		},
-	}
+// ScavengerHuntReport4D8CD0 emits the original seven-byte report.
+func (s *Server) ScavengerHuntReport4D8CD0(owner *Object) {
+	ScavengerHuntReportResult4D8CD0(owner, s.NetSendPacketXxx0)
 }
 
-// ScavengerHuntReport4D8CD0 emits the original seven-byte report through
-// native-width Object, PlayerUpdateData, and Player pointers. Both decoded
-// callers ignore the mixed EAX return, so this public binding exposes only the
-// preserved side effects.
-func (s *Server) ScavengerHuntReport4D8CD0(owner *Object) {
-	_ = scavengerReportNative4D8CD0(owner, scavengerReportServerDeps4D8CD0(s))
+// ScavengerHuntReportResult4D8CD0 returns the non-player owner or the signed
+// packet-send result with a nil owner.
+func ScavengerHuntReportResult4D8CD0(owner *Object, send func(int, []byte, *Object, int) int) (*Object, int32) {
+	result := scavengerReportNative4D8CD0(owner, scavengerReportNativeDeps4D8CD0{
+		unitCode: func(obj *Object) uint32 {
+			return uint32(ObjectNetCode(obj))
+		},
+		sendPacket: func(recipient int32, packet [7]byte, related *Object, remove int32) int32 {
+			return int32(send(int(recipient), packet[:], related, int(remove)))
+		},
+	})
+	return result.owner, result.send
 }

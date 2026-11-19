@@ -43,6 +43,12 @@ func (s *serverBalance) Float(key string) float64 {
 	return s.file.FloatDef(tag, key, 0)
 }
 
+// EliminationCountdownSeconds preserves the binary32 spill followed by the
+// signed DWORD conversion in the original elimination countdown.
+func EliminationCountdownSeconds(value float64) int {
+	return int(netFXTruncateSignedDWORD419A70(experienceSpill32TowardZero(value)))
+}
+
 func (s *serverBalance) FloatInd(key string, i int) float64 {
 	if i < 0 {
 		return 0

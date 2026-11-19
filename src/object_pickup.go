@@ -125,12 +125,12 @@ func nox_xxx_pickupTreasure_4F3580(obj, item *server.Object, a3, a4 int32) int32
 // The scalar match-state helpers remain legacy-owned, while Player and Team
 // iteration and every object/update/player access stay native-width.
 func (s *Server) playerIncrementElimDeath4D8D40(obj *server.Object) {
-	if uint8(obj.ObjClass)&uint8(object.ClassPlayer) == 0 {
+	class := uint8(obj.ObjClass)
+	update := (*server.PlayerUpdateData)(obj.UpdateData)
+	if class&uint8(object.ClassPlayer) == 0 {
 		return
 	}
-	update := (*server.PlayerUpdateData)(obj.UpdateData)
-	player := update.Player
-	player.Field2140++
+	update.Player.Field2140++
 	if !noxflags.HasGame(noxflags.GameModeElimination) {
 		return
 	}
@@ -151,18 +151,23 @@ func (s *Server) playerIncrementElimDeath4D8D40(obj *server.Object) {
 		if legacy.Sub_40A770() >= legacy.Sub_40AA40() {
 			return
 		}
-		s.ServStartCountdown(int(s.Balance.Float("SuddenDeathCountdown")), "Settings.c:SuddenDeathImminent")
+		s.startEliminationCountdown4D8D40()
 		return
 	}
-	if s.Teams.Count() >= legacy.Sub_40AA40() {
+	if int(uint8(s.Teams.Count())) >= legacy.Sub_40AA40() {
 		return
 	}
 	for team := s.Teams.First(); team != nil; team = s.Teams.Next(team) {
 		if legacy.Nox_xxx_countNonEliminatedPlayersInTeam_40A830(team) == 1 {
-			s.ServStartCountdown(int(s.Balance.Float("SuddenDeathCountdown")), "Settings.c:SuddenDeathImminent")
+			s.startEliminationCountdown4D8D40()
 			return
 		}
 	}
+}
+
+func (s *Server) startEliminationCountdown4D8D40() {
+	seconds := server.EliminationCountdownSeconds(s.Balance.Float("SuddenDeathCountdown"))
+	s.ServStartCountdown(seconds, "Settings.c:SuddenDeathImminent")
 }
 
 // PlayerIncrementElimDeath4D8D40 exposes the native-pointer service to the

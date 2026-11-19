@@ -357,12 +357,10 @@ static void nox_mapgenFreeDecorDefinitionList(uintptr_t ref) {
 
 static void nox_mapgenApplyChoiceNative_521FE0(
 	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref);
-static nox_object_t* nox_mapgenMakeSpellbookNative_5220E0(uint8_t* theme, const char* spell_name);
 static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
 	char* name, uintptr_t list_ref, int count);
 static nox_object_t* nox_mapgenAttachInventoryNative_522300(
 	nox_object_t* holder, nox_object_t* item);
-static int nox_mapgenFinishSpellbookNative_527DB0(nox_object_t* object, char spell_id);
 static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
 	nox_mapgen_decor_definition_legacy* definition, FILE* file);
 static int nox_mapgenReadDecorFillNative_51FEC0(
@@ -3283,7 +3281,7 @@ static void nox_mapgenApplyChoiceNative_521FE0(
 				entry, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
 			break;
 		case 5:
-			item = nox_mapgenMakeSpellbookNative_5220E0(theme, entry);
+			item = nox_xxx_mapGenMakeSpellbook_5220E0(theme, entry);
 			break;
 		default:
 			break;
@@ -3302,33 +3300,7 @@ void nox_xxx_mapgen_521FE0(int a1, int a2, uint32_t* a3) {
 }
 
 //----- (005220E0) --------------------------------------------------------
-static nox_object_t* nox_mapgenMakeSpellbookNative_5220E0(uint8_t* theme, const char* spell_name) {
-	uint32_t spell_count = *(uint32_t*)(theme + 1096);
-	if (!spell_count) {
-		return NULL;
-	}
-	nox_object_t* object = nox_xxx_newObjectByTypeID_4E3810("SpellBook");
-	if (!object) {
-		return NULL;
-	}
-	char spell_id;
-	if (!strcmp("*", spell_name)) {
-		spell_id = *(uint8_t*)(theme + 4 * nox_xxx_mapGenRandFunc_526AC0(0, spell_count - 1) + 548);
-	} else {
-		spell_id = nox_xxx_mapGenSpellIdByName_51E1D0(spell_name);
-		if (!spell_id) {
-			free(object);
-			return NULL;
-		}
-	}
-	nox_mapgenFinishSpellbookNative_527DB0(object, spell_id);
-	return object;
-}
-
-uint32_t* nox_xxx_mapGenMakeSpellbook_5220E0(int a1, const char* a2) {
-	return (uint32_t*)nox_mapgenMakeSpellbookNative_5220E0(
-		(uint8_t*)(uintptr_t)(uint32_t)a1, a2);
-}
+// Native-width implementation: mapgen_spellbook_public.go.
 
 //----- (005221A0) --------------------------------------------------------
 static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
@@ -3506,7 +3478,7 @@ static void* nox_mapgenPopulateDecorEntryNative_5224B0(
 			object = nox_mapgenMakeEnchantedItemNative_5221A0(
 				entry->name, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
 		} else {
-			object = nox_mapgenMakeSpellbookNative_5220E0(theme, entry->name);
+			object = nox_xxx_mapGenMakeSpellbook_5220E0(theme, entry->name);
 		}
 		if (object) {
 			result = nox_xxx_mapGenMoveObject_527A10((float*)object, (float*)&position);
@@ -6988,23 +6960,7 @@ int nox_xxx_mapGenOrientObj_527C60(int a1, int a2) {
 }
 
 //----- (00527DB0) --------------------------------------------------------
-void* nox_objectTypeGetXfer(char* id);
-static int nox_mapgenFinishSpellbookNative_527DB0(nox_object_t* object, char spell_id) {
-	if (!object) {
-		return 0;
-	}
-	char* name = nox_xxx_getUnitName_4E39D0(object);
-	if (nox_objectTypeGetXfer(name) != nox_xxx_XFerSpellReward_4F5F30 || !object->use_data) {
-		return 0;
-	}
-	*(uint8_t*)object->use_data = (uint8_t)spell_id;
-	return 1;
-}
-
-int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2) {
-	return nox_mapgenFinishSpellbookNative_527DB0(
-		(nox_object_t*)(uintptr_t)(uint32_t)a1, a2);
-}
+// Native-width implementation: mapgen_spellbook_public.go.
 
 //----- (00527E50) --------------------------------------------------------
 #if 0 // Retained PE32 implementation; native public entry is in Go.

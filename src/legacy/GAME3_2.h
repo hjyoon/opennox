@@ -284,9 +284,9 @@ void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* 
 void sub_4DFDB0(void* effect, nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
 void sub_4DFE10(void* effect, nox_object_t* owner, const nox_object_t* item);
-double nox_xxx_checkFireProtect_4DFE40(uint32_t* a1);
-double nox_xxx_checkElectrProtect_4DFF40(uint32_t* a1);
-double nox_xxx_getPoisonDmg_4E0040(uint32_t* a1);
+double nox_xxx_checkFireProtect_4DFE40(nox_object_t* unit);
+double nox_xxx_checkElectrProtect_4DFF40(nox_object_t* unit);
+double nox_xxx_getPoisonDmg_4E0040(nox_object_t* unit);
 void sub_4E0140(void* effect, nox_object_t* owner, const nox_object_t* item);
 void sub_4E0170(void* effect, nox_object_t* owner, const nox_object_t* item);
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);

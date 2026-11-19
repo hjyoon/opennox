@@ -48,7 +48,7 @@ static int nox_xxx_netReportDequip_4D8590(int index, const nox_object_t* item) {
 	return -1;
 }
 
-static int nox_xxx_netReportDequip_4D84C0(int index, const nox_object_t* item) {
+static intptr_t nox_xxx_netReportDequip_4D84C0(int index, const nox_object_t* item) {
 	if (index != 255 || item != expected_item) failure = 1;
 	sequence = sequence * 10U + 3U;
 	return -1;

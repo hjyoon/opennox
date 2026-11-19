@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "inventory_detach_4ed0c0.h"
+#include "GAME3_2.h"
 */
 import "C"
 
@@ -19,7 +20,7 @@ func inventoryDetachRuntime4ED0C0() server.InventoryDetachRuntime4ED0C0 {
 			return 0
 		},
 		NetReportDequip: func(index uint8, item *server.Object) {
-			C.nox_xxx_netReportDequip_4D84C0(C.int(index), asObjectC(item))
+			nox_xxx_netReportDequip_4D84C0(C.int(index), C.nox_equipment_report_object_t(asObjectC(item)))
 		},
 		DequipArmor: func(owner, item *server.Object, mode, report int32) {
 			C.sub_53E430(

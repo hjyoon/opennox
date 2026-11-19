@@ -228,6 +228,97 @@ Both ARM64 modes pass 2,767 checks with zero warnings. The
 `player-damage-carry-public-native-v1`. The whole-C migration
 and the final class and chapter audits remain open.
 
+### Health, object appearance and Chakram, 2026-11-19
+
+Engine `031f44fede8ea136c9d8a23ee0b9ad8412a690c5` moves electric armor
+coefficient and guard wear entries `4E2220`, `4E22A0` and `4E2330` to
+native object pointers. The electric coefficient uses the original
+`Material7` descriptor identity. The comparison covers 514 original
+results and 131 original fault boundaries. Both ARM64 modes pass 122,398
+checks. Linux `44439848393` and Windows `44439843435` pass all six jobs.
+
+Engine `69548735b8f46973f91bddc0c8adcff565d9da27` moves health, enabled
+state, height and animation-frame writes to native Go. The health setter
+preserves its signed status or native pointer result. Both ARM64 modes
+pass 2,286 checks, and both clients build with zero compiler warnings.
+Eight OpenAL replays cover Warrior I elevator travel, Conjurer II Charm,
+Wizard I entry and Magic Missile. Linux `44440237067` and Windows
+`44440233141` pass all six jobs.
+
+Engine `cb92c60e2843aa1bc826855eb504c3e5428f5142` ports buff flags,
+modifier attributes, mass, NPC color and equipment setters. Actual C
+calls match 1,369 original cases. Both ARM64 modes pass 1,866 focused
+checks, and Linux `44443827207` and Windows `44443822854` pass all six
+jobs. The initial unpinned test receiver and uninitialized test type
+registry failures are preserved with the passing runs.
+
+Engine `0124f63a9d9d3539ad165bdecfcf34929104a6fb` ports the Chakram
+rebound callback. The former Go arithmetic differs in 542 cases.
+The corrected arithmetic matches all 1,066 original observations and
+all 256 original direction-table entries. Both ARM64 modes pass 3,123
+checks. Both products build without compiler warnings and pass native
+OpenAL replays for the Chakram throw, NPC equipment colors, and Conjurer
+quickbar buffs. A separate original Warrior III Save follows the road
+from War03b into War03c and produces a living manual Save. Linux
+`44445362486` and Windows `44445358957` pass all six jobs.
+
+The records are under `opennox-verification/20261118-trade` in
+`electric-armor-and-guard-native-v1`, `sync-hp-and-object-state-native-v1`,
+`object-appearance-and-modifier-entries-native-v1`, and
+`chakram-reflect-public-native-v1`.
+
+### Access-list persistence and shop audio replay, 2026-11-19
+
+Engine `212268448d495272ee95d3783289a421492f2a0b` moves the access-list
+writer to Go and returns a scalar success code. Native file output matches
+392 original cases, including the original Windows formatter's byte
+conversion and the exclusion of temporary bans. Both ARM64 modes pass
+575 checks. Engine `54031d788f9be3158747aa887d813bea17fb2105` ports the
+three readers. The readers keep the 1,023-byte text chunk limit, original
+delimiter behavior, and final lines without a newline. The native name
+field accepts up to 25 bytes plus its terminator. Both ARM64 modes pass
+701 checks, including 124 original reader cases. Both clients build
+without compiler warnings.
+
+The Mystic replay update `af0c7ab2410dbe3d2041efac0bd96af4f04ce833`
+uses the original sale effect 307. The earlier observer kept waiting for
+a second purchase sound after the sale, and those interrupted replays
+are preserved. The repaired ordinary-clock replay passes on both ARM64
+products. The purchase drains four OpenAL buffers. The actual sale submits
+effect 307 at positive gain and queues four buffers with OpenAL Soft's
+null output. The original inventory, gold, shop stock and exit assertions
+also pass. Separate native audio and Enter-chat replays pass on both
+products. The records and retained executables are in
+`access-list-storage-native-v1`.
+
+### WarCry and important packet lifecycle, 2026-11-19
+
+Engine `9eeba2299e18327652dafd9bb25a218400e0c0f3` moves the WarCry
+monster stun helper to the map enumerator's native void callback.
+The original enumerator discards the return register. Actual C calls
+match all 600 stock callback contexts and the 24 buff applications,
+including high object addresses. Normal and `cgocheck2` macOS ARM64 each
+pass 1,150 checks.
+
+Engine `1e6ccf73f08786dbdcd748f96c819320d9fe2b21` ports eight important
+packet lifecycle entries and preserves the separate FPS reads, packet link
+ordering and rate-counter widths. Actual C calls match 1,990 stock cases
+and eight zero-divisor boundaries. Normal and `cgocheck2` ARM64 each
+pass 2,178 checks. Both clients build without compiler warnings. The
+records and retained products are in `warcry-monster-stun-entry-native-v1`
+and `important-lifecycle-native-v1`.
+
+The 12-profile source selection at that engine selects 206 of 627
+tracked C files. Default ARM64 has 2,239 named active C bodies, 14
+additional definitions and 351 bodies containing integer-pointer
+conversions. The 13 split GAME files contain 1,604 active named bodies,
+including 213 with those conversions. `GAME3_3.c` has 44 active named
+bodies and zero such conversions in default ARM64. The five monolithic
+GAME files have zero active bodies in that profile. These AST counts
+describe the compiled source inventory. The whole-C migration and final
+nine-cell campaign audit remain open. The records are in
+`whole-C-inventory-1e6ccf73-v1` and `important-lifecycle-native-v1`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -961,6 +961,36 @@ tracked C files. The release receipt
 has SHA-256 `58dd5eeb56f9dad7d3ff4fb727fee1ca46a92a01482910407e2289ded1f078ee`.
 Linux `44543980619` and Windows `44543980574` track this revision.
 
+### Monster dual buff removal entry, 2026-11-19
+
+Engine `df66f5aaeac12e0a942acee1c77837c8d69be1a0` ports `5341D0`
+from `GAME4_3.c`. The public entry passes a native object pointer
+to the shared buff-removal code. It removes Invisibility before
+Invulnerability and returns the second call's complete signed result.
+
+The 26-byte GAME.EXE body executes 192 controlled cases. Actual
+ARM64 C calls match these call traces and return values. Four further
+native C calls exercise live combinations of the two buff flags and
+their duration and power fields. Normal and cgocheck2 pass 254
+checks each without warnings.
+
+Both clients build warning-free and verify 501 public and 142 retired
+symbols. Ordinary-clock Conjurer I verifies Protection from Poison
+on self and another target with natural expiry. HD Wizard I verifies
+those paths for Haste and Protection from Fire. All 4,649 original
+asset and Save hashes match.
+
+The i386 `GAME4_3.c` audit records 81 to 80 active bodies. In default
+ARM64 the four remaining pointer and integer conversion bodies in
+that C file are native-width return adapters. The split GAME files
+contain 1,480 active bodies, 171 with pointer and integer conversions.
+Default ARM64 records 2,114 named active bodies, 308 with pointer
+and integer conversions, and 14 macro-generated definitions. Twelve
+profiles select 206 of 627 tracked C files. The release receipt
+`monster-clear-buff-entry-native-20261119-v1/monster-clear-buff-release-v1.json`
+has SHA-256 `f05a0aed8754ea773314dd19c08b5071a49c69bc5d5e3eb32f0bac34cee04f0e`.
+Linux `44548378317` and Windows `44548378589` track this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

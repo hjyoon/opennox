@@ -47,11 +47,40 @@ func accessListNativeDefaultFree416720(p unsafe.Pointer)   { C.free(p); runtime.
 func accessListNativeDefaultRefresh416720() unsafe.Pointer { return unsafe.Pointer(C.sub_455800()) }
 func accessListNativeConfig416720() unsafe.Pointer         { return C.access_list_config_416720() }
 func accessListNativeDefaultLoad416720(p unsafe.Pointer) int32 {
-	v := int32(C.sub_4E41B0((*C.char)(p)))
+	loaded := loadAccessList4E41B0(GoString((*C.char)(p)))
 	runtime.KeepAlive(p)
-	return v
+	return int32(bool2int(loaded))
 }
 func accessListNativeDefaultSave416720() { saveAccessList4E43F0("ban.txt") }
+
+//export sub_4E41B0
+func sub_4E41B0(path *C.char) C.int {
+	return C.int(bool2int(loadAccessList4E41B0(GoString(path))))
+}
+
+//export sub_4E42C0
+func sub_4E42C0(file *FILE) C.int {
+	return C.int(bool2int(loadAccessBanned4E42C0(fileByHandle(file))))
+}
+
+//export sub_4E4390
+func sub_4E4390(file *FILE) C.int {
+	loadAccessAllowed4E4390(fileByHandle(file))
+	return 1
+}
+
+func accessListLoadC4E41B0(path string) int {
+	p := CString(path)
+	defer C.free(unsafe.Pointer(p))
+	return int(C.sub_4E41B0(p))
+}
+
+func accessListLoadSectionC4E41B0(file *FILE, banned bool) int {
+	if banned {
+		return int(C.sub_4E42C0(file))
+	}
+	return int(C.sub_4E4390(file))
+}
 
 //export sub_4E43F0
 func sub_4E43F0(path *C.char) C.int {

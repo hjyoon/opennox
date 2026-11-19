@@ -110,31 +110,33 @@ func (f *File) Close() error {
 }
 
 func (f *File) ReadString() ([]byte, error) {
+	return f.ReadStringLimit(0)
+}
+
+// ReadStringLimit reads through the next line ending or max text bytes.
+// A zero limit reads the entire line. CRLF counts as one byte.
+func (f *File) ReadStringLimit(max int) ([]byte, error) {
 	f.enableBuffer()
-	var (
-		out []byte
-		end bool
-	)
-	for {
+	var out []byte
+	for max == 0 || len(out) < max {
 		b, err := f.buf.ReadByte()
 		f.Err = err
 		if err == io.EOF {
-			end = true
-			break
+			return out, io.EOF
 		} else if err != nil {
 			return nil, err
+		}
+		if b == '\r' {
+			next, err := f.buf.Peek(1)
+			if err == nil && next[0] == '\n' {
+				f.buf.Discard(1)
+				b = '\n'
+			}
 		}
 		out = append(out, b)
 		if b == '\n' {
 			break
 		}
-	}
-	if n := len(out); n >= 2 && out[n-2] == '\r' && out[n-1] == '\n' {
-		out[n-2] = '\n'
-		out = out[:n-1]
-	}
-	if end {
-		return out, io.EOF
 	}
 	return out, nil
 }

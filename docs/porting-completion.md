@@ -567,8 +567,35 @@ spider. Both failures are retained alongside the passing inputs.
 All 4,649 protected original asset and Save hashes match.
 
 The records are in `quest-and-pending-owner-forwarders-native-v1`.
-Linux `44484057023` and Windows `44483903518` track the exact
-cross-platform jobs.
+Linux `44484057023` and Windows `44483903518` pass all six required jobs.
+
+### Scavenger reports and elimination deaths, 2026-11-19
+
+Engine `50349c0d7c81a79b27c8deb0ce5d6d8bab4d9993` moves the
+Scavenger report `4D8CD0` and elimination death entry `4D8D40`
+out of `GAME3_2.c`. The original comparison executes 512 report
+cases and 352 death cases, including 48 alternate rounding controls.
+Actual ARM64 C calls match 384 original packet sends and 128 full
+non-player pointer returns. The existing Go service preserves the
+death counter and the countdown's binary32 spill, signed conversion
+and eight-bit team count.
+
+Both ARM64 modes pass 704 checks without warnings. The engine tests
+cover the native player chain, single and team countdowns, status
+updates and timer gates. The failed normal linker run and incomplete
+strict archive remain in the verification record. The individual
+packages pass on the same source revision after cache cleanup.
+
+Both ARM64 clients build without warnings and verify 462 public and
+129 retired symbols. The normal product passes the host treasure
+pickup and drop replay. The HD product passes the CTF, FlagBall and
+KOTR replay. All 4,649 protected original asset and Save hashes
+match after execution.
+
+The default ARM64 split inventory has 1,517 active C bodies, including
+192 with pointer and integer conversions. The proof is in
+`scavenger-and-elim-death-native-v1`. Linux `44490112468` and Windows
+`44490015490` track cross-platform verification.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

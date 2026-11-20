@@ -12,6 +12,7 @@ typedef struct nox_test_mapgen_occupied_rects_521bc0_result {
 	uintptr_t second_address;
 	uintptr_t head_address;
 	uintptr_t next_address;
+	uintptr_t intersection_address;
 	uintptr_t remaining_address;
 	uint32_t stored_head_token;
 	int legacy_wrapper_added;
@@ -31,7 +32,8 @@ static nox_test_mapgen_occupied_rects_521bc0_result nox_test_mapgen_occupied_rec
 	uint32_t room_token = nox_mapgenLegacyPtrRegister(room);
 
 	float2 first_pos = {10.0f, 20.0f};
-	float* first = sub_521BC0((int)room_token, &first_pos, 5.0f, 6.0f);
+	nox_mapgen_occupied_rect_legacy* first = (nox_mapgen_occupied_rect_legacy*)
+		sub_521BC0((int)room_token, &first_pos, 5.0f, 6.0f);
 	out.legacy_wrapper_added = first != NULL;
 	out.first_address = (uintptr_t)first;
 	if (!first) {
@@ -40,7 +42,8 @@ static nox_test_mapgen_occupied_rects_521bc0_result nox_test_mapgen_occupied_rec
 	}
 
 	float2 second_pos = {30.0f, 40.0f};
-	float* second = nox_mapgenAddOccupiedRectNative_521BC0(room, &second_pos, 7.0f, 8.0f);
+	nox_mapgen_occupied_rect_legacy* second = nox_mapgenAddOccupiedRectNative_521BC0(
+		room, &second_pos, 7.0f, 8.0f);
 	out.second_address = (uintptr_t)second;
 	if (!second) {
 		sub_521A10(room);
@@ -52,17 +55,19 @@ static nox_test_mapgen_occupied_rects_521bc0_result nox_test_mapgen_occupied_rec
 	out.head_address = (uintptr_t)head;
 	out.next_address = head ? (uintptr_t)nox_mapgenLegacyPtrResolve(head[6]) : 0;
 
-	float candidate[7] = {0.0f, 12.0f, 21.0f, 14.0f, 23.0f, 0.0f, 0.0f};
-	out.intersects = nox_mapgenOccupiedRectsIntersectNative_521F10(room, candidate);
+	nox_mapgen_occupied_rect_legacy candidate = {.min_x=12.0f, .min_y=21.0f, .max_x=14.0f, .max_y=23.0f};
+	nox_mapgen_occupied_rect_legacy* intersection = nox_mapgenOccupiedRectsIntersectNative_521F10(room, &candidate);
+	out.intersects = intersection != NULL;
+	out.intersection_address = (uintptr_t)intersection;
 	float point[2] = {11.0f, 22.0f};
 	out.point_occupied = nox_mapgenPointOccupiedNative_5227B0(room, point);
 
-	*(uint32_t*)second = 1;
+	second->transient = 1;
 	nox_mapgenClearTransientOccupiedRectsNative_521C10(room);
 	out.remaining_address = (uintptr_t)nox_mapgenLegacyPtrResolve(*(uint32_t*)(room + 368));
 	out.transient_removed = out.remaining_address == out.first_address;
 
-	*(uint32_t*)first = 1;
+	first->transient = 1;
 	sub_521C10((int)room_token);
 	out.all_removed = *(uint32_t*)(room + 368) == 0;
 	sub_521A10(room);
@@ -72,18 +77,19 @@ static nox_test_mapgen_occupied_rects_521bc0_result nox_test_mapgen_occupied_rec
 import "C"
 
 type mapgenOccupiedRectsResult521BC0 struct {
-	roomAddress        uintptr
-	firstAddress       uintptr
-	secondAddress      uintptr
-	headAddress        uintptr
-	nextAddress        uintptr
-	remainingAddress   uintptr
-	storedHeadToken    uint32
-	legacyWrapperAdded bool
-	intersects         bool
-	pointOccupied      bool
-	transientRemoved   bool
-	allRemoved         bool
+	roomAddress         uintptr
+	firstAddress        uintptr
+	secondAddress       uintptr
+	headAddress         uintptr
+	nextAddress         uintptr
+	intersectionAddress uintptr
+	remainingAddress    uintptr
+	storedHeadToken     uint32
+	legacyWrapperAdded  bool
+	intersects          bool
+	pointOccupied       bool
+	transientRemoved    bool
+	allRemoved          bool
 }
 
 func mapgenOccupiedRectsFixture521BC0() mapgenOccupiedRectsResult521BC0 {
@@ -91,17 +97,18 @@ func mapgenOccupiedRectsFixture521BC0() mapgenOccupiedRectsResult521BC0 {
 	defer restore()
 	got := C.nox_test_mapgen_occupied_rects_521bc0()
 	return mapgenOccupiedRectsResult521BC0{
-		roomAddress:        uintptr(got.room_address),
-		firstAddress:       uintptr(got.first_address),
-		secondAddress:      uintptr(got.second_address),
-		headAddress:        uintptr(got.head_address),
-		nextAddress:        uintptr(got.next_address),
-		remainingAddress:   uintptr(got.remaining_address),
-		storedHeadToken:    uint32(got.stored_head_token),
-		legacyWrapperAdded: got.legacy_wrapper_added != 0,
-		intersects:         got.intersects != 0,
-		pointOccupied:      got.point_occupied != 0,
-		transientRemoved:   got.transient_removed != 0,
-		allRemoved:         got.all_removed != 0,
+		roomAddress:         uintptr(got.room_address),
+		firstAddress:        uintptr(got.first_address),
+		secondAddress:       uintptr(got.second_address),
+		headAddress:         uintptr(got.head_address),
+		nextAddress:         uintptr(got.next_address),
+		intersectionAddress: uintptr(got.intersection_address),
+		remainingAddress:    uintptr(got.remaining_address),
+		storedHeadToken:     uint32(got.stored_head_token),
+		legacyWrapperAdded:  got.legacy_wrapper_added != 0,
+		intersects:          got.intersects != 0,
+		pointOccupied:       got.point_occupied != 0,
+		transientRemoved:    got.transient_removed != 0,
+		allRemoved:          got.all_removed != 0,
 	}
 }

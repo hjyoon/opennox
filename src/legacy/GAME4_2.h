@@ -94,17 +94,29 @@ double nox_mapgenRoomRandPosXNative_521B00(const uint8_t* room, const uint8_t* c
 double nox_mapgenRoomRandPosYNative_521B30(const uint8_t* room, const uint8_t* child);
 double nox_mapgenRoomAttachPosXNative_521B60(const uint8_t* room, const uint8_t* parent);
 double nox_mapgenRoomAttachPosYNative_521B90(const uint8_t* room, const uint8_t* parent);
+// Occupied rectangle links retain the fixed PE32 record layout.
+typedef struct nox_mapgen_occupied_rect_legacy {
+	uint32_t transient;
+	float min_x;
+	float min_y;
+	float max_x;
+	float max_y;
+	int32_t object_index;
+	uint32_t next_token;
+} nox_mapgen_occupied_rect_legacy;
+
 float* sub_521BC0(int a1, float2* a2, float a3, float a4);
-float* nox_mapgenAddOccupiedRectNative_521BC0(uint8_t* room, float2* pos, float width, float height);
+nox_mapgen_occupied_rect_legacy* nox_mapgenAddOccupiedRectNative_521BC0(
+	uint8_t* room, float2* pos, float width, float height);
 uint32_t* sub_521C10(int a1);
 uint32_t* nox_mapgenClearTransientOccupiedRectsNative_521C10(uint8_t* room);
 int nox_xxx_mapgen_521C60(uint8_t* theme, uintptr_t foreach_ref);
 int sub_521CB0(int a1, int a2, int a3, int a4);
 int nox_mapgenPlaceDecorObjectNative_521CB0(
 	uint8_t* theme, uint8_t* room, uint8_t* decor_entry, int object_index);
-int sub_521EB0(float* a1, float* a2);
-int sub_521F10(int a1, float* a2);
-int nox_mapgenOccupiedRectsIntersectNative_521F10(uint8_t* room, float* rect);
+int sub_521EB0(uint8_t* room, nox_mapgen_occupied_rect_legacy* rect);
+nox_mapgen_occupied_rect_legacy* nox_mapgenOccupiedRectsIntersectNative_521F10(
+	uint8_t* room, nox_mapgen_occupied_rect_legacy* rect);
 uint32_t* nox_mapgenFindForeachChoicesNative_521C60(uintptr_t foreach_ref, uint16_t type_id);
 void nox_mapgenApplyForeachNative_521C60(uint8_t* theme, uintptr_t foreach_ref);
 void nox_xxx_mapgen_521FE0(uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref);

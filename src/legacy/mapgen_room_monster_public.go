@@ -18,13 +18,6 @@ import (
 
 const mapGenMonsterSpread522810 float32 = 0.95
 
-type mapGenOccupiedRect5227B0 struct {
-	_      uint32
-	bounds [4]float32
-	_      uint32
-	next   uint32
-}
-
 func mapGenPointOccupied5227B0(head uint32, point *types.Pointf, resolve func(uint32) *mapGenOccupiedRect5227B0) bool {
 	for head != 0 {
 		rect := resolve(head)
@@ -148,10 +141,7 @@ func mapGenRoomBounds5226D0(room *C.uint8_t) [4]float32 {
 }
 
 func mapGenRoomOccupied5227B0(room *C.uint8_t, point *types.Pointf) bool {
-	head := *(*uint32)(unsafe.Add(unsafe.Pointer(room), 368))
-	return mapGenPointOccupied5227B0(head, point, func(token uint32) *mapGenOccupiedRect5227B0 {
-		return (*mapGenOccupiedRect5227B0)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
-	})
+	return mapGenPointOccupied5227B0(*mapGenOccupiedRectHead(room), point, mapGenResolveOccupiedRect)
 }
 
 //export nox_mapgenPointOccupiedNative_5227B0

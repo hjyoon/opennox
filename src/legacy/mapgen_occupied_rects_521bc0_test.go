@@ -19,6 +19,10 @@ func TestMapgenOccupiedRects521BC0PreserveNativePointers(t *testing.T) {
 	if !got.intersects {
 		t.Fatal("overlapping rectangle was not detected")
 	}
+	if got.intersectionAddress != got.firstAddress {
+		t.Fatalf("intersection pointer = %#x, want first rectangle %#x", got.intersectionAddress, got.firstAddress)
+	}
+	t.Logf("C 521F10 returned the matching native rectangle %#x", got.intersectionAddress)
 	if !got.pointOccupied {
 		t.Fatal("point inside occupied rectangle was not detected")
 	}

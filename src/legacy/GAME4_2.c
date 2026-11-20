@@ -119,16 +119,6 @@ typedef struct nox_mapgen_item_set_entry_legacy {
 	uint32_t next_token;
 } nox_mapgen_item_set_entry_legacy;
 
-typedef struct nox_mapgen_occupied_rect_legacy {
-	uint32_t transient;
-	float min_x;
-	float min_y;
-	float max_x;
-	float max_y;
-	int32_t object_index;
-	uint32_t next_token;
-} nox_mapgen_occupied_rect_legacy;
-
 typedef struct nox_mapgen_decor_fill_legacy {
 	uint32_t type;
 	char object_name[60];
@@ -2920,66 +2910,10 @@ double sub_521B90(int a1, int a2) {
 }
 
 //----- (00521BC0) --------------------------------------------------------
-float* nox_mapgenAddOccupiedRectNative_521BC0(uint8_t* room, float2* pos, float width, float height) {
-	if (!room || !pos) {
-		return NULL;
-	}
-	nox_mapgen_occupied_rect_legacy* rect = calloc(1u, sizeof(*rect));
-	if (!rect) {
-		return NULL;
-	}
-	uint32_t token = nox_mapgenLegacyPtrRegister(rect);
-	if (!token) {
-		free(rect);
-		return NULL;
-	}
-	rect->min_x = pos->field_0;
-	rect->min_y = pos->field_4;
-	rect->max_x = width + pos->field_0;
-	rect->max_y = height + pos->field_4;
-	rect->next_token = *(uint32_t*)(room + 368);
-	*(uint32_t*)(room + 368) = token;
-	return (float*)rect;
-}
-
-float* sub_521BC0(int a1, float2* a2, float a3, float a4) {
-	return nox_mapgenAddOccupiedRectNative_521BC0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3, a4);
-}
+// Native-width implementation: mapgen_occupied_rect_public.go.
 
 //----- (00521C10) --------------------------------------------------------
-uint32_t* nox_mapgenClearTransientOccupiedRectsNative_521C10(uint8_t* room) {
-	if (!room) {
-		return NULL;
-	}
-	nox_mapgen_occupied_rect_legacy* previous = NULL;
-	uint32_t token = *(uint32_t*)(room + 368);
-	while (token) {
-		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
-		if (!rect) {
-			break;
-		}
-		uint32_t next_token = rect->next_token;
-		if (rect->transient == 1) {
-			if (previous) {
-				previous->next_token = next_token;
-			} else {
-				*(uint32_t*)(room + 368) = next_token;
-			}
-			nox_mapgenLegacyPtrForget(rect);
-			free(rect);
-		} else {
-			previous = rect;
-		}
-		token = next_token;
-	}
-	return NULL;
-}
-
-uint32_t* sub_521C10(int a1) {
-	return nox_mapgenClearTransientOccupiedRectsNative_521C10(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
-}
+// Native-width implementation: mapgen_occupied_rect_public.go.
 
 //----- (00521C60) --------------------------------------------------------
 // Native-width implementation: mapgen_choice_inventory_public.go.
@@ -3034,8 +2968,8 @@ int nox_mapgenPlaceDecorObjectNative_521CB0(
 			rect->max_x = position.field_0 + width;
 			rect->max_y = position.field_4 + height;
 			rect->object_index = object_index;
-			if (sub_521EB0((float*)room, (float*)rect) &&
-				!nox_mapgenOccupiedRectsIntersectNative_521F10(room, (float*)rect)) {
+			if (sub_521EB0(room, rect) &&
+				!nox_mapgenOccupiedRectsIntersectNative_521F10(room, rect)) {
 				sub_502D70(object_index);
 				nox_mapgenApplyForeachNative_521C60(theme, *(uint32_t*)(decor_entry + 84));
 				sub_503B30(&position);
@@ -3058,54 +2992,10 @@ int sub_521CB0(int a1, int a2, int a3, int a4) {
 }
 
 //----- (00521EB0) --------------------------------------------------------
-int sub_521EB0(float* a1, float* a2) {
-	return a2[1] + 0.5 >= a1[9] && a2[3] - 0.5 <= a1[11] && a2[2] + 0.5 >= a1[10] && a2[4] - 0.5 <= a1[12];
-}
+// Native-width implementation: mapgen_occupied_rect_public.go.
 
 //----- (00521F10) --------------------------------------------------------
-int nox_mapgenOccupiedRectsIntersectNative_521F10(uint8_t* room, float* a2) {
-	float v4; // [esp+0h] [ebp-20h]
-	float v5; // [esp+4h] [ebp-1Ch]
-	float v6; // [esp+8h] [ebp-18h]
-	float v7; // [esp+Ch] [ebp-14h]
-	float v8; // [esp+14h] [ebp-Ch]
-	float v9; // [esp+1Ch] [ebp-4h]
-
-	if (!room || !a2) {
-		return 0;
-	}
-	uint32_t token = *(uint32_t*)(room + 368);
-	while (token) {
-		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
-		if (!rect) {
-			return 0;
-		}
-		if ((float*)rect != a2) {
-			v4 = a2[1] + 0.5;
-			if (v4 < rect->max_x - 0.5) {
-				v6 = a2[3] - 0.5;
-				if (v6 > rect->min_x + 0.5) {
-					v9 = rect->max_y - 0.5;
-					v5 = a2[2] + 0.5;
-					if (v5 < (double)v9) {
-						v8 = rect->min_y + 0.5;
-						v7 = a2[4] - 0.5;
-						if (v7 > (double)v8) {
-							return 1;
-						}
-					}
-				}
-			}
-		}
-		token = rect->next_token;
-	}
-	return 0;
-}
-
-int sub_521F10(int a1, float* a2) {
-	return nox_mapgenOccupiedRectsIntersectNative_521F10(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
-}
+// Native-width implementation: mapgen_occupied_rect_public.go.
 
 //----- (00521FE0) --------------------------------------------------------
 // Native-width implementation: mapgen_choice_inventory_public.go.

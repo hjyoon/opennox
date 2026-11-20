@@ -178,10 +178,9 @@ func nox_xxx_mapGenMakeMonsterInRoom_522810(room *C.uint8_t, name *C.char) *C.no
 		find: func(scale float32, point *types.Pointf) bool {
 			return sub_5226D0(room, C.float(scale), (*C.float2)(unsafe.Pointer(point))) != 0
 		},
-		selectType: func() { C.nox_xxx_mapGenGetObjID_527940(name) },
+		selectType: func() { nox_xxx_mapGenGetObjID_527940(name) },
 		place: func(point *types.Pointf) *server.Object {
-			raw := C.nox_xxx_mapGenPlaceObj_5279B0((*C.float2)(unsafe.Pointer(point)))
-			return asObjectS((*C.nox_object_t)(unsafe.Pointer(raw)))
+			return asObjectS(nox_xxx_mapGenPlaceObj_5279B0((*C.float2)(unsafe.Pointer(point))))
 		},
 		angle: func(direction *types.Pointf) int {
 			return int(nox_xxx_math_509ED0((*C.float2)(unsafe.Pointer(direction))))

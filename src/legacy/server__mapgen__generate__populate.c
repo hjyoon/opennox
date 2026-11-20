@@ -18,7 +18,7 @@ extern uint32_t dword_5d4594_1550916;
 int sub_4D42C0() { return dword_5d4594_1550916; }
 
 //----- (00522AD0) --------------------------------------------------------
-static float* nox_mapgenPlaceExitNative_522AD0(uint8_t* room, uint8_t* definition) {
+static nox_object_t* nox_mapgenPlaceExitNative_522AD0(uint8_t* room, uint8_t* definition) {
 	if (!room || !definition) {
 		return NULL;
 	}
@@ -26,7 +26,7 @@ static float* nox_mapgenPlaceExitNative_522AD0(uint8_t* room, uint8_t* definitio
 	int v2;        // eax
 	double v4;     // st7
 	double v5;     // st7
-	float* v6;     // ebx
+	nox_object_t* v6;     // ebx
 	double v7;     // st7
 	float a3;      // [esp+0h] [ebp-34h]
 	float a4;      // [esp+4h] [ebp-30h]
@@ -107,7 +107,7 @@ static float* nox_mapgenPlaceExitNative_522AD0(uint8_t* room, uint8_t* definitio
 }
 
 float* nox_xxx_mapgen_522AD0(float* a1, int a2) {
-	return nox_mapgenPlaceExitNative_522AD0(
+	return (float*)nox_mapgenPlaceExitNative_522AD0(
 		(uint8_t*)nox_mapgenLegacyPtrResolve((uintptr_t)a1),
 		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
@@ -146,7 +146,7 @@ static int nox_mapgenMakeExitNative_522A40(uint8_t* theme) {
 		}
 		uint8_t* definition = theme + 216;
 		for (int index = 0; index < *(int32_t*)(theme + 472); ++index, definition += 64) {
-			nox_object_t* object = (nox_object_t*)nox_mapgenPlaceExitNative_522AD0(room, definition);
+			nox_object_t* object = nox_mapgenPlaceExitNative_522AD0(room, definition);
 			if (object) {
 				nox_mapgenSetExitDestinationNative_527D50(object, (char*)(theme + 476));
 				return 1;

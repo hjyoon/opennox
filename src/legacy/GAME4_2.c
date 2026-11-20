@@ -44,7 +44,6 @@ extern uint32_t dword_5d4594_2487632;
 extern uint32_t dword_5d4594_3835364;
 extern uint32_t dword_5d4594_2487884;
 extern uint32_t dword_5d4594_3835372;
-extern uint32_t dword_5d4594_3835392;
 extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487568;
 extern uint32_t dword_5d4594_2487628;
@@ -52,7 +51,6 @@ extern uint32_t dword_5d4594_2487584;
 extern uint32_t dword_5d4594_2487564;
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_5d4594_2487676;
-extern uint32_t dword_5d4594_3835388;
 extern uint32_t dword_5d4594_2487652;
 extern uint32_t dword_5d4594_3835348;
 extern uint32_t dword_5d4594_2487576;
@@ -4255,7 +4253,7 @@ static int nox_mapgenPlaceDoorHorizontalNative_525690(uint8_t* room, float2* poi
 	sub_527030(&position);
 	position.field_0 -= 16.263456f;
 	nox_xxx_mapGenGetObjID_527940(definition->door_name);
-	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	nox_object_t* object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 5);
 	}
@@ -4284,12 +4282,12 @@ static int nox_mapgenPlaceDoubleDoorHorizontalNative_525740(uint8_t* room, float
 	sub_527030(&position);
 	position.field_0 -= 48.790367f;
 	nox_xxx_mapGenGetObjID_527940(definition->double_door_name);
-	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	nox_object_t* object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 5);
 	}
 	position.field_0 += 65.053825f;
-	object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 3);
 	}
@@ -4316,7 +4314,7 @@ static int nox_mapgenPlaceDoorVerticalNative_525830(uint8_t* room, float2* point
 	sub_527030(&position);
 	position.field_4 -= 16.263456f;
 	nox_xxx_mapGenGetObjID_527940(definition->door_name);
-	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	nox_object_t* object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 7);
 	}
@@ -4345,12 +4343,12 @@ static int nox_mapgenPlaceDoubleDoorVerticalNative_5258E0(uint8_t* room, float2*
 	sub_527030(&position);
 	position.field_4 -= 48.790367f;
 	nox_xxx_mapGenGetObjID_527940(definition->double_door_name);
-	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	nox_object_t* object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 7);
 	}
 	position.field_4 += 65.053825f;
-	object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	object = nox_xxx_mapGenPlaceObj_5279B0(&position);
 	if (object) {
 		nox_mapgenOrientObjNative_527C60(object, 1);
 	}
@@ -5219,70 +5217,6 @@ int sub_526E60(float* a1) {
 
 //----- (00527030) --------------------------------------------------------
 // Native-width implementation: mapgen_wall_paths_public.go.
-//----- (00527940) --------------------------------------------------------
-int nox_xxx_mapGenGetObjID_527940(char* a1) {
-	int result; // eax
-
-	if (nox_strcmpi(a1, "NONE")) {
-		if (a1) {
-			dword_5d4594_3835388 = nox_xxx_getNameId_4E3AA0(a1);
-			result = 1;
-		} else {
-			result = 0;
-		}
-	} else {
-		dword_5d4594_3835388 = 0;
-		result = 1;
-	}
-	return result;
-}
-
-//----- (005279B0) --------------------------------------------------------
-float* nox_xxx_mapGenPlaceObj_5279B0(float2* a1) {
-	float* result; // eax
-	float2 a2;     // [esp+4h] [ebp-8h]
-
-	if (!dword_5d4594_3835388) {
-		return 0;
-	}
-	result = (float*)nox_xxx_mapGenFixCoords_4D3D90(a1, &a2);
-	if (result) {
-		result = (float*)nox_xxx_newObjectWithTypeInd_4E3450(*(int*)&dword_5d4594_3835388);
-		if (result) {
-			result = nox_xxx_mapGenMoveObject_527A10(result, &a1->field_0);
-		}
-	}
-	return result;
-}
-
-//----- (00527A10) --------------------------------------------------------
-void* nox_objectTypeGetXfer(char* id);
-float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2) {
-	char* v6;  // eax
-	float2 v7; // [esp+4h] [ebp-8h]
-
-	if (!nox_xxx_mapGenFixCoords_4D3D90(a2, &v7)) {
-		return a1;
-	}
-	if (!a1) {
-		return 0;
-	}
-	nox_object_t* object = (nox_object_t*)a1;
-	object->extent = dword_5d4594_3835392;
-	++dword_5d4594_3835392;
-	object->y = v7.field_4;
-	object->x = v7.field_0;
-	object->obj_flags |= 0x1000000;
-	v6 = nox_xxx_getUnitName_4E39D0(object);
-	if (nox_objectTypeGetXfer(v6) == nox_xxx_XFerDoor_4F4CB0) {
-		object->x = (double)(int)(23 * (unsigned long long)(long long)(v7.field_0 * 0.043478262 + 0.5));
-		object->y = (double)(int)(23 * (unsigned long long)(long long)(v7.field_4 * 0.043478262 + 0.5));
-	}
-	nox_xxx_createAt_4DAA50(object, NULL, object->x, object->y);
-	nox_xxx_unitClearPendingMB_4DB030();
-	return a1;
-}
-
 //----- (00527C60) --------------------------------------------------------
 // Native-width implementation: mapgen_room_monster_public.go.
 

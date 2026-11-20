@@ -205,7 +205,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 			return asObjectS(nox_xxx_mapGenMakeSpellbook_5220E0(theme, name))
 		},
 		move: func(unit *server.Object, point *types.Pointf) {
-			C.nox_xxx_mapGenMoveObject_527A10((*C.float)(unsafe.Pointer(unit)), (*C.float2)(unsafe.Pointer(point)))
+			nox_xxx_mapGenMoveObject_527A10(asObjectC(unit), (*C.float2)(unsafe.Pointer(point)))
 		},
 	}
 	mapGenPopulateDecor522340(definition, func(token uint32) *mapGenDecorSet {

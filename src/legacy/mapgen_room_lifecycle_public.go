@@ -109,7 +109,7 @@ func nox_xxx_mapGenAddNewRoom_521730(room *C.uint32_t) C.int {
 		return 0
 	}
 	C.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
-	return C.nox_mapgenRoomOccupyNative_521100((*C.uint8_t)(raw))
+	return nox_mapgenRoomOccupyNative_521100((*C.uint8_t)(raw))
 }
 
 //export nox_mapgenRemoveRoomNative_521760
@@ -119,7 +119,7 @@ func nox_mapgenRemoveRoomNative_521760(room *C.uint8_t) C.int {
 	}
 	mapgenRooms.remove((*mapgenRoomListNode)(unsafe.Pointer(room)), mapgenResolveListedRoom, mapgenRegisterListedRoom)
 	C.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
-	return C.nox_mapgenRoomVacateNative_521180(room)
+	return nox_mapgenRoomVacateNative_521180(room)
 }
 
 //export sub_521760

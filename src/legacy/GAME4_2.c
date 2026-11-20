@@ -71,7 +71,7 @@ extern uint32_t dword_5d4594_2487524;
 extern uint32_t dword_5d4594_2487556;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 
-static uint8_t** nox_mapgen_occupancy_grid;
+uint8_t** nox_mapgen_occupancy_grid;
 static uint8_t* nox_mapgen_farthest_room;
 static uint8_t* nox_mapgen_sorted_room_head;
 static float nox_mapgen_max_room_distance;
@@ -2231,21 +2231,7 @@ uint32_t* sub_520D50(uint32_t* a1) {
 // GAME.EXE 00520DF0 is implemented in Go.
 
 //----- (00520E60) --------------------------------------------------------
-void* sub_520E60(int2* a1) {
-	int v1;     // eax
-	int v2;     // ecx
-	void* result;
-
-	v1 = dword_5d4594_2487536 + a1->field_0;
-	v2 = dword_5d4594_2487536 + a1->field_4;
-	if (v1 < 0 || v1 >= *(int*)&dword_5d4594_2487540 || v2 < 0 || v2 >= *(int*)&dword_5d4594_2487540) {
-		result = NULL;
-	} else {
-		result = nox_mapgen_occupancy_grid[v1] + 20 * v2;
-	}
-	return result;
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00520EA0) --------------------------------------------------------
 int sub_520EA0(uint8_t* a1) {
 	int v2; // edx
@@ -2324,135 +2310,11 @@ void sub_520F80() {
 }
 
 //----- (00521100) --------------------------------------------------------
-int nox_mapgenRoomOccupyNative_521100(uint8_t* a1) {
-	int result; // eax
-	int v2;     // ebx
-	int v3;     // edi
-	uint8_t* v4;
-	int v5;     // eax
-	int2 a1a;   // [esp+8h] [ebp-10h]
-	int2 a2;    // [esp+10h] [ebp-8h]
-
-	nox_xxx_mapGenRoundFloatToPtr_520DF0((float2*)(a1 + 20), &a2);
-	uint32_t room_token = nox_mapgenLegacyPtrRegister(a1);
-	if (!room_token) {
-		return 0;
-	}
-	result = *(uint32_t*)(a1 + 16);
-	v2 = 0;
-	for (a1a.field_4 = a2.field_4; v2 < result; ++a1a.field_4) {
-		v3 = 0;
-		a1a.field_0 = a2.field_0;
-		if (*(uint32_t*)(a1 + 12) > 0) {
-			do {
-				v4 = sub_520E60(&a1a);
-				if (v4) {
-					*(uint32_t*)(v4 + 16) = room_token;
-				}
-				v5 = *(uint32_t*)(a1 + 12);
-				++v3;
-				++a1a.field_0;
-			} while (v3 < v5);
-		}
-		result = *(uint32_t*)(a1 + 16);
-		++v2;
-	}
-	return result;
-}
-
-int sub_521100(int a1) {
-	return nox_mapgenRoomOccupyNative_521100((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521180) --------------------------------------------------------
-int nox_mapgenRoomVacateNative_521180(uint8_t* a1) {
-	int result; // eax
-	int v2;     // ebx
-	int v3;     // esi
-	uint8_t* v4;
-	int v5;     // eax
-	int2 a1a;   // [esp+Ch] [ebp-10h]
-	int2 a2;    // [esp+14h] [ebp-8h]
-
-	nox_xxx_mapGenRoundFloatToPtr_520DF0((float2*)(a1 + 20), &a2);
-	result = *(uint32_t*)(a1 + 16);
-	v2 = 0;
-	for (a1a.field_4 = a2.field_4; v2 < result; ++a1a.field_4) {
-		v3 = 0;
-		a1a.field_0 = a2.field_0;
-		if (*(uint32_t*)(a1 + 12) > 0) {
-			do {
-				v4 = sub_520E60(&a1a);
-				if (v4) {
-					*(uint32_t*)(v4 + 16) = 0;
-				}
-				v5 = *(uint32_t*)(a1 + 12);
-				++v3;
-				++a1a.field_0;
-			} while (v3 < v5);
-		}
-		result = *(uint32_t*)(a1 + 16);
-		++v2;
-	}
-	return result;
-}
-
-int sub_521180(int a1) {
-	return nox_mapgenRoomVacateNative_521180((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521200) --------------------------------------------------------
-void* nox_mapgenRoomAtNative_521200(uint8_t* a1) {
-	int v1;   // eax
-	int v2;   // ebx
-	int v3;   // esi
-	uint8_t* v4;
-	int v5;   // eax
-	int v6;   // eax
-	int2 a1a; // [esp+Ch] [ebp-10h]
-	int2 a2;  // [esp+14h] [ebp-8h]
-
-	nox_xxx_mapGenRoundFloatToPtr_520DF0((float2*)(a1 + 20), &a2);
-	v1 = *(uint32_t*)(a1 + 16);
-	v2 = 0;
-	a1a.field_4 = a2.field_4;
-	if (v1 <= 0) {
-		return 0;
-	}
-	while (1) {
-		v3 = 0;
-		a1a.field_0 = a2.field_0;
-		if (*(uint32_t*)(a1 + 12) > 0) {
-			while (1) {
-				v4 = sub_520E60(&a1a);
-				if (v4) {
-					if (*(uint32_t*)(v4 + 16)) {
-						return nox_mapgenLegacyPtrResolve(*(uint32_t*)(v4 + 16));
-					}
-				}
-				v5 = *(uint32_t*)(a1 + 12);
-				++v3;
-				++a1a.field_0;
-				if (v3 >= v5) {
-					goto LABEL_6;
-				}
-			}
-		}
-	LABEL_6:
-		v6 = *(uint32_t*)(a1 + 16);
-		++v2;
-		++a1a.field_4;
-		if (v2 >= v6) {
-			return 0;
-		}
-	}
-}
-
-int sub_521200(int a1) {
-	void* room = nox_mapgenRoomAtNative_521200((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
-	return (int)nox_mapgenLegacyPtrRegister(room);
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521290) --------------------------------------------------------
 void* nox_mapgenRoomAtCellNative_521290(int2* cell) {
 	uint8_t* entry = sub_520E60(cell);
@@ -2583,60 +2445,9 @@ void nox_xxx_mapgenFreeBuffer_521400() {
 // Native-width implementation: mapgen_room_lifecycle_public.go.
 
 //----- (005217A0) --------------------------------------------------------
-int sub_5217A0(int a1, int a2) {
-	return nox_mapgenRoomWithinThemeNative_5217A0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
-
-int nox_mapgenRoomWithinThemeNative_5217A0(uint8_t* a1, uint8_t* a2) {
-	int v2;         // edi
-	int v3;         // ebx
-	long double v4; // st7
-	int v5;         // edx
-	long double v6; // st6
-	int v7;         // ecx
-
-	v2 = 0;
-	v3 = *(uint32_t*)(a2 + 16);
-	v4 = *(float*)(a2 + 24);
-	if (v3 <= 0) {
-		return 1;
-	}
-	v5 = *(uint32_t*)(a2 + 12);
-	while (1) {
-		v6 = *(float*)(a2 + 20);
-		v7 = 0;
-		if (v5 > 0) {
-			while (*(float*)(a1 + 64) >= fabs((double)v6) && *(float*)(a1 + 64) >= fabs((double)v4)) {
-				v6 = v6 + 32.526913;
-				if (++v7 >= v5) {
-					goto LABEL_7;
-				}
-			}
-			return 0;
-		}
-	LABEL_7:
-		++v2;
-		v4 = v4 + 32.526913;
-		if (v2 >= v3) {
-			return 1;
-		}
-	}
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521820) --------------------------------------------------------
-int nox_mapgenRoomFitsNative_521820(uint8_t* theme, uint8_t* room) {
-	return nox_mapgenRoomWithinThemeNative_5217A0(theme, room) &&
-		nox_mapgenRoomAtNative_521200(room) == NULL;
-}
-
-int sub_521820(int a1, int a2) {
-	return nox_mapgenRoomFitsNative_521820(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
-
+// Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521850) --------------------------------------------------------
 // GAME.EXE 00521850 is implemented in Go.
 

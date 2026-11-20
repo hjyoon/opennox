@@ -42,7 +42,6 @@ extern void* dword_5d4594_2516344;
 extern uint32_t dword_5d4594_2516328;
 extern uint32_t dword_5d4594_2516348;
 extern uint32_t dword_5d4594_2650652;
-extern uintptr_t dword_8531A0_2576;
 
 // GAME.EXE stored this node as four 32-bit words. The first two fields are
 // still 32-bit protected values, but the list links must use native pointers.
@@ -1334,6 +1333,8 @@ long long nox_xxx___Getcvt_57B180() { return *getMemU64Ptr(0x5D4594, 2523788); }
 int nox_cheat_allowall = 0;
 
 //----- (0057B400) --------------------------------------------------------
+// Ported to client_glyph_access_57b400.go.
+#if 0
 int nox_xxx_client_57B400(nox_drawable* dr) {
 	int v1; // eax
 
@@ -1371,6 +1372,7 @@ int sub_57B450(nox_drawable* a1p) {
 	v2 = 1 << ((nox_playerInfo*)dword_8531A0_2576)->info.playerClass;
 	return (v2 & (unsigned char)sub_57B370(a1p->flags28, a1p->flags29, a1p->field_27)) != 0;
 }
+#endif
 
 //----- (0057B810) --------------------------------------------------------
 // Preserved original: native Go public entry in game5_public_native.go.

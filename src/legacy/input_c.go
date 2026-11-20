@@ -246,7 +246,7 @@ func Nox_xxx_cursorSetTooltip_4776B0(a1 string) {
 	C.nox_xxx_cursorSetTooltip_4776B0(wstr)
 }
 func Sub_57B450(a1 *client.Drawable) int {
-	return int(C.sub_57B450((*nox_drawable)(a1.C())))
+	return clientDrawableCanPickup57B450(a1)
 }
 func Nox_xxx_clientPickup_46C140(a1 *client.Drawable) {
 	C.nox_xxx_clientPickup_46C140((*nox_drawable)(a1.C()))

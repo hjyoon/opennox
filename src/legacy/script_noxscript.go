@@ -3,7 +3,7 @@ package legacy
 /*
 #include "server__script__script.h"
 #include "server__script__internal.h"
-#include "GAME4_1.h" // for nox_xxx_scriptPrepareFoundUnit_511D70 and nox_xxx_script_511C50
+#include "GAME4_1.h"
 int sub_516570();
 int nox_xxx_gameIsSwitchToSolo_4DB240();
 size_t nox_script_readWriteWww_5417C0(FILE* a1, FILE* a2, FILE* a3);
@@ -119,10 +119,13 @@ func Sub_516570() {
 	C.sub_516570()
 }
 func Nox_xxx_script_511C50(a1 int) *server.Object {
-	return asObjectS(C.nox_xxx_script_511C50(C.int(a1)))
+	if node := findScriptObjectCacheNode(int32(a1), false); node != nil {
+		return *scriptObjectCacheSlot(node)
+	}
+	return nil
 }
 func Nox_xxx_scriptPrepareFoundUnit_511D70(a1 *server.Object) {
-	C.nox_xxx_scriptPrepareFoundUnit_511D70(asObjectC(a1))
+	rememberScriptObject(a1, nil)
 }
 func Nox_script_readWriteWww_5417C0(a1 *binfile.File, a2 *binfile.File, a3 *binfile.File) {
 	C.nox_script_readWriteWww_5417C0(NewFileHandle(a1), NewFileHandle(a2), NewFileHandle(a3))

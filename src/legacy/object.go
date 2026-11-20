@@ -713,7 +713,7 @@ func Sub_4ECFA0(a1 *server.Object) {
 	GetServer().S().ObjectNetCodeCacheRemove4ECFA0(a1)
 }
 func Sub_511DE0(a1 *server.Object) {
-	C.sub_511DE0(asObjectC(a1))
+	forgetCachedScriptObject(a1)
 }
 func Sub_528990(a1 *server.Object) {
 	C.sub_528990(asObjectC(a1))

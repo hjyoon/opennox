@@ -1667,6 +1667,38 @@ has SHA-256 `242ab74fac0fa5c75c03df19f1a29f199d316fe25fb2cb204667c314f927eaf0`.
 Linux `44713163084` passes all four products and Windows `44713162765`
 passes amd64 and 386 at this revision.
 
+### Map generator tile wall rebuilding, 2026-11-20
+
+Engine `880220f21beccf4b8c8865d35265dfe64c6eec25` ports `527380`
+and `527450` to Go. The rebuild traverses native 56-byte tile rows and
+passes native wall pointers through the C entry. The preserved old C
+executable faults when its 44-byte PE32 walk truncates a row address
+above 4 GiB.
+
+The original 1,087 entry bytes, 39-byte converter and direction table
+execute in 124 cases. ARM64 normal and cgocheck2 each pass 3,458
+tests with zero warnings. The actual C caller verifies full-width
+tile and wall pointers. The normal, HD and dedicated ARM64 products
+build with zero warnings and check 564 retained C symbols.
+
+The dedicated server generates and reloads two fixed-seed maps. All
+four MAP and NXZ files match the preceding engine. The normal client
+verifies 54 Amb definitions, two native OpenAL emitters and all ten
+door open and close effects. The HD client creates a Warrior I autosave
+and loads it in a fresh process. The loaded player has 20 of 20 health
+and moves 187.908 units. The private autosave and all 4,649 original
+asset and Save hashes are preserved.
+
+Linux `44730418990` passes all four products. Windows
+`44730419625` passes amd64 and 386 on attempt 2 at the same revision.
+The first attempt's amd64 test deadline expired after 1,474,828
+passing test events. Its executable archive and logs are preserved.
+The thirteen split GAME files contain 1,391 active bodies. The default
+ARM64 audit finds 2,025 named active C bodies and 294 bodies with
+pointer and integer conversions. The release receipt
+`mapgen-wall-rebuild-native-20261120-v1/mapgen-wall-rebuild-release-v1.json`
+has SHA-256 `e4319a56f2aa3556739ff8c6bb93b144c8b7a7e39ea644dfad89ed9731de705d`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

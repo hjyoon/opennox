@@ -123,7 +123,7 @@ func clientCenterMessages202(t *testing.T, mode string) {
 		x := row.Input
 		emit([10]int64{1, x.Index, x.Mask, x.Frame, x.Width, x.Height, x.Top, x.Measured, x.Font, 0}, row.Expected.Events, row.Expected.Returned)
 	}
-	source, err := os.ReadFile("GAME1_3.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME1_3.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

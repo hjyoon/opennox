@@ -232,15 +232,16 @@ func sub_477530(a1 bool) {
 func sub_44A400() {
 	c := noxClient
 	if win1 := nox_gui_curDialog_830224; win1 != nil {
-		if legacy.Get_dword_5d4594_830236() != nil {
-			legacy.Get_dword_5d4594_830236().Capture(true)
-			legacy.Set_dword_5d4594_830236(nil)
+		g := win1.GUI()
+		if previous := dword_5d4594_830236; g.OwnsWindow(previous) {
+			previous.Capture(true)
 		}
+		dword_5d4594_830236 = nil
 		win1.StackPop()
 		win1.Capture(false)
 		win1.Destroy()
-		if legacy.Get_dword_5d4594_830232() != nil {
-			win1.GUI().Focus(legacy.Get_dword_5d4594_830232())
+		if previous := dword_5d4594_830232; g.OwnsWindow(previous) && !previous.Flags.Has(gui.StatusDestroyed) {
+			g.Focus(previous)
 		}
 		nox_gui_curDialog_830224 = nil
 		dword_5d4594_830228 = nil

@@ -683,8 +683,6 @@ extern unsigned int nox_client_translucentFrontWalls_805844;
 extern uint32_t dword_5d4594_10984;
 extern unsigned int dword_5d4594_527988;
 extern uint32_t dword_5d4594_528256;
-extern void* dword_5d4594_830232;
-extern void* dword_5d4594_830236;
 extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_831260;
 extern uint32_t dword_5d4594_1563096;
@@ -978,12 +976,6 @@ func Get_nox_alloc_screenParticles_806044() unsafe.Pointer {
 func Get_dword_5d4594_251744() int {
 	return int(C.dword_5d4594_251744)
 }
-func Get_dword_5d4594_830236() *gui.Window {
-	return AsWindowP(C.dword_5d4594_830236)
-}
-func Get_dword_5d4594_830232() *gui.Window {
-	return AsWindowP(C.dword_5d4594_830232)
-}
 func Get_dword_5d4594_831260() int {
 	return int(C.dword_5d4594_831260)
 }
@@ -1196,9 +1188,6 @@ func Set_nox_screenParticles_head(v unsafe.Pointer) {
 }
 func Set_dword_5d4594_806052(v unsafe.Pointer) {
 	C.dword_5d4594_806052 = (*C.nox_screenParticle)(v)
-}
-func Set_dword_5d4594_830236(v unsafe.Pointer) {
-	C.dword_5d4594_830236 = v
 }
 func Set_nox_gameDisableMapDraw_5d4594_2650672(v int) {
 	C.nox_gameDisableMapDraw_5d4594_2650672 = C.uint(v)

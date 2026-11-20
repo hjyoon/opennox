@@ -24,7 +24,7 @@ void nox_xxx_setMouseBounds_430A70(int x1, int x2, int y1, int y2);
 int nox_xxx_isQuest_4D6F50(void);
 extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_815748;
-extern uint32_t dword_5d4594_816368, dword_5d4594_816372, dword_5d4594_816376;
+extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156, dword_5d4594_825736;
 extern nox_window* dword_5d4594_816412;
 extern nox_window* dword_5d4594_825744;
@@ -239,7 +239,7 @@ func sub_43DC00() { C.dword_587000_93156 = 0 }
 
 //export sub_43DC10
 func sub_43DC10() C.int {
-	result := C.dword_5d4594_816376
+	result := musicAudioDriverLegacyMirror()
 	if result != 0 {
 		C.dword_587000_93156 = 1
 	}

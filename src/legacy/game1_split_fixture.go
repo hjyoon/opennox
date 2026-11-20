@@ -5,7 +5,7 @@ package legacy
 #include <stddef.h>
 extern uint32_t dword_5d4594_815748;
 extern uint32_t dword_5d4594_815044;
-extern uint32_t dword_5d4594_816368, dword_5d4594_816372, dword_5d4594_816376;
+extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156;
 extern nox_window* dword_5d4594_816412;
 extern uint32_t nox_color_black_2650656;
@@ -17,7 +17,6 @@ static uint32_t* g1s_word(int slot) {
  case 1:return &dword_5d4594_815044;
  case 2:return &dword_5d4594_816368;
  case 3:return &dword_5d4594_816372;
- case 4:return &dword_5d4594_816376;
  case 5:return &dword_587000_93156;
  case 7:return &nox_color_white_2523948;
  case 8:return &dword_5d4594_825736;
@@ -72,6 +71,12 @@ import "C"
 import "unsafe"
 
 func g1sWord(slot int, value uint32, set bool) uint32 {
+	if slot == 4 {
+		if set {
+			musicAudioDriverLegacyWord = value
+		}
+		return musicAudioDriverLegacyMirror()
+	}
 	p := C.g1s_word(C.int(slot))
 	if set {
 		*p = C.uint32_t(value)

@@ -17,7 +17,6 @@ char* sub_413890();
 int sub_486640(void* a1, int a2);
 
 extern void* dword_587000_127004;
-extern uint32_t dword_5d4594_816376;
 extern uint32_t dword_5d4594_831084;
 extern uint32_t dword_5d4594_831092;
 
@@ -44,9 +43,10 @@ var (
 	// The original executable stored Miles driver handles in 32-bit globals.
 	// OpenNox handles are native-width opaque values, so overlaying ail.Driver on
 	// those globals corrupts adjacent C state on 64-bit targets. Keep the real
-	// values in Go and retain the C globals only as legacy availability mirrors.
-	musicAudioDriver  ail.Driver
-	dialogAudioDriver ail.Driver
+	// values in Go and expose a fixed-width availability word to legacy callers.
+	musicAudioDriver           ail.Driver
+	musicAudioDriverLegacyWord uint32
+	dialogAudioDriver          ail.Driver
 
 	Sub_43EA20 func(a1 unsafe.Pointer) int
 	Sub_43E9F0 func()
@@ -324,7 +324,7 @@ func audioDriverLegacyMirror(drv ail.Driver) uint32 {
 
 func setMusicAudioDriver(drv ail.Driver) {
 	musicAudioDriver = drv
-	C.dword_5d4594_816376 = C.uint32_t(audioDriverLegacyMirror(drv))
+	musicAudioDriverLegacyWord = audioDriverLegacyMirror(drv)
 }
 
 func setDialogAudioDriver(drv ail.Driver) {
@@ -333,7 +333,7 @@ func setDialogAudioDriver(drv ail.Driver) {
 }
 
 func musicAudioDriverLegacyMirror() uint32 {
-	return uint32(C.dword_5d4594_816376)
+	return musicAudioDriverLegacyWord
 }
 
 func dialogAudioDriverLegacyMirror() uint32 {

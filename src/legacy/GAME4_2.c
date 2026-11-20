@@ -47,7 +47,6 @@ extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487568;
-extern uint32_t dword_5d4594_2487536;
 extern uint32_t dword_5d4594_2487628;
 extern uint32_t dword_5d4594_2487584;
 extern uint32_t dword_5d4594_2487564;
@@ -62,16 +61,13 @@ extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_2487620;
 extern uint32_t dword_5d4594_2487708;
 extern uint32_t nox_xxx_energyBoltTarget_5d4594_2487880;
-extern uint32_t dword_5d4594_2487532;
 extern uint32_t dword_5d4594_2487248;
 
-extern uint32_t dword_5d4594_2487540;
 extern uint32_t dword_5d4594_2487712;
 extern uint32_t dword_5d4594_2487524;
 extern uint32_t dword_5d4594_2487556;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 
-uint8_t** nox_mapgen_occupancy_grid;
 static uint8_t* nox_mapgen_farthest_room;
 static uint8_t* nox_mapgen_sorted_room_head;
 static float nox_mapgen_max_room_distance;
@@ -2233,82 +2229,9 @@ uint32_t* sub_520D50(uint32_t* a1) {
 //----- (00520E60) --------------------------------------------------------
 // Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00520EA0) --------------------------------------------------------
-int sub_520EA0(uint8_t* a1) {
-	int v2; // edx
-	int v3; // esi
-	int v4; // esi
-	int v5; // ecx
-	int v6; // eax
-	int v7; // ebx
-
-	dword_5d4594_2487540 = 2 * *(uint32_t*)(a1 + 68) + 1;
-	dword_5d4594_2487536 = *(uint32_t*)(a1 + 68);
-	nox_mapgen_occupancy_grid = (uint8_t**)calloc(dword_5d4594_2487540, sizeof(*nox_mapgen_occupancy_grid));
-	if (!nox_mapgen_occupancy_grid) {
-		return 0;
-	}
-	dword_5d4594_2487532 = nox_mapgenLegacyPtrRegister(nox_mapgen_occupancy_grid);
-	if (!dword_5d4594_2487532) {
-		free(nox_mapgen_occupancy_grid);
-		nox_mapgen_occupancy_grid = NULL;
-		return 0;
-	}
-	v2 = dword_5d4594_2487540;
-	v3 = 0;
-	if (dword_5d4594_2487540 > 0) {
-		do {
-			nox_mapgen_occupancy_grid[v3] = (uint8_t*)calloc(v2, 20);
-			if (!nox_mapgen_occupancy_grid[v3]) {
-				for (int i = 0; i < v3; ++i) {
-					free(nox_mapgen_occupancy_grid[i]);
-				}
-				nox_mapgenLegacyPtrForget(nox_mapgen_occupancy_grid);
-				free(nox_mapgen_occupancy_grid);
-				nox_mapgen_occupancy_grid = NULL;
-				dword_5d4594_2487532 = 0;
-				return 0;
-			}
-			v2 = dword_5d4594_2487540;
-		} while (++v3 < *(int*)&dword_5d4594_2487540);
-	}
-	v4 = 0;
-	if (v2 > 0) {
-		v5 = 0;
-		do {
-			v6 = 0;
-			if (v2 > 0) {
-				do {
-					*(uint32_t*)(nox_mapgen_occupancy_grid[v6] + v5 + 4) = v6 - dword_5d4594_2487536;
-					v7 = v6++;
-					*(uint32_t*)(nox_mapgen_occupancy_grid[v7] + v5 + 8) = v4 - dword_5d4594_2487536;
-					*(uint32_t*)(nox_mapgen_occupancy_grid[v7] + v5 + 16) = 0;
-					v2 = dword_5d4594_2487540;
-				} while (v6 < *(int*)&dword_5d4594_2487540);
-			}
-			++v4;
-			v5 += 20;
-		} while (v4 < v2);
-	}
-	return 1;
-}
-
+// Native-width implementation: mapgen_grid_allocation_public.go.
 //----- (00520F80) --------------------------------------------------------
-void sub_520F80() {
-	int i; // esi
-
-	if (!nox_mapgen_occupancy_grid) {
-		dword_5d4594_2487532 = 0;
-		return;
-	}
-	for (i = 0; i < *(int*)&dword_5d4594_2487540; ++i) {
-		free(nox_mapgen_occupancy_grid[i]);
-	}
-	nox_mapgenLegacyPtrForget(nox_mapgen_occupancy_grid);
-	free(nox_mapgen_occupancy_grid);
-	nox_mapgen_occupancy_grid = NULL;
-	dword_5d4594_2487532 = 0;
-}
-
+// Native-width implementation: mapgen_grid_allocation_public.go.
 //----- (00521100) --------------------------------------------------------
 // Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521180) --------------------------------------------------------
@@ -2316,24 +2239,7 @@ void sub_520F80() {
 //----- (00521200) --------------------------------------------------------
 // Native-width implementation: mapgen_room_occupancy_public.go.
 //----- (00521290) --------------------------------------------------------
-void* nox_mapgenRoomAtCellNative_521290(int2* cell) {
-	uint8_t* entry = sub_520E60(cell);
-	return entry ? nox_mapgenLegacyPtrResolve(*(uint32_t*)(entry + 16)) : NULL;
-}
-
-int sub_521290(int2* a1) {
-	uint8_t* v1;
-	int result; // eax
-
-	v1 = sub_520E60(a1);
-	if (v1) {
-		result = *(uint32_t*)(v1 + 16);
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
+// Native-width implementation: mapgen_grid_allocation_public.go.
 //----- (005212B0) --------------------------------------------------------
 int sub_5212B0(uint8_t* a1, uint32_t* a2) {
 	uint32_t* v2; // eax

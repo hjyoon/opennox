@@ -3,10 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
-
-extern uint8_t** nox_mapgen_occupancy_grid;
-extern uint32_t dword_5d4594_2487536;
-extern uint32_t dword_5d4594_2487540;
 */
 import "C"
 
@@ -16,13 +12,18 @@ import (
 )
 
 type mapgenGridCell struct {
-	_    [4]uint32
+	_    uint32
+	x    int32
+	y    int32
+	_    uint32
 	room uint32
 }
 
 // Remaining C callers use the original 20-byte cell and its PE32 room token.
 var (
 	_ [20]byte = [unsafe.Sizeof(mapgenGridCell{})]byte{}
+	_ [4]byte  = [unsafe.Offsetof(mapgenGridCell{}.x)]byte{}
+	_ [8]byte  = [unsafe.Offsetof(mapgenGridCell{}.y)]byte{}
 	_ [16]byte = [unsafe.Offsetof(mapgenGridCell{}.room)]byte{}
 )
 
@@ -46,13 +47,7 @@ func (grid mapgenGridView) at(x, y int32) *mapgenGridCell {
 }
 
 func mapgenCurrentGrid() mapgenGridView {
-	size := int32(C.dword_5d4594_2487540)
-	table := C.nox_mapgen_occupancy_grid
-	if size <= 0 || table == nil {
-		return mapgenGridView{}
-	}
-	rows := unsafe.Slice((**mapgenGridCell)(unsafe.Pointer(table)), size)
-	return mapgenGridView{rows: rows, offset: int32(C.dword_5d4594_2487536)}
+	return mapgenGrid.mapgenGridView
 }
 
 func mapgenWalkRoomCells(room *mapgenRoomGeometry, visit func(int32, int32) bool) {
@@ -107,8 +102,9 @@ func mapgenRoomWithinTheme(room *mapgenRoomGeometry, radius float32) bool {
 }
 
 type mapgenThemeBounds struct {
-	_      [64]byte
-	radius float32
+	_        [64]byte
+	radius   float32
+	gridHalf uint32
 }
 
 func mapgenRoomFits(room *mapgenRoomGeometry, radius float32, at func(int32, int32) *mapgenGridCell) bool {

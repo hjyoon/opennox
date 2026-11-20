@@ -1729,6 +1729,58 @@ conversions. The release receipt
 `mapgen-object-spawn-move-native-20261120-v1/mapgen-object-spawn-move-release-v1.json`
 has SHA-256 `4fcc403817d15116bc8b1b5cef43e872a45b142d9316913bffc9adac473c18ab`.
 
+### Map generator exit placement, 2026-11-20
+
+Engine `19f7c6ad3e27504b2ec3d50d15ad1d289a381585` ports `522A40`,
+`522AD0` and `527D50` to Go. It traverses native room pointers, places
+the selected exit and preserves the exact 80-byte destination field.
+The C regression exercises room, exit and occupied-rectangle addresses
+above 4 GiB. It checks destination padding and adjacent coordinates.
+
+The original 610 entry bytes, 32 bytes of jump tables and 24 bytes
+of constants execute in 106 cases. ARM64 normal and cgocheck2 pass
+3,692 tests each with zero warnings. All three ARM64 products build
+with zero warnings and verify 571 public symbols. The two dedicated
+map generations match their prior MAP and NXZ files and destinations.
+
+The normal client verifies 54 Amb definitions, two OpenAL emitters
+and ten door open and close effects. HD runs the original Conjurer
+chapter 2 Charm lesson through its script, 60 pulses and follow
+state. Linux `44746469752` passes all four products and Windows
+`44746469626` passes amd64 and 386. The default ARM64 audit finds
+2,016 named active C bodies and 292 bodies with pointer and integer
+conversions. The release receipt
+`mapgen-exit-placement-native-20261120-v1/mapgen-exit-placement-release-v1.json`
+has SHA-256 `37f34aa5e426155703b577f06f7628af774007ecdc71384d283d6b41c4f424f3`.
+
+### Map generator population completion, 2026-11-20
+
+Engine `a96768c88afe4de95367ad75191480145144ae46` ports `5228B0`,
+`526A90`, `5259D0`, `5259E0` and `4D42C0` to Go. This retires the
+six remaining C bodies and removes
+`server__mapgen__generate__populate.c` from the build. The compatibility
+entry points remain available. The native owner clears its record slot
+after release, and an absent room root skips PlayerStart placement.
+The original x86 fault on that input and the previous C source are
+preserved in the verification archive.
+
+The original 427 entry bytes and 39-byte converter execute in 42
+cases. ARM64 normal and cgocheck2 pass 3,737 tests each with zero
+warnings. Actual C calls verify the getters and release a record
+above 4 GiB. Three ARM64 products build with zero warnings and check
+577 public symbols. All four generated MAP and NXZ files match the
+preceding engine. The 4,649 original asset and Save hashes match.
+
+Normal multiplayer chat submits four messages through ordinary
+Enter, Unicode, keypad Enter and IME input. Cancelled and empty
+submissions produce no send. HD Wizard applies Haste and Protection
+from Fire to the player and an NPC, then verifies natural expiry.
+Linux `44748738761` and Windows `44748739590` pass all required jobs.
+Default ARM64 has 204 selected C files and 2,010 named active bodies
+at this revision. The release receipt
+`mapgen-finish-populate-native-20261120-v1/mapgen-finish-populate-release-v1.json`
+has SHA-256 `f68de0cb8f5d7c5ce4760d8a8bce36ebd04ffd0c18b42f2ed8a4cd49bf9c5133`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

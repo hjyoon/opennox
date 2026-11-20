@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "GAME4_1.h"
 #include "GAME4_2.h"
 */
 import "C"
@@ -49,7 +48,7 @@ func mapgenFillTileColumn(origin *mapgenWorldPoint, rows int32, place func(*mapg
 }
 
 func mapgenPlaceFillTile(position *mapgenWorldPoint) uintptr {
-	return uintptr(C.sub_51D5E0((*C.float2)(unsafe.Pointer(position))))
+	return uintptr(sub_51D5E0((*C.float2)(unsafe.Pointer(position))))
 }
 
 //export sub_5245A0

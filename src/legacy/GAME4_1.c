@@ -30,7 +30,6 @@
 #include "common__magic__speltree.h"
 #include "server__script__script.h"
 
-extern uint32_t dword_5d4594_3835364;
 extern uint32_t dword_5d4594_1599708;
 extern uint32_t dword_5d4594_1599688;
 extern uint32_t dword_587000_234176;
@@ -4920,20 +4919,5 @@ int nox_xxx_tile_51D5C0(int a1) {
 		return 0;
 	}
 	*getMemU32Ptr(0x973F18, 35916) = a1;
-	return 1;
-}
-
-//----- (0051D5E0) --------------------------------------------------------
-int sub_51D5E0(float2* position) {
-	if (!position) {
-		return 0;
-	}
-	if (*getMemU32Ptr(0x973F18, 35912) != 255) {
-		float2 fixed;
-		nox_xxx_mapGenFixCoords_4D3D90(position, &fixed);
-		if (!sub_51D8F0(&fixed) || (dword_5d4594_3835364 == 1 && !sub_527380(&fixed))) {
-			return 0;
-		}
-	}
 	return 1;
 }

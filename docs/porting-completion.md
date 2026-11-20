@@ -1589,6 +1589,84 @@ has SHA-256 `8c843a7a631cddd4c90ee0c87ccdf165fcd425040c3f4083c97eaa82c815f656`.
 Linux `44704823214` passes all four products and Windows
 `44704822770` passes amd64 and 386 for this engine.
 
+### Map generator wall lookup and removal, 2026-11-20
+
+Engine `cb34d1a1160eb59571b5af26bbbc2ae366a0e01d` ports `525330`,
+`525370`, `526DD0` and `527030` from `GAME4_2.c`. The C lookup
+writes to a native pointer output. The previous ARM64 C run
+returned success after losing the high bits of its wall address.
+The strip callers use void returns and the prefab caller passes
+a contiguous coordinate pair and a native wall slot.
+
+The original 425 bytes and the 39-byte converter execute in
+260 cases. The macOS ARM64 normal and cgocheck2 runs each pass
+3,097 checks without warnings. Actual C calls return a wall above
+4 GiB and remove the three cells of each strip while keeping the
+neighboring wall. All three products build without warnings and
+verify 560 public and 167 retired symbols. The dedicated server
+generates and reloads two fixed-seed maps with the same MAP and NXZ
+bytes as the preceding engine. All 4,649 original asset and Save
+hashes match.
+
+The normal client sends four multiplayer chat messages through
+Enter, keypad Enter and committed IME input. Cancel and empty input
+complete without another send. The HD Wizard chapter 1 replay casts
+Haste and Protection from Fire on the player and an NPC and verifies
+both effects expire. Linux `44707810137` passes all four products.
+Windows `44707810701` passes amd64 and 386 on the second attempt.
+The first Windows 386 build and package tests pass, followed by an
+access violation in the separate GC stress replay. Its exact
+executables and result remain archived.
+
+The i386 `GAME4_2.c` audit records 203 to 199 active bodies.
+The thirteen split GAME files contain 1,395 active bodies with 158
+pointer and integer conversion sites counted by function. Default
+ARM64 has 2,029 named bodies, 295 with pointer and integer
+conversions, and 14 macro expansions. The release receipt
+`mapgen-wall-paths-native-20261120-v1/mapgen-wall-paths-release-v1.json`
+has SHA-256 `13fd8819dd6d7dff0904a999fdd1fa09cafa0601931b69dfb205326615bd0041`.
+
+### Map generator world coordinate transforms, 2026-11-20
+
+Engine `69d3586e574e1d63cbb391128c24bb0ca9c4617a` ports `4D3D90`
+and `4D3E30` from `GAME3_2.c` to Go. The transforms preserve the
+original startup x87 precision, toward-zero stores, clamp order and
+overlapping coordinate pairs. The original 320 bytes execute 222
+cases. The previous ARM64 C code differs in 142 cases. The original
+startup and nearest-rounding modes were both executed for the
+retained corner and room-spawn precision fixtures before their
+expectations were corrected.
+
+Normal and cgocheck2 ARM64 runs each pass 3,332 checks without
+warnings. Each run calls both entries through C for all 222 cases.
+Earlier suite failures from missing replay inputs and the previous
+nearest-rounding room-spawn expectation remain archived. The three
+ARM64 products build without warnings and verify 562 public and 167
+retired symbols. The normal product queues the original OpenAL
+effect 307 on both quantity sales. The HD Warrior chapter 1 replay
+loads War01a, verifies five native transfer object types, dismisses
+the opening dialog and moves the player.
+
+The dedicated server generates and reloads two fixed-seed maps.
+The MAP changes are confined to coordinates in `WayPoints` and
+`ObjectData`. Wall bytes, object types, waypoints and all three exit
+destinations retain their structure. Four NXZ round trips reproduce
+their respective MAP bytes. The diagnostic build reproduces the
+production output and logs native transform inputs. The original
+startup x87 mode reproduces ten coordinate witnesses covering all
+six waypoints, PlayerStart and the three serialized exits. All 4,649
+original asset and Save hashes match.
+
+The i386 `GAME3_2.c` audit records 192 to 190 active bodies.
+The thirteen split GAME files contain 1,393 active bodies, including
+158 with pointer and integer conversions. Default ARM64 has 2,027
+named bodies, 295 with pointer and integer conversions, and 14
+macro expansions. The release receipt
+`mapgen-world-coordinates-native-20261120-v1/mapgen-world-coordinates-release-v1.json`
+has SHA-256 `242ab74fac0fa5c75c03df19f1a29f199d316fe25fb2cb204667c314f927eaf0`.
+Linux `44713163084` passes all four products and Windows `44713162765`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -2854,60 +2854,16 @@ int sub_521A70(int a1, int a2, int a3) {
 // GAME.EXE 00521AA0 is implemented in Go.
 
 //----- (00521B00) --------------------------------------------------------
-double nox_mapgenRoomRandPosXNative_521B00(const uint8_t* room, const uint8_t* child) {
-	return (double)nox_xxx_mapGenRandFunc_526AC0(
-			   0, *(const uint32_t*)(room + 12) - *(const uint32_t*)(child + 12)) *
-			32.526913 +
-		*(const float*)(room + 20);
-}
-
-double sub_521B00(int a1, int a2) {
-	return nox_mapgenRoomRandPosXNative_521B00(
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
+// Native-width implementation: mapgen_room_rand_attach_public.go.
 
 //----- (00521B30) --------------------------------------------------------
-double nox_mapgenRoomRandPosYNative_521B30(const uint8_t* room, const uint8_t* child) {
-	return (double)nox_xxx_mapGenRandFunc_526AC0(
-			   0, *(const uint32_t*)(room + 16) - *(const uint32_t*)(child + 16)) *
-			32.526913 +
-		*(const float*)(room + 24);
-}
-
-double sub_521B30(int a1, int a2) {
-	return nox_mapgenRoomRandPosYNative_521B30(
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
+// Native-width implementation: mapgen_room_rand_attach_public.go.
 
 //----- (00521B60) --------------------------------------------------------
-double nox_mapgenRoomAttachPosXNative_521B60(const uint8_t* room, const uint8_t* parent) {
-	return *(const float*)(parent + 20) -
-		(double)nox_xxx_mapGenRandFunc_526AC0(
-			0, *(const uint32_t*)(room + 12) - *(const uint32_t*)(parent + 12)) *
-			32.526913;
-}
-
-double sub_521B60(int a1, int a2) {
-	return nox_mapgenRoomAttachPosXNative_521B60(
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
+// Native-width implementation: mapgen_room_rand_attach_public.go.
 
 //----- (00521B90) --------------------------------------------------------
-double nox_mapgenRoomAttachPosYNative_521B90(const uint8_t* room, const uint8_t* parent) {
-	return *(const float*)(parent + 24) -
-		(double)nox_xxx_mapGenRandFunc_526AC0(
-			0, *(const uint32_t*)(room + 16) - *(const uint32_t*)(parent + 16)) *
-			32.526913;
-}
-
-double sub_521B90(int a1, int a2) {
-	return nox_mapgenRoomAttachPosYNative_521B90(
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
+// Native-width implementation: mapgen_room_rand_attach_public.go.
 
 //----- (00521BC0) --------------------------------------------------------
 // Native-width implementation: mapgen_occupied_rect_public.go.

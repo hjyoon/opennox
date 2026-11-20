@@ -10,7 +10,10 @@ import (
 	"unsafe"
 )
 
-const mapgenWorldToCellScale = 0x1.f7b4bap-6
+const (
+	mapgenCellSize         = 0x1.04371ep+5
+	mapgenWorldToCellScale = 0x1.f7b4bap-6
+)
 
 func mapgenGridCoordinate(value float32) int64 {
 	bias := 0.5

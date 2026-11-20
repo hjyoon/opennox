@@ -87,14 +87,11 @@ uint32_t* nox_xxx_mapGenFreeTopRoom_521A40();
 int nox_mapgenRoomLinkBothNative_521A70(uint8_t* room, uint8_t* neighbor, int direction);
 int sub_521A70(int a1, int a2, int a3);
 int sub_521AA0(uint32_t* a1, int a2);
-double sub_521B00(int a1, int a2);
-double sub_521B30(int a1, int a2);
-double sub_521B60(int a1, int a2);
-double sub_521B90(int a1, int a2);
-double nox_mapgenRoomRandPosXNative_521B00(const uint8_t* room, const uint8_t* child);
-double nox_mapgenRoomRandPosYNative_521B30(const uint8_t* room, const uint8_t* child);
-double nox_mapgenRoomAttachPosXNative_521B60(const uint8_t* room, const uint8_t* parent);
-double nox_mapgenRoomAttachPosYNative_521B90(const uint8_t* room, const uint8_t* parent);
+typedef const uint8_t nox_mapgen_readonly_room_t;
+float nox_mapgenRoomRandPosXNative_521B00(nox_mapgen_readonly_room_t* room, nox_mapgen_readonly_room_t* child);
+float nox_mapgenRoomRandPosYNative_521B30(nox_mapgen_readonly_room_t* room, nox_mapgen_readonly_room_t* child);
+float nox_mapgenRoomAttachPosXNative_521B60(nox_mapgen_readonly_room_t* room, nox_mapgen_readonly_room_t* parent);
+float nox_mapgenRoomAttachPosYNative_521B90(nox_mapgen_readonly_room_t* room, nox_mapgen_readonly_room_t* parent);
 // Occupied rectangle links retain the fixed PE32 record layout.
 typedef struct nox_mapgen_occupied_rect_legacy {
 	uint32_t transient;

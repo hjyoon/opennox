@@ -14,8 +14,6 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-const mapGenDecorCellSize = 0x1.04371ep+5
-
 type mapGenDecorAreaFlags struct {
 	_     [60]byte
 	flags uint32
@@ -36,7 +34,7 @@ type mapGenDecorObjectPlacement struct {
 }
 
 func mapGenDecorGridPosition(cells int32, roomEdge float32) float32 {
-	delta := mulFloat64TowardZero(float64(cells), mapGenDecorCellSize)
+	delta := mulFloat64TowardZero(float64(cells), mapgenCellSize)
 	return storeFloat32TowardZero(addFloat64TowardZero(delta, float64(roomEdge)))
 }
 

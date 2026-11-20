@@ -24,6 +24,7 @@
 #include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 #include "floor_brush_native.h"
+#include "floor_tile_storage.h"
 
 #include "client__video__draw_common.h"
 #include "common__magic__speltree.h"
@@ -315,8 +316,8 @@ float get_nox_xxx_wizardMaximumMana_587000_312820();
 float get_nox_xxx_conjurerMaxMana_587000_312804();
 
 //----- (0051DA70) --------------------------------------------------------
-extern nox_tileDef_t nox_tile_defs_arr[176];
 int nox_floorBrushApplyNative_51DA70(int x, int y, nox_floor_brush_t* brush, int layer, int merge) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
     int tile;
     int variation;
     if (!brush) {
@@ -338,8 +339,8 @@ int nox_floorBrushApplyNative_51DA70(int x, int y, nox_floor_brush_t* brush, int
             parity =brush->kind ==layer ?0 : (brush->kind ==1 ?1 :-1);
         }
         tile =brush->tile_id;
-        int width =nox_tile_defs_arr[tile].field_52;
-        int height =nox_tile_defs_arr[tile].field_53;
+        int width =floor_tiles->definitions[tile].field_52;
+        int height =floor_tiles->definitions[tile].field_53;
         int column =(relative_y +relative_x) %width;
         int row =(parity +relative_y -relative_x) %height;
         if (column <0) column +=width;

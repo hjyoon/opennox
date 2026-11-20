@@ -80,7 +80,7 @@ func game1SettingsOldSource40AA00(t *testing.T) []byte {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME1.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

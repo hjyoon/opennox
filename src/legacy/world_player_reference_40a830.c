@@ -16,7 +16,8 @@
 extern void* dword_5d4594_251560;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern const int ptr_5D4594_2650668_cap;
-extern nox_tileDef_t nox_tile_defs_arr[176];
+#include "floor_tile_storage.h"
+#define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
 void* nox_server_wallAttachDoor(void*,nox_object_t*);
 extern void* nox_world_player_reference_pointer(int32_t,void*,uint32_t,uint32_t,void*);
 extern uint32_t nox_world_player_reference_word(int32_t,void*,uint32_t,uint32_t,void*,uint32_t);

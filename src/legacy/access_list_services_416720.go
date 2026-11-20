@@ -6,9 +6,6 @@ package legacy
 #include "GAME1.h"
 #include "GAME2.h"
 #include "GAME3_3.h"
-// Only storage remains in C. Initialization and field access live in Go.
-extern nox_list_item_t nox_access_allowed_list_4168E0;
-extern nox_list_item_t nox_access_banned_list_416900;
 static void* access_list_config_416720(void) { return getMemAt(0x587000,54280); }
 static void access_list_layout_416720(size_t* a) {
     a[0]=sizeof(nox_list_item_t);a[1]=sizeof(nox_access_allowed_entry_t);a[2]=sizeof(nox_access_banned_entry_t);
@@ -20,25 +17,30 @@ import (
 	"runtime"
 	"sync"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-var accessListNativeOwnersOnce416720 sync.Once
+var (
+	accessListNativeOwnersOnce416720 sync.Once
+	accessListHeads416720, _         = alloc.New([2]accessListNode416720{})
+)
 
 func accessListNativeEnsure416720() {
 	accessListNativeOwnersOnce416720.Do(func() {
-		// Keep the existing C-owned, native-width sentinels for their entire
-		// process lifetime. C links never retain pointers into the Go heap.
-		accessListNativeClear416720((*accessListNode416720)(unsafe.Pointer(&C.nox_access_allowed_list_4168E0)))
-		accessListNativeClear416720((*accessListNode416720)(unsafe.Pointer(&C.nox_access_banned_list_416900)))
+		// The native sentinels remain at stable addresses for the process lifetime.
+		for i := range accessListHeads416720 {
+			accessListNativeClear416720(&accessListHeads416720[i])
+		}
 	})
 }
 
 func accessListNativeDefaultHead416720(banned bool) unsafe.Pointer {
 	accessListNativeEnsure416720()
 	if banned {
-		return unsafe.Pointer(&C.nox_access_banned_list_416900)
+		return unsafe.Pointer(&accessListHeads416720[1])
 	}
-	return unsafe.Pointer(&C.nox_access_allowed_list_4168E0)
+	return unsafe.Pointer(&accessListHeads416720[0])
 }
 func accessListNativeDefaultAlloc416720(size uintptr) unsafe.Pointer {
 	return C.calloc(1, C.size_t(size))

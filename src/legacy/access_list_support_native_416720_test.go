@@ -95,8 +95,8 @@ func TestAccessListSupportDefaultHeadsAndGC416720(t *testing.T) {
 	if ah == nil || bh == nil || ah == bh {
 		t.Fatal("independent non-nil native C head owners")
 	}
-	if unsafe.Pointer(ah) != accessSupportFixtureOwner416720(false) || unsafe.Pointer(bh) != accessSupportFixtureOwner416720(true) {
-		t.Fatal("public head must preserve each actual C data symbol address")
+	if ah != &accessListHeads416720[0] || bh != &accessListHeads416720[1] {
+		t.Fatal("each public C head must preserve its Go-owned native sentinel address")
 	}
 	for _, head := range []*accessListNode416720{ah, bh} {
 		p := unsafe.Pointer(head)

@@ -33,8 +33,6 @@ extern uint32_t dword_5d4594_528260;
 extern uint32_t dword_5d4594_2488604;
 extern uint32_t dword_5d4594_526276;
 
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 
 void nox_xxx_netlist_4DEB50();
 void nox_xxx_updateUnits_51B100();
@@ -577,7 +575,7 @@ const tileDefNativeSize = 60 + (cgoABIPointerSize - 4)
 var _ = [1]struct{}{}[tileDefNativeSize-unsafe.Sizeof(server.TileDef{})]
 
 func Get_nox_tile_defs_arr() []server.TileDef {
-	ptr := (*server.TileDef)(unsafe.Pointer(&C.nox_tile_defs_arr[0]))
-	sz := int(C.nox_tile_def_cnt)
-	return unsafe.Slice(ptr, len(C.nox_tile_defs_arr))[:sz]
+	ptr := (*server.TileDef)(unsafe.Pointer(&floorTileStorage.definitions[0]))
+	sz := int(floorTileStorage.count)
+	return unsafe.Slice(ptr, len(floorTileStorage.definitions))[:sz]
 }

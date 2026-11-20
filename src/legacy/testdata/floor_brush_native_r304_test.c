@@ -20,7 +20,10 @@
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern uint32_t dword_5d4594_3835348, dword_5d4594_3835352;
-extern nox_tileDef_t nox_tile_defs_arr[176];
+#include "floor_tile_storage.h"
+static nox_floor_tile_storage_t fixture_floor_tiles;
+nox_floor_tile_storage_t* nox_floor_tile_storage(void) { return &fixture_floor_tiles; }
+#define nox_tile_defs_arr (fixture_floor_tiles.definitions)
 
 _Static_assert(sizeof(void*) == 8, "this fixture targets native 64-bit pointers");
 _Static_assert(sizeof(obj_5D4594_2650668_t) == 56, "actual native cell size");
@@ -59,7 +62,6 @@ _Static_assert(offsetof(struct brush32, kind) == 20, "original brush layer byte"
 _Static_assert(offsetof(struct brush32, edge_id) == 24, "original brush edge DWORD");
 obj_5D4594_2650668_t** ptr_5D4594_2650668;
 uint32_t dword_5d4594_3835348, dword_5d4594_3835352;
-nox_tileDef_t nox_tile_defs_arr[176];
 static uint32_t brush_id, pattern_mode;
 static struct row_box* rows[CAP];
 static uintptr_t seen_layer;
@@ -215,7 +217,6 @@ enum { CAP=128, X=5, Y=7, MAX_NODES=32, MAX_EVENTS=128 };
 obj_5D4594_2650668_t** ptr_5D4594_2650668;
 uint32_t dword_5d4594_3835348, dword_5d4594_3835352;
 uint32_t dword_5d4594_3835356, dword_5d4594_3835360;
-nox_tileDef_t nox_tile_defs_arr[176];
 static uint32_t selected_tile, override_variation;
 static uint32_t orientations[256];
 static nox_floor_brush_t legacy_brush;
@@ -391,7 +392,6 @@ enum { CAP=128,X=5,Y=7 };
 obj_5D4594_2650668_t** ptr_5D4594_2650668;
 uint32_t dword_5d4594_2487248;
 uint32_t dword_5d4594_3835348,dword_5d4594_3835352;
-nox_tileDef_t nox_tile_defs_arr[176];
 static uint32_t error_flag,queue[1500];
 struct callback {int x,y,layer,tile; nox_floor_brush_t* brush;int edge;};
 static struct callback callbacks[16];static int calls;

@@ -4,7 +4,10 @@ package legacy
 #include <stdint.h>
 #include <stdlib.h>
 #include "GAME1.h"
+extern int* nox_settings_dirty_cell_409E40(void);
+#define nox_server_gameSettingsUpdated (*nox_settings_dirty_cell_409E40())
 #include "head_settings_reference_409470.h"
+#undef nox_server_gameSettingsUpdated
 #include "native_fixture_alloc.h"
 _Static_assert(sizeof(int)==4 && sizeof(short)==2 && sizeof(wchar2_t)==2,"settings scalar/UTF16 ABI");
 typedef int (*head_parse_fn_409470)(FILE*,uint8_t*);

@@ -374,7 +374,7 @@ func TestSettingFlagsNativeLayout409E40(t *testing.T) {
 	for field := 0; field < 2; field++ {
 		p := settingFlagsNativeCell409E40(field)
 		if uintptr(p) <= 0xffffffff || settingFlagsNativeCellWidth409E40(field) != 4 || settingFlagsNativeCellAlign409E40(field) != 4 || uintptr(p)%4 != 0 {
-			t.Fatalf("actual native C symbol DWORD layout field=%d", field)
+			t.Fatalf("actual native DWORD cell layout field=%d", field)
 		}
 		base, n, center, e := settingFlagsFixtureWindow409E40(p)
 		if e != nil || base == nil || n < 4 || n > 36 || center < 0 || center+4 > n || uintptr(base)+uintptr(center) != uintptr(p) {
@@ -382,9 +382,9 @@ func TestSettingFlagsNativeLayout409E40(t *testing.T) {
 		}
 	}
 	if settingFlagsNativeCell409E40(0) == settingFlagsNativeCell409E40(1) {
-		t.Fatal("actual symbols must be independent")
+		t.Fatal("the native cells must be independent")
 	}
-	t.Log("FIVE_FLAGS_ACTUAL_C_GLOBAL_LAYOUT_OK symbols=2 sizeof=4 align=4 native>4GiB typed-C-int-ABI=5 contiguous-layout-claim=false")
+	t.Log("FIVE_FLAGS_NATIVE_WORD_LAYOUT_OK cells=2 sizeof=4 align=4 native>4GiB typed-C-int-ABI=5 contiguous-layout-claim=false")
 }
 
 func TestSettingFlagsNativeOriginal409E40(t *testing.T) {
@@ -437,7 +437,7 @@ func TestSettingFlagsNativeOriginal409E40(t *testing.T) {
 			}
 		}
 	}
-	summary := map[string]any{"selected_inputs": 1261, "scheduled_backend_cases": attempted, "qualified_native_calls": passed, "separate_original_CW_comparisons_passed": passed * 2, "input_sha256": flagsInputSHA409E40, "original_reference_sha256": flagsReferenceSHA409E40, "actual_C_global_symbols": 2, "private_Game_DWORD_is_product_GoFlags_shadow": false, "actual_native_addresses": [3]uintptr{uintptr(settingFlagsNativeCell409E40(0)), uintptr(settingFlagsNativeCell409E40(1)), uintptr(game)}, "original_GPR_EFLAGS_caller_stack_physical_ABI_comparison": false, "external_Check_Refresh_body_execution_credit": false, "declared_ECX_EDX_physical_comparison": false, "Go_heap_pointer_domain_credit": false, "natural_product_campaign_credit": false, "new_original_execution": 0, "raw_actual_trace_file": "actual-native-1261-Go-C-calls.jsonl.gz"}
+	summary := map[string]any{"selected_inputs": 1261, "scheduled_backend_cases": attempted, "qualified_native_calls": passed, "separate_original_CW_comparisons_passed": passed * 2, "input_sha256": flagsInputSHA409E40, "original_reference_sha256": flagsReferenceSHA409E40, "actual_C_global_symbols": 1, "actual_native_DWORD_cells": 2, "private_Game_DWORD_is_product_GoFlags_shadow": false, "actual_native_addresses": [3]uintptr{uintptr(settingFlagsNativeCell409E40(0)), uintptr(settingFlagsNativeCell409E40(1)), uintptr(game)}, "original_GPR_EFLAGS_caller_stack_physical_ABI_comparison": false, "external_Check_Refresh_body_execution_credit": false, "declared_ECX_EDX_physical_comparison": false, "Go_heap_pointer_domain_credit": false, "natural_product_campaign_credit": false, "new_original_execution": 0, "raw_actual_trace_file": "actual-native-1261-Go-C-calls.jsonl.gz"}
 	data, e := json.MarshalIndent(summary, "", "  ")
 	if e != nil {
 		t.Fatal(e)

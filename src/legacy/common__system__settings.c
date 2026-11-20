@@ -20,7 +20,7 @@ void sub_409FB0_settings(short a1, unsigned short a2) {
 			v3 = 999;
 		}
 		*getMemU16Ptr(0x5D4594, 3488 + 2 * v2) = v3;
-		nox_server_gameSettingsUpdated = 1;
+		nox_server_gameSettingsUpdated_40A670();
 		if (nox_client_isConnected_43C700()) {
 			v4 = nox_strman_loadString_40F1D0("parsecmd.c:lessonsset", 0,
 											  "C:\\NoxPost\\src\\Common\\System\\settings.c", 389);

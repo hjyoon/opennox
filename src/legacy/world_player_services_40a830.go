@@ -10,11 +10,9 @@ package legacy
 #include "noxstring.h"
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern const int ptr_5D4594_2650668_cap;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 void* nox_server_wallAttachDoor(void*,nox_object_t*);
 static void* world_tile_head_cell(void){return &ptr_5D4594_2650668;}
 static int32_t world_tile_cap(void){return ptr_5D4594_2650668_cap;}
-static void* world_tile_defs(void){return nox_tile_defs_arr;}
 static void world_defend_call(void* callback,void* effect,nox_object_t* item,float* value){
  ((void(*)(void*,nox_object_t*,uintptr_t,nox_object_t*,uintptr_t,float*))callback)(effect,item,0,item,0,value);
 }
@@ -96,5 +94,5 @@ func worldTileCalloc411160(count, size uintptr) unsafe.Pointer {
 func worldTileFree411160(p unsafe.Pointer)          { game4SupportReleaseMemory(p) }
 func worldTileFloatToInt411160(value float32) int32 { return int32(C.nox_float2int(C.float(value))) }
 func worldTileDefinitions411160() []server.TileDef {
-	return unsafe.Slice((*server.TileDef)(C.world_tile_defs()), 176)
+	return unsafe.Slice((*server.TileDef)(unsafe.Pointer(&floorTileStorage.definitions[0])), len(floorTileStorage.definitions))
 }

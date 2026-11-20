@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_1.h"
-extern nox_tileDef_t nox_tile_defs_arr[176];
 extern uint32_t dword_5d4594_3835348;
 */
 import "C"
@@ -48,8 +47,8 @@ func nox_xxx_tileGetDefByName_51D4D0(name *C.char) C.int {
 	}
 	text := alloc.GoString((*byte)(unsafe.Pointer(name)))
 	matched := false
-	for i := range C.nox_tile_defs_arr {
-		def := &C.nox_tile_defs_arr[i]
+	for i := range floorTileStorage.definitions {
+		def := &floorTileStorage.definitions[i]
 		buffer := unsafe.Slice((*byte)(unsafe.Pointer(&def.name[0])), len(def.name))
 		if mapgenTileNamesEqual(alloc.GoStringS(buffer), text) {
 			*selected = uint32(i)
@@ -70,7 +69,7 @@ func nox_xxx_tileGetDefByName_51D4D0(name *C.char) C.int {
 //export nox_xxx_tileCheckImage_51D540
 func nox_xxx_tileCheckImage_51D540(index C.int) C.int {
 	selected := memmap.PtrUint32(mapgenTileStateBase, mapgenTileIDOffset)
-	if index < 0 || index >= C.int(len(C.nox_tile_defs_arr)) {
+	if index < 0 || index >= C.int(len(floorTileStorage.definitions)) {
 		*selected = 0
 		return 0
 	}
@@ -82,8 +81,8 @@ func nox_xxx_tileCheckImage_51D540(index C.int) C.int {
 func nox_xxx_tileCheckImageVari_51D570(variation C.int) C.int {
 	index := memmap.Uint32(mapgenTileStateBase, mapgenTileIDOffset)
 	// The name selector can leave the NONE sentinel in this slot.
-	if index < uint32(len(C.nox_tile_defs_arr)) {
-		def := &C.nox_tile_defs_arr[index]
+	if index < uint32(len(floorTileStorage.definitions)) {
+		def := &floorTileStorage.definitions[index]
 		if variation < C.int(def.field_52)*C.int(def.field_53) {
 			C.dword_5d4594_3835348 = C.uint32_t(variation)
 			return 1

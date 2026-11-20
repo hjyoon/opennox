@@ -36,6 +36,7 @@
 #include "common__magic__speltree.h"
 #include "common__net_list.h"
 #include "common__strman.h"
+#include "floor_tile_storage.h"
 #include "input.h"
 #include "input_common.h"
 #include "operators.h"
@@ -95,9 +96,6 @@ extern uint32_t nox_color_yellow_2589772;
 extern nox_render_data_t* nox_draw_curDrawData_3799572;
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 
 uint8_t** nox_pixbuffer_rows_3798784 = 0;
 
@@ -2022,11 +2020,12 @@ static char nox_xxx_tileDrawLegacy_4815E0(uint32_t* a1, int a2) {
 bool get_nox_client_texturedFloors_154956();
 uint32_t dword_5d4594_1193156 = 0;
 void sub_481770(int2* pos, nox_video_bag_image_t* image, uint16_t tile_index) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	(void)image;
-	if (tile_index >= nox_tile_def_cnt || !nox_tileBufferSize_481430()) {
+	if (tile_index >= floor_tiles->count || !nox_tileBufferSize_481430()) {
 		return;
 	}
-	nox_tileDef_t* tile = &nox_tile_defs_arr[tile_index];
+	nox_tileDef_t* tile = &floor_tiles->definitions[tile_index];
 	if (!get_nox_client_texturedFloors_154956() && (tile->field_58 & 1) == 1) {
 		dword_5d4594_1193156 = 1;
 	}
@@ -2113,11 +2112,12 @@ void nox_xxx_drawNoEdges_4818F0(int2* pos, nox_tile_list_node_t* edge) {
 }
 
 void nox_xxx_drawTexEdgesProbably_481900(int2* pos, nox_tile_list_node_t* edge) {
-	if (!pos || !edge || edge->field_0 < 0 || (uint32_t)edge->field_0 >= nox_tile_def_cnt ||
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
+	if (!pos || !edge || edge->field_0 < 0 || (uint32_t)edge->field_0 >= floor_tiles->count ||
 		edge->field_2 < 0 || edge->field_2 >= 64 || !nox_tileBufferSize_481430()) {
 		return;
 	}
-	nox_tileDef_t* tile = &nox_tile_defs_arr[edge->field_0];
+	nox_tileDef_t* tile = &floor_tiles->definitions[edge->field_0];
 	if (!tile->data_32 || !nox_edge_images_native[edge->field_2]) {
 		return;
 	}
@@ -2329,6 +2329,7 @@ void nox_xxx_tileCallDrawEdges_481BF0(int2* pos, nox_tile_list_node_t* edges) {
 
 //----- (00481C20) --------------------------------------------------------
 void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	int v17; // esi
 	int v63; // [esp-8h] [ebp-54h]
 	int v16; // edi
@@ -2405,7 +2406,7 @@ void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3) {
 			if (*(uint8_t*)v14 & 2) {
 				LOWORD(v13) = *(uint16_t*)(v14 + 24);
 				v15 = *(unsigned short*)(v14 + 24);
-				v62 = nox_tile_defs_arr[v15].data_32[*(uint32_t*)(v14 + 28) + nox_tile_defs_arr[v15].field_46];
+				v62 = floor_tiles->definitions[v15].data_32[*(uint32_t*)(v14 + 28) + floor_tiles->definitions[v15].field_46];
 				v68.field_0 = v76;
 				v68.field_4 = v11 + 23;
 				func_587000_154940(&v68, v62, v13);
@@ -2417,7 +2418,7 @@ void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3) {
 			if (*(uint8_t*)v14 & 1) {
 				LOWORD(v13) = *(uint16_t*)(v14 + 4);
 				v16 = *(unsigned short*)(v14 + 4);
-				v63 = nox_tile_defs_arr[v16].data_32[*(uint32_t*)(v14 + 8) + nox_tile_defs_arr[v16].field_46];
+				v63 = floor_tiles->definitions[v16].data_32[*(uint32_t*)(v14 + 8) + floor_tiles->definitions[v16].field_46];
 				v68.field_0 = v76 + 23;
 				v68.field_4 = v11;
 				func_587000_154940(&v68, v63, v13);
@@ -2438,6 +2439,7 @@ void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3) {
 }
 
 void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	int v33;  // esi
 	int v65;  // [esp-8h] [ebp-54h]
 	int v32;  // edi
@@ -2514,7 +2516,7 @@ void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78) {
 			if (v29 & 2) {
 				LOWORD(v27) = *(uint16_t*)(v30 + 24);
 				v31 = *(unsigned short*)(v30 + 24);
-				v64 = nox_tile_defs_arr[v31].data_32[*(uint32_t*)(v30 + 28) + nox_tile_defs_arr[v31].field_46];
+				v64 = floor_tiles->definitions[v31].data_32[*(uint32_t*)(v30 + 28) + floor_tiles->definitions[v31].field_46];
 				v68.field_0 = v26;
 				v68.field_4 = v76 + 23;
 				func_587000_154940(&v68, v64, v27);
@@ -2526,7 +2528,7 @@ void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78) {
 			if (*(uint8_t*)v30 & 1) {
 				LOWORD(v27) = *(uint16_t*)(v30 + 4);
 				v32 = *(unsigned short*)(v30 + 4);
-				v65 = nox_tile_defs_arr[v32].data_32[*(uint32_t*)(v30 + 8) + nox_tile_defs_arr[v32].field_46];
+				v65 = floor_tiles->definitions[v32].data_32[*(uint32_t*)(v30 + 8) + floor_tiles->definitions[v32].field_46];
 				v68.field_0 = v26 + 23;
 				v68.field_4 = v76;
 				func_587000_154940(&v68, v65, v27);
@@ -2548,6 +2550,7 @@ void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78) {
 
 //----- (00482570) --------------------------------------------------------
 int nox_xxx_tileCheckRedrawMB_482570(nox_draw_viewport_t* vp) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	uint32_t* a1 = vp;
 	int v1;       // esi
 	int v2;       // ebx
@@ -2593,11 +2596,11 @@ int nox_xxx_tileCheckRedrawMB_482570(nox_draw_viewport_t* vp) {
 			while (1) {
 				v8 = i + *v7;
 				if (*(uint8_t*)v8 & 1) {
-					if ((nox_tile_defs_arr[*(uint32_t*)(v8 + 4)].field_58 & 1) == 1) {
+					if ((floor_tiles->definitions[*(uint32_t*)(v8 + 4)].field_58 & 1) == 1) {
 						return 1;
 					}
 				}
-				if (*(uint8_t*)v8 & 2 && (nox_tile_defs_arr[*(uint32_t*)(v8 + 24)].field_58 & 1) == 1) {
+				if (*(uint8_t*)v8 & 2 && (floor_tiles->definitions[*(uint32_t*)(v8 + 24)].field_58 & 1) == 1) {
 					return 1;
 				}
 				++v6;
@@ -2616,12 +2619,12 @@ int nox_xxx_tileCheckRedrawMB_482570(nox_draw_viewport_t* vp) {
 }
 
 //----- (004826A0) --------------------------------------------------------
-static void nox_xxx_tileDrawCellPart_482620(int2* pos, int tile_index, int image_index,
-										 nox_tile_list_node_t* edges) {
-	if (tile_index < 0 || (uint32_t)tile_index >= nox_tile_def_cnt) {
+static void nox_xxx_tileDrawCellPart_482620(nox_floor_tile_storage_t* floor_tiles, int2* pos,
+										 int tile_index, int image_index, nox_tile_list_node_t* edges) {
+	if (tile_index < 0 || (uint32_t)tile_index >= floor_tiles->count) {
 		return;
 	}
-	nox_tileDef_t* tile = &nox_tile_defs_arr[tile_index];
+	nox_tileDef_t* tile = &floor_tiles->definitions[tile_index];
 	int index = image_index + tile->field_46;
 	if (!tile->data_32 || index < 0) {
 		return;
@@ -2673,6 +2676,7 @@ int nox_xxx_tileDrawImpl_4826A0(nox_draw_viewport_t* vp) {
 	dword_5d4594_3798820 = (uint32_t)(int32_t)(46 * start_x - 11);
 	dword_5d4594_3798832 = (uint32_t)(int32_t)start_y;
 
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	for (int y = start_y; y < end_y; y++) {
 		int screen_y = 46 * y - 11;
 		for (int x = start_x; x < end_x; x++) {
@@ -2680,11 +2684,11 @@ int nox_xxx_tileDrawImpl_4826A0(nox_draw_viewport_t* vp) {
 			int screen_x = 46 * x - 11;
 			if (cell->field_0 & 2) {
 				int2 pos = {screen_x, screen_y + 23};
-				nox_xxx_tileDrawCellPart_482620(&pos, (uint16_t)cell->field_6, cell->field_7, cell->field_10);
+				nox_xxx_tileDrawCellPart_482620(floor_tiles, &pos, (uint16_t)cell->field_6, cell->field_7, cell->field_10);
 			}
 			if (cell->field_0 & 1) {
 				int2 pos = {screen_x + 23, screen_y};
-				nox_xxx_tileDrawCellPart_482620(&pos, (uint16_t)cell->field_1, cell->field_2, cell->field_5);
+				nox_xxx_tileDrawCellPart_482620(floor_tiles, &pos, (uint16_t)cell->field_1, cell->field_2, cell->field_5);
 			}
 		}
 	}
@@ -4237,6 +4241,7 @@ int nox_drawable_change_light_intensity_native(nox_drawable* dr, float intensity
 
 //----- (00485B30) --------------------------------------------------------
 int nox_thing_read_floor_485B30(nox_memfile* f, char* a2) {
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
 	bool debug_things = getenv("NOX_DEBUG_THINGS") != NULL;
 	nox_memfile_skip(f, 4);
 	uint8_t name_length = nox_memfile_read_u8(f);
@@ -4245,16 +4250,16 @@ int nox_thing_read_floor_485B30(nox_memfile* f, char* a2) {
 	name[name_length] = 0;
 	if (debug_things) fprintf(stderr, "[things-floor] name=%s len=%u\n", name, name_length);
 	int tile_index = name_length;
-	if (nox_tile_def_cnt > 0) {
+	if (floor_tiles->count > 0) {
 		int i = 0;
-		for (; i < nox_tile_def_cnt; i++) {
-			nox_tileDef_t* p = &nox_tile_defs_arr[i];
+		for (; i < floor_tiles->count; i++) {
+			nox_tileDef_t* p = &floor_tiles->definitions[i];
 			if (strcmp(&p->name[0], name) == 0) {
 				tile_index = i;
 				break;
 			}
 		}
-		if (i == nox_tile_def_cnt) {
+		if (i == floor_tiles->count) {
 			return 0;
 		}
 	}
@@ -4266,9 +4271,9 @@ int nox_thing_read_floor_485B30(nox_memfile* f, char* a2) {
 	int image_count = image_type * width * height;
 	if (debug_things) fprintf(stderr, "[things-floor] index=%d type=%u width=%u height=%u count=%d\n",
 						  tile_index, image_type, width, height, image_count);
-	nox_tile_defs_arr[tile_index].data_32 =
-		calloc(image_count, sizeof(*nox_tile_defs_arr[tile_index].data_32));
-	if (debug_things) fprintf(stderr, "[things-floor] images=%p\n", (void*)nox_tile_defs_arr[tile_index].data_32);
+	floor_tiles->definitions[tile_index].data_32 =
+		calloc(image_count, sizeof(*floor_tiles->definitions[tile_index].data_32));
+	if (debug_things) fprintf(stderr, "[things-floor] images=%p\n", (void*)floor_tiles->definitions[tile_index].data_32);
 	for (int i = 0; i < image_count; i++) {
 		int image_id = nox_memfile_read_i32(f);
 		*a2 = getMemByte(0x5D4594, 1193192);
@@ -4278,7 +4283,7 @@ int nox_thing_read_floor_485B30(nox_memfile* f, char* a2) {
 			nox_memfile_read(a2, 1u, image_name_length, f);
 			a2[image_name_length] = 0;
 		}
-		nox_tile_defs_arr[tile_index].data_32[i] = nox_xxx_readImgMB_42FAA0(image_id, image_type, a2);
+		floor_tiles->definitions[tile_index].data_32[i] = nox_xxx_readImgMB_42FAA0(image_id, image_type, a2);
 	}
 	if (debug_things) fprintf(stderr, "[things-floor] done index=%d\n", tile_index);
 	return 1;

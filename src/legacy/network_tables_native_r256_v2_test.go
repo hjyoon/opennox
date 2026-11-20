@@ -76,8 +76,8 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, entry := range []struct{ file, first, last, marker string }{
-		{"GAME1.c", "//----- (00409A70)", "//----- (00409B30)", "// SETTINGS_BODY"},
-		{"GAME1.c", "//----- (0040A710)", "//----- (0040A740)", "// RATE_BODY"},
+		{"testdata/retired-game-sources/GAME1.c.txt", "//----- (00409A70)", "//----- (00409B30)", "// SETTINGS_BODY"},
+		{"testdata/retired-game-sources/GAME1.c.txt", "//----- (0040A710)", "//----- (0040A740)", "// RATE_BODY"},
 		{"GAME3_2.c", "//----- (004D0D50)", "//----- (004D0D70)", "// MODE_BODY"},
 	} {
 		source, err := os.ReadFile(entry.file)

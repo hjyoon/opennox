@@ -9,8 +9,9 @@ extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern void game4_fixture_release_go(void* p);
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
+#include "floor_tile_storage.h"
+#define nox_tile_def_cnt (nox_floor_tile_storage()->count)
+#define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
 
 typedef struct game4_tiles_test_event { uint32_t code, value, x_bits, y_bits; } game4_tiles_test_event;
 typedef struct game4_tiles_test_data {

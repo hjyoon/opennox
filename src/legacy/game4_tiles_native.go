@@ -10,8 +10,6 @@ package legacy
 #include "GAME3_2.h"
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 
 // Give cgo a unique fully prototyped entry instead of calling the shared
 // historical K&R declaration directly. This is only a raw 72-byte copy.
@@ -95,11 +93,11 @@ var game4TilesServiceFactory = game4TilesDefaultServices
 func nox_xxx_tileInit_504150(x, y C.int) C.int {
 	services := game4TilesServiceFactory()
 	transparent := memmap.PtrInt32(0x587000, 229704)
-	if *transparent == -1 && C.nox_tile_def_cnt > 0 {
+	if *transparent == -1 && floorTileStorage.count > 0 {
 		// The current C initializes v2 to zero, not -1. An absent
 		// TransparentFloor deliberately leaves the cache -1 and continues.
-		for i := uint32(0); i < uint32(C.nox_tile_def_cnt); i++ {
-			if C.strcmp((*C.char)(unsafe.Pointer(&C.nox_tile_defs_arr[i].name[0])), game4TilesTransparentName()) == 0 {
+		for i := uint32(0); i < uint32(floorTileStorage.count); i++ {
+			if C.strcmp((*C.char)(unsafe.Pointer(&floorTileStorage.definitions[i].name[0])), game4TilesTransparentName()) == 0 {
 				*transparent = int32(i)
 				break
 			}

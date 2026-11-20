@@ -54,7 +54,7 @@ func TestTrigInit260CompleteNativeBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME1.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

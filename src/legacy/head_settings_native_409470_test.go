@@ -139,7 +139,7 @@ func TestHeadSettings21ActualCABIAndCurrentCReference(t *testing.T) {
 		t.Fatal("actual owner DWORD widths")
 	}
 	for _, p := range []unsafe.Pointer{settingFlagsNativeCell409E40(0), settingFlagsNativeCell409E40(1)} {
-		headSettingsHigh409470(t, p, "actual C global")
+		headSettingsHigh409470(t, p, "native settings cell")
 	}
 }
 

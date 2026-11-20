@@ -5,8 +5,6 @@
 #include "common__system__team.h"
 #include "secret_wall.h"
 
-extern int nox_server_gameSettingsUpdated;
-
 void nox_common_setEngineFlag(const nox_engine_flag flags);
 void nox_common_resetEngineFlag(const nox_engine_flag flags);
 bool nox_common_getEngineFlag(const nox_engine_flag flags);

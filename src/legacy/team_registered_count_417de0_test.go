@@ -26,7 +26,7 @@ func TestRegisteredTeamCount417DE0CompleteNativeBody(t *testing.T) {
 		t.Fatal(err)
 	}
 	source := strings.ReplaceAll(string(fixture), "/* COMPLETE_COUNT_BODY */",
-		teamReportBody210(t, "GAME1.c", "char sub_417DE0("))
+		teamReportBody210(t, "testdata/retired-game-sources/GAME1.c.txt", "char sub_417DE0("))
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)

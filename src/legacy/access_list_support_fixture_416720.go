@@ -6,15 +6,9 @@ package legacy
 #include "GAME1.h"
 
 extern void* nox_access_native_head_416720(int banned);
-extern nox_list_item_t nox_access_allowed_list_4168E0;
-extern nox_list_item_t nox_access_banned_list_416900;
 
 static void* access_support_head_416720(int banned) {
     return nox_access_native_head_416720(banned);
-}
-
-static void* access_support_owner_416720(int banned) {
-    return banned ? (void*)&nox_access_banned_list_416900 : (void*)&nox_access_allowed_list_4168E0;
 }
 
 static void* access_support_field_416720(int field, void* entry) {
@@ -93,14 +87,6 @@ import (
 
 func accessSupportFixtureHead416720(banned int32) unsafe.Pointer {
 	return C.access_support_head_416720(C.int(banned))
-}
-
-func accessSupportFixtureOwner416720(banned bool) unsafe.Pointer {
-	v := C.int(0)
-	if banned {
-		v = 1
-	}
-	return C.access_support_owner_416720(v)
 }
 
 func accessSupportFixtureField416720(field int, entry unsafe.Pointer) unsafe.Pointer {

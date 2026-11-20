@@ -28,6 +28,7 @@
 #include "client__gui__window.h"
 #include "client__video__draw_common.h"
 #include "common__strman.h"
+#include "floor_tile_storage.h"
 #include "operators.h"
 
 extern uint64_t qword_581450_9544;
@@ -129,11 +130,10 @@ bool nox_parse_thing_pretty_image(nox_thing* obj, nox_memfile* f, char* attr_val
 }
 
 //----- (00485CF0) --------------------------------------------------------
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 int nox_free_tile_defs() {
-	for (int i = 0; i < nox_tile_def_cnt; i++) {
-		nox_tileDef_t* it = &nox_tile_defs_arr[i];
+	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
+	for (int i = 0; i < floor_tiles->count; i++) {
+		nox_tileDef_t* it = &floor_tiles->definitions[i];
 		if (it->data_32) {
 			nox_draw_memory_free(it->data_32);
 			it->data_32 = 0;

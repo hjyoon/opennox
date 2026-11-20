@@ -52,18 +52,18 @@ func testChatNearestTeam215(t *testing.T, boundary bool) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	production, err := os.ReadFile("GAME1.c")
+	production, err := os.ReadFile("testdata/retired-game-sources/GAME1.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
 	helpers := ""
 	for _, signature := range []string{"static double nox_chat_team_add_chop53_4183C0(", "static double nox_chat_team_square_chop53_4183C0(", "static float nox_chat_team_spill_chop32_4183C0("} {
 		if strings.Contains(string(production), signature) {
-			helpers += teamReportBody210(t, "GAME1.c", signature) + "\n"
+			helpers += teamReportBody210(t, "testdata/retired-game-sources/GAME1.c.txt", signature) + "\n"
 		}
 	}
 	source := strings.ReplaceAll(string(fixture), "/* CHAT_MATH_HELPERS */", helpers)
-	source = strings.ReplaceAll(source, "/* COMPLETE_CHAT_BODY */", teamReportBody210(t, "GAME1.c", "int sub_4183C0("))
+	source = strings.ReplaceAll(source, "/* COMPLETE_CHAT_BODY */", teamReportBody210(t, "testdata/retired-game-sources/GAME1.c.txt", "int sub_4183C0("))
 	cc, err := exec.LookPath("cc")
 	if err != nil {
 		t.Fatal(err)

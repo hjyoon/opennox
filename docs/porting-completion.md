@@ -1928,6 +1928,33 @@ pointer and integer conversions. The release receipt
 `mapgen-tile-selection-native-20261121-v1/mapgen-tile-selection-release-v1.json`
 has SHA-256 `8e3a8ea0910add8d8ce7ffb2913f148b4b65c27e096dd8ddd16cd8f6c9a6f6e8`.
 
+### Script object lookup cache, 2026-11-21
+
+Engine `201542b4b9ca6345a0a100bb94e013992b2f75c1` ports the
+`511C50`, `511D70`, `511DE0` and `511E20` entries and retires
+eight C bodies. The Go core preserves the 16-entry LRU ordering.
+C sees native-owned object pointers and Go can also look up Go-owned
+objects in the shared cache.
+
+The original 453 entry bytes execute in 20 sequences. Actual C tests
+compare the 18 supported original sequences and cover initialization
+and nil input. The initial Go-heap result failed the cgo pointer check.
+The corrected engine routes Go callers directly to the shared cache.
+The initial logs and products remain archived.
+
+ARM64 normal and cgocheck2 each pass 31,048 tests with zero warnings.
+Three ARM64 products build with zero warnings and verify 599 public
+symbols. The two dedicated generations reproduce four MAP and NXZ
+files. Normal Warrior chapter 3 verifies WarCry silence, expiry and
+a living manual Save. HD Conjurer chapter 3 verifies both Captain
+dialogues and a living manual Save. Linux `44770396654` and Windows
+`44770397435` pass all required jobs.
+
+Default ARM64 has 1,983 named active C bodies, including 285 with
+pointer and integer conversions. The release receipt
+`script-object-cache-native-20261121-v1/script-object-cache-release-v2.json`
+has SHA-256 `3c55ce8c983c45858f1a4e710144776de065430e9396c24d098d73b0fb382c88`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

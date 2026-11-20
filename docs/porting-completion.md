@@ -1279,6 +1279,51 @@ The first amd64 attempt reports three Go runtime failures during GC.
 Its raw JSON, job trace and 48 artifact files are preserved under
 `mapgen-place-decor-object-native-20261120-v1`. The cause remains open.
 
+### Map generator room offset entries, 2026-11-20
+
+Engine `fd820115ad5db6bb2a2b04b89c26d06a3e564f8a` ports `521B00`,
+`521B30`, `521B60` and `521B90` from `GAME4_2.c`. Four unused
+integer-pointer aliases were removed. The live C callers keep native,
+read-only room arguments. The original six machine-code calls spill their
+result to binary32. The Go entries perform that spill with the original
+scale and preserve the CRT draw and coordinate read order.
+
+The four original GAME.EXE bodies total 184 bytes. The 180 executed
+cases cover signed dimensions, live coordinate reads and both coordinate
+spills. The retained prior C fixture differs by one bit for the attached
+X coordinate. Normal ARM64 and cgocheck2 each pass 1,243 checks without
+warnings. A native C call to each entry uses room addresses above the
+PE32 range, returns the original coordinate bits and consumes exactly one
+CRT draw.
+
+Both ARM64 clients and the dedicated server build without warnings and
+verify 529 public and 157 retired symbols. The normal client verifies
+two quantity-sale requests with original effect 307 and four native
+OpenAL buffers per request. HD Warrior chapter 3 loads the earned
+cemetery Save, rides the original elevator, traverses the crypt and uses
+WarCry on the living Shaman. The native observation records power 5,
+natural expiry and a living manual Save. The first seed association
+failure and the first actual playthrough ending in player death are
+preserved.
+
+Both dedicated server revisions generate, save and reload the same
+fixed-seed room and hallway layout twice. The loaded layout contains
+74 walls, six waypoints and three Exit1 objects targeting `so_beach.map`.
+One exit X changes from 4153 to 4152. The two MAP differences are in
+ObjectData and there is a matching header checksum change. Both
+repetitions keep this exact difference and each NXZ reconstructs its
+own MAP. All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 247 to 239 active bodies. The thirteen
+split GAME files contain 1,435 active bodies, including 161 with pointer
+and integer conversions. Default ARM64 records 2,069 named active
+bodies, 298 with pointer and integer conversions, and 14 macro-generated
+definitions. The release receipt
+`mapgen-room-rand-attach-native-20261120-v1/mapgen-room-rand-attach-release-v1.json`
+has SHA-256 `8642a6fa1832cba00243efede1bba2daeb4e5811d6eb59787a025dd681c180a4`.
+Linux `44688195421` passes all four products and Windows `44688195704`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

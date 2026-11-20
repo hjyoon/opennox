@@ -1881,6 +1881,29 @@ pointer and integer conversions. The release receipt
 `mapgen-waypoint-links-native-20261120-v1/mapgen-waypoint-links-release-v1.json`
 has SHA-256 `9a3b870a359db3d80ee18384cf827571432c1f4874293db6b86fd04b7007f602`.
 
+### Map generator waypoint lookup and pairing, 2026-11-21
+
+Engine `89e4f1471b962db1f3096f4565070bf2cafacf24` ports `51D1A0`,
+`51D3F0` and `522C80` to Go. Coordinate lookups and creation return
+typed waypoint pointers. The C callers retain full-width endpoints
+while the connection result stays an integer status.
+
+The original 153 entry bytes and 135 helper bytes execute in 106 cases.
+The actual C entries compare 53 cases and exercise the creation,
+lookup and reuse of a waypoint above 4 GiB. ARM64 normal and cgocheck2
+each pass 30,906 tests with zero warnings. All three ARM64 products
+build with zero warnings and verify 591 public symbols. Both dedicated
+generations reproduce the preceding MAP and NXZ outputs byte for byte.
+
+The normal client verifies 54 Amb entries, two OpenAL emitters and
+ten door open and close effects. HD verifies the original Conjurer
+chapter 2 Charm lesson and 60 pulses. Linux `44763217814` and Windows
+`44763217566` pass all required jobs. Default ARM64 has 1,995 named
+active C bodies, including 288 with pointer and integer conversions.
+The release receipt
+`mapgen-waypoint-lookup-native-20261121-v1/mapgen-waypoint-lookup-release-v1.json`
+has SHA-256 `967688111647d103262c76eb8a9651055c9588f0637011c8ea61763c6a60a6be`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

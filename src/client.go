@@ -83,6 +83,7 @@ type Client struct {
 	fxArrowTrapTypes       [2]int
 	fxVampirismType        int
 	fxDurationRayTypes     [7]int
+	fxLegacyRayTypes       [12]int
 	fxTurnUndeadType       int
 	fxDurationRays         [96]clientDurationRay48EA70
 	dword_5d4594_1046604   int

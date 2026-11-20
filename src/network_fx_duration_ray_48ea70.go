@@ -41,14 +41,18 @@ func durationRayContainsDrawable48EA70(slots *[96]clientDurationRay48EA70, dr *c
 	return false
 }
 
-func (c *Client) isDurationRayDrawable48EA70(dr *client.Drawable) bool {
-	return durationRayContainsDrawable48EA70(&c.fxDurationRays, dr)
+func (c *Client) IsDurationRayDrawable(dr *client.Drawable) bool {
+	return c != nil && durationRayContainsDrawable48EA70(&c.fxDurationRays, dr)
+}
+
+func durationRayPayload48EA70(dr *client.Drawable) []byte {
+	return unsafe.Slice((*byte)(unsafe.Pointer(&dr.Union)), 13)
 }
 
 // The ray draw callbacks consume an unaligned PE32 payload inside the
 // drawable union, even though the union itself moves on native-width ABIs.
 func setDurationRayDrawable48EA70(dr *client.Drawable, subtype byte, source, target uint16) {
-	data := unsafe.Slice((*byte)(unsafe.Pointer(&dr.Union)), 13)
+	data := durationRayPayload48EA70(dr)
 	data[0] = 1
 	binary.LittleEndian.PutUint32(data[1:], uint32(subtype))
 	binary.LittleEndian.PutUint32(data[5:], uint32(source))

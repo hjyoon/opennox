@@ -6,7 +6,6 @@ package legacy
 void sub_4519C0();
 int sub_495430();
 void sub_44D3A0();
-void nox_xxx_sprite_49C4F0();
 void sub_45D810();
 void sub_49A630();
 void sub_49BBB0();
@@ -66,6 +65,10 @@ type Client interface {
 	Nox_xxx_spriteDeleteAll_45A5E0(a1 bool)
 	Nox_xxx_client_4984B0_drawable(dr *client.Drawable) bool
 	Nox_xxx_spriteCreate_48E970(typeID int, code uint16, x, y int) *client.Drawable
+	AddLegacyDurationRay(packet [7]byte) *client.Drawable
+	RemoveLegacyDurationRay(packet [7]byte)
+	ClearDurationRays()
+	IsDurationRayDrawable(dr *client.Drawable) bool
 }
 
 type Render2 interface {
@@ -126,10 +129,6 @@ func Sub_479280() {
 
 func Sub_45D810() {
 	C.sub_45D810()
-}
-
-func Nox_xxx_sprite_49C4F0() {
-	C.nox_xxx_sprite_49C4F0()
 }
 
 func Sub_49A630() {

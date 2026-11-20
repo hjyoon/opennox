@@ -204,10 +204,6 @@ func Nox_xxx_clientEnumHover_476FA0() {
 	C.nox_xxx_clientEnumHover_476FA0()
 }
 
-func Nox_xxx_spriteDeleteSomeList_49C4B0() {
-	C.nox_xxx_spriteDeleteSomeList_49C4B0()
-}
-
 func clientTransientRayAddAddress49BDD0(addr uintptr) bool {
 	return C.nox_client_transient_ray_add_addr(C.uintptr_t(addr)) != 0
 }

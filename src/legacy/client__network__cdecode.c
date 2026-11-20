@@ -427,7 +427,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v371;               // [esp+54h] [ebp-16FCh]
 	int v372 = 0;           // [esp+58h] [ebp-16F8h]
 	int v374;               // [esp+60h] [ebp-16F0h]
-	int v376;               // [esp+68h] [ebp-16E8h]
 	int2 v377;              // [esp+6Ch] [ebp-16E4h]
 	int2 v378;              // [esp+74h] [ebp-16DCh]
 	int2 v379;              // [esp+7Ch] [ebp-16D4h]
@@ -457,6 +456,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	wchar2_t v405[256];        // [esp+1350h] [ebp-400h]
 	wchar2_t v406[256];        // [esp+1550h] [ebp-200h]
 
+	if (op == 0x9e && (!data || sz < 7)) {
+		return -1;
+	}
 	unsigned char* end = data + sz;
 
 	switch (op) {
@@ -1922,8 +1924,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 3;
 	case 0x9Eu: // MSG_FX_DURATION_SPELL
-		LOBYTE(v376) = *(uint8_t*)(data + 1);
-		switch ((unsigned char)v376) {
+		switch (data[1]) {
 		case 1u:
 		case 2u:
 		case 3u:

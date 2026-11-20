@@ -43,7 +43,6 @@ func (c *Client) nox_xxx_gameClearAll_467DF0(a1 bool) {
 		legacy.Sub_421B10()
 	}
 	legacy.Nox_xxx_spriteDeleteSomeList_49C4B0()
-	legacy.Nox_xxx_sprite_49C4F0()
 	legacy.Sub_49A630()
 	legacy.Sub_49BBB0()
 	nox_client_resetScreenParticles_431510()

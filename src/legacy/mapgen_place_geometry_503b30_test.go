@@ -70,14 +70,14 @@ func TestMapgenPlaceOffset503B30InvalidFistpUsesLowZero(t *testing.T) {
 
 func TestMapgenFixCoords4D3D90PreservesOriginalX87Rounding(t *testing.T) {
 	// GAME.EXE 004D3DA8..004D3DCC uses FLDS/FADDS/FMULS/FSTPS with the
-	// binary32 coefficient at 00583B80. Rounding the sum to float32 before
-	// multiplying shifts X by one ULP for this input.
+	// binary32 coefficient at 00583B80. FSTPS uses the startup toward-zero
+	// rounding mode. Rounding to the nearest float32 would shift X by one ULP.
 	xBits, yBits, ok := mapgenFixedCoordsFixture4D3D90(2260.84130859375, 810.8399658203125)
 	if !ok {
 		t.Fatal("coordinate transform returned false")
 	}
-	if xBits != 0x45a0480e || yBits != 0x44f15637 {
-		t.Fatalf("fixed coordinate bits = (%08x, %08x), want (45a0480e, 44f15637)", xBits, yBits)
+	if xBits != 0x45a0480d || yBits != 0x44f15637 {
+		t.Fatalf("fixed coordinate bits = (%08x, %08x), want (45a0480d, 44f15637)", xBits, yBits)
 	}
 }
 

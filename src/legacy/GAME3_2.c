@@ -1395,60 +1395,6 @@ uint32_t* sub_4D3C80(uint32_t* a1) {
 	return result;
 }
 
-//----- (004D3D90) --------------------------------------------------------
-int nox_xxx_mapGenFixCoords_4D3D90(float2* a1, float2* a2) {
-	if (!a1 || !a2) {
-		return 0;
-	}
-	// The original FLDS/FADDS/FMULS sequence keeps its binary32 inputs and
-	// coefficient in an extended accumulator until FSTPS rounds the result.
-	// Double intermediates retain the required precision for map coordinates.
-	const double rotate = (double)0.70710677f;
-	const double sum = (double)a1->field_4 + (double)a1->field_0;
-	const double difference = (double)a1->field_4 - (double)a1->field_0;
-	a2->field_0 = (float)(sum * rotate + 2957.0);
-	a2->field_4 = (float)(difference * rotate + 2956.0);
-	// FCOMPS sends unordered (NaN) inputs through the lower clamp as well.
-	if (!(a2->field_0 > 80.5f)) {
-		a2->field_0 = 82.5;
-	}
-	if (!(a2->field_4 > 80.5f)) {
-		a2->field_4 = 81.5;
-	}
-	if (a2->field_0 >= 5853.5) {
-		a2->field_0 = 5851.5;
-	}
-	if (a2->field_4 >= 5853.5) {
-		a2->field_4 = 5852.5;
-	}
-	return 1;
-}
-
-//----- (004D3E30) --------------------------------------------------------
-int sub_4D3E30(float2* a1, float2* a2) {
-	int result; // eax
-
-	if (!a1 || !a2) {
-		return 0;
-	}
-	if (a1->field_0 <= 80.5) {
-		a1->field_0 = 82.5;
-	}
-	if (a1->field_4 <= 80.5) {
-		a1->field_4 = 81.5;
-	}
-	if (a1->field_0 >= 5853.5) {
-		a1->field_0 = 5851.5;
-	}
-	if (a1->field_4 >= 5853.5) {
-		a1->field_4 = 5852.5;
-	}
-	result = 1;
-	a2->field_0 = (a1->field_0 - 1.0 - a1->field_4) * 0.70710677;
-	a2->field_4 = (a1->field_4 + a1->field_0 - 5912.0) * 0.70710677;
-	return result;
-}
-
 //----- (004D3FF0) --------------------------------------------------------
 int sub_4D3FF0(int a1) {
 	int result; // eax

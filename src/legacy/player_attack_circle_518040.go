@@ -13,12 +13,21 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
 //export nox_xxx_playerAttackScanCircleNative_518040
 func nox_xxx_playerAttackScanCircleNative_518040(center *C.float2, radius C.float, callback, data unsafe.Pointer) {
-	sub_518040(center, radius, C.nox_unit_radius_callback_t(callback), data)
+	if center == nil || callback == nil {
+		return
+	}
+	s := GetServer().S()
+	server.PlayerAttackScanCircle518040((*types.Pointf)(unsafe.Pointer(center)), float32(radius),
+		s.Map.EachObjInRect, circleBoxCollisionNative54A990,
+		func(candidate *server.Object) {
+			ccall.CallVoidPtr2(callback, unsafe.Pointer(candidate), data)
+		})
 }
 
 //export sub_518040
@@ -37,11 +46,13 @@ func sub_518040(center *C.float2, radius C.float, callback C.nox_unit_radius_cal
 
 //export sub_5180B0
 func sub_5180B0(candidate *C.nox_object_t, context *C.nox_unit_radius_context_t) {
-	if context == nil || context.callback == nil {
+	if candidate == nil || context == nil || context.callback == nil {
 		return
 	}
 	center := (*types.Pointf)(unsafe.Pointer(context.center))
-	if server.PlayerAttackCircleOverlaps5180B0(center, float32(context.radius), asObjectS(candidate), circleBoxCollisionNative54A990) {
+	server.PlayerAttackScanCircle518040(center, float32(context.radius), func(_ types.Rectf, filter func(*server.Object) bool) {
+		filter(asObjectS(candidate))
+	}, circleBoxCollisionNative54A990, func(*server.Object) {
 		C.nox_call_unit_radius_callback(context.callback, candidate, context.data)
-	}
+	})
 }

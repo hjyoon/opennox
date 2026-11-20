@@ -1833,6 +1833,54 @@ The release receipt
 `mapgen-tile-placement-native-20261120-v1/mapgen-tile-coordinate-release-v1.json`
 has SHA-256 `c34bd2ac086a17a0014e0fa65d36f67ba1606f0e32d984840e0e0cddebda88c3`.
 
+### Map generator tile emission, 2026-11-20
+
+Engine `1bc52d853d46abecb4ebe800b9f7a2073acbc615` ports `51D5E0`
+to Go with a native position pointer. It transforms the point, places
+the tile and conditionally rebuilds walls. The entry preserves the
+no-tile sentinel and the floor and wall return statuses.
+
+The original 98 entry bytes execute in 201 cases. Actual C tests
+place a tile through a point above 4 GiB. ARM64 normal and cgocheck2
+each pass 4,361 tests with zero warnings. Three ARM64 products build
+with zero warnings and check 582 public symbols. Two dedicated
+generations match all four preceding MAP and NXZ files.
+
+Normal multiplayer chat covers four sends, cancel and empty
+submission. HD Wizard chapter 1 verifies Haste and Protection from
+Fire on the player and an NPC, including mana debit and natural expiry.
+Linux `44756872885` passes all four products and Windows `44756872830`
+passes amd64 and 386. Default ARM64 has 2,005 named active C bodies.
+The release receipt
+`mapgen-tile-emission-native-20261120-v1/mapgen-tile-emission-release-v1.json`
+has SHA-256 `efaa40b518cdd561400aea9cdab330d61b21757d83f48b35bb78c82bf5b7de5b`.
+
+### Map generator waypoint creation and links, 2026-11-21
+
+Engine `a51b601bf91c613bd10002e039a68a8aaa822653` ports `51D0F0`,
+`51D100`, `51D120`, `51D2C0` and `51D300` to Go. The last-created
+waypoint has one typed native owner. Native links retain both endpoints
+at pointer width and the legacy entries resolve their registered
+32-bit tokens. The C test creates, links and resets a waypoint above
+4 GiB and verifies the original coordinate bits.
+
+The original 304 entry bytes execute in 192 cases. The actual C
+entries compare 150 of those cases. ARM64 normal and cgocheck2 pass
+30,851 tests each with zero warnings, including the global reset
+and waypoint lifetime regressions. The three ARM64 products build
+with zero warnings and verify 588 public symbols. A first MAP
+comparison spans midnight and records a date and checksum difference.
+The same-date repeat matches four MAP and NXZ files byte for byte.
+
+Normal Warrior chapter 3 verifies original WarCry silence, expiry
+and a living manual Save. HD Wizard chapter 3 verifies the original
+cellar swordsman's HP drop to zero and the living Wizard's manual Save.
+Linux `44759921199` and Windows `44759921221` pass all required jobs.
+Default ARM64 has 1,998 named active C bodies, including 289 with
+pointer and integer conversions. The release receipt
+`mapgen-waypoint-links-native-20261120-v1/mapgen-waypoint-links-release-v1.json`
+has SHA-256 `9a3b870a359db3d80ee18384cf827571432c1f4874293db6b86fd04b7007f602`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -1552,6 +1552,43 @@ has SHA-256 `1f8dee76853b9a2e7aab8cb68fe967c7f1fdbe786337a9bf18de91dbd7e2fbc4`.
 Linux `44703025755` passes all four required jobs and Windows
 `44703026594` passes amd64 and 386 at this revision.
 
+### Map generator scratch buffer ownership, 2026-11-20
+
+Engine `1b27a98543c4893f081b9922e4050a68fdaf240b` ports scratch
+allocation and release `5213E0` and `521400` from `GAME4_2.c`
+to Go. The production `GAME3_2.c` entry prepares scratch and grid
+owners together. A failed grid setup releases the buffer and the
+caller releases the parsed theme. The PE32 mirror still contains
+a 32-bit token.
+
+The original 41 bytes execute in nine lifetime and allocation
+cases with the original 8,192-byte request. The former extracted
+C fixture is archived with its driver and body. Its replacement
+exercises the actual Go owner across twelve repeated lifetimes and
+allocation failures. The normal and cgocheck2 ARM64 runs each pass
+2,834 checks without warnings, with actual C calls verifying both
+owners above 4 GiB.
+
+The three ARM64 products build without warnings and verify 556
+public and 167 retired symbols. The normal client verifies all 54
+Amb entries, the two emitters and ten opening and closing effects
+for five original door types using native OpenAL. The HD Conjurer
+chapter 1 replay casts Protection from Poison on the player and an
+NPC, consumes 30 mana on each cast and verifies natural expiry.
+The dedicated server generates and reloads two fixed-seed maps
+with byte-identical MAP and NXZ output. All 4,649 original asset
+and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 205 to 203 active bodies.
+The thirteen split GAME files contain 1,399 active bodies, including
+161 with pointer and integer conversions. Default ARM64 has 2,033
+named bodies, 298 with pointer and integer conversions, and 14
+macro expansions. The release receipt
+`mapgen-buffer-native-20261120-v1/mapgen-buffer-release-v1.json`
+has SHA-256 `8c843a7a631cddd4c90ee0c87ccdf165fcd425040c3f4083c97eaa82c815f656`.
+Linux `44704823214` passes all four products and Windows
+`44704822770` passes amd64 and 386 for this engine.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

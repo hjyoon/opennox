@@ -140,7 +140,7 @@ int nox_xxx_tileGetDefByName_51D4D0(char* a1);
 int nox_xxx_tileCheckImage_51D540(int a1);
 int nox_xxx_tileCheckImageVari_51D570(int a1);
 int nox_xxx_tile_51D5C0(int a1);
-float* sub_51D5E0(float* a1);
+int sub_51D5E0(float2* position);
 int sub_51D8F0(float2* a1);
 int sub_51D9C0(int a1, int a2, int a3, int a4, nox_floor_brush_t* brush);
 void sub_517B70(float2* a1, void* a2, void* a3);

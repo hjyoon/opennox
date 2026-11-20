@@ -176,7 +176,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 			C.nox_xxx_tileGetDefByName_51D4D0(internCStr(name))
 		},
 		fillCrystal: func(rect *mapGenOccupiedRect5227B0, cols, rows int32) {
-			C.sub_5245A0(0, (*C.float)(unsafe.Pointer(&rect.bounds[0])), C.int(cols), C.int(rows))
+			mapgenFillTileRectangle((*mapgenWorldPoint)(unsafe.Pointer(&rect.bounds[0])), cols, rows, mapgenPlaceFillTile)
 		},
 		playerStart: func(position mapgenWorldPoint) {
 			nox_xxx_mapGenGetObjID_527940(internCStr("PlayerStart"))

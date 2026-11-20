@@ -3444,54 +3444,6 @@ int sub_524550(int* a1, int a2) {
 	return result;
 }
 
-//----- (005245A0) --------------------------------------------------------
-float* sub_5245A0(int a1, float* a2, int a3, int a4) {
-	float* result; // eax
-	int v5;        // ebp
-	int v6;        // esi
-	float point[2];
-
-	result = (float*)a4;
-	point[1] = a2[1] + 0x1.04371ep+4f;
-	if (a4 > 0) {
-		v5 = a4;
-		do {
-			point[0] = *a2 + 0x1.04371ep+4f;
-			if (a3 > 0) {
-				v6 = a3;
-				do {
-					result = sub_51D5E0(point);
-					--v6;
-					point[0] = point[0] + 0x1.04371ep+5f;
-				} while (v6);
-			}
-			--v5;
-			point[1] = point[1] + 0x1.04371ep+5f;
-		} while (v5);
-	}
-	return result;
-}
-
-//----- (00524610) --------------------------------------------------------
-float* sub_524610(int a1, float* a2, int a3) {
-	float* result; // eax
-	int v4;        // esi
-	float point[2];
-
-	result = a2;
-	v4 = a3;
-	point[0] = *a2 + 0x1.04371ep+4f;
-	point[1] = a2[1] + 0x1.04371ep+4f;
-	if (a3 > 0) {
-		do {
-			result = sub_51D5E0(point);
-			--v4;
-			point[1] = point[1] + 0x1.04371ep+5f;
-		} while (v4);
-	}
-	return result;
-}
-
 //----- (00524660) --------------------------------------------------------
 int sub_524660(float a1, float a2) { return fabs(a1 - a2) < *getMemDoublePtr(0x581450, 10432); }
 

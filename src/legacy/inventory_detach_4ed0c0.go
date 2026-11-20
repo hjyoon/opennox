@@ -42,7 +42,7 @@ func inventoryDetachRuntime4ED0C0() server.InventoryDetachRuntime4ED0C0 {
 			C.nox_xxx_netReportDrop_4D8B50(C.int(index), asObjectC(item))
 		},
 		ProtectItem: func(value uint32, item *server.Object) {
-			C.nox_xxx_protect_56FC50(C.int32_t(value), asObjectC(item))
+			updatePlayerProtectionItem(int32(value), item)
 		},
 		NPCSetItemEquip: func(owner, item *server.Object, equipped int32) {
 			owner.SetNPCItemEquipFlags(

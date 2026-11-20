@@ -13,15 +13,13 @@ import "github.com/opennox/opennox/v1/server"
 func unitSetHPNative4E4560(obj *server.Object, amount uint16) uintptr {
 	return obj.SetHP4E4560(amount, server.UnitSetHPRuntime4E4560{
 		CheckHeld: func(token uint32, item *server.Object) {
-			defer pinObjectForC(item)()
-			C.nox_xxx_protect_56FC50(C.int(token), asObjectC(item))
+			updatePlayerProtectionItem(int32(token), item)
 		},
 		SetPlayerHP: func(token uint32, value uint16) {
 			C.nox_xxx_protectPlayerHPMana_56F870(C.int(token), C.ushort(value))
 		},
 		ProtectHeld: func(token uint32, item *server.Object) int32 {
-			defer pinObjectForC(item)()
-			return int32(C.nox_xxx_protect_56FBF0(C.int(token), asObjectC(item)))
+			return updatePlayerProtectionItem(int32(token), item)
 		},
 	})
 }

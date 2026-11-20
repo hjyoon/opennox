@@ -275,14 +275,8 @@ func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object,
 			Nox_xxx_playerCallDisconnect_4DEAB0(ntype.PlayerInd(ind), 1)
 		},
 		protectName: func(token uint32, name []byte) {
-			var ptr *C.int
-			if len(name) != 0 {
-				ptr = (*C.int)(unsafe.Pointer(&name[0]))
-			}
-			crc := C.nox_xxx_protectionStringCRCLen_56FAE0(
-				ptr, C.uint(len(name)),
-			)
-			C.nox_xxx_playerResetProtectionCRC_56F7D0(C.int(token), crc)
+			crc := PlayerProtectionChecksum(name)
+			nox_xxx_playerResetProtectionCRC_56F7D0(C.int(token), C.int(crc))
 		},
 		protectInt: func(token, value uint32) {
 			C.sub_56F780(C.int(token), C.int(value))

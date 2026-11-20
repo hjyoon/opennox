@@ -7,7 +7,6 @@ package legacy
 int32_t sub_56F780(int token, int value);
 int32_t nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
 size_t nox_wcslen(const uint16_t* value);
-int sub_56FB00(int* value, unsigned int size, int token);
 
 static inline void nox_playerReadValues_protectInt_4EEDC0(
 		uint32_t token, uint32_t value) {
@@ -21,11 +20,6 @@ static inline void nox_playerReadValues_protectUint16_4EEDC0(
 
 static inline uint32_t nox_playerReadValues_wideLen_4EEDC0(void* value) {
 	return (uint32_t)nox_wcslen((const uint16_t*)value);
-}
-
-static inline int32_t nox_playerReadValues_protectName_4EEDC0(
-		void* value, uint32_t size, uint32_t token) {
-	return (int32_t)sub_56FB00((int*)value, size, (int32_t)token);
 }
 */
 import "C"
@@ -55,11 +49,7 @@ func playerReadValuesRuntime4EEDC0() server.PlayerReadValuesRuntime4EEDC0 {
 			return uint32(C.nox_playerReadValues_wideLen_4EEDC0(info.C()))
 		},
 		ProtectName: func(info *server.PlayerInfo, size, token uint32) int32 {
-			return int32(C.nox_playerReadValues_protectName_4EEDC0(
-				info.C(),
-				C.uint32_t(size),
-				C.uint32_t(token),
-			))
+			return int32(sub_56FB00((*C.int)(info.C()), C.uint(size), C.int(token)))
 		},
 	}
 }

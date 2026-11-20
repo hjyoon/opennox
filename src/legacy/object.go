@@ -870,7 +870,7 @@ func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
 			C.nox_xxx_netReportPickup_4D8A60(C.int(index), asObjectC(item))
 		},
 		ProtectItem: func(value uint32, item *server.Object) {
-			C.nox_xxx_protect_56FBF0(C.int(value), asObjectC(item))
+			updatePlayerProtectionItem(int32(value), item)
 		},
 	})
 }

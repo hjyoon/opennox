@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/internal/netalias"
 )
 
 func highAddressUpdateStreamDrawable494A60(t *testing.T) *client.Drawable {
@@ -21,20 +22,20 @@ func highAddressUpdateStreamDrawable494A60(t *testing.T) *client.Drawable {
 }
 
 func updateStreamTestHooks494A60(
-	entries *[updateStreamAliasCount494A60]updateStreamAliasEntry494A60,
+	entries *[netalias.Count]netalias.Entry,
 	frame uint32,
 ) updateStreamHooks494A60 {
 	return updateStreamHooks494A60{
 		frame:       func() uint32 { return frame },
-		lookupAlias: func(ind byte) updateStreamAliasEntry494A60 { return entries[ind] },
+		lookupAlias: func(ind byte) netalias.Entry { return entries[ind] },
 		reserveAlias: func(code, typeID uint16, now, deadline uint32) (byte, bool) {
 			return reserveUpdateStreamAlias494A60(
 				code, typeID, now, deadline,
-				func(ind byte) updateStreamAliasEntry494A60 { return entries[ind] },
-				func(ind byte, entry updateStreamAliasEntry494A60) { entries[ind] = entry },
+				func(ind byte) netalias.Entry { return entries[ind] },
+				func(ind byte, entry netalias.Entry) { entries[ind] = entry },
 			)
 		},
-		sendAlias:    func(byte, updateStreamAliasEntry494A60) {},
+		sendAlias:    func(byte, netalias.Entry) {},
 		create:       func(int, uint16, int, int) *client.Drawable { return nil },
 		updateCamera: func(int, int) {},
 		addToIndex2D: func(*client.Drawable) {},
@@ -47,7 +48,7 @@ func TestHandleUpdateStreamNative494A60PreservesHighAddressPlayer(t *testing.T) 
 		typeID = uint16(0x5678)
 		frame  = uint32(77)
 	)
-	entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
+	entries := new([netalias.Count]netalias.Entry)
 	hooks := updateStreamTestHooks494A60(entries, frame)
 	dr := highAddressUpdateStreamDrawable494A60(t)
 	dr.ObjClass = object.ClassComplex | object.ClassPlayer
@@ -71,12 +72,12 @@ func TestHandleUpdateStreamNative494A60PreservesHighAddressPlayer(t *testing.T) 
 	hooks.updateCamera = func(x, y int) { cameraX, cameraY = x, y }
 	var sent []struct {
 		alias byte
-		entry updateStreamAliasEntry494A60
+		entry netalias.Entry
 	}
-	hooks.sendAlias = func(alias byte, entry updateStreamAliasEntry494A60) {
+	hooks.sendAlias = func(alias byte, entry netalias.Entry) {
 		sent = append(sent, struct {
 			alias byte
-			entry updateStreamAliasEntry494A60
+			entry netalias.Entry
 		}{alias: alias, entry: entry})
 	}
 	hooks.addToIndex2D = func(*client.Drawable) { t.Fatal("complex drawable was re-added as simple") }
@@ -98,8 +99,8 @@ func TestHandleUpdateStreamNative494A60PreservesHighAddressPlayer(t *testing.T) 
 	if cameraX != 1000 || cameraY != 1200 {
 		t.Fatalf("camera = (%d,%d), want (1000,1200)", cameraX, cameraY)
 	}
-	if len(sent) != 1 || sent[0].alias != 0x34 || sent[0].entry != (updateStreamAliasEntry494A60{
-		code: code, typeID: typeID, deadline: math.MaxUint32,
+	if len(sent) != 1 || sent[0].alias != 0x34 || sent[0].entry != (netalias.Entry{
+		Code: code, TypeID: typeID, Deadline: math.MaxUint32,
 	}) {
 		t.Fatalf("alias notifications = %+v", sent)
 	}
@@ -114,8 +115,8 @@ func TestHandleUpdateStreamNative494A60PreservesHighAddressPlayer(t *testing.T) 
 }
 
 func TestHandleUpdateStreamNative494A60FullComplexRecordWithoutFrame(t *testing.T) {
-	entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
-	entries[2] = updateStreamAliasEntry494A60{code: 0x2345, typeID: 0x3456, deadline: math.MaxUint32}
+	entries := new([netalias.Count]netalias.Entry)
+	entries[2] = netalias.Entry{Code: 0x2345, TypeID: 0x3456, Deadline: math.MaxUint32}
 	hooks := updateStreamTestHooks494A60(entries, 91)
 	dr := highAddressUpdateStreamDrawable494A60(t)
 	dr.ObjClass = object.ClassComplex
@@ -145,8 +146,8 @@ func TestHandleUpdateStreamNative494A60FullComplexRecordWithoutFrame(t *testing.
 }
 
 func TestHandleUpdateStreamNative494A60SimpleDeltaRecord(t *testing.T) {
-	entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
-	entries[3] = updateStreamAliasEntry494A60{code: 0x3456, typeID: 0x4567, deadline: math.MaxUint32}
+	entries := new([netalias.Count]netalias.Entry)
+	entries[3] = netalias.Entry{Code: 0x3456, TypeID: 0x4567, Deadline: math.MaxUint32}
 	hooks := updateStreamTestHooks494A60(entries, 123)
 	dr := highAddressUpdateStreamDrawable494A60(t)
 	dr.ObjClass = object.ClassSimple
@@ -184,7 +185,7 @@ func TestHandleUpdateStreamNative494A60RejectsTruncatedPackets(t *testing.T) {
 		0, 0, 0,
 	}
 	for n := 0; n < len(packet); n++ {
-		entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
+		entries := new([netalias.Count]netalias.Entry)
 		hooks := updateStreamTestHooks494A60(entries, 77)
 		dr := &client.Drawable{ObjClass: object.ClassComplex | object.ClassPlayer}
 		hooks.create = func(_ int, _ uint16, x, y int) *client.Drawable {
@@ -198,8 +199,8 @@ func TestHandleUpdateStreamNative494A60RejectsTruncatedPackets(t *testing.T) {
 }
 
 func TestHandleUpdateStreamNative494A60StopsAtInvalidPosition(t *testing.T) {
-	entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
-	entries[2] = updateStreamAliasEntry494A60{code: 2, typeID: 3, deadline: math.MaxUint32}
+	entries := new([netalias.Count]netalias.Entry)
+	entries[2] = netalias.Entry{Code: 2, TypeID: 3, Deadline: math.MaxUint32}
 	hooks := updateStreamTestHooks494A60(entries, 10)
 	creates := 0
 	hooks.create = func(int, uint16, int, int) *client.Drawable { creates++; return &client.Drawable{} }
@@ -218,25 +219,25 @@ func TestHandleUpdateStreamNative494A60StopsAtInvalidPosition(t *testing.T) {
 }
 
 func TestReserveUpdateStreamAlias494A60UsesMatchExpiryAndFullSentinel(t *testing.T) {
-	entries := new([updateStreamAliasCount494A60]updateStreamAliasEntry494A60)
-	lookup := func(ind byte) updateStreamAliasEntry494A60 { return entries[ind] }
-	store := func(ind byte, entry updateStreamAliasEntry494A60) { entries[ind] = entry }
+	entries := new([netalias.Count]netalias.Entry)
+	lookup := func(ind byte) netalias.Entry { return entries[ind] }
+	store := func(ind byte, entry netalias.Entry) { entries[ind] = entry }
 
-	entries[0x34] = updateStreamAliasEntry494A60{code: 0x1234, typeID: 7, deadline: 100}
+	entries[0x34] = netalias.Entry{Code: 0x1234, TypeID: 7, Deadline: 100}
 	if ind, ok := reserveUpdateStreamAlias494A60(0x1234, 7, 50, 200, lookup, store); !ok || ind != 0x34 {
 		t.Fatalf("matching alias = %#x/%v, want 0x34/true", ind, ok)
 	}
-	if entries[0x34].deadline != 200 {
-		t.Fatalf("matching alias deadline = %d, want 200", entries[0x34].deadline)
+	if entries[0x34].Deadline != 200 {
+		t.Fatalf("matching alias deadline = %d, want 200", entries[0x34].Deadline)
 	}
 
-	entries[1] = updateStreamAliasEntry494A60{code: 9, typeID: 9, deadline: 49}
+	entries[1] = netalias.Entry{Code: 9, TypeID: 9, Deadline: 49}
 	if ind, ok := reserveUpdateStreamAlias494A60(0xff00, 8, 50, 300, lookup, store); !ok || ind != 1 {
 		t.Fatalf("expired alias = %#x/%v, want 1/true", ind, ok)
 	}
 
 	for i := 1; i < 0xff; i++ {
-		entries[i] = updateStreamAliasEntry494A60{code: uint16(i + 1), typeID: 1, deadline: math.MaxUint32}
+		entries[i] = netalias.Entry{Code: uint16(i + 1), TypeID: 1, Deadline: math.MaxUint32}
 	}
 	if ind, ok := reserveUpdateStreamAlias494A60(1, 2, 50, 400, lookup, store); ok || ind != 0xff {
 		t.Fatalf("full alias table = %#x/%v, want 0xff/false", ind, ok)

@@ -1398,48 +1398,7 @@ int nox_xxx_collideReflect_57B810(float* a1, int a2) {
 
 //----- (0057B850) --------------------------------------------------------
 
-//----- (0057B920) --------------------------------------------------------
-int sub_57B920(void* a1) {
-	int result; // eax
-
-	result = 0;
-	memset(a1, 0, 0x7F8u);
-	return result;
-}
-
-//----- (0057B9A0) --------------------------------------------------------
-char nox_xxx_cliGenerateAlias_57B9A0(void* a1, int a2, int a3, unsigned int a4) {
-	int v4; // eax
-	int v5; // edx
-	uint8_t* base = a1;
-
-	v4 = (unsigned char)a2;
-	v5 = (unsigned char)a2;
-	if ((unsigned char)a2 == 255 || !(uint8_t)a2) {
-		v4 = 1;
-		v5 = 1;
-	}
-	while ((*(unsigned short*)(base + 8 * v4) != a2 || *(unsigned short*)(base + 8 * v4 + 2) != a3) &&
-		   *(uint32_t*)(base + 8 * v4 + 4) >= a4) {
-		if (++v4 == 255) {
-			v4 = 1;
-		}
-		if (v4 == v5) {
-			LOBYTE(v4) = -1;
-			return v4;
-		}
-	}
-	return v4;
-}
-
-//----- (0057BA10) --------------------------------------------------------
-void* sub_57BA10(void* a1, short a2, short a3, int a4) {
-	uint8_t* base = a1;
-	*(uint16_t*)base = a2;
-	*(uint16_t*)(base + 2) = a3;
-	*(uint32_t*)(base + 4) = a4;
-	return a1;
-}
+// The alias table routines at 0057B920, 0057B9A0 and 0057BA10 are in network_alias_57b920.go.
 
 //----- (0057C090) --------------------------------------------------------
 // Ported to Go in groups.go so the list follows the native next field rather

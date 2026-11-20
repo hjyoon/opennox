@@ -9,25 +9,15 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/internal/netalias"
 	"github.com/opennox/opennox/v1/internal/netlist"
 )
 
-const (
-	updateStreamAliasCount494A60 = 255
-	updateStreamAliasSize494A60  = 8
-)
-
-type updateStreamAliasEntry494A60 struct {
-	code     uint16
-	typeID   uint16
-	deadline uint32
-}
-
 type updateStreamHooks494A60 struct {
 	frame        func() uint32
-	lookupAlias  func(byte) updateStreamAliasEntry494A60
+	lookupAlias  func(byte) netalias.Entry
 	reserveAlias func(code, typeID uint16, now, deadline uint32) (byte, bool)
-	sendAlias    func(alias byte, entry updateStreamAliasEntry494A60)
+	sendAlias    func(alias byte, entry netalias.Entry)
 	create       func(typeID int, code uint16, x, y int) *client.Drawable
 	updateCamera func(x, y int)
 	addToIndex2D func(*client.Drawable)
@@ -64,28 +54,15 @@ func (r *updateStreamReader494A60) readInt16() (int, bool) {
 func reserveUpdateStreamAlias494A60(
 	code, typeID uint16,
 	now, deadline uint32,
-	lookup func(byte) updateStreamAliasEntry494A60,
-	store func(byte, updateStreamAliasEntry494A60),
+	lookup func(byte) netalias.Entry,
+	store func(byte, netalias.Entry),
 ) (byte, bool) {
-	ind := byte(code)
-	if ind == 0 || ind == 0xff {
-		ind = 1
+	ind := netalias.FindAvailable(int32(code), int32(typeID), now, lookup)
+	if ind == netalias.NoAlias {
+		return ind, false
 	}
-	start := ind
-	for {
-		entry := lookup(ind)
-		if (entry.code == code && entry.typeID == typeID) || entry.deadline < now {
-			store(ind, updateStreamAliasEntry494A60{code: code, typeID: typeID, deadline: deadline})
-			return ind, true
-		}
-		ind++
-		if ind == 0xff {
-			ind = 1
-		}
-		if ind == start {
-			return 0xff, false
-		}
-	}
+	store(ind, netalias.Entry{Code: code, TypeID: typeID, Deadline: deadline})
+	return ind, true
 }
 
 func readUpdateStreamAlias494A60(
@@ -97,9 +74,9 @@ func readUpdateStreamAlias494A60(
 	if !ok {
 		return 0, 0, false
 	}
-	if alias != 0xff {
+	if alias != netalias.NoAlias {
 		entry := hooks.lookupAlias(alias)
-		return entry.code, entry.typeID, true
+		return entry.Code, entry.TypeID, true
 	}
 	code, ok = r.readUint16()
 	if !ok {
@@ -116,8 +93,8 @@ func readUpdateStreamAlias494A60(
 	}
 	alias, ok = hooks.reserveAlias(code, typeID, now, deadline)
 	if ok {
-		hooks.sendAlias(alias, updateStreamAliasEntry494A60{
-			code: code, typeID: typeID, deadline: deadline,
+		hooks.sendAlias(alias, netalias.Entry{
+			Code: code, TypeID: typeID, Deadline: deadline,
 		})
 	}
 	return code, typeID, true
@@ -272,44 +249,23 @@ func handleUpdateStreamNative494A60(data []byte, hooks updateStreamHooks494A60) 
 	}
 }
 
-type updateStreamAliasTable494A60 []byte
-
-func updateStreamRuntimeAliasTable494A60() updateStreamAliasTable494A60 {
-	data := memmap.Slice(0x5D4594, 1198020)
-	return data[:updateStreamAliasCount494A60*updateStreamAliasSize494A60]
-}
-
-func (t updateStreamAliasTable494A60) lookup(ind byte) updateStreamAliasEntry494A60 {
-	off := int(ind) * updateStreamAliasSize494A60
-	return updateStreamAliasEntry494A60{
-		code:     binary.LittleEndian.Uint16(t[off:]),
-		typeID:   binary.LittleEndian.Uint16(t[off+2:]),
-		deadline: binary.LittleEndian.Uint32(t[off+4:]),
-	}
-}
-
-func (t updateStreamAliasTable494A60) store(ind byte, entry updateStreamAliasEntry494A60) {
-	off := int(ind) * updateStreamAliasSize494A60
-	binary.LittleEndian.PutUint16(t[off:], entry.code)
-	binary.LittleEndian.PutUint16(t[off+2:], entry.typeID)
-	binary.LittleEndian.PutUint32(t[off+4:], entry.deadline)
+func updateStreamRuntimeAliasTable494A60() netalias.Table {
+	return memmap.Slice(0x5D4594, 1198020)[:netalias.TableSize]
 }
 
 func (c *Client) handleUpdateStreamPacketNative494A60(ind ntype.PlayerInd, data []byte) int {
 	table := updateStreamRuntimeAliasTable494A60()
 	return handleUpdateStreamNative494A60(data, updateStreamHooks494A60{
 		frame:       c.Server.Frame,
-		lookupAlias: table.lookup,
+		lookupAlias: table.Lookup,
 		reserveAlias: func(code, typeID uint16, now, deadline uint32) (byte, bool) {
-			return reserveUpdateStreamAlias494A60(code, typeID, now, deadline, table.lookup, table.store)
+			return reserveUpdateStreamAlias494A60(code, typeID, now, deadline, table.Lookup, table.Store)
 		},
-		sendAlias: func(alias byte, entry updateStreamAliasEntry494A60) {
+		sendAlias: func(alias byte, entry netalias.Entry) {
 			var packet [10]byte
 			packet[0] = byte(netmsg.MSG_NEW_ALIAS)
 			packet[1] = alias
-			binary.LittleEndian.PutUint16(packet[2:], entry.code)
-			binary.LittleEndian.PutUint16(packet[4:], entry.typeID)
-			binary.LittleEndian.PutUint32(packet[6:], entry.deadline)
+			entry.PutRecord(packet[2:])
 			c.srv.NetList.AddToMsgListCli(ind, netlist.Kind0, packet[:])
 		},
 		create:       c.Nox_xxx_spriteCreate_48E970,

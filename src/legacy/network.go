@@ -265,7 +265,7 @@ func Nox_xxx_netClientSend2_4E53C0(
 	))
 }
 func Sub_57B920(a1 unsafe.Pointer) {
-	C.sub_57B920(a1)
+	sub_57B920(a1)
 }
 func Nox_xxx_cliSetSettingsAcquired_4169D0(a1 int) {
 	C.nox_xxx_cliSetSettingsAcquired_4169D0(C.int(a1))

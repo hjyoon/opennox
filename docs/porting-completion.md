@@ -1192,6 +1192,47 @@ has SHA-256 `fe298cc29e9837225da28703471a8c0773315c068b8fcf2e2cebfaa8e0aee675`.
 Linux `44679551482` passes all four products and Windows `44679551311`
 passes amd64 and 386 at this revision.
 
+### Map generator occupied rectangles, 2026-11-20
+
+Engine `8d8228d7e70ee513d5c5ae80031a9a98dec907e8` ports `521BC0`,
+`521C10`, `521EB0` and `521F10` from `GAME4_2.c`. Live callers
+use typed room, coordinate and rectangle pointers. The first overlapping
+record returns at native width. The fixed 28-byte rectangle retains its
+PE32 next link, which resolves through the existing registry. Existing
+token-based callers of `521BC0` and `521C10` keep their original ABI.
+
+The four GAME.EXE bodies total 449 bytes and use an original four-byte
+scale. The 291 original cases cover coordinate spills, unordered
+comparisons, first-match traversal and transient deletion. The retained
+prior-C reproduction shows a one-bit bound difference, a different
+unordered predicate result and an intersection returning integer 1.
+Normal ARM64 and cgocheck2 each pass 855 checks without warnings. The
+actual C fixture returns the full address of the first matching record
+and verifies the remaining list after cleanup.
+
+Both ARM64 clients and the dedicated server build without warnings.
+Each verifies 524 public and 152 retired symbols. The normal client
+verifies 54 ambient definitions, stock AmbBrook1 and AmbBird1
+playback and cleanup through OpenAL. The HD client verifies potion
+purchase and both potion and equipped-weapon sales. Both sales
+enqueue stock sound 307 and four native audio buffers.
+
+The dedicated server generates and reloads two maps using the same
+encrypted theme and seed as the preceding engine. All four corresponding
+MAP and NXZ files match their preceding-engine hashes, and the NXZ
+decoder reconstructs each map exactly. The server exits naturally with
+code zero. All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 256 to 249 active bodies. The
+thirteen split GAME files contain 1,445 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,079 named
+active bodies, 298 with pointer and integer conversions, and 14
+macro-generated definitions. The release receipt
+`mapgen-occupied-rects-native-20261120-v1/mapgen-occupied-rect-release-v1.json`
+has SHA-256 `f00a4d3b31669b20f4abc8d65c2931d3390d37965ade5efeafcadcb62eb6b3e7`.
+Linux `44682752936` passes all four products and Windows `44682753848`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -1059,7 +1059,50 @@ macro-generated definitions. Twelve profiles select 206 of 627
 tracked C files. The release receipt
 `mapgen-token-reader-native-20261120-v1/mapgen-token-reader-release-v1.json`
 has SHA-256 `ebfc21ab094a480648458f8cfb533b9ecf0db5ef751ed5c7c84a7aa0f5fb3fc3`.
-Linux `44578203972` and Windows `44578205863` track this revision.
+Linux `44578203972` passes all four products and Windows `44578205863`
+passes amd64 and 386 at this revision.
+
+### Map generator choice and inventory entries, 2026-11-20
+
+Engine `b89cf010dc1f562ddc2f45c0bc46d6a84e9ec273` ports `521C60`,
+`521FE0` and `522300` from `GAME4_2.c`. Theme and object arguments
+carry native pointers, and the original fixed-width records retain
+their registered list references. Choice selection preserves signed
+weights, live entry counts and original callback order. The shared
+insertion sets the native forward and backward links and holder.
+The former `522300` entry truncates a high-address holder and crashes
+in the retained ARM64 reproduction.
+
+The three GAME.EXE bodies total 360 bytes and use a 24-byte jump table.
+The original executes 286 cases. The port retains the native rule that
+skips room-only entries during inventory generation. Ten stock cases
+demonstrate how repeating the previous insertion creates a self-link.
+ARM64 normal and cgocheck2 each pass 321 checks without compiler
+warnings. Actual C calls cover high-address insertion, weighted
+objects and spellbooks, and native and registered foreach lists.
+The earlier fixture import and initialization failures are retained.
+
+Both ARM64 clients build without warnings and verify 511 public and
+146 retired symbols. The normal multiplayer host picks up, drops
+and reacquires the same spellbook through native inventory and
+network paths. In HD the purchase playback drains four OpenAL
+buffers, and both a potion sale and an equipped-weapon sale submit
+the original effect 307 with positive gain and four queued buffers.
+The first two E2E attempts are preserved with their missing window
+and graphics archive diagnostics. The successful replays use
+private copies of the restored inputs and the same product files.
+All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 277 to 270 active bodies. The
+thirteen split GAME files contain 1,466 active bodies, 163 with
+pointer and integer conversions. Default ARM64 records 2,100 named
+active bodies, 300 with pointer and integer conversions, and 14
+macro-generated definitions. Twelve profiles select 206 of 627
+tracked C files. The release receipt
+`mapgen-choice-inventory-native-20261120-v1/mapgen-choice-inventory-release-v1.json`
+has SHA-256 `c931686a7d3225ee469ea82863dbc4957a1511bc82375cc5e68d024203e93994`.
+Linux `44667009147` passes all four products and Windows `44667009715`
+passes amd64 and 386 at this revision.
 
 ### Attack trace and collision queue entries, 2026-11-19
 

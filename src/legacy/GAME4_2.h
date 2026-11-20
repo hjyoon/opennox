@@ -120,7 +120,7 @@ int sub_5226D0(uint8_t* room, float scale, float2* point);
 int sub_5227B0(uint8_t* room, float* point);
 int nox_mapgenPointOccupiedNative_5227B0(uint8_t* room, float* point);
 nox_object_t* nox_xxx_mapGenMakeMonsterInRoom_522810(uint8_t* room, char* name);
-float* sub_522C80(float* a1);
+nox_waypoint_t* sub_522C80(float2* position);
 char nox_mapgenAddRoomPointNative_522CA0(uint8_t* room, const float2* point);
 char sub_522CA0(int a1, float* a2);
 float* nox_mapgenConnectRoomLinesNative_522D30(uint8_t* theme);

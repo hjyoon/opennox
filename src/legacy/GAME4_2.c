@@ -2408,17 +2408,6 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 //----- (00522810) --------------------------------------------------------
 // Native-width implementation: mapgen_room_monster_public.go.
 
-//----- (00522C80) --------------------------------------------------------
-float* sub_522C80(float* a1) {
-	float* result; // eax
-
-	result = sub_51D1A0((float2*)a1);
-	if (!result) {
-		result = (float*)sub_51D120((float2*)a1);
-	}
-	return result;
-}
-
 //----- (00522CA0) --------------------------------------------------------
 char nox_mapgenAddRoomPointNative_522CA0(uint8_t* room, const float2* point) {
 	if (!room || !point) {
@@ -2469,8 +2458,8 @@ float* nox_mapgenConnectRoomLinesNative_522D30(uint8_t* theme) {
 					nox_mapgenConnectionPointFarNative_523CB0(neighbor, &from);
 					nox_mapgenAddRoomPointNative_522CA0(room, &from);
 					nox_mapgenConnectionPointCenterNative_523D30(neighbor, &to);
-					sub_522C80(&from.field_0);
-					sub_522C80(&to.field_0);
+					sub_522C80(&from);
+					sub_522C80(&to);
 					sub_51D3F0(&from, &to);
 					if (!theme || !*(uint32_t*)(theme + 60)) {
 						sub_51D3F0(&to, &from);
@@ -2503,8 +2492,8 @@ float* nox_mapgenConnectRoomLinesNative_522D30(uint8_t* theme) {
 					nox_mapgenConnectionPointNearNative_523C30(room, &to);
 					nox_mapgenAddRoomPointNative_522CA0(neighbor, &to);
 				}
-				sub_522C80(&from.field_0);
-				sub_522C80(&to.field_0);
+				sub_522C80(&from);
+				sub_522C80(&to);
 				sub_51D3F0(&from, &to);
 				if (!theme || !*(uint32_t*)(theme + 60)) {
 					sub_51D3F0(&to, &from);

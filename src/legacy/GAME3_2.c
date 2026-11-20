@@ -1753,8 +1753,8 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								v39.field_4 = v37 - 32.526913;
 								v38.field_0 = v23;
 								v38.field_4 = v37 + 32.526913;
-								sub_522C80(&v39.field_0);
-								sub_522C80(&v38.field_0);
+								sub_522C80(&v39);
+								sub_522C80(&v38);
 								sub_51D3F0(&v39, &v38);
 								sub_51D3F0(&v38, &v39);
 								if (v32 == 1) {
@@ -1883,8 +1883,8 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								v39.field_4 = v15;
 								v38.field_0 = v36 + 32.526913;
 								v38.field_4 = v15;
-								sub_522C80(&v39.field_0);
-								sub_522C80(&v38.field_0);
+								sub_522C80(&v39);
+								sub_522C80(&v38);
 								sub_51D3F0(&v39, &v38);
 								sub_51D3F0(&v38, &v39);
 								if (v32 == 2) {

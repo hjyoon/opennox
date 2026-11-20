@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME4_1.h"
+#include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
 extern nox_waypoint_t* dword_5d4594_2487244;
 */
@@ -39,6 +40,14 @@ func mapgenLinkWaypoints(from, to *server.Waypoint, kind byte) bool {
 	return true
 }
 
+func mapgenFindWaypoint(position *C.float2) *server.Waypoint {
+	var fixed mapgenWorldPoint
+	if !mapgenFixWorldCoords((*mapgenWorldPoint)(unsafe.Pointer(position)), &fixed) {
+		return nil
+	}
+	return GetServer().S().WPs.Sub_579AD0(types.Ptf(fixed.x, fixed.y))
+}
+
 //export sub_51D0F0
 func sub_51D0F0(kind C.char) C.int {
 	*memmap.PtrUint8(mapgenWaypointStateBase, mapgenWaypointKindOffset) = byte(kind)
@@ -71,6 +80,36 @@ func sub_51D120(position *C.float2) *C.nox_waypoint_t {
 	}
 	globalStateNativeStorePointer(unsafe.Pointer(&C.dword_5d4594_2487244), unsafe.Pointer(created))
 	return asWaypointC(created)
+}
+
+//export sub_51D1A0
+func sub_51D1A0(position *C.float2) *C.nox_waypoint_t {
+	return asWaypointC(mapgenFindWaypoint(position))
+}
+
+//export sub_51D3F0
+func sub_51D3F0(from, to *C.float2) C.int {
+	if from == nil || to == nil {
+		return 0
+	}
+	source := mapgenFindWaypoint(from)
+	if source == nil {
+		return 0
+	}
+	target := mapgenFindWaypoint(to)
+	if target == nil {
+		return 0
+	}
+	kind := memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset)
+	return C.int(bool2int(mapgenLinkWaypoints(source, target, kind)))
+}
+
+//export sub_522C80
+func sub_522C80(position *C.float2) *C.nox_waypoint_t {
+	if existing := mapgenFindWaypoint(position); existing != nil {
+		return asWaypointC(existing)
+	}
+	return sub_51D120(position)
 }
 
 //export nox_mapgenWaypointLinkNative_51D300

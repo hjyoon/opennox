@@ -4748,42 +4748,6 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
 	}
 }
 
-//----- (0051D1A0) --------------------------------------------------------
-nox_waypoint_t* sub_579AD0(float a1, float a2);
-float* sub_51D1A0(float2* a1) {
-	float2 a2; // [esp+0h] [ebp-8h]
-
-	if (!nox_xxx_mapGenFixCoords_4D3D90(a1, &a2)) {
-		return NULL;
-	}
-	return (float*)sub_579AD0(a2.field_0, a2.field_4);
-}
-
-//----- (0051D3F0) --------------------------------------------------------
-float2* sub_51D3F0(float2* a1, float2* a2) {
-	float2* result; // eax
-	nox_waypoint_t* v3;
-
-	result = a1;
-	if (a1) {
-		if (a2) {
-			v3 = (nox_waypoint_t*)sub_51D1A0(a1);
-			result = (float2*)v3;
-			if (v3) {
-				nox_waypoint_t* v4 = (nox_waypoint_t*)sub_51D1A0(a2);
-				result = (float2*)v4;
-				if (v4) {
-					result = (float2*)(uintptr_t)nox_mapgenWaypointLinkNative_51D300(
-						v3, v4, getMemByte(0x973F18, 35972));
-				}
-			}
-		} else {
-			result = 0;
-		}
-	}
-	return result;
-}
-
 //----- (0051D4D0) --------------------------------------------------------
 int nox_xxx_tileGetDefByName_51D4D0(char* a1) {
 	int v1 = 0;

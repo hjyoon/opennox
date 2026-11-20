@@ -1233,6 +1233,52 @@ has SHA-256 `f00a4d3b31669b20f4abc8d65c2931d3390d37965ade5efeafcadcb62eb6b3e7`.
 Linux `44682752936` passes all four products and Windows `44682753848`
 passes amd64 and 386 at this revision.
 
+### Map generator AreaMap object placement, 2026-11-20
+
+Engine `5293535cff5732cedac46eb48ecd506be3051109` ports `521CB0` from
+`GAME4_2.c`. Its C entry accepts native theme, room and decoration
+record pointers. The unused integer-pointer entry is retired. The
+port uses the original binary32 scales and x87 field stores. It keeps
+the live area-size reads, placement callback order and rectangle
+ownership.
+
+The 504-byte GAME.EXE body, 39-byte x87 converter and two binary32
+scales execute in 204 original cases. The previous ARM64 C entry rounds
+both X edges one bit differently in the retained right-wall case. The
+normal and cgocheck2 suites each pass 1,061 checks without warnings.
+The actual C call verifies the area and rectangle pointers at native
+width, the existing room rectangle and the original draw counts.
+Size rejection consumes zero CRT draws. Bounds rejection consumes two.
+
+Both ARM64 clients and the dedicated server build without warnings,
+verify 525 public and 153 retired symbols, and pass product metadata
+and help checks. The normal product sends four host multiplayer
+messages using Enter, Unicode, keypad Enter and IME input. It also
+checks cancellation and empty input. HD Conjurer chapter 1 verifies
+Protection from Poison on the player and an NPC, a 30-mana debit
+per cast and natural expiry.
+
+Both revisions generate, save and reload the same authored AreaMap
+twice, with an original `so_beach` load between passes. All four MAP
+files share one SHA-256 and all four NXZ files share one SHA-256. The
+read-only decoder reconstructs each MAP and verifies one original Exit1
+at (3348, 3140) leading to `so_beach.map` and one PlayerStart. All 4,649
+original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 249 to 247 active bodies. The thirteen
+split GAME files contain 1,443 active bodies, including 161 with pointer
+and integer conversions. Default ARM64 records 2,077 named active
+bodies, 298 with pointer and integer conversions, and 14 macro-generated
+definitions. The release receipt
+`mapgen-place-decor-object-native-20261120-v1/mapgen-place-decor-object-release-v1.json`
+has SHA-256 `42f5df6efa24062aaaffeb99d5fcc5a3e10ac35500b12f3b111152eceafc72bf`.
+
+Linux `44685240640` passes all four products. Windows `44685240428`
+passes 386 on attempt 1 and amd64 on the unchanged-source attempt 2.
+The first amd64 attempt reports three Go runtime failures during GC.
+Its raw JSON, job trace and 48 artifact files are preserved under
+`mapgen-place-decor-object-native-20261120-v1`. The cause remains open.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

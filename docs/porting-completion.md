@@ -1781,6 +1781,58 @@ at this revision. The release receipt
 `mapgen-finish-populate-native-20261120-v1/mapgen-finish-populate-release-v1.json`
 has SHA-256 `f68de0cb8f5d7c5ce4760d8a8bce36ebd04ffd0c18b42f2ed8a4cd49bf9c5133`.
 
+### Map generator tile fills, 2026-11-20
+
+Engine `f01d206b9bb4317ecb2038538fa0684b738444fb` ports rectangle and
+column painting at `5245A0` and `524610`. It preserves the original
+x87 cell offsets and nested traversal order. The C entry points use
+native-width integer returns for the count and status words. The
+zero-count column path returns the original input address at native
+width. The preceding R304 C fixture is archived with its hash.
+
+The original 187 entry bytes and eight constant bytes execute in
+125 cases with 292 placement calls. Actual C tests include a column
+input above 4 GiB, the signed rectangle return and the eight
+original R304 producer cases. Normal and cgocheck2 pass 3,906
+tests each on ARM64 with zero warnings. All three ARM64 products
+build with zero warnings and verify 579 public symbols. Both
+dedicated map generations reproduce the prior MAP and NXZ bytes.
+
+The normal client submits both equipped-sale events through OpenAL
+with original sound 307, positive gain and queued buffers. HD
+verifies five Warrior chapter 1 DoorXfer states and movement.
+Linux `44751192592` passes four products. Windows `44751193150`
+passes amd64 and 386. Default ARM64 has 2,008 named active C bodies,
+290 of them with pointer and integer conversions. The release receipt
+`mapgen-tile-fill-native-20261120-v1/mapgen-tile-fill-release-v1.json`
+has SHA-256 `74b6e6e31dfd92fd042fbf1112c02b822aeed4d1413383fd1e4282e9ef9e7694`.
+
+### Map generator tile coordinates and quarters, 2026-11-20
+
+Engine `df0ae783fdd3f795b14eb51c8136723c49a80276` ports `51D8F0`
+and `51D9C0`. The Go entries preserve the original x87 tile indexing
+and quarter choices. Actual C tests exercise a native brush and floor
+row above 4 GiB. The runtime checks the cell bounds before entering
+the native floor backend.
+
+The original 370 entry bytes, 39-byte converter and eight constant
+bytes execute in 207 cases. The retained R304 fixture calls the actual
+subtile backend through an explicit callback. Its first link failure
+and the first client launcher failure are archived. The launcher replay
+uses the same verified product binaries. Final ARM64 normal and
+cgocheck2 runs pass 4,158 tests each with zero warnings. All three
+ARM64 products build with zero warnings and verify 581 public symbols.
+Both dedicated map generations reproduce the prior MAP and NXZ bytes.
+
+Normal playback verifies 54 Amb entries, two OpenAL emitters and ten
+door open and close effects. HD verifies the original Conjurer
+chapter 2 Charm lesson and its 60 pulses. Linux `44754761562` and
+Windows `44754762202` pass all required jobs. Default ARM64 has 2,006
+named active C bodies and 290 with pointer and integer conversions.
+The release receipt
+`mapgen-tile-placement-native-20261120-v1/mapgen-tile-coordinate-release-v1.json`
+has SHA-256 `c34bd2ac086a17a0014e0fa65d36f67ba1606f0e32d984840e0e0cddebda88c3`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

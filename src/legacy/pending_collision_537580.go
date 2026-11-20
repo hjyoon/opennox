@@ -54,7 +54,11 @@ func sub_537590() C.int {
 
 //export sub_5375A0
 func sub_5375A0(o *nox_object_t) {
-	pendingCollisionQueue537580.Remove(asObjectS(o))
+	pendingCollisionRemove5375A0(asObjectS(o))
+}
+
+func pendingCollisionRemove5375A0(o *server.Object) {
+	pendingCollisionQueue537580.Remove(o)
 	pendingCollisionSync537580()
 }
 

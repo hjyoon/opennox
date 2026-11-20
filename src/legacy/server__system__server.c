@@ -823,7 +823,7 @@ void nox_xxx_updateUnits_51B100_D() {
 				v66.field_4 = v65 - 42.5;
 				v66.field_8 = v56 + 42.5;
 				v66.field_C = v65 + 42.5;
-				nox_xxx_getUnitsInRect_517C10(&v66, sub_51B860, 0);
+				nox_xxx_getUnitsInRect_517C10(&v66, nox_enqueue_wall_collision_51B860, NULL);
 			}
 		}
 	}

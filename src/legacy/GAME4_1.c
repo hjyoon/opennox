@@ -3317,26 +3317,6 @@ int nox_xxx_decayDestroy_5117B0() {
 }
 #endif
 
-//----- (005117F0) --------------------------------------------------------
-char sub_5117F0(nox_object_t* a1) {
-	char result; // al
-
-	result = (char)(uintptr_t)a1;
-	if (!(a1->obj_class & 1)) {
-		result = nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
-	}
-	return result;
-}
-
-//----- (00511810) --------------------------------------------------------
-void nox_xxx_unit_511810(nox_object_t* a1) {
-	if (!(a1->obj_class & 1)) {
-		if (sub_537580(a1)) {
-			sub_5375A0(a1);
-		}
-	}
-}
-
 // 005118A0: objects_velocity_5118a0.go, with a public C ABI shim.
 
 //----- (005125A0) --------------------------------------------------------
@@ -4242,9 +4222,6 @@ void sub_51B810(nox_object_t* obj) {
 	obj->new_y += obj->vel_y;
 	nox_xxx_objectUnkUpdateCoords_4E7290(obj);
 }
-
-//----- (0051B860) --------------------------------------------------------
-char sub_51B860(nox_object_t* obj) { return nox_xxx_unitHasCollideOrUpdateFn_537610(obj); }
 
 //----- (0051B870) --------------------------------------------------------
 void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {

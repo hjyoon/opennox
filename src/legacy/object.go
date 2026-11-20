@@ -706,9 +706,6 @@ func Nox_xxx_decay_5116F0(a1 *server.Object) {
 func Nox_xxx_netReportDestroyObject_5289D0(a1 *server.Object) {
 	C.nox_xxx_netReportDestroyObject_5289D0(asObjectC(a1))
 }
-func Nox_xxx_unit_511810(a1 *server.Object) {
-	C.nox_xxx_unit_511810(asObjectC(a1))
-}
 func Sub_4ECFA0(a1 *server.Object) {
 	GetServer().S().ObjectNetCodeCacheRemove4ECFA0(a1)
 }
@@ -720,9 +717,6 @@ func Sub_528990(a1 *server.Object) {
 }
 func Nox_xxx_unitNewAddShadow_4DA9A0(a1 *server.Object) {
 	C.nox_xxx_unitNewAddShadow_4DA9A0(asObjectC(a1))
-}
-func Sub_5117F0(a1 *server.Object) {
-	C.sub_5117F0(asObjectC(a1))
 }
 func Nox_xxx_action_4DA9F0(a1 *server.Object) {
 	C.nox_xxx_action_4DA9F0(asObjectC(a1))

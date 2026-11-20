@@ -837,6 +837,8 @@ int nox_xxx_playerCanTalkMB_57A160(int a1) {
 #endif
 
 //----- (0057A1B0) --------------------------------------------------------
+// Ported to map_rule_mode_57a1b0.go.
+#if 0
 char* sub_57A1B0(short a1) {
 	for (int i = 0; i < 7; i++) {
 		if ((a1 & 0x17F0) == *getMemU32Ptr(0x587000, 312212 + 8 * i)) {
@@ -845,6 +847,7 @@ char* sub_57A1B0(short a1) {
 	}
 	return 0;
 }
+#endif
 
 //----- (0057A1E0) --------------------------------------------------------
 char sub_57A1E0(int* a1, const char* a2, int* a3, char a4, short a5) {
@@ -1004,7 +1007,6 @@ int sub_415EC0(char* a1);
 int sub_415A30(char* a1);
 int sub_57A620(unsigned char a1, const wchar2_t** a2, char* a3, int a4) {
 	const wchar2_t** v4; // ebp
-	unsigned char v5;   // dl
 	int v6;             // esi
 	int v9;             // eax
 	int v10;            // ebx
@@ -1013,20 +1015,15 @@ int sub_57A620(unsigned char a1, const wchar2_t** a2, char* a3, int a4) {
 	int v14;            // esi
 	int v15;            // ecx
 	char v16[100];      // [esp+10h] [ebp-64h]
-	unsigned char v17;  // [esp+7Ch] [ebp+8h]
 	unsigned char v18;  // [esp+7Ch] [ebp+8h]
 
 	v4 = a2;
 	nox_sprintf(v16, "%S", *a2);
-	v5 = 0;
-	v17 = 0;
-	do {
-		if (!strcmp((const char*)getMemPtr(0x587000, 312208 + 8 * v17), v16)) {
-			dword_5d4594_2523764 = *getMemU32Ptr(0x587000, 312212 + 8 * v17);
-			return a4 == dword_5d4594_2523764;
-		}
-		v17 = ++v5;
-	} while (v5 < 7u);
+	int mode = sub_57AE30(v16);
+	if (mode != 0) {
+		dword_5d4594_2523764 = mode;
+		return a4 == mode;
+	}
 	if (!(dword_5d4594_2523764 & a4) || _nox_wcsicmp(*v4, L"set") || a1 <= 1u) {
 		return 0;
 	}
@@ -1121,6 +1118,8 @@ int sub_57A620(unsigned char a1, const wchar2_t** a2, char* a3, int a4) {
 // GAME.EXE 0057A950 builds the current map rule path in Go.
 
 //----- (0057A9F0) --------------------------------------------------------
+// Ported to map_rule_mode_57a1b0.go.
+#if 0
 int sub_57A9F0(const char* a1, const char* a2) {
 	char FileName[256]; // [esp+Ch] [ebp-100h]
 
@@ -1130,6 +1129,7 @@ int sub_57A9F0(const char* a1, const char* a2) {
 	strcat(FileName, a2);
 	return nox_fs_remove(FileName);
 }
+#endif
 
 //----- (0057AAA0) --------------------------------------------------------
 // Ported to map_rule_save_57aaa0.go.
@@ -1257,6 +1257,8 @@ int* sub_57ADF0(int* a1) {
 }
 
 //----- (0057AE30) --------------------------------------------------------
+// Ported to map_rule_mode_57a1b0.go.
+#if 0
 int sub_57AE30(const char* a1) {
 	for (int i = 0; i < 7; i++) {
 		if (!strcmp((const char*)getMemPtr(0x587000, 312208 + 8 * i), a1)) {
@@ -1265,6 +1267,7 @@ int sub_57AE30(const char* a1) {
 	}
 	return 0;
 }
+#endif
 
 //----- (0057AEA0) --------------------------------------------------------
 int nox_xxx_playerCheckSpellClass_57AEA0(int a1, int a2) {

@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/ifs"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -69,7 +70,7 @@ func sub_57AAA0(filename *C.nox_cgo_const_char, data *C.char, ruleList *C.int) (
 		}
 	}
 
-	_, _ = out.WriteString(GoString(C.sub_57A1B0(C.short(mode))))
+	_, _ = out.WriteString(mapRuleModeName57A1B0(noxflags.GameFlag(mode)))
 	_, _ = out.WriteString("\n")
 	world := GetServer().S()
 	const classes = things.SpellClassAny | things.SpellClassWizard | things.SpellClassConjurer

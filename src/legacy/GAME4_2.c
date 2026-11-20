@@ -3950,7 +3950,7 @@ int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int
 		}
 		v34.field_0 = a2a.field_0 + 32.526913;
 		v34.field_4 = a2a.field_4;
-		sub_525330((int*)&v34, v7 - 1);
+		sub_525330(&v34, v7 - 1);
 		sub_5253B0(&a2a.field_0);
 		v8 = *(float*)(room + 40);
 		if (*(float*)(neighbor + 44) <= (double)*(float*)(room + 44)) {
@@ -3985,7 +3985,7 @@ int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int
 		}
 		v34.field_0 = a2a.field_0 + 32.526913;
 		v34.field_4 = a2a.field_4;
-		sub_525330((int*)&v34, v13 - 1);
+		sub_525330(&v34, v13 - 1);
 		sub_5253B0(&a2a.field_0);
 		if (*(float*)(neighbor + 44) <= (double)*(float*)(room + 44)) {
 			v14 = *(float*)(neighbor + 44);
@@ -4022,7 +4022,7 @@ int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int
 		}
 		v34.field_4 = a2a.field_4 + 32.526913;
 		v34.field_0 = a2a.field_0;
-		sub_525370((int*)&v34, v21 - 1);
+		sub_525370(&v34, v21 - 1);
 		sub_5253B0(&a2a.field_0);
 		v22 = *(float*)(room + 48);
 		v23 = *(float*)(neighbor + 48);
@@ -4057,7 +4057,7 @@ int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int
 		}
 		v34.field_4 = a2a.field_4 + 32.526913;
 		v34.field_0 = a2a.field_0;
-		sub_525370((int*)&v34, v29 - 1);
+		sub_525370(&v34, v29 - 1);
 		sub_5253B0(&a2a.field_0);
 		v30 = *(float*)(room + 48);
 		v31 = *(float*)(neighbor + 48);
@@ -4083,49 +4083,9 @@ int sub_524FB0(int a1, int a2, int a3) {
 }
 
 //----- (00525330) --------------------------------------------------------
-float2* sub_525330(float2* a1, int a2) {
-	float2* result; // eax
-	int v3;         // esi
-	float v4;       // edx
-	float2 a1a;     // [esp+4h] [ebp-8h]
-
-	result = a1;
-	v3 = a2;
-	v4 = a1->field_4;
-	a1a.field_0 = a1->field_0;
-	a1a.field_4 = v4;
-	if (a2 > 0) {
-		do {
-			result = (float2*)sub_527030(&a1a);
-			--v3;
-			a1a.field_0 = a1a.field_0 + 32.526913;
-		} while (v3);
-	}
-	return result;
-}
-
+// Native-width implementation: mapgen_wall_paths_public.go.
 //----- (00525370) --------------------------------------------------------
-float2* sub_525370(float2* a1, int a2) {
-	float2* result; // eax
-	int v3;         // esi
-	float v4;       // edx
-	float2 a1a;     // [esp+4h] [ebp-8h]
-
-	result = a1;
-	v3 = a2;
-	v4 = a1->field_4;
-	a1a.field_0 = a1->field_0;
-	a1a.field_4 = v4;
-	if (a2 > 0) {
-		do {
-			result = (float2*)sub_527030(&a1a);
-			--v3;
-			a1a.field_4 = a1a.field_4 + 32.526913;
-		} while (v3);
-	}
-	return result;
-}
-
+// Native-width implementation: mapgen_wall_paths_public.go.
 //----- (005253B0) --------------------------------------------------------
 int sub_5253B0(float* a1) {
 	double v1;        // st7
@@ -4134,33 +4094,32 @@ int sub_5253B0(float* a1) {
 	double v4;        // st7
 	int result;       // eax
 	unsigned char v6; // [esp+4h] [ebp-18h]
-	float v7;         // [esp+8h] [ebp-14h]
-	float v8;         // [esp+Ch] [ebp-10h]
-	int v9;           // [esp+10h] [ebp-Ch]
+	float2 point;
+	void* wall;
 
 	v1 = a1[1] - 32.526913;
 	v6 = 0;
-	v7 = *a1;
-	v8 = v1;
-	if (sub_526DD0(&v7, &v9)) {
+	point.field_0 = *a1;
+	point.field_4 = v1;
+	if (sub_526DD0(&point, &wall)) {
 		v6 = 1;
 	}
 	v2 = a1[1] + 32.526913;
-	v7 = *a1;
-	v8 = v2;
-	if (sub_526DD0(&v7, &v9)) {
+	point.field_0 = *a1;
+	point.field_4 = v2;
+	if (sub_526DD0(&point, &wall)) {
 		v6 |= 2u;
 	}
 	v3 = *a1 - 32.526913;
-	v8 = a1[1];
-	v7 = v3;
-	if (sub_526DD0(&v7, &v9)) {
+	point.field_4 = a1[1];
+	point.field_0 = v3;
+	if (sub_526DD0(&point, &wall)) {
 		v6 |= 4u;
 	}
 	v4 = *a1 + 32.526913;
-	v8 = a1[1];
-	v7 = v4;
-	if (sub_526DD0(&v7, &v9)) {
+	point.field_4 = a1[1];
+	point.field_0 = v4;
+	if (sub_526DD0(&point, &wall)) {
 		v6 |= 8u;
 	}
 	result = v6 - 3;
@@ -5182,43 +5141,7 @@ int sub_526D50(int a1) {
 }
 
 //----- (00526DD0) --------------------------------------------------------
-int sub_526DD0(float2* a1, int* a2) {
-	int v2;       // esi
-	long long v3; // rax
-	int v4;       // eax
-	float2 a2a;   // [esp+8h] [ebp-8h]
-
-	if (!nox_xxx_mapGenFixCoords_4D3D90(a1, &a2a)) {
-		return 0;
-	}
-	if (!a2) {
-		return 0;
-	}
-	v2 = (long long)(a2a.field_0 * 0.043478262);
-	v3 = (long long)(a2a.field_4 * 0.043478262);
-	if (((uint8_t)v3 + (uint8_t)v2) & 1) {
-		return 0;
-	}
-	if (v2 < 0) {
-		return 0;
-	}
-	if (v2 >= 256) {
-		return 0;
-	}
-	if ((int)v3 < 0) {
-		return 0;
-	}
-	if ((int)v3 >= 256) {
-		return 0;
-	}
-	v4 = nox_server_getWallAtGrid_410580(v2, v3);
-	if (!v4) {
-		return 0;
-	}
-	*a2 = v4;
-	return 1;
-}
-
+// Native-width implementation: mapgen_wall_paths_public.go.
 //----- (00526E60) --------------------------------------------------------
 int sub_526E60(float* a1) {
 	int v2;            // edi
@@ -5295,49 +5218,7 @@ int sub_526E60(float* a1) {
 }
 
 //----- (00527030) --------------------------------------------------------
-int sub_527030(float2* a1) {
-	int v1;       // edi
-	long long v2; // rax
-	int v3;       // ebx
-	uint8_t* v4;  // eax
-	uint8_t* v5;  // esi
-	float2 a2;    // [esp+Ch] [ebp-8h]
-
-	if (!nox_xxx_mapGenFixCoords_4D3D90(a1, &a2)) {
-		return 0;
-	}
-	v1 = (long long)(a2.field_0 * 0.043478262);
-	v2 = (long long)(a2.field_4 * 0.043478262);
-	v3 = v2;
-	if (((uint8_t)v2 + (uint8_t)v1) & 1) {
-		return 0;
-	}
-	if (v1 < 0) {
-		return 0;
-	}
-	if (v1 >= 256) {
-		return 0;
-	}
-	if ((int)v2 < 0) {
-		return 0;
-	}
-	if ((int)v2 >= 256) {
-		return 0;
-	}
-	v4 = nox_server_getWallAtGrid_410580(v1, v2);
-	v5 = v4;
-	if (!v4) {
-		return 0;
-	}
-	void* wall_data = nox_server_wallData(v4);
-	if (wall_data) {
-		sub_4107A0(wall_data);
-		nox_server_wallSetData(v5, NULL);
-	}
-	nox_xxx_mapDelWallAtPt_410430(v1, v3);
-	return 1;
-}
-
+// Native-width implementation: mapgen_wall_paths_public.go.
 //----- (00527380) --------------------------------------------------------
 int sub_527380(float* a1) {
 	double v1;    // st7

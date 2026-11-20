@@ -1144,6 +1144,54 @@ has SHA-256 `e20e86cce7cb17b74648c0ac75848c3c1c729890eba1ed79ff8d6b7472c8c2db`.
 Linux `44677316592` passes all four products and Windows `44677316893`
 passes amd64 and 386 at this revision.
 
+### Map generator decoration population, 2026-11-20
+
+Engine `ef73f5b9817208dadcc1b22b549cfe05a65f4a31` ports `522340`,
+`522370` and `5224B0` from `GAME4_2.c`. Both production C callers
+retain native theme and room arguments. Three unused integer-pointer
+wrappers were removed. Fixed PE32 links resolve through the existing
+registry. The port restores the original shuffle field order,
+signed density conversion, CRT draws and object placement callbacks.
+
+The three GAME.EXE bodies total 861 bytes. The original comparison uses
+the 39-byte x87 converter and the 24-byte jump table to run 153 cases.
+The prior C implementation writes the two shuffle links in reverse order
+in the retained ARM64 reproduction. Normal ARM64 and cgocheck2 each pass
+563 checks without warnings. An actual C call uses high-address room,
+theme and entry allocations, preserves adjacent room fields and the
+permanent rectangle, clears the transient rectangle and consumes five
+original CRT draws.
+
+Both ARM64 clients and the dedicated server build without warnings.
+Each verifies 518 public and 151 retired symbols. The normal client
+processes music, effects and dialogue through OpenAL in Warrior chapter 1.
+HD Wizard chapter 1 verifies five original book defaults and two changed
+mouse targets that survive repeat awards. The initial E2E failures
+record the wrapper mode and outdated product path. The successful
+replays use the same product files with both fixture issues corrected.
+
+The dedicated product loads the authored encrypted theme through the
+normal map command and generates, saves and reads its result twice,
+with a completed original `so_beach` load in between. Both generated
+maps contain two Bats with the same positions and directions, one
+RedPotion per Bat and one SpellBook. Each NXZ reconstructs its own
+3,240-byte MAP exactly. The repeated MAP saves differ at two locations
+within ObjectData and in the header checksum. The initial equality
+failure and all generated files are retained. The successful server
+run exits naturally with code zero. All 4,649 original asset and Save
+hashes match.
+
+The i386 `GAME4_2.c` audit records 262 to 256 active bodies. The
+thirteen split GAME files contain 1,452 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,086 named
+active bodies, 298 with pointer and integer conversions, and 14
+macro-generated definitions at this engine revision. Twelve profiles
+select 206 of 627 tracked C files. The release receipt
+`mapgen-populate-decor-native-20261120-v1/mapgen-populate-decor-release-v1.json`
+has SHA-256 `fe298cc29e9837225da28703471a8c0773315c068b8fcf2e2cebfaa8e0aee675`.
+Linux `44679551482` passes all four products and Windows `44679551311`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

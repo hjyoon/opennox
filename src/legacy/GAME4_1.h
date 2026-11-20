@@ -86,7 +86,12 @@ intptr_t sub_511DE0(nox_object_t* a1);
 intptr_t sub_511E20(void);
 float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2);
 void nox_xxx_monsterWalkTo_514110(nox_object_t* obj, float x, float y);
-void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1, void* a2);
+typedef struct nox_monster_patrol_request {
+	float2 origin;
+	float2 facing_point;
+	float sight_range;
+} nox_monster_patrol_request_t;
+void nox_xxx_monsterGoPatrol_515680(nox_object_t* unit, nox_monster_patrol_request_t* request);
 void nox_xxx_unitHunt_5157A0(nox_object_t* obj);
 void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1, nox_object_t* a2);
 void sub_516090(nox_object_t* a1, uint32_t a2);

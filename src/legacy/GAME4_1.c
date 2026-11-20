@@ -3398,35 +3398,6 @@ void nox_xxx_monsterWalkTo_514110(nox_object_t* obj, float x, float y) {
 }
 #endif
 
-//----- (00515680) --------------------------------------------------------
-void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1p, void* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	int v2;    // ebx
-	int v3;    // eax
-	int* v4;   // edi
-	float2 v5; // [esp+8h] [ebp-8h]
-
-	v2 = *(uint32_t*)(a1 + 748);
-	if (a1) {
-		if (*(uint8_t*)(a1 + 8) & 2) {
-			v3 = *(uint32_t*)(a1 + 16);
-			if ((v3 & 0x8000) == 0) {
-				v5.field_0 = *(float*)(a2 + 8) - *(float*)a2;
-				v5.field_4 = *(float*)(a2 + 12) - *(float*)(a2 + 4);
-				nox_xxx_monsterClearActionStack_50A3A0(a1);
-				v4 = nox_xxx_monsterPushAction_50A260(a1, 4);
-				if (v4) {
-					v4[1] = *(uint32_t*)a2;
-					v4[2] = *(uint32_t*)(a2 + 4);
-					v4[3] = nox_xxx_math_509ED0(&v5);
-				}
-				*(uint32_t*)(v2 + 1312) = *(uint32_t*)(a2 + 16);
-			}
-		}
-	}
-}
-
 //----- (005157A0) --------------------------------------------------------
 void nox_xxx_unitHunt_5157A0(nox_object_t* obj) {
 	nox_server_unit_hunt_5157a0(obj);

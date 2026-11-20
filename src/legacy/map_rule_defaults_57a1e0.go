@@ -32,16 +32,15 @@ func sub_57A1E0(data *C.int, filename *C.nox_cgo_const_char, notes *C.int, sourc
 }
 
 func readMapRuleDefaults57A1E0(settings *server.Settings2, filename *C.char, notes *C.int, sources uint8, mode uint16) C.char {
-	if notes != nil {
-		C.sub_57ADF0(notes)
-	}
+	list := (*intrusiveListNode425760)(unsafe.Pointer(notes))
+	clearMapRuleNotes(list)
 	for i := range settings.Field24.Vals {
 		settings.Field24.Vals[i] = 0xffffffff
 	}
 	settings.Field44 = [4]byte{0xff, 0xff, 0xff, 0xff}
 	settings.Field48 = 0xffffffff
 
-	selection := C.int(noxflags.GameFlag(mode) & noxflags.GameModeMask)
+	selection := noxflags.GameFlag(mode) & noxflags.GameModeMask
 	if sources&(ruleSourceMap|ruleSourceUser) != 0 {
 		mapName := alloc.GoStringS(settings.Field0[:8])
 		prefix := "maps\\" + mapName + "\\"
@@ -51,23 +50,17 @@ func readMapRuleDefaults57A1E0(settings *server.Settings2, filename *C.char, not
 			if filename != nil {
 				name = GoString(filename)
 			}
-			userLoaded = readLegacyMapRuleFile57A1E0(prefix+name, settings, notes, selection)
+			userLoaded = readMapRuleFile(prefix+name, settings, list, selection)
 		}
 		if sources&ruleSourceMap != 0 && !userLoaded {
-			readLegacyMapRuleFile57A1E0(prefix+mapName+".rul", settings, notes, selection)
+			readMapRuleFile(prefix+mapName+".rul", settings, list, selection)
 		}
 	}
 	if sources&ruleSourceInternet != 0 && C.dword_5d4594_2650652 != 0 {
-		readLegacyMapRuleFile57A1E0("internet.rul", settings, notes, selection)
+		readMapRuleFile("internet.rul", settings, list, selection)
 	}
 	if noxflags.GameFlag(mode)&noxflags.GameModeFlagBall != 0 {
 		return C.char(sub_453FA0(unsafe.Pointer(&settings.Field24), C.int(spell.SPELL_WALL), 0))
 	}
 	return C.char(int8(mode))
-}
-
-func readLegacyMapRuleFile57A1E0(path string, settings *server.Settings2, notes *C.int, mode C.int) bool {
-	name := CString(path)
-	defer StrFree(name)
-	return C.sub_57A3F0(name, (*C.char)(unsafe.Pointer(settings)), notes, mode) != 0
 }

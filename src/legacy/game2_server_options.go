@@ -343,7 +343,7 @@ func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
 		C.dword_5d4594_1046536 = nil
 	}
 	if save != 0 {
-		result := C.sub_57ADF0((*C.int)(unsafe.Pointer(&C.nox_gui_server_options_rules)))
+		result := sub_57ADF0((*C.int)(unsafe.Pointer(&C.nox_gui_server_options_rules)))
 		C.dword_587000_129656 = 1
 		return result
 	}

@@ -43,15 +43,18 @@ func sub_57A1B0(mode C.short) *C.char {
 	return internCStr(name)
 }
 
-//export sub_57AE30
-func sub_57AE30(name *C.nox_cgo_const_char) C.int {
-	token := GoString((*C.char)(name))
+func mapRuleModeByName(token string) noxflags.GameFlag {
 	for _, row := range mapRuleModes {
 		if token == row.token {
-			return C.int(row.mode)
+			return row.mode
 		}
 	}
 	return 0
+}
+
+//export sub_57AE30
+func sub_57AE30(name *C.nox_cgo_const_char) C.int {
+	return C.int(mapRuleModeByName(GoString((*C.char)(name))))
 }
 
 //export sub_57A9F0

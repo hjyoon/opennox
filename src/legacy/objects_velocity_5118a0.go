@@ -49,7 +49,7 @@ func defaultObjectsVelocityRuntime5118A0() server.ObjectsVelocityRuntime5118A0 {
 			C.nox_xxx_collSysAddCollision_548630(asObjectC(o), C.uintptr_t(kind), (*C.float2)(unsafe.Pointer(normal)))
 		},
 		Sync:   func(o *server.Object) { C.nox_xxx_unitNeedSync_4E44F0(asObjectC(o)) },
-		Coords: func(o *server.Object) { C.nox_xxx_objectUnkUpdateCoords_4E7290(asObjectC(o)) },
+		Coords: func(o *server.Object) { o.Nox_xxx_objectUnkUpdateCoords_4E7290() },
 		Move:   func(o *server.Object) { C.nox_xxx_moveUpdateSpecial_517970(asObjectC(o)) },
 	}
 }

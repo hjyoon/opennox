@@ -211,7 +211,6 @@ extern nox_window* dword_5d4594_1046516;
 
 extern uint32_t dword_5d4594_2487532;
 extern uint32_t nox_server_connectionType_3596;
-extern void* nox_monsterBin_head_2386924;
 extern uint32_t dword_5d4594_1200804;
 extern uint32_t dword_5d4594_1049484;
 extern nox_window* dword_5d4594_1321216;

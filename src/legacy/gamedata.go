@@ -28,6 +28,18 @@ type monsterBinMode struct {
 	arena bool
 }
 
+func currentMonsterBinMode() monsterBinMode {
+	return monsterBinMode{
+		solo:  noxflags.HasGame(noxflags.GameModeCoop) || noxflags.HasGame(noxflags.GameFlag22),
+		arena: noxflags.HasGame(noxflags.GameOnline),
+	}
+}
+
+type monsterBinTokens interface {
+	next() (string, error)
+	skipLine() error
+}
+
 type monsterBinStore struct {
 	head  *server.MonsterDef
 	free  map[*server.MonsterDef]func()
@@ -90,7 +102,7 @@ func (s *monsterBinStore) load(r io.Reader, mode monsterBinMode) error {
 	}
 }
 
-func (s *monsterBinStore) readDefinition(tr *monsterTokenReader, name string, mode monsterBinMode) (retErr error) {
+func (s *monsterBinStore) readDefinition(tr monsterBinTokens, name string, mode monsterBinMode) (retErr error) {
 	def, free := s.alloc()
 	if def == nil {
 		return errors.New("monster definition allocation failed")
@@ -131,6 +143,12 @@ func (s *monsterBinStore) readDefinition(tr *monsterTokenReader, name string, mo
 			case strings.EqualFold(field, "ARENA"):
 				continue
 			}
+		}
+		if fileTokens, ok := tr.(monsterBinFileTokens); ok && strings.EqualFold(field, "MISSILE_NAME") {
+			if err := fileTokens.readMissileName(def.MissileName148[:]); err != nil {
+				return fmt.Errorf("monster %q field %q: %w", name, field, err)
+			}
+			continue
 		}
 		value, err := tr.next()
 		if err != nil {
@@ -187,8 +205,12 @@ func (r *monsterTokenReader) next() (string, error) {
 }
 
 func (r *monsterTokenReader) skipLine() error {
+	return skipMonsterBinLine(r.r.ReadByte)
+}
+
+func skipMonsterBinLine(readByte func() (byte, error)) error {
 	for {
-		b, err := r.r.ReadByte()
+		b, err := readByte()
 		if err != nil {
 			return err
 		}
@@ -397,11 +419,7 @@ func Nox_xxx_loadMonsterBin_517010() int {
 		gameLog.Printf("cannot decrypt monster.bin: %v", err)
 		return 0
 	}
-	mode := monsterBinMode{
-		solo:  noxflags.HasGame(noxflags.GameModeCoop) || noxflags.HasGame(noxflags.GameFlag22),
-		arena: noxflags.HasGame(noxflags.GameOnline),
-	}
-	if err := loadedMonsterDefs.load(f, mode); err != nil {
+	if err := loadedMonsterDefs.load(f, currentMonsterBinMode()); err != nil {
 		gameLog.Printf("cannot parse monster.bin: %v", err)
 		return 0
 	}

@@ -3961,67 +3961,6 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 
 //----- (00517560) --------------------------------------------------------
 
-//----- (00518040) --------------------------------------------------------
-int sub_518040(int arg0, float a2, int arg8, int a4) {
-	int result; // eax
-	double v5;  // st7
-	double v6;  // st7
-	int a3[4];  // [esp+0h] [ebp-20h]
-	float4 a1;  // [esp+10h] [ebp-10h]
-
-	result = arg0;
-	if (arg0) {
-		v5 = *(float*)arg0 - a2;
-		a3[2] = arg8;
-		a3[0] = arg0;
-		*(float*)&a3[1] = a2;
-		a1.field_0 = v5;
-		v6 = *(float*)(arg0 + 4) - a2;
-		a3[3] = a4;
-		a1.field_4 = v6;
-		a1.field_8 = a2 + *(float*)arg0;
-		a1.field_C = a2 + *(float*)(arg0 + 4);
-		nox_xxx_getUnitsInRect_517C10(&a1, sub_5180B0, (int)a3);
-	}
-	return result;
-}
-
-//----- (005180B0) --------------------------------------------------------
-void sub_5180B0(int a1, int a2) {
-	float2* v2;     // eax
-	double v3;      // st7
-	long double v4; // st7
-	long double v5; // st7
-	float2* v6;     // eax
-	double v7;      // st7
-	float2 v8;
-
-	if (a1 && a2) {
-		if (*(uint32_t*)(a1 + 172) == 2) {
-			v6 = *(float2**)a2;
-			*(float*)&v8 = **(float**)a2 - *(float*)(a1 + 56);
-			v7 = v6->field_4 - *(float*)(a1 + 60);
-			v8.field_4 = v7;
-			v4 = sqrt(v7 * v8.field_4 + v8.field_0 * v8.field_0) - *(float*)(a1 + 176);
-		} else {
-			if (*(uint32_t*)(a1 + 172) == 3) {
-				v5 = sub_54A990((float2*)*(uint32_t*)a2, *(float*)(a2 + 4), (nox_object_t*)(uintptr_t)a1, &v8);
-				goto LABEL_9;
-			}
-			v2 = *(float2**)a2;
-			*(float*)&v8 = **(float**)a2 - *(float*)(a1 + 56);
-			v3 = v2->field_4 - *(float*)(a1 + 60);
-			v8.field_4 = v3;
-			v4 = sqrt(v3 * v8.field_4 + v8.field_0 * v8.field_0);
-		}
-		v5 = *(float*)(a2 + 4) - v4;
-	LABEL_9:
-		if (v5 > 0.0) {
-			(*(void (**)(int, uint32_t))(a2 + 8))(a1, *(uint32_t*)(a2 + 12));
-		}
-	}
-}
-
 //----- (00518770) --------------------------------------------------------
 int sub_518770() {
 	int result; // eax

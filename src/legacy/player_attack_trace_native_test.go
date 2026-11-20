@@ -20,6 +20,49 @@ type playerAttackTraceWallServer538330 struct {
 	source *server.Object
 }
 
+func TestUnitRadiusNativeCABI518040(t *testing.T) {
+	world := playerVitalReportWorld(t)
+	world.Map.Init()
+	t.Cleanup(world.Map.Free)
+	center := game4ConsumerValue(t, types.Ptf(1000, 1000))
+	probe := game4ConsumerValue(t, unitRadiusProbe518040{})
+	unit := game4ConsumerValue(t, server.Object{
+		ObjFlags: object.FlagActive, PosVec: types.Ptf(1030, 1000), NewPos: types.Ptf(1030, 1000),
+	})
+	unit.Shape.Kind, unit.Shape.Circle.R, unit.Shape.Circle.R2 = server.ShapeKindCircle, 5, 25
+	world.Map.AddObjectToIndex(unit)
+	t.Cleanup(func() { world.Map.RemoveObjectFromIndex(unit) })
+
+	if got := callUnitRadiusScanC518040(center, 35, probe); got != center || probe.calls != 1 ||
+		probe.candidate != uintptr(unit.CObj()) || probe.data != uintptr(unsafe.Pointer(probe)) {
+		t.Fatalf("C scan returned %p for center %p, probe %+v", got, center, *probe)
+	}
+	callUnitRadiusCandidateC5180B0(unit, center, 25, probe)
+	callUnitRadiusCandidateC5180B0(unit, nil, 35, probe)
+	callUnitRadiusCandidateC5180B0(nil, center, 35, probe)
+	callUnitRadiusCandidateC5180B0(unit, center, 35, nil)
+	if got := callUnitRadiusScanC518040(nil, 35, probe); got != nil {
+		t.Fatalf("C scan returned %p for nil center", got)
+	}
+	if got := callUnitRadiusScanC518040(center, 35, nil); got != center || probe.calls != 1 {
+		t.Fatalf("empty inputs or exact tangency triggered a callback, probe %+v", *probe)
+	}
+	callUnitRadiusCandidateC5180B0(unit, center, 26, probe)
+	if probe.calls != 2 || probe.candidate != uintptr(unit.CObj()) || probe.data != uintptr(unsafe.Pointer(probe)) ||
+		(unsafe.Sizeof(uintptr(0)) == 8 && probe.context <= 0xffffffff) {
+		t.Fatalf("C circle candidate lost context or pointers, probe %+v", *probe)
+	}
+
+	boxPos := types.Ptf(1004, 1001)
+	box := game4ConsumerValue(t, server.Object{PosVec: boxPos, NewPos: boxPos})
+	box.Shape.Kind, box.Shape.Box.W, box.Shape.Box.H = server.ShapeKindBox, 8, 6
+	box.Shape.Box.Calc()
+	callUnitRadiusCandidateC5180B0(box, center, 35, probe)
+	if probe.calls != 3 || probe.candidate != uintptr(box.CObj()) || probe.data != uintptr(unsafe.Pointer(probe)) {
+		t.Fatalf("C box candidate lost the actual collision callback, probe %+v", *probe)
+	}
+}
+
 func (s *playerAttackTraceWallServer538330) Nox_xxx_mapDamageToWalls_534FC0(
 	bounds image.Rectangle, _ types.Pointf, _ float32, _ int, _ object.DamageType, source *server.Object,
 ) bool {

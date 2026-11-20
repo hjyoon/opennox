@@ -104,8 +104,15 @@ void* nox_xxx_monsterDefByTT_517560(int a1);
 int sub_517590(float a1, float a2);
 void nox_xxx_moveUpdateSpecial_517970(nox_object_t* unit);
 void nox_xxx_unitsGetInCircle_517F90(float2* a1, float a2, void* fnc, void* data);
-int sub_518040(int arg0, float a2, int arg8, int a4);
-void sub_5180B0(int a1, int a2);
+typedef void (*nox_unit_radius_callback_t)(nox_object_t* candidate, void* data);
+typedef struct nox_unit_radius_context {
+	float2* center;
+	float radius;
+	nox_unit_radius_callback_t callback;
+	void* data;
+} nox_unit_radius_context_t;
+float2* sub_518040(float2* center, float radius, nox_unit_radius_callback_t callback, void* data);
+void sub_5180B0(nox_object_t* candidate, nox_unit_radius_context_t* context);
 void nox_xxx_getMissilesInCircle_518170(float2* a1, float a2, void* a3, nox_object_t* a4);
 nox_waypoint_t* sub_518740(float2* a1, unsigned char a2);
 int sub_518770();

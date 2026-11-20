@@ -11,7 +11,6 @@ func PlayerAttackScanCircle518040(center *types.Pointf, radius float32, eachRect
 		return
 	}
 	add := pointOnLineAddChop53_57C8A0
-	mul := pointOnLineMulChop53_57C8A0
 	spill := pointOnLineSpill57C8A0
 	r := float64(radius)
 	rect := types.Rectf{
@@ -19,29 +18,34 @@ func PlayerAttackScanCircle518040(center *types.Pointf, radius float32, eachRect
 		Max: types.Ptf(spill(add(r, float64(center.X))), spill(add(r, float64(center.Y)))),
 	}
 	eachRect(rect, func(candidate *Object) bool {
-		if candidate == nil {
-			return true
-		}
-		var penetration float64
-		if candidate.Shape.Kind == ShapeKindBox {
-			// The original compares the retained box return directly to zero.
-			penetration, _ = box(*center, radius, candidate)
-		} else {
-			// X is FSTP binary32; Y is FST binary32 but remains retained
-			// for multiplication by the stored Y. FSQRT stays retained.
-			dx := float64(spill(add(float64(center.X), -float64(candidate.PosVec.X))))
-			dy := add(float64(center.Y), -float64(candidate.PosVec.Y))
-			sy := float64(spill(dy))
-			distance := monsterMoveForceSqrtChop53_50D50C(add(mul(dy, sy), mul(dx, dx)))
-			if candidate.Shape.Kind == ShapeKindCircle {
-				distance = add(distance, -float64(candidate.Shape.Circle.R))
-			}
-			penetration = add(r, -distance)
-		}
-		// C0|C3 rejects negative, equal and unordered penetrations.
-		if penetration > 0 {
+		if PlayerAttackCircleOverlaps5180B0(center, radius, candidate, box) {
 			visit(candidate)
 		}
 		return true
 	})
+}
+
+// PlayerAttackCircleOverlaps5180B0 applies the original shape filter once.
+func PlayerAttackCircleOverlaps5180B0(center *types.Pointf, radius float32, candidate *Object, box func(types.Pointf, float32, *Object) (float64, types.Pointf)) bool {
+	if center == nil || candidate == nil {
+		return false
+	}
+	// C0|C3 rejects negative, equal and unordered penetrations.
+	if candidate.Shape.Kind == ShapeKindBox {
+		penetration, _ := box(*center, radius, candidate)
+		return penetration > 0
+	}
+	add := pointOnLineAddChop53_57C8A0
+	mul := pointOnLineMulChop53_57C8A0
+	spill := pointOnLineSpill57C8A0
+	// X is spilled to binary32. Y is multiplied by its binary32 copy
+	// while it remains on the x87 stack. FSQRT also stays on the stack.
+	dx := float64(spill(add(float64(center.X), -float64(candidate.PosVec.X))))
+	dy := add(float64(center.Y), -float64(candidate.PosVec.Y))
+	sy := float64(spill(dy))
+	distance := monsterMoveForceSqrtChop53_50D50C(add(mul(dy, sy), mul(dx, dx)))
+	if candidate.Shape.Kind == ShapeKindCircle {
+		distance = add(distance, -float64(candidate.Shape.Circle.R))
+	}
+	return add(float64(radius), -distance) > 0
 }

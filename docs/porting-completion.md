@@ -1104,6 +1104,46 @@ has SHA-256 `c931686a7d3225ee469ea82863dbc4957a1511bc82375cc5e68d024203e93994`.
 Linux `44667009147` passes all four products and Windows `44667009715`
 passes amd64 and 386 at this revision.
 
+### Map generator monster placement and orientation, 2026-11-20
+
+Engine `66656bd72fb40b1223f271f23c472437890523c4` ports `5226D0`,
+`5227B0`, `522810` and `527C60` from `GAME4_2.c`. Native room,
+point and object pointers cross the C boundary at full width.
+The Go implementations preserve x87 coordinate rounding and the
+original unordered upper-bound branches. Monster and door orientation
+write the native update fields. The prior C writes at offset 376
+overlap a waypoint pointer on ARM64. The retained reproductions show
+that write and the original C placement failing to orient a monster.
+
+The four GAME.EXE bodies total 650 bytes and use a 28-byte orientation
+jump table. The original executes 366 controlled cases. ARM64 normal
+and cgocheck2 each pass 389 checks without compiler warnings. The
+actual C probe verifies a room and occupied rectangle above the PE32
+address range, a blocked placement, a native spawned monster and
+direction 224 with its waypoint pointer intact. It also checks the
+door's adjacent update fields. The initial transcript comparison that
+exposed NaN-sign and default-name mismatches is retained.
+
+Both ARM64 clients build without warnings and verify 517 public and
+148 retired symbols. In ordinary time the normal OpenAL run verifies
+54 stock Amb definitions, continuous AmbBrook1 and randomly delayed
+AmbBird1 playback, and release of both emitters after range and
+drawable cleanup. HD Conjurer chapter 1 verifies the original
+Protection from Poison award, quickbar casts on the player and an NPC,
+30 mana per cast and natural server/client expiry on both targets.
+All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 270 to 262 active bodies. The
+thirteen split GAME files contain 1,458 active bodies, 162 with
+pointer and integer conversions. Default ARM64 records 2,092 named
+active bodies, 299 with pointer and integer conversions, and 14
+macro-generated definitions at this engine revision. Twelve profiles
+select 206 of 627 tracked C files. The release receipt
+`mapgen-room-monster-native-20261120-v1/mapgen-room-monster-release-v1.json`
+has SHA-256 `e20e86cce7cb17b74648c0ac75848c3c1c729890eba1ed79ff8d6b7472c8c2db`.
+Linux `44677316592` passes all four products and Windows `44677316893`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

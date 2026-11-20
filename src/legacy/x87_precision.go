@@ -16,6 +16,15 @@ func addFloat64TowardZero(a, b float64) float64 {
 	return sum
 }
 
+func mulFloat64TowardZero(a, b float64) float64 {
+	product := float64(a * b)
+	residual := math.FMA(a, b, -product)
+	if product > 0 && residual < 0 || product < 0 && residual > 0 {
+		return math.Nextafter(product, 0)
+	}
+	return product
+}
+
 func storeFloat32TowardZero(value float64) float32 {
 	narrow := float32(value)
 	if math.Abs(float64(narrow)) > math.Abs(value) {

@@ -42,11 +42,7 @@ func mapGenPointOccupied5227B0(head uint32, point *types.Pointf, resolve func(ui
 }
 
 func mapGenPointOffset5226D0(offset float64, scale, center float32) float32 {
-	scaled := float64(offset * float64(scale))
-	residual := math.FMA(offset, float64(scale), -scaled)
-	if scaled > 0 && residual < 0 || scaled < 0 && residual > 0 {
-		scaled = math.Nextafter(scaled, 0)
-	}
+	scaled := mulFloat64TowardZero(offset, float64(scale))
 	return storeFloat32TowardZero(addFloat64TowardZero(scaled, float64(center)))
 }
 

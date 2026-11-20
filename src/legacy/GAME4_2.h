@@ -113,10 +113,7 @@ nox_object_t* nox_xxx_mapGenMakeSpellbook_5220E0(uint8_t* theme, const char* spe
 uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3);
 nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(char* name, uintptr_t list_ref, int count);
 nox_object_t* sub_522300(nox_object_t* holder, nox_object_t* item);
-void nox_xxx_mapgen_522340(int a1, int a2);
 void nox_mapgenPopulateDecorNative_522340(uint8_t* theme, uint8_t* room);
-void nox_xxx_mapgen_522370(int a1, int a2, int* a3);
-float* nox_xxx_mapgen_5224B0(int a1, int a2, int a3);
 int sub_5226D0(uint8_t* room, float scale, float2* point);
 int sub_5227B0(uint8_t* room, float* point);
 int nox_mapgenPointOccupiedNative_5227B0(uint8_t* room, float* point);

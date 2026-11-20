@@ -40,12 +40,12 @@ func mapgenRoomBoundBits(dimension, position C.uint32_t) C.uint32_t {
 }
 
 type mapgenRoomGeometry struct {
-	_          C.uint32_t
-	grid       [2]C.uint32_t
-	_          [2]C.uint32_t
-	position   [2]C.uint32_t
-	dimensions [2]C.uint32_t
-	bounds     [4]C.uint32_t
+	_              C.uint32_t
+	grid           [2]C.uint32_t
+	cellDimensions [2]C.int32_t
+	position       [2]C.uint32_t
+	dimensions     [2]C.uint32_t
+	bounds         [4]C.uint32_t
 }
 
 func updateMapgenRoomRect(room *mapgenRoomGeometry) {

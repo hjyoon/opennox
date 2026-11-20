@@ -20,6 +20,7 @@
 #include "common__random.h"
 #include "operators.h"
 #include "input.h"
+#include "mapgen_decor_records.h"
 #include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 #include "floor_brush_native.h"
@@ -142,50 +143,6 @@ typedef struct nox_mapgen_wall_floor_legacy {
 	uint32_t next_token;
 } nox_mapgen_wall_floor_legacy;
 
-typedef struct nox_mapgen_decor_entry_legacy {
-	uint32_t type;
-	char name[60];
-	uint32_t density_enabled;
-	int32_t min_count;
-	int32_t max_count;
-	float density;
-	uint32_t choices_token;
-	uint32_t foreach_token;
-	uint32_t next_token;
-	uint32_t shuffle_prev_token;
-	uint32_t shuffle_next_token;
-} nox_mapgen_decor_entry_legacy;
-
-typedef struct nox_mapgen_decor_set_legacy {
-	int32_t min_count;
-	int32_t max_count;
-	uint32_t entries_token;
-	uint32_t entry_count;
-	uint32_t shares_entries;
-	uint32_t next_token;
-} nox_mapgen_decor_set_legacy;
-
-typedef struct nox_mapgen_decor_definition_legacy {
-	char name[60];
-	uint32_t room_type;
-	uint8_t constraint_mask;
-	uint8_t occur_limit;
-	uint8_t exhausted;
-	uint8_t must_occur;
-	uint8_t occurred;
-	uint8_t reserved[3];
-	uint32_t frequency;
-	int32_t min_room_size;
-	int32_t max_room_size;
-	uint32_t wall_floors_token;
-	uint32_t wall_floor_count;
-	uint32_t decor_sets_token;
-	uint32_t decor_set_count;
-	char door_name[60];
-	char double_door_name[60];
-	uint32_t next_token;
-} nox_mapgen_decor_definition_legacy;
-
 enum {
 	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
 	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
@@ -221,6 +178,10 @@ _Static_assert(offsetof(nox_mapgen_decor_entry_legacy, foreach_token) == 84,
 			   "wrong mapgen decor-entry FOREACH-token offset");
 _Static_assert(offsetof(nox_mapgen_decor_entry_legacy, next_token) == 88,
 			   "wrong mapgen decor-entry next-token offset");
+_Static_assert(offsetof(nox_mapgen_decor_entry_legacy, shuffle_next_token) == 92,
+			   "wrong mapgen decor-entry shuffle-next offset");
+_Static_assert(offsetof(nox_mapgen_decor_entry_legacy, shuffle_prev_token) == 96,
+			   "wrong mapgen decor-entry shuffle-prev offset");
 _Static_assert(sizeof(nox_mapgen_decor_set_legacy) == 24,
 			   "wrong mapgen decor-set record size");
 _Static_assert(offsetof(nox_mapgen_decor_set_legacy, next_token) == 20,
@@ -3215,202 +3176,14 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 //----- (00522300) --------------------------------------------------------
 // Native-width implementation: mapgen_choice_inventory_public.go.
 
-static void* nox_mapgenPopulateDecorEntryNative_5224B0(
-	uint8_t* theme, uint8_t* room, nox_mapgen_decor_entry_legacy* entry) {
-	if (!theme || !room || !entry) {
-		return NULL;
-	}
-	int count;
-	if (entry->density_enabled) {
-		count = (long long)((double)(*(int32_t*)(room + 12) * *(int32_t*)(room + 16)) * entry->density);
-		if (count < entry->min_count) {
-			count = entry->min_count;
-		} else if (count > entry->max_count) {
-			count = entry->max_count;
-		}
-	} else {
-		count = nox_xxx_mapGenRandFunc_526AC0(entry->min_count, entry->max_count);
-	}
-
-	void* result = NULL;
-	switch (entry->type) {
-	case 0:
-		for (int i = 0; i < count; ++i) {
-			nox_object_t* object = nox_xxx_mapGenMakeMonsterInRoom_522810(room, entry->name);
-			if (object) {
-				nox_xxx_mapgen_521FE0(theme, object, entry->choices_token);
-				result = object;
-			}
-		}
-		break;
-	case 1: {
-		int object_index = sub_5268F0(entry->name);
-		if (object_index >= 0) {
-			for (int i = 0; i < count; ++i) {
-				for (int attempt = 0; attempt < 3; ++attempt) {
-					if (nox_mapgenPlaceDecorObjectNative_521CB0(
-							theme, room, (uint8_t*)entry, object_index)) {
-						break;
-					}
-				}
-			}
-		}
-		break;
-	}
-	case 2:
-		result = nox_mapgenClearTransientOccupiedRectsNative_521C10(room);
-		break;
-	case 3:
-	case 4:
-	case 5: {
-		float2 position;
-		if (!sub_5226D0(room, 0.89999998f, &position)) {
-			break;
-		}
-		nox_object_t* object = NULL;
-		if (entry->type == 3) {
-			object = nox_mapgenMakeEnchantedItemNative_5221A0(
-				entry->name, *(uint32_t*)(theme + 1100), *(uint32_t*)(theme + 1104));
-		} else if (entry->type == 4) {
-			object = nox_mapgenMakeEnchantedItemNative_5221A0(
-				entry->name, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
-		} else {
-			object = nox_xxx_mapGenMakeSpellbook_5220E0(theme, entry->name);
-		}
-		if (object) {
-			result = nox_xxx_mapGenMoveObject_527A10((float*)object, (float*)&position);
-		}
-		break;
-	}
-	default:
-		break;
-	}
-	return result;
-}
-
-static void nox_mapgenPopulateDecorSetNative_522370(
-	uint8_t* theme, uint8_t* room, nox_mapgen_decor_set_legacy* set) {
-	if (!theme || !room || !set || !set->entries_token) {
-		return;
-	}
-	int count = nox_xxx_mapGenRandFunc_526AC0(set->min_count, set->max_count);
-	if (count > (int)set->entry_count) {
-		count = set->entry_count;
-	}
-
-	uint32_t head_token = set->entries_token;
-	uint32_t tail_token = head_token;
-	nox_mapgen_decor_entry_legacy* first = nox_mapgenDecorEntryResolve(head_token);
-	if (!first) {
-		return;
-	}
-	first->shuffle_next_token = 0;
-	first->shuffle_prev_token = 0;
-	uint32_t current_token = first->next_token;
-	for (uint32_t processed = 1; current_token && processed < set->entry_count; ++processed) {
-		nox_mapgen_decor_entry_legacy* current = nox_mapgenDecorEntryResolve(current_token);
-		if (!current) {
-			break;
-		}
-		uint32_t next_token = current->next_token;
-		nox_mapgen_decor_entry_legacy* head = nox_mapgenDecorEntryResolve(head_token);
-		nox_mapgen_decor_entry_legacy* tail = nox_mapgenDecorEntryResolve(tail_token);
-		if (!head || !tail) {
-			break;
-		}
-		if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-			if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-				tail->shuffle_next_token = current_token;
-				current->shuffle_prev_token = tail_token;
-				current->shuffle_next_token = 0;
-				tail_token = current_token;
-			} else {
-				uint32_t previous_token = tail->shuffle_prev_token;
-				current->shuffle_next_token = tail_token;
-				current->shuffle_prev_token = previous_token;
-				if (previous_token) {
-					nox_mapgen_decor_entry_legacy* previous = nox_mapgenDecorEntryResolve(previous_token);
-					if (previous) {
-						previous->shuffle_next_token = current_token;
-					}
-				} else {
-					head_token = current_token;
-				}
-				tail->shuffle_prev_token = current_token;
-			}
-		} else if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-			uint32_t following_token = head->shuffle_next_token;
-			current->shuffle_prev_token = head_token;
-			current->shuffle_next_token = following_token;
-			if (following_token) {
-				nox_mapgen_decor_entry_legacy* following = nox_mapgenDecorEntryResolve(following_token);
-				if (following) {
-					following->shuffle_prev_token = current_token;
-				}
-			} else {
-				tail_token = current_token;
-			}
-			head->shuffle_next_token = current_token;
-		} else {
-			current->shuffle_next_token = head_token;
-			current->shuffle_prev_token = 0;
-			head->shuffle_prev_token = current_token;
-			head_token = current_token;
-		}
-		current_token = next_token;
-	}
-
-	for (uint32_t token = head_token; token && count-- > 0;) {
-		nox_mapgen_decor_entry_legacy* entry = nox_mapgenDecorEntryResolve(token);
-		if (!entry) {
-			break;
-		}
-		nox_mapgenPopulateDecorEntryNative_5224B0(theme, room, entry);
-		token = entry->shuffle_next_token;
-	}
-}
-
-void nox_mapgenPopulateDecorNative_522340(uint8_t* theme, uint8_t* room) {
-	if (!theme || !room) {
-		return;
-	}
-	nox_mapgen_decor_definition_legacy* definition =
-		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
-	if (!definition) {
-		return;
-	}
-	for (uint32_t token = definition->decor_sets_token; token;) {
-		nox_mapgen_decor_set_legacy* set = nox_mapgenDecorSetResolve(token);
-		if (!set) {
-			break;
-		}
-		nox_mapgenPopulateDecorSetNative_522370(theme, room, set);
-		token = set->next_token;
-	}
-}
-
 //----- (00522340) --------------------------------------------------------
-void nox_xxx_mapgen_522340(int a1, int a2) {
-	nox_mapgenPopulateDecorNative_522340(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
-}
+// Native-width implementation: mapgen_populate_decor_public.go.
 
 //----- (00522370) --------------------------------------------------------
-void nox_xxx_mapgen_522370(int a1, int a2, int* a3) {
-	nox_mapgenPopulateDecorSetNative_522370(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
-		nox_mapgenDecorSetResolve((uintptr_t)a3));
-}
+// Native-width implementation: mapgen_populate_decor_public.go.
 
 //----- (005224B0) --------------------------------------------------------
-float* nox_xxx_mapgen_5224B0(int a1, int a2, int a3) {
-	return (float*)nox_mapgenPopulateDecorEntryNative_5224B0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
-		nox_mapgenDecorEntryResolve((uint32_t)a3));
-}
+// Native-width implementation: mapgen_populate_decor_public.go.
 
 //----- (005226D0) --------------------------------------------------------
 // Native-width implementation: mapgen_room_monster_public.go.

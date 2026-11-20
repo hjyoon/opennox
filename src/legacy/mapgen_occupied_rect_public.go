@@ -109,13 +109,13 @@ func mapGenResolveOccupiedRect(token uint32) *mapGenOccupiedRect5227B0 {
 }
 
 func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
-	raw := C.calloc(1, C.sizeof_nox_mapgen_occupied_rect_legacy)
+	raw := nox_mapgen_alloc_memory(1, C.sizeof_nox_mapgen_occupied_rect_legacy)
 	if raw == nil {
 		return nil, 0
 	}
 	token := uint32(C.nox_mapgenLegacyPtrRegister(raw))
 	if token == 0 {
-		C.free(raw)
+		nox_mapgen_release_memory(raw)
 		return nil, 0
 	}
 	return (*mapGenOccupiedRect5227B0)(raw), token
@@ -124,7 +124,7 @@ func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
 func mapGenReleaseOccupiedRect(rect *mapGenOccupiedRect5227B0) {
 	raw := unsafe.Pointer(rect)
 	C.nox_mapgenLegacyPtrForget(raw)
-	C.free(raw)
+	nox_mapgen_release_memory(raw)
 }
 
 //export nox_mapgenAddOccupiedRectNative_521BC0

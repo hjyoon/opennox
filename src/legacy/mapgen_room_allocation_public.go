@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
-#include <stdlib.h>
 */
 import "C"
 
@@ -44,12 +43,12 @@ func mapgenPrepareRoomDimensions(theme *mapgenRoomThemeDimensions, between func(
 
 //export nox_xxx_mapGenMakeRoomStruct_521940
 func nox_xxx_mapGenMakeRoomStruct_521940(width, height C.int) *C.float {
-	raw := C.calloc(1, mapgenRoomRecordSize)
+	raw := nox_mapgen_alloc_memory(1, mapgenRoomRecordSize)
 	if raw == nil {
 		return nil
 	}
 	if C.nox_mapgenLegacyPtrRegister(raw) == 0 {
-		C.free(raw)
+		nox_mapgen_release_memory(raw)
 		return nil
 	}
 	mapgenInitRoomGeometry((*mapgenRoomGeometry)(raw), int32(width), int32(height))

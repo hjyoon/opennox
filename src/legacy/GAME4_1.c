@@ -37,7 +37,6 @@ extern void* nox_alloc_pendingOwn_2386916;
 extern uint32_t dword_5d4594_2386228;
 extern void* nox_alloc_spawn_2386216;
 extern uint32_t dword_587000_230092;
-extern uint32_t dword_5d4594_3835348;
 extern void* nox_alloc_tradeSession_2386492;
 extern uint32_t dword_5d4594_2386564;
 extern uint32_t dword_5d4594_2386920;
@@ -46,9 +45,6 @@ extern uint32_t dword_5d4594_2386500;
 extern uint32_t dword_5d4594_2386212;
 extern void* nox_alloc_tradeItems_2386496;
 extern uint32_t dword_5d4594_2386224;
-
-extern uint32_t nox_tile_def_cnt;
-extern nox_tileDef_t nox_tile_defs_arr[176];
 
 void* nox_monsterBin_head_2386924 = 0;
 
@@ -4746,64 +4742,4 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
 			}
 		}
 	}
-}
-
-//----- (0051D4D0) --------------------------------------------------------
-int nox_xxx_tileGetDefByName_51D4D0(char* a1) {
-	int v1 = 0;
-	for (int i = 0; i < 176; i++) {
-		nox_tileDef_t* p = &nox_tile_defs_arr[i];
-		if (!nox_strcmpi(&p->name[0], a1)) {
-			v1 = 1;
-			*getMemU32Ptr(0x973F18, 35912) = i;
-		}
-	}
-	if (!nox_strcmpi(a1, "NONE")) {
-		*getMemU32Ptr(0x973F18, 35912) = 255;
-		return 1;
-	}
-	if (v1) {
-		return 1;
-	}
-	*getMemU32Ptr(0x973F18, 35912) = 0;
-	return 0;
-}
-
-//----- (0051D540) --------------------------------------------------------
-int nox_xxx_tileCheckImage_51D540(int a1) {
-	int result; // eax
-
-	if (a1 < 0 || a1 >= 176) {
-		*getMemU32Ptr(0x973F18, 35912) = 0;
-		result = 0;
-	} else {
-		*getMemU32Ptr(0x973F18, 35912) = a1;
-		result = 1;
-	}
-	return result;
-}
-
-//----- (0051D570) --------------------------------------------------------
-int nox_xxx_tileCheckImageVari_51D570(int a1) {
-	int result; // eax
-
-	int ind = *getMemU32Ptr(0x973F18, 35912);
-	nox_tileDef_t* p = &nox_tile_defs_arr[ind];
-	if (a1 <= p->field_52 * p->field_53 - 1) {
-		dword_5d4594_3835348 = a1;
-		result = 1;
-	} else {
-		dword_5d4594_3835348 = 0;
-		result = 0;
-	}
-	return result;
-}
-
-//----- (0051D5C0) --------------------------------------------------------
-int nox_xxx_tile_51D5C0(int a1) {
-	if (a1 != 1 && a1) {
-		return 0;
-	}
-	*getMemU32Ptr(0x973F18, 35916) = a1;
-	return 1;
 }

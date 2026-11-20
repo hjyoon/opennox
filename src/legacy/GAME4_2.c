@@ -65,7 +65,6 @@ extern uint32_t dword_5d4594_2487248;
 
 extern uint32_t dword_5d4594_2487712;
 extern uint32_t dword_5d4594_2487524;
-extern uint32_t dword_5d4594_2487556;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 
 static uint8_t* nox_mapgen_farthest_room;
@@ -2243,23 +2242,10 @@ uint32_t* sub_520D50(uint32_t* a1) {
 //----- (005212B0) --------------------------------------------------------
 // Native-width implementation: mapgen_room_displace_public.go.
 //----- (005213E0) --------------------------------------------------------
-int nox_xxx_mapgenAllocBuffer_5213E0() {
-	void* buffer = calloc(1, 0x2000u);
-	dword_5d4594_2487556 = nox_mapgenLegacyPtrRegister(buffer);
-	if (!dword_5d4594_2487556) {
-		free(buffer);
-		return 0;
-	}
-	return 1;
-}
+// Native-width implementation: mapgen_buffer_public.go.
 
 //----- (00521400) --------------------------------------------------------
-void nox_xxx_mapgenFreeBuffer_521400() {
-	void* buffer = nox_mapgenLegacyPtrResolve(dword_5d4594_2487556);
-	nox_mapgenLegacyPtrForget(buffer);
-	free(buffer);
-	dword_5d4594_2487556 = 0;
-}
+// Native-width implementation: mapgen_buffer_public.go.
 
 //----- (00521710) --------------------------------------------------------
 // Native-width implementation: mapgen_room_lifecycle_public.go.

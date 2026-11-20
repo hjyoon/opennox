@@ -1587,12 +1587,9 @@ int nox_xxx_mapGenStep_4D44E0() {
 	*getMemU32Ptr(0x5D4594, 1549864) = (long long)(*getMemFloatPtr(0x5D4594, 1549860) * 0.030743772);
 	nox_xxx_mapGenSetRngSeed_526AB0(*getMemUintPtr(0x5D4594, 1549872));
 	sub_526950();
-	result = nox_xxx_mapgenAllocBuffer_5213E0();
+	result = nox_mapgenPrepareWorkspaceNative(theme);
 	if (!result) {
-		return 0;
-	}
-	result = sub_520EA0(theme);
-	if (!result) {
+		sub_520D50((uint32_t*)theme);
 		return 0;
 	}
 	nox_xxx_mapGenMkSmallRoom_4D4F40(theme);

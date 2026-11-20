@@ -3,6 +3,11 @@
 
 #include "defs.h"
 
+typedef struct nox_rule_list_item_t {
+	nox_list_item_t list;
+	wchar2_t text[256];
+} nox_rule_list_item_t;
+
 int sub_42CC50(void** this);
 int nox_xxx_j_inventoryNameSignInit_467460(void);
 int nullsub_8(int a1, int a2);

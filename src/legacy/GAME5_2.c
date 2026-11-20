@@ -33,11 +33,6 @@
 #include "common__magic__speltree.h"
 #include "operators.h"
 
-typedef struct nox_rule_list_item_t {
-	nox_list_item_t list;
-	wchar2_t text[256];
-} nox_rule_list_item_t;
-
 extern void* dword_5d4594_2516352;
 extern uint32_t dword_5d4594_2516380;
 extern uint32_t dword_5d4594_2516372;
@@ -1137,6 +1132,8 @@ int sub_57A9F0(const char* a1, const char* a2) {
 }
 
 //----- (0057AAA0) --------------------------------------------------------
+// Ported to map_rule_save_57aaa0.go.
+#if 0
 char* sub_4159B0(int a1);
 char* sub_415E40(char* a1);
 char sub_57AAA0(const char* a1, char* a2, int* a3) {
@@ -1243,6 +1240,7 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 	}
 	return (char)v3;
 }
+#endif
 
 //----- (0057ADF0) --------------------------------------------------------
 int* sub_57ADF0(int* a1) {

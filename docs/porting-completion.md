@@ -1477,6 +1477,49 @@ has SHA-256 `ed9d06d8818303c7b771bace760f197c31f267ca586318c11720a60b779a681d`.
 Linux `44698981348` passes all four products and Windows `44698981144`
 passes amd64 and 386 at this revision.
 
+### Map generator occupancy grid ownership, 2026-11-20
+
+Engine `759372fb0a8884e5a4d133b8944bca99df06c85f` ports grid setup,
+teardown and room lookup at `520EA0`, `520F80`, and `521290` from
+`GAME4_2.c`. The row table and allocation owners use native pointers.
+The 20-byte cells and fixed PE32 mirror retain their original layout.
+The port preserves the shared allocator, releases partial tables and
+successful rows on failure, and clears the live grid on teardown.
+A second setup releases the existing grid through its owner and the
+unused integer-token lookup alias was removed.
+
+The original 300 bytes and 60-byte coordinate dependency execute in
+15 successful and 23 injected allocation failure cases. The normal
+and cgocheck2 ARM64 runs each pass 2,740 checks without warnings.
+Actual C calls verify native row addresses, signed cell coordinates,
+the fixed token, repeated cleanup, and ownership after a replacement.
+
+The three ARM64 products build without warnings and verify 552 public
+and 167 retired symbols. The normal client verifies all 54 stock
+Amb definitions, the two playing emitters and native cleanup. The
+HD Wizard III run uses the earned cellar Save, kills the original
+Swordsman with the upgraded Magic Missile, and writes a living manual
+Save at HP 33 and MP 71. The three earlier runs retain successful
+native enemy death and writes alongside their recorded resource-check
+failures. The passing replay extends the original passive recovery
+wait from 1,800 to 3,960 frames and keeps the original checks, seed
+and executable. The dedicated server generates and reloads two
+fixed-seed maps. All four MAP and NXZ outputs match. All 4,649
+original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 210 to 206 active bodies. The
+thirteen split GAME files contain 1,402 active bodies, including 161
+with pointer and integer conversions. The twelve build profiles select
+206 of 627 tracked C files. The default ARM64 AST contains 2,036
+named bodies and 14 macro expansions. It detects 298 bodies with
+pointer and integer conversions, 105 of which use an explicit
+32-bit integer type. It also verifies 64 direct calls to Go as entire
+C forwarding bodies. The release receipt
+`mapgen-grid-allocation-native-20261120-v1/mapgen-grid-allocation-release-v1.json`
+has SHA-256 `d1dd91e05d2a4fa70fadd5dcc0bf10fb6187fcdd5fe2edf8847599c59bf3e1ad`.
+Linux `44700752604` passes all four products and Windows `44700752279`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

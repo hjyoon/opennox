@@ -1699,6 +1699,36 @@ pointer and integer conversions. The release receipt
 `mapgen-wall-rebuild-native-20261120-v1/mapgen-wall-rebuild-release-v1.json`
 has SHA-256 `e4319a56f2aa3556739ff8c6bb93b144c8b7a7e39ea644dfad89ed9731de705d`.
 
+### Map generator object selection and placement, 2026-11-20
+
+Engine `edd5c5f08d4c0c583418cb244142a1a7ed38a122` ports `527940`,
+`5279B0` and `527A10` to Go. The C entry takes a complete coordinate
+pair and carries native object pointers through allocation, movement
+and door orientation. The port preserves type lookup, wrapping extent
+numbers and the original door coordinate snap.
+
+The original 390 entry bytes execute in 118 cases. ARM64 normal and
+cgocheck2 each pass 3,584 tests with zero warnings. The actual C path
+places objects above 4 GiB and checks the original snapped coordinates.
+The original R311 save and movement fixtures are retained in the
+verification record. All three ARM64 products build with zero warnings
+and check 567 public symbols.
+
+The dedicated server's four MAP and NXZ files match the prior engine.
+The normal client makes two equipped-weapon sales. Both audio events
+use the original effect 307 with queued OpenAL buffers and positive
+gain. The HD client applies Conjurer Protection from Poison to the
+player and an NPC at 30 mana per cast. Both effects expire naturally
+on the server and client. All 4,649 original asset and Save hashes match.
+
+Linux `44742841290` passes all four products. Windows `44742841429`
+passes amd64 and 386. The thirteen split GAME files contain 1,388
+active bodies, including 156 with pointer and integer conversions.
+Default ARM64 has 2,022 named active C bodies and 293 containing those
+conversions. The release receipt
+`mapgen-object-spawn-move-native-20261120-v1/mapgen-object-spawn-move-release-v1.json`
+has SHA-256 `4fcc403817d15116bc8b1b5cef43e872a45b142d9316913bffc9adac473c18ab`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

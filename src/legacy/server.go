@@ -364,7 +364,7 @@ func Nox_xxx_net_4263C0() {
 	C.nox_xxx_net_4263C0()
 }
 func Nox_xxx_protectData_56F5C0() {
-	C.nox_xxx_protectData_56F5C0()
+	nox_xxx_protectData_56F5C0()
 }
 func Sub_57B140() bool {
 	return pauseFXExpired57B140(&pauseFXStateNative57AF30, PlatformTicks())
@@ -391,7 +391,7 @@ func Sub_41E4B0(a1 int) {
 	C.sub_41E4B0(C.int(a1))
 }
 func Sub_56F1C0() {
-	C.sub_56F1C0()
+	sub_56F1C0()
 }
 func Sub_4E4ED0() int {
 	return int(C.sub_4E4ED0())
@@ -463,7 +463,7 @@ func Nox_server_accessBannedSerial_416900(a1 unsafe.Pointer) string {
 	return GoString(C.nox_access_banned_serial_416900((*C.nox_access_banned_entry_t)(a1)))
 }
 func Sub_56F3B0() {
-	C.sub_56F3B0()
+	sub_56F3B0()
 }
 func Sub_51D0E0() {
 	C.sub_51D0E0()

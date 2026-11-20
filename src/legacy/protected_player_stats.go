@@ -1,14 +1,12 @@
 package legacy
 
 /*
-#include "GAME5_2.h"
+#include <stdint.h>
 
 extern uint32_t dword_5d4594_2516328;
 extern uint32_t dword_5d4594_2516348;
 */
 import "C"
-
-import "unsafe"
 
 const minimumPlayerProtectionToken = 0x2734945f
 
@@ -16,18 +14,17 @@ func updatePlayerProtectedStat(token C.int, update func(uint32) uint32) C.int32_
 	if token < minimumPlayerProtectionToken {
 		return C.int32_t(token)
 	}
-	record := C.sub_56F590(token)
+	record := findPlayerProtectionRecord(uint32(token))
 	if record == nil {
 		return 0
 	}
-	words := (*[2]C.uint32_t)(unsafe.Pointer(record))
-	oldValue := words[1]
+	oldValue := C.uint32_t(record.value)
 	C.dword_5d4594_2516328 ^= oldValue
 	key := C.dword_5d4594_2516348
 	newValue := C.uint32_t(update(uint32(oldValue^key))) ^ key
-	words[1] = newValue
+	record.value = uint32(newValue)
 	C.dword_5d4594_2516328 ^= newValue
-	return C.int32_t(C.nox_xxx_protectData_56F5C0())
+	return C.int32_t(nox_xxx_protectData_56F5C0())
 }
 
 func setPlayerProtectedStat(token C.int, value uint32) C.int32_t {

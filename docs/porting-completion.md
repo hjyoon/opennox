@@ -1439,6 +1439,44 @@ has SHA-256 `8729a94b1eb8d89459073978d9c91ece3e9870dbd946866f83e51681570db341`.
 Linux `44696973638` passes all four products and Windows `44696974294`
 passes amd64 and 386 at this revision.
 
+### Map generator room occupancy and theme bounds, 2026-11-20
+
+Engine `f5dd3fe3fe7e0fea73c7982c52fa87e332c22fc9` ports six entries
+from `GAME4_2.c` at `520E60`, `521100`, `521180`, `521200`,
+`5217A0`, and `521820`. C callers use native room addresses. The
+20-byte grid cells keep fixed 32-bit owner tokens. The port preserves
+signed grid coordinates, row-major collision order, and room height
+returns. Five unused integer-pointer aliases were removed.
+
+The original corpus executes 787 cases through 602 bytes of ported
+code, a 112-byte coordinate dependency, and a 39-byte converter.
+A three-cell room at the original radius limit is accepted by GAME.EXE.
+The prior ARM64 C body rejects that exact coordinate. The corrected Go
+implementation uses the original binary32 scale and x87 spill behavior.
+Both macOS ARM64 modes pass 2,700 checks without warnings. Actual C
+fixtures verify the first collided room at a full native address, both
+occupancy clears, and an exact radius and the adjacent lower value.
+
+The three ARM64 products build without warnings and verify 549 public
+and 166 retired symbols. The normal client sends English, Unicode,
+keypad Enter and committed IME text. Cancel and empty input complete
+without another send. The HD client casts the original Protection from
+Poison on the Conjurer and an NPC, deducts 30 mana each time, and
+observes both effects naturally expire. The dedicated server generates
+and reloads two fixed-seed maps. All four MAP and NXZ outputs match the
+preceding engine and each layout has 74 walls, six waypoints, and three
+exits to `so_beach.map`. All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 221 to 210 active bodies. The
+thirteen split GAME files contain 1,406 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,040
+named active bodies, 298 with pointer and integer conversions, and
+14 macro-generated definitions. The release receipt
+`mapgen-room-occupancy-native-20261120-v1/mapgen-room-occupancy-release-v1.json`
+has SHA-256 `ed9d06d8818303c7b771bace760f197c31f267ca586318c11720a60b779a681d`.
+Linux `44698981348` passes all four products and Windows `44698981144`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

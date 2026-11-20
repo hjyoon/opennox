@@ -46,8 +46,8 @@ func sub_57AAA0(filename *C.nox_cgo_const_char, data *C.char, ruleList *C.int) (
 	compareDefaults := C.dword_5d4594_2650652 != 0
 	if compareDefaults {
 		online.Field0, mapDefaults.Field0 = settings.Field0, settings.Field0
-		C.sub_57A1E0((*C.int)(unsafe.Pointer(&online)), nil, nil, 4, C.short(mode))
-		C.sub_57A1E0((*C.int)(unsafe.Pointer(&mapDefaults)), nil, nil, 3, C.short(mode))
+		readMapRuleDefaults57A1E0(&online, nil, nil, ruleSourceInternet, mode)
+		readMapRuleDefaults57A1E0(&mapDefaults, nil, nil, ruleSourceMap|ruleSourceUser, mode)
 	}
 
 	rules := (*C.nox_list_item_t)(unsafe.Pointer(ruleList))

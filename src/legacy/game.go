@@ -711,7 +711,7 @@ func Nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
 	C.nox_xxx_mapSwitchLevel_4D12E0_tileFree()
 }
 func Sub_57A1E0(a1 *server.Settings2, a2 string, a3 unsafe.Pointer, a4 int, a5 noxflags.GameFlag) {
-	C.sub_57A1E0((*C.int)(unsafe.Pointer(a1)), internCStr(a2), (*C.int)(a3), C.char(a4), C.short(a5))
+	readMapRuleDefaults57A1E0(a1, internCStr(a2), (*C.int)(a3), uint8(a4), uint16(a5))
 }
 func Sub_57AAA0(a1 string, a2 *server.Settings2, a3 unsafe.Pointer) {
 	C.sub_57AAA0(internCStr(a1), (*C.char)(unsafe.Pointer(a2)), (*C.int)(a3))

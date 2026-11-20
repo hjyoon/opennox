@@ -850,6 +850,8 @@ char* sub_57A1B0(short a1) {
 #endif
 
 //----- (0057A1E0) --------------------------------------------------------
+// Ported to map_rule_defaults_57a1e0.go.
+#if 0
 char sub_57A1E0(int* a1, const char* a2, int* a3, char a4, short a5) {
 	int* v5;           // esi
 	int v6;            // ebx
@@ -907,6 +909,7 @@ char sub_57A1E0(int* a1, const char* a2, int* a3, char a4, short a5) {
 	return result;
 }
 // 57A1E0: using guessed type char var_100[256];
+#endif
 
 //----- (0057A3F0) --------------------------------------------------------
 int sub_57A3F0(char* a1, char* a2, int* a3, int a4) {
@@ -984,18 +987,13 @@ void sub_57A4D0(wchar2_t* a1, char* a2, int* a3, int a4) {
 					v5 = 0;
 				}
 			} while (v7);
-			if (v4) {
-				result = (const wchar2_t*)(uintptr_t)sub_57A620(v4, v12, a2, a4);
-				if (!result) {
-					if (a3) {
-						nox_rule_list_item_t* item = calloc(1, sizeof(*item));
-						if (!item) {
-							return;
-						}
-						nox_wcscpy(item->text, a1);
-						nox_common_list_append_4258E0((nox_list_item_t*)a3, &item->list);
-					}
+			if (v4 && !sub_57A620(v4, v12, a2, a4) && a3) {
+				nox_rule_list_item_t* item = calloc(1, sizeof(*item));
+				if (!item) {
+					return;
 				}
+				nox_wcscpy(item->text, a1);
+				nox_common_list_append_4258E0((nox_list_item_t*)a3, &item->list);
 			}
 		}
 	}

@@ -1324,6 +1324,46 @@ has SHA-256 `8642a6fa1832cba00243efede1bba2daeb4e5811d6eb59787a025dd681c180a4`.
 Linux `44688195421` passes all four products and Windows `44688195704`
 passes amd64 and 386 at this revision.
 
+### Map generator room allocation, 2026-11-20
+
+Engine `a91a5649e8cb676dd2b8c11953eadb37f05dc965` ports `521940` and
+`521990` from `GAME4_2.c`. The live C entry returns a native room
+pointer. The unused integer-pointer theme alias was removed. The
+376-byte room record retains its original geometry fields and PE32
+registry token. The port restores the binary32 dimension spills,
+signed clamping and optional CRT draw.
+
+The 192 bytes of GAME.EXE code, 39-byte converter and original scales
+execute in 144 cases. The prior C fixture rounds a three-cell width
+one bit above the original. Normal ARM64 and cgocheck2 each pass 1,389
+checks without warnings. Actual C calls verify three full-width room
+allocations, all 376 record bytes, token registration and release, and
+one additional CRT draw when the theme flag is set.
+
+Both ARM64 clients and the dedicated server build without warnings and
+verify 531 public and 158 retired symbols. The normal client verifies
+54 original ambient definitions, two playing Amb emitters and cleanup
+through OpenAL. HD Wizard chapter 3 loads the earned cellar Save,
+uses the original upgraded Magic Missile against the cellar Swordsman,
+observes native HP zero and DEAD state for the original target, and
+writes a living manual Save.
+
+The dedicated server generates and reloads two fixed-seed room and
+hallway maps. All four MAP and NXZ outputs match the preceding engine.
+The decoder also verifies all three original exits to `so_beach.map`.
+The matching loaded layout has 74 walls and six waypoints. All 4,649
+original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 239 to 236 active bodies. The
+thirteen split GAME files contain 1,432 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,066
+named active bodies, 298 with pointer and integer conversions, and
+14 macro-generated definitions. The release receipt
+`mapgen-room-allocation-native-20261120-v1/mapgen-room-allocation-release-v1.json`
+has SHA-256 `ebe2846e76659f2e4bcd5dc468b16c206e2ebf292acc379aa668587249af8cc2`.
+Linux `44690334268` passes all four products and Windows `44690333546`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

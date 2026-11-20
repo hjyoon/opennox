@@ -1520,6 +1520,38 @@ has SHA-256 `d1dd91e05d2a4fa70fadd5dcc0bf10fb6187fcdd5fe2edf8847599c59bf3e1ad`.
 Linux `44700752604` passes all four products and Windows `44700752279`
 passes amd64 and 386 at this revision.
 
+### Map generator occupied-room displacement, 2026-11-20
+
+Engine `71ba8109218b50507be42fbead3708e7afc55f05` ports `5212B0` from
+`GAME4_2.c` to Go. It updates the room through its native address,
+preserves the selected direction and retry order and matches the
+original toward-zero coordinate stores. The original 277-byte
+routine is executed in 85 cases covering four directions, conflicts
+and five exhausted 25-attempt searches. The retained ARM64 C run
+stores `0x42c32957` for a three-cell move. The original and Go both
+store `0x42c32956`.
+
+Normal and cgocheck2 ARM64 runs each pass 2,827 checks without
+warnings. Actual C entry calls retain the full-width room and linked
+wall state. Three ARM64 products build without warnings and verify
+553 public and 167 retired symbols. The normal client sells two
+equipped weapons and queues the original effect 307 using the stock
+sample bank and native OpenAL. The HD client verifies 54 Amb
+definitions, playback and cleanup for two emitters, and all ten
+opening and closing effects for five stock door types. The dedicated
+server's two MAP and two NXZ outputs match the preceding engine.
+The verification checks all 4,649 original asset and Save hashes.
+
+The i386 `GAME4_2.c` audit records 206 to 205 active bodies. The
+thirteen split GAME files contain 1,401 active bodies, including 161
+with pointer and integer conversions. Default ARM64 contains 2,035
+named bodies, 298 with pointer and integer conversions, and 14
+macro expansions. The release receipt
+`mapgen-room-displace-native-20261120-v1/mapgen-room-displace-release-v1.json`
+has SHA-256 `1f8dee76853b9a2e7aab8cb68fe967c7f1fdbe786337a9bf18de91dbd7e2fbc4`.
+Linux `44703025755` passes all four required jobs and Windows
+`44703026594` passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

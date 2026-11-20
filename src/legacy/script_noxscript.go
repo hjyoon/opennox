@@ -4,7 +4,6 @@ package legacy
 #include "server__script__script.h"
 #include "server__script__internal.h"
 #include "GAME4_1.h"
-int sub_516570();
 int nox_xxx_gameIsSwitchToSolo_4DB240();
 size_t nox_script_readWriteWww_5417C0(FILE* a1, FILE* a2, FILE* a3);
 */
@@ -116,7 +115,7 @@ func nox_script_objCallbackName_508CB0(obj *nox_object_t, event_cgo int32) *C.ch
 }
 
 func Sub_516570() {
-	C.sub_516570()
+	sub_516570()
 }
 func Nox_xxx_script_511C50(a1 int) *server.Object {
 	if node := findScriptObjectCacheNode(int32(a1), false); node != nil {

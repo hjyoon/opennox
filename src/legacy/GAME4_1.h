@@ -98,6 +98,7 @@ void sub_516090(nox_object_t* a1, uint32_t a2);
 int nox_xxx_allocPendingOwnsArray_516EE0();
 int sub_516F10();
 void sub_516F30();
+int sub_516570(void);
 uint32_t* sub_516F90(int a1, int a2);
 void sub_516FC0();
 int nox_xxx_readStr_517090(FILE* a1, uint8_t* a2);

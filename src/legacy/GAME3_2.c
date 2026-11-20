@@ -3625,15 +3625,6 @@ int nox_xxx_netSendJournalUpdate_4D9500(int a1, nox_playerInfo_journal* a2) {
 	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
 }
 
-//----- (004D9560) --------------------------------------------------------
-int nox_xxx_netSendChapterEnd_4D9560(int a1, char a2, int a3) {
-	char v5[3]; // [esp+0h] [ebp-4h]
-	v5[1] = a2;
-	v5[0] = -42;
-	v5[2] = a3 == 1;
-	return nox_xxx_netSendPacket0_4E5420(a1, v5, 3, 0, 1);
-}
-
 //----- (004D95A0) --------------------------------------------------------
 int nox_xxx_netSendFlagStatus_4D95A0(int a1, char a2, char a3, char a4, short a5) {
 	char v6[6]; // [esp+0h] [ebp-8h]

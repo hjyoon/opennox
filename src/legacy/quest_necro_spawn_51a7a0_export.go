@@ -38,3 +38,8 @@ func nox_xxx_spawnNecroQuest_native_51A7A0(position *C.float2) {
 func questNecroSpawnCEntry51A7A0(position *types.Pointf) {
 	C.nox_xxx_spawnNecroQuest_51A7A0((*C.int)(unsafe.Pointer(position)))
 }
+
+//export nox_xxx_spawnNecroQuest_51A7A0
+func nox_xxx_spawnNecroQuest_51A7A0(position *C.int) {
+	nox_xxx_spawnNecroQuest_native_51A7A0((*C.float2)(unsafe.Pointer(position)))
+}

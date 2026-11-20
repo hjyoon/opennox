@@ -36,7 +36,7 @@ func Nox_game_getQuestStage_4E3CC0() int {
 	return int(C.nox_game_getQuestStage_4E3CC0())
 }
 func Nox_xxx_getQuestStage_51A930() int {
-	return int(C.nox_xxx_getQuestStage_51A930())
+	return int(nox_xxx_getQuestStage_51A930())
 }
 func Sub_4E3D50() {
 	C.sub_4E3D50()

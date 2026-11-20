@@ -405,7 +405,7 @@ func Sub_4259C0() {
 	C.sub_4259C0()
 }
 func Sub_518770() int {
-	return int(C.sub_518770())
+	return int(sub_518770())
 }
 func Nox_xxx_allocMonsterRelatedArrays_50D780() int {
 	return int(C.nox_xxx_allocMonsterRelatedArrays_50D780())

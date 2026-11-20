@@ -43,13 +43,15 @@ func sub_50D960() C.int {
 //export sub_50DE10
 func sub_50DE10() C.int { return C.int(GetServer().S().MonsterSpawnScratchClear50DE10()) }
 
-// Keep native pointer values in integer slots only in private Cgo return
-// frames. Public C entries retain typed pointers to pinned owned records.
+//export sub_50DE60
+func sub_50DE60(obj *C.nox_object_t) *C.nox_monster_spawn_screen {
+	record := GetServer().S().MonsterSpawnScratchFind50DE60(asObjectS(obj))
+	return (*C.nox_monster_spawn_screen)(unsafe.Pointer(record))
+}
 
 //export nox_server_spawn_find_native_50DE60
 func nox_server_spawn_find_native_50DE60(obj *C.nox_object_t) C.uintptr_t {
-	record := GetServer().S().MonsterSpawnScratchFind50DE60(asObjectS(obj))
-	return C.uintptr_t(uintptr(unsafe.Pointer(record)))
+	return C.uintptr_t(uintptr(unsafe.Pointer(sub_50DE60(obj))))
 }
 
 //export sub_50DE80
@@ -71,19 +73,29 @@ func sub_50E030(generator, spawned *C.nox_object_t) C.int {
 	})))
 }
 
+//export sub_50E110
+func sub_50E110(link *C.nox_monster_spawn_link) *C.nox_monster_spawn_link {
+	value := GetServer().S().MonsterSpawnPrepend50E110((*server.MonsterSpawnLink)(unsafe.Pointer(link)))
+	return (*C.nox_monster_spawn_link)(unsafe.Pointer(value))
+}
+
 //export nox_server_spawn_prepend_native_50E110
 func nox_server_spawn_prepend_native_50E110(link *C.nox_monster_spawn_link) C.uintptr_t {
-	value := GetServer().S().MonsterSpawnPrepend50E110((*server.MonsterSpawnLink)(unsafe.Pointer(link)))
-	return C.uintptr_t(uintptr(unsafe.Pointer(value)))
+	return C.uintptr_t(uintptr(unsafe.Pointer(sub_50E110(link))))
 }
 
 //export sub_50E140
 func sub_50E140(obj *C.nox_object_t) { GetServer().S().MonsterSpawnCleanup50E140(asObjectS(obj)) }
 
+//export sub_50E1B0
+func sub_50E1B0(link *C.nox_monster_spawn_link) *C.nox_monster_spawn_link {
+	value := GetServer().S().MonsterSpawnUnlink50E1B0((*server.MonsterSpawnLink)(unsafe.Pointer(link)))
+	return (*C.nox_monster_spawn_link)(unsafe.Pointer(value))
+}
+
 //export nox_server_spawn_unlink_native_50E1B0
 func nox_server_spawn_unlink_native_50E1B0(link *C.nox_monster_spawn_link) C.uintptr_t {
-	value := GetServer().S().MonsterSpawnUnlink50E1B0((*server.MonsterSpawnLink)(unsafe.Pointer(link)))
-	return C.uintptr_t(uintptr(unsafe.Pointer(value)))
+	return C.uintptr_t(uintptr(unsafe.Pointer(sub_50E1B0(link))))
 }
 
 //export sub_50E1E0

@@ -121,6 +121,12 @@ func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
 	return (*mapGenOccupiedRect5227B0)(raw), token
 }
 
+func mapGenReleaseOccupiedRect(rect *mapGenOccupiedRect5227B0) {
+	raw := unsafe.Pointer(rect)
+	C.nox_mapgenLegacyPtrForget(raw)
+	C.free(raw)
+}
+
 //export nox_mapgenAddOccupiedRectNative_521BC0
 func nox_mapgenAddOccupiedRectNative_521BC0(room *C.uint8_t, pos *C.float2, width, height C.float) *C.nox_mapgen_occupied_rect_legacy {
 	if room == nil || pos == nil {
@@ -140,12 +146,7 @@ func sub_521BC0(roomToken C.int, pos *C.float2, width, height C.float) *C.float 
 //export nox_mapgenClearTransientOccupiedRectsNative_521C10
 func nox_mapgenClearTransientOccupiedRectsNative_521C10(room *C.uint8_t) *C.uint32_t {
 	if room != nil {
-		mapGenClearTransientOccupiedRects521C10(mapGenOccupiedRectHead(room), mapGenResolveOccupiedRect,
-			func(rect *mapGenOccupiedRect5227B0) {
-				raw := unsafe.Pointer(rect)
-				C.nox_mapgenLegacyPtrForget(raw)
-				C.free(raw)
-			})
+		mapGenClearTransientOccupiedRects521C10(mapGenOccupiedRectHead(room), mapGenResolveOccupiedRect, mapGenReleaseOccupiedRect)
 	}
 	return nil
 }

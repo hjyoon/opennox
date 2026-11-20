@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_2
 
 #include "defs.h"
+#include "mapgen_decor_records.h"
 #include "net_send_fx_all_523030.h"
 #include "cast_shock_52c5a0.h"
 
@@ -111,9 +112,8 @@ nox_mapgen_occupied_rect_legacy* nox_mapgenAddOccupiedRectNative_521BC0(
 uint32_t* sub_521C10(int a1);
 uint32_t* nox_mapgenClearTransientOccupiedRectsNative_521C10(uint8_t* room);
 int nox_xxx_mapgen_521C60(uint8_t* theme, uintptr_t foreach_ref);
-int sub_521CB0(int a1, int a2, int a3, int a4);
 int nox_mapgenPlaceDecorObjectNative_521CB0(
-	uint8_t* theme, uint8_t* room, uint8_t* decor_entry, int object_index);
+	uint8_t* theme, uint8_t* room, nox_mapgen_decor_entry_legacy* decor_entry, int object_index);
 int sub_521EB0(uint8_t* room, nox_mapgen_occupied_rect_legacy* rect);
 nox_mapgen_occupied_rect_legacy* nox_mapgenOccupiedRectsIntersectNative_521F10(
 	uint8_t* room, nox_mapgen_occupied_rect_legacy* rect);

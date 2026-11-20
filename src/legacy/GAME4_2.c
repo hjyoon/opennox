@@ -2919,77 +2919,7 @@ double sub_521B90(int a1, int a2) {
 // Native-width implementation: mapgen_choice_inventory_public.go.
 
 //----- (00521CB0) --------------------------------------------------------
-int nox_mapgenPlaceDecorObjectNative_521CB0(
-	uint8_t* theme, uint8_t* room, uint8_t* decor_entry, int object_index) {
-	if (!theme || !room || !decor_entry) {
-		return 0;
-	}
-	nox_mapgen_occupied_rect_legacy* rect = calloc(1u, sizeof(*rect));
-	if (!rect) {
-		return 0;
-	}
-	uint32_t rect_token = nox_mapgenLegacyPtrRegister(rect);
-	if (!rect_token) {
-		free(rect);
-		return 0;
-	}
-
-	float width = sub_502E70(object_index);
-	float height = sub_502EA0(object_index);
-	int width_cells = (long long)(width * 0.030743772);
-	int height_cells = (long long)(height * 0.030743772);
-	int horizontal_range = *(uint32_t*)(room + 12) - width_cells;
-	int vertical_range = *(uint32_t*)(room + 16) - height_cells;
-	if (horizontal_range >= 0 && vertical_range >= 0) {
-		char* object_record = sub_526AA0(object_index);
-		if (object_record) {
-			float2 position;
-			position.field_0 = (double)nox_xxx_mapGenRandFunc_526AC0(0, horizontal_range) * 32.526913 + *(float*)(room + 36);
-			position.field_4 = (double)nox_xxx_mapGenRandFunc_526AC0(0, vertical_range) * 32.526913 + *(float*)(room + 40);
-			uint32_t flags = *((uint32_t*)object_record + 15);
-			if (flags & 1) {
-				position.field_4 = *(float*)(room + 40);
-			} else if (flags & 2) {
-				position.field_4 = *(float*)(room + 48) - height;
-			}
-			if (flags & 4) {
-				position.field_0 = *(float*)(room + 44) - width;
-			} else if (flags & 8) {
-				position.field_0 = *(float*)(room + 36);
-			}
-			if (object_record[60] & 0x10) {
-				position.field_0 = (double)(int)(horizontal_range / 2) * 32.526913 + *(float*)(room + 36);
-				position.field_4 = (double)(vertical_range / 2) * 32.526913 + *(float*)(room + 40);
-			}
-
-			rect->transient = 1;
-			rect->min_x = position.field_0;
-			rect->min_y = position.field_4;
-			rect->max_x = position.field_0 + width;
-			rect->max_y = position.field_4 + height;
-			rect->object_index = object_index;
-			if (sub_521EB0(room, rect) &&
-				!nox_mapgenOccupiedRectsIntersectNative_521F10(room, rect)) {
-				sub_502D70(object_index);
-				nox_mapgenApplyForeachNative_521C60(theme, *(uint32_t*)(decor_entry + 84));
-				sub_503B30(&position);
-				rect->next_token = *(uint32_t*)(room + 368);
-				*(uint32_t*)(room + 368) = rect_token;
-				return 1;
-			}
-		}
-	}
-	nox_mapgenLegacyPtrForget(rect);
-	free(rect);
-	return 0;
-}
-
-int sub_521CB0(int a1, int a2, int a3, int a4) {
-	return nox_mapgenPlaceDecorObjectNative_521CB0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a3), a4);
-}
+// Native-width implementation: mapgen_place_decor_object_public.go.
 
 //----- (00521EB0) --------------------------------------------------------
 // Native-width implementation: mapgen_occupied_rect_public.go.

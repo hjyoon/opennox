@@ -191,7 +191,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 			return int32(C.sub_5268F0(&entry.name[0]))
 		},
 		tryObject: func(entry *mapGenDecorEntry, index int32) bool {
-			return C.nox_mapgenPlaceDecorObjectNative_521CB0(theme, room, (*C.uint8_t)(unsafe.Pointer(entry)), C.int(index)) != 0
+			return nox_mapgenPlaceDecorObjectNative_521CB0(theme, room, entry, C.int(index)) != 0
 		},
 		clear: func() { C.nox_mapgenClearTransientOccupiedRectsNative_521C10(room) },
 		find: func(scale float32, point *types.Pointf) bool {

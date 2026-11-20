@@ -230,7 +230,7 @@ int sub_526D50(int a1);
 int sub_526DD0(float2* position, void** wall);
 int sub_526E60(float* a1);
 int sub_527030(float2* a1);
-int sub_527380(float* a1);
+int sub_527380(float2* point);
 int sub_527450(uint32_t* a1);
 int nox_xxx_mapGenGetObjID_527940(char* a1);
 float* nox_xxx_mapGenPlaceObj_5279B0(float2* a1);

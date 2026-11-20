@@ -1402,6 +1402,43 @@ has SHA-256 `90a35c6bed8515a7c7dc1b125bb683e4b0c38e2cc51e7f661f310077c92c88a2`.
 Linux `44693868134` passes all four products and Windows `44693868642`
 passes amd64 and 386 at this revision.
 
+### Map generator room list ownership, 2026-11-20
+
+Engine `b6e48155c367ab9a2cbe69c9ad87a1d5c398254c` ports the list head,
+next, add, remove and release entries `521710`, `521720`, `521730`,
+`521760`, `521A10`, and `521A40` from `GAME4_2.c`. The C entry
+points use native pointers. The PE32 list-head word remains a registry
+token, and the live room links preserve their full addresses. The
+unused next-room integer-pointer alias was removed.
+
+The original 209 bytes execute in 210 cases. The first ARM64 runs
+exposed a bypass of the shared allocation owner during a prefab
+corridor release. The corrected room and occupied-rectangle allocator
+and release paths share that owner with the remaining C corridor code.
+The four failed test results and the preceding engine's passing prefab
+control are retained. Corrected normal and cgocheck2 each pass 1,911
+checks without warnings, including real C room mutation, owner release
+and the existing prefab corridor checks.
+
+The three ARM64 products build without warnings and verify 543 public
+and 161 retired symbols. The normal client submits stock OpenAL effect
+307 for two quantity sales with positive gain and native buffers. The
+HD client verifies two actual Plasma phases, charge depletion and ray
+cleanup. The dedicated server generates and reloads two fixed-seed
+maps, and all four MAP and NXZ outputs match the preceding engine.
+Each layout has 74 walls, six waypoints, and three exits to
+`so_beach.map`. All 4,649 original asset and Save hashes match.
+
+The i386 `GAME4_2.c` audit records 229 to 221 active bodies. The
+thirteen split GAME files contain 1,417 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,051
+named active bodies, 298 with pointer and integer conversions, and
+14 macro-generated definitions. The release receipt
+`mapgen-room-lifecycle-owner-native-20261120-v2/mapgen-room-lifecycle-release-v1.json`
+has SHA-256 `8729a94b1eb8d89459073978d9c91ece3e9870dbd946866f83e51681570db341`.
+Linux `44696973638` passes all four products and Windows `44696974294`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

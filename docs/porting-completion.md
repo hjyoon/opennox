@@ -1364,6 +1364,44 @@ has SHA-256 `ebe2846e76659f2e4bcd5dc468b16c206e2ebf292acc379aa668587249af8cc2`.
 Linux `44690334268` passes all four products and Windows `44690333546`
 passes amd64 and 386 at this revision.
 
+### Map generator room links, 2026-11-20
+
+Engine `dc7b416b0ea85e3639064e8cec3d4968044f7630` ports `5218B0`,
+`521900`, `521A70`, and `523960` from `GAME4_2.c`. Native C callers
+pass full-width room pointers. The fixed PE32 neighbor slots store
+registered tokens. The port preserves the original four direction
+buckets, append into empty slots, and partial success of reciprocal
+links. Two unused integer-pointer aliases were removed.
+
+304 GAME.EXE cases execute 184 bytes of code and use the original
+16-byte direction table. The prior ARM64 C fixture rejects the
+insertion into an empty neighbor slot and the original accepts it.
+The first new C fixtures used an uninitialized direction table.
+Starting from the normal game blob initializes that table to
+`[1, 0, 3, 2]`. Corrected normal ARM64 and cgocheck2 runs each pass
+1,696 checks without warnings. Actual C callers verify full-width
+pointers, empty slots, the live direction table and neighbor bounds.
+
+Both ARM64 clients and the dedicated server build without warnings and
+verify 536 public and 160 retired symbols. The two clients each verify
+54 original ambient definitions, the continuous and delayed Amb
+emitters, and native OpenAL cleanup. Five stock door types each submit
+and drain their own opening and closing effects. The dedicated server
+generates and reloads two fixed-seed maps. All four MAP and NXZ outputs
+match the preceding engine. Each layout has 74 walls, six waypoints,
+and three decoded exits to `so_beach.map`. All 4,649 original asset and
+Save hashes match.
+
+The i386 `GAME4_2.c` audit records 236 to 229 active bodies. The
+thirteen split GAME files contain 1,425 active bodies, including 161
+with pointer and integer conversions. Default ARM64 records 2,059
+named active bodies, 298 with pointer and integer conversions, and
+14 macro-generated definitions. The release receipt
+`mapgen-room-link-native-20261120-v1/mapgen-room-link-release-v1.json`
+has SHA-256 `90a35c6bed8515a7c7dc1b125bb683e4b0c38e2cc51e7f661f310077c92c88a2`.
+Linux `44693868134` passes all four products and Windows `44693868642`
+passes amd64 and 386 at this revision.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -3215,44 +3215,6 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 //----- (00522300) --------------------------------------------------------
 // Native-width implementation: mapgen_choice_inventory_public.go.
 
-static int nox_mapgenFindFreePointNative_5226D0(uint8_t* room, float scale, float2* point) {
-	if (!room || !point) {
-		return 0;
-	}
-	float center_x = (*(float*)(room + 36) + *(float*)(room + 44)) * 0.5f;
-	float center_y = (*(float*)(room + 40) + *(float*)(room + 48)) * 0.5f;
-	float half_width = (*(float*)(room + 44) - *(float*)(room + 36)) * 0.5f;
-	float half_height = (*(float*)(room + 48) - *(float*)(room + 40)) * 0.5f;
-	for (int attempt = 0; attempt < 10; ++attempt) {
-		point->field_0 = sub_526BC0(-half_width, half_width) * scale + center_x;
-		point->field_4 = sub_526BC0(-half_height, half_height) * scale + center_y;
-		if (!nox_mapgenPointOccupiedNative_5227B0(room, (float*)point)) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
-static nox_object_t* nox_mapgenMakeMonsterInRoomNative_522810(uint8_t* room, const char* name) {
-	if (!room || !name) {
-		return NULL;
-	}
-	float center_x = (*(float*)(room + 44) + *(float*)(room + 36)) * 0.5f;
-	float center_y = (*(float*)(room + 48) + *(float*)(room + 40)) * 0.5f;
-	float2 position;
-	if (!nox_mapgenFindFreePointNative_5226D0(room, 0.94999999f, &position)) {
-		return NULL;
-	}
-	nox_xxx_mapGenGetObjID_527940((char*)name);
-	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
-	if (object && ((uint8_t)((float*)object)[2] & 2)) {
-		float2 direction = {center_x - position.field_0, center_y - position.field_4};
-		nox_mapgenOrientObjNative_527C60(
-			object, nox_xxx_math_509EA0(nox_xxx_math_509ED0(&direction)));
-	}
-	return object;
-}
-
 static void* nox_mapgenPopulateDecorEntryNative_5224B0(
 	uint8_t* theme, uint8_t* room, nox_mapgen_decor_entry_legacy* entry) {
 	if (!theme || !room || !entry) {
@@ -3274,7 +3236,7 @@ static void* nox_mapgenPopulateDecorEntryNative_5224B0(
 	switch (entry->type) {
 	case 0:
 		for (int i = 0; i < count; ++i) {
-			nox_object_t* object = nox_mapgenMakeMonsterInRoomNative_522810(room, entry->name);
+			nox_object_t* object = nox_xxx_mapGenMakeMonsterInRoom_522810(room, entry->name);
 			if (object) {
 				nox_xxx_mapgen_521FE0(theme, object, entry->choices_token);
 				result = object;
@@ -3302,7 +3264,7 @@ static void* nox_mapgenPopulateDecorEntryNative_5224B0(
 	case 4:
 	case 5: {
 		float2 position;
-		if (!nox_mapgenFindFreePointNative_5226D0(room, 0.89999998f, &position)) {
+		if (!sub_5226D0(room, 0.89999998f, &position)) {
 			break;
 		}
 		nox_object_t* object = NULL;
@@ -3451,42 +3413,13 @@ float* nox_xxx_mapgen_5224B0(int a1, int a2, int a3) {
 }
 
 //----- (005226D0) --------------------------------------------------------
-int sub_5226D0(int a1, float a2, int a3) {
-	return nox_mapgenFindFreePointNative_5226D0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2,
-		(float2*)nox_mapgenLegacyPtrResolve((uint32_t)a3));
-}
+// Native-width implementation: mapgen_room_monster_public.go.
 
 //----- (005227B0) --------------------------------------------------------
-int nox_mapgenPointOccupiedNative_5227B0(uint8_t* room, float* point) {
-	if (!room || !point) {
-		return 0;
-	}
-	for (uint32_t token = *(uint32_t*)(room + 368); token;) {
-		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
-		if (!rect) {
-			return 0;
-		}
-		if (*point >= (double)rect->min_x && *point <= (double)rect->max_x &&
-			point[1] >= (double)rect->min_y && point[1] <= (double)rect->max_y) {
-			return 1;
-		}
-		token = rect->next_token;
-	}
-	return 0;
-}
-
-int sub_5227B0(int a1, float* a2) {
-	return nox_mapgenPointOccupiedNative_5227B0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
-}
+// Native-width implementation: mapgen_room_monster_public.go.
 
 //----- (00522810) --------------------------------------------------------
-int nox_xxx_mapGenMakeMonsterInRoom_522810(float* a1, char* a2) {
-	nox_object_t* object = nox_mapgenMakeMonsterInRoomNative_522810(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uintptr_t)a1), a2);
-	return (int)nox_mapgenLegacyPtrRegister(object);
-}
+// Native-width implementation: mapgen_room_monster_public.go.
 
 //----- (00522C80) --------------------------------------------------------
 float* sub_522C80(float* a1) {
@@ -6748,51 +6681,7 @@ float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2) {
 }
 
 //----- (00527C60) --------------------------------------------------------
-int nox_mapgenOrientObjNative_527C60(nox_object_t* object, int direction) {
-	if (!object) {
-		return 0;
-	}
-	if ((object->obj_class & 2) == 2) {
-		if (!object->data_update) {
-			return 0;
-		}
-		int direction4 = sub_4D3FF0(direction);
-		int angle = nox_xxx_mathDirection4ToAngle_509E90(direction4);
-		*(uint32_t*)((uint8_t*)object->data_update + 376) = angle;
-		object->direction1 = angle;
-		return 1;
-	}
-	if (!(object->obj_class & 0x80) || !object->data_update) {
-		return 0;
-	}
-	uint32_t* update = (uint32_t*)object->data_update;
-	uint32_t frame;
-	switch (direction) {
-	case 1:
-		frame = 0;
-		break;
-	case 3:
-		frame = 24;
-		break;
-	case 5:
-		frame = 8;
-		break;
-	case 7:
-		frame = 16;
-		break;
-	default:
-		return 0;
-	}
-	update[1] = frame;
-	update[2] = frame;
-	update[3] = frame;
-	return 1;
-}
-
-int nox_xxx_mapGenOrientObj_527C60(int a1, int a2) {
-	return nox_mapgenOrientObjNative_527C60(
-		(nox_object_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
-}
+// Native-width implementation: mapgen_room_monster_public.go.
 
 //----- (00527DB0) --------------------------------------------------------
 // Native-width implementation: mapgen_spellbook_public.go.

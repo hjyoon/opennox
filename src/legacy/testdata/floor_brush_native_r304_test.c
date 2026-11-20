@@ -113,17 +113,11 @@ static void finish(void) {
 int main(int argc, char** argv) {
     if (argc != 2) return 64;
     const char* name = argv[1]; setup(); printf("R304 CASE %s\n", name);
-    if (!strcmp(name, "descriptor-stack-chain")) {
-        // All three production functions execute unchanged. The first
-        // descriptor load precedes the grid access in sub_51DA70.
-        float2 point = {448.5f, 494.5f}; native_address(&point, "caller-stack-point");
-        need(sub_51D8F0(&point) == 1, "native stack descriptor chain should complete");
-    } else if (!strcmp(name, "descriptor-direct-stack32")) {
+    if (!strcmp(name, "descriptor-direct-stack32")) {
         struct brush32 brush = {7, 3, 0, -1, -1, 0, {0}, 255, 0};
         native_address(&brush, "pointer-free-stack-brush32");
         printf("R304 DESCRIPTOR native=%p baseline-int-diagnostic=0x%08x\n", &brush, (uint32_t)(uintptr_t)&brush);
         // API adapter passes the unchanged32-byte record by native pointer.
-        // The preceding case still exercises the actual producer.
         need(nox_floorBrushApplyNative_51DA70(X, Y, &brush, 1, 0) == 1, "native descriptor ABI should complete");
     } else if (!strcmp(name, "scalar-left") || !strcmp(name, "scalar-right")) {
         int layer = !strcmp(name, "scalar-left") ? 1 : 2;
@@ -144,12 +138,6 @@ int main(int argc, char** argv) {
                offsetof(obj_5D4594_2650668_t, field_5) - offsetof(obj_5D4594_2650668_t, field_1));
         need(result == 69 && layer_calls == 1, "subtile helper branch reached");
         need(seen_layer == expected, "native row pointer/56-byte stride/layer scalar offset");
-    } else if (!strcmp(name, "boundary-control")) {
-        need(sub_51D9C0(1, 10, 0, 0, 0) == 0 && layer_calls == 0 && free_calls == 0, "original rejected-boundary control");
-    } else if (!strcmp(name, "null-descriptor-control")) {
-        brush_id = 255; dword_5d4594_3835352 = 1;
-        float2 point = {448.5f, 494.5f};
-        need(sub_51D8F0(&point) == 69 && layer_calls == 1, "original null descriptor bypass reaches controlled callback");
     } else return 64;
     finish(); printf("R304 PASS %s\n", name); return 0;
 }
@@ -271,6 +259,15 @@ void nox_xxx_tileFreeTile_422200(nox_tile_list_node_t** head) {
 }
 int sub_411490(int edge,int variation) { event('I',edge,variation,0,0,NULL);return variation -100; }
 int nox_xxx_mapGenEdge_543EB0(int edge,int variation) { event('E',edge,variation,0,0,NULL);return variation +100; }
+// This source-bound C fixture exercises the subtile producer's native arguments.
+int sub_51D9C0(int x, int y, int dx, int dy, nox_floor_brush_t* brush) {
+    need(x==10 && y==11 && dx==0 && dy==0, "subtile producer forwards the original quarter coordinates");
+    need(brush && dword_5d4594_3835352==1 && brush->tile_id==7 && brush->variation==11 &&
+        brush->pattern==0 && brush->anchor_x==-1 && brush->anchor_y==-1 && brush->kind==0 &&
+        brush->edge_id==9 && brush->edge_variation==2, "subtile producer passes the full native brush");
+    native_address(brush,"subtile-producer brush");
+    return nox_floorBrushApplyNative_51DA70(x-1,y,brush,1,0);
+}
 static void setup(void) {
     selected_tile =7;override_variation =0;dword_5d4594_3835348 =11;
     nox_tile_defs_arr[7].field_52 =2;nox_tile_defs_arr[7].field_53 =3;

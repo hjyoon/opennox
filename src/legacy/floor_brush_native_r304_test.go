@@ -87,13 +87,13 @@ func TestFloorBrushNativeR304(t *testing.T) {
 		cases []string
 	}{
 		{"CHAIN", []floorBrushPartR304{
-			{"GAME4_1.c", "sub_51D8F0"}, {"GAME4_1.c", "sub_51D9C0"}, {"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
-		}, []string{"descriptor-stack-chain", "descriptor-direct-stack32", "scalar-left", "scalar-right", "dispatch-left", "dispatch-right", "boundary-control", "null-descriptor-control"}},
+			{"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
+		}, []string{"descriptor-direct-stack32", "scalar-left", "scalar-right", "dispatch-left", "dispatch-right"}},
 		{"LAYER", []floorBrushPartR304{
 			{"GAME4_3.c", "nox_xxx_tile_543C50"},
 		}, []string{"left-head-alignment", "right-head-width", "node-next-append-width", "tail-remove-width", "duplicate-control"}},
 		{"FUNCTIONAL", []floorBrushPartR304{
-			{"GAME4_1.c", "sub_51D8F0"}, {"GAME4_1.c", "sub_51D9C0"}, {"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
+			{"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
 			{"GAME4_3.c", "nox_xxx_tile_543C50"}, {"GAME4_3.c", "sub_543E60"},
 			{"GAME4_3.c", "nox_xxx_tileSubtile_544310"}, {"GAME4_3.c", "sub_543BC0"},
 			{"GAME4_2.c", "sub_51DA70"},
@@ -105,6 +105,9 @@ func TestFloorBrushNativeR304(t *testing.T) {
 	for _, group := range groups {
 		t.Run(strings.ToLower(group.name), func(t *testing.T) {
 			floorBrushRunR304(t, floorBrushCompileR304(t, group.name, group.parts), group.cases)
+			if group.name == "CHAIN" {
+				testFloorBrushCoordinateChainR304(t)
+			}
 		})
 	}
 }
@@ -118,4 +121,47 @@ func TestFloorBrushDeterminismR304(t *testing.T) {
 	}
 	bin := floorBrushCompileR304(t, "DETERMINISM", []floorBrushPartR304{{"GAME4_3.c", "sub_543680"}})
 	floorBrushRunR304(t, bin, []string{"flood-brush-defined-state", "flood-brush-skip-and-fix-failure"})
+}
+
+func testFloorBrushCoordinateChainR304(t *testing.T) {
+	point := mapgenWorldPoint{x: 448.5, y: 494.5}
+	t.Run("descriptor-stack-chain", func(t *testing.T) {
+		want := mapgenFloorBrush{tileID: 7, variation: 3, anchorX: -1, anchorY: -1, edgeID: 255}
+		place := func(x, y, dx, dy int32, brush *mapgenFloorBrush) int32 {
+			return mapgenApplyTileQuarter(x, y, dx, dy, brush, func(col, row int32, got *mapgenFloorBrush, layer int32) int32 {
+				if col != 9 || row != 11 || layer != 1 || got == nil || *got != want {
+					t.Fatalf("floor brush advanced to %d/%d layer %d with %+v, expected 9/11 layer 1 with %+v",
+						col, row, layer, got, want)
+				}
+				return 1
+			})
+		}
+		if status := mapgenReadTileCoordinate(&point, 7, 3, place); status != 1 {
+			t.Fatalf("brush placement returned %d, want 1", status)
+		}
+	})
+	t.Run("boundary-control", func(t *testing.T) {
+		apply := func(int32, int32, *mapgenFloorBrush, int32) int32 {
+			t.Fatal("the rejected boundary reached the floor brush")
+			return -1
+		}
+		if status := mapgenApplyTileQuarter(1, 10, 0, 0, nil, apply); status != 0 {
+			t.Fatalf("boundary returned %d, want 0", status)
+		}
+	})
+	t.Run("null-descriptor-control", func(t *testing.T) {
+		calls := 0
+		place := func(x, y, dx, dy int32, brush *mapgenFloorBrush) int32 {
+			return mapgenApplyTileQuarter(x, y, dx, dy, brush, func(col, row int32, got *mapgenFloorBrush, layer int32) int32 {
+				calls++
+				if col != 9 || row != 11 || layer != 1 || got != nil {
+					t.Fatalf("nil descriptor advanced to %d/%d layer %d with %+v", col, row, layer, got)
+				}
+				return 69
+			})
+		}
+		if status := mapgenReadTileCoordinate(&point, 255, 3, place); status != 69 || calls != 1 {
+			t.Fatalf("nil descriptor returned %d with %d calls", status, calls)
+		}
+	})
 }

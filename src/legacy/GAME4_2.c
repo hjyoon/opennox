@@ -2742,62 +2742,10 @@ int sub_521900(int a1, int a2, int a3) {
 }
 
 //----- (00521940) --------------------------------------------------------
-float* nox_xxx_mapGenMakeRoomStruct_521940(int a1, int a2) {
-	float* result; // eax
-
-	result = (float*)calloc(1u, 0x178u);
-	if (result) {
-		if (!nox_mapgenLegacyPtrRegister(result)) {
-			free(result);
-			return NULL;
-		}
-		*(uint32_t*)result = 1;
-		*((uint32_t*)result + 3) = a1;
-		*((uint32_t*)result + 4) = a2;
-		result[7] = (double)a1 * 32.526913;
-		result[8] = (double)a2 * 32.526913;
-	}
-	return result;
-}
+// Native-width implementation: mapgen_room_allocation_public.go.
 
 //----- (00521990) --------------------------------------------------------
-float* nox_mapgenPrepareRoomNative_521990(uint8_t* theme) {
-	int v2;        // eax
-	int v3;        // esi
-	int v4;        // edi
-	int v5;        // ebx
-	signed int v7; // [esp-4h] [ebp-14h]
-	int v8;        // [esp+14h] [ebp+4h]
-
-	if (!theme) {
-		return NULL;
-	}
-	v2 = *(uint32_t*)(theme + 32);
-	v7 = *(uint32_t*)(theme + 36);
-	v3 = v2 - v7;
-	v4 = nox_xxx_mapGenRandFunc2_526B00(v2, v7);
-	v8 = v4;
-	if (v4 < 5) {
-		v4 = 5;
-		v8 = 5;
-	}
-	v5 = nox_xxx_mapGenRandFunc2_526B00(v4, (long long)((double)v8 * 0.30000001));
-	if (v5 < 5) {
-		v5 = 5;
-	}
-	if (v5 < v3) {
-		v5 = v3;
-	}
-	if (*(uint32_t*)(theme + 56)) {
-		nox_xxx_mapGenRandFunc_526AC0(0, 2);
-	}
-	return nox_xxx_mapGenMakeRoomStruct_521940(v4, v5);
-}
-
-float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
-	return nox_mapgenPrepareRoomNative_521990(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
-}
+// Native-width implementation: mapgen_room_allocation_public.go.
 
 //----- (00521A10) --------------------------------------------------------
 void sub_521A10(void* lpMem) {

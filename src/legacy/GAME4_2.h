@@ -81,7 +81,6 @@ int nox_mapgenRoomLinkNative_521900(uint8_t* room, uint8_t* neighbor, int direct
 int sub_521900(int a1, int a2, int a3);
 float* nox_xxx_mapGenMakeRoomStruct_521940(int a1, int a2);
 float* nox_mapgenPrepareRoomNative_521990(uint8_t* theme);
-float* nox_xxx_mapGenPrepareRoom_521990(int a1);
 void sub_521A10(void* lpMem);
 uint32_t* nox_xxx_mapGenFreeTopRoom_521A40();
 int nox_mapgenRoomLinkBothNative_521A70(uint8_t* room, uint8_t* neighbor, int direction);

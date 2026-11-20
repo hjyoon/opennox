@@ -13,7 +13,7 @@ func TestBookRewardDraw45C7D0NativeBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	game, err := os.ReadFile("GAME2.c")
+	game, err := os.ReadFile("testdata/retired-game-sources/GAME2.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

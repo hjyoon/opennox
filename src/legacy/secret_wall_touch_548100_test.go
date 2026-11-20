@@ -11,7 +11,7 @@ import (
 // Compile the retained C reference and wall layout. The production entry now
 // runs Go; this reference still checks its original field and audio contract.
 func TestSecretWallTouch548100NativeBody(t *testing.T) {
-	source, err := os.ReadFile("GAME5.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME5.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

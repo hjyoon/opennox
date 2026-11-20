@@ -23,7 +23,7 @@ import (
 )
 
 func TestPlayerHandleKotrDeath54DC40RawBodyOnlyABI32(t *testing.T) {
-	source, err := os.ReadFile("GAME5.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME5.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

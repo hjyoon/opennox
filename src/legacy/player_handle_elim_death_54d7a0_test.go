@@ -35,7 +35,7 @@ func (s *elimScoreLegacyServer54D7A0) PlayerIncrementElimDeath4D8D40(unit *serve
 }
 
 func TestPlayerHandleElimDeath54D7A0RawBodyOnlyABI32(t *testing.T) {
-	source, err := os.ReadFile("GAME5.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME5.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

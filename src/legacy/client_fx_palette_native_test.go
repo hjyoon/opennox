@@ -41,7 +41,7 @@ func clientFXPaletteNative4B5CD0(t *testing.T, mode string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME3.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME3.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

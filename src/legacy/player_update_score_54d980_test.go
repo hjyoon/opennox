@@ -25,7 +25,7 @@ type arenaScoreLegacyServer54D980 struct {
 }
 
 func TestPlayerUpdateScore54D980RawBodyOnlyABI32(t *testing.T) {
-	source, err := os.ReadFile("GAME5.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME5.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -17,7 +17,7 @@ func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
 	for _, part := range []struct {
 		file, signature, end, marker string
 	}{
-		{"GAME2.c", "int sub_460B90(int a1) {", "\n}", "// PRODUCTION_VISIBILITY"},
+		{"testdata/retired-game-sources/GAME2.c.txt", "int sub_460B90(int a1) {", "\n}", "// PRODUCTION_VISIBILITY"},
 		{"GAME2_1.c", "void sub_461010() {", "\n//----- (00461060)", "// PRODUCTION_CLOSE"},
 		{"GAME2_1.c", "void sub_461060() {", "\n//----- (00461090)", "// PRODUCTION_OPEN"},
 	} {

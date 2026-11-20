@@ -23,8 +23,8 @@ func testObjectiveHUDNoRender212V2(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	source := string(data)
-	source = strings.ReplaceAll(source, "/* CTF_BODY */", teamReportBody210(t, "GAME2.c", "char sub_455A50("))
-	source = strings.ReplaceAll(source, "/* FLAGBALL_BODY */", teamReportBody210(t, "GAME2.c", "int sub_455F60("))
+	source = strings.ReplaceAll(source, "/* CTF_BODY */", teamReportBody210(t, "testdata/retired-game-sources/GAME2.c.txt", "char sub_455A50("))
+	source = strings.ReplaceAll(source, "/* FLAGBALL_BODY */", teamReportBody210(t, "testdata/retired-game-sources/GAME2.c.txt", "int sub_455F60("))
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)

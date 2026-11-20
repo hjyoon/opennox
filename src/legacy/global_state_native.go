@@ -7,10 +7,10 @@ extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
 extern nox_window *dword_5d4594_1049508, *dword_5d4594_1305680, *dword_5d4594_1305684;
 extern uint32_t dword_5d4594_1062488, dword_5d4594_1319056, dword_5d4594_1320964;
 extern uint32_t dword_5d4594_1098628, dword_5d4594_1321800;
-extern uint32_t nox_xxx_waypointCounterMB_587000_154948, dword_5d4594_2487244;
+extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
+extern nox_waypoint_t* dword_5d4594_2487244;
 extern uint32_t nox_xxx_minimap_587000_149232;
 extern nox_window_yyy nox_windows_arr_1093036[7];
-void* nox_mapgen_last_waypoint_slot_native_51D0E0(void);
 // Address bridges only. Existing C callers and Go entries share these owners.
 static void* global_state_slot_C(unsigned i) {
  switch(i) {
@@ -29,7 +29,6 @@ static void* global_state_slot_C(unsigned i) {
  case 13: case 14: return &nox_xxx_minimap_587000_149232;
  case 15: return &nox_windows_arr_1093036[0].field_1;
  case 16: return &nox_windows_arr_1093036[0].field_2;
- case 17: return nox_mapgen_last_waypoint_slot_native_51D0E0();
  default: return NULL;
  }
 }
@@ -98,17 +97,16 @@ func globalStateNativeValue(index int) int32 {
 }
 
 func globalStateNativeMutate(index int) {
+	if index == 12 {
+		globalStateNativeStorePointer(globalStateNativeSlot(index), nil)
+		return
+	}
 	word := globalStateNativeWord(index)
 	switch index {
 	case 10:
 		*word = 0
 	case 11:
 		*word = ^uint32(0)
-	case 12:
-		// Keep the existing full-width waypoint projection in sync with its
-		// original legacy word; the original executable had one pointer word.
-		globalStateNativeStorePointer(globalStateNativeSlot(17), nil)
-		*word = 0
 	case 13:
 		value := *word - 10
 		if int32(value) < 500 {

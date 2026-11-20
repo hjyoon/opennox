@@ -16,7 +16,6 @@
 #include "common__crypt.h"
 #include "common__net_list.h"
 #include "common__random.h"
-#include "mapgen_legacy_ptr.h"
 #include "operators.h"
 #include "common__system__team.h"
 #include "server__gamemech__explevel.h"
@@ -33,7 +32,6 @@
 extern uint32_t dword_5d4594_1599708;
 extern uint32_t dword_5d4594_1599688;
 extern uint32_t dword_587000_234176;
-extern uint32_t dword_5d4594_2487244;
 extern uint32_t dword_587000_237036;
 extern void* nox_alloc_pendingOwn_2386916;
 extern uint32_t dword_5d4594_2386228;
@@ -4750,57 +4748,6 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
 	}
 }
 
-static nox_waypoint_t* nox_mapgen_last_waypoint_51D120;
-
-void* nox_mapgen_last_waypoint_slot_native_51D0E0(void) {
-	return &nox_mapgen_last_waypoint_51D120;
-}
-
-//----- (0051D0E0) --------------------------------------------------------
-#if 0 // Restored by global_state_native_entry.go.
-void sub_51D0E0() {
-	nox_mapgen_last_waypoint_51D120 = NULL;
-	dword_5d4594_2487244 = 0;
-}
-#endif
-
-//----- (0051D0F0) --------------------------------------------------------
-int sub_51D0F0(char a1) {
-	*getMemU8Ptr(0x973F18, 35972) = a1;
-	return 1;
-}
-
-//----- (0051D100) --------------------------------------------------------
-int sub_51D100(int a1) {
-	if (a1 != 1 && a1) {
-		return 0;
-	}
-	*getMemU32Ptr(0x973F18, 35976) = a1;
-	return 1;
-}
-
-//----- (0051D120) --------------------------------------------------------
-nox_waypoint_t* nox_xxx_waypointNew_5798F0(float a1, float a2);
-uint32_t* sub_51D120(float* a1) {
-	float2 v3; // [esp+4h] [ebp-8h]
-
-	if (!nox_xxx_mapGenFixCoords_4D3D90((float2*)a1, &v3)) {
-		return NULL;
-	}
-	nox_waypoint_t* result = nox_xxx_waypointNew_5798F0(v3.field_0, v3.field_4);
-	if (result) {
-		if (nox_mapgen_last_waypoint_51D120 && *getMemU32Ptr(0x973F18, 35976) == 1) {
-			nox_mapgenWaypointLinkNative_51D300(
-				nox_mapgen_last_waypoint_51D120, result, getMemByte(0x973F18, 35972));
-			nox_mapgenWaypointLinkNative_51D300(
-				result, nox_mapgen_last_waypoint_51D120, getMemByte(0x973F18, 35972));
-		}
-		nox_mapgen_last_waypoint_51D120 = result;
-		dword_5d4594_2487244 = (uint32_t)(uintptr_t)result;
-	}
-	return (uint32_t*)result;
-}
-
 //----- (0051D1A0) --------------------------------------------------------
 nox_waypoint_t* sub_579AD0(float a1, float a2);
 float* sub_51D1A0(float2* a1) {
@@ -4810,31 +4757,6 @@ float* sub_51D1A0(float2* a1) {
 		return NULL;
 	}
 	return (float*)sub_579AD0(a2.field_0, a2.field_4);
-}
-
-int nox_mapgenWaypointLinkNative_51D300(nox_waypoint_t* from, nox_waypoint_t* to, unsigned char kind) {
-	if (!from || !to || from == to || from->points_cnt >= 0x1Fu) {
-		return 0;
-	}
-	for (int i = 0; i < from->points_cnt; ++i) {
-		if (from->points[i].waypoint == to && from->points[i].ind == kind) {
-			return 0;
-		}
-	}
-	int index = from->points_cnt++;
-	from->points[index].waypoint = to;
-	from->points[index].ind = kind;
-	return 1;
-}
-
-//----- (0051D2C0) --------------------------------------------------------
-int sub_51D2C0(int a1, int a2) { return sub_51D300(a1, a2, getMemByte(0x973F18, 35972)); }
-
-//----- (0051D300) --------------------------------------------------------
-int sub_51D300(int a1, int a2, char a3) {
-	return nox_mapgenWaypointLinkNative_51D300(
-		(nox_waypoint_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(nox_waypoint_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), (unsigned char)a3);
 }
 
 //----- (0051D3F0) --------------------------------------------------------

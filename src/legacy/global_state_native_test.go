@@ -46,9 +46,13 @@ func TestGlobalStateNativeLayout(t *testing.T) {
 	}
 }
 
+func globalStateNativePointerSlot(index int) bool {
+	return index < 4 || index == 8 || index == 9 || index == 12
+}
+
 func globalStateNativeSlotBytes(index int) []byte {
 	size := 4
-	if index < 4 || index == 8 || index == 9 || index == 17 {
+	if globalStateNativePointerSlot(index) {
 		size = int(unsafe.Sizeof(uintptr(0)))
 	}
 	return unsafe.Slice((*byte)(globalStateNativeSlot(index)), size)
@@ -57,7 +61,7 @@ func globalStateNativeSlotBytes(index int) []byte {
 func TestGlobalStateNativeOriginal(t *testing.T) {
 	var cases []globalStateNativeCase
 	npcVoiceOriginalDecode(t, globalStateNativeOriginal, "451b71b00abd252308077ea1ff1ec939a8a90f2ecd7d7460894ef248e540e4d8", "9b909bb0d714d15af0976eeaa56694b2d82e56c19ef0237c224983d631679d0f", 2926, &cases)
-	var saved [18][]byte
+	var saved [17][]byte
 	for i := range saved {
 		saved[i] = append([]byte(nil), globalStateNativeSlotBytes(i)...)
 	}
@@ -90,10 +94,10 @@ func TestGlobalStateNativeOriginal(t *testing.T) {
 					}
 					// C owns these slots and all seeded pointer bytes. Never write a Go
 					// pointer over the arbitrary previous canary in a foreign record.
-					for j := 0; j < 18; j++ {
-						if j < 4 || j == 8 || j == 9 || j == 17 {
+					for j := range saved {
+						if globalStateNativePointerSlot(j) {
 							value := unsafe.Pointer(&raw[0x6000+j*64+placement])
-							if (j < 3 && !c.Input.Nonnull) || ((j == 3 || j == 8 || j == 9) && c.Input.Word == 0) {
+							if (j < 3 && !c.Input.Nonnull) || (j >= 3 && c.Input.Word == 0) {
 								value = nil
 							}
 							globalStateNativeStorePointer(globalStateNativeSlot(j), value)
@@ -112,11 +116,11 @@ func TestGlobalStateNativeOriginal(t *testing.T) {
 					player.Field3680 = c.Input.Flags
 					player.Level = c.Input.Level
 					globalStateNativeSeedCell(cell, c.Input.Word)
-					if i >= 3 && i != 3 && i != 8 && i != 9 {
+					if !globalStateNativePointerSlot(i) {
 						*globalStateNativeWord(i) = c.Input.Word
 					}
 					copy(before, raw)
-					var snapshots [18][]byte
+					var snapshots [17][]byte
 					for j := range snapshots {
 						snapshots[j] = append([]byte(nil), globalStateNativeSlotBytes(j)...)
 					}
@@ -125,16 +129,17 @@ func TestGlobalStateNativeOriginal(t *testing.T) {
 					if c.ReturnWord != nil && result != *c.ReturnWord {
 						t.Fatalf("original int32 return %#x want %#x", result, *c.ReturnWord)
 					}
-					if i >= 10 && i <= 14 {
+					if i == 12 {
+						if c.FinalGlobal != 0 || globalStateNativePointer(i) != nil {
+							t.Fatal("native waypoint slot not cleared")
+						}
+					} else if i >= 10 && i <= 14 {
 						if got := *globalStateNativeWord(i); got != c.FinalGlobal {
 							t.Fatalf("original final global %#x want %#x", got, c.FinalGlobal)
 						}
-						if i == 12 && globalStateNativePointer(17) != nil {
-							t.Fatal("native waypoint projection not cleared")
-						}
 					}
 					for j := range snapshots {
-						if (i >= 10 && i <= 14 && globalStateNativeSlot(j) == globalStateNativeSlot(i)) || (i == 12 && j == 17) {
+						if i >= 10 && i <= 14 && globalStateNativeSlot(j) == globalStateNativeSlot(i) {
 							continue
 						}
 						if !bytes.Equal(globalStateNativeSlotBytes(j), snapshots[j]) {

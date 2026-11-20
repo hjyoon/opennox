@@ -2414,7 +2414,7 @@ float* sub_522C80(float* a1) {
 
 	result = sub_51D1A0((float2*)a1);
 	if (!result) {
-		result = (float*)sub_51D120(a1);
+		result = (float*)sub_51D120((float2*)a1);
 	}
 	return result;
 }

@@ -2700,46 +2700,11 @@ int sub_521820(int a1, int a2) {
 //----- (00521880) --------------------------------------------------------
 // GAME.EXE 00521880 is implemented in Go.
 
-int nox_mapgenRoomHasTypeOneNeighborNative_5218B0(uint8_t* room, int direction) {
-	if (!room || direction < 0 || direction >= 4) {
-		return 0;
-	}
-	int count = room[216 + direction];
-	for (int i = 0; i < count; ++i) {
-		uint32_t token = *(uint32_t*)(room + 88 + 32 * direction + 4 * i);
-		uint32_t* neighbor = (uint32_t*)nox_mapgenLegacyPtrResolve(token);
-		if (neighbor && neighbor[0] == 1) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
 //----- (005218B0) --------------------------------------------------------
-int sub_5218B0(int a1, int a2) {
-	return nox_mapgenRoomHasTypeOneNeighborNative_5218B0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
-}
-
-int nox_mapgenRoomLinkNative_521900(uint8_t* room, uint8_t* neighbor, int direction) {
-	if (!room || !neighbor || direction < 0 || direction >= 4 || room[216 + direction] >= 8u) {
-		return 0;
-	}
-	uint32_t token = nox_mapgenLegacyPtrRegister(neighbor);
-	if (!token) {
-		return 0;
-	}
-	uint8_t index = room[216 + direction]++;
-	*(uint32_t*)(room + 88 + 32 * direction + 4 * index) = token;
-	return 1;
-}
+// Native-width implementation: mapgen_room_link_public.go.
 
 //----- (00521900) --------------------------------------------------------
-int sub_521900(int a1, int a2, int a3) {
-	return nox_mapgenRoomLinkNative_521900(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), a3);
-}
+// Native-width implementation: mapgen_room_link_public.go.
 
 //----- (00521940) --------------------------------------------------------
 // Native-width implementation: mapgen_room_allocation_public.go.
@@ -2786,17 +2751,8 @@ uint32_t* nox_xxx_mapGenFreeTopRoom_521A40() {
 	return result;
 }
 
-int nox_mapgenRoomLinkBothNative_521A70(uint8_t* room, uint8_t* neighbor, int direction) {
-	nox_mapgenRoomLinkNative_521900(room, neighbor, direction);
-	return nox_mapgenRoomLinkNative_521900(neighbor, room, sub_523960(direction));
-}
-
 //----- (00521A70) --------------------------------------------------------
-int sub_521A70(int a1, int a2, int a3) {
-	return nox_mapgenRoomLinkBothNative_521A70(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), a3);
-}
+// Native-width implementation: mapgen_room_link_public.go.
 
 //----- (00521AA0) --------------------------------------------------------
 // GAME.EXE 00521AA0 is implemented in Go.
@@ -3320,7 +3276,7 @@ int sub_523920(int a1) {
 }
 
 //----- (00523960) --------------------------------------------------------
-int sub_523960(int a1) { return *getMemU32Ptr(0x587000, 254952 + 4 * a1); }
+// Native-width implementation: mapgen_room_link_public.go.
 
 //----- (00523970) --------------------------------------------------------
 int sub_523970(int a1) {

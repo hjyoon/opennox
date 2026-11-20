@@ -10,10 +10,11 @@ import (
 	"math"
 	"math/big"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 	"testing"
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 type protectionRNGOracle257 struct {
@@ -65,70 +66,82 @@ func protectionRNGOriginal257(t *testing.T) protectionRNGOracle257 {
 
 func TestProtectionRNG257CompleteNativeBodies(t *testing.T) {
 	original := protectionRNGOriginal257(t)
-	program, err := os.ReadFile("testdata/protection_rng_r257_test.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	source, err := os.ReadFile("GAME5_2.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	start, end := "//----- (0056FE30)", "//----- (00578B00)"
-	if strings.Count(string(source), start) != 1 || strings.Count(string(source), end) != 1 || bytes.Count(program, []byte("// RNG_BODY")) != 1 {
-		t.Fatal("ambiguous production RNG body")
-	}
-	_, body, _ := strings.Cut(string(source), start)
-	body, _, _ = strings.Cut(body, end)
-	program = bytes.Replace(program, []byte("// RNG_BODY"), []byte("//"+body), 1)
-	var input bytes.Buffer
-	write := func(value any) {
-		if err := binary.Write(&input, binary.LittleEndian, value); err != nil {
-			t.Fatal(err)
-		}
-	}
-	constants, err := hex.DecodeString(original.Constants)
-	if err != nil || len(constants) != 40 {
+	raw, err := hex.DecodeString(original.Constants)
+	if err != nil || len(raw) != 40 {
 		t.Fatal("different RNG constants")
 	}
-	input.Write(constants)
-	write(uint32(len(original.Rows)))
-	for _, row := range original.Rows {
-		write(row.Seed)
-		write(row.Initial)
-		write(row.Bounds)
-		write(uint32(len(row.Draws)))
-		for _, draw := range row.Draws {
-			write(draw.Value)
-			write(draw.State)
-		}
-		write(uint32(len(row.Ranges)))
-		for _, r := range row.Ranges {
-			write(r.Low)
-			write(r.High)
-			write(r.Value)
-			write(r.State)
-			write(r.Bounds)
-		}
-	}
-	compiler := strings.Fields(os.Getenv("CC"))
-	if len(compiler) == 0 {
-		compiler = []string{"cc"}
-	}
-	bin := filepath.Join(t.TempDir(), "protection-rng-native")
-	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-Wno-sign-compare", "-Wno-unused-value", "-x", "c", "-", "-o", bin, "-lm")
-	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
-	cmd.Stdin = bytes.NewReader(program)
-	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile unchanged full RNG bodies: %v\n%s", err, out)
-	}
-	for i, name := range []string{"seed", "next", "range"} {
-		t.Run(name, func(t *testing.T) {
-			cmd := exec.Command(bin, fmt.Sprint(i))
-			cmd.Stdin = bytes.NewReader(input.Bytes())
-			if out, err := cmd.CombinedOutput(); err != nil {
-				t.Fatalf("native protection RNG: %v\n%s", err, out)
-			} else {
-				t.Log(strings.TrimSpace(string(out)))
+	const stateOffset = 2516388
+	blob := memmap.BlobByAddr(0x5D4594)
+	ordinary := blob.Data
+	window := ordinary[stateOffset-24 : stateOffset+48]
+	oldWindow := [72]byte(window)
+	oldWidth, oldMinimum := *playerProtectionRandomWidth, *playerProtectionRandomMinimum
+	constants := memmap.Slice(0x581450, 11344)[:40]
+	oldConstants := [40]byte(constants)
+	copy(constants, raw)
+	t.Cleanup(func() {
+		blob.Data = ordinary
+		copy(window, oldWindow[:])
+		copy(constants, oldConstants[:])
+		*playerProtectionRandomWidth, *playerProtectionRandomMinimum = oldWidth, oldMinimum
+	})
+
+	for layout := range 2 {
+		t.Run([]string{"ordinary", "native-reallocated"}[layout], func(t *testing.T) {
+			active := ordinary
+			if layout == 1 {
+				high, release := alloc.MakeHigh[byte](nil, len(ordinary))
+				t.Cleanup(release)
+				active = high
+				if unsafe.Sizeof(uintptr(0)) == 8 && uint64(uintptr(unsafe.Pointer(&active[stateOffset]))) <= math.MaxUint32 {
+					t.Fatal("RNG fixture did not use a native address above 4 GiB")
+				}
+			}
+			blob.Data = active
+			t.Cleanup(func() { blob.Data = ordinary })
+			state := active[stateOffset : stateOffset+40]
+			before := active[stateOffset-24 : stateOffset-16]
+			after := active[stateOffset+40 : stateOffset+48]
+			guard := [8]byte{0x12, 0x49, 0x38, 0xbf, 0xc1, 0xfe, 0xe2, 0x65}
+			checkState := func(t *testing.T, expected [5]uint64) {
+				t.Helper()
+				for i, word := range expected {
+					if actual := binary.LittleEndian.Uint64(state[8*i:]); actual != word {
+						t.Fatalf("state word %d = %016x, original %016x", i, actual, word)
+					}
+				}
+			}
+			bounds := func() [3]uint32 {
+				return [3]uint32{*playerProtectionRandomWidth, memmap.Uint32(0x5D4594, 2516376), *playerProtectionRandomMinimum}
+			}
+			for _, row := range original.Rows {
+				t.Run(fmt.Sprintf("seed-%08x", row.Seed), func(t *testing.T) {
+					copy(before, guard[:])
+					copy(after, guard[:])
+					sub_56FF00(int32(row.Seed))
+					checkState(t, row.Initial)
+					if bounds() != row.Bounds {
+						t.Fatalf("seed bounds %08x, original %08x", bounds(), row.Bounds)
+					}
+					for step, draw := range row.Draws {
+						if got := math.Float64bits(nox_xxx_unkDoubleSmth_56FE30()); got != draw.Value {
+							t.Fatalf("draw %d = %016x, original %016x", step, got, draw.Value)
+						}
+						checkState(t, draw.State)
+					}
+					for step, draw := range row.Ranges {
+						if got := uint32(sub_56FF80(int32(draw.Low), int32(draw.High))); got != draw.Value {
+							t.Fatalf("range %d = %08x, original %08x", step, got, draw.Value)
+						}
+						checkState(t, draw.State)
+						if bounds() != draw.Bounds {
+							t.Fatalf("range %d bounds %08x, original %08x", step, bounds(), draw.Bounds)
+						}
+					}
+					if !bytes.Equal(before, guard[:]) || !bytes.Equal(after, guard[:]) {
+						t.Fatal("protection RNG overwrote bytes outside the state")
+					}
+				})
 			}
 		})
 	}

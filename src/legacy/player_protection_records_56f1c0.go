@@ -39,7 +39,7 @@ func playerProtectionCount() *uint16 {
 
 //export sub_56F1C0
 func sub_56F1C0() C.int {
-	C.sub_56FF00(C.int(time.Now().Unix()))
+	sub_56FF00(int32(time.Now().Unix()))
 	C.dword_5d4594_2516352 = nil
 	C.dword_5d4594_2516348 = C.uint32_t(gameFrame())
 	C.dword_5d4594_2516344 = nil
@@ -56,7 +56,7 @@ func sub_56F1C0() C.int {
 
 //export nox_xxx_protect_56F240
 func nox_xxx_protect_56F240() C.int {
-	return C.sub_56FF80(1, -1)
+	return C.int(sub_56FF80(1, -1))
 }
 
 //export sub_56F250

@@ -1904,6 +1904,30 @@ The release receipt
 `mapgen-waypoint-lookup-native-20261121-v1/mapgen-waypoint-lookup-release-v1.json`
 has SHA-256 `967688111647d103262c76eb8a9651055c9588f0637011c8ea61763c6a60a6be`.
 
+### Map generator tile selection, 2026-11-21
+
+Engine `9737e46ee41167e6ce1cf4d94356e2ff9e74a830` ports `51D4D0`,
+`51D540`, `51D570` and `51D5C0` to Go. The entries select from
+176 native tile definitions and preserve ASCII name matching, duplicate
+selection order, the no-tile sentinel and signed variation handling.
+
+The original 241 entry bytes, 208 comparator bytes and five constant
+bytes execute in 119 cases. The comparison covers 102 original-domain
+cases and 17 boundary cases. Actual C tests pass native tile names
+above 4 GiB. ARM64 normal and cgocheck2 each pass 31,026 tests with
+zero warnings. The three ARM64 products build with zero warnings and
+verify 595 public symbols. The two dedicated generations reproduce four
+MAP and NXZ files byte for byte.
+
+Normal shop playback submits two equipped-item sale effects through
+OpenAL with sound 307, positive gain and queued buffers. HD Conjurer
+chapter 3 verifies both Captain dialogues and a living manual Save.
+Linux `44765951269` and Windows `44765951033` pass all required jobs.
+Default ARM64 has 1,991 named active C bodies, including 288 with
+pointer and integer conversions. The release receipt
+`mapgen-tile-selection-native-20261121-v1/mapgen-tile-selection-release-v1.json`
+has SHA-256 `8e3a8ea0910add8d8ce7ffb2913f148b4b65c27e096dd8ddd16cd8f6c9a6f6e8`.
+
 ### Attack trace and collision queue entries, 2026-11-19
 
 Engine `06fabf10d92b978a6154b2ff31d9d38f66ff27d8` ports public attack

@@ -113,6 +113,10 @@ void* sub_57BA10(void* a1, short a2, short a3, int a4);
 void* nox_server_getFirstMapGroup_57C080();
 void* nox_server_getNextMapGroup_57C090(void* a1);
 void* nox_server_scriptGetGroup_57C0A0(int a1);
-int nox_xxx_mathPointOnTheLine_57C8A0(float4* a1, float2* a2, float2* a3);
+void sub_57C790(float4* segment, float2* point, float2* out, float length);
+int nox_xxx_mathPointOnTheLine_57C8A0(float4* segment, float2* point, float2* out);
+int sub_57CDB0(int2* grid, float* ray, float2* normal);
+char sub_57F1D0(float2* point);
+int sub_57F2A0(float2* point, int x, int y);
 
 #endif // NOX_PORT_GAME5_2

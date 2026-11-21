@@ -41,41 +41,10 @@ func DoorSize(dir byte) image.Point {
 	return doorWallTable[dir]
 }
 
-func PointOnTheLine(p1, p2 types.Pointf, a2 types.Pointf) (out types.Pointf, ok bool) { // nox_xxx_mathPointOnTheLine_57C8A0
-	// 0057C8AF..0057C909 uses gameplay precision 53 / ToZero, not
-	// binary32 coordinate subtraction or unspilled binary64 projection.
-	// X retains both its delta and dot product; Y reloads their FST stores
-	// and spills its quotient before adding the segment origin.
-	dpx := pointOnLineAddChop53_57C8A0(float64(p2.X), -float64(p1.X))
-	dpy := pointOnLineAddChop53_57C8A0(float64(p2.Y), -float64(p1.Y))
-	storedY := float64(pointOnLineSpill57C8A0(dpy))
-	d2 := float64(pointOnLineSpill57C8A0(pointOnLineAddChop53_57C8A0(
-		pointOnLineMulChop53_57C8A0(dpy, storedY), pointOnLineMulChop53_57C8A0(dpx, dpx))))
-	cy := pointOnLineAddChop53_57C8A0(float64(a2.Y), -float64(p1.Y))
-	cx := pointOnLineAddChop53_57C8A0(float64(a2.X), -float64(p1.X))
-	dd := pointOnLineAddChop53_57C8A0(pointOnLineMulChop53_57C8A0(cy, storedY), pointOnLineMulChop53_57C8A0(cx, dpx))
-	storedDot := float64(pointOnLineSpill57C8A0(dd))
-	xQuotient := pointOnLineDivChop53_57C8A0(pointOnLineMulChop53_57C8A0(dpx, dd), d2)
-	yQuotient := float64(pointOnLineSpill57C8A0(pointOnLineDivChop53_57C8A0(pointOnLineMulChop53_57C8A0(storedDot, storedY), d2)))
-	out.X = pointOnLineSpill57C8A0(pointOnLineAddChop53_57C8A0(xQuotient, float64(p1.X)))
-	out.Y = pointOnLineSpill57C8A0(pointOnLineAddChop53_57C8A0(yQuotient, float64(p1.Y)))
-	var min, max types.Pointf
-	if p1.X >= p2.X {
-		min.X = p2.X
-		max.X = p1.X
-	} else {
-		min.X = p1.X
-		max.X = p2.X
-	}
-	if p1.Y >= p2.Y {
-		max.Y = p1.Y
-		min.Y = p2.Y
-	} else {
-		min.Y = p1.Y
-		max.Y = p2.Y
-	}
-	// 0057C95C/69/87 test C0|C3, whereas 0057C978 tests C0 alone.
-	return out, !(min.X > out.X) && !(out.X > max.X) && out.Y >= min.Y && !(out.Y > max.Y)
+func PointOnTheLine(p1, p2 types.Pointf, a2 types.Pointf) (out types.Pointf, ok bool) {
+	line := types.Rectf{Min: p1, Max: p2}
+	ok = PointOnTheLineInto(&line, a2, &out)
+	return out, ok
 }
 
 var doorWallTable = []image.Point{

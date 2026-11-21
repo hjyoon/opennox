@@ -24,8 +24,8 @@ unsigned int nox_server_makeServerInfoPacket_554040(const char* inBuf, int inSz,
 unsigned int nox_xxx_net_getIP_554200(int a1);
 char* sub_554230();
 int sub_554240(int a1);
-unsigned int sub_554290();
-int sub_554300();
+unsigned int sub_554290(void);
+int sub_554300(void);
 short sub_5545A0();
 int nox_xxx_createSocketLocal_554B40(uint16_t hostshort);
 int sub_554D10();

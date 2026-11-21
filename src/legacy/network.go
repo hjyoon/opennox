@@ -200,13 +200,6 @@ func nox_server_playerIndexFromUpdateData_4D9EB0(updateData unsafe.Pointer) C.ui
 	))
 }
 
-func Nox_server_makeServerInfoPacket_554040(src, dst []byte) int {
-	csrc, free := alloc.Make([]byte{}, len(src))
-	defer free()
-	copy(csrc, src)
-	return int(C.nox_server_makeServerInfoPacket_554040((*C.char)(unsafe.Pointer(&src[0])), C.int(len(src)), (*C.char)(unsafe.Pointer(&dst[0]))))
-}
-
 func Sub_40A740() int {
 	return int(C.sub_40A740())
 }

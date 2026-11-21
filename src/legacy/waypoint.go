@@ -70,6 +70,17 @@ func sub_579C80(a1 uint32) *nox_waypoint_t {
 	return asWaypointC(GetServer().S().WPs.PendingByInd(int(a1)))
 }
 
+//export sub_579E70
+func sub_579E70() *nox_waypoint_t {
+	// The temporary map list can release this payload with its native free.
+	// The waypoint list adopts it only if the prefab is published.
+	wp := (*server.Waypoint)(C.calloc(1, C.size_t(unsafe.Sizeof(server.Waypoint{}))))
+	if wp != nil {
+		wp.Flags |= 0x1000000
+	}
+	return asWaypointC(wp)
+}
+
 //export nox_xxx_waypointNew_5798F0
 func nox_xxx_waypointNew_5798F0(x, y float32) *nox_waypoint_t {
 	return asWaypointC(GetServer().S().NewWaypoint(types.Ptf(x, y)))

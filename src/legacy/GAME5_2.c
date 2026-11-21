@@ -82,22 +82,7 @@ int nox_xxx_netClearHighBit_578B30(short a1) { return a1 & 0x7FFF; }
 #endif
 
 //----- (00578B40) --------------------------------------------------------
-int nox_xxx_packetDynamicUnitCode_578B40(int a1) {
-	int result; // eax
-	nox_object_t* v2; // eax
-
-	result = a1;
-	if ((a1 & 0x8000) == 0x8000) {
-		BYTE1(result) &= 0x7Fu;
-		v2 = nox_xxx_netGetUnitByExtent_4ED020(result);
-		if (v2) {
-			result = v2->net_code;
-		} else {
-			result = 0;
-		}
-	}
-	return result;
-}
+// This entry is implemented in object_by_extent_4ed020.go.
 
 //----- (00578B70) --------------------------------------------------------
 #if 0 // Restored by object_field_native_entry.go.
@@ -112,13 +97,7 @@ unsigned int nox_xxx_netTestHighBit_578B70(unsigned int a1) { return (a1 >> 15) 
 // The duplicate pending-waypoint iterator is exported by waypoint.go too.
 
 //----- (00579E70) --------------------------------------------------------
-nox_waypoint_t* sub_579E70() {
-	nox_waypoint_t* result = calloc(1u, sizeof(*result));
-	if (result) {
-		result->flags |= 0x1000000u;
-	}
-	return result;
-}
+// This entry is implemented in waypoint.go.
 
 //----- (00579EE0) --------------------------------------------------------
 // Native public entry: flag_predicate_native_entry.go.
@@ -358,27 +337,7 @@ int sub_57AE30(const char* a1) {
 #endif
 
 //----- (0057AEA0) --------------------------------------------------------
-int nox_xxx_playerCheckSpellClass_57AEA0(int a1, int a2) {
-	int v2;     // eax
-	int result; // eax
-	int v4;     // ecx
-
-	v2 = nox_xxx_spellFlags_424A70(a2);
-	if (a1 == 1) {
-		v4 = 0x2000000;
-	} else {
-		if (a1 != 2) {
-			return 9;
-		}
-		v4 = 0x4000000;
-	}
-	if (v2 & 0x1000000 || v4 & v2) {
-		result = 0;
-	} else {
-		result = 9;
-	}
-	return result;
-}
+// This entry is implemented in spells.go.
 
 //----- (0057AF20) --------------------------------------------------------
 // GAME.EXE 0057AF20, 0057B0A0, and 0057B180 are restored by

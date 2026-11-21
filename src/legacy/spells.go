@@ -31,6 +31,7 @@ import (
 	"math"
 	"unsafe"
 
+	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
@@ -167,6 +168,25 @@ func nox_xxx_spellHasFlags_424A50(ind_cgo, flags_cgo int32) C.bool {
 func nox_xxx_spellFlags_424A70(ind_cgo int32) C.uint {
 	ind := int(ind_cgo)
 	return C.uint(GetServer().S().Spells.Flags(spell.ID(ind)))
+}
+
+//export nox_xxx_playerCheckSpellClass_57AEA0
+func nox_xxx_playerCheckSpellClass_57AEA0(class, id C.int) C.int {
+	const incompatible = 9
+	flags := GetServer().S().Spells.Flags(spell.ID(id))
+	var classFlag things.SpellFlags
+	switch class {
+	case C.int(player.Wizard):
+		classFlag = things.SpellClassWizard
+	case C.int(player.Conjurer):
+		classFlag = things.SpellClassConjurer
+	default:
+		return incompatible
+	}
+	if flags.Has(things.SpellClassAny | classFlag) {
+		return 0
+	}
+	return incompatible
 }
 
 //export nox_xxx_spellIcon_424A90

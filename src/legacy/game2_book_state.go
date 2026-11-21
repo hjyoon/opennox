@@ -42,7 +42,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 	if player == nil {
 		return
 	}
-	if C.nox_xxx_playerCheckSpellClass_57AEA0(C.int(game2PlayerClass(player)), id) == 9 {
+	if nox_xxx_playerCheckSpellClass_57AEA0(C.int(game2PlayerClass(player)), id) == 9 {
 		return
 	}
 	player.spell_lvl[int(id)] = C.uint32_t(level)

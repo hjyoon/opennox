@@ -105,7 +105,7 @@ func sub_5044B0(index C.int32_t, x, y C.float) *C.nox_map_waypoint_list_node_504
 	if node == nil {
 		return nil
 	}
-	node.waypoint = C.game4_waypoint_alloc_native()
+	node.waypoint = sub_579E70()
 	if node.waypoint == nil {
 		game4SupportFree(unsafe.Pointer(node))
 		return nil

@@ -166,7 +166,7 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 		}
 	} else if class != 0 {
 		for id := C.nox_xxx_spellFirstValid_424AD0(); id != 0; id = C.nox_xxx_spellNextValid_424AF0(id) {
-			if id != 34 && C.nox_xxx_playerCheckSpellClass_57AEA0(class, id) == 0 && known(id, false) {
+			if id != 34 && nox_xxx_playerCheckSpellClass_57AEA0(class, id) == 0 && known(id, false) {
 				if game2BookSpellFlag(id, 0x15000) {
 					C.dword_5d4594_1047512++
 				}

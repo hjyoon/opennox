@@ -51,7 +51,7 @@ func playerProtectionChecksumRecord(token int32) *playerProtectionRecord {
 	}
 	record := findPlayerProtectionRecord(uint32(token))
 	if record == nil {
-		C.nullsub_31(1)
+		nullsub_31(1)
 	}
 	return record
 }
@@ -65,7 +65,7 @@ func sub_56FB00(data *C.int, length C.uint, token C.int) C.int {
 	if C.uint32_t(nox_xxx_protectionStringCRCLen_56FAE0(data, length))^C.dword_5d4594_2516348 == C.uint32_t(record.value) {
 		return 1
 	}
-	C.nullsub_31(1)
+	nullsub_31(1)
 	return 0
 }
 
@@ -158,6 +158,6 @@ func nox_xxx_playerApplyProtectionCRC_56FD50(token C.int, levels unsafe.Pointer,
 	if bits^uint32(C.dword_5d4594_2516348) == record.value {
 		return 1
 	}
-	C.nullsub_31(1)
+	nullsub_31(1)
 	return 0
 }

@@ -5,7 +5,6 @@ package legacy
 #include "nox_wchar.h"
 
 extern unsigned int nox_client_consoleIsServer_823684;
-extern int nox_cheat_allowall;
 extern int nox_cheat_charmall;
 
 int nox_cmd_set_sysop(int, int, wchar2_t**);
@@ -52,12 +51,15 @@ int nox_cmd_reenter(int, int, wchar2_t**);
 import "C"
 import (
 	"context"
+	"sync/atomic"
 
 	"github.com/opennox/libs/console"
 )
 
+var cheatEquipAll atomic.Bool
+
 func CheatEquipAll(v bool) {
-	C.nox_cheat_allowall = C.int(bool2int(v))
+	cheatEquipAll.Store(v)
 }
 
 func CheatCharmAll(v bool) {

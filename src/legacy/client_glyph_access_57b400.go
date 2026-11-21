@@ -2,8 +2,6 @@ package legacy
 
 /*
 #include "GAME5_2.h"
-
-extern int nox_cheat_allowall;
 */
 import "C"
 
@@ -46,7 +44,7 @@ func clientDrawableCanPickup57B450(d *client.Drawable) int {
 	if p == nil || (d.TypeIDVal == glyph && p.PlayerClass() != player.Wizard) {
 		return 0
 	}
-	if C.nox_cheat_allowall != 0 {
+	if cheatEquipAll.Load() {
 		return 1
 	}
 	// The original x86 byte shift uses the low five bits of the class.

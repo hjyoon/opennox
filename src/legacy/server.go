@@ -526,7 +526,7 @@ func Sub_410730() {
 	C.sub_410730()
 }
 func Nox_xxx_j_allocHitArray_511840() {
-	C.nox_xxx_j_allocHitArray_511840()
+	nox_xxx_j_allocHitArray_511840()
 }
 func Nox_xxx_decayDestroy_5117B0() {
 	GetServer().S().DecayDestroy5117B0()

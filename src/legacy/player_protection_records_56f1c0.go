@@ -112,7 +112,7 @@ func insertPlayerProtectionRecord(node *playerProtectionRecord) C.int {
 	}
 	node.prev = before.prev
 	if C.dword_5d4594_2516348 == 0 {
-		C.nullsub_31(1)
+		nullsub_31(1)
 	}
 	node.next = before
 	before.prev = node
@@ -144,7 +144,7 @@ func sub_56F3B0() *C.uint32_t {
 //export nox_xxx_protectionCreateInt_56F400
 func nox_xxx_protectionCreateInt_56F400(value C.int) C.int {
 	if createPlayerProtectionRecord(uint32(C.dword_5d4594_2516356), uint32(value)) == 0 {
-		C.nullsub_31(1)
+		nullsub_31(1)
 		return 0
 	}
 	token := C.dword_5d4594_2516356
@@ -195,14 +195,14 @@ func findPlayerProtectionRecord(token uint32) *playerProtectionRecord {
 			return node
 		}
 	}
-	C.nullsub_31(1)
+	nullsub_31(1)
 	return nil
 }
 
 //export nox_xxx_protectData_56F5C0
 func nox_xxx_protectData_56F5C0() C.int {
 	if C.dword_5d4594_2516348 == 0 {
-		C.nullsub_31(1)
+		nullsub_31(1)
 	}
 	frame := gameFrame()
 	oldMask := uint32(C.dword_5d4594_2516348)
@@ -230,7 +230,7 @@ func nox_xxx_protectData_56F5C0() C.int {
 	*memmap.PtrUint32(0x5D4594, 2516364)++
 	C.dword_5d4594_2516348 = C.uint32_t(newMask)
 	if newMask == 0 {
-		C.nullsub_31(1)
+		nullsub_31(1)
 	}
 	return C.int(newMask)
 }
@@ -243,14 +243,14 @@ func sub_56F6F0(index C.int) *C.uint32_t {
 		}
 		index--
 	}
-	C.nullsub_31(1)
+	nullsub_31(1)
 	return nil
 }
 
 //export sub_56F720
 func sub_56F720(first, second *C.int) {
 	if first == nil || second == nil {
-		C.nullsub_31(1)
+		nullsub_31(1)
 		return
 	}
 	a, b := (*[2]C.int)(unsafe.Pointer(first)), (*[2]C.int)(unsafe.Pointer(second))
@@ -260,6 +260,6 @@ func sub_56F720(first, second *C.int) {
 	*b = old
 	*memmap.PtrUint32(0x5D4594, 2516360)++
 	if C.dword_5d4594_2516348 == 0 {
-		C.nullsub_31(1)
+		nullsub_31(1)
 	}
 }

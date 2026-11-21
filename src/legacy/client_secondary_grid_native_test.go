@@ -24,7 +24,6 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 		{"GAME2_1.c", "//----- (00461550)", "//----- (004615C0)", "// SELECT_BODY"},
 		{"GAME2_1.c", "//----- (004619F0)", "//----- (00461B50)", "// CLEAR_BODY"},
 		{"GAME3_1.c", "//----- (004BF010)", "int nox_client_getPlayerDollState_4BF7E0", "// REPORT_BODY"},
-		{"GAME5_2.c", "//----- (00578B00)", "//----- (00578B30)", "// CODE_BODY"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {
@@ -35,15 +34,6 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 		}
 		_, body, _ := strings.Cut(string(source), part.start)
 		body, _, _ = strings.Cut(body, part.end)
-		if part.marker == "// CODE_BODY" {
-			const guard = "#if 0 // Restored by object_field_native_entry.go.\n"
-			prefix, retained, ok := strings.Cut(body, guard)
-			retained = strings.TrimRight(retained, " \t\r\n")
-			if !ok || strings.Trim(prefix, "- \t\r\n") != "" || !strings.HasSuffix(retained, "\n#endif") {
-				t.Fatal("missing complete retained original C encoder service")
-			}
-			body = prefix + strings.TrimSuffix(retained, "\n#endif") + "\n"
-		}
 		program = []byte(strings.Replace(string(program), part.marker, "//"+body, 1))
 	}
 	compiler := strings.Fields(os.Getenv("CC"))

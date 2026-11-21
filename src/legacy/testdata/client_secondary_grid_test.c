@@ -31,7 +31,22 @@ int nox_xxx_netClientSend2_4E53C0(int recipient, const void* payload, int size, 
 // SELECT_BODY
 // CLEAR_BODY
 // REPORT_BODY
-// CODE_BODY
+// Original 00578B00 encoder retained for the secondary-weapon fixture.
+unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr) {
+	unsigned int result; // eax
+
+	if (!dr) {
+		return 0;
+	}
+	result = dr->field_32;
+	if (result >= 0x8000) {
+		return 0;
+	}
+	if (dr->flags28 & 0x20400000) {
+		BYTE1(result) |= 0x80u;
+	}
+	return result;
+}
 #pragma GCC diagnostic pop
 
 static int grid_intact(void) {

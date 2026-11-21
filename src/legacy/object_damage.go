@@ -242,7 +242,20 @@ func nox_server_handler_PlayerDamage_4E17B0(
 	source := asObjectS(sourcep)
 	weapon := asObjectS(weaponp)
 	s := GetServer().S()
-	handled, result := server.PlayerDamageNative4E17B0(target, source, weapon, int32(damage), object.DamageType(damageType), server.PlayerDamageRuntime4E17B0{
+	typ := object.DamageType(damageType)
+	r := playerDamageRuntime4E17B0(s)
+	handled, result := server.PlayerDamageNative4E17B0(target, source, weapon, int32(damage), typ, r)
+	if handled {
+		return C.int(bool2int(result))
+	}
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		return C.int(bool2int(playerDamageFallbackCall4E17B0(target, source, weapon, int32(damage), typ, r)))
+	}
+	return 0
+}
+
+func playerDamageRuntime4E17B0(s *server.Server) server.PlayerDamageRuntime4E17B0 {
+	return server.PlayerDamageRuntime4E17B0{
 		Melee:            playerDamageMeleeRuntime4E17B0(s),
 		Frame:            s.Frame,
 		CoopMode:         func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
@@ -380,14 +393,30 @@ func nox_server_handler_PlayerDamage_4E17B0(
 				)
 			}
 		},
-	})
-	if handled {
-		return C.int(bool2int(result))
 	}
-	if unsafe.Sizeof(uintptr(0)) == 4 {
-		return C.int(playerDamageLegacy32Call4E17B0(targetp, sourcep, weaponp, int32(damage), int32(damageType)))
+}
+
+func playerDamageFallbackCall4E17B0(
+	target, source, weapon *server.Object, damage int32, typ object.DamageType, r server.PlayerDamageRuntime4E17B0,
+) bool {
+	r.Frame = gameFrame
+	r.ElectricArmorScale = func(target *server.Object) float32 {
+		return float32(sub_4E2220(asObjectC(target)))
 	}
-	return 0
+	r.DefaultDamage = func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+		return rawDefaultDamageNative4E0B30(target.CObj(), source.CObj(), weapon.CObj(), damage, int32(typ)) != 0
+	}
+	wear := server.PlayerDamageWear4E17B0{
+		Armor: playerDamageItemsNative4E2180,
+		Block: func(target, source, weapon *server.Object, mask uint32, amount float32, typ object.DamageType) {
+			if mask == 2 {
+				sub_4E2330(asObjectC(target), asObjectC(source), asObjectC(weapon), C.uint32_t(mask), C.float(amount), C.int(typ))
+			} else {
+				sub_4E22A0(asObjectC(target), asObjectC(source), asObjectC(weapon), C.uint32_t(mask), C.float(amount), C.int(typ))
+			}
+		},
+	}
+	return server.PlayerDamageFallback4E17B0(target, source, weapon, damage, typ, r, wear)
 }
 
 // 004E1A1D and 004E1ACE use six exclusions with a weapon, four without.

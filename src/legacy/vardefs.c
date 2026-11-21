@@ -532,7 +532,6 @@ uint32_t dword_5d4594_815100 = 0;
 nox_window* dword_5d4594_1321036 = 0;
 uint32_t dword_5d4594_1049808 = 0;
 uint32_t dword_5d4594_1568300 = 0;
-uint32_t dword_5d4594_1563320 = 0;
 uint32_t dword_5d4594_1313692 = 0;
 uint32_t dword_5d4594_1599688 = 0;
 char* dword_5d4594_1307724 = 0;

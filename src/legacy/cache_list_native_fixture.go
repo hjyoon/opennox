@@ -2,7 +2,7 @@ package legacy
 
 /*
 #include "GAME3_3.h"
-extern nox_server_netCodeCacheStruct nox_server_netCodeCache;
+static nox_server_netCodeCacheStruct cache_list_fixture;
 typedef nox_dblLinkedList*(*cache_list_entry_C)(nox_dblLinkedList**,nox_dblLinkedList*);
 _Static_assert(_Generic(&sub_4ECDE0,cache_list_entry_C:1,default:0),"native prepend ABI");
 _Static_assert(_Generic(&sub_4ECE10,cache_list_entry_C:1,default:0),"native remove ABI");
@@ -17,9 +17,9 @@ static void cache_list_layout_C(uintptr_t*v){
  v[3]=offsetof(nox_dblLinkedList,value);v[4]=offsetof(nox_dblLinkedList,next);v[5]=offsetof(nox_dblLinkedList,prev);
  v[6]=sizeof(nox_server_netCodeCacheStruct);v[7]=offsetof(nox_server_netCodeCacheStruct,firstFreeObject);v[8]=offsetof(nox_server_netCodeCacheStruct,lastFreeObject);
  v[9]=offsetof(nox_server_netCodeCacheStruct,objArray);v[10]=offsetof(nox_server_netCodeCacheStruct,firstUsedObject);v[11]=offsetof(nox_server_netCodeCacheStruct,lastUsedObject);
- v[12]=sizeof(nox_server_netCodeCache.objArray)/sizeof(nox_server_netCodeCache.objArray[0]);v[13]=sizeof(cache_list_entry_C);
+ v[12]=sizeof(cache_list_fixture.objArray)/sizeof(cache_list_fixture.objArray[0]);v[13]=sizeof(cache_list_entry_C);
 }
-static void*cache_list_cache_owner_C(void){return &nox_server_netCodeCache;}
+static void*cache_list_cache_owner_C(void){return &cache_list_fixture;}
 static void*cache_list_read_pointer_C(void*owner,unsigned cell){return ((void**)owner)[cell];}
 */
 import "C"

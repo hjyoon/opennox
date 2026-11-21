@@ -25,6 +25,7 @@ const (
 // at that record's use, never retried through a PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
 	playerPrefix            *playerDamagePrefix4E17B0
+	wear                    PlayerDamageWear4E17B0
 	Melee                   PlayerDamageMeleeRuntime4E17B0
 	Frame                   func() uint32
 	CoopMode                func() bool

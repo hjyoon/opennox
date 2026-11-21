@@ -98,9 +98,6 @@
 
 int nox_server_handler_PlayerDamage_4E17B0(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int damage, int damage_type);
-#if UINTPTR_MAX == UINT32_MAX
-int nox_server_playerDamagePE32_4E17B0(int target, int source, int weapon, int damage, int damage_type);
-#endif
 void nox_xxx_playerDecrementHPMana_4E20F0(nox_object_t* target, int32_t* output, float amount);
 double sub_4E2220(nox_object_t* target);
 int sub_4E22A0(nox_object_t* target, nox_object_t* source, nox_object_t* weapon,

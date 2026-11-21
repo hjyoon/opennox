@@ -191,9 +191,6 @@ func playerDamageCasterImpactBlock4E17B0(
 	shield := (player && (*PlayerUpdateData)(cached).State == PlayerState16) ||
 		(!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
 	shield = shield && armorFlags&0x3000000 != 0
-	if shield && (typ == object.DamageElectric || typ == object.DamageAirborneElectric) {
-		return false, false, false
-	}
 	mask, sound := uint32(2), 878
 	if !shield {
 		if weaponFlags&0x400 != 0 {
@@ -240,6 +237,9 @@ func playerDamageCasterImpactBlock4E17B0(
 				mask, sound = 0x7ff8000, 894
 			}
 		}
+	}
+	if mask == 2 && (typ == object.DamageElectric || typ == object.DamageAirborneElectric) {
+		return false, false, false
 	}
 	if mask == 0x400 && attack.Class().Has(object.ClassMissile) {
 		if r.ProjectileReflect == nil {
@@ -295,6 +295,10 @@ func playerDamageCasterImpactBlock4E17B0(
 		return reject("missing caster IMPACT block balance")
 	}
 	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
+	if r.wear.Block != nil {
+		r.wear.Block(target, source, weapon, mask, amount, typ)
+		return true, true, false
+	}
 	var item *Object
 	for next := target.InvFirstItem; next != nil; next = next.InvNextItem {
 		if next.Flags().Has(object.FlagEquipped) && uint32(next.SubClass())&mask != 0 {

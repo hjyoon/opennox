@@ -16,6 +16,27 @@ func playerDamageOwnedMonsterShape4E17B0(source, weapon *Object, _ object.Damage
 		weapon.Class().Has(object.ClassMonster) && !weapon.Class().HasAny(object.ClassPlayer|object.ClassWeapon|object.ClassWand|object.ClassMissile)
 }
 
+// PlayerDamageWear4E17B0 binds the whole-inventory armor and block services
+// used by the original damage callback.
+type PlayerDamageWear4E17B0 struct {
+	Armor func(target, source, weapon *Object, damage int32, typ object.DamageType)
+	Block func(target, source, weapon *Object, mask uint32, amount float32, typ object.DamageType)
+}
+
+// PlayerDamageFallback4E17B0 applies the original prefix and damage switch
+// for attacks that fall through the registered player's specialized handlers.
+func PlayerDamageFallback4E17B0(
+	target, source, weapon *Object, damage int32, typ object.DamageType,
+	r PlayerDamageRuntime4E17B0, wear PlayerDamageWear4E17B0,
+) bool {
+	if target == nil {
+		return false
+	}
+	r.wear = wear
+	handled, result := playerDamageNonItem4E17B0(target, source, weapon, damage, typ, r)
+	return handled && result
+}
+
 // Cache target layout/equipment before observer callbacks, but reload live
 // attack positions, classes, ownership, inventory and carry at original use.
 func playerDamageNonItem4E17B0(
@@ -83,7 +104,8 @@ func playerDamageNonItem4E17B0(
 	}
 	// Reflect selects the live attack after observer callbacks. Nonmissile
 	// types16/17 have their original point-FX/audio-only reflection branch.
-	if target.HasEnchant(playerDamageReflectEnchant4E17B0) && (attack.Class().Has(object.ClassMissile) || typ == object.DamageZapRay || typ == object.DamageAirborneElectric) {
+	if attack != nil && target.HasEnchant(playerDamageReflectEnchant4E17B0) &&
+		(attack.Class().Has(object.ClassMissile) || typ == object.DamageZapRay || typ == object.DamageAirborneElectric) {
 		missile := attack.Class().Has(object.ClassMissile)
 		if r.BlockDirection == nil {
 			return reject("missing non-item attack Reflect direction")
@@ -165,7 +187,7 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 	physical := typ == object.DamageBlade || typ == object.DamageCrush || typ == object.DamageImpale || typ == object.DamageExplosion || typ == object.DamageBite || typ == object.DamageClaw || typ == object.DamageImpact
 	electric := typ == object.DamageElectric || typ == object.DamageAirborneElectric
 	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
-	if wearArmor && !playerDamageArmorReady4E17B0(target, r) {
+	if wearArmor && r.wear.Armor == nil && !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported non-item attack armor durability")
 	}
 	effective, wear := damage, damage
@@ -192,7 +214,11 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 		}
 	}
 	if wearArmor {
-		playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)
+		if r.wear.Armor != nil {
+			r.wear.Armor(target, source, weapon, wear, typ)
+		} else {
+			playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)
+		}
 	}
 	if typ >= object.DamageBlade && typ <= object.DamageAirborneElectric && typ != object.DamageDeathMagic {
 		if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); marker != nil && *marker == 0 {

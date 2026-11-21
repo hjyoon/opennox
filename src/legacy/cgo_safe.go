@@ -18,6 +18,7 @@ package legacy
 #cgo CFLAGS: -Dstrcat=nox_strcat
 #cgo CFLAGS: -Dstrcmp=nox_strcmp
 #include <stdbool.h>
+#include <stddef.h>
 */
 import "C"
 import (
@@ -61,55 +62,57 @@ func mem_getPtrSize_go(base, off, size C.uint, ok *C.bool) unsafe.Pointer {
 }
 
 //export nox_malloc
-func nox_malloc(size C.uint) unsafe.Pointer {
+func nox_malloc(size C.size_t) unsafe.Pointer {
 	p, _ := alloc.Malloc(uintptr(size))
 	return p
 }
 
 //export nox_realloc
-func nox_realloc(ptr unsafe.Pointer, size C.uint) unsafe.Pointer {
+func nox_realloc(ptr unsafe.Pointer, size C.size_t) unsafe.Pointer {
 	return alloc.Realloc(ptr, uintptr(size))
 }
 
 //export nox_calloc
-func nox_calloc(num, size C.uint) unsafe.Pointer {
+func nox_calloc(num, size C.size_t) unsafe.Pointer {
 	p, _ := alloc.Calloc(int(num), uintptr(size))
 	return p
 }
 
 //export nox_free
 func nox_free(ptr unsafe.Pointer) {
-	alloc.Free(ptr)
+	if ptr != nil {
+		alloc.FreePtr(ptr)
+	}
 }
 
-//export nox_memset
-func nox_memset(ptr unsafe.Pointer, v C.int, size C.uint) unsafe.Pointer {
-	return alloc.Memset(ptr, byte(v), uintptr(size))
+//export nox_memset_go
+func nox_memset_go(ptr unsafe.Pointer, v C.int, size C.size_t) {
+	alloc.Memset(ptr, byte(v), uintptr(size))
 }
 
 //export nox_memcpy_go
-func nox_memcpy_go(dst, src unsafe.Pointer, size C.uint) unsafe.Pointer {
-	return alloc.Memcpy(dst, src, uintptr(size))
+func nox_memcpy_go(dst, src unsafe.Pointer, size C.size_t) {
+	alloc.Memcpy(dst, src, uintptr(size))
 }
 
 //export nox_memcmp_go
-func nox_memcmp_go(ptr1, ptr2 unsafe.Pointer, size C.uint) int32 {
+func nox_memcmp_go(ptr1, ptr2 unsafe.Pointer, size C.size_t) int32 {
 	return int32(int(alloc.Memcmp(ptr1, ptr2, uintptr(size))))
 }
 
 //export nox_strlen_go
-func nox_strlen_go(ptr *C.char) C.uint {
-	return C.uint(alloc.Strlen(unsafe.Pointer(ptr)))
+func nox_strlen_go(ptr *C.char) C.size_t {
+	return C.size_t(alloc.Strlen(unsafe.Pointer(ptr)))
 }
 
 //export nox_strcpy_go
-func nox_strcpy_go(dst, src *C.char) *C.char {
-	return (*C.char)(alloc.Strcpy(unsafe.Pointer(dst), unsafe.Pointer(src)))
+func nox_strcpy_go(dst, src *C.char) {
+	alloc.Strcpy(unsafe.Pointer(dst), unsafe.Pointer(src))
 }
 
 //export nox_strcat_go
-func nox_strcat_go(dst, src *C.char) *C.char {
-	return (*C.char)(alloc.Strcat(unsafe.Pointer(dst), unsafe.Pointer(src)))
+func nox_strcat_go(dst, src *C.char) {
+	alloc.Strcat(unsafe.Pointer(dst), unsafe.Pointer(src))
 }
 
 //export nox_strcmp_go

@@ -6,11 +6,13 @@ extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern nox_alloc_class* game4_fixture_new_class_go(char* name, int size, int count);
 // Only the declared allocation services are redirected. The reference
 // function definitions and their inputs remain byte-for-byte unchanged.
+#pragma push_macro("calloc")
+#undef calloc
 #define calloc game4_fixture_calloc_go
 #define nox_new_alloc_class game4_fixture_new_class_go
 #include "game4_list_vote_original_reference.h"
 #undef nox_new_alloc_class
-#undef calloc
+#pragma pop_macro("calloc")
 // Keep private static reference state within its C translation unit.
 static nox_vote_5066D0* game4_reference_head_get_native(void) {
  return game4_reference_vote_head_5066D0;

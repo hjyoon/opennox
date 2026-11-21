@@ -84,11 +84,15 @@ static int game4_tiles_test_subtile(float2* at) {
 	return -31;
 }
 
+#pragma push_macro("calloc")
+#pragma push_macro("free")
+#undef calloc
+#undef free
 #define calloc game4_fixture_calloc_go
 #define free game4_fixture_release_go
 #include "game4_tiles_reference.h"
-#undef free
-#undef calloc
+#pragma pop_macro("free")
+#pragma pop_macro("calloc")
 
 static game4_tiles_test_bank* game4_tiles_test_begin(void) {
 	game4_tiles_test_bank* b = calloc(1, sizeof(*b));

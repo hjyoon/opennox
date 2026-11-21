@@ -73,11 +73,15 @@ int world_old_nox_xxx_netReportPlayerStatus_417630(nox_playerInfo*);
 #define nox_xxx_wallCreateAt_410250 wp_ref_wall_create
 #define nox_server_wallAttachDoor wp_ref_wall_attach
 #define nox_xxx_equipClothFindDefByTT_413270 wp_ref_armor
-#define calloc nox_mapgen_alloc_memory
-#define free nox_mapgen_release_memory
-#include "world_player_preserved_reference_40a830.inc"
+#pragma push_macro("free")
+#pragma push_macro("calloc")
 #undef free
 #undef calloc
+#define free nox_mapgen_release_memory
+#define calloc nox_mapgen_alloc_memory
+#include "world_player_preserved_reference_40a830.inc"
+#pragma pop_macro("calloc")
+#pragma pop_macro("free")
 
 // Explicit public calls below cannot be rewritten to private copies.
 #undef nox_xxx_countNonEliminatedPlayersInTeam_40A830

@@ -35,6 +35,8 @@
 
 // Keep each graph allocation with its matching owner. The default service
 // remains CRT; high-address allocation is requested by scoped fixtures.
+#undef calloc
+#undef free
 #define calloc nox_mapgen_alloc_memory
 #define free nox_mapgen_release_memory
 

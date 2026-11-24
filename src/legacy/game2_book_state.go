@@ -243,7 +243,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	*game2BookU(1046676) = uint32(kind)
 	C.nox_client_setRenderGUI(1)
 	*game2BookU(1046680) = 0
-	C.sub_4BEDE0((*C.int2)(memmap.PtrOff(0x5D4594, 1046844)), (*C.int2)(memmap.PtrOff(0x5D4594, 1046668)), &first, &second, 19, 0, C.uintptr_t(uintptr(unsafe.Pointer(C.sub_45D7D0))), nil)
+	sub_4BEDE0((*C.int2)(memmap.PtrOff(0x5D4594, 1046844)), (*C.int2)(memmap.PtrOff(0x5D4594, 1046668)), &first, &second, 19, 0, C.uintptr_t(uintptr(unsafe.Pointer(C.sub_45D7D0))), nil)
 	*game2BookU(1046628) = 0
 	C.obj_5d4594_1046620.field_0 = C.float(*memmap.PtrFloat32(0x5D4594, 1046692) - *memmap.PtrFloat32(0x5D4594, 1046684))
 	C.obj_5d4594_1046620.field_4 = C.float(*memmap.PtrFloat32(0x5D4594, 1046696) - *memmap.PtrFloat32(0x5D4594, 1046688))

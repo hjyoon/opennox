@@ -254,5 +254,5 @@ func Nox_xxx_mapValidateMB_4CF470(a1 string, a2 uint32) int {
 	return int(validateMapFile4CF470(a1, a2))
 }
 func Nox_xxx_copyServerIPAndPort_431790(a1 string) {
-	C.nox_xxx_copyServerIPAndPort_431790(internCStr(a1))
+	nox_xxx_copyServerIPAndPort_431790(internCStr(a1))
 }

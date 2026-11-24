@@ -1,10 +1,3 @@
-// For inet_addr
-#ifdef _WIN32
-#include <winsock.h>
-#else
-#include <arpa/inet.h>
-#endif
-
 #include <math.h>
 
 #include "GAME1.h"
@@ -3294,16 +3287,6 @@ void sub_431290() {
 #endif
 
 
-//----- (00431790) --------------------------------------------------------
-char* nox_xxx_copyServerIPAndPort_431790(char* a1) {
-	char* result; // eax
-
-	result = a1;
-	if (a1) {
-		result = strncpy((char*)getMemAt(0x5D4594, 806060), a1, 0x17u);
-	}
-	return result;
-}
 // 4335F8: variable 'v12' is possibly undefined
 
 //----- (004357A0) --------------------------------------------------------
@@ -3879,64 +3862,3 @@ int sub_43AF40() { return nox_game_createOrJoin_815048; }
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_43AF80() { return dword_5d4594_814548; }
 #endif
-
-//----- (0043AF90) --------------------------------------------------------
-int sub_43AF90(int a1) {
-	int result; // eax
-
-	result = a1;
-	dword_5d4594_814548 = a1;
-	return result;
-}
-
-//----- (0043AFA0) --------------------------------------------------------
-void nox_client_setConnError_43AFA0(int a1) {
-	nox_client_connError_814552 = a1;
-	sub_43AF90(2);
-}
-
-//----- (0043B300) --------------------------------------------------------
-unsigned int nox_client_getServerAddr_43B300() {
-	unsigned int result; // eax
-
-	if (dword_5d4594_815056) {
-		result = inet_addr(dword_5d4594_814624->addr);
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
-//----- (0043B320) --------------------------------------------------------
-int nox_client_getServerPort_43B320() { return dword_5d4594_815056 != 0 ? *getMemU32Ptr(0x5D4594, 814604) : 0; }
-
-//----- (0043B340) --------------------------------------------------------
-int sub_43B340() {
-	int result; // eax
-
-	if (dword_5d4594_815056) {
-		result = dword_5d4594_814624->flags;
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
-//----- (0043B460) --------------------------------------------------------
-int sub_43B460() {
-	sub_438370();
-	nox_wnd_xxx_815040->fnc_done_out = sub_43B490;
-	nox_xxx_wnd_46C6E0(dword_5d4594_815000);
-	return nox_xxx_wnd_46ABB0(dword_5d4594_814984, 0);
-}
-
-//----- (0043B490) --------------------------------------------------------
-int sub_43B490() {
-	if (nox_game_getStateCode_43BE10() == 1700) {
-		return sub_438330();
-	}
-	nox_window_set_hidden(nox_wol_wnd_world_814980, 1);
-	nox_window_set_hidden(dword_5d4594_815000, 1);
-	nox_client_setCursorType_477610(0);
-	return 1;
-}

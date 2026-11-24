@@ -164,7 +164,7 @@ func sub_43CF40() { Sub_43CF40() }
 func sub_43CF70() { Sub_43CF70() }
 
 func ClientGetServerPort() int {
-	return int(C.nox_client_getServerPort_43B320())
+	return int(nox_client_getServerPort_43B320())
 }
 
 func Sub_43AF90(v int) {
@@ -187,7 +187,7 @@ func Nox_xxx_netSendPacket_4E5030(
 }
 
 func Nox_client_getServerAddr_43B300() netip.Addr {
-	return int2ip(uint32(C.nox_client_getServerAddr_43B300()))
+	return int2ip(uint32(nox_client_getServerAddr_43B300()))
 }
 
 func Nox_xxx_netSendLineMessage_4D9EB0(u *server.Object, s string) bool {
@@ -486,4 +486,10 @@ func Nox_xxx_netSendSimpleObject2_4DF360(pli int, obj *server.Object) {
 }
 func Nox_xxx_netCode2ChatBubble_48D850(a1 int) int {
 	return int(uintptr(unsafe.Pointer(nox_xxx_netCode2ChatBubble_48D850(C.int(a1)))))
+}
+
+//export sub_43AF90
+func sub_43AF90(state C.int) C.int {
+	C.dword_5d4594_814548 = C.uint(state)
+	return state
 }

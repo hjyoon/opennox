@@ -65,6 +65,11 @@ func (s *Server) questNextPlayerUnit4DA7F0(unit *Object) *Object {
 	return nil
 }
 
+// NextPlayerUnit4DA7F0 follows the player list through the unit's native update record.
+func (s *Server) NextPlayerUnit4DA7F0(unit *Object) *Object {
+	return s.questNextPlayerUnit4DA7F0(unit)
+}
+
 // QuestMaybeWarp4E8F60 binds the restored warp eligibility contract to native
 // Object, PlayerUpdateData and Player pointers.
 func (s *Server) QuestMaybeWarp4E8F60(runtime QuestMaybeWarpRuntime4E8F60) int32 {

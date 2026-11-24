@@ -1,10 +1,10 @@
 package legacy
 
 /*
-#include "defs.h"
+#include "GAME3_2.h"
+#include "cgo_const.h"
 #include "script_raise_zombie_516d00.h"
 
-nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1);
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
 int sub_467B00(int type_id, int amount);
 extern int dword_5d4594_2386848;
@@ -12,6 +12,9 @@ extern unsigned int dword_5d4594_2386852;
 */
 import "C"
 import (
+	"strings"
+	"unsafe"
+
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -24,10 +27,25 @@ var (
 )
 
 func Nox_xxx_getObjectByScrName_4DA4F0(name string) *server.Object {
-	cstr := CString(name)
-	defer StrFree(cstr)
-	return asObjectS(C.nox_xxx_getObjectByScrName_4DA4F0(cstr))
+	name, _, _ = strings.Cut(name, "\x00")
+	return GetServer().S().Objs.FindByScriptName(name)
 }
+
+//export nox_xxx_getObjectByScrName_4DA4F0
+func nox_xxx_getObjectByScrName_4DA4F0(name *C.char) *nox_object_t {
+	return asObjectC(GetServer().S().Objs.FindByScriptName(GoString(name)))
+}
+
+//export sub_4DA5C0
+func sub_4DA5C0(obj *nox_object_t, name *C.nox_cgo_const_char) *nox_object_t {
+	return asObjectC(asObjectS(obj).FindByScriptName(GoStringP(unsafe.Pointer(name)), true))
+}
+
+//export sub_4DA660
+func sub_4DA660(obj *nox_object_t, name *C.nox_cgo_const_char) *nox_object_t {
+	return asObjectC(asObjectS(obj).FindByScriptName(GoStringP(unsafe.Pointer(name)), false))
+}
+
 func Nox_server_scriptMoveTo_5123C0(a1 *server.Object, a2 *server.Waypoint) {
 	GetServer().S().ScriptMoveTo5123C0(a1, a2, server.ScriptMoveRuntime5123C0{
 		MoverTypeID: func() uint32 {

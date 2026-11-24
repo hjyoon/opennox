@@ -12,6 +12,7 @@ package legacy
 #include "GAME4_1.h"
 #include "common__net_list.h"
 #include "defs.h"
+typedef const nox_object_t nox_player_const_object_t;
 extern nox_window* dword_5d4594_1046492;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int nox_player_netCode_85319C;
@@ -206,6 +207,20 @@ func nox_common_playerInfoGetFirst_416EA0() *nox_playerInfo {
 //export nox_common_playerInfoGetNext_416EE0
 func nox_common_playerInfoGetNext_416EE0(it *nox_playerInfo) *nox_playerInfo {
 	return (*nox_playerInfo)(GetServer().S().Players.Next(asPlayerS(it)).C())
+}
+
+//export nox_xxx_getFirstPlayerUnit_4DA7C0
+func nox_xxx_getFirstPlayerUnit_4DA7C0() *nox_object_t {
+	return asObjectC(GetServer().S().Players.FirstUnit())
+}
+
+//export nox_xxx_getNextPlayerUnit_4DA7F0
+func nox_xxx_getNextPlayerUnit_4DA7F0(obj *C.nox_player_const_object_t) *nox_object_t {
+	unit := asObjectS((*nox_object_t)(unsafe.Pointer(obj)))
+	if unit == nil || !unit.ObjClass.Has(object.ClassPlayer) {
+		return nil
+	}
+	return asObjectC(GetServer().S().NextPlayerUnit4DA7F0(unit))
 }
 
 //export nox_common_playerInfoCount_416F40

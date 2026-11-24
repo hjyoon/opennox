@@ -13,6 +13,7 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME5.h"
 #include "GAME5_2.h"
+#include "client__gui__chathelp.h"
 extern unsigned int dword_5d4594_2649712;
 extern unsigned int dword_5d4594_2660032;
 extern unsigned int dword_5d4594_814548;
@@ -416,8 +417,49 @@ func nox_xxx_servMinimapRevealFlag_4DE380(recipient C.int) C.int {
 func Nox_xxx_netPlayerObjSend_518C30(a1 *server.Object, a2 *server.Object, a3 int, a4 int) int {
 	return int(C.nox_xxx_netPlayerObjSend_518C30(asObjectC(a1), asObjectC(a2), C.int(a3), C.int(a4)))
 }
-func Nox_xxx_gameServerReadyMB_4DD180(a1 int) {
-	C.nox_xxx_gameServerReadyMB_4DD180(C.int(a1))
+func Nox_xxx_gameServerReadyMB_4DD180(index int) {
+	nox_xxx_gameServerReadyMB_4DD180(C.int(index))
+}
+
+//export nox_xxx_gameServerReadyMB_4DD180
+func nox_xxx_gameServerReadyMB_4DD180(index C.int) C.int {
+	outer := GetServer()
+	s := outer.S()
+	player := s.Players.ByInd(ntype.PlayerInd(index))
+	if player == nil {
+		return 0
+	}
+	s.NeedPlayerStatus4174F0(player, 16)
+	if noxflags.HasGame(noxflags.GameOnline) && !noxflags.HasGame(noxflags.GameModeChat) {
+		if player.PlayerUnit != nil {
+			const invulnerable = int32(server.ENCHANT_INVULNERABLE)
+			spellBuffOffExportImpl4FF5B0(player.PlayerUnit, invulnerable)
+			buffApplyExportImpl4FF380(player.PlayerUnit, invulnerable, int16(5*int(uint16(gameFPS()))), 5)
+		}
+		for obj := s.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Class().Has(object.ClassFlag) {
+				s.Players.Nox_xxx_netMarkMinimapObject_417190(ntype.PlayerInd(index), obj, 1)
+			}
+		}
+	}
+	if player.Field3680&1 != 0 && player.PlayerUnit != nil {
+		player.SetPos3632(player.PlayerUnit.PosVec)
+		if noxflags.HasGame(noxflags.GameModeCoopTeam) {
+			Nox_xxx_playerLeaveObserver_0_4E6AA0(player)
+		}
+	}
+	outer.Nox_xxx_wall_4DF1E0(int(index))
+	if noxflags.HasGame(noxflags.GameModeQuest) && outer.GetFlag3592() {
+		nox_xxx_netGauntlet_4D9E70(index)
+	}
+	if index == server.HostPlayerIndex && noxflags.HasGame(noxflags.GameModeChat) {
+		if Get_nox_server_sanctuaryHelp_54276() == 1 {
+			C.nox_xxx_cliShowHelpGui_49C560()
+		} else {
+			Nox_xxx_guiServerOptsLoad_457500()
+		}
+	}
+	return C.int(Nox_xxx_netStatsMultiplier_4D9C20(player.PlayerUnit))
 }
 func Nox_xxx_teamCompare2_419180(t *server.ObjectTeam, id server.TeamID) int {
 	return int(C.nox_xxx_teamCompare2_419180((*C.nox_object_team_t)(unsafe.Pointer(t)), C.uchar(id)))

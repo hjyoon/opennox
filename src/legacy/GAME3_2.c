@@ -83,7 +83,6 @@ extern uint32_t dword_5d4594_1548480;
 extern nox_window* dword_5d4594_1523048;
 extern nox_window* dword_5d4594_1523044;
 extern nox_window* dword_5d4594_1523032;
-extern uint32_t nox_server_sanctuaryHelp_54276;
 extern uint32_t dword_5d4594_3835312;
 extern uint32_t dword_5d4594_3835388;
 extern uint32_t dword_5d4594_3835348;
@@ -3774,50 +3773,6 @@ int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
 			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, (unsigned char*)v6,
 										   v3 * LOBYTE(v6[4]) + 11);
 		}
-	}
-	return 0;
-}
-
-//----- (004DD180) --------------------------------------------------------
-int nox_xxx_wall_4DF1E0(int a1);
-int nox_xxx_gameServerReadyMB_4DD180(int a1) {
-	nox_playerInfo* pl = nox_common_playerInfoFromNum_417090(a1);
-	if (pl) {
-		nox_xxx_netNeedTimestampStatus_4174F0(pl, 16);
-		if (nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(128)) {
-			if (pl->playerUnit) {
-				nox_xxx_spellBuffOff_4FF5B0(pl->playerUnit, 23);
-				nox_xxx_buffApplyTo_4FF380(pl->playerUnit, 23, 5 * (uint16_t)gameFPS(), 5);
-			}
-			for (nox_object_t* obj = nox_server_getFirstObject_4DA790(); obj; obj = nox_server_getNextObject_4DA7A0(obj)) {
-				if (obj->obj_class & 0x10000000) {
-					nox_xxx_netMarkMinimapObject_417190(a1, obj, 1);
-				}
-			}
-		}
-		if ((pl->field_3680 & 1) == 1 && pl->playerUnit) {
-			pl->pos_x_3632 = pl->playerUnit->x;
-			pl->pos_y_3636 = pl->playerUnit->y;
-			if (nox_common_gameFlags_check_40A5C0(512)) {
-				nox_xxx_playerLeaveObserver_0_4E6AA0(pl);
-			}
-		}
-		nox_xxx_wall_4DF1E0(a1);
-		if (nox_common_gameFlags_check_40A5C0(4096) && sub_40A300() == 1) {
-			nox_xxx_netGauntlet_4D9E70(a1);
-		}
-		if (a1 == 31 && nox_common_gameFlags_check_40A5C0(128)) {
-			if (!nox_server_connectionType_3596 && 0) {
-				sub_49C820();
-				return nox_xxx_netStatsMultiplier_4D9C20(pl->playerUnit);
-			}
-			if (nox_server_sanctuaryHelp_54276 == 1) {
-				nox_xxx_cliShowHelpGui_49C560();
-				return nox_xxx_netStatsMultiplier_4D9C20(pl->playerUnit);
-			}
-			nox_xxx_guiServerOptsLoad_457500();
-		}
-		return nox_xxx_netStatsMultiplier_4D9C20(pl->playerUnit);
 	}
 	return 0;
 }

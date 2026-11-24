@@ -52,3 +52,7 @@ func callJoinMinimapRevealC(index int32) int32 {
 func callJoinObjectSyncC(index int32) {
 	C.sub_4DE410(C.int(index))
 }
+
+func callGameServerReadyC(index int32) int32 {
+	return int32(C.nox_xxx_gameServerReadyMB_4DD180(C.int(index)))
+}

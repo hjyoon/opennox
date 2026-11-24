@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2_3.h"
-#include "client__network__deathmsg.h"
 
 extern int nox_win_width;
 extern int nox_win_height;
@@ -67,16 +66,8 @@ func sub_495210(data *C.uint8_t) C.int {
 		frame:     gameFrame(),
 	}
 	C.dword_5d4594_1203836 = next
-	// The console formatter reads only the three participant words.
-	words := [6]C.uint16_t{
-		C.uint16_t(read(packet[0:2])),
-		C.uint16_t(ring[index].attacker),
-		C.uint16_t(ring[index].assistant),
-		C.uint16_t(ring[index].victim),
-		C.uint16_t(ring[index].weapon),
-		C.uint16_t(packet[10]),
-	}
-	return C.sub_4952E0(&words[0])
+	words := [4]C.uint16_t{0, C.uint16_t(ring[index].attacker), C.uint16_t(ring[index].assistant), C.uint16_t(ring[index].victim)}
+	return sub_4952E0(&words[0])
 }
 
 //export sub_495430

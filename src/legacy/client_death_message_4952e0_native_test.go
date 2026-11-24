@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// Compile the death-message and retired packet-ring bodies against native
+// Compile the retired death-message and packet-ring bodies against native
 // Player headers and the production UTF-16 formatter. Lookup/localization/
 // console are controlled services; this is not a full network or GUI test.
 func TestClientDeathMessage4952E0NativeBodies(t *testing.T) {
@@ -20,7 +20,7 @@ func TestClientDeathMessage4952E0NativeBodies(t *testing.T) {
 	for _, part := range []struct {
 		file, start, end, marker string
 	}{
-		{"client__network__deathmsg.c", "int sub_4952E0(uint16_t* a1) {", "", "// PRODUCTION_DEATH_MESSAGE"},
+		{"testdata/retired-game-sources/client__network__deathmsg.c.txt", "int sub_4952E0(uint16_t* a1) {", "", "// PRODUCTION_DEATH_MESSAGE"},
 		{"testdata/retired-game-sources/death-feed-495210.c.txt", "static uint16_t nox_deathmsg_read_u16(const uint8_t* data) {", "//----- (00495430)", "// PRODUCTION_DEATH_PACKET"},
 	} {
 		source, err := os.ReadFile(part.file)

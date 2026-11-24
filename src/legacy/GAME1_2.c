@@ -1,3 +1,10 @@
+// For network byte-order conversions.
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
+#endif
+
 #include <math.h>
 
 #include "GAME1.h"

@@ -190,8 +190,8 @@ func nox_gui_itemAmount_init_4BFEF0() C.int {
 	return 1
 }
 
-func itemAmountViewport() noxrender.Viewport {
-	words := (*[13]uint32)(g2ServerMem(1319108))
+func packedGUIViewport(offset uintptr) noxrender.Viewport {
+	words := (*[13]uint32)(g2ServerMem(offset))
 	pair := func(i int) image.Point {
 		return image.Pt(int(int32(words[i])), int(int32(words[i+1])))
 	}
@@ -219,7 +219,7 @@ func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
 	drawImage(base)
 	item := asDrawable(C.nox_gui_itemAmount_item_1319256)
 	item.SetPos(image.Pt(int(int32(x+C.int(C.dword_587000_183456))), int(int32(y+C.int(C.dword_587000_183460)))))
-	viewport := itemAmountViewport()
+	viewport := packedGUIViewport(1319108)
 	item.CallDraw(&viewport)
 
 	root := itemAmountRoot()

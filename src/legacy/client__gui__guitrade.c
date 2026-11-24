@@ -18,31 +18,8 @@ extern nox_window* dword_5d4594_1320940;
 extern int nox_win_width;
 extern int nox_win_height;
 
-static nox_gui_trade_slot nox_gui_trade_local_slots[NOX_GUI_TRADE_SLOT_COUNT];
-static nox_gui_trade_slot nox_gui_trade_remote_slots[NOX_GUI_TRADE_SLOT_COUNT];
-
-nox_gui_trade_slot* nox_gui_trade_slot_at(int remote, int index) {
-	if (index < 0 || index >= NOX_GUI_TRADE_SLOT_COUNT) {
-		return NULL;
-	}
-	return remote ? &nox_gui_trade_remote_slots[index] : &nox_gui_trade_local_slots[index];
-}
-
-void nox_gui_trade_slots_reset(void) {
-	for (int remote = 0; remote < 2; remote++) {
-		for (int index = 0; index < NOX_GUI_TRADE_SLOT_COUNT; index++) {
-			nox_gui_trade_slot* slot = nox_gui_trade_slot_at(remote, index);
-			if (slot->drawable) {
-				nox_xxx_spriteDelete_45A4B0(slot->drawable);
-			}
-			memset(slot, 0, sizeof(*slot));
-		}
-	}
-}
-
-static uint16_t nox_gui_trade_read_u16(const uint8_t* data) {
-	return (uint16_t)data[0] | (uint16_t)data[1] << 8;
-}
+nox_gui_trade_slot nox_gui_trade_local_slots[NOX_GUI_TRADE_SLOT_COUNT];
+nox_gui_trade_slot nox_gui_trade_remote_slots[NOX_GUI_TRADE_SLOT_COUNT];
 
 //----- (004C09D0) --------------------------------------------------------
 int sub_4C09D0() {
@@ -109,37 +86,4 @@ int sub_4C09D0() {
 	*getMemU32Ptr(0x5D4594, 1320180) = nox_xxx_gLoadImg_42F970("TradeCancelLit");
 	*getMemU32Ptr(0x5D4594, 1320184) = nox_xxx_gLoadImg_42F970("TradeGold");
 	return 1;
-}
-
-//----- (004C15D0) --------------------------------------------------------
-int sub_4C15D0(const uint8_t* data) {
-	if (!dword_5d4594_1320964 || !data) {
-		return 0;
-	}
-	uint32_t item_id = nox_gui_trade_read_u16(data + 2);
-	nox_gui_trade_slot* found = NULL;
-	for (int remote = 0; remote < 2 && !found; remote++) {
-		for (int index = 0; index < NOX_GUI_TRADE_SLOT_COUNT; index++) {
-			nox_gui_trade_slot* slot = nox_gui_trade_slot_at(remote, index);
-			if (sub_4C1760(slot, item_id)) {
-				found = slot;
-				break;
-			}
-		}
-	}
-	if (!found) {
-		wchar2_t* message =
-			nox_strman_loadString_40F1D0("TradeGUIItemNotFound", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 1141);
-		nox_xxx_printCentered_445490(message);
-		return 0;
-	}
-	found->total_cost -= found->total_cost / found->count;
-	sub_4C1710(found, item_id);
-	found->count--;
-	if (found->count == 0) {
-		nox_xxx_spriteDelete_45A4B0(found->drawable);
-		found->drawable = NULL;
-		found->total_cost = 0;
-	}
-	return (int)found->count;
 }

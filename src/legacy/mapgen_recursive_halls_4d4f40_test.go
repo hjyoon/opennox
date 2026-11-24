@@ -39,6 +39,18 @@ func TestMapgenHallExpansionKindKeepsRandomDrawOrder(t *testing.T) {
 	}
 }
 
+func TestMapgenRoomExpansionUsesUnblockedDirections(t *testing.T) {
+	InitBlobData()
+	preserveLegacyCRTRand315(t)
+	oldTicks := PlatformTicks
+	PlatformTicks = func() uint64 { return 0 }
+	t.Cleanup(func() { PlatformTicks = oldTicks })
+	result, links := mapgenRoomExpansionFixture()
+	if result != 1 || links[0] != 1 || links[1] == 0 || links[2] == 0 || links[3] == 0 {
+		t.Fatalf("expansion returned %d with direction counts %v, want the original north link and new links on the other three sides", result, links)
+	}
+}
+
 func TestMapgenHallRecordNative523E30(t *testing.T) {
 	for _, tc := range []struct {
 		kind, width, depth int32

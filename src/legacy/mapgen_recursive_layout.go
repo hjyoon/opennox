@@ -188,9 +188,9 @@ func sub_4D5350(room *C.uint8_t, depth, hallDepth, hallSize C.int, avoid *C.uint
 	}
 	nox_xxx_mapGenSetFlags_5235F0(-101)
 	if (*mapgenRoomGeometry)(unsafe.Pointer(room)).kind == 1 {
-		return C.nox_xxx_mapGenFillRoom_4D53B0(room, depth, hallDepth, hallSize, avoid)
+		return nox_xxx_mapGenFillRoom_4D53B0(room, depth, hallDepth, hallSize, avoid)
 	}
-	return C.sub_4D5630(room, depth, hallDepth, hallSize, avoid)
+	return sub_4D5630(room, depth, hallDepth, hallSize, avoid)
 }
 
 //export sub_4D5D20

@@ -196,6 +196,41 @@ func mapgenHallExpansionKindFixture(seed, kind uint32, width, height int32) int3
 	return int32(C.sub_4D5D20((*C.uint32_t)(unsafe.Pointer(&room))))
 }
 
+func mapgenRoomExpansionFixture() (int32, [4]uint8) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	theme := mapgenExpansionTheme()
+	words := (*[mapgenThemeWordCount]C.uint32_t)(unsafe.Pointer(theme))
+	saved, joinRate := *words, C.dword_5d4594_1549844
+	defer func() { *words, C.dword_5d4594_1549844 = saved, joinRate }()
+	*words = [mapgenThemeWordCount]C.uint32_t{
+		1: 6, 3: 2, 8: 5, 16: C.uint32_t(math.Float32bits(4096)), 17: 128, 18: 2,
+	}
+	C.dword_5d4594_1549844 = 0
+	if C.sub_520EA0(theme) == 0 {
+		return 0, [4]uint8{}
+	}
+	defer C.sub_520F80()
+	defer C.nox_xxx_mapGenFreeTopRoom_521A40()
+	root := unsafe.Pointer(C.nox_xxx_mapGenMakeRoomStruct_521940(15, 15))
+	if root == nil {
+		return 0, [4]uint8{}
+	}
+	point := C.float2{}
+	C.nox_xxx_mapGenSetRoomPos_521880((*C.uint32_t)(root), &point)
+	C.nox_xxx_mapGenAddNewRoom_521730((*C.uint32_t)(root))
+	neighbor := unsafe.Pointer(C.nox_xxx_mapGenMakeRoomStruct_521940(5, 5))
+	if neighbor == nil {
+		return 0, [4]uint8{}
+	}
+	defer C.sub_521A10(neighbor)
+	room := (*C.uint8_t)(root)
+	C.nox_mapgenRoomLinkNative_521900(room, (*C.uint8_t)(neighbor), 0)
+	nox_platform_srand(1)
+	result := C.nox_xxx_mapGenFillRoom_4D53B0(room, 0, 0, 0, nil)
+	return int32(result), (*mapgenRoomLinkRecord)(root).counts
+}
+
 func mapgenHallRecordFixture(kind, width, depth int32) [9]uint32 {
 	restore := mapgenHighFixtureMemory()
 	defer restore()

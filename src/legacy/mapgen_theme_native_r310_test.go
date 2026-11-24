@@ -18,28 +18,23 @@ const mapgenThemeReferenceR310 = "testdata/mapgen_theme_before_go.c"
 // original offsets, dispatch, partial writes and original bounded input domain.
 // A real encrypted-binfile/CGo integration is exercised separately.
 func TestMapgenThemeNativeOriginalContractsR310(t *testing.T) {
-	source, err := os.ReadFile("GAME4_2.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	text := strings.ReplaceAll(string(source), "\r\n", "\n")
 	archive, err := os.ReadFile(mapgenThemeReferenceR310)
 	if err != nil {
 		t.Fatal(err)
 	}
 	reference := strings.ReplaceAll(string(archive), "\r\n", "\n")
 	var bodies []string
-	for _, item := range []struct{ input, start, end string }{
-		{reference, "int nox_xxx_mapGenSpellIdByName_51E1D0(", "\n// 51E1D0:"},
-		{text, "int nox_mapgenReadAlgDataNative_51EBB0(", "\n//----- (0051EFB0)"},
-		{text, "int nox_mapgenReadSpellSetNative_51EFB0(", "\n//----- (0051F030)"},
-		{text, "int nox_mapgenReadExitNative_51F800(", "\n//----- (0051F9F0)"},
-		{reference, "int nox_mapgenReadThemeNative_51E260(", "\n//----- (0051E540)"},
+	for _, item := range []struct{ start, end string }{
+		{"int nox_xxx_mapGenSpellIdByName_51E1D0(", "\n// 51E1D0:"},
+		{"int nox_mapgenReadAlgDataNative_51EBB0(", "\n//----- (0051EFB0)"},
+		{"int nox_mapgenReadSpellSetNative_51EFB0(", "\n//----- (0051F030)"},
+		{"int nox_mapgenReadExitNative_51F800(", "\n//----- (0051F9F0)"},
+		{"int nox_mapgenReadThemeNative_51E260(", "\n//----- (0051E540)"},
 	} {
-		if strings.Count(item.input, item.start) != 1 || strings.Count(item.input, item.end) != 1 {
+		if strings.Count(reference, item.start) != 1 || strings.Count(reference, item.end) != 1 {
 			t.Fatalf("nonunique complete compatibility body: %s", item.start)
 		}
-		_, tail, _ := strings.Cut(item.input, item.start)
+		_, tail, _ := strings.Cut(reference, item.start)
 		body, _, ok := strings.Cut(tail, item.end)
 		if !ok {
 			t.Fatalf("missing production body boundary: %s", item.start)

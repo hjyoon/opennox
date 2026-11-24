@@ -86,9 +86,15 @@ func sub_51E630(file *C.FILE) C.int {
 
 //export sub_51E570
 func sub_51E570(file *C.FILE, dest *C.uint8_t) C.int {
+	return mapgenReadPlainToken(file, func(index int, value byte) {
+		*(*byte)(unsafe.Add(unsafe.Pointer(dest), index)) = value
+	})
+}
+
+func mapgenReadPlainToken(file *C.FILE, put func(int, byte)) C.int {
 	return C.int(mapGenPlainToken51E570(
 		func(value *byte) int32 { return mapGenTokenReadByte(file, value) },
-		func(index int, value byte) { *(*byte)(unsafe.Add(unsafe.Pointer(dest), index)) = value },
+		put,
 		func(value byte) bool { return C.nox_mapgen_token_isspace(C.uchar(value)) != 0 },
 		mapGenTokenNextLine,
 	))

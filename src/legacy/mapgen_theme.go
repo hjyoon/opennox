@@ -32,9 +32,9 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 		var result C.int
 		switch mapgenUppercaseToken(GoString(text)) {
 		case "ALGORITHM_DATA":
-			result = C.nox_mapgenReadAlgDataNative_51EBB0(data, file)
+			result = nox_mapgenReadAlgDataNative_51EBB0(data, file)
 		case "EXIT":
-			result = C.nox_mapgenReadExitNative_51F800(data, file)
+			result = nox_mapgenReadExitNative_51F800(data, file)
 		case "PREFAB":
 			result = C.nox_xxx_genReadPrefab_520BF0(data, file)
 		case "AMBIENT_LIGHT":
@@ -46,7 +46,7 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 			}
 			continue
 		case "SPELL_SET":
-			result = C.nox_mapgenReadSpellSetNative_51EFB0(data, file)
+			result = nox_mapgenReadSpellSetNative_51EFB0(data, file)
 		case "ARMOR_SET":
 			result = C.nox_xxx_genReadArmorSet_51F640(data, file)
 		case "WEAPON_SET":

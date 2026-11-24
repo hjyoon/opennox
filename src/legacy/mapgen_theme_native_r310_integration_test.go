@@ -105,7 +105,11 @@ END
 		{"native pointers", "native", valid, false, true},
 		{"registered high-bit name token", "token", valid, true, true},
 		{"original bounded path capacity", strings.Repeat("T", 244), valid, false, true},
+		{"comment resets the algorithm value", "algorithm-comment", strings.Replace(valid, "midHallLength\n17", "midHallLength\ndiscard// comment\n17", 1), false, true},
 		{"partial ambient EOF", "incomplete", "AMBIENT_LIGHT\n12\n34\n", false, false},
+		{"exit record limit", "exit-limit", "EXIT\n" + strings.Repeat("OBJECT\nExitN\nNORTH\n", 5) + "END\n", false, false},
+		{"exit name limit", "exit-name-limit", "EXIT\nOBJECT\n" + strings.Repeat("X", 60) + "\nNORTH\nEND\n", false, false},
+		{"destination limit", "destination-limit", "EXIT\nLINKDATA\n" + strings.Repeat("X", 60) + "\nEND\n", false, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			path := filepath.Join("mapgen", tc.fileName+".thm")
@@ -141,8 +145,25 @@ END
 					}
 				}
 				addresses["room"], addresses["hall"] = got.roomAddress, got.hallAddress
-			} else if got.words[134] != 12 || got.words[135] != 34 || got.words[136] != 0 || got.words[23] != 0 || got.words[31] != 0 {
-				t.Fatalf("premature EOF lost its original partial writes: %+v", got)
+			} else {
+				switch tc.fileName {
+				case "incomplete":
+					if got.words[134] != 12 || got.words[135] != 34 || got.words[136] != 0 || got.words[23] != 0 || got.words[31] != 0 {
+						t.Fatalf("premature EOF lost its original partial writes: %+v", got)
+					}
+				case "exit-limit":
+					if got.words[118] != 4 || got.exitName != "ExitN" || got.linkData != "" {
+						t.Fatalf("fifth exit changed populated records or destination: %+v", got)
+					}
+				case "exit-name-limit":
+					if got.words[118] != 0 || got.exitName != "" {
+						t.Fatalf("oversized exit name was written: %+v", got)
+					}
+				case "destination-limit":
+					if got.linkData != "" || got.words[134] != 0 {
+						t.Fatalf("oversized destination changed theme data: %+v", got)
+					}
+				}
 			}
 			files.RLock()
 			found := 0

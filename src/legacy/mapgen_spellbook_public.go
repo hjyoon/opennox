@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME4_2.h"
+#include "cgo_const.h"
 */
 import "C"
 
@@ -73,7 +74,7 @@ func nox_xxx_mapGenMakeSpellbook_5220E0(theme *C.uint8_t, name *C.nox_mapgen_spe
 			return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(start), C.int(end)))
 		},
 		spellID: func() int {
-			return int(C.nox_xxx_mapGenSpellIdByName_51E1D0(namePtr))
+			return int(nox_xxx_mapGenSpellIdByName_51E1D0((*C.nox_cgo_const_char)(namePtr)))
 		},
 		finish: func(unit *server.Object, id byte) {
 			nox_xxx_mapGenFinishSpellbook_527DB0(asObjectC(unit), C.char(id))

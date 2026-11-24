@@ -38,7 +38,6 @@
 #include "server__script__script.h"
 
 extern uint32_t dword_5d4594_2488620;
-extern uint32_t dword_5d4594_3835360;
 extern uint32_t dword_5d4594_2488728;
 extern uint32_t dword_5d4594_2489436;
 extern uint32_t dword_5d4594_2488724;
@@ -47,11 +46,7 @@ extern uint32_t dword_5d4594_2487932;
 extern uint32_t nox_xxx_lightningOwner_5d4594_2487900;
 extern uint32_t dword_587000_261388;
 extern uint32_t dword_5d4594_2488608;
-extern uint32_t dword_5d4594_3835348;
-extern uint32_t dword_5d4594_3835352;
 extern uint32_t nox_xxx_lightningClosestTargetDistance_5d4594_2487912;
-extern uint32_t dword_5d4594_3835356;
-extern uint32_t dword_5d4594_2487248;
 extern uint64_t qword_581450_10176;
 extern uint64_t qword_581450_9512;
 extern uint64_t qword_581450_9544;
@@ -59,7 +54,6 @@ extern uint32_t dword_5d4594_2488604;
 extern uint32_t nox_xxx_lightningTargetArrayIndex_5d4594_2487904;
 extern uint32_t nox_xxx_lightningTarget_5d4594_2487908;
 extern uint32_t dword_5d4594_2650652;
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern unsigned int gameex_flags;
 
 int nox_xxx_waypoint_579F00(float2* a1, nox_object_t* a2);
@@ -5162,150 +5156,6 @@ char* sub_542BF0(int a1, int a2, int a3) {
 }
 #endif
 // 543110: using guessed type char NewFileName[2048];
-
-//----- (00543680) --------------------------------------------------------
-int sub_543680(float* position) {
-    if (dword_5d4594_3835356 ==255) return 1;
-    float2 fixed;
-    int result =nox_xxx_mapGenFixCoords_4D3D90((float2*)position,&fixed);
-    if (result) {
-        // The original supplied only these four scalar fields. Initialize
-        // remaining transient brush state explicitly for portable C.
-        nox_floor_brush_t brush ={
-            .tile_id =*getMemU32Ptr(0x973F18,35912),
-            .variation =dword_5d4594_3835348,
-            .edge_id =dword_5d4594_3835356,
-            .edge_variation =dword_5d4594_3835360,
-        };
-        dword_5d4594_3835352 =1;
-        int2 point ={(long long)fixed.field_0,(long long)fixed.field_4};
-        result =sub_5437E0(&point.field_0,&brush,46);
-        dword_5d4594_3835352 =0;
-    }
-    return result;
-}
-
-//----- (005437E0) --------------------------------------------------------
-int sub_5437E0(int* position, nox_floor_brush_t* brush, int step) {
-    double px =(double)position[0] +11.5;
-    double py =(double)position[1] +11.5;
-    int x =(long long)(px *0x1.642c86p-6f);
-    float rounded_y =py;
-    int y =(long long)(py *0x1.642c86p-6f);
-    int remainder_x =(int)(long long)px %46;
-    int remainder_y =(long long)rounded_y %46;
-    *getMemU32Ptr(0x973F18,22200) =0;
-    dword_5d4594_2487248 =0;
-    int tile =step;
-    if (x >0 && x <127 && y >0 && y <127) {
-        int selected_x =x;
-        int selected_y =y;
-        int layer;
-        if (remainder_x <=remainder_y) {
-            if (step -remainder_x <=remainder_y) layer =2;
-            else { --selected_x; layer =1; }
-        } else if (step -remainder_x <=remainder_y) layer =1;
-        else { --selected_y; layer =2; }
-        obj_5D4594_2650668_t* cell =&ptr_5D4594_2650668[selected_x][selected_y];
-        tile =layer ==1 ?cell->field_1 :cell->field_6;
-        sub_51DD50(selected_x,selected_y,layer,tile);
-    }
-    // This worklist is3 scalar32 values per entry, independent of pointer size.
-    for (int i =0; i <(int)dword_5d4594_2487248; ++i) {
-        uint32_t* entry =getMemU32Ptr(0x973F18,16200 +12 *i);
-        x =entry[0];
-        y =entry[1];
-        uint32_t layer =entry[2];
-        if (layer &2) {
-            sub_51DD50(x,y,1,tile);
-            sub_51DD50(x,y +1,1,tile);
-            sub_51DD50(x -1,y,1,tile);
-            sub_51DD50(x -1,y +1,1,tile);
-        } else if (layer &1) {
-            sub_51DD50(x +1,y,2,tile);
-            sub_51DD50(x +1,y -1,2,tile);
-            sub_51DD50(x,y,2,tile);
-            sub_51DD50(x,y -1,2,tile);
-        }
-    }
-    uint32_t queue_x,queue_y,layer;
-    while (sub_51DE30(&queue_x,&queue_y,&layer)) {
-        x =queue_x;
-        y =queue_y;
-        if (layer &2) {
-            sub_543BC0(x,y,1,tile,brush,1);
-            sub_543BC0(x,y +1,1,tile,brush,4);
-            sub_543BC0(x -1,y,1,tile,brush,3);
-            sub_543BC0(x -1,y +1,1,tile,brush,6);
-            sub_543BC0(x,y -1,2,tile,brush,0);
-            sub_543BC0(x +1,y,2,tile,brush,2);
-            sub_543BC0(x -1,y,2,tile,brush,5);
-            sub_543BC0(x,y +1,2,tile,brush,7);
-        } else if (layer &1) {
-            sub_543BC0(x +1,y,2,tile,brush,4);
-            sub_543BC0(x +1,y -1,2,tile,brush,1);
-            sub_543BC0(x,y,2,tile,brush,6);
-            sub_543BC0(x,y -1,2,tile,brush,3);
-            sub_543BC0(x,y -1,1,tile,brush,0);
-            sub_543BC0(x +1,y,1,tile,brush,2);
-            sub_543BC0(x -1,y,1,tile,brush,5);
-            sub_543BC0(x,y +1,1,tile,brush,7);
-        }
-    }
-    return *getMemU32Ptr(0x973F18,22200) ==0;
-}
-
-//----- (00543BC0) --------------------------------------------------------
-void sub_543BC0(int x, int y, int layer, int tile, nox_floor_brush_t* brush, int edge_variation) {
-    if (x >0 && x <127 && y >0 && y <127 &&
-        (!(layer &1) || y !=1) && (!(layer &2) || x !=1)) {
-        obj_5D4594_2650668_t* cell =&ptr_5D4594_2650668[x][y];
-        if ((layer &2) && tile ==cell->field_6) return;
-        if ((!(layer &1) || tile !=cell->field_1) && brush) {
-            brush->edge_variation =edge_variation;
-            nox_floorBrushApplyNative_51DA70(x,y,brush,layer,1);
-        }
-    }
-}
-
-//----- (00544310) --------------------------------------------------------
-int nox_xxx_tileSubtile_544310(float2* a1) {
-	double v1;  // st7
-	double v2;  // st6
-	int v3;     // esi
-	int v4;     // edi
-	int v5;     // ebp
-	int v6;     // edx
-	int result; // eax
-	nox_floor_brush_t brush;  // [esp+10h] [ebp-20h]
-	float v9;   // [esp+34h] [ebp+4h]
-
-	dword_5d4594_3835352 = 1;
-	v1 = a1->field_0 + 11.5;
-    brush = (nox_floor_brush_t){
-        .tile_id =*getMemU32Ptr(0x973F18,35912),
-        .variation =dword_5d4594_3835348,
-        .pattern =0,
-        .anchor_x =-1,
-        .anchor_y =-1,
-        .kind =0,
-        .edge_id =dword_5d4594_3835356,
-        .edge_variation =dword_5d4594_3835360,
-    };
-	v2 = a1->field_4 + 11.5;
-	v3 = (long long)(v1 * 0x1.642c86p-6f);
-	v9 = v2;
-	v4 = (long long)(v2 * 0x1.642c86p-6f);
-	v5 = (int)(long long)v1 % 46;
-	v6 = (long long)v9 % 46;
-	if (*getMemU32Ptr(0x973F18, 35912) == 255) {
-		result = sub_51D9C0(v3, v4, v5, v6, 0);
-	} else {
-		result = sub_51D9C0(v3, v4, v5, v6, &brush);
-	}
-	dword_5d4594_3835352 = 0;
-	return result;
-}
 
 //----- (005443F0) --------------------------------------------------------
 // Oracle provenance only: ACTION_MOVE_TO and ACTION_MOVE_TO_HOME dispatch to

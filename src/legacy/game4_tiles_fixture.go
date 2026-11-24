@@ -14,6 +14,7 @@ extern void game4_fixture_release_go(void* p);
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern uint32_t dword_5d4594_2489436, dword_5d4594_3835356, dword_5d4594_3835360;
 extern uint32_t dword_5d4594_3835352;
+extern uint32_t dword_5d4594_2487248;
 extern void* dword_5d4594_588084;
 #include "floor_tile_storage.h"
 #define nox_tile_def_cnt (nox_floor_tile_storage()->count)
@@ -297,3 +298,22 @@ func game4TilesTestApplyBrushToken(x, y, layer int32, brush *mapgenFloorBrush) i
 }
 
 func game4TilesTestFreeBrushNodes(node unsafe.Pointer) { C.free(node) }
+
+func game4TilesTestWorklistCount() *uint32 { return (*uint32)(&C.dword_5d4594_2487248) }
+
+func game4TilesTestEnqueue(x, y, layer, tile int32) {
+	C.sub_51DD50(C.int(x), C.int(y), C.int(layer), C.int(tile))
+}
+
+func game4TilesTestDequeue(out *[3]uint32) int32 {
+	return int32(C.sub_51DE30((*C.uint32_t)(&out[0]), (*C.uint32_t)(&out[1]), (*C.uint32_t)(&out[2])))
+}
+
+func game4TilesTestApplyFlood(point *[2]int32, brush *mapgenFloorBrush) int32 {
+	return int32(C.sub_5437E0((*C.int)(&point[0]), (*C.nox_floor_brush_t)(unsafe.Pointer(brush)), 46))
+}
+
+func game4TilesTestApplySubtile(x, y float32) int32 {
+	point := C.float2{field_0: C.float(x), field_4: C.float(y)}
+	return int32(C.nox_xxx_tileSubtile_544310(&point))
+}

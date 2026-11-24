@@ -54,18 +54,14 @@ extern uint32_t dword_5d4594_2487564;
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_5d4594_2487676;
 extern uint32_t dword_5d4594_2487652;
-extern uint32_t dword_5d4594_3835348;
 extern uint32_t dword_5d4594_2487576;
 extern uint32_t dword_5d4594_2487624;
-extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_2487620;
 extern uint32_t dword_5d4594_2487708;
 extern uint32_t nox_xxx_energyBoltTarget_5d4594_2487880;
-extern uint32_t dword_5d4594_2487248;
 
 extern uint32_t dword_5d4594_2487712;
 extern uint32_t dword_5d4594_2487524;
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 
 static uint8_t* nox_mapgen_farthest_room;
 static uint8_t* nox_mapgen_sorted_room_head;
@@ -315,61 +311,6 @@ float get_nox_xxx_conjurerMaxHealth_587000_312800();
 float get_nox_xxx_warriorMaxMana_587000_312788();
 float get_nox_xxx_wizardMaximumMana_587000_312820();
 float get_nox_xxx_conjurerMaxMana_587000_312804();
-
-//----- (0051DD50) --------------------------------------------------------
-void sub_51DD50(int a1, int a2, int a3, int a4) {
-	int v4;            // edx
-	int v5;            // edi
-	unsigned char* v6; // eax
-	int v7;            // eax
-
-	if (a1 > 0 && a1 < 127 && a2 > 0 && a2 < 127) {
-		if ((v4 = a3, a3 & 2) && (v4 = a3, a4 == ptr_5D4594_2650668[a1][a2].field_6) ||
-			v4 & 1 && a4 == ptr_5D4594_2650668[a1][a2].field_1) {
-			if ((!(v4 & 1) || a2 != 1) && (!(a3 & 2) || a1 != 1)) {
-				v5 = 0;
-				if (*(int*)&dword_5d4594_2487248 > 0) {
-					v6 = getMemAt(0x973F18, 16204);
-					while (1) {
-						if (!(*((uint32_t*)v6 - 1) != a1 || *(uint32_t*)v6 != a2 || *((uint32_t*)v6 + 1) != v4)) {
-							return;
-						}
-						++v5;
-						v6 += 12;
-						if (v5 >= *(int*)&dword_5d4594_2487248) {
-							break;
-						}
-					}
-				}
-				if (dword_5d4594_2487248 >= 500) {
-					*getMemU32Ptr(0x973F18, 22200) = 1;
-				} else {
-					v7 = 12 * (dword_5d4594_2487248)++;
-					*getMemU32Ptr(0x973F18, 16200 + v7) = a1;
-					*getMemU32Ptr(0x973F18, 16204 + v7) = a2;
-					*getMemU32Ptr(0x973F18, 16208 + v7) = v4;
-				}
-			}
-		}
-	}
-}
-
-//----- (0051DE30) --------------------------------------------------------
-int sub_51DE30(uint32_t* a1, uint32_t* a2, uint32_t* a3) {
-	int v3;     // eax
-	int result; // eax
-
-	if (*(int*)&dword_5d4594_2487248 <= 0) {
-		return 0;
-	}
-	v3 = dword_5d4594_2487248 - 1;
-	dword_5d4594_2487248 = v3;
-	*a1 = *getMemU32Ptr(0x973F18, 16200 + 12 * v3);
-	*a2 = *getMemU32Ptr(0x973F18, 16204 + 12 * dword_5d4594_2487248);
-	result = 1;
-	*a3 = *getMemU32Ptr(0x973F18, 16208 + 12 * dword_5d4594_2487248);
-	return result;
-}
 
 // 0051DEA0 is implemented by the native-pointer Go callback exported from
 // wall.go. The original return value was ignored by the sole foreach caller.

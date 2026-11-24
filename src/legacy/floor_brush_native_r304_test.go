@@ -97,11 +97,11 @@ func TestFloorBrushNativeR304(t *testing.T) {
 		{"FUNCTIONAL", []floorBrushPartR304{
 			{floorBrushReferenceR304, "nox_floorBrushApplyNative_51DA70"},
 			{floorBrushReferenceR304, "nox_xxx_tile_543C50"}, {floorBrushReferenceR304, "sub_543E60"},
-			{"GAME4_3.c", "nox_xxx_tileSubtile_544310"}, {"GAME4_3.c", "sub_543BC0"},
+			{floorBrushReferenceR304, "nox_xxx_tileSubtile_544310"}, {floorBrushReferenceR304, "sub_543BC0"},
 			{floorBrushReferenceR304, "sub_51DA70"},
 		}, []string{"flag-left", "flag-right", "pattern-negative", "anchor-and-kind", "variation-override", "nil-owned-head", "invalid-layer", "list-sentinels", "merge-append", "merge-map-existing", "merge-unavailable", "merge-coalesce-order", "subtile-producer", "neighbor-writer", "legacy-null-token", "legacy-high-bit-token"}},
 		{"FLOOD", []floorBrushPartR304{
-			{"GAME4_3.c", "sub_5437E0"}, {"GAME4_2.c", "sub_51DD50"}, {"GAME4_2.c", "sub_51DE30"},
+			{floorBrushReferenceR304, "sub_5437E0"}, {floorBrushReferenceR304, "sub_51DD50"}, {floorBrushReferenceR304, "sub_51DE30"},
 		}, []string{"queue-capacity", "queue-dedup-and-bounds", "queue-pop-width-order", "flood-layer1-order", "flood-layer2-order", "flood-outside-grid"}},
 	}
 	for _, group := range groups {
@@ -121,7 +121,7 @@ func TestFloorBrushDeterminismR304(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("64-bit native pointer regression")
 	}
-	bin := floorBrushCompileR304(t, "DETERMINISM", []floorBrushPartR304{{"GAME4_3.c", "sub_543680"}})
+	bin := floorBrushCompileR304(t, "DETERMINISM", []floorBrushPartR304{{floorBrushReferenceR304, "sub_543680"}})
 	floorBrushRunR304(t, bin, []string{"flood-brush-defined-state", "flood-brush-skip-and-fix-failure"})
 }
 

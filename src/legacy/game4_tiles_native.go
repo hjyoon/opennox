@@ -73,7 +73,7 @@ func game4TilesDefaultServices() game4TilesServices {
 		base:      func(at *C.float2) { C.sub_51D8F0(at) },
 		byte3:     func(value int32) { nox_xxx_tileCheckByte3_544070(C.int(value)) },
 		byte4:     func(value int32) { nox_xxx_tileCheckByte4_5440A0(C.int(value)) },
-		subtile:   func(at *C.float2) { C.nox_xxx_tileSubtile_544310(at) },
+		subtile:   func(at *C.float2) { nox_xxx_tileSubtile_544310(at) },
 	}
 }
 

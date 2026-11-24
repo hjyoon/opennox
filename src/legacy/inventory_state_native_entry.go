@@ -6,7 +6,12 @@ package legacy
 */
 import "C"
 
-import "github.com/opennox/opennox/v1/server"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/server"
+)
 
 //export sub_461600
 func sub_461600(thingType C.int) *C.nox_drawable {
@@ -21,6 +26,11 @@ func sub_461930() C.int {
 //export sub_464B40
 func sub_464B40(column, row C.int) C.int {
 	return C.int(inventoryStateBounds464B40(int32(column), int32(row)))
+}
+
+//export sub_465990
+func sub_465990(point *C.uint32_t) C.int {
+	return C.int(inventoryStateEquippedZone465990(*(*ntype.Point32)(unsafe.Pointer(point))))
 }
 
 //export sub_467680

@@ -20,7 +20,11 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/object"
+
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 )
 
 func inventoryStateNativeSlot(index int) unsafe.Pointer {
@@ -58,6 +62,32 @@ func inventoryStateBounds464B40(column, row int32) int32 {
 		return 1
 	}
 	return 0
+}
+
+func inventoryStateEquippedZone465990(point ntype.Point32) int32 {
+	point.X -= 11
+	point.Y -= 15
+	heads := inventoryStateNativeHeads()
+	zones := memmap.PtrT[[9][4]int32](0x587000, 136192)
+	for slot := range zones {
+		if guiGeometryPointInRect4281F0(&point, &zones[slot]) == 0 {
+			continue
+		}
+		switch {
+		case slot == 0 && heads[0] == nil:
+			continue
+		case slot == 6:
+			for item := heads[8]; item != nil; item = item.NextPtr {
+				if item.Class().Has(object.ClassArmor) && object.ArmorClass(item.SubClass()).Has(object.ArmorShield) {
+					return 8
+				}
+			}
+			return 5
+		default:
+			return int32(slot)
+		}
+	}
+	return -1
 }
 
 func inventoryStateReset467680() {

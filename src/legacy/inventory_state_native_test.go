@@ -10,8 +10,11 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
+
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -62,6 +65,63 @@ func TestInventoryStateNativeLayout(t *testing.T) {
 	}
 	if unsafe.Sizeof(drawable) != drawablePrefix+pointer || unsafe.Sizeof(drawable) > 0x400 || unsafe.Sizeof(owner) != prefix+2*pointer || unsafe.Sizeof(owner) > 0x1000 || unsafe.Sizeof(window) > 0x1000 {
 		t.Fatal("native owner prefixes or disjoint foreign node strides")
+	}
+}
+
+func TestEquippedInventoryZoneNative465990(t *testing.T) {
+	// This package's tests run without the application's data loader.
+	zones := memmap.PtrT[[9][4]int32](0x587000, 136192)
+	savedZones := *zones
+	defer func() { *zones = savedZones }()
+	*zones = [9][4]int32{
+		0: {2, 1, 10, 10},
+		1: {8, 5, 12, 15},
+		6: {30, 20, 40, 31},
+		8: {40, 20, 50, 40},
+	}
+
+	items, free := alloc.NewHigh([4]client.Drawable{})
+	defer free()
+	items[0].ObjClass = object.ClassWeapon
+	items[0].ObjSubClass = object.SubClass(object.ArmorShield)
+	items[1].ObjClass = object.ClassArmor
+	items[1].ObjSubClass = object.SubClass(object.ArmorHelmet)
+	items[2].ObjClass = object.ClassArmor
+	items[2].ObjSubClass = object.SubClass(object.ArmorShield)
+	items[3].ObjClass = object.ClassWeapon
+	items[3].ObjSubClass = object.SubClass(object.ArmorShield)
+	items[0].NextPtr = &items[1]
+	items[1].NextPtr = &items[2]
+
+	heads := inventoryStateNativeHeads()
+	saved := *heads
+	defer func() { *heads = saved }()
+	for _, tc := range []struct {
+		name      string
+		x, y      int32
+		slotZero  *client.Drawable
+		slotEight *client.Drawable
+		want      int32
+	}{
+		{name: "outside", x: 9, y: 15, want: -1},
+		{name: "empty-slot-zero-continues", x: 19, y: 21, want: 1},
+		{name: "occupied-slot-zero-wins-overlap", x: 19, y: 21, slotZero: &items[0], want: 0},
+		{name: "no-shield", x: 41, y: 35, want: 5},
+		{name: "nonarmor-shield-bit", x: 41, y: 35, slotEight: &items[3], want: 5},
+		{name: "shield-after-other-items", x: 41, y: 35, slotEight: &items[0], want: 8},
+		{name: "shield-zone-inclusive-end", x: 51, y: 46, want: 5},
+		{name: "past-shield-zone", x: 52, y: 46, want: 8},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			*heads = [9]*client.Drawable{0: tc.slotZero, 8: tc.slotEight}
+			before := *heads
+			if got := inventoryStateZoneCallC(tc.x, tc.y); got != tc.want {
+				t.Fatalf("equipped slot = %d, want %d", got, tc.want)
+			}
+			if *heads != before {
+				t.Fatal("slot heads changed during lookup")
+			}
+		})
 	}
 }
 

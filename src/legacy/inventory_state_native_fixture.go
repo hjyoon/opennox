@@ -9,6 +9,7 @@ extern nox_window* dword_5d4594_1062452;
 typedef nox_drawable*(*inventory_state_find_C)(int);
 typedef int(*inventory_state_test_C)(void);
 typedef int(*inventory_state_bounds_C)(int,int);
+typedef int(*inventory_state_zone_C)(uint32_t*);
 typedef void(*inventory_state_reset_C)(void);
 typedef nox_window*(*inventory_state_window_C)(void);
 typedef int(*inventory_state_set_C)(int);
@@ -16,6 +17,7 @@ typedef nox_object_t*(*inventory_state_first_C)(nox_object_t*);
 _Static_assert(_Generic(&sub_461600,inventory_state_find_C:1,default:0),"inventory type query ABI");
 _Static_assert(_Generic(&sub_461930,inventory_state_test_C:1,default:0),"inventory class query ABI");
 _Static_assert(_Generic(&sub_464B40,inventory_state_bounds_C:1,default:0),"inventory grid ABI");
+_Static_assert(_Generic(&sub_465990,inventory_state_zone_C:1,default:0),"equipped inventory zone ABI");
 _Static_assert(_Generic(&sub_467680,inventory_state_reset_C:1,default:0),"inventory void reset ABI");
 _Static_assert(_Generic(&nox_xxx_wndGetHandle_4676A0,inventory_state_window_C:1,default:0),"inventory window ABI");
 _Static_assert(_Generic(&sub_467740,inventory_state_set_C:1,default:0),"inventory state setter ABI");
@@ -27,6 +29,10 @@ static inventory_state_reset_C volatile inventory_state_reset_callback_C=sub_467
 static inventory_state_window_C volatile inventory_state_window_callback_C=nox_xxx_wndGetHandle_4676A0;
 static inventory_state_set_C volatile inventory_state_set_callback_C=sub_467740;
 static inventory_state_first_C volatile inventory_state_first_callback_C=nox_xxx_inventoryGetFirst_4E7980;
+static int inventory_state_zone_call_C(int32_t x, int32_t y) {
+ uint32_t point[2] = {(uint32_t)x, (uint32_t)y};
+ return sub_465990(point);
+}
 typedef struct inventory_state_result_C {uint32_t word;void* pointer;} inventory_state_result_C;
 static inventory_state_result_C inventory_state_call_C(unsigned route,unsigned index,nox_object_t*owner,int query,int x,int y,int value){
  inventory_state_result_C r={0,NULL};
@@ -84,6 +90,10 @@ import "unsafe"
 func inventoryStateNativeLayoutC() (out [20]uintptr) {
 	C.inventory_state_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
+}
+
+func inventoryStateZoneCallC(x, y int32) int32 {
+	return int32(C.inventory_state_zone_call_C(C.int32_t(x), C.int32_t(y)))
 }
 
 func inventoryStateNativeSeedC(raw unsafe.Pointer, placement int, input *[54]uint32) {

@@ -1542,51 +1542,6 @@ void sub_4658A0(nox_window* win, int2* a2) {
 // 4658FF: variable 'v3' is possibly undefined
 // 465934: variable 'v5' is possibly undefined
 
-//----- (00465990) --------------------------------------------------------
-int sub_465990(uint32_t* a1) {
-	int v1;  // eax
-	int v2;  // esi
-	int v3;  // eax
-	int v5;  // eax
-	int2 v6; // [esp+4h] [ebp-8h]
-
-	v1 = a1[1] - 15;
-	v6.field_0 = *a1 - 11;
-	v6.field_4 = v1;
-	v2 = 0;
-	while (1) {
-		v3 = nox_xxx_pointInRect_4281F0(&v6, (int4*)getMemAt(0x587000, 136192 + 16 * v2));
-		if (!v3) {
-			goto LABEL_6;
-		}
-		if (v2 == 6) {
-			break;
-		}
-		if (v2) {
-			return v2;
-		}
-		if (array_5D4594_1049872[0]) {
-			return 0;
-		}
-	LABEL_6:
-		if (++v2 >= 9) {
-			return -1;
-		}
-	}
-	v5 = array_5D4594_1049872[8];
-	if (!array_5D4594_1049872[8]) {
-		return 5;
-	}
-	while (!(*(uint32_t*)(v5 + 112) & 0x2000000) || !(*(uint8_t*)(v5 + 116) & 2)) {
-		v5 = *(uint32_t*)(v5 + 368);
-		if (!v5) {
-			return 5;
-		}
-	}
-	return 8;
-}
-// 4659C7: variable 'v3' is possibly undefined
-
 //----- (00465BE0) --------------------------------------------------------
 int nox_xxx_clientDrop_465BE0(int2* a1) {
 	nox_drawable* dragged = nox_client_inventory_get_dragged();

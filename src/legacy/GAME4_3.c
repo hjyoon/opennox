@@ -58,27 +58,6 @@ extern unsigned int gameex_flags;
 
 int nox_xxx_waypoint_579F00(float2* a1, nox_object_t* a2);
 
-//----- (00531B40) --------------------------------------------------------
-extern uintptr_t nox_monster_fight_scheduler_native_531B40(nox_object_t*, nox_object_t*, unsigned int);
-int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(nox_object_t* unit, nox_object_t* target) {
-	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531B40);
-}
-
-//----- (00531C10) --------------------------------------------------------
-int* sub_531C10(nox_object_t* unit, nox_object_t* target) {
-	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531C10);
-}
-
-//----- (00531C60) --------------------------------------------------------
-int* nox_xxx_monsterAction_531C60(nox_object_t* unit, nox_object_t* target) {
-	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531C60);
-}
-
-//----- (00531D50) --------------------------------------------------------
-int* sub_531D50(nox_object_t* unit, nox_object_t* target) {
-	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531D50);
-}
-
 //----- (00531E20) --------------------------------------------------------
 // 531E20/531E90 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
@@ -288,18 +267,6 @@ void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {
 
 //----- (00534120) --------------------------------------------------------
 // Native-width implementation: server/monster_combat_predicates_534020.go.
-
-//----- (005341A0) --------------------------------------------------------
-void nox_ai_debug_print(char* str);
-void nox_ai_debug_printf_5341A0(char* a1, ...) {
-	va_list va; // [esp+8h] [ebp+8h]
-
-	va_start(va, a1);
-	if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_SHOW_AI)) {
-		nox_vsprintf((char*)getMemAt(0x5D4594, 2487996), a1, va);
-		nox_ai_debug_print((char*)getMemAt(0x5D4594, 2487996));
-	}
-}
 
 //----- (005341D0) --------------------------------------------------------
 // Native-width implementation: spell_buff_off_4ff5b0_export.go.

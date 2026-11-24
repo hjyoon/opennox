@@ -96,6 +96,13 @@ func TestMapgenDecorChoicesNative520380(t *testing.T) {
 	}
 }
 
+func TestMapgenDecorOccurrenceLimitNative524220(t *testing.T) {
+	order, totals := mapgenConsumeDecorLimitFixture()
+	if order != [2]bool{true, true} || totals != [6]int32{100, 87, 87, 87, 87, 100} {
+		t.Fatalf("occurrence limit order = %v, constraint totals = %v", order, totals)
+	}
+}
+
 func TestMapgenDecor51F9F0CopiesAndSelectsNativePointerGraph(t *testing.T) {
 	handles.InitHigh()
 	t.Cleanup(handles.Release)

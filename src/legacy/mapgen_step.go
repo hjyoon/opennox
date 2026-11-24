@@ -36,7 +36,7 @@ func mapgenGenerateBackdrop(theme *C.uint8_t) {
 		height := C.float(math.Float32frombits(uint32(other.dimensions[1])))
 		nox_mapgenAddOccupiedRectNative_521BC0((*C.uint8_t)(room), position, width, height)
 	}
-	C.nox_mapgenSelectBackdropNative_524070(theme, (*C.uint8_t)(room))
+	nox_mapgenSelectBackdropNative_524070(theme, (*C.uint8_t)(room))
 	C.nox_mapgenGenerateRoomNative_524E00(theme, (*C.uint8_t)(room))
 	C.nox_mapgenPopulateDecorNative_522340(theme, (*C.uint8_t)(room))
 	sub_521A10(room)
@@ -60,7 +60,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 	if memmap.Uint32(0x5D4594, 1549980) != 0 {
 		mapgenGenerateBackdrop(theme)
 	}
-	if C.nox_mapgenMakeRoomsNative_524310(theme) == 0 {
+	if nox_mapgenMakeRoomsNative_524310(theme) == 0 {
 		return 2
 	}
 	for _, roomType := range [...]bool{true, false} {

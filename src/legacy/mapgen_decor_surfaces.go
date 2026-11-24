@@ -111,7 +111,7 @@ func nox_xxx_mapgenCheckSettings_520AD0(settings *C.int) C.int {
 	if settings == nil {
 		return 0
 	}
-	fields := (*[8]C.int)(unsafe.Pointer(settings))
+	fields := (*mapgenDecorSettings)(unsafe.Pointer(settings))
 	totals := fields[2:]
 	clear(totals)
 	for def := mapgenResolveDecorDefinition(C.uint32_t(fields[0])); def != nil; def = mapgenResolveDecorDefinition(def.next_token) {

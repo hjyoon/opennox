@@ -207,6 +207,38 @@ func mapgenDecorChoicesFixture(path string) []mapGenChoiceRecord {
 	return result
 }
 
+func mapgenConsumeDecorLimitFixture() (order [2]bool, totals [6]int32) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	first, firstToken := mapgenAllocateDecorRecord(C.sizeof_nox_mapgen_decor_definition_legacy)
+	if first == nil {
+		return
+	}
+	defer mapgenReleaseDecorRecord(first)
+	second, secondToken := mapgenAllocateDecorRecord(C.sizeof_nox_mapgen_decor_definition_legacy)
+	if second == nil {
+		return
+	}
+	defer mapgenReleaseDecorRecord(second)
+	limited := (*C.nox_mapgen_decor_definition_legacy)(first)
+	next := (*C.nox_mapgen_decor_definition_legacy)(second)
+	limited.occur_limit = 2
+	limited.frequency = 13
+	limited.constraint_mask = 0x3F
+	limited.next_token = secondToken
+	settings := mapgenDecorSettings{C.int(firstToken), 2, 100, 100, 100, 100, 100, 100}
+	C.nox_xxx_mapGenDecorChkLimit_524220(&settings[0], C.int(firstToken))
+	order[0] = limited.occur_limit == 1 && limited.exhausted == 0 &&
+		C.uint32_t(settings[0]) == firstToken && limited.next_token == secondToken && settings[3] == 100
+	C.nox_xxx_mapGenDecorChkLimit_524220(&settings[0], C.int(firstToken))
+	order[1] = limited.occur_limit == 0 && limited.exhausted == 1 &&
+		C.uint32_t(settings[0]) == secondToken && next.next_token == firstToken && limited.next_token == 0 && settings[1] == 2
+	for i := range totals {
+		totals[i] = int32(settings[i+2])
+	}
+	return
+}
+
 type mapgenDecorResult51F9F0 struct {
 	templateParsed           bool
 	backdropParsed           bool

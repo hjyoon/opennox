@@ -25,6 +25,8 @@ type mapgenRankedRoom struct {
 	_                      [135]byte
 	distance, normalized   float32
 	bucket                 uint32
+	_                      uint32
+	decor                  C.uint32_t
 }
 
 var (
@@ -35,6 +37,7 @@ var (
 	_ [356]byte = [unsafe.Offsetof(mapgenRankedRoom{}.distance)]byte{}
 	_ [360]byte = [unsafe.Offsetof(mapgenRankedRoom{}.normalized)]byte{}
 	_ [364]byte = [unsafe.Offsetof(mapgenRankedRoom{}.bucket)]byte{}
+	_ [372]byte = [unsafe.Offsetof(mapgenRankedRoom{}.decor)]byte{}
 )
 
 var mapgenRoomRanking struct {

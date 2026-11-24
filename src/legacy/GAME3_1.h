@@ -57,7 +57,7 @@ void sub_4BFBB0(uint32_t* a1);
 int sub_4BFBF0();
 int sub_4BFC70();
 int sub_4BFC90();
-int sub_4BFCD0(int a1, int a2, int* a3, int a4);
+int sub_4BFCD0(nox_window* win, int event, nox_window* control, uintptr_t arg);
 void sub_4BFD10();
 int sub_4BFD30();
 void sub_4BFD40();

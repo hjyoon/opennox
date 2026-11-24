@@ -1297,6 +1297,7 @@ int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
 	return 0;
 }
 
+#if 0 // Preserved original for the incoming-player oracles.
 //----- (004DDF60) --------------------------------------------------------
 void nox_xxx_playerSendMOTD_4DD140(int a1);
 int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
@@ -1404,30 +1405,7 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 	}
 	return v13->net_code;
 }
-
-//----- (004DE270) --------------------------------------------------------
-int nox_xxx_sendAllPlayerIDs_4DE270(nox_playerInfo* a1) {
-	int result; // eax
-	int v3;     // [esp-1Ch] [ebp-28h]
-	char v4[7]; // [esp+4h] [ebp-8h]
-
-	result = 0;
-	for (nox_object_t* i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
-		if (i->net_code != a1->netCode) {
-			nox_player_update_data_t* update = i->data_update;
-			if (*(uint32_t*)&update->reserved_1[16]) {
-				v4[0] = -46;
-				*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)i);
-				v3 = a1->playerInd;
-				*(uint16_t*)&v4[3] = i->typ_ind;
-				v4[5] = 1;
-				v4[6] = 2;
-				result = nox_xxx_netSendPacket0_4E5420(v3, v4, 7, 0, 1);
-			}
-		}
-	}
-	return result;
-}
+#endif
 
 // GAME.EXE 004DE4D0 uses a native Go entry.
 

@@ -843,27 +843,39 @@ func (s *Server) Nox_xxx_orderUnitLocal_500C70(owner ntype.PlayerInd, orderType 
 		sendCreatureCommand: s.Nox_xxx_netCreatureCmd_4D7EE0,
 	})
 }
-func (s *Server) NetSendInterestingIDOn(u *Object) {
-	var buf [7]byte
-	buf[0] = byte(netmsg.MSG_INTERESTING_ID)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(u)))
-	binary.LittleEndian.PutUint16(buf[3:], u.TypeInd)
-	buf[5] = 1
-	buf[6] = 2
+func playerCampingMarkerPacket(unit *Object, marker byte) [7]byte {
+	var packet [7]byte
+	packet[0] = byte(netmsg.MSG_INTERESTING_ID)
+	binary.LittleEndian.PutUint16(packet[1:], uint16(ObjectNetCode(unit)))
+	binary.LittleEndian.PutUint16(packet[3:], unit.TypeInd)
+	packet[5] = marker
+	packet[6] = 2
+	return packet
+}
+
+func (s *Server) NetSendInterestingIDOn(unit *Object) {
+	packet := playerCampingMarkerPacket(unit, 1)
 	for it := s.Players.FirstUnit(); it != nil; it = s.questNextPlayerUnit4DA7F0(it) {
-		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
+		s.NetSendPacketXxx0(it.UpdateDataPlayer().Player.Index(), packet[:], nil, 1)
 	}
 }
-func (s *Server) NetSendInterestingIDOff(u *Object) {
-	var buf [7]byte
-	buf[0] = byte(netmsg.MSG_INTERESTING_ID)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(u)))
-	binary.LittleEndian.PutUint16(buf[3:], u.TypeInd)
-	buf[5] = 2
-	buf[6] = 2
+
+func (s *Server) NetSendInterestingIDOff(unit *Object) {
+	packet := playerCampingMarkerPacket(unit, 2)
 	for it := s.Players.FirstUnit(); it != nil; it = s.questNextPlayerUnit4DA7F0(it) {
-		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
+		s.NetSendPacketXxx0(it.UpdateDataPlayer().Player.Index(), packet[:], nil, 1)
 	}
+}
+
+func (s *Server) SendIncomingCampingMarkers4DE270(player *Player) int {
+	result := 0
+	for unit := s.Players.FirstUnit(); unit != nil; unit = s.questNextPlayerUnit4DA7F0(unit) {
+		if unit.NetCode != player.NetCodeVal && unit.UpdateDataPlayer().IsCamping != 0 {
+			packet := playerCampingMarkerPacket(unit, 1)
+			result = s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		}
+	}
+	return result
 }
 func (s *Server) Sub_4D7E50(obj *Object) {
 	if !obj.Class().Has(object.ClassPlayer) {

@@ -473,7 +473,7 @@ func (sp *spellWall) setWall(spl *server.DurSpell, x, y int, dir uint8) int32 {
 		if wl.Flags4.HasAny(wall.FlagDoor | wall.FlagSecret | wall.FlagBreakable) {
 			return 0
 		}
-		wl.Dir0 = nox_xxx_wall_42A6C0(wl.Dir0, dir)
+		wl.Dir0 = legacy.WallMergeDirections(wl.Dir0, dir)
 		wl.Field2 = 0
 		sp.newWall(spl, wl, 1, wl.Tile1, wl.Dir0, wl.Field2)
 		return 0

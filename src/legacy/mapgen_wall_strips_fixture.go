@@ -32,3 +32,12 @@ func mapgenWallJunctionFixture(x, y float32) int32 {
 	point := C.float2{field_0: C.float(x), field_4: C.float(y)}
 	return int32(C.sub_5253B0(&point.field_0))
 }
+
+func mapgenWallPlacementFixture(x, y float32) int32 {
+	point := C.float2{field_0: C.float(x), field_4: C.float(y)}
+	return int32(C.sub_526E60(&point.field_0))
+}
+
+func enableMapgenWallFixtureRepeat() {
+	C.dword_5d4594_3835372 = 1
+}

@@ -66,7 +66,7 @@ func mapgenPlaceWallStrip(pos *C.float2, count C.int, axis int) C.int {
 	}
 	mapgenWalkWallStrip(point, int32(count), axis, func(at [2]float32) {
 		point := C.float2{field_0: C.float(at[0]), field_4: C.float(at[1])}
-		result = C.sub_526E60(&point.field_0)
+		result = sub_526E60(&point.field_0)
 	})
 	return result
 }

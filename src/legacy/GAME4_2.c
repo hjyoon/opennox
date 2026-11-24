@@ -43,7 +43,6 @@ extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_2487804;
 extern uint32_t dword_5d4594_2487632;
 extern uint32_t dword_5d4594_2487884;
-extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_2487628;
 extern uint32_t dword_5d4594_2487652;
 extern uint32_t dword_5d4594_2487624;
@@ -1088,81 +1087,6 @@ double sub_526BC0(float a1, float a2) {
 
 //----- (00526DD0) --------------------------------------------------------
 // Native-width implementation: mapgen_wall_paths_public.go.
-//----- (00526E60) --------------------------------------------------------
-int sub_526E60(float* a1) {
-	int v2;            // edi
-	long long v3;      // rax
-	int v4;            // ebp
-	unsigned char* v5; // eax
-	unsigned char* v6; // esi
-	unsigned char* v7; // eax
-	unsigned char* v8; // esi
-	int v9;            // edx
-	unsigned char v10; // al
-	short v11;         // dx
-	int v12;           // [esp-Ch] [ebp-20h]
-	int v13;           // [esp-Ch] [ebp-20h]
-	int v14;           // [esp-8h] [ebp-1Ch]
-	int v15;           // [esp-8h] [ebp-1Ch]
-	float2 v16;        // [esp+Ch] [ebp-8h]
-
-	if (*getMemU32Ptr(0x973F18, 35948) == 255) {
-		return 1;
-	}
-	if (nox_xxx_mapGenFixCoords_4D3D90((float2*)a1, &v16)) {
-		v2 = (long long)(v16.field_0 * 0.043478262);
-		v3 = (long long)(v16.field_4 * 0.043478262);
-		v4 = v3;
-		if (!(((uint8_t)v2 + (uint8_t)v3) & 1) && v2 >= 0 && v2 < 256 && (int)v3 >= 0 && (int)v3 < 256) {
-			v5 = (unsigned char*)nox_server_getWallAtGrid_410580(v2, v3);
-			v6 = v5;
-			if (v5) {
-				v5[1] = getMemByte(0x973F18, 35948);
-				if (dword_5d4594_3835368 == 1) {
-					v10 = nox_xxx_wall_42A6C0(getMemByte(0x973F18, 35952), *v5);
-				} else {
-					v10 = getMemByte(0x973F18, 35952);
-				}
-				*v6 = v10;
-				if (dword_5d4594_3835372) {
-					v11 = v6[5] % (short)nox_xxx_map_410E00(v6[1]);
-				} else {
-					LOBYTE(v11) = getMemByte(0x973F18, 35956);
-				}
-				v15 = *v6;
-				v13 = v6[1];
-				v6[2] = v11;
-				if (v6[2] >= nox_xxx_mapWallMaxVariation_410DD0(v13, v15, 0)) {
-					v6[2] = 0;
-				}
-				v6[4] = -128;
-				return 1;
-			}
-			v7 = (unsigned char*)nox_xxx_wallCreateAt_410250(v2, v4);
-			v8 = v7;
-			if (v7) {
-				v7[1] = getMemByte(0x973F18, 35948);
-				*v7 = getMemByte(0x973F18, 35952);
-				if (dword_5d4594_3835372) {
-					v9 = v2 % nox_xxx_map_410E00(v7[1]);
-				} else {
-					LOBYTE(v9) = getMemByte(0x973F18, 35956);
-				}
-				v14 = *v8;
-				v12 = v8[1];
-				v8[2] = v9;
-				v8[4] = -128;
-				if (v8[2] >= nox_xxx_mapWallMaxVariation_410DD0(v12, v14, 0)) {
-					v8[2] = 0;
-					return 1;
-				}
-				return 1;
-			}
-		}
-	}
-	return 0;
-}
-
 //----- (00527030) --------------------------------------------------------
 // Native-width implementation: mapgen_wall_paths_public.go.
 //----- (00527C60) --------------------------------------------------------

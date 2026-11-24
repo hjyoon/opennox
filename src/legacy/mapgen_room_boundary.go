@@ -29,13 +29,13 @@ func mapgenPlaceRoomBoundary(room *mapgenRoomGeometry) {
 	} {
 		point := C.float2{field_0: left, field_4: edge.y}
 		sub_526D50(edge.leftDirection)
-		C.sub_526E60(&point.field_0)
+		sub_526E60(&point.field_0)
 		point.field_0 += mapgenCellSize
 		sub_524500(&point, horizontalCount)
 
 		point = C.float2{field_0: right, field_4: edge.y}
 		sub_526D50(edge.rightDirection)
-		C.sub_526E60(&point.field_0)
+		sub_526E60(&point.field_0)
 	}
 	for _, x := range [...]C.float{left, right} {
 		point := C.float2{field_0: x, field_4: top + mapgenCellSize}
@@ -168,7 +168,7 @@ func sub_5253B0(raw *C.float) C.int {
 	directions := [...]C.int{-1, -1, -1, 1, -1, 10, 9, 6, -1, 7, 8, 4, 0, 3, 5, 2}
 	if direction := directions[mask]; direction >= 0 {
 		sub_526D50(direction)
-		return C.sub_526E60(raw)
+		return sub_526E60(raw)
 	}
 	return mask - 3
 }

@@ -33,6 +33,15 @@ const wallDefNativeSize = 12332 + 2881*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[wallDefNativeSize-unsafe.Sizeof(server.WallDef{})]
 
+func WallMergeDirections(first, second byte) byte {
+	return memmap.Uint8(0x587000, 71276+13*uintptr(first)+uintptr(second))
+}
+
+//export nox_xxx_wall_42A6C0
+func nox_xxx_wall_42A6C0(first, second C.uchar) C.uchar {
+	return C.uchar(WallMergeDirections(byte(first), byte(second)))
+}
+
 func asWallP(p unsafe.Pointer) *server.Wall {
 	return (*server.Wall)(p)
 }

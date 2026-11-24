@@ -1675,11 +1675,6 @@ int sub_42A650(unsigned char* a1) {
 	return result != 0;
 }
 
-//----- (0042A6C0) --------------------------------------------------------
-unsigned char nox_xxx_wall_42A6C0(unsigned char a1, unsigned char a2) {
-	return getMemByte(0x587000, 71276 + 13 * a1 + a2);
-}
-
 //----- (0042A6E0) --------------------------------------------------------
 int nox_server_mapRWMapInfo_42A6E0() {
 	int vers = 3;

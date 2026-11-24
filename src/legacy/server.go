@@ -257,7 +257,7 @@ func Sub_4D60B0() {
 	resetQuestPlayers4D60B0()
 }
 func Sub_4CFDF0(a1 int) {
-	C.sub_4CFDF0(C.int(a1))
+	sub_4CFDF0(C.int(a1))
 }
 func Nox_xxx_playerMapTracksObj_4173D0(a1 int, a2 *server.Object) int {
 	return int(C.nox_xxx_playerMapTracksObj_4173D0(C.int(a1), asObjectC(a2)))
@@ -382,7 +382,7 @@ func Nox_xxx_netUpdateObjectSpecial_527E50(a1 *server.Object, a2 *server.Object)
 	C.nox_xxx_netUpdateObjectSpecial_527E50(asObjectC(a1), asObjectC(a2))
 }
 func Sub_4D15C0() {
-	C.sub_4D15C0()
+	sub_4D15C0()
 }
 func Sub_4D7B40() {
 	questPlayerStateClear4D7B40()
@@ -505,7 +505,7 @@ func SetFlagObjectCount417EC0(count uint32) {
 	C.dword_5d4594_526276 = C.uint32_t(count)
 }
 func Nox_xxx_mapFindCrown_4CFC30() {
-	C.nox_xxx_mapFindCrown_4CFC30()
+	nox_xxx_mapFindCrown_4CFC30()
 }
 func Nox_xxx_mapInfoSetCapflag_417EA0() int {
 	return int(C.nox_xxx_mapInfoSetCapflag_417EA0())
@@ -535,7 +535,7 @@ func Sub_510E50() {
 	GetServer().S().SentryGlobeReset510E50()
 }
 func Sub_4D1610() {
-	C.sub_4D1610()
+	sub_4D1610()
 }
 func Sub_50D7E0() {
 	C.sub_50D7E0()

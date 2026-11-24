@@ -111,7 +111,7 @@ func Nox_xxx_mapGenStart_4D4320() int {
 	return int(nox_xxx_mapGenStart_4D4320())
 }
 func Nox_xxx_servResetPlayers_4D23C0() {
-	C.nox_xxx_servResetPlayers_4D23C0()
+	nox_xxx_servResetPlayers_4D23C0()
 }
 func Nox_xxx_gameLoopMemDump_413E30() {
 	C.nox_xxx_gameLoopMemDump_413E30()

@@ -436,7 +436,7 @@ func Sub_4951C0() {
 	C.sub_4951C0()
 }
 func Nox_xxx_netGameSettings_4DEF00() {
-	C.nox_xxx_netGameSettings_4DEF00()
+	nox_xxx_netGameSettings_4DEF00()
 }
 func Nox_server_gameUnsetMapLoad_40A690() {
 	C.nox_server_gameUnsetMapLoad_40A690()
@@ -701,7 +701,7 @@ func Sub_500510(a1 string) {
 	C.sub_500510(internCStr(a1))
 }
 func Nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
-	C.nox_xxx_mapSwitchLevel_4D12E0_tileFree()
+	nox_xxx_mapSwitchLevel_4D12E0_tileFree()
 }
 func Sub_57A1E0(a1 *server.Settings2, a2 string, a3 unsafe.Pointer, a4 int, a5 noxflags.GameFlag) {
 	readMapRuleDefaults57A1E0(a1, internCStr(a2), (*C.int)(a3), uint8(a4), uint16(a5))

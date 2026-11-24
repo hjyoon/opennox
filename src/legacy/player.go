@@ -306,7 +306,7 @@ func nox_xxx_playerObserveMonster_4DDE80(cplayer, cunit *nox_object_t) {
 	Nox_xxx_playerObserveMonster_4DDE80(asObjectS(cplayer), asObjectS(cunit))
 }
 func Nox_xxx_scavengerTreasureMax_4D1600() uint32 {
-	return uint32(C.nox_xxx_scavengerTreasureMax_4D1600())
+	return uint32(nox_xxx_scavengerTreasureMax_4D1600())
 }
 
 func Nox_xxx_netMsgFadeBeginPlayer(ind int, dir int, a3 int) {

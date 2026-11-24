@@ -450,41 +450,17 @@ func (s *Server) sendSettings(u *server.Object) {
 		legacy.Sub_4161E0()
 	}
 
-	v3 := getSettings2ByInd(0)
-	{
-		var buf [20]byte
-		buf[0] = byte(netmsg.MSG_GAME_SETTINGS)
-		binary.LittleEndian.PutUint32(buf[1:], s.Frame())
-		binary.LittleEndian.PutUint32(buf[5:], uint32(NOX_CLIENT_VERS_CODE))
-		binary.LittleEndian.PutUint32(buf[9:], uint32(noxflags.GetGame()&0x7FFF0))
-		binary.LittleEndian.PutUint32(buf[13:], uint32(legacy.Nox_xxx_getServerSubFlags_409E60()))
-		buf[17] = byte(s.getServerMaxPlayers())
-		buf[18] = byte(legacy.Nox_xxx_servGamedataGet_40A020(v3.Field52))
-		buf[19] = byte(legacy.Sub_40A180(noxflags.GameFlag(v3.Field52)))
-		s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, buf[:20])
+	settings := getSettings2ByInd(0)
+	packet := server.GameSettingsPacket(s.Frame(), uint32(NOX_CLIENT_VERS_CODE), uint32(noxflags.GetGame()),
+		legacy.Nox_xxx_getServerSubFlags_409E60(), byte(s.getServerMaxPlayers()),
+		byte(legacy.Nox_xxx_servGamedataGet_40A020(settings.Field52)), byte(legacy.Sub_40A180(noxflags.GameFlag(settings.Field52))))
+	s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, packet[:])
+
+	details := server.GameSettingsDetailsPacket(s.getServerName(), settings)
+	if legacy.Sub_40A220() != 0 && (s.GetFlag3592() || legacy.Sub_40A180(noxflags.GameFlag(settings.Field24.Vals[0]>>16)) != 0) {
+		binary.LittleEndian.PutUint32(details[45:49], legacy.Sub_40A230())
 	}
-	{
-		var buf [49]byte
-		buf[0] = byte(netmsg.MSG_GAME_SETTINGS_2)
-		copy(buf[1:17], s.getServerName())
-		buf[16] = 0
-		binary.LittleEndian.PutUint32(buf[17:], v3.Field24.Vals[0])
-		binary.LittleEndian.PutUint32(buf[21:], v3.Field24.Vals[1])
-		binary.LittleEndian.PutUint32(buf[25:], v3.Field24.Vals[2])
-		binary.LittleEndian.PutUint32(buf[29:], v3.Field24.Vals[3])
-		binary.LittleEndian.PutUint32(buf[33:], v3.Field24.Vals[4])
-		buf[37] = v3.Field44[0]
-		buf[38] = v3.Field44[1]
-		buf[39] = v3.Field44[2]
-		buf[40] = v3.Field44[3]
-		binary.LittleEndian.PutUint32(buf[41:], v3.Field48)
-		if legacy.Sub_40A220() != 0 && (s.GetFlag3592() || legacy.Sub_40A180(noxflags.GameFlag(v3.Field24.Vals[0]>>16)) != 0) {
-			binary.LittleEndian.PutUint32(buf[45:], legacy.Sub_40A230())
-		} else {
-			binary.LittleEndian.PutUint32(buf[45:], 0)
-		}
-		s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, buf[:49])
-	}
+	s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, details[:])
 	{
 		var buf [129]byte
 		nox_xxx_netNewPlayerMakePacket_4DDA90(buf[:], pl)

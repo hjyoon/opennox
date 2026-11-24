@@ -1,12 +1,5 @@
 package legacy
 
-/*
-#include "GAME3_3.h"
-
-int sub_4CFE00(void);
-*/
-import "C"
-
 import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -47,7 +40,7 @@ func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 			return playerRespawnItemCall4EF750(unit, typeID, cattrs, a4, a5)
 		},
 		QuestDefaultsReady: func() int32 {
-			return int32(C.sub_4CFE00())
+			return int32(sub_4CFE00())
 		},
 	}
 }

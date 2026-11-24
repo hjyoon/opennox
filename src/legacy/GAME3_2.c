@@ -413,36 +413,6 @@ int nox_xxx_mapValidateMB_4CF470(char* a1, int a2) {
 	return v2;
 }
 
-//----- (004CFC30) --------------------------------------------------------
-void nox_xxx_mapFindCrown_4CFC30() {
-	if (!*getMemU32Ptr(0x5D4594, 1523076)) {
-		*getMemU32Ptr(0x5D4594, 1523076) = nox_xxx_getNameId_4E3AA0("Crown");
-	}
-	nox_object_t* obj = nox_server_getFirstObject_4DA790();
-	if (obj) {
-		do {
-			nox_object_t* next = nox_server_getNextObject_4DA7A0(obj);
-			if (obj->typ_ind == *getMemU32Ptr(0x5D4594, 1523076)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(obj);
-				sub_4EC6A0(obj);
-			}
-			obj = next;
-		} while (obj);
-	}
-}
-
-//----- (004CFDF0) --------------------------------------------------------
-int sub_4CFDF0(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1523072) = a1;
-	return result;
-}
-
-//----- (004CFE00) --------------------------------------------------------
-int sub_4CFE00() { return *getMemU32Ptr(0x5D4594, 1523072); }
-
 //----- (004CFFA0) --------------------------------------------------------
 
 //----- (004CFFC0) --------------------------------------------------------
@@ -866,48 +836,6 @@ int sub_4D12A0(int a1) {
 			return 0;
 		}
 	}
-	return 1;
-}
-
-void nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
-	for (int j = 0; j < ptr_5D4594_2650668_cap; j++) {
-		for (int k = 0; k < ptr_5D4594_2650668_cap; k++) {
-			obj_5D4594_2650668_t* tile = &ptr_5D4594_2650668[k][j];
-			tile->field_0 = 0;
-			tile->field_1 = 255;
-			tile->field_6 = 255;
-			nox_xxx_tileFreeTile_422200(&tile->field_5);
-			nox_xxx_tileFreeTile_422200(&tile->field_10);
-		}
-	}
-}
-
-//----- (004D15C0) --------------------------------------------------------
-void sub_4D15C0() { *getMemU32Ptr(0x5D4594, 1548508) = 0; }
-
-//----- (004D1600) --------------------------------------------------------
-int nox_xxx_scavengerTreasureMax_4D1600() { return *getMemU32Ptr(0x5D4594, 1548528); }
-
-//----- (004D1610) --------------------------------------------------------
-void sub_4D1610() { *getMemU32Ptr(0x5D4594, 1548528) = 0; }
-
-//----- (004D23C0) --------------------------------------------------------
-void sub_51A100();
-int nox_xxx_servResetPlayers_4D23C0() {
-	for (nox_playerInfo* pl = nox_common_playerInfoGetFirst_416EA0(); pl;
-		 pl = nox_common_playerInfoGetNext_416EE0(pl)) {
-		if (pl->playerUnit) {
-			dword_5d4594_2649712 &= ~(1u << pl->playerInd);
-			pl->field_3676 = 2;
-			nox_xxx_playerMakeDefItems_4EF7D0(pl->playerUnit, 1, 0);
-			pl->field_2140 = 0;
-			pl->lessons = 0;
-		}
-	}
-	sub_51A100();
-	nox_common_gameFlags_unset_40A540(0x20000);
-	nox_xxx_netGameSettings_4DEF00();
-	nox_server_gameUnsetMapLoad_40A690();
 	return 1;
 }
 
@@ -1944,33 +1872,6 @@ void nox_xxx_playerForceDisconnect_4DE7C0(int ind) {
 			(void)sub_4E8E60();
 		}
 	}
-}
-
-//----- (004DEF00) --------------------------------------------------------
-int nox_xxx_netGameSettings_4DEF00() {
-	char* v0;    // ebx
-	char v2[20]; // [esp+Ch] [ebp-48h]
-	char v3[49]; // [esp+20h] [ebp-34h]
-
-	v0 = nox_xxx_cliGamedataGet_416590(0);
-	v2[0] = -81;
-	*(uint32_t*)&v2[1] = gameFrame();
-	*(uint32_t*)&v2[9] = nox_common_gameFlags_getVal_40A5B0() & 0x7FFF0;
-	*(uint32_t*)&v2[13] = nox_xxx_getServerSubFlags_409E60();
-	*(uint32_t*)&v2[5] = NOX_CLIENT_VERS_CODE;
-	v2[17] = nox_xxx_servGetPlrLimit_409FA0();
-	v2[18] = nox_xxx_servGamedataGet_40A020(*((uint16_t*)v0 + 26));
-	v2[19] = sub_40A180(*((uint16_t*)v0 + 26));
-	v3[0] = -80;
-	strcpy(&v3[1], nox_xxx_serverOptionsGetServername_40A4C0());
-	memcpy(&v3[17], v0 + 24, 0x1Cu);
-	if (sub_40A220() && (sub_40A300() || sub_40A180(*((uint16_t*)v0 + 26)))) {
-		*(uint32_t*)&v3[45] = sub_40A230();
-	} else {
-		*(uint32_t*)&v3[45] = 0;
-	}
-	nox_xxx_netSendPacket1_4E5390(159, v2, 20, 0, 0);
-	return nox_xxx_netSendPacket1_4E5390(159, v3, 49, 0, 0);
 }
 
 //----- (004DF020) --------------------------------------------------------

@@ -130,6 +130,25 @@ func nox_xxx_tileFreeTileOne_4221E0(ptr unsafe.Pointer) *C.nox_tile_list_node_t 
 	return node
 }
 
+//export nox_xxx_mapSwitchLevel_4D12E0_tileFree
+func nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
+	count := int(worldTileCapacity411160())
+	rows := unsafe.Slice(C.ptr_5D4594_2650668, count)
+	// The original traverses the grid column-first. Preserve the order
+	// in which the two layers are returned to the shared subtile pool.
+	for column := range count {
+		offset := uintptr(column) * C.sizeof_obj_5D4594_2650668_t
+		for _, row := range rows {
+			tile := (*C.obj_5D4594_2650668_t)(unsafe.Add(unsafe.Pointer(row), offset))
+			tile.field_0 = 0
+			tile.field_1 = 255
+			tile.field_6 = 255
+			nox_xxx_tileFreeTile_422200(&tile.field_5)
+			nox_xxx_tileFreeTile_422200(&tile.field_10)
+		}
+	}
+}
+
 //export nox_xxx_tileFreeTile_422200
 func nox_xxx_tileFreeTile_422200(head **C.nox_tile_list_node_t) {
 	for node := *head; node != nil; {

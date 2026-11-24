@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
@@ -173,4 +174,32 @@ END
 			got.templateCleared, got.cleanupCleared)
 	}
 	checkMapgenItemSetNativeAddresses51F030(t, got)
+}
+
+func TestMapgenItemSetFailureKeepsEarlierEntries(t *testing.T) {
+	initMapgenItemSetHandles51F030(t)
+	const prefix = "WEAPON\nTEMPLATE\nMATERIAL\nBase\nEND\nEND\nWEAPON\nBow\nBowKey\nEND\nWEAPON\nStaff\nStaffKey\n"
+	for _, tc := range []struct{ name, suffix string }{
+		{"modifier count", "MATERIAL\n" + strings.Repeat("Material\n", mapgenMaxItemModifiers+1) + "END\nEND\nEND\n"},
+		{"inherited count", "EFFECTIVENESS\nApplied\nEND\nMATERIAL\n" + itemModifierNamesAtCapacity() + "END\nEND\nEND\n"},
+		{"truncated block", "MATERIAL\nPartial\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got := mapgenItemSetsFixture51F030(writeMapgenItemSetFixture51F030(t, prefix+tc.suffix), false)
+			if got.result || got.count != 1 || !got.templateCleared || !got.cleanupCleared || got.lookupNames[0] != "BowKey" {
+				t.Fatalf("failure changed the earlier entry or leaked the template: %+v", got)
+			}
+			if names := mapgenItemSetModifierNames51F030(got, 0, 1); !reflect.DeepEqual(names, []string{"Base"}) {
+				t.Fatalf("earlier entry's modifiers = %q", names)
+			}
+		})
+	}
+}
+
+func itemModifierNamesAtCapacity() string {
+	var names strings.Builder
+	for i := 0; i < mapgenMaxItemModifiers; i++ {
+		names.WriteString("Material" + strconv.Itoa(i) + "\n")
+	}
+	return names.String()
 }

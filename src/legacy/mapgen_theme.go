@@ -36,7 +36,7 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 		case "EXIT":
 			result = nox_mapgenReadExitNative_51F800(data, file)
 		case "PREFAB":
-			result = C.nox_xxx_genReadPrefab_520BF0(data, file)
+			result = nox_xxx_genReadPrefab_520BF0(data, file)
 		case "AMBIENT_LIGHT":
 			for i := 134; i <= 136; i++ {
 				if nox_xxx_mapGenReadLine_51E540(file, buf) == 0 {
@@ -48,9 +48,9 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 		case "SPELL_SET":
 			result = nox_mapgenReadSpellSetNative_51EFB0(data, file)
 		case "ARMOR_SET":
-			result = C.nox_xxx_genReadArmorSet_51F640(data, file)
+			result = nox_xxx_genReadArmorSet_51F640(data, file)
 		case "WEAPON_SET":
-			result = C.nox_xxx_genReadWeaponSet_51F030(data, file)
+			result = nox_xxx_genReadWeaponSet_51F030(data, file)
 		case "DECOR":
 			result = nox_xxx_genReadDecor_51F9F0((*C.uint32_t)(unsafe.Pointer(theme)), file)
 		}

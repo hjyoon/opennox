@@ -89,6 +89,14 @@ Gate42
 END
 SPELL_SET
 END
+PREFAB
+IGNORED
+MUST_OCCUR
+AREAMAP
+RequiredPrefab
+AREAMAP
+OptionalPrefab
+END
 DECOR
 ROOM
 RoomBase
@@ -110,6 +118,8 @@ END
 		{"exit record limit", "exit-limit", "EXIT\n" + strings.Repeat("OBJECT\nExitN\nNORTH\n", 5) + "END\n", false, false},
 		{"exit name limit", "exit-name-limit", "EXIT\nOBJECT\n" + strings.Repeat("X", 60) + "\nNORTH\nEND\n", false, false},
 		{"destination limit", "destination-limit", "EXIT\nLINKDATA\n" + strings.Repeat("X", 60) + "\nEND\n", false, false},
+		{"prefab name limit", "prefab-name-limit", "PREFAB\nAREAMAP\n" + strings.Repeat("X", 60) + "\nEND\n", false, false},
+		{"foreach requires an area", "prefab-foreach-first", "PREFAB\nFOREACH\nUnused\nEND\n", false, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			path := filepath.Join("mapgen", tc.fileName+".thm")
@@ -139,6 +149,9 @@ END
 					got.words[23] != 1 || got.words[31] != 1 || got.roomName != "RoomBase" || got.hallName != "HallBase" || got.exitName != "ExitN" || got.linkData != "Gate42" {
 					t.Fatalf("encrypted theme fields/graph changed: %+v", got)
 				}
+				if got.words[21] != 2 || got.prefabNames != [2]string{"OptionalPrefab", "RequiredPrefab"} || got.prefabRequired != [2]uint32{0, 1} {
+					t.Fatalf("prefab list count=%d names=%q required=%v", got.words[21], got.prefabNames, got.prefabRequired)
+				}
 				for i := 0; i < 6; i++ {
 					if got.words[24+i] != 1000 || got.words[32+i] != 1000 {
 						t.Fatalf("original room/hall frequency aggregates at %d: %d/%d", i, got.words[24+i], got.words[32+i])
@@ -162,6 +175,10 @@ END
 				case "destination-limit":
 					if got.linkData != "" || got.words[134] != 0 {
 						t.Fatalf("oversized destination changed theme data: %+v", got)
+					}
+				case "prefab-name-limit", "prefab-foreach-first":
+					if got.words[20] != 0 || got.words[21] != 0 {
+						t.Fatalf("invalid prefab changed the theme list: %v", got.words[20:22])
 					}
 				}
 			}

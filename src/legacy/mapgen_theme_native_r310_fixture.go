@@ -31,6 +31,8 @@ typedef struct nox_r310_theme_result {
 	char hall_name[60];
 	char exit_name[60];
 	char link_data[60];
+	char prefab_names[2][60];
+	uint32_t prefab_required[2];
 } nox_r310_theme_result;
 
 static nox_r310_theme_result nox_r310_read_theme(const char* name, int legacy) {
@@ -67,8 +69,15 @@ static nox_r310_theme_result nox_r310_read_theme(const char* name, int legacy) {
 	if (hall) memcpy(out.hall_name, hall, sizeof(out.hall_name));
 	memcpy(out.exit_name, (uint8_t*)value->words + 216, sizeof(out.exit_name));
 	memcpy(out.link_data, (uint8_t*)value->words + 476, sizeof(out.link_data));
+	uint32_t* prefab = nox_mapgenLegacyPtrResolve(value->words[20]);
+	for (unsigned i = 0; prefab && i < 2; ++i) {
+		memcpy(out.prefab_names[i], prefab, sizeof(out.prefab_names[i]));
+		out.prefab_required[i] = prefab[18];
+		prefab = nox_mapgenLegacyPtrResolve(prefab[39]);
+	}
 	sub_520D50(value->words);
-	out.cleanup_cleared = value->words[22] == 0 && value->words[23] == 0 &&
+	out.cleanup_cleared = value->words[20] == 0 && value->words[21] == 0 &&
+		value->words[22] == 0 && value->words[23] == 0 &&
 		value->words[30] == 0 && value->words[31] == 0 && value->words[38] == 0 &&
 		value->words[39] == 0 && value->words[46] == 0 && value->words[47] == 0;
 	out.guards_preserved = 1;
@@ -95,6 +104,8 @@ type mapgenThemeResultR310 struct {
 	themeAddress, nameAddress, roomAddress, hallAddress    uintptr
 	words                                                  [279]uint32
 	roomName, hallName, exitName, linkData                 string
+	prefabNames                                            [2]string
+	prefabRequired                                         [2]uint32
 }
 
 func mapgenThemeFixtureR310(name string, legacy bool) mapgenThemeResultR310 {
@@ -117,6 +128,10 @@ func mapgenThemeFixtureR310(name string, legacy bool) mapgenThemeResultR310 {
 	}
 	for i := range result.words {
 		result.words[i] = uint32(out.words[i])
+	}
+	for i := range result.prefabNames {
+		result.prefabNames[i] = C.GoString(&out.prefab_names[i][0])
+		result.prefabRequired[i] = uint32(out.prefab_required[i])
 	}
 	return result
 }

@@ -98,10 +98,6 @@ func mapgenFreeDecorDefinitionList(ref C.uint32_t) {
 	}
 }
 
-func mapgenResolveItemSetEntry(token C.uint32_t) *C.nox_mapgen_item_set_entry_legacy {
-	return (*C.nox_mapgen_item_set_entry_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
-}
-
 //export sub_520D50
 func sub_520D50(raw *C.uint32_t) *C.uint32_t {
 	if raw == nil {
@@ -116,17 +112,14 @@ func sub_520D50(raw *C.uint32_t) *C.uint32_t {
 	for _, index := range [...]int{275, 277} {
 		for item := mapgenResolveItemSetEntry(theme[index]); item != nil; {
 			next := mapgenResolveItemSetEntry(item.next_token)
-			C.nox_xxx_mapGenFreeStr_51F1F0(unsafe.Pointer(item))
+			mapgenFreeItemSetEntry(item)
 			item = next
 		}
 		theme[index], theme[index+1] = 0, 0
 	}
-	resolvePrefab := func(token C.uint32_t) *[40]C.uint32_t {
-		return (*[40]C.uint32_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
-	}
-	for prefab := resolvePrefab(theme[20]); prefab != nil; {
-		next := resolvePrefab(prefab[39])
-		mapgenFreeForeachList(prefab[38])
+	for prefab := mapgenResolveThemePrefab(theme[20]); prefab != nil; {
+		next := mapgenResolveThemePrefab(C.uint32_t(prefab.next))
+		mapgenFreeForeachList(C.uint32_t(prefab.foreach))
 		mapgenReleaseDecorRecord(unsafe.Pointer(prefab))
 		prefab = next
 	}

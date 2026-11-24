@@ -187,6 +187,7 @@ int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int
 void sub_525330(float2* position, int count);
 void sub_525370(float2* position, int count);
 int sub_5253B0(float* a1);
+void nox_mapgenGenerateDoorsNative_525510(uint8_t* theme, uint8_t* room);
 void nox_xxx_mapgen_525510(int a1, int a2);
 void nox_xxx_mapgen_525570(int a1, int a2, int a3, int a4);
 int nox_xxx_mapgen_525690(int a1, float2* a2, int a3);

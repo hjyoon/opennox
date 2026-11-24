@@ -12,7 +12,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func TestMapgenWallStripsNative(t *testing.T) {
+func newMapgenWallTestState(t *testing.T) (*server.Server, *uint32) {
+	t.Helper()
 	InitBlobData()
 	srv := newMapgenTestWallGrid(t)
 	// An empty wall definition has a 40-byte aligned header and zero sprites per direction.
@@ -29,6 +30,12 @@ func TestMapgenWallStripsNative(t *testing.T) {
 	previousTile, previousDirection := *tile, *direction
 	t.Cleanup(func() { *tile, *direction = previousTile, previousDirection })
 	*tile = 0
+	t.Cleanup(disableMapgenWallFixtureModes())
+	return srv, direction
+}
+
+func TestMapgenWallStripsNative(t *testing.T) {
+	srv, direction := newMapgenWallTestState(t)
 	if got := mapgenWallStripFixture(0, 0, -3, false); got != -3 || *direction != 0 {
 		t.Fatalf("empty horizontal strip returned %d with direction %d", got, *direction)
 	}
@@ -58,5 +65,30 @@ func TestMapgenWallStripsNative(t *testing.T) {
 	})
 	if len(want) != 0 {
 		t.Fatalf("wall strips missed coordinates %v", want)
+	}
+}
+
+func TestMapgenWallJunctionsNative(t *testing.T) {
+	srv, direction := newMapgenWallTestState(t)
+	neighbors := [...]image.Point{image.Pt(127, 127), image.Pt(129, 129), image.Pt(127, 129), image.Pt(129, 127)}
+	center := image.Pt(128, 128)
+	junctionTypes := [...]int32{-1, -1, -1, 1, -1, 10, 9, 6, -1, 7, 8, 4, 0, 3, 5, 2}
+	for mask, kind := range junctionTypes {
+		srv.Walls.Reset()
+		*direction = 13
+		for bit, pos := range neighbors {
+			if mask&(1<<bit) != 0 && srv.Walls.CreateAtGrid(pos) == nil {
+				t.Fatalf("could not create neighbor at %v", pos)
+			}
+		}
+		result := mapgenWallJunctionFixture(0, 0)
+		wall := srv.Walls.GetWallAtGridRaw(center)
+		if kind < 0 {
+			if result != int32(mask)-3 || *direction != 13 || wall != nil {
+				t.Fatalf("mask %#x: result %d, direction %d, wall %v", mask, result, *direction, wall)
+			}
+		} else if result != 1 || *direction != uint32(kind) || wall == nil || wall.Dir0 != byte(kind) {
+			t.Fatalf("mask %#x: result %d, direction %d, wall %v, want junction type %d", mask, result, *direction, wall, kind)
+		}
 	}
 }

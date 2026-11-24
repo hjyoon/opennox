@@ -414,7 +414,7 @@ func Nox_xxx_loadReflSheild_499360() int {
 	return int(C.nox_xxx_loadReflSheild_499360())
 }
 func Nox_xxx_allocClassListFriends_495980() int {
-	return int(C.nox_xxx_allocClassListFriends_495980())
+	return int(nox_xxx_allocClassListFriends_495980())
 }
 func Sub_4958F0() {
 	C.sub_4958F0()

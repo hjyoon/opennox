@@ -219,7 +219,7 @@ func Sub_499450() {
 	C.sub_499450()
 }
 func Sub_4959D0() {
-	C.sub_4959D0()
+	sub_4959D0()
 }
 func Sub_49AEA0() {
 	C.sub_49AEA0()

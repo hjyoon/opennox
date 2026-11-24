@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include "compat.h"
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "GAME1_3.h"
@@ -19,8 +20,14 @@ int sub_41C780(int a1);
 import "C"
 import (
 	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
 	"unsafe"
 
+	"github.com/opennox/libs/common"
+	"github.com/opennox/libs/datapath"
+	"github.com/opennox/libs/ifs"
 	"github.com/opennox/libs/object"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -63,8 +70,63 @@ func nox_client_countPlayerFiles04_4DC7D0() int32 {
 	return int32(Nox_client_countPlayerFiles04_4DC7D0())
 }
 
+func Nox_client_countSaveFiles_4DC550() int {
+	return int(nox_client_countSaveFiles_4DC550())
+}
+
+//export nox_client_countSaveFiles_4DC550
+func nox_client_countSaveFiles_4DC550() C.int {
+	dir := datapath.Data("Save")
+	_ = ifs.Mkdir(dir)
+	hasPlayerFile := func(slot string) bool {
+		_, err := ifs.Stat(filepath.Join(dir, slot, "Player.plr"))
+		return !os.IsNotExist(err)
+	}
+	count := 0
+	if hasPlayerFile(common.SaveAuto) {
+		count++
+	}
+	for attempt := 0; attempt < 13; attempt++ {
+		if hasPlayerFile(fmt.Sprintf(common.SaveFormat, count)) {
+			count++
+		}
+	}
+	return C.int(count)
+}
+
 func Nox_client_countPlayerFiles02_4DC630() int {
-	return int(C.nox_client_countPlayerFiles02_4DC630())
+	return int(nox_client_countPlayerFiles02_4DC630())
+}
+
+//export nox_client_countPlayerFiles02_4DC630
+func nox_client_countPlayerFiles02_4DC630() C.int {
+	root := datapath.Data()
+	dir := filepath.Join(root, "Save")
+	_ = ifs.Mkdir(dir)
+	_ = ifs.Chdir(dir)
+	defer ifs.Chdir(root)
+
+	var entry C.WIN32_FIND_DATAA
+	search := C.FindFirstFileA(internCStr("*.plr"), &entry)
+	if uintptr(search) == ^uintptr(0) {
+		return 0
+	}
+	defer C.FindClose(search)
+
+	var info server.SaveGameInfo
+	var count C.int
+	for {
+		if entry.dwFileAttributes&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
+			name := C.GoString(&entry.cFileName[0])
+			Sub_41A000(root+"\\Save\\"+name, &info)
+			if info.Flags&2 != 0 {
+				count++
+			}
+		}
+		if C.FindNextFileA(search, &entry) == 0 {
+			return count
+		}
+	}
 }
 
 //export nox_xxx_gameGet_4DB1B0

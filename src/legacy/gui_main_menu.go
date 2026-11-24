@@ -108,9 +108,6 @@ func Nox_xxx_cliSetMinimapZoom_472520(v int) {
 func Nox_xxx_monsterListFree_5174F0() {
 	nox_xxx_monsterListFree_5174F0_native()
 }
-func Nox_client_countSaveFiles_4DC550() int {
-	return int(C.nox_client_countSaveFiles_4DC550())
-}
 func Sub_4A7A60(a1 int) {
 	C.sub_4A7A60(C.int(a1))
 }

@@ -40,3 +40,17 @@ func ClientQuickbarSnapshot() (entries [25][2]uint32, row int, ok bool) {
 func ClientQuickbarNugget(slot int) *gui.Window {
 	return AsWindowP(unsafe.Pointer(C.nox_quickbar_nugget(quickBarBase45DA50(), C.int(slot))))
 }
+
+// ClientP2PTradeWindow observes the trade popup and its active state.
+func ClientP2PTradeWindow() (*gui.Window, bool) {
+	return asWindow(tradeRoot()), sub_4C12C0() != 0
+}
+
+// ClientP2PTradeOffer observes an item drawn by the live trade window.
+func ClientP2PTradeOffer(remote bool, index int) (*client.Drawable, uint32, uint32) {
+	slot := nox_gui_trade_slot_at(C.int(bool2int(remote)), C.int(index))
+	if slot == nil {
+		return nil, 0, 0
+	}
+	return asDrawable(slot.drawable), uint32(slot.count), uint32(slot.total_cost)
+}

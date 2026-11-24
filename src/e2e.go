@@ -10882,6 +10882,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertShopSaleRejection(l.Text, l.Name)
+		case "check-p2p-trade-preview":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckP2PTradePreview(l.Name)
 		case "open-shop-fixture":
 			if dt != 0 {
 				sc.Wait(dt, "")

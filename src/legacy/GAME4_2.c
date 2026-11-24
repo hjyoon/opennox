@@ -650,53 +650,6 @@ void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2) {
 
 // Room distance and ranking are implemented in mapgen_room_ranking.go.
 
-//----- (00525D20) --------------------------------------------------------
-int nox_mapgenInitialPrefabsWithCallback_525D20(uint8_t* a1, nox_mapgen_prefab_room_cb_525d20 callback) {
-	int v1;      // edi
-	uint32_t* i; // esi
-	uint32_t* j; // esi
-
-	if (!a1 || !callback) {
-		return 0;
-	}
-	v1 = 0;
-	if (!dword_5d4594_2487656) {
-		dword_5d4594_2487656 = nox_xxx_getNameId_4E3AA0("ExitNorthMarker");
-		*getMemU32Ptr(0x5D4594, 2487660) = nox_xxx_getNameId_4E3AA0("ExitSouthMarker");
-		*getMemU32Ptr(0x5D4594, 2487664) = nox_xxx_getNameId_4E3AA0("ExitEastMarker");
-		*getMemU32Ptr(0x5D4594, 2487668) = nox_xxx_getNameId_4E3AA0("ExitWestMarker");
-	}
-	sub_525DF0(a1);
-	for (i = (uint32_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(a1 + 80)); i;
-		 i = (uint32_t*)nox_mapgenLegacyPtrResolve(i[39])) {
-		if (i[18]) {
-			if (v1 == 5 || !callback(a1, (uint8_t*)i)) {
-				return 0;
-			}
-			i[19] = 1;
-			++v1;
-		}
-	}
-	for (j = (uint32_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(a1 + 80)); j;
-		 j = (uint32_t*)nox_mapgenLegacyPtrResolve(j[39])) {
-		if (!j[18]) {
-			if (v1 == 5) {
-				return 1;
-			}
-			if (!callback(a1, (uint8_t*)j)) {
-				return 0;
-			}
-			j[19] = 1;
-			++v1;
-		}
-	}
-	return 1;
-}
-
-int nox_xxx_mapGen_InPrefab1_525D20(uint8_t* a1) {
-	return nox_mapgenInitialPrefabsWithCallback_525D20(a1, nox_xxx_mapGenPrefabMkRoom_526100);
-}
-
 //----- (00525DF0) --------------------------------------------------------
 void sub_525DF0(uint8_t* a1) {
 	double v1;         // st7

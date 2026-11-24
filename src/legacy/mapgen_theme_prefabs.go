@@ -12,12 +12,16 @@ type mapgenThemePrefabRecord struct {
 	name     [60]byte
 	_        [3]uint32
 	required uint32
-	_        [19]uint32
+	placed   uint32
+	_        [18]uint32
 	foreach  uint32
 	next     uint32
 }
 
-var _ [160]byte = [unsafe.Sizeof(mapgenThemePrefabRecord{})]byte{}
+var (
+	_ [160]byte = [unsafe.Sizeof(mapgenThemePrefabRecord{})]byte{}
+	_ [76]byte  = [unsafe.Offsetof(mapgenThemePrefabRecord{}.placed)]byte{}
+)
 
 func mapgenResolveThemePrefab(token C.uint32_t) *mapgenThemePrefabRecord {
 	return (*mapgenThemePrefabRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))

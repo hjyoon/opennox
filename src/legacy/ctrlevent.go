@@ -44,6 +44,7 @@ import (
 	"github.com/opennox/libs/client/keybind"
 
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/common/memmap"
 )
 
 type CtrlEventHandler interface {
@@ -227,9 +228,12 @@ func Nox_xxx_guiServerOptsLoad_457500() {
 func Sub_460630() {
 	C.sub_460630()
 }
-func Nox_xxx_game_4DCCB0() int {
-	return int(C.nox_xxx_game_4DCCB0())
+
+//export nox_xxx_guiCursor_477600
+func nox_xxx_guiCursor_477600() C.int {
+	return C.int(*memmap.PtrUint32(0x5D4594, 1096672))
 }
+
 func Nox_client_mousePriKey_430AF0() int {
 	return int(nox_client_mousePriKey_430AF0())
 }

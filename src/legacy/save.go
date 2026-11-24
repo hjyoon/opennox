@@ -21,6 +21,10 @@ import (
 	"errors"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
+
+	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -80,6 +84,47 @@ func nox_xxx_serverIsClosing_446180() int32 { return int32(Nox_xxx_serverIsClosi
 
 //export sub_4DCC10
 func sub_4DCC10(a1p *nox_object_t) int32 { return int32(Sub_4DCC10(asObjectS(a1p))) }
+
+func Nox_xxx_mapLoadOrSaveMB_4DCC70(value int) {
+	nox_xxx_mapLoadOrSaveMB_4DCC70(C.int(value))
+}
+
+//export nox_xxx_mapLoadOrSaveMB_4DCC70
+func nox_xxx_mapLoadOrSaveMB_4DCC70(value C.int) C.int {
+	*memmap.PtrUint32(0x5D4594, 1563072) = uint32(value)
+	return value
+}
+
+func Nox_xxx_mapLoadRequired_4DCC80() int {
+	return int(nox_xxx_mapLoadRequired_4DCC80())
+}
+
+//export nox_xxx_mapLoadRequired_4DCC80
+func nox_xxx_mapLoadRequired_4DCC80() C.int {
+	return C.int(*memmap.PtrUint32(0x5D4594, 1563072))
+}
+
+func Nox_xxx_game_4DCCB0() int {
+	return int(nox_xxx_game_4DCCB0())
+}
+
+//export nox_xxx_game_4DCCB0
+func nox_xxx_game_4DCCB0() C.int {
+	if !noxflags.HasGame(noxflags.GameModeCoop) {
+		return 1
+	}
+	host := GetServer().S().Players.ByInd(31)
+	if host == nil || host.PlayerUnit == nil {
+		return 0
+	}
+	unit := host.PlayerUnit
+	if sub_4DCC90() != 0 || sub4139B0Native() != 0 ||
+		gameFrame()-*memmap.PtrUint32(0x5D4594, 1563068) < 30 ||
+		nox_xxx_guiCursor_477600() != 0 || unit.ObjFlags.Has(object.FlagAirborne) {
+		return 0
+	}
+	return C.int(bool2int(int32(Sub_4DCC10(unit)) != 0))
+}
 
 //export sub_4DCFB0
 func sub_4DCFB0(a1p *nox_object_t) { Sub_4DCFB0(asObjectS(a1p)) }

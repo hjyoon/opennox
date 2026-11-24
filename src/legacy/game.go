@@ -44,7 +44,6 @@ int sub_48C980();
 void nox_console_sendSysOpPass_4409D0(wchar2_t* a1);
 char* nox_xxx_getSomeMapName_4D0CF0();
 int  nox_server_loadMapFile_4CF5F0(char* a1, int a2);
-int nox_xxx_mapLoadRequired_4DCC80();
 void  sub_500510(const char* a1);
 int nox_xxx_guiChatIconLoad_445650();
 int nox_xxx_loadGuides_427070();
@@ -373,9 +372,6 @@ func Nox_server_testTwoPointsAndDirection_4E6E50(p1 types.Pointf, dir int16, p2 
 	return int(twoPointsAndDirection4E6E50(p1, int32(dir), p2))
 }
 
-func Nox_xxx_mapLoadOrSaveMB_4DCC70(v int) {
-	C.nox_xxx_mapLoadOrSaveMB_4DCC70(C.int(v))
-}
 func Sub_44E560() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_44E560())
 }
@@ -587,9 +583,6 @@ func Sub_40A250() {
 }
 func Sub_4D2160() {
 	C.sub_4D2160()
-}
-func Nox_xxx_mapLoadRequired_4DCC80() int {
-	return int(C.nox_xxx_mapLoadRequired_4DCC80())
 }
 func Sub_40A970() {
 	C.sub_40A970()

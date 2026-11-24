@@ -60,24 +60,47 @@ func nox_mapgenGenerateRoomNative_524E00(theme, raw *C.uint8_t) {
 	sub_526CA0(&surface.wall_name[0])
 	mapgenPlaceRoomBoundary((*mapgenRoomGeometry)(unsafe.Pointer(raw)))
 
-	links := (*mapgenRoomLinkRecord)(unsafe.Pointer(raw))
 	sub_526C80(0)
+	mapgenVisitRoomNeighbors(raw, func(neighbor *C.uint8_t, direction C.int) {
+		nox_mapgenReserveAdjacentNative_524FB0(raw, neighbor, direction)
+	})
+	sub_526C80(1)
+	nox_mapgenGenerateDoorsNative_525510(theme, raw)
+}
+
+func mapgenVisitRoomNeighbors(raw *C.uint8_t, visit func(*C.uint8_t, C.int)) {
+	links := (*mapgenRoomLinkRecord)(unsafe.Pointer(raw))
 	for direction := range links.links {
 		count := min(int(links.counts[direction]), len(links.links[direction]))
 		for _, token := range links.links[direction][:count] {
 			neighbor := mapgenResolveRoomLinkRecord(token)
 			if neighbor != nil {
-				nox_mapgenReserveAdjacentNative_524FB0(raw, (*C.uint8_t)(unsafe.Pointer(neighbor)), C.int(direction))
+				visit((*C.uint8_t)(unsafe.Pointer(neighbor)), C.int(direction))
 			}
 		}
 	}
-	sub_526C80(1)
-	C.nox_mapgenGenerateDoorsNative_525510(theme, raw)
 }
 
 //export nox_xxx_gen_524E00
 func nox_xxx_gen_524E00(theme, room C.int) {
 	nox_mapgenGenerateRoomNative_524E00(mapgenThemeByToken(theme), mapgenThemeByToken(room))
+}
+
+func mapgenAdjacentRoomEdge(room, neighbor *mapgenRoomGeometry, direction C.int) (start [2]C.float, axis int, far bool) {
+	axis = int(direction / 2)
+	cross := 1 - axis
+	edge := cross
+	far = direction == 1 || direction == 2
+	if far {
+		edge += 2
+	}
+
+	start[cross] = mapgenRoomFloat(room.bounds[edge])
+	start[axis] = mapgenRoomFloat(room.bounds[axis])
+	if candidate := mapgenRoomFloat(neighbor.bounds[axis]); candidate >= start[axis] {
+		start[axis] = candidate
+	}
+	return start, axis, far
 }
 
 //export nox_mapgenReserveAdjacentNative_524FB0
@@ -90,22 +113,10 @@ func nox_mapgenReserveAdjacentNative_524FB0(raw, other *C.uint8_t, direction C.i
 	}
 	room := (*mapgenRoomGeometry)(unsafe.Pointer(raw))
 	neighbor := (*mapgenRoomGeometry)(unsafe.Pointer(other))
-	axis := int(direction / 2)
-	cross := 1 - axis
-	edge := cross
-	if direction == 1 || direction == 2 {
-		edge += 2
-	}
-
-	var start [2]C.float
-	start[cross] = mapgenRoomFloat(room.bounds[edge])
-	start[axis] = mapgenRoomFloat(room.bounds[axis])
-	if candidate := mapgenRoomFloat(neighbor.bounds[axis]); candidate >= start[axis] {
-		start[axis] = candidate
-	}
-
+	start, axis, far := mapgenAdjacentRoomEdge(room, neighbor, direction)
 	reserved := start
-	if edge >= 2 {
+	if far {
+		cross := 1 - axis
 		reserved[cross] = C.float(float64(reserved[cross]) - mapgenHallCellSize)
 	}
 	short := neighbor

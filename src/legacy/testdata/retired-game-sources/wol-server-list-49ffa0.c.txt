@@ -1,0 +1,197 @@
+//----- (0049FFA0) --------------------------------------------------------
+nox_window* nox_wol_server_row_get(const nox_gui_server_ent_t* server) {
+	const nox_gui_server_node_t* node = nox_wol_server_node_from_record_const(server);
+	return node ? node->row : NULL;
+}
+
+void nox_wol_server_row_set(nox_gui_server_ent_t* server, nox_window* row) {
+	nox_gui_server_node_t* node = nox_wol_server_node_from_record(server);
+	if (node) {
+		node->row = row;
+	}
+}
+
+nox_list_item_t* sub_49FFA0(int destroy_rows) {
+	if (!*getMemU32Ptr(0x5D4594, 1305808) || !nox_gui_wol_servers_list.field_0 ||
+		!nox_gui_wol_servers_list.field_1) {
+		nox_common_list_clear_425760(&nox_gui_wol_servers_list);
+	}
+
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;) {
+		nox_list_item_t* next = nox_common_list_getNextSafe_4258A0(item);
+		nox_gui_server_node_t* node = nox_wol_server_node_from_list(item);
+		nox_common_list_remove_425920(item);
+		if (destroy_rows && node->row) {
+			nox_xxx_windowDestroyMB_46C4E0(node->row);
+		}
+		free(node);
+		item = next;
+	}
+	*getMemU32Ptr(0x5D4594, 1305808) = 1;
+	return NULL;
+}
+
+//----- (004A0020) --------------------------------------------------------
+nox_list_item_t* sub_4A0020(void) { return &nox_gui_wol_servers_list; }
+
+static int nox_wol_server_sort_key(nox_gui_server_ent_t* server) {
+	switch (nox_wol_servers_sorting_166704) {
+	case 2:
+		return server->sort_key = server->players;
+	case 3:
+		return server->sort_key = 32 - server->players;
+	case 6:
+		return server->sort_key = server->ping;
+	case 7:
+		return server->sort_key = 1000 - server->ping;
+	case 8:
+		return server->sort_key = server->status & 0x30;
+	case 9:
+		return server->sort_key = 48 - (server->status & 0x30);
+	default:
+		return 0;
+	}
+}
+
+static bool nox_wol_server_sorts_before(const nox_gui_server_ent_t* server,
+										const nox_gui_server_ent_t* current) {
+	switch (nox_wol_servers_sorting_166704) {
+	case 0:
+		return nox_strcmpi(server->server_name, current->server_name) <= 0;
+	case 1:
+		return nox_strcmpi(server->server_name, current->server_name) >= 0;
+	case 4:
+		return nox_wcscmp(nox_gui_wol_gameModeString_43BCB0(server->flags),
+						 nox_gui_wol_gameModeString_43BCB0(current->flags)) <= 0;
+	case 5:
+		return nox_wcscmp(nox_gui_wol_gameModeString_43BCB0(server->flags),
+						 nox_gui_wol_gameModeString_43BCB0(current->flags)) >= 0;
+	case 2:
+	case 3:
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+		return server->sort_key <= current->sort_key;
+	default:
+		return false;
+	}
+}
+
+static int nox_wol_server_insert_node(nox_gui_server_node_t* node) {
+	nox_wol_server_sort_key(&node->server);
+	int index = 0;
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;
+		 item = nox_common_list_getNextSafe_4258A0(item), ++index) {
+		nox_gui_server_node_t* current = nox_wol_server_node_from_list(item);
+		if (nox_wol_server_sorts_before(&node->server, &current->server)) {
+			nox_common_list_append_4258E0(item, &node->list);
+			return index;
+		}
+	}
+	nox_common_list_append_4258E0(&nox_gui_wol_servers_list, &node->list);
+	return index;
+}
+
+//----- (004A0030) --------------------------------------------------------
+int nox_wol_servers_addResult_4A0030(nox_gui_server_ent_t* srv) {
+	if (!srv) {
+		return -1;
+	}
+	if (!nox_gui_wol_servers_list.field_0 || !nox_gui_wol_servers_list.field_1) {
+		nox_common_list_clear_425760(&nox_gui_wol_servers_list);
+	}
+	nox_gui_server_node_t* node = calloc(1, sizeof(*node));
+	if (!node) {
+		return -1;
+	}
+	memcpy(&node->server, srv, sizeof(node->server));
+	return nox_wol_server_insert_node(node);
+}
+
+//----- (004A0290) --------------------------------------------------------
+void nox_wol_servers_sortBtnHandler_4A0290(int id) {
+	switch (id - 10047) {
+	case 0:
+		nox_wol_servers_sorting_166704 = (nox_wol_servers_sorting_166704 == 0) + 0;
+		break;
+	case 1:
+		nox_wol_servers_sorting_166704 = (nox_wol_servers_sorting_166704 == 2) + 2;
+		break;
+	case 2:
+		nox_wol_servers_sorting_166704 = (nox_wol_servers_sorting_166704 == 4) + 4;
+		break;
+	case 3:
+		nox_wol_servers_sorting_166704 = (nox_wol_servers_sorting_166704 == 6) + 6;
+		break;
+	case 4:
+		nox_wol_servers_sorting_166704 = (nox_wol_servers_sorting_166704 == 8) + 8;
+		break;
+	}
+}
+
+//----- (004A0360) --------------------------------------------------------
+nox_list_item_t* sub_4A0360(void) {
+	nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list);
+	while (item) {
+		nox_gui_server_node_t* node = nox_wol_server_node_from_list(item);
+		nox_gui_wol_newServerLine_43B7C0(&node->server);
+		item = nox_common_list_getNextSafe_4258A0(item);
+	}
+	return NULL;
+}
+
+//----- (004A0390) --------------------------------------------------------
+nox_list_item_t* sub_4A0390(void) {
+	nox_list_item_t unsorted;
+	nox_common_list_clear_425760(&unsorted);
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;) {
+		nox_list_item_t* next = nox_common_list_getNextSafe_4258A0(item);
+		nox_common_list_remove_425920(item);
+		nox_common_list_append_4258E0(&unsorted, item);
+		item = next;
+	}
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&unsorted); item;) {
+		nox_list_item_t* next = nox_common_list_getNextSafe_4258A0(item);
+		nox_common_list_remove_425920(item);
+		nox_wol_server_insert_node(nox_wol_server_node_from_list(item));
+		item = next;
+	}
+	return sub_4A0360();
+}
+
+//----- (004A0410) --------------------------------------------------------
+int sub_4A0410(const char* a1, short a2) {
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;
+		 item = nox_common_list_getNextSafe_4258A0(item)) {
+		const nox_gui_server_ent_t* server = &nox_wol_server_node_from_list_const(item)->server;
+		if (!strcmp(a1, server->addr) && a2 == server->port) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+//----- (004A0490) --------------------------------------------------------
+nox_gui_server_ent_t* sub_4A0490(int a1) {
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;
+		 item = nox_common_list_getNextSafe_4258A0(item)) {
+		nox_gui_server_node_t* node = nox_wol_server_node_from_list(item);
+		if (node->server.field_9 == (uint32_t)a1) {
+			return &node->server;
+		}
+	}
+	return NULL;
+}
+
+//----- (004A04C0) --------------------------------------------------------
+nox_gui_server_ent_t* sub_4A04C0(int a1) {
+	int index = 0;
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(&nox_gui_wol_servers_list); item;
+		 item = nox_common_list_getNextSafe_4258A0(item), ++index) {
+		if (index == a1) {
+			return &nox_wol_server_node_from_list(item)->server;
+		}
+	}
+	return NULL;
+}

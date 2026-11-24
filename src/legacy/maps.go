@@ -446,7 +446,7 @@ func Sub_461520() {
 }
 
 func Nox_xxx_tile_486060() {
-	C.nox_xxx_tile_486060()
+	nox_xxx_tile_486060()
 }
 
 func Sub_461400() {

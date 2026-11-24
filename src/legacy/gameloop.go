@@ -155,9 +155,6 @@ func Sub_459D60() int {
 func Sub_459DA0() int {
 	return int(C.sub_459DA0())
 }
-func Sub_4DF020() {
-	C.sub_4DF020()
-}
 func Sub_4161E0() {
 	C.sub_4161E0()
 }

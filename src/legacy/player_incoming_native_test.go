@@ -32,14 +32,15 @@ func TestPlayerIncomingNative4DDF60KeepsPreInitPosition(t *testing.T) {
 			if player.Field4700 != 0 || player.Field3676 != 2 {
 				t.Fatalf("fields at initialization = %d/%d", player.Field4700, player.Field3676)
 			}
+			player.Field4700 = 1
 			unit.PosVec = types.Pointf{X: 300, Y: 400}
 		})
 		want := position
 		if coop {
 			want = oldPosition
 		}
-		if player.Field4700 != 0 || player.Field3676 != 3 || player.Pos3632Vec != want {
-			t.Fatalf("incoming state with coop=%v = %d/%d/%v; want position %v", coop, player.Field4700, player.Field3676, player.Pos3632Vec, want)
+		if player.Field4700 != 1 || player.Field3676 != 3 || player.Pos3632Vec != want {
+			t.Fatalf("incoming state with coop=%v = %d/%d/%v, want position %v", coop, player.Field4700, player.Field3676, player.Pos3632Vec, want)
 		}
 	}
 }

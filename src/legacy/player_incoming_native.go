@@ -16,7 +16,13 @@ import (
 )
 
 func Nox_xxx_netPlayerIncomingServ_4DDF60(index int) {
-	nox_xxx_netPlayerIncomingServ_4DDF60(C.int(index))
+	playerIndex := C.int(index)
+	nox_xxx_netPlayerIncomingServ_4DDF60(playerIndex)
+	if player := GetServer().S().Players.ByInd(ntype.PlayerInd(playerIndex)); player != nil {
+		// PlayerInit creates the default items and sets this marker. The
+		// OpenNox session entry clears it again after announcing the join.
+		player.Field4700 = 0
+	}
 }
 
 //export nox_xxx_netPlayerIncomingServ_4DDF60

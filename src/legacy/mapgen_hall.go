@@ -10,6 +10,8 @@ import (
 	"unsafe"
 )
 
+const mapgenHallCellSize = 32.526913
+
 func mapgenIsHall(kind uint32) bool {
 	return kind >= 2 && kind <= 5
 }
@@ -61,7 +63,7 @@ func nox_mapgenMakeHallStructNative_523E30(kind, width, depth C.int) *C.float {
 		room.cellDimensions = [2]C.int32_t{C.int32_t(depth), C.int32_t(max(width, 1))}
 	}
 	for i, cells := range room.cellDimensions {
-		world := float32(float64(cells) * 32.526913)
+		world := float32(float64(cells) * mapgenHallCellSize)
 		room.dimensions[i] = C.uint32_t(math.Float32bits(world))
 	}
 	return (*C.float)(raw)

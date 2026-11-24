@@ -27,6 +27,34 @@ func TestMapgenHallRecordNative523E30(t *testing.T) {
 	}
 }
 
+func TestMapgenHallConnectionPointsNative(t *testing.T) {
+	for _, tc := range []struct {
+		kind  int32
+		x, y  [3]float32
+		edges [2]float32
+	}{
+		{2, [3]float32{30, 30, 30}, [3]float32{20, 80, 23}, [2]float32{20, 80}},
+		{3, [3]float32{30, 30, 30}, [3]float32{80, 20, 77}, [2]float32{}},
+		{4, [3]float32{50, 10, 46}, [3]float32{50, 50, 50}, [2]float32{50, 10}},
+		{5, [3]float32{10, 50, 14}, [3]float32{50, 50, 50}, [2]float32{10, 50}},
+	} {
+		for _, linked := range []bool{false, true} {
+			got, words, token := mapgenHallPointsFixture(tc.kind, linked)
+			want := [3][2]float32{{tc.x[0], tc.y[0]}, {tc.x[1], tc.y[1]}, {tc.x[2], tc.y[2]}}
+			if linked {
+				want[2] = [2]float32{30, 50}
+			}
+			returns := [2]uint32{math.Float32bits(tc.edges[0]), math.Float32bits(tc.edges[1])}
+			if tc.kind == 3 {
+				returns = [2]uint32{token, token}
+			}
+			if token == 0 || got != want || words != returns {
+				t.Fatalf("hall type %d linked=%t: points %v, words %x, want %v and %x", tc.kind, linked, got, words, want, returns)
+			}
+		}
+	}
+}
+
 func TestMapgenRecursiveHalls4D4F40PreserveNativePointers(t *testing.T) {
 	InitBlobData()
 

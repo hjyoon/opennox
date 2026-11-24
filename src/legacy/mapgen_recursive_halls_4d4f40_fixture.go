@@ -185,7 +185,10 @@ static nox_test_mapgen_recursive_halls_4d4f40_result nox_test_mapgen_recursive_h
 */
 import "C"
 
-import "unsafe"
+import (
+	"math"
+	"unsafe"
+)
 
 func mapgenHallRecordFixture(kind, width, depth int32) [9]uint32 {
 	restore := mapgenHighFixtureMemory()
@@ -196,6 +199,49 @@ func mapgenHallRecordFixture(kind, width, depth int32) [9]uint32 {
 	}
 	defer C.sub_521A10(unsafe.Pointer(room))
 	return *(*[9]uint32)(unsafe.Pointer(room))
+}
+
+func mapgenHallPointsFixture(kind int32, linked bool) (points [3][2]float32, words [2]uint32, token uint32) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	ptr := unsafe.Pointer(C.nox_mapgenMakeHallStructNative_523E30(C.int(kind), 1, 1))
+	if ptr == nil {
+		return
+	}
+	defer C.sub_521A10(ptr)
+	room := (*C.uint8_t)(ptr)
+	geo := (*mapgenRoomGeometry)(ptr)
+	for i, bound := range []float32{10, 20, 50, 80} {
+		geo.bounds[i] = C.uint32_t(math.Float32bits(bound))
+	}
+	geo.dimensions = [2]C.uint32_t{C.uint32_t(math.Float32bits(6)), C.uint32_t(math.Float32bits(8))}
+	if linked {
+		direction := C.int(0)
+		if kind == 4 || kind == 5 {
+			direction = 2
+		}
+		for i := C.int(0); i < 2; i++ {
+			other := unsafe.Pointer(C.nox_xxx_mapGenMakeRoomStruct_521940(1, 1))
+			if other == nil {
+				return
+			}
+			defer C.sub_521A10(other)
+			if C.nox_mapgenRoomLinkNative_521900(room, (*C.uint8_t)(other), direction+i) == 0 {
+				return
+			}
+		}
+	}
+	token = uint32(C.nox_mapgenLegacyPtrRegister(ptr))
+	var output [3]C.float2
+	words[0] = uint32(C.nox_mapgenConnectionPointNearNative_523C30(room, &output[0]))
+	words[1] = uint32(C.nox_mapgenConnectionPointFarNative_523CB0(room, &output[1]))
+	if C.nox_mapgenConnectionPointCenterNative_523D30(room, &output[2]) != (*C.float)(ptr) {
+		return [3][2]float32{}, words, 0
+	}
+	for i, point := range output {
+		points[i] = [2]float32{float32(point.field_0), float32(point.field_4)}
+	}
+	return
 }
 
 type mapgenRecursiveHallsResult4D4F40 struct {

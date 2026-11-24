@@ -1,9 +1,31 @@
 package legacy
 
 import (
+	"math"
 	"strconv"
 	"testing"
 )
+
+func TestMapgenHallRecordNative523E30(t *testing.T) {
+	for _, tc := range []struct {
+		kind, width, depth int32
+		cells              [2]int32
+	}{
+		{1, 5, 6, [2]int32{0, 0}},
+		{2, -3, 7, [2]int32{1, 7}},
+		{3, 4, -2, [2]int32{4, -2}},
+		{4, 0, -8, [2]int32{-8, 1}},
+		{5, math.MaxInt32, 3, [2]int32{3, math.MaxInt32}},
+	} {
+		want := [9]uint32{0: uint32(tc.kind), 3: uint32(tc.cells[0]), 4: uint32(tc.cells[1])}
+		for i, width := range tc.cells {
+			want[7+i] = math.Float32bits(float32(float64(width) * 32.526913))
+		}
+		if got := mapgenHallRecordFixture(tc.kind, tc.width, tc.depth); got != want {
+			t.Fatalf("hall type %d width %d depth %d: got %#x, want %#x", tc.kind, tc.width, tc.depth, got, want)
+		}
+	}
+}
 
 func TestMapgenRecursiveHalls4D4F40PreserveNativePointers(t *testing.T) {
 	InitBlobData()

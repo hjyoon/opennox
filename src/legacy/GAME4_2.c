@@ -659,58 +659,7 @@ void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2) {
 	nox_xxx_netSendFxAllCli_523030((float2*)a1, v5, 6);
 }
 
-//----- (005238F0) --------------------------------------------------------
-int nox_xxx_mapGenCheckRoomType_5238F0(int* a1) {
-	int v1; // eax
-
-	v1 = *a1;
-	return *a1 == 2 || v1 == 3 || v1 == 4 || v1 == 5;
-}
-
-//----- (00523920) --------------------------------------------------------
-int sub_523920(int a1) {
-	switch (a1) {
-	case 2:
-		return 0;
-	case 3:
-		return 1;
-	case 4:
-		return 2;
-	}
-	return a1 != 5 ? 0 : 3;
-}
-
-//----- (00523960) --------------------------------------------------------
-// Native-width implementation: mapgen_room_link_public.go.
-
-//----- (00523970) --------------------------------------------------------
-int sub_523970(int a1) {
-	int result; // eax
-
-	switch (a1) {
-	case 2:
-		result = 3;
-		break;
-	case 3:
-		result = 2;
-		break;
-	case 5:
-		result = 1;
-		break;
-	default:
-		result = 0;
-		break;
-	}
-	return result;
-}
-
-//----- (005239B0) --------------------------------------------------------
-int sub_5239B0(int a1) {
-	int v1; // eax
-
-	v1 = sub_523970(a1);
-	return sub_523960(v1);
-}
+// Hall orientation and allocation are implemented in mapgen_hall.go.
 
 //----- (00523A10) --------------------------------------------------------
 int nox_mapgenAdjustHallNative_523A10(uint8_t* a1, const float* a2) {
@@ -944,61 +893,6 @@ float* sub_523D30(float* a1, float* a2) {
 	return nox_mapgenConnectionPointCenterNative_523D30(
 		(uint8_t*)nox_mapgenLegacyPtrResolve((uintptr_t)a1),
 		(float2*)nox_mapgenLegacyPtrResolve((uintptr_t)a2));
-}
-
-//----- (00523E30) --------------------------------------------------------
-float* nox_mapgenMakeHallStructNative_523E30(int a1, int a2, int a3) {
-	float* result; // eax
-
-	result = (float*)calloc(1u, 0x178u);
-	if (result) {
-		if (!nox_mapgenLegacyPtrRegister(result)) {
-			free(result);
-			return NULL;
-		}
-		*(uint32_t*)result = a1;
-		switch (a1) {
-		case 2:
-		case 3:
-			*((uint32_t*)result + 3) = a2;
-			if (a2 < 1) {
-				*((uint32_t*)result + 3) = 1;
-			}
-			*((uint32_t*)result + 4) = a3;
-			break;
-		case 4:
-		case 5:
-			*((uint32_t*)result + 3) = a3;
-			*((uint32_t*)result + 4) = a2;
-			if (a2 < 1) {
-				*((uint32_t*)result + 4) = 1;
-			}
-			break;
-		default:
-			break;
-		}
-		result[7] = (double)*((int*)result + 3) * 32.526913;
-		result[8] = (double)*((int*)result + 4) * 32.526913;
-	}
-	return result;
-}
-
-float* sub_523E30(int a1, int a2, int a3) {
-	return nox_mapgenMakeHallStructNative_523E30(a1, a2, a3);
-}
-
-//----- (00523EC0) --------------------------------------------------------
-float* nox_mapgenMakeHallNative_523EC0(uint8_t* theme, int type, int size) {
-	if (!theme) {
-		return NULL;
-	}
-	int depth = nox_xxx_mapGenRandFunc2_526B00(*(uint32_t*)(theme + 4), *(uint32_t*)(theme + 8));
-	return nox_mapgenMakeHallStructNative_523E30(type, size, depth);
-}
-
-float* nox_xxx_mapGenMakeHall_523EC0(int a1, int a2, int a3) {
-	return nox_mapgenMakeHallNative_523EC0(
-		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (00524070) --------------------------------------------------------

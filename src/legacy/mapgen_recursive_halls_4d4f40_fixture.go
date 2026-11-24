@@ -185,6 +185,19 @@ static nox_test_mapgen_recursive_halls_4d4f40_result nox_test_mapgen_recursive_h
 */
 import "C"
 
+import "unsafe"
+
+func mapgenHallRecordFixture(kind, width, depth int32) [9]uint32 {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	room := C.nox_mapgenMakeHallStructNative_523E30(C.int(kind), C.int(width), C.int(depth))
+	if room == nil {
+		return [9]uint32{}
+	}
+	defer C.sub_521A10(unsafe.Pointer(room))
+	return *(*[9]uint32)(unsafe.Pointer(room))
+}
+
 type mapgenRecursiveHallsResult4D4F40 struct {
 	themeAddress               uintptr
 	specialRootAddress         uintptr

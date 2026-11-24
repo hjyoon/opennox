@@ -66,7 +66,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 	for _, roomType := range [...]bool{true, false} {
 		for node := mapgenRooms.head; node != nil; node = mapgenNextListedRoom(node, mapgenResolveListedRoom) {
 			room := unsafe.Pointer(node)
-			if (C.nox_xxx_mapGenCheckRoomType_5238F0((*C.int)(room)) != 0) == roomType {
+			if mapgenIsHall(uint32((*mapgenRoomGeometry)(room).kind)) == roomType {
 				nox_xxx_mapGenSetFlags_5235F0(C.char(-100))
 				C.nox_mapgenGenerateRoomNative_524E00(theme, (*C.uint8_t)(room))
 			}

@@ -524,7 +524,7 @@ func Sub_4C09D0() int {
 	return int(sub_4C09D0())
 }
 func Sub_478110() int {
-	return int(C.sub_478110())
+	return int(sub_478110())
 }
 func Sub_49B3E0() int {
 	return int(C.sub_49B3E0())

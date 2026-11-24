@@ -42,26 +42,17 @@
 #include "operators.h"
 
 extern uintptr_t dword_8531A0_2576;
-extern nox_video_bag_image_t* dword_5d4594_1098456;
 extern uint32_t dword_5d4594_1193352;
 extern uint32_t dword_5d4594_1096636;
 extern uint32_t dword_5d4594_3807116;
-extern uint32_t dword_5d4594_1098620;
 extern uint32_t dword_5d4594_1123520;
 extern uint32_t dword_5d4594_1193188;
-extern wchar2_t* dword_5d4594_1098596;
 extern uint32_t dword_5d4594_3799452;
-extern wchar2_t* dword_5d4594_1098600;
 extern uint32_t dword_5d4594_3807152;
-extern uint32_t dword_5d4594_1098616;
 extern uint32_t dword_5d4594_3807136;
-extern wchar2_t* dword_5d4594_1098604;
-extern char* nox_shop_dialog_file_1098608;
 extern uint32_t dword_5d4594_3804684;
 extern uint32_t dword_5d4594_3807140;
 extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
-extern uint32_t dword_5d4594_1098592;
-extern nox_window* dword_5d4594_1098580;
 extern uint32_t dword_5d4594_3798812;
 extern uint32_t dword_5d4594_3798800;
 extern uint32_t dword_5d4594_3798828;
@@ -76,11 +67,9 @@ extern uint32_t dword_5d4594_1193348;
 extern uint32_t dword_5d4594_1193360;
 extern uint32_t nox_client_highResFrontWalls_80820;
 extern uint32_t dword_5d4594_3798836;
-extern uint32_t dword_5d4594_1107036;
 extern uint32_t dword_5d4594_251572;
 extern uint32_t dword_5d4594_1098628;
 extern uint32_t dword_5d4594_3798804;
-extern nox_window* dword_5d4594_1098576;
 extern uint32_t dword_5d4594_3798820;
 extern uint32_t dword_5d4594_3798824;
 extern void* dword_587000_155144;
@@ -100,23 +89,6 @@ extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 uint8_t** nox_pixbuffer_rows_3798784 = 0;
 
 void* dword_5d4594_1096640 = 0;
-
-static nox_video_bag_image_t* nox_shop_base_image;
-static nox_video_bag_image_t* nox_shop_trade_mode_image;
-static nox_video_bag_image_t* nox_shop_identify_mode_image;
-static nox_video_bag_image_t* nox_shop_repair_mode_image;
-static nox_video_bag_image_t* nox_shop_exit_mode_image;
-static nox_video_bag_image_t* nox_shop_inventory_bar_images[2];
-static nox_video_bag_image_t* nox_shop_inventory_slider_image;
-static nox_video_bag_image_t* nox_shop_inventory_slider_selected_image;
-static nox_video_bag_image_t* nox_shop_inventory_up_image;
-static nox_video_bag_image_t* nox_shop_inventory_up_selected_image;
-static nox_video_bag_image_t* nox_shop_inventory_down_image;
-static nox_video_bag_image_t* nox_shop_inventory_down_selected_image;
-static nox_video_bag_image_t* nox_shopkeeper_images[6];
-static nox_draw_viewport_t nox_shop_draw_viewport;
-
-nox_shop_inventory_cell_t nox_client_shop_inventory[NOX_SHOP_INVENTORY_CELL_COUNT] = {0};
 
 void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
 void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
@@ -609,337 +581,6 @@ void nox_xxx_cursorSetTooltip_4776B0(wchar2_t* a1) {
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_478030() { return dword_5d4594_1098624; }
 #endif
-
-void nox_client_shop_viewport_init(int width, int height) {
-	nox_shop_draw_viewport = (nox_draw_viewport_t){
-		.x2 = width,
-		.y2 = height,
-		.width = width,
-		.height = height,
-	};
-}
-
-const nox_draw_viewport_t* nox_client_shop_viewport(void) { return &nox_shop_draw_viewport; }
-
-//----- (00478110) --------------------------------------------------------
-int sub_478110() {
-	nox_window* root;
-	nox_window* inventory;
-	nox_window* slider;
-	int width;
-	int height;
-
-	// GAME.EXE stored this pointer-free viewport in thirteen PE32 words at
-	// 0x5D4594+1098492. The native structure uses intptr_t fields, so keeping
-	// the four-byte writes aliases x2/y2 into y1 on 64-bit targets and sends
-	// every shop item off-screen.
-	nox_client_shop_viewport_init(nox_win_width, nox_win_height);
-	root = nox_new_window_from_file("Shop.wnd", sub_478480);
-	dword_5d4594_1098576 = root;
-	if (!root) {
-		return 0;
-	}
-	nox_window_set_all_funcs(root, sub_478650, sub_478970, 0);
-	inventory = nox_xxx_wndGetChildByID_46B0C0(root, 3806);
-	slider = nox_xxx_wndGetChildByID_46B0C0(root, 3807);
-	if (!inventory || !slider || !slider->field_100 || !slider->widget_data) {
-		nox_xxx_windowDestroyMB_46C4E0(root);
-		dword_5d4594_1098576 = 0;
-		return 0;
-	}
-	nox_gui_winSetFunc96_46B070(inventory, sub_478E50);
-	// GAME.EXE nulls every drawable before its full reset. Keep that order:
-	// initialization must never try to delete stale pre-initialization values.
-	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
-		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
-			nox_client_shop_inventory_cell(row, column)->drawable = NULL;
-		}
-	}
-	sub_478F10();
-	nox_window_get_size(root, &width, &height);
-	nox_window_setPos_46A9B0(root, nox_win_width - width, nox_win_height - height);
-	nox_window_set_hidden(root, 1);
-	nox_xxx_wnd_46ABB0(root, 0);
-	nox_shop_base_image = nox_xxx_gLoadImg_42F970("ShopBase");
-	nox_shop_trade_mode_image = nox_xxx_gLoadImg_42F970("ShopTradeMode");
-	nox_shop_identify_mode_image = nox_xxx_gLoadImg_42F970("ShopIdentifyMode");
-	nox_shop_repair_mode_image = nox_xxx_gLoadImg_42F970("ShopRepairMode");
-	nox_shop_exit_mode_image = nox_xxx_gLoadImg_42F970("ShopExitMode");
-	nox_shop_inventory_bar_images[0] = nox_xxx_gLoadImg_42F970("ShopInventoryBar1");
-	nox_shop_inventory_bar_images[1] = nox_xxx_gLoadImg_42F970("ShopInventoryBar2");
-	nox_shop_inventory_slider_image = nox_xxx_gLoadImg_42F970("ShopInventorySlider");
-	nox_shop_inventory_slider_selected_image = nox_xxx_gLoadImg_42F970("ShopInventorySliderSelected");
-	nox_shop_inventory_up_image = nox_xxx_gLoadImg_42F970("ShopInventoryUp");
-	nox_shop_inventory_up_selected_image = nox_xxx_gLoadImg_42F970("ShopInventoryUpSelected");
-	nox_shop_inventory_down_image = nox_xxx_gLoadImg_42F970("ShopInventorydown");
-	nox_shop_inventory_down_selected_image = nox_xxx_gLoadImg_42F970("ShopInventorydownSelected");
-	dword_5d4594_1098456 = nox_xxx_gLoadImg_42F970("ShopTextBorder");
-	nox_shopkeeper_images[0] = nox_xxx_gLoadImg_42F970("ShopkeeperPic");
-	nox_shopkeeper_images[1] = nox_xxx_gLoadImg_42F970("ShopkeeperWarriorPic");
-	nox_shopkeeper_images[2] = nox_xxx_gLoadImg_42F970("ShopkeeperConjurerPic");
-	nox_shopkeeper_images[3] = nox_xxx_gLoadImg_42F970("ShopkeeperWizardPic");
-	nox_shopkeeper_images[4] = nox_xxx_gLoadImg_42F970("ShopkeeperLandOfTheDeadPic");
-	nox_shopkeeper_images[5] = nox_xxx_gLoadImg_42F970("ShopkeeperMagicShopPic");
-	dword_5d4594_1098580 = slider;
-	nox_client_wndGetPosition_46AA60(inventory, getMemAt(0x5D4594, 1098380), getMemAt(0x5D4594, 1098384));
-	nox_window_get_size(inventory, getMemAt(0x5D4594, 1098388), getMemAt(0x5D4594, 1098392));
-	*getMemU32Ptr(0x5D4594, 1098388) += *getMemU32Ptr(0x5D4594, 1098380);
-	*getMemU32Ptr(0x5D4594, 1098392) += *getMemU32Ptr(0x5D4594, 1098384);
-	slider->field_100->width = 16;
-	slider->field_100->height = 12;
-	nox_xxx_wndSetOffsetMB_46AE40(slider->field_100, 0, -15);
-	sub_4B5700(slider, 0, 0, nox_shop_inventory_slider_image, nox_shop_inventory_slider_selected_image,
-			   nox_shop_inventory_slider_selected_image);
-	dword_5d4594_1098592 = ((uint32_t*)slider->widget_data)[1];
-	return 1;
-}
-
-//----- (00478480) --------------------------------------------------------
-int sub_478480(int a1, int a2, int* a3, int a4) {
-	int result; // eax
-	int v5;     // esi
-	int v7;     // ecx
-	int v8;     // ecx
-
-	if (a2 != 16391) {
-		if (a2 == 16393) {
-			dword_5d4594_1107036 = dword_5d4594_1098592 - a4;
-			return 0;
-		}
-		return 0;
-	}
-	if (sub_45D9B0()) {
-		return 0;
-	}
-	v5 = nox_xxx_wndGetID_46B0A0(a3);
-	nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
-	switch (v5) {
-	case 3801:
-		if (!dword_5d4594_1098624) {
-			return 0;
-		}
-		sub_478040();
-		result = 0;
-		break;
-	case 3802:
-		if (!dword_5d4594_1098624) {
-			return 0;
-		}
-		if (dword_5d4594_1098628 == 4) {
-			sub_467680();
-		}
-		nox_client_setCursorType_477610(12);
-		dword_5d4594_1098628 = 3;
-		if (sub_467C80()) {
-			return 0;
-		}
-		sub_467BB0();
-		result = 0;
-		break;
-	case 3803:
-		if (!dword_5d4594_1098624) {
-			return 0;
-		}
-		sub_467650();
-		dword_5d4594_1098628 = 4;
-		result = 0;
-		break;
-	case 3804:
-		if (dword_5d4594_1098624) {
-			if (dword_5d4594_1098628 == 4) {
-				sub_467680();
-			}
-			nox_client_setCursorType_477610(11);
-			dword_5d4594_1098628 = 2;
-		}
-		return 0;
-	case 3808:
-		if (*(int*)&dword_5d4594_1107036 - 50 >= 0) {
-			v8 = dword_5d4594_1107036 - 50 - (dword_5d4594_1107036 - 50) % 50;
-		} else {
-			v8 = 0;
-		}
-		dword_5d4594_1107036 = v8;
-		nox_window_call_field_94(dword_5d4594_1098580, 16394, dword_5d4594_1098592 - v8, 0);
-		result = 0;
-		break;
-	case 3809:
-		if (*(int*)&dword_5d4594_1107036 + 50 <= *(int*)&dword_5d4594_1098592) {
-			v7 = dword_5d4594_1107036 + 50 - (dword_5d4594_1107036 + 50) % 50;
-			dword_5d4594_1107036 = dword_5d4594_1107036 + 50 - (dword_5d4594_1107036 + 50) % 50;
-		} else {
-			v7 = dword_5d4594_1098592;
-			dword_5d4594_1107036 = dword_5d4594_1098592;
-		}
-		nox_window_call_field_94(dword_5d4594_1098580, 16394, dword_5d4594_1098592 - v7, 0);
-		result = 0;
-		break;
-	default:
-		return 0;
-	}
-	return result;
-}
-// 478585: variable 'v6' is possibly undefined
-
-//----- (00478650) --------------------------------------------------------
-int sub_478650(int a1, int a2, unsigned int a3) {
-	int v4;  // eax
-	int2 v5; // [esp+0h] [ebp-8h]
-
-	v5.field_0 = (unsigned short)a3;
-	v5.field_4 = a3 >> 16;
-	if (!sub_45D9B0()) {
-		switch (a2) {
-		case 5:
-			v4 = nox_xxx_pointInRect_4281F0(&v5, (int4*)getMemAt(0x5D4594, 1098380));
-			if (v4) {
-				if (dword_5d4594_1098628 == 2) {
-					sub_478730(&v5.field_0);
-				}
-			}
-			break;
-		case 19:
-			if (dword_5d4594_1098628 == 2) {
-				nox_window_call_field_94(dword_5d4594_1098576, 16391,
-								 (uintptr_t)nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3808), 0);
-				return 1;
-			}
-			break;
-		case 20:
-			if (dword_5d4594_1098628 == 2) {
-				nox_window_call_field_94(dword_5d4594_1098576, 16391,
-								 (uintptr_t)nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3809), 0);
-				return 1;
-			}
-			break;
-		default:
-			return 0;
-		}
-	}
-	return 1;
-}
-// 478703: variable 'v4' is possibly undefined
-
-//----- (00478970) --------------------------------------------------------
-int sub_478970() {
-	int result; // eax
-	int2 a1;    // [esp+0h] [ebp-8h]
-
-	a1.field_0 = nox_win_width - NOX_DEFAULT_WIDTH;
-	a1.field_4 = nox_win_height - NOX_DEFAULT_HEIGHT;
-	nox_client_drawImageAt_47D2C0(nox_shop_base_image, nox_win_width - NOX_DEFAULT_WIDTH,
-								  nox_win_height - NOX_DEFAULT_HEIGHT);
-	if (dword_5d4594_1098628 == 2) {
-		nox_client_drawImageAt_47D2C0(nox_shop_trade_mode_image, a1.field_0, a1.field_4);
-		sub_478C80();
-		result = 1;
-	} else if (dword_5d4594_1098628 == 3) {
-		nox_client_drawImageAt_47D2C0(nox_shop_identify_mode_image, a1.field_0, a1.field_4);
-		sub_478B10(&a1);
-		result = 1;
-	} else if (dword_5d4594_1098628 == 1) {
-		nox_client_drawImageAt_47D2C0(nox_shop_repair_mode_image, a1.field_0, a1.field_4);
-		sub_478A70(&a1);
-		result = 1;
-	} else {
-		if (dword_5d4594_1098628 == 4) {
-			nox_client_drawImageAt_47D2C0(nox_shop_repair_mode_image, a1.field_0, a1.field_4);
-			sub_478BC0(&a1.field_0);
-		}
-		result = 1;
-	}
-	return result;
-}
-
-//----- (00478A70) --------------------------------------------------------
-int sub_478A70(int2* a1) {
-	nox_window* v1; // esi
-	int result;     // eax
-	int v3;       // [esp+4h] [ebp-10h]
-	int v4;       // [esp+8h] [ebp-Ch]
-	int v5;       // [esp+Ch] [ebp-8h]
-	int v6;       // [esp+10h] [ebp-4h]
-
-	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
-	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v5, (unsigned int*)&v6);
-	nox_window_get_size(v1, &v4, &v3);
-	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
-	result = 0;
-	if (dword_5d4594_1098604) {
-		result = nox_xxx_drawStringWrap_43FAF0(0, dword_5d4594_1098604, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
-	}
-	return result;
-}
-
-//----- (00478C80) --------------------------------------------------------
-int sub_478C80() {
-	uint32_t gold = sub_4674A0();
-	nox_xxx_wndDraw_49F7F0();
-	nox_client_copyRect_49F6F0(*getMemIntPtr(0x5D4594, 1098380), *getMemIntPtr(0x5D4594, 1098384),
-							   *getMemU32Ptr(0x5D4594, 1098388) - *getMemU32Ptr(0x5D4594, 1098380),
-							   *getMemU32Ptr(0x5D4594, 1098392) - *getMemU32Ptr(0x5D4594, 1098384));
-	int origin_x = *getMemIntPtr(0x5D4594, 1098380);
-	int y = *getMemIntPtr(0x5D4594, 1098384) - (int)dword_5d4594_1107036;
-	int font_height = nox_xxx_guiFontHeightMB_43F320(0);
-	wchar2_t text[32];
-
-	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++, y += 50) {
-		if (y >= *getMemIntPtr(0x5D4594, 1098392)) {
-			break;
-		}
-		if (y <= *getMemIntPtr(0x5D4594, 1098384) - 50) {
-			continue;
-		}
-		nox_client_drawImageAt_47D2C0(nox_shop_inventory_bar_images[row % 2], origin_x, y);
-		int x = origin_x + 5;
-		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++, x += 50) {
-			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
-			if (!cell->count) {
-				continue;
-			}
-			nox_drawable* drawable = cell->drawable;
-			drawable->pos.x = x + 20;
-			drawable->pos.y = y + 25;
-			drawable->draw_func((uint32_t*)nox_client_shop_viewport(), drawable);
-			if (gold < cell->price) {
-				nox_client_drawRectFilledAlpha_49CF10(x - 5, y, 50, 50);
-			}
-			if (cell->count > 1) {
-				nox_swprintf(text, L"%d", cell->count);
-				nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-				nox_xxx_drawStringWrap_43FAF0(0, text, x, y + 5, 320, 0);
-			}
-			nox_swprintf(text, L"%d", cell->price);
-			nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
-			nox_xxx_drawStringWrap_43FAF0(0, text, x, y - font_height + 45, 320, 0);
-		}
-	}
-	return sub_49F860();
-}
-
-//----- (00478E50) --------------------------------------------------------
-int sub_478E50(int a1, int a2, unsigned int a3) {
-	(void)a1;
-	(void)a2;
-
-	if (dword_5d4594_1098628 == 2) {
-		int column = ((unsigned short)a3 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
-		int row = (int)((a3 >> 16) - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
-		if (column >= NOX_SHOP_INVENTORY_COLUMN_COUNT) {
-			column = NOX_SHOP_INVENTORY_COLUMN_COUNT - 1;
-		}
-		if (row >= NOX_SHOP_INVENTORY_ROW_COUNT) {
-			row = NOX_SHOP_INVENTORY_ROW_COUNT - 1;
-		}
-		nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
-		if (cell->count) {
-			cell->drawable->field_32 = cell->net_codes[0];
-			nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(cell->drawable));
-		}
-	}
-	return 1;
-}
 
 //----- (00479590) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.

@@ -218,7 +218,7 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 		drawObjectSetTint(C.int(memmap.Int32(0x85B3FC, 956)))
 	}
 	if restoreClip {
-		C.nox_xxx_wndDraw_49F7F0()
+		nox_xxx_wndDraw_49F7F0()
 		C.sub_49F7C0_def()
 	} else {
 		C.sub_47D370(C.int(max(0, -z)))
@@ -228,7 +228,7 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 	nox_client_drawEnableAlpha_434560(0)
 	nox_xxx_draw_434600(0)
 	if restoreClip {
-		C.sub_49F860()
+		sub_49F860()
 	}
 	dr.Field_0 = dr.Field_0&0xffff | 1<<16
 	dr.Field_1 = uint32(memmap.Uint16(0x973F18, 88)) | uint32(memmap.Uint16(0x973F18, 76))<<16

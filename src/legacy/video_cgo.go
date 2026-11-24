@@ -143,7 +143,7 @@ func Nox_xxx_setSomeFunc_48A210(a1 unsafe.Pointer) {
 	C.nox_xxx_setSomeFunc_48A210(a1)
 }
 func Sub_49F6D0(a1 int) int {
-	return int(C.sub_49F6D0(C.int(a1)))
+	return int(sub_49F6D0(C.int(a1)))
 }
 func Sub_430B50(a1 int, a2 int, a3 int, a4 int) {
 	C.sub_430B50(C.int(a1), C.int(a2), C.int(a3), C.int(a4))

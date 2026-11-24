@@ -631,13 +631,13 @@ func Sub_435150(a1 unsafe.Pointer, a2 unsafe.Pointer) {
 	sub_435150((*C.uint8_t)(a1), (*C.char)(a2))
 }
 func Nox_xxx_wndDraw_49F7F0() {
-	C.nox_xxx_wndDraw_49F7F0()
+	nox_xxx_wndDraw_49F7F0()
 }
 func Sub_49F780(a1 int, a2 int) {
-	C.sub_49F780(C.int(a1), C.int(a2))
+	nox_client_clipHorizontal_49F780(C.int(a1), C.int(a2))
 }
 func Sub_49F860() {
-	C.sub_49F860()
+	sub_49F860()
 }
 func Nox_xxx_drawEnergyBolt_499710(a1 int, a2 int, a3 int, a4 int) {
 	nox_xxx_drawEnergyBolt_499710(C.int(a1), C.int(a2), C.short(a3), C.int(a4))

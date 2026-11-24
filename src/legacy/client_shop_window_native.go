@@ -211,10 +211,10 @@ func sub_478970(win *nox_window, draw *C.nox_window_data) C.int {
 //export sub_478C80
 func sub_478C80() C.int {
 	gold := uint32(sub_4674A0())
-	C.nox_xxx_wndDraw_49F7F0()
+	nox_xxx_wndDraw_49F7F0()
 	x0, y0 := int(int32(*g2ServerWord(1098380))), int(int32(*g2ServerWord(1098384)))
 	x1, y1 := int(int32(*g2ServerWord(1098388))), int(int32(*g2ServerWord(1098392)))
-	C.nox_client_copyRect_49F6F0(C.int(x0), C.int(y0), C.int(x1-x0), C.int(y1-y0))
+	currentDrawClipRect(C.int(x0), C.int(y0), C.int(x1-x0), C.int(y1-y0))
 	r := GetClient().R2()
 	fontHeight := r.FontHeight(nil)
 	view := asViewport(&C.nox_shop_draw_viewport)
@@ -245,7 +245,7 @@ func sub_478C80() C.int {
 			r.DrawStringWrapped(nil, strconv.FormatInt(int64(int32(cell.price)), 10), image.Rect(x, lineY, x+320, lineY))
 		}
 	}
-	return C.sub_49F860()
+	return sub_49F860()
 }
 
 //export sub_478E50

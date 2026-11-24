@@ -46,7 +46,6 @@ extern uint32_t dword_5d4594_1200796;
 extern uint32_t dword_5d4594_1305788;
 extern uint32_t nox_server_sanctuaryHelp_54276;
 extern uint32_t dword_5d4594_1197308;
-extern uint32_t dword_5d4594_1305748;
 extern uint32_t dword_5d4594_1197328;
 extern uint32_t dword_5d4594_1197352;
 extern uint32_t dword_5d4594_1197336;
@@ -1660,115 +1659,6 @@ void sub_49E3C0(uint32_t* a1, int a2, unsigned int a3) {
 			*(uint16_t*)v3 = a2;
 		}
 	}
-}
-
-//----- (0049F6D0) --------------------------------------------------------
-int sub_49F6D0(int a1) {
-	int result; // eax
-
-	result = nox_draw_curDrawData_3799572->flag_0;
-	nox_draw_curDrawData_3799572->flag_0 = a1;
-	return result;
-}
-
-//----- (0049F6F0) --------------------------------------------------------
-extern int nox_client_copyRect_native_49F6F0(nox_render_data_t* data, int x, int y, int w, int h);
-int4* nox_client_copyRect_49F6F0(int xLeft, int yTop, int a3, int a4) {
-	return (int4*)(uintptr_t)nox_client_copyRect_native_49F6F0(nox_draw_curDrawData_3799572, xLeft, yTop, a3, a4);
-}
-
-//----- (0049F780) --------------------------------------------------------
-int4* sub_49F780(int xLeft, int a2) {
-	int v2; // esi
-	int v3; // eax
-
-	v2 = xLeft;
-	if (xLeft < (int)nox_draw_curDrawData_3799572->clip.min_x) {
-		v2 = nox_draw_curDrawData_3799572->clip.min_x;
-	}
-	v3 = a2;
-	if (a2 > (int)nox_draw_curDrawData_3799572->clip.max_x) {
-		v3 = nox_draw_curDrawData_3799572->clip.max_x;
-	}
-	return nox_client_copyRect_49F6F0(v2, nox_draw_curDrawData_3799572->clip.min_y, v3 - v2,
-									  nox_draw_curDrawData_3799572->clip.max_y - nox_draw_curDrawData_3799572->clip.min_y);
-}
-
-//----- (0049F7F0) --------------------------------------------------------
-void nox_xxx_wndDraw_49F7F0() {
-	if (!dword_5d4594_1305748) {
-		*getMemU32Ptr(0x5D4594, 1305772) = nox_draw_curDrawData_3799572->flag_0;
-		*getMemU32Ptr(0x5D4594, 1305756) = nox_draw_curDrawData_3799572->clip.min_x;
-		*getMemU32Ptr(0x5D4594, 1305760) = nox_draw_curDrawData_3799572->clip.min_y;
-		*getMemU32Ptr(0x5D4594, 1305764) = nox_draw_curDrawData_3799572->clip.max_x;
-		*getMemU32Ptr(0x5D4594, 1305768) = nox_draw_curDrawData_3799572->clip.max_y;
-		*getMemU32Ptr(0x5D4594, 1305732) = nox_draw_curDrawData_3799572->rect2.min_x;
-		*getMemU32Ptr(0x5D4594, 1305736) = nox_draw_curDrawData_3799572->rect2.min_y;
-		*getMemU32Ptr(0x5D4594, 1305740) = nox_draw_curDrawData_3799572->rect2.max_x;
-		*getMemU32Ptr(0x5D4594, 1305744) = nox_draw_curDrawData_3799572->rect2.max_y;
-		dword_5d4594_1305748 = 1;
-	}
-}
-
-//----- (0049F860) --------------------------------------------------------
-int sub_49F860() {
-	int result; // eax
-
-	result = dword_5d4594_1305748;
-	if (dword_5d4594_1305748) {
-		nox_draw_curDrawData_3799572->flag_0 = *getMemU32Ptr(0x5D4594, 1305772);
-		nox_rect* v1 = &nox_draw_curDrawData_3799572->clip;
-		v1->min_x = *getMemU32Ptr(0x5D4594, 1305756);
-		v1->min_y = *getMemU32Ptr(0x5D4594, 1305760);
-		v1->max_x = *getMemU32Ptr(0x5D4594, 1305764);
-		v1->max_y = *getMemU32Ptr(0x5D4594, 1305768);
-		nox_rect* v2 = &nox_draw_curDrawData_3799572->rect2;
-		v2->min_x = *getMemU32Ptr(0x5D4594, 1305732);
-		v2->min_y = *getMemU32Ptr(0x5D4594, 1305736);
-		result = *getMemU32Ptr(0x5D4594, 1305740);
-		v2->max_x = *getMemU32Ptr(0x5D4594, 1305740);
-		v2->max_y = *getMemU32Ptr(0x5D4594, 1305744);
-		dword_5d4594_1305748 = 0;
-	}
-	return result;
-}
-
-//----- (0049F930) --------------------------------------------------------
-int4* nox_xxx_utilRect_49F930(int4* a1, int4* a2, int4* a3) {
-	int v3;       // ecx
-	int v4;       // edx
-	int v5;       // ebx
-	int v6;       // edi
-	int4* result; // eax
-
-	v3 = a3->field_0;
-	if (a2->field_0 >= a3->field_0) {
-		v3 = a2->field_0;
-	}
-	v4 = a3->field_8;
-	if (a2->field_8 <= v4) {
-		v4 = a2->field_8;
-	}
-	if (v3 >= v4) {
-		return 0;
-	}
-	v5 = a3->field_4;
-	if (a2->field_4 >= v5) {
-		v5 = a2->field_4;
-	}
-	v6 = a3->field_C;
-	if (a2->field_C <= v6) {
-		v6 = a2->field_C;
-	}
-	if (v5 >= v6) {
-		return 0;
-	}
-	result = a1;
-	a1->field_0 = v3;
-	a1->field_4 = v5;
-	a1->field_8 = v4;
-	a1->field_C = v6;
-	return result;
 }
 
 //----- (0049FDB0) --------------------------------------------------------

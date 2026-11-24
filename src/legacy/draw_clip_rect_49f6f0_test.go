@@ -68,6 +68,34 @@ func TestDrawClipRect49F6F0CEntry(t *testing.T) {
 	}
 }
 
+func TestDrawClipRestoreKeepsSignedBounds(t *testing.T) {
+	data, free := noxrender.NewRenderData()
+	defer free()
+	restore := useDrawClipTestData(data)
+	defer restore()
+
+	clip := image.Rect(-18, -4, 103, 140)
+	secondary := image.Rect(-27, -5, 177, 202)
+	data.SetClipRect(clip)
+	data.SetClipRect2(secondary)
+	sub_49F6D0(3)
+	nox_xxx_wndDraw_49F7F0()
+
+	data.SetClipRect(image.Rect(11, 12, 13, 14))
+	data.SetClipRect2(image.Rect(21, 22, 23, 24))
+	sub_49F6D0(0)
+	nox_xxx_wndDraw_49F7F0()
+	if got := sub_49F860(); got != 177 {
+		t.Fatalf("saved secondary right edge = %d, want 177", got)
+	}
+	if data.ClipRect() != clip || data.ClipRect2() != secondary {
+		t.Fatalf("restored rectangles = %v, %v, want %v, %v", data.ClipRect(), data.ClipRect2(), clip, secondary)
+	}
+	if got := sub_49F6D0(0); got != 3 || sub_49F860() != 0 {
+		t.Fatalf("restored clip flag = %d, want 3 and an empty save", got)
+	}
+}
+
 func TestDrawClipRect49F6F0MinimapPixels(t *testing.T) {
 	data, free := noxrender.NewRenderDataHigh()
 	defer free()

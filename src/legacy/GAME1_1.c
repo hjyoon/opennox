@@ -437,42 +437,6 @@ unsigned int sub_419A30(float a1) {
 	return result;
 }
 
-//----- (00419A70) --------------------------------------------------------
-int nox_float2int(float a1) {
-	// Original419A70 returns integer-indefinite for invalid signed-DWORD input.
-	// Native ARM64 conversion otherwise saturates or returns zero for NaN.
-	if (!(a1 >= -2147483648.0f && a1 < 2147483648.0f)) {
-		return INT32_MIN;
-	}
-	return (int)a1;
-}
-
-//----- (00419A90) --------------------------------------------------------
-short nox_float2int16(float a1) { return (short)nox_float2int(a1); }
-
-//----- (00419AB0) --------------------------------------------------------
-short nox_float2int16_abs(float a1) { return (short)nox_float2int(fabsf(a1)); }
-
-//----- (00419AF0) --------------------------------------------------------
-float nox_double2float(double a1) {
-	// Original419AF0 stores binary32 under the startup ToZero context.
-	// Correct a rounded-away native cast without changing host FP state.
-	volatile float stored = (float)a1;
-	if (fabs((double)stored) > fabs(a1)) {
-		return nextafterf(stored, 0);
-	}
-	return stored;
-}
-
-//----- (00419B10) --------------------------------------------------------
-int nox_double2int(double a1) {
-	// Original419B10 stores a signed QWORD, then returns its low DWORD.
-	if (!(a1 >= -0x1p63 && a1 < 0x1p63)) {
-		return 0;
-	}
-	return (int32_t)(uint32_t)(int64_t)a1;
-}
-
 static int nox_save_header_call(uintptr_t offset) {
 	switch (offset) {
 	case 55944:

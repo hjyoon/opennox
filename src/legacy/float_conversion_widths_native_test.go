@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-// Compile exact production definitions; expectations come exclusively from
+// Compile the retired C conversions; expectations come exclusively from
 // independently executed original helpers and the complete ArrowTrap caller.
 func TestFloatConversionWidthsOriginalNativeC(t *testing.T) {
 	raw, err := os.ReadFile("testdata/float_conversion_widths_419a90_419b10.json")
@@ -80,7 +80,7 @@ func TestFloatConversionWidthsOriginalNativeC(t *testing.T) {
 		"short nox_float2int16_abs(float a1)",
 		"int nox_double2int(double a1)",
 	} {
-		definitions = append(definitions, extract("GAME1_1.c", marker))
+		definitions = append(definitions, extract("testdata/retired-game-sources/float-conversions-419a70.c.txt", marker))
 	}
 	definitions = append(definitions, extract("testdata/arrow_trap_fx_before_go.c", "void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2)"))
 	const harness = `

@@ -25,7 +25,7 @@ func TestFloatToIntOriginal419A70Native(t *testing.T) {
 	if err := json.Unmarshal(raw, &fixture); err != nil || !fixture.Unchanged || len(fixture.Rows) != 90 || fixture.Startup&0xf3f != 0xe3f {
 		t.Fatalf("original converter fixture: %v", err)
 	}
-	convert := summonRuntime500DA0().FloatToInt // Actual linked production C.nox_float2int binding.
+	convert := summonRuntime500DA0().FloatToInt // Actual linked nox_float2int binding.
 	selected := 0
 	for _, row := range fixture.Rows {
 		if row.CW != fixture.Startup {

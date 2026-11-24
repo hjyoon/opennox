@@ -14,7 +14,7 @@ import (
 // The independent oracle is Nox's local/remote observer and invisibility rule;
 // it never reads the poisoned legacy byte as player status.
 func TestDrawObjectPlayerStatusNative4C4770V2(t *testing.T) {
-	file, err := os.ReadFile("GAME3_1.c")
+	file, err := os.ReadFile("testdata/retired-game-sources/GAME3_1.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

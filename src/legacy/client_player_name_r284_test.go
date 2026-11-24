@@ -20,8 +20,8 @@ func clientPlayerNameNativeR284(t *testing.T, mode string) {
 	program := string(fixture)
 	for _, part := range []struct{ file, start, marker string }{
 		{"GAME2_3.c", "void sub_48D990(nox_draw_viewport_t* a1p) {", "// PRODUCTION_CHAT_NAME"},
-		{"GAME3_1.c", "int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {", "// PRODUCTION_TRADE_START_NAME"},
-		{"GAME3_1.c", "int nox_xxx_prepareP2PTrade_4C1BF0() {", "// PRODUCTION_TRADE_PREPARE_NAME"},
+		{"testdata/retired-game-sources/GAME3_1.c.txt", "int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {", "// PRODUCTION_TRADE_START_NAME"},
+		{"testdata/retired-game-sources/GAME3_1.c.txt", "int nox_xxx_prepareP2PTrade_4C1BF0() {", "// PRODUCTION_TRADE_PREPARE_NAME"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {

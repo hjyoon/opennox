@@ -11,7 +11,7 @@ import (
 // Exercise the actual dialog drawer and native viewport/drawable/window layouts.
 // Only image, position, and child-window services are intercepted.
 func TestItemAmountDraw4C0030NativeBody(t *testing.T) {
-	source, err := os.ReadFile("GAME3_1.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME3_1.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

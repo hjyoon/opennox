@@ -51,12 +51,22 @@ var toxicCloudRawRuntime53D850 = func() server.ToxicCloudRawRuntime53D850 {
 	}
 }
 
-//export nox_toxic_cloud_root_native
-func nox_toxic_cloud_root_native(small C.int, cloud *nox_object_t) {
-	server.ToxicCloudUpdateRaw53D850(asObjectS(cloud), small != 0, toxicCloudRawRuntime53D850())
+//export nox_xxx_updateToxicCloud_53D850
+func nox_xxx_updateToxicCloud_53D850(cloud *nox_object_t) {
+	server.ToxicCloudUpdateRaw53D850(asObjectS(cloud), false, toxicCloudRawRuntime53D850())
 }
 
-//export nox_toxic_cloud_target_native
-func nox_toxic_cloud_target_native(small C.int, target, cloud *nox_object_t) {
-	server.ToxicCloudAffectTargetRaw53D8C0(asObjectS(target), asObjectS(cloud), small != 0, toxicCloudRawRuntime53D850())
+//export sub_53D8C0
+func sub_53D8C0(target, cloud *nox_object_t) {
+	server.ToxicCloudAffectTargetRaw53D8C0(asObjectS(target), asObjectS(cloud), false, toxicCloudRawRuntime53D850())
+}
+
+//export nox_xxx_updateSmallToxicCloud_53D960
+func nox_xxx_updateSmallToxicCloud_53D960(cloud *nox_object_t) {
+	server.ToxicCloudUpdateRaw53D850(asObjectS(cloud), true, toxicCloudRawRuntime53D850())
+}
+
+//export nox_xxx_toxicCloudPoison_53D9D0
+func nox_xxx_toxicCloudPoison_53D9D0(target, cloud *nox_object_t) {
+	server.ToxicCloudAffectTargetRaw53D8C0(asObjectS(target), asObjectS(cloud), true, toxicCloudRawRuntime53D850())
 }

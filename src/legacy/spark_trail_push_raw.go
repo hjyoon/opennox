@@ -36,18 +36,17 @@ var sparkTrailPushRawRuntime = func() sparkTrailPushRuntime {
 	}
 }
 
-//export nox_spark_trail_push_native
-func nox_spark_trail_push_native(kind C.int, source *nox_object_t) *nox_object_t {
-	h := sparkTrailPushRawRuntime()
-	switch kind {
-	case 0:
-		server.SparkUpdateRaw53ADC0(asObjectS(source), h.DelayedDelete)
-	case 1:
-		return asObjectC(server.ProjectileTrailUpdateRaw53AEC0(asObjectS(source), h.Trail))
-	case 2:
-		server.PushUpdateRaw53B030(asObjectS(source), h.PushUnits)
-	default:
-		panic("unknown spark/trail/push update")
-	}
-	return nil
+//export nox_xxx_updateSpark_53ADC0
+func nox_xxx_updateSpark_53ADC0(source *nox_object_t) {
+	server.SparkUpdateRaw53ADC0(asObjectS(source), sparkTrailPushRawRuntime().DelayedDelete)
+}
+
+//export nox_xxx_updateProjTrail_53AEC0
+func nox_xxx_updateProjTrail_53AEC0(source *nox_object_t) *nox_object_t {
+	return asObjectC(server.ProjectileTrailUpdateRaw53AEC0(asObjectS(source), sparkTrailPushRawRuntime().Trail))
+}
+
+//export nox_xxx_updatePush_53B030
+func nox_xxx_updatePush_53B030(source *nox_object_t) {
+	server.PushUpdateRaw53B030(asObjectS(source), sparkTrailPushRawRuntime().PushUnits)
 }

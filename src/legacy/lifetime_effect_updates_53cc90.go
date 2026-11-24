@@ -51,7 +51,36 @@ var lifetimeEffectRuntime53CC90 = func() server.LifetimeEffectRuntime53CC90 {
 	}
 }
 
-//export nox_lifetime_effect_update_native
-func nox_lifetime_effect_update_native(kind C.int, source *nox_object_t) {
-	server.LifetimeEffectUpdateRaw53CC90(server.LifetimeEffectKind53CC90(kind), asObjectS(source), lifetimeEffectRuntime53CC90())
+func updateLifetimeEffect(kind server.LifetimeEffectKind53CC90, source *nox_object_t) {
+	server.LifetimeEffectUpdateRaw53CC90(kind, asObjectS(source), lifetimeEffectRuntime53CC90())
+}
+
+//export nox_xxx_updateSelfDestruct_53CC90
+func nox_xxx_updateSelfDestruct_53CC90(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectSelfDestruct53CC90, source)
+}
+
+//export nox_xxx_updateDeathBallFragment_53D220
+func nox_xxx_updateDeathBallFragment_53D220(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectDeathBallFragment53D220, source)
+}
+
+//export nox_xxx_updateMoonglow_53D270
+func nox_xxx_updateMoonglow_53D270(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectMoonglow53D270, source)
+}
+
+//export nox_xxx_updateTelekinesis_53D330
+func nox_xxx_updateTelekinesis_53D330(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectTelekinesis53D330, source)
+}
+
+//export nox_xxx_updateFist_53D400
+func nox_xxx_updateFist_53D400(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectFist53D400, source)
+}
+
+//export nox_xxx_updateFlameCleanse_53D510
+func nox_xxx_updateFlameCleanse_53D510(source *nox_object_t) {
+	updateLifetimeEffect(server.LifetimeEffectFlameCleanse53D510, source)
 }

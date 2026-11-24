@@ -37,14 +37,21 @@ var switchRawRuntime53B320 = func() server.SwitchUpdateRawRuntime53B320 {
 	return server.SwitchUpdateRawRuntime53B320{NeedSync: (*server.Object).NeedSync, QueueCollision: pendingCollisionEnqueue537610}
 }
 
-//export nox_toggle_trigger_switch_native
-func nox_toggle_trigger_switch_native(kind C.int, unit *nox_object_t) C.uchar {
-	switch kind {
-	case 0:
-		return C.uchar(server.ToggleUpdateRaw53B060(asObjectS(unit), toggleTriggerRawRuntime53B060()))
-	case 1:
-		return C.uchar(server.TriggerUpdateRaw53B1B0(asObjectS(unit), server.TriggerUpdateRawRuntime53B1B0{ToggleTriggerRawRuntime53B060: toggleTriggerRawRuntime53B060(), ImmediateType: triggerImmediateType53B1B0}))
-	default:
-		return C.uchar(server.SwitchUpdateRaw53B320(asObjectS(unit), switchRawRuntime53B320()))
+//export nox_xxx_updateToggle_53B060
+func nox_xxx_updateToggle_53B060(unit *nox_object_t) C.char {
+	return C.char(server.ToggleUpdateRaw53B060(asObjectS(unit), toggleTriggerRawRuntime53B060()))
+}
+
+//export nox_xxx_updateTrigger_53B1B0
+func nox_xxx_updateTrigger_53B1B0(unit *nox_object_t) C.char {
+	runtime := server.TriggerUpdateRawRuntime53B1B0{
+		ToggleTriggerRawRuntime53B060: toggleTriggerRawRuntime53B060(),
+		ImmediateType:                 triggerImmediateType53B1B0,
 	}
+	return C.char(server.TriggerUpdateRaw53B1B0(asObjectS(unit), runtime))
+}
+
+//export nox_xxx_updateSwitch_53B320
+func nox_xxx_updateSwitch_53B320(unit *nox_object_t) C.char {
+	return C.char(server.SwitchUpdateRaw53B320(asObjectS(unit), switchRawRuntime53B320()))
 }

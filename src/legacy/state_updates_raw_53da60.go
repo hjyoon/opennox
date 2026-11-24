@@ -35,16 +35,22 @@ var stateUpdateRawRuntime53DB30 = func() server.StateUpdateRawRuntime53DB30 {
 	}
 }
 
-//export nox_state_update_native
-func nox_state_update_native(kind C.int, source *nox_object_t) {
-	switch kind {
-	case 0:
-		server.ArachnaphobiaUpdateRaw53DA60(asObjectS(source), arachnaphobiaRawRuntime53DA60())
-	case 1:
-		server.BreakUpdateRaw53DB30(asObjectS(source), stateUpdateRawRuntime53DB30())
-	case 2:
-		server.OpenUpdateRaw53DBB0(asObjectS(source), stateUpdateRawRuntime53DB30())
-	case 3:
-		server.BreakAndRemoveUpdateRaw53DC30(asObjectS(source), stateUpdateRawRuntime53DB30())
-	}
+//export nox_xxx_updateArachnaphobia_53DA60
+func nox_xxx_updateArachnaphobia_53DA60(source *nox_object_t) {
+	server.ArachnaphobiaUpdateRaw53DA60(asObjectS(source), arachnaphobiaRawRuntime53DA60())
+}
+
+//export nox_xxx_updateBreak_53DB30
+func nox_xxx_updateBreak_53DB30(source *nox_object_t) {
+	server.BreakUpdateRaw53DB30(asObjectS(source), stateUpdateRawRuntime53DB30())
+}
+
+//export nox_xxx_updateOpen_53DBB0
+func nox_xxx_updateOpen_53DBB0(source *nox_object_t) {
+	server.OpenUpdateRaw53DBB0(asObjectS(source), stateUpdateRawRuntime53DB30())
+}
+
+//export nox_xxx_updateBreakAndRemove_53DC30
+func nox_xxx_updateBreakAndRemove_53DC30(source *nox_object_t) {
+	server.BreakAndRemoveUpdateRaw53DC30(asObjectS(source), stateUpdateRawRuntime53DB30())
 }

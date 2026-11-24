@@ -65,14 +65,12 @@ var meteorRawRuntime53D6E0 = func() server.MeteorRawRuntime53D6E0 {
 	}
 }
 
-//export nox_meteor_update_native
-func nox_meteor_update_native(kind C.int, source *nox_object_t) {
-	switch kind {
-	case 0:
-		server.MeteorShowerUpdateRaw53D5A0(asObjectS(source), meteorShowerRawRuntime53D5A0())
-	case 1:
-		server.MeteorUpdateRaw53D6E0(asObjectS(source), meteorRawRuntime53D6E0())
-	default:
-		panic("unknown meteor update")
-	}
+//export nox_xxx_updateMeteorShower_53D5A0
+func nox_xxx_updateMeteorShower_53D5A0(source *nox_object_t) {
+	server.MeteorShowerUpdateRaw53D5A0(asObjectS(source), meteorShowerRawRuntime53D5A0())
+}
+
+//export nox_xxx_meteorExplode_53D6E0
+func nox_xxx_meteorExplode_53D6E0(source *nox_object_t) {
+	server.MeteorUpdateRaw53D6E0(asObjectS(source), meteorRawRuntime53D6E0())
 }

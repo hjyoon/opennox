@@ -2608,9 +2608,7 @@ LABEL_24:;
 }
 
 //----- (0053ADC0) --------------------------------------------------------
-extern nox_object_t* nox_spark_trail_push_native(int kind, nox_object_t* source);
-void nox_xxx_updateSpark_53ADC0(nox_object_t* source) { nox_spark_trail_push_native(0, source); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateSpark_53ADC0(int a1) {
 	int v1; // eax
 	int v2; // ecx
@@ -2631,8 +2629,7 @@ void nox_xxx_updateSpark_53ADC0(int a1) {
 #endif
 
 //----- (0053AEC0) --------------------------------------------------------
-nox_object_t* nox_xxx_updateProjTrail_53AEC0(nox_object_t* source) { return nox_spark_trail_push_native(1, source); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 float* nox_xxx_updateProjTrail_53AEC0(int a1) {
 	float* v1;     // esi
 	int v2;        // eax
@@ -2688,8 +2685,7 @@ float* nox_xxx_updateProjTrail_53AEC0(int a1) {
 #endif
 
 //----- (0053B030) --------------------------------------------------------
-void nox_xxx_updatePush_53B030(nox_object_t* source) { nox_spark_trail_push_native(2, source); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updatePush_53B030(int a1) {
 	nox_xxx_mapPushUnitsAround_52E040(a1 + 56, **(float**)(a1 + 748), 0, *(float*)(*(uint32_t*)(a1 + 748) + 8), 0, 0,
 									  0);
@@ -2697,9 +2693,7 @@ void nox_xxx_updatePush_53B030(int a1) {
 #endif
 
 //----- (0053B060) --------------------------------------------------------
-extern unsigned char nox_toggle_trigger_switch_native(int kind,nox_object_t* unit);
-char nox_xxx_updateToggle_53B060(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(0, unit); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 char nox_xxx_updateToggle_53B060(uint32_t* a1) {
 	unsigned int* v1; // esi
 	unsigned int v2;  // eax
@@ -2753,8 +2747,7 @@ LABEL_18:
 #endif
 
 //----- (0053B1B0) --------------------------------------------------------
-char nox_xxx_updateTrigger_53B1B0(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(1, unit); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 char nox_xxx_updateTrigger_53B1B0(int a1) {
 	int* v1; // esi
 	int v2;  // eax
@@ -2825,8 +2818,7 @@ char sub_53B300(nox_object_t* obj) {
 #endif
 
 //----- (0053B320) --------------------------------------------------------
-char nox_xxx_updateSwitch_53B320(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(2, unit); }
-#if 0 // Original PE32 body retained as provenance; typed native entry above.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 char nox_xxx_updateSwitch_53B320(uint32_t* a1) {
 	int v1; // eax
 
@@ -3228,12 +3220,7 @@ void nox_xxx_waterBarrel_53CC30(float* a1, int a2) {
 #endif
 
 //----- (0053CC90) --------------------------------------------------------
-extern void nox_lifetime_effect_update_native(int kind, nox_object_t* source);
-void nox_xxx_updateSelfDestruct_53CC90(nox_object_t* source) {
-	nox_lifetime_effect_update_native(0, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateSelfDestruct_53CC90(int a1) {
 	if ((unsigned int)(gameFrame() - *(uint32_t*)(a1 + 128)) > 2) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
@@ -3242,11 +3229,7 @@ void nox_xxx_updateSelfDestruct_53CC90(int a1) {
 #endif
 
 //----- (0053D220) --------------------------------------------------------
-void nox_xxx_updateDeathBallFragment_53D220(nox_object_t* source) {
-	nox_lifetime_effect_update_native(1, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateDeathBallFragment_53D220(int a1) {
 	int v1; // esi
 
@@ -3261,11 +3244,7 @@ void nox_xxx_updateDeathBallFragment_53D220(int a1) {
 #endif
 
 //----- (0053D270) --------------------------------------------------------
-void nox_xxx_updateMoonglow_53D270(nox_object_t* source) {
-	nox_lifetime_effect_update_native(2, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateMoonglow_53D270(int a1) {
 	int v1;    // eax
 	int v2;    // ecx
@@ -3295,11 +3274,7 @@ void nox_xxx_updateMoonglow_53D270(int a1) {
 #endif
 
 //----- (0053D330) --------------------------------------------------------
-void nox_xxx_updateTelekinesis_53D330(nox_object_t* source) {
-	nox_lifetime_effect_update_native(3, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateTelekinesis_53D330(int a1) {
 	int v1;    // eax
 	int v2;    // ecx
@@ -3330,11 +3305,7 @@ void nox_xxx_updateTelekinesis_53D330(int a1) {
 #endif
 
 //----- (0053D400) --------------------------------------------------------
-void nox_xxx_updateFist_53D400(nox_object_t* source) {
-	nox_lifetime_effect_update_native(4, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateFist_53D400(int a1) {
 	double v1; // st7
 	double v2; // st7
@@ -3369,11 +3340,7 @@ void nox_xxx_updateFist_53D400(int a1) {
 #endif
 
 //----- (0053D510) --------------------------------------------------------
-void nox_xxx_updateFlameCleanse_53D510(nox_object_t* source) {
-	nox_lifetime_effect_update_native(5, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateFlameCleanse_53D510(int a1) {
 	float v1;  // ecx
 	float v2;  // eax
@@ -3391,12 +3358,7 @@ void nox_xxx_updateFlameCleanse_53D510(int a1) {
 #endif
 
 //----- (0053D5A0) --------------------------------------------------------
-extern void nox_meteor_update_native(int kind, nox_object_t* source);
-void nox_xxx_updateMeteorShower_53D5A0(nox_object_t* source) {
-	nox_meteor_update_native(0, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_updateMeteorShower_53D5A0(float* a2) {
 	uint32_t* v1; // ebx
 	int v2;       // edi
@@ -3447,11 +3409,7 @@ void nox_xxx_updateMeteorShower_53D5A0(float* a2) {
 #endif
 
 //----- (0053D6E0) --------------------------------------------------------
-void nox_xxx_meteorExplode_53D6E0(nox_object_t* source) {
-	nox_meteor_update_native(1, source);
-}
-
-#if 0 // ABI32 provenance; active entry uses a typed native pointer.
+#if 0 // Original PE32 implementation. The public entry is in Go.
 void nox_xxx_meteorExplode_53D6E0(int a6) {
 	int* v1;      // ebx
 	float* v2;    // edi
@@ -3491,12 +3449,6 @@ void nox_xxx_meteorExplode_53D6E0(int a6) {
 #endif
 
 //----- (0053D850) --------------------------------------------------------
-extern void nox_toxic_cloud_root_native(int small, nox_object_t* cloud);
-extern void nox_toxic_cloud_target_native(int small, nox_object_t* target, nox_object_t* cloud);
-void nox_xxx_updateToxicCloud_53D850(nox_object_t* cloud) {
-	nox_toxic_cloud_root_native(0, cloud);
-}
-
 #if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_updateToxicCloud_53D850(int a1) {
 	uint32_t* v1; // esi
@@ -3517,10 +3469,6 @@ void nox_xxx_updateToxicCloud_53D850(int a1) {
 #endif
 
 //----- (0053D8C0) --------------------------------------------------------
-void sub_53D8C0(nox_object_t* target, nox_object_t* cloud) {
-	nox_toxic_cloud_target_native(0, target, cloud);
-}
-
 #if 0 // ABI32 provenance; active entry uses typed native pointers.
 void sub_53D8C0(int a1, int a2) {
 	float v2;  // edx
@@ -3554,10 +3502,6 @@ void sub_53D8C0(int a1, int a2) {
 #endif
 
 //----- (0053D960) --------------------------------------------------------
-void nox_xxx_updateSmallToxicCloud_53D960(nox_object_t* cloud) {
-	nox_toxic_cloud_root_native(1, cloud);
-}
-
 #if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_updateSmallToxicCloud_53D960(int a1) {
 	uint32_t* v1; // esi
@@ -3578,10 +3522,6 @@ void nox_xxx_updateSmallToxicCloud_53D960(int a1) {
 #endif
 
 //----- (0053D9D0) --------------------------------------------------------
-void nox_xxx_toxicCloudPoison_53D9D0(nox_object_t* target, nox_object_t* cloud) {
-	nox_toxic_cloud_target_native(1, target, cloud);
-}
-
 #if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_toxicCloudPoison_53D9D0(int a1, int a2) {
 	float v2;  // edx
@@ -3613,8 +3553,6 @@ void nox_xxx_toxicCloudPoison_53D9D0(int a1, int a2) {
 #endif
 
 //----- (0053DA60) --------------------------------------------------------
-extern void nox_state_update_native(int kind, nox_object_t* source);
-void nox_xxx_updateArachnaphobia_53DA60(nox_object_t* source) { nox_state_update_native(0, source); }
 #if 0 // Original PE32 body retained as provenance; native entry above.
 void nox_xxx_updateArachnaphobia_53DA60(int* a1) {
 	int v1;       // eax
@@ -3651,7 +3589,6 @@ void nox_xxx_updateExpire_53DB00(int a1) {
 #endif
 
 //----- (0053DB30) --------------------------------------------------------
-void nox_xxx_updateBreak_53DB30(nox_object_t* source) { nox_state_update_native(1, source); }
 #if 0 // Original PE32 body retained as provenance; native entry above.
 int* nox_xxx_updateBreak_53DB30(uint32_t* a1) {
 	int* result; // eax
@@ -3681,7 +3618,6 @@ int* nox_xxx_updateBreak_53DB30(uint32_t* a1) {
 #endif
 
 //----- (0053DBB0) --------------------------------------------------------
-void nox_xxx_updateOpen_53DBB0(nox_object_t* source) { nox_state_update_native(2, source); }
 #if 0 // Original PE32 body retained as provenance; native entry above.
 int* nox_xxx_updateOpen_53DBB0(uint32_t* a1) {
 	int* result; // eax
@@ -3709,7 +3645,6 @@ int* nox_xxx_updateOpen_53DBB0(uint32_t* a1) {
 #endif
 
 //----- (0053DC30) --------------------------------------------------------
-void nox_xxx_updateBreakAndRemove_53DC30(nox_object_t* source) { nox_state_update_native(3, source); }
 #if 0 // Original PE32 body retained as provenance; native entry above.
 void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1) {
 	int v1; // eax

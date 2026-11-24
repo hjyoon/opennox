@@ -518,7 +518,7 @@ func Sub_48D000_initGuiKick() int {
 	return int(C.sub_48D000_initGuiKick())
 }
 func Sub_4C3760() int {
-	return int(C.sub_4C3760())
+	return int(sub_4C3760())
 }
 func Sub_4C09D0() int {
 	return int(sub_4C09D0())

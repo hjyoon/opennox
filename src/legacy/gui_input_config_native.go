@@ -4,12 +4,14 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME3_1.h"
 #include "client__gui__guiinput.h"
+#include "client__shell__inputcfg__inputcfg.h"
 #include "noxstring.h"
 extern int nox_win_width, nox_win_height;
 extern nox_window *dword_5d4594_1321224, *dword_5d4594_1321228, *dword_5d4594_1321232;
 extern nox_window *dword_5d4594_1321236, *dword_5d4594_1321240, *dword_5d4594_1321244;
 extern nox_window *dword_5d4594_1321248, *dword_5d4594_1321252;
-extern nox_window *dword_5d4594_1522612, *dword_5d4594_1522632, *dword_5d4594_1522624, *dword_5d4594_1522628;
+extern nox_window *dword_5d4594_1522604, *dword_5d4594_1522612, *dword_5d4594_1522620;
+extern nox_window *dword_5d4594_1522624, *dword_5d4594_1522628, *dword_5d4594_1522632;
 */
 import "C"
 
@@ -17,6 +19,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 //export sub_4C3500
@@ -39,7 +42,7 @@ func sub_4C35B0(cancel C.int) C.int {
 	if cancel != 0 {
 		g2ServerHidden(C.dword_5d4594_1321228, true)
 	} else {
-		C.sub_4C3620()
+		gameInputBindings.apply()
 		nox_common_writecfgfile(internCStr("nox.cfg"))
 		g2ServerHidden(C.dword_5d4594_1321228, true)
 		C.sub_472280()
@@ -57,26 +60,233 @@ func sub_4C3A60(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
 }
 
 type inputBindingPanel struct {
+	root         **nox_window
+	labels       **nox_window
 	prompt       **nox_window
 	selected     **nox_window
 	columns      [2]**nox_window
+	promptOffset uintptr
+	promptUnits  int
 	keyEmpty     uintptr
+	source       string
+	escEventLine int32
+	pressKeyLine int32
 	restoreFocus bool
 }
 
 var gameInputBindings = inputBindingPanel{
-	prompt:   &C.dword_5d4594_1321232,
-	selected: &C.dword_5d4594_1321252,
-	columns:  [2]**nox_window{&C.dword_5d4594_1321244, &C.dword_5d4594_1321248},
-	keyEmpty: 185444,
+	root:         &C.dword_5d4594_1321228,
+	labels:       &C.dword_5d4594_1321240,
+	prompt:       &C.dword_5d4594_1321232,
+	selected:     &C.dword_5d4594_1321252,
+	columns:      [2]**nox_window{&C.dword_5d4594_1321244, &C.dword_5d4594_1321248},
+	promptOffset: 1321256,
+	promptUnits:  (1321520 - 1321256) / 2,
+	keyEmpty:     185444,
+	source:       `C:\NoxPost\src\client\Gui\GuiInput.c`,
+	escEventLine: 191,
+	pressKeyLine: 436,
 }
 
 var shellInputBindings = inputBindingPanel{
+	root:         &C.dword_5d4594_1522604,
+	labels:       &C.dword_5d4594_1522620,
 	prompt:       &C.dword_5d4594_1522612,
 	selected:     &C.dword_5d4594_1522632,
 	columns:      [2]**nox_window{&C.dword_5d4594_1522624, &C.dword_5d4594_1522628},
+	promptOffset: 1522636,
+	promptUnits:  (1522892 - 1522636) / 2,
 	keyEmpty:     187824,
+	source:       `C:\NoxPost\src\Client\shell\InputCfg\inputcfg.c`,
+	escEventLine: 192,
+	pressKeyLine: 424,
 	restoreFocus: true,
+}
+
+func (p inputBindingPanel) loadString(id string, line int32) *wchar2_t {
+	return nox_strman_loadString_40F1D0(internCStr(id), nil, internCStr(p.source), line)
+}
+
+func inputBindingTitle(w *nox_window, index uintptr) *wchar2_t {
+	return (*wchar2_t)(unsafe.Pointer(g2ServerEvent(w, 16406, index, 0)))
+}
+
+func inputBindingEventName(title *wchar2_t) string {
+	event := Nox_xxx_bindevent_bindNameByTitle_42EA40(GoWString(title))
+	if event == nil {
+		return "(null)"
+	}
+	return event.Name
+}
+
+func (p inputBindingPanel) apply() C.int {
+	sub_42CD90()
+	if list := g2ServerList(*p.labels); list != nil {
+		for i, count := uintptr(0), uintptr(list.Field_11_0); i < count; i++ {
+			event := inputBindingEventName(inputBindingTitle(*p.labels, i))
+			primary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(inputBindingTitle(*p.columns[0], i)))
+			secondary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(inputBindingTitle(*p.columns[1], i)))
+			if secondary != 0 {
+				Nox_client_parseConfigHotkeysLine_42CF50(secondary.String() + " = " + event)
+			}
+			if primary != 0 {
+				Nox_client_parseConfigHotkeysLine_42CF50(primary.String() + " = " + event)
+			}
+		}
+	}
+	event := inputBindingEventName(p.loadString("bindevent:ToggleQuitMenu", p.escEventLine))
+	escape := Nox_xxx_keybind_nameByTitle_42E960(GoWString(p.loadString("keybind:Esc", p.escEventLine+1)))
+	if escape == 0 {
+		return 0
+	}
+	return C.int(Nox_client_parseConfigHotkeysLine_42CF50(escape.String() + " = " + event))
+}
+
+//export nox_gameInputApplyBindings
+func nox_gameInputApplyBindings() C.int { return gameInputBindings.apply() }
+
+//export nox_shellInputApplyBindings
+func nox_shellInputApplyBindings() C.int { return shellInputBindings.apply() }
+
+func (p inputBindingPanel) listColumns() [3]*nox_window {
+	return [3]*nox_window{*p.labels, *p.columns[0], *p.columns[1]}
+}
+
+func (p inputBindingPanel) attachLists(actionsSlot **nox_window, actionsProc, keyProc unsafe.Pointer) bool {
+	root := *p.root
+	actions := g2ServerChild(root, 910)
+	*actionsSlot = actions
+	*p.labels = g2ServerChild(root, 911)
+	*p.columns[0] = g2ServerChild(root, 912)
+	*p.columns[1] = g2ServerChild(root, 913)
+	if actions == nil || *p.labels == nil || *p.columns[0] == nil || *p.columns[1] == nil {
+		return false
+	}
+	list := g2ServerList(actions)
+	if list == nil || list.Field_7 == nil || list.Field_8 == nil || list.Field_9 == nil {
+		return false
+	}
+	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_7), 921)
+	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_8), 922)
+	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_9), 920)
+	nox_xxx_wndSetProc_46B2C0_go(actions, actionsProc)
+	for _, column := range p.listColumns() {
+		sub_46B120(column, actions)
+	}
+	nox_xxx_wndSetWindowProc_46B300_go(*p.columns[0], keyProc)
+	nox_xxx_wndSetWindowProc_46B300_go(*p.columns[1], keyProc)
+	up, down := g2ServerChild(root, 921), g2ServerChild(root, 922)
+	for _, column := range p.listColumns() {
+		g2ServerText(column, 16408, unsafe.Pointer(up), 0)
+		g2ServerText(column, 16409, unsafe.Pointer(down), 0)
+	}
+	return true
+}
+
+func (p inputBindingPanel) setMouseButtons() {
+	root := *p.root
+	for id, end := 971, 971+int(InputMouseButtonCount47DBC0()); id < end; id++ {
+		g2ServerEnabled(g2ServerChild(root, id), true)
+	}
+	if button := g2ServerChild(root, 971+int(nox_client_mousePriKey_430AF0())); button != nil {
+		g2ServerEvent(button, 16392, 1, 0)
+	}
+}
+
+func (p inputBindingPanel) bindPromptLabel() {
+	if label := g2ServerChild(*p.prompt, 981); label != nil {
+		g2ServerText(label, 16385, g2ServerMem(p.promptOffset), 0)
+	}
+}
+
+//export sub_4C3760
+func sub_4C3760() C.int {
+	p := gameInputBindings
+	root := nox_new_window_from_file(internCStr("InputCfg.wnd"), C.sub_4C3A90)
+	*p.root = root
+	if root == nil || !p.attachLists(&C.dword_5d4594_1321236, C.sub_4C3CD0, C.sub_4C3A60) {
+		return 0
+	}
+
+	p.setMouseButtons()
+	nox_window_setPos_46A9B0(root, (int32(C.nox_win_width)-int32(root.width))/2, 0)
+	prompt := g2ServerChild(root, 980)
+	*p.prompt = prompt
+	if prompt == nil {
+		return 0
+	}
+	sub_46B120(prompt, nil)
+	nox_xxx_wndSetProc_46B2C0_go(prompt, C.sub_4C3A90)
+	nox_xxx_wndSetWindowProc_46B300_go(prompt, C.sub_4C3EB0)
+	g2ServerHidden(prompt, true)
+	nox_window_setPos_46A9B0(prompt, (int32(C.nox_win_width)-int32(prompt.width))/2, int32(prompt.off_y))
+	p.bindPromptLabel()
+	g2ServerEnabled(g2ServerChild(root, 932), true)
+	g2ServerHidden(root, true)
+	return 1
+}
+
+//export sub_4C3CD0
+func sub_4C3CD0(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
+	return gameInputBindings.handleList(win, event, a, b)
+}
+
+//export sub_4CBF60
+func sub_4CBF60(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
+	return shellInputBindings.handleList(win, event, a, b)
+}
+
+func (p inputBindingPanel) handleList(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
+	switch event {
+	case 23:
+		return 1
+	case 16391, 16384:
+		root := *p.root
+		up := C.uintptr_t(uintptr(unsafe.Pointer(g2ServerChild(root, 921))))
+		down := C.uintptr_t(uintptr(unsafe.Pointer(g2ServerChild(root, 922))))
+		if a == up || a == down {
+			for _, column := range p.listColumns() {
+				g2ServerEvent(column, int(event), uintptr(a), 0)
+			}
+		}
+	case 16393:
+		// The actions list updates its scroll state before all columns are synchronized.
+		nox_xxx_wndListboxProcPre_4A30D0(win, C.uint(event), a, b)
+		first := uintptr(nox_xxx_wndListBoxFirstVisible(win))
+		for _, column := range p.listColumns() {
+			g2ServerEvent(column, 16412, first, 0)
+		}
+	case 16400:
+		sender := (*nox_window)(unsafe.Pointer(uintptr(a)))
+		index := int32(g2ServerEvent(sender, 16404, 0, 0))
+		if index >= 0 {
+			*p.selected = sender
+			p.showCapture(uintptr(index))
+		}
+	}
+	return C.int(nox_xxx_wndListboxProcPre_4A30D0(win, C.uint(event), a, b))
+}
+
+func inputPromptPart(s *wchar2_t) *uint16 {
+	if s == nil {
+		s = internWStr("(null)")
+	}
+	return (*uint16)(unsafe.Pointer(s))
+}
+
+func (p inputBindingPanel) showCapture(index uintptr) {
+	item := inputBindingTitle(*p.labels, index)
+	prompt := p.loadString("InputCfg.wnd:PressKey", p.pressKeyLine)
+	text := unsafe.Slice((*uint16)(g2ServerMem(p.promptOffset)), p.promptUnits)
+	body := text[:len(text)-1]
+	n := alloc.StrCopy16P(body, inputPromptPart(prompt))
+	n += copy(body[n:], []uint16{'\n', '\''})
+	n += alloc.StrCopy16P(body[n:], inputPromptPart(item))
+	n += copy(body[n:], []uint16{'\''})
+	text[n] = 0
+	nox_xxx_wndShowModalMB_46A8C0(*p.prompt)
+	nox_xxx_windowFocus_46B500(*p.prompt)
+	sub_46C690(*p.prompt)
 }
 
 func (p inputBindingPanel) hideCapture() {
@@ -136,7 +346,7 @@ func clearInputBinding(list *nox_window, name *wchar2_t, empty unsafe.Pointer) {
 	}
 	count := int(data.Field_11_0)
 	for i := 0; i < count; i++ {
-		current := (*wchar2_t)(unsafe.Pointer(g2ServerEvent(list, 16406, uintptr(i), 0)))
+		current := inputBindingTitle(list, uintptr(i))
 		if current != nil && C.nox_wcscmp(current, name) == 0 {
 			g2ServerText(list, 16407, empty, uintptr(i))
 		}

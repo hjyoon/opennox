@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME3.h"
 #include "GAME3_1.h"
-#include "client__shell__inputcfg__inputcfg.h"
 extern nox_window* dword_5d4594_1309720;
 extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
@@ -81,7 +80,7 @@ func sub_4A1A40(a1_cgo int32) {
 }
 
 func Sub_4CBD30() {
-	C.sub_4CBD30()
+	shellInputBindings.apply()
 }
 
 func Sub_430AA0(v int) {

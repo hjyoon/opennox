@@ -51,12 +51,10 @@ extern uint32_t dword_5d4594_1197332;
 extern nox_window* dword_5d4594_1193712;
 extern uint32_t nox_server_connectionType_3596;
 extern nox_window* dword_5d4594_1197316;
-extern void* nox_alloc_pixelSpan_1301844;
 extern nox_window* dword_5d4594_1197320;
 extern uint32_t nox_wol_servers_sorting_166704;
 extern uint32_t dword_5d4594_1197324;
 extern nox_window* dword_5d4594_1305680;
-extern uint32_t dword_5d4594_1301848;
 extern nox_window* dword_5d4594_1197312;
 extern nox_window* dword_5d4594_1303452;
 extern nox_window* dword_5d4594_1305684;
@@ -96,19 +94,6 @@ extern void* nox_xxx_clientEquipNPC_native_49A3D0(uint8_t opcode, int npc_id, ui
 											 uint8_t* modifiers);
 char* nox_xxx_clientEquip_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type, const uint8_t modifiers[4]) {
 	return (char*)nox_xxx_clientEquipNPC_native_49A3D0(opcode, npc_id, item_type, (uint8_t*)modifiers);
-}
-
-//----- (0049AEA0) --------------------------------------------------------
-int sub_49AEA0() {
-	if (nox_alloc_pixelSpan_1301844) {
-		nox_free_alloc_class(*(void**)&nox_alloc_pixelSpan_1301844);
-		nox_alloc_pixelSpan_1301844 = 0;
-	}
-	if (dword_5d4594_1301848) {
-		free(*(void**)&dword_5d4594_1301848);
-		dword_5d4594_1301848 = 0;
-	}
-	return 1;
 }
 
 //----- (0049C760) --------------------------------------------------------
@@ -186,61 +171,6 @@ int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t even
 #if 0 // Restored by global_state_native_entry.go.
 int sub_49CB40() { return dword_5d4594_1305684 != 0; }
 #endif
-
-// Most probably borders with alpha
-//----- (0049CD30) --------------------------------------------------------
-void sub_49CD30(int xLeft, int yTop, int a3, int a4, int a5, int a6) {
-	nox_rect rc; // [esp+10h] [ebp-10h]
-
-	if (a3) {
-		if (a4) {
-			if (!nox_draw_curDrawData_3799572->flag_0 ||
-				(noxSetRect(&rc, xLeft, yTop, xLeft + a3, yTop + a4),
-				 nox_xxx_utilRect_49F930((int4*)&rc, (int4*)&rc, (int4*)(&nox_draw_curDrawData_3799572->clip)))) {
-				nox_draw_set54RGB32_434040(a5);
-				sub_434080(a6);
-				nox_client_drawAddPoint_49F500(xLeft, yTop);
-				nox_client_drawAddPoint_49F500(xLeft + a3 - 1, yTop);
-				sub_49E4F0(64);
-				nox_client_drawAddPoint_49F500(xLeft + a3, yTop);
-				nox_client_drawAddPoint_49F500(xLeft + a3, yTop + a4 - 1);
-				sub_49E4F0(64);
-				nox_client_drawAddPoint_49F500(xLeft + a3, yTop + a4);
-				nox_client_drawAddPoint_49F500(xLeft, yTop + a4);
-				sub_49E4F0(64);
-				nox_client_drawAddPoint_49F500(xLeft, yTop + a4 - 1);
-				nox_client_drawAddPoint_49F500(xLeft, yTop + 1);
-				sub_49E4F0(64);
-			}
-		}
-	}
-}
-
-//----- (0049D1C0) --------------------------------------------------------
-int sub_49D1C0(void* a1, int a2, int a3) {
-	sub_49E3C0(a1, a2, a3);
-	return 0;
-}
-
-//----- (0049E3C0) --------------------------------------------------------
-void sub_49E3C0(uint32_t* a1, int a2, unsigned int a3) {
-	uint32_t* v3;  // edi
-	signed int v4; // ecx
-
-	if ((int)a3 > 0) {
-		v3 = a1;
-		v4 = a3 >> 2;
-		if (a3 >> 2) {
-			do {
-				*v3 = a2;
-				++v3;
-			} while (v4-- > 1);
-		}
-		if ((int)(a3 & 3) >= 2) {
-			*(uint16_t*)v3 = a2;
-		}
-	}
-}
 
 //----- (0049FDB0) --------------------------------------------------------
 void sub_49FDB0(int a1) {

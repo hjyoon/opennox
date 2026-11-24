@@ -69,7 +69,7 @@ func sub_479C40(win *nox_window, draw *C.nox_window_data) C.int {
 	if sub_44D930() == 0 && frame&0x7f < 30 && frame&8 != 0 {
 		window := asWindow(win)
 		origin, size := window.GlobalPos(), window.Size()
-		C.sub_49CD30(C.int(origin.X), C.int(origin.Y), C.int(size.X), C.int(size.Y)-2, C.int(*g2ServerWord(1107052)), 4)
+		sub_49CD30(C.int(origin.X), C.int(origin.Y), C.int(size.X), C.int(size.Y)-2, C.int(*g2ServerWord(1107052)), 4)
 	}
 	return C.int(nox_xxx_wndButtonDrawNoImg_4A81D0(win, draw))
 }

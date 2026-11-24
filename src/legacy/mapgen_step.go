@@ -73,7 +73,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 		}
 	}
 	nox_mapgenConnectRoomLinesNative_522D30(theme)
-	C.nox_xxx_mapgen_Doors_4D4790()
+	nox_xxx_mapgen_Doors_4D4790()
 	nox_mapgenConnectRoomPointsNative_522F40(theme)
 	nox_mapgenFinishPopulateNative_5228B0(theme)
 	return 1

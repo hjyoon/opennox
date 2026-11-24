@@ -174,6 +174,8 @@ int sub_524550(int* a1, int a2);
 uintptr_t sub_5245A0(int unused, float* origin, int columns, int rows);
 uintptr_t sub_524610(int unused, float* origin, int rows);
 int sub_524660(float a1, float a2);
+int nox_mapgenGenerateWallFloorNative_524680(
+	uint8_t* theme, uint8_t* room, nox_mapgen_wall_floor_legacy* wall_floor);
 int nox_xxx_gen_524680(int a1, int a2, int a3);
 int sub_524950(int a1, int a2, float* a3, int* a4);
 int sub_5249C0(int a1, int a2, float* a3, int* a4);

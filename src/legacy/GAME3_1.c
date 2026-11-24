@@ -119,9 +119,6 @@ nox_gui_item_amount_callback_t nox_gui_itemAmount_cancel_1319100 = NULL;
 enum {
 	NOX_GUI_SUMMON_RECORD_BASE = 1321052,
 	NOX_GUI_SUMMON_RECORD_COUNT = 4,
-	NOX_GUI_SUMMON_GRID_BASE = 1321180,
-	NOX_GUI_SUMMON_GRID_WIDTH = 2,
-	NOX_GUI_SUMMON_GRID_HEIGHT = 2,
 };
 
 static nox_gui_summon_record* nox_gui_summon_record_at(int index) {
@@ -129,20 +126,6 @@ static nox_gui_summon_record* nox_gui_summon_record_at(int index) {
 		return NULL;
 	}
 	return getMemAt(0x5D4594, NOX_GUI_SUMMON_RECORD_BASE + sizeof(nox_gui_summon_record) * index);
-}
-
-static nox_gui_summon_record* nox_gui_summon_grid_get(int x, int y) {
-	if (x < 0 || x >= NOX_GUI_SUMMON_GRID_WIDTH || y < 0 || y >= NOX_GUI_SUMMON_GRID_HEIGHT) {
-		return NULL;
-	}
-	return getMemPtr(0x5D4594, NOX_GUI_SUMMON_GRID_BASE + 4 * (y + NOX_GUI_SUMMON_GRID_HEIGHT * x));
-}
-
-static void nox_gui_summon_grid_set(int x, int y, nox_gui_summon_record* record) {
-	if (x < 0 || x >= NOX_GUI_SUMMON_GRID_WIDTH || y < 0 || y >= NOX_GUI_SUMMON_GRID_HEIGHT) {
-		return;
-	}
-	setMemPtr(0x5D4594, NOX_GUI_SUMMON_GRID_BASE + 4 * (y + NOX_GUI_SUMMON_GRID_HEIGHT * x), record);
 }
 
 //----- (004B9470) --------------------------------------------------------
@@ -2216,14 +2199,6 @@ int nox_xxx_guiDrawSummonBox_4C1FE0(nox_window* win, nox_window_data* draw) {
 	return 1;
 }
 
-//----- (004C2410) --------------------------------------------------------
-nox_gui_summon_record* nox_xxx_wndSummonGet_4C2410(const int2* pos) {
-	if (!pos) {
-		return NULL;
-	}
-	return nox_gui_summon_grid_get(pos->field_0, pos->field_4);
-}
-
 //----- (004C2440) --------------------------------------------------------
 nox_video_bag_image_t* nox_xxx_guiDrawSummon_4C2440(int a1) {
 	const char* v1; // eax
@@ -2386,16 +2361,6 @@ int sub_4C2BE0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 	return 1;
 }
 
-//----- (004C2BF0) --------------------------------------------------------
-int* sub_4C2BF0(void) {
-	for (int x = 0; x < NOX_GUI_SUMMON_GRID_WIDTH; ++x) {
-		for (int y = 0; y < NOX_GUI_SUMMON_GRID_HEIGHT; ++y) {
-			nox_gui_summon_grid_set(x, y, NULL);
-		}
-	}
-	return getMemAt(0x5D4594, NOX_GUI_SUMMON_GRID_BASE + 20);
-}
-
 //----- (004C2C20) --------------------------------------------------------
 int sub_4C2C20(nox_window* win, nox_window_data* draw, uintptr_t packed_position) {
 	(void)draw;
@@ -2422,255 +2387,6 @@ wchar2_t* sub_4C2C60(nox_window* win, const int2* pos) {
 	}
 	return nox_get_thing_pretty_name(record->thing_id);
 }
-
-//----- (004C2D60) --------------------------------------------------------
-nox_gui_summon_record* sub_4C2D60(void) {
-	for (int i = 0; i < NOX_GUI_SUMMON_RECORD_COUNT; ++i) {
-		nox_gui_summon_record* record = nox_gui_summon_record_at(i);
-		if (record->active) {
-			return record;
-		}
-	}
-	return NULL;
-}
-
-//----- (004C2D90) --------------------------------------------------------
-nox_gui_summon_record* sub_4C2D90(nox_gui_summon_record* record) {
-	if (!record) {
-		return NULL;
-	}
-	for (int i = (int)record->slot + 1; i < NOX_GUI_SUMMON_RECORD_COUNT; ++i) {
-		nox_gui_summon_record* next = nox_gui_summon_record_at(i);
-		if (next->active) {
-			return next;
-		}
-	}
-	return NULL;
-}
-
-//----- (004C2DD0) --------------------------------------------------------
-int sub_4C2DD0(const nox_gui_summon_record* record) {
-	int plant_id = dword_5d4594_1321208;
-	if (!dword_5d4594_1321208) {
-		plant_id = nox_xxx_getNameId_4E3AA0("CarnivorousPlant");
-		dword_5d4594_1321208 = plant_id;
-	}
-	return record->thing_id != (uint32_t)plant_id;
-}
-
-//----- (004C2E00) --------------------------------------------------------
-int sub_4C2E00(void) {
-	if (!dword_5d4594_1321208) {
-		dword_5d4594_1321208 = nox_xxx_getNameId_4E3AA0("CarnivorousPlant");
-	}
-	nox_gui_summon_record* record = sub_4C2D60();
-	if (!record) {
-		return 0;
-	}
-	while (!sub_4C2DD0(record)) {
-		record = sub_4C2D90(record);
-		if (!record) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
-//----- (004C2E50) --------------------------------------------------------
-void nox_xxx_cliSummonCreat_4C2E50(int net_code, int thing_id, int silent) {
-	for (nox_gui_summon_record* record = sub_4C2D60(); record; record = sub_4C2D90(record)) {
-		if (record->net_code == (uint32_t)net_code && record->thing_id == (uint32_t)thing_id) {
-			return;
-		}
-	}
-	nox_gui_summon_record* record = sub_4C2F20();
-	if (record) {
-		record->net_code = (uint32_t)net_code;
-		record->thing_id = (uint32_t)thing_id;
-		record->size = (uint8_t)sub_4C2EF0(thing_id);
-		sub_4C2F70();
-		uint8_t state = getMemByte(0x5D4594, 1321200);
-		if (!state || state == 3) {
-			if (!silent) {
-				nox_xxx_clientPlaySoundSpecial_452D80(801, 100);
-			}
-			*getMemU8Ptr(0x5D4594, 1321200) = 1;
-			nox_window_set_hidden(dword_5d4594_1321032, 0);
-			nox_window_set_hidden(dword_5d4594_1321040, 0);
-		}
-		++dword_5d4594_1321196;
-	}
-}
-
-//----- (004C2EF0) --------------------------------------------------------
-int sub_4C2EF0(int a1) {
-	int v1; // eax
-	int v3; // eax
-
-	v1 = nox_get_thing(a1)->sub_class;
-	if (v1 & 1) {
-		return 1;
-	}
-	v3 = -((v1 & 2) != 0);
-	LOBYTE(v3) = v3 & 0xFE;
-	return v3 + 4;
-}
-
-//----- (004C2F20) --------------------------------------------------------
-nox_gui_summon_record* sub_4C2F20(void) {
-	for (int i = 0; i < NOX_GUI_SUMMON_RECORD_COUNT; ++i) {
-		nox_gui_summon_record* record = nox_gui_summon_record_at(i);
-		if (!record->active) {
-			memset(record, 0, sizeof(*record));
-			record->active = 1;
-			record->slot = (uint32_t)i;
-			return record;
-		}
-	}
-	return NULL;
-}
-
-//----- (004C2F70) --------------------------------------------------------
-nox_gui_summon_record* sub_4C2F70(void) {
-	sub_4C2BF0();
-	static const uint8_t sizes[] = {1, 2, 4};
-	for (unsigned int i = 0; i < sizeof(sizes) / sizeof(sizes[0]); ++i) {
-		for (nox_gui_summon_record* record = sub_4C2D60(); record; record = sub_4C2D90(record)) {
-			if (record->size == sizes[i]) {
-				sub_4C2FD0(record);
-			}
-		}
-	}
-	return NULL;
-}
-
-//----- (004C2FD0) --------------------------------------------------------
-int sub_4C2FD0(nox_gui_summon_record* record) {
-	for (int slot = 0; slot < 4; slot += record->size) {
-		record->grid_x = *getMemIntPtr(0x587000, 184456 + 8 * slot);
-		record->grid_y = *getMemIntPtr(0x587000, 184460 + 8 * slot);
-		if (sub_4C30C0(&record->grid_x, record->size)) {
-			return sub_4C3030(&record->grid_x, record->size, record);
-		}
-	}
-	return record->size;
-}
-
-//----- (004C3030) --------------------------------------------------------
-int sub_4C3030(const int32_t* pos, int size, nox_gui_summon_record* record) {
-	int cells_x;
-	int cells_y;
-	switch (size) {
-	case 1:
-		cells_x = 1;
-		cells_y = 1;
-		break;
-	case 2:
-		cells_x = 1;
-		cells_y = 2;
-		break;
-	case 4:
-		cells_x = 2;
-		cells_y = 2;
-		break;
-	default:
-		cells_x = size;
-		cells_y = size;
-		break;
-	}
-	for (int y = pos[1]; y < pos[1] + cells_y; ++y) {
-		for (int x = pos[0]; x < pos[0] + cells_x; ++x) {
-			nox_gui_summon_grid_set(x, y, record);
-		}
-	}
-	return pos[1] + cells_y;
-}
-
-//----- (004C30C0) --------------------------------------------------------
-int sub_4C30C0(const int32_t* pos, int size) {
-	int cells_x;
-	int cells_y;
-	switch (size) {
-	case 1:
-		cells_x = 1;
-		cells_y = 1;
-		break;
-	case 2:
-		cells_x = 1;
-		cells_y = 2;
-		break;
-	case 4:
-		cells_x = 2;
-		cells_y = 2;
-		break;
-	default:
-		cells_x = size;
-		cells_y = size;
-		break;
-	}
-	if (cells_x <= 0 || cells_y <= 0) {
-		return 1;
-	}
-	for (int y = pos[1]; y < pos[1] + cells_y; ++y) {
-		for (int x = pos[0]; x < pos[0] + cells_x; ++x) {
-			if (x < 0 || x >= NOX_GUI_SUMMON_GRID_WIDTH || y < 0 || y >= NOX_GUI_SUMMON_GRID_HEIGHT) {
-				return 0;
-			}
-			if (nox_gui_summon_grid_get(x, y)) {
-				return 0;
-			}
-		}
-	}
-	return 1;
-}
-
-//----- (004C3140) --------------------------------------------------------
-void nox_xxx_cliSummonOnDieOrBanish_4C3140(int a1, void* a2) {
-	nox_gui_summon_record* record = sub_4C31D0(a1);
-	if (!record) {
-		return;
-	}
-	if (record == dword_5d4594_1321204) {
-		nox_xxx_guiHideSummonWindow_4C2470();
-	}
-	nox_drawable* sprite = nox_xxx_netSpriteByCodeDynamic_45A6F0(a1);
-	if (sprite) {
-		sprite->flags30 &= 0xBFFFFFFFu;
-	}
-	sub_4C3030(&record->grid_x, record->size, NULL);
-	sub_4C3210(record);
-	sub_4C2F70();
-	--dword_5d4594_1321196;
-	if (!dword_5d4594_1321196) {
-		if (!a2) {
-			nox_xxx_clientPlaySoundSpecial_452D80(802, 100);
-		}
-		*getMemU8Ptr(0x5D4594, 1321200) = 3;
-	}
-}
-
-//----- (004C31D0) --------------------------------------------------------
-nox_gui_summon_record* sub_4C31D0(int net_code) {
-	for (int i = 0; i < NOX_GUI_SUMMON_RECORD_COUNT; ++i) {
-		nox_gui_summon_record* record = nox_gui_summon_record_at(i);
-		if (record->active && record->net_code == (uint32_t)net_code) {
-			return record;
-		}
-	}
-	return NULL;
-}
-
-//----- (004C3210) --------------------------------------------------------
-nox_gui_summon_record* sub_4C3210(nox_gui_summon_record* record) {
-	record->active = 0;
-	return record;
-}
-
-//----- (004C3220) --------------------------------------------------------
-int nox_xxx_sprite_4C3220(nox_drawable* a1) { return sub_4C31D0(a1->field_32) != 0; }
-
-//----- (004C3260) --------------------------------------------------------
-int sub_4C3260() { return sub_4C2D60() != 0; }
 
 //----- (004C32A0) --------------------------------------------------------
 int nox_xxx_spriteDrawCircleMB_4C32A0(int a1, int a2, int a3, int a4) {

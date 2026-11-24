@@ -108,7 +108,7 @@ func Sub_43DB60() {
 	C.sub_43DB60()
 }
 func Nox_xxx_mapGenStart_4D4320() int {
-	return int(C.nox_xxx_mapGenStart_4D4320())
+	return int(nox_xxx_mapGenStart_4D4320())
 }
 func Nox_xxx_servResetPlayers_4D23C0() {
 	C.nox_xxx_servResetPlayers_4D23C0()

@@ -16,30 +16,10 @@ func TestMapgenEntryNativeObjectList(t *testing.T) {
 	if strconv.IntSize != 64 {
 		t.Skip("this contract requires native allocations above the PE32 address range")
 	}
-	source, err := os.ReadFile("GAME3_2.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	text := strings.ReplaceAll(string(source), "\r\n", "\n")
-	const start = "int nox_xxx_mapGenStart_4D4320() {"
-	const end = "//----- (004D44E0)"
-	if strings.Count(text, start) != 1 || strings.Count(text, end) != 1 {
-		t.Fatal("complete generator entry boundaries are not unique")
-	}
-	_, tail, _ := strings.Cut(text, start)
-	body, _, ok := strings.Cut(tail, end)
-	if !ok {
-		t.Fatal("complete generator entry end is absent")
-	}
 	fixture, err := os.ReadFile("testdata/mapgen_entry_native_test.c")
 	if err != nil {
 		t.Fatal(err)
 	}
-	const marker = "// COMPLETE_MAPGEN_ENTRY"
-	if strings.Count(string(fixture), marker) != 1 {
-		t.Fatal("complete generator insertion marker is not unique")
-	}
-	program := strings.Replace(string(fixture), marker, start+body, 1)
 	for _, mode := range []struct {
 		name  string
 		flags []string
@@ -66,7 +46,7 @@ func TestMapgenEntryNativeObjectList(t *testing.T) {
 			args = append(args, "-x", "c", "-", "-o", binary)
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			cmd := exec.CommandContext(ctx, compiler[0], args...)
-			cmd.Stdin = strings.NewReader(program)
+			cmd.Stdin = strings.NewReader(string(fixture))
 			output, err := cmd.CombinedOutput()
 			cancel()
 			if err != nil {

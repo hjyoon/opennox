@@ -1281,71 +1281,6 @@ int sub_4D39F0(const char* a3) {
 }
 // 4D39F0: using guessed type char var_800[2048];
 
-//----- (004D4320) --------------------------------------------------------
-int nox_xxx_mapGenStart_4D4320() {
-	int v0;                      // esi
-	int v1;                      // eax
-	char* v2;                    // eax
-	char* v3;                    // eax
-	int result;                  // eax
-	nox_object_t* i;                       // eax
-	char* v6;                    // eax
-	char* v7;                    // eax
-	char* v8;                    // [esp-8h] [ebp-C10h]
-	char* v9;                    // [esp-4h] [ebp-C0Ch]
-	char* v10;                   // [esp-4h] [ebp-C0Ch]
-	char PathName[1024];         // [esp+8h] [ebp-C00h]
-	char FileName[1024];         // [esp+408h] [ebp-800h]
-	char ExistingFileName[1024]; // [esp+808h] [ebp-400h]
-
-	v0 = 100;
-	nox_xxx_mapSwitchLevel_4D12E0(1);
-	nox_xxx_setGameFlags_40A4D0(0x400000);
-	setMemPtr(0x5D4594, 1550924, nox_get_and_zero_server_objects_4DA3C0());
-	memset(getMemAt(0x973F18, 2408), 0, 0x5B8u);
-	while (1) {
-		v1 = nox_xxx_mapGenStep_4D44E0();
-		if (v1 == 1) {
-			break;
-		}
-		if (v1) {
-			if (--v0) {
-				continue;
-			}
-		}
-		return 0;
-	}
-	v2 = nox_fs_root();
-	nox_sprintf(FileName, "%s\\nc.obj", v2);
-	v3 = nox_fs_root();
-	nox_sprintf(ExistingFileName, "%s\\blend.obj", v3);
-	if (nox_fs_access(FileName, 0) == -1 || (result = nox_fs_remove(FileName))) {
-		if (nox_fs_access(ExistingFileName, 0) == -1 || (result = nox_fs_move(ExistingFileName, FileName))) {
-			for (i = nox_server_getFirstObject_4DA790(); i; i = nox_server_getNextObject_4DA7A0(i)) {
-				i->script_id = 0;
-			}
-			nox_xxx_mapGenMakeInfo_4D5DB0(getMemAt(0x973F18, 2408));
-			v9 = nox_xxx_getRandMapName_4D4310();
-			v6 = nox_fs_root();
-			nox_sprintf(PathName, "%s\\Maps\\$%s", v6, v9);
-			nox_fs_mkdir(PathName);
-			v10 = nox_xxx_getRandMapName_4D4310();
-			v8 = nox_xxx_getRandMapName_4D4310();
-			v7 = nox_fs_root();
-			nox_sprintf(PathName, "%s\\Maps\\$%s\\$%s.map", v7, v8, v10);
-			if (!nox_xxx_mapSaveMap_51E010(PathName, 1)) {
-				return 0;
-			}
-			nox_xxx_mapSwitchLevel_4D12E0(1);
-			nox_set_server_objects_4DA3E0((nox_object_t*)getMemPtr(0x5D4594, 1550924));
-			setMemPtr(0x5D4594, 1550924, NULL);
-			nox_common_gameFlags_unset_40A540(0x400000);
-			result = 1;
-		}
-	}
-	return result;
-}
-
 //----- (004D44E0) --------------------------------------------------------
 void sub_57C490_2(char* a1);
 int nox_xxx_mapGenStep_4D44E0() {
@@ -2429,47 +2364,6 @@ int sub_4D5D20(const uint32_t* a1) {
 		result = 32;
 	}
 	return result;
-}
-
-//----- (004D5F30) --------------------------------------------------------
-int nox_xxx_mapGenStartAlt_4D5F30() {
-	int v0;                      // esi
-	int v1;                      // eax
-	char* v2;                    // eax
-	char* v3;                    // eax
-	int result;                  // eax
-	char FileName[1024];         // [esp+8h] [ebp-800h]
-	char ExistingFileName[1024]; // [esp+408h] [ebp-400h]
-
-	v0 = 100;
-	nox_xxx_setGameFlags_40A4D0(0x400000);
-	memset(getMemAt(0x973F18, 2408), 0, 0x5B8u);
-	while (1) {
-		v1 = nox_xxx_mapGenStep_4D44E0();
-		if (v1 == 1) {
-			break;
-		}
-		if (v1) {
-			if (--v0) {
-				continue;
-			}
-		}
-		return 0;
-	}
-	v2 = nox_fs_root();
-	nox_sprintf(FileName, "%s\\nc.obj", v2);
-	v3 = nox_fs_root();
-	nox_sprintf(ExistingFileName, "%s\\blend.obj", v3);
-	result = nox_fs_remove(FileName);
-	if (!result) {
-		return result;
-	}
-	if (!nox_fs_move(ExistingFileName, FileName)) {
-		return 0;
-	}
-	nox_xxx_mapGenMakeInfo_4D5DB0(getMemAt(0x973F18, 2408));
-	nox_common_gameFlags_unset_40A540(0x400000);
-	return 1;
 }
 
 //----- (004D6000) --------------------------------------------------------

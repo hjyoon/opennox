@@ -135,7 +135,7 @@ func Sub_43DBA0() {
 	C.sub_43DBA0()
 }
 func Nox_xxx_getHostInfoPtr_431770() *server.PlayerInfo {
-	return (*server.PlayerInfo)(unsafe.Pointer(C.nox_xxx_getHostInfoPtr_431770()))
+	return (*server.PlayerInfo)(unsafe.Pointer(nox_xxx_getHostInfoPtr_431770()))
 }
 func Sub_41FA40() string {
 	return GoString(C.sub_41FA40())

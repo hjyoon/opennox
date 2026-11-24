@@ -3263,27 +3263,6 @@ void sub_42EDC0() {
 	}
 }
 
-//----- (00430AA0) --------------------------------------------------------
-int sub_430AA0(int a1) {
-	int result; // eax
-
-	result = a1 - 1;
-	if (a1 == 1) {
-		dword_5d4594_805820 = 1;
-		nox_xxx_useAudio_587000_80772 = 9;
-	} else {
-		result = a1 - 2;
-		if (a1 == 2) {
-			dword_5d4594_805820 = 2;
-			nox_xxx_useAudio_587000_80772 = 13;
-		} else {
-			dword_5d4594_805820 = 0;
-			nox_xxx_useAudio_587000_80772 = 5;
-		}
-	}
-	return result;
-}
-
 //----- (00430AF0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int nox_client_mousePriKey_430AF0() { return dword_5d4594_805820; }
@@ -3293,21 +3272,6 @@ int nox_client_mousePriKey_430AF0() { return dword_5d4594_805820; }
 #if 0 // Restored by ui_state_trade_native.go.
 int nox_xxx_cursor_430B00() { return nox_xxx_useAudio_587000_80772; }
 #endif
-
-//----- (00430B10) --------------------------------------------------------
-void nox_client_setMousePos_430B10(int x, int y) { nox_client_changeMousePos_430A00(x, y, true); }
-
-//----- (00430B50) --------------------------------------------------------
-int sub_430B50(int a1, int a2, int a3, int a4) {
-	int result; // eax
-
-	dword_5d4594_3807140 = a1;
-	result = a4;
-	dword_5d4594_3807136 = a2;
-	dword_5d4594_3807116 = a3;
-	dword_5d4594_3807152 = a4;
-	return result;
-}
 
 //----- (00431270) --------------------------------------------------------
 #if 0 // Native audio context owner: sub_431270
@@ -3330,18 +3294,6 @@ void sub_431290() {
 #endif
 
 
-//----- (00431370) --------------------------------------------------------
-int sub_431370() { return sub_488B60() != 0; }
-
-//----- (00431380) --------------------------------------------------------
-void sub_431380() {
-	sub_488BA0();
-	sub_4896E0();
-}
-
-//----- (00431770) --------------------------------------------------------
-char* nox_xxx_getHostInfoPtr_431770() { return (char*)getMemAt(0x5D4594, 807172); }
-
 //----- (00431790) --------------------------------------------------------
 char* nox_xxx_copyServerIPAndPort_431790(char* a1) {
 	char* result; // eax
@@ -3353,34 +3305,6 @@ char* nox_xxx_copyServerIPAndPort_431790(char* a1) {
 	return result;
 }
 // 4335F8: variable 'v12' is possibly undefined
-
-//----- (00435570) --------------------------------------------------------
-long long nox_xxx_initTime_435570() {
-	long long result; // rax
-
-	result = nox_platform_get_ticks();
-	*getMemU64Ptr(0x5D4594, 811908) = result;
-	return result;
-}
-
-//----- (00435690) --------------------------------------------------------
-uint32_t* sub_435690(uint32_t* a1) {
-	uint32_t* result; // eax
-
-	result = a1;
-	*a1 = *getMemU32Ptr(0x5D4594, 811364);
-	a1[1] = *getMemU32Ptr(0x5D4594, 811368);
-	return result;
-}
-
-//----- (00435700) --------------------------------------------------------
-wchar2_t* sub_435700(wchar2_t* a1, int a2) {
-	wchar2_t* result; // eax
-
-	result = nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 811376), a1);
-	*getMemU32Ptr(0x5D4594, 811060) = a2;
-	return result;
-}
 
 //----- (004357A0) --------------------------------------------------------
 #if 0 // C reference for the observer visibility fixture.
@@ -3397,15 +3321,6 @@ int nox_xxx_cliToggleObsWindow_4357A0() {
 }
 
 #endif
-//----- (00435F60) --------------------------------------------------------
-int sub_435F60() {
-	int result; // eax
-
-	result = 1 - dword_5d4594_811904;
-	dword_5d4594_811904 = 1 - dword_5d4594_811904;
-	return result;
-}
-
 //----- (00436550) --------------------------------------------------------
 int sub_436550() {
 	int v0; // eax

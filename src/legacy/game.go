@@ -402,7 +402,7 @@ func Sub_45DB90() {
 	C.sub_45DB90()
 }
 func Nox_xxx_initTime_435570() {
-	C.nox_xxx_initTime_435570()
+	nox_xxx_initTime_435570()
 }
 func Nox_xxx_allocArrayHealthChanges_49A5F0() int {
 	return int(C.nox_xxx_allocArrayHealthChanges_49A5F0())

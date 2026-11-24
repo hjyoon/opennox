@@ -146,7 +146,7 @@ func Sub_49F6D0(a1 int) int {
 	return int(sub_49F6D0(C.int(a1)))
 }
 func Sub_430B50(a1 int, a2 int, a3 int, a4 int) {
-	C.sub_430B50(C.int(a1), C.int(a2), C.int(a3), C.int(a4))
+	sub_430B50(C.int(a1), C.int(a2), C.int(a3), C.int(a4))
 }
 func Sub_495A80(a1 uint32) int {
 	return int(sub_495A80(C.int(a1)))

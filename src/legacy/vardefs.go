@@ -866,6 +866,14 @@ func Get_dword_587000_93160() int {
 func Get_dword_5d4594_816348() int {
 	return int(C.dword_5d4594_816348)
 }
+
+//export sub_435F60
+func sub_435F60() C.int {
+	value := 1 - C.dword_5d4594_811904
+	C.dword_5d4594_811904 = value
+	return C.int(value)
+}
+
 func Get_dword_5d4594_811904() int {
 	return int(C.dword_5d4594_811904)
 }

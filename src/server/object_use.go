@@ -202,6 +202,13 @@ type WandUseData struct {
 	Progress       uint32
 }
 
+// WandCooldownFrames5361B0 models the startup x87 quotient and the low
+// DWORD returned by the signed QWORD conversion in GAME.EXE 00536224.
+func WandCooldownFrames5361B0(fps uint32, shotsPerSecond float64) uint32 {
+	frames := monsterMoveForceDivChop53_50D581(float64(fps), shotsPerSecond)
+	return uint32(x87TruncSignedQwordLow566DCC(frames))
+}
+
 func (d *WandUseData) UseDataPtr() unsafe.Pointer {
 	return unsafe.Pointer(d)
 }

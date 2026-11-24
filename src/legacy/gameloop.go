@@ -254,7 +254,7 @@ func Nox_xxx_printCentered_445490(str string) {
 	C.nox_xxx_printCentered_445490(wstr)
 }
 func Nox_xxx_mapValidateMB_4CF470(a1 string, a2 uint32) int {
-	return int(C.nox_xxx_mapValidateMB_4CF470(internCStr(a1), C.int(a2)))
+	return int(validateMapFile4CF470(a1, a2))
 }
 func Nox_xxx_copyServerIPAndPort_431790(a1 string) {
 	C.nox_xxx_copyServerIPAndPort_431790(internCStr(a1))

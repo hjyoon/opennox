@@ -207,7 +207,11 @@ func NewFileHandle(f *binfile.File) *FILE {
 
 //export nox_fs_access
 func nox_fs_access(path *C.char, mode_cgo int32) int32 {
-	_, err := ifs.Stat(GoString(path))
+	return fsAccess(GoString(path))
+}
+
+func fsAccess(path string) int32 {
+	_, err := ifs.Stat(path)
 	if os.IsNotExist(err) {
 		return int32(-1)
 	} else if err != nil {

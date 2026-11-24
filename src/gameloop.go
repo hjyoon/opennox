@@ -880,13 +880,8 @@ func nox_xxx_gameChangeMap_43DEB0() error {
 			mapName = c.srv.nox_server_currentMapGetFilename_409B30()
 		}
 		gameLog.Printf("nox_xxx_gameChangeMap_43DEB0: %q", mapName)
-		// TODO: remove this partial path denormalization once we port map parsing
-		mapName2 := mapName
-		if i := strings.LastIndexByte(mapName2, '/'); i >= 0 {
-			mapName2 = mapName2[:i] + "\\" + mapName2[i+1:]
-		}
 		crc := nox_xxx_mapCrcGetMB_409B00()
-		v3 := legacy.Nox_xxx_mapValidateMB_4CF470(mapName2, crc)
+		v3 := legacy.Nox_xxx_mapValidateMB_4CF470(mapName, crc)
 		if v3&0x2 == 0 {
 			gameLog.Printf("nox_xxx_mapValidateMB_4CF470: invalid or missing map file: %q", mapName)
 		}

@@ -371,48 +371,6 @@ int sub_4CF060(nox_window* win, unsigned int event, nox_window* control, uintptr
 	}
 }
 
-//----- (004CF470) --------------------------------------------------------
-int nox_xxx_mapValidateMB_4CF470(char* a1, int a2) {
-	int v2;              // ebx
-	int v4;              // [esp+8h] [ebp-408h]
-	int v5;              // [esp+Ch] [ebp-404h]
-	char FileName[1024]; // [esp+10h] [ebp-400h]
-
-	v2 = 0;
-	if (!a2) {
-		return 6;
-	}
-	if (a1) {
-		if (strchr(a1, '\\')) {
-			strcpy(FileName, a1);
-		} else {
-			strcpy(FileName, "maps\\");
-			strncat(FileName, a1, 1024-6);
-			FileName[strlen(FileName)-4] = 0;
-			*(uint16_t*)&FileName[strlen(FileName)] = *getMemU16Ptr(0x587000, 191672);
-			strcat(FileName, a1);
-		}
-		if (nox_fs_access(FileName, 0) != -1) {
-			v4 = 0;
-			if (nox_fs_access(FileName, 2) == -1) {
-				v2 = 1;
-			}
-			if (nox_xxx_cryptOpen_426910(FileName, 1, 19)) {
-				v2 |= 2u;
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 4u);
-				if (v5 != -86065425 && v5 == -86050098) {
-					nox_xxx_fileCryptReadCrcMB_426C20(&v4, 4u);
-					if (v4 == a2) {
-						v2 |= 4u;
-					}
-				}
-				nox_xxx_cryptClose_4269F0();
-			}
-		}
-	}
-	return v2;
-}
-
 //----- (004CFFA0) --------------------------------------------------------
 
 //----- (004CFFC0) --------------------------------------------------------
@@ -420,47 +378,6 @@ int nox_xxx_mapValidateMB_4CF470(char* a1, int a2) {
 //----- (004D0010) --------------------------------------------------------
 
 // GAME.EXE 004D0550 builds map rule paths in Go.
-
-//----- (004D0670) --------------------------------------------------------
-int sub_4D0670(char* a1) {
-	int v1;          // ebp
-	FILE* v2;        // eax
-	FILE* v3;        // esi
-	char* v4;        // eax
-	int v5;          // eax
-	char v7[255];    // [esp+Ch] [ebp-300h]
-	wchar2_t v8[256]; // [esp+10Ch] [ebp-200h]
-
-	v1 = 6128;
-	v2 = nox_fs_open_text(a1);
-	v3 = v2;
-	if (!v2) {
-		return 0;
-	}
-	if (!nox_fs_feof(v3)) {
-		do {
-			memset(v7, 0, 0xFCu);
-			*(uint16_t*)&v7[252] = 0;
-			v7[254] = 0;
-			nox_fs_fgets(v3, v7, 255);
-			v4 = strchr(v7, 10);
-			if (v4) {
-				*v4 = 0;
-			}
-			if (v7[0]) {
-				nox_swprintf(v8, L"%S", v7);
-				v5 = sub_57AE30(v7);
-				if (v5) {
-					v1 = v5;
-				} else if (nox_common_gameFlags_check_40A5C0(v1)) {
-					nox_server_parseCmdText_443C80(v8, 1);
-				}
-			}
-		} while (!nox_fs_feof(v3));
-	}
-	nox_fs_close(v3);
-	return 1;
-}
 
 //----- (004D0D50) --------------------------------------------------------
 #if 0 // Preserved original for the network table oracle.

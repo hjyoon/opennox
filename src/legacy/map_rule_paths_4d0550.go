@@ -6,18 +6,7 @@ package legacy
 */
 import "C"
 
-import (
-	"strings"
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
-)
-
-func readMapRuleFile4D0670(path string) bool {
-	name, free := alloc.CString(path)
-	defer free()
-	return C.sub_4D0670((*C.char)(unsafe.Pointer(name))) != 0
-}
+import "strings"
 
 func loadMapRules4D0550(filename string, readRules func(string) bool) bool {
 	if nul := strings.IndexByte(filename, 0); nul >= 0 {

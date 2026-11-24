@@ -71,8 +71,8 @@ func game4TilesDefaultServices() game4TilesServices {
 		variation: func(value int32) { C.nox_xxx_tileCheckImageVari_51D570(C.int(value)) },
 		mode:      func(value int32) { C.nox_xxx_tile_51D5C0(C.int(value)) },
 		base:      func(at *C.float2) { C.sub_51D8F0(at) },
-		byte3:     func(value int32) { C.nox_xxx_tileCheckByte3_544070(C.int(value)) },
-		byte4:     func(value int32) { C.nox_xxx_tileCheckByte4_5440A0(C.int(value)) },
+		byte3:     func(value int32) { nox_xxx_tileCheckByte3_544070(C.int(value)) },
+		byte4:     func(value int32) { nox_xxx_tileCheckByte4_5440A0(C.int(value)) },
 		subtile:   func(at *C.float2) { C.nox_xxx_tileSubtile_544310(at) },
 	}
 }

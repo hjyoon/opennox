@@ -97,3 +97,50 @@ func TestGame4TilesNativeInit504150ReferenceOrder(t *testing.T) {
 		})
 	}
 }
+
+func TestFloorEdgeSelectionNativeCEntry(t *testing.T) {
+	selected, edge, variation := game4TilesTestEdgeWords()
+	count := thingEdgeCountCell411850()
+	oldSelected, oldEdge, oldVariation, oldCount := *selected, *edge, *variation, *count
+	var saved [3][60]byte
+	for i, name := range []string{"First", "Bend", "Bend"} {
+		record := thingEdgeBytes411850(uint32(i), 28644, 60)
+		copy(saved[i][:], record)
+		clear(record)
+		copy(record, name)
+	}
+	t.Cleanup(func() {
+		*selected, *edge, *variation, *count = oldSelected, oldEdge, oldVariation, oldCount
+		for i := range saved {
+			copy(thingEdgeBytes411850(uint32(i), 28644, 60), saved[i][:])
+		}
+	})
+	*selected, *edge, *variation, *count = 1, 0, 42, 3
+	thingEdgeStore16411850(1, 28688, 1)
+	thingEdgeStore16411850(2, 28688, 3)
+
+	if game4TilesTestSelectEdge("Bend") != 1 || *selected != 1 || *edge != 1 {
+		t.Fatalf("first exact match selected = %d, edge = %d", *selected, *edge)
+	}
+	if nox_xxx_tileCheckByte3_544070(3) != 0 || *selected != 1 || *edge != 1 {
+		t.Fatalf("out-of-range edge changed selection to %d, edge = %d", *selected, *edge)
+	}
+	if nox_xxx_tileCheckByte4_5440A0(1) != 0 || *variation != 42 {
+		t.Fatalf("variation equal to its limit changed the state to %d", *variation)
+	}
+	if nox_xxx_tileCheckByte4_5440A0(2) != 1 || *variation != 2 {
+		t.Fatalf("variation using its own record was rejected, state = %d", *variation)
+	}
+	if game4TilesTestSelectEdge("bend") != 0 || *selected != 0 || *edge != 1 {
+		t.Fatalf("case-sensitive rejection selected = %d, edge = %d", *selected, *edge)
+	}
+	if game4TilesTestSelectEdge("nOnE") != 1 || *selected != 0 || *edge != 255 ||
+		nox_xxx_tileCheckByte4_5440A0(-1) != 1 || *variation != 2 {
+		t.Fatalf("NONE selected = %d, edge = %d, variation = %d", *selected, *edge, *variation)
+	}
+	*selected, *edge, *count = 1, math.MaxUint32, math.MaxUint32
+	if sub_543FB0(nil) != -1 || nox_xxx_tileCheckByte3_544070(0) != 0 ||
+		nox_xxx_tileCheckByte4_5440A0(2) != 0 || *variation != 2 {
+		t.Fatal("null name or signed edge sentinel was accepted")
+	}
+}

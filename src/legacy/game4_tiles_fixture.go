@@ -5,10 +5,12 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include "GAME4.h"
+#include "GAME4_3.h"
 extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern void game4_fixture_release_go(void* p);
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
+extern uint32_t dword_5d4594_2489436, dword_5d4594_3835356, dword_5d4594_3835360;
 #include "floor_tile_storage.h"
 #define nox_tile_def_cnt (nox_floor_tile_storage()->count)
 #define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
@@ -256,4 +258,12 @@ func (b *game4TilesTestBank) alloc(x, y int32, bits uint32, reference bool) game
 func (b *game4TilesTestBank) existing(index uint32) game4TilesAllocObservation {
 	r := C.game4_tiles_test_alloc_existing(b.ptr, C.uint32_t(index))
 	return game4TilesAllocObservation{uintptr(r.entry), uintptr(r.layer), uint32(r.x_bits), uint32(r.y_bits), uint32(r.count), uint32(r.kind), r.links != 0, r.zero_layer != 0}
+}
+
+func game4TilesTestEdgeWords() (selected, edge, variation *uint32) {
+	return (*uint32)(&C.dword_5d4594_2489436), (*uint32)(&C.dword_5d4594_3835356), (*uint32)(&C.dword_5d4594_3835360)
+}
+
+func game4TilesTestSelectEdge(name string) int {
+	return int(C.sub_544020(internCStr(name)))
 }

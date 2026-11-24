@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
 )
 
 func TestScriptCallbackQualifyExport542BF0PreservesSignedDwords(t *testing.T) {
@@ -50,5 +52,25 @@ func TestScriptCallbackQualifyCHelpers542BF0PreserveNativeStringPointersAndBound
 	}
 	if got, _ := scriptObjectQualifyNameExportCall543620(strings.Repeat("b", 74), 0); got != scriptCallbackError542BF0 {
 		t.Fatalf("C 76-byte object = %q, want %q", got, scriptCallbackError542BF0)
+	}
+}
+
+func TestScriptCallbackQualifyCHelpersShareScratchBuffer(t *testing.T) {
+	buf := memmap.Slice(0x5D4594, 2489164)[:256]
+	saved := [256]byte(buf)
+	t.Cleanup(func() { copy(buf, saved[:]) })
+	callback := sub_5435C0(nil, 1, -2, 3)
+	if got := GoString(callback); got != "(null)%1%-2%3" {
+		t.Fatalf("null callback formats as %q", got)
+	}
+	object := sub_543620(nil, -1)
+	if callback != object || unsafe.Pointer(object) != unsafe.Pointer(&buf[0]) || GoString(callback) != "(null)%-1" {
+		t.Fatal("object and callback qualifiers did not share the native output buffer")
+	}
+	name := strings.Repeat("a", 122)
+	scriptCallbackQualifyNameExportCall5435C0(name, 0, 0, 0)
+	start := len(scriptCallbackError542BF0) + 1
+	if got, want := string(buf[start:129]), name[start:]+"%0%0%0\x00"; got != want {
+		t.Fatalf("scratch after the error terminator = %q, want %q", got, want)
 	}
 }

@@ -5,6 +5,7 @@ package legacy
 #include "GAME4.h"
 #include "GAME4_2.h"
 #include "GAME4_3.h"
+#include "cgo_const.h"
 */
 import "C"
 
@@ -12,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -37,6 +39,36 @@ func scriptObjectQualifyNameExportCall543620(name string, value int32) (string, 
 	defer freeName()
 	result := C.sub_543620((*C.char)(unsafe.Pointer(cname)), C.int32_t(value))
 	return alloc.GoString((*byte)(unsafe.Pointer(result))), uintptr(unsafe.Pointer(cname))
+}
+
+func scriptQualifierInput(name *C.nox_cgo_const_char) string {
+	if name == nil {
+		return "(null)"
+	}
+	return alloc.GoString((*byte)(unsafe.Pointer(name)))
+}
+
+func writeQualifiedScriptName(name string, limit int) *C.char {
+	// Both entries use the same 256-byte C return buffer. Keep the bytes
+	// written after the error string's NUL within that buffer.
+	buf := memmap.Slice(0x5D4594, 2489164)[:256]
+	alloc.StrCopyZero(buf, name)
+	if len(name) >= limit {
+		alloc.StrCopy(buf, scriptCallbackError542BF0)
+	}
+	return (*C.char)(unsafe.Pointer(&buf[0]))
+}
+
+//export sub_5435C0
+func sub_5435C0(name *C.nox_cgo_const_char, a2, a3, a4 C.int32_t) *C.char {
+	value := scriptNameWithQualifiers(scriptQualifierInput(name), int32(a2), int32(a3), int32(a4))
+	return writeQualifiedScriptName(value, scriptCallbackNameLimit)
+}
+
+//export sub_543620
+func sub_543620(name *C.nox_cgo_const_char, value C.int32_t) *C.char {
+	qualified := scriptNameWithQualifiers(scriptQualifierInput(name), int32(value))
+	return writeQualifiedScriptName(qualified, scriptObjectNameLimit)
 }
 
 func scriptCallbackObjectKindNative542BF0(object *server.Object) scriptCallbackObjectKind542BF0 {

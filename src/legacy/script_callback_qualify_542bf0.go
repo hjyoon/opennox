@@ -9,6 +9,8 @@ const (
 	scriptCallbackMarkedFlag542BF0 = uint32(0x80000000)
 	scriptCallbackLiveFlags542BF0  = uint32(0x7fffffff)
 	scriptCallbackError542BF0      = "ERROR_NAME_TOO_LONG!"
+	scriptCallbackNameLimit        = 128
+	scriptObjectNameLimit          = 76
 )
 
 type scriptCallbackObjectKind542BF0 uint8
@@ -46,33 +48,30 @@ var (
 	scriptCallbackGeneratorEvents542BF0 = [...]int{15, 16, 18, 17}
 )
 
-func scriptCallbackAppendQualifier542BF0(dst *strings.Builder, value int32) {
-	dst.WriteByte('%')
-	dst.WriteString(strconv.FormatInt(int64(value), 10))
+func scriptNameWithQualifiers(name string, values ...int32) string {
+	var result strings.Builder
+	result.Grow(len(name) + 12*len(values))
+	result.WriteString(name)
+	for _, value := range values {
+		result.WriteByte('%')
+		result.WriteString(strconv.FormatInt(int64(value), 10))
+	}
+	return result.String()
+}
+
+func scriptNameWithinLimit(name string, limit int) string {
+	if len(name) >= limit {
+		return scriptCallbackError542BF0
+	}
+	return name
 }
 
 func scriptCallbackQualifyName542BF0(name string, a1, a2, a3 int32) string {
-	var result strings.Builder
-	result.Grow(len(name) + 36)
-	result.WriteString(name)
-	scriptCallbackAppendQualifier542BF0(&result, a1)
-	scriptCallbackAppendQualifier542BF0(&result, a2)
-	scriptCallbackAppendQualifier542BF0(&result, a3)
-	if result.Len() >= 128 {
-		return scriptCallbackError542BF0
-	}
-	return result.String()
+	return scriptNameWithinLimit(scriptNameWithQualifiers(name, a1, a2, a3), scriptCallbackNameLimit)
 }
 
 func scriptObjectQualifyName542BF0(name string, value int32) string {
-	var result strings.Builder
-	result.Grow(len(name) + 12)
-	result.WriteString(name)
-	scriptCallbackAppendQualifier542BF0(&result, value)
-	if result.Len() >= 76 {
-		return scriptCallbackError542BF0
-	}
-	return result.String()
+	return scriptNameWithinLimit(scriptNameWithQualifiers(name, value), scriptObjectNameLimit)
 }
 
 func scriptCallbackQualifyEvents542BF0[Object comparable](

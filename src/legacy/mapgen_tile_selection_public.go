@@ -2,11 +2,15 @@ package legacy
 
 /*
 #include "GAME4_1.h"
-extern uint32_t dword_5d4594_3835348;
+#include "GAME4_3.h"
+#include "cgo_const.h"
+extern uint32_t dword_5d4594_2489436;
+extern uint32_t dword_5d4594_3835348, dword_5d4594_3835356, dword_5d4594_3835360;
 */
 import "C"
 
 import (
+	"encoding/binary"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -17,6 +21,8 @@ const (
 	mapgenTileStateBase  = 0x973F18
 	mapgenTileIDOffset   = 35912
 	mapgenTileModeOffset = 35916
+	floorEdgeNameOffset  = 28644
+	floorEdgeVariations  = 28688
 )
 
 func mapgenTileNamesEqual(a, b string) bool {
@@ -98,5 +104,58 @@ func nox_xxx_tile_51D5C0(mode C.int) C.int {
 		return 0
 	}
 	*memmap.PtrUint32(mapgenTileStateBase, mapgenTileModeOffset) = uint32(mode)
+	return 1
+}
+
+//export sub_543FB0
+func sub_543FB0(name *C.nox_cgo_const_char) C.int {
+	count := int32(*thingEdgeCountCell411850())
+	if name == nil || count <= 0 {
+		return -1
+	}
+	text := alloc.GoString((*byte)(unsafe.Pointer(name)))
+	for i := int32(0); i < count; i++ {
+		record := thingEdgeBytes411850(uint32(i), floorEdgeNameOffset, 1)
+		if alloc.GoString(&record[0]) == text {
+			return C.int(i)
+		}
+	}
+	return -1
+}
+
+//export sub_544020
+func sub_544020(name *C.char) C.int {
+	C.dword_5d4594_2489436 = 0
+	if C.nox_strcmpi(internCStr("NONE"), name) == 0 {
+		C.dword_5d4594_3835356 = 255
+		return 1
+	}
+	return nox_xxx_tileCheckByte3_544070(sub_543FB0((*C.nox_cgo_const_char)(name)))
+}
+
+//export nox_xxx_tileCheckByte3_544070
+func nox_xxx_tileCheckByte3_544070(index C.int) C.int {
+	if index < 0 || index >= C.int(int32(*thingEdgeCountCell411850())) {
+		return 0
+	}
+	C.dword_5d4594_3835356 = C.uint32_t(index)
+	C.dword_5d4594_2489436 = 1
+	return 1
+}
+
+//export nox_xxx_tileCheckByte4_5440A0
+func nox_xxx_tileCheckByte4_5440A0(variation C.int) C.int {
+	if C.dword_5d4594_2489436 == 0 {
+		return 1
+	}
+	if int32(C.dword_5d4594_3835356) == -1 || variation < 0 {
+		return 0
+	}
+	// The original indexes the variation limit with the incoming value.
+	count := binary.LittleEndian.Uint16(thingEdgeBytes411850(uint32(variation), floorEdgeVariations, 2))
+	if variation >= C.int(count) {
+		return 0
+	}
+	C.dword_5d4594_3835360 = C.uint32_t(variation)
 	return 1
 }

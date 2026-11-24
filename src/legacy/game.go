@@ -560,7 +560,7 @@ func Nox_xxx_guiChatIconLoad_445650() int {
 	return int(C.nox_xxx_guiChatIconLoad_445650())
 }
 func Sub_4C3390() int {
-	return int(C.sub_4C3390())
+	return int(sub_4C3390())
 }
 func Sub_48C980() int {
 	return int(C.sub_48C980())
@@ -614,7 +614,7 @@ func Sub_4AB470() {
 	C.sub_4AB470()
 }
 func Sub_4C34A0() {
-	C.sub_4C34A0()
+	sub_4C34A0()
 }
 func Sub_445770() {
 	C.sub_445770()

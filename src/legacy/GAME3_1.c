@@ -2032,39 +2032,6 @@ int nox_xxx_prepareP2PTrade_4C1BF0() {
 	return result;
 }
 
-//----- (004C3390) --------------------------------------------------------
-int sub_4C3390() {
-	setMemPtr(0x5D4594, 1321220, nox_xxx_gLoadImg_42F970("VoteInProgress"));
-	dword_5d4594_1321216 = nox_window_new(0, 136, nox_win_width - 50, nox_win_height / 2 - 100, 50, 50, 0);
-	nox_xxx_wndSetIcon_46AE60(dword_5d4594_1321216, getMemPtr(0x5D4594, 1321220));
-	nox_window_set_all_funcs(dword_5d4594_1321216, 0, sub_4C3410, 0);
-	nox_window_set_hidden(dword_5d4594_1321216, 1);
-	return 1;
-}
-
-//----- (004C3410) --------------------------------------------------------
-int sub_4C3410(nox_window* win, void* draw) {
-	unsigned int x;
-	unsigned int y;
-
-	(void)draw;
-	nox_client_wndGetPosition_46AA60(win, &x, &y);
-	nox_client_drawImageAt_47D2C0(win->draw_data.bg_image, x + win->draw_data.img_px, y + win->draw_data.img_py);
-	return 1;
-}
-
-//----- (004C3460) --------------------------------------------------------
-int sub_4C3460(int a1) { return nox_window_set_hidden(dword_5d4594_1321216, a1); }
-
-//----- (004C34A0) --------------------------------------------------------
-int sub_4C34A0() {
-	int result; // eax
-
-	result = nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1321216);
-	dword_5d4594_1321216 = 0;
-	return result;
-}
-
 //----- (004C3500) --------------------------------------------------------
 int sub_4C3500() {
 	nox_window* v0;

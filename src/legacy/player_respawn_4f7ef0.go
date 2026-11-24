@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -23,10 +24,37 @@ const (
 	playerRespawnCorpseTypeSize53FBC0      = 44
 )
 
+func respawnPlayerCorpseTypeOffset53FBC0(direction int32, part int) uintptr {
+	return uintptr(playerRespawnCorpseTypesOffset53FBC0 + playerRespawnCorpseTypeSize53FBC0*int(direction) + 4*part)
+}
+
 func respawnPlayerTypeIndex53FBC0(direction int32, part int) uint32 {
-	offset := playerRespawnCorpseTypesOffset53FBC0 +
-		playerRespawnCorpseTypeSize53FBC0*int(direction) + 4*part
-	return memmap.Uint32(playerRespawnSettingsBase4F7EF0, uintptr(offset))
+	return memmap.Uint32(playerRespawnSettingsBase4F7EF0, respawnPlayerCorpseTypeOffset53FBC0(direction, part))
+}
+
+//export nox_xxx_createCorpse_53FCA0
+func nox_xxx_createCorpse_53FCA0() {
+	initCorpsePartTypes53FCA0(GetServer().S())
+}
+
+func initCorpsePartTypes53FCA0(world *server.Server) {
+	suffixOffsets := [...]uintptr{281216, 281220, 281224, 281228, 0, 281232, 281236, 281240, 281244}
+	partNames := [...]string{
+		"Skull", "RibCage", "Pelvis", "LeftLowerLeg", "LeftUpperLeg", "LeftLowerArm",
+		"LeftUpperArm", "RightLowerLeg", "RightUpperLeg", "RightLowerArm", "RightUpperArm",
+	}
+	for direction, suffixOffset := range suffixOffsets {
+		if suffixOffset == 0 {
+			continue
+		}
+		suffix := alloc.GoStringS(memmap.Slice(playerRespawnCorpsePointsBase53FBC0, suffixOffset))
+		for part, name := range partNames {
+			id := world.Types.IndByID("Corpse" + name + suffix)
+			offset := respawnPlayerCorpseTypeOffset53FBC0(int32(direction), part)
+			*memmap.PtrUint32(playerRespawnSettingsBase4F7EF0, offset) = uint32(id)
+		}
+	}
+	*memmap.PtrUint32(playerRespawnSettingsBase4F7EF0, playerRespawnCorpseInitOffset53FBC0) = 1
 }
 
 func respawnPlayerOffset53FBC0(direction int32, part int) types.Pointf {
@@ -45,7 +73,7 @@ func respawnPlayerImplRuntime53FBC0() server.RespawnPlayerImplRuntime53FBC0 {
 			return memmap.Uint32(playerRespawnSettingsBase4F7EF0, playerRespawnCorpseInitOffset53FBC0)
 		},
 		Initialize: func() {
-			C.nox_xxx_createCorpse_53FCA0()
+			initCorpsePartTypes53FCA0(outer.S())
 		},
 		Direction: func(direction int16) int32 {
 			return int32(Nox_xxx_math_509EA0(int(direction)))

@@ -5,15 +5,14 @@ package server
 type DoorUpdateRuntime53AC50 struct {
 	AudioEvent func(uint32, *Object)
 	QueueDoor  func(*DoorUpdateData)
-	WakeDoor   func(*Object)
+	WakeDoor   func(*Object) byte
 }
 
 // DoorUpdate53AC50 restores GAME.EXE 0053AC50 using native-width Object and
-// DoorUpdateData pointers. The original callback remains registered as the
-// thing.bin identity, but the object-update dispatcher invokes this directly.
-func (s *Server) DoorUpdate53AC50(door *Object, runtime DoorUpdateRuntime53AC50) {
+// DoorUpdateData pointers. It returns the legacy result byte for ABI callers.
+func (s *Server) DoorUpdate53AC50(door *Object, runtime DoorUpdateRuntime53AC50) byte {
 	if door == nil || door.UpdateData == nil {
-		return
+		return 0
 	}
 	update := door.UpdateDataDoor()
 	target := update.TargetDirection
@@ -33,11 +32,16 @@ func (s *Server) DoorUpdate53AC50(door *Object, runtime DoorUpdateRuntime53AC50)
 	current = update.CurrentDirection
 	if update.SyncedDirection != current {
 		door.NeedSync()
+		current = update.CurrentDirection
 		update.SyncedDirection = current
 	}
 	if uint32(door.ObjFlags)&0x1000000 == 0 ||
-		s.Frame()-update.LastMoveFrame <= s.TickRate()>>1 || current == target {
-		return
+		s.Frame()-update.LastMoveFrame <= uint32(int32(s.TickRate())>>1) {
+		return byte(current)
+	}
+	target = update.TargetDirection
+	if current == target {
+		return byte(current)
 	}
 	delta := int32(-2)
 	diff := current - target
@@ -56,8 +60,9 @@ func (s *Server) DoorUpdate53AC50(door *Object, runtime DoorUpdateRuntime53AC50)
 		runtime.QueueDoor(update)
 	}
 	if runtime.WakeDoor != nil {
-		runtime.WakeDoor(door)
+		return runtime.WakeDoor(door)
 	}
+	return byte(current)
 }
 
 func doorUpdateSound53AC50(door *Object, reachedTarget bool) uint32 {

@@ -75,20 +75,25 @@ func TestDoorUpdate53AC50MovementAndDeadline(t *testing.T) {
 			}
 			queued++
 		},
-		WakeDoor: func(got *Object) {
+		WakeDoor: func(got *Object) byte {
 			if got != door {
 				t.Fatal("woke a different door")
 			}
 			woken++
+			return 7
 		},
 	}
 	s.SetFrame(10)
-	s.DoorUpdate53AC50(door, runtime)
+	if got := s.DoorUpdate53AC50(door, runtime); got != 4 {
+		t.Fatalf("stationary return = %d, want 4", got)
+	}
 	if data.FractionalDir != 0 || queued != 0 || woken != 0 {
 		t.Fatalf("at deadline = direction %d, queue %d, wake %d", data.FractionalDir, queued, woken)
 	}
 	s.SetFrame(11)
-	s.DoorUpdate53AC50(door, runtime)
+	if got := s.DoorUpdate53AC50(door, runtime); got != 7 {
+		t.Fatalf("moving return = %d, want 7", got)
+	}
 	if data.FractionalDir != 254 || queued != 1 || woken != 1 {
 		t.Fatalf("counterclockwise = direction %d, queue %d, wake %d", data.FractionalDir, queued, woken)
 	}

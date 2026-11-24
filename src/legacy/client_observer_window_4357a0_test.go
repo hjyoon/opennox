@@ -21,7 +21,7 @@ func TestClientObserverWindow4357A0NativeBodies(t *testing.T) {
 		file, signature, marker string
 	}{
 		{"GAME1_2.c", "int nox_xxx_cliToggleObsWindow_4357A0() {", "// PRODUCTION_OBSERVER_TOGGLE"},
-		{"GAME2_3.c", "int nox_xxx_showObserverWindow_48CA70(int a1) {", "// PRODUCTION_OBSERVER_VISIBILITY"},
+		{"testdata/retired-game-sources/GAME2_3.c.txt", "int nox_xxx_showObserverWindow_48CA70(int a1) {", "// PRODUCTION_OBSERVER_VISIBILITY"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {

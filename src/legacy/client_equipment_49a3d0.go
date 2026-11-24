@@ -1,7 +1,8 @@
 package legacy
 
 /*
-#include <stdint.h>
+#include "GAME1.h"
+#include "GAME2_3.h"
 */
 import "C"
 
@@ -15,8 +16,8 @@ func clientEquipNPCNative49A3D0(npc *server.NPC, opcode byte, itemType uint32, m
 	return server.ClientEquipNPCNative49A3D0(npc, opcode == 80 || opcode == 81, itemType, modifiers)
 }
 
-//export nox_xxx_clientEquipNPC_native_49A3D0
-func nox_xxx_clientEquipNPC_native_49A3D0(opcode C.uint8_t, npcID C.int, itemType C.uint32_t, modifierIDs *C.uint8_t) unsafe.Pointer {
+//export nox_xxx_clientEquip_49A3D0
+func nox_xxx_clientEquip_49A3D0(opcode C.uint8_t, npcID C.int, itemType C.uint32_t, modifierIDs C.nox_equipment_modifier_ids) *C.char {
 	npc := GetServer().S().NPCs.ByID(int(npcID))
 	if npc == nil {
 		return nil
@@ -30,5 +31,5 @@ func nox_xxx_clientEquipNPC_native_49A3D0(opcode C.uint8_t, npcID C.int, itemTyp
 			}
 		}
 	}
-	return clientEquipNPCNative49A3D0(npc, byte(opcode), uint32(itemType), modifiers).C()
+	return (*C.char)(clientEquipNPCNative49A3D0(npc, byte(opcode), uint32(itemType), modifiers).C())
 }

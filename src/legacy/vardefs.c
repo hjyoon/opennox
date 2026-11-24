@@ -6,6 +6,8 @@ void nullsub_68();
 nox_window* dword_5d4594_1046492 = 0;
 void* nox_xxx_aClosewoodengat_587000_133480 = 0;
 nox_window* nox_wol_wnd_world_814980 = 0;
+nox_list_item_t nox_gui_wol_servers_list = {0};
+nox_render_data_t* nox_draw_curDrawData_3799572 = 0;
 uint32_t dword_5d4594_1045516 = 0;
 nox_window* dword_5d4594_1045684 = 0;
 char* dword_5d4594_1307784 = 0;

@@ -393,7 +393,7 @@ func Sub_43B630() {
 	C.sub_43B630()
 }
 func Sub_49FF20() {
-	C.sub_49FF20()
+	sub_49FF20()
 }
 func Sub_445450() {
 	C.sub_445450()

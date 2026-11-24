@@ -37,6 +37,14 @@ extern uint32_t dword_5d4594_251572;
 
 extern int nox_parse_thing_draw_funcs_cnt;
 
+// Preserve the address return for call-scoped Go drawables.
+void nox_drawable_set_light_color_go(nox_drawable* dr, int r, int g, int b);
+
+nox_drawable* nox_drawable_change_light_color_native(nox_drawable* dr, int r, int g, int b) {
+	nox_drawable_set_light_color_go(dr, r, g, b);
+	return dr;
+}
+
 //----- (0044B2D0) --------------------------------------------------------
 bool nox_parse_thing_light_dir(nox_thing* obj, nox_memfile* f, char* attr_value) {
 	int deg = 0;

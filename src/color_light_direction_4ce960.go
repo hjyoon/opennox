@@ -2,14 +2,6 @@ package opennox
 
 import "math"
 
-// The original light setters use a binary32 degrees-to-turns coefficient,
-// then separate 53-bit, round-toward-zero operations and signed-qword FISTP.
-func colorLightAngle4CE960(degrees int) int64 {
-	value := fireballMulChop53_52C790(float64(int32(degrees)), float64(math.Float32frombits(0x3b360b61)))
-	value = fireballMulChop53_52C790(value, 65536)
-	return colorLightTruncate4CE960(fireballAddChop53_52C790(value, 0.5))
-}
-
 func colorLightTruncate4CE960(value float64) int64 {
 	// x87 masked invalid FISTP produces the signed-qword indefinite value.
 	// Callers which reload EAX subsequently interpret only its signed low DWORD.

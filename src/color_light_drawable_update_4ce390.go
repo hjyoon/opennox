@@ -99,20 +99,7 @@ func alterColorLightRadius4CE760(dr *client.Drawable, data *[100]byte, count byt
 	cycle := colorLightDivideChop53_4CE440(float64(frame()), float64(uint32(delay)*uint32(count)))
 	from, to, subframe := colorLightFrameSelection4CE440(cycle, count, delay, data[0]&0x10 != 0)
 	value := colorLightLinear4CE440(int(data[66+from]), int(data[66+to]), subframe, delay)
-	return int(setColorLightSize4CE760(dr, int(int64(value))))
-}
-
-func setColorLightDirection4CE8C0(dr *client.Drawable, direction int) int64 {
-	result := colorLightAngle4CE960(direction)
-	dr.LightDir = uint16(result)
-	dr.Field_42 = 0
-	return result
-}
-
-func setColorLightSize4CE760(dr *client.Drawable, size int) int64 {
-	result := colorLightAngle4CE960(size)
-	dr.LightPenumbra = uint16(result)
-	return result
+	return int(dr.SetLightPenumbra(int32(colorLightTruncate4CE960(value))))
 }
 
 func trackColorLight4CE8C0(dr *client.Drawable, data *[100]byte, byStaticCode func(int) *client.Drawable) {
@@ -125,7 +112,7 @@ func trackColorLight4CE8C0(dr *client.Drawable, data *[100]byte, byStaticCode fu
 	}
 	dx := int32(uint32(target.PosVec.X) - uint32(dr.PosVec.X))
 	dy := int32(uint32(target.PosVec.Y) - uint32(dr.PosVec.Y))
-	setColorLightDirection4CE8C0(dr, int(colorLightTrackedAngle4CE8C0(dx, dy)))
+	dr.SetLightDirection(colorLightTrackedAngle4CE8C0(dx, dy))
 }
 
 func rotateColorLight4CE960(dr *client.Drawable, data *[100]byte, hooks colorLightDrawableHooks4CE390) {
@@ -159,5 +146,5 @@ func rotateColorLight4CE960(dr *client.Drawable, data *[100]byte, hooks colorLig
 	} else if direction >= 360 {
 		direction -= 360
 	}
-	setColorLightDirection4CE8C0(dr, int(direction))
+	dr.SetLightDirection(direction)
 }

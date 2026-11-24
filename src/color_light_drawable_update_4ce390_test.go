@@ -63,12 +63,12 @@ func TestUpdateColorLightDrawable4CE390NativeWidth(t *testing.T) {
 	if dr.LightIntensity != math.Float32frombits(0x407fffff) {
 		t.Fatalf("light intensity = %v, want original0x407fffff", dr.LightIntensity)
 	}
-	if got, want := dr.LightPenumbra, uint16(setColorLightSize4CE760(&client.Drawable{}, 135)); got != want {
+	if got, want := dr.LightPenumbra, uint16((&client.Drawable{}).SetLightPenumbra(135)); got != want {
 		t.Fatalf("light penumbra = %d, want %d", got, want)
 	}
 	// The legacy path rounds acos to float32, then truncates the resulting
 	// 89.999... degree value before converting it to the fixed angle.
-	if got, want := dr.LightDir, uint16(setColorLightDirection4CE8C0(&client.Drawable{}, 89)); got != want {
+	if got, want := dr.LightDir, uint16((&client.Drawable{}).SetLightDirection(89)); got != want {
 		t.Fatalf("light direction = %d, want %d", got, want)
 	}
 	if dr.Field_42 != 0 {

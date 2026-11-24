@@ -4154,20 +4154,6 @@ long long nox_xxx_spriteChangeLightSize_484C30(int a1, int a2) {
 }
 #endif
 
-//----- (00484CE0) --------------------------------------------------------
-int sub_484CE0(void* a1, float a2) {
-	int result; // eax
-	uint8_t* data = a1;
-
-	if (a2 > 63.0) {
-		a2 = 63.0;
-	}
-	*(float*)(data + 4) = a2;
-	result = sub_484C60(a2);
-	*(uint32_t*)(data + 8) = result;
-	return result;
-}
-
 //----- (00484D70) --------------------------------------------------------
 // Preserved original: unused packed-light shadow; native Drawable light methods already own live calls.
 #if 0
@@ -4184,57 +4170,6 @@ int nox_xxx_spriteChangeIntensity_484D70_light_intensity(int a1, float a2) {
 	return result;
 }
 #endif
-
-// Native-width Drawable variants. The original entry points above receive a
-// pointer to the packed PE32 light block. Native Drawables widen Go int-backed
-// RGB fields, so code that already owns a Drawable must not derive that block
-// with a fixed +136 byte offset on 64-bit hosts.
-nox_drawable* nox_drawable_change_light_color_native(nox_drawable* dr, int r, int g, int b) {
-	if (!dr) {
-		return NULL;
-	}
-	dr->light_flags = 2;
-	dr->light_color_r = r;
-	dr->light_color_g = g;
-	dr->light_color_b = b;
-	return dr;
-}
-
-long long nox_drawable_change_light_direction_native(nox_drawable* dr, int direction) {
-	long long result =
-		(long long)((double)direction * 0.0027777778 * *(double*)&qword_581450_9552 +
-					*(double*)&qword_581450_9544);
-	if (dr) {
-		dr->field_41_0 = (uint16_t)result;
-		dr->field_42 = 0;
-	}
-	return result;
-}
-
-long long nox_drawable_change_light_size_native(nox_drawable* dr, int size) {
-	long long result =
-		(long long)((double)size * 0.0027777778 * *(double*)&qword_581450_9552 +
-					*(double*)&qword_581450_9544);
-	if (dr) {
-		dr->field_41_1 = (uint16_t)result;
-	}
-	return result;
-}
-
-int nox_drawable_change_light_intensity_native(nox_drawable* dr, float intensity) {
-	if (!dr) {
-		return 0;
-	}
-	if (intensity > 63.0) {
-		intensity = 63.0;
-	}
-	dr->light_intensity = intensity;
-	dr->light_intensity_u16 =
-		(uint32_t)((double)intensity * *(double*)&qword_581450_9552 + *(double*)&qword_581450_9544);
-	dr->light_intensity_rad = sub_484C60(intensity);
-	return (int)dr->light_intensity_rad;
-}
-
 
 //----- (00485B30) --------------------------------------------------------
 int nox_thing_read_floor_485B30(nox_memfile* f, char* a2) {

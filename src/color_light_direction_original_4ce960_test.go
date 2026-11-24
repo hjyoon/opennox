@@ -110,9 +110,9 @@ func TestColorLightDirectionOriginal4CE960(t *testing.T) {
 			var result int64
 			switch in.Kind {
 			case "direction":
-				result = setColorLightDirection4CE8C0(dr, int(in.Value))
+				result = dr.SetLightDirection(int32(in.Value))
 			case "size":
-				result = setColorLightSize4CE760(dr, int(in.Value))
+				result = dr.SetLightPenumbra(int32(in.Value))
 			case "rotate":
 				rotateColorLight4CE960(dr, data, hooks)
 			case "track":

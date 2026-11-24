@@ -123,7 +123,7 @@ func TestColorLightInterpolationOriginal4CE440(t *testing.T) {
 						wantIntensity = 63
 					}
 				case "radius":
-					wantPenumbra = uint16(setColorLightSize4CE760(&client.Drawable{}, int(event.Value)))
+					wantPenumbra = uint16((&client.Drawable{}).SetLightPenumbra(int32(event.Value)))
 				default:
 					t.Fatal("original setter", event.Service)
 				}

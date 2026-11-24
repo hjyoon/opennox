@@ -3,7 +3,6 @@ package client
 import (
 	"encoding/json"
 	"image"
-	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -771,14 +770,6 @@ func (s *Drawable) Field32() uint32 {
 	return s.NetCode32 // TODO: NPC ID?
 }
 
-func (s *Drawable) SetLightColor(r, g, b byte) { // nox_xxx_spriteChangeLightColor_484BE0
-	if s == nil {
-		return
-	}
-	s.LightFlags = 2
-	s.LightColor = noxrender.RGB{R: int(r), G: int(g), B: int(b)}
-}
-
 func (s *Drawable) Field100() *Drawable {
 	return s.Field_100
 }
@@ -830,46 +821,6 @@ func (s *Drawable) SetFrameMB(a2 int) { // Nox_xxx_spriteSetFrameMB_45AB80
 		s.Field_78 = s.AnimFrameSlave
 		s.AnimFrameSlave = uint32(a2)
 	}
-}
-
-const (
-	lightMinIntensity  = 1.0
-	lightRadiusBias    = float32(4.0)
-	lightRadiusDivisor = float32(961.0)
-	lightRadiusScale   = float32(0.0010000000474974513)
-)
-
-func (s *Drawable) SetLightIntensity(v float32) { // nox_xxx_spriteChangeIntensity_484D70_light_intensity
-	if s == nil {
-		return
-	}
-	const (
-		qword_581450_9544 = 0.5
-		qword_581450_9552 = 0x10000
-	)
-	if v > 63.0 {
-		v = 63.0
-	}
-	s.LightIntensity = v
-	s.LightIntensityU16 = uint32(v*qword_581450_9552 + qword_581450_9544)
-	s.LightIntensityRad = uint32(LightRadius(v))
-}
-
-func LightRadius(intens float32) int {
-	if intens <= lightMinIntensity {
-		return 0
-	}
-	intens2 := intens
-	if intens2 > 31.0 {
-		intens2 = 31.0
-	}
-	// These values are immutable binary32 constants from the original
-	// byte_587000 blob at offsets 154980, 154976, and 154972. Keeping them
-	// here avoids architecture-dependent Inf-to-int conversions when the
-	// legacy blob has not been initialized yet (for example in unit tests).
-	return int(math.Sqrt(float64(((lightRadiusBias+intens2)/
-		(lightRadiusBias+lightMinIntensity) + 1.0) *
-		(intens * intens / (lightRadiusDivisor * lightRadiusScale)))))
 }
 
 func (s *Drawable) LinkType(typeID int, typ *ObjectType) {

@@ -3954,47 +3954,6 @@ int nox_xxx_sendAllPlayerIDs_4DE270(nox_playerInfo* a1) {
 	return result;
 }
 
-//----- (004DE380) --------------------------------------------------------
-int nox_xxx_servMinimapRevealFlag_4DE380(int a1) {
-	int result = 0; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 1563284)) {
-		*getMemU32Ptr(0x5D4594, 1563284) = nox_xxx_getNameId_4E3AA0("GameBall");
-	}
-	if (!*getMemU32Ptr(0x5D4594, 1563272)) {
-		*getMemU32Ptr(0x5D4594, 1563272) = nox_xxx_getNameId_4E3AA0("Crown");
-	}
-	for (nox_object_t* i = nox_server_getFirstObject_4DA790(); i; i = nox_server_getNextObject_4DA7A0(i)) {
-		if (i->obj_flags & 4) {
-			if (i->typ_ind == *getMemU32Ptr(0x5D4594, 1563284) || i->typ_ind == *getMemU32Ptr(0x5D4594, 1563272)) {
-				nox_xxx_netMarkMinimapObject_417190(a1, i, 1);
-			}
-		}
-	}
-	return result;
-}
-
-//----- (004DE410) --------------------------------------------------------
-void sub_4DE410(int a1) {
-	const uint32_t client_mask = UINT32_C(1) << a1;
-	for (nox_object_t* obj = nox_server_getFirstObject_4DA790(); obj;
-		 obj = nox_server_getNextObject_4DA7A0(obj)) {
-		obj->field_38 |= client_mask;
-		if (!(obj->obj_class & UINT32_C(0x20400000))) {
-			obj->field_37 &= ~client_mask;
-		}
-		obj->field_140[a1] &= UINT32_C(0xFFF);
-		if (obj->obj_class & UINT32_C(0x20400000)) {
-			uint32_t sync_field = UINT32_C(0x10000);
-			for (uint32_t key = 1; key < UINT32_C(0x10000); key *= 2, sync_field *= 2) {
-				if (nox_xxx_objectHasSyncData_4E4C90(obj, key)) {
-					obj->field_140[a1] |= sync_field;
-				}
-			}
-		}
-	}
-}
-
 // GAME.EXE 004DE4D0 uses a native Go entry.
 
 //----- (004DE7C0) --------------------------------------------------------

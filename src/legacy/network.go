@@ -58,6 +58,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/internal/netstr"
@@ -391,6 +392,26 @@ func nox_xxx_newPlayerSendAllPlayers_4DE300(recipient C.int) *C.char {
 func nox_xxx_netGauntlet_4D9E70(recipient C.int) C.int {
 	packet := [2]byte{byte(netmsg.MSG_GAUNTLET), 20}
 	return nox_xxx_netSendPacket0_4E5420(recipient, C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 1)
+}
+
+//export nox_xxx_servMinimapRevealFlag_4DE380
+func nox_xxx_servMinimapRevealFlag_4DE380(recipient C.int) C.int {
+	s := GetServer().S()
+	ball := memmap.PtrUint32(0x5D4594, 1563284)
+	crown := memmap.PtrUint32(0x5D4594, 1563272)
+	if *ball == 0 {
+		*ball = uint32(s.Types.IndByID("GameBall"))
+	}
+	if *crown == 0 {
+		*crown = uint32(s.Types.IndByID("Crown"))
+	}
+	for obj := s.Objs.First(); obj != nil; obj = obj.Next() {
+		typeID := uint32(obj.TypeInd)
+		if obj.Flags().Has(object.FlagActive) && (typeID == *ball || typeID == *crown) {
+			s.Players.Nox_xxx_netMarkMinimapObject_417190(ntype.PlayerInd(recipient), obj, 1)
+		}
+	}
+	return 0
 }
 func Nox_xxx_netPlayerObjSend_518C30(a1 *server.Object, a2 *server.Object, a3 int, a4 int) int {
 	return int(C.nox_xxx_netPlayerObjSend_518C30(asObjectC(a1), asObjectC(a2), C.int(a3), C.int(a4)))

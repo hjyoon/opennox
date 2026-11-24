@@ -27,6 +27,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/log"
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -476,5 +477,26 @@ func Get_nox_client_mapSpecialRWObjectData_4AC610() unsafe.Pointer {
 }
 
 func Sub_4DE410(pli ntype.PlayerInd) {
-	C.sub_4DE410(C.int(pli))
+	const syncedClasses = object.ClassImmobile | object.ClassClientPersist
+	mask := uint32(1) << pli
+	for obj := GetServer().S().Objs.First(); obj != nil; obj = obj.Next() {
+		obj.Field38 |= mask
+		requiresSync := obj.Class().HasAny(syncedClasses)
+		if !requiresSync {
+			obj.Field37 &^= mask
+		}
+		obj.Field140[pli] &= 0xfff
+		if requiresSync {
+			for key := uint32(1); key < 1<<16; key <<= 1 {
+				if objectHasSyncData(obj, key) {
+					obj.Field140[pli] |= key << 16
+				}
+			}
+		}
+	}
+}
+
+//export sub_4DE410
+func sub_4DE410(index C.int) {
+	Sub_4DE410(ntype.PlayerInd(index))
 }

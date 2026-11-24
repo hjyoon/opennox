@@ -44,3 +44,11 @@ func swapJoinFlagTypeC(value uint32) uint32 {
 func callGauntletNoticeC(index int32) int32 {
 	return int32(C.nox_xxx_netGauntlet_4D9E70(C.int(index)))
 }
+
+func callJoinMinimapRevealC(index int32) int32 {
+	return int32(C.nox_xxx_servMinimapRevealFlag_4DE380(C.int(index)))
+}
+
+func callJoinObjectSyncC(index int32) {
+	C.sub_4DE410(C.int(index))
+}

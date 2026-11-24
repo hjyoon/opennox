@@ -123,3 +123,10 @@ func assertPoint522CA0(t *testing.T, name string, got, want [2]float32) {
 		t.Fatalf("%s = %v, want %v", name, got, want)
 	}
 }
+
+func TestMapgenRoomPointCapacityAndOneWay522CA0(t *testing.T) {
+	InitBlobData()
+	if !mapgenRoomPointCapacityFixture522CA0() {
+		t.Fatal("room point storage or one-way theme behavior changed")
+	}
+}

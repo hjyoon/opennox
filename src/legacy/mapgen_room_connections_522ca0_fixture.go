@@ -247,6 +247,28 @@ cleanup:
 	out.cleanup_head_is_null = nox_xxx_mapGenGetTopRoom_521710() == NULL;
 	return out;
 }
+
+static int nox_test_mapgen_room_point_capacity_522ca0(void) {
+	uint8_t* room = (uint8_t*)nox_xxx_mapGenMakeRoomStruct_521940(3, 4);
+	if (!room) {
+		return 0;
+	}
+	int ok = 1;
+	for (int i = 0; i <= 16; ++i) {
+		float2 point = {i * 128.0f, -10.0f};
+		int expected = i < 16 ? i + 1 : 16;
+		if (nox_mapgenAddRoomPointNative_522CA0(room, &point) != expected) {
+			ok = 0;
+		}
+	}
+	float2* last = (float2*)(room + 224 + 8 * 15);
+	ok = ok && room[352] == 16 && last->field_0 == 1920.0f && last->field_4 == -10.0f;
+	sub_521A10(room);
+
+	uint32_t theme[16] = {0};
+	theme[15] = 1;
+	return ok && nox_mapgenConnectRoomPointsNative_522F40((uint8_t*)theme) == (uint8_t*)theme;
+}
 */
 import "C"
 
@@ -351,4 +373,8 @@ func mapgenRoomConnectionsFixture522CA0() mapgenRoomConnectionsResult522CA0 {
 	out.waypointCapacityRejected = got.waypoint_capacity_rejected != 0
 	out.cleanupHeadIsNull = got.cleanup_head_is_null != 0
 	return out
+}
+
+func mapgenRoomPointCapacityFixture522CA0() bool {
+	return C.nox_test_mapgen_room_point_capacity_522ca0() != 0
 }

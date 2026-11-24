@@ -23,7 +23,10 @@ type mapgenRankedRoom struct {
 	prefabNext             uint32
 	_                      [144]byte
 	visit                  uint8
-	_                      [135]byte
+	_                      [3]byte
+	points                 [16]C.float2
+	pointCount             uint8
+	_                      [3]byte
 	distance, normalized   float32
 	bucket                 uint32
 	_                      uint32
@@ -36,6 +39,8 @@ var (
 	_ [68]byte  = [unsafe.Offsetof(mapgenRankedRoom{}.sortedPrev)]byte{}
 	_ [72]byte  = [unsafe.Offsetof(mapgenRankedRoom{}.prefabNext)]byte{}
 	_ [220]byte = [unsafe.Offsetof(mapgenRankedRoom{}.visit)]byte{}
+	_ [224]byte = [unsafe.Offsetof(mapgenRankedRoom{}.points)]byte{}
+	_ [352]byte = [unsafe.Offsetof(mapgenRankedRoom{}.pointCount)]byte{}
 	_ [356]byte = [unsafe.Offsetof(mapgenRankedRoom{}.distance)]byte{}
 	_ [360]byte = [unsafe.Offsetof(mapgenRankedRoom{}.normalized)]byte{}
 	_ [364]byte = [unsafe.Offsetof(mapgenRankedRoom{}.bucket)]byte{}

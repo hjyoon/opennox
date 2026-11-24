@@ -55,7 +55,6 @@ extern uint32_t dword_5d4594_3835364;
 extern uint32_t dword_5d4594_1556128;
 extern uint32_t dword_5d4594_1556136;
 extern uint32_t dword_5d4594_3835372;
-extern uint32_t dword_5d4594_1556144;
 extern nox_window* dword_5d4594_1523040;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t nox_server_sendMotd_108752;
@@ -1360,51 +1359,6 @@ int sub_4D6770(int a1) {
 
 
 
-//----- (004D6880) --------------------------------------------------------
-int sub_4D6880(int a1, int a2) {
-	char v3[69]; // [esp+8h] [ebp-48h]
-
-	memset(v3, 0, 0x44u);
-	v3[68] = 0;
-	v3[0] = -16;
-	v3[1] = 13;
-	if (a2) {
-		v3[4] |= 1u;
-	}
-	if (sub_51A950()) {
-		v3[4] |= 2u;
-	}
-	*(uint16_t*)&v3[2] = nox_game_getQuestStage_4E3CC0();
-	nox_server_currentMapGetFilename_409B30();
-	strcpy(&v3[5], sub_4D6940());
-	nox_server_currentMapGetFilename_409B30();
-	strcpy(&v3[37], sub_4D6950());
-	return nox_xxx_netSendPacket1_4E5390(a1, v3, 69, 0, 1);
-}
-
-//----- (004D6940) --------------------------------------------------------
-char* sub_4D6940() { return (char*)getMemAt(0x973F18, 3838); }
-
-//----- (004D6950) --------------------------------------------------------
-char* sub_4D6950() { return (char*)getMemAt(0x973F18, 3806); }
-
-//----- (004D6960) --------------------------------------------------------
-int nox_game_sendQuestStage_4D6960(int a1) {
-	char v2[69] = {0};
-	v2[0] = -16;
-	v2[1] = 14;
-	v2[4] = 0;
-	if (sub_51A950()) {
-		v2[4] |= 2u;
-	}
-	*(uint16_t*)&v2[2] = nox_game_getQuestStage_4E3CC0();
-	nox_server_currentMapGetFilename_409B30();
-	strcpy(&v2[5], sub_4D6940());
-	nox_server_currentMapGetFilename_409B30();
-	strcpy(&v2[37], sub_4D6950());
-	return nox_xxx_netSendPacket1_4E5390(a1, v2, 69, 0, 1);
-}
-
 //----- (004D70B0) --------------------------------------------------------
 char* sub_4D70B0() {
 	char* result; // eax
@@ -1419,24 +1373,6 @@ char* sub_4D70B0() {
 //----- (004D70C0) --------------------------------------------------------
 
 //----- (004D7100) --------------------------------------------------------
-
-//----- (004D7150) --------------------------------------------------------
-void sub_4D7150() {
-	if (!dword_5d4594_1556144 || gameFrame() <= dword_5d4594_1556144) {
-		return;
-	}
-	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
-		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		nox_player_update_data_t* update = unit->data_update;
-		nox_playerInfo* player = update ? update->player : NULL;
-		if (player && (player->field_3680 & 1) == 1 && player->field_4792 == 1 && !update->quest_exit &&
-			!update->quest_warp_gate && (player->field_3680 & 0x10) == 0x10) {
-			sub_4DF3C0(player);
-			nox_xxx_playerLeaveObserver_0_4E6AA0(player);
-			nox_xxx_playerCameraUnlock_4E6040(unit);
-		}
-	}
-}
 
 //----- (004D71F0) --------------------------------------------------------
 void sub_4D72B0(int a1);

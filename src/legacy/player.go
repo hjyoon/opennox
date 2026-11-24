@@ -344,7 +344,7 @@ func Sub_40A1F0(v int) {
 }
 
 func Nox_game_sendQuestStage_4D6960(v ntype.PlayerInd) {
-	C.nox_game_sendQuestStage_4D6960(C.int(v))
+	nox_game_sendQuestStage_4D6960(C.int(v))
 }
 
 func Nox_xxx_playerForceSendLessons_416E50(v int) {

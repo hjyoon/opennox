@@ -251,7 +251,7 @@ func Sub_4D6770(a1 ntype.PlayerInd) {
 	sendQuestStats4D6770(a1)
 }
 func Sub_4D6880(a1 int, a2 int) {
-	C.sub_4D6880(C.int(a1), C.int(a2))
+	sub_4D6880(C.int(a1), C.int(a2))
 }
 func Sub_4D60B0() {
 	resetQuestPlayers4D60B0()
@@ -346,7 +346,7 @@ func Sub_4183C0() {
 	C.sub_4183C0()
 }
 func Sub_4D7150() {
-	C.sub_4D7150()
+	sub_4D7150()
 }
 func Sub_4D7A80() {
 	questPlayerStateExpire4D7A80()

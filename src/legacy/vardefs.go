@@ -672,7 +672,6 @@ extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int dword_5d4594_1548524;
 extern uint32_t dword_5d4594_2650652;
 extern void* dword_5d4594_1548532;
-extern unsigned int dword_5d4594_1556144;
 extern unsigned int dword_5d4594_251744;
 extern nox_window* dword_5d4594_1049508;
 extern unsigned int nox_client_translucentFrontWalls_805844;
@@ -780,7 +779,7 @@ func Sub_460D40() bool {
 }
 
 func Sub_4D7140(a1 uint32) {
-	C.dword_5d4594_1556144 = C.uint(a1)
+	C.dword_5d4594_1556144 = C.uint32_t(a1)
 }
 
 func Sub_43AF30() uint32 {

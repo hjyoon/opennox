@@ -118,15 +118,12 @@ func nox_mapgenGenerateWallFloorNative_524680(theme, raw *C.uint8_t, surface *C.
 		if fill == nil {
 			break
 		}
-		start := (*C.float)(unsafe.Pointer(&origin))
-		switch fill._type {
-		case 1:
-			C.sub_5249C0(0, C.int(token), start, &dimensions[0])
-		case 2:
-			C.sub_524B50(0, C.int(token), start, &dimensions[0])
-		default:
-			C.sub_524950(0, C.int(token), start, &dimensions[0])
+		area := mapgenFloorFillArea{
+			origin: mapgenWorldPoint{x: float32(origin.field_0), y: float32(origin.field_4)},
+			width:  int32(dimensions[0]),
+			height: int32(dimensions[1]),
 		}
+		mapgenPlaceFloorFill(0, fill, area, uint32(fill._type))
 		dimensions[0] -= 2
 		dimensions[1] -= 2
 		origin.field_0 += mapgenCellSize

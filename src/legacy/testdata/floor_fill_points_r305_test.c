@@ -1,9 +1,8 @@
 // R305 source-bound callback regression. Literal event tables, inputs,
 // callback checks, native-token collision and allocation canaries are identical
 // to the independently reviewed 15-case private original-instruction fixture.
-// The runner inserts the actual production fill typedef/resolver and three
-// complete function bodies. It links the actual production registry separately.
-// No GAME.EXE execution or full classic-generation equivalence is claimed.
+// The runner inserts the active fill typedef and the three retained C bodies
+// and links the active pointer registry separately.
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>

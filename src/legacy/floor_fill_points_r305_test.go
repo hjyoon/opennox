@@ -13,8 +13,8 @@ import (
 	"unsafe"
 )
 
-// These are source-bound native C callback contracts, not a complete classic
-// mapgen run or a Go/CGo boundary test. Original GAME.EXE SHA256:
+// These fixtures run the retained C floor fill bodies against the original
+// native callback contracts. Original GAME.EXE SHA256:
 // 0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a.
 // REA/Ghidra complete bodies: 524950..5249B7, 5249C0..524B40,
 // 524B50..524DF6. FMUL/FADD operands are binary32 583B9C=41821B8F,
@@ -26,7 +26,7 @@ func floorFillBodyR305(t *testing.T, source []byte, signature, name string) stri
 	t.Helper()
 	starts := regexp.MustCompile(signature).FindAllIndex(source, -1)
 	if len(starts) != 1 {
-		t.Fatalf("nonunique production definition %s", name)
+		t.Fatalf("nonunique retained definition %s", name)
 	}
 	body, _, ok := strings.Cut(string(source[starts[0][0]:]), "\n}\n")
 	if !ok {
@@ -41,7 +41,7 @@ func floorFillProgramR305(t *testing.T) (string, []byte, []byte) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME4_2.c")
+	source, err := os.ReadFile("testdata/mapgen_floor_fill_reference.c")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +159,7 @@ func TestFloorBrushFillPointsOriginalR305(t *testing.T) {
 			out, err := cmd.CombinedOutput()
 			cancel()
 			if err != nil {
-				t.Fatalf("compile production fill points and actual registry: %v\n%s", err, out)
+				t.Fatalf("compile retained fill points and active registry: %v\n%s", err, out)
 			}
 			for _, name := range cases {
 				t.Run(name, func(t *testing.T) {

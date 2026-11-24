@@ -93,6 +93,9 @@ var rewardFieldGuideNames4F0D20 = [...]string{
 	"UrchinShaman",
 }
 
+// FieldGuideCount includes the invalid entry at index zero.
+const FieldGuideCount = len(rewardFieldGuideNames4F0D20)
+
 // RewardFieldGuideName4F0D20 returns the exact registered guide-table name.
 // Out-of-range IDs retain the native table wrapper's nil/empty result.
 func RewardFieldGuideName4F0D20(id int) string {

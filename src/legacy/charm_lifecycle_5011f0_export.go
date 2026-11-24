@@ -19,10 +19,10 @@ func charmRuntime5011F0() server.CharmRuntime5011F0 {
 			return noxflags.HasGame(noxflags.GameFlag(mask))
 		},
 		GuideSize: func(guide int32) int32 {
-			return int32(C.nox_xxx_guideGetUnitSize_427460(C.int(guide)))
+			return int32(nox_xxx_guideGetUnitSize_427460(C.int(guide)))
 		},
 		Charmable: func(typeIndex uint16) int32 {
-			return int32(C.nox_xxx_creatureIsCharmableByTT_4272B0(C.int(typeIndex)))
+			return int32(nox_xxx_creatureIsCharmableByTT_4272B0(C.int(typeIndex)))
 		},
 		FloatToInt: func(value float32) int32 {
 			return int32(C.nox_float2int(C.float(value)))

@@ -237,19 +237,6 @@ static inline int noxSetRect(nox_rect* lprc, int xLeft, int yTop, int xRight, in
 typedef struct nox_video_bag_image_t nox_video_bag_image_t;
 int nox_video_bag_image_type(nox_video_bag_image_t* img);
 
-#define NOX_GUIDE_COUNT 41
-typedef struct nox_guide_entry_t {
-	wchar2_t* name;
-	uint32_t thing_type;
-	wchar2_t* description;
-	nox_video_bag_image_t* cage_image;
-	nox_video_bag_image_t* book_image;
-	uint32_t field_20;
-	uint8_t unit_size;
-} nox_guide_entry_t;
-extern const char* nox_guide_names_native[NOX_GUIDE_COUNT];
-extern nox_guide_entry_t nox_guide_entries_native[NOX_GUIDE_COUNT];
-
 typedef struct {
 	char name[32]; // 0, 0
 	nox_video_bag_image_t** data_32; // 8, 32

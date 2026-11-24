@@ -953,7 +953,7 @@ func playerSaveWriteName41B420(cf *cryptfile.CryptFile, name string) error {
 }
 
 func playerGuideName41B420(ind int) string {
-	return GoString(C.nox_xxx_guideNameByN_427230(C.int(ind)))
+	return server.RewardFieldGuideName4F0D20(int(int32(ind)))
 }
 
 func playerFieldbookWriteNative41B420(cf *cryptfile.CryptFile, unit *server.Object, info *server.PlayerInfo) error {

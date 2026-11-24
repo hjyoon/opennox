@@ -58,7 +58,7 @@ var clientAskInfoDepsFactory4BF050 = func() clientAskInfoDeps4BF050 {
 			return (*uint16)(unsafe.Pointer(nox_xxx_spellTitle_424930(int32(id))))
 		},
 		creatureName: func(id uint32) *uint16 {
-			return (*uint16)(unsafe.Pointer(C.nox_xxx_guiCreatureGetName_427240(C.int(int32(id)))))
+			return (*uint16)(unsafe.Pointer(nox_xxx_guiCreatureGetName_427240(C.int(int32(id)))))
 		},
 		abilityName: func(id uint32) *uint16 {
 			return (*uint16)(unsafe.Pointer(nox_xxx_abilityGetName_0_425260(int32(id))))

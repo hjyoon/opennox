@@ -27,7 +27,7 @@ func summonRuntime500DA0() server.SummonRuntime500DA0 {
 			return 0
 		},
 		GuideSize: func(guide int32) int32 {
-			return int32(C.nox_xxx_guideGetUnitSize_427460(C.int(guide)))
+			return int32(nox_xxx_guideGetUnitSize_427460(C.int(guide)))
 		},
 		CheckLimit:           Nox_xxx_checkSummonedCreaturesLimit_500D70,
 		MapTileAllowTeleport: mapTileAllowTeleport411A90,

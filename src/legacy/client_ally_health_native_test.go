@@ -8,11 +8,10 @@ import (
 	"testing"
 )
 
-// Compile the whole live ally-health table subsystem. Only memmap relocation
-// is controlled; allocation, lookup, updates and reset are actual C bodies.
+// Compile the retired ally-health table routines against a relocated memory map.
 func clientAllyHealthNative495020(t *testing.T, mode string) {
 	t.Helper()
-	source, err := os.ReadFile("GAME2_3.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/ally-health-494ff0.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

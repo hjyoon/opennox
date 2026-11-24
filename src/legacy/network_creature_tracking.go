@@ -20,9 +20,9 @@ func Nox_xxx_cliSummonOnDieOrBanish_4C3140(netCode int, silent bool) {
 }
 
 func Sub_495060(netCode, x, y int) int {
-	return int(C.sub_495060(C.int(netCode), C.short(x), C.short(y)))
+	return int(sub_495060(C.int(netCode), C.short(x), C.short(y)))
 }
 
 func Sub_4950C0(netCode int) int {
-	return int(C.sub_4950C0(C.int(netCode)))
+	return int(sub_4950C0(C.int(netCode)))
 }

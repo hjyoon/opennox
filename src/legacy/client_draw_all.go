@@ -46,7 +46,6 @@ int nox_thing_npc_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_released_soul_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_particle_draw_native(nox_draw_viewport_t* a1, nox_drawable* dr);
 void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img);
-int sub_495180(int a1, uint16_t* a2, uint16_t* a3, uint8_t* a4);
 */
 import "C"
 import (
@@ -392,7 +391,7 @@ func Sub_495180(id int) (cur, max int, alt, ok bool) {
 		curV, maxV C.uint16_t
 		altV       C.uint8_t
 	)
-	ok = C.sub_495180(C.int(id), &curV, &maxV, &altV) != 0
+	ok = sub_495180(C.int(id), &curV, &maxV, &altV) != 0
 	return int(curV), int(maxV), altV != 0, ok
 }
 

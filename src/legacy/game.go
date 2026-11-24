@@ -408,7 +408,7 @@ func Nox_xxx_allocArrayHealthChanges_49A5F0() int {
 	return int(C.nox_xxx_allocArrayHealthChanges_49A5F0())
 }
 func Sub_494F00() int {
-	return int(C.sub_494F00())
+	return int(sub_494F00())
 }
 func Nox_xxx_loadReflSheild_499360() int {
 	return int(nox_xxx_loadReflSheild_499360())
@@ -429,7 +429,7 @@ func Nox_xxx_cliPrepareGameplay2_4721D0() {
 	C.nox_xxx_cliPrepareGameplay2_4721D0()
 }
 func Sub_4951C0() {
-	C.sub_4951C0()
+	sub_4951C0()
 }
 func Nox_xxx_netGameSettings_4DEF00() {
 	nox_xxx_netGameSettings_4DEF00()

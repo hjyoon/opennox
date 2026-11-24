@@ -7,7 +7,6 @@ extern void* dword_5d4594_1096640;
 extern void* nox_client_spriteUnderCursorXxx_1096644;
 int sub_4523D0(void* a1);
 #include "audio_ambient_native_45a9b0.h"
-int nox_xxx_unitSpriteCheckAlly_4951F0(int a1);
 void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind);
 static void go_nox_drawable_call_sprite_func(void(* fnc)(nox_drawable*, void*), nox_drawable* dr, void* arg) {
 	fnc(dr, arg);
@@ -246,7 +245,7 @@ func Sub_45A9B0(a1, a2 *client.Drawable) {
 	C.sub_45A9B0((*nox_drawable)(a1.C()), (*nox_drawable)(a2.C()))
 }
 func Nox_xxx_unitSpriteCheckAlly_4951F0(id int) bool {
-	return C.nox_xxx_unitSpriteCheckAlly_4951F0(C.int(id)) != 0
+	return nox_xxx_unitSpriteCheckAlly_4951F0(C.int(id)) != 0
 }
 func Nox_xxx_draw_44C650_free_kind(ptr unsafe.Pointer, kind int) {
 	C.nox_xxx_draw_44C650_free_kind(ptr, C.int(kind))

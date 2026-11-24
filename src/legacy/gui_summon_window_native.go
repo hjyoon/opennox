@@ -172,7 +172,7 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	}
 	var hp, maxHP C.uint16_t
 	var alternate C.uint8_t
-	if C.sub_495180(C.int(record.net_code), &hp, &maxHP, &alternate) == 0 {
+	if sub_495180(C.int(record.net_code), &hp, &maxHP, &alternate) == 0 {
 		return
 	}
 	fill := C.int(0)

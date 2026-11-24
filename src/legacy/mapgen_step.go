@@ -48,7 +48,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 		return 2
 	}
 	C.sub_4D52F0()
-	if C.nox_xxx_mapGen_InPrefab2_5266F0(theme) == 0 {
+	if nox_xxx_mapGen_InPrefab2_5266F0(theme) == 0 {
 		return 2
 	}
 	if C.nox_xxx_mapGenPlacePrefabs_526830(theme) == 0 {

@@ -417,7 +417,7 @@ func Nox_xxx_allocClassListFriends_495980() int {
 	return int(nox_xxx_allocClassListFriends_495980())
 }
 func Sub_4958F0() {
-	C.sub_4958F0()
+	sub_4958F0()
 }
 func Sub_460380() {
 	C.sub_460380()

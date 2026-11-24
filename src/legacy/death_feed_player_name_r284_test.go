@@ -8,11 +8,11 @@ import (
 	"testing"
 )
 
-// The complete active death-feed consumer is compiled with actual native
+// The retired death-feed consumer is compiled with actual native
 // headers and UTF-16 formatting. Lookup/font/Thing/image/draw services are
 // controlled; no linked renderer, original executable or GUI is exercised.
 func TestDeathFeedPlayerNamesNativeR284(t *testing.T) {
-	source, err := os.ReadFile("GAME2_3.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/death-feed-495210.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -4,7 +4,6 @@ package legacy
 #include "noxstring.h"
 #include "GAME2_3.h"
 void sub_4519C0();
-int sub_495430();
 void sub_44D3A0();
 void sub_45D810();
 */
@@ -114,7 +113,7 @@ func Sub_4519C0() {
 }
 
 func Sub_495430() {
-	C.sub_495430()
+	sub_495430()
 }
 
 func Sub_479280() {

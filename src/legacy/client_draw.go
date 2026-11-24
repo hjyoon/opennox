@@ -342,8 +342,8 @@ func clientSentryRayScreenPosition4C5060(vp *noxrender.Viewport, from, to image.
 	}
 	var cfrom, cto C.int2
 	C.nox_client_sentryRayScreenPosition_4C5060(
-		(*C.nox_draw_viewport_t)(vp.C()),
-		(*C.uint16_t)(unsafe.Pointer(&ray[0])),
+		(*C.nox_sentry_const_viewport_t)(vp.C()),
+		(*C.nox_sentry_const_u16_t)(unsafe.Pointer(&ray[0])),
 		&cfrom, &cto,
 	)
 	return image.Pt(int(cfrom.field_0), int(cfrom.field_4)), image.Pt(int(cto.field_0), int(cto.field_4))

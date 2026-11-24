@@ -164,9 +164,12 @@ int nox_xxx_colorInit_4C4FD0();
 int nox_client_addSentryRay_4C5020(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 int nox_client_sentryRayCount_4C5020(void);
 int nox_client_sentryRayAt_4C5020(int index, uint16_t* ray);
-int sub_4C5020(const uint8_t* data);
+typedef const uint8_t nox_sentry_const_u8_t;
+typedef const uint16_t nox_sentry_const_u16_t;
+typedef const nox_draw_viewport_t nox_sentry_const_viewport_t;
+int sub_4C5020(nox_sentry_const_u8_t* data);
 void sub_4C5050();
-void nox_client_sentryRayScreenPosition_4C5060(const nox_draw_viewport_t* vp, const uint16_t* ray,
+void nox_client_sentryRayScreenPosition_4C5060(nox_sentry_const_viewport_t* vp, nox_sentry_const_u16_t* ray,
 									   int2* from, int2* to);
 int sub_4C5060(nox_draw_viewport_t* a1p);
 int sub_4C51D0(int2* a1, int2* a2);

@@ -117,22 +117,6 @@ void nox_xxx_polygonSetVertexIndicesNative(void* polygon, uint32_t* vertices) {
 	*(uint32_t*)((uint8_t*)polygon + 108) = 0;
 }
 
-//----- (00418800) --------------------------------------------------------
-void sub_418800(wchar2_t* a1, wchar2_t* a2, int a3) {
-	if (a1) {
-		nox_wcsncpy(a1, a2, 20);
-		a1[20] = 0;
-		*((uint32_t*)a1 + 17) = a3;
-	}
-}
-
-//----- (00418830) --------------------------------------------------------
-void sub_418830(nox_team_t* team, int id) {
-	if (team) {
-		team->field_60 = id;
-	}
-}
-
 //----- (00418840) --------------------------------------------------------
 int nox_xxx_unused_418840() {
 	int v0;       // ebp
@@ -198,74 +182,6 @@ int nox_xxx_unused_418840() {
 	return 1;
 }
 
-//----- (004189D0) --------------------------------------------------------
-nox_team_t* sub_4189D0(void) {
-	nox_team_t* result = NULL;
-	unsigned char minimum = 32;
-	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
-		unsigned char count = sub_418BC0(team);
-		if (count < minimum) {
-			minimum = count;
-			result = team;
-		}
-	}
-	return result;
-}
-
-//----- (00418A10) --------------------------------------------------------
-nox_team_t* sub_418A10(void) {
-	nox_team_t* result = nox_server_teamFirst_418B10();
-	if (!result) {
-		return nox_xxx_teamCreate_4186D0(0);
-	}
-	while (result->field_60) {
-		result = nox_server_teamNext_418B60(result);
-		if (!result) {
-			return nox_xxx_teamCreate_4186D0(0);
-		}
-	}
-	return result;
-}
-
-//----- (00418A40) --------------------------------------------------------
-nox_team_t* sub_418A40(wchar2_t* name) {
-	if (!name) {
-		return NULL;
-	}
-	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
-		if (!_nox_wcsicmp(team->name, name)) {
-			return team;
-		}
-	}
-	return NULL;
-}
-
-//----- (00418A80) --------------------------------------------------------
-nox_team_t* sub_418A80(int a1) {
-	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
-		if (team->def_ind == a1) {
-			return team;
-		}
-	}
-	return NULL;
-}
-
-//----- (00418BC0) --------------------------------------------------------
-int sub_418BC0(nox_team_t* team) {
-	int count = 0;
-	if (!team) {
-		return 0;
-	}
-	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
-		 player = nox_common_playerInfoGetNext_416EE0(player)) {
-		nox_object_team_t* value = nox_xxx_objGetTeamByNetCode_418C80(player->netCode);
-		if (nox_xxx_teamCompare2_419180(value, team->field_57)) {
-			count++;
-		}
-	}
-	return count;
-}
-
 //----- (00418C60) --------------------------------------------------------
 extern uintptr_t nox_server_team_first_member_native(nox_team_t* team);
 nox_object_team_t* nox_xxx_teamCheckSmth_418C60(nox_team_t* team) {
@@ -276,22 +192,6 @@ nox_object_team_t* nox_xxx_teamCheckSmth_418C60(nox_team_t* team) {
 extern uintptr_t nox_server_team_next_member_native(nox_object_team_t* value);
 nox_object_team_t* sub_418C70(nox_object_team_t* value) {
 	return (nox_object_team_t*)nox_server_team_next_member_native(value);
-}
-
-//----- (00418C80) --------------------------------------------------------
-nox_object_team_t* nox_xxx_objGetTeamByNetCode_418C80(int a1) {
-	if (nox_common_gameFlags_check_40A5C0(1)) {
-		nox_object_t* object = nox_server_getObjectFromNetCode_4ECCB0(a1);
-		if (object) {
-			return (nox_object_team_t*)&object->field_12;
-		}
-	} else {
-		nox_drawable* drawable = nox_xxx_netSpriteByCodeDynamic_45A6F0(a1);
-		if (drawable) {
-			return (nox_object_team_t*)&drawable->field_6;
-		}
-	}
-	return NULL;
 }
 
 //----- (00418CD0) --------------------------------------------------------
@@ -374,19 +274,6 @@ void nox_xxx_netChangeTeamID_419090(nox_team_t* team, int lessons) {
 		*(uint32_t*)&packet[6] = team->lessons;
 		nox_xxx_netSendPacket1_4E5390(159, packet, sizeof(packet), 0, 1);
 	}
-}
-
-//----- (004190F0) --------------------------------------------------------
-int sub_4190F0(wchar2_t* a1) {
-	if (!a1) {
-		return 0;
-	}
-	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
-		if (!_nox_wcsicmp(team->name, a1)) {
-			return 1;
-		}
-	}
-	return 0;
 }
 
 //----- (00419130) --------------------------------------------------------
@@ -473,36 +360,7 @@ int sub_4196D0(void* a1p, void* a2p, int a3, int a4) {
 	return 1;
 }
 
-//----- (004197C0) --------------------------------------------------------
-void sub_4197C0(wchar2_t* a1, int a2) {
-	int v2;       // edi
-	uint32_t* v3; // ebp
-	char v4[18];  // [esp+4h] [ebp-14h]
-
-	if (a1) {
-		*(uint32_t*)&v4[6] = *((uint32_t*)a1 + 15);
-		*(uint32_t*)&v4[2] = *((unsigned char*)a1 + 57);
-		*(uint16_t*)v4 = 196;
-		*(uint32_t*)&v4[10] = *((uint32_t*)a1 + 13);
-		v4[14] = 0;
-		v4[16] = *((uint8_t*)a1 + 56);
-		v4[17] = *((uint8_t*)a1 + 68);
-		if (nox_common_gameFlags_check_40A5C0(512)) {
-			v4[14] = 1;
-		}
-		v4[15] = nox_wcslen(a1);
-		v2 = 2 * (unsigned char)v4[15];
-		v3 = calloc(1, v2 + 18);
-		*(uint64_t*)v3 = *(uint64_t*)v4;
-		v3[2] = *(uint32_t*)&v4[8];
-		v3[3] = *(uint32_t*)&v4[12];
-		*((uint16_t*)v3 + 8) = *(uint16_t*)&v4[16];
-		memcpy((char*)v3 + 18, a1, 2 * (unsigned char)v4[15]);
-		nox_xxx_netSendPacket1_4E5390(a2, v3, v2 + 18, 0, 1);
-		free(v3);
-	}
-}
-
+#if 0 // Preserved original for the team report oracle.
 //----- (004198A0) --------------------------------------------------------
 void sub_4198A0(nox_object_team_t* a1, int a2, int a3) {
 	nox_object_t* v3; // eax
@@ -522,6 +380,7 @@ void sub_4198A0(nox_object_team_t* a1, int a2, int a3) {
 		}
 	}
 }
+#endif
 
 //----- (00419900) --------------------------------------------------------
 char sub_419900(nox_team_t* team, nox_object_team_t* value, short net_code) {

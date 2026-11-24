@@ -1649,6 +1649,7 @@ int sub_4DF180(void* a1) {
 }
 #endif
 
+#if 0 // Preserved original for the team report oracle.
 //----- (004DF2E0) --------------------------------------------------------
 void sub_4DF2E0(int a1) {
 	nox_team_t* i;   // ebx
@@ -1666,6 +1667,7 @@ void sub_4DF2E0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004DF3C0) --------------------------------------------------------
 void sub_4DF3C0(nox_playerInfo* pl) {

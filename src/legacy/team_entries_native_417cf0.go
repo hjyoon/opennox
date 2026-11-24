@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"encoding/binary"
 	"math"
 	"runtime"
 	"unsafe"
@@ -137,23 +136,7 @@ func sub4184D0Native(team *server.Team) {
 	rt := teamEntriesCurrent417CF0()
 	rt.Prepare(team)
 	p := team.C()
-	var header [18]byte
-	// Preserve the source read order after Prepare's possible mutation.
-	binary.LittleEndian.PutUint32(header[6:10], *(*uint32)(unsafe.Add(p, 60)))
-	binary.LittleEndian.PutUint32(header[2:6], uint32(*(*byte)(unsafe.Add(p, 57))))
-	binary.LittleEndian.PutUint16(header[:2], 196)
-	binary.LittleEndian.PutUint32(header[10:14], *(*uint32)(unsafe.Add(p, 52)))
-	header[16] = *(*byte)(unsafe.Add(p, 56))
-	header[17] = *(*byte)(unsafe.Add(p, 68))
-	if rt.Flag512() {
-		header[14] = 1
-	}
-	var length uintptr
-	for *(*uint16)(unsafe.Add(p, 2*length)) != 0 {
-		length++
-	}
-	header[15] = byte(length)
-	size := 18 + 2*int(header[15]) // length is the low BYTE, not native size_t.
+	header, size := teamDescriptorHeader((*nox_team_t)(p), rt.Flag512)
 	allocation := rt.Alloc(uintptr(size))
 	defer func() { rt.Free(allocation); runtime.KeepAlive(team) }()
 	packet := unsafe.Slice((*byte)(allocation), size)

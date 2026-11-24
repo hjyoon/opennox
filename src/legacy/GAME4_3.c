@@ -480,14 +480,6 @@ int nox_xxx_actionByName_534670(const char* a1) {
 #endif
 
 
-// Native action-name lookup bridges retain the public const input contract.
-extern int nox_monster_action_name_lookup_native_5345F0(char* name, int limit, int fallback);
-int nox_xxx_actionNByNameMB_5345F0(const char* name) {
-	return nox_monster_action_name_lookup_native_5345F0((char*)name, 39, 38);
-}
-int nox_xxx_actionByName_534670(const char* name) {
-	return nox_monster_action_name_lookup_native_5345F0((char*)name, 72, 0);
-}
 
 //----- (00534710) --------------------------------------------------------
 // Native-width implementation: server/monster_state_predicates_534710.go.

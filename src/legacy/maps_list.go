@@ -34,6 +34,29 @@ type Nox_map_list_item struct {
 	Field_8_2 uint16            // 8, 34
 }
 
+//export nox_xxx_mapGetTypeMB_4CFFA0
+func nox_xxx_mapGetTypeMB_4CFFA0(record unsafe.Pointer) C.int {
+	flags := *(*uint32)(unsafe.Add(record, 1392))
+	return C.int(nox_mapToGameFlags_4CFF50(int32(flags)))
+}
+
+//export sub_4CFFC0
+func sub_4CFFC0(entry *C.nox_map_list_item) C.int {
+	return C.int(nox_mapToGameFlags_4CFF50(int32(entry.field_7)))
+}
+
+//export nox_common_maplist_first_4D09B0
+func nox_common_maplist_first_4D09B0() *C.nox_map_list_item {
+	link := nox_common_list_getFirstSafe_425890(&C.nox_common_maplist)
+	return (*C.nox_map_list_item)(unsafe.Pointer(link))
+}
+
+//export nox_common_maplist_next_4D09C0
+func nox_common_maplist_next_4D09C0(entry *C.nox_map_list_item) *C.nox_map_list_item {
+	link := nox_common_list_getNextSafe_4258A0((*C.nox_list_item_t)(unsafe.Pointer(entry)))
+	return (*C.nox_map_list_item)(unsafe.Pointer(link))
+}
+
 func Get_nox_common_maplist() unsafe.Pointer {
 	return unsafe.Pointer(&C.nox_common_maplist)
 }

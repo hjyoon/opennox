@@ -11,7 +11,12 @@ int sub_4D0DC0(int a1, int a2);
 int sub_489FF0(int a1, int a2, const void* a3);
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+
+	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
+)
 
 func Sub_453070() int {
 	return int(C.sub_453070())
@@ -26,7 +31,12 @@ func Nox_xxx_sysopGetPass_40A630() string {
 	return GoWString(C.nox_xxx_sysopGetPass_40A630())
 }
 func Sub_4D0D70() int {
-	return int(C.sub_4D0D70())
+	return int(sub_4D0D70())
+}
+
+//export sub_4D0D70
+func sub_4D0D70() C.int {
+	return C.int(bool2int(memmap.Uint32(0x5D4594, 1548484) != 0 || noxflags.HasEngine(noxflags.EngineNoRendering)))
 }
 func Nox_xxx_getServerSubFlags_409E60() uint32 {
 	return uint32(C.nox_xxx_getServerSubFlags_409E60())

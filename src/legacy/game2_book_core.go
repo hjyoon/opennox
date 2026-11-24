@@ -11,8 +11,19 @@ import (
 	"runtime"
 	"unsafe"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 )
+
+//export nox_xxx_bookCreatureTest_4D70C0
+func nox_xxx_bookCreatureTest_4D70C0(id C.int) C.int {
+	return C.int(bool2int(noxflags.HasGame(noxflags.GameModeQuest) || id < 37 || id > 40))
+}
+
+//export sub_4D7100
+func sub_4D7100(id C.int) C.int {
+	return C.int(bool2int(noxflags.HasGame(noxflags.GameModeQuest) || id < 111 || id > 114))
+}
 
 // Cgo omits the packed info member; use the existing native Player accessor.
 func game2PlayerClass(p *C.nox_playerInfo) C.uchar {
@@ -160,7 +171,7 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 	}
 	if C.dword_5d4594_1046868 == 1 {
 		for id := C.nox_xxx_bookGetFirstCreMB_427300(); id != 0; id = C.nox_xxx_bookGetNextCre_427320(id) {
-			if known(id, true) && C.nox_xxx_bookCreatureTest_4D70C0(id) != 0 {
+			if known(id, true) && nox_xxx_bookCreatureTest_4D70C0(id) != 0 {
 				appendID(id)
 			}
 		}

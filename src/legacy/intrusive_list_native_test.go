@@ -306,6 +306,12 @@ func TestIntrusiveListNativeMapListCABI(t *testing.T) {
 			if got := ConsoleMapNames4D09B0(); !reflect.DeepEqual(got, names) {
 				t.Fatal("actual C list operations and native Go map consumer", got, names)
 			}
+			if intrusiveListCallC(12, nil, nil, 0) != uintptr(v.ptrs["a"]) ||
+				intrusiveListCallC(13, v.ptrs["a"], nil, 0) != uintptr(v.ptrs["b"]) ||
+				intrusiveListCallC(13, v.ptrs["b"], nil, 0) != uintptr(v.ptrs["c"]) ||
+				intrusiveListCallC(13, v.ptrs["c"], nil, 0) != 0 {
+				t.Fatal("public map list iterators lost a native link or the terminator")
+			}
 			if intrusiveListCallC(6, head, nil, 1) != uintptr(v.ptrs["b"]) || intrusiveListCallC(11, head, nil, 0) != uintptr(v.ptrs["c"]) {
 				t.Fatal("actual map-list index/reverse pointers narrowed")
 			}
@@ -316,7 +322,7 @@ func TestIntrusiveListNativeMapListCABI(t *testing.T) {
 			for _, label := range []string{"a", "c"} {
 				intrusiveListCallC(9, v.ptrs[label], nil, 0)
 			}
-			if intrusiveListCallC(4, head, nil, 0) != 0 || len(ConsoleMapNames4D09B0()) != 0 {
+			if intrusiveListCallC(4, head, nil, 0) != 0 || intrusiveListCallC(12, nil, nil, 0) != 0 || len(ConsoleMapNames4D09B0()) != 0 {
 				t.Fatal("actual native map list did not empty")
 			}
 			for i, label := range []string{"a", "b", "c"} {

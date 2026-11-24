@@ -202,9 +202,9 @@ func interestingXferRuntimeDeps4D0010() interestingXferNativeDeps4D0010 {
 	}
 }
 
-//export nox_xxx_interesting_xfer_native_4D0010
-func nox_xxx_interesting_xfer_native_4D0010(origin *C.uint32_t, nextExtent C.int32_t) C.int32_t {
-	return C.int32_t(interestingXferNative4D0010(
+//export nox_xxx_interesting_xfer_4D0010
+func nox_xxx_interesting_xfer_4D0010(origin *C.uint32_t, nextExtent C.int) C.int {
+	return C.int(interestingXferNative4D0010(
 		(*[2]uint32)(unsafe.Pointer(origin)),
 		int32(nextExtent),
 		interestingXferRuntimeDeps4D0010(),

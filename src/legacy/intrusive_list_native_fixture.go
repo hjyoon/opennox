@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME1_1.h"
+#include "GAME3_2.h"
 #include <stddef.h>
 #include <stdlib.h>
 _Static_assert(_Generic(&nox_common_list_clear_425760,void (*)(nox_list_item_t*):1,default:0),"list clear ABI");
@@ -30,6 +31,8 @@ static uintptr_t intrusive_list_call_C(int mode,void* a,void* b,int32_t index) {
     case 9:nox_common_list_remove_425920(a);return 0;
     case 10:return (uintptr_t)nox_common_list_getNext_425940(a);
     case 11:return (uintptr_t)sub_425960(a);
+    case 12:return (uintptr_t)nox_common_maplist_first_4D09B0();
+    case 13:return (uintptr_t)nox_common_maplist_next_4D09C0(a);
     default:abort();
     }
 }

@@ -132,7 +132,7 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 		case 10302:
 			C.nox_server_sendMotd_108752 ^= 1
 		case 10304:
-			if C.sub_4D0D70() != 0 {
+			if sub_4D0D70() != 0 {
 				C.sub_4D0D90(0)
 			} else {
 				C.sub_4D0D90(1)

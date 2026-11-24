@@ -74,7 +74,7 @@ func Sub_4D7480(obj *server.Object) {
 }
 
 func Sub_4D7520(enabled int) {
-	GetServer().S().QuestSetWarpEnabled4D7520(int32(enabled), questWarpGateRuntime4D71F0())
+	sub_4D7520(C.int(enabled))
 }
 
 func Nox_server_checkWarpGate_4D7600() {
@@ -91,12 +91,17 @@ func sub_4D7480(obj *nox_object_t) {
 	Sub_4D7480(asObjectS(obj))
 }
 
-//export nox_xxx_questWarpEnabled_native_4D7520
-func nox_xxx_questWarpEnabled_native_4D7520(enabled C.int) C.uchar {
-	return C.uchar(GetServer().S().QuestSetWarpEnabled4D7520(
+//export sub_4D7520
+func sub_4D7520(enabled C.int) C.char {
+	return C.char(GetServer().S().QuestSetWarpEnabled4D7520(
 		int32(enabled),
 		questWarpGateRuntime4D71F0(),
 	))
+}
+
+//export sub_4D75E0
+func sub_4D75E0() C.int {
+	return C.int(memmap.Uint32(questStateBase4D71F0, questWarpOnOffset4D7520))
 }
 
 //export nox_server_checkWarpGate_4D7600

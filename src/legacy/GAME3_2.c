@@ -674,18 +674,10 @@ int sub_4CFDF0(int a1) {
 int sub_4CFE00() { return *getMemU32Ptr(0x5D4594, 1523072); }
 
 //----- (004CFFA0) --------------------------------------------------------
-int nox_xxx_mapGetTypeMB_4CFFA0(void* a1) {
-	return nox_mapToGameFlags_4CFF50(*(uint32_t*)((uint8_t*)a1 + 1392));
-}
 
 //----- (004CFFC0) --------------------------------------------------------
-int sub_4CFFC0(nox_map_list_item* map) { return nox_mapToGameFlags_4CFF50(map->field_7); }
 
 //----- (004D0010) --------------------------------------------------------
-extern int32_t nox_xxx_interesting_xfer_native_4D0010(uint32_t* origin, int32_t next_extent);
-int nox_xxx_interesting_xfer_4D0010(uint32_t* a1, int a2) {
-	return (int)nox_xxx_interesting_xfer_native_4D0010(a1, (int32_t)a2);
-}
 
 // GAME.EXE 004D0550 builds map rule paths in Go.
 
@@ -766,14 +758,8 @@ void nox_common_maplist_free_4D0970() {
 }
 
 //----- (004D09B0) --------------------------------------------------------
-nox_map_list_item* nox_common_maplist_first_4D09B0() {
-	return nox_common_list_getFirstSafe_425890(&nox_common_maplist);
-}
 
 //----- (004D09C0) --------------------------------------------------------
-nox_map_list_item* nox_common_maplist_next_4D09C0(nox_map_list_item* list) {
-	return nox_common_list_getNextSafe_4258A0(list);
-}
 
 //----- (004D0A30) --------------------------------------------------------
 FILE* nox_xxx_loadMapCycle_4D0A30() {
@@ -883,9 +869,6 @@ int sub_4D0D50(int a1) {
 }
 
 //----- (004D0D70) --------------------------------------------------------
-int sub_4D0D70() {
-	return *getMemU32Ptr(0x5D4594, 1548484) || nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING);
-}
 
 //----- (004D0D90) --------------------------------------------------------
 int sub_4D0D90(int a1) {
@@ -2813,14 +2796,8 @@ char* sub_4D70B0() {
 }
 
 //----- (004D70C0) --------------------------------------------------------
-int nox_xxx_bookCreatureTest_4D70C0(int a1) {
-	return nox_common_gameFlags_check_40A5C0(4096) || a1 != 37 && a1 != 38 && a1 != 40 && a1 != 39;
-}
 
 //----- (004D7100) --------------------------------------------------------
-int sub_4D7100(int a1) {
-	return nox_common_gameFlags_check_40A5C0(4096) || a1 != 111 && a1 != 112 && a1 != 114 && a1 != 113;
-}
 
 //----- (004D7150) --------------------------------------------------------
 void sub_4D7150() {
@@ -2899,13 +2876,8 @@ int sub_4D7450(int a1, short a2) {
 //----- (004D7480) --------------------------------------------------------
 
 //----- (004D7520) --------------------------------------------------------
-extern unsigned char nox_xxx_questWarpEnabled_native_4D7520(int enabled);
-char sub_4D7520(int a1) {
-	return (char)nox_xxx_questWarpEnabled_native_4D7520(a1);
-}
 
 //----- (004D75E0) --------------------------------------------------------
-int sub_4D75E0() { return *getMemU32Ptr(0x5D4594, 1556120); }
 
 //----- (004D75F0) --------------------------------------------------------
 int sub_4D75F0(int a1) {

@@ -605,7 +605,7 @@ func Sub_49B490() {
 	C.sub_49B490()
 }
 func Sub_478F80() {
-	C.sub_478F80()
+	sub_478F80()
 }
 func Sub_479D10() {
 	C.sub_479D10()

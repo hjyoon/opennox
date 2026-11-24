@@ -62,41 +62,6 @@ void sub_478730(int* a1) {
 		quantity, 0, sub_478850, 0);
 }
 
-//----- (00478880) --------------------------------------------------------
-void nox_client_tradeXxxBuyAccept_478880(int a1, short a2) {
-	wchar2_t* v2; // eax
-
-	if (sub_467B00(a1, 1)) {
-		LOWORD(a1) = 5833;
-		HIWORD(a1) = a2;
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, &a1, 4);
-	} else {
-		nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
-		v2 = nox_strman_loadString_40F1D0("pickup.c:CarryingTooMuch", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c",
-										  207);
-		nox_xxx_printCentered_445490(v2);
-	}
-}
-
-//----- (004788F0) --------------------------------------------------------
-void sub_4788F0(int a1, int a2) {
-	wchar2_t* v2; // eax
-	char v3[5];  // [esp+8h] [ebp-8h]
-
-	if (sub_467B00(a1, a2)) {
-		v3[0] = -55;
-		v3[1] = 23;
-		*(uint16_t*)&v3[2] = a1;
-		v3[4] = a2;
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 5);
-	} else {
-		nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
-		v2 = nox_strman_loadString_40F1D0("pickup.c:CarryingTooMuch", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c",
-										  233);
-		nox_xxx_printCentered_445490(v2);
-	}
-}
-
 //----- (00478B10) --------------------------------------------------------
 wchar2_t* sub_478B10(int2* a1) {
 	nox_window* v1;  // esi
@@ -189,15 +154,6 @@ void sub_479520(int a1) {
 	v2 = nox_strman_loadString_40F1D0("ShopInformationTitle", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1350);
 	nox_xxx_dialogMsgBoxCreate_449A10(dword_5d4594_1098576, v2, (wchar2_t*)getMemAt(0x5D4594, 1097352), 33, 0, 0);
 	nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
-}
-
-void sub_479680(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
-	(void)position;
-	(void)item_id;
-	(void)thing_type;
-	(void)amount;
-	(void)extra;
-	dword_5d4594_1098616 = 0;
 }
 
 //----- (004795E0) --------------------------------------------------------

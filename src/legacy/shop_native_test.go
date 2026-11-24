@@ -3,6 +3,9 @@ package legacy
 import (
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func TestShopCellNativeLayout(t *testing.T) {
@@ -46,6 +49,46 @@ func TestShopNetCodeShiftPreservesGameEXEContract(t *testing.T) {
 	code31 := byte(got >> 40)
 	if index != 1 || code0 != 10 || code1 != 30 || code2 != 0 || code30 != 99 || code31 != 0 {
 		t.Fatalf("shift = index %d, codes %d/%d/%d/.../%d/%d", index, code0, code1, code2, code30, code31)
+	}
+}
+
+func TestShopStockFindsSpaceAfterFullStack(t *testing.T) {
+	drawable, free := alloc.New(client.Drawable{})
+	defer free()
+	const typeID = 81
+	dr := (*nox_drawable)(drawable.C())
+	dr.field_27 = typeID
+	var saved [shopRows][shopCols]shopInventoryCell
+	for row := range shopRows {
+		for col := range shopCols {
+			cell := shopCell(row, col)
+			saved[row][col], *cell = *cell, shopInventoryCell{}
+		}
+	}
+	defer func() {
+		for row := range shopRows {
+			for col := range shopCols {
+				*shopCell(row, col) = saved[row][col]
+			}
+		}
+	}()
+
+	full, empty, partial := shopCell(0, 0), shopCell(0, 1), shopCell(0, 2)
+	full.drawable, full.count, full.price = dr, shopStackMax, 11
+	partial.drawable, partial.count, partial.net_codes[0] = dr, 1, 32
+	full.net_codes[shopStackMax-1] = 31
+	if got := sub_479300(typeID, 33, 17, 0, nil); got != 2 {
+		t.Fatalf("stack size after insertion = %d, want 2", got)
+	}
+	if full.count != shopStackMax || full.price != 11 || sub_4780A0(31) != full {
+		t.Fatal("insertion changed the full stack")
+	}
+	if sub_4780A0(33) != partial || partial.price != 17 || empty.count != 0 {
+		t.Fatal("insertion did not reuse the matching stack with room")
+	}
+	partial.count = shopStackMax
+	if got := sub_4793C0(typeID); got != empty {
+		t.Fatalf("cell after both stacks fill = %p, want %p", got, empty)
 	}
 }
 

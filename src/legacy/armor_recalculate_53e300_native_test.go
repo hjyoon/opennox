@@ -3,6 +3,7 @@ package legacy
 import (
 	"bytes"
 	"encoding/json"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,6 +11,9 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/server"
 )
 
 func TestArmorRecalculateOriginal53E300NativeC(t *testing.T) {
@@ -103,6 +107,34 @@ func TestArmorRecalculateOriginal53E300NativeC(t *testing.T) {
 		}
 		selected++
 		t.Run(row.Name, func(t *testing.T) {
+			owner := &server.Object{ObjClass: object.Class(row.Inputs.Class)}
+			items := make([]server.Object, len(row.Inputs.Items))
+			link := &owner.InvFirstItem
+			for i, input := range row.Inputs.Items {
+				item := &items[i]
+				item.ObjClass = object.Class(input.Class)
+				item.ObjFlags = object.Flags(input.Flags)
+				item.TypeInd = uint16(i)
+				*link = item
+				link = &item.InvNextItem
+			}
+			value := server.EquippedArmorValue53E300(owner, func(item *server.Object) float64 {
+				input := row.Inputs.Items[item.TypeInd]
+				if input.Definition {
+					return float64(math.Float32frombits(input.ArmorBits))
+				}
+				return 0
+			}, 1)
+			switch {
+			case owner.ObjClass.Has(object.ClassPlayer):
+				if got := math.Float32bits(value); got != row.PlayerBits {
+					t.Fatalf("Go player armor=%08x, original=%08x", got, row.PlayerBits)
+				}
+			case owner.ObjClass.Has(object.ClassMonster):
+				if got := math.Float32bits(value); got != row.MonsterBits {
+					t.Fatalf("Go monster armor=%08x, original=%08x", got, row.MonsterBits)
+				}
+			}
 			args := []string{strconv.FormatUint(uint64(row.Inputs.Class), 10), strconv.Itoa(len(row.Inputs.Items))}
 			for _, value := range row.Inputs.Items {
 				present := "0"

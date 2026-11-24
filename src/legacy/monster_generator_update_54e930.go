@@ -68,7 +68,7 @@ func npcRecalculateArmorNative53E300(owner *server.Object) {
 	npcSetArmorValueNative53E300(owner, value)
 }
 
-func npcArmorDequipNative53E3A0(owner, item *server.Object) int {
+func npcArmorDequip53E3A0(owner, item *server.Object, recalculate func(*server.Object)) int {
 	if owner == nil || item == nil || uint32(item.ObjClass)&0x2000000 == 0 ||
 		!item.Flags().Has(object.FlagEquipped) {
 		return 0
@@ -88,13 +88,20 @@ func npcArmorDequipNative53E3A0(owner, item *server.Object) int {
 		owner.SetNPCItemEquipFlags(item, false, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 	}
 	item.ObjFlags &^= npcArmorSpecialFlag53E520
-	npcRecalculateArmorNative53E300(owner)
+	recalculate(owner)
 	Nox_xxx_itemApplyDisengageEffect_4F3030(item, owner)
 	return 1
 }
 
 func npcArmorEquipNative53E520(owner, item *server.Object) int {
-	if owner == nil || item == nil || owner.UpdateData == nil ||
+	if owner == nil || owner.UpdateData == nil {
+		return 0
+	}
+	return npcArmorEquip53E520(owner, item, npcRecalculateArmorNative53E300, npcArmorDequipShieldConflicts53E520)
+}
+
+func npcArmorEquip53E520(owner, item *server.Object, recalculate, dequipConflicts func(*server.Object)) int {
+	if owner == nil || item == nil ||
 		uint32(item.ObjClass)&0x2000000 == 0 || item.Flags().Has(object.FlagEquipped) {
 		return 0
 	}
@@ -111,7 +118,7 @@ func npcArmorEquipNative53E520(owner, item *server.Object) int {
 	for equipped := owner.FirstItem(); equipped != nil; equipped = equipped.NextItem() {
 		if equipped != item && uint32(equipped.ObjClass)&0x2000000 != 0 &&
 			equipped.Flags().Has(object.FlagEquipped) && equipped.ObjSubClass == item.ObjSubClass {
-			npcArmorDequipNative53E3A0(owner, equipped)
+			npcArmorDequip53E3A0(owner, equipped, recalculate)
 			break
 		}
 	}
@@ -122,19 +129,23 @@ func npcArmorEquipNative53E520(owner, item *server.Object) int {
 	if GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(item)&0xC0D != 0 {
 		item.ObjFlags |= npcArmorSpecialFlag53E520
 	}
-	npcRecalculateArmorNative53E300(owner)
+	recalculate(owner)
 	Nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner)
 	if uint8(item.ObjSubClass)&2 != 0 {
-		for weapon := owner.FirstItem(); weapon != nil; {
-			next := weapon.NextItem()
-			if weapon.Flags().Has(object.FlagEquipped) && uint32(weapon.ObjClass)&0x1001000 != 0 &&
-				GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(weapon)&0x7FFE40C != 0 {
-				npcWeaponDequipNative53A030(owner, weapon)
-			}
-			weapon = next
-		}
+		dequipConflicts(owner)
 	}
 	return 1
+}
+
+func npcArmorDequipShieldConflicts53E520(owner *server.Object) {
+	for weapon := owner.FirstItem(); weapon != nil; {
+		next := weapon.NextItem()
+		if weapon.Flags().Has(object.FlagEquipped) && uint32(weapon.ObjClass)&0x1001000 != 0 &&
+			GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(weapon)&0x7FFE40C != 0 {
+			npcWeaponDequipNative53A030(owner, weapon)
+		}
+		weapon = next
+	}
 }
 
 func monsterGeneratorRuntime54E930() server.MonsterGeneratorRuntime54E930 {

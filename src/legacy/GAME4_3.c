@@ -3436,6 +3436,7 @@ void nox_xxx_updateCrown_53E1D0(int a1) {
 //----- (0053E2D0) --------------------------------------------------------
 
 //----- (0053E300) --------------------------------------------------------
+#if 0 // Preserve the C bodies used by the original equipment fixtures.
 int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner) {
 	float value = 0.0f;
 	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
@@ -3633,6 +3634,7 @@ int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int
 }
 
 //----- (0053E7B0) --------------------------------------------------------
+#endif
 #if 0 // Restored by object_field_native_entry.go.
 nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const nox_object_t* item) {
 	for (nox_object_t* it = owner->inv_first_item; it; it = it->inv_next_item) {

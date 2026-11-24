@@ -107,20 +107,6 @@ typedef struct nox_mapgen_item_set_entry_legacy {
 	uint32_t next_token;
 } nox_mapgen_item_set_entry_legacy;
 
-typedef struct nox_mapgen_decor_fill_legacy {
-	uint32_t type;
-	char object_name[60];
-	char tile_name[60];
-	uint32_t next_token;
-} nox_mapgen_decor_fill_legacy;
-
-typedef struct nox_mapgen_wall_floor_legacy {
-	char wall_name[60];
-	char floor_name[60];
-	uint32_t fills_token;
-	uint32_t next_token;
-} nox_mapgen_wall_floor_legacy;
-
 enum {
 	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
 	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
@@ -138,16 +124,6 @@ _Static_assert(sizeof(nox_mapgen_occupied_rect_legacy) == 28,
 			   "wrong mapgen occupied-rectangle record size");
 _Static_assert(offsetof(nox_mapgen_occupied_rect_legacy, next_token) == 24,
 			   "wrong mapgen occupied-rectangle next-token offset");
-_Static_assert(sizeof(nox_mapgen_decor_fill_legacy) == 128,
-			   "wrong mapgen decor-fill record size");
-_Static_assert(offsetof(nox_mapgen_decor_fill_legacy, next_token) == 124,
-			   "wrong mapgen decor-fill next-token offset");
-_Static_assert(sizeof(nox_mapgen_wall_floor_legacy) == 128,
-			   "wrong mapgen wall/floor record size");
-_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, fills_token) == 120,
-			   "wrong mapgen wall/floor fill-token offset");
-_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, next_token) == 124,
-			   "wrong mapgen wall/floor next-token offset");
 _Static_assert(sizeof(nox_mapgen_decor_entry_legacy) == 100,
 			   "wrong mapgen decor-entry record size");
 _Static_assert(offsetof(nox_mapgen_decor_entry_legacy, choices_token) == 80,
@@ -294,10 +270,6 @@ static void nox_mapgenFreeDecorDefinitionList(uintptr_t ref) {
 	}
 }
 
-static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
-	nox_mapgen_decor_definition_legacy* definition, FILE* file);
-static int nox_mapgenReadDecorFillNative_51FEC0(
-	nox_mapgen_wall_floor_legacy* wall_floor, int type, FILE* file);
 static int nox_mapgenReadDecorSetNative_51FFA0(
 	nox_mapgen_decor_definition_legacy* definition, FILE* file);
 static int nox_mapgenReadDecorCopyNative_520660(
@@ -716,95 +688,6 @@ int nox_xxx_genReadDecor_51F9F0(uint32_t* a1, FILE* a2) {
 fail:
 	nox_mapgenFreeDecorDefinitionList(definition_token);
 	return 0;
-}
-
-//----- (0051FE00) --------------------------------------------------------
-static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
-	nox_mapgen_decor_definition_legacy* definition, FILE* file) {
-	if (!definition || !file) {
-		return NULL;
-	}
-	nox_mapgen_wall_floor_legacy* wall_floor = calloc(1u, sizeof(*wall_floor));
-	if (!wall_floor) {
-		return NULL;
-	}
-	uint32_t token = nox_mapgenLegacyPtrRegister(wall_floor);
-	if (!token) {
-		free(wall_floor);
-		return NULL;
-	}
-	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
-		goto fail;
-	}
-	strcpy(wall_floor->wall_name, (const char*)getMemAt(0x5D4594, 2487264));
-	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
-		goto fail;
-	}
-	strcpy(wall_floor->floor_name, (const char*)getMemAt(0x5D4594, 2487264));
-	wall_floor->next_token = definition->wall_floors_token;
-	definition->wall_floors_token = token;
-	++definition->wall_floor_count;
-	return wall_floor;
-
-fail:
-	nox_mapgenLegacyPtrForget(wall_floor);
-	free(wall_floor);
-	return NULL;
-}
-
-char* nox_xxx_genDecorReadWallFloor_51FE00(int a1, FILE* a2) {
-	return (char*)nox_mapgenReadWallFloorNative_51FE00(
-		nox_mapgenDecorDefinitionResolve((uint32_t)a1), a2);
-}
-
-//----- (0051FEC0) --------------------------------------------------------
-static int nox_mapgenReadDecorFillNative_51FEC0(
-	nox_mapgen_wall_floor_legacy* wall_floor, int type, FILE* file) {
-	if (!wall_floor || !file) {
-		return 0;
-	}
-	nox_mapgen_decor_fill_legacy* fill = calloc(1u, sizeof(*fill));
-	if (!fill) {
-		return 0;
-	}
-	uint32_t token = nox_mapgenLegacyPtrRegister(fill);
-	if (!token) {
-		free(fill);
-		return 0;
-	}
-	fill->type = (uint32_t)type;
-	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
-		goto fail;
-	}
-	strcpy(fill->object_name, (const char*)getMemAt(0x5D4594, 2487264));
-	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
-		goto fail;
-	}
-	strcpy(fill->tile_name, (const char*)getMemAt(0x5D4594, 2487264));
-
-	nox_mapgen_decor_fill_legacy* tail = nox_mapgenDecorFillResolve(wall_floor->fills_token);
-	if (!tail) {
-		wall_floor->fills_token = token;
-		return 1;
-	}
-	while (tail->next_token) {
-		tail = nox_mapgenDecorFillResolve(tail->next_token);
-		if (!tail) {
-			goto fail;
-		}
-	}
-	tail->next_token = token;
-	return 1;
-
-fail:
-	nox_mapgenLegacyPtrForget(fill);
-	free(fill);
-	return 0;
-}
-
-int sub_51FEC0(int a1, int a2, FILE* a3) {
-	return nox_mapgenReadDecorFillNative_51FEC0(
-		nox_mapgenWallFloorResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (0051FFA0) --------------------------------------------------------
@@ -1317,65 +1200,6 @@ int nox_xxx_genDecorReadDoubleDoor_520AB0(int a1, FILE* a2) {
 	nox_mapgen_decor_definition_legacy* definition =
 		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
 	return definition && nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)definition->double_door_name) != 0;
-}
-
-//----- (00520AD0) --------------------------------------------------------
-int nox_xxx_mapgenCheckSettings_520AD0(int* a1) {
-	if (!a1) {
-		return 0;
-	}
-	a1[2] = 0;
-	a1[3] = 0;
-	a1[4] = 0;
-	a1[5] = 0;
-	a1[6] = 0;
-	a1[7] = 0;
-	for (nox_mapgen_decor_definition_legacy* definition =
-			 nox_mapgenDecorDefinitionResolve((uint32_t)a1[0]);
-		 definition; definition = nox_mapgenDecorDefinitionResolve(definition->next_token)) {
-		if (!definition->constraint_mask) {
-			a1[2] += definition->frequency;
-			a1[3] += definition->frequency;
-			a1[4] += definition->frequency;
-			a1[5] += definition->frequency;
-			a1[6] += definition->frequency;
-			a1[7] += definition->frequency;
-		}
-		if (definition->constraint_mask & 1) {
-			a1[2] += definition->frequency;
-		}
-		if (definition->constraint_mask & 2) {
-			a1[3] += definition->frequency;
-		}
-		if (definition->constraint_mask & 4) {
-			a1[4] += definition->frequency;
-		}
-		if (definition->constraint_mask & 8) {
-			a1[5] += definition->frequency;
-		}
-		if (definition->constraint_mask & 0x10) {
-			a1[6] += definition->frequency;
-		}
-		if (definition->constraint_mask & 0x20) {
-			a1[7] += definition->frequency;
-		}
-	}
-	if (!a1[2]) {
-		return 0;
-	}
-	if (!a1[3]) {
-		return 0;
-	}
-	if (!a1[4]) {
-		return 0;
-	}
-	if (!a1[5]) {
-		return 0;
-	}
-	if (a1[6]) {
-		return a1[7] != 0;
-	}
-	return 0;
 }
 
 //----- (00520BF0) --------------------------------------------------------

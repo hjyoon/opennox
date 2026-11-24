@@ -45,11 +45,15 @@ func floorFillProgramR305(t *testing.T) (string, []byte, []byte) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	typeStarts := regexp.MustCompile(`(?m)^typedef struct nox_mapgen_decor_fill_legacy \{`).FindAllIndex(source, -1)
+	records, err := os.ReadFile("mapgen_decor_records.h")
+	if err != nil {
+		t.Fatal(err)
+	}
+	typeStarts := regexp.MustCompile(`(?m)^typedef struct nox_mapgen_decor_fill_legacy \{`).FindAllIndex(records, -1)
 	if len(typeStarts) != 1 {
 		t.Fatal("nonunique production fill record")
 	}
-	record, _, ok := strings.Cut(string(source[typeStarts[0][0]:]), "\n} nox_mapgen_decor_fill_legacy;")
+	record, _, ok := strings.Cut(string(records[typeStarts[0][0]:]), "\n} nox_mapgen_decor_fill_legacy;")
 	if !ok {
 		t.Fatal("missing complete production fill record")
 	}

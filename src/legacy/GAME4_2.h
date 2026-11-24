@@ -31,6 +31,9 @@ int sub_51F230(uint8_t* a1, FILE* a2);
 int nox_xxx_genReadArmorSet_51F640(uint8_t* a1, FILE* a2);
 int nox_xxx_genReadExit_51F800(int a1, FILE* a2);
 int nox_xxx_genReadDecor_51F9F0(uint32_t* a1, FILE* a2);
+nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
+	nox_mapgen_decor_definition_legacy* definition, FILE* file);
+int nox_mapgenReadDecorFillNative_51FEC0(nox_mapgen_wall_floor_legacy* surface, int kind, FILE* file);
 char* nox_xxx_genDecorReadWallFloor_51FE00(int a1, FILE* a2);
 int sub_51FEC0(int a1, int a2, FILE* a3);
 int nox_xxx_genDecorReadDecorSet_51FFA0(int a1, FILE* a2);

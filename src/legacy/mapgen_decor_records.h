@@ -1,6 +1,7 @@
 #ifndef NOX_MAPGEN_DECOR_RECORDS_H
 #define NOX_MAPGEN_DECOR_RECORDS_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 // These map generator records keep their PE32 layouts. Link fields are
@@ -48,5 +49,30 @@ typedef struct nox_mapgen_decor_definition_legacy {
 	char double_door_name[60];
 	uint32_t next_token;
 } nox_mapgen_decor_definition_legacy;
+
+typedef struct nox_mapgen_decor_fill_legacy {
+	uint32_t type;
+	char object_name[60];
+	char tile_name[60];
+	uint32_t next_token;
+} nox_mapgen_decor_fill_legacy;
+
+typedef struct nox_mapgen_wall_floor_legacy {
+	char wall_name[60];
+	char floor_name[60];
+	uint32_t fills_token;
+	uint32_t next_token;
+} nox_mapgen_wall_floor_legacy;
+
+_Static_assert(sizeof(nox_mapgen_decor_fill_legacy) == 128,
+			   "wrong mapgen decor-fill record size");
+_Static_assert(offsetof(nox_mapgen_decor_fill_legacy, next_token) == 124,
+			   "wrong mapgen decor-fill next-token offset");
+_Static_assert(sizeof(nox_mapgen_wall_floor_legacy) == 128,
+			   "wrong mapgen wall/floor record size");
+_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, fills_token) == 120,
+			   "wrong mapgen wall/floor fill-token offset");
+_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, next_token) == 124,
+			   "wrong mapgen wall/floor next-token offset");
 
 #endif // NOX_MAPGEN_DECOR_RECORDS_H

@@ -109,7 +109,7 @@ func nox_xxx_genReadSpellSet_51EFB0(token C.int, file *C.FILE) C.int {
 	return nox_mapgenReadSpellSetNative_51EFB0(mapgenThemeByToken(token), file)
 }
 
-func copyMapgenExitName(dst []byte, name string) bool {
+func copyMapgenName(dst []byte, name string) bool {
 	if len(name) >= len(dst) {
 		return false
 	}
@@ -128,7 +128,7 @@ func nox_mapgenReadExitNative_51F800(raw *C.uint8_t, file *C.FILE) C.int {
 		case "END":
 			return 1
 		case "LINKDATA":
-			if !read() || !copyMapgenExitName(theme.destination[:], text()) {
+			if !read() || !copyMapgenName(theme.destination[:], text()) {
 				return 0
 			}
 		case "OBJECT":
@@ -136,7 +136,7 @@ func nox_mapgenReadExitNative_51F800(raw *C.uint8_t, file *C.FILE) C.int {
 				return 0
 			}
 			exit := &theme.exits[theme.exitCount]
-			if !copyMapgenExitName(exit.name[:], text()) || !read() {
+			if !copyMapgenName(exit.name[:], text()) || !read() {
 				return 0
 			}
 			switch mapgenUppercaseToken(text()) {

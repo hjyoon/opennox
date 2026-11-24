@@ -85,10 +85,10 @@ func nox_mapgenReadThemeNative_51E260(record *C.int, name *C.nox_cgo_const_char)
 	}
 	parsed := mapgenReadThemeSections(theme, file)
 	nox_binfile_close_408D90(file)
-	if !parsed || C.nox_xxx_mapgenCheckSettings_520AD0(&theme[22]) == 0 || C.nox_xxx_mapgenCheckSettings_520AD0(&theme[30]) == 0 {
+	if !parsed || nox_xxx_mapgenCheckSettings_520AD0(&theme[22]) == 0 || nox_xxx_mapgenCheckSettings_520AD0(&theme[30]) == 0 {
 		return 0
 	}
-	if theme[46] != 0 && C.nox_xxx_mapgenCheckSettings_520AD0(&theme[46]) == 0 {
+	if theme[46] != 0 && nox_xxx_mapgenCheckSettings_520AD0(&theme[46]) == 0 {
 		return 0
 	}
 	return 1

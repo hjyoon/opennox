@@ -6,7 +6,8 @@
 #include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
 
-int sub_4B9470(const char** a1);
+typedef const char nox_flag_const_char_t;
+int sub_4B9470(nox_flag_const_char_t** material);
 int sub_4B94E0(nox_drawable* dr);
 uint32_t* sub_4B95D0(nox_drawable* dr);
 uint32_t* sub_4B9650(int a1);

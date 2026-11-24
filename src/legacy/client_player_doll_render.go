@@ -105,10 +105,6 @@ func sub_4BF7E0(origin *C.uint32_t) C.short {
 	return result
 }
 
-func setDollMaterial(slot int32, color uint32) {
-	nox_draw_setMaterial_4340A0(slot, int32(byte(color)), int32(byte(color>>8)), int32(byte(color>>16)))
-}
-
 //export sub_4BF9F0
 func sub_4BF9F0(mask, thingType, x, y C.int, offset C.uintptr_t, layer, cloak C.int) C.short {
 	drawable := sub_461600(thingType)
@@ -121,19 +117,7 @@ func sub_4BF9F0(mask, thingType, x, y C.int, offset C.uintptr_t, layer, cloak C.
 	} else {
 		def = nox_xxx_getProjectileClassById_413250(int32(drawable.field_27))
 	}
-	if def != nil {
-		for i := C.int(1); i <= 6; i++ {
-			setDollMaterial(int32(i), uint32(nox_modifier_getColorRGB(def, i)))
-		}
-		item := drawableItemData(drawable)
-		modifiers := [...]unsafe.Pointer{item.Field_108, item.Field_109, item.Field_110, item.Field_111}
-		for i, modifier := range modifiers {
-			if modifier != nil {
-				slot := nox_modifier_getColorSlot(def, C.int(i))
-				setDollMaterial(int32(slot), uint32(nox_modifier_effect_getColorRGB(modifier)))
-			}
-		}
-	}
+	applyEquipmentMaterials(def, drawable)
 	var img *C.nox_video_bag_image_t
 	if cloak != 0 {
 		img = (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, 1319052))

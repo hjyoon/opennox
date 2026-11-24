@@ -9,6 +9,7 @@ extern int nox_win_width, nox_win_height;
 extern nox_window *dword_5d4594_1321224, *dword_5d4594_1321228, *dword_5d4594_1321232;
 extern nox_window *dword_5d4594_1321236, *dword_5d4594_1321240, *dword_5d4594_1321244;
 extern nox_window *dword_5d4594_1321248, *dword_5d4594_1321252;
+extern nox_window *dword_5d4594_1522612, *dword_5d4594_1522632, *dword_5d4594_1522624, *dword_5d4594_1522628;
 */
 import "C"
 
@@ -55,14 +56,44 @@ func sub_4C3A60(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
 	return nox_xxx_wndListboxProcWithoutData10_4A28E0(win, event, a, b)
 }
 
-func hideInputBindingCapture() {
+type inputBindingPanel struct {
+	prompt       **nox_window
+	selected     **nox_window
+	columns      [2]**nox_window
+	keyEmpty     uintptr
+	restoreFocus bool
+}
+
+var gameInputBindings = inputBindingPanel{
+	prompt:   &C.dword_5d4594_1321232,
+	selected: &C.dword_5d4594_1321252,
+	columns:  [2]**nox_window{&C.dword_5d4594_1321244, &C.dword_5d4594_1321248},
+	keyEmpty: 185444,
+}
+
+var shellInputBindings = inputBindingPanel{
+	prompt:       &C.dword_5d4594_1522612,
+	selected:     &C.dword_5d4594_1522632,
+	columns:      [2]**nox_window{&C.dword_5d4594_1522624, &C.dword_5d4594_1522628},
+	keyEmpty:     187824,
+	restoreFocus: true,
+}
+
+func (p inputBindingPanel) hideCapture() {
 	nox_xxx_windowFocus_46B500(nil)
-	nox_xxx_wnd_46C6E0(C.dword_5d4594_1321232)
-	g2ServerHidden(C.dword_5d4594_1321232, true)
+	nox_xxx_wnd_46C6E0(*p.prompt)
+	g2ServerHidden(*p.prompt, true)
+	if p.restoreFocus {
+		nox_gui_input_cfg_restore_focus()
+	}
 }
 
 //export sub_4C3EB0
 func sub_4C3EB0(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
+	return gameInputBindings.handleCapture(event, a, b)
+}
+
+func (p inputBindingPanel) handleCapture(event C.int, a, b C.uintptr_t) C.int {
 	var button C.uint
 	switch event {
 	case 6, 7:
@@ -78,14 +109,14 @@ func sub_4C3EB0(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
 	case 21:
 		if a == 1 {
 			if b == 2 {
-				hideInputBindingCapture()
-				if selection := C.dword_5d4594_1321252; selection != nil {
+				p.hideCapture()
+				if selection := *p.selected; selection != nil {
 					g2ServerEvent(selection, 16403, ^uintptr(0), 0)
 				}
 			}
 			return 1
 		}
-		if b == 1 && sub_4C3FC0(C.uint(a)) != 0 {
+		if b == 1 && p.setKey(C.uint(a)) != 0 {
 			button = 0x10000
 		} else {
 			return 0
@@ -93,8 +124,8 @@ func sub_4C3EB0(win *nox_window, event C.int, a, b C.uintptr_t) C.int {
 	default:
 		return 0
 	}
-	sub_4C4100(button)
-	hideInputBindingCapture()
+	p.setButton(button)
+	p.hideCapture()
 	return 1
 }
 
@@ -112,39 +143,44 @@ func clearInputBinding(list *nox_window, name *wchar2_t, empty unsafe.Pointer) {
 	}
 }
 
-func setInputBinding(name *wchar2_t, offset uintptr) {
-	clearInputBinding(C.dword_5d4594_1321244, name, memmap.PtrOff(0x587000, offset))
-	clearInputBinding(C.dword_5d4594_1321248, name, memmap.PtrOff(0x587000, offset+4))
-	index := int32(g2ServerEvent(C.dword_5d4594_1321252, 16404, 0, 0))
-	g2ServerText(C.dword_5d4594_1321252, 16407, unsafe.Pointer(name), uintptr(index))
-	g2ServerEvent(C.dword_5d4594_1321252, 16403, ^uintptr(0), 0)
-	C.dword_5d4594_1321252 = nil
+func (p inputBindingPanel) set(name *wchar2_t, offset uintptr) {
+	for i, column := range p.columns {
+		clearInputBinding(*column, name, memmap.PtrOff(0x587000, offset+4*uintptr(i)))
+	}
+	index := int32(g2ServerEvent(*p.selected, 16404, 0, 0))
+	g2ServerText(*p.selected, 16407, unsafe.Pointer(name), uintptr(index))
+	g2ServerEvent(*p.selected, 16403, ^uintptr(0), 0)
+	*p.selected = nil
 }
 
-//export sub_4C3FC0
-func sub_4C3FC0(key C.uint) C.int {
+func (p inputBindingPanel) setKey(key C.uint) C.int {
 	name := nox_xxx_keybind_titleByKeyZero_42EA00(key)
 	if name == nil {
 		return 0
 	}
-	if C.dword_5d4594_1321252 != nil {
-		setInputBinding(name, 185444)
+	if *p.selected != nil {
+		p.set(name, p.keyEmpty)
 	}
 	return 1
 }
 
-//export sub_4C4100
-func sub_4C4100(key C.uint) C.int {
+func (p inputBindingPanel) setButton(key C.uint) C.int {
 	name := nox_xxx_keybind_titleByKey_42EA00(key)
-	if C.dword_5d4594_1321252 == nil {
+	if *p.selected == nil {
 		return 1
 	}
 	if name == nil {
 		return 0
 	}
-	setInputBinding(name, 185452)
+	p.set(name, p.keyEmpty+8)
 	return 1
 }
+
+//export sub_4C3FC0
+func sub_4C3FC0(key C.uint) C.int { return gameInputBindings.setKey(key) }
+
+//export sub_4C4100
+func sub_4C4100(key C.uint) C.int { return gameInputBindings.setButton(key) }
 
 //export sub_4C4220
 func sub_4C4220() C.int {

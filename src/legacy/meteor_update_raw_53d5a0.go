@@ -44,7 +44,7 @@ var meteorRawRuntime53D6E0 = func() server.MeteorRawRuntime53D6E0 {
 	return server.MeteorRawRuntime53D6E0{
 		AudioEvent:        func(id uint32, o *server.Object) { GetServer().S().Audio.EventObj(sound.ID(id), o, 0, 0) },
 		MakeScorch:        func(p *types.Pointf, k int) { C.nox_xxx_sMakeScorch_537AF0((*C.float)(unsafe.Pointer(p)), C.int(k)) },
-		Earthquake:        func(p *types.Pointf, k int) { C.nox_xxx_earthquakeSend_4D9110((*C.float)(unsafe.Pointer(p)), C.int(k)) },
+		Earthquake:        sendEarthquakeFromNative,
 		NewObjectByTypeID: func(name string) *server.Object { return GetServer().S().NewObjectByTypeID(name) },
 		CreateAt: func(o, owner *server.Object, p types.Pointf) {
 			C.nox_xxx_createAt_4DAA50(asObjectC(o), asObjectC(owner), C.float(p.X), C.float(p.Y))

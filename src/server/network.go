@@ -66,6 +66,39 @@ func CreatureTotalHealthPacket(obj *Object) ([7]byte, bool) {
 	return packet, true
 }
 
+func (s *Server) advanceLatencyReportPlayer() *Player {
+	player := s.Players.Next(s.Players.latencyReportPlayer)
+	if player == nil {
+		player = s.Players.First()
+	}
+	s.Players.latencyReportPlayer = player
+	return player
+}
+
+// NetReportAllLatency4D3050 advances the report cursor and queues a sample
+// for every active player. Host samples are sent even when their value is zero.
+func (s *Server) NetReportAllLatency4D3050(readLatency func(ntype.PlayerInd) int32) {
+	player := s.advanceLatencyReportPlayer()
+	for attempts := 0; player != nil && player.PlayerIndex() != HostPlayerIndex && attempts < 32; attempts++ {
+		latency := readLatency(player.PlayerIndex())
+		player = s.Players.latencyReportPlayer
+		if latency != 0 {
+			break
+		}
+		player = s.advanceLatencyReportPlayer()
+	}
+	if player == nil {
+		return
+	}
+
+	packet := [5]byte{byte(netmsg.MSG_REPORT_ALL_LATENCY)}
+	binary.LittleEndian.PutUint16(packet[1:3], uint16(player.NetCode()))
+	binary.LittleEndian.PutUint16(packet[3:5], uint16(readLatency(player.PlayerIndex())))
+	for recipient := s.Players.First(); recipient != nil; recipient = s.Players.Next(recipient) {
+		s.NetList.AddToMsgListCli(recipient.PlayerIndex(), netlist.Kind1, packet[:])
+	}
+}
+
 func (s *Server) GetOwnIP() string {
 	return s.OwnIPStr
 }
@@ -729,23 +762,48 @@ func (s *Server) Nox_xxx_servCode_523340(a1a, a1b image.Point, a2 []byte) {
 }
 
 func (s *Server) NetSendFxJiggle(ind ntype.PlayerInd, dy int8) {
-	var buf [2]byte
-	buf[0] = byte(netmsg.MSG_FX_JIGGLE)
-	buf[1] = byte(dy)
-	s.NetList.AddToMsgListCli(ind, netlist.Kind1, buf[:2])
+	s.NetQueueFxJiggle(ind, dy)
+}
+
+// NetQueueFxJiggle appends a screen-shake packet and reports queue acceptance.
+func (s *Server) NetQueueFxJiggle(ind ntype.PlayerInd, dy int8) bool {
+	packet := [2]byte{byte(netmsg.MSG_FX_JIGGLE), byte(dy)}
+	return s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:])
 }
 
 func (s *Server) Nox_xxx_earthquakeSend_4D9110(pos types.Pointf, jiggle int) {
 	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
-		pl := it.UpdateDataPlayer().Player
-		dx := float64(pos.X - pl.Pos3632Vec.X)
-		dy := float64(pos.Y - pl.Pos3632Vec.Y)
-		dd2 := dy*dy + dx*dx
-		if dd2 < 90000.0 {
-			s.NetSendFxJiggle(pl.PlayerIndex(), int8(int64((1.0-dd2*1.1111111e-05)*float64(jiggle))))
-		}
+		s.sendEarthquake4D9110(it.UpdateDataPlayer().Player, pos, jiggle)
 	}
 }
+
+// EarthquakeFromNative4D9110 follows the native player iterator and reads the
+// source position for each recipient.
+func (s *Server) EarthquakeFromNative4D9110(pos *types.Pointf, jiggle int32) {
+	for unit := s.Players.FirstUnit(); unit != nil; unit = s.NextPlayerUnit4DA7F0(unit) {
+		update := (*PlayerUpdateData)(unit.UpdateData)
+		s.sendEarthquake4D9110(update.Player, *pos, int(jiggle))
+	}
+}
+
+func (s *Server) sendEarthquake4D9110(player *Player, center types.Pointf, strength int) {
+	// GAME.EXE keeps the coordinate deltas and the scaled distance in x87
+	// registers. FCOM tests C0, so an unordered distance reaches truncation.
+	dx := logicRandomFloatAddChop53_416030(float64(center.X), -float64(player.Pos3632Vec.X))
+	dy := logicRandomFloatAddChop53_416030(float64(center.Y), -float64(player.Pos3632Vec.Y))
+	xSquared := logicRandomFloatMulChop53_416030(dx, dx)
+	ySquared := logicRandomFloatMulChop53_416030(dy, dy)
+	squared := logicRandomFloatAddChop53_416030(xSquared, ySquared)
+	if squared >= 90000 {
+		return
+	}
+	const distanceScale = float32(0x1.74d3b8p-17)
+	scaled := logicRandomFloatMulChop53_416030(squared, float64(distanceScale))
+	falloff := logicRandomFloatAddChop53_416030(1, -scaled)
+	amount := logicRandomFloatMulChop53_416030(falloff, float64(strength))
+	s.NetSendFxJiggle(player.PlayerIndex(), int8(x87TruncSignedQwordLow566DCC(amount)))
+}
+
 func classStatsToNet(stats ClassStats) noxnet.MsgStatMult {
 	return noxnet.MsgStatMult{
 		Health:   stats.Health,

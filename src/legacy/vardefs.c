@@ -284,7 +284,6 @@ uint32_t dword_5d4594_1203840 = 0;
 nox_window* dword_5d4594_826032 = 0;
 uint32_t dword_5d4594_2487708 = 0;
 uint32_t nox_xxx_waypointCounterMB_587000_154948 = 0xffffffff;
-nox_playerInfo* dword_5d4594_1548700 = 0;
 uint32_t dword_5d4594_741332 = 0;
 uint32_t dword_5d4594_1565616 = 0;
 uint32_t dword_5d4594_816356 = 0;

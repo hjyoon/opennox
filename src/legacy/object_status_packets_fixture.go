@@ -9,6 +9,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -69,4 +70,20 @@ func creatureStatusPacketNativeCalls(player uint8, creature *server.Object) []fu
 			return int32(C.nox_xxx_netReportStatsSpeed_4D9360(recipient, unit, -9, C.int(int32(speedBits))))
 		},
 	}
+}
+
+func earthquakePacketNativeCall(pos *types.Pointf, strength int32) int32 {
+	return int32(C.nox_xxx_earthquakeSend_4D9110((*C.float)(unsafe.Pointer(pos)), C.int(strength)))
+}
+
+func jigglePacketNativeCall(recipient int, offset int8) int32 {
+	return int32(C.sub_4D90E0(C.int(recipient), C.char(offset)))
+}
+
+func latencyReportNativeCall() bool {
+	return C.nox_xxx_netReportAllLatency_4D3050() == nil
+}
+
+func gauntletStartNativeCall(recipient int) int32 {
+	return int32(C.sub_4D9CF0(C.int(recipient)))
 }

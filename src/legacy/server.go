@@ -340,7 +340,7 @@ func Sub_40A6A0(a1 int) {
 	C.sub_40A6A0(C.int(a1))
 }
 func Nox_xxx_netReportAllLatency_4D3050() {
-	C.nox_xxx_netReportAllLatency_4D3050()
+	nox_xxx_netReportAllLatency_4D3050()
 }
 func Sub_4183C0() {
 	C.sub_4183C0()

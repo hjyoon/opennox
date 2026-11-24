@@ -54,6 +54,8 @@ type serverPlayers struct {
 	hostPlayer *Player
 	hostUnit   *Object
 
+	latencyReportPlayer *Player
+
 	playersXxx uint32
 	Camper     playerCamper
 }
@@ -195,6 +197,7 @@ func (s *serverPlayers) init(srv *Server) {
 }
 
 func (s *serverPlayers) free() {
+	s.latencyReportPlayer = nil
 	if s.freeNative != nil {
 		s.freeNative()
 		s.freeNative = nil

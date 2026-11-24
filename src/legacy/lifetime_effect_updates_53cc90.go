@@ -47,7 +47,7 @@ var lifetimeEffectRuntime53CC90 = func() server.LifetimeEffectRuntime53CC90 {
 		PointFX: func(id uint8, p *types.Pointf) {
 			C.nox_xxx_netSendPointFx_522FF0(C.char(id), (*C.float2)(unsafe.Pointer(p)))
 		},
-		Earthquake: func(p *types.Pointf, n int) { C.nox_xxx_earthquakeSend_4D9110((*C.float)(unsafe.Pointer(p)), C.int(n)) },
+		Earthquake: sendEarthquakeFromNative,
 	}
 }
 

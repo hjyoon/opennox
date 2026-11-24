@@ -275,7 +275,6 @@ extern uint32_t dword_5d4594_1203840;
 extern nox_window* dword_5d4594_826032;
 extern uint32_t dword_5d4594_2487708;
 extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
-extern nox_playerInfo* dword_5d4594_1548700;
 extern uint32_t dword_5d4594_741332;
 extern uint32_t dword_5d4594_1565616;
 extern uint32_t dword_5d4594_816356;

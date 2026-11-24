@@ -66,7 +66,7 @@ func Sub_4D10F0(a1 string) {
 	C.sub_4D10F0(internCStr(a1))
 }
 func Sub_4D9CF0(a1 int) {
-	C.sub_4D9CF0(C.int(a1))
+	sub_4D9CF0(C.int(a1))
 }
 func Sub_4D6000(a1 *server.Object) {
 	GetServer().S().ResetQuestPlayer4D6000(a1, func() uint32 {

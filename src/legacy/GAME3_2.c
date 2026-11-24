@@ -88,7 +88,6 @@ extern uint32_t dword_5d4594_3835348;
 extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_1550912;
 extern nox_window* dword_5d4594_1523036;
-extern nox_playerInfo* dword_5d4594_1548700;
 extern uint32_t dword_5d4594_3835356;
 
 extern uint32_t nox_server_connectionType_3596;
@@ -1140,44 +1139,6 @@ int nox_xxx_servResetPlayers_4D23C0() {
 	return 1;
 }
 
-//----- (004D3050) --------------------------------------------------------
-nox_playerInfo* nox_xxx_netReportAllLatency_4D3050() {
-	nox_playerInfo* result; // eax
-	bool v1;                // zf
-	char v3[5];             // [esp+0h] [ebp-8h]
-
-	v3[0] = -41;
-	if (!dword_5d4594_1548700 || (result = nox_common_playerInfoGetNext_416EE0(dword_5d4594_1548700),
-								  (dword_5d4594_1548700 = result) == 0)) {
-		result = nox_common_playerInfoGetFirst_416EA0();
-		dword_5d4594_1548700 = result;
-	}
-	if (result) {
-		for (int k = 0; result->playerInd != 31 && k < 32; k++) {
-			v1 = sub_554240(result->playerInd) == 0;
-			result = dword_5d4594_1548700;
-			if (!v1) {
-				break;
-			}
-			result = nox_common_playerInfoGetNext_416EE0(dword_5d4594_1548700);
-			dword_5d4594_1548700 = result;
-			if (!result) {
-				result = nox_common_playerInfoGetFirst_416EA0();
-				dword_5d4594_1548700 = result;
-			}
-		}
-		if (result) {
-			*(uint16_t*)&v3[1] = (uint16_t)result->netCode;
-			*(uint16_t*)&v3[3] = sub_554240(result->playerInd);
-			for (result = nox_common_playerInfoGetFirst_416EA0(); result;
-				 result = nox_common_playerInfoGetNext_416EE0(result)) {
-				nox_netlist_addToMsgListCli_40EBC0(result->playerInd, 1, (unsigned char*)v3, 5);
-			}
-		}
-	}
-	return result;
-}
-
 //----- (004D6000) --------------------------------------------------------
 #if 0 // Restored by server/exit_collide_4e9090_server.go at native width.
 int sub_4D6000(nox_object_t* a1p) {
@@ -1911,34 +1872,6 @@ int nox_xxx_netReportUnitHeight_4D9020(int a1, nox_object_t* a2p) {
 
 #endif
 
-//----- (004D90E0) --------------------------------------------------------
-int sub_4D90E0(int a1, char a2) {
-	char v3[2]; // [esp+0h] [ebp-2h]
-
-	v3[0] = -105;
-	v3[1] = a2;
-	return nox_netlist_addToMsgListCli_40EBC0(a1, 1, (unsigned char*)v3, 2);
-}
-
-//----- (004D9110) --------------------------------------------------------
-int nox_xxx_earthquakeSend_4D9110(float* a1, int a2) {
-	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
-		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		nox_player_update_data_t* update = unit->data_update;
-		nox_playerInfo* player = update->player;
-		double dx = (double)a1[0] - (double)player->pos_x_3632;
-		double dy = (double)a1[1] - (double)player->pos_y_3636;
-		double distance_squared = dy * dy + dx * dx;
-		if (distance_squared < 90000.0) {
-			// The original x87 FMULS at 004D915A loads a binary32
-			// coefficient. Keep its precision before signed truncation.
-			sub_4D90E0(player->playerInd,
-				(long long)((1.0 - distance_squared * (double)0.000011111111f) * (double)a2));
-		}
-	}
-	return 0;
-}
-
 //----- (004D9200) --------------------------------------------------------
 #if 0 // PE32 reference. The packet is sent by the native-width Go entry.
 int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
@@ -2074,15 +2007,6 @@ void nox_xxx_playerReportAnything_4D9900(int a1) {
 	}
 }
 #endif
-
-//----- (004D9CF0) --------------------------------------------------------
-int sub_4D9CF0(int a1) {
-	char v2[2]; // [esp+0h] [ebp-2h]
-
-	v2[0] = -16;
-	v2[1] = 0;
-	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
-}
 
 //----- (004D9D20) --------------------------------------------------------
 #if 0 // Restored by server/quest_player_state_4d79c0_server.go at native width.
@@ -2561,12 +2485,6 @@ void sub_4DF2E0(int a1) {
 			}
 		}
 	}
-}
-
-//----- (004DF360) --------------------------------------------------------
-int nox_xxx_netSendSimpleObject2_4DF360(int a1, nox_object_t* a2p) {
-	extern int nox_xxx_netSendSimpleObject_native_4DF360(int, nox_object_t*);
-	return nox_xxx_netSendSimpleObject_native_4DF360(a1, a2p);
 }
 
 //----- (004DF3C0) --------------------------------------------------------

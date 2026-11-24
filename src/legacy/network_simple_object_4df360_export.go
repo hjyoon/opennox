@@ -29,7 +29,7 @@ func netSendSimpleObjectCEntry4DF360(recipient int32, obj *server.Object) int32 
 	return int32(C.nox_xxx_netSendSimpleObject2_4DF360(C.int(recipient), asObjectC(obj)))
 }
 
-//export nox_xxx_netSendSimpleObject_native_4DF360
-func nox_xxx_netSendSimpleObject_native_4DF360(recipient C.int, obj *C.nox_object_t) C.int {
+//export nox_xxx_netSendSimpleObject2_4DF360
+func nox_xxx_netSendSimpleObject2_4DF360(recipient C.int, obj *C.nox_object_t) C.int {
 	return C.int(netSendSimpleObjectCall4DF360(int32(recipient), asObjectS(obj)))
 }

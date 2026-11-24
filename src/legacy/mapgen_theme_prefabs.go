@@ -9,18 +9,24 @@ import "C"
 import "unsafe"
 
 type mapgenThemePrefabRecord struct {
-	name     [60]byte
-	_        [3]uint32
-	required uint32
-	placed   uint32
-	_        [18]uint32
-	foreach  uint32
-	next     uint32
+	name           [60]byte
+	width, height  float32
+	_              int32
+	required       uint32
+	placed         uint32
+	markers        [mapgenPrefabDirections5262F0]mapgenPrefabExit5262F0
+	maxMarkerCount uint32
+	room           uint32
+	foreach        uint32
+	next           uint32
 }
 
 var (
 	_ [160]byte = [unsafe.Sizeof(mapgenThemePrefabRecord{})]byte{}
 	_ [76]byte  = [unsafe.Offsetof(mapgenThemePrefabRecord{}.placed)]byte{}
+	_ [80]byte  = [unsafe.Offsetof(mapgenThemePrefabRecord{}.markers)]byte{}
+	_ [144]byte = [unsafe.Offsetof(mapgenThemePrefabRecord{}.maxMarkerCount)]byte{}
+	_ [148]byte = [unsafe.Offsetof(mapgenThemePrefabRecord{}.room)]byte{}
 )
 
 func mapgenResolveThemePrefab(token C.uint32_t) *mapgenThemePrefabRecord {

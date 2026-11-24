@@ -15,14 +15,19 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 )
 
-func mapgenStorePrefabStartPositions(positions [][2]float32) {
-	cells := [...]*uint32{
+func mapgenPrefabStartCells() [10]*uint32 {
+	// The second and third position pairs use named C globals.
+	return [10]*uint32{
 		memmap.PtrUint32(0x5D4594, 2487612), memmap.PtrUint32(0x5D4594, 2487616),
 		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2487620)), (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487624)),
 		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2487628)), (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487632)),
 		memmap.PtrUint32(0x5D4594, 2487636), memmap.PtrUint32(0x5D4594, 2487640),
 		memmap.PtrUint32(0x5D4594, 2487644), memmap.PtrUint32(0x5D4594, 2487648),
 	}
+}
+
+func mapgenStorePrefabStartPositions(positions [][2]float32) {
+	cells := mapgenPrefabStartCells()
 	for index, point := range positions {
 		*cells[2*index] = math.Float32bits(point[0])
 		*cells[2*index+1] = math.Float32bits(point[1])

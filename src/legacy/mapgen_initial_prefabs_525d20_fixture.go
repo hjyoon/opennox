@@ -118,6 +118,14 @@ static nox_test_mapgen_initial_prefabs_525d20_result nox_test_mapgen_initial_pre
 */
 import "C"
 
+import "unsafe"
+
+func mapgenPrefabRoomStartFixture(raw unsafe.Pointer) ([2]float32, int64) {
+	var origin C.float2
+	y := C.sub_526260((*C.uint8_t)(raw), &origin.field_0)
+	return [2]float32{float32(origin.field_0), float32(origin.field_4)}, int64(y)
+}
+
 type mapgenInitialPrefabsResult525D20 struct {
 	themeAddress    uintptr
 	prefabAddresses [8]uintptr

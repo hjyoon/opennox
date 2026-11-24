@@ -64,6 +64,6 @@ func nox_xxx_mapGen_InPrefab1_525D20(theme *C.uint8_t) C.int {
 		return 0
 	}
 	return C.int(bool2int(mapgenInitialPrefabs(theme, func(prefab *mapgenThemePrefabRecord) bool {
-		return C.nox_xxx_mapGenPrefabMkRoom_526100(theme, (*C.uint8_t)(unsafe.Pointer(prefab))) != 0
+		return nox_xxx_mapGenPrefabMkRoom_526100(theme, (*C.uint8_t)(unsafe.Pointer(prefab))) != 0
 	})))
 }

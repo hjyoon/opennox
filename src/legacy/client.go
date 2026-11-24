@@ -7,7 +7,6 @@ void sub_4519C0();
 int sub_495430();
 void sub_44D3A0();
 void sub_45D810();
-void sub_49BBB0();
 void nox_xxx_createTextBubble_48D880(void* a1, wchar2_t* a2);
 */
 import "C"
@@ -134,7 +133,7 @@ func Sub_49A630() {
 }
 
 func Sub_49BBB0() {
-	C.sub_49BBB0()
+	sub_49BBB0()
 }
 
 func Nox_xxx_createTextBubble_48D880(pck []byte, text string) {

@@ -33,7 +33,6 @@ void sub_455950(wchar2_t* a1);
 int sub_455920(wchar2_t* a1);
 int sub_43C650();
 int sub_467CA0();
-void* sub_49BB80(char a1);
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
 void* nox_xxx_spriteGetMB_476F80();
 int nox_xxx_netOnPacketRecvCli_48EA70(int a1, unsigned char* data, int sz);
@@ -343,7 +342,7 @@ func Nox_xxx_netChangeTeamMb_419570(a1 *server.ObjectTeam, a2 uint32) {
 	C.nox_xxx_netChangeTeamMb_419570((*C.nox_object_team_t)(a1.C()), C.int(a2))
 }
 func Sub_49BB80(a1 byte) {
-	C.sub_49BB80(C.char(a1))
+	sub_49BB80(C.char(a1))
 }
 func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, data []byte) int {
 	return int(C.nox_xxx_netOnPacketRecvCli_48EA70_switch(C.int(a1), C.int(a2), (*C.uchar)(unsafe.Pointer(&data[0])), C.int(len(data))))

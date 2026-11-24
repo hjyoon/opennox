@@ -241,7 +241,7 @@ func clientWallScreenPosition473C10(vp *noxrender.Viewport, wall *server.Wall) (
 }
 
 func Sub_49BBC0() {
-	C.sub_49BBC0()
+	sub_49BBC0()
 }
 
 func Nox_xxx_polygonDrawColor_421B80() {

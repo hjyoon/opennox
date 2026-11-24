@@ -503,7 +503,7 @@ func Nox_xxx_bookInit_45B9D0() int {
 	return int(C.nox_xxx_bookInit_45B9D0())
 }
 func Sub_476E20() unsafe.Pointer {
-	return unsafe.Pointer(C.sub_476E20())
+	return unsafe.Pointer(sub_476E20())
 }
 func Sub_4BFAD0() int {
 	return int(C.sub_4BFAD0())
@@ -527,7 +527,7 @@ func Sub_478110() int {
 	return int(sub_478110())
 }
 func Sub_49B3E0() int {
-	return int(C.sub_49B3E0())
+	return int(sub_49B3E0())
 }
 func Sub_4BFC90() int {
 	return int(C.sub_4BFC90())
@@ -602,7 +602,7 @@ func Sub_4BFD10() {
 	C.sub_4BFD10()
 }
 func Sub_49B490() {
-	C.sub_49B490()
+	sub_49B490()
 }
 func Sub_478F80() {
 	sub_478F80()

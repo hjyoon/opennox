@@ -3,7 +3,6 @@ package legacy
 /*
 #include "client__gui__window.h"
 #include "client__gui__guicon.h"
-void nox_xxx_consoleEsc_49B7A0();
 unsigned int nox_gui_xxx_check_446360();
 */
 import "C"
@@ -34,5 +33,5 @@ func nox_gui_console_PrintOrError_450C30(cl C.uchar, cstr *wchar2_t) {
 func nox_gui_console_Hide_4512B0() int32 { return int32(Nox_gui_console_Hide_4512B0()) }
 
 func Nox_xxx_consoleEsc_49B7A0() {
-	C.nox_xxx_consoleEsc_49B7A0()
+	nox_xxx_consoleEsc_49B7A0()
 }

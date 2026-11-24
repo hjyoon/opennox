@@ -382,53 +382,6 @@ short sub_476D70(uint32_t* a1, int* a2, unsigned int a3) {
 	return v6;
 }
 
-//----- (00476E00) --------------------------------------------------------
-int nox_client_setPhonemeFrame_476E00(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1096596 + 4 * a1) = gameFrame();
-	return result;
-}
-
-//----- (00476E20) --------------------------------------------------------
-static nox_video_bag_image_t* nox_phoneme_images[8];
-
-nox_window* sub_476E20() {
-	static const char* const image_names[8] = {
-		"SpellGestureNW", "SpellGestureN", "SpellGestureNE", "SpellGestureW",
-		"SpellGestureE", "SpellGestureSW", "SpellGestureS", "SpellGestureSE",
-	};
-
-	for (int i = 0; i < 8; i++) {
-		nox_phoneme_images[i] = nox_xxx_gLoadImg_42F970(image_names[i]);
-		if (!nox_phoneme_images[i]) {
-			return 0;
-		}
-	}
-	nox_window* win = nox_window_new(0, 64, (nox_win_width - 100) / 2, (nox_win_height - 100) / 2, 1, 1, 0);
-	nox_window_set_all_funcs(win, 0, sub_476E90, 0);
-	return win;
-}
-
-//----- (00476E90) --------------------------------------------------------
-int sub_476E90(nox_window* win, void* draw_data) {
-	(void)win;
-	(void)draw_data;
-	const int32_t* positions = getMemAt(0x587000, 151208);
-	for (int i = 0; i < 8; i++) {
-		uint32_t* frame = getMemU32Ptr(0x5D4594, 1096596 + 4 * i);
-		if (*frame) {
-			nox_client_drawImageAt_47D2C0(nox_phoneme_images[i], nox_win_width / 2 + positions[2 * i] - 16,
-										  nox_win_height / 2 + positions[2 * i + 1] - 41);
-			if ((uint32_t)(gameFrame() - *frame) > 3) {
-				*frame = 0;
-			}
-		}
-	}
-	return 1;
-}
-
 //----- (00476F40) --------------------------------------------------------
 unsigned int nox_xxx_packetGetMarshall_476F40() {
 	unsigned int result; // eax

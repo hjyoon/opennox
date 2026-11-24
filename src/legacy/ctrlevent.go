@@ -108,7 +108,7 @@ func Nox_client_orderCreature(a1, a2 int) {
 	if a1 != 0 {
 		creature = (*C.nox_gui_summon_record)(unsafe.Pointer(uintptr(a1)))
 	}
-	C.nox_client_orderCreature(creature, C.int(a2))
+	nox_client_orderCreature(creature, C.int(a2))
 }
 
 func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {

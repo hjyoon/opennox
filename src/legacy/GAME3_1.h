@@ -126,7 +126,7 @@ int sub_4C2BD0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 int sub_4C2BE0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
 int* sub_4C2BF0(void);
 int sub_4C2C20(nox_window* win, nox_window_data* draw, uintptr_t packed_position);
-wchar2_t* sub_4C2C60(nox_window* win, const int2* pos);
+wchar2_t* sub_4C2C60(nox_window* win, nox_summon_const_position_t* pos);
 nox_gui_summon_record* sub_4C2D60(void);
 nox_gui_summon_record* sub_4C2D90(nox_gui_summon_record* record);
 int sub_4C2DD0(nox_summon_const_record_t* record);

@@ -551,7 +551,7 @@ func Nox_xxx_guiMotdLoad_4465C0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_guiMotdLoad_4465C0())
 }
 func Nox_xxx_guiSummonCreatureLoad_4C1D80() int {
-	return int(C.nox_xxx_guiSummonCreatureLoad_4C1D80())
+	return int(nox_xxx_guiSummonCreatureLoad_4C1D80())
 }
 func Sub_4AB260() int {
 	return int(C.sub_4AB260())

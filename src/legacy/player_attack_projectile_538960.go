@@ -68,9 +68,7 @@ var playerAttackProjectileRuntimeFactory538960 = func() playerAttackProjectileRu
 		EquipWeapon:           npcWeaponEquipNative53A2C0,
 		RecoilEffect:          RecoilEffectPointer4E0640(),
 		ProjectileSpeedEffect: ProjectileSpeedEffectPointer4E09B0(),
-		ApplyProjectileSpeed: func(effect *server.ModifierEff, projectile *server.Object) {
-			modifierProjectileSpeedCallNative4E09B0(effect, projectile)
-		},
+		ApplyProjectileSpeed:  applyModifierProjectileSpeed4E09B0,
 	}
 }
 

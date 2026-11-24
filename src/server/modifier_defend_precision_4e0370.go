@@ -1,10 +1,15 @@
 package server
 
-// ModifierArmorMultiplier4E0370 retains the complete original leaf's PC53
-// product and binary32 store under the startup rounding mode, locally.
-func ModifierArmorMultiplier4E0370(value, coefficient float32) float32 {
+// ModifierScalarMultiply32 applies the original PC53 product and binary32
+// store with the startup rounding mode.
+func ModifierScalarMultiply32(value, coefficient float32) float32 {
 	product := experienceMul53TowardZero(float64(coefficient), float64(value))
 	return experienceSpill32TowardZero(product)
+}
+
+// ModifierArmorMultiplier4E0370 applies the armor coefficient to the value.
+func ModifierArmorMultiplier4E0370(value, coefficient float32) float32 {
+	return ModifierScalarMultiply32(value, coefficient)
 }
 
 // ModifierDurabilityMultiplier4E0380 subtracts from one at 004E038A, then

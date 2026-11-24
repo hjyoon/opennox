@@ -2602,23 +2602,6 @@ void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 }
 #endif
 
-//----- (004E0370) --------------------------------------------------------
-// The original modifier leaves use startup binary64 ToZero arithmetic
-// before their final binary32 ToZero store. Keep the host FP mode unchanged.
-static double nox_modifierAddChop53_4E038A(double left, double right) {
-	volatile double sum = left + right;
-	volatile double residual;
-	if (fabs(left) >= fabs(right)) {
-		residual = right - (sum - left);
-	} else {
-		residual = left - (sum - right);
-	}
-	if ((sum > 0.0 && residual < 0.0) || (sum < 0.0 && residual > 0.0)) {
-		return nextafter(sum, 0.0);
-	}
-	return sum;
-}
-
 static double nox_modifierMulChop53_4E0397(double left, double right) {
 	volatile double product = left * right;
 	const double residual = fma(left, right, -product);
@@ -2626,22 +2609,6 @@ static double nox_modifierMulChop53_4E0397(double left, double right) {
 		return nextafter(product, 0.0);
 	}
 	return product;
-}
-
-float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
-	const double coefficient = nox_modifier_effect_getDefendFloat(effect);
-	*value = nox_double2float(nox_modifierMulChop53_4E0397(coefficient, (double)*value));
-	return value;
-}
-
-//----- (004E0380) --------------------------------------------------------
-float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
-	const double coefficient = nox_modifier_effect_getDefendFloat(effect);
-	// 004E038A subtracts from one; 004E0391 separately adds one.
-	const double difference = nox_modifierAddChop53_4E038A(1.0, -coefficient);
-	const double multiplier = nox_modifierAddChop53_4E038A(difference, 1.0);
-	*value = nox_double2float(nox_modifierMulChop53_4E0397(multiplier, (double)*value));
-	return value;
 }
 
 //----- (004E03D0) --------------------------------------------------------
@@ -2714,19 +2681,6 @@ static void nox_xxx_modifierEffectInform_4E04D0(nox_object_t* target, int value)
 	if (player) {
 		nox_xxx_netInformTextMsg_4DA0F0(player->playerInd, 13, &value);
 	}
-}
-
-//----- (004E04C0) --------------------------------------------------------
-float* nox_xxx_effectDamageMultiplier_4E04C0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage) {
-	(void)weapon;
-	(void)owner;
-	(void)target;
-	if (effect && damage) {
-		const double coefficient = nox_modifier_effect_getAttackFloat(effect);
-		*damage = nox_double2float(nox_modifierMulChop53_4E0397(coefficient, (double)*damage));
-	}
-	return damage;
 }
 
 //----- (004E04D0) --------------------------------------------------------
@@ -2898,20 +2852,6 @@ int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 // 4E0950: using guessed type void nullsub_22();
 
 #endif
-
-//----- (004E09B0) --------------------------------------------------------
-nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile) {
-	(void)weapon;
-	(void)owner;
-	(void)target;
-	if (effect && projectile) {
-		const double coefficient = nox_modifier_effect_getAttackFloat(effect);
-		projectile->speed_cur = nox_double2float(
-			nox_modifierMulChop53_4E0397(coefficient, (double)projectile->speed_cur));
-	}
-	return projectile;
-}
 
 //----- (004E0A00) --------------------------------------------------------
 int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1) {

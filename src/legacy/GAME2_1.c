@@ -140,30 +140,6 @@ nox_window* nox_inventory_close_button = 0;
 static nox_window* nox_inventory_overlay_window = 0;
 void* nox_inventory_font = 0;
 
-const nox_draw_viewport_t* nox_client_inventory_viewport_native(void) {
-	static nox_draw_viewport_t viewport;
-	// 00465E00 still owns the original thirteen PE32 words. Do not widen
-	// that record in place: the next inventory global starts at +1049784.
-	// Refresh the borrowed native view so all untouched words and direct
-	// memory updates retain their original values on each draw call.
-	viewport = (nox_draw_viewport_t){
-		.x1 = *getMemI32Ptr(0x5D4594, 1049732),
-		.y1 = *getMemI32Ptr(0x5D4594, 1049736),
-		.x2 = *getMemI32Ptr(0x5D4594, 1049740),
-		.y2 = *getMemI32Ptr(0x5D4594, 1049744),
-		.field_4 = *getMemI32Ptr(0x5D4594, 1049748),
-		.field_5 = *getMemI32Ptr(0x5D4594, 1049752),
-		.field_6 = *getMemI32Ptr(0x5D4594, 1049756),
-		.field_7 = *getMemI32Ptr(0x5D4594, 1049760),
-		.width = *getMemI32Ptr(0x5D4594, 1049764),
-		.height = *getMemI32Ptr(0x5D4594, 1049768),
-		.field_10 = *getMemU32Ptr(0x5D4594, 1049772),
-		.field_11 = *getMemU32Ptr(0x5D4594, 1049776),
-		.field_12 = *getMemI32Ptr(0x5D4594, 1049780),
-	};
-	return &viewport;
-}
-
 typedef struct {
 	int min;
 	int max;
@@ -209,24 +185,6 @@ obj_5D4594_2650668_t** ptr_5D4594_2650668 = 0;
 const int ptr_5D4594_2650668_cap = 128;
 
 nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] = {0};
-static nox_drawable* nox_client_inventory_dragged_1049848 = NULL;
-
-nox_drawable* nox_client_inventory_get_dragged(void) { return nox_client_inventory_dragged_1049848; }
-
-void nox_client_inventory_set_dragged(nox_drawable* drawable) {
-	nox_client_inventory_dragged_1049848 = drawable;
-#if UINTPTR_MAX == UINT32_MAX
-	// Preserve the original GAME.EXE slot as a 32-bit oracle mirror. A wider
-	// build must never put a live pointer in this fixed-width memory map.
-	*getMemU32Ptr(0x5D4594, 1049848) = (uint32_t)(uintptr_t)drawable;
-#endif
-}
-
-int nox_client_inventory_animation_state(void) { return getMemByte(0x5D4594, 1049868); }
-
-int nox_client_inventory_animation_offset(void) { return (int32_t)dword_587000_136184; }
-
-int nox_client_inventory_has_dragged(void) { return nox_client_inventory_dragged_1049848 != NULL; }
 
 //----- (00460D40) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
@@ -268,19 +226,6 @@ int sub_4611A0() { return dword_5d4594_1047932; }
 
 //----- (00461460) --------------------------------------------------------
 
-//----- (00461520) --------------------------------------------------------
-char* sub_461520() {
-	nox_playerInfo* result; // eax
-	nox_playerInfo* i;      // esi
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = result; result; i = result) {
-		nox_xxx_playerInitColors_461460(i);
-		result = nox_common_playerInfoGetNext_416EE0(i);
-	}
-	return (char*)result;
-}
-
 //----- (00461550) --------------------------------------------------------
 int nox_xxx_clientSetAltWeapon_461550(nox_inventory_cell_t* cell) {
 	nox_inventory_cell_t* previous = (nox_inventory_cell_t*)dword_5d4594_1062480;
@@ -299,22 +244,6 @@ int nox_xxx_clientSetAltWeapon_461550(nox_inventory_cell_t* cell) {
 	return nox_xxx_clientReportSecondaryWeapon_4BF010(cell->field_0);
 }
 
-//----- (004615C0) --------------------------------------------------------
-nox_drawable* sub_4615C0() {
-	uint32_t bow_type = *getMemU32Ptr(0x5D4594, 1063640);
-	if (!bow_type) {
-		bow_type = nox_xxx_getTTByNameSpriteMB_44CFC0("Bow");
-		*getMemU32Ptr(0x5D4594, 1063640) = bow_type;
-	}
-	nox_drawable* ranged = (nox_drawable*)array_5D4594_1049872[8];
-	for (nox_drawable* drawable = ranged; drawable; drawable = drawable->field_92) {
-		if (drawable->field_27 == bow_type) {
-			return ranged;
-		}
-	}
-	return (nox_drawable*)array_5D4594_1049872[7];
-}
-
 //----- (00461600) --------------------------------------------------------
 #if 0 // Restored by inventory_state_native_entry.go.
 nox_drawable* sub_461600(int thing_type) {
@@ -329,14 +258,6 @@ nox_drawable* sub_461600(int thing_type) {
 	return NULL;
 }
 #endif
-
-//----- (00461630) --------------------------------------------------------
-int nox_xxx_send2ServInvenFail_461630(short a1) {
-	char v3[3]; // [esp+0h] [ebp-4h]
-	v3[0] = -15;
-	*(uint16_t*)&v3[1] = a1;
-	return nox_xxx_netClientSend2_4E53C0(31, v3, 3, 0, 0);
-}
 
 //----- (00461930) --------------------------------------------------------
 #if 0 // Restored by inventory_state_native_entry.go.
@@ -1164,15 +1085,6 @@ int nox_xxx_trade_4657B0(short a1) {
 	v2[1] = 30;
 	*(uint16_t*)&v2[2] = a1;
 	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
-}
-
-//----- (004657E0) --------------------------------------------------------
-uint32_t nox_inventory_cell_last_net_code_4657E0(const nox_inventory_cell_t* cell) {
-	if (!cell || !cell->field_140) {
-		return 0;
-	}
-	const uint32_t* codes = &cell->field_4;
-	return codes[cell->field_140 - 1];
 }
 
 char nox_xxx_clientTradeMB_4657E0(uint32_t* a1) {

@@ -21,7 +21,7 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 	for _, part := range []struct {
 		file, start, end, marker string
 	}{
-		{"GAME2_1.c", "//----- (00461550)", "//----- (004615C0)", "// SELECT_BODY"},
+		{"GAME2_1.c", "//----- (00461550)", "//----- (00461600)", "// SELECT_BODY"},
 		{"GAME2_1.c", "//----- (004619F0)", "//----- (00461B50)", "// CLEAR_BODY"},
 		{"testdata/retired-game-sources/GAME3_1.c.txt", "//----- (004BF010)", "int nox_client_getPlayerDollState_4BF7E0", "// REPORT_BODY"},
 	} {

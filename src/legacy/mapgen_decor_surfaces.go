@@ -102,7 +102,7 @@ func nox_mapgenReadDecorFillNative_51FEC0(surface *C.nox_mapgen_wall_floor_legac
 
 //export sub_51FEC0
 func sub_51FEC0(surfaceToken, kind C.int, file *C.FILE) C.int {
-	surface := (*C.nox_mapgen_wall_floor_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(surfaceToken))))
+	surface := mapgenResolveWallFloor(C.uint32_t(surfaceToken))
 	return nox_mapgenReadDecorFillNative_51FEC0(surface, kind, file)
 }
 

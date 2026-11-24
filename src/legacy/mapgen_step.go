@@ -87,6 +87,7 @@ func nox_xxx_mapGenStep_4D44E0() C.int {
 	sub_526C40(0)
 	sub_51D100(0)
 	name := (*C.nox_cgo_const_char)(nox_xxx_getRandMapName_4D4310())
+	defer sub_520D50((*C.uint32_t)(unsafe.Pointer(theme)))
 	if nox_mapgenReadThemeNative_51E260((*C.int)(unsafe.Pointer(theme)), name) == 0 {
 		return 0
 	}
@@ -94,13 +95,11 @@ func nox_xxx_mapGenStep_4D44E0() C.int {
 	nox_xxx_mapGenSetRngSeed_526AB0(C.uint(memmap.Uint32(0x5D4594, 1549872)))
 	C.sub_526950()
 	if nox_mapgenPrepareWorkspaceNative(theme) == 0 {
-		C.sub_520D50((*C.uint32_t)(unsafe.Pointer(theme)))
 		return 0
 	}
 	result := mapgenBuildRooms(theme)
 	nox_xxx_mapGenFreeTopRoom_521A40()
 	nox_xxx_mapgenFreeBuffer_521400()
 	sub_520F80()
-	C.sub_520D50((*C.uint32_t)(unsafe.Pointer(theme)))
 	return result
 }

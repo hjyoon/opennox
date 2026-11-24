@@ -52,7 +52,7 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 		case "WEAPON_SET":
 			result = C.nox_xxx_genReadWeaponSet_51F030(data, file)
 		case "DECOR":
-			result = C.nox_xxx_genReadDecor_51F9F0((*C.uint32_t)(unsafe.Pointer(theme)), file)
+			result = nox_xxx_genReadDecor_51F9F0((*C.uint32_t)(unsafe.Pointer(theme)), file)
 		}
 		if result == 0 {
 			return false

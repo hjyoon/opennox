@@ -13,15 +13,14 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-func mapgenDecorConstraint(name string) (byte, bool) {
-	upper := mapgenUppercaseToken(name)
-	for index := uintptr(0); ; index++ {
-		name := *memmap.PtrPtr(0x587000, 253144+4*index)
+func mapgenDecorKeywordIndex(offset uintptr, uppercase string) (int, bool) {
+	for index := 0; ; index++ {
+		name := *memmap.PtrPtr(0x587000, offset+4*uintptr(index))
 		if name == nil {
 			return 0, false
 		}
-		if mapgenUppercaseToken(GoStringP(name)) == upper {
-			return byte(1 << index), true
+		if mapgenUppercaseToken(GoStringP(name)) == uppercase {
+			return index, true
 		}
 	}
 }
@@ -55,11 +54,11 @@ func nox_xxx_genDecorReadOccurConstraint_520810(token C.int, file *C.FILE) C.int
 		} else {
 			text = nil
 		}
-		mask, ok := mapgenDecorConstraint(string(part))
+		index, ok := mapgenDecorKeywordIndex(253144, mapgenUppercaseToken(string(part)))
 		if !ok {
 			return 0
 		}
-		def.constraint_mask |= C.uint8_t(mask)
+		def.constraint_mask |= C.uint8_t(1 << index)
 	}
 	return 1
 }
@@ -117,7 +116,7 @@ func nox_xxx_genDecorReadRoomSizeCon_5209F0(token C.int, file *C.FILE) C.int {
 	return 1
 }
 
-func mapgenReadDoorName(file *C.FILE, name *[60]C.char) C.int {
+func mapgenReadFixedName(file *C.FILE, name *[60]C.char) C.int {
 	length := 0
 	parsed := mapgenReadPlainToken(file, func(index int, value byte) {
 		length = index + 1
@@ -141,7 +140,7 @@ func nox_xxx_genDecorReadDoor_520A90(token C.int, file *C.FILE) C.int {
 	if def == nil {
 		return 0
 	}
-	return mapgenReadDoorName(file, &def.door_name)
+	return mapgenReadFixedName(file, &def.door_name)
 }
 
 //export nox_xxx_genDecorReadDoubleDoor_520AB0
@@ -150,5 +149,5 @@ func nox_xxx_genDecorReadDoubleDoor_520AB0(token C.int, file *C.FILE) C.int {
 	if def == nil {
 		return 0
 	}
-	return mapgenReadDoorName(file, &def.double_door_name)
+	return mapgenReadFixedName(file, &def.double_door_name)
 }

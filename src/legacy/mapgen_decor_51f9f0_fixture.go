@@ -14,6 +14,7 @@ package legacy
 typedef struct nox_test_mapgen_decor_51f9f0_result {
 	int template_parsed;
 	int backdrop_parsed;
+	int rejected_kept_backdrop;
 	int settings_valid;
 	int selected;
 	int cleanup_cleared;
@@ -61,7 +62,7 @@ static int nox_test_mapgen_read_decor_51f9f0(uint8_t* theme, const char* path) {
 }
 
 static nox_test_mapgen_decor_51f9f0_result nox_test_mapgen_decor_51f9f0(
-	const char* template_path, const char* backdrop_path) {
+	const char* template_path, const char* backdrop_path, const char* rejected_path) {
 	nox_test_mapgen_decor_51f9f0_result out = {0};
 	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
 	if (!theme) {
@@ -78,6 +79,9 @@ static nox_test_mapgen_decor_51f9f0_result nox_test_mapgen_decor_51f9f0(
 	out.backdrop_parsed = nox_test_mapgen_read_decor_51f9f0(theme, backdrop_path);
 	out.template_token = *(uint32_t*)(theme + 152);
 	out.backdrop_token = *(uint32_t*)(theme + 184);
+	uint32_t backdrop_count = *(uint32_t*)(theme + 188);
+	out.rejected_kept_backdrop = !nox_test_mapgen_read_decor_51f9f0(theme, rejected_path) &&
+		*(uint32_t*)(theme + 184) == out.backdrop_token && *(uint32_t*)(theme + 188) == backdrop_count;
 	uint8_t* template_definition =
 		(uint8_t*)nox_mapgenLegacyPtrResolve(out.template_token);
 	uint8_t* backdrop_definition =
@@ -189,6 +193,7 @@ func mapgenDecorConstraintFixture(path string) (byte, bool) {
 type mapgenDecorResult51F9F0 struct {
 	templateParsed           bool
 	backdropParsed           bool
+	rejectedKeptBackdrop     bool
 	settingsValid            bool
 	selected                 bool
 	cleanupCleared           bool
@@ -225,14 +230,16 @@ type mapgenDecorResult51F9F0 struct {
 	doubleDoorName           string
 }
 
-func mapgenDecorFixture51F9F0(templatePath, backdropPath string) mapgenDecorResult51F9F0 {
+func mapgenDecorFixture51F9F0(templatePath, backdropPath, rejectedPath string) mapgenDecorResult51F9F0 {
 	restore := mapgenHighFixtureMemory()
 	defer restore()
 	ctemplatePath := C.CString(templatePath)
 	defer C.free(unsafe.Pointer(ctemplatePath))
 	cbackdropPath := C.CString(backdropPath)
 	defer C.free(unsafe.Pointer(cbackdropPath))
-	value := C.nox_test_mapgen_decor_51f9f0(ctemplatePath, cbackdropPath)
+	crejectedPath := C.CString(rejectedPath)
+	defer C.free(unsafe.Pointer(crejectedPath))
+	value := C.nox_test_mapgen_decor_51f9f0(ctemplatePath, cbackdropPath, crejectedPath)
 	names := [6]string{}
 	for i := range names {
 		names[i] = C.GoString(C.nox_test_mapgen_decor_name_51f9f0(&value, C.int(i)))
@@ -240,6 +247,7 @@ func mapgenDecorFixture51F9F0(templatePath, backdropPath string) mapgenDecorResu
 	return mapgenDecorResult51F9F0{
 		templateParsed:           value.template_parsed != 0,
 		backdropParsed:           value.backdrop_parsed != 0,
+		rejectedKeptBackdrop:     value.rejected_kept_backdrop != 0,
 		settingsValid:            value.settings_valid != 0,
 		selected:                 value.selected != 0,
 		cleanupCleared:           value.cleanup_cleared != 0,

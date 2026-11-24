@@ -89,12 +89,28 @@ DOUBLE_DOOR
 DoubleDoorType
 END
 `)
-	got := mapgenDecorFixture51F9F0(templatePath, backdropPath)
+	rejectedPath := writeMapgenDecorFixture51F9F0(t, "rejected.txt", `BACKDROP
+Rejected
+WALL_FLOOR
+TemporaryWall
+TemporaryFloor
+DECOR_SET
+0
+0
+END
+COPY
+TemplateBase
+INVALID_DECOR_RULE
+`)
+	got := mapgenDecorFixture51F9F0(templatePath, backdropPath, rejectedPath)
 	if !got.templateParsed || !got.backdropParsed || !got.settingsValid ||
 		!got.selected || !got.cleanupCleared {
 		t.Fatalf("parse template=%v backdrop=%v settings=%v selected=%v cleanup=%v",
 			got.templateParsed, got.backdropParsed, got.settingsValid,
 			got.selected, got.cleanupCleared)
+	}
+	if !got.rejectedKeptBackdrop {
+		t.Fatal("rejected decoration changed the published backdrop list")
 	}
 	if got.templateName != "TemplateBase" || got.backdropName != "BackdropCopy" ||
 		got.wallName != "StoneWall" || got.floorName != "StoneFloor" ||

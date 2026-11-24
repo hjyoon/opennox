@@ -64,6 +64,21 @@ typedef struct nox_mapgen_wall_floor_legacy {
 	uint32_t next_token;
 } nox_mapgen_wall_floor_legacy;
 
+typedef struct nox_mapgen_item_set_entry_legacy {
+	char lookup_name[60];
+	char object_name[60];
+	uint32_t modifier_tokens[4];
+	uint32_t modifier_counts[4];
+	uint32_t next_token;
+} nox_mapgen_item_set_entry_legacy;
+
+_Static_assert(sizeof(nox_mapgen_item_set_entry_legacy) == 156, "wrong mapgen item-set record size");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, modifier_tokens) == 120,
+			   "wrong mapgen item-set modifier-token offset");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, modifier_counts) == 136,
+			   "wrong mapgen item-set modifier-count offset");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, next_token) == 152,
+			   "wrong mapgen item-set next-token offset");
 _Static_assert(sizeof(nox_mapgen_decor_fill_legacy) == 128,
 			   "wrong mapgen decor-fill record size");
 _Static_assert(offsetof(nox_mapgen_decor_fill_legacy, next_token) == 124,

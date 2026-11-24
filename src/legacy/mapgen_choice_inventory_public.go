@@ -129,13 +129,13 @@ func nox_xxx_mapgen_521FE0(theme *C.uint8_t, holder *C.nox_object_t, choices C.u
 	if theme != nil {
 		setup = (*mapGenChoiceSetup)(unsafe.Add(unsafe.Pointer(theme), 1100))
 	}
-	choice := (*mapGenChoiceRecord)(C.nox_mapgenLegacyPtrResolve(choices))
+	choice := mapgenResolveDecorChoice(choices)
 	mapGenApplyChoice521FE0(setup, asObjectS(holder), choice, mapGenChoiceServices{
 		roll: func(low, high int32) int32 {
 			return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 		},
 		next: func(next uint32) *mapGenChoiceRecord {
-			return (*mapGenChoiceRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(next)))
+			return mapgenResolveDecorChoice(C.uintptr_t(next))
 		},
 		newObject: func(name *byte) *server.Object {
 			return asObjectS(nox_xxx_newObjectByTypeID_4E3810((*C.char)(unsafe.Pointer(name))))

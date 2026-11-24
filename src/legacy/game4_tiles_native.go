@@ -10,12 +10,6 @@ package legacy
 #include "GAME3_2.h"
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-
-// Give cgo a unique fully prototyped entry instead of calling the shared
-// historical K&R declaration directly. This is only a raw 72-byte copy.
-static void game4_tiles_snapshot_504150(void* dst) {
-	memcpy(dst, sub_4D3C70(), 72);
-}
 */
 import "C"
 
@@ -70,11 +64,9 @@ type game4TilesServices struct {
 func game4TilesDefaultServices() game4TilesServices {
 	return game4TilesServices{
 		snapshot: func() [72]byte {
-			var state [72]byte
-			C.game4_tiles_snapshot_504150(unsafe.Pointer(&state[0]))
-			return state
+			return *mapgenTileInitState()
 		},
-		restore:   func(state *[72]byte) { C.nox_xxx_tileInitdataClear_4D3C50(unsafe.Pointer(&state[0])) },
+		restore:   func(state *[72]byte) { *mapgenTileInitState() = *state },
 		image:     func(value int32) { C.nox_xxx_tileCheckImage_51D540(C.int(value)) },
 		variation: func(value int32) { C.nox_xxx_tileCheckImageVari_51D570(C.int(value)) },
 		mode:      func(value int32) { C.nox_xxx_tile_51D5C0(C.int(value)) },

@@ -193,10 +193,23 @@ func nox_xxx_mapGenMakeMonsterInRoom_522810(room *C.uint8_t, name *C.char) *C.no
 	return asObjectC(spawned)
 }
 
+func mapgenOrientationDirection(direction int32) int32 {
+	directions := [...]int32{3, 0, 1, 6, -1, 2, 7, 8, 5}
+	if direction < 0 || int(direction) >= len(directions) {
+		return -1
+	}
+	return directions[direction]
+}
+
+//export sub_4D3FF0
+func sub_4D3FF0(direction C.int) C.int {
+	return C.int(mapgenOrientationDirection(int32(direction)))
+}
+
 //export nox_mapgenOrientObjNative_527C60
 func nox_mapgenOrientObjNative_527C60(unit *C.nox_object_t, direction C.int) C.int {
 	return C.int(bool2int(mapGenOrientObject527C60(asObjectS(unit), int32(direction),
-		func(direction int32) int32 { return int32(C.sub_4D3FF0(C.int(direction))) },
+		mapgenOrientationDirection,
 		func(index int32) int32 { return int32(nox_xxx_mathDirection4ToAngle_509E90(C.int(index))) },
 	)))
 }

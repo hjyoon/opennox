@@ -30,6 +30,60 @@ func nox_mapgenClearPendingScriptIDs_503B30(first *C.nox_object_t) {
 	}
 }
 
+type mapgenPlaceCorner struct {
+	x, y uint32
+}
+
+//export sub_4D3C80
+func sub_4D3C80(words *C.uint32_t) *C.uint32_t {
+	corners := (*[4]mapgenPlaceCorner)(unsafe.Pointer(words))
+	a, b, c, d := corners[0], corners[1], corners[2], corners[3]
+
+	// The C entry mixes signed temporaries and unsigned array comparisons.
+	top, left, right, bottom := a, b, c, d
+	if int32(b.y) < int32(top.y) {
+		top = b
+	}
+	if c.y < top.y {
+		top = c
+	}
+	if d.y < top.y {
+		top = d
+	}
+
+	if a.x < left.x {
+		left = a
+	}
+	if c.x < left.x {
+		left = c
+	}
+	if int32(d.x) < int32(left.x) {
+		left = d
+	}
+
+	if a.x > right.x {
+		right = a
+	}
+	if b.x > right.x {
+		right = b
+	}
+	if int32(d.x) > int32(right.x) {
+		right = d
+	}
+
+	if a.y > bottom.y {
+		bottom = a
+	}
+	if int32(b.y) > int32(bottom.y) {
+		bottom = b
+	}
+	if c.y > bottom.y {
+		bottom = c
+	}
+	*corners = [4]mapgenPlaceCorner{top, left, right, bottom}
+	return words
+}
+
 //export nox_mapgenBuildPlaceBounds_503B30
 func nox_mapgenBuildPlaceBounds_503B30(at, fixedAt *C.nox_const_float2, recordRaw *C.nox_cgo_const_void, cornerBuffer *C.int32_t, bounds *C.int4) {
 	record := unsafe.Slice((*byte)(unsafe.Pointer(recordRaw)), game4MapRecordBytes)
@@ -54,9 +108,8 @@ func nox_mapgenBuildPlaceBounds_503B30(at, fixedAt *C.nox_const_float2, recordRa
 	C.nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed)
 	corners[6] = x87TruncQwordLow(float64(fixed.field_0))
 	corners[7] = x87TruncQwordLow(float64(fixed.field_4))
-	// These existing external routines retain their actual read/write order,
-	// including a caller that aliases the rectangle with the corner array.
-	C.sub_4D3C80((*C.uint32_t)(unsafe.Pointer(cornerBuffer)))
+	// Order the corners before reading them into the rectangle. They may alias.
+	sub_4D3C80((*C.uint32_t)(unsafe.Pointer(cornerBuffer)))
 	C.sub_428170(unsafe.Pointer(cornerBuffer), bounds)
 }
 

@@ -3239,30 +3239,6 @@ short sub_42CCE0(uint16_t* this) {
 #endif
 
 
-//----- (0042EB90) --------------------------------------------------------
-int sub_42EB90(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 754052) = a1;
-	return result;
-}
-
-//----- (0042EBA0) --------------------------------------------------------
-int sub_42EBA0() { return *getMemU32Ptr(0x5D4594, 754052); }
-
-//----- (0042EDC0) --------------------------------------------------------
-void sub_42EDC0() {
-	if (ptr_5D4594_754088) {
-		free(ptr_5D4594_754088);
-		ptr_5D4594_754088 = 0;
-	}
-	if (ptr_5D4594_754092) {
-		free(ptr_5D4594_754092);
-		ptr_5D4594_754092 = 0;
-	}
-}
-
 //----- (00430AF0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int nox_client_mousePriKey_430AF0() { return dword_5d4594_805820; }
@@ -3311,54 +3287,6 @@ int nox_xxx_cliToggleObsWindow_4357A0() {
 }
 
 #endif
-//----- (00436550) --------------------------------------------------------
-int sub_436550() {
-	int v0; // eax
-
-	if (sub_459DA0() || nox_gui_xxx_check_446360() || sub_49CB40() || sub_49C810() || sub_446950() || sub_4706A0() ||
-		nox_gui_console_flagXxx_451410()) {
-		v0 = gameFrame();
-	} else {
-		v0 = gameFrame();
-		if (gameFrame() != 2) {
-			return gameFrame() - *getMemU32Ptr(0x5D4594, 811920) == 1;
-		}
-	}
-	*getMemU32Ptr(0x5D4594, 811920) = v0;
-	return 1;
-}
-
-//----- (00437100) --------------------------------------------------------
-void sub_4706C0(int a1);
-void sub_437100() {
-	int result; // eax
-
-	int flag = nox_client_getRenderGUI();
-	if (*getMemU32Ptr(0x5D4594, 811064) != flag &&
-		!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-		*getMemU32Ptr(0x5D4594, 811064) = flag;
-		sub_4721A0(flag);
-		sub_460EA0(flag);
-		nox_window_set_visible_unk5(flag);
-		sub_45D500(flag);
-		sub_455A00(flag);
-		sub_455F10(flag);
-		sub_4706C0(flag);
-		if (!flag) {
-			sub_478000();
-		}
-	}
-}
-
-//----- (004372B0) --------------------------------------------------------
-int nox_xxx_playerAnimCheck_4372B0() {
-	nox_drawable* player = getMemPtr(0x852978, 8);
-	if (!player) {
-		return 1;
-	}
-	return player->field_69 == 1 || player->field_69 == 2 || player->field_69 == 51;
-}
-
 //----- (004372E0) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
 int nox_xxx_clientIsObserver_4372E0() {

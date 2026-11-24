@@ -104,7 +104,7 @@ func Nox_xxx_tileFree_410FC0_free() {
 }
 
 func Sub_42EDC0() {
-	C.sub_42EDC0()
+	sub_42EDC0()
 }
 
 func Sub_4D11D0() {

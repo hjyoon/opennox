@@ -226,7 +226,7 @@ func Nox_client_mousePriKey_430AF0() int {
 	return int(nox_client_mousePriKey_430AF0())
 }
 func Sub_42EB90(a1 int) {
-	C.sub_42EB90(C.int(a1))
+	sub_42EB90(C.int(a1))
 }
 
 func quickBarBase45DA50() unsafe.Pointer {

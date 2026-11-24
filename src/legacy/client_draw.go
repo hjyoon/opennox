@@ -176,7 +176,7 @@ func Sub_436F50() {
 }
 
 func Sub_437100() {
-	C.sub_437100()
+	sub_437100()
 }
 
 func Sub_470DE0() {
@@ -257,7 +257,7 @@ func Nox_xxx_motd_4467F0() {
 }
 
 func Sub_42EBA0() int {
-	return int(C.sub_42EBA0())
+	return int(sub_42EBA0())
 }
 
 func Sub_49B6E0() {

@@ -2669,71 +2669,6 @@ int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6) {
 }
 #endif
 
-static nox_playerInfo* nox_xxx_modifierEffectPlayer_4E04D0(nox_object_t* target) {
-	if (!target || !(target->obj_class & 4) || !target->data_update) {
-		return 0;
-	}
-	return ((nox_player_update_data_t*)target->data_update)->player;
-}
-
-static void nox_xxx_modifierEffectInform_4E04D0(nox_object_t* target, int value) {
-	nox_playerInfo* player = nox_xxx_modifierEffectPlayer_4E04D0(target);
-	if (player) {
-		nox_xxx_netInformTextMsg_4DA0F0(player->playerInd, 13, &value);
-	}
-}
-
-//----- (004E04D0) --------------------------------------------------------
-void nox_xxx_stunEffect_4E04D0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
-	(void)weapon;
-	(void)context;
-	if (!(target->obj_class & 6)) {
-		return;
-	}
-	nox_spell_accept_arg_t arg;
-	arg.obj = target;
-	memcpy(&arg.x, &target->x, 2 * sizeof(float));
-	const int32_t power = nox_modifier_effect_getPreHitInt(effect);
-	nox_xxx_castStun_52C2C0(74, owner, owner, owner, &arg, power);
-	if (target->obj_class & 4) {
-		nox_player_update_data_t* update = target->data_update;
-		int message = 0;
-		nox_xxx_netInformTextMsg_4DA0F0(update->player->playerInd, 13, &message);
-	}
-}
-
-//----- (004E0640) --------------------------------------------------------
-void nox_xxx_recoilEffect_4E0640(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
-	(void)owner;
-	(void)context;
-	if (effect && weapon && target) {
-		nox_xxx_objectApplyForce_52DF80((float*)&weapon->x, target,
-			nox_modifier_effect_getPreHitFloat(effect));
-	}
-}
-
-//----- (004E0670) --------------------------------------------------------
-void nox_xxx_confuseEffect_4E0670(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
-	(void)weapon;
-	(void)context;
-	if (!(target->obj_class & 6)) {
-		return;
-	}
-	nox_spell_accept_arg_t arg;
-	arg.obj = target;
-	memcpy(&arg.x, &target->x, 2 * sizeof(float));
-	const int32_t power = nox_modifier_effect_getPreHitInt(effect);
-	nox_xxx_castConfuse_52C1E0(12, owner, owner, owner, &arg, power);
-	if (target->obj_class & 4) {
-		nox_player_update_data_t* update = target->data_update;
-		int message = 1;
-		nox_xxx_netInformTextMsg_4DA0F0(update->player->playerInd, 13, &message);
-	}
-}
-
 //----- (004E06F0) --------------------------------------------------------
 void nox_xxx_lightngEffect_4E06F0(
 	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
@@ -2786,28 +2721,6 @@ void nox_xxx_vampirismEffect_4E07C0(
 		amount = health;
 	}
 	nox_xxx_unitAdjustHP_4EE460(owner, amount);
-}
-
-//----- (004E0850) --------------------------------------------------------
-void nox_xxx_poisonEffect_4E0850(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
-	(void)weapon;
-	(void)context;
-	if (!effect || !target) {
-		return;
-	}
-	int blocked = 0;
-	if ((target->obj_class & 4) && target->data_update && owner) {
-		nox_player_update_data_t* update = target->data_update;
-		blocked = update->state == 16 &&
-			(nox_server_testTwoPointsAndDirection_4E6E50(
-				(float2*)&target->x, (int16_t)target->direction1, (float2*)&owner->x) & 1);
-	}
-	// 004E0884 reloads the class after the facing service.
-	if (!blocked && (target->obj_class & 6) && nox_xxx_activatePoison_4EE7E0(
-			target, 1, nox_modifier_effect_getPreDamageInt(effect))) {
-		nox_xxx_modifierEffectInform_4E04D0(target, 2);
-	}
 }
 
 //----- (004E08E0) --------------------------------------------------------

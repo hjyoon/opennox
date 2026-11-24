@@ -4,7 +4,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME2_3.h"
 #include "GAME3_1.h"
-#include "client__draw__plasma.h"
 extern uint32_t dword_5d4594_1316408, dword_5d4594_1316412, dword_5d4594_1313880;
 extern uint32_t dword_587000_180476, dword_587000_180480;
 */
@@ -164,8 +163,8 @@ func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 	a, b := C.int2{field_0: x1, field_4: y1}, C.int2{field_0: x2, field_4: y2}
 	c := C.int2{field_0: plasmaCurveFloatToInt(tangentX), field_4: plasmaCurveFloatToInt(tangentY)}
 	d := C.int2{field_0: dx, field_4: dy}
-	callback := C.uintptr_t(uintptr(C.sub_4BA8B0))
-	for lane := C.int(0); lane < 3; lane++ {
+	paths := plasmaPaths()
+	for lane := range paths {
 		progress := memmap.PtrFloat32(0x5D4594, 1313856+4*uintptr(lane))
 		delta := 0.25
 		if lane == 0 {
@@ -174,15 +173,16 @@ func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 		*progress = float32(float64(*progress) + delta)
 		segments := C.int(C.dword_5d4594_1316408)
 		if *progress >= 1 {
-			for i := segments + 1; i > 0; i-- {
-				offset := uintptr(1313864 + 28*(i+30*lane))
-				old := memmap.PtrT[[5]uint32](0x5D4594, offset)
-				*memmap.PtrT[[5]uint32](0x5D4594, offset+28) = *old
+			points := &paths[lane]
+			for i := int(segments) + 1; i > 0; i-- {
+				points[i].motion = points[i-1].motion
 			}
 			*progress = 0
-			*memmap.PtrUint32(0x5D4594, 1313908+840*uintptr(lane)) = 0
+			points[0].motion.ticks = 0
 		}
 		C.dword_5d4594_1316412 = 0
-		sub_4BEDE0(&a, &b, &c, &d, segments, C.float(*progress), callback, unsafe.Pointer(&lane))
+		plasmaSplineSamples(a, b, c, d, segments, *progress, func(from, to *plasmaCurvePoint) {
+			plasmaRememberSegment(from, to, lane)
+		})
 	}
 }

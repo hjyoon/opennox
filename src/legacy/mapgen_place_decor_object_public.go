@@ -121,9 +121,7 @@ func nox_mapgenPlaceDecorObjectNative_521CB0(theme, room *C.uint8_t, entry *C.no
 			release:  mapGenReleaseOccupiedRect,
 			width:    func(index int32) float64 { return float64(C.sub_502E70(C.int(index))) },
 			height:   func(index int32) float64 { return float64(C.sub_502EA0(C.int(index))) },
-			record: func(index int32) *mapGenDecorAreaFlags {
-				return (*mapGenDecorAreaFlags)(unsafe.Pointer(C.sub_526AA0(C.int(index))))
-			},
+			record:   mapgenAreaRecordAt,
 			roll: func(low, high int32) int32 {
 				return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 			},

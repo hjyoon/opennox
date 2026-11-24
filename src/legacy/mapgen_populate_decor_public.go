@@ -188,7 +188,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 			nox_xxx_mapgen_521FE0(theme, asObjectC(unit), C.uintptr_t(token))
 		},
 		lookup: func(entry *mapGenDecorEntry) int32 {
-			return int32(C.sub_5268F0(&entry.name[0]))
+			return mapgenFindAreaRecord(GoString(&entry.name[0]))
 		},
 		tryObject: func(entry *mapGenDecorEntry, index int32) bool {
 			return nox_mapgenPlaceDecorObjectNative_521CB0(theme, room, entry, C.int(index)) != 0

@@ -45,8 +45,6 @@ extern uint32_t dword_5d4594_2487632;
 extern uint32_t dword_5d4594_2487884;
 extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_2487628;
-extern uint32_t dword_5d4594_2487672;
-extern uint32_t dword_5d4594_2487676;
 extern uint32_t dword_5d4594_2487652;
 extern uint32_t dword_5d4594_2487624;
 extern uint32_t dword_5d4594_2487620;
@@ -2611,84 +2609,10 @@ int nox_xxx_mapGenPlacePrefabs_526830(uint8_t* theme) {
 	return nox_mapgenPlacePrefabsWithCallback_526830(theme, nox_mapgenFinalizePrefabNative_526830);
 }
 
-//----- (005268F0) --------------------------------------------------------
-int sub_5268F0(const char* a1) {
-	int v1;        // ebp
-	const char* i; // edi
-
-	v1 = 0;
-	const char* records = (const char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
-	if (*(int*)&dword_5d4594_2487676 <= 0 || !records) {
-		return -1;
-	}
-	for (i = records; strcmp(i, a1); i += 64) {
-		if (++v1 >= *(int*)&dword_5d4594_2487676) {
-			return -1;
-		}
-	}
-	return v1;
-}
-
-//----- (00526950) --------------------------------------------------------
-char* sub_526950() {
-	int v0;           // eax
-	char* result;     // eax
-	int v2;           // ebp
-	char* v3;         // ebx
-	char* v4;         // esi
-	int v5;           // edi
-	unsigned char v6; // al
-	int v7;           // [esp+4h] [ebp-104h]
-	char v8[256];     // [esp+8h] [ebp-100h]
-
-	v0 = sub_502A20();
-	dword_5d4594_2487676 = v0;
-	result = (char*)calloc(v0, 0x40u);
-	v2 = 0;
-	dword_5d4594_2487672 = nox_mapgenLegacyPtrRegister(result);
-	if (result && !dword_5d4594_2487672) {
-		free(result);
-		result = NULL;
-	}
-	if (result) {
-		v7 = 0;
-		if (dword_5d4594_2487676 > 0) {
-			while (1) {
-				v3 = &result[v2];
-				strcpy(v8, (const char*)sub_5029F0(v7));
-				strcpy(result + v2, v8);
-				strtok(v8, "-");
-				strtok(0, "-");
-				v4 = strtok(0, "-");
-				if (v4) {
-					v5 = 0;
-					if (getMemByte(0x587000, 255032)) {
-						do {
-							if (strchr(v4, (char)getMemByte(0x587000, 255032 + v5))) {
-								*((uint32_t*)v3 + 15) |= 1 << v5;
-							}
-							v6 = getMemByte(0x587000, 255033 + v5++);
-						} while (v6);
-					}
-				}
-				result = (char*)(v7 + 1);
-				v2 += 64;
-				if (++v7 >= *(int*)&dword_5d4594_2487676) {
-					break;
-				}
-				result = (char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
-			}
-		}
-	} else {
-		dword_5d4594_2487676 = 0;
-	}
-	return result;
-}
-
-//----- (00526AA0) --------------------------------------------------------
-char* sub_526AA0(int a1) {
-	char* records = (char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
-	return records ? records + (a1 << 6) : NULL;
+// GAME.EXE returns the processed record count in a pointer-sized register.
+extern uintptr_t nox_mapgenLoadAreaRecordsNative(void);
+char* sub_526950(void) {
+	return (char*)nox_mapgenLoadAreaRecordsNative();
 }
 
 //----- (00526BC0) --------------------------------------------------------

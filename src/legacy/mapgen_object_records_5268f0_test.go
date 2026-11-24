@@ -1,9 +1,49 @@
 package legacy
 
 import (
+	"bytes"
 	"strconv"
+	"strings"
 	"testing"
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+func TestMapgenAreaRecordNamesAndAttachmentFlags(t *testing.T) {
+	archive := game4ArchiveBankNew()
+	if archive == nil {
+		t.Fatal("allocate area archive")
+	}
+	t.Cleanup(archive.close)
+	archive.seed()
+	names := [3]string{"Test--Room---NSW-C", "Second-Room-w-NSE", strings.Repeat("R", 60) + "P"}
+	for i, name := range names {
+		buf := unsafe.Slice((*byte)(game4MapRecord(int32(i))), mapgenAreaRecordBytes)
+		alloc.StrCopy(buf, name)
+	}
+	markers := memmap.Slice(0x587000, 255032)[:6]
+	old := bytes.Clone(markers)
+	copy(markers, "NSEWC\x00")
+	t.Cleanup(func() { copy(markers, old) })
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	got, free := mapgenLoadAreaRecordsCFixture()
+	defer free()
+	if got != uintptr(len(names)) {
+		t.Fatalf("area reader returned word %#x, want processed count %d", got, len(names))
+	}
+	for i, flags := range []uint32{11, 0, 'P'} {
+		record := mapgenAreaRecordAt(int32(i))
+		if record == nil || record.flags != flags || mapgenFindAreaRecord(names[i]) != int32(i) {
+			t.Fatalf("area record %d did not preserve its name and marker flags %#x", i, flags)
+		}
+	}
+	if mapgenFindAreaRecord(strings.ToLower(names[0])) != -1 || mapgenAreaRecordAt(-1) != nil {
+		t.Fatal("area record accepted a mismatched name or negative index")
+	}
+}
 
 func TestMapgenObjectRecords5268F0PreserveNativePointer(t *testing.T) {
 	got := mapgenObjectRecordsFixture5268F0()

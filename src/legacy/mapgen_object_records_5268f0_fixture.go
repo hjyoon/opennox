@@ -13,6 +13,10 @@ package legacy
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_5d4594_2487676;
 
+static uintptr_t nox_test_mapgen_load_area_records(void) {
+	return (uintptr_t)sub_526950();
+}
+
 typedef struct nox_test_mapgen_object_records_5268f0_result {
 	uintptr_t records_address;
 	uintptr_t resolved_address;
@@ -62,6 +66,14 @@ static nox_test_mapgen_object_records_5268f0_result nox_test_mapgen_object_recor
 }
 */
 import "C"
+
+func mapgenLoadAreaRecordsCFixture() (uintptr, func()) {
+	count := C.dword_5d4594_2487676
+	return uintptr(C.nox_test_mapgen_load_area_records()), func() {
+		sub_526A90()
+		C.dword_5d4594_2487676 = count
+	}
+}
 
 type mapgenObjectRecordsResult5268F0 struct {
 	recordsAddress     uintptr

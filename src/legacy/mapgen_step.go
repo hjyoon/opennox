@@ -93,7 +93,8 @@ func nox_xxx_mapGenStep_4D44E0() C.int {
 	}
 	*memmap.PtrUint32(0x5D4594, 1549864) = uint32(mapgenThemeHalfGrid())
 	nox_xxx_mapGenSetRngSeed_526AB0(C.uint(memmap.Uint32(0x5D4594, 1549872)))
-	C.sub_526950()
+	nox_mapgenLoadAreaRecordsNative()
+	defer sub_526A90()
 	if nox_mapgenPrepareWorkspaceNative(theme) == 0 {
 		return 0
 	}

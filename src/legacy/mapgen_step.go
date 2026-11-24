@@ -3,7 +3,7 @@ package legacy
 /*
 #include "GAME3_2.h"
 #include "GAME4_2.h"
-#include "mapgen_theme_native.h"
+#include "cgo_const.h"
 extern uint32_t dword_5d4594_1550916;
 */
 import "C"
@@ -86,7 +86,8 @@ func nox_xxx_mapGenStep_4D44E0() C.int {
 	sub_57C490_2(internCStr("theme"))
 	sub_526C40(0)
 	sub_51D100(0)
-	if C.nox_mapgenReadThemeNative_51E260((*C.int)(unsafe.Pointer(theme)), nox_xxx_getRandMapName_4D4310()) == 0 {
+	name := (*C.nox_cgo_const_char)(nox_xxx_getRandMapName_4D4310())
+	if nox_mapgenReadThemeNative_51E260((*C.int)(unsafe.Pointer(theme)), name) == 0 {
 		return 0
 	}
 	*memmap.PtrUint32(0x5D4594, 1549864) = uint32(mapgenThemeHalfGrid())

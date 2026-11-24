@@ -98,6 +98,6 @@ func sub_51E570(file *C.FILE, dest *C.uint8_t) C.int {
 func nox_xxx_mapGenReadLine_51E540(file *C.FILE, dest *C.uint8_t) C.int {
 	return C.int(mapGenDirectiveToken51E540(
 		func() int32 { return int32(sub_51E570(file, dest)) },
-		func() int32 { return int32(C.sub_51E670(file)) },
+		func() int32 { return int32(sub_51E670(file)) },
 	))
 }

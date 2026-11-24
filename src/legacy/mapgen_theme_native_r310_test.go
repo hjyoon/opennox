@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const mapgenThemeReferenceR310 = "testdata/mapgen_theme_before_go.c"
+
 // The complete producers execute with the actual token registry and controlled
 // file/token/formatter/lookup/settings callbacks. Fixed expectations cover the
 // original offsets, dispatch, partial writes and original bounded input domain.
@@ -21,18 +23,23 @@ func TestMapgenThemeNativeOriginalContractsR310(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := strings.ReplaceAll(string(source), "\r\n", "\n")
+	archive, err := os.ReadFile(mapgenThemeReferenceR310)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reference := strings.ReplaceAll(string(archive), "\r\n", "\n")
 	var bodies []string
-	for _, item := range []struct{ start, end string }{
-		{"int nox_xxx_mapGenSpellIdByName_51E1D0(", "\n// 51E1D0:"},
-		{"int nox_mapgenReadAlgDataNative_51EBB0(", "\n//----- (0051EFB0)"},
-		{"int nox_mapgenReadSpellSetNative_51EFB0(", "\n//----- (0051F030)"},
-		{"int nox_mapgenReadExitNative_51F800(", "\n//----- (0051F9F0)"},
-		{"int nox_mapgenReadThemeNative_51E260(", "\n//----- (0051E540)"},
+	for _, item := range []struct{ input, start, end string }{
+		{reference, "int nox_xxx_mapGenSpellIdByName_51E1D0(", "\n// 51E1D0:"},
+		{text, "int nox_mapgenReadAlgDataNative_51EBB0(", "\n//----- (0051EFB0)"},
+		{text, "int nox_mapgenReadSpellSetNative_51EFB0(", "\n//----- (0051F030)"},
+		{text, "int nox_mapgenReadExitNative_51F800(", "\n//----- (0051F9F0)"},
+		{reference, "int nox_mapgenReadThemeNative_51E260(", "\n//----- (0051E540)"},
 	} {
-		if strings.Count(text, item.start) != 1 || strings.Count(text, item.end) != 1 {
-			t.Fatalf("nonunique complete production body: %s", item.start)
+		if strings.Count(item.input, item.start) != 1 || strings.Count(item.input, item.end) != 1 {
+			t.Fatalf("nonunique complete compatibility body: %s", item.start)
 		}
-		_, tail, _ := strings.Cut(text, item.start)
+		_, tail, _ := strings.Cut(item.input, item.start)
 		body, _, ok := strings.Cut(tail, item.end)
 		if !ok {
 			t.Fatalf("missing production body boundary: %s", item.start)

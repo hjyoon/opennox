@@ -11,13 +11,13 @@ import (
 	"time"
 )
 
-// Execute the complete production body and the actual noxstring formatter.
+// Execute the complete C compatibility body and the actual noxstring formatter.
 // O0/O2 observe the callee object's capacity before a potentially invalid
 // write. ASan+UBSan execute the actual formatting write without that guard.
 // All modes preserve the same 310 bounded inputs, expected text and lookup
 // contracts. This is not an execution of the complete classic generator.
 func TestMapgenSpellNameOriginalBuffersR307(t *testing.T) {
-	source, err := os.ReadFile("GAME4_2.c")
+	source, err := os.ReadFile(mapgenThemeReferenceR310)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,12 +29,12 @@ func TestMapgenSpellNameOriginalBuffersR307(t *testing.T) {
 	start := "int nox_xxx_mapGenSpellIdByName_51E1D0("
 	end := "\n// 51E1D0:"
 	if strings.Count(text, start) != 1 || strings.Count(text, end) != 1 {
-		t.Fatal("nonunique complete production spell-name body")
+		t.Fatal("nonunique complete C spell-name body")
 	}
 	_, tail, _ := strings.Cut(text, start)
 	body, _, ok := strings.Cut(tail, end)
 	if !ok {
-		t.Fatal("missing production spell-name body boundary")
+		t.Fatal("missing C spell-name body boundary")
 	}
 	const marker = "// PRODUCTION_SPELL_NAME_51E1D0"
 	program := strings.ReplaceAll(string(fixture), "\r\n", "\n")

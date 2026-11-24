@@ -495,24 +495,6 @@ int nox_xxx_checkIsKillable_528190(nox_object_t* a1p) {
 
 #endif
 
-//----- (005281D0) --------------------------------------------------------
-int nox_xxx_frameCounterSetCopyToNextFrame_5281D0() {
-	int result; // eax
-
-	result = gameFrame() + 1;
-	*getMemU32Ptr(0x5D4594, 2487684) = gameFrame() + 1;
-	return result;
-}
-
-//----- (005281E0) --------------------------------------------------------
-int nox_xxx_frameCounterSetCopy_5281E0() {
-	int result; // eax
-
-	result = gameFrame();
-	*getMemU32Ptr(0x5D4594, 2487684) = gameFrame();
-	return result;
-}
-
 //----- (005281F0) --------------------------------------------------------
 int nox_xxx_unitCanSee_536FB0(nox_object_t* a1, nox_object_t* a2, int a3);
 #if 0
@@ -871,21 +853,6 @@ int sub_528990(nox_object_t* a1) {
 }
 #endif
 
-nox_object_t* nox_xxx_getFirstUpdatableObject_4DA8A0(void);
-nox_object_t* nox_xxx_getNextUpdatableObject_4DA8B0(nox_object_t* obj);
-
-int sub_528990(nox_object_t* target) {
-	nox_object_t* monster = nox_xxx_getFirstUpdatableObject_4DA8A0();
-	while (monster) {
-		if ((monster->obj_class & 2) && !(monster->obj_flags & 0x20)) {
-			sub_528910(monster, target);
-			sub_528610(monster);
-		}
-		monster = nox_xxx_getNextUpdatableObject_4DA8B0(monster);
-	}
-	return 0;
-}
-
 //----- (005289D0) --------------------------------------------------------
 void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* object) {
 	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
@@ -978,12 +945,6 @@ int nox_xxx_destroyEveryChatMB_528D60() {
 	return result;
 }
 #endif
-
-extern uintptr_t nox_server_monster_cmd_send_native_528BD0(nox_object_t*, nox_object_t*, char*, short);
-
-uintptr_t nox_xxx_monsterCmdSend_528BD0(nox_object_t* unit, nox_object_t* source, const char* command, short duration) {
-	return nox_server_monster_cmd_send_native_528BD0(unit, source, (char*)command, duration);
-}
 
 // GAME.EXE 00529BC0 uses the Go spellcaster initialization entry.
 

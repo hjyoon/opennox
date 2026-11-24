@@ -714,7 +714,7 @@ func Sub_511DE0(a1 *server.Object) {
 	forgetCachedScriptObject(a1)
 }
 func Sub_528990(a1 *server.Object) {
-	C.sub_528990(asObjectC(a1))
+	sub_528990(asObjectC(a1))
 }
 
 var shadowObjects = list.New()

@@ -954,6 +954,18 @@ func sub_528910(monster, target *nox_object_t) C.int {
 	return C.int(bool2int(monsterLostSightNative528560(obj, index)))
 }
 
+//export sub_528990
+func sub_528990(target *nox_object_t) C.int {
+	for monster := GetServer().S().Objs.UpdatableList; monster != nil; monster = monster.UpdatableNext {
+		if !monster.Class().Has(object.ClassMonster) || monster.Flags().Has(object.FlagDestroyed) {
+			continue
+		}
+		sub_528910(asObjectC(monster), target)
+		monsterSelectEnemyNative528610(monster)
+	}
+	return 0
+}
+
 //export sub_528950
 func sub_528950(monster, target *nox_object_t) C.int {
 	obj := asObjectS(monster)

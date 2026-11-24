@@ -60,6 +60,7 @@ int sub_4BFC90();
 int sub_4BFCD0(nox_window* win, int event, nox_window* control, uintptr_t arg);
 void sub_4BFD10();
 int sub_4BFD30();
+typedef const nox_modifier_attrs_t nox_item_amount_const_attrs_t;
 void sub_4BFD40();
 int sub_4BFDD0(nox_window* win, int event, uintptr_t packed_position, uintptr_t unused);
 int sub_4BFE40();
@@ -68,9 +69,9 @@ int sub_4C0030(nox_window* win, void* draw);
 int sub_4C01C0(nox_window* win, int event, nox_window* control, uintptr_t event_arg);
 void nox_gui_itemAmount_free_4C03E0();
 int nox_gui_itemAmountDialog_4C0430(wchar2_t* title, int x, int y, uint32_t item_id, uint32_t thing_type,
-									const nox_modifier_attrs_t* attrs, uint32_t max_amount, uint32_t extra,
+									nox_item_amount_const_attrs_t* attrs, uint32_t max_amount, uint32_t extra,
 									nox_gui_item_amount_callback_t accept, nox_gui_item_amount_callback_t cancel);
-void nox_gui_item_amount_copy_attrs(nox_drawable* item, const nox_modifier_attrs_t* attrs);
+void nox_gui_item_amount_copy_attrs(nox_drawable* item, nox_item_amount_const_attrs_t* attrs);
 void nox_gui_item_amount_call_callback(nox_gui_item_amount_callback_t callback, int2* position, uint32_t amount);
 int nox_gui_item_amount_state(uint32_t* amount, uint32_t* max_amount);
 int sub_4C0560(int a1, int a2);

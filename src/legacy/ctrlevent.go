@@ -23,19 +23,6 @@ int nox_ctrlevent_add_ticks_42E630();
 extern uint32_t dword_5d4594_1319260;
 extern uint32_t dword_5d4594_1319264;
 extern uint32_t dword_5d4594_1319268;
-
-static int nox_gui_item_amount_price(uint32_t* unit_price) {
-	if (unit_price) {
-		*unit_price = 0;
-	}
-	if (dword_5d4594_1319268 != 1 || !dword_5d4594_1319264) {
-		return 0;
-	}
-	if (unit_price) {
-		*unit_price = dword_5d4594_1319260;
-	}
-	return 1;
-}
 */
 import "C"
 import (
@@ -130,14 +117,15 @@ func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {
 
 func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
 	var camount, cmax C.uint32_t
-	active = C.nox_gui_item_amount_state(&camount, &cmax) != 0
+	active = nox_gui_item_amount_state(&camount, &cmax) != 0
 	return active, uint32(camount), uint32(cmax)
 }
 
 func Nox_gui_itemAmountPrice() (enabled bool, unitPrice uint32) {
-	var cprice C.uint32_t
-	enabled = C.nox_gui_item_amount_price(&cprice) != 0
-	return enabled, uint32(cprice)
+	if C.dword_5d4594_1319268 != 1 || C.dword_5d4594_1319264 == 0 {
+		return false, 0
+	}
+	return true, uint32(C.dword_5d4594_1319260)
 }
 
 func Nox_gui_shopState() (active bool, mode, itemCount uint32) {
@@ -154,7 +142,7 @@ func Sub_4C01C0(win *gui.Window, event int, control *gui.Window, eventArg uintpt
 	if control != nil {
 		ccontrol = (*nox_window)(control.C())
 	}
-	C.sub_4C01C0(cwin, C.int(event), ccontrol, C.uintptr_t(eventArg))
+	sub_4C01C0(cwin, C.int(event), ccontrol, C.uintptr_t(eventArg))
 }
 
 func Nox_client_chatStart_46A430(v int) {

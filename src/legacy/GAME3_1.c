@@ -2032,37 +2032,6 @@ int nox_xxx_prepareP2PTrade_4C1BF0() {
 	return result;
 }
 
-//----- (004C32A0) --------------------------------------------------------
-int nox_xxx_spriteDrawCircleMB_4C32A0(int a1, int a2, int a3, int a4) {
-	unsigned char* v4; // ebx
-	int v5;            // esi
-	int v6;            // edi
-	int v8;            // [esp+10h] [ebp-8h]
-	int v9;            // [esp+14h] [ebp-4h]
-
-	v8 = (a3 * *getMemU32Ptr(0x587000, 192088)) >> 4;
-	v9 = (a3 * *getMemU32Ptr(0x587000, 192092)) >> 4;
-	nox_client_drawSetColor_434460(a4);
-	nox_client_drawEnableAlpha_434560(1);
-	v4 = getMemAt(0x587000, 192220);
-	do {
-		v5 = (a3 * *((uint32_t*)v4 - 1)) >> 4;
-		v6 = (*(uint32_t*)v4 * a3) >> 4;
-		nox_client_drawAddPoint_49F500(a1 + v8, a2 + v9);
-		nox_client_drawAddPoint_49F500(v5 + a1, v6 + a2);
-		nox_client_drawLineFromPoints_49E4B0();
-		v4 += 128;
-		v8 = v5;
-		v9 = v6;
-	} while ((int)v4 < (int)getMemAt(0x587000, 194140));
-	nox_client_drawAddPoint_49F500(a1 + ((a3 * *getMemU32Ptr(0x587000, 192088)) >> 4),
-								   a2 + ((a3 * *getMemU32Ptr(0x587000, 192092)) >> 4));
-	nox_client_drawAddPoint_49F500(a1 + v5, a2 + v6);
-	nox_client_drawLineFromPoints_49E4B0();
-	nox_client_drawEnableAlpha_434560(0);
-	return 1;
-}
-
 //----- (004C3390) --------------------------------------------------------
 int sub_4C3390() {
 	setMemPtr(0x5D4594, 1321220, nox_xxx_gLoadImg_42F970("VoteInProgress"));

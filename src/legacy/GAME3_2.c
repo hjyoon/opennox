@@ -520,19 +520,6 @@ void sub_4D61B0(int a1) {
 }
 #endif
 
-//----- (004D61F0) --------------------------------------------------------
-nox_playerInfo* sub_4D61F0(nox_object_t* player_unit) {
-	if (!player_unit || (player_unit->obj_flags & 0x20) == 0x20) {
-		return NULL;
-	}
-	nox_player_update_data_t* update = player_unit->data_update;
-	nox_playerInfo* player = update->player;
-	++player->field_4672;
-	++player->field_4676;
-	player->field_4692 |= 0x10u;
-	return player;
-}
-
 //----- (004D6540) --------------------------------------------------------
 #if 0 // Restored by server/quest_stats_4d6540_server.go at native width.
 unsigned int sub_4D6540(int a1) {
@@ -641,17 +628,6 @@ int sub_4D6770(int a1) {
 
 
 
-
-//----- (004D70B0) --------------------------------------------------------
-char* sub_4D70B0() {
-	char* result; // eax
-
-	result = *(char**)getMemAt(0x5D4594, 1556152);
-	if (!*getMemU32Ptr(0x5D4594, 1556152)) {
-		result = sub_4169F0();
-	}
-	return result;
-}
 
 //----- (004D70C0) --------------------------------------------------------
 
@@ -1140,46 +1116,6 @@ int sub_4D9E30(int a1, int a2, char a3) {
 }
 #endif
 
-//----- (004D9FD0) --------------------------------------------------------
-int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
-	char v2;         // al
-	int v3;          // edi
-	wchar2_t v6[516]; // [esp+Ch] [ebp-408h]
-	va_list va;      // [esp+420h] [ebp+Ch]
-
-	va_start(va, a2);
-	nox_vswprintf(&v6[260], a2, va);
-	LOBYTE(v6[0]) = -88; // MSG_TEXT_MESSAGE
-	*(wchar2_t*)((char*)v6 + 1) = 0;
-	HIBYTE(v6[1]) = a1;
-	if (nox_xxx_cliCanTalkMB_4100F0((short*)&v6[260])) {
-		v2 = HIBYTE(v6[1]) | 2;
-	} else {
-		v2 = HIBYTE(v6[1]) | 4;
-	}
-	HIBYTE(v6[1]) = v2;
-	v6[2] = 0;
-	v6[3] = 0;
-	LOBYTE(v6[5]) = 0;
-	v6[4] = (unsigned char)(nox_wcslen(&v6[260]) + 1);
-	if (v6[1] & 0x400) {
-		nox_wcscpy((wchar2_t*)((char*)&v6[5] + 1), &v6[260]);
-		v3 = 2;
-	} else {
-		nox_sprintf((char*)&v6[5] + 1, "%S", &v6[260]);
-		v3 = 1;
-	}
-	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
-		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		nox_player_update_data_t* update = unit->data_update;
-		if (update && update->player) {
-			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, (unsigned char*)v6,
-										   v3 * LOBYTE(v6[4]) + 11);
-		}
-	}
-	return 0;
-}
-
 #if 0 // Preserved original for the incoming-player oracles.
 //----- (004DDF60) --------------------------------------------------------
 void nox_xxx_playerSendMOTD_4DD140(int a1);
@@ -1406,62 +1342,6 @@ void sub_4DF2E0(int a1) {
 	}
 }
 #endif
-
-//----- (004DF3C0) --------------------------------------------------------
-void sub_4DF3C0(nox_playerInfo* pl) {
-	if (!pl || !pl->playerUnit) {
-		return;
-	}
-	nox_object_t* unit = pl->playerUnit;
-	nox_object_team_t* value = (nox_object_team_t*)&unit->field_12;
-	char* settings = sub_416640();
-	if (!sub_40A740() && !nox_common_gameFlags_check_40A5C0(0x8000)) {
-		if (nox_xxx_getTeamCounter_417DD0()) {
-			nox_team_t* team = sub_4189D0();
-			if (team && !nox_xxx_servObjectHasTeam_419130(value)) {
-				nox_xxx_createAtImpl_4191D0(team->field_57, value, 1, unit->net_code, 1);
-			}
-		}
-		return;
-	}
-	if (!pl->field_2068) {
-		return;
-	}
-	nox_team_t* team = nox_server_teamByXxx_418AE0(pl->field_2068);
-	int has_team;
-	if (team) {
-		has_team = nox_xxx_servObjectHasTeam_419130(value);
-	} else {
-		int maximum = (unsigned char)settings[52];
-		if ((nox_common_gameFlags_check_40A5C0(96) ||
-			 nox_common_gameFlags_check_40A5C0(16) && nox_xxx_CheckGameplayFlags_417DA0(4)) &&
-			maximum > 2) {
-			maximum = 2;
-		}
-		int count = (unsigned char)sub_417DE0();
-		if (count >= maximum) {
-			return;
-		}
-		if (!nox_common_gameFlags_check_40A5C0(96) ||
-			(count = (unsigned char)sub_417DE0(), count < sub_417DC0())) {
-			team = sub_418A10();
-			if (!team) {
-				return;
-			}
-			sub_418800(team->name, pl->field_2072, 0);
-			sub_418830(team, pl->field_2068);
-			sub_4184D0(team->name);
-			has_team = nox_xxx_servObjectHasTeam_419130(value);
-		} else {
-			return;
-		}
-	}
-	if (has_team) {
-		sub_4196D0(value, team, unit->net_code, 0);
-	} else {
-		nox_xxx_createAtImpl_4191D0(team->field_57, value, 1, unit->net_code, 0);
-	}
-}
 
 // GAME.EXE 004DFE40, 004DFF40 and 004E0040 use typed Go entries.
 

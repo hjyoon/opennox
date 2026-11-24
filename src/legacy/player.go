@@ -404,10 +404,6 @@ func Sub_425F10(p *server.Player) {
 	C.sub_425F10((*nox_playerInfo)(p.C()))
 }
 
-func Sub_4DF3C0(p *server.Player) {
-	C.sub_4DF3C0((*nox_playerInfo)(p.C()))
-}
-
 func Sub_40AA70(p *server.Player) int {
 	return int(C.sub_40AA70((*nox_playerInfo)(p.C())))
 }

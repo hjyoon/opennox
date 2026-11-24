@@ -7,6 +7,7 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -45,5 +46,50 @@ func TestEnchantItemInventoryUsesNativeObjectAndModifierLayouts(t *testing.T) {
 	}
 	if enchantItemTestInventoryNative4DFBB0(nil, 8) || enchantItemTestInventoryNative4DFBB0(owner, 0) {
 		t.Fatal("nil owner or unknown flag matched")
+	}
+}
+
+func TestEquipmentProtectionDisengageKeepsRemainingModifiers(t *testing.T) {
+	objectStatusTestServer(t, 1)
+	owner, freeOwner := alloc.NewHigh(server.Object{})
+	t.Cleanup(freeOwner)
+	item, freeItem := alloc.NewHigh(server.Object{})
+	t.Cleanup(freeItem)
+	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
+	t.Cleanup(freeAttrs)
+	remaining, freeRemaining := alloc.NewHigh(server.ModifierEff{})
+	t.Cleanup(freeRemaining)
+	*owner = server.Object{ObjClass: object.ClassPlayer, InvFirstItem: item}
+	*item = server.Object{ObjClass: object.ClassWand, InitData: unsafe.Pointer(attrs)}
+	attrs.Modifiers[3] = remaining
+
+	const otherFlags = 0x40000500
+	for _, flag := range []byte{1, 2, 4, 8, 32} {
+		on := modifierEngagePointerNative4DFBB0(flag)
+		off := modifierDisengagePointerNative4DFBB0(flag)
+		remaining.Engage112 = on
+		owner.Field110 = otherFlags
+		ccall.CallVoidPtr3(on, nil, owner.CObj(), item.CObj())
+		wantSet := otherFlags | uint32(flag)
+		if owner.Field110 != wantSet {
+			t.Fatalf("engaging %#x produced %#x, want %#x", flag, owner.Field110, wantSet)
+		}
+		item.ObjFlags = object.FlagEquipped
+		ccall.CallVoidPtr3(off, nil, owner.CObj(), item.CObj())
+		if owner.Field110 != wantSet {
+			t.Fatalf("disengaging %#x with an equipped modifier produced %#x, want %#x", flag, owner.Field110, wantSet)
+		}
+		item.ObjFlags = 0
+		ccall.CallVoidPtr3(off, nil, owner.CObj(), item.CObj())
+		if owner.Field110 != otherFlags {
+			t.Fatalf("disengaging the last %#x modifier produced %#x, want %#x", flag, owner.Field110, otherFlags)
+		}
+	}
+	owner.Field110 = 1 | 32
+	ccall.CallVoidPtr3(modifierDisengagePointerNative4DFBB0(1), nil, owner.CObj(), nil)
+	owner.ObjClass = object.ClassMonster
+	ccall.CallVoidPtr3(modifierDisengagePointerNative4DFBB0(32), nil, owner.CObj(), item.CObj())
+	if owner.Field110 != 1|32 {
+		t.Fatalf("guarded fire and regeneration callbacks wrote flags %#x", owner.Field110)
 	}
 }

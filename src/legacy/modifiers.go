@@ -150,10 +150,6 @@ func modifierDisengagePointerNative4DFBB0(flag byte) unsafe.Pointer {
 	}
 }
 
-func enchantItemTestInventoryNative4DFBB0(owner *server.Object, flag byte) bool {
-	return C.nox_xxx_enchantItemTestInventory_4DFBB0(asObjectC(owner), C.uint8_t(flag)) != 0
-}
-
 //export nox_modifier_getColorRGB
 func nox_modifier_getColorRGB(ptr unsafe.Pointer, index C.int) C.uint32_t {
 	if ptr == nil || index < 0 || index >= 8 {

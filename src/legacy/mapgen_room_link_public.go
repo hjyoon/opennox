@@ -13,11 +13,14 @@ import (
 )
 
 type mapgenRoomLinkRecord struct {
-	kind   uint32
-	_      [84]byte
-	links  [4][8]uint32
-	counts [4]uint8
+	kind          uint32
+	_             [80]byte
+	expansionNext uint32
+	links         [4][8]uint32
+	counts        [4]uint8
 }
+
+var _ [84]byte = [unsafe.Offsetof(mapgenRoomLinkRecord{}.expansionNext)]byte{}
 
 func mapgenRoomHasTypeOneNeighbor(room *mapgenRoomLinkRecord, direction int, resolve func(uint32) *mapgenRoomLinkRecord) bool {
 	if room == nil || direction < 0 || direction >= len(room.links) {

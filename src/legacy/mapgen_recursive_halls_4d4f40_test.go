@@ -4,7 +4,40 @@ import (
 	"math"
 	"strconv"
 	"testing"
+
+	"github.com/opennox/opennox/v1/common/memmap"
 )
+
+func TestMapgenHallExpansionKindKeepsRandomDrawOrder(t *testing.T) {
+	preserveLegacyCRTRand315(t)
+	branchRate, roomRate := memmap.PtrInt32(0x5D4594, 1549820), memmap.PtrInt32(0x5D4594, 1549824)
+	oldBranch, oldRoom := *branchRate, *roomRate
+	t.Cleanup(func() { *branchRate, *roomRate = oldBranch, oldRoom })
+
+	for _, tc := range []struct {
+		name           string
+		kind           uint32
+		width, height  int32
+		branch, room   int32
+		seed           uint32
+		want, nextDraw int32
+	}{
+		{"square", 2, 5, 5, 100, 100, 1, 1, 41},
+		{"negative width as unsigned", 2, -1, 5, 100, 100, 1, 1, 41},
+		{"vertical branch", 2, 3, 9, 1, 0, 1, 32, 6334},
+		{"horizontal room", 4, 9, 3, 0, 57, 1, 1, 6334},
+		{"straight", 2, 3, 9, 0, 56, 1, 2, 26500},
+		{"elbow", 2, 3, 9, 0, 89, 2, 4, 17795},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			*branchRate, *roomRate = tc.branch, tc.room
+			kind := mapgenHallExpansionKindFixture(tc.seed, tc.kind, tc.width, tc.height)
+			if next := nox_platform_rand(); kind != tc.want || next != tc.nextDraw {
+				t.Fatalf("expansion kind and next draw = %d, %d, want %d, %d", kind, next, tc.want, tc.nextDraw)
+			}
+		})
+	}
+}
 
 func TestMapgenHallRecordNative523E30(t *testing.T) {
 	for _, tc := range []struct {

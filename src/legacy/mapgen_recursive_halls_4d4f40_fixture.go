@@ -190,6 +190,12 @@ import (
 	"unsafe"
 )
 
+func mapgenHallExpansionKindFixture(seed, kind uint32, width, height int32) int32 {
+	room := mapgenRoomGeometry{kind: C.uint32_t(kind), cellDimensions: [2]C.int32_t{C.int32_t(width), C.int32_t(height)}}
+	nox_platform_srand(C.uint(seed))
+	return int32(C.sub_4D5D20((*C.uint32_t)(unsafe.Pointer(&room))))
+}
+
 func mapgenHallRecordFixture(kind, width, depth int32) [9]uint32 {
 	restore := mapgenHighFixtureMemory()
 	defer restore()

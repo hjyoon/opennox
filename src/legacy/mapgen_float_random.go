@@ -14,7 +14,10 @@ import (
 	"runtime"
 )
 
-const mapgenFloatRandomScale = 0.000030518509
+const (
+	mapgenFloatRandomScale = 0.000030518509
+	mapgenFloatEvalMethod  = C.nox_mapgen_random_float_evaluation
+)
 
 func mapgenExtendedFloatRandom(draw uint32, low, high float64) float64 {
 	// A 64-bit significand preserves the intermediate x87 operations.
@@ -34,10 +37,10 @@ func mapgenExtendedFloatRandom(draw uint32, low, high float64) float64 {
 func mapgenFloatRandomFromDraw(draw uint32, low, high float32) float64 {
 	minimum, maximum := float64(low), float64(high)
 	width := float64(float32(high - low))
-	if C.nox_mapgen_random_float_evaluation > 0 {
+	if mapgenFloatEvalMethod > 0 {
 		width = maximum - minimum
 	}
-	if C.nox_mapgen_random_float_evaluation == 2 && !math.IsNaN(width) && !math.IsInf(width, 0) {
+	if mapgenFloatEvalMethod == 2 && !math.IsNaN(width) && !math.IsInf(width, 0) {
 		return mapgenExtendedFloatRandom(draw, minimum, maximum)
 	}
 	scaled := float64(float64(draw) * width)

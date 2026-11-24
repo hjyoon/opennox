@@ -23,7 +23,7 @@ func testIncomingTeamIterator213V2(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	source := strings.ReplaceAll(string(fixture), "/* COMPLETE_INCOMING_BODY */",
-		teamReportBody210(t, "GAME3_2.c", "int nox_xxx_netPlayerIncomingServ_4DDF60("))
+		teamReportBody210(t, "testdata/retired-game-sources/GAME3_2.c.txt", "int nox_xxx_netPlayerIncomingServ_4DDF60("))
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)

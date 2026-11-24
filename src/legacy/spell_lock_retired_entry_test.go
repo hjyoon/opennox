@@ -10,7 +10,7 @@ import (
 
 func lockAssertRetired52CE90(t *testing.T, address, next, signature, hash string) {
 	t.Helper()
-	raw, err := os.ReadFile("GAME4_2.c")
+	raw, err := os.ReadFile("testdata/retired-game-sources/GAME4_2.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

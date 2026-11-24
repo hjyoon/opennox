@@ -11,7 +11,7 @@ import (
 // Compile the unchanged production body, not a second implementation, against
 // the real native-width structs. Only its external services are intercepted.
 func TestPlayerArmorDequip53E430NativeBody(t *testing.T) {
-	source, err := os.ReadFile("GAME4_3.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/GAME4_3.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

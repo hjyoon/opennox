@@ -43,7 +43,7 @@ func TestArmorEquipOriginal53E650NativeC(t *testing.T) {
 	if fixture.SHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || !fixture.Unchanged || fixture.Startup != 0xe3f || len(fixture.Rows) != 96 {
 		t.Fatal("incomplete unchanged original ArmorEquip observations")
 	}
-	src, err := os.ReadFile("GAME4_3.c")
+	src, err := os.ReadFile("testdata/retired-game-sources/GAME4_3.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 func TestEarthquakeDamageRetiredCCallback52DEC0(t *testing.T) {
-	raw, err := os.ReadFile("GAME4_2.c")
+	raw, err := os.ReadFile("testdata/retired-game-sources/GAME4_2.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

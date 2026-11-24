@@ -78,7 +78,7 @@ func TestIncomingQuest4DDF60CompleteProducer(t *testing.T) {
 		t.Fatal("incoming Quest fixture body marker is ambiguous")
 	}
 	source := strings.Replace(string(fixture), marker,
-		teamReportBody210(t, "GAME3_2.c", "int nox_xxx_netPlayerIncomingServ_4DDF60("), 1)
+		teamReportBody210(t, "testdata/retired-game-sources/GAME3_2.c.txt", "int nox_xxx_netPlayerIncomingServ_4DDF60("), 1)
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)

@@ -314,7 +314,7 @@ func Nox_xxx_drawWalls_473C10(vp *noxrender.Viewport, a2 *server.Wall) {
 	C.nox_xxx_drawWalls_473C10((*nox_draw_viewport_t)(vp.C()), a2.C())
 }
 func Sub_476080(a1 unsafe.Pointer) int {
-	return int(C.sub_476080((*C.uchar)(a1)))
+	return int(sub_476080((*C.uchar)(a1)))
 }
 func Sub_459DB0(dr *client.Drawable) int {
 	return int(C.sub_459DB0((*nox_drawable)(dr.C())))

@@ -99,47 +99,6 @@ uint32_t nox_client_highResFloors_154952 = 1;
 void* nox_video_tileBuf_ptr_3798796 = 0;
 void* nox_video_tileBuf_end_3798844 = 0;
 
-//----- (00476080) --------------------------------------------------------
-int sub_476080(unsigned char* a1) {
-	int v1;     // esi
-	int v2;     // ecx
-	int result; // eax
-	int v4;     // edx
-	int v5;     // ecx
-
-	nox_drawable* local_player = getMemPtr(0x852978, 8);
-	if (!local_player) {
-		return 23 * a1[6] + 11;
-	}
-	switch (*a1) {
-	case 0u:
-	case 3u:
-	case 0xBu:
-		v1 = -23;
-		v2 = 23 * a1[5] + 22;
-		result = 23 * a1[6];
-		break;
-	case 1u:
-	case 4u:
-	case 0xCu:
-		v1 = 23;
-		v2 = 23 * a1[5];
-		result = 23 * a1[6];
-		break;
-	default:
-		return 23 * a1[6] + 11;
-	}
-	v4 = (int)local_player->pos.x - v2;
-	v5 = v1 * ((int)local_player->pos.y - result) - 23 * v4;
-	if (v1 < 0) {
-		v5 = 23 * v4 - v1 * ((int)local_player->pos.y - result);
-	}
-	if (v5 < 0) {
-		result += 22;
-	}
-	return result;
-}
-
 //----- (00476AE0) --------------------------------------------------------
 void sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	(void)vp;
@@ -445,104 +404,8 @@ int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4) {
 int sub_47A260() { return dword_5d4594_1123520; }
 #endif
 
-//----- (0047D380) --------------------------------------------------------
-int sub_47D380(int a1, int a2) {
-	int v2; // eax
-	int v3; // ecx
-	int v4; // edx
-	int v5; // esi
-
-	v2 = a1;
-	v3 = a2;
-	if (a1 > a2) {
-		v2 = a2;
-		v3 = a1;
-	}
-	v4 = nox_draw_curDrawData_3799572->clip.min_x;
-	if (v2 >= v4) {
-		if (v2 >= nox_draw_curDrawData_3799572->clip.max_x) {
-			return 0;
-		}
-	} else {
-		v2 = nox_draw_curDrawData_3799572->clip.min_x;
-	}
-	v5 = nox_draw_curDrawData_3799572->clip.max_x;
-	if (v3 < v5) {
-		if (v3 < v4) {
-			return 0;
-		}
-	} else {
-		v3 = nox_draw_curDrawData_3799572->clip.max_x;
-	}
-	if (v2 == v3) {
-		return 0;
-	}
-	if (v2 != v4 || v3 != v5) {
-		*getMemU32Ptr(0x973F18, 52) = v2;
-		*getMemU32Ptr(0x973F18, 12) = v3;
-		dword_5d4594_3799452 = 1;
-	}
-	return 1;
-}
-
-//----- (0047DBC0) --------------------------------------------------------
-unsigned char sub_47DBC0() { return getMemByte(0x5D4594, 1193128); }
-
-//----- (0047FCE0) --------------------------------------------------------
-int sub_47FCE0(uint32_t* a1, int a2) {
-	int v2;            // edx
-	unsigned char* v3; // eax
-	int v4;            // eax
-	int v5;            // esi
-
-	v2 = 0;
-	if (*(int*)&dword_5d4594_3804684 > 0) {
-		v3 = getMemAt(0x973F18, 6092);
-		while (*((uint32_t*)v3 - 1) != a1[3] || *(uint32_t*)v3 != a1[2] || *((uint32_t*)v3 + 1) != a1[21] ||
-			   *((uint32_t*)v3 + 2) != a1[26]) {
-			++v2;
-			v3 += 16;
-			if (v2 >= *(int*)&dword_5d4594_3804684) {
-				goto LABEL_8;
-			}
-		}
-		return 1;
-	}
-LABEL_8:
-	v4 = 16 * dword_5d4594_3804684;
-	v5 = dword_5d4594_3804684 + 1;
-	*getMemU32Ptr(0x973F18, 6088 + v4) = a1[3];
-	*getMemU32Ptr(0x973F18, 6092 + v4) = a1[2];
-	*getMemU32Ptr(0x973F18, 6096 + v4) = a1[21];
-	*getMemU32Ptr(0x973F18, 6100 + v4) = a1[26];
-	dword_5d4594_3804684 = v5;
-	return 1;
-}
-
 // 4514E0: using guessed type void  nullsub_4(uint32_t, uint32_t, uint32_t, uint32_t);
 
-//----- (00480220) --------------------------------------------------------
-uint8_t* sub_480220(uint8_t* a1, uint8_t* a2) {
-	unsigned int v2; // edx
-	uint8_t* result; // eax
-
-	result = a2;
-	*a1 = 8 * *a2;
-	LOWORD(v2) = *(uint16_t*)a2;
-	a1[1] = (v2 >> 3) & 0xFC;
-	a1[2] = a2[1] & 0xF8;
-	return result;
-}
-// 480232: variable 'v2' is possibly undefined
-
-//----- (00480250) --------------------------------------------------------
-uint16_t* sub_480250(uint8_t* a1, uint16_t* a2) {
-	uint16_t* result; // eax
-
-	result = a2;
-	*a2 = (*a1 >> 3) | (8 * (a1[1] & 0xFC | (32 * (a1[2] & 0xF8))));
-	return result;
-}
 
 //----- (00480EF0) --------------------------------------------------------
 int nox_getBackbufferPitch();
@@ -5080,10 +4943,4 @@ int sub_489FF0(int a1, int a2, const void* a3) {
 	result = 11 * a1;
 	memcpy(getMemAt(0x5D4594, 1193388 + 44 * a1), a3, 0x2Cu);
 	return result;
-}
-
-//----- (0048A210) --------------------------------------------------------
-void* nox_xxx_setSomeFunc_48A210(void* a1) {
-	setMemPtr(0x5D4594, 1193504, a1);
-	return a1;
 }

@@ -33,7 +33,7 @@ import (
 // InputMouseButtonCount47DBC0 reads the legacy mouse capability BYTE used by
 // the shell and in-game InputCfg constructors.
 func InputMouseButtonCount47DBC0() uint8 {
-	return uint8(C.sub_47DBC0())
+	return uint8(sub_47DBC0())
 }
 
 var (

@@ -6,6 +6,18 @@ import (
 	"testing"
 )
 
+func TestMapgenRoomRankingDiagonalMatchesNativeArithmetic(t *testing.T) {
+	for i := uint32(0); i < 4096; i++ {
+		width := math.Float32frombits(0x41800000 + (0x1d872b41*i)&0x3ffffff)
+		height := math.Float32frombits(0x41800000 + (0x965e6217*i)&0x3ffffff)
+		got := mapgenRoomDiagonal(width, height)
+		want := mapgenRoomDiagonalCFixture(width, height)
+		if math.Float64bits(got) != math.Float64bits(want) {
+			t.Fatalf("room diagonal for %v × %v = %.17g, C evaluated %.17g", width, height, got, want)
+		}
+	}
+}
+
 func TestMapgenRoomRanking5259F0PreservesNativePointers(t *testing.T) {
 	oldPlatformTicks := PlatformTicks
 	PlatformTicks = func() uint64 { return 0 }

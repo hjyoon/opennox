@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "native_fixture_alloc.h"
+#include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -11,6 +12,10 @@ package legacy
 extern uint32_t dword_5d4594_2487576;
 extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487584;
+
+static double nox_test_mapgen_room_diagonal_5259f0(float width, float height) {
+	return sqrt(width * width + height * height);
+}
 
 typedef struct nox_test_mapgen_room_ranking_5259f0_result {
 	uintptr_t theme_address;
@@ -126,6 +131,10 @@ cleanup:
 }
 */
 import "C"
+
+func mapgenRoomDiagonalCFixture(width, height float32) float64 {
+	return float64(C.nox_test_mapgen_room_diagonal_5259f0(C.float(width), C.float(height)))
+}
 
 type mapgenRoomRankingResult5259F0 struct {
 	themeAddress            uintptr

@@ -181,10 +181,10 @@ func mapgenSetExitDestinationProduction(object *server.Object, destination *byte
 func nox_mapgenMakeExitNative_522A40(theme *C.uint8_t) C.int {
 	return C.int(bool2int(mapgenMakeExit((*mapgenExitTheme)(unsafe.Pointer(theme)), mapgenMakeExitAccess{
 		farthest: func() *mapgenExitRoom {
-			return (*mapgenExitRoom)(unsafe.Pointer(C.nox_mapgenFarthestRoomNative_5259E0()))
+			return (*mapgenExitRoom)(unsafe.Pointer(nox_mapgenFarthestRoomNative_5259E0()))
 		},
 		previous: func(room *mapgenExitRoom) *mapgenExitRoom {
-			return (*mapgenExitRoom)(unsafe.Pointer(C.nox_mapgenRoomSortedPrevNative_525C90((*C.uint8_t)(unsafe.Pointer(room)))))
+			return (*mapgenExitRoom)(unsafe.Pointer(nox_mapgenRoomSortedPrevNative_525C90((*C.nox_mapgen_readonly_room_t)(unsafe.Pointer(room)))))
 		},
 		place:          mapgenPlaceExitProduction,
 		setDestination: mapgenSetExitDestinationProduction,

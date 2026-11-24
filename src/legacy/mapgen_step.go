@@ -55,8 +55,8 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 		return 0
 	}
 	root := (*C.uint8_t)(unsafe.Pointer(mapgenResolveListedRoom(uint32(C.dword_5d4594_1550916))))
-	C.nox_mapgenComputeRoomDistancesNative_5259F0(root, nil, 0)
-	C.nox_mapgenClassifyRoomsNative_525AF0(root)
+	nox_mapgenComputeRoomDistancesNative_5259F0(root, nil, 0)
+	nox_mapgenClassifyRoomsNative_525AF0(root)
 	if memmap.Uint32(0x5D4594, 1549980) != 0 {
 		mapgenGenerateBackdrop(theme)
 	}

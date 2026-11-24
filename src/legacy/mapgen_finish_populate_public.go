@@ -157,12 +157,12 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 				internCStr(`C:\NoxPost\src\Server\MapGen\Generate\populate.c`), line)
 			C.mapgenPrintNoExit(text)
 		},
-		maxRoomDistance: func() { C.nox_mapgenMaxRoomDistanceNative_5259D0() },
+		maxRoomDistance: func() { nox_mapgenMaxRoomDistanceNative_5259D0() },
 		firstRoom: func() *mapgenPopulateRoom {
 			return (*mapgenPopulateRoom)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(C.dword_5d4594_1550916)))
 		},
 		nextRoom: func(room *mapgenPopulateRoom) *mapgenPopulateRoom {
-			return (*mapgenPopulateRoom)(unsafe.Pointer(C.nox_mapgenRoomSortedNextNative_525C90((*C.uint8_t)(unsafe.Pointer(room)))))
+			return (*mapgenPopulateRoom)(unsafe.Pointer(nox_mapgenRoomSortedNextNative_525C90((*C.nox_mapgen_readonly_room_t)(unsafe.Pointer(room)))))
 		},
 		decorate: func(theme *mapgenPopulateTheme, room *mapgenPopulateRoom) {
 			nox_mapgenPopulateDecorNative_522340((*C.uint8_t)(unsafe.Pointer(theme)), (*C.uint8_t)(unsafe.Pointer(room)))

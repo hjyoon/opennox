@@ -139,6 +139,6 @@ func sub_521A10(room unsafe.Pointer) {
 func nox_xxx_mapGenFreeTopRoom_521A40() *C.uint32_t {
 	mapgenRooms.releaseAll(mapgenResolveListedRoom, mapgenReleaseListedRoom)
 	C.dword_5d4594_2487560 = 0
-	C.nox_mapgenResetRoomRankingNative()
+	nox_mapgenResetRoomRankingNative()
 	return nil
 }

@@ -24,7 +24,6 @@
 #include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 #include "floor_brush_native.h"
-#include "floor_tile_storage.h"
 
 #include "client__video__draw_common.h"
 #include "common__magic__speltree.h"
@@ -316,68 +315,6 @@ float get_nox_xxx_conjurerMaxHealth_587000_312800();
 float get_nox_xxx_warriorMaxMana_587000_312788();
 float get_nox_xxx_wizardMaximumMana_587000_312820();
 float get_nox_xxx_conjurerMaxMana_587000_312804();
-
-//----- (0051DA70) --------------------------------------------------------
-int nox_floorBrushApplyNative_51DA70(int x, int y, nox_floor_brush_t* brush, int layer, int merge) {
-	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
-    int tile;
-    int variation;
-    if (!brush) {
-        tile =255;
-        variation =0;
-    } else if (brush->pattern && !brush->kind) {
-        tile =brush->tile_id;
-        variation =0;
-        brush->anchor_x =x;
-        brush->anchor_y =y;
-        brush->kind =(uint8_t)layer;
-    } else {
-        int relative_x =x;
-        int relative_y =y;
-        int parity =layer !=1;
-        if (brush->pattern) {
-            relative_x -=brush->anchor_x;
-            relative_y -=brush->anchor_y;
-            parity =brush->kind ==layer ?0 : (brush->kind ==1 ?1 :-1);
-        }
-        tile =brush->tile_id;
-        int width =floor_tiles->definitions[tile].field_52;
-        int height =floor_tiles->definitions[tile].field_53;
-        int column =(relative_y +relative_x) %width;
-        int row =(parity +relative_y -relative_x) %height;
-        if (column <0) column +=width;
-        if (row <0) row +=height;
-        variation =*getMemU32Ptr(0x973F18,35916) ==1
-            ? dword_5d4594_3835348 :column +row *width;
-    }
-    if (layer !=1 && layer !=2) return 0;
-
-    obj_5D4594_2650668_t* cell =&ptr_5D4594_2650668[x][y];
-    int* base_tile =layer ==1 ?&cell->field_1 :&cell->field_6;
-    int* base_variation =layer ==1 ?&cell->field_2 :&cell->field_7;
-    nox_tile_list_node_t** head =layer ==1 ?&cell->field_5 :&cell->field_10;
-    // The left scalar fields and native head are separated by alignment
-    // padding; they cannot be overlaid by a standalone nox_tile_layer_t.
-    if (dword_5d4594_3835352 ==1) {
-        return nox_xxx_tile_543C50(*base_tile,head,tile,variation,
-            brush ?brush->edge_id :255,brush ?brush->edge_variation :0,merge);
-    }
-    if (*base_tile ==tile && *base_variation ==variation) return 0;
-    *base_tile =tile;
-    *base_variation =variation;
-    if (tile ==255) nox_xxx_tileFreeTile_422200(head);
-    uint8_t bit =layer ==1 ?1 :2;
-    if (brush) cell->field_0 |=bit;
-    else cell->field_0 &= (uint8_t)~bit;
-    return 1;
-}
-
-// The preserved integer ABI carries a PE32 mapgen token. Native producers
-// use the typed entry above and never narrow a host brush pointer to int.
-int sub_51DA70(int x, int y, int brush_token, int layer, int merge) {
-    return nox_floorBrushApplyNative_51DA70(x, y,
-        nox_mapgenLegacyPtrResolve((uint32_t)brush_token), layer, merge);
-}
 
 //----- (0051DD50) --------------------------------------------------------
 void sub_51DD50(int a1, int a2, int a3, int a4) {

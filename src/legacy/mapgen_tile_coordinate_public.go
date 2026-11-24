@@ -74,7 +74,7 @@ func mapgenApplyTileQuarter(x, y, dx, dy int32, brush *mapgenFloorBrush,
 }
 
 func mapgenWriteFloorBrush(x, y int32, brush *mapgenFloorBrush, layer int32) int32 {
-	return int32(C.nox_floorBrushApplyNative_51DA70(C.int(x), C.int(y),
+	return int32(nox_floorBrushApplyNative_51DA70(C.int(x), C.int(y),
 		(*C.nox_floor_brush_t)(unsafe.Pointer(brush)), C.int(layer), 0))
 }
 

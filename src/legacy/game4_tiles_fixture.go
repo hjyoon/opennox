@@ -5,12 +5,16 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include "GAME4.h"
+#include "GAME4_2.h"
 #include "GAME4_3.h"
+#include "mapgen_legacy_ptr.h"
 extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern void game4_fixture_release_go(void* p);
 
 extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern uint32_t dword_5d4594_2489436, dword_5d4594_3835356, dword_5d4594_3835360;
+extern uint32_t dword_5d4594_3835352;
+extern void* dword_5d4594_588084;
 #include "floor_tile_storage.h"
 #define nox_tile_def_cnt (nox_floor_tile_storage()->count)
 #define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
@@ -267,3 +271,29 @@ func game4TilesTestEdgeWords() (selected, edge, variation *uint32) {
 func game4TilesTestSelectEdge(name string) int {
 	return int(C.sub_544020(internCStr(name)))
 }
+
+func game4TilesTestBrushState() (*unsafe.Pointer, *uint32) {
+	return &C.dword_5d4594_588084, (*uint32)(&C.dword_5d4594_3835352)
+}
+
+func game4TilesTestApplyBrush(x, y, layer, merge int32, brush *mapgenFloorBrush) int32 {
+	return int32(C.nox_floorBrushApplyNative_51DA70(C.int(x), C.int(y),
+		(*C.nox_floor_brush_t)(unsafe.Pointer(brush)), C.int(layer), C.int(merge)))
+}
+
+func game4TilesTestApplyBrushToken(x, y, layer int32, brush *mapgenFloorBrush) int32 {
+	native := C.calloc(1, C.sizeof_nox_floor_brush_t)
+	if native == nil {
+		return -1
+	}
+	defer C.free(native)
+	*(*mapgenFloorBrush)(native) = *brush
+	token := C.nox_mapgenLegacyPtrRegister(native)
+	if token == 0 {
+		return -1
+	}
+	defer C.nox_mapgenLegacyPtrForget(native)
+	return int32(C.sub_51DA70(C.int(x), C.int(y), C.int(token), C.int(layer), 0))
+}
+
+func game4TilesTestFreeBrushNodes(node unsafe.Pointer) { C.free(node) }

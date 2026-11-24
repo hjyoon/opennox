@@ -56,7 +56,6 @@ extern uint32_t dword_5d4594_529336;
 extern uint32_t dword_5d4594_531656;
 extern void* dword_5d4594_588068;
 extern uint32_t dword_5d4594_608316;
-extern void* dword_5d4594_588084;
 extern uint32_t dword_5d4594_588120;
 extern uint32_t dword_5d4594_528252;
 extern uint32_t dword_587000_60044;
@@ -3689,47 +3688,6 @@ int sub_422140(int a1) {
 }
 #endif
 
-
-//----- (00422160) --------------------------------------------------------
-nox_tile_list_node_t* nox_xxx_tileListAddNewSubtile_422160(int a1, int a2, int a3, int a4) {
-	nox_tile_list_node_t* result = dword_5d4594_588084;
-	if (!result) {
-		result = calloc(10, sizeof(*result));
-		if (!result) {
-			return NULL;
-		}
-		for (int i = 0; i < 9; i++) {
-			result[i].next = &result[i + 1];
-		}
-		dword_5d4594_588084 = result;
-	}
-	dword_5d4594_588084 = result->next;
-	result->field_0 = a1;
-	result->field_1 = a2;
-	result->field_2 = a3;
-	result->field_3 = a4;
-	result->next = NULL;
-	return result;
-}
-
-//----- (004221E0) --------------------------------------------------------
-nox_tile_list_node_t* nox_xxx_tileFreeTileOne_4221E0(void* a1) {
-	nox_tile_list_node_t* node = a1;
-	node->next = dword_5d4594_588084;
-	dword_5d4594_588084 = node;
-	return node;
-}
-
-//----- (00422200) --------------------------------------------------------
-void nox_xxx_tileFreeTile_422200(nox_tile_list_node_t** head) {
-	nox_tile_list_node_t* node = *head;
-	while (node) {
-		nox_tile_list_node_t* next = node->next;
-		nox_xxx_tileFreeTileOne_4221E0(node);
-		node = next;
-	}
-	*head = NULL;
-}
 
 //----- (00422230) --------------------------------------------------------
 int nox_server_mapRWFloorMap_422230(void* region) {

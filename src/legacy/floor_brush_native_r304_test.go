@@ -12,8 +12,10 @@ import (
 
 type floorBrushPartR304 struct{ file, symbol string }
 
-// These are local native C functional checks using complete production bodies,
-// actual native structs and controlled callbacks. They do not execute GAME.EXE,
+const floorBrushReferenceR304 = "testdata/floor_brush_native_r304_reference.c"
+
+// These are local native C functional checks using complete compatibility
+// bodies, actual native structs and controlled callbacks. They do not execute GAME.EXE,
 // a complete classic mapgen run, or the actual Go/CGo function boundary.
 // Original GAME.EXE SHA256:
 // 0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a.
@@ -37,11 +39,11 @@ func floorBrushCompileR304(t *testing.T, group string, parts []floorBrushPartR30
 		// An unanchored name could match a nested call in a condition.
 		starts := regexp.MustCompile(`(?m)^(?:int|void)\s+`+regexp.QuoteMeta(part.symbol)+`\([^;{}]*\)\s*\{`).FindAllIndex(source, -1)
 		if len(starts) != 1 {
-			t.Fatalf("nonunique production function %s", part.symbol)
+			t.Fatalf("nonunique fixture function %s in %s", part.symbol, part.file)
 		}
 		body, _, ok := strings.Cut(string(source[starts[0][0]:]), "\n}\n")
 		if !ok {
-			t.Fatalf("missing production end for %s", part.symbol)
+			t.Fatalf("missing fixture function end for %s", part.symbol)
 		}
 		bodies.WriteString(body + "\n}\n")
 	}
@@ -87,16 +89,16 @@ func TestFloorBrushNativeR304(t *testing.T) {
 		cases []string
 	}{
 		{"CHAIN", []floorBrushPartR304{
-			{"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
+			{floorBrushReferenceR304, "nox_floorBrushApplyNative_51DA70"},
 		}, []string{"descriptor-direct-stack32", "scalar-left", "scalar-right", "dispatch-left", "dispatch-right"}},
 		{"LAYER", []floorBrushPartR304{
-			{"GAME4_3.c", "nox_xxx_tile_543C50"},
+			{floorBrushReferenceR304, "nox_xxx_tile_543C50"},
 		}, []string{"left-head-alignment", "right-head-width", "node-next-append-width", "tail-remove-width", "duplicate-control"}},
 		{"FUNCTIONAL", []floorBrushPartR304{
-			{"GAME4_2.c", "nox_floorBrushApplyNative_51DA70"},
-			{"GAME4_3.c", "nox_xxx_tile_543C50"}, {"GAME4_3.c", "sub_543E60"},
+			{floorBrushReferenceR304, "nox_floorBrushApplyNative_51DA70"},
+			{floorBrushReferenceR304, "nox_xxx_tile_543C50"}, {floorBrushReferenceR304, "sub_543E60"},
 			{"GAME4_3.c", "nox_xxx_tileSubtile_544310"}, {"GAME4_3.c", "sub_543BC0"},
-			{"GAME4_2.c", "sub_51DA70"},
+			{floorBrushReferenceR304, "sub_51DA70"},
 		}, []string{"flag-left", "flag-right", "pattern-negative", "anchor-and-kind", "variation-override", "nil-owned-head", "invalid-layer", "list-sentinels", "merge-append", "merge-map-existing", "merge-unavailable", "merge-coalesce-order", "subtile-producer", "neighbor-writer", "legacy-null-token", "legacy-high-bit-token"}},
 		{"FLOOD", []floorBrushPartR304{
 			{"GAME4_3.c", "sub_5437E0"}, {"GAME4_2.c", "sub_51DD50"}, {"GAME4_2.c", "sub_51DE30"},

@@ -12,6 +12,7 @@ import (
 	"encoding/binary"
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -26,19 +27,12 @@ func nox_xxx_netNotifyRate_4D7F10(player C.int) C.int {
 	return sendImportantPacketBytes(player, []byte{0xec, byte(nox_xxx_rateGet_40A6C0())}, true, true)
 }
 
-func inventoryObjectPacket(op byte, item *nox_object_t) [5]byte {
-	packet := [5]byte{op}
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(nox_xxx_netGetUnitCodeServ_578AC0(item)))
-	binary.LittleEndian.PutUint16(packet[3:5], asObjectS(item).TypeInd)
-	return packet
-}
-
 //export nox_xxx_netReportPickup_4D8A60
 func nox_xxx_netReportPickup_4D8A60(recipient C.int, item *nox_object_t) C.intptr_t {
 	if asObjectS(item).Class().HasAny(object.Class(0x13001000)) {
 		return nox_xxx_netReportModifiablePickup_4D8AD0(recipient, item)
 	}
-	packet := inventoryObjectPacket(75, item)
+	packet := server.ObjectTypePacket(netmsg.MSG_REPORT_PICKUP, asObjectS(item))
 	sendImportantPacketBytes(recipient, packet[:], false, true)
 	return nox_xxx_itemReportHealth_4D87A0(recipient, item)
 }
@@ -46,7 +40,7 @@ func nox_xxx_netReportPickup_4D8A60(recipient C.int, item *nox_object_t) C.intpt
 //export nox_xxx_netReportModifiablePickup_4D8AD0
 func nox_xxx_netReportModifiablePickup_4D8AD0(recipient C.int, item *nox_object_t) C.intptr_t {
 	var packet [9]byte
-	prefix := inventoryObjectPacket(76, item)
+	prefix := server.ObjectTypePacket(netmsg.MSG_REPORT_MODIFIABLE_PICKUP, asObjectS(item))
 	copy(packet[:], prefix[:])
 	attrs := (*server.ModifierInitData)(asObjectS(item).InitData)
 	for i := 0; i < 4; i++ {
@@ -60,7 +54,7 @@ func nox_xxx_netReportModifiablePickup_4D8AD0(recipient C.int, item *nox_object_
 }
 
 func sendInventoryDrop(recipient C.int, item *nox_object_t) C.int {
-	packet := inventoryObjectPacket(77, item)
+	packet := server.ObjectTypePacket(netmsg.MSG_REPORT_DROP, asObjectS(item))
 	return sendImportantPacketBytes(recipient, packet[:], false, true)
 }
 

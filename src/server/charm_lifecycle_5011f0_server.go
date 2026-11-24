@@ -51,15 +51,10 @@ func (s *Server) charmAudio5011F0(id int32, obj *Object) {
 }
 
 func (s *Server) charmReportTotalHealth5013E0(playerInd byte, obj *Object) int {
-	if obj.HealthData == nil {
+	packet, ok := CreatureTotalHealthPacket(obj)
+	if !ok {
 		return 0
 	}
-	var packet [7]byte
-	packet[0] = byte(netmsg.MSG_REPORT_TOTAL_HEALTH)
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(s.GetUnitNetCode(obj)))
-	health := obj.HealthData
-	binary.LittleEndian.PutUint16(packet[3:5], health.Cur)
-	binary.LittleEndian.PutUint16(packet[5:7], health.Max)
 	return s.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
 }
 
@@ -68,10 +63,7 @@ func (s *Server) charmReportAcquire5013E0(
 	obj *Object,
 	gameFlag func(uint32) bool,
 ) int {
-	var packet [5]byte
-	packet[0] = byte(netmsg.MSG_REPORT_ACQUIRE_CREATURE)
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(s.GetUnitNetCode(obj)))
-	binary.LittleEndian.PutUint16(packet[3:5], obj.TypeInd)
+	packet := ObjectTypePacket(netmsg.MSG_REPORT_ACQUIRE_CREATURE, obj)
 	if gameFlag(charmAcquireTypeFlag5013E0) {
 		packet[4] |= 0x80
 	}

@@ -7,6 +7,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
@@ -150,5 +151,51 @@ func TestInventoryJournalPacketsKeepNativeWireAndReturnValues(t *testing.T) {
 		}
 		first, _ := importantNativeListC()
 		checkObjectStatusPacket(t, first, 6, tc.payload, tc.sequence, tc.remove)
+	}
+}
+
+func TestCreatureStatusPacketsKeepHealthOrderingAndMetadata(t *testing.T) {
+	objectStatusTestServer(t, 6)
+	setImportantRecipientMaskC(1 << 6)
+	const acquireFlag = noxflags.GameFlag28
+	oldFlags := noxflags.GetGame()
+	noxflags.SetGame(acquireFlag)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	creature, freeCreature := alloc.NewHigh(server.Object{})
+	t.Cleanup(freeCreature)
+	*creature = server.Object{NetCode: 0x2345, TypeInd: 0x7056, ObjClass: object.ClassMonster}
+	calls := creatureStatusPacketNativeCalls(6, creature)
+	if got := calls[0](); got != 0 {
+		t.Fatalf("unit without health data returned %d", got)
+	}
+	if first, _ := importantNativeListC(); first != nil {
+		t.Fatal("unit without health data queued a packet")
+	}
+	health, freeHealth := alloc.NewHigh(server.HealthData{})
+	t.Cleanup(freeHealth)
+	*health = server.HealthData{Cur: 0x5123, Field2: 0xcafe, Max: 0x7a99}
+	creature.HealthData = health
+	healthPacket := []byte{0xdd, 0x45, 0x23, 0x23, 0x51, 0x99, 0x7a}
+	for i, tc := range []struct {
+		enqueueOrder [][]byte
+		sequence     uint8
+	}{
+		{[][]byte{{108, 0x45, 0x23, 0x56, 0xf0}, healthPacket}, 1},
+		{[][]byte{{0xdb, 0x45, 0x23, 0x56, 0x70}, healthPacket}, 1},
+		{[][]byte{{0xdc, 0x45, 0x23}}, 1},
+		{[][]byte{{104, 0x45, 0x23, 0, 0, 0x2f, 0xc4, 0xf7}}, 0},
+	} {
+		if got := calls[i+1](); got != 1 {
+			t.Fatalf("opcode %#x returned %d", tc.enqueueOrder[0][0], got)
+		}
+		first, _ := importantNativeListC()
+		for j := len(tc.enqueueOrder) - 1; j >= 0; j-- {
+			checkObjectStatusPacket(t, first, 6, tc.enqueueOrder[j], tc.sequence, 1)
+			first = importantPacketNextC(first)
+		}
 	}
 }

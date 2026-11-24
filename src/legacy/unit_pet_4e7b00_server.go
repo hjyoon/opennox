@@ -1,8 +1,6 @@
 package legacy
 
 import (
-	"encoding/binary"
-
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 
@@ -81,31 +79,21 @@ func unitPetRuntimeDeps4E7B00(s *server.Server) unitPetNativeDeps4E7B00 {
 }
 
 func netMonitorCreatureNative4D9250(s *server.Server, playerInd byte, obj *server.Object) int {
-	var packet [5]byte
-	packet[0] = byte(netmsg.MSG_REPORT_MONITOR_CREATURE)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
-	binary.LittleEndian.PutUint16(packet[3:], obj.TypeInd)
+	packet := server.ObjectTypePacket(netmsg.MSG_REPORT_MONITOR_CREATURE, obj)
 	s.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
 	return netReportTotalHealthNative4D85C0(s, playerInd, obj)
 }
 
 func netUnmonitorCreatureNative4D92A0(s *server.Server, playerInd byte, obj *server.Object) int {
-	var packet [3]byte
-	packet[0] = byte(netmsg.MSG_REPORT_UNMONITOR_CREATURE)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
+	packet := creatureUnmonitorPacket(obj)
 	return s.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
 }
 
 func netReportTotalHealthNative4D85C0(s *server.Server, playerInd byte, obj *server.Object) int {
-	if obj.HealthData == nil {
+	packet, ok := server.CreatureTotalHealthPacket(obj)
+	if !ok {
 		return 0
 	}
-	var packet [7]byte
-	packet[0] = byte(netmsg.MSG_REPORT_TOTAL_HEALTH)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
-	health := obj.HealthData
-	binary.LittleEndian.PutUint16(packet[3:], health.Cur)
-	binary.LittleEndian.PutUint16(packet[5:], health.Max)
 	return s.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
 }
 

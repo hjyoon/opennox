@@ -53,3 +53,20 @@ func inventoryJournalNativeCalls(player uint8, plain, modified *server.Object) [
 		func() int64 { return int64(C.nox_xxx_netCreatureCmd_4D7EE0(recipient, -127)) },
 	}
 }
+
+func creatureStatusPacketNativeCalls(player uint8, creature *server.Object) []func() int32 {
+	recipient := C.int(player)
+	unit := asObjectC(creature)
+	speedBits := uint32(0xc42f0000)
+	return []func() int32{
+		func() int32 { return int32(C.nox_xxx_netReportTotalHealth_4D85C0(recipient, unit)) },
+		func() int32 { return int32(C.nox_xxx_netReportAcquireCreature_4D91A0(recipient, unit)) },
+		func() int32 { return int32(C.nox_xxx_netMonitorCreature_4D9250(recipient, unit)) },
+		func() int32 {
+			return int32(C.nox_xxx_netSendUnMonitorCrea_4D92A0(recipient, (*C.uint32_t)(unsafe.Pointer(unit))))
+		},
+		func() int32 {
+			return int32(C.nox_xxx_netReportStatsSpeed_4D9360(recipient, unit, -9, C.int(int32(speedBits))))
+		},
+	}
+}

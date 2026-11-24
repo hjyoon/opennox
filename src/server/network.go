@@ -45,6 +45,27 @@ func (p *Player) EncodeNewPlayerPacket(buf []byte) {
 	}
 }
 
+// ObjectTypePacket encodes an opcode, unit code, and object type.
+func ObjectTypePacket(op netmsg.Op, obj *Object) [5]byte {
+	packet := [5]byte{byte(op)}
+	binary.LittleEndian.PutUint16(packet[1:3], uint16(ObjectNetCode(obj)))
+	binary.LittleEndian.PutUint16(packet[3:5], obj.TypeInd)
+	return packet
+}
+
+// CreatureTotalHealthPacket encodes current and maximum health when available.
+func CreatureTotalHealthPacket(obj *Object) ([7]byte, bool) {
+	if obj.HealthData == nil {
+		return [7]byte{}, false
+	}
+	packet := [7]byte{byte(netmsg.MSG_REPORT_TOTAL_HEALTH)}
+	binary.LittleEndian.PutUint16(packet[1:3], uint16(ObjectNetCode(obj)))
+	health := obj.HealthData
+	binary.LittleEndian.PutUint16(packet[3:5], health.Cur)
+	binary.LittleEndian.PutUint16(packet[5:7], health.Max)
+	return packet, true
+}
+
 func (s *Server) GetOwnIP() string {
 	return s.OwnIPStr
 }

@@ -1750,24 +1750,6 @@ int sub_4D7EA0() {
 }
 #endif
 
-//----- (004D85C0) --------------------------------------------------------
-int nox_xxx_netReportTotalHealth_4D85C0(int a1, nox_object_t* a2) {
-	int result;   // eax
-	uint16_t* v3; // eax
-	char v4[7];   // [esp+4h] [ebp-8h]
-
-	result = a2->health_data != NULL;
-	if (a2->health_data) {
-		v4[0] = -35;
-		*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-		v3 = a2->health_data;
-		*(uint16_t*)&v4[3] = *v3;
-		*(uint16_t*)&v4[5] = v3[2];
-		result = nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 1);
-	}
-	return result;
-}
-
 // GAME.EXE 004D8620 is restored by current_hp_report_4d8620.go. Keep the raw
 // ABI32 body only as provenance; active callers use the typed CGo export in
 // unit_adjust_hp_4ee460.h.
@@ -1957,20 +1939,6 @@ int nox_xxx_earthquakeSend_4D9110(float* a1, int a2) {
 	return 0;
 }
 
-//----- (004D91A0) --------------------------------------------------------
-int nox_xxx_netReportAcquireCreature_4D91A0(int a1, nox_object_t* a2p) {
-	char v3[5]; // [esp+8h] [ebp-8h]
-
-	v3[0] = 108;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2p);
-	*(uint16_t*)&v3[3] = a2p->typ_ind;
-	if (nox_common_gameFlags_check_40A5C0(0x8000000)) {
-		v3[4] |= 0x80u;
-	}
-	nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 1);
-	return nox_xxx_netReportTotalHealth_4D85C0(a1, a2p);
-}
-
 //----- (004D9200) --------------------------------------------------------
 #if 0 // PE32 reference. The packet is sent by the native-width Go entry.
 int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
@@ -1985,37 +1953,7 @@ int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
 }
 #endif
 
-//----- (004D9250) --------------------------------------------------------
-int nox_xxx_netMonitorCreature_4D9250(int a1, nox_object_t* a2) {
-	char v3[5]; // [esp+8h] [ebp-8h]
-
-	v3[0] = -37;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	*(uint16_t*)&v3[3] = a2->typ_ind;
-	nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 1);
-	return nox_xxx_netReportTotalHealth_4D85C0(a1, a2);
-}
-
-//----- (004D92A0) --------------------------------------------------------
-int nox_xxx_netSendUnMonitorCrea_4D92A0(int a1, uint32_t* a2) {
-	char v4[3]; // [esp+0h] [ebp-4h]
-	v4[0] = -36;
-	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 1);
-}
-
 // GAME.EXE 004D92D0 uses a native Go entry.
-
-//----- (004D9360) --------------------------------------------------------
-int nox_xxx_netReportStatsSpeed_4D9360(int a1, nox_object_t* a2, char a3, int a4) {
-	char v5[8]; // [esp+0h] [ebp-8h]
-
-	v5[0] = 104;
-	*(uint16_t*)&v5[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	v5[7] = a3;
-	*(uint32_t*)&v5[3] = a4;
-	return nox_xxx_netSendPacket0_4E5420(a1, v5, 8, 0, 1);
-}
 
 //----- (004D9900) --------------------------------------------------------
 #if 0 // PE32 reference. The native entry shares the Go player-object sender.

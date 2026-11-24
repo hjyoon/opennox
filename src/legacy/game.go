@@ -596,7 +596,7 @@ func Sub_4C4220() {
 	C.sub_4C4220()
 }
 func Nox_xxx_closeP2PTradeWnd_4C12A0() {
-	C.nox_xxx_closeP2PTradeWnd_4C12A0()
+	nox_xxx_closeP2PTradeWnd_4C12A0()
 }
 func Sub_4BFD10() {
 	C.sub_4BFD10()

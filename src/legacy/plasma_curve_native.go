@@ -50,7 +50,7 @@ func plasmaCurveForwardDeltas(steps C.int, x, y [4]int32) (dx, dy [4]float32) {
 	return dx, dy
 }
 
-func addPlasmaCurveLine(from, to C.int2) {
+func addDrawLinePoints(from, to C.int2) {
 	nox_client_drawAddPoint_49F500(int32(from.field_0), int32(from.field_4))
 	nox_client_drawAddPoint_49F500(int32(to.field_0), int32(to.field_4))
 }
@@ -73,19 +73,19 @@ func sub_4BEAD0(a, b, c, d *C.int2, steps, thick C.int) {
 			dy[j] += dy[j+1]
 		}
 		to := C.int2{field_0: plasmaCurveFloatToInt(dx[0]), field_4: plasmaCurveFloatToInt(dy[0])}
-		addPlasmaCurveLine(from, to)
+		addDrawLinePoints(from, to)
 		nox_client_drawSetColor_434460(memmap.Int32(0x5D4594, 1316980))
 		nox_client_drawLineFromPoints_49E4B0()
 		if thick != 0 {
 			// 004BED3D compares the same absolute difference twice.
 			for _, side := range [...]C.int{-1, 1} {
-				addPlasmaCurveLine(C.int2{field_0: to.field_0 + side, field_4: to.field_4},
+				addDrawLinePoints(C.int2{field_0: to.field_0 + side, field_4: to.field_4},
 					C.int2{field_0: from.field_0 + side, field_4: from.field_4})
 				nox_client_drawLineFromPoints_49E4B0()
 			}
 		}
 		if memmap.Uint32(0x5D4594, 1316988) != 0 {
-			addPlasmaCurveLine(from, to)
+			addDrawLinePoints(from, to)
 			nox_draw_set54RGB32_434040(memmap.Int32(0x5D4594, 1316984))
 			sub_434080(memmap.Int32(0x5D4594, 1316992))
 			sub_49E4F0(int32(memmap.Uint8(0x5D4594, 1316996)))

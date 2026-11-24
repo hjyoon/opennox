@@ -170,14 +170,6 @@ func drawableRayPayload(d *client.Drawable) *[13]byte {
 	return (*[13]byte)(unsafe.Pointer(&d.Union))
 }
 
-func drawableRayTarget(code uint16) *client.Drawable {
-	objects := GetClient().Cli().Objs
-	if code&0x8000 != 0 {
-		return objects.ByNetCodeStatic(int(code & 0x7fff))
-	}
-	return objects.ByNetCodeDynamic(int(code))
-}
-
 func drawableRayEndpoints(ray *[13]byte) (from, to C.int2, ok bool) {
 	source := binary.LittleEndian.Uint32(ray[5:9])
 	target := binary.LittleEndian.Uint32(ray[9:13])
@@ -185,7 +177,8 @@ func drawableRayEndpoints(ray *[13]byte) (from, to C.int2, ok bool) {
 		return C.int2{field_0: C.int(uint16(source)), field_4: C.int(source >> 16)},
 			C.int2{field_0: C.int(uint16(target)), field_4: C.int(target >> 16)}, true
 	}
-	src, dst := drawableRayTarget(uint16(source)), drawableRayTarget(uint16(target))
+	objects := GetClient().Cli().Objs
+	src, dst := objects.ByNetCode(uint16(source)), objects.ByNetCode(uint16(target))
 	if src == nil || dst == nil {
 		return from, to, false
 	}

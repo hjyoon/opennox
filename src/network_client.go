@@ -69,6 +69,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return n
 	}
 	switch op {
+	case netmsg.MSG_SEQ_IMPORTANT:
+		return legacy.ClientSequencePacket48D5A0(data, nox_client_isConnected())
 	case netmsg.MSG_AUDIO_EVENT, netmsg.MSG_AUDIO_PLAYER_EVENT:
 		return c.handleAudioEventPacketNative48EA70(op, data)
 	case netmsg.MSG_PLAYER_DIED:

@@ -126,7 +126,7 @@ func Sub_4E4EF0() int {
 	return int(C.sub_4E4EF0())
 }
 func Sub_48D740() {
-	C.sub_48D740()
+	sub_48D740()
 }
 func Sub_473930() {
 	C.sub_473930()
@@ -210,7 +210,7 @@ func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())
 }
 func Sub_48D760() {
-	C.sub_48D760()
+	sub_48D760()
 }
 func Sub_417CF0() {
 	C.sub_417CF0()

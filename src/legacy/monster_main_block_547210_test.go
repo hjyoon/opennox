@@ -75,7 +75,7 @@ func monsterMainBlockLegacyFixture547210(t *testing.T) (*server.Server, *server.
 	return srv, unit, update, missile
 }
 
-// Do not replace 533E70 with a successful test callback: the actual C service
+// Do not replace 533E70 with a successful test callback: the actual shield probe
 // must enumerate the native missile index and apply its geometry, ownership,
 // collision eligibility and vision predicates before MainAI can use it.
 func TestMonsterMainBlock547210ActualMissileProbe(t *testing.T) {
@@ -111,7 +111,7 @@ func TestMonsterMainBlock547210ActualMissileProbe(t *testing.T) {
 				srv.Map.AddObjectToIndex(missile)
 			}
 			if got := Nox_xxx_monsterTestBlockShield_533E70(unit); got != want {
-				t.Fatalf("actual C missile probe=%d, want %d, unit=%p missile=%p", got, want, unit, missile)
+				t.Fatalf("actual missile probe=%d, want %d, unit=%p missile=%p", got, want, unit, missile)
 			}
 		})
 	}
@@ -140,7 +140,7 @@ func TestMonsterMainBlock547210ActualLegacyBinding(t *testing.T) {
 			if Nox_xxx_monsterTestBlockShield_533E70(unit) != 1 {
 				t.Fatal("actual native missile did not qualify for defense")
 			}
-			t.Logf("actual MainAI/C probe: unit=%p update=%p missile=%p", unit, update, missile)
+			t.Logf("actual MainAI shield probe: unit=%p update=%p missile=%p", unit, update, missile)
 			Nox_xxx_monsterMainAIFn_547210(unit)
 			if update.AIStackInd != 1 || update.AIStack[0].Type() != ai.ACTION_FIGHT ||
 				update.AIStackHead().Type() != want || update.AIStackHead().Args != [4]uintptr{uintptr(deadline)} ||

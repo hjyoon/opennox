@@ -280,54 +280,6 @@ void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {
 //----- (00533D00) --------------------------------------------------------
 // Native-width implementation: server/monster_NPC_animation_native_533d00.go.
 
-//----- (00533E70) --------------------------------------------------------
-static nox_object_t* nox_shield_block_missile;
-
-int nox_xxx_monsterTestBlockShield_533E70(nox_object_t* a1) {
-	nox_shield_block_missile = NULL;
-	*getMemU32Ptr(0x5D4594, 2487956) = 0;
-	*getMemU32Ptr(0x5D4594, 2487988) = 1315859240; // fp32 100
-	nox_xxx_getMissilesInCircle_518170((float2*)&a1->x, 100.0, sub_533EB0, a1);
-	return nox_shield_block_missile != NULL;
-}
-
-//----- (00533EB0) --------------------------------------------------------
-void sub_533EB0(nox_object_t* missile, void* unit_ptr) {
-	nox_object_t* unit = unit_ptr;
-	float2 previous = {missile->prev_x, missile->prev_y};
-	if (sub_54E6F0(unit, missile)) {
-		if (nox_server_testTwoPointsAndDirection_4E6E50(
-				(float2*)&unit->x, unit->direction1, &previous) & 1) {
-			int direction = unit->direction1;
-			double projected_x = missile->vel_x * *getMemFloatPtr(0x587000, 194136 + 8 * direction);
-			double projected_y = missile->vel_y * *getMemFloatPtr(0x587000, 194140 + 8 * direction);
-			float* direction_vector = getMemFloatPtr(0x587000, 194136 + 8 * direction);
-			if (projected_x + projected_y < 0.0) {
-				float dx = missile->x - unit->x;
-				float dy = missile->y - unit->y;
-				double perpendicular = direction_vector[0] * dy - direction_vector[1] * dx;
-				if (perpendicular < 0.0) {
-					perpendicular = -perpendicular;
-				}
-				if (perpendicular < 20.0) {
-					double speed = sqrt(missile->vel_x * missile->vel_x + missile->vel_y * missile->vel_y);
-					float normalized_x = missile->vel_x / speed;
-					float distance = sqrt(dy * dy + dx * dx);
-					if (missile->vel_y / speed * -(dy / distance) + normalized_x * -(dx / distance) > 0.69999999) {
-						if (nox_xxx_unitCanInteractWith_5370E0(unit, missile, 0)) {
-							if (distance < *getMemFloatPtr(0x5D4594, 2487988)) {
-								nox_shield_block_missile = missile;
-								*getMemU32Ptr(0x5D4594, 2487956) = 1;
-								*getMemFloatPtr(0x5D4594, 2487988) = distance;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 //----- (00534020) --------------------------------------------------------
 // Native-width implementation: server/monster_combat_predicates_534020.go.
 

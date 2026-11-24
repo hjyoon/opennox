@@ -535,7 +535,7 @@ func Sub_4F9A80(a1 *server.Object) int {
 	return int(C.sub_4F9A80(asObjectC(a1)))
 }
 func Nox_xxx_monsterTestBlockShield_533E70(a1 *server.Object) int {
-	return int(C.nox_xxx_monsterTestBlockShield_533E70(asObjectC(a1)))
+	return monsterTestBlockShield533E70(a1)
 }
 func Nox_common_mapPlrActionToStateId_4FA2B0(a1 *server.Object) int {
 	return int(GetServer().S().PlayerActionState4FA2B0(a1))

@@ -4,8 +4,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME4_2.h"
 #include "cgo_const.h"
-
-extern uint32_t dword_5d4594_1549844;
 */
 import "C"
 
@@ -90,7 +88,7 @@ func mapgenFinishHall(hall, parent, avoid *C.uint8_t, depth, hallDepth, width C.
 			validKind = !mapgenIsHall(uint32(existing.kind))
 		}
 		if !validKind || existing.flags&2 != 0 || unsafe.Pointer(existing) == unsafe.Pointer(avoid) ||
-			nox_xxx_mapGenRandFunc_526AC0(1, 100) > C.int(C.dword_5d4594_1549844) ||
+			nox_xxx_mapGenRandFunc_526AC0(1, 100) > C.int(memmap.Int32(0x5D4594, mapgenThemeOffset+4*mapgenThemeMergeRateIndex)) ||
 			nox_mapgenAdjustHallNative_523A10(hall, (*C.nox_mapgen_readonly_float_t)(unsafe.Pointer(existing))) == 0 {
 			sub_521A10(raw)
 			return false

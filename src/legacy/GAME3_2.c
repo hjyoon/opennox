@@ -70,7 +70,6 @@ static float nox_modifierSpeedAddChop32_4DFC5B(float left, float right) {
 
 extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_3835360;
-extern uint32_t dword_5d4594_1549844;
 extern uint32_t dword_5d4594_3835364;
 extern uint32_t dword_5d4594_1556128;
 extern uint32_t dword_5d4594_1556136;

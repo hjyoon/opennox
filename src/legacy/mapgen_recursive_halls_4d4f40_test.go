@@ -164,3 +164,22 @@ func TestMapgenRecursiveHalls4D4F40PreserveNativePointers(t *testing.T) {
 		}
 	}
 }
+
+func TestMapgenRoomExpansionUsesThemeMergeRate(t *testing.T) {
+	InitBlobData()
+	preserveLegacyCRTRand315(t)
+	for _, tc := range []struct {
+		rate, wantLength int32
+		wantLinks        uint8
+	}{
+		{-1, 0, 0},
+		{0, 0, 0},
+		{100, 4, 1},
+	} {
+		joined, length, links := mapgenHallMergeRateFixture(tc.rate)
+		if joined != (tc.wantLinks != 0) || length != tc.wantLength || links != tc.wantLinks {
+			t.Errorf("merge rate %d: joined %v, hall length %d and target links %d, want length %d and links %d",
+				tc.rate, joined, length, links, tc.wantLength, tc.wantLinks)
+		}
+	}
+}

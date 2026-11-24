@@ -16,10 +16,12 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+const mapgenThemeMergeRateIndex = 12
+
 var mapgenAlgorithmIntegerFields = map[string]int{
 	"MIDHALLLENGTH": 1, "HALLLENGTHVARIANCE": 2, "MIDHALLWIDTH": 3, "HALLWIDTHVARIANCE": 4,
 	"HALLLIMIT": 5, "HALLBRANCHRATE": 6, "HALLROOMRATE": 7, "MIDROOMSIZE": 8,
-	"ROOMVARIANCE": 9, "IRREGULARROOMRATE": 10, "EMPTYROOMRATE": 11, "MERGERATE": 12,
+	"ROOMVARIANCE": 9, "IRREGULARROOMRATE": 10, "EMPTYROOMRATE": 11, "MERGERATE": mapgenThemeMergeRateIndex,
 	"ADJACENTPORTALRATE": 13, "RECURSIONLIMIT": 18, "SEED": 19,
 }
 

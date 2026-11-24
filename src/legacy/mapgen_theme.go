@@ -70,7 +70,7 @@ func nox_mapgenReadThemeNative_51E260(record *C.int, name *C.nox_cgo_const_char)
 	}
 	*theme = [mapgenThemeWordCount]C.int{
 		1: 5, 2: 2, 3: 3, 4: 1, 5: 3, 6: 40, 7: 20, 8: 10, 9: 5, 10: 20,
-		12: 100, 13: 100, 14: 1, 16: 1157234688, 18: 100, 19: C.int(time.Now().Unix()),
+		mapgenThemeMergeRateIndex: 100, 13: 100, 14: 1, 16: 1157234688, 18: 100, 19: C.int(time.Now().Unix()),
 	}
 	*memmap.PtrUint32(0x5D4594, 2487520) = 0
 	themeName := "(null)"

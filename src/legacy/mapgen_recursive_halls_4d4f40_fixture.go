@@ -9,7 +9,6 @@ package legacy
 #include "mapgen_legacy_ptr.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_1549844;
 extern uint32_t dword_5d4594_1550912;
 extern uint32_t dword_5d4594_1550916;
 
@@ -53,7 +52,6 @@ static nox_test_mapgen_recursive_halls_4d4f40_result nox_test_mapgen_recursive_h
 	uint8_t saved_theme[0x45C];
 	uint32_t saved_tracking_head = dword_5d4594_1550912;
 	uint32_t saved_root = dword_5d4594_1550916;
-	uint32_t saved_join_chance = dword_5d4594_1549844;
 	int* max_depth = getMemIntPtr(0x5D4594, 1549868);
 	int* max_hall_depth = getMemIntPtr(0x5D4594, 1549816);
 	int* branch_chance = getMemIntPtr(0x5D4594, 1549820);
@@ -136,7 +134,7 @@ static nox_test_mapgen_recursive_halls_4d4f40_result nox_test_mapgen_recursive_h
 	*max_hall_depth = 0;
 	*branch_chance = 100;
 	*room_chance = 100;
-	dword_5d4594_1549844 = 100;
+	*(int32_t*)(theme + 48) = 100;
 	nox_xxx_mapGenSetRngSeed_526AB0(0x4D5630u);
 	out.recursive_grid_initialized = sub_520EA0(theme);
 	if (out.recursive_grid_initialized) {
@@ -177,7 +175,6 @@ static nox_test_mapgen_recursive_halls_4d4f40_result nox_test_mapgen_recursive_h
 	*max_hall_depth = saved_max_hall_depth;
 	*branch_chance = saved_branch_chance;
 	*room_chance = saved_room_chance;
-	dword_5d4594_1549844 = saved_join_chance;
 	dword_5d4594_1550912 = saved_tracking_head;
 	dword_5d4594_1550916 = saved_root;
 	return out;
@@ -201,12 +198,11 @@ func mapgenRoomExpansionFixture() (int32, [4]uint8) {
 	defer restore()
 	theme := mapgenExpansionTheme()
 	words := (*[mapgenThemeWordCount]C.uint32_t)(unsafe.Pointer(theme))
-	saved, joinRate := *words, C.dword_5d4594_1549844
-	defer func() { *words, C.dword_5d4594_1549844 = saved, joinRate }()
+	saved := *words
+	defer func() { *words = saved }()
 	*words = [mapgenThemeWordCount]C.uint32_t{
 		1: 6, 3: 2, 8: 5, 16: C.uint32_t(math.Float32bits(4096)), 17: 128, 18: 2,
 	}
-	C.dword_5d4594_1549844 = 0
 	if C.sub_520EA0(theme) == 0 {
 		return 0, [4]uint8{}
 	}
@@ -336,4 +332,47 @@ func mapgenRecursiveHallsFixture4D4F40() mapgenRecursiveHallsResult4D4F40 {
 		recursiveChildType:         int(got.recursive_child_type),
 		cleanupHeadIsNull:          got.cleanup_head_is_null != 0,
 	}
+}
+
+func mapgenHallMergeRateFixture(rate int32) (joined bool, hallLength int32, targetLinks uint8) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	theme := mapgenExpansionTheme()
+	words := (*[mapgenThemeWordCount]C.uint32_t)(unsafe.Pointer(theme))
+	saved := *words
+	defer func() { *words = saved }()
+	*words = [mapgenThemeWordCount]C.uint32_t{
+		mapgenThemeMergeRateIndex: C.uint32_t(rate), 16: C.uint32_t(math.Float32bits(4096)), 17: 128,
+	}
+	if sub_520EA0(theme) == 0 {
+		return
+	}
+	defer sub_520F80()
+	defer nox_xxx_mapGenFreeTopRoom_521A40()
+
+	root := nox_xxx_mapGenMakeRoomStruct_521940(5, 5)
+	if root == nil {
+		return
+	}
+	mapgenPlaceStartingRoom(root, &C.float2{})
+	target := nox_xxx_mapGenMakeRoomStruct_521940(5, 5)
+	if target == nil {
+		return
+	}
+	mapgenPlaceStartingRoom(target, &C.float2{field_0: C.float(9 * mapgenCellSize)})
+
+	hall := nox_mapgenMakeHallStructNative_523E30(4, 2, 6)
+	if hall == nil {
+		return
+	}
+	raw := (*C.uint8_t)(unsafe.Pointer(hall))
+	origin := C.float2{field_0: C.float(5 * mapgenCellSize), field_4: C.float(mapgenCellSize)}
+	nox_xxx_mapGenSetRoomPos_521880((*C.uint32_t)(unsafe.Pointer(hall)), &origin)
+	nox_platform_srand(1)
+	joined = mapgenFinishHall(raw, (*C.uint8_t)(unsafe.Pointer(root)), nil, 0, 1, 2, true)
+	if joined {
+		hallLength = int32((*mapgenRoomGeometry)(unsafe.Pointer(hall)).cellDimensions[0])
+	}
+	targetLinks = (*mapgenRoomLinkRecord)(unsafe.Pointer(target)).counts[3]
+	return
 }

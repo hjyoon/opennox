@@ -239,11 +239,6 @@ int nox_xxx_netSendPointFx_522FF0(char a1, float2* a2) {
 }
 #endif
 
-//----- (00523030) --------------------------------------------------------
-int nox_xxx_netSendFxAllCli_523030(float2* a1, const void* a2, int a3) {
-	return nox_xxx_netSendFxAllCliNative_523030(a1, (void*)a2, a3);
-}
-
 //----- (00523150) --------------------------------------------------------
 // Ported to point_fx_native.go; retained as inactive source references.
 #if 0
@@ -288,28 +283,6 @@ void nox_xxx_sendGeneratorBreakFX_523200(float* a1, char a2) {
 	nox_xxx_netSendFxAllCli_523030((float2*)a1, v5, 7);
 }
 #endif
-
-//----- (00523270) --------------------------------------------------------
-int nox_xxx_netSendVampFx_523270(char a1, short* a2, short a3) {
-	short v3;          // dx
-	unsigned short v4; // cx
-	unsigned short v5; // ax
-	float2 a1a;        // [esp+0h] [ebp-14h]
-	char a2a[11];      // [esp+8h] [ebp-Ch]
-
-	a2a[0] = a1;
-	v3 = a2[2];
-	*(uint16_t*)&a2a[1] = *a2;
-	v4 = a2[4];
-	v5 = a2[6];
-	*(uint16_t*)&a2a[3] = v3;
-	*(uint16_t*)&a2a[5] = v4;
-	*(uint16_t*)&a2a[7] = v5;
-	a1a.field_0 = (double)v4;
-	*(uint16_t*)&a2a[9] = a3;
-	a1a.field_4 = (double)v5;
-	return nox_xxx_netSendFxAllCli_523030(&a1a, a2a, 11);
-}
 
 //----- (00523530) --------------------------------------------------------
 // Native-width entry: predict_linear_native.go. Preserve the incoming body.
@@ -364,76 +337,6 @@ int nox_xxx_netClientPredictLinear_523530(int a1) {
 // Progress packets are emitted by mapgen_progress.go.
 
 // GAME.EXE 00523670 uses the Go Shield effect entry.
-
-//----- (005236F0) --------------------------------------------------------
-int nox_xxx_sendSummonStartFX_5236F0(short a1, float* a2, char a3, short a4, short a5) {
-	double v5;    // st7
-	long long v6; // rax
-	double v7;    // st7
-	char v9[12];  // [esp+4h] [ebp-Ch]
-
-	v9[0] = 126;
-	*(uint16_t*)&v9[5] = a1;
-	*(uint16_t*)&v9[7] = a4;
-	v5 = *a2;
-	v9[9] = a3;
-	v6 = (long long)v5;
-	v7 = a2[1];
-	*(uint16_t*)&v9[1] = v6;
-	*(uint16_t*)&v9[3] = (long long)v7;
-	*(uint16_t*)&v9[10] = a5;
-	return nox_xxx_netSendPacket0_4E5420(255, v9, 12, 0, 1);
-}
-
-//----- (00523760) --------------------------------------------------------
-int nox_xxx_sendSummonCancelFX_523760(short a1) {
-	char v3[3]; // [esp+0h] [ebp-4h]
-	v3[0] = 127;
-	*(uint16_t*)&v3[1] = a1;
-	return nox_xxx_netSendPacket0_4E5420(255, v3, 3, 0, 1);
-}
-
-//----- (00523830) --------------------------------------------------------
-void nox_xxx_sendGeneratorSpawnFX_523830(int4* a1, short a2) {
-	double v2;    // st7
-	short v3;     // cx
-	short v4;     // dx
-	double v5;    // st7
-	short v6;     // cx
-	float2 a1a;   // [esp+0h] [ebp-14h]
-	char a2a[12]; // [esp+8h] [ebp-Ch]
-
-	a2a[0] = -16;
-	a2a[1] = 16;
-	v2 = (double)a1->field_8;
-	v3 = a1->field_0;
-	*(uint16_t*)&a2a[4] = a1->field_4;
-	v4 = a1->field_C;
-	a1a.field_0 = v2;
-	v5 = (double)a1->field_C;
-	*(uint16_t*)&a2a[2] = v3;
-	v6 = a1->field_8;
-	*(uint16_t*)&a2a[8] = v4;
-	*(uint16_t*)&a2a[6] = v6;
-	a1a.field_4 = v5;
-	*(uint16_t*)&a2a[10] = a2;
-	nox_xxx_netSendFxAllCli_523030(&a1a, a2a, 12);
-}
-
-//----- (005238A0) --------------------------------------------------------
-void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2) {
-	short v2;   // ax
-	float v3;   // ecx
-	char v5[6]; // [esp+4h] [ebp-8h]
-
-	v5[0] = -95;
-	v2 = nox_float2int16(*a1);
-	v3 = a1[1];
-	*(uint16_t*)&v5[1] = v2;
-	*(uint16_t*)&v5[3] = nox_float2int16(v3);
-	v5[5] = a2;
-	nox_xxx_netSendFxAllCli_523030((float2*)a1, v5, 6);
-}
 
 // Hall orientation and allocation are implemented in mapgen_hall.go.
 

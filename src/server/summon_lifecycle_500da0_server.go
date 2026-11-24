@@ -125,13 +125,13 @@ func (s *Server) summonPlacement500F40(
 	})
 }
 
-func (s *Server) sendSummonStartEffect500DA0(
+func SummonStartEffectPacket(
 	effectID uint16,
 	position types.Pointf,
 	direction byte,
 	typeID uint16,
 	duration uint16,
-) {
+) [12]byte {
 	var packet [12]byte
 	packet[0] = 126
 	binary.LittleEndian.PutUint16(packet[1:3], uint16(int64(position.X)))
@@ -140,13 +140,29 @@ func (s *Server) sendSummonStartEffect500DA0(
 	binary.LittleEndian.PutUint16(packet[7:9], typeID)
 	packet[9] = direction
 	binary.LittleEndian.PutUint16(packet[10:12], duration)
+	return packet
+}
+
+func (s *Server) sendSummonStartEffect500DA0(
+	effectID uint16,
+	position types.Pointf,
+	direction byte,
+	typeID uint16,
+	duration uint16,
+) {
+	packet := SummonStartEffectPacket(effectID, position, direction, typeID, duration)
 	_ = s.NetSendPacketXxx0(255, packet[:], nil, 1)
 }
 
-func (s *Server) sendSummonCancelEffect5011C0(effectID uint16) {
+func SummonCancelEffectPacket(effectID uint16) [3]byte {
 	var packet [3]byte
 	packet[0] = 127
 	binary.LittleEndian.PutUint16(packet[1:3], effectID)
+	return packet
+}
+
+func (s *Server) sendSummonCancelEffect5011C0(effectID uint16) {
+	packet := SummonCancelEffectPacket(effectID)
 	_ = s.NetSendPacketXxx0(255, packet[:], nil, 1)
 }
 

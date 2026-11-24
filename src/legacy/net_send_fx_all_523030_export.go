@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "net_send_fx_all_523030.h"
+#include "cgo_const.h"
 */
 import "C"
 
@@ -19,6 +20,11 @@ func netSendFxAllCliEntry523030(pos types.Pointf, data []byte) int32 {
 	return int32(C.nox_xxx_netSendFxAllCli_523030(
 		(*C.float2)(unsafe.Pointer(&pos)), ptr, C.int(len(data)),
 	))
+}
+
+//export nox_xxx_netSendFxAllCli_523030
+func nox_xxx_netSendFxAllCli_523030(pos *C.float2, data *C.nox_cgo_const_void, size C.int) C.int {
+	return nox_xxx_netSendFxAllCliNative_523030(pos, unsafe.Pointer(data), size)
 }
 
 //export nox_xxx_netSendFxAllCliNative_523030

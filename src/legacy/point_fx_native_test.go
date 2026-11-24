@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -197,6 +198,73 @@ func TestPointFXNativeNestedPacketOwnership(t *testing.T) {
 		}
 		if got := pointFXActualCall(route, 0, 0xf0, 0, point); got != -1 || calls != 2 {
 			t.Fatal("outer result/count", got, calls)
+		}
+	}
+}
+
+func TestPointFXExtendedNativePacking(t *testing.T) {
+	old := pointFXRuntimeForCall522FF0
+	t.Cleanup(func() { pointFXRuntimeForCall522FF0 = old })
+	point := types.Ptf(12.9, -3.9)
+	for _, tc := range []struct {
+		name     string
+		call     func() int32
+		position types.Pointf
+		packet   []byte
+		result   int32
+	}{
+		{"vampirism", pointFXVampirismActualCall, types.Ptf(65534, 4660), []byte{0xa2, 0xff, 0xff, 0, 0x80, 0xfe, 0xff, 0x34, 0x12, 0x23, 0x81}, -17},
+		{"generator", pointFXGeneratorSpawnActualCall, types.Ptf(65539, -70000), []byte{0xf0, 16, 0xff, 0xff, 2, 0, 3, 0, 0x90, 0xee, 0xcd, 0xab}, 0},
+		{"arrow trap", func() int32 { return pointFXArrowTrapActualCall(&point) }, point, []byte{0xa1, 12, 0, 0xfd, 0xff, 0x85}, 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			pointFXRuntimeForCall522FF0 = func() server.PointFXNativeRuntime522FF0 {
+				return server.PointFXNativeRuntime522FF0{Send: func(position *types.Pointf, packet []byte) int32 {
+					calls++
+					if *position != tc.position || !bytes.Equal(packet, tc.packet) {
+						t.Fatalf("center %v and payload %x, want %v and %x", *position, packet, tc.position, tc.packet)
+					}
+					return -17
+				}}
+			}
+			if result := tc.call(); calls != 1 || result != tc.result {
+				t.Fatalf("calls %d and return %d, want 1 and %d", calls, result, tc.result)
+			}
+		})
+	}
+}
+
+func TestSummonFXNativeQueuesPackets(t *testing.T) {
+	handles.InitHigh()
+	t.Cleanup(handles.Release)
+	preserveImportantPacketState(t)
+	setImportantNativeListC(nil, nil)
+	pool := alloc.NewClassHigh("summon-effects-contract", importantPacketSizeC(), 2)
+	setImportantAllocClassC(pool.UPtr())
+	setImportantRecipientMaskC(1 << 6)
+	gameFrameHook = func() uint32 { return 7 }
+	for _, tc := range []struct {
+		start   bool
+		payload []byte
+	}{
+		{true, []byte{0x7e, 12, 0, 0xfd, 0xff, 0xef, 0xbe, 0x34, 0x12, 0x85, 0x67, 0x45}},
+		{false, []byte{0x7f, 0xef, 0xbe}},
+	} {
+		if result := pointFXSummonActualCall(tc.start); result != 1 {
+			t.Fatalf("summon opcode %#x returned %d", tc.payload[0], result)
+		}
+		first, _ := importantNativeListC()
+		if first == nil {
+			t.Fatalf("summon opcode %#x queued no packet", tc.payload[0])
+		}
+		packet := (*importantPacketLegacy)(first)
+		if got := packet.Payload[:int(packet.PayloadSize)]; !bytes.Equal(got, tc.payload) {
+			t.Fatalf("summon payload %x, want %x", got, tc.payload)
+		}
+		if byte(packet.Recipient) != 255 || packet.SequenceEnabled != 0 || packet.RemoveIfDisconnected != 1 ||
+			packet.CreatedFrame != 7 || importantPacketRelatedObjectC(first) != nil {
+			t.Fatalf("summon opcode %#x changed its broadcast queue options", tc.payload[0])
 		}
 	}
 }

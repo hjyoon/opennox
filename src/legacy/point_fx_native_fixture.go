@@ -67,3 +67,27 @@ func pointFXActualCall(route, root int, op, subtype byte, point *types.Pointf) i
 		panic("unknown point FX root")
 	}
 }
+
+func pointFXVampirismActualCall() int32 {
+	coordinates := [7]C.short{-1, 111, -32768, 222, -2, 333, 0x1234}
+	return int32(C.nox_xxx_netSendVampFx_523270(-94, &coordinates[0], -32477))
+}
+
+func pointFXGeneratorSpawnActualCall() int32 {
+	coordinates := C.int4{field_0: -1, field_4: 65538, field_8: 65539, field_C: -70000}
+	C.nox_xxx_sendGeneratorSpawnFX_523830(&coordinates, -21555)
+	return 0
+}
+
+func pointFXArrowTrapActualCall(point *types.Pointf) int32 {
+	C.nox_xxx_sendArrowTrapFX_5238A0((*C.float)(unsafe.Pointer(point)), -123)
+	return 0
+}
+
+func pointFXSummonActualCall(start bool) int32 {
+	if start {
+		position := C.float2{field_0: 12.9, field_4: -3.9}
+		return int32(C.nox_xxx_sendSummonStartFX_5236F0(-16657, &position.field_0, -123, 0x1234, 0x4567))
+	}
+	return int32(C.nox_xxx_sendSummonCancelFX_523760(-16657))
+}

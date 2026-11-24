@@ -82,7 +82,7 @@ func TestFloatConversionWidthsOriginalNativeC(t *testing.T) {
 	} {
 		definitions = append(definitions, extract("GAME1_1.c", marker))
 	}
-	definitions = append(definitions, extract("GAME4_2.c", "void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2)"))
+	definitions = append(definitions, extract("testdata/arrow_trap_fx_before_go.c", "void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2)"))
 	const harness = `
 #include <math.h>
 #include <stdint.h>

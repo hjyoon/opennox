@@ -607,14 +607,19 @@ func (s *Server) Nox_xxx_netSendFxGreenBolt_523790(p1, p2 image.Point, a2 int) {
 	s.Nox_xxx_netSendFxAllCli_523030(pos, buf[:11])
 }
 
-func (s *Server) Nox_xxx_netSendVampFx_523270(fx netmsg.Op, p1, p2 image.Point, a3 int) {
+func VampirismFXPacket523270(fx netmsg.Op, p1, p2 image.Point, amount uint16) [11]byte {
 	var buf [11]byte
 	buf[0] = byte(fx)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(p1.X))
 	binary.LittleEndian.PutUint16(buf[3:], uint16(p1.Y))
 	binary.LittleEndian.PutUint16(buf[5:], uint16(p2.X))
 	binary.LittleEndian.PutUint16(buf[7:], uint16(p2.Y))
-	binary.LittleEndian.PutUint16(buf[9:], uint16(a3))
+	binary.LittleEndian.PutUint16(buf[9:], amount)
+	return buf
+}
+
+func (s *Server) Nox_xxx_netSendVampFx_523270(fx netmsg.Op, p1, p2 image.Point, a3 int) {
+	buf := VampirismFXPacket523270(fx, p1, p2, uint16(a3))
 	pos := types.Pointf{
 		X: float32(p2.X),
 		Y: float32(p2.Y),

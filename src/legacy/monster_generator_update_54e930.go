@@ -156,10 +156,7 @@ func monsterGeneratorRuntime54E930() server.MonsterGeneratorRuntime54E930 {
 			outer.NoxScriptC().ScriptCallback(callback, caller, trigger, event)
 		},
 		SendSpawnFX: func(values [4]int32, length int16) {
-			C.nox_xxx_sendGeneratorSpawnFX_523830(
-				(*C.int4)(unsafe.Pointer(&values)),
-				C.short(length),
-			)
+			server.SendGeneratorSpawnFXNative523830(values, uint16(length), pointFXRuntimeForCall522FF0())
 		},
 		InventoryPut: func(owner, item *server.Object, report int32) {
 			inventoryPutImpl4F3070(owner, item, report != 0)

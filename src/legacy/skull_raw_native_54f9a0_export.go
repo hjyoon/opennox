@@ -47,7 +47,7 @@ func skullRawRuntime54F9A0() server.SkullRawRuntime54F9A0 {
 			C.nox_xxx_aud_501960(C.int(int32(id)), asObjectC(source), 0, 0)
 		},
 		TrapFX: func(position *types.Pointf, variant uint32) {
-			C.nox_xxx_sendArrowTrapFX_5238A0((*C.float)(unsafe.Pointer(position)), C.char(variant))
+			server.SendArrowTrapFXNative5238A0(position, byte(variant), pointFXRuntimeForCall522FF0())
 		},
 		Enumerate: func(rect types.Rectf, source *server.Object, callback func(*server.Object, *server.Object)) {
 			GetServer().S().Map.EachObjInRect(rect, func(candidate *server.Object) bool { callback(candidate, source); return true })

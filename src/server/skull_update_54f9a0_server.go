@@ -1,8 +1,6 @@
 package server
 
 import (
-	"encoding/binary"
-
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
@@ -145,9 +143,7 @@ func skullUpdateNative54F9A0(source *Object, deps skullUpdateNativeDeps54F9A0) u
 func skullArrowTrapFXPacket5238A0(position types.Pointf, variant byte) [6]byte {
 	var packet [6]byte
 	packet[0] = byte(netmsg.MSG_FX_ARROW_TRAP)
-	// nox_float2int16 truncates toward zero and then retains the low word.
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(int32(position.X)))
-	binary.LittleEndian.PutUint16(packet[3:5], uint16(int32(position.Y)))
+	pointFXNativeCoordinates522FF0(packet[1:5], &position)
 	packet[5] = variant
 	return packet
 }

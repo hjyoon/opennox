@@ -3719,69 +3719,6 @@ LABEL_A:
 // 4C4AD0: variable 'v35' is possibly undefined
 // 4C4AD0: variable 'v34' is possibly undefined
 
-//----- (004C4EC0) --------------------------------------------------------
-char sub_4C4EC0(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	nox_drawable* local = getMemPtr(0x852978, 8);
-	if (local && nox_client_drawable_testBuff_4356C0(local, 21)) {
-		return -1;
-	}
-	int x = (int)dr->pos.x - (int)vp->width / 2 - (int)vp->field_4;
-	int y = (int)dr->pos.y - (int)vp->height / 2 - (int)vp->field_5;
-	int divisor = *getMemU32Ptr(0x587000, 185464);
-	if (!divisor) {
-		return 0;
-	}
-	int alpha = 128 - ((x * x + y * y) << 7) / divisor;
-	if (alpha < 0) {
-		return 0;
-	}
-	if (alpha > 128) {
-		alpha = 128;
-	}
-	return (char)alpha;
-}
-
-#if 0 // Superseded by the native-layout implementation above.
-static char sub_4C4EC0_legacy(uint32_t* a1, int a2) {
-	int v3; // ecx
-	int v4; // eax
-	int v5; // ecx
-
-	if (*getMemU32Ptr(0x852978, 8) && nox_client_drawable_testBuff_4356C0(*getMemIntPtr(0x852978, 8), 21)) {
-		return -1;
-	}
-	v3 = *(uint32_t*)(a2 + 12) - a1[8] / 2 - a1[4];
-	v4 = *(uint32_t*)(a2 + 16) - a1[9] / 2 - a1[5];
-	v5 = 128 - ((v3 * v3 + v4 * v4) << 7) / *getMemU32Ptr(0x587000, 185464);
-	if (v5 < 0) {
-		return 0;
-	}
-	if (v5 > 128) {
-		LOBYTE(v5) = -128;
-	}
-	return v5;
-}
-#endif
-
-//----- (004C4F40) --------------------------------------------------------
-short nox_xxx_drawShinySpot_4C4F40(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	nox_things_imageRef_t* ref = getMemPtr(0x5D4594, 1321524);
-	if (!ref) {
-		ref = nox_xxx_gLoadAnim_42FA20("ShinySpot");
-		setMemPtr(0x5D4594, 1321524, ref);
-	}
-	nox_image_ref_anim_t* anim = ref->field_24;
-	unsigned int period = 8u * anim->images_sz;
-	unsigned int elapsed = gameFrame() + dr->field_32;
-	unsigned int cycle = elapsed / period;
-	unsigned int frame = (elapsed % period) >> 1;
-	if (frame < anim->images_sz) {
-		nox_client_drawImageAt_47D2C0(anim->images[frame], (int)dr->pos.x - (int)vp->field_4 + (int)vp->x1 - 64,
-								  (int)vp->y1 - dr->field_26_1 - dr->z - (int)vp->field_5 + (int)dr->pos.y - 64);
-	}
-	return cycle;
-}
-
 //----- (004C5050) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
 void sub_4C5050() { dword_5d4594_1321800 = 0; }

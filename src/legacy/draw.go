@@ -593,7 +593,7 @@ func Sub_476AE0(vp *noxrender.Viewport, dr *client.Drawable) {
 }
 
 func Nox_xxx_drawShinySpot_4C4F40(vp *noxrender.Viewport, dr *client.Drawable) {
-	C.nox_xxx_drawShinySpot_4C4F40((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
+	drawShinySpot4C4F40(vp, dr)
 }
 
 func Sub_499F60(p int, pos image.Point, a4 int, a5, a6, a7, a8, a9 int, a10 int) {

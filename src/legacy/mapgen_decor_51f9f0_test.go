@@ -1,11 +1,15 @@
 package legacy
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"strconv"
 	"testing"
+	"unsafe"
 
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 )
 
@@ -16,6 +20,42 @@ func writeMapgenDecorFixture51F9F0(t *testing.T, name, contents string) string {
 		t.Fatal(err)
 	}
 	return path
+}
+
+func TestMapgenDecorConstraintNative520810(t *testing.T) {
+	handles.InitHigh()
+	t.Cleanup(handles.Release)
+	scratch := memmap.Slice(0x5D4594, 2487264)[:256]
+	oldScratch := bytes.Clone(scratch)
+	t.Cleanup(func() { copy(scratch, oldScratch) })
+	for i, name := range []string{"One", "Two", "Three", ""} {
+		slot := memmap.PtrPtr(0x587000, 253144+4*uintptr(i))
+		old := *slot
+		t.Cleanup(func() { *slot = old })
+		if name == "" {
+			*slot = nil
+		} else {
+			*slot = unsafe.Pointer(alloc.InternCString(name))
+		}
+	}
+	for _, tc := range []struct {
+		name, text, wantScratch string
+		mask                    byte
+		ok                      bool
+	}{
+		{"separator spans", "+one++Two+THREE+\n", "+one\x00+Two\x00THREE\x00\x00", 7, true},
+		{"unknown after match", "One+Bad+Three\n", "One\x00Bad\x00Three\x00", 1, false},
+		{"none", "nOnE\n", "nOnE\x00", 0, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			path := writeMapgenDecorFixture51F9F0(t, "constraint.txt", tc.text)
+			mask, ok := mapgenDecorConstraintFixture(path)
+			gotScratch := string(scratch[:len(tc.wantScratch)])
+			if mask != tc.mask || ok != tc.ok || gotScratch != tc.wantScratch {
+				t.Fatalf("native constraint = %#x/%t, scratch = %q", mask, ok, gotScratch)
+			}
+		})
+	}
 }
 
 func TestMapgenDecor51F9F0CopiesAndSelectsNativePointerGraph(t *testing.T) {

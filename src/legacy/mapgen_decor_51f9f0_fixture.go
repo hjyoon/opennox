@@ -171,6 +171,21 @@ import "C"
 
 import "unsafe"
 
+func mapgenDecorConstraintFixture(path string) (byte, bool) {
+	file := nox_binfile_open_408CC0(internCStr(path), int32(C.NOX_BINFILE_READ))
+	if file == nil {
+		return 0, false
+	}
+	defer nox_binfile_close_408D90(file)
+	record, token := mapgenAllocateDecorRecord(C.sizeof_nox_mapgen_decor_definition_legacy)
+	if record == nil {
+		return 0, false
+	}
+	defer mapgenReleaseDecorRecord(record)
+	ok := C.nox_xxx_genDecorReadOccurConstraint_520810(C.int(token), file) != 0
+	return byte((*C.nox_mapgen_decor_definition_legacy)(record).constraint_mask), ok
+}
+
 type mapgenDecorResult51F9F0 struct {
 	templateParsed           bool
 	backdropParsed           bool

@@ -85,7 +85,8 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 	getter := "nox_stats_quest_columns_native* nox_stats_quest_columns_native_get(void) {"
 	program = strings.Replace(program, "// PRODUCTION_GETTER", getter+cut(read("stats_start_native.c"), getter, ""), 1)
 	root := "int sub_4264D0() {"
-	program = strings.Replace(program, "// PRODUCTION_ROOT", root+cut(read("GAME1_1.c"), root, "\n//----- (00426A30)"), 1)
+	const rootEnd = "\n}\n"
+	program = strings.Replace(program, "// PRODUCTION_ROOT", root+cut(read("GAME1_1.c"), root, rootEnd)+rootEnd, 1)
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}

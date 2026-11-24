@@ -344,7 +344,7 @@ func TestIntrusiveListNativeAbortCABI(t *testing.T) {
 		op := 7
 		switch mode {
 		case "direct-CRT-control":
-			op = 12 // The fixture's default branch directly calls the same CRT abort.
+			op = -1 // The fixture's default branch directly calls the same CRT abort.
 		case "nil-head":
 			a = nil
 		case "nil-item":

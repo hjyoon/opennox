@@ -18,25 +18,26 @@ func clientPlayerNameNativeR284(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	program := string(fixture)
-	for _, part := range []struct{ file, start, end, marker string }{
-		{"GAME2_3.c", "void sub_48D990(nox_draw_viewport_t* a1p) {", "//----- (0048DCF0)", "// PRODUCTION_CHAT_NAME"},
-		{"GAME3_1.c", "int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {", "//----- (004C1410)", "// PRODUCTION_TRADE_START_NAME"},
-		{"GAME3_1.c", "int nox_xxx_prepareP2PTrade_4C1BF0() {", "//----- (004C1CA0)", "// PRODUCTION_TRADE_PREPARE_NAME"},
+	for _, part := range []struct{ file, start, marker string }{
+		{"GAME2_3.c", "void sub_48D990(nox_draw_viewport_t* a1p) {", "// PRODUCTION_CHAT_NAME"},
+		{"GAME3_1.c", "int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {", "// PRODUCTION_TRADE_START_NAME"},
+		{"GAME3_1.c", "int nox_xxx_prepareP2PTrade_4C1BF0() {", "// PRODUCTION_TRADE_PREPARE_NAME"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {
 			t.Fatal(err)
 		}
 		text := string(source)
-		if strings.Count(text, part.start) != 1 || strings.Count(text, part.end) != 1 || strings.Count(program, part.marker) != 1 {
+		if strings.Count(text, part.start) != 1 || strings.Count(program, part.marker) != 1 {
 			t.Fatalf("ambiguous complete production boundary: %s", part.start)
 		}
 		_, tail, _ := strings.Cut(text, part.start)
-		body, _, ok := strings.Cut(tail, part.end)
-		if !ok || !strings.HasSuffix(strings.TrimSpace(body), "}") {
+		// File-scope definitions close at the start of a line.
+		body, _, ok := strings.Cut(tail, "\n}\n")
+		if !ok {
 			t.Fatalf("incomplete production body: %s", part.start)
 		}
-		program = strings.Replace(program, part.marker, part.start+body, 1)
+		program = strings.Replace(program, part.marker, part.start+body+"\n}\n", 1)
 	}
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {

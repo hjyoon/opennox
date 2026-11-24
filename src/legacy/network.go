@@ -57,6 +57,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/internal/netstr"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -201,6 +202,47 @@ func nox_server_playerIndexFromUpdateData_4D9EB0(updateData unsafe.Pointer) C.ui
 		func(ud *server.PlayerUpdateData) *server.Player { return ud.Player },
 		func(player *server.Player) byte { return player.PlayerInd },
 	))
+}
+
+//export nox_xxx_netInformTextMsg_4DA0F0
+func nox_xxx_netInformTextMsg_4DA0F0(index, code C.int, value *C.int) C.int {
+	var number int
+	switch code {
+	case 0, 1, 2, 12, 13, 16, 20, 21:
+		number = int(*value)
+	case 17:
+	default:
+		return code
+	}
+	return C.int(bool2int(GetServer().S().NetInformTextMsg(ntype.PlayerInd(index), byte(code), number)))
+}
+
+//export nox_xxx_netInformTextMsg2_4DA180
+func nox_xxx_netInformTextMsg2_4DA180(code C.int, data *C.uint8_t) C.intptr_t {
+	return C.intptr_t(netInformTextBroadcast4DA180(int32(code), (*byte)(unsafe.Pointer(data))))
+}
+
+func netInformTextBroadcast4DA180(code int32, data *byte) int32 {
+	var storage [6]byte
+	var packet []byte
+	switch code {
+	case 3, 4, 8, 18, 19, 21:
+		packet = storage[:]
+		copy(packet[2:], unsafe.Slice(data, 4))
+	case 5, 6, 7, 9, 10, 11:
+		packet = unsafe.Slice(data, 10)
+	case 14:
+		packet = unsafe.Slice(data, 11)
+	default:
+		return code
+	}
+	packet[0], packet[1] = byte(netmsg.MSG_INFORM), byte(code)
+	s := GetServer().S()
+	for unit := s.Players.FirstUnit(); unit != nil; unit = s.NextPlayerUnit4DA7F0(unit) {
+		update := (*server.PlayerUpdateData)(unit.UpdateData)
+		s.NetList.AddToMsgListCli(ntype.PlayerInd(update.Player.PlayerInd), netlist.Kind1, packet)
+	}
+	return 0
 }
 
 //export nox_xxx_netPriMsgToPlayer_4DA2C0

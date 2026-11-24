@@ -56,3 +56,11 @@ func callNetPriMsgToPlayerC(unit *server.Object, message *byte, flags byte) {
 func callNetPrintLineToAllC(message *byte) int32 {
 	return int32(C.nox_xxx_netPrintLineToAll_4DA390((*C.char)(unsafe.Pointer(message))))
 }
+
+func callNetInformTextC(index, code int32, value *int32) int32 {
+	return int32(C.nox_xxx_netInformTextMsg_4DA0F0(C.int(index), C.int(code), (*C.int)(unsafe.Pointer(value))))
+}
+
+func callNetInformTextBroadcastC(code int32, payload *byte) int64 {
+	return int64(C.nox_xxx_netInformTextMsg2_4DA180(C.int(code), (*C.uint8_t)(unsafe.Pointer(payload))))
+}

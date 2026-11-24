@@ -212,7 +212,7 @@ func drawLightningRay(view *C.int, dr *nox_drawable, kind lightningKind) C.int {
 	*memmap.PtrUint8(0x5D4594, 1316420) = width
 	nox_xxx_lightningProc2_4BAE60(&p1, &p2, 2, nil, sideLayers, sideLayers, 1)
 	if nox_xxx_checkGameFlagPause_413A50() == 0 {
-		C.nox_xxx_makeLightningParticles_4999D0(C.int(memmap.Int32(0x5D4594, particleOffset)), &from, &to)
+		nox_xxx_makeLightningParticles_4999D0(C.int(memmap.Int32(0x5D4594, particleOffset)), &from, &to)
 	}
 	return 1
 }

@@ -28,14 +28,6 @@ void nox_xxx_drawAllMB_475810_draw_A(nox_draw_viewport_t* vp);
 int nox_xxx_drawAllMB_475810_draw_B(nox_draw_viewport_t* vp);
 void nox_xxx_drawAllMB_475810_draw_C(nox_draw_viewport_t* vp, int v36, int v7);
 int sub_436F50();
-static void nox_client_ray_lightning_particles(int from_x, int from_y, int to_x, int to_y) {
-	int2 from = {from_x, from_y};
-	int2 to = {to_x, to_y};
-	nox_xxx_makeLightningParticles_4999D0((int)dword_5d4594_1200776, &from, &to);
-}
-static void nox_client_ray_plasma_particles(int x, int y) {
-	nox_xxx_drawEnergyBolt_499710(x, y, 10, (int)dword_5d4594_1200776);
-}
 static int nox_client_transient_ray_payload_uses_native_union(void) {
 	nox_drawable dr;
 	const unsigned char endpoints[8] = {0x34, 0x12, 0x78, 0x56, 0xbc, 0x9a, 0xf0, 0xde};
@@ -204,11 +196,13 @@ func Nox_xxx_netDrawRays_49BDD0(data [9]byte) {
 }
 
 func Nox_xxx_makeRayLightningParticles_49BDD0(from, to image.Point) {
-	C.nox_client_ray_lightning_particles(C.int(from.X), C.int(from.Y), C.int(to.X), C.int(to.Y))
+	first := C.int2{field_0: C.int(from.X), field_4: C.int(from.Y)}
+	last := C.int2{field_0: C.int(to.X), field_4: C.int(to.Y)}
+	nox_xxx_makeLightningParticles_4999D0(C.int(C.dword_5d4594_1200776), &first, &last)
 }
 
 func Nox_xxx_makeRayPlasmaParticles_49BDD0(to image.Point) {
-	C.nox_client_ray_plasma_particles(C.int(to.X), C.int(to.Y))
+	nox_xxx_drawEnergyBolt_499710(C.int(to.X), C.int(to.Y), 10, C.int(C.dword_5d4594_1200776))
 }
 
 func clientOrbPayloadUsesNativeUnion499490() bool {

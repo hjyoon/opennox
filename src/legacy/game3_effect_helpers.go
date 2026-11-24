@@ -58,7 +58,7 @@ func game3EffectsRuntime() game3EffectServices {
 			return c.Objs.ByNetCodeDynamic(int(code & 0x7fff))
 		},
 		each: c.Objs.EachInRect, pointFX: func(id uint32, p image.Point) {
-			C.nox_xxx_makePointFxCli_499610(C.int(id), 50, 1000, 30, C.int(p.X), C.int(p.Y))
+			nox_xxx_makePointFxCli_499610(C.int(id), 50, 1000, 30, C.int(p.X), C.int(p.Y))
 		},
 		direction: func(v byte) byte { return byte(C.nox_xxx_math_509EA0(C.int(v))) }, render: cl.R2(), distance: approximateDistance32,
 	}

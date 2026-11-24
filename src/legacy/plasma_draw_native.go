@@ -157,7 +157,7 @@ func plasmaRememberSegment(from, to *plasmaCurvePoint, lane int) C.char {
 	}
 	x := to.field_0 + C.int(view.World.Min.X) - C.int(view.Screen.Min.X)
 	y := to.field_4 + C.int(view.World.Min.Y) - C.int(view.Screen.Min.Y)
-	return C.char(C.nox_xxx_drawEnergyBolt_499710(x, y, 8, C.int(*spark)))
+	return C.char(nox_xxx_drawEnergyBolt_499710(x, y, 8, C.int(*spark)))
 }
 
 //export sub_4BA8B0
@@ -167,7 +167,7 @@ func sub_4BA8B0(from, to, lane *C.int) C.char {
 
 // The endpoint fields are unaligned inside the native drawable union.
 func drawableRayPayload(d *client.Drawable) *[13]byte {
-	return (*[13]byte)(unsafe.Pointer(&d.Union))
+	return (*[13]byte)(drawableEffectBytes(d)[:13])
 }
 
 func drawableRayEndpoints(ray *[13]byte) (from, to C.int2, ok bool) {

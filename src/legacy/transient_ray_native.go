@@ -126,7 +126,7 @@ func drawTransientRayOrb(typeSlot uintptr, endpoints *[4]C.uint16_t, radius C.ch
 	}
 	dx := transientRayRand(-20, 20, line+2)
 	dy := transientRayRand(-20, 20, line+3)
-	C.sub_499490(C.int(*g2ServerWord(typeSlot)), &endpoints[0], C.int(dx), C.int(dy), radius, 0)
+	sub_499490(C.int(*g2ServerWord(typeSlot)), &endpoints[0], C.int(dx), C.int(dy), radius, 0)
 }
 
 //export nox_xxx_netDrawRays_49BDD0

@@ -21,3 +21,10 @@ func ModifierDurabilityMultiplier4E0380(value, coefficient float32) float32 {
 	product := experienceMul53TowardZero(multiplier, float64(value))
 	return experienceSpill32TowardZero(product)
 }
+
+// ModifierIntegerAmount32 returns the low 32 bits of the original signed-qword
+// conversion after scaling at PC53. Invalid conversions produce zero.
+func ModifierIntegerAmount32(value int32, coefficient float32) int32 {
+	product := experienceMul53TowardZero(float64(value), float64(coefficient))
+	return x87TruncSignedQwordLow566DCC(product)
+}

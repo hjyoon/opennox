@@ -2,23 +2,21 @@ package legacy
 
 import (
 	"encoding/json"
-	"fmt"
 	"math"
 	"os"
-	"os/exec"
-	"path/filepath"
 	"reflect"
-	"strconv"
-	"strings"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
 
-// Compile complete production bodies. Expectations are observations of the
-// unchanged original executable, with damage/FX/audio/resource services declared.
+// Replay original damage, FX, audio, and resource service calls through
+// the native modifier implementations.
 func TestModifierResourceIntegerOriginalNativeC(t *testing.T) {
 	blob, err := os.ReadFile("testdata/modifier_resource_integer_original.json")
 	if err != nil {
@@ -58,115 +56,120 @@ func TestModifierResourceIntegerOriginalNativeC(t *testing.T) {
 	if fixture.SHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || !fixture.Unchanged || fixture.CW != 0xe3f || len(fixture.Faults) != 0 || len(fixture.Rows) != 240 {
 		t.Fatal("incomplete independent original modifier observations")
 	}
-	extract := func(file, signature string) string {
-		t.Helper()
-		blob, err := os.ReadFile(file)
-		if err != nil {
-			t.Fatal(err)
-		}
-		text := string(blob)
-		if strings.Count(text, signature) != 1 {
-			t.Fatalf("nonunique production function %q", signature)
-		}
-		begin := strings.Index(text, signature)
-		end := begin + strings.Index(text[begin:], "{") + 1
-		for depth := 1; depth != 0; end++ {
-			if end == len(text) {
-				t.Fatal("incomplete production body")
-			}
-			switch text[end] {
-			case '{':
-				depth++
-			case '}':
-				depth--
-			}
-		}
-		return text[begin:end]
-	}
-	harness, err := os.ReadFile("testdata/modifier_resource_integer_native_test.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	combined := string(harness)
-	for _, item := range [][3]string{
-		{"DOUBLE2INT", "GAME1_1.c", "int nox_double2int(double a1)"},
-		{"MULTIPLY", "GAME3_2.c", "static double nox_modifierMulChop53_4E0397("},
-		{"LIGHTNING", "GAME3_2.c", "void nox_xxx_lightngEffect_4E06F0("},
-		{"DRAIN_MANA", "GAME3_2.c", "void nox_xxx_drainMEffect_4E0740("},
-		{"VAMPIRISM", "GAME3_2.c", "void nox_xxx_vampirismEffect_4E07C0("},
-		{"SYMPATHY", "GAME3_2.c", "void nox_xxx_sympathyEffect_4E08E0("},
-	} {
-		marker := "// PRODUCTION_" + item[0]
-		if strings.Count(combined, marker) != 1 {
-			t.Fatal("nonunique native fixture marker")
-		}
-		combined = strings.Replace(combined, marker, extract(item[1], item[2]), 1)
-	}
-	dir := t.TempDir()
-	input, binary := filepath.Join(dir, "effects.c"), filepath.Join(dir, "effects")
-	if err := os.WriteFile(input, []byte(combined), 0600); err != nil {
-		t.Fatal(err)
-	}
-	include, err := filepath.Abs(".")
-	if err != nil {
-		t.Fatal(err)
-	}
-	compiler := strings.Fields(os.Getenv("CC"))
-	if len(compiler) == 0 {
-		compiler = []string{"cc"}
-	}
-	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-D_Static_assert(x,y)=", "-I"+include, input, "-lm", "-o", binary)
-	if out, err := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
-		t.Fatalf("compile actual modifier bodies: %v\n%s", err, out)
-	}
-	var stdin strings.Builder
-	for _, row := range fixture.Rows {
-		if row.Mode != "actual-startup" {
-			continue
-		}
-		flag := func(v bool) int {
-			if v {
-				return 1
-			}
-			return 0
-		}
-		i := row.Input
-		fmt.Fprintf(&stdin, "%d %d %d %d %d %d %d %d %d\n", i.Which, i.Value, i.Damage, i.Available, flag(i.Mutate), flag(i.NilOwner), flag(i.NilTarget), i.Class, i.Subclass)
-	}
-	command := exec.Command(binary)
-	command.Stdin = strings.NewReader(stdin.String())
-	out, err := command.CombinedOutput()
-	if err != nil {
-		t.Fatalf("actual modifier execution: %v\n%s", err, out)
-	}
-	lines := strings.Split(strings.TrimSpace(string(out)), "\n")
-	if len(lines) != 120 {
-		t.Fatalf("native observations = %d, want 120", len(lines))
-	}
 	selected := 0
 	for _, row := range fixture.Rows {
 		if row.Mode != "actual-startup" {
 			continue
 		}
-		line := lines[selected]
 		selected++
 		t.Run(row.Input.Name, func(t *testing.T) {
-			var got struct {
-				Bits      int     `json:"native_pointer_bits"`
-				Preserved bool    `json:"nonoutput_bytes_preserved"`
-				Events    []event `json:"events"`
+			in := row.Input
+			coeff := math.Float32frombits(in.Value)
+			effect := selfWeaponElectricNativeAlloc(t, server.ModifierEff{
+				AttackPreHit52: server.ModifierEffFnc{Valf: coeff},
+				AttackPreDmg64: server.ModifierEffFnc{Valf: coeff},
+			})
+			target := selfWeaponElectricNativeAlloc(t, server.Object{
+				ObjClass: object.Class(in.Class), ObjSubClass: object.SubClass(in.Subclass),
+				PosVec: types.Pointf{X: 12.75, Y: 19.25},
+				Damage: objectDamageNativeProbePtr(), NetCode: 301,
+			})
+			owner := selfWeaponElectricNativeAlloc(t, server.Object{NetCode: 269})
+			weapon := selfWeaponElectricNativeAlloc(t, server.Object{NetCode: 512})
+			rawDamage := selfWeaponElectricNativeAlloc(t, in.Damage)
+			source, victim := owner, target
+			if in.NilOwner {
+				source = nil
 			}
-			if err := json.Unmarshal([]byte(line), &got); err != nil {
-				t.Fatal(err)
+			if in.NilTarget {
+				victim = nil
 			}
-			if got.Bits != strconv.IntSize || !got.Preserved || !row.Preserved || !reflect.DeepEqual(got.Events, row.Events) {
-				t.Fatalf("native=%s; unchanged original=%+v", line, row.Events)
+			wantOwner, wantTarget, wantWeapon := *owner, *target, *weapon
+			mutate := func() {
+				if in.Mutate {
+					effect.AttackPreHit52.Valf, effect.AttackPreDmg64.Valf = 1, 1
+					if in.Which == 0 {
+						target.PosVec = types.Pointf{X: 77.5, Y: 88.25}
+					}
+				}
+			}
+
+			got := make([]event, 0, len(row.Events))
+			recordAmount := func(name string, amount uint32) {
+				got = append(got, event{Service: name, Amount: amount})
+			}
+			transfer := func(name string, unit *server.Object, amount int32, expected *server.Object) {
+				if unit != expected {
+					t.Fatalf("%s uses %p, want %p", name, unit, expected)
+				}
+				recordAmount(name, uint32(amount))
+			}
+			readAvailable := func(name string, unit *server.Object) uint16 {
+				amount := uint16(in.Available)
+				transfer(name, unit, int32(amount), target)
+				mutate()
+				return amount
+			}
+			runtime := modifierResourceRuntime{
+				damage: func(gotTarget, gotOwner, gotWeapon *server.Object, amount int32, kind object.DamageType) {
+					if gotTarget != target || gotOwner != source || gotWeapon != weapon || kind != object.DamageElectric {
+						t.Fatal("lightning damage changed identity or type")
+					}
+					recordAmount("damage", uint32(amount))
+					mutate()
+				},
+				pointFX: func(op netmsg.Op, pos *types.Pointf) {
+					if op != netmsg.MSG_FX_BLUE_SPARKS || pos != &target.PosVec {
+						t.Fatal("lightning effect lost opcode or live position")
+					}
+					got = append(got, event{
+						Service: "point-fx", Position: []uint32{math.Float32bits(pos.X), math.Float32bits(pos.Y)},
+					})
+				},
+				audio: func(id sound.ID, unit *server.Object) {
+					transfer("audio", unit, int32(id), target)
+				},
+				getMana:      func(unit *server.Object) uint16 { return readAvailable("get-mana", unit) },
+				getHealth:    func(unit *server.Object) uint16 { return readAvailable("get-hp", unit) },
+				manaSub:      func(unit *server.Object, amount int32) { transfer("mana-sub", unit, amount, target) },
+				manaAdd:      func(unit *server.Object, amount int16) { transfer("mana-add", unit, int32(uint16(amount)), owner) },
+				heal:         func(unit *server.Object, amount int32) { transfer("hp-add", unit, amount, owner) },
+				healthDamage: func(unit *server.Object, amount int32) { transfer("hp-damage", unit, amount, owner) },
+			}
+			switch in.Which {
+			case 0:
+				modifierLightning4E06F0(effect, weapon, source, victim, runtime)
+			case 1:
+				modifierDrainMana4E0740(effect, source, victim, rawDamage, runtime)
+			case 2:
+				modifierVampirism4E07C0(effect, source, victim, rawDamage, runtime)
+			case 3:
+				modifierSympathy4E08E0(effect, source, victim, rawDamage, runtime)
+			default:
+				t.Fatalf("invalid original resource effect selector %d", in.Which)
+			}
+			wantCoeff := in.Value
+			if in.Mutate && len(got) != 0 {
+				wantCoeff = math.Float32bits(1)
+				if in.Which == 0 {
+					wantTarget.PosVec = types.Pointf{X: 77.5, Y: 88.25}
+				}
+			}
+			if !reflect.DeepEqual(got, row.Events) || !row.Preserved {
+				t.Fatalf("native resource events %+v, original %+v", got, row.Events)
+			}
+			if *rawDamage != in.Damage || *target != wantTarget || *owner != wantOwner || *weapon != wantWeapon ||
+				math.Float32bits(effect.AttackPreHit52.Valf) != wantCoeff || math.Float32bits(effect.AttackPreDmg64.Valf) != wantCoeff {
+				t.Fatal("resource effect changed input storage")
 			}
 		})
 	}
+	if selected != 120 {
+		t.Fatalf("original startup observations %d, want 120", selected)
+	}
 }
 
-// Keep the public pre-damage dispatch, typed C callback, live HP lookup,
+// Keep the public pre-damage dispatch, typed C ABI callback, live HP lookup,
 // UnitAdjustHP and real UnitSetHP. No HP or damage handler is substituted.
 func TestModifierResourceVampirismActualHP(t *testing.T) {
 	_ = npcReflectLegacyServer4E17B0(t)

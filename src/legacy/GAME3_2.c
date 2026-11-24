@@ -2602,15 +2602,6 @@ void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 }
 #endif
 
-static double nox_modifierMulChop53_4E0397(double left, double right) {
-	volatile double product = left * right;
-	const double residual = fma(left, right, -product);
-	if ((product > 0.0 && residual < 0.0) || (product < 0.0 && residual > 0.0)) {
-		return nextafter(product, 0.0);
-	}
-	return product;
-}
-
 //----- (004E03D0) --------------------------------------------------------
 #if 0 // Original bodies retained; native entries are in modifier_defend_predicates_native_4e03d0.go.
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6) {
@@ -2668,78 +2659,6 @@ int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6) {
 	return result;
 }
 #endif
-
-//----- (004E06F0) --------------------------------------------------------
-void nox_xxx_lightngEffect_4E06F0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
-	(void)context;
-	if (effect && target) {
-		if (target->func_damage) {
-			nox_object_call_damage_native(target, owner, weapon,
-				nox_double2int((double)nox_modifier_effect_getPreHitFloat(effect)), 9);
-		}
-		nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)&target->x);
-		nox_xxx_aud_501960(225, target, 0, 0);
-	}
-}
-
-//----- (004E0740) --------------------------------------------------------
-void nox_xxx_drainMEffect_4E0740(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
-	(void)weapon;
-	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
-		return;
-	}
-	int amount = nox_double2int(nox_modifierMulChop53_4E0397(
-		(double)nox_modifier_effect_getPreDamageFloat(effect), (double)*damage));
-	if (!amount) {
-		amount = 1;
-	}
-	uint16_t mana = (uint16_t)nox_xxx_unitGetOldMana_4EEC80(target);
-	if (mana < amount) {
-		amount = mana;
-	}
-	nox_xxx_playerManaSub_4EEBF0(target, amount);
-	nox_xxx_playerManaAdd_4EEB80(owner, amount);
-}
-
-//----- (004E07C0) --------------------------------------------------------
-void nox_xxx_vampirismEffect_4E07C0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
-	(void)weapon;
-	if (!effect || !owner || !target || !damage || !(target->obj_class & 6) ||
-		((target->obj_class & 2) && (target->obj_subclass & 0x40))) {
-		return;
-	}
-	int amount = nox_double2int(nox_modifierMulChop53_4E0397(
-		(double)*damage, (double)nox_modifier_effect_getPreDamageFloat(effect)));
-	if (!amount) {
-		amount = 1;
-	}
-	uint16_t health = (uint16_t)nox_xxx_unitGetHP_4EE780(target);
-	if (health < amount) {
-		amount = health;
-	}
-	nox_xxx_unitAdjustHP_4EE460(owner, amount);
-}
-
-//----- (004E08E0) --------------------------------------------------------
-void nox_xxx_sympathyEffect_4E08E0(
-	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
-	(void)weapon;
-	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
-		return;
-	}
-	// 004E08FD caches the coefficient before the target HP service.
-	const double coefficient = nox_modifier_effect_getPreDamageFloat(effect);
-	int amount = *damage;
-	uint16_t health = (uint16_t)nox_xxx_unitGetHP_4EE780(target);
-	if (health < amount) {
-		amount = health;
-	}
-	nox_xxx_unitDamageClear_4EE5E0(owner,
-		nox_double2int(nox_modifierMulChop53_4E0397((double)amount, coefficient)));
-}
 
 //----- (004E0960) --------------------------------------------------------
 // The native-pointer export is implemented in readiness_raw_native_4e0960.go.

@@ -13,6 +13,12 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+const (
+	mapgenDecorConstraintNames = 253144
+	mapgenDecorFillNames       = 253200
+	mapgenDecorEntryNames      = 253216
+)
+
 func mapgenDecorKeywordIndex(offset uintptr, uppercase string) (int, bool) {
 	for index := 0; ; index++ {
 		name := *memmap.PtrPtr(0x587000, offset+4*uintptr(index))
@@ -54,7 +60,7 @@ func nox_xxx_genDecorReadOccurConstraint_520810(token C.int, file *C.FILE) C.int
 		} else {
 			text = nil
 		}
-		index, ok := mapgenDecorKeywordIndex(253144, mapgenUppercaseToken(string(part)))
+		index, ok := mapgenDecorKeywordIndex(mapgenDecorConstraintNames, mapgenUppercaseToken(string(part)))
 		if !ok {
 			return 0
 		}

@@ -21,9 +21,8 @@ func nox_mapgenChoiceNextNative_520380(ref C.uintptr_t) *C.uint32_t {
 	return (*C.uint32_t)(unsafe.Pointer(mapgenResolveDecorChoice(C.uintptr_t(choice.next))))
 }
 
-//export nox_mapgenFreeChoiceList
-func nox_mapgenFreeChoiceList(ref C.uintptr_t) {
-	for node := mapgenResolveDecorChoice(ref); node != nil; {
+func mapgenFreeChoiceList(ref C.uint32_t) {
+	for node := mapgenResolveDecorChoice(C.uintptr_t(ref)); node != nil; {
 		next := mapgenResolveDecorChoice(C.uintptr_t(node.next))
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
 		node = next
@@ -33,14 +32,13 @@ func nox_mapgenFreeChoiceList(ref C.uintptr_t) {
 func mapgenFreeForeachList(ref C.uint32_t) {
 	for node := mapGenForeachLookup(uintptr(ref)); node != nil; {
 		next := mapGenForeachLookup(uintptr(node.next))
-		nox_mapgenFreeChoiceList(C.uintptr_t(node.choices))
+		mapgenFreeChoiceList(C.uint32_t(node.choices))
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
 		node = next
 	}
 }
 
-//export nox_mapgenFreeDecorFillList
-func nox_mapgenFreeDecorFillList(ref C.uint32_t) {
+func mapgenFreeDecorFillList(ref C.uint32_t) {
 	for node := mapgenResolveDecorFill(ref); node != nil; {
 		next := mapgenResolveDecorFill(node.next_token)
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
@@ -55,7 +53,7 @@ func mapgenResolveWallFloor(token C.uint32_t) *C.nox_mapgen_wall_floor_legacy {
 func mapgenFreeWallFloorList(ref C.uint32_t) {
 	for node := mapgenResolveWallFloor(ref); node != nil; {
 		next := mapgenResolveWallFloor(node.next_token)
-		nox_mapgenFreeDecorFillList(node.fills_token)
+		mapgenFreeDecorFillList(node.fills_token)
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
 		node = next
 	}
@@ -65,11 +63,10 @@ func mapgenResolveDecorEntry(token C.uint32_t) *C.nox_mapgen_decor_entry_legacy 
 	return (*C.nox_mapgen_decor_entry_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
 }
 
-//export nox_mapgenFreeDecorEntryList
-func nox_mapgenFreeDecorEntryList(ref C.uint32_t) {
+func mapgenFreeDecorEntryList(ref C.uint32_t) {
 	for node := mapgenResolveDecorEntry(ref); node != nil; {
 		next := mapgenResolveDecorEntry(node.next_token)
-		nox_mapgenFreeChoiceList(C.uintptr_t(node.choices_token))
+		mapgenFreeChoiceList(node.choices_token)
 		mapgenFreeForeachList(node.foreach_token)
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
 		node = next
@@ -84,7 +81,7 @@ func mapgenFreeDecorSetList(ref C.uint32_t) {
 	for node := mapgenResolveDecorSet(ref); node != nil; {
 		next := mapgenResolveDecorSet(node.next_token)
 		if node.shares_entries == 0 {
-			nox_mapgenFreeDecorEntryList(node.entries_token)
+			mapgenFreeDecorEntryList(node.entries_token)
 		}
 		mapgenReleaseDecorRecord(unsafe.Pointer(node))
 		node = next

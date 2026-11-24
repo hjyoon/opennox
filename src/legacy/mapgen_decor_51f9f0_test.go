@@ -2,9 +2,11 @@ package legacy
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"testing"
 	"unsafe"
 
@@ -22,14 +24,10 @@ func writeMapgenDecorFixture51F9F0(t *testing.T, name, contents string) string {
 	return path
 }
 
-func TestMapgenDecorConstraintNative520810(t *testing.T) {
-	handles.InitHigh()
-	t.Cleanup(handles.Release)
-	scratch := memmap.Slice(0x5D4594, 2487264)[:256]
-	oldScratch := bytes.Clone(scratch)
-	t.Cleanup(func() { copy(scratch, oldScratch) })
-	for i, name := range []string{"One", "Two", "Three", ""} {
-		slot := memmap.PtrPtr(0x587000, 253144+4*uintptr(i))
+func setMapgenDecorKeywords(t *testing.T, offset uintptr, names ...string) {
+	t.Helper()
+	for i, name := range append(names, "") {
+		slot := memmap.PtrPtr(0x587000, offset+4*uintptr(i))
 		old := *slot
 		t.Cleanup(func() { *slot = old })
 		if name == "" {
@@ -38,6 +36,15 @@ func TestMapgenDecorConstraintNative520810(t *testing.T) {
 			*slot = unsafe.Pointer(alloc.InternCString(name))
 		}
 	}
+}
+
+func TestMapgenDecorConstraintNative520810(t *testing.T) {
+	handles.InitHigh()
+	t.Cleanup(handles.Release)
+	scratch := memmap.Slice(0x5D4594, 2487264)[:256]
+	oldScratch := bytes.Clone(scratch)
+	t.Cleanup(func() { copy(scratch, oldScratch) })
+	setMapgenDecorKeywords(t, mapgenDecorConstraintNames, "One", "Two", "Three")
 	for _, tc := range []struct {
 		name, text, wantScratch string
 		mask                    byte
@@ -55,6 +62,37 @@ func TestMapgenDecorConstraintNative520810(t *testing.T) {
 				t.Fatalf("native constraint = %#x/%t, scratch = %q", mask, ok, gotScratch)
 			}
 		})
+	}
+}
+
+func TestMapgenDecorChoicesNative520380(t *testing.T) {
+	handles.InitHigh()
+	t.Cleanup(handles.Release)
+	setMapgenDecorKeywords(t, mapgenDecorEntryNames, "OBJECT", "AREAMAP", "CLEAR_COLLIDES", "WEAPON", "ARMOR", "SPELL")
+	var text strings.Builder
+	text.WriteString("20\n")
+	for i := 0; i < 34; i++ {
+		fmt.Fprintf(&text, "object\nItem%d\n", i)
+	}
+	text.WriteString("OR\n*\nSPELL\nSpark\nOR\n*\nARMOR\nCoat\nOR\n-3\nWEAPON\nStaff\nEND\n")
+	got := mapgenDecorChoicesFixture(writeMapgenDecorFixture51F9F0(t, "choices.txt", text.String()))
+	if len(got) != 4 {
+		t.Fatalf("choice groups = %d, want 4", len(got))
+	}
+	if got[0].weight != 20 || got[0].count != 31 || alloc.GoStringS(got[0].items[30].name[:]) != "Item30" ||
+		alloc.GoStringS(got[0].items[31].name[:]) != "Item33" {
+		t.Fatalf("the kept choices or saturation slot changed, weight=%d count=%d", got[0].weight, got[0].count)
+	}
+	for i, name := range []string{"Spark", "Coat", "Staff"} {
+		group := &got[i+1]
+		if group.weight != 42 || group.count != 1 || group.items[0].kind != uint32(5-i) || alloc.GoStringS(group.items[0].name[:]) != name {
+			t.Fatalf("choice group %d disagrees with its original wildcard weight, type or name", i+1)
+		}
+	}
+	for _, invalid := range []string{"20\nOR\n*\nUNKNOWN\n", "20\nOR\n*\nOBJECT\n" + strings.Repeat("x", 60) + "\nEND\n"} {
+		if got := mapgenDecorChoicesFixture(writeMapgenDecorFixture51F9F0(t, "invalid.txt", invalid)); got != nil {
+			t.Fatal("invalid choice published a partially read list")
+		}
 	}
 }
 

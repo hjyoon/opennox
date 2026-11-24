@@ -190,6 +190,23 @@ func mapgenDecorConstraintFixture(path string) (byte, bool) {
 	return byte((*C.nox_mapgen_decor_definition_legacy)(record).constraint_mask), ok
 }
 
+func mapgenDecorChoicesFixture(path string) []mapGenChoiceRecord {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	file := nox_binfile_open_408CC0(internCStr(path), int32(C.NOX_BINFILE_READ))
+	if file == nil {
+		return nil
+	}
+	defer nox_binfile_close_408D90(file)
+	head := C.nox_xxx_gen_520380(file)
+	defer mapgenFreeChoiceList(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(head)))
+	var result []mapGenChoiceRecord
+	for node := head; node != nil; node = C.nox_mapgenChoiceNextNative_520380(C.uintptr_t(uintptr(unsafe.Pointer(node)))) {
+		result = append(result, *(*mapGenChoiceRecord)(unsafe.Pointer(node)))
+	}
+	return result
+}
+
 type mapgenDecorResult51F9F0 struct {
 	templateParsed           bool
 	backdropParsed           bool

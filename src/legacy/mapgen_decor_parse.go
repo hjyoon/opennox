@@ -76,11 +76,11 @@ func nox_xxx_genReadDecor_51F9F0(raw *C.uint32_t, file *C.FILE) C.int {
 		case "ROOM_SIZE_CONSTRAINT":
 			result = nox_xxx_genDecorReadRoomSizeCon_5209F0(C.int(token), file)
 		case "COPY":
-			result = C.nox_xxx_genDecorReadCopy_520660(raw, (*C.char)(record), file)
+			result = mapgenReadDecorCopy(raw, definition, file)
 		case "DECOR_SET":
-			result = C.nox_xxx_genDecorReadDecorSet_51FFA0(C.int(token), file)
+			result = mapgenReadDecorSet(definition, file)
 		default:
-			index, ok := mapgenDecorKeywordIndex(253200, word)
+			index, ok := mapgenDecorKeywordIndex(mapgenDecorFillNames, word)
 			if !ok || surface == nil {
 				return 0
 			}

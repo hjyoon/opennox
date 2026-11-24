@@ -32,6 +32,11 @@ type mapGenForeachRecord struct {
 	next    uint32
 }
 
+var (
+	_ [2060]byte = [unsafe.Sizeof(mapGenChoiceRecord{})]byte{}
+	_ [12]byte   = [unsafe.Sizeof(mapGenForeachRecord{})]byte{}
+)
+
 type mapGenChoiceSetup struct {
 	weaponRef   uint32
 	weaponCount int32

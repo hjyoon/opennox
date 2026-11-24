@@ -542,7 +542,7 @@ func Sub_46A730() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_46A730())
 }
 func Sub_4C3500() int {
-	return int(C.sub_4C3500())
+	return int(sub_4C3500())
 }
 func Nox_xxx_guiDrawRank_46E870() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_guiDrawRank_46E870())
@@ -593,7 +593,7 @@ func Sub_48D450() {
 	C.sub_48D450()
 }
 func Sub_4C4220() {
-	C.sub_4C4220()
+	sub_4C4220()
 }
 func Nox_xxx_closeP2PTradeWnd_4C12A0() {
 	nox_xxx_closeP2PTradeWnd_4C12A0()

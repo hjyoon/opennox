@@ -21,6 +21,7 @@ extern unsigned int nox_player_netCode_85319C;
 extern unsigned long long qword_5d4594_814956;
 extern uint32_t dword_5d4594_1200804;
 extern uint32_t dword_5d4594_1200832;
+extern uint32_t dword_5d4594_1563276;
 unsigned int nox_client_getServerAddr_43B300();
 void nox_xxx_playerInitColors_461460(nox_playerInfo* pl);
 int nox_client_getServerPort_43B320();
@@ -56,6 +57,7 @@ import (
 	"github.com/opennox/libs/strman"
 
 	"github.com/opennox/opennox/v1/client"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/internal/netstr"
@@ -347,8 +349,48 @@ func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, 
 func Nox_xxx_j_inventoryNameSignInit_467460() int {
 	return int(nox_xxx_j_inventoryNameSignInit_467460())
 }
-func Sub_4DDE10(a1 int, a2 *server.Player) {
-	C.sub_4DDE10(C.int(a1), (*nox_playerInfo)(a2.C()))
+func Sub_4DDE10(recipient int, player *server.Player) {
+	unit := player.PlayerUnit
+	if unit == nil {
+		return
+	}
+	flagType := C.dword_5d4594_1563276
+	if flagType == 0 {
+		flagType = C.uint32_t(GetServer().S().Types.IndByID("Flag"))
+		C.dword_5d4594_1563276 = flagType
+	}
+	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
+		if item.Class().Has(object.ClassInfoBook) || C.uint32_t(item.TypeInd) == flagType {
+			sub_4D82F0(C.int(recipient), asObjectC(item))
+		}
+	}
+}
+
+//export sub_4DDE10
+func sub_4DDE10(recipient C.int, player *nox_playerInfo) {
+	Sub_4DDE10(int(recipient), asPlayerS(player))
+}
+
+//export nox_xxx_newPlayerSendAllPlayers_4DE300
+func nox_xxx_newPlayerSendAllPlayers_4DE300(recipient C.int) *C.char {
+	players := &GetServer().S().Players
+	var packet [132]byte
+	for player := players.First(); player != nil; player = players.Next(player) {
+		index := int(player.PlayerInd)
+		if index == int(recipient) || (index == server.HostPlayerIndex && noxflags.HasEngine(noxflags.EngineNoRendering)) {
+			continue
+		}
+		player.EncodeNewPlayerPacket(packet[:])
+		nox_xxx_netSendPacket1_4E5390(recipient, C.nox_important_payload_t(unsafe.Pointer(&packet[0])), 129, nil, 0)
+		Sub_4DDE10(int(recipient), player)
+	}
+	return nil
+}
+
+//export nox_xxx_netGauntlet_4D9E70
+func nox_xxx_netGauntlet_4D9E70(recipient C.int) C.int {
+	packet := [2]byte{byte(netmsg.MSG_GAUNTLET), 20}
+	return nox_xxx_netSendPacket0_4E5420(recipient, C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 1)
 }
 func Nox_xxx_netPlayerObjSend_518C30(a1 *server.Object, a2 *server.Object, a3 int, a4 int) int {
 	return int(C.nox_xxx_netPlayerObjSend_518C30(asObjectC(a1), asObjectC(a2), C.int(a3), C.int(a4)))

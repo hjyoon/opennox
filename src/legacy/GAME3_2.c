@@ -77,7 +77,6 @@ extern uint32_t dword_5d4594_1556136;
 extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_1556144;
 extern nox_window* dword_5d4594_1523040;
-extern uint32_t dword_5d4594_1563276;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t nox_server_sendMotd_108752;
 extern uint32_t dword_5d4594_1548480;
@@ -3739,15 +3738,6 @@ int sub_4D9E30(int a1, int a2, char a3) {
 }
 #endif
 
-//----- (004D9E70) --------------------------------------------------------
-int nox_xxx_netGauntlet_4D9E70(int a1) {
-	char v2[2]; // [esp+0h] [ebp-2h]
-
-	v2[0] = -16;
-	v2[1] = 20;
-	return nox_xxx_netSendPacket0_4E5420(a1, v2, 2, 0, 1);
-}
-
 //----- (004D9FD0) --------------------------------------------------------
 int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
 	char v2;         // al
@@ -3830,23 +3820,6 @@ int nox_xxx_gameServerReadyMB_4DD180(int a1) {
 		return nox_xxx_netStatsMultiplier_4D9C20(pl->playerUnit);
 	}
 	return 0;
-}
-
-//----- (004DDE10) --------------------------------------------------------
-void sub_4DDE10(int a1, nox_playerInfo* a2p) {
-	nox_object_t* unit = a2p->playerUnit;
-	if (!unit) {
-		return;
-	}
-	if (!dword_5d4594_1563276) {
-		dword_5d4594_1563276 = nox_xxx_getNameId_4E3AA0("Flag");
-	}
-	for (nox_object_t* item = unit->inv_first_item; item; item = item->inv_next_item) {
-		if (!(item->obj_class & 0x100) && item->typ_ind != dword_5d4594_1563276) {
-			continue;
-		}
-		sub_4D82F0(a1, item);
-	}
 }
 
 //----- (004DDF60) --------------------------------------------------------
@@ -3979,21 +3952,6 @@ int nox_xxx_sendAllPlayerIDs_4DE270(nox_playerInfo* a1) {
 		}
 	}
 	return result;
-}
-
-//----- (004DE300) --------------------------------------------------------
-char* nox_xxx_newPlayerSendAllPlayers_4DE300(int a1) {
-	char v3[132]; // [esp+4h] [ebp-84h]
-
-	for (nox_playerInfo* i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0(i)) {
-		if (i->playerInd != a1 &&
-			(i->playerInd != 31 || !nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING))) {
-			nox_xxx_netNewPlayerMakePacket_4DDA90((unsigned char*)v3, i);
-			nox_xxx_netSendPacket1_4E5390(a1, v3, 129, 0, 0);
-			sub_4DDE10(a1, i);
-		}
-	}
-	return NULL;
 }
 
 //----- (004DE380) --------------------------------------------------------

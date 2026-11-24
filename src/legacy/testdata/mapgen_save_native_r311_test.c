@@ -34,7 +34,43 @@ int nox_xxx_nxzCompressFile_57BDD0(char* from,char* to) {
  ++compressions;return allow_compress;
 }
 
-// COMPLETE_MAPGEN_SAVE_R311
+// C compatibility save body before the Go port.
+int nox_xxx_mapSaveMap_51E010(char* a1, int a2) {
+	char* v2;         // edi
+	unsigned char v3; // cl
+	int result;       // eax
+	int v5;           // esi
+	int v7;           // [esp+10h] [ebp-804h]
+	char v8[1024];    // [esp+14h] [ebp-800h]
+	char Mem[1024];   // [esp+414h] [ebp-400h]
+
+	v7 = -86050098;
+	strcpy(Mem, a1);
+	v8[0] = 0;
+	strncat(v8, a1, 1024-1);
+	v8[strlen(v8)-4] = 0;
+	v2 = &v8[strlen(v8) + 1];
+	v3 = getMemByte(0x587000, 253116);
+	uint32_t suffix = *getMemU32Ptr(0x587000, 253112);
+	memcpy(--v2, &suffix, sizeof(suffix));
+	v2[4] = v3;
+	result = nox_xxx_cryptOpen_426910(Mem, 0, 19);
+	if (result) {
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 4u);
+		v5 = nox_xxx_cryptFlush_4268E0();
+		if (nox_xxx_map_51E140()) {
+			sub_4268F0(v5);
+			nox_xxx_cryptClose_4269F0();
+			if (!a2 || (result = nox_xxx_nxzCompressFile_57BDD0(Mem, v8)) != 0) {
+				result = 1;
+			}
+		} else {
+			nox_xxx_cryptClose_4269F0();
+			result = 0;
+		}
+	}
+	return result;
+}
 
 int main(void) {
  unsigned cases=0;

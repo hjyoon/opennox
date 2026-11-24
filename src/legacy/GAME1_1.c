@@ -5236,18 +5236,6 @@ int sub_4264D0() {
 	return nox_stats_quest_end_native();
 }
 
-//----- (00426A30) --------------------------------------------------------
-int nox_xxx_wallGet_426A30() { return *getMemU32Ptr(0x5D4594, 739992); }
-
-//----- (00426A70) --------------------------------------------------------
-char* nox_xxx_mapGetWallSize_426A70() { return (char*)getMemAt(0x5D4594, 739980); }
-
-//----- (00426A80) --------------------------------------------------------
-void nox_xxx_mapWall_426A80(int* a1) {
-	*getMemU32Ptr(0x5D4594, 739980) = a1[0];
-	*getMemU32Ptr(0x5D4594, 739984) = a1[1];
-}
-
 //----- (00427010) --------------------------------------------------------
 int nox_xxx_guide_427010(const char* a1) {
 	for (int i = 0; i < NOX_GUIDE_COUNT; i++) {

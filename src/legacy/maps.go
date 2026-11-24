@@ -92,11 +92,15 @@ func Get_nox_xxx_mapWriteSectionsMB_426E20() unsafe.Pointer {
 
 //export nox_xxx_nxzCompressFile_57BDD0
 func nox_xxx_nxzCompressFile_57BDD0(a1, a2 *C.char) int32 {
-	if err := cnxz.CompressFile(GoString(a1), GoString(a2)); err != nil {
+	return int32(bool2int(compressGeneratedMap(GoString(a1), GoString(a2))))
+}
+
+func compressGeneratedMap(src, dst string) bool {
+	if err := cnxz.CompressFile(src, dst); err != nil {
 		mapLog.Println(err)
-		return int32(0)
+		return false
 	}
-	return int32(1)
+	return true
 }
 
 //export nox_xxx_mapReset_5028E0

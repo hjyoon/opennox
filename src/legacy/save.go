@@ -200,7 +200,7 @@ func Nox_xxx_quickBarClose_4606B0() {
 	C.nox_xxx_quickBarClose_4606B0()
 }
 func Nox_xxx_mapSaveMap_51E010(a1 string, a2 int) bool {
-	return C.nox_xxx_mapSaveMap_51E010(internCStr(a1), C.int(a2)) != 0
+	return nox_xxx_mapSaveMap_51E010(internCStr(a1), C.int(a2)) != 0
 }
 
 func Sub_41A590(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerInfo) error {

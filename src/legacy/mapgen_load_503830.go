@@ -203,8 +203,7 @@ func mapgenLoadCurrent503830() bool {
 	if !ok {
 		return false
 	}
-	*memmap.PtrUint32(0x5D4594, 739980) = wallX
-	*memmap.PtrUint32(0x5D4594, 739984) = wallY
+	SetMapWallOffset(wallX, wallY)
 
 	var corners [8]int32
 	for _, index := range [...]int{0, 1, 6, 7, 2, 3, 4, 5} {

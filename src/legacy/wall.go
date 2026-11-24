@@ -153,8 +153,8 @@ func nox_xxx_wallForeachFn_410640(cfnc unsafe.Pointer, data unsafe.Pointer) {
 func nox_xxx_mapCountWallsMB_51DEA0(wallPtr, _ unsafe.Pointer) {
 	mapCountWalls51DEA0(
 		asWallP(wallPtr),
-		memmap.PtrUint32(0x5D4594, 2487252),
-		memmap.PtrUint32(0x5D4594, 2487256),
+		memmap.PtrUint32(0x5D4594, mapgenMinWallX),
+		memmap.PtrUint32(0x5D4594, mapgenMinWallY),
 	)
 }
 

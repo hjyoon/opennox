@@ -164,11 +164,6 @@ func init() {
 	}
 }
 
-func nox_xxx_mapWall_426A80(a1, a2 uint32) {
-	*memmap.PtrUint32(0x5D4594, 739980) = a1
-	*memmap.PtrUint32(0x5D4594, 739984) = a2
-}
-
 func mapReadCryptHeader(cf *cryptfile.CryptFile) (uint32, error) {
 	magic, err := cf.ReadU32()
 	if err != nil {
@@ -207,7 +202,7 @@ func (s *Server) nox_xxx_serverParseEntireMap_4CFCE0(cf *cryptfile.CryptFile) er
 	mapLog.Printf("server reading map sections")
 	v5a, _ := cf.ReadU32()
 	v5b, _ := cf.ReadU32()
-	nox_xxx_mapWall_426A80(v5a, v5b)
+	legacy.SetMapWallOffset(v5a, v5b)
 	for {
 		sect, err := cf.ReadString8()
 		if err != nil {
@@ -302,7 +297,7 @@ func nox_xxx_mapCliReadAllA(path string) error {
 	}
 	v9a, _ := cf.ReadU32()
 	v9b, _ := cf.ReadU32()
-	nox_xxx_mapWall_426A80(v9a, v9b)
+	legacy.SetMapWallOffset(v9a, v9b)
 	for {
 		sect, err := cf.ReadString8()
 		if err != nil {

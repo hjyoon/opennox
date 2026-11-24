@@ -284,7 +284,7 @@ func Sub_41D6C0() {
 }
 
 func Sub_49C7A0() {
-	C.sub_49C7A0()
+	sub_49C7A0()
 }
 func Sub_467CA0() {
 	C.sub_467CA0()
@@ -453,7 +453,7 @@ func nox_xxx_gameServerReadyMB_4DD180(index C.int) C.int {
 	}
 	if index == server.HostPlayerIndex && noxflags.HasGame(noxflags.GameModeChat) {
 		if Get_nox_server_sanctuaryHelp_54276() == 1 {
-			C.nox_xxx_cliShowHelpGui_49C560()
+			nox_xxx_cliShowHelpGui_49C560()
 		} else {
 			Nox_xxx_guiServerOptsLoad_457500()
 		}

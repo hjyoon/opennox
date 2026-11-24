@@ -96,76 +96,10 @@ char* nox_xxx_clientEquip_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type,
 	return (char*)nox_xxx_clientEquipNPC_native_49A3D0(opcode, npc_id, item_type, (uint8_t*)modifiers);
 }
 
-//----- (0049C760) --------------------------------------------------------
-int nox_xxx_wnd_49C760(int a1, int a2, int* a3, int a4) {
-	int v3; // esi
-
-	if (a2 == 16391) {
-		v3 = nox_xxx_wndGetID_46B0A0(a3);
-		nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
-		if (v3 == 4103) {
-			sub_49C7A0();
-		}
-	}
-	return 1;
-}
-
-//----- (0049C7A0) --------------------------------------------------------
-int sub_49C7A0() {
-	int result = 0; // eax
-
-	if (dword_5d4594_1305680) {
-		nox_server_sanctuaryHelp_54276 =
-			((unsigned int)~(
-				 nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1305680, 4104)->draw_data.field_0) >>
-			 2) &
-			1;
-		nox_xxx_wnd_46C6E0(dword_5d4594_1305680);
-		nox_xxx_wndClearCaptureMain_46ADE0(dword_5d4594_1305680);
-		nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1305680);
-		dword_5d4594_1305680 = 0;
-		nox_xxx_windowFocus_46B500(0);
-		result = nox_common_gameFlags_check_40A5C0(1);
-		if (result) {
-			result = sub_459D80(0);
-		}
-	}
-	return result;
-}
-
 //----- (0049C810) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
 int sub_49C810() { return dword_5d4594_1305680 != 0; }
 #endif
-
-//----- (0049CA60) --------------------------------------------------------
-int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg) {
-	(void)win;
-	(void)event_arg;
-	if (event == 16391 && event_win) {
-		int id = nox_xxx_wndGetID_46B0A0(event_win);
-		nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
-		if (id == 10353 && dword_5d4594_1305684) {
-			nox_xxx_wnd_46C6E0(dword_5d4594_1305684);
-			nox_xxx_wndClearCaptureMain_46ADE0(dword_5d4594_1305684);
-			if (nox_common_gameFlags_check_40A5C0(128) && nox_server_sanctuaryHelp_54276) {
-				nox_xxx_cliShowHelpGui_49C560();
-			} else {
-				sub_459D80(0);
-			}
-			nox_window* list = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1305684, 10352);
-			if (list) {
-				int selected = (int)nox_window_call_field_94(list, 16404, 0, 0);
-				nox_server_connectionType_3596 = selected + 1;
-				nox_xxx_rateUpdate_40A6D0(sub_40A710(selected + 1));
-			}
-			nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1305684);
-			dword_5d4594_1305684 = 0;
-			nox_xxx_windowFocus_46B500(0);
-		}
-	}
-	return 1;
-}
 
 //----- (0049CB40) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.

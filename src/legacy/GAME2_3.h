@@ -168,7 +168,7 @@ void nox_xxx_clientRemoveRayEffect_49C450(uint8_t* packet);
 void nox_xxx_spriteDeleteSomeList_49C4B0(void);
 void nox_xxx_sprite_49C4F0(void);
 int sub_49C520(nox_drawable* dr);
-int nox_xxx_wnd_49C760(int a1, int a2, int* a3, int a4);
+int nox_xxx_wnd_49C760(nox_window* win, int event, nox_window* control, uintptr_t event_arg);
 int sub_49C7A0();
 int sub_49C810();
 int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg);

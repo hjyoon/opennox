@@ -65,7 +65,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 	} else if notify != 0 {
 		if page := game2BookFind(id, 137); page != 137 {
 			game2BookNotify(id, page)
-			C.game2_book_reward_scalar(2, id, extra)
+			nox_client_book_reward_word(2, id, extra)
 		}
 	}
 }
@@ -104,7 +104,7 @@ func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
 		if page := game2BookFind(id, 6); page != 6 {
 			game2BookNotify(id, page)
 			if extra != 0 {
-				C.game2_book_reward_scalar(3, id, extra)
+				nox_client_book_reward_word(3, id, extra)
 			}
 		}
 	}

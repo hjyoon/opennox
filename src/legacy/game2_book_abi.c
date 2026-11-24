@@ -16,3 +16,8 @@ uint32_t* sub_45D550(uint32_t* pos) {
 void nox_xxx_abilityReward_45D290(int id, char* notify, int extra) {
     game2_book_ability_reward(id, (uintptr_t)notify, extra);
 }
+
+extern void nox_client_book_reward_word(uintptr_t kind, int id, int extra);
+void nox_xxx_bookRewardCli_499CF0(int* kind, int id, int extra) {
+    nox_client_book_reward_word((uintptr_t)kind, id, extra);
+}

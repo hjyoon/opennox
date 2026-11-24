@@ -597,7 +597,7 @@ func Nox_xxx_drawShinySpot_4C4F40(vp *noxrender.Viewport, dr *client.Drawable) {
 }
 
 func Sub_499F60(p int, pos image.Point, a4 int, a5, a6, a7, a8, a9 int, a10 int) {
-	C.sub_499F60(C.int(p), C.int(pos.X), C.int(pos.Y), C.short(a4), C.char(a5), C.char(a6), C.char(a7), C.char(a8), C.char(a9), C.int(a10))
+	sub_499F60(C.int(p), C.int(pos.X), C.int(pos.Y), C.short(a4), C.char(a5), C.char(a6), C.char(a7), C.char(a8), C.char(a9), C.int(a10))
 }
 
 func Get_sub_480250() unsafe.Pointer {
@@ -643,7 +643,7 @@ func Nox_xxx_drawEnergyBolt_499710(a1 int, a2 int, a3 int, a4 int) {
 	nox_xxx_drawEnergyBolt_499710(C.int(a1), C.int(a2), C.short(a3), C.int(a4))
 }
 func Nox_xxx_drawShield_499810(vp *noxrender.Viewport, dr *client.Drawable) {
-	C.nox_xxx_drawShield_499810((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
+	nox_xxx_drawShield_499810((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
 }
 func Sub_495BB0(dr *client.Drawable, vp *noxrender.Viewport) {
 	drawDrawableTrails(dr, vp)

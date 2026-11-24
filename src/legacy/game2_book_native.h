@@ -54,10 +54,6 @@ extern int nox_win_width, nox_win_height;
 // not reconstruct a pointer from any PE32 packed DWORD or retain Go memory.
 static nox_playerInfo* game2_book_player(void) { return (nox_playerInfo*)dword_5d4594_1047516; }
 static nox_playerInfo* game2_book_current_player(void) { return (nox_playerInfo*)dword_8531A0_2576; }
-static void game2_book_reward_scalar(uintptr_t token, int id, int extra) {
-    nox_xxx_bookRewardCli_499CF0((int*)token, id, extra);
-}
-
 // Public mixed pointer/tag ABIs stay in root-owned thin C adapters. The private
 // Go exports return words, so Go never manufactures unsafe.Pointer(1/2/3/4).
 int nox_xxx_book_45BD30(nox_window* win, nox_window_data* draw);

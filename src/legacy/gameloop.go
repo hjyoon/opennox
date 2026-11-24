@@ -216,7 +216,7 @@ func Sub_417CF0() {
 	C.sub_417CF0()
 }
 func Sub_499450() {
-	C.sub_499450()
+	sub_499450()
 }
 func Sub_4959D0() {
 	sub_4959D0()

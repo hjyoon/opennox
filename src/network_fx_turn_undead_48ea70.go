@@ -3,7 +3,6 @@ package opennox
 import (
 	"encoding/binary"
 	"image"
-	"math"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
@@ -54,19 +53,7 @@ func handleTurnUndeadFXNative48EA70(data []byte, hooks turnUndeadFXHooks48EA70) 
 		}
 		cosine, sine := hooks.directionVector(byte(direction))
 
-		// GAME.EXE writes PE32 dword indexes 79, 81, 82, 115, and
-		// 117..119 here. Those byte offsets land on widened pointers in a
-		// native Drawable, including DrawFuncPtr at byte 328. Address fields
-		// by meaning so the effect cannot replace its draw callback with the
-		// packet's Y coordinate on 64-bit hosts.
-		dr.Field_127 = dr.Field_127&0xffff0000 | uint32(uint16(direction))
-		dr.Field_117 = math.Float32bits(cosine * 4)
-		dr.Field_118 = math.Float32bits(sine * 4)
-		dr.Field_119 = 0
-		dr.AnimStart = hooks.frame()
-		dr.Field_81 = uint32(pos.X)
-		dr.Field_82 = uint32(pos.Y)
-		dr.Field_115 = hooks.secondaryUpdate
+		dr.SetTurnUndeadEffect(byte(direction), pos, cosine, sine, hooks.frame(), hooks.secondaryUpdate)
 		hooks.activate(dr)
 		hooks.sightDestroy(dr)
 	}

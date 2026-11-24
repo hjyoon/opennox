@@ -491,7 +491,6 @@ uint32_t dword_587000_126996 = 0x1;
 uint32_t dword_5d4594_2487568 = 0;
 uint32_t dword_5d4594_1045540 = 0;
 uint32_t dword_5d4594_2487580 = 0;
-void* dword_5d4594_1556856 = 0;
 void* dword_5d4594_1046360 = 0;
 uint32_t dword_5d4594_1049976 = 0;
 uint32_t dword_5d4594_1193188 = 0;

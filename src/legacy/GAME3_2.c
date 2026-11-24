@@ -80,7 +80,6 @@ extern nox_window* dword_5d4594_1523040;
 extern uint32_t dword_5d4594_1563276;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t nox_server_sendMotd_108752;
-extern void* dword_5d4594_1556856;
 extern uint32_t dword_5d4594_1548480;
 extern nox_window* dword_5d4594_1523048;
 extern nox_window* dword_5d4594_1523044;
@@ -3929,57 +3928,6 @@ int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
 		}
 	}
 	return 0;
-}
-
-//----- (004DA9A0) --------------------------------------------------------
-typedef struct nox_shadow_link_t {
-	nox_object_t* object;
-	struct nox_shadow_link_t* next;
-	struct nox_shadow_link_t* prev;
-} nox_shadow_link_t;
-
-uint32_t* nox_xxx_unitNewAddShadow_4DA9A0(nox_object_t* a1p) {
-	if (!(a1p->obj_flags & 0x410000)) {
-		nox_shadow_link_t* link = calloc(1, sizeof(*link));
-		if (!link) {
-			return (uint32_t*)a1p;
-		}
-		link->object = a1p;
-		link->next = dword_5d4594_1556856;
-		if (link->next) {
-			link->next->prev = link;
-		}
-		dword_5d4594_1556856 = link;
-		a1p->field_117 = 0;
-		a1p->field_118 = 0;
-		a1p->obj_flags |= 0x10000;
-	}
-	return (uint32_t*)a1p;
-}
-
-//----- (004DA9F0) --------------------------------------------------------
-uint32_t* nox_xxx_action_4DA9F0(nox_object_t* a1p) {
-	if (a1p->obj_flags & 0x10000) {
-		a1p->obj_flags &= 0xFFFEFFFF;
-		for (nox_shadow_link_t* link = dword_5d4594_1556856; link; link = link->next) {
-			if (link->object != a1p) {
-				continue;
-			}
-			if (link->prev) {
-				link->prev->next = link->next;
-			} else {
-				dword_5d4594_1556856 = link->next;
-			}
-			if (link->next) {
-				link->next->prev = link->prev;
-			}
-			free(link);
-			break;
-		}
-		a1p->field_117 = 0;
-		a1p->field_118 = 0;
-	}
-	return (uint32_t*)a1p;
 }
 
 //----- (004DD180) --------------------------------------------------------

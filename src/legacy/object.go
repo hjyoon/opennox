@@ -38,6 +38,7 @@ static uintptr_t nox_test_npcSetItemEquipFlags_resultOffset(nox_object_t* obj, n
 */
 import "C"
 import (
+	"container/list"
 	"image"
 	"unsafe"
 
@@ -715,11 +716,42 @@ func Sub_511DE0(a1 *server.Object) {
 func Sub_528990(a1 *server.Object) {
 	C.sub_528990(asObjectC(a1))
 }
-func Nox_xxx_unitNewAddShadow_4DA9A0(a1 *server.Object) {
-	C.nox_xxx_unitNewAddShadow_4DA9A0(asObjectC(a1))
+
+var shadowObjects = list.New()
+
+func Nox_xxx_unitNewAddShadow_4DA9A0(obj *server.Object) {
+	if obj.ObjFlags.HasAny(object.FlagShadow | object.FlagTransient) {
+		return
+	}
+	shadowObjects.PushFront(obj)
+	obj.Field117, obj.Field118 = 0, 0
+	obj.ObjFlags |= object.FlagShadow
 }
-func Nox_xxx_action_4DA9F0(a1 *server.Object) {
-	C.nox_xxx_action_4DA9F0(asObjectC(a1))
+
+//export nox_xxx_unitNewAddShadow_4DA9A0
+func nox_xxx_unitNewAddShadow_4DA9A0(obj *nox_object_t) *C.uint32_t {
+	Nox_xxx_unitNewAddShadow_4DA9A0(asObjectS(obj))
+	return (*C.uint32_t)(unsafe.Pointer(obj))
+}
+
+func Nox_xxx_action_4DA9F0(obj *server.Object) {
+	if !obj.ObjFlags.Has(object.FlagShadow) {
+		return
+	}
+	obj.ObjFlags &^= object.FlagShadow
+	for link := shadowObjects.Front(); link != nil; link = link.Next() {
+		if link.Value == obj {
+			shadowObjects.Remove(link)
+			break
+		}
+	}
+	obj.Field117, obj.Field118 = 0, 0
+}
+
+//export nox_xxx_action_4DA9F0
+func nox_xxx_action_4DA9F0(obj *nox_object_t) *C.uint32_t {
+	Nox_xxx_action_4DA9F0(asObjectS(obj))
+	return (*C.uint32_t)(unsafe.Pointer(obj))
 }
 func Nox_xxx_buffApplyTo_4FF380(a1 *server.Object, a2 server.EnchantID, dur int, power int) {
 	buffApplyLegacy4FF380(a1, int32(a2), int16(dur), int8(power))

@@ -201,66 +201,6 @@ float get_nox_xxx_conjurerMaxMana_587000_312804();
 //----- (005220E0) --------------------------------------------------------
 // Native-width implementation: mapgen_spellbook_public.go.
 
-//----- (005221A0) --------------------------------------------------------
-nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
-	char* name, uintptr_t list_ref, int count) {
-	char* definition = (char*)nox_mapgenLegacyPtrResolve(list_ref);
-	char* object_name = name;
-	if (!strcmp("*", name)) {
-		if (!definition || count <= 0) {
-			return NULL;
-		}
-		int selected = nox_xxx_mapGenRandFunc_526AC0(0, count - 1);
-		for (int i = 0; definition && i < selected; ++i) {
-			definition = (char*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(definition + 152));
-		}
-		if (!definition) {
-			return NULL;
-		}
-		object_name = definition + 60;
-	} else {
-		for (; definition; definition = (char*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(definition + 152))) {
-			if (!nox_strcmpi(definition, name)) {
-				object_name = definition + 60;
-				break;
-			}
-		}
-	}
-
-	nox_object_t* object = nox_xxx_newObjectByTypeID_4E3810(object_name);
-	if (object && definition) {
-		nox_modifier_attrs_t attrs;
-		memset(attrs.modifiers, 0, sizeof(attrs.modifiers));
-		for (int index = 0; index < 4; ++index) {
-			uint32_t modifier_count = *(uint32_t*)(definition + 136 + 4 * index);
-			if (!modifier_count ||
-				nox_xxx_mapGenRandFunc_526AC0(1, 100) > *getMemU32Ptr(0x587000, 254688 + 4 * index)) {
-				continue;
-			}
-			char* modifiers = (char*)nox_mapgenLegacyPtrResolve(
-				*(uint32_t*)(definition + 120 + 4 * index));
-			if (!modifiers) {
-				continue;
-			}
-			const char* modifier = modifiers +
-				60 * nox_xxx_mapGenRandFunc_526AC0(0, modifier_count - 1);
-			if (nox_strcmpi("none", modifier)) {
-				int modifier_id = nox_xxx_modifGetIdByName_413290(modifier);
-				attrs.modifiers[index] = nox_xxx_modifGetDescById_413330(modifier_id);
-			}
-		}
-		if (!attrs.modifiers[2]) {
-			attrs.modifiers[3] = NULL;
-		}
-		nox_xxx_modifSetItemAttrs_4E4990(object, &attrs);
-	}
-	return object;
-}
-
-uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
-	return (uint32_t*)nox_mapgenMakeEnchantedItemNative_5221A0(a1, (uintptr_t)a2, a3);
-}
-
 //----- (00522300) --------------------------------------------------------
 // Native-width implementation: mapgen_choice_inventory_public.go.
 

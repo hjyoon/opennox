@@ -203,3 +203,11 @@ func itemModifierNamesAtCapacity() string {
 	}
 	return names.String()
 }
+
+func TestMapgenEnchantedItemSelectionKeepsNativeReferences(t *testing.T) {
+	preserveLegacyCRTRand315(t)
+	ok, got := mapgenEnchantedSelectionFixture()
+	if !ok || got != [3]string{"Bow", "Bow", "Longsword"} {
+		t.Fatalf("named, wildcard and direct item choices = %v, references valid = %v", got, ok)
+	}
+}

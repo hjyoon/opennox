@@ -198,7 +198,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 			return sub_5226D0(room, C.float(scale), (*C.float2)(unsafe.Pointer(point))) != 0
 		},
 		enchanted: func(entry *mapGenDecorEntry, modifiers mapGenDecorModifierSet) *server.Object {
-			return asObjectS(C.nox_mapgenMakeEnchantedItemNative_5221A0(&entry.name[0], C.uintptr_t(modifiers.choices), C.int(modifiers.count)))
+			return asObjectS(nox_mapgenMakeEnchantedItemNative_5221A0(&entry.name[0], C.uintptr_t(modifiers.choices), C.int(modifiers.count)))
 		},
 		book: func(entry *mapGenDecorEntry) *server.Object {
 			name := (*C.nox_mapgen_spell_name_t)(unsafe.Pointer(&entry.name[0]))

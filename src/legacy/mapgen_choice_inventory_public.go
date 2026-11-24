@@ -146,7 +146,7 @@ func nox_xxx_mapgen_521FE0(theme *C.uint8_t, holder *C.nox_object_t, choices C.u
 			return asObjectS(nox_xxx_newObjectByTypeID_4E3810((*C.char)(unsafe.Pointer(name))))
 		},
 		enchant: func(name *byte, ref uint32, count int32) *server.Object {
-			return asObjectS(C.nox_mapgenMakeEnchantedItemNative_5221A0((*C.char)(unsafe.Pointer(name)), C.uintptr_t(ref), C.int(count)))
+			return asObjectS(nox_mapgenMakeEnchantedItemNative_5221A0((*C.char)(unsafe.Pointer(name)), C.uintptr_t(ref), C.int(count)))
 		},
 		spellbook: func(name *byte) *server.Object {
 			return asObjectS(nox_xxx_mapGenMakeSpellbook_5220E0(theme, (*C.nox_mapgen_spell_name_t)(unsafe.Pointer(name))))

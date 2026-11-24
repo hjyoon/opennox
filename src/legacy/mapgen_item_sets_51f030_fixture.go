@@ -167,3 +167,25 @@ func mapgenItemSetsFixture51F030(path string, armor bool) mapgenItemSetsResult51
 	}
 	return out
 }
+
+func mapgenEnchantedSelectionFixture() (bool, [3]string) {
+	restore := mapgenHighFixtureMemory()
+	defer restore()
+	raw, token := mapgenAllocateDecorRecord(C.sizeof_nox_mapgen_item_set_entry_legacy)
+	if raw == nil {
+		return false, [3]string{}
+	}
+	defer mapgenReleaseDecorRecord(raw)
+	entry := (*C.nox_mapgen_item_set_entry_legacy)(raw)
+	copyMapgenName((*[60]byte)(unsafe.Pointer(&entry.lookup_name))[:], "SampleBow")
+	copyMapgenName((*[60]byte)(unsafe.Pointer(&entry.object_name))[:], "Bow")
+	alias, aliasEntry := mapgenSelectEnchantedItem(internCStr("samplebow"), C.uintptr_t(uintptr(raw)), 1)
+	random, randomEntry := mapgenSelectEnchantedItem(internCStr("*"), C.uintptr_t(token), 1)
+	direct, directEntry := mapgenSelectEnchantedItem(internCStr("Longsword"), C.uintptr_t(token), 1)
+	missing, missingEntry := mapgenSelectEnchantedItem(internCStr("*"), 0, 1)
+	if aliasEntry != entry || randomEntry != entry || directEntry != nil || missing != nil || missingEntry != nil ||
+		alias == nil || random == nil || direct == nil {
+		return false, [3]string{}
+	}
+	return true, [3]string{GoString(alias), GoString(random), GoString(direct)}
+}

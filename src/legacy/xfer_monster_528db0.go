@@ -24,10 +24,7 @@ import (
 
 const monsterXferVersion528DB0 = 64
 
-func monsterParseSpellID528DB0(name string, allowEmpty bool) (spell.ID, error) {
-	if name == "" && allowEmpty {
-		return spell.SPELL_INVALID, nil
-	}
+func monsterParseSpellID528DB0(name string) (spell.ID, error) {
 	id := spell.ParseID(name)
 	// ParseID returns zero both for an unknown name and for the serialized
 	// SPELL_INVALID sentinel. The latter is present in original Nox map data
@@ -68,7 +65,7 @@ func monsterParseShopParam528DB0(
 		id, err := monsterParseAbilityID528DB0(name)
 		return uint32(id), err
 	default:
-		id, err := monsterParseSpellID528DB0(name, false)
+		id, err := monsterParseSpellID528DB0(name)
 		return uint32(id), err
 	}
 }
@@ -97,7 +94,7 @@ func monsterShopParamName528DB0(
 	default:
 		id := spell.ID(param)
 		name := id.String()
-		if parsed, err := monsterParseSpellID528DB0(name, false); err != nil || parsed != id {
+		if parsed, err := monsterParseSpellID528DB0(name); err != nil || parsed != id {
 			return "", fmt.Errorf("unknown spell ID %d", param)
 		}
 		return name, nil
@@ -467,10 +464,9 @@ func monsterXferDefinitionSpells528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 			if e != nil {
 				return fmt.Errorf("spell[%d] name: %w", i, e)
 			}
-			id, e := monsterParseSpellID528DB0(spellName, false)
-			if e != nil {
-				return fmt.Errorf("spell[%d]: %w", i, e)
-			}
+			// GAME.EXE uses the case-sensitive lookup result as the slot,
+			// including slot zero for an unknown name.
+			id := spell.ParseID(spellName)
 			if int(id) >= len(spells) {
 				return fmt.Errorf("spell[%d] id %d exceeds %d", i, id, len(spells)-1)
 			}
@@ -542,11 +538,7 @@ func monsterXferDefinitionTimings528DB0(cf *cryptfile.CryptFile, ud *server.Mons
 			return fmt.Errorf("auto spell[%d]: %w", i, e)
 		}
 		if cf.ReadOnly() {
-			id, e := monsterParseSpellID528DB0(value, true)
-			if e != nil {
-				return fmt.Errorf("auto spell[%d]: %w", i, e)
-			}
-			*p = uint32(id)
+			*p = uint32(spell.ParseID(value))
 		}
 	}
 	return nil

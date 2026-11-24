@@ -2,6 +2,10 @@ package legacy
 
 /*
 #include "GAME4_2.h"
+
+static double nox_test_mapgen_float_random(unsigned int draw, float low, float high) {
+	return (double)draw * (high - low) * 0.000030518509 + low;
+}
 */
 import "C"
 
@@ -24,4 +28,8 @@ func mapgenRandInt315(low, high int32) int32 {
 
 func mapgenRandWeighted315(center, spread int32) int32 {
 	return int32(C.nox_xxx_mapGenRandFunc2_526B00(C.int(center), C.int(spread)))
+}
+
+func mapgenFloatRandomReference(draw uint32, low, high float32) float64 {
+	return float64(C.nox_test_mapgen_float_random(C.uint(draw), C.float(low), C.float(high)))
 }

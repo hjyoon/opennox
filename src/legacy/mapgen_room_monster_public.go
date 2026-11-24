@@ -164,7 +164,7 @@ func sub_5226D0(room *C.uint8_t, scale C.float, point *C.float2) C.int {
 	}
 	return C.int(bool2int(mapGenFindFreePoint5226D0(
 		mapGenRoomBounds5226D0(room), float32(scale), (*types.Pointf)(unsafe.Pointer(point)),
-		func(lo, hi float32) float64 { return float64(C.sub_526BC0(C.float(lo), C.float(hi))) },
+		func(lo, hi float32) float64 { return float64(sub_526BC0(C.float(lo), C.float(hi))) },
 		func(point *types.Pointf) bool { return mapGenRoomOccupied5227B0(room, point) },
 	)))
 }

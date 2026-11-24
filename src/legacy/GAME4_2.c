@@ -644,11 +644,6 @@ char* sub_526950(void) {
 	return (char*)nox_mapgenLoadAreaRecordsNative();
 }
 
-//----- (00526BC0) --------------------------------------------------------
-double sub_526BC0(float a1, float a2) {
-	return (double)(unsigned int)nox_platform_rand() * (a2 - a1) * 0.000030518509 + a1;
-}
-
 //----- (00526DD0) --------------------------------------------------------
 // Native-width implementation: mapgen_wall_paths_public.go.
 //----- (00527030) --------------------------------------------------------

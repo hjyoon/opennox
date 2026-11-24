@@ -98,7 +98,7 @@ func sub_525DF0(raw *C.uint8_t) {
 	}
 	mapgenShufflePrefabStarts(order[:count], random)
 	positions := mapgenPrefabStarts(count, size, func() int { return random(0, 100) }, func() float32 {
-		return float32(C.sub_526BC0(C.float(-size), C.float(size)))
+		return float32(sub_526BC0(C.float(-size), C.float(size)))
 	})
 	written := count
 	if count >= 4 {

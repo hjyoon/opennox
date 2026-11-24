@@ -165,7 +165,7 @@ func Sub_48D800() {
 	C.sub_48D800()
 }
 func Sub_49A8C0() {
-	C.sub_49A8C0()
+	sub_49A8C0()
 }
 func Sub_4E4DC0() {
 	C.sub_4E4DC0()

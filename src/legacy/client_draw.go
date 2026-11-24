@@ -323,7 +323,7 @@ func Sub_472540(dr *client.Drawable) int {
 	return int(C.sub_472540((*nox_drawable)(dr.C())))
 }
 func Sub_49A6A0(vp *noxrender.Viewport, dr *client.Drawable) {
-	C.sub_49A6A0((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
+	sub_49A6A0((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
 }
 func Nox_xxx_sprite_4756E0_drawable(dr *client.Drawable) int {
 	return int(C.nox_xxx_sprite_4756E0_drawable((*nox_drawable)(dr.C())))

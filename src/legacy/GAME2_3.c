@@ -45,7 +45,6 @@ extern uint32_t dword_5d4594_1200776;
 extern uint32_t dword_5d4594_1203832;
 extern uint32_t dword_5d4594_1200796;
 extern uint32_t dword_5d4594_1305788;
-extern void* nox_alloc_healthChange_1301772;
 extern uint32_t nox_server_sanctuaryHelp_54276;
 extern uint32_t dword_5d4594_1197308;
 extern void* nox_alloc_friendList_1203860;
@@ -54,7 +53,6 @@ extern uint32_t dword_5d4594_1197328;
 extern uint32_t dword_5d4594_1197352;
 extern uint32_t dword_5d4594_1197336;
 extern uint32_t dword_5d4594_1197356;
-extern void* dword_5d4594_1301780;
 extern uint32_t dword_5d4594_1203836;
 extern uint32_t dword_5d4594_1203840;
 extern uint32_t dword_5d4594_1197332;
@@ -62,7 +60,6 @@ extern void* nox_alloc_chat_1197364;
 extern void* dword_5d4594_1203864;
 extern nox_window* dword_5d4594_1193712;
 extern uint32_t nox_server_connectionType_3596;
-extern void* dword_5d4594_1301776;
 extern nox_window* dword_5d4594_1197316;
 extern void* nox_alloc_pixelSpan_1301844;
 extern nox_window* dword_5d4594_1197320;
@@ -1946,100 +1943,6 @@ extern void* nox_xxx_clientEquipNPC_native_49A3D0(uint8_t opcode, int npc_id, ui
 											 uint8_t* modifiers);
 char* nox_xxx_clientEquip_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type, const uint8_t modifiers[4]) {
 	return (char*)nox_xxx_clientEquipNPC_native_49A3D0(opcode, npc_id, item_type, (uint8_t*)modifiers);
-}
-
-//----- (0049A5F0) --------------------------------------------------------
-int nox_xxx_allocArrayHealthChanges_49A5F0() {
-	nox_alloc_class* allocator = nox_new_alloc_class("HealthChange", sizeof(nox_health_change), 32);
-	nox_alloc_healthChange_1301772 = allocator;
-	if (allocator) {
-		dword_5d4594_1301780 = nox_xxx_guiFontPtrByName_43F360("numbers");
-		return 1;
-	}
-	return 0;
-}
-
-//----- (0049A630) --------------------------------------------------------
-void sub_49A630() {
-	nox_alloc_class_free_all((nox_alloc_class*)nox_alloc_healthChange_1301772);
-	dword_5d4594_1301776 = 0;
-}
-
-//----- (0049A650) --------------------------------------------------------
-nox_health_change* nox_xxx_cliAddHealthChange_49A650(int drawable_id, short delta) {
-	nox_health_change* change =
-		(nox_health_change*)nox_alloc_class_new_obj_zero((nox_alloc_class*)nox_alloc_healthChange_1301772);
-	if (!change) {
-		return 0;
-	}
-	change->drawable_id = (uint32_t)drawable_id;
-	change->delta = delta;
-	change->frame = (uint32_t)nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-	change->next = (nox_health_change*)dword_5d4594_1301776;
-	change->prev = 0;
-	if (change->next) {
-		change->next->prev = change;
-	}
-	dword_5d4594_1301776 = change;
-	return change->next;
-}
-
-//----- (0049A6A0) --------------------------------------------------------
-void sub_49A6A0(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	uint32_t frame = (uint32_t)nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-	uint32_t damage_color = dr == (nox_drawable*)getMemPtr(0x852978, 8)
-		? *getMemU32Ptr(0x85B3FC, 940)
-		: nox_color_yellow_2589772;
-	for (nox_health_change* change = (nox_health_change*)dword_5d4594_1301776; change;) {
-		nox_health_change* next = change->next;
-		if ((uint32_t)(frame - change->frame) > 30) {
-			sub_49A880(change);
-		} else if (change->drawable_id == dr->field_32) {
-			int x = (int)(vp->x1 + dr->pos.x - vp->field_4);
-			int frame_delta = (int32_t)(change->frame - frame);
-			int y = (int)(dr->pos.y + vp->y1 + 2 * frame_delta - (int16_t)dr->z -
-						  (int)dr->field_25 - vp->field_5);
-			wchar2_t text[80];
-			int width;
-			nox_swprintf(text, L"%d", abs((int)change->delta));
-			nox_xxx_drawGetStringSize_43F840(dword_5d4594_1301780, text, &width, 0, 0);
-			x += width / -2;
-			nox_xxx_drawSetTextColor_434390(nox_color_black_2650656);
-			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x - 1, y - 1);
-			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x - 1, y + 1);
-			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x + 1, y - 1);
-			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x + 1, y + 1);
-			if (change->delta <= 0) {
-				nox_xxx_drawSetTextColor_434390(damage_color);
-			} else {
-				nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
-			}
-			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x, y);
-		}
-		change = next;
-	}
-}
-
-//----- (0049A880) --------------------------------------------------------
-void sub_49A880(nox_health_change* change) {
-	if (change->prev) {
-		change->prev->next = change->next;
-	} else {
-		dword_5d4594_1301776 = change->next;
-	}
-	if (change->next) {
-		change->next->prev = change->prev;
-	}
-	nox_alloc_class_free_obj_first((nox_alloc_class*)nox_alloc_healthChange_1301772, change);
-}
-
-//----- (0049A8C0) --------------------------------------------------------
-int sub_49A8C0() {
-	nox_free_alloc_class((nox_alloc_class*)nox_alloc_healthChange_1301772);
-	nox_alloc_healthChange_1301772 = 0;
-	dword_5d4594_1301776 = 0;
-	dword_5d4594_1301780 = 0;
-	return 0;
 }
 
 //----- (0049AEA0) --------------------------------------------------------

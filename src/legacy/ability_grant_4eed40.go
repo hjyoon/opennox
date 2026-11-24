@@ -26,10 +26,10 @@ func abilityGivePlayerAllRuntime4EED40() server.AbilityGivePlayerAllRuntime4EED4
 			)
 		},
 		IsQuest: func() int32 {
-			return int32(C.nox_xxx_isQuest_4D6F50())
+			return int32(nox_xxx_isQuest_4D6F50())
 		},
 		QuestMode: func() int32 {
-			return int32(C.sub_4D6F70())
+			return int32(sub_4D6F70())
 		},
 		RewardAbility: func(unit *server.Object, ability, rewardArg int32) {
 			_ = abilityRewardServLegacy4FB9C0(unit, ability, rewardArg)

@@ -99,7 +99,7 @@ func Sub_461440(v int) {
 }
 
 func Sub_4D7440(v int) {
-	C.sub_4D7440(C.int(v))
+	sub_4D7440(C.int(v))
 }
 
 func Nox_xxx_cliSetMinimapZoom_472520(v int) {
@@ -118,7 +118,7 @@ func Sub_43E8C0(a1 int) {
 	C.sub_43E8C0(C.int(a1))
 }
 func Sub_4D6F80(a1 int) {
-	C.sub_4D6F80(C.int(a1))
+	sub_4D6F80(C.int(a1))
 }
 func Sub_4A7A70(a1 int) {
 	C.sub_4A7A70(C.int(a1))

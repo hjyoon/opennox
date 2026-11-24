@@ -461,7 +461,7 @@ func Nox_xxx_checkPlrCantCastSpell_4FD150(obj *server.Object, sp spell.ID, a3 in
 }
 
 func Sub_4D79A0(pli ntype.PlayerInd) {
-	C.sub_4D79A0(C.char(pli))
+	sub_4D79A0(C.char(pli))
 }
 
 func Nox_xxx_player_4E3CE0() int {

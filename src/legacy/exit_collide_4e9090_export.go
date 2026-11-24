@@ -55,7 +55,7 @@ var exitCollideCall4E9090 = func(exit, unit *server.Object, collision unsafe.Poi
 				return uint32(Nox_server_questNextStageThreshold_4D74F0(int32(stage)))
 			},
 			SendQuestStage: func(index uint8, stage uint32) {
-				C.sub_4D7450(C.int(index), C.short(stage))
+				sub_4D7450(C.int(index), C.short(stage))
 			},
 			SetPlayerState: func(obj *server.Object, state server.PlayerState) {
 				Nox_xxx_playerSetState_4FA020(obj, state)
@@ -64,14 +64,14 @@ var exitCollideCall4E9090 = func(exit, unit *server.Object, collision unsafe.Poi
 				Nox_xxx_playerGoObserver_4E6860(player, int(a2), int(a3))
 			},
 			StoreWarpFrame: func(frame uint32) {
-				C.sub_4D75F0(C.int(frame))
+				sub_4D75F0(C.int(frame))
 			},
 			StoreNextMap: storeQuestNextMap4E9090,
 			SetCurrentQuestStage: func(stage uint32) {
 				C.nox_game_setQuestStage_4E3CD0(C.int(stage))
 			},
 			SetQuestWarping: func(value int32) {
-				C.sub_4D76E0(C.int(value))
+				sub_4D76E0(C.int(value))
 			},
 			MapLoad:   outer.SwitchMap,
 			Countdown: questExitCountdownRuntime4E8E60(),

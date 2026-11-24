@@ -30,7 +30,7 @@ var doorCollideCall4E8AC0 = func(door, unit *server.Object, collision unsafe.Poi
 				C.qword_5d4594_1567940 = C.uint64_t(value)
 			},
 			StoreQuestFrame: func(frame uint32) {
-				C.sub_4D71E0(C.int(frame))
+				sub_4D71E0(C.int(frame))
 			},
 			DelayedDelete: srv.DelayedDelete,
 		},

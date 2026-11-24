@@ -42,7 +42,7 @@ func serverDiscoveryInfo554040(token uint32) *discover.MsgServerInfo {
 	name := GoString((*C.char)(headSettingsName409470()))
 	flags := uint32(noxflags.GetGame())
 	var stage uint16
-	if C.nox_xxx_isQuest_4D6F50() != 0 {
+	if nox_xxx_isQuest_4D6F50() != 0 {
 		flags = flags&^uint32(noxflags.GameModeChat) | uint32(noxflags.GameModeQuest)
 		stage = uint16(nox_game_getQuestStage_4E3CC0())
 	}

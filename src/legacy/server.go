@@ -478,13 +478,13 @@ func Sub_4165F0(a1 int, a2 int) {
 	C.sub_4165F0(C.int(a1), C.int(a2))
 }
 func Sub_4D7430() int {
-	return int(C.sub_4D7430())
+	return int(sub_4D7430())
 }
 func Sub_4D76F0() int {
-	return int(C.sub_4D76F0())
+	return int(sub_4D76F0())
 }
 func Sub_4D76E0(a1 int) {
-	C.sub_4D76E0(C.int(a1))
+	sub_4D76E0(C.int(a1))
 }
 func Nox_xxx_ruleSetNoRespawn_40A5E0(a1 int) {
 	C.nox_xxx_ruleSetNoRespawn_40A5E0(C.int(a1))

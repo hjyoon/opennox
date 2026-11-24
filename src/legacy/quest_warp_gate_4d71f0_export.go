@@ -30,7 +30,7 @@ func questWarpGateRuntime4D71F0() server.QuestWarpGateRuntime4D71F0 {
 			return uint32(C.dword_5d4594_1556136)
 		},
 		StoreExitCountdownStart: func(value uint32) {
-			C.sub_4D71E0(C.int(int32(value)))
+			sub_4D71E0(C.int(int32(value)))
 		},
 		WarpEnabled: func() uint32 {
 			return memmap.Uint32(questStateBase4D71F0, questWarpOnOffset4D7520)

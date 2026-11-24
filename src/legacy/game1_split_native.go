@@ -628,7 +628,7 @@ func sub_446780() C.int {
 
 //export nox_xxx_motd_4467F0
 func nox_xxx_motd_4467F0() {
-	if nox_gui_xxx_check_446360() != 0 || (C.nox_xxx_isQuest_4D6F50() != 0 && bool(C.nox_common_gameFlags_check_40A5C0(128))) {
+	if nox_gui_xxx_check_446360() != 0 || (nox_xxx_isQuest_4D6F50() != 0 && bool(C.nox_common_gameFlags_check_40A5C0(128))) {
 		return
 	}
 	root, list := C.dword_5d4594_826028, C.dword_5d4594_826032

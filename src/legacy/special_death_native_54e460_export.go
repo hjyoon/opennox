@@ -122,7 +122,7 @@ func specialDeathRuntime54E460() server.SpecialDeathRuntime54E460 {
 		},
 		Delete: func(unit *server.Object) uint32 { C.nox_xxx_delayedDeleteObject_4E5CC0(asObjectC(unit)); return 0 },
 		Frame:  func() uint32 { return uint32(C.gameFrame()) },
-		Timer:  func(frame uint32) uint32 { return uint32(C.sub_4D71E0(C.int(int32(frame)))) },
+		Timer:  func(frame uint32) uint32 { return uint32(sub_4D71E0(C.int(int32(frame)))) },
 		Mode:   func(mode int32) uint32 { return uint32(C.sub_4D7520(C.int(mode))) },
 		Script: func(data server.SpecialDeathCallback54E460, caller, trigger *server.Object, event uint32) uint32 {
 			if callback := data.NativeCallback(); callback != nil {

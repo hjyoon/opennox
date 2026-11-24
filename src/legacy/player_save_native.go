@@ -295,7 +295,7 @@ func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object,
 		},
 		resetQuest: Sub_4D6000,
 		sendQuestStage: func(player *server.Player) {
-			C.sub_4D7450(C.int(player.PlayerInd), C.short(player.QuestStage))
+			sub_4D7450(C.int(player.PlayerInd), C.short(player.QuestStage))
 		},
 	})
 }

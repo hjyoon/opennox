@@ -165,20 +165,7 @@ func (obj *Object) observeClear() {
 }
 
 func nox_xxx_netNewPlayerMakePacket_4DDA90(buf []byte, pl *server.Player) {
-	buf[0] = byte(netmsg.MSG_NEW_PLAYER)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(pl.NetCode()))
-	binary.LittleEndian.PutUint16(buf[100:], uint16(pl.Lessons))
-	binary.LittleEndian.PutUint16(buf[102:], uint16(pl.Field2140))
-	binary.LittleEndian.PutUint32(buf[104:], uint32(pl.ArmorEquip))
-	binary.LittleEndian.PutUint32(buf[108:], uint32(pl.WeaponEquip))
-	buf[116] = byte(pl.Field2152)
-	buf[117] = byte(pl.Field2156)
-	buf[118] = byte(bool2int(pl.Field3676 == 3))
-	binary.LittleEndian.PutUint32(buf[112:], uint32(pl.Field3680)&0x423)
-	alloc.StrCopyZero(buf[119:129], pl.Field2096())
-	if err := pl.Info().MarshalBinaryTo(buf[3 : 3+server.PlayerInfoWireSize]); err != nil {
-		panic(err)
-	}
+	pl.EncodeNewPlayerPacket(buf[:129])
 }
 
 func sub_459D70() int {

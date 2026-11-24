@@ -32,6 +32,7 @@ import (
 	"github.com/opennox/libs/spell"
 
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -415,8 +416,24 @@ func Nox_xxx_netReportPlayerStatus_417630(p *server.Player) {
 	C.nox_xxx_netReportPlayerStatus_417630((*nox_playerInfo)(p.C()))
 }
 
-func Nox_xxx_netGuiGameSettings_4DD9B0(a1 int, a2 *server.Settings2, a3 int) {
-	C.nox_xxx_netGuiGameSettings_4DD9B0(C.char(a1), unsafe.Pointer(a2), C.int(a3))
+func Nox_xxx_netGuiGameSettings_4DD9B0(code int, settings *server.Settings2, index int) {
+	nox_xxx_netGuiGameSettings_4DD9B0(C.char(code), C.nox_important_payload_t(unsafe.Pointer(settings)), C.int(index))
+}
+
+//export nox_xxx_netGuiGameSettings_4DD9B0
+func nox_xxx_netGuiGameSettings_4DD9B0(code C.char, settings C.nox_important_payload_t, index C.int) C.int {
+	var packet [60]byte
+	packet[0], packet[1] = byte(netmsg.MSG_UPDATE_GUI_GAME_SETTINGS), byte(code)
+	copy(packet[2:], unsafe.Slice((*byte)(unsafe.Pointer(settings)), len(packet)-2))
+	return nox_xxx_netSendPacket1_4E5390(index, C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 0)
+}
+
+//export nox_xxx_netNewPlayerMakePacket_4DDA90
+func nox_xxx_netNewPlayerMakePacket_4DDA90(buf *C.uchar, player *nox_playerInfo) {
+	p := asPlayerS(player)
+	// C callers reserve room for the whole profile field and its terminator.
+	size := 119 + alloc.StrLenS(p.Field2096Buf[:]) + 1
+	p.EncodeNewPlayerPacket(unsafe.Slice((*byte)(unsafe.Pointer(buf)), size))
 }
 
 func Sub_459AA0(a1 *server.Settings2) {

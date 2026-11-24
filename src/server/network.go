@@ -22,7 +22,28 @@ import (
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/internal/netstr"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+// EncodeNewPlayerPacket writes the player's wire record and NUL-terminated profile
+// into buf. The supplied buffer length limits the profile field.
+func (p *Player) EncodeNewPlayerPacket(buf []byte) {
+	buf[0] = byte(netmsg.MSG_NEW_PLAYER)
+	binary.LittleEndian.PutUint16(buf[1:], uint16(p.NetCode()))
+	binary.LittleEndian.PutUint16(buf[100:], uint16(p.Lessons))
+	binary.LittleEndian.PutUint16(buf[102:], uint16(p.Field2140))
+	binary.LittleEndian.PutUint32(buf[104:], uint32(p.ArmorEquip))
+	binary.LittleEndian.PutUint32(buf[108:], uint32(p.WeaponEquip))
+	binary.LittleEndian.PutUint32(buf[112:], uint32(p.Field3680)&0x423)
+	buf[116], buf[117], buf[118] = byte(p.Field2152), byte(p.Field2156), 0
+	if p.Field3676 == 3 {
+		buf[118] = 1
+	}
+	alloc.StrCopyZero(buf[119:], p.Field2096())
+	if err := p.Info().MarshalBinaryTo(buf[3 : 3+PlayerInfoWireSize]); err != nil {
+		panic(err)
+	}
+}
 
 func (s *Server) GetOwnIP() string {
 	return s.OwnIPStr

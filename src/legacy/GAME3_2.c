@@ -4026,32 +4026,6 @@ int nox_xxx_gameServerReadyMB_4DD180(int a1) {
 	return 0;
 }
 
-//----- (004DD9B0) --------------------------------------------------------
-int nox_xxx_netGuiGameSettings_4DD9B0(char a1, const void* a2, int a3) {
-	char v4[60]; // [esp+8h] [ebp-3Ch]
-
-	v4[0] = -79;
-	v4[1] = a1;
-	memcpy(&v4[2], a2, 0x3Au);
-	return nox_xxx_netSendPacket1_4E5390(a3, v4, 60, 0, 0);
-}
-
-//----- (004DDA90) --------------------------------------------------------
-void nox_xxx_netNewPlayerMakePacket_4DDA90(unsigned char* buf, nox_playerInfo* pl) {
-	buf[0] = 45; // MSG_NEW_PLAYER
-	*(uint16_t*)(&buf[1]) = pl->netCode;
-	*(uint16_t*)(&buf[100]) = pl->lessons;
-	*(uint16_t*)(&buf[102]) = pl->field_2140;
-	*(uint32_t*)(&buf[104]) = pl->field_0;
-	*(uint32_t*)(&buf[108]) = pl->field_4;
-	buf[116] = pl->field_2152;
-	buf[117] = pl->field_2156;
-	buf[118] = pl->field_3676 == 3;
-	*(uint32_t*)(&buf[112]) = pl->field_3680 & 0x423;
-	memcpy(&buf[119], pl->field_2096, strlen(pl->field_2096) + 1);
-	memcpy(&buf[3], &pl->info, 97);
-}
-
 //----- (004DDE10) --------------------------------------------------------
 void sub_4DDE10(int a1, nox_playerInfo* a2p) {
 	nox_object_t* unit = a2p->playerUnit;

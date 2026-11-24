@@ -238,12 +238,12 @@ func Nox_xxx_clientAskInfoMb_4BF050(a1 *client.Drawable) string {
 }
 func Nox_xxx_cursorSetTooltip_4776B0(a1 string) {
 	if a1 == "" {
-		C.nox_xxx_cursorSetTooltip_4776B0(nil)
+		nox_xxx_cursorSetTooltip_4776B0(nil)
 		return
 	}
 	wstr, free := CWString(a1)
 	defer free()
-	C.nox_xxx_cursorSetTooltip_4776B0(wstr)
+	nox_xxx_cursorSetTooltip_4776B0(wstr)
 }
 func Sub_57B450(a1 *client.Drawable) int {
 	return clientDrawableCanPickup57B450(a1)

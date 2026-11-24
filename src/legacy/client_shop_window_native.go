@@ -257,7 +257,7 @@ func sub_478E50(win *nox_window, draw *C.nox_window_data, arg C.uintptr_t) C.int
 		cell := shopCell(int(max(0, min(row, shopRows-1))), int(min(col, shopCols-1)))
 		if cell.count != 0 {
 			cell.drawable.field_32 = cell.net_codes[0]
-			C.nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(cell.drawable))
+			nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(cell.drawable))
 		}
 	}
 	return 1

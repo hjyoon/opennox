@@ -171,7 +171,7 @@ func sub_4C1120(win *nox_window, draw *C.nox_window_data, packed C.int) C.int {
 	if slot != nil && slot.count != 0 && slot.drawable != nil {
 		dr := slot.drawable
 		dr.field_32 = slot.item_ids[0]
-		C.nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(dr))
+		nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(dr))
 	}
 	return 1
 }

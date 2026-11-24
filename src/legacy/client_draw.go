@@ -184,7 +184,7 @@ func Sub_470DE0() {
 }
 
 func Nox_xxx_clientEnumHover_476FA0() {
-	C.nox_xxx_clientEnumHover_476FA0()
+	nox_xxx_clientEnumHover_476FA0()
 }
 
 func clientTransientRayPayloadUsesNativeUnion49BDD0() bool {

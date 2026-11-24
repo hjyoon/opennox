@@ -72,7 +72,7 @@ func Nox_xxx_guiSpellTargetClickCheckSend_45DBB0() {
 }
 
 func Nox_xxx_packetGetMarshall_476F40() uint32 {
-	return uint32(C.nox_xxx_packetGetMarshall_476F40())
+	return uint32(nox_xxx_packetGetMarshall_476F40())
 }
 
 func Nox_xxx_clientUpdateButtonRow_45E110(ind int) {

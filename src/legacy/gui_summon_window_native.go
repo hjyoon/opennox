@@ -434,7 +434,7 @@ func sub_4C2BE0(win *nox_window, event C.int, a, b C.uintptr_t) C.int { return 1
 //export sub_4C2C20
 func sub_4C2C20(win *nox_window, draw *C.nox_window_data, packed C.uintptr_t) C.int {
 	pos := summonPointerPosition(packed)
-	C.nox_xxx_cursorSetTooltip_4776B0(sub_4C2C60(win, (*C.nox_summon_const_position_t)(&pos)))
+	nox_xxx_cursorSetTooltip_4776B0(sub_4C2C60(win, (*C.nox_summon_const_position_t)(&pos)))
 	return 1
 }
 
@@ -451,11 +451,11 @@ func sub_4C2C60(win *nox_window, pos *C.nox_summon_const_position_t) *wchar2_t {
 func sub_4C2CE0(win *nox_window, draw *C.nox_window_data, packed C.uintptr_t) C.int {
 	switch memmap.Uint32(0x587000, 184448) {
 	case 3:
-		C.nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:GUARD"), 785))
+		nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:GUARD"), 785))
 	case 4:
-		C.nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:ESCORT"), 782))
+		nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:ESCORT"), 782))
 	case 5:
-		C.nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:HUNT"), 788))
+		nox_xxx_cursorSetTooltip_4776B0(summonText(internCStr("ccs:HUNT"), 788))
 	}
 	return 1
 }

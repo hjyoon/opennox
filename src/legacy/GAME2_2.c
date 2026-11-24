@@ -91,87 +91,11 @@ void* dword_5d4594_1096640 = 0;
 void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
 void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
 
-static size_t nox_tileBufferSize_481430(void);
-static void nox_tileBufferCopy_481490(intptr_t offset, const uint8_t* src, size_t size);
 
 void* nox_client_spriteUnderCursorXxx_1096644 = 0;
 uint32_t nox_client_highResFloors_154952 = 1;
 void* nox_video_tileBuf_ptr_3798796 = 0;
 void* nox_video_tileBuf_end_3798844 = 0;
-
-//----- (00476AE0) --------------------------------------------------------
-void sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	(void)vp;
-	if (!dr || !dr->field_76 || !nox_tileBufferSize_481430()) {
-		return;
-	}
-
-	nox_video_bag_image_t* image = NULL;
-	if (dr->draw_func == nox_thing_static_draw) {
-		if ((dr->flags28 & 0x40000) && !(dr->flags30 & 0x1000000)) {
-			return;
-		}
-		nox_static_draw_data_t* data = dr->field_76;
-		image = data->image;
-	} else {
-		nox_static_random_draw_data_t* data = dr->field_76;
-		if (!data->images) {
-			return;
-		}
-		image = data->images[dr->field_77];
-	}
-	uint8_t* pixels = nox_video_getImagePixdata_42FB30(image);
-	if (!pixels) {
-		return;
-	}
-	int width = *(uint32_t*)(pixels + 0);
-	int height = *(uint32_t*)(pixels + 4);
-	int x = *(int32_t*)(pixels + 8) + (int)dr->pos.x - (uint8_t)dr->field_0;
-	int y = *(int32_t*)(pixels + 12) + (int)dr->pos.y - dr->field_26_1 - dr->z - ((uint8_t*)&dr->field_0)[1];
-	int origin_x = (int32_t)dword_5d4594_3798820;
-	int origin_y = (int32_t)dword_5d4594_3798824;
-	if (x < origin_x || x + width >= origin_x + (int32_t)dword_5d4594_3798800 ||
-		y < origin_y || y + height >= origin_y + (int32_t)dword_5d4594_3798808) {
-		dr->field_86 = 0;
-		return;
-	}
-
-	int counter = (int32_t)nox_xxx_waypointCounterMB_587000_154948;
-	if (counter <= 0) {
-		dr->field_86 = 0;
-	}
-	if (counter > 0 && counter - (int32_t)dr->field_86 <= 1) {
-		dr->field_86 = (uint32_t)counter;
-		return;
-	}
-
-	const uint8_t* runs = pixels + 17;
-	intptr_t row_offset = (intptr_t)dword_5d4594_3798804 *
-		(y + (int32_t)dword_5d4594_3798840 - origin_y) +
-		2 * (x + (int32_t)dword_5d4594_3798836 - origin_x);
-	for (int row = 0; row < height; row++) {
-		intptr_t dst = row_offset;
-		int remaining = width;
-		while (remaining > 0) {
-			uint8_t kind = runs[0] & 0xF;
-			uint8_t count = runs[1];
-			runs += 2;
-			if (!count || count > remaining) {
-				return;
-			}
-			size_t bytes = 2u * count;
-			if (kind == 1) {
-				dst += (intptr_t)bytes;
-			} else if (kind == 2) {
-				nox_tileBufferCopy_481490(dst, runs, bytes);
-				runs += bytes;
-				dst += (intptr_t)bytes;
-			}
-			remaining -= count;
-		}
-		row_offset += dword_5d4594_3798804;
-	}
-}
 
 #if 0 // Superseded by the native-layout implementation above.
 static void* sub_476AE0_legacy(nox_draw_viewport_t* vp, nox_drawable* dr) {
@@ -692,78 +616,6 @@ int* nox_xxx_edgeDraw_480EF0(nox_video_bag_image_t* image, int a2, int a3, int* 
 void sub_481410() { nox_xxx_waypointCounterMB_587000_154948 = -1; }
 #endif
 
-//----- (004815E0) --------------------------------------------------------
-static size_t nox_tileBufferSize_481430(void) {
-	uintptr_t begin = (uintptr_t)nox_video_tileBuf_ptr_3798796;
-	uintptr_t end = (uintptr_t)nox_video_tileBuf_end_3798844;
-	if (!begin || end <= begin) {
-		return 0;
-	}
-	return end - begin;
-}
-
-static uint8_t* nox_tileBufferAt_481450(intptr_t offset) {
-	size_t size = nox_tileBufferSize_481430();
-	if (!size) {
-		return NULL;
-	}
-	intptr_t wrapped = offset % (intptr_t)size;
-	if (wrapped < 0) {
-		wrapped += (intptr_t)size;
-	}
-	return (uint8_t*)nox_video_tileBuf_ptr_3798796 + wrapped;
-}
-
-static void nox_tileBufferCopy_481490(intptr_t offset, const uint8_t* src, size_t size) {
-	size_t buffer_size = nox_tileBufferSize_481430();
-	if (!buffer_size || !src || !size) {
-		return;
-	}
-	uint8_t* begin = (uint8_t*)nox_video_tileBuf_ptr_3798796;
-	uint8_t* end = (uint8_t*)nox_video_tileBuf_end_3798844;
-	uint8_t* dst = nox_tileBufferAt_481450(offset);
-	while (size) {
-		size_t chunk = (size_t)(end - dst);
-		if (chunk > size) {
-			chunk = size;
-		}
-		memcpy(dst, src, chunk);
-		dst = begin;
-		src += chunk;
-		size -= chunk;
-	}
-}
-
-static void nox_tileBufferFill_481500(intptr_t offset, uint32_t color, size_t size) {
-	size_t buffer_size = nox_tileBufferSize_481430();
-	if (!buffer_size || !size) {
-		return;
-	}
-	uint8_t pattern[sizeof(color)];
-	memcpy(pattern, &color, sizeof(pattern));
-	for (size_t i = 0; i < size; i++) {
-		*nox_tileBufferAt_481450(offset + (intptr_t)i) = pattern[i % sizeof(pattern)];
-	}
-}
-
-void nox_xxx_tileDraw_4815E0(int2* pos, nox_video_bag_image_t* image, uint16_t tile_index) {
-	(void)tile_index;
-	uint8_t* src = nox_video_getImagePixdata_42FB30(image);
-	if (!src || !nox_tileBufferSize_481430()) {
-		return;
-	}
-	int shift = getMemByte(0x973F18, 7696);
-	intptr_t base = (intptr_t)dword_5d4594_3798804 *
-		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
-		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) << shift);
-	for (int row = 0; row < 46; row++) {
-		size_t row_offset = (size_t)(*getMemU32Ptr(0x973CE0, 192 + 4 * row)) << shift;
-		size_t row_size = (size_t)(*getMemU32Ptr(0x973CE0, 384 + 4 * row)) << shift;
-		nox_tileBufferCopy_481490(base + (intptr_t)row * dword_5d4594_3798804 + (intptr_t)row_offset, src, row_size);
-		src += row_size;
-	}
-}
-
 #if 0 // Superseded by the pointer-width-safe implementation above.
 static char nox_xxx_tileDrawLegacy_4815E0(uint32_t* a1, int a2) {
 	unsigned int v2; // ebx
@@ -838,28 +690,6 @@ static char nox_xxx_tileDrawLegacy_4815E0(uint32_t* a1, int a2) {
 //----- (00481770) --------------------------------------------------------
 bool get_nox_client_texturedFloors_154956();
 uint32_t dword_5d4594_1193156 = 0;
-void sub_481770(int2* pos, nox_video_bag_image_t* image, uint16_t tile_index) {
-	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
-	(void)image;
-	if (tile_index >= floor_tiles->count || !nox_tileBufferSize_481430()) {
-		return;
-	}
-	nox_tileDef_t* tile = &floor_tiles->definitions[tile_index];
-	if (!get_nox_client_texturedFloors_154956() && (tile->field_58 & 1) == 1) {
-		dword_5d4594_1193156 = 1;
-	}
-	int shift = getMemByte(0x973F18, 7696);
-	intptr_t base = (intptr_t)dword_5d4594_3798804 *
-		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
-		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) << shift);
-	for (int row = 0; row < 46; row++) {
-		size_t row_offset = (size_t)(*getMemU32Ptr(0x973CE0, 192 + 4 * row)) << shift;
-		size_t row_size = (size_t)(*getMemU32Ptr(0x973CE0, 384 + 4 * row)) << shift;
-		nox_tileBufferFill_481500(base + (intptr_t)row * dword_5d4594_3798804 + (intptr_t)row_offset,
-						  tile->color_48, row_size);
-	}
-}
-
 #if 0 // Superseded by the pointer-width-safe implementation above.
 static char* sub_481770_legacy(uint32_t* a1, int a2, unsigned short a3) {
 	unsigned char v4; // cl
@@ -923,79 +753,6 @@ static char* sub_481770_legacy(uint32_t* a1, int a2, unsigned short a3) {
 	return result;
 }
 #endif
-
-//----- (00481900) --------------------------------------------------------
-void nox_xxx_drawNoEdges_4818F0(int2* pos, nox_tile_list_node_t* edge) {
-	(void)pos;
-	(void)edge;
-}
-
-void nox_xxx_drawTexEdgesProbably_481900(int2* pos, nox_tile_list_node_t* edge) {
-	nox_floor_tile_storage_t* floor_tiles = nox_floor_tile_storage();
-	if (!pos || !edge || edge->field_0 < 0 || (uint32_t)edge->field_0 >= floor_tiles->count ||
-		edge->field_2 < 0 || edge->field_2 >= 64 || !nox_tileBufferSize_481430()) {
-		return;
-	}
-	nox_tileDef_t* tile = &floor_tiles->definitions[edge->field_0];
-	if (!tile->data_32 || !nox_edge_images_native[edge->field_2]) {
-		return;
-	}
-	int tile_image_index = edge->field_1 + tile->field_46;
-	int edge_image_index = edge->field_3 + *getMemU16Ptr(0x85B3FC, 28690 + 60 * edge->field_2);
-	if (tile_image_index < 0 || edge_image_index < 0) {
-		return;
-	}
-	nox_video_bag_image_t* tile_image = tile->data_32[tile_image_index];
-	nox_video_bag_image_t* edge_image = ((nox_video_bag_image_t**)nox_edge_images_native[edge->field_2])[edge_image_index];
-	uint8_t* commands = nox_video_getImagePixdata_42FB30(edge_image);
-	uint8_t* tile_pixels = nox_video_getImagePixdata_42FB30(tile_image);
-	if (!commands || !tile_pixels) {
-		return;
-	}
-	int first_row = commands[0];
-	int last_row = commands[1];
-	commands += 2;
-	if (first_row < 0 || first_row >= 46 || last_row < first_row || last_row >= 46) {
-		return;
-	}
-	*getMemU32Ptr(0x5D4594, 2523980 + 4 * edge->field_2) = 1;
-	int shift = getMemByte(0x973F18, 7696);
-	intptr_t base = (intptr_t)dword_5d4594_3798804 *
-		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
-		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) * (1 << shift));
-	for (int row = first_row; row <= last_row; row++) {
-		int remaining = *getMemU32Ptr(0x973CE0, 384 + 4 * row);
-		intptr_t dst = base + (intptr_t)row * dword_5d4594_3798804 +
-			((intptr_t)*getMemU32Ptr(0x973CE0, 192 + 4 * row) << shift);
-		const uint8_t* src = tile_pixels +
-			((size_t)*getMemU32Ptr(0x973CE0, 4 * row) << shift);
-		while (remaining > 0) {
-			uint8_t kind = commands[0];
-			uint8_t count = commands[1];
-			commands += 2;
-			if (!count || count > remaining) {
-				return;
-			}
-			size_t bytes = (size_t)count << shift;
-			switch (kind) {
-			case 1:
-				break;
-			case 2:
-				nox_tileBufferCopy_481490(dst, commands, bytes);
-				commands += bytes;
-				break;
-			case 3:
-				nox_tileBufferCopy_481490(dst, src, bytes);
-				break;
-			default:
-				return;
-			}
-			dst += (intptr_t)bytes;
-			src += bytes;
-			remaining -= count;
-		}
-	}
-}
 
 #if 0 // Superseded by the pointer-width-safe implementation above.
 static char nox_xxx_drawTexEdgesProbablyLegacy_481900(uint32_t* a1, uint32_t* a2) {

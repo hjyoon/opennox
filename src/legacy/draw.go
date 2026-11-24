@@ -589,7 +589,7 @@ func Sub_437180() {
 }
 
 func Sub_476AE0(vp *noxrender.Viewport, dr *client.Drawable) {
-	C.sub_476AE0((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
+	sub_476AE0((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))
 }
 
 func Nox_xxx_drawShinySpot_4C4F40(vp *noxrender.Viewport, dr *client.Drawable) {

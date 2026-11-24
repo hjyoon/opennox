@@ -1388,6 +1388,9 @@ func Set_nox_alloc_magicEnt_1569668(v unsafe.Pointer) {
 func Set_dword_5d4594_1569672(v int) {
 	C.dword_5d4594_1569672 = C.uint(v)
 }
+func Get_nox_xxx_waypointCounterMB_587000_154948() uint32 {
+	return uint32(C.nox_xxx_waypointCounterMB_587000_154948)
+}
 func Inc_nox_xxx_waypointCounterMB_587000_154948() {
 	C.nox_xxx_waypointCounterMB_587000_154948++
 }

@@ -29,6 +29,10 @@ func asDrawable(p *nox_drawable) *client.Drawable {
 	return (*client.Drawable)(unsafe.Pointer(p))
 }
 
+func drawableItemData(p *nox_drawable) *client.DrawableUnionItem {
+	return (*client.DrawableUnionItem)(unsafe.Pointer(&asDrawable(p).Union))
+}
+
 func AsDrawableP(p unsafe.Pointer) *client.Drawable {
 	return (*client.Drawable)(p)
 }

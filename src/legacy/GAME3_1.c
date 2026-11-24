@@ -1202,6 +1202,7 @@ void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, uintpt
 	}
 }
 
+#if 0 // The secondary weapon encoder remains available to the C fixture.
 //----- (004BF010) --------------------------------------------------------
 int nox_xxx_clientReportSecondaryWeapon_4BF010(nox_drawable* drawable) {
 	char v3[3]; // [esp+0h] [ebp-4h]
@@ -1378,6 +1379,8 @@ int sub_4BFAD0() {
 	setMemPtr(0x5D4594, 1319052, nox_xxx_gLoadImg_42F970("MaleMedievalCloakTop"));
 	return 1;
 }
+
+#endif
 
 //----- (004BFB70) --------------------------------------------------------
 void sub_4BFB70(int a1) {

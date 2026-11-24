@@ -1195,10 +1195,14 @@ func (p *PlayerInfo) SetPlayerClass(v player.Class) {
 }
 
 func (p *PlayerInfo) IsFemale() bool {
+	return p.FemaleFlag() != 0
+}
+
+func (p *PlayerInfo) FemaleFlag() byte {
 	if p == nil {
-		return false
+		return 0
 	}
-	return p.isFemale != 0
+	return p.isFemale
 }
 
 func (p *PlayerInfo) SetIsFemale(v byte) {

@@ -527,7 +527,7 @@ func dequipEquippedQuiver53A0F0(owner *server.Object, report, broadcast C.int) {
 	}
 	for item := owner.InvFirstItem; item != nil; item = item.InvNextItem {
 		if item.Flags().Has(object.FlagEquipped) && nox_xxx_weaponInventoryEquipFlags_415820(asObjectC(item)) == 2 {
-			C.nox_xxx_playerDequipWeapon_53A140(asObjectC(owner), asObjectC(item), report, broadcast)
+			playerDequipWeapon53A140(owner, item, report, broadcast)
 			return
 		}
 	}
@@ -551,7 +551,7 @@ func dequipEquippedShields53A3D0(owner *server.Object) {
 }
 
 func playerEquipWeaponNativeCall53A420(owner, item *server.Object) int {
-	return int(C.nox_xxx_playerEquipWeapon_53A420(asObjectC(owner), asObjectC(item), 1, 1))
+	return playerEquipWeapon53A420(owner, item, 1, true)
 }
 
 func npcWeaponDequipItemEligible53A030(item *server.Object) bool {

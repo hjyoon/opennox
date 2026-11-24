@@ -221,7 +221,7 @@ func nox_xxx_draw_499E70(color, x, y, width, height, edge, motion C.int) C.int {
 		} else {
 			vx = C.int(drawFXRandom(0, 20, 575))
 		}
-		C.nox_client_newScreenParticle_431540(color, px, py, vx, vy, 1, size, 0, 0, 1)
+		nox_client_newScreenParticle_431540(color, px, py, vx, vy, 1, size, 0, 0, 1)
 	}
 	return 0
 }

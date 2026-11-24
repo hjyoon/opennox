@@ -38,7 +38,6 @@
 #define calloc nox_mapgen_alloc_memory
 #define free nox_mapgen_release_memory
 
-extern uint32_t dword_5d4594_2487656;
 extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_2487804;
 extern uint32_t dword_5d4594_2487884;
@@ -75,14 +74,6 @@ _Static_assert(offsetof(nox_mapgen_decor_definition_legacy, decor_sets_token) ==
 			   "wrong mapgen decor-definition decor-set-token offset");
 _Static_assert(offsetof(nox_mapgen_decor_definition_legacy, next_token) == 220,
 			   "wrong mapgen decor-definition next-token offset");
-
-static nox_mapgen_decor_entry_legacy* nox_mapgenDecorEntryResolve(uintptr_t ref) {
-	return (nox_mapgen_decor_entry_legacy*)nox_mapgenLegacyPtrResolve(ref);
-}
-
-static nox_mapgen_decor_set_legacy* nox_mapgenDecorSetResolve(uintptr_t ref) {
-	return (nox_mapgen_decor_set_legacy*)nox_mapgenLegacyPtrResolve(ref);
-}
 
 float get_nox_xxx_warriorMaxHealth_587000_312784();
 float get_nox_xxx_wizardMaxHealth_587000_312816();
@@ -646,46 +637,6 @@ void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2) {
 // Room distance and ranking are implemented in mapgen_room_ranking.go.
 
 //----- (005262F0) --------------------------------------------------------
-
-//----- (00526830) --------------------------------------------------------
-int nox_mapgenPlacePrefabsWithCallback_526830(
-	uint8_t* theme, nox_mapgen_prefab_finalize_cb_526830 callback) {
-	if (!theme || !callback) {
-		return 0;
-	}
-	for (uint8_t* prefab = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(theme + 80)); prefab;
-		 prefab = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 156))) {
-		if (!*(uint32_t*)(prefab + 76)) {
-			continue;
-		}
-		uint8_t* foreach_entries = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 152));
-		uint8_t* room = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 148));
-		callback(theme, prefab, foreach_entries, room);
-	}
-	return 1;
-}
-
-static void nox_mapgenFinalizePrefabNative_526830(
-	uint8_t* theme, uint8_t* prefab, uint8_t* foreach_entries, uint8_t* room) {
-	sub_502D70(*(int32_t*)(prefab + 68));
-	for (nox_object_t* object = sub_504980(); object;) {
-		nox_object_t* next = sub_5049C0(object);
-		uint16_t type_id = object->typ_ind;
-		if (type_id == dword_5d4594_2487656 || type_id == *getMemU32Ptr(0x5D4594, 2487660) ||
-			type_id == *getMemU32Ptr(0x5D4594, 2487664) || type_id == *getMemU32Ptr(0x5D4594, 2487668)) {
-			sub_504A10(object);
-		}
-		object = next;
-	}
-	nox_mapgenApplyForeachNative_521C60(theme, (uintptr_t)foreach_entries);
-	if (room) {
-		sub_503B30((float2*)(room + 20));
-	}
-}
-
-int nox_xxx_mapGenPlacePrefabs_526830(uint8_t* theme) {
-	return nox_mapgenPlacePrefabsWithCallback_526830(theme, nox_mapgenFinalizePrefabNative_526830);
-}
 
 // GAME.EXE returns the processed record count in a pointer-sized register.
 extern uintptr_t nox_mapgenLoadAreaRecordsNative(void);

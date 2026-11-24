@@ -51,7 +51,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 	if nox_xxx_mapGen_InPrefab2_5266F0(theme) == 0 {
 		return 2
 	}
-	if C.nox_xxx_mapGenPlacePrefabs_526830(theme) == 0 {
+	if nox_xxx_mapGenPlacePrefabs_526830(theme) == 0 {
 		return 0
 	}
 	root := (*C.uint8_t)(unsafe.Pointer(mapgenResolveListedRoom(uint32(C.dword_5d4594_1550916))))

@@ -11,7 +11,7 @@ import "unsafe"
 type mapgenThemePrefabRecord struct {
 	name           [60]byte
 	width, height  float32
-	_              int32
+	areaIndex      int32
 	required       uint32
 	placed         uint32
 	markers        [mapgenPrefabDirections5262F0]mapgenPrefabExit5262F0

@@ -1,0 +1,105 @@
+package legacy
+
+/*
+#include "GAME3_2.h"
+#include "GAME4_2.h"
+#include "mapgen_theme_native.h"
+extern uint32_t dword_5d4594_1550916;
+*/
+import "C"
+
+import (
+	"math"
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+)
+
+const mapgenThemeOffset = 1549796
+
+func mapgenThemeHalfGrid() int32 {
+	radius := memmap.Float32(0x5D4594, 1549860)
+	return x87TruncQwordLow(float64(radius) * 0.030743772)
+}
+
+func mapgenGenerateBackdrop(theme *C.uint8_t) {
+	half := mapgenThemeHalfGrid()
+	size := C.int(2*half + 1)
+	room := unsafe.Pointer(nox_xxx_mapGenMakeRoomStruct_521940(size, size))
+	start := C.float(float64(-half) * 32.526913)
+	pos := C.float2{field_0: start, field_4: start}
+	nox_xxx_mapGenSetRoomPos_521880((*C.uint32_t)(room), &pos)
+	for node := mapgenRooms.head; node != nil; node = mapgenNextListedRoom(node, mapgenResolveListedRoom) {
+		other := (*mapgenRoomGeometry)(unsafe.Pointer(node))
+		position := (*C.float2)(unsafe.Pointer(&other.position[0]))
+		width := C.float(math.Float32frombits(uint32(other.dimensions[0])))
+		height := C.float(math.Float32frombits(uint32(other.dimensions[1])))
+		nox_mapgenAddOccupiedRectNative_521BC0((*C.uint8_t)(room), position, width, height)
+	}
+	C.nox_mapgenSelectBackdropNative_524070(theme, (*C.uint8_t)(room))
+	C.nox_mapgenGenerateRoomNative_524E00(theme, (*C.uint8_t)(room))
+	C.nox_mapgenPopulateDecorNative_522340(theme, (*C.uint8_t)(room))
+	sub_521A10(room)
+}
+
+func mapgenBuildRooms(theme *C.uint8_t) C.int {
+	C.nox_xxx_mapGenMkSmallRoom_4D4F40(theme)
+	if C.nox_xxx_mapGen_InPrefab1_525D20(theme) == 0 {
+		return 2
+	}
+	C.sub_4D52F0()
+	if C.nox_xxx_mapGen_InPrefab2_5266F0(theme) == 0 {
+		return 2
+	}
+	if C.nox_xxx_mapGenPlacePrefabs_526830(theme) == 0 {
+		return 0
+	}
+	root := (*C.uint8_t)(unsafe.Pointer(mapgenResolveListedRoom(uint32(C.dword_5d4594_1550916))))
+	C.nox_mapgenComputeRoomDistancesNative_5259F0(root, nil, 0)
+	C.nox_mapgenClassifyRoomsNative_525AF0(root)
+	if memmap.Uint32(0x5D4594, 1549980) != 0 {
+		mapgenGenerateBackdrop(theme)
+	}
+	if C.nox_mapgenMakeRoomsNative_524310(theme) == 0 {
+		return 2
+	}
+	for _, roomType := range [...]bool{true, false} {
+		for node := mapgenRooms.head; node != nil; node = mapgenNextListedRoom(node, mapgenResolveListedRoom) {
+			room := unsafe.Pointer(node)
+			if (C.nox_xxx_mapGenCheckRoomType_5238F0((*C.int)(room)) != 0) == roomType {
+				C.nox_xxx_mapGenSetFlags_5235F0(C.char(-100))
+				C.nox_mapgenGenerateRoomNative_524E00(theme, (*C.uint8_t)(room))
+			}
+		}
+	}
+	C.nox_mapgenConnectRoomLinesNative_522D30(theme)
+	C.nox_xxx_mapgen_Doors_4D4790()
+	C.nox_mapgenConnectRoomPointsNative_522F40(theme)
+	nox_mapgenFinishPopulateNative_5228B0(theme)
+	return 1
+}
+
+//export nox_xxx_mapGenStep_4D44E0
+func nox_xxx_mapGenStep_4D44E0() C.int {
+	theme := (*C.uint8_t)(memmap.PtrOff(0x5D4594, mapgenThemeOffset))
+	C.dword_5d4594_1550916 = 0
+	sub_57C490_2(internCStr("theme"))
+	sub_526C40(0)
+	sub_51D100(0)
+	if C.nox_mapgenReadThemeNative_51E260((*C.int)(unsafe.Pointer(theme)), nox_xxx_getRandMapName_4D4310()) == 0 {
+		return 0
+	}
+	*memmap.PtrUint32(0x5D4594, 1549864) = uint32(mapgenThemeHalfGrid())
+	nox_xxx_mapGenSetRngSeed_526AB0(C.uint(memmap.Uint32(0x5D4594, 1549872)))
+	C.sub_526950()
+	if nox_mapgenPrepareWorkspaceNative(theme) == 0 {
+		C.sub_520D50((*C.uint32_t)(unsafe.Pointer(theme)))
+		return 0
+	}
+	result := mapgenBuildRooms(theme)
+	nox_xxx_mapGenFreeTopRoom_521A40()
+	nox_xxx_mapgenFreeBuffer_521400()
+	sub_520F80()
+	C.sub_520D50((*C.uint32_t)(unsafe.Pointer(theme)))
+	return result
+}

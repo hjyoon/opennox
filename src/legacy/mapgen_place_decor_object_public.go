@@ -125,7 +125,7 @@ func nox_mapgenPlaceDecorObjectNative_521CB0(theme, room *C.uint8_t, entry *C.no
 				return (*mapGenDecorAreaFlags)(unsafe.Pointer(C.sub_526AA0(C.int(index))))
 			},
 			roll: func(low, high int32) int32 {
-				return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
+				return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 			},
 			inside: func(rect *mapGenOccupiedRect5227B0) bool {
 				return sub_521EB0(room, (*C.nox_mapgen_occupied_rect_legacy)(unsafe.Pointer(rect))) != 0

@@ -174,7 +174,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 	roomSize := &(*mapgenRoomGeometry)(roomPointer).cellDimensions
 	modifiers := (*[2]mapGenDecorModifierSet)(unsafe.Add(unsafe.Pointer(theme), mapGenThemeDecorModifierSetsOffset))
 	roll := func(low, high int32) int32 {
-		return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
+		return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 	}
 	resolveEntry := func(token uint32) *mapGenDecorEntry {
 		return (*mapGenDecorEntry)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))

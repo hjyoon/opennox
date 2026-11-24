@@ -3,12 +3,46 @@ package legacy
 /*
 #include "GAME3_2.h"
 #include "GAME4_2.h"
+extern uint32_t dword_5d4594_3835364, dword_5d4594_3835368;
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+)
 
 const mapgenWallCoordinateScale = 0x1.642c86p-5
+
+//export sub_526C40
+func sub_526C40(mode C.int) C.int {
+	if mode != 0 && mode != 1 {
+		return 0
+	}
+	C.dword_5d4594_3835364 = C.uint32_t(mode)
+	return 1
+}
+
+//export sub_526C80
+func sub_526C80(mode C.int) C.int {
+	if mode != 0 && mode != 1 {
+		return 0
+	}
+	C.dword_5d4594_3835368 = C.uint32_t(mode)
+	return 1
+}
+
+//export sub_526D50
+func sub_526D50(direction C.int) C.int {
+	selected := memmap.PtrUint32(0x973F18, 35952)
+	if direction < 0 || direction >= 15 {
+		*selected = 0
+		return 0
+	}
+	*selected = uint32(direction)
+	return 1
+}
 
 func mapgenWallGridCell(x, y float32) (int32, int32, bool) {
 	col := x87TruncQwordLow(mulFloat64TowardZero(float64(x), mapgenWallCoordinateScale))

@@ -25,7 +25,7 @@ func mapGenRoomOffset521B00(room, other *mapgenRoomGeometry, axis int, attach bo
 func mapGenRoomOffsetNative(room, other *C.nox_mapgen_readonly_room_t, axis int, attach bool) C.float {
 	value := mapGenRoomOffset521B00((*mapgenRoomGeometry)(unsafe.Pointer(room)),
 		(*mapgenRoomGeometry)(unsafe.Pointer(other)), axis, attach, func(low, high int32) int32 {
-			return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
+			return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 		})
 	// Both original callers spill the result to a binary32 coordinate.
 	return C.float(storeFloat32TowardZero(value))

@@ -64,7 +64,7 @@ func nox_mapgenPrepareRoomNative_521990(theme *C.uint8_t) *C.float {
 		func(first, second int32) int32 {
 			return int32(C.nox_xxx_mapGenRandFunc2_526B00(C.int(first), C.int(second)))
 		}, func(first, second int32) {
-			C.nox_xxx_mapGenRandFunc_526AC0(C.int(first), C.int(second))
+			nox_xxx_mapGenRandFunc_526AC0(C.int(first), C.int(second))
 		})
 	return nox_xxx_mapGenMakeRoomStruct_521940(C.int(width), C.int(height))
 }

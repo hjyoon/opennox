@@ -43,7 +43,6 @@ extern uint32_t dword_5d4594_2487656;
 extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_2487804;
 extern uint32_t dword_5d4594_2487632;
-extern uint32_t dword_5d4594_3835364;
 extern uint32_t dword_5d4594_2487884;
 extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_2487580;
@@ -4890,74 +4889,9 @@ char* sub_526AA0(int a1) {
 	return records ? records + (a1 << 6) : NULL;
 }
 
-//----- (00526AB0) --------------------------------------------------------
-void nox_xxx_mapGenSetRngSeed_526AB0(unsigned int a1) { nox_platform_srand(a1); }
-
-//----- (00526AC0) --------------------------------------------------------
-signed int nox_xxx_mapGenRandFunc_526AC0(int a1, signed int a2) {
-	signed int result; // eax
-
-	result = a1 + (a2 - a1 + 1) * nox_platform_rand() / 0x7FFFu;
-	if (result > a2) {
-		result = a2;
-	}
-	return result;
-}
-
-//----- (00526B00) --------------------------------------------------------
-int nox_xxx_mapGenRandFunc2_526B00(int a1, signed int a2) {
-	int v3;        // edi
-	signed int v4; // ebx
-	int v5;        // ecx
-
-	if (!a2) {
-		return a1;
-	}
-	v3 = 10000 / a2;
-	do {
-		do {
-			v4 = nox_xxx_mapGenRandFunc_526AC0(-a2, a2);
-			v5 = nox_xxx_mapGenRandFunc_526AC0(0, 10000 / a2);
-		} while (v5 >= v3 * (a2 - v4) / a2);
-	} while (v5 >= v3 * (v4 + a2) / a2);
-	return v4 + a1;
-}
-
 //----- (00526BC0) --------------------------------------------------------
 double sub_526BC0(float a1, float a2) {
 	return (double)(unsigned int)nox_platform_rand() * (a2 - a1) * 0.000030518509 + a1;
-}
-
-//----- (00526C40) --------------------------------------------------------
-int sub_526C40(int a1) {
-	if (a1 != 1 && a1) {
-		return 0;
-	}
-	dword_5d4594_3835364 = a1;
-	return 1;
-}
-
-//----- (00526C80) --------------------------------------------------------
-int sub_526C80(int a1) {
-	if (a1 != 1 && a1) {
-		return 0;
-	}
-	dword_5d4594_3835368 = a1;
-	return 1;
-}
-
-//----- (00526D50) --------------------------------------------------------
-int sub_526D50(int a1) {
-	int result; // eax
-
-	if (a1 < 0 || a1 >= 15) {
-		*getMemU32Ptr(0x973F18, 35952) = 0;
-		result = 0;
-	} else {
-		*getMemU32Ptr(0x973F18, 35952) = a1;
-		result = 1;
-	}
-	return result;
 }
 
 //----- (00526DD0) --------------------------------------------------------

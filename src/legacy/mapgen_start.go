@@ -34,7 +34,7 @@ func mapgenGenerateWithRetries(step func() int) bool {
 	return false
 }
 
-func mapgenGenerationStep() int { return int(C.nox_xxx_mapGenStep_4D44E0()) }
+func mapgenGenerationStep() int { return int(nox_xxx_mapGenStep_4D44E0()) }
 
 func mapgenFileAbsent(name string) bool {
 	_, err := ifs.Stat(name)

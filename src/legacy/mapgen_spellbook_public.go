@@ -70,7 +70,7 @@ func nox_xxx_mapGenMakeSpellbook_5220E0(theme *C.uint8_t, name *C.nox_mapgen_spe
 			binding.Objs.FreeObject(unit)
 		},
 		random: func(start, end int32) int32 {
-			return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(start), C.int(end)))
+			return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(start), C.int(end)))
 		},
 		spellID: func() int {
 			return int(C.nox_xxx_mapGenSpellIdByName_51E1D0(namePtr))

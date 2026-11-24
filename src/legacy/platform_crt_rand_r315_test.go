@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"math"
 	"sync"
 	"testing"
 
@@ -99,5 +100,32 @@ func TestPlatformCRTRand315ActualMapgenBounds(t *testing.T) {
 		if ints2[i] != ints[i] || positions2[i] != positions[i] {
 			t.Fatalf("C mapgen reseed diverged at draw %d", i)
 		}
+	}
+}
+
+func TestPlatformCRTRand315MapgenIntegerWidths(t *testing.T) {
+	preserveLegacyCRTRand315(t)
+	ranges := [][2]int32{{-500, 500}, {0, 0}, {127, -3}, {-300000000, 400000000},
+		{math.MinInt32, math.MaxInt32}, {2147483640, 2147483647}}
+	weighted := [][2]int32{{0, 0}, {-500, 30}, {1000, 5}, {2147483637, 4}}
+	digest := uint64(14695981039346656037)
+	add := func(value int32) {
+		digest ^= uint64(uint32(value))
+		digest *= 1099511628211
+	}
+	for _, seed := range []uint32{1, 1234, math.MaxUint32} {
+		mapgenRandValues315(seed, 0)
+		for range 64 {
+			for _, bounds := range ranges {
+				add(mapgenRandInt315(bounds[0], bounds[1]))
+			}
+			for _, args := range weighted {
+				add(mapgenRandWeighted315(args[0], args[1]))
+			}
+		}
+	}
+	// Computed with the previous C entries and the same CRT state transitions.
+	if want := uint64(0x79a01dceb650cb16); digest != want {
+		t.Fatalf("seeded native integer draw digest = %016x, want %016x", digest, want)
 	}
 }

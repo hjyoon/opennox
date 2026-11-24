@@ -132,7 +132,7 @@ func nox_xxx_mapgen_521FE0(theme *C.uint8_t, holder *C.nox_object_t, choices C.u
 	choice := (*mapGenChoiceRecord)(C.nox_mapgenLegacyPtrResolve(choices))
 	mapGenApplyChoice521FE0(setup, asObjectS(holder), choice, mapGenChoiceServices{
 		roll: func(low, high int32) int32 {
-			return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
+			return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 		},
 		next: func(next uint32) *mapGenChoiceRecord {
 			return (*mapGenChoiceRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(next)))

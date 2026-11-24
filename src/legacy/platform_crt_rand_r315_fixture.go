@@ -17,3 +17,11 @@ func mapgenRandValues315(seed uint32, count int) ([]int32, []float64) {
 	}
 	return ints, positions
 }
+
+func mapgenRandInt315(low, high int32) int32 {
+	return int32(C.nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
+}
+
+func mapgenRandWeighted315(center, spread int32) int32 {
+	return int32(C.nox_xxx_mapGenRandFunc2_526B00(C.int(center), C.int(spread)))
+}

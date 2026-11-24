@@ -68,6 +68,7 @@ _Static_assert(offsetof(nox_chat_bubble, drawable) >= 692,
 	"native chat-bubble fields overlap the PE32 prefix!");
 
 nox_chat_bubble* nox_xxx_netCode2ChatBubble_48D850(int a1);
+void nox_xxx_createTextBubble_48D880(void* packet, wchar2_t* text);
 void sub_48D990(nox_draw_viewport_t* a1);
 void sub_48DCF0(nox_draw_viewport_t* a1);
 bool sub_48E000(int4* a1, uint32_t* a2);

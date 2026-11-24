@@ -7,13 +7,11 @@ void sub_4519C0();
 int sub_495430();
 void sub_44D3A0();
 void sub_45D810();
-void nox_xxx_createTextBubble_48D880(void* a1, wchar2_t* a2);
 */
 import "C"
 import (
 	"image"
 	"image/color"
-	"unsafe"
 
 	"github.com/opennox/libs/strman"
 	"golang.org/x/image/font"
@@ -21,7 +19,6 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/client/noxrender"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 type Client interface {
@@ -137,11 +134,12 @@ func Sub_49BBB0() {
 }
 
 func Nox_xxx_createTextBubble_48D880(pck []byte, text string) {
-	cpck, pfree := alloc.Make(pck, len(pck))
-	defer pfree()
-	ctext, tfree := CWString(text)
-	defer tfree()
-	C.nox_xxx_createTextBubble_48D880(unsafe.Pointer(&cpck[0]), ctext)
+	if len(pck) < chatBubblePacketHeaderSize {
+		return
+	}
+	ctext, free := CWString(text)
+	defer free()
+	createChatBubble(pck, ctext)
 }
 
 func ChatBubbleSize() uintptr {
@@ -149,9 +147,9 @@ func ChatBubbleSize() uintptr {
 }
 
 func RemoveChatBubble(netCode int) {
-	C.sub_48E8E0(C.int(netCode))
+	sub_48E8E0(C.int(netCode))
 }
 
 func ResetChatBubbles() {
-	C.sub_48E940()
+	sub_48E940()
 }

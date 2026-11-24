@@ -585,7 +585,7 @@ func setRect(cr *C.nox_rect, r image.Rectangle) {
 }
 
 func Sub_437180() {
-	C.sub_48D990((*nox_draw_viewport_t)(GetClient().Viewport().C()))
+	sub_48D990((*nox_draw_viewport_t)(GetClient().Viewport().C()))
 }
 
 func Sub_476AE0(vp *noxrender.Viewport, dr *client.Drawable) {

@@ -1,0 +1,97 @@
+void sub_48D990(nox_draw_viewport_t* a1p) {
+	int font_height = nox_xxx_guiFontHeightMB_43F320(0);
+	int half_height = font_height / 2;
+	sub_437260();
+	sub_48DCF0(a1p);
+	if (!nox_chat_bubble_head_48D850) {
+		sub_437290();
+		return;
+	}
+	for (nox_chat_bubble* bubble = nox_chat_bubble_head_48D850; bubble; bubble = bubble->next) {
+		if (bubble->visible) {
+			uint32_t text_color = nox_color_white_2523948;
+			uint16_t* player_name = 0;
+			if (bubble->drawable && bubble->drawable->flags28 & 4) {
+				nox_team_t* team = nox_xxx_objGetTeamByNetCode_418C80(bubble->drawable->field_32);
+				nox_playerInfo* player_info = nox_common_playerInfoGetByID_417040(bubble->net_code);
+				if (player_info) {
+					player_name = player_info->name_final;
+				}
+				if (team) {
+					nox_team_t* resolved = nox_xxx_getTeamByID_418AB0(*((unsigned char*)team + 4));
+					if (resolved) {
+						text_color = nox_xxx_materialGetTeamColor_418D50(resolved);
+					}
+				}
+			}
+			int x = bubble->x;
+			int y = bubble->y;
+			for (int i = 0; i < 2; ++i) {
+				int color;
+				if (i) {
+					color = *getMemU32Ptr(0x85B3FC, 956);
+					--x;
+					--y;
+				} else {
+					color = *getMemU32Ptr(0x852978, 4);
+				}
+				nox_client_drawSetColor_434460(color);
+				int left = x - half_height;
+				nox_client_drawAddPoint_49F500(x, y - half_height);
+				nox_client_drawAddPoint_49F500(x - half_height, y);
+				nox_client_drawLineFromPoints_49E4B0();
+				int right = bubble->width + x;
+				nox_client_drawAddPoint_49F500(x, y - half_height);
+				nox_client_drawAddPoint_49F500(right, y - half_height);
+				nox_client_drawLineFromPoints_49E4B0();
+				int right_outer = half_height + right;
+				nox_client_drawAddPoint_49F500(right_outer, y);
+				nox_client_drawAddPoint_49F500(right, y - half_height);
+				nox_client_drawLineFromPoints_49E4B0();
+				int bottom = y + bubble->height;
+				nox_client_drawAddPoint_49F500(right_outer, y);
+				nox_client_drawAddPoint_49F500(right_outer, bottom);
+				nox_client_drawLineFromPoints_49E4B0();
+				int bottom_outer = half_height + bottom;
+				nox_client_drawAddPoint_49F500(right, bottom_outer);
+				nox_client_drawAddPoint_49F500(right_outer, bottom);
+				nox_client_drawLineFromPoints_49E4B0();
+				if (bubble->draw_tail) {
+					int tail_right = half_height + x + bubble->width / 2;
+					nox_client_drawAddPoint_49F500(right, bottom_outer);
+					nox_client_drawAddPoint_49F500(tail_right, bottom_outer);
+					nox_client_drawLineFromPoints_49E4B0();
+					int tail_bottom = font_height + bottom_outer;
+					int tail_mid = x + bubble->width / 2;
+					nox_client_drawAddPoint_49F500(tail_mid, tail_bottom);
+					nox_client_drawAddPoint_49F500(tail_right, bottom_outer);
+					nox_client_drawLineFromPoints_49E4B0();
+					int tail_left = x + bubble->width / 2 - half_height;
+					nox_client_drawAddPoint_49F500(tail_mid, tail_bottom);
+					nox_client_drawAddPoint_49F500(tail_left, bottom_outer);
+					nox_client_drawLineFromPoints_49E4B0();
+					nox_client_drawAddPoint_49F500(x, bottom_outer);
+					nox_client_drawAddPoint_49F500(tail_left, bottom_outer);
+				} else {
+					nox_client_drawAddPoint_49F500(x, bottom_outer);
+					nox_client_drawAddPoint_49F500(right, bottom_outer);
+				}
+				nox_client_drawLineFromPoints_49E4B0();
+				nox_client_drawAddPoint_49F500(x, bottom_outer);
+				nox_client_drawAddPoint_49F500(left, bottom_outer - half_height);
+				nox_client_drawLineFromPoints_49E4B0();
+				nox_client_drawAddPoint_49F500(left, bottom_outer - half_height - bubble->height);
+				nox_client_drawAddPoint_49F500(left, bottom_outer - half_height);
+				nox_client_drawLineFromPoints_49E4B0();
+			}
+			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
+			nox_xxx_drawSetColor_4343E0(*getMemIntPtr(0x852978, 4));
+			nox_xxx_drawStringWrapHL_43FD00(0, bubble->text, x, y, 128, 0);
+			if (player_name) {
+				nox_xxx_drawSetTextColor_434390(text_color);
+				nox_xxx_drawStringWrapHL_43FD00(0, player_name, x, y - font_height - 1, 128, 0);
+			}
+		}
+	}
+	sub_437290();
+}

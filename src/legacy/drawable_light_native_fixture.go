@@ -17,6 +17,11 @@ func drawableLightColorCABI(dr *client.Drawable, color noxrender.RGB) *client.Dr
 	return asDrawable(C.nox_drawable_change_light_color_native(p, C.int(color.R), C.int(color.G), C.int(color.B)))
 }
 
+func drawablePackedLightColorCABI(data *byte, color noxrender.RGB) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_spriteChangeLightColor_484BE0(
+		(*C.uint32_t)(unsafe.Pointer(data)), C.int(color.R), C.int(color.G), C.int(color.B)))
+}
+
 func drawableLightAngleCABI(dr *client.Drawable, value int32, direction bool) int64 {
 	p := (*nox_drawable)(unsafe.Pointer(dr))
 	if direction {

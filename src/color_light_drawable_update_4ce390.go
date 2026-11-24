@@ -28,9 +28,8 @@ func (c *Client) colorLightDrawableHooks4CE390() colorLightDrawableHooks4CE390 {
 	}
 }
 
-// updateColorLightDrawable4CE390 keeps the ColorLight update entirely on
-// native-width Go pointers. The legacy callback and its helpers originated as
-// PE32 routines and cannot safely receive a 64-bit Drawable address.
+// updateColorLightDrawable4CE390 runs from the Go renderer and the legacy
+// parser's registered update callback.
 func updateColorLightDrawable4CE390(vp *noxrender.Viewport, dr *client.Drawable, hooks colorLightDrawableHooks4CE390) int {
 	if vp == nil || dr == nil {
 		return 1

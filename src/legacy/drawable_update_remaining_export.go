@@ -64,6 +64,14 @@ func sub_4CA720(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(ClientUpdateManaBombOrb4CA720(asViewport(vp), asDrawable(dr)))
 }
 
+//export nox_xxx_updDrawColorlight_4CE390
+func nox_xxx_updDrawColorlight_4CE390(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	if ClientUpdateColorLight4CE390 == nil {
+		return 1
+	}
+	return int32(ClientUpdateColorLight4CE390(asViewport(vp), asDrawable(dr)))
+}
+
 //export nox_xxx_updDrawCloud_4CE1D0
 func nox_xxx_updDrawCloud_4CE1D0(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	if ClientUpdateCloud4CE1D0 == nil {

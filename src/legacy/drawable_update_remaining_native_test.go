@@ -65,6 +65,11 @@ func TestRemainingDrawableUpdateEntriesNative228(t *testing.T) {
 			ClientUpdateManaBombOrb4CA720 = h
 			return func() { ClientUpdateManaBombOrb4CA720 = old }
 		}},
+		{name: "ColorLight", fn: Get_nox_xxx_updDrawColorlight_4CE390(), void: false, set: func(h remainingDrawableHook228) func() {
+			old := ClientUpdateColorLight4CE390
+			ClientUpdateColorLight4CE390 = h
+			return func() { ClientUpdateColorLight4CE390 = old }
+		}},
 		{name: "Cloud", fn: Get_nox_xxx_updDrawCloud_4CE1D0(), void: false, set: func(h remainingDrawableHook228) func() {
 			old := ClientUpdateCloud4CE1D0
 			ClientUpdateCloud4CE1D0 = nil

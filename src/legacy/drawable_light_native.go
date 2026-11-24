@@ -19,6 +19,15 @@ func nox_drawable_set_light_color_go(dr *nox_drawable, r, g, b C.int) {
 	asDrawable(dr).SetLightColorRGB(noxrender.RGB{R: int(r), G: int(g), B: int(b)})
 }
 
+//export nox_drawable_set_packed_light_color_go
+func nox_drawable_set_packed_light_color_go(light *C.uint32_t, r, g, b C.int) {
+	data := unsafe.Slice((*byte)(unsafe.Pointer(light)), 28)
+	binary.LittleEndian.PutUint32(data[16:20], uint32(r))
+	binary.LittleEndian.PutUint32(data[:4], 2)
+	binary.LittleEndian.PutUint32(data[20:24], uint32(g))
+	binary.LittleEndian.PutUint32(data[24:28], uint32(b))
+}
+
 //export nox_drawable_change_light_direction_native
 func nox_drawable_change_light_direction_native(dr *nox_drawable, direction C.int) C.longlong {
 	return C.longlong(asDrawable(dr).SetLightDirection(int32(direction)))

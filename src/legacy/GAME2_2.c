@@ -4117,18 +4117,6 @@ int sub_484450(int a1, int a2) {
 #endif
 
 
-//----- (00484BE0) --------------------------------------------------------
-uint32_t* nox_xxx_spriteChangeLightColor_484BE0(uint32_t* a1, int a2, int a3, int a4) {
-	uint32_t* result; // eax
-
-	result = a1;
-	a1[4] = a2;
-	*a1 = 2;
-	a1[5] = a3;
-	a1[6] = a4;
-	return result;
-}
-
 //----- (00484C00) --------------------------------------------------------
 // Preserved original: unused packed-light shadow; native Drawable light methods already own live calls.
 #if 0

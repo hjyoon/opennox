@@ -14,6 +14,7 @@ var (
 	ClientUpdateVortexSource4CC950   func(*noxrender.Viewport, *client.Drawable) int
 	ClientUpdateManaBombCharge4CCAC0 func(*noxrender.Viewport, *client.Drawable) int
 	ClientUpdateManaBombOrb4CA720    func(*noxrender.Viewport, *client.Drawable) int
+	ClientUpdateColorLight4CE390     func(*noxrender.Viewport, *client.Drawable) int
 	ClientUpdateCloud4CE1D0          func(*noxrender.Viewport, *client.Drawable, int) int
 	ClientUpdateCloudRise4CE340      func(*noxrender.Viewport, *client.Drawable) int
 	ClientUpdateMeteor4CCD00         func(*noxrender.Viewport, *client.Drawable) int

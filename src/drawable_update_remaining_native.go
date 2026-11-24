@@ -27,6 +27,12 @@ func init() {
 	legacy.ClientUpdateManaBombOrb4CA720 = func(_ *noxrender.Viewport, dr *client.Drawable) int {
 		return noxClient.updateManaBombOrb4CA720(dr)
 	}
+	legacy.ClientUpdateColorLight4CE390 = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		if noxClient == nil {
+			return 1
+		}
+		return noxClient.updateColorLightDrawable4CE390(vp, dr)
+	}
 	legacy.ClientUpdateCloud4CE1D0 = func(vp *noxrender.Viewport, dr *client.Drawable, radius int) int {
 		return updateCloudDrawable4CE1D0(dr, radius, noxClient.cloudDrawableHooks4CE200())
 	}

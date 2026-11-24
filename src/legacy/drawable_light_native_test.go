@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"math"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
@@ -110,6 +111,22 @@ func TestDrawableLightNativeABIOriginal(t *testing.T) {
 			binary.LittleEndian.Uint32(block[12:]) != 0x10203040 {
 			t.Fatalf("packed intensity %#08x: returned %d, block %x", tc.input, packed, block)
 		}
+	}
+}
+
+func TestDrawableLightPackedColorPreservesAddressAndOtherFields(t *testing.T) {
+	var raw [30]byte
+	for i := range raw {
+		raw[i] = byte(i + 1)
+	}
+	want := raw
+	binary.LittleEndian.PutUint32(want[1:5], 2)
+	binary.LittleEndian.PutUint32(want[17:21], 0xfffeffff)
+	binary.LittleEndian.PutUint32(want[21:25], 0x00000102)
+	binary.LittleEndian.PutUint32(want[25:29], 0x80000000)
+	color := noxrender.RGB{R: -65537, G: 258, B: math.MinInt32}
+	if pointer := drawablePackedLightColorCABI(&raw[1], color); pointer != unsafe.Pointer(&raw[1]) || raw != want {
+		t.Fatalf("packed color returned %p for %p, bytes %x, want %x", pointer, &raw[1], raw, want)
 	}
 }
 

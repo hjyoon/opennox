@@ -54,7 +54,7 @@ func Nox_xxx_loadModifyers_4158C0() {
 }
 
 func Sub_4D11A0() {
-	C.sub_4D11A0()
+	sub_4D11A0()
 }
 
 func Sub_431370() int {
@@ -108,7 +108,7 @@ func Sub_42EDC0() {
 }
 
 func Sub_4D11D0() {
-	C.sub_4D11D0()
+	sub_4D11D0()
 }
 
 func Sub_4D0DA0() {

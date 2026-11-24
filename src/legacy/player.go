@@ -328,7 +328,7 @@ func ClientSetPlayerNetCode(id int) {
 }
 
 func Nox_xxx_playerForceDisconnect_4DE7C0(ind ntype.PlayerInd) {
-	C.nox_xxx_playerForceDisconnect_4DE7C0(C.int(ind))
+	nox_xxx_playerForceDisconnect_4DE7C0(C.int(ind))
 }
 
 func Get_nox_xxx_updatePlayerMonsterBot_4FAB20() unsafe.Pointer {

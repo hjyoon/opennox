@@ -465,10 +465,10 @@ func Nox_xxx_teamCompare2_419180(t *server.ObjectTeam, id server.TeamID) int {
 	return int(C.nox_xxx_teamCompare2_419180((*C.nox_object_team_t)(unsafe.Pointer(t)), C.uchar(id)))
 }
 func Sub_4D12A0(a1 int) int {
-	return int(C.sub_4D12A0(C.int(a1)))
+	return int(sub_4D12A0(C.int(a1)))
 }
 func Sub_4D1210(a1 int) {
-	C.sub_4D1210(C.int(a1))
+	sub_4D1210(C.int(a1))
 }
 func Nox_net_importantACK_4E55A0(playerIndex ntype.PlayerInd, frame uint32) {
 	C.nox_net_importantACK_4E55A0(C.uint8_t(playerIndex), C.uint32_t(frame))

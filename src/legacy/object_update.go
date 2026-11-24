@@ -416,11 +416,7 @@ func playerAttackNativeData538960(unit *server.Object) int {
 	if update == nil || update.Player == nil {
 		return 0
 	}
-	return int(C.nox_xxx_playerAttackNativeData_538960(
-		asObjectC(unit),
-		(*C.nox_player_update_data_t)(unsafe.Pointer(update)),
-		(*C.nox_playerInfo)(unsafe.Pointer(update.Player)),
-	))
+	return playerMeleeUpdate538960(unit, update, update.Player)
 }
 
 func playerAttackNativeNPCData538960(unit *server.Object) int {
@@ -430,23 +426,16 @@ func playerAttackNativeNPCData538960(unit *server.Object) int {
 	}
 	// GAME.EXE 005389BB reads byte +481, not DWORD field index 481.
 	// This same native byte is sent in complex NPC animation packets.
-	storedFrame := C.uint8_t(update.Field120_1)
+	storedFrame := update.Field120_1
 	originalAnimation := uint8(update.Field517)
-	storedAnimation := C.uint8_t(update.Field517)
-	result := C.nox_xxx_playerAttackNativeNPCData_538960(
-		asObjectC(unit),
-		asObjectC(unit.NPCEquippedWeapon538960()),
-		C.uint32_t(update.WeaponEquipFlags),
-		storedFrame,
-		storedAnimation,
-		&storedFrame,
-		&storedAnimation,
-	)
-	update.Field120_1 = uint8(storedFrame)
-	if uint8(storedAnimation) != originalAnimation {
+	storedAnimation := originalAnimation
+	result := npcMeleeUpdate538960(unit, unit.NPCEquippedWeapon538960(), update.WeaponEquipFlags,
+		storedFrame, storedAnimation, &storedFrame, &storedAnimation)
+	update.Field120_1 = storedFrame
+	if storedAnimation != originalAnimation {
 		update.Field517 = update.Field517&^0xff | uint32(storedAnimation)
 	}
-	return int(result)
+	return result
 }
 
 //export nox_xxx_playerAttackNPCUseWeaponNative_538960

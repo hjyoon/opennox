@@ -26,7 +26,7 @@ func mapgenInitializePrefabExitTypes() {
 
 func mapgenInitialPrefabs(theme *C.uint8_t, place func(*mapgenThemePrefabRecord) bool) bool {
 	mapgenInitializePrefabExitTypes()
-	C.sub_525DF0(theme)
+	sub_525DF0(theme)
 	words := (*[mapgenThemeWordCount]C.uint32_t)(unsafe.Pointer(theme))
 	const maxInitialPrefabs = 5
 	placed := 0

@@ -676,7 +676,7 @@ void sub_500510(const char* a1) {
 }
 
 //----- (00506F30) --------------------------------------------------------
-#if 0 // Restored with native Vote links by vote_5066d0.c.
+#if 0 // Implemented with native Vote links in game4_vote_native.go.
 void nox_xxx_voteUptate_506F30() {
 	uint32_t* result; // eax
 	uint32_t* v1;     // esi

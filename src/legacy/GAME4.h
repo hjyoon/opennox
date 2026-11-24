@@ -168,17 +168,17 @@ void nox_xxx_free_503F40();
 nox_tile_coord_entry_t* nox_xxx_tileAllocTileInCoordList_5040A0(int a1, int a2, float a3);
 int nox_xxx_tileInit_504150(int a1, int a2);
 // GAME.EXE 00503F40 and 00504290..005045AF are restored by
-// map_temp_lists_503f40.c with native-width wall/waypoint payloads and links.
+// game4_temp_lists_native.go with native-width wall/waypoint payloads and links.
 void sub_504600(char* a1, unsigned int a2, unsigned char a3);
 int sub_5046A0(uint32_t* a1, unsigned int a2);
 int sub_504720(unsigned int a1, unsigned int a2);
-// GAME.EXE 005048A0..00504AA3 is restored by map_object_list_5048a0.c.
+// GAME.EXE 005048A0..00504AA3 is implemented in game4_map_objects_native.go.
 // The dedicated header above preserves the three native pointers in each
 // temporary node and the native object pointers returned by the traversals.
 // GAME.EXE 00505060..0050535F is restored by the Go MapIntro section codec.
 // GAME.EXE 00505C30..0050625F is restored by the Go map-group reader/writer.
 int nox_server_mapRWWaypoints_506260(uint32_t* a1);
-// GAME.EXE 005066D0..005071CF is restored by vote_5066d0.c. Vote records,
+// GAME.EXE 005066D0..005071CF is implemented in game4_vote_native.go. Vote records,
 // allocator handles, list links, unit targets, and team pointers stay native-width.
 // GAME.EXE 00509120..005095DF is restored by the Go callback-slot setter.
 // Object and update/collide-data pointers remain native-width.

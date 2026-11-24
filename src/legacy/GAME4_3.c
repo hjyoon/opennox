@@ -2008,6 +2008,7 @@ void sub_53A3D0(nox_object_t* owner) {
 //----- (0053A680) --------------------------------------------------------
 
 //----- (0053A720) --------------------------------------------------------
+#if 0 // Preserve the C body used by the original equipment fixture.
 int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
 	if (!owner || !item) {
 		return 0;
@@ -2081,6 +2082,7 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 }
 
 //----- (0053A9C0) --------------------------------------------------------
+#endif
 
 
 //----- (0053AAB0) --------------------------------------------------------
@@ -3647,6 +3649,7 @@ nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const no
 #endif
 
 //----- (0053E7F0) --------------------------------------------------------
+#if 0 // Preserve the C body used by the original equipment fixture.
 static int nox_modifier_attrs_have_any_53E7F0(const nox_modifier_attrs_t* attrs) {
 	if (!attrs) {
 		return 0;
@@ -3751,6 +3754,7 @@ LABEL_40:
 }
 
 //----- (0053EAE0) --------------------------------------------------------
+#endif
 
 // Historical GAME.EXE 0053EBF0..0053ECD8 bodies. The active C callers use
 // item_drop_rules_53ebf0_export.go; Go-owned callers use the native server

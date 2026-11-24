@@ -86,6 +86,12 @@ func (s *Server) WeaponDropSound53AAB0(item *Object) {
 	playWeaponDropSound53AAB0(item, s.equipmentDropAudio)
 }
 
+func (s *Server) ArmorPickupSound53E7F0(owner, item *Object) {
+	playArmorDropSound53EAE0(item, func(id uint32, _ *Object, kind int32, code uint32) {
+		s.equipmentDropAudio(id-1, owner, kind, code)
+	})
+}
+
 func (s *Server) ArmorDropSound53EAE0(item *Object) {
 	playArmorDropSound53EAE0(item, s.equipmentDropAudio)
 }

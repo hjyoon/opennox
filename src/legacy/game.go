@@ -515,7 +515,7 @@ func Nox_game_initOptionsInGame_4ADAD0() int {
 	return int(C.nox_game_initOptionsInGame_4ADAD0())
 }
 func Sub_48D000_initGuiKick() int {
-	return int(C.sub_48D000_initGuiKick())
+	return int(sub_48D000_initGuiKick())
 }
 func Sub_4C3760() int {
 	return int(sub_4C3760())

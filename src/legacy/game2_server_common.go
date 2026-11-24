@@ -52,6 +52,10 @@ func g2ServerList(w *g2ServerWindow) *gui.ScrollListBoxData {
 	}
 	return (*gui.ScrollListBoxData)(w.widget_data)
 }
+func listBoxRowText(w *nox_window, index uintptr) *wchar2_t {
+	return (*wchar2_t)(unsafe.Pointer(g2ServerEvent(w, 16406, index, 0)))
+}
+
 func g2ServerItems(d *gui.ScrollListBoxData) []gui.ScrollListBoxItem {
 	if d == nil || d.Items == nil {
 		return nil

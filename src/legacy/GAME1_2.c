@@ -3498,6 +3498,7 @@ wchar2_t* sub_435700(wchar2_t* a1, int a2) {
 }
 
 //----- (004357A0) --------------------------------------------------------
+#if 0 // C reference for the observer visibility fixture.
 int nox_xxx_cliToggleObsWindow_4357A0() {
 	int result; // eax
 	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
@@ -3510,6 +3511,7 @@ int nox_xxx_cliToggleObsWindow_4357A0() {
 	return result;
 }
 
+#endif
 //----- (00435F60) --------------------------------------------------------
 int sub_435F60() {
 	int result; // eax

@@ -107,10 +107,6 @@ func (p inputBindingPanel) loadString(id string, line int32) *wchar2_t {
 	return nox_strman_loadString_40F1D0(internCStr(id), nil, internCStr(p.source), line)
 }
 
-func inputBindingTitle(w *nox_window, index uintptr) *wchar2_t {
-	return (*wchar2_t)(unsafe.Pointer(g2ServerEvent(w, 16406, index, 0)))
-}
-
 func inputBindingEventName(title *wchar2_t) string {
 	event := Nox_xxx_bindevent_bindNameByTitle_42EA40(GoWString(title))
 	if event == nil {
@@ -123,9 +119,9 @@ func (p inputBindingPanel) apply() C.int {
 	sub_42CD90()
 	if list := g2ServerList(*p.labels); list != nil {
 		for i, count := uintptr(0), uintptr(list.Field_11_0); i < count; i++ {
-			event := inputBindingEventName(inputBindingTitle(*p.labels, i))
-			primary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(inputBindingTitle(*p.columns[0], i)))
-			secondary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(inputBindingTitle(*p.columns[1], i)))
+			event := inputBindingEventName(listBoxRowText(*p.labels, i))
+			primary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(*p.columns[0], i)))
+			secondary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(*p.columns[1], i)))
 			if secondary != 0 {
 				Nox_client_parseConfigHotkeysLine_42CF50(secondary.String() + " = " + event)
 			}
@@ -275,7 +271,7 @@ func inputPromptPart(s *wchar2_t) *uint16 {
 }
 
 func (p inputBindingPanel) showCapture(index uintptr) {
-	item := inputBindingTitle(*p.labels, index)
+	item := listBoxRowText(*p.labels, index)
 	prompt := p.loadString("InputCfg.wnd:PressKey", p.pressKeyLine)
 	text := unsafe.Slice((*uint16)(g2ServerMem(p.promptOffset)), p.promptUnits)
 	body := text[:len(text)-1]
@@ -346,7 +342,7 @@ func clearInputBinding(list *nox_window, name *wchar2_t, empty unsafe.Pointer) {
 	}
 	count := int(data.Field_11_0)
 	for i := 0; i < count; i++ {
-		current := inputBindingTitle(list, uintptr(i))
+		current := listBoxRowText(list, uintptr(i))
 		if current != nil && C.nox_wcscmp(current, name) == 0 {
 			g2ServerText(list, 16407, empty, uintptr(i))
 		}

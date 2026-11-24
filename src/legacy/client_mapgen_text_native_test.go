@@ -49,7 +49,7 @@ func TestClientMapGenText4A9D00NativeOriginalContracts(t *testing.T) {
 			}
 		}
 	}
-	source, err := os.ReadFile("client__gui__guigen.c")
+	source, err := os.ReadFile("testdata/mapgen_client_text_before_go.c")
 	if err != nil {
 		t.Fatal(err)
 	}

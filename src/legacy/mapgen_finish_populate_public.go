@@ -147,7 +147,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 	mapgenFinishPopulate((*mapgenPopulateTheme)(unsafe.Pointer(theme)), mapgenFinishPopulateAccess{
 		setFlags: func() {
 			flags := uint8(0x9d)
-			C.nox_xxx_mapGenSetFlags_5235F0(C.char(flags))
+			nox_xxx_mapGenSetFlags_5235F0(C.char(flags))
 		},
 		makeExit: func(theme *mapgenPopulateTheme) bool {
 			return nox_mapgenMakeExitNative_522A40((*C.uint8_t)(unsafe.Pointer(theme))) != 0

@@ -156,7 +156,7 @@ func mapgenComputeRoomDistances(room, parent *mapgenRankedRoom, distance float32
 		return
 	}
 	flags := uint8(0x9C)
-	C.nox_xxx_mapGenSetFlags_5235F0(C.char(flags))
+	nox_xxx_mapGenSetFlags_5235F0(C.char(flags))
 	candidate := float32(mapgenRoomEdgeDistance(parent, distance) + float64(distance))
 	if room.visit == 1 && !(candidate < room.distance) {
 		return

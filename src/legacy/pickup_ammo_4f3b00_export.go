@@ -63,7 +63,9 @@ func Nox_xxx_netReportCharges_4D82B0(
 // Nox_xxx_pickupWeaponAudio_53A6C0 retains the material/class-specific pickup
 // audio that AmmoPickup emits after scheduling deletion of the merged item.
 func Nox_xxx_pickupWeaponAudio_53A6C0(owner, item *server.Object) {
-	C.sub_53A6C0(asObjectC(owner), asObjectC(item))
+	if owner != nil && item != nil {
+		GetServer().S().WeaponPickupSound53A6C0(owner, item)
+	}
 }
 
 //export nox_xxx_pickupAmmo_4F3B00

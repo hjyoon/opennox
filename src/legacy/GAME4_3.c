@@ -1895,34 +1895,6 @@ LABEL_159:
 // 539AF2: variable 'v76' is possibly undefined
 
 //----- (00539FB0) --------------------------------------------------------
-int sub_539FB0(nox_object_t* owner) {
-	nox_object_t* item = owner ? owner->inv_first_item : NULL;
-	if (!item) {
-		return 0;
-	}
-	while (nox_xxx_weaponInventoryEquipFlags_415820(item) != 128) {
-		item = item->inv_next_item;
-		if (!item) {
-			return 0;
-		}
-	}
-	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
-}
-
-//----- (00539FF0) --------------------------------------------------------
-int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner) {
-	nox_object_t* item = owner ? owner->inv_first_item : NULL;
-	if (!item) {
-		return 0;
-	}
-	while (nox_xxx_weaponInventoryEquipFlags_415820(item) != 2) {
-		item = item->inv_next_item;
-		if (!item) {
-			return 0;
-		}
-	}
-	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
-}
 
 //----- (0053A030) --------------------------------------------------------
 #if 0 // The public native entry now calls the Go equipment implementation.
@@ -2187,33 +2159,6 @@ int nox_xxx_playerEquipWeapon_53A420(nox_object_t* owner, nox_object_t* item, in
 // 53A4E9: variable 'v9' is possibly undefined
 
 //----- (0053A680) --------------------------------------------------------
-int sub_53A680(nox_object_t* owner) {
-	nox_object_t* item = owner ? owner->inv_first_item : NULL;
-	if (!item) {
-		return 0;
-	}
-	while (!(nox_xxx_weaponInventoryEquipFlags_415820(item) & 0xC)) {
-		item = item->inv_next_item;
-		if (!item) {
-			return 0;
-		}
-	}
-	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
-}
-
-//----- (0053A6C0) --------------------------------------------------------
-void sub_53A6C0(nox_object_t* owner, nox_object_t* item) {
-	if (!owner || !item) {
-		return;
-	}
-	if (item->obj_class & 0x1000) {
-		nox_xxx_aud_501960(830, owner, 0, 0);
-	} else if (item->material & 0x10) {
-		nox_xxx_aud_501960(842, owner, 0, 0);
-	} else if (item->material & 8) {
-		nox_xxx_aud_501960(844, owner, 0, 0);
-	}
-}
 
 //----- (0053A720) --------------------------------------------------------
 int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
@@ -2292,32 +2237,6 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 
 
 //----- (0053AAB0) --------------------------------------------------------
-void sub_53AAB0(nox_object_t* item) {
-	if (!item) {
-		return;
-	}
-	if (item->obj_class & 0x1000) {
-		nox_xxx_aud_501960(831, item, 0, 0);
-	} else if (item->material & 0x10) {
-		nox_xxx_aud_501960(843, item, 0, 0);
-	} else if (item->material & 8) {
-		nox_xxx_aud_501960(845, item, 0, 0);
-	}
-}
-
-//----- (0053AB10) --------------------------------------------------------
-int nox_xxx_dropWeapon_53AB10(nox_object_t* owner, nox_object_t* item, float2* point) {
-	if (nox_xxx_dropDefault_4ED290(owner, item, point) != 1) {
-		return 0;
-	}
-	sub_53AAB0(item);
-	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096)) {
-		if (sub_409F40(2)) {
-			nox_xxx_unitSetDecayTime_511660(item, 25 * gameFPS());
-		}
-	}
-	return 1;
-}
 
 //----- (0053AB90) --------------------------------------------------------
 #if 0
@@ -3668,12 +3587,6 @@ void nox_xxx_updateCrown_53E1D0(int a1) {
 #endif
 
 //----- (0053E2D0) --------------------------------------------------------
-int sub_53E2D0(nox_object_t* item) {
-	if (item->obj_class & 0x2000000) {
-		return (nox_xxx_unitArmorInventoryEquipFlags_415C70(item) & 0xC0D) == 0;
-	}
-	return 1;
-}
 
 //----- (0053E300) --------------------------------------------------------
 int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner) {
@@ -3989,37 +3902,6 @@ LABEL_40:
 }
 
 //----- (0053EAE0) --------------------------------------------------------
-void sub_53EAE0(nox_object_t* item) {
-	if (item) {
-		if (item->material & 0x10) {
-			nox_xxx_aud_501960(805, item, 0, 0);
-		} else if (item->material & 8) {
-			nox_xxx_aud_501960(811, item, 0, 0);
-		} else if (item->material & 4) {
-			nox_xxx_aud_501960(808, item, 0, 0);
-		} else if (item->material & 2) {
-			if (item->obj_subclass & 0x20) {
-				nox_xxx_aud_501960(817, item, 0, 0);
-			} else {
-				nox_xxx_aud_501960(814, item, 0, 0);
-			}
-		}
-	}
-}
-
-//----- (0053EB70) --------------------------------------------------------
-int nox_xxx_dropArmor_53EB70(nox_object_t* owner, nox_object_t* item, float2* point) {
-	if (nox_xxx_dropDefault_4ED290(owner, item, point) != 1) {
-		return 0;
-	}
-	sub_53EAE0(item);
-	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096)) {
-		if (sub_409F40(2)) {
-			nox_xxx_unitSetDecayTime_511660(item, 25 * gameFPS());
-		}
-	}
-	return 1;
-}
 
 // Historical GAME.EXE 0053EBF0..0053ECD8 bodies. The active C callers use
 // item_drop_rules_53ebf0_export.go; Go-owned callers use the native server

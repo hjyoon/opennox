@@ -50,23 +50,52 @@ func equipmentDropNativeHooks53AB10(
 	}
 }
 
+func playWeaponDropSound53AAB0(item *Object, audio func(uint32, *Object, int32, uint32)) {
+	weaponDropSound53AAB0(weaponDropSoundHooks53AAB0[*Object]{
+		loadItemArg:  func() *Object { return item },
+		loadClass:    func(item *Object) uint32 { return uint32(item.ObjClass) },
+		loadMaterial: func(item *Object) uint16 { return item.Material },
+		audio:        audio,
+	})
+}
+
+func playArmorDropSound53EAE0(item *Object, audio func(uint32, *Object, int32, uint32)) {
+	armorDropSound53EAE0(armorDropSoundHooks53EAE0[*Object]{
+		loadItemArg:  func() *Object { return item },
+		loadMaterial: func(item *Object) uint16 { return item.Material },
+		loadSubClass: func(item *Object) uint32 { return uint32(item.ObjSubClass) },
+		audio:        audio,
+	})
+}
+
+func (s *Server) equipmentDropAudio(id uint32, item *Object, kind int32, code uint32) {
+	s.Audio.EventObj(sound.ID(id), item, int(kind), code)
+}
+
+func (s *Server) WeaponPickupSound53A6C0(owner, item *Object) {
+	if owner != nil {
+		// Pickup uses the same class/material priority and the sound
+		// immediately preceding each corresponding drop sound.
+		playWeaponDropSound53AAB0(item, func(id uint32, _ *Object, kind int32, code uint32) {
+			s.equipmentDropAudio(id-1, owner, kind, code)
+		})
+	}
+}
+
+func (s *Server) WeaponDropSound53AAB0(item *Object) {
+	playWeaponDropSound53AAB0(item, s.equipmentDropAudio)
+}
+
+func (s *Server) ArmorDropSound53EAE0(item *Object) {
+	playArmorDropSound53EAE0(item, s.equipmentDropAudio)
+}
+
 func weaponDropNative53AB10(
 	owner, item *Object,
 	point *types.Pointf,
 	deps equipmentDropNativeDeps53AB10,
 ) int32 {
-	dropSound := func(item *Object) {
-		weaponDropSound53AAB0(weaponDropSoundHooks53AAB0[*Object]{
-			loadItemArg: func() *Object { return item },
-			loadClass: func(item *Object) uint32 {
-				return uint32(item.ObjClass)
-			},
-			loadMaterial: func(item *Object) uint16 {
-				return item.Material
-			},
-			audio: deps.audio,
-		})
-	}
+	dropSound := func(item *Object) { playWeaponDropSound53AAB0(item, deps.audio) }
 	return weaponDrop53AB10(equipmentDropNativeHooks53AB10(owner, item, point, dropSound, deps))
 }
 
@@ -75,18 +104,7 @@ func armorDropNative53EB70(
 	point *types.Pointf,
 	deps equipmentDropNativeDeps53AB10,
 ) int32 {
-	dropSound := func(item *Object) {
-		armorDropSound53EAE0(armorDropSoundHooks53EAE0[*Object]{
-			loadItemArg: func() *Object { return item },
-			loadMaterial: func(item *Object) uint16 {
-				return item.Material
-			},
-			loadSubClass: func(item *Object) uint32 {
-				return uint32(item.ObjSubClass)
-			},
-			audio: deps.audio,
-		})
-	}
+	dropSound := func(item *Object) { playArmorDropSound53EAE0(item, deps.audio) }
 	return armorDrop53EB70(equipmentDropNativeHooks53AB10(owner, item, point, dropSound, deps))
 }
 
@@ -98,9 +116,7 @@ func equipmentDropServerDeps53AB10(
 	return equipmentDropNativeDeps53AB10{
 		defaultDrop:   defaultDrop,
 		serverSubFlag: serverSubFlag,
-		audio: func(id uint32, item *Object, kind int32, code uint32) {
-			s.Audio.EventObj(sound.ID(id), item, int(kind), code)
-		},
+		audio:         s.equipmentDropAudio,
 		gameFlag: func(flag uint32) int32 {
 			if noxflags.HasGame(noxflags.GameFlag(flag)) {
 				return 1

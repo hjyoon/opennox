@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2_3.h"
-#include "client__draw__drawrays.h"
 */
 import "C"
 
@@ -40,13 +39,13 @@ func nox_xxx_spriteDeleteSomeList_49C4B0() {
 }
 
 func Nox_xxx_spriteDeleteSomeList_49C4B0() {
-	count := C.nox_client_transient_ray_count()
-	for i := C.size_t(0); i < count; i++ {
-		if dr := asDrawable(C.nox_client_transient_ray_at(i)); dr != nil {
-			GetClient().Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+	count := clientTransientRayCount49BDD0()
+	for i := range count {
+		if addr := clientTransientRayAddress49BDD0(i); addr != 0 {
+			GetClient().Nox_xxx_spriteDeleteStatic_45A4E0_drawable(AsDrawableP(unsafe.Pointer(addr)))
 		}
 	}
-	C.nox_client_transient_ray_clear()
+	clientTransientRayClear49BDD0()
 	sub_4C5050()
 }
 
@@ -61,7 +60,7 @@ func nox_xxx_sprite_49C4F0() {
 }
 
 func ClientTransientRayContains(dr *client.Drawable) bool {
-	return dr != nil && C.nox_client_transient_ray_contains((*nox_drawable)(dr.C())) != 0
+	return dr != nil && clientTransientRayContainsAddress49BDD0(uintptr(dr.C()))
 }
 
 //export sub_49C520

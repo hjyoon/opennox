@@ -28,15 +28,6 @@ void nox_xxx_drawAllMB_475810_draw_A(nox_draw_viewport_t* vp);
 int nox_xxx_drawAllMB_475810_draw_B(nox_draw_viewport_t* vp);
 void nox_xxx_drawAllMB_475810_draw_C(nox_draw_viewport_t* vp, int v36, int v7);
 int sub_436F50();
-static int nox_client_transient_ray_add_addr(uintptr_t addr) {
-	return nox_client_transient_ray_add((nox_drawable*)addr);
-}
-static uintptr_t nox_client_transient_ray_at_addr(size_t index) {
-	return (uintptr_t)nox_client_transient_ray_at(index);
-}
-static int nox_client_transient_ray_contains_addr(uintptr_t addr) {
-	return nox_client_transient_ray_contains((nox_drawable*)addr);
-}
 static void nox_client_ray_lightning_particles(int from_x, int from_y, int to_x, int to_y) {
 	int2 from = {from_x, from_y};
 	int2 to = {to_x, to_y};
@@ -204,35 +195,12 @@ func Nox_xxx_clientEnumHover_476FA0() {
 	C.nox_xxx_clientEnumHover_476FA0()
 }
 
-func clientTransientRayAddAddress49BDD0(addr uintptr) bool {
-	return C.nox_client_transient_ray_add_addr(C.uintptr_t(addr)) != 0
-}
-
-func clientTransientRayCount49BDD0() int {
-	return int(C.nox_client_transient_ray_count())
-}
-
-func clientTransientRayAddress49BDD0(index int) uintptr {
-	return uintptr(C.nox_client_transient_ray_at_addr(C.size_t(index)))
-}
-
-func clientTransientRayContainsAddress49BDD0(addr uintptr) bool {
-	return C.nox_client_transient_ray_contains_addr(C.uintptr_t(addr)) != 0
-}
-
-func clientTransientRayClear49BDD0() {
-	C.nox_client_transient_ray_clear()
-}
-
 func clientTransientRayPayloadUsesNativeUnion49BDD0() bool {
 	return C.nox_client_transient_ray_payload_uses_native_union() != 0
 }
 
-// Nox_xxx_netDrawRays_49BDD0 keeps the legacy drawable construction behind a
-// fixed-size packet boundary. The C routine never retains the packet bytes;
-// the created drawable itself is tracked in native-width storage.
 func Nox_xxx_netDrawRays_49BDD0(data [9]byte) {
-	C.nox_xxx_netDrawRays_49BDD0((*C.uchar)(unsafe.Pointer(&data[0])))
+	drawTransientRay49BDD0(&data)
 }
 
 func Nox_xxx_makeRayLightningParticles_49BDD0(from, to image.Point) {

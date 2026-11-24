@@ -4011,33 +4011,6 @@ intptr_t nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
 	}
 }
 
-//----- (004DA2C0) --------------------------------------------------------
-void nox_xxx_netPriMsgToPlayer_4DA2C0(nox_object_t* a1p, const char* a2, char a3) {
-	char v4[52]; // [esp+Ch] [ebp-34h]
-
-	if (a1p && (a1p->obj_class & UINT32_C(4)) && a2 && !sub_419E60(a1p) && strlen(a2) && strlen(a2) <= 0x30) {
-		v4[2] = a3;
-		v4[0] = -87;
-		v4[1] = 15;
-		strcpy(&v4[3], a2);
-		nox_player_update_data_t* update = a1p->data_update;
-		nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, (unsigned char*)v4, strlen(a2) + 4);
-	}
-}
-
-//----- (004DA390) --------------------------------------------------------
-int nox_xxx_netPrintLineToAll_4DA390(const char* a1) {
-	int result; // eax
-	int i;      // esi
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0(i, a1, 0);
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-	}
-	return result;
-}
-
 //----- (004DA4F0) --------------------------------------------------------
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1) {
 	nox_object_t* (*find)(nox_object_t*, const char*) = strchr(a1, ':') ? sub_4DA5C0 : sub_4DA660;

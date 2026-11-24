@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "cgo_const.h"
 #include "common__net_list.h"
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -51,6 +52,8 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/strman"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -198,6 +201,21 @@ func nox_server_playerIndexFromUpdateData_4D9EB0(updateData unsafe.Pointer) C.ui
 		func(ud *server.PlayerUpdateData) *server.Player { return ud.Player },
 		func(player *server.Player) byte { return player.PlayerInd },
 	))
+}
+
+//export nox_xxx_netPriMsgToPlayer_4DA2C0
+func nox_xxx_netPriMsgToPlayer_4DA2C0(recipient *C.nox_object_t, text *C.nox_cgo_const_char, flags C.char) {
+	unit := asObjectS(recipient)
+	if unit == nil || text == nil || !unit.Class().Has(object.ClassPlayer) {
+		return
+	}
+	GetServer().S().NetPriMsgToPlayer(unit, strman.ID(GoStringP(unsafe.Pointer(text))), byte(flags))
+}
+
+//export nox_xxx_netPrintLineToAll_4DA390
+func nox_xxx_netPrintLineToAll_4DA390(text *C.nox_cgo_const_char) C.int {
+	GetServer().S().NetPrintLineToAll(strman.ID(GoStringP(unsafe.Pointer(text))))
+	return 0
 }
 
 func Sub_40A740() int {

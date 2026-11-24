@@ -2685,18 +2685,6 @@ int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 
 #endif
 
-//----- (004E0A00) --------------------------------------------------------
-int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1) {
-	int v1 = 0;
-	for (uintptr_t off = 200728; off < 200800; off += 4, ++v1) {
-		const char* name = (const char*)getMemPtr(0x587000, off);
-		if (!strcmp(a1, name)) {
-			break;
-		}
-	}
-	return v1;
-}
-
 // Projectile reflection at GAME.EXE 004E0A70 uses a typed Go entry.
 
 //----- (004E0B30) --------------------------------------------------------

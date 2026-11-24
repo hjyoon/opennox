@@ -1003,11 +1003,14 @@ func objectDirectionInitParse(objt *ObjectType, args []string) error {
 	return nil
 }
 
-// objectDirectionAtoi5368C0 mirrors the 32-bit CRT atoi used by the original
-// shared parser: ASCII whitespace and one sign are skipped, decimal digits are
-// accumulated modulo 2^32, trailing bytes are ignored, and no digits means
-// zero.
 func objectDirectionAtoi5368C0(value string) int32 {
+	parsed, _ := ParseCRTDecimal32(value)
+	return parsed
+}
+
+// ParseCRTDecimal32 reads a signed decimal prefix after ASCII whitespace.
+// Its value wraps at 32 bits and the boolean reports whether it read a digit.
+func ParseCRTDecimal32(value string) (int32, bool) {
 	index := 0
 	for index < len(value) {
 		switch value[index] {
@@ -1027,6 +1030,7 @@ func objectDirectionAtoi5368C0(value string) int32 {
 			index++
 		}
 	}
+	start := index
 	var result uint32
 	for index < len(value) && value[index] >= '0' && value[index] <= '9' {
 		result = result*10 + uint32(value[index]-'0')
@@ -1035,7 +1039,7 @@ func objectDirectionAtoi5368C0(value string) int32 {
 	if negative {
 		result = -result
 	}
-	return int32(result)
+	return int32(result), index > start
 }
 
 func (t *ObjectType) parseUpdate(d *things.ProcFunc) error {

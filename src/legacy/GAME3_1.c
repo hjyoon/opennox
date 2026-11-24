@@ -1011,6 +1011,7 @@ int nox_xxx_prepareP2PTrade_4C1BF0() {
 #endif
 
 //----- (004C4770) --------------------------------------------------------
+#if 0 // The original body is retained for the C player-status fixture.
 void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img) {
 	if (!vp || !dr || !img) {
 		return;
@@ -1199,6 +1200,7 @@ draw_enchant_overlays:
 	((uint16_t*)&dr->field_1)[1] = *getMemU16Ptr(0x973F18, 76);
 	dr->field_2 = img;
 }
+#endif
 
 #if 0 // Superseded by the native-layout implementation above.
 static void nox_xxx_drawObjectLegacy_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img) {

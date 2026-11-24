@@ -385,7 +385,7 @@ func nox_thing_glow_orb_move_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int
 }
 
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {
-	C.nox_xxx_drawObject_4C4770_draw((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()), unsafe.Pointer(img))
+	drawObject4C4770(vp, dr, img)
 }
 func Sub_495180(id int) (cur, max int, alt, ok bool) {
 	var (

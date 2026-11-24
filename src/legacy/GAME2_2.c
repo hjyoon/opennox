@@ -74,7 +74,6 @@ extern uint32_t dword_5d4594_3798820;
 extern uint32_t dword_5d4594_3798824;
 extern void* dword_587000_155144;
 extern uint32_t dword_5d4594_3798840;
-extern nox_window* dword_5d4594_1123524;
 extern nox_window* dword_5d4594_1193380;
 extern int nox_win_width;
 extern int nox_win_height;
@@ -592,66 +591,6 @@ int sub_479590() { return dword_5d4594_1098628; }
 int sub_479870() { return dword_5d4594_1098628 == 2; }
 #endif
 
-//----- (00479950) --------------------------------------------------------
-int sub_479950() {
-	void* v2; // [esp+0h] [ebp-4h]
-
-	if (wndIsShown_nox_xxx_wndIsShown_46ACC0(dword_5d4594_1123524) == 1) {
-		return 0;
-	}
-	*getMemU8Ptr(0x5D4594, 1123516) = 0;
-	LOWORD(v2) = 720;
-	BYTE2(v2) = 0;
-	nox_netlist_addToMsgListCli_40EBC0(31, 0, &v2, 3);
-	return 1;
-}
-
-//----- (004799A0) --------------------------------------------------------
-int sub_4799A0() {
-	nox_window* slider;
-	nox_window* up;
-	nox_window* down;
-	nox_window* list;
-	nox_window* done;
-	nox_scrollListBox_data* list_data;
-	nox_video_bag_image_t* slider_image;
-	nox_video_bag_image_t* slider_lit_image;
-
-	*getMemU32Ptr(0x5D4594, 1107052) = nox_color_rgb_4344A0(240, 128, 64);
-	dword_5d4594_1123524 = nox_new_window_from_file("Dialog.wnd", nox_xxx_guiDialog_479B00);
-	if (!dword_5d4594_1123524) {
-		return 0;
-	}
-	nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1123524, sub_479BE0);
-	nox_xxx_wndSetDrawFn_46B340(dword_5d4594_1123524, sub_479CB0);
-	nox_gui_winSetFunc96_46B070(dword_5d4594_1123524, sub_479D00);
-	slider = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1123524, 3904);
-	up = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1123524, 3903);
-	down = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1123524, 3902);
-	list = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1123524, 3901);
-	done = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1123524, 3906);
-	if (!slider || !up || !down || !list || !list->widget_data || !done) {
-		nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1123524);
-		dword_5d4594_1123524 = 0;
-		return 0;
-	}
-	list_data = list->widget_data;
-	slider_lit_image = nox_xxx_gLoadImg_42F970("UISliderLit");
-	slider_image = nox_xxx_gLoadImg_42F970("UISlider");
-	sub_4B5700(slider, 0, 0, slider_image, slider_lit_image, slider_lit_image);
-	slider->draw_data.win = list;
-	up->draw_data.win = list;
-	down->draw_data.win = list;
-	list_data->field_9 = slider;
-	list_data->field_7 = up;
-	list_data->field_8 = down;
-	nox_xxx_wndSetDrawFn_46B340(done, sub_479C40);
-	nox_xxx_wnd_46ABB0(dword_5d4594_1123524, 0);
-	nox_window_set_hidden(dword_5d4594_1123524, 1);
-	dword_5d4594_1123520 = 0;
-	return 1;
-}
-
 //----- (00479B00) --------------------------------------------------------
 #if 0 // Native Go entry in npc_dialog_479b00.go; retain the PE32 body for provenance.
 int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4) {
@@ -695,67 +634,6 @@ int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4) {
 }
 #endif
 // 479B4D: variable 'v4' is possibly undefined
-
-//----- (00479BE0) --------------------------------------------------------
-int sub_479BE0(uint32_t* a1, int a2, unsigned int a3, int a4) {
-	switch (a2) {
-	case 5:
-	case 6:
-	case 7:
-	case 9:
-	case 10:
-	case 11:
-	case 13:
-	case 14:
-	case 15:
-		nox_xxx_wndPointInWnd_46AAB0(a1, (unsigned short)a3, a3 >> 16);
-		break;
-	default:
-		return 1;
-	}
-	return 1;
-}
-
-//----- (00479C40) --------------------------------------------------------
-int nox_xxx_wndButtonDrawNoImg_4A81D0(nox_window* a1, nox_window_data* a2);
-int sub_479C40(nox_window* a1, nox_window_data* a2) {
-	char v2;   // bl
-	int yTop;  // [esp+8h] [ebp-8h]
-	int xLeft; // [esp+Ch] [ebp-4h]
-
-	v2 = nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-	if (!sub_44D930() && (v2 & 0x7Fu) < 0x1E && v2 & 8) {
-		nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&xLeft, (unsigned int*)&yTop);
-		sub_49CD30(xLeft, yTop, a1->width, a1->height - 2, *getMemIntPtr(0x5D4594, 1107052), 4);
-	}
-	return nox_xxx_wndButtonDrawNoImg_4A81D0(a1, a2);
-}
-
-//----- (00479CB0) --------------------------------------------------------
-int sub_479CB0(nox_window* a1, nox_window_data* a2) {
-	nox_video_bag_image_t* v2; // esi
-	int v4; // [esp+4h] [ebp-8h]
-	int v5; // [esp+8h] [ebp-4h]
-
-	v2 = a2->bg_image;
-	nox_client_wndGetPosition_46AA60(dword_5d4594_1123524, (unsigned int*)&v4, (unsigned int*)&v5);
-	nox_client_drawImageAt_47D2C0(v2, nox_win_width - NOX_DEFAULT_WIDTH, nox_win_height - NOX_DEFAULT_HEIGHT);
-	return 1;
-}
-
-//----- (00479D00) --------------------------------------------------------
-int sub_479D00() { return 1; }
-
-//----- (00479D10) --------------------------------------------------------
-int sub_479D10() {
-	int result; // eax
-
-	nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1123524);
-	result = 0;
-	dword_5d4594_1123524 = 0;
-	dword_5d4594_1123520 = 0;
-	return result;
-}
 
 //----- (0047A260) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.

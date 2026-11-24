@@ -99,7 +99,7 @@ nox_drawable* sub_4798A0(const uint32_t* a1);
 int sub_479950();
 int sub_4799A0();
 int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4);
-int sub_479BE0(uint32_t* a1, int a2, unsigned int a3, int a4);
+int sub_479BE0(nox_window* win, int event, uintptr_t arg, uintptr_t value);
 int sub_479C40(nox_window* a1, nox_window_data* a2);
 int sub_479CB0(nox_window* a1, nox_window_data* a2);
 int sub_479D00();

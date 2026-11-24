@@ -536,7 +536,7 @@ func Nox_gui_itemAmount_init_4BFEF0() int {
 	return int(C.nox_gui_itemAmount_init_4BFEF0())
 }
 func Sub_4799A0() int {
-	return int(C.sub_4799A0())
+	return int(sub_4799A0())
 }
 func Sub_46A730() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_46A730())
@@ -608,7 +608,7 @@ func Sub_478F80() {
 	sub_478F80()
 }
 func Sub_479D10() {
-	C.sub_479D10()
+	sub_479D10()
 }
 func Sub_4AB470() {
 	C.sub_4AB470()

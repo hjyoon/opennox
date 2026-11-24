@@ -9,6 +9,8 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
+
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -31,19 +33,21 @@ func npcDialogRuntime479B00() gui.NPCDialogRuntime479B00 {
 		ClickSound: func() {
 			Nox_xxx_clientPlaySoundSpecial_452D80(sound.ID(766), 100)
 		},
-		Done: func() { C.sub_479950() },
+		Done: func() { sub_479950() },
 		Repeat: func() {
 			// Use the same native pointer slot as guiOpenNPCDialogRaw. The
 			// packed PE32 DWORD is neither this slot nor a host-width pointer.
 			file := (*byte)(*memmap.PtrPtr(0x5D4594, 1115312))
 			Dialogs.PlayFile(alloc.GoString(file), 100)
 		},
-		Answer: func(choice byte) {
-			*memmap.PtrUint8(0x5D4594, 1123516) = choice
-			packet := [3]byte{0xD0, 0x02, choice}
-			GetServer().S().NetList.AddToMsgListCli(ntype.PlayerInd(31), netlist.Kind0, packet[:])
-		},
+		Answer: npcDialogSendResponse,
 	}
+}
+
+func npcDialogSendResponse(choice byte) {
+	*g2ServerByte(1123516) = choice
+	packet := [3]byte{byte(netmsg.MSG_DIALOG), 2, choice}
+	GetServer().S().NetList.AddToMsgListCli(ntype.PlayerInd(31), netlist.Kind0, packet[:])
 }
 
 // NPCDialogProc479B00 is the callback installed by the stock Dialog.wnd

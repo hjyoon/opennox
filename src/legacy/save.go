@@ -108,7 +108,7 @@ func nox_client_countPlayerFiles02_4DC630() C.int {
 
 	var entry C.WIN32_FIND_DATAA
 	search := C.FindFirstFileA(internCStr("*.plr"), &entry)
-	if uintptr(search) == ^uintptr(0) {
+	if uintptr(unsafe.Pointer(search)) == ^uintptr(0) {
 		return 0
 	}
 	defer C.FindClose(search)

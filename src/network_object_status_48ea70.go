@@ -85,11 +85,7 @@ func drawableItemModifiers48EA70(dr *client.Drawable) *client.DrawableUnionItem 
 // prepareMonsterGeneratorStatus48EA70 preserves sub_4BC720 without sending a
 // native-width Drawable through the legacy PE32 callback boundary.
 func prepareMonsterGeneratorStatus48EA70(dr *client.Drawable) {
-	if dr == nil || dr.DrawData == nil {
-		return
-	}
-	data := unsafe.Slice((*byte)(dr.DrawData), 33)
-	dr.UnionEffect().Field_108 = uint32(data[27]) * (uint32(data[32]) + 1)
+	dr.PrepareMonsterGeneratorStatus()
 }
 
 func setDrawableModifiers48EA70(dr *client.Drawable, modifiers [4]*server.ModifierEff) {

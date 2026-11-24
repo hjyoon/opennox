@@ -687,6 +687,15 @@ func (s *Drawable) UnionEffect() *DrawableUnionEffect {
 	return (*DrawableUnionEffect)(unsafe.Pointer(&s.Union))
 }
 
+func (s *Drawable) PrepareMonsterGeneratorStatus() unsafe.Pointer {
+	if s == nil || s.DrawData == nil {
+		return nil
+	}
+	data := unsafe.Slice((*byte)(s.DrawData), 33)
+	s.UnionEffect().Field_108 = uint32(data[27]) * (uint32(data[32]) + 1)
+	return s.DrawData
+}
+
 func (s *Drawable) UnionSummon() *DrawableUnionSummon {
 	return (*DrawableUnionSummon)(unsafe.Pointer(&s.Union))
 }

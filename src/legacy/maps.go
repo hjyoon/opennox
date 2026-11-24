@@ -418,7 +418,7 @@ func FreeMapObjectListNode5048A0(node unsafe.Pointer) {
 }
 
 func Nox_xxx_prepareLightningEffects_4BAB30() {
-	C.nox_xxx_prepareLightningEffects_4BAB30()
+	nox_xxx_prepareLightningEffects_4BAB30()
 }
 
 func Sub_4B64C0() {

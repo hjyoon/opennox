@@ -212,48 +212,6 @@ void sub_4BA670(int a1, int a2, int a3, int a4, int a5) {
 // 4BAA70: variable 'v16' is possibly undefined
 // 4BAA84: variable 'v18' is possibly undefined
 
-//----- (004BAB30) --------------------------------------------------------
-int nox_xxx_prepareLightningEffects_4BAB30() {
-	int result; // eax
-
-	*getMemU32Ptr(0x5D4594, 1316464) = nox_color_rgb_4344A0(255, 255, 255);
-	*getMemU32Ptr(0x5D4594, 1316488) = nox_color_rgb_4344A0(128, 128, 255);
-	*getMemU32Ptr(0x5D4594, 1316424) = nox_color_rgb_4344A0(128, 128, 255);
-	*getMemU32Ptr(0x5D4594, 1316428) = nox_color_rgb_4344A0(64, 64, 255);
-	*getMemU32Ptr(0x5D4594, 1316516) = nox_color_rgb_4344A0(200, 200, 255);
-	*getMemU32Ptr(0x5D4594, 1316512) = nox_color_rgb_4344A0(128, 128, 255);
-	*getMemU32Ptr(0x5D4594, 1316496) = nox_color_rgb_4344A0(255, 255, 255);
-	*getMemU32Ptr(0x5D4594, 1316468) = nox_color_rgb_4344A0(255, 255, 0);
-	*getMemU32Ptr(0x5D4594, 1316460) = nox_color_rgb_4344A0(30, 160, 30);
-	*getMemU32Ptr(0x5D4594, 1316444) = nox_color_rgb_4344A0(60, 140, 60);
-	*getMemU32Ptr(0x5D4594, 1316504) = nox_color_rgb_4344A0(40, 225, 40);
-	*getMemU32Ptr(0x5D4594, 1316480) = nox_color_rgb_4344A0(150, 220, 150);
-	*getMemU32Ptr(0x5D4594, 1316520) = nox_xxx_getTTByNameSpriteMB_44CFC0("BlueSpark");
-	*getMemU32Ptr(0x5D4594, 1316524) = nox_xxx_getTTByNameSpriteMB_44CFC0("YellowSpark");
-	result = nox_xxx_getTTByNameSpriteMB_44CFC0("GreenSpark");
-	*getMemU32Ptr(0x5D4594, 1316528) = result;
-	return result;
-}
-// 4BBC74: variable 'v10' is possibly undefined
-// 4BBC74: variable 'v9' is possibly undefined
-// 4BC002: variable 'v5' is possibly undefined
-// 4BC002: variable 'v3' is possibly undefined
-
-//----- (004BC720) --------------------------------------------------------
-void* sub_4BC720(nox_drawable* dr) {
-	uint8_t* data = dr ? dr->field_76 : NULL;
-	if (!data) {
-		return NULL;
-	}
-	dr->union_u32[0] = data[27] * (data[32] + 1);
-	return data;
-}
-
-//----- (004BC920) --------------------------------------------------------
-int nox_xxx_updDrawMonsterGen_4BC920() { return 1; }
-// 4BCABD: variable 'v5' is possibly undefined
-// 4BCABD: variable 'v4' is possibly undefined
-
 //----- (004BD280) --------------------------------------------------------
 #if 0 // Native audio owner: src/legacy/audio_cache_native.go:sub_4BD280
 uint32_t* sub_4BD280(int a1, int a2) {
@@ -2190,9 +2148,6 @@ int sub_4CB1A0(uint32_t* a1, int a2) {
 	return 1;
 }
 #endif
-
-//----- (004CCCF0) --------------------------------------------------------
-int nox_xxx_updDrawUndeadKiller_4CCCF0() { return 1; }
 
 //----- (004CCD00) --------------------------------------------------------
 #if 0 // R228: original PE32 bodies; native registered entries are exported by Go.

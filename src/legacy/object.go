@@ -705,7 +705,7 @@ func Nox_xxx_decay_5116F0(a1 *server.Object) {
 	GetServer().S().DecayRemove5116F0(a1)
 }
 func Nox_xxx_netReportDestroyObject_5289D0(a1 *server.Object) {
-	C.nox_xxx_netReportDestroyObject_5289D0(asObjectC(a1))
+	nox_xxx_netReportDestroyObject_5289D0(asObjectC(a1))
 }
 func Sub_4ECFA0(a1 *server.Object) {
 	GetServer().S().ObjectNetCodeCacheRemove4ECFA0(a1)

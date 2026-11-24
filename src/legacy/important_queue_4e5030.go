@@ -13,6 +13,12 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+func sendImportantPacketBytes(recipient C.int, packet []byte, removeIfDisconnected, sequenced bool) C.int {
+	payload := C.nox_important_payload_t(unsafe.Pointer(unsafe.SliceData(packet)))
+	return nox_xxx_netSendPacket_4E5030(recipient, payload, C.int(len(packet)), nil,
+		C.int(bool2int(removeIfDisconnected)), C.char(bool2int(sequenced)))
+}
+
 //export nox_xxx_netSendPacket_4E5030
 func nox_xxx_netSendPacket_4E5030(
 	recipient C.int, payload C.nox_important_payload_t, size C.int,

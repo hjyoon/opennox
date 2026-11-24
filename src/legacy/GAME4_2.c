@@ -853,24 +853,6 @@ int sub_528990(nox_object_t* a1) {
 }
 #endif
 
-//----- (005289D0) --------------------------------------------------------
-void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* object) {
-	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
-		 player = nox_common_playerInfoGetNext_416EE0(player)) {
-		if ((UINT32_C(1) << player->playerInd) & object->field_37) {
-			uint8_t packet[3];
-			uint16_t code = (uint16_t)nox_xxx_netGetUnitCodeServ_578AC0(object);
-			packet[0] = ((uint8_t)object->field_5 >> 6) | 0x31;
-			packet[1] = (uint8_t)code;
-			packet[2] = (uint8_t)(code >> 8);
-			nox_xxx_netSendPacket0_4E5420(player->playerInd, packet, sizeof(packet), 0, 1);
-		}
-		if (object->obj_class & 6) {
-			nox_xxx_netFriendAddRemove_4D97A0(player->playerInd, object, 0);
-		}
-	}
-}
-
 //----- (00528A60) --------------------------------------------------------
 #if 0 // Restored by outbound_object_chat_native.go.
 int nox_xxx_netObjectOutOfSight_528A60(int a1, uint32_t* a2) {

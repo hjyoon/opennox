@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "GAME3_3.h"
 #include "GAME4_2.h"
 */
 import "C"
@@ -25,23 +24,17 @@ func nox_xxx_netSendVampFx_523270(op C.char, coordinates *C.short, amount C.shor
 	return C.int(pointFXRuntimeForCall522FF0().Send(&position, packet[:]))
 }
 
-func queueSummonFX(packet []byte) C.int {
-	return nox_xxx_netSendPacket0_4E5420(
-		255, C.nox_important_payload_t(unsafe.Pointer(unsafe.SliceData(packet))), C.int(len(packet)), nil, 1,
-	)
-}
-
 //export nox_xxx_sendSummonStartFX_5236F0
 func nox_xxx_sendSummonStartFX_5236F0(effectID C.short, point *C.float, direction C.char, typeID, duration C.short) C.int {
 	position := *(*types.Pointf)(unsafe.Pointer(point))
 	packet := server.SummonStartEffectPacket(uint16(effectID), position, byte(direction), uint16(typeID), uint16(duration))
-	return queueSummonFX(packet[:])
+	return sendImportantPacketBytes(255, packet[:], true, false)
 }
 
 //export nox_xxx_sendSummonCancelFX_523760
 func nox_xxx_sendSummonCancelFX_523760(effectID C.short) C.int {
 	packet := server.SummonCancelEffectPacket(uint16(effectID))
-	return queueSummonFX(packet[:])
+	return sendImportantPacketBytes(255, packet[:], true, false)
 }
 
 //export nox_xxx_sendGeneratorSpawnFX_523830

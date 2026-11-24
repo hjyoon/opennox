@@ -310,7 +310,7 @@ func Nox_xxx_scavengerTreasureMax_4D1600() uint32 {
 }
 
 func Nox_xxx_netMsgFadeBeginPlayer(ind int, dir int, a3 int) {
-	C.nox_xxx_netMsgFadeBeginPlayer(C.int(ind), C.int(dir), C.int(a3))
+	nox_xxx_netMsgFadeBeginPlayer(C.int(ind), C.int(dir), C.int(a3))
 }
 
 func PrintToPlayers(text string) {

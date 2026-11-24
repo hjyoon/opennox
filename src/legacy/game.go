@@ -423,7 +423,7 @@ func Sub_460380() {
 	C.sub_460380()
 }
 func Nox_xxx_cliPrepareGameplay1_460E60() int {
-	return int(C.nox_xxx_cliPrepareGameplay1_460E60())
+	return int(nox_xxx_cliPrepareGameplay1_460E60())
 }
 func Nox_xxx_cliPrepareGameplay2_4721D0() {
 	C.nox_xxx_cliPrepareGameplay2_4721D0()
@@ -635,7 +635,7 @@ func Sub_467980() {
 	C.sub_467980()
 }
 func Sub_460D50() {
-	C.sub_460D50()
+	sub_460D50()
 }
 func Nox_xxx_guiServerOptionsGetGametypeName_4573C0(a1 noxflags.GameFlag) string {
 	return GoWString(C.nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(a1)))
@@ -673,7 +673,7 @@ func Sub_4721A0(a1 int) {
 	C.sub_4721A0(C.int(a1))
 }
 func Sub_460EA0(a1 int) {
-	C.sub_460EA0(C.int(a1))
+	sub_460EA0(C.int(a1))
 }
 func Nox_window_set_visible_unk5(a1 int) {
 	C.nox_window_set_visible_unk5(C.int(a1))

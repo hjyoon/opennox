@@ -213,7 +213,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	case 2, 4:
 		slot = C.nox_xxx_buttonFindFirstEmptySlot_461250()
 	case 3:
-		slot = C.sub_4612A0()
+		slot = sub_4612A0()
 	default:
 		return
 	}
@@ -232,7 +232,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046636)) = float32(int32(*game2BookU(1046844)))
 	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046640)) = float32(int32(*game2BookU(1046848)))
 	C.nox_window_setPos_46A9B0(C.dword_5d4594_1046956, C.int(*game2BookU(1046844)), C.int(*game2BookU(1046848)))
-	C.nox_xxx_buttonSetImgMB_461320(slot, (*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046668)))
+	nox_xxx_buttonSetImgMB_461320(slot, (*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046668)))
 	first := C.int2{field_0: 400, field_4: -500}
 	second := C.int2{field_0: 350, field_4: 400}
 	C.dword_5d4594_1047524 = C.uint32_t(id)

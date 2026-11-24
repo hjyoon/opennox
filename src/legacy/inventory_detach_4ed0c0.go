@@ -39,7 +39,7 @@ func inventoryDetachRuntime4ED0C0() server.InventoryDetachRuntime4ED0C0 {
 			)
 		},
 		NetReportDrop: func(index uint8, item *server.Object) {
-			C.nox_xxx_netReportDrop_4D8B50(C.int(index), asObjectC(item))
+			sendInventoryDrop(C.int(index), asObjectC(item))
 		},
 		ProtectItem: func(value uint32, item *server.Object) {
 			updatePlayerProtectionItem(int32(value), item)

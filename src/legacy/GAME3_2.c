@@ -1750,24 +1750,6 @@ int sub_4D7EA0() {
 }
 #endif
 
-//----- (004D7EE0) --------------------------------------------------------
-int nox_xxx_netCreatureCmd_4D7EE0(int player, char orderType) {
-	char buf[2]; // [esp+0h] [ebp-2h]
-
-	buf[0] = -19;
-	buf[1] = orderType;
-	return nox_xxx_netSendPacket1_4E5390(player, buf, 2, 0, 1);
-}
-
-//----- (004D7F10) --------------------------------------------------------
-int nox_xxx_netNotifyRate_4D7F10(int a1) {
-	char v2[2]; // [esp+0h] [ebp-2h]
-
-	v2[0] = -20;
-	v2[1] = nox_xxx_rateGet_40A6C0();
-	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
-}
-
 //----- (004D85C0) --------------------------------------------------------
 int nox_xxx_netReportTotalHealth_4D85C0(int a1, nox_object_t* a2) {
 	int result;   // eax
@@ -1860,50 +1842,6 @@ char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1) {
 }
 #endif
 
-//----- (004D8A60) --------------------------------------------------------
-intptr_t nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
-	short v3;   // ax
-	short v4;   // cx
-	char v5[5]; // [esp+4h] [ebp-8h]
-
-	if (*(uint32_t*)&item->obj_class & 0x13001000) {
-		return nox_xxx_netReportModifiablePickup_4D8AD0(a1, item);
-	}
-	v5[0] = 75;
-	v3 = nox_xxx_netGetUnitCodeServ_578AC0(item);
-	v4 = *(uint16_t*)&item->typ_ind;
-	*(uint16_t*)&v5[1] = v3;
-	*(uint16_t*)&v5[3] = v4;
-	nox_xxx_netSendPacket1_4E5390(a1, v5, 5, 0, 0);
-	return nox_xxx_itemReportHealth_4D87A0(a1, item);
-}
-
-//----- (004D8AD0) --------------------------------------------------------
-intptr_t nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
-	char v6[9]; // [esp+8h] [ebp-Ch]
-
-	v6[0] = 76;
-	*(uint16_t*)&v6[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
-	*(uint16_t*)&v6[3] = item->typ_ind;
-	nox_modifier_attrs_t* attrs = item->init_data;
-	for (int i = 0; i < 4; ++i) {
-		void* modifier = attrs ? attrs->modifiers[i] : NULL;
-		v6[i + 5] = modifier ? (char)nox_modifier_getIndex(modifier) : -1;
-	}
-	nox_xxx_netSendPacket1_4E5390(a1, v6, 9, 0, 0);
-	return nox_xxx_itemReportHealth_4D87A0(a1, item);
-}
-
-//----- (004D8B50) --------------------------------------------------------
-int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object) {
-	char v3[5]; // [esp+4h] [ebp-8h]
-
-	v3[0] = 77;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((nox_object_t*)object);
-	*(uint16_t*)&v3[3] = object->typ_ind;
-	return nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 0);
-}
-
 // GAME.EXE 004D8B90 through 004D8C80 use Go winner report entries.
 
 // GAME.EXE 004D8CD0 and 004D8D40 use native Go entries.
@@ -1935,53 +1873,6 @@ int nox_xxx_playerSubLessons_4D8EC0(int a1, int a2) {
 	return result;
 }
 #endif
-
-//----- (004D8EF0) --------------------------------------------------------
-int nox_xxx_netReportLesson_4D8EF0(nox_object_t* a1p) {
-	char packet[11];
-	const nox_player_update_data_t* update = a1p->data_update;
-	const nox_playerInfo* player = update->player;
-	const uint16_t code = (uint16_t)a1p->net_code;
-
-	packet[0] = 78;
-	memcpy(&packet[1], &code, sizeof(code));
-	memcpy(&packet[3], &player->lessons, sizeof(player->lessons));
-	memcpy(&packet[7], &player->field_2140, sizeof(player->field_2140));
-	return nox_xxx_netSendPacket1_4E5390(255, packet, sizeof(packet), 0, 1);
-}
-
-//----- (004D8F50) --------------------------------------------------------
-int nox_xxx_netTimerStatus_4D8F50(int a1, int a2) {
-	char v3[13]; // [esp+0h] [ebp-10h]
-
-	v3[0] = -45;
-	*(uint32_t*)&v3[1] = a2;
-	*(uint32_t*)&v3[5] = sub_40A230();
-	*(uint32_t*)&v3[9] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(a1, v3, 13, 0, 1);
-}
-
-//----- (004D8F90) --------------------------------------------------------
-int nox_xxx_netReportEnchant_4D8F90(int a1, uint32_t* a2) {
-	char v3[7]; // [esp+4h] [ebp-8h]
-
-	v3[0] = 90;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	*(uint32_t*)&v3[3] = a2[85];
-	return nox_xxx_netSendPacket1_4E5390(a1, v3, 7, 0, 1);
-}
-
-//----- (004D8FD0) --------------------------------------------------------
-void nox_xxx_netReportObjHidden_4D8FD0(int a1, uint32_t* a2) {
-	uint32_t* v2; // esi
-
-	v2 = a2;
-	if ((unsigned int)0x800000 & a2[2]) {
-		*(uint16_t*)((char*)&a2 + 1) = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-		LOBYTE(a2) = 56 - ((v2[4] & 0x1000000) != 0);
-		nox_xxx_netSendPacket0_4E5420(a1, &a2, 3, 0, 1);
-	}
-}
 
 //----- (004D9020) --------------------------------------------------------
 #if 0 // Retained PE32 body; public native entry and ordinary packet builder are implemented in Go.
@@ -2124,38 +2015,6 @@ int nox_xxx_netReportStatsSpeed_4D9360(int a1, nox_object_t* a2, char a3, int a4
 	v5[7] = a3;
 	*(uint32_t*)&v5[3] = a4;
 	return nox_xxx_netSendPacket0_4E5420(a1, v5, 8, 0, 1);
-}
-
-//----- (004D9440) --------------------------------------------------------
-int nox_xxx_netSendJournalAdd_4D9440(int a1, nox_playerInfo_journal* a2p) {
-	char v3[68] = {0}; // [esp+Ch] [ebp-44h]
-
-	v3[0] = -43;
-	v3[1] = 1;
-	strncpy(&v3[2], a2p->entry, 63);
-	*(uint16_t*)&v3[66] = a2p->field_3;
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
-}
-
-//----- (004D94A0) --------------------------------------------------------
-int nox_xxx_netSendJournalRemove_4D94A0(int a1, const char* a2) {
-	char v3[68] = {0}; // [esp+8h] [ebp-44h]
-
-	v3[0] = -43;
-	v3[1] = 2;
-	strncpy(&v3[2], a2, 63);
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
-}
-
-//----- (004D9500) --------------------------------------------------------
-int nox_xxx_netSendJournalUpdate_4D9500(int a1, nox_playerInfo_journal* a2) {
-	char v3[68] = {0}; // [esp+Ch] [ebp-44h]
-
-	v3[0] = -43;
-	v3[1] = 3;
-	strncpy(&v3[2], a2->entry, 63);
-	*(uint16_t*)&v3[66] = a2->field_3;
-	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
 }
 
 //----- (004D9900) --------------------------------------------------------

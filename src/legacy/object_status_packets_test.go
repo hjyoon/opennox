@@ -103,3 +103,52 @@ func TestDestroyObjectNativeKeepsVisibilityAndFriendRecipients(t *testing.T) {
 		t.Fatal("object destruction queued an extra packet")
 	}
 }
+
+func TestInventoryJournalPacketsKeepNativeWireAndReturnValues(t *testing.T) {
+	objectStatusTestServer(t, 7)
+	setImportantRecipientMaskC(1 << 6)
+
+	plain, releasePlain := alloc.NewHigh(server.Object{})
+	t.Cleanup(releasePlain)
+	*plain = server.Object{NetCode: 0x2345, TypeInd: 0x7056}
+
+	modified, releaseModified := alloc.NewHigh(server.Object{})
+	t.Cleanup(releaseModified)
+	attrs, releaseAttrs := alloc.NewHigh(server.ModifierInitData{})
+	t.Cleanup(releaseAttrs)
+	modifier, releaseModifier := alloc.NewHigh(server.ModifierEff{})
+	t.Cleanup(releaseModifier)
+	(*server.Modifier)(unsafe.Pointer(modifier)).TypeInd = 0x1234
+	attrs.Modifiers[2] = modifier
+	*modified = server.Object{NetCode: 0x2345, TypeInd: 0x7056, ObjClass: object.Class(0x01000000), InitData: unsafe.Pointer(attrs)}
+
+	journal := [68]byte{0xd5, 1, 66: 0x76, 67: 0x98}
+	for i := 2; i < 65; i++ {
+		journal[i] = 'A'
+	}
+	update := journal
+	update[1] = 3
+	removed := [68]byte{0xd5, 2, 'K', 'e', 'y'}
+
+	calls := inventoryJournalNativeCalls(6, plain, modified)
+	for i, tc := range []struct {
+		payload  []byte
+		sequence uint8
+		remove   uint32
+		result   int64
+	}{
+		{[]byte{75, 0x45, 0x23, 0x56, 0x70}, 1, 0, 0},
+		{[]byte{76, 0x45, 0x23, 0x56, 0x70, 0xff, 0xff, 0x34, 0xff}, 1, 0, 0},
+		{[]byte{77, 0x45, 0x23, 0x56, 0x70}, 1, 0, 1},
+		{journal[:], 0, 1, 1},
+		{removed[:], 0, 1, 1},
+		{update[:], 0, 1, 1},
+		{[]byte{0xed, 0x81}, 1, 1, 1},
+	} {
+		if result := calls[i](); result != tc.result {
+			t.Fatalf("opcode %#x returned %d, want %d", tc.payload[0], result, tc.result)
+		}
+		first, _ := importantNativeListC()
+		checkObjectStatusPacket(t, first, 6, tc.payload, tc.sequence, tc.remove)
+	}
+}

@@ -899,7 +899,7 @@ func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
 	}
 	GetServer().S().InventoryPutImpl4F3070(obj, item, reportValue, server.InventoryPutRuntime4F3070{
 		ReportPickup: func(index uint8, item *server.Object) {
-			C.nox_xxx_netReportPickup_4D8A60(C.int(index), asObjectC(item))
+			nox_xxx_netReportPickup_4D8A60(C.int(index), asObjectC(item))
 		},
 		ProtectItem: func(value uint32, item *server.Object) {
 			updatePlayerProtectionItem(int32(value), item)

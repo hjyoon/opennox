@@ -10,5 +10,5 @@ _Static_assert(_Generic(&nox_xxx_netTimerStatus_4D8F50,timer_notify_native_fn_40
 import "C"
 
 func timerNativeNotify40A1F0(recipient, active int32) int32 {
-	return int32(C.nox_xxx_netTimerStatus_4D8F50(C.int(recipient), C.int(active)))
+	return int32(nox_xxx_netTimerStatus_4D8F50(C.int(recipient), C.int(active)))
 }

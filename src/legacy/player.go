@@ -441,7 +441,7 @@ func Sub_459AA0(a1 *server.Settings2) {
 }
 
 func Nox_xxx_netNotifyRate_4D7F10(v ntype.PlayerInd) {
-	C.nox_xxx_netNotifyRate_4D7F10(C.int(v))
+	nox_xxx_netNotifyRate_4D7F10(C.int(v))
 }
 
 func Nox_xxx_plrReadVals_4EEDC0(obj *server.Object, a2 int) {

@@ -55,7 +55,7 @@ var worldPlayerDefaults40A830 = worldPlayerRuntime40A830{
 		return result
 	},
 	Lesson: func(unit *server.Object) {
-		C.nox_xxx_netReportLesson_4D8EF0((*C.nox_object_t)(unsafe.Pointer(unit)))
+		nox_xxx_netReportLesson_4D8EF0((*C.nox_object_t)(unsafe.Pointer(unit)))
 		runtime.KeepAlive(unit)
 	},
 	Minimap: func(mark bool, index byte, object *server.Object, flags uint32) {

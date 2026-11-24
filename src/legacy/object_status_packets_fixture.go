@@ -34,3 +34,22 @@ func objectStatusPacketNativeCalls(player uint8, object *server.Object) []func()
 func objectStatusDestroyNativeCall(object *server.Object) {
 	C.nox_xxx_netReportDestroyObject_5289D0(asObjectC(object))
 }
+
+func inventoryJournalNativeCalls(player uint8, plain, modified *server.Object) []func() int64 {
+	recipient := C.int(player)
+	ordinary, enchanted := asObjectC(plain), asObjectC(modified)
+	entry := C.nox_playerInfo_journal{field_3: 0x9876}
+	for i := range entry.entry {
+		entry.entry[i] = 'A'
+	}
+	key := [4]C.char{'K', 'e', 'y', 0}
+	return []func() int64{
+		func() int64 { return int64(C.nox_xxx_netReportPickup_4D8A60(recipient, ordinary)) },
+		func() int64 { return int64(C.nox_xxx_netReportPickup_4D8A60(recipient, enchanted)) },
+		func() int64 { return int64(C.nox_xxx_netReportDrop_4D8B50(recipient, ordinary)) },
+		func() int64 { return int64(C.nox_xxx_netSendJournalAdd_4D9440(recipient, &entry)) },
+		func() int64 { return int64(C.nox_xxx_netSendJournalRemove_4D94A0(recipient, &key[0])) },
+		func() int64 { return int64(C.nox_xxx_netSendJournalUpdate_4D9500(recipient, &entry)) },
+		func() int64 { return int64(C.nox_xxx_netCreatureCmd_4D7EE0(recipient, -127)) },
+	}
+}

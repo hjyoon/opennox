@@ -62,14 +62,30 @@ func Get_nox_common_maplist() unsafe.Pointer {
 }
 
 func Nox_common_maplist_add_4D0760(p *Nox_map_list_item) {
-	C.nox_common_maplist_add_4D0760((*nox_map_list_item)(unsafe.Pointer(p)))
+	nox_common_maplist_add_4D0760((*C.nox_map_list_item)(unsafe.Pointer(p)))
+}
+
+//export nox_common_maplist_add_4D0760
+func nox_common_maplist_add_4D0760(entry *C.nox_map_list_item) {
+	item := (*Nox_map_list_item)(unsafe.Pointer(entry))
+	node := (*C.nox_list_item_t)(unsafe.Pointer(entry))
+	name := alloc.GoStringS(item.Name[:])
+	for it := nox_common_maplist_first_4D09B0(); it != nil; it = nox_common_maplist_next_4D09C0(it) {
+		current := (*Nox_map_list_item)(unsafe.Pointer(it))
+		if name <= alloc.GoStringS(current.Name[:]) {
+			nox_common_list_append_4258E0((*C.nox_list_item_t)(unsafe.Pointer(it)), node)
+			return
+		}
+	}
+	nox_common_list_append_4258E0(&C.nox_common_maplist, node)
 }
 
 func Sub_425770(p *Nox_map_list_item) {
 	intrusiveListInit425770((*intrusiveListNode425760)(unsafe.Pointer(p)))
 }
 
-func noxCommonMaplistFreeNative() {
+//export nox_common_maplist_free_4D0970
+func nox_common_maplist_free_4D0970() {
 	head := (*nativeListItem)(unsafe.Pointer(&C.nox_common_maplist))
 	for it := head.next; it != nil && it != head; {
 		next := it.next

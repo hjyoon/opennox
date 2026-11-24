@@ -21,13 +21,6 @@ extern unsigned int dword_587000_93156;
 extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
-import (
-	"strings"
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
-)
 
 var (
 	Nox_exit                                              func(exitCode int)
@@ -79,7 +72,7 @@ func Nox_xxx_initSinCosTables_414C90() {
 }
 
 func Nox_xxx_loadMapCycle_4D0A30() {
-	C.nox_xxx_loadMapCycle_4D0A30()
+	nox_xxx_loadMapCycle_4D0A30()
 }
 
 //export sub_4D0C80
@@ -87,18 +80,11 @@ func sub_4D0C80(line *C.char) int32 {
 	if line == nil {
 		return -1
 	}
-	want := alloc.GoString((*byte)(unsafe.Pointer(line)))
-	for i := 0; i < 6; i++ {
-		p := *memmap.PtrPtr(0x587000, uintptr(191832+8*i))
-		if p != nil && strings.EqualFold(alloc.GoString((*byte)(p)), want) {
-			return int32(i)
-		}
-	}
-	return -1
+	return mapCycleModeIndex(GoString(line))
 }
 
 func Nox_xxx_mapSelectFirst_4D0E00() {
-	C.nox_xxx_mapSelectFirst_4D0E00()
+	nox_xxx_mapSelectFirst_4D0E00()
 }
 
 func Sub_4134D0() {
@@ -126,11 +112,11 @@ func Sub_4D11D0() {
 }
 
 func Sub_4D0DA0() {
-	C.sub_4D0DA0()
+	sub_4D0DA0()
 }
 
 func Nox_common_maplist_free_4D0970() {
-	noxCommonMaplistFreeNative()
+	nox_common_maplist_free_4D0970()
 }
 
 func Sub_451970() {

@@ -51,7 +51,7 @@ func Nox_xxx_getQuestMapFile_4D0F60() string {
 	return GoString(C.nox_xxx_getQuestMapFile_4D0F60())
 }
 func Sub_4D0F30() {
-	C.sub_4D0F30()
+	sub_4D0F30()
 }
 func Nox_game_setQuestStage_4E3CD0(a1 int) {
 	C.nox_game_setQuestStage_4E3CD0(C.int(a1))

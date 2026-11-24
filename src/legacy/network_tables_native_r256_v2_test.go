@@ -89,7 +89,7 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 		}
 		_, body, _ := strings.Cut(string(source), entry.first)
 		body, _, _ = strings.Cut(body, entry.last)
-		if entry.marker == "// SETTINGS_BODY" || entry.marker == "// RATE_BODY" {
+		if entry.marker == "// SETTINGS_BODY" || entry.marker == "// RATE_BODY" || entry.marker == "// MODE_BODY" {
 			// Extract the exact preserved definition after its public entry moves
 			// to Go. Do not compile the surrounding provenance-only #if0 fence.
 			signature := "int sub_409A70(short a1) {"
@@ -97,6 +97,10 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 			if entry.marker == "// RATE_BODY" {
 				signature = "int sub_40A710(int a1) {"
 				wantSHA = "33adc12701852ecc9e4c1c7d5934433fd131b443b21d5d4692e0889ae659fc42"
+			}
+			if entry.marker == "// MODE_BODY" {
+				signature = "int sub_4D0D50(int a1) {"
+				wantSHA = "92d74fb093349548486f36705f0aecccb00d203b9070de7c0ca111686282c4e3"
 			}
 			if strings.Count(body, signature) != 1 {
 				t.Fatal("unique preserved network table C body")
@@ -213,7 +217,7 @@ func TestNetworkTables256V2LiveCgoSettingsAndModes(t *testing.T) {
 	original := networkTableOriginal256(t)
 	installNetworkTableStock256(t, original)
 	for _, row := range original.Rows {
-		if row.Variant != "stock" {
+		if row.Variant != "stock" && row.Name != "mode" {
 			continue
 		}
 		switch row.Name {
@@ -228,17 +232,23 @@ func TestNetworkTables256V2LiveCgoSettingsAndModes(t *testing.T) {
 				}
 			}
 		case "mode":
-			live := memmap.Slice(0x5D4594, 1548452)[:24]
-			before := bytes.Clone(live)
-			t.Cleanup(func() { copy(live, before) })
-			for index := 0; index < 6; index++ {
-				binary.LittleEndian.PutUint32(live[4*index:], 0x12345670+uint32(index))
-			}
-			for _, pair := range row.Cases {
-				if got, want := uint32(Sub_4D0DE0(pair[0])), 0x12345670+pair[1]; got != want {
-					t.Fatalf("mode %#x value = %#x, original slot = %d", pair[0], got, pair[1])
+			t.Run(row.Variant, func(t *testing.T) {
+				live := memmap.Slice(0x5D4594, 1548452)[:24]
+				before := bytes.Clone(live)
+				t.Cleanup(func() { copy(live, before) })
+				for index := 0; index < 6; index++ {
+					mask := memmap.PtrUint32(0x587000, 191836+8*uintptr(index))
+					old := *mask
+					t.Cleanup(func() { *mask = old })
+					*mask = row.Table[2*index]
+					binary.LittleEndian.PutUint32(live[4*index:], 0x12345670+uint32(index))
 				}
-			}
+				for _, pair := range row.Cases {
+					if got, want := uint32(Sub_4D0DE0(pair[0])), 0x12345670+pair[1]; got != want {
+						t.Fatalf("mode %#x value = %#x, original slot = %d", pair[0], got, pair[1])
+					}
+				}
+			})
 		}
 	}
 }

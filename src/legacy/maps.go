@@ -50,11 +50,15 @@ var (
 
 //export nox_common_checkMapFile_4CFE10
 func nox_common_checkMapFile_4CFE10(name *C.char) int32 {
-	if err := Nox_common_checkMapFile(GoString(name)); err != nil {
+	return int32(bool2int(checkMapFile4CFE10(GoString(name))))
+}
+
+func checkMapFile4CFE10(name string) bool {
+	if err := Nox_common_checkMapFile(name); err != nil {
 		gameLog.Println("check map file:", err)
-		return int32(0)
+		return false
 	}
-	return int32(1)
+	return true
 }
 
 //export nox_xxx_mapReadSection_426EA0

@@ -1,3 +1,4 @@
+#include "GAME2_2.h"
 #include "client__system__parsecmd.h"
 #include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
@@ -96,7 +97,7 @@ uint32_t dword_5d4594_1045528 = 0;
 nox_window* dword_5d4594_815020 = 0;
 nox_window* dword_5d4594_1305680 = 0;
 nox_window* dword_5d4594_815032 = 0;
-uint32_t dword_5d4594_1193360 = 0;
+void* dword_5d4594_1193360 = 0;
 nox_window* dword_5d4594_1049520 = 0;
 nox_window* dword_5d4594_1309748 = 0;
 nox_window* dword_5d4594_1045464 = 0;
@@ -104,7 +105,7 @@ nox_window* dword_5d4594_1045484 = 0;
 uint32_t dword_5d4594_1049856 = 0;
 nox_window* dword_5d4594_1064856 = 0;
 uint32_t nox_xxx_aNox_cfg_0_587000_132132 = 0x1;
-uint32_t dword_5d4594_1193348 = 0;
+void* dword_5d4594_1193348 = 0;
 uint32_t dword_5d4594_1047520 = 0;
 uint32_t dword_5d4594_534808 = 0;
 uint32_t dword_5d4594_1197324 = 0;
@@ -567,7 +568,7 @@ nox_window* dword_5d4594_1090828 = 0;
 uint32_t dword_5d4594_815096 = 0;
 uint32_t dword_5d4594_529332 = 0;
 uint32_t dword_5d4594_1313816 = 0;
-uint32_t dword_5d4594_1193352 = 0;
+nox_window* dword_5d4594_1193352 = 0;
 uint32_t dword_5d4594_2488724 = 0;
 void* dword_5d4594_1548532 = 0;
 uint32_t dword_5d4594_1045580 = 0;
@@ -636,3 +637,17 @@ uint32_t dword_5d4594_1046852 = 0;
 uintptr_t array_5D4594_1049872[9];
 uintptr_t dword_8531A0_2576 = 0;
 uint32_t dword_8531A0_2572 = 0;
+
+uint8_t** nox_pixbuffer_rows_3798784 = 0;
+
+void* dword_5d4594_1096640 = 0;
+
+void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
+void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
+
+
+void* nox_client_spriteUnderCursorXxx_1096644 = 0;
+uint32_t nox_client_highResFloors_154952 = 1;
+void* nox_video_tileBuf_ptr_3798796 = 0;
+void* nox_video_tileBuf_end_3798844 = 0;
+uint32_t dword_5d4594_1193156 = 0;

@@ -665,52 +665,6 @@ void nox_xxx_sendArrowTrapFX_5238A0(float* a1, char a2) {
 
 // Decoration selection and assignment are implemented in mapgen_decor_selection.go.
 
-//----- (00524500) --------------------------------------------------------
-int sub_524500(float2* a1, int a2) {
-	float v2;   // edx
-	int result; // eax
-	int v4;     // esi
-	float2 v5;  // [esp+0h] [ebp-8h]
-
-	v2 = a1->field_4;
-	v5.field_0 = a1->field_0;
-	v5.field_4 = v2;
-	sub_526D50(0);
-	result = a2;
-	if (a2 > 0) {
-		v4 = a2;
-		do {
-			result = sub_526E60(&v5);
-			--v4;
-			v5.field_0 = v5.field_0 + 32.526913;
-		} while (v4);
-	}
-	return result;
-}
-
-//----- (00524550) --------------------------------------------------------
-int sub_524550(int* a1, int a2) {
-	int v2;     // edx
-	int result; // eax
-	int v4;     // esi
-	int v5;     // [esp+4h] [ebp-8h]
-	float v6;   // [esp+8h] [ebp-4h]
-
-	v2 = a1[1];
-	v5 = *a1;
-	v6 = *(float*)&v2;
-	result = sub_526D50(1);
-	v4 = a2;
-	if (a2 > 0) {
-		do {
-			result = sub_526E60((float*)&v5);
-			--v4;
-			v6 = v6 + 32.526913;
-		} while (v4);
-	}
-	return result;
-}
-
 //----- (00524950) --------------------------------------------------------
 int sub_524950(int a1, int a2, float* a3, int* a4) {
 	float center[2];

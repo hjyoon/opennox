@@ -19,7 +19,8 @@ func (s *mapgenAdjacentReservationLegacyServer524FB0) S() *server.Server {
 	return s.srv
 }
 
-func TestMapgenAdjacentReservation524FB0PreservesNativePointers(t *testing.T) {
+func newMapgenTestWallGrid(t *testing.T) *server.Server {
+	t.Helper()
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	if srv.Walls.InitHigh() == 0 {
@@ -31,7 +32,11 @@ func TestMapgenAdjacentReservation524FB0PreservesNativePointers(t *testing.T) {
 		return &mapgenAdjacentReservationLegacyServer524FB0{srv: srv}
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
+	return srv
+}
 
+func TestMapgenAdjacentReservation524FB0PreservesNativePointers(t *testing.T) {
+	newMapgenTestWallGrid(t)
 	got := mapgenAdjacentReservationFixture524FB0()
 	if !got.usedLegacyWrapper {
 		t.Fatal("direction zero did not exercise the legacy token wrapper")

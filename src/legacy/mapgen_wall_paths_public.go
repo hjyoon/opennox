@@ -58,6 +58,29 @@ func mapgenWalkWallStrip(point [2]float32, count int32, axis int, visit func([2]
 	}
 }
 
+func mapgenPlaceWallStrip(pos *C.float2, count C.int, axis int) C.int {
+	point := [2]float32{float32(pos.field_0), float32(pos.field_4)}
+	result := sub_526D50(C.int(axis))
+	if axis == 0 {
+		result = count
+	}
+	mapgenWalkWallStrip(point, int32(count), axis, func(at [2]float32) {
+		point := C.float2{field_0: C.float(at[0]), field_4: C.float(at[1])}
+		result = C.sub_526E60(&point.field_0)
+	})
+	return result
+}
+
+//export sub_524500
+func sub_524500(pos *C.float2, count C.int) C.int {
+	return mapgenPlaceWallStrip(pos, count, 0)
+}
+
+//export sub_524550
+func sub_524550(pos *C.int, count C.int) C.int {
+	return mapgenPlaceWallStrip((*C.float2)(unsafe.Pointer(pos)), count, 1)
+}
+
 func mapgenRemoveWallStrip(pos *C.float2, count C.int, axis int) {
 	point := [2]float32{float32(pos.field_0), float32(pos.field_4)}
 	mapgenWalkWallStrip(point, int32(count), axis, func(at [2]float32) {

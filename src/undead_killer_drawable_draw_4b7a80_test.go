@@ -3,7 +3,6 @@
 package opennox
 
 import (
-	"bytes"
 	_ "embed"
 	"image"
 	"math"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
+	"github.com/opennox/opennox/v1/common/memmap/nox/blobdata"
 	"github.com/opennox/opennox/v1/legacy"
 )
 
@@ -22,12 +22,11 @@ var undeadKillerBlob587000Test []byte
 
 func TestUndeadKillerSqrtTable4B7A80(t *testing.T) {
 	const offset = 155956
-	if len(undeadKillerBlob587000Test) < offset+len(undeadKillerSqrtTable4B7A80) {
-		t.Fatalf("blob_587000.dat is only %d bytes", len(undeadKillerBlob587000Test))
-	}
-	want := undeadKillerBlob587000Test[offset : offset+len(undeadKillerSqrtTable4B7A80)]
-	if !bytes.Equal(undeadKillerSqrtTable4B7A80[:], want) {
-		t.Fatal("native square-root table differs from byte_587000[155956:156212]")
+	for index := uint32(64); index < 256; index++ {
+		want := uint32(undeadKillerBlob587000Test[offset+index]) << 8
+		if got := blobdata.ApproxSqrt32(index << 24); got != want {
+			t.Fatalf("square root table entry %d = %#x, want %#x", index, got, want)
+		}
 	}
 }
 

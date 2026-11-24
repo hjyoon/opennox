@@ -133,7 +133,7 @@ func sub_4BEDE0(a, b, c, d *C.int2, steps C.int, phase C.float, callback C.uintp
 //export sub_4BA670
 func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 	dx, dy := x2-x1, y2-y1
-	distance := int32(C.sub_48C6B0(dx, dy))
+	distance := int32(approximateDistance32(int32(dx), int32(dy)))
 	count := distance/40 + 1
 	if distance/40+2 >= 30 {
 		count = 28

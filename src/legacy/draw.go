@@ -622,13 +622,13 @@ func Get_nullsub_8() unsafe.Pointer {
 	return C.nullsub_8
 }
 func Sub_435120(a1 unsafe.Pointer, a2 unsafe.Pointer) {
-	C.sub_435120(a1, a2)
+	sub_435120(a1, a2)
 }
 func Sub_435040() {
-	C.sub_435040()
+	sub_435040()
 }
 func Sub_435150(a1 unsafe.Pointer, a2 unsafe.Pointer) {
-	C.sub_435150((*C.uchar)(a1), (*C.char)(a2))
+	sub_435150((*C.uint8_t)(a1), (*C.char)(a2))
 }
 func Nox_xxx_wndDraw_49F7F0() {
 	C.nox_xxx_wndDraw_49F7F0()

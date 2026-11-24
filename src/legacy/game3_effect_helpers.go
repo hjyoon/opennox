@@ -60,7 +60,7 @@ func game3EffectsRuntime() game3EffectServices {
 		each: c.Objs.EachInRect, pointFX: func(id uint32, p image.Point) {
 			C.nox_xxx_makePointFxCli_499610(C.int(id), 50, 1000, 30, C.int(p.X), C.int(p.Y))
 		},
-		direction: func(v byte) byte { return byte(C.nox_xxx_math_509EA0(C.int(v))) }, render: cl.R2(), distance: func(x, y int32) uint32 { return uint32(C.sub_48C6B0(C.int(x), C.int(y))) },
+		direction: func(v byte) byte { return byte(C.nox_xxx_math_509EA0(C.int(v))) }, render: cl.R2(), distance: approximateDistance32,
 	}
 }
 

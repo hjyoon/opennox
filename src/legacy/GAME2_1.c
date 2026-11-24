@@ -287,14 +287,6 @@ int nox_xxx_cliPrepareGameplay1_460E60() {
 //----- (00460EA0) --------------------------------------------------------
 int sub_460EA0(int a1) { return sub_460B90(a1); }
 
-//----- (00460EB0) --------------------------------------------------------
-void sub_460EB0(int a1, char a2) {
-	if (a1 < 0 || a1 >= 140) {
-		return;
-	}
-	*getMemU8Ptr(0x5D4594, 1049544 + a1) = a2;
-}
-
 //----- (00461010) --------------------------------------------------------
 void sub_461010() {
 	if (!dword_5d4594_1049484) {
@@ -323,117 +315,10 @@ void sub_461060() {
 	dword_5d4594_1049484 = 1;
 }
 
-//----- (00461090) --------------------------------------------------------
-char* sub_461090(int a1, int a2) {
-	int v2;       // edx
-	char* result; // eax
-	unsigned int count = 0;
-
-	v2 = gameFrame();
-	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 20);
-	do {
-		if (*((uint32_t*)result - 5) == a1) {
-			*(uint32_t*)result = a2 == 0 ? v2 : 0;
-			*((uint32_t*)result - 3) = a2;
-		}
-		result += 24;
-	} while (++count < 5);
-	return result;
-}
-
-//----- (004610D0) --------------------------------------------------------
-char* sub_4610D0(unsigned char a1) {
-	int* v1;      // esi
-	char* result; // eax
-	unsigned int count = 0;
-
-	if (a1 != 6) {
-		return sub_461090(*getMemU32Ptr(0x5D4594, 1047764 + 24*a1), 1);
-	}
-	v1 = getMemIntPtr(0x5D4594, 1047764 + 24*1);
-	do {
-		result = sub_461090(*v1, 1);
-		v1 += 6;
-	} while (++count < 5);
-	return result;
-}
-
-//----- (00461120) --------------------------------------------------------
-char* sub_461120(int a1, int a2) {
-	int v2;       // edx
-	char* result; // eax
-	unsigned int count = 0;
-
-	v2 = 1 << a1;
-	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 12);
-	do {
-		if (*((uint32_t*)result - 3) == a1) {
-			if (a2) {
-				*(uint32_t*)result |= v2;
-			} else {
-				*(uint32_t*)result &= ~v2;
-			}
-		}
-		result += 24;
-	} while (++count < 5);
-	return result;
-}
-
-//----- (00461160) --------------------------------------------------------
-int sub_461160(int a1) {
-	int v1;            // edx
-	unsigned char* v2; // eax
-
-	v1 = 1;
-	v2 = getMemAt(0x5D4594, 1047764 + 24*1);
-	while (*(uint32_t*)v2 != a1) {
-		v2 += 24;
-		++v1;
-		if (v1 >= 6) {
-			return 0;
-		}
-	}
-	return ((1 << a1) & *getMemU32Ptr(0x5D4594, 1047764 + 24*v1 + 12)) != 0;
-}
-
 //----- (004611A0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_4611A0() { return dword_5d4594_1047932; }
 #endif
-
-//----- (004611B0) --------------------------------------------------------
-int sub_4611B0() {
-	int result; // eax
-
-	result = dword_5d4594_1047936;
-	if (dword_5d4594_1047936) {
-		result = nox_xxx_clientSendAbil_45DAF0(*(int*)&dword_5d4594_1047936);
-		dword_5d4594_1047936 = 0;
-		dword_5d4594_1047932 = 0;
-	}
-	return result;
-}
-
-//----- (004611E0) --------------------------------------------------------
-void nox_xxx_netAbilityRewardCli_4611E0(int a1, int a2, char* a3) {
-	uint32_t* v3; // esi
-
-	if (a1 >= 1 && a1 < 6) {
-		v3 = getMemU32Ptr(0x5D4594, 1047764 + 24*1 + 16);
-		do {
-			if (v3[-4] == a1 && *v3 != a2) {
-				if (nox_common_gameFlags_check_40A5C0(2) && dword_8531A0_2576) {
-					((nox_playerInfo*)dword_8531A0_2576)->spell_lvl[a1] = a2;
-				}
-				*v3 = a2;
-				if (a2) {
-					nox_xxx_abilityReward_45D290(a1, a3, a3 != NULL);
-				}
-			}
-			v3 += 6;
-		} while (v3 < getMemU32Ptr(0x5D4594, 1047924));
-	}
-}
 
 //----- (00461250) --------------------------------------------------------
 int nox_xxx_buttonFindFirstEmptySlot_461250() {

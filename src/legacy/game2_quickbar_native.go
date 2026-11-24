@@ -1453,5 +1453,5 @@ func g2qCancelAbility() {
 		h.CancelAbility()
 		return
 	}
-	C.sub_4611B0()
+	sub_4611B0()
 }

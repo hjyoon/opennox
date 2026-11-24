@@ -19,7 +19,7 @@ func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
 	}{
 		{"testdata/retired-game-sources/GAME2.c.txt", "int sub_460B90(int a1) {", "\n}", "// PRODUCTION_VISIBILITY"},
 		{"GAME2_1.c", "void sub_461010() {", "\n//----- (00461060)", "// PRODUCTION_CLOSE"},
-		{"GAME2_1.c", "void sub_461060() {", "\n//----- (00461090)", "// PRODUCTION_OPEN"},
+		{"GAME2_1.c", "void sub_461060() {", "\n//----- (004611A0)", "// PRODUCTION_OPEN"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {

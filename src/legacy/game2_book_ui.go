@@ -449,7 +449,7 @@ func nox_xxx_bookWndFn_45CC10(window *C.uint32_t, event C.int, pos C.uint) C.int
 			if C.nox_xxx_guiSpell_460650() != 0 {
 				nox_xxx_guiSpellTargetClickSet_45D9D0(id)
 			} else if C.sub_4611A0() != 0 {
-				C.sub_4611B0()
+				sub_4611B0()
 			} else {
 				C.nox_xxx_bookSpellDrop_45DCA0(id, 0, x, y, nil)
 			}

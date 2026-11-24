@@ -25,7 +25,79 @@ uint32_t gameFrame(void) { return frame; }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
 #pragma GCC diagnostic ignored "-Wsign-compare"
-// COMPLETE_SUBSYSTEM
+//----- (00461090) --------------------------------------------------------
+char* sub_461090(int a1, int a2) {
+	int v2;       // edx
+	char* result; // eax
+	unsigned int count = 0;
+
+	v2 = gameFrame();
+	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 20);
+	do {
+		if (*((uint32_t*)result - 5) == a1) {
+			*(uint32_t*)result = a2 == 0 ? v2 : 0;
+			*((uint32_t*)result - 3) = a2;
+		}
+		result += 24;
+	} while (++count < 5);
+	return result;
+}
+
+//----- (004610D0) --------------------------------------------------------
+char* sub_4610D0(unsigned char a1) {
+	int* v1;      // esi
+	char* result; // eax
+	unsigned int count = 0;
+
+	if (a1 != 6) {
+		return sub_461090(*getMemU32Ptr(0x5D4594, 1047764 + 24*a1), 1);
+	}
+	v1 = getMemIntPtr(0x5D4594, 1047764 + 24*1);
+	do {
+		result = sub_461090(*v1, 1);
+		v1 += 6;
+	} while (++count < 5);
+	return result;
+}
+
+//----- (00461120) --------------------------------------------------------
+char* sub_461120(int a1, int a2) {
+	int v2;       // edx
+	char* result; // eax
+	unsigned int count = 0;
+
+	v2 = 1 << a1;
+	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 12);
+	do {
+		if (*((uint32_t*)result - 3) == a1) {
+			if (a2) {
+				*(uint32_t*)result |= v2;
+			} else {
+				*(uint32_t*)result &= ~v2;
+			}
+		}
+		result += 24;
+	} while (++count < 5);
+	return result;
+}
+
+//----- (00461160) --------------------------------------------------------
+int sub_461160(int a1) {
+	int v1;            // edx
+	unsigned char* v2; // eax
+
+	v1 = 1;
+	v2 = getMemAt(0x5D4594, 1047764 + 24*1);
+	while (*(uint32_t*)v2 != a1) {
+		v2 += 24;
+		++v1;
+		if (v1 >= 6) {
+			return 0;
+		}
+	}
+	return ((1 << a1) & *getMemU32Ptr(0x5D4594, 1047764 + 24*v1 + 12)) != 0;
+}
+
 #pragma GCC diagnostic pop
 
 static uint32_t read32(const uint8_t* p) { return (uint32_t)p[0] | (uint32_t)p[1]<<8 | (uint32_t)p[2]<<16 | (uint32_t)p[3]<<24; }

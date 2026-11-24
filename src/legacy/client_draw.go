@@ -338,14 +338,14 @@ func Sub_4757D0_drawable(dr *client.Drawable) int {
 	return int(C.sub_4757D0_drawable((*nox_drawable)(dr.C())))
 }
 func Nox_xxx_tileDrawImpl_4826A0(vp *noxrender.Viewport) {
-	C.nox_xxx_tileDrawImpl_4826A0((*nox_draw_viewport_t)(vp.C()))
+	nox_xxx_tileDrawImpl_4826A0((*nox_draw_viewport_t)(vp.C()))
 }
 func Nox_xxx_tileDrawMB_481C20_A(vp *noxrender.Viewport, a2 int) {
-	C.nox_xxx_tileDrawMB_481C20_A((*nox_draw_viewport_t)(vp.C()), C.int(a2))
+	nox_xxx_tileDrawMB_481C20_A((*nox_draw_viewport_t)(vp.C()), C.int(a2))
 }
 func Nox_xxx_tileDrawMB_481C20_B(vp *noxrender.Viewport, a2 int) {
-	C.nox_xxx_tileDrawMB_481C20_B((*nox_draw_viewport_t)(vp.C()), C.int(a2))
+	nox_xxx_tileDrawMB_481C20_B((*nox_draw_viewport_t)(vp.C()), C.int(a2))
 }
 func Nox_xxx_tileCheckRedrawMB_482570(vp *noxrender.Viewport) int {
-	return int(C.nox_xxx_tileCheckRedrawMB_482570((*nox_draw_viewport_t)(vp.C())))
+	return int(nox_xxx_tileCheckRedrawMB_482570((*nox_draw_viewport_t)(vp.C())))
 }

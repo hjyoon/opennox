@@ -312,7 +312,7 @@ func sub_4A6890() C.int {
 	asGUIAnim(C.nox_wnd_xxx_1308092).SetState(gui.AnimOut)
 	C.sub_43BE40(2)
 	C.nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
-	C.sub_4A68C0()
+	sub_4A68C0()
 	return 1
 }
 
@@ -498,7 +498,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 		C.nox_game_decStateInd_43BDC0()
 		C.nox_game_decStateInd_43BDC0()
 		C.dword_587000_171388 = 1
-		if C.sub_4A75C0() != 0 {
+		if sub_4A75C0() != 0 {
 			switch *(*byte)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307784), 66)) {
 			case 0:
 				C.nox_xxx_gameSetMapPath_409D70(internCStr("war01a.map"))

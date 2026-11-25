@@ -277,6 +277,10 @@ func sparkleLifetime4B6770(dr *client.Drawable, frame uint32) (remaining, durati
 	return remaining, duration, remaining > 0 && duration > 0
 }
 
+func drawSparkleFromLegacy(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
+	return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
+}
+
 // MagicSparkleDraw and PixieDustDraw both use sub_4B6770. The original C
 // routine derives the drawable fields through PE32 byte offsets, truncating
 // native 64-bit pointers before its first position read.

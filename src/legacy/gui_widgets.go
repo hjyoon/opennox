@@ -72,8 +72,8 @@ func Nox_gui_newScrollListBox_4A4310(par *gui.Window, status gui.StatusFlags, px
 	return gui.NewScrollListBoxRaw(g, par, status, px, py, w, h, draw, tdata, assets)
 }
 
-//export nox_gui_newScrollListBox_4A4310_go
-func nox_gui_newScrollListBox_4A4310_go(par *nox_window, status, px, py, w, h C.int, draw *C.nox_window_data, tdata *C.nox_scrollListBox_data) *nox_window {
+//export nox_gui_newScrollListBox_4A4310
+func nox_gui_newScrollListBox_4A4310(par *nox_window, status, px, py, w, h C.int, draw *C.nox_window_data, tdata *C.nox_scrollListBox_data) *nox_window {
 	win := Nox_gui_newScrollListBox_4A4310(asWindow(par), gui.StatusFlags(status), int(px), int(py), int(w), int(h), asWindowData(draw), (*gui.ScrollListBoxData)(unsafe.Pointer(tdata)))
 	if win == nil {
 		return nil

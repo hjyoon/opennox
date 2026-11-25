@@ -94,11 +94,11 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 	options := C.nox_scrollListBox_data{count: 64, line_height: C.uint16_t(height + 1), field_2: 1}
 	listHeight := C.int(C.dword_5d4594_1090044) - 2*(height+1)
 	for page := 0; page < 2; page++ {
-		container := nox_gui_newScrollListBox_4A4310_go(root, 1088, C.int(page)*width, 3*height+1, width, listHeight, &draw, &options)
+		container := nox_gui_newScrollListBox_4A4310(root, 1088, C.int(page)*width, 3*height+1, width, listHeight, &draw, &options)
 		clientRankStoreWindow(1090052+4*page, container)
 		var x C.int
 		for column, span := range columns {
-			win := nox_gui_newScrollListBox_4A4310_go(container, 1088, x, 2*height, C.int(span), listHeight, &draw, &options)
+			win := nox_gui_newScrollListBox_4A4310(container, 1088, x, 2*height, C.int(span), listHeight, &draw, &options)
 			clientRankStoreWindow(1090060+8*column+4*page, win)
 			x += C.int(span)
 		}

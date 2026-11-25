@@ -25,6 +25,14 @@ func playerKillStatsSetPairCount425CA0(value uint32) {
 	C.dword_5d4594_739392 = C.uint32_t(value)
 }
 
+func copyStatsPlayerName(index uint32, player *server.Player) {
+	name := &player.Field2096Buf[0]
+	destination := (*byte)(memmap.PtrOff(0x5D4594, uintptr(uint32(600124)+index*32)))
+	// Like the original strcpy, copy through the terminator without
+	// clearing the remaining record bytes or imposing a new name cap.
+	alloc.StrCopyP(unsafe.Slice(destination, alloc.StrLen(name)+1), name)
+}
+
 func playerKillStatsRuntime425CA0() server.PlayerKillStatsRuntime425CA0 {
 	return server.PlayerKillStatsRuntime425CA0{
 		GameFlag: func(flag uint32) bool {
@@ -32,13 +40,7 @@ func playerKillStatsRuntime425CA0() server.PlayerKillStatsRuntime425CA0 {
 		},
 		PlayerCount: Get_dword_5d4594_608316,
 		SetCount:    Set_dword_5d4594_608316,
-		CopyName: func(index uint32, player *server.Player) {
-			name := &player.Field2096Buf[0]
-			destination := (*byte)(memmap.PtrOff(0x5D4594, uintptr(uint32(600124)+index*32)))
-			// Like the original strcpy, copy through the terminator without
-			// clearing the remaining record bytes or imposing a new name cap.
-			alloc.StrCopyP(unsafe.Slice(destination, alloc.StrLen(name)+1), name)
-		},
+		CopyName:    copyStatsPlayerName,
 		ConnectionIP: func(connection int) uint32 {
 			return nox_xxx_net_getIP_554200(int32(connection))
 		},

@@ -32,7 +32,7 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 		t.Fatal("native implementation boundary is not unique")
 	}
 	_, implementation, _ := strings.Cut(string(source), "// NATIVE_STATS_IMPLEMENTATION")
-	root, err := os.ReadFile("GAME1_1.c")
+	root, err := os.ReadFile("testdata/stats_runtime_entries_original_4263c0_4264d0.c")
 	if err != nil {
 		t.Fatal(err)
 	}

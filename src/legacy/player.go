@@ -401,7 +401,7 @@ func Sub_41D670(a1 string) {
 }
 
 func Sub_425F10(p *server.Player) {
-	C.sub_425F10((*nox_playerInfo)(p.C()))
+	sub_425F10((*nox_playerInfo)(p.C()))
 }
 
 func Sub_40AA70(p *server.Player) int {
@@ -465,11 +465,11 @@ func Nox_xxx_player_4E3CE0() int {
 }
 
 func Sub_425E90(pl *server.Player, a2 int8) {
-	C.sub_425E90((*nox_playerInfo)(pl.C()), C.char(a2))
+	sub_425E90((*nox_playerInfo)(pl.C()), C.char(a2))
 }
 
 func Sub_425ED0(pl *server.Player, a2 int8) {
-	C.sub_425ED0((*nox_playerInfo)(pl.C()), C.char(a2))
+	sub_425ED0((*nox_playerInfo)(pl.C()), C.char(a2))
 }
 
 func Sub_4E55F0(pli ntype.PlayerInd) {

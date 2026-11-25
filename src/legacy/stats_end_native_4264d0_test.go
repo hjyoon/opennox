@@ -86,7 +86,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 	program = strings.Replace(program, "// PRODUCTION_GETTER", getter+cut(read("stats_start_native.c"), getter, ""), 1)
 	root := "int sub_4264D0() {"
 	const rootEnd = "\n}\n"
-	program = strings.Replace(program, "// PRODUCTION_ROOT", root+cut(read("GAME1_1.c"), root, rootEnd)+rootEnd, 1)
+	program = strings.Replace(program, "// PRODUCTION_ROOT", root+cut(read("testdata/stats_runtime_entries_original_4263c0_4264d0.c"), root, rootEnd)+rootEnd, 1)
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}

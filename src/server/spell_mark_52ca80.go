@@ -1,8 +1,6 @@
 package server
 
 import (
-	"unsafe"
-
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
@@ -45,11 +43,8 @@ func markCast52CA80(id int32, caster, aim *Object, h markCastHooks52CA80) int32 
 	}
 	if index == 4 {
 		oldest := h.frame()
-		// 0052CAF4 retains the caster DWORD as the invalid-index fallback
-		// when no timestamp is strictly older than the current frame. Do
-		// not silently select slot zero or turn its required fault into
-		// success. This value is only an array index, never a pointer.
-		index = int(uint32(uintptr(unsafe.Pointer(caster))))
+		// An out-of-range index preserves the original fault when every mark
+		// is at least as recent as the current frame.
 		for i := 0; i < 4; i++ {
 			stamp := data.Field29[i].Field34
 			if stamp < oldest {

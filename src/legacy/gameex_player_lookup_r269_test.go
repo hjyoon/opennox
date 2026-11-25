@@ -17,10 +17,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// GameEx's optional name messages reach the real C parsers. Keep their
-// historical low-byte wide-name conversion and exact, first-active match;
-// neither a UTF-8 comparison nor the packed original-name field is equivalent.
-// This is a GameEx.c contract test, not a GAME.EXE or GameEx.dll oracle.
+// GameEx's optional name messages preserve the low-byte conversion from
+// the retained C parsers and match the first active player by approved name.
 func TestGameExPlayerLookupR269(t *testing.T) {
 	const child = "OPENNOX_TEST_GAMEEX_PLAYER_LOOKUP_R269"
 	for _, parser := range []string{"0", "1"} {
@@ -30,7 +28,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 				cmd.Env = append(os.Environ(), child+"="+parser)
 				output, err := cmd.CombinedOutput()
 				if err != nil {
-					t.Fatalf("actual CGo GameEx parser%s: %v\n%s", parser, err, output)
+					t.Fatalf("GameEx parser%s: %v\n%s", parser, err, output)
 				}
 				t.Log(strings.TrimSpace(string(output)))
 				return
@@ -163,7 +161,7 @@ func TestGameExPlayerLookupR269(t *testing.T) {
 			if got != 0 || record[0] != 0xa5 || record[1] != 0x5a {
 				t.Fatal("empty roster changed result bytes")
 			}
-			fmt.Printf("R269 actual CGo parser%s: 33 guarded name/class/native-team cases plus empty roster passed\n", parser)
+			fmt.Printf("R269 Go parser%s: 33 guarded name/class/native-team cases plus empty roster passed\n", parser)
 		})
 	}
 }

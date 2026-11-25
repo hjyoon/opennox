@@ -6,7 +6,6 @@ package legacy
 #include "GAME4_3.h"
 #include "MixPatch.h"
 #include "player_try_equip_4f2f70.h"
-extern unsigned int gameex_flags;
 */
 import "C"
 
@@ -88,7 +87,7 @@ func playerDequipWeapon53A140(owner, item *server.Object, report, broadcast C.in
 		update.EquippedWeapon = nil
 	}
 	Nox_xxx_itemApplyDisengageEffect_4F3030(item, owner)
-	if unsafe.Sizeof(uintptr(0)) == 4 && C.gameex_flags&2 != 0 {
+	if unsafe.Sizeof(uintptr(0)) == 4 && Get_gameex_flags()&2 != 0 {
 		restoreGameExShield32(owner, update)
 	}
 	return 1

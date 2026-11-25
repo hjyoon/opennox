@@ -700,7 +700,6 @@ extern uint32_t nox_color_orange_2614256;
 
 extern unsigned int dword_5d4594_1064868;
 extern nox_window* dword_5d4594_1316972;
-extern unsigned int gameex_flags;
 
 extern void* dword_5d4594_1308156;
 extern void* dword_5d4594_1308160;
@@ -921,12 +920,6 @@ func Set_dword_5d4594_814624(v unsafe.Pointer) {
 }
 func Get_dword_5d4594_251560() unsafe.Pointer {
 	return C.dword_5d4594_251560
-}
-func Get_gameex_flags() uint32 {
-	return uint32(C.gameex_flags)
-}
-func Get_gameex_flags_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.gameex_flags))
 }
 func Get_dword_5d4594_1064868() int {
 	return int(C.dword_5d4594_1064868)

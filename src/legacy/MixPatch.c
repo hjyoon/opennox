@@ -1,7 +1,6 @@
 #include "MixPatch.h"
 #include "GAME1.h"
 #include "GAME3_3.h"
-#include "GameEx.h"
 
 void sub_980523(nox_object_t* unit) {
 	if (!unit)

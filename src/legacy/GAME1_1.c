@@ -71,71 +71,6 @@ extern uint32_t nox_player_netCode_85319C;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern int ptr_5D4594_2650668_cap;
 
-//----- (00418840) --------------------------------------------------------
-int nox_xxx_unused_418840() {
-	int v0;       // ebp
-	char* v1;     // ebx
-	char* v2;     // esi
-	short v3;     // ax
-	int* i;       // edi
-	char* v5;     // eax
-	int j;        // esi
-	uint32_t* v7; // eax
-	int v8;       // ecx
-	int v9;       // eax
-	int k;        // esi
-	int v11;      // eax
-
-	v0 = 0;
-	v1 = sub_416640();
-	v2 = sub_4165B0();
-	nox_server_teamsZzz_419030(1);
-	v3 = *((uint16_t*)v2 + 26) & 0x3FFF;
-	HIBYTE(v3) |= 0x80u;
-	*((uint16_t*)v2 + 26) = v3;
-	for (i = sub_425A50(); i; i = sub_425A60(i)) {
-		nox_private_player_record_t* record = (nox_private_player_record_t*)i;
-		if (v0 >= (unsigned char)v1[52]) {
-			break;
-		}
-		v5 = nox_xxx_teamCreate_4186D0(0);
-		record->team = v5;
-		if (v5) {
-			sub_418800((wchar2_t*)v5, record->name, 0);
-			sub_418830((nox_team_t*)v5, record->id);
-			sub_4184D0((wchar2_t*)record->team);
-			++v0;
-			for (j = nox_xxx_getFirstPlayerUnit_4DA7C0(); j; j = nox_xxx_getNextPlayerUnit_4DA7F0(j)) {
-				v7 = *(uint32_t**)(*(uint32_t*)(j + 748) + 276);
-				if (v7[515] != nox_player_netCode_85319C ||
-					!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-					v8 = v7[920];
-					if (!(v8 & 1) || v8 & 0x20) {
-						v9 = v7[517];
-						if (v9) {
-							if (v9 == record->id) {
-								nox_xxx_createAtImpl_4191D0(*((uint8_t*)record->team + 57), j + 48, 1, *(uint32_t*)(j + 36), 0);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	for (k = nox_xxx_getFirstPlayerUnit_4DA7C0(); k; k = nox_xxx_getNextPlayerUnit_4DA7F0(k)) {
-		if (!nox_xxx_servObjectHasTeam_419130(k + 48)) {
-			v11 = *(uint32_t*)(*(uint32_t*)(k + 748) + 276);
-			if ((*(uint32_t*)(v11 + 2060) != nox_player_netCode_85319C ||
-				 !nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) &&
-				!(*(uint8_t*)(v11 + 3680) & 1)) {
-				nox_xxx_playerGoObserver_4E6860(v11, 0, 0);
-			}
-		}
-	}
-	nox_xxx_SetGameplayFlag_417D50(4);
-	return 1;
-}
-
 //----- (00418C60) --------------------------------------------------------
 extern uintptr_t nox_server_team_first_member_native(nox_team_t* team);
 nox_object_team_t* nox_xxx_teamCheckSmth_418C60(nox_team_t* team) {
@@ -185,27 +120,6 @@ void sub_4198A0(nox_object_team_t* a1, int a2, int a3) {
 	}
 }
 #endif
-
-//----- (00419A10) --------------------------------------------------------
-double sub_419A10(float a1) {
-	*getMemFloatPtr(0x5D4594, 527672) = a1;
-	**(uint32_t**)getMemAt(0x587000, 55744) &= 0x7FFFFFFFu;
-	return *getMemFloatPtr(0x5D4594, 527672);
-}
-
-//----- (00419A30) --------------------------------------------------------
-unsigned int sub_419A30(float a1) {
-	unsigned int result; // eax
-
-	if (a1 < 0.0) {
-		return 0;
-	}
-	*getMemU32Ptr(0x5D4594, 527668) = getMemAt(0x5D4594, 527676);
-	*getMemFloatPtr(0x5D4594, 527676) = a1 + 8388608.0;
-	result = 0x7fffff & *getMemU32Ptr(0x5D4594, 527676);
-	*getMemU32Ptr(0x5D4594, 527680) = 0x7fffff & *getMemU32Ptr(0x5D4594, 527676);
-	return result;
-}
 
 //----- (0041A590) --------------------------------------------------------
 #if 0 // Restored by player_save_native.go with native-width player links.
@@ -804,24 +718,6 @@ LABEL_115:
 #endif
 
 // 41AC30: using guessed type char var_100[256];
-
-//----- (0041B3E0) --------------------------------------------------------
-int sub_41B3E0(int a1) {
-	int v1;     // eax
-	int result; // eax
-
-	v1 = *getMemU32Ptr(0x5D4594, 527724);
-	if (!*getMemU32Ptr(0x5D4594, 527724)) {
-		v1 = nox_xxx_getNameId_4E3AA0("Glyph");
-		*getMemU32Ptr(0x5D4594, 527724) = v1;
-	}
-	if ((*(uint8_t*)(a1 + 8) & 0x40) == 64) {
-		result = 0;
-	} else {
-		result = *(unsigned short*)(a1 + 4) != v1;
-	}
-	return result;
-}
 
 //----- (0041B420) --------------------------------------------------------
 #if 0 // Restored by player_save_native.go with native-width player links.

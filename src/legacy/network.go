@@ -14,9 +14,9 @@ package legacy
 #include "GAME5.h"
 #include "GAME5_2.h"
 #include "client__gui__chathelp.h"
+#include "client_ui_words.h"
 extern unsigned int dword_5d4594_2649712;
 extern unsigned int dword_5d4594_2660032;
-extern unsigned int dword_5d4594_814548;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int nox_player_netCode_85319C;
 extern uint32_t dword_5d4594_1200804;
@@ -162,7 +162,7 @@ func ClientGetServerPort() int {
 }
 
 func Sub_43AF90(v int) {
-	C.dword_5d4594_814548 = C.uint(v)
+	C.dword_5d4594_814548 = C.uint32_t(v)
 }
 
 func Nox_xxx_netSendPacket_4E5030(
@@ -542,6 +542,6 @@ func Nox_xxx_netCode2ChatBubble_48D850(a1 int) int {
 
 //export sub_43AF90
 func sub_43AF90(state C.int) C.int {
-	C.dword_5d4594_814548 = C.uint(state)
+	C.dword_5d4594_814548 = C.uint32_t(state)
 	return state
 }

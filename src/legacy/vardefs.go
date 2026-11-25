@@ -56,7 +56,6 @@ extern uint32_t dword_5d4594_832476;
 extern uint32_t dword_5d4594_1570272;
 extern nox_window* dword_5d4594_1305684;
 extern nox_window* dword_5d4594_1321228;
-extern uint32_t nox_game_createOrJoin_815048;
 extern uint32_t dword_5d4594_1063636;
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 extern uint32_t dword_5d4594_1062456;
@@ -375,7 +374,6 @@ extern nox_window* dword_5d4594_1308108;
 extern uint32_t dword_5d4594_3835312;
 extern uint32_t dword_5d4594_1197308;
 extern uint32_t dword_5d4594_1045584;
-extern uint32_t dword_5d4594_814548;
 extern nox_window* dword_5d4594_1308132;
 extern uint32_t dword_5d4594_2386228;
 extern nox_window* dword_5d4594_1308100;
@@ -653,7 +651,6 @@ extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern void* dword_5d4594_1599548;
 extern void* dword_5d4594_1599588;
 extern void* dword_5d4594_1599592;
-extern unsigned int nox_game_createOrJoin_815048;
 extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int dword_5d4594_1548524;
 extern uint32_t dword_5d4594_2650652;
@@ -668,7 +665,6 @@ extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_831260;
 extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_831224;
-extern unsigned int nox_game_createOrJoin_815048;
 extern nox_screenParticle* dword_5d4594_806052;
 extern nox_screenParticle* nox_screenParticles_head;
 extern void* nox_alloc_screenParticles_806044;
@@ -702,7 +698,6 @@ extern uint32_t dword_5d4594_815044;
 extern nox_window* nox_wol_wnd_world_814980;
 extern unsigned int nox_wol_server_result_cnt_815088;
 extern int dword_5d4594_815104;
-extern unsigned int nox_game_createOrJoin_815048;
 extern uint32_t dword_587000_87408;
 extern nox_window* dword_5d4594_814984;
 extern nox_window* dword_5d4594_814996;
@@ -1147,7 +1142,7 @@ func Set_dword_5d4594_815056(v int) {
 	C.dword_5d4594_815056 = C.uint(v)
 }
 func Set_nox_game_createOrJoin_815048(v int) {
-	C.nox_game_createOrJoin_815048 = C.uint(v)
+	C.nox_game_createOrJoin_815048 = C.uint32_t(v)
 }
 func Set_dword_587000_87412(v int) {
 	C.dword_587000_87412 = C.int(v)

@@ -10,8 +10,6 @@ extern unsigned int dword_5d4594_527988;
 extern uint32_t dword_5d4594_805820;
 extern uint32_t nox_xxx_useAudio_587000_80772;
 extern uint32_t dword_5d4594_815052;
-extern unsigned int nox_game_createOrJoin_815048;
-extern unsigned int dword_5d4594_814548;
 extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
 extern uint32_t dword_5d4594_1049864;

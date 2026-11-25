@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 extern uint32_t nox_client_connError_814552;
+extern uint32_t nox_game_createOrJoin_815048;
+extern uint32_t dword_5d4594_814548;
 extern uint32_t dword_5d4594_1064868;
 extern uint32_t dword_587000_145668;
 extern uint32_t dword_587000_145664;

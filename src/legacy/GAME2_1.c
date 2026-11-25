@@ -147,36 +147,8 @@ typedef struct {
 	int value;
 } nox_slider_data_t;
 
-enum {
-	NOX_INV_IMG_BASE,
-	NOX_INV_IMG_IDENTIFY_BASE,
-	NOX_INV_IMG_TRAY1,
-	NOX_INV_IMG_TRAY2,
-	NOX_INV_IMG_TRAY3,
-	NOX_INV_IMG_TRAY_SPECIAL,
-	NOX_INV_IMG_TRAY_IDENTIFY_LIT,
-	NOX_INV_IMG_TRAY_MAP_LIT,
-	NOX_INV_IMG_UP,
-	NOX_INV_IMG_UP_LIT,
-	NOX_INV_IMG_DOWN,
-	NOX_INV_IMG_DOWN_LIT,
-	NOX_INV_IMG_SLIDER,
-	NOX_INV_IMG_SLIDER_LIT,
-	NOX_INV_IMG_EQUIP_RING,
-	NOX_INV_IMG_QUICK_ITEM_RING,
-	NOX_INV_IMG_CLOSE_LIT,
-	NOX_INV_IMG_JOURNAL_LIT,
-	NOX_INV_IMG_INVENTORY,
-	NOX_INV_IMG_INVENTORY_LIT,
-	NOX_INV_IMG_DOLL_LIT,
-	NOX_INV_IMG_STATS,
-	NOX_INV_IMG_STATS_LIT,
-	NOX_INV_IMG_FIST,
-	NOX_INV_IMG_SHARED_KEY_MODE,
-	NOX_INV_IMG_COUNT,
-};
-static nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
-static nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
+nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
+nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
 
 nox_window_yyy nox_windows_arr_1093036[7] = {0};
 nox_drawable nox_gui_bottle_drawables[3] = {0};
@@ -1067,33 +1039,6 @@ void sub_465CD0(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t 
 	}
 }
 
-//----- (00465D50) --------------------------------------------------------
-int sub_465D50_draw(nox_window* win) {
-	int x;
-	int y;
-
-	if (!win || !win->parent) {
-		return 1;
-	}
-	nox_client_wndGetPosition_46AA60(win->parent, (unsigned int*)&x, (unsigned int*)&y);
-	nox_drawable* drawable = (nox_drawable*)(uintptr_t)sub_4615C0();
-	if (drawable) {
-		drawable->pos.x = x + 51;
-		drawable->pos.y = y + 81;
-		if (drawable->draw_func) {
-			drawable->draw_func((uint32_t*)nox_client_inventory_viewport_native(), drawable);
-		}
-	} else if (!dword_5d4594_1062496 && !dword_5d4594_1062492) {
-		nox_client_drawImageAt_47D2C0(nox_inventory_images[NOX_INV_IMG_FIST], x + 21, y + 50);
-	}
-	return 1;
-}
-
-//----- (00465DE0) --------------------------------------------------------
-int sub_465DE0(int a1) {
-	dword_5d4594_1049844 = a1;
-	return nox_xxx_j_inventoryNameSignInit_467460();
-}
 // 467460: using guessed type int nox_xxx_j_inventoryNameSignInit_467460(void);
 
 
@@ -1195,13 +1140,6 @@ nox_window* nox_xxx_wndCreateInventoryMB_465E00() {
 	}
 
 	return nox_inventory_window;
-}
-
-//----- (004661C0) --------------------------------------------------------
-int nox_xxx_movEax1Sub_4661C0(nox_window* win, void* data) {
-	(void)win;
-	(void)data;
-	return 1;
 }
 
 //----- (00466220) --------------------------------------------------------
@@ -1327,36 +1265,6 @@ int sub_466550(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 	return 0;
 }
 
-//----- (00466580) --------------------------------------------------------
-int nox_xxx_inventoryDrawProc_466580(nox_window* win, nox_window_data* draw) {
-	unsigned int x;
-	unsigned int y;
-	nox_client_wndGetPosition_46AA60(win, &x, &y);
-	if (getMemByte(0x5D4594, 1049868)) {
-		nox_client_drawImageAt_47D2C0(draw->hl_image, x, y);
-	} else {
-		nox_client_drawImageAt_47D2C0(draw->bg_image, x, y);
-	}
-	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-	wchar2_t* key = (wchar2_t*)sub_42E8E0(35, 1);
-	if (key) {
-		nox_xxx_drawString_43F6E0(nox_inventory_font, key, x + 19, y + 102);
-	}
-	return 1;
-}
-
-//----- (00466620) --------------------------------------------------------
-int sub_466620(int a1, int a2, unsigned int a3) {
-	wchar2_t* v3; // eax
-	int2 a2a;    // [esp+0h] [ebp-8h]
-
-	a2a.field_4 = a3 >> 16;
-	a2a.field_0 = (unsigned short)a3;
-	v3 = sub_466660(a1, &a2a);
-	nox_xxx_cursorSetTooltip_4776B0(v3);
-	return 1;
-}
-
 // 466676: variable 'v2' is possibly undefined
 // 4666FF: variable 'v6' is possibly undefined
 // 466737: variable 'v10' is possibly undefined
@@ -1411,29 +1319,6 @@ int sub_466950(nox_window* parent) {
 
 //----- (00466BA0) --------------------------------------------------------
 int nox_xxx_wndButtonProc_4A7F50(nox_window* win, int ev, int a3, int a4);
-int sub_466BA0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
-	int result; // eax
-
-	if (nox_client_inventory_get_dragged()) {
-		result = sub_464BD0(win, a2, a3, a4);
-	} else {
-		result = nox_xxx_wndButtonProc_4A7F50(win, a2, a3, a4);
-	}
-	return result;
-}
-
-//----- (00466BF0) --------------------------------------------------------
-int sub_466BF0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
-	int result; // eax
-
-	if (nox_client_inventory_get_dragged()) {
-		result = sub_464BD0(win, a2, a3, a4);
-	} else {
-		result = nox_xxx_wndScrollBoxDraw_4B4BA0(win, a2, a3, a4);
-	}
-	return result;
-}
-
 //----- (00466C40) --------------------------------------------------------
 int sub_466C40(nox_window* parent) {
 	nox_window_data draw = {0};
@@ -1488,55 +1373,6 @@ int sub_466ED0(nox_window* parent) {
 		return 1;
 	}
 	return 0;
-}
-
-//----- (00466F50) --------------------------------------------------------
-int sub_466F50(nox_window* win, nox_window_data* draw) {
-	nox_drawable* drawable = dword_5d4594_1063116;
-	if (!drawable) {
-		return 1;
-	}
-	if (drawable->flags28 & 0x13001000) {
-		void* def = drawable->flags28 & 0x11001000
-			? nox_xxx_getProjectileClassById_413250(drawable->field_27)
-			: nox_xxx_equipClothFindDefByTT_413270(drawable->field_27);
-		if (def) {
-			for (int i = 1; i < 7; i++) {
-				uint32_t color = nox_modifier_getColorRGB(def, i);
-				nox_draw_setMaterial_4340A0(i, color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF);
-			}
-			for (int i = 0; i < 4; i++) {
-				void* modifier = drawable->item_modifiers[i];
-				if (modifier) {
-					uint32_t color = nox_modifier_effect_getColorRGB(modifier);
-					nox_draw_setMaterial_4340A0(nox_modifier_getColorSlot(def, i), color & 0xFF,
-						(color >> 8) & 0xFF, (color >> 16) & 0xFF);
-				}
-			}
-		}
-	}
-	unsigned int x;
-	unsigned int y;
-	nox_client_wndGetPosition_46AA60(win, &x, &y);
-	nox_client_drawImageAt_47D2C0(draw->bg_image, (int)draw->img_px + (int)x, (int)draw->img_py + (int)y);
-	return 1;
-}
-
-//----- (00467050) --------------------------------------------------------
-nox_things_imageRef_t* nox_xxx_inventoryLoadImages_467050() {
-	static const char* const names[NOX_INV_IMG_COUNT] = {
-		"InventoryBase", "InventoryIdentifyBase", "InventoryTray1", "InventoryTray2", "InventoryTray3",
-		"InventoryTraySpecial", "InventoryTrayIdentifyLit", "InventoryTrayMapLit", "InventoryUpButton",
-		"InventoryUpButtonLit", "InventoryDownButton", "InventoryDownButtonLit", "InventorySliderButton",
-		"InventorySliderButtonLit", "InventoryEquipRing", "InventoryQuickItemRing", "InventoryCloseButtonLit",
-		"InventoryJournalButtonLit", "InventoryInventoryButton", "InventoryInventoryButtonLit",
-		"InventoryDollButtonLit", "InventoryStatsButton", "InventoryStatsButtonLit", "GUIFist", "SharedKeyMode",
-	};
-	for (int i = 0; i < NOX_INV_IMG_COUNT; i++) {
-		nox_inventory_images[i] = nox_xxx_gLoadImg_42F970(names[i]);
-	}
-	nox_inventory_extra_lives_anim = nox_xxx_gLoadAnim_42FA20("ExtraLives");
-	return nox_inventory_extra_lives_anim;
 }
 
 //----- (004672C0) --------------------------------------------------------

@@ -653,7 +653,7 @@ func Nox_xxx_plrLoad_41A480(a1 string) int {
 	return bool2int(loadClientSaveHeader(a1) == nil)
 }
 func Sub_465DE0(a1 int) {
-	C.sub_465DE0(C.int(a1))
+	sub_465DE0(C.int(a1))
 }
 func Sub_4E79B0(value uint32) uint32 {
 	return uint32(C.sub_4E79B0(C.uint32_t(value)))

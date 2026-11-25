@@ -39,7 +39,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 	C.nox_window_get_size(win, &w, &h)
 	meter.color_2 = meter.color_1
 	if meter.field_2 == 0 {
-		C.sub_465D50_draw(win)
+		sub_465D50_draw(win)
 		return 1
 	}
 	progress := int32((meter.field_1 << 8) / meter.field_2)
@@ -64,7 +64,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 		sub_4AE6F0(int32(x+w/2), int32(y+h/2), int32(w/2), progress, int32(meter.color_2))
 		nox_client_drawEnableAlpha_434560(0)
 	}
-	C.sub_465D50_draw(win)
+	sub_465D50_draw(win)
 	return 1
 }
 

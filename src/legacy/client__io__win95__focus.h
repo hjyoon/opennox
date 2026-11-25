@@ -3,6 +3,8 @@
 
 #include "defs.h"
 
-void sub_42EBB0(unsigned int a1, void (*fnc)(int), int field_4, const char* name);
+typedef void (*nox_focus_callback)(int);
+typedef const char nox_focus_name;
+void sub_42EBB0(unsigned int a1, nox_focus_callback fnc, int field_4, nox_focus_name* name);
 
 #endif // NOX_PORT_CLIENT_IO_WIN95_FOCUS

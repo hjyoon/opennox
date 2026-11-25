@@ -17,9 +17,7 @@ var countSlavesNativeHooks4E7CF0 = countSlavesHooks4E7CF0[*server.Object]{
 	},
 }
 
-// Nox_xxx_unitCountSlaves_4E7CF0 exposes the native-width Go path while the
-// sole historical C caller still carries surrounding ABI32 spell-record debt.
-// It does not add a CGo export beside the typed C implementation.
+// Nox_xxx_unitCountSlaves_4E7CF0 counts owned units matching both masks.
 func Nox_xxx_unitCountSlaves_4E7CF0(owner *server.Object, classMask, subclassMask uint32) int32 {
 	return countSlaves4E7CF0(owner, classMask, subclassMask, countSlavesNativeHooks4E7CF0)
 }

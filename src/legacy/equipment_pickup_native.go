@@ -39,7 +39,7 @@ func weaponPickup53A720(owner, item *server.Object, report, equipReport C.int) i
 		}
 	}
 	if equipmentPickupRulesAllowed() && sub_409F40(2) != 0 {
-		duplicate := uint32(item.ObjSubClass)&0x82 == 0 && C.sub_4E7EC0(asObjectC(owner), asObjectC(item)) != 0
+		duplicate := uint32(item.ObjSubClass)&0x82 == 0 && Sub_4E7EC0(owner, item) != 0
 		if uint32(item.ObjSubClass)&0x40 != 0 {
 			for owned := owner.Field129; owned != nil; owned = owned.Field128 {
 				if owned.ObjClass.Has(object.ClassWeapon) && uint32(owned.ObjSubClass)&0x40 != 0 {
@@ -119,7 +119,7 @@ func armorPickup53E7F0(owner, item *server.Object, report, equipReport C.int) in
 		C.dword_5d4594_2488720 = C.uint32_t(world.Types.IndByID("WoodenShield"))
 		C.dword_5d4594_2488724 = C.uint32_t(world.Types.IndByID("SteelShield"))
 	}
-	if equipmentPickupRulesAllowed() && sub_409F40(2) != 0 && C.sub_4E7EC0(asObjectC(owner), asObjectC(item)) != 0 {
+	if equipmentPickupRulesAllowed() && sub_409F40(2) != 0 && Sub_4E7EC0(owner, item) != 0 {
 		return rejectEquipment(owner, "armor.c:CannotPickupDuplicateArmor", true)
 	}
 	if equipmentPickupRulesAllowed() && owner.ObjClass.Has(object.ClassPlayer) {

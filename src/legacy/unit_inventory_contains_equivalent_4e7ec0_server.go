@@ -14,9 +14,7 @@ var inventoryContainsEquivalentNativeHooks4E7EC0 = inventoryContainsEquivalentHo
 	},
 }
 
-// Sub_4E7EC0 exposes the native-width Go path. The two historical C callers
-// use the typed C implementation while their wider pickup functions retain
-// separately tracked ABI32 debt.
+// Sub_4E7EC0 searches the owner's inventory for an equivalent item.
 func Sub_4E7EC0(owner, item *server.Object) int32 {
 	if inventoryContainsEquivalent4E7EC0(owner, item, inventoryContainsEquivalentNativeHooks4E7EC0) {
 		return 1

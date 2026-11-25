@@ -12,7 +12,7 @@ uint32_t* mem_getU32Ptr(uintptr_t base, uintptr_t offset) {
 	return &gate_words[1];
 }
 
-#include "../unit_freeze_gate_4e79b0.c"
+#include "retired-game-sources/unit_freeze_gate_4e79b0.c.txt"
 
 static uint32_t (*const setter_signature)(uint32_t) = sub_4E79B0;
 

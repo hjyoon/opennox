@@ -654,7 +654,9 @@ func Sub_465DE0(a1 int) {
 	sub_465DE0(C.int(a1))
 }
 func Sub_4E79B0(value uint32) uint32 {
-	return uint32(C.sub_4E79B0(C.uint32_t(value)))
+	return unitFreezeGateSet4E79B0(value, func(value uint32) {
+		*unitFreezeGateRuntimeRef4E79B0() = value
+	})
 }
 func Nox_xxx_playerMakeDefItems_4EF7D0(a1 *server.Object, a2 int32, a3 int32) uint8 {
 	return playerMakeDefItemsCall4EF7D0(a1, a2, a3)

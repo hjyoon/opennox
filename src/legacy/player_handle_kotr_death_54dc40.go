@@ -15,11 +15,9 @@ func playerHandleKotrDeathRuntime54DC40(srv Server) server.PlayerHandleKotrDeath
 	s := srv.S()
 	return server.PlayerHandleKotrDeathRuntime54DC40{
 		PlayerUpdateScoreRuntime54D980: playerUpdateScoreRuntime54D980(srv),
-		IsCrown: func(unit *server.Object) bool {
-			return C.nox_xxx_unitIsCrown_4E7BE0(asObjectC(unit)) != 0
-		},
-		BalanceFloat: s.Balance.Float,
-		FloatToInt:   server.PlayerKotrPoints54DC40,
+		IsCrown:                        unitHasCrown,
+		BalanceFloat:                   s.Balance.Float,
+		FloatToInt:                     server.PlayerKotrPoints54DC40,
 		GameplayFlag: func(mask uint32) bool {
 			return noxflags.HasGamePlay(noxflags.GameplayFlag(mask))
 		},

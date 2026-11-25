@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-#include "../unit_count_slaves_4e7cf0.c"
+#include "retired-game-sources/unit_count_slaves_4e7cf0.c.txt"
 
 static int32_t (*const count_slaves_signature_4e7cf0)(
 	const nox_object_t*, uint32_t, uint32_t

@@ -32,9 +32,7 @@ var itemEquivalentNativeHooks4E7DE0 = itemEquivalentHooks4E7DE0[
 	},
 }
 
-// Sub_4E7DE0 exposes the native-width Go path without adding a second CGo
-// export beside the typed C implementation. The sole historical C caller is
-// ported separately because its owner argument still carries ABI32 debt.
+// Sub_4E7DE0 compares item types, modifiers, and book payloads.
 func Sub_4E7DE0(candidate, item *server.Object) int32 {
 	if itemEquivalent4E7DE0(candidate, item, itemEquivalentNativeHooks4E7DE0) {
 		return 1

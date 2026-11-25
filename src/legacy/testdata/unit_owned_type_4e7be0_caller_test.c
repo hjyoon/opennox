@@ -30,7 +30,7 @@ int nox_xxx_getNameId_4E3AA0(char* name) {
 	return (int)lookup_result;
 }
 
-#include "../unit_owned_type_4e7be0.c"
+#include "retired-game-sources/unit_owned_type_4e7be0.c.txt"
 
 static int (*const crown_signature_4e7be0)(const nox_object_t*) = nox_xxx_unitIsCrown_4E7BE0;
 static int (*const gameball_signature_4e7c30)(const nox_object_t*) = nox_xxx_unitIsGameball_4E7C30;

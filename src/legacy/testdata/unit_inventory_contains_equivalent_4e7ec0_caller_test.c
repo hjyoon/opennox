@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "../unit_item_equivalent_4e7de0.c"
-#include "../unit_inventory_contains_equivalent_4e7ec0.c"
+#include "retired-game-sources/unit_item_equivalent_4e7de0.c.txt"
+#include "retired-game-sources/unit_inventory_contains_equivalent_4e7ec0.c.txt"
 
 static int32_t (*const inventory_contains_equivalent_signature_4e7ec0)(
 	const nox_object_t*, const nox_object_t*

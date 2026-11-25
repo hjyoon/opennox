@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../object_is_player_4e7bc0.c"
+#include "retired-game-sources/object_is_player_4e7bc0.c.txt"
 
 static int (*const object_is_player_signature_4e7bc0)(const nox_object_t*) = sub_4E7BC0;
 

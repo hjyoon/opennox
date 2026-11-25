@@ -9,12 +9,13 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func unitFreezeGateRuntimeRef4E79B0() *uint32 {
-	return (*uint32)(unsafe.Pointer(C.nox_xxx_unitFreezeGateRef_4E79B0()))
+	return memmap.PtrUint32(0x5D4594, 1567712)
 }
 
 func unitFreezeRuntime4E79C0(obj *server.Object, source uint32) byte {

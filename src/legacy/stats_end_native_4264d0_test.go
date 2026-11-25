@@ -70,7 +70,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 		{"// PRODUCTION_BULK_HEADER", "stats_bulk_native.h", "", ""},
 		{"// PRODUCTION_START_HEADER", "stats_start_native.h", "", ""},
 		{"// PRODUCTION_END_HEADER", "stats_end_native.h", "", ""},
-		{"// PRODUCTION_BULK_BODY", "stats_bulk_native.c", "// NATIVE_STATS_IMPLEMENTATION", ""},
+		{"// PRODUCTION_BULK_BODY", "testdata/retired-game-sources/stats_bulk_native.c.txt", "// NATIVE_STATS_IMPLEMENTATION", ""},
 		{"// PRODUCTION_END_BODY", "stats_end_native.c", "// NATIVE_STATS_END_IMPLEMENTATION", ""},
 	} {
 		text := read(part.path)

@@ -56,7 +56,7 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	program = "#include <stdint.h>\n" + program
 	program = strings.Replace(program, "// PRODUCTION_BULK_HEADER", read("stats_bulk_native.h"), 1)
 	program = strings.Replace(program, "// PRODUCTION_START_HEADER", read("stats_start_native.h"), 1)
-	program = strings.Replace(program, "// PRODUCTION_BULK_BODY", cut(read("stats_bulk_native.c"), "// NATIVE_STATS_IMPLEMENTATION", ""), 1)
+	program = strings.Replace(program, "// PRODUCTION_BULK_BODY", cut(read("testdata/retired-game-sources/stats_bulk_native.c.txt"), "// NATIVE_STATS_IMPLEMENTATION", ""), 1)
 	program = strings.Replace(program, "// PRODUCTION_START_BODY", cut(read("stats_start_native.c"), "// NATIVE_STATS_START_IMPLEMENTATION", ""), 1)
 	rootSignature := "void sub_426060() {"
 	program = strings.Replace(program, "// PRODUCTION_START_ROOT", rootSignature+cut(read("server__system__server.c"), rootSignature, "\n//----- (004D0CF0)"), 1)

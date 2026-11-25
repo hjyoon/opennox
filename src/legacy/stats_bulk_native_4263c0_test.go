@@ -24,7 +24,7 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("stats_bulk_native.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/stats_bulk_native.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,8 +58,9 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual native report helpers and original C entry: %v\n%s", err, output)
+		t.Fatalf("compile reference report helpers and original C entry: %v\n%s", err, output)
 	}
+	t.Run("linked Go packet", func(t *testing.T) { compareStatsBulkPacketReference(t, binary) })
 	for _, name := range []string{"packet", "flush", "lifecycle"} {
 		t.Run(name, func(t *testing.T) {
 			if output, err := exec.Command(binary, "--"+name).CombinedOutput(); err != nil {
@@ -112,9 +113,8 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 	}
 }
 
-// Exercise the real no-argument Go -> C -> Go player-list callback chain and
-// the production compressor/scrambler/envelope, not the standalone E service.
-// A child process isolates the persistent C columns and all memmap mutations.
+// Exercise the real player-list path and production packet envelope.
+// A child process isolates the report columns and all memmap mutations.
 func TestStatsBulk4263C0CgoEntry(t *testing.T) {
 	if os.Getenv("NOX_STATS_BULK_CGO_CHILD") != "1" {
 		cmd := exec.Command(os.Args[0], "-test.run=^TestStatsBulk4263C0CgoEntry$", "-test.count=1", "-test.v")

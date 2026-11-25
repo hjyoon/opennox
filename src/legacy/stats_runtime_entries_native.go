@@ -124,7 +124,7 @@ func sub_426150() {
 
 //export nox_xxx_net_4263C0
 func nox_xxx_net_4263C0() *C.char {
-	return C.nox_stats_bulk_flush_native()
+	return nox_stats_bulk_flush_native()
 }
 
 //export sub_4264D0
@@ -139,5 +139,5 @@ func sub_4264D0() C.int {
 		}
 		*memmap.PtrUint32(0x5D4594, 599504) = uint32(time.Now().Unix()) - uint32(C.dword_5d4594_600116)
 	}
-	return C.nox_stats_session_report_native(2)
+	return nox_stats_session_report_native(2)
 }

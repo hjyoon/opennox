@@ -4,8 +4,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+	"unsafe"
 )
 
 func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
@@ -18,8 +20,8 @@ func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
 		file, signature, end, marker string
 	}{
 		{"testdata/retired-game-sources/GAME2.c.txt", "int sub_460B90(int a1) {", "\n}", "// PRODUCTION_VISIBILITY"},
-		{"GAME2_1.c", "void sub_461010() {", "\n//----- (00461060)", "// PRODUCTION_CLOSE"},
-		{"GAME2_1.c", "void sub_461060() {", "\n//----- (004611A0)", "// PRODUCTION_OPEN"},
+		{"testdata/retired-game-sources/GAME2_1_trap_quickbar.c.txt", "void sub_461010() {", "\n//----- (00461060)", "// PRODUCTION_CLOSE"},
+		{"testdata/retired-game-sources/GAME2_1_trap_quickbar.c.txt", "void sub_461060() {", "\n//----- (004611A0)", "// PRODUCTION_OPEN"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {
@@ -57,5 +59,52 @@ func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
 		t.Fatalf("native Trap Set visibility contract: %v\n%s", err, output)
 	} else {
 		t.Log(strings.TrimSpace(string(output)))
+	}
+}
+
+func TestTrapQuickbarTogglePreservesWindowOrderAndSounds(t *testing.T) {
+	g2qTestIsolate(t)
+	root := g2qTestObjects(t, 1)
+	replacement := g2qTestObjects(t, 1)
+	button := g2qTestObjects(t, 1)
+	g2qTestOwner(1, g2qTrap(), root, root, root, root)
+	g2qTestPointer(5, replacement, true)
+	g2qTestPointer(2, button, true)
+	type step struct {
+		kind string
+		win  unsafe.Pointer
+		arg  int32
+	}
+	var trace []step
+	game2QuickbarTestHooks.Hidden = func(win unsafe.Pointer, hidden int32) int32 {
+		trace = append(trace, step{"hidden", win, hidden})
+		return 0
+	}
+	game2QuickbarTestHooks.Style = func(win unsafe.Pointer, style int32) int32 {
+		trace = append(trace, step{"style", win, style})
+		return 0
+	}
+	game2QuickbarTestHooks.Sound = func(id, volume int32) {
+		if volume != 100 {
+			t.Fatalf("volume = %d", volume)
+		}
+		trace = append(trace, step{"sound", nil, id})
+	}
+	sub_461010()
+	sub_461060()
+	if state := g2qTestWord(1, 0, false); state != 1 {
+		t.Fatalf("opened trap state = %d", state)
+	}
+	sub_461060()
+	sub_461010()
+	if state := g2qTestWord(1, 0, false); state != 0 {
+		t.Fatalf("closed trap state = %d", state)
+	}
+	want := []step{
+		{"hidden", root, 0}, {"hidden", replacement, 1}, {"style", button, 1}, {"sound", nil, 796},
+		{"hidden", root, 1}, {"hidden", replacement, 0}, {"style", button, 0}, {"sound", nil, 797},
+	}
+	if !reflect.DeepEqual(trace, want) {
+		t.Fatalf("trap toggle trace = %+v, want %+v", trace, want)
 	}
 }

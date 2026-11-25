@@ -163,34 +163,6 @@ nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] 
 int sub_460D40() { return dword_5d4594_1049508 != 0; }
 #endif
 
-//----- (00461010) --------------------------------------------------------
-void sub_461010() {
-	if (!dword_5d4594_1049484) {
-		return;
-	}
-	nox_window_set_hidden(nox_quickbar_root(getMemAt(0x5D4594, 1047940)), 1);
-	nox_window_set_hidden(dword_5d4594_1049512, 0);
-	sub_46AE10(dword_5d4594_1049500, 0);
-	nox_xxx_clientPlaySoundSpecial_452D80(797, 100);
-	dword_5d4594_1049484 = 0;
-}
-
-//----- (00461060) --------------------------------------------------------
-void sub_461060() {
-	if (dword_5d4594_1049484 == 1) {
-		sub_461010();
-		return;
-	}
-	if (*getMemU32Ptr(0x5D4594, 1049476) == 1) {
-		nox_xxx_quickBarClose_4606B0();
-	}
-	nox_window_set_hidden(nox_quickbar_root(getMemAt(0x5D4594, 1047940)), 0);
-	nox_window_set_hidden(dword_5d4594_1049512, 1);
-	sub_46AE10(dword_5d4594_1049500, 1);
-	nox_xxx_clientPlaySoundSpecial_452D80(796, 100);
-	dword_5d4594_1049484 = 1;
-}
-
 //----- (004611A0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_4611A0() { return dword_5d4594_1047932; }

@@ -924,7 +924,7 @@ func nox_xxx_quickbarTrapProc_45FB90(win *C.nox_window, event C.uint, unused1 C.
 		}
 		if event == 7 {
 			if win != nil && C.wndIsShown_nox_xxx_wndIsShown_46ACC0(win) == 0 {
-				C.sub_461060()
+				sub_461060()
 			}
 			return 1
 		}
@@ -1191,6 +1191,34 @@ func nox_xxx_quickBarClose_4606B0() C.int {
 	return 1
 }
 
+//export sub_461010
+func sub_461010() {
+	if C.dword_5d4594_1049484 == 0 {
+		return
+	}
+	g2qHidden(nox_quickbar_root(g2qTrap()), 1)
+	g2qHidden(C.dword_5d4594_1049512, 0)
+	g2qStyle(C.dword_5d4594_1049500, 0)
+	g2qSound(797, 100)
+	C.dword_5d4594_1049484 = 0
+}
+
+//export sub_461060
+func sub_461060() {
+	if C.dword_5d4594_1049484 == 1 {
+		sub_461010()
+		return
+	}
+	if memmap.Uint32(0x5D4594, 1049476) == 1 {
+		nox_xxx_quickBarClose_4606B0()
+	}
+	g2qHidden(nox_quickbar_root(g2qTrap()), 0)
+	g2qHidden(C.dword_5d4594_1049512, 1)
+	g2qStyle(C.dword_5d4594_1049500, 1)
+	g2qSound(796, 100)
+	C.dword_5d4594_1049484 = 1
+}
+
 //export sub_460920
 func sub_460920() {
 	if memmap.Uint32(0x5D4594, 1049476) != 0 {
@@ -1201,7 +1229,7 @@ func sub_460920() {
 		return
 	}
 	if C.dword_5d4594_1049484 == 1 {
-		C.sub_461010()
+		sub_461010()
 	}
 	main := g2qMain()
 	if main == nil {

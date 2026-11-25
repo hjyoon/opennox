@@ -79,7 +79,7 @@ func Realloc(ptr unsafe.Pointer, size uintptr) unsafe.Pointer {
 		if size < n {
 			n = size
 		}
-		C.memcpy(next, ptr, C.size_t(n))
+		copyNativeBytes(next, ptr, n)
 		FreePtr(ptr)
 		return next
 	}
@@ -161,13 +161,26 @@ func FreeSlice[T comparable](b []T) {
 
 func Memset(ptr unsafe.Pointer, v byte, size uintptr) unsafe.Pointer {
 	logMemWrite(ptr, size)
-	return C.memset(ptr, C.int(v), C.size_t(size))
+	buf := unsafe.Slice((*byte)(ptr), size)
+	if v == 0 {
+		clear(buf)
+	} else {
+		for i := range buf {
+			buf[i] = v
+		}
+	}
+	return ptr
+}
+
+func copyNativeBytes(dst, src unsafe.Pointer, size uintptr) {
+	copy(unsafe.Slice((*byte)(dst), size), unsafe.Slice((*byte)(src), size))
 }
 
 func Memcpy(dst, src unsafe.Pointer, size uintptr) unsafe.Pointer {
 	logMemRead(src, size)
 	logMemWrite(dst, size)
-	return C.memcpy(dst, src, C.size_t(size))
+	copyNativeBytes(dst, src, size)
+	return dst
 }
 
 func Memcmp(ptr1, ptr2 unsafe.Pointer, size uintptr) int {
@@ -259,7 +272,8 @@ func Strcpy(dst, src unsafe.Pointer) unsafe.Pointer {
 	n := uintptr(strlen((*byte)(src)))
 	logMemReadString(src, n+1)
 	logMemWriteString(dst, n+1)
-	return unsafe.Pointer(C.strcpy((*C.char)(dst), (*C.char)(src)))
+	copyNativeBytes(dst, src, n+1)
+	return dst
 }
 
 func Strcat(dst, src unsafe.Pointer) unsafe.Pointer {
@@ -267,7 +281,8 @@ func Strcat(dst, src unsafe.Pointer) unsafe.Pointer {
 	nd := uintptr(strlen((*byte)(dst)))
 	logMemReadString(src, ns+1)
 	logMemWriteString(dst, nd+ns+1)
-	return unsafe.Pointer(C.strcat((*C.char)(dst), (*C.char)(src)))
+	copyNativeBytes(unsafe.Add(dst, nd), src, ns+1)
+	return dst
 }
 
 func Strcmp(str1, str2 unsafe.Pointer) int {

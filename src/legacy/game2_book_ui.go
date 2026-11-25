@@ -97,7 +97,7 @@ func nox_xxx_book_45B210(unused1 *C.nox_window, event C.int) C.int {
 
 //export nox_xxx_bookChildWndProcMB_45B360
 func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
-	player := C.game2_book_player()
+	player := bookSelectedPlayer()
 	changed := false
 	if game2BookInputBlocked() {
 		return 1
@@ -169,7 +169,7 @@ func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
 
 //export nox_xxx_bookListWndProc_45B5F0
 func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int {
-	player := C.game2_book_player()
+	player := bookSelectedPlayer()
 	y := int32(uint32(pos) >> 16)
 	x := int32(uint16(pos))
 	if game2BookInputBlocked() {
@@ -368,7 +368,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 
 //export nox_xxx_bookDrawIconFn_45CB30
 func nox_xxx_bookDrawIconFn_45CB30(window *C.uint32_t) C.int {
-	player := C.game2_book_player()
+	player := bookSelectedPlayer()
 	var image unsafe.Pointer
 	if C.dword_5d4594_1046868 != 0 {
 		if C.dword_5d4594_1046868 != 1 || game2PlayerClass(player) != 2 || (player.spell_lvl[134] == 0 && (!game2BookGameFlag(0x2000) || game2BookGameFlag(4096))) {
@@ -390,7 +390,7 @@ func nox_xxx_bookDrawIconFn_45CB30(window *C.uint32_t) C.int {
 
 //export nox_xxx_bookWndFn_45CC10
 func nox_xxx_bookWndFn_45CC10(window *C.uint32_t, event C.int, pos C.uint) C.int {
-	player := C.game2_book_player()
+	player := bookSelectedPlayer()
 	win := (*C.nox_window)(unsafe.Pointer(window))
 	y := C.int(uint32(pos) >> 16)
 	x := C.int(uint16(pos))

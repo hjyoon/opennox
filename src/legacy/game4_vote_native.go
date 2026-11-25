@@ -40,7 +40,7 @@ func game4VoteFindPlayer(name *C.wchar2_t) *C.nox_playerInfo {
 	if name == nil {
 		return nil
 	}
-	for p := C.game4_players_first_native(); p != nil; p = C.nox_common_playerInfoGetNext_416EE0(p) {
+	for p := nox_common_playerInfoGetFirst_416EA0(); p != nil; p = nox_common_playerInfoGetNext_416EE0(p) {
 		if p.active == 1 && game4VoteNamesEqual(&p.name_final[0], name) {
 			return p
 		}
@@ -425,7 +425,7 @@ func sub_507000(vote *C.nox_vote_5066D0) C.int {
 		return 1
 	}
 	var players uint32
-	for p := C.game4_units_first_native(); p != nil; p = C.nox_xxx_getNextPlayerUnit_4DA7F0(p) {
+	for p := nox_xxx_getFirstPlayerUnit_4DA7C0(); p != nil; p = nox_xxx_getNextPlayerUnit_4DA7F0(p) {
 		if vote.team_mode != 1 || C.nox_xxx_servCompareTeams_419150(vote.team, game4VoteTeam(p)) != 0 {
 			players++
 		}
@@ -437,7 +437,7 @@ func sub_507000(vote *C.nox_vote_5066D0) C.int {
 }
 func game4VoteQuestPlayerCount() uint32 {
 	var count uint32
-	for unit := C.game4_units_first_native(); unit != nil; unit = C.nox_xxx_getNextPlayerUnit_4DA7F0(unit) {
+	for unit := nox_xxx_getFirstPlayerUnit_4DA7C0(); unit != nil; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit) {
 		p := game4VotePlayer(unit)
 		if p == nil {
 			continue
@@ -454,14 +454,14 @@ func sub_507090(vote *C.nox_vote_5066D0) {
 	if vote == nil || uint32(vote.count) < game4VoteQuestPlayerCount() {
 		return
 	}
-	for unit := C.game4_units_first_native(); unit != nil; unit = C.nox_xxx_getNextPlayerUnit_4DA7F0(unit) {
+	for unit := nox_xxx_getFirstPlayerUnit_4DA7C0(); unit != nil; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit) {
 		p := game4VotePlayer(unit)
 		if p != nil && p.field_4792 == 1 {
 			C.nox_xxx_playerRespawn_4F7EF0(p.playerUnit)
 		}
 	}
 	C.nox_game_setQuestStage_4E3CD0(0)
-	C.nox_xxx_mapLoad_4D2450(C.game4_quest_map_native())
+	nox_xxx_mapLoad_4D2450(nox_xxx_getQuestMapFile_4D0F60())
 	sub_5067B0(vote)
 }
 

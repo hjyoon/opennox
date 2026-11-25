@@ -202,7 +202,7 @@ func nox_mapgen_adjust_waypoint_506260(bounds unsafe.Pointer, position *C.float2
 	if bounds == nil || position == nil {
 		return
 	}
-	size := (*[2]C.int32_t)(unsafe.Pointer(C.game4_wall_size_native()))
+	size := (*[2]C.int32_t)(unsafe.Pointer(nox_xxx_mapGetWallSize_426A70()))
 	var origin C.int4
 	C.sub_428170(bounds, &origin)
 	x := float32(position.field_0) - float32(23*int32(size[0]))

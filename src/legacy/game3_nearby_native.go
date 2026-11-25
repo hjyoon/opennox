@@ -9,11 +9,12 @@ import "C"
 
 import (
 	"fmt"
+	"math"
+	"unsafe"
+
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
-	"math"
-	"unsafe"
 )
 
 // Records remain C-owned packed wire payloads; this private registry never
@@ -44,8 +45,8 @@ func sub_4A2560(xy *C.nox_cgo_const_uint32, s *C.nox_const_gui_server_ent) C.int
 //export sub_4A25C0
 func sub_4A25C0(xy *C.uint32_t, head *C.nox_list_item_t) C.int {
 	var count uint32
-	for it := C.nox_common_list_getFirstSafe_425890(head); it != nil; it = C.nox_common_list_getNextSafe_4258A0(it) {
-		if sub_4A2560(xy, C.nox_game3_server_record(it)) != 0 {
+	for it := nox_common_list_getFirstSafe_425890(head); it != nil; it = nox_common_list_getNextSafe_4258A0(it) {
+		if sub_4A2560(xy, wolServerRecord(it).C()) != 0 {
 			count++
 		}
 	}
@@ -55,8 +56,8 @@ func sub_4A25C0(xy *C.uint32_t, head *C.nox_list_item_t) C.int {
 //export sub_4A2610
 func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C.nox_window {
 	C.dword_5d4594_1307720 = 0
-	for it := C.nox_common_list_getFirstSafe_425890(head); it != nil; it = C.nox_common_list_getNextSafe_4258A0(it) {
-		s := C.nox_game3_server_record(it)
+	for it := nox_common_list_getFirstSafe_425890(head); it != nil; it = nox_common_list_getNextSafe_4258A0(it) {
+		s := wolServerRecord(it).C()
 		if sub_4A2560(xy, s) != 0 && int(C.dword_5d4594_1307720) < len(game3NearbyServers) {
 			game3NearbyServers[int(C.dword_5d4594_1307720)] = s
 			C.dword_5d4594_1307720++
@@ -65,7 +66,11 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 	if C.dword_5d4594_1307720 == 0 {
 		return C.dword_5d4594_1307716
 	}
-	popup := C.nox_new_window_from_file(internCStr("proxlist.wnd"), C.nox_game3_owner_callback(owner))
+	var callback unsafe.Pointer
+	if owner != nil {
+		callback = unsafe.Pointer(owner.field_94)
+	}
+	popup := nox_new_window_from_file(internCStr("proxlist.wnd"), callback)
 	C.dword_5d4594_1307716 = popup
 	if popup == nil {
 		return nil
@@ -77,9 +82,9 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 	p := unsafe.Slice(xy, 2)
 	var pos [2]C.uint32_t
 	sub_4A2830(C.int(int32(uint32(p[0])+216)), C.int(int32(uint32(p[1])+27)), &pos[0])
-	C.nox_window_setPos_46A9B0(popup, C.int(pos[0]), C.int(pos[1]))
-	C.nox_xxx_wnd_46B280(popup, owner)
-	child := func(id int) *C.nox_window { return C.nox_xxx_wndGetChildByID_46B0C0(popup, C.int(id)) }
+	nox_window_setPos_46A9B0(popup, int32(pos[0]), int32(pos[1]))
+	nox_xxx_wnd_46B280(popup, owner)
+	child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(popup, id) }
 	slider, up, down, list := child(10064), child(10062), child(10063), child(10061)
 	if slider == nil || up == nil || down == nil || list == nil || list.widget_data == nil || slider.field_100 == nil {
 		sub_4A2890()

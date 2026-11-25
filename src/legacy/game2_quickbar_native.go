@@ -258,7 +258,7 @@ func g2qTooltip(w *C.nox_window, spell uint32) {
 }
 func g2qB(p unsafe.Pointer, o uintptr) *byte   { return (*byte)(unsafe.Add(p, o)) }
 func g2qW(p unsafe.Pointer, o uintptr) *uint32 { return (*uint32)(unsafe.Add(p, o)) }
-func g2qRow(p unsafe.Pointer) unsafe.Pointer   { return unsafe.Pointer(C.nox_quickbar_selected_row(p)) }
+func g2qRow(p unsafe.Pointer) unsafe.Pointer   { return unsafe.Pointer(nox_quickbar_selected_row(p)) }
 func g2qMain() unsafe.Pointer                  { return C.nox_xxx_aClosewoodengat_587000_133480 }
 func g2qTrap() unsafe.Pointer                  { return memmap.PtrOff(0x5D4594, 1047940) }
 func g2qExpanded(i int) unsafe.Pointer         { return memmap.PtrOff(0x5D4594, 1048196+uintptr(256*i)) }
@@ -272,7 +272,7 @@ func g2qMirror(p unsafe.Pointer) {
 }
 func g2qTrapMirror() {
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		*memmap.PtrUint32(0x5D4594, 1048144) = uint32(uintptr(unsafe.Pointer(C.nox_quickbar_trap_selected_row())))
+		*memmap.PtrUint32(0x5D4594, 1048144) = uint32(uintptr(unsafe.Pointer(nox_quickbar_trap_selected_row())))
 	}
 }
 
@@ -858,7 +858,7 @@ func nox_xxx_quickbarTrapButtonProc_45F7A0(win *C.nox_window, event, pos C.uint)
 
 //export sub_45F890
 func sub_45F890() C.int {
-	row := unsafe.Pointer(C.nox_quickbar_trap_selected_row())
+	row := unsafe.Pointer(nox_quickbar_trap_selected_row())
 	if row == nil {
 		return 0
 	}

@@ -10,7 +10,6 @@ extern uint32_t dword_5d4594_1046872;
 extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_1046936;
 extern uint32_t dword_5d4594_1047512;
-extern uintptr_t dword_5d4594_1047516;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern nox_things_imageRef_t* dword_5d4594_1046924;
 extern nox_things_imageRef_t* dword_5d4594_1046928;
@@ -177,7 +176,7 @@ func (page bookPageLayout) drawSpell(player *C.nox_playerInfo, id int32) {
 
 //export nox_xxx_bookDrawList_45BD40
 func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
-	player := *(**C.nox_playerInfo)(unsafe.Pointer(&C.dword_5d4594_1047516))
+	player := bookSelectedPlayer()
 	var x, y C.uint
 	nox_gui_getWindowOffs_46AA20(win, &x, &y)
 	page := bookPageLayout{int32(x), int32(y), nox_xxx_guiFontHeightMB_43F320(nil)}

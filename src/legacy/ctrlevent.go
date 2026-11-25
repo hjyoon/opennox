@@ -92,7 +92,7 @@ func Nox_xxx_quickBarSetSpell(spell, slot int) {
 }
 
 func Nox_xxx_quickBarSpell(slot int) int {
-	ptr := C.nox_quickbar_selected_slot(C.nox_xxx_aClosewoodengat_587000_133480, C.int(slot))
+	ptr := nox_quickbar_selected_slot(C.nox_xxx_aClosewoodengat_587000_133480, C.int(slot))
 	if ptr == nil {
 		return 0
 	}

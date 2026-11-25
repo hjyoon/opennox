@@ -38,7 +38,7 @@ func game2BookNotify(id C.int, page int) {
 
 //export nox_xxx_netSpellRewardCli_45CFE0
 func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
-	player := C.game2_book_current_player()
+	player := g2qPlayer()
 	if player == nil {
 		return
 	}
@@ -112,7 +112,7 @@ func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
 
 //export sub_45D320
 func sub_45D320(id C.int) C.int {
-	player := C.game2_book_current_player()
+	player := g2qPlayer()
 	result := nox_xxx_bookHideMB_45ACA0(1)
 	if player != nil {
 		player.spell_lvl[int(id)] = 0
@@ -132,7 +132,7 @@ func sub_45D320(id C.int) C.int {
 
 //export sub_45D400
 func sub_45D400(id C.int) C.int {
-	player := C.game2_book_current_player()
+	player := g2qPlayer()
 	result := nox_xxx_bookHideMB_45ACA0(1)
 	if player != nil {
 		player.beast_scroll_lvl[int(id)] = 0
@@ -159,7 +159,7 @@ func sub_45D400(id C.int) C.int {
 func game2_book_disable_ability_word(id C.int) C.uintptr_t {
 	nox_xxx_bookHideMB_45ACA0(1)
 	C.nox_xxx_netAbilityRewardCli_4611E0(id, 0, nil)
-	if player := C.game2_book_player(); player != nil {
+	if player := bookSelectedPlayer(); player != nil {
 		player.spell_lvl[int(id)] = 0
 	}
 	C.sub_461360(id)

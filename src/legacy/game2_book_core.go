@@ -30,9 +30,13 @@ func game2PlayerClass(p *C.nox_playerInfo) C.uchar {
 	return C.uchar(asPlayerS(p).PlayerClass())
 }
 
+func bookSelectedPlayer() *nox_playerInfo {
+	return *(**nox_playerInfo)(unsafe.Pointer(&C.dword_5d4594_1047516))
+}
+
 func game2BookU(off uintptr) *uint32  { return memmap.PtrUint32(0x5D4594, off) }
 func game2BookID(index uint32) uint32 { return *game2BookU(1046960 + 4*uintptr(index)) }
-func game2BookClass() C.int           { return C.int(game2PlayerClass(C.game2_book_player())) }
+func game2BookClass() C.int           { return C.int(game2PlayerClass(bookSelectedPlayer())) }
 func game2BookGameFlag(flag C.int) bool {
 	return bool(C.nox_common_gameFlags_check_40A5C0(C.uint(flag)))
 }
@@ -88,7 +92,7 @@ func nox_xxx_guiSpellSortFn_45ABC0(a, b *C.nox_cgo_const_void) C.int {
 		s2 = nox_xxx_guiCreatureGetName_427240(id2)
 	} else {
 		id1 := C.int(*(*uint32)(unsafe.Pointer(a)))
-		if game2PlayerClass(C.game2_book_player()) != 0 {
+		if game2PlayerClass(bookSelectedPlayer()) != 0 {
 			s1 = C.nox_xxx_spellTitle_424930(id1)
 			s2 = C.nox_xxx_spellTitle_424930(id2)
 		} else {
@@ -148,7 +152,7 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 
 //export nox_xxx_guiSpellSortList_45ADF0
 func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
-	player := C.game2_book_player()
+	player := bookSelectedPlayer()
 	found := C.int(0)
 	C.dword_5d4594_1046656 = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
 	*game2BookU(1047508) = 0
@@ -265,7 +269,7 @@ func nox_xxx_guiSpell_45DA10(id C.int) C.int {
 
 //export nox_client_invokeSpellSlot_45DA50
 func nox_client_invokeSpellSlot_45DA50(index C.int) {
-	player := C.game2_book_current_player()
+	player := g2qPlayer()
 	if player == nil || C.nox_xxx_playerAnimCheck_4372B0() != 0 {
 		return
 	}

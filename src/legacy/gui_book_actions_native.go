@@ -2,16 +2,10 @@ package legacy
 
 /*
 #include "client__gui__guibook.h"
-
-extern uintptr_t dword_5d4594_1047516;
 */
 import "C"
 
-import (
-	"unsafe"
-
-	noxflags "github.com/opennox/opennox/v1/common/flags"
-)
+import noxflags "github.com/opennox/opennox/v1/common/flags"
 
 const bookStringsFile = "C:\\NoxPost\\src\\Client\\Gui\\guibook.c"
 
@@ -40,7 +34,7 @@ func nox_xxx_bookShowMB_45AD70(force C.int) {
 func nox_xxx_book_45CF00(data *C.uint32_t) C.int {
 	switch *data {
 	case 1310:
-		player := *(**C.nox_playerInfo)(unsafe.Pointer(&C.dword_5d4594_1047516))
+		player := bookSelectedPlayer()
 		key, line := "ToolTipSpellTab", int32(1644)
 		if game2PlayerClass(player) == 0 {
 			key, line = "ToolTipAbilityTab", 1640

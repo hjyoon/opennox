@@ -29,10 +29,4 @@ extern void* nox_alloc_vote_1599652;
 extern uint32_t dword_5d4594_1599656;
 void sub_579E90(nox_waypoint_t* waypoint);
 
-// Only typed external-service forwards. Keep the old K&R names out of new
-// cgo call identities; all new private entry prototypes have explicit (void).
-static inline char* game4_wall_size_native(void) { return nox_xxx_mapGetWallSize_426A70(); }
-static inline nox_playerInfo* game4_players_first_native(void) { return nox_common_playerInfoGetFirst_416EA0(); }
-static inline nox_object_t* game4_units_first_native(void) { return nox_xxx_getFirstPlayerUnit_4DA7C0(); }
-static inline char* game4_quest_map_native(void) { return nox_xxx_getQuestMapFile_4D0F60(); }
 #endif

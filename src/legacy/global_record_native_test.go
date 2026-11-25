@@ -12,6 +12,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 //go:embed testdata/global_record_original_v1.json.gz
@@ -46,10 +47,10 @@ func globalRecordNativeCases(t *testing.T) []globalRecordNativeCase {
 func TestGlobalRecordNativeLayout(t *testing.T) {
 	word := unsafe.Sizeof(uintptr(0))
 	want := [13]uintptr{word, 4, 4, 1, 4, word, word, word, word, word, unsafe.Alignof(uintptr(0)), 24, 10}
-	if got := globalRecordNativeLayoutC(); got != want {
+	if got := cfixture.GlobalRecordNativeLayoutC(); got != want {
 		t.Fatal("global record scalar/pointer/function ABI", got, want)
 	}
-	pointers := globalRecordNativeOwnerPointersC()
+	pointers := cfixture.GlobalRecordNativeOwnerPointersC()
 	wantOwners := [4]uintptr{
 		uintptr(memmap.PtrOff(0x5D4594, 0x650000-0x5D4594)),
 		uintptr(memmap.PtrOff(0x5D4594, 531660)),
@@ -82,11 +83,11 @@ func globalRecordNativeRun(t *testing.T, routes []int, subtests bool, extra stri
 	stateOwner := memmap.Slice(0x587000, 60032)[:64]
 	savedGlobal := append([]byte(nil), global...)
 	savedStateOwner := append([]byte(nil), stateOwner...)
-	savedIndex := globalRecordNativeSelectedC(false, 0)
+	savedIndex := cfixture.GlobalRecordNativeSelectedC(false, 0)
 	t.Cleanup(func() {
 		copy(global, savedGlobal)
 		copy(stateOwner, savedStateOwner)
-		globalRecordNativeSelectedC(true, savedIndex)
+		cfixture.GlobalRecordNativeSelectedC(true, savedIndex)
 	})
 	word := int(unsafe.Sizeof(uintptr(0)))
 	for _, route := range routes {
@@ -131,8 +132,8 @@ func globalRecordNativeRun(t *testing.T, routes []int, subtests bool, extra stri
 							slots[i] = unsafe.Pointer(&raw[0x2000+placement+offset])
 						}
 					}
-					globalRecordNativeSelectedC(true, c.Input.Index)
-					globalRecordNativeStateC(true, c.Input.StateWord)
+					cfixture.GlobalRecordNativeSelectedC(true, c.Input.Index)
+					cfixture.GlobalRecordNativeStateC(true, c.Input.StateWord)
 					wantGlobal := append([]byte(nil), global...)
 					wantRaw := append([]byte(nil), raw...)
 					wantState := append([]byte(nil), stateOwner...)
@@ -143,7 +144,7 @@ func globalRecordNativeRun(t *testing.T, routes []int, subtests bool, extra stri
 						return uintptr(unsafe.Pointer(&global[pointer-0x650000]))
 					}
 					verify := func() {
-						if !bytes.Equal(raw, wantRaw) || !bytes.Equal(global, wantGlobal) || !bytes.Equal(stateOwner, wantState) || globalRecordNativeSelectedC(false, 0) != c.Input.Index || globalRecordNativeStateC(false, 0) != c.Input.StateWord {
+						if !bytes.Equal(raw, wantRaw) || !bytes.Equal(global, wantGlobal) || !bytes.Equal(stateOwner, wantState) || cfixture.GlobalRecordNativeSelectedC(false, 0) != c.Input.Index || cfixture.GlobalRecordNativeStateC(false, 0) != c.Input.StateWord {
 							t.Fatal("whole64KiB global/foreign owner, scalar guards or selected-index shadow changed", c.Input.Name)
 						}
 					}
@@ -187,7 +188,7 @@ func globalRecordNativeRun(t *testing.T, routes []int, subtests bool, extra stri
 					if extra == "parent" {
 						at := 0x4000 + placement
 						clear(wantRaw[at : at+108])
-						got := globalRecordNativeParentC(unsafe.Pointer(&raw[at]))
+						got := cfixture.GlobalRecordNativeParentC(unsafe.Pointer(&raw[at]))
 						want := [4]uintptr{uintptr(*c.Returns[2]), 0, 0, 0}
 						if want[0] != 0 {
 							if len(c.OutputStores) != 2 {
@@ -221,4 +222,25 @@ func TestGlobalRecordNativeWrapper(t *testing.T) {
 
 func TestGlobalRecordNativeBoundedCParent(t *testing.T) {
 	globalRecordNativeRun(t, []int{2}, false, "parent")
+}
+
+func globalRecordNativeCall(route, entry int, source, first, second unsafe.Pointer) uintptr {
+	if route != 2 {
+		return cfixture.GlobalRecordNativeCall(route, entry, source, first, second)
+	}
+	switch entry {
+	case 0:
+		return uintptr(unsafe.Pointer(sub_41FA40()))
+	case 1:
+		globalRecordStore(source)
+		return 0
+	case 2:
+		return uintptr(uint32(globalRecordOutput(first, second)))
+	case 3:
+		return uintptr(uint32(sub_4200E0()))
+	case 4:
+		return uintptr(uint32(sub_420100()))
+	default:
+		panic("invalid global record native entry")
+	}
 }

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1_1.h"
@@ -82,17 +82,17 @@ import "C"
 
 import "unsafe"
 
-func globalRecordNativeLayoutC() (out [13]uintptr) {
+func GlobalRecordNativeLayoutC() (out [13]uintptr) {
 	C.global_record_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func globalRecordNativeOwnerPointersC() (out [5]uintptr) {
+func GlobalRecordNativeOwnerPointersC() (out [5]uintptr) {
 	C.global_record_owner_pointers_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func globalRecordNativeSelectedC(set bool, value uint32) uint32 {
+func GlobalRecordNativeSelectedC(set bool, value uint32) uint32 {
 	var mode C.int
 	if set {
 		mode = 1
@@ -100,7 +100,7 @@ func globalRecordNativeSelectedC(set bool, value uint32) uint32 {
 	return uint32(C.global_record_selected_C(mode, C.uint32_t(value)))
 }
 
-func globalRecordNativeStateC(set bool, value uint32) uint32 {
+func GlobalRecordNativeStateC(set bool, value uint32) uint32 {
 	var mode C.int
 	if set {
 		mode = 1
@@ -108,28 +108,12 @@ func globalRecordNativeStateC(set bool, value uint32) uint32 {
 	return uint32(C.global_record_state_C(mode, C.uint32_t(value)))
 }
 
-func globalRecordNativeCall(route, entry int, source, first, second unsafe.Pointer) uintptr {
-	if route != 2 {
-		return uintptr(C.global_record_call_C(C.uint(route), C.uint(entry), (*C.char)(source), (**C.global_record_const_char_t)(first), (**C.global_record_const_char_t)(second)))
-	}
-	switch entry {
-	case 0:
-		return uintptr(unsafe.Pointer(sub_41FA40()))
-	case 1:
-		sub_41FA50((*C.global_record_const_char_t)(source))
-		return 0
-	case 2:
-		return uintptr(uint32(sub_41FBE0((**C.global_record_const_char_t)(first), (**C.global_record_const_char_t)(second))))
-	case 3:
-		return uintptr(uint32(sub_4200E0()))
-	case 4:
-		return uintptr(uint32(sub_420100()))
-	default:
-		panic("invalid global record native entry")
-	}
+func GlobalRecordNativeCall(route, entry int, source, first, second unsafe.Pointer) uintptr {
+	return uintptr(C.global_record_call_C(C.uint(route), C.uint(entry), (*C.char)(source),
+		(**C.global_record_const_char_t)(first), (**C.global_record_const_char_t)(second)))
 }
 
-func globalRecordNativeParentC(scratch unsafe.Pointer) (out [4]uintptr) {
+func GlobalRecordNativeParentC(scratch unsafe.Pointer) (out [4]uintptr) {
 	C.global_record_parent_call_C(scratch, (*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }

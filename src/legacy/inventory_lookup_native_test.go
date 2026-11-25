@@ -13,6 +13,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 //go:embed testdata/inventory_lookup_original_v1.json.gz
@@ -58,10 +59,10 @@ func inventoryLookupNativeCases(t *testing.T) []inventoryLookupNativeCase {
 func TestInventoryLookupNativeLayout(t *testing.T) {
 	w := unsafe.Sizeof(uintptr(0))
 	want := [17]uintptr{w, 4, 4, 1, w + 144, w, w + 136, w + 140, 1, 21, 4, 84, (w + 144) * 84, w, w, 4, 144}
-	if got := inventoryLookupNativeLayoutC(); got != want {
+	if got := cfixture.InventoryLookupNativeLayoutC(); got != want {
 		t.Fatal("inventory scalar/pointer/callback ABI", got, want)
 	}
-	o := inventoryLookupNativeOwnersC()
+	o := cfixture.InventoryLookupNativeOwnersC()
 	if o[0] == o[1]+0x4b38 || o[1] != uintptr(memmap.PtrOff(0x5D4594, 0x6d0000-0x5D4594)) || o[2] != o[1]+0x4a50 || o[3] != o[2]+4 {
 		t.Fatal("extracted grid and packed result owner identities", o)
 	}
@@ -81,7 +82,7 @@ type inventoryLookupNativeState struct {
 
 func newInventoryLookupNativeState(t *testing.T) *inventoryLookupNativeState {
 	t.Helper()
-	s := &inventoryLookupNativeState{grid: inventoryLookupNativeGridC(), global: unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 0x6d0000-0x5D4594)), 65536), slot: memmap.PtrPtr(0x5D4594, 1049788), word: int(unsafe.Sizeof(uintptr(0)))}
+	s := &inventoryLookupNativeState{grid: cfixture.InventoryLookupNativeGridC(), global: unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 0x6d0000-0x5D4594)), 65536), slot: memmap.PtrPtr(0x5D4594, 1049788), word: int(unsafe.Sizeof(uintptr(0)))}
 	s.cell = s.word + 144
 	grid, global := append([]byte(nil), s.grid...), append([]byte(nil), s.global...)
 	var pointer unsafe.Pointer
@@ -197,7 +198,7 @@ func (s *inventoryLookupNativeState) initialize(t *testing.T, c inventoryLookupN
 	}
 	copy(raw[placement:], f)
 	copy(s.global, g)
-	inventoryLookupNativeSeedC(unsafe.Pointer(&s.global[0x4b38]), unsafe.Pointer(&raw[placement]))
+	cfixture.InventoryLookupNativeSeedC(unsafe.Pointer(&s.global[0x4b38]), unsafe.Pointer(&raw[placement]))
 	wantGrid := make([]byte, len(s.grid))
 	for cell := 0; cell < 84; cell++ {
 		at := 0x4b38 + 148*cell
@@ -241,7 +242,7 @@ func (s *inventoryLookupNativeState) verify(t *testing.T, c inventoryLookupNativ
 	if !bytes.Equal(raw, wantRaw) || !bytes.Equal(s.grid, wantGrid) || !bytes.Equal(s.global, wantGlobal) {
 		t.Fatal("whole native grid/global/foreign owners or guards differ", c.Input.Name)
 	}
-	if got, gotIndex := inventoryLookupNativeResultC(); got != pointer || gotIndex != index {
+	if got, gotIndex := cfixture.InventoryLookupNativeResultC(); got != pointer || gotIndex != index {
 		t.Fatalf("canonical C result reader: got%p/%#x want%p/%#x (%s)", got, gotIndex, pointer, index, c.Input.Name)
 	}
 	if *s.slot != pointer || memmap.PtrPtr(0x5D4594, 1049788) != s.slot {
@@ -304,7 +305,7 @@ func TestInventoryLookupNativeBoundedCParent(t *testing.T) {
 				input, _ := inventoryLookupNativeInput(c)
 				want = [2]uint32{uint32(input[0x4b38+148*c.Found.Cell+140]), 0}
 			}
-			if got := inventoryLookupNativeParentC(c.Input.Query); got != want {
+			if got := cfixture.InventoryLookupNativeParentC(c.Input.Query); got != want {
 				t.Fatal("unchanged bounded C parent count/NULL-drag service", c.Input.Name, got, want)
 			}
 			s.verify(t, c, prior, c.Input.InitialIndex, raw, wantRaw, wantGrid, wantGlobal)
@@ -329,7 +330,7 @@ func TestInventoryLookupNativeSequence(t *testing.T) {
 	if inventoryLookupNativeCall(1, 0, c.Input.Query, nil) != unsafe.Pointer(&s.global[0x4a50]) {
 		t.Fatal("late row hit")
 	}
-	ptr, idx := inventoryLookupNativeResultC()
+	ptr, idx := cfixture.InventoryLookupNativeResultC()
 	if ptr != unsafe.Pointer(&s.grid[83*s.cell]) || idx != 31 {
 		t.Fatal("late-cell publication")
 	}
@@ -344,4 +345,14 @@ func TestInventoryLookupNativeSequence(t *testing.T) {
 		}
 		s.verify(t, c, ptr, idx, raw, wantRaw, wantGrid, wantGlobal)
 	}
+}
+
+func inventoryLookupNativeCall(route, entry int, code uint32, output unsafe.Pointer) unsafe.Pointer {
+	if route != 2 {
+		return cfixture.InventoryLookupNativeCall(route, entry, code, output)
+	}
+	if entry == 0 {
+		return inventoryLookupLegacyResult(code)
+	}
+	return unsafe.Pointer(inventoryLookupFindCell(code, (*uint32)(output)))
 }

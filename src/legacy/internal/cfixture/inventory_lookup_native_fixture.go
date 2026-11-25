@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME2_1.h"
@@ -52,39 +52,33 @@ import "C"
 
 import "unsafe"
 
-func inventoryLookupNativeLayoutC() (out [17]uintptr) {
+func InventoryLookupNativeLayoutC() (out [17]uintptr) {
 	C.inventory_lookup_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func inventoryLookupNativeOwnersC() (out [4]uintptr) {
+func InventoryLookupNativeOwnersC() (out [4]uintptr) {
 	C.inventory_lookup_owners_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func inventoryLookupNativeGridC() []byte {
+func InventoryLookupNativeGridC() []byte {
 	return unsafe.Slice((*byte)(unsafe.Pointer(&C.nox_client_inventory_grid_1050020[0])), int(C.sizeof_nox_inventory_cell_t)*int(C.NOX_INVENTORY_CELLS_MAX))
 }
 
-func inventoryLookupNativeSeedC(packed, foreign unsafe.Pointer) {
+func InventoryLookupNativeSeedC(packed, foreign unsafe.Pointer) {
 	C.inventory_lookup_seed_C((*C.uchar)(packed), (*C.uchar)(foreign))
 }
 
-func inventoryLookupNativeCall(route, entry int, query uint32, output unsafe.Pointer) unsafe.Pointer {
-	if route == 2 {
-		if entry == 0 {
-			return unsafe.Pointer(sub_461EF0(C.int(query)))
-		}
-		return unsafe.Pointer(nox_inventory_find_cell_native_461EF0(C.int(query), (*C.uint32_t)(output)))
-	}
+func InventoryLookupNativeCall(route, entry int, query uint32, output unsafe.Pointer) unsafe.Pointer {
 	return C.inventory_lookup_call_C(C.uint(route), C.uint(entry), C.int(query), (*C.uint32_t)(output))
 }
 
-func inventoryLookupNativeResultC() (unsafe.Pointer, uint32) {
+func InventoryLookupNativeResultC() (unsafe.Pointer, uint32) {
 	return C.inventory_lookup_result_pointer_C(), uint32(C.inventory_lookup_result_index_C())
 }
 
-func inventoryLookupNativeParentC(query uint32) (out [2]uint32) {
+func InventoryLookupNativeParentC(query uint32) (out [2]uint32) {
 	C.inventory_lookup_parent_C(C.int(query), (*C.uint32_t)(unsafe.Pointer(&out[0])))
 	return
 }

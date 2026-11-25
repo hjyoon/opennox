@@ -8,6 +8,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestWOLMessageQueueKeepsNativePointerAndWordBounds(t *testing.T) {
@@ -51,7 +52,7 @@ func TestWOLMessageQueueKeepsNativePointerAndWordBounds(t *testing.T) {
 }
 
 func TestWOLOfficialServerRecordNative(t *testing.T) {
-	selected := globalRecordNativeSelectedC(false, 0)
+	selected := cfixture.GlobalRecordNativeSelectedC(false, 0)
 	owner := memmap.PtrPtr(0x5D4594, 534812)
 	oldRecord := *owner
 	official := noxflags.HasGame(noxflags.GameFlag25)
@@ -62,7 +63,7 @@ func TestWOLOfficialServerRecordNative(t *testing.T) {
 	oldSource := bytes.Clone(source)
 	oldLogin := bytes.Clone(login)
 	t.Cleanup(func() {
-		globalRecordNativeSelectedC(true, selected)
+		cfixture.GlobalRecordNativeSelectedC(true, selected)
 		*owner = oldRecord
 		copy(scratch, oldScratch)
 		copy(source, oldSource)
@@ -76,12 +77,12 @@ func TestWOLOfficialServerRecordNative(t *testing.T) {
 	for i := range scratch {
 		scratch[i] = 0xab
 	}
-	globalRecordNativeSelectedC(true, ^uint32(0))
+	cfixture.GlobalRecordNativeSelectedC(true, ^uint32(0))
 	*owner = nil
 	if result := nox_xxx_officialStringCmp_41FDE0(); result != 0 || scratch[0] != 0xab || scratch[0x6d] != 0xab || !bytes.Equal(scratch[1:0x6d], make([]byte, 0x6c)) {
 		t.Fatalf("missing selection = %d, scratch %x", result, scratch)
 	}
-	globalRecordNativeSelectedC(true, 0)
+	cfixture.GlobalRecordNativeSelectedC(true, 0)
 	if result := nox_xxx_officialStringCmp_41FDE0(); result != 1 {
 		t.Fatalf("selection without record = %d", result)
 	}

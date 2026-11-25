@@ -4,7 +4,7 @@ package legacy
 #include "map_push_units_52e040.h"
 
 static inline void nox_map_push_before_52E0E0(uintptr_t callback, nox_object_t* candidate, uint32_t distance, uintptr_t arg) {
-	if (callback) ((void (*)(nox_object_t*, uint32_t, uintptr_t))callback)(candidate, distance, arg);
+	((void (*)(nox_object_t*, uint32_t, uintptr_t))callback)(candidate, distance, arg);
 }
 */
 import "C"
@@ -60,7 +60,9 @@ func nox_xxx_unitPushAroundFn_52E0E0(candidate *nox_object_t, args *C.nox_map_pu
 		Radius: func() float32 { return float32(args.radius) }, Inner: func() float32 { return float32(args.inner) }, ScaledForce: func() float32 { return float32(args.scaled_force) },
 	}, server.MapPushUnitsAroundRuntime52E040{
 		BeforeForce: func(p *server.Object, distance float32) {
-			C.nox_map_push_before_52E0E0(args.callback, asObjectC(p), C.uint32_t(math.Float32bits(distance)), args.callback_arg)
+			if callback := args.callback; callback != 0 {
+				C.nox_map_push_before_52E0E0(callback, asObjectC(p), C.uint32_t(math.Float32bits(distance)), args.callback_arg)
+			}
 		},
 		Wake: Nox_xxx_unitHasCollideOrUpdateFn_537610,
 	})

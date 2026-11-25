@@ -10,11 +10,6 @@ static int nox_window_call_draw_func_go(int (*fnc)(nox_window*, nox_window_data*
 static uintptr_t nox_window_call_func_go(uintptr_t (*fnc)(nox_window*, int, uintptr_t, uintptr_t), nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 	return fnc(win, a2, a3, a4);
 }
-static void nox_window_call_tooltip_func(nox_window* win, nox_window_data* data, int a3) {
-	if (!win || !win->tooltip_func)
-		return;
-	win->tooltip_func(win, data, a3);
-}
 */
 import "C"
 import (

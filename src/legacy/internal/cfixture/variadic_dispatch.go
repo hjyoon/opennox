@@ -6,6 +6,7 @@ package cfixture
 #include "common__log.h"
 #include "common/fs/nox_fs.h"
 #include "noxstring.h"
+#include "noxstring_format_abi.h"
 #include <fenv.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,6 +38,13 @@ static void wide_fixed_printf_reference(char* output, int digits, ...) {
 	va_end(args);
 }
 
+static void wide_fixed_printf_host(char* output, int digits, ...) {
+	nox_format_args args;
+	va_start(args.list, digits);
+	nox_format_arg_fixed(&args, output, 32, digits);
+	va_end(args.list);
+}
+
 static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 	const int modes[] = {FE_TONEAREST, FE_TOWARDZERO, FE_DOWNWARD, FE_UPWARD};
 	fenv_t saved;
@@ -56,22 +64,31 @@ static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 	}
 	double value;
 	memcpy(&value, &bits, sizeof(value));
-	char expected[32] = {0};
+	char expected[32] = {0}, host[32] = {0};
+	int precision = digits > 0 ? digits : 5;
 
 	feclearexcept(FE_ALL_EXCEPT);
-	wide_fixed_printf_reference(expected, digits > 0 ? digits : 5, value);
+	wide_fixed_printf_reference(expected, precision, value);
 	int flags = fetestexcept(FE_ALL_EXCEPT);
 	size_t length = strlen(expected);
+
+	// Compare CRT exception flags within C. The Go callback may run runtime
+	// bookkeeping on this thread before the formatting call.
+	feclearexcept(FE_ALL_EXCEPT);
+	wide_fixed_printf_host(host, precision, value);
+	int status = (flags != fetestexcept(FE_ALL_EXCEPT) || memcmp(host, expected, sizeof(host))) ? 4 : 0;
 
 	feclearexcept(FE_ALL_EXCEPT);
 	actual[length + 1] = 0x4242;
 	int used = nox_swprintf(actual, format, value);
-	int matches = used == (int)length && flags == fetestexcept(FE_ALL_EXCEPT) && actual[length + 1] == 0x4242;
+	if (used != (int)length) status |= 2;
+	if (actual[length + 1] != 0x4242) status |= 8;
+	if (fegetround() != modes[rounding]) status |= 16;
 	for (size_t i = 0; i <= length; ++i) {
-		matches &= actual[i] == (unsigned char)expected[i];
+		if (actual[i] != (unsigned char)expected[i]) status |= 32;
 	}
 	fesetenv(&saved);
-	return matches;
+	return status ? status : 1;
 }
 */
 import "C"

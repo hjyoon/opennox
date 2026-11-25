@@ -7,6 +7,7 @@ package legacy
 #include "client__gui__guisumn.h"
 #include "server__script__internal.h"
 #include "client_ui_words.h"
+#include "vardefs.h"
 extern nox_window* dword_5d4594_1046492;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern nox_window* nox_wol_wnd_world_814980;
@@ -203,7 +204,6 @@ extern uint32_t dword_5d4594_2487560;
 extern uint32_t dword_5d4594_1062516;
 extern uint32_t dword_5d4594_1316492;
 extern uint32_t dword_5d4594_2491616;
-extern uint32_t dword_5d4594_251744;
 extern uint32_t dword_5d4594_2487248;
 extern nox_window* dword_5d4594_1046516;
 
@@ -272,7 +272,6 @@ extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_1203840;
 extern nox_window* dword_5d4594_826032;
 extern uint32_t dword_5d4594_2487708;
-extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
 extern uint32_t dword_5d4594_741332;
 extern uint32_t dword_5d4594_1565616;
 extern uint32_t dword_5d4594_816356;
@@ -631,7 +630,6 @@ extern void* nox_alloc_chat_1197364;
 extern uint32_t dword_5d4594_1090120;
 extern nox_window* dword_5d4594_1090048;
 extern nox_window* dword_5d4594_1090100;
-extern unsigned int dword_5d4594_251744;
 extern unsigned int dword_5d4594_1193156;
 extern unsigned int dword_5d4594_1193188;
 extern unsigned int dword_5d4594_2650676;
@@ -640,7 +638,6 @@ extern uint32_t dword_5d4594_3798820;
 extern uint32_t dword_5d4594_3798824;
 extern uint32_t dword_5d4594_3798836;
 extern uint32_t dword_5d4594_3798840;
-extern unsigned int nox_xxx_waypointCounterMB_587000_154948;
 extern unsigned int nox_client_fadeObjects_80836;
 extern unsigned int dword_5d4594_811904;
 extern unsigned int nox_client_gui_flag_1556112;
@@ -661,7 +658,6 @@ extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int dword_5d4594_1548524;
 extern uint32_t dword_5d4594_2650652;
 extern void* dword_5d4594_1548532;
-extern unsigned int dword_5d4594_251744;
 extern nox_window* dword_5d4594_1049508;
 extern unsigned int nox_client_translucentFrontWalls_805844;
 
@@ -672,7 +668,6 @@ extern uint32_t dword_5d4594_831220;
 extern uint32_t dword_5d4594_831260;
 extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_831224;
-extern unsigned int dword_5d4594_251744;
 extern unsigned int nox_game_createOrJoin_815048;
 extern nox_screenParticle* dword_5d4594_806052;
 extern nox_screenParticle* nox_screenParticles_head;
@@ -1302,7 +1297,7 @@ func Set_dword_5d4594_1090120(v int) {
 	C.dword_5d4594_1090120 = C.uint(v)
 }
 func Set_dword_5d4594_251744(v int) {
-	C.dword_5d4594_251744 = C.uint(v)
+	C.dword_5d4594_251744 = C.uint32_t(v)
 }
 func Set_dword_5d4594_816340(v int) {
 	C.dword_5d4594_816340 = C.uint(v)

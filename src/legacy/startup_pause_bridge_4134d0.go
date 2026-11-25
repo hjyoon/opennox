@@ -5,18 +5,9 @@ package legacy
 #include "GAME1_3.h"
 #include "GAME2.h"
 #include "client__io__win95__focus.h"
+#include "vardefs.h"
 extern uint32_t dword_5d4594_251708, dword_5d4594_251712;
-extern uint32_t dword_5d4594_251716, dword_5d4594_251720, dword_5d4594_251744;
-static uint32_t* startup_pause_cell_4134d0(int field) {
-    switch(field) {
-    case 0:return &dword_5d4594_251708;
-    case 1:return &dword_5d4594_251712;
-    case 2:return &dword_5d4594_251716;
-    case 3:return &dword_5d4594_251720;
-    case 5:return &dword_5d4594_251744;
-    default:return 0;
-    }
-}
+extern uint32_t dword_5d4594_251716, dword_5d4594_251720;
 static void* startup_pause_callback_4134d0(uint32_t kind) {
     return kind==1 ? (void*)sub_413900 : (void*)sub_4138E0;
 }
@@ -31,16 +22,31 @@ static void startup_pause_register_4134d0(uint32_t kind) {
 }
 */
 import "C"
+
 import (
-	"github.com/opennox/opennox/v1/common/memmap"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
 )
 
 func startupPauseDefaultCell4134D0(field int) unsafe.Pointer {
 	if field == 4 {
 		return memmap.PtrOff(0x5D4594, 251740)
 	}
-	return unsafe.Pointer(C.startup_pause_cell_4134d0(C.int(field)))
+	switch int32(field) {
+	case 0:
+		return unsafe.Pointer(&C.dword_5d4594_251708)
+	case 1:
+		return unsafe.Pointer(&C.dword_5d4594_251712)
+	case 2:
+		return unsafe.Pointer(&C.dword_5d4594_251716)
+	case 3:
+		return unsafe.Pointer(&C.dword_5d4594_251720)
+	case 5:
+		return unsafe.Pointer(&C.dword_5d4594_251744)
+	default:
+		return nil
+	}
 }
 func startupPauseDefaultBuffer4134D0() unsafe.Pointer { return memmap.PtrOff(0x5D4594, 251636) }
 func startupPauseCallback4134D0(kind uint32) unsafe.Pointer {

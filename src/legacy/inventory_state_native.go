@@ -5,15 +5,6 @@ package legacy
 extern uintptr_t array_5D4594_1049872[9];
 extern uint32_t dword_5d4594_1049864;
 extern nox_window* dword_5d4594_1062452;
-// Address bridges only; the existing owners remain shared with C callers.
-static void* inventory_state_slot_C(unsigned index) {
- switch(index) {
- case 0:return &array_5D4594_1049872[0];
- case 1:return &dword_5d4594_1049864;
- case 2:return &dword_5d4594_1062452;
- default:return NULL;
- }
-}
 */
 import "C"
 
@@ -28,7 +19,16 @@ import (
 )
 
 func inventoryStateNativeSlot(index int) unsafe.Pointer {
-	return C.inventory_state_slot_C(C.uint(index))
+	switch uint32(index) {
+	case 0:
+		return unsafe.Pointer(&C.array_5D4594_1049872[0])
+	case 1:
+		return unsafe.Pointer(&C.dword_5d4594_1049864)
+	case 2:
+		return unsafe.Pointer(&C.dword_5d4594_1062452)
+	default:
+		return nil
+	}
 }
 
 func inventoryStateNativeHeads() *[9]*client.Drawable {

@@ -2,19 +2,8 @@ package legacy
 
 /*
 #include "GAME2.h"
-#include "memmap.h"
 extern uint32_t dword_5d4594_1049484;
 extern nox_window* dword_5d4594_1049500;
-
-static nox_window* native_e2e_trap_control(int control) {
-	if (control == 0) return dword_5d4594_1049500;
-	nox_window* root = nox_quickbar_root(getMemAt(0x5D4594, 1047940));
-	if (!root || (control != 3 && control != 4)) return NULL;
-	for (nox_window* win = root->field_100; win; win = win->prev) {
-		if (win->field_92 == (uint32_t)control) return win;
-	}
-	return NULL;
-}
 */
 import "C"
 
@@ -23,13 +12,12 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client/gui"
-	"github.com/opennox/opennox/v1/common/memmap"
 )
 
 // ClientTrapQuickbarSnapshot only reads the packed numeric entries, including
 // reserved slots/flag bytes. Native window pointers stay in the sidecar.
 func ClientTrapQuickbarSnapshot() (entries [25][2]uint32, row int, open bool) {
-	data := unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 1047940)), 201)
+	data := unsafe.Slice((*byte)(g2qTrap()), 201)
 	for i := range entries {
 		entries[i][0] = binary.LittleEndian.Uint32(data[8*i:])
 		entries[i][1] = binary.LittleEndian.Uint32(data[8*i+4:])
@@ -38,17 +26,30 @@ func ClientTrapQuickbarSnapshot() (entries [25][2]uint32, row int, open bool) {
 }
 
 func ClientTrapQuickbarRoot() *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.nox_quickbar_root(memmap.PtrOff(0x5D4594, 1047940))))
+	return asWindow(nox_quickbar_root(g2qTrap()))
 }
 
 func ClientTrapQuickbarButton(slot int) *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.nox_quickbar_button(memmap.PtrOff(0x5D4594, 1047940), C.int(slot))))
+	return asWindow(nox_quickbar_button(g2qTrap(), C.int(slot)))
 }
 
 func ClientTrapQuickbarControl(control int) *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.native_e2e_trap_control(C.int(control))))
+	control = int(int32(control))
+	if control == 0 {
+		return asWindow(C.dword_5d4594_1049500)
+	}
+	root := nox_quickbar_root(g2qTrap())
+	if root == nil || (control != 3 && control != 4) {
+		return nil
+	}
+	for win := root.field_100; win != nil; win = win.prev {
+		if win.field_92 == C.uint32_t(control) {
+			return asWindow(win)
+		}
+	}
+	return nil
 }
 
 func ClientQuickbarButton(slot int) *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.nox_quickbar_button(quickBarBase45DA50(), C.int(slot))))
+	return asWindow(nox_quickbar_button(quickBarBase45DA50(), C.int(slot)))
 }

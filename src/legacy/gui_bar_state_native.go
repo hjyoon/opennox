@@ -5,31 +5,40 @@ package legacy
 extern nox_window_yyy nox_windows_arr_1093036[7];
 extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
 extern uint32_t dword_5d4594_1096260, dword_5d4594_1096264;
-// Addresses only: Go and the remaining C callers share these scalar owners.
-static uint32_t* gui_bar_state_slot_C(unsigned i) {
- switch(i) {
- case 0: return &dword_5d4594_1090280;
- case 1: return &dword_5d4594_1090284;
- case 2: return getMemU32Ptr(0x5D4594, 1091964);
- case 3: return getMemU32Ptr(0x5D4594, 1092992);
- case 4: return &nox_windows_arr_1093036[0].field_1;
- case 5: return &nox_windows_arr_1093036[0].field_2;
- case 6: return &nox_windows_arr_1093036[0].color_1;
- case 7: return &nox_windows_arr_1093036[0].color_2;
- case 8: return &nox_windows_arr_1093036[1].field_1;
- case 9: return &nox_windows_arr_1093036[1].field_2;
- case 10: return &dword_5d4594_1096260;
- case 11: return &dword_5d4594_1096264;
- default: return NULL;
- }
-}
 */
 import "C"
 
 import "github.com/opennox/opennox/v1/server"
 
 func guiBarStateNativeWord(index int) *uint32 {
-	return (*uint32)(C.gui_bar_state_slot_C(C.uint(index)))
+	switch uint32(index) {
+	case 0:
+		return (*uint32)(&C.dword_5d4594_1090280)
+	case 1:
+		return (*uint32)(&C.dword_5d4594_1090284)
+	case 2:
+		return g2ServerWord(1091964)
+	case 3:
+		return g2ServerWord(1092992)
+	case 4:
+		return (*uint32)(&C.nox_windows_arr_1093036[0].field_1)
+	case 5:
+		return (*uint32)(&C.nox_windows_arr_1093036[0].field_2)
+	case 6:
+		return (*uint32)(&C.nox_windows_arr_1093036[0].color_1)
+	case 7:
+		return (*uint32)(&C.nox_windows_arr_1093036[0].color_2)
+	case 8:
+		return (*uint32)(&C.nox_windows_arr_1093036[1].field_1)
+	case 9:
+		return (*uint32)(&C.nox_windows_arr_1093036[1].field_2)
+	case 10:
+		return (*uint32)(&C.dword_5d4594_1096260)
+	case 11:
+		return (*uint32)(&C.dword_5d4594_1096264)
+	default:
+		return nil
+	}
 }
 
 func guiBarStateNative(index int, value, maximum int32) int32 {

@@ -4,6 +4,10 @@
 #include "client__gui__guisumn.h"
 
 void nullsub_68();
+
+obj_5D4594_2650668_t** ptr_5D4594_2650668 = 0;
+const int ptr_5D4594_2650668_cap = 128;
+
 nox_window* dword_5d4594_1046492 = 0;
 void* nox_xxx_aClosewoodengat_587000_133480 = 0;
 nox_window* nox_wol_wnd_world_814980 = 0;

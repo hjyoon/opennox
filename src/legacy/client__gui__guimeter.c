@@ -33,10 +33,11 @@ extern uint32_t nox_client_renderBubbles_80844;
 extern nox_window* dword_5d4594_1090276;
 extern int nox_win_width;
 extern int nox_win_height;
-extern nox_window_yyy nox_windows_arr_1093036[7];
-extern nox_drawable nox_gui_bottle_drawables[3];
 
 extern uint32_t nox_color_black_2650656;
+
+nox_window_yyy nox_windows_arr_1093036[7] = {0};
+nox_drawable nox_gui_bottle_drawables[3] = {0};
 
 static nox_video_bag_image_t* nox_gui_health_mana_images[10];
 static nox_video_bag_image_t* nox_gui_health_mana_poison_tube;

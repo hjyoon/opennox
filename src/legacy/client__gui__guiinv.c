@@ -44,11 +44,6 @@ extern uintptr_t dword_5d4594_1062480;
 extern uintptr_t array_5D4594_1049872[9];
 extern int nox_win_width;
 extern int nox_win_height;
-extern nox_window* nox_inventory_window;
-extern nox_window* nox_inventory_identify_window;
-extern nox_window* nox_inventory_scroll_up_button;
-extern nox_window* nox_inventory_scroll_down_button;
-extern void* nox_inventory_font;
 
 extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_red_2589776;
@@ -59,7 +54,21 @@ extern uint32_t nox_color_violet_2598268;
 extern uint32_t nox_color_black_2650656;
 extern uint32_t nox_color_orange_2614256;
 
-extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
+nox_window* nox_win_unk5 = 0;
+nox_window* dword_5d4594_1062452 = 0;
+nox_window* nox_inventory_window = 0;
+nox_window* nox_inventory_current_weapon_window = 0;
+nox_window* nox_inventory_identify_window = 0;
+nox_window* nox_inventory_scroll_window = 0;
+nox_window* nox_inventory_journal_button = 0;
+nox_window* nox_inventory_stats_button = 0;
+nox_window* nox_inventory_scroll_up_button = 0;
+nox_window* nox_inventory_scroll_down_button = 0;
+nox_window* nox_inventory_close_button = 0;
+void* nox_inventory_font = 0;
+nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
+nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
+nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] = {0};
 
 //----- (00461660) --------------------------------------------------------
 int nox_xxx_spritePickup_461660(int net_code, int thing_type, const nox_modifier_attrs_t* attrs) {

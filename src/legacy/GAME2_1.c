@@ -1595,113 +1595,10 @@ void nox_client_invAlterWeapon_4672C0() { // Switch onto secondary weapon
 }
 // 467323: variable 'v2' is possibly undefined
 
-//----- (004673F0) --------------------------------------------------------
-int sub_4673F0(int a1, int a2) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1062580) = a1;
-	*getMemU32Ptr(0x5D4594, 1062584) = a2;
-	return result;
-}
-
-//----- (00467410) --------------------------------------------------------
-int sub_467410(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1062540) = a1;
-	return result;
-}
-
-//----- (00467420) --------------------------------------------------------
-char sub_467420(char a1) {
-	char result; // al
-
-	result = a1;
-	*getMemU8Ptr(0x5D4594, 1062536) = a1;
-	return result;
-}
-
-//----- (00467430) --------------------------------------------------------
-unsigned char sub_467430() { return getMemByte(0x5D4594, 1062536); }
-
-//----- (00467440) --------------------------------------------------------
-int sub_467440(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1062544) = a1;
-	return result;
-}
-
-//----- (00467450) --------------------------------------------------------
-int sub_467450(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1062548) = a1;
-	return result;
-}
-
-//----- (00467470) --------------------------------------------------------
-int sub_467470(int a1, float a2) {
-	int result; // eax
-
-	result = (unsigned char)a1;
-	*getMemFloatPtr(0x5D4594, 1063100 + 4 * (unsigned char)a1) = a2;
-	return result;
-}
-
-//----- (00467490) --------------------------------------------------------
-int sub_467490(int a1) {
-	int result; // eax
-
-	result = a1;
-	dword_5d4594_1062552 = a1;
-	return result;
-}
-
 //----- (004674A0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_4674A0() { return dword_5d4594_1062552; }
 #endif
-
-//----- (004674B0) --------------------------------------------------------
-void nox_window_set_visible_unk5(int visible) {
-	if (visible) {
-		nox_window_set_hidden(nox_win_unk5, 0);
-	} else {
-		nox_window_set_hidden(nox_win_unk5, 1);
-	}
-}
-
-//----- (004674E0) --------------------------------------------------------
-void nox_xxx_cliUseCurePoison_4674E0(int a1) {
-	if (nox_xxx_guiCursor_477600() != 1) {
-		if (!nox_xxx_checkGameFlagPause_413A50()) {
-			nox_inventory_cell_t* cell = nox_xxx_cliInventoryFirstItemByTT_467520(a1);
-			if (cell && cell->field_0) {
-				cell->field_0->field_32 = cell->field_4;
-				nox_xxx_clientUse_465C70(cell->field_0);
-			}
-		}
-	}
-}
-
-//----- (00467520) --------------------------------------------------------
-nox_inventory_cell_t* nox_xxx_cliInventoryFirstItemByTT_467520(int thing_type) {
-	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT; row++) {
-		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
-			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
-				row + NOX_INVENTORY_ROW_COUNT * column];
-			if (cell->field_140 && cell->field_0 && cell->field_0->field_27 == (uint32_t)thing_type) {
-				return cell;
-			}
-		}
-	}
-	return NULL;
-}
 
 //----- (00467590) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
@@ -1722,37 +1619,6 @@ int sub_467590() {
 int sub_4675B0() { return dword_5d4594_1049864; }
 #endif
 
-//----- (004675E0) --------------------------------------------------------
-short sub_4675E0(int net_code, short field_73_1, short field_73_2) {
-	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(net_code, NULL);
-	if (cell && cell->field_0) {
-		cell->field_0->field_73_1 = (uint16_t)field_73_1;
-		cell->field_0->field_73_2 = (uint16_t)field_73_2;
-		return field_73_2;
-	}
-	nox_drawable* dragged = nox_client_inventory_get_dragged();
-	if (dragged && dragged->field_32 == (uint32_t)net_code) {
-		dragged->field_73_1 = (uint16_t)field_73_1;
-		dragged->field_73_2 = (uint16_t)field_73_2;
-		return field_73_2;
-	}
-	return 0;
-}
-
-//----- (00467650) --------------------------------------------------------
-int sub_467650() {
-	int result; // eax
-
-	sub_462740();
-	dword_5d4594_1049864 = 6;
-	nox_client_setCursorType_477610(8);
-	result = sub_467C80();
-	if (!result) {
-		result = sub_467BB0();
-	}
-	return result;
-}
-
 //----- (00467680) --------------------------------------------------------
 #if 0 // Restored by inventory_state_native_entry.go.
 void sub_467680() {
@@ -1767,32 +1633,6 @@ void sub_467680() {
 nox_window* nox_xxx_wndGetHandle_4676A0() { return dword_5d4594_1062452; }
 #endif
 
-//----- (004676D0) --------------------------------------------------------
-nox_drawable* sub_4676D0(int net_code) {
-	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(net_code, NULL);
-	if (cell) {
-		return cell->field_0;
-	}
-	nox_drawable* dragged = nox_client_inventory_get_dragged();
-	if (!dragged || dragged->field_32 != (uint32_t)net_code) {
-		return NULL;
-	}
-	return dragged;
-}
-
-//----- (00467700) --------------------------------------------------------
-int sub_467700(int a1) {
-	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(a1, NULL);
-	if (cell) {
-		return cell->field_140;
-	}
-	nox_drawable* dragged = nox_client_inventory_get_dragged();
-	if (dragged && dragged->field_32 == (uint32_t)a1) {
-		return 1;
-	}
-	return 0;
-}
-
 //----- (00467740) --------------------------------------------------------
 #if 0 // Restored by inventory_state_native_entry.go.
 int sub_467740(int a1) {
@@ -1800,31 +1640,6 @@ int sub_467740(int a1) {
 	return a1;
 }
 #endif
-
-//----- (00467810) --------------------------------------------------------
-int sub_467810(int a1, int a2) {
-	if (a1 < 0 || a2 < 0 || a1 >= 4 || a2 >= 20) {
-		return 0;
-	}
-	return nox_client_inventory_grid_1050020[a2 + NOX_INVENTORY_ROW_COUNT * a1].field_140;
-}
-
-//----- (00467850) --------------------------------------------------------
-int sub_467850(int a1) {
-	nox_inventory_cell_t* cell = nox_xxx_cliInventoryFirstItemByTT_467520(a1);
-	if (cell) {
-		return cell->field_140;
-	}
-	return 0;
-}
-
-//----- (00467870) --------------------------------------------------------
-char* sub_467870(int a1, int a2) {
-	if (a1 < 0 || a2 < 0 || a1 >= 4 || a2 >= 20) {
-		return 0;
-	}
-	return &(nox_client_inventory_grid_1050020[a2 + NOX_INVENTORY_ROW_COUNT * a1].field_4);
-}
 
 //----- (004678B0) --------------------------------------------------------
 #if 0 // Restored by global_state_native_entry.go.
@@ -1838,47 +1653,6 @@ int sub_4678B0() {
 #if 0 // Restored by global_state_native_entry.go.
 int sub_4678C0() { return dword_5d4594_1062488; }
 #endif
-
-//----- (004678D0) --------------------------------------------------------
-nox_drawable* sub_4678D0() {
-	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
-	if (!player) {
-		return NULL;
-	}
-	nox_drawable* equipped = NULL;
-	for (int bit = 1; bit < 27; bit++) {
-		int mask = 1 << bit;
-		if (mask != 2 && (mask & player->field_4)) {
-			equipped = sub_461600(sub_415840(mask));
-			if (equipped) {
-				break;
-			}
-		}
-	}
-	if (!equipped) {
-		return NULL;
-	}
-	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(equipped->field_32, NULL);
-	return cell ? cell->field_0 : NULL;
-}
-
-//----- (00467930) --------------------------------------------------------
-nox_drawable* sub_467930(int net_code, int field_73_1, int field_73_2) {
-	if (!net_code) {
-		return NULL;
-	}
-	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(net_code, NULL);
-	if (!cell || !cell->field_0) {
-		return NULL;
-	}
-	nox_drawable* drawable = cell->field_0;
-	drawable->item_field_112_0 = (int16_t)field_73_1;
-	drawable->item_field_112_2 = (int16_t)field_73_2;
-	if (cell->field_132 == 1) {
-		sub_470D90(field_73_1, field_73_2);
-	}
-	return drawable;
-}
 
 //----- (00467980) --------------------------------------------------------
 int sub_467980() {
@@ -1927,110 +1701,6 @@ int sub_467980() {
 	sub_46AEC0(nox_inventory_stats_button, nox_inventory_images[NOX_INV_IMG_STATS_LIT]);
 	nox_xxx_wndSetID_46B080(nox_inventory_stats_button, 9107);
 	return nox_window_set_hidden(nox_inventory_current_weapon_window, 0);
-}
-
-//----- (00467B00) --------------------------------------------------------
-int sub_467B00(int a1, int a2) {
-	int available = 0;
-	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT - 1; row++) {
-		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
-			nox_inventory_cell_t* cell =
-				&nox_client_inventory_grid_1050020[row + NOX_INVENTORY_ROW_COUNT * column];
-			int count = cell->field_140;
-			if (!count) {
-				available++;
-				continue;
-			}
-			nox_drawable* drawable = cell->field_0;
-			if (!drawable || drawable->field_27 != (uint32_t)a1) {
-				continue;
-			}
-			int limit = 31;
-			if (drawable->flags28 & 0x10) {
-				limit = nox_common_gameFlags_check_40A5C0(6144) ? 9 : 3;
-			}
-			if (!(drawable->flags28 & 0x4000000) && a2 + count <= limit) {
-				available++;
-			}
-		}
-	}
-	return available;
-}
-
-//----- (00467BB0) --------------------------------------------------------
-int sub_467BB0() {
-	int result; // eax
-
-	result = nox_gui_xxx_check_446360();
-	if (!result) {
-		result = sub_4AE3D0();
-		if (!result) {
-			result = nox_xxx_guiCursor_477600();
-			if (!result) {
-				result = nox_xxx_playerAnimCheck_4372B0();
-				if (!result) {
-					result = nox_xxx_get_57AF20();
-					if (!result) {
-						if (getMemByte(0x5D4594, 1049868) == 3 || !getMemByte(0x5D4594, 1049868)) {
-							*getMemU8Ptr(0x5D4594, 1049868) = 1;
-							nox_xxx_clientPlaySoundSpecial_452D80(789, 100);
-						}
-						result = dword_5d4594_1062516;
-						dword_5d4594_1062512 = dword_5d4594_1062516;
-					}
-				}
-			}
-		}
-	}
-	return result;
-}
-
-//----- (00467C10) --------------------------------------------------------
-int sub_467C10() {
-	if (dword_5d4594_1049864 == 6) {
-		return 1;
-	}
-	if (!sub_467C80()) {
-		return 0;
-	}
-	*getMemU8Ptr(0x5D4594, 1049868) = 3;
-	nox_xxx_clientPlaySoundSpecial_452D80(790, 100);
-	if (dword_5d4594_1049864 == 5) {
-		sub_462740();
-	}
-	sub_467CD0();
-	return 1;
-}
-
-//----- (00467C60) --------------------------------------------------------
-int nox_client_toggleInventory_467C60() {
-	int result; // eax
-
-	if (sub_467C80()) {
-		result = sub_467C10();
-	} else {
-		result = sub_467BB0();
-	}
-	return result;
-}
-
-//----- (00467C80) --------------------------------------------------------
-int sub_467C80() { return getMemByte(0x5D4594, 1049868) == 1 || getMemByte(0x5D4594, 1049868) == 2; }
-
-//----- (00467CA0) --------------------------------------------------------
-int sub_467CA0() {
-	int result; // eax
-
-	result = sub_467C80();
-	if (!result) {
-		dword_5d4594_1062516 = 0;
-		result = nox_inventory_scroll_window != 0;
-		if (nox_inventory_scroll_window) {
-			nox_slider_data_t* slider = nox_inventory_scroll_window->widget_data;
-			result = nox_window_call_field_94(nox_inventory_scroll_window, 16394, slider->max, 0);
-		}
-	}
-	return result;
 }
 
 //----- (00467CD0) --------------------------------------------------------

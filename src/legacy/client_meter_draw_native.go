@@ -47,7 +47,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 	if progress >= 256 {
 		dial = false
 		progress = 1
-		if weapon := C.sub_4678D0(); weapon != nil {
+		if weapon := sub_4678D0(); weapon != nil {
 			current, maximum := float64(weapon.field_73_1), float64(weapon.field_73_2)
 			if current < maximum*memmap.Float64(0x581450, 9608) {
 				meter.color_2 = C.uint32_t(memmap.Uint32(0x85B3FC, 940))
@@ -188,7 +188,7 @@ func nox_xxx_guiBottleSlotProc_471B90(win *C.nox_window, event C.int) C.int {
 	case 5:
 		offset := healthQuickItem + 536*uintptr(win.widget_data)
 		if id := memmap.Int32(0x5D4594, offset); id != 0 {
-			C.nox_xxx_cliUseCurePoison_4674E0(C.int(id))
+			nox_xxx_cliUseCurePoison_4674E0(C.int(id))
 		}
 		return 1
 	case 8, 12, 16:

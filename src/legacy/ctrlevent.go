@@ -154,7 +154,7 @@ func Nox_client_toggleSpellbook_45AC70() {
 }
 
 func Nox_client_toggleInventory_467C60() {
-	C.nox_client_toggleInventory_467C60()
+	nox_client_toggleInventory_467C60()
 }
 
 func Nox_client_inventoryAnimationState() int {

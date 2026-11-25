@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -17,7 +16,7 @@ func mapgenHallMidpoint(first, last C.uint32_t) C.float {
 }
 
 func mapgenHallPointOnEdge(room *C.uint8_t, point *C.float2, far bool) C.int {
-	result := C.int(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(room)))
+	result := C.int(registerMapgenPointer(unsafe.Pointer(room)))
 	if room == nil || point == nil {
 		return result
 	}
@@ -53,7 +52,7 @@ func nox_mapgenConnectionPointNearNative_523C30(room *C.uint8_t, point *C.float2
 //export sub_523C30
 func sub_523C30(room, point C.int) C.int {
 	raw := mapgenResolveListedRoom(uint32(room))
-	output := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(point)))
+	output := resolveMapgenPointer(uintptr(uint32(point)))
 	return nox_mapgenConnectionPointNearNative_523C30((*C.uint8_t)(unsafe.Pointer(raw)), (*C.float2)(output))
 }
 
@@ -65,7 +64,7 @@ func nox_mapgenConnectionPointFarNative_523CB0(room *C.uint8_t, point *C.float2)
 //export sub_523CB0
 func sub_523CB0(room, point C.int) C.int {
 	raw := mapgenResolveListedRoom(uint32(room))
-	output := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(point)))
+	output := resolveMapgenPointer(uintptr(uint32(point)))
 	return nox_mapgenConnectionPointFarNative_523CB0((*C.uint8_t)(unsafe.Pointer(raw)), (*C.float2)(output))
 }
 
@@ -111,8 +110,8 @@ func nox_mapgenConnectionPointCenterNative_523D30(room *C.uint8_t, point *C.floa
 
 //export sub_523D30
 func sub_523D30(room, point *C.float) *C.float {
-	raw := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(unsafe.Pointer(room))))
-	output := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(unsafe.Pointer(point))))
+	raw := resolveMapgenPointer(uintptr(unsafe.Pointer(room)))
+	output := resolveMapgenPointer(uintptr(unsafe.Pointer(point)))
 	return nox_mapgenConnectionPointCenterNative_523D30((*C.uint8_t)(raw), (*C.float2)(output))
 }
 

@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -119,7 +118,7 @@ func sub_520E60(pos *C.int2) unsafe.Pointer {
 
 //export nox_mapgenRoomOccupyNative_521100
 func nox_mapgenRoomOccupyNative_521100(raw *C.uint8_t) C.int {
-	token := uint32(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(raw)))
+	token := registerMapgenPointer(unsafe.Pointer(raw))
 	if token == 0 {
 		return 0
 	}
@@ -140,7 +139,7 @@ func nox_mapgenRoomAtNative_521200(raw *C.uint8_t) unsafe.Pointer {
 	if token == 0 {
 		return nil
 	}
-	return C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token))
+	return resolveMapgenPointer(uintptr(token))
 }
 
 //export nox_mapgenRoomWithinThemeNative_5217A0

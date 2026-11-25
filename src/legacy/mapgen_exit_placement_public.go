@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 #include "server__mapgen__generate__populate.h"
 #include "xfer_exit_4f4b90.h"
 */
@@ -193,20 +192,20 @@ func nox_mapgenMakeExitNative_522A40(theme *C.uint8_t) C.int {
 
 //export nox_xxx_mapGenMakeExit_522A40
 func nox_xxx_mapGenMakeExit_522A40(themeToken C.int) C.int {
-	theme := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(themeToken)))
+	theme := resolveMapgenPointer(uintptr(uint32(themeToken)))
 	return nox_mapgenMakeExitNative_522A40((*C.uint8_t)(theme))
 }
 
 //export nox_xxx_mapgen_522AD0
 func nox_xxx_mapgen_522AD0(roomRef *C.float, definitionToken C.int) *C.float {
-	room := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(unsafe.Pointer(roomRef))))
-	definition := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(definitionToken)))
+	room := resolveMapgenPointer(uintptr(unsafe.Pointer(roomRef)))
+	definition := resolveMapgenPointer(uintptr(uint32(definitionToken)))
 	object := mapgenPlaceExitProduction((*mapgenExitRoom)(room), (*mapgenExitDefinition)(definition))
 	return (*C.float)(unsafe.Pointer(object))
 }
 
 //export sub_527D50
 func sub_527D50(objectToken C.int, destination *C.char) C.int {
-	object := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(objectToken)))
+	object := resolveMapgenPointer(uintptr(uint32(objectToken)))
 	return C.int(bool2int(mapgenSetExitDestinationProduction((*server.Object)(object), (*byte)(unsafe.Pointer(destination)))))
 }

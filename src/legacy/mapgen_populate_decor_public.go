@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "mapgen_decor_records.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -170,14 +169,14 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 	}
 	roomPointer := unsafe.Pointer(room)
 	token := *(*C.uint32_t)(unsafe.Add(roomPointer, mapGenRoomDecorationTokenOffset))
-	definition := (*mapGenDecorDefinition)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	definition := (*mapGenDecorDefinition)(resolveMapgenPointer(uintptr(token)))
 	roomSize := &(*mapgenRoomGeometry)(roomPointer).cellDimensions
 	modifiers := (*[2]mapGenDecorModifierSet)(unsafe.Add(unsafe.Pointer(theme), mapGenThemeDecorModifierSetsOffset))
 	roll := func(low, high int32) int32 {
 		return int32(nox_xxx_mapGenRandFunc_526AC0(C.int(low), C.int(high)))
 	}
 	resolveEntry := func(token uint32) *mapGenDecorEntry {
-		return (*mapGenDecorEntry)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+		return (*mapGenDecorEntry)(resolveMapgenPointer(uintptr(token)))
 	}
 	place := mapGenDecorPlacement{
 		roll: roll,
@@ -209,7 +208,7 @@ func nox_mapgenPopulateDecorNative_522340(theme, room *C.uint8_t) {
 		},
 	}
 	mapGenPopulateDecor522340(definition, func(token uint32) *mapGenDecorSet {
-		return (*mapGenDecorSet)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+		return (*mapGenDecorSet)(resolveMapgenPointer(uintptr(token)))
 	}, func(set *mapGenDecorSet) {
 		mapGenPopulateDecorSet522370(set, roll, resolveEntry, func(entry *mapGenDecorEntry) {
 			mapGenPopulateDecorEntry5224B0(entry, roomSize, modifiers, place)

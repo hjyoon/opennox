@@ -8,6 +8,7 @@ import "C"
 import (
 	"math"
 	"sync"
+	"unsafe"
 )
 
 type mapgenPointerRegistry struct {
@@ -67,6 +68,22 @@ func (r *mapgenPointerRegistry) forget(address uintptr) {
 		delete(r.byAddress, address)
 		delete(r.byToken, token)
 	}
+}
+
+func registerMapgenPointer(ptr unsafe.Pointer) uint32 {
+	return mapgenPointers.register(uintptr(ptr))
+}
+
+// Legacy records may contain either a registry token or a native address.
+// The backing native allocation is owned by the caller.
+//
+//go:nocheckptr
+func resolveMapgenPointer(value uintptr) unsafe.Pointer {
+	return unsafe.Pointer(mapgenPointers.resolve(value))
+}
+
+func forgetMapgenPointer(ptr unsafe.Pointer) {
+	mapgenPointers.forget(uintptr(ptr))
 }
 
 //export nox_mapgen_register_address_go

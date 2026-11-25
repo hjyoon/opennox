@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -13,16 +12,16 @@ func mapgenAllocateDecorRecord(size C.size_t) (unsafe.Pointer, C.uint32_t) {
 	if record == nil {
 		return nil, 0
 	}
-	token := C.nox_mapgenLegacyPtrRegister(record)
+	token := registerMapgenPointer(record)
 	if token == 0 {
 		nox_mapgen_release_memory(record)
 		return nil, 0
 	}
-	return record, token
+	return record, C.uint32_t(token)
 }
 
 func mapgenReleaseDecorRecord(record unsafe.Pointer) {
-	C.nox_mapgenLegacyPtrForget(record)
+	forgetMapgenPointer(record)
 	nox_mapgen_release_memory(record)
 }
 
@@ -36,7 +35,7 @@ func mapgenReadDecorName(file *C.FILE, destination *[60]C.char) bool {
 }
 
 func mapgenResolveDecorDefinition(token C.uint32_t) *C.nox_mapgen_decor_definition_legacy {
-	return (*C.nox_mapgen_decor_definition_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_decor_definition_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 //export nox_mapgenReadWallFloorNative_51FE00
@@ -66,7 +65,7 @@ func nox_xxx_genDecorReadWallFloor_51FE00(definitionToken C.int, file *C.FILE) *
 }
 
 func mapgenResolveDecorFill(token C.uint32_t) *C.nox_mapgen_decor_fill_legacy {
-	return (*C.nox_mapgen_decor_fill_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_decor_fill_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 //export nox_mapgenReadDecorFillNative_51FEC0

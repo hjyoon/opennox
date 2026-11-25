@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 #include "noxstring.h"
 
 typedef const nox_modifier_attrs_t object_field_const_attrs_t;
@@ -17,7 +16,7 @@ import (
 )
 
 func mapgenSelectEnchantedItem(name *C.char, ref C.uintptr_t, count C.int) (*C.char, *C.nox_mapgen_item_set_entry_legacy) {
-	entry := (*C.nox_mapgen_item_set_entry_legacy)(C.nox_mapgenLegacyPtrResolve(ref))
+	entry := (*C.nox_mapgen_item_set_entry_legacy)(resolveMapgenPointer(uintptr(ref)))
 	if GoString(name) == "*" {
 		if entry == nil || count <= 0 {
 			return nil, nil
@@ -49,7 +48,7 @@ func mapgenEnchantedItemAttrs(entry *C.nox_mapgen_item_set_entry_legacy) server.
 		if uint32(roll) > memmap.Uint32(0x587000, uintptr(254688+4*index)) {
 			continue
 		}
-		list := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(entry.modifier_tokens[index]))
+		list := resolveMapgenPointer(uintptr(entry.modifier_tokens[index]))
 		if list == nil {
 			continue
 		}

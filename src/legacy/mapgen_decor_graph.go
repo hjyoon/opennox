@@ -2,14 +2,13 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
 import "unsafe"
 
 func mapgenResolveDecorChoice(ref C.uintptr_t) *mapGenChoiceRecord {
-	return (*mapGenChoiceRecord)(C.nox_mapgenLegacyPtrResolve(ref))
+	return (*mapGenChoiceRecord)(resolveMapgenPointer(uintptr(ref)))
 }
 
 //export nox_mapgenChoiceNextNative_520380
@@ -47,7 +46,7 @@ func mapgenFreeDecorFillList(ref C.uint32_t) {
 }
 
 func mapgenResolveWallFloor(token C.uint32_t) *C.nox_mapgen_wall_floor_legacy {
-	return (*C.nox_mapgen_wall_floor_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_wall_floor_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenFreeWallFloorList(ref C.uint32_t) {
@@ -60,7 +59,7 @@ func mapgenFreeWallFloorList(ref C.uint32_t) {
 }
 
 func mapgenResolveDecorEntry(token C.uint32_t) *C.nox_mapgen_decor_entry_legacy {
-	return (*C.nox_mapgen_decor_entry_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_decor_entry_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenFreeDecorEntryList(ref C.uint32_t) {
@@ -74,7 +73,7 @@ func mapgenFreeDecorEntryList(ref C.uint32_t) {
 }
 
 func mapgenResolveDecorSet(token C.uint32_t) *C.nox_mapgen_decor_set_legacy {
-	return (*C.nox_mapgen_decor_set_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_decor_set_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenFreeDecorSetList(ref C.uint32_t) {

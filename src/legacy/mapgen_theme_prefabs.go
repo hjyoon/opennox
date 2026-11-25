@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -30,7 +29,7 @@ var (
 )
 
 func mapgenResolveThemePrefab(token C.uint32_t) *mapgenThemePrefabRecord {
-	return (*mapgenThemePrefabRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*mapgenThemePrefabRecord)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenReadThemePrefabEntry(theme *[mapgenThemeWordCount]C.uint32_t, file *C.FILE) *mapgenThemePrefabRecord {

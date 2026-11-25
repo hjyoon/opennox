@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "GAME3_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -216,6 +215,6 @@ func nox_mapgenOrientObjNative_527C60(unit *C.nox_object_t, direction C.int) C.i
 
 //export nox_xxx_mapGenOrientObj_527C60
 func nox_xxx_mapGenOrientObj_527C60(token, direction C.int) C.int {
-	unit := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(token)))
+	unit := resolveMapgenPointer(uintptr(uint32(token)))
 	return nox_mapgenOrientObjNative_527C60((*C.nox_object_t)(unit), direction)
 }

@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -131,6 +130,6 @@ func nox_mapgenConnectRoomPointsNative_522F40(theme *C.uint8_t) *C.uint8_t {
 
 //export nox_xxx_mapGenTryNextRoom_522F40
 func nox_xxx_mapGenTryNextRoom_522F40(theme *C.uint32_t) *C.uint8_t {
-	raw := (*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(unsafe.Pointer(theme)))))
+	raw := (*C.uint8_t)(resolveMapgenPointer(uintptr(unsafe.Pointer(theme))))
 	return nox_mapgenConnectRoomPointsNative_522F40(raw)
 }

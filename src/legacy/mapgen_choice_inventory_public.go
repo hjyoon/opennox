@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -158,7 +157,7 @@ func nox_xxx_mapgen_521FE0(theme *C.uint8_t, holder *C.nox_object_t, choices C.u
 }
 
 func mapGenForeachLookup(ref uintptr) *mapGenForeachRecord {
-	return (*mapGenForeachRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(ref)))
+	return (*mapGenForeachRecord)(resolveMapgenPointer(uintptr(ref)))
 }
 
 //export nox_mapgenFindForeachChoicesNative_521C60
@@ -167,7 +166,7 @@ func nox_mapgenFindForeachChoicesNative_521C60(foreachRef C.uintptr_t, typeID C.
 	if entry == nil {
 		return nil
 	}
-	return (*C.uint32_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(entry.choices)))
+	return (*C.uint32_t)(resolveMapgenPointer(uintptr(entry.choices)))
 }
 
 //export nox_mapgenApplyForeachNative_521C60

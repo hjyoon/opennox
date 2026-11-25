@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "cgo_const.h"
-#include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_5d4594_2487676;
@@ -23,7 +22,7 @@ const mapgenAreaRecordBytes = 64
 var _ [mapgenAreaRecordBytes]byte = [unsafe.Sizeof(mapGenDecorAreaFlags{})]byte{}
 
 func mapgenAreaRecords() *mapGenDecorAreaFlags {
-	return (*mapGenDecorAreaFlags)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(C.dword_5d4594_2487672)))
+	return (*mapGenDecorAreaFlags)(resolveMapgenPointer(uintptr(C.dword_5d4594_2487672)))
 }
 
 func mapgenAreaRecordName(record *mapGenDecorAreaFlags) []byte {
@@ -93,7 +92,7 @@ func nox_mapgenLoadAreaRecordsNative() C.uintptr_t {
 		C.dword_5d4594_2487676 = 0
 		return 0
 	}
-	token := C.nox_mapgenLegacyPtrRegister(ptr)
+	token := registerMapgenPointer(ptr)
 	if token == 0 {
 		nox_mapgen_release_memory(ptr)
 		C.dword_5d4594_2487676 = 0
@@ -110,7 +109,7 @@ func nox_mapgenLoadAreaRecordsNative() C.uintptr_t {
 		}
 		record.flags |= mapgenAreaAttachmentFlags(name)
 	}
-	C.dword_5d4594_2487672 = token
+	C.dword_5d4594_2487672 = C.uint32_t(token)
 	C.dword_5d4594_2487676 = C.uint32_t(count)
 	if count == 0 {
 		return C.uintptr_t(uintptr(ptr))

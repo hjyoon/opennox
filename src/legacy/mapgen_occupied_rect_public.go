@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -105,7 +104,7 @@ func mapGenOccupiedRectHead(room *C.uint8_t) *uint32 {
 }
 
 func mapGenResolveOccupiedRect(token uint32) *mapGenOccupiedRect5227B0 {
-	return (*mapGenOccupiedRect5227B0)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*mapGenOccupiedRect5227B0)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
@@ -113,7 +112,7 @@ func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
 	if raw == nil {
 		return nil, 0
 	}
-	token := uint32(C.nox_mapgenLegacyPtrRegister(raw))
+	token := registerMapgenPointer(raw)
 	if token == 0 {
 		nox_mapgen_release_memory(raw)
 		return nil, 0
@@ -123,7 +122,7 @@ func mapGenAllocateOccupiedRect() (*mapGenOccupiedRect5227B0, uint32) {
 
 func mapGenReleaseOccupiedRect(rect *mapGenOccupiedRect5227B0) {
 	raw := unsafe.Pointer(rect)
-	C.nox_mapgenLegacyPtrForget(raw)
+	forgetMapgenPointer(raw)
 	nox_mapgen_release_memory(raw)
 }
 
@@ -139,7 +138,7 @@ func nox_mapgenAddOccupiedRectNative_521BC0(room *C.uint8_t, pos *C.float2, widt
 
 //export sub_521BC0
 func sub_521BC0(roomToken C.int, pos *C.float2, width, height C.float) *C.float {
-	room := (*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(roomToken))))
+	room := (*C.uint8_t)(resolveMapgenPointer(uintptr(uint32(roomToken))))
 	return (*C.float)(unsafe.Pointer(nox_mapgenAddOccupiedRectNative_521BC0(room, pos, width, height)))
 }
 
@@ -153,7 +152,7 @@ func nox_mapgenClearTransientOccupiedRectsNative_521C10(room *C.uint8_t) *C.uint
 
 //export sub_521C10
 func sub_521C10(roomToken C.int) *C.uint32_t {
-	room := (*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(roomToken))))
+	room := (*C.uint8_t)(resolveMapgenPointer(uintptr(uint32(roomToken))))
 	return nox_mapgenClearTransientOccupiedRectsNative_521C10(room)
 }
 

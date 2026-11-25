@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "cgo_const.h"
-#include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 */
 import "C"
@@ -80,7 +79,7 @@ func nox_mapgenReadAlgDataNative_51EBB0(raw *C.uint8_t, file *C.FILE) C.int {
 }
 
 func mapgenThemeByToken(token C.int) *C.uint8_t {
-	return (*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(token))))
+	return (*C.uint8_t)(resolveMapgenPointer(uintptr(uint32(token))))
 }
 
 //export nox_xxx_genReadAlgData_51EBB0

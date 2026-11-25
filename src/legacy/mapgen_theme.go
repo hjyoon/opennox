@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "cgo_const.h"
-#include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 */
 import "C"
@@ -65,7 +64,7 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 func nox_mapgenReadThemeNative_51E260(record *C.int, name *C.nox_cgo_const_char) C.int {
 	theme := (*[mapgenThemeWordCount]C.int)(unsafe.Pointer(record))
 	clear(theme[:])
-	if C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(record)) == 0 {
+	if registerMapgenPointer(unsafe.Pointer(record)) == 0 {
 		return 0
 	}
 	*theme = [mapgenThemeWordCount]C.int{
@@ -96,6 +95,6 @@ func nox_mapgenReadThemeNative_51E260(record *C.int, name *C.nox_cgo_const_char)
 
 //export nox_xxx_mapGenReadTheme_51E260
 func nox_xxx_mapGenReadTheme_51E260(theme *C.int, token C.int) C.int {
-	name := (*C.nox_cgo_const_char)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(token))))
+	name := (*C.nox_cgo_const_char)(resolveMapgenPointer(uintptr(uint32(token))))
 	return nox_mapgenReadThemeNative_51E260(theme, name)
 }

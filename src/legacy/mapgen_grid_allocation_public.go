@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487532;
 extern uint32_t dword_5d4594_2487536;
@@ -26,7 +25,7 @@ func (grid mapgenGridStorage) release() {
 	for _, row := range grid.rows {
 		nox_mapgen_release_memory(unsafe.Pointer(row))
 	}
-	C.nox_mapgenLegacyPtrForget(grid.table)
+	forgetMapgenPointer(grid.table)
 	nox_mapgen_release_memory(grid.table)
 }
 
@@ -43,12 +42,12 @@ func sub_520EA0(rawTheme *C.uint8_t) C.int {
 	if table == nil {
 		return 0
 	}
-	token := C.nox_mapgenLegacyPtrRegister(table)
+	token := registerMapgenPointer(table)
 	if token == 0 {
 		nox_mapgen_release_memory(table)
 		return 0
 	}
-	C.dword_5d4594_2487532 = token
+	C.dword_5d4594_2487532 = C.uint32_t(token)
 
 	grid := mapgenGridStorage{table: table}
 	grid.offset = int32(half)
@@ -90,5 +89,5 @@ func nox_mapgenRoomAtCellNative_521290(pos *C.int2) unsafe.Pointer {
 	if cell == nil || cell.room == 0 {
 		return nil
 	}
-	return C.nox_mapgenLegacyPtrResolve(C.uintptr_t(cell.room))
+	return resolveMapgenPointer(uintptr(cell.room))
 }

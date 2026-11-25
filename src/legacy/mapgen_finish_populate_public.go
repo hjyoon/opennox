@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME4_1.h"
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 #include "server__mapgen__generate__populate.h"
 
 extern uint32_t dword_5d4594_1550916;
@@ -136,8 +135,8 @@ func sub_5259E0() C.int {
 func sub_526A90() {
 	slot := (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487672))
 	mapgenReleaseProcessRecords(slot, func(token uint32) {
-		records := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token))
-		C.nox_mapgenLegacyPtrForget(records)
+		records := resolveMapgenPointer(uintptr(token))
+		forgetMapgenPointer(records)
 		nox_mapgen_release_memory(records)
 	})
 }
@@ -159,7 +158,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 		},
 		maxRoomDistance: func() { nox_mapgenMaxRoomDistanceNative_5259D0() },
 		firstRoom: func() *mapgenPopulateRoom {
-			return (*mapgenPopulateRoom)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(C.dword_5d4594_1550916)))
+			return (*mapgenPopulateRoom)(resolveMapgenPointer(uintptr(C.dword_5d4594_1550916)))
 		},
 		nextRoom: func(room *mapgenPopulateRoom) *mapgenPopulateRoom {
 			return (*mapgenPopulateRoom)(unsafe.Pointer(nox_mapgenRoomSortedNextNative_525C90((*C.nox_mapgen_readonly_room_t)(unsafe.Pointer(room)))))
@@ -191,6 +190,6 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 
 //export nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate
 func nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate(themeToken C.int) {
-	theme := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(themeToken)))
+	theme := resolveMapgenPointer(uintptr(uint32(themeToken)))
 	nox_mapgenFinishPopulateNative_5228B0((*C.uint8_t)(theme))
 }

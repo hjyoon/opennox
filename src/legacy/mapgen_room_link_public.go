@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -69,11 +68,11 @@ func mapgenLinkRoomsBoth(room, neighbor *mapgenRoomLinkRecord, direction int, re
 }
 
 func mapgenRegisterRoomLinkRecord(room *mapgenRoomLinkRecord) uint32 {
-	return uint32(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(room)))
+	return registerMapgenPointer(unsafe.Pointer(room))
 }
 
 func mapgenResolveRoomLinkRecord(token uint32) *mapgenRoomLinkRecord {
-	return (*mapgenRoomLinkRecord)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*mapgenRoomLinkRecord)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenOppositeRoomDirection(direction int) int {

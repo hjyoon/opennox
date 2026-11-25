@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 extern nox_waypoint_t* dword_5d4594_2487244;
 */
 import "C"
@@ -124,7 +123,7 @@ func sub_51D2C0(from, to C.int) C.int {
 
 //export sub_51D300
 func sub_51D300(from, to C.int, kind C.char) C.int {
-	source := (*server.Waypoint)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(from))))
-	target := (*server.Waypoint)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(to))))
+	source := (*server.Waypoint)(resolveMapgenPointer(uintptr(uint32(from))))
+	target := (*server.Waypoint)(resolveMapgenPointer(uintptr(uint32(to))))
 	return C.int(bool2int(mapgenLinkWaypoints(source, target, byte(kind))))
 }

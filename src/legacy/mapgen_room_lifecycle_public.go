@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487560;
 */
@@ -78,17 +77,17 @@ func mapgenReleaseRoomRectangles(head *uint32, resolve func(uint32) *mapGenOccup
 }
 
 func mapgenRegisterListedRoom(room *mapgenRoomListNode) uint32 {
-	return uint32(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(room)))
+	return registerMapgenPointer(unsafe.Pointer(room))
 }
 
 func mapgenResolveListedRoom(token uint32) *mapgenRoomListNode {
-	return (*mapgenRoomListNode)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*mapgenRoomListNode)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenReleaseListedRoom(room *mapgenRoomListNode) {
 	raw := unsafe.Pointer(room)
 	mapgenReleaseRoomRectangles(mapGenOccupiedRectHead((*C.uint8_t)(raw)), mapGenResolveOccupiedRect, mapGenReleaseOccupiedRect)
-	C.nox_mapgenLegacyPtrForget(raw)
+	forgetMapgenPointer(raw)
 	nox_mapgen_release_memory(raw)
 }
 

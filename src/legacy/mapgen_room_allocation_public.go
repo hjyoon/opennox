@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -47,7 +46,7 @@ func nox_xxx_mapGenMakeRoomStruct_521940(width, height C.int) *C.float {
 	if raw == nil {
 		return nil
 	}
-	if C.nox_mapgenLegacyPtrRegister(raw) == 0 {
+	if registerMapgenPointer(raw) == 0 {
 		nox_mapgen_release_memory(raw)
 		return nil
 	}

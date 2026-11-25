@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 #include "mapgen_theme_native.h"
 */
 import "C"
@@ -144,7 +143,7 @@ func nox_mapgenReadConditionNative_51E800(file *C.FILE, output *C.uint32_t) C.in
 
 //export sub_51E800
 func sub_51E800(fileToken C.int, output *C.uint32_t) C.int {
-	file := (*C.FILE)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(fileToken))))
+	file := (*C.FILE)(resolveMapgenPointer(uintptr(uint32(fileToken))))
 	return nox_mapgenReadConditionNative_51E800(file, output)
 }
 
@@ -171,6 +170,6 @@ func nox_mapgenReadComparisonNative_51EAF0(file *C.FILE, output *C.uint32_t) C.i
 
 //export sub_51EAF0
 func sub_51EAF0(fileToken C.int, output *C.uint32_t) C.int {
-	file := (*C.FILE)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(fileToken))))
+	file := (*C.FILE)(resolveMapgenPointer(uintptr(uint32(fileToken))))
 	return nox_mapgenReadComparisonNative_51EAF0(file, output)
 }

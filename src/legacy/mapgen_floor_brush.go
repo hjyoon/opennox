@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME4_2.h"
 #include "GAME4_3.h"
-#include "mapgen_legacy_ptr.h"
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern void* dword_5d4594_588084;
@@ -98,7 +97,7 @@ func nox_floorBrushApplyNative_51DA70(x, y C.int, native *C.nox_floor_brush_t, l
 
 //export sub_51DA70
 func sub_51DA70(x, y, brushToken, layer, merge C.int) C.int {
-	brush := (*C.nox_floor_brush_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uint32(brushToken))))
+	brush := (*C.nox_floor_brush_t)(resolveMapgenPointer(uintptr(uint32(brushToken))))
 	return nox_floorBrushApplyNative_51DA70(x, y, brush, layer, merge)
 }
 

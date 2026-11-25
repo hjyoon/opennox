@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487524;
 */
@@ -19,12 +18,12 @@ const mapgenMaxItemModifiers = 256
 type mapgenItemModifierName [60]byte
 
 func mapgenResolveItemSetEntry(token C.uint32_t) *C.nox_mapgen_item_set_entry_legacy {
-	return (*C.nox_mapgen_item_set_entry_legacy)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)))
+	return (*C.nox_mapgen_item_set_entry_legacy)(resolveMapgenPointer(uintptr(token)))
 }
 
 func mapgenFreeItemSetModifiers(entry *C.nox_mapgen_item_set_entry_legacy) {
 	for i, token := range entry.modifier_tokens {
-		if ptr := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(token)); ptr != nil {
+		if ptr := resolveMapgenPointer(uintptr(token)); ptr != nil {
 			mapgenReleaseDecorRecord(ptr)
 		}
 		entry.modifier_tokens[i], entry.modifier_counts[i] = 0, 0
@@ -41,7 +40,7 @@ func mapgenFreeItemSetEntry(entry *C.nox_mapgen_item_set_entry_legacy) {
 
 //export nox_xxx_mapGenFreeStr_51F1F0
 func nox_xxx_mapGenFreeStr_51F1F0(ref unsafe.Pointer) {
-	ptr := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(ref)))
+	ptr := resolveMapgenPointer(uintptr(ref))
 	mapgenFreeItemSetEntry((*C.nox_mapgen_item_set_entry_legacy)(ptr))
 }
 
@@ -70,7 +69,7 @@ func mapgenMergeItemModifiers(base *C.nox_mapgen_item_set_entry_legacy, slot int
 	var merged []mapgenItemModifierName
 	if base != nil {
 		n := uint32(base.modifier_counts[slot])
-		values := (*mapgenItemModifierName)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(base.modifier_tokens[slot])))
+		values := (*mapgenItemModifierName)(resolveMapgenPointer(uintptr(base.modifier_tokens[slot])))
 		if n > mapgenMaxItemModifiers || n != 0 && values == nil {
 			return nil, false
 		}

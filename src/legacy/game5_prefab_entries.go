@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -15,11 +14,11 @@ import (
 func game5ConnectorCount() *uint32         { return memmap.PtrUint32(0x5D4594, 2491608) }
 func game5ConnectorToken(i uint32) *uint32 { return memmap.PtrUint32(0x5D4594, 2491612+4*uintptr(i)) }
 func game5ConnectorRoom(i uint32) *C.uint8_t {
-	return (*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(*game5ConnectorToken(i))))
+	return (*C.uint8_t)(resolveMapgenPointer(uintptr(*game5ConnectorToken(i))))
 }
 func game5ConnectorNew(kind, width, length int32) unsafe.Pointer {
 	room := unsafe.Pointer(C.nox_mapgenMakeHallStructNative_523E30(C.int(kind), C.int(width), C.int(length)))
-	*game5ConnectorToken(*game5ConnectorCount()) = uint32(C.nox_mapgenLegacyPtrRegister(room))
+	*game5ConnectorToken(*game5ConnectorCount()) = registerMapgenPointer(room)
 	return room
 }
 func game5ConnectorPosition(room unsafe.Pointer, x, y int32) {
@@ -52,8 +51,8 @@ func game5ConnectorCommit(first, second uintptr, d1, d2 int32) C.int {
 	if count <= 0 {
 		return 0
 	}
-	C.nox_mapgenRoomLinkBothNative_521A70((*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(first))), game5ConnectorRoom(0), C.int(d1))
-	C.nox_mapgenRoomLinkBothNative_521A70((*C.uint8_t)(C.nox_mapgenLegacyPtrResolve(C.uintptr_t(second))), game5ConnectorRoom(uint32(count-1)), C.int(d2))
+	C.nox_mapgenRoomLinkBothNative_521A70((*C.uint8_t)(resolveMapgenPointer(uintptr(first))), game5ConnectorRoom(0), C.int(d1))
+	C.nox_mapgenRoomLinkBothNative_521A70((*C.uint8_t)(resolveMapgenPointer(uintptr(second))), game5ConnectorRoom(uint32(count-1)), C.int(d2))
 	return 1
 }
 

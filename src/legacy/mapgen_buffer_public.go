@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-#include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487556;
 */
@@ -31,7 +30,7 @@ func mapgenAcquireBuffer(register func(unsafe.Pointer) uint32) (unsafe.Pointer, 
 func nox_xxx_mapgenAllocBuffer_5213E0() C.int {
 	nox_xxx_mapgenFreeBuffer_521400()
 	buffer, token := mapgenAcquireBuffer(func(ptr unsafe.Pointer) uint32 {
-		return uint32(C.nox_mapgenLegacyPtrRegister(ptr))
+		return registerMapgenPointer(ptr)
 	})
 	mapgenBuffer = buffer
 	C.dword_5d4594_2487556 = C.uint32_t(token)
@@ -41,7 +40,7 @@ func nox_xxx_mapgenAllocBuffer_5213E0() C.int {
 //export nox_xxx_mapgenFreeBuffer_521400
 func nox_xxx_mapgenFreeBuffer_521400() {
 	if mapgenBuffer != nil {
-		C.nox_mapgenLegacyPtrForget(mapgenBuffer)
+		forgetMapgenPointer(mapgenBuffer)
 		nox_mapgen_release_memory(mapgenBuffer)
 		mapgenBuffer = nil
 	}

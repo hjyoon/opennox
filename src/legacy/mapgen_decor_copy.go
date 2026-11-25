@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "cgo_const.h"
-#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -46,7 +45,7 @@ func mapgenReadDecorCopy(raw *C.uint32_t, destination *C.nox_mapgen_decor_defini
 	if destination.room_type < 3 {
 		first = mapgenResolveDecorDefinition(theme[22+8*int(destination.room_type)])
 	} else {
-		first = mapgenResolveDecorDefinition(C.nox_mapgenLegacyPtrRegister(unsafe.Pointer(destination)))
+		first = mapgenResolveDecorDefinition(C.uint32_t(registerMapgenPointer(unsafe.Pointer(destination))))
 	}
 	name := GoStringP(unsafe.Pointer(scratch))
 	source := mapgenFindNamedDecor(first, name)
@@ -117,6 +116,6 @@ func mapgenReadDecorCopy(raw *C.uint32_t, destination *C.nox_mapgen_decor_defini
 
 //export nox_xxx_genDecorReadCopy_520660
 func nox_xxx_genDecorReadCopy_520660(raw *C.uint32_t, definition *C.nox_cgo_const_char, file *C.FILE) C.int {
-	record := C.nox_mapgenLegacyPtrResolve(C.uintptr_t(uintptr(unsafe.Pointer(definition))))
+	record := resolveMapgenPointer(uintptr(unsafe.Pointer(definition)))
 	return mapgenReadDecorCopy(raw, (*C.nox_mapgen_decor_definition_legacy)(record), file)
 }

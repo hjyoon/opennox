@@ -177,34 +177,34 @@ func Sub_4E5AC0() {
 	C.sub_4E5AC0()
 }
 func Sub_4EED30() {
-	C.sub_4EED30()
+	sub_4EED30()
 }
 func Sub_4EF560() {
-	C.sub_4EF560()
+	sub_4EF560()
 }
 func Sub_4EF570() {
-	C.sub_4EF570()
+	sub_4EF570()
 }
 func Sub_4F0630() {
-	C.sub_4F0630()
+	sub_4F0630()
 }
 func Sub_4F3E20() {
-	C.sub_4F3E20()
+	sub_4F3E20()
 }
 func Sub_4FB940() {
-	C.sub_4FB940()
+	sub_4FB940()
 }
 func Sub_4FB950() {
-	C.sub_4FB950()
+	sub_4FB950()
 }
 func Sub_4FC560() {
-	C.sub_4FC560()
+	sub_4FC560()
 }
 func Sub_4FC950() {
-	C.sub_4FC950()
+	sub_4FC950()
 }
 func Sub_4FE840() {
-	C.sub_4FE840()
+	sub_4FE840()
 }
 func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())

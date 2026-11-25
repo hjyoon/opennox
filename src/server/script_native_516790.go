@@ -2,6 +2,26 @@ package server
 
 import "github.com/opennox/libs/object"
 
+// ScriptMakeFriendly516720 sets the migration bit before assigning an owner.
+func (s *Server) ScriptMakeFriendly516720(host, unit *Object) {
+	if unit == nil {
+		return
+	}
+	unit.ObjSubClass |= object.SubClass(object.MonsterMigrate)
+	if host != nil {
+		s.ObjSetOwner(host, unit)
+	}
+}
+
+// ScriptMakeEnemy516760 clears the migration bit before removing the owner.
+func (s *Server) ScriptMakeEnemy516760(unit *Object) {
+	if unit == nil {
+		return
+	}
+	unit.ObjSubClass &^= object.SubClass(object.MonsterMigrate)
+	s.ObjClearOwner(unit)
+}
+
 // ScriptUnknownB8516790 reports bit 8 of the object's subclass dword.
 // GAME.EXE 00516790 exposed this exact bit through NoxScript.
 func ScriptUnknownB8516790(obj *Object) bool {

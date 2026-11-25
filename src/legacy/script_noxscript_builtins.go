@@ -6,7 +6,6 @@ int nox_script_RetreatLevel_515DF0();
 int nox_script_RetreatLevelGroup_515E50();
 int nox_script_SetResumeLevel_515E80();
 int nox_script_SetResumeLevelGroup_515EE0();
-void nox_script_StartupScreen_516600_A();
 int sub_512E80(wchar2_t* a1);
 */
 import "C"
@@ -43,10 +42,6 @@ func CallScriptBuiltin(fi asm.Builtin) (int, bool) {
 	}
 	res := fnc(GetServer().NoxScriptC())
 	return res, true
-}
-
-func Nox_script_StartupScreen_516600_A() {
-	C.nox_script_StartupScreen_516600_A()
 }
 
 func Sub_512E80(str string) int {

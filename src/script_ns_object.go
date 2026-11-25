@@ -174,27 +174,15 @@ func (s noxScriptNS) DestroyEveryChat() {
 }
 
 func (s noxScriptNS) MakeFriendly(obj ns4.Obj) {
-	unit := s.asObj(obj)
-	if unit == nil {
-		return
-	}
-	// GAME.EXE 00516720 writes Object+12 (subclass), not Object+16
-	// (flags). For monsters this is Migrate, which permits campaign exits.
-	unit.ObjSubClass |= object.SubClass(0x100)
-	if host := s.s.Players.HostUnit(); host != nil {
-		s.s.ObjSetOwner(host, unit)
+	if unit := s.asObj(obj); unit != nil {
+		s.s.ScriptMakeFriendly516720(s.s.Players.HostUnit(), unit)
 	}
 }
 
 func (s noxScriptNS) MakeEnemy(obj ns4.Obj) {
-	unit := s.asObj(obj)
-	if unit == nil {
-		return
+	if unit := s.asObj(obj); unit != nil {
+		s.s.ScriptMakeEnemy516760(unit)
 	}
-	// GAME.EXE 00516760 clears the same subclass bit set by MakeFriendly.
-	// ClearOwner retains its separate monitored-pet notification behavior.
-	unit.ObjSubClass &^= object.SubClass(0x100)
-	s.s.ObjClearOwner(unit)
 }
 
 func (s noxScriptNS) BecomePet(obj ns4.Obj) {

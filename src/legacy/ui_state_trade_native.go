@@ -75,6 +75,8 @@ func sub_4611A0() C.int { return C.int(uiStateSharedWord(6)) }
 //export sub_4674A0
 func sub_4674A0() C.int { return C.int(uiStateSharedWord(7)) }
 
+func Nox_client_gold_4674A0() uint32 { return uint32(sub_4674A0()) }
+
 //export sub_4675B0
 func sub_4675B0() C.int { return C.int(uiStateSharedWord(8)) }
 

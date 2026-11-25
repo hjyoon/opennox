@@ -162,3 +162,40 @@ func sub_461E60(cell *C.nox_inventory_cell_t, stackIndex C.uint32_t) *C.nox_inve
 	}
 	return cell
 }
+
+func inventoryItemCell(row, column int, thingType uint32) *C.nox_inventory_cell_t {
+	cell := inventoryGridCell(row, column)
+	if cell.field_140 == 0 || cell.field_0 == nil || uint32(cell.field_0.field_27) != thingType {
+		return nil
+	}
+	return cell
+}
+
+func Nox_client_inventoryItemState(thingType uint32) (found bool, count uint32, currentHealth, maximumHealth uint16) {
+	for row := range inventoryRows {
+		for column := range inventoryColumns {
+			cell := inventoryItemCell(row, column, thingType)
+			if cell == nil {
+				continue
+			}
+			count += uint32(cell.field_140)
+			if !found {
+				currentHealth = uint16(cell.field_0.field_73_1)
+				maximumHealth = uint16(cell.field_0.field_73_2)
+				found = true
+			}
+		}
+	}
+	return
+}
+
+func Nox_client_inventoryItemLocation(thingType uint32) (found bool, column, row int, netCode uint32) {
+	for row := range inventoryRows {
+		for column := range inventoryColumns {
+			if cell := inventoryItemCell(row, column, thingType); cell != nil {
+				return true, column, row, uint32(cell.field_4)
+			}
+		}
+	}
+	return false, -1, -1, 0
+}

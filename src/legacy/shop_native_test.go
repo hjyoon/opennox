@@ -5,11 +5,13 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestShopCellNativeLayout(t *testing.T) {
-	size, countOffset, codesOffset, priceOffset := shopCellNativeLayout()
+	size, countOffset, codesOffset, priceOffset := cfixture.ShopCellNativeLayout()
 	if unsafe.Sizeof(uintptr(0)) == 4 {
 		if size != 140 || countOffset != 4 || codesOffset != 8 || priceOffset != 136 {
 			t.Fatalf("PE32 layout = size %d, offsets %d/%d/%d", size, countOffset, codesOffset, priceOffset)
@@ -28,19 +30,19 @@ func TestShopLookupPreservesNativePointer(t *testing.T) {
 		high <<= 32
 		want += uintptr(high)
 	}
-	if got := shopLookupRoundTrip(want); got != want {
+	if got := cfixture.ShopLookupRoundTrip(want); got != want {
 		t.Fatalf("drawable pointer round trip = %#x, want %#x", got, want)
 	}
 }
 
 func TestShopLookupPreservesGameEXETraversalOrder(t *testing.T) {
-	if got := shopLookupOrder(); got != 0x1111 {
+	if got := cfixture.ShopLookupOrder(); got != 0x1111 {
 		t.Fatalf("first matching drawable = %#x, want row 0/column 1 drawable %#x", got, uintptr(0x1111))
 	}
 }
 
 func TestShopNetCodeShiftPreservesGameEXEContract(t *testing.T) {
-	got := shopShiftContract()
+	got := cfixture.ShopShiftContract()
 	index := byte(got)
 	code0 := byte(got >> 8)
 	code1 := byte(got >> 16)
@@ -93,19 +95,13 @@ func TestShopStockFindsSpaceAfterFullStack(t *testing.T) {
 }
 
 func TestShopViewportUsesNativeWidth(t *testing.T) {
-	if !shopViewportNativeContract() {
+	if !cfixture.ShopViewportNativeContract() {
 		t.Fatal("shop viewport fields do not preserve the GAME.EXE 1024x768 contract")
 	}
 }
 
-func TestShopItemLocationUsesNativeCellsAndScrollOffset(t *testing.T) {
-	if got := shopItemLocationContract(); got != 0xff {
-		t.Fatalf("shop location contract bits = %#x, want %#x", got, 0xff)
-	}
-}
-
 func TestInventoryCapacityPreservesNativeDrawablePointer(t *testing.T) {
-	available, highPointer := inventoryCapacityContract(1234, 1234, 0, 1, 1)
+	available, highPointer := cfixture.InventoryCapacityContract(1234, 1234, 0, 1, 1)
 	if unsafe.Sizeof(uintptr(0)) > 4 && !highPointer {
 		t.Fatal("test drawable did not exercise a pointer above the PE32 address range")
 	}
@@ -115,7 +111,7 @@ func TestInventoryCapacityPreservesNativeDrawablePointer(t *testing.T) {
 }
 
 func TestInventoryTotalWeightPreservesNativeDrawablePointers(t *testing.T) {
-	weight, highPointers := inventoryTotalWeightContract()
+	weight, highPointers := cfixture.InventoryTotalWeightContract()
 	if unsafe.Sizeof(uintptr(0)) > 4 && !highPointers {
 		t.Fatal("test drawables did not exercise pointers above the PE32 address range")
 	}
@@ -126,13 +122,13 @@ func TestInventoryTotalWeightPreservesNativeDrawablePointers(t *testing.T) {
 
 func TestInventoryAlternateWeaponSyncPreservesNativeCellPointer(t *testing.T) {
 	const want = uint64(1<<10) - 1
-	if got := inventoryAltWeaponSyncContract(); got != want {
+	if got := cfixture.InventoryAltWeaponSyncContract(); got != want {
 		t.Fatalf("alternate weapon sync contract bits = %#x, want %#x", got, want)
 	}
 }
 
 func TestInventoryCellNativeLayout(t *testing.T) {
-	size, altOffset, countOffset := inventoryCellNativeLayout()
+	size, altOffset, countOffset := cfixture.InventoryCellNativeLayout()
 	if unsafe.Sizeof(uintptr(0)) == 4 {
 		if size != 148 || altOffset != 136 || countOffset != 140 {
 			t.Fatalf("PE32 inventory cell = size %d, offsets %d/%d", size, altOffset, countOffset)
@@ -163,7 +159,7 @@ func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			available, _ := inventoryCapacityContract(
+			available, _ := cfixture.InventoryCapacityContract(
 				tc.requestedType, tc.drawableType, tc.flags, tc.count, tc.amount,
 			)
 			if available != tc.want {
@@ -173,29 +169,100 @@ func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
 	}
 }
 
-func TestInventoryItemStateUsesNativeGrid(t *testing.T) {
-	found, count, currentHealth, maximumHealth := inventoryItemStateContract()
-	if !found || count != 3 || currentHealth != 0x2345 || maximumHealth != 0x6789 {
-		t.Fatalf("inventory state = found:%t count:%d health:%#x/%#x", found, count, currentHealth, maximumHealth)
-	}
-}
-
-func TestInventoryItemLocationUsesNativeGrid(t *testing.T) {
-	found, column, row, netCode := inventoryItemLocationContract()
-	if !found || column != 2 || row != 19 || netCode != 0x89abcdef {
-		t.Fatalf("inventory location = found:%t column:%d row:%d netcode:%#x", found, column, row, netCode)
-	}
-}
-
 func TestInventoryTooltipPreservesNativeDrawablePointer(t *testing.T) {
-	if !inventoryTooltipPointerContract() {
+	if !cfixture.InventoryTooltipPointerContract() {
 		t.Fatal("inventory tooltip drawable did not survive a native-width round trip")
 	}
 }
 
 func TestInventoryTradeSelectsLastNativeNetCode(t *testing.T) {
-	first, second := inventoryTradeNetCodeContract()
+	first, second := cfixture.InventoryTradeNetCodeContract()
 	if first != 0x11112222 || second != 0x33334444 {
 		t.Fatalf("selected net codes = %#x/%#x, want %#x/%#x", first, second, 0x11112222, 0x33334444)
+	}
+}
+
+func newShopTestDrawable(t *testing.T) *nox_drawable {
+	t.Helper()
+	p, free := alloc.CallocHigh(1, unsafe.Sizeof(nox_drawable{}))
+	t.Cleanup(free)
+	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(p) <= 0xffffffff {
+		t.Fatal("test drawable did not exercise a high native address")
+	}
+	return (*nox_drawable)(p)
+}
+
+func TestShopItemLocationUsesNativeCellsAndScrollOffset(t *testing.T) {
+	drawable := newShopTestDrawable(t)
+	t.Cleanup(cfixture.ClearShopCells())
+	active, scroll := cfixture.ShopViewWords()
+	left := memmap.PtrInt32(0x5D4594, 1098380)
+	top := memmap.PtrInt32(0x5D4594, 1098384)
+	oldActive, oldScroll, oldLeft, oldTop := *active, *scroll, *left, *top
+	t.Cleanup(func() {
+		*active, *scroll, *left, *top = oldActive, oldScroll, oldLeft, oldTop
+	})
+	*active, *scroll, *left, *top = 1, 50, 10, 20
+
+	drawable.field_27 = 0x12345678
+	cell := shopCell(7, 5)
+	cell.drawable, cell.count, cell.price = drawable, 2, 0xFEDCBA98
+	cell.net_codes[0], cell.net_codes[1], cell.net_codes[2] = 123, 0x89ABCDEF, 456
+	found, x, y, thingType, count, price := Nox_client_shopItemLocation(0x89ABCDEF)
+	if !found || x != 285 || y != 345 || thingType != 0x12345678 || count != 2 || price != 0xFEDCBA98 {
+		t.Fatalf("shop location: found %t, position (%d,%d), type %#x, count %d, price %#x", found, x, y, thingType, count, price)
+	}
+	if drawable.field_32 != 0 || cell.count != 2 || cell.net_codes[1] != 0x89ABCDEF {
+		t.Fatal("shop lookup modified the cell or drawable")
+	}
+	missing := func(netCode uint32) {
+		t.Helper()
+		if found, _, _, _, _, _ := Nox_client_shopItemLocation(netCode); found {
+			t.Fatalf("unavailable shop item %#x was returned", netCode)
+		}
+	}
+	missing(456)
+	missing(0)
+	*active = 0
+	missing(123)
+	*active = 1
+	cell.count = shopStackMax + 1
+	missing(123)
+	cell.count = 2
+	cell.drawable = nil
+	missing(123)
+}
+
+func TestInventoryItemStateUsesNativeGrid(t *testing.T) {
+	first, second := newShopTestDrawable(t), newShopTestDrawable(t)
+	t.Cleanup(cfixture.ClearInventoryCells())
+	first.field_27, first.field_73_1, first.field_73_2 = 0x12345678, 0x2345, 0x6789
+	second.field_27, second.field_73_1, second.field_73_2 = 0x12345678, 0x1111, 0x2222
+	// The row-first lookup sees first even though second precedes it physically.
+	firstCell, secondCell := inventoryGridCell(0, 1), inventoryGridCell(1, 0)
+	firstCell.field_0, firstCell.field_140 = first, 3
+	secondCell.field_0, secondCell.field_140 = second, 2
+
+	found, count, currentHealth, maximumHealth := Nox_client_inventoryItemState(0x12345678)
+	if !found || count != 5 || currentHealth != 0x2345 || maximumHealth != 0x6789 {
+		t.Fatalf("inventory state: found %t, count %d, current %#x, maximum %#x", found, count, currentHealth, maximumHealth)
+	}
+	if found, count, currentHealth, maximumHealth := Nox_client_inventoryItemState(0); found || count != 0 || currentHealth != 0 || maximumHealth != 0 {
+		t.Fatalf("missing inventory state: found %t, count %d, current %#x, maximum %#x", found, count, currentHealth, maximumHealth)
+	}
+}
+
+func TestInventoryItemLocationUsesNativeGrid(t *testing.T) {
+	drawable := newShopTestDrawable(t)
+	t.Cleanup(cfixture.ClearInventoryCells())
+	drawable.field_27 = 0x12345678
+	cell := inventoryGridCell(19, 2)
+	cell.field_0, cell.field_4, cell.field_140 = drawable, 0x89ABCDEF, 1
+	found, column, row, netCode := Nox_client_inventoryItemLocation(0x12345678)
+	if !found || column != 2 || row != 19 || netCode != 0x89ABCDEF {
+		t.Fatalf("inventory location: found %t, column %d, row %d, netcode %#x", found, column, row, netCode)
+	}
+	if found, column, row, netCode := Nox_client_inventoryItemLocation(0); found || column != -1 || row != -1 || netCode != 0 {
+		t.Fatalf("missing item: found %t, column %d, row %d, netcode %#x", found, column, row, netCode)
 	}
 }

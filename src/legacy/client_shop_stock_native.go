@@ -15,7 +15,10 @@ extern uint32_t dword_5d4594_1098616;
 */
 import "C"
 
-import "unsafe"
+import (
+	"slices"
+	"unsafe"
+)
 
 const (
 	shopRows     = C.NOX_SHOP_INVENTORY_ROW_COUNT
@@ -273,4 +276,26 @@ func sub_4798A0(point *C.nox_shop_position_word_t) *nox_drawable {
 	}
 	cell.drawable.field_32 = cell.net_codes[0]
 	return cell.drawable
+}
+
+// Nox_client_shopItemLocation locates an active stack entry in screen coordinates.
+func Nox_client_shopItemLocation(netCode uint32) (found bool, x, y int, thingType, count, price uint32) {
+	if netCode == 0 || C.dword_5d4594_1098624 == 0 {
+		return
+	}
+	for row := range shopRows {
+		for col := range shopCols {
+			cell := shopCell(row, col)
+			if cell.drawable == nil || cell.count == 0 || cell.count > shopStackMax {
+				continue
+			}
+			if !slices.Contains(cell.net_codes[:cell.count], C.uint32_t(netCode)) {
+				continue
+			}
+			x := int32(*g2ServerWord(1098380)) + int32(50*col+25)
+			y := int32(*g2ServerWord(1098384)) + int32(50*row+25) - int32(C.dword_5d4594_1107036)
+			return true, int(x), int(y), uint32(cell.drawable.field_27), uint32(cell.count), uint32(cell.price)
+		}
+	}
+	return
 }

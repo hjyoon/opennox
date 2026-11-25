@@ -158,7 +158,7 @@ func mapgenFinishScriptPayload503B30(delta [2]int32) {
 	current := (*C.char)(memmap.PtrOff(0x973F18, 30760))
 	previous := (*C.char)(memmap.PtrOff(0x973F18, 36008))
 	merged := (*C.char)(memmap.PtrOff(0x973F18, 38056))
-	C.sub_543110(current, &offset[0])
+	sub_543110(current, &offset[0])
 	if *memmap.PtrUint32(0x5D4594, 1599580) != 0 {
 		C.nox_fs_remove(previous)
 		C.nox_fs_move(merged, previous)

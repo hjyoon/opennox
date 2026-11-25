@@ -50,6 +50,27 @@ import (
 
 const colorSelectionStringsFile = "C:\\NoxPost\\src\\client\\shell\\SelColor.c"
 
+func colorSelectionPacked(window *nox_window) uint32 {
+	if window == nil {
+		return 0
+	}
+	return uint32(uintptr(window.widget_data))
+}
+
+func setColorSelectionPacked(window *nox_window, value uint32) {
+	if window == nil {
+		return
+	}
+	// The color picker stores two packed 16-bit values in this slot.
+	*(*uintptr)(unsafe.Pointer(&window.widget_data)) = uintptr(value)
+}
+
+func colorSelectionPaletteOffset(window *nox_window) uintptr {
+	value := colorSelectionPacked(window)
+	index := (value >> 16) + 32*uint32(uint16(value))
+	return 1307796 + 3*uintptr(index)
+}
+
 func colorSelectionEquipment() [5]*nox_window {
 	return [5]*nox_window{
 		C.dword_5d4594_1308116, C.dword_5d4594_1308120, C.dword_5d4594_1308124,
@@ -69,8 +90,8 @@ func nox_client_selColorSetEquipmentPalette(index C.uchar) C.int {
 		}
 	}
 	for _, window := range equipment {
-		value := C.nox_selcolor_value(window)
-		C.nox_selcolor_set_value(window, value&0xffff|C.uint32_t(index)<<16)
+		value := colorSelectionPacked(window)
+		setColorSelectionPacked(window, value&0xffff|uint32(index)<<16)
 	}
 	return 1
 }
@@ -134,8 +155,7 @@ func colorSelectionName(destination *C.wchar2_t, emptyLine, invalidLine int) {
 }
 
 func colorSelectionRGB(window *nox_window) [3]byte {
-	index := C.nox_selcolor_palette_index(window)
-	data := memmap.Slice(0x5D4594, 1307796+3*uintptr(index))
+	data := memmap.Slice(0x5D4594, colorSelectionPaletteOffset(window))
 	return [3]byte{data[0], data[1], data[2]}
 }
 
@@ -153,7 +173,7 @@ func captureColorSelection() [20]byte {
 		copy(colors[3+3*i:6+3*i], color[:])
 	}
 	for i, window := range colorSelectionEquipment() {
-		colors[15+i] = byte(C.nox_selcolor_value(window) >> 16)
+		colors[15+i] = byte(colorSelectionPacked(window) >> 16)
 	}
 	return colors
 }

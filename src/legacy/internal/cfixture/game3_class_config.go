@@ -5,6 +5,12 @@ package cfixture
 #include <string.h>
 #include <wctype.h>
 #include "native_fixture_alloc.h"
+#include "client__shell__selcolor.h"
+static inline void nox_selcolor_set_value(nox_window* win, uint32_t value) {
+	if (win) {
+		win->widget_data = (void*)(uintptr_t)value;
+	}
+}
 #include "game3_class_config_reference.h"
 #include "game3_class_config_options.h"
 extern nox_window* dword_5d4594_1308084;

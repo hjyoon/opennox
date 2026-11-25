@@ -248,7 +248,7 @@ func sub_4A5E90() C.int {
 		if i >= 5 {
 			value = uint32(memmap.Uint16(0x587000, 171372+uintptr(2*(i-5)))) << 16
 		}
-		C.nox_selcolor_set_value(*p, C.uint32_t(value))
+		setColorSelectionPacked(*p, value)
 	}
 	for i, id := range []int{711, 712, 713, 714, 751} {
 		*game3ColorSlot(10 + i) = C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1308084, C.int(id))
@@ -265,7 +265,7 @@ func sub_4A5E90() C.int {
 		}
 		for i := 5; i < 10; i++ {
 			result = C.int(uint32(*(*byte)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307784), 78+i))) << 16)
-			C.nox_selcolor_set_value(*game3ColorSlot(i), C.uint32_t(result))
+			setColorSelectionPacked(*game3ColorSlot(i), uint32(result))
 		}
 	}
 	return result
@@ -302,7 +302,7 @@ func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C
 		result = uintptr(int(C.nox_xxx_wnd_46ABB0(w, 0)))
 		index = 9
 	}
-	C.nox_selcolor_set_value(win, C.uint32_t(uint32(uint16(group))|uint32(uint16(index))<<16))
+	setColorSelectionPacked(win, uint32(uint16(group))|uint32(uint16(index))<<16)
 	return C.uintptr_t(result)
 }
 
@@ -338,9 +338,7 @@ func sub_4A6C90() C.int {
 	return 1
 }
 func game3PaletteColor(win *C.nox_window) C.int {
-	value := uint32(C.nox_selcolor_value(win))
-	index := uint32(uint16(value>>16)) + 32*uint32(uint16(value))
-	off := uintptr(1307796 + 3*index)
+	off := colorSelectionPaletteOffset(win)
 	return C.int(C.nox_color_rgb_4344A0(C.int(memmap.Uint8(0x5D4594, off)), C.int(memmap.Uint8(0x5D4594, off+1)), C.int(memmap.Uint8(0x5D4594, off+2))))
 }
 func game3ModifierPalette(mod unsafe.Pointer) {
@@ -434,7 +432,7 @@ func sub_4A72D0(index C.ushort) *C.nox_window {
 	if index < 32 {
 		w := C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1308088, C.int(C.dword_5d4594_1307792))
 		if w != nil {
-			C.nox_selcolor_set_value(w, C.uint32_t(uint32(memmap.Uint16(0x5D4594, 1307788))|uint32(index)<<16))
+			setColorSelectionPacked(w, uint32(memmap.Uint16(0x5D4594, 1307788))|uint32(index)<<16)
 		}
 		return w
 	}
@@ -448,7 +446,7 @@ func sub_4A7530(group C.ushort) *C.nox_window {
 	for id := 761; id <= 792; id++ {
 		w = C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1308088, C.int(id))
 		if w != nil {
-			C.nox_selcolor_set_value(w, C.uint32_t(uint32(group)|uint32(id-761)<<16))
+			setColorSelectionPacked(w, uint32(group)|uint32(id-761)<<16)
 		}
 	}
 	return w

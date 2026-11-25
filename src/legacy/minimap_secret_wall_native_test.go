@@ -73,7 +73,7 @@ func TestSecretWallMinimap472600NativeStateAndLegacyOffset(t *testing.T) {
 			checks++
 		}
 	}
-	t.Logf("checked %d CGo state/legacy-offset combinations with unchanged guarded C memory", checks)
+	t.Logf("checked %d native state/legacy-offset combinations with unchanged guarded C memory", checks)
 	runtime.KeepAlive(secret)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(wall)

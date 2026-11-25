@@ -1,12 +1,13 @@
 package legacy
 
-/*
-#include "secret_wall.h"
-*/
-import "C"
-import "unsafe"
+import (
+	"unsafe"
 
-// Exercise the same typed state predicate used by the native minimap pass.
+	"github.com/opennox/opennox/v1/server"
+)
+
+// The original minimap hides closing and fully open secret walls.
 func secretWallHiddenMinimap472600(ptr unsafe.Pointer) bool {
-	return C.nox_secret_wall_hidden_minimap_472600((*C.nox_secret_wall_t)(ptr)) != 0
+	state := (*server.SecretWall)(ptr).State
+	return state == 2 || state == 3
 }

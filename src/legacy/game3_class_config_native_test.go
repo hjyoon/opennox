@@ -130,6 +130,7 @@ func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
 	for i := range palette {
 		palette[i] = byte(i)
 	}
+	packed := (*uintptr)(unsafe.Pointer(&w.WidgetData))
 	for _, group := range []int{0, 1, 2} {
 		for _, index := range []int{0, 7, 31, 32} {
 			rgb := [3]byte{0xff, 0xff, 0xff}
@@ -137,18 +138,32 @@ func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
 				copy(rgb[:], palette[group*96+3*index:])
 			}
 			flags, draw := left.Flags, right.DrawData().Field0
+			*packed = ^uintptr(0)
 			want := cfixture.Game3ColorMatch(true, w, group, rgb)
-			wantFlags, wantDraw := left.Flags, right.DrawData().Field0
+			wantFlags, wantDraw, wantPacked := left.Flags, right.DrawData().Field0, *packed
 			left.Flags = flags
 			right.DrawData().Field0 = draw
+			*packed = ^uintptr(0)
 			got := cfixture.Game3ColorMatch(false, w, group, rgb)
 			if got != want || left.Flags != wantFlags || right.DrawData().Field0 != wantDraw {
 				t.Fatalf("palette pointer/status return differs group%d index%d", group, index)
+			}
+			if *packed != wantPacked {
+				t.Fatalf("palette word group %d index %d = %#x, want %#x", group, index, *packed, wantPacked)
+			}
+			if index < 32 {
+				if gotRGB := colorSelectionRGB((*nox_window)(w.C())); gotRGB != rgb {
+					t.Fatalf("palette RGB group %d index %d = %v, want %v", group, index, gotRGB, rgb)
+				}
 			}
 			if group == 1 && index < 32 && got != uintptr(right.C()) {
 				t.Fatal("matched palette window address was narrowed")
 			}
 		}
+	}
+	setColorSelectionPacked(nil, 0xffffffff)
+	if got := colorSelectionPacked(nil); got != 0 {
+		t.Fatalf("nil palette word = %#x, want zero", got)
 	}
 	runtime.GC()
 }

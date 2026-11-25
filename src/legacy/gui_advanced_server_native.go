@@ -249,7 +249,7 @@ func performanceRate(entry *nox_window) (uint32, bool) {
 	if text == nil || *text == 0 {
 		return 0, false
 	}
-	return uint32(max(0, int32(C.nox_wcstol(text, nil, 10)))), true
+	return uint32(max(0, int32(parseLegacyWideDecimal(text)))), true
 }
 
 //export sub_4BE330

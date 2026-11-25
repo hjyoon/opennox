@@ -81,7 +81,7 @@ func nox_cmd_set_players(i, n C.int, tokens **C.wchar2_t) C.int {
 	}
 	var limit C.int
 	if token := consoleLegacyToken(tokens, 2, n); token != nil {
-		limit = min(999, max(0, C.int(C.nox_wcstol(token, nil, 10))))
+		limit = min(999, max(0, C.int(parseLegacyWideDecimal(token))))
 		if nox_xxx_servGetPlrLimit_409FA0() == limit {
 			return 1
 		}

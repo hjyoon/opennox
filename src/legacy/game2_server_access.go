@@ -100,7 +100,7 @@ func g2ServerAccessEdit(edit *C.nox_window, id int) {
 	p := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(edit, 16413, 0, 0)))
 	var value int32
 	if p != nil && *p != 0 {
-		value = int32(C.nox_wcstol(p, nil, 10))
+		value = int32(parseLegacyWideDecimal(p))
 		if value < 0 {
 			value = 0
 		}
@@ -241,7 +241,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 			if text == nil || *text == 0 {
 				return 0
 			}
-			v := int32(C.nox_wcstol(text, nil, 10))
+			v := int32(parseLegacyWideDecimal(text))
 			*cell = byte((uint32(*cell & ^mask)) | uint32(v))
 		case 10129, 10131:
 			controls = unsafe.Pointer(C.sub_416630())
@@ -262,7 +262,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 			if text == nil || *text == 0 {
 				return 0
 			}
-			*cell = uint16(C.nox_wcstol(text, nil, 10))
+			*cell = uint16(parseLegacyWideDecimal(text))
 		case 10191, 10192:
 			selections := (*int32)(unsafe.Pointer(g2ServerEvent(s.wnd_10200, 16404, 0, 0)))
 			if selections == nil || *selections < 0 {

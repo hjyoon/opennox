@@ -112,7 +112,7 @@ func nox_cmd_cheat_level(i, n C.int, tokens **C.wchar2_t) C.int {
 	players := &GetServer().S().Players
 	for pl := players.First(); pl != nil; pl = players.Next(pl) {
 		if pl.PlayerUnit != nil {
-			level := C.uint8_t(C.nox_wcstol(consoleLegacyToken(tokens, 2, n), nil, 10))
+			level := C.uint8_t(parseLegacyWideDecimal(consoleLegacyToken(tokens, 2, n)))
 			sub_4EF410(asObjectC(pl.PlayerUnit), level)
 		}
 	}
@@ -123,7 +123,7 @@ func nox_cmd_cheat_level(i, n C.int, tokens **C.wchar2_t) C.int {
 func nox_cmd_window(i, n C.int, tokens **C.wchar2_t) C.int {
 	if n > 1 {
 		token := consoleLegacyToken(tokens, i, n)
-		value := C.nox_wcstol(token, nil, 10)
+		value := parseLegacyWideDecimal(token)
 		if *token == '+' || *token == '-' {
 			nox_draw_setCutSize_476700(0, int32(value))
 		} else {
@@ -177,7 +177,7 @@ func nox_cmd_set_time(i, n C.int, tokens **C.wchar2_t) C.int {
 	}
 	settings := sub_4165B0()
 	if token := consoleLegacyToken(tokens, 2, n); token != nil {
-		time := C.uchar(C.nox_wcstol(token, nil, 10))
+		time := C.uchar(parseLegacyWideDecimal(token))
 		sub_40A040_settings(consoleSettingsMode(settings), time)
 	}
 	return 1
@@ -191,7 +191,7 @@ func nox_cmd_set_lessons(i, n C.int, tokens **C.wchar2_t) C.int {
 	token := consoleLegacyToken(tokens, 2, n)
 	settings := sub_4165B0()
 	if token != nil {
-		lessons := C.ushort(C.nox_wcstol(token, nil, 10))
+		lessons := C.ushort(parseLegacyWideDecimal(token))
 		sub_409FB0_settings(consoleSettingsMode(settings), lessons)
 	}
 	return 1

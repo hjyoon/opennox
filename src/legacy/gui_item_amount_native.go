@@ -55,7 +55,7 @@ func mirrorItemAmountPointer(offset uintptr, value unsafe.Pointer) {
 }
 
 func readItemAmount() uint32 {
-	return uint32(C.nox_wcstol(C.sub_46AF00(C.dword_5d4594_1319232), nil, 10))
+	return uint32(parseLegacyWideDecimal(C.sub_46AF00(C.dword_5d4594_1319232)))
 }
 
 //export nox_gui_item_amount_state

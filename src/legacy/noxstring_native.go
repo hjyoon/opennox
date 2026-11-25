@@ -33,6 +33,46 @@ func parseLegacyDecimal32(text *C.char) C.int {
 	return C.int(value)
 }
 
+// parseLegacyWideDecimal scans the ASCII decimal prefix directly from the
+// UTF-16 buffer and uses the target's signed C long range.
+func parseLegacyWideDecimal(text *wchar2_t) C.long {
+	var offset uintptr
+	var ch wchar2_t
+	for {
+		ch = *wideStringUnit(text, offset)
+		if ch != ' ' && (ch < '\t' || ch > '\r') {
+			break
+		}
+		offset++
+	}
+	negative := ch == '-'
+	if ch == '+' || negative {
+		offset++
+	}
+	const positiveLimit = (uint64(1) << (unsafe.Sizeof(C.long(0))*8 - 1)) - 1
+	limit := positiveLimit
+	if negative {
+		limit++
+	}
+	var value uint64
+	for {
+		digit := uint64(*wideStringUnit(text, offset) - '0')
+		if digit >= 10 {
+			break
+		}
+		if value > (limit-digit)/10 {
+			value = limit
+			break
+		}
+		value = 10*value + digit
+		offset++
+	}
+	if negative {
+		return -C.long(value)
+	}
+	return C.long(value)
+}
+
 // copyLegacyCString applies the legacy formatter's code-unit conversion to
 // one string, with a terminator within the destination.
 func copyLegacyCString[D, S formatCodeUnit](dst []D, src *S) {

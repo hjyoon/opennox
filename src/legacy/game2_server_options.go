@@ -375,11 +375,11 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	*(*uint32)(unsafe.Add(output, 48)) = *g2ServerWord(1045456)
 	p := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046516, 16413, 0, 0)))
 	if *p != 0 {
-		*(*uint16)(unsafe.Add(output, 54)) = uint16(C.nox_wcstol(p, nil, 10))
+		*(*uint16)(unsafe.Add(output, 54)) = uint16(parseLegacyWideDecimal(p))
 	}
 	p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046520, 16413, 0, 0)))
 	if *p != 0 {
-		*(*byte)(unsafe.Add(output, 56)) = byte(C.nox_wcstol(p, nil, 10))
+		*(*byte)(unsafe.Add(output, 56)) = byte(parseLegacyWideDecimal(p))
 	}
 	*(*byte)(unsafe.Add(output, 57)) = byte(g2ServerChild(C.dword_5d4594_1046492, 10122).draw_data.field_0>>2) & 1
 	result := int(g2ServerEvent(C.dword_5d4594_1046496, 16404, 0, 0))

@@ -68,3 +68,21 @@ func TestLegacyWideStringNumberLeavesEndAtFirstNonASCIIUnit(t *testing.T) {
 		t.Fatalf("parse result = %d, %p, want -42, %p", got, end, wideStringUnit(text, 6))
 	}
 }
+
+func TestLegacyWideDecimalMatchesRetainedC(t *testing.T) {
+	for _, input := range []string{
+		"", "+", " - 1", " \t\n\v\f\r+17tail", "0xff", "42\x00-1",
+		"１２", "12９34", "2147483648", "-2147483649", "9223372036854775807",
+		"9223372036854775808suffix", "-9223372036854775808", "-9223372036854775809",
+		"18446744073709551616", "-18446744073709551616",
+	} {
+		t.Run(input, func(t *testing.T) {
+			words, free := alloc.CString16High(input)
+			defer free()
+			text := (*wchar2_t)(unsafe.Pointer(words))
+			if got, want := parseLegacyWideDecimal(text), nox_wcstol(text, nil, 10); got != want {
+				t.Errorf("decimal prefix result = %d, want %d", got, want)
+			}
+		})
+	}
+}

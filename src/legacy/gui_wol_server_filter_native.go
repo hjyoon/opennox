@@ -50,7 +50,7 @@ func sub_489870() C.int {
 		child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(win, id) }
 		filter.checkLatency = wolFilterSelected(child(10028))
 		pingText := nox_window_call_field_94_fnc(child(10031), 16413, 0, 0, nil, 0)
-		filter.maxLatency = uint32(C.nox_wcstol((*wchar2_t)(unsafe.Pointer(pingText)), nil, 10))
+		filter.maxLatency = uint32(parseLegacyWideDecimal((*wchar2_t)(unsafe.Pointer(pingText))))
 		filter.excludeClosed = wolFilterSelected(child(10029))
 		filter.excludePrivate = wolFilterSelected(child(10030))
 		filter.questLevel = 0

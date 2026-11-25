@@ -39,7 +39,7 @@ func TestGAME1MemDump413E30NativeCNodeLayout(t *testing.T) {
 func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 	table := memDumpTestTable413E30(t)
 	var nodes []*memDumpNode413E30
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 6; i++ {
 		p := cfixture.MemDumpFixtureNew413E30()
 		if p == nil {
 			t.Fatal("C node allocation")
@@ -53,7 +53,7 @@ func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 	for i, x := range []struct {
 		name  string
 		count uint32
-	}{{"alpha", 4}, {"beta", 10}, {"alpha", 3}, {"gamma", 1}} {
+	}{{"alpha", 4}, {"beta", 10}, {"alpha", 3}, {"gamma", 1}, {"delta", 7}, {"epsilon", 10}} {
 		copy(nodes[i].Name[:], x.name)
 		nodes[i].Count = x.count
 		if i+1 < len(nodes) {
@@ -65,13 +65,13 @@ func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 	for i, x := range []struct {
 		name  string
 		count uint32
-	}{{"gamma", 1}, {"alpha", 7}, {"beta", 10}} {
+	}{{"gamma", 1}, {"delta", 7}, {"alpha", 7}, {"epsilon", 10}, {"beta", 10}} {
 		r := table[i*84 : (i+1)*84]
 		if got := string(memDumpName413E30(r[:80])); got != x.name || binary.LittleEndian.Uint32(r[80:]) != x.count {
 			t.Fatalf("row%d=%q/%d", i, got, binary.LittleEndian.Uint32(r[80:]))
 		}
 	}
-	for i := 3; i < 1024; i++ {
+	for i := 5; i < 1024; i++ {
 		r := table[i*84 : (i+1)*84]
 		if binary.LittleEndian.Uint32(r[80:]) != 0 || !bytes.Equal(r[:80], bytes.Repeat([]byte{0xA5}, 80)) {
 			t.Fatalf("unused record%d changed", i)
@@ -82,16 +82,21 @@ func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 
 func TestGAME1MemDump413E30WrappingCountsAndGoOwners(t *testing.T) {
 	table := memDumpTestTable413E30(t)
-	first, second := new(memDumpNode413E30), new(memDumpNode413E30)
+	first, second, third := new(memDumpNode413E30), new(memDumpNode413E30), new(memDumpNode413E30)
 	copy(first.Name[:], "wrap")
 	copy(second.Name[:], "wrap")
 	first.Count, second.Count, first.Next = ^uint32(1), 9, second
+	copy(third.Name[:], "high")
+	second.Next, third.Count = third, ^uint32(0)
 	*memDumpHead413E30() = first
 	for i := 0; i < 3; i++ {
 		runtime.GC()
 	}
 	cfixture.MemDumpFixturePublic413E30()
-	if got := binary.LittleEndian.Uint32(table[80:]); got != 7 {
+	if got := binary.LittleEndian.Uint32(table[80:]); got != ^uint32(0) {
+		t.Fatalf("DWORD comparison wrap sorted first count as %d", got)
+	}
+	if got := binary.LittleEndian.Uint32(table[84+80:]); got != 7 {
 		t.Fatalf("DWORD addition=%d", got)
 	}
 	runtime.KeepAlive(first)

@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include <stdint.h>
+#include "cgo_const.h"
 */
 import "C"
 import "unsafe"
@@ -27,5 +28,7 @@ func sub_413920() C.int { return C.int(sub413920Native()) }
 //export sub_4139B0
 func sub_4139B0() C.int { return C.int(sub4139B0Native()) }
 
-//export nox_native_compare_413f60
-func nox_native_compare_413f60(a, b unsafe.Pointer) C.int { return C.int(sub413F60Native(a, b)) }
+//export sub_413F60
+func sub_413F60(a, b *C.nox_cgo_const_void) C.int {
+	return C.int(sub413F60Native(unsafe.Pointer(a), unsafe.Pointer(b)))
+}

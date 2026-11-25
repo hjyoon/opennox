@@ -73,11 +73,10 @@ func memDumpAggregate413E30(table []byte, head *memDumpNode413E30) int {
 		off := index*memDumpRowSize413E30 + memDumpNameSize413E30
 		binary.LittleEndian.PutUint32(table[off:], binary.LittleEndian.Uint32(table[off:])+node.Count)
 	}
-	if count != 0 {
-		// Keep the actual C qsort and existing raw SUB32 comparator. Replacing
-		// either with a Go ordering would change tie/wrap behavior.
-		memDumpSort413E30(unsafe.Pointer(&table[0]), count)
-	}
+	records := unsafe.Slice((*[memDumpRowSize413E30]byte)(unsafe.Pointer(unsafe.SliceData(table))), count)
+	sortLegacyQsort(records, func(a, b *[memDumpRowSize413E30]byte) int {
+		return int(sub413F60Native(unsafe.Pointer(a), unsafe.Pointer(b)))
+	})
 	runtime.KeepAlive(head)
 	return count
 }

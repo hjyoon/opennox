@@ -509,15 +509,7 @@ func sub_450760(value C.char) C.char { *memmap.PtrUint8(0x5D4594, 831252) = byte
 
 //export sub_450960
 func sub_450960(a, b *C.nox_cgo_const_void) C.int {
-	x := (*C.nox_quest_stats_row_450770)(unsafe.Pointer(a)).score
-	y := (*C.nox_quest_stats_row_450770)(unsafe.Pointer(b)).score
-	if x == y {
-		return 0
-	}
-	if x < y {
-		return 1
-	}
-	return -1
+	return C.int(questWinCompareRows450960((*questWinRowBytes450770)(unsafe.Pointer(a)), (*questWinRowBytes450770)(unsafe.Pointer(b))))
 }
 
 //export sub_450AD0

@@ -11,8 +11,9 @@ import (
 
 func TestQuestWin450770NativeRowsAndUnsignedPrefixSort(t *testing.T) {
 	rows := questWinRows450770()
-	old := *rows
-	t.Cleanup(func() { *rows = old })
+	raw := (*[6]questWinRowBytes450770)(unsafe.Pointer(rows))
+	old := *raw
+	t.Cleanup(func() { *raw = old })
 	*rows = [6]questWinRow450770{}
 	if got := questWinRowCSize450770(); got != unsafe.Sizeof(rows[0]) {
 		t.Fatalf("C row=%d Go row=%d", got, unsafe.Sizeof(rows[0]))
@@ -40,6 +41,23 @@ func TestQuestWin450770NativeRowsAndUnsignedPrefixSort(t *testing.T) {
 	for dst, src := range []int{2, 1, 0, 3, 4, 5} {
 		if rows[dst] != before[src] {
 			t.Fatalf("zero/singleton prefix changed row %d", dst)
+		}
+	}
+
+	// The original rearranges tied rows and swaps every byte of a record.
+	*rows = before
+	rows[0].Score, rows[3].Score = math.MaxUint32, 0x80000000
+	const scoreEnd = unsafe.Offsetof(questWinRow450770{}.Score) + unsafe.Sizeof(questWinRow450770{}.Score)
+	for i := range raw {
+		for j := scoreEnd; j < uintptr(len(raw[i])); j++ {
+			raw[i][j] = byte(i + 1)
+		}
+	}
+	unsorted := *raw
+	questWinSortRows450770(4)
+	for dst, src := range []int{2, 0, 3, 1, 4, 5} {
+		if raw[dst] != unsorted[src] {
+			t.Fatalf("row %d = %x, want original row %d = %x", dst, raw[dst], src, unsorted[src])
 		}
 	}
 }

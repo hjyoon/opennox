@@ -27,9 +27,9 @@ func TestSortBookEntriesKeepsOriginalTiesAndMissingTitles(t *testing.T) {
 			}
 			book[len(entries)] = canary
 			comparisons := 0
-			sortBookEntries(entries, func(a, b uint32) int {
+			sortLegacyQsort(entries, func(a, b *uint32) int {
 				comparisons++
-				left, right := test.keys[a], test.keys[b]
+				left, right := test.keys[*a], test.keys[*b]
 				if left < 0 || right < 0 {
 					return 0
 				}

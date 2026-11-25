@@ -203,7 +203,9 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 	count := *game2BookU(1047508)
 	n := count - min(count, uint32(C.dword_5d4594_1047512))
 	*game2BookU(1046940) = n/perPage + 1
-	sortBookEntries(unsafe.Slice(game2BookU(1046960), int(n)), compareBookEntries)
+	sortLegacyQsort(unsafe.Slice(game2BookU(1046960), int(n)), func(left, right *uint32) int {
+		return compareBookEntries(*left, *right)
+	})
 	return found
 }
 

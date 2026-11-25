@@ -10,5 +10,5 @@ func Nox_xxx_wndGuiTeamCreate_4185B0() {
 	C.nox_xxx_wndGuiTeamCreate_4185B0()
 }
 func Sub_41D650() {
-	C.sub_41D650()
+	sub_41D650()
 }

@@ -35,11 +35,11 @@ func sub_446380() { Sub_446380() }
 func sub_445B40() int32 { return int32(Sub_445B40()) }
 
 func Sub_41F4B0() {
-	C.sub_41F4B0()
+	sub_41F4B0()
 }
 
 func Sub_41EC30() {
-	C.sub_41EC30()
+	sub_41EC30()
 }
 
 func Sub_446490(v int) {

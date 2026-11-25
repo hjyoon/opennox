@@ -77,7 +77,7 @@ int sub_41E4B0(int a1);
 int sub_41EC30();
 int sub_41F4B0();
 uint32_t* sub_41F790(const char* a1);
-int sub_41F800(const char* a1);
+void* sub_41F800(const char* a1);
 char* sub_41FA40();
 void sub_41FA50(const char* a1);
 int sub_41FBE0(const char** a1, const char** a2);

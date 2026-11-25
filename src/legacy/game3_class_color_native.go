@@ -863,8 +863,8 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 	}
 	C.sub_446380()
 	if C.dword_5d4594_2650652 != 0 && C.sub_41E2F0() == 9 {
-		C.sub_41F4B0()
-		C.sub_41EC30()
+		sub_41F4B0()
+		sub_41EC30()
 		C.sub_446490(0)
 		C.nox_xxx____setargv_4_44B000()
 		sub_4AB4D0(0)

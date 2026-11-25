@@ -397,7 +397,7 @@ func Sub_425AD0(a1 int, a2 *uint16) unsafe.Pointer {
 }
 
 func Sub_41D670(a1 string) {
-	C.sub_41D670(internCStr(a1))
+	sub_41D670(internCStr(a1))
 }
 
 func Sub_425F10(p *server.Player) {

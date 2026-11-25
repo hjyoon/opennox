@@ -280,7 +280,7 @@ func Sub_43C650() {
 }
 
 func Sub_41D6C0() {
-	C.sub_41D6C0()
+	sub_41D6C0()
 }
 
 func Sub_49C7A0() {

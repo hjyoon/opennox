@@ -38,7 +38,7 @@ func sub_438C80(win *nox_window, draw *C.nox_window_data) C.int {
 			nox_xxx_windowFocus_46B500(C.nox_wol_wnd_world_814980)
 		}
 	}
-	if sub_4A28B0() != 0 && !bool(C.nox_xxx_wndPointInWnd_46AAB0(C.dword_5d4594_1307716, mouse.x, mouse.y)) {
+	if sub_4A28B0() != 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(C.dword_5d4594_1307716, mouse.x, mouse.y)) {
 		sub_4A2890()
 		nox_xxx_windowFocus_46B500(C.nox_wol_wnd_world_814980)
 	}

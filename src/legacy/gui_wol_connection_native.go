@@ -40,8 +40,8 @@ func sub_4383A0() C.int {
 	nox_window_set_hidden(C.nox_wol_wnd_gameList_815012, 0)
 	nox_window_set_hidden(C.dword_5d4594_814984, 1)
 	nox_window_set_hidden(C.dword_5d4594_814988, 1)
-	C.sub_46AD20(C.nox_wol_wnd_world_814980, 10006, 10007, 1)
-	C.sub_46ACE0(C.nox_wol_wnd_world_814980, 10047, 10051, 0)
+	sub_46AD20(C.nox_wol_wnd_world_814980, 10006, 10007, 1)
+	sub_46ACE0(C.nox_wol_wnd_world_814980, 10047, 10051, 0)
 	wolSetHeading(C.dword_5d4594_814996, wolWindowString("ListJoinServer", 418))
 	C.dword_587000_87408 = 1
 	return 0

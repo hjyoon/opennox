@@ -27,7 +27,7 @@ import (
 
 func meterWindowPosition(win *C.nox_window) (C.int, C.int) {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	return C.int(x), C.int(y)
 }
 
@@ -36,7 +36,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 	meter := &C.nox_windows_arr_1093036[uintptr(win.widget_data)]
 	x, y := meterWindowPosition(win)
 	var w, h C.int
-	C.nox_window_get_size(win, &w, &h)
+	nox_window_get_size(win, &w, &h)
 	meter.color_2 = meter.color_1
 	if meter.field_2 == 0 {
 		sub_465D50_draw(win)

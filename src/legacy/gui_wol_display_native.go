@@ -46,7 +46,7 @@ func sub_437320(record *C.nox_gui_server_ent_t) C.int {
 //export sub_4375C0
 func sub_4375C0(enabled C.int) {
 	if count := Get_nox_wol_server_result_cnt_815088(); count != 0 {
-		C.sub_46AD20(C.nox_wol_wnd_world_814980, 10070, C.int(count+10069), enabled)
+		sub_46AD20(C.nox_wol_wnd_world_814980, 10070, C.int(count+10069), enabled)
 	}
 }
 

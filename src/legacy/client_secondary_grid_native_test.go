@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// Compile the live C selector, marker reset and sender with the retained
+// Compile the preserved C selector, marker reset and sender with the retained
 // original C encoder service. TestObjectFieldNativeOriginal separately checks
 // the current Go encoder through its actual C, callback and Go entry paths.
 // Grid placement and the final network sink remain fixture services.
@@ -21,8 +21,6 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 	for _, part := range []struct {
 		file, start, end, marker string
 	}{
-		{"GAME2_1.c", "//----- (00461550)", "//----- (00461600)", "// SELECT_BODY"},
-		{"GAME2_1.c", "//----- (004619F0)", "//----- (00461B50)", "// CLEAR_BODY"},
 		{"testdata/retired-game-sources/GAME3_1.c.txt", "//----- (004BF010)", "int nox_client_getPlayerDollState_4BF7E0", "// REPORT_BODY"},
 	} {
 		source, err := os.ReadFile(part.file)

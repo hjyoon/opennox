@@ -28,8 +28,52 @@ int nox_xxx_netClientSend2_4E53C0(int recipient, const void* payload, int size, 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
 #pragma GCC diagnostic ignored "-Wsign-compare"
-// SELECT_BODY
-// CLEAR_BODY
+//----- (00461550) --------------------------------------------------------
+int nox_xxx_clientSetAltWeapon_461550(nox_inventory_cell_t* cell) {
+	nox_inventory_cell_t* previous = (nox_inventory_cell_t*)dword_5d4594_1062480;
+	if (previous) {
+		dword_5d4594_1062484 = previous->field_4;
+	} else {
+		dword_5d4594_1062484 = 0;
+	}
+	dword_5d4594_1062480 = (uintptr_t)cell;
+	sub_4619F0();
+	if (!cell) {
+		return nox_xxx_clientReportSecondaryWeapon_4BF010(0);
+	}
+	cell->field_0->field_32 = cell->field_4;
+	cell->field_136 = 1;
+	return nox_xxx_clientReportSecondaryWeapon_4BF010(cell->field_0);
+}
+
+//----- (004619F0) --------------------------------------------------------
+char* sub_4619F0() {
+	char* v0;     // edi
+	char* result; // eax
+	int v2;       // esi
+	int v3;       // ecx
+	unsigned int row = 0;
+
+	v0 = (char*)&(nox_client_inventory_grid_1050020[0].field_140);
+	do {
+		result = v0;
+		v2 = 4;
+		do {
+			v3 = 0;
+			if ((unsigned char)*result > 0) {
+				do {
+					*((uint32_t*)result - 1) = 0;
+					++v3;
+				} while (v3 < (unsigned char)*result);
+			}
+			result += NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t);
+			--v2;
+		} while (v2);
+		v0 += sizeof(nox_inventory_cell_t);
+	} while (++row < NOX_INVENTORY_ROW_COUNT);
+	return result;
+}
+
 // REPORT_BODY
 // Original 00578B00 encoder retained for the secondary-weapon fixture.
 unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr) {

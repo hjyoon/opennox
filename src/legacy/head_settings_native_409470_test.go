@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 var headSettingsRegions409470 = []struct {
@@ -78,11 +79,11 @@ func headSettingsString409470(t *testing.T, s string, wide bool) unsafe.Pointer 
 	if wide {
 		n *= 2
 	}
-	p := headSettingsFixtureAlloc409470(uintptr(n))
+	p := cfixture.HeadSettingsAlloc(uintptr(n))
 	if p == nil {
 		t.Fatal("calloc")
 	}
-	t.Cleanup(func() { headSettingsFixtureFree409470(p) })
+	t.Cleanup(func() { cfixture.HeadSettingsFree(p) })
 	if wide {
 		for i, b := range []byte(s) {
 			*(*uint16)(unsafe.Add(p, 2*i)) = uint16(b)
@@ -114,7 +115,7 @@ func TestHeadSettings21ActualCABIAndCurrentCReference(t *testing.T) {
 						}}
 						func() {
 							defer headSettingsObserve409470(o)()
-							results[backend] = headSettingsFixtureWord409470(ref, entry, arg)
+							results[backend] = cfixture.HeadSettingsWord(ref, entry, arg)
 						}()
 						states[backend] = headSettingsSnapshot409470()
 					}
@@ -129,8 +130,8 @@ func TestHeadSettings21ActualCABIAndCurrentCReference(t *testing.T) {
 		entry uint32
 		p     unsafe.Pointer
 	}{{0x409b30, headSettingsPath409470()}, {0x409b40, headSettingsMap409470()}, {0x40a4c0, headSettingsName409470()}, {0x40a630, headSettingsPass409470()}} {
-		got := headSettingsFixturePointer409470(false, x.entry, nil)
-		if got != x.p || got != headSettingsFixturePointer409470(true, x.entry, nil) {
+		got := cfixture.HeadSettingsPointer(false, x.entry, nil)
+		if got != x.p || got != cfixture.HeadSettingsPointer(true, x.entry, nil) {
 			t.Fatalf("getter%x native alias", x.entry)
 		}
 		headSettingsHigh409470(t, got, "public C getter")
@@ -162,7 +163,7 @@ func TestHeadSettingsStringsCurrentCAndNativePolicy(t *testing.T) {
 			var results [2]unsafe.Pointer
 			for i, ref := range []bool{true, false} {
 				headSettingsRestore409470(initial)
-				results[i] = headSettingsFixturePointer409470(ref, tc.entry, p)
+				results[i] = cfixture.HeadSettingsPointer(ref, tc.entry, p)
 				states[i] = headSettingsSnapshot409470()
 			}
 			if results[0] != results[1] || !reflect.DeepEqual(states[0], states[1]) {
@@ -173,7 +174,7 @@ func TestHeadSettingsStringsCurrentCAndNativePolicy(t *testing.T) {
 				// Valid short unchanged names must return nil and preserve dirty.
 				headSettingsDirty409470(0x12345678)
 				if tc.entry == 0x40a440 || len(tc.value) <= 79 {
-					if got := headSettingsFixturePointer409470(false, tc.entry, p); got != nil || headSettingsDirtyGet409470() != 0x12345678 {
+					if got := cfixture.HeadSettingsPointer(false, tc.entry, p); got != nil || headSettingsDirtyGet409470() != 0x12345678 {
 						t.Fatal("unchanged string rewrote state")
 					}
 				}
@@ -187,7 +188,7 @@ func TestHeadSettingsStringsCurrentCAndNativePolicy(t *testing.T) {
 		name[i] = 0x6f
 	}
 	before := bytes.Clone(name)
-	if headSettingsFixturePointer409470(false, 0x40a440, nil) != nil {
+	if cfixture.HeadSettingsPointer(false, 0x40a440, nil) != nil {
 		t.Fatal("nil name return")
 	}
 	before[0] = 0
@@ -199,7 +200,7 @@ func TestHeadSettingsStringsCurrentCAndNativePolicy(t *testing.T) {
 		headSettingsRestore409470(initial)
 		p := headSettingsString409470(t, s, false)
 		guard := bytes.Clone(unsafe.Slice((*byte)(memmap.PtrOff(0x85b3fc, 116)), 4))
-		if headSettingsFixturePointer409470(false, 0x409d70, p) != headSettingsMap409470() {
+		if cfixture.HeadSettingsPointer(false, 0x409d70, p) != headSettingsMap409470() {
 			t.Fatal("native policy result")
 		}
 		n := 0
@@ -211,7 +212,7 @@ func TestHeadSettingsStringsCurrentCAndNativePolicy(t *testing.T) {
 		}
 	}
 	headSettingsRestore409470(initial)
-	if headSettingsFixturePointer409470(false, 0x409d70, nil) != nil || !reflect.DeepEqual(initial, headSettingsSnapshot409470()) {
+	if cfixture.HeadSettingsPointer(false, 0x409d70, nil) != nil || !reflect.DeepEqual(initial, headSettingsSnapshot409470()) {
 		t.Fatal("native nil-map policy")
 	}
 }
@@ -231,7 +232,7 @@ func TestHeadSettingsRateServiceOrderingAndObserverReentry(t *testing.T) {
 			func() {
 				inner := &headSettingsObserver409470{Flags: func(m uint32) bool { trace = append(trace, "inner"); return false }}
 				defer headSettingsObserve409470(inner)()
-				if headSettingsFixtureWord409470(false, 0x40a5f0, 0) != 0xffffff9d {
+				if cfixture.HeadSettingsWord(false, 0x40a5f0, 0) != 0xffffff9d {
 					t.Fatal("nested flag result")
 				}
 			}()
@@ -249,7 +250,7 @@ func TestHeadSettingsRateServiceOrderingAndObserverReentry(t *testing.T) {
 		func() {
 			defer headSettingsObserve409470(outer)()
 			headSettingsSetRespawn409470(-99)
-			if got := headSettingsFixtureWord409470(ref, 0x40a6d0, -2147483648); got != 0xfffffff9 {
+			if got := cfixture.HeadSettingsWord(ref, 0x40a6d0, -2147483648); got != 0xfffffff9 {
 				t.Fatalf("notify return%x", got)
 			}
 		}()
@@ -258,7 +259,7 @@ func TestHeadSettingsRateServiceOrderingAndObserverReentry(t *testing.T) {
 		}
 		func() {
 			defer headSettingsObserve409470(&headSettingsObserver409470{Flags: func(uint32) bool { t.Fatal("equal rate called service"); return false }})()
-			if headSettingsFixtureWord409470(ref, 0x40a6d0, -2147483648) != 0x80000000 {
+			if cfixture.HeadSettingsWord(ref, 0x40a6d0, -2147483648) != 0x80000000 {
 				t.Fatal("same-rate return")
 			}
 		}()
@@ -319,18 +320,18 @@ func TestHeadSettingsParseActualBinfilePlainAndEncrypted(t *testing.T) {
 					headSettingsHigh409470(t, unsafe.Pointer(h), "actual opaque binfile handle")
 					func() {
 						defer Nox_fs_close(h)
-						out := headSettingsFixtureAlloc409470(288)
+						out := cfixture.HeadSettingsAlloc(288)
 						if out == nil {
 							t.Fatal("calloc token")
 						}
-						defer headSettingsFixtureFree409470(out)
+						defer cfixture.HeadSettingsFree(out)
 						headSettingsHigh409470(t, out, "actual C token output")
 						for call := 0; call < 32; call++ {
 							b := unsafe.Slice((*byte)(out), 288)
 							for i := range b {
 								b[i] = 0xcc
 							}
-							v := headSettingsFixtureParse409470(ref, unsafe.Pointer(h), unsafe.Add(out, 16))
+							v := cfixture.HeadSettingsParse(ref, unsafe.Pointer(h), unsafe.Add(out, 16))
 							pos, e := reader.File.File.Seek(0, io.SeekCurrent)
 							if e != nil {
 								t.Fatal(e)
@@ -371,7 +372,7 @@ func TestHeadSettingsDWORDNeighborsAndCaseInsensitiveNoChange(t *testing.T) {
 	headSettingsSetup409470(t)
 	limit := unsafe.Slice((*byte)(memmap.PtrOff(0x5d4594, 3460)), 12)
 	before := bytes.Clone(limit)
-	if headSettingsFixtureWord409470(false, 0x409f80, -1) != 0xffffffff {
+	if cfixture.HeadSettingsWord(false, 0x409f80, -1) != 0xffffffff {
 		t.Fatal("DWORD return")
 	}
 	binary.LittleEndian.PutUint32(before[4:8], 0xffffffff)
@@ -383,11 +384,11 @@ func TestHeadSettingsDWORDNeighborsAndCaseInsensitiveNoChange(t *testing.T) {
 		first, second string
 	}{{0x409d70, "maps\\War01a.map", "MAPS\\war01A.MAP"}, {0x40a440, "ServerOne", "sERVERoNE"}, {0x40a440, "123456789012345A", "123456789012345B"}} {
 		p := headSettingsString409470(t, tc.first, false)
-		headSettingsFixturePointer409470(false, tc.entry, p)
+		cfixture.HeadSettingsPointer(false, tc.entry, p)
 		headSettingsDirty409470(0x76543210)
 		snapshot := headSettingsSnapshot409470()
 		q := headSettingsString409470(t, tc.second, false)
-		if headSettingsFixturePointer409470(false, tc.entry, q) != nil || !reflect.DeepEqual(snapshot, headSettingsSnapshot409470()) {
+		if cfixture.HeadSettingsPointer(false, tc.entry, q) != nil || !reflect.DeepEqual(snapshot, headSettingsSnapshot409470()) {
 			t.Fatal("case-insensitive/truncated-name no-change contract")
 		}
 	}

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -57,14 +57,14 @@ import (
 	"unsafe"
 )
 
-func headSettingsFixtureWord409470(reference bool, entry uint32, value int32) uint32 {
+func HeadSettingsWord(reference bool, entry uint32, value int32) uint32 {
 	r := C.int(0)
 	if reference {
 		r = 1
 	}
 	return uint32(C.head_fixture_word_409470(r, C.uint32_t(entry), C.int32_t(value)))
 }
-func headSettingsFixturePointer409470(reference bool, entry uint32, input unsafe.Pointer) unsafe.Pointer {
+func HeadSettingsPointer(reference bool, entry uint32, input unsafe.Pointer) unsafe.Pointer {
 	r := C.int(0)
 	if reference {
 		r = 1
@@ -73,7 +73,7 @@ func headSettingsFixturePointer409470(reference bool, entry uint32, input unsafe
 	runtime.KeepAlive(input)
 	return out
 }
-func headSettingsFixtureParse409470(reference bool, file, out unsafe.Pointer) int32 {
+func HeadSettingsParse(reference bool, file, out unsafe.Pointer) int32 {
 	r := C.int(0)
 	if reference {
 		r = 1
@@ -83,7 +83,7 @@ func headSettingsFixtureParse409470(reference bool, file, out unsafe.Pointer) in
 	runtime.KeepAlive(out)
 	return v
 }
-func headSettingsFixtureAlloc409470(n uintptr) unsafe.Pointer {
+func HeadSettingsAlloc(n uintptr) unsafe.Pointer {
 	return C.nox_native_fixture_calloc_high(1, C.size_t(n))
 }
-func headSettingsFixtureFree409470(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }
+func HeadSettingsFree(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }

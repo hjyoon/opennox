@@ -15,20 +15,21 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func game3TestDrawable(t *testing.T) *client.Drawable {
 	t.Helper()
-	p := game3TestAlloc(unsafe.Sizeof(client.Drawable{}))
+	p := cfixture.Game3Alloc(unsafe.Sizeof(client.Drawable{}))
 	if p == nil {
 		t.Fatal("C allocation failed")
 	}
 	t.Cleanup(func() {
-		if !game3TestGuards(p, unsafe.Sizeof(client.Drawable{})) {
+		if !cfixture.Game3Guards(p, unsafe.Sizeof(client.Drawable{})) {
 			t.Error("native drawable canary changed")
 		}
-		game3TestFree(p)
+		cfixture.Game3Free(p)
 	})
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= math.MaxUint32 {
 		t.Fatalf("C drawable must exercise a full native address: %p", p)
@@ -117,7 +118,7 @@ func game3TestMapRecord(version uint16, withFlags bool) []byte {
 }
 
 func TestGame3MapSpriteCABIAndRetainedCurrentC(t *testing.T) {
-	layout := game3TestLayouts()
+	layout := cfixture.Game3DrawLayouts()
 	align := unsafe.Alignof(client.Drawable{})
 	prefix := (unsafe.Offsetof(client.Drawable{}.Field_127) + 4 + align - 1) &^ (align - 1)
 	// Go appends a private client handle after the exact native C prefix.
@@ -146,10 +147,10 @@ func TestGame3MapSpriteCABIAndRetainedCurrentC(t *testing.T) {
 					}
 					raw := game3TestMapRecord(version, withFlags)
 					before := append([]byte(nil), raw...)
-					ref, refCount, refCursor := game3TestReference(raw, reference, 17, 40, fail)
+					ref, refCount, refCursor := cfixture.Game3ReferenceMapSprite(raw, reference, 17, 40, fail)
 					hooks, cursor := game3TestMapIO(t, raw, actual, fail)
 					game3MapFactory = func() game3MapServices { return hooks }
-					got, count := game3TestPublicMap(17, 40)
+					got, count := cfixture.Game3PublicMapSprite(17, 40)
 					if (got == nil) != (ref == nil) || count != refCount || *cursor != refCursor || !bytes.Equal(game3TestSnapshot(actual), game3TestSnapshot(reference)) {
 						t.Fatalf("native public entry differs from preserved C: count=%d/%d cursor=%d/%d", count, refCount, *cursor, refCursor)
 					}
@@ -200,13 +201,13 @@ func TestGame3MapLightAndFullModifierPointers(t *testing.T) {
 			return unsafe.Pointer(owners[len(names)-1])
 		}
 		game3MapFactory = func() game3MapServices { return h }
-		got := game3TestPublicLoad(17, 2)
+		got := cfixture.Game3PublicLoad(17, 2)
 		if int(got) != len(raw) || *cursor != len(raw) || !reflect.DeepEqual(names, []string{"one", "two", "three", "four"}) {
 			t.Fatalf("exact stream/C-name boundary %d/%d %v", got, *cursor, names)
 		}
 		runtime.GC()
 		for i, p := range owners {
-			if game3TestItemModifier(d, i) != unsafe.Pointer(p) {
+			if cfixture.Game3ItemModifier(d, i) != unsafe.Pointer(p) {
 				t.Fatalf("modifier %d truncated/lost", i)
 			}
 		}
@@ -230,7 +231,7 @@ func TestGame3MapLightAndFullModifierPointers(t *testing.T) {
 		}
 		h, cursor := game3TestMapIO(t, raw, d, false)
 		game3MapFactory = func() game3MapServices { return h }
-		n := game3TestPublicLoad(17, 1)
+		n := cfixture.Game3PublicLoad(17, 1)
 		if int(n) != len(raw) || *cursor != len(raw) || d.LightColor.R != -1 || d.LightColor.G != 2147483647 || int64(d.LightColor.B) != -2147483648 {
 			t.Fatalf("fixed-wire light projection/count: %d/%d RGB=%+v", n, len(raw), d.LightColor)
 		}
@@ -255,8 +256,8 @@ func TestGame3BounceCABIOriginalSignedWidths(t *testing.T) {
 				actual.VelZ = v
 				ref.VelZ = v
 				game3EffectsFactory = func() game3EffectServices { return game3EffectServices{frame: func() uint32 { return frame }} }
-				want := game3TestReferenceBounce(ref, frame)
-				got := game3TestPublicBounce(actual)
+				want := cfixture.Game3ReferenceBounce(ref, frame)
+				got := cfixture.Game3PublicBounce(actual)
 				if got != want || !bytes.Equal(game3TestSnapshot(actual), game3TestSnapshot(ref)) {
 					t.Fatalf("WORD=%d BYTE=%d frame=%d return=%d/%d", z, v, frame, got, want)
 				}
@@ -267,8 +268,8 @@ func TestGame3BounceCABIOriginalSignedWidths(t *testing.T) {
 }
 
 func TestGame3SummonFullChildPointerAndFreeOrder(t *testing.T) {
-	oldBlue := game3TestOwner(0)
-	defer game3TestSetOwner(0, oldBlue)
+	oldBlue := cfixture.Game3Owner(0)
+	defer cfixture.Game3SetOwner(0, oldBlue)
 	parent, child := game3TestDrawable(t), game3TestDrawable(t)
 	old := game3EffectsFactory
 	defer func() { game3EffectsFactory = old }()
@@ -288,10 +289,10 @@ func TestGame3SummonFullChildPointerAndFreeOrder(t *testing.T) {
 		return child
 	}, direction: func(v byte) byte { return v ^ 0x80 }, frame: func() uint32 { v := clock; clock++; return v }}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	got := game3TestPublicSummon(-123, [2]uint16{65535, 32768}, 0xaffe, 255, -4)
+	got := cfixture.Game3PublicSummon(-123, [2]uint16{65535, 32768}, 0xaffe, 255, -4)
 	runtime.GC()
-	if got != 0xfedcba98 || parent.AnimStart != 0xfedcba99 || game3TestSummonChild(parent) != child.C() || parent.UnionSummon().ID != uint16(0xff85) || parent.UnionSummon().Lifetime != 65532 || child.AnimDir != 127 || child.AnimInd != 8 {
-		t.Fatalf("native summon child/token fields: %#x child=%p", got, game3TestSummonChild(parent))
+	if got != 0xfedcba98 || parent.AnimStart != 0xfedcba99 || cfixture.Game3SummonChild(parent) != child.C() || parent.UnionSummon().ID != uint16(0xff85) || parent.UnionSummon().Lifetime != 65532 || child.AnimDir != 127 || child.AnimInd != 8 {
+		t.Fatalf("native summon child/token fields: %#x child=%p", got, cfixture.Game3SummonChild(parent))
 	}
 	p := memmap.PtrUint32(0x5D4594, 1313744)
 	save := *p
@@ -312,15 +313,15 @@ func TestGame3SummonFullChildPointerAndFreeOrder(t *testing.T) {
 		calls = append(calls, "parent")
 	}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	game3TestPublicRemoveSummon(-123)
+	cfixture.Game3PublicRemoveSummon(-123)
 	if !reflect.DeepEqual(calls[len(calls)-3:], []string{"spark", "child", "parent"}) {
 		t.Fatalf("delete order %v", calls)
 	}
 }
 
 func TestGame3ShieldTypedPointerAndOpaqueSentinel(t *testing.T) {
-	oldFound := game3TestOwner(1)
-	defer game3TestSetOwner(1, oldFound)
+	oldFound := cfixture.Game3Owner(1)
+	defer cfixture.Game3SetOwner(1, oldFound)
 	offsets := []uintptr{1313748, 1313752, 1313756, 1313760, 1313764, 1313768, 1313772, 1313776, 1313780, 1313784}
 	saved := make([]uint32, len(offsets))
 	for i, off := range offsets {
@@ -359,12 +360,12 @@ func TestGame3ShieldTypedPointerAndOpaqueSentinel(t *testing.T) {
 		return created
 	}}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	if got := game3TestPublicShield(0x80001234, 1); got != 1 || loadCalls != 0 {
+	if got := cfixture.Game3PublicShield(0x80001234, 1); got != 1 || loadCalls != 0 {
 		t.Fatalf("opaque found sentinel %#x loads=%d", got, loadCalls)
 	}
 	h.each = func(image.Rectangle, func(*client.Drawable)) {}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	if got := game3TestPublicShield(0x80001234, 1); got != uintptr(created.C()) || created.UnionEffect().Field_108 != 0x80001234 {
+	if got := cfixture.Game3PublicShield(0x80001234, 1); got != uintptr(created.C()) || created.UnionEffect().Field_108 != 0x80001234 {
 		t.Fatalf("full native shield %#x", got)
 	}
 	if !reflect.DeepEqual(seen, []string{"ShpericalShieldN", "ShpericalShieldN"}) {
@@ -374,11 +375,11 @@ func TestGame3ShieldTypedPointerAndOpaqueSentinel(t *testing.T) {
 
 func TestGame3EquipmentNativeStrideModifiersAndGC(t *testing.T) {
 	n := unsafe.Sizeof([server.PlayerWeaponCnt]server.EquipmentData{})
-	p := game3TestAlloc(n)
+	p := cfixture.Game3Alloc(n)
 	if p == nil {
 		t.Fatal("C allocation")
 	}
-	defer game3TestFree(p)
+	defer cfixture.Game3Free(p)
 	entries := (*[server.PlayerWeaponCnt]server.EquipmentData)(p)
 	index := 26
 	entries[index].Field0 = 0x80000000
@@ -416,7 +417,7 @@ func TestGame3EquipmentNativeStrideModifiersAndGC(t *testing.T) {
 		}, set: func(i, r, g, b int) { calls = append(calls, [4]int{i, r, g, b}) }}
 	}
 	runtime.GC()
-	got := game3TestPublicMaterial(p, 0x80000000)
+	got := cfixture.Game3PublicMaterial(p, 0x80000000)
 	if got != uintptr(unsafe.Pointer(owners[3])) || len(calls) != 10 {
 		t.Fatalf("native modifier return/call count %#x %v", got, calls)
 	}
@@ -430,10 +431,10 @@ func TestGame3EquipmentNativeStrideModifiersAndGC(t *testing.T) {
 			t.Fatalf("modifier order %d", i)
 		}
 	}
-	if !game3TestGuards(p, n) {
+	if !cfixture.Game3Guards(p, n) {
 		t.Fatal("native equipment array canary changed")
 	}
-	if got := game3TestPublicMaterial(p, 0x12345678); got != uintptr(unsafe.Add(p, n)) {
+	if got := cfixture.Game3PublicMaterial(p, 0x12345678); got != uintptr(unsafe.Add(p, n)) {
 		t.Fatalf("native one-past no-match return %#x", got)
 	}
 }

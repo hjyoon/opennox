@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestGame3DoorByteAndPressurePlateReadOrder(t *testing.T) {
@@ -48,7 +49,7 @@ func TestGame3DoorByteAndPressurePlateReadOrder(t *testing.T) {
 					d.ObjClass = object.Class(0x80)
 				}
 			}
-			refCount, refCursor, refReads := game3TestReferenceKind(raw, reference, 17, tc.kind)
+			refCount, refCursor, refReads := cfixture.Game3ReferenceLoad(raw, reference, 17, tc.kind)
 			h, cursor := game3TestMapIO(t, raw, actual, false)
 			rw := h.rw
 			observed := [][7]uint32{}
@@ -59,7 +60,7 @@ func TestGame3DoorByteAndPressurePlateReadOrder(t *testing.T) {
 			}
 			h.attachWall = func(*client.Drawable, int32, int32) {}
 			game3MapFactory = func() game3MapServices { return h }
-			got := game3TestPublicLoad(17, tc.kind)
+			got := cfixture.Game3PublicLoad(17, tc.kind)
 			if got != refCount || *cursor != refCursor || !bytes.Equal(game3TestSnapshot(actual), game3TestSnapshot(reference)) || !reflect.DeepEqual(observed, refReads) {
 				t.Fatalf("current-C observable read/write order differs kind%d status%#x\nGo%v\nC%v", tc.kind, tc.status, observed, refReads)
 			}
@@ -88,8 +89,8 @@ func TestGame3MovingSparkMixedSignedCoordinates(t *testing.T) {
 	calls := 0
 	h := game3EffectServices{frame: func() uint32 { return 1 }, update: func(d *client.Drawable, p image.Point) { calls++; d.PosVec = p }, deleteSelf: func(*client.Drawable) {}}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	want := game3TestReferenceMotion(reference)
-	got := game3TestPublicMotion(actual)
+	want := cfixture.Game3ReferenceMotion(reference)
+	got := cfixture.Game3PublicMotion(actual)
 	if got != want || calls != 1 || actual.PosVec != image.Pt(1048575, -1) || !bytes.Equal(game3TestSnapshot(actual), game3TestSnapshot(reference)) {
 		t.Fatalf("DWORD X logical / signed temporary Y arithmetic: %+v ref%+v returns%d/%d", actual.PosVec, reference.PosVec, got, want)
 	}
@@ -118,7 +119,7 @@ func TestGame3BounceLazyFrameReadAfterZ(t *testing.T) {
 				return 1
 			}}
 			game3EffectsFactory = func() game3EffectServices { return h }
-			game3TestPublicBounce(d)
+			cfixture.Game3PublicBounce(d)
 			if reads != tc.reads {
 				t.Fatalf("frame reads%d want%d", reads, tc.reads)
 			}

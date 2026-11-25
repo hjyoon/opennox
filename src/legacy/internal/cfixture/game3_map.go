@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -116,15 +116,15 @@ import (
 	"github.com/opennox/opennox/v1/client"
 )
 
-func game3TestAlloc(n uintptr) unsafe.Pointer { return C.game3_test_alloc(C.size_t(n)) }
-func game3TestFree(p unsafe.Pointer)          { C.game3_test_free(p) }
-func game3TestGuards(p unsafe.Pointer, n uintptr) bool {
+func Game3Alloc(n uintptr) unsafe.Pointer { return C.game3_test_alloc(C.size_t(n)) }
+func Game3Free(p unsafe.Pointer)          { C.game3_test_free(p) }
+func Game3Guards(p unsafe.Pointer, n uintptr) bool {
 	return C.game3_test_guards(p, C.size_t(n)) != 0
 }
-func game3TestLayouts() [4]uintptr {
+func Game3DrawLayouts() [4]uintptr {
 	return [4]uintptr{uintptr(C.game3_test_draw_size()), uintptr(C.game3_test_equipment_size()), uintptr(C.game3_test_modifier_offset()), uintptr(C.game3_test_draw_union_offset())}
 }
-func game3TestReference(raw []byte, d *client.Drawable, id int, version int16, fail bool) (*client.Drawable, uint32, int) {
+func Game3ReferenceMapSprite(raw []byte, d *client.Drawable, id int, version int16, fail bool) (*client.Drawable, uint32, int) {
 	var source unsafe.Pointer
 	if len(raw) > 0 {
 		source = unsafe.Pointer(&raw[0])
@@ -139,12 +139,12 @@ func game3TestReference(raw []byte, d *client.Drawable, id int, version int16, f
 	runtime.KeepAlive(raw)
 	return (*client.Drawable)(unsafe.Pointer(p)), uint32(count), int(C.game3_ref_cursor())
 }
-func game3TestPublicMap(id int, version int16) (*client.Drawable, uint32) {
+func Game3PublicMapSprite(id int, version int16) (*client.Drawable, uint32) {
 	var count C.uint32_t
 	p := C.nox_xxx_spriteLoadFromMap_4AC020(C.int(id), C.short(version), &count)
 	return (*client.Drawable)(unsafe.Pointer(p)), uint32(count)
 }
-func game3TestPublicLoad(id, kind int) int32 {
+func Game3PublicLoad(id, kind int) int32 {
 	switch kind {
 	case 0:
 		return int32(C.sub_4AC7B0(C.int(id)))
@@ -158,7 +158,7 @@ func game3TestPublicLoad(id, kind int) int32 {
 		return int32(C.sub_4AD040(C.int(id)))
 	}
 }
-func game3TestReferenceKind(raw []byte, d *client.Drawable, id, kind int) (int32, int, [][7]uint32) {
+func Game3ReferenceLoad(raw []byte, d *client.Drawable, id, kind int) (int32, int, [][7]uint32) {
 	var source unsafe.Pointer
 	if len(raw) > 0 {
 		source = unsafe.Pointer(&raw[0])
@@ -174,33 +174,33 @@ func game3TestReferenceKind(raw []byte, d *client.Drawable, id, kind int) (int32
 	runtime.KeepAlive(raw)
 	return result, int(C.game3_ref_cursor()), out
 }
-func game3TestReferenceMotion(d *client.Drawable) int32 {
+func Game3ReferenceMotion(d *client.Drawable) int32 {
 	return int32(C.game3_ref_motion((*C.nox_drawable)(d.C())))
 }
-func game3TestPublicMotion(d *client.Drawable) int32 {
+func Game3PublicMotion(d *client.Drawable) int32 {
 	return int32(C.sub_4B6970(nil, (*C.nox_drawable)(d.C()), 0, 0))
 }
-func game3TestReferenceBounce(d *client.Drawable, frame uint32) int16 {
+func Game3ReferenceBounce(d *client.Drawable, frame uint32) int16 {
 	return int16(C.game3_ref_bounce((*C.nox_drawable)(d.C()), C.uint(frame)))
 }
-func game3TestPublicBounce(d *client.Drawable) int16 {
+func Game3PublicBounce(d *client.Drawable) int16 {
 	return int16(C.sub_4B69F0((*C.nox_drawable)(d.C())))
 }
-func game3TestItemModifier(d *client.Drawable, i int) unsafe.Pointer {
+func Game3ItemModifier(d *client.Drawable, i int) unsafe.Pointer {
 	return C.game3_test_item_modifier((*C.nox_drawable)(d.C()), C.int(i))
 }
-func game3TestSummonChild(d *client.Drawable) unsafe.Pointer {
+func Game3SummonChild(d *client.Drawable) unsafe.Pointer {
 	return C.game3_test_summon_child((*C.nox_drawable)(d.C()))
 }
-func game3TestPublicSummon(id int16, pos [2]uint16, thing uint16, dir byte, life int16) uintptr {
+func Game3PublicSummon(id int16, pos [2]uint16, thing uint16, dir byte, life int16) uintptr {
 	return uintptr(C.game3_test_summon(C.short(id), (*C.ushort)(unsafe.Pointer(&pos[0])), C.ushort(thing), C.uchar(dir), C.short(life)))
 }
-func game3TestPublicRemoveSummon(id int16) { C.sub_4B7EE0(C.short(id)) }
-func game3TestPublicShield(code uint32, dir int32) uintptr {
+func Game3PublicRemoveSummon(id int16) { C.sub_4B7EE0(C.short(id)) }
+func Game3PublicShield(code uint32, dir int32) uintptr {
 	return uintptr(C.game3_test_shield(C.uint(code), C.int(dir)))
 }
-func game3TestPublicMaterial(entries unsafe.Pointer, bit uintptr) uintptr {
+func Game3PublicMaterial(entries unsafe.Pointer, bit uintptr) uintptr {
 	return uintptr(C.game3_test_material(entries, C.uintptr_t(bit)))
 }
-func game3TestOwner(n int) uint32       { return uint32(C.game3_test_owner(C.int(n))) }
-func game3TestSetOwner(n int, v uint32) { C.game3_test_set_owner(C.int(n), C.uint(v)) }
+func Game3Owner(n int) uint32       { return uint32(C.game3_test_owner(C.int(n))) }
+func Game3SetOwner(n int, v uint32) { C.game3_test_set_owner(C.int(n), C.uint(v)) }

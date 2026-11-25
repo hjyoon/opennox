@@ -105,6 +105,10 @@ func sub_4611B0() C.int {
 
 //export nox_xxx_netAbilityRewardCli_4611E0
 func nox_xxx_netAbilityRewardCli_4611E0(id, value C.int, source *C.char) {
+	clientAbilityReward(id, value, source != nil)
+}
+
+func clientAbilityReward(id, value C.int, notify bool) {
 	if id < 1 || id >= 6 {
 		return
 	}
@@ -121,7 +125,8 @@ func nox_xxx_netAbilityRewardCli_4611E0(id, value C.int, source *C.char) {
 		}
 		state.reward = uint32(value)
 		if value != 0 {
-			C.nox_xxx_abilityReward_45D290(id, source, C.int(bool2int(source != nil)))
+			bit := C.int(bool2int(notify))
+			game2_book_ability_reward(id, C.uintptr_t(bit), bit)
 		}
 	}
 }

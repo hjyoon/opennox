@@ -347,6 +347,9 @@ func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, 
 	if a2 == netmsg.MSG_INFORM {
 		return clientInformPacket(data)
 	}
+	if size, handled := clientProgressPacket(a2, data); handled {
+		return size
+	}
 	return int(C.nox_xxx_netOnPacketRecvCli_48EA70_switch(C.int(a1), C.int(a2), (*C.uchar)(unsafe.Pointer(&data[0])), C.int(len(data))))
 }
 func Nox_xxx_j_inventoryNameSignInit_467460() int {

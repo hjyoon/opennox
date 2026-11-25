@@ -54,7 +54,7 @@ func testTeamReport210(t *testing.T, mode string, first int) {
 	}
 	text := string(fixture)
 	text = strings.ReplaceAll(text, "/* PRODUCTION_MEMBER_BODY */",
-		teamReportBody210(t, "GAME1_1.c", "void sub_4198A0("))
+		teamReportBody210(t, "testdata/retired-game-sources/GAME1_1.c.txt", "void sub_4198A0("))
 	text = strings.ReplaceAll(text, "/* PRODUCTION_ENUMERATION_BODY */",
 		teamReportBody210(t, "testdata/retired-game-sources/GAME3_2.c.txt", "void sub_4DF2E0("))
 	directory, err := os.Getwd()

@@ -57,20 +57,20 @@ func TestDoubleSpillOriginal419AF0StartupNativeC(t *testing.T) {
 	if len(inputs) != 41 || excludedNaNs != 4 {
 		t.Fatal("unexpected finite/infinity conversion coverage")
 	}
-	raw, err = os.ReadFile("GAME1_1.c")
+	raw, err = os.ReadFile("testdata/retired-game-sources/float-conversions-419a70.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
 	source := string(raw)
 	marker := "float nox_double2float(double a1)"
 	if strings.Count(source, marker) != 1 {
-		t.Fatal("missing or ambiguous production conversion definition")
+		t.Fatal("missing or ambiguous reference conversion definition")
 	}
 	start := strings.Index(source, marker)
 	end := start + strings.Index(source[start:], "{") + 1
 	for depth := 1; depth != 0; end++ {
 		if end >= len(source) {
-			t.Fatal("unterminated production conversion definition")
+			t.Fatal("unterminated reference conversion definition")
 		}
 		switch source[end] {
 		case '{':
@@ -117,7 +117,7 @@ int main(void) {
 	}
 	binary := filepath.Join(dir, "double-spill")
 	if output, err := exec.Command(cc, nativeFixtureCompileArgs(t, []string{"-std=c11", "-O2", "-fno-inline", file, "-lm", "-o", binary})...).CombinedOutput(); err != nil {
-		t.Fatalf("compile exact production conversion: %v\n%s", err, output)
+		t.Fatalf("compile preserved C conversion: %v\n%s", err, output)
 	}
 	command := exec.Command(binary)
 	command.Stdin = strings.NewReader(strings.Join(inputs, "\n") + "\n")

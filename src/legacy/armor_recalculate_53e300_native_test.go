@@ -70,7 +70,7 @@ func TestArmorRecalculateOriginal53E300NativeC(t *testing.T) {
 		return signature + body
 	}
 	body := extract("testdata/retired-game-sources/GAME4_3.c.txt", "int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner) {", "//----- (0053E3A0)")
-	helper := extract("GAME1_1.c", "float nox_double2float(double a1) {", "//----- (00419B10)")
+	helper := extract("testdata/retired-game-sources/float-conversions-419a70.c.txt", "float nox_double2float(double a1) {", "//----- (00419B10)")
 	harness, err := os.ReadFile("testdata/armor_recalculate_53e300_native_test.c")
 	if err != nil {
 		t.Fatal(err)

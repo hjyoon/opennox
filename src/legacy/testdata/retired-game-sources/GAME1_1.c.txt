@@ -63,17 +63,7 @@ extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern int ptr_5D4594_2650668_cap;
 
 //----- (00418C60) --------------------------------------------------------
-extern uintptr_t nox_server_team_first_member_native(nox_team_t* team);
-nox_object_team_t* nox_xxx_teamCheckSmth_418C60(nox_team_t* team) {
-	return (nox_object_team_t*)nox_server_team_first_member_native(team);
-}
-
 //----- (00418C70) --------------------------------------------------------
-extern uintptr_t nox_server_team_next_member_native(nox_object_team_t* value);
-nox_object_team_t* sub_418C70(nox_object_team_t* value) {
-	return (nox_object_team_t*)nox_server_team_next_member_native(value);
-}
-
 //----- (00419130) --------------------------------------------------------
 #if 0 // Restored by team_predicate_native_entry.go.
 int nox_xxx_servObjectHasTeam_419130(nox_object_team_t* value) {

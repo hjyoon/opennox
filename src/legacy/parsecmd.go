@@ -80,16 +80,16 @@ func Nox_cmd_set_staffs(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_set_staffs(i, n, arr)
 }
 func Nox_cmd_ban(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_ban(i, n, arr)
+	return nox_cmd_ban(i, n, arr)
 }
 func Nox_cmd_allow_user(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_allow_user(i, n, arr)
+	return nox_cmd_allow_user(i, n, arr)
 }
 func Nox_cmd_allow_ip(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_allow_ip(i, n, arr)
+	return nox_cmd_allow_ip(i, n, arr)
 }
 func Nox_cmd_kick(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_kick(i, n, arr)
+	return nox_cmd_kick(i, n, arr)
 }
 func Nox_cmd_set_players(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_set_players(i, n, arr)

@@ -2,32 +2,10 @@ package legacy
 
 /*
 #include "defs.h"
-#include "memmap.h"
 #include "noxstring.h"
 
-static wchar2_t* nox_item_name_buffer_4E77E0(void) {
-	return (wchar2_t*)getMemAt(0x5D4594, 1565660);
-}
-
-static void nox_item_name_clear_4E77E0(void) {
-	nox_wcscpy(nox_item_name_buffer_4E77E0(), (const wchar2_t*)getMemAt(0x5D4594, 1567732));
-}
-
-static void nox_item_name_copy_4E77E0(const wchar2_t* src) {
-	nox_wcscpy(nox_item_name_buffer_4E77E0(), src);
-}
-
-static void nox_item_name_append_4E77E0(const wchar2_t* src) {
-	nox_wcscat(nox_item_name_buffer_4E77E0(), src);
-}
-
-static void nox_item_name_append_space_4E77E0(void) {
-	static const wchar2_t space[2] = {' ', 0};
-	nox_wcscat(nox_item_name_buffer_4E77E0(), space);
-}
-
-static void nox_item_name_format_no_info_4E77E0(const wchar2_t* format, const char* unit_name) {
-	nox_swprintf(nox_item_name_buffer_4E77E0(), format, unit_name);
+static void nox_item_name_format_no_info_4E77E0(wchar2_t* buffer, const wchar2_t* format, const char* unit_name) {
+	nox_swprintf(buffer, format, unit_name);
 }
 */
 import "C"
@@ -36,6 +14,8 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/strman"
+
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -63,6 +43,10 @@ func itemNameNarrowPointer4E77E0(s string) *byte {
 	return (*byte)(unsafe.Pointer(internCStr(s)))
 }
 
+func itemNameBuffer4E77E0() *wchar2_t {
+	return (*wchar2_t)(memmap.PtrOff(0x5D4594, 1565660))
+}
+
 var objectItemNameRuntime = objectItemNameRuntime4E77E0{
 	weaponDef: func(ind uint16) *server.Modifier {
 		return GetServer().S().Modif.Nox_xxx_getProjectileClassById413250(int(ind))
@@ -82,25 +66,27 @@ var objectItemNameRuntime = objectItemNameRuntime4E77E0{
 		return itemNameWidePointer4E77E0(s)
 	},
 	buffer: func() *uint16 {
-		return (*uint16)(unsafe.Pointer(C.nox_item_name_buffer_4E77E0()))
+		return (*uint16)(unsafe.Pointer(itemNameBuffer4E77E0()))
 	},
 	clear: func() {
-		C.nox_item_name_clear_4E77E0()
+		empty := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1567732))
+		copyWideString(itemNameBuffer4E77E0(), empty)
 	},
 	copy: func(src *uint16) {
-		C.nox_item_name_copy_4E77E0((*C.wchar2_t)(unsafe.Pointer(src)))
+		copyWideString(itemNameBuffer4E77E0(), (*wchar2_t)(unsafe.Pointer(src)))
 	},
 	formatNoInfo: func(format *uint16, name *byte) {
 		C.nox_item_name_format_no_info_4E77E0(
+			itemNameBuffer4E77E0(),
 			(*C.wchar2_t)(unsafe.Pointer(format)),
 			(*C.char)(unsafe.Pointer(name)),
 		)
 	},
 	append: func(src *uint16) {
-		C.nox_item_name_append_4E77E0((*C.wchar2_t)(unsafe.Pointer(src)))
+		appendWideString(itemNameBuffer4E77E0(), (*wchar2_t)(unsafe.Pointer(src)))
 	},
 	appendSpace: func() {
-		C.nox_item_name_append_space_4E77E0()
+		appendWideString(itemNameBuffer4E77E0(), internWStr(" "))
 	},
 }
 

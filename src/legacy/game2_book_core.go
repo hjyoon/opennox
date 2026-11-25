@@ -85,23 +85,26 @@ func nox_client_localPlayerHasFlags30(flags C.uint32_t) C.int {
 
 //export nox_xxx_guiSpellSortFn_45ABC0
 func nox_xxx_guiSpellSortFn_45ABC0(a, b *C.nox_cgo_const_void) C.int {
-	id2 := C.int(*(*uint32)(unsafe.Pointer(b))) // The original reads argument 2 before argument 1.
+	id2 := *(*uint32)(unsafe.Pointer(b)) // The original reads argument 2 before argument 1.
+	id1 := *(*uint32)(unsafe.Pointer(a))
+	return C.int(compareBookEntries(id1, id2))
+}
+
+func compareBookEntries(left, right uint32) int {
+	id1, id2 := int32(left), int32(right)
 	var s1, s2 *C.wchar2_t
 	if C.dword_5d4594_1046868 == 1 {
-		s1 = nox_xxx_guiCreatureGetName_427240(C.int(*(*uint32)(unsafe.Pointer(a))))
-		s2 = nox_xxx_guiCreatureGetName_427240(id2)
+		s1 = nox_xxx_guiCreatureGetName_427240(C.int(id1))
+		s2 = nox_xxx_guiCreatureGetName_427240(C.int(id2))
+	} else if game2PlayerClass(bookSelectedPlayer()) != 0 {
+		s1 = nox_xxx_spellTitle_424930(id1)
+		s2 = nox_xxx_spellTitle_424930(id2)
 	} else {
-		id1 := C.int(*(*uint32)(unsafe.Pointer(a)))
-		if game2PlayerClass(bookSelectedPlayer()) != 0 {
-			s1 = C.nox_xxx_spellTitle_424930(id1)
-			s2 = C.nox_xxx_spellTitle_424930(id2)
-		} else {
-			s1 = C.nox_xxx_abilityGetName_0_425260(id1)
-			s2 = C.nox_xxx_abilityGetName_0_425260(id2)
-		}
+		s1 = nox_xxx_abilityGetName_0_425260(id1)
+		s2 = nox_xxx_abilityGetName_0_425260(id2)
 	}
 	if s1 != nil && s2 != nil {
-		return C._nox_wcsicmp(s1, s2)
+		return int(_nox_wcsicmp(s1, s2))
 	}
 	return 0
 }
@@ -197,10 +200,10 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 			}
 		}
 	}
-	n := *game2BookU(1047508) - uint32(C.dword_5d4594_1047512)
+	count := *game2BookU(1047508)
+	n := count - min(count, uint32(C.dword_5d4594_1047512))
 	*game2BookU(1046940) = n/perPage + 1
-	// qsort is the same external host sorting service, with a native callback.
-	C.qsort(memmap.PtrOff(0x5D4594, 1046960), C.size_t(n), 4, (*[0]byte)(unsafe.Pointer(C.nox_xxx_guiSpellSortFn_45ABC0)))
+	sortBookEntries(unsafe.Slice(game2BookU(1046960), int(n)), compareBookEntries)
 	return found
 }
 

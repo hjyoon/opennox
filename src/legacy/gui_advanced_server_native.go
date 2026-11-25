@@ -90,9 +90,9 @@ func sub_4BDD10() C.int {
 	case 1:
 		tab = C.nox_xxx_guiSpelllistLoad_453850(root)
 	case 2:
-		tab = C.nox_xxx_guiObjlistLoad_4530C0(root, 0x1000000)
+		tab = nox_xxx_guiObjlistLoad_4530C0(root, 0x1000000)
 	case 3:
-		tab = C.nox_xxx_guiObjlistLoad_4530C0(root, 0x2000000)
+		tab = nox_xxx_guiObjlistLoad_4530C0(root, 0x2000000)
 	default:
 		return 0
 	}
@@ -258,7 +258,7 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 	if event > 0x4007 {
 		switch event {
 		case 16393:
-			C.sub_4BE2C0(C.int(arg2))
+			sub_4BE2C0(C.int(arg2))
 			nox_xxx_gameSetAudioFadeoutMb_501AC0(int32(arg2))
 		case 16415:
 			if entry := (*nox_window)(unsafe.Pointer(uintptr(arg1))); entry != nil {

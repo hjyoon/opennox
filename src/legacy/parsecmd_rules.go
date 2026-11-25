@@ -7,7 +7,7 @@ int sub_4AD840();
 import "C"
 
 func Sub_4AD840() {
-	C.sub_4AD840()
+	sub_4AD840()
 }
 func Sub_409E70(a1 int) {
 	C.sub_409E70(C.int(a1))

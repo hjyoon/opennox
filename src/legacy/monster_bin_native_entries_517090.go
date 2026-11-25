@@ -48,7 +48,7 @@ func (r monsterBinFileTokens) readToken(dst []byte) (int, error) {
 			return n, err
 		}
 		switch {
-		case isMonsterSpace(b):
+		case isLegacyTokenSpace(b):
 			if n != 0 {
 				dst[n] = 0
 				return n, nil

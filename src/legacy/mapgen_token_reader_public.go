@@ -1,12 +1,7 @@
 package legacy
 
 /*
-#include <ctype.h>
 #include "GAME4_2.h"
-
-static inline int nox_mapgen_token_isspace(unsigned char value) {
-	return isspace((int)value);
-}
 */
 import "C"
 
@@ -30,7 +25,7 @@ func mapGenCommentLine51E630(read func(*byte) int32, nextLine func()) int32 {
 	}
 }
 
-func mapGenPlainToken51E570(read func(*byte) int32, put func(int, byte), isSpace func(byte) bool, nextLine func()) int32 {
+func mapGenPlainToken51E570(read func(*byte) int32, put func(int, byte), nextLine func()) int32 {
 	var value byte
 	leading := true
 	index := 0
@@ -42,7 +37,7 @@ func mapGenPlainToken51E570(read func(*byte) int32, put func(int, byte), isSpace
 		if value == '\n' {
 			nextLine()
 		}
-		if isSpace(value) {
+		if isLegacyTokenSpace(value) {
 			if !leading {
 				put(index, 0)
 				return 1
@@ -95,7 +90,6 @@ func mapgenReadPlainToken(file *C.FILE, put func(int, byte)) C.int {
 	return C.int(mapGenPlainToken51E570(
 		func(value *byte) int32 { return mapGenTokenReadByte(file, value) },
 		put,
-		func(value byte) bool { return C.nox_mapgen_token_isspace(C.uchar(value)) != 0 },
 		mapGenTokenNextLine,
 	))
 }

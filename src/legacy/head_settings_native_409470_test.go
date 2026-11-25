@@ -291,7 +291,11 @@ func TestHeadSettingsParseActualBinfilePlainAndEncrypted(t *testing.T) {
 		handles.Release()
 	})
 	for _, key := range []int{-1, 5} {
-		for i, text := range []string{"", "   \t\r\n", "alpha beta\n", "  first\tsecond ", "partialEOF", "slash/ tail ", "//abc\nnext ", "///\nnext ", "x // q\nend ", "A\vB\fC\rD\tE\n", "nul\x00byte ", strings.Repeat("x", 255) + " "} {
+		for i, text := range []string{
+			"", "   \t\r\n", "alpha beta\n", "  first\tsecond ", "partialEOF", "slash/ tail ",
+			"//abc\nnext ", "///\nnext ", "x // q\nend ", "A\vB\fC\rD\tE\n", "nul\x00byte ",
+			"\x80\x85\xa0\xff token ", strings.Repeat("x", 255) + " ",
+		} {
 			t.Run(fmt.Sprintf("key%d/case%d", key, i), func(t *testing.T) {
 				path := filepath.Join(t.TempDir(), "parse.bin")
 				writer, err := binfile.BinfileOpen(path, binfile.WriteOnly)

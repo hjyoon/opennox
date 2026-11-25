@@ -191,7 +191,7 @@ func (r *monsterTokenReader) next() (string, error) {
 				continue
 			}
 		}
-		if isMonsterSpace(b) {
+		if isLegacyTokenSpace(b) {
 			if len(token) == 0 {
 				continue
 			}
@@ -220,7 +220,7 @@ func skipMonsterBinLine(readByte func() (byte, error)) error {
 	}
 }
 
-func isMonsterSpace(b byte) bool {
+func isLegacyTokenSpace(b byte) bool {
 	switch b {
 	case ' ', '\t', '\n', '\r', '\v', '\f':
 		return true

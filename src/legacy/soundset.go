@@ -100,22 +100,13 @@ func readSoundSetToken(r *bufio.Reader) (string, bool) {
 				continue
 			}
 		}
-		if isSoundSetSpace(b) {
+		if isLegacyTokenSpace(b) {
 			if len(out) == 0 {
 				continue
 			}
 			return string(out), true
 		}
 		out = append(out, b)
-	}
-}
-
-func isSoundSetSpace(b byte) bool {
-	switch b {
-	case ' ', '\t', '\n', '\r', '\v', '\f':
-		return true
-	default:
-		return false
 	}
 }
 

@@ -1,17 +1,11 @@
 package legacy
 
 /*
-#include "GAME1.h"
-#include "GAME3_2.h"
 #include "common__binfile.h"
-#include <ctype.h>
 #include <stdint.h>
-static int head_settings_flags_409470(uint32_t mask) { return nox_common_gameFlags_check_40A5C0(mask) ? 1 : 0; }
-static int head_settings_notify_409470(int value) { return nox_xxx_netNotifyRate_4D7F10(value); }
-static int head_settings_compare_409470(void* a, void* b) { return nox_strcmpi((const char*)a, (const char*)b); }
-static int head_settings_space_409470(uint16_t ch) { return isspace(ch); }
 */
 import "C"
+
 import "unsafe"
 
 // Serial fixture hook. Each call reads the current observer afresh; a nested
@@ -37,18 +31,17 @@ func headSettingsFlags409470(mask uint32) bool {
 	if o := headSettingsObserved409470; o != nil && o.Flags != nil {
 		return o.Flags(mask)
 	}
-	return C.head_settings_flags_409470(C.uint32_t(mask)) != 0
+	return bool(nox_common_gameFlags_check_40A5C0(C.uint(mask)))
 }
 func headSettingsNotify409470(v int32) int32 {
 	if o := headSettingsObserved409470; o != nil && o.Notify != nil {
 		return o.Notify(v)
 	}
-	return int32(C.head_settings_notify_409470(C.int(v)))
+	return int32(nox_xxx_netNotifyRate_4D7F10(C.int(v)))
 }
 func headSettingsCompare409470(a, b unsafe.Pointer) int32 {
-	return int32(C.head_settings_compare_409470(a, b))
+	return int32(compareLegacyStringBytes((*C.char)(a), (*C.char)(b), -1))
 }
-func headSettingsSpace409470(v uint16) bool { return C.head_settings_space_409470(C.uint16_t(v)) != 0 }
 func headSettingsRead409470(file, out unsafe.Pointer) {
 	nox_binfile_fread_408E40((*C.char)(out), 1, 1, (*C.FILE)(file))
 }

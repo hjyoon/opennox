@@ -34,7 +34,7 @@ func headSettingsParse409470(file, out unsafe.Pointer) int32 {
 			return 0
 		}
 		current = word
-		if headSettingsSpace409470(uint16(word)) {
+		if isLegacyTokenSpace(byte(word)) {
 			if leading {
 				continue
 			}

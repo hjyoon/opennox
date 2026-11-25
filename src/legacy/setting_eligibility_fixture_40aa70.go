@@ -6,8 +6,14 @@ package legacy
 #include <stdint.h>
 extern uint32_t dword_5d4594_526276;
 typedef int (*setting_eligibility_fixture_fn_40aa70)(nox_playerInfo*);
+typedef void* (*setting_eligibility_info_fn_40aa70)(void);
+typedef char (*setting_eligibility_char_fn_40aa70)(void);
+typedef int (*setting_eligibility_limit_fn_40aa70)(void);
 _Static_assert(_Generic(&sub_40AA70, setting_eligibility_fixture_fn_40aa70:1, default:0), "40AA70 int(player*) ABI");
 _Static_assert(sizeof(int)==4, "40AA70 int32 return");
+_Static_assert(_Generic(&sub_416640,setting_eligibility_info_fn_40aa70:1,default:0), "Info416640 native void pointer ABI");
+_Static_assert(_Generic(&sub_417DE0,setting_eligibility_char_fn_40aa70:1,default:0), "count417DE0 char ABI");
+_Static_assert(_Generic(&sub_417DC0,setting_eligibility_limit_fn_40aa70:1,default:0), "limit417DC0 int ABI");
 _Static_assert(sizeof(((nox_playerInfo*)0)->field_3680)==4 && sizeof(((nox_playerInfo*)0)->field_2068)==4 && sizeof(((nox_playerInfo*)0)->field_2140)==4, "40AA70 three player DWORDs");
 static int setting_eligibility_fixture_call_40aa70(void* p) {
     setting_eligibility_fixture_fn_40aa70 fn=&sub_40AA70;

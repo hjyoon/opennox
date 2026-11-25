@@ -7,8 +7,53 @@ import (
 	"github.com/opennox/libs/object"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
+
+func TestTeamKeyLookup418AE0ComparesWholeWord(t *testing.T) {
+	world := objectStatusTestServer(t, 3)
+	flags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameHost | noxflags.GameModeCoopTeam)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(flags)
+	})
+	first, second, third := world.Teams.Create(2), world.Teams.Create(7), world.Teams.Create(8)
+	if first == nil || second == nil || third == nil {
+		t.Fatal("test teams were not created")
+	}
+	tests := []struct {
+		word uint32
+		want *server.Team
+	}{
+		{0x00000080, first},
+		{0x80000080, second},
+		{0xffffffff, third},
+		{0x70000080, nil},
+	}
+	for _, tc := range tests {
+		if tc.want != nil {
+			cfixture.TeamSetLookupWord418830(tc.want.C(), tc.word)
+		}
+	}
+	// GAME.EXE 00418AEE compares the stored DWORD with the full input word.
+	for _, tc := range tests {
+		if got := cfixture.TeamLookupWord418AE0(tc.word); got != tc.want.C() {
+			t.Errorf("C team lookup %#08x = %p, want %p", tc.word, got, tc.want.C())
+		}
+		if got := world.Teams.ByXxx(int(tc.word)); got != tc.want {
+			t.Errorf("Go team lookup %#08x = %p, want %p", tc.word, got, tc.want)
+		}
+	}
+	if unsafe.Sizeof(int(0)) == 8 {
+		widerWord := (uint64(1) << 32) | uint64(tests[0].word)
+		if got := world.Teams.ByXxx(int(widerWord)); got != nil {
+			t.Errorf("team lookup %#x narrowed to team %p", widerWord, got)
+		}
+	}
+}
 
 func TestTeamRosterNativeReportsDescriptorsAndMembers4DF2E0(t *testing.T) {
 	world := objectStatusTestServer(t, 3)

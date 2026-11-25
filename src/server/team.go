@@ -140,9 +140,14 @@ func (s *serverTeams) Teams() []*Team {
 	return out
 }
 
-func (s *serverTeams) ByXxx(a1 int) *Team { // nox_server_teamByXxx_418AE0
+func (s *serverTeams) ByXxx(key int) *Team { // nox_server_teamByXxx_418AE0
+	// The C entry supplies an int32, while Go callers also pass uint32 keys.
+	word := uint32(key)
+	if key != int(int32(word)) && key != int(word) {
+		return nil
+	}
 	for it := s.First(); it != nil; it = s.Next(it) {
-		if it.Ind60() == a1 {
+		if it.field_60 == word {
 			return it
 		}
 	}

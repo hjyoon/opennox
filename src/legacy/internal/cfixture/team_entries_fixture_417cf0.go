@@ -2,6 +2,7 @@ package cfixture
 
 /*
 #include "GAME1.h"
+#include "GAME1_1.h"
 #include "common__system__team.h"
 #include <stddef.h>
 static size_t team_entries_layout_417cf0(int f) {
@@ -30,4 +31,12 @@ func TeamEntriesCall4183C0() int32           { return int32(C.sub_4183C0()) }
 func TeamEntriesCall4184D0(p unsafe.Pointer) { C.team_entries_packet_call_417cf0(p) }
 func TeamEntriesLayout417CF0(field int) uintptr {
 	return uintptr(C.team_entries_layout_417cf0(C.int(field)))
+}
+
+func TeamSetLookupWord418830(team unsafe.Pointer, word uint32) {
+	C.sub_418830((*C.nox_team_t)(team), C.int(int32(word)))
+}
+
+func TeamLookupWord418AE0(word uint32) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_server_teamByXxx_418AE0(C.int(int32(word))))
 }

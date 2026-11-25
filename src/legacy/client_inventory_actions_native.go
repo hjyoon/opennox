@@ -41,7 +41,7 @@ func nox_client_invAlterWeapon_4672C0() {
 		nox_xxx_cursorSetDraggedItem_477690(nil)
 	}
 
-	cell := (*C.nox_inventory_cell_t)(globalStateNativePointer(2))
+	cell := clientInventoryAlternateCell()
 	var alternate *nox_drawable
 	if cell != nil {
 		alternate = cell.field_0
@@ -58,14 +58,14 @@ func nox_client_invAlterWeapon_4672C0() {
 	}
 	if alternate != nil {
 		alternate.field_32 = cell.field_4
-		C.nox_xxx_clientEquip_4623B0(alternate)
+		nox_xxx_clientEquip_4623B0(alternate)
 		nox_xxx_clientPlaySoundSpecial_452D80(895, 100)
 	}
 }
 
 func inventoryDequipForAlternate(equipped *nox_drawable) {
 	C.dword_5d4594_1062492 = C.uintptr_t(uintptr(unsafe.Pointer(equipped)))
-	C.nox_xxx_clientDequip_464B70(equipped)
+	nox_xxx_clientDequip_464B70(equipped)
 	nox_xxx_clientPlaySoundSpecial_452D80(895, 100)
 }
 

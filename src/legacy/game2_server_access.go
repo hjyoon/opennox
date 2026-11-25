@@ -62,8 +62,8 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 		d.Field_7 = unsafe.Pointer(up)
 		d.Field_8 = unsafe.Pointer(down)
 	}
-	C.sub_454740()
-	C.sub_454640()
+	sub_454740()
+	sub_454640()
 	if g2ServerGame(1) {
 		C.nox_xxx_wndSetDrawFn_46B340(s.root, unsafe.Pointer(C.sub_454A90))
 	}

@@ -6,12 +6,14 @@
 #include "client__gui__guispell.h"
 #include "stats_start_native.h"
 #include "client__gui__servopts__playrlst.h"
+#include "client__gui__servopts__access.h"
 
 void nullsub_68();
 
 obj_5D4594_2650668_t** ptr_5D4594_2650668 = 0;
 const int ptr_5D4594_2650668_cap = 128;
 
+nox_gui_server_access_state nox_gui_server_access;
 nox_window* nox_win_unk5 = 0;
 nox_window* nox_wnd_quitMenu_825760 = 0;
 nox_window* dword_5d4594_1062452 = 0;

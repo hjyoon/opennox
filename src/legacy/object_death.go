@@ -210,6 +210,11 @@ var impEggDieCall54CAE0 = func(obj *server.Object) {
 	server.ImpEggDieNative54CAE0(obj, simpleObjectDeathRuntime54CAE0())
 }
 
+//export nox_xxx_dieBarrel_54DFA0
+func nox_xxx_dieBarrel_54DFA0(source *nox_object_t) {
+	barrelDieCall54DFA0(asObjectS(source))
+}
+
 var barrelDieCall54DFA0 = func(source *server.Object) {
 	outer := GetServer()
 	s := outer.S()

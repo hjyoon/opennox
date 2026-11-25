@@ -865,8 +865,14 @@ func Nox_object_setGold_4FA620(obj *server.Object, v int) {
 func Nox_xxx_script_forcedialog_548CD0(obj, obj2 *server.Object) {
 	C.nox_xxx_script_forcedialog_548CD0(asObjectC(obj), asObjectC(obj2))
 }
+
+//export sub_4E39F0_obj_db
+func sub_4E39F0_obj_db(obj *nox_object_t) *wchar2_t {
+	return internWStr(Sub_4E39F0_obj_db(asObjectS(obj)))
+}
+
 func Sub_4E39F0_obj_db(obj *server.Object) string {
-	return GoWString(C.sub_4E39F0_obj_db(asObjectC(obj)))
+	return GetServer().S().ShopObjectName4E39F0(obj)
 }
 func Nox_xxx_mobSetFightTarg_515D30(obj, targ *server.Object) {
 	GetServer().S().MonsterSetFightTarget515D30(obj, targ)

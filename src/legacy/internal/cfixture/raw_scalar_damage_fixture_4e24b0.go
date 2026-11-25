@@ -1,6 +1,6 @@
 //go:build darwin && arm64
 
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -35,18 +35,18 @@ import (
 	"unsafe"
 )
 
-func rawScalarDamageFixtureCall4E24B0(which int, target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
+func RawScalarDamageFixtureCall4E24B0(which int, target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
 	result := C.raw_scalar_damage_fixture_call(C.uint32_t(which), target, source, weapon, C.int32_t(damage), C.int32_t(typ))
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(weapon)
 	return int32(result)
 }
-func rawScalarDamageFixtureAddress4E24B0(which int) uintptr {
+func RawScalarDamageFixtureAddress4E24B0(which int) uintptr {
 	return uintptr(C.raw_scalar_damage_fixture_address(C.uint32_t(which)))
 }
-func rawScalarDamageFixtureBadU324E24B0(value unsafe.Pointer) uint32 {
+func RawScalarDamageFixtureBadU324E24B0(value unsafe.Pointer) uint32 {
 	return uint32(C.raw_scalar_damage_fixture_bad_u32(value))
 }
-func rawScalarDamageFixtureAlloc4E24B0() unsafe.Pointer     { return C.raw_scalar_damage_fixture_alloc() }
-func rawScalarDamageFixtureFree4E24B0(value unsafe.Pointer) { C.free(value) }
+func RawScalarDamageFixtureAlloc4E24B0() unsafe.Pointer     { return C.raw_scalar_damage_fixture_alloc() }
+func RawScalarDamageFixtureFree4E24B0(value unsafe.Pointer) { C.free(value) }

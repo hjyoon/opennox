@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -21,22 +21,22 @@ import "C"
 
 import "unsafe"
 
-func npcVoiceLayoutC() (uintptr, uintptr, uintptr) {
+func NpcVoiceLayoutC() (uintptr, uintptr, uintptr) {
 	return C.sizeof_nox_object_t, uintptr(C.npc_voice_object_class()), uintptr(C.npc_voice_object_update())
 }
 
-func npcVoiceSetC(obj, data unsafe.Pointer) int32 {
+func NpcVoiceSetC(obj, data unsafe.Pointer) int32 {
 	return int32(C.npc_voice_set((*C.nox_object_t)(obj), data))
 }
 
-func npcVoiceLookupC(name unsafe.Pointer) unsafe.Pointer {
+func NpcVoiceLookupC(name unsafe.Pointer) unsafe.Pointer {
 	return C.npc_voice_lookup((*C.char)(name))
 }
 
-func npcVoiceGetC(obj unsafe.Pointer) unsafe.Pointer {
+func NpcVoiceGetC(obj unsafe.Pointer) unsafe.Pointer {
 	return C.npc_voice_get((*C.nox_object_t)(obj))
 }
 
-func npcVoiceTransferC(obj unsafe.Pointer) uintptr {
+func NpcVoiceTransferC(obj unsafe.Pointer) uintptr {
 	return uintptr(C.npc_voice_transfer((*C.nox_object_t)(obj)))
 }

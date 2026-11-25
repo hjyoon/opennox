@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -48,7 +49,7 @@ func TestShopExitNativeCABI50F4C0(t *testing.T) {
 					}
 					return 0
 				}
-				shopExitFixtureCall(route, session)
+				cfixture.ShopExitFixtureCall(route, session)
 				if sends != 1 || world.IsTradeSessionNative(session) != quest || update.Trade70 != nil {
 					t.Fatal("shop close did not establish the expected ownership")
 				}

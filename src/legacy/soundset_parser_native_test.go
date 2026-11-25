@@ -19,6 +19,7 @@ import (
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 //go:embed testdata/soundset_parser_original_4240f0_424170_v2.json.gz
@@ -78,14 +79,14 @@ func soundSetParserOwnersNew(t *testing.T, placement int) *soundSetParserOwners 
 	for i := range v.oldPointers {
 		v.oldPointers[i] = *memmap.PtrPtr(0x587000, soundSetFieldTable+uintptr(i*8))
 	}
-	v.oldCHead = *soundSetOldHeadC()
+	v.oldCHead = *cfixture.SoundSetOldHeadC()
 	v.oldBlobHead = *memmap.PtrUint32(0x5d4594, 588120)
 	t.Cleanup(func() {
 		copy(memmap.Slice(0x587000, soundSetFieldTable-16), v.oldPacked)
 		for i, p := range v.oldPointers {
 			*memmap.PtrPtr(0x587000, soundSetFieldTable+uintptr(i*8)) = p
 		}
-		*soundSetOldHeadC() = v.oldCHead
+		*cfixture.SoundSetOldHeadC() = v.oldCHead
 		*memmap.PtrUint32(0x5d4594, 588120) = v.oldBlobHead
 	})
 	return v
@@ -129,7 +130,7 @@ func (v *soundSetParserOwners) reset(t *testing.T, c soundSetParserOriginalCase)
 	}
 	soundSetHead = nil
 	soundSetByName = make(map[string]*soundSetRecord)
-	*soundSetOldHeadC() = 0xdeadface
+	*cfixture.SoundSetOldHeadC() = 0xdeadface
 	*memmap.PtrUint32(0x5d4594, 588120) = 0xc0ffee
 }
 
@@ -157,7 +158,7 @@ func (v *soundSetParserOwners) preserveInputs(t *testing.T) func() {
 				t.Fatal("public C changed native name sidecar")
 			}
 		}
-		if *soundSetOldHeadC() != 0xdeadface || *memmap.PtrUint32(0x5d4594, 588120) != 0xc0ffee {
+		if *cfixture.SoundSetOldHeadC() != 0xdeadface || *memmap.PtrUint32(0x5d4594, 588120) != 0xc0ffee {
 			t.Fatal("native metadata overwrote an unrelated old DWORD head")
 		}
 	}
@@ -234,7 +235,7 @@ func soundSetParserNormalizeTrace(in []map[string]any) []map[string]any {
 }
 
 func TestSoundSetParserNativePackedCABI(t *testing.T) {
-	if soundSetPackedSizeC() != 84 || soundSetRecordSize != 84 || soundSetFieldTable != 64704 {
+	if cfixture.SoundSetPackedSizeC() != 84 || soundSetRecordSize != 84 || soundSetFieldTable != 64704 {
 		t.Fatal("independent packed record/table ABI")
 	}
 }
@@ -253,7 +254,7 @@ func TestSoundSetParserNativeOriginalCABI(t *testing.T) {
 						check := v.preserveInputs(t)
 						want := append([]byte(nil), v.data...)
 						copy(want[v.start:], npcVoiceUnhex(t, c.After))
-						if got := soundSetFieldC(unsafe.Pointer(&v.data[v.start]), input, c.Value); got != c.Result {
+						if got := cfixture.SoundSetFieldC(unsafe.Pointer(&v.data[v.start]), input, c.Value); got != c.Result {
 							t.Fatal("actual public C field result", got, c.Result)
 						}
 						if !bytes.Equal(want, v.data) {
@@ -330,7 +331,7 @@ func TestSoundSetParserNativeOriginalCABI(t *testing.T) {
 					}
 					restore := soundSetParserObserve424170(o)
 					defer restore()
-					if got := soundSetParseC(path); got != c.Result || cursor != c.Consumed {
+					if got := cfixture.SoundSetParseC(path); got != c.Result || cursor != c.Consumed {
 						t.Fatal("actual public C parser result/cursor", got, c.Result, cursor, c.Consumed)
 					}
 					got, _ := json.Marshal(trace)
@@ -427,7 +428,7 @@ func TestSoundSetParserNativePublicEncryptedFileCABI(t *testing.T) {
 					defer soundSetParserReleaseFiles(t)()
 					input := v.input([]byte(path))
 					check := v.preserveInputs(t)
-					if got := soundSetParseC(input); got != c.Result {
+					if got := cfixture.SoundSetParseC(input); got != c.Result {
 						t.Fatal("real encrypted public C parser result", got, c.Result)
 					}
 					v.checkNodes(t, c.Nodes, ptrs)
@@ -469,13 +470,13 @@ func TestSoundSetParserNativeOwnedNamesGC(t *testing.T) {
 	}, Close: func(unsafe.Pointer) int32 { return 0 }}
 	restore := soundSetParserObserve424170(o)
 	defer restore()
-	if soundSetParseC(path) != selected.Result {
+	if cfixture.SoundSetParseC(path) != selected.Result {
 		t.Fatal("duplicate parser result")
 	}
 	runtime.GC()
 	v.checkNodes(t, selected.Nodes, ptrs)
 	query := v.input([]byte(soundSetHead.name))
-	if npcVoiceLookupC(query) != ptrs[len(ptrs)-1] || soundSetName(ptrs[0]) != soundSetHead.name {
+	if cfixture.NpcVoiceLookupC(query) != ptrs[len(ptrs)-1] || soundSetName(ptrs[0]) != soundSetHead.name {
 		t.Fatal("public C lookup or hidden duplicate lost its owned name after GC")
 	}
 }
@@ -513,7 +514,7 @@ func TestSoundSetParserNativeDefaultServices(t *testing.T) {
 				check := v.preserveInputs(t)
 				var failed bool
 				if mode == "C" {
-					failed = soundSetParseC(input) == 0
+					failed = cfixture.SoundSetParseC(input) == 0
 				} else {
 					failed = parseSoundSetBin(path) != nil
 				}
@@ -540,7 +541,7 @@ func TestSoundSetParserNativeDefaultServices(t *testing.T) {
 					if !bytes.Equal(unsafe.Slice((*byte)(rec.data), 84), want) {
 						t.Fatal("default sound service or packed numeric data", mode, i)
 					}
-					if i == 0 && npcVoiceLookupC(v.input([]byte(name))) != rec.data {
+					if i == 0 && cfixture.NpcVoiceLookupC(v.input([]byte(name))) != rec.data {
 						t.Fatal("public C lookup of default parsed data")
 					}
 					rec = rec.next

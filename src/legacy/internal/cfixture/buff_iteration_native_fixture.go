@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -20,20 +20,20 @@ import "C"
 
 import "unsafe"
 
-func buffIterationLayoutC() (uintptr, uintptr) {
+func BuffIterationLayoutC() (uintptr, uintptr) {
 	return C.sizeof_nox_object_t, uintptr(C.buff_iteration_buffs_offset())
 }
 
-func buffIterationCountC(unit unsafe.Pointer) byte {
+func BuffIterationCountC(unit unsafe.Pointer) byte {
 	return byte(C.buff_iteration_count((*C.nox_object_t)(unit)))
 }
 
-func buffIterationFirstC() uint32 { return uint32(C.buff_iteration_first()) }
-func buffIterationNextC(buff uint32) uint32 {
+func BuffIterationFirstC() uint32 { return uint32(C.buff_iteration_first()) }
+func BuffIterationNextC(buff uint32) uint32 {
 	return uint32(C.buff_iteration_next(C.int(int32(buff))))
 }
 
-func buffIterationOwnersC() (*uint32, []byte, []byte) {
+func BuffIterationOwnersC() (*uint32, []byte, []byte) {
 	return (*uint32)(unsafe.Pointer(C.buff_iteration_count_owner())),
 		unsafe.Slice((*byte)(unsafe.Pointer(C.buff_iteration_table_owner())), 116),
 		unsafe.Slice((*byte)(unsafe.Pointer(C.buff_iteration_blob_count_owner())), 4)

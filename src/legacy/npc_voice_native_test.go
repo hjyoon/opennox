@@ -22,6 +22,7 @@ import (
 	crypt "github.com/opennox/noxcrypt"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -196,7 +197,7 @@ func npcVoiceIndex(index *int, pointers []unsafe.Pointer) unsafe.Pointer {
 }
 
 func TestNPCVoiceNativeLayoutCABI(t *testing.T) {
-	size, class, update := npcVoiceLayoutC()
+	size, class, update := cfixture.NpcVoiceLayoutC()
 	if size != unsafe.Offsetof(server.Object{}.ScriptPickup)+unsafe.Sizeof(server.Object{}.ScriptPickup) || class != unsafe.Offsetof(server.Object{}.ObjClass) || update != unsafe.Offsetof(server.Object{}.UpdateData) {
 		t.Fatal("C and Go native object prefix disagree", size, class, update)
 	}
@@ -236,7 +237,7 @@ func TestNPCVoiceNativeOriginalCABI(t *testing.T) {
 						if c.Present {
 							obj = unsafe.Pointer(v.obj)
 						}
-						if got := npcVoiceSetC(obj, newData); got != c.Result {
+						if got := cfixture.NpcVoiceSetC(obj, newData); got != c.Result {
 							t.Fatal("actual public C setter result", got, c.Result)
 						}
 						if !bytes.Equal(v.update, wantUpdate) || !bytes.Equal(v.object, wantObj) || !bytes.Equal(v.data, wantData) {
@@ -246,7 +247,7 @@ func TestNPCVoiceNativeOriginalCABI(t *testing.T) {
 						if c.Present && c.Class&2 != 0 {
 							want = newData
 						}
-						if got := npcVoiceGetC(obj); got != want {
+						if got := cfixture.NpcVoiceGetC(obj); got != want {
 							t.Fatalf("existing public C getter returned %p, want %p", got, want)
 						}
 					} else if c.Kind == "lookup" {
@@ -259,7 +260,7 @@ func TestNPCVoiceNativeOriginalCABI(t *testing.T) {
 							input = unsafe.Pointer(&v.data[4096+v.start])
 						}
 						want := append([]byte(nil), v.data...)
-						if got := npcVoiceLookupC(input); got != npcVoiceIndex(c.ResultIndex, ptrs) {
+						if got := cfixture.NpcVoiceLookupC(input); got != npcVoiceIndex(c.ResultIndex, ptrs) {
 							t.Fatalf("actual const C lookup=%p, expected index %v", got, c.ResultIndex)
 						}
 						if !bytes.Equal(want, v.data) {
@@ -382,7 +383,7 @@ func TestNPCVoiceNativePublicCryptFileCABI(t *testing.T) {
 						if c.Mode == 0 && c.Trace[len(c.Trace)-1].Length == 0 {
 							wantResult = 0 // actual fread/fwrite item result for zero-size payload
 						}
-						if got := npcVoiceTransferC(obj); got != wantResult {
+						if got := cfixture.NpcVoiceTransferC(obj); got != wantResult {
 							t.Fatal("actual public C wire result", got, wantResult)
 						}
 						if !bytes.Equal(v.object, wantObj) || !bytes.Equal(v.data, wantData) || !bytes.Equal(v.update, wantUpdate) {

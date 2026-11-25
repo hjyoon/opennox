@@ -8,6 +8,7 @@ import (
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -36,23 +37,23 @@ func TestTradeReleaseNativeCABI510000(t *testing.T) {
 				(uintptr(unsafe.Pointer(session)) <= 0xffffffff || uintptr(unsafe.Pointer(left)) <= 0xffffffff) {
 				t.Fatal("session and node must exercise high addresses")
 			}
-			if got := tradeOfferReleaseFixtureCall(route, left); got != 0 || session.Field32 != nil || session.Field36 != right {
+			if got := cfixture.TradeOfferReleaseFixtureCall(route, left); got != 0 || session.Field32 != nil || session.Field36 != right {
 				t.Fatalf("offer release returned %d or changed an unrelated list", got)
 			}
 			if first.Worth != 41 || second.Worth != 93 || !world.IsTradeSessionNative(session) {
 				t.Fatal("offer release changed an object or the session owner")
 			}
-			if got := tradeOfferReleaseFixtureCall(route, nil); got != 0 {
+			if got := cfixture.TradeOfferReleaseFixtureCall(route, nil); got != 0 {
 				t.Fatalf("empty offers returned %d", got)
 			}
 			a.UpdateDataPlayer().Trade70 = nil
 			b.UpdateDataPlayer().Trade70 = nil
-			tradeReleaseFixtureCall(route, session)
+			cfixture.TradeReleaseFixtureCall(route, session)
 			if world.IsTradeSessionNative(session) || !world.IsTradeSessionNative(older) ||
 				older.Field60 != nil || first.NetCode != 0x1acb || second.NetCode != 0xb78d {
 				t.Fatal("session release changed an adjacent owner or freed offered objects")
 			}
-			tradeReleaseFixtureCall(route, session)
+			cfixture.TradeReleaseFixtureCall(route, session)
 		})
 	}
 }
@@ -75,20 +76,20 @@ func TestTradeReleasePE32Pools510000(t *testing.T) {
 	tail := (*server.TradeItem)(items.NewObject())
 	head.Field32, head.Field36 = offer, other
 	offer.Field8, tail.Field12 = tail, offer
-	restore := tradeReleaseFixtureUsePE32Pools(sessions, items, head)
+	restore := cfixture.TradeReleaseFixtureUsePE32Pools(sessions, items, head)
 	defer restore()
 	game4ConsumerServices(t, game4TradeServices{world: &server.Server{}})
-	if got := tradeOfferReleaseFixtureCall(1, offer); got != 0 ||
+	if got := cfixture.TradeOfferReleaseFixtureCall(1, offer); got != 0 ||
 		items.HasActiveObject(unsafe.Pointer(offer)) || items.HasActiveObject(unsafe.Pointer(tail)) ||
 		!items.HasActiveObject(unsafe.Pointer(other)) {
 		t.Fatal("offer-path allocator ownership")
 	}
 	head.Field32 = nil
-	tradeReleaseFixtureCall(0, head)
+	cfixture.TradeReleaseFixtureCall(0, head)
 	if sessions.HasActiveObject(unsafe.Pointer(head)) || items.HasActiveObject(unsafe.Pointer(other)) ||
-		tradeReleaseFixturePE32Head() != uintptr(unsafe.Pointer(older)) ||
+		cfixture.TradeReleaseFixturePE32Head() != uintptr(unsafe.Pointer(older)) ||
 		!sessions.HasActiveObject(unsafe.Pointer(older)) || older.Field60 != nil {
 		t.Fatal("legacy pool release or linked head")
 	}
-	tradeReleaseFixtureCall(1, head)
+	cfixture.TradeReleaseFixtureCall(1, head)
 }

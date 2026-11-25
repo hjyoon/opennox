@@ -20,6 +20,7 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -101,7 +102,7 @@ type playerBotMorphGo4FAAC0 interface {
 
 func playerBotMorphCall4FAAC0(path, op string, obj *server.Object) byte {
 	if path == "C" {
-		return playerBotMorphOriginalC4FAAC0(obj, op == "FromPlayer")
+		return cfixture.PlayerBotMorphOriginalC4FAAC0(obj, op == "FromPlayer")
 	}
 	native := any(obj).(playerBotMorphGo4FAAC0)
 	if op == "FromPlayer" {

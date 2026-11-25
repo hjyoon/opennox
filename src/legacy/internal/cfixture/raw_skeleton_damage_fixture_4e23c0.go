@@ -1,6 +1,6 @@
 //go:build darwin && arm64
 
-package legacy
+package cfixture
 
 /*
 #include "GAME3_3.h"
@@ -30,7 +30,7 @@ import (
 	"unsafe"
 )
 
-func rawSkeletonFixtureCall4E23C0(target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
+func RawSkeletonFixtureCall4E23C0(target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
 	result := C.raw_skeleton_fixture_call_4e23c0(target, source, weapon, C.int32_t(damage), C.int32_t(typ))
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(source)
@@ -38,7 +38,7 @@ func rawSkeletonFixtureCall4E23C0(target, source, weapon unsafe.Pointer, damage,
 	return int32(result)
 }
 
-func rawSkeletonFixtureCObjectOffsets4E23C0() (out [5]uintptr) {
+func RawSkeletonFixtureCObjectOffsets4E23C0() (out [5]uintptr) {
 	for i := range out {
 		out[i] = uintptr(C.raw_skeleton_fixture_offset_4e23c0(C.int(i)))
 	}

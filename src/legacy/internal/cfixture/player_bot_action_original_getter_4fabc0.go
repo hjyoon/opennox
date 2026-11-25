@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -17,6 +17,6 @@ import (
 	"unsafe"
 )
 
-func playerBotActionOriginalC4FABC0(unit *server.Object) byte {
+func PlayerBotActionOriginalC4FABC0(unit *server.Object) byte {
 	return byte(C.bot_action_original_4fabc0(unsafe.Pointer(unit)))
 }

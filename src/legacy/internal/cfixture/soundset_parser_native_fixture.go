@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1_1.h"
@@ -16,16 +16,16 @@ static uint32_t* soundset_old_head_C(void) { return &dword_5d4594_588120; }
 import "C"
 import "unsafe"
 
-func soundSetFieldC(data, name unsafe.Pointer, value uint32) int32 {
+func SoundSetFieldC(data, name unsafe.Pointer, value uint32) int32 {
 	return int32(C.soundset_field_C(data, (*C.char)(name), C.int(int32(value))))
 }
 
-func soundSetParseC(path unsafe.Pointer) int32 {
+func SoundSetParseC(path unsafe.Pointer) int32 {
 	return int32(C.soundset_parser_C((*C.char)(path)))
 }
 
-func soundSetOldHeadC() *uint32 {
+func SoundSetOldHeadC() *uint32 {
 	return (*uint32)(unsafe.Pointer(C.soundset_old_head_C()))
 }
 
-func soundSetPackedSizeC() uintptr { return C.sizeof_soundset_packed_fixture }
+func SoundSetPackedSizeC() uintptr { return C.sizeof_soundset_packed_fixture }

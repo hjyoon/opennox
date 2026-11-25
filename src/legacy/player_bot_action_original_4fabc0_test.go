@@ -17,6 +17,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -86,7 +87,7 @@ type playerBotActionGo4FABC0 interface{ PlayerBotActionToState4FABC0() byte }
 
 func playerBotActionCall4FABC0(path string, u *server.Object) byte {
 	if path == "C" {
-		return playerBotActionOriginalC4FABC0(u)
+		return cfixture.PlayerBotActionOriginalC4FABC0(u)
 	}
 	return any(u).(playerBotActionGo4FABC0).PlayerBotActionToState4FABC0()
 }

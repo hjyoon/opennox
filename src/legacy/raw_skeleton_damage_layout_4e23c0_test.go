@@ -9,11 +9,12 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func TestRawSkeletonNativeLayout4E23C0(t *testing.T) {
-	offsets, cOffsets := rawSkeletonOffsets4E23C0(), rawSkeletonFixtureCObjectOffsets4E23C0()
+	offsets, cOffsets := rawSkeletonOffsets4E23C0(), cfixture.RawSkeletonFixtureCObjectOffsets4E23C0()
 	for i, cOffset := range cOffsets {
 		if offsets[i] != cOffset {
 			t.Fatalf("field%d Go=%d C=%d", i, offsets[i], cOffset)
@@ -35,7 +36,7 @@ func TestRawSkeletonDefaultFallback4E23C0(t *testing.T) {
 		t.Run(backend, func(t *testing.T) {
 			call := rawSkeletonDamageNative4E23C0
 			if backend == "C" {
-				call = rawSkeletonFixtureCall4E23C0
+				call = cfixture.RawSkeletonFixtureCall4E23C0
 			}
 			if result := call(nil, nil, nil, -2147483648, -1); result != 1 {
 				t.Fatal("actual Buff and raw DefaultDamage nil-target fallback", result)
@@ -97,7 +98,7 @@ func TestRawSkeletonPinnedGoHeap4E23C0(t *testing.T) {
 			defer pop()
 			call := rawSkeletonDamageNative4E23C0
 			if backend == "C" {
-				call = rawSkeletonFixtureCall4E23C0
+				call = cfixture.RawSkeletonFixtureCall4E23C0
 			}
 			if result := call(unsafe.Pointer(target), unsafe.Pointer(source), nil, -1, -1); result != 1 {
 				t.Fatal("cached native update pointer/raw void result", result)

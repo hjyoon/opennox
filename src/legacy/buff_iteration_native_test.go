@@ -16,6 +16,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -67,7 +68,7 @@ func buffIterationOriginalCases(t *testing.T) []buffIterationOriginalCase {
 
 func buffIterationPreserveOwners(t *testing.T) (*uint32, []byte, []byte) {
 	t.Helper()
-	count, table, blobCount := buffIterationOwnersC()
+	count, table, blobCount := cfixture.BuffIterationOwnersC()
 	oldCount := *count
 	oldTable, oldBlob := append([]byte(nil), table...), append([]byte(nil), blobCount...)
 	t.Cleanup(func() { *count = oldCount; copy(table, oldTable); copy(blobCount, oldBlob) })
@@ -93,7 +94,7 @@ func buffIterationInstallCase(c buffIterationOriginalCase, count *uint32, table,
 }
 
 func TestBuffIterationNativeLayoutCABI(t *testing.T) {
-	size, buffs := buffIterationLayoutC()
+	size, buffs := cfixture.BuffIterationLayoutC()
 	wantSize, wantBuffs := uintptr(772), uintptr(340)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantSize, wantBuffs = 912, 344
@@ -137,11 +138,11 @@ func TestBuffIterationNativeOriginalCABI(t *testing.T) {
 						if c.Present {
 							input = unsafe.Pointer(unit)
 						}
-						got = uint32(buffIterationCountC(input))
+						got = uint32(cfixture.BuffIterationCountC(input))
 					case "first":
-						got = buffIterationFirstC()
+						got = cfixture.BuffIterationFirstC()
 					case "next":
-						got = buffIterationNextC(c.Arg)
+						got = cfixture.BuffIterationNextC(c.Arg)
 					default:
 						t.Fatal("unknown original operation", c.Kind)
 					}

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME4_1.h"
@@ -36,15 +36,15 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func tradeReleaseFixtureCall(route int, session *server.TradeSession) {
+func TradeReleaseFixtureCall(route int, session *server.TradeSession) {
 	C.trade_release_fixture_call(C.int(route), unsafe.Pointer(session))
 }
 
-func tradeOfferReleaseFixtureCall(route int, head *server.TradeItem) int {
+func TradeOfferReleaseFixtureCall(route int, head *server.TradeItem) int {
 	return int(C.offer_release_fixture_call(C.int(route), unsafe.Pointer(head)))
 }
 
-func tradeReleaseFixtureUsePE32Pools(sessions, items *alloc.Class, head *server.TradeSession) func() {
+func TradeReleaseFixtureUsePE32Pools(sessions, items *alloc.Class, head *server.TradeSession) func() {
 	oldSessions, oldItems, oldHead := C.nox_alloc_tradeSession_2386492, C.nox_alloc_tradeItems_2386496, C.dword_5d4594_2386500
 	C.nox_alloc_tradeSession_2386492 = sessions.UPtr()
 	C.nox_alloc_tradeItems_2386496 = items.UPtr()
@@ -54,6 +54,6 @@ func tradeReleaseFixtureUsePE32Pools(sessions, items *alloc.Class, head *server.
 	}
 }
 
-func tradeReleaseFixturePE32Head() uintptr {
+func TradeReleaseFixturePE32Head() uintptr {
 	return uintptr(C.dword_5d4594_2386500)
 }

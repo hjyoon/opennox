@@ -19,6 +19,7 @@ import (
 	"strconv"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -199,7 +200,7 @@ func rskBuildGraph4E23C0(in *rskInput4E23C0, path string) (g *rskGraph4E23C0, er
 	if page < 4096 || page&(page-1) != 0 {
 		return nil, fmt.Errorf("native page size")
 	}
-	g.Meta = rskGraphMetadata4E23C0{Page: page, Offsets: rawSkeletonOffsets4E23C0(), COffsets: rawSkeletonFixtureCObjectOffsets4E23C0(), Identities: make(map[string]uint64), Scope: "foreign C-owned selected-field projection; nil physical EA and opaque accessible-body equivalence are not claimed"}
+	g.Meta = rskGraphMetadata4E23C0{Page: page, Offsets: rawSkeletonOffsets4E23C0(), COffsets: cfixture.RawSkeletonFixtureCObjectOffsets4E23C0(), Identities: make(map[string]uint64), Scope: "foreign C-owned selected-field projection; nil physical EA and opaque accessible-body equivalence are not claimed"}
 	for i := 0; i < 5; i++ {
 		if g.Meta.Offsets[i] != g.Meta.COffsets[i] {
 			return nil, fmt.Errorf("actual C/Go named object offset %d", i)

@@ -25,6 +25,8 @@ import (
 	"testing"
 	"time"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const rskInputSHA4E23C0 = "a345b89795dd111b843f5bde10deb8bf49ec6546e627222d54b02a90d5e13a16"
@@ -451,7 +453,7 @@ func TestRawSkeletonNativeWorker4E23C0(t *testing.T) {
 	entry := reflect.ValueOf(rawSkeletonDamageNative4E23C0).Pointer()
 	if child.Backend == "C" {
 		backend = 2
-		entry = reflect.ValueOf(rawSkeletonFixtureCall4E23C0).Pointer()
+		entry = reflect.ValueOf(cfixture.RawSkeletonFixtureCall4E23C0).Pointer()
 	} else if child.Backend != "Go" {
 		t.Fatal("actual backend")
 	}
@@ -462,7 +464,7 @@ func TestRawSkeletonNativeWorker4E23C0(t *testing.T) {
 	if child.Backend == "Go" {
 		result = rawSkeletonDamageNative4E23C0(target, source, weapon, int32(g.Input.Args[3]), int32(g.Input.Args[4]))
 	} else {
-		result = rawSkeletonFixtureCall4E23C0(target, source, weapon, int32(g.Input.Args[3]), int32(g.Input.Args[4]))
+		result = cfixture.RawSkeletonFixtureCall4E23C0(target, source, weapon, int32(g.Input.Args[3]), int32(g.Input.Args[4]))
 	}
 	must(trace.Sync())
 	must(rskWriteJSON4E23C0(filepath.Join(directory, "actual-return.json"), rskChildResult4E23C0{PID: os.Getpid(), Backend: child.Backend, Return: uint32(result), UsedReads: g.UsedReads, UsedServices: g.UsedServices, Consumed: g.UsedPackets, TraceEvents: events, ResultScope: "real caller with independently chosen external boundary inputs; helper/product/campaign service execution credit zero"}))

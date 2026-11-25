@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME4_1.h"
@@ -29,10 +29,10 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func callTradeCancel510DC0(route int, session *server.TradeSession) {
+func CallTradeCancel510DC0(route int, session *server.TradeSession) {
 	C.cancel_session_probe(C.int(route), unsafe.Pointer(session))
 }
 
-func callQuestCacheClear510E20(route, index int) {
+func CallQuestCacheClear510E20(route, index int) {
 	C.clear_shop_cache_probe(C.int(route), C.int(index))
 }

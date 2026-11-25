@@ -12,6 +12,8 @@ import (
 	"os"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const rawScalarDamageReferenceSHA4E24B0 = "423bf6344e1874539b475417161a2f620e069dfddb987880938e2c5138ec85de"
@@ -203,14 +205,14 @@ func rawScalarDamagePoolNew4E24B0(t *testing.T, words []uint32) *rawScalarDamage
 	pool := &rawScalarDamagePool4E24B0{Pointers: map[uint32]unsafe.Pointer{0: nil}}
 	t.Cleanup(func() {
 		for _, base := range pool.Bases {
-			rawScalarDamageFixtureFree4E24B0(base)
+			cfixture.RawScalarDamageFixtureFree4E24B0(base)
 		}
 	})
 	for _, word := range words {
 		if _, exists := pool.Pointers[word]; exists {
 			continue
 		}
-		base := rawScalarDamageFixtureAlloc4E24B0()
+		base := cfixture.RawScalarDamageFixtureAlloc4E24B0()
 		if base == nil {
 			t.Fatal("C-owned opaque canary allocation")
 		}
@@ -221,7 +223,7 @@ func rawScalarDamagePoolNew4E24B0(t *testing.T, words []uint32) *rawScalarDamage
 		}
 		pool.Before = append(pool.Before, append([]byte(nil), frame...))
 		pointer := unsafe.Add(base, uintptr(word&3))
-		if uintptr(pointer) <= 0xffffffff || uintptr(pointer) == uintptr(rawScalarDamageFixtureBadU324E24B0(pointer)) {
+		if uintptr(pointer) <= 0xffffffff || uintptr(pointer) == uintptr(cfixture.RawScalarDamageFixtureBadU324E24B0(pointer)) {
 			t.Fatal("actual high native pointer/truncation negative control")
 		}
 		pool.Pointers[word] = pointer
@@ -248,7 +250,7 @@ func rawScalarDamageIndex4E24B0(t *testing.T, symbol string) int {
 }
 func rawScalarDamageCall4E24B0(backend string, index int, target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
 	if backend == "C" {
-		return rawScalarDamageFixtureCall4E24B0(index, target, source, weapon, damage, typ)
+		return cfixture.RawScalarDamageFixtureCall4E24B0(index, target, source, weapon, damage, typ)
 	}
 	switch index {
 	case 0:
@@ -305,7 +307,7 @@ func TestRawScalarDamageOriginalConsumers4E24B0(t *testing.T) {
 				input := data.Inputs[row.Name]
 				pool := rawScalarDamagePoolNew4E24B0(t, input.Args[:3])
 				index := rawScalarDamageIndex4E24B0(t, input.Function)
-				if rawScalarDamageFixtureAddress4E24B0(index) <= 0xffffffff {
+				if cfixture.RawScalarDamageFixtureAddress4E24B0(index) <= 0xffffffff {
 					t.Fatal("actual typed C entry above4GiB")
 				}
 				var calls []rawScalarDamageObserved4E24B0
@@ -323,7 +325,7 @@ func TestRawScalarDamageOriginalConsumers4E24B0(t *testing.T) {
 				if rawScalarDamageObserveParent4E24B0 != nil {
 					t.Fatal("seam not restored")
 				}
-				t.Logf("RAW_SCALAR_DAMAGE_ORIGINAL_OK backend=%s case=%s mode=%x function=%s calls=%d result=%08x target=%p source=%p weapon=%p entry=%#x parent-boundary=true all-canaries=true", backend, row.Name, row.CW, row.Function, len(calls), uint32(result), pool.Pointers[input.Args[0]], pool.Pointers[input.Args[1]], pool.Pointers[input.Args[2]], rawScalarDamageFixtureAddress4E24B0(index))
+				t.Logf("RAW_SCALAR_DAMAGE_ORIGINAL_OK backend=%s case=%s mode=%x function=%s calls=%d result=%08x target=%p source=%p weapon=%p entry=%#x parent-boundary=true all-canaries=true", backend, row.Name, row.CW, row.Function, len(calls), uint32(result), pool.Pointers[input.Args[0]], pool.Pointers[input.Args[1]], pool.Pointers[input.Args[2]], cfixture.RawScalarDamageFixtureAddress4E24B0(index))
 			})
 		}
 	}
@@ -395,7 +397,7 @@ func TestRawScalarDamageDefaultPublicNilTarget4E24B0(t *testing.T) {
 	for index, symbol := range rawScalarDamageSymbols4E24B0 {
 		t.Run(symbol, func(t *testing.T) {
 			pool := rawScalarDamagePoolNew4E24B0(t, []uint32{0x21000100, 0x21000200})
-			result := rawScalarDamageFixtureCall4E24B0(index, nil, pool.Pointers[0x21000100], pool.Pointers[0x21000200], 27, 0)
+			result := cfixture.RawScalarDamageFixtureCall4E24B0(index, nil, pool.Pointers[0x21000100], pool.Pointers[0x21000200], 27, 0)
 			// Existing independently qualified raw-parent nil-target control is1;
 			// no scalar430 external-reply row is used as a parent-body oracle.
 			if result != 1 || rawScalarDamageObserveParent4E24B0 != nil || rawDefaultDamageNativeObserverStack4E0B30 != nil {

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "native_fixture_alloc.h"
@@ -94,7 +94,7 @@ static int nox_test_mapgen_buffers_502A20(uintptr_t* first_address, uintptr_t* s
 */
 import "C"
 
-func mapgenBufferContract502A20() (uintptr, uintptr, bool) {
+func MapgenBufferContract502A20() (uintptr, uintptr, bool) {
 	var first, second C.uintptr_t
 	ok := C.nox_test_mapgen_buffers_502A20(&first, &second) != 0
 	return uintptr(first), uintptr(second), ok

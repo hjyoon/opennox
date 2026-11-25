@@ -13,6 +13,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -21,7 +22,7 @@ func armorCoefficientBytes415BD0[T any](value *T) []byte {
 }
 
 func TestArmorCoefficientLayout415BD0(t *testing.T) {
-	class, typ := armorCoefficientCOffsets415BD0()
+	class, typ := cfixture.ArmorCoefficientCOffsets415BD0()
 	if class != unsafe.Offsetof(server.Object{}.ObjClass) || typ != unsafe.Offsetof(server.Object{}.TypeInd) {
 		t.Fatal("compiled C and native Go object offsets differ")
 	}
@@ -71,7 +72,7 @@ func TestArmorCoefficientHighNative415BD0(t *testing.T) {
 	for _, vector := range fixture.Cases {
 		definition.DamageCoeffOrArmor64 = math.Float32frombits(vector.Word)
 		beforeDefinition := armorCoefficientBytes415BD0(definition)
-		for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, armorCoefficientActualC415BD0} {
+		for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, cfixture.ArmorCoefficientActualC415BD0} {
 			reads = nil
 			got := math.Float64bits(call(unsafe.Pointer(item)))
 			if got != vector.Wide {
@@ -85,7 +86,7 @@ func TestArmorCoefficientHighNative415BD0(t *testing.T) {
 			}
 			calls++
 		}
-		if math.Float64bits(armorCoefficientTypedCConversion415BD0(unsafe.Pointer(definition))) != vector.Wide {
+		if math.Float64bits(cfixture.ArmorCoefficientTypedCConversion415BD0(unsafe.Pointer(definition))) != vector.Wide {
 			t.Fatalf("independent typed C float-to-double %#08x", vector.Word)
 		}
 		if !bytes.Equal(beforeItem, armorCoefficientBytes415BD0(item)) || !bytes.Equal(beforeDefinition, armorCoefficientBytes415BD0(definition)) {
@@ -103,7 +104,7 @@ func TestArmorCoefficientCachedReads415BD0(t *testing.T) {
 	defer freeItem()
 	definition, freeDefinition := alloc.NewHigh(server.Modifier{})
 	defer freeDefinition()
-	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, armorCoefficientActualC415BD0} {
+	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, cfixture.ArmorCoefficientActualC415BD0} {
 		item.ObjClass, item.TypeInd, definition.DamageCoeffOrArmor64 = object.ClassArmor, 0xffff, -0.25
 		pop := pushArmorCoefficientObserver415BD0(&armorCoefficientObserver415BD0{
 			Read: func(read armorCoefficientRead415BD0) {
@@ -154,7 +155,7 @@ func TestArmorCoefficientDefaultLookup415BD0(t *testing.T) {
 	defer freeLast()
 	first.Next80 = last
 	srv.Modif.Dword_5d4594_251608 = first
-	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, armorCoefficientActualC415BD0} {
+	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, cfixture.ArmorCoefficientActualC415BD0} {
 		for _, class := range []object.Class{0, object.ClassMonster, object.ClassArmor, object.Class(0xffffffff)} {
 			item.ObjClass, item.TypeInd = class, 0x8001
 			want := float64(0)
@@ -188,7 +189,7 @@ func TestArmorCoefficientPinnedGoHeap415BD0(t *testing.T) {
 		return unsafe.Pointer(definition)
 	}})
 	defer pop()
-	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, armorCoefficientActualC415BD0} {
+	for _, call := range []func(unsafe.Pointer) float64{armorCoefficientNative415BD0, cfixture.ArmorCoefficientActualC415BD0} {
 		if got := call(unsafe.Pointer(item)); got != math.SmallestNonzeroFloat32 {
 			t.Fatal("pinned Go-owned object/definition")
 		}

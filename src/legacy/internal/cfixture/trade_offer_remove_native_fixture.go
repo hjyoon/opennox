@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME4_1.h"
@@ -20,6 +20,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func callTradeOfferRemove50FE20(route int, session *server.TradeSession, code uint32) int {
+func CallTradeOfferRemove50FE20(route int, session *server.TradeSession, code uint32) int {
 	return int(C.offer_remove_fixture(C.int(route), unsafe.Pointer(session), C.uint32_t(code)))
 }

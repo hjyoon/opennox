@@ -11,6 +11,7 @@ import (
 	"github.com/opennox/libs/strman"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -94,8 +95,8 @@ func TestTradeCancelCacheNativeCABI510DC0(t *testing.T) {
 			})
 		}
 		host.cleared = nil
-		callQuestCacheClear510E20(route, -1)
-		callQuestCacheClear510E20(route, 32)
+		cfixture.CallQuestCacheClear510E20(route, -1)
+		cfixture.CallQuestCacheClear510E20(route, 32)
 		if len(host.cleared) != 0 {
 			t.Fatal("invalid Quest cache indices were forwarded")
 		}
@@ -106,7 +107,7 @@ func checkTradeCancelNative(t *testing.T, route int, row tradeCancelCacheCase, h
 	t.Helper()
 	if row.Observed.Fault != nil {
 		// The native entry keeps the established nil guard.
-		callTradeCancel510DC0(route, nil)
+		cfixture.CallTradeCancel510DC0(route, nil)
 		if *row.Observed.Fault != 16 || host.cancelled != nil || len(host.packets) != 0 {
 			t.Fatal("nil cancellation reached a child")
 		}
@@ -131,7 +132,7 @@ func checkTradeCancelNative(t *testing.T, route int, row tradeCancelCacheCase, h
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(session)) <= 0xffffffff {
 		t.Fatal("test did not allocate a high session")
 	}
-	callTradeCancel510DC0(route, session)
+	cfixture.CallTradeCancel510DC0(route, session)
 	var want [][2]byte
 	if row.Observed.Child == "shop" {
 		want = [][2]byte{{0xc9, 0x02}}
@@ -169,7 +170,7 @@ func checkQuestCacheClearNative(t *testing.T, route int, row tradeCancelCacheCas
 		defer func() { *slot, *otherSlot = before, otherBefore }()
 		*slot, *otherSlot = unsafe.Pointer(selected), unsafe.Pointer(other)
 	}
-	callQuestCacheClear510E20(route, index)
+	cfixture.CallQuestCacheClear510E20(route, index)
 	if !reflect.DeepEqual(host.cleared, []int{index}) || world.IsTradeSessionNative(selected) ||
 		world.ClearQuestShopSessionNative510E20(index) || !world.IsTradeSessionNative(other) {
 		t.Fatalf("cache clear changed the wrong owner or left the selected slot live: %v", host.cleared)

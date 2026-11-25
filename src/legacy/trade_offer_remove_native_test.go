@@ -7,6 +7,7 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -182,7 +183,7 @@ func checkTradeOfferRemoveCase(t *testing.T, route int, row tradeOfferRemoveCase
 			wantEvents = append(wantEvents, fmt.Sprintf("send:%d:%x", index+1, packet))
 		}
 	}
-	if got := callTradeOfferRemove50FE20(route, session, in.Code); got != want.Result {
+	if got := cfixture.CallTradeOfferRemove50FE20(route, session, in.Code); got != want.Result {
 		t.Fatalf("remove result = %d, want %d", got, want.Result)
 	}
 	if !slices.Equal(gotEvents, wantEvents) {
@@ -207,7 +208,7 @@ func TestTradeOfferRemoveNativeCallbackCanRelease50FE20(t *testing.T) {
 			}
 		}}
 	}})
-	if got := callTradeOfferRemove50FE20(1, session, 17); got != 0 || sends != 1 || world.IsTradeSessionNative(session) {
+	if got := cfixture.CallTradeOfferRemove50FE20(1, session, 17); got != 0 || sends != 1 || world.IsTradeSessionNative(session) {
 		t.Fatalf("interrupted removal = %d, sends = %d, live session = %t", got, sends, world.IsTradeSessionNative(session))
 	}
 }

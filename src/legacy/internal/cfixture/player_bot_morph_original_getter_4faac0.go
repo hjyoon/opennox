@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -15,7 +15,7 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func playerBotMorphOriginalC4FAAC0(unit *server.Object, from bool) byte {
+func PlayerBotMorphOriginalC4FAAC0(unit *server.Object, from bool) byte {
 	if from {
 		return byte(C.nox_xxx_mobMorphFromPlayer_4FAAC0((*C.uint32_t)(unsafe.Pointer(unit))))
 	}

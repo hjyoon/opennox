@@ -4,10 +4,12 @@ import (
 	"math"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestMapgenBuffers502A20PreserveOriginalContractAndNativePointers(t *testing.T) {
-	first, second, ok := mapgenBufferContract502A20()
+	first, second, ok := cfixture.MapgenBufferContract502A20()
 	if !ok {
 		t.Fatal("mapgen count, save-by-name, or buffer accessor contract failed")
 	}

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME4_1.h"
@@ -23,6 +23,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func shopExitFixtureCall(route int, session *server.TradeSession) {
+func ShopExitFixtureCall(route int, session *server.TradeSession) {
 	C.shop_exit_fixture(C.int(route), unsafe.Pointer(session))
 }

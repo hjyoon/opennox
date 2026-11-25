@@ -1,6 +1,6 @@
 //go:build darwin && arm64
 
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -19,17 +19,17 @@ import (
 	"unsafe"
 )
 
-func armorCoefficientActualC415BD0(item unsafe.Pointer) float64 {
+func ArmorCoefficientActualC415BD0(item unsafe.Pointer) float64 {
 	result := float64(C.armor_coefficient_actual_C_415bd0(item))
 	runtime.KeepAlive(item)
 	return result
 }
 
-func armorCoefficientCOffsets415BD0() (class, typ uintptr) {
+func ArmorCoefficientCOffsets415BD0() (class, typ uintptr) {
 	return uintptr(C.armor_coefficient_class_offset_415bd0()), uintptr(C.armor_coefficient_type_offset_415bd0())
 }
 
-func armorCoefficientTypedCConversion415BD0(definition unsafe.Pointer) float64 {
+func ArmorCoefficientTypedCConversion415BD0(definition unsafe.Pointer) float64 {
 	result := float64(C.armor_coefficient_typed_C_conversion_415bd0(definition))
 	runtime.KeepAlive(definition)
 	return result

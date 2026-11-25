@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -35,10 +35,10 @@ import "C"
 
 import "unsafe"
 
-func game1LeafCallC40A180(entry, word uint32) uint32 {
+func Game1LeafCallC40A180(entry, word uint32) uint32 {
 	return uint32(C.game1_leaf_call_40a180(C.uint(entry), C.uint32_t(word)))
 }
 
-func game1LeafCellC40A180(base, offset uint32) unsafe.Pointer {
+func Game1LeafCellC40A180(base, offset uint32) unsafe.Pointer {
 	return C.game1_leaf_cell_40a180(C.uint32_t(base), C.size_t(offset))
 }

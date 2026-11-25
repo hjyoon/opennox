@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 // This control also runs before replacing either public C body. It freezes the
@@ -26,7 +27,7 @@ func TestGAME1Diagnostics413E30EmptyPublicBaseline(t *testing.T) {
 		binary.LittleEndian.PutUint32(want[i*rowSize+80:], 0)
 	}
 	*packed, *native = 0, nil
-	memDumpFixturePublic413E30()
+	cfixture.MemDumpFixturePublic413E30()
 	if !bytes.Equal(table, want) {
 		t.Fatal("actual public entry changed names or failed to clear all1024 DWORD counts")
 	}

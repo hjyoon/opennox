@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -65,7 +66,7 @@ func TestMonsterGeneratorDamageNativeDefaultPointFXMatchesC(t *testing.T) {
 				receiver.PlayerUnit.PosVec = pos
 				monsterGeneratorDamageDefaultRuntime4E27D0().PointFX(op[0], op[1], point)
 				actual := s.NetList.CopyPacketsA(ntype.PlayerInd(receiver.PlayerInd), netlist.Kind1)
-				generatorDamagePointFXExistingC(op[0], op[1], point)
+				cfixture.GeneratorDamagePointFXExistingC(op[0], op[1], point)
 				originalC := s.NetList.CopyPacketsA(ntype.PlayerInd(receiver.PlayerInd), netlist.Kind1)
 				if len(actual) != 6 || len(originalC) != 6 || !bytes.Equal(actual, originalC) {
 					t.Fatalf("actual default packet % x vs unchanged C % x at%v", actual, originalC, pos)
@@ -120,7 +121,7 @@ func TestMonsterGeneratorDamageNativeDefaultComposition(t *testing.T) {
 					}
 					*o = server.Object{ObjClass: object.ClassImmobile, ObjFlags: object.Flags(state.Flags), Field5: state.Status, PosVec: types.Ptf(math.Float32frombits(state.Position[0]), math.Float32frombits(state.Position[1])), Frame134: state.EffectFrame, HealthData: h, UpdateData: u, Buffs: 1 << server.ENCHANT_INVULNERABLE}
 				}
-				generatorDamageBindC(v.objects[0])
+				cfixture.GeneratorDamageBindC(v.objects[0])
 				s.SetFrame(c.Input.Frame)
 				receiver.PlayerUnit.PosVec = v.objects[0].PosVec
 				if got := v.state(); !reflect.DeepEqual(got, c.Before) {
@@ -153,7 +154,7 @@ func TestMonsterGeneratorDamageNativeDefaultComposition(t *testing.T) {
 					}
 				}
 				queuedBefore := reflect.ValueOf(&s.Audio).Elem().FieldByName("delayedObj").Len()
-				got := generatorDamageActualCall(route, v.objects[0], v.object(c.Input.Source), v.object(c.Input.Weapon), c.Input.Damage, c.Input.DamageType)
+				got := cfixture.GeneratorDamageActualCall(route, v.objects[0], v.object(c.Input.Source), v.object(c.Input.Weapon), c.Input.Damage, c.Input.DamageType)
 				if uint32(got) != c.Return {
 					t.Fatalf("actual default return %#x want%#x", uint32(got), c.Return)
 				}
@@ -167,7 +168,7 @@ func TestMonsterGeneratorDamageNativeDefaultComposition(t *testing.T) {
 				if fx != nil {
 					wantAudio = 1
 					*comparisonPoint = types.Ptf(math.Float32frombits(fx.PointBits[0]), math.Float32frombits(fx.PointBits[1]))
-					generatorDamagePointFXExistingC(byte(fx.Args[0]), byte(fx.Args[1]), comparisonPoint)
+					cfixture.GeneratorDamagePointFXExistingC(byte(fx.Args[0]), byte(fx.Args[1]), comparisonPoint)
 					control := s.NetList.CopyPacketsA(ntype.PlayerInd(receiver.PlayerInd), netlist.Kind1)
 					if len(packet) != 6 || len(control) != 6 || !bytes.Equal(packet, control) {
 						t.Fatalf("real default wire % x want unchanged C % x", packet, control)

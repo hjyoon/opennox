@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestGAME1Trig414C90ActualEntryFullOriginalBytesAndReturn(t *testing.T) {
@@ -37,7 +38,7 @@ func TestGAME1Trig414C90ActualEntryFullOriginalBytesAndReturn(t *testing.T) {
 			}
 			*flag = row.Ready
 			beforeS, beforeA := bytes.Clone(sine), bytes.Clone(arc)
-			got := trigFixturePublic414C90()
+			got := cfixture.TrigFixturePublic414C90()
 			if got != row.Returned || *flag != row.Final {
 				t.Fatalf("return/flag=%02x/%02x want%02x/%02x", got, *flag, row.Returned, row.Final)
 			}

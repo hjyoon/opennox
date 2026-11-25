@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1_1.h"
@@ -14,22 +14,22 @@ static uint16_t named_mask_monster_low16_C(const char* input,uint32_t initial) {
 import "C"
 import "unsafe"
 
-func namedBitmaskSetC(name, bits, names unsafe.Pointer) int32 {
+func NamedBitmaskSetC(name, bits, names unsafe.Pointer) int32 {
 	return int32(C.named_mask_set_C((*C.char)(name), (*C.uint32_t)(bits), (**C.char)(names)))
 }
 
-func namedBitmaskParseC(input, bits, names unsafe.Pointer) {
+func NamedBitmaskParseC(input, bits, names unsafe.Pointer) {
 	C.named_mask_parse_C((*C.char)(input), (*C.uint32_t)(bits), (**C.char)(names))
 }
 
-func namedBitmaskMonsterC(input, bits unsafe.Pointer) {
+func NamedBitmaskMonsterC(input, bits unsafe.Pointer) {
 	C.named_mask_monster_C((*C.char)(input), (*C.uint32_t)(bits))
 }
 
-func namedBitmaskMonsterLow16C(input unsafe.Pointer, initial uint32) uint16 {
+func NamedBitmaskMonsterLow16C(input unsafe.Pointer, initial uint32) uint16 {
 	return uint16(C.named_mask_monster_low16_C((*C.char)(input), C.uint32_t(initial)))
 }
 
-func namedBitmaskSizesC() (uintptr, uintptr) {
+func NamedBitmaskSizesC() (uintptr, uintptr) {
 	return C.sizeof_named_mask_pointer_fixture, C.sizeof_uint32_t
 }

@@ -1,14 +1,14 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME3_2.h"
 */
 import "C"
 
-func countSaveFilesC() int {
+func CountSaveFilesC() int {
 	return int(C.nox_client_countSaveFiles_4DC550())
 }
 
-func countPlayerFilesC() int {
+func CountPlayerFilesC() int {
 	return int(C.nox_client_countPlayerFiles02_4DC630())
 }

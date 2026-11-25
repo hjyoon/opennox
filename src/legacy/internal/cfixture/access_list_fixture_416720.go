@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -26,7 +26,7 @@ import (
 	"unsafe"
 )
 
-func accessListFixtureCall416720(entry uint32, index int32, name, serial unsafe.Pointer) (unsafe.Pointer, uint32) {
+func AccessListFixtureCall416720(entry uint32, index int32, name, serial unsafe.Pointer) (unsafe.Pointer, uint32) {
 	var word C.int
 	p := C.access_list_fixture_call_416720(C.int(entry), C.int(index), name, serial, &word)
 	runtime.KeepAlive(name)

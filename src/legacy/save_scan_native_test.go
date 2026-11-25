@@ -14,6 +14,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestCountSaveFilesNativeCEntry4DC550(t *testing.T) {
@@ -48,7 +49,7 @@ func TestCountSaveFilesNativeCEntry4DC550(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			if got := countSaveFilesC(); got != tc.want {
+			if got := cfixture.CountSaveFilesC(); got != tc.want {
 				t.Fatalf("C entry counted %d save slots, want %d", got, tc.want)
 			}
 			if dir, err := os.Stat(filepath.Join(root, "Save")); err != nil || !dir.IsDir() {
@@ -73,7 +74,7 @@ func TestCountPlayerFilesNativeCEntry4DC630(t *testing.T) {
 		noxflags.SetGame(oldFlags)
 	})
 	t.Chdir(t.TempDir())
-	if got := countPlayerFilesC(); got != 0 {
+	if got := cfixture.CountPlayerFilesC(); got != 0 {
 		t.Fatalf("empty Save directory has %d characters", got)
 	}
 	dir := filepath.Join(root, "Save")
@@ -85,7 +86,7 @@ func TestCountPlayerFilesNativeCEntry4DC630(t *testing.T) {
 	} {
 		writePlayerScanHeader(t, filepath.Join(dir, name), flags)
 	}
-	if got := countPlayerFilesC(); got != 2 {
+	if got := cfixture.CountPlayerFilesC(); got != 2 {
 		t.Fatalf("C entry counted %d online characters, want 2", got)
 	}
 	cwd, err := os.Getwd()

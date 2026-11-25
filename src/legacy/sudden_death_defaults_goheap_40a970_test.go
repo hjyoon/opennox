@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/datapath"
 	"github.com/opennox/libs/strman"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -65,7 +66,7 @@ func suddenDeathExtraCall40A970(t *testing.T, backend string) {
 	case "Go":
 		sub40A970Native()
 	case "C":
-		suddenDeathFixtureCall40A970()
+		cfixture.SuddenDeathFixtureCall40A970()
 	default:
 		t.Fatal("declared void backend")
 	}

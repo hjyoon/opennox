@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -85,21 +85,21 @@ import (
 	"unsafe"
 )
 
-func accessSupportFixtureHead416720(banned int32) unsafe.Pointer {
+func AccessSupportFixtureHead416720(banned int32) unsafe.Pointer {
 	return C.access_support_head_416720(C.int(banned))
 }
 
-func accessSupportFixtureField416720(field int, entry unsafe.Pointer) unsafe.Pointer {
+func AccessSupportFixtureField416720(field int, entry unsafe.Pointer) unsafe.Pointer {
 	p := C.access_support_field_416720(C.int(field), entry)
 	runtime.KeepAlive(entry)
 	return p
 }
 
-func accessSupportFixtureOffset416720(field int) uintptr {
+func AccessSupportFixtureOffset416720(field int) uintptr {
 	return uintptr(C.access_support_offset_416720(C.int(field)))
 }
 
-func accessSupportFixtureSize416720(banned bool) uintptr {
+func AccessSupportFixtureSize416720(banned bool) uintptr {
 	v := C.int(0)
 	if banned {
 		v = 1
@@ -107,7 +107,7 @@ func accessSupportFixtureSize416720(banned bool) uintptr {
 	return uintptr(C.access_support_size_416720(v))
 }
 
-func accessSupportFixtureLinks416720(entry unsafe.Pointer) [3]unsafe.Pointer {
+func AccessSupportFixtureLinks416720(entry unsafe.Pointer) [3]unsafe.Pointer {
 	var links [3]unsafe.Pointer
 	for i := range links {
 		links[i] = C.access_support_link_416720(entry, C.int(i))
@@ -116,12 +116,12 @@ func accessSupportFixtureLinks416720(entry unsafe.Pointer) [3]unsafe.Pointer {
 	return links
 }
 
-func accessSupportFixtureStore416720(field int, entry unsafe.Pointer, index int, value uint32) {
+func AccessSupportFixtureStore416720(field int, entry unsafe.Pointer, index int, value uint32) {
 	C.access_support_store_416720(C.int(field), entry, C.uint(index), C.uint(value))
 	runtime.KeepAlive(entry)
 }
 
-func accessSupportFixtureRead416720(field int, entry unsafe.Pointer, index int) uint32 {
+func AccessSupportFixtureRead416720(field int, entry unsafe.Pointer, index int) uint32 {
 	v := uint32(C.access_support_read_416720(C.int(field), entry, C.uint(index)))
 	runtime.KeepAlive(entry)
 	return v

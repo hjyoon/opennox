@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -67,33 +67,33 @@ import (
 	"unsafe"
 )
 
-func startupPauseFixtureCall4134D0(entry uint32, arg int32, a, b unsafe.Pointer) int32 {
+func StartupPauseFixtureCall4134D0(entry uint32, arg int32, a, b unsafe.Pointer) int32 {
 	v := int32(C.sp_fixture_call_4134d0(C.uint32_t(entry), C.int32_t(arg), a, b))
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 	return v
 }
-func startupPauseFixtureDrive4134D0() unsafe.Pointer {
+func StartupPauseFixtureDrive4134D0() unsafe.Pointer {
 	return unsafe.Pointer(C.sp_fixture_drive_4134d0())
 }
-func startupPauseFixtureQsort4134D0(base unsafe.Pointer, count int) {
+func StartupPauseFixtureQsort4134D0(base unsafe.Pointer, count int) {
 	C.sp_fixture_qsort_4134d0(base, C.size_t(count))
 	runtime.KeepAlive(base)
 }
 func startupPauseFixtureCallback4134D0(kind uint32, arg int32) {
 	C.sp_fixture_callback_4134d0(C.uint32_t(kind), C.int32_t(arg))
 }
-func startupPauseFixtureFocusCount4134D0(kind int) int {
+func StartupPauseFixtureFocusCount4134D0(kind int) int {
 	return int(C.sp_fixture_focus_count_4134d0(C.int(kind)))
 }
-func startupPauseFixtureFocusRecord4134D0(kind, index int) bool {
+func StartupPauseFixtureFocusRecord4134D0(kind, index int) bool {
 	return C.sp_fixture_focus_record_4134d0(C.int(kind), C.int(index)) != 0
 }
-func startupPauseFixtureFocusBegin4134D0() { C.sp_fixture_focus_begin_4134d0() }
-func startupPauseFixtureFocusEnd4134D0()   { C.sp_fixture_focus_end_4134d0() }
-func startupPauseFixtureFocusOwner4134D0(kind int) unsafe.Pointer {
+func StartupPauseFixtureFocusBegin4134D0() { C.sp_fixture_focus_begin_4134d0() }
+func StartupPauseFixtureFocusEnd4134D0()   { C.sp_fixture_focus_end_4134d0() }
+func StartupPauseFixtureFocusOwner4134D0(kind int) unsafe.Pointer {
 	return C.sp_fixture_focus_owner_4134d0(C.int(kind))
 }
-func startupPauseFixtureFocusInvoke4134D0(kind, index int, arg int32) {
+func StartupPauseFixtureFocusInvoke4134D0(kind, index int, arg int32) {
 	C.sp_fixture_focus_invoke_4134d0(C.int(kind), C.int(index), C.int(arg))
 }

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -42,18 +42,18 @@ import "C"
 
 import "unsafe"
 
-func game1SettingsCallC40AA00(entry, word uint32) uint32 {
+func Game1SettingsCallC40AA00(entry, word uint32) uint32 {
 	return uint32(C.game1_settings_call_40aa00(C.uint32_t(entry), C.uint32_t(word)))
 }
 
-func game1SettingsCellC40AA00(offset uint32) unsafe.Pointer {
+func Game1SettingsCellC40AA00(offset uint32) unsafe.Pointer {
 	return C.game1_settings_cell_40aa00(C.size_t(offset))
 }
 
-func game1SettingsBlobC40AA00(offset, width int) []byte {
+func Game1SettingsBlobC40AA00(offset, width int) []byte {
 	return unsafe.Slice((*byte)(C.game1_settings_raw_blob_40aa00(C.size_t(offset), C.size_t(width))), width)
 }
 
-func game1SettingsGlobalC40AA00() (unsafe.Pointer, uintptr, uintptr) {
+func Game1SettingsGlobalC40AA00() (unsafe.Pointer, uintptr, uintptr) {
 	return C.game1_settings_global_40aa00(), uintptr(C.game1_settings_global_width_40aa00()), uintptr(C.game1_settings_global_align_40aa00())
 }

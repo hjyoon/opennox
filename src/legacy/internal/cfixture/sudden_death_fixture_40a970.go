@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -21,12 +21,12 @@ static size_t sudden_death_fixture_player_width_40a970(void) {
 import "C"
 
 // The public C entry has no parameters and no integer return transport.
-func suddenDeathFixtureCall40A970() {
+func SuddenDeathFixtureCall40A970() {
 	C.sudden_death_fixture_call_40a970()
 }
 
 // Both expressions concern the compiled declaration only. No player instance
 // or complete struct allocation is required by this helper.
-func suddenDeathFixtureCPlayerLayout40A970() (offset, width uintptr) {
+func SuddenDeathFixtureCPlayerLayout40A970() (offset, width uintptr) {
 	return uintptr(C.sudden_death_fixture_player_offset_40a970()), uintptr(C.sudden_death_fixture_player_width_40a970())
 }

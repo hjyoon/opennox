@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -22,12 +22,12 @@ static void team_entries_packet_call_417cf0(void* p) { sub_4184D0((nox_team_t*)p
 import "C"
 import "unsafe"
 
-func teamEntriesCall417CF0() int32           { return int32(C.sub_417CF0()) }
-func teamEntriesCall417DC0() int32           { return int32(C.sub_417DC0()) }
-func teamEntriesCall417DE0() byte            { return byte(C.sub_417DE0()) }
-func teamEntriesCall418390() int32           { return int32(C.sub_418390()) }
-func teamEntriesCall4183C0() int32           { return int32(C.sub_4183C0()) }
-func teamEntriesCall4184D0(p unsafe.Pointer) { C.team_entries_packet_call_417cf0(p) }
-func teamEntriesLayout417CF0(field int) uintptr {
+func TeamEntriesCall417CF0() int32           { return int32(C.sub_417CF0()) }
+func TeamEntriesCall417DC0() int32           { return int32(C.sub_417DC0()) }
+func TeamEntriesCall417DE0() byte            { return byte(C.sub_417DE0()) }
+func TeamEntriesCall418390() int32           { return int32(C.sub_418390()) }
+func TeamEntriesCall4183C0() int32           { return int32(C.sub_4183C0()) }
+func TeamEntriesCall4184D0(p unsafe.Pointer) { C.team_entries_packet_call_417cf0(p) }
+func TeamEntriesLayout417CF0(field int) uintptr {
 	return uintptr(C.team_entries_layout_417cf0(C.int(field)))
 }

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -31,7 +31,7 @@ import (
 	"unsafe"
 )
 
-func titleFixtureToMask415960(armor bool, query unsafe.Pointer) uint32 {
+func TitleFixtureToMask415960(armor bool, query unsafe.Pointer) uint32 {
 	a := C.int(0)
 	if armor {
 		a = 1
@@ -41,7 +41,7 @@ func titleFixtureToMask415960(armor bool, query unsafe.Pointer) uint32 {
 	return v
 }
 
-func titleFixtureFromMask415960(armor bool, mask uint32) unsafe.Pointer {
+func TitleFixtureFromMask415960(armor bool, mask uint32) unsafe.Pointer {
 	a := C.int(0)
 	if armor {
 		a = 1
@@ -49,7 +49,7 @@ func titleFixtureFromMask415960(armor bool, mask uint32) unsafe.Pointer {
 	return unsafe.Pointer(C.tt_fixture_from_mask_415960(a, C.uint32_t(mask)))
 }
 
-func titleFixtureLoad415960(armor bool) uintptr {
+func TitleFixtureLoad415960(armor bool) uintptr {
 	a := C.int(0)
 	if armor {
 		a = 1

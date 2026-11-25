@@ -18,6 +18,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const fourTimersInputSHA40A1F0 = "5a1e175d954288b72f677d4047a77d261eac9a10bcb52d21fcceaf21aae3a78e"
@@ -540,7 +541,7 @@ func (r *timerRun40A1F0) operand(e timerNativeOperand40A1F0) {
 	actualAddress := uint32(0)
 	width := uint32(4)
 	if e.Field == 3 {
-		base := uintptr(fourTimersCellC40A1F0(0x5d4594, 3500))
+		base := uintptr(cfixture.FourTimersCellC40A1F0(0x5d4594, 3500))
 		p := uintptr(e.Address)
 		if p < base || p-base >= 6 {
 			r.t.Fatal("actual live limit pointer domain")
@@ -556,7 +557,7 @@ func (r *timerRun40A1F0) operand(e timerNativeOperand40A1F0) {
 		if e.Field == 0 {
 			base = 0x587000
 		}
-		if e.Address != fourTimersCellC40A1F0(base, offsets[e.Field]) {
+		if e.Address != cfixture.FourTimersCellC40A1F0(base, offsets[e.Field]) {
 			r.t.Fatal("actual native C/Go cell identity")
 		}
 		actualAddress = base + offsets[e.Field]
@@ -617,7 +618,7 @@ func timerCall40A1F0(backend string, in timerInput40A1F0) uint64 {
 		arg = in.Args[0]
 	}
 	if backend == "C" {
-		return fourTimersCallC40A1F0(in.Entry, arg)
+		return cfixture.FourTimersCallC40A1F0(in.Entry, arg)
 	}
 	switch in.Entry {
 	case 0x40a1f0:
@@ -676,7 +677,7 @@ func TestFourTimersNativeABI40A1F0(t *testing.T) {
 				base = 0x587000
 			}
 			p := timerNativeCell40A1F0(field, uint32(i))
-			if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != fourTimersCellC40A1F0(base, offset) {
+			if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != cfixture.FourTimersCellC40A1F0(base, offset) {
 				t.Fatal("actual full native scalar cell aliases")
 			}
 		}

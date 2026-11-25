@@ -19,6 +19,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type game1LeafConfig40A180 struct {
@@ -382,7 +383,7 @@ func game1LeafCallGo40A180(entry, argument uint32) uint32 {
 func TestGame1ScalarLeavesABI40A180(t *testing.T) {
 	for _, cell := range []struct{ base, offset uint32 }{{0x587000, 4652}, {0x587000, 4660}, {0x587000, 4664}, {0x587000, 4704}, {0x5d4594, 3500}, {0x5d4594, 3588}} {
 		p := memmap.PtrOff(uintptr(cell.base), uintptr(cell.offset))
-		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != game1LeafCellC40A180(cell.base, cell.offset) {
+		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != cfixture.Game1LeafCellC40A180(cell.base, cell.offset) {
 			t.Fatalf("actual native C/Go memmap alias base=%x offset=%d", cell.base, cell.offset)
 		}
 	}
@@ -418,7 +419,7 @@ func TestGame1ScalarLeavesOldC40A180(t *testing.T) {
 			for value := 0; value <= 65535; value++ {
 				wanted := reference[index*65536+value]
 				goValue := sub40A180Native(int16(uint16(value)))
-				cValue := game1LeafCallC40A180(0x40a180, uint32(value))
+				cValue := cfixture.Game1LeafCallC40A180(0x40a180, uint32(value))
 				nativeCalls += 2
 				if goValue != wanted || cValue != uint32(wanted) {
 					t.Fatalf("old C A180 input=%04x Go=%02x C=%08x old=%02x", value, goValue, cValue, wanted)
@@ -446,7 +447,7 @@ func TestGame1ScalarLeavesOldC40A180(t *testing.T) {
 				if backend == "Go" {
 					got = game1LeafCallGo40A180(row.Entry, row.Argument)
 				} else {
-					got = game1LeafCallC40A180(row.Entry, row.Argument)
+					got = cfixture.Game1LeafCallC40A180(row.Entry, row.Argument)
 				}
 				nativeCalls++
 				actualA, actualB := bytes.Clone(a), bytes.Clone(b)

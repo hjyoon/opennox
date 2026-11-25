@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1_1.h"
@@ -53,16 +53,16 @@ static void private_records_consumer_C(void* record,void* team,uintptr_t* out) {
 import "C"
 import "unsafe"
 
-func privatePlayerRecordsCallC(mode int, p unsafe.Pointer, value int32, name *uint16) uintptr {
+func PrivatePlayerRecordsCallC(mode int, p unsafe.Pointer, value int32, name *uint16) uintptr {
 	return uintptr(C.private_records_call_C(C.int(mode), p, C.int32_t(value), (*C.uint16_t)(unsafe.Pointer(name))))
 }
 
-func privatePlayerRecordsLayoutC() (out [7]uintptr) {
+func PrivatePlayerRecordsLayoutC() (out [7]uintptr) {
 	C.private_records_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return out
 }
 
-func privatePlayerRecordsConsumerC(p, team unsafe.Pointer) (out [3]uintptr) {
+func PrivatePlayerRecordsConsumerC(p, team unsafe.Pointer) (out [3]uintptr) {
 	C.private_records_consumer_C(p, team, (*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return out
 }

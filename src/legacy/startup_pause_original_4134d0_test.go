@@ -15,6 +15,8 @@ import (
 	"strconv"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type spWrite4134D0 struct {
@@ -338,7 +340,7 @@ func spRun4134D0(t *testing.T, in *spInput4134D0, backend string) (out spRawCall
 			if backend == "Go" {
 				result = sub413890Native()
 			} else {
-				result = startupPauseFixtureDrive4134D0()
+				result = cfixture.StartupPauseFixtureDrive4134D0()
 			}
 			if result != nil {
 				t.Fatal("disabled current CD fallback")
@@ -350,7 +352,7 @@ func spRun4134D0(t *testing.T, in *spInput4134D0, backend string) (out spRawCall
 			arg = int32(in.Args[0])
 		}
 		if backend == "C" {
-			out.Result = uint32(startupPauseFixtureCall4134D0(in.Entry, arg, args[0], args[1]))
+			out.Result = uint32(cfixture.StartupPauseFixtureCall4134D0(in.Entry, arg, args[0], args[1]))
 			return
 		}
 		switch in.Entry {

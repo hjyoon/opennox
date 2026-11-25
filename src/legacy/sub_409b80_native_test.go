@@ -13,6 +13,8 @@ import (
 	"os"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const sub409B80InputsSHA = "b3313d14cf5fec847639901104d012b282c330467102319681c7595cd2624d46"
@@ -146,7 +148,7 @@ func TestSub409B80NativeConsumers(t *testing.T) {
 			if nul < 0 || nul+1 > 15 {
 				t.Fatal("short independent NUL domain")
 			}
-			physical := sub409B80FixtureBlob()
+			physical := cfixture.Sub409B80FixtureBlob()
 			if uintptr(physical) <= 0xffffffff {
 				t.Fatal("native C-owned storage must be above4GiB")
 			}
@@ -156,7 +158,7 @@ func TestSub409B80NativeConsumers(t *testing.T) {
 			for i := range window {
 				window[i] = 0xa5
 			}
-			if n := sub409B80FixtureSet(payload); n != uint32(nul+1) {
+			if n := cfixture.Sub409B80FixtureSet(payload); n != uint32(nul+1) {
 				t.Fatal("actual sibling setter return")
 			}
 			want := bytes.Repeat([]byte{0xa5}, 24)
@@ -164,11 +166,11 @@ func TestSub409B80NativeConsumers(t *testing.T) {
 			if !bytes.Equal(window, want) {
 				t.Fatal("actual setter firstNUL/prefix/suffix bytes")
 			}
-			first, second := sub409B80FixtureC(), sub409B80FixtureC()
+			first, second := cfixture.Sub409B80FixtureC(), cfixture.Sub409B80FixtureC()
 			if first != physical || second != first || sub409B80Native() != physical {
 				t.Fatal("actual C/native/live buffer alias")
 			}
-			if uint32(uintptr(physical)) != sub409B80FixtureBadU32() || uintptr(sub409B80FixtureBadU32()) == uintptr(physical) {
+			if uint32(uintptr(physical)) != cfixture.Sub409B80FixtureBadU32() || uintptr(cfixture.Sub409B80FixtureBadU32()) == uintptr(physical) {
 				t.Fatal("non-dereferenced uint32 loss control")
 			}
 			oldCopy := Sub_409B80()
@@ -176,12 +178,12 @@ func TestSub409B80NativeConsumers(t *testing.T) {
 				t.Fatal("Go firstNUL/case/rawUTF8 copy")
 			}
 			out := bytes.Repeat([]byte{0x7b}, 24)
-			n := sub409B80FixtureCCopy(out)
+			n := cfixture.Sub409B80FixtureCCopy(out)
 			if n != nul+1 || !bytes.Equal(out[:n], payload[:nul+1]) || !bytes.Equal(out[n:], bytes.Repeat([]byte{0x7b}, 24-n)) {
 				t.Fatal("actual compiled C caller char* and NUL copy")
 			}
 			replacement := []byte("next\x00")
-			if sub409B80FixtureSet(replacement) != uint32(len(replacement)) || sub409B80FixtureC() != first || GoStringP(first) != "next" || Sub_409B80() != "next" || oldCopy != string(payload[:nul]) {
+			if cfixture.Sub409B80FixtureSet(replacement) != uint32(len(replacement)) || cfixture.Sub409B80FixtureC() != first || GoStringP(first) != "next" || Sub_409B80() != "next" || oldCopy != string(payload[:nul]) {
 				t.Fatal("later writer visible through old C alias; old Go copy immutable")
 			}
 			copy(want[8:], replacement)

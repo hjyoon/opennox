@@ -1,6 +1,6 @@
 //go:build darwin && arm64
 
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -27,15 +27,15 @@ import (
 	"unsafe"
 )
 
-func sub409B80FixtureBlob() unsafe.Pointer { return C.sub409b80_fixture_blob() }
-func sub409B80FixtureC() unsafe.Pointer    { return unsafe.Pointer(C.sub409b80_fixture_C_caller()) }
-func sub409B80FixtureBadU32() uint32       { return uint32(C.sub409b80_fixture_bad_u32()) }
-func sub409B80FixtureSet(raw []byte) uint32 {
+func Sub409B80FixtureBlob() unsafe.Pointer { return C.sub409b80_fixture_blob() }
+func Sub409B80FixtureC() unsafe.Pointer    { return unsafe.Pointer(C.sub409b80_fixture_C_caller()) }
+func Sub409B80FixtureBadU32() uint32       { return uint32(C.sub409b80_fixture_bad_u32()) }
+func Sub409B80FixtureSet(raw []byte) uint32 {
 	n := C.sub_409B50((*C.char)(unsafe.Pointer(&raw[0])))
 	runtime.KeepAlive(raw)
 	return uint32(n)
 }
-func sub409B80FixtureCCopy(out []byte) int {
+func Sub409B80FixtureCCopy(out []byte) int {
 	n := C.sub409b80_fixture_C_copy(unsafe.Pointer(&out[0]), C.size_t(len(out)))
 	runtime.KeepAlive(out)
 	return int(n)

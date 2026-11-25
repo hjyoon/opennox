@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func memDumpTestTable413E30(t *testing.T) []byte {
@@ -27,7 +28,7 @@ func memDumpTestTable413E30(t *testing.T) []byte {
 func TestGAME1MemDump413E30NativeCNodeLayout(t *testing.T) {
 	var n memDumpNode413E30
 	want := [4]uintptr{unsafe.Sizeof(n), unsafe.Offsetof(n.Next), unsafe.Offsetof(n.Count), unsafe.Offsetof(n.Name)}
-	if got := memDumpFixtureLayout413E30(); got != want {
+	if got := cfixture.MemDumpFixtureLayout413E30(); got != want {
 		t.Fatalf("C native layout %v Go %v", got, want)
 	}
 	if unsafe.Sizeof(n.Count) != 4 || len(n.Name) != 80 {
@@ -39,11 +40,11 @@ func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 	table := memDumpTestTable413E30(t)
 	var nodes []*memDumpNode413E30
 	for i := 0; i < 4; i++ {
-		p := memDumpFixtureNew413E30()
+		p := cfixture.MemDumpFixtureNew413E30()
 		if p == nil {
 			t.Fatal("C node allocation")
 		}
-		t.Cleanup(func() { memDumpFixtureFree413E30(p) })
+		t.Cleanup(func() { cfixture.MemDumpFixtureFree413E30(p) })
 		nodes = append(nodes, (*memDumpNode413E30)(p))
 		if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(p) <= uintptr(^uint32(0)) {
 			t.Fatal("C node did not exercise high pointer bits")
@@ -60,7 +61,7 @@ func TestGAME1MemDump413E30ActualCEntryHighNativeLinks(t *testing.T) {
 		}
 	}
 	*memDumpHead413E30() = nodes[0]
-	memDumpFixturePublic413E30()
+	cfixture.MemDumpFixturePublic413E30()
 	for i, x := range []struct {
 		name  string
 		count uint32
@@ -89,7 +90,7 @@ func TestGAME1MemDump413E30WrappingCountsAndGoOwners(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		runtime.GC()
 	}
-	memDumpFixturePublic413E30()
+	cfixture.MemDumpFixturePublic413E30()
 	if got := binary.LittleEndian.Uint32(table[80:]); got != 7 {
 		t.Fatalf("DWORD addition=%d", got)
 	}
@@ -106,7 +107,7 @@ func TestGAME1MemDump413E30PackedHeadIsNotNativeAddress(t *testing.T) {
 	t.Cleanup(func() { *packed = old })
 	*packed = 0xF1234567
 	*memDumpHead413E30() = nil
-	memDumpFixturePublic413E30()
+	cfixture.MemDumpFixturePublic413E30()
 	if *packed != 0xF1234567 || binary.LittleEndian.Uint32(table[80:]) != 0 {
 		t.Fatal("packed scalar interpreted or overwritten as native pointer")
 	}

@@ -16,6 +16,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -308,7 +309,7 @@ func (v *privateRecordsArena) run(t *testing.T, op privateRecordsOp) {
 			value = int32(arg.Value)
 		}
 	}
-	got := privatePlayerRecordsCallC(privateRecordsModes[op.Kind], p, value, name)
+	got := cfixture.PrivatePlayerRecordsCallC(privateRecordsModes[op.Kind], p, value, name)
 	switch op.ResultType {
 	case "pointer":
 		var result struct {
@@ -379,8 +380,8 @@ func TestPrivatePlayerRecordsNativeLayoutCABI(t *testing.T) {
 		want = [7]uintptr{80, 32, 24, 44, 48, 56, 24}
 	}
 	got := [7]uintptr{unsafe.Sizeof(privatePlayerRecord425AD0{}), unsafe.Sizeof(privatePlayerChild425B30{}), unsafe.Offsetof(privatePlayerRecord425AD0{}.name), unsafe.Offsetof(privatePlayerRecord425AD0{}.id), unsafe.Offsetof(privatePlayerRecord425AD0{}.team), unsafe.Offsetof(privatePlayerRecord425AD0{}.children), unsafe.Offsetof(privatePlayerChild425B30{}.peer)}
-	if got != want || privatePlayerRecordsLayoutC() != want {
-		t.Fatal("independent32/64bit C/Go owner layout", got, privatePlayerRecordsLayoutC(), want)
+	if got != want || cfixture.PrivatePlayerRecordsLayoutC() != want {
+		t.Fatal("independent32/64bit C/Go owner layout", got, cfixture.PrivatePlayerRecordsLayoutC(), want)
 	}
 }
 
@@ -442,11 +443,11 @@ func TestPrivatePlayerRecordsNativeDefaultLifecycleCABI(t *testing.T) {
 			}
 			Sub_425B30(p, 0)
 			Sub_425B30(p, 31)
-			privatePlayerRecordsCallC(8, p, 0, nil)
-			if privatePlayerRecordsCallC(4, nil, 0x12345678, nil) != uintptr(p) {
+			cfixture.PrivatePlayerRecordsCallC(8, p, 0, nil)
+			if cfixture.PrivatePlayerRecordsCallC(4, nil, 0x12345678, nil) != uintptr(p) {
 				t.Fatal("first disconnect removed a still-used record")
 			}
-			privatePlayerRecordsCallC(8, p, 31, nil)
+			cfixture.PrivatePlayerRecordsCallC(8, p, 31, nil)
 			if Sub_425A70(0x12345678) != nil || alloc.TryFreePtr(p) {
 				t.Fatal("last C disconnect did not release its record")
 			}
@@ -488,8 +489,8 @@ func TestPrivatePlayerRecordsNativeFullPlayerNameCABI(t *testing.T) {
 		t.Fatal("full field must retain original raw name/ID overlap")
 	}
 	Sub_425B30(p, 0)
-	privatePlayerRecordsCallC(8, p, 0, nil)
-	if privatePlayerRecordsCallC(2, nil, 0, nil) != 0 {
+	cfixture.PrivatePlayerRecordsCallC(8, p, 0, nil)
+	if cfixture.PrivatePlayerRecordsCallC(2, nil, 0, nil) != 0 {
 		t.Fatal("full-name record did not release")
 	}
 }
@@ -506,7 +507,7 @@ func TestPrivatePlayerRecordsNativeTypedPayloadConsumerCABI(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(teamPtr) <= math.MaxUint32 {
 		t.Fatal("typed C consumer must retain a high team pointer")
 	}
-	got := privatePlayerRecordsConsumerC(p, teamPtr)
+	got := cfixture.PrivatePlayerRecordsConsumerC(p, teamPtr)
 	record := (*privatePlayerRecord425AD0)(p)
 	want := [3]uintptr{uintptr(unsafe.Pointer(&record.name[0])), uintptr(uint32(0xffffffe9)), uintptr(teamPtr)}
 	if got != want || record.team != teamPtr {

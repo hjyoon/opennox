@@ -14,6 +14,8 @@ import (
 	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type flagsWindow409E40 struct {
@@ -81,7 +83,7 @@ func flagsSlice409E40(v []int) []int {
 }
 func flagsSnapshotWindows409E40(windows [3]flagsWindow409E40) (out [3][]byte) {
 	for i, w := range windows {
-		out[i] = settingFlagsFixtureSnapshot409E40(w.Base, len(w.Before))
+		out[i] = cfixture.SettingFlagsFixtureSnapshot409E40(w.Base, len(w.Before))
 	}
 	return
 }
@@ -98,7 +100,7 @@ func (c *flagsNativeContext409E40) apply(writes []flagsInputWrite409E40) {
 		if e != nil || len(data) != 4 {
 			panic("independent whole DWORD write")
 		}
-		settingFlagsFixtureCopy409E40(c.Cells[flagsCellField409E40(write.Address)], data)
+		cfixture.SettingFlagsFixtureCopy409E40(c.Cells[flagsCellField409E40(write.Address)], data)
 	}
 }
 func (c *flagsNativeContext409E40) mutate(kind string, site, address, width uint32) {
@@ -301,10 +303,10 @@ func flagsRunOne409E40(chosen *flagsChosen409E40, backend string, gameAllocation
 			// Capture the actual failure before restoration. Full known readable
 			// windows restore only this test process's original C bytes, never files.
 			for i, w := range windows {
-				settingFlagsFixtureCopy409E40(w.Base, original[i])
+				cfixture.SettingFlagsFixtureCopy409E40(w.Base, original[i])
 			}
 			for i, w := range windows {
-				if !bytes.Equal(settingFlagsFixtureSnapshot409E40(w.Base, len(original[i])), original[i]) {
+				if !bytes.Equal(cfixture.SettingFlagsFixtureSnapshot409E40(w.Base, len(original[i])), original[i]) {
 					err = fmt.Errorf("actual C state/canary restoration failed")
 				}
 			}
@@ -331,13 +333,13 @@ func flagsRunOne409E40(chosen *flagsChosen409E40, backend string, gameAllocation
 	}
 	for i, p := range cells {
 		if i == 2 {
-			windows[i] = flagsWindow409E40{Base: gameAllocation, Center: 16, Before: settingFlagsFixtureSnapshot409E40(gameAllocation, 36)}
+			windows[i] = flagsWindow409E40{Base: gameAllocation, Center: 16, Before: cfixture.SettingFlagsFixtureSnapshot409E40(gameAllocation, 36)}
 		} else {
-			base, n, center, e := settingFlagsFixtureWindow409E40(p)
+			base, n, center, e := cfixture.SettingFlagsFixtureWindow409E40(p)
 			if e != nil {
 				return e
 			}
-			windows[i] = flagsWindow409E40{Base: base, Center: center, Before: settingFlagsFixtureSnapshot409E40(base, n)}
+			windows[i] = flagsWindow409E40{Base: base, Center: center, Before: cfixture.SettingFlagsFixtureSnapshot409E40(base, n)}
 		}
 		original[i] = append([]byte(nil), windows[i].Before...)
 	}
@@ -353,7 +355,7 @@ func flagsRunOne409E40(chosen *flagsChosen409E40, backend string, gameAllocation
 	for i, w := range windows {
 		record.WindowBases[i] = uint64(uintptr(w.Base))
 		record.WindowCenters[i] = w.Center
-		record.WindowBefore[i] = settingFlagsFixtureSnapshot409E40(w.Base, len(w.Before))
+		record.WindowBefore[i] = cfixture.SettingFlagsFixtureSnapshot409E40(w.Base, len(w.Before))
 	}
 	pop = pushSettingFlagsNativeObserver409E40(&settingFlagsNativeObserver409E40{Operand: context.operand, Service: context.service})
 	record.NativeCallStarted = true
@@ -361,7 +363,7 @@ func flagsRunOne409E40(chosen *flagsChosen409E40, backend string, gameAllocation
 	if backend == "Go" {
 		result = flagsCallGo409E40(chosen.Input.Entry, int32(chosen.Input.Args[0]))
 	} else if backend == "C" {
-		result = settingFlagsFixtureCall409E40(chosen.Input.Entry, int32(chosen.Input.Args[0]))
+		result = cfixture.SettingFlagsFixtureCall409E40(chosen.Input.Entry, int32(chosen.Input.Args[0]))
 	} else {
 		return fmt.Errorf("selected native backend")
 	}
@@ -376,7 +378,7 @@ func TestSettingFlagsNativeLayout409E40(t *testing.T) {
 		if uintptr(p) <= 0xffffffff || settingFlagsNativeCellWidth409E40(field) != 4 || settingFlagsNativeCellAlign409E40(field) != 4 || uintptr(p)%4 != 0 {
 			t.Fatalf("actual native DWORD cell layout field=%d", field)
 		}
-		base, n, center, e := settingFlagsFixtureWindow409E40(p)
+		base, n, center, e := cfixture.SettingFlagsFixtureWindow409E40(p)
 		if e != nil || base == nil || n < 4 || n > 36 || center < 0 || center+4 > n || uintptr(base)+uintptr(center) != uintptr(p) {
 			t.Fatalf("actual VM-bounded C window field=%d: %v", field, e)
 		}
@@ -420,8 +422,8 @@ func TestSettingFlagsNativeOriginal409E40(t *testing.T) {
 			t.Error(e)
 		}
 	}()
-	allocation, game := settingFlagsFixtureGameNew409E40()
-	defer settingFlagsFixtureFree409E40(allocation)
+	allocation, game := cfixture.SettingFlagsFixtureGameNew409E40()
+	defer cfixture.SettingFlagsFixtureFree409E40(allocation)
 	attempted, passed := 0, 0
 	for i := range chosen {
 		for _, backend := range []string{"Go", "C"} {

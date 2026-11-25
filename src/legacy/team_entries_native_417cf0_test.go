@@ -13,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -169,7 +170,7 @@ func TestRemainingTeamEntries4183C0FrozenOriginal(t *testing.T) {
 					defer pop()
 					var got int32
 					if public {
-						got = teamEntriesCall4183C0()
+						got = cfixture.TeamEntriesCall4183C0()
 					} else {
 						got = sub4183C0Native()
 					}
@@ -200,7 +201,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 	}
 	want := []uintptr{unsafe.Sizeof(server.Team{}), 60, unsafe.Offsetof(server.Team{}.Field_72), prefix, unsafe.Offsetof(server.Object{}.UpdateData), unsafe.Offsetof(server.PlayerUpdateData{}.Player), unsafe.Offsetof(server.Player{}.NetCodeVal), unsafe.Offsetof(server.Player{}.Field3680)}
 	for i, v := range want {
-		if c := teamEntriesLayout417CF0(i); c != v {
+		if c := cfixture.TeamEntriesLayout417CF0(i); c != v {
 			t.Fatalf("C/Go layout field%d %d/%d", i, c, v)
 		}
 	}
@@ -210,7 +211,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 		a, b := func() (int32, int32) {
 			pop := pushTeamEntriesRuntime417CF0(&rt)
 			defer pop()
-			return teamEntriesCall417CF0(), teamEntriesCall417DC0()
+			return cfixture.TeamEntriesCall417CF0(), cfixture.TeamEntriesCall417DC0()
 		}()
 		if a != value || b != value || !reflect.DeepEqual(order, []string{"remove-false", "actual-limit"}) {
 			t.Fatalf("service return/order %v %d/%d", order, a, b)
@@ -232,7 +233,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 		got := func() int32 {
 			pop := pushTeamEntriesRuntime417CF0(&rt)
 			defer pop()
-			return teamEntriesCall418390()
+			return cfixture.TeamEntriesCall418390()
 		}()
 		expected := []int{10}
 		result := int32(0)
@@ -266,7 +267,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 		got := func() byte {
 			pop := pushTeamEntriesRuntime417CF0(&rt)
 			defer pop()
-			return teamEntriesCall417DE0()
+			return cfixture.TeamEntriesCall417DE0()
 		}()
 		free()
 		if got != byte(count) || nextCalls != count {
@@ -278,7 +279,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 	defer func() { *cell = saved }()
 	for _, v := range []uint32{0, 0x80000000, 0xffffffff} {
 		*cell = v
-		if got := teamEntriesCall417DC0(); uint32(got) != v {
+		if got := cfixture.TeamEntriesCall417DC0(); uint32(got) != v {
 			t.Fatalf("actualCglobal %08x/%08x", got, v)
 		}
 	}
@@ -377,7 +378,7 @@ func TestRemainingTeamEntries4184D0NativePacket(t *testing.T) {
 					pop := pushTeamEntriesRuntime417CF0(&rt)
 					defer pop()
 					if public {
-						teamEntriesCall4184D0(unsafe.Pointer(team))
+						cfixture.TeamEntriesCall4184D0(unsafe.Pointer(team))
 					} else {
 						sub4184D0Native(team)
 					}

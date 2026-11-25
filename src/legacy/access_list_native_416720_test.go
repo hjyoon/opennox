@@ -13,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type accessControlOp416720 struct {
@@ -241,7 +242,7 @@ func TestAccessListNativePreservedC416720(t *testing.T) {
 						var word uint32
 						if entry != 0 {
 							if backend == "C" {
-								p, word = accessListFixtureCall416720(entry, op.Value, np, sp)
+								p, word = cfixture.AccessListFixtureCall416720(entry, op.Value, np, sp)
 							} else {
 								switch entry {
 								case 0x416720:
@@ -312,7 +313,7 @@ func TestAccessListNativePinnedCachedNext416720(t *testing.T) {
 			defer pop()
 			var got unsafe.Pointer
 			if backend == "C" {
-				got, _ = accessListFixtureCall416720(0x416950, 0, nil, nil)
+				got, _ = cfixture.AccessListFixtureCall416720(0x416950, 0, nil, nil)
 			} else {
 				got = sub416950Native()
 			}

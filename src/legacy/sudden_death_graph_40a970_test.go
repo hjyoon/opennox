@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -152,7 +153,7 @@ func sdBuildGraph40A970(in *sdInput40A970, path string) (g *sdGraph40A970, err e
 	if page < 8192 || page&(page-1) != 0 {
 		return nil, fmt.Errorf("native guard page geometry")
 	}
-	offset, width := suddenDeathFixtureCPlayerLayout40A970()
+	offset, width := cfixture.SuddenDeathFixtureCPlayerLayout40A970()
 	named := unsafe.Offsetof(server.Player{}.Field3680)
 	if offset != named || width != 4 {
 		return nil, fmt.Errorf("actual compiled C/Go status DWORD layout")

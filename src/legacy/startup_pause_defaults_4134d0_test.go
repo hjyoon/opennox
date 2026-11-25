@@ -11,6 +11,7 @@ import (
 
 	flags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func spSaveCells4134D0(t *testing.T) {
@@ -54,7 +55,7 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		for i := 0; i < 6; i++ {
 			*(*uint32)(startupPauseDefaultCell4134D0(i)) = 0x80000000 + uint32(i)
 		}
-		if startupPauseFixtureCall4134D0(0x4134d0, 0, nil, nil) != 0 {
+		if cfixture.StartupPauseFixtureCall4134D0(0x4134d0, 0, nil, nil) != 0 {
 			t.Fatal("current startup policy return")
 		}
 		for i := 0; i < 6; i++ {
@@ -80,7 +81,7 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		copy(b, spPattern4134D0(0x6a)[:12])
 		want := append([]byte(nil), b...)
 		clear(want[:2])
-		if startupPauseFixtureDrive4134D0() != nil || !bytes.Equal(b, want) {
+		if cfixture.StartupPauseFixtureDrive4134D0() != nil || !bytes.Equal(b, want) {
 			t.Fatal("two BYTE stores/current disabled fallback")
 		}
 	})
@@ -92,7 +93,7 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 			if v != 0 {
 				want = 1
 			}
-			if startupPauseFixtureCall4134D0(0x4139b0, 0, nil, nil) != want {
+			if cfixture.StartupPauseFixtureCall4134D0(0x4139b0, 0, nil, nil) != want {
 				t.Fatal("canonical int32 C global query")
 			}
 		}
@@ -114,8 +115,8 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 	})
 	t.Run("typed_focus_registration", func(t *testing.T) {
 		spSaveCells4134D0(t)
-		startupPauseFixtureFocusBegin4134D0()
-		defer startupPauseFixtureFocusEnd4134D0()
+		cfixture.StartupPauseFixtureFocusBegin4134D0()
+		defer cfixture.StartupPauseFixtureFocusEnd4134D0()
 		var pauses []uint32
 		o := &startupPauseObserver4134D0{Service: func(site uint32, args []startupPauseArg4134D0) (uint32, bool) {
 			switch site {
@@ -135,17 +136,17 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		}}
 		pop := pushStartupPauseObserver4134D0(o)
 		defer pop()
-		if startupPauseFixtureCall4134D0(0x413920, 0, nil, nil) != 1 {
+		if cfixture.StartupPauseFixtureCall4134D0(0x413920, 0, nil, nil) != 1 {
 			t.Fatal("registration return")
 		}
 		for _, kind := range []int{1, 2} {
-			if startupPauseFixtureFocusCount4134D0(kind) != 1 || !startupPauseFixtureFocusRecord4134D0(kind, 0) || uintptr(startupPauseFixtureFocusOwner4134D0(kind)) <= 0xffffffff || uintptr(startupPauseCallback4134D0(uint32(kind))) <= 0xffffffff {
+			if cfixture.StartupPauseFixtureFocusCount4134D0(kind) != 1 || !cfixture.StartupPauseFixtureFocusRecord4134D0(kind, 0) || uintptr(cfixture.StartupPauseFixtureFocusOwner4134D0(kind)) <= 0xffffffff || uintptr(startupPauseCallback4134D0(uint32(kind))) <= 0xffffffff {
 				t.Fatal("typed native callback array/identity")
 			}
 		}
 		*(*uint32)(startupPauseDefaultCell4134D0(4)) = 0
-		startupPauseFixtureFocusInvoke4134D0(1, 0, -1)
-		startupPauseFixtureFocusInvoke4134D0(2, 0, -2147483648)
+		cfixture.StartupPauseFixtureFocusInvoke4134D0(1, 0, -1)
+		cfixture.StartupPauseFixtureFocusInvoke4134D0(2, 0, -2147483648)
 		if len(pauses) != 2 || pauses[0] != 0 || pauses[1] != 1 || *(*uint32)(startupPauseDefaultCell4134D0(4)) != 0x80000000 {
 			t.Fatal("stored callbacks use full reply/order")
 		}
@@ -164,7 +165,7 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		var pin runtime.Pinner
 		pin.Pin(&b[0])
 		defer pin.Unpin()
-		startupPauseFixtureQsort4134D0(unsafe.Pointer(&b[0]), 4)
+		cfixture.StartupPauseFixtureQsort4134D0(unsafe.Pointer(&b[0]), 4)
 		seen := map[uint32]bool{}
 		for i := range keys {
 			r := b[i*84 : (i+1)*84]
@@ -213,7 +214,7 @@ func TestStartupPauseNativePinnedAndReentry4134D0(t *testing.T) {
 				}
 				var result int32
 				if backend == "C" {
-					result = startupPauseFixtureCall4134D0(0x413f60, 0, ap, bp)
+					result = cfixture.StartupPauseFixtureCall4134D0(0x413f60, 0, ap, bp)
 				} else {
 					result = sub413F60Native(ap, bp)
 				}
@@ -246,7 +247,7 @@ func TestStartupPauseNativePinnedAndReentry4134D0(t *testing.T) {
 					pop := pushStartupPauseObserver4134D0(i)
 					defer pop()
 					runtime.GC()
-					nested = startupPauseFixtureCall4134D0(0x4139b0, 0, nil, nil)
+					nested = cfixture.StartupPauseFixtureCall4134D0(0x4139b0, 0, nil, nil)
 				}()
 				outer[3] = 0xffffffff
 			}
@@ -261,7 +262,7 @@ func TestStartupPauseNativePinnedAndReentry4134D0(t *testing.T) {
 		}
 		pop := pushStartupPauseObserver4134D0(o)
 		defer pop()
-		startupPauseFixtureCall4134D0(0x4137e0, 0, nil, nil)
+		cfixture.StartupPauseFixtureCall4134D0(0x4137e0, 0, nil, nil)
 		if nested != 1 || calls != 1 || outer[3] != 0xcafebabe {
 			t.Fatal("nested C reentry/default owner isolation")
 		}

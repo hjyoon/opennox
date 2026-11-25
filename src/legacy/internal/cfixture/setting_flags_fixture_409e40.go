@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -84,7 +84,7 @@ import (
 	"unsafe"
 )
 
-func settingFlagsFixtureCall409E40(entry uint32, word int32) int32 {
+func SettingFlagsFixtureCall409E40(entry uint32, word int32) int32 {
 	var known C.int
 	result := C.setting_flags_fixture_call_409e40(C.uint32_t(entry), C.int(word), &known)
 	if known != 1 {
@@ -92,7 +92,7 @@ func settingFlagsFixtureCall409E40(entry uint32, word int32) int32 {
 	}
 	return int32(result)
 }
-func settingFlagsFixtureGameNew409E40() (allocation, cell unsafe.Pointer) {
+func SettingFlagsFixtureGameNew409E40() (allocation, cell unsafe.Pointer) {
 	allocation = C.setting_flags_fixture_game_new_409e40()
 	if allocation == nil {
 		panic("private C game input allocation")
@@ -100,8 +100,8 @@ func settingFlagsFixtureGameNew409E40() (allocation, cell unsafe.Pointer) {
 	cell = C.setting_flags_fixture_game_cell_409e40(allocation)
 	return
 }
-func settingFlagsFixtureFree409E40(p unsafe.Pointer) { C.setting_flags_fixture_free_409e40(p) }
-func settingFlagsFixtureCopy409E40(destination unsafe.Pointer, source []byte) {
+func SettingFlagsFixtureFree409E40(p unsafe.Pointer) { C.setting_flags_fixture_free_409e40(p) }
+func SettingFlagsFixtureCopy409E40(destination unsafe.Pointer, source []byte) {
 	if len(source) == 0 {
 		return
 	}
@@ -109,7 +109,7 @@ func settingFlagsFixtureCopy409E40(destination unsafe.Pointer, source []byte) {
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(destination)
 }
-func settingFlagsFixtureSnapshot409E40(source unsafe.Pointer, length int) []byte {
+func SettingFlagsFixtureSnapshot409E40(source unsafe.Pointer, length int) []byte {
 	if length <= 0 || length > 36 {
 		panic("bounded mapped C window")
 	}
@@ -118,7 +118,7 @@ func settingFlagsFixtureSnapshot409E40(source unsafe.Pointer, length int) []byte
 	runtime.KeepAlive(source)
 	return out
 }
-func settingFlagsFixtureWindow409E40(cell unsafe.Pointer) (base unsafe.Pointer, length, center int, err error) {
+func SettingFlagsFixtureWindow409E40(cell unsafe.Pointer) (base unsafe.Pointer, length, center int, err error) {
 	var n, c C.size_t
 	base = C.setting_flags_fixture_window_409e40(cell, &n, &c)
 	if base == nil {

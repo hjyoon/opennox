@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -27,13 +27,13 @@ static void* game_settings_fixture_pointer(int entry,int32_t a){
 import "C"
 import "unsafe"
 
-func gameSettingsFixtureWord4161E0(entry uint32, a, b int32) int32 {
+func GameSettingsFixtureWord4161E0(entry uint32, a, b int32) int32 {
 	return int32(C.game_settings_fixture_word(C.int(entry), C.int32_t(a), C.int32_t(b)))
 }
-func gameSettingsFixturePointer4161E0(entry uint32, a int32) unsafe.Pointer {
+func GameSettingsFixturePointer4161E0(entry uint32, a int32) unsafe.Pointer {
 	return C.game_settings_fixture_pointer(C.int(entry), C.int32_t(a))
 }
-func gameSettingsFixtureAlloc4161E0(n uintptr) unsafe.Pointer {
+func GameSettingsFixtureAlloc4161E0(n uintptr) unsafe.Pointer {
 	return C.nox_native_fixture_calloc_high(1, C.size_t(n))
 }
-func gameSettingsFixtureFree4161E0(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }
+func GameSettingsFixtureFree4161E0(p unsafe.Pointer) { C.nox_native_fixture_free_high(p) }

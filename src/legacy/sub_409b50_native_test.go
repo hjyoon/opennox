@@ -15,6 +15,8 @@ import (
 	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const sub409B50InputsSHA = "f8b02862d2ffc239243310d8e6ac2a1b7309552f4529973a6a61518f1782eb33"
@@ -210,8 +212,8 @@ func TestSub409B50NativeOrderAndAlias(t *testing.T) {
 			if nul < 0 || r.Count != uint32(nul+1) {
 				t.Fatal("independent source firstNUL/actual count")
 			}
-			physical := sub409B80FixtureBlob()
-			if uintptr(physical) <= 0xffffffff || sub409B80FixtureC() != physical {
+			physical := cfixture.Sub409B80FixtureBlob()
+			if uintptr(physical) <= 0xffffffff || cfixture.Sub409B80FixtureC() != physical {
 				t.Fatal("actual shared native C-owned alias")
 			}
 			window := unsafe.Slice((*byte)(unsafe.Add(physical, -16)), 96)
@@ -244,11 +246,11 @@ func TestSub409B50NativeOrderAndAlias(t *testing.T) {
 				if backend == "Go" {
 					count = sub409B50Native(unsafe.Pointer(&source[0]))
 				} else {
-					count = sub409B80FixtureSet(source)
+					count = cfixture.Sub409B80FixtureSet(source)
 				}
 				runtime.KeepAlive(source)
 				runtime.KeepAlive(allocation)
-				if count != r.Count || !bytes.Equal(window, after) || sub409B80FixtureC() != physical {
+				if count != r.Count || !bytes.Equal(window, after) || cfixture.Sub409B80FixtureC() != physical {
 					t.Fatal("actual ordered DWORD/tail/overlap/return/alias", backend, exact)
 				}
 				if c.Source != "alias" && !bytes.Equal(source, payload) {
@@ -256,7 +258,7 @@ func TestSub409B50NativeOrderAndAlias(t *testing.T) {
 				}
 				// Destructive forward overlap can erase NUL. Compare fixed raw
 				// bytes above, then restore a fresh normal string before GoString.
-				if sub409B80FixtureSet([]byte("next\x00")) != 5 || Sub_409B80() != "next" || sub409B80FixtureC() != physical {
+				if cfixture.Sub409B80FixtureSet([]byte("next\x00")) != 5 || Sub_409B80() != "next" || cfixture.Sub409B80FixtureC() != physical {
 					t.Fatal("fresh setter/getter regression after raw snapshot")
 				}
 				if exact {

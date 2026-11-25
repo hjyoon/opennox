@@ -16,6 +16,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type gameSettingsInput4161E0 struct {
@@ -133,9 +134,9 @@ func gameSettingsLoad4161E0(t *testing.T) (gameSettingsInputs4161E0, []gameSetti
 func gameSettingsCall4161E0(backend string, in gameSettingsInput4161E0) (uint32, unsafe.Pointer) {
 	if backend == "C" {
 		if in.ReturnKind == "pointer" {
-			return 0, gameSettingsFixturePointer4161E0(in.Entry, in.Args[0])
+			return 0, cfixture.GameSettingsFixturePointer4161E0(in.Entry, in.Args[0])
 		}
-		return uint32(gameSettingsFixtureWord4161E0(in.Entry, in.Args[0], in.Args[1])), nil
+		return uint32(cfixture.GameSettingsFixtureWord4161E0(in.Entry, in.Args[0], in.Args[1])), nil
 	}
 	switch in.Entry {
 	case 0x4161e0:
@@ -169,13 +170,13 @@ func gameSettingsCall4161E0(backend string, in gameSettingsInput4161E0) (uint32,
 }
 func gameSettingsRunInput4161E0(t *testing.T, backend string, in gameSettingsInput4161E0, want gameSettingsReference4161E0) {
 	t.Helper()
-	p := gameSettingsFixtureAlloc4161E0(640)
-	dirty := gameSettingsFixtureAlloc4161E0(48)
+	p := cfixture.GameSettingsFixtureAlloc4161E0(640)
+	dirty := cfixture.GameSettingsFixtureAlloc4161E0(48)
 	if p == nil || dirty == nil {
 		t.Fatal("calloc")
 	}
-	defer gameSettingsFixtureFree4161E0(p)
-	defer gameSettingsFixtureFree4161E0(dirty)
+	defer cfixture.GameSettingsFixtureFree4161E0(p)
+	defer cfixture.GameSettingsFixtureFree4161E0(dirty)
 	block := unsafe.Slice((*byte)(p), 640)
 	for i := range block {
 		block[i] = 0xbd
@@ -194,11 +195,11 @@ func gameSettingsRunInput4161E0(t *testing.T, backend string, in gameSettingsInp
 	var strings [2][2]unsafe.Pointer
 	for i := range strings {
 		for j := range strings[i] {
-			strings[i][j] = gameSettingsFixtureAlloc4161E0(32)
+			strings[i][j] = cfixture.GameSettingsFixtureAlloc4161E0(32)
 			if strings[i][j] == nil {
 				t.Fatal("string calloc")
 			}
-			defer gameSettingsFixtureFree4161E0(strings[i][j])
+			defer cfixture.GameSettingsFixtureFree4161E0(strings[i][j])
 			copy(unsafe.Slice((*byte)(strings[i][j]), 32), in.Strings[i][j])
 		}
 	}
@@ -389,13 +390,13 @@ func TestGameSettingsNativePinnedGoHeap4161E0(t *testing.T) {
 	}
 }
 func TestGameSettingsNativeObserverLIFO4161E0(t *testing.T) {
-	p := gameSettingsFixtureAlloc4161E0(512)
-	d := gameSettingsFixtureAlloc4161E0(4)
+	p := cfixture.GameSettingsFixtureAlloc4161E0(512)
+	d := cfixture.GameSettingsFixtureAlloc4161E0(4)
 	if p == nil || d == nil {
 		t.Fatal("calloc")
 	}
-	defer gameSettingsFixtureFree4161E0(p)
-	defer gameSettingsFixtureFree4161E0(d)
+	defer cfixture.GameSettingsFixtureFree4161E0(p)
+	defer cfixture.GameSettingsFixtureFree4161E0(d)
 	outer := &gameSettingsNativeObserver4161E0{Region: unsafe.Add(p, 80), Dirty: d}
 	pop := pushGameSettingsNativeObserver4161E0(outer)
 	defer pop()

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME3_3.h"
@@ -45,33 +45,33 @@ static int generator_damage_point_fx_frozen_523150(char a1, char a2, float* a3) 
 }
 */
 import "C"
-import "unsafe"
-
 import (
+	"unsafe"
+
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/server"
 )
 
-func generatorDamageLayoutC() (v [19]uintptr) {
+func GeneratorDamageLayoutC() (v [19]uintptr) {
 	C.generator_damage_layout_C((*C.uintptr_t)(unsafe.Pointer(&v[0])))
 	return v
 }
 
-func generatorDamageBindC(unit *server.Object) {
-	C.generator_damage_bind_C(asObjectC(unit))
+func GeneratorDamageBindC(unit *server.Object) {
+	C.generator_damage_bind_C((*C.nox_object_t)(unit.CObj()))
 }
 
-func generatorDamagePointFXExistingC(op, subtype byte, point *types.Pointf) {
+func GeneratorDamagePointFXExistingC(op, subtype byte, point *types.Pointf) {
 	C.generator_damage_point_fx_frozen_523150(C.char(op), C.char(subtype), (*C.float)(unsafe.Pointer(point)))
 }
 
-func generatorDamageActualCall(route int, unit, source, weapon *server.Object, damage, typ int32) int32 {
+func GeneratorDamageActualCall(route int, unit, source, weapon *server.Object, damage, typ int32) int32 {
 	if route == 2 {
 		if unit.CallDamage(source, weapon, int(damage), object.DamageType(typ)) {
 			return 1
 		}
 		return 0
 	}
-	return int32(C.generator_damage_call_C(C.int(route), asObjectC(unit), asObjectC(source), asObjectC(weapon), C.int(damage), C.int(typ)))
+	return int32(C.generator_damage_call_C(C.int(route), (*C.nox_object_t)(unit.CObj()), (*C.nox_object_t)(source.CObj()), (*C.nox_object_t)(weapon.CObj()), C.int(damage), C.int(typ)))
 }

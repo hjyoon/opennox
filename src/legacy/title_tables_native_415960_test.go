@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type titleTestRow415960 struct {
@@ -94,21 +95,21 @@ func titleTestInstall415960(t *testing.T, table titleTable415960, rows []titleTe
 
 func titleTestTo415960(backend string, armor bool, query unsafe.Pointer) uint32 {
 	if backend == "C" {
-		return titleFixtureToMask415960(armor, query)
+		return cfixture.TitleFixtureToMask415960(armor, query)
 	}
 	return titleToMask415960(titleTestTable415960(armor), query)
 }
 
 func titleTestFrom415960(backend string, armor bool, mask uint32) unsafe.Pointer {
 	if backend == "C" {
-		return titleFixtureFromMask415960(armor, mask)
+		return cfixture.TitleFixtureFromMask415960(armor, mask)
 	}
 	return titleFromMask415960(titleTestTable415960(armor), mask)
 }
 
 func titleTestLoad415960(backend string, armor bool) uintptr {
 	if backend == "C" {
-		return titleFixtureLoad415960(armor)
+		return cfixture.TitleFixtureLoad415960(armor)
 	}
 	return titleLoadTable415960(titleTestTable415960(armor))
 }
@@ -312,7 +313,7 @@ func TestTitleTablesNativeGoOwners415960(t *testing.T) {
 		func() {
 			pop := titlePushObserver415960(&titleObserver415960{Compare: func(x, y unsafe.Pointer) (int32, bool) { innerCalls++; return 0, true }})
 			defer pop()
-			if titleFixtureToMask415960(false, q) != 0x12345678 {
+			if cfixture.TitleFixtureToMask415960(false, q) != 0x12345678 {
 				t.Fatal("nested C->Go lookup")
 			}
 		}()
@@ -322,7 +323,7 @@ func TestTitleTablesNativeGoOwners415960(t *testing.T) {
 	defer pop()
 	for i := 0; i < 12; i++ {
 		runtime.GC()
-		if titleFixtureToMask415960(false, q) != 0x12345678 || titleFixtureFromMask415960(false, 0x12345678) != a {
+		if cfixture.TitleFixtureToMask415960(false, q) != 0x12345678 || cfixture.TitleFixtureFromMask415960(false, 0x12345678) != a {
 			t.Fatal("pinned native owner lost through GC/C ABI")
 		}
 	}

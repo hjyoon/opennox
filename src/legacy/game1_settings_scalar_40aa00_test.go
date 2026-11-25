@@ -12,6 +12,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type game1SettingsCase40AA00 struct {
@@ -147,7 +148,7 @@ func game1SettingsCallGo40AA00(entry, argument uint32) uint32 {
 func game1SettingsGlobalWindow40AA00(t *testing.T) (unsafe.Pointer, int, int) {
 	t.Helper()
 	cell := game1SettingsGlobal40E090()
-	base, length, center, err := settingFlagsFixtureWindow409E40(cell)
+	base, length, center, err := cfixture.SettingFlagsFixtureWindow409E40(cell)
 	if err != nil || length < 4 || length > 36 || center < 0 || center > length-4 || unsafe.Add(base, center) != cell {
 		t.Fatal("actual C global VM-bounded neighbour window", err)
 	}
@@ -156,16 +157,16 @@ func game1SettingsGlobalWindow40AA00(t *testing.T) (unsafe.Pointer, int, int) {
 
 func game1SettingsSave40AA00(t *testing.T) func() {
 	t.Helper()
-	window := game1SettingsBlobC40AA00(3468, 80)
-	other := game1SettingsBlobC40AA00(10976, 20)
+	window := cfixture.Game1SettingsBlobC40AA00(3468, 80)
+	other := cfixture.Game1SettingsBlobC40AA00(10976, 20)
 	savedWindow, savedOther := bytes.Clone(window), bytes.Clone(other)
 	globalBase, globalLength, _ := game1SettingsGlobalWindow40AA00(t)
-	savedGlobal := settingFlagsFixtureSnapshot409E40(globalBase, globalLength)
+	savedGlobal := cfixture.SettingFlagsFixtureSnapshot409E40(globalBase, globalLength)
 	oldFrame, oldFPS := gameFrameHook, gameFPSHook
 	return func() {
 		copy(window, savedWindow)
 		copy(other, savedOther)
-		settingFlagsFixtureCopy409E40(globalBase, savedGlobal)
+		cfixture.SettingFlagsFixtureCopy409E40(globalBase, savedGlobal)
 		gameFrameHook, gameFPSHook = oldFrame, oldFPS
 	}
 }
@@ -173,12 +174,12 @@ func game1SettingsSave40AA00(t *testing.T) func() {
 func TestGame1SettingsScalarABI40AA00(t *testing.T) {
 	for _, offset := range []uint32{3476, 3508, 3520, 3536} {
 		p := memmap.PtrOff(0x5d4594, uintptr(offset))
-		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != game1SettingsCellC40AA00(offset) {
+		if (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || p != cfixture.Game1SettingsCellC40AA00(offset) {
 			t.Fatalf("actual full native live cell alias offset=%d", offset)
 		}
 	}
-	p, width, align := game1SettingsGlobalC40AA00()
-	rawBlob := game1SettingsBlobC40AA00(10976, 20)
+	p, width, align := cfixture.Game1SettingsGlobalC40AA00()
+	rawBlob := cfixture.Game1SettingsBlobC40AA00(10976, 20)
 	if p != game1SettingsGlobal40E090() || (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || width != 4 || align != 4 || uintptr(p)%align != 0 || p == unsafe.Pointer(&rawBlob[8]) {
 		t.Fatal("actual C global DWORD width/alignment/address and independent packed blob")
 	}
@@ -196,8 +197,8 @@ func TestGame1SettingsScalarOldC40AA00(t *testing.T) {
 	}
 	restore := game1SettingsSave40AA00(t)
 	defer restore()
-	window := game1SettingsBlobC40AA00(3468, 80)
-	other := game1SettingsBlobC40AA00(10976, 20)
+	window := cfixture.Game1SettingsBlobC40AA00(3468, 80)
+	other := cfixture.Game1SettingsBlobC40AA00(10976, 20)
 	global := (*uint32)(game1SettingsGlobal40E090())
 	globalBase, globalLength, globalCenter := game1SettingsGlobalWindow40AA00(t)
 	trace, err := os.OpenFile(filepath.Join(directory, "actual-settings-scalar-results.jsonl"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
@@ -215,19 +216,19 @@ func TestGame1SettingsScalarOldC40AA00(t *testing.T) {
 				copy(window, row.Window[:])
 				copy(other, row.IndependentBlob[:])
 				*global = row.Global
-				globalBefore := settingFlagsFixtureSnapshot409E40(globalBase, globalLength)
+				globalBefore := cfixture.SettingFlagsFixtureSnapshot409E40(globalBase, globalLength)
 				gameFPSHook = func() uint32 { return row.FPS }
 				gameFrameHook = func() uint32 { return row.Frame }
 				var got uint32
 				if backend == "Go" {
 					got = game1SettingsCallGo40AA00(row.Entry, row.Argument)
 				} else {
-					got = game1SettingsCallC40AA00(row.Entry, row.Argument)
+					got = cfixture.Game1SettingsCallC40AA00(row.Entry, row.Argument)
 				}
 				calls++
 				actualWindow, actualOther := bytes.Clone(window), bytes.Clone(other)
 				actualGlobal := *global
-				globalAfter := settingFlagsFixtureSnapshot409E40(globalBase, globalLength)
+				globalAfter := cfixture.SettingFlagsFixtureSnapshot409E40(globalBase, globalLength)
 				globalExpected := bytes.Clone(globalBefore)
 				copy(globalExpected[globalCenter:globalCenter+4], old[84:88])
 				returnDefined := row.Entry != 0x40e090
@@ -260,7 +261,7 @@ func TestGame1SettingsScalarPEOrder40AA00(t *testing.T) {
 	for _, backend := range []string{"Go", "C"} {
 		for _, control := range []string{"frame-before-start", "start-before-FPS"} {
 			t.Run(backend+"/"+control, func(t *testing.T) {
-				window := game1SettingsBlobC40AA00(3468, 80)
+				window := cfixture.Game1SettingsBlobC40AA00(3468, 80)
 				before := bytes.Clone(window)
 				var order []string
 				*start = 0
@@ -285,7 +286,7 @@ func TestGame1SettingsScalarPEOrder40AA00(t *testing.T) {
 				if backend == "Go" {
 					got = uint32(sub40AA00Native())
 				} else {
-					got = game1SettingsCallC40AA00(0x40aa00, 0)
+					got = cfixture.Game1SettingsCallC40AA00(0x40aa00, 0)
 				}
 				wantedStart := uint32(0)
 				if control == "start-before-FPS" {
@@ -308,11 +309,11 @@ func TestGame1SettingsScalarLiveAliases40AA00(t *testing.T) {
 	restore := game1SettingsSave40AA00(t)
 	defer restore()
 	for _, v := range []uint32{0x80000001, 0xffffffff} {
-		if uint32(sub40AA30Native(int32(v))) != v || game1SettingsCallC40AA00(0x40aa20, 0) != v {
+		if uint32(sub40AA30Native(int32(v))) != v || cfixture.Game1SettingsCallC40AA00(0x40aa20, 0) != v {
 			t.Fatal("Go setter immediately visible to actual C getter")
 		}
 		v ^= 0x01020304
-		if game1SettingsCallC40AA00(0x40aa30, v) != v || uint32(sub40AA20Native()) != v {
+		if cfixture.Game1SettingsCallC40AA00(0x40aa30, v) != v || uint32(sub40AA20Native()) != v {
 			t.Fatal("actual C setter immediately visible to Go getter")
 		}
 	}
@@ -322,10 +323,10 @@ func TestGame1SettingsScalarLiveAliases40AA00(t *testing.T) {
 			if uint32(sub40AA60Native(int32(-1951535091))) != v {
 				t.Fatal("raw Go setter return")
 			}
-		} else if game1SettingsCallC40AA00(0x40aa60, v) != v {
+		} else if cfixture.Game1SettingsCallC40AA00(0x40aa60, v) != v {
 			t.Fatal("raw actual C setter return")
 		}
-		if *memmap.PtrUint32(0x5d4594, 3508) != v || *(*uint32)(game1SettingsCellC40AA00(3508)) != v {
+		if *memmap.PtrUint32(0x5d4594, 3508) != v || *(*uint32)(cfixture.Game1SettingsCellC40AA00(3508)) != v {
 			t.Fatal("live cell setter visibility")
 		}
 	}

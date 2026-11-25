@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -94,7 +95,7 @@ func generatorDamageArenaNew(t *testing.T, placement int) *generatorDamageArena 
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(&raw[0])) <= math.MaxUint32 {
 		t.Fatal("native foreign owners must be above 4 GiB")
 	}
-	v := &generatorDamageArena{raw: raw, layout: generatorDamageLayoutC()}
+	v := &generatorDamageArena{raw: raw, layout: cfixture.GeneratorDamageLayoutC()}
 	for i := range v.objects {
 		v.objects[i] = (*server.Object)(unsafe.Pointer(&raw[0x1000+i*0x1000+placement]))
 	}
@@ -191,7 +192,7 @@ func (v *generatorDamageArena) prepare(t *testing.T, c generatorDamageCase) {
 		put32(at+int(v.layout[13]), 0xa1000000+uint32(i))
 		put32(at+int(v.layout[14]), 0xb2000000+uint32(i))
 	}
-	generatorDamageBindC(v.objects[0])
+	cfixture.GeneratorDamageBindC(v.objects[0])
 	if got := v.state(); !reflect.DeepEqual(got, c.Before) {
 		t.Fatalf("native input state got%+v want%+v", got, c.Before)
 	}
@@ -360,7 +361,7 @@ func (v *generatorDamageArena) run(t *testing.T, route int, c generatorDamageCas
 	old := monsterGeneratorDamageRuntimeForCall4E27D0
 	monsterGeneratorDamageRuntimeForCall4E27D0 = func() server.MonsterGeneratorDamageNativeRuntime4E27D0 { return rt }
 	defer func() { monsterGeneratorDamageRuntimeForCall4E27D0 = old }()
-	got := generatorDamageActualCall(route, v.objects[0], v.object(c.Input.Source), v.object(c.Input.Weapon), c.Input.Damage, c.Input.DamageType)
+	got := cfixture.GeneratorDamageActualCall(route, v.objects[0], v.object(c.Input.Source), v.object(c.Input.Weapon), c.Input.Damage, c.Input.DamageType)
 	want := c.Return
 	if route == 2 && want != 0 {
 		want = 1
@@ -384,7 +385,7 @@ func (v *generatorDamageArena) run(t *testing.T, route int, c generatorDamageCas
 func TestMonsterGeneratorDamageNativeLayout(t *testing.T) {
 	o, h, u := server.Object{}, server.HealthData{}, server.MonsterGenUpdateData{}
 	want := [19]uintptr{unsafe.Offsetof(o.ScriptPickup) + unsafe.Sizeof(o.ScriptPickup), unsafe.Offsetof(o.ObjFlags), unsafe.Offsetof(o.Field5), unsafe.Offsetof(o.PosVec), unsafe.Offsetof(o.PosVec) + 4, unsafe.Offsetof(o.Frame134), unsafe.Offsetof(o.HealthData), unsafe.Offsetof(o.UpdateData), unsafe.Offsetof(o.Damage), unsafe.Sizeof(h), unsafe.Offsetof(h.Cur), unsafe.Offsetof(h.Max), unsafe.Sizeof(u), unsafe.Offsetof(u.Field48), unsafe.Offsetof(u.FuncInd52), unsafe.Sizeof(server.ScriptCallback{}), unsafe.Offsetof(h.Field2), unsafe.Sizeof(types.Pointf{}), unsafe.Offsetof(types.Pointf{}.Y)}
-	if got := generatorDamageLayoutC(); got != want || got[0] > unsafe.Sizeof(o) {
+	if got := cfixture.GeneratorDamageLayoutC(); got != want || got[0] > unsafe.Sizeof(o) {
 		t.Fatalf("independent C/native Go shared layouts got%v want%v", got, want)
 	}
 }

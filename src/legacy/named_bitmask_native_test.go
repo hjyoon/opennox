@@ -11,10 +11,11 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestNamedBitmaskNativeLayoutCABI(t *testing.T) {
-	ptr, word := namedBitmaskSizesC()
+	ptr, word := cfixture.NamedBitmaskSizesC()
 	if ptr != unsafe.Sizeof(uintptr(0)) || word != 4 {
 		t.Fatal("native pointer array stride/packed mask ABI", ptr, word)
 	}
@@ -90,14 +91,14 @@ func TestNamedBitmaskNativeOriginalCABI(t *testing.T) {
 						if c.Result == nil {
 							t.Fatal("missing original setter status")
 						}
-						if got := namedBitmaskSetC(input, bits, names); got != *c.Result {
+						if got := cfixture.NamedBitmaskSetC(input, bits, names); got != *c.Result {
 							t.Fatal("actual C setter status", got, *c.Result)
 						}
 					} else {
 						if c.Result != nil {
 							t.Fatal("void parser status must not be inferred")
 						}
-						namedBitmaskParseC(input, bits, names)
+						cfixture.NamedBitmaskParseC(input, bits, names)
 					}
 					got, _ := json.Marshal(trace)
 					want, _ := json.Marshal(c.Trace)
@@ -123,11 +124,11 @@ func TestNamedBitmaskNativeDefaultCABI(t *testing.T) {
 					check := v.expect(t, c)
 					input, bits, names := v.pointers()
 					if c.Kind == "setter" {
-						if got := namedBitmaskSetC(input, bits, names); got != *c.Result {
+						if got := cfixture.NamedBitmaskSetC(input, bits, names); got != *c.Result {
 							t.Fatal("unmocked C comparison status", got, *c.Result)
 						}
 					} else {
-						namedBitmaskParseC(input, bits, names)
+						cfixture.NamedBitmaskParseC(input, bits, names)
 					}
 					check()
 				})
@@ -172,9 +173,9 @@ func TestNamedBitmaskNativePackedMonsterOwnerCABI(t *testing.T) {
 					v.reset(t, c)
 					check := v.expect(t, c)
 					input, bits, _ := v.pointers()
-					namedBitmaskMonsterC(input, bits)
+					cfixture.NamedBitmaskMonsterC(input, bits)
 					check()
-					if got := namedBitmaskMonsterLow16C(input, c.BeforeMask); got != uint16(c.AfterMask) {
+					if got := cfixture.NamedBitmaskMonsterLow16C(input, c.BeforeMask); got != uint16(c.AfterMask) {
 						t.Fatal("actual packed caller uint16narrowing", got, uint16(c.AfterMask))
 					}
 					if !bytes.Equal(before, memmap.Slice(0x587000, base-16)[:len(before)]) {

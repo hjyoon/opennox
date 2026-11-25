@@ -8,6 +8,8 @@ import (
 	"testing"
 	"unicode/utf16"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestAccessListSupportCFieldAddresses416720(t *testing.T) {
@@ -28,15 +30,15 @@ func TestAccessListSupportCFieldAddresses416720(t *testing.T) {
 		{"banned-serial", 2, true, unsafe.Offsetof(banned.Serial), 1, 23, 0xEA, 0xD7},
 	} {
 		t.Run(item.name, func(t *testing.T) {
-			if accessSupportFixtureField416720(item.field, nil) != nil {
+			if cfixture.AccessSupportFixtureField416720(item.field, nil) != nil {
 				t.Fatal("public C getter must preserve nil")
 			}
-			offset := accessSupportFixtureOffset416720(item.field)
+			offset := cfixture.AccessSupportFixtureOffset416720(item.field)
 			if offset != item.goOffset {
 				t.Fatalf("named C/Go field offset: C=%d Go=%d", offset, item.goOffset)
 			}
 			const guard = 16
-			size := accessSupportFixtureSize416720(item.banned)
+			size := cfixture.AccessSupportFixtureSize416720(item.banned)
 			base := accessListNativeFixtureAlloc416720(size + 2*guard)
 			if base == nil {
 				t.Fatal("C entry allocation")
@@ -46,14 +48,14 @@ func TestAccessListSupportCFieldAddresses416720(t *testing.T) {
 			copy(storage, bytes.Repeat([]byte{0xA7}, len(storage)))
 			want := append([]byte(nil), storage...)
 			entry := unsafe.Add(base, guard)
-			field := accessSupportFixtureField416720(item.field, entry)
+			field := cfixture.AccessSupportFixtureField416720(item.field, entry)
 			if field != unsafe.Add(entry, offset) {
 				t.Fatalf("public getter must alias the complete native field: entry=%p field=%p", entry, field)
 			}
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(entry) <= 0xFFFFFFFF {
 				t.Fatal("control needs a C entry above4GiB")
 			}
-			accessSupportFixtureStore416720(item.field, entry, 0, item.firstValue)
+			cfixture.AccessSupportFixtureStore416720(item.field, entry, 0, item.firstValue)
 			last := unsafe.Add(field, uintptr(item.width*item.last))
 			if item.width == 2 {
 				if *(*uint16)(field) != uint16(item.firstValue) {
@@ -72,10 +74,10 @@ func TestAccessListSupportCFieldAddresses416720(t *testing.T) {
 			}
 			for i := 0; i < 3; i++ {
 				runtime.GC()
-				if accessSupportFixtureField416720(item.field, entry) != field {
+				if cfixture.AccessSupportFixtureField416720(item.field, entry) != field {
 					t.Fatal("public field address changed after GC")
 				}
-				if accessSupportFixtureRead416720(item.field, entry, item.last) != item.lastValue {
+				if cfixture.AccessSupportFixtureRead416720(item.field, entry, item.last) != item.lastValue {
 					t.Fatal("Go alias write did not reach the final named C field element")
 				}
 				if !bytes.Equal(storage, want) {
@@ -90,8 +92,8 @@ func TestAccessListSupportDefaultHeadsAndGC416720(t *testing.T) {
 	if accessListNativeCurrent416720() != nil {
 		t.Fatal("test requires actual default owners")
 	}
-	ah := (*accessListNode416720)(accessSupportFixtureHead416720(0))
-	bh := (*accessListNode416720)(accessSupportFixtureHead416720(1))
+	ah := (*accessListNode416720)(cfixture.AccessSupportFixtureHead416720(0))
+	bh := (*accessListNode416720)(cfixture.AccessSupportFixtureHead416720(1))
 	if ah == nil || bh == nil || ah == bh {
 		t.Fatal("independent non-nil native C head owners")
 	}
@@ -100,7 +102,7 @@ func TestAccessListSupportDefaultHeadsAndGC416720(t *testing.T) {
 	}
 	for _, head := range []*accessListNode416720{ah, bh} {
 		p := unsafe.Pointer(head)
-		links := accessSupportFixtureLinks416720(p)
+		links := cfixture.AccessSupportFixtureLinks416720(p)
 		if links[0] == nil || links[1] == nil || links[2] != p {
 			t.Fatal("head accessor must initialize the native sentinel before returning")
 		}
@@ -111,17 +113,17 @@ func TestAccessListSupportDefaultHeadsAndGC416720(t *testing.T) {
 	accessListNativeClear416720(bh)
 	for i := 0; i < 3; i++ {
 		runtime.GC()
-		if accessSupportFixtureHead416720(0) != unsafe.Pointer(ah) || accessListNativeDefaultHead416720(false) != unsafe.Pointer(ah) {
+		if cfixture.AccessSupportFixtureHead416720(0) != unsafe.Pointer(ah) || accessListNativeDefaultHead416720(false) != unsafe.Pointer(ah) {
 			t.Fatal("allowed head identity changed")
 		}
 		for _, selector := range []int32{1, -1, 0x7FFFFFFF, -0x80000000} {
-			if accessSupportFixtureHead416720(selector) != unsafe.Pointer(bh) {
+			if cfixture.AccessSupportFixtureHead416720(selector) != unsafe.Pointer(bh) {
 				t.Fatal("nonzero banned selector changed native owner identity")
 			}
 		}
 		for _, head := range []*accessListNode416720{ah, bh} {
 			p := unsafe.Pointer(head)
-			if got := accessSupportFixtureLinks416720(p); got != [3]unsafe.Pointer{p, p, p} {
+			if got := cfixture.AccessSupportFixtureLinks416720(p); got != [3]unsafe.Pointer{p, p, p} {
 				t.Fatalf("C-observed native sentinel links: %v", got)
 			}
 		}
@@ -137,8 +139,8 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			if accessListNativeCurrent416720() != nil {
 				t.Fatal("test requires actual default owners")
 			}
-			ah := (*accessListNode416720)(accessSupportFixtureHead416720(0))
-			bh := (*accessListNode416720)(accessSupportFixtureHead416720(1))
+			ah := (*accessListNode416720)(cfixture.AccessSupportFixtureHead416720(0))
+			bh := (*accessListNode416720)(cfixture.AccessSupportFixtureHead416720(1))
 			if ah == nil || bh == nil || ah == bh {
 				t.Fatal("default native owners")
 			}
@@ -166,7 +168,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 					if !known || dead[p] {
 						t.Fatal("only this control's live C allocations may be freed")
 					}
-					links := accessSupportFixtureLinks416720(p)
+					links := cfixture.AccessSupportFixtureLinks416720(p)
 					if links[0] != p || links[1] != p {
 						t.Fatal("entry must be unlinked before Free")
 					}
@@ -217,7 +219,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 				if backend == "Go" {
 					result = sub4168A0Native(p)
 				} else {
-					result, _ = accessListFixtureCall416720(0x4168A0, 0, p, nil)
+					result, _ = cfixture.AccessListFixtureCall416720(0x4168A0, 0, p, nil)
 				}
 				if result != nil {
 					t.Fatal("add must propagate the isolated Refresh return")
@@ -226,7 +228,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			if backend == "Go" {
 				sub416770Native(0, bannedName, serial)
 			} else {
-				accessListFixtureCall416720(0x416770, 0, bannedName, serial)
+				cfixture.AccessListFixtureCall416720(0x416770, 0, bannedName, serial)
 			}
 			if len(allocations) != 3 || refreshes != 3 {
 				t.Fatal("two allowed entries and one banned entry must be allocated and refreshed")
@@ -234,7 +236,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			a, b, ban := allocations[0], allocations[1], allocations[2]
 			for i := 0; i < 3; i++ {
 				runtime.GC()
-				if accessSupportFixtureHead416720(0) != unsafe.Pointer(ah) || accessSupportFixtureHead416720(1) != unsafe.Pointer(bh) {
+				if cfixture.AccessSupportFixtureHead416720(0) != unsafe.Pointer(ah) || cfixture.AccessSupportFixtureHead416720(1) != unsafe.Pointer(bh) {
 					t.Fatal("head lookup/GC must not reset or replace a populated owner")
 				}
 				if sub4168E0Native() != a || Nox_server_accessAllowedFirst_4168E0() != a || sub4168F0Native(a) != b || Nox_server_accessAllowedNext_4168F0(a) != b || Nox_server_accessAllowedNext_4168F0(b) != nil {
@@ -247,15 +249,15 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 					t.Fatal("existing consumers must use the same native name/serial fields")
 				}
 			}
-			accessSupportFixtureStore416720(0, a, 0, 'Z')
-			accessSupportFixtureStore416720(2, ban, 0, 'X')
+			cfixture.AccessSupportFixtureStore416720(0, a, 0, 'Z')
+			cfixture.AccessSupportFixtureStore416720(2, ban, 0, 'X')
 			if Nox_server_accessAllowedName_4168E0(a) != "Zlpha" || Nox_server_accessBannedSerial_416900(ban) != "Xerial-0001" {
 				t.Fatal("named C mutations must be visible through existing Go consumers")
 			}
 			// Remove through the other entry path, keeping the actual sentinel owner.
 			var removed unsafe.Pointer
 			if backend == "Go" {
-				removed, _ = accessListFixtureCall416720(0x416860, 0, nil, nil)
+				removed, _ = cfixture.AccessListFixtureCall416720(0x416860, 0, nil, nil)
 			} else {
 				removed = sub416860Native(0)
 			}
@@ -264,7 +266,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			}
 			// removed is an opaque identity only; it is never dereferenced after Free.
 			if backend == "Go" {
-				accessListFixtureCall416720(0x416950, 0, nil, nil)
+				cfixture.AccessListFixtureCall416720(0x416950, 0, nil, nil)
 			} else {
 				sub416950Native()
 			}
@@ -273,7 +275,7 @@ func TestAccessListSupportExistingListInterop416720(t *testing.T) {
 			}
 			for _, head := range []*accessListNode416720{ah, bh} {
 				p := unsafe.Pointer(head)
-				if accessSupportFixtureLinks416720(p) != [3]unsafe.Pointer{p, p, p} {
+				if cfixture.AccessSupportFixtureLinks416720(p) != [3]unsafe.Pointer{p, p, p} {
 					t.Fatal("clear must restore C-observed sentinel self-links")
 				}
 			}

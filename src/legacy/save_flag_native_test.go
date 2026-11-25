@@ -9,6 +9,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -17,14 +18,14 @@ func TestMapLoadFlagNativeCEntries(t *testing.T) {
 	old := *flag
 	t.Cleanup(func() { *flag = old })
 	for _, value := range []int32{0, 1, -1, -2147483648, 2147483647} {
-		if got := setMapLoadFlagC(value); got != value {
+		if got := cfixture.SetMapLoadFlagC(value); got != value {
 			t.Fatalf("setter returned %d, want %d", got, value)
 		}
 		if got := Nox_xxx_mapLoadRequired_4DCC80(); got != int(value) || *flag != uint32(value) {
 			t.Fatalf("Go read %d and stored word %#x, want %d", got, *flag, value)
 		}
 		Nox_xxx_mapLoadOrSaveMB_4DCC70(int(value))
-		if got := mapLoadFlagC(); got != value {
+		if got := cfixture.MapLoadFlagC(); got != value {
 			t.Fatalf("C read %d, want %d", got, value)
 		}
 	}
@@ -91,7 +92,7 @@ func TestSaveGateNativeCEntry4DCCB0(t *testing.T) {
 			}
 			unit.ObjFlags = tc.flags
 			*cursor, *stamp, *pause = tc.cursor, tc.last, tc.paused
-			if got := saveGateCursorC(); got != int32(tc.cursor) {
+			if got := cfixture.SaveGateCursorC(); got != int32(tc.cursor) {
 				t.Fatalf("cursor word read as %d, want %d", got, int32(tc.cursor))
 			}
 			gameFrameHook = func() uint32 { return tc.frame }
@@ -104,7 +105,7 @@ func TestSaveGateNativeCEntry4DCCB0(t *testing.T) {
 				checks++
 				return tc.saveCheck
 			}
-			if got := callSaveGateC(); got != tc.want || checks != tc.wantChecks {
+			if got := cfixture.CallSaveGateC(); got != tc.want || checks != tc.wantChecks {
 				t.Fatalf("gate = %d with %d final checks, want %d with %d checks", got, checks, tc.want, tc.wantChecks)
 			}
 		})

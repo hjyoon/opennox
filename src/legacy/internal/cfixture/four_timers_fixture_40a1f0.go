@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -30,10 +30,10 @@ import "C"
 
 import "unsafe"
 
-func fourTimersCallC40A1F0(entry, argument uint32) uint64 {
+func FourTimersCallC40A1F0(entry, argument uint32) uint64 {
 	return uint64(C.timer_fixture_call_40a1f0(C.uint32_t(entry), C.uint32_t(argument)))
 }
 
-func fourTimersCellC40A1F0(base, offset uint32) unsafe.Pointer {
+func FourTimersCellC40A1F0(base, offset uint32) unsafe.Pointer {
 	return C.timer_fixture_cell_40a1f0(C.uint32_t(base), C.size_t(offset))
 }

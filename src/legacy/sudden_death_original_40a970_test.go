@@ -20,6 +20,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const sdInputSHA40A970 = "6896556370c4c649a794bd60328ffe253245116aa0319c703c0b9e1d66d27778"
@@ -475,7 +477,7 @@ func TestSuddenDeathNativeWorker40A970(t *testing.T) {
 	entry := reflect.ValueOf(sub40A970Native).Pointer()
 	if child.Backend == "C" {
 		backend = 2
-		entry = reflect.ValueOf(suddenDeathFixtureCall40A970).Pointer()
+		entry = reflect.ValueOf(cfixture.SuddenDeathFixtureCall40A970).Pointer()
 	} else if child.Backend != "Go" {
 		t.Fatal("actual backend")
 	}
@@ -483,7 +485,7 @@ func TestSuddenDeathNativeWorker40A970(t *testing.T) {
 	save()
 	must(rskWriteJSON4E23C0(filepath.Join(dir, "actual-child-PREEXEC.json"), map[string]any{"pid": os.Getpid(), "parent_pid": os.Getppid(), "backend": child.Backend, "control_word": child.ControlWord, "executable_sha256": sha, "input_sha256": rskHash4E23C0(child.Raw), "BEFORE_sha256": rskHash4E23C0(before), "prepared_before_actual_root": true, "original_observations_passed_to_child": false, "diagnostic_cells_are_foreign_not_production_alias": true}))
 	if child.Backend == "C" {
-		suddenDeathFixtureCall40A970()
+		cfixture.SuddenDeathFixtureCall40A970()
 	} else {
 		sub40A970Native()
 	}

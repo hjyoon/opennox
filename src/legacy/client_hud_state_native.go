@@ -41,7 +41,7 @@ func sub_42EDC0() {
 //export sub_436550
 func sub_436550() C.int {
 	blocked := sub_459DA0() != 0 || nox_gui_xxx_check_446360() != 0 || sub_49CB40() != 0 ||
-		sub_49C810() != 0 || sub_446950() != 0 || C.sub_4706A0() != 0 || nox_gui_console_flagXxx_451410() != 0
+		sub_49C810() != 0 || sub_446950() != 0 || sub_4706A0() != 0 || nox_gui_console_flagXxx_451410() != 0
 	frame := gameFrame()
 	if !blocked && gameFrame() != 2 {
 		return C.int(bool2int(gameFrame()-memmap.Uint32(0x5D4594, 811920) == 1))

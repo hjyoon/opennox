@@ -412,7 +412,7 @@ func Sub_445FF0() {
 }
 
 func Sub_470680() {
-	C.sub_470680()
+	sub_470680()
 }
 
 func Sub_461520() {

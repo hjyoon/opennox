@@ -252,7 +252,7 @@ func Nox_xxx_clientPickup_46C140(a1 *client.Drawable) {
 	C.nox_xxx_clientPickup_46C140((*nox_drawable)(a1.C()))
 }
 func Sub_46B630(a1 *gui.Window, a2 int, a3 int) *gui.Window {
-	return asWindow(C.sub_46B630((*nox_window)(a1.C()), C.int(a2), C.int(a3)))
+	return asWindow(sub_46B630((*nox_window)(a1.C()), C.int(a2), C.int(a3)))
 }
 
 func Get_nox_input_reset_430140() unsafe.Pointer {

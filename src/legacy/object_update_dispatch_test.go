@@ -7,9 +7,59 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/strman"
+	"github.com/opennox/libs/things"
 
+	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
+
+func TestObjectUpdateParsersLoadNativeRecords(t *testing.T) {
+	srv := server.NewHigh(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.FreeObjectTypes()
+	t.Cleanup(srv.FreeObjectTypes)
+
+	load := func(name string, args ...string) unsafe.Pointer {
+		t.Helper()
+		id := "UpdateParserFixture" + name
+		if err := srv.Types.ReadObjectType(&things.Thing{
+			Name: id, OnUpdate: &things.ProcFunc{Name: name, Args: args},
+		}); err != nil {
+			t.Fatalf("load %s: %v", name, err)
+		}
+		typ := srv.Types.ByID(id)
+		if typ == nil || typ.UpdateData == nil {
+			t.Fatalf("%s has no registered update data", name)
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(typ.UpdateData) <= math.MaxUint32 {
+			t.Fatalf("%s record pointer does not exercise native pointer width", name)
+		}
+		return typ.UpdateData
+	}
+	push := (*server.PushUpdateData53B030)(load("PushUpdate", "-0", "2.75"))
+	if !math.Signbit(float64(push.Radius)) || !math.Signbit(float64(push.RadiusCopy)) || push.Force != 2.75 {
+		t.Fatalf("push record = %+v", push)
+	}
+	damage := (*[3]int32)(load("LoopAndDamageUpdate", "\t-3+17", "19tail"))
+	if *damage != [3]int32{-3, 17, 19} {
+		t.Fatalf("loop-and-damage record = %v", *damage)
+	}
+	lifetime := (*server.LifetimeUpdateData53B8F0)(load("LifetimeUpdate", "  +280suffix"))
+	if lifetime.Duration != 280 {
+		t.Fatalf("lifetime duration = %d, want 280", lifetime.Duration)
+	}
+	for _, name := range []string{"TriggerUpdate", "ToggleUpdate"} {
+		trigger := (*server.TriggerUpdateData)(load(name, "HasteOn", "HasteOff"))
+		if trigger.SoundActivate != uint32(sound.ByName("HasteOn")) || trigger.SoundDeactivate != uint32(sound.ByName("HasteOff")) {
+			t.Fatalf("%s parsed sound IDs = %d, %d", name, trigger.SoundActivate, trigger.SoundDeactivate)
+		}
+	}
+	skull := (*server.SkullUpdateData)(load("SkullUpdate", "  Harpoon", "ignored"))
+	if string(skull.ProjectileName[:8]) != "Harpoon\x00" || skull.ProjectileType != 0 {
+		t.Fatalf("skull projectile = %q, %d", skull.ProjectileName, skull.ProjectileType)
+	}
+}
 
 func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 	type installFunc func(func(*server.Object)) func()

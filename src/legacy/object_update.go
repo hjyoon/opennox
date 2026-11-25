@@ -18,7 +18,6 @@ void nox_xxx_updateProjectile_53AC10(nox_object_t* a1);
 void nox_xxx_updateDeathBall_53D080(nox_object_t* a1);
 void nox_xxx_updateOneSecondDie_53CB60_go(nox_object_t* source);
 void nox_xxx_updateExpire_53DB00_go(nox_object_t* source);
-static int nox_call_objectType_parseUpdate_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 void nox_xxx___mkgmtime_538280(nox_object_t* a1);
 _Static_assert(_Generic(&nox_xxx_warcryStunMonsters_539B90, void (*)(void*, void*): 1, default: 0),
 	"Warcry uses the native map enumeration callback ABI");
@@ -34,6 +33,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -256,12 +256,12 @@ func init() {
 		unsafe.Sizeof(server.MonsterGenUpdateData{}),
 	)
 
-	server.RegisterObjectUpdateParse("PushUpdate", wrapObjectUpdateParseC(C.sub_536550))
-	server.RegisterObjectUpdateParse("TriggerUpdate", wrapObjectUpdateParseC(C.sub_5365B0))
-	server.RegisterObjectUpdateParse("ToggleUpdate", wrapObjectUpdateParseC(C.sub_5365B0))
-	server.RegisterObjectUpdateParse("LoopAndDamageUpdate", wrapObjectUpdateParseC(C.sub_536580))
-	server.RegisterObjectUpdateParse("LifetimeUpdate", wrapObjectUpdateParseC(C.sub_536600))
-	server.RegisterObjectUpdateParse("SkullUpdate", wrapObjectUpdateParseC(C.sub_5364E0))
+	server.RegisterObjectUpdateParse("PushUpdate", wrapObjectUpdateParse(sub_536550))
+	server.RegisterObjectUpdateParse("TriggerUpdate", wrapObjectUpdateParse(sub_5365B0))
+	server.RegisterObjectUpdateParse("ToggleUpdate", wrapObjectUpdateParse(sub_5365B0))
+	server.RegisterObjectUpdateParse("LoopAndDamageUpdate", wrapObjectUpdateParse(sub_536580))
+	server.RegisterObjectUpdateParse("LifetimeUpdate", wrapObjectUpdateParse(sub_536600))
+	server.RegisterObjectUpdateParse("SkullUpdate", wrapObjectUpdateParse(sub_5364E0))
 }
 
 //export nox_xxx_updatePlayer_4F8100
@@ -357,10 +357,11 @@ func Get_nox_xxx___mkgmtime_538280() unsafe.Pointer {
 	return C.nox_xxx___mkgmtime_538280
 }
 
-func wrapObjectUpdateParseC(ptr unsafe.Pointer) server.ObjectParseFunc {
+func wrapObjectUpdateParse[T unsafe.Pointer | *C.int32_t | *C.uint32_t](parse func(*C.char, T) C.int) server.ObjectParseFunc {
 	return func(objt *server.ObjectType, args []string) error {
-
-		if Nox_call_objectType_parseUpdate_go(ptr, strings.Join(args, " "), objt.UpdateData) == 0 {
+		text := CString(strings.Join(args, " "))
+		defer StrFree(text)
+		if parse(text, T(objt.UpdateData)) == 0 {
 			return fmt.Errorf("cannot parse update data for %q", objt.ID())
 		}
 		return nil
@@ -376,7 +377,7 @@ func Sub_4E4100() uint32 {
 func Nox_call_objectType_parseUpdate_go(a1 unsafe.Pointer, a2 string, a3 unsafe.Pointer) int {
 	cstr := CString(a2)
 	defer StrFree(cstr)
-	return int(C.nox_call_objectType_parseUpdate_go((*[0]byte)(a1), cstr, a3))
+	return ccall.CallIntPtr2(a1, unsafe.Pointer(cstr), a3)
 }
 
 //export nox_server_playerCanMove_4F9BC0

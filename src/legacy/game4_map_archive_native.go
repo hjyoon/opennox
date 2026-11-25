@@ -4,7 +4,6 @@ package legacy
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "GAME4.h"
 #include "common/fs/nox_fs.h"
 
@@ -41,7 +40,7 @@ func sub_5029A0(name *C.char) C.int {
 		return -1
 	}
 	for i := int32(0); ; {
-		if C.nox_strcmpi(name, (*C.char)(game4MapRecord(i))) == 0 {
+		if compareLegacyStringBytes(unsafe.Pointer(name), game4MapRecord(i), -1) == 0 {
 			return C.int(i)
 		}
 		i++
@@ -66,11 +65,24 @@ func sub_502A20() C.int { return C.int(int32(C.dword_5d4594_1599596)) }
 //export sub_502A30
 func sub_502A30(name *C.char) C.int { return sub_502D70(sub_5029A0(name)) }
 
+func writeGame4MapPath(dst unsafe.Pointer, name *C.char) {
+	// The final byte of the path slot is reserved by the original setters.
+	path := unsafe.Slice((*byte)(dst), mapgenPathBufferSize503140-1)
+	for i := range path {
+		ch := *(*byte)(unsafe.Add(unsafe.Pointer(name), i))
+		if ch == 0 {
+			clear(path[i:])
+			return
+		}
+		path[i] = ch
+	}
+}
+
 //export sub_502A50
 func sub_502A50(name *C.char) C.int {
 	sub_502DF0()
 	if name != nil {
-		C.strncpy((*C.char)(C.dword_5d4594_1599588), name, 0x7ff)
+		writeGame4MapPath(C.dword_5d4594_1599588, name)
 		return 1
 	}
 	*(*byte)(C.dword_5d4594_1599588) = *memmap.PtrUint8(0x5D4594, 1599608)
@@ -80,7 +92,7 @@ func sub_502A50(name *C.char) C.int {
 //export sub_502A90
 func sub_502A90() *C.char {
 	p := (*C.char)(C.dword_5d4594_1599588)
-	if C.strlen(p) == 0 {
+	if *p == 0 {
 		return nil
 	}
 	return p
@@ -89,7 +101,7 @@ func sub_502A90() *C.char {
 //export sub_502AB0
 func sub_502AB0(name *C.char) C.int {
 	if name != nil {
-		C.strncpy((*C.char)(C.dword_5d4594_1599592), name, 0x7ff)
+		writeGame4MapPath(C.dword_5d4594_1599592, name)
 		return 1
 	}
 	*(*byte)(C.dword_5d4594_1599592) = *memmap.PtrUint8(0x5D4594, 1599612)
@@ -99,7 +111,7 @@ func sub_502AB0(name *C.char) C.int {
 //export sub_502AF0
 func sub_502AF0() *C.char {
 	p := (*C.char)(C.dword_5d4594_1599592)
-	if C.strlen(p) == 0 {
+	if *p == 0 {
 		return nil
 	}
 	return p
@@ -130,10 +142,10 @@ func game4MapReadU32(file *C.FILE) (uint32, bool) {
 func sub_502B10() C.int {
 	C.dword_5d4594_1599596 = 0
 	if C.dword_5d4594_1599588 == nil {
-		C.dword_5d4594_1599588 = C.calloc(1, 0x800)
+		C.dword_5d4594_1599588 = C.calloc(1, mapgenPathBufferSize503140)
 	}
 	if C.dword_5d4594_1599592 == nil {
-		C.dword_5d4594_1599592 = C.calloc(1, 0x800)
+		C.dword_5d4594_1599592 = C.calloc(1, mapgenPathBufferSize503140)
 	}
 	if C.dword_5d4594_1599576 == nil {
 		C.dword_5d4594_1599576 = (*C.char)(C.calloc(1, 0x26000))
@@ -142,7 +154,8 @@ func sub_502B10() C.int {
 		return 0
 	}
 	first := (*C.char)(C.dword_5d4594_1599588)
-	if *(*byte)(unsafe.Pointer(first)) == 0 || C.memchr(unsafe.Pointer(first), 0, 0x800) == nil {
+	path := unsafe.Slice((*byte)(unsafe.Pointer(first)), mapgenPathBufferSize503140)
+	if n := StrLenBytes(path); n == 0 || n == len(path) {
 		return 0
 	}
 	if game4MapOpen(first) == 0 {
@@ -192,10 +205,7 @@ func sub_502B10() C.int {
 		record := unsafe.Slice((*byte)(game4MapRecord(int32(C.dword_5d4594_1599596))), game4MapRecordBytes)
 		// Consume the declared bytes, but emulate strcpy's embedded-NUL stop
 		// and leave the remainder of the existing 64-byte name slot intact.
-		n := 0
-		for name[n] != 0 {
-			n++
-		}
+		n := StrLenBytes(name[:])
 		copy(record[:], name[:n+1])
 		binary.LittleEndian.PutUint32(record[64:], x)
 		binary.LittleEndian.PutUint32(record[68:], y)
@@ -350,16 +360,13 @@ func sub_5034B0(name *C.char) C.int {
 	if name == nil || source == nil {
 		return 0
 	}
-	directory := unsafe.Slice((*byte)(memmap.PtrOff(0x973F18, 42152)), 0x800)
-	dirLength := 0
-	for dirLength < len(directory) && directory[dirLength] != 0 {
-		dirLength++
-	}
+	directory := unsafe.Slice((*byte)(memmap.PtrOff(0x973F18, 42152)), mapgenPathBufferSize503140)
+	dirLength := StrLenBytes(directory)
 	const suffix = "\\copy.tmp\x00"
-	if dirLength == 0 || dirLength+len(suffix) > 0x800 {
+	if dirLength == 0 || dirLength+len(suffix) > len(directory) {
 		return 0
 	}
-	var path [0x800]byte
+	var path [mapgenPathBufferSize503140]byte
 	copy(path[:], directory[:dirLength])
 	copy(path[dirLength:], suffix)
 	outputPath := (*C.char)(unsafe.Pointer(&path[0]))

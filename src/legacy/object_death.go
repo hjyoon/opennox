@@ -64,8 +64,8 @@ func init() {
 	server.RegisterObjectDeathGo("MarkerDie", C.nox_xxx_dieMarker_54E460_go, func(source *server.Object) {
 		markerDieCall54E460(source)
 	}, 0)
-	server.RegisterObjectDeath("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, 0)
-	server.RegisterObjectDeath("ArmorDie", C.nox_xxx_dieArmor_54E170_obj_die, 0)
+	server.RegisterObjectDeathGo("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, equipmentWeaponDeath, 0)
+	server.RegisterObjectDeathGo("ArmorDie", C.nox_xxx_dieArmor_54E170_obj_die, equipmentArmorDeath, 0)
 	server.RegisterObjectDeathGo("BoulderDie", C.nox_xxx_dieBoulder_54E4B0_go, func(source *server.Object) {
 		boulderDieCall54E4B0(source)
 	}, 0)

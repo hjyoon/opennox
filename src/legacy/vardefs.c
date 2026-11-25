@@ -251,6 +251,7 @@ uint32_t dword_5d4594_1062516 = 0;
 uint32_t dword_5d4594_1316492 = 0;
 uint32_t dword_5d4594_2491616 = 0;
 uint32_t dword_5d4594_251744 = 0;
+const char nox_startup_pause_names[2][6] = {"Pause", "Pause"};
 uint32_t dword_5d4594_2487248 = 0;
 nox_window* dword_5d4594_1046516 = 0;
 uint32_t dword_5d4594_2487532 = 0;

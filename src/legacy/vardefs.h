@@ -5,5 +5,6 @@
 
 extern uint32_t dword_5d4594_251744;
 extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
+extern const char nox_startup_pause_names[2][6];
 
 #endif

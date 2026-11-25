@@ -6,6 +6,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestFloorFloodNativeCABI(t *testing.T) {
@@ -28,12 +29,12 @@ func TestFloorFloodNativeCABI(t *testing.T) {
 	}
 
 	owner := (*unsafe.Pointer)(worldTileHeadCell411160())
-	pool, floorMode := game4TilesTestBrushState()
-	count := game4TilesTestWorklistCount()
+	pool, floorMode := cfixture.Game4TilesBrushState()
+	count := cfixture.Game4TilesWorklistCount()
 	scratch := memmap.Slice(0x973F18, 16200)[:6004]
 	saved := [6004]byte(scratch)
 	mode, selectedTile := memmap.PtrUint32(0x973F18, 35916), memmap.PtrUint32(0x973F18, 35912)
-	_, edge, variation := game4TilesTestEdgeWords()
+	_, edge, variation := cfixture.Game4TilesEdgeWords()
 	oldOwner, oldPool := *owner, *pool
 	oldCount, oldFloorMode, oldMode, oldTile := *count, *floorMode, *mode, *selectedTile
 	oldEdge, oldVariation := *edge, *variation
@@ -47,27 +48,27 @@ func TestFloorFloodNativeCABI(t *testing.T) {
 	*floorMode, *mode, *selectedTile, *edge, *variation = 1, 0, tile, edgeID, 2
 	clear(scratch)
 	*count = 500
-	game4TilesTestEnqueue(9, 11, 1, tile)
+	cfixture.Game4TilesEnqueue(9, 11, 1, tile)
 	if *count != 500 || !floorFloodTestOverflow() {
 		t.Fatal("worklist cap did not report overflow")
 	}
 	*count = 0
-	game4TilesTestEnqueue(9, 11, 1, tile)
-	game4TilesTestEnqueue(9, 11, 1, tile)
-	game4TilesTestEnqueue(9, 10, 3, tile)
-	game4TilesTestEnqueue(9, 1, 1, tile)
-	game4TilesTestEnqueue(1, 11, 2, tile)
+	cfixture.Game4TilesEnqueue(9, 11, 1, tile)
+	cfixture.Game4TilesEnqueue(9, 11, 1, tile)
+	cfixture.Game4TilesEnqueue(9, 10, 3, tile)
+	cfixture.Game4TilesEnqueue(9, 1, 1, tile)
+	cfixture.Game4TilesEnqueue(1, 11, 2, tile)
 	if *count != 2 {
 		t.Fatalf("deduplication or border filtering left %d entries", *count)
 	}
 	out := [3]uint32{}
-	if game4TilesTestDequeue(&out) != 1 || out != [3]uint32{9, 10, 3} || *count != 1 {
+	if cfixture.Game4TilesDequeue(&out) != 1 || out != [3]uint32{9, 10, 3} || *count != 1 {
 		t.Fatalf("first native pop = %v, count = %d", out, *count)
 	}
-	if game4TilesTestDequeue(&out) != 1 || out != [3]uint32{9, 11, 1} || *count != 0 {
+	if cfixture.Game4TilesDequeue(&out) != 1 || out != [3]uint32{9, 11, 1} || *count != 0 {
 		t.Fatalf("second native pop = %v, count = %d", out, *count)
 	}
-	if game4TilesTestDequeue(&out) != 0 || out != [3]uint32{9, 11, 1} {
+	if cfixture.Game4TilesDequeue(&out) != 0 || out != [3]uint32{9, 11, 1} {
 		t.Fatalf("empty native pop wrote %v", out)
 	}
 
@@ -101,11 +102,11 @@ func TestFloorFloodNativeCABI(t *testing.T) {
 			t.Fatalf("flood emission %d = %+v at %p, want edge variation %d at %p", i, node, node, want.kind, want.node)
 		}
 	}
-	if game4TilesTestApplySubtile(448.5, 494.5) != 1 || *floorMode != 0 || at(9, 11).List5 == nil {
+	if cfixture.Game4TilesApplySubtile(448.5, 494.5) != 1 || *floorMode != 0 || at(9, 11).List5 == nil {
 		t.Fatal("native subtile producer did not paint the selected quarter and reset the mode")
 	}
 	*selectedTile = 255
-	if game4TilesTestApplySubtile(448.5, 494.5) != 1 || *floorMode != 0 || at(9, 11).List5 != nil {
+	if cfixture.Game4TilesApplySubtile(448.5, 494.5) != 1 || *floorMode != 0 || at(9, 11).List5 != nil {
 		t.Fatal("native no-tile sentinel did not clear the quarter and reset the mode")
 	}
 }

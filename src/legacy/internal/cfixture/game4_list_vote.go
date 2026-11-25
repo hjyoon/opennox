@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "game4_list_vote_native.h"
@@ -27,77 +27,37 @@ import (
 	"fmt"
 	"runtime"
 	"unsafe"
-
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-//export game4_fixture_calloc_go
-func game4_fixture_calloc_go(count, size C.size_t) unsafe.Pointer {
-	return game4SupportAllocate(uintptr(count), uintptr(size))
+type Game4SupportServices struct {
+	HighMemory       func() func()
+	Allocate         func(count, size uintptr) unsafe.Pointer
+	Release          func(unsafe.Pointer)
+	WallHead         func() unsafe.Pointer
+	SetWallHead      func(unsafe.Pointer)
+	MapObjectHead    func() unsafe.Pointer
+	SetMapObjectHead func(unsafe.Pointer)
+	VoteHead         func() unsafe.Pointer
+	SetVoteHead      func(unsafe.Pointer)
+	ObserveFree      func(func(unsafe.Pointer)) func()
+	ObservePacket    func(func(int32, []byte) int32) func()
+	AddVoter         func(unsafe.Pointer, uint32) int8
 }
 
-//export game4_fixture_release_go
-func game4_fixture_release_go(p unsafe.Pointer) { game4SupportReleaseMemory(p) }
-
-//export game4_fixture_new_class_go
-func game4_fixture_new_class_go(name *C.char, size, count C.int) *C.nox_alloc_class {
-	return game4SupportNewClass(name, size, count)
-}
-
-func game4SupportHighFixtureMemory() func() {
-	oldAllocate, oldRelease, oldClass := game4SupportAllocationService, game4SupportReleaseService, game4SupportClassService
-	owners := make(map[unsafe.Pointer]func())
-	game4SupportAllocationService = func(count, size uintptr) unsafe.Pointer {
-		p, release := alloc.CallocHigh(int(count), size)
-		owners[p] = release
-		return p
-	}
-	game4SupportReleaseService = func(p unsafe.Pointer) {
-		if release, ok := owners[p]; ok {
-			delete(owners, p)
-			release()
-		} else if oldRelease != nil {
-			oldRelease(p)
-		} else {
-			C.free(p)
-		}
-	}
-	game4SupportClassService = func(name string, size uintptr, count int) unsafe.Pointer {
-		return alloc.NewClassHigh(name, size, count).UPtr()
-	}
-	return func() {
-		game4SupportAllocationService, game4SupportReleaseService, game4SupportClassService = oldAllocate, oldRelease, oldClass
-		if len(owners) != 0 {
-			panic(fmt.Sprintf("GAME4 high fixture retained %d foreign allocations", len(owners)))
-		}
-	}
-}
-
-// These diagnostic callbacks preserve the real free operation and copy the
-// synchronous reference packet before its C stack storage expires.
-//
-//export game4_reference_free_go
-func game4_reference_free_go(p unsafe.Pointer) { game4SupportFree(p) }
-
-//export game4_reference_send_packet_go
-func game4_reference_send_packet_go(recipient C.int, packet unsafe.Pointer, size C.int, related unsafe.Pointer, reliable C.int) C.int {
-	return C.int(game4VoteSend(int32(recipient), C.GoBytes(packet, size)))
-}
-
-type game4SupportObservation struct {
+type Game4SupportObservation struct {
 	Links           []int
 	Freed           []int
 	Bytes           []byte
-	Packets         []game4SupportPacket
+	Packets         []Game4SupportPacket
 	NativeAddresses []uintptr
 }
-type game4SupportPacket struct {
+type Game4SupportPacket struct {
 	Recipient int32
 	Bytes     []byte
 }
 
-func game4SupportGuarded(size uintptr) (unsafe.Pointer, unsafe.Pointer, func() bool) {
-	base := game4SupportAllocate(1, size+64)
+func (f Game4SupportServices) guarded(size uintptr) (unsafe.Pointer, unsafe.Pointer, func() bool) {
+	base := f.Allocate(1, size+64)
 	if base == nil {
 		panic("game4 support fixture allocation failed")
 	}
@@ -128,12 +88,12 @@ func game4SupportRole(p unsafe.Pointer, roles map[unsafe.Pointer]int) int {
 
 // Runs the same bounded constructors/lookup/free sequence through the public
 // C ABI or the independently renamed complete original C definitions.
-func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservation, err error) {
-	defer game4SupportHighFixtureMemory()()
-	oldHead := game4WallHead()
-	game4SetWallHead(nil)
+func (f Game4SupportServices) Walls(reference, freePayloads bool) (out Game4SupportObservation, err error) {
+	defer f.HighMemory()()
+	oldHead := f.WallHead()
+	f.SetWallHead(nil)
 	C.game4_reference_wall_list_set_head_504290(nil)
-	defer game4SetWallHead(oldHead)
+	defer f.SetWallHead(oldHead)
 	var nodes [2]*C.nox_map_wall_list_node_504290
 	var data [2]unsafe.Pointer
 	roles := make(map[unsafe.Pointer]int)
@@ -146,7 +106,7 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 		if nodes[i] == nil || nodes[i].wall == nil {
 			return out, fmt.Errorf("wall allocation")
 		}
-		data[i] = game4SupportAllocate(32, 1)
+		data[i] = f.Allocate(32, 1)
 		if data[i] == nil {
 			return out, fmt.Errorf("wall payload allocation")
 		}
@@ -160,7 +120,7 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 		roles[data[i]] = 30 + i
 		out.NativeAddresses = append(out.NativeAddresses, uintptr(unsafe.Pointer(nodes[i])), uintptr(unsafe.Pointer(nodes[i].wall)), uintptr(data[i]))
 	}
-	head := game4WallHead()
+	head := (*C.nox_map_wall_list_node_504290)(f.WallHead())
 	if reference {
 		head = C.game4_reference_wall_list_head_504290()
 	}
@@ -174,9 +134,7 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 		miss = C.nox_xxx_cliWallGet_5042F0(-1, 2)
 	}
 	out.Links = append(out.Links, game4SupportRole(unsafe.Pointer(hit), roles), game4SupportRole(unsafe.Pointer(miss), roles))
-	oldObserver := game4SupportFreeObserver
-	defer func() { game4SupportFreeObserver = oldObserver }()
-	game4SupportFreeObserver = func(p unsafe.Pointer) {
+	defer f.ObserveFree(func(p unsafe.Pointer) {
 		role := game4SupportRole(p, roles)
 		out.Freed = append(out.Freed, role)
 		if role >= 30 {
@@ -187,7 +145,7 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 				}
 			}
 		}
-	}
+	})()
 	flag := C.int32_t(0)
 	if freePayloads {
 		flag = 1
@@ -199,7 +157,7 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 		}
 	} else {
 		C.nox_mapgen_free_wall_list_503F40(flag)
-		if game4WallHead() != nil {
+		if f.WallHead() != nil {
 			err = fmt.Errorf("native head not cleared")
 		}
 	}
@@ -210,18 +168,18 @@ func game4SupportWalls(reference, freePayloads bool) (out game4SupportObservatio
 					err = fmt.Errorf("retained payload changed")
 				}
 			}
-			game4SupportReleaseMemory(p)
+			f.Release(p)
 		}
 	}
 	return
 }
 
-func game4SupportMapObjects(reference bool) (out game4SupportObservation, err error) {
-	defer game4SupportHighFixtureMemory()()
-	old := game4MapObjectHead()
-	game4SetMapObjectHead(nil)
+func (f Game4SupportServices) MapObjects(reference bool) (out Game4SupportObservation, err error) {
+	defer f.HighMemory()()
+	old := f.MapObjectHead()
+	f.SetMapObjectHead(nil)
 	C.game4_reference_map_object_list_set_head_5048A0(nil)
-	defer game4SetMapObjectHead(old)
+	defer f.SetMapObjectHead(old)
 	var objects [3]*C.nox_object_t
 	var nodes [3]*C.nox_map_object_list_node_5048A0
 	var bases [3]unsafe.Pointer
@@ -230,12 +188,12 @@ func game4SupportMapObjects(reference bool) (out game4SupportObservation, err er
 	defer func() {
 		for _, p := range bases {
 			if p != nil {
-				game4SupportReleaseMemory(p)
+				f.Release(p)
 			}
 		}
 	}()
 	for i := range objects {
-		base, data, guard := game4SupportGuarded(C.sizeof_nox_object_t)
+		base, data, guard := f.guarded(C.sizeof_nox_object_t)
 		bases[i] = base
 		guards[i] = guard
 		objects[i] = (*C.nox_object_t)(data)
@@ -251,7 +209,7 @@ func game4SupportMapObjects(reference bool) (out game4SupportObservation, err er
 		roles[unsafe.Pointer(nodes[i])] = 11 + i
 		out.NativeAddresses = append(out.NativeAddresses, uintptr(data), uintptr(unsafe.Pointer(nodes[i])))
 	}
-	head := game4MapObjectHead()
+	head := (*C.nox_map_object_list_node_5048A0)(f.MapObjectHead())
 	if reference {
 		head = C.game4_reference_map_object_list_head_5048A0()
 	}
@@ -268,9 +226,7 @@ func game4SupportMapObjects(reference bool) (out game4SupportObservation, err er
 		out.Links = append(out.Links, game4SupportRole(unsafe.Pointer(n), roles), game4SupportRole(unsafe.Pointer(n.previous), roles), game4SupportRole(unsafe.Pointer(next), roles), game4SupportRole(unsafe.Pointer(object), roles), game4SupportRole(unsafe.Pointer(object.object_prev), roles), game4SupportRole(unsafe.Pointer(object.object_next), roles))
 		n = next
 	}
-	oldObserver := game4SupportFreeObserver
-	defer func() { game4SupportFreeObserver = oldObserver }()
-	game4SupportFreeObserver = func(p unsafe.Pointer) { out.Freed = append(out.Freed, game4SupportRole(p, roles)) }
+	defer f.ObserveFree(func(p unsafe.Pointer) { out.Freed = append(out.Freed, game4SupportRole(p, roles)) })()
 	for n := head; n != nil; {
 		next := n.next
 		if reference {
@@ -280,7 +236,7 @@ func game4SupportMapObjects(reference bool) (out game4SupportObservation, err er
 		}
 		n = next
 	}
-	game4SetMapObjectHead(nil)
+	f.SetMapObjectHead(nil)
 	C.game4_reference_map_object_list_set_head_5048A0(nil)
 	for _, guard := range guards {
 		if !guard() {
@@ -290,10 +246,10 @@ func game4SupportMapObjects(reference bool) (out game4SupportObservation, err er
 	return
 }
 
-func game4SupportPinnedMapObjects(a, b unsafe.Pointer) (bool, func()) {
-	releaseMemory := game4SupportHighFixtureMemory()
-	old := game4MapObjectHead()
-	game4SetMapObjectHead(nil)
+func (f Game4SupportServices) PinnedMapObjects(a, b unsafe.Pointer) (bool, func()) {
+	releaseMemory := f.HighMemory()
+	old := f.MapObjectHead()
+	f.SetMapObjectHead(nil)
 	first := C.nox_xxx_unitAddToList_5048A0((*C.nox_object_t)(a))
 	second := C.nox_xxx_unitAddToList_5048A0((*C.nox_object_t)(b))
 	runtime.GC()
@@ -305,40 +261,40 @@ func game4SupportPinnedMapObjects(a, b unsafe.Pointer) (bool, func()) {
 		if first != nil {
 			C.nox_map_object_list_node_free_5048A0(first)
 		}
-		game4SetMapObjectHead(old)
+		f.SetMapObjectHead(old)
 		releaseMemory()
 	}
 }
 
-func game4SupportVoteAdd(reference bool, voters uint32, count uint8, mask uint32) (ret int8, body []byte, guardOK bool) {
-	defer game4SupportHighFixtureMemory()()
-	base, data, guard := game4SupportGuarded(C.sizeof_nox_vote_5066D0)
-	defer game4SupportReleaseMemory(base)
+func (f Game4SupportServices) VoteAdd(reference bool, voters uint32, count uint8, mask uint32) (ret int8, body []byte, guardOK bool) {
+	defer f.HighMemory()()
+	base, data, guard := f.guarded(C.sizeof_nox_vote_5066D0)
+	defer f.Release(base)
 	vote := (*C.nox_vote_5066D0)(data)
 	vote.voters = C.uint32_t(voters)
 	vote.count = C.uint8_t(count)
 	if reference {
 		ret = int8(C.game4_reference_vote_add_voter_5066D0(vote, C.uint32_t(mask)))
 	} else {
-		ret = int8(game4VoteAddVoter(vote, mask))
+		ret = f.AddVoter(unsafe.Pointer(vote), mask)
 	}
 	return ret, append([]byte(nil), unsafe.Slice((*byte)(data), C.sizeof_nox_vote_5066D0)...), guard()
 }
 
-func game4SupportVoteUnlink(reference bool, removed int) (out game4SupportObservation, err error) {
-	defer game4SupportHighFixtureMemory()()
-	old := game4VoteHead
-	game4VoteHead = nil
+func (f Game4SupportServices) VoteUnlink(reference bool, removed int) (out Game4SupportObservation, err error) {
+	defer f.HighMemory()()
+	old := f.VoteHead()
+	f.SetVoteHead(nil)
 	C.game4_reference_head_set_native(nil)
-	defer func() { game4VoteHead = old; C.game4_reference_head_set_native(nil) }()
+	defer func() { f.SetVoteHead(old); C.game4_reference_head_set_native(nil) }()
 	var nodes [3]*C.nox_vote_5066D0
 	roles := make(map[unsafe.Pointer]int)
 	for i := range nodes {
-		nodes[i] = (*C.nox_vote_5066D0)(game4SupportAllocate(1, C.sizeof_nox_vote_5066D0))
+		nodes[i] = (*C.nox_vote_5066D0)(f.Allocate(1, C.sizeof_nox_vote_5066D0))
 		if nodes[i] == nil {
 			return out, fmt.Errorf("vote allocation")
 		}
-		defer game4SupportReleaseMemory(unsafe.Pointer(nodes[i]))
+		defer f.Release(unsafe.Pointer(nodes[i]))
 		roles[unsafe.Pointer(nodes[i])] = i + 1
 	}
 	for i := range nodes {
@@ -355,7 +311,7 @@ func game4SupportVoteUnlink(reference bool, removed int) (out game4SupportObserv
 		head = C.game4_reference_head_get_native()
 	} else {
 		result = C.sub_506810(nodes[removed])
-		head = game4VoteHead
+		head = (*C.nox_vote_5066D0)(f.VoteHead())
 	}
 	out.Links = append(out.Links, game4SupportRole(unsafe.Pointer(result), roles), game4SupportRole(unsafe.Pointer(head), roles))
 	for n := head; n != nil; n = n.next {
@@ -364,29 +320,27 @@ func game4SupportVoteUnlink(reference bool, removed int) (out game4SupportObserv
 	return
 }
 
-func game4SupportVoteLifecycle(reference bool) (out game4SupportObservation, err error) {
-	defer game4SupportHighFixtureMemory()()
+func (f Game4SupportServices) VoteLifecycle(reference bool) (out Game4SupportObservation, err error) {
+	defer f.HighMemory()()
 	// Isolate both allocators/heads without resetting any unrelated live owner.
-	oldHead, oldAllocator, oldDiagnostic := game4VoteHead, C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
-	game4VoteHead = nil
+	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
+	f.SetVoteHead(nil)
 	C.nox_alloc_vote_1599652 = nil
 	C.dword_5d4594_1599656 = 0
 	defer func() {
-		game4VoteHead = oldHead
+		f.SetVoteHead(oldHead)
 		C.nox_alloc_vote_1599652 = oldAllocator
 		C.dword_5d4594_1599656 = oldDiagnostic
 	}()
-	oldSend := game4VotePacketObserver
-	defer func() { game4VotePacketObserver = oldSend }()
-	game4VotePacketObserver = func(recipient int32, b []byte) int32 {
-		out.Packets = append(out.Packets, game4SupportPacket{recipient, append([]byte(nil), b...)})
+	defer f.ObservePacket(func(recipient int32, b []byte) int32 {
+		out.Packets = append(out.Packets, Game4SupportPacket{recipient, append([]byte(nil), b...)})
 		return 73
-	}
-	unit := (*C.nox_object_t)(game4SupportAllocate(1, C.sizeof_nox_object_t))
+	})()
+	unit := (*C.nox_object_t)(f.Allocate(1, C.sizeof_nox_object_t))
 	if unit == nil {
 		return out, fmt.Errorf("unit allocation")
 	}
-	defer game4SupportReleaseMemory(unsafe.Pointer(unit))
+	defer f.Release(unsafe.Pointer(unit))
 	unit.obj_class = 4
 	var first, second *C.nox_vote_5066D0
 	if reference {
@@ -423,28 +377,27 @@ func game4SupportVoteLifecycle(reference bool) (out game4SupportObservation, err
 	return
 }
 
-func game4SupportNameEquality(a, b []uint16) (bool, bool) {
+func Game4VoteNameEqual(a, b []uint16) bool {
 	x, y := (*C.wchar2_t)(unsafe.Pointer(&a[0])), (*C.wchar2_t)(unsafe.Pointer(&b[0]))
-	got := game4VoteNamesEqual(x, y)
 	want := C.nox_wcscmp(x, y) == 0
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
-	return got, want
+	return want
 }
 
 // Captures the target before the packet transport can reenter and mutate the
 // live player's unit. Each backend owns a fresh native allocator, and restores
 // any unrelated production head/class without resetting it.
-func game4SupportVoteTargetCache(reference bool, unit unsafe.Pointer, name []uint16) (unsafe.Pointer, error) {
-	defer game4SupportHighFixtureMemory()()
-	oldHead, oldAllocator, oldDiagnostic := game4VoteHead, C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
+func (f Game4SupportServices) VoteTargetCache(reference bool, unit unsafe.Pointer, name []uint16) (unsafe.Pointer, error) {
+	defer f.HighMemory()()
+	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
 	oldMinimum := C.nox_server_kickQuestPlayerMinVotes_229992
-	game4VoteHead = nil
+	f.SetVoteHead(nil)
 	C.nox_alloc_vote_1599652 = nil
 	C.dword_5d4594_1599656 = 0
 	C.nox_server_kickQuestPlayerMinVotes_229992 = 5
 	defer func() {
-		game4VoteHead = oldHead
+		f.SetVoteHead(oldHead)
 		C.nox_alloc_vote_1599652 = oldAllocator
 		C.dword_5d4594_1599656 = oldDiagnostic
 		C.nox_server_kickQuestPlayerMinVotes_229992 = oldMinimum

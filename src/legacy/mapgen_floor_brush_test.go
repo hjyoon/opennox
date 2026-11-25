@@ -6,6 +6,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestFloorBrushNativeCABI(t *testing.T) {
@@ -16,7 +17,7 @@ func TestFloorBrushNativeCABI(t *testing.T) {
 	t.Cleanup(freeRows)
 	rows[x] = unsafe.Pointer(&row[0])
 	owner := (*unsafe.Pointer)(worldTileHeadCell411160())
-	pool, subtileMode := game4TilesTestBrushState()
+	pool, subtileMode := cfixture.Game4TilesBrushState()
 	mode := memmap.PtrUint32(0x973F18, 35916)
 	oldOwner, oldPool, oldSubtileMode, oldMode := *owner, *pool, *subtileMode, *mode
 	t.Cleanup(func() { *owner, *pool, *subtileMode, *mode = oldOwner, oldPool, oldSubtileMode, oldMode })
@@ -58,7 +59,7 @@ func TestFloorBrushNativeCABI(t *testing.T) {
 	first := cell.List5
 	t.Cleanup(func() {
 		*pool = oldPool
-		game4TilesTestFreeBrushNodes(unsafe.Pointer(first))
+		cfixture.Game4TilesFreeBrushNodes(unsafe.Pointer(first))
 	})
 	if got := game4TilesTestApplyBrush(x, y, 1, 0, &brush); got != 0 || first.Next != nil {
 		t.Fatalf("duplicate brush returned %d and wrote %+v", got, first)

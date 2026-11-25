@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -31,11 +32,11 @@ func game4SupportRequireHigh(t *testing.T, addresses []uintptr) {
 func TestGame4TempListsNativeCReferenceFreeOrder(t *testing.T) {
 	for _, payloads := range []bool{false, true} {
 		t.Run(fmt.Sprint(payloads), func(t *testing.T) {
-			want, err := game4SupportWalls(true, payloads)
+			want, err := game4SupportFixture.Walls(true, payloads)
 			if err != nil {
 				t.Fatal(err)
 			}
-			got, err := game4SupportWalls(false, payloads)
+			got, err := game4SupportFixture.Walls(false, payloads)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -55,11 +56,11 @@ func TestGame4TempListsNativeCReferenceFreeOrder(t *testing.T) {
 }
 
 func TestGame4MapObjectsNativeCReferenceAndPinnedOwners(t *testing.T) {
-	want, err := game4SupportMapObjects(true)
+	want, err := game4SupportFixture.MapObjects(true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := game4SupportMapObjects(false)
+	got, err := game4SupportFixture.MapObjects(false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,7 +78,7 @@ func TestGame4MapObjectsNativeCReferenceAndPinnedOwners(t *testing.T) {
 	pin.Pin(first)
 	pin.Pin(second)
 	defer pin.Unpin()
-	ok, cleanup := game4SupportPinnedMapObjects(unsafe.Pointer(first), unsafe.Pointer(second))
+	ok, cleanup := game4SupportFixture.PinnedMapObjects(unsafe.Pointer(first), unsafe.Pointer(second))
 	defer cleanup()
 	if !ok || second.ObjNext != first || first.ObjPrev != second {
 		t.Fatalf("pinned owner identity/link mismatch")
@@ -94,8 +95,8 @@ func TestGame4VoteNativeExactCScalarAndUnlink(t *testing.T) {
 		mask   uint32
 	}{{0, 0, 1}, {1, 1, 1}, {0x100, 3, 0x100}, {0, 255, 0x80000000}, {0x80000000, 1, 0x80000000}, {0xffffffff, 255, 0x20}} {
 		t.Run(fmt.Sprintf("%08x-%d-%08x", in.voters, in.count, in.mask), func(t *testing.T) {
-			ret, body, guard := game4SupportVoteAdd(false, in.voters, in.count, in.mask)
-			want, wbody, wguard := game4SupportVoteAdd(true, in.voters, in.count, in.mask)
+			ret, body, guard := game4SupportFixture.VoteAdd(false, in.voters, in.count, in.mask)
+			want, wbody, wguard := game4SupportFixture.VoteAdd(true, in.voters, in.count, in.mask)
 			if ret != want || !bytes.Equal(body, wbody) || !guard || !wguard {
 				t.Fatalf("add-voter mismatch or canary damage: return %d/%d", ret, want)
 			}
@@ -103,11 +104,11 @@ func TestGame4VoteNativeExactCScalarAndUnlink(t *testing.T) {
 	}
 	for i := 0; i < 3; i++ {
 		t.Run(fmt.Sprintf("unlink-%d", i), func(t *testing.T) {
-			got, err := game4SupportVoteUnlink(false, i)
+			got, err := game4SupportFixture.VoteUnlink(false, i)
 			if err != nil {
 				t.Fatal(err)
 			}
-			want, err := game4SupportVoteUnlink(true, i)
+			want, err := game4SupportFixture.VoteUnlink(true, i)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -131,11 +132,11 @@ func TestGame4VoteNativeCReferencePacketsAndLifetime(t *testing.T) {
 	oldFrame := gameFrameHook
 	gameFrameHook = func() uint32 { return 0x12345678 }
 	defer func() { gameFrameHook = oldFrame }()
-	want, err := game4SupportVoteLifecycle(true)
+	want, err := game4SupportFixture.VoteLifecycle(true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := game4SupportVoteLifecycle(false)
+	got, err := game4SupportFixture.VoteLifecycle(false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -143,7 +144,7 @@ func TestGame4VoteNativeCReferencePacketsAndLifetime(t *testing.T) {
 	if !reflect.DeepEqual(got.Packets, want.Packets) || !reflect.DeepEqual(got.Links, want.Links) {
 		t.Fatalf("lifecycle packets/fields %v/%v, C %v/%v", got.Packets, got.Links, want.Packets, want.Links)
 	}
-	expected := []game4SupportPacket{{255, []byte{0xee, 6, 1}}, {1, []byte{0xee, 7}}, {31, []byte{0xee, 7}}, {255, []byte{0xee, 6, 0}}}
+	expected := []cfixture.Game4SupportPacket{{255, []byte{0xee, 6, 1}}, {1, []byte{0xee, 7}}, {31, []byte{0xee, 7}}, {255, []byte{0xee, 6, 0}}}
 	if !reflect.DeepEqual(got.Packets, expected) || !reflect.DeepEqual(got.Links, []int{6, 6, 0x12345678, 0x12345678, 0}) {
 		t.Fatalf("bounded vote lifetime sequence %+v", got)
 	}
@@ -198,7 +199,7 @@ func game4SupportTargetCacheControl(t *testing.T) {
 			}
 			return 73
 		}
-		got, err := game4SupportVoteTargetCache(reference, unsafe.Pointer(unit), []uint16{'c', 'a', 'c', 'h', 'e', 0})
+		got, err := game4SupportFixture.VoteTargetCache(reference, unsafe.Pointer(unit), []uint16{'c', 'a', 'c', 'h', 'e', 0})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -207,4 +208,43 @@ func game4SupportTargetCacheControl(t *testing.T) {
 		}
 	}
 	targetPlayer.PlayerUnit = nil
+}
+
+var game4SupportFixture = cfixture.Game4SupportServices{
+	HighMemory:       game4SupportHighFixtureMemory,
+	Allocate:         game4SupportAllocate,
+	Release:          game4SupportReleaseMemory,
+	WallHead:         func() unsafe.Pointer { return unsafe.Pointer(game4WallHead()) },
+	SetWallHead:      func(p unsafe.Pointer) { game4SetWallHead(game4FixturePointer(p, game4WallHead())) },
+	MapObjectHead:    func() unsafe.Pointer { return unsafe.Pointer(game4MapObjectHead()) },
+	SetMapObjectHead: func(p unsafe.Pointer) { game4SetMapObjectHead(game4FixturePointer(p, game4MapObjectHead())) },
+	VoteHead:         func() unsafe.Pointer { return unsafe.Pointer(game4VoteHead) },
+	SetVoteHead:      func(p unsafe.Pointer) { game4VoteHead = game4FixturePointer(p, game4VoteHead) },
+	ObserveFree: func(next func(unsafe.Pointer)) func() {
+		previous := game4SupportFreeObserver
+		game4SupportFreeObserver = next
+		return func() { game4SupportFreeObserver = previous }
+	},
+	ObservePacket: func(next func(int32, []byte) int32) func() {
+		previous := game4VotePacketObserver
+		game4VotePacketObserver = next
+		return func() { game4VotePacketObserver = previous }
+	},
+	AddVoter: func(p unsafe.Pointer, mask uint32) int8 {
+		return int8(game4VoteAddVoter(game4FixturePointer(p, game4VoteHead), mask))
+	},
+}
+
+func game4FixturePointer[T any](p unsafe.Pointer, _ *T) *T {
+	return (*T)(p)
+}
+
+func game4SupportNameEquality(a, b []uint16) (bool, bool) {
+	first := (*wchar2_t)(unsafe.Pointer(&a[0]))
+	second := (*wchar2_t)(unsafe.Pointer(&b[0]))
+	got := game4VoteNamesEqual(first, second)
+	want := cfixture.Game4VoteNameEqual(a, b)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	return got, want
 }

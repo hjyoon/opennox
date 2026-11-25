@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -205,90 +205,105 @@ static game4_tiles_test_alloc_result game4_tiles_test_alloc_existing(game4_tiles
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
 
-type game4TilesTestBank struct {
-	ptr           *C.game4_tiles_test_bank
-	releaseMemory func()
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
+
+type Game4TilesBank struct {
+	ptr *C.game4_tiles_test_bank
 }
 
-func game4TilesTestBegin() *game4TilesTestBank {
-	releaseMemory := game4SupportHighFixtureMemory()
+func NewGame4TilesBank() *Game4TilesBank {
 	p := C.game4_tiles_test_begin()
 	if p == nil {
-		releaseMemory()
 		return nil
 	}
-	return &game4TilesTestBank{ptr: p, releaseMemory: releaseMemory}
+	return &Game4TilesBank{ptr: p}
 }
-func (b *game4TilesTestBank) close() {
-	C.game4_tiles_test_end(b.ptr)
-	b.releaseMemory()
-}
-func (b *game4TilesTestBank) seed(shape, definitions int, cached int32) {
+
+func (b *Game4TilesBank) Close() { C.game4_tiles_test_end(b.ptr) }
+
+func (b *Game4TilesBank) Seed(shape, definitions int, cached int32) {
 	C.game4_tiles_test_seed(b.ptr, C.int(shape), C.int(definitions), C.int32_t(cached))
 }
-func (b *game4TilesTestBank) data() []byte {
+func (b *Game4TilesBank) Data() []byte {
 	return C.GoBytes(C.game4_tiles_test_data_ptr(b.ptr), C.int(C.game4_tiles_test_data_bytes()))
 }
-func (b *game4TilesTestBank) canaries() bool { return C.game4_tiles_test_canaries(b.ptr) != 0 }
-func game4TilesTestInit(x, y int32, reference bool) (int32, int32) {
-	return int32(C.game4_tiles_test_init(C.int(x), C.int(y), C.int(bool2int(reference)))), int32(C.game4_tiles_test_cached())
+func (b *Game4TilesBank) Canaries() bool { return C.game4_tiles_test_canaries(b.ptr) != 0 }
+func Game4TilesInit(x, y int32, reference bool) (int32, int32) {
+	return int32(C.game4_tiles_test_init(C.int(x), C.int(y), C.int(boolInt(reference)))), int32(C.game4_tiles_test_cached())
 }
-func game4TilesTestServices() game4TilesServices {
-	return game4TilesServices{
-		snapshot:  func() [72]byte { var b [72]byte; C.game4_tiles_test_snapshot_copy(unsafe.Pointer(&b[0])); return b },
-		restore:   func(b *[72]byte) { C.game4_tiles_test_restore(unsafe.Pointer(&b[0])) },
-		image:     func(v int32) { C.game4_tiles_test_image(C.int(v)) },
-		variation: func(v int32) { C.game4_tiles_test_variation(C.int(v)) },
-		mode:      func(v int32) { C.game4_tiles_test_mode(C.int(v)) },
-		base:      func(p *C.float2) { C.game4_tiles_test_base(p) },
-		byte3:     func(v int32) { C.game4_tiles_test_byte3(C.int(v)) },
-		byte4:     func(v int32) { C.game4_tiles_test_byte4(C.int(v)) },
-		subtile:   func(p *C.float2) { C.game4_tiles_test_subtile(p) },
+
+type Game4TileControls struct {
+	Snapshot  func() [72]byte
+	Restore   func(*[72]byte)
+	Image     func(int32)
+	Variation func(int32)
+	Mode      func(int32)
+	Base      func(unsafe.Pointer)
+	Byte3     func(int32)
+	Byte4     func(int32)
+	Subtile   func(unsafe.Pointer)
+}
+
+func Game4TileReferenceControls() Game4TileControls {
+	return Game4TileControls{
+		Snapshot:  func() [72]byte { var b [72]byte; C.game4_tiles_test_snapshot_copy(unsafe.Pointer(&b[0])); return b },
+		Restore:   func(b *[72]byte) { C.game4_tiles_test_restore(unsafe.Pointer(&b[0])) },
+		Image:     func(v int32) { C.game4_tiles_test_image(C.int(v)) },
+		Variation: func(v int32) { C.game4_tiles_test_variation(C.int(v)) },
+		Mode:      func(v int32) { C.game4_tiles_test_mode(C.int(v)) },
+		Base:      func(p unsafe.Pointer) { C.game4_tiles_test_base((*C.float2)(p)) },
+		Byte3:     func(v int32) { C.game4_tiles_test_byte3(C.int(v)) },
+		Byte4:     func(v int32) { C.game4_tiles_test_byte4(C.int(v)) },
+		Subtile:   func(p unsafe.Pointer) { C.game4_tiles_test_subtile((*C.float2)(p)) },
 	}
 }
 
-type game4TilesAllocObservation struct {
-	entry, layer              uintptr
-	xBits, yBits, count, kind uint32
-	links, zeroLayer          bool
+type Game4TilesAllocation struct {
+	Entry, Layer              uintptr
+	XBits, YBits, Count, Kind uint32
+	Links, ZeroLayer          bool
 }
 
-func game4TilesTestAllocReset() { C.game4_tiles_test_alloc_reset() }
-func (b *game4TilesTestBank) alloc(x, y int32, bits uint32, reference bool) game4TilesAllocObservation {
-	r := C.game4_tiles_test_alloc(b.ptr, C.int(x), C.int(y), C.uint32_t(bits), C.int(bool2int(reference)))
-	return game4TilesAllocObservation{uintptr(r.entry), uintptr(r.layer), uint32(r.x_bits), uint32(r.y_bits), uint32(r.count), uint32(r.kind), r.links != 0, r.zero_layer != 0}
+func Game4TilesAllocReset() { C.game4_tiles_test_alloc_reset() }
+func (b *Game4TilesBank) Alloc(x, y int32, bits uint32, reference bool) Game4TilesAllocation {
+	r := C.game4_tiles_test_alloc(b.ptr, C.int(x), C.int(y), C.uint32_t(bits), C.int(boolInt(reference)))
+	return Game4TilesAllocation{uintptr(r.entry), uintptr(r.layer), uint32(r.x_bits), uint32(r.y_bits), uint32(r.count), uint32(r.kind), r.links != 0, r.zero_layer != 0}
 }
-func (b *game4TilesTestBank) existing(index uint32) game4TilesAllocObservation {
+func (b *Game4TilesBank) Existing(index uint32) Game4TilesAllocation {
 	r := C.game4_tiles_test_alloc_existing(b.ptr, C.uint32_t(index))
-	return game4TilesAllocObservation{uintptr(r.entry), uintptr(r.layer), uint32(r.x_bits), uint32(r.y_bits), uint32(r.count), uint32(r.kind), r.links != 0, r.zero_layer != 0}
+	return Game4TilesAllocation{uintptr(r.entry), uintptr(r.layer), uint32(r.x_bits), uint32(r.y_bits), uint32(r.count), uint32(r.kind), r.links != 0, r.zero_layer != 0}
 }
 
-func game4TilesTestEdgeWords() (selected, edge, variation *uint32) {
+func Game4TilesEdgeWords() (selected, edge, variation *uint32) {
 	return (*uint32)(&C.dword_5d4594_2489436), (*uint32)(&C.dword_5d4594_3835356), (*uint32)(&C.dword_5d4594_3835360)
 }
 
-func game4TilesTestSelectEdge(name string) int {
-	return int(C.sub_544020(internCStr(name)))
+func Game4TilesSelectEdge(name string) int {
+	ptr, release := alloc.CString(name)
+	defer release()
+	return int(C.sub_544020((*C.char)(unsafe.Pointer(ptr))))
 }
 
-func game4TilesTestBrushState() (*unsafe.Pointer, *uint32) {
+func Game4TilesBrushState() (*unsafe.Pointer, *uint32) {
 	return &C.dword_5d4594_588084, (*uint32)(&C.dword_5d4594_3835352)
 }
 
-func game4TilesTestApplyBrush(x, y, layer, merge int32, brush *mapgenFloorBrush) int32 {
+func Game4TilesApplyBrush(x, y, layer, merge int32, brush unsafe.Pointer) int32 {
 	return int32(C.nox_floorBrushApplyNative_51DA70(C.int(x), C.int(y),
-		(*C.nox_floor_brush_t)(unsafe.Pointer(brush)), C.int(layer), C.int(merge)))
+		(*C.nox_floor_brush_t)(brush), C.int(layer), C.int(merge)))
 }
 
-func game4TilesTestApplyBrushToken(x, y, layer int32, brush *mapgenFloorBrush) int32 {
+func Game4TilesApplyBrushToken(x, y, layer int32, brush unsafe.Pointer) int32 {
 	native := C.calloc(1, C.sizeof_nox_floor_brush_t)
 	if native == nil {
 		return -1
 	}
 	defer C.free(native)
-	*(*mapgenFloorBrush)(native) = *brush
+	*(*C.nox_floor_brush_t)(native) = *(*C.nox_floor_brush_t)(brush)
 	token := C.nox_mapgenLegacyPtrRegister(native)
 	if token == 0 {
 		return -1
@@ -297,23 +312,23 @@ func game4TilesTestApplyBrushToken(x, y, layer int32, brush *mapgenFloorBrush) i
 	return int32(C.sub_51DA70(C.int(x), C.int(y), C.int(token), C.int(layer), 0))
 }
 
-func game4TilesTestFreeBrushNodes(node unsafe.Pointer) { C.free(node) }
+func Game4TilesFreeBrushNodes(node unsafe.Pointer) { C.free(node) }
 
-func game4TilesTestWorklistCount() *uint32 { return (*uint32)(&C.dword_5d4594_2487248) }
+func Game4TilesWorklistCount() *uint32 { return (*uint32)(&C.dword_5d4594_2487248) }
 
-func game4TilesTestEnqueue(x, y, layer, tile int32) {
+func Game4TilesEnqueue(x, y, layer, tile int32) {
 	C.sub_51DD50(C.int(x), C.int(y), C.int(layer), C.int(tile))
 }
 
-func game4TilesTestDequeue(out *[3]uint32) int32 {
+func Game4TilesDequeue(out *[3]uint32) int32 {
 	return int32(C.sub_51DE30((*C.uint32_t)(&out[0]), (*C.uint32_t)(&out[1]), (*C.uint32_t)(&out[2])))
 }
 
-func game4TilesTestApplyFlood(point *[2]int32, brush *mapgenFloorBrush) int32 {
-	return int32(C.sub_5437E0((*C.int)(&point[0]), (*C.nox_floor_brush_t)(unsafe.Pointer(brush)), 46))
+func Game4TilesApplyFlood(point *[2]int32, brush unsafe.Pointer) int32 {
+	return int32(C.sub_5437E0((*C.int)(&point[0]), (*C.nox_floor_brush_t)(brush), 46))
 }
 
-func game4TilesTestApplySubtile(x, y float32) int32 {
+func Game4TilesApplySubtile(x, y float32) int32 {
 	point := C.float2{field_0: C.float(x), field_4: C.float(y)}
 	return int32(C.nox_xxx_tileSubtile_544310(&point))
 }

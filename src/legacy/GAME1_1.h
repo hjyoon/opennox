@@ -121,7 +121,6 @@ int* sub_421990(int2* a1, float a2, int a3);
 uint32_t* sub_421B10();
 int sub_421B40(uint32_t* a1);
 void nox_xxx_polygonDrawColor_421B80();
-void nox_xxx_questCheckSecretArea_421C70(nox_object_t* a1);
 unsigned char* sub_421F10(int* a1, int a2);
 void nox_xxx_monsterPolygonEnter_421FF0(nox_object_t* a1);
 nox_playerInfo* sub_422140(nox_playerInfo* player);

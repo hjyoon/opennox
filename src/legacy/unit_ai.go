@@ -1042,7 +1042,7 @@ func Nox_xxx_checkIsKillable_528190(a1 *server.Object) int {
 	return bool2int(monsterSightKillable528190(a1))
 }
 func Nox_xxx_polygonIsPlayerInPolygon_4217B0(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {
-	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.nox_xxx_polygonIsPlayerInPolygon_4217B0((*C.int2)(a1), C.int(a2))))
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(nox_xxx_polygonIsPlayerInPolygon_4217B0((*C.int2)(a1), C.int(a2))))
 }
 
 func Nox_xxx_polygonGetNext_4210A0() *Nox_player_polygon_check_data {
@@ -1071,11 +1071,11 @@ func Nox_xxx_polygonSetAngle_420D40(x, y float32, index, remap uint32) *Nox_poly
 }
 
 func Sub_420E80(x, y, maxDistanceSquared float32) *Nox_polygon_angle_data {
-	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.sub_420E80(C.float(x), C.float(y), C.float(maxDistanceSquared))))
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(sub_420E80(C.float(x), C.float(y), C.float(maxDistanceSquared))))
 }
 
 func Sub_421F10(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {
-	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.sub_421F10((*C.int)(a1), C.int(a2))))
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(sub_421F10((*C.int)(a1), C.int(a2))))
 }
 func Nox_xxx_mobAction_50A910(a1 *server.Object) {
 	GetServer().S().MonsterActionRefresh50A910(a1)

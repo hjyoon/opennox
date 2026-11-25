@@ -166,7 +166,7 @@ func mapWallZone(w *server.Wall, fallback byte) byte {
 	point := C.int2{field_0: wall.GridStep*C.int(w.X5) + 11, field_4: wall.GridStep*C.int(w.Y6) + 11}
 	poly := Nox_xxx_polygonIsPlayerInPolygon_4217B0(unsafe.Pointer(&point), 0)
 	if poly == nil {
-		poly = (*Nox_player_polygon_check_data)(unsafe.Pointer(C.sub_421990(&point, 10, 0)))
+		poly = (*Nox_player_polygon_check_data)(unsafe.Pointer(sub_421990(&point, 10, 0)))
 	}
 	if poly == nil {
 		return fallback

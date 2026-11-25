@@ -3,6 +3,7 @@ package legacy
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -36,21 +37,21 @@ func TestPointSegmentProjectionOriginal427DF0NativeC(t *testing.T) {
 	if !fixture.Unchanged || fixture.OriginalSHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" || fixture.Startup != 0xe3f || len(fixture.Rows) != 326 {
 		t.Fatal("incomplete original full-projection fixture")
 	}
-	raw, err = os.ReadFile("GAME1_1.c")
+	reference, err := os.ReadFile("testdata/point_segment_projection_original.c")
 	if err != nil {
 		t.Fatal(err)
 	}
-	source := string(raw)
+	source := string(reference)
 	extract := func(marker string) string {
 		t.Helper()
 		if strings.Count(source, marker) != 1 {
-			t.Fatalf("missing or ambiguous production definition %s", marker)
+			t.Fatalf("missing or ambiguous reference definition %s", marker)
 		}
 		start := strings.Index(source, marker)
 		end := start + strings.Index(source[start:], "{") + 1
 		for depth := 1; depth != 0; end++ {
 			if end >= len(source) {
-				t.Fatalf("unterminated production definition %s", marker)
+				t.Fatalf("unterminated reference definition %s", marker)
 			}
 			switch source[end] {
 			case '{':
@@ -62,9 +63,7 @@ func TestPointSegmentProjectionOriginal427DF0NativeC(t *testing.T) {
 		return source[start:end]
 	}
 	definitions := []string{extract("int nox_float2int(float a1)"), extract("float nox_double2float(double a1)")}
-	// Include each production dependency actually present in the translation
-	// unit. Both before and after compile their real bodies against the same
-	// independent original fixture; no expected value is derived from C.
+	// Compile the preserved C helpers in the original startup rounding context.
 	for _, marker := range []string{
 		"static double nox_projection_add_chop53_427DF0(",
 		"static double nox_projection_mul_chop53_427DF0(",
@@ -139,6 +138,14 @@ int main(void){
 	for j, i := range selected {
 		row := fixture.Rows[i]
 		t.Run(row.Name, func(t *testing.T) {
+			bits, err := strconv.ParseUint(strings.TrimPrefix(row.Radius, "0x"), 16, 32)
+			if err != nil {
+				t.Fatal(err)
+			}
+			point := row.Point
+			if hit := projectMapPointOntoSegment(&point, &row.Line, math.Float32frombits(uint32(bits))); hit != (row.Result != 0) || point != row.After {
+				t.Fatalf("linked Go projection hit=%t point=%v, original result=%d point=%v", hit, point, row.Result, row.After)
+			}
 			var result, x, y, width int
 			var ptr uint64
 			if n, err := fmt.Sscanf(lines[j], "%d %d %d %d %x", &result, &x, &y, &width, &ptr); err != nil || n != 5 {

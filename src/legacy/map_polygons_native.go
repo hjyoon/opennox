@@ -41,7 +41,7 @@ type mapPolygonRecord struct {
 	AudioZone    byte
 	_            byte
 	Flags        uint32
-	_            uint32
+	Visited      uint32
 }
 
 var _ = [1]struct{}{}[unsafe.Sizeof(Nox_player_polygon_check_data{})-unsafe.Sizeof(mapPolygonRecord{})]
@@ -132,7 +132,7 @@ func mapPolygonHandlers(cf *cryptfile.CryptFile, poly *mapPolygonRecord, context
 
 func readMapPolygon(cf *cryptfile.CryptFile, version int16, index uint32, debug func(string, ...any)) (bool, error) {
 	debug("[polygon] record=%d begin\n", index)
-	raw := C.sub_421230()
+	raw := sub_421230()
 	if raw == nil {
 		return false, fmt.Errorf("initialize map polygon")
 	}

@@ -245,7 +245,7 @@ func Sub_49BBC0() {
 }
 
 func Nox_xxx_polygonDrawColor_421B80() {
-	C.nox_xxx_polygonDrawColor_421B80()
+	nox_xxx_polygonDrawColor_421B80()
 }
 
 func Nox_xxx_cliToggleObsWindow_4357A0() {

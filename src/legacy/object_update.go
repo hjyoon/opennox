@@ -378,9 +378,6 @@ func Nox_call_objectType_parseUpdate_go(a1 unsafe.Pointer, a2 string, a3 unsafe.
 	defer StrFree(cstr)
 	return int(C.nox_call_objectType_parseUpdate_go((*[0]byte)(a1), cstr, a3))
 }
-func Nox_xxx_questCheckSecretArea_421C70(a1 *server.Object) {
-	C.nox_xxx_questCheckSecretArea_421C70(asObjectC(a1))
-}
 
 //export nox_server_playerCanMove_4F9BC0
 func nox_server_playerCanMove_4F9BC0(unit *nox_object_t) C.int {

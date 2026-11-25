@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "client__system__parsecmd.h"
 #include "client__gui__guicon.h"
 
 static void nox_console_print_settings_line(wchar2_t* text) {
@@ -9,9 +8,6 @@ static void nox_console_print_settings_line(wchar2_t* text) {
 }
 static void nox_console_print_settings_value(wchar2_t* format, wchar2_t* text) {
 	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, text);
-}
-static void nox_console_print_player_limit(wchar2_t* format, int value) {
-	sub_440A20(format, value);
 }
 */
 import "C"
@@ -92,7 +88,7 @@ func nox_cmd_set_players(i, n C.int, tokens **C.wchar2_t) C.int {
 		nox_xxx_servSetPlrLimit_409F80(limit)
 		sub_455800()
 	}
-	C.nox_console_print_player_limit(consoleLegacyString("playersset", 3779), limit)
+	centerMessageWithNumber(consoleLegacyString("playersset", 3779), limit)
 	return 1
 }
 

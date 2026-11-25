@@ -248,7 +248,7 @@ func Nox_xxx_gui_43E1A0(a1 int) {
 func Nox_xxx_printCentered_445490(str string) {
 	wstr, free := CWString(str)
 	defer free()
-	C.nox_xxx_printCentered_445490(wstr)
+	nox_xxx_printCentered_445490(wstr)
 }
 func Nox_xxx_mapValidateMB_4CF470(a1 string, a2 uint32) int {
 	return int(validateMapFile4CF470(a1, a2))

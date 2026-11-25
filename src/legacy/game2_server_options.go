@@ -174,7 +174,7 @@ func sub_459150() C.char {
 	C.nox_xxx_gameSetServername_40A440((*C.char)(g2ServerAt(settings, 9)))
 	mode := g2ServerMode(settings)
 	if mode&0x1000 == 0 {
-		C.sub_409FB0_settings(C.short(mode), C.ushort(*(*uint16)(g2ServerAt(settings, 54))))
+		sub_409FB0_settings(C.short(mode), C.ushort(*(*uint16)(g2ServerAt(settings, 54))))
 		C.sub_40A040_settings(C.short(mode), C.uchar(*(*byte)(g2ServerAt(settings, 56))))
 	}
 	if g2ServerGame(128) {

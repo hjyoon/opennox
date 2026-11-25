@@ -53,7 +53,7 @@ func Sub_4D0D90(a1 int) {
 	sub_4D0D90(C.int(a1))
 }
 func Sub_409FB0_settings(a1 uint16, a2 uint16) {
-	C.sub_409FB0_settings(C.short(a1), C.ushort(a2))
+	sub_409FB0_settings(C.short(a1), C.ushort(a2))
 }
 func Sub_409EC0(a1 int) {
 	C.sub_409EC0(C.int(a1))

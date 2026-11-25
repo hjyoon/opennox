@@ -192,7 +192,7 @@ func nox_cmd_set_lessons(i, n C.int, tokens **C.wchar2_t) C.int {
 	settings := sub_4165B0()
 	if token != nil {
 		lessons := C.ushort(C.nox_wcstol(token, nil, 10))
-		C.sub_409FB0_settings(consoleSettingsMode(settings), lessons)
+		sub_409FB0_settings(consoleSettingsMode(settings), lessons)
 	}
 	return 1
 }

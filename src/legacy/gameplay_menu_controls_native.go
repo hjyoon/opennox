@@ -72,7 +72,7 @@ func nox_xxx_consoleEsc_49B7A0() {
 		return
 	}
 	closed := sub_460660() != 0
-	if C.sub_46A6A0() != 0 || closed {
+	if sub_46A6A0() != 0 || closed {
 		return
 	}
 	if sub_45D9B0() == 1 {

@@ -539,7 +539,7 @@ func Sub_4799A0() int {
 	return int(sub_4799A0())
 }
 func Sub_46A730() unsafe.Pointer {
-	return unsafe.Pointer(C.sub_46A730())
+	return unsafe.Pointer(sub_46A730())
 }
 func Sub_4C3500() int {
 	return int(sub_4C3500())
@@ -629,7 +629,7 @@ func Sub_4505E0() {
 	C.sub_4505E0()
 }
 func Sub_46A860() {
-	C.sub_46A860()
+	sub_46A860()
 }
 func Sub_467980() {
 	C.sub_467980()

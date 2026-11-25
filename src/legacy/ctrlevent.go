@@ -146,7 +146,7 @@ func Sub_4C01C0(win *gui.Window, event int, control *gui.Window, eventArg uintpt
 }
 
 func Nox_client_chatStart_46A430(v int) {
-	C.nox_client_chatStart_46A430(C.int(v))
+	nox_client_chatStart_46A430(C.int(v))
 }
 
 func Nox_client_toggleSpellbook_45AC70() {

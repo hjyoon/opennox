@@ -15,5 +15,5 @@ func Nox_xxx_serverHandleClientConsole_443E90(a1 *server.Player, a2 byte, cmd st
 func Nox_xxx_cmdSayDo_46A4B0(text string, a2 int) {
 	cstr, free := CWString(text)
 	defer free()
-	C.nox_xxx_cmdSayDo_46A4B0(cstr, C.int(a2))
+	nox_xxx_cmdSayDo_46A4B0(cstr, C.int(a2))
 }

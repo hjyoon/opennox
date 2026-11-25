@@ -12,6 +12,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/internal/legacycrt"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
@@ -62,7 +63,7 @@ func nox_mapgenReadAlgDataNative_51EBB0(raw *C.uint8_t, file *C.FILE) C.int {
 		key := mapgenUppercaseToken(GoStringP(unsafe.Pointer(token)))
 		switch key {
 		case "MAPSIZE":
-			theme[16] = math.Float32bits(float32(C.atof(cvalue)))
+			theme[16] = math.Float32bits(legacycrt.AtofFloat32(alloc.GoStringS(value)))
 		case "USEDOORS":
 			theme[14] = uint32(bool2int(mapgenUppercaseToken(alloc.GoStringS(value)) == "TRUE"))
 		case "DEBUG":

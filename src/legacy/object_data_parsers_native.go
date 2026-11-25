@@ -12,6 +12,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/internal/legacycrt"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -28,10 +29,7 @@ func parseWandCharges(args *C.char, data *server.WandUseData) (next *C.char, ok 
 }
 
 func wandCooldown5361B0(token string) uint32 {
-	arg, free := alloc.CString(token)
-	defer free()
-	rate := float64(C.atof((*C.char)(unsafe.Pointer(arg))))
-	return server.WandCooldownFrames5361B0(gameFPS(), rate)
+	return server.WandCooldownFrames5361B0(gameFPS(), legacycrt.Atof(token))
 }
 
 //export sub_5361B0

@@ -5,7 +5,11 @@ package legacy
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/internal/legacycrt"
+)
 
 func mapgenDecorSetTailLink(def *C.nox_mapgen_decor_definition_legacy) *C.uint32_t {
 	link := &def.decor_sets_token
@@ -44,7 +48,7 @@ func mapgenReadDecorEntry(entry *C.nox_mapgen_decor_entry_legacy, file *C.FILE) 
 	if !read() {
 		return false
 	}
-	entry.density = C.float(C.atof(text))
+	entry.density = C.float(legacycrt.AtofFloat32(GoString(text)))
 	if !read() {
 		return false
 	}

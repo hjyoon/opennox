@@ -1,8 +1,8 @@
 # Manual diagnostic: failures are collected and reported at the end.
 # Use the headless runner with NOX_E2E_AUDIO=mock and
 # NOX_E2E_AUDIO_HANDLES=true and NOX_E2E_OVERRIDE=true to record screenshots.
-# Copy this YAML into a temporary directory before recording. Audio playback
-# and disk writes are not verified; this audit currently reports known failures.
+# Copy this YAML into a temporary directory before recording. Audio checks
+# cover requested volume and mute state.
 # Both client and client-hd are supported via NOX_E2E_CLIENT_TARGET.
 steps:
   - action: slow
@@ -62,6 +62,10 @@ steps:
     name: apply server options
   - action: wait
     dt: 120
+  - action: esc
+    name: close server options before opening the pause menu
+  - action: wait
+    dt: 30
   - action: audit-client-options
     mode: 1
     name: audit all in-game client options using real input

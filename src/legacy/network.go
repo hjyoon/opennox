@@ -356,8 +356,11 @@ func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, 
 	if size, handled := clientSettingsPacket(a2, data); handled {
 		return size
 	}
-	if a2 == netmsg.MSG_GAUNTLET {
+	switch a2 {
+	case netmsg.MSG_GAUNTLET:
 		return clientQuestPacket(data)
+	case netmsg.MSG_TRADE:
+		return clientTradePacket(data)
 	}
 	if size := clientInventoryReportPacket(a2, data); size != 0 {
 		return size

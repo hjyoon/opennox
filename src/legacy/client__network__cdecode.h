@@ -10,5 +10,6 @@ int nox_client_decodeSettingsPacket(int op, unsigned char* data, int size);
 int nox_client_decodeQuestPacket(unsigned char* data, int size);
 int nox_client_decodeInventoryReport(int op, unsigned char* data, int size);
 int nox_client_decodeScorePacket(int op, unsigned char* data, int size);
+int nox_client_decodeTradePacket(unsigned char* data, int size);
 
 #endif // NOX_PORT_CLIENT_NETWORK_CDECODE

@@ -16,6 +16,11 @@ static intptr_t line_message_fixture(nox_object_t* unit, wchar2_t* format, int p
 	return nox_xxx_netSendLineMessage_4D9EB0(unit, format, "xp", points, suffix);
 }
 
+static int broadcast_message_fixture(char tag, wchar2_t* format, int points) {
+	const wchar2_t suffix[] = {0x17a, 0};
+	return nox_xxx_printToAll_4D9FD0(tag, format, "xp", points, suffix);
+}
+
 static void ai_debug_printf_fixture(char* format, int frame) {
 	nox_ai_debug_printf_5341A0(format, frame, "monster");
 }
@@ -97,6 +102,10 @@ import "unsafe"
 
 func LineMessage4D9EB0(unit unsafe.Pointer, format *uint16, points int) uintptr {
 	return uintptr(C.line_message_fixture((*C.nox_object_t)(unit), (*C.wchar2_t)(unsafe.Pointer(format)), C.int(points)))
+}
+
+func BroadcastMessage4D9FD0(tag byte, format *uint16, points int) int {
+	return int(C.broadcast_message_fixture(C.char(tag), (*C.wchar2_t)(unsafe.Pointer(format)), C.int(points)))
 }
 
 func AIDebugPrintf5341A0(format *byte, frame int) {

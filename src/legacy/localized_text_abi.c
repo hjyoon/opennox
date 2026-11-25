@@ -1,12 +1,12 @@
-#include <stdarg.h>
-#include "nox_wchar.h"
+#include "noxstring_format_abi.h"
 
-static void format_bounded_wide(wchar2_t* out, size_t capacity, const wchar2_t* format, ...) {
-	va_list args;
-	va_start(args, format);
-	nox_vsnwprintf(out, capacity - 1, format, args);
-	va_end(args);
-	out[capacity - 1] = 0;
+extern void nox_format_bounded_wide_go(wchar2_t* out, size_t capacity, nox_format_word* format, nox_format_args* args);
+
+static void format_bounded_wide(wchar2_t* out, size_t capacity, nox_format_word* format, ...) {
+	nox_format_args args;
+	va_start(args.list, format);
+	nox_format_bounded_wide_go(out, capacity, format, &args);
+	va_end(args.list);
 }
 
 void nox_format_wide_strings_abi(wchar2_t* out, size_t capacity, const wchar2_t* format,

@@ -2,11 +2,15 @@ package legacy
 
 import (
 	"bytes"
+	"strings"
 	"testing"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -65,5 +69,55 @@ func TestBroadcastPlayerTextNative4D9FD0(t *testing.T) {
 	var packet [11 + 2*255]byte
 	if got := broadcastPlayerTextPacket4D9FD0(&packet, 0, &text[0]); len(got) != 11 || got[8] != 0 {
 		t.Fatalf("16-bit text count header = %x", got)
+	}
+}
+
+func TestBroadcastPlayerTextVariadicCEntry4D9FD0(t *testing.T) {
+	world := lineMessageTestWorld(t)
+	player := world.Players.NewRaw(1)
+	unit, freeUnit := alloc.NewHigh(server.Object{})
+	t.Cleanup(freeUnit)
+	update, freeUpdate := alloc.NewHigh(server.PlayerUpdateData{})
+	t.Cleanup(freeUpdate)
+	update.Player = player
+	unit.ObjClass, unit.UpdateData = object.ClassPlayer, unsafe.Pointer(update)
+	player.PlayerUnit = unit
+	t.Cleanup(func() { player.PlayerUnit = nil })
+
+	for _, tc := range []struct {
+		name, format, message string
+	}{
+		{"formatted words", "%S %04d%s", "xp 0037ź"},
+		{"length byte wraps", strings.Repeat("x", 256), strings.Repeat("x", 255)},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			format, freeFormat := alloc.CString16(tc.format)
+			t.Cleanup(freeFormat)
+			const tag = 0x10
+			if got := cfixture.BroadcastMessage4D9FD0(tag, format, 37); got != 0 {
+				t.Fatalf("broadcast result = %d, want 0", got)
+			}
+			text, freeText := alloc.CString16(tc.message)
+			t.Cleanup(freeText)
+			var buffer [11 + 2*255]byte
+			want := broadcastPlayerTextPacket4D9FD0(&buffer, tag, text)
+			if got := world.NetList.CopyPacketsA(player.PlayerIndex(), netlist.Kind1); !bytes.Equal(got, want) {
+				t.Fatalf("broadcast packet = %x, want %x", got, want)
+			}
+		})
+	}
+}
+
+func TestBoundedWideStringsTerminateAtCapacity(t *testing.T) {
+	format, freeFormat := CWString("%s|%s")
+	t.Cleanup(freeFormat)
+	first, freeFirst := CWString("가")
+	t.Cleanup(freeFirst)
+	second, freeSecond := CWString("나나다")
+	t.Cleanup(freeSecond)
+	buffer := [7]wchar2_t{0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5}
+	formatWideStrings(buffer[1:6], format, first, second)
+	if want := [7]wchar2_t{0xa5, '가', '|', '나', '나', 0, 0xa5}; buffer != want {
+		t.Fatalf("bounded format = %x, want %x", buffer, want)
 	}
 }

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
-#include "client__gui__guijourn.h"
 
 extern uint32_t dword_587000_136184;
 extern uint32_t dword_5d4594_1049864, dword_5d4594_1062488;
@@ -41,7 +40,7 @@ func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_dat
 			case 0:
 				nox_xxx_guiDrawInventoryTray_4643B0(left, top)
 			case 1:
-				C.nox_xxx_guiDrawJournal_469D40(left, top, C.int(C.dword_5d4594_1062512))
+				nox_xxx_guiDrawJournal_469D40(left, top, C.int(C.dword_5d4594_1062512))
 			}
 			sub_49F860()
 		}

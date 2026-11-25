@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME1_1.h"
-#include "client__gui__guijourn.h"
 */
 import "C"
 
@@ -13,7 +12,7 @@ import (
 )
 
 func Nox_xxx_cliBuildJournalString_469BC0() {
-	C.nox_xxx_cliBuildJournalString_469BC0()
+	nox_xxx_cliBuildJournalString_469BC0()
 }
 
 func journalEntryAddLegacy427500(unit *server.Object, message string, entryType uint16) *server.PlayerJournal {

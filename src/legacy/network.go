@@ -344,6 +344,9 @@ func Sub_49BB80(a1 byte) {
 	sub_49BB80(C.char(a1))
 }
 func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, data []byte) int {
+	if a2 == netmsg.MSG_INFORM {
+		return clientInformPacket(data)
+	}
 	return int(C.nox_xxx_netOnPacketRecvCli_48EA70_switch(C.int(a1), C.int(a2), (*C.uchar)(unsafe.Pointer(&data[0])), C.int(len(data))))
 }
 func Nox_xxx_j_inventoryNameSignInit_467460() int {

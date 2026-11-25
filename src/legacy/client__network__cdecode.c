@@ -2048,7 +2048,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	LABEL_651:
 		return 4;
 	case 169: // MSG_INFORM
-		return nox_client_handlePacketInform_4C9BF0(data);
+		return nox_client_handlePacketInformSized_4C9BF0(data, sz);
 	case 171: // MSG_IMPORTANT_ACK
 		if (nox_client_isConnected_43C700()) {
 			nox_net_importantACK_4E55A0(a1, *(uint32_t*)(data + 1));

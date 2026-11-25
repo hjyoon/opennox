@@ -145,10 +145,10 @@ func Sub_456FA0() {
 	C.sub_456FA0()
 }
 func Sub_418E40(t *server.Team, p *server.ObjectTeam) {
-	C.sub_418E40((*C.nox_team_t)(t.C()), (*C.nox_object_team_t)(unsafe.Pointer(p)))
+	sub_418E40((*C.nox_team_t)(t.C()), (*C.nox_object_team_t)(unsafe.Pointer(p)))
 }
 func Sub_418D80(t *server.Team) {
-	C.sub_418D80((*C.nox_team_t)(t.C()))
+	sub_418D80((*C.nox_team_t)(t.C()))
 }
 func Sub_456EA0(name string) {
 	C.sub_456EA0(internWStr(name))

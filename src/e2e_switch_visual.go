@@ -14,6 +14,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/client"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -350,6 +351,14 @@ func e2eMinimapDynamicWallLifecycle(f *e2eSecretWallTouchFixture) error {
 			}
 			w.Tile1, w.Dir0 = f.tile, 1
 			created = append(created, w)
+			if !noxflags.HasGame(noxflags.GameNotQuest) {
+				if err := e2eMinimapWallRaster(grid, 1, false, "unexplored wall"); err != nil {
+					return err
+				}
+			}
+			// The viewport sets this word when it draws a wall. Give the
+			// temporary fixture the explored state for the raster checks.
+			w.Field12 = 1
 			if err := e2eMinimapWallRaster(grid, 1, true, "created wall"); err != nil {
 				return err
 			}
@@ -371,7 +380,7 @@ func e2eMinimapDynamicWallLifecycle(f *e2eSecretWallTouchFixture) error {
 		if reused != w {
 			return fmt.Errorf("normal wall free list did not reuse the deleted native wall")
 		}
-		reused.Tile1, reused.Dir0 = f.tile, 1
+		reused.Tile1, reused.Dir0, reused.Field12 = f.tile, 1, 1
 		if err := e2eMinimapWallRaster(grid, 1, true, "recreated wall"); err != nil {
 			return err
 		}

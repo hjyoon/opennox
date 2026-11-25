@@ -1,6 +1,6 @@
-# Normal map-script Enable API, untouched stock Spike SlaveDraw, and the actual
-# C minimap raster for both original G_Crypts secret-wall diagonals. No client
-# flags, frames, packets, wall states or expected pixels are injected.
+# Normal map-script Enable API, untouched stock Spike SlaveDraw, and the live
+# minimap raster for both original G_Crypts secret-wall diagonals. The raster
+# also tracks temporary ordinary walls before and after exploration.
 steps:
   - action: slow
     dur: 5ms

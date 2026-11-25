@@ -28,9 +28,7 @@ func serverOptionsWindowFile() *C.char {
 	if lang < 0 || lang >= 9 {
 		lang = 0
 	}
-	// Use the string slots directly. The original table has four-byte
-	// entries and its addresses cannot be read as native pointers.
-	return (*C.char)(memmap.PtrOff(0x587000, 129868+16*uintptr(lang)))
+	return (*C.char)(*memmap.PtrPtr(0x587000, 129760+4*uintptr(lang)))
 }
 
 //export nox_xxx_guiServerOptsLoad_457500
@@ -87,20 +85,9 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	*memmap.PtrPtr(0x5D4594, 1046352) = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs1")))
 	C.dword_5d4594_1046356 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs2")))
 	C.dword_5d4594_1046360 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs3")))
-	list := C.dword_5d4594_1046496
-	sliderImage := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISlider")))
+	slider := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISlider")))
 	sliderLit := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISliderLit")))
-	panel := C.dword_5d4594_1046500
-	slider := nox_xxx_wndGetChildByID_46B0C0(panel, 10182)
-	up := nox_xxx_wndGetChildByID_46B0C0(panel, 10180)
-	down := nox_xxx_wndGetChildByID_46B0C0(panel, 10181)
-	slider.field_100.width, slider.field_100.height = 16, 10
-	sub_4B5700(slider, nil, nil, sliderImage, sliderLit, sliderLit)
-	nox_xxx_wnd_46B280(slider, list)
-	nox_xxx_wnd_46B280(up, list)
-	nox_xxx_wnd_46B280(down, list)
-	scroll := g2ServerList(list)
-	scroll.Field_9, scroll.Field_7, scroll.Field_8 = unsafe.Pointer(slider), unsafe.Pointer(up), unsafe.Pointer(down)
+	attachServerListScrollbar(C.dword_5d4594_1046500, C.dword_5d4594_1046496, 10182, 10180, 10181, slider, sliderLit)
 
 	child(10160).draw_data.field_0 |= 4
 	settings := sub_4165D0(0)

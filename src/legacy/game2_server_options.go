@@ -243,7 +243,7 @@ func sub_4593B0(tab C.int) C.int {
 			C.sub_4AD820()
 			C.dword_5d4594_1046540 = nil
 		}
-		C.dword_5d4594_1046532 = C.nox_xxx_guiServerPlayersLoad_456270(root)
+		C.dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(root)
 		return sub_459560(10162)
 	}
 	if tab != 0 {

@@ -4,6 +4,7 @@
 #include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
 #include "stats_start_native.h"
+#include "client__gui__servopts__playrlst.h"
 
 void nullsub_68();
 
@@ -321,6 +322,7 @@ unsigned int dword_5d4594_2489420 = 0;
 unsigned int dword_5d4594_2489424 = 0;
 unsigned int dword_5d4594_2489428 = 0;
 nox_stats_quest_columns_native nox_stats_quest_columns = {0};
+nox_gui_server_players_state nox_gui_server_players;
 uint32_t dword_5d4594_1565616 = 0;
 uint32_t dword_5d4594_816356 = 0;
 uint32_t dword_5d4594_1203836 = 0;

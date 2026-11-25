@@ -124,7 +124,7 @@ func serverOptionsSwitchTab(window *nox_window, showTeams bool) {
 			serverOptionsChild(10162).draw_data.field_0 &^= 4
 		} else {
 			g2ServerHidden(serverOptionsChild(10196), true)
-			C.dword_5d4594_1046532 = C.nox_xxx_guiServerPlayersLoad_456270(root)
+			C.dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(root)
 		}
 		sub_46ACE0(root, 10141, 10141, 1)
 		g2ServerHidden(C.dword_5d4594_1046524, true)

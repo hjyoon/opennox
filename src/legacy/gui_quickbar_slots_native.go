@@ -61,7 +61,7 @@ func nox_xxx_cliPrepareGameplay1_460E60() C.int {
 	if sub_460D40() != 0 {
 		sub_460D50()
 	}
-	if C.nox_xxx_quickBarCreate_45E190() == 0 {
+	if nox_xxx_quickBarCreate_45E190() == 0 {
 		return 0
 	}
 	sub_460EA0(C.int(nox_client_getRenderGUI()))

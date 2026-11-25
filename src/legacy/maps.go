@@ -155,11 +155,7 @@ func Nox_server_mapRWWaypoints_506260(cf *cryptfile.CryptFile, a1 unsafe.Pointer
 			if a1 == nil {
 				return true
 			}
-			pos := C.int2{
-				field_0: C.int(int32(wp.PosVec.X)),
-				field_4: C.int(int32(wp.PosVec.Y)),
-			}
-			return C.nox_xxx_wallMath_427F30(&pos, (*C.int)(a1)) != 0
+			return mapWallRegionContains(int32(wp.PosVec.X), int32(wp.PosVec.Y), (*[8]int32)(a1))
 		})
 	}
 	hooks := mapWaypointReadHooks506260{

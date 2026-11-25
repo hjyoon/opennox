@@ -42,10 +42,9 @@ func mapTaggedWallOffset(region unsafe.Pointer) (int32, int32) {
 	if region == nil {
 		return 0, 0
 	}
-	var bounds C.int4
-	C.sub_428170(region, &bounds)
-	return int32(bounds.field_0)/23 - memmap.Int32(0x5D4594, mapWallOffsetX),
-		int32(bounds.field_4)/23 - memmap.Int32(0x5D4594, mapWallOffsetY)
+	bounds := mapWallRegionBounds((*[8]int32)(region))
+	return bounds[0]/wall.GridStep - memmap.Int32(0x5D4594, mapWallOffsetX),
+		bounds[1]/wall.GridStep - memmap.Int32(0x5D4594, mapWallOffsetY)
 }
 
 func mapTaggedWallAt(pos image.Point, temporary bool) *server.Wall {
@@ -173,11 +172,8 @@ func writeMapTaggedWalls(cf *cryptfile.CryptFile, region unsafe.Pointer, section
 		if !w.Flags4.Has(section.flag) {
 			return true
 		}
-		if region != nil {
-			point := C.int2{field_0: 23 * C.int(w.X5), field_4: 23 * C.int(w.Y6)}
-			if C.nox_xxx_wallMath_427F30(&point, (*C.int)(region)) == 0 {
-				return true
-			}
+		if region != nil && !mapWallRegionContains(wall.GridStep*int32(w.X5), wall.GridStep*int32(w.Y6), (*[8]int32)(region)) {
+			return true
 		}
 		walls = append(walls, w)
 		return true

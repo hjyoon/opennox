@@ -29,7 +29,7 @@ func TestFloorMapV4WholeFlagBoundsR303(t *testing.T) {
 		{"GAME1_1.c", "nox_server_mapRWFloorMap_422230"},
 		{"GAME1_1.c", "nox_xxx_tileReadOne_422A40"},
 		{"GAME1_1.c", "nox_xxx_tile_422C10"},
-		{"GAME1_2.c", "sub_428170"},
+		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		data, err := os.ReadFile(part.file)
 		if err != nil {

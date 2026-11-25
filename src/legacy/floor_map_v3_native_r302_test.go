@@ -23,7 +23,7 @@ func TestFloorMapV3NativeDataR302(t *testing.T) {
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
 		{"GAME1_1.c", "nox_xxx_tile_422C10"},
-		{"GAME1_2.c", "sub_428170"},
+		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		data, err := os.ReadFile(part.file)
 		if err != nil {

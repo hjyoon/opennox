@@ -9,7 +9,41 @@
 #include <string.h>
 #include "GAME1_2.h"
 
-// PRODUCTION_REGION_BOUNDS_BODY
+int sub_428170(void* a1p, int4* a2) {
+	int32_t* a1 = a1p;
+	int v2; // edx
+	int v3; // edx
+
+	v2 = a1[1];
+	if (v2 >= a1[7]) {
+		a2->field_C = v2;
+		a2->field_4 = a1[7];
+	} else {
+		a2->field_4 = v2;
+		a2->field_C = a1[7];
+	}
+	v3 = a1[2];
+	if (v3 >= a1[4]) {
+		a2->field_8 = v3;
+		a2->field_0 = a1[4];
+	} else {
+		a2->field_0 = v3;
+		a2->field_8 = a1[4];
+	}
+	if (a2->field_0 < 0) {
+		a2->field_0 = 0;
+	}
+	if (a2->field_4 < 0) {
+		a2->field_4 = 0;
+	}
+	if (a2->field_8 >= 5888) {
+		a2->field_8 = 5887;
+	}
+	if (a2->field_C >= 5888) {
+		a2->field_C = 5887;
+	}
+	return 0;
+}
 
 _Static_assert(sizeof(int) == sizeof(int32_t), "original coordinate DWORD width");
 _Static_assert(sizeof(int4) == 16, "original four signed coordinate fields");

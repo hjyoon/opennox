@@ -19,19 +19,6 @@ func TestRegionBoundsSignedOriginalR303(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1_2.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	starts := regexp.MustCompile(`(?m)^int sub_428170\([^;\n]*\) \{`).FindAllIndex(source, -1)
-	if len(starts) != 1 {
-		t.Fatal("nonunique production sub_428170")
-	}
-	body, _, ok := strings.Cut(string(source[starts[0][0]:]), "\n}\n")
-	if !ok {
-		t.Fatal("missing production function end")
-	}
-	program := strings.Replace(string(fixture), "// PRODUCTION_REGION_BOUNDS_BODY", body+"\n}\n", 1)
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}
@@ -39,9 +26,9 @@ func TestRegionBoundsSignedOriginalR303(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "region-bounds-signed")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Werror", "-I.", "-x", "c", "-", "-o", bin)
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
-	cmd.Stdin = strings.NewReader(program)
+	cmd.Stdin = strings.NewReader(string(fixture))
 	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual region bounds function: %v\n%s", err, out)
+		t.Fatalf("compile preserved region bounds reference: %v\n%s", err, out)
 	}
 	listed, err := exec.Command(bin, "--list").CombinedOutput()
 	if err != nil {
@@ -142,7 +129,7 @@ func TestFloorMapV3FlagByteR303(t *testing.T) {
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
 		{"GAME1_1.c", "nox_xxx_tile_422C10"},
-		{"GAME1_2.c", "sub_428170"},
+		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		source, err := os.ReadFile(part.file)
 		if err != nil {

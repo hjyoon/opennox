@@ -233,8 +233,8 @@ func Sub_41AA30(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	return playerStatusReadRuntime41AA30(cf, u)
 }
 
-//export nox_xxx_playerStatusRead_native_41AA30
-func nox_xxx_playerStatusRead_native_41AA30(unit unsafe.Pointer) C.int {
+//export sub_41AA30
+func sub_41AA30(unit, _ unsafe.Pointer) C.int {
 	err := playerStatusReadRuntime41AA30(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -252,8 +252,8 @@ func Sub_41AC30(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	return playerInventoryReadRuntime41AC30(cf, u)
 }
 
-//export nox_xxx_playerInventoryRead_native_41AC30
-func nox_xxx_playerInventoryRead_native_41AC30(unit unsafe.Pointer) C.int {
+//export sub_41AC30
+func sub_41AC30(unit, _ unsafe.Pointer) C.int {
 	err := playerInventoryReadRuntime41AC30(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -271,8 +271,8 @@ func Nox_xxx_guiFieldbook_41B420(cf *cryptfile.CryptFile, u *server.Object, pinf
 	return playerFieldbookReadRuntime41B420(cf, u)
 }
 
-//export nox_xxx_playerFieldbookRead_native_41B420
-func nox_xxx_playerFieldbookRead_native_41B420(unit unsafe.Pointer) C.int {
+//export nox_xxx_guiFieldbook_41B420
+func nox_xxx_guiFieldbook_41B420(unit, _ unsafe.Pointer) C.int {
 	err := playerFieldbookReadRuntime41B420(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -290,8 +290,8 @@ func Nox_xxx_guiSpellbook_41B660(cf *cryptfile.CryptFile, u *server.Object, pinf
 	return playerSpellbookReadRuntime41B660(cf, u)
 }
 
-//export nox_xxx_playerSpellbookRead_native_41B660
-func nox_xxx_playerSpellbookRead_native_41B660(unit unsafe.Pointer) C.int {
+//export nox_xxx_guiSpellbook_41B660
+func nox_xxx_guiSpellbook_41B660(unit, _ unsafe.Pointer) C.int {
 	err := playerSpellbookReadRuntime41B660(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -309,8 +309,8 @@ func Nox_xxx_guiEnchantment_41B9C0(cf *cryptfile.CryptFile, u *server.Object, pi
 	return playerEnchantmentReadRuntime41B9C0(cf, u)
 }
 
-//export nox_xxx_playerEnchantmentRead_native_41B9C0
-func nox_xxx_playerEnchantmentRead_native_41B9C0(unit unsafe.Pointer) C.int {
+//export nox_xxx_guiEnchantment_41B9C0
+func nox_xxx_guiEnchantment_41B9C0(unit, _ unsafe.Pointer) C.int {
 	err := playerEnchantmentReadRuntime41B9C0(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -328,8 +328,8 @@ func Sub_41BEC0(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	return playerJournalReadRuntime41BEC0(cf, u)
 }
 
-//export nox_xxx_playerJournalRead_native_41BEC0
-func nox_xxx_playerJournalRead_native_41BEC0(unit unsafe.Pointer) C.int {
+//export sub_41BEC0
+func sub_41BEC0(unit, _ unsafe.Pointer) C.int {
 	err := playerJournalReadRuntime41BEC0(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),
@@ -347,8 +347,8 @@ func Sub_41C080(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	return playerGameReadRuntime41C080(cf, u)
 }
 
-//export nox_xxx_playerGameRead_native_41C080
-func nox_xxx_playerGameRead_native_41C080(unit unsafe.Pointer) C.int {
+//export sub_41C080
+func sub_41C080(unit, _ unsafe.Pointer) C.int {
 	err := playerGameReadRuntime41C080(
 		cryptfile.Global(),
 		asObjectS((*nox_object_t)(unit)),

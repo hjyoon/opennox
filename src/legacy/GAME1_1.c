@@ -839,12 +839,6 @@ int sub_41AA30(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerStatusRead_native_41AA30(void* unit);
-
-int sub_41AA30(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerStatusRead_native_41AA30(unit);
-}
 // 41AAD8: variable 'v4' is possibly undefined
 // 41AB12: variable 'v5' is possibly undefined
 
@@ -1205,12 +1199,6 @@ LABEL_115:
 }
 #endif
 
-extern int nox_xxx_playerInventoryRead_native_41AC30(void* unit);
-
-int sub_41AC30(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerInventoryRead_native_41AC30(unit);
-}
 // 41AC30: using guessed type char var_100[256];
 
 //----- (0041B3B0) --------------------------------------------------------
@@ -1347,12 +1335,6 @@ int nox_xxx_guiFieldbook_41B420(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerFieldbookRead_native_41B420(void* unit);
-
-int nox_xxx_guiFieldbook_41B420(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerFieldbookRead_native_41B420(unit);
-}
 // 41B420: using guessed type char var_100[256];
 
 //----- (0041B660) --------------------------------------------------------
@@ -1513,12 +1495,6 @@ int nox_xxx_guiSpellbook_41B660(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerSpellbookRead_native_41B660(void* unit);
-
-int nox_xxx_guiSpellbook_41B660(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerSpellbookRead_native_41B660(unit);
-}
 // 41B660: using guessed type char var_100[256];
 
 //----- (0041B9C0) --------------------------------------------------------
@@ -1689,12 +1665,6 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerEnchantmentRead_native_41B9C0(void* unit);
-
-int nox_xxx_guiEnchantment_41B9C0(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerEnchantmentRead_native_41B9C0(unit);
-}
 // 41B9C0: using guessed type char var_100[256];
 
 //----- (0041BEC0) --------------------------------------------------------
@@ -1771,12 +1741,6 @@ int sub_41BEC0(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerJournalRead_native_41BEC0(void* unit);
-
-int sub_41BEC0(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerJournalRead_native_41BEC0(unit);
-}
 // 41BEC0: using guessed type char var_40[64];
 
 //----- (0041C080) --------------------------------------------------------
@@ -1834,12 +1798,6 @@ int sub_41C080(void* a1p, void* a2p) {
 }
 #endif
 
-extern int nox_xxx_playerGameRead_native_41C080(void* unit);
-
-int sub_41C080(void* unit, void* info) {
-	(void)info;
-	return nox_xxx_playerGameRead_native_41C080(unit);
-}
 
 //----- (0041C280) --------------------------------------------------------
 // Related to placing traps??

@@ -76,26 +76,26 @@ func clientInventoryReleaseOnAlternate(dragged *nox_drawable) bool {
 	column := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
 	row := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
 	if !weapon || sub_464B40(column, row) == 0 {
-		C.sub_4649B0(dragged, column, row)
+		sub_4649B0(dragged, column, row)
 		return true
 	}
 	cell := inventoryGridCell(int(row), int(column))
 	if cell.field_132 != 0 {
-		C.sub_4649B0(dragged, column, row)
+		sub_4649B0(dragged, column, row)
 		return true
 	}
 	if nox_xxx_ammoCheck_415880(int32(dragged.field_27)) == 2 {
 		ammo4 := sub_461600(C.int(sub_415840(4)))
 		ammo8 := sub_461600(C.int(sub_415840(8)))
 		if ammo4 == nil && ammo8 == nil {
-			C.sub_4649B0(dragged, column, row)
+			sub_4649B0(dragged, column, row)
 			return false
 		}
 	}
 	if alternate := clientInventoryAlternateCell(); alternate != nil {
 		alternate.field_136 = 0
 	}
-	C.sub_4649B0(dragged, column, row)
+	sub_4649B0(dragged, column, row)
 	nox_xxx_clientSetAltWeapon_461550(cell)
 	cell.field_136 = 1
 	return true
@@ -197,7 +197,7 @@ func nox_xxx_clientKeyEquip_465C30(column, row C.int) C.int {
 		return 0
 	}
 	nox_xxx_clientEquip_4623B0(dragged)
-	return C.sub_4649B0(dragged, column, row)
+	return sub_4649B0(dragged, column, row)
 }
 
 //export nox_xxx_clientUse_465C70

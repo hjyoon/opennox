@@ -129,7 +129,7 @@ func sub_467CD0() C.int {
 	if dragged != nil {
 		column := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
 		row := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
-		if C.dword_5d4594_1049856 == 0 && C.sub_4649B0(dragged, column, row) == 0 {
+		if C.dword_5d4594_1049856 == 0 && sub_4649B0(dragged, column, row) == 0 {
 			inventoryReinsertDraggedItem(dragged)
 		}
 		nox_client_inventory_set_dragged(nil)
@@ -155,18 +155,5 @@ func inventoryReinsertDraggedItem(dragged *nox_drawable) {
 	if cell == nil {
 		return
 	}
-	cell.field_132 = 0
-	for _, head := range inventoryStateNativeHeads() {
-		for equipped := head; equipped != nil; equipped = equipped.NextPtr {
-			if equipped.NetCode32 != netCode {
-				continue
-			}
-			cell.field_132 = 1
-			if cell.field_136 != 0 {
-				nox_xxx_clientSetAltWeapon_461550(nil)
-				cell.field_136 = 0
-			}
-			break
-		}
-	}
+	clientInventoryMarkEquipped(cell, netCode)
 }

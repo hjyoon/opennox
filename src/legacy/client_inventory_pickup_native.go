@@ -19,11 +19,18 @@ func clientInventoryString(key string, line int32) *wchar2_t {
 	return nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(`C:\NoxPost\src\Client\Gui\guiinv.c`), line)
 }
 
-//export nox_xxx_spritePickup_461660
-func nox_xxx_spritePickup_461660(code, thingType C.int, attrs *C.inventory_const_modifier_attrs_t) C.int {
+func clientInventoryIsSpecialThing(thingType C.uint32_t) bool {
 	switch uint32(thingType) {
 	case uint32(C.dword_5d4594_1062560), memmap.Uint32(0x5D4594, 1049728), memmap.Uint32(0x5D4594, 1049724),
 		uint32(C.dword_5d4594_1062556), uint32(C.dword_5d4594_1062564):
+		return true
+	}
+	return false
+}
+
+//export nox_xxx_spritePickup_461660
+func nox_xxx_spritePickup_461660(code, thingType C.int, attrs *C.inventory_const_modifier_attrs_t) C.int {
+	if clientInventoryIsSpecialThing(C.uint32_t(thingType)) {
 		return 1
 	}
 	cell, row, column := clientInventoryStackPickup(code, thingType)
@@ -123,10 +130,9 @@ func sub_461A80(code C.int) {
 	nox_xxx_cursorResetDraggedItem_4776A0()
 }
 
-func clientInventoryCloneDrawable(source *nox_drawable, code C.uint32_t) *nox_drawable {
+func clientInventoryCloneDrawable(source *nox_drawable) *nox_drawable {
 	drawable := nox_new_drawable_for_thing(int32(source.field_27))
 	if drawable != nil {
-		drawable.field_32 = code
 		drawable.flags30 |= 0x40000000
 		*drawableItemData(drawable) = *drawableItemData(source)
 		drawable.field_113 = source.field_113
@@ -154,11 +160,12 @@ func sub_462040(code C.int) {
 		C.nox_xxx_printCentered_445490(clientInventoryString("TooManyEquipped", 1701))
 		return
 	}
-	equipped := clientInventoryCloneDrawable(source, C.uint32_t(code))
+	equipped := clientInventoryCloneDrawable(source)
 	if equipped == nil {
 		C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1619))
 		return
 	}
+	equipped.field_32 = C.uint32_t(code)
 	sub_4623E0(equipped, slot)
 	if cell != nil {
 		cell.field_132 = 1
@@ -212,11 +219,12 @@ func nox_xxx_cliInventorySpriteUpd_465A30() {
 	if cell.field_140 == 0 {
 		return
 	}
-	dragged := clientInventoryCloneDrawable(cell.field_0, cell.field_4)
+	dragged := clientInventoryCloneDrawable(cell.field_0)
 	nox_client_inventory_set_dragged(dragged)
 	if dragged == nil {
 		C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1123))
 		return
 	}
+	dragged.field_32 = cell.field_4
 	sub_461E60(cell, 0)
 }

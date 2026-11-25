@@ -101,8 +101,7 @@ func sub_466660(_ C.int, point *C.int2) *C.wchar2_t {
 		column = (point.field_4 - 13) / 50
 		row = C.int(inventoryRows - 1)
 	case clientInventoryPointInRect(point, 0x587000, 136352):
-		column = (point.field_0 - 314) / 50
-		row = C.int((C.uint32_t(point.field_4) + C.dword_5d4594_1062512 - 13) / 50)
+		column, row = clientInventoryStorageIndex(point)
 	default:
 		return nil
 	}

@@ -6,11 +6,16 @@ import "github.com/opennox/libs/object"
 // The prefix uses the source for facing/Reflect, but every damage and wear
 // callback must retain the original nil weapon argument.
 func playerDamageWeaponlessNonItemShape4E17B0(source, weapon *Object, _ object.DamageType) bool {
-	if source == nil || weapon != nil || source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) {
+	if source == nil || weapon != nil {
 		return false
 	}
-	if source.Class().Has(object.ClassPlayer) {
-		return !source.Class().Has(object.ClassMonster) && source.UpdateData != nil && source.UpdateDataPlayer().Player != nil
+	class := source.Class()
+	if class.HasAny(object.ClassWeapon|object.ClassWand) ||
+		(class.Has(object.ClassMissile) && class.HasAny(object.MaskUnits)) {
+		return false
 	}
-	return !source.Class().Has(object.ClassMonster) || source.UpdateData != nil
+	if class.Has(object.ClassPlayer) {
+		return !class.Has(object.ClassMonster) && source.UpdateData != nil && source.UpdateDataPlayer().Player != nil
+	}
+	return !class.Has(object.ClassMonster) || source.UpdateData != nil
 }

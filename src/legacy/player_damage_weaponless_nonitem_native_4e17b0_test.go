@@ -40,7 +40,7 @@ func TestPlayerDamageWeaponlessNonItemNativeDamage4E17B0(t *testing.T) {
 	}
 	oldLog := srv.Log
 	t.Cleanup(func() { srv.Log = oldLog })
-	for _, sourceKind := range []string{"player", "monster", "world", "zero"} {
+	for _, sourceKind := range []string{"player", "monster", "world", "zero", "missile"} {
 		for _, weaponKind := range []string{"none"} {
 			for typ := object.DamageType(0); typ < 18; typ++ {
 				for _, kind := range []string{"player", "npc", "ordinary-monster"} {
@@ -62,11 +62,16 @@ func TestPlayerDamageWeaponlessNonItemNativeDamage4E17B0(t *testing.T) {
 								if sourceKind != "player" {
 									attacker, _ = npcReflectLegacyObjects4E17B0(t, &pin)
 								}
-								if sourceKind == "world" || sourceKind == "zero" {
-									attacker.ObjClass, attacker.ObjSubClass, attacker.UpdateData, attacker.HealthData = object.ClassDoor, 0, nil, nil
-									if sourceKind == "zero" {
-										attacker.ObjClass = 0
-									}
+								switch sourceKind {
+								case "world":
+									attacker.ObjClass = object.ClassDoor
+								case "zero":
+									attacker.ObjClass = 0
+								case "missile":
+									attacker.ObjClass = object.ClassMissile
+								}
+								if !attacker.Class().HasAny(object.MaskUnits) {
+									attacker.ObjSubClass, attacker.UpdateData, attacker.HealthData = 0, nil, nil
 								}
 								if weaponKind == "world" {
 									weapon.ObjClass, weapon.ObjSubClass, weapon.UpdateData, weapon.HealthData = object.ClassArmor, 0, nil, nil

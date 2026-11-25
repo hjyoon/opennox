@@ -247,9 +247,6 @@ func Nox_xxx_cursorSetTooltip_4776B0(a1 string) {
 func Sub_57B450(a1 *client.Drawable) int {
 	return clientDrawableCanPickup57B450(a1)
 }
-func Nox_xxx_clientPickup_46C140(a1 *client.Drawable) {
-	C.nox_xxx_clientPickup_46C140((*nox_drawable)(a1.C()))
-}
 func Sub_46B630(a1 *gui.Window, a2 int, a3 int) *gui.Window {
 	return asWindow(sub_46B630((*nox_window)(a1.C()), C.int(a2), C.int(a3)))
 }

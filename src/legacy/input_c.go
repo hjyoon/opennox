@@ -217,7 +217,7 @@ func Sub_45D9B0() int {
 	return int(C.sub_45D9B0())
 }
 func Sub_45D870() {
-	C.sub_45D870()
+	sub_45D870()
 }
 
 func spriteHasState4C3220(a1 *client.Drawable, lookup func(uint32) bool) int {

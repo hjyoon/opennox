@@ -113,7 +113,7 @@ func nox_xxx_bookSetColor_45AC40() C.int {
 //export nox_client_toggleSpellbook_45AC70
 func nox_client_toggleSpellbook_45AC70() {
 	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(C.nox_win_unk1) != 0 {
-		C.nox_xxx_bookShowMB_45AD70(0)
+		nox_xxx_bookShowMB_45AD70(0)
 	} else {
 		nox_xxx_bookHideMB_45ACA0(0)
 	}

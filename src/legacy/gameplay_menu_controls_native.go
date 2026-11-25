@@ -76,7 +76,7 @@ func nox_xxx_consoleEsc_49B7A0() {
 		return
 	}
 	if sub_45D9B0() == 1 {
-		C.sub_45D870()
+		sub_45D870()
 		return
 	}
 

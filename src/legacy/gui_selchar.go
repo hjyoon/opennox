@@ -140,7 +140,7 @@ func Sub_4AD9B0(a1 int) {
 	C.sub_4AD9B0(C.int(a1))
 }
 func Nox_xxx_bookShowMB_45AD70(a1 int) {
-	C.nox_xxx_bookShowMB_45AD70(C.int(a1))
+	nox_xxx_bookShowMB_45AD70(C.int(a1))
 }
 func Sub_41A000(a1 string, a2 *server.SaveGameInfo) int {
 	return bool2int(readPlayerSavePreview(a1, unsafe.Pointer(a2)) == nil)

@@ -72,7 +72,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 
 //export game2_book_forward_word
 func game2_book_forward_word(kind C.uintptr_t, id C.int, position *C.int2) C.uintptr_t {
-	C.nox_xxx_bookShowMB_45AD70(1)
+	nox_xxx_bookShowMB_45AD70(1)
 	C.nox_window_setPos_46A9B0(C.nox_win_unk1, position.field_0, position.field_4)
 	token := uintptr(kind)
 	count := 0
@@ -264,7 +264,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	}
 	C.dword_5d4594_1046648 = C.uint32_t(C.nox_xxx_bookGet_430B40_get_mouse_prev_seq())
 	if !game2BookGameFlag(2048) || C.nox_gui_xxx_check_446360() == 1 || C.nox_xxx_gameGet_4DB1B0() == 1 {
-		C.sub_45D870()
+		sub_45D870()
 	}
 }
 

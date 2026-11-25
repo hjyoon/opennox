@@ -9,7 +9,7 @@ import (
 )
 
 func TestBookRewardDraw45C7D0NativeBody(t *testing.T) {
-	book, err := os.ReadFile("client__gui__guibook.c")
+	book, err := os.ReadFile("testdata/retired-game-sources/client__gui__guibook.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

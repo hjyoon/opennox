@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdlib.h>
@@ -32,12 +32,13 @@ static size_t game3_fixture_layout(int which) {switch(which){case 0:return sizeo
 */
 import "C"
 import (
+	"unsafe"
+
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
-	"unsafe"
 )
 
-func game3FixtureConfig(reference bool, which int, text *string) (int, []byte, uintptr) {
+func Game3Config(reference bool, which int, text *string) (int, []byte, uintptr) {
 	var p unsafe.Pointer
 	if text != nil {
 		p = C.nox_native_fixture_calloc_high(1, C.size_t(len(*text)+33))
@@ -61,7 +62,7 @@ func game3FixtureConfig(reference bool, which int, text *string) (int, []byte, u
 	}
 	return int(r), after, uintptr(p)
 }
-func game3FixtureName(reference bool, words []uint16) (int, []byte) {
+func Game3ColorName(reference bool, words []uint16) (int, []byte) {
 	p := C.nox_native_fixture_calloc_high(1, C.size_t(2*len(words)+32))
 	defer C.nox_native_fixture_free_high(p)
 	C.memset(p, 0xA7, C.size_t(2*len(words)+32))
@@ -73,7 +74,7 @@ func game3FixtureName(reference bool, words []uint16) (int, []byte) {
 	r := C.game3_fixture_name(ref, (*C.wchar2_t)(unsafe.Add(p, 8)))
 	return int(r), append([]byte(nil), unsafe.Slice((*byte)(p), 2*len(words)+32)...)
 }
-func game3FixtureMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr {
+func Game3ColorMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr {
 	p := C.nox_native_fixture_calloc_high(1, 3)
 	defer C.nox_native_fixture_free_high(p)
 	copy(unsafe.Slice((*byte)(p), 3), rgb[:])
@@ -83,32 +84,32 @@ func game3FixtureMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr 
 	}
 	return uintptr(C.game3_fixture_match(v, (*C.nox_window)(w.C()), C.int(group), (*C.uchar)(p)))
 }
-func game3FixtureSwapColorRoot(w *gui.Window) *gui.Window {
-	old := asWindow(C.dword_5d4594_1308084)
+func Game3SwapColorRoot(w *gui.Window) *gui.Window {
+	old := (*gui.Window)(unsafe.Pointer(C.dword_5d4594_1308084))
 	C.dword_5d4594_1308084 = (*C.nox_window)(w.C())
 	return old
 }
-func game3FixtureSwapOptionsRoot(w *gui.Window) *gui.Window {
-	old := asWindow(C.dword_5d4594_1309720)
+func Game3SwapOptionsRoot(w *gui.Window) *gui.Window {
+	old := (*gui.Window)(unsafe.Pointer(C.dword_5d4594_1309720))
 	C.dword_5d4594_1309720 = (*C.nox_window)(w.C())
 	return old
 }
-func game3FixtureRadio(w *gui.Window, code int, a, b uintptr, pre bool) int {
+func Game3Radio(w *gui.Window, code int, a, b uintptr, pre bool) int {
 	v := C.int(0)
 	if pre {
 		v = 1
 	}
 	return int(C.game3_fixture_radio((*C.nox_window)(w.C()), C.int(code), C.uintptr_t(a), C.uintptr_t(b), v))
 }
-func game3FixtureRadioInit(w *gui.Window) int {
+func Game3RadioInit(w *gui.Window) int {
 	return int(C.nox_xxx_wndRadioButtonSetAllFn_4A87E0((*C.nox_window)(w.C())))
 }
-func game3FixtureLayout(which int) uintptr { return uintptr(C.game3_fixture_layout(C.int(which))) }
-func game3FixtureRadioCallbackWords(w *gui.Window) (uintptr, uintptr) {
+func Game3ConfigLayout(which int) uintptr { return uintptr(C.game3_fixture_layout(C.int(which))) }
+func Game3RadioCallbackWords(w *gui.Window) (uintptr, uintptr) {
 	p := (*C.nox_window)(w.C())
 	return uintptr(unsafe.Pointer(p.field_93)), uintptr(unsafe.Pointer(p.draw_func))
 }
-func game3FixtureRadioText(w *gui.Window, words []uint16) []uint16 {
+func Game3RadioText(w *gui.Window, words []uint16) []uint16 {
 	p := C.nox_native_fixture_calloc_high(1, C.size_t(2*len(words)))
 	defer C.nox_native_fixture_free_high(p)
 	copy(unsafe.Slice((*uint16)(p), len(words)), words)
@@ -116,12 +117,12 @@ func game3FixtureRadioText(w *gui.Window, words []uint16) []uint16 {
 	cw := (*C.nox_window)(w.C())
 	return append([]uint16(nil), unsafe.Slice((*uint16)(unsafe.Pointer(&cw.draw_data.text[0])), 64)...)
 }
-func game3FixtureConfigAddress() unsafe.Pointer { return unsafe.Pointer(C.sub_4A7EF0()) }
-func game3FixtureLookup(text string) int {
+func Game3ConfigAddress() unsafe.Pointer { return unsafe.Pointer(C.sub_4A7EF0()) }
+func Game3ConfigLookup(text string) int {
 	p, free := alloc.CStringHigh(text)
 	defer free()
 	return int(C.sub_4A7B40((*C.char)(unsafe.Pointer(p))))
 }
-func game3FixtureUnknownOptions(w *gui.Window) [3]int {
+func Game3UnknownOptions(w *gui.Window) [3]int {
 	return [3]int{int(C.sub_4AAA70()), int(C.sub_4AABE0((*C.nox_window)(w.C()), -902, nil, 0)), int(C.sub_4AB340((*C.nox_window)(w.C()), 21, 1, 0))}
 }

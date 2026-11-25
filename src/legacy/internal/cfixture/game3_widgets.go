@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <string.h>
@@ -137,12 +137,11 @@ static int game3_test_layout(size_t out[8]) {
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/client/gui"
 	"runtime"
 	"unsafe"
 )
 
-func game3WidgetPositionCOwner(ref bool, x, y int32) (out [2]uint32, address uintptr, intact bool) {
+func Game3WidgetPositionCOwner(ref bool, x, y int32) (out [2]uint32, address uintptr, intact bool) {
 	r := C.int(0)
 	if ref {
 		r = 1
@@ -152,15 +151,15 @@ func game3WidgetPositionCOwner(ref bool, x, y int32) (out [2]uint32, address uin
 	return out, uintptr(nativeAddress), intact
 }
 
-func game3WidgetReferencePosition(ref bool, x, y int32) (out [2]uint32) {
-	out, _, intact := game3WidgetPositionCOwner(ref, x, y)
+func Game3WidgetReferencePosition(ref bool, x, y int32) (out [2]uint32) {
+	out, _, intact := Game3WidgetPositionCOwner(ref, x, y)
 	if !intact {
 		panic("position output identity or canary changed")
 	}
 	return out
 }
 
-func game3WidgetPositionPinnedOwner(x, y int32) (out [2]uint32, same bool) {
+func Game3WidgetPositionPinnedOwner(x, y int32) (out [2]uint32, same bool) {
 	var pin runtime.Pinner
 	pin.Pin(&out[0])
 	defer pin.Unpin()
@@ -171,7 +170,7 @@ func game3WidgetPositionPinnedOwner(x, y int32) (out [2]uint32, same bool) {
 	runtime.KeepAlive(&out)
 	return out, same
 }
-func game3WidgetReferenceDistance(ref bool, x, y uint32, sx, sy int16, radius float64) (bool, uintptr) {
+func Game3WidgetReferenceDistance(ref bool, x, y uint32, sx, sy int16, radius float64) (bool, uintptr) {
 	r := C.int(0)
 	if ref {
 		r = 1
@@ -180,7 +179,7 @@ func game3WidgetReferenceDistance(ref bool, x, y uint32, sx, sy int16, radius fl
 	ok := C.game3_test_distance(r, C.uint32_t(x), C.uint32_t(y), C.int16_t(sx), C.int16_t(sy), C.double(radius), &addr) != 0
 	return ok, uintptr(addr)
 }
-func game3WidgetReferenceSlider(ref, vertical, pre bool, ev int, a, b uintptr, lo, hi int32, scale uint32, value int32) (out [20]int64) {
+func Game3WidgetReferenceSlider(ref, vertical, pre bool, ev int, a, b uintptr, lo, hi int32, scale uint32, value int32) (out [20]int64) {
 	r, v, p := C.int(0), C.int(0), C.int(0)
 	if ref {
 		r = 1
@@ -194,7 +193,7 @@ func game3WidgetReferenceSlider(ref, vertical, pre bool, ev int, a, b uintptr, l
 	C.game3_test_slider(r, v, p, C.int(ev), C.uintptr_t(a), C.uintptr_t(b), C.int(lo), C.int(hi), C.uint32_t(scale), C.int(value), (*C.int64_t)(unsafe.Pointer(&out[0])))
 	return
 }
-func game3WidgetReferenceList(ref bool, op, scroll, delta int, update bool) (out [16]uint64) {
+func Game3WidgetReferenceList(ref bool, op, scroll, delta int, update bool) (out [16]uint64) {
 	r, u := C.int(0), C.int(0)
 	if ref {
 		r = 1
@@ -205,34 +204,38 @@ func game3WidgetReferenceList(ref bool, op, scroll, delta int, update bool) (out
 	C.game3_test_list(r, C.int(op), C.int(scroll), C.int(delta), u, (*C.uint64_t)(unsafe.Pointer(&out[0])))
 	return
 }
-func game3WidgetReferenceColor(i int) uint32 { return uint32(C.game3_test_palette(C.int(i))) }
-func game3WidgetSelectionCheck() (uintptr, bool) {
+func Game3WidgetReferenceColor(i int) uint32 { return uint32(C.game3_test_palette(C.int(i))) }
+func Game3WidgetSelectionCheck() (uintptr, bool) {
 	var p C.uintptr_t
 	v := C.game3_test_selection(&p) != 0
 	return uintptr(p), v
 }
-func game3WidgetDestroyCheck(vertical bool) bool {
+func Game3WidgetDestroyCheck(vertical bool) bool {
 	v := C.int(0)
 	if vertical {
 		v = 1
 	}
 	return C.game3_test_destroy(v) != 0
 }
-func game3WidgetLayout() (out [8]uintptr) {
+func Game3WidgetLayout() (out [8]uintptr) {
 	C.game3_test_layout((*C.size_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func game3WidgetPinnedSelection(p unsafe.Pointer) { C.game3_test_selection_ptr(p) }
-func game3WidgetCreateSlider(parent *gui.Window, draw *gui.WindowData, opts *game3SliderData) *gui.Window {
-	return asWindow(C.nox_gui_newSlider_4B4EE0((*C.nox_window)(parent.C()), 8, 0, 0, 100, 100, (*C.nox_window_data)(draw.C()), (*C.float)(unsafe.Pointer(opts))))
-}
-func game3WidgetInitList(w *gui.Window) { C.nox_xxx_wndListboxInit_4A3C00((*C.nox_window)(w.C()), nil) }
-func game3WidgetListDrawWithoutRenderer(w *gui.Window) int {
-	return int(C.nox_xxx_wndListboxDrawNoImage_4A3C50((*C.nox_window)(w.C()), (*C.nox_window_data)(w.DrawData().C())))
+func Game3WidgetPinnedSelection(p unsafe.Pointer) { C.game3_test_selection_ptr(p) }
+func Game3WidgetCreateSlider(parent, draw, opts unsafe.Pointer) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_gui_newSlider_4B4EE0((*C.nox_window)(parent), 8, 0, 0, 100, 100, (*C.nox_window_data)(draw), (*C.float)(opts)))
 }
 
-func game3WidgetServerCount(ref bool) (uintptr, bool) {
+func Game3WidgetInitList(w unsafe.Pointer) {
+	C.nox_xxx_wndListboxInit_4A3C00((*C.nox_window)(w), nil)
+}
+
+func Game3WidgetListDrawWithoutRenderer(w, draw unsafe.Pointer) int {
+	return int(C.nox_xxx_wndListboxDrawNoImage_4A3C50((*C.nox_window)(w), (*C.nox_window_data)(draw)))
+}
+
+func Game3WidgetServerCount(ref bool) (uintptr, bool) {
 	r := C.int(0)
 	if ref {
 		r = 1
@@ -241,20 +244,23 @@ func game3WidgetServerCount(ref bool) (uintptr, bool) {
 	ok := C.game3_test_server_count(r, &p) != 0
 	return uintptr(p), ok
 }
-func game3WidgetRegistryCheck() (uintptr, bool) {
+func Game3WidgetRegistryCheck(setEntry func(unsafe.Pointer) func()) (uintptr, bool) {
 	p := C.nox_native_fixture_calloc_high(1, 169)
 	if p == nil {
 		return 0, false
 	}
 	defer C.nox_native_fixture_free_high(p)
-	old, oldCount := game3NearbyServers, C.dword_5d4594_1307720
-	defer func() { game3NearbyServers = old; C.dword_5d4594_1307720 = oldCount }()
-	game3NearbyServers[0] = (*C.nox_gui_server_ent_t)(p)
+	oldCount := C.dword_5d4594_1307720
+	restoreEntry := setEntry(p)
+	defer func() {
+		restoreEntry()
+		C.dword_5d4594_1307720 = oldCount
+	}()
 	C.dword_5d4594_1307720 = 1
 	return uintptr(p), unsafe.Pointer(C.sub_4A28C0(0)) == p && C.sub_4A28C0(-1) == nil && C.sub_4A28C0(1) == nil
 }
 
-func game3WidgetGuardedSelectionCheck() (uintptr, bool) {
+func Game3WidgetGuardedSelectionCheck() (uintptr, bool) {
 	var address C.uintptr_t
 	okay := C.game3_test_guarded_selection(&address) != 0
 	return uintptr(address), okay

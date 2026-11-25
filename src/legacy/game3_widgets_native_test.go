@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"image"
 	"math"
 	"runtime"
@@ -13,7 +14,7 @@ import (
 
 func TestGame3NearbyNativeCReferences(t *testing.T) {
 	for _, ref := range []bool{false, true} {
-		if p, ok := game3WidgetServerCount(ref); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
+		if p, ok := cfixture.Game3WidgetServerCount(ref); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
 			t.Fatal("native linked server-node count/identity")
 		}
 	}
@@ -23,29 +24,29 @@ func TestGame3NearbyNativeCReferences(t *testing.T) {
 
 	for _, xy := range [][2]int32{{0, 0}, {215, 26}, {216, 27}, {400, 251}, {601, 452}, {math.MinInt32, math.MaxInt32}, {math.MaxInt32, math.MinInt32}, {-1, -1}} {
 		t.Run(fmt.Sprintf("position/%d,%d", xy[0], xy[1]), func(t *testing.T) {
-			got, want := game3WidgetReferencePosition(false, xy[0], xy[1]), game3WidgetReferencePosition(true, xy[0], xy[1])
+			got, want := cfixture.Game3WidgetReferencePosition(false, xy[0], xy[1]), cfixture.Game3WidgetReferencePosition(true, xy[0], xy[1])
 			if got != want {
 				t.Fatalf("native=%v C=%v", got, want)
 			}
 		})
 	}
 	t.Run("position/native-owners", func(t *testing.T) {
-		want := game3WidgetReferencePosition(true, 216, 27)
+		want := cfixture.Game3WidgetReferencePosition(true, 216, 27)
 		for _, ref := range []bool{false, true} {
-			got, address, intact := game3WidgetPositionCOwner(ref, 216, 27)
+			got, address, intact := cfixture.Game3WidgetPositionCOwner(ref, 216, 27)
 			if !intact || got != want || (unsafe.Sizeof(uintptr(0)) == 8 && address <= math.MaxUint32) {
 				t.Fatalf("C-owned position: ref=%t value=%v want=%v address=%x intact=%t", ref, got, want, address, intact)
 			}
 		}
-		if got, same := game3WidgetPositionPinnedOwner(216, 27); !same || got != want {
+		if got, same := cfixture.Game3WidgetPositionPinnedOwner(216, 27); !same || got != want {
 			t.Fatalf("pinned Go position: value=%v want=%v returned-same-owner=%t", got, want, same)
 		}
 	})
 	for _, r := range []float64{0, 1, 5, 15.5, 10000000000, math.Inf(1), math.NaN()} {
 		for _, xy := range [][2]uint32{{0, 0}, {3, 4}, {0xffffffff, 0x80000000}, {0x7fffffff, 0xffffffff}} {
 			t.Run(fmt.Sprintf("distance/%08x,%08x/%g", xy[0], xy[1], r), func(t *testing.T) {
-				got, p := game3WidgetReferenceDistance(false, xy[0], xy[1], -32768, 32767, r)
-				want, _ := game3WidgetReferenceDistance(true, xy[0], xy[1], -32768, 32767, r)
+				got, p := cfixture.Game3WidgetReferenceDistance(false, xy[0], xy[1], -32768, 32767, r)
+				want, _ := cfixture.Game3WidgetReferenceDistance(true, xy[0], xy[1], -32768, 32767, r)
 				if got != want {
 					t.Fatalf("native=%v C=%v", got, want)
 				}
@@ -62,7 +63,7 @@ func TestGame3ListBoxNativeCReferences(t *testing.T) {
 		for _, delta := range []int{-9, -1, 0, 1, 9} {
 			for _, update := range []bool{false, true} {
 				t.Run(fmt.Sprintf("scroll/%d/delta/%d/update/%t", scroll, delta, update), func(t *testing.T) {
-					got, want := game3WidgetReferenceList(false, 1, scroll, delta, update), game3WidgetReferenceList(true, 1, scroll, delta, update)
+					got, want := cfixture.Game3WidgetReferenceList(false, 1, scroll, delta, update), cfixture.Game3WidgetReferenceList(true, 1, scroll, delta, update)
 					if got != want {
 						t.Fatalf("native=%v C=%v", got, want)
 					}
@@ -79,7 +80,7 @@ func TestGame3ListBoxNativeCReferences(t *testing.T) {
 	for _, op := range []int{0, 2, 3} {
 		for _, scroll := range []int{0, 7, 8, 20, 31, 65535} {
 			t.Run(fmt.Sprintf("op/%d/scroll/%d", op, scroll), func(t *testing.T) {
-				got, want := game3WidgetReferenceList(false, op, scroll, 0, true), game3WidgetReferenceList(true, op, scroll, 0, true)
+				got, want := cfixture.Game3WidgetReferenceList(false, op, scroll, 0, true), cfixture.Game3WidgetReferenceList(true, op, scroll, 0, true)
 				if got != want {
 					t.Fatalf("native=%v C=%v", got, want)
 				}
@@ -87,7 +88,7 @@ func TestGame3ListBoxNativeCReferences(t *testing.T) {
 		}
 	}
 	for i := -2; i <= 18; i++ {
-		if got, want := game3ListColor(int32(i)), game3WidgetReferenceColor(i); got != want {
+		if got, want := game3ListColor(int32(i)), cfixture.Game3WidgetReferenceColor(i); got != want {
 			t.Fatalf("palette %d native=%08x C=%08x", i, got, want)
 		}
 	}
@@ -112,7 +113,7 @@ func TestGame3SliderNativeCReferences(t *testing.T) {
 		for _, scale := range []float32{0, 0.125, 0.9, 2.25} {
 			for _, tc := range cases {
 				t.Run(fmt.Sprintf("vertical/%t/scale/%g/%s", vertical, scale, tc.name), func(t *testing.T) {
-					got, want := game3WidgetReferenceSlider(false, vertical, tc.pre, tc.event, tc.a, tc.b, 3, 97, math.Float32bits(scale), 15), game3WidgetReferenceSlider(true, vertical, tc.pre, tc.event, tc.a, tc.b, 3, 97, math.Float32bits(scale), 15)
+					got, want := cfixture.Game3WidgetReferenceSlider(false, vertical, tc.pre, tc.event, tc.a, tc.b, 3, 97, math.Float32bits(scale), 15), cfixture.Game3WidgetReferenceSlider(true, vertical, tc.pre, tc.event, tc.a, tc.b, 3, 97, math.Float32bits(scale), 15)
 					if got != want {
 						t.Fatalf("native=%v C=%v", got, want)
 					}
@@ -129,20 +130,20 @@ func TestGame3SliderNativeCReferences(t *testing.T) {
 }
 
 func TestGame3WidgetsNativeLayoutAndPinnedSelection(t *testing.T) {
-	layout := game3WidgetLayout()
+	layout := cfixture.Game3WidgetLayout()
 	if layout[0] != unsafe.Sizeof(gui.Window{}) || layout[1] != unsafe.Sizeof(gui.WindowData{}) || layout[2] != unsafe.Sizeof(gui.ScrollListBoxData{}) || layout[3] != unsafe.Sizeof(gui.ScrollListBoxItem{}) || layout[4] != unsafe.Offsetof(gui.Window{}.WidgetData) || layout[5] != unsafe.Offsetof(gui.Window{}.Field100Ptr) || layout[6] != unsafe.Offsetof(gui.ScrollListBoxData{}.Field_12) || layout[7] != unsafe.Sizeof(game3SliderData{}) {
 		t.Fatalf("C/Go layout mismatch %v", layout)
 	}
-	if p, ok := game3WidgetSelectionCheck(); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
+	if p, ok := cfixture.Game3WidgetSelectionCheck(); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
 		t.Fatal("native selection copy/full-pointer/canary contract failed")
 	}
 	if runtime.GOOS != "windows" {
-		if p, ok := game3WidgetGuardedSelectionCheck(); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
+		if p, ok := cfixture.Game3WidgetGuardedSelectionCheck(); !ok || (unsafe.Sizeof(uintptr(0)) == 8 && p <= math.MaxUint32) {
 			t.Fatal("exact Count C selection at guard-page boundary/canary failed")
 		}
 	}
 	for _, vertical := range []bool{false, true} {
-		if !game3WidgetDestroyCheck(vertical) {
+		if !cfixture.Game3WidgetDestroyCheck(vertical) {
 			t.Fatal("destroy did not free and clear native slider data")
 		}
 	}
@@ -160,7 +161,7 @@ func TestGame3WidgetsNativeLayoutAndPinnedSelection(t *testing.T) {
 	pin.Pin(a)
 	defer pin.Unpin()
 	runtime.GC()
-	game3WidgetPinnedSelection(unsafe.Pointer(d))
+	cfixture.Game3WidgetPinnedSelection(unsafe.Pointer(d))
 	runtime.GC()
 	if *d.Field_12 != 11 || a[1] != 12 || a[2] != 13 || a[3] != math.MaxUint32 {
 		t.Fatal("pinned Go full-pointer selection copy failed")
@@ -204,7 +205,7 @@ func TestGame3WidgetsNativeConstructorAndExistingDelegates(t *testing.T) {
 	if list == nil {
 		t.Fatal("native listbox constructor")
 	}
-	game3WidgetInitList(list)
+	cfixture.Game3WidgetInitList(list.C())
 	// Existing native selection registry and pre-handler remain the same owner.
 	text, free := alloc.CString16High("entry")
 	defer free()
@@ -216,7 +217,7 @@ func TestGame3WidgetsNativeConstructorAndExistingDelegates(t *testing.T) {
 		t.Fatal("native list data was not updated")
 	}
 	list.SetPos(image.Pt(5, 9))
-	if game3WidgetListDrawWithoutRenderer(list) != 1 {
+	if cfixture.Game3WidgetListDrawWithoutRenderer(list.C(), list.DrawData().C()) != 1 {
 		t.Fatal("public draw bridge")
 	}
 }
@@ -269,4 +270,16 @@ func TestGame3WidgetsNativeSliderCleanup(t *testing.T) {
 			})
 		}
 	}
+}
+
+func game3WidgetCreateSlider(parent *gui.Window, draw *gui.WindowData, opts *game3SliderData) *gui.Window {
+	return AsWindowP(cfixture.Game3WidgetCreateSlider(parent.C(), draw.C(), unsafe.Pointer(opts)))
+}
+
+func game3WidgetRegistryCheck() (uintptr, bool) {
+	return cfixture.Game3WidgetRegistryCheck(func(p unsafe.Pointer) func() {
+		old := game3NearbyServers
+		*(*unsafe.Pointer)(unsafe.Pointer(&game3NearbyServers[0])) = p
+		return func() { game3NearbyServers = old }
+	})
 }

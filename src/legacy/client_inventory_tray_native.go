@@ -46,7 +46,7 @@ func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_dat
 		}
 		origin := [2]C.uint32_t{C.uint32_t(x), C.uint32_t(y)}
 		if C.dword_5d4594_1049864 == 5 {
-			C.sub_4627F0(&origin[0])
+			sub_4627F0(&origin[0])
 			nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_IDENTIFY_BASE], int32(x), int32(y))
 		} else {
 			switch memmap.Uint8(0x5D4594, 1049870) {

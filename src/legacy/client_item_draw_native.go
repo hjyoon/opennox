@@ -34,7 +34,7 @@ func nox_thing_armor_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
 //export nox_thing_armor_animate_draw
 func nox_thing_armor_animate_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
 	sub_4B96F0(drawable)
-	return C.nox_thing_animate_draw((*C.uint32_t)(unsafe.Pointer(viewport)), drawable)
+	return nox_thing_animate_draw((*C.uint32_t)(unsafe.Pointer(viewport)), drawable)
 }
 
 //export nox_thing_flag_draw

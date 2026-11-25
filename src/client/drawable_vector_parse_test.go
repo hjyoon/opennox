@@ -75,6 +75,52 @@ func TestParseAnimStateDrawDataRejectsMissingState(t *testing.T) {
 	}
 }
 
+func TestParseAnimStateDrawDataReplacesFrameOwner(t *testing.T) {
+	var program []byte
+	for _, delay := range []byte{3, 7} {
+		program = appendAnimationU32(program, 0x53544154)
+		program = appendAnimationU32(program, 2)
+		program = append(program, 0, 0, 1, delay, 4, 'L', 'o', 'o', 'p')
+		program = appendAnimationU32(program, 42)
+	}
+
+	for _, tc := range []struct {
+		name     string
+		complete bool
+	}{
+		{"keep replacement", true},
+		{"release replacement on error", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			input := program
+			if tc.complete {
+				input = appendAnimationU32(input, 0x454E4420)
+			}
+			var freed [2]int
+			allocated := 0
+			allocate := func(count int) ([]noxrender.ImageHandle, func()) {
+				owner := allocated
+				allocated++
+				return make([]noxrender.ImageHandle, count), func() { freed[owner]++ }
+			}
+			var data AnimationStateDrawData
+			err := ParseAnimStateDrawDataWithAllocator(&data, newAnimationMemFile(t, input),
+				func(int, byte, string) noxrender.ImageHandle { return nil }, allocate)
+			if allocated != 2 || freed[0] != 1 {
+				t.Fatalf("allocations = %d, releases = %v", allocated, freed)
+			}
+			replacement := data.Anim[0]
+			if tc.complete {
+				if err != nil || freed[1] != 0 || replacement.Val42 != 7 || replacement.Frames[0] == nil {
+					t.Fatalf("replacement = %+v, releases = %v, error = %v", replacement, freed, err)
+				}
+			} else if err == nil || freed[1] != 1 || replacement.Frames[0] != nil {
+				t.Fatalf("failed replacement = %+v, releases = %v, error = %v", replacement, freed, err)
+			}
+		})
+	}
+}
+
 func TestParseAnimStateDrawDataLoadsSingleFrameSequence(t *testing.T) {
 	var data []byte
 	data = appendAnimationU32(data, 0x53544154)

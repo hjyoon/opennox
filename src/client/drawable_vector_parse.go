@@ -13,22 +13,35 @@ import (
 // single-sequence frame loader. The binary input remains the original PE32
 // format, while dd uses the target architecture's native pointer width.
 func ParseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle) error {
-	return parseAnimStateDrawData(dd, f, imageRef, false)
+	return ParseAnimStateDrawDataWithAllocator(dd, f, imageRef, func(count int) ([]noxrender.ImageHandle, func()) {
+		return alloc.Make([]noxrender.ImageHandle{}, count)
+	})
 }
 
 // ParseAnimStateDrawDataHigh uses the same binary parser and failure cleanup
 // while requesting high foreign frame arrays for an explicit native owner.
 func ParseAnimStateDrawDataHigh(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle) error {
-	return parseAnimStateDrawData(dd, f, imageRef, true)
+	return ParseAnimStateDrawDataWithAllocator(dd, f, imageRef, func(count int) ([]noxrender.ImageHandle, func()) {
+		return alloc.MakeHigh([]noxrender.ImageHandle{}, count)
+	})
 }
 
-func parseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imageRef func(id int, typ byte, name string) noxrender.ImageHandle, high bool) (err error) {
+// ParseAnimStateDrawDataWithAllocator lets the C ABI supply its current
+// allocation policy while using the same layout, parser and cleanup.
+func ParseAnimStateDrawDataWithAllocator(
+	dd *AnimationStateDrawData, f *binfile.MemFile,
+	imageRef func(id int, typ byte, name string) noxrender.ImageHandle,
+	allocate func(count int) ([]noxrender.ImageHandle, func()),
+) (err error) {
 	dd.Size = uint32(unsafe.Sizeof(*dd))
-	var frameAllocs []func()
+	var frameAllocs [3]func()
 	defer func() {
 		if err != nil {
-			for i := len(frameAllocs) - 1; i >= 0; i-- {
-				frameAllocs[i]()
+			for i, free := range frameAllocs {
+				if free != nil {
+					free()
+					dd.Anim[i].Frames[0] = nil
+				}
 			}
 		}
 	}()
@@ -64,6 +77,11 @@ func parseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imag
 		}
 		ani.Kind = ParseAnimKind(kind)
 
+		if free := frameAllocs[ind]; free != nil {
+			free()
+			frameAllocs[ind] = nil
+			ani.Frames[0] = nil
+		}
 		cnt := int(ani.Cnt40)
 		if cnt == 0 {
 			continue
@@ -71,14 +89,11 @@ func parseAnimStateDrawData(dd *AnimationStateDrawData, f *binfile.MemFile, imag
 		if imageRef == nil {
 			return fmt.Errorf("animate-state image resolver is nil")
 		}
-		var frames []noxrender.ImageHandle
-		var free func()
-		if high {
-			frames, free = alloc.MakeHigh([]noxrender.ImageHandle{}, cnt)
-		} else {
-			frames, free = alloc.Make([]noxrender.ImageHandle{}, cnt)
+		frames, free := allocate(cnt)
+		frameAllocs[ind] = free
+		if len(frames) != cnt {
+			return fmt.Errorf("cannot allocate %d animate-state frames", cnt)
 		}
-		frameAllocs = append(frameAllocs, free)
 		ani.Frames[0] = &frames[0]
 		for i := range frames {
 			id := f.ReadI32()

@@ -160,7 +160,7 @@ import (
 )
 
 func Nox_xxx_clientDrawAll_436100_draw_A() {
-	C.nox_xxx_clientDrawAll_436100_draw_A()
+	nox_xxx_clientDrawAll_436100_draw_A()
 }
 
 func Nox_xxx_drawMinimapAndLines_4738E0() {
@@ -168,11 +168,11 @@ func Nox_xxx_drawMinimapAndLines_4738E0() {
 }
 
 func Nox_xxx_clientDrawAll_436100_draw_B() {
-	C.nox_xxx_clientDrawAll_436100_draw_B()
+	nox_xxx_clientDrawAll_436100_draw_B()
 }
 
 func Sub_436F50() {
-	C.sub_436F50()
+	sub_436F50()
 }
 
 func Sub_437100() {

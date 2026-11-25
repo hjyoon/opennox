@@ -8,11 +8,11 @@ import (
 	"testing"
 )
 
-// Execute the complete production drawer with native layouts and the real
+// Execute the retained C drawer with native layouts and the real
 // UTF-16 formatter. The frozen PE32 table deliberately retains the exact
 // adjacent addresses from the reported Linux/amd64 crash.
 func TestPlayerInfoDraw436F50NativePointers(t *testing.T) {
-	source, err := os.ReadFile("client__system__client.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/client__system__client.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

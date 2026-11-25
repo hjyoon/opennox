@@ -307,7 +307,7 @@ func Nox_xxx_updateUnitBuffs_4FF620(a1 *server.Object) {
 	unitBuffUpdateLegacy4FF620(a1)
 }
 func Nox_xxx_reconAttempt_41E390() {
-	C.nox_xxx_reconAttempt_41E390()
+	nox_xxx_reconAttempt_41E390()
 }
 func Sub_5096F0() {
 	C.sub_5096F0()
@@ -388,7 +388,7 @@ func Sub_4D7B40() {
 	questPlayerStateClear4D7B40()
 }
 func Sub_41E4B0(a1 int) {
-	C.sub_41E4B0(C.int(a1))
+	sub_41E4B0(C.int(a1))
 }
 func Sub_56F1C0() {
 	sub_56F1C0()

@@ -107,7 +107,7 @@ func Sub_41E470() {
 	C.sub_41E470()
 }
 func Nox_xxx_reconStart_41E400() {
-	C.nox_xxx_reconStart_41E400()
+	nox_xxx_reconStart_41E400()
 }
 func Sub_467C10() int {
 	return int(C.sub_467C10())

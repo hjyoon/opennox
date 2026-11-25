@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"image"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -377,7 +378,7 @@ type xwisInfoShort struct {
 func (v *xwisInfoShort) Equal(v2 *xwisInfoShort) bool {
 	return v.Name == v2.Name && v.Map == v2.Map &&
 		v.Port == v2.Port && v.Flags == v2.Flags &&
-		v.Access == v2.Access && len(v.Players) == len(v2.Players) &&
+		v.Access == v2.Access && slices.Equal(v.Players, v2.Players) &&
 		v.MaxPlayers == v2.MaxPlayers && v.Level == v2.Level &&
 		v.Res == v2.Res
 }
@@ -456,9 +457,10 @@ func gameAccessToXWIS(v lobby.GameAccess) xwis.Access {
 func (v xwisInfoShort) GameInfo() discover.GameInfo {
 	info := discover.GameInfo{
 		Game: lobby.Game{
-			Name: v.Name,
-			Port: v.Port,
-			Map:  v.Map,
+			Name:   v.Name,
+			Port:   v.Port,
+			Map:    v.Map,
+			Access: v.Access,
 			Res: lobby.Resolution{
 				Width:   v.Res.X,
 				Height:  v.Res.Y,

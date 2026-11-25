@@ -72,7 +72,7 @@ static void gui_geometry_capture_image_C(nox_video_bag_image_t*image,int x,int y
 #define nox_draw_setColorMultAndIntensityRGB_433CD0(a,b,c) ((void)0)
 #define nox_client_drawImageAt_47D2C0(image,x,y) gui_geometry_capture_image_C((image),(x),(y))
 #define nox_xxx_spriteLoadStaticRandomData_44C000(a,b) ((nox_static_random_draw_data_t*)0)
-#include "client__draw__doordraw.c"
+#include "testdata/retired-game-sources/client__draw__doordraw.c.txt"
 static gui_geometry_door_C volatile gui_geometry_door_callback_C=gui_geometry_bounded_door_draw_C;
 typedef struct gui_geometry_door_result_C{void*image;int x,y,calls,result;}gui_geometry_door_result_C;
 static void gui_geometry_door_seed_C(void*p,size_t placement,int frame,int metal){

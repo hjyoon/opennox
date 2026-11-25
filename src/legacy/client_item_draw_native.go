@@ -9,7 +9,6 @@ package legacy
 #include "client__draw__parse__parse.h"
 #include "client__draw__slavedraw.h"
 #include "client__draw__staticdraw.h"
-#include "client__draw__weapondraw.h"
 */
 import "C"
 
@@ -21,7 +20,7 @@ import (
 
 //export nox_thing_base_draw
 func nox_thing_base_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
-	C.nox_thing_weapon_draw(viewport, drawable)
+	nox_thing_weapon_draw(viewport, drawable)
 	return 1
 }
 
@@ -39,7 +38,7 @@ func nox_thing_armor_animate_draw(viewport *C.int, drawable *C.nox_drawable) C.i
 
 //export nox_thing_flag_draw
 func nox_thing_flag_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
-	C.nox_thing_weapon_animate_draw(viewport, drawable)
+	nox_thing_weapon_animate_draw(viewport, drawable)
 	if noxflags.HasGame(noxflags.GameModeChat) && drawable.flags30&0x1000000 != 0 {
 		view := (*C.nox_draw_viewport_t)(unsafe.Pointer(viewport))
 		x := int32(view.x1) + int32(drawable.pos.x) - int32(view.field_4)

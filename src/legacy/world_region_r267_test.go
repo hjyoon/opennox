@@ -68,17 +68,6 @@ func TestWorldRegion437860NativeRelocationR267(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1_2.c")
-	if err != nil {
-		t.Fatal(err)
-	}
-	const first, last, marker = "//----- (00437860)", "//----- (004379C0)", "// PRODUCTION_BODY"
-	if strings.Count(string(source), first) != 1 || strings.Count(string(source), last) != 1 || bytes.Count(program, []byte(marker)) != 1 {
-		t.Fatal("ambiguous complete world-region body")
-	}
-	_, body, _ := strings.Cut(string(source), first)
-	body, _, _ = strings.Cut(body, last)
-	program = bytes.Replace(program, []byte(marker), []byte("//"+body), 1)
 	var input bytes.Buffer
 	word := func(value uint32) {
 		if err := binary.Write(&input, binary.LittleEndian, value); err != nil {

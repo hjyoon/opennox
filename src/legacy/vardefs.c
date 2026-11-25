@@ -651,3 +651,14 @@ uint32_t nox_client_highResFloors_154952 = 1;
 void* nox_video_tileBuf_ptr_3798796 = 0;
 void* nox_video_tileBuf_end_3798844 = 0;
 uint32_t dword_5d4594_1193156 = 0;
+
+int nox_win_width = 0;
+int nox_win_height = 0;
+obj_5D4594_754088_t* ptr_5D4594_754088 = 0;
+int ptr_5D4594_754088_cnt = 0;
+obj_5D4594_754088_t* ptr_5D4594_754092 = 0;
+int ptr_5D4594_754092_cnt = 0;
+nox_screenParticle* nox_screenParticles_head = 0;
+nox_screenParticle* dword_5d4594_806052 = 0;
+nox_gui_server_ent_t* dword_5d4594_814624 = 0;
+void* dword_5d4594_805984 = 0;

@@ -63,7 +63,7 @@ func TestQuickbarDragOut45EF50NativeOriginal(t *testing.T) {
 	}
 	program := string(csource)
 	for _, part := range []struct{ file, signature, marker string }{
-		{"GAME1_2.c", "int nox_xxx_pointInRect_4281F0(int2* a1, int4* a2) {", "// PRODUCTION_RECTANGLE"},
+		{"testdata/retired-game-sources/GAME1_2.c.txt", "int nox_xxx_pointInRect_4281F0(int2* a1, int4* a2) {", "// PRODUCTION_RECTANGLE"},
 		{"testdata/retired-game-sources/GAME2.c.txt", "int nox_xxx_quickBarWnd_45EF50(nox_window* win, int event, unsigned int pos) {", "// PRODUCTION_EVENT"},
 	} {
 		body, err := os.ReadFile(part.file)

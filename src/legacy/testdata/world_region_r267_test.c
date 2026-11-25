@@ -15,7 +15,22 @@ static unsigned char* getMemAt(uintptr_t base, uintptr_t offset) {
 	return table + offset - 87528;
 }
 
-// PRODUCTION_BODY
+//----- (00437860) --------------------------------------------------------
+int sub_437860(int a1, int a2) {
+	int result;        // eax
+	unsigned char* v3; // ecx
+
+	result = 0;
+	v3 = getMemAt(0x587000, 87532);
+	while (a1 <= *((short*)v3 - 2) || a1 >= *(short*)v3 || a2 <= *((short*)v3 - 1) || a2 >= *((short*)v3 + 1)) {
+		v3 += 8;
+		++result;
+		if (v3 >= (unsigned char*)getMemAt(0x587000, 87564)) {
+			return 0;
+		}
+	}
+	return result;
+}
 
 static uint32_t word(void) {
 	unsigned char p[4];

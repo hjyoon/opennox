@@ -82,16 +82,16 @@ func TestLegacyWideIntegerMatchesRetainedC(t *testing.T) {
 		for _, withEnd := range []bool{true, false} {
 			got, want := cfixture.CompareWideInteger(text, base, withEnd)
 			if got != want {
-				t.Fatalf("base %d withEnd=%t input %q: got %+v, want %+v", base, withEnd, input, got, want)
+				t.Errorf("base %d withEnd=%t input %q: got %+v, want %+v", base, withEnd, input, got, want)
 			}
 			if base == 10 && int64(parseLegacyWideDecimal((*wchar2_t)(text))) != want.Value {
-				t.Fatalf("decimal prefix for %q disagreed with %+v", input, want)
+				t.Errorf("decimal prefix for %q disagreed with %+v", input, want)
 			}
 		}
 	}
 	inputs := []string{
 		"", "+", " - 1", " \t\n\v\f\r+17tail", "0", "08", "-0129!",
-		"0xff", "-0XfF!", "0x", "0x+3", "0b", "+0b011", "0B011!", "-0b2",
+		"0xff", "-0XfF!", "0x", "0x+3", " -0X", "\t+0Xz", "0x-1", "0b", "+0b011", "0B011!", "-0b2",
 		"Z.", "+xyz", "42\x00-1", "１２", "12９34", "\u00a012", "-3🙂4",
 	}
 	for base := 0; base <= 36; base++ {
@@ -132,10 +132,27 @@ func TestLegacyWideIntegerBinaryPrefixDialect(t *testing.T) {
 			{"0B2", 0, 1},
 		} {
 			words, free := alloc.CString16High(tc.text)
-			value, consumed, overflow := scanLegacyLong(words, base, true)
+			value, consumed, overflow := scanLegacyLong(words, base, legacyLongPrefixes{binary: true})
 			free()
 			if int64(value) != tc.value || consumed != tc.consumed || overflow {
 				t.Fatalf("base %d input %q: got %d at %d (overflow=%t), want %d at %d", base, tc.text, value, consumed, overflow, tc.value, tc.consumed)
+			}
+		}
+	}
+}
+
+func TestLegacyWideIntegerBareHexDialect(t *testing.T) {
+	words, free := alloc.CString16High(" -0Xz")
+	defer free()
+	for _, base := range []int{0, 16} {
+		for _, test := range []struct {
+			reject   bool
+			consumed uintptr
+		}{{false, 3}, {true, 0}} {
+			value, consumed, overflow := scanLegacyLong(words, base, legacyLongPrefixes{rejectBareHex: test.reject})
+			if value != 0 || consumed != test.consumed || overflow {
+				t.Fatalf("base %d bare prefix rejected=%t: got %d at %d (overflow=%t), want 0 at %d",
+					base, test.reject, value, consumed, overflow, test.consumed)
 			}
 		}
 	}

@@ -13,11 +13,14 @@ typedef const char nox_const_string_byte_t;
 struct nox_strtol_dialect {
 	int auto_binary;
 	int base2_binary;
+	int auto_reject_bare_hex;
+	int base16_reject_bare_hex;
 	int missing_digits_errno;
 };
 
 static struct nox_strtol_dialect nox_strtol_dialect(void) {
 	const char binary[] = "0b1";
+	const char bare_hex[] = "0x";
 	struct nox_strtol_dialect result;
 	char* end;
 	int saved = errno;
@@ -25,6 +28,10 @@ static struct nox_strtol_dialect nox_strtol_dialect(void) {
 	result.auto_binary = end == binary + 3;
 	strtol(binary, &end, 2);
 	result.base2_binary = end == binary + 3;
+	strtol(bare_hex, &end, 0);
+	result.auto_reject_bare_hex = end == bare_hex;
+	strtol(bare_hex, &end, 16);
+	result.base16_reject_bare_hex = end == bare_hex;
 	errno = 0;
 	strtol("!", &end, 10);
 	result.missing_digits_errno = errno;
@@ -74,7 +81,7 @@ func parseLegacyWideDecimal(text *wchar2_t) C.long {
 // scanLegacyLongDecimal reads an ASCII decimal prefix using the target's
 // signed C long range. It returns the number of code units consumed.
 func scanLegacyLongDecimal[T formatCodeUnit](text *T) (C.long, uintptr) {
-	value, consumed, _ := scanLegacyLong(text, 10, false)
+	value, consumed, _ := scanLegacyLong(text, 10, legacyLongPrefixes{})
 	return value, consumed
 }
 
@@ -89,7 +96,11 @@ func legacyLongDigit[T formatCodeUnit](ch T) uint64 {
 	return 36
 }
 
-func scanLegacyLong[T formatCodeUnit](text *T, base int, binaryPrefix bool) (C.long, uintptr, bool) {
+type legacyLongPrefixes struct {
+	binary, rejectBareHex bool
+}
+
+func scanLegacyLong[T formatCodeUnit](text *T, base int, prefixes legacyLongPrefixes) (C.long, uintptr, bool) {
 	unitAt := func(index uintptr) T {
 		return *(*T)(unsafe.Add(unsafe.Pointer(text), index*unsafe.Sizeof(*text)))
 	}
@@ -105,12 +116,15 @@ func scanLegacyLong[T formatCodeUnit](text *T, base int, binaryPrefix bool) (C.l
 		ch = unitAt(offset)
 	}
 	if ch == '0' {
-		if (base == 0 || base == 16) &&
-			unitAt(offset+1)|('a'-'A') == 'x' && legacyLongDigit(unitAt(offset+2)) < 16 {
-			base, offset = 16, offset+2
+		prefix := unitAt(offset+1) | ('a' - 'A')
+		if (base == 0 || base == 16) && prefix == 'x' {
+			if legacyLongDigit(unitAt(offset+2)) < 16 {
+				base, offset = 16, offset+2
+			} else if prefixes.rejectBareHex {
+				return 0, 0, false
+			}
 		}
-		if binaryPrefix && (base == 0 || base == 2) &&
-			unitAt(offset+1)|('a'-'A') == 'b' && legacyLongDigit(unitAt(offset+2)) < 2 {
+		if prefixes.binary && (base == 0 || base == 2) && prefix == 'b' && legacyLongDigit(unitAt(offset+2)) < 2 {
 			base, offset = 2, offset+2
 		}
 		if base == 0 {
@@ -360,10 +374,14 @@ func nox_wcstol(text *C.nox_const_string_unit_t, end **C.wchar2_t, base C.int) C
 	if base != 0 && (base < 2 || base > 36) {
 		C.nox_strtol_invalid_base(base)
 	} else {
-		binaryPrefix := base == 0 && legacyLongDialect.auto_binary != 0 ||
-			base == 2 && legacyLongDialect.base2_binary != 0
+		prefixes := legacyLongPrefixes{
+			binary: base == 0 && legacyLongDialect.auto_binary != 0 ||
+				base == 2 && legacyLongDialect.base2_binary != 0,
+			rejectBareHex: base == 0 && legacyLongDialect.auto_reject_bare_hex != 0 ||
+				base == 16 && legacyLongDialect.base16_reject_bare_hex != 0,
+		}
 		var overflow bool
-		value, consumed, overflow = scanLegacyLong((*uint16)(unsafe.Pointer(text)), int(base), binaryPrefix)
+		value, consumed, overflow = scanLegacyLong((*uint16)(unsafe.Pointer(text)), int(base), prefixes)
 		if overflow {
 			C.nox_strtol_set_errno(C.ERANGE)
 		} else if consumed == 0 && legacyLongDialect.missing_digits_errno != 0 {

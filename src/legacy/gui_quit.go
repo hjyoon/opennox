@@ -51,7 +51,7 @@ func Nox_xxx_guiServerOptionsHide_4597E0(v int) {
 }
 
 func Sub_445C40() {
-	C.sub_445C40()
+	sub_445C40()
 }
 
 func quitMenuCanAutoSave445830() bool {

@@ -108,7 +108,7 @@ func nox_xxx_consoleEsc_49B7A0() {
 		return
 	}
 	if nox_xxx_game_4DCCB0() != 0 {
-		C.sub_445C40()
+		sub_445C40()
 	} else {
 		nox_xxx_clientPlaySoundSpecial_452D80(231, 100)
 	}

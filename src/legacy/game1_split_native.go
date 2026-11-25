@@ -456,7 +456,7 @@ func sub_445770() C.int {
 }
 
 //export nox_xxx_quitDialogYes_445B20
-func nox_xxx_quitDialogYes_445B20() { C.nox_client_quit_4460C0(); C.sub_445C40() }
+func nox_xxx_quitDialogYes_445B20() { C.nox_client_quit_4460C0(); sub_445C40() }
 
 //export nox_xxx_quitDialogNo_445B30
 func nox_xxx_quitDialogNo_445B30() C.int {
@@ -469,7 +469,7 @@ func sub_445BA0() { C.sub_413A00(0) }
 //export sub_445C20
 func sub_445C20() {
 	if C.nox_xxx_wndGetFlags_46ADA0(C.nox_wnd_quitMenu_825760)&0x10 == 0 {
-		C.sub_445C40()
+		sub_445C40()
 	}
 }
 

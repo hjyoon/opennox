@@ -209,7 +209,7 @@ func sub_4AD9B0(skip C.int) C.int {
 	C.nox_window_set_hidden(C.dword_5d4594_1309820, 1)
 	C.nox_window_set_hidden(C.dword_5d4594_1309824, 1)
 	if skip == 0 {
-		C.sub_445C40()
+		sub_445C40()
 	}
 	return 1
 }
@@ -357,7 +357,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 			C.nox_draw_setCutSize_476700(100, 0)
 		case 341:
 			sub_4AD9B0(0)
-			C.sub_445C40()
+			sub_445C40()
 			C.sub_4C4260()
 		case 361:
 			if C.sub_453070() == 1 {

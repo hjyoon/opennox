@@ -13,6 +13,7 @@ obj_5D4594_2650668_t** ptr_5D4594_2650668 = 0;
 const int ptr_5D4594_2650668_cap = 128;
 
 nox_window* nox_win_unk5 = 0;
+nox_window* nox_wnd_quitMenu_825760 = 0;
 nox_window* dword_5d4594_1062452 = 0;
 nox_window* nox_inventory_window = 0;
 nox_window* nox_inventory_current_weapon_window = 0;

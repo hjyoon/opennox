@@ -169,24 +169,46 @@ func TestGame4WaypointFollowCFloatBoundaryAndLiveCursor(t *testing.T) {
 	xold, yold := *xp, *yp
 	t.Cleanup(func() { *xp, *yp = xold, yold })
 	*xp, *yp = 0.3125, -0.75
-	for _, d := range []types.Pointf{{9.999999, 0}, {10, 0}, {0, 10}, {6, 8}, {-6, -8}, {0.001, 9.999999}, {100000, 0}, {0, 0}} {
+	// Branch and force words observed from GAME.EXE 004F9ADA..004F9B07
+	// and 004F9B5F..004F9B87 with startup x87 control word 0x0e7f.
+	tests := []struct {
+		pos, target types.Pointf
+		steer       bool
+	}{
+		{target: types.Pointf{9.999999, 0}},
+		{target: types.Pointf{10, 0}, steer: true},
+		{target: types.Pointf{0, 10}, steer: true},
+		{target: types.Pointf{6, 8}, steer: true},
+		{target: types.Pointf{-6, -8}, steer: true},
+		{target: types.Pointf{0.001, 9.999999}},
+		{target: types.Pointf{100000, 0}, steer: true},
+		{},
+		{target: types.Pointf{8.07499885559082, 5.898677349090576}, steer: true},
+		{
+			pos:    types.Pointf{-0.035242218524217606, -0.34607747197151184},
+			target: types.Pointf{5.693376064300537, 7.850441932678223},
+		},
+	}
+	for _, tc := range tests {
 		u.CustomWaypointRead = 0
 		u.CustomWaypoints[0] = w
 		u.CustomWaypoints[1] = w
-		o.PosVec = types.Pointf{}
-		w.PosVec = d
+		o.PosVec = tc.pos
+		w.PosVec = tc.target
 		o.ForceVec = types.Pointf{X: 0.1, Y: -0.2}
 		o.SpeedCur = 1.7
-		fx, fy := o.ForceVec.X, o.ForceVec.Y
-		want := game4FollowFloatC(d.X, d.Y, o.SpeedCur, *xp, *yp, &fx, &fy)
-		got := game4WaypointC(o, 3, 0, 0)
-		if got != want {
-			t.Fatalf("threshold %+v=%d want%d", d, got, want)
+		wantForce := [2]uint32{0x3dcccccd, 0xbe4ccccd}
+		if tc.steer {
+			wantForce = [2]uint32{0x3f219999, 0xbfbccccd}
 		}
-		if got == 1 && (math.Float32bits(o.ForceVec.X) != math.Float32bits(fx) || math.Float32bits(o.ForceVec.Y) != math.Float32bits(fy) || o.Direction2 != 17) {
-			t.Fatalf("force %+v got%+v want%v/%v", d, o.ForceVec, fx, fy)
+		if got := game4WaypointC(o, 3, 0, 0); got != bool2int(tc.steer) {
+			t.Fatalf("steer from %+v to %+v = %d, want %t", tc.pos, tc.target, got, tc.steer)
 		}
-		if got == 0 && (u.CustomWaypoints[0] != w || u.CustomWaypoints[1] != nil) {
+		gotForce := [2]uint32{math.Float32bits(o.ForceVec.X), math.Float32bits(o.ForceVec.Y)}
+		if gotForce != wantForce || tc.steer && o.Direction2 != 17 {
+			t.Fatalf("force from %+v to %+v = %08x, want %08x, direction %d", tc.pos, tc.target, gotForce, wantForce, o.Direction2)
+		}
+		if !tc.steer && (u.CustomWaypoints[0] != w || u.CustomWaypoints[1] != nil) {
 			t.Fatal("callback cursor/cache ordering")
 		}
 	}

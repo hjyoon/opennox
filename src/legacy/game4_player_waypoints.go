@@ -99,16 +99,25 @@ func sub_4F9AB0(unit *C.nox_object_t) C.int {
 		return 0
 	}
 	r := game4WaypointServices()
-	d := types.Pointf{X: wp.PosVec.X - o.PosVec.X, Y: wp.PosVec.Y - o.PosVec.Y}
-	if float64(d.Y)*float64(d.Y)+float64(d.X*d.X) >= 100 {
+	// GAME.EXE stores both deltas for the direction lookup and retains the
+	// unrounded Y delta on the x87 stack for the first multiplication.
+	dx := addFloat64TowardZero(float64(wp.PosVec.X), -float64(o.PosVec.X))
+	dy := addFloat64TowardZero(float64(wp.PosVec.Y), -float64(o.PosVec.Y))
+	d := types.Pointf{X: storeFloat32TowardZero(dx), Y: storeFloat32TowardZero(dy)}
+	xSquared := float64(d.X) * float64(d.X)
+	ySquared := mulFloat64TowardZero(dy, float64(d.Y))
+	if addFloat64TowardZero(xSquared, ySquared) >= 100 {
 		o.Direction2 = server.DirFromVec(d)
 		if r.buffed(o) {
 			o.Direction2 = r.confused(o)
 		}
 		i := 8 * int(int16(o.Direction2))
-		o.ForceVec.X += memmap.Float32(0x587000, uintptr(194136+i)) * o.SpeedCur
-		fy := memmap.Float32(0x587000, uintptr(194140+i)) * o.SpeedCur
-		o.ForceVec.Y = float32(float64(o.ForceVec.Y) + float64(fy))
+		// Two binary32 inputs have an exact binary64 product. The original
+		// keeps this precision through the addition and stores toward zero.
+		fx := float64(memmap.Float32(0x587000, uintptr(194136+i))) * float64(o.SpeedCur)
+		o.ForceVec.X = storeFloat32TowardZero(addFloat64TowardZero(fx, float64(o.ForceVec.X)))
+		fy := float64(memmap.Float32(0x587000, uintptr(194140+i))) * float64(o.SpeedCur)
+		o.ForceVec.Y = storeFloat32TowardZero(addFloat64TowardZero(fy, float64(o.ForceVec.Y)))
 		return 1
 	}
 	r.delete(wp)

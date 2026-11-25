@@ -34,17 +34,6 @@ static int game4_player_damage_entry(nox_object_t* unit,nox_object_t* target,int
 static int game4_player_phoneme_entry(uint32_t code,int8_t phoneme) { return nox_xxx_spellGetPhoneme_4FE1C0(code,phoneme); }
 static int game4_player_animation_entry(int mask) {return sub_4FA280(mask);}
 
-// Current native-C floating expressions, separated from the Go implementation.
-static int game4_player_follow_float_reference(float dx,float dy,float speed,float cx,float cy,float* fx,float* fy) {
- double v4=dy, v6;
- if(v4*dy+dx*dx>=100.0) {
-  *fx += cx*speed;
-  v6=cy*speed;
-  *fy += v6;
-  return 1;
- }
- return 0;
-}
 */
 import "C"
 
@@ -78,7 +67,4 @@ func game4PhonemeC(code uint32, p int8) int32 {
 }
 func game4AnimationC(mask uint32) int32 {
 	return int32(C.game4_player_animation_entry(C.int(int32(mask))))
-}
-func game4FollowFloatC(dx, dy, speed, cx, cy float32, fx, fy *float32) int {
-	return int(C.game4_player_follow_float_reference(C.float(dx), C.float(dy), C.float(speed), C.float(cx), C.float(cy), (*C.float)(unsafe.Pointer(fx)), (*C.float)(unsafe.Pointer(fy))))
 }

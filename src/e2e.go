@@ -292,6 +292,7 @@ type e2eStep struct {
 type e2eScenario struct {
 	steps                 []e2eStep
 	done                  chan struct{}
+	screenReference       *e2eScreenReference
 	wizard1InitialUrchins map[*server.Object]struct{}
 	wizard1UrchinsBefore  int
 	wizard1UrchinHPBefore int
@@ -9348,6 +9349,17 @@ func (sc *e2eScenario) Screen(name string) {
 				e2eLog.Println(err)
 			}
 		}
+		if want := sc.screenReference.expectedFrame(name, noxServer.Strings()); want != "" {
+			if got := e2eScreenDigest(img); got != want {
+				if err := os.WriteFile(gotName, ibuf.Bytes(), 0644); err != nil {
+					panic(err)
+				}
+				e2eError(fmt.Errorf("screen %q pixel SHA-256 %s differs from reference %s (%s)", name, got, want, gotName))
+				return
+			}
+			e2eLog.Printf("SCREEN MATCH: %s", name)
+			return
+		}
 		if data, err := os.ReadFile(fname + ".png"); err == nil {
 			exp, err := png.Decode(bytes.NewReader(data))
 			if err != nil {
@@ -9389,7 +9401,8 @@ func (sc *e2eScenario) Screen(name string) {
 }
 
 type e2eFileYML struct {
-	Steps []e2eStepYML `yaml:"steps"`
+	ScreenReference *e2eScreenReference `yaml:"screen-reference,omitempty"`
+	Steps           []e2eStepYML        `yaml:"steps"`
 }
 
 type e2eStepYML struct {
@@ -9442,6 +9455,7 @@ func (sc *e2eScenario) Load(path string) {
 	if err != nil {
 		panic(err)
 	}
+	sc.screenReference = list.ScreenReference
 	for _, l := range list.Steps {
 		dt := time.Duration(l.Time)
 		if l.Dur != 0 {

@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"unsafe"
 
 	"github.com/opennox/libs/ifs"
 )
@@ -138,11 +139,11 @@ func mapgenRewriteAreaMapFile502ED0(target, source, directory string) (bool, err
 
 //export nox_mapgenRewriteAreaMap_502ED0
 func nox_mapgenRewriteAreaMap_502ED0(name, source, directory *C.char) C.int {
-	src, ok := mapgenBoundedCPath503140(source)
+	src, ok := mapgenBoundedCString(unsafe.Pointer(source))
 	if !ok {
 		return -1
 	}
-	dir, ok := mapgenBoundedCPath503140(directory)
+	dir, ok := mapgenBoundedCString(unsafe.Pointer(directory))
 	if !ok || len(dir)+len(mapgenBackupSuffix503140) >= mapgenPathBufferSize503140 {
 		return -1
 	}

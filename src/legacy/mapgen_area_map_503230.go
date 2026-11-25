@@ -2,19 +2,6 @@ package legacy
 
 /*
 #include <stdint.h>
-
-// A bounded C-string scan avoids reading past short C.CString allocations.
-static int nox_mapgen_name_length_503230(const char* p) {
-	if (!p) {
-		return -1;
-	}
-	for (int i = 0; i < 0x800; ++i) {
-		if (!p[i]) {
-			return i;
-		}
-	}
-	return -1;
-}
 */
 import "C"
 
@@ -27,6 +14,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"unsafe"
 
 	"github.com/opennox/libs/ifs"
 )
@@ -130,11 +118,11 @@ func mapgenRenameAreaMapFile503230(oldName, newName, source, directory string) e
 
 //export nox_mapgenRenameAreaMap_503230
 func nox_mapgenRenameAreaMap_503230(oldName, newName, source, directory *C.char) C.int {
-	src, ok := mapgenBoundedCPath503140(source)
+	src, ok := mapgenBoundedCString(unsafe.Pointer(source))
 	if !ok {
 		return 0
 	}
-	dir, ok := mapgenBoundedCPath503140(directory)
+	dir, ok := mapgenBoundedCString(unsafe.Pointer(directory))
 	if !ok || len(dir)+len(mapgenBackupSuffix503140) >= mapgenPathBufferSize503140 {
 		return 0
 	}
@@ -145,12 +133,11 @@ func nox_mapgenRenameAreaMap_503230(oldName, newName, source, directory *C.char)
 		}
 		return 0
 	}
-	oldLength := int(C.nox_mapgen_name_length_503230(oldName))
-	newLength := int(C.nox_mapgen_name_length_503230(newName))
-	if oldLength < 0 || newLength < 0 {
+	old, oldOK := mapgenBoundedCString(unsafe.Pointer(oldName))
+	new, newOK := mapgenBoundedCString(unsafe.Pointer(newName))
+	if !oldOK || !newOK {
 		return rollback(fmt.Errorf("unterminated AreaMap rename argument"))
 	}
-	old, new := C.GoStringN(oldName, C.int(oldLength)), C.GoStringN(newName, C.int(newLength))
 	if err := mapgenRenameAreaMapFile503230(old, new, src, dir); err != nil {
 		return rollback(err)
 	}

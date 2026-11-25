@@ -7,8 +7,8 @@ import "C"
 
 import (
 	"errors"
-	"strings"
 	"syscall"
+	"unsafe"
 
 	"github.com/opennox/libs/ifs"
 )
@@ -27,25 +27,25 @@ func mapgenPrepareAreaMapWithFS503140(source, directory string, remove func(stri
 	return rename(source, backup) == nil
 }
 
-func mapgenBoundedCPath503140(p *C.char) (string, bool) {
+func mapgenBoundedCString(p unsafe.Pointer) (string, bool) {
 	if p == nil {
 		return "", false
 	}
-	raw := C.GoStringN(p, mapgenPathBufferSize503140)
-	i := strings.IndexByte(raw, 0)
-	if i < 0 {
-		return "", false
+	for offset := range mapgenPathBufferSize503140 {
+		if *(*byte)(unsafe.Add(p, offset)) == 0 {
+			return string(unsafe.Slice((*byte)(p), offset)), true
+		}
 	}
-	return raw[:i], true
+	return "", false
 }
 
 //export nox_mapgenPrepareAreaMap_503140
 func nox_mapgenPrepareAreaMap_503140(source, directory *C.char) C.int {
-	src, ok := mapgenBoundedCPath503140(source)
+	src, ok := mapgenBoundedCString(unsafe.Pointer(source))
 	if !ok {
 		return 0
 	}
-	dir, ok := mapgenBoundedCPath503140(directory)
+	dir, ok := mapgenBoundedCString(unsafe.Pointer(directory))
 	if !ok {
 		return 0
 	}

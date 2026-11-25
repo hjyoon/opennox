@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include <string.h>
 #include "GAME3_1.h"
 */
 import "C"
@@ -18,11 +17,11 @@ func sub_4B9470(material **C.nox_flag_const_char_t) C.int {
 		return 0
 	}
 	for offset := uintptr(177488); ; offset += 8 {
-		name := (*C.char)(*memmap.PtrPtr(0x587000, offset))
+		name := *memmap.PtrPtr(0x587000, offset)
 		if name == nil {
 			return 0
 		}
-		if C.strcmp((*C.char)(unsafe.Pointer(*material)), name) == 0 {
+		if equalCStrings(unsafe.Pointer(*material), name) {
 			return C.int(memmap.Int32(0x587000, offset+4))
 		}
 	}

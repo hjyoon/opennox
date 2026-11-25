@@ -114,6 +114,19 @@ func GoStringP(s unsafe.Pointer) string {
 	return GoString((*C.char)(s))
 }
 
+func equalCStrings(first, second unsafe.Pointer) bool {
+	for offset := uintptr(0); ; offset++ {
+		a := *(*byte)(unsafe.Add(first, offset))
+		b := *(*byte)(unsafe.Add(second, offset))
+		if a != b {
+			return false
+		}
+		if a == 0 {
+			return true
+		}
+	}
+}
+
 func GoStringN(s *C.char, n int) string {
 	return GoStringNP(unsafe.Pointer(s), n)
 }

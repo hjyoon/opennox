@@ -3,7 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
 #include "GAME4.h"
 #include "GAME4_1.h"
 #include "GAME4_3.h"
@@ -88,8 +87,9 @@ func nox_xxx_tileInit_504150(x, y C.int) C.int {
 	if *transparent == -1 && floorTileStorage.count > 0 {
 		// The current C initializes v2 to zero, not -1. An absent
 		// TransparentFloor deliberately leaves the cache -1 and continues.
+		name := unsafe.Pointer(internCStr("TransparentFloor"))
 		for i := uint32(0); i < uint32(floorTileStorage.count); i++ {
-			if C.strcmp((*C.char)(unsafe.Pointer(&floorTileStorage.definitions[i].name[0])), game4TilesTransparentName()) == 0 {
+			if equalCStrings(unsafe.Pointer(&floorTileStorage.definitions[i].name[0]), name) {
 				*transparent = int32(i)
 				break
 			}
@@ -123,4 +123,3 @@ func nox_xxx_tileInit_504150(x, y C.int) C.int {
 
 // C-owned interned storage is stable across collections and is not a Go
 // string pointer retained by a C caller. strcmp remains the original service.
-func game4TilesTransparentName() *C.char { return internCStr("TransparentFloor") }

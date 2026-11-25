@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"math/big"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -27,23 +28,51 @@ func e2ePushMode(level int, direction string) (fromNPC, ok bool) {
 	}
 }
 
-// Predict the radial attenuation and the stock ApplyForce conversions without
-// calling either production service. The map radius uses binary32 squared
-// distance; ApplyForce uses the separate double-precision vector length.
+func e2ePushFloat32(value *big.Float) float32 {
+	rounded, accuracy := value.Float32()
+	if accuracy == big.Above && value.Sign() > 0 || accuracy == big.Below && value.Sign() < 0 {
+		return math.Nextafter32(rounded, 0)
+	}
+	return rounded
+}
+
+// Replay the arithmetic at GAME.EXE 52C000, 52E040 and 52E0E0 with x87
+// precision 53 and rounding toward zero. Model each binary32 store
+// independently of the engine's arithmetic helpers.
 func e2ePushExpectedForce(origin, position types.Pointf, mass float32, coefficient float64, level int32) types.Pointf {
-	delta := position.Sub(origin)
-	distance := float32(math.Sqrt(float64(delta.X*delta.X+delta.Y*delta.Y)) + 0.1)
-	if distance > 600 {
+	x87 := func(value float64) *big.Float {
+		return new(big.Float).SetPrec(53).SetMode(big.ToZero).SetFloat64(value)
+	}
+	spill := func(value *big.Float) *big.Float {
+		return x87(float64(e2ePushFloat32(value)))
+	}
+	dx := spill(x87(0).Sub(x87(float64(position.X)), x87(float64(origin.X))))
+	dyWide := x87(0).Sub(x87(float64(position.Y)), x87(float64(origin.Y)))
+	dy := spill(dyWide)
+	squared := x87(0).Mul(dyWide, dy)
+	squared.Add(squared, x87(0).Mul(dx, dx))
+	distance := x87(0).Sqrt(squared)
+	distance.Add(distance, x87(float64(float32(0.1))))
+	if distance.Cmp(x87(600)) > 0 {
 		return types.Pointf{}
 	}
-	force := float32(coefficient * float64(level))
-	if distance > 10 {
-		force *= 1 - (distance-10)/(600-10)
+	distance = spill(distance)
+
+	force := spill(x87(0).Mul(x87(coefficient), x87(float64(level))))
+	scaled := spill(x87(0).Mul(force, x87(10)))
+	if distance.Cmp(x87(10)) > 0 {
+		fraction := x87(0).Sub(distance, x87(10))
+		fraction.Quo(fraction, x87(600-10))
+		ratio := x87(0).Sub(x87(1), fraction)
+		scaled = spill(x87(0).Mul(ratio, scaled))
 	}
-	strength := 10 * force / mass
-	length := float32(math.Hypot(float64(delta.X), float64(delta.Y)) + 0.1)
-	return types.Ptf(float32(float64(delta.X)*float64(strength)/float64(length)),
-		float32(float64(delta.Y)*float64(strength)/float64(length)))
+	factor := spill(x87(0).Quo(scaled, x87(float64(mass))))
+	component := func(delta *big.Float) float32 {
+		result := x87(0).Mul(factor, delta)
+		result.Quo(result, distance)
+		return e2ePushFloat32(result.Add(result, x87(0)))
+	}
+	return types.Ptf(component(dx), component(dy))
 }
 
 type e2ePushFixture struct {

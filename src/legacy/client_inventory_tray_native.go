@@ -54,7 +54,7 @@ func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_dat
 				sub_4BF7E0(&origin[0])
 				nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_BASE], int32(x), int32(y))
 			case 1:
-				C.nox_client_makePlayerStatsDlg_463880((*C.int)(unsafe.Pointer(&origin[0])))
+				nox_client_makePlayerStatsDlg_463880((*C.int)(unsafe.Pointer(&origin[0])))
 				nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_IDENTIFY_BASE], int32(x), int32(y))
 			}
 			nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))

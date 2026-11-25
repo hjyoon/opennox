@@ -511,14 +511,6 @@ void nox_client_gui_serverInfoBlock_4394D0(const nox_gui_server_ent_t* server) {
 	buf[sizeof(buf)-1] = 0;
 	nox_swprintf(wbuf, L"%S", buf);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, wbuf, -1);
-	if (0) {
-		nox_window_call_field_94(dword_5d4594_815004, 16397, getMemAt(0x587000, 89332), -1);
-		wchar2_t* hostTitle = nox_strman_loadString_40F1D0("GameHost", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 766);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, hostTitle, 14);
-		sub_439CC0(*(uint32_t*)(a1 + 32), buf);
-		nox_swprintf(wbuf, L"%S", buf);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, wbuf, -1);
-	}
 	nox_window_call_field_94(dword_5d4594_815004, 16397, getMemAt(0x587000, 89396), -1);
 	wchar2_t* pingTitle = nox_strman_loadString_40F1D0("Ping", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 774);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, pingTitle, 14);

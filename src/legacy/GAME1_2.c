@@ -2792,49 +2792,7 @@ int nox_xxx_clientIsObserver_4372E0() {
 }
 #endif
 
-//----- (00438E30) --------------------------------------------------------
-int sub_438E30(uint32_t* a1, int a2) {
-	uint32_t* v1; // esi
-	int v2;       // edx
-	int v3;       // esi
-	short** v4;   // edi
-	int v6;       // [esp+4h] [ebp-4h]
-
-	v1 = a1;
-	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&v6, &a1);
-	v2 = v1[25];
-	if (v1[9] & 6) {
-		nox_client_drawImageAt_47D2C0(v1[19], v6 + v1[24], (int)a1 + v2);
-	} else {
-		nox_client_drawImageAt_47D2C0(v1[15], v6 + v1[24], (int)a1 + v2);
-	}
-	v3 = v1[100];
-	if (!v3) {
-		return 1;
-	}
-	do {
-		if (!(*(uint8_t*)(v3 + 4) & 0x10) && *(uint32_t*)(v3 + 44) == 2048) {
-			v4 = *(short***)(v3 + 32);
-			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-			nox_xxx_drawStringStyle_43F7B0(*(uint32_t*)(v3 + 236), (wchar2_t*)(*v4), v6 + *(uint32_t*)(v3 + 16), (int)a1 + *(uint32_t*)(v3 + 20));
-		}
-		v3 = *(uint32_t*)(v3 + 388);
-	} while (v3);
-	return 1;
-}
-
 // 439385: variable 'v2' is possibly undefined
-
-//----- (00439CC0) --------------------------------------------------------
-char* sub_439CC0(int a1, char* a2) {
-	size_t v2;    // esi
-	char* result; // eax
-
-	v2 = (size_t)&strstr((const char*)(a1 + 52), "'s_game")[-52 - a1];
-	result = strncpy(a2, (const char*)(a1 + 52), v2);
-	a2[v2] = 0;
-	return result;
-}
 
 // 43A3CE: variable 'v22' is possibly undefined
 

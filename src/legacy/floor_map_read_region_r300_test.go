@@ -21,7 +21,7 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-// Compile the complete production functions against controlled services. These
+// Compile the original functions against controlled services. These
 // cases verify signed row translation, fixed wire widths and native list links;
 // the companion CGo test below uses the real cryptfile service.
 func TestFloorMapNativeRegionDataR300(t *testing.T) {
@@ -34,9 +34,9 @@ func TestFloorMapNativeRegionDataR300(t *testing.T) {
 	}
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
-		{"GAME1_1.c", "nox_server_mapRWFloorMap_422230"},
-		{"GAME1_1.c", "nox_xxx_tileReadOne_422A40"},
-		{"GAME1_1.c", "nox_xxx_tile_422C10"},
+		{"testdata/floor_map_v4_original_422230.c", "nox_server_mapRWFloorMap_422230"},
+		{"testdata/floor_tile_fields_original_422a40.c", "nox_xxx_tileReadOne_422A40"},
+		{"testdata/floor_map_v3_original_422c10.c", "nox_xxx_tile_422C10"},
 		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		data, err := os.ReadFile(part.file)
@@ -45,11 +45,11 @@ func TestFloorMapNativeRegionDataR300(t *testing.T) {
 		}
 		starts := regexp.MustCompile(`(?m)^(?:int|unsigned char) `+part.symbol+`\([^;\n]*\) \{`).FindAllIndex(data, -1)
 		if len(starts) != 1 {
-			t.Fatalf("nonunique production function %s", part.symbol)
+			t.Fatalf("nonunique reference function %s", part.symbol)
 		}
 		body, _, ok := strings.Cut(string(data[starts[0][0]:]), "\n}\n")
 		if !ok {
-			t.Fatalf("missing production end for %s", part.symbol)
+			t.Fatalf("missing reference function end for %s", part.symbol)
 		}
 		bodies.WriteString(body + "\n}\n")
 	}
@@ -64,7 +64,7 @@ func TestFloorMapNativeRegionDataR300(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual FloorMap functions: %v\n%s", err, out)
+		t.Fatalf("compile reference FloorMap functions: %v\n%s", err, out)
 	}
 	for _, name := range []string{"v4-negative-row-delta-read", "v3-region-two-column-read", "v4-region-write-native-links"} {
 		t.Run(name, func(t *testing.T) {
@@ -77,7 +77,7 @@ func TestFloorMapNativeRegionDataR300(t *testing.T) {
 	}
 }
 
-// Exercise the actual Go wrapper and C FloorMap entry/delegate with a region
+// Exercise the Go FloorMap entry and both versions with a region
 // above 4GiB. Isolate C crashes so a truncated pointer fails this regression
 // without terminating the rest of the legacy test suite.
 func TestFloorMapReadNativeRegionR300(t *testing.T) {
@@ -116,7 +116,7 @@ func TestFloorMapReadNativeRegionR300(t *testing.T) {
 			cmd.WaitDelay = 2 * time.Second
 			output, err := cmd.CombinedOutput()
 			if err != nil || ctx.Err() != nil {
-				t.Fatalf("actual FloorMap CGo child: err=%v context=%v\n%s", err, ctx.Err(), output)
+				t.Fatalf("FloorMap native-region child: err=%v context=%v\n%s", err, ctx.Err(), output)
 			}
 			marker := fmt.Sprintf("R300_FLOOR_CGO_OK version=%d bytes=%d", version, 18+2*int(version-3))
 			if !bytes.Contains(output, []byte(marker)) {

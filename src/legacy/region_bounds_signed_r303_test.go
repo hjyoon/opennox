@@ -128,7 +128,7 @@ func TestFloorMapV3FlagByteR303(t *testing.T) {
 	}
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
-		{"GAME1_1.c", "nox_xxx_tile_422C10"},
+		{"testdata/floor_map_v3_original_422c10.c", "nox_xxx_tile_422C10"},
 		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		source, err := os.ReadFile(part.file)

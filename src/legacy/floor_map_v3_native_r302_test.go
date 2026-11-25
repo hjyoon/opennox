@@ -10,7 +10,7 @@ import (
 	"unsafe"
 )
 
-// Exercise the complete production v3 codec with nonempty native tile rows and
+// Exercise the original v3 codec with nonempty native tile rows and
 // lists. Controlled services make the byte stream and callback order observable.
 func TestFloorMapV3NativeDataR302(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
@@ -22,7 +22,7 @@ func TestFloorMapV3NativeDataR302(t *testing.T) {
 	}
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
-		{"GAME1_1.c", "nox_xxx_tile_422C10"},
+		{"testdata/floor_map_v3_original_422c10.c", "nox_xxx_tile_422C10"},
 		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		data, err := os.ReadFile(part.file)
@@ -31,11 +31,11 @@ func TestFloorMapV3NativeDataR302(t *testing.T) {
 		}
 		start := regexp.MustCompile(`(?m)^int `+part.symbol+`\([^;\n]*\) \{`).FindAllIndex(data, -1)
 		if len(start) != 1 {
-			t.Fatalf("nonunique production function %s", part.symbol)
+			t.Fatalf("nonunique reference function %s", part.symbol)
 		}
 		body, _, ok := strings.Cut(string(data[start[0][0]:]), "\n}\n")
 		if !ok {
-			t.Fatalf("missing production end for %s", part.symbol)
+			t.Fatalf("missing reference function end for %s", part.symbol)
 		}
 		bodies.WriteString(body + "\n}\n")
 	}
@@ -50,7 +50,7 @@ func TestFloorMapV3NativeDataR302(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual v3 FloorMap function: %v\n%s", err, out)
+		t.Fatalf("compile reference v3 FloorMap function: %v\n%s", err, out)
 	}
 	for _, name := range []string{"nil-region-write", "geometry-region-write", "nil-region-read", "region-read", "edge-write", "edge-read", "empty-write"} {
 		t.Run(name, func(t *testing.T) {

@@ -130,11 +130,8 @@ func Nox_server_mapRWMapInfo_42A6E0(cf *cryptfile.CryptFile, _ unsafe.Pointer) e
 func Nox_server_mapRWWallMap_429B20(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
 	return mapRWWallGrid(cf, (*[8]int32)(region))
 }
-func Nox_server_mapRWFloorMap_422230(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if C.nox_server_mapRWFloorMap_422230(a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWFloorMap_422230(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWFloorGrid(cf, (*[8]int32)(region))
 }
 func Nox_server_mapRWSecretWalls_4297C0(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
 	return mapRWTaggedWalls(cf, region, mapSecretWalls)

@@ -11,7 +11,7 @@ import (
 )
 
 // The original v4 bound searches compare the entire first BYTE to zero, while
-// the v3 whole-map input accepts that BYTE without masking. Compile both actual
+// the v3 whole-map input accepts that BYTE without masking. Compile both original
 // codecs together so the high flag state reaches the v4 writer through v3 I/O.
 // Original GAME.EXE: 0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a;
 // predicate sites 0x4222b5, 0x422305, 0x422333, 0x422370; containing candidate
@@ -26,9 +26,9 @@ func TestFloorMapV4WholeFlagBoundsR303(t *testing.T) {
 	}
 	var bodies strings.Builder
 	for _, part := range []struct{ file, symbol string }{
-		{"GAME1_1.c", "nox_server_mapRWFloorMap_422230"},
-		{"GAME1_1.c", "nox_xxx_tileReadOne_422A40"},
-		{"GAME1_1.c", "nox_xxx_tile_422C10"},
+		{"testdata/floor_map_v4_original_422230.c", "nox_server_mapRWFloorMap_422230"},
+		{"testdata/floor_tile_fields_original_422a40.c", "nox_xxx_tileReadOne_422A40"},
+		{"testdata/floor_map_v3_original_422c10.c", "nox_xxx_tile_422C10"},
 		{"testdata/region_bounds_signed_r303_test.c", "sub_428170"},
 	} {
 		data, err := os.ReadFile(part.file)
@@ -37,11 +37,11 @@ func TestFloorMapV4WholeFlagBoundsR303(t *testing.T) {
 		}
 		starts := regexp.MustCompile(`(?m)^(?:int|unsigned char) `+part.symbol+`\([^;\n]*\) \{`).FindAllIndex(data, -1)
 		if len(starts) != 1 {
-			t.Fatalf("nonunique production function %s", part.symbol)
+			t.Fatalf("nonunique reference function %s", part.symbol)
 		}
 		body, _, ok := strings.Cut(string(data[starts[0][0]:]), "\n}\n")
 		if !ok {
-			t.Fatalf("missing production end for %s", part.symbol)
+			t.Fatalf("missing reference function end for %s", part.symbol)
 		}
 		bodies.WriteString(body + "\n}\n")
 	}
@@ -55,7 +55,7 @@ func TestFloorMapV4WholeFlagBoundsR303(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual FloorMap input and writer: %v\n%s", err, out)
+		t.Fatalf("compile reference FloorMap input and writer: %v\n%s", err, out)
 	}
 	for _, name := range []string{"high-only-04", "high-only-80", "high-only-grid-edge", "high-and-layer-05", "high-and-two-layers-07", "layer-clear-high-only", "low-layer-control", "empty-control", "adjacent-byte-0100", "adjacent-byte-80000000"} {
 		t.Run(name, func(t *testing.T) {

@@ -637,7 +637,7 @@ func Sub_460D50() {
 	sub_460D50()
 }
 func Nox_xxx_guiServerOptionsGetGametypeName_4573C0(a1 noxflags.GameFlag) string {
-	return GoWString(C.nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(a1)))
+	return GoWString(nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(a1)))
 }
 func Sub_40A180(a1 noxflags.GameFlag) int {
 	return int(C.sub_40A180(C.short(a1)))

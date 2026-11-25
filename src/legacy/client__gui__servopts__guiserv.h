@@ -3,6 +3,11 @@
 
 #include "defs.h"
 
+void nox_gui_gamemode_load_457410(void);
+void sub_457A10(void);
+int sub_459650(wchar2_t* title);
+void nox_xxx_windowServerOptionsFillGametypeList_4596A0(void);
+
 wchar2_t* nox_xxx_guiServerOptionsGetGametypeName_4573C0(short mode);
 int nox_xxx_guiServerOptsLoad_457500();
 int nox_xxx_options_457AA0(int a1, uint8_t* a2);

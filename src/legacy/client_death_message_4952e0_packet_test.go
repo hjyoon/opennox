@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -91,9 +92,9 @@ func TestClientDeathMessage4952E0ActualPacketDispatcher(t *testing.T) {
 			oldConsole := GetConsole
 			GetConsole = func() *console.Console { return cn }
 			t.Cleanup(func() { GetConsole = oldConsole })
-			next, oldest := deathMessageRingIndexes495210()
-			t.Cleanup(func() { setDeathMessageRingIndexes495210(next, oldest) })
-			setDeathMessageRingIndexes495210(99, 0)
+			next, oldest := cfixture.DeathMessageRingIndexes495210()
+			t.Cleanup(func() { cfixture.SetDeathMessageRingIndexes495210(next, oldest) })
+			cfixture.SetDeathMessageRingIndexes495210(99, 0)
 			ring := memmap.PtrT[[600]uint32](0x5d4594, 1201428)
 			oldRing := *ring
 			t.Cleanup(func() { *ring = oldRing })
@@ -118,7 +119,7 @@ func TestClientDeathMessage4952E0ActualPacketDispatcher(t *testing.T) {
 			if *ring != wantRing || !bytes.Equal(packet, packetBefore) {
 				t.Fatal("packet or ring changed outside original death-event stores")
 			}
-			if next, oldest := deathMessageRingIndexes495210(); next != 0 || oldest != 1 {
+			if next, oldest := cfixture.DeathMessageRingIndexes495210(); next != 0 || oldest != 1 {
 				t.Fatalf("full ring did not wrap/advance oldest: %d/%d", next, oldest)
 			}
 			for i, p := range slots {

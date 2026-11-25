@@ -6,6 +6,8 @@ import (
 	"math"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestTransientRayRegistry49BDD0PreservesNativeAddresses(t *testing.T) {
@@ -51,31 +53,31 @@ func TestTransientRayRegistry49BDD0PreservesNativeAddresses(t *testing.T) {
 }
 
 func TestTransientRayPayload49BDD0UsesNativeDrawableUnion(t *testing.T) {
-	if !clientTransientRayPayloadUsesNativeUnion49BDD0() {
+	if !cfixture.ClientTransientRayPayloadUsesNativeUnion49BDD0() {
 		t.Fatal("ray payload used the PE32 byte offset instead of the native drawable union")
 	}
 }
 
 func TestCharmOrbPayload499490UsesNativeDrawableUnion(t *testing.T) {
-	if !clientOrbPayloadUsesNativeUnion499490() {
+	if !cfixture.ClientOrbPayloadUsesNativeUnion499490() {
 		t.Fatal("charm orb payload used the PE32 byte offset or corrupted the drawable links")
 	}
 }
 
 func TestManaBombOrbPayload499520UsesNativeDrawableUnion(t *testing.T) {
-	if !clientManaBombPayloadUsesNativeUnion499520() {
+	if !cfixture.ClientManaBombPayloadUsesNativeUnion499520() {
 		t.Fatal("mana bomb orb payload used the PE32 byte offset or corrupted the drawable links")
 	}
 }
 
 func TestBallisticFXPayload499610UsesNativeDrawableUnion(t *testing.T) {
-	if !clientBallisticFXPayloadUsesNativeUnion499610() {
+	if !cfixture.ClientBallisticFXPayloadUsesNativeUnion499610() {
 		t.Fatal("ballistic FX payload used the PE32 byte offset or corrupted the drawable links")
 	}
 }
 
 func TestFallingSparkPayload499950UsesNativeDrawableUnion(t *testing.T) {
-	if !clientFallingSparkPayloadUsesNativeUnion499950() {
+	if !cfixture.ClientFallingSparkPayloadUsesNativeUnion499950() {
 		t.Fatal("falling spark payload used the PE32 byte offset or corrupted the drawable links")
 	}
 }

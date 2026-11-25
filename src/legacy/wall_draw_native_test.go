@@ -11,11 +11,12 @@ import (
 
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func TestWallDrawUsesNativeImagePointers(t *testing.T) {
-	if !clientWallDrawImageArgumentNative473C10() {
+	if !cfixture.ClientWallDrawImageArgumentNative473C10() {
 		t.Fatal("wall edge draw image argument is not a native pointer")
 	}
 
@@ -25,7 +26,7 @@ func TestWallDrawUsesNativeImagePointers(t *testing.T) {
 	if unsafe.Sizeof(addr) == 8 && addr <= math.MaxUint32 {
 		t.Fatalf("wall image pointer = %p, want native address above 4 GiB", image)
 	}
-	if got := clientWallImageAddressRoundTrip473C10(addr); got != addr {
+	if got := cfixture.ClientWallImageAddressRoundTrip473C10(addr); got != addr {
 		t.Fatalf("wall image pointer round trip = %#x, want %#x", got, addr)
 	}
 	var def server.WallDef
@@ -43,7 +44,7 @@ func TestWallDrawUsesNativeViewportCoordinates(t *testing.T) {
 	}
 	wall := server.Wall{X5: 50, Y6: 70}
 
-	x, y := clientWallScreenPosition473C10(&vp, &wall)
+	x, y := cfixture.ClientWallScreenPosition473C10(vp.C(), wall.C())
 	if want := vp.Screen.Min.X + 23*int(wall.X5) - vp.World.Min.X; x != want {
 		t.Errorf("wall screen x = %d, want %d", x, want)
 	}

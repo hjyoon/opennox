@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -14,22 +14,22 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func scorePacketStamp48EA70(p *server.Player) uint32 {
+func ScorePacketStamp48EA70(p *server.Player) uint32 {
 	return uint32(C.score_packet_stamp_48ea70((*C.nox_playerInfo)(unsafe.Pointer(p))))
 }
 
-func setScorePacketStamp48EA70(p *server.Player, value uint32) {
+func SetScorePacketStamp48EA70(p *server.Player, value uint32) {
 	C.score_packet_set_stamp_48ea70((*C.nox_playerInfo)(unsafe.Pointer(p)), C.uint32_t(value))
 }
 
-func scorePacketStampOffset48EA70() int {
+func ScorePacketStampOffset48EA70() int {
 	return int(C.score_packet_stamp_offset_48ea70())
 }
 
-func scorePacketCenteredIndex48EA70() uint32 {
+func ScorePacketCenteredIndex48EA70() uint32 {
 	return uint32(C.dword_5d4594_825736)
 }
 
-func setScorePacketCenteredIndex48EA70(value uint32) {
+func SetScorePacketCenteredIndex48EA70(value uint32) {
 	C.dword_5d4594_825736 = C.uint32_t(value)
 }

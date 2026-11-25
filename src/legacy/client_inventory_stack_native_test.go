@@ -8,12 +8,13 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestClientInventoryCompactionPreservesStackOrderAndAlternatePointer(t *testing.T) {
-	grid, layout := clientSecondaryGridLayout198()
+	grid, layout := cfixture.ClientSecondaryGridLayout198()
 	original := slices.Clone(grid)
-	selected, previous := clientSecondaryGridGlobals198()
+	selected, previous := cfixture.ClientSecondaryGridGlobals198()
 
 	destination, freeDestination := alloc.NewHigh(client.Drawable{TypeIDVal: 7})
 	defer freeDestination()
@@ -22,7 +23,7 @@ func TestClientInventoryCompactionPreservesStackOrderAndAlternatePointer(t *test
 
 	defer func() {
 		copy(grid, original)
-		clientSecondaryGridRestore198(selected, previous)
+		cfixture.ClientSecondaryGridRestore198(selected, previous)
 	}()
 	clear(grid)
 
@@ -44,7 +45,7 @@ func TestClientInventoryCompactionPreservesStackOrderAndAlternatePointer(t *test
 	}
 	writeCode(reserved, 0, 999)
 	checkReserved := slices.Clone(reserved)
-	clientSecondaryGridPrepare198(42)
+	cfixture.ClientSecondaryGridPrepare198(42)
 
 	sub_461B50()
 
@@ -59,7 +60,7 @@ func TestClientInventoryCompactionPreservesStackOrderAndAlternatePointer(t *test
 			t.Fatalf("remaining code %d = %d", i, got)
 		}
 	}
-	if got, _ := clientSecondaryGridGlobals198(); got != uintptr(unsafe.Pointer(&gap[0])) {
+	if got, _ := cfixture.ClientSecondaryGridGlobals198(); got != uintptr(unsafe.Pointer(&gap[0])) {
 		t.Fatalf("alternate weapon points to %#x, want %p", got, &gap[0])
 	}
 	if !slices.Equal(reserved, checkReserved) {

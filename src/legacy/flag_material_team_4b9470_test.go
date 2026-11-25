@@ -10,6 +10,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestFlagMaterialTeam4B9470ReadsNativePointerSlotsAndPackedIDs(t *testing.T) {
@@ -26,26 +27,26 @@ func TestFlagMaterialTeam4B9470ReadsNativePointerSlotsAndPackedIDs(t *testing.T)
 			t.Fatalf("flag material %q pointers must be above 4 GiB: table=%p input=%p", name, namePtr, input)
 		}
 		want := int(memmap.Int32(0x587000, 177492+8*row))
-		if got := flagMaterialTeamCall4B9470(input); got != want {
+		if got := cfixture.FlagMaterialTeamCall4B9470(input); got != want {
 			free()
 			t.Fatalf("flag material %q team = %d, want %d", name, got, want)
 		}
-		if got := flagMaterialDrawableTeamCall4B94E0(input, 0x10000000); got != want {
+		if got := cfixture.FlagMaterialDrawableTeamCall4B94E0(input, 0x10000000); got != want {
 			free()
 			t.Fatalf("drawable material %q team = %d, want %d", name, got, want)
 		}
-		if got := flagMaterialDrawableTeamCall4B94E0(input, 0); got != 0 {
+		if got := cfixture.FlagMaterialDrawableTeamCall4B94E0(input, 0); got != 0 {
 			free()
 			t.Fatalf("non-flag drawable material %q team = %d, want 0", name, got)
 		}
 		free()
 	}
-	if got := flagMaterialTeamNilCall4B9470(); got != 0 {
+	if got := cfixture.FlagMaterialTeamNilCall4B9470(); got != 0 {
 		t.Fatalf("nil material result = %d, want 0", got)
 	}
 	for _, name := range []string{"not-a-flag-material", strings.ToLower(GoStringP(*memmap.PtrPtr(0x587000, 177488)))} {
 		input, free := alloc.CStringHigh(name)
-		got := flagMaterialTeamCall4B9470(input)
+		got := cfixture.FlagMaterialTeamCall4B9470(input)
 		free()
 		if got != 0 {
 			t.Fatalf("unknown/case-mismatched material %q team = %d, want 0", name, got)
@@ -63,15 +64,15 @@ func TestFlagMaterialTeam4B9470LiveSlotSentinelAndFullWidthID(t *testing.T) {
 	t.Cleanup(free)
 	t.Cleanup(func() { *first, *id = oldName, oldID })
 	*first, *id = unsafe.Pointer(input), 0x12345678
-	if got := flagMaterialTeamCall4B9470(input); got != int(*id) {
+	if got := cfixture.FlagMaterialTeamCall4B9470(input); got != int(*id) {
 		t.Fatalf("live native material team = %#x, want %#x", got, *id)
 	}
 	*id = -7
-	if got := flagMaterialTeamCall4B9470(input); got != -7 {
+	if got := cfixture.FlagMaterialTeamCall4B9470(input); got != -7 {
 		t.Fatalf("signed team result = %d, want -7", got)
 	}
 	*first = nil
-	if got := flagMaterialTeamCall4B9470(input); got != 0 {
+	if got := cfixture.FlagMaterialTeamCall4B9470(input); got != 0 {
 		t.Fatalf("empty table result = %d, want 0", got)
 	}
 }

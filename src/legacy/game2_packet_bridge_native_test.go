@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"runtime"
 	"testing"
 	"unsafe"
@@ -38,7 +39,7 @@ func TestGame2PacketBridgeConsumesOneNativeMessage(t *testing.T) {
 					}
 					return 1
 				}
-				if got := game2PacketBridgeFixture(3, tc.op, p, 64, viaSwitch); got != tc.length || calls != 1 {
+				if got := cfixture.Game2PacketBridgeFixture(3, tc.op, p, 64, viaSwitch); got != tc.length || calls != 1 {
 					t.Fatalf("consumed=%d calls=%d", got, calls)
 				}
 				if !bytes.Equal(buf, before) {
@@ -64,30 +65,30 @@ func TestGame2PacketBridgeRejectsIncompleteAndUnregistered(t *testing.T) {
 		calls := 0
 		Nox_xxx_netOnPacketRecvCli_48EA70 = func(ntype.PlayerInd, *byte, int) int { calls++; return 1 }
 		for _, sz := range []int32{-1, 0, tc.length - 1} {
-			if game2PacketBridgeFixture(0, tc.op, p, sz, false) != -1 {
+			if cfixture.Game2PacketBridgeFixture(0, tc.op, p, sz, false) != -1 {
 				t.Fatal("incomplete message accepted")
 			}
 		}
-		if game2PacketBridgeFixture(0, tc.op, nil, tc.length, false) != -1 || calls != 0 {
+		if cfixture.Game2PacketBridgeFixture(0, tc.op, nil, tc.length, false) != -1 || calls != 0 {
 			t.Fatal("nil message executed")
 		}
 		*(*byte)(p) = 0
-		if game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 || calls != 0 {
+		if cfixture.Game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 || calls != 0 {
 			t.Fatal("opcode mismatch executed")
 		}
 		*(*byte)(p) = byte(tc.op)
 		Nox_xxx_netOnPacketRecvCli_48EA70 = nil
-		if game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 {
+		if cfixture.Game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 {
 			t.Fatal("unregistered native handler")
 		}
 		for _, result := range []int{0, -1, 2} {
 			Nox_xxx_netOnPacketRecvCli_48EA70 = func(ntype.PlayerInd, *byte, int) int { return result }
-			if game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 {
+			if cfixture.Game2PacketBridgeFixture(0, tc.op, p, tc.length, false) != -1 {
 				t.Fatal("failure interpreted as consumed bytes")
 			}
 		}
 	}
-	if game2PacketBridgeFixture(0, 99, p, 32, false) != -1 {
+	if cfixture.Game2PacketBridgeFixture(0, 99, p, 32, false) != -1 {
 		t.Fatal("unsupported opcode accepted")
 	}
 }

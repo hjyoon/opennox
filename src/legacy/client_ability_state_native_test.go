@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 // Check the preserved C functions and linked Go entries against the five
@@ -101,14 +102,14 @@ func testClientAbilityStateLinked(t *testing.T, mode string) {
 								}
 							}
 						}
-						result, wantOffset = clientAbilityState461090(key, availability), 164
+						result, wantOffset = cfixture.ClientAbilityState461090(key, availability), 164
 					case "reset":
 						for base := 6; base <= 30; base += 6 {
 							if key == 6 || want[base] == want[key*6] {
 								want[base+2], want[base+5] = 1, 0
 							}
 						}
-						result, wantOffset = clientAbilityReset4610D0(key), 164
+						result, wantOffset = cfixture.ClientAbilityReset4610D0(key), 164
 					case "active":
 						for base := 6; base <= 30; base += 6 {
 							if want[base] == uint32(key) {
@@ -120,7 +121,7 @@ func testClientAbilityStateLinked(t *testing.T, mode string) {
 							}
 						}
 						input := [4]int{0, 1, -1, 1}[clock]
-						result, wantOffset = clientAbilitySetActive461120(key, input), 156
+						result, wantOffset = cfixture.ClientAbilitySetActive461120(key, input), 156
 					}
 					if wantOffset != 0 && result != uintptr(unsafe.Pointer(table))+wantOffset {
 						t.Fatalf("%s layout %d key %d: returned %#x", mode, layout, key, result)
@@ -133,7 +134,7 @@ func testClientAbilityStateLinked(t *testing.T, mode string) {
 								break
 							}
 						}
-						if got := clientAbilityActive461160(key); got != active {
+						if got := cfixture.ClientAbilityActive461160(key); got != active {
 							t.Fatalf("%s layout %d key %d: active = %t, want %t", mode, layout, key, got, active)
 						}
 					}

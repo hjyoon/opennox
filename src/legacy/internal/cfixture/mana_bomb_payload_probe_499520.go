@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "native_fixture_alloc.h"
@@ -47,7 +47,7 @@ static nox_mana_bomb_probe_result nox_mana_bomb_probe_499520(
 */
 import "C"
 
-func manaBombPayloadProbe499520(path [4]uint16, angle uint16, reverse, fade, mode, fill byte) (effect [5]uint32, marker uint32, address uintptr, canary, callback bool) {
+func ManaBombPayloadProbe499520(path [4]uint16, angle uint16, reverse, fade, mode, fill byte) (effect [5]uint32, marker uint32, address uintptr, canary, callback bool) {
 	var input [4]C.int16_t
 	for i, v := range path {
 		input[i] = C.int16_t(v)

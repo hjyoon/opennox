@@ -1,6 +1,10 @@
 package legacy
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
+)
 
 func TestInventoryViewportNativeFields(t *testing.T) {
 	for _, tc := range []struct {
@@ -14,7 +18,7 @@ func TestInventoryViewportNativeFields(t *testing.T) {
 		{name: "refresh after nonzero words", words: [13]uint32{0, 0, 1280, 720, 0, 0, 0, 0, 1280, 720}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			fields, unchanged := inventoryViewportNativeFields(tc.words)
+			fields, unchanged := cfixture.InventoryViewportNativeFields(tc.words)
 			if !unchanged {
 				t.Fatal("conversion modified the PE32 record or its neighboring globals")
 			}

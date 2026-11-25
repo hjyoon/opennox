@@ -15,6 +15,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 // The actual C switch still consumes CE/CF/EB/CD. Exercise its genuine table
@@ -150,7 +151,7 @@ func TestClientAbilityPacketsActualDispatcher(t *testing.T) {
 											break
 										}
 									}
-									if clientAbilityActive461160(key) != active || !bytes.Equal(rows, want) {
+									if cfixture.ClientAbilityActive461160(key) != active || !bytes.Equal(rows, want) {
 										free()
 										t.Fatalf("actual ability query id%d after op%d id%d", key, op, id)
 									}

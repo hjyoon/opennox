@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -20,25 +20,25 @@ static void* g2bt_text(void*p){return sub_450AF0(p);}
 import "C"
 import "unsafe"
 
-func g2bTestLayout(f int) uintptr { return uintptr(C.g2bt_layout(C.int(f))) }
-func g2bTestWord(f int, v uint32, set bool) uint32 {
+func G2bTestLayout(f int) uintptr { return uintptr(C.g2bt_layout(C.int(f))) }
+func G2bTestWord(f int, v uint32, set bool) uint32 {
 	s := C.int(0)
 	if set {
 		s = 1
 	}
 	return uint32(C.g2bt_word(C.int(f), C.uint32_t(v), s))
 }
-func g2bTestPointer(f int, p unsafe.Pointer, set bool) unsafe.Pointer {
+func G2bTestPointer(f int, p unsafe.Pointer, set bool) unsafe.Pointer {
 	s := C.int(0)
 	if set {
 		s = 1
 	}
 	return C.g2bt_pointer(C.int(f), p, s)
 }
-func g2bTestCall(op, v int, p unsafe.Pointer) int32 {
+func G2bTestCall(op, v int, p unsafe.Pointer) int32 {
 	return int32(C.g2bt_call(C.int(op), C.int(v), p))
 }
-func g2bTestScroll() float64                       { return float64(C.g2bt_scroll()) }
-func g2bTestCompare(a, b unsafe.Pointer) int32     { return int32(C.g2bt_compare(a, b)) }
-func g2bTestImage(p unsafe.Pointer) unsafe.Pointer { return C.g2bt_image(p) }
-func g2bTestText(p unsafe.Pointer) unsafe.Pointer  { return C.g2bt_text(p) }
+func G2bTestScroll() float64                       { return float64(C.g2bt_scroll()) }
+func G2bTestCompare(a, b unsafe.Pointer) int32     { return int32(C.g2bt_compare(a, b)) }
+func G2bTestImage(p unsafe.Pointer) unsafe.Pointer { return C.g2bt_image(p) }
+func G2bTestText(p unsafe.Pointer) unsafe.Pointer  { return C.g2bt_text(p) }

@@ -18,6 +18,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -122,7 +123,7 @@ func TestClientScorePackets48EA70ActualPacketDispatcher(t *testing.T) {
 					Lessons: -17, Field2140: 0x77778888, Field2144: 0xaabbccdd,
 					Field2152: tc.cached, Field2156: tc.total, GoldVal: 0x5a5a5a5a}
 				p.SetName("플레이어🚀")
-				setScorePacketStamp48EA70(p, tc.stamp)
+				cfixture.SetScorePacketStamp48EA70(p, tc.stamp)
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= 0xffffffff {
 					t.Fatalf("Player not above 4 GiB: %p", p)
 				}
@@ -139,12 +140,12 @@ func TestClientScorePackets48EA70ActualPacketDispatcher(t *testing.T) {
 				binary.LittleEndian.PutUint16(settings[54:56], 6)
 				settingsBefore := *settings
 				center := memmap.PtrT[[1932]byte](0x5d4594, 823804)
-				oldCenter, oldIndex := *center, scorePacketCenteredIndex48EA70()
-				t.Cleanup(func() { *center = oldCenter; setScorePacketCenteredIndex48EA70(oldIndex) })
+				oldCenter, oldIndex := *center, cfixture.ScorePacketCenteredIndex48EA70()
+				t.Cleanup(func() { *center = oldCenter; cfixture.SetScorePacketCenteredIndex48EA70(oldIndex) })
 				for i := range center {
 					center[i] = 0x5a
 				}
-				setScorePacketCenteredIndex48EA70(prior)
+				cfixture.SetScorePacketCenteredIndex48EA70(prior)
 				wantCenter, wantIndex := *center, prior
 				printer := new(scorePacketPrinter48EA70)
 				cn, oldConsole := console.New(printer), GetConsole
@@ -190,7 +191,7 @@ func TestClientScorePackets48EA70ActualPacketDispatcher(t *testing.T) {
 					} else {
 						put(unsafe.Offsetof(p.Field2152), tc.first)
 						put(unsafe.Offsetof(p.Field2156), tc.second)
-						binary.LittleEndian.PutUint32(wantPlayer[scorePacketStampOffset48EA70():], tc.frame)
+						binary.LittleEndian.PutUint32(wantPlayer[cfixture.ScorePacketStampOffset48EA70():], tc.frame)
 					}
 				}
 				var wantLines []string
@@ -214,7 +215,7 @@ func TestClientScorePackets48EA70ActualPacketDispatcher(t *testing.T) {
 				if !reflect.DeepEqual(printer.lines, wantLines) || !reflect.DeepEqual(printer.colors, wantColors) || !reflect.DeepEqual(sounds, wantSounds) {
 					t.Fatalf("output=%q/%v sound=%v, want=%q/%v sound=%v", printer.lines, printer.colors, sounds, wantLines, wantColors, wantSounds)
 				}
-				if *center != wantCenter || scorePacketCenteredIndex48EA70() != wantIndex {
+				if *center != wantCenter || cfixture.ScorePacketCenteredIndex48EA70() != wantIndex {
 					t.Fatal("centered text, timer, byte flag or slot wrap differs")
 				}
 				if *settings != settingsBefore || !bytes.Equal(backing, packetBefore) {
@@ -230,7 +231,7 @@ func TestClientScorePackets48EA70ActualPacketDispatcher(t *testing.T) {
 					}
 				}
 				t.Logf("actual op%d Player=%p score=%08x/%08x/%08x treasure=%08x/%08x/%08x centered=%d->%d announce=%t",
-					tc.op, p, uint32(p.Lessons), p.Field2140, p.Field2144, p.Field2152, p.Field2156, scorePacketStamp48EA70(p), prior, wantIndex, tc.announce)
+					tc.op, p, uint32(p.Lessons), p.Field2140, p.Field2144, p.Field2152, p.Field2156, cfixture.ScorePacketStamp48EA70(p), prior, wantIndex, tc.announce)
 			})
 		}
 	}

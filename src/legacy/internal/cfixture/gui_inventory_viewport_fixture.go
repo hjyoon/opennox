@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME2_1.h"
@@ -35,7 +35,7 @@ import "C"
 
 import "unsafe"
 
-func inventoryViewportNativeFields(words [13]uint32) ([13]int64, bool) {
+func InventoryViewportNativeFields(words [13]uint32) ([13]int64, bool) {
 	var fields [13]int64
 	unchanged := C.nox_test_inventory_viewport_native(
 		(*C.uint32_t)(unsafe.Pointer(&words[0])),

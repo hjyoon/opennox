@@ -1,6 +1,6 @@
 //go:build !server
 
-package legacy
+package cfixture
 
 /*
 #include "GAME3_1.h"
@@ -22,14 +22,14 @@ import "C"
 
 import "unsafe"
 
-func flagMaterialTeamCall4B9470(name *byte) int {
+func FlagMaterialTeamCall4B9470(name *byte) int {
 	return int(C.nox_client_flag_material_team_call_4b9470((*C.char)(unsafe.Pointer(name))))
 }
 
-func flagMaterialTeamNilCall4B9470() int {
+func FlagMaterialTeamNilCall4B9470() int {
 	return int(C.sub_4B9470(nil))
 }
 
-func flagMaterialDrawableTeamCall4B94E0(name *byte, flags uint32) int {
+func FlagMaterialDrawableTeamCall4B94E0(name *byte, flags uint32) int {
 	return int(C.nox_client_flag_material_drawable_call_4b94e0((*C.char)(unsafe.Pointer(name)), C.uint32_t(flags)))
 }

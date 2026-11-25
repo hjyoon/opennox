@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"math"
 	"runtime"
 	"testing"
@@ -15,11 +16,11 @@ func g2bTestIsolate(t *testing.T) {
 	t.Helper()
 	var words [5]uint32
 	for i := range words {
-		words[i] = g2bTestWord(i, 0, false)
+		words[i] = cfixture.G2bTestWord(i, 0, false)
 	}
 	var ptrs [3]unsafe.Pointer
 	for i := range ptrs {
-		ptrs[i] = g2bTestPointer(i, nil, false)
+		ptrs[i] = cfixture.G2bTestPointer(i, nil, false)
 	}
 	bh, qh := game2BriefingTestHooks, game2QuickbarTestHooks
 	byteFlag := memmap.Uint8(0x5D4594, 831252)
@@ -27,10 +28,10 @@ func g2bTestIsolate(t *testing.T) {
 	image, text := *memmap.PtrPtr(0x5D4594, 832460), *memmap.PtrPtr(0x5D4594, 832464)
 	t.Cleanup(func() {
 		for i, v := range words {
-			g2bTestWord(i, v, true)
+			cfixture.G2bTestWord(i, v, true)
 		}
 		for i, v := range ptrs {
-			g2bTestPointer(i, v, true)
+			cfixture.G2bTestPointer(i, v, true)
 		}
 		game2BriefingTestHooks = bh
 		game2QuickbarTestHooks = qh
@@ -43,7 +44,7 @@ func g2bTestIsolate(t *testing.T) {
 
 func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 	g2bTestIsolate(t)
-	data, free := alloc.MakeHigh([]byte{}, int(g2bTestLayout(0))+32)
+	data, free := alloc.MakeHigh([]byte{}, int(cfixture.G2bTestLayout(0))+32)
 	defer free()
 	for i := range data {
 		data[i] = 0xa7
@@ -60,8 +61,8 @@ func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 	}
 	for _, pri := range []uint32{0, 0x400000, 0x20000000, 0x20400000, 0xffffffff} {
 		for _, sub := range []uint32{0, 8, 16, 24, 0xffffffff} {
-			*(*uint32)(unsafe.Add(p, g2bTestLayout(1))) = pri
-			*(*uint32)(unsafe.Add(p, g2bTestLayout(2))) = sub
+			*(*uint32)(unsafe.Add(p, cfixture.G2bTestLayout(1))) = pri
+			*(*uint32)(unsafe.Add(p, cfixture.G2bTestLayout(2))) = sub
 			before := append([]byte(nil), data...)
 			runtime.GC()
 			expected := []int32{int32(pri >> 22 & 1), 0, 0}
@@ -72,7 +73,7 @@ func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 				expected[2] = 1
 			}
 			for op, w := range expected {
-				if g2bTestCall(op, 99, nil) != w || g2bTestCall(op, 0, nil) != 0 {
+				if cfixture.G2bTestCall(op, 99, nil) != w || cfixture.G2bTestCall(op, 0, nil) != 0 {
 					t.Fatal("typed Thing flags/public nil")
 				}
 			}
@@ -82,41 +83,41 @@ func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 		}
 	}
 	for _, value := range []uint32{0, 1, 0x80000000, 0xffffffff} {
-		g2bTestWord(0, 0xface, true)
-		g2bTestWord(1, value, true)
-		if g2bTestCall(4, 0, nil) != int32(value) {
+		cfixture.G2bTestWord(0, 0xface, true)
+		cfixture.G2bTestWord(1, value, true)
+		if cfixture.G2bTestCall(4, 0, nil) != int32(value) {
 			t.Fatal("copy flag DWORD return")
 		}
 		want := uint32(0xface)
 		if value != 0 {
 			want = 1
 		}
-		if g2bTestWord(0, 0, false) != want {
+		if cfixture.G2bTestWord(0, 0, false) != want {
 			t.Fatal("conditional flag write")
 		}
-		g2bTestCall(3, 0, nil)
-		if g2bTestCall(5, 0, nil) != 0 {
+		cfixture.G2bTestCall(3, 0, nil)
+		if cfixture.G2bTestCall(5, 0, nil) != 0 {
 			t.Fatal("flag clear")
 		}
 	}
 	for _, v := range []int{0, 1, 127, 128, 254, 255, -1} {
-		if g2bTestCall(6, v, nil) != int32(byte(v)) || g2bTestCall(7, 0, nil) != int32(byte(v)) {
+		if cfixture.G2bTestCall(6, v, nil) != int32(byte(v)) || cfixture.G2bTestCall(7, 0, nil) != int32(byte(v)) {
 			t.Fatal("char/BYTE ABI")
 		}
 	}
 	for _, v := range []int{0, -1, math.MinInt32, math.MaxInt32} {
-		g2bTestCall(8, v, nil)
-		if g2bTestCall(9, 0, nil) != int32(v) {
+		cfixture.G2bTestCall(8, v, nil)
+		if cfixture.G2bTestCall(9, 0, nil) != int32(v) {
 			t.Fatal("quest stage DWORD")
 		}
 	}
 	for _, v := range []uint32{0, 1, 254, 255, 256, 0xffffffff} {
-		g2bTestWord(2, v, true)
+		cfixture.G2bTestWord(2, v, true)
 		want := float64(0)
 		if v == 255 {
 			want = 1
 		}
-		if g2bTestScroll() != want {
+		if cfixture.G2bTestScroll() != want {
 			t.Fatal("scroll double ABI")
 		}
 	}
@@ -124,7 +125,7 @@ func TestGame2BriefingNativeThingFlagsAndScalarABI(t *testing.T) {
 
 func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 	g2bTestIsolate(t)
-	size, off := g2bTestLayout(3), g2bTestLayout(4)
+	size, off := cfixture.G2bTestLayout(3), cfixture.G2bTestLayout(4)
 	data, free := alloc.MakeHigh([]byte{}, int(size*2+32))
 	defer free()
 	for i := range data {
@@ -142,7 +143,7 @@ func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 			} else if x > y {
 				want = -1
 			}
-			if g2bTestCompare(a, b) != want || !bytes.Equal(data, before) {
+			if cfixture.G2bTestCompare(a, b) != want || !bytes.Equal(data, before) {
 				t.Fatal("unsigned score comparator/C const adapter")
 			}
 		}
@@ -161,10 +162,10 @@ func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 		return ip
 	}}
 	sideBytes := append([]byte(nil), memmap.Slice(0x5D4594, 832460)[:12]...)
-	if g2bTestImage(ip) != ip || calls != 0 || g2bTestImage(nil) != ip || calls != 1 || *memmap.PtrPtr(0x5D4594, 832460) != ip {
+	if cfixture.G2bTestImage(ip) != ip || calls != 0 || cfixture.G2bTestImage(nil) != ip || calls != 1 || *memmap.PtrPtr(0x5D4594, 832460) != ip {
 		t.Fatal("native image side slot")
 	}
-	if g2bTestText(tp) != tp || *memmap.PtrPtr(0x5D4594, 832464) != tp {
+	if cfixture.G2bTestText(tp) != tp || *memmap.PtrPtr(0x5D4594, 832464) != tp {
 		t.Fatal("UTF16 side slot")
 	}
 	for i := 0; i < 4; i++ {
@@ -178,7 +179,7 @@ func TestGame2BriefingNativeScoreAndPointerSideSlots(t *testing.T) {
 	}
 	// Real native callback ABI accepts a high pointer while its unused arguments
 	// remain opaque; no GetClient/render context is required for these gates.
-	if g2bTestCall(11, 0, a) != 1 || g2bTestCall(12, 23, a) != 1 || g2bTestCall(12, 22, a) != 0 {
+	if cfixture.G2bTestCall(11, 0, a) != 1 || cfixture.G2bTestCall(12, 23, a) != 1 || cfixture.G2bTestCall(12, 22, a) != 0 {
 		t.Fatal("native window/draw ABI")
 	}
 }
@@ -203,10 +204,10 @@ func TestGame2BriefingNativeCleanupActualCSlots(t *testing.T) {
 	window, fw := alloc.MakeHigh([]byte{}, 32)
 	defer fw()
 	wp := unsafe.Pointer(&window[0])
-	g2bTestPointer(0, wp, true)
-	g2bTestPointer(1, wp, true)
-	g2bTestPointer(2, wp, true)
-	g2bTestWord(3, 0xffffffff, true)
+	cfixture.G2bTestPointer(0, wp, true)
+	cfixture.G2bTestPointer(1, wp, true)
+	cfixture.G2bTestPointer(2, wp, true)
+	cfixture.G2bTestWord(3, 0xffffffff, true)
 	var log []string
 	game2QuickbarTestHooks = &game2QuickbarHooks{Destroy: func(p unsafe.Pointer) int32 {
 		if p != wp {
@@ -224,7 +225,7 @@ func TestGame2BriefingNativeCleanupActualCSlots(t *testing.T) {
 		log = append(log, fmt.Sprint(order[i]))
 		return int32(700 + order[i])
 	}}
-	if g2bTestCall(10, 0, nil) != 711 || len(log) != 13 {
+	if cfixture.G2bTestCall(10, 0, nil) != 711 || len(log) != 13 {
 		t.Fatalf("last sprite delete return %v", log)
 	}
 	for _, s := range slots {
@@ -233,16 +234,16 @@ func TestGame2BriefingNativeCleanupActualCSlots(t *testing.T) {
 		}
 	}
 	for i := 0; i < 3; i++ {
-		if g2bTestPointer(i, nil, false) != nil {
+		if cfixture.G2bTestPointer(i, nil, false) != nil {
 			t.Fatal("actual C root/image slot not cleared")
 		}
 	}
-	if g2bTestWord(3, 0, false) != 0 {
+	if cfixture.G2bTestWord(3, 0, false) != 0 {
 		t.Fatal("briefing active flag")
 	}
 	log = nil
 	game2BriefingTestHooks.DeleteSprite = func(unsafe.Pointer) int32 { t.Fatal("empty cleanup must skip deletion"); return 0 }
-	if g2bTestCall(10, 0, nil) != 0 || len(log) != 0 {
+	if cfixture.G2bTestCall(10, 0, nil) != 0 || len(log) != 0 {
 		t.Fatal("empty cleanup")
 	}
 }

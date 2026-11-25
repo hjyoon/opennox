@@ -14,6 +14,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 // Exercise the complete C dispatcher and real 32-slot ally table. Only
@@ -32,7 +33,7 @@ func TestClientAllyHealthPacketsActualDispatcher(t *testing.T) {
 		return
 	}
 	InitBlobData()
-	rows := clientAllyHealthTable495020()
+	rows := cfixture.ClientAllyHealthTable495020()
 	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(&rows[0])) <= math.MaxUint32 {
 		t.Fatalf("native ally table below 4 GiB: %p", &rows[0])
 	}
@@ -56,7 +57,7 @@ func TestClientAllyHealthPacketsActualDispatcher(t *testing.T) {
 			if got := Sub_495060(int(code), 100+slot, 500+slot); got != 1 {
 				t.Fatalf("real monitor insertion slot%d: %d", slot, got)
 			}
-			if got := clientAllyHealthColor4950F0(uint32(code), byte(0xff-slot)); got != 1 {
+			if got := cfixture.ClientAllyHealthColor4950F0(uint32(code), byte(0xff-slot)); got != 1 {
 				t.Fatalf("real alternate-color slot%d: %d", slot, got)
 			}
 			row := seed[slot*16:]
@@ -66,7 +67,7 @@ func TestClientAllyHealthPacketsActualDispatcher(t *testing.T) {
 			binary.LittleEndian.PutUint16(row[8:], uint16(500+slot))
 			binary.LittleEndian.PutUint32(row[12:], 1)
 		}
-		if !bytes.Equal(rows, seed) || clientAllyHealthFree494FF0() != nil {
+		if !bytes.Equal(rows, seed) || cfixture.ClientAllyHealthFree494FF0() != nil {
 			t.Fatal("real 32-slot monitor population differs from original scalar layout")
 		}
 		for _, connected := range []bool{false, true} {
@@ -148,7 +149,7 @@ func TestClientAllyHealthPacketsActualDispatcher(t *testing.T) {
 				t.Fatalf("unmonitor slot%d changed unrelated fields", slot)
 			}
 		}
-		reset := clientAllyHealthReset4951C0()
+		reset := cfixture.ClientAllyHealthReset4951C0()
 		// The original return is table+518 in the containing memmap blob.
 		// Compare addresses without constructing an out-of-slice pointer.
 		if uintptr(reset) != uintptr(unsafe.Pointer(&rows[0]))+518 {

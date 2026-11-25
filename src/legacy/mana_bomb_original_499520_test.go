@@ -6,6 +6,8 @@ import (
 	"os"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestManaBombPayloadOriginal499520(t *testing.T) {
@@ -52,7 +54,7 @@ func TestManaBombPayloadOriginal499520(t *testing.T) {
 			for i, v := range r.Input.Path {
 				path[i] = uint16(v)
 			}
-			e, marker, address, canary, callback := manaBombPayloadProbe499520(path, r.Input.Angle, r.Input.Reverse, 5, r.Input.Mode, r.Input.Fill)
+			e, marker, address, canary, callback := cfixture.ManaBombPayloadProbe499520(path, r.Input.Angle, r.Input.Reverse, 5, r.Input.Mode, r.Input.Fill)
 			want := r.Activations[0].State
 			if unsafe.Sizeof(uintptr(0)) == 8 && address <= math.MaxUint32 {
 				t.Fatal("native C drawable address must exceed4GiB")

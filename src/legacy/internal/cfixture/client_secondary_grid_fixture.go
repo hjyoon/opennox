@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME2_1.h"
@@ -33,7 +33,7 @@ import "C"
 
 import "unsafe"
 
-func clientSecondaryGridLayout198() ([]byte, [9]int) {
+func ClientSecondaryGridLayout198() ([]byte, [9]int) {
 	var raw [9]C.size_t
 	C.secondary_grid_layout_198(&raw[0])
 	var layout [9]int
@@ -43,18 +43,18 @@ func clientSecondaryGridLayout198() ([]byte, [9]int) {
 	return unsafe.Slice((*byte)(C.secondary_grid_base_198()), layout[0]*layout[1]), layout
 }
 
-func clientSecondaryGridGlobals198() (uintptr, uint32) {
+func ClientSecondaryGridGlobals198() (uintptr, uint32) {
 	return uintptr(C.secondary_grid_selected_198()), uint32(C.secondary_grid_previous_198())
 }
 
-func clientSecondaryGridRestore198(selected uintptr, code uint32) {
+func ClientSecondaryGridRestore198(selected uintptr, code uint32) {
 	C.secondary_grid_restore_198(C.uintptr_t(selected), C.uint32_t(code))
 }
 
-func clientSecondaryGridPrepare198(slot int) {
+func ClientSecondaryGridPrepare198(slot int) {
 	C.secondary_grid_prepare_previous_198(C.int(slot))
 }
 
-func clientSecondaryGridSelect198(slot int) int {
+func ClientSecondaryGridSelect198(slot int) int {
 	return int(C.secondary_grid_select_198(C.int(slot)))
 }

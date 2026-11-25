@@ -13,6 +13,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -32,7 +33,7 @@ func TestClientSecondaryActualHostPacketQueue(t *testing.T) {
 		return
 	}
 	InitBlobData()
-	grid, layout := clientSecondaryGridLayout198()
+	grid, layout := cfixture.ClientSecondaryGridLayout198()
 	stride, cells, codeOff, equipOff, markerOff, countOff := layout[0], layout[1], layout[2], layout[3], layout[4], layout[5]
 	drawSize, drawCodeOff, drawFlagsOff := layout[6], layout[7], layout[8]
 	pointerSize := int(unsafe.Sizeof(uintptr(0)))
@@ -46,11 +47,11 @@ func TestClientSecondaryActualHostPacketQueue(t *testing.T) {
 	drawables, free := alloc.MakeHigh([]byte{0}, cells*drawSize)
 	defer free()
 	before := bytes.Clone(grid)
-	oldSelected, oldCode := clientSecondaryGridGlobals198()
+	oldSelected, oldCode := cfixture.ClientSecondaryGridGlobals198()
 	oldServer, oldFlags := GetServer, noxflags.GetGame()
 	defer func() {
 		copy(grid, before)
-		clientSecondaryGridRestore198(oldSelected, oldCode)
+		cfixture.ClientSecondaryGridRestore198(oldSelected, oldCode)
 		GetServer = oldServer
 		noxflags.ResetGame()
 		noxflags.SetGame(oldFlags)
@@ -92,7 +93,7 @@ func TestClientSecondaryActualHostPacketQueue(t *testing.T) {
 					binary.LittleEndian.PutUint32(drawables[slot*drawSize+drawCodeOff:], 0xfedc0000+uint32(slot))
 					binary.LittleEndian.PutUint32(drawables[slot*drawSize+drawFlagsOff:], flags[(slot+pattern)%3])
 				}
-				clientSecondaryGridPrepare198(previous)
+				cfixture.ClientSecondaryGridPrepare198(previous)
 				wantGrid, wantDraw := bytes.Clone(grid), bytes.Clone(drawables)
 				wantPrevious := uint32(0)
 				if previous >= 0 {
@@ -116,10 +117,10 @@ func TestClientSecondaryActualHostPacketQueue(t *testing.T) {
 						}
 					}
 				}
-				if got := clientSecondaryGridSelect198(selected); got != 1 {
+				if got := cfixture.ClientSecondaryGridSelect198(selected); got != 1 {
 					t.Fatalf("actual selector return=%d", got)
 				}
-				gotSelected, gotPrevious := clientSecondaryGridGlobals198()
+				gotSelected, gotPrevious := cfixture.ClientSecondaryGridGlobals198()
 				wantPacket := []byte{0xe0, byte(wire), byte(wire >> 8)}
 				if gotSelected != wantSelected || gotPrevious != wantPrevious || !bytes.Equal(grid, wantGrid) || !bytes.Equal(drawables, wantDraw) ||
 					!bytes.Equal(list.CopyPacketsA(31, netlist.Kind0), wantPacket) {

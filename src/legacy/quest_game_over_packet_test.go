@@ -18,6 +18,7 @@ import (
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -100,7 +101,7 @@ func TestQuestGameOverWindowPacket(t *testing.T) {
 			}
 			var used int
 			if route == "legacy ABI" {
-				used = int(game2PacketBridgeFixture(0, int32(op), unsafe.Pointer(&packet[0]), int32(len(packet)), true))
+				used = int(cfixture.Game2PacketBridgeFixture(0, int32(op), unsafe.Pointer(&packet[0]), int32(len(packet)), true))
 			} else {
 				used = Nox_xxx_netOnPacketRecvCli_48EA70_switch(0, op, packet[:])
 			}

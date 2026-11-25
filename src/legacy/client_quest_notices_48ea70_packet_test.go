@@ -18,6 +18,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -128,12 +129,12 @@ func TestClientQuestNotices48EA70ActualPacketDispatcher(t *testing.T) {
 				GetConsole = func() *console.Console { return cn }
 				t.Cleanup(func() { GetConsole = oldConsole })
 				center := memmap.PtrT[[1932]byte](0x5d4594, 823804)
-				oldCenter, oldIndex := *center, scorePacketCenteredIndex48EA70()
-				t.Cleanup(func() { *center = oldCenter; setScorePacketCenteredIndex48EA70(oldIndex) })
+				oldCenter, oldIndex := *center, cfixture.ScorePacketCenteredIndex48EA70()
+				t.Cleanup(func() { *center = oldCenter; cfixture.SetScorePacketCenteredIndex48EA70(oldIndex) })
 				for i := range center {
 					center[i] = 0x5a
 				}
-				setScorePacketCenteredIndex48EA70(prior)
+				cfixture.SetScorePacketCenteredIndex48EA70(prior)
 				wantCenter, wantIndex := *center, prior
 				settings := memmap.PtrT[[116]byte](0x5d4594, 371380)
 				oldSettings := *settings
@@ -225,7 +226,7 @@ func TestClientQuestNotices48EA70ActualPacketDispatcher(t *testing.T) {
 				if !reflect.DeepEqual(printer.lines, wantLines) || !reflect.DeepEqual(printer.colors, wantColors) || !reflect.DeepEqual(titleCalls, wantTitles) {
 					t.Fatalf("output=%q/%v titles=%v, want=%q/%v titles=%v", printer.lines, printer.colors, titleCalls, wantLines, wantColors, wantTitles)
 				}
-				if *center != wantCenter || scorePacketCenteredIndex48EA70() != wantIndex || *settings != wantSettings || !bytes.Equal(backing, packetBefore) {
+				if *center != wantCenter || cfixture.ScorePacketCenteredIndex48EA70() != wantIndex || *settings != wantSettings || !bytes.Equal(backing, packetBefore) {
 					t.Fatal("centered slots/timer, settings or packed packet/guards differ")
 				}
 				if tc.settings {

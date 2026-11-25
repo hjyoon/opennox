@@ -632,7 +632,7 @@ func Sub_46A860() {
 	sub_46A860()
 }
 func Sub_467980() {
-	C.sub_467980()
+	sub_467980()
 }
 func Sub_460D50() {
 	sub_460D50()

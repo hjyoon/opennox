@@ -186,16 +186,22 @@ func sub_4678D0() *C.nox_drawable {
 	if player == nil {
 		return nil
 	}
+	if item := inventoryEquippedWeapon(player.WeaponEquip); item != nil {
+		if cell, _ := inventoryLookupNativeSearch(uint32(item.field_32)); cell != nil {
+			return cell.field_0
+		}
+	}
+	return nil
+}
+
+func inventoryEquippedWeapon(weapons uint32) *nox_drawable {
 	for bit := 2; bit < 27; bit++ {
 		mask := uint32(1) << bit
-		if player.WeaponEquip&mask == 0 {
+		if weapons&mask == 0 {
 			continue
 		}
 		if item := sub_461600(C.int(sub_415840(int32(mask)))); item != nil {
-			if cell, _ := inventoryLookupNativeSearch(uint32(item.field_32)); cell != nil {
-				return cell.field_0
-			}
-			return nil
+			return item
 		}
 	}
 	return nil
@@ -289,7 +295,7 @@ func sub_467C10() C.int {
 	if C.dword_5d4594_1049864 == 5 {
 		C.sub_462740()
 	}
-	C.sub_467CD0()
+	sub_467CD0()
 	return 1
 }
 

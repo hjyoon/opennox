@@ -126,7 +126,7 @@ func sub_470DE0() C.int {
 func sub_470E90(_ *C.nox_window, event C.int) C.int {
 	switch event {
 	case 5:
-		C.nox_client_invAlterWeapon_4672C0()
+		nox_client_invAlterWeapon_4672C0()
 		return 1
 	case 8, 12, 16:
 		return 0

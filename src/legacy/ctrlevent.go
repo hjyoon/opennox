@@ -178,7 +178,7 @@ func Nox_client_mapZoomOut_472500() {
 }
 
 func Nox_client_invAlterWeapon_4672C0() {
-	C.nox_client_invAlterWeapon_4672C0()
+	nox_client_invAlterWeapon_4672C0()
 }
 
 func Nox_client_quickHealthPotion_472220() {

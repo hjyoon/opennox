@@ -137,7 +137,7 @@ func Sub_4611A0() int {
 	return int(sub_4611A0())
 }
 func Sub_467CD0() {
-	C.sub_467CD0()
+	sub_467CD0()
 }
 func Nox_xxx_setSomeFunc_48A210(a1 unsafe.Pointer) {
 	nox_xxx_setSomeFunc_48A210(a1)

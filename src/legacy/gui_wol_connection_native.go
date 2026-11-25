@@ -4,6 +4,7 @@ package legacy
 #include "GAME1_2.h"
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
+#include "client_ui_words.h"
 
 extern nox_window* nox_wol_wnd_world_814980;
 extern nox_window* nox_wol_wnd_gameList_815012;
@@ -11,7 +12,6 @@ extern nox_window *dword_5d4594_814984, *dword_5d4594_814988, *dword_5d4594_8149
 extern nox_window* dword_5d4594_815000;
 extern uint32_t dword_587000_87408, dword_5d4594_815096, dword_5d4594_815100;
 extern uint64_t qword_5d4594_814956, qword_5d4594_815068;
-extern unsigned int nox_client_connError_814552;
 */
 import "C"
 

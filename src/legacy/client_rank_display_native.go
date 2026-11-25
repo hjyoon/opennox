@@ -3,9 +3,9 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "client__gui__guirank.h"
+#include "client_ui_words.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern unsigned int dword_587000_145664, dword_587000_145668;
 extern uint32_t dword_587000_145672;
 extern uint32_t dword_5d4594_1090120;
 extern nox_window* dword_5d4594_1090100;

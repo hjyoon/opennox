@@ -15,7 +15,7 @@ extern unsigned int dword_5d4594_814548;
 extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
 extern uint32_t dword_5d4594_1049864;
-extern unsigned int dword_5d4594_1064868;
+#include "client_ui_words.h"
 extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1098628;

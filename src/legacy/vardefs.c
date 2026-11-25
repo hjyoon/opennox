@@ -7,6 +7,7 @@
 #include "stats_start_native.h"
 #include "client__gui__servopts__playrlst.h"
 #include "client__gui__servopts__access.h"
+#include "client_ui_words.h"
 
 void nullsub_68();
 

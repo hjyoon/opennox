@@ -4,7 +4,7 @@ package legacy
 #include "defs.h"
 #include "GAME2_3.h"
 extern nox_render_data_t* nox_draw_curDrawData_3799572;
-extern unsigned int dword_5d4594_1305748;
+#include "client_ui_words.h"
 static uintptr_t draw_clip_rect_test_49F6F0(nox_render_data_t* data, int x, int y, int w, int h) {
 	nox_render_data_t* saved = nox_draw_curDrawData_3799572;
 	nox_draw_curDrawData_3799572 = data;

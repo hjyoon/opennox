@@ -10,7 +10,7 @@ extern nox_window* dword_5d4594_1090100;
 extern nox_window* dword_5d4594_1090108;
 extern nox_window* dword_5d4594_1090112;
 extern uint32_t dword_5d4594_1090040, dword_5d4594_1090044;
-extern unsigned int dword_587000_145664, dword_587000_145668;
+#include "client_ui_words.h"
 extern uint32_t dword_8531A0_2572;
 extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 extern int nox_win_width;

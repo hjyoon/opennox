@@ -4,7 +4,7 @@ package legacy
 #include "GAME2_3.h"
 
 extern nox_render_data_t* nox_draw_curDrawData_3799572;
-extern unsigned int dword_5d4594_1305748;
+#include "client_ui_words.h"
 */
 import "C"
 

@@ -8,7 +8,8 @@ package legacy
 extern nox_window* dword_5d4594_1064856;
 extern nox_window* dword_5d4594_1064860;
 extern void* dword_5d4594_1064864;
-extern unsigned int dword_5d4594_1064868, nox_player_netCode_85319C;
+#include "client_ui_words.h"
+extern unsigned int nox_player_netCode_85319C;
 extern int nox_win_width, nox_win_height;
 */
 import "C"

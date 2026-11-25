@@ -5,7 +5,7 @@ package legacy
 #include "client__gui__guirank.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern unsigned int dword_587000_145664;
+#include "client_ui_words.h"
 extern uint32_t dword_587000_145672, dword_5d4594_1090120;
 extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 */

@@ -1,3 +1,4 @@
+#include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "client__system__parsecmd.h"
 #include "client__gui__guitrade.h"
@@ -7,6 +8,22 @@ void nullsub_68();
 
 obj_5D4594_2650668_t** ptr_5D4594_2650668 = 0;
 const int ptr_5D4594_2650668_cap = 128;
+
+nox_window* nox_win_unk5 = 0;
+nox_window* dword_5d4594_1062452 = 0;
+nox_window* nox_inventory_window = 0;
+nox_window* nox_inventory_current_weapon_window = 0;
+nox_window* nox_inventory_identify_window = 0;
+nox_window* nox_inventory_scroll_window = 0;
+nox_window* nox_inventory_journal_button = 0;
+nox_window* nox_inventory_stats_button = 0;
+nox_window* nox_inventory_scroll_up_button = 0;
+nox_window* nox_inventory_scroll_down_button = 0;
+nox_window* nox_inventory_close_button = 0;
+void* nox_inventory_font = 0;
+nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
+nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
+nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] = {0};
 
 nox_window* dword_5d4594_1046492 = 0;
 void* nox_xxx_aClosewoodengat_587000_133480 = 0;

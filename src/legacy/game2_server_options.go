@@ -390,9 +390,10 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	if result >= 0 {
 		p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046496, 16406, uintptr(result), 0)))
 		C.game2_server_narrow_wide(buf, p)
-		token := C.strtok(buf, internCStr("\t"))
+		tokens := legacyByteTokens{next: &narrow[0]}
+		token := tokens.take("\t")
 		if token != nil {
-			C.strcpy((*C.char)(output), token)
+			C.strcpy((*C.char)(output), (*C.char)(unsafe.Pointer(token)))
 			return 0
 		}
 		*(*byte)(output) = 0

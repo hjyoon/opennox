@@ -1,17 +1,8 @@
 package legacy
 
-/*
-#include "defs.h"
-#include "noxstring.h"
-#include <string.h>
-static int named_mask_prefix(const char* input) { return strncmp(input,"NULL",4); }
-static char* named_mask_token(char* input) { return strtok(input,"+"); }
-*/
-import "C"
 import "unsafe"
 
-// Serial observation of the three declared libc boundaries in the independent
-// original reference. The kernel owns all pointer traversal and mask updates.
+// Serial observation of the three original string operations.
 type namedBitmaskObserver423930 struct {
 	Compare func(unsafe.Pointer, unsafe.Pointer) int32
 	Prefix  func(unsafe.Pointer) int32
@@ -35,19 +26,25 @@ func namedBitmaskCompare4239C0(a, b unsafe.Pointer) int32 {
 	if o := namedBitmaskObserved423930; o != nil && o.Compare != nil {
 		return o.Compare(a, b)
 	}
-	return int32(C.nox_strcmpi((*C.char)(a), (*C.char)(b)))
+	return int32(compareLegacyStringBytes(a, b, -1))
 }
 
 func namedBitmaskPrefix423930(input unsafe.Pointer) int32 {
 	if o := namedBitmaskObserved423930; o != nil && o.Prefix != nil {
 		return o.Prefix(input)
 	}
-	return int32(C.named_mask_prefix((*C.char)(input)))
+	const prefix = "NULL"
+	for i := range len(prefix) {
+		if value := *(*byte)(unsafe.Add(input, i)); value != prefix[i] {
+			return int32(value) - int32(prefix[i])
+		}
+	}
+	return 0
 }
 
-func namedBitmaskToken423930(input unsafe.Pointer) unsafe.Pointer {
+func namedBitmaskToken423930(tokens *legacyByteTokens, input unsafe.Pointer) unsafe.Pointer {
 	if o := namedBitmaskObserved423930; o != nil && o.Token != nil {
 		return o.Token(input)
 	}
-	return unsafe.Pointer(C.named_mask_token((*C.char)(input)))
+	return unsafe.Pointer(tokens.take("+"))
 }

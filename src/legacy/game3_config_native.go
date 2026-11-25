@@ -100,13 +100,13 @@ func sub_4A7C60(s *C.char) C.int {
 	}
 	*memmap.PtrUint32(0x5D4594, 1308736) = 0
 	*memmap.PtrUint32(0x5D4594, 1308732) = 0
-	// Keep the host CRT tokenizer cursor and the original unequal delimiter
-	// sets: the second token permits commas and the first permits spaces.
-	if p := C.strtok(s, internCStr(",\t\r\n")); p != nil {
-		*memmap.PtrUint32(0x5D4594, 1308732) = uint32(C.atoi(p))
+	// The second token permits commas and the first permits spaces.
+	tokens := legacyByteTokens{next: (*byte)(unsafe.Pointer(s))}
+	if p := tokens.take(",\t\r\n"); p != nil {
+		*memmap.PtrUint32(0x5D4594, 1308732) = uint32(C.atoi((*C.char)(unsafe.Pointer(p))))
 	}
-	if p := C.strtok(nil, internCStr(" \t\r\n")); p != nil {
-		*memmap.PtrUint32(0x5D4594, 1308736) = uint32(C.atoi(p))
+	if p := tokens.take(" \t\r\n"); p != nil {
+		*memmap.PtrUint32(0x5D4594, 1308736) = uint32(C.atoi((*C.char)(unsafe.Pointer(p))))
 	}
 	if *memmap.PtrUint32(0x5D4594, 1308732) != 0 && *memmap.PtrUint32(0x5D4594, 1308736) != 0 {
 		return 1

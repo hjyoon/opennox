@@ -24,7 +24,10 @@ func TestGame3ConfigCEntriesMatchRetainedReference(t *testing.T) {
 			inputs = append(inputs, string(bytes.Repeat([]byte{'x'}, 128)), string(bytes.Repeat([]byte{'y'}, 129)))
 		}
 		if which == 10 {
-			inputs = []string{"12,34", " 12, 34", "4,5,6", "1\t2", "1 2", "0,1", "1,0", "", "-9,7"}
+			inputs = []string{
+				"12,34", " 12, 34", "4,5,6", "1\t2", "1 2", "0,1", "1,0", "", "-9,7",
+				",,\t,\n", "\t\n, 12,\r \t -34  tail", "12,\t ,7", "1,2\x00,3",
+			}
 		}
 		for _, text := range inputs {
 			t.Run(fmt.Sprintf("%d/%q", which, text), func(t *testing.T) {

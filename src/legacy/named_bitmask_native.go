@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -36,20 +35,15 @@ func namedBitmaskSetNative4239C0(name unsafe.Pointer, bitmask *uint32, names nam
 }
 
 func namedBitmaskParseNative423930(input unsafe.Pointer, bitmask *uint32, names namedBitmaskNames4239C0) {
-	// Preserve the original libc tokenizer state, including CRT implementations
-	// that keep strtok's continuation in thread-local storage. Its retained
-	// pointer must refer to foreign storage across Cgo calls.
-	runtime.LockOSThread()
-	defer runtime.UnlockOSThread()
 	text := alloc.GoString((*byte)(input))
-	copyBuf, free := alloc.Make([]byte{}, len(text)+1)
-	defer free()
+	copyBuf := make([]byte, len(text)+1)
 	copy(copyBuf, text)
 	scratch := unsafe.Pointer(&copyBuf[0])
 	if namedBitmaskPrefix423930(scratch) == 0 {
 		return
 	}
-	for token := namedBitmaskToken423930(scratch); token != nil; token = namedBitmaskToken423930(nil) {
+	tokens := legacyByteTokens{next: &copyBuf[0]}
+	for token := namedBitmaskToken423930(&tokens, scratch); token != nil; token = namedBitmaskToken423930(&tokens, nil) {
 		namedBitmaskSetNative4239C0(token, bitmask, names)
 	}
 }

@@ -167,13 +167,13 @@ func _nox_wcsicmp(a, b *C.nox_const_string_unit_t) C.int {
 	}
 }
 
-func compareLegacyStringBytes(a, b *C.char, count int) C.int {
+func compareLegacyStringBytes(a, b unsafe.Pointer, count int) C.int {
 	if count == 0 {
 		return 0
 	}
 	for i := 0; ; i++ {
-		left := *(*uint8)(unsafe.Add(unsafe.Pointer(a), i))
-		right := *(*uint8)(unsafe.Add(unsafe.Pointer(b), i))
+		left := *(*uint8)(unsafe.Add(a, i))
+		right := *(*uint8)(unsafe.Add(b, i))
 		if left != right {
 			lowerLeft, lowerRight := C.tolower(C.int(left)), C.tolower(C.int(right))
 			switch {
@@ -191,12 +191,12 @@ func compareLegacyStringBytes(a, b *C.char, count int) C.int {
 
 //export nox_strcmpi
 func nox_strcmpi(a, b *C.nox_const_string_byte_t) C.int {
-	return compareLegacyStringBytes(a, b, -1)
+	return compareLegacyStringBytes(unsafe.Pointer(a), unsafe.Pointer(b), -1)
 }
 
 //export nox_strnicmp
 func nox_strnicmp(a, b *C.nox_const_string_byte_t, count C.int) C.int {
-	return compareLegacyStringBytes(a, b, int(count))
+	return compareLegacyStringBytes(unsafe.Pointer(a), unsafe.Pointer(b), int(count))
 }
 
 //export nox_wcstol

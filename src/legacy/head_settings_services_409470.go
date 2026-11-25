@@ -40,7 +40,7 @@ func headSettingsNotify409470(v int32) int32 {
 	return int32(nox_xxx_netNotifyRate_4D7F10(C.int(v)))
 }
 func headSettingsCompare409470(a, b unsafe.Pointer) int32 {
-	return int32(compareLegacyStringBytes((*C.char)(a), (*C.char)(b), -1))
+	return int32(compareLegacyStringBytes(a, b, -1))
 }
 func headSettingsRead409470(file, out unsafe.Pointer) {
 	nox_binfile_fread_408E40((*C.char)(out), 1, 1, (*C.FILE)(file))

@@ -74,7 +74,7 @@ func floorFillProgramR305(t *testing.T) (string, []byte, []byte) {
 		}
 		program = strings.Replace(program, marker, replacement, 1)
 	}
-	registry, err := os.ReadFile("mapgen_legacy_ptr.c")
+	registry, err := os.ReadFile("testdata/retired-game-sources/mapgen_legacy_ptr.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

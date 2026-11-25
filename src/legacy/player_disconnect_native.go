@@ -98,13 +98,13 @@ func clearDisconnectedPeerState4DE7C0(world *server.Server, index int) {
 func resumeQuestAfterDisconnect4DE7C0(world *server.Server) {
 	switch {
 	case sub_4E9010() == 1:
-		nox_xxx_mapLoad_4D2450(C.sub_4E8E50())
+		nox_xxx_mapLoad_4D2450(sub_4E8E50())
 	case nox_server_questMaybeWarp_4E8F60() != 0:
 		sub_4D60B0()
 		sub_4D76E0(1)
 		stage := nox_game_getQuestStage_4E3CC0()
 		nox_game_setQuestStage_4E3CD0(nox_server_questNextStageThreshold_4D74F0(stage) - 1)
-		nox_xxx_mapLoad_4D2450(C.sub_4E8E50())
+		nox_xxx_mapLoad_4D2450(sub_4E8E50())
 	default:
 		for unit := world.Players.FirstUnit(); unit != nil; unit = world.NextPlayerUnit4DA7F0(unit) {
 			if unit.UpdateDataPlayer().QuestExit != nil {

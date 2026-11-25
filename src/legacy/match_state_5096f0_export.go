@@ -25,7 +25,7 @@ var matchLimitStateCall5096F0 = func() int32 {
 			return int32(Sub_40A1A0())
 		},
 		SwitchToNextMap: func() {
-			outer.SwitchMap(GoString(C.sub_4E8E50()))
+			outer.SwitchMap(GoString(sub_4E8E50()))
 		},
 		PrintAutoExit: func() {
 			srv.NetPrintLineToAll("chklimit.c:AutoExitToNextMap")

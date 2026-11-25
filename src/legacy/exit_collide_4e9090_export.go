@@ -13,7 +13,7 @@ import (
 )
 
 func storeQuestNextMap4E9090(name string) {
-	dst := unsafe.Slice((*byte)(unsafe.Pointer(C.sub_4E8E50())), len(name)+1)
+	dst := unsafe.Slice((*byte)(unsafe.Pointer(sub_4E8E50())), len(name)+1)
 	copy(dst, name)
 	dst[len(name)] = 0
 }

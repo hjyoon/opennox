@@ -47,9 +47,14 @@ func nox_xxx_clientSetAltWeapon_461550(cell *C.nox_inventory_cell_t) C.int {
 
 //export sub_461970
 func sub_461970(netCode, thingType C.int) *C.nox_inventory_cell_t {
+	c, _, _ := clientInventoryStackPickup(netCode, thingType)
+	return c
+}
+
+func clientInventoryStackPickup(netCode, thingType C.int) (*C.nox_inventory_cell_t, int, int) {
 	thing := nox_get_thing(int32(thingType))
 	if thing == nil || thing.pri_class&0x4000000 != 0 {
-		return nil
+		return nil, 0, 0
 	}
 	for row := range inventoryRows - 1 {
 		for column := range inventoryColumns {
@@ -58,11 +63,11 @@ func sub_461970(netCode, thingType C.int) *C.nox_inventory_cell_t {
 			if n != 0 && n < inventoryStackMax && cell.field_0 != nil && cell.field_0.field_27 == C.uint32_t(thingType) {
 				inventoryCellCodes(cell)[n] = C.uint32_t(netCode)
 				cell.field_140++
-				return cell
+				return cell, row, column
 			}
 		}
 	}
-	return nil
+	return nil, 0, 0
 }
 
 //export sub_4619F0

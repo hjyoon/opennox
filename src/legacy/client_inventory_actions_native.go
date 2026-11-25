@@ -149,7 +149,7 @@ func inventoryReinsertDraggedItem(dragged *nox_drawable) {
 		modifiers: [4]unsafe.Pointer{data.Field_108, data.Field_109, data.Field_110, data.Field_111},
 		field_16:  C.uint32_t(uint32(uint16(data.Field_112_0)) | uint32(uint16(data.Field_112_2))<<16),
 	}
-	C.nox_xxx_spritePickup_461660(C.int(dragged.field_32), C.int(dragged.field_27), &attrs)
+	nox_xxx_spritePickup_461660(C.int(dragged.field_32), C.int(dragged.field_27), &attrs)
 	netCode := uint32(dragged.field_32)
 	cell, _ := inventoryLookupNativeSearch(netCode)
 	if cell == nil {

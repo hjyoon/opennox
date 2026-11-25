@@ -164,7 +164,7 @@ func sub_4658A0(win *C.nox_window, point *C.int2) {
 			row := (point.field_4 + C.int(C.dword_5d4594_1062512) - 13) / 50
 			clientInventorySetClickCell(column, row)
 			if sub_464B40(column, row) != 0 {
-				C.nox_xxx_cliInventorySpriteUpd_465A30()
+				nox_xxx_cliInventorySpriteUpd_465A30()
 			}
 		}
 	}
@@ -191,7 +191,7 @@ func nox_xxx_clientDrop_465BE0(position *C.int2) C.int {
 //export nox_xxx_clientKeyEquip_465C30
 func nox_xxx_clientKeyEquip_465C30(column, row C.int) C.int {
 	clientInventorySetClickCell(column, row)
-	C.nox_xxx_cliInventorySpriteUpd_465A30()
+	nox_xxx_cliInventorySpriteUpd_465A30()
 	dragged := nox_client_inventory_get_dragged()
 	if dragged == nil {
 		return 0

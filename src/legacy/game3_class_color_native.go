@@ -389,7 +389,7 @@ func sub_4A6DC0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	if C.dword_5d4594_1308136.flags&8 != 0 {
 		off = uintptr(16 + 4*variant)
 	}
-	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(C.mem_getPtrValue(0x973A20, C.uintptr_t(off))), C.int(x), C.int(y))
+	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(off))), C.int(x), C.int(y))
 	for layer := 0; layer < 26; layer++ {
 		var mod unsafe.Pointer
 		switch uint32(1) << layer {
@@ -410,7 +410,7 @@ func sub_4A6DC0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		default:
 			continue
 		}
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(C.mem_getPtrValue(0x973A20, C.uintptr_t(32+104*variant+4*uint32(layer)))), C.int(x), C.int(y))
+		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(32+104*variant+4*uint32(layer)))), C.int(x), C.int(y))
 	}
 	return 1
 }
@@ -818,9 +818,9 @@ func sub_4AB0C0() C.int {
 
 //export sub_4AB260
 func sub_4AB260() C.int {
-	C.mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(C.nox_xxx_gLoadImg_42F970(internCStr("DisconnectIcon"))))
+	mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(C.nox_xxx_gLoadImg_42F970(internCStr("DisconnectIcon"))))
 	C.dword_5d4594_1309756 = C.nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2+3, 50, 50, nil)
-	C.nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_1309756, (*C.nox_video_bag_image_t)(C.mem_getPtrValue(0x5D4594, 1309752)))
+	C.nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_1309756, (*C.nox_video_bag_image_t)(mem_getPtrValue(0x5D4594, 1309752)))
 	C.nox_window_set_all_funcs(C.dword_5d4594_1309756, nil, C.sub_4AB420, nil)
 	C.dword_5d4594_1309748 = C.nox_new_window_from_file(internCStr("discon.wnd"), C.sub_4AB390)
 	C.nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_1309748, C.sub_4AB340)

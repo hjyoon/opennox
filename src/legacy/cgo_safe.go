@@ -19,6 +19,7 @@ package legacy
 #cgo CFLAGS: -Dstrcmp=nox_strcmp
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 */
 import "C"
 import (
@@ -46,7 +47,7 @@ func checkPanicC(r any, ok *C.bool) {
 }
 
 //export mem_getPtr_go
-func mem_getPtr_go(base, off C.uint, ok *C.bool) unsafe.Pointer {
+func mem_getPtr_go(base, off C.uintptr_t, ok *C.bool) unsafe.Pointer {
 	defer func() {
 		checkPanicC(recover(), ok)
 	}()
@@ -54,7 +55,7 @@ func mem_getPtr_go(base, off C.uint, ok *C.bool) unsafe.Pointer {
 }
 
 //export mem_getPtrSize_go
-func mem_getPtrSize_go(base, off, size C.uint, ok *C.bool) unsafe.Pointer {
+func mem_getPtrSize_go(base, off, size C.uintptr_t, ok *C.bool) unsafe.Pointer {
 	defer func() {
 		checkPanicC(recover(), ok)
 	}()

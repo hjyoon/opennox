@@ -183,7 +183,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 			nox_xxx_mapGenPlaceObj_5279B0((*C.float2)(unsafe.Pointer(&position)))
 		},
 		setAmbientColor: func(color *[3]uint32) {
-			C.sub_469B90((*C.int)(unsafe.Pointer(&color[0])))
+			sub_469B90((*C.int)(unsafe.Pointer(&color[0])))
 		},
 		cleanup: sub_526A90,
 	})

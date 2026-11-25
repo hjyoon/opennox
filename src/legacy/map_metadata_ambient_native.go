@@ -96,6 +96,30 @@ func nox_server_mapRWMapInfo_42A6E0() C.int {
 	return C.int(bool2int(mapRWMetadata(cryptfile.Global()) == nil))
 }
 
+func ambientMapColor() *[3]uint32 {
+	return memmap.PtrT[[3]uint32](0x587000, 142296)
+}
+
+//export sub_469B90
+func sub_469B90(source *C.int) C.int {
+	values := (*[3]uint32)(unsafe.Pointer(source))
+	color := ambientMapColor()
+	for i := range color {
+		color[i] = values[i]
+	}
+	return C.int(color[2])
+}
+
+//export nox_xxx_getAmbientColor_469BB0
+func nox_xxx_getAmbientColor_469BB0() *C.char {
+	return (*C.char)(unsafe.Pointer(ambientMapColor()))
+}
+
+//export sub_469FA0
+func sub_469FA0() C.int {
+	return C.int(memmap.Int32(0x5D4594, 1064848))
+}
+
 func mapRWAmbientColor(cf *cryptfile.CryptFile) error {
 	if cf == nil {
 		return fmt.Errorf("ambient map lighting requires an open crypt file")
@@ -109,7 +133,7 @@ func mapRWAmbientColor(cf *cryptfile.CryptFile) error {
 	}
 	var color [3]uint32
 	if !cf.ReadOnly() {
-		color = *(*[3]uint32)(unsafe.Pointer(C.nox_xxx_getAmbientColor_469BB0()))
+		color = *ambientMapColor()
 	}
 	for i, intensity := range color {
 		value, err := cf.ReadWriteU32(intensity)
@@ -119,7 +143,7 @@ func mapRWAmbientColor(cf *cryptfile.CryptFile) error {
 		color[i] = value
 	}
 	if cf.ReadOnly() {
-		C.sub_469B90((*C.int)(unsafe.Pointer(&color[0])))
+		*ambientMapColor() = color
 		if noxflags.HasGame(noxflags.GameClient | noxflags.GameFlag22) {
 			sub_4349C0((*C.uint)(unsafe.Pointer(&color[0])))
 		}

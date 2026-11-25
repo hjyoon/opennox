@@ -183,5 +183,5 @@ func nox_xxx_polygonDrawColor_421B80() {
 	}
 	player.SetAudioZone(1)
 	player.SetLocalPolygonID(0)
-	sub_4349C0((*C.uint)(unsafe.Pointer(C.nox_xxx_getAmbientColor_469BB0())))
+	sub_4349C0((*C.uint)(unsafe.Pointer(ambientMapColor())))
 }

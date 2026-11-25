@@ -1748,23 +1748,6 @@ int sub_467CD0() {
 	return handled;
 }
 
-//----- (00469B90) --------------------------------------------------------
-int sub_469B90(int* a1) {
-	int result; // eax
-
-	*getMemU32Ptr(0x587000, 142296) = *a1;
-	*getMemU32Ptr(0x587000, 142300) = a1[1];
-	result = a1[2];
-	*getMemU32Ptr(0x587000, 142304) = a1[2];
-	return result;
-}
-
-//----- (00469BB0) --------------------------------------------------------
-char* nox_xxx_getAmbientColor_469BB0() { return (char*)getMemAt(0x587000, 142296); }
-
-//----- (00469FA0) --------------------------------------------------------
-int sub_469FA0() { return *getMemU32Ptr(0x5D4594, 1064848); }
-
 //----- (0046A430) --------------------------------------------------------
 void nox_client_chatStart_46A430(int a1) {
 	if (!nox_common_gameFlags_check_40A5C0(2048)) {

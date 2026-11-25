@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -204,61 +204,61 @@ import "C"
 
 import "unsafe"
 
-type game4ArchiveBank struct {
+type Game4ArchiveBank struct {
 	ptr *C.game4_map_archive_test_bank
 }
 
-func game4ArchiveBankNew() *game4ArchiveBank {
+func NewGame4ArchiveBank() *Game4ArchiveBank {
 	p := C.game4_map_archive_test_begin()
 	if p == nil {
 		return nil
 	}
-	return &game4ArchiveBank{ptr: p}
+	return &Game4ArchiveBank{ptr: p}
 }
-func (b *game4ArchiveBank) close() { C.game4_map_archive_test_end(b.ptr) }
-func (b *game4ArchiveBank) seed()  { C.game4_map_archive_test_seed(b.ptr) }
-func (b *game4ArchiveBank) address() uintptr {
+func (b *Game4ArchiveBank) Close() { C.game4_map_archive_test_end(b.ptr) }
+func (b *Game4ArchiveBank) Seed()  { C.game4_map_archive_test_seed(b.ptr) }
+func (b *Game4ArchiveBank) Address() uintptr {
 	return uintptr(C.game4_map_archive_test_record_address(b.ptr))
 }
-func (b *game4ArchiveBank) nameAddresses() [2]uintptr {
+func (b *Game4ArchiveBank) NameAddresses() [2]uintptr {
 	return [2]uintptr{uintptr(C.game4_map_archive_test_first_address(b.ptr)), uintptr(C.game4_map_archive_test_second_address(b.ptr))}
 }
-func (b *game4ArchiveBank) payload() []byte {
+func (b *Game4ArchiveBank) Payload() []byte {
 	return C.GoBytes(C.game4_map_archive_test_payload(b.ptr), C.int(C.game4_map_archive_test_payload_bytes()))
 }
-func (b *game4ArchiveBank) ownersIntact() bool { return C.game4_map_archive_test_owner(b.ptr) != 0 }
+func (b *Game4ArchiveBank) OwnersIntact() bool { return C.game4_map_archive_test_owner(b.ptr) != 0 }
 
-type game4ArchiveLeaf struct {
-	indices     [5]int32
-	pointers    [4]uintptr
-	coordinates [2]uint64
-	setters     [4]int32
+type Game4ArchiveLeaf struct {
+	Indices     [5]int32
+	Pointers    [4]uintptr
+	Coordinates [2]uint64
+	Setters     [4]int32
 }
 
-func (b *game4ArchiveBank) leaf(reference bool) game4ArchiveLeaf {
-	r := C.game4_map_archive_test_leaf(b.ptr, C.int(bool2int(reference)))
-	var out game4ArchiveLeaf
-	for i := range out.indices {
-		out.indices[i] = int32(r.index[i])
+func (b *Game4ArchiveBank) Leaf(reference bool) Game4ArchiveLeaf {
+	r := C.game4_map_archive_test_leaf(b.ptr, C.int(boolInt(reference)))
+	var out Game4ArchiveLeaf
+	for i := range out.Indices {
+		out.Indices[i] = int32(r.index[i])
 	}
-	for i := range out.pointers {
-		out.pointers[i] = uintptr(r.pointers[i])
+	for i := range out.Pointers {
+		out.Pointers[i] = uintptr(r.pointers[i])
 	}
-	for i := range out.coordinates {
-		out.coordinates[i] = uint64(r.coordinate_bits[i])
+	for i := range out.Coordinates {
+		out.Coordinates[i] = uint64(r.coordinate_bits[i])
 	}
-	for i := range out.setters {
-		out.setters[i] = int32(r.setters[i])
+	for i := range out.Setters {
+		out.Setters[i] = int32(r.setters[i])
 	}
 	return out
 }
-func (b *game4ArchiveBank) index(path string, reference bool) (int, uint32, bool) {
+func (b *Game4ArchiveBank) Index(path string, reference bool) (int, uint32, bool) {
 	p := C.CString(path)
 	defer C.free(unsafe.Pointer(p))
-	r := C.game4_map_archive_test_index(b.ptr, p, C.int(bool2int(reference)))
+	r := C.game4_map_archive_test_index(b.ptr, p, C.int(boolInt(reference)))
 	return int(r), uint32(C.game4_map_archive_test_count()), C.game4_map_archive_test_closed() != 0
 }
-func (b *game4ArchiveBank) extract(source, directory, name, attachment string, reference bool) int {
+func (b *Game4ArchiveBank) Extract(source, directory, name, attachment string, reference bool) int {
 	s := C.CString(source)
 	defer C.free(unsafe.Pointer(s))
 	d := C.CString(directory)
@@ -267,31 +267,31 @@ func (b *game4ArchiveBank) extract(source, directory, name, attachment string, r
 	defer C.free(unsafe.Pointer(n))
 	a := C.CString(attachment)
 	defer C.free(unsafe.Pointer(a))
-	return int(C.game4_map_archive_test_extract(b.ptr, s, d, n, a, C.int(bool2int(reference))))
+	return int(C.game4_map_archive_test_extract(b.ptr, s, d, n, a, C.int(boolInt(reference))))
 }
 
-type game4ArchiveGeometry struct {
-	corners  [8]int32
-	bounds   [4]int32
-	delta    [2]int32
-	wallBits uint32
-	canaries bool
+type Game4ArchiveGeometry struct {
+	Corners  [8]int32
+	Bounds   [4]int32
+	Delta    [2]int32
+	WallBits uint32
+	Canaries bool
 }
 
-func game4ArchiveGeometryReference(x, y, w, h float32, ox, oy int32, wall uint32, reference bool) game4ArchiveGeometry {
-	r := C.game4_map_archive_test_geometry_run(C.float(x), C.float(y), C.float(w), C.float(h), C.int32_t(ox), C.int32_t(oy), C.uint32_t(wall), C.int(bool2int(reference)))
-	out := game4ArchiveGeometry{wallBits: uint32(r.wall_bits), canaries: r.canaries != 0}
-	for i := range out.corners {
-		out.corners[i] = int32(r.corners[i])
+func Game4ArchiveGeometryReference(x, y, w, h float32, ox, oy int32, wall uint32, reference bool) Game4ArchiveGeometry {
+	r := C.game4_map_archive_test_geometry_run(C.float(x), C.float(y), C.float(w), C.float(h), C.int32_t(ox), C.int32_t(oy), C.uint32_t(wall), C.int(boolInt(reference)))
+	out := Game4ArchiveGeometry{WallBits: uint32(r.wall_bits), Canaries: r.canaries != 0}
+	for i := range out.Corners {
+		out.Corners[i] = int32(r.corners[i])
 	}
-	for i := range out.bounds {
-		out.bounds[i] = int32(r.bounds[i])
+	for i := range out.Bounds {
+		out.Bounds[i] = int32(r.bounds[i])
 	}
-	for i := range out.delta {
-		out.delta[i] = int32(r.delta[i])
+	for i := range out.Delta {
+		out.Delta[i] = int32(r.delta[i])
 	}
 	return out
 }
-func game4ArchiveOffsetReference(coordinate float32, origin int32, reference bool) int32 {
-	return int32(C.game4_map_archive_test_offset(C.float(coordinate), C.int32_t(origin), C.int(bool2int(reference))))
+func Game4ArchiveOffsetReference(coordinate float32, origin int32, reference bool) int32 {
+	return int32(C.game4_map_archive_test_offset(C.float(coordinate), C.int32_t(origin), C.int(boolInt(reference))))
 }

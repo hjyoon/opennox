@@ -9,15 +9,16 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestMapgenAreaRecordNamesAndAttachmentFlags(t *testing.T) {
-	archive := game4ArchiveBankNew()
+	archive := cfixture.NewGame4ArchiveBank()
 	if archive == nil {
 		t.Fatal("allocate area archive")
 	}
-	t.Cleanup(archive.close)
-	archive.seed()
+	t.Cleanup(archive.Close)
+	archive.Seed()
 	names := [3]string{"Test--Room---NSW-C", "Second-Room-w-NSE", strings.Repeat("R", 60) + "P"}
 	for i, name := range names {
 		buf := unsafe.Slice((*byte)(game4MapRecord(int32(i))), mapgenAreaRecordBytes)

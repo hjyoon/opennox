@@ -9,48 +9,50 @@ import (
 	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestGame4MapArchiveNativeOwnersAndGC(t *testing.T) {
-	b := game4ArchiveBankNew()
+	b := cfixture.NewGame4ArchiveBank()
 	if b == nil {
 		t.Fatal("C-owned fixture allocation failed")
 	}
-	defer b.close()
-	b.seed()
-	want := b.leaf(true)
-	wantBytes := b.payload()
-	b.seed()
-	got := b.leaf(false)
+	defer b.Close()
+	b.Seed()
+	want := b.Leaf(true)
+	wantBytes := b.Payload()
+	b.Seed()
+	got := b.Leaf(false)
 	runtime.GC()
-	if got != want || !bytes.Equal(b.payload(), wantBytes) {
+	if got != want || !bytes.Equal(b.Payload(), wantBytes) {
 		t.Fatalf("public native C entries differ from retained C reference: got %+v, want %+v", got, want)
 	}
-	base := b.address()
-	names := b.nameAddresses()
+	base := b.Address()
+	names := b.NameAddresses()
 	if unsafe.Sizeof(uintptr(0)) == 8 && base <= math.MaxUint32 {
 		t.Fatalf("C record owner is not high-address: %#x", base)
 	}
-	if got.pointers != [4]uintptr{base + 2*76, base + 3*76, names[0], names[1]} || names[0] == 0 || names[1] == 0 || names[0] == names[1] {
-		t.Fatalf("borrowed pointer identities differ: %x (records=%#x)", got.pointers, base)
+	if got.Pointers != [4]uintptr{base + 2*76, base + 3*76, names[0], names[1]} || names[0] == 0 || names[1] == 0 || names[0] == names[1] {
+		t.Fatalf("borrowed pointer identities differ: %x (records=%#x)", got.Pointers, base)
 	}
-	if !b.ownersIntact() {
+	if !b.OwnersIntact() {
 		t.Fatal("native C owner slots or adjacent canaries changed")
 	}
 	// Call through the public C ABI after collection while the same C bank
 	// remains installed; no Go pointer was retained in a C global owner.
-	if again := b.leaf(false); again != got {
+	if again := b.Leaf(false); again != got {
 		t.Fatalf("public entry results changed across GC: %+v -> %+v", got, again)
 	}
 }
 
 func TestGame4MapArchiveIndexCurrentCReference(t *testing.T) {
 	initMapgenReaderHandles502B10(t)
-	b := game4ArchiveBankNew()
+	b := cfixture.NewGame4ArchiveBank()
 	if b == nil {
 		t.Fatal("C-owned fixture allocation failed")
 	}
-	defer b.close()
+	defer b.Close()
 	path := filepath.Join(t.TempDir(), "index.bin")
 	valid := mapgenStreamWire502B10(
 		mapgenRecordWire502B10([]byte{'A', 0, 'Z'}, 0x7fc01234, 0x80000000, bytes.Repeat([]byte{1, 2, 3}, 1500)),
@@ -68,12 +70,12 @@ func TestGame4MapArchiveIndexCurrentCReference(t *testing.T) {
 			if err := os.WriteFile(path, tc.wire, 0o600); err != nil {
 				t.Fatal(err)
 			}
-			b.seed()
-			wr, wc, wclosed := b.index(path, true)
-			want := b.payload()
-			b.seed()
-			gr, gc, gclosed := b.index(path, false)
-			if gr != wr || gc != wc || gclosed != wclosed || !gclosed || !bytes.Equal(b.payload(), want) || !b.ownersIntact() {
+			b.Seed()
+			wr, wc, wclosed := b.Index(path, true)
+			want := b.Payload()
+			b.Seed()
+			gr, gc, gclosed := b.Index(path, false)
+			if gr != wr || gc != wc || gclosed != wclosed || !gclosed || !bytes.Equal(b.Payload(), want) || !b.OwnersIntact() {
 				t.Fatalf("index/reference mismatch: got(%d,%d,%v), want(%d,%d,%v)", gr, gc, gclosed, wr, wc, wclosed)
 			}
 		})
@@ -95,9 +97,9 @@ func TestGame4MapArchiveGeometryCurrentCReference(t *testing.T) {
 		{"unordered", float32(math.NaN()), 12, float32(math.Inf(1)), 0, 0, 0, 1},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			want := game4ArchiveGeometryReference(tc.x, tc.y, tc.w, tc.h, tc.ox, tc.oy, tc.wall, true)
-			got := game4ArchiveGeometryReference(tc.x, tc.y, tc.w, tc.h, tc.ox, tc.oy, tc.wall, false)
-			if got != want || !got.canaries {
+			want := cfixture.Game4ArchiveGeometryReference(tc.x, tc.y, tc.w, tc.h, tc.ox, tc.oy, tc.wall, true)
+			got := cfixture.Game4ArchiveGeometryReference(tc.x, tc.y, tc.w, tc.h, tc.ox, tc.oy, tc.wall, false)
+			if got != want || !got.Canaries {
 				t.Fatalf("geometry differs: got %+v, want retained C %+v", got, want)
 			}
 		})
@@ -115,8 +117,8 @@ func TestGame4MapArchiveGeometryCurrentCReference(t *testing.T) {
 		{"offset infinity", float32(math.Inf(-1)), math.MaxInt32},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			want := game4ArchiveOffsetReference(tc.coordinate, tc.origin, true)
-			if got := game4ArchiveOffsetReference(tc.coordinate, tc.origin, false); got != want {
+			want := cfixture.Game4ArchiveOffsetReference(tc.coordinate, tc.origin, true)
+			if got := cfixture.Game4ArchiveOffsetReference(tc.coordinate, tc.origin, false); got != want {
 				t.Fatalf("offset differs: %d / retained C %d", got, want)
 			}
 		})
@@ -125,11 +127,11 @@ func TestGame4MapArchiveGeometryCurrentCReference(t *testing.T) {
 
 func TestGame4MapArchiveExtractCurrentCReference(t *testing.T) {
 	initMapgenReaderHandles502B10(t)
-	b := game4ArchiveBankNew()
+	b := cfixture.NewGame4ArchiveBank()
 	if b == nil {
 		t.Fatal("C-owned fixture allocation failed")
 	}
-	defer b.close()
+	defer b.Close()
 	dir := t.TempDir()
 	source := filepath.Join(dir, "AreaMap.dat")
 	attachment := filepath.Join(dir, "embedded.bin")
@@ -166,11 +168,11 @@ func TestGame4MapArchiveExtractCurrentCReference(t *testing.T) {
 				if err := os.WriteFile(attachment, []byte("stale owned output"), 0o600); err != nil {
 					t.Fatal(err)
 				}
-				b.seed()
-				got := b.extract(source, dir, tc.lookup, attachment, reference)
+				b.Seed()
+				got := b.Extract(source, dir, tc.lookup, attachment, reference)
 				mapBytes, mapExists := read(filepath.Join(dir, "copy.tmp"))
 				attachmentBytes, attachmentExists := read(attachment)
-				if !b.ownersIntact() {
+				if !b.OwnersIntact() {
 					t.Fatal("extraction changed native owner slots/canaries")
 				}
 				if reference {

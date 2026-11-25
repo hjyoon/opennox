@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "quest_win_screen_450770.h"
+#include "cgo_const.h"
 #include "client__gui__window.h"
 #include "common__strman.h"
 #include "GAME1.h"
@@ -78,8 +79,8 @@ var questWinCall450770 = func(packet *byte) int32 {
 	return questWinScreen450770(packet, questWinNativeHooks450770())
 }
 
-//export nox_client_questWinScreen_native_450770
-func nox_client_questWinScreen_native_450770(packet *C.uchar) C.int {
+//export nox_xxx_clientQuestWinScreen_450770
+func nox_xxx_clientQuestWinScreen_450770(packet *C.nox_cgo_const_uchar) C.int {
 	return C.int(questWinCall450770((*byte)(unsafe.Pointer(packet))))
 }
 

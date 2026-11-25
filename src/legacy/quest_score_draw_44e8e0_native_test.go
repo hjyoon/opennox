@@ -8,11 +8,11 @@ import (
 	"testing"
 )
 
-// Compile the complete live C renderer with real native layouts and UTF-16
+// Compile the retained C renderer with real native layouts and UTF-16
 // formatting. Only the memory map, locale and drawing services are controlled.
 func questScoreDrawNative44E8E0(t *testing.T, mode string) {
 	t.Helper()
-	source, err := os.ReadFile("client__gui__guibrief.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/client__gui__guibrief.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

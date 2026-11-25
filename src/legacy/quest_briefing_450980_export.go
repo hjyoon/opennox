@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "quest_briefing_450980.h"
+#include "cgo_const.h"
 */
 import "C"
 
@@ -27,8 +28,8 @@ var questStageBriefingCall450980 = func(packet *byte, show int32) int32 {
 	return questStageBriefing450980(packet, show, questStageBriefingNativeHooks450980())
 }
 
-//export nox_client_showQuestBriefing2_native_450980
-func nox_client_showQuestBriefing2_native_450980(packet *C.uchar, show C.int) C.int {
+//export nox_client_showQuestBriefing2_450980
+func nox_client_showQuestBriefing2_450980(packet *C.nox_cgo_const_uchar, show C.int) C.int {
 	return C.int(questStageBriefingCall450980((*byte)(unsafe.Pointer(packet)), int32(show)))
 }
 

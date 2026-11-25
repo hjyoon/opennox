@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "quest_briefing_draw_44f300.h"
 #include "client__gui__guibrief.h"
 #include "common__strman.h"
 extern int nox_win_width;
@@ -82,8 +81,8 @@ var questBriefingDrawCall44F300 = func(_ *gui.Window, draw *gui.WindowData) int3
 	return questBriefingDraw44F300(questBriefingDrawNativeHooks44F300(draw))
 }
 
-//export nox_client_questBriefingDraw_native_44F300
-func nox_client_questBriefingDraw_native_44F300(win *C.nox_window, draw *C.nox_window_data) C.int {
+//export sub_44F300
+func sub_44F300(win *C.nox_window, draw *C.nox_window_data) C.int {
 	return C.int(questBriefingDrawCall44F300((*gui.Window)(unsafe.Pointer(win)), (*gui.WindowData)(unsafe.Pointer(draw))))
 }
 

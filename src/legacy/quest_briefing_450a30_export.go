@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "quest_briefing_450a30.h"
+#include "cgo_const.h"
 #include "GAME1_2.h"
 #include "GAME2.h"
 #include "common__strman.h"
@@ -55,8 +56,8 @@ var questStartBriefingCall450A30 = func(packet *byte, show int32) int32 {
 	return questStartBriefing450A30(packet, show, questStartBriefingNativeHooks450A30())
 }
 
-//export nox_client_showQuestBriefing_native_450A30
-func nox_client_showQuestBriefing_native_450A30(packet *C.uchar, show C.int) C.int {
+//export nox_client_showQuestBriefing_450A30
+func nox_client_showQuestBriefing_450A30(packet *C.nox_cgo_const_uchar, show C.int) C.int {
 	return C.int(questStartBriefingCall450A30((*byte)(unsafe.Pointer(packet)), int32(show)))
 }
 

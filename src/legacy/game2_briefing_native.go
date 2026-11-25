@@ -288,7 +288,7 @@ func sub_44E560() *C.nox_window {
 			C.nox_window_setPos_46A9B0(result, C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)))
 			child := C.nox_xxx_wndGetChildByID_46B0C0(result, 1010)
 			C.nox_xxx_wndSetDrawFn_46B340(child, unsafe.Pointer(C.sub_44E6F0))
-			C.sub_44E410()
+			sub_44E410()
 			result = C.dword_5d4594_831236
 		}
 	}
@@ -333,11 +333,11 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	C.nox_client_copyRect_49F6F0(C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)), 640, 480)
 	flags := memmap.Uint8(0x5D4594, 832472)
 	if flags&1 != 0 {
-		C.sub_44E8E0(win, draw)
+		sub_44E8E0(win, draw)
 	} else if flags&2 != 0 {
-		C.sub_44F0F0(win, draw)
+		sub_44F0F0(win, draw)
 	} else if flags&4 != 0 {
-		C.sub_44F300(win, draw)
+		sub_44F300(win, draw)
 	} else {
 		C.nox_xxx_wndStaticDrawNoImage_488D00(win, draw)
 	}

@@ -206,7 +206,7 @@ func Nox_client_spellSetSelect_460590() {
 }
 
 func Nox_client_buildTrap_45E040() {
-	C.nox_client_buildTrap_45E040()
+	nox_client_buildTrap_45E040()
 }
 
 func Nox_xxx_guiServerOptsLoad_457500() {

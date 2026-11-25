@@ -61,7 +61,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 		if player.spell_lvl[34] == 1 && notify != 0 {
 			show = 1
 		}
-		C.nox_xxx_quickbarAddTrap_460EC0(show)
+		nox_xxx_quickbarAddTrap_460EC0(show)
 	} else if notify != 0 {
 		if page := game2BookFind(id, 137); page != 137 {
 			game2BookNotify(id, page)

@@ -423,7 +423,7 @@ func nox_xxx_bookSpellDrop_45DCA0(spell C.int, flags C.char, x, y C.int, source 
 	trap := g2qTrap()
 	root := nox_quickbar_root(trap)
 	shown := root != nil && C.wndIsShown_nox_xxx_wndIsShown_46ACC0(root) != 0
-	if (shown || C.nox_xxx_spellPutInBox_45DEB0(trap, spell, x, y) == 0) && source != trap {
+	if (shown || nox_xxx_spellPutInBox_45DEB0(trap, spell, x, y) == 0) && source != trap {
 		first := 4
 		if memmap.Uint32(0x5D4594, 1049476) != 0 {
 			first = 0
@@ -436,7 +436,7 @@ func nox_xxx_bookSpellDrop_45DCA0(spell C.int, flags C.char, x, y C.int, source 
 				oldSpell = *(*uint16)(unsafe.Add(row, uintptr(8*slot)))
 				oldFlags = *g2qB(row, uintptr(8*slot+4))
 			}
-			if C.nox_xxx_spellPutInBox_45DEB0(data, spell, x, y) == 0 {
+			if nox_xxx_spellPutInBox_45DEB0(data, spell, x, y) == 0 {
 				continue
 			}
 			if slot >= 0 && row != nil {
@@ -834,7 +834,7 @@ func nox_xxx_quickbarTrapButtonProc_45F7A0(win *C.nox_window, event, pos C.uint)
 	}
 	if memmap.Uint32(0x5D4594, 1047928) != 0 {
 		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(pos)), C.int(uint32(pos)>>16))) {
-			C.nox_client_buildTrap_45E040()
+			nox_client_buildTrap_45E040()
 		}
 		C.nox_xxx_wndClearCaptureMain_46ADE0(win)
 		C.dword_5d4594_1049532 = nil
@@ -851,7 +851,7 @@ func nox_xxx_quickbarTrapButtonProc_45F7A0(win *C.nox_window, event, pos C.uint)
 		C.dword_5d4594_1049532 = win
 		*memmap.PtrUint32(0x5D4594, 1047928) = 1
 	} else {
-		C.nox_client_buildTrap_45E040()
+		nox_client_buildTrap_45E040()
 	}
 	return 1
 }
@@ -943,7 +943,7 @@ func nox_xxx_quickbarDrawFn_460000(unused1 *C.nox_window, unused2 *C.nox_window_
 	if delta >= 0 {
 		if delta <= 0 {
 			if uint32(C.dword_5d4594_1049536) > uint32(C.nox_win_height) {
-				C.sub_460070()
+				sub_460070()
 				C.dword_5d4594_1049536 = C.uint32_t(C.nox_win_height - 74)
 			}
 		} else {

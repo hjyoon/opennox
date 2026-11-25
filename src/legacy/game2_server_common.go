@@ -92,7 +92,7 @@ func g2ServerPlayerByName(name *C.wchar2_t) *C.nox_playerInfo {
 		return nil
 	}
 	for p := C.nox_common_playerInfoGetFirst_416EA0(); p != nil; p = C.nox_common_playerInfoGetNext_416EE0(p) {
-		if C.game2_server_icmp(&p.name_final[0], name) == 0 {
+		if _nox_wcsicmp(&p.name_final[0], name) == 0 {
 			return p
 		}
 	}

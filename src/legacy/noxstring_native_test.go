@@ -8,6 +8,26 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+func TestLegacyCStringCopyRetainsCodeUnitsAndBounds(t *testing.T) {
+	wide := [...]uint16{0x0080, 0x0100, 0xd83d, 0x00e9, 0}
+	narrow := [...]byte{0xdd, 0xdd, 0xdd, 0xdd, 0xdd, 0xdd}
+	copyLegacyCString(narrow[:5], &wide[0])
+	if want := [6]byte{0x80, 0, 0x3d, 0xe9, 0, 0xdd}; narrow != want {
+		t.Fatalf("wide-to-narrow code units = %x, want %x", narrow, want)
+	}
+	narrowSource := [...]byte{0x80, 0xff, 0x41}
+	wideDestination := [...]uint16{0xdddd, 0xdddd, 0xdddd, 0xdddd}
+	copyLegacyCString(wideDestination[:3], &narrowSource[0])
+	if want := [4]uint16{0x80, 0xff, 0, 0xdddd}; wideDestination != want {
+		t.Fatalf("bounded narrow-to-wide code units = %x, want %x", wideDestination, want)
+	}
+	null := make([]byte, len("(null)")+1)
+	copyLegacyCString(null, (*uint16)(nil))
+	if got := string(null); got != "(null)\x00" {
+		t.Fatalf("nil wide string = %q, want a terminated (null)", got)
+	}
+}
+
 func TestLegacyWideStringKeepsCodeUnitsAndPointerOffsets(t *testing.T) {
 	previous := wideStringTokenNext
 	t.Cleanup(func() { wideStringTokenNext = previous })

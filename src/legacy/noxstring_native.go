@@ -27,6 +27,35 @@ func appendWideString(dst, src *wchar2_t) {
 	nox_wcscat(dst, (*C.nox_const_string_unit_t)(src))
 }
 
+// copyLegacyCString applies the legacy formatter's code-unit conversion to
+// one string, with a terminator within the destination.
+func copyLegacyCString[D, S formatCodeUnit](dst []D, src *S) {
+	if len(dst) == 0 {
+		return
+	}
+	limit := len(dst) - 1
+	if src == nil {
+		const nullText = "(null)"
+		n := min(limit, len(nullText))
+		for i := range n {
+			dst[i] = D(nullText[i])
+		}
+		dst[n] = 0
+		return
+	}
+	stride := unsafe.Sizeof(*src)
+	var n int
+	for n < limit {
+		unit := *(*S)(unsafe.Add(unsafe.Pointer(src), uintptr(n)*stride))
+		if unit == 0 {
+			break
+		}
+		dst[n] = D(unit)
+		n++
+	}
+	dst[n] = 0
+}
+
 func wideStringUnit(text *wchar2_t, index uintptr) *wchar2_t {
 	return (*wchar2_t)(unsafe.Add(unsafe.Pointer(text), index*2))
 }

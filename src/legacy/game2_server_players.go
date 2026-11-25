@@ -220,7 +220,7 @@ func sub_456F10(name *C.wchar2_t, remove C.int) C.int {
 	i := 0
 	for p := g2ServerFirst(&C.nox_gui_server_players.teams); p != nil; p = g2ServerNext(p) {
 		entry := (*C.nox_gui_server_team_entry)(p)
-		if C.game2_server_icmp(&entry.name[0], name) == 0 {
+		if _nox_wcsicmp(&entry.name[0], name) == 0 {
 			if remove != 0 {
 				accessListNativeRemove416720((*accessListNode416720)(p))
 				g2ServerRelease(p)

@@ -36,7 +36,7 @@ func nox_xxx_guiServerOptionsTryHide_4574D0() C.int {
 func sub_457B60(input *C.char) C.int {
 	buf, free := g2ServerTemp(100)
 	defer free()
-	C.game2_server_widen((*C.wchar2_t)(unsafe.Pointer(&buf[0])), C.nox_xxx_serverOptionsGetServername_40A4C0())
+	copyLegacyCString(buf, (*byte)(unsafe.Pointer(nox_xxx_serverOptionsGetServername_40A4C0())))
 	g2ServerText(C.dword_5d4594_1046512, 16414, unsafe.Pointer(&buf[0]), 0)
 	C.sub_459CD0()
 	id := 10119
@@ -355,13 +355,9 @@ func sub_459870() *C.char { return (*C.char)(unsafe.Pointer(&C.nox_gui_server_op
 
 //export sub_459A40
 func sub_459A40(name *C.char) C.int {
-	narrow, free := alloc.Make([]byte{}, 100)
-	defer free()
 	wide, freeWide := g2ServerTemp(100)
 	defer freeWide()
-	C.strncpy((*C.char)(unsafe.Pointer(&narrow[0])), name, 15)
-	narrow[15] = 0
-	C.game2_server_widen((*C.wchar2_t)(unsafe.Pointer(&wide[0])), (*C.char)(unsafe.Pointer(&narrow[0])))
+	copyLegacyCString(wide[:16], (*byte)(unsafe.Pointer(name)))
 	return C.int(g2ServerText(C.dword_5d4594_1046512, 16414, unsafe.Pointer(&wide[0]), 0))
 }
 
@@ -371,7 +367,7 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	defer free()
 	buf := (*C.char)(unsafe.Pointer(&narrow[0]))
 	name := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046512, 16413, 0, 0)))
-	C.game2_server_narrow_wide(buf, name)
+	copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(name)))
 	C.strncpy((*C.char)(unsafe.Add(output, 9)), buf, 15)
 	*(*uint16)(unsafe.Add(output, 52)) = uint16(C.sub_459C10())
 	copy(unsafe.Slice((*byte)(unsafe.Add(output, 24)), 20), unsafe.Slice((*byte)(unsafe.Pointer(sub_453F90())), 20))
@@ -389,7 +385,7 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	result := int(g2ServerEvent(C.dword_5d4594_1046496, 16404, 0, 0))
 	if result >= 0 {
 		p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046496, 16406, uintptr(result), 0)))
-		C.game2_server_narrow_wide(buf, p)
+		copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(p)))
 		tokens := legacyByteTokens{next: &narrow[0]}
 		token := tokens.take("\t")
 		if token != nil {

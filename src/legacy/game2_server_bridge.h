@@ -177,14 +177,8 @@ extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 extern nox_video_bag_image_t* nox_fb_flag_team_border;
 extern nox_list_item_t nox_gui_server_options_rules;
-// Macro/vararg or function-pointer ABI bridges only; no game algorithm here.
+// Keep the source location used by the C window dispatch macro.
 static uintptr_t game2_server_event(nox_window* w,int e,uintptr_t a,uintptr_t b) {
  return nox_window_call_field_94(w,e,a,b);
 }
-static void game2_server_format_wide(wchar2_t* dst,const wchar2_t* src,int star) {
- if(star) nox_swprintf(dst,L"*%s",src); else nox_swprintf(dst,L"%s",src);
-}
-static void game2_server_narrow_wide(char* dst,const wchar2_t* src) { nox_sprintf(dst,"%S",src); }
-static void game2_server_widen(wchar2_t* dst,const char* src) { nox_swprintf(dst,L"%S",src); }
-static int game2_server_icmp(const wchar2_t* a,const wchar2_t* b) { return _nox_wcsicmp(a,b); }
 #endif

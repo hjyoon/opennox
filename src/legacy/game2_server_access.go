@@ -350,7 +350,8 @@ func sub_455800() *C.int {
 				g2ServerText(s.wnd_10105, 16397, unsafe.Pointer(&p.name[0]), ^uintptr(0))
 			} else {
 				buf, free := g2ServerTemp(26)
-				C.game2_server_format_wide((*C.wchar2_t)(unsafe.Pointer(&buf[0])), &p.name[0], 1)
+				buf[0] = '*'
+				copyLegacyCString(buf[1:], (*uint16)(unsafe.Pointer(&p.name[0])))
 				g2ServerText(s.wnd_10105, 16397, unsafe.Pointer(&buf[0]), ^uintptr(0))
 				free()
 			}

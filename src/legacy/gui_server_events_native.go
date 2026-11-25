@@ -244,21 +244,21 @@ func serverOptionsFieldChanged(eventArg, id uintptr) C.int {
 	if text == nil {
 		return 1
 	}
-	var narrow [200]C.char
-	C.game2_server_narrow_wide(&narrow[0], text)
+	var narrow [200]byte
+	copyLegacyCString(narrow[:], (*uint16)(unsafe.Pointer(text)))
 	if narrow[0] == 0 {
 		return 1
 	}
 	switch id {
 	case 10101:
 		window.draw_data.text_color = C.uint32_t(nox_color_rgb_4344A0(230, 165, 65))
-		alloc.StrCopy(settings.Field0[9:], GoString(&narrow[0]))
+		alloc.StrCopy(settings.Field0[9:], string(narrow[:StrLenBytes(narrow[:])]))
 		nox_xxx_gameSetServername_40A440((*C.char)(unsafe.Pointer(&settings.Field0[9])))
 	case 10134:
-		settings.Field54 = uint16(max(C.atoi(&narrow[0]), 0))
+		settings.Field54 = uint16(max(C.atoi((*C.char)(unsafe.Pointer(&narrow[0]))), 0))
 		sub_459D50(1)
 	case 10135:
-		value := max(C.atoi(&narrow[0]), 0)
+		value := max(C.atoi((*C.char)(unsafe.Pointer(&narrow[0]))), 0)
 		if value > 255 {
 			value = 255
 			g2ServerIntText(window, 255, ^uintptr(0))

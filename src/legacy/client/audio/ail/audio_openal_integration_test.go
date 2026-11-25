@@ -95,6 +95,55 @@ func TestOpenALStreamPause(t *testing.T) {
 	}
 }
 
+func TestOpenALDeviceFocusPause(t *testing.T) {
+	h := openPlaybackTestDriver(t)
+	path := silentPlaybackWAV(t, 2*time.Second)
+	active, paused := h.OpenStream(path), h.OpenStream(path)
+	for _, stream := range []Stream{active, paused} {
+		if stream == 0 {
+			t.Fatal("cannot open PCM stream")
+		}
+		t.Cleanup(func() { _ = stream.Close() })
+		stream.SetVolume(0)
+		stream.Start()
+	}
+	h.get().doWork()
+	paused.Pause(true)
+	source := active.get().source
+	if source.State() != openal.Playing || paused.get().source.State() != openal.Paused {
+		t.Fatal("focus fixture needs playing and independently paused sources")
+	}
+	if !h.SetPlaybackPaused(true) {
+		t.Skip("OpenAL playback device does not support pausing output")
+	}
+	t.Cleanup(func() { h.SetPlaybackPaused(false) })
+	cursor := source.Geti(openal.AlSampleOffset)
+	stats := h.PlaybackStats()
+	for range 8 {
+		time.Sleep(10 * time.Millisecond)
+		h.get().doWork()
+	}
+	if got := source.Geti(openal.AlSampleOffset); got != cursor {
+		t.Fatalf("unfocused source advanced from %d to %d", cursor, got)
+	}
+	if got := h.PlaybackStats(); got != stats {
+		t.Fatalf("unfocused device serviced audio buffers: %+v -> %+v", stats, got)
+	}
+	if !h.SetPlaybackPaused(false) {
+		t.Fatal("cannot resume OpenAL output")
+	}
+	deadline := time.Now().Add(500 * time.Millisecond)
+	for source.Geti(openal.AlSampleOffset) == cursor && time.Now().Before(deadline) {
+		time.Sleep(10 * time.Millisecond)
+	}
+	if got := source.Geti(openal.AlSampleOffset); got == cursor {
+		t.Fatal("focused playback did not resume")
+	}
+	if got := paused.get().source.State(); got != openal.Paused {
+		t.Fatalf("independently paused stream became %v on focus gain", got)
+	}
+}
+
 func TestOpenALShortStreamDrain(t *testing.T) {
 	h := openPlaybackTestDriver(t)
 	s := h.OpenStream(silentPlaybackWAV(t, 40*time.Millisecond))

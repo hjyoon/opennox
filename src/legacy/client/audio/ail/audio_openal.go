@@ -107,14 +107,15 @@ func (h Timer) get() *audioTimer {
 }
 
 type audioDriver struct {
-	h          Driver
-	dev        *openal.Device
-	ctx        *openal.Context
-	mu         sync.Mutex
-	sampleHead *audioSample
-	streamHead *audioStream
-	t          *time.Ticker
-	stats      PlaybackStats
+	h            Driver
+	dev          *openal.Device
+	ctx          *openal.Context
+	mu           sync.Mutex
+	outputPaused bool
+	sampleHead   *audioSample
+	streamHead   *audioStream
+	t            *time.Ticker
+	stats        PlaybackStats
 }
 
 type audioSampleBuf struct {
@@ -968,6 +969,27 @@ func (h Stream) Status() int {
 	return 2
 }
 
+// SetPlaybackPaused freezes the device and its queue service together.
+func (dig Driver) SetPlaybackPaused(paused bool) bool {
+	// Closing removes the driver from this map before destroying its device.
+	audioDrivers.RLock()
+	defer audioDrivers.RUnlock()
+	d := audioDrivers.byHandle[dig]
+	if d == nil {
+		return false
+	}
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	if d.outputPaused == paused {
+		return true
+	}
+	if !d.dev.SetPlaybackPaused(paused) {
+		return false
+	}
+	d.outputPaused = paused
+	return true
+}
+
 func (dig Driver) Close() error {
 	if audioDebug {
 		audioLog.Println("AIL_waveOutClose")
@@ -1140,6 +1162,9 @@ func (s *audioStream) work() {
 func (d *audioDriver) doWork() {
 	d.mu.Lock()
 	defer d.mu.Unlock()
+	if d.outputPaused {
+		return
+	}
 	for s := d.sampleHead; s != nil; s = s.next {
 		s.work()
 	}

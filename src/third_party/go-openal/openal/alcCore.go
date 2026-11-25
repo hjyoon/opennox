@@ -38,6 +38,21 @@ ALCint walcGetInteger(ALCdevice *device, ALCenum param) {
 	alcGetIntegerv(device, param, 1, &result);
 	return result;
 }
+
+typedef void (ALC_APIENTRY *walcDevicePauseProc)(ALCdevice *);
+
+static int walcSetDevicePaused(ALCdevice *device, int paused) {
+	if (!alcIsExtensionPresent(device, "ALC_SOFT_pause_device")) {
+		return 0;
+	}
+	const ALCchar *name = paused ? "alcDevicePauseSOFT" : "alcDeviceResumeSOFT";
+	walcDevicePauseProc toggle = (walcDevicePauseProc)alcGetProcAddress(device, name);
+	if (!toggle) {
+		return 0;
+	}
+	toggle(device);
+	return 1;
+}
 */
 import "C"
 import "unsafe"
@@ -131,6 +146,16 @@ func (self *Device) cHandle() *C.ALCdevice {
 func (self *Device) CloseDevice() bool {
 	//TODO: really a method? or not?
 	return C.alcCloseDevice(self.cHandle()) != 0
+}
+
+// SetPlaybackPaused suspends or resumes the mixer's device output.
+// It returns whether the playback device supports the operation.
+func (self *Device) SetPlaybackPaused(paused bool) bool {
+	var mode C.int
+	if paused {
+		mode = 1
+	}
+	return C.walcSetDevicePaused(self.cHandle(), mode) != 0
 }
 
 func (self *Device) CreateContext() *Context {

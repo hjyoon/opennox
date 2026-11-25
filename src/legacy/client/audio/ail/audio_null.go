@@ -96,6 +96,8 @@ func (h Stream) Status() int { return 2 }
 
 func (dig Driver) Close() error { return nil }
 
+func (dig Driver) SetPlaybackPaused(paused bool) bool { return false }
+
 func WaveOutOpen() Driver {
 	return 0
 }

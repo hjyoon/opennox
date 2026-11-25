@@ -106,10 +106,18 @@ type AudioSample struct {
 }
 
 //export sub_43E8E0
-func sub_43E8E0(a1 C.int) {}
+func sub_43E8E0(_ C.int) {
+	if Sub_43F130 != nil {
+		Sub_43F130().SetPlaybackPaused(true)
+	}
+}
 
 //export sub_43E910
-func sub_43E910(a1 C.int) {}
+func sub_43E910(_ C.int) {
+	if Sub_43F130 != nil {
+		Sub_43F130().SetPlaybackPaused(false)
+	}
+}
 
 //export sub_43F050
 func sub_43F050() C.int {

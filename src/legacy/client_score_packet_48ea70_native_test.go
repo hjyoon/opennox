@@ -10,11 +10,10 @@ import (
 	"testing"
 )
 
-// Extract both complete production switch arms and their actual Player
-// declarations. This fixture does not manufacture a corrected body; the
-// unrelated dispatcher arms remain a separate actual-CGo regression.
+// Exercise both retired C switch arms and their original Player declarations.
+// The active client packet routes are covered by the dispatcher test.
 func TestClientScorePackets48EA70NativeBodies(t *testing.T) {
-	source, err := os.ReadFile("client__network__cdecode.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/client__network__cdecode.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

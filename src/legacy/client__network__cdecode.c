@@ -65,15 +65,6 @@ void sub_456140(unsigned char a1);
 
 uint32_t nox_client_fadeObjects_80836 = 1;
 
-// Score packets are packed little-endian wire data, not native Player layouts.
-static uint16_t nox_cdecode_score_read_u16(const unsigned char* data) {
-	return (uint16_t)data[0] | (uint16_t)((uint16_t)data[1] << 8);
-}
-
-static uint32_t nox_cdecode_score_read_u32(const unsigned char* data) {
-	return (uint32_t)data[0] | (uint32_t)data[1] << 8 | (uint32_t)data[2] << 16 | (uint32_t)data[3] << 24;
-}
-
 //----- (0048EA70) --------------------------------------------------------
 void sub_41CC00(char* s);
 void* nox_new_npc(int id);
@@ -159,55 +150,12 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	unsigned int v117;      // ecx
 	unsigned short v118;    // ax
 	char* v119;             // esi
-	int v124;               // eax
-	int v125;               // esi
-	char* v126;             // ebx
-	nox_playerInfo* v127;   // esi
-	wchar2_t* v128;          // eax
 	unsigned int v129;      // eax
 	int v130;               // esi
 	int v132;               // eax
 	int v133;               // esi
 	int v134;               // esi
 	int v135;               // ebx
-	int v140;               // eax
-	int v141;               // esi
-	nox_playerInfo* v142;   // esi
-	wchar2_t* v143;          // eax
-	nox_team_t* v144;       // esi
-	nox_object_team_t* v145; // eax
-	wchar2_t* v146;          // eax
-	int v147;               // eax
-	wchar2_t* v148;          // eax
-	wchar2_t* v149;          // eax
-	int v150;               // esi
-	wchar2_t* v151;          // eax
-	int v152;               // eax
-	int v153;               // edi
-	nox_playerInfo* v154;   // ebx
-	wchar2_t* v155;          // eax
-	wchar2_t* v156;          // eax
-	wchar2_t* v157;          // eax
-	wchar2_t* v158;          // eax
-	wchar2_t* v159;          // eax
-	nox_team_t* v160;       // ebx
-	wchar2_t* v161;          // eax
-	nox_object_team_t* v162; // esi
-	wchar2_t* v163;          // eax
-	int v164;               // esi
-	wchar2_t* v165;          // eax
-	wchar2_t* v166;          // eax
-	wchar2_t* v167;          // eax
-	wchar2_t* v168;          // eax
-	wchar2_t* v169;          // eax
-	wchar2_t* v170;          // eax
-	wchar2_t* v171;          // eax
-	nox_team_t* v172;       // ebx
-	wchar2_t* v173;          // eax
-	nox_object_team_t* v174; // esi
-	wchar2_t* v175;          // eax
-	int v176;               // esi
-	wchar2_t* v177;          // eax
 	int v178;               // eax
 	int v179;               // esi
 	int v180;               // eax
@@ -317,7 +265,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	nox_playerInfo* v296;   // esi
 	int v297;               // eax
 	int v298;               // esi
-	wchar2_t* v314;          // [esp-Ch] [ebp-175Ch]
 	char v315;              // [esp-8h] [ebp-1758h]
 	unsigned char v316;     // [esp-8h] [ebp-1758h]
 	int v317;               // [esp-4h] [ebp-1754h]
@@ -335,9 +282,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v329;               // [esp+4h] [ebp-174Ch]
 	int v331;               // [esp+4h] [ebp-174Ch]
 	float v332;             // [esp+4h] [ebp-174Ch]
-	wchar2_t* v334;          // [esp+4h] [ebp-174Ch]
-	wchar2_t* v335;          // [esp+4h] [ebp-174Ch]
-	wchar2_t* v336;          // [esp+4h] [ebp-174Ch]
 	int v337;               // [esp+4h] [ebp-174Ch]
 	int v338;               // [esp+4h] [ebp-174Ch]
 	int v339;               // [esp+4h] [ebp-174Ch]
@@ -359,7 +303,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v367;               // [esp+44h] [ebp-170Ch]
 	int v368;               // [esp+48h] [ebp-1708h]
 	int v371;               // [esp+54h] [ebp-16FCh]
-	int v372 = 0;           // [esp+58h] [ebp-16F8h]
 	int v374;               // [esp+60h] [ebp-16F0h]
 	int2 v377;              // [esp+6Ch] [ebp-16E4h]
 	int2 v378;              // [esp+74h] [ebp-16DCh]
@@ -367,19 +310,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v382[8];            // [esp+A0h] [ebp-16B0h]
 	wchar2_t v386[20];       // [esp+F0h] [ebp-1660h]
 	wchar2_t v387[20];       // [esp+118h] [ebp-1638h]
-	wchar2_t v388[64];       // [esp+140h] [ebp-1610h]
-	wchar2_t v389[128];      // [esp+1C0h] [ebp-1590h]
-	wchar2_t v390[128];      // [esp+2C0h] [ebp-1490h]
-	wchar2_t v391[128];      // [esp+3C0h] [ebp-1390h]
-	wchar2_t v392[128];      // [esp+4C0h] [ebp-1290h]
-	wchar2_t v393[128];      // [esp+5C0h] [ebp-1190h]
-	wchar2_t v394[128];      // [esp+6C0h] [ebp-1090h]
-	wchar2_t v395[64];       // [esp+7C0h] [ebp-F90h]
-	wchar2_t v396[64];       // [esp+840h] [ebp-F10h]
 	wchar2_t v397[100];      // [esp+8C0h] [ebp-E90h]
-	wchar2_t v398[128];      // [esp+988h] [ebp-DC8h]
-	wchar2_t v400[256];        // [esp+B50h] [ebp-C00h]
-	wchar2_t v406[256];        // [esp+1550h] [ebp-200h]
 
 	if (op == 0x9e && (!data || sz < 7)) {
 		return -1;
@@ -684,30 +615,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	case 77: // MSG_REPORT_DROP
 		return nox_client_decodeInventoryReport(op, data, sz);
 	case 78: // MSG_REPORT_LESSON
-		v124 = nox_xxx_netClearHighBit_578B30(nox_cdecode_score_read_u16(data + 1));
-		v125 = v124;
-		v126 = nox_xxx_cliGamedataGet_416590(0);
-		if (nox_client_isConnected_43C700()) {
-			v127 = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(v125);
-			if (v127) {
-				if (!nox_common_gameFlags_check_40A5C0(1)) {
-					v127->lessons = (int32_t)nox_cdecode_score_read_u32(data + 3);
-					v127->field_2140 = nox_cdecode_score_read_u32(data + 7);
-					v127->field_2144 = gameFrame();
-				}
-				if (nox_common_gameFlags_check_40A5C0(1024)) {
-					k = (int32_t)nox_cdecode_score_read_u32(data + 7);
-					if (k >= *((unsigned short*)v126 + 27)) {
-						v128 = nox_strman_loadString_40F1D0("Eliminated", 0,
-															"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3452);
-						nox_swprintf(v395, v128, v127->name_final);
-						nox_xxx_clientPlaySoundSpecial_452D80(312, 100);
-						nox_xxx_printCentered_445490(v395);
-					}
-				}
-			}
-		}
-		return 11;
+		return nox_client_decodeScorePacket(op, data, sz);
 	case 79: // MSG_REPORT_MUNDANE_ARMOR_EQUIP
 	case 80: // MSG_REPORT_MUNDANE_WEAPON_EQUIP
 		if (!nox_client_isConnected_43C700()) {
@@ -750,304 +658,11 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		sub_417B80(*(uint8_t*)data, *(unsigned short*)(data + 1), *(uint32_t*)(data + 3));
 		return 7;
 	case 85: // MSG_REPORT_TREASURE_COUNT
-		v140 = nox_xxx_netClearHighBit_578B30(nox_cdecode_score_read_u16(data + 1));
-		v141 = v140;
-		if (nox_client_isConnected_43C700()) {
-			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
-				nox_xxx_netTestHighBit_578B70(nox_cdecode_score_read_u16(data + 1));
-			}
-			v142 = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(v141);
-			if (v142) {
-				if (!nox_common_gameFlags_check_40A5C0(1) && gameFrame() > v142->field_2160) {
-					HIWORD(v5) = 0;
-					v142->field_2152 = nox_cdecode_score_read_u16(data + 3);
-					WORD2(v5) = nox_cdecode_score_read_u16(data + 5);
-					v142->field_2156 = WORD2(v5);
-					v142->field_2160 = gameFrame();
-				}
-				k = (int32_t)(v142->field_2156 - UINT32_C(1));
-				if (v142->field_2152 == (uint32_t)k) {
-					v143 = nox_strman_loadString_40F1D0("SH_NearVictory", 0,
-														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3729);
-					nox_swprintf(v406, v143, v142->name_final);
-					nox_xxx_printCentered_445490(v406);
-				}
-			}
-		}
-		return 7;
 	case 86: // MSG_REPORT_FLAG_BALL_WINNER
-		v144 = nox_xxx_getTeamByID_418AB0(*(unsigned short*)(data + 1));
-		if (!nox_client_isConnected_43C700()) {
-			return 8;
-		}
-		HIDWORD(v5) = *(uint32_t*)(data + 4);
-		if (HIDWORD(v5) <= *(int*)&dword_5d4594_1200804) {
-			return 8;
-		}
-		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
-			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
-		}
-		nox_xxx_clientPlaySoundSpecial_452D80(309, 100);
-		if (!nox_common_gameFlags_check_40A5C0(1)) {
-			nox_xxx_setGameFlags_40A4D0(8);
-		}
-		nox_xxx_initTime_435570();
-		if (!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-			sub_470510();
-		}
-		v145 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-		if (v145 && nox_xxx_teamCompare2_419180(v145, *(uint8_t*)(data + 1))) {
-			v146 = nox_strman_loadString_40F1D0("TeamWon", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3776);
-			nox_swprintf(v400, v146);
-			v147 = 0;
-		} else {
-			v148 =
-				nox_strman_loadString_40F1D0("teamformat", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3781);
-			nox_swprintf(v400, v148, v144);
-			v149 =
-				nox_strman_loadString_40F1D0("FB_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3782);
-			nox_swprintf(v400, v149, v400);
-			v147 = 1;
-		}
-		sub_435700(v400, v147);
-		nox_xxx_guiServerOptionsHide_4597E0(0);
-		return 8;
 	case 87: // MSG_REPORT_FLAG_WINNER
-		v172 = nox_xxx_getTeamByID_418AB0(*(unsigned short*)(data + 1));
-		if (!nox_client_isConnected_43C700()) {
-			return 8;
-		}
-		k = dword_5d4594_1200804;
-		if (*(uint32_t*)(data + 4) <= *(int*)&dword_5d4594_1200804) {
-			return 8;
-		}
-		v393[0] = 0;
-		if (*(uint8_t*)(data + 3) == 1) {
-			v173 = nox_strman_loadString_40F1D0("TimeLimitReached", 0,
-												"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4055);
-			nox_swprintf(v393, v173);
-		}
-		nox_xxx_clientPlaySoundSpecial_452D80(309, 100);
-		if (!nox_common_gameFlags_check_40A5C0(1)) {
-			nox_xxx_setGameFlags_40A4D0(8);
-		}
-		nox_xxx_initTime_435570();
-		if (!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-			sub_470510();
-		}
-		v174 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-		if (v172) {
-			v175 = nox_strman_loadString_40F1D0("CTF_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
-												4071);
-			nox_swprintf(v398, v175, v172);
-			if (!v174 || !nox_xxx_teamCompare2_419180(v174, v172->field_57)) {
-				v176 = 1;
-				goto LABEL_600;
-			}
-		} else {
-			v177 = nox_strman_loadString_40F1D0("CTF_Tie", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4083);
-			nox_swprintf(v398, v177);
-		}
-		v176 = 0;
-	LABEL_600:
-		nox_wcscat(v393, v398);
-		sub_435700(v393, v176);
-		nox_xxx_guiServerOptionsHide_4597E0(0);
-		return 8;
 	case 88: // MSG_REPORT_DEATHMATCH_WINNER
-		v150 = 1;
-		v389[0] = 0;
-		v392[0] = 0;
-		v391[0] = 0;
-		if (!nox_client_isConnected_43C700()) {
-			return 8;
-		}
-		HIDWORD(v5) = *(uint32_t*)(data + 4);
-		if (HIDWORD(v5) <= *(int*)&dword_5d4594_1200804) {
-			return 8;
-		}
-		v391[0] = 0;
-		if (*(uint8_t*)(data + 3) == 1) {
-			v151 = nox_strman_loadString_40F1D0("TimeLimitReached", 0,
-												"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3823);
-			nox_swprintf(v391, v151);
-		}
-		nox_xxx_clientPlaySoundSpecial_452D80(309, 100);
-		if (!nox_common_gameFlags_check_40A5C0(1)) {
-			nox_xxx_setGameFlags_40A4D0(8);
-		}
-		if (!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-			sub_470510();
-		}
-		nox_xxx_initTime_435570();
-		if (*(uint16_t*)(data + 1)) {
-			v152 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-			v372 = v152;
-		}
-		v153 = v372;
-		v154 = nox_common_playerInfoGetByID_417040(v372);
-		if (!nox_common_gameFlags_check_40A5C0(1024)) {
-			if (*(uint16_t*)(data + 1)) {
-				if (!v154) {
-					goto LABEL_559;
-				}
-				if (!*(uint8_t*)(data + 3)) {
-					sub_4947E0(v154);
-				}
-				if (v153 != nox_player_netCode_85319C) {
-					v159 = nox_strman_loadString_40F1D0("DM_Loss", 0,
-														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3899);
-					nox_swprintf(v389, v159, v154->name_final);
-					v150 = 1;
-					goto LABEL_559;
-				}
-				if (!v154->info.isFemale) {
-					v314 = nox_strman_loadString_40F1D0("DM_MaleVictory", 0,
-														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3905);
-					nox_swprintf(v389, v314);
-					v150 = 0;
-					nox_wcscat(v391, v389);
-					sub_435700(v391, v150);
-					nox_xxx_guiServerOptionsHide_4597E0(0);
-					return 8;
-				}
-				v155 = nox_strman_loadString_40F1D0("DM_FemaleVictory", 0,
-													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3907);
-			} else {
-				v155 =
-					nox_strman_loadString_40F1D0("DM_Tie", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3884);
-			}
-			nox_swprintf(v389, v155);
-			v150 = 0;
-			nox_wcscat(v391, v389);
-			sub_435700(v391, v150);
-			nox_xxx_guiServerOptionsHide_4597E0(0);
-			return 8;
-		}
-		if (!*(uint16_t*)(data + 1)) {
-			v155 = nox_strman_loadString_40F1D0("HL_Tie", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3847);
-			nox_swprintf(v389, v155);
-			v150 = 0;
-			nox_wcscat(v391, v389);
-			sub_435700(v391, v150);
-			nox_xxx_guiServerOptionsHide_4597E0(0);
-			return 8;
-		}
-		v156 = nox_strman_loadString_40F1D0("HL_Header", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3852);
-		nox_swprintf(v389, v156);
-		if (v153 == nox_player_netCode_85319C) {
-			v334 = nox_strman_loadString_40F1D0("HL_You", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3855);
-			v157 =
-				nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3855);
-			nox_swprintf(v392, v157, v334);
-			nox_wcscat(v389, v392);
-			v150 = 0;
-		} else {
-			if (v154) {
-				v158 = nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
-													3863);
-				nox_swprintf(v392, v158, v154->name_final);
-				if (!*(uint8_t*)(data + 3)) {
-					sub_4947E0(v154);
-				}
-			}
-			nox_wcscat(v389, v392);
-			v150 = 1;
-		}
-	LABEL_559:
-		nox_wcscat(v391, v389);
-		sub_435700(v391, v150);
-		nox_xxx_guiServerOptionsHide_4597E0(0);
-		return 8;
 	case 89: // MSG_REPORT_DEATHMATCH_TEAM_WINNER
-		v160 = nox_xxx_getTeamByID_418AB0(*(unsigned short*)(data + 1));
-		if (!nox_client_isConnected_43C700()) {
-			return 8;
-		}
-		k = dword_5d4594_1200804;
-		if (*(uint32_t*)(data + 4) <= *(int*)&dword_5d4594_1200804) {
-			return 8;
-		}
-		v394[0] = 0;
-		if (*(uint8_t*)(data + 3) == 1) {
-			v161 = nox_strman_loadString_40F1D0("TimeLimitReached", 0,
-												"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3945);
-			nox_swprintf(v394, v161);
-		}
-		nox_xxx_clientPlaySoundSpecial_452D80(309, 100);
-		if (!nox_common_gameFlags_check_40A5C0(1)) {
-			nox_xxx_setGameFlags_40A4D0(8);
-		}
-		nox_xxx_initTime_435570();
-		if (!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
-			sub_470510();
-		}
-		v162 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-		if (nox_common_gameFlags_check_40A5C0(1024)) {
-			if (!v160) {
-				v163 =
-					nox_strman_loadString_40F1D0("HL_Tie", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3964);
-				nox_swprintf(v390, v163);
-				v164 = 0;
-				goto LABEL_585;
-			}
-			v165 =
-				nox_strman_loadString_40F1D0("HL_Header", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3969);
-			nox_swprintf(v390, v165);
-			if (v162 && nox_xxx_teamCompare2_419180(v162, v160->field_57)) {
-				v335 = nox_strman_loadString_40F1D0("HL_YourTeam", 0,
-													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3973);
-				v166 = nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
-													3973);
-				nox_swprintf(v388, v166, v335);
-				nox_wcscat(v390, v388);
-				v164 = 0;
-			} else {
-				v336 =
-					nox_strman_loadString_40F1D0("Team", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3980);
-				v167 = nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
-													3980);
-				nox_swprintf(v388, v167, v336);
-				nox_swprintf(v396, v388, v160);
-				nox_wcscat(v390, v396);
-				v164 = 1;
-			}
-			if (!*(uint8_t*)(data + 3)) {
-				sub_4948B0(v160);
-				goto LABEL_585;
-			}
-		} else {
-			if (!v160) {
-				v168 =
-					nox_strman_loadString_40F1D0("DM_Tie", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3999);
-				nox_swprintf(v390, v168);
-				v164 = 0;
-				goto LABEL_585;
-			}
-			if (v162 && nox_xxx_teamCompare2_419180(v162, v160->field_57)) {
-				v169 = nox_strman_loadString_40F1D0("DM_TeamVictory", 0,
-													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4006);
-				nox_swprintf(v390, v169);
-				v164 = 0;
-			} else {
-				v170 =
-					nox_strman_loadString_40F1D0("Team", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4011);
-				nox_swprintf(v388, v170, v160);
-				v171 = nox_strman_loadString_40F1D0("DM_Loss", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
-													4012);
-				nox_swprintf(v390, v171, v388);
-				v164 = 1;
-			}
-			if (!*(uint8_t*)(data + 3)) {
-				sub_4948B0(v160);
-				goto LABEL_585;
-			}
-		}
-	LABEL_585:
-		nox_wcscat(v394, v390);
-		sub_435700(v394, v164);
-		nox_xxx_guiServerOptionsHide_4597E0(0);
-		return 8;
+		return nox_client_decodeScorePacket(op, data, sz);
 	case 90: { // MSG_REPORT_ENCHANTMENT
 		v132 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v133 = v132;

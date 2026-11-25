@@ -23,13 +23,12 @@ import (
 
 //export sub_49B4B0
 func sub_49B4B0(raw *C.ushort) C.int {
-	root := C.dword_5d4594_1303452
-	g2ServerHidden(root, false)
-	g2ServerEnabled(root, true)
+	g2ServerHidden(C.dword_5d4594_1303452, false)
+	g2ServerEnabled(C.dword_5d4594_1303452, true)
 	nox_xxx_clientPlaySoundSpecial_452D80(1007, 100)
 	var width, height C.int
-	nox_window_get_size(root, &width, &height)
-	nox_window_setPos_46A9B0(root, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
+	nox_window_get_size(C.dword_5d4594_1303452, &width, &height)
+	nox_window_setPos_46A9B0(C.dword_5d4594_1303452, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
 	words := unsafe.Slice((*byte)(unsafe.Pointer(raw)), 8)
 	const source = `C:\NoxPost\src\client\Gui\GUIGGOvr.c`
 	counts := [...]struct {

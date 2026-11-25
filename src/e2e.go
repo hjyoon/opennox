@@ -94,6 +94,8 @@ var e2e struct {
 	err              error
 	checkSave        *e2eCheckSave
 
+	highObjectAddresses bool
+
 	shopMerchant           *server.Object
 	shopMerchantWireCode   uint16
 	shopSession            *server.TradeSession
@@ -293,6 +295,7 @@ type e2eScenario struct {
 	steps                 []e2eStep
 	done                  chan struct{}
 	screenReference       *e2eScreenReference
+	highObjectAddresses   bool
 	wizard1InitialUrchins map[*server.Object]struct{}
 	wizard1UrchinsBefore  int
 	wizard1UrchinHPBefore int
@@ -1790,6 +1793,7 @@ func e2eDoorTileCoordinate4F4CB0(component int32, position float32) int32 {
 }
 
 func (sc *e2eScenario) AssertDoorXferLoaded(name string) {
+	sc.highObjectAddresses = true
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
@@ -1847,6 +1851,7 @@ func (sc *e2eScenario) AssertDoorXferLoaded(name string) {
 }
 
 func (sc *e2eScenario) AssertTriggerXferLoaded(name string) {
+	sc.highObjectAddresses = true
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
@@ -1905,6 +1910,7 @@ func (sc *e2eScenario) AssertTriggerXferLoaded(name string) {
 }
 
 func (sc *e2eScenario) AssertHoleXferLoaded(name string) {
+	sc.highObjectAddresses = true
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
@@ -1959,6 +1965,7 @@ func (sc *e2eScenario) AssertHoleXferLoaded(name string) {
 }
 
 func (sc *e2eScenario) AssertTransporterXferLoaded(name string) {
+	sc.highObjectAddresses = true
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
@@ -2022,6 +2029,7 @@ func (sc *e2eScenario) AssertTransporterXferLoaded(name string) {
 }
 
 func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
+	sc.highObjectAddresses = true
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
@@ -11312,6 +11320,7 @@ func e2eQueue(sc *e2eScenario) {
 	}
 	sc.steps = nil
 	e2e.done = sc.done
+	e2e.highObjectAddresses = sc.highObjectAddresses
 }
 
 func e2eQueueInput(evs ...seat.InputEvent) {

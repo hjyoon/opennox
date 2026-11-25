@@ -719,7 +719,11 @@ func (s *Server) newSession() error {
 		return errors.New("sub_518770 failed")
 	}
 	noxflags.HasGame(noxflags.GameFlag22)
-	if !s.Objs.Init(5000) {
+	initObjects := s.Objs.Init
+	if e2e.highObjectAddresses {
+		initObjects = s.Objs.InitHigh
+	}
+	if !initObjects(5000) {
 		return errors.New("nox_xxx_allocClassArrayObjects_4E3360 failed")
 	}
 	s.Map.Init()

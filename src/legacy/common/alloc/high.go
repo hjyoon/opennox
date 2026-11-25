@@ -6,9 +6,9 @@ import (
 )
 
 // MallocHigh allocates zeroed foreign memory for fixtures which must exercise
-// pointer bits above 32. Windows' non-ASLR race executables have a low C heap,
-// so their fixtures request a separate top-down mapping. Ordinary allocations
-// and 32-bit targets retain the normal C allocator.
+// pointer bits above 32. Linux amd64 and arm64 and Windows amd64 request a
+// separate mapping because their C heaps can be below 4 GiB. Ordinary
+// allocations and 32-bit targets use the C allocator.
 // The returned memory remains compatible with FreePtr and Realloc.
 func MallocHigh(size uintptr) (unsafe.Pointer, func()) {
 	if size == 0 {

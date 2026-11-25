@@ -139,7 +139,7 @@ func serverRosterAssignPlayers(root, teams *nox_window) {
 				if nox_xxx_servObjectHasTeam_419130(member) != 0 {
 					sub_4196D0(unsafe.Pointer(member), unsafe.Pointer(team), C.int(player.netCode), 1)
 				} else {
-					C.nox_xxx_createAtImpl_4191D0(team.field_57, member, 1, C.int(player.netCode), 1)
+					nox_xxx_createAtImpl_4191D0(team.field_57, member, 1, C.int(player.netCode), 1)
 				}
 			}
 		}

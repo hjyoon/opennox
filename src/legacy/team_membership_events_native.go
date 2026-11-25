@@ -171,7 +171,7 @@ func sub_4196D0(rawMember, rawTeam unsafe.Pointer, netCode, flags C.int) C.int {
 		previous.field_48--
 	}
 	sub_418E40(previous, value)
-	C.nox_xxx_createAtImpl_4191D0(team.field_57, value, 0, netCode, flags)
+	nox_xxx_createAtImpl_4191D0(team.field_57, value, 0, netCode, flags)
 	if C.uint(netCode) == C.nox_player_netCode_85319C {
 		sub_455E70(team.field_57)
 	}

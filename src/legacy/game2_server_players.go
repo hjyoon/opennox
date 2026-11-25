@@ -115,7 +115,7 @@ func sub_456BB0(team *C.nox_team_t) {
 			}
 		}
 	} else if server {
-		C.nox_xxx_createAtImpl_4191D0(team.field_57, value, 1, C.int(C.nox_player_netCode_85319C), 1)
+		nox_xxx_createAtImpl_4191D0(team.field_57, value, 1, C.int(C.nox_player_netCode_85319C), 1)
 	} else {
 		C.sub_419900(team, value, C.short(C.nox_player_netCode_85319C))
 	}

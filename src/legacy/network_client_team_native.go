@@ -52,7 +52,7 @@ func clientTeamCreatePacket(data []byte) {
 		return
 	}
 	if noxflags.HasGame(noxflags.GameHost) {
-		C.nox_xxx_createAtImpl_4191D0(team.field_57, member, 1, code, 1)
+		nox_xxx_createAtImpl_4191D0(team.field_57, member, 1, code, 1)
 	} else {
 		sub_419900(team, member, C.short(code))
 	}
@@ -70,7 +70,7 @@ func clientTeamAddMemberPacket(data []byte) {
 	}
 	if team := clientTeamByPacketID(data); team != nil {
 		member := (*C.nox_object_team_t)(unsafe.Pointer(&asDrawable(drawable).TeamVal))
-		C.nox_xxx_createAtImpl_4191D0(team.field_57, member, 0, C.int(rawCode), 0)
+		nox_xxx_createAtImpl_4191D0(team.field_57, member, 0, C.int(rawCode), 0)
 		sub_4571A0(C.int(rawCode), C.int(team.field_57))
 	}
 }

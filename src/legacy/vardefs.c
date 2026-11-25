@@ -3,6 +3,7 @@
 #include "client__system__parsecmd.h"
 #include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
+#include "stats_start_native.h"
 
 void nullsub_68();
 
@@ -313,6 +314,7 @@ nox_window* dword_5d4594_826032 = 0;
 uint32_t dword_5d4594_2487708 = 0;
 uint32_t nox_xxx_waypointCounterMB_587000_154948 = 0xffffffff;
 uint32_t dword_5d4594_741332 = 0;
+nox_stats_quest_columns_native nox_stats_quest_columns = {0};
 uint32_t dword_5d4594_1565616 = 0;
 uint32_t dword_5d4594_816356 = 0;
 uint32_t dword_5d4594_1203836 = 0;

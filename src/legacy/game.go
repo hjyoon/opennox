@@ -36,7 +36,6 @@ package legacy
 #include "client__drawable__drawable.h"
 #include "client__gui__guimeter.h"
 
-void sub_426060();
 void sub_417160();
 void sub_4D2160();
 void sub_4D22B0();
@@ -456,7 +455,7 @@ func Sub_416690() {
 	C.sub_416690()
 }
 func Sub_426060() {
-	C.sub_426060()
+	sub_426060()
 }
 func Sub_455C30() int {
 	return int(C.sub_455C30())

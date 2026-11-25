@@ -83,6 +83,10 @@ func sub_426150() {
 	if !noxflags.HasGame(noxflags.GameOnline) || noxflags.HasGame(noxflags.GameModeQuest) {
 		return
 	}
+	fillStatsStartHeader((*uint32)(unsafe.Pointer(&C.dword_5d4594_599496)))
+}
+
+func fillStatsStartHeader(modeCell *uint32) {
 	settings := (*[109]byte)(sub_416640())
 	data := (*[124]byte)(unsafe.Pointer(nox_xxx_cliGamedataGet_416590(0)))
 	*memmap.PtrUint16(0x5D4594, 599482) = uint16(settings[103])
@@ -93,7 +97,7 @@ func sub_426150() {
 	mode := binary.LittleEndian.Uint16(data[52:])
 	for report, flag := range [...]uint16{0x100, 0x20, 0x40, 0x10, 0x400} {
 		if mode&flag != 0 {
-			C.dword_5d4594_599496 = C.uint32_t(report)
+			*modeCell = uint32(report)
 			break
 		}
 	}
@@ -131,7 +135,7 @@ func nox_xxx_net_4263C0() *C.char {
 func sub_4264D0() C.int {
 	if noxflags.HasGame(noxflags.GameModeQuest) {
 		*memmap.PtrUint32(0x5D4594, 739416) = uint32(time.Now().Unix()) - uint32(C.dword_5d4594_600116)
-		return C.nox_stats_quest_end_native()
+		return nox_stats_quest_end_native()
 	}
 	if noxflags.HasGame(noxflags.GameOnline) {
 		for player := nox_common_playerInfoGetFirst_416EA0(); player != nil; player = nox_common_playerInfoGetNext_416EE0(player) {

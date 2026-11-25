@@ -57,9 +57,9 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	program = strings.Replace(program, "// PRODUCTION_BULK_HEADER", read("stats_bulk_native.h"), 1)
 	program = strings.Replace(program, "// PRODUCTION_START_HEADER", read("stats_start_native.h"), 1)
 	program = strings.Replace(program, "// PRODUCTION_BULK_BODY", cut(read("testdata/retired-game-sources/stats_bulk_native.c.txt"), "// NATIVE_STATS_IMPLEMENTATION", ""), 1)
-	program = strings.Replace(program, "// PRODUCTION_START_BODY", cut(read("stats_start_native.c"), "// NATIVE_STATS_START_IMPLEMENTATION", ""), 1)
+	program = strings.Replace(program, "// PRODUCTION_START_BODY", cut(read("testdata/retired-game-sources/stats_start_native.c.txt"), "// NATIVE_STATS_START_IMPLEMENTATION", ""), 1)
 	rootSignature := "void sub_426060() {"
-	program = strings.Replace(program, "// PRODUCTION_START_ROOT", rootSignature+cut(read("server__system__server.c"), rootSignature, "\n//----- (004D0CF0)"), 1)
+	program = strings.Replace(program, "// PRODUCTION_START_ROOT", rootSignature+cut(read("testdata/retired-game-sources/stats_start_entry.c.txt"), rootSignature, "\n//----- (004D0CF0)"), 1)
 	compiler := strings.Fields(os.Getenv("CC"))
 	if len(compiler) == 0 {
 		compiler = []string{"cc"}
@@ -70,7 +70,7 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual statistics startup/packet chain: %v\n%s", err, output)
+		t.Fatalf("compile reference statistics startup/packet chain: %v\n%s", err, output)
 	}
 	for _, name := range []string{"header", "root", "cleanup"} {
 		t.Run(name, func(t *testing.T) {

@@ -71,7 +71,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 		{"// PRODUCTION_START_HEADER", "stats_start_native.h", "", ""},
 		{"// PRODUCTION_END_HEADER", "stats_end_native.h", "", ""},
 		{"// PRODUCTION_BULK_BODY", "testdata/retired-game-sources/stats_bulk_native.c.txt", "// NATIVE_STATS_IMPLEMENTATION", ""},
-		{"// PRODUCTION_END_BODY", "stats_end_native.c", "// NATIVE_STATS_END_IMPLEMENTATION", ""},
+		{"// PRODUCTION_END_BODY", "testdata/retired-game-sources/stats_end_native.c.txt", "// NATIVE_STATS_END_IMPLEMENTATION", ""},
 	} {
 		text := read(part.path)
 		if part.begin != "" {
@@ -83,7 +83,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 		program = strings.Replace(program, part.token, text, 1)
 	}
 	getter := "nox_stats_quest_columns_native* nox_stats_quest_columns_native_get(void) {"
-	program = strings.Replace(program, "// PRODUCTION_GETTER", getter+cut(read("stats_start_native.c"), getter, ""), 1)
+	program = strings.Replace(program, "// PRODUCTION_GETTER", getter+cut(read("testdata/retired-game-sources/stats_start_native.c.txt"), getter, ""), 1)
 	root := "int sub_4264D0() {"
 	const rootEnd = "\n}\n"
 	program = strings.Replace(program, "// PRODUCTION_ROOT", root+cut(read("testdata/stats_runtime_entries_original_4263c0_4264d0.c"), root, rootEnd)+rootEnd, 1)
@@ -97,7 +97,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("compile actual end/Quest builder/packet: %v\n%s", err, output)
+		t.Fatalf("compile reference end/Quest builder/packet: %v\n%s", err, output)
 	}
 	for _, name := range []string{"root", "builder", "packet"} {
 		t.Run(name, func(t *testing.T) {

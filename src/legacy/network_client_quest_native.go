@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
 #include "client__gui__guiggovr.h"
 #include "cgo_const.h"
 */
@@ -226,12 +225,4 @@ func clientQuestPacket(data []byte) int {
 		clientQuestKeyNotice(data)
 	}
 	return size
-}
-
-//export nox_client_decodeQuestPacket
-func nox_client_decodeQuestPacket(data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	return C.int(clientQuestPacket(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))))
 }

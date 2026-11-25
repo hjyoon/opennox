@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
+#include <stdint.h>
 
 extern uint32_t dword_5d4594_1200804;
 */
@@ -262,12 +262,4 @@ func clientScorePacket(op netmsg.Op, data []byte) int {
 		clientMatchWinnerPacket(op, data)
 	}
 	return size
-}
-
-//export nox_client_decodeScorePacket
-func nox_client_decodeScorePacket(op C.int, data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	return C.int(clientScorePacket(netmsg.Op(op), unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))))
 }

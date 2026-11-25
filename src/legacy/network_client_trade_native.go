@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
 #include "GAME3_1.h"
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
@@ -84,12 +83,4 @@ func clientTradePacket(data []byte) int {
 		sub_479740(C.int(word(2)), C.uint(binary.LittleEndian.Uint32(data[4:8])))
 	}
 	return size
-}
-
-//export nox_client_decodeTradePacket
-func nox_client_decodeTradePacket(data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	return C.int(clientTradePacket(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))))
 }

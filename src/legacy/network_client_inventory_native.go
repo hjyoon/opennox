@@ -1,13 +1,12 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
+#include "defs.h"
 */
 import "C"
 
 import (
 	"encoding/binary"
-	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 
@@ -154,12 +153,4 @@ func clientInventoryReportPacket(op netmsg.Op, data []byte) int {
 		}
 	}
 	return size
-}
-
-//export nox_client_decodeInventoryReport
-func nox_client_decodeInventoryReport(op C.int, data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	return C.int(clientInventoryReportPacket(netmsg.Op(op), unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))))
 }

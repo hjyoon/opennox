@@ -1,8 +1,8 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
 #include "cgo_const.h"
+#include "defs.h"
 
 extern uint32_t dword_5d4594_1200768, dword_5d4594_1200832;
 */
@@ -167,13 +167,4 @@ func clientSettingsPacket(op netmsg.Op, data []byte) (int, bool) {
 		return 0, false
 	}
 	return -1, true
-}
-
-//export nox_client_decodeSettingsPacket
-func nox_client_decodeSettingsPacket(op C.int, data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	n, _ := clientSettingsPacket(netmsg.Op(op), unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size)))
-	return C.int(n)
 }

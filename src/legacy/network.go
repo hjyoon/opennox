@@ -43,7 +43,6 @@ static intptr_t nox_xxx_netSendLineMessage_go(nox_object_t* a1, wchar2_t* str) {
 nox_drawable* nox_xxx_netSpriteByCodeDynamic_45A6F0(int a1);
 
 int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1, nox_object_t* a2, int a3, signed int a4);
-int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data, int sz);
 */
 import "C"
 import (
@@ -361,6 +360,8 @@ func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, 
 		return clientQuestPacket(data)
 	case netmsg.MSG_TRADE:
 		return clientTradePacket(data)
+	case netmsg.MSG_TEAM_MSG:
+		return clientTeamPacket(data)
 	}
 	if size := clientInventoryReportPacket(a2, data); size != 0 {
 		return size
@@ -368,7 +369,34 @@ func Nox_xxx_netOnPacketRecvCli_48EA70_switch(a1 ntype.PlayerInd, a2 netmsg.Op, 
 	if size := clientScorePacket(a2, data); size != 0 {
 		return size
 	}
-	return int(C.nox_xxx_netOnPacketRecvCli_48EA70_switch(C.int(a1), C.int(a2), (*C.uchar)(unsafe.Pointer(&data[0])), C.int(len(data))))
+	if size := clientSessionPacket(a2, data); size != 0 {
+		return size
+	}
+	switch a2 {
+	case netmsg.MSG_REPORT_MUNDANE_ARMOR_EQUIP, netmsg.MSG_REPORT_MUNDANE_WEAPON_EQUIP,
+		netmsg.MSG_REPORT_MODIFIABLE_WEAPON_EQUIP, netmsg.MSG_REPORT_MODIFIABLE_ARMOR_EQUIP,
+		netmsg.MSG_REPORT_ARMOR_DEQUIP, netmsg.MSG_REPORT_WEAPON_DEQUIP:
+		return clientLegacyEquipmentReport(a2, data)
+	case netmsg.MSG_SIMPLE_OBJ, netmsg.MSG_COMPLEX_OBJ, netmsg.MSG_PLAYER_OBJ:
+		return clientNativeObjectPacket(a1, a2, data)
+	case netmsg.MSG_UPDATE_STREAM:
+		// The full receiver owns update streams and their stream index.
+		return 0
+	default:
+		if len(data) == 0 || data[0] != byte(a2) || DecodeNativeClientPacket == nil {
+			return -1
+		}
+		return DecodeNativeClientPacket(a2, data)
+	}
+}
+
+//export nox_xxx_netOnPacketRecvCli_48EA70_switch
+func nox_xxx_netOnPacketRecvCli_48EA70_switch(player, op C.int, data *C.uchar, size C.int) C.int {
+	if op < 0 || op > 255 || data == nil || size < 0 {
+		return -1
+	}
+	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size))
+	return C.int(Nox_xxx_netOnPacketRecvCli_48EA70_switch(ntype.PlayerInd(player), netmsg.Op(op), packet))
 }
 func Nox_xxx_j_inventoryNameSignInit_467460() int {
 	return int(nox_xxx_j_inventoryNameSignInit_467460())

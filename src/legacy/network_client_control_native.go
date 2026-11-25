@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include "client__network__cdecode.h"
+#include <stdint.h>
 */
 import "C"
 
@@ -102,13 +102,4 @@ func clientControlPacket(ind ntype.PlayerInd, op netmsg.Op, data []byte) (int, b
 		sub_43DAD0()
 	}
 	return size, true
-}
-
-//export nox_client_decodeControlPacket
-func nox_client_decodeControlPacket(ind, op C.int, data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return -1
-	}
-	n, _ := clientControlPacket(ntype.PlayerInd(ind), netmsg.Op(op), unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size)))
-	return C.int(n)
 }

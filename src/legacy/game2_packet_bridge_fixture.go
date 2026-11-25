@@ -2,7 +2,7 @@ package legacy
 
 /*
 #include "game2_packet_bridge.h"
-int nox_xxx_netOnPacketRecvCli_48EA70_switch(int player, int op, unsigned char* data, int size);
+#include "client__network__cdecode.h"
 */
 import "C"
 import "unsafe"

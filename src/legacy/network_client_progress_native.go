@@ -1,8 +1,5 @@
 package legacy
 
-/*
-#include "client__network__cdecode.h"
-*/
 import "C"
 
 import (
@@ -63,13 +60,4 @@ func clientProgressPacket(op netmsg.Op, data []byte) (int, bool) {
 		nox_xxx_mapGenClientText_4A9D00((*C.uchar)(unsafe.Pointer(&data[0])))
 	}
 	return size, true
-}
-
-//export nox_client_decodeProgressPacket
-func nox_client_decodeProgressPacket(op C.int, data *C.uchar, size C.int) C.int {
-	if data == nil || size < 0 {
-		return 0
-	}
-	n, _ := clientProgressPacket(netmsg.Op(op), unsafe.Slice((*byte)(unsafe.Pointer(data)), int(size)))
-	return C.int(n)
 }

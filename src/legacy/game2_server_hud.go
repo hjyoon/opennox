@@ -23,7 +23,7 @@ func sub_455A50(count C.char) C.char {
 	}
 	w := C.dword_5d4594_1045604
 	if w == nil {
-		v := C.sub_455C30()
+		v := sub_455C30()
 		if v == 0 {
 			return C.char(v)
 		}
@@ -201,4 +201,86 @@ func sub_456240() C.int {
 	C.dword_5d4594_1045636 = nil
 	C.dword_5d4594_1045640 = 0
 	return result
+}
+
+const clientCTFSource = `C:\\NoxPost\\src\\client\\Gui\\GUI_CTF.c`
+
+//export sub_455C30
+func sub_455C30() C.int {
+	if C.dword_5d4594_1045604 != nil {
+		return 1
+	}
+	root := C.nox_new_window_from_file(internCStr("GUI_CTF.wnd"), nil)
+	C.dword_5d4594_1045604 = root
+	if root == nil {
+		return 0
+	}
+	for id := 8811; id <= 8826; id++ {
+		child := g2ServerChild(C.dword_5d4594_1045604, id)
+		if child == nil {
+			return 0
+		}
+		C.nox_window_set_all_funcs(child, nil, unsafe.Pointer(C.sub_455CD0), nil)
+		nox_xxx_wndWddSetTooltip_46B000(&child.draw_data, g2ServerLoad("FlagHomeTT", clientCTFSource, 201))
+	}
+	sub_455A00(0)
+	C.nox_ctf_flag_team_border = nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder"))
+	return 1
+}
+
+//export sub_455D80
+func sub_455D80(index C.uchar, status C.char) {
+	if index > 16 {
+		return
+	}
+	*g2ServerByte(1045611 + uintptr(index)) = byte(status)
+	child := g2ServerChild(C.dword_5d4594_1045604, int(index)+8810)
+	if child == nil {
+		return
+	}
+	key, line := "FlagHomeTT", 260
+	switch status {
+	case 0:
+		if child.flags&C.NOX_WIN_LAYER_FRONT != 0 {
+			line = 242
+		}
+	case 1:
+		key, line = "TheirFlagCarriedTT", 252
+		if child.flags&C.NOX_WIN_LAYER_FRONT != 0 {
+			key, line = "YourFlagCarriedTT", 234
+		}
+	case 2:
+		key, line = "FlagAwayTT", 256
+		if child.flags&C.NOX_WIN_LAYER_FRONT != 0 {
+			line = 238
+		}
+	default:
+		return
+	}
+	nox_xxx_wndWddSetTooltip_46B000(&child.draw_data, g2ServerLoad(key, clientCTFSource, line))
+}
+
+//export sub_456140
+func sub_456140(status C.uchar) {
+	*g2ServerByte(1045644) = byte(status)
+	root := C.dword_5d4594_1045636
+	if root == nil {
+		return
+	}
+	image, tooltip, line := "BallAtHome", "BallHomeTT", 165
+	switch status {
+	case 0:
+	case 1:
+		image, tooltip, line = "BallAway", "BallAwayTT", 170
+	case 2:
+		image, tooltip, line = "BallRed", "BallRedTT", 175
+	case 4:
+		image, tooltip, line = "BallBlue", "BallBlueTT", 180
+	default:
+		return
+	}
+	draw := &root.draw_data
+	draw.bg_image = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr(image)))
+	const source = `C:\\NoxPost\\src\\client\\Gui\\guifb.c`
+	nox_xxx_wndWddSetTooltip_46B000(draw, g2ServerLoad(tooltip, source, line))
 }

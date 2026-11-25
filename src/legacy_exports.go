@@ -3,6 +3,7 @@ package opennox
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
@@ -318,6 +319,14 @@ func init() {
 	}
 	legacy.Sub_554240 = sub_554240
 	legacy.Nox_xxx_netOnPacketRecvCli_48EA70 = nox_xxx_netOnPacketRecvCli_48EA70
+	legacy.DecodeNativeClientPacket = func(op netmsg.Op, data []byte) int {
+		if noxClient != nil {
+			if used, handled := noxClient.handleNativeClientPacket(op, data); handled {
+				return used
+			}
+		}
+		return -1
+	}
 	legacy.Sub_43C6E0 = sub_43C6E0
 	legacy.Sub_43CF40 = sub_43CF40
 	legacy.Sub_43CF70 = sub_43CF70

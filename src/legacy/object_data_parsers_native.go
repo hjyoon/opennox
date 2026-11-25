@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include <stdlib.h>
 #include "GAME4_3.h"
 */
 import "C"
@@ -104,13 +103,10 @@ func sub_5364E0(args *C.char, output unsafe.Pointer) C.int {
 //export sub_536550
 func sub_536550(args *C.char, output *C.uint32_t) C.int {
 	data := (*server.PushUpdateData53B030)(unsafe.Pointer(output))
-	var next *C.char
-	radius := C.strtof(args, &next)
-	if next != args {
-		data.Radius = float32(radius)
-		force := C.strtof(next, &args)
-		if args != next {
-			data.Force = float32(force)
+	if radius, rest, ok := legacycrt.ScanFloat32(GoString(args)); ok {
+		data.Radius = radius
+		if force, _, ok := legacycrt.ScanFloat32(rest); ok {
+			data.Force = force
 		}
 	}
 	data.RadiusCopy = data.Radius

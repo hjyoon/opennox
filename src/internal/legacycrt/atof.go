@@ -10,17 +10,21 @@ import (
 
 // Atof converts the decimal prefix accepted at GAME.EXE 005668EE.
 func Atof(text string) float64 {
+	return math.Float64frombits(decimalBits(text, 53, 1023, 1<<63))
+}
+
+func decimalBits(text string, precision, bias int, signMask uint64) uint64 {
 	digits, scale, negative := atofMantissa(text)
 	var sign uint64
 	if negative {
-		sign = 1 << 63
+		sign = signMask
 	}
 	// Even the largest 24-digit mantissa underflows binary64 at this scale.
 	if len(digits) == 0 || scale < -350 {
-		return math.Float64frombits(sign)
+		return sign
 	}
 	if scale > 308 {
-		return math.Float64frombits(sign | 0x7ff0000000000000)
+		return sign | decimalInfinity(precision, bias)
 	}
 
 	value := atofNormalize(digits)
@@ -38,7 +42,7 @@ func Atof(text string) float64 {
 			scale /= 8
 		}
 	}
-	return math.Float64frombits(sign | value.binary64())
+	return sign | value.binary(precision, bias)
 }
 
 // AtofFloat32 applies the game's startup rounding toward zero to the
@@ -52,8 +56,10 @@ func AtofFloat32(text string) float32 {
 	return out
 }
 
+const asciiWhitespace = " \t\n\v\f\r"
+
 func atofMantissa(text string) (digits []byte, scale int, negative bool) {
-	text = strings.TrimLeft(text, " \t\n\v\f\r")
+	text = strings.TrimLeft(text, asciiWhitespace)
 	if text == "" {
 		return nil, 0, false
 	}
@@ -236,35 +242,40 @@ func (v atofExtended) multiply(power atofExtended) atofExtended {
 	return atofExtended{significand: high, tail: tail, exponent: exponent}
 }
 
-func (v atofExtended) binary64() uint64 {
+func decimalInfinity(precision, bias int) uint64 {
+	return uint64(2*bias+1) << (precision - 1)
+}
+
+func (v atofExtended) binary(precision, bias int) uint64 {
 	tail := uint32(v.tail) << 16
-	value, carry := atofRound53(v.significand, tail)
+	value, carry := atofRound(v.significand, tail, precision)
 	exponent := v.exponent + int(carry)
 	switch {
-	case exponent > 1023:
-		return 0x7ff0000000000000
-	case exponent < -1076:
+	case exponent > bias:
+		return decimalInfinity(precision, bias)
+	case exponent < -bias-precision:
 		return 0
-	case exponent < -1022:
-		shift := -1023 - exponent
+	case exponent <= -bias:
+		shift := -bias - exponent
 		high := v.significand >> shift
 		if shift <= 32 {
 			tail = tail>>shift | uint32(v.significand<<(32-shift))
 		} else {
 			tail = uint32(v.significand >> (shift - 32))
 		}
-		value, _ := atofRound53(high, tail)
+		value, _ := atofRound(high, tail, precision)
 		return value >> 1
 	default:
-		return uint64(exponent+1023)<<52 | value&((1<<52)-1)
+		fractionBits := precision - 1
+		return uint64(exponent+bias)<<fractionBits | value&((1<<fractionBits)-1)
 	}
 }
 
-func atofRound53(high uint64, tail uint32) (value, carry uint64) {
-	const guard = 1 << 10
+func atofRound(high uint64, tail uint32, precision int) (value, carry uint64) {
+	guard := uint64(1) << (63 - precision)
 	// 0056BE23 checks the guard and the bits below the next lower bit.
 	if high&guard != 0 && (high&(guard/2-1) != 0 || tail != 0) {
 		high, carry = bits.Add64(high, guard*2, 0)
 	}
-	return high >> 11, carry
+	return high >> (64 - precision), carry
 }

@@ -10,8 +10,6 @@ package legacy
 #include "GAME2_2.h"
 #include "GAME4.h"
 extern uint32_t dword_5d4594_251572;
-int nox_free_tile_defs();
-int sub_485F30();
 */
 import "C"
 import (
@@ -73,10 +71,10 @@ func nox_xxx_checkFacade_4117E0(tile *C.nox_tileDef_t) C.int {
 }
 
 func Sub_485CF0() {
-	C.nox_free_tile_defs()
+	nox_free_tile_defs()
 }
 func Sub_485F30() {
-	C.sub_485F30()
+	sub_485F30()
 }
 
 func Nox_thing_skip_spells_415100(f *binfile.MemFile) {

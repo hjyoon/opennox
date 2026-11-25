@@ -28,7 +28,7 @@ func e2ePushMode(level int, direction string) (fromNPC, ok bool) {
 	}
 }
 
-func e2ePushFloat32(value *big.Float) float32 {
+func e2eRadialSpellFloat32(value *big.Float) float32 {
 	rounded, accuracy := value.Float32()
 	if accuracy == big.Above && value.Sign() > 0 || accuracy == big.Below && value.Sign() < 0 {
 		return math.Nextafter32(rounded, 0)
@@ -36,15 +36,16 @@ func e2ePushFloat32(value *big.Float) float32 {
 	return rounded
 }
 
-// Replay the arithmetic at GAME.EXE 52C000, 52E040 and 52E0E0 with x87
-// precision 53 and rounding toward zero. Model each binary32 store
-// independently of the engine's arithmetic helpers.
-func e2ePushExpectedForce(origin, position types.Pointf, mass float32, coefficient float64, level int32) types.Pointf {
+// Replay the GAME.EXE Pull and Push casts and radial force calculations
+// with x87 precision 53 and rounding toward zero. The coefficient carries
+// the spell's force sign. Each binary32 store is modeled independently of
+// the engine's arithmetic helpers.
+func e2eRadialSpellExpectedForce(origin, position types.Pointf, mass float32, coefficient float64, level int32) types.Pointf {
 	x87 := func(value float64) *big.Float {
 		return new(big.Float).SetPrec(53).SetMode(big.ToZero).SetFloat64(value)
 	}
 	spill := func(value *big.Float) *big.Float {
-		return x87(float64(e2ePushFloat32(value)))
+		return x87(float64(e2eRadialSpellFloat32(value)))
 	}
 	dx := spill(x87(0).Sub(x87(float64(position.X)), x87(float64(origin.X))))
 	dyWide := x87(0).Sub(x87(float64(position.Y)), x87(float64(origin.Y)))
@@ -70,7 +71,7 @@ func e2ePushExpectedForce(origin, position types.Pointf, mass float32, coefficie
 	component := func(delta *big.Float) float32 {
 		result := x87(0).Mul(factor, delta)
 		result.Quo(result, distance)
-		return e2ePushFloat32(result.Add(result, x87(0)))
+		return e2eRadialSpellFloat32(result.Add(result, x87(0)))
 	}
 	return types.Ptf(component(dx), component(dy))
 }
@@ -194,7 +195,7 @@ func (f *e2ePushFixture) beginCast() {
 }
 
 func (f *e2ePushFixture) verifyForce() {
-	want := e2ePushExpectedForce(f.caster.PosVec, f.target.PosVec, f.target.Mass, noxServer.Balance.Float("PushPowerCoeff"), int32(f.level))
+	want := e2eRadialSpellExpectedForce(f.caster.PosVec, f.target.PosVec, f.target.Mass, noxServer.Balance.Float("PushPowerCoeff"), int32(f.level))
 	got := f.target.ForceVec
 	if got != want || got == (types.Pointf{}) || f.target.HealthData.Cur != f.health || f.castSeen {
 		e2eError(fmt.Errorf("Push force/health/count mismatch: direction=%s level=%d force=%v want=%v HP=%d/%d repeated=%t", f.direction, f.level, got, want, f.target.HealthData.Cur, f.health, f.castSeen))

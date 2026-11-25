@@ -27,25 +27,6 @@ func e2ePullMode(level int, direction string) (fromNPC, ok bool) {
 	}
 }
 
-// Predict the negative radial force and stock ApplyForce conversions without
-// calling either production service. The map radius uses binary32 squared
-// distance; ApplyForce uses the separate double-precision vector length.
-func e2ePullExpectedForce(origin, position types.Pointf, mass float32, coefficient float64, level int32) types.Pointf {
-	delta := position.Sub(origin)
-	distance := float32(math.Sqrt(float64(delta.X*delta.X+delta.Y*delta.Y)) + 0.1)
-	if distance > 600 {
-		return types.Pointf{}
-	}
-	force := float32(-(coefficient * float64(level)))
-	if distance > 10 {
-		force *= 1 - (distance-10)/(600-10)
-	}
-	strength := 10 * force / mass
-	length := float32(math.Hypot(float64(delta.X), float64(delta.Y)) + 0.1)
-	return types.Ptf(float32(float64(delta.X)*float64(strength)/float64(length)),
-		float32(float64(delta.Y)*float64(strength)/float64(length)))
-}
-
 type e2ePullFixture struct {
 	level                  int
 	fromNPC                bool
@@ -165,7 +146,7 @@ func (f *e2ePullFixture) beginCast() {
 }
 
 func (f *e2ePullFixture) verifyForce() {
-	want := e2ePullExpectedForce(f.caster.PosVec, f.target.PosVec, f.target.Mass, noxServer.Balance.Float("PullPowerCoeff"), int32(f.level))
+	want := e2eRadialSpellExpectedForce(f.caster.PosVec, f.target.PosVec, f.target.Mass, -noxServer.Balance.Float("PullPowerCoeff"), int32(f.level))
 	got := f.target.ForceVec
 	if got != want || got == (types.Pointf{}) || f.target.HealthData.Cur != f.health || f.castSeen {
 		e2eError(fmt.Errorf("Pull force/health/count mismatch: direction=%s level=%d force=%v want=%v HP=%d/%d repeated=%t", f.direction, f.level, got, want, f.target.HealthData.Cur, f.health, f.castSeen))

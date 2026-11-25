@@ -62,19 +62,19 @@ func TestE2EPushSpellForcePrediction(t *testing.T) {
 		want     types.Pointf
 	}{{types.Ptf(0, 0), types.Ptf(0, 0)}, {types.Ptf(3, 0), types.Ptf(30.0/3.1, 0)},
 		{types.Ptf(0, -3), types.Ptf(0, -30.0/3.1)}, {types.Ptf(601, 0), types.Ptf(0, 0)}} {
-		got := e2ePushExpectedForce(types.Ptf(0, 0), tc.position, 1, 1, 1)
+		got := e2eRadialSpellExpectedForce(types.Ptf(0, 0), tc.position, 1, 1, 1)
 		if math.Abs(float64(got.X-tc.want.X)) > 1e-6 || math.Abs(float64(got.Y-tc.want.Y)) > 1e-6 {
 			t.Fatalf("%v force=%v want=%v", tc.position, got, tc.want)
 		}
 	}
-	base := e2ePushExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 20, 1.00000004, 3)
-	halfMass := e2ePushExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 10, 1.00000004, 3)
+	base := e2eRadialSpellExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 20, 1.00000004, 3)
+	halfMass := e2eRadialSpellExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 10, 1.00000004, 3)
 	if base.X <= 0 || base.Y != 0 || halfMass.X != 2*base.X {
 		t.Fatalf("attenuation/mass prediction=%v/%v", base, halfMass)
 	}
 }
 
-func TestE2EPushSpellForceMatchesOriginal(t *testing.T) {
+func TestE2ERadialSpellForceMatchesOriginal(t *testing.T) {
 	// Expected words from GAME.EXE, from the cast entry through the radial
 	// force stores at x87 control word 0x0e3f.
 	for _, test := range []struct {
@@ -85,12 +85,14 @@ func TestE2EPushSpellForceMatchesOriginal(t *testing.T) {
 		want             [2]uint32
 	}{
 		{types.Ptf(512, 512), types.Ptf(512, 400), 15, 15, 1, [2]uint32{0, 0xc104319d}},
+		{types.Ptf(512, 512), types.Ptf(512, 400), 15, -15, 1, [2]uint32{0, 0x4104319d}},
 		{types.Ptf(512, 512), types.Ptf(512, 400), 15, 15, 5, [2]uint32{0, 0xc2253e06}},
 		{types.Ptf(1000.1, 1000.7), types.Ptf(1079.2, 921.5), 17.5, 13.05, 4, [2]uint32{0x418b5783, 0xc18b84a0}},
+		{types.Ptf(1000.1, 1000.7), types.Ptf(1079.2, 921.5), 17.5, -13.05, 4, [2]uint32{0xc18b5783, 0x418b84a0}},
 		{types.Ptf(0, 0), types.Ptf(599.9, 0), 15, 15, 1, [2]uint32{}},
 		{types.Ptf(0, 0), types.Ptf(3, 0), 1, 1, 1, [2]uint32{0x411ad6b5, 0}},
 	} {
-		got := e2ePushExpectedForce(test.origin, test.position, test.mass, test.coefficient, test.level)
+		got := e2eRadialSpellExpectedForce(test.origin, test.position, test.mass, test.coefficient, test.level)
 		if bits := [2]uint32{math.Float32bits(got.X), math.Float32bits(got.Y)}; bits != test.want {
 			t.Errorf("level %d from %v to %v: force bits %08x, want %08x", test.level, test.origin, test.position, bits, test.want)
 		}

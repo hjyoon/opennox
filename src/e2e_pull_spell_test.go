@@ -74,13 +74,13 @@ func TestE2EPullSpellForcePrediction(t *testing.T) {
 		want     types.Pointf
 	}{{types.Ptf(0, 0), types.Ptf(0, 0)}, {types.Ptf(3, 0), types.Ptf(-30.0/3.1, 0)},
 		{types.Ptf(0, -3), types.Ptf(0, 30.0/3.1)}, {types.Ptf(601, 0), types.Ptf(0, 0)}} {
-		got := e2ePullExpectedForce(types.Ptf(0, 0), tc.position, 1, 1, 1)
+		got := e2eRadialSpellExpectedForce(types.Ptf(0, 0), tc.position, 1, -1, 1)
 		if math.Abs(float64(got.X-tc.want.X)) > 1e-6 || math.Abs(float64(got.Y-tc.want.Y)) > 1e-6 {
 			t.Fatalf("%v force=%v want=%v", tc.position, got, tc.want)
 		}
 	}
-	base := e2ePullExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 20, 1.00000004, 3)
-	halfMass := e2ePullExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 10, 1.00000004, 3)
+	base := e2eRadialSpellExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 20, -1.00000004, 3)
+	halfMass := e2eRadialSpellExpectedForce(types.Ptf(100, 200), types.Ptf(212, 200), 10, -1.00000004, 3)
 	if base.X >= 0 || base.Y != 0 || halfMass.X != 2*base.X {
 		t.Fatalf("attenuation/mass prediction=%v/%v", base, halfMass)
 	}
@@ -92,8 +92,8 @@ func TestE2EPullSpellForcePolarity(t *testing.T) {
 		for _, mass := range []float32{15, 15.6} {
 			for _, delta := range []types.Pointf{types.Ptf(3, 4), types.Ptf(112, 0), types.Ptf(-79, 79), types.Ptf(601, 0)} {
 				position := origin.Add(delta)
-				pull := e2ePullExpectedForce(origin, position, mass, 15, level)
-				push := e2ePushExpectedForce(origin, position, mass, 15, level)
+				pull := e2eRadialSpellExpectedForce(origin, position, mass, -15, level)
+				push := e2eRadialSpellExpectedForce(origin, position, mass, 15, level)
 				if pull.X != -push.X || pull.Y != -push.Y || pull != (types.Pointf{}) && pull.X*delta.X+pull.Y*delta.Y >= 0 {
 					t.Fatalf("level/mass/delta=%d/%g/%v Pull=%v Push=%v", level, mass, delta, pull, push)
 				}

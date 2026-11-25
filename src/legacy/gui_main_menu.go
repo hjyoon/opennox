@@ -103,7 +103,7 @@ func Sub_4D7440(v int) {
 }
 
 func Nox_xxx_cliSetMinimapZoom_472520(v int) {
-	C.nox_xxx_cliSetMinimapZoom_472520(C.int(v))
+	nox_xxx_cliSetMinimapZoom_472520(C.int(v))
 }
 func Nox_xxx_monsterListFree_5174F0() {
 	nox_xxx_monsterListFree_5174F0_native()

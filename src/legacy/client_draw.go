@@ -164,7 +164,7 @@ func Nox_xxx_clientDrawAll_436100_draw_A() {
 }
 
 func Nox_xxx_drawMinimapAndLines_4738E0() {
-	C.nox_xxx_drawMinimapAndLines_4738E0()
+	nox_xxx_drawMinimapAndLines_4738E0()
 }
 
 func Nox_xxx_clientDrawAll_436100_draw_B() {
@@ -320,7 +320,7 @@ func Sub_459DB0(dr *client.Drawable) int {
 	return int(C.sub_459DB0((*nox_drawable)(dr.C())))
 }
 func Sub_472540(dr *client.Drawable) int {
-	return int(C.sub_472540((*nox_drawable)(dr.C())))
+	return int(sub_472540((*nox_drawable)(dr.C())))
 }
 func Sub_49A6A0(vp *noxrender.Viewport, dr *client.Drawable) {
 	sub_49A6A0((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()))

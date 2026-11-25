@@ -3,11 +3,11 @@ package legacy
 import (
 	"bytes"
 	"math"
-	"os"
 	"runtime"
-	"strings"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/libs/wall"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -80,21 +80,17 @@ func TestSecretWallMinimap472600NativeStateAndLegacyOffset(t *testing.T) {
 }
 
 func TestMinimap472600UsesNativeSecretWallState(t *testing.T) {
-	source, err := os.ReadFile("GAME2_1.c")
-	if err != nil {
-		t.Fatal(err)
+	secret := server.SecretWall{}
+	tile := server.Wall{Flags4: wall.FlagSecret, Field12: 1, Data: unsafe.Pointer(&secret)}
+	for state := range 256 {
+		secret.State = byte(state)
+		if visible := minimapWallVisible(&tile); visible != (state != 2 && state != 3) {
+			t.Fatalf("secret state %d: visible=%t", state, visible)
+		}
 	}
-	const signature = "int nox_xxx_cliDrawMinimap_472600("
-	if strings.Count(string(source), signature) != 1 {
-		t.Fatal("production minimap signature is not unique")
-	}
-	_, body, _ := strings.Cut(string(source), signature)
-	body, _, ok := strings.Cut(body, "\n//----- (004730D0)")
-	if !ok {
-		t.Fatal("production minimap boundary is missing")
-	}
-	const call = "nox_secret_wall_hidden_minimap_472600((const nox_secret_wall_t*)nox_server_wallData(v11))"
-	if strings.Count(body, call) != 1 || strings.Contains(body, "wallData[21]") {
-		t.Fatal("production minimap does not use the tested native secret-wall predicate")
+	tile.Flags4 |= wall.FlagBroken
+	secret.State = 0
+	if minimapWallVisible(&tile) {
+		t.Fatal("broken open secret wall is visible")
 	}
 }

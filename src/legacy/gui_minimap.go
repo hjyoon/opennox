@@ -20,7 +20,7 @@ func sub_473670() int32 { return int32(Sub_473670()) }
 func nox_client_toggleMap_473610() C.char { return C.char(Nox_client_toggleMap_473610()) }
 
 func DrawMinimap4Sprite4725C0(drawable *client.Drawable) {
-	C.nox_xxx_drawMinimap4Sprite_4725C0((*C.nox_drawable)(drawable.C()))
+	nox_xxx_drawMinimap4Sprite_4725C0((*C.nox_drawable)(drawable.C()))
 }
 
 func SetMinimapZoom(zoom uint32) {

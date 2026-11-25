@@ -298,7 +298,11 @@ func sub_4BD7A0(p unsafe.Pointer) {
 //export sub_4BD7C0
 func sub_4BD7C0(p unsafe.Pointer) unsafe.Pointer {
 	v := (*AudioVoiceNative)(p)
-	C.nox_audio_source_callbacks(p)
+	// Native callback slots can be initialized before their previous bytes
+	// hold valid pointers. Store the code addresses without a GC barrier.
+	*(*uintptr)(unsafe.Pointer(&v.Refill)) = uintptr(unsafe.Pointer(C.sub_4BD8C0))
+	*(*uintptr)(unsafe.Pointer(&v.Restart)) = uintptr(unsafe.Pointer(C.sub_4BD940))
+	*(*uintptr)(unsafe.Pointer(&v.Finish)) = uintptr(unsafe.Pointer(C.sub_4BD9B0))
 	v.OnRefill, v.OnRestart, v.OnEnd, v.UserData = nil, nil, nil, nil
 	v.Kind = 1
 	v.Flags, v.Repeat, v.Priority = 0, 0, 0

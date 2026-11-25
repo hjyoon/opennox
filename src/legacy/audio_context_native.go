@@ -235,7 +235,7 @@ func sub_4871C0_go(device unsafe.Pointer, index C.int, format unsafe.Pointer) un
 	ctx.Voices.init()
 	ctx.Group.Init()
 	ctx.Interval = 33
-	ctx.Update = C.nox_audio_context_update_callback()
+	ctx.Update = unsafe.Pointer(C.sub_4873C0)
 	if format != nil {
 		sub_487590_go(unsafe.Pointer(ctx), format)
 	}

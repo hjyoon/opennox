@@ -128,10 +128,6 @@ typedef struct audio_native_cached_sample {
 #pragma pack(pop)
 #endif
 
-void *nox_audio_builtin_class(void);
-void nox_audio_source_callbacks(void *voice);
-void *nox_audio_context_update_callback(void);
-
 void sub_43EDB0(HSAMPLE sample);
 int sub_43EE00(void *sample);
 void *sub_4BD280(int count, int size);

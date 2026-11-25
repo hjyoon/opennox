@@ -5,7 +5,31 @@ package legacy
 /*
 #include "audio_source_native.h"
 #include "GAME1_3.h"
-static audio_native_class *am_class(void) { return nox_audio_builtin_class(); }
+static int audio_native_device_create(void *device) { return sub_43E940(device); }
+static void audio_native_device_destroy(void *device) { (void)device; sub_43E9F0(); }
+static void audio_native_context_destroy(void *context) { (void)context; sub_43EC10(); }
+static void audio_native_voice_destroy(void *voice) { sub_43ECB0(voice); }
+static void audio_native_voice_stop(void *voice) { sub_43EFD0(voice); }
+static void audio_native_voice_refresh(void *voice) { sub_43F060(voice); }
+static void audio_native_voice_restart(void *voice) { (void)voice; sub_43F0D0(); }
+static int audio_native_voice_resume(void *voice) { (void)voice; return sub_43F030(0); }
+static int audio_native_voice_status(void *voice) { (void)voice; return sub_43F050(); }
+
+static audio_native_class *am_class(void) {
+    static audio_native_methods methods = {
+        .create = sub_43EC30, .destroy = audio_native_voice_destroy, .play = sub_43ED00,
+        .stop = audio_native_voice_stop, .pause = sub_43F010, .resume = audio_native_voice_resume,
+        .status = audio_native_voice_status, .refresh = audio_native_voice_refresh, .restart = audio_native_voice_restart,
+    };
+    static audio_native_class class_ = {
+        .name = "Audio", .flags = 2,
+        .create = audio_native_device_create, .destroy = audio_native_device_destroy,
+        .context_create = sub_43EA20, .context_destroy = audio_native_context_destroy,
+        .methods = &methods,
+    };
+    return &class_;
+}
+
 static int am_context_create(void *p) { return am_class()->context_create(p); }
 static void am_context_destroy(void *p) { am_class()->context_destroy(p); }
 static void *am_create(void *p) { return sub_4BD720(p); }

@@ -441,7 +441,7 @@ func Sub_416650() int {
 	return int(C.sub_416650())
 }
 func Sub_46DCC0() {
-	C.sub_46DCC0()
+	sub_46DCC0()
 }
 func Sub_409B80() string {
 	return GoString(C.sub_409B80())

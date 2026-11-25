@@ -33,7 +33,7 @@ var questThemeCall51A1F0 = func(group int32) {
 	})
 }
 
-//export nox_xxx_questTheme_native_51A1F0
-func nox_xxx_questTheme_native_51A1F0(group C.int) {
+//export sub_51A1F0
+func sub_51A1F0(group C.int) {
 	questThemeCall51A1F0(int32(group))
 }

@@ -266,7 +266,7 @@ func Sub_519710(a1 unsafe.Pointer) int {
 	return int(C.sub_519710(a1))
 }
 func Nox_xxx_updateUnits_51B100_D() {
-	C.nox_xxx_updateUnits_51B100_D()
+	nox_xxx_updateUnits_51B100_D()
 }
 func Nox_xxx_decay_511750() {
 	srv := GetServer()
@@ -355,7 +355,7 @@ func Sub_50D890() {
 	C.sub_50D890()
 }
 func Sub_4E4170() {
-	C.sub_4E4170()
+	sub_4E4170()
 }
 func Nox_xxx_voteUptate_506F30() {
 	C.nox_xxx_voteUptate_506F30()

@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "nox_wchar.h"
+#include "cgo_const.h"
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "GAME1_2.h"
@@ -355,7 +356,7 @@ func nox_xxx_mapSwitchLevel_4D12E0(a1_cgo int32) {
 }
 
 func Nox_xxx_getSomeMapName_4D0CF0() string {
-	return GoString(C.nox_xxx_getSomeMapName_4D0CF0())
+	return GoString(nox_xxx_getSomeMapName_4D0CF0())
 }
 
 func Nox_server_gameSettingsUpdated_40A670() {
@@ -565,7 +566,7 @@ func Sub_48C980() int {
 	return int(C.sub_48C980())
 }
 func Sub_4D22B0() {
-	C.sub_4D22B0()
+	sub_4D22B0()
 }
 func Sub_459870() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_459870())
@@ -577,7 +578,7 @@ func Sub_40A250() {
 	C.sub_40A250()
 }
 func Sub_4D2160() {
-	C.sub_4D2160()
+	sub_4D2160()
 }
 func Sub_40A970() {
 	C.sub_40A970()
@@ -688,7 +689,7 @@ func Nox_xxx_mapFindPlayerStart_4F7AB0(a2 *server.Object) types.Pointf {
 	return GetServer().S().MapFindPlayerStart4F7AB0(a2)
 }
 func Sub_500510(a1 string) {
-	C.sub_500510(internCStr(a1))
+	sub_500510((*C.nox_cgo_const_char)(internCStr(a1)))
 }
 func Nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
 	nox_xxx_mapSwitchLevel_4D12E0_tileFree()

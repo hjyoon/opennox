@@ -57,13 +57,13 @@ func Nox_game_setQuestStage_4E3CD0(a1 int) {
 	C.nox_game_setQuestStage_4E3CD0(C.int(a1))
 }
 func Sub_51A920(a1 int) {
-	C.sub_51A920(C.int(a1))
+	sub_51A920(C.int(a1))
 }
 func Sub_51A1F0(a1 int) {
-	C.sub_51A1F0(C.int(a1))
+	sub_51A1F0(C.int(a1))
 }
 func Sub_4D10F0(a1 string) {
-	C.sub_4D10F0(internCStr(a1))
+	sub_4D10F0(internCStr(a1))
 }
 func Sub_4D9CF0(a1 int) {
 	sub_4D9CF0(C.int(a1))

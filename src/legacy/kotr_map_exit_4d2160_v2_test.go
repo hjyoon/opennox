@@ -29,7 +29,7 @@ func testKOTRMapExit216(t *testing.T, first, last int) {
 		t.Fatal(err)
 	}
 	source := strings.ReplaceAll(string(fixture), "/* COMPLETE_KOTR_MAP_EXIT_BODY */",
-		teamReportBody210(t, "server__system__server.c", "void sub_4D2160("))
+		teamReportBody210(t, "testdata/retired-game-sources/server__system__server.c.txt", "void sub_4D2160("))
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)

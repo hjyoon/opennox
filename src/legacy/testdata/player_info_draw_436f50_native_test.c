@@ -14,7 +14,7 @@
 #else
 #pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
 #endif
-#include "../noxstring.c"
+#include "noxstring_reference.c"
 #pragma GCC diagnostic pop
 
 char* nox_itoa(int value, char* dest, int radix) {

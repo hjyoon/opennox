@@ -13,7 +13,7 @@
 #else
 #pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
 #endif
-#include "noxstring.c"
+#include "testdata/noxstring_reference.c"
 #pragma GCC diagnostic pop
 
 /* The exercised formatter has only %s; integer formatting is not substituted. */

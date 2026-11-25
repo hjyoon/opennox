@@ -17,7 +17,7 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-func mapMetadataTransfer(cf *cryptfile.CryptFile, field []byte) error {
+func mapSectionTransfer(cf *cryptfile.CryptFile, field []byte) error {
 	if cf.ReadOnly() {
 		_, err := io.ReadFull(cf, field)
 		return err
@@ -37,7 +37,7 @@ func mapMetadataName(cf *cryptfile.CryptFile, buf []byte) error {
 	if int(size) > len(buf) {
 		return fmt.Errorf("map quest name has %d bytes, maximum %d", size, len(buf))
 	}
-	if err := mapMetadataTransfer(cf, buf[:size]); err != nil {
+	if err := mapSectionTransfer(cf, buf[:size]); err != nil {
 		return err
 	}
 	if int(size) < len(buf) {
@@ -62,14 +62,14 @@ func mapRWMetadata(cf *cryptfile.CryptFile) error {
 	if version >= 1 {
 		offset := 0
 		for _, size := range [...]int{64, 512, 16, 64, 64, 128, 128, 256, 128, 32, 4} {
-			if err := mapMetadataTransfer(cf, buf[offset:offset+size]); err != nil {
+			if err := mapSectionTransfer(cf, buf[offset:offset+size]); err != nil {
 				return err
 			}
 			offset += size
 		}
 		if version == 2 {
 			for i := range 2 {
-				if err := mapMetadataTransfer(cf, buf[1396+i:1397+i]); err != nil {
+				if err := mapSectionTransfer(cf, buf[1396+i:1397+i]); err != nil {
 					return err
 				}
 			}

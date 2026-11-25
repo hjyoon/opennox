@@ -140,17 +140,11 @@ func Nox_server_mapRWFloorMap_422230(_ *cryptfile.CryptFile, a1 unsafe.Pointer) 
 	}
 	return nil
 }
-func Nox_server_mapRWSecretWalls_4297C0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWSecretWalls_4297C0, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWSecretWalls_4297C0(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWTaggedWalls(cf, region, mapSecretWalls)
 }
-func Nox_server_mapRWDestructableWalls_429530(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWDestructableWalls_429530, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWDestructableWalls_429530(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWTaggedWalls(cf, region, mapBreakableWalls)
 }
 func Nox_server_mapRWWaypoints_506260(cf *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if cf == nil {
@@ -340,11 +334,8 @@ func mapWriteWaypoints506260(cf *cryptfile.CryptFile, first *server.Waypoint, ac
 	}
 	return nil
 }
-func Nox_server_mapRWWindowWalls_4292C0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWWindowWalls_4292C0, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWWindowWalls_4292C0(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWTaggedWalls(cf, region, mapWindowWalls)
 }
 func Nox_server_mapRWGroupData_505C30(cf *cryptfile.CryptFile, _ unsafe.Pointer) error {
 	if cf == nil {

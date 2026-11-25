@@ -1,17 +1,17 @@
 package legacy
 
-/*
-#include <stdint.h>
-#include <stdlib.h>
-#include "world_player_reference_40a830.h"
-*/
-import "C"
 import (
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"runtime"
 	"unsafe"
 )
+
+func init() {
+	cfixture.WorldReferencePointer = worldPlayerReferencePointer
+	cfixture.WorldReferenceWord = worldPlayerReferenceWord
+}
 
 func worldPlayerBool40A830(v bool) uint32 {
 	if v {
@@ -22,9 +22,7 @@ func worldPlayerBool40A830(v bool) uint32 {
 
 // These two private symbols are only service seams for the exact renamed
 // C reference copies. They never replace an entry algorithm with its result.
-//
-//export nox_world_player_reference_pointer
-func nox_world_player_reference_pointer(op C.int32_t, p unsafe.Pointer, a, b C.uint32_t, q unsafe.Pointer) unsafe.Pointer {
+func worldPlayerReferencePointer(op int32, p unsafe.Pointer, a, b uint32, q unsafe.Pointer) unsafe.Pointer {
 	r := worldPlayerRuntimeCurrent40A830()
 	switch int(op) {
 	case 1:
@@ -50,8 +48,7 @@ func nox_world_player_reference_pointer(op C.int32_t, p unsafe.Pointer, a, b C.u
 	}
 }
 
-//export nox_world_player_reference_word
-func nox_world_player_reference_word(op C.int32_t, p unsafe.Pointer, a, b C.uint32_t, q unsafe.Pointer, n C.uint32_t) C.uint32_t {
+func worldPlayerReferenceWord(op int32, p unsafe.Pointer, a, b uint32, q unsafe.Pointer, n uint32) uint32 {
 	r := worldPlayerRuntimeCurrent40A830()
 	var word uint32
 	switch int(op) {
@@ -90,15 +87,11 @@ func nox_world_player_reference_word(op C.int32_t, p unsafe.Pointer, a, b C.uint
 	}
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(q)
-	return C.uint32_t(word)
+	return uint32(word)
 }
 func worldPlayerFixtureWord40A830(backend string, entry int, p unsafe.Pointer, a uint32) uint32 {
 	if backend != "go" {
-		ref := 0
-		if backend == "old" {
-			ref = 1
-		}
-		return uint32(C.world_player_fixture_word(C.int(ref), C.int(entry), p, C.uint32_t(a)))
+		return cfixture.WorldWord(backend == "old", entry, p, a)
 	}
 	switch entry {
 	case 0:
@@ -130,11 +123,7 @@ func worldPlayerFixtureWord40A830(backend string, entry int, p unsafe.Pointer, a
 }
 func worldPlayerFixturePointer40A830(backend string, entry int, p, q unsafe.Pointer, a, b int32) unsafe.Pointer {
 	if backend != "go" {
-		ref := 0
-		if backend == "old" {
-			ref = 1
-		}
-		return C.world_player_fixture_pointer(C.int(ref), C.int(entry), p, q, C.int32_t(a), C.int32_t(b))
+		return cfixture.WorldPointer(backend == "old", entry, p, q, a, b)
 	}
 	switch entry {
 	case 0:
@@ -167,26 +156,22 @@ func worldPlayerFixtureArmor40A830(backend string, p *server.Object) float64 {
 	if backend == "go" {
 		return itemDefendNative415C00(p)
 	}
-	ref := 0
-	if backend == "old" {
-		ref = 1
-	}
-	return float64(C.world_player_fixture_armor(C.int(ref), unsafe.Pointer(p)))
+	return cfixture.WorldArmor(backend == "old", unsafe.Pointer(p))
 }
 func worldPlayerFixtureLayout40A830(i int) uintptr {
-	return uintptr(C.world_player_fixture_layout(C.int(i)))
+	return cfixture.WorldLayout(i)
 }
 func worldPlayerFixtureAlloc40A830(n uintptr) unsafe.Pointer { return game4SupportAllocate(1, n) }
 func worldPlayerFixtureFree40A830(p unsafe.Pointer)          { game4SupportReleaseMemory(p) }
 func worldPlayerFixtureTileOwner40A830(p unsafe.Pointer, n int32) {
-	C.world_player_fixture_tile_owner(p, C.int(n))
+	cfixture.WorldTileOwner(p, n)
 }
 func worldPlayerFixtureModifierNext40A830(p, next unsafe.Pointer) {
-	C.world_player_fixture_modifier_next(p, next)
+	cfixture.WorldModifierNext(p, next)
 }
 func worldPlayerFixtureDefendCallback40A830() unsafe.Pointer {
-	return C.world_player_fixture_defend_callback()
+	return cfixture.WorldDefendCallback()
 }
 func worldPlayerFixtureDefendSeen40A830(e, item unsafe.Pointer) bool {
-	return C.world_player_fixture_defend_seen(e, item) != 0
+	return cfixture.WorldDefendSeen(e, item)
 }

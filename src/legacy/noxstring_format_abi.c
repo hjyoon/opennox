@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int nox_format_arg_int(nox_format_args* args) {
 	return va_arg(args->list, int);
@@ -20,11 +19,12 @@ const wchar2_t* nox_format_arg_wide(nox_format_args* args) {
 	return va_arg(args->list, const wchar2_t*);
 }
 
-size_t nox_format_arg_float(nox_format_args* args, char* out, int precision) {
-	char format[32];
-	snprintf(format, sizeof(format), "%%.%df", precision);
-	snprintf(out, 32, format, va_arg(args->list, double));
-	return strlen(out);
+void nox_format_arg_fixed(nox_format_args* args, char* out, size_t capacity, int precision) {
+	snprintf(out, capacity, "%.*f", precision, va_arg(args->list, double));
+}
+
+void nox_format_host_narrow(nox_format_args* args, char* out, size_t capacity, const char* format) {
+	vsnprintf(out, capacity, format, args->list);
 }
 
 void nox_format_abort(int code) {

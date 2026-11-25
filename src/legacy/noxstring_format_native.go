@@ -129,8 +129,13 @@ func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C
 				precision = 5
 			}
 			var number [32]C.char
-			length := int(C.nox_format_arg_float(args, &number[0], C.int(precision)))
-			for _, digit := range number[:length] {
+			// Use the host's floating-point formatting and retain the legacy
+			// temporary buffer size before widening the formatted bytes.
+			C.nox_format_arg_fixed(args, &number[0], C.size_t(len(number)), C.int(precision))
+			for _, digit := range number {
+				if digit == 0 {
+					break
+				}
 				emit(uint16(byte(digit)))
 			}
 		case '%', '!':

@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stdbool.h>
 #include <stdio.h>
+#include "noxstring_format_abi.h"
 */
 import "C"
 import (
@@ -154,6 +155,13 @@ func nox_fs_fputs(f *FILE, str *C.char) int32 {
 		return int32(-1)
 	}
 	return int32(n)
+}
+
+//export nox_fs_vfprintf_go
+func nox_fs_vfprintf_go(file *FILE, format *C.nox_format_byte, args *C.nox_format_args) C.int {
+	var text [2048]C.char
+	C.nox_format_host_narrow(args, &text[0], C.size_t(len(text)), format)
+	return C.int(nox_fs_fputs(file, &text[0]))
 }
 
 //export nox_fs_feof

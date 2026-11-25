@@ -1,13 +1,13 @@
-#include "noxstring.h"
-#include <string.h>
+#include "common__log.h"
+#include "noxstring_format_abi.h"
 
 char nox_log_buf[512] = {0};
 
 //----- (00413D30) --------------------------------------------------------
-void nox_xxx_networkLog_print(char* str);
-void nox_xxx_networkLog_printf_413D30(char* fmt, ...) {
-	va_list va;
-	va_start(va, fmt);
-	nox_vsprintf(nox_log_buf, fmt, va);
-	nox_xxx_networkLog_print(nox_log_buf);
+void nox_network_log_vprintf_413D30(nox_format_byte* format, nox_format_args* args);
+void nox_xxx_networkLog_printf_413D30(char* format, ...) {
+	nox_format_args args;
+	va_start(args.list, format);
+	nox_network_log_vprintf_413D30(format, &args);
+	va_end(args.list);
 }

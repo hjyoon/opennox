@@ -14,7 +14,7 @@ func withRespawnRemove4EC6A0Class(t *testing.T, count int, fn func(*alloc.Class,
 	handles.InitHigh()
 	t.Cleanup(handles.Release)
 
-	oldAllocator := respawnAddLoadAllocator4EC5E0()
+	oldAllocator := respawnAllocatorLoad4ECA60()
 	oldHead := respawnAddLoadHead4EC5E0()
 	class := alloc.NewClassHigh("RespawnRemove4EC6A0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), count+1)
 	objects := make([]*server.Object, count)
@@ -27,13 +27,13 @@ func withRespawnRemove4EC6A0Class(t *testing.T, count int, fn func(*alloc.Class,
 	}
 	defer func() {
 		respawnAddStoreHead4EC5E0(oldHead)
-		respawnAddStoreAllocator4EC5E0(oldAllocator)
+		respawnAllocatorStore4ECA60(oldAllocator)
 		for _, freeObject := range freeObjects {
 			freeObject()
 		}
 		class.Free()
 	}()
-	respawnAddStoreAllocator4EC5E0(class.UPtr())
+	respawnAllocatorStore4ECA60(class.UPtr())
 	fn(class, records, objects)
 }
 

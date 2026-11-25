@@ -15,14 +15,14 @@ func TestNoxXxxRespawnAdd4EC5E0NativeRecord(t *testing.T) {
 	t.Cleanup(handles.Release)
 
 	oldAllow := respawnAddLoadAllow4EC5E0()
-	oldAllocator := respawnAddLoadAllocator4EC5E0()
+	oldAllocator := respawnAllocatorLoad4ECA60()
 	oldHead := respawnAddLoadHead4EC5E0()
 	oldWeaponFlags := objectNPCWeaponEquipFlags
 
 	class := alloc.NewClassHigh("RespawnAdd4EC5E0Test", unsafe.Sizeof(respawnRecord4EC5E0{}), 3)
 	defer func() {
 		respawnAddStoreHead4EC5E0(oldHead)
-		respawnAddStoreAllocator4EC5E0(oldAllocator)
+		respawnAllocatorStore4ECA60(oldAllocator)
 		respawnAddStoreAllow4EC5E0(oldAllow)
 		objectNPCWeaponEquipFlags = oldWeaponFlags
 		class.Free()
@@ -52,7 +52,7 @@ func TestNoxXxxRespawnAdd4EC5E0NativeRecord(t *testing.T) {
 	previous := (*respawnRecord4EC5E0)(class.NewObject())
 	previous.TypeInd = 0x12345678
 	respawnAddStoreAllow4EC5E0(1)
-	respawnAddStoreAllocator4EC5E0(class.UPtr())
+	respawnAllocatorStore4ECA60(class.UPtr())
 	respawnAddStoreHead4EC5E0(previous)
 
 	weaponCalls := 0

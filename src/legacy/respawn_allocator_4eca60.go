@@ -1,15 +1,7 @@
 package legacy
 
 /*
-extern void* nox_alloc_respawn_1568020;
-
-static void* nox_respawn_allocator_load_4ECA60(void) {
-	return nox_alloc_respawn_1568020;
-}
-
-static void nox_respawn_allocator_store_4ECA60(void* value) {
-	nox_alloc_respawn_1568020 = value;
-}
+#include "vardefs.h"
 */
 import "C"
 
@@ -26,11 +18,11 @@ type respawnAllocatorRuntime4ECA60 struct {
 }
 
 func respawnAllocatorLoad4ECA60() unsafe.Pointer {
-	return C.nox_respawn_allocator_load_4ECA60()
+	return C.nox_alloc_respawn_1568020
 }
 
 func respawnAllocatorStore4ECA60(value unsafe.Pointer) {
-	C.nox_respawn_allocator_store_4ECA60(value)
+	globalStateNativeStorePointer(unsafe.Pointer(&C.nox_alloc_respawn_1568020), value)
 }
 
 func respawnAllocatorNative4ECA60(runtime respawnAllocatorRuntime4ECA60) int {

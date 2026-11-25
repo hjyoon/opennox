@@ -36,7 +36,7 @@ func Nox_xxx_respawnRemove_4EC6A0(obj *server.Object) {
 		StorePrev: func(rec, prev *respawnRecord4EC5E0) {
 			rec.Prev = prev
 		},
-		LoadAllocator: respawnAddLoadAllocator4EC5E0,
+		LoadAllocator: respawnAllocatorLoad4ECA60,
 		FreeFirst: func(allocator unsafe.Pointer, rec *respawnRecord4EC5E0) {
 			alloc.AsClass(allocator).FreeObjectFirst(unsafe.Pointer(rec))
 		},

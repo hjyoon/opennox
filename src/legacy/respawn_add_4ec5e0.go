@@ -1,38 +1,8 @@
 package legacy
 
 /*
-#include <stddef.h>
-#include <stdint.h>
-
-typedef struct nox_respawn_record_t nox_respawn_record_t;
-
-extern void* nox_alloc_respawn_1568020;
-extern nox_respawn_record_t* dword_5d4594_1568024;
-extern uint32_t nox_xxx_respawnAllow_587000_205200;
-
-static uint32_t nox_respawn_add_load_allow_4EC5E0(void) {
-	return nox_xxx_respawnAllow_587000_205200;
-}
-
-static void nox_respawn_add_store_allow_4EC5E0(uint32_t value) {
-	nox_xxx_respawnAllow_587000_205200 = value;
-}
-
-static void* nox_respawn_add_load_allocator_4EC5E0(void) {
-	return nox_alloc_respawn_1568020;
-}
-
-static void nox_respawn_add_store_allocator_4EC5E0(void* value) {
-	nox_alloc_respawn_1568020 = value;
-}
-
-static void* nox_respawn_add_load_head_4EC5E0(void) {
-	return dword_5d4594_1568024;
-}
-
-static void nox_respawn_add_store_head_4EC5E0(void* value) {
-	dword_5d4594_1568024 = (nox_respawn_record_t*)value;
-}
+#include "defs.h"
+#include "vardefs.h"
 */
 import "C"
 
@@ -45,27 +15,19 @@ import (
 )
 
 func respawnAddLoadAllow4EC5E0() uint32 {
-	return uint32(C.nox_respawn_add_load_allow_4EC5E0())
+	return uint32(C.nox_xxx_respawnAllow_587000_205200)
 }
 
 func respawnAddStoreAllow4EC5E0(value uint32) {
-	C.nox_respawn_add_store_allow_4EC5E0(C.uint32_t(value))
-}
-
-func respawnAddLoadAllocator4EC5E0() unsafe.Pointer {
-	return C.nox_respawn_add_load_allocator_4EC5E0()
-}
-
-func respawnAddStoreAllocator4EC5E0(value unsafe.Pointer) {
-	C.nox_respawn_add_store_allocator_4EC5E0(value)
+	C.nox_xxx_respawnAllow_587000_205200 = C.uint32_t(value)
 }
 
 func respawnAddLoadHead4EC5E0() *respawnRecord4EC5E0 {
-	return (*respawnRecord4EC5E0)(C.nox_respawn_add_load_head_4EC5E0())
+	return (*respawnRecord4EC5E0)(unsafe.Pointer(C.dword_5d4594_1568024))
 }
 
 func respawnAddStoreHead4EC5E0(value *respawnRecord4EC5E0) {
-	C.nox_respawn_add_store_head_4EC5E0(unsafe.Pointer(value))
+	globalStateNativeStorePointer(unsafe.Pointer(&C.dword_5d4594_1568024), unsafe.Pointer(value))
 }
 
 // Nox_xxx_respawnAdd_4EC5E0 restores GAME.EXE 004EC5E0 while retaining the
@@ -74,10 +36,8 @@ func Nox_xxx_respawnAdd_4EC5E0(obj *server.Object) {
 	server.RespawnAdd4EC5E0(obj, server.RespawnAddHooks4EC5E0[
 		*server.Object, *respawnRecord4EC5E0, unsafe.Pointer, unsafe.Pointer,
 	]{
-		LoadAllow: respawnAddLoadAllow4EC5E0,
-		LoadAllocator: func() unsafe.Pointer {
-			return respawnAddLoadAllocator4EC5E0()
-		},
+		LoadAllow:     respawnAddLoadAllow4EC5E0,
+		LoadAllocator: respawnAllocatorLoad4ECA60,
 		AllocZero: func(allocator unsafe.Pointer) *respawnRecord4EC5E0 {
 			return (*respawnRecord4EC5E0)(alloc.AsClass(allocator).NewObject())
 		},

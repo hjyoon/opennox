@@ -1,29 +1,5 @@
 package legacy
 
-/*
-#include <stddef.h>
-#include <stdint.h>
-
-typedef struct nox_respawn_record_t nox_respawn_record_t;
-
-extern void* nox_alloc_respawn_1568020;
-extern nox_respawn_record_t* dword_5d4594_1568024;
-extern uint32_t nox_xxx_respawnAllow_587000_205200;
-
-static void* nox_respawn_reset_load_allocator_4EC5B0(void) {
-	return nox_alloc_respawn_1568020;
-}
-
-static void nox_respawn_reset_clear_head_4EC5B0(void) {
-	dword_5d4594_1568024 = NULL;
-}
-
-static void nox_respawn_reset_enable_4EC5B0(void) {
-	nox_xxx_respawnAllow_587000_205200 = 1;
-}
-*/
-import "C"
-
 import (
 	"unsafe"
 
@@ -35,17 +11,15 @@ import (
 // contract while keeping both pointer-valued globals at the native C width.
 func Sub_4EC5B0() {
 	server.RespawnReset4EC5B0(server.RespawnResetHooks4EC5B0[unsafe.Pointer]{
-		LoadAllocator: func() unsafe.Pointer {
-			return C.nox_respawn_reset_load_allocator_4EC5B0()
-		},
+		LoadAllocator: respawnAllocatorLoad4ECA60,
 		ClearHead: func() {
-			C.nox_respawn_reset_clear_head_4EC5B0()
+			respawnAddStoreHead4EC5E0(nil)
 		},
 		FreeAll: func(allocator unsafe.Pointer) {
 			alloc.AsClass(allocator).FreeAllObjects()
 		},
 		Enable: func() {
-			C.nox_respawn_reset_enable_4EC5B0()
+			respawnAddStoreAllow4EC5E0(1)
 		},
 	})
 }

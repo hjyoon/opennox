@@ -1,14 +1,5 @@
 package legacy
 
-/*
-extern void* nox_alloc_respawn_1568020;
-
-static void* nox_respawn_allocator_free_load_4ECA90(void) {
-	return nox_alloc_respawn_1568020;
-}
-*/
-import "C"
-
 import (
 	"unsafe"
 
@@ -32,9 +23,7 @@ func respawnAllocatorFreeNative4ECA90(runtime respawnAllocatorFreeRuntime4ECA90)
 // the legacy pointer global, matching the original session-shutdown boundary.
 func Sub_4ECA90() {
 	respawnAllocatorFreeNative4ECA90(respawnAllocatorFreeRuntime4ECA90{
-		LoadAllocator: func() unsafe.Pointer {
-			return C.nox_respawn_allocator_free_load_4ECA90()
-		},
+		LoadAllocator: respawnAllocatorLoad4ECA60,
 		FreeClass: func(allocator unsafe.Pointer) {
 			alloc.AsClass(allocator).Free()
 		},

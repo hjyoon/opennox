@@ -1,17 +1,7 @@
 package legacy
 
 /*
-#include <stdint.h>
-
-extern uint32_t dword_5d4594_1568028;
-
-static uint32_t nox_respawn_scheduler_load_crown_4EC720(void) {
-	return dword_5d4594_1568028;
-}
-
-static void nox_respawn_scheduler_store_crown_4EC720(uint32_t value) {
-	dword_5d4594_1568028 = value;
-}
+#include "vardefs.h"
 */
 import "C"
 
@@ -76,11 +66,11 @@ type respawnSchedulerRuntime4EC720 struct {
 }
 
 func respawnSchedulerLoadCrown4EC720() uint32 {
-	return uint32(C.nox_respawn_scheduler_load_crown_4EC720())
+	return uint32(C.dword_5d4594_1568028)
 }
 
 func respawnSchedulerStoreCrown4EC720(value uint32) {
-	C.nox_respawn_scheduler_store_crown_4EC720(C.uint32_t(value))
+	C.dword_5d4594_1568028 = C.uint32_t(value)
 }
 
 func respawnSchedulerNative4EC720(runtime respawnSchedulerRuntime4EC720) {

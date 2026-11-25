@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"io"
 	"runtime"
 	"sync"
@@ -285,7 +286,7 @@ func seExtraCall40AA70(t *testing.T, backend string, player unsafe.Pointer) int3
 		return sub40AA70Native(player)
 	}
 	if backend == "C" {
-		return settingEligibilityFixtureCall40AA70(player)
+		return cfixture.SettingEligibilityFixtureCall40AA70(player)
 	}
 	t.Fatal("declared backend")
 	return 0
@@ -336,7 +337,7 @@ func seExtraWorld40AA70(t *testing.T, in *seExtraInput40AA70, flags uint32) {
 	saved := append([]byte(nil), window...)
 	t.Cleanup(func() { copy(window, saved) })
 	window[4], window[5] = seExtraBytes40AA70(t, in, in.Roles["info0"], 52, 1)[0], 0
-	limit := settingEligibilityFixtureLimitCell40AA70()
+	limit := cfixture.SettingEligibilityFixtureLimitCell40AA70()
 	seExtraPointer40AA70(t, limit)
 	oldLimit := *(*uint32)(limit)
 	*(*uint32)(limit) = 0x80000000
@@ -449,7 +450,7 @@ func TestSettingEligibilityPinnedGoHeap40AA70(t *testing.T) {
 			oldGlobal := *(*uint32)(cell)
 			*(*uint32)(cell) = in.InitialWords["005d5348"]
 			defer func() { *(*uint32)(cell) = oldGlobal }()
-			layout := settingEligibilityFixtureCLayout40AA70()
+			layout := cfixture.SettingEligibilityFixtureCLayout40AA70()
 			named := [3]uintptr{unsafe.Offsetof(server.Player{}.Field3680), unsafe.Offsetof(server.Player{}.Field2068), unsafe.Offsetof(server.Player{}.Field2140)}
 			for i, f := range layout {
 				if f.Offset != named[i] || f.Width != 4 {

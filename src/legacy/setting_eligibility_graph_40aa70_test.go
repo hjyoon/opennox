@@ -8,6 +8,7 @@ package legacy
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"os"
 	"runtime"
 	"sort"
@@ -74,7 +75,7 @@ type seMeta40AA70 struct {
 	Banks      []seBank40AA70
 	Fields     []seField40AA70
 	Identities map[string]uint64
-	CLayout    [3]settingEligibilityFixtureField40AA70
+	CLayout    [3]cfixture.SettingEligibilityFixtureField40AA70
 	GoOffsets  [3]uintptr
 	Opaque     []uint32
 	GlobalCell uint64
@@ -155,13 +156,13 @@ func seBuildGraph40AA70(in *seInput40AA70, path string) (g *seGraph40AA70, err e
 	if page < 8192 || page&(page-1) != 0 {
 		return nil, fmt.Errorf("native guard page geometry")
 	}
-	g.Meta = seMeta40AA70{Page: page, Identities: map[string]uint64{}, CLayout: settingEligibilityFixtureCLayout40AA70(), GoOffsets: [3]uintptr{unsafe.Offsetof(server.Player{}.Field3680), unsafe.Offsetof(server.Player{}.Field2068), unsafe.Offsetof(server.Player{}.Field2140)}}
+	g.Meta = seMeta40AA70{Page: page, Identities: map[string]uint64{}, CLayout: cfixture.SettingEligibilityFixtureCLayout40AA70(), GoOffsets: [3]uintptr{unsafe.Offsetof(server.Player{}.Field3680), unsafe.Offsetof(server.Player{}.Field2068), unsafe.Offsetof(server.Player{}.Field2140)}}
 	for i, w := range []uintptr{4, 4, 4} {
 		if g.Meta.CLayout[i].Offset != g.Meta.GoOffsets[i] || g.Meta.CLayout[i].Width != w {
 			return nil, fmt.Errorf("actual named C/Go field layout %d", i)
 		}
 	}
-	if settingEligibilityFixtureCPointerWidth40AA70() != unsafe.Sizeof(unsafe.Pointer(nil)) {
+	if cfixture.SettingEligibilityFixtureCPointerWidth40AA70() != unsafe.Sizeof(unsafe.Pointer(nil)) {
 		return nil, fmt.Errorf("C/Go pointer width")
 	}
 	g.File, err = os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)

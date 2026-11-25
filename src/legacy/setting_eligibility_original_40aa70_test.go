@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"io"
 	"os"
 	"os/exec"
@@ -454,7 +455,7 @@ func TestSettingEligibilityNativeWorker40AA70(t *testing.T) {
 	entry := reflect.ValueOf(sub40AA70Native).Pointer()
 	if input.Backend == "C" {
 		backend = 2
-		entry = reflect.ValueOf(settingEligibilityFixtureCall40AA70).Pointer()
+		entry = reflect.ValueOf(cfixture.SettingEligibilityFixtureCall40AA70).Pointer()
 	} else if input.Backend != "Go" {
 		t.Fatal("actual backend")
 	}
@@ -468,7 +469,7 @@ func TestSettingEligibilityNativeWorker40AA70(t *testing.T) {
 	must(e)
 	var result int32
 	if input.Backend == "C" {
-		result = settingEligibilityFixtureCall40AA70(player)
+		result = cfixture.SettingEligibilityFixtureCall40AA70(player)
 	} else {
 		result = sub40AA70Native(player)
 	}

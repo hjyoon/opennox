@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"math"
 	"reflect"
 	"runtime"
@@ -46,29 +47,29 @@ func TestGame4GoldCEntryNativeWordsAndUnsignedBoundaries(t *testing.T) {
 		{7, 0x80000000, 0, 2}, {math.MaxUint32, 1, 0, 2}, {7, 0xfffffffe, 5, 2},
 	} {
 		p.GoldVal = tc.initial
-		result := game4GoldC(o, tc.op, tc.value)
+		result := cfixture.Game4GoldC(o, tc.op, tc.value)
 		if p.GoldVal != tc.want {
 			t.Fatalf("gold %+v = %#x", tc, p.GoldVal)
 		}
 		if tc.op < 2 && result != 0x123 {
 			t.Fatalf("opaque return=%#x", result)
 		}
-		if got := game4GoldC(o, 3, 0); got != uintptr(tc.want) {
+		if got := cfixture.Game4GoldC(o, 3, 0); got != uintptr(tc.want) {
 			t.Fatalf("player getter=%#x", got)
 		}
-		if got := game4GoldC(o, 4, 0); got != uintptr(tc.want) {
+		if got := cfixture.Game4GoldC(o, 4, 0); got != uintptr(tc.want) {
 			t.Fatalf("object getter=%#x", got)
 		}
 	}
 	p.GoldVal = 0xdeadbeef
 	o.ObjClass = object.ClassMonster
-	if got := game4GoldC(o, 3, 0); got != 0xdeadbeef {
+	if got := cfixture.Game4GoldC(o, 3, 0); got != 0xdeadbeef {
 		t.Fatalf("player getter incorrectly class gated: %#x", got)
 	}
-	if got := game4GoldC(o, 4, 0); got != 0 {
+	if got := cfixture.Game4GoldC(o, 4, 0); got != 0 {
 		t.Fatalf("object class gate=%#x", got)
 	}
-	game4GoldC(o, 2, 7)
+	cfixture.Game4GoldC(o, 2, 7)
 	if p.GoldVal != 0xdeadbeef {
 		t.Fatal("nonplayer setter changed Gold")
 	}
@@ -117,24 +118,24 @@ func TestGame4WaypointCEntryCallbackOrderAndNativeLinks(t *testing.T) {
 	u.CustomWaypoints = [3]*server.Object{a, b, nil}
 	u.CustomWaypointRead = 2
 	u.CustomWaypointWrite = 1
-	game4WaypointC(o, 0, 0, 0)
+	cfixture.Game4WaypointC(o, 0, 0, 0)
 	if !reflect.DeepEqual(events, []string{"delete-a", "delete-c"}) || u.CustomWaypoints != ([3]*server.Object{}) || u.CustomWaypointRead != 0 || u.CustomWaypointWrite != 0 {
 		t.Fatalf("cleanup: %v %+v", events, u)
 	}
 	o.UpdateData = unsafe.Pointer(u)
 	u.CustomWaypointWrite = 2
-	game4WaypointC(o, 1, 1.25, -2.5)
-	game4WaypointC(o, 1, 1.25, -2.5)
+	cfixture.Game4WaypointC(o, 1, 1.25, -2.5)
+	cfixture.Game4WaypointC(o, 1, 1.25, -2.5)
 	if !reflect.DeepEqual(events, []string{"delete-a", "delete-c", "new", "create", "move"}) {
 		t.Fatal(events)
 	}
 	p.Field3680 = 3
-	game4WaypointC(o, 1, 1.25, -2.5)
+	cfixture.Game4WaypointC(o, 1, 1.25, -2.5)
 	if len(events) != 5 {
 		t.Fatal("observer created/moved waypoint")
 	}
 	u.CustomWaypointRead = 2
-	if game4WaypointC(o, 2, 0, 0) != 1 {
+	if cfixture.Game4WaypointC(o, 2, 0, 0) != 1 {
 		t.Fatal("presence lost high pointer")
 	}
 }
@@ -201,7 +202,7 @@ func TestGame4WaypointFollowCFloatBoundaryAndLiveCursor(t *testing.T) {
 		if tc.steer {
 			wantForce = [2]uint32{0x3f219999, 0xbfbccccd}
 		}
-		if got := game4WaypointC(o, 3, 0, 0); got != bool2int(tc.steer) {
+		if got := cfixture.Game4WaypointC(o, 3, 0, 0); got != bool2int(tc.steer) {
 			t.Fatalf("steer from %+v to %+v = %d, want %t", tc.pos, tc.target, got, tc.steer)
 		}
 		gotForce := [2]uint32{math.Float32bits(o.ForceVec.X), math.Float32bits(o.ForceVec.Y)}
@@ -234,7 +235,7 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 	}}
 	game4RewardServices = func() game4RewardRuntime { return r }
 	for kind := 0; kind < 3; kind++ {
-		if got := game4RewardC(o, kind, target, 0xfe); got != 23 {
+		if got := cfixture.Game4RewardC(o, kind, target, 0xfe); got != 23 {
 			t.Fatal(got)
 		}
 		want := []byte{0xf0, byte(30 + kind), 0xfe, 0x34, 0x12}
@@ -242,12 +243,12 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 			t.Fatal(packets)
 		}
 	}
-	if game4RewardC(o, 8, nil, 0) != 6 || len(packets) != 3 {
+	if cfixture.Game4RewardC(o, 8, nil, 0) != 6 || len(packets) != 3 {
 		t.Fatal("invalid subtype")
 	}
 	for _, n := range []int{0, 1, 48, 49, 255, 256, 257} {
 		before := len(packets)
-		game4StringC(o, strings.Repeat("x", n), 0xf7)
+		cfixture.Game4StringC(o, strings.Repeat("x", n), 0xf7)
 		if n == 1 || n == 48 {
 			if len(packets) != before+1 {
 				t.Fatal(n)
@@ -283,7 +284,7 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 	}
 	r.bonus = func() float64 { return 1.25 }
 	r.floatInt = game3MapFloatInt
-	if got := game4GuideC(o, target, nil); got != 9 {
+	if got := cfixture.Game4GuideC(o, target, nil); got != 9 {
 		t.Fatalf("cached update/reloaded player=%d", got)
 	}
 	o.UpdateData = unsafe.Pointer(u)
@@ -295,14 +296,14 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 	var pin runtime.Pinner
 	pin.Pin(&guarded)
 	defer pin.Unpin()
-	if got := game4DamageC(o, target, &guarded.damage); got != 10 || guarded.damage != 10 || guarded.before != 0xaabbccdd || guarded.after != 0xdeadbeef {
+	if got := cfixture.Game4DamageC(o, target, &guarded.damage); got != 10 || guarded.damage != 10 || guarded.before != 0xaabbccdd || guarded.after != 0xdeadbeef {
 		t.Fatalf("damage %+v return%d", guarded, got)
 	}
 	// No guide must not touch the damage pointer or resolve a game-data bonus.
 	o.UpdateData = unsafe.Pointer(u)
 	r.guide = func(string) int { return 0 }
 	r.bonus = func() float64 { t.Fatal("eager bonus"); return 0 }
-	if got := game4DamageC(o, target, nil); got != 0 {
+	if got := cfixture.Game4DamageC(o, target, nil); got != 0 {
 		t.Fatal(got)
 	}
 }
@@ -342,7 +343,7 @@ func TestGame4PhonemeCEntryAllSignedInputsAndSelection(t *testing.T) {
 				if mode == 3 {
 					want = 0
 				}
-				if got := game4PhonemeC(0xfedcba98, int8(n)); got != want {
+				if got := cfixture.Game4PhonemeC(0xfedcba98, int8(n)); got != want {
 					t.Fatalf("server%v mode%d phoneme%d=%d want%d", isServer, mode, n, got, want)
 				}
 			}
@@ -360,20 +361,20 @@ func TestGame4AnimationCEntryBitPriorityAndActionGates(t *testing.T) {
 		*p = 0xf0000000 + uint32(bit)
 		defer func() { *p = old }()
 		for _, mask := range []uint32{1 << bit, (1 << bit) | 0xf8000003} {
-			if got := uint32(game4AnimationC(mask)); got != *p {
+			if got := uint32(cfixture.Game4AnimationC(mask)); got != *p {
 				t.Fatalf("bit%d mask%x=%x", bit, mask, got)
 			}
 		}
 	}
-	if game4AnimationC(0xf8000003) != 0 {
+	if cfixture.Game4AnimationC(0xf8000003) != 0 {
 		t.Fatal("excluded bits")
 	}
 	o, u, _ := game4PlayerBank(t)
-	if game4WaypointC(o, 4, 0, 0) != 1 || game4WaypointC(o, 5, 0, 0) != 1 {
+	if cfixture.Game4WaypointC(o, 4, 0, 0) != 1 || cfixture.Game4WaypointC(o, 5, 0, 0) != 1 {
 		t.Fatal("idle gates")
 	}
 	u.State = server.PlayerState23
-	if game4WaypointC(o, 5, 0, 0) != 0 {
+	if cfixture.Game4WaypointC(o, 5, 0, 0) != 0 {
 		t.Fatal("attack state gate")
 	}
 }

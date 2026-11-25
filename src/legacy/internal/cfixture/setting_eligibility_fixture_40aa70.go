@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -33,23 +33,23 @@ static void* setting_eligibility_fixture_limit_cell_40aa70(void) { return &dword
 import "C"
 import "unsafe"
 
-type settingEligibilityFixtureField40AA70 struct{ Offset, Width uintptr }
+type SettingEligibilityFixtureField40AA70 struct{ Offset, Width uintptr }
 
-func settingEligibilityFixtureCall40AA70(player unsafe.Pointer) int32 {
+func SettingEligibilityFixtureCall40AA70(player unsafe.Pointer) int32 {
 	return int32(C.setting_eligibility_fixture_call_40aa70(player))
 }
-func settingEligibilityFixtureCLayout40AA70() [3]settingEligibilityFixtureField40AA70 {
-	var out [3]settingEligibilityFixtureField40AA70
+func SettingEligibilityFixtureCLayout40AA70() [3]SettingEligibilityFixtureField40AA70 {
+	var out [3]SettingEligibilityFixtureField40AA70
 	for i := range out {
-		out[i] = settingEligibilityFixtureField40AA70{uintptr(C.setting_eligibility_fixture_offset_40aa70(C.int(i))), 4}
+		out[i] = SettingEligibilityFixtureField40AA70{uintptr(C.setting_eligibility_fixture_offset_40aa70(C.int(i))), 4}
 	}
 	return out
 }
-func settingEligibilityFixtureCPointerWidth40AA70() uintptr {
+func SettingEligibilityFixtureCPointerWidth40AA70() uintptr {
 	return uintptr(C.setting_eligibility_fixture_pointer_width_40aa70())
 }
 
 // Existing C-owned limit is exposed only so controls can save and restore it.
-func settingEligibilityFixtureLimitCell40AA70() unsafe.Pointer {
+func SettingEligibilityFixtureLimitCell40AA70() unsafe.Pointer {
 	return C.setting_eligibility_fixture_limit_cell_40aa70()
 }

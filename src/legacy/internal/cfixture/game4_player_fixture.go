@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -38,33 +38,34 @@ static int game4_player_animation_entry(int mask) {return sub_4FA280(mask);}
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/server"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
 )
 
-func game4GoldC(o *server.Object, op int, n uint32) uintptr {
-	return uintptr(C.game4_player_gold_entry(asObjectC(o), C.int(op), C.uint32_t(n)))
+func Game4GoldC(o *server.Object, op int, n uint32) uintptr {
+	return uintptr(C.game4_player_gold_entry((*C.nox_object_t)(o.CObj()), C.int(op), C.uint32_t(n)))
 }
-func game4WaypointC(o *server.Object, op int, x, y float32) int {
-	return int(C.game4_player_waypoint_entry(asObjectC(o), C.int(op), C.float(x), C.float(y)))
+func Game4WaypointC(o *server.Object, op int, x, y float32) int {
+	return int(C.game4_player_waypoint_entry((*C.nox_object_t)(o.CObj()), C.int(op), C.float(x), C.float(y)))
 }
-func game4RewardC(o *server.Object, kind int, target *server.Object, flags byte) int {
-	return int(C.game4_player_reward_entry(asObjectC(o), C.int(kind), asObjectC(target), C.char(flags)))
+func Game4RewardC(o *server.Object, kind int, target *server.Object, flags byte) int {
+	return int(C.game4_player_reward_entry((*C.nox_object_t)(o.CObj()), C.int(kind), (*C.nox_object_t)(target.CObj()), C.char(flags)))
 }
-func game4StringC(o *server.Object, text string, flags byte) {
+func Game4StringC(o *server.Object, text string, flags byte) {
 	p := C.CString(text)
 	defer C.free(unsafe.Pointer(p))
-	C.game4_player_string_entry(asObjectC(o), p, C.char(flags))
+	C.game4_player_string_entry((*C.nox_object_t)(o.CObj()), p, C.char(flags))
 }
-func game4GuideC(o, target *server.Object, damage *int32) int32 {
-	return int32(C.game4_player_guide_entry(asObjectC(o), asObjectC(target), (*C.int)(unsafe.Pointer(damage))))
+func Game4GuideC(o, target *server.Object, damage *int32) int32 {
+	return int32(C.game4_player_guide_entry((*C.nox_object_t)(o.CObj()), (*C.nox_object_t)(target.CObj()), (*C.int)(unsafe.Pointer(damage))))
 }
-func game4DamageC(o, target *server.Object, damage *int32) int32 {
-	return int32(C.game4_player_damage_entry(asObjectC(o), asObjectC(target), (*C.int)(unsafe.Pointer(damage))))
+func Game4DamageC(o, target *server.Object, damage *int32) int32 {
+	return int32(C.game4_player_damage_entry((*C.nox_object_t)(o.CObj()), (*C.nox_object_t)(target.CObj()), (*C.int)(unsafe.Pointer(damage))))
 }
-func game4PhonemeC(code uint32, p int8) int32 {
+func Game4PhonemeC(code uint32, p int8) int32 {
 	return int32(C.game4_player_phoneme_entry(C.uint32_t(code), C.int8_t(p)))
 }
-func game4AnimationC(mask uint32) int32 {
+func Game4AnimationC(mask uint32) int32 {
 	return int32(C.game4_player_animation_entry(C.int(int32(mask))))
 }

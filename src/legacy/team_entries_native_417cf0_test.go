@@ -274,7 +274,7 @@ func TestRemainingTeamEntries417CF0ABIAndServices(t *testing.T) {
 			t.Fatalf("charwrap/count%d got%d next%d", count, got, nextCalls)
 		}
 	}
-	cell := (*uint32)(settingEligibilityFixtureLimitCell40AA70())
+	cell := (*uint32)(cfixture.SettingEligibilityFixtureLimitCell40AA70())
 	saved := *cell
 	defer func() { *cell = saved }()
 	for _, v := range []uint32{0, 0x80000000, 0xffffffff} {

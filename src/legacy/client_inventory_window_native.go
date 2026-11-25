@@ -26,7 +26,7 @@ import (
 //export nox_xxx_wndCreateInventoryMB_465E00
 func nox_xxx_wndCreateInventoryMB_465E00() *C.nox_window {
 	nox_xxx_inventoryLoadImages_467050()
-	C.nox_xxx_inventoryNameSignInit_4671E0()
+	nox_xxx_inventoryNameSignInit_4671E0()
 	C.nox_inventory_font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
 	width, height := C.nox_win_width, C.nox_win_height
 	*memmap.PtrT[[6]uint32](0x5D4594, 1049732) = [6]uint32{0, 0, uint32(width), uint32(height), 0, 0}

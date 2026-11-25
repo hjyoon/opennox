@@ -83,7 +83,7 @@ func nox_xxx_consoleEsc_49B7A0() {
 	// Each handler runs before testing whether this Escape was consumed.
 	closed = sub_4BFE40() != 0
 	closed = nox_xxx_quickBarClose_4606B0() != 0 || closed
-	closed = C.sub_462740() != 0 || closed
+	closed = sub_462740() != 0 || closed
 	if sub_44A4E0() != 0 || closed {
 		return
 	}

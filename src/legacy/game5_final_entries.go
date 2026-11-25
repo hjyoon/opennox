@@ -8,7 +8,7 @@ import "C"
 
 //export nox_xxx_j_inventoryNameSignInit_467460
 func nox_xxx_j_inventoryNameSignInit_467460() C.int {
-	return C.nox_xxx_inventoryNameSignInit_4671E0()
+	return nox_xxx_inventoryNameSignInit_4671E0()
 }
 
 //export nox_xxx_j_allocHitArray_511840

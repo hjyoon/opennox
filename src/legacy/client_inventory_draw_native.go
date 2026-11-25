@@ -62,7 +62,7 @@ func nox_xxx_inventoryDrawProc_466580(win *C.nox_window, draw *C.nox_window_data
 //export sub_466620
 func sub_466620(control, _ C.int, packed C.uint) C.int {
 	point := C.int2{field_0: C.int(uint16(packed)), field_4: C.int(packed >> 16)}
-	nox_xxx_cursorSetTooltip_4776B0(C.sub_466660(control, &point))
+	nox_xxx_cursorSetTooltip_4776B0(sub_466660(control, &point))
 	return 1
 }
 

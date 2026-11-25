@@ -85,7 +85,7 @@ func sub_467980() C.int {
 	}
 	nox_client_inventory_set_dragged(nil)
 	C.dword_5d4594_1049856 = 0
-	C.sub_462740()
+	sub_462740()
 	C.dword_5d4594_1049864 = 0
 	nox_xxx_clientSetAltWeapon_461550(nil)
 	C.dword_5d4594_1062488 = 0

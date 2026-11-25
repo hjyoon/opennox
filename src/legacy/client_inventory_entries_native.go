@@ -131,7 +131,7 @@ func sub_4675E0(code C.int, current, maximum C.short) C.short {
 
 //export sub_467650
 func sub_467650() C.int {
-	C.sub_462740()
+	sub_462740()
 	C.dword_5d4594_1049864 = 6
 	nox_client_setCursorType_477610(8)
 	if result := sub_467C80(); result != 0 {
@@ -293,7 +293,7 @@ func sub_467C10() C.int {
 	*memmap.PtrUint8(0x5D4594, 1049868) = 3
 	nox_xxx_clientPlaySoundSpecial_452D80(790, 100)
 	if C.dword_5d4594_1049864 == 5 {
-		C.sub_462740()
+		sub_462740()
 	}
 	sub_467CD0()
 	return 1

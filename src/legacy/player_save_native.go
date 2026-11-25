@@ -918,7 +918,7 @@ func playerInventoryReadRuntime41AC30(cf *cryptfile.CryptFile, unit *server.Obje
 		tryDequip: Nox_xxx_playerTryDequip_4F2FB0,
 		tryEquip:  Nox_xxx_playerTryEquip_4F2F70,
 		clearClientSelection: func() {
-			C.sub_467750(0, 0)
+			sub_467750(0, 0)
 			C.sub_467740(0)
 		},
 		reportSecondary: func(ind byte, item *server.Object) {

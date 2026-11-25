@@ -1508,15 +1508,6 @@ void* sub_46AF40(nox_window* win) {
 }
 #endif
 
-//----- (0046DC30) --------------------------------------------------------
-int sub_46DC30(nox_window* win, unsigned char color, const wchar2_t* format, ...) {
-	va_list va;
-	va_start(va, format);
-	nox_vswprintf((wchar2_t*)getMemAt(0x5D4594, 1089000), format, va);
-	va_end(va);
-	return sub_46DC00(win, color, (const wchar2_t*)getMemAt(0x5D4594, 1089000));
-}
-
 //----- (00470A90) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int nox_xxx_playerGet_470A90() { return dword_5d4594_1096252; }

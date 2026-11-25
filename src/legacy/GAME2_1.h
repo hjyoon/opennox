@@ -189,7 +189,6 @@ nox_window* nox_client_getWin1064916_46C720();
 int sub_46D6F0();
 int sub_46DB80();
 int sub_46DC00(nox_window* win, unsigned char color, const wchar2_t* text);
-int sub_46DC30(nox_window* win, unsigned char color, const wchar2_t* format, ...);
 char* sub_46DCC0();
 int sub_46E080(nox_playerInfo* player);
 int sub_46E130(int a1);

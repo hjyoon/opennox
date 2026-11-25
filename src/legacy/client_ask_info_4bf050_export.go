@@ -30,7 +30,7 @@ var clientAskInfoDepsFactory4BF050 = func() clientAskInfoDeps4BF050 {
 		space:        alloc.InternCString16(" "),
 		prefixFormat: alloc.InternCString16("%s "),
 		copyText: func(dst, src *uint16) {
-			C.nox_wcscpy((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(src)))
+			copyWideString((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(src)))
 		},
 		appendText: func(dst, src *uint16) {
 			C.nox_wcscat((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(src)))

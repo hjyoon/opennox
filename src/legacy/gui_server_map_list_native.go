@@ -116,7 +116,7 @@ func sub_459880(data *C.char) C.int {
 		g2ServerEnabled(C.dword_5d4594_1046520, true)
 	}
 	title := g2ServerLoad(labelKey, serverOptionsStringsFile, labelLine)
-	C.nox_wcscpy(&C.dword_5d4594_1046516.draw_data.text[0], title)
+	copyWideString(&C.dword_5d4594_1046516.draw_data.text[0], title)
 	sub_4580E0(data)
 	sub_459A40((*C.char)(g2ServerAt(data, 9)))
 	if g2ServerGame(uint32(noxflags.GameHost)) && !g2ServerGame(uint32(serverOptionsIndividualLadder|serverOptionsClanLadder)) {

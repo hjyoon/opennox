@@ -65,7 +65,7 @@ func sub_4C09D0() C.int {
 	g2ServerHidden(root, true)
 	g2ServerEnabled(root, false)
 	nox_gui_trade_slots_reset()
-	C.nox_wcscpy((*wchar2_t)(g2ServerMem(1319972)), tradeString("TotalValueLabel", 749))
+	copyWideString((*wchar2_t)(g2ServerMem(1319972)), tradeString("TotalValueLabel", 749))
 	*g2ServerWord(1320188), *g2ServerWord(1320192) = 0, 0
 	*g2ServerWord(1320196), *g2ServerWord(1320200) = uint32(C.nox_win_width), uint32(C.nox_win_height)
 	*g2ServerWord(1320220), *g2ServerWord(1320224) = uint32(C.nox_win_width), uint32(C.nox_win_height)

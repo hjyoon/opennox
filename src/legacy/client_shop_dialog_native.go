@@ -109,7 +109,7 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 		name = (*C.nox_shop_const_wchar2_t)(g2ServerMem(1107044))
 	}
 	title := (*wchar2_t)(g2ServerMem(1097300))
-	C.nox_wcscpy(title, (*wchar2_t)(unsafe.Pointer(name)))
+	copyWideString(title, (*wchar2_t)(unsafe.Pointer(name)))
 	C.sub_46AEE0(label, title)
 	if intro != nil && *intro != 0 {
 		C.dword_5d4594_1098604 = nox_strman_loadString_40F1D0(intro, &C.nox_shop_dialog_file_1098608, internCStr(shopSource), 1128)

@@ -91,7 +91,7 @@ func sub_4627F0(origin *C.uint32_t) C.uintptr_t {
 	root := C.nox_inventory_identify_window
 	title := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
 	if selected == nil {
-		C.nox_wcscpy(title, clientInventoryString("thing.db:IdentifyDescription", 2529))
+		copyWideString(title, clientInventoryString("thing.db:IdentifyDescription", 2529))
 		list := nox_xxx_wndGetChildByID_46B0C0(root, 9156)
 		return C.uintptr_t(nox_window_call_field_94_fnc(list, 16399, 0, 0, internCStr(clientInventoryDescriptionSource), 0))
 	}

@@ -311,7 +311,7 @@ func sub_459700() C.int {
 	buf, free := g2ServerTemp(256)
 	defer free()
 	if line != nil {
-		C.nox_wcsncpy((*C.wchar2_t)(unsafe.Pointer(&buf[0])), line, 255)
+		nox_wcsncpy((*C.wchar2_t)(unsafe.Pointer(&buf[0])), line, 255)
 		buf[255] = 0
 	}
 	g2ServerEvent(C.dword_5d4594_1046496, 16398, uintptr(int32(index)), 0)

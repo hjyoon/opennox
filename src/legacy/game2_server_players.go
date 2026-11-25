@@ -139,7 +139,7 @@ func sub_456D00(index C.int, out *C.wchar2_t) *C.wchar2_t {
 	buf, free := g2ServerTemp(56)
 	defer free()
 	p := (*C.wchar2_t)(unsafe.Pointer(&buf[0]))
-	C.nox_wcscpy(p, line)
+	copyWideString(p, line)
 	name := C.nox_wcstok(p, (*C.wchar2_t)(internWStr("\t\n\r")))
 	if name == nil {
 		return nil
@@ -268,7 +268,7 @@ func sub_457140(id C.int, name *C.wchar2_t) C.int {
 	entry := (*C.nox_gui_server_player_entry)(p)
 	accessListNativeInit416720((*accessListNode416720)(p))
 	accessListNativeAppend416720((*accessListNode416720)(unsafe.Pointer(&C.nox_gui_server_players.players)), (*accessListNode416720)(p))
-	C.nox_wcscpy(&entry.name[0], name)
+	copyWideString(&entry.name[0], name)
 	entry.net_code = C.uint32_t(id)
 	return C.int(g2ServerText(w, 16397, unsafe.Pointer(name), 3))
 }

@@ -43,7 +43,7 @@ func questGameOverTimerNativeHooks49B6E0() questGameOverTimerHooks49B6E0[*gui.Wi
 		index:  func(player *server.Player) uint8 { return player.PlayerInd },
 		copyEmpty: func() {
 			// The source is an inline UTF-16 string, not a PE32 pointer slot.
-			C.nox_wcscpy(questGameOverTimerBuffer49B6E0(), (*C.wchar2_t)(memmap.Ptr(0x5D4594+1303464)))
+			copyWideString(questGameOverTimerBuffer49B6E0(), (*C.wchar2_t)(memmap.Ptr(0x5D4594+1303464)))
 		},
 		loadText: func(key, source string, line int32) unsafe.Pointer {
 			return unsafe.Pointer(C.nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(source), C.int(line)))

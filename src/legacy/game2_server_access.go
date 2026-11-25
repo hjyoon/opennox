@@ -108,7 +108,7 @@ func g2ServerAccessEdit(edit *C.nox_window, id int) {
 	switch id {
 	case 10104:
 		if p != nil {
-			C.nox_wcscpy((*C.wchar2_t)(unsafe.Add(settings, 78)), p)
+			copyWideString((*C.wchar2_t)(unsafe.Add(settings, 78)), p)
 		}
 	case 10126, 10128:
 		if value > 14 {

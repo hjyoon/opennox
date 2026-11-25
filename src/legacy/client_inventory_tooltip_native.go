@@ -33,7 +33,7 @@ func sub_462740() C.int {
 	nox_window_set_hidden(C.nox_inventory_identify_window, 1)
 	C.dword_5d4594_1063116, C.dword_5d4594_1063120 = nil, nil
 	text := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
-	C.nox_wcscpy(text, clientInventoryString("thing.db:IdentifyDescription", 2361))
+	copyWideString(text, clientInventoryString("thing.db:IdentifyDescription", 2361))
 	child := nox_xxx_wndGetChildByID_46B0C0(C.nox_inventory_identify_window, 9156)
 	nox_window_call_field_94_fnc(child, 16399, 0, 0, internCStr("client_inventory_tooltip_native.go"), 0)
 	nox_xxx_wndClearCaptureMain_46ADE0(C.nox_inventory_window)
@@ -182,7 +182,7 @@ func sub_466E20(id *C.uint32_t) C.int {
 //export nox_xxx_inventoryNameSignInit_4671E0
 func nox_xxx_inventoryNameSignInit_4671E0() C.int {
 	title := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1062588))
-	C.nox_wcscpy(title, (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063676)))
+	copyWideString(title, (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063676)))
 	player := Get_dword_8531A0_2576()
 	var level int32
 	if noxflags.HasGame(noxflags.GameModeQuest) || nox_xxx_isQuest_4D6F50() != 0 || sub_4D6F70() != 0 {

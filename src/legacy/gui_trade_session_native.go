@@ -155,7 +155,7 @@ func nox_xxx_netP2PStartTrade_4C1320(data *C.nox_trade_const_u8_t) C.int {
 	}
 	C.dword_5d4594_1320964 = 1
 	sub_4C1410()
-	C.nox_wcscpy((*wchar2_t)(g2ServerMem(1319844)), (*wchar2_t)(unsafe.Add(unsafe.Pointer(data), 2)))
+	copyWideString((*wchar2_t)(g2ServerMem(1319844)), (*wchar2_t)(unsafe.Add(unsafe.Pointer(data), 2)))
 	g2ServerEnabled(tradeRoot(), true)
 	nox_xxx_showP2PTradeWnd_4C12D0()
 	var width, height C.int

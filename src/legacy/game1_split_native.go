@@ -116,7 +116,7 @@ func sub_43BC10(text *wchar2_t, limit C.uchar) *C.ushort {
 	if text == nil {
 		return nil
 	}
-	n := int(C.nox_wcslen(text))
+	n := int(nox_wcslen(text))
 	for {
 		var width C.int
 		if h := game1SplitTestHooks; h != nil && h.StringWidth != nil {
@@ -338,7 +338,7 @@ func sub_445450() *wchar2_t {
 		if h := game1SplitTestHooks; h != nil && h.CopyText != nil {
 			result = h.CopyText(dst, src)
 		} else {
-			result = C.nox_wcscpy(dst, src)
+			result = copyWideString(dst, src)
 		}
 		*(*uint32)(game1CenterMemory(0x5D4594, 824440+644*i)) = 0
 		*(*byte)(game1CenterMemory(0x5D4594, 824444+644*i)) = 0

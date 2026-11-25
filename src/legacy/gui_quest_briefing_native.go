@@ -153,7 +153,7 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	copyWideString(&title[0], briefingText("GUIBrief.c:GauntletStatTitle", 449))
 	copyWideString(&details[0], briefingText("Noxworld.c:Stage", 451))
 	appendWideString(&details[0], internWStr(" "))
-	nox_itow(C.int(memmap.Int32(0x5D4594, 831228)), &details[C.nox_wcslen(&details[0])], 10)
+	nox_itow(C.int(memmap.Int32(0x5D4594, 831228)), &details[nox_wcslen(&details[0])], 10)
 	C.nox_briefing_pair(&text[0], &title[0], &details[0])
 	tw, lineHeight := briefingMeasure(font, &text[0])
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))

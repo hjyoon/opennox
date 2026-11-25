@@ -146,7 +146,7 @@ func sub_4C1B50(data *C.nox_trade_const_u8_t) C.int {
 	if itemCount != 0 {
 		WStrCopy(countText, 16, "("+strconv.FormatInt(int64(itemCount), 10)+")")
 	} else {
-		C.nox_wcscpy(countText, (*wchar2_t)(g2ServerMem(1320984)))
+		copyWideString(countText, (*wchar2_t)(g2ServerMem(1320984)))
 	}
 	return C.int(WStrCopy((*wchar2_t)(g2ServerMem(1320100)), 16, remoteTotal))
 }

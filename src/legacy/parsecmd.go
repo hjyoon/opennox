@@ -128,71 +128,71 @@ func Nox_cmd_mute(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_mute(i, n, arr)
 }
 func Nox_cmd_offonly1(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_offonly1(i, n, arr)
+	return nox_cmd_offonly1(i, n, arr)
 }
 func Nox_cmd_offonly2(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_offonly2(i, n, arr)
 }
 func Nox_cmd_set_net_debug(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_net_debug(i, n, arr)
+	return nox_cmd_set_net_debug(i, n, arr)
 }
 func Nox_cmd_unset_net_debug(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_unset_net_debug(i, n, arr)
+	return nox_cmd_unset_net_debug(i, n, arr)
 }
 func Nox_cmd_show_info(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_show_info(i, n, arr)
+	return nox_cmd_show_info(i, n, arr)
 }
 func Nox_cmd_show_mem(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_show_mem(i, n, arr)
+	return nox_cmd_show_mem(i, n, arr)
 }
 func Nox_cmd_show_rank(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_show_rank(i, n, arr)
+	return nox_cmd_show_rank(i, n, arr)
 }
 func Nox_cmd_show_motd(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_show_motd(i, n, arr)
+	return nox_cmd_show_motd(i, n, arr)
 }
 func Nox_cmd_show_seq(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_show_seq(i, n, arr)
+	return nox_cmd_show_seq(i, n, arr)
 }
 func Nox_cmd_list_maps(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_list_maps(i, n, arr)
 }
 func Nox_cmd_cheat_ability(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_cheat_ability(i, n, arr)
+	return nox_cmd_cheat_ability(i, n, arr)
 }
 func Nox_cmd_cheat_level(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_cheat_level(i, n, arr)
+	return nox_cmd_cheat_level(i, n, arr)
 }
 func Nox_cmd_window(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_window(i, n, arr)
+	return nox_cmd_window(i, n, arr)
 }
 func Nox_cmd_set_qual_modem(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_qual_modem(i, n, arr)
+	return nox_cmd_set_qual_modem(i, n, arr)
 }
 func Nox_cmd_set_qual_isdn(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_qual_isdn(i, n, arr)
+	return nox_cmd_set_qual_isdn(i, n, arr)
 }
 func Nox_cmd_set_qual_cable(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_qual_cable(i, n, arr)
+	return nox_cmd_set_qual_cable(i, n, arr)
 }
 func Nox_cmd_set_qual_t1(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_qual_t1(i, n, arr)
+	return nox_cmd_set_qual_t1(i, n, arr)
 }
 func Nox_cmd_set_qual_lan(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_qual_lan(i, n, arr)
+	return nox_cmd_set_qual_lan(i, n, arr)
 }
 func Nox_cmd_set_time(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_time(i, n, arr)
+	return nox_cmd_set_time(i, n, arr)
 }
 func Nox_cmd_set_lessons(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_lessons(i, n, arr)
+	return nox_cmd_set_lessons(i, n, arr)
 }
 func Nox_cmd_menu_options(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_menu_options(i, n, arr)
+	return nox_cmd_menu_options(i, n, arr)
 }
 func Nox_cmd_menu_vidopt(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_menu_vidopt(i, n, arr)
+	return nox_cmd_menu_vidopt(i, n, arr)
 }
 func Nox_cmd_reenter(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_reenter(i, n, arr)
+	return nox_cmd_reenter(i, n, arr)
 }

@@ -58,14 +58,6 @@ static void nox_rank_set_window(int offset, nox_window* win) {
 	nox_rank_windows[(offset - NOX_RANK_WINDOW_FIRST) / 4] = win;
 }
 
-//----- (0046DC60) --------------------------------------------------------
-int sub_46DC60(nox_window* win, unsigned char color, const wchar2_t* text) {
-	if (!text) {
-		text = nox_strman_loadString_40F1D0("InternalError", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1050);
-	}
-	return text ? sub_46DC00(win, color, text) : 0;
-}
-
 //----- (0046E870) --------------------------------------------------------
 nox_window* nox_xxx_guiDrawRank_46E870() {
 	int v0;              // ebx
@@ -511,79 +503,6 @@ int sub_46F080(nox_window* win, nox_window_data* draw) {
 		sub_46FAE0();
 	}
 	return 1;
-}
-
-//----- (0046F8F0) --------------------------------------------------------
-int sub_46F8F0(int page, int empty_rows) {
-	for (int row = 0; row < empty_rows; ++row) {
-		sub_46DC60(nox_rank_window_at(1090060 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147124));
-		sub_46DC60(nox_rank_window_at(1090068 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147128));
-		sub_46DC60(nox_rank_window_at(1090076 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147132));
-		sub_46DC60(nox_rank_window_at(1090084 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147136));
-		sub_46DC60(nox_rank_window_at(1090092 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147140));
-	}
-	sub_46DC60(nox_rank_window_at(1090060 + 4 * page), 9,
-		nox_strman_loadString_40F1D0("player", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 189));
-	sub_46DC60(nox_rank_window_at(1090068 + 4 * page), 9, (wchar2_t*)getMemAt(0x587000, 147188));
-	const wchar2_t* class_heading = nox_strman_loadString_40F1D0(
-		dword_5d4594_1090120 == 1 ? "LivesHeading" : "class", 0,
-		"C:\\NoxPost\\src\\client\\Gui\\guirank.c", dword_5d4594_1090120 == 1 ? 193 : 195);
-	sub_46DC60(nox_rank_window_at(1090076 + 4 * page), 9, class_heading);
-	const wchar2_t* score_heading;
-	if (dword_5d4594_1090120 == 5) {
-		score_heading = nox_strman_loadString_40F1D0("rank", 0,
-			"C:\\NoxPost\\src\\client\\Gui\\guirank.c", 199);
-	} else {
-		score_heading = nox_strman_loadString_40F1D0(
-			dword_5d4594_1090120 == 1 ? "HealthHeading" : "score", 0,
-			"C:\\NoxPost\\src\\client\\Gui\\guirank.c", dword_5d4594_1090120 == 1 ? 201 : 203);
-	}
-	sub_46DC60(nox_rank_window_at(1090084 + 4 * page), 9, score_heading);
-	const wchar2_t* last_heading = nox_strman_loadString_40F1D0(
-		dword_5d4594_1090120 == 1 ? "class" : "ping", 0,
-		"C:\\NoxPost\\src\\client\\Gui\\guirank.c", dword_5d4594_1090120 == 1 ? 207 : 209);
-	return sub_46DC60(nox_rank_window_at(1090092 + 4 * page), 9, last_heading);
-}
-
-//----- (0046FB50) --------------------------------------------------------
-wchar2_t* sub_46FB50(int a1, uint8_t* a2) {
-	wchar2_t* v2;     // eax
-	wchar2_t* result; // eax
-	wchar2_t* v4;     // eax
-	wchar2_t* v5;     // eax
-	wchar2_t* v6;     // eax
-
-	switch (a1) {
-	case 4:
-		v2 = nox_strman_loadString_40F1D0("Ball", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 244);
-		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1090024), L"<%s", v2);
-		*a2 = 4;
-		result = (wchar2_t*)getMemAt(0x5D4594, 1090024);
-		break;
-	case 1:
-		v4 = nox_strman_loadString_40F1D0("King", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 250);
-		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1090024), L"<%s", v4);
-		result = (wchar2_t*)getMemAt(0x5D4594, 1090024);
-		*a2 = 4;
-		break;
-	case 2:
-		v5 = nox_strman_loadString_40F1D0("Flag", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 256);
-		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1090024), L"<%s", v5);
-		result = (wchar2_t*)getMemAt(0x5D4594, 1090024);
-		*a2 = 7;
-		break;
-	case 3:
-		v6 = nox_strman_loadString_40F1D0("Flag", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 262);
-		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1090024), L"<%s", v6);
-		*a2 = 13;
-		result = (wchar2_t*)getMemAt(0x5D4594, 1090024);
-		break;
-	default:
-		result = (wchar2_t*)getMemAt(0x587000, 147724);
-		*a2 = 4;
-		break;
-	}
-	return result;
 }
 
 //----- (0046FC50) --------------------------------------------------------

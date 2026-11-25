@@ -44,78 +44,6 @@ void sub_440A20(wchar2_t* a1, ...) {
 	nox_xxx_printCentered_445490((wchar2_t*)getMemAt(0x5D4594, 822660));
 }
 
-//----- (004424F0) --------------------------------------------------------
-int nox_cmd_set_cycle(int tokInd, int tokCnt, wchar2_t** tokens) {
-	wchar2_t* v3;
-	if (tokCnt == 3) {
-		if (!_nox_wcsicmp(tokens[tokInd], L"on")) {
-			sub_4D0D90(1);
-			v3 = nox_strman_loadString_40F1D0("MapCycleOn", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2614);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3);
-			sub_4AD840();
-			return 1;
-		}
-		if (!_nox_wcsicmp(tokens[tokInd], L"off")) {
-			sub_4D0D90(0);
-			v3 = nox_strman_loadString_40F1D0("MapCycleOff", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2621);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3);
-			sub_4AD840();
-			return 1;
-		}
-	}
-	return 0;
-}
-
-//----- (00442590) --------------------------------------------------------
-int nox_cmd_set_weapons(int tokInd, int tokCnt, wchar2_t** tokens) {
-	wchar2_t* v3;
-	wchar2_t* v5;
-	if (tokCnt == 3) {
-		if (!_nox_wcsicmp(tokens[tokInd], L"on")) {
-			sub_409E70(1);
-			nox_server_gameSettingsUpdated_40A670();
-			v5 = nox_strman_loadString_40F1D0("cmd_token:on", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2644);
-			v3 = nox_strman_loadString_40F1D0("weapons", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2645);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3, v5);
-			return 1;
-		}
-		if (!_nox_wcsicmp(tokens[tokInd], L"off")) {
-			sub_409EC0(1);
-			nox_server_gameSettingsUpdated_40A670();
-			v5 = nox_strman_loadString_40F1D0("cmd_token:off", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2652);
-			v3 = nox_strman_loadString_40F1D0("weapons", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2653);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3, v5);
-			return 1;
-		}
-	}
-	return 0;
-}
-
-//----- (00442670) --------------------------------------------------------
-int nox_cmd_set_staffs(int tokInd, int tokCnt, wchar2_t** tokens) {
-	wchar2_t* v3;
-	wchar2_t* v5;
-	if (tokCnt == 3) {
-		if (!_nox_wcsicmp(tokens[tokInd], L"on")) {
-			sub_409E70(16);
-			nox_server_gameSettingsUpdated_40A670();
-			v5 = nox_strman_loadString_40F1D0("cmd_token:on", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2674);
-			v3 = nox_strman_loadString_40F1D0("staffs", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2675);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3, v5);
-			return 1;
-		}
-		if (!_nox_wcsicmp(tokens[tokInd], L"off")) {
-			sub_409EC0(16);
-			nox_server_gameSettingsUpdated_40A670();
-			v5 = nox_strman_loadString_40F1D0("cmd_token:off", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2682);
-			v3 = nox_strman_loadString_40F1D0("staffs", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 2683);
-			nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v3, v5);
-			return 1;
-		}
-	}
-	return 0;
-}
-
 //----- (00443160) --------------------------------------------------------
 int nox_cmd_ban(int tokInd, int tokCnt, wchar2_t** tokens) {
 	wchar2_t* v4; // edi
@@ -198,47 +126,6 @@ int nox_cmd_kick(int tokInd, int tokCnt, wchar2_t** tokens) {
 		v6 = nox_strman_loadString_40F1D0("kicked", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3739);
 		sub_440A20(v6, v5->name_final);
 	}
-	return 1;
-}
-
-//----- (00443380) --------------------------------------------------------
-int nox_cmd_set_players(int tokInd, int tokCnt, wchar2_t** tokens) {
-	int v3;            // esi
-	const wchar2_t* v5; // eax
-	int v6;            // eax
-	wchar2_t* v7;       // eax
-
-	v3 = 0;
-	if (tokCnt != 3) {
-		return 0;
-	}
-	v5 = tokens[2];
-	if (v5) {
-		v6 = nox_wcstol(v5, 0, 10);
-		v3 = v6;
-		if (v6 >= 0) {
-			if (v6 > 999) {
-				v3 = 999;
-			}
-		} else {
-			v3 = 0;
-		}
-		if (nox_xxx_servGetPlrLimit_409FA0() == v3) {
-			return 1;
-		}
-		nox_xxx_servSetPlrLimit_409F80(v3);
-		sub_455800();
-	}
-	v7 = nox_strman_loadString_40F1D0("playersset", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3779);
-	sub_440A20(v7, v3);
-	return 1;
-}
-
-//----- (00443480) --------------------------------------------------------
-int nox_cmd_set_spellpts(int tokInd, int tokCnt, wchar2_t** tokens) {
-	wchar2_t* s =
-		nox_strman_loadString_40F1D0("notyetimplemented", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3830);
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, s);
 	return 1;
 }
 

@@ -71,13 +71,13 @@ func WrapCommandC(cfnc func(C.int, C.int, **wchar2_t) C.int) console.CommandLega
 }
 
 func Nox_cmd_set_cycle(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_cycle(i, n, arr)
+	return nox_cmd_set_cycle(i, n, arr)
 }
 func Nox_cmd_set_weapons(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_weapons(i, n, arr)
+	return nox_cmd_set_weapons(i, n, arr)
 }
 func Nox_cmd_set_staffs(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_staffs(i, n, arr)
+	return nox_cmd_set_staffs(i, n, arr)
 }
 func Nox_cmd_ban(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_ban(i, n, arr)
@@ -92,10 +92,10 @@ func Nox_cmd_kick(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_kick(i, n, arr)
 }
 func Nox_cmd_set_players(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_players(i, n, arr)
+	return nox_cmd_set_players(i, n, arr)
 }
 func Nox_cmd_set_spellpts(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_spellpts(i, n, arr)
+	return nox_cmd_set_spellpts(i, n, arr)
 }
 func Nox_cmd_offonly1(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_offonly1(i, n, arr)

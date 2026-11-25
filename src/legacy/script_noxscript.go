@@ -5,7 +5,6 @@ package legacy
 #include "server__script__internal.h"
 #include "GAME4_1.h"
 int nox_xxx_gameIsSwitchToSolo_4DB240();
-size_t nox_script_readWriteWww_5417C0(FILE* a1, FILE* a2, FILE* a3);
 */
 import "C"
 import (
@@ -127,5 +126,5 @@ func Nox_xxx_scriptPrepareFoundUnit_511D70(a1 *server.Object) {
 	rememberScriptObject(a1, nil)
 }
 func Nox_script_readWriteWww_5417C0(a1 *binfile.File, a2 *binfile.File, a3 *binfile.File) {
-	C.nox_script_readWriteWww_5417C0(NewFileHandle(a1), NewFileHandle(a2), NewFileHandle(a3))
+	nox_script_readWriteWww_5417C0(NewFileHandle(a1), NewFileHandle(a2), NewFileHandle(a3))
 }

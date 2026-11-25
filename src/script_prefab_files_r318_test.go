@@ -26,7 +26,7 @@ import (
 
 // Authored SCRIPT03 records exercise the actual native merger and live VM.
 // The expected bytes follow the file grammar, independently of the C writer.
-func prefabScriptStreamR318(names, strings []string) []byte {
+func prefabScriptStreamR318(names, strings []string, globalCount uint32, functions map[string][]uint32) []byte {
 	var out bytes.Buffer
 	word := func(v uint32) { _ = binary.Write(&out, binary.LittleEndian, v) }
 	text := func(v string) { word(uint32(len(v))); out.WriteString(v) }
@@ -45,7 +45,7 @@ func prefabScriptStreamR318(names, strings []string) []byte {
 		out.WriteString("SYMB")
 		count := uint32(0)
 		if index == 1 {
-			count = 4
+			count = globalCount
 		}
 		word(count)
 		word(0)
@@ -53,8 +53,14 @@ func prefabScriptStreamR318(names, strings []string) []byte {
 			word(1)
 		}
 		out.WriteString("DATA")
-		word(4)
-		word(uint32(asm.OpReturn))
+		code := functions[name]
+		if code == nil {
+			code = []uint32{uint32(asm.OpReturn)}
+		}
+		word(uint32(4 * len(code)))
+		for _, op := range code {
+			word(op)
+		}
 	}
 	out.WriteString("DONE")
 	return out.Bytes()
@@ -85,7 +91,7 @@ func TestScriptPrefabFilesR318(t *testing.T) {
 	noxServer = s
 	defer s.Close()
 	nativePath := (*byte)(memmap.PtrOff(0x973F18, 30760))
-	payload := prefabScriptStreamR318([]string{"Probe%7%13%-29"}, nil)
+	payload := prefabScriptStreamR318([]string{"Probe%7%13%-29"}, nil, 4, nil)
 	for _, tc := range []struct {
 		name string
 		load bool
@@ -147,9 +153,40 @@ func TestScriptPrefabFilesR318(t *testing.T) {
 		})
 	}
 
-	first := prefabScriptStreamR318([]string{"First%0%13%-29"}, []string{"first string"})
-	second := prefabScriptStreamR318([]string{"Second%1%-91%37"}, []string{"second string"})
-	want := prefabScriptStreamR318([]string{"First%0%13%-29", "Second%1%-91%37"}, []string{"first string", "second string"})
+	const firstName, secondName = "First%0%13%-29", "Second%1%-91%37"
+	const signedByteMin = 0xffffff80
+	secondCode := []uint32{
+		uint32(asm.OpLoadVarInt), 1, 5,
+		uint32(asm.OpLoadVarString), 1, 127,
+		uint32(asm.OpPushString), 127,
+		uint32(asm.OpPushInt), 0x180,
+		uint32(asm.OpPushFloat), 0x3fa00000,
+		uint32(asm.OpJumpIf), 0xff,
+		uint32(asm.OpCallScript), 2,
+		uint32(asm.OpPushInt), 2,
+		uint32(asm.OpCallBuiltin), uint32(asm.BuiltinSecondTimer),
+		uint32(asm.OpPushInt), 2, uint32(asm.OpPushInt), 3,
+		uint32(asm.OpCallBuiltin), uint32(asm.BuiltinSetDialog),
+		uint32(asm.OpReturn),
+	}
+	relocatedCode := []uint32{
+		uint32(asm.OpLoadVarInt), 1, 7,
+		uint32(asm.OpLoadVarString), 1, signedByteMin,
+		uint32(asm.OpPushString), signedByteMin,
+		uint32(asm.OpPushInt), signedByteMin,
+		uint32(asm.OpPushFloat), 0x3fa00000,
+		uint32(asm.OpJumpIf), 0xffffffff,
+		uint32(asm.OpCallScript), 3,
+		uint32(asm.OpPushInt), 3,
+		uint32(asm.OpCallBuiltin), uint32(asm.BuiltinSecondTimer),
+		uint32(asm.OpPushInt), 3, uint32(asm.OpPushInt), 4,
+		uint32(asm.OpCallBuiltin), uint32(asm.BuiltinSetDialog),
+		uint32(asm.OpReturn),
+	}
+	first := prefabScriptStreamR318([]string{firstName}, []string{"first string"}, 6, nil)
+	second := prefabScriptStreamR318([]string{secondName}, []string{"second string"}, 4, map[string][]uint32{secondName: secondCode})
+	want := prefabScriptStreamR318([]string{firstName, secondName}, []string{"first string", "second string"}, 6,
+		map[string][]uint32{secondName: relocatedCode})
 	for _, existing := range []bool{false, true} {
 		t.Run(map[bool]string{false: "merge creates destination", true: "merge truncates previous destination"}[existing], func(t *testing.T) {
 			dir := t.TempDir()

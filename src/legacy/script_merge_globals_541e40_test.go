@@ -18,7 +18,7 @@ func TestScriptMergeGlobals541E40Native(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	body := teamReportBody210(t, "server__script__file.c", "int nox_script_readWriteVvv_541E40(")
+	body := teamReportBody210(t, "testdata/retired-game-sources/server__script__file.c.txt", "int nox_script_readWriteVvv_541E40(")
 	program := strings.Replace(string(fixture), "// PRODUCTION_GLOBAL_MERGE_541E40", body, 1)
 	var input bytes.Buffer
 	word := func(dst *bytes.Buffer, value uint32) { _ = binary.Write(dst, binary.LittleEndian, value) }
@@ -76,7 +76,7 @@ func TestScriptMergeGlobals541E40Native(t *testing.T) {
 			cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 			cmd.Stdin = strings.NewReader(program)
 			if out, err := cmd.CombinedOutput(); err != nil {
-				t.Fatalf("compile complete production GLOBAL merger: %v\n%s", err, out)
+				t.Fatalf("compile reference GLOBAL merger: %v\n%s", err, out)
 			}
 			cmd = exec.Command(binary)
 			cmd.Stdin = bytes.NewReader(input.Bytes())

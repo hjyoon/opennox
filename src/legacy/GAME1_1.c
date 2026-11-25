@@ -65,7 +65,6 @@ extern uint32_t dword_5d4594_528256;
 extern uint32_t dword_5d4594_534808;
 extern uint32_t dword_5d4594_529340;
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
-extern uint32_t dword_5d4594_2660652;
 extern uint32_t dword_5d4594_529316;
 extern uint32_t nox_player_netCode_85319C;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
@@ -1418,41 +1417,6 @@ int sub_41D6C0() {
 	return v11;
 }
 
-//----- (0041DA10) --------------------------------------------------------
-int sub_41DA10(int a1) {
-	uint16_t* v1;   // edi
-	int result = 0; // eax
-
-	v1 = *(uint16_t**)getMemAt(0x587000, 58132 + 16 * a1);
-	if (v1) {
-		result = 0;
-		memset(v1, 0, 0x2Cu);
-		v1[22] = 0;
-		*getMemU32Ptr(0x587000, 58136 + 16 * a1) = 0;
-	}
-	return result;
-}
-
-//----- (0041DA70) --------------------------------------------------------
-int sub_41DA70(int a1, short a2) {
-	int result; // eax
-	int v3;     // ecx
-	int v4;     // edx
-
-	result = 16 * a1;
-	v3 = *getMemU32Ptr(0x587000, 58132 + 16 * a1);
-	if (v3 && (v4 = *getMemU32Ptr(0x587000, 58136 + 16 * a1), v4 < 23)) {
-		*(uint16_t*)(v3 + 2 * v4) = a2;
-		++*getMemU32Ptr(0x587000, 58136 + 16 * a1);
-	} else {
-		result = sub_41E300(11);
-		if (result) {
-			dword_5d4594_2660652 = 0;
-		}
-	}
-	return result;
-}
-
 //----- (0041E2F0) --------------------------------------------------------
 #if 0 // Restored by ui_state_trade_native.go.
 int sub_41E2F0() { return dword_5d4594_527988; }
@@ -1586,32 +1550,6 @@ int sub_41FBE0(uint32_t* a1, uint32_t* a2) {
 }
 #endif
 
-//----- (0041FDE0) --------------------------------------------------------
-int nox_xxx_officialStringCmp_41FDE0() {
-	int v0;         // ebx
-	size_t v1;      // eax
-	const char* v3; // [esp+8h] [ebp-8h]
-	const char* v4; // [esp+Ch] [ebp-4h]
-
-	memset(getMemAt(0x85B3FC, 10308), 0, 0x6Cu);
-	if (sub_41FBE0(&v3, &v4) != 1) {
-		return 0;
-	}
-	v0 = sub_4207E0();
-	if (v0) {
-		strcpy((char*)(v0 + 228), v3);
-		strcpy((char*)(v0 + 238), v4);
-		sub_41FA50(v3);
-		v1 = strcspn((const char*)(v0 + 24), ":");
-		if (!strncmp("Official", (const char*)(v1 + v0 + 25), 8u)) {
-			nox_xxx_setGameFlags_40A4D0(0x1000000);
-		} else {
-			nox_common_gameFlags_unset_40A540(0x1000000);
-		}
-	}
-	return 1;
-}
-
 //----- (004200E0) --------------------------------------------------------
 #if 0 // Restored by global_record_native_entry.go.
 int sub_4200E0() { return *getMemU32Ptr(0x587000, 60072); }
@@ -1731,9 +1669,6 @@ int sub_420360(char* a1, uint16_t* a2) {
 		}
 	}
 }
-
-//----- (004207E0) --------------------------------------------------------
-int sub_4207E0() { return *getMemU32Ptr(0x5D4594, 534812); }
 
 //----- (00420C40) --------------------------------------------------------
 

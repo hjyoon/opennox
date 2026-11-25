@@ -131,7 +131,7 @@ func Nox_xxx_playerAnimCheck_4372B0() int {
 	return int(nox_xxx_playerAnimCheck_4372B0())
 }
 func Sub_41DA10(a1 int) {
-	C.sub_41DA10(C.int(a1))
+	sub_41DA10(C.int(a1))
 }
 func Nox_xxx_bookHideMB_45ACA0(a1 int) int {
 	return int(C.nox_xxx_bookHideMB_45ACA0(C.int(a1)))

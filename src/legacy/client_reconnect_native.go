@@ -40,7 +40,7 @@ func nox_xxx_reconAttempt_41E390() C.int {
 	}
 	NetworkLogPrint("RECON: Attempting to re-login")
 	sub_40E090()
-	if C.nox_xxx_officialStringCmp_41FDE0() != 1 {
+	if nox_xxx_officialStringCmp_41FDE0() != 1 {
 		return sub_41E470()
 	}
 	C.dword_5d4594_528256 = 1

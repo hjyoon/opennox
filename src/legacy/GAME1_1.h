@@ -86,7 +86,7 @@ int sub_4200E0();
 int sub_420100();
 int sub_420230(char* a1, uint16_t* a2);
 int sub_420360(char* a1, uint16_t* a2);
-int sub_4207E0();
+void* sub_4207E0(void);
 uint32_t* sub_420C40(int a1, int a2);
 uint32_t* sub_420C70();
 char* nox_xxx_polygon_420CA0();

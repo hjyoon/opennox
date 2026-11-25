@@ -144,7 +144,7 @@ func Sub_43AF40() int {
 	return int(sub_43AF40())
 }
 func Sub_43AA70() {
-	C.sub_43AA70()
+	sub_43AA70()
 }
 func Nox_server_gameDoSwitchMap_40A680() int {
 	return int(C.nox_server_gameDoSwitchMap_40A680())

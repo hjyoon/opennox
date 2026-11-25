@@ -74,7 +74,7 @@ func sub_438330() C.int {
 	callback := anim.Func13Ptr
 	anim.Free()
 	if !noxflags.HasGame(noxflags.GameFlag29) {
-		C.nox_client_guiXxx_43A9D0()
+		nox_client_guiXxx_43A9D0()
 	}
 	if callback != nil {
 		ccall.CallIntVoid(callback)
@@ -105,10 +105,7 @@ func sub_438480() C.int {
 	if gameData == nil || infoData == nil {
 		return 0
 	}
-	columns := [...]*nox_window{
-		C.dword_5d4594_815016, C.dword_5d4594_815020, C.dword_5d4594_815024,
-		C.dword_5d4594_815028, C.dword_5d4594_815032,
-	}
+	columns := wolGameColumns()
 	nox_xxx_wndSetProc_46B2C0_go(list, C.sub_439050)
 	nox_xxx_wndSetWindowProc_46B300_go(list, C.sub_438EF0)
 	for _, column := range columns {
@@ -125,4 +122,11 @@ func sub_438480() C.int {
 		}
 	}
 	return result
+}
+
+func wolGameColumns() [5]*nox_window {
+	return [5]*nox_window{
+		C.dword_5d4594_815016, C.dword_5d4594_815020, C.dword_5d4594_815024,
+		C.dword_5d4594_815028, C.dword_5d4594_815032,
+	}
 }

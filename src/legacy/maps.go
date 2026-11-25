@@ -36,7 +36,6 @@ import (
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/legacy/cnxz"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -128,11 +127,8 @@ func Nox_server_mapRWMapInfo_42A6E0(cf *cryptfile.CryptFile, _ unsafe.Pointer) e
 	}
 	return mapRWMetadata(cf)
 }
-func Nox_server_mapRWWallMap_429B20(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWWallMap_429B20, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWWallMap_429B20(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWWallGrid(cf, (*[8]int32)(region))
 }
 func Nox_server_mapRWFloorMap_422230(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if C.nox_server_mapRWFloorMap_422230(a1) == 0 {
@@ -371,17 +367,11 @@ func Nox_server_mapRWAmbientData_429200(cf *cryptfile.CryptFile, _ unsafe.Pointe
 	}
 	return mapRWAmbientColor(cf)
 }
-func Nox_server_mapRWPolygons_428CD0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWPolygons_428CD0, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWPolygons_428CD0(cf *cryptfile.CryptFile, region unsafe.Pointer) error {
+	return mapRWPolygons(cf, region != nil)
 }
-func Nox_server_mapRWObjectTOC_428B30(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWObjectTOC_428B30, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
+func Nox_server_mapRWObjectTOC_428B30(cf *cryptfile.CryptFile, _ unsafe.Pointer) error {
+	return mapRWObjectTOC(cf)
 }
 
 func mapObjectListAdd5048A0(obj *server.Object) unsafe.Pointer {

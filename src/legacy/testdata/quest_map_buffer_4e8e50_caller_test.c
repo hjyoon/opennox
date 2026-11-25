@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../quest_map_buffer_4e8e50.c"
+#include "retired-game-sources/quest_map_buffer_4e8e50.c.txt"
 
 static char quest_map_storage[256];
 static void* mapped_pointer;

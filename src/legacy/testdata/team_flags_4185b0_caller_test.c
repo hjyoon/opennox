@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../team_flags_4185b0.c"
+#include "retired-game-sources/team_flags_4185b0.c.txt"
 
 typedef int (*create_flags_fn)(void);
 typedef char* (*toggle_flags_fn)(int);

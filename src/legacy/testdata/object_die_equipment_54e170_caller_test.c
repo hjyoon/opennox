@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../server__object__die__die.c"
+#include "retired-game-sources/server__object__die__die.c.txt"
 
 enum {
 	EVENT_LANGUAGE = 1,

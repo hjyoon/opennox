@@ -10,7 +10,7 @@
 
 #include "mapgen_theme_native.h"
 #include "mapgen_legacy_ptr.h"
-#include "mapgen_legacy_ptr.c"
+#include "testdata/retired-game-sources/mapgen_legacy_ptr.c.txt"
 
 #define CHECK(x) do { if (!(x)) { fprintf(stderr, "check failed line %d: %s\n", __LINE__, #x); exit(90); } } while (0)
 struct guarded_theme { uint32_t before[8]; uint32_t words[279]; uint32_t after[8]; };

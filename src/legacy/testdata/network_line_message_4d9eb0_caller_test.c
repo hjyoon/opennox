@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../network_line_message_4d9eb0.c"
+#include "retired-game-sources/network_line_message_4d9eb0.c.txt"
 
 enum {
 	EVENT_FORMAT = 1,

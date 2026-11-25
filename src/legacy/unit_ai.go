@@ -677,9 +677,14 @@ func monsterActionMissileRuntime532540() server.MonsterActionMissileRuntime53254
 	}
 }
 
+//export nox_ai_debug_enabled
+func nox_ai_debug_enabled() C.int {
+	return C.int(bool2int(noxflags.HasEngine(noxflags.EngineShowAI)))
+}
+
 //export nox_ai_debug_print
 func nox_ai_debug_print(str *C.char) {
-	if noxflags.HasEngine(noxflags.EngineShowAI) {
+	if nox_ai_debug_enabled() != 0 {
 		ai.Log.Printf("%s", GoString(str))
 	}
 }

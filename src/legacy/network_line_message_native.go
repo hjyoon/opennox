@@ -11,6 +11,7 @@ import (
 
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
@@ -53,6 +54,18 @@ func sendLineMessageText(update unsafe.Pointer, text *wchar2_t) C.intptr_t {
 	index := ntype.PlayerInd(nox_server_playerIndexFromUpdateData_4D9EB0(update))
 	queued := GetServer().S().NetList.AddToMsgListCli(index, netlist.Kind1, packet[:size])
 	return C.intptr_t(bool2int(queued))
+}
+
+// Cache the native update address before formatting reads any arguments.
+//
+//export nox_line_message_player_update_4D9EB0
+func nox_line_message_player_update_4D9EB0(obj *nox_object_t, update *C.uintptr_t) C.int {
+	player := asObjectS(obj)
+	if !player.Class().Has(object.ClassPlayer) {
+		return 0
+	}
+	*update = C.uintptr_t(uintptr(player.UpdateData))
+	return 1
 }
 
 //export nox_send_line_message_text_4D9EB0

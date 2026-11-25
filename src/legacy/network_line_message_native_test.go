@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"runtime"
 	"testing"
 	"unsafe"
 
@@ -50,7 +51,8 @@ func TestNetLineMessagePacket4D9EB0Encoding(t *testing.T) {
 	}
 }
 
-func TestNetLineMessageGoTextPreservesPercentSigns(t *testing.T) {
+func lineMessageTestWorld(t *testing.T) *server.Server {
+	t.Helper()
 	world := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(world.Close)
 	world.NetList.Init()
@@ -58,7 +60,11 @@ func TestNetLineMessageGoTextPreservesPercentSigns(t *testing.T) {
 	oldServer := GetServer
 	GetServer = func() Server { return &chatLegacyServer528AC0{srv: world} }
 	t.Cleanup(func() { GetServer = oldServer })
+	return world
+}
 
+func TestNetLineMessageGoTextPreservesPercentSigns(t *testing.T) {
+	world := lineMessageTestWorld(t)
 	const index = 3
 	player := world.Players.ByIndRaw(index)
 	player.PlayerInd = index
@@ -68,10 +74,37 @@ func TestNetLineMessageGoTextPreservesPercentSigns(t *testing.T) {
 	if !Nox_xxx_netSendLineMessage_4D9EB0(unit, message) {
 		t.Fatal("could not queue line message")
 	}
-	packet := world.NetList.CopyPacketsA(index, netlist.Kind1)
+	checkLineMessageText(t, world.NetList.CopyPacketsA(index, netlist.Kind1), message)
+}
+
+func TestNetLineMessageNativeFormatsForPlayer4D9EB0(t *testing.T) {
+	world := lineMessageTestWorld(t)
+	const index = 3
+	send := directExperienceGrantRuntime4EF3A0().SendLineMessage
+	send(nil, "XP %05d", 42)
+	send(&server.Object{ObjClass: object.ClassMonster}, "XP %05d", 42)
+	if packet := world.NetList.CopyPacketsA(index, netlist.Kind1); len(packet) != 0 {
+		t.Fatalf("non-player queued a line message: %x", packet)
+	}
+
+	player := world.Players.ByIndRaw(index)
+	player.PlayerInd = index
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	var pin runtime.Pinner
+	pin.Pin(player)
+	pin.Pin(update)
+	pin.Pin(unit)
+	defer pin.Unpin()
+	send(unit, "XP %05d", 42)
+	checkLineMessageText(t, world.NetList.CopyPacketsA(index, netlist.Kind1), "XP 00042")
+}
+
+func checkLineMessageText(t *testing.T, packet []byte, message string) {
+	t.Helper()
 	const header = 11
 	if len(packet) != header+len(message)+1 || packet[0] != byte(netmsg.MSG_TEXT_MESSAGE) ||
 		packet[8] != byte(len(message)+1) || string(packet[header:len(packet)-1]) != message || packet[len(packet)-1] != 0 {
-		t.Fatalf("packet = %x, want literal %q", packet, message)
+		t.Fatalf("packet = %x, want text %q", packet, message)
 	}
 }

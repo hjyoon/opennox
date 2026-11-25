@@ -198,7 +198,7 @@ func nox_xxx_cliPrepareGameplay2_4721D0() C.int {
 	if win := C.nox_windows_arr_1093036[3].win; win != nil {
 		nox_xxx_windowDestroyMB_46C4E0(win)
 	}
-	C.nox_xxx_guiHealthManaInit_4714E0()
+	nox_xxx_guiHealthManaInit_4714E0()
 	sub_472310()
 	return sub_4721A0(C.int(nox_client_getRenderGUI()))
 }

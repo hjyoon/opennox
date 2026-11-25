@@ -465,7 +465,7 @@ func Sub_456070() int {
 	return int(C.sub_456070())
 }
 func Nox_xxx_guiHealthManaInit_4714E0() int {
-	return int(C.nox_xxx_guiHealthManaInit_4714E0())
+	return int(nox_xxx_guiHealthManaInit_4714E0())
 }
 
 type GUIHealthManaState struct {
@@ -483,7 +483,7 @@ type GUIHealthManaState struct {
 
 func Nox_client_guiHealthManaState(meter int) (GUIHealthManaState, bool) {
 	var state C.nox_client_gui_health_mana_state
-	if C.nox_client_guiHealthManaState(C.int(meter), &state) == 0 {
+	if nox_client_guiHealthManaState(C.int(meter), &state) == 0 {
 		return GUIHealthManaState{}, false
 	}
 	return GUIHealthManaState{

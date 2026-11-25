@@ -68,7 +68,7 @@ func nox_xxx_wndCreateInventoryMB_465E00() *C.nox_window {
 	nox_xxx_wndSetIconLit_46AEA0(hud, nox_xxx_gLoadImg_42F970(internCStr("CurrentWeaponLit")))
 	nox_xxx_wndSetOffsetMB_46AE40(hud, -1, 0)
 	nox_win_init_cur_weapon(hud, 24, 51, 53, 53)
-	C.sub_471160(hud, 79, 40, 20, 127)
+	sub_471160(hud, 79, 40, 20, 127)
 	sub_470D70()
 	toggle := nox_window_new_go(hud, 8, 5, 11, 28, 29, nil)
 	nox_window_set_all_funcs_go(toggle, C.sub_466550, C.nox_xxx_movEax1Sub_4661C0, C.sub_466160)

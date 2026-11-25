@@ -16,6 +16,7 @@ import (
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -92,9 +93,9 @@ func TestMonsterStatePredicatesOriginalActualC534710(t *testing.T) {
 	serverReads := 0
 	GetServer = func() Server { serverReads++; return owner() }
 	t.Cleanup(func() { GetServer = owner })
-	oldCache := statePredicateOriginalSwapMimicCache534840(0)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldCache) })
-	cachePtr := statePredicateOriginalMimicCachePointer534840()
+	oldCache := cfixture.StatePredicateOriginalSwapMimicCache534840(0)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldCache) })
+	cachePtr := cfixture.StatePredicateOriginalMimicCachePointer534840()
 	type unitGuard struct {
 		Before [64]byte
 		Value  server.Object
@@ -178,7 +179,7 @@ func TestMonsterStatePredicatesOriginalActualC534710(t *testing.T) {
 			if row.Entry == 0x534840 {
 				setRegistry(c.Lookup)
 			}
-			statePredicateOriginalSwapMimicCache534840(c.Cache)
+			cfixture.StatePredicateOriginalSwapMimicCache534840(c.Cache)
 			before := make([][]byte, len(regions))
 			for i, r := range regions {
 				before[i] = snapshot(r.ptr, r.size)
@@ -187,7 +188,7 @@ func TestMonsterStatePredicatesOriginalActualC534710(t *testing.T) {
 			cacheRegion := unsafe.Add(cachePtr, -16)
 			cacheGuardBefore := snapshot(cacheRegion, 36)
 			if row.Entry == 0x534840 {
-				if got := statePredicateOriginalNameIDControl534840(); got != uint32(c.Lookup) {
+				if got := cfixture.StatePredicateOriginalNameIDControl534840(); got != uint32(c.Lookup) {
 					t.Fatalf("ordinary actual C name-ID control got=%d want=%d", got, c.Lookup)
 				}
 				lookupControls++
@@ -195,7 +196,7 @@ func TestMonsterStatePredicatesOriginalActualC534710(t *testing.T) {
 					t.Fatal("ordinary name-ID control changed predicate cache")
 				}
 			}
-			target := statePredicateOriginalPublicC534710(row.Entry)
+			target := cfixture.StatePredicateOriginalPublicC534710(row.Entry)
 			if target == nil {
 				t.Fatal("missing actual C entry", row.Entry)
 			}

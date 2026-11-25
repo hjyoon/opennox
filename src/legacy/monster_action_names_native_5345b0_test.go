@@ -14,6 +14,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 //go:embed testdata/monster_action_names_original_5345b0_534670.json.gz
@@ -86,7 +87,7 @@ func TestMonsterActionNamesNativeOriginalCABI(t *testing.T) {
 						if err := json.Unmarshal(c.Result, &want); err != nil {
 							t.Fatal(err)
 						}
-						got := monsterActionNamesGetC(c.Kind == "selected_name", c.Value)
+						got := cfixture.MonsterActionNamesGetC(c.Kind == "selected_name", c.Value)
 						if want == nil {
 							if got != nil {
 								t.Fatalf("C name outside the table=%p, want NULL", got)
@@ -98,7 +99,7 @@ func TestMonsterActionNamesNativeOriginalCABI(t *testing.T) {
 							// The original getters return the same stable table entry
 							// for equal names, including a non-NULL empty slot39.
 							expected := unsafe.Pointer(alloc.InternCString(*want))
-							if got != expected || monsterActionNamesGetC(c.Kind == "selected_name", c.Value) != got {
+							if got != expected || cfixture.MonsterActionNamesGetC(c.Kind == "selected_name", c.Value) != got {
 								t.Fatal("C getter lost the complete stable string pointer")
 							}
 						}
@@ -120,7 +121,7 @@ func TestMonsterActionNamesNativeOriginalCABI(t *testing.T) {
 							t.Fatal(err)
 						}
 						pointer := unsafe.Pointer(&owner[start])
-						if got := monsterActionNamesLookupC(c.Kind == "action_by_name", pointer); got != want {
+						if got := cfixture.MonsterActionNamesLookupC(c.Kind == "action_by_name", pointer); got != want {
 							t.Fatalf("actual const C lookup %s=%d want=%d", c.Kind, got, want)
 						}
 						if !bytes.Equal(owner, before) {

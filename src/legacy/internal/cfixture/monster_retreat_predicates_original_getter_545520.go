@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -55,13 +55,13 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func retreatPredicatesOriginalC545520(entry int, unit *server.Object) int {
+func RetreatPredicatesOriginalC545520(entry int, unit *server.Object) int {
 	return int(C.retreat_original_public_545520(C.int(entry), (*C.nox_object_t)(unsafe.Pointer(unit))))
 }
-func retreatPredicatesOriginalABI545520(entry int) int {
+func RetreatPredicatesOriginalABI545520(entry int) int {
 	return int(C.retreat_original_abi_545520(C.int(entry)))
 }
-func retreatPredicatesOriginalLayout545520() (out [6]uintptr) {
+func RetreatPredicatesOriginalLayout545520() (out [6]uintptr) {
 	for i := range out {
 		out[i] = uintptr(C.retreat_original_layout_545520(C.int(i)))
 	}

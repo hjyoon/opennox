@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -19,10 +19,10 @@ import "C"
 
 import "unsafe"
 
-func monsterSpawnOwnerNativeRead(pointer unsafe.Pointer, offset uintptr) uintptr {
+func MonsterSpawnOwnerNativeRead(pointer unsafe.Pointer, offset uintptr) uintptr {
 	return uintptr(C.spawn_owner_fixture_read(pointer, C.size_t(offset)))
 }
 
-func monsterSpawnOwnerNativeCLayout() [4]uintptr {
+func MonsterSpawnOwnerNativeCLayout() [4]uintptr {
 	return [4]uintptr{uintptr(C.spawn_owner_fixture_size()), uintptr(C.spawn_owner_fixture_align()), uintptr(C.spawn_owner_fixture_older()), uintptr(C.spawn_owner_fixture_newer())}
 }

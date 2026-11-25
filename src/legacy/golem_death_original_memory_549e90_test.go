@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"math"
 	"runtime"
 	"runtime/debug"
@@ -21,14 +22,14 @@ func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
 	copy(data[16:64], golemOriginalMassBytes549E90())
 	mass := unsafe.Add(address, 32)
 	before := bytes.Clone(data)
-	guard, release := golemOriginalGuardPage549E90()
+	guard, release := cfixture.GolemOriginalGuardPage549E90()
 	if guard == nil {
 		t.Fatal("actual protected page")
 	}
 	defer release()
 	t.Run("mapped-neighbourhood", func(t *testing.T) {
 		for index := int32(-16); index < 32; index++ {
-			old, corrected := golemOriginalByteAddress549E90(mass, index), golemOriginalMappedMassAddress549E90(mass, index, guard)
+			old, corrected := golemOriginalByteAddress549E90(mass, index), cfixture.GolemOriginalMappedMassAddress549E90(mass, index, guard)
 			if old != corrected || *(*byte)(old) != *(*byte)(corrected) {
 				t.Fatal("original mapped byte address/value changed", index)
 			}
@@ -37,7 +38,7 @@ func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
 	t.Run("shared-divisor-byte12", func(t *testing.T) {
 		binary.LittleEndian.PutUint32(data[44:], 0x12345680)
 		for i, v := range []byte{0x80, 0x56, 0x34, 0x12} {
-			if *(*byte)(golemOriginalMappedMassAddress549E90(mass, int32(12+i), guard)) != v {
+			if *(*byte)(cfixture.GolemOriginalMappedMassAddress549E90(mass, int32(12+i), guard)) != v {
 				t.Fatal("packed divisor byte alias", i)
 			}
 		}
@@ -50,7 +51,7 @@ func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			old := debug.SetPanicOnFault(true)
 			defer debug.SetPanicOnFault(old)
-			projected := golemOriginalMappedMassAddress549E90(mass, tc.index, guard)
+			projected := cfixture.GolemOriginalMappedMassAddress549E90(mass, tc.index, guard)
 			if projected != guard {
 				t.Fatal("original unmapped domain")
 			}
@@ -68,7 +69,7 @@ func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
 
 	t.Run("mapped-DWORD-slot-addresses", func(t *testing.T) {
 		for _, index := range []int32{-1, 0, 1, 11, 12, 0x7fffffff, math.MinInt32} {
-			old, corrected := golemOriginalSlotAddress549E90(mass, index), golemOriginalMappedSlotAddress549E90(mass, index, 0x5cd5f0, guard)
+			old, corrected := golemOriginalSlotAddress549E90(mass, index), cfixture.GolemOriginalMappedSlotAddress549E90(mass, index, 0x5cd5f0, guard)
 			if old != corrected {
 				t.Fatal("original mapped slot identity", index)
 			}
@@ -77,7 +78,7 @@ func TestGolemDeathFixtureMappedMassDomain549E90(t *testing.T) {
 	t.Run("unmapped-rock-table", func(t *testing.T) {
 		old := debug.SetPanicOnFault(true)
 		defer debug.SetPanicOnFault(old)
-		projected := golemOriginalMappedSlotAddress549E90(mass, 0x10000000, 0x5cd5f0, guard)
+		projected := cfixture.GolemOriginalMappedSlotAddress549E90(mass, 0x10000000, 0x5cd5f0, guard)
 		if projected != guard {
 			t.Fatal("original unmapped rock-table domain")
 		}

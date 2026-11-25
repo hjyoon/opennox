@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -137,7 +138,7 @@ func TestMeleeBlockerOriginalActualC532390(t *testing.T) {
 				if unsafe.Sizeof(uintptr(0)) == 4 {
 					binary.LittleEndian.PutUint32(wantGlobal[64:], uint32(uintptr(wantSelected)))
 				}
-				ccall.CallVoidPtr2(meleePublicCBefore532130(0x532390), candidate.CObj(), unit.CObj())
+				ccall.CallVoidPtr2(cfixture.MeleePublicCBefore532130(0x532390), candidate.CObj(), unit.CObj())
 			}
 			if *selected != wantSelected || math.Float32bits(*distance) != wantDistance {
 				t.Errorf("native selected/distance=%p/%08x; original=%p/%08x", *selected, math.Float32bits(*distance), wantSelected, wantDistance)

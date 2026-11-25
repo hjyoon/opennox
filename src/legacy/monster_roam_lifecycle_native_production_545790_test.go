@@ -12,6 +12,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -47,7 +48,7 @@ func TestMonsterRoamWaypointLifecycleNativeProduction545790(t *testing.T) {
 	if e1 != nil || e2 != nil || e3 != nil || entry < 0 || entry > 1 || (index != 0 && index != 11 && index != 23) || selected < 0 || selected > 1 {
 		t.Fatal("production mode values")
 	}
-	if roamLifecycleOriginalABI545790(entry) != 64 {
+	if cfixture.RoamLifecycleOriginalABI545790(entry) != 64 {
 		t.Fatal("typed native public ABI required")
 	}
 	s, unit, first, owner := monsterMainBlockLegacyFixture547210(t)
@@ -111,7 +112,7 @@ func TestMonsterRoamWaypointLifecycleNativeProduction545790(t *testing.T) {
 			t.Fatal("leaf operation changed frame, RNG or stack-change state")
 		}
 	}
-	if result := roamLifecycleOriginalC545790(entry, unit); result != unsafe.Pointer(updates[selected]) {
+	if result := cfixture.RoamLifecycleOriginalC545790(entry, unit); result != unsafe.Pointer(updates[selected]) {
 		t.Fatal("complete native update-pointer return", result, updates[selected])
 	}
 	check()

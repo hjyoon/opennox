@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -32,7 +33,7 @@ func TestMonsterRetreatPredicatesNativeRawClasses545520(t *testing.T) {
 				w.Data.StatusFlags = object.MonsterStatus(row.Input.Status)
 				entry := map[string]int{"545520": 0, "545580": 1, "5455B0": 2}[row.Input.Entry]
 				before := bytes.Clone(w.Heap)
-				if got := retreatPredicatesOriginalC545520(entry, w.Unit); row.Output.Result == nil || got != int(*row.Output.Result) {
+				if got := cfixture.RetreatPredicatesOriginalC545520(entry, w.Unit); row.Output.Result == nil || got != int(*row.Output.Result) {
 					t.Fatal("raw public C entry adds a class gate or changes original result", got, row.Output.Result)
 				}
 				if !bytes.Equal(before, w.Heap) {

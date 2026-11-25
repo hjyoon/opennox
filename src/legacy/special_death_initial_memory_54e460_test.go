@@ -12,6 +12,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -98,7 +99,7 @@ func specialDeathRolePE54E460(role int) uint32 {
 
 func newSpecialDeathMemory54E460(t *testing.T, c specialDeathInput54E460, want specialDeathInitial54E460) *specialDeathMemory54E460 {
 	t.Helper()
-	heap, guard, free := generatorCreditOriginalHeap4D61B0()
+	heap, guard, free := cfixture.GeneratorCreditOriginalHeap4D61B0()
 	t.Cleanup(free)
 	off := specialDeathOriginalLayout54E460()
 	if heap == nil || guard < off[0]+512 || off[0]+2*off[28] >= 0x1000 || off[10] >= 0x1000 || off[13] >= 0x1000 || (off[28] == 8 && uintptr(heap) <= math.MaxUint32) {
@@ -181,7 +182,7 @@ func (m *specialDeathMemory54E460) fromPE(pe uint32) unsafe.Pointer {
 	if p, ok := m.peToNative[pe]; ok {
 		return p
 	}
-	p := generatorCreditOriginalBad4D61B0(m.heap, m.guard, len(m.peToNative))
+	p := cfixture.GeneratorCreditOriginalBad4D61B0(m.heap, m.guard, len(m.peToNative))
 	if uintptr(p)+m.off[0]+2*m.off[28]+128 >= uintptr(m.heap) {
 		m.t.Fatal("invalid pointer's complete native object must remain protected")
 	}

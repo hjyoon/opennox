@@ -15,6 +15,7 @@ import (
 
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -105,7 +106,7 @@ func TestSimplePolypDeathOriginal54CAE0(t *testing.T) {
 
 func simplePolypRunOriginal54CAE0(t *testing.T, in simplePolypInput54CAE0, mode string, nearest bool) (out simplePolypOutput54CAE0) {
 	t.Helper()
-	base, page, free := simplePolypOriginalHeap54CAE0()
+	base, page, free := cfixture.SimplePolypOriginalHeap54CAE0()
 	if base == nil {
 		t.Fatal("guarded native C fixture")
 	}
@@ -121,7 +122,7 @@ func simplePolypRunOriginal54CAE0(t *testing.T, in simplePolypInput54CAE0, mode 
 	offsets := [7]int{0x1000, 0x2000, 0x3000, 0x4000, 0x5000, 0x6000, 0x7000}
 	ptr := func(role int) unsafe.Pointer {
 		if role < 0 {
-			return simplePolypOriginalBad54CAE0(base, page, role)
+			return cfixture.SimplePolypOriginalBad54CAE0(base, page, role)
 		}
 		return unsafe.Add(base, offsets[role])
 	}

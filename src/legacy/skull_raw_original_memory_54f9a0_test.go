@@ -8,6 +8,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -31,7 +32,7 @@ func (m *skullRawMemory54F9A0) pointer(role int) unsafe.Pointer {
 		if role != -1 && role != -2 {
 			m.t.Fatal("undeclared bad role", role)
 		}
-		return simplePolypOriginalBad54CAE0(m.heap, m.page, role)
+		return cfixture.SimplePolypOriginalBad54CAE0(m.heap, m.page, role)
 	}
 	if role >= 8 {
 		m.t.Fatal("undeclared mapped role", role)
@@ -136,7 +137,7 @@ func (m *skullRawMemory54F9A0) acceptWorldWrites() { m.before = bytes.Clone(m.bu
 
 func newSkullRawMemory54F9A0(t *testing.T, in skullRawInput54F9A0) (*skullRawMemory54F9A0, func()) {
 	t.Helper()
-	heap, page, free := simplePolypOriginalHeap54CAE0()
+	heap, page, free := cfixture.SimplePolypOriginalHeap54CAE0()
 	if heap == nil || page <= unsafe.Sizeof(server.Object{}) {
 		t.Fatal("complete native C arena and guard page")
 	}

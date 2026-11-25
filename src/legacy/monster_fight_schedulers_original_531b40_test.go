@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"math"
 	"os"
@@ -524,7 +525,7 @@ func schedPrepare531B40(f *schedFixture531B40) func() {
 	return func() { GetServer = old }
 }
 func schedExecute531B40(f *schedFixture531B40, entry uint32) schedOutcome531B40 {
-	result := ccall.CallUPtrPtr2(fightSchedulerPublicCBefore531B40(entry), f.units[0].Value.CObj(), f.units[1].Value.CObj())
+	result := ccall.CallUPtrPtr2(cfixture.FightSchedulerPublicCBefore531B40(entry), f.units[0].Value.CObj(), f.units[1].Value.CObj())
 	return schedOutcome531B40{Returned: result, ReturnKnown: true}
 }
 func TestFightSchedulersOriginalActualC531B40(t *testing.T) {

@@ -13,6 +13,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -33,7 +34,7 @@ func inversionInventoryInitials4FA4F0(t *testing.T) []inversionInventoryInitial4
 
 func newInversionInventoryMemory4FA4F0(t *testing.T, row inversionInventoryInitial4FA4F0) *modifierPredicateMemory4E03D0 {
 	t.Helper()
-	heap, guard, free := generatorCreditOriginalHeap4D61B0()
+	heap, guard, free := cfixture.GeneratorCreditOriginalHeap4D61B0()
 	t.Cleanup(free)
 	off, inventory := modifierPredicatesLayout4E03D0(), inversionInventoryLayout4FA4F0()
 	if heap == nil || guard < off[4]+1024 || (off[12] == 8 && uintptr(heap) <= math.MaxUint32) {
@@ -57,7 +58,7 @@ func newInversionInventoryMemory4FA4F0(t *testing.T, row inversionInventoryIniti
 		m.addresses[pe], m.reverse[uintptr(p)] = p, pe
 	}
 	add(0, nil)
-	add(0x41000000, generatorCreditOriginalBad4D61B0(heap, guard, 0))
+	add(0x41000000, cfixture.GeneratorCreditOriginalBad4D61B0(heap, guard, 0))
 	add(0x4e03d0, modifierPredicatesCallback4E03D0(0))
 	add(0x4e0480, modifierPredicatesCallback4E03D0(1))
 	add(0x4fa4f0, inversionInventoryPointer4FA4F0(false))

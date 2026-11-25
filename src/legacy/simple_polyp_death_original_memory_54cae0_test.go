@@ -10,12 +10,13 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func TestSimplePolypFixtureMemoryDomain54CAE0(t *testing.T) {
 	TestSimplePolypDeathNativeLayout54CAE0(t)
-	heap, page, free := simplePolypOriginalHeap54CAE0()
+	heap, page, free := cfixture.SimplePolypOriginalHeap54CAE0()
 	if heap == nil {
 		t.Fatal("C-owned mapped heap and protected predecessor page")
 	}
@@ -27,7 +28,7 @@ func TestSimplePolypFixtureMemoryDomain54CAE0(t *testing.T) {
 		t.Fatal("native memory-domain fixture must exceed4GiB")
 	}
 	ptr := func(role int) *server.Object {
-		return (*server.Object)(simplePolypOriginalBad54CAE0(heap, page, role))
+		return (*server.Object)(cfixture.SimplePolypOriginalBad54CAE0(heap, page, role))
 	}
 	if ptr(-1) != nil || ptr(-2) == nil || ptr(-3) == nil || ptr(-4) == nil || ptr(-2) == ptr(-3) || ptr(-3) == ptr(-4) {
 		t.Fatal("independent nil/unmapped/partial pointer identities")

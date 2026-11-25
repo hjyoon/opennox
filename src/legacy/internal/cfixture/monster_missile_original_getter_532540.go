@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -10,7 +10,7 @@ static uintptr_t missileLeadPublicCNativeABI533080(nox_object_t* unit, nox_objec
 import "C"
 import "unsafe"
 
-func missilePublicCBefore532540(entry uint32) unsafe.Pointer {
+func MissilePublicCBefore532540(entry uint32) unsafe.Pointer {
 	switch entry {
 	case 0x532540:
 		return C.sub_532540
@@ -21,6 +21,6 @@ func missilePublicCBefore532540(entry uint32) unsafe.Pointer {
 	}
 }
 
-func missileLeadPublicCBefore533080(unit, target unsafe.Pointer, speed float32, out unsafe.Pointer) uintptr {
- return uintptr(C.missileLeadPublicCNativeABI533080((*C.nox_object_t)(unit), (*C.nox_object_t)(target), C.float(speed), (*C.float2)(out)))
+func MissileLeadPublicCBefore533080(unit, target unsafe.Pointer, speed float32, out unsafe.Pointer) uintptr {
+	return uintptr(C.missileLeadPublicCNativeABI533080((*C.nox_object_t)(unit), (*C.nox_object_t)(target), C.float(speed), (*C.float2)(out)))
 }

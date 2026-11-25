@@ -13,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -78,7 +79,7 @@ func TestMonsterRetreatPredicatesOriginal545520(t *testing.T) {
 			for _, row := range retreatPredicateRows545520(t) {
 				t.Run(row.Input.Name, func(t *testing.T) {
 					entry := map[string]int{"545520": 0, "545580": 1, "5455B0": 2}[row.Input.Entry]
-					if path == "C" && retreatPredicatesOriginalABI545520(entry) != 64 {
+					if path == "C" && cfixture.RetreatPredicatesOriginalABI545520(entry) != 64 {
 						t.Fatal("native C entry pending; actual legacy-int faults qualified independently")
 					}
 					w := newDodgeWorld547C50(t, dodgeRow547C50{})
@@ -106,7 +107,7 @@ func TestMonsterRetreatPredicatesOriginal545520(t *testing.T) {
 					func() {
 						defer func() { fault = recover() }()
 						if path == "C" {
-							result = retreatPredicatesOriginalC545520(entry, unit)
+							result = cfixture.RetreatPredicatesOriginalC545520(entry, unit)
 							return
 						}
 						native, ok := any(unit).(retreatPredicateNative545520)

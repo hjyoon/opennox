@@ -18,6 +18,7 @@ import (
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -123,8 +124,8 @@ func TestComplexObjectSendOrdinaryBindings518960(t *testing.T) {
 	types.Write(0, 22)
 	types.Write(1, 33)
 	types.Write(2, 44)
-	oldMimic := statePredicateOriginalSwapMimicCache534840(11)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldMimic) })
+	oldMimic := cfixture.StatePredicateOriginalSwapMimicCache534840(11)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldMimic) })
 	b := &animationFixture533790{t: t, srv: srv}
 	unit := animationAllocate533790[server.Object](t, b)
 	update := animationAllocate533790[server.MonsterUpdateData](t, b)
@@ -181,7 +182,7 @@ func TestComplexObjectSendOrdinaryBindings518960(t *testing.T) {
 					beforeD := animationSnapshot533790(unsafe.Pointer(update), unsafe.Sizeof(*update))
 					beforeH := animationSnapshot533790(unsafe.Pointer(health), unsafe.Sizeof(*health))
 					beforeE := animationSnapshot533790(unsafe.Pointer(enemy), unsafe.Sizeof(*enemy))
-					mimic := animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)
+					mimic := animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)
 					events := []map[string]any{}
 					drain := func() {
 						recipient, data := complexObjectTakeImportantPacketC518960()
@@ -231,7 +232,7 @@ func TestComplexObjectSendOrdinaryBindings518960(t *testing.T) {
 					if !bytes.Equal(beforeU, animationSnapshot533790(unsafe.Pointer(unit), unsafe.Sizeof(*unit))) || !bytes.Equal(beforeD, animationSnapshot533790(unsafe.Pointer(update), unsafe.Sizeof(*update))) || !bytes.Equal(beforeH, animationSnapshot533790(unsafe.Pointer(health), unsafe.Sizeof(*health))) || !bytes.Equal(beforeE, animationSnapshot533790(unsafe.Pointer(enemy), unsafe.Sizeof(*enemy))) {
 						t.Error("whole native guarded unit/MUD/health/enemy differs beyond original HP sample")
 					}
-					if !bytes.Equal(mimic, animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)) {
+					if !bytes.Equal(mimic, animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)) {
 						t.Error("Mimic cache/neighbors changed")
 					}
 					if types.Read(0) != 22 || types.Read(1) != 33 || types.Read(2) != 44 || srv.Frame() != n.Frame {

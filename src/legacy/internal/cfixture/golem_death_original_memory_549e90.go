@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -40,7 +40,7 @@ static void* golem_fixture_slot_address_549e90(void* table,int32_t index,uint32_
 import "C"
 import "unsafe"
 
-func golemOriginalGuardPage549E90() (unsafe.Pointer, func()) {
+func GolemOriginalGuardPage549E90() (unsafe.Pointer, func()) {
 	var size C.size_t
 	p := C.golem_fixture_guard_549e90(&size)
 	return p, func() {
@@ -49,10 +49,10 @@ func golemOriginalGuardPage549E90() (unsafe.Pointer, func()) {
 		}
 	}
 }
-func golemOriginalMappedMassAddress549E90(table unsafe.Pointer, index int32, unmapped unsafe.Pointer) unsafe.Pointer {
+func GolemOriginalMappedMassAddress549E90(table unsafe.Pointer, index int32, unmapped unsafe.Pointer) unsafe.Pointer {
 	return C.golem_fixture_mass_address_549e90(table, C.int32_t(index), unmapped)
 }
 
-func golemOriginalMappedSlotAddress549E90(table unsafe.Pointer, index int32, originalBase uint32, unmapped unsafe.Pointer) unsafe.Pointer {
+func GolemOriginalMappedSlotAddress549E90(table unsafe.Pointer, index int32, originalBase uint32, unmapped unsafe.Pointer) unsafe.Pointer {
 	return C.golem_fixture_slot_address_549e90(table, C.int32_t(index), C.uint32_t(originalBase), unmapped)
 }

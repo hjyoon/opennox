@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME4_3.h"
@@ -21,7 +21,7 @@ import "C"
 
 import "unsafe"
 
-func monsterActionNamesGetC(selected bool, value uint32) unsafe.Pointer {
+func MonsterActionNamesGetC(selected bool, value uint32) unsafe.Pointer {
 	var cselected C.int
 	if selected {
 		cselected = 1
@@ -29,7 +29,7 @@ func monsterActionNamesGetC(selected bool, value uint32) unsafe.Pointer {
 	return unsafe.Pointer(C.nox_action_names_fixture_get(cselected, C.int(value)))
 }
 
-func monsterActionNamesLookupC(short bool, value unsafe.Pointer) int32 {
+func MonsterActionNamesLookupC(short bool, value unsafe.Pointer) int32 {
 	var cshort C.int
 	if short {
 		cshort = 1

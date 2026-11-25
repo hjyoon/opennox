@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -145,8 +146,8 @@ func animationNewFixture533790(t *testing.T) *animationFixture533790 {
 	}
 	f.target = animationAllocate533790[server.Object](t, f)
 	f.cache = animationAllocate533790[[3]uint32](t, f)
-	oldCache := statePredicateOriginalSwapMimicCache534840(0)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldCache) })
+	oldCache := cfixture.StatePredicateOriginalSwapMimicCache534840(0)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldCache) })
 	owner := GetServer
 	GetServer = func() Server {
 		if f.recording {
@@ -177,7 +178,7 @@ func animationNewFixture533790(t *testing.T) *animationFixture533790 {
 				live = "other"
 			}
 			f.predicates = append(f.predicates, animationPredicateEntry533790{name, f.call, f.caches(), unit.TypeInd, uint32(unit.ObjClass), uint32(f.updates[0].Value.StatusFlags), live})
-			return animationPredicatePublicC533790(index, unit)
+			return cfixture.AnimationPredicatePublicC533790(index, unit)
 		}
 	}
 	f.runtime = server.MonsterAnimationNativeRuntime533790{Mimic: wrap(0, "Mimic"), Plant: wrap(1, "CarnivorousPlant"), Zombie: wrap(2, "ZombiePair")}
@@ -188,11 +189,11 @@ func animationNewFixture533790(t *testing.T) *animationFixture533790 {
 	return f
 }
 func (f *animationFixture533790) caches() [4]uint32 {
-	return [4]uint32{*(*uint32)(statePredicateOriginalMimicCachePointer534840()), f.cache.Value[0], f.cache.Value[1], f.cache.Value[2]}
+	return [4]uint32{*(*uint32)(cfixture.StatePredicateOriginalMimicCachePointer534840()), f.cache.Value[0], f.cache.Value[1], f.cache.Value[2]}
 }
 func (f *animationFixture533790) setCache(i int, v uint32) {
 	if i == 0 {
-		statePredicateOriginalSwapMimicCache534840(v)
+		cfixture.StatePredicateOriginalSwapMimicCache534840(v)
 	} else {
 		f.cache.Value[i-1] = v
 	}
@@ -343,7 +344,7 @@ func (f *animationFixture533790) prepare(row *animationRow533790) {
 	for i, r := range f.regions {
 		f.before[i] = animationSnapshot533790(r.Ptr, r.Size)
 	}
-	f.mimicGuard = animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)
+	f.mimicGuard = animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)
 }
 func animationPatchValue533790[T any](t *testing.T, expected [][]byte, regions []animationRegion533790, pointer *T, value T) {
 	t.Helper()
@@ -429,7 +430,7 @@ func (f *animationFixture533790) check(control bool) {
 			f.t.Errorf("native guarded unit/update/other/target/cache region%d differs beyond original outputs", i)
 		}
 	}
-	if !bytes.Equal(f.mimicGuard, animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)) {
+	if !bytes.Equal(f.mimicGuard, animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)) {
 		f.t.Error("native Mimic cache or neighbor guards differ")
 	}
 }
@@ -494,6 +495,6 @@ func animationRunOriginal533790(t *testing.T, kind string, invoke func(*animatio
 }
 func TestAnimationSelectorOriginalActualC533790(t *testing.T) {
 	animationRunOriginal533790(t, "actual C", func(f *animationFixture533790) uint32 {
-		return uint32(ccall.CallIntPtr(animationSelectorPublicC533790(), f.unit.Value.CObj()))
+		return uint32(ccall.CallIntPtr(cfixture.AnimationSelectorPublicC533790(), f.unit.Value.CObj()))
 	})
 }

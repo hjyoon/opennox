@@ -16,6 +16,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -174,14 +175,14 @@ func TestMonsterCombatPredicatesOriginalActualC534020(t *testing.T) {
 			for i, region := range regions {
 				before[i] = combatPredicateSnapshot534020(region.ptr, region.size)
 			}
-			target := combatPredicateOriginalPublicC534020(row.Entry)
+			target := cfixture.CombatPredicateOriginalPublicC534020(row.Entry)
 			if target == nil {
 				t.Fatalf("missing actual public C entry %#x", row.Entry)
 			}
 			entries[row.Entry]++
 			if !controlOnly {
 				if row.Entry == 0x534470 {
-					got := math.Float64bits(combatPredicateOriginalDouble534470(target, unit))
+					got := math.Float64bits(cfixture.CombatPredicateOriginalDouble534470(target, unit))
 					if got != row.ReturnF64 {
 						t.Errorf("original range bits got=%016x original=%016x", got, row.ReturnF64)
 					}

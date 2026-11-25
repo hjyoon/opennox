@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "monster_spawn_registry_50d780.h"
@@ -59,16 +59,16 @@ import "C"
 
 import "unsafe"
 
-func monsterSpawnRegistryNativeCall(route, entry int, a, b unsafe.Pointer) uintptr {
+func MonsterSpawnRegistryNativeCall(route, entry int, a, b unsafe.Pointer) uintptr {
 	return uintptr(C.spawn_registry_call_C(C.int(route), C.int(entry), a, b))
 }
-func monsterSpawnRegistryNativeRead(owner unsafe.Pointer, offset uintptr) uintptr {
+func MonsterSpawnRegistryNativeRead(owner unsafe.Pointer, offset uintptr) uintptr {
 	return uintptr(C.spawn_registry_read_C(owner, C.size_t(offset)))
 }
-func monsterSpawnRegistryNativeObjectData(owner unsafe.Pointer) uintptr {
+func MonsterSpawnRegistryNativeObjectData(owner unsafe.Pointer) uintptr {
 	return uintptr(C.spawn_registry_data_C((*C.nox_object_t)(owner)))
 }
-func monsterSpawnRegistryNativeLayout() (out [12]uintptr) {
+func MonsterSpawnRegistryNativeLayout() (out [12]uintptr) {
 	C.spawn_registry_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }

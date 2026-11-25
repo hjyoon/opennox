@@ -14,6 +14,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -122,7 +123,7 @@ func TestHitLatchOriginalActualC532880(t *testing.T) {
 			reads := []uint32{}
 			gameFrameHook = func() uint32 { reads = append(reads, row.Input.Frame); return row.Input.Frame }
 			if !control {
-				got := ccall.CallUPtrPtr(hitLatchPublicC532880(), unit.Value.CObj())
+				got := ccall.CallUPtrPtr(cfixture.HitLatchPublicC532880(), unit.Value.CObj())
 				if want := uintptr(unsafe.Pointer(&updates[row.Input.Slot].Value)); got != want {
 					t.Errorf("native return=%#x original selected update=%#x", got, want)
 				}

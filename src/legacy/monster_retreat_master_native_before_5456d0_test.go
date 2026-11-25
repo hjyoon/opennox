@@ -9,6 +9,7 @@ import (
 
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/unit/ai"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -68,7 +69,7 @@ func TestMonsterRetreatMasterNativeCBefore5456D0(t *testing.T) {
 		before[i] = bytes.Clone(unsafe.Slice((*byte)(item.ptr), int(item.size)))
 	}
 	set, action := dodgeOriginalControls547C50(unit)
-	if set != uintptr(unsafe.Pointer(owner)) || action != uint32(ai.ACTION_MOVE_TO) || unitBuffTestExportCall4FF350(unit, 29) != 1 || retreatPredicatesOriginalC545520(0, unit) != 0 || retreatPredicatesOriginalC545520(1, unit) != 1 || retreatPredicatesOriginalC545520(2, unit) != 0 {
+	if set != uintptr(unsafe.Pointer(owner)) || action != uint32(ai.ACTION_MOVE_TO) || unitBuffTestExportCall4FF350(unit, 29) != 1 || cfixture.RetreatPredicatesOriginalC545520(0, unit) != 0 || cfixture.RetreatPredicatesOriginalC545520(1, unit) != 1 || cfixture.RetreatPredicatesOriginalC545520(2, unit) != 0 {
 		t.Fatal("actual typed sound/action/buff and all three native predicate positive controls")
 	}
 	for i, item := range pointers {

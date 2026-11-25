@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -47,7 +47,7 @@ import "C"
 
 import "unsafe"
 
-func simplePolypOriginalHeap54CAE0() (unsafe.Pointer, uintptr, func()) {
+func SimplePolypOriginalHeap54CAE0() (unsafe.Pointer, uintptr, func()) {
 	var page C.size_t
 	heap := C.simple_polyp_heap_54cae0(&page)
 	return heap, uintptr(page), func() {
@@ -57,6 +57,6 @@ func simplePolypOriginalHeap54CAE0() (unsafe.Pointer, uintptr, func()) {
 	}
 }
 
-func simplePolypOriginalBad54CAE0(heap unsafe.Pointer, page uintptr, role int) unsafe.Pointer {
+func SimplePolypOriginalBad54CAE0(heap unsafe.Pointer, page uintptr, role int) unsafe.Pointer {
 	return C.simple_polyp_bad_54cae0(heap, C.size_t(page), C.int(role))
 }

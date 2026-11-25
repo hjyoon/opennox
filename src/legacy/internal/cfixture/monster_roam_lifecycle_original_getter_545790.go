@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -44,13 +44,13 @@ import (
 	"unsafe"
 )
 
-func roamLifecycleOriginalC545790(entry int, unit *server.Object) unsafe.Pointer {
+func RoamLifecycleOriginalC545790(entry int, unit *server.Object) unsafe.Pointer {
 	return C.roam_lifecycle_original_545790(C.int(entry), (*C.nox_object_t)(unsafe.Pointer(unit)))
 }
-func roamLifecycleOriginalABI545790(entry int) int {
+func RoamLifecycleOriginalABI545790(entry int) int {
 	return int(C.roam_lifecycle_abi_545790(C.int(entry)))
 }
-func roamLifecycleOriginalLayout545790() (out [8]uintptr) {
+func RoamLifecycleOriginalLayout545790() (out [8]uintptr) {
 	for i := range out {
 		out[i] = uintptr(C.roam_lifecycle_layout_545790(C.int(i)))
 	}

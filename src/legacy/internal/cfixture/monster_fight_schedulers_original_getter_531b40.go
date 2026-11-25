@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -7,7 +7,7 @@ package legacy
 import "C"
 import "unsafe"
 
-func fightSchedulerPublicCBefore531B40(entry uint32) unsafe.Pointer {
+func FightSchedulerPublicCBefore531B40(entry uint32) unsafe.Pointer {
 	switch entry {
 	case 0x531b40:
 		return C.nox_xxx_TODOsomeCallingMeleeAttack_531B40

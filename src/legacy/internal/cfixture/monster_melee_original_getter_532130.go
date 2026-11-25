@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -7,7 +7,7 @@ package legacy
 import "C"
 import "unsafe"
 
-func meleePublicCBefore532130(entry uint32) unsafe.Pointer {
+func MeleePublicCBefore532130(entry uint32) unsafe.Pointer {
 	switch entry {
 	case 0x532130:
 		return C.nox_xxx_mobActionMelee1_532130

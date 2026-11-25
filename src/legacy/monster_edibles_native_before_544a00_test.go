@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -72,7 +73,7 @@ func TestMonsterSearchEdibleActualCBefore544A00(t *testing.T) {
 			before[i] = bytes.Clone(unsafe.Slice((*byte)(r.ptr), int(r.size)))
 		}
 		set, action := dodgeOriginalControls547C50(unit)
-		if set != uintptr(unsafe.Pointer(owner)) || action != uint32(ai.ACTION_MOVE_TO) || retreatPredicatesOriginalC545520(0, unit) != 0 || ccall.CallIntPtr(statePredicateOriginalPublicC534710(0x5347f0), unit.CObj()) != 0 {
+		if set != uintptr(unsafe.Pointer(owner)) || action != uint32(ai.ACTION_MOVE_TO) || cfixture.RetreatPredicatesOriginalC545520(0, unit) != 0 || ccall.CallIntPtr(cfixture.StatePredicateOriginalPublicC534710(0x5347f0), unit.CObj()) != 0 {
 			t.Fatal("typed sound/action/health/poison positive controls")
 		}
 		for i, r := range records {

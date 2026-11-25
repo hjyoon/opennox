@@ -15,6 +15,7 @@ import (
 
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -113,7 +114,7 @@ func TestMissileLeadAliasesOriginal533080(t *testing.T) {
 				}
 				var returned uintptr
 				if mode == "C" {
-					returned = missileLeadPublicCBefore533080(u.Value.CObj(), v.Value.CObj(), math.Float32frombits(row.Speed), unsafe.Pointer(out))
+					returned = cfixture.MissileLeadPublicCBefore533080(u.Value.CObj(), v.Value.CObj(), math.Float32frombits(row.Speed), unsafe.Pointer(out))
 				} else {
 					returned = uintptr(unsafe.Pointer(server.MonsterProjectileLead533080(&u.Value, &v.Value, math.Float32frombits(row.Speed), out)))
 				}

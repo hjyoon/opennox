@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -14,7 +14,7 @@ static int nox_state_original_lookup_control(void) {return nox_xxx_getNameId_4E3
 import "C"
 import "unsafe"
 
-func statePredicateOriginalPublicC534710(entry uint32) unsafe.Pointer {
+func StatePredicateOriginalPublicC534710(entry uint32) unsafe.Pointer {
 	switch entry {
 	case 0x534710:
 		return C.sub_534710
@@ -32,12 +32,12 @@ func statePredicateOriginalPublicC534710(entry uint32) unsafe.Pointer {
 		return nil
 	}
 }
-func statePredicateOriginalSwapMimicCache534840(value uint32) uint32 {
+func StatePredicateOriginalSwapMimicCache534840(value uint32) uint32 {
 	return uint32(C.nox_state_original_swap_cache(C.uint(value)))
 }
-func statePredicateOriginalMimicCachePointer534840() unsafe.Pointer {
+func StatePredicateOriginalMimicCachePointer534840() unsafe.Pointer {
 	return C.nox_state_original_cache_ptr()
 }
-func statePredicateOriginalNameIDControl534840() uint32 {
+func StatePredicateOriginalNameIDControl534840() uint32 {
 	return uint32(C.nox_state_original_lookup_control())
 }

@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -155,7 +156,7 @@ func senderNewFixture518960(t *testing.T) *senderFixture518960 {
 				f.inMimic = true
 				defer func() { f.inMimic = false }()
 			}
-			return animationPredicatePublicC533790(index, unit)
+			return cfixture.AnimationPredicatePublicC533790(index, unit)
 		}
 	}
 	f.b.runtime = server.MonsterAnimationNativeRuntime533790{Mimic: predicate(0), Plant: predicate(1), Zombie: predicate(2)}
@@ -180,7 +181,7 @@ func senderNewFixture518960(t *testing.T) *senderFixture518960 {
 		},
 		Animation: func(u *server.Object) int32 {
 			f.event(map[string]any{"entry": "0x533790"})
-			return int32(ccall.CallIntPtr(animationSelectorPublicC533790(), u.CObj()))
+			return int32(ccall.CallIntPtr(cfixture.AnimationSelectorPublicC533790(), u.CObj()))
 		},
 		Random: func(min, max int32) int32 {
 			f.event(map[string]any{"entry": "0x415fa0", "minimum": uint32(min), "maximum": uint32(max), "index_before": f.b.srv.Rand.Logic.Index()})
@@ -399,7 +400,7 @@ func (f *senderFixture518960) prepare(row *senderRow518960, phaseB bool) {
 	for i, r := range f.b.regions {
 		f.before[i] = animationSnapshot533790(r.Ptr, r.Size)
 	}
-	f.mimicBefore = animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)
+	f.mimicBefore = animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)
 }
 
 func (f *senderFixture518960) patch(field string, raw json.RawMessage) {
@@ -519,7 +520,7 @@ func (f *senderFixture518960) check(control bool) {
 			f.t.Errorf("native guarded unit/two-MUD/target/cache/health/frame region%d differs beyond original outputs", i)
 		}
 	}
-	if !bytes.Equal(f.mimicBefore, animationSnapshot533790(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)) {
+	if !bytes.Equal(f.mimicBefore, animationSnapshot533790(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)) {
 		f.t.Error("Mimic DWORD or neighbor guards differ")
 	}
 	if f.b.srv.Frame() != f.network.Frame {

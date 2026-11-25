@@ -14,6 +14,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -98,7 +99,7 @@ func animationOriginalFaultDiagnostics50A850(t *testing.T, actualC bool) {
 					t.Errorf("fault guard region%d changed beyond original lookup effects", i)
 				}
 			}
-			if !bytes.Equal(f.scratchBefore, animationSnapshot50A850(unsafe.Add(memmap.PtrOff(0x5D4594, 2487964), -32), 80)) || !bytes.Equal(f.mimicGuard, animationSnapshot50A850(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)) {
+			if !bytes.Equal(f.scratchBefore, animationSnapshot50A850(unsafe.Add(memmap.PtrOff(0x5D4594, 2487964), -32), 80)) || !bytes.Equal(f.mimicGuard, animationSnapshot50A850(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)) {
 				t.Error("fault scratch/cache neighbor guards changed")
 			}
 		})

@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -134,7 +135,7 @@ func TestDeadTargetOriginalActualC532040(t *testing.T) {
 				t.Fatal("invalid frozen original return/read-only contract")
 			}
 			if !control {
-				result := ccall.CallUPtrPtr2(deadTargetPublicCBefore532040(), candidate.Value.CObj(), unsafe.Pointer(&context.Value))
+				result := ccall.CallUPtrPtr2(cfixture.DeadTargetPublicCBefore532040(), candidate.Value.CObj(), unsafe.Pointer(&context.Value))
 				if result != uintptr(unsafe.Pointer(&candidate.Value)) {
 					t.Errorf("native return=%#x, original candidate role=%p", result, &candidate.Value)
 				}

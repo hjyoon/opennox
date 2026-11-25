@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -55,7 +56,7 @@ type monsterSpawnOwnerNativeCase struct {
 
 func TestMonsterSpawnOwnerNativeLayout(t *testing.T) {
 	want := [4]uintptr{unsafe.Sizeof(server.MonsterSpawnLink{}), unsafe.Alignof(server.MonsterSpawnLink{}), unsafe.Offsetof(server.MonsterSpawnLink{}.Older), unsafe.Offsetof(server.MonsterSpawnLink{}.Newer)}
-	if got := monsterSpawnOwnerNativeCLayout(); got != want || want[0] != 3*unsafe.Sizeof(uintptr(0)) {
+	if got := cfixture.MonsterSpawnOwnerNativeCLayout(); got != want || want[0] != 3*unsafe.Sizeof(uintptr(0)) {
 		t.Fatal("native C/Go link layout", got, want)
 	}
 }
@@ -227,7 +228,7 @@ func monsterSpawnOwnerNativeRun(t *testing.T, c monsterSpawnOwnerNativeCase, pla
 				{unsafe.Offsetof(server.MonsterUpdateData{}.Field548), uintptr(unsafe.Pointer(generator))},
 				{unsafe.Offsetof(server.MonsterUpdateData{}.Field549), uintptr(unsafe.Pointer(link))},
 			} {
-				if got := monsterSpawnOwnerNativeRead(unsafe.Pointer(data[i]), field.offset); got != field.value {
+				if got := cfixture.MonsterSpawnOwnerNativeRead(unsafe.Pointer(data[i]), field.offset); got != field.value {
 					t.Fatal("C native backreference read", c.Input.Name, place, index, i, got, field.value)
 				}
 				putWord(image, place+0x6000+0x2000*i+int(field.offset), field.value)
@@ -249,7 +250,7 @@ func monsterSpawnOwnerNativeRun(t *testing.T, c monsterSpawnOwnerNativeCase, pla
 			want := [3]uintptr{uintptr(unsafe.Pointer(objectPointer)), uintptr(unsafe.Pointer(older)), uintptr(unsafe.Pointer(newer))}
 			var actual [3]uintptr
 			for field := range actual {
-				actual[field] = monsterSpawnOwnerNativeRead(unsafe.Pointer(link), uintptr(field)*word)
+				actual[field] = cfixture.MonsterSpawnOwnerNativeRead(unsafe.Pointer(link), uintptr(field)*word)
 			}
 			if actual != want {
 				t.Fatal("C pinned link graph", c.Input.Name, place, index, i, actual, want)

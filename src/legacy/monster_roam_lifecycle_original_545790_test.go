@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"io"
 	"os"
@@ -76,7 +77,7 @@ func TestMonsterRoamWaypointLifecycleOriginal545790(t *testing.T) {
 	if len(data.Rows) != 1321 {
 		t.Fatal("original context count", len(data.Rows))
 	}
-	layout := roamLifecycleOriginalLayout545790()
+	layout := cfixture.RoamLifecycleOriginalLayout545790()
 	for _, mode := range []string{"C", "Go"} {
 		t.Run(mode, func(t *testing.T) {
 			for _, row := range data.Rows {
@@ -162,7 +163,7 @@ func TestMonsterRoamWaypointLifecycleOriginal545790(t *testing.T) {
 							entry = 1
 						}
 						if mode == "C" {
-							result = roamLifecycleOriginalC545790(entry, arg)
+							result = cfixture.RoamLifecycleOriginalC545790(entry, arg)
 							return
 						}
 						native, ok := any(arg).(roamLifecycleRawContract545790)

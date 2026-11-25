@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -36,7 +36,7 @@ import "C"
 
 import "unsafe"
 
-func generatorCreditOriginalHeap4D61B0() (unsafe.Pointer, uintptr, func()) {
+func GeneratorCreditOriginalHeap4D61B0() (unsafe.Pointer, uintptr, func()) {
 	var guard C.size_t
 	heap := C.generator_credit_heap_4d61b0(&guard)
 	return heap, uintptr(guard), func() {
@@ -46,11 +46,11 @@ func generatorCreditOriginalHeap4D61B0() (unsafe.Pointer, uintptr, func()) {
 	}
 }
 
-func generatorCreditOriginalBad4D61B0(heap unsafe.Pointer, guard uintptr, slot int) unsafe.Pointer {
+func GeneratorCreditOriginalBad4D61B0(heap unsafe.Pointer, guard uintptr, slot int) unsafe.Pointer {
 	return C.generator_credit_bad_4d61b0(heap, C.size_t(guard), C.int(slot))
 }
 
-func generatorCreditOriginalField4D61B0(player unsafe.Pointer, flags bool) unsafe.Pointer {
+func GeneratorCreditOriginalField4D61B0(player unsafe.Pointer, flags bool) unsafe.Pointer {
 	v := 0
 	if flags {
 		v = 1

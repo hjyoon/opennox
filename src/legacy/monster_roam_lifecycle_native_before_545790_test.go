@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"os"
 	"os/exec"
@@ -15,7 +16,7 @@ func TestMonsterRoamWaypointLifecycleNativeLayout545790(t *testing.T) {
 	unit, update, item := server.Object{}, server.MonsterUpdateData{}, server.AIStackItem{}
 	prefix := unsafe.Offsetof(unit.ScriptPickup) + unsafe.Sizeof(unit.ScriptPickup)
 	want := [8]uintptr{unsafe.Offsetof(unit.UpdateData), prefix, unsafe.Offsetof(update.Waypoints), unsafe.Offsetof(update.Field91), unsafe.Offsetof(update.AIStackInd), unsafe.Offsetof(update.AIStack), unsafe.Sizeof(item), unsafe.Offsetof(item.Args)}
-	if got := roamLifecycleOriginalLayout545790(); got != want {
+	if got := cfixture.RoamLifecycleOriginalLayout545790(); got != want {
 		t.Fatal("independent C/Go object, MUD and native stack layouts", got, want)
 	}
 }
@@ -57,7 +58,7 @@ func TestMonsterRoamWaypointLifecycleActualCBefore545790(t *testing.T) {
 			before[i] = bytes.Clone(unsafe.Slice((*byte)(record.ptr), int(record.size)))
 		}
 		set, action := dodgeOriginalControls547C50(unit)
-		if set != uintptr(unsafe.Pointer(owner)) || action != update.AIStack[0].Action || retreatPredicatesOriginalC545520(0, unit) != 1 {
+		if set != uintptr(unsafe.Pointer(owner)) || action != update.AIStack[0].Action || cfixture.RetreatPredicatesOriginalC545520(0, unit) != 1 {
 			t.Fatal("actual typed sound/action/predicate controls")
 		}
 		for i, record := range records {
@@ -68,11 +69,11 @@ func TestMonsterRoamWaypointLifecycleActualCBefore545790(t *testing.T) {
 		if unsafe.Sizeof(uintptr(0)) != 8 || uintptr(unsafe.Pointer(unit)) <= 0xffffffff || uintptr(unsafe.Pointer(update)) <= 0xffffffff || uintptr(unsafe.Pointer(owner)) <= 0xffffffff {
 			t.Fatal("high native control pointers required")
 		}
-		if roamLifecycleOriginalABI545790(entry) != 32 {
+		if cfixture.RoamLifecycleOriginalABI545790(entry) != 32 {
 			t.Fatal("unchanged original legacy-int ABI required")
 		}
 		t.Logf("ROAM_LIFECYCLE_VALID_NATIVE_CONTROLS entry=%d unit=%p update=%p owner=%p", entry, unit, update, owner)
-		roamLifecycleOriginalC545790(entry, unit)
+		cfixture.RoamLifecycleOriginalC545790(entry, unit)
 		t.Fatal("old C entry unexpectedly returned")
 	}
 	for entry := 0; entry < 2; entry++ {

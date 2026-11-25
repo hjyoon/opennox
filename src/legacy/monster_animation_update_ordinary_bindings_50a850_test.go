@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -98,8 +99,8 @@ func TestAnimationUpdateOrdinaryBindings50A850(t *testing.T) {
 	view.Write(0, 22)
 	view.Write(1, 33)
 	view.Write(2, 44)
-	oldMimic := statePredicateOriginalSwapMimicCache534840(11)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldMimic) })
+	oldMimic := cfixture.StatePredicateOriginalSwapMimicCache534840(11)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldMimic) })
 	scratch := memmap.PtrOff(0x5D4594, 2487964)
 	savedScratch := animationSnapshot50A850(unsafe.Add(scratch, -32), 80)
 	t.Cleanup(func() { copy(unsafe.Slice((*byte)(unsafe.Add(scratch, -32)), 80), savedScratch) })
@@ -250,7 +251,7 @@ func TestAnimationUpdateOrdinaryBindings50A850(t *testing.T) {
 				if !bytes.Equal(scratchExpected, animationSnapshot50A850(unsafe.Add(scratch, -32), 80)) {
 					t.Error("ordinary scratch bytes or neighbors differ")
 				}
-				if view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(statePredicateOriginalMimicCachePointer534840()) != 11 {
+				if view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(cfixture.StatePredicateOriginalMimicCachePointer534840()) != 11 {
 					t.Fatal("ordinary cache inputs changed")
 				}
 			}

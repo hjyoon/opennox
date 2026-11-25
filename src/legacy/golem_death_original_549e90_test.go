@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"math"
 	"os"
@@ -174,7 +175,7 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 	}
 	copy(massBuf[16:64], golemOriginalMassBytes549E90())
 	massBase := unsafe.Add(massStorage, 32)
-	unmapped, freeUnmapped := golemOriginalGuardPage549E90()
+	unmapped, freeUnmapped := cfixture.GolemOriginalGuardPage549E90()
 	if unmapped == nil {
 		t.Fatal("original unmapped mass-domain guard page")
 	}
@@ -342,19 +343,19 @@ func golemRunOriginal549E90(t *testing.T, in golemInput549E90, mode string, near
 	rt.FPS = func() uint32 { return fps }
 	rt.MechName = func(index int32) unsafe.Pointer {
 		pending = "mech-table"
-		value := *(*unsafe.Pointer)(golemOriginalMappedSlotAddress549E90(mech, index, 0x5cd4e8, unmapped))
+		value := *(*unsafe.Pointer)(cfixture.GolemOriginalMappedSlotAddress549E90(mech, index, 0x5cd4e8, unmapped))
 		pending = ""
 		return value
 	}
 	rt.RockName = func(index int32) unsafe.Pointer {
 		pending = "rock-table"
-		value := *(*unsafe.Pointer)(golemOriginalMappedSlotAddress549E90(rock, index, 0x5cd5f0, unmapped))
+		value := *(*unsafe.Pointer)(cfixture.GolemOriginalMappedSlotAddress549E90(rock, index, 0x5cd5f0, unmapped))
 		pending = ""
 		return value
 	}
 	rt.Mass = func(index int32) byte {
 		pending = "mass-table"
-		value := *(*byte)(golemOriginalMappedMassAddress549E90(massBase, index, unmapped))
+		value := *(*byte)(cfixture.GolemOriginalMappedMassAddress549E90(massBase, index, unmapped))
 		pending = ""
 		return value
 	}

@@ -16,16 +16,17 @@ import (
 
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 type missileLeadOriginalRow533080 struct {
-	Index        int       `json:"index"`
-	Position     [4]uint32 `json:"position_bits"`
-	Velocity     [2]uint32 `json:"velocity_bits"`
-	Speed        uint32    `json:"speed_bits"`
-	Output       [2]uint32 `json:"output_bits"`
-	ReturnRole   string    `json:"return_role"`
+	Index      int       `json:"index"`
+	Position   [4]uint32 `json:"position_bits"`
+	Velocity   [2]uint32 `json:"velocity_bits"`
+	Speed      uint32    `json:"speed_bits"`
+	Output     [2]uint32 `json:"output_bits"`
+	ReturnRole string    `json:"return_role"`
 }
 
 type missileLeadOriginalObjectGuard533080 struct {
@@ -104,7 +105,7 @@ func TestMissileLeadOriginalActualC533080(t *testing.T) {
 			beforeUnit := copyBytes(unsafe.Pointer(unit), unsafe.Sizeof(*unit))
 			beforeTarget := copyBytes(unsafe.Pointer(target), unsafe.Sizeof(*target))
 			if !control {
-				result := missileLeadPublicCBefore533080(unit.Value.CObj(), target.Value.CObj(), math.Float32frombits(row.Speed), unsafe.Pointer(&out.Value))
+				result := cfixture.MissileLeadPublicCBefore533080(unit.Value.CObj(), target.Value.CObj(), math.Float32frombits(row.Speed), unsafe.Pointer(&out.Value))
 				if result != uintptr(unsafe.Pointer(&target.Value)) {
 					t.Errorf("native target pointer return = %#x, want %p", result, &target.Value)
 				}

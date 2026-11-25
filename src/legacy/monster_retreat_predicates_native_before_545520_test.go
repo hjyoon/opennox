@@ -10,13 +10,14 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func TestMonsterRetreatPredicatesNativeLayout545520(t *testing.T) {
 	obj, update, health := server.Object{}, server.MonsterUpdateData{}, server.HealthData{}
 	want := [6]uintptr{unsafe.Offsetof(obj.HealthData), unsafe.Offsetof(obj.UpdateData), unsafe.Offsetof(obj.Buffs), unsafe.Offsetof(health.Max), unsafe.Offsetof(update.ResumeLevel), unsafe.Offsetof(update.StatusFlags)}
-	if got := retreatPredicatesOriginalLayout545520(); got != want {
+	if got := cfixture.RetreatPredicatesOriginalLayout545520(); got != want {
 		t.Fatal("independent native C/Go layout", got, want)
 	}
 }
@@ -65,10 +66,10 @@ func TestMonsterRetreatPredicatesNativeCBefore545520(t *testing.T) {
 	if set != uintptr(w.Data.SoundSet122) || action != 0 || unitBuffTestExportCall4FF350(w.Unit, 29) != 1 || !bytes.Equal(before, w.Heap) {
 		t.Fatal("typed native sound/action/buff positive controls or whole allocation guard")
 	}
-	if retreatPredicatesOriginalABI545520(entry) != 32 {
+	if cfixture.RetreatPredicatesOriginalABI545520(entry) != 32 {
 		t.Fatal("unchanged legacy-int public ABI required")
 	}
 	t.Logf("RETREAT_PREDICATE_VALID_NATIVE_CONTROLS entry=%d unit=%p health=%p update=%p", entry, w.Unit, w.Unit.HealthData, w.Data)
-	retreatPredicatesOriginalC545520(entry, w.Unit)
+	cfixture.RetreatPredicatesOriginalC545520(entry, w.Unit)
 	t.Fatal("old C unexpectedly returned")
 }

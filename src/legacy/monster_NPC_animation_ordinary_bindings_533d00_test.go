@@ -17,6 +17,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -76,8 +77,8 @@ func TestNPCAnimationOrdinaryBindings533D00(t *testing.T) {
 	view.Write(0, 22)
 	view.Write(1, 33)
 	view.Write(2, 44)
-	oldMimic := statePredicateOriginalSwapMimicCache534840(11)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldMimic) })
+	oldMimic := cfixture.StatePredicateOriginalSwapMimicCache534840(11)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldMimic) })
 	weapon := memmap.PtrOff(0x587000, 215824)
 	weaponBefore := animationSnapshot533D00(weapon, 108)
 	t.Cleanup(func() { copy(unsafe.Slice((*byte)(weapon), 108), weaponBefore) })
@@ -203,7 +204,7 @@ func TestNPCAnimationOrdinaryBindings533D00(t *testing.T) {
 					}
 				}
 			}
-			if *unit != beforeU || *update != beforeD || view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(statePredicateOriginalMimicCachePointer534840()) != 11 {
+			if *unit != beforeU || *update != beforeD || view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(cfixture.StatePredicateOriginalMimicCachePointer534840()) != 11 {
 				t.Fatal("ordinary binding changed object/update/cache inputs")
 			}
 		})

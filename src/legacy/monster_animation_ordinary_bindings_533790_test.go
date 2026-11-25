@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -66,8 +67,8 @@ func TestAnimationSelectorOrdinaryBindings533790(t *testing.T) {
 	view.Write(0, 22)
 	view.Write(1, 33)
 	view.Write(2, 44)
-	oldCache := statePredicateOriginalSwapMimicCache534840(11)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldCache) })
+	oldCache := cfixture.StatePredicateOriginalSwapMimicCache534840(11)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldCache) })
 	unit, freeU := alloc.NewHigh(server.Object{})
 	update, freeD := alloc.NewHigh(server.MonsterUpdateData{})
 	enemy, freeE := alloc.NewHigh(server.Object{})
@@ -123,13 +124,13 @@ func TestAnimationSelectorOrdinaryBindings533790(t *testing.T) {
 			defer func() { GetServer = oldServer }()
 			beforeU, beforeD := *unit, *update
 			want := original.Output.Returns[0]
-			if got := uint32(ccall.CallIntPtr(animationSelectorPublicC533790(), unit.CObj())); got != want {
+			if got := uint32(ccall.CallIntPtr(cfixture.AnimationSelectorPublicC533790(), unit.CObj())); got != want {
 				t.Errorf("ordinary public C=%d original=%d", got, want)
 			}
 			if got := uint32(srv.MonsterAnimationIndex533790(unit)); got != want {
 				t.Errorf("ordinary public Go=%d original=%d", got, want)
 			}
-			if *unit != beforeU || *update != beforeD || view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(statePredicateOriginalMimicCachePointer534840()) != 11 {
+			if *unit != beforeU || *update != beforeD || view.Read(0) != 22 || view.Read(1) != 33 || view.Read(2) != 44 || *(*uint32)(cfixture.StatePredicateOriginalMimicCachePointer534840()) != 11 {
 				t.Fatal("ordinary cached binding modified native inputs or caches")
 			}
 		})

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -13,9 +13,9 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func animationSelectorPublicC533790() unsafe.Pointer { return C.nox_xxx_mobActionToAnimation_533790 }
+func AnimationSelectorPublicC533790() unsafe.Pointer { return C.nox_xxx_mobActionToAnimation_533790 }
 
-func animationPredicatePublicC533790(index int, unit *server.Object) uint32 {
+func AnimationPredicatePublicC533790(index int, unit *server.Object) uint32 {
 	var fn unsafe.Pointer
 	switch index {
 	case 0:

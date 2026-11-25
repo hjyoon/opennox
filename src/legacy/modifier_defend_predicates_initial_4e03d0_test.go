@@ -19,6 +19,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -100,7 +101,7 @@ type modifierPredicateMemory4E03D0 struct {
 
 func newModifierPredicateMemory4E03D0(t *testing.T, row modifierPredicateInitial4E03D0) *modifierPredicateMemory4E03D0 {
 	t.Helper()
-	heap, guard, free := generatorCreditOriginalHeap4D61B0()
+	heap, guard, free := cfixture.GeneratorCreditOriginalHeap4D61B0()
 	t.Cleanup(free)
 	off := modifierPredicatesLayout4E03D0()
 	if heap == nil || guard < off[4]+1024 || (off[12] == 8 && uintptr(heap) <= math.MaxUint32) {
@@ -124,7 +125,7 @@ func newModifierPredicateMemory4E03D0(t *testing.T, row modifierPredicateInitial
 		m.addresses[pe], m.reverse[uintptr(native)] = native, pe
 	}
 	add(0, nil)
-	add(0x41000000, generatorCreditOriginalBad4D61B0(heap, guard, 0))
+	add(0x41000000, cfixture.GeneratorCreditOriginalBad4D61B0(heap, guard, 0))
 	add(0x4e03d0, modifierPredicatesCallback4E03D0(0))
 	add(0x4e0480, modifierPredicatesCallback4E03D0(1))
 	for _, role := range []int{0x1000, 0x2000, 0x3000, 0x4000, 0x5000} {

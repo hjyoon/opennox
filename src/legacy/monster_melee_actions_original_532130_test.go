@@ -22,6 +22,7 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -783,7 +784,7 @@ func TestMeleeActionsOriginalActualC532130(t *testing.T) {
 				f.validate(t, result, control)
 			}()
 			if !control {
-				result = ccall.CallUPtrPtr(meleePublicCBefore532130(row.Entry), f.unit().CObj())
+				result = ccall.CallUPtrPtr(cfixture.MeleePublicCBefore532130(row.Entry), f.unit().CObj())
 			}
 		})
 	}

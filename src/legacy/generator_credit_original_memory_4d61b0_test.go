@@ -10,6 +10,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -61,7 +62,7 @@ func generatorCreditInputs4D61B0(t *testing.T) ([]generatorCreditInput4D61B0, []
 
 func newGeneratorCreditMemory4D61B0(t *testing.T, c generatorCreditInput4D61B0, initial generatorCreditInitial4D61B0) *generatorCreditMemory4D61B0 {
 	t.Helper()
-	heap, guard, free := generatorCreditOriginalHeap4D61B0()
+	heap, guard, free := cfixture.GeneratorCreditOriginalHeap4D61B0()
 	t.Cleanup(free)
 	if heap == nil || guard < unsafe.Sizeof(server.Player{})+256 || (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(heap) <= math.MaxUint32) {
 		t.Fatal("C-owned whole heap and predecessor guard large enough for a native Player")
@@ -141,7 +142,7 @@ func (m *generatorCreditMemory4D61B0) fromPE(value uint32) unsafe.Pointer {
 	if p, ok := m.peToNative[value]; ok {
 		return p
 	}
-	p := generatorCreditOriginalBad4D61B0(m.heap, m.guard, len(m.peToNative))
+	p := cfixture.GeneratorCreditOriginalBad4D61B0(m.heap, m.guard, len(m.peToNative))
 	if uintptr(p)+m.off[18]+4 >= uintptr(m.heap) {
 		m.t.Fatal("malformed pointer and full Player offset must remain protected")
 	}
@@ -219,7 +220,7 @@ func (m *generatorCreditMemory4D61B0) domainRead(key string) (out *uint32) {
 		v = m.toPE(uintptr(unsafe.Pointer((*server.PlayerUpdateData)(u.UpdateData).Player)))
 	case "counter", "player_flags":
 		p := unsafe.Pointer((*server.PlayerUpdateData)(u.UpdateData).Player)
-		v = *(*uint32)(generatorCreditOriginalField4D61B0(p, key == "player_flags"))
+		v = *(*uint32)(cfixture.GeneratorCreditOriginalField4D61B0(p, key == "player_flags"))
 		// Four declared PE32 aliases overlap a pointer representation. Its
 		// native low DWORD is address-dependent, so compare its relocated
 		// pointer meaning, as in the whole-heap projection.

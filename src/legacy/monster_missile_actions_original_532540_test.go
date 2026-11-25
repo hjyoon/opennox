@@ -19,6 +19,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -622,7 +623,7 @@ func TestMissileActionsOriginalActualC532540(t *testing.T) {
 				f.validate(t, result, control, true)
 			}()
 			if !control {
-				result = ccall.CallUPtrPtr(missilePublicCBefore532540(row.Entry), f.unit().CObj())
+				result = ccall.CallUPtrPtr(cfixture.MissilePublicCBefore532540(row.Entry), f.unit().CObj())
 			}
 		})
 	}

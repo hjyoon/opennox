@@ -18,6 +18,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -187,8 +188,8 @@ func animationNewFixture533D00(t *testing.T) *animationFixture533D00 {
 	}
 	t.Cleanup(func() { playerAnimFrames4F9F90 = oldFrames })
 	f.cache = animationAllocate533D00[[3]uint32](t, f)
-	oldCache := statePredicateOriginalSwapMimicCache534840(0)
-	t.Cleanup(func() { statePredicateOriginalSwapMimicCache534840(oldCache) })
+	oldCache := cfixture.StatePredicateOriginalSwapMimicCache534840(0)
+	t.Cleanup(func() { cfixture.StatePredicateOriginalSwapMimicCache534840(oldCache) })
 	owner := GetServer
 	GetServer = func() Server {
 		if f.recording {
@@ -219,7 +220,7 @@ func animationNewFixture533D00(t *testing.T) *animationFixture533D00 {
 				live = "other"
 			}
 			f.predicates = append(f.predicates, animationPredicateEntry533D00{name, f.call, f.caches(), unit.TypeInd, uint32(unit.ObjClass), uint32(f.updates[0].Value.StatusFlags), live})
-			return animationPredicatePublicC533790(index, unit)
+			return cfixture.AnimationPredicatePublicC533790(index, unit)
 		}
 	}
 	f.runtime = server.MonsterAnimationNativeRuntime533790{Mimic: wrap(0, "Mimic"), Plant: wrap(1, "CarnivorousPlant"), Zombie: wrap(2, "ZombiePair")}
@@ -236,7 +237,7 @@ func animationNewFixture533D00(t *testing.T) *animationFixture533D00 {
 			return NPCFramesActualC533D00(index)
 		},
 		Selector: func(unit *server.Object) int32 {
-			return int32(ccall.CallIntPtr(animationSelectorPublicC533790(), unit.CObj()))
+			return int32(ccall.CallIntPtr(cfixture.AnimationSelectorPublicC533790(), unit.CObj()))
 		},
 		Scratch: func() *server.MonsterAnim { return (*server.MonsterAnim)(memmap.PtrOff(0x5D4594, 2487964)) },
 	}
@@ -247,11 +248,11 @@ func animationNewFixture533D00(t *testing.T) *animationFixture533D00 {
 	return f
 }
 func (f *animationFixture533D00) caches() [4]uint32 {
-	return [4]uint32{*(*uint32)(statePredicateOriginalMimicCachePointer534840()), f.cache.Value[0], f.cache.Value[1], f.cache.Value[2]}
+	return [4]uint32{*(*uint32)(cfixture.StatePredicateOriginalMimicCachePointer534840()), f.cache.Value[0], f.cache.Value[1], f.cache.Value[2]}
 }
 func (f *animationFixture533D00) setCache(i int, v uint32) {
 	if i == 0 {
-		statePredicateOriginalSwapMimicCache534840(v)
+		cfixture.StatePredicateOriginalSwapMimicCache534840(v)
 	} else {
 		f.cache.Value[i-1] = v
 	}
@@ -446,7 +447,7 @@ func (f *animationFixture533D00) prepare(row *animationRow533D00) {
 	for i, r := range f.regions {
 		f.before[i] = animationSnapshot533D00(r.Ptr, r.Size)
 	}
-	f.mimicGuard = animationSnapshot533D00(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)
+	f.mimicGuard = animationSnapshot533D00(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)
 }
 func animationPatchValue533D00[T any](t *testing.T, expected [][]byte, regions []animationRegion533D00, pointer *T, value T) {
 	t.Helper()
@@ -544,7 +545,7 @@ func (f *animationFixture533D00) check(control bool) {
 			f.t.Errorf("native guarded unit/update/other/target/cache region%d differs beyond original outputs", i)
 		}
 	}
-	if !bytes.Equal(f.mimicGuard, animationSnapshot533D00(unsafe.Add(statePredicateOriginalMimicCachePointer534840(), -64), 132)) {
+	if !bytes.Equal(f.mimicGuard, animationSnapshot533D00(unsafe.Add(cfixture.StatePredicateOriginalMimicCachePointer534840(), -64), 132)) {
 		f.t.Error("native Mimic cache or neighbor guards differ")
 	}
 }

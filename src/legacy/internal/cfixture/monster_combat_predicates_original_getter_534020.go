@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "defs.h"
@@ -11,7 +11,7 @@ import (
 	"unsafe"
 )
 
-func combatPredicateOriginalPublicC534020(entry uint32) unsafe.Pointer {
+func CombatPredicateOriginalPublicC534020(entry uint32) unsafe.Pointer {
 	switch entry {
 	case 0x534020:
 		return C.sub_534020
@@ -44,6 +44,6 @@ func combatPredicateOriginalPublicC534020(entry uint32) unsafe.Pointer {
 	}
 }
 
-func combatPredicateOriginalDouble534470(fnc unsafe.Pointer, unit *server.Object) float64 {
+func CombatPredicateOriginalDouble534470(fnc unsafe.Pointer, unit *server.Object) float64 {
 	return float64(C.nox_combat_predicate_call_double(fnc, unsafe.Pointer(unit)))
 }

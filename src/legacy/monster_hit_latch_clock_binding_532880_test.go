@@ -7,6 +7,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -19,7 +20,7 @@ func TestHitLatchProductionClockBinding532880(t *testing.T) {
 	*unit = server.Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(update)}
 	invoke := func() {
 		t.Helper()
-		if got := ccall.CallUPtrPtr(hitLatchPublicC532880(), unit.CObj()); got != uintptr(unsafe.Pointer(update)) {
+		if got := ccall.CallUPtrPtr(cfixture.HitLatchPublicC532880(), unit.CObj()); got != uintptr(unsafe.Pointer(update)) {
 			t.Fatalf("native cached update return=%#x want=%p", got, update)
 		}
 	}

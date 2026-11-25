@@ -45,6 +45,10 @@ steps:
     y: 380
   - action: wait
     dt: 120
+  - action: esc
+    name: close server options before testing gameplay shortcuts
+  - action: wait
+    dt: 30
   - action: set-quickbar-spell
     spell: 27
     slot: 0

@@ -21,14 +21,18 @@ func sub_4BFB70(mode C.int) {
 
 //export sub_4BFBB0
 func sub_4BFBB0(request *C.uint32_t) {
+	serverKeyVisibleRequest(uintptr(unsafe.Pointer(request)))
+}
+
+func serverKeyVisibleRequest(request uintptr) {
 	switch C.dword_5d4594_1319056 {
 	case 0:
-		if uintptr(unsafe.Pointer(request)) == 1 {
+		if request == 1 {
 			sub_4BFBF0()
 			sub_4BFB70(1)
 		}
 	case 1:
-		if request == nil {
+		if request == 0 {
 			sub_4BFC70()
 			sub_4BFB70(0)
 		}

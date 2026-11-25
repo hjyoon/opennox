@@ -20,14 +20,14 @@ import (
 )
 
 const clientSettingsRecordSize = 58
-const clientSettingsStringsFile = `C:\NoxPost\src\Client\Network\cdecode.c`
+const clientDecodeStringsFile = `C:\NoxPost\src\Client\Network\cdecode.c`
 
 func clientSettingsRecord(index byte) []byte {
 	return unsafe.Slice((*byte)(unsafe.Pointer(nox_xxx_cliGamedataGet_416590(C.int(index)))), clientSettingsRecordSize)
 }
 
-func clientSettingsText(key string, line int32) *wchar2_t {
-	return nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(clientSettingsStringsFile), line)
+func clientDecodeString(key string, line int32) *wchar2_t {
+	return nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(clientDecodeStringsFile), line)
 }
 
 func clientGameSettingsPacket(data []byte) {
@@ -110,7 +110,7 @@ func clientGameSettings2Packet(data []byte) {
 	}
 	copy(snapshot, settings)
 	if nox_client_isConnected_43C700() != 0 && C.dword_5d4594_1200768 != 0 {
-		nox_xxx_printCentered_445490(clientSettingsText("OptionsChanged", 1429))
+		nox_xxx_printCentered_445490(clientDecodeString("OptionsChanged", 1429))
 		nox_xxx_clientPlaySoundSpecial_452D80(310, 100)
 	}
 }
@@ -132,7 +132,7 @@ func clientGUISettingsPacket(data []byte) {
 				if C.dword_5d4594_1200832 != 0 {
 					player := (*C.nox_playerInfo)(Get_dword_8531A0_2576().C())
 					var text [128]wchar2_t
-					formatWideStrings(text[:], clientSettingsText("NameChange", 1470), &player.name_final[0], nil)
+					formatWideStrings(text[:], clientDecodeString("NameChange", 1470), &player.name_final[0], nil)
 					nox_xxx_printCentered_445490(&text[0])
 					C.dword_5d4594_1200832 = 0
 				}

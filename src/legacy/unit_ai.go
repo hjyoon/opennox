@@ -10,6 +10,7 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME4_3.h"
 #include "GAME5.h"
+#include "noxstring_format_abi.h"
 #include "server__script__script.h"
 extern uint32_t dword_5d4594_2491580;
 extern uint32_t dword_5d4594_2491588;
@@ -677,15 +678,15 @@ func monsterActionMissileRuntime532540() server.MonsterActionMissileRuntime53254
 	}
 }
 
-//export nox_ai_debug_enabled
-func nox_ai_debug_enabled() C.int {
-	return C.int(bool2int(noxflags.HasEngine(noxflags.EngineShowAI)))
-}
-
-//export nox_ai_debug_print
-func nox_ai_debug_print(str *C.char) {
-	if nox_ai_debug_enabled() != 0 {
-		ai.Log.Printf("%s", GoString(str))
+//export nox_ai_debug_vprintf_5341A0
+func nox_ai_debug_vprintf_5341A0(format *C.nox_format_byte, args *C.nox_format_args) {
+	if !noxflags.HasEngine(noxflags.EngineShowAI) {
+		return
+	}
+	text := memmap.PtrUint8(0x5D4594, 2487996)
+	legacyFormat(text, math.MaxInt32, (*byte)(unsafe.Pointer(format)), args)
+	if noxflags.HasEngine(noxflags.EngineShowAI) {
+		ai.Log.Printf("%s", GoString((*C.char)(unsafe.Pointer(text))))
 	}
 }
 

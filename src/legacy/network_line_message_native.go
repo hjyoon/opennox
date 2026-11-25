@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "noxstring_format_abi.h"
 */
 import "C"
 
@@ -56,19 +57,17 @@ func sendLineMessageText(update unsafe.Pointer, text *wchar2_t) C.intptr_t {
 	return C.intptr_t(bool2int(queued))
 }
 
-// Cache the native update address before formatting reads any arguments.
-//
-//export nox_line_message_player_update_4D9EB0
-func nox_line_message_player_update_4D9EB0(obj *nox_object_t, update *C.uintptr_t) C.int {
+//export nox_net_line_message_vprintf_4D9EB0
+func nox_net_line_message_vprintf_4D9EB0(obj *nox_object_t, format *C.nox_format_word, args *C.nox_format_args) C.intptr_t {
 	player := asObjectS(obj)
 	if !player.Class().Has(object.ClassPlayer) {
-		return 0
+		return C.intptr_t(uintptr(unsafe.Pointer(obj)))
 	}
-	*update = C.uintptr_t(uintptr(player.UpdateData))
-	return 1
-}
 
-//export nox_send_line_message_text_4D9EB0
-func nox_send_line_message_text_4D9EB0(update unsafe.Pointer, text *C.wchar2_t) C.intptr_t {
-	return sendLineMessageText(update, text)
+	// Cache update data before formatting reads any arguments. Reserve the
+	// final zero-initialized word for the terminator of a truncated message.
+	update := player.UpdateData
+	var text [256]uint16
+	legacyFormat(&text[0], uintptr(len(text)-1), (*uint16)(unsafe.Pointer(format)), args)
+	return sendLineMessageText(update, (*wchar2_t)(unsafe.Pointer(&text[0])))
 }

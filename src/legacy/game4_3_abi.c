@@ -1,6 +1,6 @@
 #include "GAME1.h"
 #include "GAME4_3.h"
-#include "noxstring.h"
+#include "noxstring_format_abi.h"
 
 // The C entry points preserve their pointer-shaped return registers.
 //----- (00531B40) --------------------------------------------------------
@@ -24,17 +24,11 @@ int* sub_531D50(nox_object_t* unit, nox_object_t* target) {
 	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531D50);
 }
 
-// The variadic entry formats the legacy log before the Go logger.
 //----- (005341A0) --------------------------------------------------------
-int nox_ai_debug_enabled(void);
-void nox_ai_debug_print(char* str);
-void nox_ai_debug_printf_5341A0(char* a1, ...) {
-	va_list va; // [esp+8h] [ebp+8h]
-
-	va_start(va, a1);
-	if (nox_ai_debug_enabled()) {
-		nox_vsprintf((char*)getMemAt(0x5D4594, 2487996), a1, va);
-		nox_ai_debug_print((char*)getMemAt(0x5D4594, 2487996));
-	}
-	va_end(va);
+void nox_ai_debug_vprintf_5341A0(nox_format_byte* format, nox_format_args* args);
+void nox_ai_debug_printf_5341A0(char* format, ...) {
+	nox_format_args args;
+	va_start(args.list, format);
+	nox_ai_debug_vprintf_5341A0(format, &args);
+	va_end(args.list);
 }

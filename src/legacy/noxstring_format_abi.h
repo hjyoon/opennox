@@ -3,7 +3,9 @@
 
 #include "noxstring.h"
 
-typedef struct nox_format_args nox_format_args;
+typedef struct nox_format_args {
+	va_list list;
+} nox_format_args;
 typedef const char nox_format_byte;
 typedef const wchar2_t nox_format_word;
 

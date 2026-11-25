@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct nox_format_args {
-	va_list list;
-};
-
 int nox_format_arg_int(nox_format_args* args) {
 	return va_arg(args->list, int);
 }

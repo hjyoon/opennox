@@ -509,7 +509,7 @@ func Sub_4BFAD0() int {
 	return int(C.sub_4BFAD0())
 }
 func Nox_xxx_wndCreateInventoryMB_465E00() unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_wndCreateInventoryMB_465E00())
+	return unsafe.Pointer(nox_xxx_wndCreateInventoryMB_465E00())
 }
 func Nox_game_initOptionsInGame_4ADAD0() int {
 	return int(C.nox_game_initOptionsInGame_4ADAD0())

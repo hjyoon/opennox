@@ -24,13 +24,11 @@ import (
 var clientInventoryViewport, _ = alloc.NewHigh(noxrender.Viewport{})
 var clientInventoryDragged *nox_drawable
 
-//export nox_client_inventory_viewport_native
-func nox_client_inventory_viewport_native() *C.nox_const_inventory_viewport {
-	words := memmap.PtrT[[13]uint32](0x5D4594, 1049732)
+func legacyViewportFromWords32(words *[13]uint32) noxrender.Viewport {
 	point := func(i int) image.Point {
 		return image.Pt(int(int32(words[i])), int(int32(words[i+1])))
 	}
-	*clientInventoryViewport = noxrender.Viewport{
+	return noxrender.Viewport{
 		Screen:   image.Rectangle{Min: point(0), Max: point(2)},
 		World:    image.Rectangle{Min: point(4), Max: point(6)},
 		Size:     point(8),
@@ -38,6 +36,12 @@ func nox_client_inventory_viewport_native() *C.nox_const_inventory_viewport {
 		Field11:  uint(words[11]),
 		Jiggle12: int(int32(words[12])),
 	}
+}
+
+//export nox_client_inventory_viewport_native
+func nox_client_inventory_viewport_native() *C.nox_const_inventory_viewport {
+	words := memmap.PtrT[[13]uint32](0x5D4594, 1049732)
+	*clientInventoryViewport = legacyViewportFromWords32(words)
 	return (*C.nox_const_inventory_viewport)(clientInventoryViewport.C())
 }
 

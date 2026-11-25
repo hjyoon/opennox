@@ -411,7 +411,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	unsigned int v356;      // [esp+18h] [ebp-1738h]
 	int v357;               // [esp+18h] [ebp-1738h]
 	int* v358;              // [esp+18h] [ebp-1738h]
-	char v359;              // [esp+1Fh] [ebp-1731h]
 	int v360;               // [esp+20h] [ebp-1730h]
 	int i;                  // [esp+24h] [ebp-172Ch]
 	int v362;               // [esp+28h] [ebp-1728h]
@@ -2030,12 +2029,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	case 169: // MSG_INFORM
 		return nox_client_handlePacketInformSized_4C9BF0(data, sz);
 	case 171: // MSG_IMPORTANT_ACK
-		if (nox_client_isConnected_43C700()) {
-			nox_net_importantACK_4E55A0(a1, *(uint32_t*)(data + 1));
-		}
-		return 5;
 	case 0xAEu: // MSG_OUTGOING_CLIENT
-		return 3;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xAFu: // MSG_GAME_SETTINGS
 		dword_5d4594_1200768 = 0;
 		v34 = *(uint32_t*)(data + 1);
@@ -2410,11 +2405,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return -1;
 	case 0xC5u: // MSG_KICK_NOTIFICATION
-		sub_43B6E0();
-		return 1;
 	case 0xC6u: // MSG_TIMEOUT_NOTIFICATION
-		sub_43B750();
-		return 1;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xC9u: // MSG_SERVER_QUIT_ACK
 		switch (*(unsigned char*)(data + 1)) {
 		case 1u:
@@ -2499,25 +2491,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return -1;
 	case 0xCAu: // MSG_CHAT_KILL
-		if (nox_client_isConnected_43C700()) {
-			if (*(short*)(data + 1) == -8531) {
-				sub_48E940();
-			} else {
-				sub_48E8E0(*(unsigned short*)(data + 1));
-			}
-		}
-		return 3;
 	case 0xCBu: // MSG_MESSAGES_KILL
-		if (nox_client_isConnected_43C700()) {
-			sub_445450();
-		}
-		return 1;
 	case 0xCCu: // MSG_SEQ_IMPORTANT
-		if (nox_client_isConnected_43C700()) {
-			sub_48D5A0(data);
-		}
-		k = *(unsigned char*)(data + 3);
-		return k + 4;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xCDu: // MSG_REPORT_ABILITY_AWARD
 	case 0xCEu: // MSG_REPORT_ABILITY_STATE
 	case 0xCFu: // MSG_REPORT_ACTIVE_ABILITIES
@@ -2548,21 +2524,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 7;
 	case 0xD3u: // MSG_TIMER_STATUS
-		if (!nox_client_isConnected_43C700()) {
-			return 13;
-		}
-		if ((unsigned int)(gameFrame() - *(uint32_t*)(data + 9)) >= 0x1E) {
-			v359 = -44;
-			nox_xxx_netClientSend2_4E53C0(31, &v359, 1, 0, 1);
-			return 13;
-		}
-		if (*(uint32_t*)(data + 1)) {
-			sub_40A1F0(1);
-			v5 = sub_40A310(*(uint32_t*)(data + 5));
-		} else {
-			sub_40A1F0(0);
-		}
-		return 13;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xD5u: // MSG_JOURNAL_MSG
 		v296 = (nox_playerInfo*)dword_8531A0_2576;
 		switch (*(uint8_t*)(data + 1)) {
@@ -2592,13 +2554,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	case 0xD6u: // MSG_CHAPTER_END
 		return nox_client_decodeProgressPacket(op, data, sz);
 	case 0xD7u: // MSG_REPORT_ALL_LATENCY
-	{
-		nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1));
-		if (player) {
-			*(uint16_t*)&player->field_2148 = *(uint16_t*)(data + 3);
-		}
-		return 5;
-	}
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xD8u: // MSG_REPORT_FLAG_STATUS
 		if (nox_client_isConnected_43C700()) {
 			sub_455D80(*(uint8_t*)(data + 2), *(uint8_t*)(data + 1));
@@ -2723,20 +2679,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		return 4;
 	}
 	case 0xE5u: // MSG_MUSIC_EVENT
-		if (nox_client_isConnected_43C700()) {
-			sub_43D9B0(*(unsigned char*)(data + 1), *(unsigned char*)(data + 2));
-		}
-		return 3;
 	case 0xE6u: // MSG_MUSIC_PUSH_EVENT
-		if (nox_client_isConnected_43C700()) {
-			sub_43DA80();
-		}
-		return 3;
 	case 0xE7u: // MSG_MUSIC_POP_EVENT
-		if (nox_client_isConnected_43C700()) {
-			sub_43DAD0();
-		}
-		return 3;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xE8u: // MSG_PLAYER_DIED
 		if (nox_client_isConnected_43C700()) {
 			LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1));
@@ -2806,14 +2751,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	case 0xEDu: // MSG_REPORT_CREATURE_CMD
 		return nox_client_decodeProgressPacket(op, data, sz);
 	case 0xEEu: // MSG_VOTE
-		if (*(uint8_t*)(data + 1) == 6) {
-			sub_48D4B0(*(unsigned char*)(data + 2));
-			return 3;
-		} else if (*(uint8_t*)(data + 1) == 7) {
-			sub_48D4A0();
-			return 2;
-		}
-		return -1;
+		return nox_client_decodeControlPacket(a1, op, data, sz);
 	case 0xF0u: // MSG_GAUNTLET
 		switch (*(unsigned char*)(data + 1)) {
 		case 0u:

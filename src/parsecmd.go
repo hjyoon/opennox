@@ -37,8 +37,8 @@ func init() {
 
 var (
 	noxCmdList = &console.Command{Token: "list", HelpID: "listhelp", Flags: console.ClientServer, Sub: []*console.Command{
-		{Token: "maps", HelpID: "listmapshelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_list_maps)},
-		{Token: "users", HelpID: "listusershelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_list_users)},
+		{Token: "maps", HelpID: "listmapshelp", Flags: console.ClientServer, Func: consoleListMaps},
+		{Token: "users", HelpID: "listusershelp", Flags: console.ClientServer, Func: consoleListUsers},
 	}}
 	noxCmdSet = &console.Command{Token: "set", HelpID: "sethelp", Flags: console.ClientServer, Sub: []*console.Command{
 		{Token: "cycle", HelpID: "setcyclehelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_cycle)},
@@ -50,8 +50,8 @@ var (
 			return true
 		}},
 		{Token: "lessons", HelpID: "setlessonshelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_lessons)},
-		{Token: "monsters", HelpID: "setmnstrshelp", Flags: console.Server | console.Cheat, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_mnstrs)},
-		{Token: "name", HelpID: "setnamehelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_name)},
+		{Token: "monsters", HelpID: "setmnstrshelp", Flags: console.Server | console.Cheat, Func: consoleSetMonsters},
+		{Token: "name", HelpID: "setnamehelp", Flags: console.Server, Func: consoleSetName},
 		{Token: "netdebug", HelpID: "setnetdebughelp", Flags: console.ClientServer | console.Cheat, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_net_debug)},
 		{Token: "ob", HelpID: "setobshelp", Flags: console.ClientServer | console.Cheat, Func: func(ctx context.Context, c *console.Console, tokens []string) bool {
 			cur := console.CurCommand(ctx)
@@ -78,14 +78,14 @@ var (
 			c.Print(console.ColorRed, s)
 			return true
 		}},
-		{Token: "spell", HelpID: "setspellhelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_spell)},
+		{Token: "spell", HelpID: "setspellhelp", Flags: console.Server, Func: consoleSetSpell},
 		{Token: "spellpoints", HelpID: "setspellptshelp", Flags: console.Server | console.Cheat, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_spellpts)},
 		{Token: "staffs", HelpID: "setstaffshelp", Flags: console.Server | console.Cheat, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_staffs)},
-		{Token: "sysop", HelpID: "setsysophelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_sysop)},
+		{Token: "sysop", HelpID: "setsysophelp", Flags: console.Server, Func: consoleSetSysop},
 		{Token: "time", HelpID: "settimehelp", Flags: console.Server, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_time)},
 		{Token: "weapons", HelpID: "setweaponshelp", Flags: console.Server | console.Cheat, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_set_weapons)},
 		{Token: "team", HelpID: "officialonly", Flags: console.Server | console.Cheat | console.FlagDedicated, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_offonly1)},
-		{Token: "mode", HelpID: "officialonly", Flags: console.Server | console.Cheat | console.FlagDedicated, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_offonly2)},
+		{Token: "mode", HelpID: "officialonly", Flags: console.Server | console.Cheat | console.FlagDedicated, Func: consoleDedicatedOnly(consoleSetMode)},
 	}}
 	noxCmdUnSet = &console.Command{Token: "unset", HelpID: "unsethelp", Flags: console.ClientServer, Sub: []*console.Command{
 		{Token: "frameratelimiter", HelpID: "unsetfrhelp", Flags: console.Server, Func: func(ctx context.Context, c *console.Console, tokens []string) bool {
@@ -172,12 +172,12 @@ var (
 			{Token: "vidopt", HelpID: "menuvidopthelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_menu_vidopt)},
 			{Token: "options", HelpID: "menuoptionshelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_menu_options)},
 		}},
-		{Token: "mute", HelpID: "mutehelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_mute)},
+		{Token: "mute", HelpID: "mutehelp", Flags: console.ClientServer, Func: consoleMute},
 		{Token: "quit", HelpID: "quithelp", Flags: console.ClientServer, Func: func(ctx context.Context, c *console.Console, tokens []string) bool {
 			nox_client_quit_4460C0()
 			return true
 		}},
-		{Token: "unmute", HelpID: "unmutehelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_unmute)},
+		{Token: "unmute", HelpID: "unmutehelp", Flags: console.ClientServer, Func: consoleUnmute},
 		{Token: "window", HelpID: "windowhelp", Flags: console.ClientServer, LegacyFunc: legacy.WrapCommandC(legacy.Nox_cmd_window)},
 	}
 )

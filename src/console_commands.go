@@ -39,14 +39,9 @@ func consoleCommandAt(c *console.Console, path string) *console.Command {
 	return found
 }
 
-// Replace only the unsafe/absent leaves. Their original help and permission
-// flags remain on the registered command objects.
+// Restore commands registered by the console and apply the dedicated-only gates.
 func restoreConsoleCommands(c *console.Console) {
 	for path, fn := range map[string]console.CommandFunc{
-		"set name": consoleSetName, "set monsters": consoleSetMonsters, "set sysop": consoleSetSysop,
-		"set spell": consoleSetSpell, "set mode": consoleDedicatedOnly(consoleSetMode),
-		"mute": consoleMute, "unmute": consoleUnmute,
-		"list users": consoleListUsers, "list maps": consoleListMaps,
 		"list spells": consoleListSpells, "bind": consoleBind,
 		"log file": consoleLogFile, "log stop": consoleLogStop,
 	} {

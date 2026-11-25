@@ -7,24 +7,16 @@ package legacy
 extern unsigned int nox_client_consoleIsServer_823684;
 extern int nox_cheat_charmall;
 
-int nox_cmd_set_sysop(int, int, wchar2_t**);
 int nox_cmd_set_cycle(int, int, wchar2_t**);
 int nox_cmd_set_weapons(int, int, wchar2_t**);
 int nox_cmd_set_staffs(int, int, wchar2_t**);
-int nox_cmd_set_name(int, int, wchar2_t**);
-int nox_cmd_set_mnstrs(int, int, wchar2_t**);
-int nox_cmd_set_spell(int, int, wchar2_t**);
 int nox_cmd_ban(int, int, wchar2_t**);
 int nox_cmd_allow_user(int, int, wchar2_t**);
 int nox_cmd_allow_ip(int, int, wchar2_t**);
 int nox_cmd_kick(int, int, wchar2_t**);
 int nox_cmd_set_players(int, int, wchar2_t**);
 int nox_cmd_set_spellpts(int, int, wchar2_t**);
-int nox_cmd_list_users(int, int, wchar2_t**);
-int nox_cmd_unmute(int, int, wchar2_t**);
-int nox_cmd_mute(int, int, wchar2_t**);
 int nox_cmd_offonly1(int, int, wchar2_t**);
-int nox_cmd_offonly2(int, int, wchar2_t**);
 int nox_cmd_set_net_debug(int, int, wchar2_t**);
 int nox_cmd_unset_net_debug(int, int, wchar2_t**);
 int nox_cmd_show_info(int, int, wchar2_t**);
@@ -32,7 +24,6 @@ int nox_cmd_show_mem(int, int, wchar2_t**);
 int nox_cmd_show_rank(int, int, wchar2_t**);
 int nox_cmd_show_motd(int, int, wchar2_t**);
 int nox_cmd_show_seq(int, int, wchar2_t**);
-int nox_cmd_list_maps(int, int, wchar2_t**);
 int nox_cmd_cheat_ability(int, int, wchar2_t**);
 int nox_cmd_cheat_level(int, int, wchar2_t**);
 int nox_cmd_cheat_gold(int, int, wchar2_t**);
@@ -79,9 +70,6 @@ func WrapCommandC(cfnc func(C.int, C.int, **wchar2_t) C.int) console.CommandLega
 	}
 }
 
-func Nox_cmd_set_sysop(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_sysop(i, n, arr)
-}
 func Nox_cmd_set_cycle(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_set_cycle(i, n, arr)
 }
@@ -90,15 +78,6 @@ func Nox_cmd_set_weapons(i C.int, n C.int, arr **wchar2_t) C.int {
 }
 func Nox_cmd_set_staffs(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_set_staffs(i, n, arr)
-}
-func Nox_cmd_set_name(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_name(i, n, arr)
-}
-func Nox_cmd_set_mnstrs(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_mnstrs(i, n, arr)
-}
-func Nox_cmd_set_spell(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_set_spell(i, n, arr)
 }
 func Nox_cmd_ban(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_ban(i, n, arr)
@@ -118,20 +97,8 @@ func Nox_cmd_set_players(i C.int, n C.int, arr **wchar2_t) C.int {
 func Nox_cmd_set_spellpts(i C.int, n C.int, arr **wchar2_t) C.int {
 	return C.nox_cmd_set_spellpts(i, n, arr)
 }
-func Nox_cmd_list_users(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_list_users(i, n, arr)
-}
-func Nox_cmd_unmute(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_unmute(i, n, arr)
-}
-func Nox_cmd_mute(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_mute(i, n, arr)
-}
 func Nox_cmd_offonly1(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_offonly1(i, n, arr)
-}
-func Nox_cmd_offonly2(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_offonly2(i, n, arr)
 }
 func Nox_cmd_set_net_debug(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_set_net_debug(i, n, arr)
@@ -153,9 +120,6 @@ func Nox_cmd_show_motd(i C.int, n C.int, arr **wchar2_t) C.int {
 }
 func Nox_cmd_show_seq(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_show_seq(i, n, arr)
-}
-func Nox_cmd_list_maps(i C.int, n C.int, arr **wchar2_t) C.int {
-	return C.nox_cmd_list_maps(i, n, arr)
 }
 func Nox_cmd_cheat_ability(i C.int, n C.int, arr **wchar2_t) C.int {
 	return nox_cmd_cheat_ability(i, n, arr)

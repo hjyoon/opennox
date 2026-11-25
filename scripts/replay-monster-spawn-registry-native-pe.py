@@ -63,7 +63,7 @@ intent = dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), sour
               raw_link_routes=2, native_owner_placements=[0, 512, 4096],
               expected_terminal_events=2409, expected_getter_reads_from_passing_paths_per_repetition=13860,
               source_files={str(path.relative_to(repo)): digest(path) for path in [
-                  fixture, repo / "src/legacy/monster_spawn_registry_native_fixture.go",
+                  fixture, repo / "src/legacy/internal/cfixture/monster_spawn_registry_native_fixture.go",
                   repo / "src/legacy/monster_spawn_registry_native_test.go",
                   repo / "src/legacy/monster_spawn_registry_native_entry.go",
                   repo / "src/legacy/monster_spawn_registry_50d780.h"]},

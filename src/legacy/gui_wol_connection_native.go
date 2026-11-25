@@ -134,7 +134,7 @@ func sub_43A810() {
 	nox_window_set_hidden(C.dword_5d4594_814984, 0)
 	nox_window_set_hidden(C.dword_5d4594_814988, 1)
 	region := C.int(Get_dword_587000_87412())
-	nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_814984, C.nox_wol_map_icon(region))
+	nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_814984, nox_wol_map_icon(region))
 	id, line := "JoinServer", int32(382)
 	if Get_nox_game_createOrJoin_815048() == 1 {
 		id, line = "CreateMsg", 377

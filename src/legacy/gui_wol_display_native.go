@@ -37,8 +37,8 @@ func sub_437320(record *C.nox_gui_server_ent_t) C.int {
 		tier++
 	}
 	small := C.int(bool2int(Get_dword_587000_87412() == -1))
-	row.draw_data.bg_image = unsafe.Pointer(C.nox_wol_server_icon(small, C.int(tier), 0))
-	row.draw_data.hl_image = unsafe.Pointer(C.nox_wol_server_icon(small, C.int(tier), 1))
+	row.draw_data.bg_image = unsafe.Pointer(nox_wol_server_icon(small, C.int(tier), 0))
+	row.draw_data.hl_image = unsafe.Pointer(nox_wol_server_icon(small, C.int(tier), 1))
 	row.draw_data.dis_image = row.draw_data.bg_image
 	return 1
 }

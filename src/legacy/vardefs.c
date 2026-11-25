@@ -688,4 +688,6 @@ int ptr_5D4594_754092_cnt = 0;
 nox_screenParticle* nox_screenParticles_head = 0;
 nox_screenParticle* dword_5d4594_806052 = 0;
 nox_gui_server_ent_t* dword_5d4594_814624 = 0;
+int dword_5d4594_815104 = 0;
+nox_gui_animation* nox_wnd_xxx_815040 = 0;
 void* dword_5d4594_805984 = 0;

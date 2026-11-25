@@ -105,13 +105,13 @@ func init() {
 		if NoxGameShowGameSelNative != nil {
 			return NoxGameShowGameSelNative() != 0
 		}
-		return C.nox_game_showGameSel_4379F0() != 0
+		return nox_game_showGameSel_4379F0() != 0
 	})
 	gui.RegisterState(client.StateXxx, "StateXxx", func() bool {
 		if NoxGameShowGameSelNative != nil {
 			return NoxGameShowGameSelNative() != 0
 		}
-		return C.nox_game_showGameSel_4379F0() != 0
+		return nox_game_showGameSel_4379F0() != 0
 	})
 }
 

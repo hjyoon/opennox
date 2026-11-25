@@ -26,10 +26,8 @@ func indexedDirectionClassify509E20(value, threshold int32) int32 {
 // indexedDirectionVector509E20 is the threshold-six classification of the
 // exact 256 signed int32 vector pairs at GAME.EXE 005B5E58. The source table
 // SHA-256 is 69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079.
-func indexedDirectionVector509E20(direction int32) IndexedDirectionVector509E20 {
+func indexedDirectionVector509E20(direction byte) IndexedDirectionVector509E20 {
 	switch {
-	case direction < 0 || direction > 255:
-		panic("direction outside sealed GAME.EXE vector table")
 	case direction <= 17:
 		return IndexedDirectionVector509E20{X: 1, Y: 0}
 	case direction <= 46:
@@ -51,12 +49,11 @@ func indexedDirectionVector509E20(direction int32) IndexedDirectionVector509E20 
 	}
 }
 
-// IndexedDirection509E20 preserves GAME.EXE 00509E20's fixed-width table
-// lookup, threshold comparisons, output-store order, and residual return
-// value. Valid callers pass a direction in [0,255]. Reading adjacent PE data
-// for a malformed direction is intentionally not recreated.
+// IndexedDirection509E20 quantizes the original indexed direction table.
+// Use the direction's low byte, as Dir16.Vec does, for facing values loaded
+// from a wider field.
 func IndexedDirection509E20(direction int32, out *IndexedDirectionVector509E20) int32 {
-	vector := indexedDirectionVector509E20(direction)
+	vector := indexedDirectionVector509E20(byte(direction))
 	out.X = vector.X
 	out.Y = vector.Y
 	if vector.Y > 0 {

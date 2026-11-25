@@ -3,9 +3,6 @@ package legacy
 /*
 #include "defs.h"
 #include "GAME1_1.h"
-#include "GAME3_2.h"
-#include "GAME3_3.h"
-#include "GAME4_1.h"
 */
 import "C"
 
@@ -33,7 +30,7 @@ func PlayerSendFloatToIntNative419A70(value float32) int32 {
 }
 
 func PlayerSendDirectionNative509E20(index int32) server.IndexedDirectionVector509E20 {
-	var value C.int2
-	C.nox_xxx_xferIndexedDirection_509E20(C.int(index), &value)
-	return server.IndexedDirectionVector509E20{X: int32(value.field_0), Y: int32(value.field_4)}
+	var value server.IndexedDirectionVector509E20
+	server.IndexedDirection509E20(index, &value)
+	return value
 }

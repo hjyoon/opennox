@@ -61,6 +61,21 @@ func TestIndexedDirection509E20CanonicalDirections(t *testing.T) {
 	}
 }
 
+func TestIndexedDirection509E20UsesByteAngle(t *testing.T) {
+	var want [256]IndexedDirectionVector509E20
+	var results [256]int32
+	for angle := range want {
+		results[angle] = IndexedDirection509E20(int32(angle), &want[angle])
+	}
+	for direction := int32(math.MinInt16); direction <= math.MaxInt16; direction++ {
+		angle := byte(direction)
+		var got IndexedDirectionVector509E20
+		if result := IndexedDirection509E20(direction, &got); got != want[angle] || result != results[angle] {
+			t.Fatalf("direction %d = %+v/%d, want %+v/%d", direction, got, result, want[angle], results[angle])
+		}
+	}
+}
+
 func TestDirectionAngle509E00And509E90MatchSealedTable(t *testing.T) {
 	want := [3][3]uint32{
 		{160, 192, 224},
@@ -82,13 +97,11 @@ func TestDirectionAngle509E00And509E90MatchSealedTable(t *testing.T) {
 	}
 }
 
-func TestDirectionMath509ExRejectsUnsealedAdjacentData(t *testing.T) {
+func TestDirectionIndexToAngle509E90RejectsOutOfBoundsIndices(t *testing.T) {
 	for _, test := range []struct {
 		name string
 		call func()
 	}{
-		{name: "indexed negative", call: func() { IndexedDirection509E20(-1, new(IndexedDirectionVector509E20)) }},
-		{name: "indexed high", call: func() { IndexedDirection509E20(256, new(IndexedDirectionVector509E20)) }},
 		{name: "angle negative", call: func() { DirectionIndexToAngle509E90(-1) }},
 		{name: "angle high", call: func() { DirectionIndexToAngle509E90(9) }},
 	} {

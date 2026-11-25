@@ -55,13 +55,17 @@ func TestPlayerSendOrdinaryBindings518C30(t *testing.T) {
 		state            server.PlayerState
 		field131         uint32
 		self             bool
+		direction        server.Dir16
+		wireDirection    byte
 		animation, frame byte
 	}{
-		{"idle", 0, 0, false, 4, 0xff},
-		{"walk", 2, 0, false, 21, 0xa5},
-		{"emote", 25, 0, false, 20, 0xa5},
-		{"original override", 3, 16, false, 51, 0xff},
-		{"self gold report", 0, 0, true, 4, 0xff},
+		{"idle", 0, 0, false, 0, 0x40, 4, 0xff},
+		{"walk", 2, 0, false, 0, 0x40, 21, 0xa5},
+		{"emote", 25, 0, false, 0, 0x40, 20, 0xa5},
+		{"original override", 3, 16, false, 0, 0x40, 51, 0xff},
+		{"self gold report", 0, 0, true, 0, 0x40, 4, 0xff},
+		{"direction overflow", 0, 0, true, 0x0109, 0x40, 4, 0xff},
+		{"direction underflow", 0, 0, false, 0xffe0, 0x20, 4, 0xff},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -73,7 +77,7 @@ func TestPlayerSendOrdinaryBindings518C30(t *testing.T) {
 							base.NetList.ResetAll()
 							base.SetFrame(0x12340064)
 							*recipient = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(ru)}
-							*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(uu), TypeInd: 73, NetCode: 0x2345, PosVec: types.Ptf(256.75, -123.75), Field131: tc.field131, Direction1: 0}
+							*unit = server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(uu), TypeInd: 73, NetCode: 0x2345, PosVec: types.Ptf(256.75, -123.75), Field131: tc.field131, Direction1: tc.direction}
 							*ru = server.PlayerUpdateData{Player: rp}
 							*uu = server.PlayerUpdateData{Player: up, State: tc.state, Field59_0: 0xa5}
 							*rp = server.Player{PlayerInd: 3, PlayerUnit: recipient}
@@ -109,7 +113,7 @@ func TestPlayerSendOrdinaryBindings518C30(t *testing.T) {
 									got = 1
 								}
 							}
-							want := []byte{0xc3, 0x45, 0x23, 73, 0, 0, 1, 0x85, 0xff, 0x40, tc.frame, tc.animation}
+							want := []byte{0xc3, 0x45, 0x23, 73, 0, 0, 1, 0x85, 0xff, tc.wireDirection, tc.frame, tc.animation}
 							a, b := base.NetList.CopyPacketsA(3, netlist.Kind1), base.NetList.CopyPacketsB(3)
 							var wantA, wantB []byte
 							if stream != 0 {

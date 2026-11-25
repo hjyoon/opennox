@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -73,54 +73,54 @@ import "C"
 
 import "unsafe"
 
-func game2BookTestConfig(cursor, result int32) {
+func Game2BookConfig(cursor, result int32) {
 	C.game2_book_test_config(C.int(cursor), C.int(result))
 }
-func game2BookTestSend(old, ability bool, p unsafe.Pointer, count int32, flag byte) int32 {
-	return int32(C.game2_book_test_send(C.int(game2BookBool(old)), C.int(game2BookBool(ability)), p, C.int(count), C.char(flag)))
+func Game2BookSend(old, ability bool, p unsafe.Pointer, count int32, flag byte) int32 {
+	return int32(C.game2_book_test_send(C.int(boolInt(old)), C.int(boolInt(ability)), p, C.int(count), C.char(flag)))
 }
-func game2BookBool(v bool) int32 {
+func boolInt(v bool) int32 {
 	if v {
 		return 1
 	}
 	return 0
 }
-func game2BookTestCapture() ([]byte, int) {
+func Game2BookCapture() ([]byte, int) {
 	p := make([]byte, 22)
 	n := int(C.game2_book_test_capture(unsafe.Pointer(&p[0])))
 	return p[:n], int(C.game2_book_test_calls())
 }
-func game2BookTestRow(old bool, p unsafe.Pointer, slot, kind int) unsafe.Pointer {
-	return C.game2_book_test_row(C.int(game2BookBool(old)), p, C.int(slot), C.int(kind))
+func Game2BookRow(old bool, p unsafe.Pointer, slot, kind int) unsafe.Pointer {
+	return C.game2_book_test_row(C.int(boolInt(old)), p, C.int(slot), C.int(kind))
 }
-func game2BookTestAnim(old bool, p, fn unsafe.Pointer, op int) unsafe.Pointer {
-	return C.game2_book_test_anim(C.int(game2BookBool(old)), p, fn, C.int(op))
+func Game2BookAnim(old bool, p, fn unsafe.Pointer, op int) unsafe.Pointer {
+	return C.game2_book_test_anim(C.int(boolInt(old)), p, fn, C.int(op))
 }
-func game2BookTestLayout(f int) uintptr { return uintptr(C.game2_book_test_layout(C.int(f))) }
-func game2BookTestCallback(creature bool) unsafe.Pointer {
-	return C.game2_book_test_callback(C.int(game2BookBool(creature)))
+func Game2BookLayout(f int) uintptr { return uintptr(C.game2_book_test_layout(C.int(f))) }
+func Game2BookCallback(creature bool) unsafe.Pointer {
+	return C.game2_book_test_callback(C.int(boolInt(creature)))
 }
-func game2BookTestLocalFlags(old bool, flags uint32) int32 {
-	return int32(C.game2_book_test_localflags(C.int(game2BookBool(old)), C.uint32_t(flags)))
+func Game2BookLocalFlags(old bool, flags uint32) int32 {
+	return int32(C.game2_book_test_localflags(C.int(boolInt(old)), C.uint32_t(flags)))
 }
-func game2BookTestMove(old bool, a, b unsafe.Pointer) int32 {
-	return int32(C.game2_book_test_move(C.int(game2BookBool(old)), a, b))
+func Game2BookMove(old bool, a, b unsafe.Pointer) int32 {
+	return int32(C.game2_book_test_move(C.int(boolInt(old)), a, b))
 }
-func game2BookTestClick(old, creature bool) int32 {
-	return int32(C.game2_book_test_click(C.int(game2BookBool(old)), C.int(game2BookBool(creature))))
+func Game2BookClick(old, creature bool) int32 {
+	return int32(C.game2_book_test_click(C.int(boolInt(old)), C.int(boolInt(creature))))
 }
-func game2BookTestMode(field int, value uint32, set bool) uint32 {
-	return uint32(C.game2_book_test_mode(C.int(field), C.uint32_t(value), C.int(game2BookBool(set))))
+func Game2BookMode(field int, value uint32, set bool) uint32 {
+	return uint32(C.game2_book_test_mode(C.int(field), C.uint32_t(value), C.int(boolInt(set))))
 }
-func game2BookTestReset(old bool) int32 {
-	return int32(C.game2_book_test_reset(C.int(game2BookBool(old))))
+func Game2BookReset(old bool) int32 {
+	return int32(C.game2_book_test_reset(C.int(boolInt(old))))
 }
-func game2BookTestTarget(old, direct bool, id int32) int32 {
-	return int32(C.game2_book_test_target(C.int(game2BookBool(old)), C.int(game2BookBool(direct)), C.int(id)))
+func Game2BookTarget(old, direct bool, id int32) int32 {
+	return int32(C.game2_book_test_target(C.int(boolInt(old)), C.int(boolInt(direct)), C.int(id)))
 }
-func game2BookTestBusy(v uint32, set bool) uint32 {
-	return uint32(C.game2_book_test_busy(C.uint32_t(v), C.int(game2BookBool(set))))
+func Game2BookBusy(v uint32, set bool) uint32 {
+	return uint32(C.game2_book_test_busy(C.uint32_t(v), C.int(boolInt(set))))
 }
-func game2BookTestBlockedCallback(old bool, which int, win unsafe.Pointer, event, pos uint32) int32 {
-	return int32(C.game2_book_test_blocked_callback(C.int(game2BookBool(old)), C.int(which), win, C.uint(event), C.uint(pos)))
+func Game2BookBlockedCallback(old bool, which int, win unsafe.Pointer, event, pos uint32) int32 {
+	return int32(C.game2_book_test_blocked_callback(C.int(boolInt(old)), C.int(which), win, C.uint(event), C.uint(pos)))
 }

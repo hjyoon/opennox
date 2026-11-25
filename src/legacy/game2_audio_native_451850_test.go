@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/legacy/timer"
 	"math"
 	"runtime"
@@ -20,7 +22,7 @@ func game2AudioTestSetup(t *testing.T) *game2AudioDefinition {
 	oldTicks, oldTimer := PlatformTicks, timer.PlatformTicks
 	PlatformTicks = func() uint64 { return 0x100000005 }
 	timer.PlatformTicks = PlatformTicks
-	oldFlag := game2AudioFixtureEnabled(-1)
+	oldFlag := cfixture.Game2AudioEnabled(-1)
 	b := &game2AudioBank{Driver: 1, Names: map[string]int16{"sample0": 0, "sample1": 1}, Generations: make(map[*game2AudioVoice]uint64)}
 	b.Token = game2AudioAlloc(1)
 	if b.Token == nil {
@@ -36,15 +38,15 @@ func game2AudioTestSetup(t *testing.T) *game2AudioDefinition {
 		game2AudioSamples[s.Token] = s
 	}
 	ctx := Game2AudioOpenContext(1)
-	if ctx == nil || game2AudioFixtureInit(ctx, b.Token) != 1 {
+	if ctx == nil || cfixture.Game2AudioInit(ctx, b.Token) != 1 {
 		t.Fatal("public initializer with distinct typed device context")
 	}
-	game2AudioFixtureEnabled(1)
+	cfixture.Game2AudioEnabled(1)
 	t.Cleanup(func() {
-		game2AudioFixtureShutdown()
+		cfixture.Game2AudioShutdown()
 		Game2AudioCloseBank(b.Token)
 		Game2AudioCloseContext(ctx)
-		game2AudioFixtureEnabled(oldFlag)
+		cfixture.Game2AudioEnabled(oldFlag)
 		PlatformTicks = oldTicks
 		timer.PlatformTicks = oldTimer
 	})
@@ -83,8 +85,8 @@ func TestGame2AudioNativeScalarCReferences451850(t *testing.T) {
 	for _, v := range []int32{math.MinInt32, -100, -51, -50, -49, -1, 0, 1, 49, 50, 51, 100, math.MaxInt32} {
 		t.Run(fmt.Sprint(v), func(t *testing.T) {
 			goValue := game2AudioPan452FA0(v)
-			oldC := game2AudioFixturePan(true, v)
-			publicC := game2AudioFixturePan(false, v)
+			oldC := cfixture.Game2AudioPan(true, v)
+			publicC := cfixture.Game2AudioPan(false, v)
 			if goValue != oldC || publicC != oldC {
 				t.Fatalf("signed C division: Go %d C %d old %d", goValue, publicC, oldC)
 			}
@@ -95,7 +97,7 @@ func TestGame2AudioNativeScalarCReferences451850(t *testing.T) {
 func TestGame2AudioNativeLayoutsAndLifetime451850(t *testing.T) {
 	d := game2AudioTestSetup(t)
 	d.set(0, 1)
-	c := game2AudioFixtureLayout()
+	c := cfixture.Game2AudioLayout()
 	e := game2AudioEvent{}
 	v := game2AudioVoice{}
 	h := game2AudioHandle{}
@@ -106,16 +108,16 @@ func TestGame2AudioNativeLayoutsAndLifetime451850(t *testing.T) {
 			t.Fatalf("C/Go native layout %d=%d want%d", i, c[i], want[i])
 		}
 	}
-	a, b := game2AudioFixtureAllocate(d.Pointer), game2AudioAllocate452300(d.Pointer)
+	a, b := (*game2AudioEvent)(cfixture.Game2AudioAllocate(d.Pointer)), game2AudioAllocate452300(d.Pointer)
 	if a == nil || b == nil || a.Next != b || b.Prev != a {
 		t.Fatal("actual full-pointer C-owned linked list")
 	}
-	if unsafe.Sizeof(uintptr(0)) == 8 && (game2AudioFixturePointer(unsafe.Pointer(a)) <= math.MaxUint32 || game2AudioFixturePointer(d.Pointer) <= math.MaxUint32) {
+	if unsafe.Sizeof(uintptr(0)) == 8 && (cfixture.Game2AudioPointer(unsafe.Pointer(a)) <= math.MaxUint32 || cfixture.Game2AudioPointer(d.Pointer) <= math.MaxUint32) {
 		t.Fatal("native pointer witness did not exceed 32bits")
 	}
 	hp := (*game2AudioHandle)(game2AudioAlloc(unsafe.Sizeof(h)))
 	defer game2AudioFree(unsafe.Pointer(hp))
-	if game2AudioFixtureSetHandle(hp, a) != d.Pointer || game2AudioFixtureGetHandle(hp) != a {
+	if cfixture.Game2AudioSetHandle(unsafe.Pointer(hp), unsafe.Pointer(a)) != d.Pointer || (*game2AudioEvent)(cfixture.Game2AudioGetHandle(unsafe.Pointer(hp))) != a {
 		t.Fatal("typed public handle ABI")
 	}
 	for i := 0; i < 4; i++ {
@@ -125,17 +127,17 @@ func TestGame2AudioNativeLayoutsAndLifetime451850(t *testing.T) {
 		t.Fatal("full native pointers after GC")
 	}
 	a.Flags = 0x12345600
-	if game2AudioFixtureStop(a) != 0x12345601 || a.State != 4 || a.Serial != 0 {
+	if cfixture.Game2AudioStop(unsafe.Pointer(a)) != 0x12345601 || a.State != 4 || a.Serial != 0 {
 		t.Fatal("stop preserves high flag bytes and invalidates serial")
 	}
-	if game2AudioFixtureGetHandle(hp) != nil || hp.Event != nil {
+	if (*game2AudioEvent)(cfixture.Game2AudioGetHandle(unsafe.Pointer(hp))) != nil || hp.Event != nil {
 		t.Fatal("stale handle")
 	}
-	if game2AudioFixtureRelease(a) != unsafe.Pointer(a) || b.Prev != nil || game2Audio.First != b {
+	if cfixture.Game2AudioRelease(unsafe.Pointer(a)) != unsafe.Pointer(a) || b.Prev != nil || game2Audio.First != b {
 		t.Fatal("cached successor and opaque native freed slot")
 	}
 	// No dereference of returned freed slot; a reused slot has fresh serial.
-	reused := game2AudioFixtureAllocate(d.Pointer)
+	reused := (*game2AudioEvent)(cfixture.Game2AudioAllocate(d.Pointer))
 	if reused != a || reused.Serial == hp.Serial {
 		t.Fatal("pool reuse generation")
 	}
@@ -149,11 +151,11 @@ func TestGame2AudioNativeLayoutsAndLifetime451850(t *testing.T) {
 		defer pin.Unpin()
 		defer delete(game2Audio.Live, &pinned)
 		defer func() { *hp = game2AudioHandle{} }()
-		game2AudioFixtureSetHandle(hp, &pinned)
+		cfixture.Game2AudioSetHandle(unsafe.Pointer(hp), unsafe.Pointer(&pinned))
 		for i := 0; i < 4; i++ {
 			runtime.GC()
 		}
-		if game2AudioFixtureGetHandle(hp) != &pinned {
+		if (*game2AudioEvent)(cfixture.Game2AudioGetHandle(unsafe.Pointer(hp))) != &pinned {
 			t.Fatal("individually pinned Go owner public C handle")
 		}
 	}()
@@ -177,7 +179,7 @@ func TestGame2AudioNativeSchedulingAndSelection451850(t *testing.T) {
 	if game2AudioStart451CA0(e) == nil || game2AudioNext451CF0(e) == nil || game2AudioNext451CF0(e) == nil || e.Loops != 1 {
 		t.Fatal("loop counter at list exhaustion")
 	}
-	if game2AudioFixtureDelay(e, 0x100000007, 3) != 0x20000000c || e.Due != 0x20000000c || e.State != 2 || e.SavedState != 3 {
+	if cfixture.Game2AudioDelay(unsafe.Pointer(e), 0x100000007, 3) != 0x20000000c || e.Due != 0x20000000c || e.State != 2 || e.SavedState != 3 {
 		t.Fatal("full64 clock and delay")
 	}
 	PlatformTicks = func() uint64 { return e.Due }
@@ -308,13 +310,13 @@ func TestGame2AudioNativeParserCReferences452890(t *testing.T) {
 				unsafe.Slice((*byte)(d.Pointer), 200)[i] = 0xa7
 			}
 			game2AudioReset451920(d.Pointer)
-			game2AudioFixtureReferenceReset(name)
-			a := game2AudioFixtureParse(tc.kind, true, fOld, scratchOld)
-			b := game2AudioFixtureParse(tc.kind, false, fNew, scratchNew)
+			cfixture.Game2AudioReferenceReset(name)
+			a := cfixture.Game2AudioParse(tc.kind, true, fOld, scratchOld)
+			b := cfixture.Game2AudioParse(tc.kind, false, fNew, scratchNew)
 			if a != b || len(fOld.Data()) != len(fNew.Data()) {
 				t.Fatalf("return/cursor old%d new%d remaining%d/%d", a, b, len(fOld.Data()), len(fNew.Data()))
 			}
-			if !bytes.Equal(game2AudioFixtureReferenceWords(), unsafe.Slice((*byte)(d.Pointer), 200)) {
+			if !bytes.Equal(cfixture.Game2AudioReferenceWords(), unsafe.Slice((*byte)(d.Pointer), 200)) {
 				t.Fatal("all200 scalar bytes versus original named C parser")
 			}
 			if tc.kind < 2 && !bytes.Equal(unsafe.Slice((*byte)(scratchOld), 288), unsafe.Slice((*byte)(scratchNew), 288)) {
@@ -332,7 +334,7 @@ func TestGame2AudioNativeMalformedPolicy452890(t *testing.T) {
 		t.Run(fmt.Sprintf("short-%d", n), func(t *testing.T) {
 			d.set(0, 0)
 			f := game2AudioTestFile(t, data[:n])
-			if game2AudioFixtureParse(0, false, f, nil) != 0 || d.word(0) != 0 || len(f.Data()) != 0 {
+			if cfixture.Game2AudioParse(0, false, f, nil) != 0 || d.word(0) != 0 || len(f.Data()) != 0 {
 				t.Fatal("short read rejected after consuming only available bytes")
 			}
 		})
@@ -345,7 +347,7 @@ func TestGame2AudioNativeMalformedPolicy452890(t *testing.T) {
 	aud = append(aud, 0)
 	f := game2AudioTestFile(t, aud)
 	canary := append([]byte(nil), unsafe.Slice((*byte)(unsafe.Add(d.Pointer, 200)), 200)...)
-	if game2AudioFixtureParse(1, false, f, nil) != 1 || d.word(48) != 32 || len(f.Data()) != 0 {
+	if cfixture.Game2AudioParse(1, false, f, nil) != 1 || d.word(48) != 32 || len(f.Data()) != 0 {
 		t.Fatal("bounded32 sample slots and complete cursor")
 	}
 	if !bytes.Equal(canary, unsafe.Slice((*byte)(unsafe.Add(d.Pointer, 200)), 200)) {
@@ -357,7 +359,7 @@ func TestGame2AudioNativeContextAndConditionalMirrors451850(t *testing.T) {
 	d := game2AudioTestSetup(t)
 	ctx := game2Audio.Context
 	bank := game2Audio.Bank
-	if ctx == nil || ctx.EventMaster != game2Audio.Master || ctx.Driver != 1 || game2AudioFixturePointer(unsafe.Pointer(ctx)) == ctx.Driver {
+	if ctx == nil || ctx.EventMaster != game2Audio.Master || ctx.Driver != 1 || cfixture.Game2AudioPointer(unsafe.Pointer(ctx)) == ctx.Driver {
 		t.Fatal("full context address is distinct from numeric AIL handle")
 	}
 	name := sound.ID(1).String()
@@ -384,7 +386,7 @@ func TestGame2AudioNativeContextAndConditionalMirrors451850(t *testing.T) {
 	}
 	unregistered := game2AudioAlloc(16)
 	defer game2AudioFree(unregistered)
-	if game2AudioFixtureInit(unregistered, bank.Token) != 0 || game2Audio.Initialized {
+	if cfixture.Game2AudioInit(unregistered, bank.Token) != 0 || game2Audio.Initialized {
 		t.Fatal("unregistered old context not reinterpreted as driver handle")
 	}
 }
@@ -414,8 +416,8 @@ func TestGame2AudioNativeFiveStageMix4BD840(t *testing.T) {
 	}
 	defer game2AudioFree(fxp)
 	fx := (*timer.TimerGroup)(fxp)
-	oldFX := game2AudioFixtureFXOwner(fxp, true)
-	defer game2AudioFixtureFXOwner(oldFX, true)
+	oldFX := cfixture.Game2AudioFXOwner(fxp, true)
+	defer cfixture.Game2AudioFXOwner(oldFX, true)
 	cases := []struct {
 		name         string
 		values       [5][3]uint32
@@ -441,14 +443,14 @@ func TestGame2AudioNativeFiveStageMix4BD840(t *testing.T) {
 			v.Master = fx
 			fxRef := &groups[2]
 			if !tc.fx {
-				game2AudioFixtureFXOwner(nil, true)
+				cfixture.Game2AudioFXOwner(nil, true)
 				v.Master = game2AudioFXMaster()
 				fxRef = nil
 				if v.Master != nil {
 					t.Fatal("nil actual FX must not alias adaptive master")
 				}
 			} else {
-				game2AudioFixtureFXOwner(fxp, true)
+				cfixture.Game2AudioFXOwner(fxp, true)
 			}
 			game2Audio.Context.EventMaster = game2Audio.Master
 			adaptiveRef := &groups[4]
@@ -460,14 +462,14 @@ func TestGame2AudioNativeFiveStageMix4BD840(t *testing.T) {
 			// candidate composition (Init preserves some unchanged timer flags).
 			v.Mixed = timer.TimerGroup{}
 			var expected timer.TimerGroup
-			game2AudioFixtureMix(&expected, &groups[0], &groups[1], fxRef, &groups[3], adaptiveRef)
+			cfixture.Game2AudioMix(&expected, &groups[0], &groups[1], fxRef, &groups[3], adaptiveRef)
 			game2AudioUpdateMixSources(v)
 			game2AudioMixVoice4BD840(v)
 			if v.Mixed != expected || v.Group != groups[0] || e.Group != groups[1] {
 				t.Fatal("exact Voice/Owner/FX/Base/Adaptive composition, order, or updated-bit clearing")
 			}
 			for _, rate := range []uint32{0, 44100, 0x80000001, 0xffffffff} {
-				want := game2AudioFixtureMixedParameters(&expected, rate)
+				want := cfixture.Game2AudioMixedParameters(&expected, rate)
 				gain, pan, pitch := game2AudioMixedSampleParameters(v, rate)
 				if [3]int32{int32(gain), int32(pan), int32(pitch)} != want {
 					t.Fatal("actual43F060 composed gain/pan and wrapping signed pitch consumers")
@@ -539,6 +541,43 @@ func TestGame2AudioNativeAudibleGainStealing487810(t *testing.T) {
 		}
 		if got := game2AudioAcquire452810(7, 0); got != want {
 			t.Fatal("exact cached mixed-gain0x666 cutoff")
+		}
+	}
+}
+
+func game2AudioHighFixtureMemory() func() {
+	oldAllocate, oldRelease, oldDefinition := game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService
+	owners := make(map[unsafe.Pointer]func())
+	definitions, freeDefinitions := alloc.CallocHigh(1023, 200)
+	// Preserve the actual pre-initialization scalar bytes and original stride.
+	// Only the fixture's foreign address changes; the product owner is untouched.
+	copy(unsafe.Slice((*byte)(definitions), 1023*200), unsafe.Slice((*byte)(memmap.PtrOff(0x5d4594, 840628)), 1023*200))
+	game2AudioAllocationService = func(size uintptr) unsafe.Pointer {
+		p, release := alloc.MallocHigh(size)
+		owners[p] = release
+		return p
+	}
+	game2AudioReleaseService = func(p unsafe.Pointer) {
+		if release, ok := owners[p]; ok {
+			delete(owners, p)
+			release()
+		} else if oldRelease != nil {
+			oldRelease(p)
+		} else {
+			cfixture.Game2AudioFree(p)
+		}
+	}
+	game2AudioDefinitionService = func(i int) unsafe.Pointer {
+		if i < 0 || i >= 1023 {
+			panic("audio fixture definition index")
+		}
+		return unsafe.Add(definitions, uintptr(i)*200)
+	}
+	return func() {
+		game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService = oldAllocate, oldRelease, oldDefinition
+		freeDefinitions()
+		if len(owners) != 0 {
+			panic(fmt.Sprintf("GAME2 audio high fixture retained %d foreign allocations", len(owners)))
 		}
 	}
 }

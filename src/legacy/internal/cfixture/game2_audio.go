@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -41,80 +41,46 @@ static int ga_fixture_enabled(int set){if(set<0)return sub_453070();if(set)nox_x
 */
 import "C"
 import (
-	"fmt"
-	"github.com/opennox/opennox/v1/common/memmap"
+	"runtime"
+	"unsafe"
+
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/timer"
-	"runtime"
-	"unsafe"
 )
 
-func game2AudioHighFixtureMemory() func() {
-	oldAllocate, oldRelease, oldDefinition := game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService
-	owners := make(map[unsafe.Pointer]func())
-	definitions, freeDefinitions := alloc.CallocHigh(1023, 200)
-	// Preserve the actual pre-initialization scalar bytes and original stride.
-	// Only the fixture's foreign address changes; the product owner is untouched.
-	copy(unsafe.Slice((*byte)(definitions), 1023*200), unsafe.Slice((*byte)(memmap.PtrOff(0x5d4594, 840628)), 1023*200))
-	game2AudioAllocationService = func(size uintptr) unsafe.Pointer {
-		p, release := alloc.MallocHigh(size)
-		owners[p] = release
-		return p
-	}
-	game2AudioReleaseService = func(p unsafe.Pointer) {
-		if release, ok := owners[p]; ok {
-			delete(owners, p)
-			release()
-		} else if oldRelease != nil {
-			oldRelease(p)
-		} else {
-			C.free(p)
-		}
-	}
-	game2AudioDefinitionService = func(i int) unsafe.Pointer {
-		if i < 0 || i >= 1023 {
-			panic("audio fixture definition index")
-		}
-		return unsafe.Add(definitions, uintptr(i)*200)
-	}
-	return func() {
-		game2AudioAllocationService, game2AudioReleaseService, game2AudioDefinitionService = oldAllocate, oldRelease, oldDefinition
-		freeDefinitions()
-		if len(owners) != 0 {
-			panic(fmt.Sprintf("GAME2 audio high fixture retained %d foreign allocations", len(owners)))
-		}
-	}
-}
-
-func game2AudioFixtureLayout() []uintptr {
+func Game2AudioLayout() []uintptr {
 	v := make([]uintptr, 21)
 	for i := range v {
 		v[i] = uintptr(C.ga_fixture_layout(C.int(i)))
 	}
 	return v
 }
-func game2AudioFixtureMix(out, voice, owner, fx, base, adaptive *timer.TimerGroup) {
+func Game2AudioMix(out, voice, owner, fx, base, adaptive *timer.TimerGroup) {
 	C.ga_fixture_mix((*C.game2_audio_group)(unsafe.Pointer(out)), (*C.game2_audio_group)(unsafe.Pointer(voice)), (*C.game2_audio_group)(unsafe.Pointer(owner)), (*C.game2_audio_group)(unsafe.Pointer(fx)), (*C.game2_audio_group)(unsafe.Pointer(base)), (*C.game2_audio_group)(unsafe.Pointer(adaptive)))
 }
-func game2AudioFixtureMixedParameters(group *timer.TimerGroup, rate uint32) [3]int32 {
+func Game2AudioMixedParameters(group *timer.TimerGroup, rate uint32) [3]int32 {
 	var out [3]int32
 	C.ga_fixture_mixed_parameters((*C.game2_audio_group)(unsafe.Pointer(group)), C.uint32_t(rate), (*C.int32_t)(unsafe.Pointer(&out[0])))
 	return out
 }
-func game2AudioFixtureFXOwner(p unsafe.Pointer, set bool) unsafe.Pointer {
+func Game2AudioFXOwner(p unsafe.Pointer, set bool) unsafe.Pointer {
 	s := C.int(0)
 	if set {
 		s = 1
 	}
 	return C.ga_fixture_fx_owner(p, s)
 }
-func game2AudioFixturePointer(p unsafe.Pointer) uintptr { return uintptr(C.ga_fixture_pointer(p)) }
-func game2AudioFixtureReferenceReset(name string)       { C.ga_fixture_reference_reset(internCStr(name)) }
-func game2AudioFixtureReferenceWords() []byte {
+func Game2AudioPointer(p unsafe.Pointer) uintptr { return uintptr(C.ga_fixture_pointer(p)) }
+func Game2AudioReferenceReset(name string) {
+	ptr, free := alloc.CString(name)
+	defer free()
+	C.ga_fixture_reference_reset((*C.char)(unsafe.Pointer(ptr)))
+}
+func Game2AudioReferenceWords() []byte {
 	return append([]byte(nil), unsafe.Slice((*byte)(C.ga_fixture_reference_words()), 200)...)
 }
-func game2AudioFixtureParse(kind int, reference bool, f *binfile.MemFile, scratch unsafe.Pointer) int32 {
+func Game2AudioParse(kind int, reference bool, f *binfile.MemFile, scratch unsafe.Pointer) int32 {
 	r := C.int(0)
 	if reference {
 		r = 1
@@ -123,33 +89,35 @@ func game2AudioFixtureParse(kind int, reference bool, f *binfile.MemFile, scratc
 	runtime.KeepAlive(f)
 	return ret
 }
-func game2AudioFixturePan(reference bool, v int32) int32 {
+func Game2AudioPan(reference bool, v int32) int32 {
 	r := C.int(0)
 	if reference {
 		r = 1
 	}
 	return int32(C.ga_fixture_pan(r, C.int(v)))
 }
-func game2AudioFixtureAllocate(p unsafe.Pointer) *game2AudioEvent {
-	return (*game2AudioEvent)(C.ga_fixture_allocate(p))
+func Game2AudioAllocate(p unsafe.Pointer) unsafe.Pointer {
+	return C.ga_fixture_allocate(p)
 }
-func game2AudioFixtureSetHandle(h *game2AudioHandle, e *game2AudioEvent) unsafe.Pointer {
-	return C.ga_fixture_set_handle(unsafe.Pointer(h), unsafe.Pointer(e))
+func Game2AudioSetHandle(h unsafe.Pointer, e unsafe.Pointer) unsafe.Pointer {
+	return C.ga_fixture_set_handle(h, e)
 }
-func game2AudioFixtureGetHandle(h *game2AudioHandle) *game2AudioEvent {
-	return (*game2AudioEvent)(C.ga_fixture_get_handle(unsafe.Pointer(h)))
+func Game2AudioGetHandle(h unsafe.Pointer) unsafe.Pointer {
+	return C.ga_fixture_get_handle(h)
 }
-func game2AudioFixtureDelay(e *game2AudioEvent, delta int64, next int32) int64 {
-	return int64(C.ga_fixture_delay(unsafe.Pointer(e), C.int64_t(delta), C.int(next)))
+func Game2AudioDelay(e unsafe.Pointer, delta int64, next int32) int64 {
+	return int64(C.ga_fixture_delay(e, C.int64_t(delta), C.int(next)))
 }
-func game2AudioFixtureInit(context, bank unsafe.Pointer) int32 {
+func Game2AudioInit(context, bank unsafe.Pointer) int32 {
 	return int32(C.ga_fixture_init(context, bank))
 }
-func game2AudioFixtureShutdown() { C.ga_fixture_shutdown() }
-func game2AudioFixtureStop(e *game2AudioEvent) int32 {
-	return int32(C.ga_fixture_stop(unsafe.Pointer(e)))
+func Game2AudioShutdown() { C.ga_fixture_shutdown() }
+func Game2AudioStop(e unsafe.Pointer) int32 {
+	return int32(C.ga_fixture_stop(e))
 }
-func game2AudioFixtureRelease(e *game2AudioEvent) unsafe.Pointer {
-	return C.ga_fixture_release(unsafe.Pointer(e))
+func Game2AudioRelease(e unsafe.Pointer) unsafe.Pointer {
+	return C.ga_fixture_release(e)
 }
-func game2AudioFixtureEnabled(v int32) int32 { return int32(C.ga_fixture_enabled(C.int(v))) }
+func Game2AudioEnabled(v int32) int32 { return int32(C.ga_fixture_enabled(C.int(v))) }
+
+func Game2AudioFree(p unsafe.Pointer) { C.free(p) }

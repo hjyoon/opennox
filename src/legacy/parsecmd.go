@@ -4,7 +4,6 @@ package legacy
 #include <stddef.h>
 #include "nox_wchar.h"
 
-extern unsigned int nox_client_consoleIsServer_823684;
 extern int nox_cheat_charmall;
 
 int nox_cmd_set_cycle(int, int, wchar2_t**);
@@ -58,8 +57,7 @@ func CheatCharmAll(v bool) {
 }
 
 func WrapCommandC(cfnc func(C.int, C.int, **wchar2_t) C.int) console.CommandLegacyFunc {
-	return func(ctx context.Context, c *console.Console, tokInd int, tokens []string) bool {
-		C.nox_client_consoleIsServer_823684 = C.uint(bool2int(!console.IsClient(ctx)))
+	return func(_ context.Context, _ *console.Console, tokInd int, tokens []string) bool {
 		ctokens, free := CWStrSlice(tokens)
 		defer free()
 		var ptr **wchar2_t

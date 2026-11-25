@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../object_inventory_4e7980.c"
+#include "retired-game-sources/object_inventory_4e7980.c.txt"
 
 static nox_object_t* (*const first_signature)(nox_object_t*) = nox_xxx_inventoryGetFirst_4E7980;
 static nox_object_t* (*const next_signature)(nox_object_t*) = nox_xxx_inventoryGetNext_4E7990;

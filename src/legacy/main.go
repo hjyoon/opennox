@@ -68,7 +68,7 @@ func Nox_xxx_tileAlloc_410F60_init() int {
 }
 
 func Nox_xxx_initSinCosTables_414C90() {
-	C.nox_xxx_initSinCosTables_414C90()
+	trigInitNative414C90()
 }
 
 func Nox_xxx_loadMapCycle_4D0A30() {

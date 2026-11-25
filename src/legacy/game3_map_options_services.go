@@ -456,7 +456,7 @@ func sub_4AEE30() C.longlong {
 	scale := math.Float64frombits(uint64(C.qword_581450_9552))
 	for i := 0; i < 320; i++ {
 		angle := float64(i+192) * (*memmap.PtrFloat64(0x581450, 9768)) * (*memmap.PtrFloat64(0x581450, 9760))
-		out = int64(float64(C.sin(C.double(angle))) * scale)
+		out = int64(math.Sin(angle) * scale)
 		*memmap.PtrUint32(0x5D4594, uintptr(1309840+4*i)) = uint32(out)
 	}
 	return C.longlong(out)

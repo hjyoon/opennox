@@ -21,7 +21,7 @@ import (
 // remain unchanged, including all 2160 reward and 512 settings inputs.
 func clientQuestNoticesProgramR306(t *testing.T) string {
 	t.Helper()
-	source, err := os.ReadFile("client__network__cdecode.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/client__network__cdecode.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -14,7 +14,7 @@ import (
 // callbacks are controlled, while formatting uses the real UTF-16 code.
 func clientQuestNoticesNative48EA70(t *testing.T, mode string) {
 	t.Helper()
-	source, err := os.ReadFile("client__network__cdecode.c")
+	source, err := os.ReadFile("testdata/retired-game-sources/client__network__cdecode.c.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -2,7 +2,7 @@
 #define NOX_PORT_CLIENT_GUI_GUICON
 
 #include "client__gui__window.h"
-#include "nox_wchar.h"
+#include "noxstring_format_abi.h"
 
 enum {
 	NOX_CONSOLE_BLACK = 1,
@@ -28,13 +28,14 @@ int nox_gui_console_flagXxx_451410();
 
 int nox_gui_console_Print_450B90(unsigned char cl, wchar2_t* str);
 void nox_gui_console_PrintOrError_450C30(unsigned char cl, wchar2_t* str);
+int nox_gui_console_vprintf_450C00(unsigned char cl, nox_format_word* format, nox_format_args* args);
 
 static int nox_gui_console_Printf_450C00(unsigned char cl, wchar2_t* fmt, ...) {
-	static wchar2_t nox_gui_console_printBuf[512] = {0};
-	va_list va;
-	va_start(va, fmt);
-	nox_vswprintf(nox_gui_console_printBuf, fmt, va);
-	return nox_gui_console_Print_450B90(cl, nox_gui_console_printBuf);
+	nox_format_args args;
+	va_start(args.list, fmt);
+	int result = nox_gui_console_vprintf_450C00(cl, fmt, &args);
+	va_end(args.list);
+	return result;
 }
 
 #endif // NOX_PORT_CLIENT_GUI_GUICON

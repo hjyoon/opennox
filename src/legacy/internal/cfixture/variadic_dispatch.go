@@ -3,6 +3,7 @@ package cfixture
 /*
 #include "GAME3_2.h"
 #include "GAME4_3.h"
+#include "client__gui__guicon.h"
 #include "common__log.h"
 #include "common/fs/nox_fs.h"
 #include "noxstring.h"
@@ -19,6 +20,11 @@ static intptr_t line_message_fixture(nox_object_t* unit, wchar2_t* format, int p
 static int broadcast_message_fixture(char tag, wchar2_t* format, int points) {
 	const wchar2_t suffix[] = {0x17a, 0};
 	return nox_xxx_printToAll_4D9FD0(tag, format, "xp", points, suffix);
+}
+
+static int console_printf_fixture(unsigned char color, wchar2_t* format, int points) {
+	const wchar2_t suffix[] = {0x17a, 0};
+	return nox_gui_console_Printf_450C00(color, format, "xp", points, suffix);
 }
 
 static void ai_debug_printf_fixture(char* format, int frame) {
@@ -106,6 +112,10 @@ func LineMessage4D9EB0(unit unsafe.Pointer, format *uint16, points int) uintptr 
 
 func BroadcastMessage4D9FD0(tag byte, format *uint16, points int) int {
 	return int(C.broadcast_message_fixture(C.char(tag), (*C.wchar2_t)(unsafe.Pointer(format)), C.int(points)))
+}
+
+func ConsolePrintf450C00(color byte, format *uint16, points int) int {
+	return int(C.console_printf_fixture(C.uchar(color), (*C.wchar2_t)(unsafe.Pointer(format)), C.int(points)))
 }
 
 func AIDebugPrintf5341A0(format *byte, frame int) {

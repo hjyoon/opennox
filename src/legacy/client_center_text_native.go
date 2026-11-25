@@ -10,19 +10,6 @@ extern uint32_t dword_5d4594_825736;
 static void nox_center_console_text(wchar2_t* format, wchar2_t* text) {
 	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, text);
 }
-static void nox_center_format(wchar2_t* out, size_t count, const wchar2_t* format, ...) {
-	va_list args;
-	va_start(args, format);
-	nox_vsnwprintf(out, count, format, args);
-	va_end(args);
-	out[count - 1] = 0;
-}
-static void nox_center_format_number(wchar2_t* out, size_t count, const wchar2_t* format, int value) {
-	nox_center_format(out, count, format, value);
-}
-static void nox_center_format_name(wchar2_t* out, size_t count, const wchar2_t* format, const wchar2_t* name) {
-	nox_center_format(out, count, format, name);
-}
 */
 import "C"
 
@@ -57,13 +44,13 @@ func nox_xxx_printCentered_445490(text *C.wchar2_t) {
 
 func centerMessageWithNumber(format *wchar2_t, value C.int) {
 	var text [centerMessageWords]wchar2_t
-	C.nox_center_format_number(&text[0], C.size_t(len(text)), format, value)
+	formatWideNumber(text[:], format, value)
 	nox_xxx_printCentered_445490(&text[0])
 }
 
 func centerMessageWithName(format, name *wchar2_t) {
 	var text [centerMessageWords]wchar2_t
-	C.nox_center_format_name(&text[0], C.size_t(len(text)), format, name)
+	formatWideStrings(text[:], format, name, nil)
 	nox_xxx_printCentered_445490(&text[0])
 }
 

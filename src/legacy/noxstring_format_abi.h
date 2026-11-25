@@ -11,6 +11,11 @@ typedef const wchar2_t nox_format_word;
 
 int nox_format_narrow_go(char* out, size_t capacity, nox_format_byte* format, nox_format_args* args);
 int nox_format_wide_go(wchar2_t* out, size_t capacity, nox_format_word* format, nox_format_args* args);
+void nox_format_bounded_wide_go(wchar2_t* out, size_t capacity, nox_format_word* format, nox_format_args* args);
+
+void nox_format_wide_number_abi(wchar2_t* out, size_t capacity, const wchar2_t* format, int value);
+void nox_format_wide_strings_abi(wchar2_t* out, size_t capacity, const wchar2_t* format,
+                               const wchar2_t* first, const wchar2_t* second);
 
 int nox_format_arg_int(nox_format_args* args);
 unsigned int nox_format_arg_uint(nox_format_args* args);

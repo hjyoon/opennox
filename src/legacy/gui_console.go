@@ -24,6 +24,13 @@ func nox_gui_console_Print_450B90(cl C.uchar, cstr *wchar2_t) int32 {
 	return int32(1)
 }
 
+//export nox_gui_console_vprintf_450C00
+func nox_gui_console_vprintf_450C00(cl C.uchar, format *C.nox_format_word, args *C.nox_format_args) C.int {
+	var text [512]wchar2_t
+	nox_format_bounded_wide_go(&text[0], C.size_t(len(text)), format, args)
+	return C.int(nox_gui_console_Print_450B90(cl, &text[0]))
+}
+
 //export nox_gui_console_PrintOrError_450C30
 func nox_gui_console_PrintOrError_450C30(cl C.uchar, cstr *wchar2_t) {
 	GetConsole().PrintOrError(console.Color(cl), GoWString(cstr))

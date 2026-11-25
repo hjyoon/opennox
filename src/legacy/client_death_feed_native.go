@@ -100,6 +100,20 @@ func nox_death_feed_draw_495500(entry *C.int) C.int {
 	return C.int(drawDeathFeedEntry((*deathFeedEntry)(unsafe.Pointer(entry))))
 }
 
+//export nox_death_feed_draw_result_495500
+func nox_death_feed_draw_result_495500(entry *C.int) C.uintptr_t {
+	record := (*deathFeedEntry)(unsafe.Pointer(entry))
+	result := int32(drawDeathFeedEntry(record))
+	return C.uintptr_t(deathFeedEntryResult(record, result))
+}
+
+func deathFeedEntryResult(entry *deathFeedEntry, result int32) uintptr {
+	if entry.victim != 0 {
+		return uintptr(result)
+	}
+	return uintptr(unsafe.Pointer(entry))
+}
+
 func drawDeathFeedEntry(entry *deathFeedEntry) int {
 	r := GetClient().R2()
 	face := r.GetFonts().FontByName("large")

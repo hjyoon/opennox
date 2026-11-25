@@ -6,7 +6,30 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+func TestDeathFeedEntryResultPreservesPointerAndSignedCoordinate(t *testing.T) {
+	entry, release := alloc.NewHigh(deathFeedEntry{})
+	t.Cleanup(release)
+	address := uintptr(unsafe.Pointer(entry))
+	if unsafe.Sizeof(address) == 8 && address <= uintptr(^uint32(0)) {
+		t.Fatalf("entry pointer %p does not exercise the native width", entry)
+	}
+	if got := deathFeedEntryResult(entry, -17); got != address {
+		t.Fatalf("no victim returned %#x, want entry pointer %#x", got, address)
+	}
+
+	entry.victim = 1
+	if got := deathFeedEntryResult(entry, 19); got != 19 {
+		t.Fatalf("positive draw coordinate = %#x, want 19", got)
+	}
+	if got, want := deathFeedEntryResult(entry, -17), ^uintptr(0)-16; got != want {
+		t.Fatalf("signed draw coordinate = %#x, want %#x", got, want)
+	}
+}
 
 // The retired death-feed consumer is compiled with actual native
 // headers and UTF-16 formatting. Lookup/font/Thing/image/draw services are

@@ -197,7 +197,7 @@ func sub_4567C0(unusedWindow *C.nox_window, event C.int, window *C.nox_window, u
 }
 
 func serverRosterTeamTitle(line, name *C.wchar2_t, team *C.nox_team_t, settings *C.char, redLine int) {
-	C.nox_wcscpy(line, name)
+	copyWideString(line, name)
 	if !g2ServerGame(96) && (settings == nil || *(*byte)(g2ServerAt(settings, 52))&0x60 == 0) {
 		return
 	}
@@ -209,7 +209,7 @@ func serverRosterTeamTitle(line, name *C.wchar2_t, team *C.nox_team_t, settings 
 		key = "BlueFlag"
 		redLine += 4
 	}
-	C.nox_wcscat(line, g2ServerLoad(key, serverPlayersStringsFile, redLine))
+	appendWideString(line, g2ServerLoad(key, serverPlayersStringsFile, redLine))
 }
 
 //export sub_457010
@@ -222,7 +222,7 @@ func sub_457010(team *C.nox_team_t, name *C.wchar2_t) C.int {
 	for pointer := g2ServerFirst(head); pointer != nil; pointer = g2ServerNext(pointer) {
 		entry := (*C.nox_gui_server_team_entry)(pointer)
 		if entry.team_id == C.uint32_t(team.field_57) {
-			C.nox_wcscpy(&entry.name[0], name)
+			copyWideString(&entry.name[0], name)
 			break
 		}
 	}
@@ -267,7 +267,7 @@ func sub_457230(name *C.wchar2_t) C.uintptr_t {
 	entry.color = C.uint8_t(sub_457120(team))
 	sub_425770(unsafe.Pointer(&entry.list))
 	nox_common_list_append_4258E0(&C.nox_gui_server_players.teams, &entry.list)
-	C.nox_wcscpy(&entry.name[0], name)
+	copyWideString(&entry.name[0], name)
 
 	var line [56]C.wchar2_t
 	serverRosterTeamTitle(&line[0], name, team, sub_4165B0(), 893)

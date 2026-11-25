@@ -150,9 +150,9 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	var title, details, text [256]C.wchar2_t
 
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
-	C.nox_wcscpy(&title[0], briefingText("GUIBrief.c:GauntletStatTitle", 449))
-	C.nox_wcscpy(&details[0], briefingText("Noxworld.c:Stage", 451))
-	C.nox_wcscat(&details[0], internWStr(" "))
+	copyWideString(&title[0], briefingText("GUIBrief.c:GauntletStatTitle", 449))
+	copyWideString(&details[0], briefingText("Noxworld.c:Stage", 451))
+	appendWideString(&details[0], internWStr(" "))
 	nox_itow(C.int(memmap.Int32(0x5D4594, 831228)), &details[C.nox_wcslen(&details[0])], 10)
 	C.nox_briefing_pair(&text[0], &title[0], &details[0])
 	tw, lineHeight := briefingMeasure(font, &text[0])
@@ -194,14 +194,14 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 		C.nox_briefing_literal(&title[0], briefingText("GeneralPrint:SecretsNoneFound", 596))
 	}
 	if players <= 1 {
-		C.nox_wcscpy(&text[0], &title[0])
+		copyWideString(&text[0], &title[0])
 	} else {
 		if friendsSecrets != 0 {
 			if format := briefingText("GeneralPrint:SecretsFoundByFriends", 606); format != nil {
 				C.nox_briefing_number(&details[0], format, C.int(friendsSecrets))
 			}
 		} else {
-			C.nox_wcscpy(&details[0], briefingText("GeneralPrint:SecretsNoneFoundByFriends", 612))
+			copyWideString(&details[0], briefingText("GeneralPrint:SecretsNoneFoundByFriends", 612))
 		}
 		C.nox_briefing_pair(&text[0], &title[0], &details[0])
 	}
@@ -217,8 +217,8 @@ func sub_44F0F0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	font := draw.font
 	var format, stage [256]C.wchar2_t
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
-	C.nox_wcscpy(&format[0], briefingText("Noxworld.c:Stage", 668))
-	C.nox_wcscat(&format[0], internWStr(" %d"))
+	copyWideString(&format[0], briefingText("Noxworld.c:Stage", 668))
+	appendWideString(&format[0], internWStr(" %d"))
 	C.nox_briefing_number(&stage[0], &format[0], nox_gui_getQuestStage_450B10())
 	tw, th := briefingMeasure(font, &stage[0])
 	nox_xxx_drawString_43F6E0(font, &stage[0], width/2-tw/2, height/2+3*(th-80))

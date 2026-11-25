@@ -125,11 +125,11 @@ func colorSelectionName(destination *C.wchar2_t, emptyLine, invalidLine int) {
 	if name == nil {
 		name = g2ServerLoad("DefaultName", colorSelectionStringsFile, emptyLine)
 	} else if *name == 0 {
-		C.nox_wcscpy(name, g2ServerLoad("DefaultName", colorSelectionStringsFile, emptyLine))
+		copyWideString(name, g2ServerLoad("DefaultName", colorSelectionStringsFile, emptyLine))
 	}
-	C.nox_wcscpy(destination, name)
+	copyWideString(destination, name)
 	if sub_4A6B50(destination) == 0 {
-		C.nox_wcscpy(destination, g2ServerLoad("DefaultName", colorSelectionStringsFile, invalidLine))
+		copyWideString(destination, g2ServerLoad("DefaultName", colorSelectionStringsFile, invalidLine))
 	}
 }
 

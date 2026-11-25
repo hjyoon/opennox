@@ -18,6 +18,15 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+// Keep caller-owned UTF-16 buffers within Go when the caller is native Go.
+func copyWideString(dst, src *wchar2_t) *wchar2_t {
+	return nox_wcscpy(dst, (*C.nox_const_string_unit_t)(src))
+}
+
+func appendWideString(dst, src *wchar2_t) {
+	nox_wcscat(dst, (*C.nox_const_string_unit_t)(src))
+}
+
 func wideStringUnit(text *wchar2_t, index uintptr) *wchar2_t {
 	return (*wchar2_t)(unsafe.Add(unsafe.Pointer(text), index*2))
 }

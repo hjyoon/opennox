@@ -144,7 +144,7 @@ func sub_456D00(index C.int, out *C.wchar2_t) *C.wchar2_t {
 	if name == nil {
 		return nil
 	}
-	return C.nox_wcscpy(out, name)
+	return copyWideString(out, name)
 }
 
 //export sub_456D60

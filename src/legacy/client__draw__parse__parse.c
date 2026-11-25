@@ -3,37 +3,6 @@
 #include "GAME1_2.h"
 #include "operators.h"
 
-//----- (0044C000) --------------------------------------------------------
-nox_static_random_draw_data_t* nox_xxx_spriteLoadStaticRandomData_44C000(char* attr_value, nox_memfile* f) {
-	nox_static_random_draw_data_t* data = nox_draw_memory_calloc(1, sizeof(*data));
-	if (!data) {
-		return NULL;
-	}
-	data->size = sizeof(*data);
-	data->count = nox_memfile_read_u8(f);
-	if (data->count == 0) {
-		return data;
-	}
-	data->images = nox_draw_memory_calloc(data->count, sizeof(*data->images));
-	if (!data->images) {
-		nox_draw_memory_free(data);
-		return NULL;
-	}
-	for (int i = 0; i < data->count; i++) {
-		int image_id = nox_memfile_read_i32(f);
-		char image_type = 0;
-		attr_value[0] = getMemByte(0x5D4594, 830852);
-		if (image_id == -1) {
-			image_type = nox_memfile_read_i8(f);
-			uint8_t name_len = nox_memfile_read_u8(f);
-			nox_memfile_read(attr_value, 1, name_len, f);
-			attr_value[name_len] = 0;
-		}
-		data->images[i] = nox_xxx_readImgMB_42FAA0(image_id, image_type, attr_value);
-	}
-	return data;
-}
-
 //----- (0044B8B0) --------------------------------------------------------
 int nox_xxx_loadVectorAnimated_44B8B0(int a1, nox_memfile* f) {
 	*(uint16_t*)(a1 + 40) = nox_memfile_read_u8(f);
@@ -99,24 +68,4 @@ int nox_xxx_loadVectorAnimated_44BC50(int a1, nox_memfile* f) {
 		}
 	}
 	return 0;
-}
-
-//----- (0044B4C0) --------------------------------------------------------
-int get_animation_kind_id_44B4C0(const char* a1) {
-	if (!strcmp(a1, "OneShot")) {
-		return 0;
-	}
-	if (!strcmp(a1, "OneShotRemove")) {
-		return 1;
-	}
-	if (!strcmp(a1, "Loop")) {
-		return 2;
-	}
-	if (!strcmp(a1, "LoopAndFade")) {
-		return 3;
-	}
-	if (!strcmp(a1, "Random")) {
-		return 4;
-	}
-	return strcmp(a1, "Slave") != 0 ? 0 : 5;
 }

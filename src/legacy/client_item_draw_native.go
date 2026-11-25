@@ -28,7 +28,7 @@ func nox_thing_base_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
 //export nox_thing_armor_draw
 func nox_thing_armor_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
 	sub_4B96F0(drawable)
-	return C.nox_thing_static_draw((*C.uint32_t)(unsafe.Pointer(viewport)), drawable)
+	return nox_thing_static_draw((*C.uint32_t)(unsafe.Pointer(viewport)), drawable)
 }
 
 //export nox_thing_armor_animate_draw
@@ -57,19 +57,13 @@ func nox_thing_flag_draw(viewport *C.int, drawable *C.nox_drawable) C.int {
 
 //export nox_thing_slave_draw
 func nox_thing_slave_draw(viewport *C.uint32_t, drawable *C.nox_drawable) C.int {
-	data := (*C.nox_static_random_draw_data_t)(drawable.field_76)
-	if data != nil && data.images != nil && drawable.field_77 < C.uint32_t(data.count) {
-		image := unsafe.Slice(data.images, int(data.count))[drawable.field_77]
-		view := (*C.nox_draw_viewport_t)(unsafe.Pointer(viewport))
-		nox_xxx_drawObject_4C4770_draw(view, drawable, unsafe.Pointer(image))
-	}
-	return 1
+	return nox_thing_static_random_draw(viewport, drawable)
 }
 
 //export nox_things_slave_draw_parse
 func nox_things_slave_draw_parse(thing *C.nox_thing, file *C.nox_memfile, attrs *C.char) C.bool {
 	thing.draw_func = (*[0]byte)(C.nox_thing_slave_draw)
-	data := C.nox_xxx_spriteLoadStaticRandomData_44C000(attrs, file)
+	data := nox_xxx_spriteLoadStaticRandomData_44C000(attrs, file)
 	thing.field_5c = unsafe.Pointer(data)
 	thing.field_60 = 0
 	return C.bool(data != nil)

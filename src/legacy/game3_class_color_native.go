@@ -869,7 +869,7 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 		C.nox_xxx____setargv_4_44B000()
 		sub_4AB4D0(0)
 	} else {
-		C.sub_43B750()
+		sub_43B750()
 		sub_4AB4D0(0)
 	}
 	return 0

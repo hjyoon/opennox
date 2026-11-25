@@ -109,8 +109,8 @@ func wolServerSortsBefore(a, b *Nox_gui_server_ent_t, mode uint32) bool {
 		}
 		return cmp >= 0
 	case 4, 5:
-		first := C.nox_gui_wol_gameModeString_43BCB0(C.short(a.Flags()))
-		second := C.nox_gui_wol_gameModeString_43BCB0(C.short(b.Flags()))
+		first := nox_gui_wol_gameModeString_43BCB0(C.short(a.Flags()))
+		second := nox_gui_wol_gameModeString_43BCB0(C.short(b.Flags()))
 		cmp := C.nox_wcscmp(first, second)
 		if mode == 4 {
 			return cmp <= 0
@@ -171,7 +171,7 @@ func nox_wol_servers_sortBtnHandler_4A0290(id C.int) {
 //export sub_4A0360
 func sub_4A0360() *C.nox_list_item_t {
 	for item := nox_common_list_getFirstSafe_425890(wolServerHead()); item != nil; item = nox_common_list_getNextSafe_4258A0(item) {
-		C.nox_gui_wol_newServerLine_43B7C0(wolServerRecord(item).C())
+		nox_gui_wol_newServerLine_43B7C0(wolServerRecord(item).C())
 	}
 	return nil
 }

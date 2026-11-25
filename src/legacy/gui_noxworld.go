@@ -226,7 +226,7 @@ func Sub_43B6D0() int {
 }
 
 func Sub_438770() bool {
-	return C.sub_438770() != 0
+	return sub_438770() != 0
 }
 
 func Sub_43AF80() int {

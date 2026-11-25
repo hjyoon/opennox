@@ -26,11 +26,3 @@ func g2ServerRelease(p unsafe.Pointer) {
 		C.free(p)
 	}
 }
-
-//export game2_server_reference_alloc_go
-func game2_server_reference_alloc_go(count, size C.size_t) unsafe.Pointer {
-	return g2ServerAllocate(uintptr(count), uintptr(size))
-}
-
-//export game2_server_reference_free_go
-func game2_server_reference_free_go(p unsafe.Pointer) { g2ServerRelease(p) }

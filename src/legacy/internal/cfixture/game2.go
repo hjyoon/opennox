@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -88,10 +88,7 @@ import (
 	"unsafe"
 )
 
-func game2ServerFixtureCall(old bool, entry uint32, p unsafe.Pointer, a, b int32) uintptr {
-	previousAlloc, previousFree := game2ServerAllocationService, game2ServerReleaseService
-	game2ServerAllocationService, game2ServerReleaseService = game2ServerFixtureAllocateHigh, game2ServerFixtureFree
-	defer func() { game2ServerAllocationService, game2ServerReleaseService = previousAlloc, previousFree }()
+func Game2Call(old bool, entry uint32, p unsafe.Pointer, a, b int32) uintptr {
 	var v C.uintptr_t
 	if old {
 		v = C.game2_server_reference_call(C.uint32_t(entry), p, C.int(a), C.int(b))
@@ -101,78 +98,68 @@ func game2ServerFixtureCall(old bool, entry uint32, p unsafe.Pointer, a, b int32
 	runtime.KeepAlive(p)
 	return uintptr(v)
 }
-func game2ServerFixtureOwner(field int) unsafe.Pointer {
+func Game2Owner(field int) unsafe.Pointer {
 	return *C.game2_server_fixture_owner(C.int(field))
 }
-func game2ServerFixtureSetOwner(field int, p unsafe.Pointer) {
+func Game2SetOwner(field int, p unsafe.Pointer) {
 	*C.game2_server_fixture_owner(C.int(field)) = p
 	runtime.KeepAlive(p)
 }
-func game2ServerFixtureHead(team bool) *accessListNode416720 {
+func Game2Head(team bool) unsafe.Pointer {
 	v := C.int(0)
 	if team {
 		v = 1
 	}
-	return (*accessListNode416720)(C.game2_server_fixture_head(v))
+	return C.game2_server_fixture_head(v)
 }
-func game2ServerFixtureLayout(field int) uintptr {
+func Game2Layout(field int) uintptr {
 	return uintptr(C.game2_server_fixture_layout(C.int(field)))
 }
 
-var game2ServerFixtureHighOwners = make(map[unsafe.Pointer]struct{})
+var game2HighOwners = make(map[unsafe.Pointer]struct{})
 
-func game2ServerFixtureAllocateHigh(count, size uintptr) unsafe.Pointer {
+func Game2AllocateHigh(count, size uintptr) unsafe.Pointer {
 	p := C.nox_native_fixture_calloc_high(C.size_t(count), C.size_t(size))
 	if p != nil {
-		game2ServerFixtureHighOwners[p] = struct{}{}
+		game2HighOwners[p] = struct{}{}
 	}
 	return p
 }
 
-func game2ServerFixtureAlloc(n uintptr) unsafe.Pointer { return game2ServerFixtureAllocateHigh(1, n) }
-func game2ServerFixtureFree(p unsafe.Pointer) {
-	if _, owned := game2ServerFixtureHighOwners[p]; owned {
-		delete(game2ServerFixtureHighOwners, p)
+func Game2Alloc(n uintptr) unsafe.Pointer { return Game2AllocateHigh(1, n) }
+func Game2Free(p unsafe.Pointer) {
+	if _, owned := game2HighOwners[p]; owned {
+		delete(game2HighOwners, p)
 		C.nox_native_fixture_free_high(p)
 	} else {
 		C.free(p)
 	}
 }
-func game2ServerFixtureFirstVisible(p unsafe.Pointer) int {
+func Game2FirstVisible(p unsafe.Pointer) int {
 	v := int(C.game2_server_reference_first_visible(p))
 	runtime.KeepAlive(p)
 	return v
 }
-func game2ServerFixtureTeam(id uint32, color byte, name unsafe.Pointer) unsafe.Pointer {
+func Game2Team(id uint32, color byte, name unsafe.Pointer) unsafe.Pointer {
 	p := C.game2_server_fixture_team(C.uint32_t(id), C.uint8_t(color), (*C.wchar2_t)(name))
 	if p != nil {
-		game2ServerFixtureHighOwners[p] = struct{}{}
+		game2HighOwners[p] = struct{}{}
 	}
 	runtime.KeepAlive(name)
 	return p
 }
-func game2ServerFixtureAccessEvent(w unsafe.Pointer, event int, a, b uintptr) int {
+func Game2AccessEvent(w unsafe.Pointer, event int, a, b uintptr) int {
 	v := int(C.game2_server_fixture_access_event(w, C.int(event), C.uintptr_t(a), C.uintptr_t(b)))
 	runtime.KeepAlive(w)
 	return v
 }
 
-func game2ServerFixtureClearHead(team bool) {
-	h := game2ServerFixtureHead(team)
-	for p := accessListNativeNext416720(h); p != nil; {
-		next := accessListNativeNext416720(p)
-		accessListNativeRemove416720(p)
-		game2ServerFixtureFree(unsafe.Pointer(p))
-		p = next
-	}
-	accessListNativeClear416720(h)
-}
-func game2ServerFixtureDrawable(p unsafe.Pointer, cl, sub, flags, anim, frame, prev uint32, link unsafe.Pointer) {
+func Game2Drawable(p unsafe.Pointer, cl, sub, flags, anim, frame, prev uint32, link unsafe.Pointer) {
 	C.game2_server_fixture_drawable(p, C.uint32_t(cl), C.uint32_t(sub), C.uint32_t(flags), C.uint32_t(anim), C.uint32_t(frame), C.uint32_t(prev), link)
 	runtime.KeepAlive(link)
 	runtime.KeepAlive(p)
 }
-func game2ServerFixtureNoRender(set bool) bool {
+func Game2NoRender(set bool) bool {
 	old := bool(C.nox_common_getEngineFlag(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING))
 	if set {
 		C.nox_common_setEngineFlag(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)
@@ -181,11 +168,24 @@ func game2ServerFixtureNoRender(set bool) bool {
 	}
 	return old
 }
-func game2ServerFixtureHUD(ctf bool, count byte) int {
+func Game2HUD(ctf bool, count byte) int {
 	if ctf {
 		return int(C.sub_455A50(C.char(count)))
 	}
 	return int(C.sub_455F60())
 }
 
-func game2ServerFixtureControls() unsafe.Pointer { return unsafe.Pointer(C.sub_416630()) }
+func Game2Controls() unsafe.Pointer { return unsafe.Pointer(C.sub_416630()) }
+
+var Game2ReferenceAllocate func(uintptr, uintptr) unsafe.Pointer
+var Game2ReferenceRelease func(unsafe.Pointer)
+
+//export game2_server_reference_alloc_go
+func game2_server_reference_alloc_go(count, size C.size_t) unsafe.Pointer {
+	return Game2ReferenceAllocate(uintptr(count), uintptr(size))
+}
+
+//export game2_server_reference_free_go
+func game2_server_reference_free_go(p unsafe.Pointer) {
+	Game2ReferenceRelease(p)
+}

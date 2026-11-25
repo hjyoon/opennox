@@ -89,7 +89,7 @@ func nox_xxx_cliUseCurePoison_4674E0(thingType C.int) {
 	}
 	if cell := nox_xxx_cliInventoryFirstItemByTT_467520(thingType); cell != nil && cell.field_0 != nil {
 		cell.field_0.field_32 = cell.field_4
-		C.nox_xxx_clientUse_465C70(cell.field_0)
+		nox_xxx_clientUse_465C70(cell.field_0)
 	}
 }
 

@@ -89,6 +89,13 @@ int nox_gui_console_Print_450B90(unsigned char color, wchar2_t* message) {
 	return print_result;
 }
 
+// The standalone oracle formats through the archived C formatter.
+int nox_gui_console_vprintf_450C00(unsigned char color, nox_format_word* format, nox_format_args* args) {
+	static wchar2_t message[512];
+	nox_vswprintf(message, format, args->list);
+	return nox_gui_console_Print_450B90(color, message);
+}
+
 void* mem_getPtr(uintptr_t base, uintptr_t off) {
 	if (base == 0x587000 && off == 161668) return final_format;
 	abort();

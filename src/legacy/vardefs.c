@@ -25,6 +25,9 @@ nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
 nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
 nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] = {0};
 
+nox_window_yyy nox_windows_arr_1093036[7] = {0};
+nox_drawable nox_gui_bottle_drawables[3] = {0};
+
 nox_window* dword_5d4594_1046492 = 0;
 void* nox_xxx_aClosewoodengat_587000_133480 = 0;
 nox_window* nox_wol_wnd_world_814980 = 0;

@@ -19,7 +19,7 @@ func TestSortBookEntriesKeepsOriginalTiesAndMissingTitles(t *testing.T) {
 		{"missing titles", []int{-1, 4, 4, 2, 0, -1, 4, 3, 0, 3, -1, 1}, []uint32{5, 1, 2, 3, 4, 11, 0, 7, 8, 9, 10, 6}, 32},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			const canary = 0xff000000
+			const canary uint32 = 0xff000000
 			book := make([]uint32, len(test.keys)+1)
 			entries := book[:len(test.keys)]
 			for i := range entries {

@@ -136,6 +136,3 @@ func Get_winMainMenuAnimOutStartFnc() unsafe.Pointer {
 func Get_winMainMenuAnimOutDoneFnc() unsafe.Pointer {
 	return C.winMainMenuAnimOutDoneFnc
 }
-func Get_sub_4A22A0() unsafe.Pointer {
-	return C.sub_4A22A0
-}

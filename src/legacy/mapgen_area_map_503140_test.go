@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"syscall"
 	"testing"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestMapgenPrepareAreaMap503140FileOperationOrder(t *testing.T) {
@@ -52,7 +54,7 @@ func TestMapgenPrepareAreaMap503140ViaC(t *testing.T) {
 	if err := os.WriteFile(source, []byte("new map"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if got := mapgenPrepareAreaMapViaC503140(source, directory); got != 1 {
+	if got := cfixture.MapgenPrepareAreaMapViaC503140(source, directory); got != 1 {
 		t.Fatalf("first prepare = %d", got)
 	}
 	if data, err := os.ReadFile(backup); err != nil || string(data) != "new map" {
@@ -64,13 +66,13 @@ func TestMapgenPrepareAreaMap503140ViaC(t *testing.T) {
 	if err := os.WriteFile(source, []byte("replacement"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if got := mapgenPrepareAreaMapViaC503140(source, directory); got != 1 {
+	if got := cfixture.MapgenPrepareAreaMapViaC503140(source, directory); got != 1 {
 		t.Fatalf("replacement prepare = %d", got)
 	}
 	if data, err := os.ReadFile(backup); err != nil || string(data) != "replacement" {
 		t.Fatalf("replacement backup = %q, %v", data, err)
 	}
-	if got := mapgenPrepareAreaMapViaC503140("", directory); got != 0 {
+	if got := cfixture.MapgenPrepareAreaMapViaC503140("", directory); got != 0 {
 		t.Fatalf("empty source prepare = %d", got)
 	}
 }

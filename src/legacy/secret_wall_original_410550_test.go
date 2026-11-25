@@ -20,6 +20,8 @@ import (
 	"testing"
 	"time"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const swInputSHA410550 = "8bfe33a17556423af70a2945102bed8ff5cf46206babc99e35d005e5d83ef921"
@@ -455,7 +457,7 @@ func TestSecretWallNativeWorker410550(t *testing.T) {
 	}
 	if input.Backend == "C" {
 		backend = 2
-		entry = reflect.ValueOf(secretWallFixtureCall410550).Pointer()
+		entry = reflect.ValueOf(cfixture.SecretWallFixtureCall410550).Pointer()
 	} else if input.Backend != "Go" {
 		t.Fatal("actual backend")
 	}
@@ -480,7 +482,7 @@ func TestSecretWallNativeWorker410550(t *testing.T) {
 	}
 	var result unsafe.Pointer
 	if input.Backend == "C" {
-		result = secretWallFixtureCall410550(in.Entry, argWord, argPointer)
+		result = cfixture.SecretWallFixtureCall410550(in.Entry, argWord, argPointer)
 	} else {
 		switch in.Entry {
 		case 0x410550:

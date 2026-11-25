@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 	"os"
 	"os/exec"
@@ -54,11 +55,11 @@ func TestWallDestroyedActualCBefore4DF0A0(t *testing.T) {
 				t.Fatal("whole valid native record changed during controls", i)
 			}
 		}
-		if wallDestroyedOriginalTyped4DF0A0() {
+		if cfixture.WallDestroyedOriginalTyped4DF0A0() {
 			t.Fatal("unchanged old public C implementation is required")
 		}
 		t.Logf("WALL_DESTROYED_REAL_NATIVE_CONTROLS recipient=%d wall=%p first=%p last=%p full-records=true real-ordinary-and-C-traversal=true", recipient, wall, units[0], units[1])
-		wallDestroyedOriginalC4DF0A0(wall, int32(recipient))
+		cfixture.WallDestroyedOriginalC4DF0A0(wall, int32(recipient))
 		t.Fatal("unported raw C unexpectedly returned")
 	}
 	for _, recipient := range []int{0, 32} {

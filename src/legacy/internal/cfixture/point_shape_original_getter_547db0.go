@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -29,11 +29,11 @@ import (
 	"unsafe"
 )
 
-func pointShapeOriginalC547DB0(unit *server.Object, point *types.Pointf) int {
+func PointShapeOriginalC547DB0(unit *server.Object, point *types.Pointf) int {
 	return int(C.point_shape_public_547db0((*C.nox_object_t)(unsafe.Pointer(unit)), (*C.float2)(unsafe.Pointer(point))))
 }
-func pointShapeOriginalABI547DB0() int { return int(C.point_shape_abi_547db0()) }
-func pointShapeOriginalLayout547DB0() (out [5]uintptr) {
+func PointShapeOriginalABI547DB0() int { return int(C.point_shape_abi_547db0()) }
+func PointShapeOriginalLayout547DB0() (out [5]uintptr) {
 	for i := range out {
 		out[i] = uintptr(C.point_shape_layout_547db0(C.int(i)))
 	}

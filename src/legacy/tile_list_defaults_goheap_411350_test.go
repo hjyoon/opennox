@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func tlFindControl411350(t *testing.T, cases []tlCase411350, predicate func(*tlInput411350, map[uint32][]byte) bool) *tlCase411350 {
@@ -90,11 +91,11 @@ func tlDirectCall411350(in *tlInput411350, backend string, head, xy unsafe.Point
 	if backend == "C" {
 		switch in.Entry {
 		case 0x411350:
-			return tileListFixtureList411350(head, xy, int32(in.Args[2]))
+			return cfixture.TileListFixtureList411350(head, xy, int32(in.Args[2]))
 		case 0x4113a0:
-			return tileListFixturePoint411350(xy, int32(in.Args[1]))
+			return cfixture.TileListFixturePoint411350(xy, int32(in.Args[1]))
 		case 0x411490:
-			return tileListFixtureEdge411350(int32(in.Args[0]), int32(in.Args[1]))
+			return cfixture.TileListFixtureEdge411350(int32(in.Args[0]), int32(in.Args[1]))
 		}
 	}
 	if backend != "Go" {

@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdint.h>
@@ -25,10 +25,10 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func wallDestroyedOriginalC4DF0A0(wall *server.Wall, recipient int32) int32 {
+func WallDestroyedOriginalC4DF0A0(wall *server.Wall, recipient int32) int32 {
 	return int32(C.wall_destroyed_original_public_4df0a0((*C.nox_map_wall_504290)(unsafe.Pointer(wall)), C.int(recipient)))
 }
 
-func wallDestroyedOriginalTyped4DF0A0() bool {
+func WallDestroyedOriginalTyped4DF0A0() bool {
 	return C.wall_destroyed_original_typed_4df0a0() != 0
 }

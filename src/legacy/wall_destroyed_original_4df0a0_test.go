@@ -15,6 +15,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -241,10 +242,10 @@ func TestWallDestroyedOriginal4DF0A0(t *testing.T) {
 					func() {
 						defer func() { fault = recover() }()
 						if mode == "C" {
-							if !wallDestroyedOriginalTyped4DF0A0() {
+							if !cfixture.WallDestroyedOriginalTyped4DF0A0() {
 								t.Fatal("raw C port is not implemented")
 							}
-							result = wallDestroyedOriginalC4DF0A0(arg, in.Recipient)
+							result = cfixture.WallDestroyedOriginalC4DF0A0(arg, in.Recipient)
 							return
 						}
 						native, ok := any(arg).(wallDestroyedRawContract4DF0A0)

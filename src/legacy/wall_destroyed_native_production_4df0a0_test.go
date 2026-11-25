@@ -12,6 +12,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -20,7 +21,7 @@ import (
 func TestWallDestroyedActualCProduction4DF0A0(t *testing.T) {
 	modes := []string{"broadcast", "direct0", "direct31", "direct255", "empty-broadcast", "empty-direct", "inactive-first", "last-slot", "unsigned255", "cached-wall", "live-disconnect", "direct-poison", "direct-excluded"}
 	if mode := os.Getenv("OPENNOX_WALL_DESTROYED_PRODUCTION_CHILD"); mode != "" {
-		if !slices.Contains(modes, mode) || secretWallNativeRuntimeOverride4DF120 != nil || !wallDestroyedOriginalTyped4DF0A0() {
+		if !slices.Contains(modes, mode) || secretWallNativeRuntimeOverride4DF120 != nil || !cfixture.WallDestroyedOriginalTyped4DF0A0() {
 			t.Fatal("known mode, native public C entry and default runtime required", mode)
 		}
 		TestSecretWallStateNativeLayout4DF120(t)
@@ -117,7 +118,7 @@ func TestWallDestroyedActualCProduction4DF0A0(t *testing.T) {
 			return s.Frame()
 		}
 		counters := *memmap.PtrT[[32]uint16](0x5D4594, 1565524)
-		if got := wallDestroyedOriginalC4DF0A0(wall, recipient); got != wantReturn {
+		if got := cfixture.WallDestroyedOriginalC4DF0A0(wall, recipient); got != wantReturn {
 			t.Fatal("actual direct-Send/broadcast return", got, wantReturn)
 		}
 		var actualRecipients []byte

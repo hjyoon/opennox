@@ -10,6 +10,8 @@ import (
 	"sort"
 	"strconv"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 type tlWrite411350 = swWrite410550
@@ -135,7 +137,7 @@ func tlBuildGraph411350(in *tlInput411350, path string) (g *tlGraph411350, err e
 		return nil, e
 	}
 	var n tileListNativeNode411350
-	g.Meta = tlMeta411350{Page: page, Identities: map[string]uint64{}, CLayout: tileListFixtureLayout411350(), GoOffsets: [5]uintptr{unsafe.Offsetof(n.Value), unsafe.Offsetof(n.Preserved), unsafe.Offsetof(n.Edge), unsafe.Offsetof(n.Variation), unsafe.Offsetof(n.Next)}}
+	g.Meta = tlMeta411350{Page: page, Identities: map[string]uint64{}, CLayout: cfixture.TileListFixtureLayout411350(), GoOffsets: [5]uintptr{unsafe.Offsetof(n.Value), unsafe.Offsetof(n.Preserved), unsafe.Offsetof(n.Edge), unsafe.Offsetof(n.Variation), unsafe.Offsetof(n.Next)}}
 	for i, v := range g.Meta.GoOffsets {
 		if g.Meta.CLayout[i] != v {
 			return nil, fmt.Errorf("actual node offset%d", i)
@@ -294,8 +296,8 @@ func tlBuildGraph411350(in *tlInput411350, path string) (g *tlGraph411350, err e
 			if e != nil {
 				return nil, e
 			}
-			tileListFixtureStorePointer411350(slot, v)
-			if tileListFixtureLoadPointer411350(slot) != v {
+			cfixture.TileListFixtureStorePointer411350(slot, v)
+			if cfixture.TileListFixtureLoadPointer411350(slot) != v {
 				return nil, fmt.Errorf("full PTR initialization")
 			}
 		} else {
@@ -413,7 +415,7 @@ func (g *tlGraph411350) apply(writes []tlWrite411350) error {
 				if e != nil {
 					return e
 				}
-				tileListFixtureStorePointer411350(slot, p)
+				cfixture.TileListFixtureStorePointer411350(slot, p)
 			} else {
 				ddiCopyIn4E0B30(slot, data)
 			}

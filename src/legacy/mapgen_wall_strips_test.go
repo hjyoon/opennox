@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -30,24 +31,24 @@ func newMapgenWallTestState(t *testing.T) (*server.Server, *uint32) {
 	previousTile, previousDirection := *tile, *direction
 	t.Cleanup(func() { *tile, *direction = previousTile, previousDirection })
 	*tile = 0
-	t.Cleanup(disableMapgenWallFixtureModes())
+	t.Cleanup(cfixture.DisableMapgenWallFixtureModes())
 	return srv, direction
 }
 
 func TestMapgenWallStripsNative(t *testing.T) {
 	srv, direction := newMapgenWallTestState(t)
-	if got := mapgenWallStripFixture(0, 0, -3, false); got != -3 || *direction != 0 {
+	if got := cfixture.MapgenWallStripFixture(0, 0, -3, false); got != -3 || *direction != 0 {
 		t.Fatalf("empty horizontal strip returned %d with direction %d", got, *direction)
 	}
-	if got := mapgenWallStripFixture(0, 0, 0, true); got != 1 || *direction != 1 {
+	if got := cfixture.MapgenWallStripFixture(0, 0, 0, true); got != 1 || *direction != 1 {
 		t.Fatalf("empty vertical strip returned %d with direction %d", got, *direction)
 	}
 
 	const cell = 32.526913
-	if got := mapgenWallStripFixture(cell, 0, 4, false); got != 1 {
+	if got := cfixture.MapgenWallStripFixture(cell, 0, 4, false); got != 1 {
 		t.Fatalf("horizontal strip returned %d", got)
 	}
-	if got := mapgenWallStripFixture(0, cell, 4, true); got != 1 {
+	if got := cfixture.MapgenWallStripFixture(0, cell, 4, true); got != 1 {
 		t.Fatalf("vertical strip returned %d", got)
 	}
 	want := map[image.Point]byte{
@@ -81,7 +82,7 @@ func TestMapgenWallJunctionsNative(t *testing.T) {
 				t.Fatalf("could not create neighbor at %v", pos)
 			}
 		}
-		result := mapgenWallJunctionFixture(0, 0)
+		result := cfixture.MapgenWallJunctionFixture(0, 0)
 		wall := srv.Walls.GetWallAtGridRaw(center)
 		if kind < 0 {
 			if result != int32(mask)-3 || *direction != 13 || wall != nil {
@@ -106,28 +107,28 @@ func TestMapgenWallPlacementNative(t *testing.T) {
 	definition.Variations12272[0][0] = 5
 	definition.Variations12272[0][2] = 5
 	first := image.Pt(128, 128)
-	if got := mapgenWallPlacementFixture(0, 0); got != 1 {
+	if got := cfixture.MapgenWallPlacementFixture(0, 0); got != 1 {
 		t.Fatalf("new wall returned %d", got)
 	}
 	wall := srv.Walls.GetWallAtGridRaw(first)
 	if wall == nil || wall.Dir0 != 0 || wall.Field2 != 3 || wall.Flags4 != 0x80 {
 		t.Fatalf("new wall has unexpected direction, variation or flags at %v", first)
 	}
-	if got := mapgenWallPlacementFixture(16.263456, 0); got != 0 {
+	if got := cfixture.MapgenWallPlacementFixture(16.263456, 0); got != 0 {
 		t.Fatalf("odd-parity cell returned %d", got)
 	}
 
 	*direction = 1
 	sub_526C80(1)
-	enableMapgenWallFixtureRepeat()
-	if got := mapgenWallPlacementFixture(0, 0); got != 1 || wall.Dir0 != 2 || wall.Field2 != 3 {
+	cfixture.EnableMapgenWallFixtureRepeat()
+	if got := cfixture.MapgenWallPlacementFixture(0, 0); got != 1 || wall.Dir0 != 2 || wall.Field2 != 3 {
 		t.Fatalf("merged wall returned %d with direction %d and variation %d", got, wall.Dir0, wall.Field2)
 	}
 
 	definition.Field749 = 0
 	definition.Variations12272[0][1] = 5
 	second := image.Pt(129, 129)
-	if got := mapgenWallPlacementFixture(0, 32.526913); got != 1 {
+	if got := cfixture.MapgenWallPlacementFixture(0, 32.526913); got != 1 {
 		t.Fatalf("wall with empty repeat period returned %d", got)
 	}
 	if placed := srv.Walls.GetWallAtGridRaw(second); placed == nil || placed.Dir0 != 1 || placed.Field2 != 0 {

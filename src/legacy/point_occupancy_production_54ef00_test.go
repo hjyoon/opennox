@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -21,7 +22,7 @@ func pointOccupancyObjectBytes54EF00(unit *server.Object) []byte {
 }
 
 func TestPointOccupancyProduction54EF00(t *testing.T) {
-	if occupancyOriginalParentABI54EF00() != 64 || occupancyOriginalCandidateABI54EF60() != 64 || pointShapeOriginalABI547DB0() != 64 {
+	if occupancyOriginalParentABI54EF00() != 64 || occupancyOriginalCandidateABI54EF60() != 64 || cfixture.PointShapeOriginalABI547DB0() != 64 {
 		t.Fatal("all three native public signatures required")
 	}
 	for _, tc := range []struct {
@@ -77,7 +78,7 @@ func TestPointOccupancyProduction54EF00(t *testing.T) {
 			scratch := memmap.PtrUint32(0x5D4594, 2491708)
 			oldScratch := *scratch
 			t.Cleanup(func() { *scratch = oldScratch })
-			if got := pointShapeOriginalC547DB0(unit, point); (got == 1) != tc.inside {
+			if got := cfixture.PointShapeOriginalC547DB0(unit, point); (got == 1) != tc.inside {
 				t.Fatal("actual native predicate", got, tc.inside)
 			}
 			for _, path := range []string{"C-parent", "Go-server", "C-callback"} {

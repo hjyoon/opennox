@@ -13,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -72,7 +73,7 @@ func pointShapeOriginalRows547DB0(t *testing.T) []pointShapeRow547DB0 {
 func TestPointShapeOriginal547DB0(t *testing.T) {
 	for _, path := range []string{"C", "Go"} {
 		t.Run(path, func(t *testing.T) {
-			if path == "C" && pointShapeOriginalABI547DB0() != 64 {
+			if path == "C" && cfixture.PointShapeOriginalABI547DB0() != 64 {
 				t.Fatal("native public C entry not implemented; exact legacy fault is qualified separately")
 			}
 			for _, row := range pointShapeOriginalRows547DB0(t) {
@@ -104,7 +105,7 @@ func TestPointShapeOriginal547DB0(t *testing.T) {
 					func() {
 						defer func() { fault = recover() }()
 						if path == "C" {
-							result = pointShapeOriginalC547DB0(unit, point)
+							result = cfixture.PointShapeOriginalC547DB0(unit, point)
 						} else if unit.Sub547DB0(point) {
 							result = 1
 						}

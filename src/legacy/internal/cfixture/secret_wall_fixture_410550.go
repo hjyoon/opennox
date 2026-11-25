@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -59,7 +59,7 @@ import "unsafe"
 
 // These thunks call the actual public C entries. They never restore PE DWORDs
 // as pointers and never dereference an address obtained from a low32 witness.
-func secretWallFixtureCall410550(entry uint32, argWord uint32, argPointer unsafe.Pointer) unsafe.Pointer {
+func SecretWallFixtureCall410550(entry uint32, argWord uint32, argPointer unsafe.Pointer) unsafe.Pointer {
 	switch entry {
 	case 0x410550, 0x410730, 0x4107a0:
 	default:
@@ -67,37 +67,37 @@ func secretWallFixtureCall410550(entry uint32, argWord uint32, argPointer unsafe
 	}
 	return C.secret_wall_fixture_call_410550(C.uint32_t(entry), C.uint32_t(argWord), argPointer)
 }
-func secretWallFixtureLayout410550() [4]uintptr {
+func SecretWallFixtureLayout410550() [4]uintptr {
 	var out [4]uintptr
 	for i := range out {
 		out[i] = uintptr(C.secret_wall_fixture_layout_410550(C.int(i)))
 	}
 	return out
 }
-func secretWallFixturePointerWidth410550() uintptr {
+func SecretWallFixturePointerWidth410550() uintptr {
 	return uintptr(C.secret_wall_fixture_pointer_width_410550())
 }
-func secretWallFixtureWallSize410550() uintptr {
+func SecretWallFixtureWallSize410550() uintptr {
 	return uintptr(C.secret_wall_fixture_wall_size_410550())
 }
-func secretWallFixtureHeadCell410550() unsafe.Pointer {
+func SecretWallFixtureHeadCell410550() unsafe.Pointer {
 	return C.secret_wall_fixture_head_cell_410550()
 }
-func secretWallFixtureStorePointer410550(slot, p unsafe.Pointer) {
+func SecretWallFixtureStorePointer410550(slot, p unsafe.Pointer) {
 	C.secret_wall_fixture_store_pointer_410550(slot, p)
 }
-func secretWallFixtureLoadPointer410550(slot unsafe.Pointer) unsafe.Pointer {
+func SecretWallFixtureLoadPointer410550(slot unsafe.Pointer) unsafe.Pointer {
 	return C.secret_wall_fixture_load_pointer_410550(slot)
 }
 
 // Finite default-linked controls own these C allocations. Goheap controls pin
 // every transitive owner explicitly and clear C-retained pointers before Unpin.
-func secretWallFixtureAlloc410550(n uintptr) unsafe.Pointer {
+func SecretWallFixtureAlloc410550(n uintptr) unsafe.Pointer {
 	return C.secret_wall_fixture_alloc_410550(C.size_t(n))
 }
-func secretWallFixtureFree410550(p unsafe.Pointer) { C.secret_wall_fixture_free_410550(p) }
+func SecretWallFixtureFree410550(p unsafe.Pointer) { C.secret_wall_fixture_free_410550(p) }
 
-func secretWallFixtureScalarOffsets410550() [6]uintptr {
+func SecretWallFixtureScalarOffsets410550() [6]uintptr {
 	var out [6]uintptr
 	for i := range out {
 		out[i] = uintptr(C.secret_wall_fixture_scalar_offset_410550(C.int(i)))

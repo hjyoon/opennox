@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -47,33 +47,33 @@ import (
 	"unsafe"
 )
 
-func tileListFixtureList411350(head, xy unsafe.Pointer, initial int32) int32 {
+func TileListFixtureList411350(head, xy unsafe.Pointer, initial int32) int32 {
 	value := int32(C.tile_list_fixture_list_411350(head, xy, C.int32_t(initial)))
 	runtime.KeepAlive(head)
 	runtime.KeepAlive(xy)
 	return value
 }
-func tileListFixturePoint411350(xy unsafe.Pointer, selector int32) int32 {
+func TileListFixturePoint411350(xy unsafe.Pointer, selector int32) int32 {
 	value := int32(C.tile_list_fixture_point_411350(xy, C.int32_t(selector)))
 	runtime.KeepAlive(xy)
 	return value
 }
-func tileListFixtureEdge411350(edge, variation int32) int32 {
+func TileListFixtureEdge411350(edge, variation int32) int32 {
 	return int32(C.tile_list_fixture_edge_411350(C.int32_t(edge), C.int32_t(variation)))
 }
-func tileListFixtureLayout411350() [7]uintptr {
+func TileListFixtureLayout411350() [7]uintptr {
 	var values [7]uintptr
 	for i := range values {
 		values[i] = uintptr(C.tile_list_fixture_layout_411350(C.int(i)))
 	}
 	return values
 }
-func tileListFixtureStorePointer411350(slot, pointer unsafe.Pointer) {
+func TileListFixtureStorePointer411350(slot, pointer unsafe.Pointer) {
 	C.tile_list_fixture_store_pointer_411350(slot, pointer)
 	runtime.KeepAlive(slot)
 	runtime.KeepAlive(pointer)
 }
-func tileListFixtureLoadPointer411350(slot unsafe.Pointer) unsafe.Pointer {
+func TileListFixtureLoadPointer411350(slot unsafe.Pointer) unsafe.Pointer {
 	pointer := C.tile_list_fixture_load_pointer_411350(slot)
 	runtime.KeepAlive(slot)
 	return pointer

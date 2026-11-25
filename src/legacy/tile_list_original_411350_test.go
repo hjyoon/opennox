@@ -20,6 +20,8 @@ import (
 	"testing"
 	"time"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 const tlInputSHA411350 = "bcb75fa919bb8def777b843bce044236f33f14b3b3729e7628522080953c2cac"
@@ -436,11 +438,11 @@ func TestTileListNativeWorker411350(t *testing.T) {
 		backend = 2
 		switch in.Entry {
 		case 0x411350:
-			root = reflect.ValueOf(tileListFixtureList411350).Pointer()
+			root = reflect.ValueOf(cfixture.TileListFixtureList411350).Pointer()
 		case 0x4113a0:
-			root = reflect.ValueOf(tileListFixturePoint411350).Pointer()
+			root = reflect.ValueOf(cfixture.TileListFixturePoint411350).Pointer()
 		case 0x411490:
-			root = reflect.ValueOf(tileListFixtureEdge411350).Pointer()
+			root = reflect.ValueOf(cfixture.TileListFixtureEdge411350).Pointer()
 		}
 	} else if input.Backend != "Go" {
 		t.Fatal("backend")
@@ -459,7 +461,7 @@ func TestTileListNativeWorker411350(t *testing.T) {
 		xy, e := g.pointer(in.Args[1])
 		must(e)
 		if input.Backend == "C" {
-			result = tileListFixtureList411350(head, xy, int32(in.Args[2]))
+			result = cfixture.TileListFixtureList411350(head, xy, int32(in.Args[2]))
 		} else {
 			result = sub411350Native(head, xy, int32(in.Args[2]))
 		}
@@ -470,7 +472,7 @@ func TestTileListNativeWorker411350(t *testing.T) {
 		xy, e := g.pointer(in.Args[0])
 		must(e)
 		if input.Backend == "C" {
-			result = tileListFixturePoint411350(xy, int32(in.Args[1]))
+			result = cfixture.TileListFixturePoint411350(xy, int32(in.Args[1]))
 		} else {
 			result = sub4113A0Native(xy, int32(in.Args[1]))
 		}
@@ -479,7 +481,7 @@ func TestTileListNativeWorker411350(t *testing.T) {
 			t.Fatal("490 arity")
 		}
 		if input.Backend == "C" {
-			result = tileListFixtureEdge411350(int32(in.Args[0]), int32(in.Args[1]))
+			result = cfixture.TileListFixtureEdge411350(int32(in.Args[0]), int32(in.Args[1]))
 		} else {
 			result = sub411490Native(int32(in.Args[0]), int32(in.Args[1]))
 		}

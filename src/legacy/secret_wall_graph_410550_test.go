@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -203,9 +204,9 @@ func swBuildGraph410550(in *swInput410550, path string) (g *swGraph410550, err e
 	if page < 8192 || page&(page-1) != 0 {
 		return nil, fmt.Errorf("native guard-page geometry")
 	}
-	g.Meta = swMeta410550{Page: page, Identities: map[string]uint64{}, CLayout: secretWallFixtureLayout410550(), GoOffsets: secretWallNativeOffsets410550()}
+	g.Meta = swMeta410550{Page: page, Identities: map[string]uint64{}, CLayout: cfixture.SecretWallFixtureLayout410550(), GoOffsets: secretWallNativeOffsets410550()}
 	var named server.SecretWall
-	g.Meta.CScalarOffsets = secretWallFixtureScalarOffsets410550()
+	g.Meta.CScalarOffsets = cfixture.SecretWallFixtureScalarOffsets410550()
 	g.Meta.GoScalarOffsets = [6]uintptr{unsafe.Offsetof(named.X), unsafe.Offsetof(named.Y), unsafe.Offsetof(named.OpenWait), unsafe.Offsetof(named.Flags), unsafe.Offsetof(named.LastOpen), unsafe.Offsetof(named.PlayerBits)}
 	for i, v := range g.Meta.GoScalarOffsets {
 		if g.Meta.CScalarOffsets[i] != v {
@@ -216,7 +217,7 @@ func swBuildGraph410550(in *swInput410550, path string) (g *swGraph410550, err e
 		return nil, fmt.Errorf("four native adjacent BYTEs")
 	}
 	pw := int(unsafe.Sizeof(unsafe.Pointer(nil)))
-	if secretWallFixturePointerWidth410550() != uintptr(pw) || g.Meta.CLayout[3] != unsafe.Sizeof(server.SecretWall{}) || g.Meta.CLayout[3] != uintptr(32+2*(pw-4)) {
+	if cfixture.SecretWallFixturePointerWidth410550() != uintptr(pw) || g.Meta.CLayout[3] != unsafe.Sizeof(server.SecretWall{}) || g.Meta.CLayout[3] != uintptr(32+2*(pw-4)) {
 		return nil, fmt.Errorf("actual C record/pointer width")
 	}
 	for i, v := range g.Meta.GoOffsets {
@@ -476,8 +477,8 @@ func swBuildGraph410550(in *swInput410550, path string) (g *swGraph410550, err e
 				return nil, fmt.Errorf("complete native pointer field")
 			}
 			slot := unsafe.Add(g.Pointers[ri], f.NativeOffset)
-			secretWallFixtureStorePointer410550(slot, v)
-			if secretWallFixtureLoadPointer410550(slot) != v {
+			cfixture.SecretWallFixtureStorePointer410550(slot, v)
+			if cfixture.SecretWallFixtureLoadPointer410550(slot) != v {
 				return nil, fmt.Errorf("C full-pointer memcpy roundtrip")
 			}
 		} else {
@@ -492,7 +493,7 @@ func swBuildGraph410550(in *swInput410550, path string) (g *swGraph410550, err e
 	if e != nil {
 		return nil, e
 	}
-	secretWallFixtureStorePointer410550(g.Head, head)
+	cfixture.SecretWallFixtureStorePointer410550(g.Head, head)
 	for _, p := range append([]unsafe.Pointer{g.Header}, g.Pointers...) {
 		if e = rawDefaultDamageSharedSync4E0B30(p, page); e != nil {
 			return nil, e
@@ -545,7 +546,7 @@ func (g *swGraph410550) apply(writes []swWrite410550) error {
 			if e != nil {
 				return e
 			}
-			secretWallFixtureStorePointer410550(p, v)
+			cfixture.SecretWallFixtureStorePointer410550(p, v)
 		} else {
 			ddiCopyIn4E0B30(p, data)
 		}

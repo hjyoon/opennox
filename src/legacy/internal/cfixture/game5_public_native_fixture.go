@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stddef.h>
@@ -57,17 +57,17 @@ import "C"
 
 import "unsafe"
 
-func game5PublicPlayerLayoutC() (uintptr, uintptr) {
+func Game5PublicPlayerLayoutC() (uintptr, uintptr) {
 	return C.sizeof_nox_playerInfo, uintptr(C.game5_public_player_flags_offset())
 }
-func game5PublicCanTalkC(player unsafe.Pointer) int32 {
+func Game5PublicCanTalkC(player unsafe.Pointer) int32 {
 	return int32(C.game5_public_can_talk(player))
 }
-func game5PublicReflectC(normal, velocity unsafe.Pointer) uintptr {
+func Game5PublicReflectC(normal, velocity unsafe.Pointer) uintptr {
 	return uintptr(C.game5_public_reflect(normal, velocity))
 }
-func game5PublicX87AvailableC() bool { return C.game5_public_x87_available() != 0 }
-func game5PublicX87ReflectC(normal, velocity unsafe.Pointer, output *[32]byte, delta *int) bool {
+func Game5PublicX87AvailableC() bool { return C.game5_public_x87_available() != 0 }
+func Game5PublicX87ReflectC(normal, velocity unsafe.Pointer, output *[32]byte, delta *int) bool {
 	d := int32(-2147483648)
 	if delta != nil {
 		d = int32(*delta)

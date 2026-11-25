@@ -18,6 +18,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -47,7 +48,7 @@ type game5PublicOriginalCase struct {
 }
 
 func TestGame5PublicNativePlayerLayoutCABI(t *testing.T) {
-	size, offset := game5PublicPlayerLayoutC()
+	size, offset := cfixture.Game5PublicPlayerLayoutC()
 	if size != unsafe.Sizeof(server.Player{}) || offset != unsafe.Offsetof(server.Player{}.Field3680) || unsafe.Sizeof(server.Player{}.Field3680) != 4 {
 		t.Fatalf("native Player layout C=%d/%d Go=%d/%d", size, offset, unsafe.Sizeof(server.Player{}), unsafe.Offsetof(server.Player{}.Field3680))
 	}
@@ -125,7 +126,7 @@ func TestGame5PublicNativeOriginalCABI(t *testing.T) {
 			}
 		}
 	}
-	nativeX87 := game5PublicX87AvailableC()
+	nativeX87 := cfixture.Game5PublicX87AvailableC()
 	if nativeX87 != (runtime.GOARCH == "386" || runtime.GOARCH == "amd64") {
 		t.Fatal("native x87 reference architecture mismatch")
 	}
@@ -171,7 +172,7 @@ func TestGame5PublicNativeOriginalCABI(t *testing.T) {
 						if err := json.Unmarshal(c.Result, &want); err != nil {
 							t.Fatal(err)
 						}
-						if got := game5PublicCanTalkC(arg); got != want || uint32(noxflags.GetGame()) != c.Flags {
+						if got := cfixture.Game5PublicCanTalkC(arg); got != want || uint32(noxflags.GetGame()) != c.Flags {
 							t.Fatalf("actual C player entry: got%d want%d native player=%p flags=%08x", got, want, arg, c.Flags)
 						}
 						if !bytes.Equal(playerBytes, before) {
@@ -200,11 +201,11 @@ func TestGame5PublicNativeOriginalCABI(t *testing.T) {
 						}
 						if nativeX87 {
 							var native [32]byte
-							if !game5PublicX87ReflectC(normal, velocity, &native, c.AliasDelta) || !bytes.Equal(native[:], want) {
+							if !cfixture.Game5PublicX87ReflectC(normal, velocity, &native, c.AliasDelta) || !bytes.Equal(native[:], want) {
 								t.Fatalf("local x87 sequence disagrees with sealed references: got=%x want=%x", native, want)
 							}
 						}
-						if got := game5PublicReflectC(normal, velocity); got != uintptr(velocity) {
+						if got := cfixture.Game5PublicReflectC(normal, velocity); got != uintptr(velocity) {
 							t.Fatalf("C return truncated velocity: %x != %p", got, velocity)
 						}
 						if !bytes.Equal(owner, want) {

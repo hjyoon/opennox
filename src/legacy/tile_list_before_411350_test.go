@@ -14,6 +14,8 @@ import (
 	"sort"
 	"strconv"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func tlIndependentInputBefore411350(in *tlInput411350) (map[uint32][]byte, error) {
@@ -125,7 +127,7 @@ func tlIndependentNativeBefore411350(in *tlInput411350, pages map[uint32][]byte,
 	}
 	var named tileListNativeNode411350
 	goOffsets := [5]uintptr{unsafe.Offsetof(named.Value), unsafe.Offsetof(named.Preserved), unsafe.Offsetof(named.Edge), unsafe.Offsetof(named.Variation), unsafe.Offsetof(named.Next)}
-	if goOffsets != [5]uintptr{0, 4, 8, 12, 16} || unsafe.Sizeof(named) != 24 || unsafe.Sizeof(unsafe.Pointer(nil)) != 8 || meta.GoOffsets != goOffsets || meta.CLayout != [7]uintptr{0, 4, 8, 12, 16, 24, 8} || tileListFixtureLayout411350() != meta.CLayout {
+	if goOffsets != [5]uintptr{0, 4, 8, 12, 16} || unsafe.Sizeof(named) != 24 || unsafe.Sizeof(unsafe.Pointer(nil)) != 8 || meta.GoOffsets != goOffsets || meta.CLayout != [7]uintptr{0, 4, 8, 12, 16, 24, 8} || cfixture.TileListFixtureLayout411350() != meta.CLayout {
 		return nil, fmt.Errorf("independent named C/Go layout and widths")
 	}
 	read := func(address uint32, width int) ([]byte, error) {

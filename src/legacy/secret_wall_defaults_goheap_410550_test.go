@@ -8,6 +8,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -16,7 +17,7 @@ import (
 func swExtraCall410550(t *testing.T, backend string, entry, word uint32, p unsafe.Pointer) unsafe.Pointer {
 	t.Helper()
 	if backend == "C" {
-		return secretWallFixtureCall410550(entry, word, p)
+		return cfixture.SecretWallFixtureCall410550(entry, word, p)
 	}
 	if backend != "Go" {
 		t.Fatal("unknown SecretWall extra backend")
@@ -45,7 +46,7 @@ func swExtraBytes410550(p unsafe.Pointer, n uintptr) []byte {
 func swExtraHead410550(t *testing.T) unsafe.Pointer {
 	t.Helper()
 	head := secretWallNativeHeadCell410550()
-	if head != secretWallFixtureHeadCell410550() || secretWallFixturePointerWidth410550() != unsafe.Sizeof(unsafe.Pointer(nil)) {
+	if head != cfixture.SecretWallFixtureHeadCell410550() || cfixture.SecretWallFixturePointerWidth410550() != unsafe.Sizeof(unsafe.Pointer(nil)) {
 		t.Fatal("actual production C pointer cell/width")
 	}
 	swExtraPointer410550(t, head)
@@ -58,8 +59,8 @@ func TestSecretWallNativeDefaultLinked410550(t *testing.T) {
 				t.Fatal("default control requires nil observer")
 			}
 			head := swExtraHead410550(t)
-			old := secretWallFixtureLoadPointer410550(head)
-			layout := secretWallFixtureLayout410550()
+			old := cfixture.SecretWallFixtureLoadPointer410550(head)
+			layout := cfixture.SecretWallFixtureLayout410550()
 			offsets := secretWallNativeOffsets410550()
 			for i := range offsets {
 				if offsets[i] != layout[i] {
@@ -69,35 +70,35 @@ func TestSecretWallNativeDefaultLinked410550(t *testing.T) {
 			var nodes [2]unsafe.Pointer
 			var walls [2]unsafe.Pointer
 			defer func() {
-				secretWallFixtureStorePointer410550(head, old)
+				cfixture.SecretWallFixtureStorePointer410550(head, old)
 				for _, p := range nodes {
 					if p != nil {
-						secretWallFixtureFree410550(p)
+						cfixture.SecretWallFixtureFree410550(p)
 					}
 				}
 				for _, p := range walls {
 					if p != nil {
-						secretWallFixtureFree410550(p)
+						cfixture.SecretWallFixtureFree410550(p)
 					}
 				}
 			}()
 			for i := 0; i < 2; i++ {
-				nodes[i] = secretWallFixtureAlloc410550(layout[3] + 16)
-				walls[i] = secretWallFixtureAlloc410550(secretWallFixtureWallSize410550() + 16)
+				nodes[i] = cfixture.SecretWallFixtureAlloc410550(layout[3] + 16)
+				walls[i] = cfixture.SecretWallFixtureAlloc410550(cfixture.SecretWallFixtureWallSize410550() + 16)
 				if nodes[i] == nil || walls[i] == nil {
 					t.Fatal("finite C default allocation")
 				}
 				swExtraPointer410550(t, nodes[i])
 				swExtraPointer410550(t, walls[i])
 				ddiFill4E0B30(nodes[i], int(layout[3]+16), 0x4d)
-				ddiFill4E0B30(walls[i], int(secretWallFixtureWallSize410550()+16), 0x6b)
-				secretWallFixtureStorePointer410550(unsafe.Add(nodes[i], layout[0]), nil)
-				secretWallFixtureStorePointer410550(unsafe.Add(nodes[i], layout[1]), walls[i])
+				ddiFill4E0B30(walls[i], int(cfixture.SecretWallFixtureWallSize410550()+16), 0x6b)
+				cfixture.SecretWallFixtureStorePointer410550(unsafe.Add(nodes[i], layout[0]), nil)
+				cfixture.SecretWallFixtureStorePointer410550(unsafe.Add(nodes[i], layout[1]), walls[i])
 				*(*uint16)(unsafe.Add(walls[i], layout[2])) = uint16(0x1111 + 0x1111*i)
 			}
-			secretWallFixtureStorePointer410550(unsafe.Add(nodes[0], layout[0]), nodes[1])
-			secretWallFixtureStorePointer410550(head, nodes[0])
-			wallBefore := [2][]byte{swExtraBytes410550(walls[0], secretWallFixtureWallSize410550()+16), swExtraBytes410550(walls[1], secretWallFixtureWallSize410550()+16)}
+			cfixture.SecretWallFixtureStorePointer410550(unsafe.Add(nodes[0], layout[0]), nodes[1])
+			cfixture.SecretWallFixtureStorePointer410550(head, nodes[0])
+			wallBefore := [2][]byte{swExtraBytes410550(walls[0], cfixture.SecretWallFixtureWallSize410550()+16), swExtraBytes410550(walls[1], cfixture.SecretWallFixtureWallSize410550()+16)}
 			node1Before := swExtraBytes410550(nodes[1], layout[3]+16)
 			for i := 0; i < 2; i++ {
 				if got := swExtraCall410550(t, backend, 0x410550, uint32(0x1111+0x1111*i), nil); got != walls[i] {
@@ -107,7 +108,7 @@ func TestSecretWallNativeDefaultLinked410550(t *testing.T) {
 			matched := nodes[0]
 			got := swExtraCall410550(t, backend, 0x4107a0, 0, matched)
 			nodes[0] = nil
-			if got != matched || secretWallFixtureLoadPointer410550(head) != nodes[1] {
+			if got != matched || cfixture.SecretWallFixtureLoadPointer410550(head) != nodes[1] {
 				t.Fatal("existing C cached removed-pointer return and actual live head")
 			}
 			if !bytes.Equal(swExtraBytes410550(nodes[1], layout[3]+16), node1Before) {
@@ -115,11 +116,11 @@ func TestSecretWallNativeDefaultLinked410550(t *testing.T) {
 			}
 			got = swExtraCall410550(t, backend, 0x410730, 0, nil)
 			nodes[1] = nil
-			if got != nil || secretWallFixtureLoadPointer410550(head) != nil {
+			if got != nil || cfixture.SecretWallFixtureLoadPointer410550(head) != nil {
 				t.Fatal("real default clear and actual C head nil")
 			}
 			for i := range walls {
-				if !bytes.Equal(swExtraBytes410550(walls[i], secretWallFixtureWallSize410550()+16), wallBefore[i]) {
+				if !bytes.Equal(swExtraBytes410550(walls[i], cfixture.SecretWallFixtureWallSize410550()+16), wallBefore[i]) {
 					t.Fatal("real default wall full canary")
 				}
 			}
@@ -171,8 +172,8 @@ func TestSecretWallNativePinnedGoHeap410550(t *testing.T) {
 				swExtraPointer410550(t, unsafe.Pointer(w))
 			}
 			head := swExtraHead410550(t)
-			old := secretWallFixtureLoadPointer410550(head)
-			secretWallFixtureStorePointer410550(head, unsafe.Pointer(nodes[0]))
+			old := cfixture.SecretWallFixtureLoadPointer410550(head)
+			cfixture.SecretWallFixtureStorePointer410550(head, unsafe.Pointer(nodes[0]))
 			counts := 0
 			frees := []unsafe.Pointer{}
 			gc := func(point string) {
@@ -195,7 +196,7 @@ func TestSecretWallNativePinnedGoHeap410550(t *testing.T) {
 			pop := pushSecretWallNativeObserver410550(observer)
 			// This later defer runs before the earlier Unpin defer, clearing
 			// all C-retained references to these owners even when an assertion fails.
-			defer func() { secretWallFixtureStorePointer410550(head, old); pop() }()
+			defer func() { cfixture.SecretWallFixtureStorePointer410550(head, old); pop() }()
 			var beforeNodes [3][]byte
 			var beforeWalls [2][]byte
 			for i, n := range nodes {
@@ -218,7 +219,7 @@ func TestSecretWallNativePinnedGoHeap410550(t *testing.T) {
 			gc("before-middle-remove")
 			got = swExtraCall410550(t, backend, 0x4107a0, 0, unsafe.Pointer(nodes[1]))
 			gc("after-middle-remove")
-			if got != unsafe.Pointer(nodes[1]) || secretWallFixtureLoadPointer410550(head) != unsafe.Pointer(nodes[0]) || nodes[0].Next != nodes[2] || len(frees) != 1 || frees[0] != unsafe.Pointer(nodes[1]) {
+			if got != unsafe.Pointer(nodes[1]) || cfixture.SecretWallFixtureLoadPointer410550(head) != unsafe.Pointer(nodes[0]) || nodes[0].Next != nodes[2] || len(frees) != 1 || frees[0] != unsafe.Pointer(nodes[1]) {
 				t.Fatal("pinned middle removal: cached return, real head, previous.Next, handled Free identity")
 			}
 			if !bytes.Equal(swExtraBytes410550(unsafe.Pointer(nodes[0]), unsafe.Sizeof(*nodes[0])), expectedFirstBytes) {
@@ -232,7 +233,7 @@ func TestSecretWallNativePinnedGoHeap410550(t *testing.T) {
 			gc("before-clear")
 			got = swExtraCall410550(t, backend, 0x410730, 0, nil)
 			gc("after-clear")
-			if got != nil || secretWallFixtureLoadPointer410550(head) != nil || len(frees) != 3 || counts != 9 {
+			if got != nil || cfixture.SecretWallFixtureLoadPointer410550(head) != nil || len(frees) != 3 || counts != 9 {
 				t.Fatalf("pinned clear retention/GC got=%p frees=%d GC=%d", got, len(frees), counts)
 			}
 			for i, n := range []*server.SecretWall{nodes[1], nodes[0], nodes[2]} {
@@ -265,9 +266,9 @@ func TestSecretWallNativeObserverReentry410550(t *testing.T) {
 				t.Fatal("serial reentry control")
 			}
 			head := swExtraHead410550(t)
-			old := secretWallFixtureLoadPointer410550(head)
-			secretWallFixtureStorePointer410550(head, nil)
-			defer secretWallFixtureStorePointer410550(head, old)
+			old := cfixture.SecretWallFixtureLoadPointer410550(head)
+			cfixture.SecretWallFixtureStorePointer410550(head, nil)
+			defer cfixture.SecretWallFixtureStorePointer410550(head, old)
 			outerCalls, innerCalls := 0, 0
 			outer := &secretWallNativeObserver410550{}
 			outer.Service = func(site uint32, args []secretWallNativeArg410550) (secretWallNativeReply410550, bool) {

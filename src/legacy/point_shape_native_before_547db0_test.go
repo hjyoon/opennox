@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -29,7 +30,7 @@ func TestPointShapeNativeCBefore547DB0(t *testing.T) {
 	TestMonsterDodgeablesNativeLayout547C50(t)
 	o := server.Object{}
 	want := [5]uintptr{unsafe.Offsetof(o.NewPos), unsafe.Offsetof(o.NewPos) + 4, unsafe.Offsetof(o.Shape), unsafe.Offsetof(o.Shape) + unsafe.Offsetof(server.Shape{}.Circle) + 4, unsafe.Sizeof(types.Pointf{})}
-	if got := pointShapeOriginalLayout547DB0(); got != want {
+	if got := cfixture.PointShapeOriginalLayout547DB0(); got != want {
 		t.Fatal("independent point/shape C/Go layout", got, want)
 	}
 	w := newDodgeWorld547C50(t, dodgeOriginalRows547C50(t)[0])
@@ -49,10 +50,10 @@ func TestPointShapeNativeCBefore547DB0(t *testing.T) {
 	if set != uintptr(w.Data.SoundSet122) || action != 0 || !w.Unit.Sub547DB0(point) || !bytes.Equal(before, w.Heap) {
 		t.Fatal("actual typed getter, positive native geometry and complete initial allocation controls")
 	}
-	if pointShapeOriginalABI547DB0() != 32 {
+	if cfixture.PointShapeOriginalABI547DB0() != 32 {
 		t.Fatal("unchanged legacy int ABI required")
 	}
 	t.Logf("POINT_SHAPE_BEFORE_VALID_NATIVE_CONTROLS unit=%p point=%p kind=%d radius2=%08x publicABI=legacy32-explicit-narrowing", w.Unit, point, w.Unit.Shape.Kind, math.Float32bits(w.Unit.Shape.Circle.R2))
-	pointShapeOriginalC547DB0(w.Unit, point)
+	cfixture.PointShapeOriginalC547DB0(w.Unit, point)
 	t.Fatal("old C unexpectedly returned")
 }

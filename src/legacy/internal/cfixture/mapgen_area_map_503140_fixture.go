@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include <stdlib.h>
@@ -33,7 +33,7 @@ import "C"
 
 import "unsafe"
 
-func mapgenPrepareAreaMapViaC503140(source, directory string) int {
+func MapgenPrepareAreaMapViaC503140(source, directory string) int {
 	csource := C.CString(source)
 	defer C.free(unsafe.Pointer(csource))
 	cdirectory := C.CString(directory)

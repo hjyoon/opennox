@@ -9,6 +9,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestMapgenTileScratchNativeCEntries(t *testing.T) {
@@ -20,8 +21,8 @@ func TestMapgenTileScratchNativeCEntries(t *testing.T) {
 	for i := range initial {
 		initial[i] = byte(i*19 + 3)
 	}
-	writeMapgenTileStateC(&initial)
-	if got := mapgenTileStateC(); &got[0] != &data[0] || *got != initial || data[72] != 0xa9 {
+	cfixture.WriteMapgenTileStateC(&initial)
+	if got := cfixture.MapgenTileStateC(); &got[0] != &data[0] || *got != initial || data[72] != 0xa9 {
 		t.Fatalf("tile scratch address, state, or adjacent byte differs")
 	}
 	svc := game4TilesDefaultServices()
@@ -29,7 +30,7 @@ func TestMapgenTileScratchNativeCEntries(t *testing.T) {
 	var later [72]byte
 	later[0], later[71] = 0x34, 0x56
 	svc.restore(&later)
-	if snapshot != initial || *mapgenTileStateC() != later || data[72] != 0xa9 {
+	if snapshot != initial || *cfixture.MapgenTileStateC() != later || data[72] != 0xa9 {
 		t.Fatal("renderer snapshot or restore changed the tile state contract")
 	}
 }
@@ -42,15 +43,15 @@ func TestRandomMapNameNativeCEntries(t *testing.T) {
 		data[i] = 0xcc
 	}
 	name := []byte{'r', 'a', 'n', 0xfe, 0, 'x', 0}
-	if got := writeRandomMapNameC(&name[0]); got != 5 {
+	if got := cfixture.WriteRandomMapNameC(&name[0]); got != 5 {
 		t.Fatalf("C setter returned %d, want 5 bytes including NUL", got)
 	}
-	ptr := randomMapNameC()
+	ptr := cfixture.RandomMapNameC()
 	if ptr != &data[0] || !bytes.Equal(data[:5], name[:5]) || data[5] != 0xcc {
 		t.Fatalf("random map name address or copy differs: % x", data[:7])
 	}
 	Sub_4D42E0("go\x00later")
-	if got := randomMapNameC(); got != ptr || !bytes.Equal(data[:6], []byte{'g', 'o', 0, 0xfe, 0, 0xcc}) {
+	if got := cfixture.RandomMapNameC(); got != ptr || !bytes.Equal(data[:6], []byte{'g', 'o', 0, 0xfe, 0, 0xcc}) {
 		t.Fatalf("Go write did not update the same C name slot: % x", data[:7])
 	}
 }
@@ -67,7 +68,7 @@ func TestMapgenCornerOrderNativeCEntry4D3C80(t *testing.T) {
 		for i := range corners {
 			corners[i] = keys[(bits>>(2*i))&3]
 		}
-		if got := orderMapgenCornersC(corners); got != corners {
+		if got := cfixture.OrderMapgenCornersC(corners); got != corners {
 			t.Fatalf("case %d returned %p, want %p", bits, got, corners)
 		}
 		for i, word := range corners {
@@ -83,12 +84,12 @@ func TestMapgenCornerOrderNativeCEntry4D3C80(t *testing.T) {
 
 func TestMapgenOrientationDirectionNativeCEntry4D3FF0(t *testing.T) {
 	for direction, want := range []int32{3, 0, 1, 6, -1, 2, 7, 8, 5} {
-		if got := mapgenOrientationDirectionC(int32(direction)); got != want {
+		if got := cfixture.MapgenOrientationDirectionC(int32(direction)); got != want {
 			t.Errorf("direction %d returned %d, want %d", direction, got, want)
 		}
 	}
 	for _, direction := range []int32{math.MinInt32, -1, 9, math.MaxInt32} {
-		if got := mapgenOrientationDirectionC(direction); got != -1 {
+		if got := cfixture.MapgenOrientationDirectionC(direction); got != -1 {
 			t.Errorf("direction %d returned %d, want -1", direction, got)
 		}
 	}

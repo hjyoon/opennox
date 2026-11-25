@@ -18,10 +18,7 @@ _Static_assert(_Generic(&nox_common_playerInfoGetNext_416EE0,sudden_death_next_f
 _Static_assert(_Generic(&nox_xxx_playerUnsetStatus_417530,sudden_death_unset_status_fn_40a970:1,default:0), "status char return ABI, ignored by caller");
 _Static_assert(_Generic(&nox_common_gameFlags_unset_40A540,sudden_death_unset_flags_fn_40a970:1,default:0), "flags void(unsigned int) ABI");
 
-static uint64_t sudden_death_gamedata_bits_40a970(uint32_t site) {
-    static char threshold[] = "SuddenDeathPlayerThreshold";
-    static char lifetime[] = "SuddenDeathLifeTime";
-    char* key = site == 0x40a98a ? threshold : lifetime;
+static uint64_t sudden_death_gamedata_bits_40a970(char* key) {
     sudden_death_gamedata_fn_40a970 fn = &nox_xxx_gamedataGetFloat_419D40;
     double value = fn(key);
     uint64_t bits;
@@ -49,7 +46,8 @@ func suddenDeathNativeServiceDefault40A970(site uint32, arguments []suddenDeathN
 	case 0x40A98A, 0x40A9A1:
 		var reply suddenDeathNativeReply40A970
 		reply.FloatFormat = "f64"
-		binary.LittleEndian.PutUint64(reply.FloatPayload[:8], uint64(C.sudden_death_gamedata_bits_40a970(C.uint32_t(site))))
+		key := internCStr(arguments[0].String)
+		binary.LittleEndian.PutUint64(reply.FloatPayload[:8], uint64(C.sudden_death_gamedata_bits_40a970(key)))
 		return reply
 	case 0x40A9BA:
 		return suddenDeathNativeReply40A970{Pointer: C.sudden_death_first_40a970()}

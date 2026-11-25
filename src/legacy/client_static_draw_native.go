@@ -4,7 +4,6 @@ package legacy
 #include "cgo_const.h"
 #include "client__draw__parse__parse.h"
 #include "client__draw__staticdraw.h"
-#include "draw_allocation.h"
 */
 import "C"
 
@@ -28,11 +27,11 @@ func readLegacyDrawImage(file *C.nox_memfile, scratch *C.char, nameOffset uintpt
 	return nox_xxx_readImgMB_42FAA0(imageID, kind, scratch)
 }
 
-func legacyDrawImageList(file *C.nox_memfile, scratch *C.char, count int, nameOffset uintptr) (**nox_video_bag_image_t, bool) {
+func legacyDrawImageList(file *C.nox_memfile, scratch *C.char, count int, nameOffset uintptr, high bool) (**nox_video_bag_image_t, bool) {
 	if count == 0 {
 		return nil, true
 	}
-	base := (**nox_video_bag_image_t)(C.nox_draw_memory_calloc(C.size_t(count), C.size_t(unsafe.Sizeof(unsafe.Pointer(nil)))))
+	base := (**nox_video_bag_image_t)(allocateDrawMemory(count, unsafe.Sizeof(unsafe.Pointer(nil)), high))
 	if base == nil {
 		return nil, false
 	}
@@ -45,16 +44,20 @@ func legacyDrawImageList(file *C.nox_memfile, scratch *C.char, count int, nameOf
 
 //export nox_xxx_spriteLoadStaticRandomData_44C000
 func nox_xxx_spriteLoadStaticRandomData_44C000(scratch *C.char, file *C.nox_memfile) *C.nox_static_random_draw_data_t {
+	return loadStaticRandomDrawData(scratch, file, false)
+}
+
+func loadStaticRandomDrawData(scratch *C.char, file *C.nox_memfile, high bool) *C.nox_static_random_draw_data_t {
 	size := unsafe.Sizeof(C.nox_static_random_draw_data_t{})
-	data := (*C.nox_static_random_draw_data_t)(C.nox_draw_memory_calloc(1, C.size_t(size)))
+	data := (*C.nox_static_random_draw_data_t)(allocateDrawMemory(1, size, high))
 	if data == nil {
 		return nil
 	}
 	data.size = C.uint32_t(size)
 	data.count = nox_memfile_read_u8(file)
-	images, ok := legacyDrawImageList(file, scratch, int(data.count), 830852)
+	images, ok := legacyDrawImageList(file, scratch, int(data.count), 830852, high)
 	if !ok {
-		C.nox_draw_memory_free(unsafe.Pointer(data))
+		freeDrawMemory(unsafe.Pointer(data))
 		return nil
 	}
 	data.images = images
@@ -87,8 +90,12 @@ func nox_thing_static_random_draw(viewport *C.uint32_t, drawable *C.nox_drawable
 
 //export nox_things_static_draw_parse
 func nox_things_static_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char) C.bool {
+	return parseStaticDraw(thing, file, scratch, false)
+}
+
+func parseStaticDraw(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char, high bool) C.bool {
 	size := unsafe.Sizeof(C.nox_static_draw_data_t{})
-	data := (*C.nox_static_draw_data_t)(C.nox_draw_memory_calloc(1, C.size_t(size)))
+	data := (*C.nox_static_draw_data_t)(allocateDrawMemory(1, size, high))
 	if data == nil {
 		return false
 	}
@@ -101,8 +108,12 @@ func nox_things_static_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scrat
 
 //export nox_things_static_random_draw_parse
 func nox_things_static_random_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char) C.bool {
+	return parseStaticRandomDraw(thing, file, scratch, false)
+}
+
+func parseStaticRandomDraw(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char, high bool) C.bool {
 	thing.draw_func = (*[0]byte)(C.nox_thing_static_random_draw)
-	data := nox_xxx_spriteLoadStaticRandomData_44C000(scratch, file)
+	data := loadStaticRandomDrawData(scratch, file, high)
 	thing.field_5c = unsafe.Pointer(data)
 	return C.bool(data != nil)
 }

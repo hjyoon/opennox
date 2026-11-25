@@ -18,7 +18,7 @@ func freeLegacyVectorFrames(frames *[9]*noxrender.ImageHandle) {
 		if direction == 4 || images == nil {
 			continue
 		}
-		nox_draw_memory_release_go(unsafe.Pointer(images))
+		freeDrawMemory(unsafe.Pointer(images))
 		frames[direction] = nil
 	}
 }
@@ -28,7 +28,7 @@ func freeLegacyEquipmentFrames(animation *client.PlayerEquipAnimation) {
 		return
 	}
 	freeLegacyVectorFrames(&animation.Frames)
-	nox_draw_memory_release_go(unsafe.Pointer(animation))
+	freeDrawMemory(unsafe.Pointer(animation))
 }
 
 func freeLegacyPlayerDrawFrames(data *client.PlayerDrawData) {
@@ -53,14 +53,14 @@ func nox_xxx_draw_44C650_free_kind(pointer unsafe.Pointer, kind C.int) {
 	switch kind {
 	case 2:
 		data := (*C.nox_static_random_draw_data_t)(pointer)
-		nox_draw_memory_release_go(unsafe.Pointer(data.images))
+		freeDrawMemory(unsafe.Pointer(data.images))
 	case 3:
 		data := (*C.nox_animate_draw_data_t)(pointer)
-		nox_draw_memory_release_go(unsafe.Pointer(data.images))
+		freeDrawMemory(unsafe.Pointer(data.images))
 	case 4:
 		data := (*C.nox_cond_animate_draw_data_t)(pointer)
 		for _, images := range data.images {
-			nox_draw_memory_release_go(unsafe.Pointer(images))
+			freeDrawMemory(unsafe.Pointer(images))
 		}
 	case 5:
 		data := (*client.AnimationVector)(pointer)
@@ -78,7 +78,7 @@ func nox_xxx_draw_44C650_free_kind(pointer unsafe.Pointer, kind C.int) {
 			freeLegacyVectorFrames(&data.Anim[i].Frames)
 		}
 	}
-	nox_draw_memory_release_go(pointer)
+	freeDrawMemory(pointer)
 }
 
 //export nox_free_tile_defs
@@ -88,7 +88,7 @@ func nox_free_tile_defs() C.int {
 	for i := range count {
 		tile := &tiles.definitions[i]
 		if tile.data_32 != nil {
-			nox_draw_memory_release_go(unsafe.Pointer(tile.data_32))
+			freeDrawMemory(unsafe.Pointer(tile.data_32))
 			tile.data_32 = nil
 		}
 	}
@@ -101,7 +101,7 @@ func sub_485F30() C.int {
 	for i := range count {
 		images := thingEdgeImageCell411850(uint32(i))
 		if *images != nil {
-			nox_draw_memory_release_go(*images)
+			freeDrawMemory(*images)
 			*images = nil
 		}
 		thingEdgeStore32411850(uint32(i), 28676, 0)

@@ -4,7 +4,6 @@ package legacy
 #include "client__draw__animdraw.h"
 #include "client__draw__canidraw.h"
 #include "client__draw__parse__parse.h"
-#include "draw_allocation.h"
 */
 import "C"
 
@@ -84,8 +83,12 @@ func nox_thing_animate_draw(viewport *C.uint32_t, drawable *C.nox_drawable) C.in
 
 //export nox_things_animate_draw_parse
 func nox_things_animate_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char) C.bool {
+	return parseAnimateDraw(thing, file, scratch, false)
+}
+
+func parseAnimateDraw(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char, high bool) C.bool {
 	size := unsafe.Sizeof(C.nox_animate_draw_data_t{})
-	data := (*C.nox_animate_draw_data_t)(C.nox_draw_memory_calloc(1, C.size_t(size)))
+	data := (*C.nox_animate_draw_data_t)(allocateDrawMemory(1, size, high))
 	if data == nil {
 		return false
 	}
@@ -93,9 +96,9 @@ func nox_things_animate_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scra
 	data.frame_count = nox_memfile_read_u8(file)
 	data.frame_delay = nox_memfile_read_u8(file)
 	data.animation_kind = readLegacyAnimationKind(file, scratch)
-	images, ok := legacyDrawImageList(file, scratch, int(data.frame_count), 830832)
+	images, ok := legacyDrawImageList(file, scratch, int(data.frame_count), 830832, high)
 	if !ok {
-		C.nox_draw_memory_free(unsafe.Pointer(data))
+		freeDrawMemory(unsafe.Pointer(data))
 		return false
 	}
 	data.images = images
@@ -136,27 +139,31 @@ func nox_thing_cond_animate_draw(viewport *C.uint32_t, drawable *C.nox_drawable)
 
 //export nox_things_cond_animate_draw_parse
 func nox_things_cond_animate_draw_parse(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char) C.bool {
+	return parseConditionalAnimateDraw(thing, file, scratch, false)
+}
+
+func parseConditionalAnimateDraw(thing *C.nox_thing, file *C.nox_memfile, scratch *C.char, high bool) C.bool {
 	size := unsafe.Sizeof(C.nox_cond_animate_draw_data_t{})
-	data := (*C.nox_cond_animate_draw_data_t)(C.nox_draw_memory_calloc(1, C.size_t(size)))
+	data := (*C.nox_cond_animate_draw_data_t)(allocateDrawMemory(1, size, high))
 	if data == nil {
 		return false
 	}
 	data.size = C.uint32_t(size)
 	states := int(nox_memfile_read_u8(file))
 	if states > len(data.images) {
-		C.nox_draw_memory_free(unsafe.Pointer(data))
+		freeDrawMemory(unsafe.Pointer(data))
 		return false
 	}
 	for state := range states {
 		data.frame_count[state] = nox_memfile_read_u8(file)
 		data.frame_delay[state] = nox_memfile_read_u8(file)
 		data.animation_kind[state] = readLegacyAnimationKind(file, scratch)
-		images, ok := legacyDrawImageList(file, scratch, int(data.frame_count[state]), 830836)
+		images, ok := legacyDrawImageList(file, scratch, int(data.frame_count[state]), 830836, high)
 		if !ok {
 			for _, previous := range data.images[:state] {
-				C.nox_draw_memory_free(unsafe.Pointer(previous))
+				freeDrawMemory(unsafe.Pointer(previous))
 			}
-			C.nox_draw_memory_free(unsafe.Pointer(data))
+			freeDrawMemory(unsafe.Pointer(data))
 			return false
 		}
 		data.images[state] = images
@@ -170,7 +177,7 @@ func nox_things_cond_animate_draw_parse(thing *C.nox_thing, file *C.nox_memfile,
 //export nox_things_animate_state_draw_parse
 func nox_things_animate_state_draw_parse(thing *C.nox_thing, file *C.nox_memfile, _ *C.char) C.bool {
 	size := unsafe.Sizeof(client.AnimationStateDrawData{})
-	data := (*client.AnimationStateDrawData)(C.nox_draw_memory_calloc(1, C.size_t(size)))
+	data := (*client.AnimationStateDrawData)(allocateDrawMemory(1, size, false))
 	if data == nil {
 		return false
 	}
@@ -178,7 +185,7 @@ func nox_things_animate_state_draw_parse(thing *C.nox_thing, file *C.nox_memfile
 		return GetClient().R2().GetBag().ImageRef(id, kind, name).C()
 	}
 	if err := client.ParseAnimStateDrawDataWithAllocator(data, asMemfile(file), resolve, legacyAllocateAnimationFrames); err != nil {
-		C.nox_draw_memory_free(unsafe.Pointer(data))
+		freeDrawMemory(unsafe.Pointer(data))
 		return false
 	}
 	thing.field_54 = 2
@@ -188,11 +195,11 @@ func nox_things_animate_state_draw_parse(thing *C.nox_thing, file *C.nox_memfile
 }
 
 func legacyAllocateAnimationFrames(count int) ([]noxrender.ImageHandle, func()) {
-	pointer := C.nox_draw_memory_calloc(C.size_t(count), C.size_t(unsafe.Sizeof(noxrender.ImageHandle(nil))))
+	pointer := allocateDrawMemory(count, unsafe.Sizeof(noxrender.ImageHandle(nil)), false)
 	if pointer == nil {
 		return nil, nil
 	}
-	return unsafe.Slice((*noxrender.ImageHandle)(pointer), count), func() { C.nox_draw_memory_free(pointer) }
+	return unsafe.Slice((*noxrender.ImageHandle)(pointer), count), func() { freeDrawMemory(pointer) }
 }
 
 //export nox_xxx_loadVectorAnimated_44B8B0
@@ -213,7 +220,7 @@ func nox_xxx_loadVectorAnimated_44B8B0(pointer unsafe.Pointer, file *C.nox_memfi
 func sub_44BE90(pointer unsafe.Pointer, file *C.nox_memfile) C.int {
 	vector := (*client.AnimationVector)(pointer)
 	var scratch [256]C.char
-	images, ok := legacyDrawImageList(file, &scratch[0], int(vector.Cnt40), 830848)
+	images, ok := legacyDrawImageList(file, &scratch[0], int(vector.Cnt40), 830848, false)
 	if !ok {
 		return 0
 	}
@@ -230,10 +237,10 @@ func nox_xxx_loadVectorAnimated_44BC50(pointer unsafe.Pointer, file *C.nox_memfi
 		if direction == 4 {
 			continue
 		}
-		images, ok := legacyDrawImageList(file, &scratch[0], int(vector.Cnt40), 830844)
+		images, ok := legacyDrawImageList(file, &scratch[0], int(vector.Cnt40), 830844, false)
 		if !ok {
 			for _, frame := range frames[:direction] {
-				C.nox_draw_memory_free(unsafe.Pointer(frame))
+				freeDrawMemory(unsafe.Pointer(frame))
 			}
 			return 0
 		}

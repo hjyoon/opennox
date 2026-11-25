@@ -70,8 +70,12 @@ func nox_thing_door_draw(view *C.nox_draw_viewport_t, drawable *C.nox_drawable) 
 
 //export nox_things_door_draw_parse
 func nox_things_door_draw_parse(thing *C.nox_thing, file *C.nox_memfile, attrs *C.char) C.bool {
+	return parseDoorDraw(thing, file, attrs, false)
+}
+
+func parseDoorDraw(thing *C.nox_thing, file *C.nox_memfile, attrs *C.char, high bool) C.bool {
 	thing.draw_func = (*[0]byte)(C.nox_thing_door_draw)
-	data := nox_xxx_spriteLoadStaticRandomData_44C000(attrs, file)
+	data := loadStaticRandomDrawData(attrs, file, high)
 	thing.field_5c = unsafe.Pointer(data)
 	return C.bool(data != nil)
 }

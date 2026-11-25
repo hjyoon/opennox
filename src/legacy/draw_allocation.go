@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include <stdlib.h>
-#include "draw_allocation.h"
 */
 import "C"
 
@@ -12,14 +11,15 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-//export nox_draw_memory_calloc_high_go
-func nox_draw_memory_calloc_high_go(count, size C.size_t) unsafe.Pointer {
-	p, _ := alloc.CallocHigh(int(count), uintptr(size))
-	return p
+func allocateDrawMemory(count int, size uintptr, high bool) unsafe.Pointer {
+	if high && count > 0 && size != 0 && uintptr(count) <= ^uintptr(0)/size {
+		p, _ := alloc.CallocHigh(count, size)
+		return p
+	}
+	return C.calloc(C.size_t(count), C.size_t(size))
 }
 
-//export nox_draw_memory_release_go
-func nox_draw_memory_release_go(ptr unsafe.Pointer) {
+func freeDrawMemory(ptr unsafe.Pointer) {
 	if !alloc.TryFreePtr(ptr) {
 		C.free(ptr)
 	}

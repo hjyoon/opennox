@@ -36,9 +36,6 @@ int sub_467CA0();
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
 void* nox_xxx_spriteGetMB_476F80();
 int nox_xxx_netOnPacketRecvCli_48EA70(int a1, unsigned char* data, int sz);
-static intptr_t nox_xxx_netSendLineMessage_go(nox_object_t* a1, wchar2_t* str) {
-	return nox_xxx_netSendLineMessage_4D9EB0(a1, str);
-}
 
 nox_drawable* nox_xxx_netSpriteByCodeDynamic_45A6F0(int a1);
 
@@ -188,11 +185,16 @@ func Nox_client_getServerAddr_43B300() netip.Addr {
 	return int2ip(uint32(nox_client_getServerAddr_43B300()))
 }
 
-func Nox_xxx_netSendLineMessage_4D9EB0(u *server.Object, s string) bool {
-	_ = netmsg.MSG_TEXT_MESSAGE
-	cstr, free := CWString(s)
-	defer free()
-	return C.nox_xxx_netSendLineMessage_go(asObjectC(u), cstr) != 0
+func Nox_xxx_netSendLineMessage_4D9EB0(unit *server.Object, message string) bool {
+	if unit == nil {
+		return false
+	}
+	if !unit.Class().Has(object.ClassPlayer) {
+		return true
+	}
+	var text [256]uint16
+	alloc.StrCopyZero16(text[:], message)
+	return sendLineMessageText(unit.UpdateData, (*wchar2_t)(unsafe.Pointer(&text[0]))) != 0
 }
 
 //export nox_server_playerIndexFromUpdateData_4D9EB0

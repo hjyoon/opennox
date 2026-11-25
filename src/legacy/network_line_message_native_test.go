@@ -3,9 +3,15 @@ package legacy
 import (
 	"bytes"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/strman"
+
+	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/server"
 )
 
 func TestNetLineMessagePacket4D9EB0Encoding(t *testing.T) {
@@ -41,5 +47,31 @@ func TestNetLineMessagePacket4D9EB0Encoding(t *testing.T) {
 				t.Fatalf("decoded = %+v, error=%v", decoded, err)
 			}
 		})
+	}
+}
+
+func TestNetLineMessageGoTextPreservesPercentSigns(t *testing.T) {
+	world := server.NewHigh(nil, nil, strman.New())
+	t.Cleanup(world.Close)
+	world.NetList.Init()
+	t.Cleanup(world.NetList.Free)
+	oldServer := GetServer
+	GetServer = func() Server { return &chatLegacyServer528AC0{srv: world} }
+	t.Cleanup(func() { GetServer = oldServer })
+
+	const index = 3
+	player := world.Players.ByIndRaw(index)
+	player.PlayerInd = index
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	const message = "Progress: 100% (%s %% %d)"
+	if !Nox_xxx_netSendLineMessage_4D9EB0(unit, message) {
+		t.Fatal("could not queue line message")
+	}
+	packet := world.NetList.CopyPacketsA(index, netlist.Kind1)
+	const header = 11
+	if len(packet) != header+len(message)+1 || packet[0] != byte(netmsg.MSG_TEXT_MESSAGE) ||
+		packet[8] != byte(len(message)+1) || string(packet[header:len(packet)-1]) != message || packet[len(packet)-1] != 0 {
+		t.Fatalf("packet = %x, want literal %q", packet, message)
 	}
 }

@@ -273,7 +273,7 @@ func Get_nox_thing_glow_orb_move_draw() unsafe.Pointer {
 }
 
 func Nox_xxx_drawAllMB_475810_draw_B(vp *noxrender.Viewport) int {
-	return int(C.nox_xxx_drawAllMB_475810_draw_B((*nox_draw_viewport_t)(vp.C())))
+	return int(nox_xxx_drawAllMB_475810_draw_B((*nox_draw_viewport_t)(vp.C())))
 }
 func Sub_4C5060(vp *noxrender.Viewport) {
 	C.sub_4C5060((*nox_draw_viewport_t)(vp.C()))
@@ -311,7 +311,7 @@ func clientSentryRayScreenPosition4C5060(vp *noxrender.Viewport, from, to image.
 	return image.Pt(int(cfrom.field_0), int(cfrom.field_4)), image.Pt(int(cto.field_0), int(cto.field_4))
 }
 func Nox_xxx_drawWalls_473C10(vp *noxrender.Viewport, a2 *server.Wall) {
-	C.nox_xxx_drawWalls_473C10((*nox_draw_viewport_t)(vp.C()), a2.C())
+	nox_xxx_drawWalls_473C10((*nox_draw_viewport_t)(vp.C()), a2.C())
 }
 func Sub_476080(a1 unsafe.Pointer) int {
 	return int(sub_476080((*C.uchar)(a1)))

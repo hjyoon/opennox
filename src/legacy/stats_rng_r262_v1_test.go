@@ -62,6 +62,9 @@ func TestStatsRNG262CompleteNativeBody(t *testing.T) {
 	if !bytes.Equal(blob[8368:8376], constant) {
 		t.Fatal("startup coefficient differs")
 	}
+	t.Run("linked_go", func(t *testing.T) {
+		testStatsRandomOnLinkedGo(t, original)
+	})
 	var input bytes.Buffer
 	input.Write(constant)
 	binary.Write(&input, binary.LittleEndian, uint32(len(original.Rows)))
@@ -94,7 +97,7 @@ func TestStatsRNG262CompleteNativeBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1_2.c")
+	source, err := os.ReadFile(statsPacketReferenceC)
 	if err != nil {
 		t.Fatal(err)
 	}

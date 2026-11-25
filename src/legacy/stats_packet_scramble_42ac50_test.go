@@ -13,7 +13,7 @@ func TestStatsPacketScramble42AC50NativeBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1_2.c")
+	source, err := os.ReadFile(statsPacketReferenceC)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -13,7 +13,7 @@ func TestStatsPacketRLE42A970ByteComparisons(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source, err := os.ReadFile("GAME1_2.c")
+	source, err := os.ReadFile(statsPacketReferenceC)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,12 +45,13 @@ func TestStatsPacketRLE42A970ByteComparisons(t *testing.T) {
 	} else {
 		t.Log(strings.TrimSpace(string(output)))
 	}
+	transcript, err := exec.Command(binary, "--json").Output()
+	if err != nil {
+		t.Fatalf("read preserved compression cases: %v", err)
+	}
+	testStatsPacketRLEOnLinkedGo(t, transcript)
 	if receipt := os.Getenv("NOX_STATS_RLE_NATIVE_JSON"); receipt != "" {
-		output, err := exec.Command(binary, "--json").Output()
-		if err != nil {
-			t.Fatalf("record native BYTE cases: %v", err)
-		}
-		if err := os.WriteFile(receipt, output, 0600); err != nil {
+		if err := os.WriteFile(receipt, transcript, 0600); err != nil {
 			t.Fatal(err)
 		}
 	}

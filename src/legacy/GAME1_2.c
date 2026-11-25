@@ -161,15 +161,6 @@ int sub_428220(float2* a1, float4* a2) {
 }
 #endif
 
-//----- (004282D0) --------------------------------------------------------
-char* sub_4282D0(char* a1, int a2) {
-	char* result; // eax
-
-	result = strncpy((char*)getMemAt(0x5D4594, 741316), a1, 0x10u);
-	*getMemU32Ptr(0x5D4594, 741304) = a2;
-	return result;
-}
-
 //----- (004282F0) --------------------------------------------------------
 void* sub_4282F0(int a1, int a2, size_t a3) {
 	int v3;         // ebx

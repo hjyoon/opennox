@@ -60,7 +60,13 @@ static void startup_free(void* pointer) {
 #define time fixture_time
 // PRODUCTION_BULK_BODY
 // PRODUCTION_START_BODY
-// PRODUCTION_IP_ROOT
+char* sub_4282D0(char* a1, int a2) {
+	char* result; // eax
+
+	result = strncpy((char*)getMemAt(0x5D4594, 741316), a1, 0x10u);
+	*getMemU32Ptr(0x5D4594, 741304) = a2;
+	return result;
+}
 // PRODUCTION_START_ROOT
 #undef time
 #undef free

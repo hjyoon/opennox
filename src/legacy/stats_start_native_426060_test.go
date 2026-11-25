@@ -58,8 +58,6 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	program = strings.Replace(program, "// PRODUCTION_START_HEADER", read("stats_start_native.h"), 1)
 	program = strings.Replace(program, "// PRODUCTION_BULK_BODY", cut(read("stats_bulk_native.c"), "// NATIVE_STATS_IMPLEMENTATION", ""), 1)
 	program = strings.Replace(program, "// PRODUCTION_START_BODY", cut(read("stats_start_native.c"), "// NATIVE_STATS_START_IMPLEMENTATION", ""), 1)
-	ipSignature := "char* sub_4282D0(char* a1, int a2) {"
-	program = strings.Replace(program, "// PRODUCTION_IP_ROOT", ipSignature+cut(read("GAME1_2.c"), ipSignature, "\n//----- (004282F0)"), 1)
 	rootSignature := "void sub_426060() {"
 	program = strings.Replace(program, "// PRODUCTION_START_ROOT", rootSignature+cut(read("server__system__server.c"), rootSignature, "\n//----- (004D0CF0)"), 1)
 	compiler := strings.Fields(os.Getenv("CC"))

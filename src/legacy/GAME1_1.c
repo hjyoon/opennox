@@ -2065,23 +2065,6 @@ int sub_424D20(int a1) {
 #endif
 
 
-//----- (00424D80) --------------------------------------------------------
-int nox_xxx_abilityNameToN_424D80(const char* a1) {
-	int v2 = 0;
-	const char* v1 = getMemPtr(0x587000, 69736);
-	if (!v1) {
-		return 0;
-	}
-	while (strcmp(v1, a1)) {
-		++v2;
-		v1 = getMemPtr(0x587000, 69736 + 4 * v2);
-		if (!v1) {
-			return 0;
-		}
-	}
-	return v2;
-}
-
 // 424FE7: variable 'v34' is possibly undefined
 // 424F00: using guessed type char var_100[256];
 

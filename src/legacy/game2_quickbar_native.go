@@ -1279,7 +1279,7 @@ func sub_460A10(data unsafe.Pointer, rows, slots C.int, kind C.char) C.int {
 				if kind != 0 {
 					*g2qW(p, 0) = uint32(C.nox_xxx_spellNameToN_4243F0(&name[0]))
 				} else {
-					*g2qW(p, 0) = uint32(C.nox_xxx_abilityNameToN_424D80(&name[0]))
+					*g2qW(p, 0) = uint32(abilityIDBySaveName(GoString(&name[0])))
 				}
 			} else {
 				var name *C.char

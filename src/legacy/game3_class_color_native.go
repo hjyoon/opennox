@@ -124,7 +124,6 @@ extern void* dword_5d4594_1308164;
 extern int nox_game_showOptions_native(void);
 void nox_video_setMenuOptions(nox_window*);
 int nox_gui_menu_proc_ext(int);
-void sub_4AA650(void);
 static inline void* game3_native_word_ptr(uintptr_t word) { return (void*)word; }
 */
 import "C"
@@ -730,11 +729,11 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			C.sub_486320(C.dword_587000_122852, C.int(arg))
 			if arg != 0 {
 				if C.sub_44D990() != 0 {
-					C.sub_4AA650()
+					optionsDialogCycleNative4AA650()
 					return 0
 				}
 				game3OptionsToggle(C.dword_5d4594_1309732)
-				C.sub_4AA650()
+				optionsDialogCycleNative4AA650()
 				return 0
 			}
 			if C.sub_44D990() != 1 {
@@ -775,7 +774,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 				if C.sub_44D990() == 0 {
 					game3OptionsToggle(C.dword_5d4594_1309732)
 				}
-				C.sub_4AA650()
+				optionsDialogCycleNative4AA650()
 				return 0
 			}
 			if C.sub_44D990() != 1 {

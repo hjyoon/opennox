@@ -30,7 +30,6 @@ extern int nox_win_width;
 int nox_gui_menu_proc_ext(int);
 void nox_video_setMenuOptions(nox_window*);
 void nox_common_writecfgfile(char*);
-void sub_4AA650(void);
 */
 import "C"
 
@@ -413,7 +412,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 				if C.sub_44D990() == 0 {
 					game3IngameOptionsToggle(C.dword_5d4594_1309836)
 				}
-				C.sub_4AA650()
+				optionsDialogCycleNative4AA650()
 			} else if C.sub_44D990() == 1 {
 				game3IngameOptionsToggle(C.dword_5d4594_1309836)
 			}

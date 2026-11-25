@@ -169,7 +169,6 @@ extern uint64_t qword_581450_10256;
 extern uint64_t qword_581450_9552;
 extern uint64_t qword_581450_9512;
 extern uint64_t qword_5d4594_815068;
-extern uint64_t qword_5d4594_814956;
 extern uint64_t qword_581450_10176;
 extern uint32_t dword_5d4594_1316408;
 extern uint32_t dword_587000_292492;

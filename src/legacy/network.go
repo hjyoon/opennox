@@ -19,7 +19,6 @@ extern unsigned int dword_5d4594_2660032;
 extern unsigned int dword_5d4594_814548;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int nox_player_netCode_85319C;
-extern unsigned long long qword_5d4594_814956;
 extern uint32_t dword_5d4594_1200804;
 extern uint32_t dword_5d4594_1200832;
 extern uint32_t dword_5d4594_1563276;

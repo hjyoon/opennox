@@ -8,5 +8,6 @@ extern uint32_t dword_5d4594_1064868;
 extern uint32_t dword_587000_145668;
 extern uint32_t dword_587000_145664;
 extern uint32_t dword_5d4594_1305748;
+extern uint64_t qword_5d4594_814956;
 
 #endif

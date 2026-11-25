@@ -265,7 +265,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		sub_453F70((*C.nox_cgo_const_void)(unsafe.Add(data, 24)))
 		sub_4535E0((*C.int)(unsafe.Add(data, 44)))
 		sub_4535F0(*(*C.int)(unsafe.Add(data, 48)))
-		C.sub_459880(settings)
+		sub_459880(settings)
 		g2ServerEvent(list, 16403, ^uintptr(0), 0)
 		sub_459D50(1)
 	case 10175:

@@ -50,7 +50,7 @@ func sub_457B60(input *C.char) C.int {
 		if g2ServerGame(128) {
 			source := C.nox_xxx_cliGamedataGet_416590(1)
 			mode := *(*uint16)(unsafe.Add(unsafe.Pointer(source), 52)) & 0x17F0
-			C.nox_client_guiserv_updateMapList_458230(C.int(mode), source, true)
+			nox_client_guiserv_updateMapList_458230(C.int(mode), source, true)
 			data = C.sub_4165B0()
 			cell := (*uint16)(g2ServerAt(data, 52))
 			*cell = mode | (*cell & 0xE80F)
@@ -68,7 +68,7 @@ func sub_457B60(input *C.char) C.int {
 				C.sub_46AD20(C.dword_5d4594_1046508, 10330, 10333, 0)
 			}
 			data = input
-			C.nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
+			nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
 		}
 		g2ServerIntText(C.dword_5d4594_1046516, int32(uint16(C.nox_xxx_servGamedataGet_40A020(C.short(g2ServerMode(data))))), 0)
 		g2ServerIntText(C.dword_5d4594_1046520, int32(C.sub_40A180(C.short(g2ServerMode(data)))), 0)
@@ -81,7 +81,7 @@ func sub_457B60(input *C.char) C.int {
 		C.sub_46AD20(C.dword_5d4594_1046504, 10134, 10135, 0)
 		C.sub_46ACE0(C.dword_5d4594_1046492, 10141, 10141, 1)
 		data = input
-		C.nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
+		nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
 		sub_457460(input)
 	}
 	if bool(C.nox_xxx_CheckGameplayFlags_417DA0(2)) {
@@ -90,9 +90,9 @@ func sub_457B60(input *C.char) C.int {
 	if bool(C.nox_xxx_CheckGameplayFlags_417DA0(1)) {
 		g2ServerChild(C.dword_5d4594_1046508, 10333).draw_data.field_0 |= 4
 	}
-	name := C.nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(g2ServerMode(data)))
+	name := nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(g2ServerMode(data)))
 	g2ServerText(g2ServerChild(C.dword_5d4594_1046492, 10119), 16385, unsafe.Pointer(name), 0)
-	C.sub_459880(data)
+	sub_459880(data)
 	return sub_457F30(C.int(g2ServerMode(data) >> 12 & 1))
 }
 
@@ -320,7 +320,7 @@ func sub_459700() C.int {
 	g2ServerEvent(C.dword_5d4594_1046496, 16403, uintptr(int32(index)), 0)
 	C.sub_57A9F0(data, internCStr("user.rul"))
 	C.sub_57A1E0((*C.int)(unsafe.Pointer(data)), internCStr("user.rul"), nil, 5, C.short(g2ServerMode(data)))
-	C.sub_459880(data)
+	sub_459880(data)
 	return sub_459D50(1)
 }
 
@@ -411,11 +411,11 @@ func sub_459C30() C.int {
 	if C.dword_5d4594_1046492 == nil {
 		return 0
 	}
-	C.sub_459880(data)
+	sub_459880(data)
 	C.sub_4BDF70((*C.int)(unsafe.Pointer(data)))
-	C.nox_client_guiserv_updateMapList_458230(C.int(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))), data, false)
+	nox_client_guiserv_updateMapList_458230(C.int(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))), data, false)
 	sub_457460(data)
-	name := C.nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))))
+	name := nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))))
 	return C.int(g2ServerText(g2ServerChild(C.dword_5d4594_1046492, 10119), 16385, unsafe.Pointer(name), 0))
 }
 

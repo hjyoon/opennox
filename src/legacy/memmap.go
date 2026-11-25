@@ -13,6 +13,7 @@ extern unsigned char byte_973A20[704];
 */
 import "C"
 import (
+	"slices"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -37,4 +38,45 @@ func mem_getPtrValue(base, off C.uintptr_t) unsafe.Pointer {
 //export mem_setPtrValue
 func mem_setPtrValue(base, off C.uintptr_t, value unsafe.Pointer) {
 	*memmap.PtrPtr(uintptr(base), uintptr(off)) = value
+}
+
+// Keep the original switch order for lookups that fall through their first blob.
+var legacyMemoryBlobOrder = [...]uintptr{
+	0x581450, 0x587000, 0x5D4594, 0x973CE0, 0x973F18, 0x85B3FC, 0x852978, 0x973A20,
+}
+
+func legacyMemoryBlobPointer(blob *memmap.Blob, off, size uintptr) unsafe.Pointer {
+	if blob == nil || len(blob.Data) == 0 {
+		return nil
+	}
+	capacity := uintptr(len(blob.Data))
+	if off > capacity || size > capacity-off {
+		return nil
+	}
+	return unsafe.Add(unsafe.Pointer(&blob.Data[0]), off)
+}
+
+func legacyMemoryPointer(base, off, size uintptr) unsafe.Pointer {
+	blob := memmap.BlobByAddr(base)
+	if blob == nil || blob.Addr != base {
+		return nil
+	}
+	if pointer := legacyMemoryBlobPointer(blob, off, size); pointer != nil {
+		return pointer
+	}
+	next := slices.Index(legacyMemoryBlobOrder[:], base)
+	if next < 0 {
+		return nil
+	}
+	for _, address := range legacyMemoryBlobOrder[next+1:] {
+		if pointer := legacyMemoryBlobPointer(memmap.BlobByAddr(address), off, size); pointer != nil {
+			return pointer
+		}
+	}
+	return nil
+}
+
+//export nox_legacy_memory_pointer
+func nox_legacy_memory_pointer(base, off, size C.uintptr_t) unsafe.Pointer {
+	return legacyMemoryPointer(uintptr(base), uintptr(off), uintptr(size))
 }

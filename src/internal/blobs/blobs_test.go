@@ -92,3 +92,24 @@ func TestReadBlobs(t *testing.T) {
 	require.Len(t, bl.mapg1.blobs2, blobCnt)
 	require.Len(t, bl.mapg2.blobs, blobCnt)
 }
+
+func TestAddBlobWithGoMemoryLookup(t *testing.T) {
+	dir := blobTestFixture(t)
+	const adapter = "void* mem_getPtrSize(unsigned base, unsigned off, unsigned size);\n"
+	path := filepath.Join(dir, "memmap.c")
+	require.NoError(t, os.WriteFile(path, []byte(adapter), 0644))
+
+	blobs, err := ReadBlobs()
+	require.NoError(t, err)
+	blobs.Add(Blob{Blob: 0x4000, Size: 4, Data: []byte{13, 14, 15, 16}})
+	require.NoError(t, blobs.Write())
+
+	actual, err := os.ReadFile(path)
+	require.NoError(t, err)
+	require.Equal(t, adapter, string(actual))
+	blobs, err = ReadBlobs()
+	require.NoError(t, err)
+	require.NotNil(t, blobs.Get(0x4000))
+	require.Len(t, blobs.mapg1.blobs1, 4)
+	require.Len(t, blobs.mapg2.blobs, 4)
+}

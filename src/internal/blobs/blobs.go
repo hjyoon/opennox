@@ -133,8 +133,10 @@ func (b *Blobs) Add(v Blob) {
 	b.mapg1.blobs1 = append(b.mapg1.blobs1, v)
 	b.mapg1.blobs2 = append(b.mapg1.blobs2, v)
 	b.mapg2.blobs = append(b.mapg2.blobs, v)
-	b.mapc.blobs1 = append(b.mapc.blobs1, v)
-	b.mapc.blobs2 = append(b.mapc.blobs2, v)
+	if len(b.mapc.blobs1) != 0 {
+		b.mapc.blobs1 = append(b.mapc.blobs1, v)
+		b.mapc.blobs2 = append(b.mapc.blobs2, v)
+	}
 	b.data.blobs = append(b.data.blobs, v)
 }
 
@@ -202,6 +204,10 @@ func (b *Blobs) readMemmapC() error {
 }
 
 func (b *Blobs) writeMemmapC() error {
+	if len(b.mapc.blobs1) == 0 {
+		return nil
+	}
+
 	f, err := os.Create(Path(memmapC))
 	if err != nil {
 		return err

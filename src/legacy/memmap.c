@@ -1,55 +1,26 @@
-// must be before any includes
 #define NOX_IN_MEMMAP
-#include <stdint.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-// unknown element size; assumes int
+// Width used by the generic legacy accessor.
 #define MEMLOG_UNK_SIZE sizeof(int)
 
-extern unsigned char byte_581450[23472];
-extern unsigned char byte_5D4594[2598284];
-extern unsigned char byte_587000[316820];
-extern unsigned char byte_973CE0[568];
-extern unsigned char byte_973F18[44881];
-extern unsigned char byte_85B3FC[1029636];
-extern unsigned char byte_852978[40];
-extern unsigned char byte_973A20[704];
 #ifndef NOX_CGO_MEMMAP
+extern void* nox_legacy_memory_pointer(uintptr_t base, uintptr_t off, uintptr_t size);
+
 void* mem_getPtrSize(uintptr_t base, uintptr_t off, uintptr_t size) {
-	switch (base) {
-	case 0x581450:
-		if (off + size <= sizeof(byte_581450))
-			return &byte_581450[off];
-	case 0x587000:
-		if (off + size <= sizeof(byte_587000))
-			return &byte_587000[off];
-	case 0x5D4594:
-		if (off + size <= sizeof(byte_5D4594))
-			return &byte_5D4594[off];
-	case 0x973CE0:
-		if (off + size <= sizeof(byte_973CE0))
-			return &byte_973CE0[off];
-	case 0x973F18:
-		if (off + size <= sizeof(byte_973F18))
-			return &byte_973F18[off];
-	case 0x85B3FC:
-		if (off + size <= sizeof(byte_85B3FC))
-			return &byte_85B3FC[off];
-	case 0x852978:
-		if (off + size <= sizeof(byte_852978))
-			return &byte_852978[off];
-	case 0x973A20:
-		if (off + size <= sizeof(byte_973A20))
-			return &byte_973A20[off];
+	void* ptr = nox_legacy_memory_pointer(base, off, size);
+	if (ptr) {
+		return ptr;
 	}
-	fprintf(stderr, "Invalid memory access! Requested = %x+%d[%d]\n", base, off, size);
+	fprintf(stderr, "Invalid memory access! Requested = %" PRIxPTR "+%" PRIuPTR "[%" PRIuPTR "]\n",
+	        base, off, size);
 	abort();
-	return 0;
 }
-#else  // NOX_CGO_MEMMAP
+#else
 void* mem_getPtrSize(uintptr_t base, uintptr_t off, uintptr_t size);
-#endif // NOX_CGO_MEMMAP
+#endif
 
 // defined in the header, emits the signature; we need an implementation now
 #undef MEM_FUNC_PTR

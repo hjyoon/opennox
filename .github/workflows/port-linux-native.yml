@@ -3,6 +3,13 @@ name: Porting Linux native checkpoint
 on:
   workflow_dispatch:
     inputs:
+      architecture:
+        description: Native Linux runner architecture
+        type: choice
+        options:
+          - amd64
+          - arm64
+        default: amd64
       products:
         description: Native products to qualify
         type: choice
@@ -25,17 +32,19 @@ permissions:
 
 jobs:
   native:
-    name: Linux/amd64 ${{ matrix.product }}
+    name: Linux/${{ matrix.arch }} ${{ matrix.product }}
     if: github.ref == 'refs/heads/port/go1.26-multiarch' || github.ref == 'refs/heads/port/go1.27-multiarch'
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
+        arch:
+          - ${{ inputs.architecture || 'amd64' }}
         product: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.products == 'server') && '["opennox-server"]' || (github.event_name == 'workflow_dispatch' && inputs.products == 'server-hd') && '["opennox-server-hd"]' || '["opennox","opennox-hd","opennox-server","opennox-server-hd"]') }}
     env:
       GOOS: linux
-      GOARCH: amd64
+      GOARCH: ${{ matrix.arch }}
       CGO_ENABLED: '1'
       CC: gcc
       CXX: g++
@@ -51,8 +60,8 @@ jobs:
       SDL_AUDIODRIVER: dummy
       ALSOFT_DRIVERS: 'null'
       NATIVE_PRODUCT: ${{ matrix.product }}
-      NATIVE_REPORT_DIR: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}
-      OPENNOX_LOCAL_TEST_ARTIFACTS: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}/native-fixture-artifacts
+      NATIVE_REPORT_DIR: ${{ github.workspace }}/build/linux-${{ matrix.arch }}-${{ matrix.product }}
+      OPENNOX_LOCAL_TEST_ARTIFACTS: ${{ github.workspace }}/build/linux-${{ matrix.arch }}-${{ matrix.product }}/native-fixture-artifacts
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -70,9 +79,14 @@ jobs:
       - name: Verify native toolchain
         working-directory: src
         run: |
-          test "$(uname -m)" = x86_64
+          case "$GOARCH" in
+            amd64) host_machine=x86_64 ;;
+            arm64) host_machine=aarch64 ;;
+            *) exit 2 ;;
+          esac
+          test "$(uname -m)" = "$host_machine"
           test "$(../scripts/go.sh env GOHOSTOS)" = linux
-          test "$(../scripts/go.sh env GOHOSTARCH)" = amd64
+          test "$(../scripts/go.sh env GOHOSTARCH)" = "$GOARCH"
           mkdir -p "$NATIVE_REPORT_DIR"
           ../scripts/go.sh version | tee "$NATIVE_REPORT_DIR/go-version.txt"
           gcc --version | tee "$NATIVE_REPORT_DIR/cc-version.txt"
@@ -83,7 +97,7 @@ jobs:
         id: native_build
         working-directory: src
         run: |
-          ../scripts/go.sh run ./internal/noxbuild -o="$NATIVE_REPORT_DIR" -os=linux -arch=amd64 -cc=gcc -cxx=g++ "$NATIVE_PRODUCT"
+          ../scripts/go.sh run ./internal/noxbuild -o="$NATIVE_REPORT_DIR" -os=linux -arch="$GOARCH" -cc=gcc -cxx=g++ "$NATIVE_PRODUCT"
           product="$NATIVE_REPORT_DIR/$NATIVE_PRODUCT"
           ../scripts/go.sh run ./internal/noxbuild -verify "$product" > "$NATIVE_REPORT_DIR/product-verification.txt"
           ../scripts/go.sh version -m "$product" > "$NATIVE_REPORT_DIR/product-build-info.txt"
@@ -189,7 +203,7 @@ jobs:
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
-          name: linux-amd64-${{ matrix.product }}-${{ github.sha }}
-          path: build/linux-amd64-${{ matrix.product }}/
+          name: linux-${{ matrix.arch }}-${{ matrix.product }}-${{ github.sha }}
+          path: build/linux-${{ matrix.arch }}-${{ matrix.product }}/
           if-no-files-found: warn
           retention-days: 7

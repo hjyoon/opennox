@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 //go:embed testdata/gui_geometry_original_v1.json.gz
@@ -66,7 +67,7 @@ func TestGuiGeometryNativeLayout(t *testing.T) {
 	want[22] = unsafe.Sizeof([4]float32{})
 	want[23] = unsafe.Sizeof(win.DrawData().Field0)
 	want[24] = unsafe.Sizeof(uint32(0))
-	if got := guiGeometryNativeLayoutC(); got != want {
+	if got := cfixture.GUIGeometryLayout(); got != want {
 		t.Fatal("native Window/viewport and fixed32 geometry layouts", got, want)
 	}
 	if unsafe.Offsetof(vp.World) != 4*word || unsafe.Offsetof(vp.Size) != 8*word || unsafe.Offsetof(vp.Field10) != 10*word || unsafe.Offsetof(vp.Field11) != 11*word || unsafe.Offsetof(vp.Jiggle12) != 12*word {
@@ -139,7 +140,7 @@ func guiGeometryNativeRun(t *testing.T, facade bool) {
 					copy(input[6:10], c.Input.Bounds[:])
 					copy(input[10:23], c.Input.Viewport[:])
 					copy(input[23:25], c.Input.Out[:])
-					guiGeometryNativeSeedC(unsafe.Pointer(&raw[0]), placement, &input, point, bounds, out)
+					cfixture.GUIGeometrySeed(unsafe.Pointer(&raw[0]), placement, &input, point, bounds, out)
 					win := (*gui.Window)(unsafe.Pointer(&raw[placement+0x5000]))
 					vp := (*noxrender.Viewport)(unsafe.Pointer(&raw[placement+0x1000]))
 					vpWords := (*[13]uintptr)(unsafe.Pointer(vp))
@@ -270,10 +271,10 @@ func TestGuiGeometryNativeDoorDraw(t *testing.T) {
 						input := [25]uint32{}
 						viewport := [13]uint32{12, 24, 652, 504, 100, 200, 740, 680, 640, 480, 0, 0, 0}
 						copy(input[10:23], viewport[:])
-						guiGeometryNativeSeedC(unsafe.Pointer(&raw[0]), placement, &input, 0x2000, 0x3000, 0x4000)
-						guiGeometryNativeDoorSeed(unsafe.Pointer(&raw[0]), placement, frame, metal)
+						cfixture.GUIGeometrySeed(unsafe.Pointer(&raw[0]), placement, &input, 0x2000, 0x3000, 0x4000)
+						cfixture.GUIGeometryDoorSeed(unsafe.Pointer(&raw[0]), placement, frame, metal)
 						before := append([]byte(nil), raw...)
-						image, x, y, calls, result := guiGeometryNativeDoorCall(route, unsafe.Pointer(&raw[0]), placement)
+						image, x, y, calls, result := cfixture.GUIGeometryDoorCall(route, unsafe.Pointer(&raw[0]), placement)
 						dx, dy := int32(0), int32(0)
 						switch frame {
 						case 0:
@@ -300,4 +301,27 @@ func TestGuiGeometryNativeDoorDraw(t *testing.T) {
 			}
 		}
 	}
+}
+
+func guiGeometryNativeCall(route, index int, win unsafe.Pointer, enabled int32, viewport, point, bounds, out unsafe.Pointer) (uint32, unsafe.Pointer) {
+	if route != 2 {
+		return cfixture.GUIGeometryCall(route, index, win, enabled, viewport, point, bounds, out)
+	}
+	switch index {
+	case 0:
+		return 0, guiGeometryStyle46AE10((*gui.Window)(win), enabled).C()
+	case 1:
+		return uint32(guiGeometryPointInRect4281F0((*ntype.Point32)(point), (*[4]int32)(bounds))), nil
+	case 2:
+		return uint32(guiGeometryFloatInRect428220((*[2]float32)(point), (*[4]float32)(bounds))), nil
+	case 3:
+		return uint32(guiGeometryToScreen4739E0((*noxrender.Viewport)(viewport), (*ntype.Point32)(point), (*ntype.Point32)(out))), nil
+	case 4:
+		return uint32(guiGeometryToWorld473A10((*noxrender.Viewport)(viewport), (*ntype.Point32)(point), (*ntype.Point32)(out))), nil
+	}
+	panic("invalid GUI geometry entry")
+}
+
+func guiGeometryNativeStyleFacade(win unsafe.Pointer, enabled int32) int32 {
+	return g2qStyle((*nox_window)(win), enabled)
 }

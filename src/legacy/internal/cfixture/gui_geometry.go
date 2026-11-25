@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "GAME1.h"
@@ -87,52 +87,27 @@ static gui_geometry_door_result_C gui_geometry_door_call_C(unsigned route,void*p
 */
 import "C"
 
-import (
-	"unsafe"
+import "unsafe"
 
-	"github.com/opennox/opennox/v1/client/gui"
-	"github.com/opennox/opennox/v1/client/noxrender"
-	"github.com/opennox/opennox/v1/common/ntype"
-)
-
-func guiGeometryNativeLayoutC() (out [25]uintptr) {
+func GUIGeometryLayout() (out [25]uintptr) {
 	C.gui_geometry_layout_C((*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return
 }
 
-func guiGeometryNativeSeedC(raw unsafe.Pointer, placement int, input *[25]uint32, point, bounds, out int) {
+func GUIGeometrySeed(raw unsafe.Pointer, placement int, input *[25]uint32, point, bounds, out int) {
 	C.gui_geometry_seed_C(raw, C.size_t(placement), (*C.uint32_t)(unsafe.Pointer(&input[0])), C.size_t(point), C.size_t(bounds), C.size_t(out))
 }
 
-func guiGeometryNativeCall(route, index int, win unsafe.Pointer, enabled int32, viewport, point, bounds, out unsafe.Pointer) (uint32, unsafe.Pointer) {
-	if route != 2 {
-		r := C.gui_geometry_call_C(C.uint(route), C.uint(index), (*C.nox_window)(win), C.int(enabled), (*C.nox_draw_viewport_t)(viewport), (*C.int2)(point), bounds, out)
-		return uint32(r.word), r.pointer
-	}
-	switch index {
-	case 0:
-		return 0, guiGeometryStyle46AE10((*gui.Window)(win), enabled).C()
-	case 1:
-		return uint32(guiGeometryPointInRect4281F0((*ntype.Point32)(point), (*[4]int32)(bounds))), nil
-	case 2:
-		return uint32(guiGeometryFloatInRect428220((*[2]float32)(point), (*[4]float32)(bounds))), nil
-	case 3:
-		return uint32(guiGeometryToScreen4739E0((*noxrender.Viewport)(viewport), (*ntype.Point32)(point), (*ntype.Point32)(out))), nil
-	case 4:
-		return uint32(guiGeometryToWorld473A10((*noxrender.Viewport)(viewport), (*ntype.Point32)(point), (*ntype.Point32)(out))), nil
-	}
-	panic("invalid GUI geometry entry")
+func GUIGeometryCall(route, index int, win unsafe.Pointer, enabled int32, viewport, point, bounds, out unsafe.Pointer) (uint32, unsafe.Pointer) {
+	r := C.gui_geometry_call_C(C.uint(route), C.uint(index), (*C.nox_window)(win), C.int(enabled), (*C.nox_draw_viewport_t)(viewport), (*C.int2)(point), bounds, out)
+	return uint32(r.word), r.pointer
 }
 
-func guiGeometryNativeStyleFacade(win unsafe.Pointer, enabled int32) int32 {
-	return g2qStyle((*C.nox_window)(win), enabled)
-}
-
-func guiGeometryNativeDoorSeed(raw unsafe.Pointer, placement, frame, metal int) {
+func GUIGeometryDoorSeed(raw unsafe.Pointer, placement, frame, metal int) {
 	C.gui_geometry_door_seed_C(raw, C.size_t(placement), C.int(frame), C.int(metal))
 }
 
-func guiGeometryNativeDoorCall(route int, raw unsafe.Pointer, placement int) (unsafe.Pointer, int32, int32, int, int) {
+func GUIGeometryDoorCall(route int, raw unsafe.Pointer, placement int) (unsafe.Pointer, int32, int32, int, int) {
 	r := C.gui_geometry_door_call_C(C.uint(route), raw, C.size_t(placement))
 	return r.image, int32(r.x), int32(r.y), int(r.calls), int(r.result)
 }

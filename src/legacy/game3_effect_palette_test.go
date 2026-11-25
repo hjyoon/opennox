@@ -3,6 +3,8 @@ package legacy
 import (
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestGame3HarpoonGeometryOriginalC(t *testing.T) {
@@ -15,7 +17,7 @@ func TestGame3HarpoonGeometryOriginalC(t *testing.T) {
 			{1, 37}, {-1, 37}, {37, 1}, {37, -1}, {-37, -1}, {-1, -37},
 		} {
 			end := game3LinePoint{origin.x + delta.x, origin.y + delta.y}
-			want, wantReturn, address := game3HarpoonOriginalControl(origin, end)
+			want, wantReturn, address := cfixture.Game3HarpoonLineReference(origin.x, origin.y, end.x, end.y)
 			if unsafe.Sizeof(uintptr(0)) > 4 && address <= 0xffffffff {
 				t.Fatalf("original C control requires native high pointers: %#x", address)
 			}

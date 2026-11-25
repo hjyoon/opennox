@@ -1,4 +1,4 @@
-package legacy
+package cfixture
 
 /*
 #include "native_fixture_alloc.h"
@@ -60,10 +60,10 @@ static int game3_ref_line_call(int x1, int y1, int x2, int y2, int* out, uintptr
 */
 import "C"
 
-func game3HarpoonOriginalControl(a, b game3LinePoint) ([15]int32, int32, uintptr) {
+func Game3HarpoonLineReference(x1, y1, x2, y2 int32) ([15]int32, int32, uintptr) {
 	var values [15]C.int
 	var address C.uintptr_t
-	result := C.game3_ref_line_call(C.int(a.x), C.int(a.y), C.int(b.x), C.int(b.y), &values[0], &address)
+	result := C.game3_ref_line_call(C.int(x1), C.int(y1), C.int(x2), C.int(y2), &values[0], &address)
 	var rows [15]int32
 	for i, value := range values {
 		rows[i] = int32(value)

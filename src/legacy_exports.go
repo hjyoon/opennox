@@ -20,7 +20,6 @@ func init() {
 	legacy.Sub_57C490_2 = sub_57C490_2
 	legacy.Nox_thing_debug_draw = nox_thing_debug_draw
 	legacy.Nox_thing_particle_draw = nox_thing_particle_draw_native
-	legacy.DrawLifetimeSparkle = drawSparkleFromLegacy
 	legacy.Sub_4E8290 = sub_4E8290
 	legacy.Sub_4E82C0 = sub_4E82C0
 	legacy.Sub_4E8310 = func() unsafe.Pointer { return unsafe.Pointer(sub_4E8310()) }

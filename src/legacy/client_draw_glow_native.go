@@ -20,6 +20,9 @@ var DrawLifetimeSparkle func(*client.Drawable, *noxrender.Viewport, noxcolor.RGB
 
 //export sub_4B6770
 func sub_4B6770(vp *C.int, dr *C.nox_drawable, bright, dim C.int) C.int {
+	if DrawLifetimeSparkle == nil {
+		return 0
+	}
 	return C.int(DrawLifetimeSparkle(asDrawable(dr), (*noxrender.Viewport)(unsafe.Pointer(vp)),
 		noxcolor.RGBA5551(bright), noxcolor.RGBA5551(dim)))
 }

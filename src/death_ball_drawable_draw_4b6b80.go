@@ -28,6 +28,9 @@ func init() {
 func init() {
 	// Registered C entries use the same palette selection, RNG, lifetime,
 	// clipping and raster implementation as the existing native world route.
+	legacy.DrawLifetimeSparkle = func(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
+		return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
+	}
 	legacy.Nox_thing_magic_sparkle_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
 		bright, dim, _ := sparkleDrawColors4B6770(legacy.Get_nox_thing_magic_sparkle_draw(), noxClient.srv.Rand.Other.Int)
 		return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
@@ -275,10 +278,6 @@ func sparkleLifetime4B6770(dr *client.Drawable, frame uint32) (remaining, durati
 		remaining--
 	}
 	return remaining, duration, remaining > 0 && duration > 0
-}
-
-func drawSparkleFromLegacy(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
-	return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
 }
 
 // MagicSparkleDraw and PixieDustDraw both use sub_4B6770. The original C

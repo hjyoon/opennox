@@ -1,20 +1,15 @@
 package legacy
 
 /*
-#include <stdlib.h>
 #include "GAME1_2.h"
 #include "GAME2.h"
 #include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "client__gui__guiquit.h"
-
-extern obj_5D4594_754088_t *ptr_5D4594_754088, *ptr_5D4594_754092;
 */
 import "C"
 
 import (
-	"unsafe"
-
 	"github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 )
@@ -28,14 +23,6 @@ func sub_42EB90(value C.int) C.int {
 //export sub_42EBA0
 func sub_42EBA0() C.int {
 	return C.int(memmap.Int32(0x5D4594, 754052))
-}
-
-//export sub_42EDC0
-func sub_42EDC0() {
-	C.free(unsafe.Pointer(C.ptr_5D4594_754088))
-	C.ptr_5D4594_754088 = nil
-	C.free(unsafe.Pointer(C.ptr_5D4594_754092))
-	C.ptr_5D4594_754092 = nil
 }
 
 //export sub_436550

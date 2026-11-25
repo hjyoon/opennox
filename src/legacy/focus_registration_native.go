@@ -9,7 +9,45 @@ extern int ptr_5D4594_754088_cnt, ptr_5D4594_754092_cnt;
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
+)
+
+var windowFocused = true
+
+// SetWindowFocused delivers focus transitions through the callbacks registered
+// for GAME.EXE 0042ED20 and 0042ED70.
+func SetWindowFocused(focused bool) {
+	if focused == windowFocused {
+		return
+	}
+	if focused {
+		windowFocused = true
+		runFocusCallbacks(&C.ptr_5D4594_754088, &C.ptr_5D4594_754088_cnt)
+	} else {
+		runFocusCallbacks(&C.ptr_5D4594_754092, &C.ptr_5D4594_754092_cnt)
+		windowFocused = false
+	}
+}
+
+func runFocusCallbacks(records **C.obj_5D4594_754088_t, count *C.int) {
+	// A callback can register another entry and move the array.
+	for i := 0; *records != nil && i < int(*count); i++ {
+		record := unsafe.Slice(*records, int(*count))[i]
+		ccall.CallVoidInt(unsafe.Pointer(record.fnc), int(record.field_4))
+	}
+}
+
+//export sub_42EDC0
+func sub_42EDC0() {
+	C.free(unsafe.Pointer(C.ptr_5D4594_754088))
+	C.free(unsafe.Pointer(C.ptr_5D4594_754092))
+	C.ptr_5D4594_754088, C.ptr_5D4594_754092 = nil, nil
+	C.ptr_5D4594_754088_cnt, C.ptr_5D4594_754092_cnt = 0, 0
+	windowFocused = true
+}
 
 //export sub_42EBB0
 func sub_42EBB0(kind C.uint, callback C.nox_focus_callback, field C.int, name *C.nox_focus_name) {

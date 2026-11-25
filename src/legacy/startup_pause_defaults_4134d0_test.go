@@ -117,13 +117,17 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		spSaveCells4134D0(t)
 		cfixture.StartupPauseFixtureFocusBegin4134D0()
 		defer cfixture.StartupPauseFixtureFocusEnd4134D0()
+		previousFocus := windowFocused
+		windowFocused = true
+		defer func() { windowFocused = previousFocus }()
 		var pauses []uint32
+		pauseState := uint32(0x80000000)
 		o := &startupPauseObserver4134D0{Service: func(site uint32, args []startupPauseArg4134D0) (uint32, bool) {
 			switch site {
 			case 0x41392e, 0x413941:
 				return 0, false
 			case 0x4138e0:
-				return 0x80000000, true
+				return pauseState, true
 			case 0x413900:
 				return 0, true
 			case 0x4138ec, 0x413914:
@@ -149,6 +153,29 @@ func TestStartupPauseNativeDefaults4134D0(t *testing.T) {
 		cfixture.StartupPauseFixtureFocusInvoke4134D0(2, 0, -2147483648)
 		if len(pauses) != 2 || pauses[0] != 0 || pauses[1] != 1 || *(*uint32)(startupPauseDefaultCell4134D0(4)) != 0x80000000 {
 			t.Fatal("stored callbacks use full reply/order")
+		}
+
+		pauses, pauseState = nil, 0
+		for _, focused := range []bool{true, false, false, true, true} {
+			SetWindowFocused(focused)
+		}
+		if len(pauses) != 2 || pauses[0] != 1 || pauses[1] != 0 {
+			t.Fatalf("focus transition pause calls = %v, want [1 0]", pauses)
+		}
+
+		pauses, pauseState = nil, 1
+		SetWindowFocused(false)
+		SetWindowFocused(true)
+		if len(pauses) != 1 || pauses[0] != 1 {
+			t.Fatalf("focus interrupted an existing pause: calls %v", pauses)
+		}
+		SetWindowFocused(false)
+		sub_42EDC0()
+		if !windowFocused || cfixture.StartupPauseFixtureFocusCount4134D0(1) != 0 || cfixture.StartupPauseFixtureFocusCount4134D0(2) != 0 {
+			t.Fatal("focus teardown retained registration state")
+		}
+		if sub413920Native() != 1 || !cfixture.StartupPauseFixtureFocusRecord4134D0(1, 0) || !cfixture.StartupPauseFixtureFocusRecord4134D0(2, 0) {
+			t.Fatal("focus callbacks could not be registered after teardown")
 		}
 	})
 	t.Run("actual_const_qsort", func(t *testing.T) {

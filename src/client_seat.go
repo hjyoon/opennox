@@ -84,9 +84,17 @@ func (c *Client) initSeat(sz image.Point) error {
 	// a display/DPI change. SDL reports mouse positions in logical window units
 	// while OpenGL renders in drawable pixels.
 	c.Seat.OnInput(func(ev seat.InputEvent) {
-		switch ev.(type) {
-		case *seat.MouseMoveEvent, *seat.MouseButtonEvent, seat.WindowEvent:
+		switch ev := ev.(type) {
+		case *seat.MouseMoveEvent, *seat.MouseButtonEvent:
 			syncInputViewport()
+		case seat.WindowEvent:
+			syncInputViewport()
+			switch ev {
+			case seat.WindowFocused:
+				legacy.SetWindowFocused(true)
+			case seat.WindowUnfocused:
+				legacy.SetWindowFocused(false)
+			}
 		}
 	})
 	inp = input.New(c.Log, c.Seat, false, c.Strings().Lang())

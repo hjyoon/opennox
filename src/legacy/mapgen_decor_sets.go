@@ -32,11 +32,11 @@ func mapgenReadDecorEntry(entry *C.nox_mapgen_decor_entry_legacy, file *C.FILE) 
 		return false
 	}
 	if mapgenUppercaseToken(GoString(text)) != "DENSITY" {
-		entry.min_count = C.int32_t(C.atoi(text))
+		entry.min_count = C.int32_t(parseLegacyDecimal32(text))
 		if !read() {
 			return false
 		}
-		entry.max_count = C.int32_t(C.atoi(text))
+		entry.max_count = C.int32_t(parseLegacyDecimal32(text))
 		return true
 	}
 
@@ -49,7 +49,7 @@ func mapgenReadDecorEntry(entry *C.nox_mapgen_decor_entry_legacy, file *C.FILE) 
 		return false
 	}
 	if GoString(text) != "*" {
-		entry.min_count = C.int32_t(C.atoi(text))
+		entry.min_count = C.int32_t(parseLegacyDecimal32(text))
 	}
 	if !read() {
 		return false
@@ -57,7 +57,7 @@ func mapgenReadDecorEntry(entry *C.nox_mapgen_decor_entry_legacy, file *C.FILE) 
 	if GoString(text) == "*" {
 		entry.max_count = 999999
 	} else {
-		entry.max_count = C.int32_t(C.atoi(text))
+		entry.max_count = C.int32_t(parseLegacyDecimal32(text))
 	}
 	return true
 }
@@ -83,11 +83,11 @@ func mapgenReadDecorSet(definition *C.nox_mapgen_decor_definition_legacy, file *
 	if !read() {
 		return 0
 	}
-	set.min_count = C.int32_t(C.atoi(text))
+	set.min_count = C.int32_t(parseLegacyDecimal32(text))
 	if !read() {
 		return 0
 	}
-	set.max_count = C.int32_t(C.atoi(text))
+	set.max_count = C.int32_t(parseLegacyDecimal32(text))
 
 	var current *C.nox_mapgen_decor_entry_legacy
 	for read() {

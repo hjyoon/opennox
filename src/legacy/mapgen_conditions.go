@@ -95,7 +95,7 @@ func mapgenReadThreshold(file *C.FILE, left C.int, output *C.uint32_t) C.int {
 	if nox_mapgenReadComparisonNative_51EAF0(file, &op) == 0 || nox_xxx_mapGenReadLine_51E540(file, scratch) == 0 {
 		return 0
 	}
-	right := C.atoi((*C.char)(unsafe.Pointer(scratch)))
+	right := parseLegacyDecimal32((*C.char)(unsafe.Pointer(scratch)))
 	var matches bool
 	switch op {
 	case 0:
@@ -134,7 +134,7 @@ func nox_mapgenReadConditionNative_51E800(file *C.FILE, output *C.uint32_t) C.in
 		if !strings.ContainsRune(token, '%') {
 			return 0
 		}
-		chance := C.atoi((*C.char)(unsafe.Pointer(scratch)))
+		chance := parseLegacyDecimal32((*C.char)(unsafe.Pointer(scratch)))
 		passed = nox_xxx_mapGenRandFunc_526AC0(1, 100) <= chance
 	}
 	*output = C.uint32_t(bool2int(passed))

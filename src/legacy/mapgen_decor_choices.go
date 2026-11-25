@@ -64,7 +64,7 @@ func mapgenReadChoices(file *C.FILE) (result C.uint32_t) {
 			choice.weight = -1
 			wildcards++
 		} else {
-			choice.weight = int32(C.atoi(text))
+			choice.weight = int32(parseLegacyDecimal32(text))
 			remaining -= choice.weight
 		}
 		switch mapgenReadChoiceItems(file, choice) {

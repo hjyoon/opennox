@@ -71,7 +71,7 @@ func nox_mapgenReadAlgDataNative_51EBB0(raw *C.uint8_t, file *C.FILE) C.int {
 			theme[0] = mapgenSkeletonIndex(alloc.GoStringS(value))
 		default:
 			if index, ok := mapgenAlgorithmIntegerFields[key]; ok {
-				theme[index] = uint32(C.atoi(cvalue))
+				theme[index] = uint32(parseLegacyDecimal32(cvalue))
 			}
 		}
 	}

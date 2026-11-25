@@ -76,7 +76,7 @@ func nox_xxx_genDecorReadOccurLimit_5208D0(token C.int, file *C.FILE) C.int {
 	if def == nil || nox_xxx_mapGenReadLine_51E540(file, text) == 0 {
 		return 0
 	}
-	def.occur_limit = C.uint8_t(C.atoi((*C.char)(unsafe.Pointer(text))))
+	def.occur_limit = C.uint8_t(parseLegacyDecimal32((*C.char)(unsafe.Pointer(text))))
 	return 1
 }
 
@@ -110,14 +110,14 @@ func nox_xxx_genDecorReadRoomSizeCon_5209F0(token C.int, file *C.FILE) C.int {
 		return 0
 	}
 	value := (*C.char)(unsafe.Pointer(text))
-	def.min_room_size = C.int32_t(C.atoi(value))
+	def.min_room_size = C.int32_t(parseLegacyDecimal32(value))
 	if nox_xxx_mapGenReadLine_51E540(file, text) == 0 {
 		return 0
 	}
 	if GoString(value) == "*" {
 		def.max_room_size = 999999
 	} else {
-		def.max_room_size = C.int32_t(C.atoi(value))
+		def.max_room_size = C.int32_t(parseLegacyDecimal32(value))
 	}
 	return 1
 }

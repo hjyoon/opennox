@@ -59,6 +59,26 @@ func TestGame3ConfigCEntriesMatchRetainedReference(t *testing.T) {
 	}
 }
 
+func TestGame3ConfigDecimalKeepsOriginalDwordWrap(t *testing.T) {
+	cell := memmap.PtrUint32(0x5D4594, 1308740)
+	saved := *cell
+	t.Cleanup(func() { *cell = saved })
+	for _, tc := range []struct {
+		text string
+		want uint32
+	}{
+		{" \t+18446744073709551617tail", 1},
+		{"-18446744073709551617", 0xffffffff},
+		{"18446744073709551616", 0},
+		{"-4294967295suffix", 1},
+		{"42\x00ignored", 42},
+	} {
+		if ok, _, _ := cfixture.Game3Config(false, 6, &tc.text); ok != 1 || *cell != tc.want {
+			t.Errorf("decimal input %q stored %#x (status %d), want %#x", tc.text, *cell, ok, tc.want)
+		}
+	}
+}
+
 func TestGame3ColorNameMatchesRetainedC(t *testing.T) {
 	for _, text := range []string{"", " ", "\t\r\n", "name", "  Name  ", "*first?", " ?first/second ", "a|b", `\\foo`, "  :  ", "ab\tcd  ", "abcdefghijklmnopqrstuvwxy"} {
 		t.Run(text, func(t *testing.T) {

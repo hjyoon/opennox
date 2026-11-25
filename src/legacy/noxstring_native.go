@@ -16,6 +16,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/server"
 )
 
 // Keep caller-owned UTF-16 buffers within Go when the caller is native Go.
@@ -25,6 +26,11 @@ func copyWideString(dst, src *wchar2_t) *wchar2_t {
 
 func appendWideString(dst, src *wchar2_t) {
 	nox_wcscat(dst, (*C.nox_const_string_unit_t)(src))
+}
+
+func parseLegacyDecimal32(text *C.char) C.int {
+	value, _ := server.ParseCRTDecimal32(GoString(text))
+	return C.int(value)
 }
 
 // copyLegacyCString applies the legacy formatter's code-unit conversion to

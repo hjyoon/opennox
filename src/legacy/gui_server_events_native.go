@@ -255,10 +255,10 @@ func serverOptionsFieldChanged(eventArg, id uintptr) C.int {
 		alloc.StrCopy(settings.Field0[9:], string(narrow[:StrLenBytes(narrow[:])]))
 		nox_xxx_gameSetServername_40A440((*C.char)(unsafe.Pointer(&settings.Field0[9])))
 	case 10134:
-		settings.Field54 = uint16(max(C.atoi((*C.char)(unsafe.Pointer(&narrow[0]))), 0))
+		settings.Field54 = uint16(max(parseLegacyDecimal32((*C.char)(unsafe.Pointer(&narrow[0]))), 0))
 		sub_459D50(1)
 	case 10135:
-		value := max(C.atoi((*C.char)(unsafe.Pointer(&narrow[0]))), 0)
+		value := max(parseLegacyDecimal32((*C.char)(unsafe.Pointer(&narrow[0]))), 0)
 		if value > 255 {
 			value = 255
 			g2ServerIntText(window, 255, ^uintptr(0))

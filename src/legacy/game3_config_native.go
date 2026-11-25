@@ -77,7 +77,7 @@ func game3ConfigAtoi(s *C.char, off uintptr) C.int {
 	if s == nil {
 		return 0
 	}
-	*memmap.PtrUint32(0x5D4594, off) = uint32(C.atoi(s))
+	*memmap.PtrUint32(0x5D4594, off) = uint32(parseLegacyDecimal32(s))
 	return 1
 }
 
@@ -103,10 +103,10 @@ func sub_4A7C60(s *C.char) C.int {
 	// The second token permits commas and the first permits spaces.
 	tokens := legacyByteTokens{next: (*byte)(unsafe.Pointer(s))}
 	if p := tokens.take(",\t\r\n"); p != nil {
-		*memmap.PtrUint32(0x5D4594, 1308732) = uint32(C.atoi((*C.char)(unsafe.Pointer(p))))
+		*memmap.PtrUint32(0x5D4594, 1308732) = uint32(parseLegacyDecimal32((*C.char)(unsafe.Pointer(p))))
 	}
 	if p := tokens.take(" \t\r\n"); p != nil {
-		*memmap.PtrUint32(0x5D4594, 1308736) = uint32(C.atoi((*C.char)(unsafe.Pointer(p))))
+		*memmap.PtrUint32(0x5D4594, 1308736) = uint32(parseLegacyDecimal32((*C.char)(unsafe.Pointer(p))))
 	}
 	if *memmap.PtrUint32(0x5D4594, 1308732) != 0 && *memmap.PtrUint32(0x5D4594, 1308736) != 0 {
 		return 1

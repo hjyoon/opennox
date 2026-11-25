@@ -41,7 +41,7 @@ func mapgenReadThemeSections(theme *[mapgenThemeWordCount]C.int, file *C.FILE) b
 				if nox_xxx_mapGenReadLine_51E540(file, buf) == 0 {
 					return false
 				}
-				theme[i] = C.atoi(text)
+				theme[i] = parseLegacyDecimal32(text)
 			}
 			continue
 		case "SPELL_SET":

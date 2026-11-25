@@ -12,7 +12,6 @@ package legacy
 #include "client__io__win95__focus.h"
 #include "client__system__parsecmd.h"
 #include "input_common.h"
-#include "MixPatch.h"
 #include "client__gui__tooltip.h"
 #include "client__gui__gamewin__gamewin.h"
 

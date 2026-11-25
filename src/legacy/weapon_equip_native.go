@@ -4,7 +4,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 #include "GAME4_3.h"
-#include "MixPatch.h"
 #include "player_try_equip_4f2f70.h"
 */
 import "C"
@@ -94,18 +93,30 @@ func playerDequipWeapon53A140(owner, item *server.Object, report, broadcast C.in
 }
 
 func restoreGameExShield32(owner *server.Object, update *server.PlayerUpdateData) {
-	C.sub_980523(asObjectC(owner))
+	// GameEx stores the remembered shield in the original 32-bit player slot.
+	remembered := (**server.Object)(unsafe.Add(unsafe.Pointer(update.Player), 2500))
+	for item := owner.InvFirstItem; item != nil; item = item.InvNextItem {
+		if item.Class().Has(object.ClassArmor) && item.Flags().Has(object.FlagEquipped) &&
+			nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectC(item))&0x3000000 != 0 {
+			*remembered = item
+		}
+	}
 	secondary := *(**nox_object_t)(unsafe.Pointer(&update.Field27))
 	if secondary != nil && uint32(nox_xxx_weaponInventoryEquipFlags_415820(secondary))&shieldConflictingWeaponMask != 0 {
 		return
 	}
-	// GameEx stores the remembered shield in the original 32-bit player slot.
-	shield := *(**server.Object)(unsafe.Add(unsafe.Pointer(update.Player), 2500))
+	shield := *remembered
 	if shield == nil || uint8(shield.ObjFlags) != 16 {
-		shield = asObjectS(C.sub_9805EB(asObjectC(owner)))
+		shield = nil
+		for item := owner.InvFirstItem; item != nil; item = item.InvNextItem {
+			if item.Class().Has(object.ClassArmor) && item.ObjFlags == 16 {
+				shield = item
+				break
+			}
+		}
 	}
 	if shield != nil {
-		C.nox_xxx_playerTryEquip_4F2F70(asObjectC(owner), asObjectC(shield))
+		Nox_xxx_playerTryEquip_4F2F70(owner, shield)
 	}
 }
 

@@ -122,11 +122,11 @@ func sub_51A100() {
 	GetServer().S().MapSend.Sub_51A100()
 }
 
-func Nox_server_mapRWMapInfo_42A6E0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWMapInfo_42A6E0, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
+func Nox_server_mapRWMapInfo_42A6E0(cf *cryptfile.CryptFile, _ unsafe.Pointer) error {
+	if cf == nil {
+		cf = cryptfile.Global()
 	}
-	return nil
+	return mapRWMetadata(cf)
 }
 func Nox_server_mapRWWallMap_429B20(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if ccall.CallIntPtr(C.nox_server_mapRWWallMap_429B20, a1) == 0 {
@@ -378,11 +378,11 @@ func Nox_server_mapRWGroupData_505C30(cf *cryptfile.CryptFile, _ unsafe.Pointer)
 	}
 	return mapReadGroups505C30(cf, hooks)
 }
-func Nox_server_mapRWAmbientData_429200(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWAmbientData_429200, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
+func Nox_server_mapRWAmbientData_429200(cf *cryptfile.CryptFile, _ unsafe.Pointer) error {
+	if cf == nil {
+		cf = cryptfile.Global()
 	}
-	return nil
+	return mapRWAmbientColor(cf)
 }
 func Nox_server_mapRWPolygons_428CD0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if ccall.CallIntPtr(C.nox_server_mapRWPolygons_428CD0, a1) == 0 {

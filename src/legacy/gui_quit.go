@@ -75,7 +75,7 @@ func Set_dword_5d4594_2650652(v int) {
 }
 
 func Sub_41CEE0(p unsafe.Pointer, a2 int) {
-	C.sub_41CEE0(p, C.int(a2))
+	writeClientSaveHeader(p, a2 != 0)
 }
 
 func Get_nox_xxx_menuGameOnButton_445840() unsafe.Pointer {

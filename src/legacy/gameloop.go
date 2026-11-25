@@ -225,7 +225,7 @@ func Sub_49AEA0() {
 	sub_49AEA0()
 }
 func Nox_xxx_netSavePlayer_41CE00() {
-	C.nox_xxx_netSavePlayer_41CE00()
+	nox_xxx_netSavePlayer_41CE00()
 }
 func Sub_4D39F0(a1 string) {
 	mapgenInitializeAreaArchive(a1)

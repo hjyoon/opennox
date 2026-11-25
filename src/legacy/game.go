@@ -647,12 +647,10 @@ func Nox_xxx_servGamedataGet_40A020(a1 uint16) int {
 	return int(C.nox_xxx_servGamedataGet_40A020(C.short(a1)))
 }
 func Sub_41D1A0(a1 int) {
-	C.sub_41D1A0(C.int(a1))
+	sub_41D1A0(C.int(a1))
 }
 func Nox_xxx_plrLoad_41A480(a1 string) int {
-	str := CString(a1)
-	defer StrFree(str)
-	return int(C.nox_xxx_plrLoad_41A480(str))
+	return bool2int(loadClientSaveHeader(a1) == nil)
 }
 func Sub_465DE0(a1 int) {
 	C.sub_465DE0(C.int(a1))

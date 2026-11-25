@@ -19,7 +19,6 @@ int sub_41C780(int a1);
 */
 import "C"
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -357,31 +356,13 @@ func sub_41C080(unit, _ unsafe.Pointer) C.int {
 }
 
 func Sub_41C280(cf *cryptfile.CryptFile) error {
-	old := cryptfile.Global()
-	cryptfile.SetGlobal(cf)
-	defer cryptfile.SetGlobal(old)
-	if C.sub_41C280(nil) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return saveClientGUISection(cf, nil)
 }
 
 func Nox_xxx_parseFileInfoData_41C3B0(cf *cryptfile.CryptFile) error {
-	old := cryptfile.Global()
-	cryptfile.SetGlobal(cf)
-	defer cryptfile.SetGlobal(old)
-	if C.nox_xxx_parseFileInfoData_41C3B0(0) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return saveFileInfoSection(cf, clientSaveFileInfo())
 }
 
 func Sub_41C780(cf *cryptfile.CryptFile) error {
-	old := cryptfile.Global()
-	cryptfile.SetGlobal(cf)
-	defer cryptfile.SetGlobal(old)
-	if C.sub_41C780(0) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return saveClientMusicSection(cf)
 }

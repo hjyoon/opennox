@@ -483,7 +483,7 @@ func playerStatusReadRuntime41AA30(cf *cryptfile.CryptFile, unit *server.Object)
 }
 
 func playerInventoryGridCount41AC30() int {
-	return int(C.sub_41B3B0())
+	return int(sub_41B3B0())
 }
 
 func playerInventoryGridCodes41AC30(column, row int) []uint32 {

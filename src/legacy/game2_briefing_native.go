@@ -297,7 +297,7 @@ func sub_44E560() *C.nox_window {
 
 //export nox_client_wndQuestBriefProc_44E630
 func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unused2 C.uintptr_t, unused3 C.uintptr_t) C.int {
-	if memmap.Uint32(0x5D4594, 831248) != 0 && event != 18 && event != 17 && C.sub_41D1B0() != 1 {
+	if memmap.Uint32(0x5D4594, 831248) != 0 && event != 18 && event != 17 && sub_41D1B0() != 1 {
 		C.sub_450580()
 		if C.dword_5d4594_831220 != 0 {
 			if C.dword_5d4594_831220 == 255 {

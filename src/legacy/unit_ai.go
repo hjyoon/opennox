@@ -1046,27 +1046,27 @@ func Nox_xxx_polygonIsPlayerInPolygon_4217B0(a1 unsafe.Pointer, a2 int) *Nox_pla
 }
 
 func Nox_xxx_polygonGetNext_4210A0() *Nox_player_polygon_check_data {
-	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.nox_xxx_polygonGetNext_4210A0()))
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(nox_xxx_polygonGetNext_4210A0()))
 }
 
 func Sub_4210E0(polygon *Nox_player_polygon_check_data) *Nox_player_polygon_check_data {
-	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.sub_4210E0(unsafe.Pointer(polygon))))
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(sub_4210E0(unsafe.Pointer(polygon))))
 }
 
 func Nox_xxx_polygonGetVertexIndicesNative(polygon *Nox_player_polygon_check_data) *uint32 {
-	return (*uint32)(unsafe.Pointer(C.nox_xxx_polygonGetVertexIndicesNative(unsafe.Pointer(polygon))))
+	return (*uint32)(unsafe.Pointer(nox_xxx_polygonGetVertexIndicesNative(unsafe.Pointer(polygon))))
 }
 
 func Nox_xxx_polygonGetDataNative(polygon *Nox_player_polygon_check_data) unsafe.Pointer {
-	return C.nox_xxx_polygonGetDataNative(unsafe.Pointer(polygon))
+	return nox_xxx_polygonGetDataNative(unsafe.Pointer(polygon))
 }
 
 func Nox_xxx_polygonGetAngle_421030(index uint32) *Nox_polygon_angle_data {
-	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.nox_xxx_polygonGetAngle_421030(C.int(index))))
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(nox_xxx_polygonGetAngle_421030(C.int(index))))
 }
 
 func Nox_xxx_polygonSetAngle_420D40(x, y float32, index, remap uint32) *Nox_polygon_angle_data {
-	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.nox_xxx_polygonSetAngle_420D40(
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(nox_xxx_polygonSetAngle_420D40(
 		C.int(int32(math.Float32bits(x))), C.int(int32(math.Float32bits(y))), C.uint(index), C.int(remap))))
 }
 

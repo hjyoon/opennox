@@ -28,20 +28,20 @@ const (
 // The map polygon table keeps its fixed-width records. Data and vertex
 // allocations live in the existing native sidecars keyed by record address.
 type mapPolygonRecord struct {
-	_           uint32
-	Name        [76]byte
-	_           uint32
-	_           uint32
-	Bounds      [4]int32
-	Color       [3]byte
-	_           byte
-	_           uint32
-	Handlers    [2]server.ScriptCallback
-	VertexCount uint16
-	AudioZone   byte
-	_           byte
-	Flags       uint32
-	_           uint32
+	DataMarker   uint32
+	Name         [76]byte
+	Index        uint32
+	Active       uint32
+	Bounds       [4]int32
+	Color        [3]byte
+	_            byte
+	VertexMarker uint32
+	Handlers     [2]server.ScriptCallback
+	VertexCount  uint16
+	AudioZone    byte
+	_            byte
+	Flags        uint32
+	_            uint32
 }
 
 var _ = [1]struct{}{}[unsafe.Sizeof(Nox_player_polygon_check_data{})-unsafe.Sizeof(mapPolygonRecord{})]
@@ -182,15 +182,15 @@ func readMapPolygon(cf *cryptfile.CryptFile, version int16, index uint32, debug 
 		C.free(vertexData)
 		return false, err
 	}
-	C.nox_xxx_polygonSetVertexIndicesNative(unsafe.Pointer(poly), (*C.uint32_t)(vertexData))
-	C.sub_421040(unsafe.Pointer(poly))
+	nox_xxx_polygonSetVertexIndicesNative(unsafe.Pointer(poly), (*C.uint32_t)(vertexData))
+	sub_421040(unsafe.Pointer(poly))
 	debug("[polygon] record=%d vertices=%d ptr=%p\n", index, poly.VertexCount, vertexData)
 	poly.Bounds, err = mapPolygonBounds(unsafe.Slice((*uint32)(vertexData), poly.VertexCount))
 	if err != nil {
 		return false, err
 	}
 	if version >= 2 {
-		context := C.nox_xxx_polygonGetDataNative(unsafe.Pointer(poly))
+		context := nox_xxx_polygonGetDataNative(unsafe.Pointer(poly))
 		debug("[polygon] record=%d handler1 data=%p\n", index, context)
 		if err := mapPolygonHandlers(cf, poly, context); err != nil {
 			return false, err
@@ -208,13 +208,13 @@ func readMapPolygon(cf *cryptfile.CryptFile, version int16, index uint32, debug 
 
 func writeMapPolygonAngles(cf *cryptfile.CryptFile) error {
 	var count uint32
-	for angle := C.nox_xxx_polygon_420CA0(); angle != nil; angle = C.nox_xxx_polygon_420CD0((*C.uint32_t)(unsafe.Pointer(angle))) {
+	for angle := nox_xxx_polygon_420CA0(); angle != nil; angle = nox_xxx_polygon_420CD0((*C.uint32_t)(unsafe.Pointer(angle))) {
 		count++
 	}
 	if err := cf.WriteU32(count); err != nil {
 		return err
 	}
-	for angle := C.nox_xxx_polygon_420CA0(); angle != nil; angle = C.nox_xxx_polygon_420CD0((*C.uint32_t)(unsafe.Pointer(angle))) {
+	for angle := nox_xxx_polygon_420CA0(); angle != nil; angle = nox_xxx_polygon_420CD0((*C.uint32_t)(unsafe.Pointer(angle))) {
 		raw := unsafe.Slice((*byte)(unsafe.Pointer(angle)), 12)
 		if err := mapSectionTransfer(cf, raw[:4]); err != nil {
 			return err
@@ -245,14 +245,14 @@ func writeMapPolygon(cf *cryptfile.CryptFile, poly *mapPolygonRecord) error {
 	if err := cf.WriteU16(poly.VertexCount); err != nil {
 		return err
 	}
-	vertexData := C.nox_xxx_polygonGetVertexIndicesNative(unsafe.Pointer(poly))
+	vertexData := nox_xxx_polygonGetVertexIndicesNative(unsafe.Pointer(poly))
 	if vertexData == nil && poly.VertexCount != 0 {
 		return fmt.Errorf("map polygon has %d missing vertices", poly.VertexCount)
 	}
 	if err := mapSectionTransfer(cf, unsafe.Slice((*byte)(unsafe.Pointer(vertexData)), int(poly.VertexCount)*4)); err != nil {
 		return err
 	}
-	context := C.nox_xxx_polygonGetDataNative(unsafe.Pointer(poly))
+	context := nox_xxx_polygonGetDataNative(unsafe.Pointer(poly))
 	if err := mapPolygonHandlers(cf, poly, context); err != nil {
 		return err
 	}

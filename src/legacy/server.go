@@ -517,10 +517,10 @@ func Nox_xxx_mapInfoSetKotr_4180D0() int {
 	return int(C.nox_xxx_mapInfoSetKotr_4180D0())
 }
 func Nox_xxx_teamAssignFlags_418640() {
-	C.nox_xxx_teamAssignFlags_418640()
+	nox_xxx_teamAssignFlags_418640()
 }
 func Nox_xxx_toggleAllTeamFlags_418690(a1 int) {
-	C.nox_xxx_toggleAllTeamFlags_418690(C.int(a1))
+	nox_xxx_toggleAllTeamFlags_418690(C.int(a1))
 }
 func Sub_410730() {
 	C.sub_410730()

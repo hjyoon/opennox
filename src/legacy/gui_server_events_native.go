@@ -197,24 +197,24 @@ func serverOptionsButton(window *nox_window) {
 	case 10330:
 		panel := C.dword_5d4594_1046508
 		if bool(nox_xxx_CheckGameplayFlags_417DA0(4)) {
-			C.nox_xxx_toggleAllTeamFlags_418690(0)
+			nox_xxx_toggleAllTeamFlags_418690(0)
 			C.nox_server_teamsZzz_419030(1)
 			sub_46AD20(panel, 10331, 10333, 0)
 		} else {
-			C.nox_xxx_wndGuiTeamCreate_4185B0()
+			nox_xxx_wndGuiTeamCreate_4185B0()
 			if bool(nox_xxx_CheckGameplayFlags_417DA0(2)) {
 				C.sub_4181F0(0)
 			} else {
-				C.nox_xxx_toggleAllTeamFlags_418690(1)
+				nox_xxx_toggleAllTeamFlags_418690(1)
 			}
 			sub_46AD20(panel, 10331, 10333, 1)
 		}
 	case 10331:
 		if bool(nox_xxx_CheckGameplayFlags_417DA0(2)) {
 			C.nox_xxx_UnsetGameplayFlags_417D70(2)
-			C.nox_xxx_toggleAllTeamFlags_418690(1)
+			nox_xxx_toggleAllTeamFlags_418690(1)
 		} else {
-			C.nox_xxx_toggleAllTeamFlags_418690(0)
+			nox_xxx_toggleAllTeamFlags_418690(0)
 			C.sub_418390()
 		}
 	case 10332:

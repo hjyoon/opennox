@@ -64,15 +64,19 @@ with zipfile.ZipFile(archive) as bundle:
         assert executable.stat().st_size == record['bytes'] and sha(executable) == record['sha256']
         binaries[package] = dict(record=record, path=str(executable))
 
+fixture_artifacts = report / 'native-fixture-artifacts'
+fixture_artifacts.mkdir()
 environment = dict(os.environ, GOTOOLCHAIN='local', GOARCH='386', CGO_ENABLED='1',
-                   GOGC='100', GODEBUG='', GOMAXPROCS='2')
+                   GOGC='100', GODEBUG='', GOMAXPROCS='2',
+                   OPENNOX_LOCAL_TEST_ARTIFACTS=str(fixture_artifacts))
 environment.pop('GOEXPERIMENT', None)
 compiler = Path(environment['CC'])
 assert compiler.name == 'i686-w64-mingw32-clang.exe' and compiler.is_file()
 assert environment['CGO_CFLAGS'] == '-O2 -g'
 (report / 'environment.json').write_text(json.dumps(dict(
     selected={name: environment.get(name) for name in ['GOARCH', 'CGO_ENABLED', 'GOGC', 'GODEBUG',
-              'GOMAXPROCS', 'GOEXPERIMENT', 'CC', 'CXX', 'CGO_CFLAGS', 'CGO_CFLAGS_ALLOW']},
+              'GOMAXPROCS', 'GOEXPERIMENT', 'CC', 'CXX', 'CGO_CFLAGS', 'CGO_CFLAGS_ALLOW',
+              'OPENNOX_LOCAL_TEST_ARTIFACTS']},
     compiler_version=subprocess.check_output([str(compiler), '--version'], text=True),
     original_independent_C_probes_keep_native_386_compiler=True,
     native_test_executables_never_rebuilt=True), indent=2))
@@ -123,6 +127,7 @@ for index in range(10):
 replay('server-cure-poison-controls', 'server', '^TestCurePoisonCast52CDB0', count=10)
 replay('legacy-troll-original', 'legacy', '^TestTrollDeathOriginal54A270$', count=3)
 replay('legacy-troll-GC-stress', 'legacy', '^TestTrollDeathOriginal54A270$', count=3, gc='10')
+replay('legacy-damage-predicate-faults-GC-stress', 'legacy', '^TestDamagePredicatesInitialMemory4E1400$', count=10, gc='10')
 replay('server-full-original', 'server', '.')
 replay('legacy-full-original', 'legacy', '.')
 (report / 'scope.json').write_text(json.dumps(dict(

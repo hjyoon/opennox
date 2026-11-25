@@ -9,6 +9,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -19,7 +20,8 @@ func TestEquipmentDeathSendsLocalizedMessageAndDeletes(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "strings.json")
 	const localized = `{"entries":[
 		{"id":"die.c:WeaponDieMetal","vals":[{"str":"Metal %s broke"}]},
-		{"id":"die.c:ArmorDieWood","vals":[{"str":"Wood %s broke"}]}
+		{"id":"die.c:ArmorDieWood","vals":[{"str":"Wood %s broke"}]},
+		{"id":"die.c:ArmorDieGeneric","vals":[{"str":"%s broke"}]}
 	]}`
 	if err := os.WriteFile(path, []byte(localized), 0600); err != nil {
 		t.Fatal(err)
@@ -31,6 +33,13 @@ func TestEquipmentDeathSendsLocalizedMessageAndDeletes(t *testing.T) {
 	t.Cleanup(world.Close)
 	world.NetList.Init()
 	t.Cleanup(world.NetList.Free)
+	world.Audio.Init(world)
+	t.Cleanup(world.Audio.Free)
+	world.Audio.Reset()
+	if noxflags.HasGame(noxflags.GameFlag20) {
+		noxflags.UnsetGame(noxflags.GameFlag20)
+		t.Cleanup(func() { noxflags.SetGame(noxflags.GameFlag20) })
+	}
 	outer := &questLoseArmorLegacyServer54CD30{native: world}
 	oldServer, oldNames := GetServer, objectItemNameRuntime
 	t.Cleanup(func() {
@@ -64,6 +73,7 @@ func TestEquipmentDeathSendsLocalizedMessageAndDeletes(t *testing.T) {
 	}{
 		{"WeaponDie", object.MaterialMetal | object.MaterialWood, "Metal item broke"},
 		{"ArmorDie", object.MaterialWood | object.MaterialCloth, "Wood item broke"},
+		{"ArmorDie", 0, "item broke"},
 	} {
 		t.Run(tc.handler, func(t *testing.T) {
 			item.Material = uint16(tc.material)

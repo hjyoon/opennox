@@ -120,6 +120,9 @@ func (s *serverAudio) MaxDist(id sound.ID) int {
 }
 
 func (s *serverAudio) Field12(id sound.ID) int32 {
+	if id < 0 || id >= sound.ID(len(s.bySound)) {
+		return 0
+	}
 	return int32(s.bySound[id].Field12)
 }
 

@@ -33,22 +33,28 @@ func parseLegacyDecimal32(text *C.char) C.int {
 	return C.int(value)
 }
 
-// parseLegacyWideDecimal scans the ASCII decimal prefix directly from the
-// UTF-16 buffer and uses the target's signed C long range.
 func parseLegacyWideDecimal(text *wchar2_t) C.long {
+	value, _ := scanLegacyLongDecimal((*uint16)(unsafe.Pointer(text)))
+	return value
+}
+
+// scanLegacyLongDecimal reads an ASCII decimal prefix using the target's
+// signed C long range. It returns the number of code units consumed.
+func scanLegacyLongDecimal[T formatCodeUnit](text *T) (C.long, uintptr) {
+	unitAt := func(index uintptr) T {
+		return *(*T)(unsafe.Add(unsafe.Pointer(text), index*unsafe.Sizeof(*text)))
+	}
 	var offset uintptr
-	var ch wchar2_t
-	for {
-		ch = *wideStringUnit(text, offset)
-		if ch != ' ' && (ch < '\t' || ch > '\r') {
-			break
-		}
+	ch := unitAt(offset)
+	for ch == ' ' || ch >= '\t' && ch <= '\r' {
 		offset++
+		ch = unitAt(offset)
 	}
 	negative := ch == '-'
 	if ch == '+' || negative {
 		offset++
 	}
+	firstDigit := offset
 	const positiveLimit = (uint64(1) << (unsafe.Sizeof(C.long(0))*8 - 1)) - 1
 	limit := positiveLimit
 	if negative {
@@ -56,21 +62,24 @@ func parseLegacyWideDecimal(text *wchar2_t) C.long {
 	}
 	var value uint64
 	for {
-		digit := uint64(*wideStringUnit(text, offset) - '0')
+		digit := uint64(unitAt(offset) - '0')
 		if digit >= 10 {
 			break
 		}
 		if value > (limit-digit)/10 {
 			value = limit
-			break
+		} else {
+			value = 10*value + digit
 		}
-		value = 10*value + digit
 		offset++
 	}
-	if negative {
-		return -C.long(value)
+	if offset == firstDigit {
+		return 0, 0
 	}
-	return C.long(value)
+	if negative {
+		return -C.long(value), offset
+	}
+	return C.long(value), offset
 }
 
 // copyLegacyCString applies the legacy formatter's code-unit conversion to

@@ -86,3 +86,36 @@ func TestLegacyWideDecimalMatchesRetainedC(t *testing.T) {
 		})
 	}
 }
+
+func TestThingIntegerReadsDecimalPrefixesAndAdvancesPastOverflow(t *testing.T) {
+	const large = "18446744073709551616"
+	text := CString(" \t-17+12\n" + large + " -9 no-number")
+	defer StrFree(text)
+	wide, free := CWString(large)
+	defer free()
+	overflow := int32(nox_wcstol(wide, nil, 10))
+	arg := text
+	for _, want := range []struct {
+		value int32
+		rest  string
+	}{
+		{-17, "+12\n" + large + " -9 no-number"},
+		{12, "\n" + large + " -9 no-number"},
+		{overflow, " -9 no-number"},
+		{-9, " no-number"},
+	} {
+		got, next := scanThingInt(arg)
+		if got != want.value || GoString(next) != want.rest {
+			t.Fatalf("scan at %q = %d, %q, want %d, %q", GoString(arg), got, GoString(next), want.value, want.rest)
+		}
+		arg = next
+	}
+	for _, input := range []string{" no-number", " \v-", "\x00+12"} {
+		invalid := CString(input)
+		got, next := scanThingInt(invalid)
+		StrFree(invalid)
+		if got != 0 || next != nil {
+			t.Errorf("scan at %q = %d, %p, want 0, nil", input, got, next)
+		}
+	}
+}

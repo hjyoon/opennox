@@ -120,12 +120,11 @@ func sub_536550(args *C.char, output *C.uint32_t) C.int {
 }
 
 func scanThingInt(args *C.char) (int32, *C.char) {
-	var next *C.char
-	value := C.strtol(args, &next, 10)
-	if next == args {
+	value, consumed := scanLegacyLongDecimal((*byte)(unsafe.Pointer(args)))
+	if consumed == 0 {
 		return 0, nil
 	}
-	return int32(value), next
+	return int32(value), (*C.char)(unsafe.Add(unsafe.Pointer(args), consumed))
 }
 
 //export sub_536580

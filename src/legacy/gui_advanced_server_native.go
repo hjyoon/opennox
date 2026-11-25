@@ -88,7 +88,7 @@ func sub_4BDD10() C.int {
 	case 0:
 		tab = sub_4CEBA0(root, sub_4165B0())
 	case 1:
-		tab = C.nox_xxx_guiSpelllistLoad_453850(root)
+		tab = nox_xxx_guiSpelllistLoad_453850(root)
 	case 2:
 		tab = nox_xxx_guiObjlistLoad_4530C0(root, 0x1000000)
 	case 3:

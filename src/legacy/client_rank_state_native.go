@@ -26,7 +26,7 @@ func nox_xxx_Proc_46F070(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t)
 //export sub_46FAE0
 func sub_46FAE0() {
 	page := memmap.Int32(0x5D4594, 1088996)
-	win := C.nox_rank_window_at(C.int(1090060 + 4*page))
+	win := nox_rank_window_at(C.int(1090060 + 4*page))
 	if win == nil || win.widget_data == nil || C.dword_587000_145672 == math.MaxUint32 {
 		return
 	}

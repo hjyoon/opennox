@@ -545,7 +545,7 @@ func Sub_4C3500() int {
 	return int(sub_4C3500())
 }
 func Nox_xxx_guiDrawRank_46E870() unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_guiDrawRank_46E870())
+	return unsafe.Pointer(nox_xxx_guiDrawRank_46E870())
 }
 func Nox_xxx_guiMotdLoad_4465C0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_guiMotdLoad_4465C0())

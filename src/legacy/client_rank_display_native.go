@@ -57,8 +57,8 @@ func sub_46F080(win *C.nox_window, draw *C.nox_window_data) C.int {
 		sub_46DCC0()
 		C.dword_587000_145664 = 0
 		clientRankFillDisplay(int(C.dword_5d4594_1090120), limit)
-		C.sub_46FC50()
-		C.sub_46FD80()
+		sub_46FC50()
+		sub_46FD80()
 	}
 	if int32(C.dword_587000_145672) >= 0 {
 		sub_46FAE0()
@@ -205,7 +205,7 @@ func clientRankDisplayPlayer(mode int, limit int32, page int, row *clientRankPla
 		*memmap.PtrUint32(0x5D4594, 1088996) = uint32(page)
 	}
 	clientRankWriteWideCell(start, color, (*wchar2_t)(&row.Name[0]))
-	clientRankWriteWideCell(start+16, color, C.nox_rank_class_name(C.uint(row.Class)))
+	clientRankWriteWideCell(start+16, color, nox_rank_class_name(C.uint(row.Class)))
 	if mode != 5 || row.Score > 0 {
 		clientRankWriteNumberCell(start+24, color, int32(row.Score), "")
 	} else {

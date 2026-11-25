@@ -29,7 +29,7 @@ func clientRankStockText(offset uintptr) *wchar2_t {
 }
 
 func clientRankWindow(offset int) *C.nox_window {
-	return C.nox_rank_window_at(C.int(offset))
+	return nox_rank_window_at(C.int(offset))
 }
 
 func clientRankList(offset int) *C.nox_scrollListBox_data {
@@ -158,7 +158,7 @@ func sub_46FFD0() C.uchar {
 			healthColor = 15
 		}
 		clientRankWriteNumberCell(1090084, healthColor, health, "%")
-		clientRankWriteWideCell(1090092, color, C.nox_rank_class_name(C.uint(row.Class)))
+		clientRankWriteWideCell(1090092, color, nox_rank_class_name(C.uint(row.Class)))
 
 		var markerColor C.uint8_t
 		marker := sub_46FB50(C.int(row.Objective), &markerColor)

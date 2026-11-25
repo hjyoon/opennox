@@ -55,7 +55,7 @@ func sub_46DB80() C.int {
 	file := internCStr("client_rank_list_native.go")
 	for page := 0; page < 2; page++ {
 		for offset := 1090060; offset <= 1090092; offset += 8 {
-			if win := C.nox_rank_window_at(C.int(offset + 4*page)); win != nil {
+			if win := nox_rank_window_at(C.int(offset + 4*page)); win != nil {
 				result = C.int(nox_window_call_field_94_fnc(win, 16399, 1, 0, file, 0))
 			}
 		}

@@ -905,7 +905,7 @@ func Get_dword_5d4594_1090048() *gui.Window {
 	return asWindow(C.dword_5d4594_1090048)
 }
 func Get_nox_rank_window(offset int) *gui.Window {
-	return asWindow(C.nox_rank_window_at(C.int(offset)))
+	return asWindow(nox_rank_window_at(C.int(offset)))
 }
 func Get_dword_5d4594_1090120() int {
 	return int(C.dword_5d4594_1090120)

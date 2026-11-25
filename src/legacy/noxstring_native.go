@@ -3,11 +3,43 @@ package legacy
 /*
 #include "noxstring.h"
 #include <ctype.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <wctype.h>
 
 typedef const wchar2_t nox_const_string_unit_t;
 typedef const char nox_const_string_byte_t;
+
+struct nox_strtol_dialect {
+	int auto_binary;
+	int base2_binary;
+	int missing_digits_errno;
+};
+
+static struct nox_strtol_dialect nox_strtol_dialect(void) {
+	const char binary[] = "0b1";
+	struct nox_strtol_dialect result;
+	char* end;
+	int saved = errno;
+	strtol(binary, &end, 0);
+	result.auto_binary = end == binary + 3;
+	strtol(binary, &end, 2);
+	result.base2_binary = end == binary + 3;
+	errno = 0;
+	strtol("!", &end, 10);
+	result.missing_digits_errno = errno;
+	errno = saved;
+	return result;
+}
+
+static void nox_strtol_set_errno(int value) {
+	errno = value;
+}
+
+// Invalid bases can invoke the host CRT's invalid-parameter handler.
+static void nox_strtol_invalid_base(int base) {
+	strtol("", NULL, base);
+}
 */
 import "C"
 
@@ -15,9 +47,10 @@ import (
 	"strconv"
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
+
+var legacyLongDialect = C.nox_strtol_dialect()
 
 // Keep caller-owned UTF-16 buffers within Go when the caller is native Go.
 func copyWideString(dst, src *wchar2_t) *wchar2_t {
@@ -41,6 +74,22 @@ func parseLegacyWideDecimal(text *wchar2_t) C.long {
 // scanLegacyLongDecimal reads an ASCII decimal prefix using the target's
 // signed C long range. It returns the number of code units consumed.
 func scanLegacyLongDecimal[T formatCodeUnit](text *T) (C.long, uintptr) {
+	value, consumed, _ := scanLegacyLong(text, 10, false)
+	return value, consumed
+}
+
+func legacyLongDigit[T formatCodeUnit](ch T) uint64 {
+	if ch >= '0' && ch <= '9' {
+		return uint64(ch - '0')
+	}
+	ch |= 'a' - 'A'
+	if ch >= 'a' && ch <= 'z' {
+		return uint64(ch-'a') + 10
+	}
+	return 36
+}
+
+func scanLegacyLong[T formatCodeUnit](text *T, base int, binaryPrefix bool) (C.long, uintptr, bool) {
 	unitAt := func(index uintptr) T {
 		return *(*T)(unsafe.Add(unsafe.Pointer(text), index*unsafe.Sizeof(*text)))
 	}
@@ -53,6 +102,23 @@ func scanLegacyLongDecimal[T formatCodeUnit](text *T) (C.long, uintptr) {
 	negative := ch == '-'
 	if ch == '+' || negative {
 		offset++
+		ch = unitAt(offset)
+	}
+	if ch == '0' {
+		if (base == 0 || base == 16) &&
+			unitAt(offset+1)|('a'-'A') == 'x' && legacyLongDigit(unitAt(offset+2)) < 16 {
+			base, offset = 16, offset+2
+		}
+		if binaryPrefix && (base == 0 || base == 2) &&
+			unitAt(offset+1)|('a'-'A') == 'b' && legacyLongDigit(unitAt(offset+2)) < 2 {
+			base, offset = 2, offset+2
+		}
+		if base == 0 {
+			base = 8
+		}
+	}
+	if base == 0 {
+		base = 10
 	}
 	firstDigit := offset
 	const positiveLimit = (uint64(1) << (unsafe.Sizeof(C.long(0))*8 - 1)) - 1
@@ -60,26 +126,30 @@ func scanLegacyLongDecimal[T formatCodeUnit](text *T) (C.long, uintptr) {
 	if negative {
 		limit++
 	}
+	radix := uint64(base)
+	cutoff, lastDigit := limit/radix, limit%radix
 	var value uint64
+	var overflow bool
 	for {
-		digit := uint64(unitAt(offset) - '0')
-		if digit >= 10 {
+		digit := legacyLongDigit(unitAt(offset))
+		if digit >= radix {
 			break
 		}
-		if value > (limit-digit)/10 {
+		if value > cutoff || value == cutoff && digit > lastDigit {
 			value = limit
+			overflow = true
 		} else {
-			value = 10*value + digit
+			value = radix*value + digit
 		}
 		offset++
 	}
 	if offset == firstDigit {
-		return 0, 0
+		return 0, 0, false
 	}
 	if negative {
-		return -C.long(value), offset
+		return -C.long(value), offset, overflow
 	}
-	return C.long(value), offset
+	return C.long(value), offset, overflow
 }
 
 // copyLegacyCString applies the legacy formatter's code-unit conversion to
@@ -285,23 +355,23 @@ func nox_strnicmp(a, b *C.nox_const_string_byte_t, count C.int) C.int {
 
 //export nox_wcstol
 func nox_wcstol(text *C.nox_const_string_unit_t, end **C.wchar2_t, base C.int) C.long {
-	n := int(nox_wcslen(text))
-	raw, free := alloc.Calloc(n+1, 1)
-	defer free()
-	ascii := unsafe.Slice((*byte)(raw), n)
-	for i := range ascii {
-		word := *wideStringUnit(text, uintptr(i))
-		if word < 0x80 {
-			ascii[i] = byte(word)
-		} else {
-			ascii[i] = 0x7f
+	var value C.long
+	var consumed uintptr
+	if base != 0 && (base < 2 || base > 36) {
+		C.nox_strtol_invalid_base(base)
+	} else {
+		binaryPrefix := base == 0 && legacyLongDialect.auto_binary != 0 ||
+			base == 2 && legacyLongDialect.base2_binary != 0
+		var overflow bool
+		value, consumed, overflow = scanLegacyLong((*uint16)(unsafe.Pointer(text)), int(base), binaryPrefix)
+		if overflow {
+			C.nox_strtol_set_errno(C.ERANGE)
+		} else if consumed == 0 && legacyLongDialect.missing_digits_errno != 0 {
+			C.nox_strtol_set_errno(legacyLongDialect.missing_digits_errno)
 		}
 	}
-	first := (*C.char)(raw)
-	last := first
-	value := C.strtol(first, &last, base)
 	if end != nil {
-		*end = wideStringUnit(text, uintptr(unsafe.Pointer(last))-uintptr(raw))
+		*end = wideStringUnit(text, consumed)
 	}
 	return value
 }

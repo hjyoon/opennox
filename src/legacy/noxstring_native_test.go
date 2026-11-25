@@ -1,11 +1,16 @@
 package legacy
 
 import (
+	"math"
+	"runtime"
 	"slices"
+	"strconv"
+	"strings"
 	"testing"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestLegacyCStringCopyRetainsCodeUnitsAndBounds(t *testing.T) {
@@ -69,21 +74,70 @@ func TestLegacyWideStringNumberLeavesEndAtFirstNonASCIIUnit(t *testing.T) {
 	}
 }
 
-func TestLegacyWideDecimalMatchesRetainedC(t *testing.T) {
-	for _, input := range []string{
-		"", "+", " - 1", " \t\n\v\f\r+17tail", "0xff", "42\x00-1",
-		"１２", "12９34", "2147483648", "-2147483649", "9223372036854775807",
-		"9223372036854775808suffix", "-9223372036854775808", "-9223372036854775809",
-		"18446744073709551616", "-18446744073709551616",
-	} {
-		t.Run(input, func(t *testing.T) {
-			words, free := alloc.CString16High(input)
-			defer free()
-			text := (*wchar2_t)(unsafe.Pointer(words))
-			if got, want := parseLegacyWideDecimal(text), nox_wcstol(text, nil, 10); got != want {
-				t.Errorf("decimal prefix result = %d, want %d", got, want)
+func TestLegacyWideIntegerMatchesRetainedC(t *testing.T) {
+	compare := func(base int, input string) {
+		words, free := alloc.CString16High(input)
+		defer free()
+		text := unsafe.Pointer(words)
+		for _, withEnd := range []bool{true, false} {
+			got, want := cfixture.CompareWideInteger(text, base, withEnd)
+			if got != want {
+				t.Fatalf("base %d withEnd=%t input %q: got %+v, want %+v", base, withEnd, input, got, want)
 			}
-		})
+			if base == 10 && int64(parseLegacyWideDecimal((*wchar2_t)(text))) != want.Value {
+				t.Fatalf("decimal prefix for %q disagreed with %+v", input, want)
+			}
+		}
+	}
+	inputs := []string{
+		"", "+", " - 1", " \t\n\v\f\r+17tail", "0", "08", "-0129!",
+		"0xff", "-0XfF!", "0x", "0x+3", "0b", "+0b011", "0B011!", "-0b2",
+		"Z.", "+xyz", "42\x00-1", "１２", "12９34", "\u00a012", "-3🙂4",
+	}
+	for base := 0; base <= 36; base++ {
+		if base == 1 {
+			continue
+		}
+		for _, input := range inputs {
+			compare(base, input)
+		}
+		digitsBase := base
+		if digitsBase == 0 {
+			digitsBase = 10
+		}
+		for _, magnitude := range []uint64{math.MaxInt32, 1 << 31, 1<<31 + 1, math.MaxInt64, 1 << 63, 1<<63 + 1, math.MaxUint64} {
+			digits := strconv.FormatUint(magnitude, digitsBase)
+			compare(base, digits+"!")
+			compare(base, "-"+digits+"!")
+		}
+		compare(base, strings.Repeat(strconv.FormatInt(int64(digitsBase-1), digitsBase), 160)+"!")
+	}
+	if runtime.GOOS != "windows" {
+		for _, base := range []int{-1, 1, 37} {
+			compare(base, "123")
+		}
+	}
+}
+
+func TestLegacyWideIntegerBinaryPrefixDialect(t *testing.T) {
+	for _, base := range []int{0, 2} {
+		for _, tc := range []struct {
+			text     string
+			value    int64
+			consumed uintptr
+		}{
+			{"0b1012", 5, 5},
+			{" -0B101!", -5, 7},
+			{"0b", 0, 1},
+			{"0B2", 0, 1},
+		} {
+			words, free := alloc.CString16High(tc.text)
+			value, consumed, overflow := scanLegacyLong(words, base, true)
+			free()
+			if int64(value) != tc.value || consumed != tc.consumed || overflow {
+				t.Fatalf("base %d input %q: got %d at %d (overflow=%t), want %d at %d", base, tc.text, value, consumed, overflow, tc.value, tc.consumed)
+			}
+		}
 	}
 }
 
@@ -93,7 +147,8 @@ func TestThingIntegerReadsDecimalPrefixesAndAdvancesPastOverflow(t *testing.T) {
 	defer StrFree(text)
 	wide, free := CWString(large)
 	defer free()
-	overflow := int32(nox_wcstol(wide, nil, 10))
+	_, reference := cfixture.CompareWideInteger(unsafe.Pointer(wide), 10, false)
+	overflow := int32(reference.Value)
 	arg := text
 	for _, want := range []struct {
 		value int32

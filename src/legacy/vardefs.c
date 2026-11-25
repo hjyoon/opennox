@@ -25,6 +25,7 @@ nox_window* nox_inventory_scroll_down_button = 0;
 nox_window* nox_inventory_close_button = 0;
 void* nox_inventory_font = 0;
 void* nox_quickbar_font = 0;
+float2 obj_5d4594_1046620 = {0};
 nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
 nox_things_imageRef_t* nox_inventory_extra_lives_anim = 0;
 nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX] = {0};

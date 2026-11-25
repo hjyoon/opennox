@@ -50,43 +50,16 @@ func dispatchNetworkControlNative51BAD0(
 		return networkPlayerSetWaypointPacketSize51BAD0, true, true
 
 	case netmsg.MSG_VOTE:
-		if len(data) < networkVoteControlPacketSize51BAD0 {
+		kind, cancel, name, size := server.DecodeVotePacket51BAD0(data, runtime.questMode)
+		if size == 0 {
 			return 0, true, false
 		}
-		subtype := data[1]
-		if subtype <= 3 {
-			if len(data) < networkVoteNamedPacketSize51BAD0 {
-				return 0, true, false
-			}
-			// The wire field has no spare terminator when all 25 code units are
-			// populated. Copy it and append one before calling the legacy lookup.
-			name := make([]uint16, networkVoteNameUnits51BAD0+1)
-			for i := 0; i < networkVoteNameUnits51BAD0; i++ {
-				name[i] = binary.LittleEndian.Uint16(data[2+i*2 : 4+i*2])
-			}
-			kind := 1
-			if subtype&1 == 0 {
-				kind = 0
-				if runtime.questMode {
-					kind = 3
-				}
-			}
-			if subtype < 2 {
-				runtime.voteStart(kind, unit, name)
-			} else {
-				runtime.voteCancel(kind, unit, name)
-			}
-			return networkVoteNamedPacketSize51BAD0, true, true
+		if cancel {
+			runtime.voteCancel(kind, unit, name)
+		} else {
+			runtime.voteStart(kind, unit, name)
 		}
-		switch subtype {
-		case 4:
-			runtime.voteStart(2, unit, nil)
-		case 5:
-			runtime.voteCancel(2, unit, nil)
-		default:
-			return 0, true, false
-		}
-		return networkVoteControlPacketSize51BAD0, true, true
+		return size, true, true
 
 	case netmsg.MSG_GAUNTLET:
 		if len(data) < server.NetworkGauntletPacketSize51BAD0 {

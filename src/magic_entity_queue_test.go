@@ -12,7 +12,7 @@ import (
 
 func TestDecodeTrySpellPacket(t *testing.T) {
 	wantSpells := [5]int32{1, 0, 0x12345678, -1, 136}
-	data := make([]byte, trySpellPacketSize+3)
+	data := make([]byte, server.NetworkTrySpellPacketSize51BAD0+3)
 	data[0] = byte(netmsg.MSG_TRY_SPELL)
 	for i, sp := range wantSpells {
 		binary.LittleEndian.PutUint32(data[1+4*i:], uint32(sp))
@@ -20,7 +20,7 @@ func TestDecodeTrySpellPacket(t *testing.T) {
 	data[21] = 0xa5
 	copy(data[22:], []byte{0xde, 0xad, 0xbe})
 
-	spells, targetMode, ok := decodeTrySpellPacket(data)
+	spells, targetMode, ok := server.DecodeTrySpellPacket51BAD0(data)
 	if !ok {
 		t.Fatal("decodeTrySpellPacket rejected a complete packet")
 	}
@@ -30,15 +30,15 @@ func TestDecodeTrySpellPacket(t *testing.T) {
 }
 
 func TestDecodeTrySpellPacketRejectsIncompleteOrWrongOpcode(t *testing.T) {
-	data := make([]byte, trySpellPacketSize)
+	data := make([]byte, server.NetworkTrySpellPacketSize51BAD0)
 	data[0] = byte(netmsg.MSG_TRY_SPELL)
-	for n := 0; n < trySpellPacketSize; n++ {
-		if _, _, ok := decodeTrySpellPacket(data[:n]); ok {
+	for n := 0; n < server.NetworkTrySpellPacketSize51BAD0; n++ {
+		if _, _, ok := server.DecodeTrySpellPacket51BAD0(data[:n]); ok {
 			t.Fatalf("decodeTrySpellPacket accepted %d-byte packet", n)
 		}
 	}
 	data[0] = byte(netmsg.MSG_TRY_ABILITY)
-	if _, _, ok := decodeTrySpellPacket(data); ok {
+	if _, _, ok := server.DecodeTrySpellPacket51BAD0(data); ok {
 		t.Fatal("decodeTrySpellPacket accepted the wrong opcode")
 	}
 }

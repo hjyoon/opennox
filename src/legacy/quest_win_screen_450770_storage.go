@@ -11,6 +11,7 @@ import (
 	"encoding/binary"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -25,8 +26,13 @@ type questWinRow450770 struct {
 
 type questWinRowBytes450770 [unsafe.Sizeof(questWinRow450770{})]byte
 
+var _ [C.sizeof_nox_quest_stats_row_450770]byte = questWinRowBytes450770{}
+
+// The score comparator takes native row pointers, and sorting swaps whole rows.
+var questWinStats450770, _ = alloc.New([6]questWinRow450770{})
+
 func questWinRows450770() *[6]questWinRow450770 {
-	return (*[6]questWinRow450770)(unsafe.Pointer(&C.nox_quest_stats_450770[0]))
+	return questWinStats450770
 }
 
 func questWinSortRows450770(count int) {

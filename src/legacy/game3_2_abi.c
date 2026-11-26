@@ -1,8 +1,6 @@
 #include "GAME3_2.h"
 #include "noxstring_format_abi.h"
 
-nox_list_item_t nox_common_maplist = {0};
-
 extern uintptr_t nox_quest_closing_settings_4D70B0(void);
 char* sub_4D70B0(void) { return (char*)nox_quest_closing_settings_4D70B0(); }
 

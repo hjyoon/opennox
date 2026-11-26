@@ -1,4 +1,0 @@
-#include "client__gui__guitrade.h"
-
-nox_gui_trade_slot nox_gui_trade_local_slots[NOX_GUI_TRADE_SLOT_COUNT];
-nox_gui_trade_slot nox_gui_trade_remote_slots[NOX_GUI_TRADE_SLOT_COUNT];

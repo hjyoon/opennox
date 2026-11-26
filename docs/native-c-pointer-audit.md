@@ -251,6 +251,26 @@ with Go 1.27.3, an array named with `go:linkname` appeared as a local
 data symbol in the Go object. Clang could not resolve an external C
 array reference to it.
 
+### Trade slots, quest score rows, and map list storage
+
+Go allocates the two trade slot tables, the six quest score rows, and the
+map list sentinel once in native memory. The trade accessor returns
+distinct contiguous tables with 140-byte slots on 32-bit hosts and
+144-byte slots on 64-bit hosts. The original `GAME.EXE` trade lookup at
+`0x4C1910` uses 140-byte slots in order 0, 2, 1, 3.
+
+The original win screen at `0x450770` steps through 16-byte score rows.
+The native row is 16 bytes on 32-bit hosts and 24 bytes on 64-bit hosts.
+The C comparator receives those native row addresses, and sorting
+continues to swap whole rows including trailing padding. The standalone
+C score-draw oracle defines its own fixture rows.
+
+The map list iterator at `0x4D09B0` passes the permanent sentinel at
+`0x748308` to the list service. Native C tests access the Go-owned
+sentinel by pointer, use the public iterators, and verify the linked
+records and end marker. Removing the two storage translation units
+leaves 36 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

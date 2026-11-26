@@ -22,8 +22,6 @@ _Static_assert(offsetof(nox_quest_stats_row_450770, coop_secrets) == sizeof(void
 _Static_assert(offsetof(nox_quest_stats_row_450770, score) == sizeof(void*) + 8, "Quest score offset");
 _Static_assert(sizeof(nox_quest_stats_row_450770) == (sizeof(void*) == 4 ? 16 : 24), "Quest native row size");
 
-extern nox_quest_stats_row_450770 nox_quest_stats_450770[6];
-
 int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet);
 
 #endif

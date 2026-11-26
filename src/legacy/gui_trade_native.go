@@ -8,6 +8,18 @@ package legacy
 
 static int nox_test_gui_trade_pointer_round_trip(uintptr_t value) {
 	nox_gui_trade_slot* slot = nox_gui_trade_slot_at(0, 0);
+	nox_gui_trade_slot* remote_slots = nox_gui_trade_slot_at(1, 0);
+	if (!slot || !remote_slots || nox_gui_trade_slot_at(0, -1) ||
+		nox_gui_trade_slot_at(1, NOX_GUI_TRADE_SLOT_COUNT)) {
+		return 0;
+	}
+	for (int i = 0; i < NOX_GUI_TRADE_SLOT_COUNT; ++i) {
+		if (nox_gui_trade_slot_at(0, i) != &slot[i] ||
+			nox_gui_trade_slot_at(-1, i) != &remote_slots[i] ||
+			remote_slots == &slot[i] || slot == &remote_slots[i]) {
+			return 0;
+		}
+	}
 	nox_gui_trade_slot old_slot = *slot;
 	nox_gui_trade_slot* old_local = dword_5d4594_1320932;
 	nox_gui_trade_slot* old_remote = dword_5d4594_1320936;

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "defs.h"
 void nox_common_list_clear_425760(nox_list_item_t* list);
-extern nox_list_item_t nox_common_maplist;
 void nox_common_scanAddMap(char* filename);
 void nox_common_maplist_add_4D0760(nox_map_list_item* mp);
 void* sub_425770(void* a1p);
@@ -16,6 +15,9 @@ import (
 )
 
 var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_map_list_item{})-unsafe.Sizeof(Nox_map_list_item{})]
+
+// Keep the native sentinel address stable across scans and list resets.
+var mapListHead, _ = alloc.New(C.nox_list_item_t{})
 
 type nox_map_list_item = C.nox_map_list_item
 type nativeListItem struct {
@@ -47,7 +49,7 @@ func sub_4CFFC0(entry *C.nox_map_list_item) C.int {
 
 //export nox_common_maplist_first_4D09B0
 func nox_common_maplist_first_4D09B0() *C.nox_map_list_item {
-	link := nox_common_list_getFirstSafe_425890(&C.nox_common_maplist)
+	link := nox_common_list_getFirstSafe_425890(mapListHead)
 	return (*C.nox_map_list_item)(unsafe.Pointer(link))
 }
 
@@ -58,7 +60,7 @@ func nox_common_maplist_next_4D09C0(entry *C.nox_map_list_item) *C.nox_map_list_
 }
 
 func Get_nox_common_maplist() unsafe.Pointer {
-	return unsafe.Pointer(&C.nox_common_maplist)
+	return unsafe.Pointer(mapListHead)
 }
 
 func Nox_common_maplist_add_4D0760(p *Nox_map_list_item) {
@@ -77,7 +79,7 @@ func nox_common_maplist_add_4D0760(entry *C.nox_map_list_item) {
 			return
 		}
 	}
-	nox_common_list_append_4258E0(&C.nox_common_maplist, node)
+	nox_common_list_append_4258E0(mapListHead, node)
 }
 
 func Sub_425770(p *Nox_map_list_item) {
@@ -86,7 +88,7 @@ func Sub_425770(p *Nox_map_list_item) {
 
 //export nox_common_maplist_free_4D0970
 func nox_common_maplist_free_4D0970() {
-	head := (*nativeListItem)(unsafe.Pointer(&C.nox_common_maplist))
+	head := (*nativeListItem)(unsafe.Pointer(mapListHead))
 	for it := head.next; it != nil && it != head; {
 		next := it.next
 		alloc.FreePtr(unsafe.Pointer(it))
@@ -100,7 +102,7 @@ func nox_common_maplist_free_4D0970() {
 // ConsoleMapNames4D09B0 reads the native list and bounded Name field, rather
 // than the original PE32 byte offset twelve used by the old console command.
 func ConsoleMapNames4D09B0() []string {
-	head := (*nativeListItem)(unsafe.Pointer(&C.nox_common_maplist))
+	head := (*nativeListItem)(unsafe.Pointer(mapListHead))
 	var names []string
 	for it := head.next; it != nil && it != head; it = it.next {
 		mp := (*Nox_map_list_item)(unsafe.Pointer(it))

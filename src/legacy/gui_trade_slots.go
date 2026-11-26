@@ -5,8 +5,6 @@ package legacy
 #include "noxstring.h"
 #include "common__strman.h"
 #include "client__gui__guimsg.h"
-extern nox_gui_trade_slot nox_gui_trade_local_slots[NOX_GUI_TRADE_SLOT_COUNT];
-extern nox_gui_trade_slot nox_gui_trade_remote_slots[NOX_GUI_TRADE_SLOT_COUNT];
 extern uint32_t dword_5d4594_1320944, dword_5d4594_1320948, dword_5d4594_1320964;
 */
 import "C"
@@ -16,9 +14,14 @@ import (
 	"slices"
 	"strconv"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 type tradeClientSlot = C.nox_gui_trade_slot
+
+// The C accessor and the drag state keep slot addresses for the life of a game.
+var tradeClientSlots, _ = alloc.New([2][C.NOX_GUI_TRADE_SLOT_COUNT]tradeClientSlot{})
 
 const (
 	tradeSlotCapacity = C.NOX_GUI_TRADE_SLOT_ITEM_CAPACITY
@@ -167,9 +170,9 @@ func nox_gui_trade_slot_at(remote, index C.int) *tradeClientSlot {
 		return nil
 	}
 	if remote != 0 {
-		return &C.nox_gui_trade_remote_slots[index]
+		return &tradeClientSlots[1][index]
 	}
-	return &C.nox_gui_trade_local_slots[index]
+	return &tradeClientSlots[0][index]
 }
 
 //export nox_gui_trade_slots_reset

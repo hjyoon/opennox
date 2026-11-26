@@ -45,16 +45,17 @@ steps:
     y: 380
   - action: wait
     dt: 120
-  - action: assert-quickbar-spell
-    spell: 0
-    slot: 0
   - action: screen
-    name: quickbar empty before
+    name: quickbar before starting spell fixture
   - action: set-quickbar-spell
     spell: 27
     slot: 0
   - action: wait
     dt: 30
+  - action: assert-quickbar-spell
+    spell: 27
+    slot: 0
+    name: verify spell is present before mouse drag
   - action: screen
     name: quickbar occupied before
   - action: move
@@ -99,6 +100,25 @@ steps:
     spell: 27
     slot: 0
     name: reserved quickbar area cancels removal
+  - action: move
+    x: 475
+    y: 743
+    name: select the destination's starting shortcut
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: true}
+  - action: move
+    dt: 2
+    x: 700
+    y: 380
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: false}
+  - action: assert-quickbar-spell
+    dt: 30
+    spell: 0
+    slot: 1
+    name: verify empty destination before moving a shortcut
   - action: move
     x: 438
     y: 743

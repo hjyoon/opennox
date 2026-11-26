@@ -62,10 +62,9 @@ steps:
     name: apply server options
   - action: wait
     dt: 120
-  - action: esc
-    name: close server options before opening the pause menu
-  - action: wait
-    dt: 30
+  - action: assert-escape-menu
+    active: false
+    name: verify gameplay before opening the pause menu
   - action: audit-client-options
     mode: 1
     name: audit all in-game client options using real input

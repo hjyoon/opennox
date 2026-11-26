@@ -833,6 +833,14 @@ poison flag, colors, and item type IDs. The word and drawable fixture
 calls reach the live Go-owned state. This removes 13 definitions
 from `vardefs.c`, leaving 468.
 
+### Unreferenced C storage
+
+The C, Go, assembly, and script inventory identified 85 unused
+definitions. The list includes 80 32-bit words, two 64-bit words,
+and the former spawn, monster-list, and pending-owner allocator
+pointers. Removing the definitions and their declarations leaves
+383 variables in `vardefs.c`, including 296 `uint32_t` words.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

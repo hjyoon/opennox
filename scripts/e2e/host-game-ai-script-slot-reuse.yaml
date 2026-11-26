@@ -1,6 +1,7 @@
 # Reuse real high-address object/waypoint slots through production stack APIs,
 # then use script Move/Wander and observe ordinary AI updates and rendering.
 # This is a script-dispatch regression, not an autonomous AI-choice assertion.
+map-profile: arena-lod
 steps:
   - action: slow
     dur: 5ms

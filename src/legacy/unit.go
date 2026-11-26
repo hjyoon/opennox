@@ -65,7 +65,7 @@ func Nox_xxx_monsterWalkTo_514110(a1 *server.Object, a2 float32, a3 float32) {
 	monsterWalkToCall514110(a1, a2, a3)
 }
 func Nox_xxx_monsterLookAt_5125A0(a1 *server.Object, a2 int) {
-	C.nox_xxx_monsterLookAt_5125A0(asObjectC(a1), C.int(a2))
+	monsterLookAtCall5125A0(a1, int32(a2))
 }
 func Nox_xxx_unitFreeze_4E79C0(a1 *server.Object, a2 int) {
 	unitFreezeRuntime4E79C0(a1, uint32(a2))

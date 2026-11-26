@@ -8,9 +8,6 @@ package legacy
 #include "unit_buff_test_4ff350.h"
 _Static_assert(_Generic(&sub_4EB250,nox_object_t* (*)(nox_object_t*):1,default:0),"native Chakram retarget public pointer ABI");
 _Static_assert(_Generic(&sub_4EB340,void (*)(nox_object_t*,float2*):1,default:0),"native Chakram callback public pointer ABI");
-static void chakram_retarget_each_rect_4eb250(float4* rectangle,float2* point) {
- nox_xxx_getUnitsInRect_517C10(rectangle,sub_4EB340,point);
-}
 */
 import "C"
 
@@ -26,14 +23,17 @@ func chakramRetargetRuntime4EB250() server.ChakramRetargetRuntime4EB250 {
 		return *chakramRetargetNativeRuntimeOverride4EB250
 	}
 	return server.ChakramRetargetRuntime4EB250{
-		EachRect: func(rect types.Rectf, _ func(*server.Object, *types.Pointf), point *types.Pointf) {
-			C.chakram_retarget_each_rect_4eb250((*C.float4)(unsafe.Pointer(&rect)), (*C.float2)(unsafe.Pointer(point)))
+		EachRect: func(rect types.Rectf, visit func(*server.Object, *types.Pointf), point *types.Pointf) {
+			GetServer().S().Map.EachObjInRect(rect, func(candidate *server.Object) bool {
+				visit(candidate, point)
+				return true
+			})
 		},
 		HasEnchant: func(candidate *server.Object, enchant uint32) bool {
-			return C.nox_xxx_testUnitBuffs_4FF350((*C.nox_object_t)(unsafe.Pointer(candidate)), C.int32_t(enchant)) != 0
+			return nox_xxx_testUnitBuffs_4FF350(asObjectC(candidate), C.int32_t(enchant)) != 0
 		},
 		CanSee: func(candidate, source *server.Object) bool {
-			return C.nox_xxx_mapCheck_537110((*C.nox_object_t)(unsafe.Pointer(candidate)), (*C.nox_object_t)(unsafe.Pointer(source))) != 0
+			return nox_xxx_mapCheck_537110(asObjectC(candidate), asObjectC(source)) != 0
 		},
 	}
 }

@@ -1032,6 +1032,22 @@ frames and the local and network progress paths passed the headless
 raster checks on macOS ARM64 with strict Cgo checking. The integer
 key tests passed on Linux 386.
 
+### Object scans and direction calls
+
+Chakram retargeting and collision use the typed Go rectangle iterator.
+Retargeting reads the live source position during each visit. Collision
+copies the bounds before iteration and retains the registered Pentagram
+callback address for filtering. The Go monster-facing call consumes the
+integer result directly. The C entry continues to expose its original
+pointer-shaped result.
+
+Compared with `64c0032c1`, 30 Go-callable Cgo preamble entry points
+disappear from the default macOS ARM64 client link. The comparison
+matches preamble definitions to linked symbols in their Go packages.
+The remaining adapters include native indirect calls, mixed pointer
+and scalar results, unaligned native loads and stores, CRT integration,
+and regression probes.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

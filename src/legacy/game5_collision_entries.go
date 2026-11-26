@@ -2,15 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
-void sub_548220(nox_object_t*, nox_object_t*);
-void nox_xxx_getUnitsInRect_517C10(float4*, void*, void*);
-void nox_script_callByIndex_507310(int, void*, void*);
-int nox_float2int(float);
 static void* game5_word_pointer(uintptr_t p) { return (void*)p; }
-static void* game5_pentagram_callback(void) { return (void*)nox_xxx_collidePentagram_4EAB20; }
-static void game5_collision_query(nox_object_t* obj) {
- nox_xxx_getUnitsInRect_517C10((float4*)&obj->collide_x1, (void*)sub_548220, obj);
-}
 */
 import "C"
 
@@ -144,7 +136,11 @@ func sub_5481C0(raw *nox_object_t) {
 	if obj.Flags()&0x60 != 0 {
 		return
 	}
-	C.game5_collision_query(raw)
+	rect := types.Rectf{Min: obj.CollideP1, Max: obj.CollideP2}
+	GetServer().S().Map.EachObjInRect(rect, func(candidate *server.Object) bool {
+		sub_548220(asObjectC(candidate), raw)
+		return true
+	})
 	if obj.Flags()&8 == 0 {
 		switch obj.Shape.Kind {
 		case 2:
@@ -205,7 +201,8 @@ func sub_548360(firstRaw, secondRaw *nox_object_t) C.int {
 	}
 	telekinesis := memmap.Uint32(0x5D4594, 2490516)
 	fc, sc := first.Collide, second.Collide
-	if fc == C.game5_pentagram_callback() && uint32(second.TypeInd) == telekinesis || sc == C.game5_pentagram_callback() && uint32(first.TypeInd) == telekinesis {
+	pentagram := C.nox_xxx_collidePentagram_4EAB20
+	if fc == pentagram && uint32(second.TypeInd) == telekinesis || sc == pentagram && uint32(first.TypeInd) == telekinesis {
 		return 0
 	}
 	fclass, sclass := first.ObjClass, second.ObjClass
@@ -271,7 +268,7 @@ func sub_548B60() {
 	for ; node != nil; node = node.next {
 		data := node.data
 		speed := float32(float32(data.AngularVelocity+data.AngularVelocity) + 0.5)
-		step := int32(C.nox_float2int(C.float(speed)))
+		step := int32(nox_float2int(C.float(speed)))
 		if step < 0 {
 			step = -step
 		}
@@ -310,7 +307,7 @@ func nox_xxx_script_forcedialog_548CD0(playerRaw, monsterRaw *nox_object_t) {
 	}
 	data := monster.UpdateDataMonster()
 	if monster.Field5&0x10 != 0 && data.DialogStartFunc != -1 && data.DialogEndFunc != -1 {
-		C.nox_script_callByIndex_507310(C.int(data.DialogStartFunc), unsafe.Pointer(player), unsafe.Pointer(monster))
+		nox_script_callByIndex_507310(int32(data.DialogStartFunc), unsafe.Pointer(player), unsafe.Pointer(monster))
 	}
 }
 

@@ -8,7 +8,6 @@ package ail
 #define MINIMP3_NO_SIMD
 #include "../mp3/minimp3.h"
 #cgo noescape mp3dec_unpack_layer3
-#cgo noescape mp3dec_synthesize_layer3
 */
 import "C"
 import (
@@ -52,7 +51,7 @@ type waveFormatMP3 struct {
 
 type mp3Decoder struct {
 	r          *wavReader
-	synthesis  C.mp3dec_synthesis_t
+	synthesis  mp3SynthesisState
 	overlap    [2][mp3OverlapSamples]float32
 	sync       mp3FrameSync
 	reservoir  mp3BitReservoir
@@ -95,7 +94,7 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 		data := d.buf[d.bufOff : d.bufOff+d.bufSz]
 		skip, size, reset := d.sync.next(data)
 		if reset {
-			d.synthesis = C.mp3dec_synthesis_t{}
+			clear(d.synthesis[:])
 			clear(d.overlap[:])
 			d.reservoir.used = 0
 		}
@@ -170,9 +169,8 @@ func (d *mp3Decoder) decodeLayer3(frame []byte, header mp3FrameHeader, info *mp3
 			}
 			mp3Hybrid(&spectrum[g][ch], &d.overlap[ch], side.blockType, longSubbands)
 		}
+		d.synthesis.synthesize(&spectrum[g], channels, out[g*channels*mp3SpectralSamples:])
 	}
-	C.mp3dec_synthesize_layer3(&d.synthesis, &spectra, C.int(count), C.int(channels),
-		(*C.int16_t)(unsafe.Pointer(&out[0])))
 	d.reservoir.save(data, int(consumed))
 	return true
 }

@@ -13,7 +13,7 @@ struct nox_object_t {
 typedef int32_t (*player_try_dequip_fn)(
 	nox_object_t*, const nox_object_t*);
 typedef int32_t (*dequip_lower_fn)(
-	nox_object_t*, nox_object_t*, int32_t, int32_t);
+	nox_object_t*, const nox_object_t*, int32_t, int32_t);
 
 _Static_assert(CHAR_BIT == 8, "bytes must remain eight bits");
 _Static_assert(sizeof(int32_t) == 4, "dequip result and flags must be exact dwords");
@@ -32,7 +32,7 @@ static int failure_line;
 
 static int32_t try_weapon(
 		nox_object_t* owner,
-		nox_object_t* item,
+		const nox_object_t* item,
 		int32_t flag1,
 		int32_t flag2) {
 	call_sequence = call_sequence * 10U + 1U;
@@ -44,7 +44,7 @@ static int32_t try_weapon(
 
 static int32_t try_armor(
 		nox_object_t* owner,
-		nox_object_t* item,
+		const nox_object_t* item,
 		int32_t flag1,
 		int32_t flag2) {
 	call_sequence = call_sequence * 10U + 2U;
@@ -54,12 +54,10 @@ static int32_t try_armor(
 	return armor_result;
 }
 
-// Freestanding semantic companion for the Go export used by the production
-// const adapter. It independently checks the original callback order while the
-// linked adapter checks that the public const pointer is forwarded unchanged.
-int32_t nox_xxx_playerTryDequip_4F2FB0_go(
+// Freestanding reference for the original callback order and C signature.
+int32_t nox_xxx_playerTryDequip_4F2FB0(
 		nox_object_t* owner,
-		nox_object_t* item) {
+		const nox_object_t* item) {
 	dequip_lower_fn const weapon = try_weapon;
 	dequip_lower_fn const armor = try_armor;
 	if (weapon(owner, item, INT32_C(1), INT32_C(1)) != INT32_C(0))

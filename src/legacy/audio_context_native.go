@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stdlib.h>
 #include "audio_source_native.h"
+#include "cgo_const.h"
 extern void *dword_587000_155144;
 extern void *dword_5d4594_805984;
 */
@@ -184,8 +185,8 @@ func sub_487100(out unsafe.Pointer) unsafe.Pointer {
 	return *p
 }
 
-//export sub_487150_go
-func sub_487150_go(index C.int, format unsafe.Pointer) unsafe.Pointer {
+//export sub_487150
+func sub_487150(index C.int, format *C.nox_cgo_const_void) unsafe.Pointer {
 	requested := int32(index)
 	if requested == -1 {
 		requested = 0
@@ -205,7 +206,7 @@ func sub_487150_go(index C.int, format unsafe.Pointer) unsafe.Pointer {
 	}
 	v := d.Contexts[slot]
 	if v == nil {
-		v = (*AudioContextNative)(sub_4871C0_go(device, C.int(slot), format))
+		v = (*AudioContextNative)(sub_4871C0(device, C.int(slot), format))
 		if v == nil {
 			return nil
 		}
@@ -216,8 +217,8 @@ func sub_487150_go(index C.int, format unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(v)
 }
 
-//export sub_4871C0_go
-func sub_4871C0_go(device unsafe.Pointer, index C.int, format unsafe.Pointer) unsafe.Pointer {
+//export sub_4871C0
+func sub_4871C0(device unsafe.Pointer, index C.int, format *C.nox_cgo_const_void) unsafe.Pointer {
 	d := (*AudioDeviceNative)(device)
 	// Native arrays have sixteen slots, matching the original device owner.
 	if index < 0 || index >= C.int(len(d.Contexts)) {
@@ -237,7 +238,7 @@ func sub_4871C0_go(device unsafe.Pointer, index C.int, format unsafe.Pointer) un
 	ctx.Interval = 33
 	ctx.Update = unsafe.Pointer(C.sub_4873C0)
 	if format != nil {
-		sub_487590_go(unsafe.Pointer(ctx), format)
+		sub_487590(unsafe.Pointer(ctx), format)
 	}
 	if audioNativeCall(d.Class.ContextCreate, unsafe.Pointer(ctx)) == 0 {
 		return unsafe.Pointer(ctx)
@@ -332,9 +333,9 @@ func sub_4873C0(p unsafe.Pointer) C.int {
 	return 0
 }
 
-//export sub_487590_go
-func sub_487590_go(p, format unsafe.Pointer) unsafe.Pointer {
-	(*AudioContextNative)(p).Format60 = *(*[7]uint32)(format)
+//export sub_487590
+func sub_487590(p unsafe.Pointer, format *C.nox_cgo_const_void) unsafe.Pointer {
+	(*AudioContextNative)(p).Format60 = *(*[7]uint32)(unsafe.Pointer(format))
 	return p
 }
 

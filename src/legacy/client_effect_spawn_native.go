@@ -4,6 +4,9 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME3_1.h"
 #include "client__draw__fx.h"
+typedef const uint16_t nox_effect_const_destination;
+typedef const int16_t nox_effect_const_path;
+typedef const int2 nox_effect_const_origin;
 */
 import "C"
 
@@ -32,8 +35,8 @@ func setOrbPayload(dr *client.Drawable, destination *[2]C.uint16_t, radius, fade
 	payload[11], payload[12], payload[13], payload[14] = radius, fade, mode, mode
 }
 
-//export noxClientSetOrbPayload
-func noxClientSetOrbPayload(dr *nox_drawable, destination *C.uint16_t, radius, fade, mode C.uint8_t) {
+//export nox_client_orb_set_payload_499490
+func nox_client_orb_set_payload_499490(dr *nox_drawable, destination *C.nox_effect_const_destination, radius, fade, mode C.uint8_t) {
 	if dr != nil && destination != nil {
 		setOrbPayload(asDrawable(dr), (*[2]C.uint16_t)(unsafe.Pointer(destination)), byte(radius), byte(fade), byte(mode))
 	}
@@ -68,8 +71,8 @@ func setManaBombOrbPayload(dr *client.Drawable, path *[4]C.short, angle uint16, 
 	dr.Field_127 = dr.Field_127&0xffff0000 | uint32(angle)
 }
 
-//export noxClientSetManaBombOrbPayload
-func noxClientSetManaBombOrbPayload(dr *nox_drawable, path *C.short, angle C.uint16_t, reverse, fade, mode C.uint8_t) {
+//export nox_client_mana_bomb_orb_set_payload_499520
+func nox_client_mana_bomb_orb_set_payload_499520(dr *nox_drawable, path *C.nox_effect_const_path, angle C.uint16_t, reverse, fade, mode C.uint8_t) {
 	if dr != nil && path != nil {
 		setManaBombOrbPayload(asDrawable(dr), (*[4]C.short)(unsafe.Pointer(path)), uint16(angle), byte(reverse), byte(fade), byte(mode))
 	}
@@ -157,8 +160,8 @@ func setFallingSparkPayload(dr *client.Drawable, origin *C.int2, z uint16, veloc
 	payload[10] = fade
 }
 
-//export noxClientSetFallingSparkPayload
-func noxClientSetFallingSparkPayload(dr *nox_drawable, origin *C.int2, z C.uint16_t, velocity C.int8_t, fade C.uint8_t) {
+//export nox_client_falling_spark_set_payload_499950
+func nox_client_falling_spark_set_payload_499950(dr *nox_drawable, origin *C.nox_effect_const_origin, z C.uint16_t, velocity C.int8_t, fade C.uint8_t) {
 	if dr != nil && origin != nil {
 		setFallingSparkPayload(asDrawable(dr), origin, uint16(z), int8(velocity), byte(fade))
 	}

@@ -125,6 +125,16 @@ chapter one, manual save and load, and advanced server options.
 Removing `readonly_bindings.c` brings the top-level legacy C file count
 to 46.
 
+Eight more read-only input declarations now link to Go for equipment
+removal, modifier disengagement, audio format data, and effect payloads.
+The public dequip entry was exercised with an equipped item and owner
+above 4 GiB. The Nox executable passes both pointers and flags 1 and 1
+to the weapon routine, and invokes the armor routine after a zero
+weapon result. The Go dispatch retains that order and the signed
+32-bit result. The audio format and effect payload tests exercise the
+public C entries and native layouts. Removing these four C files
+leaves 42 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

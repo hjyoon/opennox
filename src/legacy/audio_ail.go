@@ -6,6 +6,7 @@ package legacy
 #include "GAME2_2.h"
 #include "client/audio/ail/compat_mss.h"
 #include "client__io__win95__focus.h"
+#include "cgo_const.h"
 
 void sub_43E910(int a1);
 void sub_43E8E0(int a1);
@@ -419,7 +420,7 @@ func Sub_487D00(a1 unsafe.Pointer) {
 }
 
 func Sub_487150(a1 int, a2 unsafe.Pointer) unsafe.Pointer {
-	return C.sub_487150(C.int(a1), a2)
+	return sub_487150(C.int(a1), (*C.nox_cgo_const_void)(a2))
 }
 
 func Sub_487790(a1 unsafe.Pointer, a2 int) int {

@@ -451,7 +451,7 @@ func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 	if uint32(item.ObjSubClass)&2 == 0 {
 		owner.SetNPCWeaponForMeleeUpdate532130(update, nil)
 	}
-	C.nox_xxx_itemApplyDisengageEffect_4F3030(asObjectC(item), asObjectC(owner))
+	Nox_xxx_itemApplyDisengageEffect_4F3030(item, owner)
 	GetServer().S().Spells.Dur.ItemCancelDurSpells4FEB60(owner, item)
 	return 1
 }

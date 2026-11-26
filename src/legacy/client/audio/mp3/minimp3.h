@@ -12,8 +12,6 @@
 
 typedef struct {
 	float mdct_overlap[2][9 * 32], qmf_state[15 * 2 * 32];
-	int reserv;
-	unsigned char reserv_buf[511];
 } mp3dec_t;
 
 typedef struct {
@@ -34,9 +32,9 @@ typedef int16_t mp3d_sample_t;
 typedef float mp3d_sample_t;
 void mp3dec_f32_to_s16(const float* in, int16_t* out, int num_samples);
 #endif /* MINIMP3_FLOAT_OUTPUT */
-// Returns 1 with PCM and 0 when the Layer III reservoir is incomplete.
+// Decode an assembled Layer III payload and return the number of bits consumed.
 int mp3dec_decode_layer3(mp3dec_t* dec, const uint8_t* hdr, const mp3dec_granule_t* granules,
-							int data_offset, int data_begin, int frame_bytes, mp3d_sample_t* pcm);
+							const uint8_t* main_data, int data_bytes, mp3d_sample_t* pcm);
 
 #ifdef __cplusplus
 }
@@ -1058,29 +1056,6 @@ static void L3_imdct_gr(float* grbuf, float* overlap, unsigned block_type, unsig
 		L3_imdct36(grbuf, overlap, g_mdct_window[block_type == STOP_BLOCK_TYPE], 32 - n_long_bands);
 }
 
-static void L3_save_reservoir(mp3dec_t* h, mp3dec_scratch_t* s) {
-	int pos = (s->bs.pos + 7) / 8u;
-	int remains = s->bs.limit / 8u - pos;
-	if (remains > MAX_BITRESERVOIR_BYTES) {
-		pos += remains - MAX_BITRESERVOIR_BYTES;
-		remains = MAX_BITRESERVOIR_BYTES;
-	}
-	if (remains > 0) {
-		memmove(h->reserv_buf, s->maindata + pos, remains);
-	}
-	h->reserv = remains;
-}
-
-static int L3_restore_reservoir(mp3dec_t* h, bs_t* bs, mp3dec_scratch_t* s, int main_data_begin) {
-	int frame_bytes = (bs->limit - bs->pos) / 8;
-	int bytes_have = MINIMP3_MIN(h->reserv, main_data_begin);
-	memcpy(s->maindata, h->reserv_buf + MINIMP3_MAX(0, h->reserv - main_data_begin),
-		   MINIMP3_MIN(h->reserv, main_data_begin));
-	memcpy(s->maindata + bytes_have, bs->buf + bs->pos / 8, frame_bytes);
-	bs_init(&s->bs, s->maindata, bytes_have + frame_bytes);
-	return h->reserv >= main_data_begin;
-}
-
 static void L3_decode(mp3dec_t* h, const uint8_t* hdr, mp3dec_scratch_t* s, const mp3dec_granule_t* gr_info, int nch) {
 	int ch;
 
@@ -1537,22 +1512,18 @@ static void mp3d_synth_granule(float* qmf_state, float* grbuf, int nbands, int n
 }
 
 int mp3dec_decode_layer3(mp3dec_t* dec, const uint8_t* hdr, const mp3dec_granule_t* granules,
-							int data_offset, int data_begin, int frame_bytes, mp3d_sample_t* pcm) {
+							const uint8_t* main_data, int data_bytes, mp3d_sample_t* pcm) {
 	int channels = HDR_IS_MONO(hdr) ? 1 : 2;
-	bs_t bs_frame[1];
 	mp3dec_scratch_t scratch;
 
-	bs_init(bs_frame, hdr + data_offset, frame_bytes - data_offset);
-	int success = L3_restore_reservoir(dec, bs_frame, &scratch, data_begin);
-	if (success) {
-		for (int igr = 0; igr < (HDR_TEST_MPEG1(hdr) ? 2 : 1); igr++, pcm += 576 * channels) {
-			memset(scratch.grbuf[0], 0, 576 * 2 * sizeof(float));
-			L3_decode(dec, hdr, &scratch, granules + igr * channels, channels);
-			mp3d_synth_granule(dec->qmf_state, scratch.grbuf[0], 18, channels, pcm, scratch.syn[0]);
-		}
+	memcpy(scratch.maindata, main_data, data_bytes);
+	bs_init(&scratch.bs, scratch.maindata, data_bytes);
+	for (int igr = 0; igr < (HDR_TEST_MPEG1(hdr) ? 2 : 1); igr++, pcm += 576 * channels) {
+		memset(scratch.grbuf[0], 0, 576 * 2 * sizeof(float));
+		L3_decode(dec, hdr, &scratch, granules + igr * channels, channels);
+		mp3d_synth_granule(dec->qmf_state, scratch.grbuf[0], 18, channels, pcm, scratch.syn[0]);
 	}
-	L3_save_reservoir(dec, &scratch);
-	return success;
+	return scratch.bs.pos;
 }
 
 #ifdef MINIMP3_FLOAT_OUTPUT

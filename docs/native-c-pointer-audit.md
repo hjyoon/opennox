@@ -45,6 +45,25 @@ argument. Fifty of the directly named callbacks return C `int`. The
 shared dispatcher still needs per-callback signature verification for
 integer results, pointer-sized results, and argument counts.
 
+### Memory map and MP3 follow-up
+
+Go now exports the 12 memory-map accessors with native-width addresses
+and typed C pointer results. Removing `memmap.c` brings the top-level C
+file count to 53. Native callers and invalid-access termination passed
+on macOS ARM64 and on Linux ARM64 with the safe profile. The Windows 386
+test executable cross-compiled. On macOS the safe profile stalled
+during AddressSanitizer startup at both the audit baseline and the
+ported revision.
+
+The OpenAL package compiles the bundled MP3 Layer III decoder separately
+from the top-level files. Go now synchronizes MP3 frames, parses Layer III
+side information, and maintains the bit reservoir. The C comparisons
+matched 46,706 frame-synchronization inputs, 25,000 side-information
+inputs, and 16,000 reservoir transitions. Stock dialog and four
+synthetic streams produced the established PCM with `cgocheck2` and
+`checkptr=2`. The active C pipeline still decodes scalefactors and Huffman
+coefficients, applies stereo and spectral transforms, and synthesizes PCM.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

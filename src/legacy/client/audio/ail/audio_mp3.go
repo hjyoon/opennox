@@ -53,6 +53,7 @@ type mp3Decoder struct {
 	r          *wavReader
 	dec        C.mp3dec_t
 	sync       mp3FrameSync
+	reservoir  mp3BitReservoir
 	sampleRate int
 	channel    int
 
@@ -93,6 +94,7 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 		skip, size, reset := d.sync.next(data)
 		if reset {
 			d.dec = C.mp3dec_t{}
+			d.reservoir.used = 0
 		}
 		if skip+size == 0 {
 			break // An incomplete trailing header cannot advance the stream.
@@ -117,6 +119,12 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 }
 
 func (d *mp3Decoder) decodeLayer3(frame []byte, info *mp3SideInfo, out []int16) bool {
+	var scratch [mp3ReservoirSize + mp3MaxFreeFormatBytes]byte
+	data, ready := d.reservoir.restore(scratch[:], frame[info.mainDataOffset:], info.mainDataBegin)
+	if !ready {
+		d.reservoir.save(data, 0)
+		return false
+	}
 	var granules [4]C.mp3dec_granule_t
 	for i := range granules {
 		src, dst := &info.granules[i], &granules[i]
@@ -141,9 +149,10 @@ func (d *mp3Decoder) decodeLayer3(frame []byte, info *mp3SideInfo, out []int16) 
 		dst.count1_table = C.uint8_t(src.countOneTable)
 		dst.scfsi = C.uint8_t(src.scalefacReuseMask)
 	}
-	return C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
-		C.int(info.mainDataOffset), C.int(info.mainDataBegin), C.int(len(frame)),
-		(*C.int16_t)(unsafe.Pointer(&out[0]))) != 0
+	consumed := C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
+		(*C.uint8_t)(unsafe.Pointer(&scratch[0])), C.int(len(data)), (*C.int16_t)(unsafe.Pointer(&out[0])))
+	d.reservoir.save(data, int(consumed))
+	return true
 }
 
 func (d *mp3Decoder) Seek(position int) {

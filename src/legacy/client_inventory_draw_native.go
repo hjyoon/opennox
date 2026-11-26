@@ -7,7 +7,6 @@ package legacy
 extern uintptr_t dword_5d4594_1062492;
 extern uint32_t dword_5d4594_1062496, dword_5d4594_1049844;
 extern nox_drawable* dword_5d4594_1063116;
-extern void* nox_inventory_font;
 */
 import "C"
 
@@ -15,6 +14,12 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
+)
+
+var (
+	inventoryFont       unsafe.Pointer
+	inventoryImages     [C.NOX_INV_IMG_COUNT]*nox_video_bag_image_t
+	inventoryExtraLives *nox_things_imageRef_t
 )
 
 //export sub_465D50_draw
@@ -30,7 +35,7 @@ func sub_465D50_draw(win *C.nox_window) C.int {
 			ccall.CallIntPtr2(unsafe.Pointer(item.draw_func), unsafe.Pointer(viewport), unsafe.Pointer(item))
 		}
 	} else if C.dword_5d4594_1062496 == 0 && C.dword_5d4594_1062492 == 0 {
-		nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_FIST], int32(x+21), int32(y+50))
+		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_FIST], int32(x+21), int32(y+50))
 	}
 	return 1
 }
@@ -54,7 +59,7 @@ func nox_xxx_inventoryDrawProc_466580(win *C.nox_window, draw *C.nox_window_data
 	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(image), int32(x), int32(y))
 	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	if key := sub_42E8E0(35, 1); key != nil {
-		nox_xxx_drawString_43F6E0(C.nox_inventory_font, key, int32(x+19), int32(y+102))
+		nox_xxx_drawString_43F6E0(inventoryFont, key, int32(x+19), int32(y+102))
 	}
 	return 1
 }
@@ -113,8 +118,8 @@ func nox_xxx_inventoryLoadImages_467050() *C.nox_things_imageRef_t {
 		"InventoryDollButtonLit", "InventoryStatsButton", "InventoryStatsButtonLit", "GUIFist", "SharedKeyMode",
 	}
 	for index, name := range names {
-		C.nox_inventory_images[index] = nox_xxx_gLoadImg_42F970(internCStr(name))
+		inventoryImages[index] = nox_xxx_gLoadImg_42F970(internCStr(name))
 	}
-	C.nox_inventory_extra_lives_anim = nox_xxx_gLoadAnim_42FA20(internCStr("ExtraLives"))
-	return C.nox_inventory_extra_lives_anim
+	inventoryExtraLives = nox_xxx_gLoadAnim_42FA20(internCStr("ExtraLives"))
+	return inventoryExtraLives
 }

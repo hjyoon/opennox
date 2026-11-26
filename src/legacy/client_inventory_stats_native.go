@@ -3,7 +3,6 @@ package legacy
 /*
 #include "client__gui__guiinv.h"
 
-extern void* nox_inventory_font;
 
 static void nox_client_format_inventory_stat(wchar2_t* out, const wchar2_t* format, int first, int second) {
 	nox_swprintf(out, format, first, second);
@@ -52,7 +51,7 @@ func clientInventoryStatInt(value float64) int {
 //export nox_client_makePlayerStatsDlg_463880
 func nox_client_makePlayerStatsDlg_463880(origin *C.int) {
 	render := GetClient().R2()
-	small := render.GetFonts().AsFont(C.nox_inventory_font)
+	small := render.GetFonts().AsFont(inventoryFont)
 	lineHeight := render.FontHeight(nil)
 	offsetY := clientInventoryStatInt(float64(lineHeight-render.FontHeight(small))*0.5 + 0.5)
 	pl := Get_dword_8531A0_2576()

@@ -7,15 +7,11 @@ package legacy
 
 extern uint32_t dword_5d4594_1049796_inventory_click_column_index;
 extern uint32_t dword_5d4594_1049800_inventory_click_row_index;
-extern uint32_t dword_5d4594_1049856, dword_5d4594_1049864;
+extern uint32_t dword_5d4594_1049856;
 extern uint32_t dword_5d4594_1062488, dword_5d4594_1062496;
 extern uintptr_t dword_5d4594_1062492;
 extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516, dword_5d4594_1062520;
 extern uint32_t dword_5d4594_1062552, dword_587000_136184;
-extern nox_window* nox_inventory_scroll_window;
-extern nox_window* nox_inventory_current_weapon_window;
-extern nox_window* nox_inventory_journal_button;
-extern nox_window* nox_inventory_stats_button;
 */
 import "C"
 
@@ -86,7 +82,7 @@ func sub_467980() C.int {
 	nox_client_inventory_set_dragged(nil)
 	C.dword_5d4594_1049856 = 0
 	sub_462740()
-	C.dword_5d4594_1049864 = 0
+	inventoryState.mode = 0
 	nox_xxx_clientSetAltWeapon_461550(nil)
 	C.dword_5d4594_1062488 = 0
 	clear(inventoryStateNativeHeads()[:])
@@ -105,22 +101,22 @@ func sub_467980() C.int {
 	C.dword_5d4594_1062520 = 0
 	C.dword_5d4594_1062512 = 0
 
-	scroll := C.nox_inventory_scroll_window
+	scroll := inventoryWindows.slider
 	if slider := game3Slider(scroll); slider != nil {
 		file := internCStr("client_inventory_actions_native.go")
 		nox_window_call_field_94_fnc(scroll, 16395, 0, 850, file, 0)
 		nox_window_call_field_94_fnc(scroll, 16394, uintptr(uint32(slider.Max)-uint32(C.dword_5d4594_1062512)), 0, file, 0)
 	}
-	journal := C.nox_inventory_journal_button
+	journal := inventoryWindows.journal
 	nox_xxx_wndSetIcon_46AE60(journal, nil)
-	sub_46AEC0(journal, C.nox_inventory_images[C.NOX_INV_IMG_JOURNAL_LIT])
+	sub_46AEC0(journal, inventoryImages[C.NOX_INV_IMG_JOURNAL_LIT])
 	nox_xxx_wndSetID_46B080(journal, 9105)
 	*memmap.PtrUint8(0x5D4594, 1049870) = 0
-	stats := C.nox_inventory_stats_button
-	nox_xxx_wndSetIcon_46AE60(stats, C.nox_inventory_images[C.NOX_INV_IMG_STATS])
-	sub_46AEC0(stats, C.nox_inventory_images[C.NOX_INV_IMG_STATS_LIT])
+	stats := inventoryWindows.stats
+	nox_xxx_wndSetIcon_46AE60(stats, inventoryImages[C.NOX_INV_IMG_STATS])
+	sub_46AEC0(stats, inventoryImages[C.NOX_INV_IMG_STATS_LIT])
 	nox_xxx_wndSetID_46B080(stats, 9107)
-	return C.int(nox_window_set_hidden(C.nox_inventory_current_weapon_window, 0))
+	return C.int(nox_window_set_hidden(inventoryWindows.weapon, 0))
 }
 
 //export sub_467CD0

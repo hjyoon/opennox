@@ -6,9 +6,8 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__guimsg.h"
 
-extern nox_window *nox_inventory_window, *nox_inventory_scroll_up_button, *nox_inventory_scroll_down_button;
 extern nox_drawable* dword_5d4594_1063116;
-extern uint32_t dword_5d4594_1049856, dword_5d4594_1049864, dword_5d4594_1062512;
+extern uint32_t dword_5d4594_1049856, dword_5d4594_1062512;
 extern uint32_t dword_5d4594_1049796_inventory_click_column_index, dword_5d4594_1049800_inventory_click_row_index;
 extern uint32_t dword_5d4594_1049804, dword_5d4594_1049808;
 extern int nox_win_width, nox_win_height;
@@ -77,7 +76,7 @@ func sub_464BD0(win *C.nox_window, event C.int, packed, extra C.uintptr_t) C.int
 	screen := C.int2{field_0: C.int(uint16(packed)), field_4: C.int(packed >> 16)}
 	var local C.int2
 	point := C.nox_point{x: screen.field_0, y: screen.field_4}
-	sub_463370(C.nox_inventory_window, &point, (*C.uint32_t)(unsafe.Pointer(&local)))
+	sub_463370(inventoryWindows.panel, &point, (*C.uint32_t)(unsafe.Pointer(&local)))
 	if sub_45D9B0() != 0 || nox_client_inventory_animation_state() != 2 {
 		return 1
 	}
@@ -88,12 +87,12 @@ func sub_464BD0(win *C.nox_window, event C.int, packed, extra C.uintptr_t) C.int
 		}
 		return clientInventoryPress(&local)
 	case 7:
-		if nox_xxx_playerAnimCheck_4372B0() != 0 || C.dword_5d4594_1049864 == 6 {
+		if nox_xxx_playerAnimCheck_4372B0() != 0 || inventoryState.mode == 6 {
 			return 1
 		}
 		if memmap.Uint8(0x5D4594, 1049869) == 0 &&
 			clientInventoryPointInRect(&local, 0x587000, 136368) && (local.field_4-13)/50 == 1 {
-			if C.dword_5d4594_1049864 == 5 {
+			if inventoryState.mode == 5 {
 				sub_462740()
 			} else {
 				sub_465CA0()
@@ -102,7 +101,7 @@ func sub_464BD0(win *C.nox_window, event C.int, packed, extra C.uintptr_t) C.int
 		}
 		fallthrough
 	case 6:
-		if nox_xxx_playerAnimCheck_4372B0() != 0 || C.dword_5d4594_1049864 == 6 {
+		if nox_xxx_playerAnimCheck_4372B0() != 0 || inventoryState.mode == 6 {
 			return 1
 		}
 		clientInventoryRelease(&screen, &local)
@@ -110,7 +109,7 @@ func sub_464BD0(win *C.nox_window, event C.int, packed, extra C.uintptr_t) C.int
 	case 8:
 		return 1
 	case 9:
-		if C.dword_5d4594_1049864 == 5 {
+		if inventoryState.mode == 5 {
 			sub_462740()
 			return 1
 		}
@@ -120,22 +119,22 @@ func sub_464BD0(win *C.nox_window, event C.int, packed, extra C.uintptr_t) C.int
 			return 1
 		}
 		if clientInventoryCheckTabs(&local) {
-			return C.int(bool2int(C.dword_5d4594_1049864 == 5))
+			return C.int(bool2int(inventoryState.mode == 5))
 		}
-		button := C.nox_inventory_scroll_up_button
+		button := inventoryWindows.scrollUp
 		if event == 20 {
-			button = C.nox_inventory_scroll_down_button
+			button = inventoryWindows.scrollDown
 		}
-		nox_window_call_field_94_fnc(C.nox_inventory_window, 16391, uintptr(unsafe.Pointer(button)), 0,
+		nox_window_call_field_94_fnc(inventoryWindows.panel, 16391, uintptr(unsafe.Pointer(button)), 0,
 			internCStr("client_inventory_drag_native.go"), 0)
 		return 1
 	default:
-		return C.int(bool2int(C.dword_5d4594_1049864 == 5))
+		return C.int(bool2int(inventoryState.mode == 5))
 	}
 }
 
 func clientInventoryPress(local *C.int2) C.int {
-	switch C.dword_5d4594_1049864 {
+	switch inventoryState.mode {
 	case 5:
 		if clientInventoryPointInRect(local, 0x587000, 136352) {
 			column, row := clientInventoryStorageIndex(local)
@@ -165,11 +164,11 @@ func clientInventoryPress(local *C.int2) C.int {
 		if memmap.Uint8(0x5D4594, 1049869) != 0 {
 			return 1
 		}
-		nox_xxx_wndSetCaptureMain_46ADC0(C.nox_inventory_window)
+		nox_xxx_wndSetCaptureMain_46ADC0(inventoryWindows.panel)
 		if sub_479590() == 3 {
 			nox_xxx_clientTradeMB_4657E0((*C.uint32_t)(unsafe.Pointer(local)))
 		} else {
-			sub_4658A0(C.nox_inventory_window, local)
+			sub_4658A0(inventoryWindows.panel, local)
 		}
 		if dragged := nox_client_inventory_get_dragged(); dragged != nil {
 			nox_xxx_cursorSetDraggedItem_477690(dragged)
@@ -182,15 +181,15 @@ func clientInventoryPress(local *C.int2) C.int {
 }
 
 func clientInventoryRelease(screen, local *C.int2) {
-	if C.dword_5d4594_1049864 == 5 {
+	if inventoryState.mode == 5 {
 		if nox_xxx_cursorGetTypePrev_477630() == 7 {
 			sub_462740()
 			return
 		}
 	} else {
-		nox_xxx_wndClearCaptureMain_46ADE0(C.nox_inventory_window)
+		nox_xxx_wndClearCaptureMain_46ADE0(inventoryWindows.panel)
 	}
-	if C.dword_5d4594_1049864 == 4 {
+	if inventoryState.mode == 4 {
 		clientInventoryCheckWorldTarget(screen)
 		return
 	}
@@ -202,7 +201,7 @@ func clientInventoryRelease(screen, local *C.int2) {
 
 	fromColumn := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
 	fromRow := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
-	if !bool(C.nox_xxx_wndPointInWnd_46AAB0(C.nox_inventory_window, screen.field_0, screen.field_4)) || clientInventoryCheckTabs(local) {
+	if !bool(C.nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, screen.field_0, screen.field_4)) || clientInventoryCheckTabs(local) {
 		clientInventoryDropOutside(dragged, screen, fromColumn, fromRow)
 		return
 	}
@@ -282,7 +281,7 @@ func clientInventoryUseFromCell(dragged *nox_drawable, column, row C.int) {
 }
 
 func clientInventoryCheckWorldTarget(screen *C.int2) {
-	defer func() { C.dword_5d4594_1049864 = 0 }()
+	defer func() { inventoryState.mode = 0 }()
 	var world C.int2
 	sub_473970(screen, &world)
 	point := C.nox_point{x: world.field_0, y: world.field_4}
@@ -310,7 +309,7 @@ func clientInventoryDropOutside(dragged *nox_drawable, screen *C.int2, column, r
 	}
 	count := inventoryGridCell(int(row), int(column)).field_140
 	if count != 0 {
-		nox_xxx_wndClearCaptureMain_46ADE0(C.nox_inventory_window)
+		nox_xxx_wndClearCaptureMain_46ADE0(inventoryWindows.panel)
 		var attrs *C.nox_modifier_attrs_t
 		if dragged.flags28&0x13001000 != 0 {
 			attrs = (*C.nox_modifier_attrs_t)(unsafe.Pointer(drawableItemData(dragged)))

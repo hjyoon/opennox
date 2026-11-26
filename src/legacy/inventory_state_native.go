@@ -1,10 +1,7 @@
 package legacy
 
 /*
-#include "GAME2_1.h"
-extern uintptr_t array_5D4594_1049872[9];
-extern uint32_t dword_5d4594_1049864;
-extern nox_window* dword_5d4594_1062452;
+#include "client__gui__guiinv.h"
 */
 import "C"
 
@@ -16,16 +13,24 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var inventoryState, _ = alloc.New(C.nox_inventory_state_t{})
+
+//export nox_inventory_state_storage
+func nox_inventory_state_storage() *C.nox_inventory_state_t {
+	return inventoryState
+}
 
 func inventoryStateNativeSlot(index int) unsafe.Pointer {
 	switch uint32(index) {
 	case 0:
-		return unsafe.Pointer(&C.array_5D4594_1049872[0])
+		return unsafe.Pointer(&inventoryState.equipped[0])
 	case 1:
-		return unsafe.Pointer(&C.dword_5d4594_1049864)
+		return unsafe.Pointer(&inventoryState.mode)
 	case 2:
-		return unsafe.Pointer(&C.dword_5d4594_1062452)
+		return unsafe.Pointer(&inventoryState.root)
 	default:
 		return nil
 	}

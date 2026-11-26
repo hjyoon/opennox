@@ -14,7 +14,7 @@ extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1107036;
 extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062484;
-extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
+#define nox_client_inventory_grid_1050020 (*nox_inventory_grid_storage())
 
 static void nox_test_shop_clear(void) {
 	// Test drawables are intentionally synthetic high addresses. Never run the
@@ -309,9 +309,10 @@ func ClearShopCells() func() {
 }
 
 func ClearInventoryCells() func() {
-	old := C.nox_client_inventory_grid_1050020
-	C.nox_client_inventory_grid_1050020 = [C.NOX_INVENTORY_CELLS_MAX]C.nox_inventory_cell_t{}
-	return func() { C.nox_client_inventory_grid_1050020 = old }
+	grid := C.nox_inventory_grid_storage()
+	old := *grid
+	*grid = C.nox_inventory_grid_t{}
+	return func() { *grid = old }
 }
 
 func ShopViewWords() (active, scroll *uint32) {

@@ -3,11 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "GAME2_3.h"
-extern nox_window* nox_inventory_window;
-extern nox_window* nox_inventory_identify_window;
-extern nox_window* nox_inventory_scroll_down_button;
-extern nox_window* nox_inventory_scroll_up_button;
-extern nox_window* nox_inventory_current_weapon_window;
 extern nox_window_yyy nox_windows_arr_1093036[7];
 extern uint32_t dword_5d4594_1062512;
 */
@@ -21,18 +16,18 @@ import (
 )
 
 func InventoryWindow() *gui.Window {
-	return asWindow(C.nox_inventory_window)
+	return asWindow(inventoryWindows.panel)
 }
 
 func InventoryIdentifyWindow() *gui.Window {
-	return asWindow(C.nox_inventory_identify_window)
+	return asWindow(inventoryWindows.identify)
 }
 
 func InventoryScrollButton(down bool) *gui.Window {
 	if down {
-		return asWindow(C.nox_inventory_scroll_down_button)
+		return asWindow(inventoryWindows.scrollDown)
 	}
-	return asWindow(C.nox_inventory_scroll_up_button)
+	return asWindow(inventoryWindows.scrollUp)
 }
 
 func InventoryDrawTrayClipped(pos image.Point) bool {
@@ -95,7 +90,7 @@ func InventoryWeaponWindow(alternate bool) *gui.Window {
 
 func inventoryWeaponWindow(alternate bool) *nox_window {
 	if alternate {
-		return C.nox_inventory_current_weapon_window
+		return inventoryWindows.weapon
 	}
 	return C.nox_windows_arr_1093036[4].win
 }

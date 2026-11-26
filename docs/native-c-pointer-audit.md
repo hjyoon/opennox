@@ -629,6 +629,24 @@ The map download test supplies a scenario path and the default
 map profile when it invokes the runner's preparation block.
 The six subcases exercise the copied maps and generated ZIPs.
 
+### Inventory window and cell storage
+
+The original inventory constructor at `0x465E00` publishes its
+root at `0x6D7BC8`. Go holds the root, the panel and its child
+windows, and the font and image references. The shared root
+slot, nine equipment-list heads, and 32-bit inventory mode occupy
+one native allocation owned by Go.
+
+The original lookup at `0x461EF0` advances by 148 bytes per cell.
+The 21-by-4 grid keeps that stride on 32-bit targets and uses a
+152-byte stride on 64-bit targets. Go allocates the grid for the
+process lifetime so secondary-weapon selection and the shop still
+refer to the same cells. The C test fixtures write those live cells
+and verify their layouts and pointer identity.
+
+This migration removes 17 definitions from `vardefs.c`, including
+11 window pointer slots.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

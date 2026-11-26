@@ -6,13 +6,13 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "GAME4_1.h"
+#include "client__gui__guiinv.h"
 extern unsigned int dword_5d4594_527988;
 extern uint32_t dword_5d4594_805820;
 extern uint32_t nox_xxx_useAudio_587000_80772;
 extern uint32_t dword_5d4594_815052;
 extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
-extern uint32_t dword_5d4594_1049864;
 #include "client_ui_words.h"
 extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1098624;
@@ -34,9 +34,12 @@ _Static_assert(_Generic(&sub_478030,ui_word_callback_C:1,default:0),"word32 ABI 
 _Static_assert(_Generic(&sub_479590,ui_word_callback_C:1,default:0),"word32 ABI sub_479590");
 _Static_assert(_Generic(&sub_47A260,ui_word_callback_C:1,default:0),"word32 ABI sub_47A260");
 static ui_word_callback_C ui_word_entries_C[]={sub_41E2F0,nox_client_mousePriKey_430AF0,nox_xxx_cursor_430B00,sub_43AF30,sub_43AF40,sub_43AF80,sub_4611A0,sub_4674A0,sub_4675B0,sub_46A4A0,nox_xxx_playerGet_470A90,sub_478030,sub_479590,sub_47A260};
-static uint32_t*ui_word_globals_C[]={&dword_5d4594_527988,&dword_5d4594_805820,&nox_xxx_useAudio_587000_80772,&dword_5d4594_815052,&nox_game_createOrJoin_815048,&dword_5d4594_814548,&dword_5d4594_1047932,&dword_5d4594_1062552,&dword_5d4594_1049864,&dword_5d4594_1064868,&dword_5d4594_1096252,&dword_5d4594_1098624,&dword_5d4594_1098628,&dword_5d4594_1123520};
-static uint32_t ui_word_get_C(unsigned i){return *ui_word_globals_C[i];}
-static void ui_word_set_C(unsigned i,uint32_t v){*ui_word_globals_C[i]=v;}
+static uint32_t*ui_word_globals_C[]={&dword_5d4594_527988,&dword_5d4594_805820,&nox_xxx_useAudio_587000_80772,&dword_5d4594_815052,&nox_game_createOrJoin_815048,&dword_5d4594_814548,&dword_5d4594_1047932,&dword_5d4594_1062552,NULL,&dword_5d4594_1064868,&dword_5d4594_1096252,&dword_5d4594_1098624,&dword_5d4594_1098628,&dword_5d4594_1123520};
+static uint32_t* ui_word_address_C(unsigned i) {
+    return i == 8 ? &nox_inventory_state_storage()->mode : ui_word_globals_C[i];
+}
+static uint32_t ui_word_get_C(unsigned i){return *ui_word_address_C(i);}
+static void ui_word_set_C(unsigned i,uint32_t v){*ui_word_address_C(i)=v;}
 static int ui_word_call_C(int route,unsigned i){if(route==1){ui_word_callback_C f=ui_word_entries_C[i];return f();}switch(i){
 case 0:return sub_41E2F0();
 case 1:return nox_client_mousePriKey_430AF0();

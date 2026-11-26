@@ -1,7 +1,21 @@
 #ifndef NOX_PORT_CLIENT_GUI_GUIINV
 #define NOX_PORT_CLIENT_GUI_GUIINV
 
+#include <stddef.h>
 #include "defs.h"
+
+typedef nox_inventory_cell_t nox_inventory_grid_t[NOX_INVENTORY_CELLS_MAX];
+nox_inventory_grid_t* nox_inventory_grid_storage(void);
+
+typedef struct nox_inventory_state_t {
+	nox_drawable* equipped[9];
+	nox_window* root;
+	uint32_t mode;
+} nox_inventory_state_t;
+
+_Static_assert(offsetof(nox_inventory_state_t, root) == 9 * sizeof(void*), "inventory root offset");
+_Static_assert(offsetof(nox_inventory_state_t, mode) == 10 * sizeof(void*), "inventory mode offset");
+nox_inventory_state_t* nox_inventory_state_storage(void);
 
 int nox_xxx_spritePickup_461660(int net_code, int thing_type, const nox_modifier_attrs_t* attrs);
 int sub_4617C0(int net_code, int thing_type, const nox_modifier_attrs_t* attrs, int2* position);

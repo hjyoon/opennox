@@ -3,9 +3,8 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "GAME3_3.h"
-extern uintptr_t array_5D4594_1049872[9];
-extern uint32_t dword_5d4594_1049864,dword_5d4594_1062488;
-extern nox_window* dword_5d4594_1062452;
+#include "client__gui__guiinv.h"
+extern uint32_t dword_5d4594_1062488;
 typedef nox_drawable*(*inventory_state_find_C)(int);
 typedef int(*inventory_state_test_C)(void);
 typedef int(*inventory_state_bounds_C)(int,int);
@@ -68,19 +67,21 @@ static void inventory_state_seed_C(void*p,size_t placement,const uint32_t*q){
   nodes[j]->field_27=q[18+3*j];nodes[j]->flags28=q[19+3*j];
   int32_t next=(int32_t)q[20+3*j];nodes[j]->field_92=next<0?NULL:nodes[next];
  }
- for(unsigned j=0;j<9;j++){int32_t head=(int32_t)q[9+j];array_5D4594_1049872[j]=head<0?0:(uintptr_t)nodes[head];}
+ nox_inventory_state_t* state = nox_inventory_state_storage();
+ for(unsigned j=0;j<9;j++){int32_t head=(int32_t)q[9+j];state->equipped[j]=head<0?NULL:nodes[head];}
  nox_object_t*owner=(nox_object_t*)(raw+0x8000+placement);
  nox_object_t*items[]={NULL,(nox_object_t*)(raw+0x9000+placement),(nox_object_t*)(raw+0xa000+placement)};
  owner->inv_first_item=items[q[8]];
- dword_5d4594_1049864=q[1];dword_5d4594_1062488=q[3];
- dword_5d4594_1062452=q[7]?(nox_window*)(raw+0xc000+placement):NULL;
+ state->mode=q[1];dword_5d4594_1062488=q[3];
+ state->root=q[7]?(nox_window*)(raw+0xc000+placement):NULL;
 }
 static void inventory_state_layout_C(uintptr_t*v){
+ nox_inventory_state_t* state = NULL;
  v[0]=sizeof(void*);v[1]=sizeof(nox_drawable);v[2]=offsetof(nox_drawable,field_27);v[3]=offsetof(nox_drawable,flags28);v[4]=offsetof(nox_drawable,field_92);
  v[5]=sizeof(((nox_drawable*)0)->field_27);v[6]=sizeof(((nox_drawable*)0)->flags28);v[7]=sizeof(((nox_drawable*)0)->field_92);
  v[8]=sizeof(nox_object_t);v[9]=offsetof(nox_object_t,inv_first_item);v[10]=sizeof(((nox_object_t*)0)->inv_first_item);v[11]=sizeof(nox_window);
- v[12]=sizeof(array_5D4594_1049872);v[13]=sizeof(array_5D4594_1049872[0]);v[14]=sizeof(array_5D4594_1049872)/sizeof(array_5D4594_1049872[0]);
- v[15]=sizeof(dword_5d4594_1049864);v[16]=sizeof(dword_5d4594_1062488);v[17]=sizeof(dword_5d4594_1062452);v[18]=sizeof(int);v[19]=sizeof(uint32_t);
+ v[12]=sizeof(state->equipped);v[13]=sizeof(state->equipped[0]);v[14]=sizeof(state->equipped)/sizeof(state->equipped[0]);
+ v[15]=sizeof(state->mode);v[16]=sizeof(dword_5d4594_1062488);v[17]=sizeof(state->root);v[18]=sizeof(int);v[19]=sizeof(uint32_t);
 }
 */
 import "C"

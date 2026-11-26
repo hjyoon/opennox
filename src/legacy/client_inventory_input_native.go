@@ -6,11 +6,9 @@ package legacy
 #include "client__gui__window.h"
 
 typedef const nox_inventory_cell_t nox_const_inventory_cell;
-extern nox_window* nox_inventory_window;
-extern nox_window* nox_inventory_identify_window;
 extern uint32_t dword_5d4594_1049796_inventory_click_column_index;
 extern uint32_t dword_5d4594_1049800_inventory_click_row_index;
-extern uint32_t dword_5d4594_1049856, dword_5d4594_1049864;
+extern uint32_t dword_5d4594_1049856;
 extern uint32_t dword_5d4594_1062512;
 extern uintptr_t dword_5d4594_1062492;
 */
@@ -34,7 +32,7 @@ func nox_xxx_inventoryWndProc_464BB0(win *C.nox_window, event C.int, a, b C.uint
 
 //export sub_464770
 func sub_464770(win *C.nox_window, event C.int, packed, unused C.uintptr_t) C.int {
-	if C.dword_5d4594_1049864 == 6 {
+	if inventoryState.mode == 6 {
 		return 1
 	}
 	switch event {
@@ -42,14 +40,14 @@ func sub_464770(win *C.nox_window, event C.int, packed, unused C.uintptr_t) C.in
 		return 1
 	case 6:
 		if dragged := nox_client_inventory_get_dragged(); dragged != nil {
-			inside := bool(C.nox_xxx_wndPointInWnd_46AAB0(C.nox_inventory_window, C.int(uint16(packed)), C.int(uint32(packed)>>16)))
+			inside := bool(C.nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, C.int(uint16(packed)), C.int(uint32(packed)>>16)))
 			clearCapture := !inside || clientInventoryReleaseOnAlternate(dragged)
 			clientInventoryFinishDrag(dragged)
 			if !clearCapture {
 				return 1
 			}
 		}
-		nox_xxx_wndClearCaptureMain_46ADE0(C.nox_inventory_window)
+		nox_xxx_wndClearCaptureMain_46ADE0(inventoryWindows.panel)
 		return 1
 	case 7:
 		if clientInventoryAlternateCell() != nil {
@@ -209,10 +207,10 @@ func nox_xxx_clientUse_465C70(drawable *C.nox_drawable) {
 
 //export sub_465CA0
 func sub_465CA0() C.int {
-	nox_window_set_hidden(C.nox_inventory_identify_window, 0)
-	C.dword_5d4594_1049864 = 5
+	nox_window_set_hidden(inventoryWindows.identify, 0)
+	inventoryState.mode = 5
 	nox_client_setCursorType_477610(6)
-	return C.int(nox_xxx_wndSetCaptureMain_46ADC0(C.nox_inventory_window))
+	return C.int(nox_xxx_wndSetCaptureMain_46ADC0(inventoryWindows.panel))
 }
 
 //export sub_465CD0

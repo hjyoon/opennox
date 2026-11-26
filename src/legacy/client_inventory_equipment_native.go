@@ -5,9 +5,8 @@ package legacy
 #include "GAME3_2.h"
 
 typedef const nox_drawable inventory_const_drawable_t;
-extern uint32_t dword_5d4594_1049864, dword_5d4594_1062496;
+extern uint32_t dword_5d4594_1062496;
 extern uintptr_t dword_5d4594_1062492;
-extern void* nox_inventory_font;
 */
 import "C"
 
@@ -177,7 +176,7 @@ func sub_4624D0(code C.int) C.int {
 
 //export sub_4625D0
 func sub_4625D0(win *C.nox_window, draw *C.nox_window_data) C.int {
-	if C.dword_5d4594_1049864 == 5 {
+	if inventoryState.mode == 5 {
 		return 1
 	}
 	x, y := meterWindowPosition(win)
@@ -195,7 +194,7 @@ func sub_4625D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		}
 	}
 	if key := sub_42E8E0(35, 1); key != nil {
-		nox_xxx_drawString_43F6E0(C.nox_inventory_font, key, int32(x+22), int32(y+41))
+		nox_xxx_drawString_43F6E0(inventoryFont, key, int32(x+22), int32(y+41))
 	}
 	return 1
 }

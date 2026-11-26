@@ -33,8 +33,6 @@ enum {
 	NOX_INV_IMG_SHARED_KEY_MODE,
 	NOX_INV_IMG_COUNT,
 };
-extern nox_video_bag_image_t* nox_inventory_images[NOX_INV_IMG_COUNT];
-extern nox_things_imageRef_t* nox_inventory_extra_lives_anim;
 
 int sub_460D40();
 int sub_460D50();

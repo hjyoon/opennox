@@ -3,13 +3,17 @@ package legacy
 /*
 #include "GAME1_1.h"
 #include "GAME2_1.h"
+#include "client__gui__guiinv.h"
 
-extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
 extern uint32_t dword_5d4594_1062484;
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
 
 const (
 	inventoryRows     = int(C.NOX_INVENTORY_ROW_COUNT)
@@ -17,8 +21,16 @@ const (
 	inventoryStackMax = 32
 )
 
+// Inventory callbacks retain cell addresses in the equipment and drag state.
+var inventoryGrid, _ = alloc.New(C.nox_inventory_grid_t{})
+
+//export nox_inventory_grid_storage
+func nox_inventory_grid_storage() *C.nox_inventory_grid_t {
+	return inventoryGrid
+}
+
 func inventoryGridCell(row, column int) *C.nox_inventory_cell_t {
-	return &C.nox_client_inventory_grid_1050020[row+inventoryRows*column]
+	return &inventoryGrid[row+inventoryRows*column]
 }
 
 func inventoryCellCodes(cell *C.nox_inventory_cell_t) []C.uint32_t {

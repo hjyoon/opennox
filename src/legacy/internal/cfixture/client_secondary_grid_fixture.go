@@ -2,7 +2,8 @@ package cfixture
 
 /*
 #include "GAME2_1.h"
-extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
+#include "client__gui__guiinv.h"
+#define nox_client_inventory_grid_1050020 (*nox_inventory_grid_storage())
 extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062484;
 static void* secondary_grid_base_198(void) { return nox_client_inventory_grid_1050020; }

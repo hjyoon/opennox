@@ -12,7 +12,6 @@ extern uint32_t nox_xxx_useAudio_587000_80772;
 extern uint32_t dword_5d4594_815052;
 extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
-extern uint32_t dword_5d4594_1049864;
 #include "client_ui_words.h"
 extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1098624;
@@ -56,7 +55,7 @@ func sub_4674A0() C.int { return C.int(C.dword_5d4594_1062552) }
 func Nox_client_gold_4674A0() uint32 { return uint32(sub_4674A0()) }
 
 //export sub_4675B0
-func sub_4675B0() C.int { return C.int(C.dword_5d4594_1049864) }
+func sub_4675B0() C.int { return C.int(inventoryState.mode) }
 
 //export sub_46A4A0
 func sub_46A4A0() C.int { return C.int(C.dword_5d4594_1064868) }

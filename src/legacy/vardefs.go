@@ -34,7 +34,6 @@ extern nox_window* dword_5d4594_1045604;
 extern uintptr_t dword_5d4594_529316;
 extern nox_window* dword_5d4594_1309820;
 extern uint32_t dword_5d4594_1062508;
-extern uint32_t dword_5d4594_1049864;
 extern uint32_t dword_5d4594_1062512;
 extern uint32_t dword_5d4594_1599656;
 extern nox_window* dword_5d4594_1049500;
@@ -591,10 +590,8 @@ extern uint32_t dword_587000_122956;
 extern uint32_t dword_5d4594_2491716;
 extern uint32_t dword_587000_180476;
 extern uint32_t dword_5d4594_1046852;
-extern uintptr_t array_5D4594_1049872[9];
 
 
-extern nox_window* dword_5d4594_1062452;
 
 extern unsigned int dword_5d4594_2660032;
 extern void* dword_5d4594_814624;
@@ -996,7 +993,7 @@ func Get_dword_5d4594_1522628() *gui.Window {
 	return asWindow(shellInputBindings.columns[1])
 }
 func Get_dword_5d4594_1062452() *gui.Window {
-	return asWindow(C.dword_5d4594_1062452)
+	return asWindow(inventoryState.root)
 }
 func Get_dword_5d4594_2516356() int {
 	return int(C.dword_5d4594_2516356)

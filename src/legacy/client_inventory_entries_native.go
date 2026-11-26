@@ -7,10 +7,8 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1049864, dword_5d4594_1062512, dword_5d4594_1062516;
+extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516;
 extern uint32_t dword_5d4594_1062552;
-extern nox_window* nox_win_unk5;
-extern nox_window* nox_inventory_scroll_window;
 */
 import "C"
 
@@ -79,7 +77,7 @@ func sub_467490(value C.int) C.int {
 
 //export nox_window_set_visible_unk5
 func nox_window_set_visible_unk5(visible C.int) {
-	nox_window_set_hidden(C.nox_win_unk5, int32(bool2int(visible == 0)))
+	nox_window_set_hidden(inventoryWindows.weaponHUD, int32(bool2int(visible == 0)))
 }
 
 //export nox_xxx_cliUseCurePoison_4674E0
@@ -132,7 +130,7 @@ func sub_4675E0(code C.int, current, maximum C.short) C.short {
 //export sub_467650
 func sub_467650() C.int {
 	sub_462740()
-	C.dword_5d4594_1049864 = 6
+	inventoryState.mode = 6
 	nox_client_setCursorType_477610(8)
 	if result := sub_467C80(); result != 0 {
 		return result
@@ -284,7 +282,7 @@ func sub_467BB0() C.int {
 
 //export sub_467C10
 func sub_467C10() C.int {
-	if C.dword_5d4594_1049864 == 6 {
+	if inventoryState.mode == 6 {
 		return 1
 	}
 	if sub_467C80() == 0 {
@@ -292,7 +290,7 @@ func sub_467C10() C.int {
 	}
 	*memmap.PtrUint8(0x5D4594, 1049868) = 3
 	nox_xxx_clientPlaySoundSpecial_452D80(790, 100)
-	if C.dword_5d4594_1049864 == 5 {
+	if inventoryState.mode == 5 {
 		sub_462740()
 	}
 	sub_467CD0()
@@ -319,7 +317,7 @@ func sub_467CA0() C.int {
 		return result
 	}
 	C.dword_5d4594_1062516 = 0
-	win := C.nox_inventory_scroll_window
+	win := inventoryWindows.slider
 	if win == nil {
 		return 0
 	}

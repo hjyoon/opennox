@@ -3,7 +3,8 @@ package cfixture
 /*
 #include "GAME2_1.h"
 #include "memmap.h"
-extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
+#include "client__gui__guiinv.h"
+#define nox_client_inventory_grid_1050020 (*nox_inventory_grid_storage())
 typedef char*(*inventory_lookup_legacy_C)(int);
 typedef nox_inventory_cell_t*(*inventory_lookup_native_C)(int,uint32_t*);
 _Static_assert(_Generic(&sub_461EF0,inventory_lookup_legacy_C:1,default:0),"legacy inventory search ABI");
@@ -63,7 +64,7 @@ func InventoryLookupNativeOwnersC() (out [4]uintptr) {
 }
 
 func InventoryLookupNativeGridC() []byte {
-	return unsafe.Slice((*byte)(unsafe.Pointer(&C.nox_client_inventory_grid_1050020[0])), int(C.sizeof_nox_inventory_cell_t)*int(C.NOX_INVENTORY_CELLS_MAX))
+	return unsafe.Slice((*byte)(unsafe.Pointer(C.nox_inventory_grid_storage())), int(C.sizeof_nox_inventory_cell_t)*int(C.NOX_INVENTORY_CELLS_MAX))
 }
 
 func InventoryLookupNativeSeedC(packed, foreign unsafe.Pointer) {

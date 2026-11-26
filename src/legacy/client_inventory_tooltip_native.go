@@ -5,9 +5,8 @@ package legacy
 #include "client__gui__guimsg.h"
 #include "common__object__modifier.h"
 
-extern nox_window *nox_inventory_window, *nox_inventory_identify_window;
 extern nox_drawable *dword_5d4594_1063116, *dword_5d4594_1063120;
-extern uint32_t dword_5d4594_1049844, dword_5d4594_1049864, dword_5d4594_1062484, dword_5d4594_1062512;
+extern uint32_t dword_5d4594_1049844, dword_5d4594_1062484, dword_5d4594_1062512;
 extern uint32_t dword_5d4594_1049796_inventory_click_column_index, dword_5d4594_1049800_inventory_click_row_index;
 
 static int nox_client_format_inventory_title(wchar2_t* dst, const wchar2_t* format,
@@ -27,17 +26,17 @@ import (
 
 //export sub_462740
 func sub_462740() C.int {
-	if wndIsShown_nox_xxx_wndIsShown_46ACC0(C.nox_inventory_identify_window) != 0 {
+	if wndIsShown_nox_xxx_wndIsShown_46ACC0(inventoryWindows.identify) != 0 {
 		return 0
 	}
-	nox_window_set_hidden(C.nox_inventory_identify_window, 1)
+	nox_window_set_hidden(inventoryWindows.identify, 1)
 	C.dword_5d4594_1063116, C.dword_5d4594_1063120 = nil, nil
 	text := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
 	copyWideString(text, clientInventoryString("thing.db:IdentifyDescription", 2361))
-	child := nox_xxx_wndGetChildByID_46B0C0(C.nox_inventory_identify_window, 9156)
+	child := nox_xxx_wndGetChildByID_46B0C0(inventoryWindows.identify, 9156)
 	nox_window_call_field_94_fnc(child, 16399, 0, 0, internCStr("client_inventory_tooltip_native.go"), 0)
-	nox_xxx_wndClearCaptureMain_46ADE0(C.nox_inventory_window)
-	C.dword_5d4594_1049864 = 0
+	nox_xxx_wndClearCaptureMain_46ADE0(inventoryWindows.panel)
+	inventoryState.mode = 0
 	nox_client_setCursorType_477610(0)
 	return 1
 }

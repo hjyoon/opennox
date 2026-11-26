@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 #include "client__gui__guiinv.h"
 
-extern nox_window *nox_inventory_window, *nox_inventory_identify_window;
 extern nox_drawable *dword_5d4594_1063116, *dword_5d4594_1063120;
 
 static void nox_client_format_identify_damage(wchar2_t* out, const wchar2_t* format, double value) {
@@ -55,7 +54,7 @@ func (d clientInventoryDescription) damage(key string, line int32, indent string
 func clientInventoryIdentifyCursor() {
 	mouse := nox_client_getMousePos_4309F0()
 	var point C.int2
-	sub_463370(C.nox_inventory_window, &mouse, (*C.uint32_t)(unsafe.Pointer(&point)))
+	sub_463370(inventoryWindows.panel, &mouse, (*C.uint32_t)(unsafe.Pointer(&point)))
 	switch {
 	case clientInventoryPointInRect(&point, 0x587000, 136368):
 		if (point.field_4-13)/50 != 1 {
@@ -88,7 +87,7 @@ func sub_4627F0(origin *C.uint32_t) C.uintptr_t {
 		return C.uintptr_t(uintptr(unsafe.Pointer(selected)))
 	}
 	C.dword_5d4594_1063120 = selected
-	root := C.nox_inventory_identify_window
+	root := inventoryWindows.identify
 	title := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
 	if selected == nil {
 		copyWideString(title, clientInventoryString("thing.db:IdentifyDescription", 2529))

@@ -73,19 +73,19 @@ func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
 	*memmap.PtrInt32(0x5D4594, 1321004) = 0
 	*memmap.PtrInt32(0x5D4594, 1321000) = int32(y)
 	C.dword_5d4594_1320988, C.dword_5d4594_1320992 = C.uint32_t(x), C.uint32_t(y)
-	root := nox_window_new_go(nil, 8, x, y, 87, 115, nil)
+	root := nox_window_new(nil, 8, x, y, 87, 115, nil)
 	C.dword_5d4594_1321032 = root
-	nox_window_set_all_funcs_go(root, C.sub_4C2BD0, C.sub_4C24A0, nil)
-	grid := nox_window_new_go(root, 136, 5, 38, 76, 76, nil)
+	nox_window_set_all_funcs(root, C.sub_4C2BD0, C.sub_4C24A0, nil)
+	grid := nox_window_new(root, 136, 5, 38, 76, 76, nil)
 	C.dword_5d4594_1321036 = grid
-	nox_window_set_all_funcs_go(grid, C.nox_xxx_wndSummonProc_4C2B10, C.nox_xxx_guiDrawSummonBox_4C1FE0, C.sub_4C2C20)
+	nox_window_set_all_funcs(grid, C.nox_xxx_wndSummonProc_4C2B10, C.nox_xxx_guiDrawSummonBox_4C1FE0, C.sub_4C2C20)
 	nox_xxx_wndWddSetTooltip_46B000(&grid.draw_data, summonText(internCStr("ToolTipSummon"), 818))
 	*memmap.PtrPtr(0x5D4594, 1320996) = unsafe.Pointer(Nox_xxx_gLoadImg("CreatureCageBottom").C())
-	top := nox_window_new_go(grid, 160, 0, 0, 1, 1, nil)
+	top := nox_window_new(grid, 160, 0, 0, 1, 1, nil)
 	nox_xxx_wndSetIcon_46AE60(top, nox_xxx_gLoadImg_42F970(internCStr("CreatureCageTop")))
 	nox_xxx_wndSetOffsetMB_46AE40(top, -5, -38)
-	cage := nox_window_new_go(root, 8, 19, 0, 48, 39, nil)
-	nox_window_set_all_funcs_go(cage, C.sub_4C2BE0, C.sub_4C24A0, nil)
+	cage := nox_window_new(root, 8, 19, 0, 48, 39, nil)
+	nox_window_set_all_funcs(cage, C.sub_4C2BE0, C.sub_4C24A0, nil)
 	names := [...]string{
 		"CreatureCageHuntButtonLit", "CreatureCageHuntButton",
 		"CreatureCageGuardButtonLit", "CreatureCageGuardButton",
@@ -99,10 +99,10 @@ func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
 			*memmap.PtrPtr(0x5D4594, 1321008+4*uintptr(i)) = unsafe.Pointer(img)
 		}
 	}
-	button := nox_window_new_go(nil, 168, x+27, y+12, 34, 34, nil)
+	button := nox_window_new(nil, 168, x+27, y+12, 34, 34, nil)
 	C.dword_5d4594_1321040 = button
 	button.draw_data.group |= 0x100
-	nox_window_set_all_funcs_go(button, C.nox_xxx_wndSummonBigButtonProc_4C24B0, nil, C.sub_4C2CE0)
+	nox_window_set_all_funcs(button, C.nox_xxx_wndSummonBigButtonProc_4C24B0, nil, C.sub_4C2CE0)
 	setSummonButtonImages(summonImage(1321028), C.dword_5d4594_1321024)
 	nox_xxx_wndSetOffsetMB_46AE40(button, -27, -12)
 	*memmap.PtrUint8(0x5D4594, 1321200) = 0
@@ -305,13 +305,13 @@ func nox_xxx_wndSummonCreateList_4C2560(pos *C.int2) {
 	} else if y+height >= C.nox_win_height {
 		y = C.nox_win_width - height - 1
 	}
-	popup := nox_window_new_go(nil, 40, x, y, width, height, nil)
+	popup := nox_window_new(nil, 40, x, y, width, height, nil)
 	C.dword_5d4594_1321044 = popup
-	nox_window_set_all_funcs_go(popup, nil, C.sub_4C26F0, nil)
+	nox_window_set_all_funcs(popup, nil, C.sub_4C26F0, nil)
 	nox_xxx_wndShowModalMB_46A8C0(popup)
 	for i, command := range summonCommands {
-		button := nox_window_new_go(popup, 8, 0, C.int(i)*(row+2), width, row+1, nil)
-		nox_window_set_all_funcs_go(button, C.nox_xxx_clientOrderCreature_4C2A60, C.sub_4C27F0, nil)
+		button := nox_window_new(popup, 8, 0, C.int(i)*(row+2), width, row+1, nil)
+		nox_window_set_all_funcs(button, C.nox_xxx_clientOrderCreature_4C2A60, C.sub_4C27F0, nil)
 		*(*uintptr)(unsafe.Pointer(&button.widget_data)) = command
 	}
 	nox_xxx_clientPlaySoundSpecial_452D80(791, 100)

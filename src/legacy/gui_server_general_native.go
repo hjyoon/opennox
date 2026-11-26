@@ -54,7 +54,7 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 		return nil
 	}
 	C.sub_46B120(root, parent)
-	nox_xxx_wndSetDrawFn_46B340_go(root, unsafe.Pointer(C.sub_4AD570))
+	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_4AD570))
 	if spells := g2ServerChild(root, 10306); spells != nil && noxflags.HasGame(noxflags.GameModeCTF|noxflags.GameModeElimination) {
 		g2ServerEnabled(spells, false)
 	}
@@ -64,7 +64,7 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 		sub_4AD4B0()
 		if owner := g2ServerChild(root, 10310); owner != nil {
 			nox_xxx_wnd_46B280(owner, root)
-			nox_xxx_wndSetProc_46B2C0_go(owner, proc)
+			nox_xxx_wndSetProc_46B2C0(owner, proc)
 		}
 		if list := g2ServerChild(root, 10317); list != nil {
 			for offset := uintptr(173540); offset < 173556; offset += 4 {

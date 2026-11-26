@@ -17,10 +17,10 @@ import (
 func sub_4C3390() C.int {
 	image := nox_xxx_gLoadImg_42F970(internCStr("VoteInProgress"))
 	*memmap.PtrPtr(0x5D4594, 1321220) = unsafe.Pointer(image)
-	root := nox_window_new_go(nil, 136, C.nox_win_width-50, C.nox_win_height/2-100, 50, 50, nil)
+	root := nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2-100, 50, 50, nil)
 	C.dword_5d4594_1321216 = root
 	nox_xxx_wndSetIcon_46AE60(root, image)
-	nox_window_set_all_funcs_go(root, nil, C.sub_4C3410, nil)
+	nox_window_set_all_funcs(root, nil, C.sub_4C3410, nil)
 	nox_window_set_hidden(root, 1)
 	return 1
 }

@@ -87,6 +87,12 @@ func TestWindowConstructorUsesNativeCallbackABI(t *testing.T) {
 	}
 }
 
+func TestWindowCallbackSettersRejectNullThroughC(t *testing.T) {
+	if !windowNullSettersC() {
+		t.Fatal("a window callback setter did not return -2 for a null window")
+	}
+}
+
 func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 	g := newWidgetCallbackGUI(t)
 	defer g.DestroyAll()

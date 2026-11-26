@@ -165,12 +165,12 @@ func (p inputBindingPanel) attachLists(actionsSlot **nox_window, actionsProc, ke
 	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_7), 921)
 	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_8), 922)
 	nox_xxx_wndSetID_46B080((*nox_window)(list.Field_9), 920)
-	nox_xxx_wndSetProc_46B2C0_go(actions, actionsProc)
+	nox_xxx_wndSetProc_46B2C0(actions, actionsProc)
 	for _, column := range p.listColumns() {
 		sub_46B120(column, actions)
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(*p.columns[0], keyProc)
-	nox_xxx_wndSetWindowProc_46B300_go(*p.columns[1], keyProc)
+	nox_xxx_wndSetWindowProc_46B300(*p.columns[0], keyProc)
+	nox_xxx_wndSetWindowProc_46B300(*p.columns[1], keyProc)
 	up, down := g2ServerChild(root, 921), g2ServerChild(root, 922)
 	for _, column := range p.listColumns() {
 		g2ServerText(column, 16408, unsafe.Pointer(up), 0)
@@ -212,8 +212,8 @@ func sub_4C3760() C.int {
 		return 0
 	}
 	sub_46B120(prompt, nil)
-	nox_xxx_wndSetProc_46B2C0_go(prompt, C.sub_4C3A90)
-	nox_xxx_wndSetWindowProc_46B300_go(prompt, C.sub_4C3EB0)
+	nox_xxx_wndSetProc_46B2C0(prompt, C.sub_4C3A90)
+	nox_xxx_wndSetWindowProc_46B300(prompt, C.sub_4C3EB0)
 	g2ServerHidden(prompt, true)
 	nox_window_setPos_46A9B0(prompt, (int32(C.nox_win_width)-int32(prompt.width))/2, int32(prompt.off_y))
 	p.bindPromptLabel()

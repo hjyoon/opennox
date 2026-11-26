@@ -108,7 +108,7 @@ func nox_game_showSelColor_4A5D00() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(root, unsafe.Pointer(C.sub_4A18E0))
+	nox_xxx_wndSetWindowProc_46B300(root, unsafe.Pointer(C.sub_4A18E0))
 	ani := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -440, 0, 20, 0, -40)
 	C.nox_wnd_xxx_1308092 = ani
 	if ani == nil {
@@ -121,7 +121,7 @@ func nox_game_showSelColor_4A5D00() C.int {
 	for _, ids := range [...][2]int32{{720, 729}, {761, 792}} {
 		for id := ids[0]; id <= ids[1]; id++ {
 			window := nox_xxx_wndGetChildByID_46B0C0(root, id)
-			nox_xxx_wndSetDrawFn_46B340_go(window, unsafe.Pointer(C.sub_4A6D20))
+			nox_xxx_wndSetDrawFn_46B340(window, unsafe.Pointer(C.sub_4A6D20))
 		}
 	}
 	if C.dword_587000_171388 != 0 {
@@ -131,12 +131,12 @@ func nox_game_showSelColor_4A5D00() C.int {
 	nox_xxx_wndRetNULL_46A8A0()
 	palette := nox_xxx_wndGetChildByID_46B0C0(root, 760)
 	C.dword_5d4594_1308088 = palette
-	nox_xxx_wndSetProc_46B2C0_go(palette, events)
-	nox_xxx_wndSetWindowProc_46B300_go(palette, unsafe.Pointer(C.sub_4A7270))
+	nox_xxx_wndSetProc_46B2C0(palette, events)
+	nox_xxx_wndSetWindowProc_46B300(palette, unsafe.Pointer(C.sub_4A7270))
 	sub_46B120(palette, nil)
 	sub_4BFAD0()
 	model := nox_xxx_wndGetChildByID_46B0C0(root, 740)
-	nox_xxx_wndSetDrawFn_46B340_go(model, unsafe.Pointer(C.sub_4A6DC0))
+	nox_xxx_wndSetDrawFn_46B340(model, unsafe.Pointer(C.sub_4A6DC0))
 	return 1
 }
 

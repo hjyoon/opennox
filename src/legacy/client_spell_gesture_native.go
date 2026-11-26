@@ -51,7 +51,7 @@ func sub_476E20() *nox_window {
 		}
 	}
 	win := C.nox_window_new(nil, 64, (C.nox_win_width-100)/2, (C.nox_win_height-100)/2, 1, 1, nil)
-	nox_window_set_all_funcs_go(win, nil, C.sub_476E90, nil)
+	nox_window_set_all_funcs(win, nil, C.sub_476E90, nil)
 	return win
 }
 

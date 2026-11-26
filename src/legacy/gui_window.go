@@ -84,8 +84,8 @@ func set_dword_5d4594_3799468(v_cgo int32) {
 	GetClient().Cli().GUI.ValYYY = v
 }
 
-//export nox_window_new_go
-func nox_window_new_go(par *nox_window, flags, a3, a4, w, h C.int, fnc C.nox_window_init_proc) *nox_window {
+//export nox_window_new
+func nox_window_new(par *nox_window, flags, a3, a4, w, h C.int, fnc C.nox_window_init_proc) *nox_window {
 	win := GetClient().Cli().GUI.NewWindowRaw(asWindow(par), gui.StatusFlags(flags), int(a3), int(a4), int(w), int(h), nil)
 	if fnc != nil {
 		win.SetFunc94C(unsafe.Pointer(fnc))
@@ -112,43 +112,43 @@ func nox_xxx_wndSetID_46B080(win *nox_window, id_cgo int32) int32 {
 	return int32(0)
 }
 
-//export nox_window_set_all_funcs_go
-func nox_window_set_all_funcs_go(p *nox_window, a2 unsafe.Pointer, draw unsafe.Pointer, tooltip unsafe.Pointer) int32 {
+//export nox_window_set_all_funcs
+func nox_window_set_all_funcs(p *nox_window, a2 unsafe.Pointer, draw unsafe.Pointer, tooltip unsafe.Pointer) C.int {
 	if p == nil {
-		return int32(-2)
+		return -2
 	}
 	win := asWindow(p)
 	win.SetFunc93C(a2)
 	win.SetDrawC(draw)
 	win.SetTooltipFunc(tooltip)
-	return int32(0)
+	return 0
 }
 
-//export nox_xxx_wndSetWindowProc_46B300_go
-func nox_xxx_wndSetWindowProc_46B300_go(win *nox_window, fnc unsafe.Pointer) int32 {
+//export nox_xxx_wndSetWindowProc_46B300
+func nox_xxx_wndSetWindowProc_46B300(win *nox_window, fnc unsafe.Pointer) C.int {
 	if win == nil {
-		return int32(-2)
+		return -2
 	}
 	asWindow(win).SetFunc93C(fnc)
-	return int32(0)
+	return 0
 }
 
-//export nox_xxx_wndSetProc_46B2C0_go
-func nox_xxx_wndSetProc_46B2C0_go(win *nox_window, fnc unsafe.Pointer) int32 {
+//export nox_xxx_wndSetProc_46B2C0
+func nox_xxx_wndSetProc_46B2C0(win *nox_window, fnc unsafe.Pointer) C.int {
 	if win == nil {
-		return int32(-2)
+		return -2
 	}
 	asWindow(win).SetFunc94C(fnc)
-	return int32(0)
+	return 0
 }
 
-//export nox_xxx_wndSetDrawFn_46B340_go
-func nox_xxx_wndSetDrawFn_46B340_go(win *nox_window, fnc unsafe.Pointer) int32 {
+//export nox_xxx_wndSetDrawFn_46B340
+func nox_xxx_wndSetDrawFn_46B340(win *nox_window, fnc unsafe.Pointer) C.int {
 	if win == nil {
-		return int32(-2)
+		return -2
 	}
 	asWindow(win).SetDrawC(fnc)
-	return int32(0)
+	return 0
 }
 
 //export nox_gui_winSetFunc96_46B070

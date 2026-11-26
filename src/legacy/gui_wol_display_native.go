@@ -106,11 +106,11 @@ func sub_438480() C.int {
 		return 0
 	}
 	columns := wolGameColumns()
-	nox_xxx_wndSetProc_46B2C0_go(list, C.sub_439050)
-	nox_xxx_wndSetWindowProc_46B300_go(list, C.sub_438EF0)
+	nox_xxx_wndSetProc_46B2C0(list, C.sub_439050)
+	nox_xxx_wndSetWindowProc_46B300(list, C.sub_438EF0)
 	for _, column := range columns {
 		sub_46B120(column, list)
-		nox_xxx_wndSetWindowProc_46B300_go(column, C.sub_438EF0)
+		nox_xxx_wndSetWindowProc_46B300(column, C.sub_438EF0)
 	}
 	nox_xxx_wndSetID_46B080((*nox_window)(infoData.Field_7), 10035)
 	nox_xxx_wndSetID_46B080((*nox_window)(infoData.Field_8), 10036)

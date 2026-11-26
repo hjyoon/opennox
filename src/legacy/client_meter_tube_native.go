@@ -78,7 +78,7 @@ func configureClientMeterWindow(win *nox_window, index int, procedure, draw unsa
 	if win == nil {
 		return
 	}
-	nox_window_set_all_funcs_go(win, procedure, draw, nil)
+	nox_window_set_all_funcs(win, procedure, draw, nil)
 	if label != "" {
 		nox_xxx_wndWddSetTooltip_46B000(&win.draw_data, clientMeterString(label, line))
 	}
@@ -87,7 +87,7 @@ func configureClientMeterWindow(win *nox_window, index int, procedure, draw unsa
 
 func clientMeterWindow(parent *nox_window, flags, x, y, w, h C.int, index int,
 	procedure, draw unsafe.Pointer, label string, line int32) *nox_window {
-	win := nox_window_new_go(parent, flags, x, y, w, h, nil)
+	win := nox_window_new(parent, flags, x, y, w, h, nil)
 	configureClientMeterWindow(win, index, procedure, draw, label, line)
 	return win
 }
@@ -96,8 +96,8 @@ func clientMeterWindow(parent *nox_window, flags, x, y, w, h C.int, index int,
 func sub_471160(parent *C.nox_window, x, y, w, h C.int) C.int {
 	charges := &C.nox_windows_arr_1093036[5]
 	icon := &C.nox_windows_arr_1093036[6]
-	charges.win = nox_window_new_go(parent, 1032, x, y, w, h, nil)
-	icon.win = nox_window_new_go(parent, 1032, x-17, y-15, 15, 15, nil)
+	charges.win = nox_window_new(parent, 1032, x, y, w, h, nil)
+	icon.win = nox_window_new(parent, 1032, x-17, y-15, 15, 15, nil)
 	configureClientMeterWindow(charges.win, 5, nil, C.sub_471250, "ToolTipCharges", 921)
 	configureClientMeterWindow(icon.win, 6, nil, C.sub_471450, "ToolTipCharges", 925)
 	return C.int(bool2int(charges.win != nil))
@@ -140,7 +140,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 		C.dword_5d4594_1096280 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("RedApple")))
 		C.dword_5d4594_1096284 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Meat")))
 	}
-	root := nox_window_new_go(nil, 136, width-91, height-201, 91, 201, nil)
+	root := nox_window_new(nil, 136, width-91, height-201, 91, 201, nil)
 	C.dword_5d4594_1090276 = root
 	if root == nil {
 		return 0
@@ -165,7 +165,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 		floatingFlags = 8
 	}
 	clientPoisonTube = nox_xxx_gLoadImg_42F970(internCStr(poisonIcon))
-	panel := nox_window_new_go(root, 136, 0, 0, 91, 159, nil)
+	panel := nox_window_new(root, 136, 0, 0, 91, 159, nil)
 	nox_xxx_wndSetIcon_46AE60(panel, nox_xxx_gLoadImg_42F970(internCStr(parentIcon)))
 	if mana {
 		C.nox_windows_arr_1093036[1].win = clientMeterWindow(panel, 8, 60, 34, 25, 125, 1,

@@ -139,7 +139,7 @@ func sub_460070() C.int {
 	nox_xxx_wnd_46AD60(activate, 8)
 	nox_xxx_wndWddSetTooltip_46B000(&construct.draw_data, quickbarText("ToolTipTrapConstruct", line+3))
 	nox_xxx_wnd_46AD60(construct, 8)
-	nox_xxx_wndSetDrawFn_46B340_go(construct, nil)
+	nox_xxx_wndSetDrawFn_46B340(construct, nil)
 	return 1
 }
 

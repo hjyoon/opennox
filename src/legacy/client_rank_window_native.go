@@ -79,12 +79,12 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 	}
 	C.dword_5d4594_1090040 = C.uint32_t(width)
 	C.dword_5d4594_1090044 = C.uint32_t(439 - height)
-	root := nox_window_new_go(nil, 1560, 0, height+40, 1, 1, nil)
+	root := nox_window_new(nil, 1560, 0, height+40, 1, 1, nil)
 	C.dword_5d4594_1090048 = root
 	if root == nil {
 		return nil
 	}
-	nox_window_set_all_funcs_go(root, unsafe.Pointer(C.sub_46F060), unsafe.Pointer(C.sub_46F080), nil)
+	nox_window_set_all_funcs(root, unsafe.Pointer(C.sub_46F060), unsafe.Pointer(C.sub_46F080), nil)
 	clientRankSetTransparentColors(&root.draw_data)
 	draw := C.nox_window_data{style: 32, text_color: C.uint32_t(memmap.Uint32(0x85B3FC, 940))}
 	clientRankSetTransparentColors(&draw)
@@ -102,7 +102,7 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 			clientRankStoreWindow(1090060+8*column+4*page, win)
 			x += C.int(span)
 		}
-		nox_xxx_wndSetProc_46B2C0_go(container, unsafe.Pointer(C.nox_xxx_Proc_46F070))
+		nox_xxx_wndSetProc_46B2C0(container, unsafe.Pointer(C.nox_xxx_Proc_46F070))
 		for column := range columns {
 			sub_46B120(nox_rank_window_at(C.int(1090060+8*column+4*page)), container)
 		}

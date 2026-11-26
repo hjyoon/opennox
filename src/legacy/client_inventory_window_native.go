@@ -32,46 +32,46 @@ func nox_xxx_wndCreateInventoryMB_465E00() *C.nox_window {
 	*memmap.PtrT[[6]uint32](0x5D4594, 1049732) = [6]uint32{0, 0, uint32(width), uint32(height), 0, 0}
 	*memmap.PtrUint32(0x5D4594, 1049764) = uint32(width)
 	*memmap.PtrUint32(0x5D4594, 1049768) = uint32(height)
-	root := nox_window_new_go(nil, 552, 0, 0, 563, 264, nil)
+	root := nox_window_new(nil, 552, 0, 0, 563, 264, nil)
 	C.dword_5d4594_1062452 = root
 	if root == nil {
 		return nil
 	}
-	nox_window_set_all_funcs_go(root, nil, C.nox_xxx_movEax1Sub_4661C0, nil)
-	hover := nox_window_new_go(root, 8, 0, 224, width, 40, nil)
-	nox_window_set_all_funcs_go(hover, C.nox_xxx_XorEaxEaxSub_464BA0, C.nox_xxx_movEax1Sub_4661C0, C.nox_xxx_inventroryOnHovewerSub_4667E0)
+	nox_window_set_all_funcs(root, nil, C.nox_xxx_movEax1Sub_4661C0, nil)
+	hover := nox_window_new(root, 8, 0, 224, width, 40, nil)
+	nox_window_set_all_funcs(hover, C.nox_xxx_XorEaxEaxSub_464BA0, C.nox_xxx_movEax1Sub_4661C0, C.nox_xxx_inventroryOnHovewerSub_4667E0)
 
-	inventory := nox_window_new_go(root, 40, 0, 0, 563, 224, C.nox_window_init_proc(C.sub_466220))
+	inventory := nox_window_new(root, 40, 0, 0, 563, 224, C.nox_window_init_proc(C.sub_466220))
 	C.nox_inventory_window = inventory
 	if inventory == nil {
 		return nil
 	}
-	nox_window_set_all_funcs_go(inventory, C.sub_464BD0, C.nox_xxx_inventoryDrawAllMB_463430, C.sub_466620)
+	nox_window_set_all_funcs(inventory, C.sub_464BD0, C.nox_xxx_inventoryDrawAllMB_463430, C.sub_466620)
 	inventory.draw_data.style |= 0x100
-	overlay := nox_window_new_go(root, 40, 0, 0, 1, 1, nil)
-	nox_window_set_all_funcs_go(overlay, C.sub_464BD0, C.nox_xxx_movEax1Sub_4661C0, nil)
-	weapon := nox_window_new_go(inventory, 40, 173, 174, 50, 50, nil)
+	overlay := nox_window_new(root, 40, 0, 0, 1, 1, nil)
+	nox_window_set_all_funcs(overlay, C.sub_464BD0, C.nox_xxx_movEax1Sub_4661C0, nil)
+	weapon := nox_window_new(inventory, 40, 173, 174, 50, 50, nil)
 	C.nox_inventory_current_weapon_window = weapon
-	nox_window_set_all_funcs_go(weapon, C.sub_464770, C.sub_4625D0, C.sub_4661D0)
+	nox_window_set_all_funcs(weapon, C.sub_464770, C.sub_4625D0, C.sub_4661D0)
 	weapon.draw_data.style |= 0x100
 
 	if sub_466950(inventory) == 0 || sub_466C40(inventory) == 0 || sub_466ED0(inventory) == 0 {
 		return nil
 	}
-	hud := nox_window_new_go(nil, 0x408|C.NOX_WIN_LAYER_BACK, -1, height-127, 111, 127, nil)
+	hud := nox_window_new(nil, 0x408|C.NOX_WIN_LAYER_BACK, -1, height-127, 111, 127, nil)
 	C.nox_win_unk5 = hud
 	if hud == nil {
 		return nil
 	}
-	nox_window_set_all_funcs_go(hud, C.nox_xxx_inventoryWndProc_464BB0, C.nox_xxx_inventoryDrawProc_466580, nil)
+	nox_window_set_all_funcs(hud, C.nox_xxx_inventoryWndProc_464BB0, C.nox_xxx_inventoryDrawProc_466580, nil)
 	nox_xxx_wndSetIcon_46AE60(hud, nox_xxx_gLoadImg_42F970(internCStr("CurrentWeapon")))
 	nox_xxx_wndSetIconLit_46AEA0(hud, nox_xxx_gLoadImg_42F970(internCStr("CurrentWeaponLit")))
 	nox_xxx_wndSetOffsetMB_46AE40(hud, -1, 0)
 	nox_win_init_cur_weapon(hud, 24, 51, 53, 53)
 	sub_471160(hud, 79, 40, 20, 127)
 	sub_470D70()
-	toggle := nox_window_new_go(hud, 8, 5, 11, 28, 29, nil)
-	nox_window_set_all_funcs_go(toggle, C.sub_466550, C.nox_xxx_movEax1Sub_4661C0, C.sub_466160)
+	toggle := nox_window_new(hud, 8, 5, 11, 28, 29, nil)
+	nox_window_set_all_funcs(toggle, C.sub_466550, C.nox_xxx_movEax1Sub_4661C0, C.sub_466160)
 	clientInventoryInitializeReservedCells()
 	return inventory
 }
@@ -236,8 +236,8 @@ func sub_466950(parent *C.nox_window) C.int {
 	if slider == nil {
 		return 0
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(slider, C.sub_466BF0)
-	nox_xxx_wndSetWindowProc_46B300_go(slider.field_100, C.sub_466BA0)
+	nox_xxx_wndSetWindowProc_46B300(slider, C.sub_466BF0)
+	nox_xxx_wndSetWindowProc_46B300(slider.field_100, C.sub_466BA0)
 	slider.field_100.width, slider.field_100.height = 16, 16
 	nox_xxx_wndSetOffsetMB_46AE40(slider.field_100, 0, -15)
 	thumb := unsafe.Pointer(C.nox_inventory_images[C.NOX_INV_IMG_SLIDER])
@@ -283,6 +283,6 @@ func sub_466ED0(parent *C.nox_window) C.int {
 	sub_46B120(win, parent)
 	nox_window_setPos_46A9B0(win, 51, 15)
 	child := nox_xxx_wndGetChildByID_46B0C0(win, 9155)
-	nox_xxx_wndSetDrawFn_46B340_go(child, C.sub_466F50)
+	nox_xxx_wndSetDrawFn_46B340(child, C.sub_466F50)
 	return 1
 }

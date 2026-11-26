@@ -158,7 +158,7 @@ func sub_46A730() *C.nox_window {
 	if entry == nil {
 		return nil
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(entry, C.sub_46A7E0)
+	nox_xxx_wndSetWindowProc_46B300(entry, C.sub_46A7E0)
 	C.dword_5d4594_1064864 = entry.widget_data
 	return root
 }

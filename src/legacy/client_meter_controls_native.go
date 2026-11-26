@@ -137,10 +137,10 @@ func sub_470E90(_ *C.nox_window, event C.int) C.int {
 
 //export nox_win_init_cur_weapon
 func nox_win_init_cur_weapon(parent *C.nox_window, x, y, width, height C.int) {
-	win := nox_window_new_go(parent, 0x408, x, y, width, height, nil)
+	win := nox_window_new(parent, 0x408, x, y, width, height, nil)
 	C.nox_windows_arr_1093036[4].win = win
 	if win != nil {
-		nox_window_set_all_funcs_go(win, C.sub_470E90, C.sub_470F40_draw, C.sub_4710B0)
+		nox_window_set_all_funcs(win, C.sub_470E90, C.sub_470F40_draw, C.sub_4710B0)
 		*(*uintptr)(unsafe.Pointer(&win.widget_data)) = 4
 	}
 }

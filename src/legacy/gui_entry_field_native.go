@@ -177,7 +177,7 @@ func nox_xxx_wndEdit_488830(win *nox_window) C.int {
 	if asWindow(win).GetFlags().Has(gui.StatusImage) {
 		draw = C.nox_xxx_wndEditDrawWithImage_488870
 	}
-	return C.int(nox_window_set_all_funcs_go(win, C.nox_xxx_wndEditProc_487D70, draw, nil))
+	return C.int(nox_window_set_all_funcs(win, C.nox_xxx_wndEditProc_487D70, draw, nil))
 }
 
 //export nox_xxx_wndEditDrawNoImage_488160

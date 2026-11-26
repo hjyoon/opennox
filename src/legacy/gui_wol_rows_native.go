@@ -135,6 +135,6 @@ func nox_gui_wol_newServerLine_43B7C0(raw *C.nox_gui_server_ent_t) {
 	}
 	var tip [128]wchar2_t
 	nox_xxx_wndWddSetTooltip_46B000(&row.draw_data, wolCopyBytesToWide(tip[:], label+suffix))
-	nox_xxx_wndSetProc_46B2C0_go(row, C.nox_xxx_windowMultiplayerSub_439E70)
+	nox_xxx_wndSetProc_46B2C0(row, C.nox_xxx_windowMultiplayerSub_439E70)
 	nox_xxx_wndSetID_46B080(row, int32(record.Field_9)+10070)
 }

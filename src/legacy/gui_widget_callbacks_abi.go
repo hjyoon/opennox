@@ -85,6 +85,13 @@ static nox_window* nox_test_window_constructor(void) {
 	return nox_window_new(NULL, 8, 10, 20, 120, 20, nox_test_window_initializer);
 }
 
+static int nox_test_window_null_setters(void) {
+	return nox_window_set_all_funcs(NULL, NULL, NULL, NULL) == -2 &&
+		nox_xxx_wndSetProc_46B2C0(NULL, NULL) == -2 &&
+		nox_xxx_wndSetWindowProc_46B300(NULL, NULL) == -2 &&
+		nox_xxx_wndSetDrawFn_46B340(NULL, NULL) == -2;
+}
+
 static int nox_test_listbox_event_callback(nox_window* win, int multi, int event, uintptr_t a3, uintptr_t a4) {
 	if (multi) {
 		return nox_xxx_wndListboxProcWithData10_4A2DE0(win, event, a3, a4);
@@ -152,6 +159,10 @@ func windowWithInitializerC() (*gui.Window, uint32) {
 		return nil, 0
 	}
 	return asWindow(win), uint32(win.field_92)
+}
+
+func windowNullSettersC() bool {
+	return C.nox_test_window_null_setters() != 0
 }
 
 func listBoxEventCallbackC(win *gui.Window, multi bool, event int, a3, a4 uintptr) int {

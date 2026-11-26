@@ -20,7 +20,7 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	if root == nil {
 		return nil
 	}
-	nox_xxx_wndSetDrawFn_46B340_go(root, unsafe.Pointer(C.sub_453350))
+	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_453350))
 	C.sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
 	list := g2ServerChild(root, 1510)

@@ -56,8 +56,8 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 
 	nox_draw_setTabWidth_43FE20(100)
 	nox_window_setPos_46A9B0(root, int32(C.nox_win_width)-int32(root.width)-10, 0)
-	nox_xxx_wndSetWindowProc_46B300_go(root, unsafe.Pointer(C.nox_xxx_guiServerOptionsProc_458590))
-	nox_xxx_wndSetDrawFn_46B340_go(root, unsafe.Pointer(C.nox_xxx_windowServerOptionsDrawProc_458500))
+	nox_xxx_wndSetWindowProc_46B300(root, unsafe.Pointer(C.nox_xxx_guiServerOptionsProc_458590))
+	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.nox_xxx_windowServerOptionsDrawProc_458500))
 	child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(root, id) }
 	C.dword_5d4594_1046512 = child(10101)
 	C.dword_5d4594_1046496 = child(10114)
@@ -79,7 +79,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 		nox_xxx_wnd_46B280(panel, root)
 	}
 	for _, panel := range panels {
-		nox_xxx_wndSetProc_46B2C0_go(panel, pre)
+		nox_xxx_wndSetProc_46B2C0(panel, pre)
 	}
 
 	*memmap.PtrPtr(0x5D4594, 1046352) = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs1")))

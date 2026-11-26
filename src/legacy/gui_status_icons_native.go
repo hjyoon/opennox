@@ -21,7 +21,7 @@ import (
 func clientStatusIcon(image string, imageSlot uintptr, aboveCenter C.int) *nox_window {
 	slot := memmap.PtrPtr(0x5D4594, imageSlot)
 	*slot = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr(image)))
-	window := nox_window_new_go(nil, 136, C.nox_win_width-50, C.nox_win_height/2-aboveCenter, 50, 50, nil)
+	window := nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2-aboveCenter, 50, 50, nil)
 	nox_xxx_wndSetIcon_46AE60(window, (*nox_video_bag_image_t)(*slot))
 	return window
 }
@@ -33,7 +33,7 @@ func nox_xxx_guiChatIconLoad_445650() C.int {
 	if window == nil {
 		return 0
 	}
-	nox_window_set_all_funcs_go(window, nil, unsafe.Pointer(C.nox_xxx_guiChatMode_4456E0), nil)
+	nox_window_set_all_funcs(window, nil, unsafe.Pointer(C.nox_xxx_guiChatMode_4456E0), nil)
 	const source = `C:\\NoxPost\\src\\client\\Gui\\chaticon.c`
 	tooltip := nox_strman_loadString_40F1D0(internCStr("chatmode"), nil, internCStr(source), 73)
 	nox_xxx_wndWddSetTooltip_46B000(&window.draw_data, tooltip)
@@ -47,7 +47,7 @@ func sub_48C980() C.int {
 	if window == nil {
 		return 0
 	}
-	nox_window_set_all_funcs_go(window, nil, unsafe.Pointer(C.sub_48C9F0), nil)
+	nox_window_set_all_funcs(window, nil, unsafe.Pointer(C.sub_48C9F0), nil)
 	return 1
 }
 

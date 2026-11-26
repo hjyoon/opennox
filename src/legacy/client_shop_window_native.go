@@ -52,7 +52,7 @@ func sub_478110() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_window_set_all_funcs_go(root, C.sub_478650, C.sub_478970, nil)
+	nox_window_set_all_funcs(root, C.sub_478650, C.sub_478970, nil)
 	inventory := nox_xxx_wndGetChildByID_46B0C0(root, 3806)
 	slider := nox_xxx_wndGetChildByID_46B0C0(root, 3807)
 	if inventory == nil || slider == nil || slider.field_100 == nil || slider.widget_data == nil {

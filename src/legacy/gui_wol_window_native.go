@@ -99,9 +99,9 @@ func wolShowExistingWorld() {
 func wolBindWorldControls(root *nox_window) {
 	C.dword_5d4594_814984 = nox_xxx_wndGetChildByID_46B0C0(root, 10020)
 	C.dword_5d4594_814988 = nox_xxx_wndGetChildByID_46B0C0(root, 10021)
-	nox_xxx_wndSetWindowProc_46B300_go(C.dword_5d4594_814984, C.sub_439D00)
-	nox_xxx_wndSetWindowProc_46B300_go(C.dword_5d4594_814988, C.sub_439D00)
-	nox_xxx_wndSetProc_46B2C0_go(C.dword_5d4594_814988, C.nox_xxx_windowMultiplayerSub_439E70)
+	nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_814984, C.sub_439D00)
+	nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_814988, C.sub_439D00)
+	nox_xxx_wndSetProc_46B2C0(C.dword_5d4594_814988, C.nox_xxx_windowMultiplayerSub_439E70)
 	C.dword_5d4594_814996 = nox_xxx_wndGetChildByID_46B0C0(root, 10011)
 	C.nox_wol_wnd_gameList_815012 = nox_xxx_wndGetChildByID_46B0C0(root, 10037)
 	C.dword_5d4594_815004 = nox_xxx_wndGetChildByID_46B0C0(root, 10034)
@@ -121,8 +121,8 @@ func wolBindWorldControls(root *nox_window) {
 	join := nox_xxx_wndGetChildByID_46B0C0(root, 10003)
 	join.draw_data.field_0 &^= 4
 	draw := nox_xxx_wndGetChildByID_46B0C0(root, 10046)
-	nox_xxx_wndSetDrawFn_46B340_go(draw, C.sub_438C80)
-	nox_xxx_wndSetProc_46B2C0_go(C.nox_wol_wnd_gameList_815012, C.nox_xxx_windowMultiplayerSub_439E70)
+	nox_xxx_wndSetDrawFn_46B340(draw, C.sub_438C80)
+	nox_xxx_wndSetProc_46B2C0(C.nox_wol_wnd_gameList_815012, C.nox_xxx_windowMultiplayerSub_439E70)
 	nox_window_set_hidden(C.nox_wol_wnd_gameList_815012, 1)
 	nox_window_set_hidden(C.dword_5d4594_815000, 1)
 	nox_xxx_wnd_46B280(C.dword_5d4594_815008, root)
@@ -166,7 +166,7 @@ func nox_game_showGameSel_4379F0() C.int {
 	}
 	sub_49FF20()
 	nox_xxx_wndShowModalMB_46A8C0(root)
-	nox_window_set_all_funcs_go(root, C.sub_439D00, nil, nil)
+	nox_window_set_all_funcs(root, C.sub_439D00, nil, nil)
 	anim := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -480, 0, 20, 0, -40)
 	C.nox_wnd_xxx_815040 = anim
 	if anim == nil {
@@ -213,9 +213,9 @@ func nox_game_showGameSel_4379F0() C.int {
 	if sub_44A4A0() != 0 {
 		sub_44A4B0()
 	}
-	nox_xxx_wndSetDrawFn_46B340_go(C.dword_5d4594_814984, C.sub_438E30)
+	nox_xxx_wndSetDrawFn_46B340(C.dword_5d4594_814984, C.sub_438E30)
 	for id := int32(10054); id <= 10057; id++ {
-		nox_xxx_wndSetDrawFn_46B340_go(nox_xxx_wndGetChildByID_46B0C0(root, id), C.sub_438E30)
+		nox_xxx_wndSetDrawFn_46B340(nox_xxx_wndGetChildByID_46B0C0(root, id), C.sub_438E30)
 	}
 	if Get_dword_587000_87408() == 0 {
 		sub_46ACE0(root, 10047, 10051, 1)

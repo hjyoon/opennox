@@ -59,11 +59,11 @@ type quickbarArrowSpec struct {
 }
 
 func newQuickbarArrow(parent *nox_window, spec quickbarArrowSpec) {
-	win := nox_window_new_go(parent, 1032, spec.x, spec.y, spec.width, spec.height, nil)
+	win := nox_window_new(parent, 1032, spec.x, spec.y, spec.width, spec.height, nil)
 	nox_xxx_wndSetOffsetMB_46AE40(win, spec.iconX, spec.iconY)
 	nox_xxx_wndSetIcon_46AE60(win, nil)
 	nox_xxx_wndSetIconLit_46AEA0(win, quickbarImage(spec.image))
-	nox_window_set_all_funcs_go(win, unsafe.Pointer(C.nox_xxx_quickbarTrapUpDownProc_45F630),
+	nox_window_set_all_funcs(win, unsafe.Pointer(C.nox_xxx_quickbarTrapUpDownProc_45F630),
 		unsafe.Pointer(C.nox_xxx_quickbarTrapUpDownDraw_45F6F0), nil)
 	win.field_92 = spec.id
 	quickbarTooltip(win, spec.tooltip, spec.sourceLine)
@@ -75,23 +75,23 @@ func createQuickbarRight(x, y C.int, player *C.nox_playerInfo, class playerlib.C
 	if warrior {
 		style = 1672
 	}
-	root := nox_window_new_go(nil, style, x+260, y, 45, 66, nil)
+	root := nox_window_new(nil, style, x+260, y, 45, 66, nil)
 	C.dword_5d4594_1049504 = root
 	nox_xxx_wndSetOffsetMB_46AE40(root, -263, 0)
 	C.dword_5d4594_1049536 = C.uint32_t(y)
-	nox_xxx_wndSetWindowProc_46B300_go(root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0))
+	nox_xxx_wndSetWindowProc_46B300(root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0))
 	if warrior {
 		quickbarIcons(root, "QuickBarWarriorRight", "QuickBarWarriorRight")
 		return
 	}
 
-	activate := nox_window_new_go(root, 1032, 9, 33, 32, 32, nil)
+	activate := nox_window_new(root, 1032, 9, 33, 32, 32, nil)
 	C.dword_5d4594_1049520 = activate
-	nox_window_set_all_funcs_go(activate, unsafe.Pointer(C.nox_xxx_quickbarTrapButtonProc_45F7A0),
+	nox_window_set_all_funcs(activate, unsafe.Pointer(C.nox_xxx_quickbarTrapButtonProc_45F7A0),
 		unsafe.Pointer(C.nox_xxx_quickbarDrawFn_460000), nil)
-	construct := nox_window_new_go(root, 1160, 0, 19, 12, 12, nil)
+	construct := nox_window_new(root, 1160, 0, 19, 12, 12, nil)
 	C.dword_5d4594_1049500 = construct
-	nox_xxx_wndSetWindowProc_46B300_go(construct, unsafe.Pointer(C.nox_xxx_quickbarTrapProc_45FB90))
+	nox_xxx_wndSetWindowProc_46B300(construct, unsafe.Pointer(C.nox_xxx_quickbarTrapProc_45FB90))
 	nox_xxx_wndSetOffsetMB_46AE40(construct, -265, -23)
 	quickbarIcons(construct, "QuickBarTrapButton", "QuickBarTrapButtonLit")
 
@@ -110,7 +110,7 @@ func createQuickbarRight(x, y C.int, player *C.nox_playerInfo, class playerlib.C
 		quickbarIcons(root, "QuickBarWarriorRight", "QuickBarWarriorRight")
 		nox_xxx_wndClearFlag_46AD80(activate, 8)
 		nox_xxx_wndClearFlag_46AD80(construct, 8)
-		nox_xxx_wndSetDrawFn_46B340_go(construct, unsafe.Pointer(C.nox_xxx_quickbarButtonBookDraw_45EF30))
+		nox_xxx_wndSetDrawFn_46B340(construct, unsafe.Pointer(C.nox_xxx_quickbarButtonBookDraw_45EF30))
 		return
 	}
 	quickbarIcons(root, icon, icon+"Hit")
@@ -131,8 +131,8 @@ func createQuickbarTrapTray(x, y, fontHeight C.int) {
 	nox_window_set_hidden(root, 1)
 	C.dword_5d4594_1049484 = 0
 
-	label := nox_window_new_go(root, 1032, 20, -7, 110, fontHeight, nil)
-	nox_window_set_all_funcs_go(label, nil, unsafe.Pointer(C.nox_xxx_quickbarDraw_45FAC0), nil)
+	label := nox_window_new(root, 1032, 20, -7, 110, fontHeight, nil)
+	nox_window_set_all_funcs(label, nil, unsafe.Pointer(C.nox_xxx_quickbarDraw_45FAC0), nil)
 	newQuickbarArrow(root, quickbarArrowSpec{
 		x: 15, y: 12, width: 10, height: 14, iconX: -55, iconY: -32,
 		image: "QuickBarTrapTrayUpLit", tooltip: "ToolTipPrevTrap", sourceLine: 1883, id: 3,
@@ -144,7 +144,7 @@ func createQuickbarTrapTray(x, y, fontHeight C.int) {
 }
 
 func createQuickbarLeft(x, y C.int, warrior bool) {
-	root := nox_window_new_go(nil, 1032, x-1, y+26, 61, 48, nil)
+	root := nox_window_new(nil, 1032, x-1, y+26, 61, 48, nil)
 	C.dword_5d4594_1049508 = root
 	nox_xxx_wndSetOffsetMB_46AE40(root, 1, -26)
 	icon := "QuickBarSpellSetBase"
@@ -155,13 +155,13 @@ func createQuickbarLeft(x, y C.int, warrior bool) {
 	if !warrior {
 		root.field_92 = 5
 	}
-	nox_window_set_all_funcs_go(root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0),
+	nox_window_set_all_funcs(root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0),
 		unsafe.Pointer(C.nox_xxx_quickbarTrapUpDownDraw_45F6F0), nil)
-	bookBase := nox_window_new_go(root, 1160, 0, 9, 29, 30, nil)
+	bookBase := nox_window_new(root, 1160, 0, 9, 29, 30, nil)
 	C.dword_5d4594_1049524 = bookBase
 	quickbarIcons(bookBase, "SpellbookButton", "SpellbookButtonLit")
-	book := nox_window_new_go(bookBase, 1064, 1, 2, 28, 28, nil)
-	nox_window_set_all_funcs_go(book, unsafe.Pointer(C.nox_xxx_quickbarButtonBookWnd_45F450),
+	book := nox_window_new(bookBase, 1064, 1, 2, 28, 28, nil)
+	nox_window_set_all_funcs(book, unsafe.Pointer(C.nox_xxx_quickbarButtonBookWnd_45F450),
 		unsafe.Pointer(C.nox_xxx_quickbarButtonBookDraw_45EF30), unsafe.Pointer(C.nox_xxx_quickbarButtonBook_45F3F0))
 	quickbarTooltip(book, "OpenSpellBookTT", 1931)
 	if warrior {
@@ -177,13 +177,13 @@ func createQuickbarLeft(x, y C.int, warrior bool) {
 	} {
 		newQuickbarArrow(root, spec)
 	}
-	C.dword_5d4594_1049516 = nox_window_new_go(nil, 1032, 0, 0, 1, 1, nil)
-	nox_window_set_all_funcs_go(C.dword_5d4594_1049516, unsafe.Pointer(C.sub_45EF40), unsafe.Pointer(C.sub_45F8F0), nil)
-	title := nox_window_new_go(nil, 1152, x, y, 2, 2, nil)
+	C.dword_5d4594_1049516 = nox_window_new(nil, 1032, 0, 0, 1, 1, nil)
+	nox_window_set_all_funcs(C.dword_5d4594_1049516, unsafe.Pointer(C.sub_45EF40), unsafe.Pointer(C.sub_45F8F0), nil)
+	title := nox_window_new(nil, 1152, x, y, 2, 2, nil)
 	C.dword_5d4594_1049512 = title
 	nox_xxx_wndSetIcon_46AE60(title, quickbarImage("QuickBarTitle"))
-	label := nox_window_new_go(title, 8, 115, 6, 101, 14, nil)
-	nox_window_set_all_funcs_go(label, nil, unsafe.Pointer(C.sub_45F9B0), nil)
+	label := nox_window_new(title, 8, 115, 6, 101, 14, nil)
+	nox_window_set_all_funcs(label, nil, unsafe.Pointer(C.sub_45F9B0), nil)
 }
 
 func createQuickbarNuggets(warrior bool) bool {
@@ -204,23 +204,23 @@ func createQuickbarNuggets(warrior bool) bool {
 			if rowIndex == 4 {
 				index = C.int(slot)
 			}
-			win := nox_window_new_go(nil, 1160, x+offset, y, 30, 10, nil)
+			win := nox_window_new(nil, 1160, x+offset, y, 30, 10, nil)
 			image := fmt.Sprintf("%s%d", prefix, index+1)
 			quickbarIcons(win, image, image+suffix)
 			nox_xxx_wndSetOffsetMB_46AE40(win, -70-offset, -23)
-			nox_window_set_all_funcs_go(win, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0), nil, nil)
+			nox_window_set_all_funcs(win, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0), nil, nil)
 			nox_quickbar_set_nugget(bar, C.int(slot), win)
 			nox_xxx_updateSpellIconDir_45DE10(index, bar)
 			if !warrior {
-				child := nox_window_new_go(win, 1032, 12, 0, 10, 10, nil)
-				nox_window_set_all_funcs_go(child, unsafe.Pointer(C.sub_45F520),
+				child := nox_window_new(win, 1032, 12, 0, 10, 10, nil)
+				nox_window_set_all_funcs(child, unsafe.Pointer(C.sub_45F520),
 					unsafe.Pointer(C.nox_xxx_quickbarButtonBookDraw_45EF30), unsafe.Pointer(C.sub_45F480))
 				child.field_92 = C.uint(index) | C.uint(rowIndex)<<16
 				nox_quickbar_set_nugget_child(bar, C.int(slot), child)
 			}
 			if rowIndex == 4 {
-				key := nox_window_new_go(win, 1032, 13, 39, 10, 10, nil)
-				nox_window_set_all_funcs_go(key, nil, unsafe.Pointer(C.sub_45F5D0), nil)
+				key := nox_window_new(win, 1032, 13, 39, 10, 10, nil)
+				nox_window_set_all_funcs(key, nil, unsafe.Pointer(C.sub_45F5D0), nil)
 				key.field_92 = C.uint(index)
 			} else {
 				nox_window_set_hidden(win, 1)

@@ -66,7 +66,7 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 		C.nox_xxx_windowDestroyMB_46C4E0(root)
 		return nil
 	}
-	nox_xxx_wndSetDrawFn_46B340_go(background, C.sub_4CEED0)
+	nox_xxx_wndSetDrawFn_46B340(background, C.sub_4CEED0)
 	sub_46B120(root, parent)
 	slider := unsafe.Pointer(Nox_xxx_gLoadImg("UISlider").C())
 	sliderLit := unsafe.Pointer(Nox_xxx_gLoadImg("UISliderLit").C())

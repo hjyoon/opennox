@@ -167,7 +167,7 @@ func nox_gui_itemAmount_init_4BFEF0() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_window_set_all_funcs_go(root, C.sub_4BFDD0, C.sub_4C0030, nil)
+	nox_window_set_all_funcs(root, C.sub_4BFDD0, C.sub_4C0030, nil)
 	C.dword_5d4594_1319232 = g2ServerChild(root, 3601)
 	C.dword_5d4594_1319236 = g2ServerChild(root, 3607)
 	g2ServerHidden(root, true)

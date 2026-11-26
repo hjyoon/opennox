@@ -119,7 +119,7 @@ func sub_489B80(parent *nox_window) *nox_window {
 	filter := wolServerFilterRecord(0)
 	sub_46B120(win, parent)
 	sub_46B120(options, win)
-	nox_xxx_wndSetProc_46B2C0_go(options, C.nox_xxx_windowMplayFilterProc_489E70)
+	nox_xxx_wndSetProc_46B2C0(options, C.nox_xxx_windowMplayFilterProc_489E70)
 	if filter.checkLatency != 0 {
 		child(10028).draw_data.field_0 |= 4
 	}

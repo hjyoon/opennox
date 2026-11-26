@@ -31,8 +31,8 @@ func sub_4799A0() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(root, C.sub_479BE0)
-	nox_xxx_wndSetDrawFn_46B340_go(root, C.sub_479CB0)
+	nox_xxx_wndSetWindowProc_46B300(root, C.sub_479BE0)
+	nox_xxx_wndSetDrawFn_46B340(root, C.sub_479CB0)
 	nox_gui_winSetFunc96_46B070(root, C.sub_479D00)
 
 	slider := nox_xxx_wndGetChildByID_46B0C0(root, 3904)
@@ -51,7 +51,7 @@ func sub_4799A0() C.int {
 	C.sub_4B5700(slider, nil, nil, normal, lit, lit)
 	slider.draw_data.win, up.draw_data.win, down.draw_data.win = list, list, list
 	data.Field_9, data.Field_7, data.Field_8 = unsafe.Pointer(slider), unsafe.Pointer(up), unsafe.Pointer(down)
-	nox_xxx_wndSetDrawFn_46B340_go(done, C.sub_479C40)
+	nox_xxx_wndSetDrawFn_46B340(done, C.sub_479C40)
 	nox_xxx_wnd_46ABB0_go(root, 0)
 	nox_window_set_hidden(root, 1)
 	C.dword_5d4594_1123520 = 0

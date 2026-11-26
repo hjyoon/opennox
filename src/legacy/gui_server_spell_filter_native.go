@@ -24,7 +24,7 @@ func nox_xxx_guiSpelllistLoad_453850(parent *C.nox_window) *C.nox_window {
 	if root == nil {
 		return nil
 	}
-	nox_xxx_wndSetDrawFn_46B340_go(root, unsafe.Pointer(C.sub_453B80))
+	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_453B80))
 	C.sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
 	names, classes := g2ServerChild(root, 1110), g2ServerChild(root, 1112)

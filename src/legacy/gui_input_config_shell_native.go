@@ -25,7 +25,7 @@ func sub_4CB880() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_xxx_wndSetWindowProc_46B300_go(root, C.sub_4A18E0)
+	nox_xxx_wndSetWindowProc_46B300(root, C.sub_4A18E0)
 	anim := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -480, 0, 20, 0, -40)
 	C.nox_wnd_xxx_1522608 = anim
 	if anim == nil {
@@ -48,8 +48,8 @@ func sub_4CB880() C.int {
 		return 0
 	}
 	sub_46B120(prompt, nil)
-	nox_xxx_wndSetProc_46B2C0_go(prompt, C.sub_4CBE70)
-	nox_xxx_wndSetWindowProc_46B300_go(prompt, C.sub_4CC170)
+	nox_xxx_wndSetProc_46B2C0(prompt, C.sub_4CBE70)
+	nox_xxx_wndSetWindowProc_46B300(prompt, C.sub_4CC170)
 	g2ServerHidden(prompt, true)
 	p.bindPromptLabel()
 	return 1

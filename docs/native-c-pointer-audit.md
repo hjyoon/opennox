@@ -64,10 +64,15 @@ transforms and 768 polyphase synthesis inputs per tested profile, and
 The 8 kHz mixed-block case preserves the packed spectral buffer geometry
 with a zero-initialized Go workspace.
 
-All 1,137 original MP3 dialog files matched the `f257d38b1` C-backed
-baseline on macOS ARM64 and Linux ARM64. Each run checked the PCM
-digest and sample count for 207,224,064 interleaved samples. The Go
-arithmetic preserves the two tested compilers' rounding orders.
+The supplied Nox installation's 2,383 MP3 files matched the
+`f257d38b1` C-backed baseline on macOS ARM64 and Linux ARM64. Each run
+checked the per-file PCM digest and sample count for 379,593,216
+interleaved samples. The Go arithmetic preserves the two tested
+compilers' rounding orders.
+
+The window constructor and four callback registration functions now
+export their C signatures directly from Go. Removing their forwarding
+file brings the top-level legacy C file count to 52.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

@@ -37,7 +37,7 @@ func sub_4C09D0() C.int {
 	if root == nil {
 		return 0
 	}
-	nox_window_set_all_funcs_go(root, C.sub_4C0630, C.sub_4C0D00, nil)
+	nox_window_set_all_funcs(root, C.sub_4C0630, C.sub_4C0D00, nil)
 	nox_xxx_wndWddSetTooltip_46B000(&root.draw_data, tradeString("TradeMain", 692))
 	for _, tip := range [...]struct {
 		id   int

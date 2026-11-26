@@ -61,7 +61,7 @@ func nox_xxx_guiServerPlayersLoad_456270(parent *C.nox_window) *C.nox_window {
 	C.dword_5d4594_1045688 = nox_xxx_wndGetChildByID_46B0C0(root, 10507)
 	C.dword_5d4594_1045692 = nox_xxx_wndGetChildByID_46B0C0(root, 10509)
 	sub_46B120(root, parent)
-	nox_xxx_wndSetDrawFn_46B340_go(root, unsafe.Pointer(C.sub_456640))
+	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_456640))
 	nox_xxx_wndRetNULL_46A8A0()
 	nox_common_list_clear_425760(&C.nox_gui_server_players.players)
 	nox_common_list_clear_425760(&C.nox_gui_server_players.teams)

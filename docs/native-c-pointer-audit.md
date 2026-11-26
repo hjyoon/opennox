@@ -434,6 +434,18 @@ afterward. It compares all three strings delivered to the logger.
 The tests passed on macOS ARM64 with strict pointer checks, Linux
 ARM64, and emulated Linux 386.
 
+### Windows 386 team membership replay
+
+GitHub Actions run `45852354788` recorded 69 passing terminal events
+from the retained Windows 386 test executable under `GOGC=10`.
+The checker expected 66 because its list omitted the three repetitions
+of `TestTeamMembershipNativePinnedGoNodes`.
+
+The checker now includes the pinned-node test and derives the event
+count from the expected identities and repetitions. The archived
+native output matches all 69 events after verifying the output and
+executable hashes against the run's records.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

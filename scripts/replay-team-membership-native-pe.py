@@ -46,7 +46,9 @@ owner_rows = json.loads(gzip.decompress(owners.read_bytes()))
 assert len(owner_rows) == 1044 and sum(len(r["events"]) for r in owner_rows) == 14877
 repetitions = 3
 expected = collections.Counter({name: repetitions for name in [
-    "TestTeamMembershipNativeLayout", "TestTeamMembershipNativeOriginalQueries",
+    "TestTeamMembershipNativeLayout",
+    "TestTeamMembershipNativePinnedGoNodes",
+    "TestTeamMembershipNativeOriginalQueries",
     "TestTeamMembershipNativeOwnerCompatibility"]})
 for route in range(3):
     for place in [0, 512, 4096]:
@@ -55,7 +57,7 @@ for parent in range(2):
     expected[f"TestTeamMembershipNativeOwnerCompatibility/parents{parent}"] = repetitions
     for program in ["link-commit-detach", "move-deferred-commit", "detach-ID-fallback", "reset-reuse"]:
         expected[f"TestTeamMembershipNativeOwnerCompatibility/parents{parent}/{program}"] = repetitions
-assert sum(expected.values()) == 66
+expected_terminals = sum(expected.values())
 command = [str(binary), "-test.v", "-test.count=" + str(repetitions),
            "-test.timeout=8m", "-test.run=^TestTeamMembershipNative"]
 env = dict(os.environ, GOGC="10", GOEXPERIMENT="")
@@ -65,7 +67,7 @@ intent = dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), sour
               original_query_contexts=2088, incoming_owner_cases=1044,
               incoming_owner_observations=14877, native_calls_per_repetition=554364,
               actual_C_calls_per_repetition=369576, executed_owner_cases_per_repetition=2088, owner_observations_per_repetition=29754,
-              expected_terminal_events=66)
+              expected_terminal_events=expected_terminals)
 (out / "intent.json").write_text(json.dumps(intent, indent=2) + "\n")
 timed_out = False
 with (out / "native.stdout.log").open("xb") as stdout, (out / "native.stderr.log").open("xb") as stderr:
@@ -100,4 +102,4 @@ record = dict(intent, native_exit_code=code, timed_out=timed_out,
 (out / "summary.json").write_text(json.dumps(record, indent=2) + "\n")
 print(json.dumps(record), flush=True)
 assert code == 0 and not timed_out and not unfinished
-assert actions == {"pass": 66} and seen == expected and after == before
+assert actions == {"pass": expected_terminals} and seen == expected and after == before

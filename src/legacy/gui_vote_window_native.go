@@ -9,7 +9,6 @@ package legacy
 #include "client__gui__guivote.h"
 #include "noxstring.h"
 extern int nox_win_width;
-extern nox_window *dword_5d4594_1193712, *dword_5d4594_1197312, *dword_5d4594_1197316, *dword_5d4594_1197320;
 extern uint32_t dword_5d4594_1197308, dword_5d4594_1197324, dword_5d4594_1197328;
 extern uint32_t dword_5d4594_1197332, dword_5d4594_1197336;
 */
@@ -26,6 +25,10 @@ import (
 
 type voteNames [32][28]uint16
 
+var voteWindow struct {
+	root, players, topics *nox_window
+}
+
 func voteNameIn(name *wchar2_t, names [][28]uint16) bool {
 	for i := range names {
 		if C.nox_wcscmp(name, (*wchar2_t)(unsafe.Pointer(&names[i][0]))) == 0 {
@@ -41,7 +44,7 @@ func voteNameCount(count C.uint32_t) int {
 
 //export nox_xxx_showObserverWindow_48CA70
 func nox_xxx_showObserverWindow_48CA70(hidden C.int) C.int {
-	return C.int(nox_window_set_hidden(C.dword_5d4594_1193712, int32(hidden)))
+	return C.int(nox_window_set_hidden(observerStatusIcon, int32(hidden)))
 }
 
 //export nox_xxx_cliToggleObsWindow_4357A0
@@ -52,7 +55,7 @@ func nox_xxx_cliToggleObsWindow_4357A0() C.int {
 
 //export sub_48CAD0
 func sub_48CAD0() C.int {
-	window := C.dword_5d4594_1197312
+	window := voteWindow.root
 	if wndIsShown_nox_xxx_wndIsShown_46ACC0(window) != 0 {
 		return 0
 	}
@@ -64,12 +67,12 @@ func sub_48CAD0() C.int {
 //export sub_48D000_initGuiKick
 func sub_48D000_initGuiKick() C.int {
 	root := nox_new_window_from_file(internCStr("GuiKick.wnd"), C.nox_xxx_guiKick_48D0A0)
-	C.dword_5d4594_1197312 = root
+	storeWindowReference(&voteWindow.root, root)
 	if root == nil {
 		return 0
 	}
-	C.dword_5d4594_1197316 = g2ServerChild(root, 4320)
-	C.dword_5d4594_1197320 = g2ServerChild(root, 4321)
+	storeWindowReference(&voteWindow.players, g2ServerChild(root, 4320))
+	storeWindowReference(&voteWindow.topics, g2ServerChild(root, 4321))
 	nox_window_setPos_46A9B0(root, (int32(C.nox_win_width)-int32(root.width))/2, int32(root.off_y))
 	g2ServerHidden(root, true)
 	C.dword_5d4594_1197324, C.dword_5d4594_1197328 = 0, 0
@@ -112,7 +115,7 @@ func sub_48D120() C.int {
 	C.dword_5d4594_1197328 = C.dword_5d4594_1197324
 	*previous = *live
 	C.dword_5d4594_1197324 = 0
-	win := C.dword_5d4594_1197316
+	win := voteWindow.players
 	selected := g2ServerEvent(win, 16404, 0, 0)
 	if data := g2ServerList(win); selected != 0 && data != nil && data.Field_4 != 0 {
 		indices := unsafe.Slice((*uint32)(unsafe.Pointer(selected)), int(data.Count))
@@ -178,7 +181,7 @@ func nox_xxx_clientVote_48D3E0() C.int { return sendQuestResetVote(5) }
 
 //export sub_48D340
 func sub_48D340() C.int {
-	vote := g2ServerEvent(C.dword_5d4594_1197320, 16404, 0, 0) == 0
+	vote := g2ServerEvent(voteWindow.topics, 16404, 0, 0) == 0
 	next := C.uint32_t(bool2int(vote))
 	prior := C.dword_5d4594_1197336
 	C.dword_5d4594_1197332 = next
@@ -194,7 +197,7 @@ func sub_48D340() C.int {
 
 //export sub_48D410
 func sub_48D410() C.uintptr_t {
-	selection := g2ServerEvent(C.dword_5d4594_1197320, 16404, 0, 0)
+	selection := g2ServerEvent(voteWindow.topics, 16404, 0, 0)
 	switch selection {
 	case 0:
 		return sub_48CB10(2)
@@ -207,11 +210,11 @@ func sub_48D410() C.uintptr_t {
 
 //export sub_48D450
 func sub_48D450() C.int {
-	root := C.dword_5d4594_1197312
+	root := voteWindow.root
 	nox_xxx_wnd_46C6E0(root)
 	nox_xxx_wndClearCaptureMain_46ADE0(root)
 	nox_xxx_windowDestroyMB_46C4E0(root)
-	C.dword_5d4594_1197312, C.dword_5d4594_1197316, C.dword_5d4594_1197320 = nil, nil, nil
+	voteWindow.root, voteWindow.players, voteWindow.topics = nil, nil, nil
 	C.dword_5d4594_1197324, C.dword_5d4594_1197328 = 0, 0
 	return sub_48D4A0()
 }
@@ -276,8 +279,8 @@ func addVotePlayers(win *nox_window) {
 
 //export sub_48CB10
 func sub_48CB10(mode C.int) C.uintptr_t {
-	root := C.dword_5d4594_1197312
-	players, topics := C.dword_5d4594_1197316, C.dword_5d4594_1197320
+	root := voteWindow.root
+	players, topics := voteWindow.players, voteWindow.topics
 	g2ServerEvent(players, 16399, 0, 0)
 	g2ServerEvent(topics, 16399, 0, 0)
 	C.dword_5d4594_1197308 = C.uint32_t(mode)

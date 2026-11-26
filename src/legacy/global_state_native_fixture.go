@@ -7,7 +7,6 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3_1.h"
 #include "GAME4_1.h"
-extern nox_window_yyy nox_windows_arr_1093036[7];
 typedef int(*global_state_value_callback_C)(void);
 typedef void(*global_state_void_callback_C)(void);
 _Static_assert(_Generic(&nox_xxx_clientIsObserver_4372E0,global_state_value_callback_C:1,default:0),"global entry ABI nox_xxx_clientIsObserver_4372E0");
@@ -50,7 +49,6 @@ case 14: nox_client_mapZoomOut_472500();return 0;
 case 15: return sub_470CC0();
 case 16: return sub_470CD0();
 default:return 0;}}
-static void*global_state_windows_C(void){return nox_windows_arr_1093036;}
 static void global_state_seed_cell_C(void*p,uint32_t word){((nox_inventory_cell_t*)p)->field_4=word;}
 static void global_state_layout_C(uintptr_t*v){
 v[0]=sizeof(void*);v[1]=sizeof(nox_playerInfo);v[2]=offsetof(nox_playerInfo,active);v[3]=sizeof(((nox_playerInfo*)0)->active);v[4]=sizeof(((nox_playerInfo*)0)->active_padding);
@@ -68,7 +66,7 @@ func globalStateNativeLayoutC() (out [17]uintptr) {
 	return
 }
 func globalStateNativeWindows() []byte {
-	return unsafe.Slice((*byte)(C.global_state_windows_C()), 7*int(C.sizeof_nox_window_yyy))
+	return unsafe.Slice((*byte)(unsafe.Pointer(clientMeterRecords)), int(unsafe.Sizeof(*clientMeterRecords)))
 }
 func globalStateNativeSeedCell(p unsafe.Pointer, word uint32) {
 	C.global_state_seed_cell_C(p, C.uint32_t(word))

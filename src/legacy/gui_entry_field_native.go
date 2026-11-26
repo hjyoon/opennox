@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_2.h"
 
 extern void* dword_5d4594_1193348;
-extern nox_window* dword_5d4594_1193352;
 extern void* dword_5d4594_1193360;
 */
 import "C"
@@ -21,6 +20,8 @@ import (
 )
 
 const entryFieldPE32 = unsafe.Sizeof(uintptr(0)) == 4
+
+var entryFieldIMEWindow *nox_window
 
 //export nox_xxx_wndEditProc_487D70
 func nox_xxx_wndEditProc_487D70(win *nox_window, event C.int, a3, a4 C.uintptr_t) C.int {
@@ -115,17 +116,17 @@ func nox_xxx_wndEditProcPre_488710(native *nox_window, event C.uint, a3, a4 C.ui
 			alloc.FreePtr(win.WidgetData)
 			win.WidgetData = nil
 		}
-		if C.dword_5d4594_1193352 == native {
-			C.dword_5d4594_1193352 = nil
+		if entryFieldIMEWindow == native {
+			entryFieldIMEWindow = nil
 		}
 	case 23:
 		if a3 != 0 {
-			C.dword_5d4594_1193352 = native
+			entryFieldIMEWindow = native
 			nox_input_enableTextEdit_5700CA()
 			win.DrawData().Field0 |= 6
 		} else {
 			nox_input_disableTextEdit_5700F6()
-			C.dword_5d4594_1193352 = nil
+			entryFieldIMEWindow = nil
 			win.DrawData().Field0 &^= 6
 			if data != nil {
 				if list := entryFieldIMEListPE32(data); list != nil {
@@ -316,7 +317,7 @@ func sub_488BA0() C.int {
 
 //export nox_xxx_onChar_488BD0
 func nox_xxx_onChar_488BD0(ch C.ushort) {
-	native := C.dword_5d4594_1193352
+	native := entryFieldIMEWindow
 	if C.dword_5d4594_1193348 == nil || native == nil {
 		return
 	}

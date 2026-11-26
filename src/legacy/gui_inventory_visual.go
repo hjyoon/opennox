@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "GAME2_3.h"
-extern nox_window_yyy nox_windows_arr_1093036[7];
 extern uint32_t dword_5d4594_1062512;
 */
 import "C"
@@ -92,7 +91,7 @@ func inventoryWeaponWindow(alternate bool) *nox_window {
 	if alternate {
 		return inventoryWindows.weapon
 	}
-	return C.nox_windows_arr_1093036[4].win
+	return clientMeterRecords[4].win
 }
 
 func InventoryWeaponDrawable(alternate bool) *client.Drawable {

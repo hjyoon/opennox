@@ -4,8 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern nox_window_yyy nox_windows_arr_1093036[7];
-extern nox_drawable nox_gui_bottle_drawables[3];
 extern void* dword_5d4594_1096288;
 extern uint64_t qword_581450_9512, qword_581450_9544;
 extern uint32_t dword_5d4594_1096264;
@@ -31,7 +29,7 @@ func meterWindowPosition(win *C.nox_window) (C.int, C.int) {
 
 //export sub_470F40_draw
 func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
-	meter := &C.nox_windows_arr_1093036[uintptr(win.widget_data)]
+	meter := &clientMeterRecords[uintptr(win.widget_data)]
 	x, y := meterWindowPosition(win)
 	var w, h C.int
 	nox_window_get_size(win, &w, &h)
@@ -75,7 +73,7 @@ func drawMeterChargeRow(x, y C.int, row uintptr) {
 
 //export sub_471250
 func sub_471250(win *C.nox_window, _ *C.nox_window_data) C.int {
-	meter := &C.nox_windows_arr_1093036[uintptr(win.widget_data)]
+	meter := &clientMeterRecords[uintptr(win.widget_data)]
 	x, y := meterWindowPosition(win)
 	if meter.field_2 == 0 {
 		nox_client_drawSetColor_434460(int32(meter.color_1))
@@ -145,7 +143,7 @@ func meterDecimalText(buffer *[16]uint16, number int32) *wchar2_t {
 //export sub_471450
 func sub_471450(win *C.nox_window, _ *C.nox_window_data) C.int {
 	var buffer [16]uint16
-	meter := &C.nox_windows_arr_1093036[uintptr(win.widget_data)]
+	meter := &clientMeterRecords[uintptr(win.widget_data)]
 	text := meterDecimalText(&buffer, int32(meter.field_1))
 	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	var width C.int
@@ -161,7 +159,7 @@ func nox_xxx_guiBottleSlotDrawFn_471A80(win *C.nox_window, _ *C.nox_window_data)
 	offset := healthQuickItem + 536*index
 	x, y := meterWindowPosition(win)
 	if memmap.Uint16(0x5D4594, offset+4) != 0 {
-		drawable := &C.nox_gui_bottle_drawables[index]
+		drawable := &clientPotionDrawables[index]
 		if drawable.draw_func != nil {
 			drawable.pos.x, drawable.pos.y = C.intptr_t(x+14), C.intptr_t(y+15)
 			viewport := legacyViewportFromWords32(memmap.PtrT[[13]uint32](0x5D4594, 1091908))
@@ -199,7 +197,7 @@ func nox_xxx_guiBottleSlotProc_471B90(win *C.nox_window, event C.int) C.int {
 //export nox_xxx_drawHealthManaBar_471C00
 func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C.int {
 	index := uintptr(win.widget_data)
-	meter := &C.nox_windows_arr_1093036[index]
+	meter := &clientMeterRecords[index]
 	if nox_xxx_clientIsObserver_4372E0() != 0 || Get_nox_gameDisableMapDraw_5d4594_2650672() != 0 ||
 		noxflags.HasGame(noxflags.GameFlag21|noxflags.GameFlag24) {
 		return 1

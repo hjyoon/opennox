@@ -27,7 +27,6 @@ extern uint32_t dword_5d4594_815748;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156, dword_5d4594_825736;
 extern nox_window* dword_5d4594_816412;
-extern nox_window* dword_5d4594_825744;
 extern nox_window* dword_5d4594_826028;
 extern nox_window* dword_5d4594_826032;
 extern nox_window* nox_wnd_quitMenu_825760;
@@ -444,13 +443,13 @@ func nox_xxx_guiChatMode_4456E0(w *nox_window, unused unsafe.Pointer) C.int {
 
 //export nox_xxx_guiChatShowHide_445730
 func nox_xxx_guiChatShowHide_445730(hidden C.int) C.int {
-	return C.nox_window_set_hidden(C.dword_5d4594_825744, hidden)
+	return C.nox_window_set_hidden(chatStatusIcon, hidden)
 }
 
 //export sub_445770
 func sub_445770() C.int {
-	result := C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_825744)
-	C.dword_5d4594_825744 = nil
+	result := C.nox_xxx_windowDestroyMB_46C4E0(chatStatusIcon)
+	chatStatusIcon = nil
 	return result
 }
 

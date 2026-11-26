@@ -58,7 +58,7 @@ func Nox_client_gold_4674A0() uint32 { return uint32(sub_4674A0()) }
 func sub_4675B0() C.int { return C.int(inventoryState.mode) }
 
 //export sub_46A4A0
-func sub_46A4A0() C.int { return C.int(C.dword_5d4594_1064868) }
+func sub_46A4A0() C.int { return C.int(*clientChatActive) }
 
 //export nox_xxx_playerGet_470A90
 func nox_xxx_playerGet_470A90() C.int { return C.int(C.dword_5d4594_1096252) }

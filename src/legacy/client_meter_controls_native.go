@@ -6,9 +6,6 @@ package legacy
 #include "client__system__ctrlevnt.h"
 #include "GAME2_3.h"
 
-extern nox_window_yyy nox_windows_arr_1093036[7];
-extern nox_drawable nox_gui_bottle_drawables[3];
-extern nox_window* dword_5d4594_1090276;
 extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
 extern uint32_t dword_5d4594_1096272, dword_5d4594_1096276;
@@ -35,8 +32,8 @@ func nox_xxx_cliShowHideTubes_470AA0(visible C.int) {
 	C.dword_5d4594_1096252 = C.uint32_t(visible)
 	if memmap.Uint32(0x5D4594, 1093176) != 0 {
 		hidden := int32(bool2int(visible == 0))
-		nox_window_set_hidden(C.nox_windows_arr_1093036[2].win, hidden)
-		nox_window_set_hidden(C.nox_windows_arr_1093036[3].win, hidden)
+		nox_window_set_hidden(clientMeterRecords[2].win, hidden)
+		nox_window_set_hidden(clientMeterRecords[3].win, hidden)
 	}
 }
 
@@ -48,9 +45,9 @@ func nox_xxx_guiHealthManaColorInit_470B00() *C.uchar {
 	*memmap.PtrUint32(0x5D4594, 1091964) = uint32(nox_color_rgb_4344A0(0, 255, 0))
 	*memmap.PtrUint32(0x5D4594, 1092992) = uint32(nox_color_rgb_4344A0(0, 100, 0))
 
-	health := &C.nox_windows_arr_1093036[0]
+	health := &clientMeterRecords[0]
 	health.color_1, health.color_2 = red, darkRed
-	mana := &C.nox_windows_arr_1093036[1]
+	mana := &clientMeterRecords[1]
 	mana.color_1 = nox_color_rgb_4344A0(0, 0, 255)
 	mana.color_2 = nox_color_rgb_4344A0(0, 0, 100)
 	for i := 4; i <= 6; i++ {
@@ -58,7 +55,7 @@ func nox_xxx_guiHealthManaColorInit_470B00() *C.uchar {
 		if i == 4 {
 			level = 240
 		}
-		meter := &C.nox_windows_arr_1093036[i]
+		meter := &clientMeterRecords[i]
 		meter.color_1 = nox_color_rgb_4344A0(level, 0, level)
 		meter.color_2 = nox_color_rgb_4344A0(50, 0, 50)
 	}
@@ -71,7 +68,7 @@ func nox_xxx_guiHealthManaColorInit_470B00() *C.uchar {
 
 //export sub_470D20
 func sub_470D20(current, maximum C.int) C.int {
-	meter := &C.nox_windows_arr_1093036[4]
+	meter := &clientMeterRecords[4]
 	meter.field_1, meter.field_2 = C.uint32_t(current), C.uint32_t(maximum)
 	if current != maximum {
 		return C.int(nox_xxx_setKeybTimeout_4160D0(17))
@@ -82,17 +79,17 @@ func sub_470D20(current, maximum C.int) C.int {
 //export sub_470D70
 func sub_470D70() {
 	for i := 5; i <= 6; i++ {
-		nox_window_set_hidden(C.nox_windows_arr_1093036[i].win, 1)
+		nox_window_set_hidden(clientMeterRecords[i].win, 1)
 	}
 }
 
 //export sub_470D90
 func sub_470D90(current, maximum C.int) C.int {
 	for i := 5; i <= 6; i++ {
-		nox_window_set_hidden(C.nox_windows_arr_1093036[i].win, 0)
+		nox_window_set_hidden(clientMeterRecords[i].win, 0)
 	}
 	for i := 5; i <= 6; i++ {
-		meter := &C.nox_windows_arr_1093036[i]
+		meter := &clientMeterRecords[i]
 		meter.field_1, meter.field_2 = C.uint32_t(current), C.uint32_t(maximum)
 	}
 	return current
@@ -101,7 +98,7 @@ func sub_470D90(current, maximum C.int) C.int {
 //export sub_470DE0
 func sub_470DE0() C.int {
 	netcode := clientPlayerNetCode
-	health := &C.nox_windows_arr_1093036[0]
+	health := &clientMeterRecords[0]
 	current, maximum := uint32(health.field_1), uint32(health.field_2)
 	if netcode == 0 || current == 0 {
 		return C.int(netcode)
@@ -137,7 +134,7 @@ func sub_470E90(_ *C.nox_window, event C.int) C.int {
 //export nox_win_init_cur_weapon
 func nox_win_init_cur_weapon(parent *C.nox_window, x, y, width, height C.int) {
 	win := nox_window_new(parent, 0x408, x, y, width, height, nil)
-	C.nox_windows_arr_1093036[4].win = win
+	storeWindowReference(&clientMeterRecords[4].win, win)
 	if win != nil {
 		nox_window_set_all_funcs(win, C.sub_470E90, C.sub_470F40_draw, C.sub_4710B0)
 		*(*uintptr)(unsafe.Pointer(&win.widget_data)) = 4
@@ -146,7 +143,7 @@ func nox_win_init_cur_weapon(parent *C.nox_window, x, y, width, height C.int) {
 
 //export sub_472080
 func sub_472080() C.int {
-	meter := &C.nox_windows_arr_1093036[4]
+	meter := &clientMeterRecords[4]
 	if meter.field_1 == meter.field_2 {
 		return C.int(meter.field_1)
 	}
@@ -172,9 +169,9 @@ func nox_xxx_guiHealthManaTubeProc_472100(_ *C.nox_window, event C.int) C.int {
 	case 7:
 		previous := C.dword_5d4594_1096252
 		C.dword_5d4594_1096252 = 1 - previous
-		nox_window_set_hidden(C.nox_windows_arr_1093036[2].win, int32(bool2int(previous == 1)))
+		nox_window_set_hidden(clientMeterRecords[2].win, int32(bool2int(previous == 1)))
 		if memmap.Uint8(0x85B3FC, 12254) != 0 {
-			nox_window_set_hidden(C.nox_windows_arr_1093036[3].win, int32(bool2int(C.dword_5d4594_1096252 == 0)))
+			nox_window_set_hidden(clientMeterRecords[3].win, int32(bool2int(C.dword_5d4594_1096252 == 0)))
 		}
 		nox_xxx_clientPlaySoundSpecial_452D80(901, 100)
 		return 1
@@ -187,14 +184,14 @@ func nox_xxx_guiHealthManaTubeProc_472100(_ *C.nox_window, event C.int) C.int {
 
 //export sub_4721A0
 func sub_4721A0(visible C.int) C.int {
-	return C.int(nox_window_set_hidden(C.dword_5d4594_1090276, int32(bool2int(visible == 0))))
+	return C.int(nox_window_set_hidden(clientMeterRoot, int32(bool2int(visible == 0))))
 }
 
 //export nox_xxx_cliPrepareGameplay2_4721D0
 func nox_xxx_cliPrepareGameplay2_4721D0() C.int {
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1090276)
-	nox_xxx_windowDestroyMB_46C4E0(C.nox_windows_arr_1093036[2].win)
-	if win := C.nox_windows_arr_1093036[3].win; win != nil {
+	nox_xxx_windowDestroyMB_46C4E0(clientMeterRoot)
+	nox_xxx_windowDestroyMB_46C4E0(clientMeterRecords[2].win)
+	if win := clientMeterRecords[3].win; win != nil {
 		nox_xxx_windowDestroyMB_46C4E0(win)
 	}
 	nox_xxx_guiHealthManaInit_4714E0()
@@ -251,7 +248,7 @@ func sub_472280() *C.wchar2_t {
 }
 
 func linkQuickPotionDrawable(index int, thingID C.int) {
-	drawable := &C.nox_gui_bottle_drawables[index]
+	drawable := &clientPotionDrawables[index]
 	*drawable = C.nox_drawable{}
 	if thingID == 0 {
 		return
@@ -287,5 +284,5 @@ func sub_472310() *C.uchar {
 	if health == 0 {
 		return nil
 	}
-	return (*C.uchar)(unsafe.Pointer(&C.nox_gui_bottle_drawables[0]))
+	return (*C.uchar)(unsafe.Pointer(&clientPotionDrawables[0]))
 }

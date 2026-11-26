@@ -10,7 +10,6 @@ extern uint32_t dword_5d4594_1062488, dword_5d4594_1319056;
 extern uint32_t dword_5d4594_1098628, dword_5d4594_1321800;
 extern nox_waypoint_t* dword_5d4594_2487244;
 extern uint32_t nox_xxx_minimap_587000_149232;
-extern nox_window_yyy nox_windows_arr_1093036[7];
 static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
@@ -50,9 +49,9 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 13, 14:
 		return unsafe.Pointer(&C.nox_xxx_minimap_587000_149232)
 	case 15:
-		return unsafe.Pointer(&C.nox_windows_arr_1093036[0].field_1)
+		return unsafe.Pointer(&clientMeterRecords[0].field_1)
 	case 16:
-		return unsafe.Pointer(&C.nox_windows_arr_1093036[0].field_2)
+		return unsafe.Pointer(&clientMeterRecords[0].field_2)
 	default:
 		return nil
 	}

@@ -4,13 +4,10 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guimeter.h"
 
-extern nox_window *dword_5d4594_1090276, *dword_5d4594_1090292, *dword_5d4594_1090828, *dword_5d4594_1091364;
 extern uint32_t dword_5d4594_1096252, dword_5d4594_1096256, dword_5d4594_1096260, dword_5d4594_1096264;
 extern uint32_t dword_5d4594_1096272, dword_5d4594_1096276, dword_5d4594_1096280, dword_5d4594_1096284;
 extern void* dword_5d4594_1096288;
 extern int nox_win_width, nox_win_height;
-extern nox_window_yyy nox_windows_arr_1093036[7];
-extern nox_drawable nox_gui_bottle_drawables[3];
 */
 import "C"
 
@@ -21,12 +18,16 @@ import (
 	"github.com/opennox/libs/player"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const clientMeterSource = `C:\NoxPost\src\Client\Gui\guimeter.c`
 
 var clientHealthManaImages [10]*nox_video_bag_image_t
 var clientPoisonTube *nox_video_bag_image_t
+var clientMeterRoot *nox_window
+var clientMeterRecords, _ = alloc.New([7]C.nox_window_yyy{})
+var clientPotionDrawables, _ = alloc.New([3]C.nox_drawable{})
 
 func clientMeterString(key string, line int32) *wchar2_t {
 	return nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(clientMeterSource), line)
@@ -34,11 +35,11 @@ func clientMeterString(key string, line int32) *wchar2_t {
 
 //export nox_client_guiHealthManaState
 func nox_client_guiHealthManaState(index C.int, state *C.nox_client_gui_health_mana_state) C.int {
-	root := C.dword_5d4594_1090276
+	root := clientMeterRoot
 	if state == nil || root == nil || index < 0 || index >= 2 {
 		return 0
 	}
-	meter := &C.nox_windows_arr_1093036[index]
+	meter := &clientMeterRecords[index]
 	if meter.win == nil {
 		return 0
 	}
@@ -94,24 +95,24 @@ func clientMeterWindow(parent *nox_window, flags, x, y, w, h C.int, index int,
 
 //export sub_471160
 func sub_471160(parent *C.nox_window, x, y, w, h C.int) C.int {
-	charges := &C.nox_windows_arr_1093036[5]
-	icon := &C.nox_windows_arr_1093036[6]
-	charges.win = nox_window_new(parent, 1032, x, y, w, h, nil)
-	icon.win = nox_window_new(parent, 1032, x-17, y-15, 15, 15, nil)
+	charges := &clientMeterRecords[5]
+	icon := &clientMeterRecords[6]
+	storeWindowReference(&charges.win, nox_window_new(parent, 1032, x, y, w, h, nil))
+	storeWindowReference(&icon.win, nox_window_new(parent, 1032, x-17, y-15, 15, 15, nil))
 	configureClientMeterWindow(charges.win, 5, nil, C.sub_471250, "ToolTipCharges", 921)
 	configureClientMeterWindow(icon.win, 6, nil, C.sub_471450, "ToolTipCharges", 925)
 	return C.int(bool2int(charges.win != nil))
 }
 
-func clientMeterBottle(root *nox_window, x C.int, index int, label string, line int32) *nox_window {
-	return clientMeterWindow(root, 8, x, 166, 28, 30, index,
+func clientMeterBottle(root *nox_window, x C.int, index int, label string, line int32) {
+	clientMeterWindow(root, 8, x, 166, 28, 30, index,
 		C.nox_xxx_guiBottleSlotProc_471B90, C.nox_xxx_guiBottleSlotDrawFn_471A80, label, line)
 }
 
 func clientMeterAssignPotion(slot int, countOffset, typeOffset uintptr, thingType C.uint32_t) {
 	*memmap.PtrUint16(0x5D4594, countOffset) = 0
 	if thing := nox_get_thing(int32(thingType)); thing != nil {
-		drawable := &C.nox_gui_bottle_drawables[slot]
+		drawable := &clientPotionDrawables[slot]
 		nox_drawable_link_thing(drawable, int32(thing.field_1c))
 		drawable.flags30 |= 0x40000000
 	}
@@ -141,14 +142,14 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 		C.dword_5d4594_1096284 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Meat")))
 	}
 	root := nox_window_new(nil, 136, width-91, height-201, 91, 201, nil)
-	C.dword_5d4594_1090276 = root
+	storeWindowReference(&clientMeterRoot, root)
 	if root == nil {
 		return 0
 	}
 	nox_xxx_wndSetIcon_46AE60(root, clientHealthManaImages[0])
-	C.dword_5d4594_1091364 = clientMeterBottle(root, 6, 2, "CurePoisonSlotTT", 1029)
+	clientMeterBottle(root, 6, 2, "CurePoisonSlotTT", 1029)
 	clientMeterAssignPotion(2, 1091384, 1091380, C.dword_5d4594_1096276)
-	C.dword_5d4594_1090292 = clientMeterBottle(root, 34, 0, "HealthSlotTT", 1060)
+	clientMeterBottle(root, 34, 0, "HealthSlotTT", 1060)
 	*memmap.PtrUint16(0x5D4594, 1090312) = 0
 	*memmap.PtrUint32(0x5D4594, 1090296) = 0
 	*memmap.PtrUint32(0x5D4594, 1090308) = 0
@@ -158,7 +159,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	healthTipLine := int32(1173)
 	floatingFlags := C.int(24)
 	if mana {
-		C.dword_5d4594_1090828 = clientMeterBottle(root, 62, 1, "ManaSlotTT", 1083)
+		clientMeterBottle(root, 62, 1, "ManaSlotTT", 1083)
 		clientMeterAssignPotion(1, 1090848, 1090844, C.dword_5d4594_1096272)
 		parentIcon, poisonIcon = "HealthManaTubes", "PoisonTube"
 		healthTipLine = 1135
@@ -168,19 +169,27 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	panel := nox_window_new(root, 136, 0, 0, 91, 159, nil)
 	nox_xxx_wndSetIcon_46AE60(panel, nox_xxx_gLoadImg_42F970(internCStr(parentIcon)))
 	if mana {
-		C.nox_windows_arr_1093036[1].win = clientMeterWindow(panel, 8, 60, 34, 25, 125, 1,
+		window := clientMeterWindow(panel, 8, 60, 34, 25, 125, 1,
 			C.nox_xxx_guiHealthManaTubeProc_472100, C.nox_xxx_guiHealthManaTubeDraw_471D10,
 			"ToolTipMana", 1122)
+		storeWindowReference(&clientMeterRecords[1].win, window)
+	} else {
+		clientMeterRecords[1].win = nil
 	}
-	C.nox_windows_arr_1093036[0].win = clientMeterWindow(panel, 8, 34, 34, 25, 125, 0,
+	healthTube := clientMeterWindow(panel, 8, 34, 34, 25, 125, 0,
 		C.nox_xxx_guiHealthManaTubeProc_472100, C.nox_xxx_guiHealthManaTubeDraw_471D10,
 		"ToolTipHealth", healthTipLine)
-	C.nox_windows_arr_1093036[2].win = clientMeterWindow(nil, floatingFlags, 0, 0, 0, 0, 0,
+	storeWindowReference(&clientMeterRecords[0].win, healthTube)
+	healthBar := clientMeterWindow(nil, floatingFlags, 0, 0, 0, 0, 0,
 		nil, C.nox_xxx_drawHealthManaBar_471C00, "", 0)
+	storeWindowReference(&clientMeterRecords[2].win, healthBar)
 	if mana {
-		C.nox_windows_arr_1093036[3].win = clientMeterWindow(nil, 8, 0, 0, 0, 0, 1,
+		window := clientMeterWindow(nil, 8, 0, 0, 0, 0, 1,
 			nil, C.nox_xxx_drawHealthManaBar_471C00, "", 0)
+		storeWindowReference(&clientMeterRecords[3].win, window)
 		*memmap.PtrUint32(0x5D4594, 1093176) = 1
+	} else {
+		clientMeterRecords[3].win = nil
 	}
 	sub_472280()
 	nox_xxx_guiHealthManaColorInit_470B00()
@@ -188,8 +197,8 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 		C.dword_5d4594_1096252 = 1
 	} else {
 		C.dword_5d4594_1096252 = 0
-		nox_window_set_hidden(C.nox_windows_arr_1093036[2].win, 1)
-		nox_window_set_hidden(C.nox_windows_arr_1093036[3].win, 1)
+		nox_window_set_hidden(clientMeterRecords[2].win, 1)
+		nox_window_set_hidden(clientMeterRecords[3].win, 1)
 	}
 	return 1
 }
@@ -268,15 +277,15 @@ func clientMeterDrawHealthIcon() {
 			C.dword_5d4594_1096256 = 0
 		}
 	}
-	nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_1090276, clientHealthManaImages[index])
+	nox_xxx_wndSetIcon_46AE60(clientMeterRoot, clientHealthManaImages[index])
 }
 
 //export nox_xxx_guiHealthManaTubeDraw_471D10
 func nox_xxx_guiHealthManaTubeDraw_471D10(win *C.nox_window, draw *C.nox_window_data) C.int {
 	index := int(uintptr(win.widget_data))
-	meter := &C.nox_windows_arr_1093036[index]
+	meter := &clientMeterRecords[index]
 	if index == 0 && C.dword_5d4594_1096264 != 0 {
-		x, y := meterWindowPosition(C.dword_5d4594_1090276)
+		x, y := meterWindowPosition(clientMeterRoot)
 		nox_client_drawImageAt_47D2C0(clientPoisonTube, int32(x), int32(y))
 	}
 	x, y := meterWindowPosition(win)

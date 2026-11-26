@@ -296,9 +296,9 @@ func TestGame2QuickbarControlCleanup(t *testing.T) {
 	root := g.NewWindowRaw(nil, 0, 0, 0, 40, 40, nil)
 	button := g.NewWindowRaw(root, 0, 0, 0, 12, 12, nil)
 	replacement := g.NewWindowRaw(nil, 0, 0, 0, 40, 40, nil)
-	storeQuickbarControl(&quickbarControls.right, (*nox_window)(root.C()))
-	storeQuickbarControl(&quickbarControls.trap_activate, (*nox_window)(button.C()))
-	storeQuickbarControl(&quickbarControls.right, (*nox_window)(replacement.C()))
+	storeWindowReference(&quickbarControls.right, (*nox_window)(root.C()))
+	storeWindowReference(&quickbarControls.trap_activate, (*nox_window)(button.C()))
+	storeWindowReference(&quickbarControls.right, (*nox_window)(replacement.C()))
 	registerQuickbarDragCleanup((*nox_window)(button.C()))
 	g2qTestPointer(8, button.C(), true)
 	*memmap.PtrUint32(0x5D4594, 1047928) = 1

@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME3_1.h"
-extern nox_window* dword_5d4594_1321216;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -13,12 +12,14 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 )
 
+var voteOverlayRoot *nox_window
+
 //export sub_4C3390
 func sub_4C3390() C.int {
 	image := nox_xxx_gLoadImg_42F970(internCStr("VoteInProgress"))
 	*memmap.PtrPtr(0x5D4594, 1321220) = unsafe.Pointer(image)
 	root := nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2-100, 50, 50, nil)
-	C.dword_5d4594_1321216 = root
+	storeWindowReference(&voteOverlayRoot, root)
 	nox_xxx_wndSetIcon_46AE60(root, image)
 	nox_window_set_all_funcs(root, nil, C.sub_4C3410, nil)
 	nox_window_set_hidden(root, 1)
@@ -35,12 +36,12 @@ func sub_4C3410(win *nox_window, draw unsafe.Pointer) C.int {
 
 //export sub_4C3460
 func sub_4C3460(hidden C.int) C.int {
-	return C.int(nox_window_set_hidden(C.dword_5d4594_1321216, int32(hidden)))
+	return C.int(nox_window_set_hidden(voteOverlayRoot, int32(hidden)))
 }
 
 //export sub_4C34A0
 func sub_4C34A0() C.int {
-	result := nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1321216)
-	C.dword_5d4594_1321216 = nil
+	result := nox_xxx_windowDestroyMB_46C4E0(voteOverlayRoot)
+	voteOverlayRoot = nil
 	return C.int(result)
 }

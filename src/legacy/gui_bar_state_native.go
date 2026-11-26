@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern nox_window_yyy nox_windows_arr_1093036[7];
 extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
 extern uint32_t dword_5d4594_1096260, dword_5d4594_1096264;
 */
@@ -21,17 +20,17 @@ func guiBarStateNativeWord(index int) *uint32 {
 	case 3:
 		return g2ServerWord(1092992)
 	case 4:
-		return (*uint32)(&C.nox_windows_arr_1093036[0].field_1)
+		return (*uint32)(&clientMeterRecords[0].field_1)
 	case 5:
-		return (*uint32)(&C.nox_windows_arr_1093036[0].field_2)
+		return (*uint32)(&clientMeterRecords[0].field_2)
 	case 6:
-		return (*uint32)(&C.nox_windows_arr_1093036[0].color_1)
+		return (*uint32)(&clientMeterRecords[0].color_1)
 	case 7:
-		return (*uint32)(&C.nox_windows_arr_1093036[0].color_2)
+		return (*uint32)(&clientMeterRecords[0].color_2)
 	case 8:
-		return (*uint32)(&C.nox_windows_arr_1093036[1].field_1)
+		return (*uint32)(&clientMeterRecords[1].field_1)
 	case 9:
-		return (*uint32)(&C.nox_windows_arr_1093036[1].field_2)
+		return (*uint32)(&clientMeterRecords[1].field_2)
 	case 10:
 		return (*uint32)(&C.dword_5d4594_1096260)
 	case 11:

@@ -777,6 +777,28 @@ formatting and variadic adapters, and two indirect damage and sound
 callback frames. The 386 and ARM profiles add the two float-word
 adapters. The safe profiles add four memory and string adapters.
 
+### Client status windows, meters, and chat
+
+The original chat constructor at `0x46A730` publishes the root, entry
+field, and its data at `0x6D852C` through `0x6D8534`. Go retains the two
+window references and reads the data from the live entry field. The
+chat active word remains 32 bits. The retained C fixture writes the
+same word read by the chat callbacks.
+
+The meter constructor at `0x4714E0` publishes the meter root at
+`0x6DE878`. Go allocates the seven meter records and three potion
+drawables in native memory. A meter record is 20 bytes on 32-bit
+targets and 24 bytes on 64-bit targets. The draw comparisons use the
+same drawable array. The three potion children are owned by the
+meter window and have no independent Go callers.
+
+Go also holds the status icons, vote controls, and PE32 IME focus
+reference at native pointer width. The original vote constructor at
+`0x48D000` publishes the root and two child controls at `0x6F8A94`
+through `0x6F8A9C`. The window references are cleared when their
+owners leave the GUI pool. This removes 17 definitions, including
+13 standalone window pointers, from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

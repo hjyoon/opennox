@@ -5,8 +5,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_825744;
-extern nox_window* dword_5d4594_1193712;
 extern int nox_win_width, nox_win_height;
 int sub_48C9F0(nox_window* win, void* draw);
 */
@@ -17,6 +15,8 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 )
+
+var chatStatusIcon, observerStatusIcon *nox_window
 
 func clientStatusIcon(image string, imageSlot uintptr, aboveCenter C.int) *nox_window {
 	slot := memmap.PtrPtr(0x5D4594, imageSlot)
@@ -29,7 +29,7 @@ func clientStatusIcon(image string, imageSlot uintptr, aboveCenter C.int) *nox_w
 //export nox_xxx_guiChatIconLoad_445650
 func nox_xxx_guiChatIconLoad_445650() C.int {
 	window := clientStatusIcon("ChatIcon", 825748, 50)
-	C.dword_5d4594_825744 = window
+	storeWindowReference(&chatStatusIcon, window)
 	if window == nil {
 		return 0
 	}
@@ -43,7 +43,7 @@ func nox_xxx_guiChatIconLoad_445650() C.int {
 //export sub_48C980
 func sub_48C980() C.int {
 	window := clientStatusIcon("ObserverIcon", 1193716, 100)
-	C.dword_5d4594_1193712 = window
+	storeWindowReference(&observerStatusIcon, window)
 	if window == nil {
 		return 0
 	}
@@ -58,7 +58,7 @@ func sub_48C9F0(window *C.nox_window, draw unsafe.Pointer) C.int {
 	if window != nil && Get_dword_8531A0_2576() != nil {
 		const source = `C:\\NoxPost\\src\\client\\Gui\\guiobs.c`
 		tooltip := nox_strman_loadString_40F1D0(internCStr("observermode"), nil, internCStr(source), 41)
-		if observer := C.dword_5d4594_1193712; observer != nil {
+		if observer := observerStatusIcon; observer != nil {
 			nox_xxx_wndWddSetTooltip_46B000(&observer.draw_data, tooltip)
 		}
 		data := &window.draw_data

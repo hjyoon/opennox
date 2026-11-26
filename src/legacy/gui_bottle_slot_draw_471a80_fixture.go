@@ -7,7 +7,6 @@ package legacy
 #include "memmap.h"
 #include "internal/cfixture/render_palette_reference.h"
 
-extern nox_drawable nox_gui_bottle_drawables[3];
 extern void* dword_5d4594_1096288;
 
 static int64_t nox_test_bottle_observed_471A80[30];
@@ -52,7 +51,7 @@ static int nox_test_bottle_calls_471A80(void) {
     return nox_test_bottle_observed_471A80[19];
 }
 
-static void nox_test_bottle_slot_draw_471A80(nox_window* win, const uint32_t* words,
+static void nox_test_bottle_slot_draw_471A80(nox_window* win, nox_drawable* drawables, const uint32_t* words,
         int slot, uint16_t count, int callback, int mutate_viewport, int new_count,
         const uint16_t* binding, int64_t* out) {
     uint32_t* record = getMemU32Ptr(0x5D4594, 1091904);
@@ -64,7 +63,7 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, const uint32_t* wo
 
     uint8_t saved_slots[3][20];
     nox_drawable saved_drawables[3];
-    memcpy(saved_drawables, nox_gui_bottle_drawables, sizeof(saved_drawables));
+    memcpy(saved_drawables, drawables, sizeof(saved_drawables));
     for (int i = 0; i < 3; i++) {
         memcpy(saved_slots[i], getMemAt(0x5D4594, 1090300 + 536 * i), 20);
     }
@@ -74,7 +73,7 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, const uint32_t* wo
     *getMemU32Ptr(0x5D4594, 1090308 + 536 * slot) = UINT32_C(0x12345678);
     *getMemU16Ptr(0x5D4594, 1090312 + 536 * slot) = count;
 
-    nox_drawable* dr = &nox_gui_bottle_drawables[slot];
+    nox_drawable* dr = &drawables[slot];
     memset(dr, 0, sizeof(*dr));
     dr->field_27 = UINT32_C(0x23456789);
     dr->flags30 = UINT32_C(0x40000000);
@@ -106,7 +105,7 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, const uint32_t* wo
     out[28] = 1;
     for (int i = 0; i < 3; i++) {
         if (i != slot) {
-            out[22] &= memcmp(&nox_gui_bottle_drawables[i], &saved_drawables[i], sizeof(*dr)) == 0;
+            out[22] &= memcmp(&drawables[i], &saved_drawables[i], sizeof(*dr)) == 0;
             out[28] &= memcmp(getMemAt(0x5D4594, 1090300 + 536 * i), saved_slots[i], 20) == 0;
         }
     }
@@ -123,7 +122,7 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, const uint32_t* wo
     dword_5d4594_1096288 = saved_font;
     nox_color_white_2523948 = saved_white;
     memcpy(record, saved_record, sizeof(saved_record));
-    memcpy(nox_gui_bottle_drawables, saved_drawables, sizeof(saved_drawables));
+    memcpy(drawables, saved_drawables, sizeof(saved_drawables));
     for (int i = 0; i < 3; i++) {
         memcpy(getMemAt(0x5D4594, 1090300 + 536 * i), saved_slots[i], 20);
     }
@@ -140,7 +139,7 @@ import (
 func bottleSlotDrawC471A80(win *gui.Window, words [13]uint32, slot int, count uint16,
 	callback, mutateViewport bool, newCount int, binding [4]uint16) [30]int64 {
 	var out [30]int64
-	C.nox_test_bottle_slot_draw_471A80((*C.nox_window)(win.C()),
+	C.nox_test_bottle_slot_draw_471A80((*C.nox_window)(win.C()), &clientPotionDrawables[0],
 		(*C.uint32_t)(unsafe.Pointer(&words[0])), C.int(slot), C.uint16_t(count),
 		C.int(bool2int(callback)), C.int(bool2int(mutateViewport)), C.int(newCount),
 		(*C.uint16_t)(unsafe.Pointer(&binding[0])), (*C.int64_t)(unsafe.Pointer(&out[0])))

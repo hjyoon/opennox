@@ -5,9 +5,6 @@ package legacy
 #include "GAME2_2.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_1064856;
-extern nox_window* dword_5d4594_1064860;
-extern void* dword_5d4594_1064864;
 #include "client_ui_words.h"
 extern int nox_win_width, nox_win_height;
 */
@@ -28,13 +25,24 @@ import (
 
 const clientChatTeamOffset = 1064872
 
+var (
+	clientChatRoot, clientChatEntry *nox_window
+	clientChatActive, _             = alloc.New(C.uint32_t(0))
+)
+
+//export nox_client_chat_active_storage
+func nox_client_chat_active_storage() *C.uint32_t { return clientChatActive }
+
 func clientChatEntryData() *gui.EntryFieldData {
-	return (*gui.EntryFieldData)(C.dword_5d4594_1064864)
+	if clientChatEntry == nil {
+		return nil
+	}
+	return (*gui.EntryFieldData)(clientChatEntry.widget_data)
 }
 
 //export nox_client_chatStart_46A430
 func nox_client_chatStart_46A430(team C.int) {
-	if noxflags.HasGame(noxflags.GameModeCoop) || C.dword_5d4594_1064868 != 0 {
+	if noxflags.HasGame(noxflags.GameModeCoop) || *clientChatActive != 0 {
 		return
 	}
 	data := clientChatEntryData()
@@ -43,11 +51,11 @@ func nox_client_chatStart_46A430(team C.int) {
 	}
 	data.Text[0] = 0
 	data.Field_1052 &^= 0xffff
-	root := C.dword_5d4594_1064856
+	root := clientChatRoot
 	nox_xxx_wndShowModalMB_46A8C0(root)
 	sub_46C690(root)
-	nox_xxx_windowFocus_46B500(C.dword_5d4594_1064860)
-	C.dword_5d4594_1064868 = 1
+	nox_xxx_windowFocus_46B500(clientChatEntry)
+	*clientChatActive = 1
 	*memmap.PtrInt32(0x5D4594, clientChatTeamOffset) = int32(team)
 }
 
@@ -105,12 +113,12 @@ func nox_xxx_cmdSayDo_46A4B0(text *C.wchar2_t, team C.int) C.size_t {
 
 //export sub_46A5D0
 func sub_46A5D0(win *C.nox_window, draw *C.nox_window_data) C.int {
-	root, data := C.dword_5d4594_1064856, clientChatEntryData()
+	root, data := clientChatRoot, clientChatEntryData()
 	if root == nil || data == nil {
 		return 0
 	}
 	nox_xxx_wndShowModalMB_46A8C0(root)
-	nox_xxx_windowFocus_46B500(C.dword_5d4594_1064860)
+	nox_xxx_windowFocus_46B500(clientChatEntry)
 	var textWidth, prefixWidth C.int
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(unsafe.Pointer(&data.Text[0])), &textWidth, nil, 0)
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(unsafe.Pointer(&data.Text[256])), &prefixWidth, nil, 0)
@@ -122,11 +130,11 @@ func sub_46A5D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 
 //export sub_46A6A0
 func sub_46A6A0() C.int {
-	root := C.dword_5d4594_1064856
+	root := clientChatRoot
 	if wndIsShown_nox_xxx_wndIsShown_46ACC0(root) != 0 {
 		return 0
 	}
-	entry := C.dword_5d4594_1064860
+	entry := clientChatEntry
 	if nox_xxx_wndGetFocus_46B4F0() == entry {
 		nox_xxx_windowFocus_46B500(nil)
 	}
@@ -137,7 +145,7 @@ func sub_46A6A0() C.int {
 		entry.flags &^= 8
 	}
 	set_dword_5d4594_3799468(1)
-	C.dword_5d4594_1064868 = 0
+	*clientChatActive = 0
 	return 1
 }
 
@@ -147,18 +155,22 @@ func sub_46A730() *C.nox_window {
 	*memmap.PtrInt32(0x5D4594, 1064876) = x
 	*memmap.PtrInt32(0x5D4594, 1064880) = y
 	root := nox_new_window_from_file(internCStr("GuiChat.wnd"), C.sub_46A820)
-	C.dword_5d4594_1064856 = root
+	clientChatRoot = root
 	if root == nil {
 		return nil
 	}
+	asWindow(root).AddCleanup(func() {
+		if clientChatRoot == root {
+			resetClientChatWindow()
+		}
+	})
 	nox_window_setPos_46A9B0(root, x, y)
 	entry := nox_xxx_wndGetChildByID_46B0C0(root, 9201)
-	C.dword_5d4594_1064860 = entry
+	storeWindowReference(&clientChatEntry, entry)
 	if entry == nil {
 		return nil
 	}
 	nox_xxx_wndSetWindowProc_46B300(entry, C.sub_46A7E0)
-	C.dword_5d4594_1064864 = entry.widget_data
 	return root
 }
 
@@ -184,16 +196,19 @@ func sub_46A820(win *C.nox_window, event, arg1, arg2 C.int) C.int {
 	return 0
 }
 
+func resetClientChatWindow() {
+	clientChatRoot, clientChatEntry = nil, nil
+	*clientChatActive = 0
+	*memmap.PtrInt32(0x5D4594, clientChatTeamOffset) = 0
+}
+
 //export sub_46A860
 func sub_46A860() C.int {
 	var result C.int
-	if root := C.dword_5d4594_1064856; root != nil {
+	if root := clientChatRoot; root != nil {
 		result = C.int(nox_xxx_windowDestroyMB_46C4E0(root))
-		C.dword_5d4594_1064856 = nil
 	}
-	C.dword_5d4594_1064860, C.dword_5d4594_1064864 = nil, nil
-	C.dword_5d4594_1064868 = 0
-	*memmap.PtrInt32(0x5D4594, clientChatTeamOffset) = 0
+	resetClientChatWindow()
 	return result
 }
 

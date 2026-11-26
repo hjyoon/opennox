@@ -33,6 +33,16 @@ func asWindow(win *nox_window) *gui.Window {
 	return AsWindowP(unsafe.Pointer(win))
 }
 
+// Store a GUI-thread reference until its window is returned to the pool.
+func storeWindowReference(slot **nox_window, win *nox_window) {
+	*slot = win
+	asWindow(win).AddCleanup(func() {
+		if *slot == win {
+			*slot = nil
+		}
+	})
+}
+
 var (
 	legacyWindowRecoveryWarning sync.Once
 	legacyWindowRejectWarning   sync.Once

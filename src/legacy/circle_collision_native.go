@@ -53,9 +53,23 @@ func nox_xxx_collisionCheckCircleCircle_550D00_go(first, second *nox_object_t) {
 	server.CircleCircleCollision550D00(asObjectS(first), asObjectS(second), circleCollisionRuntimeNative550D00())
 }
 
+// The eleven wall definitions read by GAME.EXE at 0x550068.
+var circleWallDefinitions54FFC0 = [...]server.CircleWallDefinition54FFC0{
+	{Second: 1, SecondHi: 23},
+	{First: 1, FirstHi: 23},
+	{First: 1, FirstHi: 23, Second: 1, SecondHi: 23},
+	{First: 1, FirstHi: 11.5, Second: 1, SecondHi: 23},
+	{First: 1, FirstHi: 23, Second: 1, SecondLo: 11.5, SecondHi: 23},
+	{First: 1, FirstLo: 11.5, FirstHi: 23, Second: 1, SecondHi: 23},
+	{First: 1, FirstHi: 23, Second: 1, SecondHi: 11.5},
+	{First: 1, FirstHi: 11.5, Second: 1, SecondLo: 11.5, SecondHi: 23},
+	{First: 1, FirstLo: 11.5, FirstHi: 23, Second: 1, SecondLo: 11.5, SecondHi: 23},
+	{First: 1, FirstLo: 11.5, FirstHi: 23, Second: 1, SecondHi: 11.5},
+	{First: 1, FirstHi: 11.5, Second: 1, SecondHi: 11.5},
+}
+
 func circleWallDefinitionNative54FFC0(index byte) server.CircleWallDefinition54FFC0 {
-	d := &C.table_313272[index]
-	return server.CircleWallDefinition54FFC0{First: byte(d.f0), Second: byte(d.f12), FirstLo: float32(d.f4), FirstHi: float32(d.f8), SecondLo: float32(d.f16), SecondHi: float32(d.f20)}
+	return circleWallDefinitions54FFC0[index]
 }
 
 func circleWallRuntimeNative54FEF0() server.CircleWallRuntime54FEF0 {

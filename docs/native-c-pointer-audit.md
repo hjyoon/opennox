@@ -271,6 +271,17 @@ sentinel by pointer, use the public iterators, and verify the linked
 records and end marker. Removing the two storage translation units
 leaves 36 top-level legacy C files.
 
+### Wall collision definitions
+
+The 11 wall definitions are now stored in the Go type consumed by
+circle-wall collision. The original routine reads 24-byte records
+from `0x5D37B8` at `0x550068`. All 264 bytes in the supplied
+`GAME.EXE` match the sealed records. The native test compares every
+decoded field and replays both stock collision points for each wall
+type through the production geometry.
+
+Removing `game5_wall_data.c` leaves 35 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -4,18 +4,6 @@
 #include "defs.h"
 #include "mover_update_54f740.h"
 
-typedef struct {
-	uint32_t f0;
-	float f4;
-	float f8;
-	uint32_t f12;
-	float f16;
-	float f20;
-} struct313272;
-
-_Static_assert(sizeof(struct313272) == 24, "wrong circle wall definition size");
-extern struct313272 table_313272[11];
-
 #include "monster_random_walk_native_545020.h"
 #include "monster_facing_native_545210.h"
 #include "monster_retreat_native_545440.h"

@@ -80,7 +80,7 @@ func TestCircleCollisionNativeWallIndexOriginal(t *testing.T) {
 		f := func(off int) float32 { return math.Float32frombits(binary.LittleEndian.Uint32(d[off:])) }
 		want := server.CircleWallDefinition54FFC0{First: d[0], Second: d[12], FirstLo: f(4), FirstHi: f(8), SecondLo: f(16), SecondHi: f(20)}
 		if got := circleWallDefinitionNative54FFC0(index); got != want {
-			t.Fatalf("live C-owned wall definition %d differs: %+v original=%+v", index, got, want)
+			t.Fatalf("wall definition %d differs: %+v original=%+v", index, got, want)
 		}
 	}
 	rigidNativeTable(t, 292496, tables["wall-edge-masks"])
@@ -114,7 +114,7 @@ func TestCircleCollisionNativeWallIndexOriginal(t *testing.T) {
 			if math.Float32bits(r.Spring()) != i.Spring {
 				t.Fatal("live C-owned spring differs from original input")
 			}
-			// Use the actual world methods with the actual C-owned definition
+			// Use the actual world methods with the production definition
 			// and coefficient providers. Only declared output services observe.
 			r.WallType = s.Sub_57B500
 			r.WallObject = s.Walls.GetWallAtGrid

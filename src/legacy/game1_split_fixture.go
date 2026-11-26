@@ -7,7 +7,6 @@ extern uint32_t dword_5d4594_815748;
 extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156;
-extern nox_window* dword_5d4594_816412;
 #include "internal/cfixture/render_palette_reference.h"
 extern uint32_t dword_5d4594_825736;
 extern int nox_win_width;
@@ -91,11 +90,11 @@ func g1sPointer(op, value int, p, out unsafe.Pointer) unsafe.Pointer {
 }
 func g1sLayout(op int) uintptr { return uintptr(C.g1s_layout(C.int(op))) }
 func g1sSwapBackdrop(p unsafe.Pointer) unsafe.Pointer {
-	old := C.dword_5d4594_816412
-	C.dword_5d4594_816412 = (*nox_window)(p)
+	old := shellBackdrop
+	shellBackdrop = (*nox_window)(p)
 	return unsafe.Pointer(old)
 }
-func g1sBackdrop() unsafe.Pointer { return unsafe.Pointer(C.dword_5d4594_816412) }
+func g1sBackdrop() unsafe.Pointer { return unsafe.Pointer(shellBackdrop) }
 func g1sFormat(addr string, port uint16, dst unsafe.Pointer) int32 {
 	return int32(C.nox_sprintAddrPort_43BC80(internCStr(addr), C.ushort(port), (*C.char)(dst)))
 }

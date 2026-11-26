@@ -26,11 +26,6 @@ extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_815748;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156, dword_5d4594_825736;
-extern nox_window* dword_5d4594_816412;
-extern nox_window* dword_5d4594_826028;
-extern nox_window* dword_5d4594_826032;
-extern nox_window* nox_wnd_quitMenu_825760;
-extern void* dword_5d4594_826036;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -247,6 +242,8 @@ func sub_43DC10() C.int {
 //export sub_43DC30
 func sub_43DC30() C.int { return C.int(C.dword_587000_93156) }
 
+var shellBackdrop *nox_window
+
 //export nox_xxx_gui_43E1A0
 func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 	if show != 0 {
@@ -256,19 +253,19 @@ func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 		} else {
 			w = C.nox_window_new(nil, 552, 0, 0, C.nox_win_width, C.nox_win_height, nil)
 		}
-		C.dword_5d4594_816412 = w
+		storeWindowReference(&shellBackdrop, w)
 		if w != nil {
 			w.draw_data.bg_color = renderPalette.black
 		}
 		return (*C.uint32_t)(unsafe.Pointer(w))
 	}
-	if w := C.dword_5d4594_816412; w != nil {
+	if w := shellBackdrop; w != nil {
 		if h := game1SplitTestHooks; h != nil && h.DestroyWindow != nil {
 			h.DestroyWindow(w)
 		} else {
 			C.nox_xxx_windowDestroyMB_46C4E0(w)
 		}
-		C.dword_5d4594_816412 = nil
+		shellBackdrop = nil
 	}
 	// All callers discard the old destroy-status-as-pointer return value.
 	return nil
@@ -458,7 +455,7 @@ func nox_xxx_quitDialogYes_445B20() { C.nox_client_quit_4460C0(); sub_445C40() }
 
 //export nox_xxx_quitDialogNo_445B30
 func nox_xxx_quitDialogNo_445B30() C.int {
-	return C.nox_xxx_wndSetCaptureMain_46ADC0(C.nox_wnd_quitMenu_825760)
+	return C.nox_xxx_wndSetCaptureMain_46ADC0(quitMenuWindow)
 }
 
 //export sub_445BA0
@@ -466,19 +463,19 @@ func sub_445BA0() { C.sub_413A00(0) }
 
 //export sub_445C20
 func sub_445C20() {
-	if C.nox_xxx_wndGetFlags_46ADA0(C.nox_wnd_quitMenu_825760)&0x10 == 0 {
+	if C.nox_xxx_wndGetFlags_46ADA0(quitMenuWindow)&0x10 == 0 {
 		sub_445C40()
 	}
 }
 
 //export sub_445FF0
 func sub_445FF0() *C.uint32_t {
-	if w := C.nox_wnd_quitMenu_825760; w != nil {
+	if w := quitMenuWindow; w != nil {
 		w.draw_data.bg_color = renderPalette.black
 	}
 	var result *nox_window
 	for id := C.int(9001); id <= 9006; id++ {
-		result = C.nox_xxx_wndGetChildByID_46B0C0(C.nox_wnd_quitMenu_825760, id)
+		result = C.nox_xxx_wndGetChildByID_46B0C0(quitMenuWindow, id)
 		if result != nil {
 			result.draw_data.text_color = renderPalette.orange
 		}
@@ -488,15 +485,18 @@ func sub_445FF0() *C.uint32_t {
 
 //export nox_gui_xxx_check_446360
 func nox_gui_xxx_check_446360() C.uint {
-	if w := C.nox_wnd_quitMenu_825760; w != nil {
+	if w := quitMenuWindow; w != nil {
 		return C.uint((^uint32(C.nox_xxx_wndGetFlags_46ADA0(w)) >> 4) & 1)
 	}
 	return 0
 }
 
+var motdRoot, motdList *nox_window
+var motdBuffer unsafe.Pointer
+
 //export nox_motd_4463E0
 func nox_motd_4463E0(index C.int) C.int {
-	C.dword_5d4594_826036 = nil
+	motdBuffer = nil
 	size := memmap.PtrUint32(0x5D4594, 826040+uintptr(4*uint32(index)))
 	*size = 0
 	f := C.nox_fs_open(internCStr("motd.txt"))
@@ -513,7 +513,7 @@ func nox_motd_4463E0(index C.int) C.int {
 	if p == nil {
 		return 0
 	}
-	C.dword_5d4594_826036 = p
+	motdBuffer = p
 	C.nox_binfile_fread_raw_40ADD0((*C.char)(p), C.size_t(*size), 1, f)
 	*(*byte)(unsafe.Add(p, uintptr(*size))) = 0
 	*size++
@@ -523,11 +523,11 @@ func nox_motd_4463E0(index C.int) C.int {
 //export sub_446490_go
 func sub_446490_go(index C.int) C.uintptr_t {
 	result := C.uintptr_t(0)
-	if p := C.dword_5d4594_826036; p != nil {
+	if p := motdBuffer; p != nil {
 		C.free(p)
 		result = C.uintptr_t(C.intptr_t(index))
 	}
-	C.dword_5d4594_826036 = nil
+	motdBuffer = nil
 	*memmap.PtrUint32(0x5D4594, 826040+uintptr(4*uint32(index))) = 0
 	return result
 }
@@ -535,12 +535,12 @@ func sub_446490_go(index C.int) C.uintptr_t {
 //export nox_xxx_guiMotdLoad_4465C0
 func nox_xxx_guiMotdLoad_4465C0() *nox_window {
 	root := C.nox_new_window_from_file(internCStr("motd.wnd"), unsafe.Pointer(C.sub_4466C0))
-	C.dword_5d4594_826028 = root
+	storeWindowReference(&motdRoot, root)
 	if root == nil {
 		return nil
 	}
 	w := C.nox_xxx_wndGetChildByID_46B0C0(root, 4203)
-	C.dword_5d4594_826032 = w
+	storeWindowReference(&motdList, w)
 	if w == nil {
 		return nil
 	}
@@ -607,12 +607,12 @@ func nox_xxx_motdAddSomeTextMB_446730_go(input *C.uint8_t) C.uintptr_t {
 	// The listbox copies synchronously; release this foreign owner afterwards.
 	text, free := game1ByteWide(GoString((*C.char)(unsafe.Pointer(input))))
 	defer free()
-	return C.nox_window_call_field_94_fnc(C.dword_5d4594_826032, 16397, C.uintptr_t(uintptr(unsafe.Pointer(&text[0]))), ^C.uintptr_t(0), internCStr("game1_split_native.go"), 0)
+	return C.nox_window_call_field_94_fnc(motdList, 16397, C.uintptr_t(uintptr(unsafe.Pointer(&text[0]))), ^C.uintptr_t(0), internCStr("game1_split_native.go"), 0)
 }
 
 //export sub_446780
 func sub_446780() C.int {
-	root, list := C.dword_5d4594_826028, C.dword_5d4594_826032
+	root, list := motdRoot, motdList
 	if root == nil || list == nil || C.wndIsShown_nox_xxx_wndIsShown_46ACC0(root) != 0 {
 		return 0
 	}
@@ -629,7 +629,7 @@ func nox_xxx_motd_4467F0() {
 	if nox_gui_xxx_check_446360() != 0 || (nox_xxx_isQuest_4D6F50() != 0 && bool(C.nox_common_gameFlags_check_40A5C0(128))) {
 		return
 	}
-	root, list := C.dword_5d4594_826028, C.dword_5d4594_826032
+	root, list := motdRoot, motdList
 	if !bool(C.nox_common_getEngineFlag(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) && root != nil && list != nil &&
 		C.nox_xxx_wndGetFlags_46ADA0(root)&0x10 != 0 && C.sub_44A4A0() == 0 && C.sub_49C810() == 0 && C.sub_49CB40() == 0 {
 		C.nox_xxx_wndShowModalMB_46A8C0(root)
@@ -670,7 +670,7 @@ func nox_xxx_motd_4467F0() {
 
 //export sub_446950
 func sub_446950() C.int {
-	if w := C.dword_5d4594_826028; w != nil && C.nox_xxx_wndGetFlags_46ADA0(w)&0x10 == 0 {
+	if w := motdRoot; w != nil && C.nox_xxx_wndGetFlags_46ADA0(w)&0x10 == 0 {
 		return 1
 	}
 	return 0

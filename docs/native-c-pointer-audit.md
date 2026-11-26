@@ -799,6 +799,26 @@ through `0x6F8A9C`. The window references are cleared when their
 owners leave the GUI pool. This removes 17 definitions, including
 13 standalone window pointers, from `vardefs.c`.
 
+### Setup dialogs, shell windows, and briefing previews
+
+The original help and connection constructors at `0x49C560` and
+`0x49C820` store the roots at `0x7131E4` and `0x7131E8`. Their Go
+slots remain addressable at native width for the C callback tests.
+The shell backdrop, pause menu, message-of-the-day window and list,
+and server key window clear their references through GUI pool cleanup.
+The server key mode remains a 32-bit word and clears with its root.
+
+The briefing constructor at `0x44E560` publishes the outer window and
+panel at `0x69F498` and `0x69F494`. Those two slots and the preview
+font occupy 12 bytes on 32-bit targets and 24 bytes on 64-bit
+targets. Go holds all twelve preview drawable pointers and preserves
+their existing deletion order. The C fixture and Go callbacks share
+the live briefing slots.
+
+This removes another 24 definitions from `vardefs.c`. The 481
+remaining definitions include no standalone window pointer or
+meter-record array.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -9,7 +9,6 @@ package legacy
 #include "client__gui__guiquit.h"
 #include "client__gui__window.h"
 
-extern nox_window* nox_wnd_quitMenu_825760;
 */
 import "C"
 
@@ -72,7 +71,7 @@ func nox_xxx_menuGameOnButton_445840(root *C.nox_window, event C.int, control *C
 			sub_43CF70()
 		}
 	case 9004:
-		menu := C.nox_wnd_quitMenu_825760
+		menu := quitMenuWindow
 		nox_xxx_wndClearCaptureMain_46ADE0(menu)
 		message := escapeMenuText("GUIQuit.c:ReallyQuitMessage", 185)
 		title := escapeMenuText("GUIQuit.c:ReallyQuitTitle", 184)
@@ -158,7 +157,7 @@ func showEscapeMultiplayer(menu *nox_window) {
 
 //export sub_445C40
 func sub_445C40() {
-	menu := C.nox_wnd_quitMenu_825760
+	menu := quitMenuWindow
 	if menu == nil {
 		return
 	}

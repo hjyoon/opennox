@@ -4,19 +4,20 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 extern int nox_win_width, nox_win_height;
-extern uint32_t dword_5d4594_1319056;
-extern nox_window* dword_5d4594_1319060;
 */
 import "C"
 
 import "unsafe"
 
+var serverKeyWindow *nox_window
+var serverKeyMode uint32
+
 //export sub_4BFB70
 func sub_4BFB70(mode C.int) {
-	if C.dword_5d4594_1319056 == 0 && mode == 1 {
+	if serverKeyMode == 0 && mode == 1 {
 		nox_xxx_clientPlaySoundSpecial_452D80(1022, 100)
 	}
-	C.dword_5d4594_1319056 = C.uint32_t(mode)
+	serverKeyMode = uint32(mode)
 }
 
 //export sub_4BFBB0
@@ -25,7 +26,7 @@ func sub_4BFBB0(request *C.uint32_t) {
 }
 
 func serverKeyVisibleRequest(request uintptr) {
-	switch C.dword_5d4594_1319056 {
+	switch serverKeyMode {
 	case 0:
 		if request == 1 {
 			sub_4BFBF0()
@@ -41,7 +42,7 @@ func serverKeyVisibleRequest(request uintptr) {
 
 //export sub_4BFBF0
 func sub_4BFBF0() C.int {
-	root := C.dword_5d4594_1319060
+	root := serverKeyWindow
 	if root == nil {
 		return 0
 	}
@@ -55,7 +56,7 @@ func sub_4BFBF0() C.int {
 
 //export sub_4BFC70
 func sub_4BFC70() C.int {
-	root := C.dword_5d4594_1319060
+	root := serverKeyWindow
 	if root == nil {
 		return 0
 	}
@@ -66,10 +67,16 @@ func sub_4BFC70() C.int {
 //export sub_4BFC90
 func sub_4BFC90() C.int {
 	root := nox_new_window_from_file(internCStr("SKey.wnd"), C.sub_4BFCD0)
-	C.dword_5d4594_1319060 = root
+	serverKeyWindow = root
 	if root == nil {
 		return 0
 	}
+	asWindow(root).AddCleanup(func() {
+		if serverKeyWindow == root {
+			serverKeyWindow = nil
+			serverKeyMode = 0
+		}
+	})
 	sub_4BFB70(0)
 	sub_4BFC70()
 	return 1
@@ -89,7 +96,7 @@ func sub_4BFCD0(win *nox_window, event C.int, control *nox_window, arg C.uintptr
 
 //export sub_4BFD10
 func sub_4BFD10() {
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1319060)
-	C.dword_5d4594_1319060 = nil
+	nox_xxx_windowDestroyMB_46C4E0(serverKeyWindow)
+	serverKeyWindow = nil
 	sub_4BFB70(0)
 }

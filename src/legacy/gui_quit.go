@@ -6,7 +6,6 @@ package legacy
 #include "GAME1_3.h"
 #include "GAME3_2.h"
 #include "GAME4_1.h"
-extern nox_window* nox_wnd_quitMenu_825760;
 extern uint32_t dword_5d4594_2650652;
 extern uint32_t dword_5d4594_830272;
 */
@@ -21,6 +20,8 @@ var (
 	Sub_446380 func()
 	Sub_445B40 func() int
 )
+
+var quitMenuWindow *nox_window
 
 //export nox_xxx____setargv_4_44B000
 func nox_xxx____setargv_4_44B000() {
@@ -58,7 +59,7 @@ func quitMenuCanAutoSave445830() bool {
 }
 
 func Set_nox_wnd_quitMenu_825760(win *gui.Window) {
-	C.nox_wnd_quitMenu_825760 = (*nox_window)(win.C())
+	storeWindowReference(&quitMenuWindow, (*nox_window)(win.C()))
 }
 
 func Nox_xxx____setargv_4_44B000() {

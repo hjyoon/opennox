@@ -7,8 +7,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_1305680;
-extern nox_window* dword_5d4594_1305684;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -21,7 +19,14 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+type gameSetupWindowSlots struct {
+	help, connection *nox_window
+}
+
+var gameSetupWindows, _ = alloc.New(gameSetupWindowSlots{})
 
 func showGameSetupDialog(win *nox_window) {
 	sub_46B120(win, nil)
@@ -38,7 +43,7 @@ func nox_xxx_cliShowHelpGui_49C560() {
 	}
 	windowPath := (*C.char)(*memmap.PtrPtr(0x587000, 164512+4*uintptr(lang)))
 	win := nox_new_window_from_file(windowPath, C.nox_xxx_wnd_49C760)
-	C.dword_5d4594_1305680 = win
+	storeWindowReference(&gameSetupWindows.help, win)
 	if win == nil {
 		return
 	}
@@ -92,7 +97,7 @@ func nox_xxx_wnd_49C760(window *nox_window, event C.int, control *nox_window, ar
 
 //export sub_49C7A0
 func sub_49C7A0() C.int {
-	win := C.dword_5d4594_1305680
+	win := gameSetupWindows.help
 	if win == nil {
 		return 0
 	}
@@ -101,7 +106,7 @@ func sub_49C7A0() C.int {
 	nox_xxx_wnd_46C6E0(win)
 	nox_xxx_wndClearCaptureMain_46ADE0(win)
 	nox_xxx_windowDestroyMB_46C4E0(win)
-	C.dword_5d4594_1305680 = nil
+	gameSetupWindows.help = nil
 	nox_xxx_windowFocus_46B500(nil)
 	if noxflags.HasGame(noxflags.GameHost) {
 		return sub_459D80(0)
@@ -120,7 +125,7 @@ func gameConnectionTypeText(index int, line int32) *wchar2_t {
 //export sub_49C820
 func sub_49C820() C.int {
 	win := nox_new_window_from_file(internCStr("conntype.wnd"), C.sub_49CA60)
-	C.dword_5d4594_1305684 = win
+	storeWindowReference(&gameSetupWindows.connection, win)
 	if win == nil {
 		return 0
 	}
@@ -143,7 +148,7 @@ func sub_49C820() C.int {
 
 //export sub_49C910
 func sub_49C910() *nox_window {
-	win := C.dword_5d4594_1305684
+	win := gameSetupWindows.connection
 	if win == nil {
 		return nil
 	}
@@ -184,7 +189,7 @@ func sub_49CA60(window *nox_window, event C.int, control *nox_window, argument C
 	}
 	id := nox_xxx_wndGetID_46B0A0(control)
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
-	win := C.dword_5d4594_1305684
+	win := gameSetupWindows.connection
 	if id != 10353 || win == nil {
 		return 1
 	}
@@ -201,7 +206,7 @@ func sub_49CA60(window *nox_window, event C.int, control *nox_window, argument C
 		nox_xxx_rateUpdate_40A6D0(sub_40A710(index + 1))
 	}
 	nox_xxx_windowDestroyMB_46C4E0(win)
-	C.dword_5d4594_1305684 = nil
+	gameSetupWindows.connection = nil
 	nox_xxx_windowFocus_46B500(nil)
 	return 1
 }

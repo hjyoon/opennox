@@ -108,9 +108,13 @@ func (f *e2eEnvironmentFixture) prepare() {
 	}
 	if f.unit != f.host {
 		// Keep the ordinary player/camera near the verified arena, outside
-		// the hazard. A clear remote footprint alone need not be visible
-		// through the original map's walls from the spawn position.
-		asObjectS(f.host).SetPos(f.outside)
+		// the hazard and clear of the victim's starting footprint.
+		spectator, ok := f.spectatorPosition()
+		if !ok {
+			e2eError(fmt.Errorf("no separate spectator footprint near %v for %s", f.outside, f.kind))
+			return
+		}
+		asObjectS(f.host).SetPos(spectator)
 		f.host.VelVec, f.host.ForceVec, f.host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
 		noxServer.CreateObjectAt(f.unit, nil, f.outside)
 		asObjectS(f.unit).SetAggression(0)
@@ -142,6 +146,34 @@ func (f *e2eEnvironmentFixture) prepare() {
 	legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(f.unit)
 	f.health, f.baseline = f.unit.HealthData.Cur, f.unit.Frame134
 	noxServer.TickHook(f.observe)
+}
+
+func (f *e2eEnvironmentFixture) spectatorPosition() (types.Pointf, bool) {
+	radius := f.host.Shape.Circle.R + 2
+	separation := radius + f.unit.Shape.Circle.R + 8
+	distance := f.outside.Sub(f.contact).Len()
+	safe := func(pos types.Pointf) bool {
+		return legacy.Nox_xxx_tileNFromPoint_411160(pos) != 6 && e2eWarriorLaneClear(f.host, f.contact, pos)
+	}
+	for dir := 0; dir < 256; dir += 32 {
+		x, y := server.SinCosDir(byte(dir))
+		pos := f.outside.Add(types.Ptf(x, y).Mul(separation))
+		if pos.Sub(f.contact).Len() < distance || !safe(pos) {
+			continue
+		}
+		clear := true
+		for around := 0; around < 256; around += 32 {
+			ax, ay := server.SinCosDir(byte(around))
+			if !safe(pos.Add(types.Ptf(ax, ay).Mul(radius))) {
+				clear = false
+				break
+			}
+		}
+		if clear {
+			return pos, true
+		}
+	}
+	return types.Pointf{}, false
 }
 
 func (f *e2eEnvironmentFixture) startContact() {
@@ -178,7 +210,8 @@ func (f *e2eEnvironmentFixture) observe() {
 		return
 	}
 	if f.unit != f.host && f.host.HealthData.Cur != f.hostHP {
-		e2eError(fmt.Errorf("environment spectator was damaged: %s/%s HP=%d/%d", f.kind, f.victim, f.host.HealthData.Cur, f.hostHP))
+		e2eError(fmt.Errorf("environment spectator was damaged: %s/%s HP=%d/%d position=%v damage=%d source=%p hazard=%p",
+			f.kind, f.victim, f.host.HealthData.Cur, f.hostHP, f.host.PosVec, f.host.Field131, f.host.Obj130, f.hazard))
 		return
 	}
 	if f.unit.HealthData.Cur >= f.health {

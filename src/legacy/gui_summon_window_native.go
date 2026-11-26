@@ -13,8 +13,6 @@ extern uint32_t nox_xxx_screenWidth_587000_184452;
 extern uint32_t dword_5d4594_1320988, dword_5d4594_1320992, dword_5d4594_1321196, dword_8531A0_2572;
 extern nox_window *dword_5d4594_1321032, *dword_5d4594_1321036, *dword_5d4594_1321040, *dword_5d4594_1321044;
 extern nox_video_bag_image_t* dword_5d4594_1321024;
-extern uint32_t nox_color_white_2523948, nox_color_blue_2650684, nox_color_yellow_2589772;
-extern uint32_t nox_color_black_2650656, nox_color_violet_2598268;
 */
 import "C"
 
@@ -159,7 +157,7 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	y := windowY + 38*C.int(record.grid_y) + 2
 	width, height := 38*C.int(w)-4, 38*C.int(h)-4
 	if record.highlight != 0 {
-		C.nox_client_drawSetColor_434460(C.int(C.nox_color_yellow_2589772))
+		C.nox_client_drawSetColor_434460(C.int(renderPalette.yellow))
 		record.highlight = 0
 		C.nox_client_drawRectFilledOpaque_49CE30(x, y, width, height)
 	} else if img := nox_xxx_guiDrawSummon_4C2440(C.int(record.thing_id)); img != nil {
@@ -179,7 +177,7 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	if maxHP != 0 {
 		fill = height * C.int(hp) / C.int(maxHP)
 	}
-	emptyColor, fillColor := C.int(C.nox_color_violet_2598268), C.int(memmap.Int32(0x85B3FC, 940))
+	emptyColor, fillColor := C.int(renderPalette.violet), C.int(memmap.Int32(0x85B3FC, 940))
 	if alternate != 0 {
 		emptyColor, fillColor = C.int(memmap.Int32(0x85B3FC, 984)), C.int(C.dword_8531A0_2572)
 	}
@@ -350,9 +348,9 @@ func sub_4C27F0(win *nox_window, draw *C.nox_window_data) C.int {
 	nox_xxx_guiFontHeightMB_43F320(nil)
 	x += (C.int(C.nox_xxx_screenWidth_587000_184452)-textWidth)/2 + 1
 	y += 3
-	shadow := C.int(C.nox_color_black_2650656)
+	shadow := C.int(renderPalette.black)
 	if C.nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y) {
-		drawSummonOutlinedText(x, y, C.int(C.nox_color_yellow_2589772), shadow, text)
+		drawSummonOutlinedText(x, y, C.int(renderPalette.yellow), shadow, text)
 		last := memmap.PtrUint32(0x587000, 184552)
 		if command != uintptr(*last) {
 			*last = uint32(command)
@@ -363,10 +361,10 @@ func sub_4C27F0(win *nox_window, draw *C.nox_window_data) C.int {
 	color := C.int(memmap.Int32(0x85B3FC, 956))
 	if selected != nil {
 		if sub_4C2DD0((*C.nox_summon_const_record_t)(selected)) != 0 || (command != 4 && command != 5) {
-			color = C.int(C.nox_color_white_2523948)
+			color = C.int(renderPalette.white)
 		}
 	} else if (command != 4 && command != 5) || sub_4C2E00() != 0 {
-		color = C.int(C.nox_color_blue_2650684)
+		color = C.int(renderPalette.blue)
 	}
 	drawSummonOutlinedText(x, y, color, shadow, text)
 	return 1

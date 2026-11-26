@@ -14,7 +14,6 @@ typedef const nox_draw_viewport_t nox_shop_const_viewport_t;
 extern int nox_win_width, nox_win_height;
 extern nox_window *dword_5d4594_1098576, *dword_5d4594_1098580;
 extern uint32_t dword_5d4594_1098592, dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
-extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 extern nox_video_bag_image_t* dword_5d4594_1098456;
 */
 import "C"
@@ -239,11 +238,11 @@ func sub_478C80() C.int {
 				nox_client_drawRectFilledAlpha_49CF10(int32(x-5), int32(y), 50, 50)
 			}
 			if cell.count > 1 {
-				nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+				nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 				r.DrawStringWrapped(nil, strconv.FormatInt(int64(int32(cell.count)), 10), image.Rect(x, y+5, x+320, y+5))
 			}
 			lineY := y - fontHeight + 45
-			nox_xxx_drawSetTextColor_434390(int32(C.nox_color_yellow_2589772))
+			nox_xxx_drawSetTextColor_434390(int32(renderPalette.yellow))
 			r.DrawStringWrapped(nil, strconv.FormatInt(int64(int32(cell.price)), 10), image.Rect(x, lineY, x+320, lineY))
 		}
 	}

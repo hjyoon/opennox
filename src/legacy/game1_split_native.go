@@ -32,7 +32,6 @@ extern nox_window* dword_5d4594_826028;
 extern nox_window* dword_5d4594_826032;
 extern nox_window* nox_wnd_quitMenu_825760;
 extern void* dword_5d4594_826036;
-extern uint32_t nox_color_black_2650656, nox_color_white_2523948, nox_color_orange_2614256;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -260,7 +259,7 @@ func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 		}
 		C.dword_5d4594_816412 = w
 		if w != nil {
-			w.draw_data.bg_color = C.nox_color_black_2650656
+			w.draw_data.bg_color = renderPalette.black
 		}
 		return (*C.uint32_t)(unsafe.Pointer(w))
 	}
@@ -358,7 +357,7 @@ func nox_xxx_drawMessageLines_445530() C.int {
 		if *(*uint32)(game1CenterMemory(0x5D4594, 824440+uintptr(644*index))) < game1CenterFrame() {
 			break
 		}
-		game1CenterColor(uint32(C.nox_color_black_2650656))
+		game1CenterColor(uint32(renderPalette.black))
 		text := (*wchar2_t)(game1CenterMemory(0x5D4594, 823804+uintptr(644*index)))
 		width := game1CenterWidth(text)
 		x := (int32(C.nox_win_width) - width) / 2
@@ -367,7 +366,7 @@ func nox_xxx_drawMessageLines_445530() C.int {
 			sy := *(*int32)(game1CenterMemory(0x587000, 107852+8*shadow))
 			game1CenterDraw(text, x+sx, y+sy)
 		}
-		color := uint32(C.nox_color_white_2523948)
+		color := uint32(renderPalette.white)
 		if line != 0 {
 			color = *(*uint32)(game1CenterMemory(0x5D4594, 2597996))
 		}
@@ -476,13 +475,13 @@ func sub_445C20() {
 //export sub_445FF0
 func sub_445FF0() *C.uint32_t {
 	if w := C.nox_wnd_quitMenu_825760; w != nil {
-		w.draw_data.bg_color = C.nox_color_black_2650656
+		w.draw_data.bg_color = renderPalette.black
 	}
 	var result *nox_window
 	for id := C.int(9001); id <= 9006; id++ {
 		result = C.nox_xxx_wndGetChildByID_46B0C0(C.nox_wnd_quitMenu_825760, id)
 		if result != nil {
-			result.draw_data.text_color = C.nox_color_orange_2614256
+			result.draw_data.text_color = renderPalette.orange
 		}
 	}
 	return (*C.uint32_t)(unsafe.Pointer(result))

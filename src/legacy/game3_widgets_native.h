@@ -15,9 +15,5 @@
 #include "client__video__draw_common.h"
 extern uint32_t dword_5d4594_1307720;
 extern nox_window* dword_5d4594_1307716;
-extern uint32_t nox_color_white_2523948, nox_color_black_2650656;
-extern uint32_t nox_color_violet_2598268, nox_color_red_2589776;
-extern uint32_t nox_color_green_2614268, nox_color_cyan_2649820;
-extern uint32_t nox_color_blue_2650684, nox_color_orange_2614256;
-extern uint32_t nox_color_yellow_2589772, dword_8531A0_2572;
+extern uint32_t dword_8531A0_2572;
 #endif

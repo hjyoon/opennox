@@ -5,7 +5,7 @@ package legacy
 #include "common/alloc/classes/alloc_class.h"
 
 extern void *nox_alloc_healthChange_1301772, *dword_5d4594_1301776, *dword_5d4594_1301780;
-extern uint32_t nox_color_yellow_2589772, nox_color_black_2650656, dword_8531A0_2572;
+extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -60,7 +60,7 @@ func healthChangeHead() *C.nox_health_change {
 //export sub_49A6A0
 func sub_49A6A0(view *nox_draw_viewport_t, drawable *nox_drawable) {
 	frame := uint32(nox_xxx_bookGet_430B40_get_mouse_prev_seq())
-	damageColor := uint32(C.nox_color_yellow_2589772)
+	damageColor := uint32(renderPalette.yellow)
 	if unsafe.Pointer(drawable) == *memmap.PtrPtr(0x852978, 8) {
 		damageColor = memmap.Uint32(0x85B3FC, 940)
 	}
@@ -94,7 +94,7 @@ func drawHealthChangeNumber(point image.Point, text string, color uint32) {
 	r := GetClient().R2()
 	font := r.GetFonts().AsFont(C.dword_5d4594_1301780)
 	point.X -= r.GetStringSizeWrapped(font, text, 0).X / 2
-	r.Data().SetTextColor(noxcolor.RGBA5551(C.nox_color_black_2650656))
+	r.Data().SetTextColor(noxcolor.RGBA5551(renderPalette.black))
 	for _, offset := range healthChangeOutline {
 		r.DrawString(font, text, point.Add(offset))
 	}

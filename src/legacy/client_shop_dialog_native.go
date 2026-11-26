@@ -16,7 +16,6 @@ extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036
 extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
 extern char* nox_shop_dialog_file_1098608;
 extern nox_video_bag_image_t* dword_5d4594_1098456;
-extern uint32_t nox_color_white_2523948;
 
 static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
 	nox_swprintf(dst, format, amount);
@@ -63,7 +62,7 @@ func drawShopInstructions(pos *C.int2, text **wchar2_t, key string, line int32, 
 	inventory := asWindow(nox_xxx_wndGetChildByID_46B0C0(shopRoot(), 3806))
 	origin, size := inventory.GlobalPos(), inventory.Size()
 	if white {
-		nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	}
 	nox_client_drawImageAt_47D2C0(C.dword_5d4594_1098456, int32(pos.field_0), int32(pos.field_4))
 	if *text == nil && key != "" {

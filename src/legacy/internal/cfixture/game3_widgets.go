@@ -8,6 +8,7 @@ package cfixture
 #include <unistd.h>
 #endif
 #include "game3_widgets_native.h"
+#include "render_palette_reference.h"
 // Defined reference service: invoke the actual native-width callback directly.
 // The global main-client legacy-address recovery service is not an algorithm
 // under comparison and cannot own these private C test windows.

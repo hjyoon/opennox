@@ -8,8 +8,8 @@ extern uint32_t dword_5d4594_815044;
 extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
 extern uint32_t dword_587000_93156;
 extern nox_window* dword_5d4594_816412;
-extern uint32_t nox_color_black_2650656;
-extern uint32_t nox_color_white_2523948, dword_5d4594_825736;
+#include "internal/cfixture/render_palette_reference.h"
+extern uint32_t dword_5d4594_825736;
 extern int nox_win_width;
 static uint32_t* g1s_word(int slot) {
  switch(slot) {

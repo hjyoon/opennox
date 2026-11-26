@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_3.h"
 
-extern uint32_t nox_color_white_2523948;
 */
 import "C"
 
@@ -28,7 +27,7 @@ func sub_48D990(view *nox_draw_viewport_t) {
 
 func drawChatBubble(bubble *C.nox_chat_bubble, fontHeight int32) {
 	var playerName *wchar2_t
-	textColor := int32(C.nox_color_white_2523948)
+	textColor := int32(renderPalette.white)
 	if drawable := asDrawable(bubble.drawable); drawable != nil && drawable.ObjClass&4 != 0 {
 		team := teamObjectByNetCode418C80(drawable.NetCode32)
 		if info := nox_common_playerInfoGetByID_417040(int32(bubble.net_code)); info != nil {
@@ -49,7 +48,7 @@ func drawChatBubble(bubble *C.nox_chat_bubble, fontHeight int32) {
 	nox_client_drawSetColor_434460(memmap.Int32(0x85B3FC, 956))
 	drawChatBubbleBorder(x, y, w, h, fontHeight, bubble.draw_tail != 0)
 
-	nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	nox_xxx_drawSetColor_4343E0(outline)
 	nox_xxx_drawStringWrapHL_43FD00(nil, &bubble.text[0], x, y, 128, 0)
 	if playerName != nil {

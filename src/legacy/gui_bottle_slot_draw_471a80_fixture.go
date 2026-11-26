@@ -5,10 +5,10 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "memmap.h"
+#include "internal/cfixture/render_palette_reference.h"
 
 extern nox_drawable nox_gui_bottle_drawables[3];
 extern void* dword_5d4594_1096288;
-extern uint32_t nox_color_white_2523948;
 
 static int64_t nox_test_bottle_observed_471A80[30];
 static int nox_test_bottle_slot_471A80;

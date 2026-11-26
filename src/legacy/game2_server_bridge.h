@@ -161,15 +161,6 @@ extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern nox_window* dword_5d4594_1046492;
 extern int nox_win_width;
 extern int nox_win_height;
-extern uint32_t nox_color_white_2523948;
-extern uint32_t nox_color_black_2650656;
-extern uint32_t nox_color_violet_2598268;
-extern uint32_t nox_color_red_2589776;
-extern uint32_t nox_color_green_2614268;
-extern uint32_t nox_color_cyan_2649820;
-extern uint32_t nox_color_blue_2650684;
-extern uint32_t nox_color_orange_2614256;
-extern uint32_t nox_color_yellow_2589772;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 // Keep the source location used by the C window dispatch macro.

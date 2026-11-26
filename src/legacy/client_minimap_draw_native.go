@@ -5,7 +5,6 @@ package legacy
 
 extern int nox_win_width, nox_win_height;
 extern uint32_t dword_8531A0_2572;
-extern uint32_t nox_color_black_2650656, nox_color_white_2523948, nox_color_blue_2650684;
 */
 import "C"
 
@@ -42,7 +41,7 @@ func drawClientMinimapBackground(top, size int32) {
 	if viewportX == 0 {
 		nox_client_drawRectFilledAlpha_49CF10(0, top, size, size)
 	} else {
-		nox_client_drawSetColor_434460(int32(C.nox_color_black_2650656))
+		nox_client_drawSetColor_434460(int32(renderPalette.black))
 		width := min(viewportX, size)
 		nox_client_drawRectFilledOpaque_49CE30(0, top, width, size)
 		if viewportX < size {
@@ -50,7 +49,7 @@ func drawClientMinimapBackground(top, size int32) {
 		}
 	}
 	nox_client_drawEnableAlpha_434560(1)
-	nox_client_drawSetColor_434460(int32(C.nox_color_black_2650656))
+	nox_client_drawSetColor_434460(int32(renderPalette.black))
 	for i, alpha := range [...]uint8{0x5a, 0x3c, 0x28} {
 		extra := C.int(i + 1)
 		nox_client_drawSetAlpha_434580(C.uchar(alpha))
@@ -194,7 +193,7 @@ func (m clientMinimapView) drawTrackedObjects(local *nox_drawable) {
 		drawAt := (*C.uint32_t)(unsafe.Pointer(&at[0]))
 		color := minimapMutedColor()
 		if item.flags28&0x400000 != 0 && item.flags29&8 != 0 {
-			color = int32(C.nox_color_blue_2650684)
+			color = int32(renderPalette.blue)
 		}
 		nox_client_drawSetColor_434460(color)
 		switch {
@@ -211,12 +210,12 @@ func (m clientMinimapView) drawTrackedObjects(local *nox_drawable) {
 			if member.Has() {
 				minimapSetTeamColor(int32(member.ID))
 			} else {
-				nox_client_drawSetColor_434460(int32(C.nox_color_white_2523948))
+				nox_client_drawSetColor_434460(int32(renderPalette.white))
 			}
 			nox_video_drawCircleRad3_4734F0((*C.int)(unsafe.Pointer(&at[0])))
 		case item.flags28&0x10000000 != 0:
 			if item.flags30&0x1000000 != 0 {
-				nox_client_drawSetColor_434460(int32(C.nox_color_white_2523948))
+				nox_client_drawSetColor_434460(int32(renderPalette.white))
 				minimapSetTeamColor(int32(sub_4B94E0(item)))
 				sub_4733B0(drawAt)
 			}
@@ -231,7 +230,7 @@ func (m clientMinimapView) drawTrackedObjects(local *nox_drawable) {
 		default:
 			player := nox_common_playerInfoGetByID_417040(int32(item.field_32))
 			if player != nil && player.field_4&1 != 0 {
-				nox_client_drawSetColor_434460(int32(C.nox_color_white_2523948))
+				nox_client_drawSetColor_434460(int32(renderPalette.white))
 				if member := teamObjectByNetCode418C80(uint32(item.field_32)); member != nil {
 					opposite := int32(1)
 					if member.ID == 1 {

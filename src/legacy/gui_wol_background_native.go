@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME1_2.h"
 
-extern uint32_t nox_color_white_2523948;
 */
 import "C"
 
@@ -30,7 +29,7 @@ func sub_438E30(win *C.nox_window, _ *C.nox_window_data) C.int {
 		if text == nil {
 			continue
 		}
-		nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 		nox_xxx_drawStringStyle_43F7B0(child.draw_data.font, text.text, x+int32(child.off_x), y+int32(child.off_y))
 	}
 	return 1

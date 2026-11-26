@@ -8,7 +8,6 @@ package legacy
 extern int nox_win_width, nox_win_height;
 extern nox_window* dword_5d4594_1320940;
 extern uint32_t dword_5d4594_1320944, dword_5d4594_1320948;
-extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 */
 import "C"
 
@@ -93,10 +92,10 @@ func drawTradeSlots(remote C.int, origin image.Point, fontHeight int32) {
 			var buffer [32]uint16
 			text := (*wchar2_t)(unsafe.Pointer(&buffer[0]))
 			WStrCopy(text, len(buffer), strconv.FormatInt(int64(int32(slot.count)), 10))
-			nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+			nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 			nox_xxx_drawString_43F6E0(nil, text, x+5, y+5)
 			WStrCopy(text, len(buffer), strconv.FormatInt(int64(int32(slot.total_cost)), 10))
-			nox_xxx_drawSetTextColor_434390(int32(C.nox_color_yellow_2589772))
+			nox_xxx_drawSetTextColor_434390(int32(renderPalette.yellow))
 			nox_xxx_drawString_43F6E0(nil, text, x+5, y+45-fontHeight)
 		}
 	}

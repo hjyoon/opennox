@@ -639,15 +639,6 @@ extern nox_window* dword_5d4594_1082856;
 extern void* dword_5d4594_1082864;
 extern void* dword_5d4594_1082868;
 
-extern uint32_t nox_color_white_2523948;
-extern uint32_t nox_color_red_2589776;
-extern uint32_t nox_color_blue_2650684;
-extern uint32_t nox_color_green_2614268;
-extern uint32_t nox_color_cyan_2649820;
-extern uint32_t nox_color_yellow_2589772;
-extern uint32_t nox_color_violet_2598268;
-extern uint32_t nox_color_black_2650656;
-extern uint32_t nox_color_orange_2614256;
 
 extern nox_window* dword_5d4594_1316972;
 
@@ -919,58 +910,58 @@ func Get_dword_5d4594_831220() int {
 	return int(C.dword_5d4594_831220)
 }
 func Get_nox_color_black_2650656() uint32 {
-	return uint32(C.nox_color_black_2650656)
+	return uint32(renderPalette.black)
 }
 func Get_nox_color_white_2523948() uint32 {
-	return uint32(C.nox_color_white_2523948)
+	return uint32(renderPalette.white)
 }
 func Get_nox_color_violet_2598268() uint32 {
-	return uint32(C.nox_color_violet_2598268)
+	return uint32(renderPalette.violet)
 }
 func Get_nox_color_red_2589776() uint32 {
-	return uint32(C.nox_color_red_2589776)
+	return uint32(renderPalette.red)
 }
 func Get_nox_color_green_2614268() uint32 {
-	return uint32(C.nox_color_green_2614268)
+	return uint32(renderPalette.green)
 }
 func Get_nox_color_cyan_2649820() uint32 {
-	return uint32(C.nox_color_cyan_2649820)
+	return uint32(renderPalette.cyan)
 }
 func Get_nox_color_blue_2650684() uint32 {
-	return uint32(C.nox_color_blue_2650684)
+	return uint32(renderPalette.blue)
 }
 func Get_nox_color_orange_2614256() uint32 {
-	return uint32(C.nox_color_orange_2614256)
+	return uint32(renderPalette.orange)
 }
 func Get_nox_color_yellow_2589772() uint32 {
-	return uint32(C.nox_color_yellow_2589772)
+	return uint32(renderPalette.yellow)
 }
 func Get_nox_color_black_2650656_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_black_2650656))
+	return (*uint32)(unsafe.Pointer(&renderPalette.black))
 }
 func Get_nox_color_white_2523948_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_white_2523948))
+	return (*uint32)(unsafe.Pointer(&renderPalette.white))
 }
 func Get_nox_color_violet_2598268_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_violet_2598268))
+	return (*uint32)(unsafe.Pointer(&renderPalette.violet))
 }
 func Get_nox_color_red_2589776_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_red_2589776))
+	return (*uint32)(unsafe.Pointer(&renderPalette.red))
 }
 func Get_nox_color_green_2614268_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_green_2614268))
+	return (*uint32)(unsafe.Pointer(&renderPalette.green))
 }
 func Get_nox_color_cyan_2649820_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_cyan_2649820))
+	return (*uint32)(unsafe.Pointer(&renderPalette.cyan))
 }
 func Get_nox_color_blue_2650684_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_blue_2650684))
+	return (*uint32)(unsafe.Pointer(&renderPalette.blue))
 }
 func Get_nox_color_orange_2614256_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_orange_2614256))
+	return (*uint32)(unsafe.Pointer(&renderPalette.orange))
 }
 func Get_nox_color_yellow_2589772_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.nox_color_yellow_2589772))
+	return (*uint32)(unsafe.Pointer(&renderPalette.yellow))
 }
 func Get_dword_5d4594_823776() int {
 	return int(C.dword_5d4594_823776)
@@ -1150,31 +1141,31 @@ func Set_nox_draw_curDrawData_3799572(v *noxrender.RenderData) {
 	C.nox_draw_curDrawData_3799572 = (*nox_render_data_t)(v.C())
 }
 func Set_nox_color_black_2650656(v uint32) {
-	C.nox_color_black_2650656 = C.uint(v)
+	renderPalette.black = C.uint32_t(v)
 }
 func Set_nox_color_white_2523948(v uint32) {
-	C.nox_color_white_2523948 = C.uint(v)
+	renderPalette.white = C.uint32_t(v)
 }
 func Set_nox_color_violet_2598268(v uint32) {
-	C.nox_color_violet_2598268 = C.uint(v)
+	renderPalette.violet = C.uint32_t(v)
 }
 func Set_nox_color_red_2589776(v uint32) {
-	C.nox_color_red_2589776 = C.uint(v)
+	renderPalette.red = C.uint32_t(v)
 }
 func Set_nox_color_green_2614268(v uint32) {
-	C.nox_color_green_2614268 = C.uint(v)
+	renderPalette.green = C.uint32_t(v)
 }
 func Set_nox_color_cyan_2649820(v uint32) {
-	C.nox_color_cyan_2649820 = C.uint(v)
+	renderPalette.cyan = C.uint32_t(v)
 }
 func Set_nox_color_blue_2650684(v uint32) {
-	C.nox_color_blue_2650684 = C.uint(v)
+	renderPalette.blue = C.uint32_t(v)
 }
 func Set_nox_color_orange_2614256(v uint32) {
-	C.nox_color_orange_2614256 = C.uint(v)
+	renderPalette.orange = C.uint32_t(v)
 }
 func Set_nox_color_yellow_2589772(v uint32) {
-	C.nox_color_yellow_2589772 = C.uint(v)
+	renderPalette.yellow = C.uint32_t(v)
 }
 func Set_dword_5d4594_1305748(v int) {
 	C.dword_5d4594_1305748 = C.uint32_t(v)

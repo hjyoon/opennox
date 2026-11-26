@@ -115,6 +115,9 @@ func Game2Head(team bool) unsafe.Pointer {
 func Game2RulesHead() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_459870())
 }
+func Game2ReferenceColor(index int) uint32 {
+	return uint32(C.game2_server_reference_color(C.int(index)))
+}
 func Game2Layout(field int) uintptr {
 	return uintptr(C.game2_server_fixture_layout(C.int(field)))
 }

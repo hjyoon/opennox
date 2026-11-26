@@ -1,4 +1,5 @@
 #include "game2_server_bridge.h"
+#include "render_palette_reference.h"
 extern void* game2_server_reference_alloc_go(size_t count, size_t size);
 extern void game2_server_reference_free_go(void* ptr);
 static nox_list_item_t* game2_server_reference_rules_head(void) {
@@ -168,3 +169,7 @@ uintptr_t game2_server_reference_call(uint32_t entry,void* p,int a,int b) {
 }
 
 int game2_server_reference_first_visible(void* p){return game2_server_old_nox_gui_server_list_first_visible(p);}
+
+uint32_t game2_server_reference_color(int index) {
+	return game2_server_old_nox_gui_server_players_color_value(index);
+}

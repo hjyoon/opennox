@@ -577,6 +577,22 @@ two initialized drawing callback pointers. The team file contains nine
 | Indirect damage and sound callback frames | `raw_default_damage_native_bridge_4e0b30.c` |
 | AddressSanitizer memory and string wrappers | `cgo_safe.c` |
 
+### Renderer color cells
+
+The original color initializer at `0x4A94A0` publishes the color
+pointers in the table beginning at `0x85B480`. OpenNox publishes
+native-width addresses to the same table entries. The nine cells
+from `common__system__team.c` now occupy 36 bytes allocated by Go
+in native memory. They remain live for the process, and each
+published pointer continues to refer to the cell updated through
+the renderer's existing setters.
+
+The retained C color lookup and the Go server list read each
+cell after a write through its published address and a forced
+garbage collection. Removing the team color storage file leaves
+28 top-level C files. The standard 64-bit and 32-bit profiles
+select 25 and 27 files, respectively.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -9,7 +9,6 @@ package legacy
 #include "client__video__draw_common.h"
 extern int nox_win_width;
 extern uint32_t dword_5d4594_1321520, dword_8531A0_2572;
-extern uint32_t nox_color_blue_2650684, nox_color_white_2523948;
 */
 import "C"
 
@@ -197,7 +196,7 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 	drawObjectPrevious.address, drawObjectPrevious.z = address, z
 	if dr.HasEnchant(server.ENCHANT_FREEZE) ||
 		(dr.Class()&0x2 != 0 && dr.Flags()&0x40000000 != 0 && dr.Flags()&0x8020 == 0) {
-		drawObjectSetTint(C.int(C.nox_color_blue_2650684))
+		drawObjectSetTint(C.int(renderPalette.blue))
 	} else {
 		sub_4345F0(1)
 		C.nox_draw_setColorMultAndIntensityRGB_433CD0(C.uint8_t(light[0]), C.uint8_t(light[4]), C.uint8_t(light[8]))
@@ -208,9 +207,9 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 		return
 	}
 	if !dr.Class().Has(object.ClassPlayer) && dr.HasEnchant(server.ENCHANT_INVULNERABLE) && !noxflags.HasGame(noxflags.GameModeCoop) {
-		tint := C.nox_color_blue_2650684
+		tint := renderPalette.blue
 		if gameFrame()&1 != 0 {
-			tint = C.nox_color_white_2523948
+			tint = renderPalette.white
 		}
 		drawObjectSetTint(C.int(tint))
 	}

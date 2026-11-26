@@ -5,7 +5,7 @@ package legacy
 #include "client__gui__guiinv.h"
 
 extern uintptr_t dword_5d4594_1062492;
-extern uint32_t dword_5d4594_1062496, dword_5d4594_1049844, nox_color_white_2523948;
+extern uint32_t dword_5d4594_1062496, dword_5d4594_1049844;
 extern nox_drawable* dword_5d4594_1063116;
 extern void* nox_inventory_font;
 */
@@ -52,7 +52,7 @@ func nox_xxx_inventoryDrawProc_466580(win *C.nox_window, draw *C.nox_window_data
 		image = draw.hl_image
 	}
 	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(image), int32(x), int32(y))
-	nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	if key := sub_42E8E0(35, 1); key != nil {
 		nox_xxx_drawString_43F6E0(C.nox_inventory_font, key, int32(x+19), int32(y+102))
 	}

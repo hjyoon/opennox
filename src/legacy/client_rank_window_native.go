@@ -12,7 +12,6 @@ extern nox_window* dword_5d4594_1090112;
 extern uint32_t dword_5d4594_1090040, dword_5d4594_1090044;
 #include "client_ui_words.h"
 extern uint32_t dword_8531A0_2572;
-extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 extern int nox_win_width;
 */
 import "C"
@@ -116,8 +115,8 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 		id     string
 		line   int32
 	}{
-		{1090100, height, C.nox_color_yellow_2589772, "yourrank", 1772},
-		{1090112, 2 * height, C.nox_color_white_2523948, "WindowDir:Empty", 1782},
+		{1090100, height, renderPalette.yellow, "yourrank", 1772},
+		{1090112, 2 * height, renderPalette.white, "WindowDir:Empty", 1782},
 		{1090108, 3 * height, C.uint32_t(memmap.Uint32(0x85B3FC, 940)), "WindowDir:Empty", 1790},
 		{1090104, 0, C.dword_8531A0_2572, "TeamPlayerRank", 1798},
 	}

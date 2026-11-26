@@ -7,7 +7,6 @@ package legacy
 typedef const wchar2_t rank_const_text_t;
 #include "client_ui_words.h"
 extern uint32_t dword_587000_145672, dword_5d4594_1090120;
-extern uint32_t nox_color_white_2523948, nox_color_yellow_2589772;
 */
 import "C"
 
@@ -184,9 +183,9 @@ func clientRankDrawQuestKeys(row int32, keys [2]byte) {
 			continue
 		}
 		markerX := int32(x) + 5
-		color := int32(C.nox_color_white_2523948)
+		color := int32(renderPalette.white)
 		if index == 1 {
-			color = int32(C.nox_color_yellow_2589772)
+			color = int32(renderPalette.yellow)
 			if keys[0] == 1 {
 				markerX += 15
 			}

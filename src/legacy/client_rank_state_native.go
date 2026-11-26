@@ -6,7 +6,6 @@ package legacy
 
 extern nox_window* dword_5d4594_1090048;
 extern uint32_t dword_5d4594_1090120, dword_587000_145672;
-extern uint32_t nox_color_yellow_2589772;
 */
 import "C"
 
@@ -34,7 +33,7 @@ func sub_46FAE0() {
 	x, y := meterWindowPosition(win)
 	h := int32(data.line_height)
 	markerY := int32(y) + int32(C.dword_587000_145672)*h + h/2
-	nox_client_drawSetColor_434460(int32(C.nox_color_yellow_2589772))
+	nox_client_drawSetColor_434460(int32(renderPalette.yellow))
 	nox_xxx_drawPointMB_499B70(int32(x)+1, markerY, 3)
 }
 

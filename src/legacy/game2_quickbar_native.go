@@ -160,15 +160,6 @@ extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern nox_window* dword_5d4594_1046492;
 extern int nox_win_width;
 extern int nox_win_height;
-extern uint32_t nox_color_white_2523948;
-extern uint32_t nox_color_black_2650656;
-extern uint32_t nox_color_violet_2598268;
-extern uint32_t nox_color_red_2589776;
-extern uint32_t nox_color_green_2614268;
-extern uint32_t nox_color_cyan_2649820;
-extern uint32_t nox_color_blue_2650684;
-extern uint32_t nox_color_orange_2614256;
-extern uint32_t nox_color_yellow_2589772;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 extern nox_window* nox_wnd_briefing_831232;
@@ -757,7 +748,7 @@ func sub_45F5D0(win *C.nox_window, unused1 *C.nox_window_data) C.int {
 	var x, y C.uint
 	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if text := C.sub_42E8E0(C.int(win.field_92+28), 1); text != nil {
-		C.nox_xxx_drawSetTextColor_434390(C.int(C.nox_color_white_2523948))
+		C.nox_xxx_drawSetTextColor_434390(C.int(renderPalette.white))
 		C.nox_xxx_drawString_43F6E0(C.nox_quickbar_font, (*C.wchar2_t)(unsafe.Pointer(text)), C.int(x), C.int(y))
 	}
 	return 1

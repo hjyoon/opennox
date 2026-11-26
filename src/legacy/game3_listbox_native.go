@@ -113,7 +113,7 @@ func nox_xxx_wndListBox_4A3A70(w *C.nox_window) C.int {
 func game3ListColor(i int32) uint32 {
 	switch i {
 	case 0:
-		return uint32(C.nox_color_black_2650656)
+		return uint32(renderPalette.black)
 	case 1:
 		return *memmap.PtrUint32(0x852978, 4)
 	case 2:
@@ -121,29 +121,29 @@ func game3ListColor(i int32) uint32 {
 	case 3:
 		return *memmap.PtrUint32(0x5D4594, 2597996)
 	case 4:
-		return uint32(C.nox_color_white_2523948)
+		return uint32(renderPalette.white)
 	case 5:
-		return uint32(C.nox_color_violet_2598268)
+		return uint32(renderPalette.violet)
 	case 6:
 		return *memmap.PtrUint32(0x85B3FC, 940)
 	case 7:
-		return uint32(C.nox_color_red_2589776)
+		return uint32(renderPalette.red)
 	case 8:
 		return *memmap.PtrUint32(0x85B3FC, 984)
 	case 9:
 		return uint32(C.dword_8531A0_2572)
 	case 10:
-		return uint32(C.nox_color_green_2614268)
+		return uint32(renderPalette.green)
 	case 11:
 		return *memmap.PtrUint32(0x85B3FC, 944)
 	case 12:
-		return uint32(C.nox_color_cyan_2649820)
+		return uint32(renderPalette.cyan)
 	case 13:
-		return uint32(C.nox_color_blue_2650684)
+		return uint32(renderPalette.blue)
 	case 14:
-		return uint32(C.nox_color_orange_2614256)
+		return uint32(renderPalette.orange)
 	case 15:
-		return uint32(C.nox_color_yellow_2589772)
+		return uint32(renderPalette.yellow)
 	case 16:
 		return *memmap.PtrUint32(0x852978, 0)
 	}

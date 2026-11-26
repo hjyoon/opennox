@@ -8,8 +8,6 @@ extern nox_window_yyy nox_windows_arr_1093036[7];
 extern nox_drawable nox_gui_bottle_drawables[3];
 extern void* dword_5d4594_1096288;
 extern uint64_t qword_581450_9512, qword_581450_9544;
-extern uint32_t nox_color_white_2523948, nox_color_black_2650656;
-extern uint32_t nox_color_violet_2598268, nox_color_yellow_2589772;
 extern uint32_t dword_5d4594_1096264;
 extern int nox_win_width, nox_win_height;
 */
@@ -53,7 +51,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 				meter.color_2 = C.uint32_t(memmap.Uint32(0x85B3FC, 940))
 				dial = true
 			} else if current < maximum*math.Float64frombits(uint64(C.qword_581450_9544)) {
-				meter.color_2 = C.nox_color_yellow_2589772
+				meter.color_2 = renderPalette.yellow
 				dial = true
 			}
 		}
@@ -149,7 +147,7 @@ func sub_471450(win *C.nox_window, _ *C.nox_window_data) C.int {
 	var buffer [16]uint16
 	meter := &C.nox_windows_arr_1093036[uintptr(win.widget_data)]
 	text := meterDecimalText(&buffer, int32(meter.field_1))
-	nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	var width C.int
 	nox_xxx_drawGetStringSize_43F840(C.dword_5d4594_1096288, text, &width, nil, 0)
 	x, y := meterWindowPosition(win)
@@ -170,7 +168,7 @@ func nox_xxx_guiBottleSlotDrawFn_471A80(win *C.nox_window, _ *C.nox_window_data)
 			ccall.CallIntPtr2(unsafe.Pointer(drawable.draw_func), viewport.C(), unsafe.Pointer(drawable))
 		}
 		var buffer [16]uint16
-		nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 		count := memmap.Uint16(0x5D4594, offset+4)
 		text := meterDecimalText(&buffer, int32(count))
 		height := nox_xxx_guiFontHeightMB_43F320(C.dword_5d4594_1096288)
@@ -214,11 +212,11 @@ func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C
 	if meter.field_2 != 0 {
 		fill = C.int(48 * meter.field_1 / meter.field_2)
 	}
-	nox_client_drawSetColor_434460(int32(C.nox_color_black_2650656))
+	nox_client_drawSetColor_434460(int32(renderPalette.black))
 	C.nox_client_drawRectFilledOpaque_49CE30(x, y, 2, 48)
 	nox_client_drawSetColor_434460(int32(meter.color_1))
 	C.nox_client_drawRectFilledOpaque_49CE30(x, y-fill+48, 2, fill)
-	border := int32(C.nox_color_violet_2598268)
+	border := int32(renderPalette.violet)
 	if index != 0 {
 		border = memmap.Int32(0x85B3FC, 944)
 	} else if C.dword_5d4594_1096264 != 0 {

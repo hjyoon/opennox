@@ -161,15 +161,6 @@ extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern nox_window* dword_5d4594_1046492;
 extern int nox_win_width;
 extern int nox_win_height;
-extern uint32_t nox_color_white_2523948;
-extern uint32_t nox_color_black_2650656;
-extern uint32_t nox_color_violet_2598268;
-extern uint32_t nox_color_red_2589776;
-extern uint32_t nox_color_green_2614268;
-extern uint32_t nox_color_cyan_2649820;
-extern uint32_t nox_color_blue_2650684;
-extern uint32_t nox_color_orange_2614256;
-extern uint32_t nox_color_yellow_2589772;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 extern nox_window* nox_wnd_briefing_831232;
@@ -278,7 +269,7 @@ func sub_44E560() *C.nox_window {
 	C.dword_5d4594_831236 = result
 	if result != nil {
 		C.nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
-		result.draw_data.bg_color = C.nox_color_black_2650656
+		result.draw_data.bg_color = renderPalette.black
 		C.nox_wnd_briefing_831232 = C.nox_new_window_from_file(internCStr("Briefing.wnd"), nil)
 		result = C.nox_wnd_briefing_831232
 		if result != nil {

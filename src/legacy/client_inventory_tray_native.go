@@ -7,7 +7,6 @@ package legacy
 extern uint32_t dword_587000_136184;
 extern uint32_t dword_5d4594_1049864, dword_5d4594_1062488;
 extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516, dword_5d4594_1062520, dword_5d4594_1062552;
-extern uint32_t nox_color_white_2523948, nox_color_blue_2650684, nox_color_yellow_2589772;
 extern uint64_t qword_581450_9544;
 extern nox_window *nox_inventory_scroll_window, *nox_inventory_journal_button, *nox_inventory_stats_button;
 extern nox_window* nox_inventory_current_weapon_window;
@@ -57,7 +56,7 @@ func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_dat
 				nox_client_makePlayerStatsDlg_463880((*C.int)(unsafe.Pointer(&origin[0])))
 				nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_IDENTIFY_BASE], int32(x), int32(y))
 			}
-			nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+			nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 			text := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1062588))
 			nox_xxx_drawStringWrap_43FAF0(nil, text, int32(x)+13, int32(y)+17, 196, 0)
 		}
@@ -156,7 +155,7 @@ func nox_xxx_guiDrawInventoryTray_4643B0(left, top C.int) C.int {
 	nox_client_drawImageAt_47D2C0(C.nox_inventory_images[C.NOX_INV_IMG_TRAY_SPECIAL], x, y)
 	var buffer [16]uint16
 	text := clientInventoryNumberText(&buffer, int32(C.dword_5d4594_1062552), "")
-	nox_xxx_drawSetTextColor_434390(int32(C.nox_color_yellow_2589772))
+	nox_xxx_drawSetTextColor_434390(int32(renderPalette.yellow))
 	var width C.int
 	nox_xxx_drawGetStringSize_43F840(C.nox_inventory_font, text, &width, nil, 0)
 	nox_xxx_drawString_43F6E0(C.nox_inventory_font, text, x-int32(width)+43, y+36)
@@ -194,7 +193,7 @@ func clientInventoryDrawTrayCell(cell *C.nox_inventory_cell_t, x, y int32, buffe
 	if durability < maximum*memmap.Float64(0x581450, 9608) {
 		color = memmap.Uint32(0x85B3FC, 940)
 	} else if durability < maximum*math.Float64frombits(uint64(C.qword_581450_9544)) {
-		color = uint32(C.nox_color_yellow_2589772)
+		color = uint32(renderPalette.yellow)
 	}
 	if color != 0x80000000 {
 		nox_client_drawSetColor_434460(int32(color))
@@ -226,12 +225,12 @@ func clientInventoryDrawTrayCell(cell *C.nox_inventory_cell_t, x, y int32, buffe
 	}
 	if cell.field_140 > 1 {
 		text := clientInventoryNumberText(buffer, int32(cell.field_140), "")
-		nox_xxx_drawSetTextColor_434390(int32(C.nox_color_white_2523948))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 		nox_xxx_drawString_43F6E0(C.nox_inventory_font, text, x+6, y+6)
 	}
 	if drawable.flags28&0x13001000 != 0 && item.Field_112_0 >= 0 {
 		text := clientInventoryNumberText(buffer, int32(item.Field_112_0), "")
-		nox_xxx_drawSetTextColor_434390(int32(C.nox_color_blue_2650684))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.blue))
 		var width C.int
 		nox_xxx_drawGetStringSize_43F840(C.nox_inventory_font, text, &width, nil, 0)
 		nox_xxx_drawString_43F6E0(C.nox_inventory_font, text, x-int32(width)+44, y+6)

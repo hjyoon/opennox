@@ -3,4 +3,5 @@
 #include "game2_server_bridge.h"
 uintptr_t game2_server_reference_call(uint32_t,void*,int,int);
 int game2_server_reference_first_visible(void*);
+uint32_t game2_server_reference_color(int index);
 #endif

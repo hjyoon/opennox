@@ -3,11 +3,13 @@ package opennox
 import (
 	"fmt"
 	"image"
+	"slices"
 
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/noximage"
 	"github.com/opennox/libs/spell"
+	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/things"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -62,13 +64,27 @@ func e2eItemIconPixelCount(actual, reference *noximage.Image16) (pixels, matchin
 	return
 }
 
+// Select a stock notice for a snapshot while the real packet is handled.
+func e2eUseNoticeVariant(key strman.ID, index int) (restore func(), err error) {
+	entry, ok := noxServer.Strings().Get(key)
+	if !ok || index < 0 || index >= len(entry.Vals) {
+		return nil, fmt.Errorf("notice %q variant %d unavailable", key, index)
+	}
+	saved := slices.Clone(entry.Vals)
+	for i := range entry.Vals {
+		entry.Vals[i] = saved[index]
+	}
+	return func() { copy(entry.Vals, saved) }, nil
+}
+
 // Award through the real server path and observe the client packet, natural
 // book animation, insertion, and stock 0x600 default. Other entries (including
 // manually changed targets) must remain byte-for-byte unchanged.
-func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name string) {
+func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, messageVariant *int, name string) {
 	var before [25][2]uint32
 	var index, row, maxTrail int
 	var flags things.SpellFlags
+	var restoreNotice func()
 	sc.addWhen(0, name+" prepare actual award", 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_8531A0_2576() != nil && legacy.Sub_45D9B0() == 0
 	}, func() {
@@ -104,8 +120,20 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 			e2eError(fmt.Errorf("no free slot for book award %d", id))
 			return
 		}
+		if messageVariant != nil {
+			var err error
+			restoreNotice, err = e2eUseNoticeVariant("plyrspel.c:AwardSpell", *messageVariant)
+			if err != nil {
+				e2eError(err)
+				return
+			}
+		}
 		unit := noxServer.Players.HostUnit()
 		if got := legacy.Nox_xxx_spellGrantToPlayer_4FB550(unit, id, 1, 1, 1); got != 1 {
+			if restoreNotice != nil {
+				restoreNotice()
+				restoreNotice = nil
+			}
 			e2eError(fmt.Errorf("server book award failed: spell=%d result=%d", id, got))
 			return
 		}
@@ -132,6 +160,14 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 		self := entries[index][1]&1 != 0
 		e2eLog.Printf("BOOK DEFAULT VERIFIED: spell=%d stock_flags=%x cast_on_self=%t max_natural_trail=%d preserved_other_entries=true", id, uint32(flags), self, maxTrail)
 	})
+	if messageVariant != nil {
+		sc.add(0, "", func() {
+			if restoreNotice != nil {
+				restoreNotice()
+				restoreNotice = nil
+			}
+		})
+	}
 	// Close the book through its normal input before testing the real toggle.
 	sc.Key(keybind.KeyB, name+" close book with B")
 	sc.Wait(30, name+" settle book close")

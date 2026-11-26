@@ -2,6 +2,17 @@
 # Award and waiting NPC placement are starting fixtures only. No cast/effect,
 # packet, cursor-object, mana or expiry result is supplied by the scenario.
 # Poison starts in a fresh session with stock mana; Fire is covered by Wizard.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "conjurer Protection from Poison actual self and other quickbar casts self=true actual quickbar effect": 27e634fecfabec78de328737e76ede9613877c4754807f55ebffc8cec7de20b9
+      "conjurer Protection from Poison actual self and other quickbar casts self=false actual quickbar effect": 6d230e0c4a4bb2a71af579103f20f74c5a57bf12469fde21ba35ef2c7b447c3e
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "conjurer Protection from Poison actual self and other quickbar casts self=true actual quickbar effect": ec8d2af920319e88ccec53febdda6c98a500e0570c23ff91cb1464883f97b92f
+      "conjurer Protection from Poison actual self and other quickbar casts self=false actual quickbar effect": e003b1825ddf7514e29ccab6e9893adb02df9dc00c27ad55867ccbff89f06fa3
 steps:
   - action: slow
     dur: 5ms
@@ -55,6 +66,8 @@ steps:
     name: settle after opening dialog
   - action: check-quickbar-buff-cast
     spell: 64
+    award-message-variant: 1
+    cast-message-variants: [0, 2]
     name: conjurer Protection from Poison actual self and other quickbar casts
   - action: quit
     dt: 1

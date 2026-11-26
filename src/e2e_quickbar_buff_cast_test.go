@@ -35,11 +35,11 @@ func TestE2EQuickbarBuffSpecsAndBoundedSchedule(t *testing.T) {
 						t.Errorf("unsupported spell %d scheduled gameplay", id)
 					}
 				}()
-				sc.CheckQuickbarBuffCast(id, "invalid")
+				sc.CheckQuickbarBuffCast(id, nil, nil, "invalid")
 			}()
 			continue
 		}
-		sc.CheckQuickbarBuffCast(id, "live cast")
+		sc.CheckQuickbarBuffCast(id, nil, nil, "live cast")
 		for suffix, timeout := range map[string]time.Duration{
 			"prepare ordinary waiting NPC fixtures":                 1200,
 			"self=true observe natural cursor selection":            120,

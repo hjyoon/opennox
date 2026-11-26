@@ -9422,6 +9422,9 @@ type e2eFileYML struct {
 }
 
 type e2eStepYML struct {
+	AwardMessageVariant *int  `yaml:"award-message-variant,omitempty"`
+	CastMessageVariants []int `yaml:"cast-message-variants,omitempty"`
+
 	Action   string        `yaml:"action"`
 	Time     uint64        `yaml:"dt,omitempty"`
 	Dur      time.Duration `yaml:"dur,omitempty"`
@@ -9506,7 +9509,7 @@ func (sc *e2eScenario) Load(path string) {
 			sc.CheckTrapQuickbarIcons(l.Name)
 		case "check-book-reward-default":
 			sc.Wait(dt, "")
-			sc.CheckBookRewardDefault(spell.ID(l.Spell), l.Active, l.Name)
+			sc.CheckBookRewardDefault(spell.ID(l.Spell), l.Active, l.AwardMessageVariant, l.Name)
 		case "check-award-frame-pacing":
 			sc.Wait(dt, "")
 			sc.CheckAwardFramePacing(l.Name)
@@ -9515,7 +9518,7 @@ func (sc *e2eScenario) Load(path string) {
 			sc.CheckAIScriptSlotReuse(l.Text, l.Name)
 		case "check-quickbar-buff-cast":
 			sc.Wait(dt, "")
-			sc.CheckQuickbarBuffCast(spell.ID(l.Spell), l.Name)
+			sc.CheckQuickbarBuffCast(spell.ID(l.Spell), l.AwardMessageVariant, l.CastMessageVariants, l.Name)
 		case "check-npc-dialog-repeat":
 			sc.Wait(dt, "")
 			sc.CheckNPCDialogRepeat(l.Count, l.Name)

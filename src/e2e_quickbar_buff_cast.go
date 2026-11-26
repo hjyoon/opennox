@@ -228,21 +228,25 @@ func (f *e2eQuickbarBuffCast) check() {
 // Cursor selection, gesture queue, phoneme tree, mana debit, target selection,
 // server/client buffs and expiry are read-only observations. No direct cast,
 // mana refill, injected spell packet, target pointer or timer is supplied.
-func (sc *e2eScenario) CheckQuickbarBuffCast(id spell.ID, name string) {
+func (sc *e2eScenario) CheckQuickbarBuffCast(id spell.ID, awardVariant *int, castVariants []int, name string) {
 	buff, key, ok := e2eQuickbarBuffSpec(id)
 	if !ok {
 		panic(fmt.Sprintf("unsupported quickbar buff spell %d", id))
 	}
+	if len(castVariants) != 0 && len(castVariants) != 2 {
+		panic("cast-message-variants requires one index for each of the self and other casts")
+	}
 	f := &e2eQuickbarBuffCast{id: id, buff: buff}
-	sc.CheckBookRewardDefault(id, false, name+" natural default")
+	sc.CheckBookRewardDefault(id, false, awardVariant, name+" natural default")
 	sc.addWhen(0, name+" prepare ordinary waiting NPC fixtures", 1200, func() bool {
 		host := noxServer.Players.HostUnit()
 		return host != nil && host.Buffs == 0 && host.UpdateData != nil &&
 			host.UpdateDataPlayer().ManaCur >= uint16(2*noxServer.Spells.ManaCost(id, 1))
 	}, func() { f.prepare(key) })
 	sc.Wait(5, name+" publish fixture positions")
-	for _, self := range []bool{true, false} {
+	for i, self := range []bool{true, false} {
 		label := fmt.Sprintf("%s self=%t", name, self)
+		var restoreNotice func()
 		if !self {
 			sc.add(0, label+" press real target nugget", func() {
 				win := legacy.ClientQuickbarNugget(f.slot)
@@ -259,6 +263,13 @@ func (sc *e2eScenario) CheckQuickbarBuffCast(id spell.ID, name string) {
 			return f.host.UpdateDataPlayer().CursorObj == f.npc
 		}, func() { f.begin(self) })
 		sc.add(1, label+" release real spell shortcut", func() {
+			if len(castVariants) != 0 {
+				var err error
+				restoreNotice, err = e2eUseNoticeVariant("plyrspel.c:SpellCastSuccess", castVariants[i])
+				if err != nil {
+					e2eError(err)
+				}
+			}
 			keys := [...]keybind.Key{keybind.KeyA, keybind.KeyS, keybind.KeyD, keybind.KeyF, keybind.KeyG}
 			e2eQueueInput(&seat.KeyboardEvent{Key: keys[f.slot], Pressed: false})
 		})
@@ -272,6 +283,13 @@ func (sc *e2eScenario) CheckQuickbarBuffCast(id spell.ID, name string) {
 			return f.applied != 0 && magicEntityHead == nil && client != nil && client.HasEnchant(f.buff) && hudOK && hud.Current == uint32(f.host.UpdateDataPlayer().ManaCur)
 		}, f.check)
 		sc.Screen(label + " actual quickbar effect")
+		if len(castVariants) != 0 {
+			sc.add(0, "", func() {
+				if restoreNotice != nil {
+					restoreNotice()
+				}
+			})
+		}
 	}
 	sc.addWhen(0, name+" observe natural buff expiry", 6200, func() bool {
 		for _, unit := range []*server.Object{f.host, f.npc, f.control} {

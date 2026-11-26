@@ -79,9 +79,13 @@ func TestHeadlessRuntimeMapsCanBeDownloaded(t *testing.T) {
 						t.Fatal(err)
 					}
 				}
-				cmd := exec.Command("bash", "-s", "--", source)
+				scenario := filepath.Join(task, "scenario.yaml")
+				if err := os.WriteFile(scenario, []byte("steps: []\n"), 0644); err != nil {
+					t.Fatal(err)
+				}
+				cmd := exec.Command("bash", "-s", "--", source, scenario)
 				cmd.Env = append(os.Environ(), "TMPDIR="+task)
-				cmd.Stdin = strings.NewReader("#!/usr/bin/env bash\nset -euo pipefail\ndata_dir=\"$1\"\n" + preparation + "\n")
+				cmd.Stdin = strings.NewReader("#!/usr/bin/env bash\nset -euo pipefail\ndata_dir=\"$1\"\nscenario=\"$2\"\nmap_profile=all\n" + preparation + "\n")
 				out, err := cmd.CombinedOutput()
 				if err != nil {
 					t.Fatalf("actual runner preparation: %v\n%s", err, out)

@@ -609,6 +609,26 @@ clears both ends of the borrowed range when releasing the buffer.
 This migration removes four storage definitions from `vardefs.c`,
 leaving 672.
 
+### Spellbook notice variants in the wizard scenario
+
+The original CSF entry provides three phrasings for the award
+notice. A rerun reached the same quickbar state and differed from
+the final reference in the Force Field and Shock notices. The
+wizard scenario now selects the stock notice variants visible in
+the reference frame while granting those spells through the normal
+network path. It restores the entries after each award and checks
+the exact reference frame using the pixel digest for the English
+or Korean CSF profile.
+
+The conjurer quickbar scenario selects its award and cast notices
+before entering the real input and spell paths. It checks the
+self-target and other-target frames under both CSF profiles and
+observes natural buff expiry.
+
+The map download test supplies a scenario path and the default
+map profile when it invokes the runner's preparation block.
+The six subcases exercise the copied maps and generated ZIPs.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

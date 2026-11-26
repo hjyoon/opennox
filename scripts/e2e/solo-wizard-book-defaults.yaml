@@ -8,12 +8,14 @@ screen-references:
       "wizard chapter one click plus 20 ticks": 99a1ec9db8596d2317b529bbc0da3c813ea67fd70a5bdbd893017283fc4e829e
       "wizard chapter one click plus 120 ticks": 850d5fc32c145705f99a66628de176e20286c81fa0200ad63523e598d5750cf3
       "wizard gameplay after chapter one click": 262564cf447523e655bf9a8b73a247ecc187457008c3a7e9ead86b8bdfd1aafb
+      "wizard natural book defaults and manual preferences": 5402dc6b55416d0d688f5490c71cbd94ee3468686fc59373a9bbb8b6f831649d
   - text-id: Briefing:WarriorChapterBegin1
     text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
     frames:
       "wizard chapter one click plus 20 ticks": 6c2298c8c73269514ea90e4326653b51856a6a658c810bfc1cf75adc5562227a
       "wizard chapter one click plus 120 ticks": 74dc055ba931ff787a4a2002a12425cd8ef2dd9ade249bdfab954c8debc2f34c
       "wizard gameplay after chapter one click": 0b6f4a3e982612b7caa72c95e8ebf57c8b905bc40db9a19e4a2ed535a6026829
+      "wizard natural book defaults and manual preferences": a70a40cbfe9ccbbff146f242df05e98cd634469bf80e77afa0036fde86725147
 
 steps:
   - action: slow
@@ -91,14 +93,17 @@ steps:
   - action: check-book-reward-default
     spell: 51
     active: false
+    award-message-variant: 0
     name: wizard Shield book default
   - action: check-book-reward-default
     spell: 71
     active: false
+    award-message-variant: 2
     name: wizard Shock book default
   - action: check-book-reward-default
     spell: 27
     active: false
+    award-message-variant: 0
     name: wizard Fireball book default
   - action: screen
     name: wizard natural book defaults and manual preferences

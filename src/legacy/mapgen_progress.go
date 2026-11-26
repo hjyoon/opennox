@@ -1,20 +1,10 @@
 package legacy
 
-/*
-#include "GAME4_2.h"
-#include "client__gui__guigen.h"
-
-
-// The packed compass table stores 32-bit image keys. The bag resolves them
-// against its live image handles without dereferencing the key itself.
-static inline nox_video_bag_image_t* nox_mapgenCompassImageKey(uint32_t value) {
-	return (nox_video_bag_image_t*)(uintptr_t)value;
-}
-*/
 import "C"
 
 import (
 	"encoding/binary"
+	"image"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/flags"
@@ -78,11 +68,13 @@ func nox_xxx_mapGenClientText_4A9D00(raw *C.uchar) C.short {
 	nox_client_clearScreen_440900()
 	x := int32(clientDisplayStorage.width)/2 - 160
 	y := int32(clientDisplayStorage.height)/2 - 120
+	at := image.Pt(int(x), int(y))
+	render := GetClient().R2()
 	frame := memmap.PtrUint32(0x5D4594, 1309672)
 	background := memmap.Uint32(0x5D4594, 1309644+4*uintptr(*frame%4))
-	nox_client_drawImageAt_47D2C0(C.nox_mapgenCompassImageKey(C.uint32_t(background)), x, y)
+	render.DrawImageAt(render.GetBag().ImageByLegacyKey(background), at)
 	arrow := memmap.Uint32(0x5D4594, uintptr(1309516+4*(*frame)))
-	nox_client_drawImageAt_47D2C0(C.nox_mapgenCompassImageKey(C.uint32_t(arrow)), x, y)
+	render.DrawImageAt(render.GetBag().ImageByLegacyKey(arrow), at)
 
 	label := memmap.PtrPtr(0x5D4594, 1309660)
 	if index := int(packet[0]) - 0x9B; index >= 0 && index < len(mapgenProgressLabels) {

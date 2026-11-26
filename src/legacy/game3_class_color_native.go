@@ -430,12 +430,12 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 func nox_xxx_compassGenStrings_4A9C80() C.int {
 	*memmap.PtrUint32(0x5D4594, 1309664) = 0
 	for i := 1; i <= 4; i++ {
-		h := C.nox_xxx_gLoadImg_42F970(internCStr("Compass" + strconv.Itoa(i)))
-		*memmap.PtrUint32(0x5D4594, 1309644+uintptr(4*(i-1))) = uint32(uintptr(unsafe.Pointer(h)))
+		h := Nox_xxx_gLoadImg("Compass" + strconv.Itoa(i)).C()
+		*memmap.PtrUint32(0x5D4594, 1309644+uintptr(4*(i-1))) = uint32(uintptr(h))
 	}
 	for i := 1; i <= 32; i++ {
-		h := C.nox_xxx_gLoadImg_42F970(internCStr("CompassMainArrow" + strconv.Itoa(i)))
-		*memmap.PtrUint32(0x5D4594, 1309516+uintptr(4*(i-1))) = uint32(uintptr(unsafe.Pointer(h)))
+		h := Nox_xxx_gLoadImg("CompassMainArrow" + strconv.Itoa(i)).C()
+		*memmap.PtrUint32(0x5D4594, 1309516+uintptr(4*(i-1))) = uint32(uintptr(h))
 	}
 	return 1
 }

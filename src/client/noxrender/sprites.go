@@ -56,7 +56,7 @@ func (img *Image) C() ImageHandle {
 	}
 	if img.h == nil {
 		img.h = ImageHandle(handles.NewPtr())
-		img.c.byHandle[img.h] = img
+		img.c.byHandle[uintptr(img.h)] = img
 		img.c.registerLegacyHandle(img.h)
 	}
 	return img.h
@@ -210,7 +210,7 @@ func (b *RenderSprites) ReadVideoBag() error {
 type RenderSprites struct {
 	log            *slog.Logger
 	bag            *bag.File
-	byHandle       map[ImageHandle]*Image
+	byHandle       map[uintptr]*Image
 	byLegacyHandle map[uint32]ImageHandle
 	byIndex        []*Image
 
@@ -223,7 +223,7 @@ type RenderSprites struct {
 
 func (b *RenderSprites) init(log *slog.Logger) {
 	b.log = log
-	b.byHandle = make(map[ImageHandle]*Image)
+	b.byHandle = make(map[uintptr]*Image)
 	b.byLegacyHandle = make(map[uint32]ImageHandle)
 }
 
@@ -234,7 +234,7 @@ func (b *RenderSprites) Free() {
 		img.Free()
 	}
 	b.byIndex = nil
-	b.byHandle = make(map[ImageHandle]*Image)
+	b.byHandle = make(map[uintptr]*Image)
 	b.byLegacyHandle = make(map[uint32]ImageHandle)
 }
 
@@ -243,16 +243,24 @@ func NewRawImage(typ int, data []byte) *Image {
 }
 
 func (b *RenderSprites) AsImage(p ImageHandle) *Image {
-	if p == nil {
+	return b.imageByHandleKey(uintptr(p))
+}
+
+// ImageByLegacyKey resolves the packed 32-bit handle stored by the PE32 renderer.
+func (b *RenderSprites) ImageByLegacyKey(key uint32) *Image {
+	return b.imageByHandleKey(uintptr(key))
+}
+
+func (b *RenderSprites) imageByHandleKey(key uintptr) *Image {
+	if key == 0 {
 		return nil
 	}
-	img := b.byHandle[p]
+	img := b.byHandle[key]
 	if img == nil {
-		img = b.imageByLegacyHandle(uintptr(p))
+		img = b.imageByLegacyHandle(key)
 	}
 	if img == nil {
-		err := fmt.Errorf("unexpected image handle: %x", p)
-		imgLog.Printf("%v", err)
+		imgLog.Printf("unexpected image handle: %x", key)
 	}
 	return img
 }
@@ -288,7 +296,7 @@ func (b *RenderSprites) imageByLegacyHandle(addr uintptr) *Image {
 	if h == nil {
 		return nil
 	}
-	return b.byHandle[h]
+	return b.byHandle[uintptr(h)]
 }
 
 func (b *RenderSprites) ImageByIndex(ind int) *Image {

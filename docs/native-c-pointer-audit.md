@@ -1022,6 +1022,16 @@ native width, wall radius inputs retain their float32 bits, and the live
 sudden-death values retain their float64 representation. The C declarations
 and compile-time layout checks continue to validate the exported ABI.
 
+### Map generation compass image keys
+
+The progress display resolves its packed 32-bit image keys in the Go
+sprite registry. The registry retains its live image owners and looks
+up exact native handle values before checking low-word aliases.
+The 36 compass slots retain their 32-bit layout. The 32 paired compass
+frames and the local and network progress paths passed the headless
+raster checks on macOS ARM64 with strict Cgo checking. The integer
+key tests passed on Linux 386.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

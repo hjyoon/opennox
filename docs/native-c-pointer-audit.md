@@ -135,6 +135,17 @@ weapon result. The Go dispatch retains that order and the signed
 public C entries and native layouts. Removing these four C files
 leaves 42 top-level legacy C files.
 
+### Transient ray callbacks
+
+The four ray registry entries now export their C signatures from Go.
+The registry keeps native drawable pointers and clears the occupied
+slots at frame end. The Nox entry at `0x49BDD0` limits the registry
+to 96 drawables. The C test fills all 96 slots with native pointers,
+checks invalid inputs and full-width lookup, and verifies clearing.
+The selected end-to-end cases completed chain lightning, plasma, and
+the charm effect. Removing the forwarding file leaves 41 top-level
+legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -9,6 +9,38 @@ package cfixture
 #include "client__draw__drawrays.h"
 #include "client__draw__fx.h"
 
+_Static_assert(_Generic(&nox_client_transient_ray_contains,
+	int (*)(const nox_drawable*): 1, default: 0), "const drawable input");
+_Static_assert(_Generic(&nox_client_transient_ray_at,
+	nox_drawable* (*)(size_t): 1, default: 0), "native drawable result");
+
+static int nox_client_transient_ray_registry_c_abi(nox_drawable* pool) {
+	nox_client_transient_ray_clear();
+	if (nox_client_transient_ray_add(NULL)) {
+		return 0;
+	}
+	for (size_t i = 0; i < NOX_CLIENT_TRANSIENT_RAY_CAPACITY; i++) {
+		if (!nox_client_transient_ray_add(&pool[i])) {
+			return 0;
+		}
+	}
+	if (nox_client_transient_ray_count() != NOX_CLIENT_TRANSIENT_RAY_CAPACITY ||
+		nox_client_transient_ray_add(&pool[NOX_CLIENT_TRANSIENT_RAY_CAPACITY]) ||
+		nox_client_transient_ray_at(NOX_CLIENT_TRANSIENT_RAY_CAPACITY) != NULL ||
+		nox_client_transient_ray_at(SIZE_MAX) != NULL) {
+		return 0;
+	}
+	for (size_t i = 0; i < NOX_CLIENT_TRANSIENT_RAY_CAPACITY; i++) {
+		const nox_drawable* expected = &pool[i];
+		if (nox_client_transient_ray_at(i) != expected || !nox_client_transient_ray_contains(expected)) {
+			return 0;
+		}
+	}
+	nox_client_transient_ray_clear();
+	return nox_client_transient_ray_count() == 0 &&
+		nox_client_transient_ray_at(0) == NULL && !nox_client_transient_ray_contains(pool);
+}
+
 static int nox_client_transient_ray_payload_uses_native_union(void) {
 	nox_drawable dr;
 	const unsigned char endpoints[8] = {0x34, 0x12, 0x78, 0x56, 0xbc, 0x9a, 0xf0, 0xde};
@@ -133,6 +165,10 @@ static uintptr_t nox_client_wall_image_addr_roundtrip(uintptr_t addr) {
 import "C"
 
 import "unsafe"
+
+func ClientTransientRayRegistry49BDD0(pool unsafe.Pointer) bool {
+	return C.nox_client_transient_ray_registry_c_abi((*C.nox_drawable)(pool)) != 0
+}
 
 func ClientTransientRayPayloadUsesNativeUnion49BDD0() bool {
 	return C.nox_client_transient_ray_payload_uses_native_union() != 0

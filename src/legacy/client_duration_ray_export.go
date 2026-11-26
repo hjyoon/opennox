@@ -41,8 +41,8 @@ func nox_xxx_spriteDeleteSomeList_49C4B0() {
 func Nox_xxx_spriteDeleteSomeList_49C4B0() {
 	count := clientTransientRayCount49BDD0()
 	for i := range count {
-		if addr := clientTransientRayAddress49BDD0(i); addr != 0 {
-			GetClient().Nox_xxx_spriteDeleteStatic_45A4E0_drawable(AsDrawableP(unsafe.Pointer(addr)))
+		if dr := nox_client_transient_ray_at(C.size_t(i)); dr != nil {
+			GetClient().Nox_xxx_spriteDeleteStatic_45A4E0_drawable(asDrawable(dr))
 		}
 	}
 	clientTransientRayClear49BDD0()
@@ -60,7 +60,7 @@ func nox_xxx_sprite_49C4F0() {
 }
 
 func ClientTransientRayContains(dr *client.Drawable) bool {
-	return dr != nil && clientTransientRayContainsAddress49BDD0(uintptr(dr.C()))
+	return dr != nil && nox_client_transient_ray_contains((*nox_drawable)(dr.C())) != 0
 }
 
 //export sub_49C520

@@ -3,6 +3,8 @@ package legacy
 /*
 #include "client__draw__drawrays.h"
 #include "client__draw__fx.h"
+#include "cgo_const.h"
+typedef const nox_drawable nox_transient_const_drawable;
 extern uint32_t dword_5d4594_1304328;
 */
 import "C"
@@ -16,15 +18,16 @@ import (
 )
 
 var transientRays struct {
-	addresses [C.NOX_CLIENT_TRANSIENT_RAY_CAPACITY]uintptr
+	drawables [C.NOX_CLIENT_TRANSIENT_RAY_CAPACITY]*nox_drawable
 	count     int
 }
 
-func clientTransientRayAddAddress49BDD0(addr uintptr) bool {
-	if addr == 0 || transientRays.count >= len(transientRays.addresses) {
+//export nox_client_transient_ray_add
+func nox_client_transient_ray_add(dr *nox_drawable) C.bool {
+	if dr == nil || transientRays.count >= len(transientRays.drawables) {
 		return false
 	}
-	transientRays.addresses[transientRays.count] = addr
+	transientRays.drawables[transientRays.count] = dr
 	transientRays.count++
 	*g2ServerWord(1304308) = uint32(transientRays.count)
 	return true
@@ -34,19 +37,21 @@ func clientTransientRayCount49BDD0() int {
 	return transientRays.count
 }
 
-func clientTransientRayAddress49BDD0(index int) uintptr {
-	if index < 0 || index >= transientRays.count {
-		return 0
+//export nox_client_transient_ray_at
+func nox_client_transient_ray_at(index C.size_t) *nox_drawable {
+	if index >= C.size_t(transientRays.count) {
+		return nil
 	}
-	return transientRays.addresses[index]
+	return transientRays.drawables[index]
 }
 
-func clientTransientRayContainsAddress49BDD0(addr uintptr) bool {
-	return slices.Contains(transientRays.addresses[:transientRays.count], addr)
+//export nox_client_transient_ray_contains
+func nox_client_transient_ray_contains(dr *C.nox_transient_const_drawable) C.int {
+	return C.int(bool2int(slices.Contains(transientRays.drawables[:transientRays.count], dr)))
 }
 
 func clientTransientRayClear49BDD0() {
-	clear(transientRays.addresses[:transientRays.count])
+	clear(transientRays.drawables[:transientRays.count])
 	transientRays.count = 0
 	*g2ServerWord(1304308) = 0
 }
@@ -61,29 +66,14 @@ func nox_client_transient_ray_clear() {
 	clientTransientRayClear49BDD0()
 }
 
-//export noxClientTransientRayAdd
-func noxClientTransientRayAdd(addr C.uintptr_t) C.bool {
-	return C.bool(clientTransientRayAddAddress49BDD0(uintptr(addr)))
-}
-
-//export noxClientTransientRayAddress
-func noxClientTransientRayAddress(index C.size_t) C.uintptr_t {
-	return C.uintptr_t(clientTransientRayAddress49BDD0(int(index)))
-}
-
-//export noxClientTransientRayContains
-func noxClientTransientRayContains(addr C.uintptr_t) C.int {
-	return C.int(bool2int(clientTransientRayContainsAddress49BDD0(uintptr(addr))))
-}
-
 func setTransientRayPayload(dr *nox_drawable, endpoints *[8]byte) {
 	ray := drawableRayPayload(asDrawable(dr))
 	ray[0] = 0
 	copy(ray[5:], endpoints[:])
 }
 
-//export noxClientTransientRaySetPayload
-func noxClientTransientRaySetPayload(dr *nox_drawable, endpoints *C.uchar) {
+//export nox_client_transient_ray_set_payload
+func nox_client_transient_ray_set_payload(dr *nox_drawable, endpoints *C.nox_cgo_const_uchar) {
 	setTransientRayPayload(dr, (*[8]byte)(unsafe.Pointer(endpoints)))
 }
 
@@ -138,7 +128,7 @@ func nox_xxx_netDrawRays_49BDD0(data *C.uchar) *nox_drawable {
 }
 
 func drawTransientRay49BDD0(packet *[9]byte) *nox_drawable {
-	if transientRays.count >= len(transientRays.addresses) {
+	if transientRays.count >= len(transientRays.drawables) {
 		return nil
 	}
 	initTransientRayTypes()
@@ -179,7 +169,7 @@ func drawTransientRay49BDD0(packet *[9]byte) *nox_drawable {
 		return nil
 	}
 	setTransientRayPayload(dr, (*[8]byte)(packet[1:]))
-	if !clientTransientRayAddAddress49BDD0(uintptr(unsafe.Pointer(dr))) {
+	if !nox_client_transient_ray_add(dr) {
 		nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
 		return nil
 	}

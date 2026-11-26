@@ -2,6 +2,7 @@
 # then resume combat after natural enchant expiry and ordinary player movement
 # back into sight. No attack input, FLEE/action/path/timer or damage is injected.
 # Stock non-Coop IMMUNE_FEAR NPCs must reject the spell and keep fighting.
+map-profile: arena-fortress
 steps:
   - action: slow
     dur: 5ms

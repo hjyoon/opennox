@@ -28,7 +28,7 @@ fi
 scenario_map_profile="$(awk '/^map-profile:[[:space:]]*/ { sub(/^[^:]*:[[:space:]]*/, ""); sub(/[[:space:]]*(#.*)?$/, ""); print; exit }' "$scenario")"
 map_profile="${NOX_E2E_MAP_PROFILE:-${scenario_map_profile:-all}}"
 case "$map_profile" in
-all|arena-lod|arena-stock|campaign1to3|quest-stock) ;;
+all|arena-fortress|arena-lod|arena-stock|campaign1to3|quest-stock) ;;
 *) echo "error: unknown E2E map profile: $map_profile" >&2; exit 2 ;;
 esac
 seat_backend="${NOX_E2E_SEAT:-headless}"
@@ -123,6 +123,12 @@ mkdir "$runtime_data_dir/maps"
 while IFS= read -r -d '' source_map_path; do
 	map_name="$(basename "$source_map_path")"
 	case "$map_profile" in
+	arena-fortress)
+		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
+		fortress|so_beach|so_lod) ;;
+		*) continue ;;
+		esac
+		;;
 	arena-lod)
 		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
 		so_beach|so_lod) ;;

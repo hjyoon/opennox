@@ -1,4 +1,4 @@
-FROM golang:1.26.5-trixie@sha256:98988b42f3293b627bf07c884ff17181a59501769cd8c06c7ba901e0ce2c9853
+FROM golang:1.27.3-trixie@sha256:af1bfc2614ebb1dbd31af514b78740fd678850e76498762b425ecee4c5c6ea80
 
 # GCC 14.2 ICEs in peephole2 on large legacy C translation units.
 ENV GOTOOLCHAIN=local \
@@ -10,22 +10,24 @@ ARG GID=1000
 ARG GIT_SHA=""
 ARG GIT_TAG=""
 
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -y \
-                        gcc gcc-multilib \
-                        libsdl2-dev libsdl2-dev:i386 libopenal-dev libopenal-dev:i386
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc pkg-config libsdl2-dev libopenal-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid $GID runner && \
     useradd --home-dir /home/runner --no-create-home --gid runner --uid $UID --shell /bin/sh runner
 
 WORKDIR /home/runner/opennox
 
-ADD ./go.* ./
+COPY go.mod go.sum ./
+COPY third_party/go-openal/go.mod ./third_party/go-openal/
+COPY third_party/opennox-libs/go.mod third_party/opennox-libs/go.sum ./third_party/opennox-libs/
 
-RUN test "$(go env GOVERSION)" = "go1.26.5"
-RUN go mod download
+# The Docker context is src, so recreate the module selection from the root workspace.
+RUN test "$(go env GOVERSION)" = "$(awk '$1 == "toolchain" { print $2 }' go.mod)" && \
+    go work init . ./third_party/opennox-libs && \
+    go mod download
 
-ADD . .
+COPY . .
 
 RUN go run ./internal/noxbuild client client-hd && ./opennox -h && ./opennox-hd -h

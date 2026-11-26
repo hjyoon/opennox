@@ -1,5 +1,6 @@
 # Five public raw Skull C entries with real stock-map services and prepared stock source objects.
 # Explicit diagnostic; no natural trap activation or earned campaign credit.
+map-profile: arena-lod
 steps:
   - action: slow
     dur: 1ms

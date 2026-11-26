@@ -1,6 +1,7 @@
 # Natural stock Troll death, actual SmallToxicCloud owner/lifetime, dose-one
 # poison and periodic HP loss on player/Wolf/NPC, plus stock immune Troll.
 # Console command is available only under NOX_E2E; input remains F1/text/Enter.
+map-profile: arena-fortress
 steps:
   - action: slow
     dur: 1ms

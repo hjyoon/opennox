@@ -1,14 +1,24 @@
-screen-reference:
-  # Pixel digests for the asset edition with the English chapter briefing.
-  text-id: Briefing:WarriorChapterBegin1
-  text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
-  frames:
-    chapter one before click: bbe781aa8aa1a4fcad064fb4c30d4996f24c8185b9a397fe02dc77215e545d93
-    chapter one click plus 20 ticks: 73b57df582226d57afd347ebfb21515115aa11e11c399c48274fe4dcf564e67f
-    chapter one click plus 120 ticks: f7b47989fc334c53af2c2adf351252cfe94a1bffa6bcc8d7a048508fd78ec5b4
-    gameplay after chapter one click: 58f5b81ef6bc7dfe809d216595a8500e312dd0f563e4681b84bcc97d69c70e6b
-    warrior opening dialog dismissed: b85c45bbb3b301c91c7590911048acd760f952c435950c554af242922bf632b9
-    gameplay after warrior movement: a59b7eef6decae3eb5062ac2c1af56158f17cebe04ced943b56d3a540598c7bf
+screen-references:
+  # Asset edition with the English chapter briefing.
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      chapter one before click: bbe781aa8aa1a4fcad064fb4c30d4996f24c8185b9a397fe02dc77215e545d93
+      chapter one click plus 20 ticks: 73b57df582226d57afd347ebfb21515115aa11e11c399c48274fe4dcf564e67f
+      chapter one click plus 120 ticks: f7b47989fc334c53af2c2adf351252cfe94a1bffa6bcc8d7a048508fd78ec5b4
+      gameplay after chapter one click: 58f5b81ef6bc7dfe809d216595a8500e312dd0f563e4681b84bcc97d69c70e6b
+      warrior opening dialog dismissed: b85c45bbb3b301c91c7590911048acd760f952c435950c554af242922bf632b9
+      gameplay after warrior movement: a59b7eef6decae3eb5062ac2c1af56158f17cebe04ced943b56d3a540598c7bf
+  # Stock Korean strings, using the same original War01A map.
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      chapter one before click: 54bb93f674e8b7809d14696c738cb566c08dfb85aae582c47a1a0d50776c5fd0
+      chapter one click plus 20 ticks: 73b57df582226d57afd347ebfb21515115aa11e11c399c48274fe4dcf564e67f
+      chapter one click plus 120 ticks: dc61d87d73e37b832a22145e2f33247e099e12f57a69047a6e4d81608f61a7c9
+      gameplay after chapter one click: 7a97f5b0efadd31372a61d5afed5a088a79a6a92434fc19452221d2467b68150
+      warrior opening dialog dismissed: 36ba0833748f1d7e45023945c0d60137eac962ccfa7bbe9b2b5d339c31853a8c
+      gameplay after warrior movement: a59b7eef6decae3eb5062ac2c1af56158f17cebe04ced943b56d3a540598c7bf
 
 steps:
   - action: slow

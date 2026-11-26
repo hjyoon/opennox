@@ -1,7 +1,6 @@
 package legacy
 
 /*
-#include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -24,6 +23,14 @@ typedef struct nox_test_mapgen_place_prefabs_526830_result {
 	int calls;
 } nox_test_mapgen_place_prefabs_526830_result;
 
+typedef struct nox_test_mapgen_place_prefabs_526830_buffers {
+	uint8_t* theme;
+	uint8_t* prefabs[3];
+	uint8_t* rooms[3];
+	uint32_t* foreach_entries[2];
+	uint32_t* choices[2];
+} nox_test_mapgen_place_prefabs_526830_buffers;
+
 static nox_test_mapgen_place_prefabs_526830_result* nox_test_mapgen_place_prefabs_out_526830;
 
 static void nox_test_mapgen_finalize_prefab_526830(
@@ -39,24 +46,21 @@ static void nox_test_mapgen_finalize_prefab_526830(
 	out->callback_room_addresses[call] = (uintptr_t)room;
 }
 
-static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs_526830(void) {
+static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs_526830(
+	const nox_test_mapgen_place_prefabs_526830_buffers* buffers) {
 	nox_test_mapgen_place_prefabs_526830_result out = {0};
-	uint8_t* theme = (uint8_t*)nox_native_fixture_calloc_high(1, 0x45C);
-	uint8_t* prefabs[3] = {0};
-	uint8_t* rooms[3] = {0};
-	uint32_t* foreach_entries[2] = {0};
-	uint32_t* choices[2] = {0};
-	if (!theme || !nox_mapgenLegacyPtrRegister(theme)) {
-		nox_native_fixture_free_high(theme);
+	uint8_t* theme = buffers->theme;
+	uint8_t* const* prefabs = buffers->prefabs;
+	uint8_t* const* rooms = buffers->rooms;
+	uint32_t* const* foreach_entries = buffers->foreach_entries;
+	uint32_t* const* choices = buffers->choices;
+	if (!nox_mapgenLegacyPtrRegister(theme)) {
 		return out;
 	}
 	out.theme_address = (uintptr_t)theme;
 
 	for (int i = 0; i < 3; ++i) {
-		prefabs[i] = (uint8_t*)nox_native_fixture_calloc_high(1, 160);
-		rooms[i] = (uint8_t*)nox_native_fixture_calloc_high(1, 64);
-		if (!prefabs[i] || !rooms[i] || !nox_mapgenLegacyPtrRegister(prefabs[i]) ||
-			!nox_mapgenLegacyPtrRegister(rooms[i])) {
+		if (!nox_mapgenLegacyPtrRegister(prefabs[i]) || !nox_mapgenLegacyPtrRegister(rooms[i])) {
 			goto cleanup;
 		}
 		out.prefab_addresses[i] = (uintptr_t)prefabs[i];
@@ -73,10 +77,7 @@ static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs
 	*(uint32_t*)(prefabs[2] + 76) = 1;
 
 	for (int i = 0; i < 2; ++i) {
-		foreach_entries[i] = (uint32_t*)nox_native_fixture_calloc_high(1, 12);
-		choices[i] = (uint32_t*)nox_native_fixture_calloc_high(1, 0x80C);
-		if (!foreach_entries[i] || !choices[i] || !nox_mapgenLegacyPtrRegister(foreach_entries[i]) ||
-			!nox_mapgenLegacyPtrRegister(choices[i])) {
+		if (!nox_mapgenLegacyPtrRegister(foreach_entries[i]) || !nox_mapgenLegacyPtrRegister(choices[i])) {
 			goto cleanup;
 		}
 		out.foreach_addresses[i] = (uintptr_t)foreach_entries[i];
@@ -100,31 +101,24 @@ static nox_test_mapgen_place_prefabs_526830_result nox_test_mapgen_place_prefabs
 
 cleanup:
 	for (int i = 0; i < 2; ++i) {
-		if (choices[i]) {
-			nox_mapgenLegacyPtrForget(choices[i]);
-			nox_native_fixture_free_high(choices[i]);
-		}
-		if (foreach_entries[i]) {
-			nox_mapgenLegacyPtrForget(foreach_entries[i]);
-			nox_native_fixture_free_high(foreach_entries[i]);
-		}
+		nox_mapgenLegacyPtrForget(choices[i]);
+		nox_mapgenLegacyPtrForget(foreach_entries[i]);
 	}
 	for (int i = 0; i < 3; ++i) {
-		if (rooms[i]) {
-			nox_mapgenLegacyPtrForget(rooms[i]);
-			nox_native_fixture_free_high(rooms[i]);
-		}
-		if (prefabs[i]) {
-			nox_mapgenLegacyPtrForget(prefabs[i]);
-			nox_native_fixture_free_high(prefabs[i]);
-		}
+		nox_mapgenLegacyPtrForget(rooms[i]);
+		nox_mapgenLegacyPtrForget(prefabs[i]);
 	}
 	nox_mapgenLegacyPtrForget(theme);
-	nox_native_fixture_free_high(theme);
 	return out;
 }
 */
 import "C"
+
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
 
 type mapgenPlacePrefabsResult526830 struct {
 	themeAddress             uintptr
@@ -143,7 +137,28 @@ type mapgenPlacePrefabsResult526830 struct {
 }
 
 func mapgenPlacePrefabsFixture526830() mapgenPlacePrefabsResult526830 {
-	got := C.nox_test_mapgen_place_prefabs_526830()
+	var releases []func()
+	defer func() {
+		for _, release := range releases {
+			release()
+		}
+	}()
+	allocate := func(size uintptr) unsafe.Pointer {
+		pointer, release := alloc.MallocHigh(size)
+		releases = append(releases, release)
+		return pointer
+	}
+	var buffers C.nox_test_mapgen_place_prefabs_526830_buffers
+	buffers.theme = (*C.uint8_t)(allocate(0x45c))
+	for i := range buffers.prefabs {
+		buffers.prefabs[i] = (*C.uint8_t)(allocate(160))
+		buffers.rooms[i] = (*C.uint8_t)(allocate(64))
+	}
+	for i := range buffers.foreach_entries {
+		buffers.foreach_entries[i] = (*C.uint32_t)(allocate(12))
+		buffers.choices[i] = (*C.uint32_t)(allocate(0x80c))
+	}
+	got := C.nox_test_mapgen_place_prefabs_526830(&buffers)
 	out := mapgenPlacePrefabsResult526830{
 		themeAddress:       uintptr(got.theme_address),
 		foundChoiceAddress: uintptr(got.found_choice_address),

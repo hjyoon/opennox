@@ -1,8 +1,12 @@
 package legacy
 
 import (
+	"math"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestMapgenPointerRegistryTokens(t *testing.T) {
@@ -35,5 +39,24 @@ func TestMapgenPointerRegistryTokens(t *testing.T) {
 	r.forget(address)
 	if r.register(address) != uint32(address) {
 		t.Fatal("released low token was not available")
+	}
+}
+
+func TestMapgenPointerRegistryCEntryLifecycle(t *testing.T) {
+	owner, free := alloc.NewHigh([2]uint32{})
+	t.Cleanup(free)
+	pointer := unsafe.Pointer(owner)
+	address := uintptr(pointer)
+	if unsafe.Sizeof(pointer) == 8 && address <= math.MaxUint32 {
+		t.Fatal("native owner must exceed 4 GiB")
+	}
+	if !cfixture.MapgenLegacyPointerLifecycle(pointer) {
+		t.Fatal("C registration, resolution, or release changed")
+	}
+	mapgenPointers.mu.Lock()
+	remaining := mapgenPointers.byAddress[address]
+	mapgenPointers.mu.Unlock()
+	if remaining != 0 {
+		t.Fatalf("released owner still has token %#x", remaining)
 	}
 }

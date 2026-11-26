@@ -225,6 +225,32 @@ cleanup checks.
 
 Removing `client__drawable__drawdb.c` leaves 38 top-level legacy C files.
 
+### Map generator pointer tokens
+
+The Nox prefab routine at `0x526830` reads its list head and next link
+as 32-bit fields at offsets 80 and 156. Registration and release now
+take native pointers directly in Go. The C resolver receives an address
+word so its pointer result preserves unregistered values. The C
+lifecycle test checks a live owner, null, a released token, and the
+unregistered word 1.
+
+The prefab fixture supplies separate native buffers from Go's
+high-address allocator. On Linux ARM64 the previous libc allocation
+could put one or more buffers below the PE32 address range. The
+assertions continue to compare original addresses and require high
+addresses on 64-bit targets.
+
+The standard macOS ARM64 build now selects 37 top-level C files with
+60 function bodies. The safe build selects 38 files and 64 bodies.
+
+### C data linkage
+
+The `byte_*` blobs provide addressable data symbols to native C
+fixtures and back the Go memory map. In a macOS ARM64 linker probe
+with Go 1.27.3, an array named with `go:linkname` appeared as a local
+data symbol in the Go object. Clang could not resolve an external C
+array reference to it.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

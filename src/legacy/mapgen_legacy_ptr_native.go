@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include <stdint.h>
+#include "mapgen_legacy_ptr.h"
 */
 import "C"
 
@@ -86,9 +86,9 @@ func forgetMapgenPointer(ptr unsafe.Pointer) {
 	mapgenPointers.forget(uintptr(ptr))
 }
 
-//export nox_mapgen_register_address_go
-func nox_mapgen_register_address_go(address C.uintptr_t) C.uint32_t {
-	return C.uint32_t(mapgenPointers.register(uintptr(address)))
+//export nox_mapgenLegacyPtrRegister
+func nox_mapgenLegacyPtrRegister(ptr unsafe.Pointer) C.uint32_t {
+	return C.uint32_t(registerMapgenPointer(ptr))
 }
 
 //export nox_mapgen_resolve_address_go
@@ -96,7 +96,7 @@ func nox_mapgen_resolve_address_go(value C.uintptr_t) C.uintptr_t {
 	return C.uintptr_t(mapgenPointers.resolve(uintptr(value)))
 }
 
-//export nox_mapgen_forget_address_go
-func nox_mapgen_forget_address_go(address C.uintptr_t) {
-	mapgenPointers.forget(uintptr(address))
+//export nox_mapgenLegacyPtrForget
+func nox_mapgenLegacyPtrForget(ptr unsafe.Pointer) {
+	forgetMapgenPointer(ptr)
 }

@@ -3,13 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 #include "common/alloc/classes/alloc_class.h"
-
-extern void* nox_alloc_tradeItems_2386496;
-
-static void* nox_legacy_trade_alloc_item(void) {
-	return nox_alloc_class_new_obj_zero((nox_alloc_class*)nox_alloc_tradeItems_2386496);
-}
-
 */
 import "C"
 
@@ -34,7 +27,7 @@ func nox_xxx_addItemToShopSession_50EE00(ptr unsafe.Pointer, obj *nox_object_t) 
 	if unsafe.Sizeof(uintptr(0)) != 4 {
 		return nil
 	}
-	node := (*server.TradeItem)(C.nox_legacy_trade_alloc_item())
+	node := (*server.TradeItem)(nox_alloc_class_new_obj_zero((*C.nox_alloc_class)(legacyTradePools.items)))
 	if node == nil {
 		return nil
 	}

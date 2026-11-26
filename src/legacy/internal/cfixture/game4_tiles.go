@@ -12,10 +12,6 @@ package cfixture
 extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern void game4_fixture_release_go(void* p);
 
-extern uint32_t dword_5d4594_2489436, dword_5d4594_3835356, dword_5d4594_3835360;
-extern uint32_t dword_5d4594_3835352;
-extern uint32_t dword_5d4594_2487248;
-extern void* dword_5d4594_588084;
 #include "floor_tile_storage.h"
 #define nox_tile_def_cnt (nox_floor_tile_storage()->count)
 #define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
@@ -281,7 +277,8 @@ func (b *Game4TilesBank) Existing(index uint32) Game4TilesAllocation {
 }
 
 func Game4TilesEdgeWords() (selected, edge, variation *uint32) {
-	return (*uint32)(&C.dword_5d4594_2489436), (*uint32)(&C.dword_5d4594_3835356), (*uint32)(&C.dword_5d4594_3835360)
+	state := C.nox_floor_edit_storage()
+	return (*uint32)(&state.selected_edge), (*uint32)(&state.edge_tile), (*uint32)(&state.edge_variation)
 }
 
 func Game4TilesSelectEdge(name string) int {
@@ -291,7 +288,8 @@ func Game4TilesSelectEdge(name string) int {
 }
 
 func Game4TilesBrushState() (*unsafe.Pointer, *uint32) {
-	return &C.dword_5d4594_588084, (*uint32)(&C.dword_5d4594_3835352)
+	state := C.nox_floor_edit_storage()
+	return &state.brush_nodes, (*uint32)(&state.brush_mode)
 }
 
 func Game4TilesApplyBrush(x, y, layer, merge int32, brush unsafe.Pointer) int32 {
@@ -316,7 +314,7 @@ func Game4TilesApplyBrushToken(x, y, layer int32, brush unsafe.Pointer) int32 {
 
 func Game4TilesFreeBrushNodes(node unsafe.Pointer) { C.free(node) }
 
-func Game4TilesWorklistCount() *uint32 { return (*uint32)(&C.dword_5d4594_2487248) }
+func Game4TilesWorklistCount() *uint32 { return (*uint32)(&C.nox_floor_edit_storage().flood_count) }
 
 func Game4TilesEnqueue(x, y, layer, tile int32) {
 	C.sub_51DD50(C.int(x), C.int(y), C.int(layer), C.int(tile))

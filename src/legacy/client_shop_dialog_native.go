@@ -10,7 +10,7 @@ package legacy
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
 
-extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
+extern uint32_t dword_5d4594_1107036;
 
 static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
 	nox_swprintf(dst, format, amount);
@@ -92,7 +92,7 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 	root := shopRoot()
 	label := nox_xxx_wndGetChildByID_46B0C0(root, 3810)
 	sub_445C20()
-	C.dword_5d4594_1098624, C.dword_5d4594_1098628 = 1, 1
+	clientUIWords.shop_active, clientUIWords.shop_mode = 1, 1
 	nox_window_set_hidden(root, 0)
 	nox_xxx_wnd_46ABB0_go(root, 1)
 	nox_xxx_wndShowModalMB_46A8C0(root)

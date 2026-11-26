@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 
 extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_1062552;
 */
 import "C"
 
@@ -87,7 +86,7 @@ func sub_467980() C.int {
 	*memmap.PtrUint32(0x5D4594, 1062540) = 0
 	*memmap.PtrUint32(0x5D4594, 1062544) = 0
 	*memmap.PtrUint32(0x5D4594, 1062548) = 0
-	C.dword_5d4594_1062552 = 0
+	clientUIWords.player_gold = 0
 	sub_472310()
 	legacyWords.dword_587000_136184 = ^C.uint32_t(224) // -225, the closed tray offset.
 	*memmap.PtrUint8(0x5D4594, 1049868) = 0

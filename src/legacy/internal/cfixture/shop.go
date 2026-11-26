@@ -9,8 +9,8 @@ package cfixture
 #include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "client__gui__guiinv.h"
+#include "client_ui_words.h"
 
-extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1107036;
 extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062484;
@@ -49,15 +49,16 @@ static int nox_test_shop_storage_contract(void) {
 }
 
 static uintptr_t nox_test_shop_lookup_round_trip(uintptr_t drawable_value) {
-	uint32_t old_active = dword_5d4594_1098624;
+	nox_client_ui_words_t* state = nox_client_ui_words_storage();
+	uint32_t old_active = state->shop_active;
 	nox_test_shop_clear();
-	dword_5d4594_1098624 = 1;
+	state->shop_active = 1;
 	nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(7, 4);
 	cell->drawable = (nox_drawable*)drawable_value;
 	cell->count = 1;
 	cell->net_codes[17] = 0x1234ABCDu;
 	uintptr_t result = (uintptr_t)sub_478080(0x1234ABCDu);
-	dword_5d4594_1098624 = old_active;
+	state->shop_active = old_active;
 	nox_test_shop_clear();
 	return result;
 }
@@ -316,5 +317,5 @@ func ClearInventoryCells() func() {
 }
 
 func ShopViewWords() (active, scroll *uint32) {
-	return (*uint32)(&C.dword_5d4594_1098624), (*uint32)(&C.dword_5d4594_1107036)
+	return (*uint32)(&C.nox_client_ui_words_storage().shop_active), (*uint32)(&C.dword_5d4594_1107036)
 }

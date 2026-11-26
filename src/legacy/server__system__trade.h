@@ -3,6 +3,15 @@
 
 #include "defs.h"
 #include "game4_gold_consumers.h"
+#include <stddef.h>
+
+typedef struct {
+	void* sessions;
+	void* items;
+	uint32_t head_word;
+} nox_legacy_trade_pools_t;
+_Static_assert(offsetof(nox_legacy_trade_pools_t, head_word) == 2 * sizeof(void*), "legacy trade head word");
+nox_legacy_trade_pools_t* nox_legacy_trade_pool_storage(void);
 
 int sub_50E7A0(void* session, nox_object_t* item);
 int sub_5104F0(nox_object_t* recipient, short amount);

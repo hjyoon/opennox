@@ -7,7 +7,7 @@ package legacy
 typedef const uint8_t nox_shop_modifier_id_t;
 typedef const uint32_t nox_shop_position_word_t;
 
-extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
+extern uint32_t dword_5d4594_1107036;
 */
 import "C"
 
@@ -42,7 +42,7 @@ func shopCell(row, col int) *shopInventoryCell {
 
 //export sub_478080
 func sub_478080(code C.uint32_t) *nox_drawable {
-	if C.dword_5d4594_1098624 != 0 {
+	if clientUIWords.shop_active != 0 {
 		if cell := sub_4780A0(code); cell != nil {
 			return cell.drawable
 		}
@@ -86,7 +86,7 @@ func sub_478F10() {
 //export nox_gui_shop_state
 func nox_gui_shop_state(mode, count *C.uint32_t) C.int {
 	if mode != nil {
-		*mode = C.dword_5d4594_1098628
+		*mode = clientUIWords.shop_mode
 	}
 	if count != nil {
 		var total C.uint32_t
@@ -95,7 +95,7 @@ func nox_gui_shop_state(mode, count *C.uint32_t) C.int {
 		}
 		*count = total
 	}
-	return C.int(bool2int(shopRoot() != nil && C.dword_5d4594_1098624 != 0))
+	return C.int(bool2int(shopRoot() != nil && clientUIWords.shop_active != 0))
 }
 
 //export sub_478F80
@@ -104,7 +104,7 @@ func sub_478F80() C.int {
 	sub_44D8F0()
 	nox_xxx_windowDestroyMB_46C4E0(shopRoot())
 	shopWindow, shopSlider = nil, nil
-	C.dword_5d4594_1098624, C.dword_5d4594_1098628 = 0, 1
+	clientUIWords.shop_active, clientUIWords.shop_mode = 0, 1
 	legacyPointers.shopSellInstructions, legacyPointers.shopRepairInstructions, legacyPointers.shopBuyInstructions = nil, nil, nil
 	legacyPointers.shopDialogFile = nil
 	legacyWords.dword_5d4594_1098616 = 0
@@ -151,11 +151,11 @@ func nox_xxx_getShopPic_4790F0(typeID C.int) *nox_video_bag_image_t {
 
 //export sub_479280
 func sub_479280() {
-	if C.dword_5d4594_1098624 == 0 {
+	if clientUIWords.shop_active == 0 {
 		return
 	}
 	sub_467680()
-	C.dword_5d4594_1098624, C.dword_5d4594_1098628 = 0, 0
+	clientUIWords.shop_active, clientUIWords.shop_mode = 0, 0
 	sub_478F10()
 	sub_44D8F0()
 	nox_window_set_hidden(shopRoot(), 1)
@@ -254,10 +254,10 @@ func sub_4794D0(cell *shopInventoryCell, code C.uint32_t) C.int {
 
 //export sub_4795A0
 func sub_4795A0(mode C.int) {
-	if C.dword_5d4594_1098628 == 4 && mode != 4 {
+	if clientUIWords.shop_mode == 4 && mode != 4 {
 		sub_467680()
 	}
-	C.dword_5d4594_1098628 = C.uint32_t(mode)
+	clientUIWords.shop_mode = C.uint32_t(mode)
 }
 
 //export sub_479880
@@ -286,7 +286,7 @@ func sub_4798A0(point *C.nox_shop_position_word_t) *nox_drawable {
 
 // Nox_client_shopItemLocation locates an active stack entry in screen coordinates.
 func Nox_client_shopItemLocation(netCode uint32) (found bool, x, y int, thingType, count, price uint32) {
-	if netCode == 0 || C.dword_5d4594_1098624 == 0 {
+	if netCode == 0 || clientUIWords.shop_active == 0 {
 		return
 	}
 	for row := range shopRows {

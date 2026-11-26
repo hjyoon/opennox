@@ -52,7 +52,6 @@ func (c *guiAdvOptions) Init(cli *Client) {
 		{ID: 2032, Bool: &nox_client_lockHighResFloors_1193152, TextID: "AdVidOpt.wnd:LockHiResFloors"},
 		{ID: 2033, Bool: &nox_client_texturedFloors2_154960, TextID: "AdVidOpt.wnd:FlatShadedFloors"},
 		{ID: 2052, Flag: noxflags.EngineNoSoftLights, Text: "Disable Soft Light", TextID: "AdVidOpt.wnd:NoSoftLights"},
-		//{ID: 2041, CFlag: &C.nox_client_renderBubbles_80844, TextID: "AdVidOpt.wnd:RenderBubbles"},
 		{ID: 2040, Bool: &nox_client_renderGUI_80828, TextID: "AdVidOpt.wnd:RenderGUI"},
 	}
 	for _, opt := range c.noxVideoAdvList {

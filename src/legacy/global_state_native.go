@@ -5,7 +5,6 @@ package legacy
 #include <string.h>
 extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_1098628;
 static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
@@ -31,7 +30,7 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 6:
 		return unsafe.Pointer(&tradeActive)
 	case 7:
-		return unsafe.Pointer(&C.dword_5d4594_1098628)
+		return unsafe.Pointer(&clientUIWords.shop_mode)
 	case 8:
 		return unsafe.Pointer(&gameSetupWindows.help)
 	case 9:

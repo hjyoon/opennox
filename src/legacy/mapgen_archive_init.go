@@ -4,8 +4,7 @@ package legacy
 #include "GAME3_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_3835352, dword_5d4594_3835356;
-extern uint32_t dword_5d4594_3835360, dword_5d4594_3835368;
+extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_3835396;
 */
@@ -33,9 +32,9 @@ func mapgenResetWorkspaceSettings() {
 	*memmap.PtrUint64(0x5D4594, 1549772) = uint64(nox_platform_get_ticks())
 	clear(unsafe.Slice((*byte)(memmap.PtrOff(0x973F18, 35912)), 0x48))
 	legacyWords.dword_5d4594_3835348 = 0
-	C.dword_5d4594_3835352 = 0
-	C.dword_5d4594_3835356 = 255
-	C.dword_5d4594_3835360 = 0
+	floorEditState.brush_mode = 0
+	floorEditState.edge_tile = 255
+	floorEditState.edge_variation = 0
 	legacyWords.dword_5d4594_3835364 = 1
 	C.dword_5d4594_3835368 = 1
 	C.dword_5d4594_3835372 = 1

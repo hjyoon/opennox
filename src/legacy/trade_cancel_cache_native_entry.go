@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 
-extern void* nox_alloc_tradeSession_2386492;
 */
 import "C"
 
@@ -26,7 +25,7 @@ func nox_xxx_shopCancelSession_510DC0(ptr unsafe.Pointer) {
 			return
 		}
 	}
-	if cgoABIPointerSize != 4 || !alloc.AsClass(C.nox_alloc_tradeSession_2386492).HasActiveObject(ptr) {
+	if cgoABIPointerSize != 4 || !alloc.AsClass(legacyTradePools.sessions).HasActiveObject(ptr) {
 		return
 	}
 	if session.Field16 != 0 {

@@ -906,6 +906,18 @@ existing native pointer stores used by the scheduler.
 
 There are 99 remaining definitions in `vardefs.c`.
 
+### UI, vote, trade, and floor editing state
+
+Go allocates 24 more cells in native memory for UI modes and gold,
+vote thresholds and allocation, trade pools, and floor editing.
+The C comparisons use typed storage accessors and the existing
+entry points. The frozen vote reference reads the configured
+thresholds through its fixture bindings. The PE32 trade head stays
+a 32-bit word beside the native pool pointers. Shop insertion uses
+the existing Go allocator entry directly.
+
+There are 75 remaining definitions in `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

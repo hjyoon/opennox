@@ -7,8 +7,6 @@ package legacy
 #include "GAME4_3.h"
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-extern void* dword_5d4594_588084;
-extern uint32_t dword_5d4594_3835352;
 */
 import "C"
 
@@ -72,7 +70,7 @@ func nox_floorBrushApplyNative_51DA70(x, y C.int, native *C.nox_floor_brush_t, l
 	if layer == 2 {
 		baseTile, baseVariation, head = &cell.field_6, &cell.field_7, &cell.field_10
 	}
-	if C.dword_5d4594_3835352 == 1 {
+	if floorEditState.brush_mode == 1 {
 		edge, edgeVariation := C.int(255), C.int(0)
 		if brush != nil {
 			edge, edgeVariation = C.int(brush.edgeID), C.int(brush.edgeVariation)
@@ -103,7 +101,7 @@ func sub_51DA70(x, y, brushToken, layer, merge C.int) C.int {
 
 //export nox_xxx_tileListAddNewSubtile_422160
 func nox_xxx_tileListAddNewSubtile_422160(tile, variation, edge, edgeVariation C.int) *C.nox_tile_list_node_t {
-	node := (*C.nox_tile_list_node_t)(C.dword_5d4594_588084)
+	node := (*C.nox_tile_list_node_t)(floorEditState.brush_nodes)
 	if node == nil {
 		const batch = 10
 		node = (*C.nox_tile_list_node_t)(C.calloc(batch, C.sizeof_nox_tile_list_node_t))
@@ -115,7 +113,7 @@ func nox_xxx_tileListAddNewSubtile_422160(tile, variation, edge, edgeVariation C
 			nodes[i].next = &nodes[i+1]
 		}
 	}
-	C.dword_5d4594_588084 = unsafe.Pointer(node.next)
+	floorEditState.brush_nodes = unsafe.Pointer(node.next)
 	node.field_0, node.field_1, node.field_2, node.field_3 = tile, variation, edge, edgeVariation
 	node.next = nil
 	return node
@@ -124,8 +122,8 @@ func nox_xxx_tileListAddNewSubtile_422160(tile, variation, edge, edgeVariation C
 //export nox_xxx_tileFreeTileOne_4221E0
 func nox_xxx_tileFreeTileOne_4221E0(ptr unsafe.Pointer) *C.nox_tile_list_node_t {
 	node := (*C.nox_tile_list_node_t)(ptr)
-	node.next = (*C.nox_tile_list_node_t)(C.dword_5d4594_588084)
-	C.dword_5d4594_588084 = ptr
+	node.next = (*C.nox_tile_list_node_t)(floorEditState.brush_nodes)
+	floorEditState.brush_nodes = ptr
 	return node
 }
 

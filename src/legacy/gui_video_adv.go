@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "client__gui__window.h"
-extern unsigned int nox_client_renderBubbles_80844;
 int nox_xxx_tileSetDrawFn_481420();
 */
 import "C"

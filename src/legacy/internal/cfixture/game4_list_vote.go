@@ -4,14 +4,17 @@ package cfixture
 #include "game4_list_vote_native.h"
 extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern nox_alloc_class* game4_fixture_new_class_go(char* name, int size, int count);
-// Only the declared allocation services are redirected. The reference
-// function definitions and their inputs remain byte-for-byte unchanged.
+// The reference uses the fixture allocator and the live vote thresholds.
 #pragma push_macro("calloc")
 #undef calloc
 #define calloc game4_fixture_calloc_go
 #define nox_new_alloc_class game4_fixture_new_class_go
 #include "game4_mapgen_storage_fixture.h"
+#define nox_server_kickQuestPlayerMinVotes_229992 (nox_vote_state_storage()->minimum_kick)
+#define nox_server_resetQuestMinVotes_229988 (nox_vote_state_storage()->minimum_reset)
 #include "game4_list_vote_original_reference.h"
+#undef nox_server_resetQuestMinVotes_229988
+#undef nox_server_kickQuestPlayerMinVotes_229992
 #undef nox_new_alloc_class
 #pragma pop_macro("calloc")
 // Keep private static reference state within its C translation unit.
@@ -324,14 +327,15 @@ func (f Game4SupportServices) VoteUnlink(reference bool, removed int) (out Game4
 func (f Game4SupportServices) VoteLifecycle(reference bool) (out Game4SupportObservation, err error) {
 	defer f.HighMemory()()
 	// Isolate both allocators/heads without resetting any unrelated live owner.
-	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
+	state := C.nox_vote_state_storage()
+	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), state.allocator, state.diagnostic
 	f.SetVoteHead(nil)
-	C.nox_alloc_vote_1599652 = nil
-	C.dword_5d4594_1599656 = 0
+	state.allocator = nil
+	state.diagnostic = 0
 	defer func() {
 		f.SetVoteHead(oldHead)
-		C.nox_alloc_vote_1599652 = oldAllocator
-		C.dword_5d4594_1599656 = oldDiagnostic
+		state.allocator = oldAllocator
+		state.diagnostic = oldDiagnostic
 	}()
 	defer f.ObservePacket(func(recipient int32, b []byte) int32 {
 		out.Packets = append(out.Packets, Game4SupportPacket{recipient, append([]byte(nil), b...)})
@@ -391,17 +395,18 @@ func Game4VoteNameEqual(a, b []uint16) bool {
 // any unrelated production head/class without resetting it.
 func (f Game4SupportServices) VoteTargetCache(reference bool, unit unsafe.Pointer, name []uint16) (unsafe.Pointer, error) {
 	defer f.HighMemory()()
-	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), C.nox_alloc_vote_1599652, C.dword_5d4594_1599656
-	oldMinimum := C.nox_server_kickQuestPlayerMinVotes_229992
+	state := C.nox_vote_state_storage()
+	oldHead, oldAllocator, oldDiagnostic := f.VoteHead(), state.allocator, state.diagnostic
+	oldMinimum := state.minimum_kick
 	f.SetVoteHead(nil)
-	C.nox_alloc_vote_1599652 = nil
-	C.dword_5d4594_1599656 = 0
-	C.nox_server_kickQuestPlayerMinVotes_229992 = 5
+	state.allocator = nil
+	state.diagnostic = 0
+	state.minimum_kick = 5
 	defer func() {
 		f.SetVoteHead(oldHead)
-		C.nox_alloc_vote_1599652 = oldAllocator
-		C.dword_5d4594_1599656 = oldDiagnostic
-		C.nox_server_kickQuestPlayerMinVotes_229992 = oldMinimum
+		state.allocator = oldAllocator
+		state.diagnostic = oldDiagnostic
+		state.minimum_kick = oldMinimum
 	}()
 	cname := (*C.wchar2_t)(unsafe.Pointer(&name[0]))
 	var vote *C.nox_vote_5066D0

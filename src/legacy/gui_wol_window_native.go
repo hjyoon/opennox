@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern uint32_t dword_5d4594_815052;
 */
 import "C"
 
@@ -195,7 +194,7 @@ func nox_game_showGameSel_4379F0() C.int {
 	sub_40A3C0(C.uint(nox_xxx_servGetPort_40A430()))
 	Set_nox_game_createOrJoin_815048(0)
 	Set_dword_5d4594_815044(0)
-	C.dword_5d4594_815052 = 0
+	clientUIWords.wol_game_data_ready = 0
 	sub_43AF90(0)
 	Set_qword_5d4594_815068(uint64(nox_platform_get_ticks() + 1000))
 	if Get_dword_587000_87408() == 1 {

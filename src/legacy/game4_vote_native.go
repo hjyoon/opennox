@@ -6,14 +6,24 @@ package legacy
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/common/memmap"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-// Records come from the native class allocator. Only the private list head
-// moves from file-static C storage to a typed Go root; no PE32 diagnostic
-// DWORD is used to store a native pointer.
+// The list head points to records from the native class allocator.
 var game4VoteHead *C.nox_vote_5066D0
+
+var voteStorage = func() *C.nox_vote_state_t {
+	state, _ := alloc.New(C.nox_vote_state_t{})
+	state.minimum_kick = 5
+	state.minimum_reset = 6
+	return state
+}()
+
+//export nox_vote_state_storage
+func nox_vote_state_storage() *C.nox_vote_state_t { return voteStorage }
 
 func game4VotePlayer(unit *C.nox_object_t) *C.nox_playerInfo {
 	if unit == nil || unit.obj_class&4 == 0 || unit.data_update == nil {
@@ -78,32 +88,32 @@ func game4VoteRemoveVoter(vote *C.nox_vote_5066D0, mask uint32) {
 //export nox_xxx_allocVoteArray_5066D0
 func nox_xxx_allocVoteArray_5066D0() C.int {
 	allocator := game4SupportNewClass(internCStr("VoteClass"), C.int(C.sizeof_nox_vote_5066D0), 64)
-	C.nox_alloc_vote_1599652 = unsafe.Pointer(allocator)
+	voteStorage.allocator = unsafe.Pointer(allocator)
 	if allocator == nil {
 		return 0
 	}
 	game4VoteHead = nil
-	C.dword_5d4594_1599656 = 0
+	voteStorage.diagnostic = 0
 	return 1
 }
 
 //export sub_506700
 func sub_506700() {
-	if C.nox_alloc_vote_1599652 != nil {
-		C.nox_alloc_class_free_all((*C.nox_alloc_class)(C.nox_alloc_vote_1599652))
+	if voteStorage.allocator != nil {
+		C.nox_alloc_class_free_all((*C.nox_alloc_class)(voteStorage.allocator))
 	}
 	game4VoteHead = nil
-	C.dword_5d4594_1599656 = 0
+	voteStorage.diagnostic = 0
 }
 
 //export sub_506720
 func sub_506720() C.int {
-	if C.nox_alloc_vote_1599652 != nil {
-		C.nox_free_alloc_class((*C.nox_alloc_class)(C.nox_alloc_vote_1599652))
+	if voteStorage.allocator != nil {
+		C.nox_free_alloc_class((*C.nox_alloc_class)(voteStorage.allocator))
 	}
-	C.nox_alloc_vote_1599652 = nil
+	voteStorage.allocator = nil
 	game4VoteHead = nil
-	C.dword_5d4594_1599656 = 0
+	voteStorage.diagnostic = 0
 	return 0
 }
 
@@ -141,8 +151,8 @@ func sub_5067B0(vote *C.nox_vote_5066D0) {
 		}
 	}
 	sub_506810(vote)
-	if C.nox_alloc_vote_1599652 != nil {
-		C.nox_alloc_class_free_obj_first((*C.nox_alloc_class)(C.nox_alloc_vote_1599652), unsafe.Pointer(vote))
+	if voteStorage.allocator != nil {
+		C.nox_alloc_class_free_obj_first((*C.nox_alloc_class)(voteStorage.allocator), unsafe.Pointer(vote))
 	}
 	if game4VoteHead == nil {
 		sub_507190(255, 0)
@@ -229,10 +239,10 @@ func sub_5068E0(kind C.int, unit *C.nox_object_t, name *C.wchar2_t) C.char {
 
 //export nox_vote_record_alloc_5066D0
 func nox_vote_record_alloc_5066D0() *C.nox_vote_5066D0 {
-	if C.nox_alloc_vote_1599652 == nil {
+	if voteStorage.allocator == nil {
 		return nil
 	}
-	return (*C.nox_vote_5066D0)(C.nox_alloc_class_new_obj_zero((*C.nox_alloc_class)(C.nox_alloc_vote_1599652)))
+	return (*C.nox_vote_5066D0)(C.nox_alloc_class_new_obj_zero((*C.nox_alloc_class)(voteStorage.allocator)))
 }
 
 //export sub_506A20
@@ -278,7 +288,7 @@ func nox_xxx_voteAddMB_506AD0(vote *C.nox_vote_5066D0) *C.nox_vote_5066D0 {
 
 //export sub_506B00
 func sub_506B00(kind C.int, unit *C.nox_object_t) *C.nox_vote_5066D0 {
-	if C.nox_server_resetQuestMinVotes_229988 == 0 {
+	if voteStorage.minimum_reset == 0 {
 		return nil
 	}
 	voter := game4VotePlayer(unit)
@@ -299,7 +309,7 @@ func sub_506B00(kind C.int, unit *C.nox_object_t) *C.nox_vote_5066D0 {
 
 //export sub_506B80
 func sub_506B80(kind C.int, unit *C.nox_object_t, name *C.wchar2_t) *C.nox_vote_5066D0 {
-	if C.nox_server_kickQuestPlayerMinVotes_229992 == 0 || name == nil {
+	if voteStorage.minimum_kick == 0 || name == nil {
 		return nil
 	}
 	voter := game4VotePlayer(unit)
@@ -508,7 +518,7 @@ func sub_5071C0() C.int {
 func nox_vote_head_5066D0() *C.nox_vote_5066D0 { return game4VoteHead }
 
 //export nox_vote_allocator_5066D0
-func nox_vote_allocator_5066D0() unsafe.Pointer { return C.nox_alloc_vote_1599652 }
+func nox_vote_allocator_5066D0() unsafe.Pointer { return voteStorage.allocator }
 
 //export nox_vote_record_size_5066D0
 func nox_vote_record_size_5066D0() C.size_t { return C.sizeof_nox_vote_5066D0 }

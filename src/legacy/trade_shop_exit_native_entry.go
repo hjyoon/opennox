@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 
-extern void* nox_alloc_tradeSession_2386492;
 */
 import "C"
 
@@ -25,7 +24,7 @@ func nox_xxx_shopExit_50F4C0(ptr unsafe.Pointer) {
 	if world.CloseShopNative50F4C0(session, Nox_xxx_unitUnFreeze_4E7A60) || unsafe.Sizeof(uintptr(0)) != 4 {
 		return
 	}
-	pool := alloc.AsClass(C.nox_alloc_tradeSession_2386492)
+	pool := alloc.AsClass(legacyTradePools.sessions)
 	if !pool.HasActiveObject(ptr) {
 		return
 	}

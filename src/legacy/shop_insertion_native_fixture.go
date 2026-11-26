@@ -4,7 +4,6 @@ package legacy
 #include "GAME4_1.h"
 #include "common/alloc/classes/alloc_class.h"
 
-extern void* nox_alloc_tradeItems_2386496;
 
 typedef void* (*shop_insert_native_t)(void*, nox_object_t*);
 _Static_assert(_Generic(&nox_xxx_addItemToShopSession_50EE00, shop_insert_native_t:1, default:0), "shop insertion ABI");
@@ -37,10 +36,10 @@ func shopInsertionFixtureUsePE32Pool(capacity int) (restore func()) {
 	if pool == nil {
 		return nil
 	}
-	previous := C.nox_alloc_tradeItems_2386496
-	C.nox_alloc_tradeItems_2386496 = unsafe.Pointer(pool)
+	previous := legacyTradePools.items
+	legacyTradePools.items = unsafe.Pointer(pool)
 	return func() {
-		C.nox_alloc_tradeItems_2386496 = previous
+		legacyTradePools.items = previous
 		C.nox_free_alloc_class(pool)
 	}
 }

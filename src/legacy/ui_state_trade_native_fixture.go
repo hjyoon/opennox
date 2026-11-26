@@ -7,16 +7,8 @@ package legacy
 #include "GAME2_2.h"
 #include "GAME4_1.h"
 #include "client__gui__guiinv.h"
-extern unsigned int dword_5d4594_527988;
-extern uint32_t dword_5d4594_805820;
-extern uint32_t nox_xxx_useAudio_587000_80772;
-extern uint32_t dword_5d4594_815052;
-extern uint32_t dword_5d4594_1062552;
 #include "client_ui_words.h"
 #include "game2_quickbar_native.h"
-extern uint32_t dword_5d4594_1098624;
-extern uint32_t dword_5d4594_1098628;
-extern uint32_t dword_5d4594_1123520;
 typedef int(*ui_word_callback_C)(void);
 _Static_assert(_Generic(&sub_41E2F0,ui_word_callback_C:1,default:0),"word32 ABI sub_41E2F0");
 _Static_assert(_Generic(&nox_client_mousePriKey_430AF0,ui_word_callback_C:1,default:0),"word32 ABI nox_client_mousePriKey_430AF0");
@@ -33,14 +25,24 @@ _Static_assert(_Generic(&sub_478030,ui_word_callback_C:1,default:0),"word32 ABI 
 _Static_assert(_Generic(&sub_479590,ui_word_callback_C:1,default:0),"word32 ABI sub_479590");
 _Static_assert(_Generic(&sub_47A260,ui_word_callback_C:1,default:0),"word32 ABI sub_47A260");
 static ui_word_callback_C ui_word_entries_C[]={sub_41E2F0,nox_client_mousePriKey_430AF0,nox_xxx_cursor_430B00,sub_43AF30,sub_43AF40,sub_43AF80,sub_4611A0,sub_4674A0,sub_4675B0,sub_46A4A0,nox_xxx_playerGet_470A90,sub_478030,sub_479590,sub_47A260};
-static uint32_t*ui_word_globals_C[]={&dword_5d4594_527988,&dword_5d4594_805820,&nox_xxx_useAudio_587000_80772,&dword_5d4594_815052,&nox_game_createOrJoin_815048,&dword_5d4594_814548,NULL,&dword_5d4594_1062552,NULL,NULL,NULL,&dword_5d4594_1098624,&dword_5d4594_1098628,&dword_5d4594_1123520};
 static uint32_t* ui_word_address_C(unsigned i) {
+    nox_client_ui_words_t* state = nox_client_ui_words_storage();
     switch (i) {
+    case 0: return &state->wol_status;
+    case 1: return &state->mouse_primary;
+    case 2: return &state->audio_mask;
+    case 3: return &state->wol_game_data_ready;
+    case 4: return &state->create_or_join;
+    case 5: return &state->network_state;
     case 6: return &nox_quickbar_controls_storage()->targeting_ability;
+    case 7: return &state->player_gold;
     case 8: return &nox_inventory_state_storage()->mode;
     case 9: return nox_client_chat_active_storage();
     case 10: return nox_client_meter_visible_storage();
-    default: return ui_word_globals_C[i];
+    case 11: return &state->shop_active;
+    case 12: return &state->shop_mode;
+    case 13: return &state->dialog_active;
+    default: return NULL;
     }
 }
 static uint32_t ui_word_get_C(unsigned i){return *ui_word_address_C(i);}

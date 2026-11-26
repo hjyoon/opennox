@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guiinv.h"
 
 extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_1062552;
 */
 import "C"
 
@@ -149,7 +148,7 @@ func nox_xxx_guiDrawInventoryTray_4643B0(left, top C.int) C.int {
 	x, y := int32(left), int32(top)
 	nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_TRAY_SPECIAL], x, y)
 	var buffer [16]uint16
-	text := clientInventoryNumberText(&buffer, int32(C.dword_5d4594_1062552), "")
+	text := clientInventoryNumberText(&buffer, int32(clientUIWords.player_gold), "")
 	nox_xxx_drawSetTextColor_434390(int32(renderPalette.yellow))
 	var width C.int
 	nox_xxx_drawGetStringSize_43F840(inventoryFont, text, &width, nil, 0)

@@ -2,10 +2,8 @@ package cfixture
 
 /*
 #include "GAME4_1.h"
+#include "server__system__trade.h"
 
-extern void* nox_alloc_tradeItems_2386496;
-extern void* nox_alloc_tradeSession_2386492;
-extern uint32_t dword_5d4594_2386500;
 
 typedef void (*trade_release_t)(void*);
 typedef int (*offer_release_t)(void*);
@@ -45,15 +43,16 @@ func TradeOfferReleaseFixtureCall(route int, head *server.TradeItem) int {
 }
 
 func TradeReleaseFixtureUsePE32Pools(sessions, items *alloc.Class, head *server.TradeSession) func() {
-	oldSessions, oldItems, oldHead := C.nox_alloc_tradeSession_2386492, C.nox_alloc_tradeItems_2386496, C.dword_5d4594_2386500
-	C.nox_alloc_tradeSession_2386492 = sessions.UPtr()
-	C.nox_alloc_tradeItems_2386496 = items.UPtr()
-	C.dword_5d4594_2386500 = C.uint32_t(uintptr(unsafe.Pointer(head)))
+	state := C.nox_legacy_trade_pool_storage()
+	oldSessions, oldItems, oldHead := state.sessions, state.items, state.head_word
+	state.sessions = sessions.UPtr()
+	state.items = items.UPtr()
+	state.head_word = C.uint32_t(uintptr(unsafe.Pointer(head)))
 	return func() {
-		C.nox_alloc_tradeSession_2386492, C.nox_alloc_tradeItems_2386496, C.dword_5d4594_2386500 = oldSessions, oldItems, oldHead
+		state.sessions, state.items, state.head_word = oldSessions, oldItems, oldHead
 	}
 }
 
 func TradeReleaseFixturePE32Head() uintptr {
-	return uintptr(C.dword_5d4594_2386500)
+	return uintptr(C.nox_legacy_trade_pool_storage().head_word)
 }

@@ -7,7 +7,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1062552;
 */
 import "C"
 
@@ -70,7 +69,7 @@ func sub_467470(index C.int, value C.float) C.int {
 
 //export sub_467490
 func sub_467490(value C.int) C.int {
-	C.dword_5d4594_1062552 = C.uint32_t(value)
+	clientUIWords.player_gold = C.uint32_t(value)
 	return value
 }
 

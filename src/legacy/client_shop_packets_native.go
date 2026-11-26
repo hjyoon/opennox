@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__guishop.h"
 #include "client__gui__guimsg.h"
 
-extern uint32_t dword_5d4594_1098624;
 */
 import "C"
 
@@ -28,7 +27,7 @@ func shopItemPacket(command byte, item uint16, amount ...byte) C.int {
 
 //export sub_478040
 func sub_478040() C.int {
-	if C.dword_5d4594_1098624 == 0 {
+	if clientUIWords.shop_active == 0 {
 		return 0
 	}
 	tradeActionPacket(18)

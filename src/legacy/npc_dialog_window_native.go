@@ -6,7 +6,6 @@ package legacy
 #include "GAME3.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1123520;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -31,7 +30,7 @@ func sub_4799A0() C.int {
 	npcDialogWindow = root
 	asWindow(root).AddCleanup(func() {
 		if npcDialogWindow == root {
-			npcDialogWindow, C.dword_5d4594_1123520 = nil, 0
+			npcDialogWindow, clientUIWords.dialog_active = nil, 0
 		}
 	})
 	if root == nil {
@@ -60,7 +59,7 @@ func sub_4799A0() C.int {
 	nox_xxx_wndSetDrawFn_46B340(done, C.sub_479C40)
 	nox_xxx_wnd_46ABB0_go(root, 0)
 	nox_window_set_hidden(root, 1)
-	C.dword_5d4594_1123520 = 0
+	clientUIWords.dialog_active = 0
 	return 1
 }
 
@@ -95,6 +94,6 @@ func sub_479D00() C.int {
 //export sub_479D10
 func sub_479D10() C.int {
 	nox_xxx_windowDestroyMB_46C4E0(npcDialogWindow)
-	npcDialogWindow, C.dword_5d4594_1123520 = nil, 0
+	npcDialogWindow, clientUIWords.dialog_active = nil, 0
 	return 0
 }

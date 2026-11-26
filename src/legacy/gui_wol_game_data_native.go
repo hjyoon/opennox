@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME1_2.h"
 
-extern uint32_t dword_5d4594_815052;
 */
 import "C"
 
@@ -22,7 +21,7 @@ func sub_43AA70() *C.char {
 		NetworkLogPrint("RECON: Posting server to WOL")
 	}
 	Set_nox_game_createOrJoin_815048(0)
-	C.dword_5d4594_815052 = 1
+	clientUIWords.wol_game_data_ready = 1
 
 	current := nox_xxx_cliGamedataGet_416590(0)
 	record := unsafe.Slice((*byte)(sub_416640()), int(C.sizeof_nox_gui_server_ent_t))

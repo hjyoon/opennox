@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_1.h"
 #include "GAME4_3.h"
 #include "cgo_const.h"
-extern uint32_t dword_5d4594_2489436;
-extern uint32_t dword_5d4594_3835356, dword_5d4594_3835360;
 */
 import "C"
 
@@ -125,9 +123,9 @@ func sub_543FB0(name *C.nox_cgo_const_char) C.int {
 
 //export sub_544020
 func sub_544020(name *C.char) C.int {
-	C.dword_5d4594_2489436 = 0
+	floorEditState.selected_edge = 0
 	if C.nox_strcmpi(internCStr("NONE"), name) == 0 {
-		C.dword_5d4594_3835356 = 255
+		floorEditState.edge_tile = 255
 		return 1
 	}
 	return nox_xxx_tileCheckByte3_544070(sub_543FB0((*C.nox_cgo_const_char)(name)))
@@ -138,17 +136,17 @@ func nox_xxx_tileCheckByte3_544070(index C.int) C.int {
 	if index < 0 || index >= C.int(int32(*thingEdgeCountCell411850())) {
 		return 0
 	}
-	C.dword_5d4594_3835356 = C.uint32_t(index)
-	C.dword_5d4594_2489436 = 1
+	floorEditState.edge_tile = C.uint32_t(index)
+	floorEditState.selected_edge = 1
 	return 1
 }
 
 //export nox_xxx_tileCheckByte4_5440A0
 func nox_xxx_tileCheckByte4_5440A0(variation C.int) C.int {
-	if C.dword_5d4594_2489436 == 0 {
+	if floorEditState.selected_edge == 0 {
 		return 1
 	}
-	if int32(C.dword_5d4594_3835356) == -1 || variation < 0 {
+	if int32(floorEditState.edge_tile) == -1 || variation < 0 {
 		return 0
 	}
 	// The original indexes the variation limit with the incoming value.
@@ -156,6 +154,6 @@ func nox_xxx_tileCheckByte4_5440A0(variation C.int) C.int {
 	if variation >= C.int(count) {
 		return 0
 	}
-	C.dword_5d4594_3835360 = C.uint32_t(variation)
+	floorEditState.edge_variation = C.uint32_t(variation)
 	return 1
 }

@@ -3,9 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 #include "GAME4_3.h"
-extern uint32_t dword_5d4594_2487248;
-extern uint32_t dword_5d4594_3835352;
-extern uint32_t dword_5d4594_3835356, dword_5d4594_3835360;
 */
 import "C"
 
@@ -51,7 +48,7 @@ func sub_51DD50(x, y, layer, tile C.int) {
 		return
 	}
 	entry := floorFloodEntry{uint32(x), uint32(y), uint32(layer)}
-	count := C.dword_5d4594_2487248
+	count := floorEditState.flood_count
 	for i := int32(0); i < int32(count); i++ {
 		if *floorFloodWorklistEntry(i) == entry {
 			return
@@ -61,20 +58,20 @@ func sub_51DD50(x, y, layer, tile C.int) {
 		*floorFloodOverflow() = 1
 		return
 	}
-	C.dword_5d4594_2487248++
+	floorEditState.flood_count++
 	*floorFloodWorklistEntry(int32(count)) = entry
 }
 
 //export sub_51DE30
 func sub_51DE30(x, y, layer *C.uint32_t) C.int {
-	count := int32(C.dword_5d4594_2487248)
+	count := int32(floorEditState.flood_count)
 	if count <= 0 {
 		return 0
 	}
-	C.dword_5d4594_2487248--
+	floorEditState.flood_count--
 	*x = C.uint32_t(floorFloodWorklistEntry(count - 1).x)
-	*y = C.uint32_t(floorFloodWorklistEntry(int32(C.dword_5d4594_2487248)).y)
-	*layer = C.uint32_t(floorFloodWorklistEntry(int32(C.dword_5d4594_2487248)).layer)
+	*y = C.uint32_t(floorFloodWorklistEntry(int32(floorEditState.flood_count)).y)
+	*layer = C.uint32_t(floorFloodWorklistEntry(int32(floorEditState.flood_count)).layer)
 	return 1
 }
 
@@ -82,14 +79,14 @@ func selectedFloorEdgeBrush() C.nox_floor_brush_t {
 	return C.nox_floor_brush_t{
 		tile_id:        C.uint32_t(memmap.Uint32(mapgenTileStateBase, mapgenTileIDOffset)),
 		variation:      legacyWords.dword_5d4594_3835348,
-		edge_id:        C.dword_5d4594_3835356,
-		edge_variation: C.dword_5d4594_3835360,
+		edge_id:        floorEditState.edge_tile,
+		edge_variation: floorEditState.edge_variation,
 	}
 }
 
 //export sub_543680
 func sub_543680(position *C.float) C.int {
-	if C.dword_5d4594_3835356 == 255 {
+	if floorEditState.edge_tile == 255 {
 		return 1
 	}
 	var fixed mapgenWorldPoint
@@ -98,9 +95,9 @@ func sub_543680(position *C.float) C.int {
 	}
 	brush := selectedFloorEdgeBrush()
 	point := [2]C.int{C.int(x87TruncQwordLow(float64(fixed.x))), C.int(x87TruncQwordLow(float64(fixed.y)))}
-	C.dword_5d4594_3835352 = 1
+	floorEditState.brush_mode = 1
 	result := sub_5437E0(&point[0], &brush, 46)
-	C.dword_5d4594_3835352 = 0
+	floorEditState.brush_mode = 0
 	return result
 }
 
@@ -118,7 +115,7 @@ func sub_5437E0(position *C.int, brush *C.nox_floor_brush_t, step C.int) C.int {
 	point := unsafe.Slice(position, 2)
 	x, y, dx, dy := floorBrushGridPosition(float64(point[0]), float64(point[1]))
 	*floorFloodOverflow() = 0
-	C.dword_5d4594_2487248 = 0
+	floorEditState.flood_count = 0
 	tile := step
 	if floorFloodWithinGrid(x, y) {
 		layer := C.int(2)
@@ -140,7 +137,7 @@ func sub_5437E0(position *C.int, brush *C.nox_floor_brush_t, step C.int) C.int {
 		sub_51DD50(x, y, layer, tile)
 	}
 
-	for i := int32(0); i < int32(C.dword_5d4594_2487248); i++ {
+	for i := int32(0); i < int32(floorEditState.flood_count); i++ {
 		entry := floorFloodWorklistEntry(i)
 		x, y := C.int(entry.x), C.int(entry.y)
 		if entry.layer&2 != 0 {
@@ -198,7 +195,7 @@ func sub_543BC0(x, y, layer, tile C.int, brush *C.nox_floor_brush_t, edgeVariati
 
 //export nox_xxx_tileSubtile_544310
 func nox_xxx_tileSubtile_544310(position *C.float2) C.int {
-	C.dword_5d4594_3835352 = 1
+	floorEditState.brush_mode = 1
 	x, y, dx, dy := floorBrushGridPosition(float64(position.field_0), float64(position.field_4))
 	brush := selectedFloorEdgeBrush()
 	brush.anchor_x, brush.anchor_y = -1, -1
@@ -207,6 +204,6 @@ func nox_xxx_tileSubtile_544310(position *C.float2) C.int {
 		selected = &brush
 	}
 	result := sub_51D9C0(x, y, dx, dy, selected)
-	C.dword_5d4594_3835352 = 0
+	floorEditState.brush_mode = 0
 	return result
 }

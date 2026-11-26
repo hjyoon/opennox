@@ -1,6 +1,7 @@
 #ifndef NOX_GAME4_LIST_VOTE_NATIVE_H
 #define NOX_GAME4_LIST_VOTE_NATIVE_H
 #include <stdint.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include "map_temp_lists_503f40.h"
 #include "map_object_list_5048a0.h"
@@ -17,10 +18,15 @@
 
 extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_3835396;
-extern uint32_t nox_server_kickQuestPlayerMinVotes_229992;
-extern uint32_t nox_server_resetQuestMinVotes_229988;
-extern void* nox_alloc_vote_1599652;
-extern uint32_t dword_5d4594_1599656;
+typedef struct {
+	void* allocator;
+	uint32_t diagnostic;
+	uint32_t minimum_kick;
+	uint32_t minimum_reset;
+} nox_vote_state_t;
+_Static_assert(offsetof(nox_vote_state_t, diagnostic) == sizeof(void*), "vote word offset");
+nox_vote_state_t* nox_vote_state_storage(void);
+
 void sub_579E90(nox_waypoint_t* waypoint);
 
 #endif

@@ -12,7 +12,7 @@ package legacy
 typedef const nox_draw_viewport_t nox_shop_const_viewport_t;
 
 extern int nox_win_width, nox_win_height;
-extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
+extern uint32_t dword_5d4594_1107036;
 */
 import "C"
 
@@ -120,28 +120,28 @@ func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 	case 3801:
 		sub_478040()
 	case 3802:
-		if C.dword_5d4594_1098624 != 0 {
-			if C.dword_5d4594_1098628 == 4 {
+		if clientUIWords.shop_active != 0 {
+			if clientUIWords.shop_mode == 4 {
 				sub_467680()
 			}
 			nox_client_setCursorType_477610(12)
-			C.dword_5d4594_1098628 = 3
+			clientUIWords.shop_mode = 3
 			if C.sub_467C80() == 0 {
 				C.sub_467BB0()
 			}
 		}
 	case 3803:
-		if C.dword_5d4594_1098624 != 0 {
+		if clientUIWords.shop_active != 0 {
 			C.sub_467650()
-			C.dword_5d4594_1098628 = 4
+			clientUIWords.shop_mode = 4
 		}
 	case 3804:
-		if C.dword_5d4594_1098624 != 0 {
-			if C.dword_5d4594_1098628 == 4 {
+		if clientUIWords.shop_active != 0 {
+			if clientUIWords.shop_mode == 4 {
 				sub_467680()
 			}
 			nox_client_setCursorType_477610(11)
-			C.dword_5d4594_1098628 = 2
+			clientUIWords.shop_mode = 2
 		}
 	case 3808:
 		offset := C.dword_5d4594_1107036 - 50
@@ -177,11 +177,11 @@ func sub_478650(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 	switch event {
 	case 5:
 		pos := shopMousePosition(arg)
-		if C.dword_5d4594_1098628 == 2 && sub_479880((*C.uint32_t)(unsafe.Pointer(&pos))) {
+		if clientUIWords.shop_mode == 2 && sub_479880((*C.uint32_t)(unsafe.Pointer(&pos))) {
 			sub_478730(&pos.field_0)
 		}
 	case 19, 20:
-		if C.dword_5d4594_1098628 == 2 {
+		if clientUIWords.shop_mode == 2 {
 			button := nox_xxx_wndGetChildByID_46B0C0(shopRoot(), 3808+int32(event)-19)
 			g2ServerText(shopRoot(), 16391, unsafe.Pointer(button), 0)
 		}
@@ -199,7 +199,7 @@ func sub_478970(win *nox_window, draw *C.nox_window_data) C.int {
 	r := GetClient().R2()
 	at := image.Pt(int(x), int(y))
 	r.DrawImageAt(shopImages.base, at)
-	switch C.dword_5d4594_1098628 {
+	switch clientUIWords.shop_mode {
 	case 2:
 		r.DrawImageAt(shopImages.trade, at)
 		sub_478C80()
@@ -258,7 +258,7 @@ func sub_478C80() C.int {
 
 //export sub_478E50
 func sub_478E50(win *nox_window, draw *C.nox_window_data, arg C.uintptr_t) C.int {
-	if C.dword_5d4594_1098628 == 2 {
+	if clientUIWords.shop_mode == 2 {
 		pos := shopMousePosition(arg)
 		col := (uint32(pos.field_0) - *g2ServerWord(1098380)) / 50
 		row := int32(uint32(pos.field_4)-*g2ServerWord(1098384)+uint32(C.dword_5d4594_1107036)) / 50

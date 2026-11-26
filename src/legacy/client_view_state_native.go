@@ -4,7 +4,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME2_2.h"
 
-extern uint32_t dword_5d4594_805820, nox_xxx_useAudio_587000_80772;
 */
 import "C"
 
@@ -18,13 +17,13 @@ import (
 func sub_430AA0(mode C.int) C.int {
 	switch mode {
 	case 1:
-		C.dword_5d4594_805820, C.nox_xxx_useAudio_587000_80772 = 1, 9
+		clientUIWords.mouse_primary, clientUIWords.audio_mask = 1, 9
 		return 0
 	case 2:
-		C.dword_5d4594_805820, C.nox_xxx_useAudio_587000_80772 = 2, 13
+		clientUIWords.mouse_primary, clientUIWords.audio_mask = 2, 13
 		return 0
 	default:
-		C.dword_5d4594_805820, C.nox_xxx_useAudio_587000_80772 = 0, 5
+		clientUIWords.mouse_primary, clientUIWords.audio_mask = 0, 5
 		return mode - 2
 	}
 }

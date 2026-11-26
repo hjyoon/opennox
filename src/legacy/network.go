@@ -163,7 +163,7 @@ func ClientGetServerPort() int {
 }
 
 func Sub_43AF90(v int) {
-	C.dword_5d4594_814548 = C.uint32_t(v)
+	clientUIWords.network_state = C.uint32_t(v)
 }
 
 func Nox_xxx_netSendPacket_4E5030(
@@ -543,6 +543,6 @@ func Nox_xxx_netCode2ChatBubble_48D850(a1 int) int {
 
 //export sub_43AF90
 func sub_43AF90(state C.int) C.int {
-	C.dword_5d4594_814548 = C.uint32_t(state)
+	clientUIWords.network_state = C.uint32_t(state)
 	return state
 }

@@ -93,7 +93,7 @@ static void special_death_generator_54e460(nox_object_t* u,uintptr_t* p,uint32_t
  for(int i=0;i<4;i++)w[i]=d->pre_collision[2+i];
 }
 static nox_object_t* special_death_parent_54e460(nox_object_t* u){return nox_xxx_findParentChainPlayer_4EC580(u);}
-static uint32_t special_death_type_54e460(const char* name){return (uint32_t)nox_xxx_getNameId_4E3AA0(name);}
+static uint32_t special_death_type_54e460(char* name){return (uint32_t)nox_xxx_getNameId_4E3AA0(name);}
 static nox_object_t* special_death_new_54e460(uint32_t id){return nox_xxx_newObjectWithTypeInd_4E3450((int32_t)id);}
 static void special_death_audio_54e460(uint32_t id,nox_object_t* u){nox_xxx_aud_501960((int32_t)id,u,0,0);}
 */

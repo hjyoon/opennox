@@ -97,8 +97,10 @@ static nox_test_mapgen_room_connections_522ca0_result nox_test_mapgen_room_conne
 	}
 	room_added = 1;
 
-	int2 room_cell = {0};
-	nox_xxx_mapGenRoundFloatToPtr_520DF0((float2*)(room + 20), &room_cell);
+	uint32_t cell_words[2];
+	nox_xxx_mapGenRoundFloatToPtr_520DF0((float2*)(room + 20), cell_words);
+	int2 room_cell;
+	memcpy(&room_cell, cell_words, sizeof(room_cell));
 	out.room_at_cell_address = (uintptr_t)nox_mapgenRoomAtCellNative_521290(&room_cell);
 	out.native_lines_returned_null = nox_mapgenConnectRoomLinesNative_522D30(theme) == NULL;
 	out.native_points_returned_null = nox_mapgenConnectRoomPointsNative_522F40(theme) == NULL;

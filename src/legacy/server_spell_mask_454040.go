@@ -4,7 +4,7 @@ package legacy
 #include <string.h>
 #include "GAME2.h"
 
-static uintptr_t nox_server_spell_mask_stack_call_454040(uint32_t* out) {
+static bool nox_server_spell_mask_stack_call_454040(uint32_t* out) {
 	struct {
 		uint32_t before;
 		uint32_t mask[5];
@@ -14,7 +14,7 @@ static uintptr_t nox_server_spell_mask_stack_call_454040(uint32_t* out) {
 	out[0] = snapshot.before;
 	memcpy(out + 1, snapshot.mask, sizeof(snapshot.mask));
 	out[6] = snapshot.after;
-	return (uintptr_t)snapshot.mask;
+	return (uintptr_t)snapshot.mask > UINT32_MAX;
 }
 */
 import "C"
@@ -25,7 +25,7 @@ func serverSpellMaskCall454040(mask *uint32) {
 	C.sub_454040((*C.uint32_t)(unsafe.Pointer(mask)))
 }
 
-func serverSpellMaskStackCall454040() (words [7]uint32, address uintptr) {
-	address = uintptr(C.nox_server_spell_mask_stack_call_454040((*C.uint32_t)(unsafe.Pointer(&words[0]))))
-	return words, address
+func serverSpellMaskStackCall454040() (words [7]uint32, above32Bits bool) {
+	above32Bits = bool(C.nox_server_spell_mask_stack_call_454040((*C.uint32_t)(unsafe.Pointer(&words[0]))))
+	return words, above32Bits
 }

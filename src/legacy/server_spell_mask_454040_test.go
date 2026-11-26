@@ -48,9 +48,9 @@ func TestServerSpellMask454040NativeStackAndPackedWords(t *testing.T) {
 			want[1+int(id)/32] &^= 1 << (uint(id) % 32)
 		}
 	}
-	got, address := serverSpellMaskStackCall454040()
-	if unsafe.Sizeof(uintptr(0)) == 8 && address <= math.MaxUint32 {
-		t.Fatalf("C stack mask address = %#x, want above 4 GiB", address)
+	got, above32Bits := serverSpellMaskStackCall454040()
+	if unsafe.Sizeof(uintptr(0)) == 8 && !above32Bits {
+		t.Fatal("C stack mask address must be above 4 GiB")
 	}
 	if got != want {
 		t.Fatalf("C stack snapshot = %#v, want %#v", got, want)

@@ -65,7 +65,7 @@ static void skull_control_54f9a0(nox_object_t* u,uintptr_t* p,uint32_t* w){
  if(u->data_update){skull_original_data_54f9a0* d=u->data_update;w[9]=d->scan;w[10]=d->fire;w[11]=d->state;w[12]=d->projectile;w[13]=d->enabled;}
  if(u->collide_data){skull_original_collide_54f9a0* d=u->collide_data;w[14]=(uint32_t)d->damage;w[15]=(uint32_t)d->field4;}
 }
-static uint32_t skull_type_54f9a0(const char* name){return (uint32_t)nox_xxx_getNameId_4E3AA0(name);}
+static uint32_t skull_type_54f9a0(char* name){return (uint32_t)nox_xxx_getNameId_4E3AA0(name);}
 static nox_object_t* skull_new_54f9a0(uint32_t id){return nox_xxx_newObjectWithTypeInd_4E3450((int32_t)id);}
 static void skull_audio_54f9a0(nox_object_t* u){nox_xxx_aud_501960(889,u,0,0);}
 static int skull_direction_54f9a0(nox_object_t* source,nox_object_t* target){return nox_server_testTwoPointsAndDirection_4E6E50((float2*)&source->x,(int16_t)source->direction1,(float2*)&target->x);}

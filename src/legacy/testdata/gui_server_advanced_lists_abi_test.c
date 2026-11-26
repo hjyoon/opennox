@@ -20,17 +20,8 @@ typedef void* (*rules_scan_fn)(char*);
 typedef int (*title_to_mask_fn)(wchar2_t*);
 typedef wchar2_t* (*mask_to_title_fn)(int);
 
-extern nox_window* dword_5d4594_1316708;
-extern nox_window* dword_5d4594_1316712;
-extern nox_window* dword_5d4594_1523024;
-extern nox_window* dword_5d4594_1523028;
-extern nox_window* dword_5d4594_1523032;
-extern nox_window* dword_5d4594_1523036;
-extern nox_window* dword_5d4594_1523040;
-extern nox_window* dword_5d4594_1523044;
-extern nox_window* dword_5d4594_1523048;
 
-#define ASSERT_NATIVE_WINDOW_GLOBAL(name) \
+#define ASSERT_NATIVE_WINDOW_SLOT(name) \
 	_Static_assert(_Generic(&(name), nox_window**: 1, default: 0), \
 		#name " must store a native window pointer")
 
@@ -38,20 +29,11 @@ _Static_assert(CHAR_BIT == 8, "bytes must remain eight bits");
 _Static_assert(sizeof(void*) == sizeof(uintptr_t),
 	"GUI callback payloads must remain native-width");
 
-ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->object_list);
-ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->object_filter);
-ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_names);
-ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_filter);
-ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_classes);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1316708);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1316712);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523024);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523028);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523032);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523036);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523040);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523044);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523048);
+ASSERT_NATIVE_WINDOW_SLOT(((nox_game2_server_windows_t*)0)->object_list);
+ASSERT_NATIVE_WINDOW_SLOT(((nox_game2_server_windows_t*)0)->object_filter);
+ASSERT_NATIVE_WINDOW_SLOT(((nox_game2_server_windows_t*)0)->spell_names);
+ASSERT_NATIVE_WINDOW_SLOT(((nox_game2_server_windows_t*)0)->spell_filter);
+ASSERT_NATIVE_WINDOW_SLOT(((nox_game2_server_windows_t*)0)->spell_classes);
 
 _Static_assert(_Generic(&nox_xxx_guiObjlistLoad_4530C0,
 	object_list_load_fn: 1, default: 0),

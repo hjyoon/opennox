@@ -8,8 +8,6 @@ package legacy
 #include "client__gui__servopts__objlst.h"
 #include "client__gui__servopts__spelllst.h"
 #include "client__gui__window.h"
-extern uint32_t dword_5d4594_1316704;
-extern nox_window *dword_5d4594_1316708, *dword_5d4594_1316712, *dword_5d4594_1316972;
 */
 import "C"
 
@@ -22,16 +20,28 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+var (
+	advancedServerWindow    *nox_window
+	advancedServerTab       *nox_window
+	advancedServerTabIndex  uint32
+	serverPerformanceWindow *nox_window
+)
+
 //export nox_xxx_loadAdvancedWnd_4BDC10
 func nox_xxx_loadAdvancedWnd_4BDC10(settings *C.int) C.int {
-	if C.dword_5d4594_1316708 != nil || settings == nil {
+	if advancedServerWindow != nil || settings == nil {
 		return 0
 	}
 	root := nox_new_window_from_file(internCStr("advanced.wnd"), C.nox_xxx_windowAdvancedServProc_4BDDB0)
-	C.dword_5d4594_1316708 = root
+	advancedServerWindow = root
 	if root == nil {
 		return 0
 	}
+	asWindow(root).AddCleanup(func() {
+		if advancedServerWindow == root {
+			advancedServerWindow, advancedServerTab = nil, nil
+		}
+	})
 	sub_46B120(root, nil)
 	sub_46C690(root)
 	nox_xxx_wndShowModalMB_46A8C0(root)
@@ -59,19 +69,19 @@ func applyAdvancedFilters(settings *server.Settings2) {
 
 //export sub_4BDC70
 func sub_4BDC70(settings *C.int) C.int {
-	root := C.dword_5d4594_1316708
+	root := advancedServerWindow
 	if settings == nil || root == nil {
 		return 0
 	}
 	if noxflags.HasGame(noxflags.GameHost) {
 		setAdvancedRadio(g2ServerChild(root, 10167), true)
-		C.dword_5d4594_1316704 = 0
+		advancedServerTabIndex = 0
 	} else {
 		setAdvancedRadio(g2ServerChild(root, 10164), true)
 		if rules := g2ServerChild(root, 10167); rules != nil {
 			g2ServerEnabled(rules, false)
 		}
-		C.dword_5d4594_1316704 = 1
+		advancedServerTabIndex = 1
 	}
 	applyAdvancedFilters((*server.Settings2)(unsafe.Pointer(settings)))
 	return sub_4BDD10()
@@ -79,12 +89,12 @@ func sub_4BDC70(settings *C.int) C.int {
 
 //export sub_4BDD10
 func sub_4BDD10() C.int {
-	root := C.dword_5d4594_1316708
+	root := advancedServerWindow
 	if root == nil {
 		return 0
 	}
 	var tab *nox_window
-	switch C.dword_5d4594_1316704 {
+	switch advancedServerTabIndex {
 	case 0:
 		tab = sub_4CEBA0(root, sub_4165B0())
 	case 1:
@@ -96,7 +106,7 @@ func sub_4BDD10() C.int {
 	default:
 		return 0
 	}
-	C.dword_5d4594_1316712 = tab
+	advancedServerTab = tab
 	if tab == nil {
 		return 0
 	}
@@ -127,31 +137,31 @@ func nox_xxx_windowAdvancedServProc_4BDDB0(win *nox_window, event C.int, control
 	if id < 10164 || id > 10167 {
 		return 1
 	}
-	if tab := C.dword_5d4594_1316712; tab != nil {
+	if tab := advancedServerTab; tab != nil {
 		C.nox_xxx_windowDestroyMB_46C4E0(tab)
-		C.dword_5d4594_1316712 = nil
+		advancedServerTab = nil
 	}
-	C.dword_5d4594_1316704 = C.uint32_t((id - 10163) % 4)
+	advancedServerTabIndex = uint32((id - 10163) % 4)
 	sub_4BDD10()
 	return 1
 }
 
 //export sub_4BDF30
 func sub_4BDF30() C.int {
-	root := C.dword_5d4594_1316708
+	root := advancedServerWindow
 	if root == nil {
 		return 0
 	}
 	C.nox_xxx_wnd_46C6E0(root)
 	C.nox_xxx_windowDestroyMB_46C4E0(root)
-	C.dword_5d4594_1316708 = nil
-	C.dword_5d4594_1316712 = nil
+	advancedServerWindow = nil
+	advancedServerTab = nil
 	return C.int(nox_xxx_windowFocus_46B500(nil))
 }
 
 //export sub_4BDF70
 func sub_4BDF70(settings *C.int) C.int {
-	if C.dword_5d4594_1316708 == nil {
+	if advancedServerWindow == nil {
 		return 0
 	}
 	return sub_4BDF90(settings)
@@ -163,7 +173,7 @@ func sub_4BDF90(settings *C.int) C.int {
 		return 0
 	}
 	applyAdvancedFilters((*server.Settings2)(unsafe.Pointer(settings)))
-	switch C.dword_5d4594_1316704 {
+	switch advancedServerTabIndex {
 	case 1:
 		return sub_454120()
 	case 2, 3:
@@ -196,7 +206,12 @@ func sub_4BDFD0() C.int {
 	if root == nil {
 		return 0
 	}
-	C.dword_5d4594_1316972 = root
+	serverPerformanceWindow = root
+	asWindow(root).AddCleanup(func() {
+		if serverPerformanceWindow == root {
+			serverPerformanceWindow = nil
+		}
+	})
 	sub_46B120(root, nil)
 	sub_46C690(root)
 	nox_xxx_wndShowModalMB_46A8C0(root)
@@ -215,7 +230,7 @@ func sub_4BDFD0() C.int {
 
 //export sub_4BE120
 func sub_4BE120(ptr unsafe.Pointer) C.int {
-	root := C.dword_5d4594_1316972
+	root := serverPerformanceWindow
 	if ptr == nil || root == nil {
 		return 0
 	}
@@ -270,7 +285,7 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 		return 1
 	}
 	if event == 16387 {
-		entry := g2ServerChild(C.dword_5d4594_1316972, int(int32(arg2)))
+		entry := g2ServerChild(serverPerformanceWindow, int(int32(arg2)))
 		if entry == nil || uint16(arg1) == 1 {
 			return 0
 		}
@@ -293,7 +308,7 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 		field := settings[advancedPerfLockMode:]
 		binary.LittleEndian.PutUint32(field, binary.LittleEndian.Uint32(field)^1)
 	case 2106, 2107, 2108, 2109:
-		if entry := g2ServerChild(C.dword_5d4594_1316972, 2110); entry != nil {
+		if entry := g2ServerChild(serverPerformanceWindow, 2110); entry != nil {
 			g2ServerEnabled(entry, id == 2109)
 		}
 		binary.LittleEndian.PutUint32(settings[advancedPerfRateMode:], uint32(id-2106))
@@ -306,13 +321,13 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 
 //export sub_4BE610
 func sub_4BE610() C.int {
-	root := C.dword_5d4594_1316972
+	root := serverPerformanceWindow
 	if root == nil {
 		return 0
 	}
 	C.nox_xxx_wnd_46C6E0(root)
 	C.nox_xxx_windowDestroyMB_46C4E0(root)
-	C.dword_5d4594_1316972 = nil
+	serverPerformanceWindow = nil
 	return C.int(nox_xxx_windowFocus_46B500(nil))
 }
 

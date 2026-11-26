@@ -718,6 +718,16 @@ and player and team list heads in native memory. The fixtures use the
 same live addresses as the Go handlers. This removes 26 definitions
 from `vardefs.c`.
 
+### Advanced server and in-game options windows
+
+The original advanced server and rule-list constructors publish their
+roots at `0x715CF8` and `0x7482E4`. Go holds the roots, tab selection,
+rule controls, performance window, and the in-game options and backdrop
+references. The tab selection stays an unsigned 32-bit value. Window
+cleanup releases the borrowed rule, object, spell, and audio controls
+before the GUI allocator can recycle them. This removes 17 definitions
+from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

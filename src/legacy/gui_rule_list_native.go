@@ -12,8 +12,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 #include "client__gui__window.h"
 #include "client__video__draw_common.h"
-extern nox_window *dword_5d4594_1523024, *dword_5d4594_1523028, *dword_5d4594_1523032;
-extern nox_window *dword_5d4594_1523036, *dword_5d4594_1523040, *dword_5d4594_1523044, *dword_5d4594_1523048;
 */
 import "C"
 
@@ -26,21 +24,23 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-func clearRuleListWindows() {
-	C.dword_5d4594_1523024 = nil
-	C.dword_5d4594_1523028 = nil
-	C.dword_5d4594_1523032 = nil
-	C.dword_5d4594_1523036 = nil
-	C.dword_5d4594_1523040 = nil
-	C.dword_5d4594_1523044 = nil
-	C.dword_5d4594_1523048 = nil
+type ruleListControls struct {
+	root    *nox_window
+	list    *nox_window
+	name    *nox_window
+	save    *nox_window
+	replace *nox_window
+	load    *nox_window
+	remove  *nox_window
 }
+
+var ruleListWindows ruleListControls
 
 //export sub_4CEBA0
 func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
-	clearRuleListWindows()
+	ruleListWindows = ruleListControls{}
 	root := nox_new_window_from_file(internCStr("rulelist.wnd"), C.sub_4CF060)
-	C.dword_5d4594_1523024 = root
+	ruleListWindows.root = root
 	if root == nil {
 		return nil
 	}
@@ -50,22 +50,27 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 	replace := g2ServerChild(root, 10173)
 	load := g2ServerChild(root, 10174)
 	remove := g2ServerChild(root, 10175)
-	C.dword_5d4594_1523028 = list
-	C.dword_5d4594_1523032 = edit
-	C.dword_5d4594_1523036 = save
-	C.dword_5d4594_1523040 = replace
-	C.dword_5d4594_1523044 = load
-	C.dword_5d4594_1523048 = remove
+	ruleListWindows.list = list
+	ruleListWindows.name = edit
+	ruleListWindows.save = save
+	ruleListWindows.replace = replace
+	ruleListWindows.load = load
+	ruleListWindows.remove = remove
 	background := g2ServerChild(root, 10176)
 	thumb := g2ServerChild(root, 10179)
 	up := g2ServerChild(root, 10177)
 	down := g2ServerChild(root, 10178)
 	if list == nil || edit == nil || save == nil || replace == nil || load == nil || remove == nil ||
 		background == nil || thumb == nil || up == nil || down == nil || list.widget_data == nil || thumb.field_100 == nil {
-		clearRuleListWindows()
+		ruleListWindows = ruleListControls{}
 		C.nox_xxx_windowDestroyMB_46C4E0(root)
 		return nil
 	}
+	asWindow(root).AddCleanup(func() {
+		if ruleListWindows.root == root {
+			ruleListWindows = ruleListControls{}
+		}
+	})
 	nox_xxx_wndSetDrawFn_46B340(background, C.sub_4CEED0)
 	sub_46B120(root, parent)
 	slider := unsafe.Pointer(Nox_xxx_gLoadImg("UISlider").C())
@@ -78,7 +83,7 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 	data := (*C.nox_scrollListBox_data)(list.widget_data)
 	data.field_9, data.field_7, data.field_8 = unsafe.Pointer(thumb), unsafe.Pointer(up), unsafe.Pointer(down)
 	refreshRuleList4CED40(mapName)
-	return C.dword_5d4594_1523024
+	return ruleListWindows.root
 }
 
 //export nox_gui_refresh_rule_list_4CED40
@@ -87,7 +92,7 @@ func nox_gui_refresh_rule_list_4CED40(mapName *C.char) C.uintptr_t {
 }
 
 func refreshRuleList4CED40(mapName *C.char) uintptr {
-	list := C.dword_5d4594_1523028
+	list := ruleListWindows.list
 	if mapName == nil || list == nil {
 		return ^uintptr(0)
 	}
@@ -149,9 +154,9 @@ func setRuleListEnabled(win *nox_window, enabled bool) {
 
 //export sub_4CEED0
 func sub_4CEED0(win *nox_window, draw *C.nox_window_data) C.int {
-	list, edit := C.dword_5d4594_1523028, C.dword_5d4594_1523032
-	save, replace := C.dword_5d4594_1523036, C.dword_5d4594_1523040
-	load, remove := C.dword_5d4594_1523044, C.dword_5d4594_1523048
+	list, edit := ruleListWindows.list, ruleListWindows.name
+	save, replace := ruleListWindows.save, ruleListWindows.replace
+	load, remove := ruleListWindows.load, ruleListWindows.remove
 	if win == nil || draw == nil || list == nil || edit == nil || save == nil || replace == nil || load == nil || remove == nil {
 		return 1
 	}
@@ -201,7 +206,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 	if event == 16387 {
 		return editRuleListTitle(control, int32(eventArg))
 	}
-	list, edit := C.dword_5d4594_1523028, C.dword_5d4594_1523032
+	list, edit := ruleListWindows.list, ruleListWindows.name
 	if event != 16391 || control == nil || uintptr(unsafe.Pointer(control)) == 1 || list == nil || edit == nil {
 		return 1
 	}
@@ -230,7 +235,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		}
 		g2ServerText(list, 16397, unsafe.Pointer(title), ^uintptr(0))
 		g2ServerText(edit, 16414, unsafe.Pointer(memmap.PtrUint16(0x5D4594, 1523056)), 0)
-		setRuleListEnabled(C.dword_5d4594_1523036, false)
+		setRuleListEnabled(ruleListWindows.save, false)
 	case 10173:
 		sub_416580()
 		selected := int32(g2ServerEvent(list, 16404, 0, 0))
@@ -287,7 +292,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 }
 
 func editRuleListTitle(control *nox_window, id int32) C.int {
-	root := C.dword_5d4594_1523024
+	root := ruleListWindows.root
 	if root == nil || uintptr(unsafe.Pointer(control)) == 1 {
 		return 0
 	}
@@ -296,7 +301,7 @@ func editRuleListTitle(control *nox_window, id int32) C.int {
 		return 0
 	}
 	text := ruleListText(edit, 16413, 0)
-	save := C.dword_5d4594_1523036
+	save := ruleListWindows.save
 	if id == 10171 && text != nil && *text != 0 && save != nil {
 		name := GoString(sub_4165B0())
 		wide, free := g2ServerTemp(len(name) + 1)

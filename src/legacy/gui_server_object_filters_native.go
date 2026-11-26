@@ -19,6 +19,11 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	if root == nil {
 		return nil
 	}
+	asWindow(root).AddCleanup(func() {
+		if serverSharedWindows.object_filter == root {
+			serverSharedWindows.object_filter, serverSharedWindows.object_list = nil, nil
+		}
+	})
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_453350))
 	C.sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
@@ -26,7 +31,7 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	serverSharedWindows.object_list = list
 	if list == nil {
 		nox_xxx_windowDestroyMB_46C4E0(root)
-		serverSharedWindows.object_filter = nil
+		serverSharedWindows.object_filter, serverSharedWindows.object_list = nil, nil
 		return nil
 	}
 	sub_4532E0()

@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__servopts__advserv.h"
 #include "client__gui__servopts__general.h"
 
-extern nox_window *dword_5d4594_1309812, *dword_5d4594_1316972;
 
 static void nox_format_server_audio_cutoff(wchar2_t* out, const wchar2_t* format, int value) {
 	nox_swprintf(out, format, value);
@@ -22,6 +21,8 @@ import (
 
 const serverGeneralStrings = `C:\NoxPost\src\client\Gui\ServOpts\general.c`
 
+var serverGeneralWindow *nox_window
+
 func serverConnectionLabel(offset uintptr, line int32) *wchar2_t {
 	key := (*C.char)(g2ServerPointerSlot(0x587000, offset))
 	if key == nil {
@@ -36,7 +37,7 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 	if nox_xxx_guiFontHeightMB_43F320(nil) > 10 {
 		lang = 2
 	}
-	if C.dword_5d4594_1309812 != nil {
+	if serverGeneralWindow != nil {
 		return nil
 	}
 	table := int32(173556)
@@ -49,10 +50,15 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 	}
 	proc := unsafe.Pointer(C.nox_xxx_windowServerOptionsGeneralProc_4AD5D0)
 	root := nox_new_window_from_file(path, proc)
-	C.dword_5d4594_1309812 = root
+	serverGeneralWindow = root
 	if root == nil {
 		return nil
 	}
+	asWindow(root).AddCleanup(func() {
+		if serverGeneralWindow == root {
+			serverGeneralWindow = nil
+		}
+	})
 	C.sub_46B120(root, parent)
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_4AD570))
 	if spells := g2ServerChild(root, 10306); spells != nil && noxflags.HasGame(noxflags.GameModeCTF|noxflags.GameModeElimination) {
@@ -81,12 +87,12 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 			g2ServerEnabled(video, false)
 		}
 	}
-	return C.dword_5d4594_1309812
+	return serverGeneralWindow
 }
 
 //export sub_4AD4B0
 func sub_4AD4B0() C.int {
-	root := C.dword_5d4594_1309812
+	root := serverGeneralWindow
 	if root == nil {
 		return 0
 	}
@@ -117,7 +123,7 @@ func markServerGeneralChoice(root *C.nox_window, id int) {
 
 //export sub_4AD840
 func sub_4AD840() C.int {
-	root := C.dword_5d4594_1309812
+	root := serverGeneralWindow
 	if root == nil {
 		return 0
 	}
@@ -167,6 +173,6 @@ func sub_4BE2C0(value C.int) C.int {
 	dst := (*C.wchar2_t)(g2ServerMem(1316716))
 	format := g2ServerLoad("AudCullDesc", `C:\NoxPost\src\client\Gui\ServOpts\advserv.c`, 71)
 	C.nox_format_server_audio_cutoff(dst, format, value)
-	control := g2ServerChild(C.dword_5d4594_1316972, 2120)
+	control := g2ServerChild(serverPerformanceWindow, 2120)
 	return C.int(g2ServerText(control, 16385, unsafe.Pointer(dst), ^uintptr(0)))
 }

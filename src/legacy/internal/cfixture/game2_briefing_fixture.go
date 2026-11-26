@@ -5,11 +5,22 @@ package cfixture
 #include "GAME2.h"
 #include "quest_win_screen_450770.h"
 extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_587000_122848,dword_5d4594_831092,dword_5d4594_831260,dword_5d4594_831244;
+extern uint32_t dword_587000_122848,dword_5d4594_831260,dword_5d4594_831244;
 extern uintptr_t dword_5d4594_832484;
 extern nox_window*dword_5d4594_831236,*nox_wnd_briefing_831232;
 static size_t g2bt_layout(int f){switch(f){case 0:return sizeof(nox_thing);case 1:return offsetof(nox_thing,pri_class);case 2:return offsetof(nox_thing,sub_class);case 3:return sizeof(nox_quest_stats_row_450770);case 4:return offsetof(nox_quest_stats_row_450770,score);default:return (size_t)-1;}}
-static uint32_t g2bt_word(int f,uint32_t v,int set){uint32_t*p;switch(f){case 0:p=&dword_587000_122848;break;case 1:p=&dword_5d4594_831092;break;case 2:p=&dword_5d4594_831220;break;case 3:p=&dword_5d4594_831260;break;default:p=&dword_5d4594_831244;}if(set)*p=v;return*p;}
+static uint32_t g2bt_word(int f, uint32_t value, int set) {
+    uint32_t* word;
+    switch (f) {
+    case 0: word = &dword_587000_122848; break;
+    case 1: word = nox_dialog_audio_driver_word(); break;
+    case 2: word = &dword_5d4594_831220; break;
+    case 3: word = &dword_5d4594_831260; break;
+    default: word = &dword_5d4594_831244; break;
+    }
+    if (set) *word = value;
+    return *word;
+}
 static void* g2bt_pointer(int f,void*p,int set){void**q;switch(f){case 0:q=(void**)&dword_5d4594_831236;break;case 1:q=(void**)&nox_wnd_briefing_831232;break;default:q=(void**)&dword_5d4594_832484;}if(set)*q=p;return*q;}
 static int g2bt_call(int op,int v,void*p){switch(op){case 0:return sub_44D040(v);case 1:return sub_44D060(v);case 2:return sub_44D090(v);case 3:sub_44D960();return 0;case 4:return sub_44D970();case 5:return sub_44D990();case 6:return (unsigned char)sub_450760((char)v);case 7:return sub_450750();case 8:nox_gui_setQuestStage_450B00(v);return 0;case 9:return nox_gui_getQuestStage_450B10();case 10:return sub_4505E0();case 11:return sub_44E8D0(p,p);default:return nox_xxx_wndProc_44E6E0(p,v,(uintptr_t)p,(uintptr_t)p);}}
 static double g2bt_scroll(void){return sub_44E8B0();}

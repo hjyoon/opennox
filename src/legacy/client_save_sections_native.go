@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME1_1.h"
 #include "GAME3_3.h"
-extern unsigned int nox_player_netCode_85319C;
 */
 import "C"
 
@@ -54,7 +53,7 @@ func saveClientGUISection(cf *cryptfile.CryptFile, arg unsafe.Pointer) error {
 		}
 	}
 	if int16(version) >= 3 {
-		player := nox_common_playerInfoGetByID_417040(int32(C.nox_player_netCode_85319C))
+		player := nox_common_playerInfoGetByID_417040(int32(clientPlayerNetCode))
 		order := byte(4)
 		if player != nil {
 			order = byte(player.field_3648)
@@ -164,7 +163,7 @@ func sub_41B3B0() C.int {
 //export nox_xxx_netSavePlayer_41CE00
 func nox_xxx_netSavePlayer_41CE00() C.int {
 	packet := [3]byte{byte(netmsg.MSG_REQUEST_SAVE_PLAYER)}
-	binary.LittleEndian.PutUint16(packet[1:], uint16(C.nox_player_netCode_85319C))
+	binary.LittleEndian.PutUint16(packet[1:], uint16(clientPlayerNetCode))
 	nox_xxx_netClientSend2_4E53C0(31, C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 1)
 	return 1
 }

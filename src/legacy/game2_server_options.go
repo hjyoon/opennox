@@ -6,9 +6,19 @@ package legacy
 */
 import "C"
 import (
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var serverOptionsNameInput *C.nox_window
+
+// The rule list head returned to legacy callers has a stable native address.
+var serverOptionsRules = func() *C.nox_list_item_t {
+	head, _ := alloc.New(C.nox_list_item_t{})
+	nox_common_list_clear_425760(head)
+	return head
+}()
 
 func g2ServerAt(p *C.char, off uintptr) unsafe.Pointer { return unsafe.Add(unsafe.Pointer(p), off) }
 func g2ServerMode(p *C.char) uint16                    { return *(*uint16)(g2ServerAt(p, 52)) }
@@ -37,7 +47,7 @@ func sub_457B60(input *C.char) C.int {
 	buf, free := g2ServerTemp(100)
 	defer free()
 	copyLegacyCString(buf, (*byte)(unsafe.Pointer(nox_xxx_serverOptionsGetServername_40A4C0())))
-	g2ServerText(C.dword_5d4594_1046512, 16414, unsafe.Pointer(&buf[0]), 0)
+	g2ServerText(serverOptionsNameInput, 16414, unsafe.Pointer(&buf[0]), 0)
 	C.sub_459CD0()
 	id := 10119
 	if g2ServerGame(128) {
@@ -197,10 +207,10 @@ func sub_459150() C.char {
 	}
 	C.nox_xxx_spellEnableAll_424BD0()
 	C.sub_4537F0()
-	C.sub_57AAA0(internCStr("user.rul"), C.nox_xxx_cliGamedataGet_416590(1), (*C.int)(unsafe.Pointer(&C.nox_gui_server_options_rules)))
+	C.sub_57AAA0(internCStr("user.rul"), C.nox_xxx_cliGamedataGet_416590(1), (*C.int)(unsafe.Pointer(serverOptionsRules)))
 	C.sub_57A950(C.nox_server_currentMapGetFilename_409B30())
 	flags := C.short(C.nox_common_gameFlags_getVal_40A5B0())
-	C.sub_57A1E0((*C.int)(unsafe.Pointer(C.nox_xxx_cliGamedataGet_416590(0))), internCStr("user.rul"), (*C.int)(unsafe.Pointer(&C.nox_gui_server_options_rules)), 3, flags)
+	C.sub_57A1E0((*C.int)(unsafe.Pointer(C.nox_xxx_cliGamedataGet_416590(0))), internCStr("user.rul"), (*C.int)(unsafe.Pointer(serverOptionsRules)), 3, flags)
 	return C.char(uintptr(unsafe.Pointer(nox_xxx_guiServerOptionsHide_4597E0(0))))
 }
 
@@ -343,7 +353,7 @@ func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
 		C.dword_5d4594_1046536 = nil
 	}
 	if save != 0 {
-		result := sub_57ADF0((*C.int)(unsafe.Pointer(&C.nox_gui_server_options_rules)))
+		result := sub_57ADF0((*C.int)(unsafe.Pointer(serverOptionsRules)))
 		C.dword_587000_129656 = 1
 		return result
 	}
@@ -351,14 +361,14 @@ func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
 }
 
 //export sub_459870
-func sub_459870() *C.char { return (*C.char)(unsafe.Pointer(&C.nox_gui_server_options_rules)) }
+func sub_459870() *C.char { return (*C.char)(unsafe.Pointer(serverOptionsRules)) }
 
 //export sub_459A40
 func sub_459A40(name *C.char) C.int {
 	wide, freeWide := g2ServerTemp(100)
 	defer freeWide()
 	copyLegacyCString(wide[:16], (*byte)(unsafe.Pointer(name)))
-	return C.int(g2ServerText(C.dword_5d4594_1046512, 16414, unsafe.Pointer(&wide[0]), 0))
+	return C.int(g2ServerText(serverOptionsNameInput, 16414, unsafe.Pointer(&wide[0]), 0))
 }
 
 //export nox_game2_server_apply_459AA0
@@ -366,7 +376,7 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	narrow, free := alloc.Make([]byte{}, 100)
 	defer free()
 	buf := (*C.char)(unsafe.Pointer(&narrow[0]))
-	name := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046512, 16413, 0, 0)))
+	name := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsNameInput, 16413, 0, 0)))
 	copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(name)))
 	C.strncpy((*C.char)(unsafe.Add(output, 9)), buf, 15)
 	*(*uint16)(unsafe.Add(output, 52)) = uint16(C.sub_459C10())

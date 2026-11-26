@@ -5,7 +5,25 @@ import (
 	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
+
+func TestGame2ServerNativeRulesHead(t *testing.T) {
+	head := cfixture.Game2RulesHead()
+	if head != unsafe.Pointer(serverOptionsRules) {
+		t.Fatalf("rules head = %p, want %p", head, serverOptionsRules)
+	}
+	runtime.GC()
+	if got := cfixture.Game2RulesHead(); got != head {
+		t.Fatalf("rules head after GC = %p, want %p", got, head)
+	}
+	for i, link := range unsafe.Slice((*unsafe.Pointer)(head), 3) {
+		if link != head {
+			t.Fatalf("empty rules head field %d = %p, want %p", i, link, head)
+		}
+	}
+}
 
 func TestGame2ServerNativeOptionsWindowGetter(t *testing.T) {
 	// Fixture field8 is the actual C-owned nox_window* global. The getter

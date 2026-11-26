@@ -537,6 +537,46 @@ The tests check each native offset, address bits above 4 GiB on
 The quickbar drag-out handler checks all 245 cases captured from the
 original `0x45EF50` routine.
 
+### Book, server options, and briefing storage
+
+Go initializes the book's 12 window and image pointer slots in native
+memory for the lifetime of the process. The slots occupy 48 bytes on
+32-bit targets and 96 bytes on 64-bit targets. The retained C book
+reference and Go use the same native slots. The local player netcode
+continues to use a 32-bit unsigned value across the book, team, chat,
+save, and HUD paths.
+
+The original `0x459870` returns the address of the server rules list
+head at `0x6D3B58`. The Go initializer allocates a stable head in native
+memory and sets all three links to its address. The list head occupies
+12 or 24 bytes, depending on pointer width. The options loader binds
+the server name input as a native window pointer for child 10101.
+
+In the original, `0x44D970` reads a 32-bit value at `0x69F408` and
+sets the briefing flag when the value is nonzero. The Go audio driver
+keeps the native handle and supplies the 32-bit value through the
+existing callback. The dialog fallback starts at 1 and changes on the
+first successful dialog read.
+
+Removing `game2_native_data.c` leaves 29 top-level legacy C files. The
+standard 64-bit build selects 26 files with 54 C function bodies. The
+standard 32-bit build selects 28 files with 56 bodies. The safe tag
+adds one C file and four bodies to each profile.
+
+The remaining storage definitions are in `vardefs.c` and
+`common__system__team.c`. Clang reports 676 definitions in
+`vardefs.c`, including 406 `uint32_t` words, 137 window pointers and
+two initialized drawing callback pointers. The team file contains nine
+32-bit color cells.
+
+| Remaining boundary | Files |
+| --- | --- |
+| Native variadic argument lists and host formatting | `cgo_fs.c`, `common__log.c`, `game3_2_abi.c`, `game4_3_abi.c`, `network_line_message_4d9eb0.c`, `noxstring_format_abi.c` |
+| Legacy pointer, tag and scalar conversions | `client_chat_bubble_abi.c`, `client_death_feed_abi.c`, `client_render_clip_abi.c`, `common__object__armrlook.c`, `common__object__weaplook.c`, `game1_split_abi.c`, `game2_book_abi.c`, `game2_quickbar_abi.c`, `game2_server_abi.c`, `game3_class_config_options_abi.c`, `game3_map_effect_abi.c`, `game4_gold_consumers_abi.c`, `game4_map_archive_abi.c`, `game4_player_abi.c`, `gui_input_config_abi.c`, `mapgen_area_records_abi.c`, `mapgen_legacy_ptr.c` |
+| Raw float argument words on 32-bit targets | `map_radial_damage_4e25b0.c`, `objects_velocity_5118a0.c` |
+| Indirect damage and sound callback frames | `raw_default_damage_native_bridge_4e0b30.c` |
+| AddressSanitizer memory and string wrappers | `cgo_safe.c` |
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

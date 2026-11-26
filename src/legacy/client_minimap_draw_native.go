@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 
 extern int nox_win_width, nox_win_height;
-extern unsigned int nox_player_netCode_85319C;
 extern uint32_t dword_8531A0_2572;
 extern uint32_t nox_color_black_2650656, nox_color_white_2523948, nox_color_blue_2650684;
 */
@@ -304,7 +303,7 @@ func nox_xxx_cliDrawMinimap_472600(_ *C.nox_drawable, layer C.int) C.int {
 		view.drawAI()
 	}
 	local := (*nox_drawable)(*memmap.PtrPtr(0x852978, 8))
-	team := teamObjectByNetCode418C80(uint32(C.nox_player_netCode_85319C))
+	team := teamObjectByNetCode418C80(clientPlayerNetCode)
 	view.drawTrackedObjects(local)
 	view.drawPlayers(local, team)
 	return sub_49F860()

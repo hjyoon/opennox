@@ -6,6 +6,8 @@ package legacy
 import "C"
 import "unsafe"
 
+var flagballTeamBorder *C.nox_video_bag_image_t
+
 //export sub_455A00
 func sub_455A00(show C.int) C.int {
 	w := C.dword_5d4594_1045604
@@ -17,7 +19,7 @@ func sub_455A00(show C.int) C.int {
 
 //export sub_455A50
 func sub_455A50(count C.char) C.char {
-	C.nox_xxx_objGetTeamByNetCode_418C80(C.int(C.nox_player_netCode_85319C))
+	C.nox_xxx_objGetTeamByNetCode_418C80(C.int(clientPlayerNetCode))
 	if g2ServerEngine(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) {
 		return 0
 	}
@@ -131,7 +133,7 @@ func sub_455F10(show C.int) C.int {
 
 //export sub_455F60
 func sub_455F60() C.int {
-	C.nox_xxx_objGetTeamByNetCode_418C80(C.int(C.nox_player_netCode_85319C))
+	C.nox_xxx_objGetTeamByNetCode_418C80(C.int(clientPlayerNetCode))
 	if g2ServerEngine(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) {
 		return 0
 	}
@@ -174,7 +176,7 @@ func sub_456070() C.int {
 		}
 		C.nox_window_set_all_funcs(w, nil, unsafe.Pointer(C.sub_4560D0), nil)
 		sub_455F10(0)
-		C.nox_fb_flag_team_border = (*C.nox_video_bag_image_t)(C.nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder")))
+		flagballTeamBorder = (*C.nox_video_bag_image_t)(C.nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder")))
 	}
 	return 1
 }
@@ -186,8 +188,8 @@ func sub_4560D0(w *C.nox_window, d *C.nox_window_data) C.int {
 	if d.bg_image != nil {
 		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), C.int(x), C.int(y))
 	}
-	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && C.nox_fb_flag_team_border != nil {
-		C.nox_client_drawImageAt_47D2C0(C.nox_fb_flag_team_border, C.int(x)-4, C.int(y)-4)
+	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && flagballTeamBorder != nil {
+		C.nox_client_drawImageAt_47D2C0(flagballTeamBorder, C.int(x)-4, C.int(y)-4)
 	}
 	return 1
 }

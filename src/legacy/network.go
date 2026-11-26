@@ -19,7 +19,6 @@ package legacy
 extern unsigned int dword_5d4594_2649712;
 extern unsigned int dword_5d4594_2660032;
 extern uint32_t dword_5d4594_2650652;
-extern unsigned int nox_player_netCode_85319C;
 extern uint32_t dword_5d4594_1200804;
 extern uint32_t dword_5d4594_1200832;
 extern uint32_t dword_5d4594_1563276;

@@ -15,9 +15,6 @@ extern nox_things_imageRef_t* dword_5d4594_1046924;
 extern nox_things_imageRef_t* dword_5d4594_1046928;
 extern nox_window* dword_5d4594_1046944;
 extern nox_window* dword_5d4594_1046948;
-extern nox_video_bag_image_t* nox_book_background_image;
-extern nox_video_bag_image_t* nox_book_guide_tab_lit_image;
-extern nox_video_bag_image_t* nox_book_spell_tab_lit_image;
 
 static inline void nox_book_format_level(wchar2_t* dst, const wchar2_t* format, int level) {
 	nox_swprintf(dst, format, level);
@@ -182,10 +179,10 @@ func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
 	page := bookPageLayout{int32(x), int32(y), nox_xxx_guiFontHeightMB_43F320(nil)}
 	C.dword_5d4594_1046656 = C.uint32_t(page.fontHeight + 2)
 	nox_xxx_drawSetTextColor_434390(memmap.Int32(0x5D4594, 1046880))
-	nox_client_drawImageAt_47D2C0(C.nox_book_background_image, page.x-24, page.y-76)
-	tab := C.nox_book_spell_tab_lit_image
+	nox_client_drawImageAt_47D2C0(bookUI.background, page.x-24, page.y-76)
+	tab := bookUI.spell_tab_lit
 	if C.dword_5d4594_1046872 != 0 {
-		tab = C.nox_book_guide_tab_lit_image
+		tab = bookUI.guide_tab_lit
 	}
 	nox_client_drawImageAt_47D2C0(tab, page.x-24, page.y-76)
 

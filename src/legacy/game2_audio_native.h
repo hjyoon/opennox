@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include "memfile.h"
 
+uint32_t* nox_dialog_audio_driver_word(void);
+
 /* Private native layouts. The original sound-definition wire/scalar record
  * remains exactly 200 bytes. Its old pointer/list slots are NOT native slots.
  * Names and list membership live in the Go-owned sidecar, pointing only to

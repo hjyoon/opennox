@@ -119,7 +119,7 @@ func nox_xxx_bookSetColor_45AC40() C.int {
 
 //export nox_client_toggleSpellbook_45AC70
 func nox_client_toggleSpellbook_45AC70() {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(C.nox_win_unk1) != 0 {
+	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 {
 		nox_xxx_bookShowMB_45AD70(0)
 	} else {
 		nox_xxx_bookHideMB_45ACA0(0)
@@ -128,7 +128,7 @@ func nox_client_toggleSpellbook_45AC70() {
 
 //export nox_xxx_bookHideMB_45ACA0
 func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(C.nox_win_unk1) != 0 || C.dword_5d4594_1047520 == 1 {
+	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 || C.dword_5d4594_1047520 == 1 {
 		return 0
 	}
 	C.dword_5d4594_1046864 = 0
@@ -137,10 +137,10 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 	if C.dword_5d4594_1046872 != 0 {
 		C.dword_5d4594_1046868 = 1
 	}
-	if C.nox_xxx_wndGetCaptureMain_46AE00() == C.nox_win_unk1 {
-		C.nox_xxx_wndClearCaptureMain_46ADE0(C.nox_win_unk1)
+	if C.nox_xxx_wndGetCaptureMain_46AE00() == bookUI.list_window {
+		C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 	}
-	game2BookHide(C.nox_win_unk1, 1)
+	game2BookHide(bookUI.list_window, 1)
 	game2BookSound(787)
 	if animate != 0 {
 		C.nox_xxx_aNox_cfg_0_587000_132132 = 1
@@ -220,7 +220,7 @@ func nox_xxx_book_45B010(force C.int) {
 		if C.dword_5d4594_1046872 != 0 {
 			C.dword_5d4594_1046868 = 1
 		}
-		C.nox_xxx_wndShowModalMB_46A8C0(C.nox_win_unk1)
+		C.nox_xxx_wndShowModalMB_46A8C0(bookUI.list_window)
 		game2BookSound(786)
 	}
 }
@@ -241,7 +241,7 @@ func nox_xxx_bookClickCreature_45B200() C.int {
 
 //export sub_45CFC0
 func sub_45CFC0() C.int {
-	return C.int((^uint8(C.nox_xxx_wndGetFlags_46ADA0(C.nox_win_unk1)) >> 4) & 1)
+	return C.int((^uint8(C.nox_xxx_wndGetFlags_46ADA0(bookUI.list_window)) >> 4) & 1)
 }
 
 //export sub_45D9B0

@@ -73,7 +73,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 //export game2_book_forward_word
 func game2_book_forward_word(kind C.uintptr_t, id C.int, position *C.int2) C.uintptr_t {
 	nox_xxx_bookShowMB_45AD70(1)
-	C.nox_window_setPos_46A9B0(C.nox_win_unk1, position.field_0, position.field_4)
+	C.nox_window_setPos_46A9B0(bookUI.list_window, position.field_0, position.field_4)
 	token := uintptr(kind)
 	count := 0
 	switch token {
@@ -93,7 +93,7 @@ func game2_book_forward_word(kind C.uintptr_t, id C.int, position *C.int2) C.uin
 
 //export game2_book_ability_reward
 func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
-	player := C.nox_common_playerInfoGetByID_417040(C.int(C.nox_player_netCode_85319C))
+	player := C.nox_common_playerInfoGetByID_417040(C.int(clientPlayerNetCode))
 	if player == nil {
 		return
 	}
@@ -163,7 +163,7 @@ func game2_book_disable_ability_word(id C.int) C.uintptr_t {
 		player.spell_lvl[int(id)] = 0
 	}
 	C.sub_461360(id)
-	player := C.nox_common_playerInfoGetByID_417040(C.int(C.nox_player_netCode_85319C))
+	player := C.nox_common_playerInfoGetByID_417040(C.int(clientPlayerNetCode))
 	if player == nil {
 		return 0
 	}
@@ -175,12 +175,12 @@ func sub_45D500(show C.int) C.int {
 	result := C.int(C.dword_5d4594_1046864)
 	if show != 0 {
 		if C.dword_5d4594_1046864 != 0 {
-			result = game2BookHide(C.nox_win_unk1, 0)
+			result = game2BookHide(bookUI.list_window, 0)
 		}
 	} else if C.dword_5d4594_1046864 != 0 {
 		result = C.sub_47A260()
 		if result == 0 {
-			result = game2BookHide(C.nox_win_unk1, 1)
+			result = game2BookHide(bookUI.list_window, 1)
 		}
 	}
 	return result

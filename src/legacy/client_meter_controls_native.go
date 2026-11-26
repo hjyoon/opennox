@@ -13,7 +13,6 @@ extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
 extern uint32_t dword_5d4594_1096272, dword_5d4594_1096276;
 extern uint32_t dword_5d4594_1096280, dword_5d4594_1096284;
-extern unsigned int nox_player_netCode_85319C;
 */
 import "C"
 
@@ -101,7 +100,7 @@ func sub_470D90(current, maximum C.int) C.int {
 
 //export sub_470DE0
 func sub_470DE0() C.int {
-	netcode := C.nox_player_netCode_85319C
+	netcode := clientPlayerNetCode
 	health := &C.nox_windows_arr_1093036[0]
 	current, maximum := uint32(health.field_1), uint32(health.field_2)
 	if netcode == 0 || current == 0 {

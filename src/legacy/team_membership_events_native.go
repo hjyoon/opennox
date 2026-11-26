@@ -7,7 +7,6 @@ package legacy
 #include "client__gui__servopts__playrlst.h"
 #include "common__system__team.h"
 
-extern unsigned int nox_player_netCode_85319C;
 */
 import "C"
 
@@ -172,7 +171,7 @@ func sub_4196D0(rawMember, rawTeam unsafe.Pointer, netCode, flags C.int) C.int {
 	}
 	sub_418E40(previous, value)
 	nox_xxx_createAtImpl_4191D0(team.field_57, value, 0, netCode, flags)
-	if C.uint(netCode) == C.nox_player_netCode_85319C {
+	if uint32(netCode) == clientPlayerNetCode {
 		sub_455E70(team.field_57)
 	}
 	return 1

@@ -11,6 +11,12 @@ static int game2_book_old_send(int a,int b,unsigned char* p,int n) {
  if(a!=31||b!=0||n<0||n>22)abort();
  book_ref_len=n;book_ref_calls++;memcpy(book_ref_packet,p,n);return book_ref_result;
 }
+#define nox_win_unk1 (nox_book_ui_storage()->list_window)
+#define nox_book_arrow_images (nox_book_ui_storage()->arrows)
+#define nox_book_background_image (nox_book_ui_storage()->background)
+#define nox_book_guide_tab_lit_image (nox_book_ui_storage()->guide_tab_lit)
+#define nox_book_spell_tab_lit_image (nox_book_ui_storage()->spell_tab_lit)
+#define nox_player_netCode_85319C (nox_client_player_net_code())
 #include "game2_book_reference.h"
 static void game2_book_test_config(int cursor,int result) {
  book_ref_cursor=cursor;book_ref_result=result;book_ref_len=book_ref_calls=0;memset(book_ref_packet,0,22);

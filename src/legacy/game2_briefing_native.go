@@ -172,10 +172,8 @@ extern uint32_t nox_color_orange_2614256;
 extern uint32_t nox_color_yellow_2589772;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
-extern nox_window* nox_win_unk1;
 extern nox_window* nox_wnd_briefing_831232;
 extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
-extern uint32_t dword_5d4594_831092;
 int nox_client_getBriefDuration(void);
 */
 import "C"
@@ -248,7 +246,7 @@ func sub_44D960() { C.dword_587000_122848 = 0 }
 
 //export sub_44D970
 func sub_44D970() C.int {
-	v := C.dword_5d4594_831092
+	v := dialogAudioDriverLegacyMirror()
 	if v != 0 {
 		C.dword_587000_122848 = 1
 	}

@@ -5,7 +5,19 @@ package legacy
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
+
+// Share native window and image slots with the retained C book reference.
+var bookUI, _ = alloc.New(C.nox_book_ui_slots{})
+
+//export nox_book_ui_storage
+func nox_book_ui_storage() *C.nox_book_ui_slots {
+	return bookUI
+}
 
 func game2BookInputBlocked() bool {
 	return C.dword_5d4594_1047520 == 1 || (nox_client_localPlayerHasFlags30(2) != 0 && C.sub_478030() == 0 && C.sub_47A260() == 0)
@@ -128,7 +140,7 @@ func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
 			nox_book_anim_set_end(C.dword_5d4594_1046928, unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0))
 			game2BookHide(C.dword_5d4594_1046952, 1)
 			game2BookHide(C.dword_5d4594_1046948, 0)
-			C.nox_xxx_wndClearCaptureMain_46ADE0(C.nox_win_unk1)
+			C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 			C.nox_xxx_bookSpellDnDclear_477660()
 		}
 		return 1
@@ -162,7 +174,7 @@ func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
 	nox_book_anim_set_end(ref, unsafe.Pointer(C.nox_xxx_bookClickCreature_45B200))
 	game2BookHide(C.dword_5d4594_1046952, 1)
 	game2BookHide(C.dword_5d4594_1046948, 0)
-	C.nox_xxx_wndClearCaptureMain_46ADE0(C.nox_win_unk1)
+	C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 	C.nox_xxx_bookSpellDnDclear_477660()
 	return 1
 }
@@ -300,21 +312,21 @@ func nox_xxx_bookInit_45B9D0() C.int {
 	}
 	for i, name := range []string{"ArrowNW", "ArrowN", "ArrowNE", "ArrowW", "ArrowE", "ArrowSW", "ArrowS", "ArrowSE"} {
 		image := loadImage(name)
-		C.nox_book_arrow_images[i] = image
+		bookUI.arrows[i] = image
 		if image == nil {
 			return 0
 		}
 	}
-	C.nox_book_background_image = loadImage("BookOfKnowledge")
-	if C.nox_book_background_image == nil {
+	bookUI.background = loadImage("BookOfKnowledge")
+	if bookUI.background == nil {
 		return 0
 	}
-	C.nox_book_guide_tab_lit_image = loadImage("GuideTabLit")
-	if C.nox_book_guide_tab_lit_image == nil {
+	bookUI.guide_tab_lit = loadImage("GuideTabLit")
+	if bookUI.guide_tab_lit == nil {
 		return 0
 	}
-	C.nox_book_spell_tab_lit_image = loadImage("SpellTabLit")
-	if C.nox_book_spell_tab_lit_image == nil {
+	bookUI.spell_tab_lit = loadImage("SpellTabLit")
+	if bookUI.spell_tab_lit == nil {
 		return 0
 	}
 	loadAnim := func(name string) *C.nox_things_imageRef_t {
@@ -332,28 +344,28 @@ func nox_xxx_bookInit_45B9D0() C.int {
 		return 0
 	}
 	nox_book_anim_set_end(C.dword_5d4594_1046928, unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0))
-	C.nox_win_unk1 = C.nox_window_new(nil, 1196, 5, C.nox_win_height-323, 285, 168, nil)
-	C.nox_window_set_all_funcs(C.nox_win_unk1, unsafe.Pointer(C.nox_xxx_bookListWndProc_45B5F0), unsafe.Pointer(C.nox_xxx_bookDrawList_45BD40), nil)
-	game2BookHide(C.nox_win_unk1, 1)
-	first := C.nox_window_new(C.nox_win_unk1, 8, 257, 15, 27, 40, nil)
+	bookUI.list_window = C.nox_window_new(nil, 1196, 5, C.nox_win_height-323, 285, 168, nil)
+	C.nox_window_set_all_funcs(bookUI.list_window, unsafe.Pointer(C.nox_xxx_bookListWndProc_45B5F0), unsafe.Pointer(C.nox_xxx_bookDrawList_45BD40), nil)
+	game2BookHide(bookUI.list_window, 1)
+	first := C.nox_window_new(bookUI.list_window, 8, 257, 15, 27, 40, nil)
 	if first == nil {
 		return 0
 	}
 	C.nox_window_set_all_funcs(first, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
 	first.id = 1320
-	second := C.nox_window_new(C.nox_win_unk1, 8, 253, 61, 27, 40, nil)
+	second := C.nox_window_new(bookUI.list_window, 8, 253, 61, 27, 40, nil)
 	if second == nil {
 		return 0
 	}
 	C.nox_window_set_all_funcs(second, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
 	second.id = 1310
-	C.dword_5d4594_1046944 = C.nox_window_new(C.nox_win_unk1, 136, 24, 138, 20, 20, nil)
+	C.dword_5d4594_1046944 = C.nox_window_new(bookUI.list_window, 136, 24, 138, 20, 20, nil)
 	C.nox_window_set_all_funcs(C.dword_5d4594_1046944, unsafe.Pointer(C.nox_xxx_book_45B210), nil, nil)
 	C.nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_1046944, loadImage("ArrowW"))
-	C.dword_5d4594_1046948 = C.nox_window_new(C.nox_win_unk1, 136, 233, 138, 20, 20, nil)
+	C.dword_5d4594_1046948 = C.nox_window_new(bookUI.list_window, 136, 233, 138, 20, 20, nil)
 	C.nox_window_set_all_funcs(C.dword_5d4594_1046948, unsafe.Pointer(C.nox_xxx_bookWndProc_45B070), nil, nil)
 	C.nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_1046948, loadImage("ArrowE"))
-	C.dword_5d4594_1046952 = C.nox_window_new(C.nox_win_unk1, 8, 63, 19, 30, 30, nil)
+	C.dword_5d4594_1046952 = C.nox_window_new(bookUI.list_window, 8, 63, 19, 30, 30, nil)
 	C.nox_window_set_all_funcs(C.dword_5d4594_1046952, unsafe.Pointer(C.nox_xxx_bookWndFn_45CC10), unsafe.Pointer(C.nox_xxx_bookDrawIconFn_45CB30), nil)
 	game2BookHide(C.dword_5d4594_1046952, 1)
 	C.dword_5d4594_1046956 = C.nox_window_new(nil, 40, 0, 0, 30, 30, nil)

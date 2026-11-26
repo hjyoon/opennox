@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME2.h"
 #include "client__gui__servopts__guiserv.h"
-extern unsigned int nox_player_netCode_85319C;
 */
 import "C"
 import (

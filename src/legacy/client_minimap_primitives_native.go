@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 extern uint32_t nox_xxx_minimap_587000_149232;
-extern unsigned int nox_player_netCode_85319C;
 */
 import "C"
 
@@ -177,7 +176,7 @@ func nox_xxx_drawMinimapAndLines_4738E0() C.int {
 		return 1
 	}
 	if memmap.Uint8(0x5D4594, 1096424)&1 != 0 {
-		drawable := nox_xxx_netSpriteByCodeDynamic_45A6F0(int32(C.nox_player_netCode_85319C))
+		drawable := nox_xxx_netSpriteByCodeDynamic_45A6F0(int32(clientPlayerNetCode))
 		nox_xxx_drawMinimap4Sprite_4725C0(drawable)
 	}
 	return nox_xxx_drawMessageLines_445530()

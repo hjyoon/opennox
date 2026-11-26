@@ -95,19 +95,19 @@ func sub_456BB0(team *C.nox_team_t) {
 		return
 	}
 	server := g2ServerGame(1)
-	value := C.nox_xxx_objGetTeamByNetCode_418C80(C.int(C.nox_player_netCode_85319C))
+	value := C.nox_xxx_objGetTeamByNetCode_418C80(C.int(clientPlayerNetCode))
 	if value == nil {
 		return
 	}
 	if C.nox_xxx_servObjectHasTeam_419130(value) != 0 {
 		if !server {
-			C.sub_419960(team, value, C.short(C.nox_player_netCode_85319C))
+			C.sub_419960(team, value, C.short(clientPlayerNetCode))
 			*g2ServerWord(1045696)++
 			return
 		}
-		C.sub_4196D0(unsafe.Pointer(value), unsafe.Pointer(team), C.int(C.nox_player_netCode_85319C), 1)
+		C.sub_4196D0(unsafe.Pointer(value), unsafe.Pointer(team), C.int(clientPlayerNetCode), 1)
 		if !g2ServerGame(128) {
-			p := C.nox_common_playerInfoGetByID_417040(C.int(C.nox_player_netCode_85319C))
+			p := C.nox_common_playerInfoGetByID_417040(C.int(clientPlayerNetCode))
 			if p != nil && p.playerUnit != nil {
 				var pos C.float2
 				C.nox_xxx_mapFindPlayerStart_4F7AB0(&pos, p.playerUnit)
@@ -115,9 +115,9 @@ func sub_456BB0(team *C.nox_team_t) {
 			}
 		}
 	} else if server {
-		nox_xxx_createAtImpl_4191D0(team.field_57, value, 1, C.int(C.nox_player_netCode_85319C), 1)
+		nox_xxx_createAtImpl_4191D0(team.field_57, value, 1, C.int(clientPlayerNetCode), 1)
 	} else {
-		C.sub_419900(team, value, C.short(C.nox_player_netCode_85319C))
+		C.sub_419900(team, value, C.short(clientPlayerNetCode))
 	}
 	*g2ServerWord(1045696)++
 }

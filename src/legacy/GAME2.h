@@ -6,8 +6,6 @@
 #include "client__gui__servopts__access.h"
 #include "common__system__team.h"
 
-extern nox_list_item_t nox_gui_server_options_rules;
-
 char* nox_get_thing_name(int i);
 nox_thing* nox_get_thing(int i);
 wchar2_t* nox_get_thing_pretty_name(int i);

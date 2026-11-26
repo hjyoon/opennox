@@ -21,9 +21,6 @@
 #include "client__audio__audevent.h"
 #include "client__system__ctrlevnt.h"
 #include "input_common.h"
-extern nox_window* dword_5d4594_1046512;
-extern uint32_t dword_587000_122856, dword_5d4594_831092;
-extern unsigned int nox_player_netCode_85319C;
 #include <string.h>
 #include "operators.h"
 #include "GAME1.h"
@@ -175,8 +172,6 @@ extern uint32_t nox_color_orange_2614256;
 extern uint32_t nox_color_yellow_2589772;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
-extern nox_video_bag_image_t* nox_fb_flag_team_border;
-extern nox_list_item_t nox_gui_server_options_rules;
 // Keep the source location used by the C window dispatch macro.
 static uintptr_t game2_server_event(nox_window* w,int e,uintptr_t a,uintptr_t b) {
  return nox_window_call_field_94(w,e,a,b);

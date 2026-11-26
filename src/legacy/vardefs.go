@@ -617,7 +617,6 @@ extern unsigned int dword_5d4594_811904;
 extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int nox_client_highResFloors_154952;
 extern unsigned int nox_client_highResFrontWalls_80820;
-extern unsigned int nox_player_netCode_85319C;
 extern uint32_t dword_5d4594_1599644;
 extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int dword_5d4594_1548524;

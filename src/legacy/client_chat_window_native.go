@@ -9,7 +9,6 @@ extern nox_window* dword_5d4594_1064856;
 extern nox_window* dword_5d4594_1064860;
 extern void* dword_5d4594_1064864;
 #include "client_ui_words.h"
-extern unsigned int nox_player_netCode_85319C;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -81,7 +80,7 @@ func clientChatMessage(text []uint16, narrow, team bool, code, x, y uint16) *nox
 
 //export nox_xxx_cmdSayDo_46A4B0
 func nox_xxx_cmdSayDo_46A4B0(text *C.wchar2_t, team C.int) C.size_t {
-	code := C.nox_player_netCode_85319C
+	code := clientPlayerNetCode
 	drawable := nox_xxx_netSpriteByCodeDynamic_45A6F0(int32(code))
 	var x, y uint16 = 0xffff, 0xffff
 	if drawable != nil {

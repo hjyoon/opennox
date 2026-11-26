@@ -112,6 +112,9 @@ func Game2Head(team bool) unsafe.Pointer {
 	}
 	return C.game2_server_fixture_head(v)
 }
+func Game2RulesHead() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_459870())
+}
 func Game2Layout(field int) uintptr {
 	return uintptr(C.game2_server_fixture_layout(C.int(field)))
 }

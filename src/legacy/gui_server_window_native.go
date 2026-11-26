@@ -44,7 +44,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	if noxflags.HasGame(noxflags.GameHost) {
 		sub_459D50(1)
 		if C.dword_587000_129656 != 0 {
-			nox_common_list_clear_425760(&C.nox_gui_server_options_rules)
+			nox_common_list_clear_425760(serverOptionsRules)
 		}
 	}
 	pre := unsafe.Pointer(C.nox_xxx_guiServerOptionsProcPre_4585D0)
@@ -59,7 +59,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	nox_xxx_wndSetWindowProc_46B300(root, unsafe.Pointer(C.nox_xxx_guiServerOptionsProc_458590))
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.nox_xxx_windowServerOptionsDrawProc_458500))
 	child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(root, id) }
-	C.dword_5d4594_1046512 = child(10101)
+	serverOptionsNameInput = child(10101)
 	C.dword_5d4594_1046496 = child(10114)
 	C.dword_5d4594_1046500 = child(10183)
 	C.dword_5d4594_1046504 = child(10197)

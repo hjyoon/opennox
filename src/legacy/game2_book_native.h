@@ -1,5 +1,6 @@
 #ifndef OPENNOX_GAME2_BOOK_NATIVE_H
 #define OPENNOX_GAME2_BOOK_NATIVE_H
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include "GAME1.h"
@@ -40,15 +41,24 @@ extern uint32_t dword_5d4594_1046852, dword_5d4594_1046636, dword_5d4594_1046640
 extern uint32_t dword_5d4594_1046652, dword_5d4594_1046648;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern unsigned int nox_player_netCode_85319C;
-extern nox_window *nox_win_unk1, *dword_5d4594_1046944, *dword_5d4594_1046948;
+extern nox_window *dword_5d4594_1046944, *dword_5d4594_1046948;
 extern nox_window *dword_5d4594_1046952, *dword_5d4594_1046956;
 extern nox_things_imageRef_t *dword_5d4594_1046924, *dword_5d4594_1046928;
-extern nox_video_bag_image_t *nox_book_arrow_images[8];
-extern nox_video_bag_image_t *nox_book_background_image, *nox_book_guide_tab_lit_image, *nox_book_spell_tab_lit_image;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern float2 obj_5d4594_1046620;
 extern int nox_win_width, nox_win_height;
+
+typedef struct nox_book_ui_slots {
+	nox_window* list_window;
+	nox_video_bag_image_t* arrows[8];
+	nox_video_bag_image_t* background;
+	nox_video_bag_image_t* guide_tab_lit;
+	nox_video_bag_image_t* spell_tab_lit;
+} nox_book_ui_slots;
+_Static_assert(sizeof(nox_book_ui_slots) == 12 * sizeof(void*), "book UI slots size");
+_Static_assert(offsetof(nox_book_ui_slots, background) == 9 * sizeof(void*), "book background offset");
+nox_book_ui_slots* nox_book_ui_storage(void);
+uint32_t nox_client_player_net_code(void);
 
 // Public mixed pointer/tag ABIs stay in root-owned thin C adapters. The private
 // Go exports return words, so Go never manufactures unsafe.Pointer(1/2/3/4).

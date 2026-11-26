@@ -19,7 +19,6 @@ int sub_486640(void* a1, int a2);
 
 extern void* dword_587000_127004;
 extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_831092;
 
 void sub_43DC00();
 void sub_44D960();
@@ -37,8 +36,17 @@ import (
 
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/timer"
 )
+
+// Keep the fixed-width mirror accessible to the native briefing fixture.
+var dialogAudioDriverWord, _ = alloc.New(C.uint32_t(0))
+
+//export nox_dialog_audio_driver_word
+func nox_dialog_audio_driver_word() *C.uint32_t {
+	return dialogAudioDriverWord
+}
 
 var (
 	// The original executable stored Miles driver handles in 32-bit globals.
@@ -338,7 +346,7 @@ func setMusicAudioDriver(drv ail.Driver) {
 
 func setDialogAudioDriver(drv ail.Driver) {
 	dialogAudioDriver = drv
-	C.dword_5d4594_831092 = C.uint32_t(audioDriverLegacyMirror(drv))
+	*dialogAudioDriverWord = C.uint32_t(audioDriverLegacyMirror(drv))
 }
 
 func musicAudioDriverLegacyMirror() uint32 {
@@ -346,7 +354,7 @@ func musicAudioDriverLegacyMirror() uint32 {
 }
 
 func dialogAudioDriverLegacyMirror() uint32 {
-	return uint32(C.dword_5d4594_831092)
+	return uint32(*dialogAudioDriverWord)
 }
 
 func Get_dword_5d4594_816376() ail.Driver {

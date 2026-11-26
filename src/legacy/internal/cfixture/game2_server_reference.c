@@ -1,6 +1,10 @@
 #include "game2_server_bridge.h"
 extern void* game2_server_reference_alloc_go(size_t count, size_t size);
 extern void game2_server_reference_free_go(void* ptr);
+static nox_list_item_t* game2_server_reference_rules_head(void) {
+	return (nox_list_item_t*)sub_459870();
+}
+#define nox_gui_server_options_rules (*game2_server_reference_rules_head())
 /* Only the retained diagnostic translation unit redirects these services;
  * the complete reference include and ordinary product allocator stay intact. */
 #pragma push_macro("calloc")
@@ -74,6 +78,7 @@ static nox_drawable* nox_xxx_spriteSetFrameMB_45AB80_drawable(nox_drawable* dr, 
 #define sub_457140 game2_server_old_sub_457140
 static int sub_457140(int a1,wchar2_t* a2);
 #include "game2_server_reference.inc"
+#undef nox_gui_server_options_rules
 int sub_457140(int a1, wchar2_t* a2) {
 	if (!dword_5d4594_1045684 || !a2) {
 		return 0;

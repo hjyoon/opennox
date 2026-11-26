@@ -15,7 +15,6 @@ package legacy
 typedef const nox_object_t nox_player_const_object_t;
 extern nox_window* dword_5d4594_1046492;
 extern uint32_t dword_5d4594_2650652;
-extern unsigned int nox_player_netCode_85319C;
 void nox_xxx_WideScreenDo_515240(bool enable);
 static void nox_xxx_printToAll_4D9FD0_go(int a1, wchar2_t* str) {
 	nox_xxx_printToAll_4D9FD0(a1, str);
@@ -47,6 +46,8 @@ var (
 	Nox_xxx_playerObserveClear_4DDEF0    func(cplayer *server.Object)
 	Nox_xxx_playerObserveMonster_4DDE80  func(cplayer, cunit *server.Object)
 )
+
+var clientPlayerNetCode uint32
 
 type nox_playerInfo = C.nox_playerInfo
 
@@ -320,11 +321,16 @@ func PrintToPlayers(text string) {
 }
 
 func ClientPlayerNetCode() int {
-	return int(C.nox_player_netCode_85319C)
+	return int(clientPlayerNetCode)
 }
 
 func ClientSetPlayerNetCode(id int) {
-	C.nox_player_netCode_85319C = C.uint(id)
+	clientPlayerNetCode = uint32(id)
+}
+
+//export nox_client_player_net_code
+func nox_client_player_net_code() C.uint32_t {
+	return C.uint32_t(clientPlayerNetCode)
 }
 
 func Nox_xxx_playerForceDisconnect_4DE7C0(ind ntype.PlayerInd) {

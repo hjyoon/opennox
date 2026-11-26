@@ -6,7 +6,6 @@ package legacy
 extern uint32_t dword_5d4594_830864;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_587000_122856;
 extern uint32_t dword_587000_122848;
 extern void* dword_587000_81128;
 extern void* dword_587000_122852;
@@ -27,14 +26,15 @@ func Set_dword_5d4594_831080(v uint32) {
 }
 
 var (
-	Dialogs *dialog.Dialog
+	Dialogs            *dialog.Dialog
+	dialogFallbackMode uint32 = 1
 )
 
 func initDialog() {
 	Dialogs = dialog.NewDialog(
 		"dialog",
 		(*uint32)(&C.dword_587000_122848),
-		(*uint32)(&C.dword_5d4594_830864), (*uint32)(&C.dword_5d4594_831084), (*uint32)(&C.dword_587000_122856), (*uint32)(&C.dword_5d4594_831076), &dialogAudioDriver,
+		(*uint32)(&C.dword_5d4594_830864), (*uint32)(&C.dword_5d4594_831084), &dialogFallbackMode, (*uint32)(&C.dword_5d4594_831076), &dialogAudioDriver,
 		memmap.PtrUint32(0x5D4594, 830860),
 		func() *strman.StringManager {
 			return GetServer().S().Strings()

@@ -489,6 +489,8 @@ func (c *Client) nox_xxx_tileInitBuf_430DB0(width, height int) {
 
 func (c *Client) nox_video_freeFloorBuffer_430EC0() {
 	if c.tiles.noxTileBuf != nil {
+		legacy.Set_nox_video_tileBuf_ptr_3798796(nil)
+		legacy.Set_nox_video_tileBuf_end_3798844(nil)
 		c.tiles.noxTileBufFree()
 		c.tiles.noxTileBuf = nil
 		c.tiles.noxTileBufFree = nil

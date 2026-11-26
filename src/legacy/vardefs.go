@@ -679,10 +679,6 @@ extern uint32_t dword_5d4594_3798840;
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_8531A0_2572;
 extern unsigned int dword_5d4594_1599628;
-extern void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t);
-extern void (*func_587000_154944)(int2*, nox_tile_list_node_t*);
-extern void* nox_video_tileBuf_ptr_3798796;
-extern void* nox_video_tileBuf_end_3798844;
 
 extern unsigned int dword_5d4594_1193188;
 extern int nox_win_width;
@@ -1217,18 +1213,6 @@ func Set_dword_5d4594_3798836(v int) {
 }
 func Set_dword_5d4594_3798840(v int) {
 	C.dword_5d4594_3798840 = C.uint(v)
-}
-func Set_nox_video_tileBuf_ptr_3798796(v unsafe.Pointer) {
-	C.nox_video_tileBuf_ptr_3798796 = v
-}
-func Set_nox_video_tileBuf_end_3798844(v unsafe.Pointer) {
-	C.nox_video_tileBuf_end_3798844 = v
-}
-func Set_func_587000_154940(v unsafe.Pointer) {
-	C.func_587000_154940 = (*[0]byte)(v)
-}
-func Set_func_587000_154944(v unsafe.Pointer) {
-	C.func_587000_154944 = (*[0]byte)(v)
 }
 func Set_dword_5d4594_3799452(v int) {
 	C.dword_5d4594_3799452 = C.uint(v)

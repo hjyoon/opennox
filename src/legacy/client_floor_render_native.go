@@ -6,8 +6,6 @@ package legacy
 #include "client__draw__staticdraw.h"
 #include "client__draw__parse__parse.h"
 
-extern void* nox_video_tileBuf_ptr_3798796;
-extern void* nox_video_tileBuf_end_3798844;
 extern uint32_t dword_5d4594_3798800, dword_5d4594_3798804, dword_5d4594_3798808;
 extern uint32_t dword_5d4594_3798820, dword_5d4594_3798824, dword_5d4594_3798836, dword_5d4594_3798840;
 */
@@ -22,8 +20,18 @@ import (
 
 const floorTileRows = 46
 
+var floorTileBufferStart, floorTileBufferEnd unsafe.Pointer
+
+func Set_nox_video_tileBuf_ptr_3798796(start unsafe.Pointer) {
+	floorTileBufferStart = start
+}
+
+func Set_nox_video_tileBuf_end_3798844(end unsafe.Pointer) {
+	floorTileBufferEnd = end
+}
+
 func floorTileBuffer() []byte {
-	begin, end := C.nox_video_tileBuf_ptr_3798796, C.nox_video_tileBuf_end_3798844
+	begin, end := floorTileBufferStart, floorTileBufferEnd
 	if begin == nil || uintptr(end) <= uintptr(begin) {
 		return nil
 	}

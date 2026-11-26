@@ -9,11 +9,16 @@ extern uint32_t dword_5d4594_3798812, dword_5d4594_3798816;
 extern uint32_t dword_5d4594_3798820, dword_5d4594_3798824;
 extern uint32_t dword_5d4594_3798828, dword_5d4594_3798832;
 extern uint32_t dword_5d4594_3798836, dword_5d4594_3798840;
-extern void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t);
-extern void (*func_587000_154944)(int2*, nox_tile_list_node_t*);
+typedef void (*nox_floor_tile_draw_fn)(int2*, nox_video_bag_image_t*, uint16_t);
+typedef void (*nox_floor_edge_draw_fn)(int2*, nox_tile_list_node_t*);
 
-static inline void nox_floor_call_tile_draw(int2* pos, nox_video_bag_image_t* image, uint16_t tile) {
-	func_587000_154940(pos, image, tile);
+static inline void nox_floor_call_tile_draw(nox_floor_tile_draw_fn draw, int2* pos,
+                                           nox_video_bag_image_t* image, uint16_t tile) {
+	draw(pos, image, tile);
+}
+
+static inline void nox_floor_call_edge_draw(nox_floor_edge_draw_fn draw, int2* pos, nox_tile_list_node_t* edge) {
+	draw(pos, edge);
 }
 */
 import "C"
@@ -23,10 +28,22 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 const floorGridStep = 46
+
+var (
+	floorTileDraw = Get_nox_xxx_tileDraw_4815E0()
+	floorEdgeDraw = Get_nox_xxx_drawTexEdgesProbably_481900()
+)
+
+func Set_func_587000_154940(draw unsafe.Pointer) {
+	floorTileDraw = draw
+}
+
+func Set_func_587000_154944(draw unsafe.Pointer) {
+	floorEdgeDraw = draw
+}
 
 //export sub_476D70
 func sub_476D70(dst *C.uint32_t, src *C.int, size C.uint) C.short {
@@ -52,13 +69,13 @@ func sub_476D70(dst *C.uint32_t, src *C.int, size C.uint) C.short {
 //export nox_xxx_tileCallDrawEdges_481BF0
 func nox_xxx_tileCallDrawEdges_481BF0(pos *C.int2, edges *C.nox_tile_list_node_t) {
 	for edge := edges; edge != nil; edge = edge.next {
-		switch fn := unsafe.Pointer(C.func_587000_154944); fn {
+		switch fn := floorEdgeDraw; fn {
 		case nil, Get_nox_xxx_drawNoEdges_4818F0():
 			return
 		case Get_nox_xxx_drawTexEdgesProbably_481900():
 			nox_xxx_drawTexEdgesProbably_481900(pos, edge)
 		default:
-			ccall.CallVoidPtr2(fn, unsafe.Pointer(pos), unsafe.Pointer(edge))
+			C.nox_floor_call_edge_draw(C.nox_floor_edge_draw_fn(fn), pos, edge)
 		}
 	}
 }
@@ -73,7 +90,7 @@ func drawFloorCellPart(pos *C.int2, tileIndex C.uint16_t, variation C.int, edges
 		return
 	}
 	image := floorDrawImageAt(unsafe.Pointer(tile.data_32), index)
-	switch unsafe.Pointer(C.func_587000_154940) {
+	switch fn := floorTileDraw; fn {
 	case nil:
 		return
 	case Get_nox_xxx_tileDraw_4815E0():
@@ -81,7 +98,7 @@ func drawFloorCellPart(pos *C.int2, tileIndex C.uint16_t, variation C.int, edges
 	case Get_sub_481770():
 		sub_481770(pos, image, tileIndex)
 	default:
-		C.nox_floor_call_tile_draw(pos, image, tileIndex)
+		C.nox_floor_call_tile_draw(C.nox_floor_tile_draw_fn(fn), pos, image, tileIndex)
 	}
 	*memmap.PtrUint32(0x85B3FC, 228+4*uintptr(tileIndex)) = 1
 	nox_xxx_tileCallDrawEdges_481BF0(pos, edges)

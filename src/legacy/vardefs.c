@@ -675,14 +675,8 @@ uint8_t** nox_pixbuffer_rows_3798784 = 0;
 
 void* dword_5d4594_1096640 = 0;
 
-void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
-void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
-
-
 void* nox_client_spriteUnderCursorXxx_1096644 = 0;
 uint32_t nox_client_highResFloors_154952 = 1;
-void* nox_video_tileBuf_ptr_3798796 = 0;
-void* nox_video_tileBuf_end_3798844 = 0;
 uint32_t dword_5d4594_1193156 = 0;
 
 int nox_win_width = 0;

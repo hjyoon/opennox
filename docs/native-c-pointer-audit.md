@@ -593,6 +593,22 @@ garbage collection. Removing the team color storage file leaves
 28 top-level C files. The standard 64-bit and 32-bit profiles
 select 25 and 27 files, respectively.
 
+### Floor render callbacks and buffer release
+
+The original `0x481420` stores the floor tile and edge callbacks at
+`0x5ACD3C` and `0x5ACD40`. Go now holds both addresses at native
+width. Known callbacks dispatch directly to Go. Other callbacks use
+typed C calls with a native position and image or edge pointer.
+The tile callback also takes the original 16-bit tile identifier.
+The edge test verifies both addresses as the loop traverses two
+native nodes and checks the nil and no-edge selections.
+
+The original `0x430EC0` clears the published floor buffer start
+address before running the remaining renderer cleanup. OpenNox
+clears both ends of the borrowed range when releasing the buffer.
+This migration removes four storage definitions from `vardefs.c`,
+leaving 672.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

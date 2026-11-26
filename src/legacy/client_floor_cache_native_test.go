@@ -2,9 +2,11 @@ package legacy
 
 import (
 	"image"
+	"runtime"
 	"testing"
 
 	"github.com/opennox/opennox/v1/client/noxrender"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestFloorVisibleCellsUsesNativeViewportCoordinates(t *testing.T) {
@@ -24,5 +26,24 @@ func TestFloorVisibleCellsUsesNativeViewportCoordinates(t *testing.T) {
 				t.Fatalf("visible floor cells = %v, want %v", got, tc.want)
 			}
 		})
+	}
+}
+
+func TestFloorEdgeCallbackUsesTypedNativePointers(t *testing.T) {
+	original := floorEdgeDraw
+	defer Set_func_587000_154944(original)
+
+	Set_func_587000_154944(cfixture.FloorEdgeCallback())
+	runtime.GC()
+	if got := cfixture.FloorEdgeCallbackCalls(); got != 2 {
+		t.Fatalf("two typed native edge callbacks in list order, got %d", got)
+	}
+	Set_func_587000_154944(Get_nox_xxx_drawNoEdges_4818F0())
+	if got := cfixture.FloorEdgeCallbackCalls(); got != 0 {
+		t.Fatalf("draw-no-edges callback count = %d, want 0", got)
+	}
+	Set_func_587000_154944(nil)
+	if got := cfixture.FloorEdgeCallbackCalls(); got != 0 {
+		t.Fatalf("nil edge callback count = %d, want 0", got)
 	}
 }

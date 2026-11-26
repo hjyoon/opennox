@@ -83,11 +83,11 @@ assert environment['CGO_CFLAGS'] == '-O2 -g'
 results = []
 
 
-def replay(label, package, pattern, count=1, gc='100'):
+def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None):
     executable = binaries[package]['path']
     args = [executable, '-test.v=test2json', '-test.count=' + str(count),
             '-test.timeout=15m', '-test.run=' + pattern]
-    env = dict(environment, GOGC=gc)
+    env = dict(environment if runtime_env is None else runtime_env, GOGC=gc)
     raw, errors = report / (label + '.stdout.log'), report / (label + '.stderr.log')
     with raw.open('xb') as output, errors.open('xb') as error:
         try:
@@ -112,6 +112,7 @@ def replay(label, package, pattern, count=1, gc='100'):
                 unfinished.discard(name)
                 actions[action] += 1
     row = dict(label=label, package=package, source=source, args=args, GOGC=gc,
+               GODEBUG=env.get('GODEBUG', ''), GOMAXPROCS=env.get('GOMAXPROCS'),
                binary_exit_code=code, binary_exit_hex=None if code is None else hex(code & 0xffffffff),
                converter_exit_code=conversion.returncode, actions=dict(actions),
                unfinished_tests=sorted(unfinished), stdout_sha256=sha(raw), stderr_sha256=sha(errors),
@@ -121,6 +122,17 @@ def replay(label, package, pattern, count=1, gc='100'):
     (report / 'results.json').write_text(json.dumps(results, indent=2))
     print(json.dumps(row), flush=True)
 
+
+gate_env = dict(environment)
+gate_env.pop('GOMAXPROCS')
+golem_gate_pattern = '^Test(SkeletonDeathOriginal54A310|GolemDeathOriginal549E90|UIStateTradeNativeValue)$'
+golem_mass_pattern = '^TestGolemDeathOriginal549E90$/^pc53_tozero$/^Go$/^golem-cache-10000000-divisor-12$'
+replay('legacy-skeleton-golem-trade-GC-stress', 'legacy', golem_gate_pattern,
+       count=10, gc='10', runtime_env=gate_env)
+replay('legacy-golem-unmapped-mass-GC-stress', 'legacy', golem_mass_pattern,
+       count=40, gc='10', runtime_env=gate_env)
+replay('legacy-golem-unmapped-mass-synchronous-preemption', 'legacy', golem_mass_pattern,
+       count=40, gc='10', runtime_env=dict(gate_env, GODEBUG='asyncpreemptoff=1'))
 
 for index in range(10):
     replay('server-required-nil-cold-' + str(index), 'server', '^TestCurePoisonCast52CDB0NilTargetAndRequiredArgument$')

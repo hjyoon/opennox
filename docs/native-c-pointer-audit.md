@@ -146,6 +146,25 @@ The selected end-to-end cases completed chain lightning, plasma, and
 the charm effect. Removing the forwarding file leaves 41 top-level
 legacy C files.
 
+### Fixed-argument localized text
+
+The two bounded wide-formatting entries now pass typed numbers or text
+directly to the Go formatter. Their C signatures retain `size_t`, a
+signed C `int` for the numeric entry, and read-only two-byte input
+units. The original Nox string table uses the numeric and string
+formats for server limits, player names, and game notices. The C
+comparisons exercise 40 combinations of formats and arguments at each
+of 33 buffer capacities. They check every output word and the guards.
+
+Removing `localized_text_abi.c` leaves 40 top-level legacy C files.
+Clang counts 82 function bodies in the 39 files selected by the
+standard macOS ARM64 build and 89 in the 40 files selected by the safe
+profile. Ten files provide declarations or storage. The standard
+function bodies include 18 C formatting routines and their helpers,
+nine reserved modifier callbacks, two raw float adapters, and four
+damage dispatch adapters. The other 49 forward arguments or results
+between C and Go.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

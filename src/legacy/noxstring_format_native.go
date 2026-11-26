@@ -14,7 +14,50 @@ type formatCodeUnit interface {
 	byte | uint16
 }
 
+type formatValue struct {
+	number int32
+	text   *wchar2_t
+}
+
+type formatArguments struct {
+	native *C.nox_format_args
+	values []formatValue
+}
+
+func (a *formatArguments) nextValue() formatValue {
+	if len(a.values) == 0 {
+		return formatValue{}
+	}
+	value := a.values[0]
+	a.values = a.values[1:]
+	return value
+}
+
+func (a *formatArguments) integer(unsigned bool) int32 {
+	if a.native == nil {
+		return a.nextValue().number
+	}
+	if unsigned {
+		return int32(C.nox_format_arg_uint(a.native))
+	}
+	return int32(C.nox_format_arg_int(a.native))
+}
+
+func (a *formatArguments) stringPointer(wide bool) unsafe.Pointer {
+	if a.native == nil {
+		return unsafe.Pointer(a.nextValue().text)
+	}
+	if wide {
+		return unsafe.Pointer(C.nox_format_arg_wide(a.native))
+	}
+	return unsafe.Pointer(C.nox_format_arg_narrow(a.native))
+}
+
 func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C.nox_format_args) int32 {
+	return formatWithArgs(dst, capacity, format, formatArguments{native: args})
+}
+
+func formatWithArgs[T formatCodeUnit](dst *T, capacity uintptr, format *T, args formatArguments) int32 {
 	unitSize := unsafe.Sizeof(*new(T))
 	wide := unitSize == 2
 	var out int32
@@ -58,45 +101,36 @@ func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C
 		}
 		switch code {
 		case 'c':
-			emit(uint16(C.nox_format_arg_int(args)))
+			emit(uint16(args.integer(false)))
 		case 's', 'S':
-			if (code == 's') == wide {
-				ptr := C.nox_format_arg_wide(args)
-				if ptr == nil {
-					for _, ch := range "(null)" {
-						emit(uint16(ch))
-					}
-					continue
+			wideString := (code == 's') == wide
+			arg := args.stringPointer(wideString)
+			if arg == nil {
+				for _, ch := range "(null)" {
+					emit(uint16(ch))
 				}
+				continue
+			}
+			if wideString {
+				ptr := (*wchar2_t)(arg)
 				for ; *ptr != 0; ptr = wideStringUnit(ptr, 1) {
 					emit(uint16(*ptr))
 				}
 			} else {
-				ptr := (*byte)(unsafe.Pointer(C.nox_format_arg_narrow(args)))
-				if ptr == nil {
-					for _, ch := range "(null)" {
-						emit(uint16(ch))
-					}
-					continue
-				}
+				ptr := (*byte)(arg)
 				for ; *ptr != 0; ptr = (*byte)(unsafe.Add(unsafe.Pointer(ptr), 1)) {
 					emit(uint16(*ptr))
 				}
 			}
 		case 'd', 'i', 'x', 'X', 'o', 'u':
-			var number int32
+			// The legacy integer service takes a signed 32-bit word for every base.
+			number := args.integer(code != 'd' && code != 'i')
 			base := 10
-			if code == 'd' || code == 'i' {
-				number = int32(C.nox_format_arg_int(args))
-			} else {
-				// The legacy integer service takes a signed 32-bit word for every base.
-				number = int32(C.nox_format_arg_uint(args))
-				switch code {
-				case 'x', 'X':
-					base = 16
-				case 'o':
-					base = 8
-				}
+			switch code {
+			case 'x', 'X':
+				base = 16
+			case 'o':
+				base = 8
 			}
 			var scratch [32]byte
 			digits := strconv.AppendInt(scratch[:0], int64(number), base)
@@ -122,7 +156,7 @@ func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C
 				emit(uint16(digit))
 			}
 		case 'f':
-			if !wide {
+			if !wide || args.native == nil {
 				C.nox_format_abort(C.int(code))
 			}
 			if precision <= 0 {
@@ -131,7 +165,7 @@ func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C
 			var number [32]C.char
 			// Use the host's floating-point formatting and retain the legacy
 			// temporary buffer size before widening the formatted bytes.
-			C.nox_format_arg_fixed(args, &number[0], C.size_t(len(number)), C.int(precision))
+			C.nox_format_arg_fixed(args.native, &number[0], C.size_t(len(number)), C.int(precision))
 			for _, digit := range number {
 				if digit == 0 {
 					break

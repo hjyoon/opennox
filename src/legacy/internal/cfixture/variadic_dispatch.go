@@ -12,6 +12,44 @@ package cfixture
 #include <stdio.h>
 #include <string.h>
 
+_Static_assert(_Generic(&nox_format_wide_number_abi,
+	void (*)(wchar2_t*, size_t, const wchar2_t*, int): 1, default: 0), "fixed number ABI");
+_Static_assert(_Generic(&nox_format_wide_strings_abi,
+	void (*)(wchar2_t*, size_t, const wchar2_t*, const wchar2_t*, const wchar2_t*): 1,
+	default: 0), "fixed string ABI");
+
+static void bounded_wide_variadic_reference(wchar2_t* out, size_t capacity, const wchar2_t* format, ...) {
+	va_list args;
+	va_start(args, format);
+	nox_vsnwprintf(out, capacity - 1, format, args);
+	va_end(args);
+	out[capacity - 1] = 0;
+}
+
+static int bounded_wide_fixed_matches(const wchar2_t* format, int value,
+                                     const wchar2_t* first, const wchar2_t* second, int strings) {
+	for (size_t capacity = 0; capacity <= 32; capacity++) {
+		wchar2_t actual[34], expected[34];
+		memset(actual, 0xa5, sizeof(actual));
+		memset(expected, 0xa5, sizeof(expected));
+		if (strings) {
+			nox_format_wide_strings_abi(actual + 1, capacity, format, first, second);
+			if (capacity) {
+				bounded_wide_variadic_reference(expected + 1, capacity, format, first, second);
+			}
+		} else {
+			nox_format_wide_number_abi(actual + 1, capacity, format, value);
+			if (capacity) {
+				bounded_wide_variadic_reference(expected + 1, capacity, format, value);
+			}
+		}
+		if (memcmp(actual, expected, sizeof(actual))) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 static intptr_t line_message_fixture(nox_object_t* unit, wchar2_t* format, int points) {
 	const wchar2_t suffix[] = {'!', 0};
 	return nox_xxx_netSendLineMessage_4D9EB0(unit, format, "xp", points, suffix);
@@ -132,4 +170,13 @@ func FilePrintf(file unsafe.Pointer, width int) int {
 
 func WideFixedPrintfMatches(bits uint64, digits, rounding int) int {
 	return int(C.wide_fixed_printf_matches(C.uint64_t(bits), C.int(digits), C.int(rounding)))
+}
+
+func BoundedWideNumberMatches(format *uint16, value int32) bool {
+	return C.bounded_wide_fixed_matches((*C.wchar2_t)(unsafe.Pointer(format)), C.int(value), nil, nil, 0) != 0
+}
+
+func BoundedWideStringsMatch(format, first, second *uint16) bool {
+	return C.bounded_wide_fixed_matches((*C.wchar2_t)(unsafe.Pointer(format)), 0,
+		(*C.wchar2_t)(unsafe.Pointer(first)), (*C.wchar2_t)(unsafe.Pointer(second)), 1) != 0
 }

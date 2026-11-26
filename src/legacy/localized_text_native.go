@@ -7,16 +7,34 @@ import "C"
 import "unsafe"
 
 func formatWideNumber(out []wchar2_t, format *wchar2_t, value C.int) {
-	C.nox_format_wide_number_abi(&out[0], C.size_t(len(out)), format, value)
+	values := [...]formatValue{{number: int32(value)}}
+	formatBoundedWide(out, format, formatArguments{values: values[:]})
 }
 
 func formatWideStrings(out []wchar2_t, format, first, second *wchar2_t) {
-	C.nox_format_wide_strings_abi(&out[0], C.size_t(len(out)), format, first, second)
+	values := [...]formatValue{{text: first}, {text: second}}
+	formatBoundedWide(out, format, formatArguments{values: values[:]})
+}
+
+func formatBoundedWide(out []wchar2_t, format *wchar2_t, args formatArguments) {
+	if len(out) == 0 {
+		return
+	}
+	formatWithArgs((*uint16)(unsafe.Pointer(&out[0])), uintptr(len(out)-1), (*uint16)(unsafe.Pointer(format)), args)
+	out[len(out)-1] = 0
+}
+
+//export nox_format_wide_number_abi
+func nox_format_wide_number_abi(dst *C.wchar2_t, capacity C.size_t, format *C.nox_format_word, value C.int) {
+	formatWideNumber(unsafe.Slice(dst, capacity), format, value)
+}
+
+//export nox_format_wide_strings_abi
+func nox_format_wide_strings_abi(dst *C.wchar2_t, capacity C.size_t, format, first, second *C.nox_format_word) {
+	formatWideStrings(unsafe.Slice(dst, capacity), format, first, second)
 }
 
 //export nox_format_bounded_wide_go
 func nox_format_bounded_wide_go(dst *C.wchar2_t, capacity C.size_t, format *C.nox_format_word, args *C.nox_format_args) {
-	out := unsafe.Slice(dst, uintptr(capacity))
-	nox_format_wide_go(dst, capacity-1, format, args)
-	out[len(out)-1] = 0
+	formatBoundedWide(unsafe.Slice(dst, capacity), format, formatArguments{native: args})
 }

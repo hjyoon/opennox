@@ -48,6 +48,29 @@ func TestLegacyWideNumberFormatterRetainsTerminatorAndGuards(t *testing.T) {
 	}
 }
 
+func TestLegacyBoundedWideCEntriesMatchVariadic(t *testing.T) {
+	for _, input := range []string{"done %%", "%c", "%07d", "%+4i", "%.12x", "%08X", "%o", "%u"} {
+		format, free := CWString(input)
+		t.Cleanup(free)
+		for _, value := range []int32{0, 37, math.MinInt32, math.MaxInt32} {
+			if !cfixture.BoundedWideNumberMatches((*uint16)(unsafe.Pointer(format)), value) {
+				t.Errorf("number format %q, value %d differs from C variadic output", input, value)
+			}
+		}
+	}
+	first := [...]uint16{'A', '가', 0}
+	second := [...]uint16{0xd83d, 0xde83, 0}
+	for _, input := range []string{"done %%", "%s", "%s|%s", "%S|%s"} {
+		format, free := CWString(input)
+		t.Cleanup(free)
+		for _, arg := range []*uint16{&second[0], nil} {
+			if !cfixture.BoundedWideStringsMatch((*uint16)(unsafe.Pointer(format)), &first[0], arg) {
+				t.Errorf("string format %q with second argument %p differs from C variadic output", input, arg)
+			}
+		}
+	}
+}
+
 func TestLegacyNetworkLogPrintf413D30(t *testing.T) {
 	previous := NetworkLogPrint
 	t.Cleanup(func() { NetworkLogPrint = previous })

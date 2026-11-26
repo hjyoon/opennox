@@ -4,8 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guirank.h"
 
-extern nox_window* dword_5d4594_1090048;
-extern uint32_t dword_5d4594_1090120, dword_587000_145672;
 */
 import "C"
 
@@ -26,13 +24,13 @@ func nox_xxx_Proc_46F070(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t)
 func sub_46FAE0() {
 	page := memmap.Int32(0x5D4594, 1088996)
 	win := nox_rank_window_at(C.int(1090060 + 4*page))
-	if win == nil || win.widget_data == nil || C.dword_587000_145672 == math.MaxUint32 {
+	if win == nil || win.widget_data == nil || clientRankHighlightRow == math.MaxUint32 {
 		return
 	}
 	data := (*C.nox_scrollListBox_data)(win.widget_data)
 	x, y := meterWindowPosition(win)
 	h := int32(data.line_height)
-	markerY := int32(y) + int32(C.dword_587000_145672)*h + h/2
+	markerY := int32(y) + int32(clientRankHighlightRow)*h + h/2
 	nox_client_drawSetColor_434460(int32(renderPalette.yellow))
 	nox_xxx_drawPointMB_499B70(int32(x)+1, markerY, 3)
 }
@@ -93,20 +91,20 @@ func clientRankAhead(a, b uint32, ascending bool) bool {
 
 //export sub_470580
 func sub_470580() C.int {
-	return C.int(bool2int(C.dword_5d4594_1090120 != 0 &&
-		wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_1090048) != 1))
+	return C.int(bool2int(clientRankViewMode != 0 &&
+		wndIsShown_nox_xxx_wndIsShown_46ACC0(clientRankRoot) != 1))
 }
 
 //export sub_4705B0
 func sub_4705B0() {
-	win := C.dword_5d4594_1090048
+	win := clientRankRoot
 	if win == nil {
 		return
 	}
 	if wndIsShown_nox_xxx_wndIsShown_46ACC0(win) != 0 {
 		nox_window_set_hidden(win, 0)
 	}
-	C.dword_5d4594_1090120 = 0
+	clientRankViewMode = 0
 	sub_4703F0()
 }
 
@@ -150,5 +148,5 @@ func sub_470680() C.int {
 
 //export sub_4706A0
 func sub_4706A0() C.int {
-	return C.int(bool2int(C.dword_5d4594_1090048 != nil && C.dword_5d4594_1090120 != 0))
+	return C.int(bool2int(clientRankRoot != nil && clientRankViewMode != 0))
 }

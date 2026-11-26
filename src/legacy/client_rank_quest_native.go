@@ -5,8 +5,6 @@ package legacy
 #include "client__gui__guirank.h"
 
 typedef const wchar2_t rank_const_text_t;
-#include "client_ui_words.h"
-extern uint32_t dword_587000_145672, dword_5d4594_1090120;
 */
 import "C"
 
@@ -71,7 +69,7 @@ func sub_46F8F0(page, emptyRows C.int) C.int {
 	}
 	sub_46DC60(clientRankWindow(start), 9, (*C.rank_const_text_t)(clientRankLocalized("player", 189)))
 	sub_46DC60(clientRankWindow(start+8), 9, (*C.rank_const_text_t)(clientRankStockText(147188)))
-	mode := C.dword_5d4594_1090120
+	mode := clientRankViewMode
 	classID, classLine := "class", int32(195)
 	scoreID, scoreLine := "score", int32(203)
 	lastID, lastLine := "ping", int32(209)
@@ -134,9 +132,9 @@ func sub_46FFD0() C.uchar {
 			}
 		}
 		if row.NetCode == local {
-			C.dword_587000_145672 = math.MaxUint32
+			clientRankHighlightRow = math.MaxUint32
 			if data := clientRankList(1090060); data != nil {
-				C.dword_587000_145672 = C.uint32_t(data.field_11_1)
+				clientRankHighlightRow = uint32(data.field_11_1)
 			}
 			*memmap.PtrUint32(0x5D4594, 1088996) = 0
 		}
@@ -165,7 +163,7 @@ func sub_46FFD0() C.uchar {
 		clientRankDrawQuestKeys(displayRow, Nox_client_playerQuestKeysReceived(asPlayerS(player)))
 		displayRow++
 	}
-	C.dword_587000_145664 = 1
+	clientRankDirty = 1
 	return C.uchar(count)
 }
 

@@ -5,12 +5,6 @@ package legacy
 #include "client__gui__guirank.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern nox_window* dword_5d4594_1090048;
-extern nox_window* dword_5d4594_1090100;
-extern nox_window* dword_5d4594_1090108;
-extern nox_window* dword_5d4594_1090112;
-extern uint32_t dword_5d4594_1090040, dword_5d4594_1090044;
-#include "client_ui_words.h"
 extern uint32_t dword_8531A0_2572;
 extern int nox_win_width;
 */
@@ -18,6 +12,7 @@ import "C"
 
 import (
 	"fmt"
+	"math"
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -26,9 +21,20 @@ import (
 )
 
 const (
-	clientRankFirstWindow = 1090052
-	clientRankLastWindow  = 1090112
-	clientRankTransparent = 0x80000000
+	clientRankFirstWindow    = 1090052
+	clientRankPositionOffset = 1090100
+	clientRankTimerOffset    = 1090108
+	clientRankLimitOffset    = 1090112
+	clientRankLastWindow     = clientRankLimitOffset
+	clientRankTransparent    = 0x80000000
+)
+
+var (
+	clientRankRoot         *nox_window
+	clientRankViewMode     uint32
+	clientRankDirty        uint32 = 1
+	clientRankPendingMode  uint32 = 6
+	clientRankHighlightRow uint32 = math.MaxUint32
 )
 
 var clientRankWindows [1 + (clientRankLastWindow-clientRankFirstWindow)/4]*C.nox_window
@@ -68,7 +74,7 @@ func sub_46F030() *C.wchar2_t {
 
 //export nox_xxx_guiDrawRank_46E870
 func nox_xxx_guiDrawRank_46E870() *C.nox_window {
-	C.dword_587000_145668 = 6
+	clientRankPendingMode = 6
 	sub_46F030()
 	height := C.int(nox_xxx_guiFontHeightMB_43F320(nil))
 	columns := clientRankMeasureColumns()
@@ -76,13 +82,18 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 	for _, value := range columns {
 		width += C.int(value)
 	}
-	C.dword_5d4594_1090040 = C.uint32_t(width)
-	C.dword_5d4594_1090044 = C.uint32_t(439 - height)
 	root := nox_window_new(nil, 1560, 0, height+40, 1, 1, nil)
-	C.dword_5d4594_1090048 = root
+	clientRankRoot = root
+	clear(clientRankWindows[:])
 	if root == nil {
 		return nil
 	}
+	asWindow(root).AddCleanup(func() {
+		if clientRankRoot == root {
+			clientRankRoot = nil
+			clear(clientRankWindows[:])
+		}
+	})
 	nox_window_set_all_funcs(root, unsafe.Pointer(C.sub_46F060), unsafe.Pointer(C.sub_46F080), nil)
 	clientRankSetTransparentColors(&root.draw_data)
 	draw := C.nox_window_data{style: 32, text_color: C.uint32_t(memmap.Uint32(0x85B3FC, 940))}
@@ -91,7 +102,7 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 	drawText := (*[64]uint16)(unsafe.Pointer(&draw.text[0]))
 	alloc.StrCopyZero16P(drawText[:], text)
 	options := C.nox_scrollListBox_data{count: 64, line_height: C.uint16_t(height + 1), field_2: 1}
-	listHeight := C.int(C.dword_5d4594_1090044) - 2*(height+1)
+	listHeight := 439 - height - 2*(height+1)
 	for page := 0; page < 2; page++ {
 		container := nox_gui_newScrollListBox_4A4310(root, 1088, C.int(page)*width, 3*height+1, width, listHeight, &draw, &options)
 		clientRankStoreWindow(1090052+4*page, container)
@@ -115,9 +126,9 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 		id     string
 		line   int32
 	}{
-		{1090100, height, renderPalette.yellow, "yourrank", 1772},
-		{1090112, 2 * height, renderPalette.white, "WindowDir:Empty", 1782},
-		{1090108, 3 * height, C.uint32_t(memmap.Uint32(0x85B3FC, 940)), "WindowDir:Empty", 1790},
+		{clientRankPositionOffset, height, renderPalette.yellow, "yourrank", 1772},
+		{clientRankLimitOffset, 2 * height, renderPalette.white, "WindowDir:Empty", 1782},
+		{clientRankTimerOffset, 3 * height, C.uint32_t(memmap.Uint32(0x85B3FC, 940)), "WindowDir:Empty", 1790},
 		{1090104, 0, C.dword_8531A0_2572, "TeamPlayerRank", 1798},
 	}
 	for _, label := range labels {
@@ -125,16 +136,8 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 		textData.text = clientRankLocalized(label.id, label.line)
 		win := nox_gui_newStaticText_489300(root, 1088, 0, label.y, width, height+1, &draw, &textData)
 		clientRankStoreWindow(label.offset, win)
-		switch label.offset {
-		case 1090100:
-			C.dword_5d4594_1090100 = win
-		case 1090108:
-			C.dword_5d4594_1090108 = win
-		case 1090112:
-			C.dword_5d4594_1090112 = win
-		}
 	}
-	C.dword_587000_145664 = 1
+	clientRankDirty = 1
 	return root
 }
 
@@ -169,7 +172,7 @@ func clientRankMeasureColumns() *[5]int32 {
 
 //export sub_46FC50
 func sub_46FC50() C.char {
-	win := C.dword_5d4594_1090108
+	win := clientRankWindow(clientRankTimerOffset)
 	if win == nil {
 		return 0
 	}
@@ -195,7 +198,7 @@ func clientRankTimerMode() bool {
 
 //export sub_46FD80
 func sub_46FD80() C.int {
-	win := C.dword_5d4594_1090112
+	win := clientRankWindow(clientRankLimitOffset)
 	if win == nil {
 		return 0
 	}

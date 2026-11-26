@@ -1059,7 +1059,6 @@ func nox_game_guiInit_473680() error {
 		return errors.New("sub_4C3500 failed")
 	}
 	rankRoot := legacy.Nox_xxx_guiDrawRank_46E870()
-	*memmap.PtrPtr(0x5D4594, 1096340) = rankRoot
 	if rankRoot == nil {
 		return errors.New("nox_xxx_guiDrawRank_46E870 failed")
 	}

@@ -664,6 +664,19 @@ of the deadline at `0x69B500`. The C checks cover the event payload,
 window draw and listbox callback signatures. This migration removes
 20 definitions from `vardefs.c`.
 
+### Rank window storage
+
+The original rank constructor at `0x46E870` publishes the root at
+`0x6DE794`. Go holds the root and looks up the position, timer, and
+lesson-limit labels in the existing rank window table. The root's
+cleanup clears the table and the root slot before the window pool
+can recycle their addresses.
+
+The current and pending modes, refresh flag, and highlighted row
+retain their 32-bit values and existing C entry points. Layout
+calculations use the same local dimensions. This migration removes
+ten definitions from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

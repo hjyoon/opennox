@@ -20,7 +20,6 @@ extern uintptr_t dword_5d4594_1062480;
 extern uintptr_t dword_5d4594_832484;
 extern uint32_t dword_5d4594_2516348;
 extern nox_drawable* dword_5d4594_1063116;
-extern uint32_t dword_5d4594_1090120;
 extern uint32_t dword_5d4594_2516328;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1046868;
@@ -267,7 +266,6 @@ extern nox_window* dword_5d4594_1046536;
 extern uint32_t dword_5d4594_1062468;
 extern nox_window* dword_5d4594_1523036;
 extern uint32_t dword_5d4594_1197328;
-extern uint32_t dword_5d4594_1090044;
 extern void* nox_alloc_monsterList_2386220;
 extern uint32_t nox_xxx_lightningClosestTargetDistance_5d4594_2487912;
 extern uint32_t dword_5d4594_1567928;
@@ -299,7 +297,6 @@ extern uint32_t nox_client_gui_flag_1556112;
 extern uint32_t dword_5d4594_1301812;
 extern void* nox_alloc_friendList_1203860;
 extern uint32_t dword_5d4594_2660032;
-extern uint32_t dword_5d4594_1090040;
 extern uint32_t dword_5d4594_3835348;
 extern nox_window* dword_5d4594_1045692;
 extern uint32_t dword_5d4594_1046640;
@@ -329,7 +326,6 @@ extern nox_window* dword_5d4594_1046540;
 extern uint32_t dword_5d4594_1062496;
 extern void* nox_alloc_vote_1599652;
 extern uint32_t dword_5d4594_1049804;
-extern nox_window* dword_5d4594_1090112;
 extern uint32_t dword_5d4594_3807140;
 extern uint32_t dword_5d4594_2487676;
 extern void* dword_5d4594_1049696;
@@ -343,7 +339,6 @@ extern uint32_t dword_5d4594_3804684;
 extern nox_window* dword_5d4594_1308120;
 extern uint32_t dword_5d4594_2488608;
 extern uint32_t dword_5d4594_1568868;
-extern nox_window* dword_5d4594_1090108;
 extern nox_window* dword_5d4594_1308108;
 extern uint32_t dword_5d4594_3835312;
 extern uint32_t dword_5d4594_1197308;
@@ -380,7 +375,6 @@ extern uint32_t dword_5d4594_1200768;
 extern nox_window* dword_5d4594_1523032;
 extern uint32_t dword_5d4594_831256;
 extern uint32_t dword_5d4594_1316436;
-extern uint32_t dword_587000_145672;
 extern uint32_t dword_5d4594_1046864;
 extern nox_window* dword_5d4594_1523044;
 extern void* dword_5d4594_1046356;
@@ -584,9 +578,6 @@ extern void* dword_5d4594_814624;
 extern uint32_t dword_5d4594_2649712;
 extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
 extern void* nox_alloc_chat_1197364;
-extern uint32_t dword_5d4594_1090120;
-extern nox_window* dword_5d4594_1090048;
-extern nox_window* dword_5d4594_1090100;
 extern unsigned int dword_5d4594_1193156;
 extern unsigned int dword_5d4594_1193188;
 extern unsigned int dword_5d4594_2650676;
@@ -809,16 +800,16 @@ func Get_dword_5d4594_2660032() int {
 	return int(C.dword_5d4594_2660032)
 }
 func Get_dword_5d4594_1090048() *gui.Window {
-	return asWindow(C.dword_5d4594_1090048)
+	return asWindow(clientRankRoot)
 }
 func Get_nox_rank_window(offset int) *gui.Window {
 	return asWindow(nox_rank_window_at(C.int(offset)))
 }
 func Get_dword_5d4594_1090120() int {
-	return int(C.dword_5d4594_1090120)
+	return int(clientRankViewMode)
 }
 func Get_dword_5d4594_1090100() *gui.Window {
-	return asWindow(C.dword_5d4594_1090100)
+	return asWindow(clientRankWindow(clientRankPositionOffset))
 }
 func Get_dword_5d4594_814624() unsafe.Pointer {
 	return C.dword_5d4594_814624
@@ -1199,13 +1190,13 @@ func Set_nox_alloc_chat_1197364(v unsafe.Pointer) {
 	C.nox_alloc_chat_1197364 = v
 }
 func Set_dword_587000_145664(v int) {
-	C.dword_587000_145664 = C.uint32_t(v)
+	clientRankDirty = uint32(v)
 }
 func Set_dword_587000_145668(v int) {
-	C.dword_587000_145668 = C.uint32_t(v)
+	clientRankPendingMode = uint32(v)
 }
 func Set_dword_5d4594_1090120(v int) {
-	C.dword_5d4594_1090120 = C.uint(v)
+	clientRankViewMode = uint32(v)
 }
 func Set_dword_5d4594_251744(v int) {
 	C.dword_5d4594_251744 = C.uint32_t(v)

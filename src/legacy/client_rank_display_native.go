@@ -3,12 +3,8 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "client__gui__guirank.h"
-#include "client_ui_words.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern uint32_t dword_587000_145672;
-extern uint32_t dword_5d4594_1090120;
-extern nox_window* dword_5d4594_1090100;
 */
 import "C"
 
@@ -29,15 +25,15 @@ func sub_46F080(win *C.nox_window, draw *C.nox_window_data) C.int {
 	if win == nil || draw == nil {
 		return 0
 	}
-	if !noxflags.HasGame(noxflags.GameFlag4) && C.dword_587000_145668 != 6 {
-		next := C.dword_587000_145668
+	if !noxflags.HasGame(noxflags.GameFlag4) && clientRankPendingMode != 6 {
+		next := clientRankPendingMode
 		if next == 0 {
 			next = 6
 		}
-		C.dword_5d4594_1090120 = next - 1
+		clientRankViewMode = next - 1
 		sub_4703F0()
-		C.dword_587000_145668 = 6
-		if C.dword_5d4594_1090120 == 0 {
+		clientRankPendingMode = 6
+		if clientRankViewMode == 0 {
 			return 1
 		}
 	}
@@ -49,18 +45,18 @@ func sub_46F080(win *C.nox_window, draw *C.nox_window_data) C.int {
 		nox_client_drawRectFilledAlpha_49CF10(int32(x), int32(y), int32(win.width), int32(win.height))
 	}
 	lastFrame := memmap.PtrUint32(0x5D4594, 1090124)
-	if C.dword_587000_145664 != 0 || gameFrame() > *lastFrame+gameFPS() {
+	if clientRankDirty != 0 || gameFrame() > *lastFrame+gameFPS() {
 		set_dword_5d4594_3799468(1)
 		*lastFrame = gameFrame()
-		C.dword_587000_145672 = math.MaxUint32
+		clientRankHighlightRow = math.MaxUint32
 		sub_46DB80()
 		sub_46DCC0()
-		C.dword_587000_145664 = 0
-		clientRankFillDisplay(int(C.dword_5d4594_1090120), limit)
+		clientRankDirty = 0
+		clientRankFillDisplay(int(clientRankViewMode), limit)
 		sub_46FC50()
 		sub_46FD80()
 	}
-	if int32(C.dword_587000_145672) >= 0 {
+	if int32(clientRankHighlightRow) >= 0 {
 		sub_46FAE0()
 	}
 	return 1
@@ -136,7 +132,7 @@ func clientRankFillDisplay(mode int, limit int32) {
 			alloc.StrCopyZero16(label[:], fmt.Sprintf("%s %d / %d", text, uint8(sub_46FEE0()), memmap.Uint8(0x5D4594, 1090118)))
 		}
 	}
-	labelWindow := C.dword_5d4594_1090100
+	labelWindow := clientRankWindow(clientRankPositionOffset)
 	if showRank {
 		if wndIsShown_nox_xxx_wndIsShown_46ACC0(labelWindow) != 0 {
 			nox_window_set_hidden(labelWindow, 0)
@@ -201,7 +197,7 @@ func clientRankDisplayPlayer(mode int, limit int32, page int, row *clientRankPla
 		}
 	}
 	if row.NetCode == local {
-		C.dword_587000_145672 = C.uint32_t(clientRankListRows(start))
+		clientRankHighlightRow = uint32(clientRankListRows(start))
 		*memmap.PtrUint32(0x5D4594, 1088996) = uint32(page)
 	}
 	clientRankWriteWideCell(start, color, (*wchar2_t)(&row.Name[0]))

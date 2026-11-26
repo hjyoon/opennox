@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guirank.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern uint32_t dword_5d4594_1090120;
 */
 import "C"
 
@@ -79,7 +78,7 @@ func sub_46DCC0() *C.char {
 	*memmap.PtrUint8(0x5D4594, 1090118) = 0
 	count := clientRankPlayerCount()
 	switch {
-	case C.dword_5d4594_1090120 == 5:
+	case clientRankViewMode == 5:
 		clientRankStorePlayers(clientRankLadder, count)
 	case noxflags.HasGame(noxflags.GameModeElimination):
 		clientRankStoreTeams(true)

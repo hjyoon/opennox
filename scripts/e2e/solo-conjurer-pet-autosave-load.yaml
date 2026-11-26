@@ -1,4 +1,17 @@
 seed-scenario: seed-solo-conjurer-pet-autosave.yaml
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "campaign pets before autosave reload": cccc42dee2cb341139849bcac479c8115c91590d7b37ef4c2f1f6ed76ea38926
+      "campaign pets restored from autosave": fbcccc4756824818fd3fccb1d7aef98acd0f679e255ec1496848ebb6d361f452
+      "campaign loaded pets after next chapter transition": 60c942b8782bbde3c801f83ac67bca46a4a58bac654690647660b9edef019b63
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "campaign pets restored from autosave": 5e0e1c7e1097a0b0bf67eecf83d4cfe9b43a901e11ab9fb00edd77513f249471
+      "campaign loaded pets after next chapter transition": cec4797f1ab57c3d4ae68e84f61920f1300623ed980a7f4ffa5ee1f21d281936
+
 steps:
   - action: slow
     dur: 1ms

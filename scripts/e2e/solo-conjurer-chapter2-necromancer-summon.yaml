@@ -1,6 +1,16 @@
 # Exercise the complete Con02A Necromancer setpiece through its natural map
 # triggers, verify the alive/client-visible Spider, and wait for the attack,
 # Necromancer exit, player release and cinematic cleanup.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "Con02A necromancer setpiece complete": 60e2c0ef685ece2913100a4520158a7fde494c9095f0076d0dfce4f1fae59449
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "Con02A necromancer setpiece complete": b47eb24518e4f00beb5d7284a88c9b11f4e95bd503b48a9f26946607bd02eef7
+
 steps:
   - action: slow
     dur: 1ms

@@ -3,6 +3,22 @@
 # input. No wolf is spawned, reowned, healed or given migration/AI flags.
 # Only player placement at each stock exit is a fixture; normal collision,
 # cooperative save/load, networking and follower updates do the transitions.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "War03b stock town arrival dialog": f162e743360d7697ff95f23c1e56faa95215810b7be237db8df3c3cd3809183a
+      "War03b stock first wolf purchase dialog": 5fcef35b1a0f93f0d67112c3e0fc8919e9bb6070ce0dcdf6e0a4d44e0a1ff5d7
+      "War03b purchased wolves inside War03c": be0714ed74ebb5e1a52f45bd673756c0f6a9ce8e55ac24f6ce2266f88b3309a5
+      "War03b purchased wolves after saved map return": 8b3f29196aeee37eef8bafc05faed1373b6adaf2d9ddf8f845023a3329f0dc94
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "War03b stock town arrival dialog": 78711cab4cb050f8f41e4e2b130cf54d1e0c55e868792e796d83359f3a7dd1f5
+      "War03b stock first wolf purchase dialog": afa461f910d76e06df10064982022ac310e7f88e76ef1b9fb704a33ddac2ceb6
+      "War03b purchased wolves inside War03c": be0714ed74ebb5e1a52f45bd673756c0f6a9ce8e55ac24f6ce2266f88b3309a5
+      "War03b purchased wolves after saved map return": 8b3f29196aeee37eef8bafc05faed1373b6adaf2d9ddf8f845023a3329f0dc94
+
 steps:
   - action: slow
     dur: 1ms

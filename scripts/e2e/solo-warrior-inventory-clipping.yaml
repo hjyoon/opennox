@@ -1,3 +1,21 @@
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "inventory 4x3 clipped": c6d0117ffa47e9cf1866d8001b9404f2b79e51497261edf0cc00f447556f4ec3
+      "inventory scrolled clipped": 8e2a77e44fb07ac61490b4d56e40fe0aa907e4c6a1ce7c84ddd884d284ea81ee
+      "inventory weapon icons": 1f88fa52aac0a876e09c59bf8cf8e5b09b528c3e3db56bff602318afbec61c97
+      "item description clipped": 73fb91ccc9a63c198afd7bac486a09684bc1380c0e6cf0134350c1aa4f163323
+      "item description scrolled clipped": fbc4c88ff12597fcceaa386821343ecc00384208219838c78d407d1251274808
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "inventory 4x3 clipped": ef8c5885d6b2f5ce1f7ed76f735be97b0a4c633147518d10bcfea52c360f174a
+      "inventory scrolled clipped": f7dc2ba54d50e620c765a8871672f0d0690bb17d03011b3769e12761d721ecb7
+      "inventory weapon icons": dc0eb30d46d31c4d52154db31bd8e74c463ee1e083e731a9743f9bf9c792a400
+      "item description clipped": 00d4ff50cb60f094c7da9d15c3d5e44a0b633e07168484de7149717266438b6d
+      "item description scrolled clipped": 4082ad925b4bfc745cda73b9751c30fb3d6797dda9322351426361e7ef03d682
+
 steps:
   - action: slow
     dur: 5ms

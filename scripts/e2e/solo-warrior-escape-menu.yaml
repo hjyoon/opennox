@@ -1,3 +1,13 @@
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "warrior escape menu open": 899f1e5bb391390f5c21073595a90d593b48aa254c132b14316ce55c5eef0916
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "warrior escape menu open": bae8ac36db905adc8e6ca291a7da5a8295fbd581db9d119a53ac40a485e65c08
+
 steps:
   - action: slow
     dur: 5ms

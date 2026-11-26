@@ -1,4 +1,14 @@
 # Real campaign input and manual Save/Load UI in an isolated runner Save tree.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "campaign manual save restored player": ae5a546555b635f2d501ba08632d6f185216d28767717eb5fa2af79036a37497
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "campaign manual save restored player": ae5a546555b635f2d501ba08632d6f185216d28767717eb5fa2af79036a37497
+
 steps:
   - action: slow
     dur: 1ms

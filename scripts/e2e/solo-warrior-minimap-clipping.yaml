@@ -1,3 +1,15 @@
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "clipped minimap": a85a3ecae3e850e08a3455568a698a0aaee8a342768e3680f31dd4db892942e8
+      "minimap closed": de4985d416603a15c16baa21e44f800e14e9d6f1f3b878eec827b3c40ad918bb
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "clipped minimap": 5ae2b77ec8ebd28e982385a62df35c9afd75936a8624bab81b021c8d777fa16f
+      "minimap closed": f70dc9755c46c1137e5e70b959b69a4f1704ccbf5e0f207e08cfd084944f4d1e
+
 steps:
   - action: slow
     dur: 5ms

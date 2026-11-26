@@ -1,5 +1,20 @@
 # Natural Solo book rewards, original 0x600 defaults, real manual toggles,
 # repeated awards, and preservation of every other quickbar entry.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "conjurer chapter one before click": e628d3cb0c42b4306a207918a37bf25b6d4f4b30528be875d7fdca662014811d
+      "conjurer chapter one click plus 20 ticks": ac6a567581703d592086d42a352f9c84f88d7e5fe317ad21c0e1a28782fdf4e2
+      "conjurer chapter one click plus 120 ticks": 3dca8befeddf1eb88a53b3535515432533ebf308dbabb46b7785e3af6060b2be
+      "conjurer gameplay after chapter one click": b9a43cc5381c5426d0ef23a962f9af8e2730dca905b43f4c6d6ed8975dd4a17d
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "conjurer chapter one click plus 20 ticks": 3e909e6e3a08abae38a6b126cf5d029897d358660881d6e6ef73ed3ee78a8811
+      "conjurer chapter one click plus 120 ticks": f206e7a36f24b0643b6d819cac1c5171ac931511f5d153d393696c81083039dd
+      "conjurer gameplay after chapter one click": 75aa71e0b4af4cc58f8e3643541ca6a1ba9a4fc141dc8827a765782228315cd0
+
 steps:
   - action: slow
     dur: 5ms

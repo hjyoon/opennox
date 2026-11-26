@@ -1,6 +1,16 @@
 # Enter the War01A StartWizardSetpiece polygon through the real client/server
 # transition path and verify that Jerry, Bryan, and the Wizard all act before
 # the script returns control to the player.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "war01a three NPC event completed": 19a8f90597f5e8732be0ffd0468a861e80eb8e8513502a44e0e1dfee6002dc2e
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "war01a three NPC event completed": 19a8f90597f5e8732be0ffd0468a861e80eb8e8513502a44e0e1dfee6002dc2e
+
 steps:
   - action: slow
     dur: 1ms

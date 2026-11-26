@@ -2,6 +2,18 @@
 # use stock exit contacts across Con01a/Con02a/Con03a, enter Con03b and
 # return to saved Con03a. Check the same five native pets/wire identities
 # before their natural Pixie expiration, without changing ownership or flags.
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "pets visible after first exit contact": 7efcc686626a14560290b3695f866fb645e7d243456c50512c2124ccb08aaad3
+      "pets visible after second exit contact": 54e6e73b47b5d02189fcfaac73da4477f4119c54e2d857a4bbc4d6ce9310dab9
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "pets visible after first exit contact": be2666fa7ef35686cae6395ea5f79d65eca00cb78fb0dc7e250fb268e390c0f5
+      "pets visible after second exit contact": 9725ca381545cd9cd20635e29a457b3b81708241eed27c55a9886767381187cc
+
 steps:
   - action: slow
     dur: 1ms

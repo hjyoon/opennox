@@ -8,9 +8,9 @@ on:
         type: string
         required: true
       profiles:
-        description: Diagnostic instrumentation; retained-386-faults requires retained_artifact_id
+        description: Diagnostic profile. Retained 386 profiles require retained_artifact_id.
         type: choice
-        options: [checks, report, checkptr, gccheckmark, race, retained-386-faults]
+        options: [checks, report, checkptr, gccheckmark, race, retained-386-faults, retained-386-damage]
         default: checks
       retained_artifact_id:
         description: Optional retained native artifact; replay exact executables without rebuilding
@@ -232,7 +232,7 @@ jobs:
           go-version: ${{ steps.retained_go.outputs.version }}
           cache: false
       - name: Restore original 386 compiler for retained independent C probes
-        if: ${{ inputs.retained_entry_probe || inputs.profiles == 'retained-386-faults' }}
+        if: ${{ inputs.retained_entry_probe || inputs.profiles == 'retained-386-faults' || inputs.profiles == 'retained-386-damage' }}
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
@@ -265,7 +265,7 @@ jobs:
           SOURCE_REVISION: ${{ inputs.source_revision }}
           REPORT_DIR: build/windows-retained-diagnostic
           RETAINED_ENTRY_PROBE: ${{ inputs.retained_entry_probe }}
-          RETAINED_386_FAULT_MATRIX: ${{ inputs.profiles == 'retained-386-faults' }}
+          RETAINED_386_FAULT_PROFILE: ${{ inputs.profiles }}
           BASELINE_RETAINED_ARTIFACT_ID: ${{ inputs.baseline_retained_artifact_id }}
           BASELINE_SOURCE_REVISION: ${{ inputs.baseline_source_revision }}
         run: |
@@ -293,7 +293,7 @@ jobs:
           assert artifact['workflow_run']['head_sha'] == source
           assert not artifact['expired']
           (report/'original-artifact.json').write_text(json.dumps(artifact, indent=2))
-          if os.environ.get('RETAINED_386_FAULT_MATRIX') == 'true':
+          if os.environ['RETAINED_386_FAULT_PROFILE'] in ('retained-386-faults', 'retained-386-damage'):
               assert artifact['name'] == 'opennox-server-windows-386'
               runner = report/'replay-windows-retained-386-faults.py'
               runner.write_bytes(subprocess.check_output([

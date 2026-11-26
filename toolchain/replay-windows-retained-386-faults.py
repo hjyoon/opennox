@@ -83,7 +83,7 @@ assert environment['CGO_CFLAGS'] == '-O2 -g'
 results = []
 
 
-def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None):
+def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None, timeout=1000):
     executable = binaries[package]['path']
     args = [executable, '-test.v=test2json', '-test.count=' + str(count),
             '-test.timeout=15m', '-test.run=' + pattern]
@@ -92,7 +92,7 @@ def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None):
     with raw.open('xb') as output, errors.open('xb') as error:
         try:
             process = subprocess.run(args, cwd=repo / 'src' / package, env=env,
-                                     stdout=output, stderr=error, timeout=1000)
+                                     stdout=output, stderr=error, timeout=timeout)
             code = process.returncode
         except subprocess.TimeoutExpired:
             code = None
@@ -111,7 +111,7 @@ def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None):
             elif name and action in ['pass', 'skip', 'fail']:
                 unfinished.discard(name)
                 actions[action] += 1
-    row = dict(label=label, package=package, source=source, args=args, GOGC=gc,
+    row = dict(label=label, package=package, source=source, args=args, GOGC=gc, timeout_seconds=timeout,
                GODEBUG=env.get('GODEBUG', ''), GOMAXPROCS=env.get('GOMAXPROCS'),
                binary_exit_code=code, binary_exit_hex=None if code is None else hex(code & 0xffffffff),
                converter_exit_code=conversion.returncode, actions=dict(actions),
@@ -123,26 +123,40 @@ def replay(label, package, pattern, count=1, gc='100', *, runtime_env=None):
     print(json.dumps(row), flush=True)
 
 
-gate_env = dict(environment)
-gate_env.pop('GOMAXPROCS')
-golem_gate_pattern = '^Test(SkeletonDeathOriginal54A310|GolemDeathOriginal549E90|UIStateTradeNativeValue)$'
-golem_mass_pattern = '^TestGolemDeathOriginal549E90$/^pc53_tozero$/^Go$/^golem-cache-10000000-divisor-12$'
-replay('legacy-skeleton-golem-trade-GC-stress', 'legacy', golem_gate_pattern,
-       count=10, gc='10', runtime_env=gate_env)
-replay('legacy-golem-unmapped-mass-GC-stress', 'legacy', golem_mass_pattern,
-       count=40, gc='10', runtime_env=gate_env)
-replay('legacy-golem-unmapped-mass-synchronous-preemption', 'legacy', golem_mass_pattern,
-       count=40, gc='10', runtime_env=dict(gate_env, GODEBUG='asyncpreemptoff=1'))
+profile = os.environ.get('RETAINED_386_FAULT_PROFILE', 'retained-386-faults')
+damage_pattern = '^TestDamagePredicatesInitialMemory4E1400$'
+if profile == 'retained-386-damage':
+    for label, gc, debug in (
+        ('ordinary-gc', '100', ''),
+        ('gc-stress', '10', ''),
+        ('synchronous-preemption', '10', 'asyncpreemptoff=1'),
+        ('fixed-stack', '10', 'gcshrinkstackoff=1'),
+        ('synchronous-preemption-fixed-stack', '10', 'asyncpreemptoff=1,gcshrinkstackoff=1'),
+    ):
+        replay('legacy-damage-' + label, 'legacy', damage_pattern, count=10, gc=gc,
+               runtime_env=dict(environment, GODEBUG=debug), timeout=90)
+else:
+    gate_env = dict(environment)
+    gate_env.pop('GOMAXPROCS')
+    golem_gate_pattern = '^Test(SkeletonDeathOriginal54A310|GolemDeathOriginal549E90|UIStateTradeNativeValue)$'
+    golem_mass_pattern = '^TestGolemDeathOriginal549E90$/^pc53_tozero$/^Go$/^golem-cache-10000000-divisor-12$'
+    replay('legacy-skeleton-golem-trade-GC-stress', 'legacy', golem_gate_pattern,
+           count=10, gc='10', runtime_env=gate_env)
+    replay('legacy-golem-unmapped-mass-GC-stress', 'legacy', golem_mass_pattern,
+           count=40, gc='10', runtime_env=gate_env)
+    replay('legacy-golem-unmapped-mass-synchronous-preemption', 'legacy', golem_mass_pattern,
+           count=40, gc='10', runtime_env=dict(gate_env, GODEBUG='asyncpreemptoff=1'))
 
-for index in range(10):
-    replay('server-required-nil-cold-' + str(index), 'server', '^TestCurePoisonCast52CDB0NilTargetAndRequiredArgument$')
-replay('server-cure-poison-controls', 'server', '^TestCurePoisonCast52CDB0', count=10)
-replay('legacy-troll-original', 'legacy', '^TestTrollDeathOriginal54A270$', count=3)
-replay('legacy-troll-GC-stress', 'legacy', '^TestTrollDeathOriginal54A270$', count=3, gc='10')
-replay('legacy-damage-predicate-faults-GC-stress', 'legacy', '^TestDamagePredicatesInitialMemory4E1400$', count=10, gc='10')
-replay('server-full-original', 'server', '.')
-replay('legacy-full-original', 'legacy', '.')
+    for index in range(10):
+        replay('server-required-nil-cold-' + str(index), 'server', '^TestCurePoisonCast52CDB0NilTargetAndRequiredArgument$')
+    replay('server-cure-poison-controls', 'server', '^TestCurePoisonCast52CDB0', count=10)
+    replay('legacy-troll-original', 'legacy', '^TestTrollDeathOriginal54A270$', count=3)
+    replay('legacy-troll-GC-stress', 'legacy', '^TestTrollDeathOriginal54A270$', count=3, gc='10')
+    replay('legacy-damage-predicate-faults-GC-stress', 'legacy', damage_pattern, count=10, gc='10')
+    replay('server-full-original', 'server', '.')
+    replay('legacy-full-original', 'legacy', '.')
 (report / 'scope.json').write_text(json.dumps(dict(
+    profile=profile,
     diagnostic_only=True, no_rebuild_or_engine_or_runtime_or_test_changes=True,
     exact_retained_executables=binaries, artifact_zip_sha256=sha(archive),
     direct_binary_exit_separate_from_converter=True,

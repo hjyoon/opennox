@@ -2,6 +2,7 @@ package cfixture
 
 /*
 #include <stdint.h>
+#include "game4_mapgen_storage_fixture.h"
 #include <stdlib.h>
 #include <string.h>
 #include "GAME4.h"
@@ -11,7 +12,6 @@ package cfixture
 extern void* game4_fixture_calloc_go(size_t count, size_t size);
 extern void game4_fixture_release_go(void* p);
 
-extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 extern uint32_t dword_5d4594_2489436, dword_5d4594_3835356, dword_5d4594_3835360;
 extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_2487248;

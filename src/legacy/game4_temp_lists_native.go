@@ -8,16 +8,16 @@ import "C"
 import "unsafe"
 
 func game4WallHead() *C.nox_map_wall_list_node_504290 {
-	return (*C.nox_map_wall_list_node_504290)(C.dword_5d4594_1599532)
+	return game4Mapgen.wall_head
 }
 func game4SetWallHead(node *C.nox_map_wall_list_node_504290) {
-	C.dword_5d4594_1599532 = unsafe.Pointer(node)
+	game4Mapgen.wall_head = node
 }
 func game4WaypointHead() *C.nox_map_waypoint_list_node_5044B0 {
-	return (*C.nox_map_waypoint_list_node_5044B0)(C.dword_5d4594_1599548)
+	return game4Mapgen.waypoint_head
 }
 func game4SetWaypointHead(node *C.nox_map_waypoint_list_node_5044B0) {
-	C.dword_5d4594_1599548 = unsafe.Pointer(node)
+	game4Mapgen.waypoint_head = node
 }
 
 //export sub_504290
@@ -169,7 +169,7 @@ func nox_mapgen_free_waypoint_list_503F40(freePayloads C.int32_t) {
 
 //export nox_mapgen_free_tile_list_503F40
 func nox_mapgen_free_tile_list_503F40() {
-	for entry := C.dword_5d4594_1599556; entry != nil; {
+	for entry := game4Mapgen.tile_head; entry != nil; {
 		next := entry.prev
 		if entry.layer != nil {
 			C.nox_xxx_tileFreeTile_422200(&entry.layer.subtiles)
@@ -178,7 +178,7 @@ func nox_mapgen_free_tile_list_503F40() {
 		game4SupportFree(unsafe.Pointer(entry))
 		entry = next
 	}
-	C.dword_5d4594_1599556 = nil
+	game4Mapgen.tile_head = nil
 }
 
 //export nox_mapgen_free_wall_list_503F40

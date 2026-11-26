@@ -13,8 +13,6 @@ package legacy
 extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
 extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_1599480;
-extern uint32_t dword_5d4594_1599476;
 extern uint32_t dword_5d4594_3835396;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t dword_5d4594_3835312;
@@ -179,9 +177,9 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 			return mapgenPlacePoint503B30{x: float32(x), y: float32(y)}, ok
 		},
 		placementReady: func() bool {
-			loaded := uint32(C.dword_5d4594_1599480)
+			loaded := uint32(game4Mapgen.loaded_index)
 			return loaded == uint32(C.dword_5d4594_3835396) && int32(loaded) != -1 &&
-				uint32(C.dword_5d4594_1599476) != 1
+				uint32(game4Mapgen.tiles_placed) != 1
 		},
 		loadSelected: func() bool {
 			return C.nox_xxx_mapgenSaveMap_503830(C.int(int32(C.dword_5d4594_3835396))) != 0
@@ -240,7 +238,7 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 			GetServer().S().Objs.ObjectsClearPending()
 		},
 		markPlaced: func() {
-			C.dword_5d4594_1599476 = 1
+			game4Mapgen.tiles_placed = 1
 		},
 		hasScriptPayload: func() bool {
 			return C.dword_5d4594_1599644 != 0

@@ -68,7 +68,6 @@ func init() {
 		Flags:  console.Server | console.Cheat,
 		Func: func(ctx context.Context, c *console.Console, tokens []string) bool {
 			return noxCmdSetBool(c, tokens, func(allow bool) {
-				legacy.CheatCharmAll(allow)
 				if allow {
 					c.Print(console.ColorLightYellow, "players can charm any creature")
 				} else {

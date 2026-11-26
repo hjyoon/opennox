@@ -2,13 +2,12 @@ package legacy
 
 /*
 #include <stdint.h>
+#include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <string.h>
 
 #include "GAME4.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_1599476;
-extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_3835396;
 
 typedef struct nox_test_mapgen_position_503ec0_result {

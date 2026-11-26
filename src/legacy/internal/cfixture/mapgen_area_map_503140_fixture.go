@@ -2,12 +2,12 @@ package cfixture
 
 /*
 #include <stdlib.h>
+#include "game4_mapgen_storage_fixture.h"
 #include <string.h>
 
 #include "GAME4.h"
 #include "memmap.h"
 
-extern void* dword_5d4594_1599588;
 
 static int nox_test_mapgen_prepare_area_map_503140(const char* source, const char* directory) {
 	char* directory_buffer = getMemAt(0x973F18, 42152);

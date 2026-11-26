@@ -8,7 +8,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME3_2.h"
 
-extern nox_tile_coord_entry_t* dword_5d4594_1599556;
 */
 import "C"
 
@@ -30,11 +29,11 @@ func nox_xxx_tileAllocTileInCoordList_5040A0(x, y C.int, rawKind C.float) *C.nox
 		game4SupportReleaseMemory(unsafe.Pointer(entry))
 		return nil
 	}
-	entry.prev = C.dword_5d4594_1599556
+	entry.prev = game4Mapgen.tile_head
 	if entry.prev != nil {
 		entry.prev.next = entry
 	}
-	C.dword_5d4594_1599556 = entry
+	game4Mapgen.tile_head = entry
 	*memmap.PtrUint32(0x5D4594, 1599560)++
 	// a3 is a raw DWORD carrier despite its historical float ABI spelling.
 	entry.kind = C.uint8_t(math.Float32bits(float32(rawKind)))
@@ -96,7 +95,7 @@ func nox_xxx_tileInit_504150(x, y C.int) C.int {
 		}
 	}
 	state := services.snapshot()
-	entry := C.dword_5d4594_1599556
+	entry := game4Mapgen.tile_head
 	if entry != nil {
 		baseX, baseY := float32(x), float32(y)
 		for entry != nil {

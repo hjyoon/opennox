@@ -10,6 +10,7 @@ extern nox_alloc_class* game4_fixture_new_class_go(char* name, int size, int cou
 #undef calloc
 #define calloc game4_fixture_calloc_go
 #define nox_new_alloc_class game4_fixture_new_class_go
+#include "game4_mapgen_storage_fixture.h"
 #include "game4_list_vote_original_reference.h"
 #undef nox_new_alloc_class
 #pragma pop_macro("calloc")

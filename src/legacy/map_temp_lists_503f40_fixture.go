@@ -2,15 +2,13 @@ package legacy
 
 /*
 #include <stdint.h>
+#include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <stdlib.h>
 #include <string.h>
 
 #include "GAME4.h"
 #include "memmap.h"
 
-extern void* dword_5d4594_1599532;
-extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-extern void* dword_5d4594_1599548;
 
 typedef struct nox_test_map_temp_lists_503f40_result {
 	uintptr_t addresses[10];

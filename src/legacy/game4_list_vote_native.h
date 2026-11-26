@@ -16,12 +16,6 @@
 #include "common/alloc/classes/alloc_class.h"
 
 extern uint32_t dword_5d4594_3835368;
-extern void* dword_5d4594_1599532;
-extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-extern void* dword_5d4594_1599548;
-extern uint32_t dword_5d4594_1599476;
-extern uint32_t dword_5d4594_1599480;
-extern void* dword_5d4594_1599540;
 extern uint32_t dword_5d4594_3835396;
 extern uint32_t nox_server_kickQuestPlayerMinVotes_229992;
 extern uint32_t nox_server_resetQuestMinVotes_229988;

@@ -8,10 +8,10 @@ import "C"
 import "unsafe"
 
 func game4MapObjectHead() *C.nox_map_object_list_node_5048A0 {
-	return (*C.nox_map_object_list_node_5048A0)(C.dword_5d4594_1599540)
+	return game4Mapgen.object_head
 }
 func game4SetMapObjectHead(node *C.nox_map_object_list_node_5048A0) {
-	C.dword_5d4594_1599540 = unsafe.Pointer(node)
+	game4Mapgen.object_head = node
 }
 
 //export nox_xxx_unitAddToList_5048A0
@@ -54,8 +54,8 @@ func sub_504910(deltaX, deltaY C.int32_t) C.int32_t {
 
 //export sub_504980
 func sub_504980() *C.nox_object_t {
-	loaded := C.dword_5d4594_1599480
-	if !(loaded == C.dword_5d4594_3835396 && int32(loaded) != -1 && C.dword_5d4594_1599476 != 1) && C.nox_xxx_mapgenSaveMap_503830(C.int(int32(C.dword_5d4594_3835396))) == 0 {
+	loaded := game4Mapgen.loaded_index
+	if !(loaded == C.dword_5d4594_3835396 && int32(loaded) != -1 && game4Mapgen.tiles_placed != 1) && C.nox_xxx_mapgenSaveMap_503830(C.int(int32(C.dword_5d4594_3835396))) == 0 {
 		return nil
 	}
 	node := game4MapObjectHead()

@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "native_fixture_alloc.h"
+#include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,14 +12,10 @@ package legacy
 #include "common__crypt.h"
 #include "memmap.h"
 
-extern void* dword_5d4594_1599588;
 extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
 extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_1599480;
-extern uint32_t dword_5d4594_1599476;
 extern uint32_t dword_5d4594_3835396;
-extern FILE* nox_file_8;
 
 static uintptr_t nox_test_mapgen_xfer_obj_503830;
 static uintptr_t nox_test_mapgen_xfer_bounds_503830;

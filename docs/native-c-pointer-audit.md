@@ -477,6 +477,29 @@ Removing `game3_1_abi.c` brings the top-level legacy C file count
 to 31. The two input-binding C entries retain their pointer-shaped
 return values.
 
+### GAME4 map generator storage
+
+Go allocates the map generator's shared state for the process
+lifetime. Two 32-bit fields track the loaded index and the placement
+status. Seven native pointers track the archive handle, path buffers,
+and object, wall, waypoint, and tile lists. The C layout occupies 36
+bytes on 32-bit hosts and 64 on 64-bit hosts.
+
+The original executable uses `0x75ADF4` for the archive handle and
+reads the four list heads during cleanup from `0x503F40`. The Go
+workers and the native fixtures use the same live storage. The
+retained C references still exercise archive seek and close, wire
+record parsing, and list allocation, traversal, and release.
+
+The decompiler-only charm-all flag had one console writer and zero
+live readers. Its removal leaves the charm spell's original
+restrictions and the existing console responses intact.
+
+The map archive and list tests passed on macOS ARM64 with strict
+pointer checks, Linux ARM64, and emulated Linux 386. Windows 386
+and AMD64 server cross-builds passed. Removing
+`game4_native_data.c` brings the top-level legacy C file count to 30.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "game4_mapgen_state.h"
 #include "client__gui__guitrade.h"
 #include "client__gui__guirank.h"
 #include "client__gui__guisumn.h"
@@ -618,14 +619,6 @@ extern unsigned int nox_client_highResFloors_154952;
 extern unsigned int nox_client_highResFrontWalls_80820;
 extern unsigned int nox_player_netCode_85319C;
 extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_1599480;
-extern uint32_t dword_5d4594_1599476;
-extern void* dword_5d4594_1599540;
-extern void* dword_5d4594_1599532;
-extern nox_tile_coord_entry_t* dword_5d4594_1599556;
-extern void* dword_5d4594_1599548;
-extern void* dword_5d4594_1599588;
-extern void* dword_5d4594_1599592;
 extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int dword_5d4594_1548524;
 extern uint32_t dword_5d4594_2650652;
@@ -879,28 +872,28 @@ func Get_dword_5d4594_1316972() *gui.Window {
 	return asWindow(C.dword_5d4594_1316972)
 }
 func Get_dword_5d4594_1599588() unsafe.Pointer {
-	return C.dword_5d4594_1599588
+	return game4Mapgen.archive_path
 }
 func Get_dword_5d4594_1599592() unsafe.Pointer {
-	return C.dword_5d4594_1599592
+	return game4Mapgen.staging_path
 }
 func Get_dword_5d4594_1599540() unsafe.Pointer {
-	return C.dword_5d4594_1599540
+	return unsafe.Pointer(game4Mapgen.object_head)
 }
 func Get_dword_5d4594_1599476() int {
-	return int(C.dword_5d4594_1599476)
+	return int(game4Mapgen.tiles_placed)
 }
 func Get_dword_5d4594_1599480() uint32 {
-	return uint32(C.dword_5d4594_1599480)
+	return uint32(game4Mapgen.loaded_index)
 }
 func Get_dword_5d4594_1599548() unsafe.Pointer {
-	return C.dword_5d4594_1599548
+	return unsafe.Pointer(game4Mapgen.waypoint_head)
 }
 func Get_dword_5d4594_1599556() unsafe.Pointer {
-	return unsafe.Pointer(C.dword_5d4594_1599556)
+	return unsafe.Pointer(game4Mapgen.tile_head)
 }
 func Get_dword_5d4594_1599532() unsafe.Pointer {
-	return C.dword_5d4594_1599532
+	return unsafe.Pointer(game4Mapgen.wall_head)
 }
 func Get_dword_5d4594_1200804() int {
 	return int(C.dword_5d4594_1200804)
@@ -1062,22 +1055,22 @@ func Set_dword_5d4594_1599644(v int) {
 	C.dword_5d4594_1599644 = C.uint32_t(v)
 }
 func Set_dword_5d4594_1599480(v uint32) {
-	C.dword_5d4594_1599480 = C.uint(v)
+	game4Mapgen.loaded_index = C.uint(v)
 }
 func Set_dword_5d4594_1599476(v int) {
-	C.dword_5d4594_1599476 = C.uint(v)
+	game4Mapgen.tiles_placed = C.uint(v)
 }
 func Set_dword_5d4594_1599540(v unsafe.Pointer) {
-	C.dword_5d4594_1599540 = v
+	game4Mapgen.object_head = (*C.nox_map_object_list_node_5048A0)(v)
 }
 func Set_dword_5d4594_1599532(v unsafe.Pointer) {
-	C.dword_5d4594_1599532 = v
+	game4Mapgen.wall_head = (*C.nox_map_wall_list_node_504290)(v)
 }
 func Set_dword_5d4594_1599556(v unsafe.Pointer) {
-	C.dword_5d4594_1599556 = (*C.nox_tile_coord_entry_t)(v)
+	game4Mapgen.tile_head = (*C.nox_tile_coord_entry_t)(v)
 }
 func Set_dword_5d4594_1599548(v unsafe.Pointer) {
-	C.dword_5d4594_1599548 = v
+	game4Mapgen.waypoint_head = (*C.nox_map_waypoint_list_node_5044B0)(v)
 }
 func Get_dword_5d4594_2386836() int {
 	return int(C.dword_5d4594_2386836)
@@ -1353,10 +1346,10 @@ func Inc_nox_wol_server_result_cnt_815088() {
 	C.nox_wol_server_result_cnt_815088++
 }
 func Set_dword_5d4594_1599588(v unsafe.Pointer) {
-	C.dword_5d4594_1599588 = v
+	game4Mapgen.archive_path = v
 }
 func Set_dword_5d4594_1599592(v unsafe.Pointer) {
-	C.dword_5d4594_1599592 = v
+	game4Mapgen.staging_path = v
 }
 func Get_dword_5d4594_1599592_ptr() *uint32 {
 	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_2649712))

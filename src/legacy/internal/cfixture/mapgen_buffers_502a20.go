@@ -2,6 +2,7 @@ package cfixture
 
 /*
 #include "native_fixture_alloc.h"
+#include "game4_mapgen_storage_fixture.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,11 +10,8 @@ package cfixture
 #include "GAME4.h"
 #include "memmap.h"
 
-extern void* dword_5d4594_1599588;
-extern void* dword_5d4594_1599592;
 extern uint32_t dword_5d4594_1599596;
 extern uint32_t dword_5d4594_3835396;
-extern FILE* nox_file_8;
 
 typedef int (*nox_mapgen_count_502A20_fn)(void);
 typedef int (*nox_mapgen_save_name_502A30_fn)(char*);

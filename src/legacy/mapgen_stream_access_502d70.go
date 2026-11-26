@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "native_fixture_alloc.h"
+#include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +14,6 @@ package legacy
 extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
 extern uint32_t dword_5d4594_3835396;
-extern FILE* nox_file_8;
 
 typedef struct nox_test_mapgen_stream_access_502D70_result {
 	uintptr_t records_address;

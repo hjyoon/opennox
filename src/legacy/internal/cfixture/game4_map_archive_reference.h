@@ -3,6 +3,7 @@
 #ifndef OPENNOX_GAME4_MAP_ARCHIVE_REFERENCE_H
 #define OPENNOX_GAME4_MAP_ARCHIVE_REFERENCE_H
 #include <limits.h>
+#include "game4_mapgen_storage_fixture.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,14 +16,9 @@
 #include "common__crypt.h"
 #include "noxstring.h"
 extern char* dword_5d4594_1599576;
-extern void* dword_5d4594_1599588;
-extern void* dword_5d4594_1599592;
 extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_1599480;
-extern uint32_t dword_5d4594_1599476;
 extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_3835396;
-extern FILE* nox_file_8;
 extern int nox_mapgenRewriteAreaMap_502ED0(char*, char*, char*);
 extern int nox_mapgenPrepareAreaMap_503140(char*, char*);
 extern int nox_mapgenRenameAreaMap_503230(char*, char*, char*, char*);

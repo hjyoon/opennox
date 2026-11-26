@@ -4,8 +4,6 @@ package legacy
 #include <stddef.h>
 #include "nox_wchar.h"
 
-extern int nox_cheat_charmall;
-
 int nox_cmd_set_cycle(int, int, wchar2_t**);
 int nox_cmd_set_weapons(int, int, wchar2_t**);
 int nox_cmd_set_staffs(int, int, wchar2_t**);
@@ -50,10 +48,6 @@ var cheatEquipAll atomic.Bool
 
 func CheatEquipAll(v bool) {
 	cheatEquipAll.Store(v)
-}
-
-func CheatCharmAll(v bool) {
-	C.nox_cheat_charmall = C.int(bool2int(v))
 }
 
 func WrapCommandC(cfnc func(C.int, C.int, **wchar2_t) C.int) console.CommandLegacyFunc {

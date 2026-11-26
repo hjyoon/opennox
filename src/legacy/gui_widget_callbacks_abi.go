@@ -11,7 +11,6 @@ package legacy
 #include "client__gui__guiinput.h"
 #include "client__shell__inputcfg__inputcfg.h"
 
-typedef int (*nox_test_widget_event_callback_t)(nox_window*, int, uintptr_t, uintptr_t);
 typedef uintptr_t (*nox_test_widget_pre_callback_t)(nox_window*, unsigned int, uintptr_t, uintptr_t);
 typedef int (*nox_test_widget_draw_callback_t)(nox_window*, nox_window_data*);
 typedef nox_window* (*nox_test_window_constructor_t)(nox_window*, int, int, int, int, int,
@@ -24,35 +23,35 @@ _Static_assert(_Generic(&nox_xxx_wndProc_44E6E0, nox_window_init_proc: 1, defaul
 _Static_assert(_Generic(&sub_466220, nox_window_init_proc: 1, default: 0),
 	"inventory initializer must use the window constructor callback ABI");
 
-_Static_assert(_Generic(&nox_xxx_wndEditProc_487D70, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&nox_xxx_wndEditProc_487D70, nox_window_proc: 1, default: 0),
 	"edit event callback must use native-width arguments");
 _Static_assert(_Generic(&nox_xxx_wndEditProcPre_488710, nox_test_widget_pre_callback_t: 1, default: 0),
 	"edit control callback must return native-width arguments");
 _Static_assert(_Generic(&nox_xxx_wndEditDrawNoImage_488160, nox_test_widget_draw_callback_t: 1, default: 0),
 	"edit draw callback must use native-width arguments");
-_Static_assert(_Generic(&sub_46A7E0, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_46A7E0, nox_window_proc: 1, default: 0),
 	"chat edit event callback must use native-width arguments");
-_Static_assert(_Generic(&nox_xxx_wndListboxProcWithoutData10_4A28E0, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&nox_xxx_wndListboxProcWithoutData10_4A28E0, nox_window_proc: 1, default: 0),
 	"single-select list-box callback must use native-width arguments");
-_Static_assert(_Generic(&nox_xxx_wndListboxProcWithData10_4A2DE0, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&nox_xxx_wndListboxProcWithData10_4A2DE0, nox_window_proc: 1, default: 0),
 	"multi-select list-box callback must use native-width arguments");
 _Static_assert(_Generic(&nox_xxx_wndListboxProcPre_4A30D0, nox_test_widget_pre_callback_t: 1, default: 0),
 	"list-box control callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4C3A60, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4C3A60, nox_window_proc: 1, default: 0),
 	"in-game input-config list callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4C3A90, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4C3A90, nox_window_proc: 1, default: 0),
 	"in-game input-config root callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4C3CD0, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4C3CD0, nox_window_proc: 1, default: 0),
 	"in-game input-config control callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4C3EB0, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4C3EB0, nox_window_proc: 1, default: 0),
 	"in-game input-config modal callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4CBE70, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4CBE70, nox_window_proc: 1, default: 0),
 	"shell input-config root callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4CBF60, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4CBF60, nox_window_proc: 1, default: 0),
 	"shell input-config control callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4CC140, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4CC140, nox_window_proc: 1, default: 0),
 	"shell input-config list callback must use native-width arguments");
-_Static_assert(_Generic(&sub_4CC170, nox_test_widget_event_callback_t: 1, default: 0),
+_Static_assert(_Generic(&sub_4CC170, nox_window_proc: 1, default: 0),
 	"shell input-config modal callback must use native-width arguments");
 
 static int nox_test_edit_event_callback(nox_window* win, int event, uintptr_t a3, uintptr_t a4) {
@@ -83,6 +82,20 @@ static uintptr_t nox_test_window_initializer(nox_window* win, int event, uintptr
 
 static nox_window* nox_test_window_constructor(void) {
 	return nox_window_new(NULL, 8, 10, 20, 120, 20, nox_test_window_initializer);
+}
+
+static int nox_test_window_signed_proc(nox_window* win, int event, uintptr_t a, uintptr_t b) {
+	if (event == 0x5005 && a == (uintptr_t)win && b == ~a) {
+		return -3;
+	}
+	return 0;
+}
+
+static int nox_test_window_set_signed_proc(nox_window* win) {
+	nox_window_proc proc = nox_test_window_signed_proc;
+	return nox_xxx_wndSetWindowProc_46B300(win, proc) == 0 &&
+		nox_xxx_wndSetProc_46B2C0(win, proc) == 0 &&
+		win->field_93 == (void*)proc && win->field_94 == (void*)proc;
 }
 
 static int nox_test_window_null_setters(void) {
@@ -163,6 +176,10 @@ func windowWithInitializerC() (*gui.Window, uint32) {
 
 func windowNullSettersC() bool {
 	return C.nox_test_window_null_setters() != 0
+}
+
+func windowSetSignedProcC(win *gui.Window) bool {
+	return C.nox_test_window_set_signed_proc((*nox_window)(win.C())) != 0
 }
 
 func listBoxEventCallbackC(win *gui.Window, multi bool, event int, a3, a4 uintptr) int {

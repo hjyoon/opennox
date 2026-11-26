@@ -39,11 +39,22 @@ base-address access with `-race`, which a separate protected-page probe
 reproduced. Other selected race tests and the forced-GC ownership replay
 passed.
 
-The window registration inventory records 82 call sites, including 54
-distinct directly named C callbacks and 14 sites that forward a callback
-argument. Fifty of the directly named callbacks return C `int`. The
-shared dispatcher still needs per-callback signature verification for
-integer results, pointer-sized results, and argument counts.
+The initial window registration inventory recorded 82 call sites. The
+follow-up traced the parser, widget, and forwarded registrations to 84
+event procedures and two constructor procedures. They retain the original
+addresses in the C-visible window fields. Go invokes each implementation
+with its declared argument types. Signed C `int` results retain their
+low 32 bits, while the pointer-returning edit procedure and constructor
+procedures preserve the full word. Control payloads become window
+pointers only for events that read them. The rule-list control sentinel
+is handled as a scalar.
+
+The supplied `GAME.EXE` has C `int` setter status and stores the two
+procedure addresses at PE32 offsets 372 and 376. The shared structure
+keeps those slots at 372 and 376 on 32-bit hosts and 464 and 472 on
+64-bit hosts. The constructor signature supplies the result width for an
+external initializer and an ordinary C event callback uses the signed
+event signature.
 
 ### Memory map and MP3 follow-up
 

@@ -11,7 +11,10 @@
 typedef enum { NOX_WIN_HIDDEN = 0x10, NOX_WIN_LAYER_FRONT = 0x20, NOX_WIN_LAYER_BACK = 0x40 } nox_window_flags;
 
 typedef struct nox_window nox_window;
+typedef int (*nox_window_proc)(nox_window*, int, uintptr_t, uintptr_t);
 typedef uintptr_t (*nox_window_init_proc)(nox_window*, int, uintptr_t, uintptr_t);
+// The setters also accept original procedure addresses backed by typed Go
+// implementations. Other C callers use nox_window_proc for events.
 typedef struct nox_window_data {
 	unsigned int field_0; // 0, 0 (36)
 	int group;            // 1, 4 (40)

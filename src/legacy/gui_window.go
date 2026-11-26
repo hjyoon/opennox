@@ -3,13 +3,6 @@ package legacy
 /*
 #include <stdlib.h>
 #include "client__gui__window.h"
-
-static int nox_window_call_draw_func_go(int (*fnc)(nox_window*, nox_window_data*), nox_window* win, nox_window_data* data) {
-	return fnc(win, data);
-}
-static uintptr_t nox_window_call_func_go(uintptr_t (*fnc)(nox_window*, int, uintptr_t, uintptr_t), nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
-	return fnc(win, a2, a3, a4);
-}
 */
 import "C"
 import (
@@ -88,7 +81,7 @@ func set_dword_5d4594_3799468(v_cgo int32) {
 func nox_window_new(par *nox_window, flags, a3, a4, w, h C.int, fnc C.nox_window_init_proc) *nox_window {
 	win := GetClient().Cli().GUI.NewWindowRaw(asWindow(par), gui.StatusFlags(flags), int(a3), int(a4), int(w), int(h), nil)
 	if fnc != nil {
-		win.SetFunc94C(unsafe.Pointer(fnc))
+		win.SetInitializerC(unsafe.Pointer(fnc))
 		win.Func94(gui.WindowInit{})
 	}
 	return (*nox_window)(win.C())

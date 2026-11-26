@@ -14,18 +14,49 @@ const deadWord = 0xacacacac
 type WindowFunc func(win *Window, ev WindowEvent) WindowEventResp
 type WindowDrawFunc func(win *Window, draw *WindowData) int
 
+type nativeWindowProc func(win *Window, event int, a, b uintptr) uintptr
+
+var (
+	windowProcs = ccall.NewFuncs(func(fnc unsafe.Pointer) nativeWindowProc {
+		return func(win *Window, event int, a, b uintptr) uintptr {
+			return uintptr(uint32(ccall.CallWindowProc(fnc, win.C(), event, a, b)))
+		}
+	})
+	windowInitializers = ccall.NewFuncs(func(fnc unsafe.Pointer) nativeWindowProc {
+		return func(win *Window, event int, a, b uintptr) uintptr {
+			return ccall.CallUPtrPtrIntUPtr2(fnc, win.C(), event, a, b)
+		}
+	})
+)
+
+// RegisterWindowProcC associates an exported C address with its Go procedure.
+// The legacy package registers its procedures during package initialization.
+func RegisterWindowProcC(addr unsafe.Pointer, proc func(*Window, int, uintptr, uintptr) uintptr) {
+	windowProcs.Register(addr, proc)
+}
+
+// RegisterWindowInitializerC binds a native-width constructor procedure.
+func RegisterWindowInitializerC(addr unsafe.Pointer, proc func(*Window, int, uintptr, uintptr) uintptr) {
+	windowInitializers.Register(addr, proc)
+}
+
+func windowProcResponse(proc nativeWindowProc, win *Window, e WindowEvent) WindowEventResp {
+	event := e.EventCode()
+	a, b := e.EventArgsC()
+	r := proc(win, event, a, b)
+	if r == 0 {
+		return nil
+	}
+	return RawEventResp(r)
+}
+
 func WrapFuncC(fnc unsafe.Pointer) WindowFunc {
-	if fnc == nil {
+	proc := windowProcs.Get(fnc)
+	if proc == nil {
 		return nil
 	}
 	return func(win *Window, e WindowEvent) WindowEventResp {
-		ev := e.EventCode()
-		a1, a2 := e.EventArgsC()
-		r := ccall.CallUPtrPtrIntUPtr2(fnc, win.C(), ev, a1, a2)
-		if r == 0 {
-			return nil
-		}
-		return RawEventResp(r)
+		return windowProcResponse(proc, win, e)
 	}
 }
 
@@ -43,6 +74,8 @@ type windowExt struct {
 	Func93 WindowFunc
 	Func94 WindowFunc
 	Draw   WindowDrawFunc
+
+	initializer unsafe.Pointer
 
 	cleanups          []func()
 	cleanupRunning    bool
@@ -392,7 +425,9 @@ func (win *Window) SetFunc94(fnc WindowFunc) { // nox_xxx_wndSetProc_46B2C0
 		fnc = func(win *Window, ev WindowEvent) WindowEventResp { return nil }
 	}
 	win.field94 = nil
-	win.ext().Func94 = fnc
+	ext := win.ext()
+	ext.Func94 = fnc
+	ext.initializer = nil
 }
 
 // SetFunc94C is the native counterpart of SetFunc94.
@@ -404,8 +439,19 @@ func (win *Window) SetFunc94C(fnc unsafe.Pointer) {
 		win.SetFunc94(nil)
 		return
 	}
-	win.ext().Func94 = nil
+	ext := win.ext()
+	ext.Func94 = nil
+	ext.initializer = nil
 	win.field94 = fnc
+}
+
+// SetInitializerC installs the native-width constructor procedure in field94.
+// It remains in that slot until another control procedure is installed.
+func (win *Window) SetInitializerC(fnc unsafe.Pointer) {
+	win.SetFunc94C(fnc)
+	if fnc != nil && !win.isNilOrDead() {
+		win.ext().initializer = fnc
+	}
 }
 
 func (win *Window) SetDraw(fnc WindowDrawFunc) { // nox_xxx_wndSetDrawFn_46B340
@@ -499,32 +545,25 @@ func (win *Window) Func93(e WindowEvent) WindowEventResp {
 	if win.field93 == nil || uintptr(win.field93) == deadWord {
 		return nil
 	}
-	ev := e.EventCode()
-	a1, a2 := e.EventArgsC()
-	r := ccall.CallUPtrPtrIntUPtr2(win.field93, win.C(), ev, a1, a2)
-	if r == 0 {
-		return nil
-	}
-	return RawEventResp(r)
+	return windowProcResponse(windowProcs.Get(win.field93), win, e)
 }
 
 func (win *Window) Func94(e WindowEvent) WindowEventResp {
 	if win.isNilOrDead() {
 		return nil
 	}
-	if ext := win.ext(); ext != nil && ext.Func94 != nil {
+	ext := win.ext()
+	if ext != nil && ext.Func94 != nil {
 		return ext.Func94(win, e)
 	}
-	if win.field94 == nil || uintptr(win.field94) == deadWord {
+	fnc := win.field94
+	if fnc == nil || uintptr(fnc) == deadWord {
 		return nil
 	}
-	ev := e.EventCode()
-	a1, a2 := e.EventArgsC()
-	r := ccall.CallUPtrPtrIntUPtr2(win.field94, win.C(), ev, a1, a2)
-	if r == 0 {
-		return nil
+	if ext != nil && ext.initializer == fnc {
+		return windowProcResponse(windowInitializers.Get(fnc), win, e)
 	}
-	return RawEventResp(r)
+	return windowProcResponse(windowProcs.Get(fnc), win, e)
 }
 
 func (win *Window) Draw() {

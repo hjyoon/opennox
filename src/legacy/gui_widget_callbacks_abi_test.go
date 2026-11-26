@@ -85,6 +85,17 @@ func TestWindowConstructorUsesNativeCallbackABI(t *testing.T) {
 	if response == nil || response.EventRespC() != addr {
 		t.Fatalf("constructor callback response = %v, want address %#x", response, addr)
 	}
+
+	if !windowSetSignedProcC(win) {
+		t.Fatal("C setters did not store the signed event callback in both slots")
+	}
+	event := &gui.RawEvent{Event: 0x5005, Arg1: addr, Arg2: ^addr}
+	for _, call := range []func(gui.WindowEvent) gui.WindowEventResp{win.Func93, win.Func94} {
+		got := call(event)
+		if got == nil || gui.EventRespInt(got) != -3 || got.EventRespC() != 0xfffffffd {
+			t.Fatalf("signed event callback response = %v, want C int -3", got)
+		}
+	}
 }
 
 func TestWindowCallbackSettersRejectNullThroughC(t *testing.T) {
@@ -125,6 +136,10 @@ func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 	requireNativeWindowAddress(t, cWin)
 	if got, want := editPreCallbackC(cWin, 0x401d, 0, 0), uintptr(cWin.WidgetData); got != want {
 		t.Fatalf("C entry-field data pointer = %#x, want %#x", got, want)
+	}
+	got := cWin.Func94(gui.AsWindowEvent(0x401d, 0, 0))
+	if want := uintptr(cWin.WidgetData); got == nil || got.EventRespC() != want {
+		t.Fatalf("installed entry-field data pointer = %v, want %#x", got, want)
 	}
 }
 

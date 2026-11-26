@@ -19,7 +19,6 @@ package legacy
 #include "client__video__draw_common.h"
 #include "input.h"
 #include "operators.h"
-extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
 int nox_gui_menu_proc_ext(int);
 void nox_video_setMenuOptions(nox_window*);
 void nox_common_writecfgfile(char*);

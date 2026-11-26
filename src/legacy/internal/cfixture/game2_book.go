@@ -48,6 +48,9 @@ static int game2_book_old_send(int a,int b,unsigned char* p,int n) {
 #include "client_native_storage.h"
 #define nox_win_width (nox_client_display_storage()->width)
 #define nox_win_height (nox_client_display_storage()->height)
+#include "world_native_storage.h"
+#define dword_8531A0_2576 (nox_world_owner_storage()->local_player_word)
+#define nox_xxx_aClosewoodengat_587000_133480 (nox_world_owner_storage()->quickbar_data)
 #include "game2_book_reference.h"
 static void game2_book_test_config(int cursor,int result) {
  book_ref_cursor=cursor;book_ref_result=result;book_ref_len=book_ref_calls=0;memset(book_ref_packet,0,22);

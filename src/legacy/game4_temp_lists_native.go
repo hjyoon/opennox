@@ -59,7 +59,7 @@ func sub_504330(deltaX, deltaY C.int32_t) C.int32_t {
 		y := (int32(deltaY) + 23*int32(source.y)) / 23
 		wall := (*C.nox_map_wall_504290)(C.nox_server_getWallAtGrid_410580(C.int(x), C.int(y)))
 		if wall != nil {
-			if C.dword_5d4594_3835368 != 0 {
+			if archiveAndMapgenStorage.merge_walls != 0 {
 				wall.dir = nox_xxx_wall_42A6C0(wall.dir, source.dir)
 			} else {
 				wall.dir = source.dir

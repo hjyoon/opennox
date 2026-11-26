@@ -10,10 +10,6 @@ package legacy
 #include "map_temp_lists_503f40.h"
 #include "server__script__file.h"
 
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_3835396;
 
 int32_t nox_script_readWriteZzz_541670(char* path, char* path2, char* dst);
 */
@@ -112,9 +108,9 @@ func mapgenPlaceRuntimeGeometry503B30(
 	at mapgenPlacePoint503B30,
 	fixed mapgenPlacePoint503B30,
 ) (mapgenPlaceGeometry503B30, bool) {
-	selected := uint32(C.dword_5d4594_3835396)
-	records := unsafe.Pointer(C.dword_5d4594_1599576)
-	if records == nil || selected >= uint32(C.dword_5d4594_1599596) {
+	selected := uint32(archiveAndMapgenStorage.selected_archive_index)
+	records := unsafe.Pointer(archiveAndMapgenStorage.archive_records)
+	if records == nil || selected >= uint32(archiveAndMapgenStorage.archive_record_count) {
 		return mapgenPlaceGeometry503B30{}, false
 	}
 	record := unsafe.Add(records, uintptr(selected)*76)
@@ -176,11 +172,11 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 		},
 		placementReady: func() bool {
 			loaded := uint32(game4Mapgen.loaded_index)
-			return loaded == uint32(C.dword_5d4594_3835396) && int32(loaded) != -1 &&
+			return loaded == uint32(archiveAndMapgenStorage.selected_archive_index) && int32(loaded) != -1 &&
 				uint32(game4Mapgen.tiles_placed) != 1
 		},
 		loadSelected: func() bool {
-			return C.nox_xxx_mapgenSaveMap_503830(C.int(int32(C.dword_5d4594_3835396))) != 0
+			return C.nox_xxx_mapgenSaveMap_503830(C.int(int32(archiveAndMapgenStorage.selected_archive_index))) != 0
 		},
 		geometry: mapgenPlaceRuntimeGeometry503B30,
 		storeGeometry: func(geometry mapgenPlaceGeometry503B30) {
@@ -239,7 +235,7 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 			game4Mapgen.tiles_placed = 1
 		},
 		hasScriptPayload: func() bool {
-			return C.dword_5d4594_1599644 != 0
+			return archiveAndMapgenStorage.objects_placed != 0
 		},
 		finishScriptPayload: mapgenFinishScriptPayload503B30,
 		advancePlacementIndex: func() {

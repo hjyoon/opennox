@@ -1,6 +1,8 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_2487524 (nox_archive_mapgen_storage()->item_set_template)
 #include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -11,7 +13,6 @@ package legacy
 #include "common__binfile.h"
 #include "mapgen_legacy_ptr.h"
 
-extern uint32_t dword_5d4594_2487524;
 
 typedef struct nox_test_mapgen_item_sets_51f030_result {
 	int result;

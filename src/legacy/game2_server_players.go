@@ -99,7 +99,7 @@ func sub_456640(w *C.nox_window, d *C.nox_window_data) C.int {
 
 //export sub_456BB0
 func sub_456BB0(team *C.nox_team_t) {
-	local := (*C.nox_playerInfo)(unsafe.Pointer(uintptr(C.dword_8531A0_2576)))
+	local := (*C.nox_playerInfo)(unsafe.Pointer(uintptr(worldOwnerStorage.local_player_word)))
 	if team == nil || (local != nil && (local.field_4&1 != 0 || local.field_3680&1 != 0)) {
 		return
 	}
@@ -302,7 +302,7 @@ func g2ServerPlayerColor(index int) uint32 {
 	case 8:
 		return *(*uint32)(g2ServerMemOff(0x85B3FC, 984))
 	case 9:
-		return uint32(C.dword_8531A0_2572)
+		return uint32(worldWordStorage.local_player_color)
 	case 10:
 		return uint32(renderPalette.green)
 	case 11:

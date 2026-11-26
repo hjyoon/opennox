@@ -8,11 +8,8 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 #include "noxstring.h"
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-extern const int ptr_5D4594_2650668_cap;
+#include "world_native_storage.h"
 void* nox_server_wallAttachDoor(void*,nox_object_t*);
-static void* world_tile_head_cell(void){return &ptr_5D4594_2650668;}
-static int32_t world_tile_cap(void){return ptr_5D4594_2650668_cap;}
 static void world_defend_call(void* callback,void* effect,nox_object_t* item,float* value){
  ((void(*)(void*,nox_object_t*,uintptr_t,nox_object_t*,uintptr_t,float*))callback)(effect,item,0,item,0,value);
 }
@@ -89,8 +86,10 @@ func worldPlayerCallDefend415C00(callback unsafe.Pointer, effect *server.Modifie
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(value)
 }
-func worldTileHeadCell411160() unsafe.Pointer { return C.world_tile_head_cell() }
-func worldTileCapacity411160() int32          { return int32(C.world_tile_cap()) }
+func worldTileHeadCell411160() unsafe.Pointer {
+	return unsafe.Pointer(&worldOwnerStorage.tile_coordinates)
+}
+func worldTileCapacity411160() int32 { return C.NOX_WORLD_TILE_CAPACITY }
 func worldTileCalloc411160(count, size uintptr) unsafe.Pointer {
 	return game4SupportAllocate(count, size)
 }

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -140,7 +139,7 @@ func (m clientMinimapView) drawAI() {
 	count, raw := sub_50CB00(), sub_50CB10()
 	if count >= 2 && raw != nil {
 		points := unsafe.Slice((*[2]float32)(raw), count)
-		nox_client_drawSetColor_434460(int32(C.dword_8531A0_2572))
+		nox_client_drawSetColor_434460(int32(worldWordStorage.local_player_color))
 		for i := 1; i < len(points); i++ {
 			a, b := points[i-1], points[i]
 			p, q := m.projectDebug(a[0], a[1]), m.projectDebug(b[0], b[1])
@@ -198,7 +197,7 @@ func (m clientMinimapView) drawTrackedObjects(local *nox_drawable) {
 		switch {
 		case uint32(item.field_27) == *crown:
 			if minimapCrownShown() {
-				nox_client_drawSetColor_434460(int32(C.dword_8531A0_2572))
+				nox_client_drawSetColor_434460(int32(worldWordStorage.local_player_color))
 				if member := teamObjectByNetCode418C80(uint32(item.field_32)); member != nil {
 					minimapSetTeamColor(int32(member.ID))
 				}
@@ -244,7 +243,7 @@ func (m clientMinimapView) drawTrackedObjects(local *nox_drawable) {
 }
 
 func (m clientMinimapView) drawPlayers(local *nox_drawable, localTeam *server.ObjectTeam) {
-	playerColor := int32(C.dword_8531A0_2572)
+	playerColor := int32(worldWordStorage.local_player_color)
 	for drawable := nox_xxx_cliGetSpritePlayer_45A000(); drawable != nil; drawable = sub_45A010(drawable) {
 		crowned := bool(nox_client_drawable_testBuff_4356C0(drawable, 30))
 		member := teamObjectByNetCode418C80(uint32(drawable.field_32))

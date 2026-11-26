@@ -319,7 +319,7 @@ func nox_xxx_book_45BD30(unused1 *C.nox_window, unused2 *C.nox_window_data) C.in
 
 //export nox_xxx_bookInit_45B9D0
 func nox_xxx_bookInit_45B9D0() C.int {
-	bookState.player_word = C.dword_8531A0_2576
+	bookState.player_word = worldOwnerStorage.local_player_word
 	loadImage := func(name string) *C.nox_video_bag_image_t {
 		p := C.CString(name)
 		defer C.free(unsafe.Pointer(p))

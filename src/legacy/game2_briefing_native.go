@@ -52,9 +52,6 @@ package legacy
 #include "input_common.h"
 #include <string.h>
 #include "game2_quickbar_native.h"
-extern uintptr_t dword_8531A0_2576;
-extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 int nox_client_getBriefDuration(void);
 */

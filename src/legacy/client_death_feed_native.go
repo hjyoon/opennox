@@ -3,9 +3,6 @@ package legacy
 /*
 #include "GAME2_3.h"
 
-extern uint32_t dword_5d4594_1203836;
-extern uint32_t dword_5d4594_1203840;
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -39,10 +36,10 @@ var (
 //export sub_495210
 func sub_495210(data *C.uint8_t) C.int {
 	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), 11)
-	index := C.dword_5d4594_1203836
+	index := worldWordStorage.death_message_word_1203836
 	next := (index + 1) % deathFeedCapacity
-	if next == C.dword_5d4594_1203840 {
-		C.dword_5d4594_1203840 = (C.dword_5d4594_1203840 + 1) % deathFeedCapacity
+	if next == worldWordStorage.death_message_word_1203840 {
+		worldWordStorage.death_message_word_1203840 = (worldWordStorage.death_message_word_1203840 + 1) % deathFeedCapacity
 	}
 	read := binary.LittleEndian.Uint16
 	if packet[10] == 1 {
@@ -62,7 +59,7 @@ func sub_495210(data *C.uint8_t) C.int {
 		kind:      uint32(packet[10]),
 		frame:     gameFrame(),
 	}
-	C.dword_5d4594_1203836 = next
+	worldWordStorage.death_message_word_1203836 = next
 	words := [4]C.uint16_t{0, C.uint16_t(ring[index].attacker), C.uint16_t(ring[index].assistant), C.uint16_t(ring[index].victim)}
 	return sub_4952E0(&words[0])
 }
@@ -75,21 +72,21 @@ func sub_495430() C.int {
 	nox_xxx_draw_434600(0)
 	ring := memmap.PtrT[[deathFeedCapacity]deathFeedEntry](0x5D4594, 1201428)
 	maxRow := C.uint32_t(clientDisplayStorage.height / 4 / deathFeedRowHeight)
-	oldest := C.dword_5d4594_1203840
-	for index := oldest; index != C.dword_5d4594_1203836; index = (index + 1) % deathFeedCapacity {
+	oldest := worldWordStorage.death_message_word_1203840
+	for index := oldest; index != worldWordStorage.death_message_word_1203836; index = (index + 1) % deathFeedCapacity {
 		if legacyWords.dword_5d4594_1203832 > maxRow {
 			break
 		}
 		if gameFrame()-ring[oldest].frame > 90 {
 			oldest = (oldest + 1) % deathFeedCapacity
-			C.dword_5d4594_1203840 = oldest
+			worldWordStorage.death_message_word_1203840 = oldest
 			continue
 		}
 		drawDeathFeedEntry(&ring[index])
-		oldest = C.dword_5d4594_1203840
+		oldest = worldWordStorage.death_message_word_1203840
 		legacyWords.dword_5d4594_1203832++
 	}
-	return C.int(C.dword_5d4594_1203836)
+	return C.int(worldWordStorage.death_message_word_1203836)
 }
 
 //export nox_death_feed_draw_495500
@@ -156,7 +153,7 @@ func drawDeathFeedEntry(entry *deathFeedEntry) int {
 		}
 		nox_xxx_drawSetTextColor_434390(memmap.Int32(0x5D4594, 2597996))
 		if code == uint32(ClientPlayerNetCode()) {
-			nox_xxx_drawSetTextColor_434390(int32(C.dword_8531A0_2572))
+			nox_xxx_drawSetTextColor_434390(int32(worldWordStorage.local_player_color))
 		}
 		return r.DrawString(face, text, image.Pt(x, textY))
 	}
@@ -206,8 +203,8 @@ func deathFeedIcon(entry *deathFeedEntry) *noxrender.Image {
 
 //export sub_4958F0
 func sub_4958F0() C.int {
-	C.dword_5d4594_1203840 = 0
-	C.dword_5d4594_1203836 = 0
+	worldWordStorage.death_message_word_1203840 = 0
+	worldWordStorage.death_message_word_1203836 = 0
 	types := [...]string{"ArcherBolt", "ArcherArrow", "Bow", "CrossBow"}
 	for i, typeName := range types {
 		id := memmap.PtrT[uint32](0x5D4594, 1203844+uintptr(i)*4)

@@ -57,15 +57,15 @@ func sub_4A25C0(xy *C.uint32_t, head *C.nox_list_item_t) C.int {
 
 //export sub_4A2610
 func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C.nox_window {
-	C.dword_5d4594_1307720 = 0
+	worldWordStorage.nearby_server_count = 0
 	for it := nox_common_list_getFirstSafe_425890(head); it != nil; it = nox_common_list_getNextSafe_4258A0(it) {
 		s := wolServerRecord(it).C()
-		if sub_4A2560(xy, s) != 0 && int(C.dword_5d4594_1307720) < len(game3NearbyServers) {
-			game3NearbyServers[int(C.dword_5d4594_1307720)] = s
-			C.dword_5d4594_1307720++
+		if sub_4A2560(xy, s) != 0 && int(worldWordStorage.nearby_server_count) < len(game3NearbyServers) {
+			game3NearbyServers[int(worldWordStorage.nearby_server_count)] = s
+			worldWordStorage.nearby_server_count++
 		}
 	}
-	if C.dword_5d4594_1307720 == 0 {
+	if worldWordStorage.nearby_server_count == 0 {
 		return game3NearbyWindow
 	}
 	var callback unsafe.Pointer
@@ -103,7 +103,7 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 	data.Field_8 = unsafe.Pointer(down)
 	slider.field_100.width = 16
 	slider.field_100.height = 10
-	for i := 0; i < int(C.dword_5d4594_1307720); i++ {
+	for i := 0; i < int(worldWordStorage.nearby_server_count); i++ {
 		s := game3NearbyServers[i]
 		raw := unsafe.Slice((*byte)(unsafe.Pointer(s)), 169)
 		var name string
@@ -160,7 +160,7 @@ func sub_4A2890() C.int {
 		result = C.nox_xxx_windowDestroyMB_46C4E0(game3NearbyWindow)
 		game3NearbyWindow = nil
 	}
-	C.dword_5d4594_1307720 = 0
+	worldWordStorage.nearby_server_count = 0
 	clear(game3NearbyServers[:])
 	return result
 }
@@ -175,7 +175,7 @@ func sub_4A28B0() C.int {
 
 //export sub_4A28C0
 func sub_4A28C0(i C.int) *C.nox_gui_server_ent_t {
-	if i >= 0 && i < C.int(C.dword_5d4594_1307720) && int(i) < len(game3NearbyServers) {
+	if i >= 0 && i < C.int(worldWordStorage.nearby_server_count) && int(i) < len(game3NearbyServers) {
 		return game3NearbyServers[int(i)]
 	}
 	return nil

@@ -1,6 +1,9 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_2487576 (nox_archive_mapgen_storage()->farthest_room)
+#define dword_5d4594_2487584 (nox_archive_mapgen_storage()->room_rank_word_2487584)
 #include "native_fixture_alloc.h"
 #include <math.h>
 #include <stdint.h>
@@ -9,8 +12,6 @@ package legacy
 #include "GAME4_2.h"
 #include "mapgen_legacy_ptr.h"
 
-extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487584;
 
 static float nox_test_mapgen_room_distance_5259f0(float width, float height, float accumulated) {
 	double w = width, h = height;

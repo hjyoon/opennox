@@ -4,7 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "GAME1_1.h"
 
-extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 */
 import "C"
 
@@ -181,7 +180,7 @@ func sub_421040(polygon unsafe.Pointer) {
 }
 
 func mapPolygonNext(index uint32) *mapPolygonRecord {
-	for limit := uint32(C.nox_xxx_polygonNextIdx_587000_60352); index < limit; index++ {
+	for limit := uint32(worldWordStorage.next_polygon_index); index < limit; index++ {
 		polygon := mapPolygonByIndex(index)
 		if polygon.Active != 0 {
 			return polygon
@@ -202,13 +201,13 @@ func sub_4210E0(previous unsafe.Pointer) *C.char {
 
 //export sub_421130
 func sub_421130() C.int {
-	limit := C.nox_xxx_polygonNextIdx_587000_60352
+	limit := worldWordStorage.next_polygon_index
 	for index := uint32(1); index < uint32(limit); index++ {
 		if mapPolygonByIndex(index).Active == 0 {
 			return C.int(index)
 		}
 	}
-	C.nox_xxx_polygonNextIdx_587000_60352++
+	worldWordStorage.next_polygon_index++
 	return C.int(limit)
 }
 
@@ -238,6 +237,6 @@ func sub_421430() unsafe.Pointer {
 		polygon.VertexCount, polygon.Index, polygon.Active = 0, 0, 0
 		polygon.Handlers[0].Func, polygon.Handlers[1].Func = -1, -1
 	}
-	C.nox_xxx_polygonNextIdx_587000_60352 = 1
+	worldWordStorage.next_polygon_index = 1
 	return result
 }

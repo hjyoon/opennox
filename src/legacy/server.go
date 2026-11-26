@@ -25,7 +25,6 @@ package legacy
 #include "common__crypt.h"
 #include "common__log.h"
 
-extern uint32_t dword_5d4594_526276;
 
 
 void nox_xxx_netlist_4DEB50();
@@ -492,7 +491,7 @@ func Sub_455F60() {
 	C.sub_455F60()
 }
 func SetFlagObjectCount417EC0(count uint32) {
-	C.dword_5d4594_526276 = C.uint32_t(count)
+	worldWordStorage.team_entries_limit = C.uint32_t(count)
 }
 func Nox_xxx_mapFindCrown_4CFC30() {
 	nox_xxx_mapFindCrown_4CFC30()

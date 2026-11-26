@@ -4,8 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "client__io__win95__focus.h"
 
-extern obj_5D4594_754088_t *ptr_5D4594_754088, *ptr_5D4594_754092;
-extern int ptr_5D4594_754088_cnt, ptr_5D4594_754092_cnt;
 */
 import "C"
 
@@ -25,9 +23,9 @@ func SetWindowFocused(focused bool) {
 	}
 	if focused {
 		windowFocused = true
-		runFocusCallbacks(&C.ptr_5D4594_754088, &C.ptr_5D4594_754088_cnt)
+		runFocusCallbacks(&worldOwnerStorage.focus_primary, &worldOwnerStorage.focus_primary_count)
 	} else {
-		runFocusCallbacks(&C.ptr_5D4594_754092, &C.ptr_5D4594_754092_cnt)
+		runFocusCallbacks(&worldOwnerStorage.focus_secondary, &worldOwnerStorage.focus_secondary_count)
 		windowFocused = false
 	}
 }
@@ -42,10 +40,10 @@ func runFocusCallbacks(records **C.obj_5D4594_754088_t, count *C.int) {
 
 //export sub_42EDC0
 func sub_42EDC0() {
-	C.free(unsafe.Pointer(C.ptr_5D4594_754088))
-	C.free(unsafe.Pointer(C.ptr_5D4594_754092))
-	C.ptr_5D4594_754088, C.ptr_5D4594_754092 = nil, nil
-	C.ptr_5D4594_754088_cnt, C.ptr_5D4594_754092_cnt = 0, 0
+	C.free(unsafe.Pointer(worldOwnerStorage.focus_primary))
+	C.free(unsafe.Pointer(worldOwnerStorage.focus_secondary))
+	worldOwnerStorage.focus_primary, worldOwnerStorage.focus_secondary = nil, nil
+	worldOwnerStorage.focus_primary_count, worldOwnerStorage.focus_secondary_count = 0, 0
 	windowFocused = true
 }
 
@@ -55,9 +53,9 @@ func sub_42EBB0(kind C.uint, callback C.nox_focus_callback, field C.int, name *C
 	var count *C.int
 	switch kind {
 	case 1:
-		records, count = &C.ptr_5D4594_754088, &C.ptr_5D4594_754088_cnt
+		records, count = &worldOwnerStorage.focus_primary, &worldOwnerStorage.focus_primary_count
 	case 2:
-		records, count = &C.ptr_5D4594_754092, &C.ptr_5D4594_754092_cnt
+		records, count = &worldOwnerStorage.focus_secondary, &worldOwnerStorage.focus_secondary_count
 	default:
 		return
 	}

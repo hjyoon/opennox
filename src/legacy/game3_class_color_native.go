@@ -46,10 +46,6 @@ package legacy
 #include "input_common.h"
 #include "operators.h"
 
-extern uint32_t dword_8531A0_2572;
-extern uint32_t dword_5d4594_1313788;
-extern uint32_t dword_5d4594_1313740;
-extern uint32_t dword_5d4594_1307720;
 
 
 #include "game3_class_config_options.h"

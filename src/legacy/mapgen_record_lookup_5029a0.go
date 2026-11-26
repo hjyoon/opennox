@@ -1,14 +1,15 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1599576 (nox_archive_mapgen_storage()->archive_records)
+#define dword_5d4594_1599596 (nox_archive_mapgen_storage()->archive_record_count)
 #include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <string.h>
 
 #include "GAME4.h"
 
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
 
 typedef int (*nox_mapgen_lookup_5029A0_fn)(char*);
 typedef char* (*nox_mapgen_entry_5029F0_fn)(int);

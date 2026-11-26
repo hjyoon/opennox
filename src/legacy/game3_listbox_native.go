@@ -131,7 +131,7 @@ func game3ListColor(i int32) uint32 {
 	case 8:
 		return *memmap.PtrUint32(0x85B3FC, 984)
 	case 9:
-		return uint32(C.dword_8531A0_2572)
+		return uint32(worldWordStorage.local_player_color)
 	case 10:
 		return uint32(renderPalette.green)
 	case 11:

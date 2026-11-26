@@ -278,7 +278,7 @@ func nox_client_invokeSpellSlot_45DA50(index C.int) {
 	if player == nil || C.nox_xxx_playerAnimCheck_4372B0() != 0 {
 		return
 	}
-	slot := nox_quickbar_selected_slot(C.nox_xxx_aClosewoodengat_587000_133480, index)
+	slot := nox_quickbar_selected_slot(worldOwnerStorage.quickbar_data, index)
 	if slot == nil {
 		return
 	}

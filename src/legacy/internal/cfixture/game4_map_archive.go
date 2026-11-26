@@ -9,6 +9,11 @@ package cfixture
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wint-to-pointer-cast"
 #endif
+#include "world_native_storage.h"
+#define dword_5d4594_1599576 (nox_archive_mapgen_storage()->archive_records)
+#define dword_5d4594_1599596 (nox_archive_mapgen_storage()->archive_record_count)
+#define dword_5d4594_1599644 (nox_archive_mapgen_storage()->objects_placed)
+#define dword_5d4594_3835396 (nox_archive_mapgen_storage()->selected_archive_index)
 #include "game4_map_archive_reference.h"
 #if defined(__clang__)
 #pragma clang diagnostic pop

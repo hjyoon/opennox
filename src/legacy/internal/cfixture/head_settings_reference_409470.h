@@ -3,7 +3,9 @@
 #include "GAME1.h"
 #include "GAME3_2.h"
 #include "common__binfile.h"
+#ifndef dword_5d4594_3484
 extern uint32_t dword_5d4594_3484;
+#endif
 extern int head_settings_reference_flags_409470(uint32_t);
 extern int head_settings_reference_notify_409470(int);
 /* These two service names are redirected only AFTER public headers. The

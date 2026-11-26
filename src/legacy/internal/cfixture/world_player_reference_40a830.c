@@ -13,9 +13,6 @@
 #include "common__system__team.h"
 #include "world_player_reference_40a830.h"
 #include "mapgen_allocation.h"
-extern void* dword_5d4594_251560;
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-extern const int ptr_5D4594_2650668_cap;
 #include "floor_tile_storage.h"
 #define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
 void* nox_server_wallAttachDoor(void*,nox_object_t*);
@@ -79,6 +76,10 @@ int world_old_nox_xxx_netReportPlayerStatus_417630(nox_playerInfo*);
 #undef calloc
 #define free nox_mapgen_release_memory
 #define calloc nox_mapgen_alloc_memory
+#include "world_native_storage.h"
+#define dword_5d4594_251560 (nox_world_owner_storage()->secret_wall_head)
+#define ptr_5D4594_2650668 (nox_world_owner_storage()->tile_coordinates)
+#define ptr_5D4594_2650668_cap NOX_WORLD_TILE_CAPACITY
 #include "world_player_preserved_reference_40a830.inc"
 #pragma pop_macro("calloc")
 #pragma pop_macro("free")

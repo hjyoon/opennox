@@ -33,7 +33,6 @@ package legacy
 #include "client__drawable__update__sparklup.h"
 #include "client__drawable__update__telwake.h"
 #include "client__drawable__update__vortexup.h"
-extern void* nox_xxx_aClosewoodengat_587000_133480;
 */
 import "C"
 import (
@@ -44,7 +43,7 @@ import (
 
 func InitBlobData() {
 	blobdata.Init(&blobdata.Ptrs{
-		Ptr_nox_xxx_aClosewoodengat_587000_133480: &C.nox_xxx_aClosewoodengat_587000_133480,
+		Ptr_nox_xxx_aClosewoodengat_587000_133480: &worldOwnerStorage.quickbar_data,
 		Ptr_dword_587000_155144:                   &legacyPointers.audioGlobal,
 		Ptr_dword_587000_127004:                   &clientAudioStorage.effects_timer,
 		Ptr_dword_587000_93164:                    &clientAudioStorage.music_timer,

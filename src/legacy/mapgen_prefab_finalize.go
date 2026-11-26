@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487656;
 */
 import "C"
 
@@ -30,7 +29,7 @@ func mapgenVisitPlacedPrefabs(theme *C.uint8_t, finish func(*mapgenThemePrefabRe
 func mapgenFinalizePrefab(theme *C.uint8_t, prefab *mapgenThemePrefabRecord, foreach *C.uint8_t, room *mapgenRankedRoom) {
 	sub_502D70(C.int(prefab.areaIndex))
 	markers := [...]uint32{
-		uint32(C.dword_5d4594_2487656),
+		uint32(archiveAndMapgenStorage.north_prefab),
 		memmap.Uint32(0x5D4594, 2487660),
 		memmap.Uint32(0x5D4594, 2487664),
 		memmap.Uint32(0x5D4594, 2487668),

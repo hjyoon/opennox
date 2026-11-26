@@ -1,12 +1,13 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define nox_xxx_polygonNextIdx_587000_60352 (nox_world_word_storage()->next_polygon_index)
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "map_temp_lists_503f40.h"
 #include <stddef.h>
 #include <stdint.h>
-extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 typedef void* (*wall_attach_fixture_fn_410390)(nox_drawable*,int,int);
 typedef void* (*wall_attach_fixture_lookup_fn_410390)(int,int);
 typedef nox_player_polygon_check_data* (*wall_attach_fixture_polygon_fn_410390)(int2*,int);

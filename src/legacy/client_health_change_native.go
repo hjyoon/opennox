@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_3.h"
 #include "common/alloc/classes/alloc_class.h"
 
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -76,7 +75,7 @@ func sub_49A6A0(view *nox_draw_viewport_t, drawable *nox_drawable) {
 			value := int(change.delta)
 			color := damageColor
 			if value > 0 {
-				color = uint32(C.dword_8531A0_2572)
+				color = uint32(worldWordStorage.local_player_color)
 			}
 			if value < 0 {
 				value = -value

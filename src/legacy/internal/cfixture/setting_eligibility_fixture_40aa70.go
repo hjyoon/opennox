@@ -1,10 +1,11 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_526276 (nox_world_word_storage()->team_entries_limit)
 #include "GAME1.h"
 #include <stddef.h>
 #include <stdint.h>
-extern uint32_t dword_5d4594_526276;
 typedef int (*setting_eligibility_fixture_fn_40aa70)(nox_playerInfo*);
 typedef void* (*setting_eligibility_info_fn_40aa70)(void);
 typedef char (*setting_eligibility_char_fn_40aa70)(void);
@@ -49,7 +50,7 @@ func SettingEligibilityFixtureCPointerWidth40AA70() uintptr {
 	return uintptr(C.setting_eligibility_fixture_pointer_width_40aa70())
 }
 
-// Existing C-owned limit is exposed only so controls can save and restore it.
+// The live team-entry limit is exposed so controls can save and restore it.
 func SettingEligibilityFixtureLimitCell40AA70() unsafe.Pointer {
 	return C.setting_eligibility_fixture_limit_cell_40aa70()
 }

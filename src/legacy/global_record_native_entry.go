@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME1_1.h"
-extern uint32_t dword_587000_60044;
 typedef const char global_record_const_char_t;
 */
 import "C"
@@ -39,15 +38,15 @@ func sub_41FBE0(first, second **C.global_record_const_char_t) C.int {
 }
 
 func globalRecordOutput(first, second unsafe.Pointer) int32 {
-	if uint32(C.dword_587000_60044) == ^uint32(0) {
+	if uint32(worldWordStorage.global_record_word_60044) == ^uint32(0) {
 		return 0
 	}
-	offset := uint32(531660) + 24*uint32(C.dword_587000_60044)
+	offset := uint32(531660) + 24*uint32(worldWordStorage.global_record_word_60044)
 	// These C-owned output slots may be uninitialized. A Go pointer write
 	// barrier would interpret their old bytes as Go heap references.
 	*(*uintptr)(first) = uintptr(memmap.PtrOff(0x5D4594, uintptr(offset)))
 	// The stock entry reloads the selected index after its first store.
-	offset = uint32(531670) + 24*uint32(C.dword_587000_60044)
+	offset = uint32(531670) + 24*uint32(worldWordStorage.global_record_word_60044)
 	*(*uintptr)(second) = uintptr(memmap.PtrOff(0x5D4594, uintptr(offset)))
 	return 1
 }

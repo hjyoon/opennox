@@ -1,12 +1,13 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_8531A0_2576 (nox_world_owner_storage()->local_player_word)
+#define nox_xxx_aClosewoodengat_587000_133480 (nox_world_owner_storage()->quickbar_data)
 #include <stddef.h>
 #include <string.h>
 #include "GAME2.h"
 #include "game2_quickbar_native.h"
-extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern uintptr_t dword_8531A0_2576;
 static size_t g2qt_layout(int f){switch(f){case 0:return sizeof(nox_quickbar_window_set);case 1:return offsetof(nox_quickbar_window_set,data);case 2:return offsetof(nox_quickbar_window_set,root);case 3:return offsetof(nox_quickbar_window_set,buttons);case 4:return offsetof(nox_quickbar_window_set,nuggets);case 5:return offsetof(nox_quickbar_window_set,nugget_children);case 6:return sizeof(nox_window);case 7:return offsetof(nox_window,field_92);case 8:return sizeof(nox_playerInfo);case 9:return offsetof(nox_playerInfo,info.playerClass);default:return (size_t)-1;}}
 static void* g2qt_array(void) {
     return nox_quickbar_window_storage();

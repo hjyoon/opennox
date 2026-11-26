@@ -2,14 +2,13 @@ package legacy
 
 /*
 #include "GAME1_1.h"
-extern uint32_t dword_587000_66116;
 */
 import "C"
 
 // The extracted C scalar is independent of the raw blob at the same PE32
 // address. Keep its live owner while the table retains packed DWORD stride.
 func buffIterationCountScalar424CB0() int32 {
-	return int32(C.dword_587000_66116)
+	return int32(worldWordStorage.buff_iteration_count)
 }
 
 //export sub_424CB0

@@ -7,10 +7,6 @@ package legacy
 #include "GAME4.h"
 #include "common/fs/nox_fs.h"
 
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_3835396;
 
 */
 import "C"
@@ -26,12 +22,12 @@ import (
 const game4MapRecordBytes = 76
 
 func game4MapRecord(index int32) unsafe.Pointer {
-	return unsafe.Add(unsafe.Pointer(C.dword_5d4594_1599576), uintptr(index)*game4MapRecordBytes)
+	return unsafe.Add(unsafe.Pointer(archiveAndMapgenStorage.archive_records), uintptr(index)*game4MapRecordBytes)
 }
 
 //export sub_5029A0
 func sub_5029A0(name *C.char) C.int {
-	if int32(C.dword_5d4594_1599596) <= 0 {
+	if int32(archiveAndMapgenStorage.archive_record_count) <= 0 {
 		return -1
 	}
 	for i := int32(0); ; {
@@ -39,7 +35,7 @@ func sub_5029A0(name *C.char) C.int {
 			return C.int(i)
 		}
 		i++
-		if i >= int32(C.dword_5d4594_1599596) {
+		if i >= int32(archiveAndMapgenStorage.archive_record_count) {
 			return -1
 		}
 	}
@@ -48,14 +44,14 @@ func sub_5029A0(name *C.char) C.int {
 //export sub_5029F0
 func sub_5029F0(index C.int) *C.char {
 	// The inclusive upper bound is the current C contract (one-past record).
-	if index < 0 || int32(index) > int32(C.dword_5d4594_1599596) {
+	if index < 0 || int32(index) > int32(archiveAndMapgenStorage.archive_record_count) {
 		return nil
 	}
 	return (*C.char)(game4MapRecord(int32(index)))
 }
 
 //export sub_502A20
-func sub_502A20() C.int { return C.int(int32(C.dword_5d4594_1599596)) }
+func sub_502A20() C.int { return C.int(int32(archiveAndMapgenStorage.archive_record_count)) }
 
 //export sub_502A30
 func sub_502A30(name *C.char) C.int { return sub_502D70(sub_5029A0(name)) }
@@ -135,17 +131,17 @@ func game4MapReadU32(file *C.FILE) (uint32, bool) {
 
 //export sub_502B10
 func sub_502B10() C.int {
-	C.dword_5d4594_1599596 = 0
+	archiveAndMapgenStorage.archive_record_count = 0
 	if game4Mapgen.archive_path == nil {
 		game4Mapgen.archive_path = C.calloc(1, mapgenPathBufferSize503140)
 	}
 	if game4Mapgen.staging_path == nil {
 		game4Mapgen.staging_path = C.calloc(1, mapgenPathBufferSize503140)
 	}
-	if C.dword_5d4594_1599576 == nil {
-		C.dword_5d4594_1599576 = (*C.char)(C.calloc(1, 0x26000))
+	if archiveAndMapgenStorage.archive_records == nil {
+		archiveAndMapgenStorage.archive_records = (*C.char)(C.calloc(1, 0x26000))
 	}
-	if game4Mapgen.archive_path == nil || game4Mapgen.staging_path == nil || C.dword_5d4594_1599576 == nil {
+	if game4Mapgen.archive_path == nil || game4Mapgen.staging_path == nil || archiveAndMapgenStorage.archive_records == nil {
 		return 0
 	}
 	first := (*C.char)(game4Mapgen.archive_path)
@@ -169,7 +165,7 @@ func sub_502B10() C.int {
 		if length == 0 {
 			return 1
 		}
-		if C.dword_5d4594_1599596 >= 2048 || length < 11 {
+		if archiveAndMapgenStorage.archive_record_count >= 2048 || length < 11 {
 			return 0
 		}
 		afterLength := int64(nox_fs_ftell(game4Mapgen.archive))
@@ -197,7 +193,7 @@ func sub_502B10() C.int {
 		if !ok {
 			return 0
 		}
-		record := unsafe.Slice((*byte)(game4MapRecord(int32(C.dword_5d4594_1599596))), game4MapRecordBytes)
+		record := unsafe.Slice((*byte)(game4MapRecord(int32(archiveAndMapgenStorage.archive_record_count))), game4MapRecordBytes)
 		// Consume the declared bytes, but emulate strcpy's embedded-NUL stop
 		// and leave the remainder of the existing 64-byte name slot intact.
 		n := StrLenBytes(name[:])
@@ -205,7 +201,7 @@ func sub_502B10() C.int {
 		binary.LittleEndian.PutUint32(record[64:], x)
 		binary.LittleEndian.PutUint32(record[68:], y)
 		binary.LittleEndian.PutUint32(record[72:], uint32(afterLength-4))
-		C.dword_5d4594_1599596++
+		archiveAndMapgenStorage.archive_record_count++
 		if nox_fs_fseek(game4Mapgen.archive, C.long(length-11-int32(nameLength)), int32(C.SEEK_CUR)) != 0 {
 			return 0
 		}
@@ -214,10 +210,10 @@ func sub_502B10() C.int {
 
 //export sub_502D70
 func sub_502D70(index C.int) C.int {
-	if index < 0 || int32(index) >= int32(C.dword_5d4594_1599596) {
+	if index < 0 || int32(index) >= int32(archiveAndMapgenStorage.archive_record_count) {
 		return 0
 	}
-	C.dword_5d4594_3835396 = C.uint32_t(index)
+	archiveAndMapgenStorage.selected_archive_index = C.uint32_t(index)
 	return C.int(bool2int(nox_xxx_mapgenSaveMap_503830(index) == 0))
 }
 
@@ -250,7 +246,7 @@ func sub_502DF0() *C.FILE {
 
 //export sub_502E10
 func sub_502E10(index C.int) *C.FILE {
-	if game4Mapgen.archive == nil || index < 0 || int32(index) >= int32(C.dword_5d4594_1599596) {
+	if game4Mapgen.archive == nil || index < 0 || int32(index) >= int32(archiveAndMapgenStorage.archive_record_count) {
 		return nil
 	}
 	offset := binary.LittleEndian.Uint32(unsafe.Slice((*byte)(game4MapRecord(int32(index))), game4MapRecordBytes)[72:])
@@ -267,7 +263,7 @@ func sub_502E50(name *C.char) *C.FILE {
 }
 
 func game4MapCoordinate(index C.int, offset int) C.double {
-	if index < 0 || int32(index) >= int32(C.dword_5d4594_1599596) {
+	if index < 0 || int32(index) >= int32(archiveAndMapgenStorage.archive_record_count) {
 		return -1
 	}
 	bits := binary.LittleEndian.Uint32(unsafe.Slice((*byte)(game4MapRecord(int32(index))), game4MapRecordBytes)[offset:])
@@ -457,19 +453,19 @@ func sub_5036D0(name, outputPath *C.char) C.int {
 
 //export nox_xxx_mapgenSaveMap_503830
 func nox_xxx_mapgenSaveMap_503830(index C.int) C.int {
-	if index < 0 || int32(index) >= int32(C.dword_5d4594_1599596) {
+	if index < 0 || int32(index) >= int32(archiveAndMapgenStorage.archive_record_count) {
 		return 0
 	}
 	C.nox_xxx_free_503F40()
 	*memmap.PtrUint32(0x5D4594, 1599572) = math.MaxUint32
-	C.dword_5d4594_1599644 = 0
+	archiveAndMapgenStorage.objects_placed = 0
 	if game4MapOpen((*C.char)(game4Mapgen.archive_path)) == 0 || sub_502E10(index) == nil || !mapgenLoadCurrent503830() {
 		sub_502DF0()
 		return 0
 	}
 	game4Mapgen.loaded_index = C.uint32_t(index)
 	game4Mapgen.tiles_placed = 0
-	C.dword_5d4594_3835396 = C.uint32_t(index)
+	archiveAndMapgenStorage.selected_archive_index = C.uint32_t(index)
 	sub_502DF0()
 	return 1
 }

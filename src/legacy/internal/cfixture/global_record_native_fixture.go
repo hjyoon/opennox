@@ -1,9 +1,10 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_587000_60044 (nox_world_word_storage()->global_record_word_60044)
 #include "GAME1_1.h"
 #include "memmap.h"
-extern uint32_t dword_587000_60044;
 typedef const char global_record_const_char_t;
 typedef char*(*global_record_get_C)(void);
 typedef void(*global_record_set_C)(const char*);

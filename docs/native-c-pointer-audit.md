@@ -931,6 +931,34 @@ The music module owns its nesting counter and the audio comparison
 owns its private bank. Their two obsolete C definitions were removed,
 leaving 38 definitions in `vardefs.c`.
 
+### Map generation, world, and focus storage
+
+Go allocates the remaining 37 cells for archive records, map
+generation, focus registration, world lists, and player state.
+Archive and list owners retain native pointer width. Packed map
+indices, tokens, counters, and flags retain their 32-bit widths.
+The tile coordinate table uses a compile-time capacity of 128.
+C fixtures read the live slots through their storage bindings. The
+native word allocation includes space for the settings comparisons'
+16-byte neighbour reads.
+
+The storage migration removes `vardefs.c` after its last definitions.
+
+### Remaining top-level C entry points
+
+The 27 top-level C files have 60 function definitions across the
+supported architecture and tag profiles. Default 64-bit builds select
+24 files and 54 definitions. Default 32-bit builds select 26 files
+and 56 definitions. The `safe` tag adds four definitions in one file
+to either selection.
+
+The union includes 38 pointer and scalar ABI adapters, 14 variadic and
+host formatting entries, two native indirect-call frames, two float
+bit adapters, and four safe memory and string entries. Their standalone
+game algorithm count is zero. The count covers the top-level C files.
+The three C comparison sources, Cgo preambles, and inline headers
+have separate audit scopes.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

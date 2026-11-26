@@ -8,7 +8,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "common__strman.h"
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -197,7 +196,7 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	}
 	emptyColor, fillColor := C.int(renderPalette.violet), C.int(memmap.Int32(0x85B3FC, 940))
 	if alternate != 0 {
-		emptyColor, fillColor = C.int(memmap.Int32(0x85B3FC, 984)), C.int(C.dword_8531A0_2572)
+		emptyColor, fillColor = C.int(memmap.Int32(0x85B3FC, 984)), C.int(worldWordStorage.local_player_color)
 	}
 	C.nox_client_drawSetColor_434460(emptyColor)
 	C.nox_client_drawRectFilledOpaque_49CE30(x+width-2, y, 2, height)

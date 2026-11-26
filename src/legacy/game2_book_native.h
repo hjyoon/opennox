@@ -30,8 +30,6 @@
 #include "client__gui__guispell.h"
 #include "common__gamemech__pausefx.h"
 
-extern uintptr_t dword_8531A0_2576;
-extern void* nox_xxx_aClosewoodengat_587000_133480;
 
 typedef struct {
 	uintptr_t player_word;

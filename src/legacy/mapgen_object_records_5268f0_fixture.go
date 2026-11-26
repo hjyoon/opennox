@@ -1,6 +1,9 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_2487672 (nox_archive_mapgen_storage()->object_record_head)
+#define dword_5d4594_2487676 (nox_archive_mapgen_storage()->object_record_cursor)
 #include "mapgen_allocation.h"
 #include <stdint.h>
 #include <stdlib.h>
@@ -10,8 +13,6 @@ package legacy
 #include "mapgen_legacy_ptr.h"
 #include "server__mapgen__generate__populate.h"
 
-extern uint32_t dword_5d4594_2487672;
-extern uint32_t dword_5d4594_2487676;
 
 static uintptr_t nox_test_mapgen_load_area_records(void) {
 	return (uintptr_t)sub_526950();
@@ -68,10 +69,10 @@ static nox_test_mapgen_object_records_5268f0_result nox_test_mapgen_object_recor
 import "C"
 
 func mapgenLoadAreaRecordsCFixture() (uintptr, func()) {
-	count := C.dword_5d4594_2487676
+	count := archiveAndMapgenStorage.object_record_cursor
 	return uintptr(C.nox_test_mapgen_load_area_records()), func() {
 		sub_526A90()
-		C.dword_5d4594_2487676 = count
+		archiveAndMapgenStorage.object_record_cursor = count
 	}
 }
 

@@ -82,6 +82,8 @@ static int sub_457140(int a1,wchar2_t* a2);
 #define nox_gui_server_players (*nox_gui_server_players_storage())
 #define dword_5d4594_1045684 (nox_game2_server_windows_storage()->players)
 #define dword_5d4594_1046492 (nox_game2_server_windows_storage()->options)
+#include "world_native_storage.h"
+#define dword_8531A0_2572 (nox_world_word_storage()->local_player_color)
 #include "game2_server_reference.inc"
 #undef dword_5d4594_1046492
 #undef dword_5d4594_1045684

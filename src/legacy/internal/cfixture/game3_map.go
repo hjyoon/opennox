@@ -1,6 +1,9 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1313740 (nox_world_word_storage()->map_effect_word_1313740)
+#define dword_5d4594_1313788 (nox_world_word_storage()->map_effect_word_1313788)
 #include <stdint.h>
 #include <stdlib.h>
 #include "native_fixture_alloc.h"
@@ -13,7 +16,6 @@ package cfixture
 #include "GAME3.h"
 #include "common__system__team.h"
 #include "operators.h"
-extern uint32_t dword_5d4594_1313740,dword_5d4594_1313788;
 static unsigned int game3_test_owner(int n){return n?dword_5d4594_1313788:dword_5d4594_1313740;}
 static void game3_test_set_owner(int n,unsigned int v){if(n)dword_5d4594_1313788=v;else dword_5d4594_1313740=v;}
 

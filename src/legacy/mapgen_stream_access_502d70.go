@@ -1,6 +1,10 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1599576 (nox_archive_mapgen_storage()->archive_records)
+#define dword_5d4594_1599596 (nox_archive_mapgen_storage()->archive_record_count)
+#define dword_5d4594_3835396 (nox_archive_mapgen_storage()->selected_archive_index)
 #include "native_fixture_alloc.h"
 #include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <stdint.h>
@@ -11,9 +15,6 @@ package legacy
 #include "GAME4.h"
 #include "common/fs/nox_fs.h"
 
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_3835396;
 
 typedef struct nox_test_mapgen_stream_access_502D70_result {
 	uintptr_t records_address;

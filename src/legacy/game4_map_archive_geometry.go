@@ -9,7 +9,6 @@ package legacy
 #include "game4_map_archive.h"
 typedef const float2 nox_const_float2;
 
-extern uint32_t dword_5d4594_3835396;
 */
 import "C"
 
@@ -161,7 +160,7 @@ func sub_503B30(at *C.float2) C.int {
 
 //export sub_503EC0
 func sub_503EC0(object *C.nox_object_t, out *C.float2) C.int {
-	if game4Mapgen.loaded_index != C.dword_5d4594_3835396 || int32(game4Mapgen.loaded_index) == -1 || game4Mapgen.tiles_placed == 1 {
+	if game4Mapgen.loaded_index != archiveAndMapgenStorage.selected_archive_index || int32(game4Mapgen.loaded_index) == -1 || game4Mapgen.tiles_placed == 1 {
 		return 0
 	}
 	origin := C.float2{

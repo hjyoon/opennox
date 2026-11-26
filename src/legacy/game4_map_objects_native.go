@@ -55,7 +55,7 @@ func sub_504910(deltaX, deltaY C.int32_t) C.int32_t {
 //export sub_504980
 func sub_504980() *C.nox_object_t {
 	loaded := game4Mapgen.loaded_index
-	if !(loaded == C.dword_5d4594_3835396 && int32(loaded) != -1 && game4Mapgen.tiles_placed != 1) && C.nox_xxx_mapgenSaveMap_503830(C.int(int32(C.dword_5d4594_3835396))) == 0 {
+	if !(loaded == archiveAndMapgenStorage.selected_archive_index && int32(loaded) != -1 && game4Mapgen.tiles_placed != 1) && C.nox_xxx_mapgenSaveMap_503830(C.int(int32(archiveAndMapgenStorage.selected_archive_index))) == 0 {
 		return nil
 	}
 	node := game4MapObjectHead()

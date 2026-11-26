@@ -1,9 +1,10 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1599628 (nox_world_word_storage()->script_pointer_word)
 #include "defs.h"
 #include "memmap.h"
-extern unsigned int dword_5d4594_1599628;
 int sub_512E80(wchar2_t*);
 typedef int(*wide_script_pointer_entry_C)(wchar2_t*);
 _Static_assert(_Generic(&sub_512E80,wide_script_pointer_entry_C:1,default:0),"wide script pointer entry ABI");

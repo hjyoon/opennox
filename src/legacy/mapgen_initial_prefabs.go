@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487656;
 */
 import "C"
 
@@ -15,10 +14,10 @@ import (
 )
 
 func mapgenInitializePrefabExitTypes() {
-	if C.dword_5d4594_2487656 != 0 {
+	if archiveAndMapgenStorage.north_prefab != 0 {
 		return
 	}
-	C.dword_5d4594_2487656 = C.uint32_t(nox_xxx_getNameId_4E3AA0(internCStr("ExitNorthMarker")))
+	archiveAndMapgenStorage.north_prefab = C.uint32_t(nox_xxx_getNameId_4E3AA0(internCStr("ExitNorthMarker")))
 	for i, name := range [...]string{"ExitSouthMarker", "ExitEastMarker", "ExitWestMarker"} {
 		*memmap.PtrUint32(0x5D4594, uintptr(2487660+4*i)) = uint32(nox_xxx_getNameId_4E3AA0(internCStr(name)))
 	}

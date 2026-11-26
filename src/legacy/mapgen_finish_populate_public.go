@@ -7,9 +7,6 @@ package legacy
 #include "GAME4_2.h"
 #include "server__mapgen__generate__populate.h"
 
-extern uint32_t dword_5d4594_1550916;
-extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487672;
 
 static inline void mapgenPrintNoExit(wchar2_t* text) {
     nox_xxx_printToAll_4D9FD0(0, text);
@@ -117,7 +114,7 @@ func mapgenReleaseProcessRecords(slot *uint32, release func(uint32)) {
 
 //export sub_4D42C0
 func sub_4D42C0() C.int {
-	return C.int(C.dword_5d4594_1550916)
+	return C.int(archiveAndMapgenStorage.room_head)
 }
 
 //export sub_5259D0
@@ -127,12 +124,12 @@ func sub_5259D0() C.double {
 
 //export sub_5259E0
 func sub_5259E0() C.int {
-	return C.int(C.dword_5d4594_2487576)
+	return C.int(archiveAndMapgenStorage.farthest_room)
 }
 
 //export sub_526A90
 func sub_526A90() {
-	slot := (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487672))
+	slot := (*uint32)(unsafe.Pointer(&archiveAndMapgenStorage.object_record_head))
 	mapgenReleaseProcessRecords(slot, func(token uint32) {
 		records := resolveMapgenPointer(uintptr(token))
 		forgetMapgenPointer(records)
@@ -157,7 +154,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 		},
 		maxRoomDistance: func() { nox_mapgenMaxRoomDistanceNative_5259D0() },
 		firstRoom: func() *mapgenPopulateRoom {
-			return (*mapgenPopulateRoom)(resolveMapgenPointer(uintptr(C.dword_5d4594_1550916)))
+			return (*mapgenPopulateRoom)(resolveMapgenPointer(uintptr(archiveAndMapgenStorage.room_head)))
 		},
 		nextRoom: func(room *mapgenPopulateRoom) *mapgenPopulateRoom {
 			return (*mapgenPopulateRoom)(unsafe.Pointer(nox_mapgenRoomSortedNextNative_525C90((*C.nox_mapgen_readonly_room_t)(unsafe.Pointer(room)))))

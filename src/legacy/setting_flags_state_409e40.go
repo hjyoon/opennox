@@ -1,10 +1,11 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_3484 (nox_world_word_storage()->server_subflags)
 #include <stddef.h>
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_3484;
 extern int sub_4D7EA0(void);
 
 _Static_assert(sizeof(uint32_t) == 4, "settings flags DWORD ABI");
@@ -12,7 +13,6 @@ _Static_assert(sizeof(int) == 4, "settings dirty int ABI");
 _Static_assert(sizeof(dword_5d4594_3484) == 4, "actual subflags global width");
 _Static_assert(_Generic(&dword_5d4594_3484, uint32_t*: 1, default: 0), "actual subflags pointer type");
 
-static void* setting_flags_subflags_cell_409e40(void) { return &dword_5d4594_3484; }
 static size_t setting_flags_subflags_width_409e40(void) { return sizeof(dword_5d4594_3484); }
 static size_t setting_flags_subflags_align_409e40(void) { return _Alignof(uint32_t); }
 static int setting_flags_refresh_409e40(void) { return sub_4D7EA0(); }
@@ -40,7 +40,7 @@ func nox_settings_dirty_cell_409E40() *C.int { return settingsDirtyWord }
 func settingFlagsNativeCell409E40(field int) unsafe.Pointer {
 	switch field {
 	case 0:
-		return C.setting_flags_subflags_cell_409e40()
+		return unsafe.Pointer(&worldWordStorage.server_subflags)
 	case 1:
 		return unsafe.Pointer(settingsDirtyWord)
 	default:

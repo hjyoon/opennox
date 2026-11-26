@@ -16,7 +16,6 @@ package legacy
 #include "client__gui__guispell.h"
 #include "client__gui__servopts__guiserv.h"
 
-extern void* nox_xxx_aClosewoodengat_587000_133480;
 
 int nox_ctrlevent_add_ticks_42E630();
 
@@ -85,11 +84,11 @@ func Nox_xxx_quickBarToggle_460920() {
 }
 
 func Nox_xxx_quickBarSetSpell(spell, slot int) {
-	C.nox_xxx_spellKeyPackSetSpell_45DC40(C.nox_xxx_aClosewoodengat_587000_133480, C.int(spell), C.int(slot))
+	C.nox_xxx_spellKeyPackSetSpell_45DC40(worldOwnerStorage.quickbar_data, C.int(spell), C.int(slot))
 }
 
 func Nox_xxx_quickBarSpell(slot int) int {
-	ptr := nox_quickbar_selected_slot(C.nox_xxx_aClosewoodengat_587000_133480, C.int(slot))
+	ptr := nox_quickbar_selected_slot(worldOwnerStorage.quickbar_data, C.int(slot))
 	if ptr == nil {
 		return 0
 	}
@@ -227,7 +226,7 @@ func Sub_42EB90(a1 int) {
 }
 
 func quickBarBase45DA50() unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_aClosewoodengat_587000_133480)
+	return unsafe.Pointer(worldOwnerStorage.quickbar_data)
 }
 
 func Nox_client_invokeSpellSlot_45DA50(a1 int) {

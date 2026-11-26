@@ -1,6 +1,8 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_2487656 (nox_archive_mapgen_storage()->north_prefab)
 #include "native_fixture_alloc.h"
 #include <stdint.h>
 #include <stdlib.h>
@@ -9,7 +11,6 @@ package legacy
 #include "mapgen_legacy_ptr.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_2487656;
 
 typedef struct nox_test_mapgen_initial_prefabs_525d20_result {
 	uintptr_t theme_address;

@@ -51,9 +51,6 @@ package legacy
 #include "input_common.h"
 #include <string.h>
 #include "game2_quickbar_native.h"
-extern uintptr_t dword_8531A0_2576;
-extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 */
 import "C"
@@ -155,11 +152,11 @@ func g2qTooltip(w *C.nox_window, spell uint32) {
 func g2qB(p unsafe.Pointer, o uintptr) *byte   { return (*byte)(unsafe.Add(p, o)) }
 func g2qW(p unsafe.Pointer, o uintptr) *uint32 { return (*uint32)(unsafe.Add(p, o)) }
 func g2qRow(p unsafe.Pointer) unsafe.Pointer   { return unsafe.Pointer(nox_quickbar_selected_row(p)) }
-func g2qMain() unsafe.Pointer                  { return C.nox_xxx_aClosewoodengat_587000_133480 }
+func g2qMain() unsafe.Pointer                  { return worldOwnerStorage.quickbar_data }
 func g2qTrap() unsafe.Pointer                  { return memmap.PtrOff(0x5D4594, 1047940) }
 func g2qExpanded(i int) unsafe.Pointer         { return memmap.PtrOff(0x5D4594, 1048196+uintptr(256*i)) }
 func g2qPlayer() *C.nox_playerInfo {
-	return *(**C.nox_playerInfo)(unsafe.Pointer(&C.dword_8531A0_2576))
+	return *(**C.nox_playerInfo)(unsafe.Pointer(&worldOwnerStorage.local_player_word))
 }
 func g2qMirror(p unsafe.Pointer) {
 	if unsafe.Sizeof(uintptr(0)) == 4 && p != nil {
@@ -307,7 +304,7 @@ func nox_xxx_spellKeyPackSetSpell_45DC40(data unsafe.Pointer, spell, slot C.int)
 	if w := nox_quickbar_button(data, slot); w != nil {
 		g2qTooltip(w, uint32(spell))
 	}
-	if C.dword_8531A0_2576 != 0 {
+	if worldOwnerStorage.local_player_word != 0 {
 		g2qSound(794, 100)
 	}
 }
@@ -429,7 +426,7 @@ func nox_xxx_clientUpdateButtonRow_45E110(index C.int) C.int {
 			return index
 		}
 		*g2qB(data, 200) = byte(index)
-		if C.dword_8531A0_2576 != 0 {
+		if worldOwnerStorage.local_player_word != 0 {
 			g2qSound(798, 100)
 		}
 		g2qMirror(data)

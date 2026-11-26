@@ -1,13 +1,14 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_526276 (nox_world_word_storage()->team_entries_limit)
 #include <stdlib.h>
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "GAME3_3.h"
 #include "common__system__team.h"
 #include "client__gui__servopts__playrlst.h"
-extern uint32_t dword_5d4594_526276;
 static int32_t team_entries_limit_417cf0(void) { return (int32_t)dword_5d4594_526276; }
 */
 import "C"

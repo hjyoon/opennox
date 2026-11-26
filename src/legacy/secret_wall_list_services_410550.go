@@ -6,9 +6,7 @@ package legacy
 #include <stdlib.h>
 #include <string.h>
 #include "GAME1.h"
-extern void* dword_5d4594_251560;
 
-static void* secret_wall_native_head_cell_410550(void) { return &dword_5d4594_251560; }
 static void* secret_wall_native_foreign_load_pointer_410550(const void* slot) {
     void* value;
     memcpy(&value, slot, sizeof(value));
@@ -30,10 +28,9 @@ import (
 	"unsafe"
 )
 
-// This always names the actual production C owner; the four-byte historical
-// memmap descriptor is not the storage used by the current C list helpers.
+// The live native slot holds the secret wall list head.
 func secretWallNativeHeadCell410550() unsafe.Pointer {
-	return C.secret_wall_native_head_cell_410550()
+	return unsafe.Pointer(&worldOwnerStorage.secret_wall_head)
 }
 
 func secretWallNativeForeignLoadPointer410550(slot unsafe.Pointer) unsafe.Pointer {

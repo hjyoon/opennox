@@ -4,7 +4,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME4_2.h"
 #include "cgo_const.h"
-extern uint32_t dword_5d4594_1550916;
 */
 import "C"
 
@@ -54,7 +53,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 	if nox_xxx_mapGenPlacePrefabs_526830(theme) == 0 {
 		return 0
 	}
-	root := (*C.uint8_t)(unsafe.Pointer(mapgenResolveListedRoom(uint32(C.dword_5d4594_1550916))))
+	root := (*C.uint8_t)(unsafe.Pointer(mapgenResolveListedRoom(uint32(archiveAndMapgenStorage.room_head))))
 	nox_mapgenComputeRoomDistancesNative_5259F0(root, nil, 0)
 	nox_mapgenClassifyRoomsNative_525AF0(root)
 	if memmap.Uint32(0x5D4594, 1549980) != 0 {
@@ -82,7 +81,7 @@ func mapgenBuildRooms(theme *C.uint8_t) C.int {
 //export nox_xxx_mapGenStep_4D44E0
 func nox_xxx_mapGenStep_4D44E0() C.int {
 	theme := (*C.uint8_t)(memmap.PtrOff(0x5D4594, mapgenThemeOffset))
-	C.dword_5d4594_1550916 = 0
+	archiveAndMapgenStorage.room_head = 0
 	sub_57C490_2(internCStr("theme"))
 	sub_526C40(0)
 	sub_51D100(0)

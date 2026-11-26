@@ -1,6 +1,9 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1599576 (nox_archive_mapgen_storage()->archive_records)
+#define dword_5d4594_1599596 (nox_archive_mapgen_storage()->archive_record_count)
 #include "native_fixture_alloc.h"
 #include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <stdint.h>
@@ -11,8 +14,6 @@ package legacy
 #include "GAME4.h"
 #include "memmap.h"
 
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
 
 typedef struct nox_test_mapgen_rename_503230_result {
 	int result;

@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_2487672;
-extern uint32_t dword_5d4594_2487676;
 */
 import "C"
 
@@ -22,7 +20,7 @@ const mapgenAreaRecordBytes = 64
 var _ [mapgenAreaRecordBytes]byte = [unsafe.Sizeof(mapGenDecorAreaFlags{})]byte{}
 
 func mapgenAreaRecords() *mapGenDecorAreaFlags {
-	return (*mapGenDecorAreaFlags)(resolveMapgenPointer(uintptr(C.dword_5d4594_2487672)))
+	return (*mapGenDecorAreaFlags)(resolveMapgenPointer(uintptr(archiveAndMapgenStorage.object_record_head)))
 }
 
 func mapgenAreaRecordName(record *mapGenDecorAreaFlags) []byte {
@@ -33,14 +31,14 @@ func mapgenAreaRecordName(record *mapGenDecorAreaFlags) []byte {
 
 func mapgenAreaRecordAt(index int32) *mapGenDecorAreaFlags {
 	records := mapgenAreaRecords()
-	if records == nil || index < 0 || index > int32(C.dword_5d4594_2487676) {
+	if records == nil || index < 0 || index > int32(archiveAndMapgenStorage.object_record_cursor) {
 		return nil
 	}
 	return (*mapGenDecorAreaFlags)(unsafe.Add(unsafe.Pointer(records), uintptr(index)*mapgenAreaRecordBytes))
 }
 
 func mapgenFindAreaRecord(name string) int32 {
-	count, records := int32(C.dword_5d4594_2487676), mapgenAreaRecords()
+	count, records := int32(archiveAndMapgenStorage.object_record_cursor), mapgenAreaRecords()
 	if count <= 0 || records == nil {
 		return -1
 	}
@@ -84,18 +82,18 @@ func nox_mapgenLoadAreaRecordsNative() C.uintptr_t {
 	sub_526A90()
 	count := sub_502A20()
 	if count < 0 {
-		C.dword_5d4594_2487676 = 0
+		archiveAndMapgenStorage.object_record_cursor = 0
 		return 0
 	}
 	ptr := nox_mapgen_alloc_memory(C.size_t(count), mapgenAreaRecordBytes)
 	if ptr == nil {
-		C.dword_5d4594_2487676 = 0
+		archiveAndMapgenStorage.object_record_cursor = 0
 		return 0
 	}
 	token := registerMapgenPointer(ptr)
 	if token == 0 {
 		nox_mapgen_release_memory(ptr)
-		C.dword_5d4594_2487676 = 0
+		archiveAndMapgenStorage.object_record_cursor = 0
 		return 0
 	}
 	records := unsafe.Slice((*mapGenDecorAreaFlags)(ptr), int(count))
@@ -104,13 +102,13 @@ func nox_mapgenLoadAreaRecordsNative() C.uintptr_t {
 		record := &records[i]
 		if !copyMapgenName(mapgenAreaRecordName(record), name) {
 			mapgenReleaseDecorRecord(ptr)
-			C.dword_5d4594_2487676 = 0
+			archiveAndMapgenStorage.object_record_cursor = 0
 			return 0
 		}
 		record.flags |= mapgenAreaAttachmentFlags(name)
 	}
-	C.dword_5d4594_2487672 = C.uint32_t(token)
-	C.dword_5d4594_2487676 = C.uint32_t(count)
+	archiveAndMapgenStorage.object_record_head = C.uint32_t(token)
+	archiveAndMapgenStorage.object_record_cursor = C.uint32_t(count)
 	if count == 0 {
 		return C.uintptr_t(uintptr(ptr))
 	}

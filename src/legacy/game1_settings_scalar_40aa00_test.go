@@ -183,7 +183,7 @@ func TestGame1SettingsScalarABI40AA00(t *testing.T) {
 	if p != game1SettingsGlobal40E090() || (unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= 0xffffffff) || width != 4 || align != 4 || uintptr(p)%align != 0 || p == unsafe.Pointer(&rawBlob[8]) {
 		t.Fatal("actual C global DWORD width/alignment/address and independent packed blob")
 	}
-	t.Logf("GAME1_SETTINGS_SCALAR_ABI_OK public-C=6 live-aliases=4 separate-C-global=1 native-pointer-width=%d high-address-qualified=%t original-pointer-truncation-claim=false", unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(uintptr(0)) == 8)
+	t.Logf("GAME1_SETTINGS_SCALAR_ABI_OK public-C=6 live-aliases=4 separate-native-cell=1 native-pointer-width=%d high-address-qualified=%t original-pointer-truncation-claim=false", unsafe.Sizeof(uintptr(0)), unsafe.Sizeof(uintptr(0)) == 8)
 }
 
 func TestGame1SettingsScalarOldC40AA00(t *testing.T) {

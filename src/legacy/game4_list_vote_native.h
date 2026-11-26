@@ -16,8 +16,6 @@
 #include "player_respawn_4f7ef0.h"
 #include "common/alloc/classes/alloc_class.h"
 
-extern uint32_t dword_5d4594_3835368;
-extern uint32_t dword_5d4594_3835396;
 typedef struct {
 	void* allocator;
 	uint32_t diagnostic;

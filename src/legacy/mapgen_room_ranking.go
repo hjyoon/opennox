@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487584;
 */
 import "C"
 
@@ -65,12 +63,12 @@ func mapgenSetMaximumRoomDistance(distance float32) {
 
 func mapgenSetFarthestRoom(room *mapgenRankedRoom) {
 	mapgenRoomRanking.farthest = room
-	C.dword_5d4594_2487576 = C.uint32_t(mapgenRankedRoomToken(room))
+	archiveAndMapgenStorage.farthest_room = C.uint32_t(mapgenRankedRoomToken(room))
 }
 
 func mapgenSetSortedRoomHead(room *mapgenRankedRoom) {
 	mapgenRoomRanking.head = room
-	C.dword_5d4594_2487584 = C.uint32_t(mapgenRankedRoomToken(room))
+	archiveAndMapgenStorage.room_rank_word_2487584 = C.uint32_t(mapgenRankedRoomToken(room))
 }
 
 //export nox_mapgenResetRoomRankingNative

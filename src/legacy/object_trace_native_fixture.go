@@ -1,10 +1,11 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_2488620 (nox_world_word_storage()->object_trace_word)
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 typedef const nox_object_t object_trace_const_object_t;
-extern uint32_t dword_5d4594_2488620;
 typedef uint32_t(*object_trace_net_C)(const nox_object_t*);
 typedef uint16_t(*object_trace_type_C)(const nox_object_t*);
 typedef void*(*object_trace_init_C)(const nox_object_t*);

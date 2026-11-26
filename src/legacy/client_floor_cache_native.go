@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 typedef void (*nox_floor_tile_draw_fn)(int2*, nox_video_bag_image_t*, uint16_t);
 typedef void (*nox_floor_edge_draw_fn)(int2*, nox_tile_list_node_t*);
 
@@ -131,7 +130,7 @@ func floorTileNeedsTextures(tile C.int) bool {
 
 //export nox_xxx_tileCheckRedrawMB_482570
 func nox_xxx_tileCheckRedrawMB_482570(vp *nox_draw_viewport_t) C.int {
-	if vp == nil || C.ptr_5D4594_2650668 == nil {
+	if vp == nil || worldOwnerStorage.tile_coordinates == nil {
 		return 0
 	}
 	left, top, right, bottom := floorVisibleCells(vp, int32(clientDisplayStorage.tile_columns), int32(clientDisplayStorage.tile_rows), worldTileCapacity411160())
@@ -149,7 +148,7 @@ func nox_xxx_tileCheckRedrawMB_482570(vp *nox_draw_viewport_t) C.int {
 
 //export nox_xxx_tileDrawImpl_4826A0
 func nox_xxx_tileDrawImpl_4826A0(vp *nox_draw_viewport_t) C.int {
-	if vp == nil || C.ptr_5D4594_2650668 == nil {
+	if vp == nil || worldOwnerStorage.tile_coordinates == nil {
 		return 0
 	}
 	legacyWords.dword_5d4594_3798836, legacyWords.dword_5d4594_3798840 = 0, 0
@@ -174,7 +173,7 @@ func nox_xxx_tileDrawImpl_4826A0(vp *nox_draw_viewport_t) C.int {
 
 //export nox_xxx_tileDrawMB_481C20_A
 func nox_xxx_tileDrawMB_481C20_A(vp *nox_draw_viewport_t, world C.int) {
-	if C.ptr_5D4594_2650668 == nil {
+	if worldOwnerStorage.tile_coordinates == nil {
 		return
 	}
 	worldX := int32(world)
@@ -234,7 +233,7 @@ func nox_xxx_tileDrawMB_481C20_A(vp *nox_draw_viewport_t, world C.int) {
 
 //export nox_xxx_tileDrawMB_481C20_B
 func nox_xxx_tileDrawMB_481C20_B(vp *nox_draw_viewport_t, world C.int) {
-	if C.ptr_5D4594_2650668 == nil {
+	if worldOwnerStorage.tile_coordinates == nil {
 		return
 	}
 	worldY := int32(world)

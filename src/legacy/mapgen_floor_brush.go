@@ -6,7 +6,6 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME4_3.h"
 
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 */
 import "C"
 
@@ -17,7 +16,7 @@ import (
 )
 
 func mapgenFloorCell(x, y int32) *C.obj_5D4594_2650668_t {
-	row := worldTileRow411160(unsafe.Pointer(C.ptr_5D4594_2650668), x)
+	row := worldTileRow411160(unsafe.Pointer(worldOwnerStorage.tile_coordinates), x)
 	return (*C.obj_5D4594_2650668_t)(unsafe.Add(row, uintptr(y)*C.sizeof_obj_5D4594_2650668_t))
 }
 
@@ -130,7 +129,7 @@ func nox_xxx_tileFreeTileOne_4221E0(ptr unsafe.Pointer) *C.nox_tile_list_node_t 
 //export nox_xxx_mapSwitchLevel_4D12E0_tileFree
 func nox_xxx_mapSwitchLevel_4D12E0_tileFree() {
 	count := int(worldTileCapacity411160())
-	rows := unsafe.Slice(C.ptr_5D4594_2650668, count)
+	rows := unsafe.Slice(worldOwnerStorage.tile_coordinates, count)
 	// The original traverses the grid column-first. Preserve the order
 	// in which the two layers are returned to the shared subtile pool.
 	for column := range count {

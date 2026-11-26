@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487524;
 */
 import "C"
 
@@ -45,8 +44,8 @@ func nox_xxx_mapGenFreeStr_51F1F0(ref unsafe.Pointer) {
 }
 
 func mapgenClearItemSetTemplate() {
-	entry := mapgenResolveItemSetEntry(C.dword_5d4594_2487524)
-	C.dword_5d4594_2487524 = 0
+	entry := mapgenResolveItemSetEntry(archiveAndMapgenStorage.item_set_template)
+	archiveAndMapgenStorage.item_set_template = 0
 	mapgenFreeItemSetEntry(entry)
 }
 
@@ -109,7 +108,7 @@ func mapgenMergeItemModifiers(base *C.nox_mapgen_item_set_entry_legacy, slot int
 }
 
 func mapgenInstallItemModifiers(entry *C.nox_mapgen_item_set_entry_legacy, parsed *[4][]mapgenItemModifierName) bool {
-	base := mapgenResolveItemSetEntry(C.dword_5d4594_2487524)
+	base := mapgenResolveItemSetEntry(archiveAndMapgenStorage.item_set_template)
 	var replacement C.nox_mapgen_item_set_entry_legacy
 	for i, changes := range parsed {
 		names, ok := mapgenMergeItemModifiers(base, i, changes)
@@ -209,7 +208,7 @@ func mapgenReadItemSet(raw *C.uint8_t, file *C.FILE, section string, index int) 
 
 		if isTemplate {
 			mapgenClearItemSetTemplate()
-			C.dword_5d4594_2487524 = token
+			archiveAndMapgenStorage.item_set_template = token
 			continue
 		}
 		link := &theme[index]

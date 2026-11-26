@@ -4,7 +4,6 @@ package legacy
 #include "client__gui__guibrief.h"
 #include "noxstring.h"
 
-extern uintptr_t dword_8531A0_2576;
 
 static inline void nox_briefing_number(wchar2_t* dst, const wchar2_t* format, int value) {
 	nox_swprintf(dst, format, value);
@@ -167,7 +166,7 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 			continue
 		}
 		players++
-		if C.uintptr_t(uintptr(unsafe.Pointer(row.Player))) == C.dword_8531A0_2576 {
+		if C.uintptr_t(uintptr(unsafe.Pointer(row.Player))) == worldOwnerStorage.local_player_word {
 			mySecrets = int(row.CoopSecrets)
 		} else {
 			friendsSecrets += int(row.CoopSecrets)

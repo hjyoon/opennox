@@ -1,6 +1,11 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define ptr_5D4594_754088 (nox_world_owner_storage()->focus_primary)
+#define ptr_5D4594_754088_cnt (nox_world_owner_storage()->focus_primary_count)
+#define ptr_5D4594_754092 (nox_world_owner_storage()->focus_secondary)
+#define ptr_5D4594_754092_cnt (nox_world_owner_storage()->focus_secondary_count)
 #include "GAME1.h"
 #include "defs.h"
 #include <stddef.h>
@@ -37,9 +42,6 @@ static void sp_fixture_qsort_4134d0(void* base,size_t count) { qsort(base,count,
 static void sp_fixture_callback_4134d0(uint32_t kind,int32_t arg) {
     void (*fn)(int)=kind==1?sub_413900:sub_4138E0;fn(arg);
 }
-extern obj_5D4594_754088_t* ptr_5D4594_754088;
-extern obj_5D4594_754088_t* ptr_5D4594_754092;
-extern int ptr_5D4594_754088_cnt,ptr_5D4594_754092_cnt;
 static struct {obj_5D4594_754088_t *a,*b;int na,nb;} sp_focus_saved_4134d0;
 static void sp_fixture_focus_begin_4134d0(void) {
     sp_focus_saved_4134d0.a=ptr_5D4594_754088;sp_focus_saved_4134d0.b=ptr_5D4594_754092;

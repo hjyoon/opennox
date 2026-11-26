@@ -7,7 +7,6 @@ package legacy
 #include "GAME4_2.h"
 #include "map_object_list_5048a0.h"
 
-extern uint32_t dword_5d4594_2487656;
 */
 import "C"
 
@@ -237,7 +236,7 @@ func mapgenPrefabRuntimeDeps5262F0(
 			return uint32((*C.nox_object_t)(object).extent)
 		},
 		markerID: [mapgenPrefabDirections5262F0]func() uint32{
-			func() uint32 { return uint32(C.dword_5d4594_2487656) },
+			func() uint32 { return uint32(archiveAndMapgenStorage.north_prefab) },
 			func() uint32 { return *memmap.PtrUint32(0x5D4594, 2487660) },
 			func() uint32 { return *memmap.PtrUint32(0x5D4594, 2487664) },
 			func() uint32 { return *memmap.PtrUint32(0x5D4594, 2487668) },

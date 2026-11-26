@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME1_1.h"
-extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 */
 import "C"
 
@@ -75,7 +74,7 @@ func findMapPolygon(previous uint32, accepts func(*mapPolygonRecord) bool) *mapP
 			return polygon
 		}
 	}
-	for index := uint32(1); index < uint32(C.nox_xxx_polygonNextIdx_587000_60352); index++ {
+	for index := uint32(1); index < uint32(worldWordStorage.next_polygon_index); index++ {
 		polygon := mapPolygonByIndex(index)
 		if polygon.Active != 0 && polygon.Index != previous && accepts(polygon) {
 			return polygon

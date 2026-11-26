@@ -7,7 +7,6 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3_1.h"
 #include "client__video__draw_common.h"
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -131,7 +130,7 @@ func drawObjectInvisibility4C4770(dr, local *client.Drawable, player *server.Pla
 		return true
 	}
 	if !sameTeam && local.HasEnchant(server.ENCHANT_INFRAVISION) {
-		drawObjectSetTint(C.int(C.dword_8531A0_2572))
+		drawObjectSetTint(C.int(worldWordStorage.local_player_color))
 		drawObjectSetAlpha(0xff)
 		return true
 	}
@@ -144,7 +143,7 @@ func drawObjectInvisibility4C4770(dr, local *client.Drawable, player *server.Pla
 	}
 	if sameTeam && alpha <= 1 &&
 		((dr.Class()&0x2 != 0 && dr.AnimInd == 8) || (dr.Class().Has(object.ClassPlayer) && dr.AnimInd == 0)) {
-		drawObjectSetTint(C.int(C.dword_8531A0_2572))
+		drawObjectSetTint(C.int(worldWordStorage.local_player_color))
 		alpha = 0x80
 	}
 	drawObjectSetAlpha(alpha)

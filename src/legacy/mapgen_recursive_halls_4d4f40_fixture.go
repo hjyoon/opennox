@@ -1,6 +1,9 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1550912 (nox_archive_mapgen_storage()->hall_tracking_head)
+#define dword_5d4594_1550916 (nox_archive_mapgen_storage()->room_head)
 #include <stdint.h>
 #include <string.h>
 
@@ -9,8 +12,6 @@ package legacy
 #include "mapgen_legacy_ptr.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_1550912;
-extern uint32_t dword_5d4594_1550916;
 
 typedef struct nox_test_mapgen_recursive_halls_4d4f40_result {
 	uintptr_t theme_address;

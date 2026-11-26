@@ -18,6 +18,8 @@ static uintptr_t game3_test_reference_event(nox_window* w,int e,uintptr_t a,uint
 }
 #undef nox_window_call_field_94
 #define nox_window_call_field_94(w,e,a,b) game3_test_reference_event(w,e,a,b)
+#include "world_native_storage.h"
+#define dword_8531A0_2572 (nox_world_word_storage()->local_player_color)
 #include "game3_widgets_reference.h"
 
 _Static_assert(sizeof(nox_scrollListBox_data)==(sizeof(void*)==8?80:56), "list data native shape");
@@ -251,13 +253,13 @@ func Game3WidgetRegistryCheck(setEntry func(unsafe.Pointer) func()) (uintptr, bo
 		return 0, false
 	}
 	defer C.nox_native_fixture_free_high(p)
-	oldCount := C.dword_5d4594_1307720
+	oldCount := C.nox_world_word_storage().nearby_server_count
 	restoreEntry := setEntry(p)
 	defer func() {
 		restoreEntry()
-		C.dword_5d4594_1307720 = oldCount
+		C.nox_world_word_storage().nearby_server_count = oldCount
 	}()
-	C.dword_5d4594_1307720 = 1
+	C.nox_world_word_storage().nearby_server_count = 1
 	return uintptr(p), unsafe.Pointer(C.sub_4A28C0(0)) == p && C.sub_4A28C0(-1) == nil && C.sub_4A28C0(1) == nil
 }
 

@@ -1,11 +1,12 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_10984 (nox_world_word_storage()->settings_scalar)
 #include "GAME1.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-extern uint32_t dword_5d4594_10984;
 _Static_assert(sizeof(int)==4 && sizeof(uint32_t)==4, "settings scalar DWORD ABI");
 typedef int (*game1_settings_get_fn)(void);
 typedef int (*game1_settings_set_fn)(int);

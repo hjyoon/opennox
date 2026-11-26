@@ -7,7 +7,6 @@ package legacy
 #include "GAME3.h"
 #include "GAME4_1.h"
 #include "client__draw__fx.h"
-extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
 */
 import "C"
 
@@ -234,12 +233,12 @@ func sub_4B7EE0(id C.short) {
 	if *p == 0 {
 		*p = h.typeID("SummonEffect")
 	}
-	if C.dword_5d4594_1313740 == 0 {
-		C.dword_5d4594_1313740 = C.uint32_t(h.typeID("BlueSpark"))
+	if worldWordStorage.map_effect_word_1313740 == 0 {
+		worldWordStorage.map_effect_word_1313740 = C.uint32_t(h.typeID("BlueSpark"))
 	}
 	for d := h.first(); d != nil; d = d.Next() {
 		if d.TypeIDVal == *p && d.UnionSummon().ID == uint16(id) {
-			h.pointFX(uint32(C.dword_5d4594_1313740), d.PosVec)
+			h.pointFX(uint32(worldWordStorage.map_effect_word_1313740), d.PosVec)
 			h.deleteChild(d.UnionSummon().Child)
 			h.deleteSelf(d)
 			return
@@ -266,7 +265,7 @@ func nox_xxx_spriteShieldLoad_4B7F90() C.int {
 func game3ShieldScan(d *client.Drawable, code uint32) {
 	for i := 0; i < 9; i++ {
 		if d.TypeIDVal == memmap.Uint32(0x5D4594, uintptr(1313748+4*i)) && d.UnionEffect().Field_108 == code {
-			C.dword_5d4594_1313788 = 1
+			worldWordStorage.map_effect_word_1313788 = 1
 		}
 	}
 }
@@ -289,9 +288,9 @@ func game3Shield(code uint32, direction int32, h game3EffectServices) uintptr {
 	}
 	p := d.PosVec
 	rect := image.Rect(p.X-10, p.Y-10, p.X+10, p.Y+10)
-	C.dword_5d4594_1313788 = 0
+	worldWordStorage.map_effect_word_1313788 = 0
 	h.each(rect, func(other *client.Drawable) { game3ShieldScan(other, code) })
-	if C.dword_5d4594_1313788 == 1 {
+	if worldWordStorage.map_effect_word_1313788 == 1 {
 		return 1
 	}
 	shield := h.load(memmap.Uint32(0x5D4594, uintptr(uint32(1313748+4*direction))), image.Pt(p.X, p.Y+3))

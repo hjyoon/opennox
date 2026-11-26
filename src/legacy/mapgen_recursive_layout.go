@@ -5,8 +5,6 @@ package legacy
 #include "GAME4_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_1550912;
-extern uint32_t dword_5d4594_1550916;
 */
 import "C"
 
@@ -28,8 +26,8 @@ const (
 
 func mapgenTrackExpansionRoom(room *C.float) {
 	record := (*mapgenRoomLinkRecord)(unsafe.Pointer(room))
-	record.expansionNext = uint32(C.dword_5d4594_1550912)
-	C.dword_5d4594_1550912 = C.uint32_t(mapgenRegisterRoomLinkRecord(record))
+	record.expansionNext = uint32(archiveAndMapgenStorage.hall_tracking_head)
+	archiveAndMapgenStorage.hall_tracking_head = C.uint32_t(mapgenRegisterRoomLinkRecord(record))
 }
 
 func mapgenPlaceStartingRoom(room *C.float, position *C.float2) {
@@ -123,7 +121,7 @@ func mapgenBuildHallRing() *C.float {
 	for i := nox_xxx_mapGenRandFunc_526AC0(0, stride); i < C.int(count); i += nox_xxx_mapGenRandFunc_526AC0(1, stride) {
 		mapgenTrackExpansionRoom(rooms[i])
 	}
-	C.dword_5d4594_1550916 = C.uint32_t(mapgenRegisterRoomLinkRecord((*mapgenRoomLinkRecord)(unsafe.Pointer(previous))))
+	archiveAndMapgenStorage.room_head = C.uint32_t(mapgenRegisterRoomLinkRecord((*mapgenRoomLinkRecord)(unsafe.Pointer(previous))))
 	return previous
 }
 
@@ -144,7 +142,7 @@ func mapgenStartingRoomY(cell int32, height float32) C.float {
 
 //export nox_xxx_mapGenMkSmallRoom_4D4F40
 func nox_xxx_mapGenMkSmallRoom_4D4F40(theme *C.uint8_t) *C.float {
-	C.dword_5d4594_1550912 = 0
+	archiveAndMapgenStorage.hall_tracking_head = 0
 	if theme == nil {
 		return nil
 	}
@@ -156,7 +154,7 @@ func nox_xxx_mapGenMkSmallRoom_4D4F40(theme *C.uint8_t) *C.float {
 	if room == nil {
 		return nil
 	}
-	C.dword_5d4594_1550916 = C.uint32_t(mapgenRegisterRoomLinkRecord((*mapgenRoomLinkRecord)(unsafe.Pointer(room))))
+	archiveAndMapgenStorage.room_head = C.uint32_t(mapgenRegisterRoomLinkRecord((*mapgenRoomLinkRecord)(unsafe.Pointer(room))))
 	size := (*mapgenRoomGeometry)(unsafe.Pointer(room)).dimensions[1]
 	position := C.float2{field_4: mapgenStartingRoomY(int32(words[17]), math.Float32frombits(uint32(size)))}
 	mapgenPlaceStartingRoom(room, &position)
@@ -166,7 +164,7 @@ func nox_xxx_mapGenMkSmallRoom_4D4F40(theme *C.uint8_t) *C.float {
 
 //export sub_4D52F0
 func sub_4D52F0() {
-	for room := mapgenResolveRoomLinkRecord(uint32(C.dword_5d4594_1550912)); room != nil; room = mapgenResolveRoomLinkRecord(room.expansionNext) {
+	for room := mapgenResolveRoomLinkRecord(uint32(archiveAndMapgenStorage.hall_tracking_head)); room != nil; room = mapgenResolveRoomLinkRecord(room.expansionNext) {
 		raw := (*C.uint8_t)(unsafe.Pointer(room))
 		size := (*mapgenRoomGeometry)(unsafe.Pointer(room)).cellDimensions
 		switch room.kind {

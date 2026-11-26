@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern unsigned int dword_5d4594_1599628;
 */
 import "C"
 
@@ -14,7 +13,7 @@ import (
 
 //export sub_512E80
 func sub_512E80(value *C.wchar2_t) C.int {
-	count := uint32(C.dword_5d4594_1599628)
+	count := uint32(worldWordStorage.script_pointer_word)
 	result := count
 	if int32(count) < 1024 {
 		offset := uint32(26664) + 4*count
@@ -28,7 +27,7 @@ func sub_512E80(value *C.wchar2_t) C.int {
 			*slot = unsafe.Pointer(value)
 		}
 		result = count + 1
-		C.dword_5d4594_1599628 = C.uint(result)
+		worldWordStorage.script_pointer_word = C.uint(result)
 	}
 	return C.int(int32(result - 1))
 }

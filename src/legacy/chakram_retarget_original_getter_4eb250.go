@@ -1,6 +1,8 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1567928 (nox_world_word_storage()->chakram_selected_word)
 #include <stddef.h>
 #include <stdint.h>
 #include "defs.h"
@@ -8,7 +10,6 @@ package legacy
 #include "GAME4_3.h"
 #include "chakram_update_53dcc0.h"
 #include "memmap.h"
-extern uint32_t dword_5d4594_1567928;
 static void chakram_retarget_original_seed_4eb250(nox_object_t* source) {
  dword_5d4594_1567928=0;
  *getMemU32Ptr(0x5D4594,1567924)=(uint32_t)(uintptr_t)source;

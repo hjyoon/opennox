@@ -1,6 +1,8 @@
 package legacy
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_3835396 (nox_archive_mapgen_storage()->selected_archive_index)
 #include <stdint.h>
 #include "internal/cfixture/game4_mapgen_storage_fixture.h"
 #include <string.h>
@@ -8,7 +10,6 @@ package legacy
 #include "GAME4.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_3835396;
 
 typedef struct nox_test_mapgen_position_503ec0_result {
 	uintptr_t object_address;

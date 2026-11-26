@@ -8,56 +8,6 @@ package legacy
 #include "client__gui__guisumn.h"
 #include "server__script__internal.h"
 #include "client_ui_words.h"
-extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
-extern char* dword_5d4594_1599576;
-extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_3835396;
-extern uint32_t dword_5d4594_2487524;
-extern uint32_t dword_587000_60044;
-extern void* dword_5d4594_251560;
-extern uint32_t dword_5d4594_3484;
-extern uint32_t dword_5d4594_1550916;
-
-extern uint32_t dword_5d4594_1203840;
-extern uint32_t dword_5d4594_1203836;
-extern uint32_t dword_5d4594_1567928;
-extern uint32_t dword_5d4594_1307720;
-extern uint32_t dword_5d4594_1550912;
-extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_10984;
-extern uint32_t dword_5d4594_2487676;
-extern uint32_t dword_5d4594_2487672;
-extern uint32_t dword_587000_66116;
-extern uint32_t dword_5d4594_1313740;
-extern uint32_t dword_5d4594_2487584;
-extern uint32_t dword_5d4594_526276;
-extern uint32_t dword_5d4594_1599644;
-extern uint32_t dword_5d4594_3835372;
-extern uint32_t dword_5d4594_1313788;
-extern uint32_t dword_5d4594_3835368;
-extern uint32_t dword_5d4594_2488620;
-extern uint32_t dword_5d4594_2487656;
-
-
-
-extern uint32_t dword_5d4594_1599644;
-
-extern uint32_t dword_5d4594_10984;
-extern nox_window* dword_5d4594_1082856;
-extern void* dword_5d4594_1082864;
-extern void* dword_5d4594_1082868;
-
-
-
-
-
-extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_8531A0_2572;
-extern unsigned int dword_5d4594_1599628;
-
-
-
 */
 import "C"
 import (
@@ -219,7 +169,7 @@ func Set_dword_5d4594_814624(v unsafe.Pointer) {
 	legacyPointers.wolSelectedServer = v
 }
 func Get_dword_5d4594_251560() unsafe.Pointer {
-	return C.dword_5d4594_251560
+	return worldOwnerStorage.secret_wall_head
 }
 func Get_dword_5d4594_1064868() int {
 	return int(*clientChatActive)
@@ -385,7 +335,7 @@ func Get_nox_client_gui_flag_1556112() int {
 }
 
 func Set_dword_5d4594_1599628(v int) {
-	C.dword_5d4594_1599628 = C.uint(v)
+	worldWordStorage.script_pointer_word = C.uint(v)
 }
 
 func Sub_41E2F0() int {
@@ -408,7 +358,7 @@ func Nox_xxx_get_57AF20() int {
 }
 
 func Set_dword_5d4594_1599644(v int) {
-	C.dword_5d4594_1599644 = C.uint32_t(v)
+	archiveAndMapgenStorage.objects_placed = C.uint32_t(v)
 }
 func Set_dword_5d4594_1599480(v uint32) {
 	game4Mapgen.loaded_index = C.uint(v)
@@ -471,7 +421,7 @@ func Set_dword_5d4594_527988(v int) {
 	clientUIWords.wol_status = C.uint(v)
 }
 func Set_dword_5d4594_10984(v int) {
-	C.dword_5d4594_10984 = C.uint(v)
+	worldWordStorage.settings_scalar = C.uint(v)
 }
 func Set_nox_alloc_screenParticles_806044(v unsafe.Pointer) {
 	legacyPointers.screenParticleAllocator = v
@@ -716,19 +666,19 @@ func Get_dword_8531A0_2576() *server.Player {
 }
 func Set_dword_8531A0_2576(p *server.Player) {
 	currentPlayer8531A02576.Store(p)
-	C.dword_8531A0_2576 = C.uintptr_t(uintptr(p.C()))
+	worldOwnerStorage.local_player_word = C.uintptr_t(uintptr(p.C()))
 }
 func Get_dword_8531A0_2572() uint32 {
-	return uint32(C.dword_8531A0_2572)
+	return uint32(worldWordStorage.local_player_color)
 }
 func Get_dword_8531A0_2572_ptr() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.dword_8531A0_2572))
+	return (*uint32)(unsafe.Pointer(&worldWordStorage.local_player_color))
 }
 func Set_dword_8531A0_2572(v uint32) {
-	C.dword_8531A0_2572 = C.uint(v)
+	worldWordStorage.local_player_color = C.uint(v)
 }
 func Get_dword_5d4594_2488620() uint32 {
-	return uint32(C.dword_5d4594_2488620)
+	return uint32(worldWordStorage.object_trace_word)
 }
 
 // Glyph casts share this original C-owned DWORD, not its retired blob slot.
@@ -742,7 +692,7 @@ func Get_dword_5d4594_2487804_ptr() *uint32 {
 }
 
 func Set_dword_5d4594_2488620(v uint32) {
-	C.dword_5d4594_2488620 = C.uint32_t(v)
+	worldWordStorage.object_trace_word = C.uint32_t(v)
 }
 func Get_dword_5d4594_608316() uint32 {
 	return uint32(legacyWords.dword_5d4594_608316)

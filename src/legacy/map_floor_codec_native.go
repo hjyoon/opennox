@@ -2,9 +2,8 @@ package legacy
 
 /*
 #include "GAME1_1.h"
+#include "world_native_storage.h"
 
-extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-extern const int ptr_5D4594_2650668_cap;
 */
 import "C"
 
@@ -24,10 +23,10 @@ const floorMapVersion = 4
 type floorMapGrid []*C.obj_5D4594_2650668_t
 
 func liveFloorMapGrid() floorMapGrid {
-	if C.ptr_5D4594_2650668 == nil {
+	if worldOwnerStorage.tile_coordinates == nil {
 		return nil
 	}
-	return unsafe.Slice(C.ptr_5D4594_2650668, int(C.ptr_5D4594_2650668_cap))
+	return unsafe.Slice(worldOwnerStorage.tile_coordinates, int(C.NOX_WORLD_TILE_CAPACITY))
 }
 
 func (grid floorMapGrid) cell(x, y int32) *C.obj_5D4594_2650668_t {

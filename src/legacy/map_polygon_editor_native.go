@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME2_1.h"
 
-extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 */
 import "C"
 
@@ -103,7 +102,7 @@ func sub_4211D0(raw unsafe.Pointer) C.int {
 func sub_421230() *C.uchar {
 	index := uint32(sub_421130())
 	if index >= mapPolygonCapacity {
-		C.nox_xxx_polygonNextIdx_587000_60352 = C.uint32_t(index)
+		worldWordStorage.next_polygon_index = C.uint32_t(index)
 		return nil
 	}
 	polygon := mapPolygonByIndex(index)
@@ -165,7 +164,7 @@ func nox_xxx_polygonDrawColor_421B80() {
 	if player == nil {
 		return
 	}
-	if C.nox_xxx_polygonNextIdx_587000_60352 > 1 {
+	if worldWordStorage.next_polygon_index > 1 {
 		id := player.LocalPolygonID()
 		if id != 0xdeadface && now == previous {
 			return

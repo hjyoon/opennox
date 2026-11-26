@@ -2,7 +2,7 @@ package legacy
 
 import "unsafe"
 
-// Field 0 is the actual C subflags DWORD; field 1 is the actual C int dirty cell.
+// Field 0 is the native subflags DWORD. Field 1 is the native C int dirty cell.
 // A before-read event has no loaded value. Observing it must not add a read.
 type settingFlagsNativeOperand409E40 struct {
 	Site       uint32

@@ -1,6 +1,9 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_1599596 (nox_archive_mapgen_storage()->archive_record_count)
+#define dword_5d4594_3835396 (nox_archive_mapgen_storage()->selected_archive_index)
 #include "native_fixture_alloc.h"
 #include "game4_mapgen_storage_fixture.h"
 #include <stdint.h>
@@ -10,8 +13,6 @@ package cfixture
 #include "GAME4.h"
 #include "memmap.h"
 
-extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_3835396;
 
 typedef int (*nox_mapgen_count_502A20_fn)(void);
 typedef int (*nox_mapgen_save_name_502A30_fn)(char*);

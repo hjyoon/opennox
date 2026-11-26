@@ -2,21 +2,21 @@ package cfixture
 
 /*
 #include "GAME4_2.h"
+#include "world_native_storage.h"
 
-extern uint32_t dword_5d4594_3835368, dword_5d4594_3835372;
 */
 import "C"
 
 import "unsafe"
 
 func DisableMapgenWallFixtureModes() func() {
-	merge := C.dword_5d4594_3835368
-	repeat := C.dword_5d4594_3835372
-	C.dword_5d4594_3835368 = 0
-	C.dword_5d4594_3835372 = 0
+	merge := C.nox_archive_mapgen_storage().merge_walls
+	repeat := C.nox_archive_mapgen_storage().repeat_walls
+	C.nox_archive_mapgen_storage().merge_walls = 0
+	C.nox_archive_mapgen_storage().repeat_walls = 0
 	return func() {
-		C.dword_5d4594_3835368 = merge
-		C.dword_5d4594_3835372 = repeat
+		C.nox_archive_mapgen_storage().merge_walls = merge
+		C.nox_archive_mapgen_storage().repeat_walls = repeat
 	}
 }
 
@@ -39,5 +39,5 @@ func MapgenWallPlacementFixture(x, y float32) int32 {
 }
 
 func EnableMapgenWallFixtureRepeat() {
-	C.dword_5d4594_3835372 = 1
+	C.nox_archive_mapgen_storage().repeat_walls = 1
 }

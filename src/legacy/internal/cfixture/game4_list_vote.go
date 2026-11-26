@@ -12,6 +12,9 @@ extern nox_alloc_class* game4_fixture_new_class_go(char* name, int size, int cou
 #include "game4_mapgen_storage_fixture.h"
 #define nox_server_kickQuestPlayerMinVotes_229992 (nox_vote_state_storage()->minimum_kick)
 #define nox_server_resetQuestMinVotes_229988 (nox_vote_state_storage()->minimum_reset)
+#include "world_native_storage.h"
+#define dword_5d4594_3835368 (nox_archive_mapgen_storage()->merge_walls)
+#define dword_5d4594_3835396 (nox_archive_mapgen_storage()->selected_archive_index)
 #include "game4_list_vote_original_reference.h"
 #undef nox_server_resetQuestMinVotes_229988
 #undef nox_server_kickQuestPlayerMinVotes_229992

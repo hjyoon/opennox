@@ -6,6 +6,8 @@ package cfixture
 #include "GAME1.h"
 extern int* nox_settings_dirty_cell_409E40(void);
 #define nox_server_gameSettingsUpdated (*nox_settings_dirty_cell_409E40())
+#include "world_native_storage.h"
+#define dword_5d4594_3484 (nox_world_word_storage()->server_subflags)
 #include "head_settings_reference_409470.h"
 #undef nox_server_gameSettingsUpdated
 #include "native_fixture_alloc.h"

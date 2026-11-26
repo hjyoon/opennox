@@ -15,10 +15,18 @@
 #include "common/fs/nox_fs.h"
 #include "common__crypt.h"
 #include "noxstring.h"
+#ifndef dword_5d4594_1599576
 extern char* dword_5d4594_1599576;
+#endif
+#ifndef dword_5d4594_1599596
 extern uint32_t dword_5d4594_1599596;
+#endif
+#ifndef dword_5d4594_1599644
 extern uint32_t dword_5d4594_1599644;
+#endif
+#ifndef dword_5d4594_3835396
 extern uint32_t dword_5d4594_3835396;
+#endif
 extern int nox_mapgenRewriteAreaMap_502ED0(char*, char*, char*);
 extern int nox_mapgenPrepareAreaMap_503140(char*, char*);
 extern int nox_mapgenRenameAreaMap_503230(char*, char*, char*, char*);

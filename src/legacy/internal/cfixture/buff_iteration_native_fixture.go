@@ -1,9 +1,10 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_587000_66116 (nox_world_word_storage()->buff_iteration_count)
 #include <stddef.h>
 #include "GAME1_1.h"
-extern uint32_t dword_587000_66116;
 _Static_assert(_Generic(&sub_424CB0, char (*)(nox_object_t*): 1, default: 0), "native buff counter ABI");
 _Static_assert(_Generic(&sub_424D00, int (*)(void): 1, default: 0), "buff first ABI");
 _Static_assert(_Generic(&sub_424D20, int (*)(int): 1, default: 0), "buff next token ABI");

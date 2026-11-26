@@ -4,9 +4,6 @@ package legacy
 #include "GAME3_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_3835368;
-extern uint32_t dword_5d4594_3835372;
-extern uint32_t dword_5d4594_3835396;
 */
 import "C"
 
@@ -36,11 +33,11 @@ func mapgenResetWorkspaceSettings() {
 	floorEditState.edge_tile = 255
 	floorEditState.edge_variation = 0
 	legacyWords.dword_5d4594_3835364 = 1
-	C.dword_5d4594_3835368 = 1
-	C.dword_5d4594_3835372 = 1
+	archiveAndMapgenStorage.merge_walls = 1
+	archiveAndMapgenStorage.repeat_walls = 1
 	legacyAddressableWords.dword_5d4594_3835388 = 0
 	legacyAddressableWords.dword_5d4594_3835392 = 1
-	C.dword_5d4594_3835396 = ^C.uint32_t(0)
+	archiveAndMapgenStorage.selected_archive_index = ^C.uint32_t(0)
 	*memmap.PtrUint8(0x973F18, 35972) = 2
 	sub_51D0E0()
 }

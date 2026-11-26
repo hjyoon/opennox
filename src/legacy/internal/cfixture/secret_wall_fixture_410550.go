@@ -1,6 +1,8 @@
 package cfixture
 
 /*
+#include "world_native_storage.h"
+#define dword_5d4594_251560 (nox_world_owner_storage()->secret_wall_head)
 #include "GAME1.h"
 #include "secret_wall.h"
 #include "map_temp_lists_503f40.h"
@@ -8,7 +10,6 @@ package cfixture
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-extern void* dword_5d4594_251560;
 typedef void* (*secret_wall_lookup_fn_410550)(short);
 typedef nox_secret_wall_t* (*secret_wall_clear_fn_410550)(void);
 typedef nox_secret_wall_t* (*secret_wall_remove_fn_410550)(void*);

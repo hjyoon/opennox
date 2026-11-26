@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guirank.h"
 
 typedef const wchar2_t rank_const_text_t;
-extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -128,7 +127,7 @@ func nox_xxx_guiDrawRank_46E870() *C.nox_window {
 		{clientRankPositionOffset, height, renderPalette.yellow, "yourrank", 1772},
 		{clientRankLimitOffset, 2 * height, renderPalette.white, "WindowDir:Empty", 1782},
 		{clientRankTimerOffset, 3 * height, C.uint32_t(memmap.Uint32(0x85B3FC, 940)), "WindowDir:Empty", 1790},
-		{1090104, 0, C.dword_8531A0_2572, "TeamPlayerRank", 1798},
+		{1090104, 0, worldWordStorage.local_player_color, "TeamPlayerRank", 1798},
 	}
 	for _, label := range labels {
 		draw.text_color = label.color

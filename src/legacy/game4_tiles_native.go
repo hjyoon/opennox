@@ -37,13 +37,17 @@ func nox_xxx_tileAllocTileInCoordList_5040A0(x, y C.int, rawKind C.float) *C.nox
 	*memmap.PtrUint32(0x5D4594, 1599560)++
 	// a3 is a raw DWORD carrier despite its historical float ABI spelling.
 	entry.kind = C.uint8_t(math.Float32bits(float32(rawKind)))
-	entry.x = C.float(float32(x) * 46)
-	entry.y = C.float(float32(y) * 46)
+	// GAME.EXE keeps the exact X product for its offset. It stores and
+	// reloads the rounded Y product before adding the Y offset.
+	tileX := int64(x) * 46
+	tileY := float32(int64(y) * 46)
 	if entry.kind == 1 {
-		entry.x = C.float(float32(entry.x) + 23)
+		tileX += 23
 	} else {
-		entry.y = C.float(float32(entry.y) + 23)
+		tileY += 23
 	}
+	entry.x = C.float(tileX)
+	entry.y = C.float(tileY)
 	return entry
 }
 

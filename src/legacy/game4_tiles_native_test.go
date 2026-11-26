@@ -16,14 +16,20 @@ func TestGame4TilesNativeAllocation5040A0(t *testing.T) {
 		t.Fatal("C fixture allocation failed")
 	}
 	defer b.close()
+	// Coordinate words captured by executing GAME.EXE 0x5040A0 with the
+	// original constants. The retained C compiler can round its casts
+	// at different points.
 	cases := []struct {
-		x, y int32
-		bits uint32
+		x, y         int32
+		bits         uint32
+		wantX, wantY uint32
 	}{
-		{3, 4, 1},
-		{-7, 9, 0x3f800000},
-		{math.MaxInt32, math.MinInt32, 0x7fc00001},
-		{16777217, -16777217, 0x800000ff},
+		{3, 4, 1, 0x43210000, 0x43380000},
+		{-7, 9, 0x3f800000, 0xc3a10000, 0x43da8000},
+		{math.MaxInt32, math.MinInt32, 0x7fc00001, 0x51b80000, 0xd1b80000},
+		{16777217, -16777217, 0x800000ff, 0x4e380001, 0xce380001},
+		{16777215, 16777215, 1, 0x4e380000, 0x4e37ffff},
+		{16777215, 16777215, 0, 0x4e37ffff, 0x4e37ffff},
 	}
 	var want []cfixture.Game4TilesAllocation
 	for _, reference := range []bool{true, false} {
@@ -48,13 +54,15 @@ func TestGame4TilesNativeAllocation5040A0(t *testing.T) {
 			expected := want[i]
 			expected.Entry = got.Entry
 			expected.Layer = got.Layer
+			expected.XBits = tc.wantX
+			expected.YBits = tc.wantY
 			if got != expected {
-				t.Fatalf("public C entry differs from retained C: %+v / %+v", got, expected)
+				t.Fatalf("public C entry (%d, %d, %#x): %+v, want %+v", tc.x, tc.y, tc.bits, got, expected)
 			}
 		}
 		runtime.GC()
 		for i, expected := range live {
-			expected.Count = 3
+			expected.Count = uint32(len(cases) - 1)
 			if got := b.Existing(uint32(i)); got != expected {
 				t.Fatalf("native C-owned list changed across GC: %+v / %+v", got, expected)
 			}

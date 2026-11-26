@@ -37,7 +37,7 @@ typedef struct game4_tiles_test_bank {
 	int32_t old_transparent;
 	nox_tileDef_t old_defs[3];
 	struct game4_tiles_test_bank* old_active;
-	nox_tile_coord_entry_t* allocated[8];
+	nox_tile_coord_entry_t* allocated[12];
 	uint32_t allocated_count;
 	game4_tiles_test_data data;
 } game4_tiles_test_bank;
@@ -175,7 +175,7 @@ typedef struct game4_tiles_test_alloc_result {
 } game4_tiles_test_alloc_result;
 static game4_tiles_test_alloc_result game4_tiles_test_alloc(game4_tiles_test_bank* b, int x, int y, uint32_t bits, int reference) {
 	game4_tiles_test_alloc_result r = {0};
-	if (b->allocated_count >= 8) return r;
+	if (b->allocated_count >= sizeof(b->allocated) / sizeof(b->allocated[0])) return r;
 	nox_tile_coord_entry_t* old = dword_5d4594_1599556;
 	float kind; memcpy(&kind, &bits, 4);
 	nox_tile_coord_entry_t* p = reference ? game4_tiles_ref_alloc(x,y,kind) : nox_xxx_tileAllocTileInCoordList_5040A0(x,y,kind);
@@ -190,15 +190,17 @@ static game4_tiles_test_alloc_result game4_tiles_test_alloc(game4_tiles_test_ban
 }
 static game4_tiles_test_alloc_result game4_tiles_test_alloc_existing(game4_tiles_test_bank* b, uint32_t index) {
 	game4_tiles_test_alloc_result r = {0};
-	if (b->allocated_count < 4 || index >= 4) return r;
-	uint32_t start = b->allocated_count - 4;
-	nox_tile_coord_entry_t* p = b->allocated[start + index];
+	r.count = *getMemU32Ptr(0x5D4594, 1599560);
+	uint32_t count = r.count + 1;
+	if (count > b->allocated_count || index >= count) return r;
+	uint32_t position = b->allocated_count - count + index;
+	nox_tile_coord_entry_t* p = b->allocated[position];
 	r.entry = (uintptr_t)p; r.layer = (uintptr_t)p->layer;
 	memcpy(&r.x_bits, &p->x, 4); memcpy(&r.y_bits, &p->y, 4);
-	r.count = *getMemU32Ptr(0x5D4594, 1599560); r.kind = p->kind;
-	r.links = dword_5d4594_1599556 == b->allocated[start+3] &&
-		p->prev == (index ? b->allocated[start+index-1] : NULL) &&
-		p->next == (index < 3 ? b->allocated[start+index+1] : NULL);
+	r.kind = p->kind;
+	r.links = dword_5d4594_1599556 == b->allocated[b->allocated_count - 1] &&
+		p->prev == (index ? b->allocated[position - 1] : NULL) &&
+		p->next == (index + 1 < count ? b->allocated[position + 1] : NULL);
 	nox_tile_layer_t zero = {0}; r.zero_layer = memcmp(&zero, p->layer, sizeof(zero)) == 0;
 	return r;
 }

@@ -492,13 +492,35 @@ retained C references still exercise archive seek and close, wire
 record parsing, and list allocation, traversal, and release.
 
 The decompiler-only charm-all flag had one console writer and zero
-live readers. Its removal leaves the charm spell's original
-restrictions and the existing console responses intact.
+live readers. The Go charm worker applies the original spell
+restrictions. The console command displays its configured messages.
 
 The map archive and list tests passed on macOS ARM64 with strict
 pointer checks, Linux ARM64, and emulated Linux 386. Windows 386
 and AMD64 server cross-builds passed. Removing
 `game4_native_data.c` brings the top-level legacy C file count to 30.
+
+The audited 64-bit builds select 27 C files by default and 28 with
+the safe tag. The 32-bit builds select 29 and 30, respectively.
+The default builds compile 54 C function bodies on 64-bit hosts
+and 56 on 32-bit hosts.
+
+### Original tile coordinate rounding
+
+The tile allocator at `0x5040A0` scales integer coordinates by 46.
+For kind 1 the original x87 code adds 23 to the exact X product
+before storing the float. The other branch adds 23 to Y after
+storing and reloading the scaled Y coordinate as a float.
+The Go allocator makes both rounding points explicit.
+
+The instruction bytes and constants from the supplied `GAME.EXE`
+ran under 386 emulation with allocator and deallocator hooks. The
+native test uses the six observed coordinate pairs and checks
+allocation, zero-filled layers, links, and counts through forced GC.
+The suite passed on macOS ARM64 with strict pointer checking, Linux
+ARM64, and emulated Linux 386. Windows 386 and AMD64 server builds
+passed. The final client passed the new-warrior quest and item
+quantity scenarios, including all three quantity reference frames.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

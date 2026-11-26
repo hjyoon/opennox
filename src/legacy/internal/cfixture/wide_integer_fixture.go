@@ -31,9 +31,11 @@ static void nox_compare_wide_integer(const wchar2_t* text, int base, bool with_e
 	}
 	char* narrow_end = ascii;
 	want->value = strtol(ascii, with_end ? &narrow_end : NULL, base);
-	want->consumed = (uintptr_t)narrow_end - (uintptr_t)ascii;
-	free(ascii);
+	// The CRT can leave the end pointer unspecified for an invalid base.
+	bool valid_base = base == 0 || (base >= 2 && base <= 36);
+	want->consumed = with_end && valid_base ? (uintptr_t)narrow_end - (uintptr_t)ascii : 0;
 	want->error = errno;
+	free(ascii);
 
 	wchar2_t* wide_end = (wchar2_t*)text;
 	errno = EDOM;

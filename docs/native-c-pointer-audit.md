@@ -359,6 +359,13 @@ for level updates and player-file loading. This removes six C helpers
 from cgo preambles. The Go menu handlers also call the existing MOTD
 cleanup, title loaders, and server settings services directly.
 
+### CRT end pointer comparison
+
+The retained wide-integer fixture captures errno directly after
+`strtol`. A Linux ARM64 probe observed the ASan interceptor replace
+the end cursor for an invalid base. The fixture checks zero consumed
+units for an invalid base and compares the CRT cursor for valid bases.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

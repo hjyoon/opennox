@@ -32,6 +32,11 @@ func Nox_xxx_playerUpdateScoreNative54D980(victim, killer, assist *server.Object
 	C.nox_player_update_score_native_call_54D980(asObjectC(victim), asObjectC(killer), asObjectC(assist), C.uint32_t(tracking))
 }
 
+//export nox_player_update_score_native_call_54D980
+func nox_player_update_score_native_call_54D980(victim, killer, assist *nox_object_t, tracking C.uint32_t) {
+	nox_server_player_update_score_native_54D980(victim, killer, assist, tracking)
+}
+
 //export nox_server_player_update_score_native_54D980
 func nox_server_player_update_score_native_54D980(victim, killer, assist *nox_object_t, tracking C.uint32_t) {
 	srv := GetServer()

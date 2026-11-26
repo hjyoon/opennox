@@ -31,6 +31,11 @@ func Nox_xxx_playerHandleKotrDeathNative54DC40(victim, killer *server.Object) {
 	C.nox_player_handle_kotr_death_native_call_54DC40(asObjectC(victim), asObjectC(killer))
 }
 
+//export nox_player_handle_kotr_death_native_call_54DC40
+func nox_player_handle_kotr_death_native_call_54DC40(victim, killer *nox_object_t) {
+	nox_server_player_handle_kotr_death_native_54DC40(victim, killer)
+}
+
 //export nox_server_player_handle_kotr_death_native_54DC40
 func nox_server_player_handle_kotr_death_native_54DC40(victim, killer *nox_object_t) {
 	server.PlayerHandleKotrDeath54DC40(asObjectS(victim), asObjectS(killer), playerHandleKotrDeathRuntime54DC40(GetServer()))

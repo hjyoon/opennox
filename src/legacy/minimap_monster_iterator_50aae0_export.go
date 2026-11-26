@@ -1,10 +1,7 @@
 package legacy
 
 /*
-// The shared header still contains unrelated Win32-only layout assertions.
-#define _Static_assert(...)
 #include "GAME4_1.h"
-#undef _Static_assert
 */
 import "C"
 
@@ -30,6 +27,22 @@ func minimapMonsterFirstExportCall50AAE0() unsafe.Pointer {
 
 func minimapMonsterNextExportCall50AB10() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_minimapNextMonster_50AB10())
+}
+
+//export nox_xxx_minimapFirstMonster_50AAE0
+func nox_xxx_minimapFirstMonster_50AAE0() *C.float {
+	if obj := nox_minimapFirstMonsterObject_50AAE0(); obj != nil {
+		return &obj.x
+	}
+	return nil
+}
+
+//export nox_xxx_minimapNextMonster_50AB10
+func nox_xxx_minimapNextMonster_50AB10() *C.float {
+	if obj := nox_minimapNextMonsterObject_50AB10(); obj != nil {
+		return &obj.x
+	}
+	return nil
 }
 
 //export nox_minimapFirstMonsterObject_50AAE0

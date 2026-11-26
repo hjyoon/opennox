@@ -448,6 +448,12 @@ func init() {
 
 func collideNoop(*server.Object, *server.Object, unsafe.Pointer) {}
 
+//export nox_xxx_collideDefault_4E87A0
+func nox_xxx_collideDefault_4E87A0(object, other *nox_object_t, collision *C.float) {}
+
+//export nox_xxx_collideTelekinesis_4EADE0
+func nox_xxx_collideTelekinesis_4EADE0(object, other *nox_object_t, collision *C.float) {}
+
 func wrapObjectCollideParseC(ptr unsafe.Pointer) server.ObjectParseFunc {
 	return func(objt *server.ObjectType, args []string) error {
 		if Nox_call_objectType_parseCollide_go(ptr, strings.Join(args, " "), objt.CollideData) == 0 {

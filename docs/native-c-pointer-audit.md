@@ -85,6 +85,21 @@ The window constructor and four callback registration functions now
 export their C signatures directly from Go. Removing their forwarding
 file brings the top-level legacy C file count to 52.
 
+### Collision, minimap, and scoring exports
+
+The two collision no-ops, the two minimap position iterators, and three
+scoring entry points now export their existing signatures from Go. The
+Nox executable returns immediately at the two no-op addresses. For
+minimap iteration it returns the address of the object's X coordinate
+or null. The native implementation takes the address of the same field
+in the host layout. The Elimination and King of the Realm entry points
+preserve their native object pointers, and Arena score tracking retains
+its 32-bit argument.
+
+Removing the five translation units brings the top-level legacy C file
+count to 47. The default macOS ARM64 build selects 46 files with 111
+function bodies. Ten of the selected files provide data or declarations.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -181,6 +181,17 @@ retains the incoming byte and the native UTF-16 result pointer.
 
 Removing `common__object__modifier.c` leaves 39 top-level legacy C files.
 
+### Team member iteration
+
+The two team entry points now return native membership pointers directly
+from Go. The original PE32 head and next fields are at offsets 44 and 0.
+The Go link tables preserve native pointer width while the C-visible
+record sizes and offsets retain their layout. C tests reproduce the
+original query order and check the foreign owner guards across link,
+unlink, reset, and close. A pinned Go fixture verifies the same C
+pointer returns after garbage collection and verifies that detach
+clears the links.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

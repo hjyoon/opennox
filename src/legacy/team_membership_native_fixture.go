@@ -62,9 +62,9 @@ func teamMembershipNativeParentDetachC(value unsafe.Pointer) uintptr {
 func teamMembershipNativeQuery(route, kind int, value unsafe.Pointer) uintptr {
 	if route == 2 {
 		if kind == 0 {
-			return uintptr(nox_server_team_first_member_native((*C.nox_team_t)(value)))
+			return uintptr(unsafe.Pointer(nox_xxx_teamCheckSmth_418C60((*C.nox_team_t)(value))))
 		}
-		return uintptr(nox_server_team_next_member_native((*C.nox_object_team_t)(value)))
+		return uintptr(unsafe.Pointer(sub_418C70((*C.nox_object_team_t)(value))))
 	}
 	return uintptr(C.team_membership_query_C(C.int(route), C.int(kind), value))
 }

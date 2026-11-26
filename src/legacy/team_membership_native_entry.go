@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include "common__system__team.h"
+#include "GAME1_1.h"
 */
 import "C"
 
@@ -11,23 +11,22 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// Return native integer values across private Cgo frames. The public C entries
-// keep their pointer types without introducing Go pointer stores into C memory.
+// Team iteration borrows the attached object's native membership record.
 
-//export nox_server_team_first_member_native
-func nox_server_team_first_member_native(team *C.nox_team_t) C.uintptr_t {
+//export nox_xxx_teamCheckSmth_418C60
+func nox_xxx_teamCheckSmth_418C60(team *C.nox_team_t) *C.nox_object_team_t {
 	if team == nil {
-		return 0
+		return nil
 	}
 	value := GetServer().S().Teams.FirstObjectTeam(asTeam(team))
-	return C.uintptr_t(uintptr(unsafe.Pointer(value)))
+	return (*C.nox_object_team_t)(unsafe.Pointer(value))
 }
 
-//export nox_server_team_next_member_native
-func nox_server_team_next_member_native(value *C.nox_object_team_t) C.uintptr_t {
+//export sub_418C70
+func sub_418C70(value *C.nox_object_team_t) *C.nox_object_team_t {
 	if value == nil {
-		return 0
+		return nil
 	}
 	next := GetServer().S().Teams.NextObjectTeam((*server.ObjectTeam)(unsafe.Pointer(value)))
-	return C.uintptr_t(uintptr(unsafe.Pointer(next)))
+	return (*C.nox_object_team_t)(unsafe.Pointer(next))
 }

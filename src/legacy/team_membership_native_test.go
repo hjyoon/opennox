@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"math"
+	"runtime"
 	"testing"
 	"unsafe"
 
@@ -42,6 +43,41 @@ func TestTeamMembershipNativeLayout(t *testing.T) {
 	want := [13]uintptr{word, unsafe.Sizeof(team), unsafe.Alignof(team), 44, 4, unsafe.Sizeof(node), unsafe.Alignof(node), unsafe.Offsetof(node.Field0), unsafe.Sizeof(node.Field0), unsafe.Offsetof(node.ID), unsafe.Sizeof(node.ID), word, word}
 	if got := teamMembershipNativeLayoutC(); got != want || got[5] != 8 || got[9] != 4 {
 		t.Fatal("native public function types and fixed record", got, want)
+	}
+}
+
+func TestTeamMembershipNativePinnedGoNodes(t *testing.T) {
+	srv := server.NewHigh(nil, nil, strman.New())
+	defer srv.Close()
+	oldServer := GetServer
+	GetServer = func() Server { return &teamMembershipTestServer{native: srv} }
+	defer func() { GetServer = oldServer }()
+
+	teamMembershipNativeSeedC(srv.Teams.Arr[0].C())
+	team := &srv.Teams.Arr[1]
+	first, next := new(server.ObjectTeam), new(server.ObjectTeam)
+	var pin runtime.Pinner
+	pin.Pin(first)
+	pin.Pin(next)
+	defer pin.Unpin()
+
+	srv.Teams.AttachObject(next, team.ID())
+	srv.Teams.AttachObject(first, team.ID())
+	runtime.GC()
+	for route := 0; route < 2; route++ {
+		if got := teamMembershipNativeQuery(route, 0, team.C()); got != uintptr(unsafe.Pointer(first)) {
+			t.Fatalf("route %d returned head %#x, want %p", route, got, first)
+		}
+		if got := teamMembershipNativeQuery(route, 1, unsafe.Pointer(first)); got != uintptr(unsafe.Pointer(next)) {
+			t.Fatalf("route %d returned next %#x, want %p", route, got, next)
+		}
+	}
+	srv.Teams.DetachAllObjects(team)
+	for route := 0; route < 2; route++ {
+		if teamMembershipNativeQuery(route, 0, team.C()) != 0 ||
+			teamMembershipNativeQuery(route, 1, unsafe.Pointer(first)) != 0 {
+			t.Fatalf("route %d retained a detached member", route)
+		}
 	}
 }
 

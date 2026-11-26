@@ -133,9 +133,9 @@ func (f *e2eQuestDeathFixture) hasNaturalDamageEvidence() bool {
 }
 
 func (f *e2eQuestDeathFixture) prepare() {
-	f.combat = e2eQuestCombatFixture{typeID: "Necromancer"}
-	f.combat.prepare() // The only fixture is placement beside a stock minion.
-	if e2e.err != nil {
+	f.combat = e2eQuestCombatFixture{typeID: "Necromancer", previousTarget: f.combat.target}
+	if err := f.combat.prepare(); err != nil {
+		e2eError(err)
 		return
 	}
 	var err error

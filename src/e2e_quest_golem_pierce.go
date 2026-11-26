@@ -3,8 +3,10 @@ package opennox
 import (
 	"fmt"
 	"math"
+	"slices"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -57,13 +59,40 @@ func (f *e2eQuestGolemPierceFixture) prepare() {
 		e2eError(fmt.Errorf("Quest GolemArrow requires 1..12 observed hits, got %d", f.required))
 		return
 	}
-	f.combat.prepare()
-	if f.combat.unit == nil || f.combat.target == nil {
+	state, err := e2eReadQuestPlayer()
+	if err == nil {
+		err = state.validate(6, "g_lotdd")
+	}
+	if err != nil {
+		e2eError(err)
 		return
 	}
-	if !f.combat.target.Class().Has(object.ClassMonster) || f.combat.target.ObjOwner != nil ||
-		f.combat.target.UpdateDataMonster().MonsterDef == nil || f.combat.unit.UpdateDataPlayer() == nil {
-		e2eError(fmt.Errorf("Quest GolemArrow: stock encounter definition/ownership or player update is missing"))
+	unit := noxServer.Players.HostUnit()
+	group := noxServer.nox_xxx_getQuestStage_51A930()
+	if group < 0 || group >= 3 {
+		e2eError(fmt.Errorf("Quest GolemArrow: invalid generator group %d", group))
+		return
+	}
+	var position types.Pointf
+	var generator *server.Object
+	for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+		if !obj.Class().Has(object.ClassMonsterGenerator) || obj.UpdateData == nil ||
+			!obj.Flags().Has(object.FlagEnabled) || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			continue
+		}
+		templates := obj.UpdateDataMonsterGen().Field0[4*group : 4*group+4]
+		if !slices.ContainsFunc(templates, func(template *server.Object) bool {
+			return template != nil && template.ObjectTypeC().ID() == "FlyingGolem"
+		}) {
+			continue
+		}
+		if pos, ok := e2eQuestApproachPosition(unit, obj); ok {
+			position, generator = pos, obj
+			break
+		}
+	}
+	if generator == nil {
+		e2eError(fmt.Errorf("Quest GolemArrow: no open approach to a stock FlyingGolem generator"))
 		return
 	}
 	typ := noxServer.Types.ByID("GolemArrow")
@@ -73,10 +102,11 @@ func (f *e2eQuestGolemPierceFixture) prepare() {
 	}
 	f.arrowType = uint16(typ.Ind())
 	f.arrows = make(map[*server.Object]e2eQuestGolemArrow)
-	f.previousHP, f.lastHP = f.combat.playerHP, f.combat.playerHP
-	f.lastHitFrame = f.combat.startFrame
-	e2eLog.Printf("QUEST GOLEM PIERCE APPROACH: frame=%d player=%p stock-encounter=%p arrow-type=%d hp=%d required-hits=%d player-placement-only=true",
-		f.combat.startFrame, f.combat.unit, f.combat.target, f.arrowType, f.previousHP, f.required)
+	e2eQuestPlacePlayer(unit, position)
+	f.combat.unit, f.combat.playerHP, f.combat.startFrame = unit, unit.HealthData.Cur, noxServer.Frame()
+	f.previousHP, f.lastHP, f.lastHitFrame = f.combat.playerHP, f.combat.playerHP, f.combat.startFrame
+	e2eLog.Printf("QUEST GOLEM PIERCE APPROACH: frame=%d player=%p stock-generator=%p pos=%v arrow-type=%d hp=%d required-hits=%d player-placement-only=true",
+		f.combat.startFrame, unit, generator, position, f.arrowType, f.previousHP, f.required)
 }
 
 func (f *e2eQuestGolemPierceFixture) stockGolemReady() bool {
@@ -193,7 +223,7 @@ func (f *e2eQuestGolemPierceFixture) ready() bool {
 }
 
 func (sc *e2eScenario) CheckQuestGolemPierce(count int, name string) {
-	f := &e2eQuestGolemPierceFixture{combat: e2eQuestCombatFixture{typeID: "Necromancer"}, required: count}
+	f := &e2eQuestGolemPierceFixture{required: count}
 	sc.add(0, name+" place only player beside stock encounter", f.prepare)
 	sc.addWhen(0, name+" wait for stock FlyingGolem generation", 600, f.stockGolemReady, nil)
 	sc.addWhen(0, name+" wait for stock GolemArrow hits and client display", 1800, f.ready, func() {

@@ -1,6 +1,22 @@
 # Stock Quest menu and four real exit transitions generate the stage 5 minions.
 # Place only the player beside the existing monster. AI, spells, HP, inventory,
 # damage, death and reward-drop paths are not injected.
+# Stock selector sequence with the original monster WAIT draws.
+map-profile: quest-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "Quest sequence stage 5 score": f6c65886b87d9f29d13c44ea07aa672ab5cd7d572a4e1babd2b135d08544d54f
+      "Quest Necromancer real combat enemy attack": fa638bbbb1cb0594e039698f126c7ed2ff20724da1aa201b686f2371a1d80e41
+      "Quest Necromancer real combat defeated and rewards": 99b1d02f726274b04a071c3fdbaf46f9090a766bff6b8433047f9cacb6334093
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "Quest sequence stage 5 score": 1ae2813d8e394d8a713d06d00338f3b977ea540c3354143a45de0fd0ad4e0388
+      "Quest Necromancer real combat enemy attack": c98364b54825c19e83144a18ac07ea21cb4cc0e1048b6bb216637f93316340b1
+      "Quest Necromancer real combat defeated and rewards": 882c61bd796106bab418db1524cbef786e9e03e3700ed0cb10d10adf82c45b9e
+
 steps:
   - action: slow
     dur: 1ms
@@ -73,7 +89,7 @@ steps:
     name: dismiss combat sequence stage 3 briefing
   - action: assert-quest-stage
     count: 3
-    map: g_lotdd
+    map: g_mines
     name: combat sequence stage 3 playable
   - action: walk-quest
     ang: 0.5
@@ -87,7 +103,7 @@ steps:
     name: dismiss combat sequence stage 4 briefing
   - action: assert-quest-stage
     count: 4
-    map: g_swamp
+    map: g_crypts
     name: combat sequence stage 4 playable
   - action: walk-quest
     ang: 1

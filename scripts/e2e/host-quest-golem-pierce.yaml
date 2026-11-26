@@ -1,7 +1,21 @@
-# Stock stage 5 generators generate FlyingGolem after a player-only approach.
-# Four real Quest exits reach stage 5. Place only the player;
+# The stock G_LOTDD generators generate FlyingGolem after a player approach.
+# Five real Quest exits reach stage 6. Place only the player;
 # observe native AI, live owned GolemArrow, PIERCE HP loss and client display.
 # No monster, damage, health, armor, spell, packet or UI-state injection.
+# Stock selector sequence with the original monster WAIT draws.
+map-profile: quest-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "Quest sequence stage 5 score": f6c65886b87d9f29d13c44ea07aa672ab5cd7d572a4e1babd2b135d08544d54f
+      "Quest FlyingGolem real PIERCE health and damage display": dff8c66106c09652ef837f3a420f98cfab3ad6964b71793f749b0f88f22609b0
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "Quest sequence stage 5 score": 1ae2813d8e394d8a713d06d00338f3b977ea540c3354143a45de0fd0ad4e0388
+      "Quest FlyingGolem real PIERCE health and damage display": 265f64b12d4a3319bec88dc912f6af6dcf26ea09358647c18162e004498d3a8d
+
 steps:
   - action: slow
     dur: 1ms
@@ -74,7 +88,7 @@ steps:
     name: dismiss golem sequence stage 3 briefing
   - action: assert-quest-stage
     count: 3
-    map: g_lotdd
+    map: g_mines
     name: golem sequence stage 3 playable
   - action: walk-quest
     ang: 0.5
@@ -88,7 +102,7 @@ steps:
     name: dismiss golem sequence stage 4 briefing
   - action: assert-quest-stage
     count: 4
-    map: g_swamp
+    map: g_crypts
     name: golem sequence stage 4 playable
   - action: walk-quest
     ang: 1
@@ -106,6 +120,20 @@ steps:
     count: 5
     map: g_forest
     name: golem sequence stage 5 playable
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in golem sequence stage 5
+  - action: enter-quest-exit
+    name: golem sequence stage 5 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss golem sequence stage 6 briefing
+  - action: assert-quest-stage
+    count: 6
+    map: g_lotdd
+    name: golem sequence stage 6 playable
   - action: check-quest-golem-pierce
     count: 3
     name: Quest FlyingGolem real PIERCE

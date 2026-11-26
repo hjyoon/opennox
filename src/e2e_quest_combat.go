@@ -5,6 +5,7 @@ import (
 	"image"
 	"math"
 
+	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
@@ -17,13 +18,16 @@ import (
 // enemies/actions, change aggression/HP, call damage, or force a death/drop.
 type e2eQuestCombatFixture struct {
 	unit, target                 *server.Object
+	previousTarget               *server.Object
 	typeID                       string
+	lastReachable                bool
 	playerHP, targetHP           uint16
 	incoming, outgoing, dead     bool
 	clientIncoming, clientDamage bool
 	items                        []*server.Object
 	ticks                        uint32
 	startFrame                   uint32
+	warCryFrame, chargeFrame     uint32
 }
 
 // A last-damage source can already have been removed by a subsequent tick.
@@ -43,58 +47,99 @@ func e2eQuestCombatAttributedTo(source, unit *server.Object) bool {
 	return e2eObjectInWorld(source) && source.ObjOwner == unit
 }
 
-func (f *e2eQuestCombatFixture) prepare() {
+func e2eQuestApproachPosition(unit, target *server.Object) (types.Pointf, bool) {
+	radius := unit.Shape.Circle.R
+	var best types.Pointf
+	fewest := math.MaxInt
+	for _, distance := range []float32{64, 96, 128, 160, 192} {
+		for direction := 0; direction < 256; direction += 8 {
+			cosine, sine := server.SinCosDir(byte(direction))
+			pos := target.PosVec.Add(types.Ptf(distance*cosine, distance*sine))
+			if !noxServer.MapTraceRay(pos, target.PosVec, server.MapTraceFlags(69)) ||
+				!e2eWarriorLaneClear(unit, pos, pos) {
+				continue
+			}
+			clear := true
+			for angle := 0; angle < 256; angle += 32 {
+				x, y := server.SinCosDir(byte(angle))
+				if !noxServer.MapTraceRay(pos, pos.Add(types.Ptf(radius*x, radius*y)), server.MapTraceFlag1) {
+					clear = false
+					break
+				}
+			}
+			if !clear {
+				continue
+			}
+			if !target.Class().Has(object.ClassMonster) {
+				return pos, true
+			}
+			// Choose a visible approach away from competing monsters and
+			// generators so the tracked minion can land the observed hit.
+			reach := types.Ptf(160, 160)
+			nearby := 0
+			noxServer.Map.EachObjInRect(types.Rectf{Min: pos.Sub(reach), Max: pos.Add(reach)}, func(other *server.Object) bool {
+				if other != target && other.Class().HasAny(object.ClassMonster|object.ClassMonsterGenerator) &&
+					!other.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+					noxServer.MapTraceRay(other.PosVec, pos, server.MapTraceFlags(69)) {
+					nearby++
+				}
+				return true
+			})
+			if nearby == 0 {
+				return pos, true
+			}
+			if nearby < fewest {
+				best, fewest = pos, nearby
+			}
+		}
+	}
+	return best, fewest != math.MaxInt
+}
+
+func e2eQuestPlacePlayer(unit *server.Object, pos types.Pointf) {
+	asObjectS(unit).SetPos(pos)
+	unit.NewPos, unit.PrevPos = pos, pos
+	unit.VelVec, unit.ForceVec, unit.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+	legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(unit)
+}
+
+func (f *e2eQuestCombatFixture) prepare() error {
 	state, err := e2eReadQuestPlayer()
 	if err == nil {
 		err = state.validate(5, "g_forest")
 	}
 	if err != nil || f.typeID != "Necromancer" && f.typeID != "Hecubah" {
-		e2eError(fmt.Errorf("Quest combat setup: type=%q state=%+v error=%v", f.typeID, state, err))
-		return
+		return fmt.Errorf("Quest combat setup: type=%q state=%+v error=%v", f.typeID, state, err)
 	}
 	f.unit = noxServer.Players.HostUnit()
 	var pos types.Pointf
 	found := false
 	for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
-		if obj.ObjectTypeC().ID() != f.typeID || obj.UpdateData == nil || obj.HealthData == nil ||
+		if obj == f.previousTarget || obj.ObjectTypeC().ID() != f.typeID || obj.UpdateData == nil || obj.HealthData == nil ||
 			obj.HealthData.Cur == 0 || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
 			continue
 		}
-		for _, distance := range []float32{64, 96, 128} {
-			for direction := 0; direction < 32; direction++ {
-				angle := 2 * math.Pi * float64(direction) / 32
-				candidate := types.Pointf{X: obj.PosVec.X + distance*float32(math.Cos(angle)), Y: obj.PosVec.Y + distance*float32(math.Sin(angle))}
-				// Exclude the target's own collision shape at the ray endpoint.
-				// All other live objects and map walls still obstruct the approach.
-				if e2eWarriorLaneClear(obj, candidate, obj.PosVec) {
-					pos, found, f.target = candidate, true, obj
-					break
-				}
-			}
-			if found {
+		if candidate, ok := e2eQuestApproachPosition(f.unit, obj); ok {
+			pos, found, f.target = candidate, true, obj
+			if !f.lastReachable {
 				break
 			}
-		}
-		if found {
-			break
+			continue
 		}
 		e2eLog.Printf("QUEST COMBAT APPROACH BLOCKED: type=%s object=%p pos=%v", f.typeID, obj, obj.PosVec)
 	}
 	if !found {
-		e2eError(fmt.Errorf("Quest combat: no reachable player approach to any stock %s", f.typeID))
-		return
+		return fmt.Errorf("Quest combat: no reachable player approach to any stock %s", f.typeID)
 	}
 	for item := f.target.FirstItem(); item != nil; item = item.NextItem() {
 		f.items = append(f.items, item)
 	}
-	asObjectS(f.unit).SetPos(pos)
-	f.unit.NewPos, f.unit.PrevPos = pos, pos
-	f.unit.VelVec, f.unit.ForceVec, f.unit.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
-	legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(f.unit)
+	e2eQuestPlacePlayer(f.unit, pos)
 	f.playerHP, f.targetHP, f.startFrame = f.unit.HealthData.Cur, f.target.HealthData.Cur, noxServer.Frame()
 	e2eLog.Printf("QUEST COMBAT PREPARED: type=%s stage=%d frame=%d player=%p hp=%d pos=%v target=%p hp=%d pos=%v inventory=%d AI-unchanged=true",
 		f.typeID, state.stage, f.startFrame, f.unit, f.playerHP, pos, f.target, f.targetHP, f.target.PosVec, len(f.items))
 	f.logState()
+	return nil
 }
 
 func (f *e2eQuestCombatFixture) logState() {
@@ -171,24 +216,50 @@ func (f *e2eQuestCombatFixture) fight() bool {
 	if f.dead || !e2eObjectInWorld(f.target) {
 		return true
 	}
+	frame := noxServer.Frame()
+	if f.warCryFrame != 0 && frame == f.warCryFrame+1 {
+		e2eQueueInput(&seat.KeyboardEvent{Key: keybind.KeyS, Pressed: false})
+	}
+	if f.chargeFrame != 0 && frame == f.chargeFrame+1 {
+		e2eQueueInput(&seat.KeyboardEvent{Key: keybind.KeyA, Pressed: false})
+	}
 	if f.ticks%3 == 0 {
-		mouse := noxClient.Viewport().ToScreenPos(image.Pt(int(f.target.PosVec.X), int(f.target.PosVec.Y)))
+		delta := f.target.PosVec.Sub(f.unit.PosVec)
+		distance := delta.Len()
+		aim := f.target.PosVec
+		if distance > 32 && distance < 160 {
+			aim = f.unit.PosVec.Add(delta.Normalize().Mul(160))
+		}
+		mouse := noxClient.Viewport().ToScreenPos(image.Pt(int(aim.X), int(aim.Y)))
 		noxClient.ChangeMousePos(mouse, true)
 		e2eQueueInput(&seat.MouseMoveEvent{Pos: mouse, Relative: false})
-		distance := math.Hypot(float64(f.unit.PosVec.X-f.target.PosVec.X), float64(f.unit.PosVec.Y-f.target.PosVec.Y))
 		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonRight, Pressed: distance > 32})
+		if f.warCryFrame == 0 && distance <= 120 {
+			// The player has already taken a verified hit from the caster.
+			// Use the Warrior's ordinary War Cry input while closing for melee.
+			e2eQueueInput(&seat.KeyboardEvent{Key: keybind.KeyS, Pressed: true})
+			f.warCryFrame = frame
+		}
+		if f.chargeFrame == 0 && distance > 32 && distance <= 80 {
+			e2eQueueInput(&seat.KeyboardEvent{Key: keybind.KeyA, Pressed: true})
+			f.chargeFrame = frame
+		}
 	}
-	if f.ticks%30 == 0 {
+	if f.ticks%8 == 0 {
 		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
-	} else if f.ticks%30 == 1 {
+	} else if f.ticks%8 == 1 {
 		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 	}
 	return false
 }
 
 func (sc *e2eScenario) CheckQuestMinionCombat(typeID, name string) {
-	f := &e2eQuestCombatFixture{typeID: typeID}
-	sc.add(0, name+" place only player beside stock minion", f.prepare)
+	f := &e2eQuestCombatFixture{typeID: typeID, lastReachable: true}
+	sc.add(0, name+" place only player beside stock minion", func() {
+		if err := f.prepare(); err != nil {
+			e2eError(err)
+		}
+	})
 	sc.addWhen(0, name+" wait for natural AI acquisition", 600, f.acquired, func() {
 		e2eLog.Printf("QUEST COMBAT ACQUIRED: type=%s frame=%d elapsed=%d", f.typeID, noxServer.Frame(), noxServer.Frame()-f.startFrame)
 		f.logState()
@@ -201,7 +272,12 @@ func (sc *e2eScenario) CheckQuestMinionCombat(typeID, name string) {
 	})
 	sc.Screen(name + " enemy attack")
 	sc.addWhen(0, name+" defeat minion with real mouse input", 2400, f.fight, func() {
-		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false}, &seat.MouseButtonEvent{Button: seat.MouseButtonRight, Pressed: false})
+		e2eQueueInput(
+			&seat.KeyboardEvent{Key: keybind.KeyA, Pressed: false},
+			&seat.KeyboardEvent{Key: keybind.KeyS, Pressed: false},
+			&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false},
+			&seat.MouseButtonEvent{Button: seat.MouseButtonRight, Pressed: false},
+		)
 		if !f.outgoing || !f.clientDamage || !f.dead {
 			e2eError(fmt.Errorf("Quest combat death unproven: type=%s player-damage=%t client-damage=%t dead=%t", f.typeID, f.outgoing, f.clientDamage, f.dead))
 			return

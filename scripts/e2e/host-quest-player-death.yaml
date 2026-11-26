@@ -6,6 +6,8 @@
 # and capture the result window before the real Continue input.
 # Observe native client/server identity and the real HUD DWORD without writes:
 # initial 2, deaths 1/0/0 (server reset is deferred), respawns 1/0/2.
+# Stock selector sequence with the original monster WAIT draws.
+map-profile: quest-stock
 steps:
   - action: slow
     dur: 1ms
@@ -78,7 +80,7 @@ steps:
     name: dismiss combat sequence stage 3 briefing
   - action: assert-quest-stage
     count: 3
-    map: g_lotdd
+    map: g_mines
     name: combat sequence stage 3 playable
   - action: walk-quest
     ang: 0.5
@@ -92,7 +94,7 @@ steps:
     name: dismiss combat sequence stage 4 briefing
   - action: assert-quest-stage
     count: 4
-    map: g_swamp
+    map: g_crypts
     name: combat sequence stage 4 playable
   - action: walk-quest
     ang: 1

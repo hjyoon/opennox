@@ -105,10 +105,10 @@ func TestE2EQuestGolemPierceScenario(t *testing.T) {
 		t.Fatal(err)
 	}
 	scenario := string(raw)
-	if strings.Count(scenario, "action: enter-quest-exit") != 4 ||
+	if strings.Count(scenario, "action: enter-quest-exit") != 5 ||
 		!strings.Contains(scenario, "action: check-quest-golem-pierce\n    count: 3") ||
-		!strings.Contains(scenario, "generate FlyingGolem") || !strings.Contains(scenario, "map: g_forest") {
-		t.Fatal("stock golem requires four real Quest transitions and three actual hits")
+		!strings.Contains(scenario, "generate FlyingGolem") || !strings.Contains(scenario, "map: g_lotdd") {
+		t.Fatal("stock golem requires five real Quest transitions and three actual hits")
 	}
 	for _, action := range []string{"spawn-monster", "set-monster-health", "set-player-health", "damage-monster", "call-noxscript-function", "switch-map"} {
 		if strings.Contains(scenario, "action: "+action) {

@@ -4,14 +4,8 @@ package legacy
 #include "GAME1_2.h"
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
-#include "client_ui_words.h"
 
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* nox_wol_wnd_gameList_815012;
-extern nox_window *dword_5d4594_814984, *dword_5d4594_814988, *dword_5d4594_814992, *dword_5d4594_814996;
-extern nox_window* dword_5d4594_815000;
 extern uint32_t dword_587000_87408, dword_5d4594_815096, dword_5d4594_815100;
-extern uint64_t qword_5d4594_815068;
 */
 import "C"
 
@@ -20,6 +14,12 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+)
+
+var (
+	wolConnectDeadline uint64
+	wolRefreshDeadline uint64
+	wolConnectionError uint32
 )
 
 func wolWindowString(id string, line int32) *wchar2_t {
@@ -33,16 +33,16 @@ func wolSetHeading(win *nox_window, text *wchar2_t) {
 
 //export sub_4383A0
 func sub_4383A0() C.int {
-	if wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_814992) == 0 {
-		nox_window_set_hidden(C.dword_5d4594_814992, 1)
+	if wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.filter) == 0 {
+		nox_window_set_hidden(wolWindows.filter, 1)
 		sub_489870()
 	}
-	nox_window_set_hidden(C.nox_wol_wnd_gameList_815012, 0)
-	nox_window_set_hidden(C.dword_5d4594_814984, 1)
-	nox_window_set_hidden(C.dword_5d4594_814988, 1)
-	sub_46AD20(C.nox_wol_wnd_world_814980, 10006, 10007, 1)
-	sub_46ACE0(C.nox_wol_wnd_world_814980, 10047, 10051, 0)
-	wolSetHeading(C.dword_5d4594_814996, wolWindowString("ListJoinServer", 418))
+	nox_window_set_hidden(wolWindows.gameList, 0)
+	nox_window_set_hidden(wolWindows.mapPanel, 1)
+	nox_window_set_hidden(wolWindows.regionPanel, 1)
+	sub_46AD20(wolWindows.root, 10006, 10007, 1)
+	sub_46ACE0(wolWindows.root, 10047, 10051, 0)
+	wolSetHeading(wolWindows.heading, wolWindowString("ListJoinServer", 418))
 	C.dword_587000_87408 = 1
 	return 0
 }
@@ -51,12 +51,12 @@ func sub_4383A0() C.int {
 func sub_438770() C.int {
 	switch sub_43AF80() {
 	case 0:
-		listVisible := wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_814984) == 0 ||
-			wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_814988) == 0 ||
-			wndIsShown_nox_xxx_wndIsShown_46ACC0(C.nox_wol_wnd_gameList_815012) == 0
+		listVisible := wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.mapPanel) == 0 ||
+			wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.regionPanel) == 0 ||
+			wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.gameList) == 0
 		if listVisible && Get_nox_game_createOrJoin_815048() == 0 && Get_dword_5d4594_815044() == 0 &&
-			Sub_43AF30() == 0 && wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_815000) != 0 {
-			if uint64(nox_platform_get_ticks()) > uint64(C.qword_5d4594_815068) {
+			Sub_43AF30() == 0 && wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.serverInfo) != 0 {
+			if uint64(nox_platform_get_ticks()) > wolRefreshDeadline {
 				nox_client_refreshServerList_4378B0()
 			} else {
 				sub_438770_waitList()
@@ -66,7 +66,7 @@ func sub_438770() C.int {
 		sub_438BD0()
 		sub_43AF90(1)
 	case 3:
-		if uint64(nox_platform_get_ticks()) >= uint64(C.qword_5d4594_814956) {
+		if uint64(nox_platform_get_ticks()) >= wolConnectDeadline {
 			nox_client_setConnError_43AFA0(8)
 		}
 	case 4:
@@ -105,12 +105,12 @@ func sub_438770() C.int {
 //export sub_438BD0
 func sub_438BD0() C.int {
 	if sub_44A4A0() == 0 {
-		nox_xxx_dialogMsgBoxCreate_449A10(C.nox_wol_wnd_world_814980, nil, nil, 0, nil, nil)
+		nox_xxx_dialogMsgBoxCreate_449A10(wolWindows.root, nil, nil, 0, nil, nil)
 	}
-	code := C.nox_client_connError_814552
+	code := wolConnectionError
 	if code != 8 && code != 9 && code != 10 {
 		sub_449E00(wolWindowString("ConnError", 1262))
-		code = C.nox_client_connError_814552
+		code = wolConnectionError
 	}
 	ids := [...]string{
 		"ErrLowPing", "ErrHighPing", "ErrLowLevel", "ErrHighLevel",
@@ -131,27 +131,27 @@ func sub_438BD0() C.int {
 
 //export sub_43A810
 func sub_43A810() {
-	nox_window_set_hidden(C.dword_5d4594_814984, 0)
-	nox_window_set_hidden(C.dword_5d4594_814988, 1)
+	nox_window_set_hidden(wolWindows.mapPanel, 0)
+	nox_window_set_hidden(wolWindows.regionPanel, 1)
 	region := C.int(Get_dword_587000_87412())
-	nox_xxx_wndSetIcon_46AE60(C.dword_5d4594_814984, nox_wol_map_icon(region))
+	nox_xxx_wndSetIcon_46AE60(wolWindows.mapPanel, nox_wol_map_icon(region))
 	id, line := "JoinServer", int32(382)
 	if Get_nox_game_createOrJoin_815048() == 1 {
 		id, line = "CreateMsg", 377
 	}
-	wolSetHeading(C.dword_5d4594_814996, wolWindowString(id, line))
+	wolSetHeading(wolWindows.heading, wolWindowString(id, line))
 	sub_49FDB0(C.int(Get_dword_587000_87412()))
 }
 
 //export sub_43B630
 func sub_43B630() *C.uint32_t {
-	nox_xxx_wnd_46C6E0(C.dword_5d4594_815000)
+	nox_xxx_wnd_46C6E0(wolWindows.serverInfo)
 	message := wolWindowString("AttemptingConn", 1284)
-	return (*C.uint32_t)(nox_xxx_dialogMsgBoxCreate_449A10(C.nox_wol_wnd_world_814980, nil, message, 34, nil, nil))
+	return (*C.uint32_t)(nox_xxx_dialogMsgBoxCreate_449A10(wolWindows.root, nil, message, 34, nil, nil))
 }
 
 func wolDisconnectedNotice(id string, line int32, pending *C.uint32_t) {
-	if C.nox_wol_wnd_world_814980 == nil {
+	if wolWindows.root == nil {
 		*pending = 1
 		return
 	}

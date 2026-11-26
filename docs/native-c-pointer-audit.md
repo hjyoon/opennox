@@ -647,6 +647,23 @@ and verify their layouts and pointer identity.
 This migration removes 17 definitions from `vardefs.c`, including
 11 window pointer slots.
 
+### Multiplayer browser windows and connection state
+
+The browser constructor at `0x4379F0` publishes its root at
+`0x69B518`. Go stores the root, server information popup,
+map and region panels, and the five game-list columns at their
+native pointer width. The filter and nearby-server windows use
+the same typed pointers. Browser teardown at `0x43A9D0` keeps
+the original order for the filter, nearby popup, detached server
+popup, and root. It clears the child references after destruction.
+
+Go keeps the connection deadline and server refresh deadline as
+64-bit values and the connection error code as a 32-bit value.
+The original connection loop at `0x438770` compares both words
+of the deadline at `0x69B500`. The C checks cover the event payload,
+window draw and listbox callback signatures. This migration removes
+20 definitions from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

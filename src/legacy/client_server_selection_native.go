@@ -11,9 +11,6 @@ package legacy
 
 extern uint32_t dword_5d4594_815056;
 extern nox_gui_animation* nox_wnd_xxx_815040;
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* dword_5d4594_815000;
-extern nox_window* dword_5d4594_814984;
 */
 import "C"
 
@@ -81,8 +78,8 @@ func sub_43B340() C.int {
 func sub_43B460() C.int {
 	C.sub_438370()
 	C.nox_wnd_xxx_815040.fnc_done_out = (*[0]byte)(C.sub_43B490)
-	nox_xxx_wnd_46C6E0(C.dword_5d4594_815000)
-	return C.int(nox_xxx_wnd_46ABB0_go(C.dword_5d4594_814984, 0))
+	nox_xxx_wnd_46C6E0(wolWindows.serverInfo)
+	return C.int(nox_xxx_wnd_46ABB0_go(wolWindows.mapPanel, 0))
 }
 
 //export sub_43B490
@@ -90,8 +87,8 @@ func sub_43B490() C.int {
 	if nox_game_getStateCode_43BE10() == 1700 {
 		return C.sub_438330()
 	}
-	nox_window_set_hidden(C.nox_wol_wnd_world_814980, 1)
-	nox_window_set_hidden(C.dword_5d4594_815000, 1)
+	nox_window_set_hidden(wolWindows.root, 1)
+	nox_window_set_hidden(wolWindows.serverInfo, 1)
 	C.nox_client_setCursorType_477610(0)
 	return 1
 }

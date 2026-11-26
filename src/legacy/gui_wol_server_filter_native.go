@@ -5,8 +5,6 @@ package legacy
 #include "client__gui__window.h"
 
 typedef const void* nox_wol_filter_const_data;
-extern nox_window* dword_5d4594_1193380;
-extern nox_window* dword_5d4594_1193384;
 */
 import "C"
 
@@ -18,6 +16,8 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/server"
 )
+
+var wolFilterWindow, wolFilterOptions *nox_window
 
 type wolServerFilter struct {
 	checkLatency   uint32
@@ -44,7 +44,7 @@ func wolFilterSelected(win *nox_window) uint32 {
 
 //export sub_489870
 func sub_489870() C.int {
-	win := C.dword_5d4594_1193380
+	win := wolFilterWindow
 	if *wolServerFilterMode(0) == 2 {
 		filter := wolServerFilterRecord(0)
 		child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(win, id) }
@@ -109,13 +109,13 @@ func nox_xxx_checkSomeFlagsOnJoin_4899C0(raw *C.nox_gui_server_ent_t) C.int {
 //export sub_489B80
 func sub_489B80(parent *nox_window) *nox_window {
 	win := nox_new_window_from_file(internCStr("filter.wnd"), C.nox_xxx_windowMplayFilterProc_489E70)
-	C.dword_5d4594_1193380 = win
+	wolFilterWindow = win
 	if win == nil {
 		return nil
 	}
 	child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(win, id) }
 	options := child(10012)
-	C.dword_5d4594_1193384 = options
+	wolFilterOptions = options
 	filter := wolServerFilterRecord(0)
 	sub_46B120(win, parent)
 	sub_46B120(options, win)
@@ -173,7 +173,7 @@ func sub_489B80(parent *nox_window) *nox_window {
 
 //export sub_489DC0
 func sub_489DC0() {
-	options := C.dword_5d4594_1193384
+	options := wolFilterOptions
 	nox_window_set_hidden(options, 0)
 	ping := nox_xxx_wndGetChildByID_46B0C0(options, 10031)
 	nox_xxx_wnd_46ABB0_go(ping, int32(wolFilterSelected(nox_xxx_wndGetChildByID_46B0C0(options, 10028))))
@@ -191,7 +191,7 @@ func nox_xxx_windowMplayFilterProc_489E70(win *nox_window, event C.int, eventArg
 	control := (*nox_window)(unsafe.Pointer(uintptr(eventArg)))
 	id := nox_xxx_wndGetID_46B0A0(control)
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
-	root, options := C.dword_5d4594_1193380, C.dword_5d4594_1193384
+	root, options := wolFilterWindow, wolFilterOptions
 	switch id {
 	case 10015:
 		C.sub_46AD20(root, 10016, 10017, C.int(1-wolFilterSelected(control)))
@@ -210,14 +210,14 @@ func nox_xxx_windowMplayFilterProc_489E70(win *nox_window, event C.int, eventArg
 
 //export sub_489FB0
 func sub_489FB0() C.int {
-	win := C.dword_5d4594_1193380
+	win := wolFilterWindow
 	if win == nil {
 		return 0
 	}
 	sub_489870()
 	nox_xxx_wndClearCaptureMain_46ADE0(win)
 	ret := nox_xxx_windowDestroyMB_46C4E0(win)
-	C.dword_5d4594_1193380 = nil
+	wolFilterWindow, wolFilterOptions = nil, nil
 	return C.int(ret)
 }
 

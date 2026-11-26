@@ -4,9 +4,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* nox_wol_wnd_gameList_815012;
-extern nox_window *dword_5d4594_814984, *dword_5d4594_814988, *dword_5d4594_814992, *dword_5d4594_814996;
 extern int dword_5d4594_815104;
 */
 import "C"
@@ -28,7 +25,7 @@ func wolClickMapServer(id int32) {
 	point := nox_client_getMousePos_4309F0()
 	nearby := [2]C.uint32_t{C.uint32_t(point.x - 216), C.uint32_t(point.y - 27)}
 	if sub_4A25C0(&nearby[0], sub_4A0020()) >= 2 {
-		sub_4A2610(C.nox_wol_wnd_world_814980, &nearby[0], sub_4A0020())
+		sub_4A2610(wolWindows.root, &nearby[0], sub_4A0020())
 	} else {
 		wolShowSelectedServer(point, sub_4A0490(C.int(id-10070)))
 	}
@@ -49,13 +46,13 @@ func wolSelectWorldRegion(region int32) {
 
 func wolShowLegacyFilter() {
 	Set_nox_game_createOrJoin_815048(0)
-	nox_window_set_hidden(C.nox_wol_wnd_gameList_815012, 1)
-	nox_window_set_hidden(C.dword_5d4594_814984, 1)
-	nox_window_set_hidden(C.dword_5d4594_814988, 1)
-	nox_window_set_hidden(C.dword_5d4594_814992, 0)
-	sub_46AD20(C.nox_wol_wnd_world_814980, 10006, 10007, 0)
-	sub_46ACE0(C.nox_wol_wnd_world_814980, 10047, 10051, 1)
-	wolSetHeading(C.dword_5d4594_814996, wolWindowString("FilterMsg", 2186))
+	nox_window_set_hidden(wolWindows.gameList, 1)
+	nox_window_set_hidden(wolWindows.mapPanel, 1)
+	nox_window_set_hidden(wolWindows.regionPanel, 1)
+	nox_window_set_hidden(wolWindows.filter, 0)
+	sub_46AD20(wolWindows.root, 10006, 10007, 0)
+	sub_46ACE0(wolWindows.root, 10047, 10051, 1)
+	wolSetHeading(wolWindows.heading, wolWindowString("FilterMsg", 2186))
 }
 
 func wolStartLegacyHost(quest bool) {
@@ -71,7 +68,7 @@ func wolStartLegacyHost(quest bool) {
 	}
 	nox_client_setMousePos_430B10(408, 239)
 	sub_4375C0(0)
-	if wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_814992) == 0 {
+	if wndIsShown_nox_xxx_wndIsShown_46ACC0(wolWindows.filter) == 0 {
 		sub_489870()
 	}
 	if quest {
@@ -81,7 +78,7 @@ func wolStartLegacyHost(quest bool) {
 		return
 	}
 	Set_dword_587000_87412(0)
-	child := nox_xxx_wndGetChildByID_46B0C0(C.nox_wol_wnd_world_814980, 10020)
+	child := nox_xxx_wndGetChildByID_46B0C0(wolWindows.root, 10020)
 	nox_window_call_field_93(child, 5, 15663512, 0)
 }
 

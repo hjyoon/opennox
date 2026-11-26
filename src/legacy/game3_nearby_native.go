@@ -17,6 +17,8 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+var game3NearbyWindow *nox_window
+
 // Records remain C-owned packed wire payloads; this private registry never
 // stores native links or window pointers in their DWORD fields.
 var game3NearbyServers [2500]*C.nox_gui_server_ent_t
@@ -64,14 +66,14 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 		}
 	}
 	if C.dword_5d4594_1307720 == 0 {
-		return C.dword_5d4594_1307716
+		return game3NearbyWindow
 	}
 	var callback unsafe.Pointer
 	if owner != nil {
 		callback = unsafe.Pointer(owner.field_94)
 	}
 	popup := nox_new_window_from_file(internCStr("proxlist.wnd"), callback)
-	C.dword_5d4594_1307716 = popup
+	game3NearbyWindow = popup
 	if popup == nil {
 		return nil
 	}
@@ -154,9 +156,9 @@ func sub_4A2830(x, y C.int, out *C.uint32_t) *C.uint32_t {
 //export sub_4A2890
 func sub_4A2890() C.int {
 	var result C.int
-	if C.dword_5d4594_1307716 != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1307716)
-		C.dword_5d4594_1307716 = nil
+	if game3NearbyWindow != nil {
+		result = C.nox_xxx_windowDestroyMB_46C4E0(game3NearbyWindow)
+		game3NearbyWindow = nil
 	}
 	C.dword_5d4594_1307720 = 0
 	clear(game3NearbyServers[:])
@@ -165,7 +167,7 @@ func sub_4A2890() C.int {
 
 //export sub_4A28B0
 func sub_4A28B0() C.int {
-	if C.dword_5d4594_1307716 != nil {
+	if game3NearbyWindow != nil {
 		return 1
 	}
 	return 0

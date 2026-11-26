@@ -6,12 +6,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* nox_wol_wnd_gameList_815012;
-extern nox_window *dword_5d4594_814984, *dword_5d4594_814988, *dword_5d4594_814992, *dword_5d4594_814996;
-extern nox_window *dword_5d4594_815000, *dword_5d4594_815004, *dword_5d4594_815008;
-extern nox_window *dword_5d4594_815016, *dword_5d4594_815020, *dword_5d4594_815024;
-extern nox_window *dword_5d4594_815028, *dword_5d4594_815032;
 extern nox_gui_animation* nox_wnd_xxx_815040;
 extern uint32_t dword_5d4594_815052, dword_5d4594_815096, dword_5d4594_815100;
 */
@@ -23,6 +17,21 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 )
+
+type wolWorldWindows struct {
+	root             *nox_window
+	mapPanel         *nox_window
+	regionPanel      *nox_window
+	filter           *nox_window
+	heading          *nox_window
+	serverInfo       *nox_window
+	serverDetails    *nox_window
+	serverInfoButton *nox_window
+	gameList         *nox_window
+	gameColumns      [5]*nox_window
+}
+
+var wolWindows wolWorldWindows
 
 var wolServerIcons [2][3][2]*C.nox_video_bag_image_t
 var wolMapIcons [4]*C.nox_video_bag_image_t
@@ -69,7 +78,7 @@ func wolLoadWorldIcons() {
 }
 
 func wolWorldTrigger(event int32, senderID int32) {
-	root := C.nox_wol_wnd_world_814980
+	root := wolWindows.root
 	sender := nox_xxx_wndGetChildByID_46B0C0(root, senderID)
 	nox_window_call_field_94_fnc(root, event, uintptr(unsafe.Pointer(sender)), 0, nil, 0)
 }
@@ -81,13 +90,13 @@ func wolShowExistingWorld() {
 	anim.fnc_done_out = (*[0]byte)(C.sub_438330)
 	sub_43BE40(3)
 	nox_xxx_clientPlaySoundSpecial_452D80(922, 100)
-	nox_window_set_hidden(C.nox_wol_wnd_world_814980, 0)
-	nox_window_set_hidden(C.dword_5d4594_815000, 0)
-	nox_xxx_wnd_46ABB0_go(C.dword_5d4594_814984, 1)
+	nox_window_set_hidden(wolWindows.root, 0)
+	nox_window_set_hidden(wolWindows.serverInfo, 0)
+	nox_xxx_wnd_46ABB0_go(wolWindows.mapPanel, 1)
 	if Get_nox_game_createOrJoin_815048() != 0 {
 		sub_4375C0(0)
 	}
-	sub_46ACE0(C.nox_wol_wnd_world_814980, 10047, 10051, C.int(bool2int(Get_dword_587000_87408() == 0)))
+	sub_46ACE0(wolWindows.root, 10047, 10051, C.int(bool2int(Get_dword_587000_87408() == 0)))
 	if sub_4D6FA0() == 2 {
 		wolWorldTrigger(16391, 10010)
 		wolWorldTrigger(16391, 10010)
@@ -95,22 +104,19 @@ func wolShowExistingWorld() {
 }
 
 func wolBindWorldControls(root *nox_window) {
-	C.dword_5d4594_814984 = nox_xxx_wndGetChildByID_46B0C0(root, 10020)
-	C.dword_5d4594_814988 = nox_xxx_wndGetChildByID_46B0C0(root, 10021)
-	nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_814984, C.sub_439D00)
-	nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_814988, C.sub_439D00)
-	nox_xxx_wndSetProc_46B2C0(C.dword_5d4594_814988, C.nox_xxx_windowMultiplayerSub_439E70)
-	C.dword_5d4594_814996 = nox_xxx_wndGetChildByID_46B0C0(root, 10011)
-	C.nox_wol_wnd_gameList_815012 = nox_xxx_wndGetChildByID_46B0C0(root, 10037)
-	C.dword_5d4594_815004 = nox_xxx_wndGetChildByID_46B0C0(root, 10034)
-	C.dword_5d4594_815000 = nox_xxx_wndGetChildByID_46B0C0(root, 10033)
-	C.dword_5d4594_814992 = sub_489B80(root)
-	C.dword_5d4594_815008 = nox_xxx_wndGetChildByID_46B0C0(root, 10001)
-	for i, slot := range [...]*(*nox_window){
-		&C.dword_5d4594_815016, &C.dword_5d4594_815020, &C.dword_5d4594_815024,
-		&C.dword_5d4594_815028, &C.dword_5d4594_815032,
-	} {
-		*slot = nox_xxx_wndGetChildByID_46B0C0(root, int32(10038+i))
+	wolWindows.mapPanel = nox_xxx_wndGetChildByID_46B0C0(root, 10020)
+	wolWindows.regionPanel = nox_xxx_wndGetChildByID_46B0C0(root, 10021)
+	nox_xxx_wndSetWindowProc_46B300(wolWindows.mapPanel, C.sub_439D00)
+	nox_xxx_wndSetWindowProc_46B300(wolWindows.regionPanel, C.sub_439D00)
+	nox_xxx_wndSetProc_46B2C0(wolWindows.regionPanel, C.nox_xxx_windowMultiplayerSub_439E70)
+	wolWindows.heading = nox_xxx_wndGetChildByID_46B0C0(root, 10011)
+	wolWindows.gameList = nox_xxx_wndGetChildByID_46B0C0(root, 10037)
+	wolWindows.serverDetails = nox_xxx_wndGetChildByID_46B0C0(root, 10034)
+	wolWindows.serverInfo = nox_xxx_wndGetChildByID_46B0C0(root, 10033)
+	wolWindows.filter = sub_489B80(root)
+	wolWindows.serverInfoButton = nox_xxx_wndGetChildByID_46B0C0(root, 10001)
+	for i := range wolWindows.gameColumns {
+		wolWindows.gameColumns[i] = nox_xxx_wndGetChildByID_46B0C0(root, int32(10038+i))
 	}
 	host := nox_xxx_wndGetChildByID_46B0C0(root, 10002)
 	if noxflags.HasGame(noxflags.GameFlag25) {
@@ -120,10 +126,10 @@ func wolBindWorldControls(root *nox_window) {
 	join.draw_data.field_0 &^= 4
 	draw := nox_xxx_wndGetChildByID_46B0C0(root, 10046)
 	nox_xxx_wndSetDrawFn_46B340(draw, C.sub_438C80)
-	nox_xxx_wndSetProc_46B2C0(C.nox_wol_wnd_gameList_815012, C.nox_xxx_windowMultiplayerSub_439E70)
-	nox_window_set_hidden(C.nox_wol_wnd_gameList_815012, 1)
-	nox_window_set_hidden(C.dword_5d4594_815000, 1)
-	nox_xxx_wnd_46B280(C.dword_5d4594_815008, root)
+	nox_xxx_wndSetProc_46B2C0(wolWindows.gameList, C.nox_xxx_windowMultiplayerSub_439E70)
+	nox_window_set_hidden(wolWindows.gameList, 1)
+	nox_window_set_hidden(wolWindows.serverInfo, 1)
+	nox_xxx_wnd_46B280(wolWindows.serverInfoButton, root)
 }
 
 func wolBindListControls(parent, list *nox_window, sliderID, upID, downID int32) *nox_window {
@@ -153,12 +159,12 @@ func nox_game_showGameSel_4379F0() C.int {
 	if Get_dword_587000_87412() != -1 {
 		sub_49FDB0(0)
 	}
-	if C.nox_wol_wnd_world_814980 != nil {
+	if wolWindows.root != nil {
 		wolShowExistingWorld()
 		return 1
 	}
 	root := nox_new_window_from_file(internCStr("noxworld.wnd"), C.nox_xxx_windowMultiplayerSub_439E70)
-	C.nox_wol_wnd_world_814980 = root
+	wolWindows.root = root
 	if root == nil {
 		return 0
 	}
@@ -175,16 +181,16 @@ func nox_game_showGameSel_4379F0() C.int {
 	anim.fnc_done_out = (*[0]byte)(C.sub_438330)
 	wolBindWorldControls(root)
 	Set_dword_587000_87412(0)
-	nox_window_set_hidden(C.dword_5d4594_814988, 1)
-	wolSetHeading(C.dword_5d4594_814996, wolWindowString("JoinServer", 2517))
-	sub_46ACE0(C.dword_5d4594_814984, 10620, 10631, 1)
+	nox_window_set_hidden(wolWindows.regionPanel, 1)
+	wolSetHeading(wolWindows.heading, wolWindowString("JoinServer", 2517))
+	sub_46ACE0(wolWindows.mapPanel, 10620, 10631, 1)
 	sub_49FDB0(0)
 	wolLoadWorldIcons()
 
-	thumb := wolBindListControls(C.nox_wol_wnd_gameList_815012, C.nox_wol_wnd_gameList_815012, 10053, 10043, 10044)
+	thumb := wolBindListControls(wolWindows.gameList, wolWindows.gameList, 10053, 10043, 10044)
 	thumb.width, thumb.height = 16, 12
 	nox_xxx_wndSetOffsetMB_46AE40(thumb, 0, -15)
-	infoThumb := wolBindListControls(C.dword_5d4594_815000, C.dword_5d4594_815004, 10032, 10035, 10036)
+	infoThumb := wolBindListControls(wolWindows.serverInfo, wolWindows.serverDetails, 10032, 10035, 10036)
 	infoThumb.width, infoThumb.height = 16, 10
 	sub_438480()
 	sub_40A3C0(C.uint(nox_xxx_servGetPort_40A430()))
@@ -211,7 +217,7 @@ func nox_game_showGameSel_4379F0() C.int {
 	if sub_44A4A0() != 0 {
 		sub_44A4B0()
 	}
-	nox_xxx_wndSetDrawFn_46B340(C.dword_5d4594_814984, C.sub_438E30)
+	nox_xxx_wndSetDrawFn_46B340(wolWindows.mapPanel, C.sub_438E30)
 	for id := int32(10054); id <= 10057; id++ {
 		nox_xxx_wndSetDrawFn_46B340(nox_xxx_wndGetChildByID_46B0C0(root, id), C.sub_438E30)
 	}

@@ -5,11 +5,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_window* nox_wol_wnd_gameList_815012;
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* dword_5d4594_815004;
-extern nox_window *dword_5d4594_815016, *dword_5d4594_815020, *dword_5d4594_815024;
-extern nox_window *dword_5d4594_815028, *dword_5d4594_815032;
 extern nox_gui_animation* nox_wnd_xxx_815040;
 */
 import "C"
@@ -46,7 +41,7 @@ func sub_437320(record *C.nox_gui_server_ent_t) C.int {
 //export sub_4375C0
 func sub_4375C0(enabled C.int) {
 	if count := Get_nox_wol_server_result_cnt_815088(); count != 0 {
-		sub_46AD20(C.nox_wol_wnd_world_814980, 10070, C.int(count+10069), enabled)
+		sub_46AD20(wolWindows.root, 10070, C.int(count+10069), enabled)
 	}
 }
 
@@ -64,7 +59,7 @@ func sub_437860(x, y C.int) C.int {
 //export sub_4379C0
 func sub_4379C0() {
 	if Get_dword_587000_87408() == 1 {
-		nox_window_call_field_94_fnc(C.nox_wol_wnd_gameList_815012, 16399, 0, 0, nil, 0)
+		nox_window_call_field_94_fnc(wolWindows.gameList, 16399, 0, 0, nil, 0)
 	}
 }
 
@@ -96,7 +91,7 @@ func sub_438370() C.int {
 
 //export sub_438480
 func sub_438480() C.int {
-	list, info := C.nox_wol_wnd_gameList_815012, C.dword_5d4594_815004
+	list, info := wolWindows.gameList, wolWindows.serverDetails
 	if list == nil || info == nil {
 		return 0
 	}
@@ -105,7 +100,7 @@ func sub_438480() C.int {
 	if gameData == nil || infoData == nil {
 		return 0
 	}
-	columns := wolGameColumns()
+	columns := wolWindows.gameColumns
 	nox_xxx_wndSetProc_46B2C0(list, C.sub_439050)
 	nox_xxx_wndSetWindowProc_46B300(list, C.sub_438EF0)
 	for _, column := range columns {
@@ -122,11 +117,4 @@ func sub_438480() C.int {
 		}
 	}
 	return result
-}
-
-func wolGameColumns() [5]*nox_window {
-	return [5]*nox_window{
-		C.dword_5d4594_815016, C.dword_5d4594_815020, C.dword_5d4594_815024,
-		C.dword_5d4594_815028, C.dword_5d4594_815032,
-	}
 }

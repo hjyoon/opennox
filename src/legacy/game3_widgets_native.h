@@ -14,6 +14,5 @@
 #include "client__gui__gadgets__listbox.h"
 #include "client__video__draw_common.h"
 extern uint32_t dword_5d4594_1307720;
-extern nox_window* dword_5d4594_1307716;
 extern uint32_t dword_8531A0_2572;
 #endif

@@ -5,7 +5,6 @@ package legacy
 #include "client__shell__noxworld.h"
 
 typedef const nox_gui_server_ent_t nox_wol_const_server_t;
-extern nox_window *dword_5d4594_815000, *dword_5d4594_815004, *dword_5d4594_815008;
 */
 import "C"
 
@@ -25,21 +24,21 @@ func nox_client_gui_serverInfoBlockCheckExp_439370(pos *C.int2, server *C.nox_wo
 		return
 	}
 	sub_439450(C.int(pos.field_0), C.int(pos.field_4), (*C.uint32_t)(unsafe.Pointer(pos)))
-	sub_46B120(C.dword_5d4594_815000, nil)
-	nox_xxx_wndShowModalMB_46A8C0(C.dword_5d4594_815000)
-	sub_46C690(C.dword_5d4594_815000)
-	nox_window_setPos_46A9B0(C.dword_5d4594_815000, int32(pos.field_0), int32(pos.field_4))
+	sub_46B120(wolWindows.serverInfo, nil)
+	nox_xxx_wndShowModalMB_46A8C0(wolWindows.serverInfo)
+	sub_46C690(wolWindows.serverInfo)
+	nox_window_setPos_46A9B0(wolWindows.serverInfo, int32(pos.field_0), int32(pos.field_4))
 	nox_client_gui_serverInfoBlock_4394D0(server)
 	Set_dword_5d4594_815056(1)
 	record := (*Nox_gui_server_ent_t)(unsafe.Pointer(server))
 	*memmap.PtrUint16(0x5D4594, 814604) = uint16(record.Port())
 	if noxflags.HasEngine(noxflags.EngineNoRendering) {
-		nox_xxx_wnd_46ABB0_go(C.dword_5d4594_815008, 0)
+		nox_xxx_wnd_46ABB0_go(wolWindows.serverInfoButton, 0)
 	}
 }
 
 func wolInfoAppend(text *wchar2_t, style int) {
-	nox_window_call_field_94_fnc(C.dword_5d4594_815004, 16397, uintptr(unsafe.Pointer(text)), uintptr(style), nil, 0)
+	nox_window_call_field_94_fnc(wolWindows.serverDetails, 16397, uintptr(unsafe.Pointer(text)), uintptr(style), nil, 0)
 }
 
 func wolInfoSeparator(offset uintptr) {
@@ -90,7 +89,7 @@ func nox_client_gui_serverInfoBlock_4394D0(server *C.nox_wol_const_server_t) {
 	resolution := int32(record.Field_25_2 & 0x7f)
 	buffer, release := alloc.New([512]wchar2_t{})
 	defer release()
-	nox_window_call_field_94_fnc(C.dword_5d4594_815004, 16399, 0, 0, nil, 0)
+	nox_window_call_field_94_fnc(wolWindows.serverDetails, 16399, 0, 0, nil, 0)
 	wolInfoAppend(wolWindowString("Name", 749), 14)
 	name := record.ServerName()
 	if name == "" {

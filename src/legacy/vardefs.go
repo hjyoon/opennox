@@ -11,14 +11,11 @@ package legacy
 #include "vardefs.h"
 extern nox_window* dword_5d4594_1046492;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern nox_window* nox_wol_wnd_world_814980;
 extern uint32_t dword_5d4594_1045516;
 extern nox_window* dword_5d4594_1045684;
 extern char* dword_5d4594_1307784;
 extern uint32_t dword_5d4594_2650652;
 extern nox_window* dword_5d4594_1320940;
-extern nox_window* dword_5d4594_815004;
-extern nox_window* nox_wol_wnd_gameList_815012;
 extern uintptr_t dword_5d4594_1062480;
 extern uintptr_t dword_5d4594_832484;
 extern uint32_t dword_5d4594_2516348;
@@ -27,7 +24,6 @@ extern uint32_t dword_5d4594_1090120;
 extern uint32_t dword_5d4594_2516328;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1046868;
-extern nox_window* dword_5d4594_1193380;
 extern nox_window* dword_5d4594_1316972;
 extern nox_window* dword_5d4594_1123524;
 extern nox_window* dword_5d4594_1045604;
@@ -69,7 +65,6 @@ extern nox_window* dword_5d4594_1316708;
 extern uint32_t dword_5d4594_251572;
 extern nox_window* dword_5d4594_1303452;
 extern uint32_t dword_5d4594_2386224;
-extern nox_window* dword_5d4594_815016;
 extern nox_window* dword_5d4594_1197312;
 extern nox_window* dword_5d4594_831236;
 extern uint32_t dword_5d4594_1047540;
@@ -81,14 +76,10 @@ extern uint32_t nox_xxx_lightningTarget_5d4594_2487908;
 extern uint32_t dword_5d4594_1107036;
 extern uint32_t dword_5d4594_3798836;
 extern uint32_t dword_5d4594_1565512;
-extern nox_window* dword_5d4594_815028;
 extern void* dword_5d4594_1301848;
 extern nox_window* dword_5d4594_1316712;
-extern nox_window* dword_5d4594_815024;
 extern uint32_t dword_5d4594_1045528;
-extern nox_window* dword_5d4594_815020;
 extern nox_window* dword_5d4594_1305680;
-extern nox_window* dword_5d4594_815032;
 extern nox_window* dword_5d4594_1049520;
 extern nox_window* dword_5d4594_1309748;
 extern nox_window* dword_5d4594_1045464;
@@ -106,7 +97,6 @@ extern uint32_t dword_5d4594_2487556;
 extern nox_window* dword_5d4594_1523024;
 extern void* dword_5d4594_2516344;
 extern nox_window* dword_5d4594_1046508;
-extern nox_window* dword_5d4594_1193384;
 extern uint32_t dword_5d4594_1045536;
 extern uint32_t nox_wol_servers_sorting_166704;
 extern uint32_t dword_5d4594_371692;
@@ -129,7 +119,6 @@ extern void* dword_587000_127004;
 extern uint32_t nox_wol_server_result_cnt_815088;
 extern nox_things_imageRef_t* dword_5d4594_1046924;
 extern uint32_t nox_xxx_polygonNextAngle_587000_60356;
-extern nox_window* dword_5d4594_1307716;
 extern uint32_t dword_587000_93156;
 extern uint32_t dword_587000_93160;
 extern uint32_t dword_5d4594_2650676;
@@ -161,7 +150,6 @@ extern uint64_t qword_5d4594_1567940;
 extern uint64_t qword_581450_10256;
 extern uint64_t qword_581450_9552;
 extern uint64_t qword_581450_9512;
-extern uint64_t qword_5d4594_815068;
 extern uint64_t qword_581450_10176;
 extern uint32_t dword_5d4594_1316408;
 extern uint32_t dword_587000_292492;
@@ -191,7 +179,6 @@ extern uint32_t dword_5d4594_3798812;
 extern nox_window* dword_5d4594_1046952;
 extern uintptr_t dword_5d4594_832536;
 extern uint32_t dword_587000_87408;
-extern nox_window* dword_5d4594_814988;
 extern uint32_t dword_5d4594_2487560;
 extern uint32_t dword_5d4594_1062516;
 extern uint32_t dword_5d4594_1316492;
@@ -350,7 +337,6 @@ extern uint32_t dword_5d4594_1316476;
 extern void* nox_alloc_spawn_2386216;
 extern uint32_t dword_5d4594_2487672;
 extern void* nox_alloc_magicEnt_1569668;
-extern nox_window* dword_5d4594_814992;
 extern uint32_t dword_587000_66116;
 extern uint32_t dword_5d4594_2487564;
 extern uint32_t dword_5d4594_3804684;
@@ -644,15 +630,10 @@ extern unsigned int dword_5d4594_2386852;
 
 extern int dword_587000_87412;
 extern unsigned int dword_5d4594_527988;
-extern nox_window* dword_5d4594_815004;
 extern uint32_t dword_5d4594_815044;
-extern nox_window* nox_wol_wnd_world_814980;
 extern unsigned int nox_wol_server_result_cnt_815088;
 extern int dword_5d4594_815104;
 extern uint32_t dword_587000_87408;
-extern nox_window* dword_5d4594_814984;
-extern nox_window* dword_5d4594_814996;
-extern nox_window* dword_5d4594_815000;
 extern uint32_t dword_5d4594_815056;
 
 extern unsigned int nox_client_translucentFrontWalls_805844;
@@ -721,7 +702,7 @@ func Get_dword_587000_87412() int {
 	return int(C.dword_587000_87412)
 }
 func Get_dword_5d4594_815000() *gui.Window {
-	return asWindow(C.dword_5d4594_815000)
+	return asWindow(wolWindows.serverInfo)
 }
 func Get_dword_587000_87408() int {
 	return int(C.dword_587000_87408)
@@ -730,10 +711,10 @@ func Get_nox_game_createOrJoin_815048() int {
 	return int(C.nox_game_createOrJoin_815048)
 }
 func Get_dword_5d4594_814996() *gui.Window {
-	return asWindow(C.dword_5d4594_814996)
+	return asWindow(wolWindows.heading)
 }
 func Get_dword_5d4594_814984() *gui.Window {
-	return asWindow(C.dword_5d4594_814984)
+	return asWindow(wolWindows.mapPanel)
 }
 func Get_dword_5d4594_2488604() int {
 	return int(C.dword_5d4594_2488604)
@@ -1020,11 +1001,11 @@ func Sub_41E2F0() int {
 }
 
 func Get_nox_wol_wnd_world_814980() *gui.Window {
-	return asWindow(C.nox_wol_wnd_world_814980)
+	return asWindow(wolWindows.root)
 }
 
 func Get_dword_5d4594_815004() *gui.Window {
-	return asWindow(C.dword_5d4594_815004)
+	return asWindow(wolWindows.serverDetails)
 }
 
 func Nox_xxx_get_57AF20() int {
@@ -1080,10 +1061,10 @@ func Set_nox_wol_server_result_cnt_815088(v int) {
 	C.nox_wol_server_result_cnt_815088 = C.uint(v)
 }
 func Set_qword_5d4594_815068(v uint64) {
-	C.qword_5d4594_815068 = C.uint64_t(v)
+	wolRefreshDeadline = v
 }
 func Set_nox_client_connError_814552(v int) {
-	C.nox_client_connError_814552 = C.uint32_t(v)
+	wolConnectionError = uint32(v)
 }
 func Set_dword_5d4594_815056(v int) {
 	C.dword_5d4594_815056 = C.uint(v)
@@ -1287,7 +1268,7 @@ func Set_dword_5d4594_2650680(v int) {
 	C.dword_5d4594_2650680 = C.uint(v)
 }
 func Set_qword_5d4594_814956(v uint64) {
-	C.qword_5d4594_814956 = C.uint64_t(v)
+	wolConnectDeadline = v
 }
 func Set_dword_5d4594_1200804(v uint32) {
 	C.dword_5d4594_1200804 = C.uint(v)

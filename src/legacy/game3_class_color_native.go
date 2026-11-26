@@ -87,7 +87,6 @@ extern nox_window* dword_5d4594_1309728;
 extern nox_window* dword_5d4594_1309732;
 extern uint64_t qword_581450_9552;
 extern void* dword_587000_93164;
-extern nox_window* dword_5d4594_1307716;
 extern void* dword_587000_127004;
 extern nox_window* dword_5d4594_1308088;
 extern nox_window* dword_5d4594_1309748;

@@ -7,10 +7,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_window* nox_wol_wnd_gameList_815012;
-extern nox_window* nox_wol_wnd_world_814980;
-extern nox_window* dword_5d4594_815000;
-extern nox_window* dword_5d4594_1307716;
 */
 import "C"
 
@@ -22,7 +18,7 @@ import (
 //export sub_438C80
 func sub_438C80(win *nox_window, draw *C.nox_window_data) C.int {
 	mouse := nox_client_getMousePos_4309F0()
-	popup := C.dword_5d4594_815000
+	popup := wolWindows.serverInfo
 	if popup != nil && wndIsShown_nox_xxx_wndIsShown_46ACC0(popup) == 0 && Get_dword_5d4594_815044() == 0 {
 		w := asWindow(popup)
 		margin := image.Pt(32, 32)
@@ -31,16 +27,16 @@ func sub_438C80(win *nox_window, draw *C.nox_window_data) C.int {
 		hi := origin.Add(w.Size()).Add(margin)
 		x, y := int(mouse.x), int(mouse.y)
 		if x < lo.X || x > hi.X || y < lo.Y || y > hi.Y {
-			nox_window_set_hidden(C.dword_5d4594_815000, 1)
-			nox_window_call_field_94_fnc(C.nox_wol_wnd_gameList_815012, 16403, ^uintptr(0), 0, nil, 0)
+			nox_window_set_hidden(wolWindows.serverInfo, 1)
+			nox_window_call_field_94_fnc(wolWindows.gameList, 16403, ^uintptr(0), 0, nil, 0)
 			Set_dword_5d4594_815056(0)
-			nox_xxx_wnd_46C6E0(C.dword_5d4594_815000)
-			nox_xxx_windowFocus_46B500(C.nox_wol_wnd_world_814980)
+			nox_xxx_wnd_46C6E0(wolWindows.serverInfo)
+			nox_xxx_windowFocus_46B500(wolWindows.root)
 		}
 	}
-	if sub_4A28B0() != 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(C.dword_5d4594_1307716, mouse.x, mouse.y)) {
+	if sub_4A28B0() != 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(game3NearbyWindow, mouse.x, mouse.y)) {
 		sub_4A2890()
-		nox_xxx_windowFocus_46B500(C.nox_wol_wnd_world_814980)
+		nox_xxx_windowFocus_46B500(wolWindows.root)
 	}
 	if Get_nox_game_createOrJoin_815048() != 0 && sub_438DD0(C.uint(mouse.x), C.uint(mouse.y)) != 0 {
 		C.nox_client_setCursorType_477610(9)
@@ -59,7 +55,7 @@ func sub_438DD0(x, y C.uint) C.int {
 }
 
 func wolGameColumnsSend(event int32, arg, arg2 uintptr) {
-	for _, column := range wolGameColumns() {
+	for _, column := range wolWindows.gameColumns {
 		nox_window_call_field_94_fnc(column, event, arg, arg2, nil, 0)
 	}
 }
@@ -77,7 +73,7 @@ func sub_438EF0(win *nox_window, event C.int, arg, arg2 C.uintptr_t) C.int {
 	if event == 20 {
 		control = uintptr(data.Field_8)
 	}
-	nox_window_call_field_94_fnc(C.nox_wol_wnd_gameList_815012, 16391, control, 0, nil, 0)
+	nox_window_call_field_94_fnc(wolWindows.gameList, 16391, control, 0, nil, 0)
 	wolGameColumnsSend(16391, control, 0)
 	return 0
 }
@@ -89,7 +85,7 @@ func sub_439050(win *nox_window, event C.uint, arg, arg2 C.uintptr_t) C.int {
 		return 1
 	case 0x4000:
 		sender := (*nox_window)(unsafe.Pointer(uintptr(arg)))
-		list := C.nox_wol_wnd_gameList_815012
+		list := wolWindows.gameList
 		if sender == nox_xxx_wndGetChildByID_46B0C0(list, 10043) ||
 			sender == nox_xxx_wndGetChildByID_46B0C0(list, 10044) {
 			wolGameColumnsSend(0x4000, uintptr(arg), 0)

@@ -8,10 +8,6 @@ package legacy
 #include "GAME5_2.h"
 #include "client__gui__window.h"
 #include "client__shell__selchar.h"
-
-extern nox_window* dword_5d4594_814984;
-extern nox_window* dword_5d4594_815000;
-extern nox_window* nox_wol_wnd_world_814980;
 */
 import "C"
 
@@ -77,7 +73,7 @@ func sub_439D90(x, y C.uint) C.int {
 
 //export sub_43A920
 func sub_43A920() C.int {
-	nox_xxx_windowFocus_46B500(C.nox_wol_wnd_world_814980)
+	nox_xxx_windowFocus_46B500(wolWindows.root)
 	if sub_43BE30() == 0 || memmap.Uint32(0x5D4594, 815084) == 0 {
 		C.sub_44A400()
 	}
@@ -88,18 +84,18 @@ func sub_43A920() C.int {
 
 //export nox_client_guiXxx_43A9D0
 func nox_client_guiXxx_43A9D0() C.int {
-	C.nox_xxx_wndClearCaptureMain_46ADE0(C.dword_5d4594_814984)
+	C.nox_xxx_wndClearCaptureMain_46ADE0(wolWindows.mapPanel)
 	sub_489FB0()
 	sub_4A2890()
-	if popup := C.dword_5d4594_815000; popup != nil && popup.parent == nil {
+	if popup := wolWindows.serverInfo; popup != nil && popup.parent == nil {
 		nox_xxx_wnd_46C6E0(popup)
-		nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_815000)
-		C.dword_5d4594_815000 = nil
+		nox_xxx_windowDestroyMB_46C4E0(wolWindows.serverInfo)
+		wolWindows.serverInfo = nil
 	}
-	if C.nox_wol_wnd_world_814980 != nil {
-		nox_xxx_windowDestroyMB_46C4E0(C.nox_wol_wnd_world_814980)
-		C.nox_wol_wnd_world_814980 = nil
+	if wolWindows.root != nil {
+		nox_xxx_windowDestroyMB_46C4E0(wolWindows.root)
 	}
+	wolWindows = wolWorldWindows{}
 	sub_43A920()
 	nox_xxx_windowFocus_46B500(nil)
 	Set_nox_wol_server_result_cnt_815088(0)

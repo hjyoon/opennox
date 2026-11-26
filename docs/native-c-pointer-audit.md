@@ -168,6 +168,19 @@ nine reserved modifier callbacks, two raw float adapters, and four
 damage dispatch adapters. The other 49 forward arguments or results
 between C and Go.
 
+### Modifier callbacks
+
+The original effect tables point their nine reserved entries at distinct
+single-instruction returns. Go exports the nine symbols, the four
+multiplier callbacks, and the enchantment tooltip. The C tests call the
+reserved entries through distinct addresses and replay 128 multiplier
+cases from the original executable with native objects and scalars. The
+multiplier entries return the same address supplied by the C caller.
+Go-owned attack and defense values use typed Go dispatch. The tooltip
+retains the incoming byte and the native UTF-16 result pointer.
+
+Removing `common__object__modifier.c` leaves 39 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

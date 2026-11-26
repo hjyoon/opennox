@@ -32,8 +32,8 @@ var itemEnchantmentTooltipCall413480 = func(flag byte) unsafe.Pointer {
 	return itemEnchantmentTooltip413480(flag, itemEnchantmentTooltipNativeHooks413480())
 }
 
-//export nox_item_enchantment_tooltip_native_413480
-func nox_item_enchantment_tooltip_native_413480(flag C.uchar) *wchar2_t {
+//export sub_413480
+func sub_413480(flag C.char) *wchar2_t {
 	return (*wchar2_t)(itemEnchantmentTooltipCall413480(byte(flag)))
 }
 

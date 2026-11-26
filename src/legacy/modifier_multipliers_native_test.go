@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -25,6 +26,12 @@ type originalModifierMultiplierFixture struct {
 		}
 		ValueBits     uint32 `json:"value_bits"`
 		ReturnPointer string `json:"return_pointer"`
+	}
+}
+
+func TestModifierReservedCallbacksHaveDistinctCAddresses(t *testing.T) {
+	if !cfixture.ModifierReservedCallbacksDistinct() {
+		t.Fatal("each reserved modifier must have its own C callback address")
 	}
 }
 
@@ -65,12 +72,14 @@ func replayModifierMultipliers(
 	t.Cleanup(freeEffect)
 	projectile, freeProjectile := alloc.NewHigh(server.Object{})
 	t.Cleanup(freeProjectile)
-	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(effect.C()) <= math.MaxUint32 || uintptr(projectile.CObj()) <= math.MaxUint32) {
-		t.Fatal("native fixture addresses must exceed 4 GiB")
-	}
-	var output struct {
+	output, freeOutput := alloc.NewHigh(struct {
 		value float32
 		guard uint32
+	}{})
+	t.Cleanup(freeOutput)
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(effect.C()) <= math.MaxUint32 ||
+		uintptr(projectile.CObj()) <= math.MaxUint32 || uintptr(unsafe.Pointer(output)) <= math.MaxUint32) {
+		t.Fatal("native fixture addresses must exceed 4 GiB")
 	}
 	counts := make(map[string]int)
 	for _, row := range fixture.Rows {
@@ -126,16 +135,31 @@ func replayModifierMultipliers(
 }
 
 func TestModifierNativeMultipliersKeepUnpinnedStorage(t *testing.T) {
-	effect := server.ModifierEff{Attack40: server.ModifierEffFnc{Valf: 2}}
+	effect := server.ModifierEff{
+		Attack40: server.ModifierEffFnc{Valf: 2},
+		Defend76: server.ModifierEffFnc{Valf: 0.25},
+	}
 	projectile := server.Object{SpeedCur: 4}
-	if got := modifierProjectileSpeedCallNative4E09B0(&effect, &projectile); got != &projectile || projectile.SpeedCur != 8 {
-		t.Fatalf("projectile returned %p (want %p) with speed %g", got, &projectile, projectile.SpeedCur)
+	server.CallModifierAttackEffect(ProjectileSpeedEffectPointer4E09B0(), &effect, nil, nil, nil, unsafe.Pointer(&projectile))
+	if projectile.SpeedCur != 8 {
+		t.Fatalf("projectile speed = %g, want 8", projectile.SpeedCur)
 	}
 	damage := float32(7)
-	if got := modifierDamageMultiplierCallNative4E04C0(nil, &damage); got != &damage || damage != 7 {
-		t.Fatalf("missing modifier returned %p (want %p) with damage %g", got, &damage, damage)
+	attack := modifierDamageMultiplierPointer4E04C0()
+	server.CallModifierAttackEffect(attack, nil, nil, nil, nil, unsafe.Pointer(&damage))
+	if damage != 7 {
+		t.Fatalf("missing modifier changed damage to %g", damage)
 	}
-	if got := modifierDamageMultiplierCallNative4E04C0(&effect, nil); got != nil {
-		t.Fatalf("native nil damage returned %p", got)
+	server.CallModifierAttackEffect(attack, &effect, nil, nil, nil, nil)
+	server.CallModifierAttackEffect(attack, &effect, nil, nil, nil, unsafe.Pointer(&damage))
+	if damage != 14 {
+		t.Fatalf("multiplied damage = %g, want 14", damage)
+	}
+	defend := playerDamageLateDefendFunctionsNative4E1320()
+	armor, durability := float32(4), float32(4)
+	worldPlayerCallDefend415C00(defend.armorMultiplier, &effect, nil, &armor)
+	worldPlayerCallDefend415C00(defend.durabilityMultiplier, &effect, nil, &durability)
+	if armor != 1 || durability != 7 {
+		t.Fatalf("defend multipliers returned armor %g and durability %g, want 1 and 7", armor, durability)
 	}
 }

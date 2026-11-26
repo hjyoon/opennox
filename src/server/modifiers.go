@@ -53,6 +53,8 @@ var (
 	modDefendEffects = make(map[string]modFuncs)
 	modUpdateEffects = make(map[string]modFuncs)
 	modEngageEffects = make(map[string]modFuncs)
+
+	modNativeDamageEffects = make(map[unsafe.Pointer]func(*ModifierEff, unsafe.Pointer))
 )
 
 func registerModif(m map[string]modFuncs, name string, fnc unsafe.Pointer, parse ModifierParseFunc) {
@@ -64,6 +66,22 @@ func registerModif(m map[string]modFuncs, name string, fnc unsafe.Pointer, parse
 
 func RegisterModifDamageEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc) {
 	registerModif(modDamageEffects, name, fnc, parse)
+}
+
+// RegisterNativeModifDamageEffect retains the published callback address
+// and supplies a Go call for game-owned attack records.
+func RegisterNativeModifDamageEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc, apply func(*ModifierEff, unsafe.Pointer)) {
+	RegisterModifDamageEffect(name, fnc, parse)
+	modNativeDamageEffects[fnc] = apply
+}
+
+// CallModifierAttackEffect invokes a modifier with the game's attack context.
+func CallModifierAttackEffect(fnc unsafe.Pointer, effect *ModifierEff, item, owner, target *Object, context unsafe.Pointer) {
+	if apply := modNativeDamageEffects[fnc]; apply != nil {
+		apply(effect, context)
+		return
+	}
+	ccall.CallVoidPtr5(fnc, effect.C(), item.CObj(), owner.CObj(), target.CObj(), context)
 }
 
 func RegisterModifDefendEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc) {

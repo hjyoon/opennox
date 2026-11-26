@@ -81,6 +81,9 @@ var worldPlayerDefaults40A830 = worldPlayerRuntime40A830{
 }
 
 func worldPlayerCallDefend415C00(callback unsafe.Pointer, effect *server.ModifierEff, item *server.Object, value *float32) {
+	if applyModifierDefendScalar(callback, effect, value) {
+		return
+	}
 	C.world_defend_call(callback, unsafe.Pointer(effect), (*C.nox_object_t)(unsafe.Pointer(item)), (*C.float)(unsafe.Pointer(value)))
 	runtime.KeepAlive(effect)
 	runtime.KeepAlive(item)

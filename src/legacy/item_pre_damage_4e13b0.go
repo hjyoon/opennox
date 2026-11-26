@@ -14,7 +14,6 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -86,8 +85,6 @@ func itemPreDamageApplyNative4E13B0(
 		if unsafe.Sizeof(uintptr(0)) != 4 {
 			return
 		}
-		ccall.CallVoidPtr5(
-			fnc, effect.C(), weapon.CObj(), source.CObj(), target.CObj(), unsafe.Pointer(damage),
-		)
+		server.CallModifierAttackEffect(fnc, effect, weapon, source, target, unsafe.Pointer(damage))
 	}
 }

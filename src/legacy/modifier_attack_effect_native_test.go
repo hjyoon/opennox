@@ -78,11 +78,6 @@ func TestItemAttackEffect538840NativeCallback(t *testing.T) {
 	item := &server.Object{InitData: unsafe.Pointer(data)}
 	owner := &server.Object{}
 	attack := &server.ArrowAttackData{Damage: 8, Owner: owner, Source: item}
-	var pin runtime.Pinner
-	for _, ptr := range []any{mod, data, item, owner, attack} {
-		pin.Pin(ptr)
-	}
-	defer pin.Unpin()
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, ptr := range []unsafe.Pointer{mod.C(), unsafe.Pointer(data), item.CObj(), owner.CObj(), unsafe.Pointer(attack)} {
 			if uintptr(ptr) <= math.MaxUint32 {
@@ -105,11 +100,6 @@ func TestPlayerPreAttackEffects538290NativeCallback(t *testing.T) {
 	item := &server.Object{InitData: unsafe.Pointer(data)}
 	target := &server.Object{}
 	attack := &server.ChakramAttackData{Damage: 8, Source: item}
-	var pin runtime.Pinner
-	for _, ptr := range []any{mod, data, item, target, attack} {
-		pin.Pin(ptr)
-	}
-	defer pin.Unpin()
 	if got := (*server.Server)(nil).PlayerPreAttackEffects538290(target, nil, item, unsafe.Pointer(attack)); got != 0 {
 		t.Fatalf("dispatcher result = %d", got)
 	}

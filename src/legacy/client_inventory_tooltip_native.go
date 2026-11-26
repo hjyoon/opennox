@@ -139,7 +139,7 @@ func nox_xxx_inventroryOnHovewerSub_4667E0(control, event C.int, packed C.uint) 
 			continue
 		}
 		if icon == 0 {
-			nox_xxx_cursorSetTooltip_4776B0(C.sub_413480(C.char(mask)))
+			nox_xxx_cursorSetTooltip_4776B0(sub_413480(C.char(mask)))
 			return 1
 		}
 		icon--

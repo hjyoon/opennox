@@ -4,7 +4,6 @@ import (
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 type preAttackEffectsRuntime538290 struct {
@@ -21,9 +20,7 @@ func (s *Server) PlayerPreAttackEffects538290(target, owner, item *Object, conte
 		gameplay: func() bool { return noxflags.HasGamePlay(noxflags.GameplayFlag1) },
 		enemy:    s.IsEnemyTo,
 		buff:     func(unit *Object, buff int32) int32 { return unit.UnitBuffTest4FF350(buff) },
-		invoke: func(fn unsafe.Pointer, mod *ModifierEff, item, owner, target *Object, ctx unsafe.Pointer) {
-			ccall.CallVoidPtr5(fn, mod.C(), item.CObj(), owner.CObj(), target.CObj(), ctx)
-		},
+		invoke:   CallModifierAttackEffect,
 	})
 }
 

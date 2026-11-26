@@ -3,17 +3,8 @@ package legacy
 /*
 #include "defs.h"
 #include "cgo_const.h"
+#include "common__object__modifier.h"
 #include "regeneration_raw_4e01d0.h"
-
-void nullsub_22();
-void nullsub_36();
-void nullsub_38();
-void nullsub_39();
-void nullsub_40();
-void nullsub_41();
-void nullsub_42();
-void nullsub_43();
-void nullsub_44();
 
 int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6);
 
@@ -361,25 +352,61 @@ var (
 	_ = nox_xxx_blueFREffect_4E05F0
 )
 
+// The modifier tables use separate addresses for these reserved effects.
+
+//export nullsub_22
+func nullsub_22() {}
+
+//export nullsub_36
+func nullsub_36() {}
+
+//export nullsub_38
+func nullsub_38() {}
+
+//export nullsub_39
+func nullsub_39() {}
+
+//export nullsub_40
+func nullsub_40() {}
+
+//export nullsub_41
+func nullsub_41() {}
+
+//export nullsub_42
+func nullsub_42() {}
+
+//export nullsub_43
+func nullsub_43() {}
+
+//export nullsub_44
+func nullsub_44() {}
+
 func init() {
 	statusEffects := modifierStatusEffectPointers4E04D0()
-	server.RegisterModifDamageEffect("DamageMultiplierEffect", C.nox_xxx_effectDamageMultiplier_4E04C0, server.ModEffectParseFloat)
+	server.RegisterNativeModifDamageEffect("DamageMultiplierEffect", C.nox_xxx_effectDamageMultiplier_4E04C0, server.ModEffectParseFloat,
+		func(effect *server.ModifierEff, context unsafe.Pointer) {
+			applyModifierDamageMultiplier4E04C0(effect, (*float32)(context))
+		})
+	noop := func(*server.ModifierEff, unsafe.Pointer) {}
 	server.RegisterModifDamageEffect("StunEffect", statusEffects[0], server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("FireEffect", C.nox_xxx_fireEffect_4E0550, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("FireRingEffect", C.nox_xxx_fireRingEffect_4E05B0, server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("BlueFireRingEffect", C.nox_xxx_blueFREffect_4E05F0, server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("FrostEffect", C.nullsub_38, server.ModEffectParseInt)
+	server.RegisterNativeModifDamageEffect("FrostEffect", C.nullsub_38, server.ModEffectParseInt, noop)
 	server.RegisterModifDamageEffect("RecoilEffect", C.nox_xxx_recoilEffect_4E0640, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("ConfuseEffect", statusEffects[1], server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("LightningEffect", C.nox_xxx_lightngEffect_4E06F0, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("DrainManaEffect", C.nox_xxx_drainMEffect_4E0740, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("VampirismEffect", C.nox_xxx_vampirismEffect_4E07C0, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("PoisonEffect", C.nox_xxx_poisonEffect_4E0850, server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("PanicEffect", C.nullsub_39, server.ModEffectParseInt)
+	server.RegisterNativeModifDamageEffect("PanicEffect", C.nullsub_39, server.ModEffectParseInt, noop)
 	server.RegisterModifDamageEffect("SympathyEffect", C.nox_xxx_sympathyEffect_4E08E0, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("ReadinessEffect", C.nullsub_22, server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("ProjectileSpeedEffect", C.nox_xxx_effectProjectileSpeed_4E09B0, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("ReplenishmentEffect", C.nullsub_36, server.ModEffectParseInt)
+	server.RegisterNativeModifDamageEffect("ReadinessEffect", C.nullsub_22, server.ModEffectParseInt, noop)
+	server.RegisterNativeModifDamageEffect("ProjectileSpeedEffect", C.nox_xxx_effectProjectileSpeed_4E09B0, server.ModEffectParseFloat,
+		func(effect *server.ModifierEff, context unsafe.Pointer) {
+			applyModifierProjectileSpeed4E09B0(effect, (*server.Object)(context))
+		})
+	server.RegisterNativeModifDamageEffect("ReplenishmentEffect", C.nullsub_36, server.ModEffectParseInt, noop)
 
 	server.RegisterModifDefendEffect("ArmorMultiplierEffect", C.sub_4E0370, server.ModEffectParseFloat)
 	server.RegisterModifDefendEffect("DurabilityMultiplierEffect", C.sub_4E0380, server.ModEffectParseFloat)

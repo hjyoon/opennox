@@ -1,17 +1,13 @@
 package server
 
-import (
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
-)
+import "unsafe"
 
 // ItemApplyAttackEffect538840 preserves GAME.EXE 00538840: cache the
 // modifier array once, then reload each of its four entries after callbacks.
 // The target argument is nil; context is the native temporary attack record.
 func (s *Server) ItemApplyAttackEffect538840(item, owner *Object, context unsafe.Pointer) int32 {
 	return itemApplyAttackEffect538840(item, owner, context, func(fn unsafe.Pointer, mod *ModifierEff, item, owner *Object, context unsafe.Pointer) {
-		ccall.CallVoidPtr5(fn, mod.C(), item.CObj(), owner.CObj(), nil, context)
+		CallModifierAttackEffect(fn, mod, item, owner, nil, context)
 	})
 }
 

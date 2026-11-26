@@ -179,11 +179,21 @@ extern uint32_t dword_5d4594_831092;
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/common/memmap"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-// Serial test seams control external UI/audio services, never the C owners.
+// C retains registry addresses across calls. The native storage lives for the process.
+var quickbarWindowSets, _ = alloc.New([8]C.nox_quickbar_window_set{})
+
+//export nox_quickbar_window_storage
+func nox_quickbar_window_storage() *C.nox_quickbar_window_set {
+	return &quickbarWindowSets[0]
+}
+
+// Serial test seams control external UI/audio services.
 type game2QuickbarHooks struct {
 	Sound         func(int32, int32)
 	Destroy       func(unsafe.Pointer) int32
@@ -276,12 +286,12 @@ func g2qTrapMirror() {
 	}
 }
 
-// Keep the original eight native C-owned sets. No packed record stores a
-// native pointer on a 64-bit host. The original nil-key matching is retained.
+// Keep window pointers in the eight native registry entries and match nil keys
+// in the same order as any other key.
 func g2qWindows(data unsafe.Pointer, create bool) *C.nox_quickbar_window_set {
 	var empty *C.nox_quickbar_window_set
-	for i := range C.nox_quickbar_window_sets {
-		p := &C.nox_quickbar_window_sets[i]
+	for i := range quickbarWindowSets {
+		p := &quickbarWindowSets[i]
 		if p.data == data {
 			return p
 		}
@@ -344,8 +354,8 @@ func nox_quickbar_set_nugget_child(data unsafe.Pointer, index C.int, win *C.nox_
 
 //export nox_quickbar_data_for_window
 func nox_quickbar_data_for_window(win *C.nox_window) unsafe.Pointer {
-	for i := range C.nox_quickbar_window_sets {
-		p := &C.nox_quickbar_window_sets[i]
+	for i := range quickbarWindowSets {
+		p := &quickbarWindowSets[i]
 		if p.root == win {
 			return p.data
 		}
@@ -367,8 +377,8 @@ func nox_quickbar_windows_clear(data unsafe.Pointer) {
 
 //export nox_quickbar_windows_destroy_all
 func nox_quickbar_windows_destroy_all() {
-	for i := range C.nox_quickbar_window_sets {
-		p := &C.nox_quickbar_window_sets[i]
+	for i := range quickbarWindowSets {
+		p := &quickbarWindowSets[i]
 		g2qDestroy(p.root)
 		for j := range p.buttons {
 			g2qDestroy(p.buttons[j])

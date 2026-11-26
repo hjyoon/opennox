@@ -522,6 +522,21 @@ ARM64, and emulated Linux 386. Windows 386 and AMD64 server builds
 passed. The final client passed the new-warrior quest and item
 quantity scenarios, including all three quantity reference frames.
 
+### Quickbar window registry
+
+The original selection routine at `0x45DA50` loads the row address at
+offset 204 and indexes the eight-byte slots within the row. Go allocates
+the separate eight-entry window registry in native memory for the
+lifetime of the process. Each registry entry is 68 bytes on 32-bit
+targets and 136 bytes on 64-bit targets. The registry clears each
+entry after destroying its root, buttons, and nugget windows.
+
+The C fixture populates the same registry used by the Go callbacks.
+The tests check each native offset, address bits above 4 GiB on
+64-bit targets, reuse of cleared slots, and the order of destruction.
+The quickbar drag-out handler checks all 245 cases captured from the
+original `0x45EF50` routine.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

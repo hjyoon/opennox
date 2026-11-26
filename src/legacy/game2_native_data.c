@@ -185,11 +185,3 @@ int nox_client_getBriefDuration();
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 static void nox_gui_server_players_clear_list(nox_list_item_t* head);
 void sub_4537F0();
-typedef struct nox_quickbar_window_set {
-	void* data;
-	nox_window* root;
-	nox_window* buttons[5];
-	nox_window* nuggets[5];
-	nox_window* nugget_children[5];
-} nox_quickbar_window_set;
-nox_quickbar_window_set nox_quickbar_window_sets[8];

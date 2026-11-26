@@ -35,8 +35,9 @@ int nox_format_arg_int(nox_format_args* args);
 unsigned int nox_format_arg_uint(nox_format_args* args);
 const char* nox_format_arg_narrow(nox_format_args* args);
 const wchar2_t* nox_format_arg_wide(nox_format_args* args);
+uint64_t nox_format_arg_double_bits(nox_format_args* args);
 #endif
-void nox_format_arg_fixed(nox_format_args* args, char* out, size_t capacity, int precision);
+void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision);
 void nox_format_host_narrow(nox_format_args* args, char* out, size_t capacity, const char* format);
 void nox_format_abort(int code);
 

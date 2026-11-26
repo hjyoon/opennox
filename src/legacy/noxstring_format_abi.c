@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+_Static_assert(sizeof(double) == sizeof(uint64_t), "double bit transport width");
 
 #ifndef NOX_GO_FORMAT_WORDS
 int nox_format_arg_int(nox_format_args* args) {
@@ -19,10 +22,19 @@ const char* nox_format_arg_narrow(nox_format_args* args) {
 const wchar2_t* nox_format_arg_wide(nox_format_args* args) {
 	return va_arg(args->list, const wchar2_t*);
 }
+
+uint64_t nox_format_arg_double_bits(nox_format_args* args) {
+	double value = va_arg(args->list, double);
+	uint64_t bits;
+	memcpy(&bits, &value, sizeof(bits));
+	return bits;
+}
 #endif
 
-void nox_format_arg_fixed(nox_format_args* args, char* out, size_t capacity, int precision) {
-	snprintf(out, capacity, "%.*f", precision, va_arg(args->list, double));
+void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision) {
+	double value;
+	memcpy(&value, &bits, sizeof(value));
+	snprintf(out, capacity, "%.*f", precision, value);
 }
 
 void nox_format_host_narrow(nox_format_args* args, char* out, size_t capacity, const char* format) {

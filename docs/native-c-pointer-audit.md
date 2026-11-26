@@ -976,6 +976,15 @@ covered 37 calls. The argument list retains native text pointers and
 format capacity, and result length. The map-list narrowing preserves
 the low byte of each code unit.
 
+### Floating-point variadic arguments
+
+Go reads the double slots from the SysV and AAPCS64 register
+save areas and from the native stack cursors. The 32-bit ARM cursor
+aligns each double before consuming its eight bytes. The inventory
+damage formatter passes its promoted double directly from Go.
+The fixed-signature CRT call receives the raw bits and supplies
+the native decimal rounding, nonfinite spelling, and bounded output.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

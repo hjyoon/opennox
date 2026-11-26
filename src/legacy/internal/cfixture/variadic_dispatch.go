@@ -82,6 +82,12 @@ static int wide_mixed_fixture(wchar2_t* out, const wchar2_t* format, const char*
 	return nox_swprintf(out, format, narrow, first, wide, second);
 }
 
+static int wide_double_fixture(wchar2_t* out, const wchar2_t* format, uint64_t bits, int marker) {
+	double value;
+	memcpy(&value, &bits, sizeof(value));
+	return nox_swprintf(out, format, value, marker);
+}
+
 static int variadic_registers_and_stack_fixture(void) {
 	const wchar2_t first[] = {'w', 'i', 'd', 'e', 0};
 	const wchar2_t tail[] = {'e', 'n', 'd', 0};
@@ -128,13 +134,6 @@ static void wide_fixed_printf_reference(char* output, int digits, ...) {
 	va_end(args);
 }
 
-static void wide_fixed_printf_host(char* output, int digits, ...) {
-	nox_format_args args;
-	va_start(args.list, digits);
-	nox_format_arg_fixed(&args, output, 32, digits);
-	va_end(args.list);
-}
-
 static double wide_fixed_printf_value(const volatile uint64_t* input) {
 	uint64_t bits = *input;
 	double value;
@@ -173,7 +172,7 @@ static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 	// Compare CRT exception flags within C. The Go callback may run runtime
 	// bookkeeping on this thread before the formatting call.
 	feclearexcept(FE_ALL_EXCEPT);
-	wide_fixed_printf_host(host, precision, wide_fixed_printf_value(&input));
+	nox_format_fixed_bits(input, host, sizeof(host), precision);
 	int status = (flags != fetestexcept(FE_ALL_EXCEPT) || memcmp(host, expected, sizeof(host))) ? 4 : 0;
 
 	feclearexcept(FE_ALL_EXCEPT);
@@ -225,6 +224,12 @@ func WideMixedPrintf(out, format *uint16, narrow *byte, first int32, wide *uint1
 	return int(C.wide_mixed_fixture(
 		(*C.wchar2_t)(unsafe.Pointer(out)), (*C.wchar2_t)(unsafe.Pointer(format)),
 		(*C.char)(unsafe.Pointer(narrow)), C.int(first), (*C.wchar2_t)(unsafe.Pointer(wide)), C.uint(second),
+	))
+}
+
+func WideDoublePrintf(out, format *uint16, bits uint64, marker int32) int {
+	return int(C.wide_double_fixture(
+		(*C.wchar2_t)(unsafe.Pointer(out)), (*C.wchar2_t)(unsafe.Pointer(format)), C.uint64_t(bits), C.int(marker),
 	))
 }
 

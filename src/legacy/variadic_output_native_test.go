@@ -167,6 +167,26 @@ func TestLegacyWideFixedPrintfPreservesNativeFormatting(t *testing.T) {
 	}
 }
 
+func TestLegacyFixedWideDoubleMatchesVariadic(t *testing.T) {
+	format, release := CWString("%.62f|%d")
+	defer release()
+	for _, bits := range []uint64{
+		math.Float64bits(-2.5), math.Float64bits(math.MaxFloat64),
+		0x8000000000000000, 1, 0xfff8000000000000, 0x7ff0000000000001,
+	} {
+		var expected, actual [64]uint16
+		for i := range expected {
+			expected[i], actual[i] = 0xa5a5, 0xa5a5
+		}
+		want := cfixture.WideDoublePrintf(&expected[1], (*uint16)(unsafe.Pointer(format)), bits, -17)
+		used := formatFixedWide((*wchar2_t)(unsafe.Pointer(&actual[1])), format,
+			formatValue{doubleBits: bits}, formatValue{number: -17})
+		if int(used) != want || actual != expected {
+			t.Fatalf("double %016x fixed output (%d, %x) differs from variadic output (%d, %x)", bits, used, actual, want, expected)
+		}
+	}
+}
+
 func TestLegacyVariadicWordsAcrossRegistersAndStack(t *testing.T) {
 	if !cfixture.VariadicRegistersAndStack() {
 		t.Fatal("native format changed a mixed argument, terminator, or guard")

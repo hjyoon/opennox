@@ -15,8 +15,9 @@ type formatCodeUnit interface {
 }
 
 type formatValue struct {
-	number int32
-	text   unsafe.Pointer
+	number     int32
+	text       unsafe.Pointer
+	doubleBits uint64
 }
 
 type nativeFormatArgs = C.nox_format_args
@@ -47,6 +48,13 @@ func (a *formatArguments) stringPointer(wide bool) unsafe.Pointer {
 		return a.nextValue().text
 	}
 	return nativeFormatStringPointer(a.native, wide)
+}
+
+func (a *formatArguments) floatingPoint() uint64 {
+	if a.native == nil {
+		return a.nextValue().doubleBits
+	}
+	return nativeFormatDoubleBits(a.native)
 }
 
 func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C.nox_format_args) int32 {
@@ -152,16 +160,16 @@ func formatWithArgs[T formatCodeUnit](dst *T, capacity uintptr, format *T, args 
 				emit(uint16(digit))
 			}
 		case 'f':
-			if !wide || args.native == nil {
+			if !wide {
 				C.nox_format_abort(C.int(code))
 			}
 			if precision <= 0 {
 				precision = 5
 			}
 			var number [32]C.char
-			// Use the host's floating-point formatting and retain the legacy
-			// temporary buffer size before widening the formatted bytes.
-			C.nox_format_arg_fixed(args.native, &number[0], C.size_t(len(number)), C.int(precision))
+			// The CRT supplies the native rounding and nonfinite spelling
+			// for these 31 visible bytes. Pass the original double bits.
+			C.nox_format_fixed_bits(C.uint64_t(args.floatingPoint()), &number[0], C.size_t(len(number)), C.int(precision))
 			for _, digit := range number {
 				if digit == 0 {
 					break

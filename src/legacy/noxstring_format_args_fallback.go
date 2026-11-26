@@ -20,3 +20,7 @@ func nativeFormatStringPointer(args *nativeFormatArgs, wide bool) unsafe.Pointer
 	}
 	return unsafe.Pointer(C.nox_format_arg_narrow(args))
 }
+
+func nativeFormatDoubleBits(args *nativeFormatArgs) uint64 {
+	return uint64(C.nox_format_arg_double_bits(args))
+}

@@ -4,15 +4,11 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME3_2.h"
 #include "client__gui__guiinv.h"
-
-
-static void nox_client_format_identify_damage(wchar2_t* out, const wchar2_t* format, double value) {
-	nox_swprintf(out, format, value);
-}
 */
 import "C"
 
 import (
+	"math"
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -46,7 +42,7 @@ func (d clientInventoryDescription) gap(offset uintptr) {
 
 func (d clientInventoryDescription) damage(key string, line int32, indent string, value float32) {
 	var formatted [256]wchar2_t
-	C.nox_client_format_identify_damage(&formatted[0], clientInventoryString(key, line), C.double(value))
+	formatFixedWide(&formatted[0], clientInventoryString(key, line), formatValue{doubleBits: math.Float64bits(float64(value))})
 	d.text(indent + GoWString(&formatted[0]))
 }
 

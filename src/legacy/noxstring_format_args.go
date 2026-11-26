@@ -9,7 +9,7 @@ import (
 
 type sysVVariadicArgs struct {
 	generalOffset uint32
-	_             uint32 // Floating-point offset, advanced by the C formatter.
+	floatOffset   uint32
 	overflow      unsafe.Pointer
 	registers     unsafe.Pointer
 }
@@ -17,9 +17,9 @@ type sysVVariadicArgs struct {
 type aapcs64VariadicArgs struct {
 	stack         unsafe.Pointer
 	generalTop    unsafe.Pointer
-	_             unsafe.Pointer // Floating-point register save area.
+	floatTop      unsafe.Pointer
 	generalOffset int32
-	_             int32 // Floating-point offset, advanced by the C formatter.
+	floatOffset   int32
 }
 
 func nativeFormatInteger(args *nativeFormatArgs, _ bool) int32 {
@@ -33,8 +33,7 @@ func nativeFormatStringPointer(args *nativeFormatArgs, _ bool) unsafe.Pointer {
 func nextNativeFormatWord(args *nativeFormatArgs) unsafe.Pointer {
 	const registerSize = 8
 	address := unsafe.Pointer(args)
-	// The C va_list remains live through the formatting callback. Update the
-	// same cursor that the C floating-point formatter uses for mixed lists.
+	// Keep the C va_list cursor live for mixed register and stack arguments.
 	switch {
 	case runtime.GOARCH == "amd64" && runtime.GOOS != "windows":
 		list := (*sysVVariadicArgs)(address)
@@ -43,7 +42,7 @@ func nextNativeFormatWord(args *nativeFormatArgs) unsafe.Pointer {
 			list.generalOffset += registerSize
 			return slot
 		}
-		return nextNativeFormatStackWord(&list.overflow)
+		return nextNativeFormatStackArgument(&list.overflow, unsafe.Sizeof(address))
 	case runtime.GOARCH == "arm64" && runtime.GOOS != "darwin" && runtime.GOOS != "ios" && runtime.GOOS != "windows":
 		list := (*aapcs64VariadicArgs)(address)
 		offset := list.generalOffset
@@ -53,14 +52,48 @@ func nextNativeFormatWord(args *nativeFormatArgs) unsafe.Pointer {
 				return unsafe.Add(list.generalTop, offset)
 			}
 		}
-		return nextNativeFormatStackWord(&list.stack)
+		return nextNativeFormatStackArgument(&list.stack, unsafe.Sizeof(address))
 	default:
-		return nextNativeFormatStackWord((*unsafe.Pointer)(address))
+		return nextNativeFormatStackArgument((*unsafe.Pointer)(address), unsafe.Sizeof(address))
 	}
 }
 
-func nextNativeFormatStackWord(cursor *unsafe.Pointer) unsafe.Pointer {
+func nativeFormatDoubleBits(args *nativeFormatArgs) uint64 {
+	const doubleSize = 8
+	const floatRegisterSize = 16
+	address := unsafe.Pointer(args)
+	switch {
+	case runtime.GOARCH == "amd64" && runtime.GOOS != "windows":
+		list := (*sysVVariadicArgs)(address)
+		const floatRegisterEnd = 6*8 + 8*floatRegisterSize
+		if list.floatOffset < floatRegisterEnd {
+			slot := unsafe.Add(list.registers, list.floatOffset)
+			list.floatOffset += floatRegisterSize
+			return *(*uint64)(slot)
+		}
+		return *(*uint64)(nextNativeFormatStackArgument(&list.overflow, doubleSize))
+	case runtime.GOARCH == "arm64" && runtime.GOOS != "darwin" && runtime.GOOS != "ios" && runtime.GOOS != "windows":
+		list := (*aapcs64VariadicArgs)(address)
+		offset := list.floatOffset
+		if offset < 0 {
+			list.floatOffset += floatRegisterSize
+			if list.floatOffset <= 0 {
+				return *(*uint64)(unsafe.Add(list.floatTop, offset))
+			}
+		}
+		return *(*uint64)(nextNativeFormatStackArgument(&list.stack, doubleSize))
+	default:
+		cursor := (*unsafe.Pointer)(address)
+		if runtime.GOARCH == "arm" {
+			// AAPCS32 aligns the anonymous double after any preceding word.
+			*cursor = unsafe.Add(*cursor, -uintptr(*cursor)&(doubleSize-1))
+		}
+		return *(*uint64)(nextNativeFormatStackArgument(cursor, doubleSize))
+	}
+}
+
+func nextNativeFormatStackArgument(cursor *unsafe.Pointer, size uintptr) unsafe.Pointer {
 	slot := *cursor
-	*cursor = unsafe.Add(slot, unsafe.Sizeof(slot))
+	*cursor = unsafe.Add(slot, size)
 	return slot
 }

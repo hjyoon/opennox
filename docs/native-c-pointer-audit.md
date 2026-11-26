@@ -61,7 +61,9 @@ side information, and maintains the bit reservoir. The C comparisons
 matched 46,706 frame-synchronization inputs, 25,000 side-information
 inputs, and 16,000 reservoir transitions. Stock dialog and four
 synthetic streams produced the established PCM with `cgocheck2` and
-`checkptr=2`. The active C pipeline still decodes scalefactors and Huffman
+`checkptr=2`. The Linux ARM64 stock dialog also matched its C baseline
+byte for byte. The stock test records both compiler-specific hashes.
+The active C pipeline still decodes scalefactors and Huffman
 coefficients, applies stereo and spectral transforms, and synthesizes PCM.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10

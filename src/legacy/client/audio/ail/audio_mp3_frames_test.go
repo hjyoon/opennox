@@ -258,8 +258,15 @@ func TestWAVMP3StreamStockDialog(t *testing.T) {
 		t.Fatal("expected stock mono MP3 Korean dialog WAV")
 	}
 	pcm := referenceMP3FramePCM(t, data)
-	if len(pcm) != 449856 || mp3FramePCMHash(pcm) != "defe45e21494c4868ee8852c82da34c9bb9dd86f5e845907f22895572672c9f0" {
-		t.Fatal("stock reference changed its established full PCM length/hash")
+	if len(pcm) != 449856 {
+		t.Fatalf("stock PCM length = %d, want 449856", len(pcm))
+	}
+	// The scalar C decoder's PCM depends on compiler floating-point rounding.
+	switch hash := mp3FramePCMHash(pcm); hash {
+	case "defe45e21494c4868ee8852c82da34c9bb9dd86f5e845907f22895572672c9f0", // macOS ARM64 Clang
+		"7c7e991371a36c121a0e33fc8ae682ae1c60b65124536b285ee9aba629727a92": // Linux ARM64 GCC
+	default:
+		t.Fatalf("stock PCM hash = %s, want an established scalar decoder hash", hash)
 	}
 	for _, offset := range []int{0, 1, 575, 576, 577, 22050, 449855, 449856, 449857} {
 		t.Run(fmt.Sprintf("frame-%d", offset), func(t *testing.T) {

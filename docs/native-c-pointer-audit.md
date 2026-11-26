@@ -204,6 +204,15 @@ byte comparisons that extend past a zero byte.
 The standard macOS ARM64 profile selects 38 top-level C files with 66
 function bodies. The safe profile selects 39 files and 70 bodies.
 
+### Damage flag queries
+
+Damage, timers, and settings now use the Go flag predicates directly.
+The two C entry points also export from Go with their original 32-bit
+mask and result types. The Nox code at `0x40A5C0` and `0x417DA0`
+returns one when the mask overlaps the stored flags. A C probe checked
+seven masks including zero, multiple bits, and the signed gameplay
+mask's high bit. Observer replies keep their complete word.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

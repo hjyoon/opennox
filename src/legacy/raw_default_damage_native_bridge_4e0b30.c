@@ -54,14 +54,4 @@ void rdd_native_sound_callback_4e0b30(
     __asm__ __volatile__("" ::: "memory");
 }
 
-uint32_t rdd_native_game_flags_word_4e0b30(uint32_t flags) {
-    return nox_common_gameFlags_check_40A5C0((unsigned int)flags)
-               ? UINT32_C(1) : UINT32_C(0);
-}
-
-uint32_t rdd_native_gameplay_flags_word_4e0b30(int32_t flags) {
-    return nox_xxx_CheckGameplayFlags_417DA0((int)flags)
-               ? UINT32_C(1) : UINT32_C(0);
-}
-
 #undef RDD_NATIVE_CALLBACK_FRAME_4E0B30

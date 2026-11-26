@@ -13,8 +13,6 @@ static inline void nox_selcolor_set_value(nox_window* win, uint32_t value) {
 }
 #include "game3_class_config_reference.h"
 #include "game3_class_config_options.h"
-extern nox_window* dword_5d4594_1308084;
-extern nox_window* dword_5d4594_1309720;
 static int game3_fixture_config(int reference, int which, char* p) {
  switch(which) {
  case 0: return reference ? game3_reference_sub_4A7A80(p) : sub_4A7A80(p);
@@ -32,7 +30,12 @@ static int game3_fixture_config(int reference, int which, char* p) {
  return -99;
 }
 static int game3_fixture_name(int reference,wchar2_t* p) {return reference?game3_reference_sub_4A6B50(p):sub_4A6B50(p);}
-static uintptr_t game3_fixture_match(int reference,nox_window* w,int group,unsigned char* p) {return (uintptr_t)(reference?game3_reference_sub_4A61E0(w,group,p):sub_4A61E0(w,group,p));}
+static uintptr_t game3_fixture_match(int reference, nox_window* root, nox_window* w, int group, unsigned char* p) {
+ if (reference) {
+   return (uintptr_t)game3_reference_sub_4A61E0(w, group, p, root);
+ }
+ return (uintptr_t)sub_4A61E0(w, group, p);
+}
 static int game3_fixture_radio(nox_window* w,int code,uintptr_t a,uintptr_t b,int pre) {return pre?nox_xxx_wndRadioButtonProcPre_4A93C0(w,code,a,b):nox_xxx_wndRadioButtonProc_4A84E0(w,code,a,b);}
 static size_t game3_fixture_layout(int which) {switch(which){case 0:return sizeof(nox_window);case 1:return offsetof(nox_window,widget_data);case 2:return offsetof(nox_window,draw_data);case 3:return offsetof(nox_window,parent);case 4:return offsetof(nox_window,field_100);case 5:return sizeof(nox_window_data);}return 0;}
 */
@@ -80,7 +83,7 @@ func Game3ColorName(reference bool, words []uint16) (int, []byte) {
 	r := C.game3_fixture_name(ref, (*C.wchar2_t)(unsafe.Add(p, 8)))
 	return int(r), append([]byte(nil), unsafe.Slice((*byte)(p), 2*len(words)+32)...)
 }
-func Game3ColorMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr {
+func Game3ColorMatch(ref bool, root, w *gui.Window, group int, rgb [3]byte) uintptr {
 	p := C.nox_native_fixture_calloc_high(1, 3)
 	defer C.nox_native_fixture_free_high(p)
 	copy(unsafe.Slice((*byte)(p), 3), rgb[:])
@@ -88,17 +91,7 @@ func Game3ColorMatch(ref bool, w *gui.Window, group int, rgb [3]byte) uintptr {
 	if ref {
 		v = 1
 	}
-	return uintptr(C.game3_fixture_match(v, (*C.nox_window)(w.C()), C.int(group), (*C.uchar)(p)))
-}
-func Game3SwapColorRoot(w *gui.Window) *gui.Window {
-	old := (*gui.Window)(unsafe.Pointer(C.dword_5d4594_1308084))
-	C.dword_5d4594_1308084 = (*C.nox_window)(w.C())
-	return old
-}
-func Game3SwapOptionsRoot(w *gui.Window) *gui.Window {
-	old := (*gui.Window)(unsafe.Pointer(C.dword_5d4594_1309720))
-	C.dword_5d4594_1309720 = (*C.nox_window)(w.C())
-	return old
+	return uintptr(C.game3_fixture_match(v, (*C.nox_window)(root.C()), (*C.nox_window)(w.C()), C.int(group), (*C.uchar)(p)))
 }
 func Game3Radio(w *gui.Window, code int, a, b uintptr, pre bool) int {
 	v := C.int(0)

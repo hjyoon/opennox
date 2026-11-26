@@ -5,8 +5,6 @@ package legacy
 #include "client__shell__selclass.h"
 #include "client__shell__selcolor.h"
 
-extern char* dword_5d4594_1307724;
-extern nox_window* dword_5d4594_1307736;
 */
 import "C"
 
@@ -27,8 +25,8 @@ func sub_4A4A20(unusedWindow *C.nox_window, event C.int, source *C.nox_window, u
 		if id >= 601 && id <= 603 {
 			index := id - 601
 			g2ServerEnabled(classSelectNext, true)
-			description := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1307736, 605)
-			*(*byte)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307724), 66)) = byte(index)
+			description := nox_xxx_wndGetChildByID_46B0C0(classSelectRoot, 605)
+			*(*byte)(unsafe.Add(unsafe.Pointer(classSelectProfile), 66)) = byte(index)
 			idPtr := (*C.char)(memmap.PtrOff(0x587000, 170220+8*uintptr(index)))
 			text := nox_strman_loadString_40F1D0(idPtr, nil, internCStr(classSelectionStringsFile), 279)
 			g2ServerText(description, 16385, unsafe.Pointer(text), 0)
@@ -58,7 +56,7 @@ func sub_4A4A20(unusedWindow *C.nox_window, event C.int, source *C.nox_window, u
 
 //export sub_4A4B70
 func sub_4A4B70(clearSpells C.int) C.uintptr_t {
-	class := *(*byte)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307724), 66))
+	class := *(*byte)(unsafe.Add(unsafe.Pointer(classSelectProfile), 66))
 	tables := [...]struct{ offset, length uintptr }{
 		{170104, 12}, {170116, 20}, {170136, 20},
 	}

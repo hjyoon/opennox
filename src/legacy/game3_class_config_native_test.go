@@ -139,8 +139,9 @@ func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
 	g := gui.NewHigh(nil)
 	t.Cleanup(g.DestroyAll)
 	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 100, 100, nil)
-	old := cfixture.Game3SwapColorRoot(root)
-	t.Cleanup(func() { cfixture.Game3SwapColorRoot(old) })
+	old := colorSelectRoot
+	colorSelectRoot = (*nox_window)(root.C())
+	t.Cleanup(func() { colorSelectRoot = old })
 	w := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 8, 8, nil)
 	w.SetID(721)
 	left := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 8, 8, nil)
@@ -162,12 +163,12 @@ func TestGame3PaletteNativePointerAndMixedReturn(t *testing.T) {
 			}
 			flags, draw := left.Flags, right.DrawData().Field0
 			*packed = ^uintptr(0)
-			want := cfixture.Game3ColorMatch(true, w, group, rgb)
+			want := cfixture.Game3ColorMatch(true, root, w, group, rgb)
 			wantFlags, wantDraw, wantPacked := left.Flags, right.DrawData().Field0, *packed
 			left.Flags = flags
 			right.DrawData().Field0 = draw
 			*packed = ^uintptr(0)
-			got := cfixture.Game3ColorMatch(false, w, group, rgb)
+			got := cfixture.Game3ColorMatch(false, root, w, group, rgb)
 			if got != want || left.Flags != wantFlags || right.DrawData().Field0 != wantDraw {
 				t.Fatalf("palette pointer/status return differs group%d index%d", group, index)
 			}
@@ -227,8 +228,9 @@ func TestGame3RadioNativeCEntryAndGC(t *testing.T) {
 	if b.DrawData().Field0&4 == 0 || a.DrawData().Field0&4 != 0 {
 		t.Fatal("programmatic native sibling traversal")
 	}
-	old := cfixture.Game3SwapOptionsRoot(nil)
-	defer cfixture.Game3SwapOptionsRoot(old)
+	old := optionsRoot
+	optionsRoot = nil
+	defer func() { optionsRoot = old }()
 	if got := cfixture.Game3UnknownOptions(a); got != [3]int{0, 0, 1} {
 		t.Fatalf("bounded nil-options/unknown-event/key states %v", got)
 	}

@@ -677,6 +677,21 @@ retain their 32-bit values and existing C entry points. Layout
 calculations use the same local dimensions. This migration removes
 ten definitions from `vardefs.c`.
 
+### Character menus and options windows
+
+The class, color, and options constructors publish their roots at
+`0x7139EC`, `0x713B48`, and `0x7141AC` in the supplied executable.
+Go holds those roots, the color palette and swatch controls, the
+sound checkboxes, and the connection-loss windows. The class and
+color screens borrow the original profile bytes through full-width
+pointers. The color picker keeps the palette group and index packed
+as two 16-bit values and clears its window references on close.
+
+The retained color-matching fixture receives the same native root
+as the Go entry. It compares the pointer and scalar return values,
+the packed color word, and the affected controls. This migration
+removes 27 definitions from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

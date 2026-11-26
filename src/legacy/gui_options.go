@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME3.h"
 #include "GAME3_1.h"
-extern nox_window* dword_5d4594_1309720;
 */
 import "C"
 import (
@@ -95,7 +94,7 @@ func Get_nox_wnd_xxx_1309740() *gui.Anim {
 }
 
 func Get_dword_5d4594_1309720() *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.dword_5d4594_1309720))
+	return asWindow(optionsRoot)
 }
 
 func OptionsInGameProc4ADF30() unsafe.Pointer { return C.nox_xxx_windowOptionsProc_4ADF30 }

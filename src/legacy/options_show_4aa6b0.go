@@ -6,10 +6,6 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3.h"
 #include "GAME3_1.h"
-extern nox_window* dword_5d4594_1309720;
-extern nox_window* dword_5d4594_1309728;
-extern nox_window* dword_5d4594_1309732;
-extern nox_window* dword_5d4594_1309736;
 */
 import "C"
 
@@ -19,6 +15,9 @@ import (
 	"github.com/opennox/opennox/v1/client/gui"
 )
 
+var optionsRoot *nox_window
+var optionsAudioChecks [3]*nox_window
+
 func OptionsShowCEntry4AA6B0() int32 { return int32(C.nox_game_showOptions_4AA6B0()) }
 
 func OptionsNewWindow4AA6B0(name string) *gui.Window {
@@ -26,7 +25,7 @@ func OptionsNewWindow4AA6B0(name string) *gui.Window {
 }
 
 func OptionsStoreRoot4AA6B0(win *gui.Window) {
-	C.dword_5d4594_1309720 = (*nox_window)(unsafe.Pointer(win))
+	optionsRoot = (*nox_window)(unsafe.Pointer(win))
 }
 
 func OptionsNewAdvanced4AA6B0(win *gui.Window) int32 {
@@ -44,22 +43,22 @@ func OptionsStoreCheckbox4AA6B0(channel int32, win *gui.Window) {
 	ptr := (*nox_window)(unsafe.Pointer(win))
 	switch channel {
 	case 0:
-		C.dword_5d4594_1309728 = ptr
+		optionsAudioChecks[0] = ptr
 	case 1:
-		C.dword_5d4594_1309732 = ptr
+		optionsAudioChecks[1] = ptr
 	default:
-		C.dword_5d4594_1309736 = ptr
+		optionsAudioChecks[2] = ptr
 	}
 }
 
 func OptionsCheckbox4AA6B0(channel int32) *gui.Window {
 	switch channel {
 	case 0:
-		return asWindow(C.dword_5d4594_1309728)
+		return asWindow(optionsAudioChecks[0])
 	case 1:
-		return asWindow(C.dword_5d4594_1309732)
+		return asWindow(optionsAudioChecks[1])
 	default:
-		return asWindow(C.dword_5d4594_1309736)
+		return asWindow(optionsAudioChecks[2])
 	}
 }
 

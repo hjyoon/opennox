@@ -5,7 +5,6 @@
 #include "GAME3.h"
 #include "client__shell__selcolor.h"
 #include "operators.h"
-extern nox_window* dword_5d4594_1308084;
 
 static int game3_reference_sub_4A6B50(wchar2_t* a1) {
 	wchar2_t* v1;    // esi
@@ -69,7 +68,7 @@ static int game3_reference_sub_4A6B50(wchar2_t* a1) {
 	return v2;
 }
 
-static unsigned char* game3_reference_sub_4A61E0(nox_window* a1, int a2, unsigned char* a3) {
+static unsigned char* game3_reference_sub_4A61E0(nox_window* a1, int a2, unsigned char* a3, nox_window* root) {
 	unsigned int v3;       // esi
 	unsigned char* result; // eax
 	nox_window* v5;        // eax
@@ -86,9 +85,9 @@ static unsigned char* game3_reference_sub_4A61E0(nox_window* a1, int a2, unsigne
 	}
 	if (a2 == 1) {
 		int id = nox_xxx_wndGetID_46B0A0(a1);
-		v5 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1308084, id - 10);
+		v5 = nox_xxx_wndGetChildByID_46B0C0(root, id - 10);
 		nox_xxx_wnd_46ABB0(v5, 1);
-		v6 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1308084, id + 10);
+		v6 = nox_xxx_wndGetChildByID_46B0C0(root, id + 10);
 		if (v6) {
 			v6->draw_data.field_0 |= 6u;
 		}
@@ -96,7 +95,7 @@ static unsigned char* game3_reference_sub_4A61E0(nox_window* a1, int a2, unsigne
 	}
 LABEL_9:
 	if (v3 == 32 && a2 == 1) {
-		v6 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1308084, nox_xxx_wndGetID_46B0A0(a1) - 10);
+		v6 = nox_xxx_wndGetChildByID_46B0C0(root, nox_xxx_wndGetID_46B0A0(a1) - 10);
 		result = (unsigned char*)(uintptr_t)nox_xxx_wnd_46ABB0(v6, 0);
 		LOWORD(v3) = 9;
 	}

@@ -16,25 +16,7 @@ package legacy
 #include "common__savegame.h"
 #include "noxstring.h"
 
-extern nox_window* dword_5d4594_1308084;
-extern nox_window* dword_5d4594_1308088;
-extern nox_window* dword_5d4594_1308096;
-extern nox_window* dword_5d4594_1308100;
-extern nox_window* dword_5d4594_1308104;
-extern nox_window* dword_5d4594_1308108;
-extern nox_window* dword_5d4594_1308112;
-extern nox_window* dword_5d4594_1308116;
-extern nox_window* dword_5d4594_1308120;
-extern nox_window* dword_5d4594_1308124;
-extern nox_window* dword_5d4594_1308128;
-extern nox_window* dword_5d4594_1308132;
-extern nox_window* dword_5d4594_1308136;
-extern nox_window* dword_5d4594_1308140;
-extern nox_window* dword_5d4594_1308144;
-extern nox_window* dword_5d4594_1308148;
-extern nox_window* dword_5d4594_1308152;
 extern uint32_t dword_587000_171388;
-extern char* dword_5d4594_1307784;
 */
 import "C"
 
@@ -48,6 +30,16 @@ import (
 )
 
 const colorSelectionStringsFile = "C:\\NoxPost\\src\\client\\shell\\SelColor.c"
+
+var (
+	colorSelectRoot            *nox_window
+	colorSelectPalette         *nox_window
+	colorSelectName            *nox_window
+	colorSelectSwatches        [10]*nox_window
+	colorSelectPreviewControls [4]*nox_window
+	colorSelectProfile         *C.char
+	colorSelectPaletteButton   uint32
+)
 
 func colorSelectionPacked(window *nox_window) uint32 {
 	if window == nil {
@@ -70,19 +62,12 @@ func colorSelectionPaletteOffset(window *nox_window) uintptr {
 	return 1307796 + 3*uintptr(index)
 }
 
-func colorSelectionEquipment() [5]*nox_window {
-	return [5]*nox_window{
-		C.dword_5d4594_1308116, C.dword_5d4594_1308120, C.dword_5d4594_1308124,
-		C.dword_5d4594_1308128, C.dword_5d4594_1308132,
-	}
-}
-
 //export nox_client_selColorSetEquipmentPalette
 func nox_client_selColorSetEquipmentPalette(index C.uchar) C.int {
 	if index >= 32 {
 		return 0
 	}
-	equipment := colorSelectionEquipment()
+	equipment := colorSelectSwatches[5:]
 	for _, window := range equipment {
 		if window == nil {
 			return 0
@@ -99,11 +84,11 @@ func nox_client_selColorSetEquipmentPalette(index C.uchar) C.int {
 func nox_game_showSelColor_4A5D00() C.int {
 	nox_game_addStateCode_43BDD0(700)
 	profile := nox_xxx_getHostInfoPtr_431770()
-	C.dword_5d4594_1307784 = profile
+	colorSelectProfile = profile
 	*(*byte)(unsafe.Add(unsafe.Pointer(profile), 67)) = 0
 	events := unsafe.Pointer(C.sub_4A7330)
 	root := nox_new_window_from_file(internCStr("SelColor.wnd"), events)
-	C.dword_5d4594_1308084 = root
+	colorSelectRoot = root
 	if root == nil {
 		return 0
 	}
@@ -125,11 +110,11 @@ func nox_game_showSelColor_4A5D00() C.int {
 	}
 	if C.dword_587000_171388 != 0 {
 		name := g2ServerLoad("DefaultName", colorSelectionStringsFile, 1138)
-		g2ServerText(C.dword_5d4594_1308152, 16414, unsafe.Pointer(name), 0)
+		g2ServerText(colorSelectName, 16414, unsafe.Pointer(name), 0)
 	}
 	nox_xxx_wndRetNULL_46A8A0()
 	palette := nox_xxx_wndGetChildByID_46B0C0(root, 760)
-	C.dword_5d4594_1308088 = palette
+	colorSelectPalette = palette
 	nox_xxx_wndSetProc_46B2C0(palette, events)
 	nox_xxx_wndSetWindowProc_46B300(palette, unsafe.Pointer(C.sub_4A7270))
 	sub_46B120(palette, nil)
@@ -140,7 +125,7 @@ func nox_game_showSelColor_4A5D00() C.int {
 }
 
 func colorSelectionName(destination *C.wchar2_t, emptyLine, invalidLine int) {
-	window := C.dword_5d4594_1308152
+	window := colorSelectName
 	name := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(window, 16413, 0, 0)))
 	if name == nil {
 		name = g2ServerLoad("DefaultName", colorSelectionStringsFile, emptyLine)
@@ -160,10 +145,10 @@ func colorSelectionRGB(window *nox_window) [3]byte {
 
 func captureColorSelection() [20]byte {
 	var colors [20]byte
-	primary := colorSelectionRGB(C.dword_5d4594_1308096)
+	primary := colorSelectionRGB(colorSelectSwatches[0])
 	copy(colors[:3], primary[:])
-	custom := [...]*nox_window{C.dword_5d4594_1308136, C.dword_5d4594_1308140, C.dword_5d4594_1308144, C.dword_5d4594_1308148}
-	palette := [...]*nox_window{C.dword_5d4594_1308100, C.dword_5d4594_1308104, C.dword_5d4594_1308108, C.dword_5d4594_1308112}
+	custom := colorSelectPreviewControls
+	palette := [...]*nox_window{colorSelectSwatches[1], colorSelectSwatches[2], colorSelectSwatches[3], colorSelectSwatches[4]}
 	for i, toggle := range custom {
 		color := primary
 		if toggle != nil && toggle.flags&8 != 0 {
@@ -171,7 +156,7 @@ func captureColorSelection() [20]byte {
 		}
 		copy(colors[3+3*i:6+3*i], color[:])
 	}
-	for i, window := range colorSelectionEquipment() {
+	for i, window := range colorSelectSwatches[5:] {
 		colors[15+i] = byte(colorSelectionPacked(window) >> 16)
 	}
 	return colors
@@ -179,7 +164,7 @@ func captureColorSelection() [20]byte {
 
 //export sub_4A68C0
 func sub_4A68C0() *C.wchar2_t {
-	base := unsafe.Pointer(C.dword_5d4594_1307784)
+	base := unsafe.Pointer(colorSelectProfile)
 	name := (*C.wchar2_t)(base)
 	colorSelectionName(name, 225, 232)
 	profile := unsafe.Slice((*byte)(base), 88)
@@ -217,7 +202,7 @@ func sub_4A75C0() C.int {
 	}
 	colorSelectionName(&save.player_name[0], 605, 612)
 	save.field_1276 = 1
-	save.player_class = *(*C.uint8_t)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307784), 66))
+	save.player_class = *(*C.uint8_t)(unsafe.Add(unsafe.Pointer(colorSelectProfile), 66))
 	colors := captureColorSelection()
 	for i, value := range colors {
 		save.field_1204[i] = C.uint8_t(value)

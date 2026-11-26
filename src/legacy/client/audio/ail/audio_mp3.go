@@ -7,6 +7,7 @@ package ail
 #define MINIMP3_ONLY_MP3
 #define MINIMP3_NO_SIMD
 #include "../mp3/minimp3.h"
+#cgo noescape mp3dec_decode_layer3
 */
 import "C"
 import (
@@ -102,15 +103,47 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 		if size == 0 || header.layer() != 3 {
 			continue
 		}
-		status := C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&data[skip])),
-			C.int(size), (*C.int16_t)(unsafe.Pointer(&out[0])))
-		if status < 0 {
+		frame := data[skip : skip+size]
+		info, valid := readMP3SideInfo(frame, header)
+		if !valid {
 			d.sync.header[0] = 0
-		} else if status > 0 {
+			continue
+		}
+		if d.decodeLayer3(frame, &info, out) {
 			return header.samples(), true
 		}
 	}
 	return 0, false
+}
+
+func (d *mp3Decoder) decodeLayer3(frame []byte, info *mp3SideInfo, out []int16) bool {
+	var granules [4]C.mp3dec_granule_t
+	for i := range granules {
+		src, dst := &info.granules[i], &granules[i]
+		for n, width := range src.bandWidths {
+			dst.sfbtab[n] = C.uint8_t(width)
+		}
+		dst.part_23_length = C.uint16_t(src.dataBits)
+		dst.big_values = C.uint16_t(src.bigValues)
+		dst.scalefac_compress = C.uint16_t(src.scalefacCompress)
+		dst.global_gain = C.uint8_t(src.globalGain)
+		dst.block_type = C.uint8_t(src.blockType)
+		dst.mixed_block_flag = C.uint8_t(src.mixedBlock)
+		dst.n_long_sfb = C.uint8_t(src.longBands)
+		dst.n_short_sfb = C.uint8_t(src.shortBands)
+		for n := range src.huffmanTable {
+			dst.table_select[n] = C.uint8_t(src.huffmanTable[n])
+			dst.region_count[n] = C.uint8_t(src.regionBandCount[n])
+			dst.subblock_gain[n] = C.uint8_t(src.subblockGain[n])
+		}
+		dst.preflag = C.uint8_t(src.preflag)
+		dst.scalefac_scale = C.uint8_t(src.scalefacScale)
+		dst.count1_table = C.uint8_t(src.countOneTable)
+		dst.scfsi = C.uint8_t(src.scalefacReuseMask)
+	}
+	return C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
+		C.int(info.mainDataOffset), C.int(info.mainDataBegin), C.int(len(frame)),
+		(*C.int16_t)(unsafe.Pointer(&out[0]))) != 0
 }
 
 func (d *mp3Decoder) Seek(position int) {

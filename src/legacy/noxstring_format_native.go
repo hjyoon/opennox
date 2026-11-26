@@ -16,7 +16,7 @@ type formatCodeUnit interface {
 
 type formatValue struct {
 	number int32
-	text   *wchar2_t
+	text   unsafe.Pointer
 }
 
 type nativeFormatArgs = C.nox_format_args
@@ -44,7 +44,7 @@ func (a *formatArguments) integer(unsigned bool) int32 {
 
 func (a *formatArguments) stringPointer(wide bool) unsafe.Pointer {
 	if a.native == nil {
-		return unsafe.Pointer(a.nextValue().text)
+		return a.nextValue().text
 	}
 	return nativeFormatStringPointer(a.native, wide)
 }

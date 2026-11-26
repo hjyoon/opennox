@@ -14,9 +14,6 @@ static inline void item_amount_call(nox_gui_item_amount_callback_t callback, int
 									uint32_t thing, uint32_t amount, uint32_t extra) {
 	callback(pos, id, thing, amount, extra);
 }
-static inline void item_amount_format_tag(wchar2_t* text, const wchar2_t* format) {
-	nox_swprintf(text, format);
-}
 */
 import "C"
 
@@ -308,7 +305,7 @@ func nox_gui_itemAmountDialog_4C0430(title *wchar2_t, x, y C.int, id, thing C.ui
 	writeItemAmount(1)
 	if itemAmountDialog.priceMode == 0 {
 		text := g2ServerMem(1319068)
-		C.item_amount_format_tag((*wchar2_t)(text), (*wchar2_t)(g2ServerMem(1319272)))
+		formatFixedWide((*wchar2_t)(text), (*wchar2_t)(g2ServerMem(1319272)))
 		g2ServerText(itemAmountDialog.priceLabel, 16385, text, 0)
 	}
 	return 0

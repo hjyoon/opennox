@@ -3,9 +3,6 @@ package legacy
 /*
 #include "client__gui__guispell.h"
 #include "noxstring.h"
-static inline void nox_quickbar_format_set(wchar2_t* dst, const wchar2_t* format, int set) {
-	nox_swprintf(dst, format, set);
-}
 */
 import "C"
 
@@ -21,7 +18,7 @@ func drawQuickbarSetName(win *nox_window, key string, line int32, set int, yOffs
 	var width, height C.int
 	nox_window_get_size(win, &width, &height)
 	var text [32]C.wchar2_t
-	C.nox_quickbar_format_set(&text[0], quickbarText(key, line), C.int(set))
+	formatFixedWide(&text[0], quickbarText(key, line), formatValue{number: int32(set)})
 
 	var textWidth C.int
 	nox_xxx_drawGetStringSize_43F840(nil, &text[0], &textWidth, nil, 0)

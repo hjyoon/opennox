@@ -3,10 +3,6 @@ package legacy
 /*
 #include "client__network__inform.h"
 #include <string.h>
-
-static void nox_format_inform_number(wchar2_t* out, const wchar2_t* format, int value) {
-	nox_swprintf(out, format, value);
-}
 */
 import "C"
 
@@ -167,7 +163,7 @@ func clientInformPacket(data []byte) int {
 		nox_xxx_dialogMsgBoxCreate_449A10(nil, title, message, 33, nil, nil)
 	case 0x15:
 		var text [256]wchar2_t
-		C.nox_format_inform_number(&text[0], informString("GeneralPrint:AdvanceToStage1", 281), C.int(value))
+		formatFixedWide(&text[0], informString("GeneralPrint:AdvanceToStage1", 281), formatValue{number: int32(value)})
 		informPrint("use.c:SignSays", 282, &text[0], nil)
 	}
 	return size

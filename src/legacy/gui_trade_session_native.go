@@ -6,10 +6,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "noxstring.h"
-
-static inline void gui_trade_format_initial_total(wchar2_t* out, const wchar2_t* format) {
-	nox_swprintf(out, format, 0);
-}
 */
 import "C"
 
@@ -174,7 +170,7 @@ func sub_4C1410() C.int {
 	nox_gui_trade_slots_reset()
 	var text [64]uint16
 	ptr := unsafe.Pointer(&text[0])
-	C.gui_trade_format_initial_total((*wchar2_t)(ptr), (*wchar2_t)(g2ServerMem(1319972)))
+	formatFixedWide((*wchar2_t)(ptr), (*wchar2_t)(g2ServerMem(1319972)), formatValue{number: 0})
 	g2ServerText(tradeChild(3711), 16385, ptr, 0)
 	g2ServerText(tradeChild(3712), 16385, ptr, 0)
 	result := g2ServerText(tradeChild(3713), 16385, ptr, 0)

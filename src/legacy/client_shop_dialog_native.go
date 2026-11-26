@@ -9,11 +9,6 @@ package legacy
 #include "noxstring.h"
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
-
-
-static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
-	nox_swprintf(dst, format, amount);
-}
 */
 import "C"
 
@@ -121,7 +116,7 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 func sub_479520(amount C.int) {
 	format := shopString("NotEnoughGold", 1346)
 	text := (*wchar2_t)(g2ServerMem(1097352))
-	C.shop_format_gold_shortage(text, format, amount)
+	formatFixedWide(text, format, formatValue{number: int32(amount)})
 	nox_xxx_dialogMsgBoxCreate_449A10(shopRoot(), shopString("ShopInformationTitle", 1350), text, 33, nil, nil)
 	nox_xxx_clientPlaySoundSpecial_452D80(925, 100)
 }

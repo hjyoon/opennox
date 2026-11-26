@@ -3,10 +3,6 @@ package legacy
 /*
 #include "defs.h"
 #include "noxstring.h"
-
-static void nox_item_name_format_no_info_4E77E0(wchar2_t* buffer, const wchar2_t* format, const char* unit_name) {
-	nox_swprintf(buffer, format, unit_name);
-}
 */
 import "C"
 
@@ -76,11 +72,7 @@ var objectItemNameRuntime = objectItemNameRuntime4E77E0{
 		copyWideString(itemNameBuffer4E77E0(), (*wchar2_t)(unsafe.Pointer(src)))
 	},
 	formatNoInfo: func(format *uint16, name *byte) {
-		C.nox_item_name_format_no_info_4E77E0(
-			itemNameBuffer4E77E0(),
-			(*C.wchar2_t)(unsafe.Pointer(format)),
-			(*C.char)(unsafe.Pointer(name)),
-		)
+		formatFixedWide(itemNameBuffer4E77E0(), (*C.wchar2_t)(unsafe.Pointer(format)), formatValue{text: unsafe.Pointer(name)})
 	},
 	append: func(src *uint16) {
 		appendWideString(itemNameBuffer4E77E0(), (*wchar2_t)(unsafe.Pointer(src)))

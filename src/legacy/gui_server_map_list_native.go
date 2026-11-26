@@ -5,15 +5,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 #include "client__gui__window.h"
 #include "noxstring.h"
-
-
-static void format_server_option_map_row(wchar2_t* out, const wchar2_t* format, const char* map, int min, int max) {
-	nox_swprintf(out, format, map, min, max);
-}
-
-static void narrow_server_option_map_row(char* out, const wchar2_t* text) {
-	nox_sprintf(out, "%S", text);
-}
 */
 import "C"
 
@@ -42,9 +33,9 @@ func serverOptionMapNameFromRow(text *C.wchar2_t) string {
 	if text == nil {
 		return ""
 	}
-	var narrow [200]C.char
-	C.narrow_server_option_map_row(&narrow[0], text)
-	name, _, _ := strings.Cut(strings.TrimLeft(GoString(&narrow[0]), "\t"), "\t")
+	var narrow [200]byte
+	copyLegacyCString(narrow[:], (*uint16)(unsafe.Pointer(text)))
+	name, _, _ := strings.Cut(strings.TrimLeft(GoStringS(narrow[:]), "\t"), "\t")
 	return name
 }
 
@@ -63,7 +54,7 @@ func nox_client_guiserv_updateMapList_458230(mode C.int, current *C.char, apply 
 		name := &mapInfo.name[0]
 		color := serverOptionMapRowColor(GoString(name), uint16(mode))
 		format := g2ServerLoad("RecPlayers", serverOptionsStringsFile, 823)
-		C.format_server_option_map_row(&title[0], format, name, C.int(mapInfo.field_8_0), C.int(mapInfo.field_8_1))
+		formatFixedWide(&title[0], format, formatValue{text: unsafe.Pointer(name)}, formatValue{number: int32(mapInfo.field_8_0)}, formatValue{number: int32(mapInfo.field_8_1)})
 		g2ServerText(list, 16397, unsafe.Pointer(&title[0]), color)
 		if C.nox_strcmpi(current, name) == 0 {
 			matched = true

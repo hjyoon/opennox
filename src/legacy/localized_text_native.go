@@ -12,8 +12,16 @@ func formatWideNumber(out []wchar2_t, format *wchar2_t, value C.int) {
 }
 
 func formatWideStrings(out []wchar2_t, format, first, second *wchar2_t) {
-	values := [...]formatValue{{text: first}, {text: second}}
+	values := [...]formatValue{{text: unsafe.Pointer(first)}, {text: unsafe.Pointer(second)}}
 	formatBoundedWide(out, format, formatArguments{values: values[:]})
+}
+
+func formatFixedWide(dst, format *wchar2_t, values ...formatValue) C.int {
+	// Retain the nox_vswprintf capacity and its result in code units.
+	return C.int(formatWithArgs(
+		(*uint16)(unsafe.Pointer(dst)), 0x3fffffff,
+		(*uint16)(unsafe.Pointer(format)), formatArguments{values: values},
+	))
 }
 
 func formatBoundedWide(out []wchar2_t, format *wchar2_t, args formatArguments) {

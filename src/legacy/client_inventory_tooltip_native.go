@@ -4,12 +4,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__guimsg.h"
 #include "common__object__modifier.h"
-
-
-static int nox_client_format_inventory_title(wchar2_t* dst, const wchar2_t* format,
-	const wchar2_t* name, const wchar2_t* level) {
-	return nox_swprintf(dst, format, name, level);
-}
 */
 import "C"
 
@@ -197,7 +191,7 @@ func nox_xxx_inventoryNameSignInit_4671E0() C.int {
 			levelName := clientInventoryString(key, 4763)
 			format := clientInventoryString("ElaborateNameFormat", 4761)
 			name := (*wchar2_t)(unsafe.Pointer(&player.NameFinal[0]))
-			return C.nox_client_format_inventory_title(title, format, name, levelName)
+			return formatFixedWide(title, format, formatValue{text: unsafe.Pointer(name)}, formatValue{text: unsafe.Pointer(levelName)})
 		}
 	}
 	return C.int(level)

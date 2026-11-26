@@ -6,10 +6,6 @@ package legacy
 #include "common__strman.h"
 #include "GAME2_1.h"
 #include "noxstring.h"
-
-static void quest_game_over_format_49B6E0(wchar2_t* dst, const wchar2_t* format, const wchar2_t* title, int32_t seconds) {
-	nox_swprintf(dst, format, title, seconds);
-}
 */
 import "C"
 
@@ -48,7 +44,7 @@ func questGameOverTimerNativeHooks49B6E0() questGameOverTimerHooks49B6E0[*gui.Wi
 			return unsafe.Pointer(C.nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(source), C.int(line)))
 		},
 		format: func(title unsafe.Pointer, seconds int32) {
-			C.quest_game_over_format_49B6E0(questGameOverTimerBuffer49B6E0(), internWStr(questGameOverTimerFormat49B6E0), (*C.wchar2_t)(title), C.int32_t(seconds))
+			formatFixedWide(questGameOverTimerBuffer49B6E0(), internWStr(questGameOverTimerFormat49B6E0), formatValue{text: unsafe.Pointer((*C.wchar2_t)(title))}, formatValue{number: int32(seconds)})
 		},
 		child: func(win *gui.Window, id int32) *gui.Window {
 			return (*gui.Window)(unsafe.Pointer(C.nox_xxx_wndGetChildByID_46B0C0((*C.nox_window)(win.C()), C.int(id))))

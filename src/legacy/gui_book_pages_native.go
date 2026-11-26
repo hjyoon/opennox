@@ -3,11 +3,6 @@ package legacy
 /*
 #include "client__gui__guibook.h"
 #include "noxstring.h"
-
-
-static inline void nox_book_format_level(wchar2_t* dst, const wchar2_t* format, int level) {
-	nox_swprintf(dst, format, level);
-}
 */
 import "C"
 
@@ -155,7 +150,7 @@ func (page bookPageLayout) drawSpell(player *C.nox_playerInfo, id int32) {
 			y += page.fontHeight
 		}
 	}
-	C.nox_book_format_level(&text[0], bookText("PowerLevel", 1206), C.int(player.spell_lvl[id]))
+	formatFixedWide(&text[0], bookText("PowerLevel", 1206), formatValue{number: int32(player.spell_lvl[id])})
 	page.drawCenteredLine(&text[0], y+page.fontHeight)
 	page.drawDetail(nox_xxx_spellDescription_424A30(id))
 }

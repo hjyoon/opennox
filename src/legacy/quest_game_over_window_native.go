@@ -3,14 +3,6 @@ package legacy
 /*
 #include "client__gui__guiggovr.h"
 #include "client__gui__window.h"
-
-
-static void nox_quest_over_format_count(wchar2_t* out, const wchar2_t* format, int count) {
-	nox_swprintf(out, format, count);
-}
-static void nox_quest_over_format_text(wchar2_t* out, const wchar2_t* format) {
-	nox_swprintf(out, format);
-}
 */
 import "C"
 
@@ -41,9 +33,9 @@ func sub_49B4B0(raw *C.ushort) C.int {
 	for i, count := range counts {
 		value := binary.LittleEndian.Uint16(words[2+2*i : 4+2*i])
 		text := g2ServerLoad(count.key, source, count.line)
-		C.nox_quest_over_format_count((*C.wchar2_t)(g2ServerMem(count.offset)), text, C.int(value))
+		formatFixedWide((*C.wchar2_t)(g2ServerMem(count.offset)), text, formatValue{number: int32(value)})
 	}
-	C.nox_quest_over_format_text((*C.wchar2_t)(g2ServerMem(1303196)), (*C.wchar2_t)(g2ServerMem(1303460)))
+	formatFixedWide((*C.wchar2_t)(g2ServerMem(1303196)), (*C.wchar2_t)(g2ServerMem(1303460)))
 	for _, field := range [...]struct {
 		id     int
 		offset uintptr

@@ -77,6 +77,11 @@ static int file_printf_fixture(FILE* file, int width) {
 	return nox_fs_fprintf(file, "%0*d", width, 7);
 }
 
+static int wide_mixed_fixture(wchar2_t* out, const wchar2_t* format, const char* narrow,
+			      int first, const wchar2_t* wide, unsigned int second) {
+	return nox_swprintf(out, format, narrow, first, wide, second);
+}
+
 static int variadic_registers_and_stack_fixture(void) {
 	const wchar2_t first[] = {'w', 'i', 'd', 'e', 0};
 	const wchar2_t tail[] = {'e', 'n', 'd', 0};
@@ -214,6 +219,13 @@ func NetworkLogPrintf413D30(format *byte) {
 
 func FilePrintf(file unsafe.Pointer, width int) int {
 	return int(C.file_printf_fixture((*C.FILE)(file), C.int(width)))
+}
+
+func WideMixedPrintf(out, format *uint16, narrow *byte, first int32, wide *uint16, second uint32) int {
+	return int(C.wide_mixed_fixture(
+		(*C.wchar2_t)(unsafe.Pointer(out)), (*C.wchar2_t)(unsafe.Pointer(format)),
+		(*C.char)(unsafe.Pointer(narrow)), C.int(first), (*C.wchar2_t)(unsafe.Pointer(wide)), C.uint(second),
+	))
 }
 
 func WideFixedPrintfMatches(bits uint64, digits, rounding int) int {

@@ -5,10 +5,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME5_2.h"
 #include "noxstring.h"
-
-static void tooltip_format_4BF050(wchar2_t* dst, const wchar2_t* format, const void* arg) {
-	nox_swprintf(dst, format, arg);
-}
 */
 import "C"
 import (
@@ -36,7 +32,7 @@ var clientAskInfoDepsFactory4BF050 = func() clientAskInfoDeps4BF050 {
 			C.nox_wcscat((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(src)))
 		},
 		formatText: func(dst, format *uint16, arg unsafe.Pointer) {
-			C.tooltip_format_4BF050((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(format)), arg)
+			formatFixedWide((*wchar2_t)(unsafe.Pointer(dst)), (*wchar2_t)(unsafe.Pointer(format)), formatValue{text: arg})
 		},
 		prettyName: func(id uint32) *uint16 {
 			return (*uint16)(unsafe.Pointer(nox_get_thing_pretty_name(int32(id))))

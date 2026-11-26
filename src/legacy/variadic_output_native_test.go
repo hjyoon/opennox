@@ -71,6 +71,33 @@ func TestLegacyBoundedWideCEntriesMatchVariadic(t *testing.T) {
 	}
 }
 
+func TestLegacyFixedWideMatchesMixedVariadic(t *testing.T) {
+	format, release := CWString("%S\t%012d|%s|%u%%")
+	defer release()
+	narrow := [...]byte{'M', 0xff, 0}
+	wide := [...]uint16{'가', 0xd83d, 0xde83, 0}
+	for _, args := range []struct {
+		narrow *byte
+		wide   *uint16
+	}{
+		{&narrow[0], &wide[0]},
+		{nil, nil},
+	} {
+		var expected, actual [64]uint16
+		for i := range expected {
+			expected[i], actual[i] = 0xa5a5, 0xa5a5
+		}
+		length := cfixture.WideMixedPrintf(&expected[1], (*uint16)(unsafe.Pointer(format)),
+			args.narrow, math.MinInt32, args.wide, math.MaxUint32)
+		used := formatFixedWide((*wchar2_t)(unsafe.Pointer(&actual[1])), format,
+			formatValue{text: unsafe.Pointer(args.narrow)}, formatValue{number: math.MinInt32},
+			formatValue{text: unsafe.Pointer(args.wide)}, formatValue{number: -1})
+		if int(used) != length || actual != expected {
+			t.Fatalf("fixed output (%d, %x) differs from variadic output (%d, %x)", used, actual, length, expected)
+		}
+	}
+}
+
 func TestLegacyNetworkLogPrintf413D30(t *testing.T) {
 	previous := NetworkLogPrint
 	t.Cleanup(func() { NetworkLogPrint = previous })

@@ -966,6 +966,16 @@ game algorithm count is zero. The count covers the top-level C files.
 The three C comparison sources, Cgo preambles, and inline headers
 have separate audit scopes.
 
+### Fixed localized formatting in Cgo preambles
+
+The server options, map list, inventory, quickbar, quest briefing and
+game-over screens, overlays, tooltips, shop, trade, and network notices
+now format their fixed arguments directly in Go. The 28 retired C helpers
+covered 37 calls. The argument list retains native text pointers and
+32-bit numeric words. Wide output keeps the original UTF-16 code units,
+format capacity, and result length. The map-list narrowing preserves
+the low byte of each code unit.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

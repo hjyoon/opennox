@@ -2,11 +2,6 @@ package legacy
 
 /*
 #include "client__gui__guiinv.h"
-
-
-static void nox_client_format_inventory_stat(wchar2_t* out, const wchar2_t* format, int first, int second) {
-	nox_swprintf(out, format, first, second);
-}
 */
 import "C"
 
@@ -40,7 +35,7 @@ func nox_client_inventory_total_weight_463880() C.int {
 
 func clientInventoryStatText(id string, line int32, first, second int) string {
 	var out [256]wchar2_t
-	C.nox_client_format_inventory_stat(&out[0], clientInventoryString(id, line), C.int(first), C.int(second))
+	formatFixedWide(&out[0], clientInventoryString(id, line), formatValue{number: int32(first)}, formatValue{number: int32(second)})
 	return GoWString(&out[0])
 }
 

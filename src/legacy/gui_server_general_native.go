@@ -4,11 +4,6 @@ package legacy
 #include "game2_server_bridge.h"
 #include "client__gui__servopts__advserv.h"
 #include "client__gui__servopts__general.h"
-
-
-static void nox_format_server_audio_cutoff(wchar2_t* out, const wchar2_t* format, int value) {
-	nox_swprintf(out, format, value);
-}
 */
 import "C"
 
@@ -172,7 +167,7 @@ func sub_4BE2C0(value C.int) C.int {
 	binary.LittleEndian.PutUint32(field, uint32(value))
 	dst := (*C.wchar2_t)(g2ServerMem(1316716))
 	format := g2ServerLoad("AudCullDesc", `C:\NoxPost\src\client\Gui\ServOpts\advserv.c`, 71)
-	C.nox_format_server_audio_cutoff(dst, format, value)
+	formatFixedWide(dst, format, formatValue{number: int32(value)})
 	control := g2ServerChild(serverPerformanceWindow, 2120)
 	return C.int(g2ServerText(control, 16385, unsafe.Pointer(dst), ^uintptr(0)))
 }

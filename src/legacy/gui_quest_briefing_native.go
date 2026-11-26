@@ -3,20 +3,6 @@ package legacy
 /*
 #include "client__gui__guibrief.h"
 #include "noxstring.h"
-
-
-static inline void nox_briefing_number(wchar2_t* dst, const wchar2_t* format, int value) {
-	nox_swprintf(dst, format, value);
-}
-static inline void nox_briefing_literal(wchar2_t* dst, const wchar2_t* format) {
-	nox_swprintf(dst, format);
-}
-static inline void nox_briefing_pair(wchar2_t* dst, const wchar2_t* left, const wchar2_t* right) {
-	nox_swprintf(dst, L"%s - %s", left, right);
-}
-static inline void nox_briefing_player_line(wchar2_t* dst, int rank, const wchar2_t* name) {
-	nox_swprintf(dst, L"%d) %s", rank, name);
-}
 */
 import "C"
 
@@ -27,6 +13,9 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var briefingPairFormat = internWStr("%s - %s")
+var briefingPlayerFormat = internWStr("%d) %s")
 
 const briefingStringsFile = "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c"
 
@@ -101,7 +90,7 @@ func drawQuestScoreRow(font unsafe.Pointer, row *questWinRow450770, rank int, x,
 	var text [256]C.wchar2_t
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_orange_2614256()))
 	name := (*C.wchar2_t)(unsafe.Pointer(&row.Player.NameFinal[0]))
-	C.nox_briefing_player_line(&text[0], C.int(rank), name)
+	formatFixedWide(&text[0], briefingPlayerFormat, formatValue{number: int32(rank)}, formatValue{text: unsafe.Pointer(name)})
 	length := alloc.StrLenN(&text[0], len(text))
 	measured, _ := briefingMeasure(font, &text[0])
 	for measured >= nameWidth && length > 5 {
@@ -129,7 +118,7 @@ func drawQuestScoreRow(font unsafe.Pointer, row *questWinRow450770, rank int, x,
 		nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 		label := briefingText(field.key, field.line)
 		nox_xxx_drawStringWrap_43FAF0(font, label, x, y, labelWidth, lineHeight)
-		C.nox_briefing_number(&text[0], format, C.int(field.value))
+		formatFixedWide(&text[0], format, formatValue{number: int32(field.value)})
 		nox_xxx_drawSetTextColor_434390(int32(field.color))
 		nox_xxx_drawStringWrap_43FAF0(font, &text[0], x+labelWidth, y, width-labelWidth, lineHeight)
 		y += spacing
@@ -149,7 +138,7 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	copyWideString(&details[0], briefingText("Noxworld.c:Stage", 451))
 	appendWideString(&details[0], internWStr(" "))
 	nox_itow(C.int(memmap.Int32(0x5D4594, 831228)), &details[nox_wcslen(&details[0])], 10)
-	C.nox_briefing_pair(&text[0], &title[0], &details[0])
+	formatFixedWide(&text[0], briefingPairFormat, formatValue{text: unsafe.Pointer(&title[0])}, formatValue{text: unsafe.Pointer(&details[0])})
 	tw, lineHeight := briefingMeasure(font, &text[0])
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 	nox_xxx_drawString_43F6E0(font, &text[0], width/2-tw/2, height/2-240+lineHeight)
@@ -178,27 +167,27 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	}
 
 	total := C.int(memmap.Uint32(0x5D4594, 832356))
-	C.nox_briefing_number(&title[0], briefingText("GeneralPrint:SecretsTotal", 583), total)
+	formatFixedWide(&title[0], briefingText("GeneralPrint:SecretsTotal", 583), formatValue{number: int32(total)})
 	tw, th := briefingMeasure(font, &title[0])
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_orange_2614256()))
 	nox_xxx_drawString_43F6E0(font, &title[0], originX+320-tw/2, originY+3*(150-th))
 
 	if mySecrets != 0 {
-		C.nox_briefing_number(&title[0], briefingText("GeneralPrint:SecretsFound", 593), C.int(mySecrets))
+		formatFixedWide(&title[0], briefingText("GeneralPrint:SecretsFound", 593), formatValue{number: int32(mySecrets)})
 	} else {
-		C.nox_briefing_literal(&title[0], briefingText("GeneralPrint:SecretsNoneFound", 596))
+		formatFixedWide(&title[0], briefingText("GeneralPrint:SecretsNoneFound", 596))
 	}
 	if players <= 1 {
 		copyWideString(&text[0], &title[0])
 	} else {
 		if friendsSecrets != 0 {
 			if format := briefingText("GeneralPrint:SecretsFoundByFriends", 606); format != nil {
-				C.nox_briefing_number(&details[0], format, C.int(friendsSecrets))
+				formatFixedWide(&details[0], format, formatValue{number: int32(friendsSecrets)})
 			}
 		} else {
 			copyWideString(&details[0], briefingText("GeneralPrint:SecretsNoneFoundByFriends", 612))
 		}
-		C.nox_briefing_pair(&text[0], &title[0], &details[0])
+		formatFixedWide(&text[0], briefingPairFormat, formatValue{text: unsafe.Pointer(&title[0])}, formatValue{text: unsafe.Pointer(&details[0])})
 	}
 	tw, th = briefingMeasure(font, &text[0])
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_orange_2614256()))
@@ -214,7 +203,7 @@ func sub_44F0F0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 	copyWideString(&format[0], briefingText("Noxworld.c:Stage", 668))
 	appendWideString(&format[0], internWStr(" %d"))
-	C.nox_briefing_number(&stage[0], &format[0], nox_gui_getQuestStage_450B10())
+	formatFixedWide(&stage[0], &format[0], formatValue{number: int32(nox_gui_getQuestStage_450B10())})
 	tw, th := briefingMeasure(font, &stage[0])
 	nox_xxx_drawString_43F6E0(font, &stage[0], width/2-tw/2, height/2+3*(th-80))
 	if message := (*C.wchar2_t)(*memmap.PtrPtr(0x5D4594, 832464)); message != nil {

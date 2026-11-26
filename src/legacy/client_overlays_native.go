@@ -3,17 +3,6 @@ package legacy
 /*
 #include "defs.h"
 #include "noxstring.h"
-
-
-static inline void nox_format_overlay_map(wchar2_t* dst, const char* map) {
-	nox_swprintf(dst, L"%S", map);
-}
-static inline void nox_format_overlay_coordinates(wchar2_t* dst, int x, int y) {
-	nox_swprintf(dst, L"X:%d\tY:%d", x, y);
-}
-static inline void nox_format_overlay_player(wchar2_t* dst, const wchar2_t* format, int value, const wchar2_t* class_name) {
-	nox_swprintf(dst, format, value, class_name);
-}
 */
 import "C"
 
@@ -24,6 +13,9 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var overlayMapFormat = internWStr("%S")
+var overlayCoordinatesFormat = internWStr("X:%d\tY:%d")
 
 const clientOverlayStrings = "C:\\NoxPost\\src\\client\\System\\client.c"
 
@@ -108,7 +100,7 @@ func sub_436F50() C.int {
 	x, y := int32(view.x1)+10, int32(view.y1)+90
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 	text := (*C.wchar2_t)(memmap.PtrOff(0x5D4594, 811120))
-	C.nox_format_overlay_map(text, nox_server_currentMapGetFilename_409B30())
+	formatFixedWide(text, overlayMapFormat, formatValue{text: unsafe.Pointer(nox_server_currentMapGetFilename_409B30())})
 	nox_xxx_drawString_43F6E0(nil, text, x, y)
 	local := (*nox_drawable)(*memmap.PtrPtr(0x852978, 8))
 	if local == nil {
@@ -119,14 +111,14 @@ func sub_436F50() C.int {
 		return 1
 	}
 	y += fontHeight
-	C.nox_format_overlay_coordinates(text, C.int(local.pos.x), C.int(local.pos.y))
+	formatFixedWide(text, overlayCoordinatesFormat, formatValue{number: int32(local.pos.x)}, formatValue{number: int32(local.pos.y)})
 	nox_xxx_drawString_43F6E0(nil, text, x, y)
 	classID := uintptr(game2PlayerClass(player))
 	name := (*C.char)(*memmap.PtrPtr(0x587000, 29456+4*classID))
 	source := internCStr(clientOverlayStrings)
 	class := nox_strman_loadString_40F1D0(name, nil, source, 1357)
 	format := nox_strman_loadString_40F1D0(internCStr("PlayerInfo"), nil, source, 1355)
-	C.nox_format_overlay_player(text, format, C.int(player.field_3684), class)
+	formatFixedWide(text, format, formatValue{number: int32(player.field_3684)}, formatValue{text: unsafe.Pointer(class)})
 	return C.int(nox_xxx_drawString_43F6E0(nil, text, x, y+fontHeight))
 }
 

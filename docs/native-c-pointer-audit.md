@@ -1012,6 +1012,16 @@ word width. The macOS ARM64 baseline and updated paths pass the same
 return-width regression, and the protected player tests pass on macOS
 ARM64 with strict Cgo checking and on Linux ARM64 PIE.
 
+### World state and settings services
+
+The team list, settings refresh, access list, sudden-death timer, player
+iteration, and wall polygon services share their Go implementations with
+the C exports. Twelve Cgo preambles were removed. The access configuration
+uses the same checked memory-map entry. Player and polygon pointers keep
+native width, wall radius inputs retain their float32 bits, and the live
+sudden-death values retain their float64 representation. The C declarations
+and compile-time layout checks continue to validate the exported ABI.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

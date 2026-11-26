@@ -1,15 +1,12 @@
 package legacy
 
 /*
-#include "world_native_storage.h"
-#define dword_5d4594_526276 (nox_world_word_storage()->team_entries_limit)
 #include <stdlib.h>
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "GAME3_3.h"
 #include "common__system__team.h"
 #include "client__gui__servopts__playrlst.h"
-static int32_t team_entries_limit_417cf0(void) { return (int32_t)dword_5d4594_526276; }
 */
 import "C"
 
@@ -22,7 +19,7 @@ import (
 
 var teamEntriesDefaults417CF0 = teamEntriesRuntime417CF0{
 	RemoveActive: func() int32 { return int32(GetServer().TeamsRemoveActive(false)) },
-	Limit:        func() int32 { return int32(C.team_entries_limit_417cf0()) },
+	Limit:        func() int32 { return int32(worldWordStorage.team_entries_limit) },
 	Count:        func() byte { return byte(GetServer().S().Teams.Count()) },
 	SetGameplay:  func(v uint32) { noxflags.SetGamePlay(noxflags.GameplayFlag(v)) },
 	AutoAssign:   func(v int32) { TeamAutoAssign4181F0(v != 0) },
@@ -39,11 +36,11 @@ var teamEntriesDefaults417CF0 = teamEntriesRuntime417CF0{
 	Attach: func(id server.TeamID, value *server.ObjectTeam, code int32) {
 		Nox_xxx_createAtImpl_4191D0(id, value, 1, int(code), 0)
 	},
-	Prepare: func(t *server.Team) { C.sub_457230((*C.wchar2_t)(t.C())) },
+	Prepare: func(t *server.Team) { sub_457230((*C.wchar2_t)(t.C())) },
 	Flag512: func() bool { return noxflags.HasGame(noxflags.GameFlag(512)) },
 	Alloc:   func(n uintptr) unsafe.Pointer { return C.calloc(1, C.size_t(n)) },
 	Free:    func(p unsafe.Pointer) { C.free(p) },
 	Send: func(p unsafe.Pointer, n int) {
-		C.nox_xxx_netSendPacket1_4E5390(159, C.nox_important_payload_t(p), C.int(n), nil, 1)
+		nox_xxx_netSendPacket1_4E5390(159, C.nox_important_payload_t(p), C.int(n), nil, 1)
 	},
 }

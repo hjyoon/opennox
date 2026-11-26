@@ -11,9 +11,6 @@ typedef nox_object_t* (*two_settings_pointer_next_unit_fn_40a740)(const nox_obje
 _Static_assert(_Generic(&sub_4165B0,two_settings_pointer_info_fn_40a740:1,default:0), "Info native char pointer ABI");
 _Static_assert(_Generic(&nox_xxx_getFirstPlayerUnit_4DA7C0,two_settings_pointer_first_unit_fn_40a740:1,default:0), "FirstUnit native pointer ABI");
 _Static_assert(_Generic(&nox_xxx_getNextPlayerUnit_4DA7F0,two_settings_pointer_next_unit_fn_40a740:1,default:0), "NextUnit native pointer ABI");
-static void* two_settings_pointer_info_40a740(void) { return sub_4165B0(); }
-static void* two_settings_pointer_first_unit_40a740(void) { return nox_xxx_getFirstPlayerUnit_4DA7C0(); }
-static void* two_settings_pointer_next_unit_40a740(void* unit) { return nox_xxx_getNextPlayerUnit_4DA7F0((const nox_object_t*)unit); }
 static void* two_settings_pointer_foreign_pointer_40a740(uintptr_t bits) { return (void*)bits; }
 */
 import "C"
@@ -36,7 +33,7 @@ func twoSettingsPointerNativeServiceDefault40A740(site uint32, arguments []twoSe
 	defer func() { runtime.KeepAlive(arguments) }()
 	switch site {
 	case 0x40A741:
-		return twoSettingsPointerNativeReply40A740{Pointer: C.two_settings_pointer_info_40a740()}
+		return twoSettingsPointerNativeReply40A740{Pointer: unsafe.Pointer(sub_4165B0())}
 	case 0x40A74D:
 		return twoSettingsPointerNativeReply40A740{Word: rawDefaultDamageGameFlagsNative4E0B30(arguments[0].Word)}
 	case 0x40A778:
@@ -44,9 +41,9 @@ func twoSettingsPointerNativeServiceDefault40A740(site uint32, arguments []twoSe
 	case 0x40A784:
 		return twoSettingsPointerNativeReply40A740{Pointer: unsafe.Pointer(nox_server_teamFirst_418B10())}
 	case 0x40A79A:
-		return twoSettingsPointerNativeReply40A740{Pointer: C.two_settings_pointer_first_unit_40a740()}
+		return twoSettingsPointerNativeReply40A740{Pointer: unsafe.Pointer(nox_xxx_getFirstPlayerUnit_4DA7C0())}
 	case 0x40A7C9:
-		return twoSettingsPointerNativeReply40A740{Pointer: C.two_settings_pointer_next_unit_40a740(arguments[0].Pointer)}
+		return twoSettingsPointerNativeReply40A740{Pointer: unsafe.Pointer(nox_xxx_getNextPlayerUnit_4DA7F0((*nox_object_t)(arguments[0].Pointer)))}
 	case 0x40A7D9:
 		return twoSettingsPointerNativeReply40A740{Pointer: unsafe.Pointer(nox_server_teamNext_418B60((*nox_team_t)(arguments[0].Pointer)))}
 	case 0x40A7EE:

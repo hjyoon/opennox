@@ -9,7 +9,6 @@ package legacy
 #include "GAME3_3.h"
 #include "noxstring.h"
 #include "world_native_storage.h"
-void* nox_server_wallAttachDoor(void*,nox_object_t*);
 static void world_defend_call(void* callback,void* effect,nox_object_t* item,float* value){
  ((void(*)(void*,nox_object_t*,uintptr_t,nox_object_t*,uintptr_t,float*))callback)(effect,item,0,item,0,value);
 }
@@ -43,11 +42,11 @@ var worldPlayerDefaults40A830 = worldPlayerRuntime40A830{
 	},
 	GameFlags:   func() uint32 { return uint32(noxflags.GetGame()) },
 	TimerStatus: sub40A220Native,
-	TimerMode:   func(mode int16) byte { return byte(C.sub_40A180(C.short(mode))) },
+	TimerMode:   sub40A180Native,
 	TimerStart:  func() { sub40A250Native() },
 	TimerSet:    sub40A1F0Native,
 	Send: func(recipient int32, packet []byte) int32 {
-		result := int32(C.nox_xxx_netSendPacket1_4E5390(C.int(recipient), C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 0))
+		result := int32(nox_xxx_netSendPacket1_4E5390(C.int(recipient), C.nox_important_payload_t(unsafe.Pointer(&packet[0])), C.int(len(packet)), nil, 0))
 		runtime.KeepAlive(packet)
 		return result
 	},
@@ -57,23 +56,23 @@ var worldPlayerDefaults40A830 = worldPlayerRuntime40A830{
 	},
 	Minimap: func(mark bool, index byte, object *server.Object, flags uint32) {
 		if mark {
-			C.nox_xxx_netMarkMinimapObject_417190(C.int(index), (*C.nox_object_t)(unsafe.Pointer(object)), C.uint(flags))
+			nox_xxx_netMarkMinimapObject_417190(int32(index), asObjectC(object), flags)
 		} else {
-			C.nox_xxx_netUnmarkMinimapObj_417300(C.int(index), (*C.nox_object_t)(unsafe.Pointer(object)), C.uint(flags))
+			nox_xxx_netUnmarkMinimapObj_417300(int32(index), asObjectC(object), flags)
 		}
 		runtime.KeepAlive(object)
 	},
 	WallCreate: func(x, y int32) *server.Wall {
-		return (*server.Wall)(C.nox_xxx_wallCreateAt_410250(C.int(x), C.int(y)))
+		return (*server.Wall)(nox_xxx_wallCreateAt_410250(x, y))
 	},
 	WallAttach: func(w *server.Wall, o *server.Object) unsafe.Pointer {
-		return C.nox_server_wallAttachDoor(unsafe.Pointer(w), (*C.nox_object_t)(unsafe.Pointer(o)))
+		return nox_server_wallAttachDoor(unsafe.Pointer(w), asObjectC(o))
 	},
 	ArmorDefinition: func(kind uint16) *server.Modifier {
-		return (*server.Modifier)(C.nox_xxx_equipClothFindDefByTT_413270(C.int(kind)))
+		return (*server.Modifier)(nox_xxx_equipClothFindDefByTT_413270(int32(kind)))
 	},
 	CompareNames: func(a, b *uint16) int32 {
-		return int32(C._nox_wcsicmp((*C.wchar2_t)(unsafe.Pointer(a)), (*C.wchar2_t)(unsafe.Pointer(b))))
+		return int32(_nox_wcsicmp((*wchar2_t)(unsafe.Pointer(a)), (*wchar2_t)(unsafe.Pointer(b))))
 	},
 }
 

@@ -6,8 +6,6 @@ package legacy
 #include <stddef.h>
 #include <stdint.h>
 
-extern int sub_4D7EA0(void);
-
 _Static_assert(sizeof(uint32_t) == 4, "settings flags DWORD ABI");
 _Static_assert(sizeof(int) == 4, "settings dirty int ABI");
 _Static_assert(sizeof(dword_5d4594_3484) == 4, "actual subflags global width");
@@ -15,7 +13,6 @@ _Static_assert(_Generic(&dword_5d4594_3484, uint32_t*: 1, default: 0), "actual s
 
 static size_t setting_flags_subflags_width_409e40(void) { return sizeof(dword_5d4594_3484); }
 static size_t setting_flags_subflags_align_409e40(void) { return _Alignof(uint32_t); }
-static int setting_flags_refresh_409e40(void) { return sub_4D7EA0(); }
 */
 import "C"
 
@@ -71,5 +68,5 @@ func settingFlagsNativeCellAlign409E40(field int) uintptr {
 }
 
 func settingFlagsNativeRefresh409E40() int32 {
-	return int32(C.setting_flags_refresh_409e40())
+	return int32(sub_4D7EA0())
 }

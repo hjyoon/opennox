@@ -1,3 +1,14 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game after lava damage": 088b316ce0739b750e2decdfd081827919cc362d747ab930af8a0dbd33da0715
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game after lava damage": 088b316ce0739b750e2decdfd081827919cc362d747ab930af8a0dbd33da0715
+
 steps:
   - action: slow
     dur: 5ms

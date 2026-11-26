@@ -1,5 +1,20 @@
 # Normal menu and keyboard input. The enemy server-player fixture picks up
 # the stock GameBall through ordinary collision; never inject owner or damage.
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "charge an enemy GameBall carrier attempt 1 dropped ball": 28693f28cc9aa45e7c3c2371963b81480be5494c1df5c8d490f48db5230f7465
+      "charge an enemy GameBall carrier attempt 2 dropped ball": 417aa4dd585c4ca54d968304f25f3ba938b7019edf2b360b9f414caac29034b1
+      "FlagBall charge ready": c31eed020e0c360060107577b543c5d9684ab19de19820032b032a18c164558a
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "charge an enemy GameBall carrier attempt 1 dropped ball": b8d6f7759a56d1936947de6a1f74c77960b381af9bb6de347102df631646ae67
+      "charge an enemy GameBall carrier attempt 2 dropped ball": 9e06b1ab2514d09402e7f9e032cf2701a730d821a91e1312eaa9b3a8adc971ca
+      "FlagBall charge ready": 3b5da5b7f0db4bc3bbb39c130507f815a466fca407f8e2af7d2a92907aa1e40c
+
 steps:
   - action: slow
     dur: 1ms

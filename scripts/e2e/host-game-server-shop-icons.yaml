@@ -1,5 +1,28 @@
 # Real server buy, sell, and repair; read-only icon checks against live frames.
 # Quote/gold/inventory assertions retain the existing server-shop scenario.
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game server shop": 614e365f384223cb698004cd1ac651184e8f790df2cbdd9ef3b7bd84b01f68cb
+      "host game server shop buy mode": 8b2764b07cbe88b3cc7db8cfea44f31173bac5809345a6009c7d56b49b294765
+      "host game server shop purchased": e24cf8b8de92e25c22625649723f249ffe09807bef5e9fe8fab8433097fd3abc
+      "host game server shop sell quote": d6550dafda502ce2f0af380cdc92d527cb84481f521a6637ded35ecc22ec2402
+      "host game server shop sold": c6ccef2de13fd896fc35088077712b648070285af5db7181606c7155b6926220
+      "host game server shop repair quote": 147f0da4815d87c4a5add40ce548c18c1553c8ba718572bdd6e2ccfddef3bc3b
+      "host game server shop repaired": 3a6c1b08bc177aff61a1a330f6c698453c9a8f3166ddb364bbbdbd0b8f29b7ea
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game server shop": ce20c9b5e77d6e322d2ebecbeb9098a8a873cb123c8d2230157d6c81b0494e7e
+      "host game server shop buy mode": 51abc7b22cd6349dfd7006aa567e9751e5fbe0245eb0499c8de466f380d183d8
+      "host game server shop purchased": 13d7c812f2e1b5017037b6751cbc3b6470d72a888d2680bb35c657f1ad3ed45b
+      "host game server shop sell quote": 5d968b48776ede488fc7533d5909bb5fffe780b722b8650471a240df531d7114
+      "host game server shop sold": d207cf16d737ca8f125133ff9e869c5ad4beef575070f5e9a9539f3b6ad42362
+      "host game server shop repair quote": 2d61ce20b968636800c4e3252860584f5effab79ab1964df017f5da250adb421
+      "host game server shop repaired": b398274197895c1063fdb9ba78045428cb82c3f3d399e69cd7ce74d169d18bd0
+
 steps:
   - action: slow
     dur: 5ms

@@ -1,6 +1,7 @@
 # Six directed Player/Monster/NPC pairs for each spell family.
 # Ordinary script casts: player keyboard/mana and autonomous AI are separate.
 # Stock ownership supplies hostility; damage/buffs/packets are not injected.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

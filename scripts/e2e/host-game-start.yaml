@@ -1,3 +1,18 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game start": eac292c4d31f4d41be990b3f53d25b36cb198a6f523bddac75bc003d9f68f91b
+      "host game after walk": 77fb4ece2384cb2a4cee5471969abe92904394698c1f66871eaf97ff871e2484
+      "host game after melee": 877be4cf43ea03e861bb9d5898a27756065f7cfc1873d72cc8f51d2345fa9ff5
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game start": eac292c4d31f4d41be990b3f53d25b36cb198a6f523bddac75bc003d9f68f91b
+      "host game after walk": 77fb4ece2384cb2a4cee5471969abe92904394698c1f66871eaf97ff871e2484
+      "host game after melee": 877be4cf43ea03e861bb9d5898a27756065f7cfc1873d72cc8f51d2345fa9ff5
+
 steps:
   - action: slow
     dur: 5ms

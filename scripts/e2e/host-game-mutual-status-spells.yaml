@@ -1,6 +1,7 @@
 # Bidirectional real casts and natural NPC cast animation, no injected buffs,
 # damage, packets or rendered pixels. Target-only flags/power, stock duration,
 # client effects and natural expiry are observed; player mana/input is not.
+map-profile: arena-lod
 steps:
   - action: slow
     dur: 5ms

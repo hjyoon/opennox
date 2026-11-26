@@ -1,3 +1,4 @@
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

@@ -1,3 +1,18 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game inventory open": 470a23193e791bea066522e951618a5e922adfad6027d82d150384d7dbf4faa1
+      "host game inventory dragging": 04b7ace93db6894cb8461e80e531ebce7d8652cf6fe61b1c4de2f23d69b942f0
+      "host game inventory dropped": 978aa978856d22470ad751389f03b21499b9e4adbd81951ae1ed8bf980e833ff
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game inventory open": f13a2f33bdbcfc866c9d456213fef15a488602033972ad4f1ea5f1f16c140f91
+      "host game inventory dragging": 4af10d80046443f423ca65e90e1e688e245f370bc446c9035f6dd55b90a570ff
+      "host game inventory dropped": dfac652560485edf4cdcf070666c90b5004ec950d4b750cffb63e7a6a8ed501b
+
 steps:
   - action: slow
     dur: 5ms

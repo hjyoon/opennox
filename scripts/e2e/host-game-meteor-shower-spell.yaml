@@ -2,6 +2,7 @@
 # stock NPC MeteorShower action. Placement/durability/WAIT/host ownership are
 # setup. Source/children, RNG, animation frames, HP/packets/pixels and expiry
 # are read-only observations. Screenshots are private diagnostics, not goldens.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

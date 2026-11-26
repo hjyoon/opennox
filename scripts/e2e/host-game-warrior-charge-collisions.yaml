@@ -1,5 +1,6 @@
 # Normal menu startup and keyboard charge against a server-player fixture and
 # existing stock walls. Never inject collision, ability, damage or HUD state.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 1ms

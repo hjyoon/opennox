@@ -1,3 +1,26 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game server shop": 614e365f384223cb698004cd1ac651184e8f790df2cbdd9ef3b7bd84b01f68cb
+      "host game server shop buy mode": 8b2764b07cbe88b3cc7db8cfea44f31173bac5809345a6009c7d56b49b294765
+      "host game server shop purchased": adec3e1fa8778a9b2eb4ebc24f94cbb82250dc06dc56a0166adae791c516a543
+      "host game server shop sell quote": 91804ca73a4b5a65a95781166f37df03845395b44c9d18f4394bea062e1841b1
+      "host game server shop sold": facdd0a8c1e6ea4eb4428d0ae2ece2b2a2ceeca6bd0c22e203f4d2cb924399fa
+      "host game server shop repair quote": 7b0337704a7210988a687f65a682de12750a742178ca69046e20b70b990e2ecf
+      "host game server shop repaired": 9acc475e44c3f4b14312bf1df119095f0e00f7beaf493d4e75462a69fa51705f
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game server shop": ce20c9b5e77d6e322d2ebecbeb9098a8a873cb123c8d2230157d6c81b0494e7e
+      "host game server shop buy mode": 51abc7b22cd6349dfd7006aa567e9751e5fbe0245eb0499c8de466f380d183d8
+      "host game server shop purchased": 8c00e9cc04db458b9a774562b7798a769054c87cc02ae0277cb09b143277281b
+      "host game server shop sell quote": bf29da1b6c5c561e203c0ed0066cfd7d0928d3744bf18b61ea00fcf82846b8c9
+      "host game server shop sold": 754f97624c6ae3af039f5d7d33fcf7dd9de50b7d90cf98f1e38fb8e85d51cc29
+      "host game server shop repair quote": 7a7084d283094efe4b2ef2c599a52eb5833515c1fed59058c976655c752d4529
+      "host game server shop repaired": bba9c930d945b34c532d08a0f719914857082587208d1bd996e2d01086efb532
+
 steps:
   - action: slow
     dur: 5ms

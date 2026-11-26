@@ -1,3 +1,18 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game item amount one": bef52ab2a0a5baa26586191f25bb02a4d1f5807048ec5f24cab628e7e697de0f
+      "host game item amount two": 7e57fb6fd3fd9893a276e9dcadda92825ee890deb870a6814a9c35ce1908e4b0
+      "host game item amount accepted": b9148f88d98dfecc109ec6d3cea7a8fc090877e34fd7eb4fe726e942995b4b54
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game item amount one": c8361baa2d0cf9446e9565c13ab999bc58fed8cf401e96e2665dc2a41f3c4b36
+      "host game item amount two": 82478363cd243ad46dd83bcfbc92ef09efd80180d317f297e80849d820df8360
+      "host game item amount accepted": c714026e0e74c2a054610aac8b990f4a33146cd73f49330cd95bbb743e0db4f9
+
 steps:
   - action: slow
     dur: 5ms

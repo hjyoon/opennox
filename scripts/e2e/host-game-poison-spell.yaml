@@ -2,6 +2,7 @@
 # animated cast. Placement/waiting AI are setup; no Poison or HP is injected.
 # Requested levels do not override the stock mode-selected projectile power.
 # Assert natural application, exact first DOT, client damage/HUD and cure replay.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

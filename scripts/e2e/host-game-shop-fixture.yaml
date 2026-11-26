@@ -1,3 +1,22 @@
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "host game shop fixture": a4a291df3c5e9c4eda2a890a18a914b622f82b4bb5c4b05d7b4074d002683afe
+      "host game shop buy mode": aa0d03caa336902c16b65db13cdc063ce8bc20df096310783b49ab30091d2ef8
+      "host game shop amount": c0a8f2423ac9e9c319270a8a8ee71696119ffb4f5b8a1eccb347bd8ee7e6c9c2
+      "host game shop sell mode": acff216ac39c6389d81cacba1342e7f77800f884d466d90a2d2368b6ceb79135
+      "host game shop repair mode": 7bb56e8a3f6f5fff39a607d26edac13dae1f321de7dcabf3fbdc5e099aa0478a
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "host game shop fixture": 309d2022db5a82337f4471c6e62181ce21186dbebd188a59c6c99a661b20bc22
+      "host game shop buy mode": 3d30f1f27f5d93f246e4db41f1e8d5ca76d4ef0d9e06e8e61142269d4d23e81e
+      "host game shop amount": c699da70d9cb3c5a5e10846ca2687a12db20c67be1995ecbeb024a7bc5147df8
+      "host game shop sell mode": 72e0b1a4864ef4d1e514bdfdbc06e8630a016e6cf33490b0c11259ea7cec2a0c
+      "host game shop repair mode": 44fb5d1c4447487d99798a79967d9d809c7eb39de392fb22eb53c1a8938ba254
+
 steps:
   - action: slow
     dur: 5ms

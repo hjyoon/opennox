@@ -2,6 +2,7 @@
 # spell selector and actual C cast ABI; balance, buffs, drawing and expiry are
 # not injected. Incantation input, mana cost and enemy hit admission are outside
 # this visual scenario.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

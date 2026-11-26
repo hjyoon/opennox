@@ -20,6 +20,11 @@ type meteorCastLegacyServer52D9D0 struct {
 
 func (s *meteorCastLegacyServer52D9D0) S() *server.Server { return s.srv }
 
+func retiredMeteorTypeCache52D9D0() *uint32 {
+	// These tests compare the retired blob bytes with the live native cache.
+	return (*uint32)(unsafe.Pointer(&memmap.BlobByAddr(0x5D4594).Data[2487804]))
+}
+
 func TestMeteorCastNativeServiceUsesCSharedCache52D9D0(t *testing.T) {
 	last, freeLast := alloc.NewHigh(server.Object{TypeInd: 321})
 	defer freeLast()
@@ -39,7 +44,7 @@ func TestMeteorCastNativeServiceUsesCSharedCache52D9D0(t *testing.T) {
 	*caster = server.Object{PosVec: types.Ptf(10, 20)}
 	*arg = server.SpellAcceptArg{Obj: first, Pos: types.Ptf(30, 40)}
 	cache := Get_dword_5d4594_2487804_ptr()
-	retired := memmap.PtrUint32(0x5D4594, 2487804)
+	retired := retiredMeteorTypeCache52D9D0()
 	if cache == retired {
 		t.Fatal("C-owned cache incorrectly aliases the retired PE32 blob")
 	}

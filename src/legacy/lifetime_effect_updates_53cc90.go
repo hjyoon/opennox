@@ -29,7 +29,7 @@ var lifetimeEffectRuntime53CC90 = func() server.LifetimeEffectRuntime53CC90 {
 			if x != nil {
 				panic("fragment damage requires nil exclusion")
 			}
-			C.nox_xxx_mapDamageUnitsAround_4E25B0((*C.float)(unsafe.Pointer(p)), C.float(a), C.float(b), C.int(d), C.int(typ), asObjectC(o), nil)
+			mapDamageUnitsAround4E25B0(p, a, b, int32(d), typ, o, nil)
 		},
 		ValidPosition: func(p types.Pointf) bool { return GetServer().S().Map.ValidIndexPos(p) },
 		Move: func(o *server.Object, p *types.Pointf) {

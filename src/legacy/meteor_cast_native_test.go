@@ -309,7 +309,7 @@ func TestMeteorCastNativePublicPointers(t *testing.T) {
 func TestMeteorCastNativeDefaultBindings(t *testing.T) {
 	showerCache := memmap.PtrUint32(0x5D4594, 2487800)
 	meteorCache := Get_dword_5d4594_2487804_ptr()
-	retiredCache := memmap.PtrUint32(0x5D4594, 2487804)
+	retiredCache := retiredMeteorTypeCache52D9D0()
 	if meteorCache == retiredCache {
 		t.Fatal("Meteor cache aliases retired PE32 storage")
 	}

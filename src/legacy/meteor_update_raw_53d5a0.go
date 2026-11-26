@@ -54,7 +54,7 @@ var meteorRawRuntime53D6E0 = func() server.MeteorRawRuntime53D6E0 {
 			if x != nil {
 				panic("meteor damage requires nil exclusion")
 			}
-			C.nox_xxx_mapDamageUnitsAround_4E25B0((*C.float)(unsafe.Pointer(p)), C.float(a), C.float(b), C.int(d), C.int(typ), asObjectC(o), nil)
+			mapDamageUnitsAround4E25B0(p, a, b, int32(d), typ, o, nil)
 		},
 		DamageWalls: func(r image.Rectangle, p *types.Pointf, a float32, d int, typ object.DamageType, o *server.Object) {
 			// Preserve the original signed bounds; the older C export's

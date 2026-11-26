@@ -201,6 +201,11 @@ return their destination pointers on the C side.
 A Linux ARM64 C caller verified empty inputs, comparison order, and
 byte comparisons that extend past a zero byte.
 
+A Go 1.27.3 callback probe wrote through its input pointer and returned
+the same address. The runtime rejected the return when the Go caller
+used only the cgo call's implicit pin. The same call succeeded with an
+explicit `runtime.Pinner`.
+
 The standard macOS ARM64 profile selects 38 top-level C files with 66
 function bodies. The safe profile selects 39 files and 70 bodies.
 
@@ -281,6 +286,32 @@ decoded field and replays both stock collision points for each wall
 type through the production geometry.
 
 Removing `game5_wall_data.c` leaves 35 top-level legacy C files.
+
+### Radial damage and object velocity float entries
+
+The public C entries for radial damage and object velocity now call Go
+directly on AMD64 and ARM64. Their C declarations retain the native
+pointer, float, and integer arguments. The radial damage probe preserves
+both signs of signaling NaN as well as quiet NaN payloads, negative zero,
+and a subnormal. The original radial damage code compares the radii
+and also moves the encoded words through integer registers.
+
+The 32-bit builds keep the C entries that forward the encoded floats as
+integer words. This preserves the argument before a 386 cgo wrapper can
+quiet a signaling NaN through x87. The Go callers for lifetime effects
+and meteor damage call the shared radial damage service directly.
+
+The Meteor tests compare the retired PE32 cache bytes with the separate
+native cache through their actual owners. The fixtures read the retired
+bytes from the blob so the safe profile's normal runtime checks still
+apply to the gameplay calls.
+
+The 64-bit default build selects 32 C files with 58 function bodies.
+There are 38 fixed-signature adapters, 18 formatting or variadic
+routines, and two indirect damage and sound callback frames. Eight of
+the selected files provide storage. The safe tag adds one source file
+with four memory write adapters. The 32-bit builds also select the two
+float adapters.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

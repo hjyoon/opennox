@@ -55,10 +55,14 @@ func defaultObjectsVelocityRuntime5118A0() server.ObjectsVelocityRuntime5118A0 {
 }
 
 func Nox_xxx_updateObjectsVelocity_5118A0(step float32) {
-	server.UpdateObjectsVelocity5118A0(step, objectsVelocityRuntime5118A0())
+	updateObjectsVelocity5118A0(step)
+}
+
+func updateObjectsVelocity5118A0(step float32) int32 {
+	return server.UpdateObjectsVelocity5118A0(step, objectsVelocityRuntime5118A0())
 }
 
 //export nox_update_objects_velocity_bits_5118a0
 func nox_update_objects_velocity_bits_5118a0(step C.uint32_t) C.int32_t {
-	return C.int32_t(server.UpdateObjectsVelocity5118A0(math.Float32frombits(uint32(step)), objectsVelocityRuntime5118A0()))
+	return C.int32_t(updateObjectsVelocity5118A0(math.Float32frombits(uint32(step))))
 }

@@ -313,6 +313,20 @@ the selected files provide storage. The safe tag adds one source file
 with four memory write adapters. The 32-bit builds also select the two
 float adapters.
 
+### Shop inventory and viewport
+
+Go allocates the 60 inventory cells and the shop viewport in native
+memory. The C header keeps its array expression and cell accessor
+through a typed storage view. The C tests check column-major addresses,
+140-byte and 144-byte cell strides, and viewport identity across
+initialization.
+
+The original lookup at `0x4780A0` gates each 32-code search on the
+cell's count at PE32 offset 4. The native lookup uses that same
+admission field. The tests cover a zero-count cell with a drawable and
+a nonempty cell with a matching code in the final slot. Removing
+`client_shop_abi.c` leaves 34 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

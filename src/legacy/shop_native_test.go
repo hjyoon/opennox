@@ -41,6 +41,12 @@ func TestShopLookupPreservesGameEXETraversalOrder(t *testing.T) {
 	}
 }
 
+func TestShopLookupUsesCountAndStableStorage(t *testing.T) {
+	if !cfixture.ShopStorageContract() {
+		t.Fatal("shop cells must keep their column-major addresses and use count to admit lookup")
+	}
+}
+
 func TestShopNetCodeShiftPreservesGameEXEContract(t *testing.T) {
 	got := cfixture.ShopShiftContract()
 	index := byte(got)

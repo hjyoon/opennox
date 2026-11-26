@@ -11,7 +11,6 @@ package legacy
 
 typedef const nox_draw_viewport_t nox_shop_const_viewport_t;
 
-extern nox_draw_viewport_t nox_shop_draw_viewport;
 extern int nox_win_width, nox_win_height;
 extern nox_window *dword_5d4594_1098576, *dword_5d4594_1098580;
 extern uint32_t dword_5d4594_1098592, dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
@@ -26,7 +25,10 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client/noxrender"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var shopDrawViewport, _ = alloc.New(C.nox_draw_viewport_t{})
 
 var shopImages struct {
 	base, trade, identify, repair *noxrender.Image
@@ -36,12 +38,12 @@ var shopImages struct {
 //export nox_client_shop_viewport_init
 func nox_client_shop_viewport_init(width, height C.int) {
 	w, h := C.intptr_t(width), C.intptr_t(height)
-	C.nox_shop_draw_viewport = C.nox_draw_viewport_t{x2: w, y2: h, width: w, height: h}
+	*shopDrawViewport = C.nox_draw_viewport_t{x2: w, y2: h, width: w, height: h}
 }
 
 //export nox_client_shop_viewport
 func nox_client_shop_viewport() *C.nox_shop_const_viewport_t {
-	return (*C.nox_shop_const_viewport_t)(&C.nox_shop_draw_viewport)
+	return (*C.nox_shop_const_viewport_t)(shopDrawViewport)
 }
 
 //export sub_478110
@@ -62,8 +64,8 @@ func sub_478110() C.int {
 	}
 	nox_gui_winSetFunc96_46B070(inventory, C.sub_478E50)
 	// The game clears startup storage before paths that can destroy drawables.
-	for i := range C.nox_client_shop_inventory {
-		C.nox_client_shop_inventory[i].drawable = nil
+	for i := range shopInventory {
+		shopInventory[i].drawable = nil
 	}
 	sub_478F10()
 	win := asWindow(root)
@@ -217,7 +219,7 @@ func sub_478C80() C.int {
 	currentDrawClipRect(C.int(x0), C.int(y0), C.int(x1-x0), C.int(y1-y0))
 	r := GetClient().R2()
 	fontHeight := r.FontHeight(nil)
-	view := asViewport(&C.nox_shop_draw_viewport)
+	view := asViewport(shopDrawViewport)
 	y := y0 - int(int32(C.dword_5d4594_1107036))
 	for row := 0; row < shopRows && y < y1; row, y = row+1, y+50 {
 		if y <= y0-50 {

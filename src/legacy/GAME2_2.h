@@ -32,7 +32,9 @@ _Static_assert(offsetof(nox_shop_inventory_cell_t, price) == (sizeof(void*) == 4
 _Static_assert(sizeof(nox_shop_inventory_cell_t) == (sizeof(void*) == 4 ? 140 : 144),
 	"wrong native shop cell size!");
 
-extern nox_shop_inventory_cell_t nox_client_shop_inventory[NOX_SHOP_INVENTORY_CELL_COUNT];
+typedef nox_shop_inventory_cell_t nox_shop_inventory_t[NOX_SHOP_INVENTORY_CELL_COUNT];
+nox_shop_inventory_t* nox_client_shop_inventory_storage(void);
+#define nox_client_shop_inventory (*nox_client_shop_inventory_storage())
 
 static inline nox_shop_inventory_cell_t* nox_client_shop_inventory_cell(int row, int column) {
 	return &nox_client_shop_inventory[row + NOX_SHOP_INVENTORY_ROW_COUNT * column];

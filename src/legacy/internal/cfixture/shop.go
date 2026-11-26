@@ -22,12 +22,39 @@ static void nox_test_shop_clear(void) {
 	memset(nox_client_shop_inventory, 0, sizeof(nox_client_shop_inventory));
 }
 
+static int nox_test_shop_storage_contract(void) {
+	nox_shop_inventory_t* storage = nox_client_shop_inventory_storage();
+	for (int col = 0; col < NOX_SHOP_INVENTORY_COLUMN_COUNT; ++col) {
+		for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; ++row) {
+			int index = row + NOX_SHOP_INVENTORY_ROW_COUNT * col;
+			if (nox_client_shop_inventory_cell(row, col) != &(*storage)[index]) {
+				return 0;
+			}
+		}
+	}
+
+	nox_shop_inventory_t saved;
+	memcpy(saved, *storage, sizeof(saved));
+	nox_test_shop_clear();
+	nox_drawable drawable = {0};
+	nox_shop_inventory_cell_t* empty = nox_client_shop_inventory_cell(0, 0);
+	nox_shop_inventory_cell_t* available = nox_client_shop_inventory_cell(1, 0);
+	empty->drawable = &drawable;
+	empty->net_codes[0] = 77;
+	available->count = 1;
+	available->net_codes[31] = 77;
+	int result = storage == nox_client_shop_inventory_storage() && sub_4780A0(77) == available;
+	memcpy(*storage, saved, sizeof(saved));
+	return result;
+}
+
 static uintptr_t nox_test_shop_lookup_round_trip(uintptr_t drawable_value) {
 	uint32_t old_active = dword_5d4594_1098624;
 	nox_test_shop_clear();
 	dword_5d4594_1098624 = 1;
 	nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(7, 4);
 	cell->drawable = (nox_drawable*)drawable_value;
+	cell->count = 1;
 	cell->net_codes[17] = 0x1234ABCDu;
 	uintptr_t result = (uintptr_t)sub_478080(0x1234ABCDu);
 	dword_5d4594_1098624 = old_active;
@@ -43,6 +70,7 @@ static uintptr_t nox_test_shop_lookup_order(void) {
 	nox_shop_inventory_cell_t* second = nox_client_shop_inventory_cell(1, 0);
 	first->drawable = (nox_drawable*)(uintptr_t)0x1111u;
 	second->drawable = (nox_drawable*)(uintptr_t)0x2222u;
+	first->count = second->count = 1;
 	first->net_codes[31] = 77;
 	second->net_codes[0] = 77;
 	uintptr_t result = (uintptr_t)sub_4780A0(77)->drawable;
@@ -74,9 +102,10 @@ static size_t nox_test_shop_codes_offset(void) { return offsetof(nox_shop_invent
 static size_t nox_test_shop_price_offset(void) { return offsetof(nox_shop_inventory_cell_t, price); }
 
 static int nox_test_shop_viewport_contract(void) {
+	const nox_draw_viewport_t* initial = nox_client_shop_viewport();
 	nox_client_shop_viewport_init(1024, 768);
 	const nox_draw_viewport_t* vp = nox_client_shop_viewport();
-	return vp && vp->x1 == 0 && vp->y1 == 0 && vp->x2 == 1024 && vp->y2 == 768 &&
+	return vp && vp == initial && vp->x1 == 0 && vp->y1 == 0 && vp->x2 == 1024 && vp->y2 == 768 &&
 		vp->field_4 == 0 && vp->field_5 == 0 && vp->field_6 == 0 && vp->field_7 == 0 &&
 		vp->width == 1024 && vp->height == 768 && vp->field_10 == 0 && vp->field_11 == 0 &&
 		vp->field_12 == 0;
@@ -226,6 +255,10 @@ func ShopLookupRoundTrip(value uintptr) uintptr {
 	return uintptr(C.nox_test_shop_lookup_round_trip(C.uintptr_t(value)))
 }
 
+func ShopStorageContract() bool {
+	return C.nox_test_shop_storage_contract() != 0
+}
+
 func ShopLookupOrder() uintptr {
 	return uintptr(C.nox_test_shop_lookup_order())
 }
@@ -269,9 +302,10 @@ func InventoryTradeNetCodeContract() (first, second uint32) {
 }
 
 func ClearShopCells() func() {
-	old := C.nox_client_shop_inventory
-	C.nox_client_shop_inventory = [C.NOX_SHOP_INVENTORY_CELL_COUNT]C.nox_shop_inventory_cell_t{}
-	return func() { C.nox_client_shop_inventory = old }
+	cells := C.nox_client_shop_inventory_storage()
+	old := *cells
+	*cells = C.nox_shop_inventory_t{}
+	return func() { *cells = old }
 }
 
 func ClearInventoryCells() func() {

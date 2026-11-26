@@ -18,6 +18,8 @@ import "C"
 import (
 	"slices"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const (
@@ -28,10 +30,18 @@ const (
 
 type shopInventoryCell = C.nox_shop_inventory_cell_t
 
+// C callers keep cell addresses across stock changes and shop resets.
+var shopInventory, _ = alloc.New(C.nox_shop_inventory_t{})
+
+//export nox_client_shop_inventory_storage
+func nox_client_shop_inventory_storage() *C.nox_shop_inventory_t {
+	return shopInventory
+}
+
 func shopRoot() *nox_window { return C.dword_5d4594_1098576 }
 
 func shopCell(row, col int) *shopInventoryCell {
-	return &C.nox_client_shop_inventory[row+shopRows*col]
+	return &shopInventory[row+shopRows*col]
 }
 
 //export sub_478080
@@ -50,7 +60,7 @@ func sub_4780A0(code C.uint32_t) *shopInventoryCell {
 	for row := range shopRows {
 		for col := range shopCols {
 			cell := shopCell(row, col)
-			if cell.drawable == nil {
+			if cell.count == 0 {
 				continue
 			}
 			for _, stored := range &cell.net_codes {
@@ -84,8 +94,8 @@ func nox_gui_shop_state(mode, count *C.uint32_t) C.int {
 	}
 	if count != nil {
 		var total C.uint32_t
-		for i := range C.nox_client_shop_inventory {
-			total += C.nox_client_shop_inventory[i].count
+		for i := range shopInventory {
+			total += shopInventory[i].count
 		}
 		*count = total
 	}

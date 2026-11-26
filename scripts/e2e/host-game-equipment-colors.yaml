@@ -60,10 +60,9 @@ steps:
   - action: wait
     dt: 120
     name: settle after server options
-  - action: esc
-    name: close server options before inventory shortcuts
-  - action: wait
-    dt: 30
+  - action: assert-escape-menu
+    active: false
+    name: verify gameplay before using inventory shortcuts
   - action: grant-engage-item
     item: Sword
     modifier: FireProtect1

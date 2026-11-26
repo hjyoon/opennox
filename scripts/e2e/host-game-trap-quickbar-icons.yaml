@@ -45,10 +45,9 @@ steps:
     y: 380
   - action: wait
     dt: 120
-  - action: esc
-    name: close server options before testing gameplay shortcuts
-  - action: wait
-    dt: 30
+  - action: assert-escape-menu
+    active: false
+    name: verify gameplay before testing the quickbar
   - action: set-quickbar-spell
     spell: 27
     slot: 0

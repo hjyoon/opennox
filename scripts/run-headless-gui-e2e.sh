@@ -109,15 +109,18 @@ cleanup_runtime_data() {
 }
 trap cleanup_runtime_data EXIT
 
+data_excludes=(! -iname save ! -iname nox.cfg ! -iname opennox.yml ! -iname nc.obj ! -iname maps)
+# Balance-sensitive stock scenarios use gamedata.bin from the supplied assets.
+if awk '/^stock-gamedata:[[:space:]]*true([[:space:]]*(#.*)?)?$/ { found = 1; exit } END { exit !found }' "$scenario"; then
+	data_excludes+=(! -iname gamedata.yml)
+fi
 while IFS= read -r -d '' source_path; do
 	entry_name="$(basename "$source_path")"
 	case "$entry_name" in
 	[Bb][Aa][Nn].[Tt][Xx][Tt]) cp -pL "$source_path" "$runtime_data_dir/$entry_name" ;;
 	*) ln -s "$source_path" "$runtime_data_dir/$entry_name" ;;
 	esac
-done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
-	! -iname save ! -iname nox.cfg ! -iname opennox.yml \
-	! -iname nc.obj ! -iname maps -print0)
+done < <(find "$data_dir" -mindepth 1 -maxdepth 1 "${data_excludes[@]}" -print0)
 mkdir "$runtime_data_dir/Save"
 mkdir "$runtime_data_dir/maps"
 while IFS= read -r -d '' source_map_path; do

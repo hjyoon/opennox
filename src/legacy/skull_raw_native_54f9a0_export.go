@@ -10,7 +10,6 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME4_3.h"
 #include "GAME5.h"
-static double skull_raw_balance_54f9a0(void){return nox_xxx_gamedataGetFloat_419D40("ArrowTrapDamage");}
 */
 import "C"
 
@@ -35,16 +34,16 @@ func skullRawRuntime54F9A0() server.SkullRawRuntime54F9A0 {
 		return *skullRawOriginalRuntimeOverride54F9A0
 	}
 	return server.SkullRawRuntime54F9A0{
-		Resolve: func(name string) uint32 { return uint32(C.nox_xxx_getNameId_4E3AA0(internCStr(name))) },
+		Resolve: func(name string) uint32 { return uint32(nox_xxx_getNameId_4E3AA0(internCStr(name))) },
 		New: func(id uint32) *server.Object {
-			return asObjectS(C.nox_xxx_newObjectWithTypeInd_4E3450(C.int(int32(id))))
+			return GetServer().S().NewObjectByTypeInd(int(int32(id)))
 		},
 		Create: func(projectile, owner *server.Object, position types.Pointf, extra uint32) {
-			C.nox_xxx_createAt_4DAA50(asObjectC(projectile), asObjectC(owner), C.float(position.X), C.float(position.Y))
+			nox_xxx_createAt_4DAA50(asObjectC(projectile), asObjectC(owner), C.float(position.X), C.float(position.Y))
 		},
-		Balance: func() float64 { return float64(C.skull_raw_balance_54f9a0()) },
+		Balance: func() float64 { return GetServer().S().Balance.Float("ArrowTrapDamage") },
 		Audio: func(id uint32, source *server.Object) {
-			C.nox_xxx_aud_501960(C.int(int32(id)), asObjectC(source), 0, 0)
+			nox_xxx_aud_501960(int32(id), asObjectC(source), 0, 0)
 		},
 		TrapFX: func(position *types.Pointf, variant uint32) {
 			server.SendArrowTrapFXNative5238A0(position, byte(variant), pointFXRuntimeForCall522FF0())
@@ -53,15 +52,15 @@ func skullRawRuntime54F9A0() server.SkullRawRuntime54F9A0 {
 			GetServer().S().Map.EachObjInRect(rect, func(candidate *server.Object) bool { callback(candidate, source); return true })
 		},
 		Enemy: func(source, candidate *server.Object) uint32 {
-			return uint32(C.nox_xxx_unitIsEnemyTo_5330C0(asObjectC(source), asObjectC(candidate)))
+			return uint32(nox_xxx_unitIsEnemyTo_5330C0(asObjectC(source), asObjectC(candidate)))
 		},
 		MapCheck: func(candidate, source *server.Object) uint32 {
-			return uint32(C.nox_xxx_mapCheck_537110(asObjectC(candidate), asObjectC(source)))
+			return uint32(nox_xxx_mapCheck_537110(asObjectC(candidate), asObjectC(source)))
 		},
 		Front: func(source *server.Object, direction int32, candidate *server.Object) uint32 {
 			return uint32(C.nox_server_testTwoPointsAndDirection_4E6E50((*C.float2)(unsafe.Pointer(&source.PosVec)), C.int(direction), (*C.float2)(unsafe.Pointer(&candidate.PosVec))))
 		},
-		FPS: func() uint32 { return uint32(C.gameFPS()) },
+		FPS: gameFPS,
 		DirectionComponent: func(direction int16, component uint32) float32 {
 			return *(*float32)(memmap.Ptr(uintptr(int64(0x5b6658) + int64(direction)*8 + int64(component)*4)))
 		},

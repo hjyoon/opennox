@@ -1048,6 +1048,18 @@ The remaining adapters include native indirect calls, mixed pointer
 and scalar results, unaligned native loads and stores, CRT integration,
 and regression probes.
 
+### Cloud and trap services
+
+The Polyp and Troll death paths use the Go object type registry and
+balance table for their poison clouds. The shooting trap reads its
+damage from the same Go balance table. The five retired Cgo helpers
+forwarded type requests and double-valued balance requests. The
+callbacks keep their original call order and native object pointers.
+The linked-entry reduction reaches 35 with this change. Production C
+entry tests passed on macOS ARM64 with strict Cgo checking and on Linux
+ARM64 PIE. The four gameplay replays cover Polyp death, the Troll
+cloud and its damage ticks, and the shooting trap.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

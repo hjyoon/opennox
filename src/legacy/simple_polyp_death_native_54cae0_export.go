@@ -8,8 +8,6 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4.h"
 #include "GAME5.h"
-static uint32_t polyp_raw_resolve_54cb10(void) {return (uint32_t)nox_xxx_getNameId_4E3AA0("ToxicCloud");}
-static double polyp_raw_balance_54cb10(void) {return nox_xxx_gamedataGetFloat_419D40("ToxicCloudLifetime");}
 */
 import "C"
 
@@ -27,10 +25,10 @@ func simplePolypRawRuntime54CAE0() server.SimpleObjectDeathRuntime54CAE0 {
 	}
 	return server.SimpleObjectDeathRuntime54CAE0{
 		Audio: func(id uint32, source *server.Object) {
-			C.nox_xxx_aud_501960(C.int(int32(id)), asObjectC(source), 0, 0)
+			nox_xxx_aud_501960(int32(id), asObjectC(source), 0, 0)
 		},
 		DelayedDelete: func(source *server.Object) {
-			C.nox_xxx_delayedDeleteObject_4E5CC0(asObjectC(source))
+			nox_xxx_delayedDeleteObject_4E5CC0(asObjectC(source))
 		},
 	}
 }
@@ -48,15 +46,15 @@ func polypRawRuntime54CB10() server.PolypDeathRawRuntime54CB10 {
 	}
 	return server.PolypDeathRawRuntime54CB10{
 		SimpleObjectDeathRuntime54CAE0: simplePolypRawRuntime54CAE0(),
-		Resolve:                        func() uint32 { return uint32(C.polyp_raw_resolve_54cb10()) },
+		Resolve:                        func() uint32 { return uint32(GetServer().S().Types.IndByID("ToxicCloud")) },
 		New: func(id uint32) *server.Object {
-			return asObjectS(C.nox_xxx_newObjectWithTypeInd_4E3450(C.int(int32(id))))
+			return GetServer().S().NewObjectByTypeInd(int(int32(id)))
 		},
 		Create: func(cloud, owner *server.Object, position types.Pointf, extra uint32) {
-			C.nox_xxx_createAt_4DAA50(asObjectC(cloud), asObjectC(owner), C.float(position.X), C.float(position.Y))
+			nox_xxx_createAt_4DAA50(asObjectC(cloud), asObjectC(owner), C.float(position.X), C.float(position.Y))
 		},
-		Balance: func() float64 { return float64(C.polyp_raw_balance_54cb10()) },
-		FPS:     func() uint32 { return uint32(C.gameFPS()) },
+		Balance: func() float64 { return GetServer().S().Balance.Float("ToxicCloudLifetime") },
+		FPS:     gameFPS,
 	}
 }
 

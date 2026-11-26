@@ -4,6 +4,26 @@
 # assert-quest-minion it is the minimum number of live, native monsters.
 # assert-quest-generators reads native caps against the stock balance; it does
 # not initialize, strengthen or repair a generator.
+# Stock selector sequence with the original monster WAIT draws.
+map-profile: quest-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "Quest sequence stage 5 score": f6c65886b87d9f29d13c44ea07aa672ab5cd7d572a4e1babd2b135d08544d54f
+      "Quest sequence stage 5 gameplay": 9ec4d054f181a4c2223e9db1fe160dcabfb61395604d87f85a93298e0b285e97
+      "Quest sequence stage 6 gameplay": 13f896b598f7198f4b1e1a1f0a0d74bb8db0e4add0941d01585586248e20e1ff
+      "Quest sequence stage 20 score": d482ea27902e747f0b17136c2a5d5bd2274f697d90c5ee38985cc80f9a01a3bc
+      "Quest sequence stage 20 gameplay": 8a3818cd0aee1c62fdbbf33ac8e9f932e0e08e841c800320aa87752fdbdd3d05
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "Quest sequence stage 5 score": 1ae2813d8e394d8a713d06d00338f3b977ea540c3354143a45de0fd0ad4e0388
+      "Quest sequence stage 5 gameplay": 1ab17df6db0cc5eb4d85eace027c25213fb5ef30ad450d69d77eca839378b25f
+      "Quest sequence stage 6 gameplay": 7e51ba436b8bb4d306bb063a980313661cb898919d17516f28c9b3d4bae0bc8a
+      "Quest sequence stage 20 score": d3a40ee5f9b855175bff3542a8640b9ac5c82a2ad41688b47d85de21bc9a0a28
+      "Quest sequence stage 20 gameplay": c401e44924e3796ce9a3cd10ab051906d7704feef56bb52166e4d78c785568e3
+
 steps:
   - action: slow
     dur: 1ms
@@ -82,7 +102,7 @@ steps:
     name: dismiss Quest sequence stage 3 briefing
   - action: assert-quest-stage
     count: 3
-    map: g_lotdd
+    map: g_mines
     name: Quest sequence stage 3 playable
   - action: assert-quest-generators
     count: 3
@@ -99,7 +119,7 @@ steps:
     name: dismiss Quest sequence stage 4 briefing
   - action: assert-quest-stage
     count: 4
-    map: g_swamp
+    map: g_crypts
     name: Quest sequence stage 4 playable
   - action: assert-quest-generators
     count: 4
@@ -145,7 +165,7 @@ steps:
     name: dismiss Quest sequence stage 6 briefing
   - action: assert-quest-stage
     count: 6
-    map: g_cryptd
+    map: g_lotdd
     name: Quest sequence stage 6 playable
   - action: assert-quest-generators
     count: 6
@@ -164,7 +184,7 @@ steps:
     name: dismiss Quest sequence stage 7 briefing
   - action: assert-quest-stage
     count: 7
-    map: g_lava
+    map: g_swamp
     name: Quest sequence stage 7 playable
   - action: assert-quest-generators
     count: 7
@@ -181,7 +201,7 @@ steps:
     name: dismiss Quest sequence stage 8 briefing
   - action: assert-quest-stage
     count: 8
-    map: g_mines
+    map: g_lava
     name: Quest sequence stage 8 playable
   - action: assert-quest-generators
     count: 8
@@ -215,7 +235,7 @@ steps:
     name: dismiss Quest sequence stage 10 briefing
   - action: assert-quest-stage
     count: 10
-    map: g_forest
+    map: g_mines
     name: Quest sequence stage 10 playable
   - action: assert-quest-generators
     count: 10
@@ -232,7 +252,7 @@ steps:
     name: dismiss Quest sequence stage 11 briefing
   - action: assert-quest-stage
     count: 11
-    map: g_lotdd
+    map: g_crypts
     name: Quest sequence stage 11 playable
   - action: assert-quest-generators
     count: 11
@@ -249,7 +269,7 @@ steps:
     name: dismiss Quest sequence stage 12 briefing
   - action: assert-quest-stage
     count: 12
-    map: g_temple
+    map: g_swamp
     name: Quest sequence stage 12 playable
   - action: assert-quest-generators
     count: 12
@@ -266,7 +286,7 @@ steps:
     name: dismiss Quest sequence stage 13 briefing
   - action: assert-quest-stage
     count: 13
-    map: g_swamp
+    map: g_foresd
     name: Quest sequence stage 13 playable
   - action: assert-quest-generators
     count: 13
@@ -283,7 +303,7 @@ steps:
     name: dismiss Quest sequence stage 14 briefing
   - action: assert-quest-stage
     count: 14
-    map: g_mines
+    map: g_lava
     name: Quest sequence stage 14 playable
   - action: assert-quest-generators
     count: 14
@@ -300,7 +320,7 @@ steps:
     name: dismiss Quest sequence stage 15 briefing
   - action: assert-quest-stage
     count: 15
-    map: g_lava
+    map: g_temple
     name: Quest sequence stage 15 playable
   - action: assert-quest-generators
     count: 15
@@ -317,7 +337,7 @@ steps:
     name: dismiss Quest sequence stage 16 briefing
   - action: assert-quest-stage
     count: 16
-    map: g_cryptd
+    map: g_lotdd
     name: Quest sequence stage 16 playable
   - action: assert-quest-generators
     count: 16
@@ -334,7 +354,7 @@ steps:
     name: dismiss Quest sequence stage 17 briefing
   - action: assert-quest-stage
     count: 17
-    map: g_temple
+    map: g_castld
     name: Quest sequence stage 17 playable
   - action: assert-quest-generators
     count: 17
@@ -351,7 +371,7 @@ steps:
     name: dismiss Quest sequence stage 18 briefing
   - action: assert-quest-stage
     count: 18
-    map: g_swamp
+    map: g_forest
     name: Quest sequence stage 18 playable
   - action: assert-quest-generators
     count: 18
@@ -368,7 +388,7 @@ steps:
     name: dismiss Quest sequence stage 19 briefing
   - action: assert-quest-stage
     count: 19
-    map: g_forest
+    map: g_swamp
     name: Quest sequence stage 19 playable
   - action: assert-quest-generators
     count: 19
@@ -387,7 +407,7 @@ steps:
     name: dismiss Quest sequence stage 20 briefing
   - action: assert-quest-stage
     count: 20
-    map: g_castle
+    map: g_crypts
     name: Quest sequence stage 20 playable
   - action: assert-quest-generators
     count: 20

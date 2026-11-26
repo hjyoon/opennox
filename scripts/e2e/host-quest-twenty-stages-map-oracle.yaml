@@ -5,6 +5,7 @@
 # All menu inputs, walks, exits, native generator caps and minion assertions
 # retain the existing twenty-stage flow. Frames are diagnostic private PNGs,
 # not replacement screenshot goldens. No map/history/RNG result is supplied.
+map-profile: quest-stock
 steps:
   - action: observe-quest-map-selection
     name: observe original native Quest map selections

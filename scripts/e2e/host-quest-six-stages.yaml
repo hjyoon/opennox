@@ -2,6 +2,22 @@
 # exit is a fixture; map/stage flags, minions, rewards, HP, packets and UI state
 # are never injected. count in assert-quest-stage is the expected stage; in
 # assert-quest-minion it is the minimum number of live, native monsters.
+# Stock selector sequence with the original monster WAIT draws.
+map-profile: quest-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      "Quest sequence stage 5 score": f6c65886b87d9f29d13c44ea07aa672ab5cd7d572a4e1babd2b135d08544d54f
+      "Quest sequence stage 5 gameplay": 9ec4d054f181a4c2223e9db1fe160dcabfb61395604d87f85a93298e0b285e97
+      "Quest sequence stage 6 gameplay": 13f896b598f7198f4b1e1a1f0a0d74bb8db0e4add0941d01585586248e20e1ff
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      "Quest sequence stage 5 score": 1ae2813d8e394d8a713d06d00338f3b977ea540c3354143a45de0fd0ad4e0388
+      "Quest sequence stage 5 gameplay": 1ab17df6db0cc5eb4d85eace027c25213fb5ef30ad450d69d77eca839378b25f
+      "Quest sequence stage 6 gameplay": 7e51ba436b8bb4d306bb063a980313661cb898919d17516f28c9b3d4bae0bc8a
+
 steps:
   - action: slow
     dur: 1ms
@@ -74,7 +90,7 @@ steps:
     name: dismiss Quest sequence stage 3 briefing
   - action: assert-quest-stage
     count: 3
-    map: g_lotdd
+    map: g_mines
     name: Quest sequence stage 3 playable
   - action: walk-quest
     ang: 0.5
@@ -88,7 +104,7 @@ steps:
     name: dismiss Quest sequence stage 4 briefing
   - action: assert-quest-stage
     count: 4
-    map: g_swamp
+    map: g_crypts
     name: Quest sequence stage 4 playable
   - action: walk-quest
     ang: 1
@@ -128,7 +144,7 @@ steps:
     name: dismiss Quest sequence stage 6 briefing
   - action: assert-quest-stage
     count: 6
-    map: g_cryptd
+    map: g_lotdd
     name: Quest sequence stage 6 playable
   - action: walk-quest
     ang: 1

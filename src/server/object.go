@@ -2040,7 +2040,12 @@ func (obj *Object) SetColor(ind int, cl color.Color) {
 			obj.Nox_xxx_setNPCColor_4E4A90(byte(ind), &ccl)
 		}
 	} else if obj.Class().Has(object.ClassPlayer) {
-		panic("not implemented")
+		if obj.UpdateData == nil {
+			return
+		}
+		if p := obj.ControllingPlayer(); p != nil {
+			p.setMaterialColor(ind, cl)
+		}
 	}
 }
 

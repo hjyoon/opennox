@@ -108,12 +108,11 @@ func AsColor3(cl color.Color) Color3 {
 	case color.Gray:
 		return Color3{R: cl.Y, G: cl.Y, B: cl.Y}
 	}
-	r, g, b, _ := cl.RGBA()
-	return Color3{
-		R: byte(r >> 16),
-		G: byte(g >> 16),
-		B: byte(b >> 16),
+	rgb := color.NRGBAModel.Convert(cl).(color.NRGBA)
+	if rgb.A < 128 {
+		return Color3{}
 	}
+	return Color3{R: rgb.R, G: rgb.G, B: rgb.B}
 }
 
 type Color3 struct {

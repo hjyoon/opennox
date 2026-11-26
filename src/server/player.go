@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"image/color"
 	"unsafe"
 
 	noxcolor "github.com/opennox/libs/color"
@@ -1051,6 +1052,36 @@ func (p *Player) Sub422140() {
 
 func (p *Player) InitColors() {
 	p.Colors.Set(&p.Info().Colors)
+}
+
+// setMaterialColor indexes the six player sprite materials in draw order,
+// matching the zero-based NPC script API. The third material is runtime-only.
+// Packed profile colors are used by both player saves and the join packet.
+func (p *Player) setMaterialColor(ind int, cl color.Color) {
+	info := &p.Info().Colors
+	var stored *types.RGB
+	var material *uint32
+	switch ind {
+	case 0:
+		stored, material = &info.Hair, &p.Colors.Hair
+	case 1:
+		stored, material = &info.Goatee, &p.Colors.Goatee
+	case 2:
+		material = &p.Colors.UnkColor
+	case 3:
+		stored, material = &info.Beard, &p.Colors.Beard
+	case 4:
+		stored, material = &info.Mustache, &p.Colors.Mustache
+	case 5:
+		stored, material = &info.Skin, &p.Colors.Skin
+	default:
+		return
+	}
+	rgb := AsColor3(cl)
+	if stored != nil {
+		*stored = types.RGB(rgb)
+	}
+	*material = noxcolor.RGB5551Color(rgb.R, rgb.G, rgb.B).Color32()
 }
 
 type PlayerUnitColors struct {

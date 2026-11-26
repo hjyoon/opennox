@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guimsg.h"
 #include "common__object__modifier.h"
 
-extern uint32_t dword_5d4594_1062484;
 
 static int nox_client_format_inventory_title(wchar2_t* dst, const wchar2_t* format,
 	const wchar2_t* name, const wchar2_t* level) {
@@ -225,13 +224,13 @@ func sub_467750(code C.int, rejected C.char) C.int {
 			return 0
 		}
 		C.nox_xxx_printCentered_445490(clientInventoryString("Weapon2CantUse", 5379))
-		if code := C.dword_5d4594_1062484; code != 0 {
+		if code := clientItemStorage.secondary_previous; code != 0 {
 			if cell, _ := inventoryLookupNativeSearch(uint32(code)); cell != nil {
 				nox_xxx_clientSetAltWeapon_461550(cell)
 				return 0
 			}
 		}
 	}
-	C.dword_5d4594_1062484 = 0
+	clientItemStorage.secondary_previous = 0
 	return 0
 }

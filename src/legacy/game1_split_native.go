@@ -22,11 +22,6 @@ void nox_client_gui_set_flag_815132(int v);
 char* nox_client_getChatMap_49FF40(short* pos);
 void nox_xxx_setMouseBounds_430A70(int x1, int x2, int y1, int y2);
 int nox_xxx_isQuest_4D6F50(void);
-extern uint32_t dword_5d4594_815044;
-extern uint32_t dword_5d4594_815748;
-extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
-extern uint32_t dword_587000_93156, dword_5d4594_825736;
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -77,7 +72,7 @@ func nox_xxx_xferGetBuffer_446520(index C.int) unsafe.Pointer {
 func nox_client_xxx_switchChatMap_43B510() {
 	C.nox_client_gui_set_flag_815132(0)
 	C.nox_xxx_setGameFlags_40A4D0(5)
-	C.nox_xxx_setMouseBounds_430A70(0, C.nox_win_width-1, 0, C.nox_win_height-1)
+	C.nox_xxx_setMouseBounds_430A70(0, clientDisplayStorage.width-1, 0, clientDisplayStorage.height-1)
 	position := C.uint32_t(memmap.Uint32(0x5D4594, 814916))
 	name := GoString(C.nox_client_getChatMap_49FF40((*C.short)(unsafe.Pointer(&position))))
 	if strings.Contains(name, ".") {
@@ -99,7 +94,7 @@ func nox_client_xxx_switchChatMap_43B510() {
 }
 
 //export sub_43B6D0
-func sub_43B6D0() C.int { return C.int(C.dword_5d4594_815044) }
+func sub_43B6D0() C.int { return C.int(clientItemStorage.menu_word_815044) }
 
 //export sub_43BDB0
 func sub_43BDB0() C.int { return C.int(memmap.Uint32(0x5D4594, 815092)) }
@@ -148,13 +143,13 @@ func sub_43C650() C.int {
 	*memmap.PtrUint64(0x5D4594, 815220+uintptr(index)*8) = delta
 	*memmap.PtrUint64(0x5D4594, 815756) = (memmap.Uint64(0x5D4594, 815756) + 1) % 60
 	*memmap.PtrUint64(0x5D4594, 815740) = now
-	C.dword_5d4594_815748++
-	return C.int(C.dword_5d4594_815748)
+	clientItemStorage.frame_sample_count++
+	return C.int(clientItemStorage.frame_sample_count)
 }
 
 //export sub_43CEB0
 func sub_43CEB0() {
-	n := int32(C.dword_5d4594_815748)
+	n := int32(clientItemStorage.frame_sample_count)
 	if n >= 60 {
 		n = 60
 	}
@@ -170,77 +165,80 @@ func sub_43CEB0() {
 }
 
 func game1MusicFrame(index uint32) unsafe.Pointer {
-	return memmap.PtrOff(0x5D4594, 815772+uintptr(16*(index+6*uint32(C.dword_5d4594_816372))))
+	return memmap.PtrOff(0x5D4594, 815772+uintptr(16*(index+6*uint32(clientAudioStorage.music_word_816372))))
 }
 
 //export sub_43DA80
 func sub_43DA80() C.int {
-	if int32(C.dword_5d4594_816368) < 6 {
-		sub_43DD10(game1MusicFrame(uint32(C.dword_5d4594_816368)))
-		C.dword_5d4594_816368++
+	if int32(clientAudioStorage.music_word_816368) < 6 {
+		sub_43DD10(game1MusicFrame(uint32(clientAudioStorage.music_word_816368)))
+		clientAudioStorage.music_word_816368++
 		return 1
 	}
-	C.dword_5d4594_816368 = 6
+	clientAudioStorage.music_word_816368 = 6
 	return 0
 }
 
 //export sub_43DAD0
 func sub_43DAD0() {
-	if C.dword_5d4594_816368 > 0 {
-		C.dword_5d4594_816368--
-		sub_43D9E0(game1MusicFrame(uint32(C.dword_5d4594_816368)))
+	if clientAudioStorage.music_word_816368 > 0 {
+		clientAudioStorage.music_word_816368--
+		sub_43D9E0(game1MusicFrame(uint32(clientAudioStorage.music_word_816368)))
 	}
-	C.dword_5d4594_816368 = 0
+	clientAudioStorage.music_word_816368 = 0
 }
 
 //export sub_43DB20
-func sub_43DB20() C.int { return C.int(C.dword_5d4594_816368) }
+func sub_43DB20() C.int { return C.int(clientAudioStorage.music_word_816368) }
 
 //export sub_43DB30
-func sub_43DB30(value C.int) C.int { C.dword_5d4594_816368 = C.uint32_t(value); return value }
+func sub_43DB30(value C.int) C.int {
+	clientAudioStorage.music_word_816368 = C.uint32_t(value)
+	return value
+}
 
 //export sub_43DB40
 func sub_43DB40(index C.int) *C.char { return (*C.char)(game1MusicFrame(uint32(index))) }
 
 //export sub_43DB60
 func sub_43DB60() C.int {
-	if int32(C.dword_5d4594_816372) >= 3 {
-		C.dword_5d4594_816372 = 3
+	if int32(clientAudioStorage.music_word_816372) >= 3 {
+		clientAudioStorage.music_word_816372 = 3
 		return 3
 	}
 	sub_43DA80()
-	level := uint32(C.dword_5d4594_816372)
-	*memmap.PtrUint32(0x5D4594, 816076+uintptr(4*level)) = uint32(C.dword_5d4594_816368)
-	C.dword_5d4594_816368 = 0
-	C.dword_5d4594_816372++
-	return C.int(C.dword_5d4594_816372)
+	level := uint32(clientAudioStorage.music_word_816372)
+	*memmap.PtrUint32(0x5D4594, 816076+uintptr(4*level)) = uint32(clientAudioStorage.music_word_816368)
+	clientAudioStorage.music_word_816368 = 0
+	clientAudioStorage.music_word_816372++
+	return C.int(clientAudioStorage.music_word_816372)
 }
 
 //export sub_43DBA0
 func sub_43DBA0() {
-	if C.dword_5d4594_816372 > 0 {
-		C.dword_5d4594_816372--
-		C.dword_5d4594_816368 = C.uint32_t(memmap.Uint32(0x5D4594, 816076+uintptr(4*uint32(C.dword_5d4594_816372))))
+	if clientAudioStorage.music_word_816372 > 0 {
+		clientAudioStorage.music_word_816372--
+		clientAudioStorage.music_word_816368 = C.uint32_t(memmap.Uint32(0x5D4594, 816076+uintptr(4*uint32(clientAudioStorage.music_word_816372))))
 		sub_43DAD0()
 	} else {
-		C.dword_5d4594_816372 = 0
+		clientAudioStorage.music_word_816372 = 0
 	}
 }
 
 //export sub_43DC00
-func sub_43DC00() { C.dword_587000_93156 = 0 }
+func sub_43DC00() { clientAudioStorage.music_enabled = 0 }
 
 //export sub_43DC10
 func sub_43DC10() C.int {
 	result := musicAudioDriverLegacyMirror()
 	if result != 0 {
-		C.dword_587000_93156 = 1
+		clientAudioStorage.music_enabled = 1
 	}
 	return C.int(result)
 }
 
 //export sub_43DC30
-func sub_43DC30() C.int { return C.int(C.dword_587000_93156) }
+func sub_43DC30() C.int { return C.int(clientAudioStorage.music_enabled) }
 
 var shellBackdrop *nox_window
 
@@ -251,7 +249,7 @@ func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 		if h := game1SplitTestHooks; h != nil && h.NewBackdrop != nil {
 			w = h.NewBackdrop()
 		} else {
-			w = C.nox_window_new(nil, 552, 0, 0, C.nox_win_width, C.nox_win_height, nil)
+			w = C.nox_window_new(nil, 552, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, nil)
 		}
 		storeWindowReference(&shellBackdrop, w)
 		if w != nil {
@@ -338,7 +336,7 @@ func sub_445450() *wchar2_t {
 		*(*uint32)(game1CenterMemory(0x5D4594, 824440+644*i)) = 0
 		*(*byte)(game1CenterMemory(0x5D4594, 824444+644*i)) = 0
 	}
-	C.dword_5d4594_825736 = 0
+	clientItemStorage.center_message_index = 0
 	return result
 }
 
@@ -346,7 +344,7 @@ func sub_445450() *wchar2_t {
 func nox_xxx_drawMessageLines_445530() C.int {
 	height, top := game1CenterViewport()
 	y := 3*height/4 + top - 15
-	index := uint32(C.dword_5d4594_825736)
+	index := uint32(clientItemStorage.center_message_index)
 	result := C.int(0)
 	for line := 0; line < 3; line++ {
 		result = C.int(game1CenterFrame())
@@ -356,7 +354,7 @@ func nox_xxx_drawMessageLines_445530() C.int {
 		game1CenterColor(uint32(renderPalette.black))
 		text := (*wchar2_t)(game1CenterMemory(0x5D4594, 823804+uintptr(644*index)))
 		width := game1CenterWidth(text)
-		x := (int32(C.nox_win_width) - width) / 2
+		x := (int32(clientDisplayStorage.width) - width) / 2
 		for shadow := uintptr(0); shadow < 4; shadow++ {
 			sx := *(*int32)(game1CenterMemory(0x587000, 107848+8*shadow))
 			sy := *(*int32)(game1CenterMemory(0x587000, 107852+8*shadow))

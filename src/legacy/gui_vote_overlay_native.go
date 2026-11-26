@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME3_1.h"
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -18,7 +17,7 @@ var voteOverlayRoot *nox_window
 func sub_4C3390() C.int {
 	image := nox_xxx_gLoadImg_42F970(internCStr("VoteInProgress"))
 	*memmap.PtrPtr(0x5D4594, 1321220) = unsafe.Pointer(image)
-	root := nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2-100, 50, 50, nil)
+	root := nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2-100, 50, 50, nil)
 	storeWindowReference(&voteOverlayRoot, root)
 	nox_xxx_wndSetIcon_46AE60(root, image)
 	nox_window_set_all_funcs(root, nil, C.sub_4C3410, nil)

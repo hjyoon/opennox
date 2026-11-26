@@ -359,7 +359,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 		return 0
 	}
 	nox_book_anim_set_end(bookDetails.backward, unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0))
-	bookUI.list_window = C.nox_window_new(nil, 1196, 5, C.nox_win_height-323, 285, 168, nil)
+	bookUI.list_window = C.nox_window_new(nil, 1196, 5, clientDisplayStorage.height-323, 285, 168, nil)
 	root := bookUI.list_window
 	asWindow(root).AddCleanup(func() {
 		if bookUI.list_window == root {

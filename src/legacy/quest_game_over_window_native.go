@@ -4,7 +4,6 @@ package legacy
 #include "client__gui__guiggovr.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width, nox_win_height;
 
 static void nox_quest_over_format_count(wchar2_t* out, const wchar2_t* format, int count) {
 	nox_swprintf(out, format, count);
@@ -27,7 +26,7 @@ func sub_49B4B0(raw *C.ushort) C.int {
 	nox_xxx_clientPlaySoundSpecial_452D80(1007, 100)
 	var width, height C.int
 	nox_window_get_size(questGameOverWindow, &width, &height)
-	nox_window_setPos_46A9B0(questGameOverWindow, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
+	nox_window_setPos_46A9B0(questGameOverWindow, int32(clientDisplayStorage.width/2-width/2), int32(clientDisplayStorage.height/2-height/2))
 	words := unsafe.Slice((*byte)(unsafe.Pointer(raw)), 8)
 	const source = `C:\NoxPost\src\client\Gui\GUIGGOvr.c`
 	counts := [...]struct {

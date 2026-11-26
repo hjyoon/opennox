@@ -54,7 +54,7 @@ func sub_4C0630(win *nox_window, event C.int, packed, unused C.uintptr_t) C.int 
 		if C.nox_xxx_wndGetCaptureMain_46AE00() == tradeRoot() {
 			C.nox_xxx_wndClearCaptureMain_46ADE0(tradeRoot())
 		}
-		if C.dword_5d4594_1320968 != nil && C.dword_5d4594_1320972 != nil {
+		if clientItemStorage.trade_dragged != nil && clientItemStorage.trade_source != nil {
 			finishTradeDrag(pos)
 		}
 		return 1
@@ -68,7 +68,7 @@ func startTradeDrag(slot *tradeClientSlot, pos C.int2) {
 	nox_xxx_setKeybTimeout_4160D0(2)
 	*(*C.int2)(g2ServerMem(1319276)) = pos
 	drawable := slot.drawable
-	C.dword_5d4594_1320968 = drawable
+	clientItemStorage.trade_dragged = drawable
 	drawable.field_32 = slot.item_ids[slot.count-1]
 	slot.item_ids[slot.count-1] = 0
 	nox_xxx_cursorSetDraggedItem_477690(drawable)
@@ -76,7 +76,7 @@ func startTradeDrag(slot *tradeClientSlot, pos C.int2) {
 	if slot.count == 0 {
 		slot.drawable = nil
 	}
-	C.dword_5d4594_1320972 = slot
+	clientItemStorage.trade_source = slot
 	*g2ServerWord(1320304) = 0
 	nox_xxx_clientPlaySoundSpecial_452D80(791, 100)
 }
@@ -88,7 +88,7 @@ func tradeShortClick(pos C.int2, key C.uchar) bool {
 }
 
 func finishTradeDrag(pos C.int2) {
-	drawable := C.dword_5d4594_1320968
+	drawable := clientItemStorage.trade_dragged
 	switch *g2ServerWord(1320304) {
 	case 0:
 		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4)) || tradeShortClick(pos, 2) {
@@ -99,15 +99,15 @@ func finishTradeDrag(pos C.int2) {
 			nox_xxx_clientTrade_0_4C08E0(drawable)
 		}
 	}
-	slot := C.dword_5d4594_1320972
-	drawable = C.dword_5d4594_1320968
+	slot := clientItemStorage.trade_source
+	drawable = clientItemStorage.trade_dragged
 	slot.item_ids[slot.count] = drawable.field_32
 	slot.count++
 	if slot.count == 1 {
 		slot.drawable = drawable
 	}
 	nox_xxx_cursorResetDraggedItem_4776A0()
-	C.dword_5d4594_1320968, C.dword_5d4594_1320972 = nil, nil
+	clientItemStorage.trade_dragged, clientItemStorage.trade_source = nil, nil
 }
 
 //export sub_4C0C90
@@ -179,8 +179,8 @@ func sub_4C1410() C.int {
 	g2ServerText(tradeChild(3712), 16385, ptr, 0)
 	result := g2ServerText(tradeChild(3713), 16385, ptr, 0)
 	tradeLocalAccepted, tradeRemoteAccepted = 0, 0
-	C.dword_5d4594_1320968, C.dword_5d4594_1320972 = nil, nil
-	C.dword_5d4594_1320932, C.dword_5d4594_1320936 = nil, nil
+	clientItemStorage.trade_dragged, clientItemStorage.trade_source = nil, nil
+	clientItemStorage.trade_local, clientItemStorage.trade_remote = nil, nil
 	return C.int(result)
 }
 

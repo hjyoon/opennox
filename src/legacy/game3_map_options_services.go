@@ -19,9 +19,7 @@ package legacy
 #include "client__video__draw_common.h"
 #include "input.h"
 #include "operators.h"
-extern void *dword_587000_127004, *dword_587000_93164;
 extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
-extern int nox_win_width;
 int nox_gui_menu_proc_ext(int);
 void nox_video_setMenuOptions(nox_window*);
 void nox_common_writecfgfile(char*);
@@ -282,7 +280,7 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 	if C.nox_client_advVideoOpts_New_4CB590(root) == 0 {
 		return 0
 	}
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 351), C.dword_587000_127004, image, lit) {
+	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 351), clientAudioStorage.effects_timer, image, lit) {
 		return 0
 	}
 	inGameOptionsWindows.audioChecks[0] = C.nox_xxx_wndGetChildByID_46B0C0(root, 361)
@@ -292,7 +290,7 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 	}
 	inGameOptionsWindows.audioChecks[1] = C.nox_xxx_wndGetChildByID_46B0C0(root, 362)
 	game3IngameOptionsChecked(inGameOptionsWindows.audioChecks[1], C.sub_44D990())
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 353), C.dword_587000_93164, image, lit) {
+	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 353), clientAudioStorage.music_timer, image, lit) {
 		return 0
 	}
 	inGameOptionsWindows.audioChecks[2] = C.nox_xxx_wndGetChildByID_46B0C0(root, 363)
@@ -331,7 +329,7 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 		x = memmap.Int32(0x587000, off+8)
 		off += 16
 	}
-	left := (int(C.nox_win_width) - int(root.width)) / 2
+	left := (int(clientDisplayStorage.width) - int(root.width)) / 2
 	C.nox_window_setPos_46A9B0(root, C.int(left), 0)
 	C.nox_window_setPos_46A9B0(back, C.int(left), 0)
 	C.nox_window_set_hidden(C.nox_xxx_wndGetChildByID_46B0C0(root, 371), 0)
@@ -390,7 +388,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 				C.sub_43DC00()
 			} else {
 				C.sub_43DC10()
-				C.sub_486320(C.dword_587000_93164, C.int(*(*uint32)(unsafe.Add(C.dword_587000_93164, 4))>>16))
+				C.sub_486320(clientAudioStorage.music_timer, C.int(*(*uint32)(unsafe.Add(clientAudioStorage.music_timer, 4))>>16))
 			}
 		case 371:
 			sub_4AD9B0(0)
@@ -409,7 +407,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 		value := C.int(int32(arg))
 		switch id {
 		case 351:
-			C.sub_486320(C.dword_587000_127004, value)
+			C.sub_486320(clientAudioStorage.effects_timer, value)
 			if event == 16393 && active != nil && active.parent == sender {
 				return 0
 			}
@@ -432,7 +430,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 				game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[1])
 			}
 		case 353:
-			C.sub_486320(C.dword_587000_93164, value)
+			C.sub_486320(clientAudioStorage.music_timer, value)
 			if arg != 0 {
 				if C.sub_43DC30() == 0 {
 					game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[2])

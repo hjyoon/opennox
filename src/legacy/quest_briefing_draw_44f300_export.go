@@ -3,8 +3,6 @@ package legacy
 /*
 #include "client__gui__guibrief.h"
 #include "common__strman.h"
-extern int nox_win_width;
-extern int nox_win_height;
 */
 import "C"
 
@@ -31,7 +29,7 @@ func questBriefingDrawNativeHooks44F300(draw *gui.WindowData) questBriefingDrawH
 		resetParticles: Nox_client_resetScreenParticles_431510,
 		hideBook:       func(v int32) int32 { return int32(Nox_xxx_bookHideMB_45ACA0(int(v))) },
 		prepare:        Sub_446780,
-		dimensions:     func() (int32, int32) { return int32(C.nox_win_width), int32(C.nox_win_height) },
+		dimensions:     func() (int32, int32) { return int32(clientDisplayStorage.width), int32(clientDisplayStorage.height) },
 		loadText: func(key, source string, line int32) *uint16 {
 			return (*uint16)(unsafe.Pointer(C.nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(source), C.int(line))))
 		},

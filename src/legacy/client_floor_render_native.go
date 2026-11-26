@@ -6,7 +6,6 @@ package legacy
 #include "client__draw__staticdraw.h"
 #include "client__draw__parse__parse.h"
 
-extern uint32_t dword_5d4594_3798800, dword_5d4594_3798804, dword_5d4594_3798808;
 */
 import "C"
 
@@ -70,11 +69,11 @@ func fillFloorSpan(buffer []byte, offset int, color uint32, size int) {
 func floorTileBase(x, y int32, shift uint8) int {
 	dx := int32(legacyWords.dword_5d4594_3798836) + x - int32(legacyWords.dword_5d4594_3798820)
 	dy := int32(legacyWords.dword_5d4594_3798840) + y - int32(legacyWords.dword_5d4594_3798824)
-	return int(C.dword_5d4594_3798804)*int(dy) + int(dx<<shift)
+	return int(clientDisplayStorage.tile_stride)*int(dy) + int(dx<<shift)
 }
 
 func floorTileRow(base, row int, shift uint8) (offset, size int) {
-	offset = base + row*int(C.dword_5d4594_3798804) + int(memmap.Uint32(0x973CE0, 192+4*uintptr(row)))<<shift
+	offset = base + row*int(clientDisplayStorage.tile_stride) + int(memmap.Uint32(0x973CE0, 192+4*uintptr(row)))<<shift
 	size = int(memmap.Uint32(0x973CE0, 384+4*uintptr(row))) << shift
 	return offset, size
 }
@@ -133,7 +132,7 @@ func nox_xxx_drawTexEdgesProbably_481900(pos *C.int2, edge *C.nox_tile_list_node
 		return
 	}
 	tile := &tiles.definitions[edge.field_0]
-	images := C.nox_edge_images_native[edge.field_2]
+	images := clientDisplayStorage.edge_images[edge.field_2]
 	if tile.data_32 == nil || images == nil {
 		return
 	}
@@ -218,8 +217,8 @@ func sub_476AE0(view *nox_draw_viewport_t, dr *nox_drawable) {
 	x := int32(read(pixels[8:])) + int32(dr.pos.x) - int32(byte(dr.field_0))
 	y := int32(read(pixels[12:])) + int32(dr.pos.y) - int32(dr.field_26_1) - int32(dr.z) - int32(byte(dr.field_0>>8))
 	originX, originY := int32(legacyWords.dword_5d4594_3798820), int32(legacyWords.dword_5d4594_3798824)
-	if x < originX || x+width >= originX+int32(C.dword_5d4594_3798800) ||
-		y < originY || y+height >= originY+int32(C.dword_5d4594_3798808) {
+	if x < originX || x+width >= originX+int32(clientDisplayStorage.tile_width) ||
+		y < originY || y+height >= originY+int32(clientDisplayStorage.tile_height) {
 		dr.field_86 = 0
 		return
 	}
@@ -258,6 +257,6 @@ func sub_476AE0(view *nox_draw_viewport_t, dr *nox_drawable) {
 			}
 			remaining -= count
 		}
-		rowOffset += int(C.dword_5d4594_3798804)
+		rowOffset += int(clientDisplayStorage.tile_stride)
 	}
 }

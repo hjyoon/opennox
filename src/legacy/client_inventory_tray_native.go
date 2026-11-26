@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
 
-extern uint32_t dword_5d4594_1062488;
 */
 import "C"
 
@@ -199,7 +198,7 @@ func clientInventoryDrawTrayCell(cell *C.nox_inventory_cell_t, x, y int32, buffe
 		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_EQUIP_RING], x, y)
 	case cell.field_136 != 0:
 		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_QUICK_ITEM_RING], x, y)
-	case cell.field_4 == C.dword_5d4594_1062488:
+	case cell.field_4 == clientItemStorage.equipped_item_code:
 		if alt := clientInventoryAlternateCell(); alt != nil && alt.field_0 != nil &&
 			alt.field_0.flags28&0x1000000 != 0 && alt.field_0.flags29&0xc != 0 {
 			nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_QUICK_ITEM_RING], x, y)

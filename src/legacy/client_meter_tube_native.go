@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guimeter.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -138,7 +137,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	}
 	meterState.font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
 	meterState.poisoned, meterState.iconPhase, meterState.iconTicks = 0, 0, 0
-	width, height := C.nox_win_width, C.nox_win_height
+	width, height := clientDisplayStorage.width, clientDisplayStorage.height
 	*memmap.PtrT[[6]uint32](0x5D4594, 1091908) = [6]uint32{0, 0, uint32(width), uint32(height), 0, 0}
 	*memmap.PtrUint32(0x5D4594, 1091940) = uint32(width)
 	*memmap.PtrUint32(0x5D4594, 1091944) = uint32(height)

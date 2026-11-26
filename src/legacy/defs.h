@@ -26,7 +26,6 @@
 
 #define NOX_PLAYER_MAX_LEVEL 10
 
-extern void* nox_edge_images_native[64];
 
 #include "common/platform/platform.h"
 #include "memmap.h"

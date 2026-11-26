@@ -53,14 +53,7 @@
 #include "audio_ambient_native_45a9b0.h"
 void sub_4537F0(void);
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_5d4594_1045420;
-extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_830864;
-extern void* dword_587000_127004;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern int nox_win_width;
-extern int nox_win_height;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 // Keep the source location used by the C window dispatch macro.

@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1062488;
 */
 import "C"
 
@@ -78,7 +77,7 @@ func sub_467980() C.int {
 	sub_462740()
 	inventoryState.mode = 0
 	nox_xxx_clientSetAltWeapon_461550(nil)
-	C.dword_5d4594_1062488 = 0
+	clientItemStorage.equipped_item_code = 0
 	clear(inventoryStateNativeHeads()[:])
 	legacyPointers.inventoryDragItem = nil
 	legacyWords.dword_5d4594_1062496 = 0

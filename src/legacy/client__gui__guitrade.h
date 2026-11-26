@@ -25,10 +25,6 @@ _Static_assert(offsetof(nox_gui_trade_slot, total_cost) == sizeof(void*) + 33 * 
 _Static_assert(sizeof(nox_gui_trade_slot) == (sizeof(void*) == 4 ? 140 : 144),
 	"trade slot must use one native pointer and fixed-width scalar fields");
 
-extern nox_gui_trade_slot* dword_5d4594_1320932;
-extern nox_gui_trade_slot* dword_5d4594_1320936;
-extern nox_drawable* dword_5d4594_1320968;
-extern nox_gui_trade_slot* dword_5d4594_1320972;
 
 nox_gui_trade_slot* nox_gui_trade_slot_at(int remote, int index);
 void nox_gui_trade_slots_reset(void);

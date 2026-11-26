@@ -10,7 +10,9 @@
 #include "floor_tile_storage.h"
 #define nox_tile_def_cnt (nox_floor_tile_storage()->count)
 #define nox_tile_defs_arr (nox_floor_tile_storage()->definitions)
-extern uint32_t dword_5d4594_251572;
+#include "client_native_storage.h"
+#define nox_edge_images_native (nox_client_display_storage()->edge_images)
+#define dword_5d4594_251572 (nox_client_display_storage()->edge_count)
 static int thing_reference_nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {
 	if (nox_tile_def_cnt >= 176) {
 		return 0;

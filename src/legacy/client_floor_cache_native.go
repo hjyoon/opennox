@@ -4,8 +4,6 @@ package legacy
 #include "GAME2_2.h"
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
-extern uint32_t dword_5d4594_3798800, dword_5d4594_3798808;
-extern uint32_t dword_5d4594_3798812, dword_5d4594_3798816;
 typedef void (*nox_floor_tile_draw_fn)(int2*, nox_video_bag_image_t*, uint16_t);
 typedef void (*nox_floor_edge_draw_fn)(int2*, nox_tile_list_node_t*);
 
@@ -136,7 +134,7 @@ func nox_xxx_tileCheckRedrawMB_482570(vp *nox_draw_viewport_t) C.int {
 	if vp == nil || C.ptr_5D4594_2650668 == nil {
 		return 0
 	}
-	left, top, right, bottom := floorVisibleCells(vp, int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816), worldTileCapacity411160())
+	left, top, right, bottom := floorVisibleCells(vp, int32(clientDisplayStorage.tile_columns), int32(clientDisplayStorage.tile_rows), worldTileCapacity411160())
 	for y := max(0, top); y < bottom; y++ {
 		for x := max(0, left); x < right; x++ {
 			cell := mapgenFloorCell(x, y)
@@ -159,7 +157,7 @@ func nox_xxx_tileDrawImpl_4826A0(vp *nox_draw_viewport_t) C.int {
 	clear(memmap.PtrT[[176]uint32](0x85B3FC, 228)[:])
 	clear(memmap.PtrT[[64]uint32](0x5D4594, 2523980)[:])
 
-	left, top, right, bottom := floorVisibleCells(vp, int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816), worldTileCapacity411160())
+	left, top, right, bottom := floorVisibleCells(vp, int32(clientDisplayStorage.tile_columns), int32(clientDisplayStorage.tile_rows), worldTileCapacity411160())
 	if left < 0 || top < 0 || left >= right || top >= bottom {
 		return 0
 	}
@@ -182,8 +180,8 @@ func nox_xxx_tileDrawMB_481C20_A(vp *nox_draw_viewport_t, world C.int) {
 	worldX := int32(world)
 	left, origin := int32(legacyWords.dword_5d4594_3798828), int32(legacyWords.dword_5d4594_3798820)
 	top, originY := int32(legacyWords.dword_5d4594_3798832), int32(legacyWords.dword_5d4594_3798824)
-	width, height := int32(C.dword_5d4594_3798800), int32(C.dword_5d4594_3798808)
-	columns, rows := int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816)
+	width, height := int32(clientDisplayStorage.tile_width), int32(clientDisplayStorage.tile_height)
+	columns, rows := int32(clientDisplayStorage.tile_columns), int32(clientDisplayStorage.tile_rows)
 	dx, dy := int32(legacyWords.dword_5d4594_3798836), int32(legacyWords.dword_5d4594_3798840)
 	var column, screenX int32
 	if worldX >= origin+23 {
@@ -242,8 +240,8 @@ func nox_xxx_tileDrawMB_481C20_B(vp *nox_draw_viewport_t, world C.int) {
 	worldY := int32(world)
 	top, origin := int32(legacyWords.dword_5d4594_3798832), int32(legacyWords.dword_5d4594_3798824)
 	left, originX := int32(legacyWords.dword_5d4594_3798828), int32(legacyWords.dword_5d4594_3798820)
-	height, dy := int32(C.dword_5d4594_3798808), int32(legacyWords.dword_5d4594_3798840)
-	columns, rows := int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816)
+	height, dy := int32(clientDisplayStorage.tile_height), int32(legacyWords.dword_5d4594_3798840)
+	columns, rows := int32(clientDisplayStorage.tile_columns), int32(clientDisplayStorage.tile_rows)
 	var row, screenY int32
 	if worldY >= origin+23 {
 		bottom := nox_getBackbufHeight() + worldY

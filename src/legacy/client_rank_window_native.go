@@ -6,7 +6,6 @@ package legacy
 
 typedef const wchar2_t rank_const_text_t;
 extern uint32_t dword_8531A0_2572;
-extern int nox_win_width;
 */
 import "C"
 
@@ -153,7 +152,7 @@ func clientRankMeasureColumns() *[5]int32 {
 	columns := memmap.PtrT[[5]int32](0x5D4594, 1084036)
 	measure := func(text *wchar2_t) int32 {
 		var width C.int
-		nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, int32(C.nox_win_width))
+		nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, int32(clientDisplayStorage.width))
 		return int32(width)
 	}
 	columns[0] = 80

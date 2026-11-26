@@ -4,8 +4,9 @@ package cfixture
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
 #define nox_client_inventory_grid_1050020 (*nox_inventory_grid_storage())
-extern uintptr_t dword_5d4594_1062480;
-extern uint32_t dword_5d4594_1062484;
+#include "client_native_storage.h"
+#define dword_5d4594_1062480 (nox_client_item_storage()->secondary_selected)
+#define dword_5d4594_1062484 (nox_client_item_storage()->secondary_previous)
 static void* secondary_grid_base_198(void) { return nox_client_inventory_grid_1050020; }
 static void secondary_grid_layout_198(size_t* out) {
     out[0]=sizeof(nox_inventory_cell_t); out[1]=NOX_INVENTORY_CELLS_MAX;

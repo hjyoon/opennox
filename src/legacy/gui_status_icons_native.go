@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width, nox_win_height;
 int sub_48C9F0(nox_window* win, void* draw);
 */
 import "C"
@@ -21,7 +20,7 @@ var chatStatusIcon, observerStatusIcon *nox_window
 func clientStatusIcon(image string, imageSlot uintptr, aboveCenter C.int) *nox_window {
 	slot := memmap.PtrPtr(0x5D4594, imageSlot)
 	*slot = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr(image)))
-	window := nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2-aboveCenter, 50, 50, nil)
+	window := nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2-aboveCenter, 50, 50, nil)
 	nox_xxx_wndSetIcon_46AE60(window, (*nox_video_bag_image_t)(*slot))
 	return window
 }

@@ -11,9 +11,9 @@ package cfixture
 #include "client__gui__guiinv.h"
 #include "client_ui_words.h"
 
-extern uint32_t dword_5d4594_1107036;
-extern uintptr_t dword_5d4594_1062480;
-extern uint32_t dword_5d4594_1062484;
+#include "client_native_storage.h"
+#define dword_5d4594_1062480 (nox_client_item_storage()->secondary_selected)
+#define dword_5d4594_1062484 (nox_client_item_storage()->secondary_previous)
 #define nox_client_inventory_grid_1050020 (*nox_inventory_grid_storage())
 
 static void nox_test_shop_clear(void) {
@@ -317,5 +317,5 @@ func ClearInventoryCells() func() {
 }
 
 func ShopViewWords() (active, scroll *uint32) {
-	return (*uint32)(&C.nox_client_ui_words_storage().shop_active), (*uint32)(&C.dword_5d4594_1107036)
+	return (*uint32)(&C.nox_client_ui_words_storage().shop_active), (*uint32)(&C.nox_client_item_storage().shop_scroll)
 }

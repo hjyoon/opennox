@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 
-extern int nox_win_width, nox_win_height;
 extern uint32_t dword_8531A0_2572;
 */
 import "C"
@@ -36,7 +35,7 @@ func (m clientMinimapView) projectDebug(x, y float32) [2]int32 {
 }
 
 func drawClientMinimapBackground(top, size int32) {
-	currentDrawClipRect(0, 0, C.nox_win_width, C.nox_win_height)
+	currentDrawClipRect(0, 0, clientDisplayStorage.width, clientDisplayStorage.height)
 	viewportX := int32(nox_draw_getViewport_437250().x1)
 	if viewportX == 0 {
 		nox_client_drawRectFilledAlpha_49CF10(0, top, size, size)
@@ -285,9 +284,9 @@ func nox_xxx_cliDrawMinimap_472600(_ *C.nox_drawable, layer C.int) C.int {
 	if zoom == 0 {
 		return 0
 	}
-	size := int32(C.nox_win_width / 6)
+	size := int32(clientDisplayStorage.width / 6)
 	worldSize := size * zoom / 100
-	top := (int32(C.nox_win_height) - size) / 2
+	top := (int32(clientDisplayStorage.height) - size) / 2
 	camera := GetClient().Viewport().World.Max
 	view := clientMinimapView{
 		originX: int32(camera.X) - worldSize/2,

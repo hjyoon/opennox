@@ -5,7 +5,6 @@ package legacy
 
 typedef const nox_draw_viewport_t wall_const_viewport_t;
 typedef const unsigned char wall_const_byte_t;
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -46,7 +45,7 @@ func nox_xxx_drawWalls_473C10(view *C.nox_draw_viewport_t, data unsafe.Pointer) 
 	if wall.Flags4&0x40 != 0 && (shape == 0 || shape == 1) {
 		spriteShape += 11
 	}
-	left, right := int32(0), int32(C.nox_win_width)
+	left, right := int32(0), int32(clientDisplayStorage.width)
 	if memmap.Uint32(0x587000, 80808) != 0 {
 		var visible bool
 		left, right, spriteShape, visible = clientWallClipSpan(shape, spriteShape, x, y, right)
@@ -106,7 +105,7 @@ func nox_xxx_drawWalls_473C10(view *C.nox_draw_viewport_t, data unsafe.Pointer) 
 		sprite := (*nox_video_bag_image_t)(nox_xxx_getWallSprite_46A3B0(tile, spriteShape, variation, variant))
 		start := (*C.int)(unsafe.Pointer(&first[0]))
 		end := (*C.int)(unsafe.Pointer(&last[0]))
-		nox_xxx_edgeDraw_480EF0(sprite, C.int(x), C.int(y), start, end, C.nox_win_height, C.int(left), C.int(right), 0, mode)
+		nox_xxx_edgeDraw_480EF0(sprite, C.int(x), C.int(y), start, end, clientDisplayStorage.height, C.int(left), C.int(right), 0, mode)
 	} else if sub_47D380(C.int(left), C.int(right)) != 0 {
 		if seeThrough {
 			nox_client_drawEnableAlpha_434560(1)

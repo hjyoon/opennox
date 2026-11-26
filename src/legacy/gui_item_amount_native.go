@@ -6,7 +6,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "noxstring.h"
-extern int nox_win_width, nox_win_height;
 
 _Static_assert(sizeof(nox_gui_item_amount_callback_t) == sizeof(uintptr_t),
 	"item-amount callback must occupy one native pointer slot");
@@ -191,8 +190,8 @@ func nox_gui_itemAmount_init_4BFEF0() C.int {
 	g2ServerEnabled(root, false)
 
 	*g2ServerWord(1319108), *g2ServerWord(1319112) = 0, 0
-	*g2ServerWord(1319116), *g2ServerWord(1319120) = uint32(C.nox_win_width), uint32(C.nox_win_height)
-	*g2ServerWord(1319140), *g2ServerWord(1319144) = uint32(C.nox_win_width), uint32(C.nox_win_height)
+	*g2ServerWord(1319116), *g2ServerWord(1319120) = uint32(clientDisplayStorage.width), uint32(clientDisplayStorage.height)
+	*g2ServerWord(1319140), *g2ServerWord(1319144) = uint32(clientDisplayStorage.width), uint32(clientDisplayStorage.height)
 	*g2ServerWord(1319124), *g2ServerWord(1319128) = 0, 0
 
 	names := [...]string{
@@ -224,7 +223,7 @@ func packedGUIViewport(offset uintptr) noxrender.Viewport {
 
 //export sub_4C0030
 func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
-	C.nox_client_drawRectFilledAlpha_49CF10(0, 0, C.nox_win_width, C.nox_win_height)
+	C.nox_client_drawRectFilledAlpha_49CF10(0, 0, clientDisplayStorage.width, clientDisplayStorage.height)
 	x, y := itemAmountPosition(win)
 	drawImage := func(index int) {
 		nox_client_drawImageAt_47D2C0(itemAmountDialog.images[index], int32(x), int32(y))
@@ -322,11 +321,11 @@ func sub_4C0560(x, y C.int) C.int {
 	C.nox_window_get_size(root, &width, &height)
 	x = max(0, x-C.int(legacyWords.dword_587000_183456))
 	y = max(0, y-C.int(legacyWords.dword_587000_183460))
-	if x+width >= C.nox_win_width {
-		x = C.nox_win_width - width
+	if x+width >= clientDisplayStorage.width {
+		x = clientDisplayStorage.width - width
 	}
-	if y+height >= C.nox_win_height {
-		y = C.nox_win_height - height
+	if y+height >= clientDisplayStorage.height {
+		y = clientDisplayStorage.height - height
 	}
 	return C.int(nox_window_setPos_46A9B0(root, int32(x), int32(y)))
 }

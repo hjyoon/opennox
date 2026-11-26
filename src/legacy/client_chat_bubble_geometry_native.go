@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -19,7 +18,7 @@ func chatBubbleTouchesRect(box *C.int4, left, top, right, bottom C.int) bool {
 
 //export sub_48E000
 func sub_48E000(box *C.int4, drawTail *C.uint32_t) C.bool {
-	width, height := C.nox_win_width, C.nox_win_height
+	width, height := clientDisplayStorage.width, clientDisplayStorage.height
 	if box.field_0 < 0 || box.field_4 < 0 || box.field_8 > width || box.field_C > height {
 		*drawTail = 0
 	}
@@ -120,15 +119,15 @@ func sub_48E480(a, b *C.uint32_t) C.int {
 //export sub_48E530
 func sub_48E530(x, y C.int) C.int {
 	column := C.int(16)
-	if x >= 2*C.nox_win_width/3 {
+	if x >= 2*clientDisplayStorage.width/3 {
 		column = 64
-	} else if x >= C.nox_win_width/3 {
+	} else if x >= clientDisplayStorage.width/3 {
 		column = 32
 	}
-	if y < C.nox_win_height/3 {
+	if y < clientDisplayStorage.height/3 {
 		return column | 1
 	}
-	if y >= 2*C.nox_win_height/3 {
+	if y >= 2*clientDisplayStorage.height/3 {
 		return column | 4
 	}
 	return column | 2

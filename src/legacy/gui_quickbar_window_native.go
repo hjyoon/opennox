@@ -12,8 +12,6 @@ package legacy
 #include "client__gui__guispell.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width;
-extern int nox_win_height;
 */
 import "C"
 
@@ -232,7 +230,7 @@ func nox_xxx_quickBarCreate_45E190() C.int {
 	*memmap.PtrUint32(0x5D4594, 1049480) = 0
 	*memmap.PtrUint8(0x5D4594, 1049488) = 0
 	fontHeight := C.int(nox_xxx_guiFontHeightMB_43F320(nil))
-	x, y := (C.nox_win_width-320)/2, C.nox_win_height-74
+	x, y := (clientDisplayStorage.width-320)/2, clientDisplayStorage.height-74
 	legacyWords.dword_5d4594_1047548, legacyWords.dword_5d4594_1047552 = C.uint32_t(x), C.uint32_t(y)
 	quickbarControls.font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
 	if unsafe.Sizeof(uintptr(0)) == 4 {
@@ -241,7 +239,7 @@ func nox_xxx_quickBarCreate_45E190() C.int {
 	*memmap.PtrUint32(0x587000, 133656) = uint32(x)
 	*memmap.PtrUint32(0x587000, 133660) = uint32(y - 17)
 	*memmap.PtrUint32(0x587000, 133664) = uint32(x + 320)
-	*memmap.PtrUint32(0x587000, 133668) = uint32(C.nox_win_height)
+	*memmap.PtrUint32(0x587000, 133668) = uint32(clientDisplayStorage.height)
 	player := g2qPlayer()
 	if player == nil {
 		return 0

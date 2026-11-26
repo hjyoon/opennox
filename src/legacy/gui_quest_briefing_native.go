@@ -5,8 +5,6 @@ package legacy
 #include "noxstring.h"
 
 extern uintptr_t dword_8531A0_2576;
-extern int nox_win_width;
-extern int nox_win_height;
 
 static inline void nox_briefing_number(wchar2_t* dst, const wchar2_t* format, int value) {
 	nox_swprintf(dst, format, value);
@@ -95,7 +93,7 @@ func briefingContinue(font unsafe.Pointer, blink *C.uint32_t, y, line int32) C.i
 	text := briefingText("GeneralPrint:QuestSplash12", line)
 	var width C.int
 	nox_xxx_drawGetStringSize_43F840(font, text, &width, nil, 0)
-	x := (int32(C.nox_win_width)-C.NOX_DEFAULT_WIDTH)/2 + C.NOX_DEFAULT_WIDTH/2
+	x := (int32(clientDisplayStorage.width)-C.NOX_DEFAULT_WIDTH)/2 + C.NOX_DEFAULT_WIDTH/2
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 	return C.int(nox_xxx_drawString_43F6E0(font, text, x-int32(width)/2, y))
 }
@@ -141,7 +139,7 @@ func drawQuestScoreRow(font unsafe.Pointer, row *questWinRow450770, rank int, x,
 
 //export sub_44E8E0
 func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
-	width, height := int32(C.nox_win_width), int32(C.nox_win_height)
+	width, height := int32(clientDisplayStorage.width), int32(clientDisplayStorage.height)
 	originX := (width - C.NOX_DEFAULT_WIDTH) / 2
 	originY := (height - C.NOX_DEFAULT_HEIGHT) / 2
 	font := draw.font
@@ -211,7 +209,7 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 
 //export sub_44F0F0
 func sub_44F0F0(_ *C.nox_window, draw *C.nox_window_data) C.int {
-	width, height := int32(C.nox_win_width), int32(C.nox_win_height)
+	width, height := int32(clientDisplayStorage.width), int32(clientDisplayStorage.height)
 	font := draw.font
 	var format, stage [256]C.wchar2_t
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))

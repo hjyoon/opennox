@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME2_3.h"
 
-extern int nox_win_width;
-extern int nox_win_height;
 extern uint32_t dword_5d4594_1203836;
 extern uint32_t dword_5d4594_1203840;
 extern uint32_t dword_8531A0_2572;
@@ -76,7 +74,7 @@ func sub_495430() C.int {
 	sub_4345F0(0)
 	nox_xxx_draw_434600(0)
 	ring := memmap.PtrT[[deathFeedCapacity]deathFeedEntry](0x5D4594, 1201428)
-	maxRow := C.uint32_t(C.nox_win_height / 4 / deathFeedRowHeight)
+	maxRow := C.uint32_t(clientDisplayStorage.height / 4 / deathFeedRowHeight)
 	oldest := C.dword_5d4594_1203840
 	for index := oldest; index != C.dword_5d4594_1203836; index = (index + 1) % deathFeedCapacity {
 		if legacyWords.dword_5d4594_1203832 > maxRow {
@@ -148,7 +146,7 @@ func drawDeathFeedEntry(entry *deathFeedEntry) int {
 	width += r.GetStringSizeWrapped(face, assistant, 0).X
 	victimSize := r.GetStringSizeWrapped(face, victim, 0)
 	width += iconSize.X + victimSize.X
-	left := (int(C.nox_win_width) - width - 10) / 2
+	left := (int(clientDisplayStorage.width) - width - 10) / 2
 	top := int(legacyWords.dword_5d4594_1203832) * deathFeedRowHeight
 	r.DrawRectFilledAlpha(left-5, top, width+20, deathFeedRowHeight)
 	textY := top + (deathFeedRowHeight-victimSize.Y)/2

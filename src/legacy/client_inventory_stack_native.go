@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
 
-extern uint32_t dword_5d4594_1062484;
 */
 import "C"
 
@@ -40,9 +39,9 @@ func inventoryCellCodes(cell *C.nox_inventory_cell_t) []C.uint32_t {
 //export nox_xxx_clientSetAltWeapon_461550
 func nox_xxx_clientSetAltWeapon_461550(cell *C.nox_inventory_cell_t) C.int {
 	previous := (*C.nox_inventory_cell_t)(globalStateNativePointer(2))
-	C.dword_5d4594_1062484 = 0
+	clientItemStorage.secondary_previous = 0
 	if previous != nil {
-		C.dword_5d4594_1062484 = previous.field_4
+		clientItemStorage.secondary_previous = previous.field_4
 	}
 	if cell != nil && cell.field_0 == nil {
 		cell = nil

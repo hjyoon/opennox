@@ -3,7 +3,6 @@ package legacy
 /*
 #include "client__gui__guibook.h"
 
-extern int nox_win_width;
 */
 import "C"
 
@@ -61,9 +60,9 @@ func advanceBookReward(x, y *C.float) {
 	velocity.field_4 = C.float(memmap.Float32(0x5D4594, 1046696+offset) - memmap.Float32(0x5D4594, 1046688+offset))
 	nox_xxx_utilNormalizeVector_509F20(velocity)
 	speed := C.float(10)
-	if C.nox_win_width < 1000 {
+	if clientDisplayStorage.width < 1000 {
 		speed = 8
-		if C.nox_win_width < 750 {
+		if clientDisplayStorage.width < 750 {
 			speed = 6
 		}
 	}

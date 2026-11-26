@@ -2,7 +2,7 @@ package cfixture
 
 /*
 #include "defs.h"
-extern uint32_t dword_5d4594_825736;
+#include "client_native_storage.h"
 static uint32_t score_packet_stamp_48ea70(nox_playerInfo* p) { return p->field_2160; }
 static void score_packet_set_stamp_48ea70(nox_playerInfo* p, uint32_t value) { p->field_2160 = value; }
 static size_t score_packet_stamp_offset_48ea70(void) { return offsetof(nox_playerInfo, field_2160); }
@@ -27,9 +27,9 @@ func ScorePacketStampOffset48EA70() int {
 }
 
 func ScorePacketCenteredIndex48EA70() uint32 {
-	return uint32(C.dword_5d4594_825736)
+	return uint32(C.nox_client_item_storage().center_message_index)
 }
 
 func SetScorePacketCenteredIndex48EA70(value uint32) {
-	C.dword_5d4594_825736 = C.uint32_t(value)
+	C.nox_client_item_storage().center_message_index = C.uint32_t(value)
 }

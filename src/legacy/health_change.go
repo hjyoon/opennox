@@ -8,10 +8,11 @@ package legacy
 #include "GAME2_3.h"
 #include "common/alloc/classes/alloc_class.h"
 
-extern void* nox_alloc_healthChange_1301772;
-extern void* dword_5d4594_1301776;
-extern void* dword_5d4594_1301780;
 
+#include "client_native_storage.h"
+#define nox_alloc_healthChange_1301772 (nox_client_display_storage()->health_change_allocator)
+#define dword_5d4594_1301776 (nox_client_display_storage()->health_change_head)
+#define dword_5d4594_1301780 (nox_client_display_storage()->health_change_font)
 static void* nox_test_health_change_saved_allocator;
 static void* nox_test_health_change_saved_head;
 static void* nox_test_health_change_saved_font;

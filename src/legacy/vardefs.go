@@ -9,63 +9,31 @@ package legacy
 #include "server__script__internal.h"
 #include "client_ui_words.h"
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern uintptr_t dword_5d4594_1062480;
-extern uint32_t dword_5d4594_3798804;
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
-extern uint32_t dword_5d4594_816348;
-extern uint32_t dword_5d4594_251572;
-extern uint32_t dword_5d4594_1107036;
 extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_3798808;
 extern uint32_t dword_5d4594_3835396;
-extern uint32_t dword_5d4594_3798816;
 extern uint32_t dword_5d4594_2487524;
-extern void* dword_587000_127004;
-extern uint32_t dword_587000_93156;
-extern uint32_t dword_587000_93160;
-extern uint32_t dword_5d4594_815044;
-extern uint32_t dword_5d4594_816340;
-extern uint32_t dword_5d4594_816368;
-extern void* dword_587000_93164;
-extern nox_drawable* dword_5d4594_1320968;
 extern uint32_t dword_587000_60044;
 extern void* dword_5d4594_251560;
 extern uint32_t dword_5d4594_3484;
-extern void* dword_5d4594_1301776;
 extern uint32_t dword_5d4594_1550916;
-extern uint32_t dword_5d4594_3798800;
-extern uint32_t dword_5d4594_3798812;
 
-extern uint32_t dword_5d4594_588120;
-extern uint32_t dword_5d4594_816372;
-extern nox_gui_trade_slot* dword_5d4594_1320932;
 extern uint32_t dword_5d4594_1203840;
-extern uint32_t dword_5d4594_816356;
 extern uint32_t dword_5d4594_1203836;
-extern void* dword_5d4594_1301780;
 extern uint32_t dword_5d4594_1567928;
 extern uint32_t dword_5d4594_1307720;
 extern uint32_t dword_5d4594_1550912;
-extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_825736;
 extern uint32_t dword_5d4594_2487576;
-extern nox_gui_trade_slot* dword_5d4594_1320972;
 extern uint32_t dword_5d4594_10984;
 extern uint32_t dword_5d4594_2487676;
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_587000_66116;
 extern uint32_t dword_5d4594_1313740;
 extern uint32_t dword_5d4594_2487584;
-extern void* nox_alloc_healthChange_1301772;
-extern nox_gui_trade_slot* dword_5d4594_1320936;
-extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_526276;
-extern uint32_t dword_5d4594_1062484;
 extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_3835372;
-extern uint32_t dword_5d4594_815748;
-extern uint32_t dword_5d4594_1045420;
 extern uint32_t dword_5d4594_1313788;
 extern uint32_t dword_5d4594_3835368;
 extern uint32_t dword_5d4594_2488620;
@@ -83,19 +51,11 @@ extern void* dword_5d4594_1082868;
 
 
 
-extern uint32_t dword_5d4594_815044;
 
-extern uint32_t dword_5d4594_3798800;
-extern uint32_t dword_5d4594_3798804;
-extern uint32_t dword_5d4594_3798808;
-extern uint32_t dword_5d4594_3798812;
-extern uint32_t dword_5d4594_3798816;
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_8531A0_2572;
 extern unsigned int dword_5d4594_1599628;
 
-extern int nox_win_width;
-extern int nox_win_height;
 
 
 */
@@ -125,10 +85,10 @@ func Get_nox_wol_server_result_cnt_815088() int {
 	return int(legacyWords.nox_wol_server_result_cnt_815088)
 }
 func Get_dword_5d4594_815044() int {
-	return int(C.dword_5d4594_815044)
+	return int(clientItemStorage.menu_word_815044)
 }
 func Set_dword_5d4594_815044(v int) {
-	C.dword_5d4594_815044 = C.uint(v)
+	clientItemStorage.menu_word_815044 = C.uint(v)
 }
 func Get_dword_587000_87412() int {
 	return int(legacyWords.dword_587000_87412)
@@ -161,7 +121,7 @@ func Get_dword_587000_122852() unsafe.Pointer {
 	return legacyPointers.dialogTimer
 }
 func Get_dword_587000_93164() unsafe.Pointer {
-	return C.dword_587000_93164
+	return clientAudioStorage.music_timer
 }
 func Get_nox_client_translucentFrontWalls_805844() int {
 	return int(legacyAddressableWords.nox_client_translucentFrontWalls_805844)
@@ -194,16 +154,16 @@ func Get_nox_server_kickQuestPlayerMinVotes_229992() int {
 	return int(voteStorage.minimum_kick)
 }
 func Get_dword_5d4594_816340() int {
-	return int(C.dword_5d4594_816340)
+	return int(clientAudioStorage.music_initialized)
 }
 func Get_dword_587000_93156() int {
-	return int(C.dword_587000_93156)
+	return int(clientAudioStorage.music_enabled)
 }
 func Get_dword_587000_93160() int {
-	return int(C.dword_587000_93160)
+	return int(clientAudioStorage.music_idle)
 }
 func Get_dword_5d4594_816348() int {
-	return int(C.dword_5d4594_816348)
+	return int(clientAudioStorage.music_state)
 }
 
 //export sub_435F60
@@ -535,10 +495,10 @@ func Get_dword_5d4594_1563096() int {
 	return int(legacyWords.dword_5d4594_1563096)
 }
 func Set_nox_win_width(v int) {
-	C.nox_win_width = C.int(v)
+	clientDisplayStorage.width = C.int(v)
 }
 func Set_nox_win_height(v int) {
-	C.nox_win_height = C.int(v)
+	clientDisplayStorage.height = C.int(v)
 }
 func Set_dword_5d4594_823776(v int) {
 	legacyWords.dword_5d4594_823776 = C.uint(v)
@@ -592,19 +552,19 @@ func Set_nox_client_gui_flag_1556112(v int) {
 	legacyWords.nox_client_gui_flag_1556112 = C.uint(v)
 }
 func Set_dword_5d4594_3798812(v int) {
-	C.dword_5d4594_3798812 = C.uint(v)
+	clientDisplayStorage.tile_columns = C.uint(v)
 }
 func Set_dword_5d4594_3798800(v int) {
-	C.dword_5d4594_3798800 = C.uint(v)
+	clientDisplayStorage.tile_width = C.uint(v)
 }
 func Set_dword_5d4594_3798816(v int) {
-	C.dword_5d4594_3798816 = C.uint(v)
+	clientDisplayStorage.tile_rows = C.uint(v)
 }
 func Set_dword_5d4594_3798808(v int) {
-	C.dword_5d4594_3798808 = C.uint(v)
+	clientDisplayStorage.tile_height = C.uint(v)
 }
 func Set_dword_5d4594_3798804(v int) {
-	C.dword_5d4594_3798804 = C.uint(v)
+	clientDisplayStorage.tile_stride = C.uint(v)
 }
 func Set_dword_5d4594_3798820(v int) {
 	legacyWords.dword_5d4594_3798820 = C.uint(v)
@@ -643,10 +603,10 @@ func Set_dword_5d4594_251744(v int) {
 	legacyAddressableWords.dword_5d4594_251744 = C.uint32_t(v)
 }
 func Set_dword_5d4594_816340(v int) {
-	C.dword_5d4594_816340 = C.uint(v)
+	clientAudioStorage.music_initialized = C.uint(v)
 }
 func Set_dword_5d4594_816348(v int) {
-	C.dword_5d4594_816348 = C.uint(v)
+	clientAudioStorage.music_state = C.uint(v)
 }
 func Set_dword_5d4594_1548532(v unsafe.Pointer) {
 	legacyPointers.lastFlagStart = v

@@ -17,14 +17,11 @@ int sub_43F0E0(uint32_t* a1);
 char* sub_413890();
 int sub_486640(void* a1, int a2);
 
-extern void* dword_587000_127004;
-extern uint32_t dword_5d4594_831084;
 
 void sub_43DC00();
 void sub_44D960();
 void sub_453050(void);
 int sub_451850(void* a2, void* a3);
-extern void* dword_587000_93164;
 */
 import "C"
 import (
@@ -284,7 +281,7 @@ func Get_sub_43E8E0() unsafe.Pointer {
 }
 
 func Get_dword_587000_127004() unsafe.Pointer {
-	return C.dword_587000_127004
+	return clientAudioStorage.effects_timer
 }
 
 func Sub_43F0E0(v unsafe.Pointer) int {

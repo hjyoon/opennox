@@ -32,7 +32,6 @@
 
 extern uintptr_t dword_8531A0_2576;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern int nox_win_width, nox_win_height;
 
 typedef struct {
 	uintptr_t player_word;

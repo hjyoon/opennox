@@ -249,9 +249,9 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	bookState.reward_velocity.field_4 = C.float(*memmap.PtrFloat32(0x5D4594, 1046696) - *memmap.PtrFloat32(0x5D4594, 1046688))
 	C.nox_xxx_utilNormalizeVector_509F20(&bookState.reward_velocity)
 	scale := float64(10)
-	if C.nox_win_width < 1000 {
+	if clientDisplayStorage.width < 1000 {
 		scale = 8
-		if C.nox_win_width < 750 {
+		if clientDisplayStorage.width < 750 {
 			scale = 6
 		}
 	}

@@ -8,7 +8,6 @@ package legacy
 #include "GAME3_3.h"
 #include "client__gui__guivote.h"
 #include "noxstring.h"
-extern int nox_win_width;
 */
 import "C"
 
@@ -71,7 +70,7 @@ func sub_48D000_initGuiKick() C.int {
 	}
 	storeWindowReference(&voteWindow.players, g2ServerChild(root, 4320))
 	storeWindowReference(&voteWindow.topics, g2ServerChild(root, 4321))
-	nox_window_setPos_46A9B0(root, (int32(C.nox_win_width)-int32(root.width))/2, int32(root.off_y))
+	nox_window_setPos_46A9B0(root, (int32(clientDisplayStorage.width)-int32(root.width))/2, int32(root.off_y))
 	g2ServerHidden(root, true)
 	legacyWords.dword_5d4594_1197324, legacyWords.dword_5d4594_1197328 = 0, 0
 	sub_48D4A0()

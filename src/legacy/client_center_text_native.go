@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guimsg.h"
 #include "common__system__settings.h"
 
-extern uint32_t dword_5d4594_825736;
 
 static void nox_center_console_text(wchar2_t* format, wchar2_t* text) {
 	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, text);
@@ -27,11 +26,11 @@ func nox_xxx_printCentered_445490(text *C.wchar2_t) {
 	if text == nil {
 		return
 	}
-	index := C.dword_5d4594_825736 + 1
+	index := clientItemStorage.center_message_index + 1
 	if index >= 3 {
 		index = 0
 	}
-	C.dword_5d4594_825736 = index
+	clientItemStorage.center_message_index = index
 	offset := 644 * uintptr(index)
 	destination := (*[centerMessageWords]uint16)(game1CenterMemory(0x5D4594, 823804+offset))
 	alloc.StrCopyZero16P(destination[:], (*uint16)(unsafe.Pointer(text)))

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "client__gui__guispell.h"
 
-extern int nox_win_height;
 */
 import "C"
 
@@ -150,7 +149,7 @@ func nox_xxx_quickbarAddTrap_460EC0(show C.int) *C.uint32_t {
 	if construct == nil || icon == nil || construct.flags&8 != 0 {
 		return (*C.uint32_t)(unsafe.Pointer(construct))
 	}
-	legacyWords.dword_5d4594_1049536 = C.uint32_t(C.nox_win_height + 1)
+	legacyWords.dword_5d4594_1049536 = C.uint32_t(clientDisplayStorage.height + 1)
 	source := internCStr(quickbarStringsFile)
 	var particle *C.nox_screenParticle
 	for range 50 {

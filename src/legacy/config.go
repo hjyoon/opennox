@@ -9,8 +9,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME5_2.h"
 #include "common__system__settings.h"
-extern void* dword_587000_127004;
-extern void* dword_587000_93164;
 */
 import "C"
 

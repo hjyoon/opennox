@@ -5,7 +5,6 @@ package legacy
 #include "memfile.h"
 #include "GAME1.h"
 #include "GAME2.h"
-extern uint32_t dword_5d4594_251572;
 */
 import "C"
 
@@ -20,12 +19,14 @@ var _ = [1]struct{}{}[unsafe.Sizeof(server.TileDef{})-C.sizeof_nox_tileDef_t]
 var _ = [1]struct{}{}[C.sizeof_nox_tileDef_t-unsafe.Sizeof(server.TileDef{})]
 
 func thingTileCountCell411540() *uint32 { return (*uint32)(unsafe.Pointer(&floorTileStorage.count)) }
-func thingEdgeCountCell411850() *uint32 { return (*uint32)(unsafe.Pointer(&C.dword_5d4594_251572)) }
+func thingEdgeCountCell411850() *uint32 {
+	return (*uint32)(unsafe.Pointer(&clientDisplayStorage.edge_count))
+}
 func thingTileOwner411540(i uint32) *server.TileDef {
 	return (*server.TileDef)(unsafe.Pointer(&floorTileStorage.definitions[i]))
 }
 func thingEdgeImageCell411850(i uint32) *unsafe.Pointer {
-	return (*unsafe.Pointer)(unsafe.Pointer(&C.nox_edge_images_native[i]))
+	return (*unsafe.Pointer)(unsafe.Pointer(&clientDisplayStorage.edge_images[i]))
 }
 func thingEdgeBytes411850(i uint32, off uintptr, n int) []byte {
 	return unsafe.Slice((*byte)(memmap.PtrOff(0x85B3FC, off+60*uintptr(i))), n)

@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "noxstring.h"
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -72,8 +71,8 @@ func sub_4C09D0() C.int {
 	nox_gui_trade_slots_reset()
 	copyWideString((*wchar2_t)(g2ServerMem(1319972)), tradeString("TotalValueLabel", 749))
 	*g2ServerWord(1320188), *g2ServerWord(1320192) = 0, 0
-	*g2ServerWord(1320196), *g2ServerWord(1320200) = uint32(C.nox_win_width), uint32(C.nox_win_height)
-	*g2ServerWord(1320220), *g2ServerWord(1320224) = uint32(C.nox_win_width), uint32(C.nox_win_height)
+	*g2ServerWord(1320196), *g2ServerWord(1320200) = uint32(clientDisplayStorage.width), uint32(clientDisplayStorage.height)
+	*g2ServerWord(1320220), *g2ServerWord(1320224) = uint32(clientDisplayStorage.width), uint32(clientDisplayStorage.height)
 	*g2ServerWord(1320204), *g2ServerWord(1320208) = 0, 0
 	for i, name := range [...]string{
 		"TradeBase", "TradeLeftAcceptPushed", "TradeLeftAcceptLit", "TradeRightAcceptLit", "TradeCancelLit", "TradeGold",

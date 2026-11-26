@@ -6,7 +6,8 @@ package cfixture
 #include <string.h>
 #include "game2_audio_native.h"
 #include "game2_audio_reference_452890.h"
-extern void* dword_587000_127004;
+#include "client_native_storage.h"
+#define dword_587000_127004 (nox_client_audio_storage()->effects_timer)
 void *sub_4864A0(void*);
 void sub_486570(void*,void*);
 void sub_486620(void*);

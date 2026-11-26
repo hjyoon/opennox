@@ -11,8 +11,6 @@ package legacy
 
 typedef const nox_draw_viewport_t nox_shop_const_viewport_t;
 
-extern int nox_win_width, nox_win_height;
-extern uint32_t dword_5d4594_1107036;
 */
 import "C"
 
@@ -49,7 +47,7 @@ func nox_client_shop_viewport() *C.nox_shop_const_viewport_t {
 
 //export sub_478110
 func sub_478110() C.int {
-	nox_client_shop_viewport_init(C.nox_win_width, C.nox_win_height)
+	nox_client_shop_viewport_init(clientDisplayStorage.width, clientDisplayStorage.height)
 	root := nox_new_window_from_file(internCStr("Shop.wnd"), C.sub_478480)
 	shopWindow, shopSlider = root, nil
 	if root == nil {
@@ -75,7 +73,7 @@ func sub_478110() C.int {
 	}
 	sub_478F10()
 	win := asWindow(root)
-	win.SetPos(image.Pt(int(C.nox_win_width), int(C.nox_win_height)).Sub(win.Size()))
+	win.SetPos(image.Pt(int(clientDisplayStorage.width), int(clientDisplayStorage.height)).Sub(win.Size()))
 	win.Hide()
 	win.SetEnabled(false)
 
@@ -109,7 +107,7 @@ func sub_478110() C.int {
 //export sub_478480
 func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 	if event == 16393 {
-		C.dword_5d4594_1107036 = shopScrollLimit - C.uint32_t(value)
+		clientItemStorage.shop_scroll = shopScrollLimit - C.uint32_t(value)
 	}
 	if event != 16391 || sub_45D9B0() != 0 {
 		return 0
@@ -144,13 +142,13 @@ func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 			clientUIWords.shop_mode = 2
 		}
 	case 3808:
-		offset := C.dword_5d4594_1107036 - 50
+		offset := clientItemStorage.shop_scroll - 50
 		if int32(offset) < 0 {
 			offset = 0
 		}
 		shopSetScrollOffset(offset - offset%50)
 	case 3809:
-		offset := C.dword_5d4594_1107036 + 50
+		offset := clientItemStorage.shop_scroll + 50
 		if int32(offset) <= int32(shopScrollLimit) {
 			shopSetScrollOffset(offset - offset%50)
 		} else {
@@ -161,7 +159,7 @@ func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 }
 
 func shopSetScrollOffset(offset C.uint32_t) {
-	C.dword_5d4594_1107036 = offset
+	clientItemStorage.shop_scroll = offset
 	g2ServerEvent(shopSlider, 16394, uintptr(shopScrollLimit-offset), 0)
 }
 
@@ -193,8 +191,8 @@ func sub_478650(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 
 //export sub_478970
 func sub_478970(win *nox_window, draw *C.nox_window_data) C.int {
-	x := C.nox_win_width - C.NOX_DEFAULT_WIDTH
-	y := C.nox_win_height - C.NOX_DEFAULT_HEIGHT
+	x := clientDisplayStorage.width - C.NOX_DEFAULT_WIDTH
+	y := clientDisplayStorage.height - C.NOX_DEFAULT_HEIGHT
 	pos := C.int2{field_0: x, field_4: y}
 	r := GetClient().R2()
 	at := image.Pt(int(x), int(y))
@@ -226,7 +224,7 @@ func sub_478C80() C.int {
 	r := GetClient().R2()
 	fontHeight := r.FontHeight(nil)
 	view := asViewport(shopDrawViewport)
-	y := y0 - int(int32(C.dword_5d4594_1107036))
+	y := y0 - int(int32(clientItemStorage.shop_scroll))
 	for row := 0; row < shopRows && y < y1; row, y = row+1, y+50 {
 		if y <= y0-50 {
 			continue
@@ -261,7 +259,7 @@ func sub_478E50(win *nox_window, draw *C.nox_window_data, arg C.uintptr_t) C.int
 	if clientUIWords.shop_mode == 2 {
 		pos := shopMousePosition(arg)
 		col := (uint32(pos.field_0) - *g2ServerWord(1098380)) / 50
-		row := int32(uint32(pos.field_4)-*g2ServerWord(1098384)+uint32(C.dword_5d4594_1107036)) / 50
+		row := int32(uint32(pos.field_4)-*g2ServerWord(1098384)+uint32(clientItemStorage.shop_scroll)) / 50
 		cell := shopCell(int(max(0, min(row, shopRows-1))), int(min(col, shopCols-1)))
 		if cell.count != 0 {
 			cell.drawable.field_32 = cell.net_codes[0]

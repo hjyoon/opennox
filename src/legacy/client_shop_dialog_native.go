@@ -10,7 +10,6 @@ package legacy
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
 
-extern uint32_t dword_5d4594_1107036;
 
 static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
 	nox_swprintf(dst, format, amount);
@@ -114,7 +113,7 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 	if file := legacyPointers.shopDialogFile; file != nil {
 		nox_xxx_playDialogFile_44D900((*byte)(unsafe.Pointer(file)), 100)
 	}
-	C.dword_5d4594_1107036 = 0
+	clientItemStorage.shop_scroll = 0
 	return C.int(g2ServerEvent(shopSlider, 16394, uintptr(shopScrollLimit), 0))
 }
 

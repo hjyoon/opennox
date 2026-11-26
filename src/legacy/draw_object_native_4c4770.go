@@ -7,7 +7,6 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3_1.h"
 #include "client__video__draw_common.h"
-extern int nox_win_width;
 extern uint32_t dword_8531A0_2572;
 */
 import "C"
@@ -58,7 +57,7 @@ func drawObjectWallVisible4C4770(vp *noxrender.Viewport, dr *client.Drawable, wo
 		to.field_4 += 2
 	}
 	var clipped int32
-	cutoff := int32(C.nox_win_width)
+	cutoff := int32(clientDisplayStorage.width)
 	return sub_4C42A0(&from, &to, &clipped, &cutoff) != 0
 }
 

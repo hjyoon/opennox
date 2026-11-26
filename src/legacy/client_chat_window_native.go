@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 
 #include "client_ui_words.h"
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -123,7 +122,7 @@ func sub_46A5D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(unsafe.Pointer(&data.Text[0])), &textWidth, nil, 0)
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(unsafe.Pointer(&data.Text[256])), &prefixWidth, nil, 0)
 	width := min(320, max(100, textWidth+prefixWidth+10))
-	nox_window_setPos_46A9B0(root, int32((C.nox_win_width-width)/2), int32(root.off_y))
+	nox_window_setPos_46A9B0(root, int32((clientDisplayStorage.width-width)/2), int32(root.off_y))
 	C.sub_46AB20(win, width, 20)
 	return nox_xxx_wndEditDrawNoImage_488160(win, draw)
 }
@@ -151,7 +150,7 @@ func sub_46A6A0() C.int {
 
 //export sub_46A730
 func sub_46A730() *C.nox_window {
-	x, y := int32(C.nox_win_width/2), int32(2*C.nox_win_height/3)
+	x, y := int32(clientDisplayStorage.width/2), int32(2*clientDisplayStorage.height/3)
 	*memmap.PtrInt32(0x5D4594, 1064876) = x
 	*memmap.PtrInt32(0x5D4594, 1064880) = y
 	root := nox_new_window_from_file(internCStr("GuiChat.wnd"), C.sub_46A820)

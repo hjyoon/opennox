@@ -8,7 +8,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "common__strman.h"
-extern int nox_win_width, nox_win_height;
 extern uint32_t dword_8531A0_2572;
 */
 import "C"
@@ -76,7 +75,7 @@ func sub_4C1CA0(command C.int) C.int {
 
 //export nox_xxx_guiSummonCreatureLoad_4C1D80
 func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
-	x, y := C.nox_win_width-95, C.int(-145)
+	x, y := clientDisplayStorage.width-95, C.int(-145)
 	*memmap.PtrInt32(0x5D4594, 1321004) = 0
 	*memmap.PtrInt32(0x5D4594, 1321000) = int32(y)
 	summonCageX, summonCageY = int32(x), int32(y)
@@ -304,7 +303,7 @@ func nox_xxx_wndSummonCreateList_4C2560(pos *C.int2) {
 	for _, command := range summonCommands {
 		text := summonCommandText(command, 588)
 		var width, height C.int
-		nox_xxx_drawGetStringSize_43F840(nil, text, &width, &height, int32(C.nox_win_width))
+		nox_xxx_drawGetStringSize_43F840(nil, text, &width, &height, int32(clientDisplayStorage.width))
 		if w := C.uint32_t(width); w > legacyWords.nox_xxx_screenWidth_587000_184452 {
 			legacyWords.nox_xxx_screenWidth_587000_184452 = w
 		}
@@ -316,13 +315,13 @@ func nox_xxx_wndSummonCreateList_4C2560(pos *C.int2) {
 	y := pos.field_4 - height/2
 	if x < 0 {
 		x = 0
-	} else if x+width >= C.nox_win_width {
-		x = C.nox_win_width - width - 1
+	} else if x+width >= clientDisplayStorage.width {
+		x = clientDisplayStorage.width - width - 1
 	}
 	if y < 0 {
 		y = 0
-	} else if y+height >= C.nox_win_height {
-		y = C.nox_win_width - height - 1
+	} else if y+height >= clientDisplayStorage.height {
+		y = clientDisplayStorage.width - height - 1
 	}
 	popup := nox_window_new(nil, 40, x, y, width, height, nil)
 	summonWindows.popup = popup

@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_2.h"
 #include "client__gui__guigen.h"
 
-extern int nox_win_width;
-extern int nox_win_height;
 
 // The packed compass table stores 32-bit image keys. The bag resolves them
 // against its live image handles without dereferencing the key itself.
@@ -76,10 +74,10 @@ func nox_xxx_mapGenClientText_4A9D00(raw *C.uchar) C.short {
 	*last = uint32(sequence)
 
 	nox_xxx_clientPlaySoundSpecial_452D80(897, 50)
-	Sub_430B50(0, 0, int(C.nox_win_width)-1, int(C.nox_win_height)-1)
+	Sub_430B50(0, 0, int(clientDisplayStorage.width)-1, int(clientDisplayStorage.height)-1)
 	nox_client_clearScreen_440900()
-	x := int32(C.nox_win_width)/2 - 160
-	y := int32(C.nox_win_height)/2 - 120
+	x := int32(clientDisplayStorage.width)/2 - 160
+	y := int32(clientDisplayStorage.height)/2 - 120
 	frame := memmap.PtrUint32(0x5D4594, 1309672)
 	background := memmap.Uint32(0x5D4594, 1309644+4*uintptr(*frame%4))
 	nox_client_drawImageAt_47D2C0(C.nox_mapgenCompassImageKey(C.uint32_t(background)), x, y)
@@ -94,8 +92,8 @@ func nox_xxx_mapGenClientText_4A9D00(raw *C.uchar) C.short {
 	}
 	var textWidth C.int
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(*label), &textWidth, nil, 0)
-	centerX := int32(C.nox_win_width-textWidth) / 2
-	centerY := int32(C.nox_win_height)/2 - (2*nox_xxx_guiFontHeightMB_43F320(nil) + 70)
+	centerX := int32(clientDisplayStorage.width-textWidth) / 2
+	centerY := int32(clientDisplayStorage.height)/2 - (2*nox_xxx_guiFontHeightMB_43F320(nil) + 70)
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
 	nox_xxx_drawSetColor_4343E0(memmap.Int32(0x852978, 4))
 	nox_draw_drawStringHL_43F730(nil, (*wchar2_t)(*label), centerX, centerY)

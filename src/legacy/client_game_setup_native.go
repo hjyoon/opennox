@@ -7,8 +7,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width;
-extern int nox_win_height;
 
 */
 import "C"
@@ -48,7 +46,7 @@ func nox_xxx_cliShowHelpGui_49C560() {
 		return
 	}
 	showGameSetupDialog(win)
-	nox_window_setPos_46A9B0(win, int32((int(C.nox_win_width)-int(win.width))/2), int32((int(C.nox_win_height)-int(win.height))/2))
+	nox_window_setPos_46A9B0(win, int32((int(clientDisplayStorage.width)-int(win.width))/2), int32((int(clientDisplayStorage.height)-int(win.height))/2))
 
 	host := noxflags.HasGame(noxflags.GameHost)
 	child := nox_xxx_wndGetChildByID_46B0C0(win, 4102)
@@ -131,7 +129,7 @@ func sub_49C820() C.int {
 	}
 	showGameSetupDialog(win)
 	sub_49C910()
-	nox_window_setPos_46A9B0(win, int32(C.nox_win_width)/2-int32(win.width)/2, int32(C.nox_win_height)/2-int32(win.height)/2)
+	nox_window_setPos_46A9B0(win, int32(clientDisplayStorage.width)/2-int32(win.width)/2, int32(clientDisplayStorage.height)/2-int32(win.height)/2)
 	C.nox_xxx_guiServerOptsLoad_457500()
 	sub_459D80(1)
 

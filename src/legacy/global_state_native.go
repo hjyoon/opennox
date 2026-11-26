@@ -3,8 +3,7 @@ package legacy
 /*
 #include "defs.h"
 #include <string.h>
-extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
-extern uint32_t dword_5d4594_1062488;
+extern uintptr_t dword_8531A0_2576;
 static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
@@ -20,11 +19,11 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 0, 1:
 		return unsafe.Pointer(&C.dword_8531A0_2576)
 	case 2:
-		return unsafe.Pointer(&C.dword_5d4594_1062480)
+		return unsafe.Pointer(&clientItemStorage.secondary_selected)
 	case 3:
 		return unsafe.Pointer(&quickbarControls.left)
 	case 4:
-		return unsafe.Pointer(&C.dword_5d4594_1062488)
+		return unsafe.Pointer(&clientItemStorage.equipped_item_code)
 	case 5:
 		return unsafe.Pointer(&serverKeyMode)
 	case 6:

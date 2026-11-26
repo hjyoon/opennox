@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_2.h"
 #include "floor_tile_storage.h"
 
-extern uint32_t dword_5d4594_3798804;
 */
 import "C"
 
@@ -112,7 +111,7 @@ func readFloorEdgeImages(f *binfile.MemFile, scratch []byte) int {
 		return 0
 	}
 	name := alloc.GoStringS(rawName)
-	count := min(int(*thingEdgeCountCell411850()), len(C.nox_edge_images_native))
+	count := min(int(*thingEdgeCountCell411850()), len(clientDisplayStorage.edge_images))
 	index := 0
 	for index < count && GoStringP(memmap.PtrOff(0x85B3FC, 28644+60*uintptr(index))) != name {
 		index++
@@ -135,7 +134,7 @@ func readFloorEdgeImages(f *binfile.MemFile, scratch []byte) int {
 		C.free(unsafe.Pointer(images))
 		return 0
 	}
-	C.nox_edge_images_native[index] = unsafe.Pointer(images)
+	clientDisplayStorage.edge_images[index] = unsafe.Pointer(images)
 	*memmap.PtrUint32(0x85B3FC, 28676+60*uintptr(index)) = 0
 	return 1
 }
@@ -153,7 +152,7 @@ func nox_thing_read_edge_485D40(file *nox_memfile, scratch *C.char) C.int {
 //export nox_xxx_tile_486060
 func nox_xxx_tile_486060() C.int {
 	Set_dword_5d4594_1193188(1)
-	stride := 45 * uint32(C.dword_5d4594_3798804)
+	stride := 45 * uint32(clientDisplayStorage.tile_stride)
 	*memmap.PtrUint32(0x973CE0, 376) = stride + uint32(46)<<memmap.Uint8(0x973F18, 7696)
 	return C.int(stride)
 }

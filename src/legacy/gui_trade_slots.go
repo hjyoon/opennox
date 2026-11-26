@@ -59,9 +59,9 @@ func nox_xxx_tradeClientAddItem_4C1790(data *C.nox_trade_const_u8_t) *tradeClien
 	tradeLocalAccepted, tradeRemoteAccepted = 0, 0
 	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), 11)
 	thing := C.uint32_t(binary.LittleEndian.Uint16(packet[3:5]))
-	slot, remote := C.dword_5d4594_1320936, C.int(1)
+	slot, remote := clientItemStorage.trade_remote, C.int(1)
 	if packet[2] == 1 {
-		slot, remote = C.dword_5d4594_1320932, 0
+		slot, remote = clientItemStorage.trade_local, 0
 	}
 	if sub_4C18E0(thing, (*C.nox_trade_const_slot_t)(slot)) == 0 {
 		slot = findTradeSlot(remote, thing)
@@ -91,7 +91,7 @@ func nox_xxx_tradeClientAddItem_4C1790(data *C.nox_trade_const_u8_t) *tradeClien
 	slot.item_ids[slot.count] = C.uint32_t(binary.LittleEndian.Uint16(packet[5:7]))
 	slot.count++
 	slot.total_cost += C.uint32_t(binary.LittleEndian.Uint32(packet[7:11]))
-	C.dword_5d4594_1320932, C.dword_5d4594_1320936 = nil, nil
+	clientItemStorage.trade_local, clientItemStorage.trade_remote = nil, nil
 	return slot
 }
 

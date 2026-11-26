@@ -6,7 +6,6 @@ package legacy
 #include "GAME2_1.h"
 
 typedef const nox_modifier_attrs_t inventory_const_modifier_attrs_t;
-extern uint32_t dword_5d4594_1062488;
 */
 import "C"
 
@@ -175,7 +174,7 @@ func sub_462040(code C.int) {
 		clientInventoryEquipAmmo()
 	}
 	if slot == 0 {
-		C.dword_5d4594_1062488 = equipped.field_32
+		clientItemStorage.equipped_item_code = equipped.field_32
 	}
 	if item := drawableItemData(equipped); item.Field_112_0 >= 0 {
 		sub_470D90(C.int(item.Field_112_0), C.int(item.Field_112_2))
@@ -190,7 +189,7 @@ func sub_462040(code C.int) {
 }
 
 func clientInventoryEquipAmmo() {
-	if code := C.dword_5d4594_1062488; code != 0 {
+	if code := clientItemStorage.equipped_item_code; code != 0 {
 		if cell, _ := inventoryLookupNativeSearch(uint32(code)); cell != nil && cell.field_0 != nil {
 			cell.field_0.field_32 = cell.field_4
 			nox_xxx_clientEquip_4623B0(cell.field_0)

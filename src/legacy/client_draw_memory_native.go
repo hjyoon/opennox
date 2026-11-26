@@ -97,7 +97,7 @@ func nox_free_tile_defs() C.int {
 
 //export sub_485F30
 func sub_485F30() C.int {
-	count := min(int(int32(*thingEdgeCountCell411850())), len(C.nox_edge_images_native))
+	count := min(int(int32(*thingEdgeCountCell411850())), len(clientDisplayStorage.edge_images))
 	for i := range count {
 		images := thingEdgeImageCell411850(uint32(i))
 		if *images != nil {

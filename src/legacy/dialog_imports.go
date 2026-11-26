@@ -3,9 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_830864;
-extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_831084;
 */
 import "C"
 import (
@@ -31,7 +28,7 @@ func initDialog() {
 	Dialogs = dialog.NewDialog(
 		"dialog",
 		(*uint32)(&briefingState.dialog_enabled),
-		(*uint32)(&C.dword_5d4594_830864), (*uint32)(&C.dword_5d4594_831084), &dialogFallbackMode, (*uint32)(&C.dword_5d4594_831076), &dialogAudioDriver,
+		(*uint32)(&clientAudioStorage.dialog_state), (*uint32)(&clientAudioStorage.dialog_flag), &dialogFallbackMode, (*uint32)(&clientAudioStorage.dialog_initialized), &dialogAudioDriver,
 		memmap.PtrUint32(0x5D4594, 830860),
 		func() *strman.StringManager {
 			return GetServer().S().Strings()

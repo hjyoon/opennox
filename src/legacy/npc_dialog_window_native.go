@@ -6,7 +6,6 @@ package legacy
 #include "GAME3.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -81,8 +80,8 @@ func sub_479C40(win *nox_window, draw *C.nox_window_data) C.int {
 
 //export sub_479CB0
 func sub_479CB0(win *nox_window, draw *C.nox_window_data) C.int {
-	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(draw.bg_image), int32(C.nox_win_width)-C.NOX_DEFAULT_WIDTH,
-		int32(C.nox_win_height)-C.NOX_DEFAULT_HEIGHT)
+	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(draw.bg_image), int32(clientDisplayStorage.width)-C.NOX_DEFAULT_WIDTH,
+		int32(clientDisplayStorage.height)-C.NOX_DEFAULT_HEIGHT)
 	return 1
 }
 

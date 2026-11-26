@@ -4,8 +4,6 @@ package legacy
 #include "defs.h"
 #include "noxstring.h"
 
-extern int nox_win_width;
-extern int nox_win_height;
 
 static inline void nox_format_overlay_map(wchar2_t* dst, const char* map) {
 	nox_swprintf(dst, L"%S", map);
@@ -49,8 +47,8 @@ func nox_xxx_clientDrawAll_436100_draw_A() {
 	var width C.int
 	nox_xxx_drawGetStringSize_43F840(font, title, &width, nil, 0)
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_white_2523948()))
-	x := int32(C.nox_win_width-width) / 2
-	y := int32(C.nox_win_height) / 2
+	x := int32(clientDisplayStorage.width-width) / 2
+	y := int32(clientDisplayStorage.height) / 2
 	title = nox_strman_loadString_40F1D0(internCStr("InProgress"), nil, internCStr(clientOverlayStrings), 1553)
 	nox_xxx_drawString_43F6E0(font, title, x, y)
 }
@@ -71,7 +69,7 @@ func nox_xxx_clientDrawAll_436100_draw_B() {
 		name := (*C.char)(*memmap.PtrPtr(0x587000, 85712+offset))
 		*image = unsafe.Pointer(nox_xxx_gLoadImg_42F970(name))
 	}
-	x, y := (int32(C.nox_win_width)-310)/2, (int32(C.nox_win_height)-200)/2
+	x, y := (int32(clientDisplayStorage.width)-310)/2, (int32(clientDisplayStorage.height)-200)/2
 	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(*image), x, y)
 
 	var text [264]C.wchar2_t

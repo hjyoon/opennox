@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_3.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -50,7 +49,7 @@ func sub_476E20() *nox_window {
 			return nil
 		}
 	}
-	win := C.nox_window_new(nil, 64, (C.nox_win_width-100)/2, (C.nox_win_height-100)/2, 1, 1, nil)
+	win := C.nox_window_new(nil, 64, (clientDisplayStorage.width-100)/2, (clientDisplayStorage.height-100)/2, 1, 1, nil)
 	nox_window_set_all_funcs(win, nil, C.sub_476E90, nil)
 	return win
 }
@@ -58,7 +57,7 @@ func sub_476E20() *nox_window {
 //export sub_476E90
 func sub_476E90(win *nox_window, data unsafe.Pointer) C.int {
 	offsets := memmap.PtrT[[8][2]int32](0x587000, 151208)
-	origin := image.Pt(int(C.nox_win_width)/2-16, int(C.nox_win_height)/2-41)
+	origin := image.Pt(int(clientDisplayStorage.width)/2-16, int(clientDisplayStorage.height)/2-41)
 	for i, img := range clientGestureImages {
 		start := clientGestureFrame(i)
 		if *start == 0 {

@@ -3,7 +3,6 @@ package legacy
 /*
 #include <stdlib.h>
 #include "game2_audio_native.h"
-extern void *dword_587000_127004;
 */
 import "C"
 import (
@@ -132,7 +131,7 @@ func game2AudioNextSerial() uint32 {
 	return v
 }
 func game2AudioFXMaster() *timer.TimerGroup {
-	if p := unsafe.Pointer(C.dword_587000_127004); p != nil {
+	if p := unsafe.Pointer(clientAudioStorage.effects_timer); p != nil {
 		return (*timer.TimerGroup)(p)
 	}
 	return nil // absent FX is skipped; adaptive EventMaster is a separate stage.

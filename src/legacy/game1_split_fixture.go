@@ -3,13 +3,14 @@ package legacy
 /*
 #include "GAME1_3.h"
 #include <stddef.h>
-extern uint32_t dword_5d4594_815748;
-extern uint32_t dword_5d4594_815044;
-extern uint32_t dword_5d4594_816368, dword_5d4594_816372;
-extern uint32_t dword_587000_93156;
+#include "client_native_storage.h"
+#define dword_5d4594_815748 (nox_client_item_storage()->frame_sample_count)
+#define dword_5d4594_815044 (nox_client_item_storage()->menu_word_815044)
+#define dword_5d4594_816368 (nox_client_audio_storage()->music_word_816368)
+#define dword_5d4594_816372 (nox_client_audio_storage()->music_word_816372)
+#define dword_587000_93156 (nox_client_audio_storage()->music_enabled)
+#define dword_5d4594_825736 (nox_client_item_storage()->center_message_index)
 #include "internal/cfixture/render_palette_reference.h"
-extern uint32_t dword_5d4594_825736;
-extern int nox_win_width;
 static uint32_t* g1s_word(int slot) {
  switch(slot) {
  case 0:return &dword_5d4594_815748;
@@ -100,7 +101,7 @@ func g1sFormat(addr string, port uint16, dst unsafe.Pointer) int32 {
 }
 
 func g1sSwapWidth(value int32) int32 {
-	old := C.nox_win_width
-	C.nox_win_width = C.int(value)
+	old := clientDisplayStorage.width
+	clientDisplayStorage.width = C.int(value)
 	return int32(old)
 }

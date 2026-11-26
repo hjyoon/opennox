@@ -50,10 +50,6 @@ extern uint32_t dword_8531A0_2572;
 extern uint32_t dword_5d4594_1313788;
 extern uint32_t dword_5d4594_1313740;
 extern uint32_t dword_5d4594_1307720;
-extern void* dword_587000_93164;
-extern void* dword_587000_127004;
-extern int nox_win_width;
-extern int nox_win_height;
 
 
 #include "game3_class_config_options.h"
@@ -573,8 +569,8 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 					C.sub_43DC00()
 				} else {
 					C.sub_43DC10()
-					value := *(*uint32)(unsafe.Add(C.dword_587000_93164, 4))
-					C.sub_486320(C.dword_587000_93164, C.int(value>>16))
+					value := *(*uint32)(unsafe.Add(clientAudioStorage.music_timer, 4))
+					C.sub_486320(clientAudioStorage.music_timer, C.int(value>>16))
 				}
 			} else {
 				switch id - 361 {
@@ -626,7 +622,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 		active := C.nox_client_getWin1064916_46C720()
 		switch id {
 		case 351:
-			C.sub_486320(C.dword_587000_127004, C.int(arg))
+			C.sub_486320(clientAudioStorage.effects_timer, C.int(arg))
 			if active != nil && active.parent == sender {
 				return 0
 			}
@@ -661,7 +657,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			game3OptionsToggle(optionsAudioChecks[1])
 			return 0
 		case 353:
-			C.sub_486320(C.dword_587000_93164, C.int(arg))
+			C.sub_486320(clientAudioStorage.music_timer, C.int(arg))
 			if arg != 0 {
 				if C.sub_43DC30() != 0 {
 					return 0
@@ -702,7 +698,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			game3OptionsToggle(optionsAudioChecks[1])
 			return 0
 		}
-		C.sub_486320(C.dword_587000_127004, C.int(arg))
+		C.sub_486320(clientAudioStorage.effects_timer, C.int(arg))
 		if arg != 0 {
 			if C.sub_453070() != 0 {
 				C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
@@ -736,13 +732,13 @@ func sub_4AB0C0() C.int {
 //export sub_4AB260
 func sub_4AB260() C.int {
 	mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(C.nox_xxx_gLoadImg_42F970(internCStr("DisconnectIcon"))))
-	disconnectIndicator = C.nox_window_new(nil, 136, C.nox_win_width-50, C.nox_win_height/2+3, 50, 50, nil)
+	disconnectIndicator = C.nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2+3, 50, 50, nil)
 	C.nox_xxx_wndSetIcon_46AE60(disconnectIndicator, (*C.nox_video_bag_image_t)(mem_getPtrValue(0x5D4594, 1309752)))
 	C.nox_window_set_all_funcs(disconnectIndicator, nil, C.sub_4AB420, nil)
 	disconnectDialog = C.nox_new_window_from_file(internCStr("discon.wnd"), C.sub_4AB390)
 	C.nox_xxx_wndSetWindowProc_46B300(disconnectDialog, C.sub_4AB340)
 	C.sub_46B120(disconnectDialog, nil)
-	C.nox_window_setPos_46A9B0(disconnectDialog, C.int(int64(C.nox_win_width)/2-int64(disconnectDialog.end_x)/2), C.int(int64(C.nox_win_height)/2-int64(disconnectDialog.end_y)/2))
+	C.nox_window_setPos_46A9B0(disconnectDialog, C.int(int64(clientDisplayStorage.width)/2-int64(disconnectDialog.end_x)/2), C.int(int64(clientDisplayStorage.height)/2-int64(disconnectDialog.end_y)/2))
 	return 1
 }
 

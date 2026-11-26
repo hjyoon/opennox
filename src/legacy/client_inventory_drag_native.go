@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__guimsg.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -286,7 +285,7 @@ func clientInventoryCheckWorldTarget(screen *C.int2) {
 		C.nox_xxx_printCentered_445490(clientInventoryString("NoObject", 3869))
 		return
 	}
-	center := C.int2{field_0: C.nox_win_width / 2, field_4: C.nox_win_height / 2}
+	center := C.int2{field_0: clientDisplayStorage.width / 2, field_4: clientDisplayStorage.height / 2}
 	sub_473970(&center, &center)
 	dx, dy := center.field_0-C.int(target.pos.x), center.field_4-C.int(target.pos.y)
 	if dx*dx+dy*dy > 5625 {

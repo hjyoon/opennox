@@ -34,8 +34,6 @@ package legacy
 #include "client__drawable__update__telwake.h"
 #include "client__drawable__update__vortexup.h"
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern void* dword_587000_127004;
-extern void* dword_587000_93164;
 */
 import "C"
 import (
@@ -48,8 +46,8 @@ func InitBlobData() {
 	blobdata.Init(&blobdata.Ptrs{
 		Ptr_nox_xxx_aClosewoodengat_587000_133480: &C.nox_xxx_aClosewoodengat_587000_133480,
 		Ptr_dword_587000_155144:                   &legacyPointers.audioGlobal,
-		Ptr_dword_587000_127004:                   &C.dword_587000_127004,
-		Ptr_dword_587000_93164:                    &C.dword_587000_93164,
+		Ptr_dword_587000_127004:                   &clientAudioStorage.effects_timer,
+		Ptr_dword_587000_93164:                    &clientAudioStorage.music_timer,
 		Ptr_dword_587000_122852:                   &legacyPointers.dialogTimer,
 		Ptr_dword_587000_81128:                    &legacyPointers.ordinaryMusicTimer,
 

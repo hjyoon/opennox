@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__guiinput.h"
 #include "client__shell__inputcfg__inputcfg.h"
 #include "noxstring.h"
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -21,7 +20,7 @@ import (
 func sub_4C3500() C.int {
 	root := nox_new_window_from_file(internCStr("yesno.wnd"), nil)
 	if root != nil {
-		nox_window_setPos_46A9B0(root, int32(C.nox_win_width-320)/2, int32(C.nox_win_height-240)/2)
+		nox_window_setPos_46A9B0(root, int32(clientDisplayStorage.width-320)/2, int32(clientDisplayStorage.height-240)/2)
 	}
 	nox_window_set_hidden(root, 1)
 	return C.int(bool2int(root != nil))
@@ -190,7 +189,7 @@ func sub_4C3760() C.int {
 	}
 
 	p.setMouseButtons()
-	nox_window_setPos_46A9B0(root, (int32(C.nox_win_width)-int32(root.width))/2, 0)
+	nox_window_setPos_46A9B0(root, (int32(clientDisplayStorage.width)-int32(root.width))/2, 0)
 	prompt := g2ServerChild(root, 980)
 	p.prompt = prompt
 	if prompt == nil {
@@ -200,7 +199,7 @@ func sub_4C3760() C.int {
 	nox_xxx_wndSetProc_46B2C0(prompt, C.sub_4C3A90)
 	nox_xxx_wndSetWindowProc_46B300(prompt, C.sub_4C3EB0)
 	g2ServerHidden(prompt, true)
-	nox_window_setPos_46A9B0(prompt, (int32(C.nox_win_width)-int32(prompt.width))/2, int32(prompt.off_y))
+	nox_window_setPos_46A9B0(prompt, (int32(clientDisplayStorage.width)-int32(prompt.width))/2, int32(prompt.off_y))
 	p.bindPromptLabel()
 	g2ServerEnabled(g2ServerChild(root, 932), true)
 	g2ServerHidden(root, true)

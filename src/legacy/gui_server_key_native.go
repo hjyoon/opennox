@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME3_1.h"
 #include "client__gui__window.h"
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -50,7 +49,7 @@ func sub_4BFBF0() C.int {
 	g2ServerEnabled(root, true)
 	var width, height C.int
 	C.nox_window_get_size(root, &width, &height)
-	nox_window_setPos_46A9B0(root, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
+	nox_window_setPos_46A9B0(root, int32(clientDisplayStorage.width/2-width/2), int32(clientDisplayStorage.height/2-height/2))
 	return C.int(nox_xxx_windowFocus_46B500(nil))
 }
 

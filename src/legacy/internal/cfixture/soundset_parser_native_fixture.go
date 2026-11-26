@@ -4,7 +4,8 @@ package cfixture
 #include "GAME1_1.h"
 #include <stdint.h>
 #include <stddef.h>
-extern uint32_t dword_5d4594_588120;
+#include "client_native_storage.h"
+#define dword_5d4594_588120 (nox_client_audio_storage()->soundset_reference_head)
 typedef struct { uint32_t name_token, sounds[18], next_token, reserved; } soundset_packed_fixture;
 _Static_assert(sizeof(soundset_packed_fixture)==84 && offsetof(soundset_packed_fixture,sounds)==4 && offsetof(soundset_packed_fixture,next_token)==76 && offsetof(soundset_packed_fixture,reserved)==80, "packed numeric record remains PE32-sized");
 _Static_assert(_Generic(&sub_4240F0, int (*)(void*, const char*, int): 1, default: 0), "native data pointer and const field ABI");

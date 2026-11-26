@@ -7,7 +7,6 @@ package legacy
 typedef const uint8_t nox_shop_modifier_id_t;
 typedef const uint32_t nox_shop_position_word_t;
 
-extern uint32_t dword_5d4594_1107036;
 */
 import "C"
 
@@ -80,7 +79,7 @@ func sub_478F10() {
 			*cell = shopInventoryCell{}
 		}
 	}
-	C.dword_5d4594_1107036 = 0
+	clientItemStorage.shop_scroll = 0
 }
 
 //export nox_gui_shop_state
@@ -267,7 +266,7 @@ func sub_479880(point *C.uint32_t) C.bool {
 
 func shopCellAt(point *C.int2) *shopInventoryCell {
 	col := (uint32(point.field_0) - *g2ServerWord(1098380)) / 50
-	row := (uint32(point.field_4) - *g2ServerWord(1098384) + uint32(C.dword_5d4594_1107036)) / 50
+	row := (uint32(point.field_4) - *g2ServerWord(1098384) + uint32(clientItemStorage.shop_scroll)) / 50
 	return shopCell(int(min(row, shopRows-1)), int(min(col, shopCols-1)))
 }
 
@@ -299,7 +298,7 @@ func Nox_client_shopItemLocation(netCode uint32) (found bool, x, y int, thingTyp
 				continue
 			}
 			x := int32(*g2ServerWord(1098380)) + int32(50*col+25)
-			y := int32(*g2ServerWord(1098384)) + int32(50*row+25) - int32(C.dword_5d4594_1107036)
+			y := int32(*g2ServerWord(1098384)) + int32(50*row+25) - int32(clientItemStorage.shop_scroll)
 			return true, int(x), int(y), uint32(cell.drawable.field_27), uint32(cell.count), uint32(cell.price)
 		}
 	}

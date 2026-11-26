@@ -6,6 +6,11 @@ package legacy
 
 #include "GAME3_1.h"
 
+#include "client_native_storage.h"
+#define dword_5d4594_1320932 (nox_client_item_storage()->trade_local)
+#define dword_5d4594_1320936 (nox_client_item_storage()->trade_remote)
+#define dword_5d4594_1320972 (nox_client_item_storage()->trade_source)
+#define dword_5d4594_1320968 (nox_client_item_storage()->trade_dragged)
 static int nox_test_gui_trade_pointer_round_trip(uintptr_t value) {
 	nox_gui_trade_slot* slot = nox_gui_trade_slot_at(0, 0);
 	nox_gui_trade_slot* remote_slots = nox_gui_trade_slot_at(1, 0);

@@ -45,6 +45,9 @@ static int game2_book_old_send(int a,int b,unsigned char* p,int n) {
 #define nox_xxx_aNox_cfg_0_587000_132132 (nox_book_state_storage()->show_detail_page)
 #define nox_xxx_aNox_cfg_0_587000_132136 (nox_book_state_storage()->list_drag_index)
 #define obj_5d4594_1046620 (nox_book_state_storage()->reward_velocity)
+#include "client_native_storage.h"
+#define nox_win_width (nox_client_display_storage()->width)
+#define nox_win_height (nox_client_display_storage()->height)
 #include "game2_book_reference.h"
 static void game2_book_test_config(int cursor,int result) {
  book_ref_cursor=cursor;book_ref_result=result;book_ref_len=book_ref_calls=0;memset(book_ref_packet,0,22);

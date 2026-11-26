@@ -918,6 +918,19 @@ the existing Go allocator entry directly.
 
 There are 75 remaining definitions in `vardefs.c`.
 
+### Display, audio, and client item storage
+
+Go allocates 35 slots for the display dimensions and tile geometry,
+edge images, health changes, music and dialog state, and trade and
+inventory. The image table holds 64 native pointers. The inventory
+selection is a native-width word and the related item codes are
+32 bits. Audio starts with the same enabled and idle values.
+The C comparisons use the live slots through typed accessors.
+
+The music module owns its nesting counter and the audio comparison
+owns its private bank. Their two obsolete C definitions were removed,
+leaving 38 definitions in `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__guimeter.h"
 #include "client__gui__window.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -26,7 +25,7 @@ func nox_xxx_wndCreateInventoryMB_465E00() *C.nox_window {
 	nox_xxx_inventoryLoadImages_467050()
 	nox_xxx_inventoryNameSignInit_4671E0()
 	inventoryFont = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
-	width, height := C.nox_win_width, C.nox_win_height
+	width, height := clientDisplayStorage.width, clientDisplayStorage.height
 	*memmap.PtrT[[6]uint32](0x5D4594, 1049732) = [6]uint32{0, 0, uint32(width), uint32(height), 0, 0}
 	*memmap.PtrUint32(0x5D4594, 1049764) = uint32(width)
 	*memmap.PtrUint32(0x5D4594, 1049768) = uint32(height)

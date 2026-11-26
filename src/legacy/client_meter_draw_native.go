@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern int nox_win_width, nox_win_height;
 */
 import "C"
 
@@ -199,7 +198,7 @@ func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C
 		noxflags.HasGame(noxflags.GameFlag21|noxflags.GameFlag24) {
 		return 1
 	}
-	x, y := C.nox_win_width/2+15, C.nox_win_height/2-48
+	x, y := clientDisplayStorage.width/2+15, clientDisplayStorage.height/2-48
 	if index != 0 {
 		x += 6
 	}

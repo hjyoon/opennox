@@ -53,14 +53,7 @@ package legacy
 #include <string.h>
 #include "game2_quickbar_native.h"
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_5d4594_1045420;
-extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_830864;
-extern void* dword_587000_127004;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern int nox_win_width;
-extern int nox_win_height;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 int nox_client_getBriefDuration(void);
@@ -174,9 +167,9 @@ func nox_xxx_playGMCAPsmth_44E3E0() C.int {
 
 //export sub_44E560
 func sub_44E560() *C.nox_window {
-	*memmap.PtrUint32(0x5D4594, 831284) = uint32((C.nox_win_width - 640) / 2)
-	*memmap.PtrUint32(0x5D4594, 831288) = uint32((C.nox_win_height - 480) / 2)
-	result := C.nox_window_new(nil, 56, 0, 0, C.nox_win_width, C.nox_win_height, C.nox_window_init_proc(C.nox_xxx_wndProc_44E6E0))
+	*memmap.PtrUint32(0x5D4594, 831284) = uint32((clientDisplayStorage.width - 640) / 2)
+	*memmap.PtrUint32(0x5D4594, 831288) = uint32((clientDisplayStorage.height - 480) / 2)
+	result := C.nox_window_new(nil, 56, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, C.nox_window_init_proc(C.nox_xxx_wndProc_44E6E0))
 	storeWindowReference(&briefingState.outer, result)
 	if result != nil {
 		C.nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))

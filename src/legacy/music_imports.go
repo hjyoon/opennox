@@ -3,13 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_816356;
-extern uint32_t dword_5d4594_816368;
-extern uint32_t dword_5d4594_816340;
-extern uint32_t dword_5d4594_816372;
-extern uint32_t dword_5d4594_816348;
-extern uint32_t dword_587000_93156;
-extern uint32_t dword_587000_93160;
 */
 import "C"
 
@@ -28,14 +21,14 @@ var (
 
 func initMusic() {
 	var (
-		dword_5d4594_816368      *uint32            = (*uint32)(&C.dword_5d4594_816368)
-		dword_5d4594_816372      *uint32            = (*uint32)(&C.dword_5d4594_816372)
-		dword_587000_93156       *uint32            = (*uint32)(&C.dword_587000_93156)
-		dword_587000_93160       *uint32            = (*uint32)(&C.dword_587000_93160)
-		dword_5d4594_816340      *uint32            = (*uint32)(&C.dword_5d4594_816340)
+		dword_5d4594_816368      *uint32            = (*uint32)(&clientAudioStorage.music_word_816368)
+		dword_5d4594_816372      *uint32            = (*uint32)(&clientAudioStorage.music_word_816372)
+		dword_587000_93156       *uint32            = (*uint32)(&clientAudioStorage.music_enabled)
+		dword_587000_93160       *uint32            = (*uint32)(&clientAudioStorage.music_idle)
+		dword_5d4594_816340      *uint32            = (*uint32)(&clientAudioStorage.music_initialized)
 		counter_5d4594_816244    *timer.TimerGroup  = memmap.PtrT[timer.TimerGroup](0x5d4594, 816244)
 		ptr_counter_587000_81128 **timer.TimerGroup = (**timer.TimerGroup)(unsafe.Pointer(&legacyPointers.ordinaryMusicTimer))
-		dword_5d4594_816348      *uint32            = (*uint32)(&C.dword_5d4594_816348)
+		dword_5d4594_816348      *uint32            = (*uint32)(&clientAudioStorage.music_state)
 	)
 	MusicModule = music.NewModule(
 		"music",

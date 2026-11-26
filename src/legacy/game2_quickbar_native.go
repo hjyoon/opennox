@@ -52,14 +52,7 @@ package legacy
 #include <string.h>
 #include "game2_quickbar_native.h"
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_5d4594_1045420;
-extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_830864;
-extern void* dword_587000_127004;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern int nox_win_width;
-extern int nox_win_height;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 */
@@ -845,9 +838,9 @@ func nox_xxx_quickbarDrawFn_460000(unused1 *C.nox_window, unused2 *C.nox_window_
 	delta := y - int32(legacyWords.dword_5d4594_1049536)
 	if delta >= 0 {
 		if delta <= 0 {
-			if uint32(legacyWords.dword_5d4594_1049536) > uint32(C.nox_win_height) {
+			if uint32(legacyWords.dword_5d4594_1049536) > uint32(clientDisplayStorage.height) {
 				sub_460070()
-				legacyWords.dword_5d4594_1049536 = C.uint32_t(C.nox_win_height - 74)
+				legacyWords.dword_5d4594_1049536 = C.uint32_t(clientDisplayStorage.height - 74)
 			}
 		} else {
 			C.nox_window_setPos_46A9B0(win, C.int(win.off_x), C.int(y-1))

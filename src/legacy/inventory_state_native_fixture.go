@@ -4,7 +4,8 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME3_3.h"
 #include "client__gui__guiinv.h"
-extern uint32_t dword_5d4594_1062488;
+#include "client_native_storage.h"
+#define dword_5d4594_1062488 (nox_client_item_storage()->equipped_item_code)
 typedef nox_drawable*(*inventory_state_find_C)(int);
 typedef int(*inventory_state_test_C)(void);
 typedef int(*inventory_state_bounds_C)(int,int);

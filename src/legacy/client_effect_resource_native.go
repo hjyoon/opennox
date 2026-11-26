@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_3.h"
 
-extern int nox_win_height;
 */
 import "C"
 
@@ -92,7 +91,7 @@ func nox_client_book_reward_word(kind C.uintptr_t, id, extra C.int) {
 	case 3:
 		color = 3
 	}
-	at := C.int2{field_0: 5, field_4: C.nox_win_height / 3}
+	at := C.int2{field_0: 5, field_4: clientDisplayStorage.height / 3}
 	game2_book_forward_word(kind, id, &at)
 	x, y := at.field_0, at.field_4
 	nox_xxx_draw_499E70(color, x, y, 271, 166, 1, 1)

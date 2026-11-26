@@ -11,10 +11,6 @@ extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_1046936;
 extern uint32_t dword_5d4594_1047512;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
-extern nox_things_imageRef_t* dword_5d4594_1046924;
-extern nox_things_imageRef_t* dword_5d4594_1046928;
-extern nox_window* dword_5d4594_1046944;
-extern nox_window* dword_5d4594_1046948;
 
 static inline void nox_book_format_level(wchar2_t* dst, const wchar2_t* format, int level) {
 	nox_swprintf(dst, format, level);
@@ -64,7 +60,7 @@ func (page bookPageLayout) drawCenteredLine(text *C.wchar2_t, y int32) {
 
 func (page bookPageLayout) drawContents(player *C.nox_playerInfo) {
 	if C.dword_5d4594_1046936 == 0 {
-		nox_window_set_hidden(C.dword_5d4594_1046944, 1)
+		nox_window_set_hidden(bookDetails.left_arrow, 1)
 	}
 	spacing := int32(C.dword_5d4594_1046656)
 	rows := 141/spacing - 1
@@ -188,9 +184,9 @@ func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
 
 	switch C.dword_5d4594_1046868 {
 	case 3:
-		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(C.dword_5d4594_1046928)), page.x-24, page.y-76)
+		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(bookDetails.backward)), page.x-24, page.y-76)
 	case 2:
-		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(C.dword_5d4594_1046924)), page.x-24, page.y-76)
+		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(bookDetails.forward)), page.x-24, page.y-76)
 	default:
 		if C.nox_xxx_aNox_cfg_0_587000_132132 != 0 {
 			page.drawContents(player)
@@ -210,7 +206,7 @@ func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
 	}
 	if C.nox_xxx_aNox_cfg_0_587000_132132 == 0 &&
 		int32(C.dword_5d4594_1046932) >= memmap.Int32(0x5D4594, 1047508)-int32(C.dword_5d4594_1047512)-1 {
-		nox_window_set_hidden(C.dword_5d4594_1046948, 1)
+		nox_window_set_hidden(bookDetails.right_arrow, 1)
 	}
 	return 1
 }

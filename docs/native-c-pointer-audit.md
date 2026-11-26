@@ -742,6 +742,41 @@ cleanup releases the borrowed rule, object, spell, and audio controls
 before the GUI allocator can recycle them. This removes 17 definitions
 from `vardefs.c`.
 
+### Quickbar controls and book details
+
+The original quickbar constructor at `0x45E190` stores its left
+control at `0x6D4938`. The book constructor at `0x45B9D0` stores its
+page arrows, page icon, and reward window at `0x6D3F34` through
+`0x6D3F40`. Go holds the quickbar's eight control slots and the book's
+six window and animation slots in native memory. The layouts occupy
+32 and 24 bytes on 32-bit targets, and 64 and 48 bytes on 64-bit
+targets.
+
+The quickbar cleanup clears each control before its address can be
+reused, including a spell or trap button carrying an active drag.
+The book clears its borrowed controls with the book list and clears
+the separate reward window when it is released. The C fixtures use
+the same live slots as the Go callbacks. This removes 14 definitions
+from `vardefs.c`.
+
+The four window and control migrations leave 522 definitions in
+`vardefs.c`, including 389 unsigned 32-bit words and 22 window
+pointers. The remaining window slots belong to the briefing and
+escape menus, game setup, chat, vote and observer controls, status
+icons, meters, and text input.
+
+| Profile | Top-level C files selected | C function bodies |
+| --- | ---: | ---: |
+| AMD64 and ARM64 | 25 | 54 |
+| 386 and ARM | 27 | 56 |
+| AMD64 and ARM64 with `safe` | 26 | 58 |
+| 386 and ARM with `safe` | 28 | 60 |
+
+The 54 common bodies contain 38 fixed-signature conversions, 14
+formatting and variadic adapters, and two indirect damage and sound
+callback frames. The 386 and ARM profiles add the two float-word
+adapters. The safe profiles add four memory and string adapters.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

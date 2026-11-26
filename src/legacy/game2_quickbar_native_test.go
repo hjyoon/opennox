@@ -6,14 +6,16 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"math"
 	"os"
 	"reflect"
 	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func g2qTestIsolate(t *testing.T) {
@@ -283,6 +285,37 @@ func TestGame2QuickbarNativeDestroyOrder(t *testing.T) {
 		if b != 0 {
 			t.Fatal("registry reset")
 		}
+	}
+}
+
+func TestGame2QuickbarControlCleanup(t *testing.T) {
+	g2qTestIsolate(t)
+	g := gui.NewHigh(nil)
+	defer g.DestroyAll()
+
+	root := g.NewWindowRaw(nil, 0, 0, 0, 40, 40, nil)
+	button := g.NewWindowRaw(root, 0, 0, 0, 12, 12, nil)
+	replacement := g.NewWindowRaw(nil, 0, 0, 0, 40, 40, nil)
+	storeQuickbarControl(&quickbarControls.right, (*nox_window)(root.C()))
+	storeQuickbarControl(&quickbarControls.trap_activate, (*nox_window)(button.C()))
+	storeQuickbarControl(&quickbarControls.right, (*nox_window)(replacement.C()))
+	registerQuickbarDragCleanup((*nox_window)(button.C()))
+	g2qTestPointer(8, button.C(), true)
+	*memmap.PtrUint32(0x5D4594, 1047928) = 1
+	g2qTestWord(2, 1, true)
+
+	root.Destroy()
+	g.FreeDestroyed()
+	if g2qTestPointer(3, nil, false) != replacement.C() {
+		t.Fatal("destroyed root cleared the replacement")
+	}
+	if g2qTestPointer(6, nil, false) != nil || g2qTestPointer(8, nil, false) != nil ||
+		memmap.Uint32(0x5D4594, 1047928) != 0 || g2qTestWord(2, 0, false) != 0 {
+		t.Fatal("destroyed child left a control reference or active drag")
+	}
+	g.DestroyAll()
+	if g2qTestPointer(3, nil, false) != nil {
+		t.Fatal("pool teardown left a root reference")
 	}
 }
 

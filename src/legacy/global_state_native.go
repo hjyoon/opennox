@@ -5,7 +5,7 @@ package legacy
 #include "vardefs.h"
 #include <string.h>
 extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
-extern nox_window *dword_5d4594_1049508, *dword_5d4594_1305680, *dword_5d4594_1305684;
+extern nox_window *dword_5d4594_1305680, *dword_5d4594_1305684;
 extern uint32_t dword_5d4594_1062488, dword_5d4594_1319056;
 extern uint32_t dword_5d4594_1098628, dword_5d4594_1321800;
 extern nox_waypoint_t* dword_5d4594_2487244;
@@ -28,7 +28,7 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 2:
 		return unsafe.Pointer(&C.dword_5d4594_1062480)
 	case 3:
-		return unsafe.Pointer(&C.dword_5d4594_1049508)
+		return unsafe.Pointer(&quickbarControls.left)
 	case 4:
 		return unsafe.Pointer(&C.dword_5d4594_1062488)
 	case 5:

@@ -3,9 +3,6 @@ package legacy
 /*
 #include "client__gui__guispell.h"
 
-extern nox_window* dword_5d4594_1049500;
-extern nox_window* dword_5d4594_1049504;
-extern nox_window* dword_5d4594_1049520;
 extern uint32_t dword_5d4594_1049536;
 extern int nox_win_height;
 */
@@ -117,9 +114,9 @@ func sub_460070() C.int {
 	if player == nil {
 		return 0
 	}
-	icon := C.dword_5d4594_1049504
-	activate := C.dword_5d4594_1049520
-	construct := C.dword_5d4594_1049500
+	icon := quickbarControls.right
+	activate := quickbarControls.trap_activate
+	construct := quickbarControls.trap_construct
 	if icon == nil || activate == nil || construct == nil {
 		return 1
 	}
@@ -149,8 +146,8 @@ func nox_xxx_quickbarAddTrap_460EC0(show C.int) *C.uint32_t {
 		sub_460070()
 		return nil
 	}
-	construct := C.dword_5d4594_1049500
-	icon := C.dword_5d4594_1049504
+	construct := quickbarControls.trap_construct
+	icon := quickbarControls.right
 	if construct == nil || icon == nil || construct.flags&8 != 0 {
 		return (*C.uint32_t)(unsafe.Pointer(construct))
 	}

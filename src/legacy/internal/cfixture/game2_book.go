@@ -17,6 +17,12 @@ static int game2_book_old_send(int a,int b,unsigned char* p,int n) {
 #define nox_book_guide_tab_lit_image (nox_book_ui_storage()->guide_tab_lit)
 #define nox_book_spell_tab_lit_image (nox_book_ui_storage()->spell_tab_lit)
 #define nox_player_netCode_85319C (nox_client_player_net_code())
+#define dword_5d4594_1046944 (nox_book_details_storage()->left_arrow)
+#define dword_5d4594_1046948 (nox_book_details_storage()->right_arrow)
+#define dword_5d4594_1046952 (nox_book_details_storage()->page_icon)
+#define dword_5d4594_1046956 (nox_book_details_storage()->reward)
+#define dword_5d4594_1046924 (nox_book_details_storage()->forward)
+#define dword_5d4594_1046928 (nox_book_details_storage()->backward)
 #include "game2_book_reference.h"
 static void game2_book_test_config(int cursor,int result) {
  book_ref_cursor=cursor;book_ref_result=result;book_ref_len=book_ref_calls=0;memset(book_ref_packet,0,22);

@@ -145,7 +145,7 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 	if animate != 0 {
 		C.nox_xxx_aNox_cfg_0_587000_132132 = 1
 		C.dword_5d4594_1046936 = 0
-		game2BookHide(C.dword_5d4594_1046952, 1)
+		game2BookHide(bookDetails.page_icon, 1)
 	}
 	if C.nox_xxx_bookGetSpellDnDType_477670() == 1 {
 		C.nox_xxx_bookSpellDnDclear_477660()

@@ -191,7 +191,7 @@ func game2_book_position_word(position *C.uint32_t) C.uintptr_t {
 	if position == nil {
 		return 0
 	}
-	result := C.nox_client_wndGetPosition_46AA60(C.dword_5d4594_1046952, (*C.uint)(unsafe.Pointer(position)), (*C.uint)(unsafe.Add(unsafe.Pointer(position), 4)))
+	result := C.nox_client_wndGetPosition_46AA60(bookDetails.page_icon, (*C.uint)(unsafe.Pointer(position)), (*C.uint)(unsafe.Add(unsafe.Pointer(position), 4)))
 	return C.uintptr_t(uintptr(int64(result)))
 }
 
@@ -231,7 +231,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	game2_book_position_word((*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046844)))
 	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046636)) = float32(int32(*game2BookU(1046844)))
 	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046640)) = float32(int32(*game2BookU(1046848)))
-	C.nox_window_setPos_46A9B0(C.dword_5d4594_1046956, C.int(*game2BookU(1046844)), C.int(*game2BookU(1046848)))
+	C.nox_window_setPos_46A9B0(bookDetails.reward, C.int(*game2BookU(1046844)), C.int(*game2BookU(1046848)))
 	nox_xxx_buttonSetImgMB_461320(slot, (*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046668)))
 	first := C.int2{field_0: 400, field_4: -500}
 	second := C.int2{field_0: 350, field_4: 400}
@@ -257,8 +257,8 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	}
 	C.obj_5d4594_1046620.field_0 = C.float(float64(C.obj_5d4594_1046620.field_0) * scale)
 	C.obj_5d4594_1046620.field_4 = C.float(float64(C.obj_5d4594_1046620.field_4) * scale)
-	game2BookHide(C.dword_5d4594_1046956, 0)
-	C.nox_xxx_wndShowModalMB_46A8C0(C.dword_5d4594_1046956)
+	game2BookHide(bookDetails.reward, 0)
+	C.nox_xxx_wndShowModalMB_46A8C0(bookDetails.reward)
 	if game2BookGameFlag(2048) {
 		C.sub_57AF30(nil, kind)
 	}
@@ -287,7 +287,7 @@ func sub_45D7D0(a, b *C.int) C.int {
 func sub_45D810() {
 	if C.dword_5d4594_1047520 != 0 {
 		C.dword_5d4594_1047520 = 0
-		game2BookHide(C.dword_5d4594_1046956, 1)
+		game2BookHide(bookDetails.reward, 1)
 		C.dword_5d4594_1046648 = 0
 		C.nox_xxx_clientUpdateButtonRow_45E110(C.int(*game2BookU(1046612)))
 		if game2BookGameFlag(2048) {

@@ -14,6 +14,20 @@ _Static_assert(sizeof(nox_quickbar_window_set) == 17 * sizeof(void*), "quickbar 
 _Static_assert(offsetof(nox_quickbar_window_set, nugget_children) == 12 * sizeof(void*),
                "quickbar window set children offset");
 nox_quickbar_window_set* nox_quickbar_window_storage(void);
+
+typedef struct {
+	nox_window* trap_construct;
+	nox_window* right;
+	nox_window* left;
+	nox_window* title;
+	nox_window* drag_window;
+	nox_window* trap_activate;
+	nox_window* book_button;
+	nox_window* dragged_slot;
+} nox_quickbar_controls_t;
+_Static_assert(sizeof(nox_quickbar_controls_t) == 8 * sizeof(nox_window*),
+	"quickbar controls must contain eight native pointers");
+nox_quickbar_controls_t* nox_quickbar_controls_storage(void);
 uintptr_t nox_game2_book_insert_native(uintptr_t kind, int spell, int slot);
 int nox_client_localPlayerHasFlags30(uint32_t flags);
 #endif

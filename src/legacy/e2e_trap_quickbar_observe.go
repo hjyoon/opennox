@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2.h"
 extern uint32_t dword_5d4594_1049484;
-extern nox_window* dword_5d4594_1049500;
 */
 import "C"
 
@@ -36,7 +35,7 @@ func ClientTrapQuickbarButton(slot int) *gui.Window {
 func ClientTrapQuickbarControl(control int) *gui.Window {
 	control = int(int32(control))
 	if control == 0 {
-		return asWindow(C.dword_5d4594_1049500)
+		return asWindow(quickbarControls.trap_construct)
 	}
 	root := nox_quickbar_root(g2qTrap())
 	if root == nil || (control != 3 && control != 4) {

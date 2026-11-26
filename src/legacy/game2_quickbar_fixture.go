@@ -9,14 +9,30 @@ extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_5d4594_1049496,dword_5d4594_1049484,dword_5d4594_1047932,dword_5d4594_1047936;
 extern void*dword_5d4594_1049692,*dword_5d4594_1049696;
-extern nox_window *dword_5d4594_1049500,*dword_5d4594_1049504,*dword_5d4594_1049508,*dword_5d4594_1049512,*dword_5d4594_1049520,*dword_5d4594_1049524,*dword_5d4594_1049532;
 static size_t g2qt_layout(int f){switch(f){case 0:return sizeof(nox_quickbar_window_set);case 1:return offsetof(nox_quickbar_window_set,data);case 2:return offsetof(nox_quickbar_window_set,root);case 3:return offsetof(nox_quickbar_window_set,buttons);case 4:return offsetof(nox_quickbar_window_set,nuggets);case 5:return offsetof(nox_quickbar_window_set,nugget_children);case 6:return sizeof(nox_window);case 7:return offsetof(nox_window,field_92);case 8:return sizeof(nox_playerInfo);case 9:return offsetof(nox_playerInfo,info.playerClass);default:return (size_t)-1;}}
 static void* g2qt_array(void) {
     return nox_quickbar_window_storage();
 }
-static void* g2qt_pointer(int field,void* value,int set){
- void**p;switch(field){case 0:p=&nox_xxx_aClosewoodengat_587000_133480;break;case 1:p=(void**)&dword_8531A0_2576;break;case 2:p=(void**)&dword_5d4594_1049500;break;case 3:p=(void**)&dword_5d4594_1049504;break;case 4:p=(void**)&dword_5d4594_1049508;break;case 5:p=(void**)&dword_5d4594_1049512;break;case 6:p=(void**)&dword_5d4594_1049520;break;case 7:p=(void**)&dword_5d4594_1049524;break;case 9:p=&dword_5d4594_1049692;break;case 10:p=&dword_5d4594_1049696;break;default:p=(void**)&dword_5d4594_1049532;}
- if(set)*p=value;return *p;
+static void* g2qt_pointer(int field, void* value, int set) {
+    nox_quickbar_controls_t* controls = nox_quickbar_controls_storage();
+    void** slot;
+    switch (field) {
+    case 0: slot = &nox_xxx_aClosewoodengat_587000_133480; break;
+    case 1: slot = (void**)&dword_8531A0_2576; break;
+    case 2: slot = (void**)&controls->trap_construct; break;
+    case 3: slot = (void**)&controls->right; break;
+    case 4: slot = (void**)&controls->left; break;
+    case 5: slot = (void**)&controls->title; break;
+    case 6: slot = (void**)&controls->trap_activate; break;
+    case 7: slot = (void**)&controls->book_button; break;
+    case 9: slot = &dword_5d4594_1049692; break;
+    case 10: slot = &dword_5d4594_1049696; break;
+    default: slot = (void**)&controls->dragged_slot;
+    }
+    if (set) {
+        *slot = value;
+    }
+    return *slot;
 }
 static uint32_t g2qt_word(int field,uint32_t value,int set){uint32_t*p;switch(field){case 0:p=&dword_5d4594_1049496;break;case 1:p=&dword_5d4594_1049484;break;case 2:p=&dword_5d4594_1047932;break;default:p=&dword_5d4594_1047936;}if(set)*p=value;return*p;}
 static void g2qt_owner(int index, void* data, nox_window* root,

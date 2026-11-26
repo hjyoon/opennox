@@ -3,10 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "client__gui__guispell.h"
-
-extern nox_window *dword_5d4594_1049500, *dword_5d4594_1049504, *dword_5d4594_1049520;
-extern nox_window *dword_5d4594_1049508, *dword_5d4594_1049512, *dword_5d4594_1049516, *dword_5d4594_1049532;
-extern uint32_t dword_5d4594_1047932;
 */
 import "C"
 
@@ -37,22 +33,21 @@ func quickbarSpellRows() (*[5][5]quickbarSpellSlot, int) {
 //export sub_460D50
 func sub_460D50() C.int {
 	slots := [...]**nox_window{
-		&C.dword_5d4594_1049500, &C.dword_5d4594_1049504,
-		&C.dword_5d4594_1049520, &C.dword_5d4594_1049508,
-		&C.dword_5d4594_1049512, &C.dword_5d4594_1049516,
+		&quickbarControls.trap_construct, &quickbarControls.right,
+		&quickbarControls.trap_activate, &quickbarControls.left,
+		&quickbarControls.title, &quickbarControls.drag_window,
 	}
 	for _, slot := range slots {
 		nox_xxx_windowDestroyMB_46C4E0(*slot)
 		*slot = nil
 	}
+	quickbarControls.book_button = nil
 	nox_quickbar_windows_destroy_all()
 	for row := range 5 {
 		clear(memmap.PtrT[[11]uint32](0x5D4594, 1048196+256*uintptr(row)+208)[:])
 	}
 	clear(memmap.PtrT[[4]uint32](0x5D4594, 1048148)[:])
-	C.dword_5d4594_1049532 = nil
-	*memmap.PtrUint32(0x5D4594, 1047928) = 0
-	C.dword_5d4594_1047932 = 0
+	clearQuickbarDragState()
 	return 0
 }
 

@@ -41,9 +41,6 @@ extern uint32_t dword_5d4594_1046852, dword_5d4594_1046636, dword_5d4594_1046640
 extern uint32_t dword_5d4594_1046652, dword_5d4594_1046648;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern nox_window *dword_5d4594_1046944, *dword_5d4594_1046948;
-extern nox_window *dword_5d4594_1046952, *dword_5d4594_1046956;
-extern nox_things_imageRef_t *dword_5d4594_1046924, *dword_5d4594_1046928;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern float2 obj_5d4594_1046620;
 extern int nox_win_width, nox_win_height;
@@ -58,6 +55,18 @@ typedef struct nox_book_ui_slots {
 _Static_assert(sizeof(nox_book_ui_slots) == 12 * sizeof(void*), "book UI slots size");
 _Static_assert(offsetof(nox_book_ui_slots, background) == 9 * sizeof(void*), "book background offset");
 nox_book_ui_slots* nox_book_ui_storage(void);
+
+typedef struct {
+	nox_window* left_arrow;
+	nox_window* right_arrow;
+	nox_window* page_icon;
+	nox_window* reward;
+	nox_things_imageRef_t* forward;
+	nox_things_imageRef_t* backward;
+} nox_book_details_t;
+_Static_assert(sizeof(nox_book_details_t) == 6 * sizeof(void*),
+	"book detail slots must contain six native pointers");
+nox_book_details_t* nox_book_details_storage(void);
 uint32_t nox_client_player_net_code(void);
 
 // Public mixed pointer/tag ABIs stay in root-owned thin C adapters. The private

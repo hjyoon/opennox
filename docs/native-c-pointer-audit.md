@@ -55,16 +55,19 @@ test executable cross-compiled. On macOS the safe profile stalled
 during AddressSanitizer startup at both the audit baseline and the
 ported revision.
 
-The OpenAL package compiles the bundled MP3 Layer III decoder separately
-from the top-level files. Go now synchronizes MP3 frames, parses Layer III
-side information, and maintains the bit reservoir. The C comparisons
-matched 46,706 frame-synchronization inputs, 25,000 side-information
-inputs, and 16,000 reservoir transitions. Stock dialog and four
-synthetic streams produced the established PCM with `cgocheck2` and
-`checkptr=2`. The Linux ARM64 stock dialog also matched its C baseline
-byte for byte. The stock test records both compiler-specific hashes.
-The active C pipeline still decodes scalefactors and Huffman
-coefficients, applies stereo and spectral transforms, and synthesizes PCM.
+The MP3 Layer III decoder now runs in Go. The migration removed the
+codec's C translation unit, header, and cgo calls from the AIL package.
+The C comparisons matched 46,706 frame-synchronization inputs, 25,000
+side-information inputs, 16,000 reservoir transitions, 768 hybrid
+transforms and 768 polyphase synthesis inputs per tested profile, and
+2,187 spectral decoding inputs with initialized scratch storage.
+The 8 kHz mixed-block case preserves the packed spectral buffer geometry
+with a zero-initialized Go workspace.
+
+All 1,137 original MP3 dialog files matched the `f257d38b1` C-backed
+baseline on macOS ARM64 and Linux ARM64. Each run checked the PCM
+digest and sample count for 207,224,064 interleaved samples. The Go
+arithmetic preserves the two tested compilers' rounding orders.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

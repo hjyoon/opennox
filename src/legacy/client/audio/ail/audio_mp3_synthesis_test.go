@@ -39,7 +39,7 @@ func TestMP3SynthesisScalarReference(t *testing.T) {
 				state[j] = sample(gain)
 			}
 		}
-		state.synthesize(&spectrum, channels, pcm[:])
+		state.synthesize(&spectrum[0], &spectrum[1], channels, pcm[:])
 		for _, v := range pcm {
 			data = binary.LittleEndian.AppendUint16(data, uint16(v))
 		}
@@ -64,5 +64,24 @@ func TestMP3SynthesisScalarReference(t *testing.T) {
 	}
 	if got := fmt.Sprintf("%x", sha256.Sum256(data)); got != want {
 		t.Fatalf("MP3 PCM, synthesis coefficients and history hash = %s, want %s", got, want)
+	}
+}
+
+func TestMP3SynthesisPairRounding(t *testing.T) {
+	var line [mp3QMFSaved]float32
+	// Coefficients from the stock dialog at the rounding boundary.
+	coefficients := [...]uint32{0x3d3ff30a, 0x3da9dfe0, 0xbd81d0ac, 0xbbd1f9f8, 0xbe137842, 0xbd16b6d9, 0xbdd9e36e, 0x3d31feec}
+	for i, coefficient := range coefficients {
+		line[(14-2*i)*mp3QMFStride+2] = math.Float32frombits(coefficient)
+	}
+
+	var pcm [17]int16
+	mp3SynthesisPair(pcm[:], 1, line[:])
+	want := int16(531)
+	if runtime.GOARCH == "arm64" && !mp3LinuxARM64Contract {
+		want = 530
+	}
+	if pcm[16] != want {
+		t.Fatalf("MP3 PCM midpoint = %d, want %d", pcm[16], want)
 	}
 }

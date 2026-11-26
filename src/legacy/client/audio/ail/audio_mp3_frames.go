@@ -2,9 +2,9 @@
 
 package ail
 
-// minimp3 returns frames per channel, while audioDecoder.Decode returns
-// interleaved samples. Always decode a complete MP3 frame into private storage:
-// callers (including stream refills) may have less than one frame left.
+// The raw decoder counts frames per channel. audioDecoder.Decode counts
+// interleaved samples. Decode complete MP3 frames into private storage so
+// callers can pass a smaller buffer.
 type mp3FrameDecoder struct {
 	*mp3Decoder
 	position int

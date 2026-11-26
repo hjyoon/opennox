@@ -2,19 +2,10 @@
 
 package ail
 
-/*
-#include <stdint.h>
-#define MINIMP3_ONLY_MP3
-#define MINIMP3_NO_SIMD
-#include "../mp3/minimp3.h"
-#cgo noescape mp3dec_unpack_layer3
-*/
-import "C"
 import (
 	"encoding/binary"
 	"fmt"
 	"io"
-	"unsafe"
 )
 
 func newMP3Decoder(r *wavReader, hr io.Reader, wf waveFormat, hdr []byte) (*mp3Decoder, error) {
@@ -127,51 +118,19 @@ func (d *mp3Decoder) decodeLayer3(frame []byte, header mp3FrameHeader, info *mp3
 		d.reservoir.save(data, 0)
 		return false
 	}
-	var granules [4]C.mp3dec_granule_t
-	for i := range granules {
-		src, dst := &info.granules[i], &granules[i]
-		for n, width := range src.bandWidths {
-			dst.sfbtab[n] = C.uint8_t(width)
-		}
-		dst.part_23_length = C.uint16_t(src.dataBits)
-		dst.big_values = C.uint16_t(src.bigValues)
-		dst.scalefac_compress = C.uint16_t(src.scalefacCompress)
-		dst.global_gain = C.uint8_t(src.globalGain)
-		dst.block_type = C.uint8_t(src.blockType)
-		dst.mixed_block_flag = C.uint8_t(src.mixedBlock)
-		dst.n_long_sfb = C.uint8_t(src.longBands)
-		dst.n_short_sfb = C.uint8_t(src.shortBands)
-		for n := range src.huffmanTable {
-			dst.table_select[n] = C.uint8_t(src.huffmanTable[n])
-			dst.region_count[n] = C.uint8_t(src.regionBandCount[n])
-			dst.subblock_gain[n] = C.uint8_t(src.subblockGain[n])
-		}
-		dst.preflag = C.uint8_t(src.preflag)
-		dst.scalefac_scale = C.uint8_t(src.scalefacScale)
-		dst.count1_table = C.uint8_t(src.countOneTable)
-		dst.scfsi = C.uint8_t(src.scalefacReuseMask)
-	}
-	var spectra C.mp3dec_spectral_frame_t
-	consumed := C.mp3dec_unpack_layer3((*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
-		(*C.uint8_t)(unsafe.Pointer(&scratch[0])), C.int(len(data)), &spectra)
-	spectrum := (*[2][2][mp3SpectralSamples]float32)(unsafe.Pointer(&spectra))
+	bits := mp3BitReader{data: data}
+	var spectrum mp3SpectralWorkspace
+	var intensity [2][39]uint8
 	channels, count := header.channelCount(), header.granuleCount()
-	mixedLongSubbands := 2
-	if header.bandRateIndex() == 2 {
-		mixedLongSubbands = 4
-	}
 	for g := range count {
+		side := info.granules[g*channels:]
+		spectrum.unpack(header, side, &bits, &intensity)
 		for ch := range channels {
-			side := &info.granules[g*channels+ch]
-			longSubbands := 0
-			if side.mixedBlock != 0 {
-				longSubbands = mixedLongSubbands
-			}
-			mp3Hybrid(&spectrum[g][ch], &d.overlap[ch], side.blockType, longSubbands)
+			mp3Hybrid(spectrum.channel(ch), &d.overlap[ch], side[ch].blockType, side[ch].longSubbands(header))
 		}
-		d.synthesis.synthesize(&spectrum[g], channels, out[g*channels*mp3SpectralSamples:])
+		d.synthesis.synthesize(spectrum.channel(0), spectrum.channel(1), channels, out[g*channels*mp3SpectralSamples:])
 	}
-	d.reservoir.save(data, int(consumed))
+	d.reservoir.save(data, bits.pos)
 	return true
 }
 

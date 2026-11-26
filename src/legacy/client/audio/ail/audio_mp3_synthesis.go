@@ -12,15 +12,18 @@ const (
 
 type mp3SynthesisState [mp3QMFSaved]float32
 
-func (s *mp3SynthesisState) synthesize(spectrum *[2][mp3SpectralSamples]float32, channels int, pcm []int16) {
-	for ch := range channels {
-		mp3SynthesisDCT(&spectrum[ch])
+func (s *mp3SynthesisState) synthesize(left, right *[mp3SpectralSamples]float32, channels int, pcm []int16) {
+	mp3SynthesisDCT(left)
+	if channels == 2 {
+		mp3SynthesisDCT(right)
+	} else {
+		right = left
 	}
 
 	var lines [mp3QMFWorkSize]float32
 	copy(lines[:], s[:])
 	for slot := 0; slot < mp3SamplesPerSubband; slot += 2 {
-		mp3SynthesizeSlots(spectrum, slot, lines[slot*mp3QMFStride:], channels, pcm[slot*channels*mp3Subbands:])
+		mp3SynthesizeSlots(left, right, slot, lines[slot*mp3QMFStride:], channels, pcm[slot*channels*mp3Subbands:])
 	}
 
 	history := lines[mp3SamplesPerSubband*mp3QMFStride:]
@@ -122,8 +125,7 @@ func mp3SynthesisDCT8(x *[8]float32) {
 	x[7] = (xt - x7) * 2.56291556
 }
 
-func mp3SynthesizeSlots(spectrum *[2][mp3SpectralSamples]float32, slot int, lines []float32, channels int, pcm []int16) {
-	left, right := &spectrum[0], &spectrum[channels-1]
+func mp3SynthesizeSlots(left, right *[mp3SpectralSamples]float32, slot int, lines []float32, channels int, pcm []int16) {
 	for j := range 2 {
 		z := mp3QMFSaved + 4*(15+16*j)
 		lines[z] = left[slot+j+mp3SamplesPerSubband*16]
@@ -149,7 +151,7 @@ func mp3SynthesizeSlots(spectrum *[2][mp3SpectralSamples]float32, slot int, line
 		var a, b [4]float32
 		for j := range 4 {
 			vz, vy := lines[z+j], lines[z+j-mp3QMFStride*15]
-			a[j] = mp3SynthesisDifference(vz, weights[0], vy, weights[1])
+			a[j] = mp3ProductDifference(vz, weights[0], vy, weights[1])
 			b[j] = vz*weights[1] + float32(vy*weights[0])
 		}
 		for tap := 1; tap < 8; tap++ {
@@ -160,9 +162,9 @@ func mp3SynthesizeSlots(spectrum *[2][mp3SpectralSamples]float32, slot int, line
 				vz, vy := lines[front+j], lines[back+j]
 				b[j] += vz*w1 + float32(vy*w0)
 				if tap&1 != 0 {
-					a[j] += mp3SynthesisDifference(vy, w1, vz, w0)
+					a[j] += mp3ProductDifference(vy, w1, vz, w0)
 				} else {
-					a[j] += mp3SynthesisDifference(vz, w0, vy, w1)
+					a[j] += mp3ProductDifference(vz, w0, vy, w1)
 				}
 			}
 		}
@@ -175,7 +177,7 @@ func mp3SynthesizeSlots(spectrum *[2][mp3SpectralSamples]float32, slot int, line
 	}
 }
 
-func mp3SynthesisDifference(a, wa, b, wb float32) float32 {
+func mp3ProductDifference(a, wa, b, wb float32) float32 {
 	if mp3LinuxARM64Contract {
 		return float32(a*wa) - b*wb
 	}
@@ -183,7 +185,11 @@ func mp3SynthesisDifference(a, wa, b, wb float32) float32 {
 }
 
 func mp3SynthesisPair(pcm []int16, channels int, z []float32) {
+	// Clang rounds the initial product before accumulating the later taps.
 	a := (z[14*64] - z[0]) * 29
+	if !mp3LinuxARM64Contract {
+		a = float32(a)
+	}
 	a += (z[1*64] + z[13*64]) * 213
 	a += (z[12*64] - z[2*64]) * 459
 	a += (z[3*64] + z[11*64]) * 2037
@@ -195,6 +201,9 @@ func mp3SynthesisPair(pcm []int16, channels int, z []float32) {
 
 	z = z[2:]
 	a = z[14*64] * 104
+	if !mp3LinuxARM64Contract {
+		a = float32(a)
+	}
 	a += z[12*64] * 1567
 	a += z[10*64] * 9727
 	a += z[8*64] * 64019

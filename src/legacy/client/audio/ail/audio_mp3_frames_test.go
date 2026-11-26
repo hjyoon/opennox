@@ -85,7 +85,7 @@ func referenceMP3FramePCM(t *testing.T, data []byte) []int16 {
 	for calls := 0; calls < 10000; calls++ {
 		n, ok := raw.Decode(buffer[:])
 		if n < 0 || n > 1152 || n*r.Channels() > len(buffer) {
-			t.Fatalf("invalid native minimp3 frame count %d", n)
+			t.Fatalf("invalid MP3 frame count %d", n)
 		}
 		result = append(result, buffer[:n*r.Channels()]...)
 		if !ok {
@@ -193,7 +193,7 @@ func TestWAVMP3StreamPendingTailAndRewind(t *testing.T) {
 			pcm := referenceMP3FramePCM(t, data)
 			r := openMP3FrameFixture(t, data)
 			// Require working Position before testing a small destination. On the
-			// unwrapped decoder, C writes a full MP3 frame regardless of its size.
+			// raw decoder, the destination holds a complete MP3 frame.
 			var bootstrap [1152 * 2]int16
 			n, ok := r.Decode(bootstrap[:])
 			if !ok || n <= 0 || r.Position() != n/f.channels {

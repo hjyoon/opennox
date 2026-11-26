@@ -15,6 +15,7 @@ type WindowFunc func(win *Window, ev WindowEvent) WindowEventResp
 type WindowDrawFunc func(win *Window, draw *WindowData) int
 
 type nativeWindowProc func(win *Window, event int, a, b uintptr) uintptr
+type nativeWindowTooltip func(win *Window, draw *WindowData, pos uintptr)
 
 var (
 	windowProcs = ccall.NewFuncs(func(fnc unsafe.Pointer) nativeWindowProc {
@@ -25,6 +26,16 @@ var (
 	windowInitializers = ccall.NewFuncs(func(fnc unsafe.Pointer) nativeWindowProc {
 		return func(win *Window, event int, a, b uintptr) uintptr {
 			return ccall.CallUPtrPtrIntUPtr2(fnc, win.C(), event, a, b)
+		}
+	})
+	windowDraws = ccall.NewFuncs(func(fnc unsafe.Pointer) WindowDrawFunc {
+		return func(win *Window, draw *WindowData) int {
+			return ccall.CallWindowDraw(fnc, win.C(), draw.C())
+		}
+	})
+	windowTooltips = ccall.NewFuncs(func(fnc unsafe.Pointer) nativeWindowTooltip {
+		return func(win *Window, draw *WindowData, pos uintptr) {
+			ccall.CallWindowTooltip(fnc, win.C(), draw.C(), pos)
 		}
 	})
 )
@@ -38,6 +49,16 @@ func RegisterWindowProcC(addr unsafe.Pointer, proc func(*Window, int, uintptr, u
 // RegisterWindowInitializerC binds a native-width constructor procedure.
 func RegisterWindowInitializerC(addr unsafe.Pointer, proc func(*Window, int, uintptr, uintptr) uintptr) {
 	windowInitializers.Register(addr, proc)
+}
+
+// RegisterWindowDrawC binds a legacy draw procedure to its Go implementation.
+func RegisterWindowDrawC(addr unsafe.Pointer, proc WindowDrawFunc) {
+	windowDraws.Register(addr, proc)
+}
+
+// RegisterWindowTooltipC binds a legacy tooltip procedure to its Go implementation.
+func RegisterWindowTooltipC(addr unsafe.Pointer, proc func(*Window, *WindowData, uintptr)) {
+	windowTooltips.Register(addr, proc)
 }
 
 func windowProcResponse(proc nativeWindowProc, win *Window, e WindowEvent) WindowEventResp {
@@ -61,12 +82,7 @@ func WrapFuncC(fnc unsafe.Pointer) WindowFunc {
 }
 
 func WrapDrawFuncC(fnc unsafe.Pointer) WindowDrawFunc {
-	if fnc == nil {
-		return nil
-	}
-	return func(win *Window, draw *WindowData) int {
-		return ccall.CallIntPtr2(fnc, win.C(), draw.C())
-	}
+	return windowDraws.Get(fnc)
 }
 
 type windowExt struct {
@@ -577,7 +593,7 @@ func (win *Window) Draw() {
 	if win.drawFunc == nil || uintptr(win.drawFunc) == deadWord {
 		return
 	}
-	ccall.CallVoidPtr2(win.drawFunc, win.C(), win.DrawData().C())
+	windowDraws.Get(win.drawFunc)(win, win.DrawData())
 }
 
 func (win *Window) TooltipFunc(a1 uintptr) {
@@ -587,7 +603,7 @@ func (win *Window) TooltipFunc(a1 uintptr) {
 	if win.TooltipFuncPtr == nil || uintptr(win.TooltipFuncPtr) == deadWord {
 		return
 	}
-	ccall.CallVoidUPtr3(win.TooltipFuncPtr, uintptr(win.C()), uintptr(win.DrawData().C()), a1)
+	windowTooltips.Get(win.TooltipFuncPtr)(win, win.DrawData(), a1)
 }
 
 func (win *Window) Focus() {

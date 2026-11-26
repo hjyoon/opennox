@@ -98,6 +98,27 @@ static int nox_test_window_set_signed_proc(nox_window* win) {
 		win->field_93 == (void*)proc && win->field_94 == (void*)proc;
 }
 
+static int nox_test_window_draw_proc(nox_window* win, nox_window_data* draw) {
+	if (draw == &win->draw_data) {
+		win->field_92 = 1;
+	}
+	return -7;
+}
+
+static int nox_test_window_tooltip_proc(nox_window* win, nox_window_data* draw, int pos) {
+	if (draw == &win->draw_data && (uint32_t)pos == 0x80010003) {
+		win->field_92 = 2;
+	}
+	return -9;
+}
+
+static int nox_test_window_set_draw_and_tooltip(nox_window* win) {
+	nox_window_draw_proc draw = nox_test_window_draw_proc;
+	nox_window_tooltip_proc tooltip = nox_test_window_tooltip_proc;
+	return nox_window_set_all_funcs(win, NULL, draw, tooltip) == 0 &&
+		win->draw_func == draw && win->tooltip_func == tooltip;
+}
+
 static int nox_test_window_null_setters(void) {
 	return nox_window_set_all_funcs(NULL, NULL, NULL, NULL) == -2 &&
 		nox_xxx_wndSetProc_46B2C0(NULL, NULL) == -2 &&
@@ -180,6 +201,14 @@ func windowNullSettersC() bool {
 
 func windowSetSignedProcC(win *gui.Window) bool {
 	return C.nox_test_window_set_signed_proc((*nox_window)(win.C())) != 0
+}
+
+func windowSetDrawAndTooltipC(win *gui.Window) bool {
+	return C.nox_test_window_set_draw_and_tooltip((*nox_window)(win.C())) != 0
+}
+
+func windowCallbackStateC(win *gui.Window) uint32 {
+	return uint32((*nox_window)(win.C()).field_92)
 }
 
 func listBoxEventCallbackC(win *gui.Window, multi bool, event int, a3, a4 uintptr) int {

@@ -104,6 +104,25 @@ func TestWindowCallbackSettersRejectNullThroughC(t *testing.T) {
 	}
 }
 
+func TestWindowDrawAndTooltipNativeABI(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+
+	win := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 120, 20, nil)
+	requireNativeWindowAddress(t, win)
+	if !windowSetDrawAndTooltipC(win) {
+		t.Fatal("C setter did not store the draw and tooltip procedure addresses")
+	}
+	win.Draw()
+	if got := windowCallbackStateC(win); got != 1 {
+		t.Fatalf("draw callback did not receive its window data: %d", got)
+	}
+	win.TooltipFunc(0x80010003)
+	if got := windowCallbackStateC(win); got != 2 {
+		t.Fatalf("tooltip callback did not receive its native arguments: %d", got)
+	}
+}
+
 func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 	g := newWidgetCallbackGUI(t)
 	defer g.DestroyAll()

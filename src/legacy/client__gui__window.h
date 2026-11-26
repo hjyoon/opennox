@@ -41,6 +41,9 @@ typedef struct nox_window_data {
 _Static_assert(sizeof(nox_window_data) == (sizeof(void*) == 4 ? 332 : 392),
 	"wrong native size of nox_window_data structure!");
 
+typedef int (*nox_window_draw_proc)(nox_window*, nox_window_data*);
+typedef int (*nox_window_tooltip_proc)(nox_window*, nox_window_data*, int);
+
 typedef struct nox_window {
 	int id;                                                  // 0, 0
 	nox_window_flags flags;                                  // 1, 4
@@ -55,8 +58,8 @@ typedef struct nox_window {
 	unsigned int field_92;                                   // 92, 368
 	void* field_93;                                          // 93, legacy event procedure address
 	void* field_94;                                          // 94, legacy control procedure address
-	int (*draw_func)(nox_window*, nox_window_data*);         // 95, 380, second arg is &field_9
-	int (*tooltip_func)(nox_window*, nox_window_data*, int); // 96, 384
+	nox_window_draw_proc draw_func;                          // 95, 380, second arg is &field_9
+	nox_window_tooltip_proc tooltip_func;                    // 96, 384
 	nox_window* prev;                                        // 97, 388
 	nox_window* next;                                        // 98, 392
 	nox_window* parent;                                      // 99, 396

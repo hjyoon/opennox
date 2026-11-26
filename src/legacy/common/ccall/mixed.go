@@ -4,6 +4,7 @@ package ccall
 #include <stdint.h>
 
 typedef struct nox_window nox_window;
+typedef struct nox_window_data nox_window_data;
 
 static int go_call_window_proc(
 	int (*fnc)(nox_window*, int, uintptr_t, uintptr_t),
@@ -17,6 +18,18 @@ static uintptr_t go_call_uptr_ptr_int_uptr2_func(
 	nox_window* a1, int a2, uintptr_t a3, uintptr_t a4
 ) {
 	return fnc(a1, a2, a3, a4);
+}
+
+static int go_call_window_draw(
+	int (*fnc)(nox_window*, nox_window_data*), nox_window* win, nox_window_data* draw
+) {
+	return fnc(win, draw);
+}
+
+static void go_call_window_tooltip(
+	int (*fnc)(nox_window*, nox_window_data*, int), nox_window* win, nox_window_data* draw, int pos
+) {
+	fnc(win, draw, pos);
 }
 */
 import "C"
@@ -37,4 +50,12 @@ func CallUPtrPtrIntUPtr2(fnc unsafe.Pointer, a1 unsafe.Pointer, a2 int, a3, a4 u
 		C.uintptr_t(a3),
 		C.uintptr_t(a4),
 	))
+}
+
+func CallWindowDraw(fnc, win, draw unsafe.Pointer) int {
+	return int(C.go_call_window_draw((*[0]byte)(fnc), (*C.nox_window)(win), (*C.nox_window_data)(draw)))
+}
+
+func CallWindowTooltip(fnc, win, draw unsafe.Pointer, pos uintptr) {
+	C.go_call_window_tooltip((*[0]byte)(fnc), (*C.nox_window)(win), (*C.nox_window_data)(draw), C.int(pos))
 }

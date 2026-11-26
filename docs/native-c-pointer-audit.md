@@ -56,6 +56,14 @@ keeps those slots at 372 and 376 on 32-bit hosts and 464 and 472 on
 external initializer and an ordinary C event callback uses the signed
 event signature.
 
+The draw and tooltip inventory resolves 60 draw procedures and 16
+tooltip procedures to Go implementations. Dispatch preserves the
+procedure addresses and uses each implementation's typed arguments.
+External C procedures take the window and draw-data pointers. The
+tooltip's third argument is a 32-bit packed cursor position. The
+original Nox setters write their addresses at PE32 offsets 380 and
+384. The matching native offsets are 480 and 488 on 64-bit hosts.
+
 ### Memory map and MP3 follow-up
 
 Go now exports the 12 memory-map accessors with native-width addresses
@@ -98,6 +106,7 @@ its 32-bit argument.
 
 Removing the five translation units brings the top-level legacy C file
 count to 47. The default macOS ARM64 build selects 46 files with 111
+function bodies. The safe profile selects all 47 files with 118
 function bodies. Ten of the selected files provide data or declarations.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10

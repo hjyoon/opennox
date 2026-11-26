@@ -34,16 +34,8 @@ steps:
     x: 352
     y: 608
     name: accept warrior color
-  - action: wait
-    dt: 1000
-    name: wait for chapter one briefing
-  - action: click
-    x: 512
-    y: 384
+  - action: click-chapter-briefing
     name: dismiss chapter one briefing
-  - action: wait
-    dt: 120
-    name: enter stock opening dialog
   - action: check-npc-dialog-repeat
     count: 2
     name: repeat naturally completed opening voice

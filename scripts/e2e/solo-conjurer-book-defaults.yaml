@@ -87,14 +87,17 @@ steps:
   - action: check-book-reward-default
     spell: 64
     active: true
+    award-message-variant: 0
     name: conjurer Protection from Poison book default
   - action: check-book-reward-default
     spell: 41
     active: false
+    award-message-variant: 1
     name: conjurer Lesser Heal book default
   - action: check-book-reward-default
     spell: 60
     active: false
+    award-message-variant: 0
     name: conjurer Poison book default
   - action: screen
     name: conjurer natural book defaults and manual preferences

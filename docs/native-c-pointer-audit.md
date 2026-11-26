@@ -620,6 +620,9 @@ network path. It restores the entries after each award and checks
 the exact reference frame using the pixel digest for the English
 or Korean CSF profile.
 
+The conjurer book-default scenario selects the three stock
+award notices visible in its final reference frame.
+
 The conjurer quickbar scenario selects its award and cast notices
 before entering the real input and spell paths. It checks the
 self-target and other-target frames under both CSF profiles and
@@ -930,6 +933,10 @@ The C comparisons use the live slots through typed accessors.
 The music module owns its nesting counter and the audio comparison
 owns its private bank. Their two obsolete C definitions were removed,
 leaving 38 definitions in `vardefs.c`.
+
+The opening dialogue replay now dismisses the captured chapter briefing
+as soon as it becomes ready, then observes the first native voice stream
+and both requested replays through natural completion.
 
 ### Map generation, world, and focus storage
 

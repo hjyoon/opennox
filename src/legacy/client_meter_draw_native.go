@@ -4,9 +4,7 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern void* dword_5d4594_1096288;
 extern uint64_t qword_581450_9512, qword_581450_9544;
-extern uint32_t dword_5d4594_1096264;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -147,9 +145,9 @@ func sub_471450(win *C.nox_window, _ *C.nox_window_data) C.int {
 	text := meterDecimalText(&buffer, int32(meter.field_1))
 	nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	var width C.int
-	nox_xxx_drawGetStringSize_43F840(C.dword_5d4594_1096288, text, &width, nil, 0)
+	nox_xxx_drawGetStringSize_43F840(meterState.font, text, &width, nil, 0)
 	x, y := meterWindowPosition(win)
-	nox_xxx_drawString_43F6E0(C.dword_5d4594_1096288, text, int32(x-width/2+8), int32(y+1))
+	nox_xxx_drawString_43F6E0(meterState.font, text, int32(x-width/2+8), int32(y+1))
 	return 1
 }
 
@@ -169,12 +167,12 @@ func nox_xxx_guiBottleSlotDrawFn_471A80(win *C.nox_window, _ *C.nox_window_data)
 		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 		count := memmap.Uint16(0x5D4594, offset+4)
 		text := meterDecimalText(&buffer, int32(count))
-		height := nox_xxx_guiFontHeightMB_43F320(C.dword_5d4594_1096288)
-		nox_xxx_drawString_43F6E0(C.dword_5d4594_1096288, text, int32(x-2), int32(y)-height+10)
+		height := nox_xxx_guiFontHeightMB_43F320(meterState.font)
+		nox_xxx_drawString_43F6E0(meterState.font, text, int32(x-2), int32(y)-height+10)
 	}
 	label := (*wchar2_t)(memmap.PtrOff(0x5D4594, offset-8))
-	height := nox_xxx_guiFontHeightMB_43F320(C.dword_5d4594_1096288)
-	nox_xxx_drawString_43F6E0(C.dword_5d4594_1096288, label, int32(x-2), int32(y)-height+33)
+	height := nox_xxx_guiFontHeightMB_43F320(meterState.font)
+	nox_xxx_drawString_43F6E0(meterState.font, label, int32(x-2), int32(y)-height+33)
 	return 1
 }
 
@@ -217,7 +215,7 @@ func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C
 	border := int32(renderPalette.violet)
 	if index != 0 {
 		border = memmap.Int32(0x85B3FC, 944)
-	} else if C.dword_5d4594_1096264 != 0 {
+	} else if meterState.poisoned != 0 {
 		border = memmap.Int32(0x85B3FC, 984)
 	}
 	nox_client_drawSetColor_434460(border)

@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_2.h"
 
 extern uint32_t dword_5d4594_3804684;
-extern nox_render_data_t* nox_draw_curDrawData_3799572;
 */
 import "C"
 
@@ -42,7 +41,7 @@ func sub_476080(record *C.uchar) C.int {
 
 //export sub_47D380
 func sub_47D380(a, b C.int) C.int {
-	clip := C.nox_draw_curDrawData_3799572.clip
+	clip := currentDrawData.clip
 	minimum, maximum := C.int(clip.min_x), C.int(clip.max_x)
 	left, right := min(a, b), max(a, b)
 	if left >= maximum || right < minimum {

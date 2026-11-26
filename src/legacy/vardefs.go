@@ -168,7 +168,6 @@ extern uint32_t dword_5d4594_1565616;
 extern uint32_t dword_5d4594_816356;
 extern uint32_t dword_5d4594_1203836;
 extern void* dword_5d4594_1301780;
-extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_741356;
 extern uint32_t dword_5d4594_1197356;
 extern uint32_t dword_5d4594_1045436;
@@ -191,11 +190,9 @@ extern uint32_t dword_5d4594_1321208;
 extern uint32_t dword_5d4594_2487620;
 extern uint32_t dword_5d4594_531656;
 extern void* nox_alloc_tradeSession_2386492;
-extern void* dword_5d4594_1096288;
 extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_825736;
 extern uint32_t dword_5d4594_1313540;
-extern uint32_t dword_5d4594_1096284;
 extern uint32_t dword_5d4594_2487624;
 extern uint32_t dword_5d4594_2487576;
 extern uint32_t nox_client_gui_flag_1556112;
@@ -206,7 +203,6 @@ extern uint32_t dword_5d4594_3835348;
 extern uint32_t dword_5d4594_1046640;
 extern nox_gui_trade_slot* dword_5d4594_1320972;
 extern uint32_t dword_5d4594_1565516;
-extern uint32_t dword_5d4594_1096260;
 extern uint32_t dword_5d4594_529336;
 extern uint32_t dword_5d4594_2487652;
 extern uint32_t dword_5d4594_3835388;
@@ -270,15 +266,12 @@ extern uint32_t dword_5d4594_831256;
 extern uint32_t dword_5d4594_1316436;
 extern uint32_t dword_5d4594_1046864;
 extern uint32_t dword_5d4594_3799452;
-extern uint32_t dword_5d4594_1096280;
 extern uint32_t dword_5d4594_1316472;
 extern uint32_t dword_5d4594_1062560;
 extern uint32_t dword_5d4594_2491544;
 extern uint32_t dword_587000_183456;
 extern uint32_t nox_xxx_lightningOwner_5d4594_2487900;
-extern uint32_t dword_5d4594_1096256;
 extern uint32_t dword_5d4594_2523764;
-extern uint32_t dword_5d4594_1090280;
 extern uint32_t dword_5d4594_1200796;
 extern uint32_t dword_5d4594_1313536;
 extern wchar2_t* dword_5d4594_1098596;
@@ -289,7 +282,6 @@ extern uint32_t dword_5d4594_1316484;
 extern nox_gui_trade_slot* dword_5d4594_1320936;
 extern uint32_t dword_5d4594_1045552;
 extern uint32_t dword_587000_234176;
-extern uint32_t dword_5d4594_1096264;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_1203832;
 extern uint32_t dword_5d4594_831244;
@@ -303,7 +295,6 @@ extern uint32_t dword_5d4594_1049992;
 extern uint32_t dword_587000_171388;
 extern uint32_t dword_5d4594_1062484;
 extern uint32_t dword_5d4594_528260;
-extern uint32_t dword_5d4594_1090284;
 extern uint32_t dword_5d4594_1301796;
 extern uint32_t dword_5d4594_2487932;
 extern uint32_t dword_5d4594_2487628;
@@ -321,7 +312,6 @@ extern uint32_t dword_5d4594_1193188;
 extern uint32_t dword_5d4594_1565628;
 extern uint32_t dword_5d4594_816444;
 extern uint32_t nox_server_sendMotd_108752;
-extern uint32_t dword_5d4594_1096276;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t dword_5d4594_1123520;
 extern uint32_t dword_5d4594_2488720;
@@ -353,7 +343,6 @@ extern uint32_t dword_5d4594_1568300;
 extern uint32_t dword_5d4594_1313692;
 extern uint32_t dword_5d4594_1599688;
 extern uint32_t nox_server_kickQuestPlayerMinVotes_229992;
-extern uint32_t dword_5d4594_1096272;
 extern uint32_t dword_5d4594_1096636;
 extern uint32_t dword_5d4594_1522956;
 extern uint32_t dword_587000_183460;
@@ -519,7 +508,6 @@ extern int nox_win_height;
 extern uint8_t** nox_pixbuffer_rows_3798784;
 extern uint32_t dword_5d4594_823776;
 
-extern nox_render_data_t* nox_draw_curDrawData_3799572;
 */
 import "C"
 import (
@@ -966,7 +954,7 @@ func Set_dword_5d4594_823776(v int) {
 	C.dword_5d4594_823776 = C.uint(v)
 }
 func Set_nox_draw_curDrawData_3799572(v *noxrender.RenderData) {
-	C.nox_draw_curDrawData_3799572 = (*nox_render_data_t)(v.C())
+	currentDrawData = (*nox_render_data_t)(v.C())
 }
 func Set_nox_color_black_2650656(v uint32) {
 	renderPalette.black = C.uint32_t(v)
@@ -996,7 +984,7 @@ func Set_nox_color_yellow_2589772(v uint32) {
 	renderPalette.yellow = C.uint32_t(v)
 }
 func Set_dword_5d4594_1305748(v int) {
-	C.dword_5d4594_1305748 = C.uint32_t(v)
+	drawClipSaved = C.uint32_t(v)
 }
 func Set_nox_pixbuffer_rows_3798784(v unsafe.Pointer) {
 	C.nox_pixbuffer_rows_3798784 = (**C.uchar)(v)
@@ -1213,5 +1201,5 @@ func Set_dword_5d4594_608316(v uint32) {
 	C.dword_5d4594_608316 = C.uint32_t(v)
 }
 func Nox_xxx_playerGet_470A90() int {
-	return int(C.dword_5d4594_1096252)
+	return int(meterState.barsVisible)
 }

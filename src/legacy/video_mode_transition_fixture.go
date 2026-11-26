@@ -4,7 +4,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern nox_render_data_t* nox_draw_curDrawData_3799572;
 int nox_getBackbufferPitch(void);
 */
 import "C"
@@ -14,9 +13,8 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
-// Declaration-only test access to the real C globals and entry. These aliases
-// neither replace a video callback nor install a test row/pixel buffer.
+// Test access to the live render-data slot and the C pitch entry.
 var (
-	VideoModeRenderDataC = (**noxrender.RenderData)(unsafe.Pointer(&C.nox_draw_curDrawData_3799572))
+	VideoModeRenderDataC = (**noxrender.RenderData)(unsafe.Pointer(&currentDrawData))
 	VideoModePitchCEntry = C.nox_getBackbufferPitch
 )

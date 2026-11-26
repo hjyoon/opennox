@@ -13,7 +13,6 @@ extern uint32_t dword_5d4594_815052;
 extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
 #include "client_ui_words.h"
-extern uint32_t dword_5d4594_1096252;
 extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1098628;
 extern uint32_t dword_5d4594_1123520;
@@ -61,7 +60,7 @@ func sub_4675B0() C.int { return C.int(inventoryState.mode) }
 func sub_46A4A0() C.int { return C.int(*clientChatActive) }
 
 //export nox_xxx_playerGet_470A90
-func nox_xxx_playerGet_470A90() C.int { return C.int(C.dword_5d4594_1096252) }
+func nox_xxx_playerGet_470A90() C.int { return C.int(meterState.barsVisible) }
 
 //export sub_478030
 func sub_478030() C.int { return C.int(C.dword_5d4594_1098624) }

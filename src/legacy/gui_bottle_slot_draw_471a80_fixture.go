@@ -7,7 +7,6 @@ package legacy
 #include "memmap.h"
 #include "internal/cfixture/render_palette_reference.h"
 
-extern void* dword_5d4594_1096288;
 
 static int64_t nox_test_bottle_observed_471A80[30];
 static int nox_test_bottle_slot_471A80;
@@ -51,7 +50,7 @@ static int nox_test_bottle_calls_471A80(void) {
     return nox_test_bottle_observed_471A80[19];
 }
 
-static void nox_test_bottle_slot_draw_471A80(nox_window* win, nox_drawable* drawables, const uint32_t* words,
+static void nox_test_bottle_slot_draw_471A80(nox_window* win, nox_drawable* drawables, void** font, const uint32_t* words,
         int slot, uint16_t count, int callback, int mutate_viewport, int new_count,
         const uint16_t* binding, int64_t* out) {
     uint32_t* record = getMemU32Ptr(0x5D4594, 1091904);
@@ -83,10 +82,10 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, nox_drawable* draw
     nox_drawable expected_drawable;
     memcpy(&expected_drawable, dr, sizeof(*dr));
     void* saved_widget = win->widget_data;
-    void* saved_font = dword_5d4594_1096288;
+    void* saved_font = *font;
     uint32_t saved_white = nox_color_white_2523948;
     win->widget_data = (void*)(intptr_t)slot;
-    dword_5d4594_1096288 = NULL;
+    *font = NULL;
     nox_color_white_2523948 = UINT32_C(0xffff);
     memset(nox_test_bottle_observed_471A80, 0, sizeof(nox_test_bottle_observed_471A80));
     nox_test_bottle_slot_471A80 = slot;
@@ -119,7 +118,7 @@ static void nox_test_bottle_slot_draw_471A80(nox_window* win, nox_drawable* draw
 
     win->widget_data = saved_widget;
     out[29] = win->widget_data == saved_widget;
-    dword_5d4594_1096288 = saved_font;
+    *font = saved_font;
     nox_color_white_2523948 = saved_white;
     memcpy(record, saved_record, sizeof(saved_record));
     memcpy(drawables, saved_drawables, sizeof(saved_drawables));
@@ -139,7 +138,7 @@ import (
 func bottleSlotDrawC471A80(win *gui.Window, words [13]uint32, slot int, count uint16,
 	callback, mutateViewport bool, newCount int, binding [4]uint16) [30]int64 {
 	var out [30]int64
-	C.nox_test_bottle_slot_draw_471A80((*C.nox_window)(win.C()), &clientPotionDrawables[0],
+	C.nox_test_bottle_slot_draw_471A80((*C.nox_window)(win.C()), &clientPotionDrawables[0], &meterState.font,
 		(*C.uint32_t)(unsafe.Pointer(&words[0])), C.int(slot), C.uint16_t(count),
 		C.int(bool2int(callback)), C.int(bool2int(mutateViewport)), C.int(newCount),
 		(*C.uint16_t)(unsafe.Pointer(&binding[0])), (*C.int64_t)(unsafe.Pointer(&out[0])))

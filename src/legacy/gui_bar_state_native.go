@@ -2,8 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
-extern uint32_t dword_5d4594_1096260, dword_5d4594_1096264;
 */
 import "C"
 
@@ -12,9 +10,9 @@ import "github.com/opennox/opennox/v1/server"
 func guiBarStateNativeWord(index int) *uint32 {
 	switch uint32(index) {
 	case 0:
-		return (*uint32)(&C.dword_5d4594_1090280)
+		return (*uint32)(&meterState.healthShadow)
 	case 1:
-		return (*uint32)(&C.dword_5d4594_1090284)
+		return (*uint32)(&meterState.healthColor)
 	case 2:
 		return g2ServerWord(1091964)
 	case 3:
@@ -32,9 +30,9 @@ func guiBarStateNativeWord(index int) *uint32 {
 	case 9:
 		return (*uint32)(&clientMeterRecords[1].field_2)
 	case 10:
-		return (*uint32)(&C.dword_5d4594_1096260)
+		return (*uint32)(&meterState.iconTicks)
 	case 11:
-		return (*uint32)(&C.dword_5d4594_1096264)
+		return (*uint32)(&meterState.poisoned)
 	default:
 		return nil
 	}

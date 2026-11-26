@@ -4,9 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guimeter.h"
 
-extern uint32_t dword_5d4594_1096252, dword_5d4594_1096256, dword_5d4594_1096260, dword_5d4594_1096264;
-extern uint32_t dword_5d4594_1096272, dword_5d4594_1096276, dword_5d4594_1096280, dword_5d4594_1096284;
-extern void* dword_5d4594_1096288;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -29,6 +26,20 @@ var clientMeterRoot *nox_window
 var clientMeterRecords, _ = alloc.New([7]C.nox_window_yyy{})
 var clientPotionDrawables, _ = alloc.New([3]C.nox_drawable{})
 
+type clientMeterState struct {
+	font                              unsafe.Pointer
+	barsVisible, iconPhase, iconTicks C.uint32_t
+	poisoned                          C.uint32_t
+	healthColor, healthShadow         C.uint32_t
+	bluePotion, curePotion            C.uint32_t
+	apple, meat                       C.uint32_t
+}
+
+var meterState, _ = alloc.New(clientMeterState{})
+
+//export nox_client_meter_visible_storage
+func nox_client_meter_visible_storage() *C.uint32_t { return &meterState.barsVisible }
+
 func clientMeterString(key string, line int32) *wchar2_t {
 	return nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(clientMeterSource), line)
 }
@@ -45,7 +56,7 @@ func nox_client_guiHealthManaState(index C.int, state *C.nox_client_gui_health_m
 	}
 	state.current, state.maximum = meter.field_1, meter.field_2
 	state.primary_color, state.secondary_color = meter.color_1, meter.color_2
-	state.poisoned = C.int(bool2int(C.dword_5d4594_1096264 != 0))
+	state.poisoned = C.int(bool2int(meterState.poisoned != 0))
 	state.meter_x, state.meter_y = meterWindowPosition(meter.win)
 	state.root_x, state.root_y = meterWindowPosition(root)
 	state.poison_tube_ready = C.int(bool2int(clientPoisonTube != nil))
@@ -125,8 +136,8 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	if pl == nil {
 		return 0
 	}
-	C.dword_5d4594_1096288 = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
-	C.dword_5d4594_1096264, C.dword_5d4594_1096256, C.dword_5d4594_1096260 = 0, 0, 0
+	meterState.font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
+	meterState.poisoned, meterState.iconPhase, meterState.iconTicks = 0, 0, 0
 	width, height := C.nox_win_width, C.nox_win_height
 	*memmap.PtrT[[6]uint32](0x5D4594, 1091908) = [6]uint32{0, 0, uint32(width), uint32(height), 0, 0}
 	*memmap.PtrUint32(0x5D4594, 1091940) = uint32(width)
@@ -136,10 +147,10 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	}
 	if red := memmap.PtrUint32(0x5D4594, 1096268); *red == 0 {
 		*red = uint32(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("RedPotion")))
-		C.dword_5d4594_1096272 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("BluePotion")))
-		C.dword_5d4594_1096276 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("CurePoisonPotion")))
-		C.dword_5d4594_1096280 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("RedApple")))
-		C.dword_5d4594_1096284 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Meat")))
+		meterState.bluePotion = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("BluePotion")))
+		meterState.curePotion = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("CurePoisonPotion")))
+		meterState.apple = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("RedApple")))
+		meterState.meat = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Meat")))
 	}
 	root := nox_window_new(nil, 136, width-91, height-201, 91, 201, nil)
 	storeWindowReference(&clientMeterRoot, root)
@@ -148,7 +159,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	}
 	nox_xxx_wndSetIcon_46AE60(root, clientHealthManaImages[0])
 	clientMeterBottle(root, 6, 2, "CurePoisonSlotTT", 1029)
-	clientMeterAssignPotion(2, 1091384, 1091380, C.dword_5d4594_1096276)
+	clientMeterAssignPotion(2, 1091384, 1091380, meterState.curePotion)
 	clientMeterBottle(root, 34, 0, "HealthSlotTT", 1060)
 	*memmap.PtrUint16(0x5D4594, 1090312) = 0
 	*memmap.PtrUint32(0x5D4594, 1090296) = 0
@@ -160,7 +171,7 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	floatingFlags := C.int(24)
 	if mana {
 		clientMeterBottle(root, 62, 1, "ManaSlotTT", 1083)
-		clientMeterAssignPotion(1, 1090848, 1090844, C.dword_5d4594_1096272)
+		clientMeterAssignPotion(1, 1090848, 1090844, meterState.bluePotion)
 		parentIcon, poisonIcon = "HealthManaTubes", "PoisonTube"
 		healthTipLine = 1135
 		floatingFlags = 8
@@ -194,9 +205,9 @@ func nox_xxx_guiHealthManaInit_4714E0() C.int {
 	sub_472280()
 	nox_xxx_guiHealthManaColorInit_470B00()
 	if noxflags.HasGame(noxflags.GameModeQuest) {
-		C.dword_5d4594_1096252 = 1
+		meterState.barsVisible = 1
 	} else {
-		C.dword_5d4594_1096252 = 0
+		meterState.barsVisible = 0
 		nox_window_set_hidden(clientMeterRecords[2].win, 1)
 		nox_window_set_hidden(clientMeterRecords[3].win, 1)
 	}
@@ -224,7 +235,7 @@ func clientMeterDrawBubbles(index int, left, top, level int32, color uint32) {
 			continue
 		}
 		drawColor := b.color
-		if C.dword_5d4594_1096264 != 0 {
+		if meterState.poisoned != 0 {
 			drawColor = color
 		}
 		nox_client_drawSetColor_434460(int32(drawColor))
@@ -267,14 +278,14 @@ func clientMeterDrawBubbles(index int, left, top, level int32, color uint32) {
 }
 
 func clientMeterDrawHealthIcon() {
-	index := int32(C.dword_5d4594_1096256 >> 3)
-	if int32(C.dword_5d4594_1096260) > 0 {
-		C.dword_5d4594_1096256 += C.dword_5d4594_1096260
-		C.dword_5d4594_1096260--
-		index = int32(C.dword_5d4594_1096256) >> 3
+	index := int32(meterState.iconPhase >> 3)
+	if int32(meterState.iconTicks) > 0 {
+		meterState.iconPhase += meterState.iconTicks
+		meterState.iconTicks--
+		index = int32(meterState.iconPhase) >> 3
 		if index >= int32(len(clientHealthManaImages)) {
 			index = 0
-			C.dword_5d4594_1096256 = 0
+			meterState.iconPhase = 0
 		}
 	}
 	nox_xxx_wndSetIcon_46AE60(clientMeterRoot, clientHealthManaImages[index])
@@ -284,7 +295,7 @@ func clientMeterDrawHealthIcon() {
 func nox_xxx_guiHealthManaTubeDraw_471D10(win *C.nox_window, draw *C.nox_window_data) C.int {
 	index := int(uintptr(win.widget_data))
 	meter := &clientMeterRecords[index]
-	if index == 0 && C.dword_5d4594_1096264 != 0 {
+	if index == 0 && meterState.poisoned != 0 {
 		x, y := meterWindowPosition(clientMeterRoot)
 		nox_client_drawImageAt_47D2C0(clientPoisonTube, int32(x), int32(y))
 	}

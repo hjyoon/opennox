@@ -819,6 +819,20 @@ This removes another 24 definitions from `vardefs.c`. The 481
 remaining definitions include no standalone window pointer or
 meter-record array.
 
+### Renderer and meter state
+
+The original clip save routine at `0x49F7F0` loads the active draw
+data through `0x973FA8` and sets the 32-bit save flag at `0x713228`.
+Go holds that flag and the native reference to the active buffer.
+Video initialization still publishes both buffers in the same order.
+The C clip entry retains its pointer-shaped status. Go receives and
+returns the status as an integer.
+
+Go holds the meter font reference, visibility word, animation ticks,
+poison flag, colors, and item type IDs. The word and drawable fixture
+calls reach the live Go-owned state. This removes 13 definitions
+from `vardefs.c`, leaving 468.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

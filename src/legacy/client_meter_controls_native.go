@@ -6,10 +6,6 @@ package legacy
 #include "client__system__ctrlevnt.h"
 #include "GAME2_3.h"
 
-extern uint32_t dword_5d4594_1096252;
-extern uint32_t dword_5d4594_1090280, dword_5d4594_1090284;
-extern uint32_t dword_5d4594_1096272, dword_5d4594_1096276;
-extern uint32_t dword_5d4594_1096280, dword_5d4594_1096284;
 */
 import "C"
 
@@ -29,7 +25,7 @@ const (
 
 //export nox_xxx_cliShowHideTubes_470AA0
 func nox_xxx_cliShowHideTubes_470AA0(visible C.int) {
-	C.dword_5d4594_1096252 = C.uint32_t(visible)
+	meterState.barsVisible = C.uint32_t(visible)
 	if memmap.Uint32(0x5D4594, 1093176) != 0 {
 		hidden := int32(bool2int(visible == 0))
 		nox_window_set_hidden(clientMeterRecords[2].win, hidden)
@@ -41,7 +37,7 @@ func nox_xxx_cliShowHideTubes_470AA0(visible C.int) {
 func nox_xxx_guiHealthManaColorInit_470B00() *C.uchar {
 	red := nox_color_rgb_4344A0(255, 0, 0)
 	darkRed := nox_color_rgb_4344A0(100, 0, 0)
-	C.dword_5d4594_1090284, C.dword_5d4594_1090280 = red, darkRed
+	meterState.healthColor, meterState.healthShadow = red, darkRed
 	*memmap.PtrUint32(0x5D4594, 1091964) = uint32(nox_color_rgb_4344A0(0, 255, 0))
 	*memmap.PtrUint32(0x5D4594, 1092992) = uint32(nox_color_rgb_4344A0(0, 100, 0))
 
@@ -167,11 +163,11 @@ func sub_4720C0(x, y C.int) C.int {
 func nox_xxx_guiHealthManaTubeProc_472100(_ *C.nox_window, event C.int) C.int {
 	switch event {
 	case 7:
-		previous := C.dword_5d4594_1096252
-		C.dword_5d4594_1096252 = 1 - previous
+		previous := meterState.barsVisible
+		meterState.barsVisible = 1 - previous
 		nox_window_set_hidden(clientMeterRecords[2].win, int32(bool2int(previous == 1)))
 		if memmap.Uint8(0x85B3FC, 12254) != 0 {
-			nox_window_set_hidden(clientMeterRecords[3].win, int32(bool2int(C.dword_5d4594_1096252 == 0)))
+			nox_window_set_hidden(clientMeterRecords[3].win, int32(bool2int(meterState.barsVisible == 0)))
 		}
 		nox_xxx_clientPlaySoundSpecial_452D80(901, 100)
 		return 1
@@ -261,14 +257,14 @@ func linkQuickPotionDrawable(index int, thingID C.int) {
 
 //export sub_472310
 func sub_472310() *C.uchar {
-	cure := C.int(C.dword_5d4594_1096276)
-	mana := C.int(C.dword_5d4594_1096272)
+	cure := C.int(meterState.curePotion)
+	mana := C.int(meterState.bluePotion)
 	*memmap.PtrUint16(0x5D4594, cureQuickItem+4) = uint16(C.sub_467850(cure))
 	*memmap.PtrUint16(0x5D4594, manaQuickItem+4) = uint16(C.sub_467850(mana))
 
 	healthCount := memmap.PtrUint16(0x5D4594, healthQuickItem+4)
 	var health C.int
-	for _, id := range [...]C.int{C.int(memmap.Uint32(0x5D4594, 1096268)), C.int(C.dword_5d4594_1096284), C.int(C.dword_5d4594_1096280)} {
+	for _, id := range [...]C.int{C.int(memmap.Uint32(0x5D4594, 1096268)), C.int(meterState.meat), C.int(meterState.apple)} {
 		*healthCount = uint16(C.sub_467850(id))
 		if *healthCount != 0 {
 			health = id

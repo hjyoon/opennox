@@ -1073,6 +1073,19 @@ the normal Action input before walking. A loopback replay confirmed
 a shared player netcode and over 194 world units of movement on the
 server and client with the unit in normal collision state.
 
+### Checked tile edge reads
+
+The tile edge reader applies the memory check to its addressed byte.
+It derives the blob base from that checked pointer for operand reports.
+The reported native pointer and logical PE32 offset stay paired.
+The Linux ARM64 `safe` build passed the tile ownership, access list,
+collision, and mana layout tests.
+
+The default macOS ARM64 client has 87 Go-callable preamble entries
+matched by source definition and linked name. The count includes 18
+shared and 13 typed native call adapters, 31 native memory and scalar
+adapters, four platform CRT adapters, and 21 regression probes.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

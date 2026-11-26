@@ -119,9 +119,10 @@ func tileListNativeReadEdgeByte411350(site, index, rawOffset uint32) uint8 {
 	} else {
 		// The existing EDGE byte owner has stride60. It is distinct from
 		// the native TileDef array and contains no relocated pointer here.
-		base = memmap.PtrOff(0x85b3fc, 0)
 		offset = uintptr(rawOffset)
 		address = memmap.PtrOff(0x85b3fc, offset)
+		// The base describes the operand. Only the addressed edge byte is read.
+		base = unsafe.Add(address, -int(offset))
 	}
 	field := 6
 	if site == 0x4114a8 {

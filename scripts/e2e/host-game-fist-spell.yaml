@@ -4,6 +4,34 @@
 # deletion from incomplete unit-target damage/death admissions. No spell result
 # or physics state is injected. This is not a particular map trigger, keyboard
 # incantation, mana-cost, enemy-unit or Linux/AMD64 runtime test.
+map-profile: arena-stock
+screen-references:
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: fe162230dd9c762a4f83d7baa3ee95f649d69d77d85ac2b521206bccb43798fa
+    frames:
+      Fist level 1 falling: 0dc496ce626457046a18569ee6b20d2f621a7aaeab19a550f19d13189ec1f0f9
+      Fist level 1 impact: 2e09a8084fd77e760e7bfd653c9c927a98d3987a1f581b6ca66b3959ffdab9a9
+      Fist level 2 falling: 68a86d49979dfe33ed6e6a95f99c64522cc3147e139f995c394bc063a3286ec6
+      Fist level 2 impact: 3e67fb2a2f160ad8549a0686aed7ea84b7221537bbf2efc040f87984e08e0968
+      Fist level 3 falling: 5919801d1ad00efc69d697d7585e19f124a56dc58ce6497813b530471fba8610
+      Fist level 3 impact: 61fb9a91f3885004949142b734a342817196d7d7f99959b318fdadd4d5d16a28
+      Fist level 4 falling: 6117907dd709a58854a1a3669e833637213db1ab26591eb98af09145438445de
+      Fist level 4 impact: c2cb16e80967cbd40c58a8a394f15405d6176cf657d1eb0a18c8b620b5abe31a
+      Fist level 5 falling: 56f0b28f206e599918e6677fb2825046bf859b9e36be1cdef42c5c5cb19220f6
+      Fist level 5 impact: f6fc83f388f527edbcab21622d7751696514f7b952ca54b78a1de368c689d168
+  - text-id: Briefing:WarriorChapterBegin1
+    text-sha256: af8c590efd1f863c043dea7ec06042790e0f1110ea97e8c48c7b455b62cddd21
+    frames:
+      Fist level 1 falling: 357b73d6f74d058ef23b09c6a6c1a72578ddc247293f13445fae02cf51a79555
+      Fist level 1 impact: d141d14f0e486667bbc2b52f3e41cd9766eba8d9f4198acc3fa3668fa93ec9a6
+      Fist level 2 falling: e1df7d629b2d5559dd9b4c382957a24be1fdb94f3860fdef43543481177dfa49
+      Fist level 2 impact: f97a9c369cbd98dae6c20b8201858d5c015f9090baf065cb957d6ea58bfa1878
+      Fist level 3 falling: c41e9c8d0791400d35eecad27590bb33142a37a2e3247f7adca93fa8d4f676ec
+      Fist level 3 impact: ef82f1ede5d9b2ea3ac66affee5ef5e6e87330df99a526181044769367799a5e
+      Fist level 4 falling: 560199e949717ec3d0ff92725c0587a5d162722276b624f2c81a7daf1d2765e0
+      Fist level 4 impact: 27b231ec1321ba3beee97e5d7bab9bdb65659b6b053b3fe91d07fa45412d961e
+      Fist level 5 falling: 57b769e3cd4644e802bbf7d66cd021852f8ad2f0a46006d325f46a4b7135b80d
+      Fist level 5 impact: 2a3bbe4d34dbdc9e8e00f4881dc34f0c1d827846024d6611a9b8afef5da975ad
 steps:
   - action: slow
     dur: 5ms

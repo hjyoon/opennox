@@ -20,6 +20,7 @@ package legacy
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "cgo_const.h"
 */
 import "C"
 import (
@@ -81,13 +82,13 @@ func nox_memcpy_go(dst, src unsafe.Pointer, size C.size_t) {
 	alloc.Memcpy(dst, src, uintptr(size))
 }
 
-//export nox_memcmp_go
-func nox_memcmp_go(ptr1, ptr2 unsafe.Pointer, size C.size_t) int32 {
-	return int32(int(alloc.Memcmp(ptr1, ptr2, uintptr(size))))
+//export nox_memcmp
+func nox_memcmp(ptr1, ptr2 *C.nox_cgo_const_void, size C.size_t) C.int {
+	return C.int(alloc.Memcmp(unsafe.Pointer(ptr1), unsafe.Pointer(ptr2), uintptr(size)))
 }
 
-//export nox_strlen_go
-func nox_strlen_go(ptr *C.char) C.size_t {
+//export nox_strlen
+func nox_strlen(ptr *C.nox_cgo_const_char) C.size_t {
 	return C.size_t(alloc.Strlen(unsafe.Pointer(ptr)))
 }
 
@@ -101,7 +102,7 @@ func nox_strcat_go(dst, src *C.char) {
 	alloc.Strcat(unsafe.Pointer(dst), unsafe.Pointer(src))
 }
 
-//export nox_strcmp_go
-func nox_strcmp_go(str1, str2 *C.char) int32 {
-	return int32(int(alloc.Strcmp(unsafe.Pointer(str1), unsafe.Pointer(str2))))
+//export nox_strcmp
+func nox_strcmp(str1, str2 *C.nox_cgo_const_char) C.int {
+	return C.int(alloc.Strcmp(unsafe.Pointer(str1), unsafe.Pointer(str2)))
 }

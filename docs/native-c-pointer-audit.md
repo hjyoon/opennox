@@ -192,6 +192,18 @@ unlink, reset, and close. A pinned Go fixture verifies the same C
 pointer returns after garbage collection and verifies that detach
 clears the links.
 
+### Read-only safe C services
+
+The safe-build memory comparison, string length, and string comparison
+entries now export directly from Go. The generated C declarations keep
+the read-only inputs and the native `size_t` width. Four write routines
+return their destination pointers on the C side.
+A Linux ARM64 C caller verified empty inputs, comparison order, and
+byte comparisons that extend past a zero byte.
+
+The standard macOS ARM64 profile selects 38 top-level C files with 66
+function bodies. The safe profile selects 39 files and 70 bodies.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

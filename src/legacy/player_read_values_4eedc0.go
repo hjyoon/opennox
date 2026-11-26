@@ -1,27 +1,5 @@
 package legacy
 
-/*
-#include <stddef.h>
-#include <stdint.h>
-
-int32_t sub_56F780(int token, int value);
-int32_t nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
-size_t nox_wcslen(const uint16_t* value);
-
-static inline void nox_playerReadValues_protectInt_4EEDC0(
-		uint32_t token, uint32_t value) {
-	(void)sub_56F780((int32_t)token, (int32_t)value);
-}
-
-static inline void nox_playerReadValues_protectUint16_4EEDC0(
-		uint32_t token, uint16_t value) {
-	(void)nox_xxx_protectPlayerHPMana_56F870((int32_t)token, value);
-}
-
-static inline uint32_t nox_playerReadValues_wideLen_4EEDC0(void* value) {
-	return (uint32_t)nox_wcslen((const uint16_t*)value);
-}
-*/
 import "C"
 
 import "github.com/opennox/opennox/v1/server"
@@ -34,19 +12,13 @@ func playerReadValuesRuntime4EEDC0() server.PlayerReadValuesRuntime4EEDC0 {
 		},
 		Ability: abilityGivePlayerAllRuntime4EED40(),
 		ProtectInt: func(token, value uint32) {
-			C.nox_playerReadValues_protectInt_4EEDC0(
-				C.uint32_t(token),
-				C.uint32_t(value),
-			)
+			setPlayerProtectedStat(token, value)
 		},
 		ProtectUint16: func(token uint32, value uint16) {
-			C.nox_playerReadValues_protectUint16_4EEDC0(
-				C.uint32_t(token),
-				C.uint16_t(value),
-			)
+			setPlayerProtectedStat(token, uint32(value))
 		},
 		WideLen: func(info *server.PlayerInfo) uint32 {
-			return uint32(C.nox_playerReadValues_wideLen_4EEDC0(info.C()))
+			return uint32(nox_wcslen((*wchar2_t)(info.C())))
 		},
 		ProtectName: func(info *server.PlayerInfo, size, token uint32) int32 {
 			return int32(sub_56FB00((*C.int)(info.C()), C.uint(size), C.int(token)))

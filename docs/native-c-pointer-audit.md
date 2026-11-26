@@ -1000,6 +1000,18 @@ bring that count to 125, with 107 in `legacy` and 18 in
 `legacy/common/ccall`. This is a linked-symbol count for one product.
 It includes helpers used by in-game regression probes.
 
+### Protected player values
+
+Health, mana, experience, and gold updates share the Go protection
+record operations with the C exports. The 14 retired Cgo preambles
+forwarded updates and UTF-16 name length requests. The protection
+token keeps its signed 32-bit gate, mana deltas keep their signed
+16-bit input, and experience uses the original x87 conversion model.
+The mana refresh and subtraction results sign-extend to the native
+word width. The macOS ARM64 baseline and updated paths pass the same
+return-width regression, and the protected player tests pass on macOS
+ARM64 with strict Cgo checking and on Linux ARM64 PIE.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

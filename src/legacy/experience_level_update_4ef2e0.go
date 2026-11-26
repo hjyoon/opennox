@@ -1,19 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-#include "server__gamemech__explevel.h"
-
-int32_t sub_56F980(int token, unsigned char level);
-
-static inline void nox_experienceLevelProtect_4EF2E0(
-		uint32_t token, uint8_t level) {
-	(void)sub_56F980((int32_t)token, (unsigned char)level);
-}
-*/
-import "C"
-
 import "github.com/opennox/opennox/v1/server"
 
 func experienceLevelUpdateRuntime4EF2E0() server.ExperienceLevelUpdateRuntime4EF2E0 {
@@ -28,10 +14,7 @@ func experienceLevelUpdateRuntime4EF2E0() server.ExperienceLevelUpdateRuntime4EF
 			return Sub_4DB1C0() != nil
 		},
 		ProtectLevel: func(token uint32, level uint8) {
-			C.nox_experienceLevelProtect_4EF2E0(
-				C.uint32_t(token),
-				C.uint8_t(level),
-			)
+			addPlayerProtectedStat(token, uint32(level))
 		},
 		ReadValues: playerReadValuesCall4EEDC0,
 		PauseFX: func(unit *server.Object, mode int32) {

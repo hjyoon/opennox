@@ -279,7 +279,7 @@ func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object,
 			nox_xxx_playerResetProtectionCRC_56F7D0(C.int(token), C.int(crc))
 		},
 		protectInt: func(token, value uint32) {
-			C.sub_56F780(C.int(token), C.int(value))
+			setPlayerProtectedStat(uint32(token), uint32(value))
 		},
 		protectClass: func(token uint32, class byte) {
 			sub_56F820(C.int(token), C.uchar(class))

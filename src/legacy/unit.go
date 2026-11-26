@@ -59,7 +59,7 @@ func Nox_xxx_mobInformOwnerHP_4EE4C0(a1 *server.Object) {
 	mobInformOwnerHPCall4EE4C0(a1)
 }
 func Nox_xxx_protectMana_56F9E0(a1 int, a2 int16) {
-	C.nox_xxx_protectMana_56F9E0(C.int(a1), C.short(a2))
+	addPlayerProtectedStat(uint32(a1), uint32(a2))
 }
 func Nox_xxx_monsterWalkTo_514110(a1 *server.Object, a2 float32, a3 float32) {
 	monsterWalkToCall514110(a1, a2, a3)

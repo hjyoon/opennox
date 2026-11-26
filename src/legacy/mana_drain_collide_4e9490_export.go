@@ -18,7 +18,7 @@ var manaDrainCollideCall4E9490 = func(source, target *server.Object, collision u
 		target,
 		collision,
 		func(token uint32, delta int16) {
-			C.nox_xxx_protectMana_56F9E0(C.int(token), C.short(delta))
+			addPlayerProtectedStat(token, uint32(delta))
 		},
 	)
 }

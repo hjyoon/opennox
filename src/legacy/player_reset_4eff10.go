@@ -1,19 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-typedef struct nox_object_t nox_object_t;
-
-int32_t nox_xxx_protectPlayerHPMana_56F870(int token, uint16_t value);
-
-static inline void nox_playerReset_protectMana_4EFF10(
-		uint32_t token, uint16_t value) {
-	(void)nox_xxx_protectPlayerHPMana_56F870((int32_t)token, value);
-}
-*/
-import "C"
-
 import "github.com/opennox/opennox/v1/server"
 
 func playerResetRuntime4EFF10() server.PlayerResetRuntime4EFF10 {
@@ -28,10 +14,7 @@ func playerResetRuntime4EFF10() server.PlayerResetRuntime4EFF10 {
 		},
 		AwardWarriorAbilities: Nox_xxx_spellAwardAll3_4EFE10,
 		ProtectMana: func(token uint32, value uint16) {
-			C.nox_playerReset_protectMana_4EFF10(
-				C.uint32_t(token),
-				C.uint16_t(value),
-			)
+			setPlayerProtectedStat(token, uint32(value))
 		},
 		SetHealthMaximum: Nox_xxx_unitHPsetOnMax_4EE6F0,
 		SetPlayerState: func(unit *server.Object, state server.PlayerState) {

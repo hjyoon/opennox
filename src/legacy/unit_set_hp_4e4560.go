@@ -16,7 +16,7 @@ func unitSetHPNative4E4560(obj *server.Object, amount uint16) uintptr {
 			updatePlayerProtectionItem(int32(token), item)
 		},
 		SetPlayerHP: func(token uint32, value uint16) {
-			C.nox_xxx_protectPlayerHPMana_56F870(C.int(token), C.ushort(value))
+			setPlayerProtectedStat(token, uint32(value))
 		},
 		ProtectHeld: func(token uint32, item *server.Object) int32 {
 			return updatePlayerProtectionItem(int32(token), item)

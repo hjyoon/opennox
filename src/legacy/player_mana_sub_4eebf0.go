@@ -1,16 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-int32_t nox_xxx_protectMana_56F9E0(int token, short delta);
-
-static inline uintptr_t nox_playerManaSub_protectMana(int token, int16_t delta) {
-	return (uintptr_t)nox_xxx_protectMana_56F9E0(token, (short)delta);
-}
-*/
-import "C"
-
 import "github.com/opennox/opennox/v1/server"
 
 func playerManaSubCall4EEBF0(obj *server.Object, amount int32) uintptr {
@@ -18,10 +7,7 @@ func playerManaSubCall4EEBF0(obj *server.Object, amount int32) uintptr {
 		obj,
 		amount,
 		func(token uint32, delta int16) uintptr {
-			return uintptr(C.nox_playerManaSub_protectMana(
-				C.int(int32(token)),
-				C.int16_t(delta),
-			))
+			return uintptr(addPlayerProtectedStat(token, uint32(delta)))
 		},
 	)
 }

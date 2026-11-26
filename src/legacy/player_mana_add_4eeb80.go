@@ -1,21 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-int32_t nox_xxx_protectPlayerHPMana_56F870(int token, unsigned short value);
-int32_t nox_xxx_protectMana_56F9E0(int token, short delta);
-
-static inline void nox_playerManaAdd_protectMana(int token, short delta) {
-	(void)nox_xxx_protectMana_56F9E0(token, delta);
-}
-
-static inline uint16_t nox_playerManaAdd_protectMaximum(int token, unsigned short value) {
-	return (uint16_t)nox_xxx_protectPlayerHPMana_56F870(token, value);
-}
-*/
-import "C"
-
 import "github.com/opennox/opennox/v1/server"
 
 func playerManaAddCall4EEB80(obj *server.Object, amount int32) uint16 {
@@ -23,13 +7,10 @@ func playerManaAddCall4EEB80(obj *server.Object, amount int32) uint16 {
 		obj,
 		amount,
 		func(token uint32, delta int16) {
-			C.nox_playerManaAdd_protectMana(C.int(int32(token)), C.short(delta))
+			addPlayerProtectedStat(token, uint32(delta))
 		},
 		func(token uint32, maximum uint16) uint16 {
-			return uint16(C.nox_playerManaAdd_protectMaximum(
-				C.int(int32(token)),
-				C.ushort(maximum),
-			))
+			return uint16(setPlayerProtectedStat(token, uint32(maximum)))
 		},
 	)
 }

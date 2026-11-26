@@ -1,40 +1,21 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-int32_t sub_56F920(int token, int delta);
-
-static inline void nox_playerUnitInit_protectGold_4EFE80(
-		uint32_t token, int32_t delta) {
-	(void)sub_56F920((int32_t)token, delta);
-}
-*/
-import "C"
-
 import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/server"
 )
 
-func playerUnitInitProtectGold4EFE80(token uint32, delta int32) {
-	C.nox_playerUnitInit_protectGold_4EFE80(
-		C.uint32_t(token),
-		C.int32_t(delta),
-	)
-}
-
 // Nox_xxx_protectGoldDelta_56F920 applies the scalar protection update used
 // by 004FA590/004FA5D0 without passing a native Object pointer through their
 // original int-typed ABI.
 func Nox_xxx_protectGoldDelta_56F920(token uint32, delta int32) {
-	playerUnitInitProtectGold4EFE80(token, delta)
+	addPlayerProtectedStat(token, uint32(delta))
 }
 
 func playerUnitInitRuntime4EFE80() server.PlayerUnitInitRuntime4EFE80 {
 	s := GetServer().S()
 	return server.PlayerUnitInitRuntime4EFE80{
-		ProtectGold: playerUnitInitProtectGold4EFE80,
+		ProtectGold: Nox_xxx_protectGoldDelta_56F920,
 		SyncLevel: func(unit *server.Object) {
 			_ = playerSyncLevelCall4EF140(unit)
 		},

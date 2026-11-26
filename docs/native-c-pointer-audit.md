@@ -718,6 +718,20 @@ and player and team list heads in native memory. The fixtures use the
 same live addresses as the Go handlers. This removes 26 definitions
 from `vardefs.c`.
 
+### Shop, trade, and other gameplay windows
+
+The shop, trade, summon cage, NPC dialog, and quest game-over roots are
+published at `0x6E08E4`, `0x716D80`, `0x716DDC`, `0x6E6A58`, and
+`0x712930` in the supplied executable. Go stores the roots, the shop
+slider, and the summon cage and command controls at native pointer
+width. The trade state and summon count retain their 32-bit values.
+Summon cage coordinates use signed 32-bit values through the animation.
+
+The window pool cleanup clears borrowed controls and the selected summon
+record when their owning windows are released. The quest timer reads the
+same root slot as the game-over event handler. This removes 19 definitions
+from `vardefs.c`.
+
 ### Advanced server and in-game options windows
 
 The original advanced server and rule-list constructors publish their

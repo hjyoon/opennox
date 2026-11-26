@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 extern uint32_t dword_5d4594_1047520;
-extern nox_window* dword_5d4594_1123524;
 */
 import "C"
 import (
@@ -57,5 +56,5 @@ func NPCDialogProc479B00() unsafe.Pointer { return C.nox_xxx_guiDialog_479B00 }
 func npcDialogPauseSlot479B00() *uint32 { return (*uint32)(&C.dword_5d4594_1047520) }
 
 func npcDialogWindowSlot479B00() **gui.Window {
-	return (**gui.Window)(unsafe.Pointer(&C.dword_5d4594_1123524))
+	return (**gui.Window)(unsafe.Pointer(&npcDialogWindow))
 }

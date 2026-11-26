@@ -25,7 +25,6 @@ _Static_assert(offsetof(nox_gui_summon_record, size) == 20, "wrong summon-record
 _Static_assert(offsetof(nox_gui_summon_record, slot) == 24, "wrong summon-record slot offset");
 _Static_assert(offsetof(nox_gui_summon_record, highlight) == 28, "wrong summon-record highlight offset");
 
-extern nox_gui_summon_record* dword_5d4594_1321204;
 
 int nox_xxx_guiSummonCreatureLoad_4C1D80(void);
 void nox_xxx_wndSummonCreateList_4C2560(int2* a1);

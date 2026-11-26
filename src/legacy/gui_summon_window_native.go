@@ -10,9 +10,7 @@ package legacy
 #include "common__strman.h"
 extern int nox_win_width, nox_win_height;
 extern uint32_t nox_xxx_screenWidth_587000_184452;
-extern uint32_t dword_5d4594_1320988, dword_5d4594_1320992, dword_5d4594_1321196, dword_8531A0_2572;
-extern nox_window *dword_5d4594_1321032, *dword_5d4594_1321036, *dword_5d4594_1321040, *dword_5d4594_1321044;
-extern nox_video_bag_image_t* dword_5d4594_1321024;
+extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -24,6 +22,18 @@ import (
 )
 
 const summonSourceFile = "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c"
+
+var summonWindows struct {
+	root   *nox_window
+	grid   *nox_window
+	button *nox_window
+	popup  *nox_window
+}
+
+var summonCageX, summonCageY int32
+var summonCount uint32
+var summonEscortLit *nox_video_bag_image_t
+var summonSelectedRecord *C.nox_gui_summon_record
 
 func summonText(name *C.char, line C.int) *wchar2_t {
 	return C.nox_strman_loadString_40F1D0(name, nil, internCStr(summonSourceFile), line)
@@ -44,7 +54,7 @@ func summonWindowPosition(win *nox_window) (x, y C.int) {
 }
 
 func setSummonButtonImages(normal, lit *nox_video_bag_image_t) C.int {
-	button := C.dword_5d4594_1321040
+	button := summonWindows.button
 	nox_xxx_wndSetIcon_46AE60(button, normal)
 	sub_46AEC0(button, lit)
 	return nox_xxx_wndSetIconLit_46AEA0(button, lit)
@@ -57,7 +67,7 @@ func sub_4C1CA0(command C.int) C.int {
 	case 3:
 		return setSummonButtonImages(summonImage(1321020), summonImage(1321016))
 	case 4:
-		return setSummonButtonImages(summonImage(1321028), C.dword_5d4594_1321024)
+		return setSummonButtonImages(summonImage(1321028), summonEscortLit)
 	case 5:
 		return setSummonButtonImages(summonImage(1321012), summonImage(1321008))
 	default:
@@ -70,12 +80,17 @@ func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
 	x, y := C.nox_win_width-95, C.int(-145)
 	*memmap.PtrInt32(0x5D4594, 1321004) = 0
 	*memmap.PtrInt32(0x5D4594, 1321000) = int32(y)
-	C.dword_5d4594_1320988, C.dword_5d4594_1320992 = C.uint32_t(x), C.uint32_t(y)
+	summonCageX, summonCageY = int32(x), int32(y)
 	root := nox_window_new(nil, 8, x, y, 87, 115, nil)
-	C.dword_5d4594_1321032 = root
+	summonWindows.root = root
+	asWindow(root).AddCleanup(func() {
+		if summonWindows.root == root {
+			summonWindows.root, summonWindows.grid = nil, nil
+		}
+	})
 	nox_window_set_all_funcs(root, C.sub_4C2BD0, C.sub_4C24A0, nil)
 	grid := nox_window_new(root, 136, 5, 38, 76, 76, nil)
-	C.dword_5d4594_1321036 = grid
+	summonWindows.grid = grid
 	nox_window_set_all_funcs(grid, C.nox_xxx_wndSummonProc_4C2B10, C.nox_xxx_guiDrawSummonBox_4C1FE0, C.sub_4C2C20)
 	nox_xxx_wndWddSetTooltip_46B000(&grid.draw_data, summonText(internCStr("ToolTipSummon"), 818))
 	*memmap.PtrPtr(0x5D4594, 1320996) = unsafe.Pointer(Nox_xxx_gLoadImg("CreatureCageBottom").C())
@@ -92,16 +107,21 @@ func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
 	for i, name := range names {
 		img := Nox_xxx_gLoadImg(name).C()
 		if i == 4 {
-			C.dword_5d4594_1321024 = (*nox_video_bag_image_t)(img)
+			summonEscortLit = (*nox_video_bag_image_t)(img)
 		} else {
 			*memmap.PtrPtr(0x5D4594, 1321008+4*uintptr(i)) = unsafe.Pointer(img)
 		}
 	}
 	button := nox_window_new(nil, 168, x+27, y+12, 34, 34, nil)
-	C.dword_5d4594_1321040 = button
+	summonWindows.button = button
+	asWindow(button).AddCleanup(func() {
+		if summonWindows.button == button {
+			summonWindows.button = nil
+		}
+	})
 	button.draw_data.group |= 0x100
 	nox_window_set_all_funcs(button, C.nox_xxx_wndSummonBigButtonProc_4C24B0, nil, C.sub_4C2CE0)
-	setSummonButtonImages(summonImage(1321028), C.dword_5d4594_1321024)
+	setSummonButtonImages(summonImage(1321028), summonEscortLit)
 	nox_xxx_wndSetOffsetMB_46AE40(button, -27, -12)
 	*memmap.PtrUint8(0x5D4594, 1321200) = 0
 	g2ServerHidden(root, true)
@@ -110,7 +130,7 @@ func nox_xxx_guiSummonCreatureLoad_4C1D80() C.int {
 		summonRecordAt(i).active = 0
 	}
 	sub_4C2BF0()
-	C.dword_5d4594_1321044, C.dword_5d4594_1321204, C.dword_5d4594_1321196 = nil, nil, 0
+	summonWindows.popup, summonSelectedRecord, summonCount = nil, nil, 0
 	return 1
 }
 
@@ -132,17 +152,17 @@ func stepSummonCage(state byte, y, shown, hidden int32) (byte, int32) {
 }
 
 func updateSummonCage() (x, y int32) {
-	root, button := C.dword_5d4594_1321032, C.dword_5d4594_1321040
+	root, button := summonWindows.root, summonWindows.button
 	state := memmap.PtrUint8(0x5D4594, 1321200)
 	prev := *state
-	next, y := stepSummonCage(prev, int32(C.dword_5d4594_1320992), memmap.Int32(0x5D4594, 1321004), memmap.Int32(0x5D4594, 1321000))
-	C.dword_5d4594_1320992 = C.uint32_t(y)
+	next, y := stepSummonCage(prev, summonCageY, memmap.Int32(0x5D4594, 1321004), memmap.Int32(0x5D4594, 1321000))
+	summonCageY = y
 	*state = next
 	if prev == 3 && next == 0 {
 		g2ServerHidden(root, true)
 		g2ServerHidden(button, true)
 	}
-	x = int32(C.dword_5d4594_1320988)
+	x = summonCageX
 	nox_window_setPos_46A9B0(root, x, y)
 	nox_window_setPos_46A9B0(button, x+27, y+12)
 	return x, y
@@ -210,7 +230,7 @@ func nox_xxx_guiDrawSummonBox_4C1FE0(win *nox_window, draw *C.nox_window_data) C
 		}
 	}
 	hoverFlag := memmap.PtrUint32(0x5D4594, 1321212)
-	overButton := bool(C.nox_xxx_wndPointInWnd_46AAB0(C.dword_5d4594_1321040, mouse.x, mouse.y))
+	overButton := bool(C.nox_xxx_wndPointInWnd_46AAB0(summonWindows.button, mouse.x, mouse.y))
 	if bool(C.nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y)) || overButton || *hoverFlag == 1 {
 		hovered := summonRecordUnder(mouse.x, mouse.y, wx, wy)
 		*hoverFlag = 0
@@ -225,7 +245,7 @@ func nox_xxx_guiDrawSummonBox_4C1FE0(win *nox_window, draw *C.nox_window_data) C
 			}
 		}
 	}
-	if popup := C.dword_5d4594_1321044; popup != nil && !C.nox_xxx_wndPointInWnd_46AAB0(popup, mouse.x, mouse.y) {
+	if popup := summonWindows.popup; popup != nil && !C.nox_xxx_wndPointInWnd_46AAB0(popup, mouse.x, mouse.y) {
 		nox_xxx_guiHideSummonWindow_4C2470()
 	}
 	return 1
@@ -242,10 +262,12 @@ func nox_xxx_guiDrawSummon_4C2440(thing C.int) *nox_video_bag_image_t {
 
 //export nox_xxx_guiHideSummonWindow_4C2470
 func nox_xxx_guiHideSummonWindow_4C2470() C.int {
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1321044)
-	C.dword_5d4594_1321044, C.dword_5d4594_1321204 = nil, nil
+	nox_xxx_windowDestroyMB_46C4E0(summonWindows.popup)
+	summonWindows.popup, summonSelectedRecord = nil, nil
 	nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
-	C.dword_5d4594_1321040.draw_data.field_0 &^= 2
+	if button := summonWindows.button; button != nil {
+		button.draw_data.field_0 &^= 2
+	}
 	return 1
 }
 
@@ -262,15 +284,15 @@ func nox_xxx_wndSummonBigButtonProc_4C24B0(win *nox_window, event C.int, packed,
 	case 5, 6:
 		return 1
 	case 7:
-		C.dword_5d4594_1321204 = nil
+		summonSelectedRecord = nil
 		p := summonPointerPosition(packed)
 		nox_xxx_wndSummonCreateList_4C2560(&p)
-		C.dword_5d4594_1321040.draw_data.field_0 |= 2
+		summonWindows.button.draw_data.field_0 |= 2
 		return 1
 	case 17:
-		C.dword_5d4594_1321040.draw_data.field_0 |= 2
+		summonWindows.button.draw_data.field_0 |= 2
 	case 18:
-		C.dword_5d4594_1321040.draw_data.field_0 &^= 2
+		summonWindows.button.draw_data.field_0 &^= 2
 	}
 	return 0
 }
@@ -304,7 +326,13 @@ func nox_xxx_wndSummonCreateList_4C2560(pos *C.int2) {
 		y = C.nox_win_width - height - 1
 	}
 	popup := nox_window_new(nil, 40, x, y, width, height, nil)
-	C.dword_5d4594_1321044 = popup
+	summonWindows.popup = popup
+	asWindow(popup).AddCleanup(func() {
+		if summonWindows.popup == popup {
+			summonWindows.popup = nil
+			summonSelectedRecord = nil
+		}
+	})
 	nox_window_set_all_funcs(popup, nil, C.sub_4C26F0, nil)
 	nox_xxx_wndShowModalMB_46A8C0(popup)
 	for i, command := range summonCommands {
@@ -335,7 +363,7 @@ func sub_4C2A00(x, y, color, shadow C.int, text *C.short) C.int {
 func sub_4C27F0(win *nox_window, draw *C.nox_window_data) C.int {
 	command := uintptr(win.widget_data)
 	summonCarnivorousPlant()
-	selected := C.dword_5d4594_1321204
+	selected := summonSelectedRecord
 	if selected == nil && command == 1 {
 		return 1
 	}
@@ -394,7 +422,7 @@ func nox_xxx_clientOrderCreature_4C2A60(win *nox_window, event C.int, a, b C.uin
 		return 1
 	case 7:
 		command := C.int(uintptr(win.widget_data))
-		selected := C.dword_5d4594_1321204
+		selected := summonSelectedRecord
 		if command != 2 && (selected != nil || command != 1) {
 			nox_client_orderCreature(selected, command)
 		}
@@ -413,7 +441,7 @@ func nox_xxx_wndSummonProc_4C2B10(win *nox_window, event C.int, packed, unused C
 		pos := summonPointerPosition(packed)
 		wx, wy := summonWindowPosition(win)
 		record := summonRecordUnder(pos.field_0, pos.field_4, wx, wy)
-		C.dword_5d4594_1321204 = record
+		summonSelectedRecord = record
 		if record != nil {
 			nox_xxx_wndSummonCreateList_4C2560(&pos)
 		}

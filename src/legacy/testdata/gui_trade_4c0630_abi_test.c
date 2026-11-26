@@ -10,13 +10,10 @@ typedef nox_gui_trade_slot* (*trade_slot_fn)(int2*);
 typedef int (*trade_packet_fn)(const uint8_t*);
 typedef nox_gui_trade_slot* (*trade_add_item_fn)(const uint8_t*);
 
-extern nox_window* dword_5d4594_1320940;
 
 _Static_assert(CHAR_BIT == 8, "bytes must remain eight bits");
 _Static_assert(sizeof(void*) == sizeof(uintptr_t),
 	"trade GUI pointers must remain native-width");
-_Static_assert(_Generic(&dword_5d4594_1320940, nox_window**: 1, default: 0),
-	"the trade root window must remain a native pointer");
 _Static_assert(_Generic(&dword_5d4594_1320932, nox_gui_trade_slot**: 1, default: 0),
 	"the local recent trade slot must remain a native pointer");
 _Static_assert(_Generic(&dword_5d4594_1320936, nox_gui_trade_slot**: 1, default: 0),

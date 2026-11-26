@@ -10,7 +10,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__guiquit.h"
 
-extern nox_window* dword_5d4594_1303452;
 */
 import "C"
 
@@ -20,13 +19,20 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 )
 
+var questGameOverWindow *nox_window
+
 //export sub_49B3E0
 func sub_49B3E0() C.int {
 	root := nox_new_window_from_file(internCStr("GGOver.wnd"), C.sub_49B420)
-	C.dword_5d4594_1303452 = root
+	questGameOverWindow = root
 	if root == nil {
 		return 0
 	}
+	asWindow(root).AddCleanup(func() {
+		if questGameOverWindow == root {
+			questGameOverWindow = nil
+		}
+	})
 	nox_window_set_hidden(root, 1)
 	nox_xxx_wnd_46ABB0_go(root, 0)
 	return 1
@@ -53,14 +59,14 @@ func sub_49B420(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 
 //export sub_49B490
 func sub_49B490() C.int {
-	result := nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1303452)
-	C.dword_5d4594_1303452 = nil
+	result := nox_xxx_windowDestroyMB_46C4E0(questGameOverWindow)
+	questGameOverWindow = nil
 	return C.int(result)
 }
 
 //export sub_49B6B0
 func sub_49B6B0() C.int {
-	win := C.dword_5d4594_1303452
+	win := questGameOverWindow
 	nox_window_set_hidden(win, 1)
 	nox_xxx_wnd_46ABB0_go(win, 0)
 	return C.int(nox_xxx_windowFocus_46B500(nil))

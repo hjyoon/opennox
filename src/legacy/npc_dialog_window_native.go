@@ -6,7 +6,6 @@ package legacy
 #include "GAME3.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_1123524;
 extern uint32_t dword_5d4594_1123520;
 extern int nox_win_width, nox_win_height;
 */
@@ -14,9 +13,11 @@ import "C"
 
 import "unsafe"
 
+var npcDialogWindow *nox_window
+
 //export sub_479950
 func sub_479950() C.int {
-	if wndIsShown_nox_xxx_wndIsShown_46ACC0(C.dword_5d4594_1123524) != 0 {
+	if wndIsShown_nox_xxx_wndIsShown_46ACC0(npcDialogWindow) != 0 {
 		return 0
 	}
 	npcDialogSendResponse(0)
@@ -27,7 +28,12 @@ func sub_479950() C.int {
 func sub_4799A0() C.int {
 	*g2ServerWord(1107052) = uint32(nox_color_rgb_4344A0(240, 128, 64))
 	root := nox_new_window_from_file(internCStr("Dialog.wnd"), C.nox_xxx_guiDialog_479B00)
-	C.dword_5d4594_1123524 = root
+	npcDialogWindow = root
+	asWindow(root).AddCleanup(func() {
+		if npcDialogWindow == root {
+			npcDialogWindow, C.dword_5d4594_1123520 = nil, 0
+		}
+	})
 	if root == nil {
 		return 0
 	}
@@ -43,7 +49,7 @@ func sub_4799A0() C.int {
 	data := g2ServerList(list)
 	if slider == nil || up == nil || down == nil || done == nil || data == nil {
 		nox_xxx_windowDestroyMB_46C4E0(root)
-		C.dword_5d4594_1123524 = nil
+		npcDialogWindow = nil
 		return 0
 	}
 	lit := unsafe.Pointer(Nox_xxx_gLoadImg("UISliderLit").C())
@@ -88,7 +94,7 @@ func sub_479D00() C.int {
 
 //export sub_479D10
 func sub_479D10() C.int {
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1123524)
-	C.dword_5d4594_1123524, C.dword_5d4594_1123520 = nil, 0
+	nox_xxx_windowDestroyMB_46C4E0(npcDialogWindow)
+	npcDialogWindow, C.dword_5d4594_1123520 = nil, 0
 	return 0
 }

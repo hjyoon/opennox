@@ -4,7 +4,6 @@ package legacy
 #include "client__gui__guiggovr.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_1303452;
 extern int nox_win_width, nox_win_height;
 
 static void nox_quest_over_format_count(wchar2_t* out, const wchar2_t* format, int count) {
@@ -23,12 +22,12 @@ import (
 
 //export sub_49B4B0
 func sub_49B4B0(raw *C.ushort) C.int {
-	g2ServerHidden(C.dword_5d4594_1303452, false)
-	g2ServerEnabled(C.dword_5d4594_1303452, true)
+	g2ServerHidden(questGameOverWindow, false)
+	g2ServerEnabled(questGameOverWindow, true)
 	nox_xxx_clientPlaySoundSpecial_452D80(1007, 100)
 	var width, height C.int
-	nox_window_get_size(C.dword_5d4594_1303452, &width, &height)
-	nox_window_setPos_46A9B0(C.dword_5d4594_1303452, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
+	nox_window_get_size(questGameOverWindow, &width, &height)
+	nox_window_setPos_46A9B0(questGameOverWindow, int32(C.nox_win_width/2-width/2), int32(C.nox_win_height/2-height/2))
 	words := unsafe.Slice((*byte)(unsafe.Pointer(raw)), 8)
 	const source = `C:\NoxPost\src\client\Gui\GUIGGOvr.c`
 	counts := [...]struct {
@@ -50,7 +49,7 @@ func sub_49B4B0(raw *C.ushort) C.int {
 		id     int
 		offset uintptr
 	}{{10710, 1302172}, {10705, 1302940}, {10706, 1302684}, {10707, 1301916}, {10708, 1302428}, {10711, 1303196}} {
-		g2ServerText(g2ServerChild(C.dword_5d4594_1303452, field.id), 16385, g2ServerMem(field.offset), 0)
+		g2ServerText(g2ServerChild(questGameOverWindow, field.id), 16385, g2ServerMem(field.offset), 0)
 	}
 	result := C.int(gameFrame())
 	*g2ServerWord(1303456) = gameFrame()

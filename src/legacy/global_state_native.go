@@ -6,7 +6,7 @@ package legacy
 #include <string.h>
 extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
 extern nox_window *dword_5d4594_1049508, *dword_5d4594_1305680, *dword_5d4594_1305684;
-extern uint32_t dword_5d4594_1062488, dword_5d4594_1319056, dword_5d4594_1320964;
+extern uint32_t dword_5d4594_1062488, dword_5d4594_1319056;
 extern uint32_t dword_5d4594_1098628, dword_5d4594_1321800;
 extern nox_waypoint_t* dword_5d4594_2487244;
 extern uint32_t nox_xxx_minimap_587000_149232;
@@ -34,7 +34,7 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 5:
 		return unsafe.Pointer(&C.dword_5d4594_1319056)
 	case 6:
-		return unsafe.Pointer(&C.dword_5d4594_1320964)
+		return unsafe.Pointer(&tradeActive)
 	case 7:
 		return unsafe.Pointer(&C.dword_5d4594_1098628)
 	case 8:

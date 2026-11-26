@@ -6,8 +6,6 @@ package legacy
 #include "client__gui__window.h"
 #include "noxstring.h"
 extern int nox_win_width, nox_win_height;
-extern nox_window* dword_5d4594_1320940;
-extern uint32_t dword_5d4594_1320944, dword_5d4594_1320948;
 */
 import "C"
 
@@ -21,7 +19,10 @@ import (
 
 const tradeCellSize = 50
 
-func tradeRoot() *nox_window { return C.dword_5d4594_1320940 }
+var tradeWindow *nox_window
+var tradeActive, tradeLocalAccepted, tradeRemoteAccepted uint32
+
+func tradeRoot() *nox_window { return tradeWindow }
 
 func tradeChild(id int) *nox_window { return g2ServerChild(tradeRoot(), id) }
 
@@ -32,10 +33,15 @@ func tradeImage(offset uintptr) *nox_video_bag_image_t {
 //export sub_4C09D0
 func sub_4C09D0() C.int {
 	root := nox_new_window_from_file(internCStr("Trade.wnd"), C.sub_4C0C90)
-	C.dword_5d4594_1320940 = root
+	tradeWindow = root
 	if root == nil {
 		return 0
 	}
+	asWindow(root).AddCleanup(func() {
+		if tradeWindow == root {
+			tradeWindow, tradeActive = nil, 0
+		}
+	})
 	nox_window_set_all_funcs(root, C.sub_4C0630, C.sub_4C0D00, nil)
 	nox_xxx_wndWddSetTooltip_46B000(&root.draw_data, tradeString("TradeMain", 692))
 	for _, tip := range [...]struct {
@@ -118,12 +124,12 @@ func sub_4C0D00(win *nox_window, draw *C.nox_window_data) C.int {
 		nox_client_drawImageAt_47D2C0(tradeImage(1320184), gx, gy)
 	}
 	accept := tradeChild(3708)
-	if C.dword_5d4594_1320944 != 0 {
+	if tradeLocalAccepted != 0 {
 		drawImage(1320172)
 	} else if accept.draw_data.field_0&4 != 0 {
 		drawImage(1320168)
 	}
-	if C.dword_5d4594_1320948 != 0 {
+	if tradeRemoteAccepted != 0 {
 		drawImage(1320176)
 	}
 	cancel := tradeChild(3710)

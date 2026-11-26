@@ -10,12 +10,10 @@ package legacy
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
 
-extern nox_window* dword_5d4594_1098580;
-extern uint32_t dword_5d4594_1098592, dword_5d4594_1098616, dword_5d4594_1098620;
+extern uint32_t dword_5d4594_1098616, dword_5d4594_1098620;
 extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
 extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
 extern char* nox_shop_dialog_file_1098608;
-extern nox_video_bag_image_t* dword_5d4594_1098456;
 
 static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
 	nox_swprintf(dst, format, amount);
@@ -64,7 +62,7 @@ func drawShopInstructions(pos *C.int2, text **wchar2_t, key string, line int32, 
 	if white {
 		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
 	}
-	nox_client_drawImageAt_47D2C0(C.dword_5d4594_1098456, int32(pos.field_0), int32(pos.field_4))
+	nox_client_drawImageAt_47D2C0(shopBorderImage, int32(pos.field_0), int32(pos.field_4))
 	if *text == nil && key != "" {
 		*text = shopString(key, line)
 	}
@@ -120,7 +118,7 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 		nox_xxx_playDialogFile_44D900((*byte)(unsafe.Pointer(file)), 100)
 	}
 	C.dword_5d4594_1107036 = 0
-	return C.int(g2ServerEvent(C.dword_5d4594_1098580, 16394, uintptr(C.dword_5d4594_1098592), 0))
+	return C.int(g2ServerEvent(shopSlider, 16394, uintptr(shopScrollLimit), 0))
 }
 
 //export sub_479520

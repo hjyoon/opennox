@@ -6,7 +6,6 @@ package legacy
 #include "common__strman.h"
 #include "GAME2_1.h"
 #include "noxstring.h"
-extern nox_window* dword_5d4594_1303452;
 
 static void quest_game_over_format_49B6E0(wchar2_t* dst, const wchar2_t* format, const wchar2_t* title, int32_t seconds) {
 	nox_swprintf(dst, format, title, seconds);
@@ -23,7 +22,7 @@ import (
 )
 
 func questGameOverTimerRootSlot49B6E0() **gui.Window {
-	return (**gui.Window)(unsafe.Pointer(&C.dword_5d4594_1303452))
+	return (**gui.Window)(unsafe.Pointer(&questGameOverWindow))
 }
 
 func questGameOverTimerBuffer49B6E0() *C.wchar2_t {

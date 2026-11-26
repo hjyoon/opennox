@@ -5,7 +5,6 @@ package legacy
 #include "noxstring.h"
 #include "common__strman.h"
 #include "client__gui__guimsg.h"
-extern uint32_t dword_5d4594_1320944, dword_5d4594_1320948, dword_5d4594_1320964;
 */
 import "C"
 
@@ -54,10 +53,10 @@ func sub_4C1760(slot *C.nox_trade_const_slot_t, id C.uint32_t) C.int {
 
 //export nox_xxx_tradeClientAddItem_4C1790
 func nox_xxx_tradeClientAddItem_4C1790(data *C.nox_trade_const_u8_t) *tradeClientSlot {
-	if C.dword_5d4594_1320964 == 0 || data == nil {
+	if tradeActive == 0 || data == nil {
 		return nil
 	}
-	C.dword_5d4594_1320944, C.dword_5d4594_1320948 = 0, 0
+	tradeLocalAccepted, tradeRemoteAccepted = 0, 0
 	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), 11)
 	thing := C.uint32_t(binary.LittleEndian.Uint16(packet[3:5]))
 	slot, remote := C.dword_5d4594_1320936, C.int(1)
@@ -137,8 +136,8 @@ func sub_4C19C0(thing C.uint32_t) *tradeClientSlot {
 
 //export sub_4C1B50
 func sub_4C1B50(data *C.nox_trade_const_u8_t) C.int {
-	if C.dword_5d4594_1320964 == 0 || data == nil {
-		return C.int(C.dword_5d4594_1320964)
+	if tradeActive == 0 || data == nil {
+		return C.int(tradeActive)
 	}
 	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), 14)
 	playerTotal := strconv.FormatInt(int64(int32(binary.LittleEndian.Uint32(packet[2:6]))), 10)
@@ -156,12 +155,12 @@ func sub_4C1B50(data *C.nox_trade_const_u8_t) C.int {
 
 //export sub_4C1BC0
 func sub_4C1BC0(data *C.nox_trade_const_u8_t) C.int {
-	if C.dword_5d4594_1320964 != 0 && data != nil {
+	if tradeActive != 0 && data != nil {
 		flags := *(*byte)(unsafe.Add(unsafe.Pointer(data), 2))
-		C.dword_5d4594_1320944 = C.uint32_t(flags & 1)
-		C.dword_5d4594_1320948 = C.uint32_t((flags >> 1) & 1)
+		tradeLocalAccepted = uint32(flags & 1)
+		tradeRemoteAccepted = uint32((flags >> 1) & 1)
 	}
-	return C.int(C.dword_5d4594_1320964)
+	return C.int(tradeActive)
 }
 
 //export nox_gui_trade_slot_at
@@ -194,7 +193,7 @@ func tradeString(name string, line C.int) *wchar2_t {
 
 //export sub_4C15D0
 func sub_4C15D0(data *C.nox_trade_const_u8_t) C.int {
-	if C.dword_5d4594_1320964 == 0 || data == nil {
+	if tradeActive == 0 || data == nil {
 		return 0
 	}
 	packet := unsafe.Slice((*byte)(unsafe.Pointer(data)), 4)

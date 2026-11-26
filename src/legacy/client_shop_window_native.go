@@ -12,9 +12,7 @@ package legacy
 typedef const nox_draw_viewport_t nox_shop_const_viewport_t;
 
 extern int nox_win_width, nox_win_height;
-extern nox_window *dword_5d4594_1098576, *dword_5d4594_1098580;
-extern uint32_t dword_5d4594_1098592, dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
-extern nox_video_bag_image_t* dword_5d4594_1098456;
+extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
 */
 import "C"
 
@@ -26,6 +24,10 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var shopWindow, shopSlider *nox_window
+var shopBorderImage *nox_video_bag_image_t
+var shopScrollLimit C.uint32_t
 
 var shopDrawViewport, _ = alloc.New(C.nox_draw_viewport_t{})
 
@@ -49,7 +51,7 @@ func nox_client_shop_viewport() *C.nox_shop_const_viewport_t {
 func sub_478110() C.int {
 	nox_client_shop_viewport_init(C.nox_win_width, C.nox_win_height)
 	root := nox_new_window_from_file(internCStr("Shop.wnd"), C.sub_478480)
-	C.dword_5d4594_1098576 = root
+	shopWindow, shopSlider = root, nil
 	if root == nil {
 		return 0
 	}
@@ -58,9 +60,14 @@ func sub_478110() C.int {
 	slider := nox_xxx_wndGetChildByID_46B0C0(root, 3807)
 	if inventory == nil || slider == nil || slider.field_100 == nil || slider.widget_data == nil {
 		nox_xxx_windowDestroyMB_46C4E0(root)
-		C.dword_5d4594_1098576 = nil
+		shopWindow = nil
 		return 0
 	}
+	asWindow(root).AddCleanup(func() {
+		if shopWindow == root {
+			shopWindow, shopSlider = nil, nil
+		}
+	})
 	nox_gui_winSetFunc96_46B070(inventory, C.sub_478E50)
 	// The game clears startup storage before paths that can destroy drawables.
 	for i := range shopInventory {
@@ -83,11 +90,11 @@ func sub_478110() C.int {
 	for _, name := range [...]string{"ShopInventoryUp", "ShopInventoryUpSelected", "ShopInventorydown", "ShopInventorydownSelected"} {
 		Nox_xxx_gLoadImg(name)
 	}
-	C.dword_5d4594_1098456 = (*nox_video_bag_image_t)(Nox_xxx_gLoadImg("ShopTextBorder").C())
+	shopBorderImage = (*nox_video_bag_image_t)(Nox_xxx_gLoadImg("ShopTextBorder").C())
 	for _, entry := range shopPortraits[:6] {
 		Nox_xxx_gLoadImg(entry.image)
 	}
-	C.dword_5d4594_1098580 = slider
+	shopSlider = slider
 	origin := asWindow(inventory).GlobalPos()
 	end := origin.Add(asWindow(inventory).Size())
 	*g2ServerWord(1098380), *g2ServerWord(1098384) = uint32(origin.X), uint32(origin.Y)
@@ -95,14 +102,14 @@ func sub_478110() C.int {
 	slider.field_100.width, slider.field_100.height = 16, 12
 	nox_xxx_wndSetOffsetMB_46AE40(slider.field_100, 0, -15)
 	C.sub_4B5700(slider, nil, nil, unsafe.Pointer(thumb.C()), unsafe.Pointer(thumbPressed.C()), unsafe.Pointer(thumbPressed.C()))
-	C.dword_5d4594_1098592 = (*[2]C.uint32_t)(slider.widget_data)[1]
+	shopScrollLimit = (*[2]C.uint32_t)(slider.widget_data)[1]
 	return 1
 }
 
 //export sub_478480
 func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 	if event == 16393 {
-		C.dword_5d4594_1107036 = C.dword_5d4594_1098592 - C.uint32_t(value)
+		C.dword_5d4594_1107036 = shopScrollLimit - C.uint32_t(value)
 	}
 	if event != 16391 || sub_45D9B0() != 0 {
 		return 0
@@ -144,10 +151,10 @@ func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 		shopSetScrollOffset(offset - offset%50)
 	case 3809:
 		offset := C.dword_5d4594_1107036 + 50
-		if int32(offset) <= int32(C.dword_5d4594_1098592) {
+		if int32(offset) <= int32(shopScrollLimit) {
 			shopSetScrollOffset(offset - offset%50)
 		} else {
-			shopSetScrollOffset(C.dword_5d4594_1098592)
+			shopSetScrollOffset(shopScrollLimit)
 		}
 	}
 	return 0
@@ -155,7 +162,7 @@ func sub_478480(win *nox_window, event C.int, arg, value C.uintptr_t) C.int {
 
 func shopSetScrollOffset(offset C.uint32_t) {
 	C.dword_5d4594_1107036 = offset
-	g2ServerEvent(C.dword_5d4594_1098580, 16394, uintptr(C.dword_5d4594_1098592-offset), 0)
+	g2ServerEvent(shopSlider, 16394, uintptr(shopScrollLimit-offset), 0)
 }
 
 func shopMousePosition(packed C.uintptr_t) C.int2 {

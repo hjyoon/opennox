@@ -39,8 +39,6 @@ _Static_assert(offsetof(nox_gui_summon_record, size) == 20,
 _Static_assert(offsetof(nox_gui_summon_record, slot) == 24 &&
 	offsetof(nox_gui_summon_record, highlight) == 28,
 	"summon slot and highlight fields must preserve their PE32 offsets");
-_Static_assert(sizeof(dword_5d4594_1321204) == sizeof(void*),
-	"the selected summon must remain a native pointer");
 
 _Static_assert(_Generic(&nox_xxx_guiDrawSummonBox_4C1FE0,
 	summon_draw_fn: 1, default: 0),

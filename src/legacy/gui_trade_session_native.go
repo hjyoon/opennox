@@ -6,8 +6,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__gui__window.h"
 #include "noxstring.h"
-extern nox_window* dword_5d4594_1320940;
-extern uint32_t dword_5d4594_1320944, dword_5d4594_1320948, dword_5d4594_1320964;
 
 static inline void gui_trade_format_initial_total(wchar2_t* out, const wchar2_t* format) {
 	nox_swprintf(out, format, 0);
@@ -130,13 +128,13 @@ func sub_4C0C90(win *nox_window, event C.int, arg, unused C.uintptr_t) C.int {
 //export nox_xxx_closeP2PTradeWnd_4C12A0
 func nox_xxx_closeP2PTradeWnd_4C12A0() C.int {
 	nox_xxx_windowDestroyMB_46C4E0(tradeRoot())
-	C.dword_5d4594_1320940, C.dword_5d4594_1320964 = nil, 0
+	tradeWindow, tradeActive = nil, 0
 	return 0
 }
 
 //export nox_xxx_showP2PTradeWnd_4C12D0
 func nox_xxx_showP2PTradeWnd_4C12D0() C.int {
-	if C.dword_5d4594_1320964 == 0 {
+	if tradeActive == 0 {
 		return 0
 	}
 	return C.int(nox_xxx_wndShowModalMB_46A8C0(tradeRoot()))
@@ -150,10 +148,10 @@ func tradeSetNames(player *nox_playerInfo) C.int {
 //export nox_xxx_netP2PStartTrade_4C1320
 func nox_xxx_netP2PStartTrade_4C1320(data *C.nox_trade_const_u8_t) C.int {
 	player := (*nox_playerInfo)(unsafe.Pointer(Get_dword_8531A0_2576()))
-	if player == nil || data == nil || C.dword_5d4594_1320964 == 1 {
+	if player == nil || data == nil || tradeActive == 1 {
 		return 0
 	}
-	C.dword_5d4594_1320964 = 1
+	tradeActive = 1
 	sub_4C1410()
 	copyWideString((*wchar2_t)(g2ServerMem(1319844)), (*wchar2_t)(unsafe.Add(unsafe.Pointer(data), 2)))
 	g2ServerEnabled(tradeRoot(), true)
@@ -180,7 +178,7 @@ func sub_4C1410() C.int {
 	g2ServerText(tradeChild(3711), 16385, ptr, 0)
 	g2ServerText(tradeChild(3712), 16385, ptr, 0)
 	result := g2ServerText(tradeChild(3713), 16385, ptr, 0)
-	C.dword_5d4594_1320944, C.dword_5d4594_1320948 = 0, 0
+	tradeLocalAccepted, tradeRemoteAccepted = 0, 0
 	C.dword_5d4594_1320968, C.dword_5d4594_1320972 = nil, nil
 	C.dword_5d4594_1320932, C.dword_5d4594_1320936 = nil, nil
 	return C.int(result)
@@ -188,19 +186,19 @@ func sub_4C1410() C.int {
 
 //export sub_4C1590
 func sub_4C1590() C.int {
-	if C.dword_5d4594_1320964 == 0 {
+	if tradeActive == 0 {
 		return 0
 	}
 	sub_4C1410()
 	g2ServerHidden(tradeRoot(), true)
 	g2ServerEnabled(tradeRoot(), false)
-	C.dword_5d4594_1320964 = 0
+	tradeActive = 0
 	return C.sub_467C10()
 }
 
 //export nox_xxx_prepareP2PTrade_4C1BF0
 func nox_xxx_prepareP2PTrade_4C1BF0() C.int {
-	result := C.dword_5d4594_1320964
+	result := tradeActive
 	player := (*nox_playerInfo)(unsafe.Pointer(Get_dword_8531A0_2576()))
 	if result != 0 && player != nil {
 		sub_4C1410()

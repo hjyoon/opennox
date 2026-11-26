@@ -2,8 +2,7 @@ package legacy
 
 /*
 #include "GAME3_1.h"
-extern uint32_t dword_5d4594_1321196, dword_5d4594_1321208;
-extern nox_window *dword_5d4594_1321032, *dword_5d4594_1321040;
+extern uint32_t dword_5d4594_1321208;
 */
 import "C"
 
@@ -125,10 +124,10 @@ func nox_xxx_cliSummonCreat_4C2E50(code, thing, silent C.int) {
 			nox_xxx_clientPlaySoundSpecial_452D80(801, 100)
 		}
 		*state = 1
-		g2ServerHidden(C.dword_5d4594_1321032, false)
-		g2ServerHidden(C.dword_5d4594_1321040, false)
+		g2ServerHidden(summonWindows.root, false)
+		g2ServerHidden(summonWindows.button, false)
 	}
-	C.dword_5d4594_1321196++
+	summonCount++
 }
 
 //export sub_4C2EF0
@@ -243,7 +242,7 @@ func removeSummonCreature(code C.int, silent bool) {
 	if record == nil {
 		return
 	}
-	if record == C.dword_5d4594_1321204 {
+	if record == summonSelectedRecord {
 		C.nox_xxx_guiHideSummonWindow_4C2470()
 	}
 	if sprite := nox_xxx_netSpriteByCodeDynamic_45A6F0(int32(code)); sprite != nil {
@@ -252,8 +251,8 @@ func removeSummonCreature(code C.int, silent bool) {
 	setSummonGridRect(int32(record.grid_x), int32(record.grid_y), int32(record.size), nil)
 	sub_4C3210(record)
 	sub_4C2F70()
-	C.dword_5d4594_1321196--
-	if C.dword_5d4594_1321196 == 0 {
+	summonCount--
+	if summonCount == 0 {
 		if !silent {
 			nox_xxx_clientPlaySoundSpecial_452D80(802, 100)
 		}

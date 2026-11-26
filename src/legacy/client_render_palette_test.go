@@ -3,9 +3,34 @@ package legacy
 import (
 	"runtime"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
+
+func TestDisplayPaletteExpansion435120(t *testing.T) {
+	var packed [256][3]byte
+	for i := range packed {
+		packed[i] = [3]byte{byte(i), byte(17*i + 3), byte(255 - i)}
+	}
+	original := packed
+	var expanded [256][4]byte
+	Sub_435120(unsafe.Pointer(&expanded), unsafe.Pointer(&packed))
+	for i, rgb := range original {
+		want := [4]byte{rgb[0], rgb[1], rgb[2], 4}
+		if expanded[i] != want {
+			t.Fatalf("color %d = %v, want %v", i, expanded[i], want)
+		}
+	}
+	if packed != original {
+		t.Fatal("expanded palette modified the packed source")
+	}
+	var restored [256][3]byte
+	Sub_435150(unsafe.Pointer(&restored), unsafe.Pointer(&expanded))
+	if restored != original {
+		t.Fatal("palette round trip changed the packed RGB values")
+	}
+}
 
 func TestLegacyRenderPaletteNativeStorage(t *testing.T) {
 	slots := [...]struct {

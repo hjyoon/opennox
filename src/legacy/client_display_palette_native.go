@@ -48,7 +48,7 @@ func sub_435040() {
 
 //export sub_435120
 func sub_435120(dst, src unsafe.Pointer) {
-	out, in := (*[256][4]byte)(dst), (*[256][4]byte)(src)
+	out, in := (*[256][4]byte)(dst), (*[256][3]byte)(src)
 	for i := range out {
 		out[i][0] = in[i][0]
 		out[i][1] = in[i][1]

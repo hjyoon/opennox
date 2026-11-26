@@ -53,40 +53,40 @@ steps:
   # injected client text. All fixtures retain their stock object callbacks.
   - action: check-ground-item-tooltip
     item: RedApple
-    text: 사과
+    text-id: thing.db:RedApplePrettyName
     x: 40
     y: 0
-    name: verify apple Korean tooltip
+    name: verify localized apple tooltip
   - action: screen
     name: apple Korean tooltip
   - action: check-object-tooltip-cleared
     name: clear apple tooltip
   - action: check-ground-item-tooltip
     item: Mushroom
-    text: 버섯
+    text-id: thing.db:MushroomPrettyName
     x: -40
     y: 0
-    name: verify mushroom Korean tooltip
+    name: verify localized mushroom tooltip
   - action: screen
     name: mushroom Korean tooltip
   - action: check-object-tooltip-cleared
     name: clear mushroom tooltip
   - action: check-ground-item-tooltip
     item: GreatSword
-    text: 그레이트 서드
+    text-id: modifier.db:GreatSwordDesc
     x: 0
     y: 40
-    name: verify weapon Korean tooltip
+    name: verify localized weapon tooltip
   - action: screen
     name: weapon Korean tooltip
   - action: check-object-tooltip-cleared
     name: clear weapon tooltip
   - action: check-ground-item-tooltip
     item: LeatherArmor
-    text: 가죽 튜닉
+    text-id: modifier.db:LeatherArmorDesc
     x: 0
     y: -40
-    name: verify armor Korean tooltip
+    name: verify localized armor tooltip
   - action: screen
     name: armor Korean tooltip
   - action: check-object-tooltip-cleared

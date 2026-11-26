@@ -22,7 +22,7 @@ func e2eObjectTooltipText() string {
 
 // CheckGroundItemTooltip uses stock server objects and real mouse input. It
 // never calls the tooltip builder or seeds the drawable's book cache/text.
-func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, parameter int, offset image.Point, name string) {
+func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, textID strman.ID, parameter int, offset image.Point, name string) {
 	var wire uint16
 	var bookID uint32
 	sc.addWhen(0, name+" spawn", 1200, func() bool {
@@ -34,10 +34,25 @@ func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, par
 			return
 		}
 		sm := noxClient.Strings()
-		if item.Class().Has(object.ClassInfoBook) {
-			if int(sm.Lang()) != 8 || item.UseData.Ptr == nil {
-				e2eError(fmt.Errorf("tooltip book fixture needs Korean strings and stock use data: language=%d object=%p data=%p", sm.Lang(), item, item.UseData.Ptr))
+		if textID != "" {
+			entry, ok := sm.Get(textID)
+			if text != "" || !ok || len(entry.Vals) != 1 || entry.Vals[0].Str == "" {
+				e2eError(fmt.Errorf("tooltip fixture %q needs one expected string from %q", typeID, textID))
 				return
+			}
+			text = entry.Vals[0].Str
+		}
+		if item.Class().Has(object.ClassInfoBook) {
+			if item.UseData.Ptr == nil {
+				e2eError(fmt.Errorf("tooltip book fixture %q has no stock use data", typeID))
+				return
+			}
+			bookTitle := func(title string) string {
+				caption := sm.GetString("ToolTip.c:BookOf")
+				if sm.Lang() == 6 {
+					return title + " " + caption
+				}
+				return caption + " " + title
 			}
 			switch {
 			case item.SubClass().AsBook().Has(object.BookSpell):
@@ -53,7 +68,7 @@ func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, par
 					return
 				}
 				if text == "" {
-					text = sm.GetStringInFile("BookOf", `C:\NoxPost\src\client\Gui\ToolTip.c`) + " " + title
+					text = bookTitle(title)
 				}
 			case item.SubClass().AsBook().Has(object.BookFieldGuide):
 				bookID = uint32(server.RewardFieldGuideID4F0D20(creature))
@@ -63,8 +78,13 @@ func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, par
 				}
 				item.UseDataFieldGuide().SetCreature(creature)
 				if text == "" {
-					text = sm.GetStringInFile(strman.ID("creature:"+creature), `C:\NoxPost\src\common\Magic\ComGuide.c`) + " " +
-						sm.GetStringInFile("LoreScroll", `C:\NoxPost\src\client\Gui\ToolTip.c`)
+					title := sm.GetString(strman.ID("creature:" + creature))
+					caption := sm.GetString("ToolTip.c:LoreScroll")
+					if sm.Lang() == 3 || sm.Lang() == 5 {
+						text = caption + " " + title
+					} else {
+						text = title + " " + caption
+					}
 				}
 			case item.SubClass().AsBook().Has(object.BookAbility):
 				if parameter <= 0 || parameter >= 6 {
@@ -74,7 +94,7 @@ func (sc *e2eScenario) CheckGroundItemTooltip(typeID, creature, text string, par
 				item.UseDataAbilityReward().Ability = byte(parameter)
 				bookID = uint32(parameter)
 				if text == "" {
-					text = sm.GetStringInFile("BookOf", `C:\NoxPost\src\client\Gui\ToolTip.c`) + " " + legacy.Nox_xxx_abilityGetName_0_425260(parameter)
+					text = bookTitle(legacy.Nox_xxx_abilityGetName_0_425260(parameter))
 				}
 			}
 		}

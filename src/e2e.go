@@ -31,6 +31,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/platform"
 	"github.com/opennox/libs/spell"
+	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
@@ -9420,6 +9421,7 @@ type e2eStepYML struct {
 	Name     string        `yaml:"name,omitempty"`
 	Role     string        `yaml:"role,omitempty"`
 	Text     string        `yaml:"text,omitempty"`
+	TextID   strman.ID     `yaml:"text-id,omitempty"`
 	X        int           `yaml:"x,omitempty"`
 	Y        int           `yaml:"y,omitempty"`
 	Ang      float64       `yaml:"ang,omitempty"`
@@ -9548,7 +9550,7 @@ func (sc *e2eScenario) Load(path string) {
 			sc.Move(l.X, l.Y, l.Name)
 		case "check-ground-item-tooltip":
 			sc.Wait(dt, "")
-			sc.CheckGroundItemTooltip(l.Item, l.Creature, l.Text, l.Amount, image.Pt(l.X, l.Y), l.Name)
+			sc.CheckGroundItemTooltip(l.Item, l.Creature, l.Text, l.TextID, l.Amount, image.Pt(l.X, l.Y), l.Name)
 		case "check-object-tooltip-cleared":
 			sc.Wait(dt, "")
 			sc.CheckObjectTooltipCleared(l.Name)

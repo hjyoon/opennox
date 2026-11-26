@@ -31,13 +31,13 @@ func (c *inputCfgCaptureFocusClient4CC170) Strings() *strman.StringManager { ret
 func newInputCfgCaptureFocusFixture4CC170(t *testing.T) (*gui.GUI, *gui.Window, *gui.Window, *gui.Window) {
 	t.Helper()
 	oldClient, oldBackground := GetClient, gui.MainBg
-	oldPrompt := *inputCfgCapturePromptSlot4CC170
-	oldSelection := *inputCfgCaptureSelectionSlot4CC170
+	oldPrompt := shellInputBindings.prompt
+	oldSelection := shellInputBindings.selected
 	g := gui.NewHigh(nil)
 	t.Cleanup(func() {
 		g.DestroyAll()
-		*inputCfgCapturePromptSlot4CC170 = oldPrompt
-		*inputCfgCaptureSelectionSlot4CC170 = oldSelection
+		shellInputBindings.prompt = oldPrompt
+		shellInputBindings.selected = oldSelection
 		GetClient, gui.MainBg = oldClient, oldBackground
 	})
 	c := &inputCfgCaptureFocusClient4CC170{cli: &client.Client{GUI: g}, sm: strman.New()}
@@ -57,8 +57,8 @@ func newInputCfgCaptureFocusFixture4CC170(t *testing.T) (*gui.GUI, *gui.Window, 
 		requireNativeWindowAddress(t, win)
 	}
 	gui.MainBg = background
-	*inputCfgCapturePromptSlot4CC170 = prompt
-	*inputCfgCaptureSelectionSlot4CC170 = nil
+	shellInputBindings.prompt = (*nox_window)(prompt.C())
+	shellInputBindings.selected = nil
 	prompt.SetFunc93C(inputCfgCapturePromptCEntry4CC170)
 	if got := prompt.StackPush(); got != 0 {
 		t.Fatalf("modal stack push: %d", got)
@@ -106,7 +106,7 @@ func TestInputCfgCaptureCExitRestoresShellFocus(t *testing.T) {
 				t.Fatalf("closed=%t focus=%p want=%p stack=%p want=%p hidden=%t", tc.closed,
 					g.Focused(), wantFocus, g.StackHead(), wantStack, prompt.GetFlags().IsHidden())
 			}
-			if g.Captured() != root || !root.GetFlags().Has(gui.StatusNoFocus) || *inputCfgCaptureSelectionSlot4CC170 != nil {
+			if g.Captured() != root || !root.GetFlags().Has(gui.StatusNoFocus) || shellInputBindings.selected != nil {
 				t.Fatal("C exit changed unrelated capture/root flags/selection")
 			}
 		})

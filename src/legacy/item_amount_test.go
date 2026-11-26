@@ -1,12 +1,16 @@
 package legacy
 
 import (
+	"runtime"
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestItemAmountNativeLayout(t *testing.T) {
-	attrsSize, attrsField, drawableModifiers, drawableFieldLow, drawableFieldHigh, callbackSize := itemAmountNativeLayout()
+	attrsSize, attrsField, drawableModifiers, drawableFieldLow, drawableFieldHigh, callbackSize := cfixture.ItemAmountNativeLayout()
 	word := unsafe.Sizeof(uintptr(0))
 	if callbackSize != word {
 		t.Fatalf("callback slot size = %d, want native pointer size %d", callbackSize, word)
@@ -23,33 +27,52 @@ func TestItemAmountNativeLayout(t *testing.T) {
 }
 
 func TestItemAmountPointerSlotsPreserveNativeWidth(t *testing.T) {
-	want := uintptr(0x12345)
-	if unsafe.Sizeof(uintptr(0)) > 4 {
-		high := uint64(1)
-		high <<= 40
-		want += uintptr(high)
+	root, freeRoot := alloc.NewHigh(nox_window{})
+	t.Cleanup(freeRoot)
+	item, freeItem := alloc.NewHigh(nox_drawable{})
+	t.Cleanup(freeItem)
+	image, freeImage := alloc.NewHigh(byte(0))
+	t.Cleanup(freeImage)
+	accept, cancel := cfixture.ItemAmountCallbacks()
+	saved := itemAmountDialog
+	t.Cleanup(func() { itemAmountDialog = saved })
+
+	itemAmountDialog.root, itemAmountDialog.drawable = root, item
+	itemAmountDialog.images[7] = (*nox_video_bag_image_t)(unsafe.Pointer(image))
+	itemAmountDialog.accept, itemAmountDialog.cancel = itemAmountCallback(accept), itemAmountCallback(cancel)
+	runtime.GC()
+
+	slots := []struct {
+		name      string
+		got, want unsafe.Pointer
+	}{
+		{"dialog", Get_nox_gui_itemAmount_dialog_1319228().C(), unsafe.Pointer(root)},
+		{"item", ClientItemAmountDrawable().C(), unsafe.Pointer(item)},
+		{"image", unsafe.Pointer(itemAmountDialog.images[7]), unsafe.Pointer(image)},
+		{"accept callback", unsafe.Pointer(itemAmountDialog.accept), accept},
+		{"cancel callback", unsafe.Pointer(itemAmountDialog.cancel), cancel},
 	}
-	for slot, name := range []string{"dialog", "item", "image", "accept callback", "cancel callback"} {
-		if got := itemAmountPointerRoundTrip(slot, want); got != want {
-			t.Errorf("%s pointer round trip = %#x, want %#x", name, got, want)
+	for i, slot := range slots {
+		if slot.got != slot.want {
+			t.Errorf("%s pointer = %p, want %p", slot.name, slot.got, slot.want)
+		}
+		if i < 3 && unsafe.Sizeof(uintptr(0)) == 8 && uint64(uintptr(slot.got)) <= 0xffffffff {
+			t.Errorf("%s pointer %p does not exercise the upper address bits", slot.name, slot.got)
 		}
 	}
 }
 
 func TestItemAmountModifierCopyPreservesNativePointers(t *testing.T) {
-	base := uintptr(0x23456)
-	if unsafe.Sizeof(uintptr(0)) > 4 {
-		high := uint64(1)
-		high <<= 40
-		base += uintptr(high)
-	}
-	if !itemAmountAttrsContract(base, 0x89ABCDEF) {
+	modifiers, free := alloc.NewHigh([4]byte{})
+	defer free()
+	if !cfixture.ItemAmountAttrsContract(modifiers, 0x89ABCDEF) {
 		t.Fatal("four modifier pointers or trailing PE32 field were not copied exactly")
 	}
 }
 
 func TestItemAmountCallbackPreservesGameEXEArgumentOrder(t *testing.T) {
-	if !itemAmountCallbackContract() {
-		t.Fatal("callback did not receive position/item ID/thing type/amount/extra in GAME.EXE order")
+	accept, cancel := cfixture.ItemAmountCallbacks()
+	if !cfixture.ItemAmountCallbackContract(accept, 1) || !cfixture.ItemAmountCallbackContract(cancel, 2) {
+		t.Fatal("accept or cancel did not receive position/item ID/thing type/amount/extra in GAME.EXE order")
 	}
 }

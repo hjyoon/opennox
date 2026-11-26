@@ -1,11 +1,6 @@
 #include "client__gui__guiinput.h"
 #include "client__shell__inputcfg__inputcfg.h"
 
-nox_window* dword_5d4594_1321236 = NULL;
-nox_window* dword_5d4594_1321240 = NULL;
-nox_window* dword_5d4594_1321244 = NULL;
-nox_window* dword_5d4594_1321248 = NULL;
-
 int nox_gameInputApplyBindings(void);
 int nox_shellInputApplyBindings(void);
 

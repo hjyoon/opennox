@@ -8,8 +8,9 @@ package legacy
 #include "noxstring.h"
 extern int nox_win_width, nox_win_height;
 extern uint32_t dword_587000_183456, dword_587000_183460;
-extern uint32_t dword_5d4594_1319248, dword_5d4594_1319260, dword_5d4594_1319264, dword_5d4594_1319268;
-extern nox_window *dword_5d4594_1319232, *dword_5d4594_1319236;
+
+_Static_assert(sizeof(nox_gui_item_amount_callback_t) == sizeof(uintptr_t),
+	"item-amount callback must occupy one native pointer slot");
 
 static inline void item_amount_call(nox_gui_item_amount_callback_t callback, int2* pos, uint32_t id,
 									uint32_t thing, uint32_t amount, uint32_t extra) {
@@ -40,7 +41,19 @@ const (
 	itemAmountImageNoWithoutTag
 )
 
-func itemAmountRoot() *nox_window { return C.nox_gui_itemAmount_dialog_1319228 }
+type itemAmountCallback = C.nox_gui_item_amount_callback_t
+
+var itemAmountDialog struct {
+	root, amountInput, priceLabel *nox_window
+	drawable                      *nox_drawable
+	images                        [8]*nox_video_bag_image_t
+	accept, cancel                itemAmountCallback
+	maxAmount, unitPrice          uint32
+	priceMode                     uint32
+	active                        bool
+}
+
+func itemAmountRoot() *nox_window { return itemAmountDialog.root }
 
 func itemAmountPosition(win *nox_window) (x, y C.int) {
 	var px, py C.uint
@@ -55,7 +68,7 @@ func mirrorItemAmountPointer(offset uintptr, value unsafe.Pointer) {
 }
 
 func readItemAmount() uint32 {
-	return uint32(parseLegacyWideDecimal(C.sub_46AF00(C.dword_5d4594_1319232)))
+	return uint32(parseLegacyWideDecimal(C.sub_46AF00(itemAmountDialog.amountInput)))
 }
 
 //export nox_gui_item_amount_state
@@ -66,14 +79,14 @@ func nox_gui_item_amount_state(amount, maxAmount *C.uint32_t) C.int {
 	if maxAmount != nil {
 		*maxAmount = 0
 	}
-	if C.dword_5d4594_1319268 != 1 || C.dword_5d4594_1319232 == nil {
+	if !itemAmountDialog.active || itemAmountDialog.amountInput == nil {
 		return 0
 	}
 	if amount != nil {
 		*amount = C.uint32_t(readItemAmount())
 	}
 	if maxAmount != nil {
-		*maxAmount = C.dword_5d4594_1319248
+		*maxAmount = C.uint32_t(itemAmountDialog.maxAmount)
 	}
 	return 1
 }
@@ -85,9 +98,9 @@ func setItemAmountNumber(win *nox_window, offset uintptr, value uint32) {
 }
 
 func writeItemAmount(amount uint32) {
-	setItemAmountNumber(C.dword_5d4594_1319232, 1319164, amount)
-	if C.dword_5d4594_1319264 != 0 {
-		setItemAmountNumber(C.dword_5d4594_1319236, 1319068, uint32(C.dword_5d4594_1319260)*amount)
+	setItemAmountNumber(itemAmountDialog.amountInput, 1319164, amount)
+	if itemAmountDialog.priceMode != 0 {
+		setItemAmountNumber(itemAmountDialog.priceLabel, 1319068, itemAmountDialog.unitPrice*amount)
 	}
 }
 
@@ -120,18 +133,18 @@ func invokeItemAmount(callback C.nox_gui_item_amount_callback_t, amount uint32) 
 //export sub_4BFD40
 func sub_4BFD40() {
 	root := itemAmountRoot()
-	if C.dword_5d4594_1319268 == 1 {
+	if itemAmountDialog.active {
 		g2ServerHidden(root, true)
 		g2ServerEnabled(root, false)
 		nox_xxx_wnd_46C6E0(root)
 		deleteItemAmountDrawable()
-		C.dword_5d4594_1319268 = 0
+		itemAmountDialog.active = false
 		return
 	}
 	g2ServerEnabled(root, true)
 	sub_46C690(root)
 	nox_xxx_wndShowModalMB_46A8C0(root)
-	C.dword_5d4594_1319268 = 1
+	itemAmountDialog.active = true
 }
 
 //export sub_4BFDD0
@@ -151,25 +164,30 @@ func sub_4BFDD0(win *nox_window, event C.int, packed, unused C.uintptr_t) C.int 
 
 //export sub_4BFE40
 func sub_4BFE40() C.int {
-	if C.dword_5d4594_1319268 != 1 {
+	if !itemAmountDialog.active {
 		return 0
 	}
-	invokeItemAmount(C.nox_gui_itemAmount_cancel_1319100, min(readItemAmount(), uint32(C.dword_5d4594_1319248)))
+	invokeItemAmount(itemAmountDialog.cancel, min(readItemAmount(), itemAmountDialog.maxAmount))
 	sub_4BFD40()
 	return 1
 }
 
+// ItemAmountCancel4BFE40 closes an active quantity dialog through its cancel callback.
+func ItemAmountCancel4BFE40() int {
+	return int(sub_4BFE40())
+}
+
 //export nox_gui_itemAmount_init_4BFEF0
 func nox_gui_itemAmount_init_4BFEF0() C.int {
-	C.dword_5d4594_1319264 = 0
+	itemAmountDialog.priceMode = 0
 	root := nox_new_window_from_file(internCStr("MultMove.wnd"), C.sub_4C01C0)
-	C.nox_gui_itemAmount_dialog_1319228 = root
+	itemAmountDialog.root = root
 	if root == nil {
 		return 0
 	}
 	nox_window_set_all_funcs(root, C.sub_4BFDD0, C.sub_4C0030, nil)
-	C.dword_5d4594_1319232 = g2ServerChild(root, 3601)
-	C.dword_5d4594_1319236 = g2ServerChild(root, 3607)
+	itemAmountDialog.amountInput = g2ServerChild(root, 3601)
+	itemAmountDialog.priceLabel = g2ServerChild(root, 3607)
 	g2ServerHidden(root, true)
 	g2ServerEnabled(root, false)
 
@@ -184,7 +202,7 @@ func nox_gui_itemAmount_init_4BFEF0() C.int {
 	}
 	for i, name := range names {
 		img := Nox_xxx_gLoadImg(name).C()
-		C.nox_gui_itemAmount_images_1319196[i] = (*nox_video_bag_image_t)(img)
+		itemAmountDialog.images[i] = (*nox_video_bag_image_t)(img)
 		mirrorItemAmountPointer(1319196+4*uintptr(i), unsafe.Pointer(img))
 	}
 	return 1
@@ -210,14 +228,14 @@ func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
 	C.nox_client_drawRectFilledAlpha_49CF10(0, 0, C.nox_win_width, C.nox_win_height)
 	x, y := itemAmountPosition(win)
 	drawImage := func(index int) {
-		nox_client_drawImageAt_47D2C0(C.nox_gui_itemAmount_images_1319196[index], int32(x), int32(y))
+		nox_client_drawImageAt_47D2C0(itemAmountDialog.images[index], int32(x), int32(y))
 	}
 	base, yes, no := itemAmountImageBaseWithoutTag, itemAmountImageYesWithoutTag, itemAmountImageNoWithoutTag
-	if C.dword_5d4594_1319264 != 0 {
+	if itemAmountDialog.priceMode != 0 {
 		base, yes, no = itemAmountImageBase, itemAmountImageYes, itemAmountImageNo
 	}
 	drawImage(base)
-	item := asDrawable(C.nox_gui_itemAmount_item_1319256)
+	item := asDrawable(itemAmountDialog.drawable)
 	item.SetPos(image.Pt(int(int32(x+C.int(C.dword_587000_183456))), int(int32(y+C.int(C.dword_587000_183460)))))
 	viewport := packedGUIViewport(1319108)
 	item.CallDraw(&viewport)
@@ -234,14 +252,14 @@ func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
 
 //export sub_4C01C0
 func sub_4C01C0(win *nox_window, event C.int, control *nox_window, arg C.uintptr_t) C.int {
-	if event != 16391 || C.dword_5d4594_1319268 != 1 {
+	if event != 16391 || !itemAmountDialog.active {
 		return 0
 	}
 	id := C.nox_xxx_wndGetID_46B0A0(control)
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	switch id {
 	case 3602:
-		if amount := readItemAmount() + 1; amount <= uint32(C.dword_5d4594_1319248) {
+		if amount := readItemAmount() + 1; amount <= itemAmountDialog.maxAmount {
 			writeItemAmount(amount)
 		}
 	case 3603:
@@ -249,7 +267,7 @@ func sub_4C01C0(win *nox_window, event C.int, control *nox_window, arg C.uintptr
 			writeItemAmount(amount - 1)
 		}
 	case 3604, 3606:
-		invokeItemAmount(C.nox_gui_itemAmount_accept_1319160, min(readItemAmount(), uint32(C.dword_5d4594_1319248)))
+		invokeItemAmount(itemAmountDialog.accept, min(readItemAmount(), itemAmountDialog.maxAmount))
 		sub_4BFD40()
 	case 3605:
 		sub_4BFE40()
@@ -258,43 +276,42 @@ func sub_4C01C0(win *nox_window, event C.int, control *nox_window, arg C.uintptr
 }
 
 func deleteItemAmountDrawable() {
-	if dr := C.nox_gui_itemAmount_item_1319256; dr != nil {
+	if dr := itemAmountDialog.drawable; dr != nil {
 		nox_xxx_spriteDelete_45A4B0(dr)
 	}
-	C.nox_gui_itemAmount_item_1319256 = nil
+	itemAmountDialog.drawable = nil
 }
 
 //export nox_gui_itemAmount_free_4C03E0
 func nox_gui_itemAmount_free_4C03E0() {
 	deleteItemAmountDrawable()
 	nox_xxx_windowDestroyMB_46C4E0(itemAmountRoot())
-	C.nox_gui_itemAmount_dialog_1319228 = nil
-	C.dword_5d4594_1319232 = nil
-	C.dword_5d4594_1319236 = nil
-	C.dword_5d4594_1319264 = 0
+	itemAmountDialog.root, itemAmountDialog.amountInput, itemAmountDialog.priceLabel = nil, nil, nil
+	itemAmountDialog.priceMode = 0
+	itemAmountDialog.active = false
 }
 
 //export nox_gui_itemAmountDialog_4C0430
 func nox_gui_itemAmountDialog_4C0430(title *wchar2_t, x, y C.int, id, thing C.uint32_t, attrs *C.nox_item_amount_const_attrs_t, maxAmount, extra C.uint32_t, accept, cancel C.nox_gui_item_amount_callback_t) C.int {
 	g2ServerText(g2ServerChild(itemAmountRoot(), 3606), 16385, unsafe.Pointer(title), 0)
 	item := nox_new_drawable_for_thing(int32(thing))
-	C.nox_gui_itemAmount_item_1319256 = item
+	itemAmountDialog.drawable = item
 	item.flags30 |= 0x40000000
 	nox_gui_item_amount_copy_attrs(item, attrs)
-	C.nox_gui_itemAmount_accept_1319160 = accept
-	C.nox_gui_itemAmount_cancel_1319100 = cancel
+	itemAmountDialog.accept = accept
+	itemAmountDialog.cancel = cancel
 	mirrorItemAmountPointer(1319160, unsafe.Pointer(accept))
 	mirrorItemAmountPointer(1319100, unsafe.Pointer(cancel))
 	*g2ServerWord(1319240), *g2ServerWord(1319244) = uint32(thing), uint32(id)
-	C.dword_5d4594_1319248 = maxAmount
+	itemAmountDialog.maxAmount = uint32(maxAmount)
 	*g2ServerWord(1319252) = uint32(extra)
 	sub_4BFD40()
 	sub_4C0560(x, y)
 	writeItemAmount(1)
-	if C.dword_5d4594_1319264 == 0 {
+	if itemAmountDialog.priceMode == 0 {
 		text := g2ServerMem(1319068)
 		C.item_amount_format_tag((*wchar2_t)(text), (*wchar2_t)(g2ServerMem(1319272)))
-		g2ServerText(C.dword_5d4594_1319236, 16385, text, 0)
+		g2ServerText(itemAmountDialog.priceLabel, 16385, text, 0)
 	}
 	return 0
 }
@@ -317,7 +334,7 @@ func sub_4C0560(x, y C.int) C.int {
 
 //export sub_4C05F0
 func sub_4C05F0(priceMode, unitPrice C.int) C.int {
-	C.dword_5d4594_1319264 = C.uint32_t(priceMode)
-	C.dword_5d4594_1319260 = C.uint32_t(unitPrice)
+	itemAmountDialog.priceMode = uint32(priceMode)
+	itemAmountDialog.unitPrice = uint32(unitPrice)
 	return priceMode
 }

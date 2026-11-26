@@ -22,6 +22,31 @@ steps:
     name: first options animation completed
   - action: screen
     name: main options lifecycle open
+  - action: click
+    x: 512
+    y: 595
+    name: open the shell input panel
+  - action: wait
+    dt: 100
+    name: wait for the input panel animation
+  - action: click-main-options-back
+    name: close the input panel through Back
+  - action: check-main-options-lifecycle
+    dt: 100
+    mode: 1
+    name: input panel returned to a newly opened options window
+  - action: click
+    x: 512
+    y: 595
+    name: reopen the shell input panel after teardown
+  - action: wait
+    dt: 100
+  - action: click-main-options-back
+    name: close the rebuilt input panel through Back
+  - action: check-main-options-lifecycle
+    dt: 100
+    mode: 1
+    name: reopened input panel returned to options
   - action: esc
     name: real Escape key input
   - action: check-main-options-lifecycle

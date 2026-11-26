@@ -20,9 +20,6 @@ extern void* nox_xxx_aClosewoodengat_587000_133480;
 
 int nox_ctrlevent_add_ticks_42E630();
 
-extern uint32_t dword_5d4594_1319260;
-extern uint32_t dword_5d4594_1319264;
-extern uint32_t dword_5d4594_1319268;
 */
 import "C"
 import (
@@ -112,7 +109,7 @@ func Nox_client_orderCreature(a1, a2 int) {
 }
 
 func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {
-	return AsWindowP(unsafe.Pointer(C.nox_gui_itemAmount_dialog_1319228))
+	return asWindow(itemAmountRoot())
 }
 
 func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
@@ -122,10 +119,10 @@ func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
 }
 
 func Nox_gui_itemAmountPrice() (enabled bool, unitPrice uint32) {
-	if C.dword_5d4594_1319268 != 1 || C.dword_5d4594_1319264 == 0 {
+	if !itemAmountDialog.active || itemAmountDialog.priceMode == 0 {
 		return false, 0
 	}
-	return true, uint32(C.dword_5d4594_1319260)
+	return true, itemAmountDialog.unitPrice
 }
 
 func Nox_gui_shopState() (active bool, mode, itemCount uint32) {

@@ -87,11 +87,6 @@ int sub_4C0D00(nox_window* win, nox_window_data* draw_data);
 int sub_4C1120(nox_window* win, nox_window_data* draw_data, int packed_position);
 nox_gui_trade_slot* sub_4C11E0(int2* point);
 
-extern nox_window* nox_gui_itemAmount_dialog_1319228;
-extern nox_drawable* nox_gui_itemAmount_item_1319256;
-extern nox_video_bag_image_t* nox_gui_itemAmount_images_1319196[8];
-extern nox_gui_item_amount_callback_t nox_gui_itemAmount_accept_1319160;
-extern nox_gui_item_amount_callback_t nox_gui_itemAmount_cancel_1319100;
 int nox_xxx_closeP2PTradeWnd_4C12A0();
 int sub_4C12C0();
 int nox_xxx_showP2PTradeWnd_4C12D0();

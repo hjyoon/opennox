@@ -5,9 +5,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__shell__inputcfg__inputcfg.h"
 #include "client__shell__optsback.h"
-extern nox_gui_animation* nox_wnd_xxx_1522608;
-extern nox_window *dword_5d4594_1522604, *dword_5d4594_1522612, *dword_5d4594_1522616;
-extern nox_window *dword_5d4594_1522632;
 */
 import "C"
 
@@ -16,34 +13,35 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
+var shellInputAnimation *gui.Anim
+
 //export sub_4CB880
 func sub_4CB880() C.int {
 	nox_game_addStateCode_43BDD0(900)
-	p := shellInputBindings
+	p := &shellInputBindings
 	root := nox_new_window_from_file(internCStr("InputCfg.wnd"), C.sub_4CBE70)
-	C.dword_5d4594_1522604 = root
+	p.root = root
 	if root == nil {
 		return 0
 	}
 	nox_xxx_wndSetWindowProc_46B300(root, C.sub_4A18E0)
-	anim := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -480, 0, 20, 0, -40)
-	C.nox_wnd_xxx_1522608 = anim
+	anim := Nox_gui_makeAnimation_43C5B0(asWindow(root), 0, 0, 0, -480, 0, 20, 0, -40)
+	shellInputAnimation = anim
 	if anim == nil {
 		return 0
 	}
-	a := asGUIAnim(anim)
-	a.StateID = 900
-	a.Func12Ptr = C.sub_4CBB70
-	a.FncDoneOutPtr = C.sub_4CBBB0
+	anim.StateID = 900
+	anim.Func12Ptr = C.sub_4CBB70
+	anim.FncDoneOutPtr = C.sub_4CBBB0
 
-	if !p.attachLists(&C.dword_5d4594_1522616, C.sub_4CBF60, C.sub_4CC140) {
+	if !p.attachLists(C.sub_4CBF60, C.sub_4CC140) {
 		return 0
 	}
 	sub_4CBBF0()
 	p.setMouseButtons()
 
 	prompt := g2ServerChild(root, 980)
-	C.dword_5d4594_1522612 = prompt
+	p.prompt = prompt
 	if prompt == nil {
 		return 0
 	}
@@ -59,7 +57,7 @@ func sub_4CB880() C.int {
 func sub_4CBB70() C.int {
 	shellInputBindings.apply()
 	nox_common_writecfgfile(internCStr("nox.cfg"))
-	asGUIAnim(C.nox_wnd_xxx_1522608).SetState(gui.AnimOut)
+	shellInputAnimation.SetState(gui.AnimOut)
 	sub_43BE40(2)
 	nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
 	return 1
@@ -67,12 +65,10 @@ func sub_4CBB70() C.int {
 
 //export sub_4CBBB0
 func sub_4CBBB0() C.int {
-	anim := C.nox_wnd_xxx_1522608
-	next := asGUIAnim(anim).Func13Ptr
-	nox_gui_freeAnimation_43C570(anim)
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1522604)
-	nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1522612)
-	C.dword_5d4594_1522604, C.dword_5d4594_1522612, C.dword_5d4594_1522632 = nil, nil, nil
+	next := shellInputAnimation.Func13Ptr
+	shellInputAnimation.Free()
+	shellInputAnimation = nil
+	shellInputBindings.destroy()
 	ccall.CallIntVoid(next)
 	return 1
 }

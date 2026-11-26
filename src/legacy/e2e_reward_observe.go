@@ -17,7 +17,7 @@ import (
 // ClientItemAmountDrawable observes the live quantity dialog without replacing
 // its item, callback, viewport, or rendered pixels.
 func ClientItemAmountDrawable() *client.Drawable {
-	return AsDrawableP(unsafe.Pointer(C.nox_gui_itemAmount_item_1319256))
+	return asDrawable(itemAmountDialog.drawable)
 }
 
 // ClientQuickbarSnapshot observes the PE32 numeric entries through the live

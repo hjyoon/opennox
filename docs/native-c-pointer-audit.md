@@ -446,6 +446,37 @@ count from the expected identities and repetitions. The archived
 native output matches all 69 events after verifying the output and
 executable hashes against the run's records.
 
+### Input binding panels and quantity dialog
+
+The shell input panel uses the fields at `0x748140` through
+`0x74815C` in `GAME.EXE`. Go holds the shell and in-game window
+references and the shell animation pointer at native width.
+After releasing the animation and windows, the shell transition
+clears the panel and selection references before its continuation.
+The in-game panel clears its capture selection when its windows
+are released. The options lifecycle E2E opens and closes the shell
+panel twice.
+
+The quantity modal holds the root, child windows, drawable, eight
+images, and both callbacks in Go. Its amounts and prices retain
+32-bit arithmetic. The original accept and cancel calls pass a
+position pointer followed by the item ID, thing type, amount, and
+extra value. Native tests use real pointer addresses, force GC,
+and check both callbacks against that argument order. Full modal
+teardown clears the active flag with the released window references.
+
+The C entry and retained draw tests passed on macOS ARM64 with
+strict pointer checks, Linux ARM64, and emulated Linux 386. The
+hosted quantity E2E matched all three reference frames with the
+default mock audio setup. Enabling the optional mock audio handle
+trace changed the frame hash at both revisions. The shop quantity
+E2E confirmed two stock sale sound submissions and queued buffers
+through OpenAL.
+
+Removing `game3_1_abi.c` brings the top-level legacy C file count
+to 31. The two input-binding C entries retain their pointer-shaped
+return values.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

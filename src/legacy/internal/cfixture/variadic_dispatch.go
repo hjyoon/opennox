@@ -78,6 +78,43 @@ static int file_printf_fixture(FILE* file, int width) {
 	return nox_fs_fprintf(file, "%0*d", width, 7);
 }
 
+static int variadic_registers_and_stack_fixture(void) {
+	const wchar2_t first[] = {'w', 'i', 'd', 'e', 0};
+	const wchar2_t tail[] = {'e', 'n', 'd', 0};
+	const char narrow_expected[] = "-2147483648|abc|-1|wide|-543210FF|(null)|-9|Q|xyz|2147483647";
+	char narrow[160];
+	memset(narrow, 0x5a, sizeof(narrow));
+	int length = nox_sprintf(narrow + 1, "%d|%s|%u|%S|%X|%s|%d|%c|%s|%d",
+		INT32_MIN, "abc", UINT32_MAX, first, UINT32_C(0xabcdef01), (const char*)NULL,
+		-9, 'Q', "xyz", INT32_MAX);
+	if (length != sizeof(narrow_expected) - 1 || memcmp(narrow + 1, narrow_expected, sizeof(narrow_expected)) ||
+		narrow[0] != 0x5a || narrow[sizeof(narrow_expected) + 1] != 0x5a) {
+		return 0;
+	}
+
+	const char wide_source[] = "%d|%s|%.2f|%S|%u|%.2f|%d|%.2f|%S|%.2f|%X|%.2f|%d|%.2f|%s|%.2f|%S|%.2f|%d|%.2f|%u|%.2f|%s";
+	const char wide_expected[] = "-17|wide|0.25|n|-1073741823|-2.50|42|3.25|q|4.50|-543210FF|5.25|-9|6.50|wide|7.25|s|8.50|123|9.25|-1|-10.50|end";
+	wchar2_t wide_format[sizeof(wide_source)], wide[200];
+	for (size_t i = 0; i < sizeof(wide_source); ++i) {
+		wide_format[i] = (unsigned char)wide_source[i];
+	}
+	memset(wide, 0x5a, sizeof(wide));
+	length = nox_swprintf(wide + 1, wide_format,
+		-17, first, 0.25, "n", UINT32_C(0xc0000001), -2.5, 42, 3.25, "q", 4.5,
+		UINT32_C(0xabcdef01), 5.25, -9, 6.5, first, 7.25, "s", 8.5, 123, 9.25,
+		UINT32_MAX, -10.5, tail);
+	if (length != sizeof(wide_expected) - 1 || wide[0] != 0x5a5a ||
+		wide[sizeof(wide_expected) + 1] != 0x5a5a) {
+		return 0;
+	}
+	for (size_t i = 0; i < sizeof(wide_expected); ++i) {
+		if (wide[i + 1] != (unsigned char)wide_expected[i]) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 static void wide_fixed_printf_reference(char* output, int digits, ...) {
 	char format[32];
 	va_list args;
@@ -151,6 +188,10 @@ static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 import "C"
 
 import "unsafe"
+
+func VariadicRegistersAndStack() bool {
+	return C.variadic_registers_and_stack_fixture() != 0
+}
 
 func LineMessage4D9EB0(unit unsafe.Pointer, format *uint16, points int) uintptr {
 	return uintptr(C.line_message_fixture((*C.nox_object_t)(unit), (*C.wchar2_t)(unsafe.Pointer(format)), C.int(points)))

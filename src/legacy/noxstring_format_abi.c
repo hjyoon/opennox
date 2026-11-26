@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifndef NOX_GO_FORMAT_WORDS
 int nox_format_arg_int(nox_format_args* args) {
 	return va_arg(args->list, int);
 }
@@ -18,6 +19,7 @@ const char* nox_format_arg_narrow(nox_format_args* args) {
 const wchar2_t* nox_format_arg_wide(nox_format_args* args) {
 	return va_arg(args->list, const wchar2_t*);
 }
+#endif
 
 void nox_format_arg_fixed(nox_format_args* args, char* out, size_t capacity, int precision) {
 	snprintf(out, capacity, "%.*f", precision, va_arg(args->list, double));

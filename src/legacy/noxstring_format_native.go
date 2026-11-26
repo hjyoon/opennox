@@ -19,8 +19,10 @@ type formatValue struct {
 	text   *wchar2_t
 }
 
+type nativeFormatArgs = C.nox_format_args
+
 type formatArguments struct {
-	native *C.nox_format_args
+	native *nativeFormatArgs
 	values []formatValue
 }
 
@@ -37,20 +39,14 @@ func (a *formatArguments) integer(unsigned bool) int32 {
 	if a.native == nil {
 		return a.nextValue().number
 	}
-	if unsigned {
-		return int32(C.nox_format_arg_uint(a.native))
-	}
-	return int32(C.nox_format_arg_int(a.native))
+	return nativeFormatInteger(a.native, unsigned)
 }
 
 func (a *formatArguments) stringPointer(wide bool) unsafe.Pointer {
 	if a.native == nil {
 		return unsafe.Pointer(a.nextValue().text)
 	}
-	if wide {
-		return unsafe.Pointer(C.nox_format_arg_wide(a.native))
-	}
-	return unsafe.Pointer(C.nox_format_arg_narrow(a.native))
+	return nativeFormatStringPointer(a.native, wide)
 }
 
 func legacyFormat[T formatCodeUnit](dst *T, capacity uintptr, format *T, args *C.nox_format_args) int32 {

@@ -125,3 +125,9 @@ func TestLegacyWideFixedPrintfPreservesNativeFormatting(t *testing.T) {
 		}
 	}
 }
+
+func TestLegacyVariadicWordsAcrossRegistersAndStack(t *testing.T) {
+	if !cfixture.VariadicRegistersAndStack() {
+		t.Fatal("native format changed a mixed argument, terminator, or guard")
+	}
+}

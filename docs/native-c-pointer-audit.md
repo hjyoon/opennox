@@ -327,6 +327,24 @@ admission field. The tests cover a zero-count cell with a drawable and
 a nonempty cell with a matching code in the final slot. Removing
 `client_shop_abi.c` leaves 34 top-level legacy C files.
 
+### Variadic integer and string arguments
+
+The Go formatter advances the caller's native argument list for
+promoted integers and string pointers on 386, AMD64, ARMv7, and ARM64.
+SysV AMD64 uses the general-register offset and overflow area. AAPCS64
+uses the signed register-save offset and stack cursor. The Apple ARM64,
+Windows, and 32-bit cursor layouts advance by one native word.
+
+C initializes and copies the variadic list, and the floating-point
+formatter advances its part of the same list. The mixed C caller
+checks integer signs, full-width pointers, ten doubles, termination,
+and guard bytes across the register and stack boundaries. Compiler
+assertions check the size and alignment of the variadic state.
+
+The 64-bit default profile selects 31 top-level C files with 54
+function bodies. The safe profile selects 32 with 58 bodies.
+The 32-bit profiles also select the two float adapters.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

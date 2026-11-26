@@ -25,10 +25,7 @@ typedef struct nox_gui_server_players_state {
 	nox_list_item_t teams;
 } nox_gui_server_players_state;
 
-extern nox_gui_server_players_state nox_gui_server_players;
-extern nox_window* dword_5d4594_1045684;
-extern nox_window* dword_5d4594_1045688;
-extern nox_window* dword_5d4594_1045692;
+nox_gui_server_players_state* nox_gui_server_players_storage(void);
 
 nox_window* nox_xxx_guiServerPlayersLoad_456270(nox_window* parent);
 int sub_4567C0(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg);

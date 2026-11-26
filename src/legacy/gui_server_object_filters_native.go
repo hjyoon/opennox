@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__servopts__objlst.h"
 
 extern uint32_t dword_5d4594_1045460;
-extern nox_window *dword_5d4594_1045468, *dword_5d4594_1045464;
 */
 import "C"
 
@@ -16,7 +15,7 @@ const serverObjectFilterStrings = `C:\NoxPost\src\client\Gui\ServOpts\objlst.c`
 //export nox_xxx_guiObjlistLoad_4530C0
 func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox_window {
 	root := nox_new_window_from_file(internCStr("objlst.wnd"), unsafe.Pointer(C.sub_4533D0))
-	C.dword_5d4594_1045468 = root
+	serverSharedWindows.object_filter = root
 	if root == nil {
 		return nil
 	}
@@ -24,10 +23,10 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	C.sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
 	list := g2ServerChild(root, 1510)
-	C.dword_5d4594_1045464 = list
+	serverSharedWindows.object_list = list
 	if list == nil {
 		nox_xxx_windowDestroyMB_46C4E0(root)
-		C.dword_5d4594_1045468 = nil
+		serverSharedWindows.object_filter = nil
 		return nil
 	}
 	sub_4532E0()
@@ -62,5 +61,5 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	if !g2ServerGame(1) || g2ServerGame(49152) {
 		C.sub_46AD20(root, 1515, 1533, 0)
 	}
-	return C.dword_5d4594_1045468
+	return serverSharedWindows.object_filter
 }

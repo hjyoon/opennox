@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__window.h"
 #include "noxstring.h"
 
-extern nox_window* dword_5d4594_1046492;
 
 static void format_server_option_text(wchar2_t* out, const wchar2_t* text) {
 	nox_swprintf(out, text);
@@ -45,7 +44,7 @@ func serverOptionsText(offset uintptr) *C.wchar2_t {
 }
 
 func putServerOptionsLabel(id int32, text *C.wchar2_t) C.int {
-	window := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, id)
+	window := nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, id)
 	return C.int(g2ServerText(window, 16385, unsafe.Pointer(text), ^uintptr(0)))
 }
 
@@ -92,7 +91,7 @@ func sub_4580E0(name *C.char) C.int {
 
 //export sub_459CD0
 func sub_459CD0() C.int {
-	if C.dword_5d4594_1046492 == nil {
+	if serverSharedWindows.options == nil {
 		return 0
 	}
 	var count uint8

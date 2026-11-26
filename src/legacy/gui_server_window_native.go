@@ -4,12 +4,6 @@ package legacy
 #include "game2_server_bridge.h"
 
 extern uint32_t dword_587000_129656;
-extern void* dword_5d4594_1046356;
-extern void* dword_5d4594_1046360;
-extern nox_window* dword_5d4594_1046500;
-extern nox_window* dword_5d4594_1046524;
-extern nox_window* dword_5d4594_1046532;
-extern nox_window* dword_5d4594_1046536;
 */
 import "C"
 
@@ -18,7 +12,30 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+type serverOptionsChildWindows struct {
+	mapList     *nox_window
+	mapPanel    *nox_window
+	pane10197   *nox_window
+	pane10199   *nox_window
+	lessonLimit *nox_window
+	timeLimit   *nox_window
+	pane10150   *nox_window
+	accessTab   *nox_window
+	playersTab  *nox_window
+	pane10153   *nox_window
+	generalTab  *nox_window
+}
+
+var serverOptionsChildren serverOptionsChildWindows
+var serverOptionsTabImage2, serverOptionsTabImage3 unsafe.Pointer
+
+var serverSharedWindows, _ = alloc.New(C.nox_game2_server_windows_t{})
+
+//export nox_game2_server_windows_storage
+func nox_game2_server_windows_storage() *C.nox_game2_server_windows_t { return serverSharedWindows }
 
 func serverOptionsWindowFile() *C.char {
 	lang := nox_strman_get_lang_code()
@@ -36,7 +53,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	if nox_gui_xxx_check_446360() != 0 {
 		return 1
 	}
-	if C.dword_5d4594_1046492 != nil {
+	if serverSharedWindows.options != nil {
 		nox_xxx_clientPlaySoundSpecial_452D80(231, 100)
 		nox_xxx_guiServerOptionsTryHide_4574D0()
 		return 1
@@ -49,7 +66,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	}
 	pre := unsafe.Pointer(C.nox_xxx_guiServerOptionsProcPre_4585D0)
 	root := nox_new_window_from_file(serverOptionsWindowFile(), pre)
-	C.dword_5d4594_1046492 = root
+	serverSharedWindows.options = root
 	if root == nil {
 		return 0
 	}
@@ -60,20 +77,20 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.nox_xxx_windowServerOptionsDrawProc_458500))
 	child := func(id int32) *nox_window { return nox_xxx_wndGetChildByID_46B0C0(root, id) }
 	serverOptionsNameInput = child(10101)
-	C.dword_5d4594_1046496 = child(10114)
-	C.dword_5d4594_1046500 = child(10183)
-	C.dword_5d4594_1046504 = child(10197)
-	C.dword_5d4594_1046508 = child(10199)
-	C.dword_5d4594_1046524 = child(10150)
-	C.dword_5d4594_1046516 = child(10134)
-	C.dword_5d4594_1046520 = child(10135)
-	C.dword_5d4594_1046536 = child(10153)
+	serverOptionsChildren.mapList = child(10114)
+	serverOptionsChildren.mapPanel = child(10183)
+	serverOptionsChildren.pane10197 = child(10197)
+	serverOptionsChildren.pane10199 = child(10199)
+	serverOptionsChildren.pane10150 = child(10150)
+	serverOptionsChildren.lessonLimit = child(10134)
+	serverOptionsChildren.timeLimit = child(10135)
+	serverOptionsChildren.pane10153 = child(10153)
 	nox_gui_winSetFunc96_46B070(child(10331), unsafe.Pointer(C.nox_xxx_options_457AA0))
 	nox_gui_winSetFunc96_46B070(child(10333), unsafe.Pointer(C.nox_xxx_options_457B00))
 
 	panels := [...]*nox_window{
-		C.dword_5d4594_1046524, C.dword_5d4594_1046532, C.dword_5d4594_1046536,
-		C.dword_5d4594_1046500, C.dword_5d4594_1046504, C.dword_5d4594_1046508,
+		serverOptionsChildren.pane10150, serverOptionsChildren.playersTab, serverOptionsChildren.pane10153,
+		serverOptionsChildren.mapPanel, serverOptionsChildren.pane10197, serverOptionsChildren.pane10199,
 	}
 	for _, panel := range panels {
 		nox_xxx_wnd_46B280(panel, root)
@@ -83,11 +100,11 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	}
 
 	*memmap.PtrPtr(0x5D4594, 1046352) = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs1")))
-	C.dword_5d4594_1046356 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs2")))
-	C.dword_5d4594_1046360 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs3")))
+	serverOptionsTabImage2 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs2")))
+	serverOptionsTabImage3 = unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UITabs3")))
 	slider := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISlider")))
 	sliderLit := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISliderLit")))
-	attachServerListScrollbar(C.dword_5d4594_1046500, C.dword_5d4594_1046496, 10182, 10180, 10181, slider, sliderLit)
+	attachServerListScrollbar(serverOptionsChildren.mapPanel, serverOptionsChildren.mapList, 10182, 10180, 10181, slider, sliderLit)
 
 	child(10160).draw_data.field_0 |= 4
 	settings := sub_4165D0(0)
@@ -106,7 +123,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 		g2ServerText(team, 16385, unsafe.Pointer(title), ^uintptr(0))
 		nox_xxx_wndWddSetTooltip_46B000(&team.draw_data, g2ServerLoad("servopts.wnd:TeamTT", serverOptionsStringsFile, 1812))
 		g2ServerHidden(child(10149), false)
-		g2ServerHidden(C.dword_5d4594_1046508, true)
+		g2ServerHidden(serverOptionsChildren.pane10199, true)
 		sub_46ACE0(root, 10145, 10146, 1)
 	}
 	if C.dword_587000_129656 != 0 {

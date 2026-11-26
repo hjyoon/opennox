@@ -10,7 +10,7 @@ var flagballTeamBorder *C.nox_video_bag_image_t
 
 //export sub_455A00
 func sub_455A00(show C.int) C.int {
-	w := C.dword_5d4594_1045604
+	w := serverSharedWindows.ctf_hud
 	if show != 0 && *g2ServerWord(1045608) != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
 		return C.nox_xxx_wndShowModalMB_46A8C0(w)
 	}
@@ -23,13 +23,13 @@ func sub_455A50(count C.char) C.char {
 	if g2ServerEngine(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) {
 		return 0
 	}
-	w := C.dword_5d4594_1045604
+	w := serverSharedWindows.ctf_hud
 	if w == nil {
 		v := sub_455C30()
 		if v == 0 {
 			return C.char(v)
 		}
-		w = C.dword_5d4594_1045604
+		w = serverSharedWindows.ctf_hud
 	}
 	var width, height, depth, maxW, maxH C.int
 	C.nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(&width, &height, &depth)
@@ -104,7 +104,7 @@ func sub_455CD0(w *C.nox_window, d *C.nox_window_data) C.int {
 
 //export sub_455E70
 func sub_455E70(index C.uchar) C.int {
-	w := C.dword_5d4594_1045604
+	w := serverSharedWindows.ctf_hud
 	for i := 0; i < int(*g2ServerByte(1045628)); i++ {
 		C.nox_xxx_wndClearFlag_46AD80(g2ServerChild(w, i+8811), 32)
 	}
@@ -114,17 +114,17 @@ func sub_455E70(index C.uchar) C.int {
 //export sub_455EE0
 func sub_455EE0() C.int {
 	var result C.int
-	if C.dword_5d4594_1045604 != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1045604)
+	if serverSharedWindows.ctf_hud != nil {
+		result = C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.ctf_hud)
 	}
-	C.dword_5d4594_1045604 = nil
+	serverSharedWindows.ctf_hud = nil
 	*g2ServerWord(1045608) = 0
 	return result
 }
 
 //export sub_455F10
 func sub_455F10(show C.int) C.int {
-	w := C.dword_5d4594_1045636
+	w := serverSharedWindows.flagball_hud
 	if show != 0 && C.dword_5d4594_1045640 != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
 		return C.nox_xxx_wndShowModalMB_46A8C0(w)
 	}
@@ -137,13 +137,13 @@ func sub_455F60() C.int {
 	if g2ServerEngine(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) {
 		return 0
 	}
-	w := C.dword_5d4594_1045636
+	w := serverSharedWindows.flagball_hud
 	if w == nil {
 		v := sub_456070()
 		if v == 0 {
 			return v
 		}
-		w = C.dword_5d4594_1045636
+		w = serverSharedWindows.flagball_hud
 	}
 	var width, height, depth, maxW, maxH C.int
 	C.nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(&width, &height, &depth)
@@ -168,9 +168,9 @@ func sub_456050() C.int { C.dword_5d4594_1045640 = 0; return sub_455F10(0) }
 
 //export sub_456070
 func sub_456070() C.int {
-	if C.dword_5d4594_1045636 == nil {
+	if serverSharedWindows.flagball_hud == nil {
 		w := C.nox_new_window_from_file(internCStr("gui_fb.wnd"), nil)
-		C.dword_5d4594_1045636 = w
+		serverSharedWindows.flagball_hud = w
 		if w == nil {
 			return 0
 		}
@@ -197,10 +197,10 @@ func sub_4560D0(w *C.nox_window, d *C.nox_window_data) C.int {
 //export sub_456240
 func sub_456240() C.int {
 	var result C.int
-	if C.dword_5d4594_1045636 != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1045636)
+	if serverSharedWindows.flagball_hud != nil {
+		result = C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.flagball_hud)
 	}
-	C.dword_5d4594_1045636 = nil
+	serverSharedWindows.flagball_hud = nil
 	C.dword_5d4594_1045640 = 0
 	return result
 }
@@ -209,16 +209,16 @@ const clientCTFSource = `C:\\NoxPost\\src\\client\\Gui\\GUI_CTF.c`
 
 //export sub_455C30
 func sub_455C30() C.int {
-	if C.dword_5d4594_1045604 != nil {
+	if serverSharedWindows.ctf_hud != nil {
 		return 1
 	}
 	root := C.nox_new_window_from_file(internCStr("GUI_CTF.wnd"), nil)
-	C.dword_5d4594_1045604 = root
+	serverSharedWindows.ctf_hud = root
 	if root == nil {
 		return 0
 	}
 	for id := 8811; id <= 8826; id++ {
-		child := g2ServerChild(C.dword_5d4594_1045604, id)
+		child := g2ServerChild(serverSharedWindows.ctf_hud, id)
 		if child == nil {
 			return 0
 		}
@@ -236,7 +236,7 @@ func sub_455D80(index C.uchar, status C.char) {
 		return
 	}
 	*g2ServerByte(1045611 + uintptr(index)) = byte(status)
-	child := g2ServerChild(C.dword_5d4594_1045604, int(index)+8810)
+	child := g2ServerChild(serverSharedWindows.ctf_hud, int(index)+8810)
 	if child == nil {
 		return
 	}
@@ -265,7 +265,7 @@ func sub_455D80(index C.uchar, status C.char) {
 //export sub_456140
 func sub_456140(status C.uchar) {
 	*g2ServerByte(1045644) = byte(status)
-	root := C.dword_5d4594_1045636
+	root := serverSharedWindows.flagball_hud
 	if root == nil {
 		return
 	}

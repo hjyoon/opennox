@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__servopts__spelllst.h"
 #include "cgo_const.h"
 
-extern nox_window *dword_5d4594_1045508, *dword_5d4594_1045480, *dword_5d4594_1045484;
 */
 import "C"
 
@@ -20,7 +19,7 @@ const serverSpellFilterStrings = `C:\NoxPost\src\client\Gui\ServOpts\spelllst.c`
 //export nox_xxx_guiSpelllistLoad_453850
 func nox_xxx_guiSpelllistLoad_453850(parent *C.nox_window) *C.nox_window {
 	root := nox_new_window_from_file(internCStr("spelllst.wnd"), unsafe.Pointer(C.sub_453C00))
-	C.dword_5d4594_1045484 = root
+	serverSharedWindows.spell_filter = root
 	if root == nil {
 		return nil
 	}
@@ -28,10 +27,10 @@ func nox_xxx_guiSpelllistLoad_453850(parent *C.nox_window) *C.nox_window {
 	C.sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
 	names, classes := g2ServerChild(root, 1110), g2ServerChild(root, 1112)
-	C.dword_5d4594_1045480, C.dword_5d4594_1045508 = names, classes
+	serverSharedWindows.spell_names, serverSharedWindows.spell_classes = names, classes
 	if names == nil || classes == nil {
 		nox_xxx_windowDestroyMB_46C4E0(root)
-		C.dword_5d4594_1045484, C.dword_5d4594_1045480, C.dword_5d4594_1045508 = nil, nil, nil
+		serverSharedWindows.spell_filter, serverSharedWindows.spell_names, serverSharedWindows.spell_classes = nil, nil, nil
 		return nil
 	}
 	sub_453B00()
@@ -73,7 +72,7 @@ func nox_xxx_guiSpelllistLoad_453850(parent *C.nox_window) *C.nox_window {
 	if !g2ServerGame(1) || g2ServerGame(49152) {
 		sub_46AD20(root, 1115, 1133, 0)
 	}
-	return C.dword_5d4594_1045484
+	return serverSharedWindows.spell_filter
 }
 
 func serverSpellFilterScroll(names, classes, control *C.nox_window) {
@@ -152,7 +151,7 @@ func setServerSpellFilter(root, names, control *C.nox_window, row int) {
 
 //export sub_453C00
 func sub_453C00(window *C.nox_window, event C.int, control *C.nox_window, arg C.uintptr_t) C.int {
-	root, names, classes := C.dword_5d4594_1045484, C.dword_5d4594_1045480, C.dword_5d4594_1045508
+	root, names, classes := serverSharedWindows.spell_filter, serverSharedWindows.spell_names, serverSharedWindows.spell_classes
 	if root == nil || names == nil || classes == nil || control == nil {
 		return 0
 	}

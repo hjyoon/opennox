@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__window.h"
 #include "noxstring.h"
 
-extern nox_window* dword_5d4594_1046492;
 */
 import "C"
 
@@ -61,7 +60,7 @@ func nox_xxx_guiServerOptionsGetGametypeName_4573C0(mode C.short) *C.wchar2_t {
 
 //export sub_457A10
 func sub_457A10() {
-	win := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, 10120)
+	win := nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, 10120)
 	if win == nil {
 		return
 	}
@@ -99,7 +98,7 @@ func sub_459650(title *C.wchar2_t) C.int {
 
 //export sub_459C10
 func sub_459C10() C.int {
-	win := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, 10119)
+	win := nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, 10119)
 	if win == nil {
 		return 0
 	}
@@ -108,7 +107,7 @@ func sub_459C10() C.int {
 
 //export nox_xxx_windowServerOptionsFillGametypeList_4596A0
 func nox_xxx_windowServerOptionsFillGametypeList_4596A0() {
-	win := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, 10120)
+	win := nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, 10120)
 	if win == nil {
 		return
 	}

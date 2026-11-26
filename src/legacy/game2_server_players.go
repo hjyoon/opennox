@@ -5,7 +5,16 @@ package legacy
 #include "map_find_player_start_4f7ab0.h"
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
+
+var serverPlayersState, _ = alloc.New(C.nox_gui_server_players_state{})
+
+//export nox_gui_server_players_storage
+func nox_gui_server_players_storage() *C.nox_gui_server_players_state { return serverPlayersState }
 
 func g2ServerFirst(head *C.nox_list_item_t) unsafe.Pointer {
 	return unsafe.Pointer(accessListNativeNext416720((*accessListNode416720)(unsafe.Pointer(head))))
@@ -25,7 +34,7 @@ func g2ServerClearList(head *C.nox_list_item_t) {
 
 //export sub_456500
 func sub_456500() C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil {
 		return 0
 	}
@@ -35,10 +44,10 @@ func sub_456500() C.int {
 	}
 	g2ServerEvent(players, 16399, 0, 0)
 	g2ServerEvent(teams, 16399, 0, 0)
-	g2ServerClearList(&C.nox_gui_server_players.players)
-	g2ServerClearList(&C.nox_gui_server_players.teams)
-	g2ServerEnabled(C.dword_5d4594_1045688, false)
-	g2ServerEnabled(C.dword_5d4594_1045692, false)
+	g2ServerClearList(&serverPlayersState.players)
+	g2ServerClearList(&serverPlayersState.teams)
+	g2ServerEnabled(serverSharedWindows.remove_team, false)
+	g2ServerEnabled(serverSharedWindows.rename_team, false)
 	for team := C.nox_server_teamFirst_418B10(); team != nil; team = C.nox_server_teamNext_418B60(team) {
 		C.sub_457230(&team.name[0])
 	}
@@ -59,7 +68,7 @@ func sub_456500() C.int {
 
 //export sub_456640
 func sub_456640(w *C.nox_window, d *C.nox_window_data) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if w == nil || d == nil || root == nil {
 		return 0
 	}
@@ -82,8 +91,8 @@ func sub_456640(w *C.nox_window, d *C.nox_window_data) C.int {
 	}
 	teams := g2ServerChild(root, 10502)
 	if teams != nil && int32(g2ServerEvent(teams, 16404, 0, 0)) < 0 {
-		g2ServerEnabled(C.dword_5d4594_1045688, false)
-		g2ServerEnabled(C.dword_5d4594_1045692, false)
+		g2ServerEnabled(serverSharedWindows.remove_team, false)
+		g2ServerEnabled(serverSharedWindows.rename_team, false)
 	}
 	return 1
 }
@@ -124,7 +133,7 @@ func sub_456BB0(team *C.nox_team_t) {
 
 //export sub_456D00
 func sub_456D00(index C.int, out *C.wchar2_t) *C.wchar2_t {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if out == nil || root == nil || index < 0 {
 		return nil
 	}
@@ -149,20 +158,20 @@ func sub_456D00(index C.int, out *C.wchar2_t) *C.wchar2_t {
 
 //export sub_456D60
 func sub_456D60(destroy C.int) *C.int {
-	if destroy != 0 && C.dword_5d4594_1045684 != nil {
-		C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1045684)
+	if destroy != 0 && serverSharedWindows.players != nil {
+		C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.players)
 	}
-	g2ServerClearList(&C.nox_gui_server_players.players)
-	g2ServerClearList(&C.nox_gui_server_players.teams)
-	C.dword_5d4594_1045684 = nil
-	C.dword_5d4594_1045688 = nil
-	C.dword_5d4594_1045692 = nil
+	g2ServerClearList(&serverPlayersState.players)
+	g2ServerClearList(&serverPlayersState.teams)
+	serverSharedWindows.players = nil
+	serverSharedWindows.remove_team = nil
+	serverSharedWindows.rename_team = nil
 	return nil
 }
 
 //export sub_456DF0
 func sub_456DF0(id C.int) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil {
 		return 0
 	}
@@ -180,7 +189,7 @@ func sub_456DF0(id C.int) C.int {
 //export sub_456E40
 func sub_456E40(id, remove C.int) C.int {
 	i := 0
-	for p := g2ServerFirst(&C.nox_gui_server_players.players); p != nil; p = g2ServerNext(p) {
+	for p := g2ServerFirst(&serverPlayersState.players); p != nil; p = g2ServerNext(p) {
 		entry := (*C.nox_gui_server_player_entry)(p)
 		if uint32(entry.net_code) == uint32(id) {
 			if remove != 0 {
@@ -196,7 +205,7 @@ func sub_456E40(id, remove C.int) C.int {
 
 //export sub_456EA0
 func sub_456EA0(name *C.wchar2_t) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil {
 		return 0
 	}
@@ -218,7 +227,7 @@ func sub_456F10(name *C.wchar2_t, remove C.int) C.int {
 		return -1
 	}
 	i := 0
-	for p := g2ServerFirst(&C.nox_gui_server_players.teams); p != nil; p = g2ServerNext(p) {
+	for p := g2ServerFirst(&serverPlayersState.teams); p != nil; p = g2ServerNext(p) {
 		entry := (*C.nox_gui_server_team_entry)(p)
 		if _nox_wcsicmp(&entry.name[0], name) == 0 {
 			if remove != 0 {
@@ -234,12 +243,12 @@ func sub_456F10(name *C.wchar2_t, remove C.int) C.int {
 
 //export sub_456FA0
 func sub_456FA0() C.int {
-	if C.dword_5d4594_1045684 == nil {
+	if serverSharedWindows.players == nil {
 		return 0
 	}
-	g2ServerClearList(&C.nox_gui_server_players.teams)
-	g2ServerEnabled(C.dword_5d4594_1045688, false)
-	g2ServerEnabled(C.dword_5d4594_1045692, false)
+	g2ServerClearList(&serverPlayersState.teams)
+	g2ServerEnabled(serverSharedWindows.remove_team, false)
+	g2ServerEnabled(serverSharedWindows.rename_team, false)
 	return sub_456500()
 }
 
@@ -253,7 +262,7 @@ func sub_457120(team *C.nox_team_t) C.uchar {
 
 //export sub_457140
 func sub_457140(id C.int, name *C.wchar2_t) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil || name == nil {
 		return 0
 	}
@@ -267,7 +276,7 @@ func sub_457140(id C.int, name *C.wchar2_t) C.int {
 	}
 	entry := (*C.nox_gui_server_player_entry)(p)
 	accessListNativeInit416720((*accessListNode416720)(p))
-	accessListNativeAppend416720((*accessListNode416720)(unsafe.Pointer(&C.nox_gui_server_players.players)), (*accessListNode416720)(p))
+	accessListNativeAppend416720((*accessListNode416720)(unsafe.Pointer(&serverPlayersState.players)), (*accessListNode416720)(p))
 	copyWideString(&entry.name[0], name)
 	entry.net_code = C.uint32_t(id)
 	return C.int(g2ServerText(w, 16397, unsafe.Pointer(name), 3))
@@ -315,7 +324,7 @@ func g2ServerPlayerColor(index int) uint32 {
 
 //export sub_4571A0
 func sub_4571A0(playerID, teamID C.int) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil {
 		return 0
 	}
@@ -327,7 +336,7 @@ func sub_4571A0(playerID, teamID C.int) C.int {
 	}
 	color := 3
 	if teamID != 0 {
-		for p := g2ServerFirst(&C.nox_gui_server_players.teams); p != nil; p = g2ServerNext(p) {
+		for p := g2ServerFirst(&serverPlayersState.teams); p != nil; p = g2ServerNext(p) {
 			team := (*C.nox_gui_server_team_entry)(p)
 			if uint32(team.team_id) == uint32(teamID) {
 				color = int(team.color)
@@ -342,7 +351,7 @@ func sub_4571A0(playerID, teamID C.int) C.int {
 //export sub_457350
 func sub_457350(oldID, newID C.int) {
 	old := uint32(uint8(oldID))
-	for p := g2ServerFirst(&C.nox_gui_server_players.teams); p != nil; p = g2ServerNext(p) {
+	for p := g2ServerFirst(&serverPlayersState.teams); p != nil; p = g2ServerNext(p) {
 		team := (*C.nox_gui_server_team_entry)(p)
 		if uint32(team.team_id) == old {
 			team.team_id = C.uint32_t(uint8(newID))
@@ -352,7 +361,7 @@ func sub_457350(oldID, newID C.int) {
 
 //export sub_4573A0
 func sub_4573A0() C.int {
-	if C.dword_5d4594_1045684 != nil {
+	if serverSharedWindows.players != nil {
 		return sub_456500()
 	}
 	return 0

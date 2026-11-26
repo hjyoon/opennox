@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "../client__gui__servopts__guiserv.h"
 
 #include "../GAME1_1.h"
 #include "../GAME1_3.h"
@@ -70,10 +71,10 @@ _Static_assert(offsetof(nox_gui_server_players_state, teams) == sizeof(nox_list_
 	"native player and team list heads must not overlap");
 _Static_assert(sizeof(nox_gui_server_players_state) == 2 * sizeof(nox_list_item_t),
 	"server-player list state must contain two independent native heads");
-_Static_assert(sizeof(dword_5d4594_1045684) == sizeof(void*) &&
-		sizeof(dword_5d4594_1045688) == sizeof(void*) &&
-		sizeof(dword_5d4594_1045692) == sizeof(void*),
-	"server-player window globals must preserve native pointers");
+_Static_assert(sizeof(((nox_game2_server_windows_t*)0)->players) == sizeof(void*) &&
+		sizeof(((nox_game2_server_windows_t*)0)->remove_team) == sizeof(void*) &&
+		sizeof(((nox_game2_server_windows_t*)0)->rename_team) == sizeof(void*),
+	"server-player window slots must preserve native pointers");
 #if UINTPTR_MAX == UINT32_MAX
 _Static_assert(sizeof(nox_gui_server_player_entry) == 72,
 	"PE32 player list records must remain 72 bytes");

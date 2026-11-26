@@ -4,11 +4,20 @@ package legacy
 #include "game2_server_bridge.h"
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
+
+var serverAccessState, _ = alloc.New(C.nox_gui_server_access_state{})
+
+//export nox_gui_server_access_storage
+func nox_gui_server_access_storage() *C.nox_gui_server_access_state { return serverAccessState }
 
 //export nox_xxx_guiServerAccessLoad_4541D0
 func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.root != nil {
 		return nil
 	}
@@ -73,7 +82,7 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 
 //export sub_454A90
 func sub_454A90(w *C.nox_window, d *C.nox_window_data) C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	g2ServerDrawBackground(w, d, false)
 	if s.wnd_10111.flags&8 != 0 {
 		p := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(s.wnd_10111, 16413, 0, 0)))
@@ -142,7 +151,7 @@ func g2ServerAccessEdit(edit *C.nox_window, id int) {
 
 //export nox_xxx_windowAccessProc_454BA0
 func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.uintptr_t) C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	switch event {
 	case 16387:
 		if uint16(a) == 1 {
@@ -303,7 +312,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 
 //export sub_455770
 func sub_455770() C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.wnd_10200 == nil {
 		return 0
 	}
@@ -323,7 +332,7 @@ func sub_455770() C.int {
 
 //export sub_4557D0
 func sub_4557D0(v C.int) C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	result := v
 	if v != 0 && s.root != nil {
 		result = C.nox_xxx_windowDestroyMB_46C4E0(s.root)
@@ -334,7 +343,7 @@ func sub_4557D0(v C.int) C.int {
 
 //export sub_455800
 func sub_455800() *C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.root == nil {
 		return nil
 	}
@@ -362,7 +371,7 @@ func sub_455800() *C.int {
 
 //export sub_455920
 func sub_455920(name *C.wchar2_t) C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.root == nil || s.wnd_10200 == nil {
 		return 0
 	}
@@ -371,7 +380,7 @@ func sub_455920(name *C.wchar2_t) C.int {
 
 //export sub_455950
 func sub_455950(name *C.wchar2_t) {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.root != nil {
 		i := sub_4559B0(name)
 		if i != -1 {
@@ -385,7 +394,7 @@ func sub_455950(name *C.wchar2_t) {
 
 //export sub_4559B0
 func sub_4559B0(name *C.wchar2_t) C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	if s.wnd_10200 == nil {
 		return -1
 	}

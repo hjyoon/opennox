@@ -30,7 +30,7 @@ typedef struct nox_gui_server_access_state {
 	nox_window* active_list;
 } nox_gui_server_access_state;
 
-extern nox_gui_server_access_state nox_gui_server_access;
+nox_gui_server_access_state* nox_gui_server_access_storage(void);
 
 nox_window* nox_xxx_guiServerAccessLoad_4541D0(nox_window* parent);
 int sub_454A90(nox_window* win, nox_window_data* draw);

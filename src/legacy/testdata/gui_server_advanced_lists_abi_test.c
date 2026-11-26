@@ -1,5 +1,6 @@
 #include <limits.h>
 #include <stdint.h>
+#include "../client__gui__servopts__guiserv.h"
 
 #include "../GAME1.h"
 #include "../GAME2.h"
@@ -19,11 +20,6 @@ typedef void* (*rules_scan_fn)(char*);
 typedef int (*title_to_mask_fn)(wchar2_t*);
 typedef wchar2_t* (*mask_to_title_fn)(int);
 
-extern nox_window* dword_5d4594_1045464;
-extern nox_window* dword_5d4594_1045468;
-extern nox_window* dword_5d4594_1045480;
-extern nox_window* dword_5d4594_1045484;
-extern nox_window* dword_5d4594_1045508;
 extern nox_window* dword_5d4594_1316708;
 extern nox_window* dword_5d4594_1316712;
 extern nox_window* dword_5d4594_1523024;
@@ -42,11 +38,11 @@ _Static_assert(CHAR_BIT == 8, "bytes must remain eight bits");
 _Static_assert(sizeof(void*) == sizeof(uintptr_t),
 	"GUI callback payloads must remain native-width");
 
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1045464);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1045468);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1045480);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1045484);
-ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1045508);
+ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->object_list);
+ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->object_filter);
+ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_names);
+ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_filter);
+ASSERT_NATIVE_WINDOW_GLOBAL(((nox_game2_server_windows_t*)0)->spell_classes);
 ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1316708);
 ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1316712);
 ASSERT_NATIVE_WINDOW_GLOBAL(dword_5d4594_1523024);

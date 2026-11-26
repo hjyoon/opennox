@@ -8,12 +8,6 @@ package legacy
 #include "common__magic__speltree.h"
 #include "common__system__team.h"
 
-extern nox_window* dword_5d4594_1046500;
-extern nox_window* dword_5d4594_1046524;
-extern nox_window* dword_5d4594_1046528;
-extern nox_window* dword_5d4594_1046532;
-extern nox_window* dword_5d4594_1046536;
-extern nox_window* dword_5d4594_1046540;
 */
 import "C"
 
@@ -26,7 +20,7 @@ import (
 )
 
 func serverOptionsChild(id int32) *nox_window {
-	return nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, id)
+	return nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, id)
 }
 
 func serverOptionsListChanged(window *nox_window, row uintptr) {
@@ -79,7 +73,7 @@ func serverOptionsApply() {
 	nox_game2_server_apply_459AA0(unsafe.Pointer(record))
 	sub_4165F0(1, 0)
 	count := int(nox_xxx_getTeamCounter_417DD0())
-	root := C.dword_5d4594_1046492
+	root := serverSharedWindows.options
 	if noxflags.HasGame(noxflags.GameModeChat) {
 		mode := (*server.Settings2)(unsafe.Pointer(record)).Field52
 		lastLine := 0
@@ -109,7 +103,7 @@ func serverOptionsApply() {
 }
 
 func serverOptionsSwitchTab(window *nox_window, showTeams bool) {
-	root := C.dword_5d4594_1046492
+	root := serverSharedWindows.options
 	parent := window.parent
 	sub_46B120(window, nil)
 	sub_46B120(window, parent)
@@ -124,30 +118,30 @@ func serverOptionsSwitchTab(window *nox_window, showTeams bool) {
 			serverOptionsChild(10162).draw_data.field_0 &^= 4
 		} else {
 			g2ServerHidden(serverOptionsChild(10196), true)
-			C.dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(root)
+			serverOptionsChildren.playersTab = nox_xxx_guiServerPlayersLoad_456270(root)
 		}
 		sub_46ACE0(root, 10141, 10141, 1)
-		g2ServerHidden(C.dword_5d4594_1046524, true)
+		g2ServerHidden(serverOptionsChildren.pane10150, true)
 		return
 	}
-	if C.dword_5d4594_1046532 != nil {
+	if serverOptionsChildren.playersTab != nil {
 		C.sub_456D60(1)
-		C.dword_5d4594_1046532 = nil
+		serverOptionsChildren.playersTab = nil
 	}
-	if C.dword_5d4594_1046528 != nil {
+	if serverOptionsChildren.accessTab != nil {
 		C.sub_4557D0(1)
-		C.dword_5d4594_1046528 = nil
+		serverOptionsChildren.accessTab = nil
 	}
-	if C.dword_5d4594_1046536 != nil {
+	if serverOptionsChildren.pane10153 != nil {
 		C.sub_4AD820()
-		C.dword_5d4594_1046540 = nil
+		serverOptionsChildren.generalTab = nil
 	}
 	sub_46ACE0(root, 10161, 10163, 1)
 	if noxflags.HasGame(noxflags.GameHost) {
 		sub_46ACE0(root, 10141, 10141, 0)
 	}
 	g2ServerHidden(serverOptionsChild(10196), true)
-	g2ServerHidden(C.dword_5d4594_1046524, false)
+	g2ServerHidden(serverOptionsChildren.pane10150, false)
 }
 
 func serverOptionsButton(window *nox_window) {
@@ -163,8 +157,8 @@ func serverOptionsButton(window *nox_window) {
 	case 10122:
 		enable := window.draw_data.field_0&4 != 0
 		if !g2ServerGame(uint32(serverOptionsIndividualLadder | serverOptionsClanLadder)) {
-			g2ServerEnabled(C.dword_5d4594_1046500, enable)
-			g2ServerEnabled(C.dword_5d4594_1046504, enable)
+			g2ServerEnabled(serverOptionsChildren.mapPanel, enable)
+			g2ServerEnabled(serverOptionsChildren.pane10197, enable)
 		}
 		sub_459D50(1)
 	case 10141:
@@ -195,7 +189,7 @@ func serverOptionsButton(window *nox_window) {
 	case 10163:
 		C.sub_4593B0(0)
 	case 10330:
-		panel := C.dword_5d4594_1046508
+		panel := serverOptionsChildren.pane10199
 		if bool(nox_xxx_CheckGameplayFlags_417DA0(4)) {
 			nox_xxx_toggleAllTeamFlags_418690(0)
 			C.nox_server_teamsZzz_419030(1)

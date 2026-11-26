@@ -3,6 +3,25 @@
 
 #include "defs.h"
 
+typedef struct {
+	nox_window* object_filter;
+	nox_window* object_list;
+	nox_window* spell_filter;
+	nox_window* spell_names;
+	nox_window* spell_classes;
+	nox_window* players;
+	nox_window* remove_team;
+	nox_window* rename_team;
+	nox_window* options;
+	nox_window* ctf_hud;
+	nox_window* flagball_hud;
+} nox_game2_server_windows_t;
+
+_Static_assert(sizeof(nox_game2_server_windows_t) == 11 * sizeof(nox_window*),
+	"server GUI storage must contain 11 native window pointers");
+
+nox_game2_server_windows_t* nox_game2_server_windows_storage(void);
+
 void nox_gui_gamemode_load_457410(void);
 void sub_457A10(void);
 int sub_459650(wchar2_t* title);

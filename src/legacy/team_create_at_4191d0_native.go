@@ -4,7 +4,6 @@ package legacy
 #include "common__system__team.h"
 #include "client__gui__window.h"
 
-extern nox_window* dword_5d4594_1045604;
 */
 import "C"
 
@@ -87,7 +86,7 @@ func teamCreateAtRuntimeNative4191D0(world *server.Server) server.TeamCreateAtRu
 	return server.TeamCreateAtRuntime4191D0{
 		ClientNetCode: uint32(ClientPlayerNetCode()),
 		SelectLocalTeam: func(id server.TeamID) {
-			if C.dword_5d4594_1045604 != nil {
+			if serverSharedWindows.ctf_hud != nil {
 				sub_455E70(C.uchar(id))
 			}
 		},

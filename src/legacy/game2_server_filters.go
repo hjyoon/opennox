@@ -9,7 +9,7 @@ import "unsafe"
 
 //export sub_4532E0
 func sub_4532E0() *C.nox_window {
-	w, root := C.dword_5d4594_1045464, C.dword_5d4594_1045468
+	w, root := serverSharedWindows.object_list, serverSharedWindows.object_filter
 	if w == nil || root == nil {
 		return nil
 	}
@@ -37,7 +37,7 @@ func sub_453350(w *C.nox_window, d *C.nox_window_data) C.int {
 
 //export sub_4533D0
 func sub_4533D0(unused1 *C.nox_window, event C.int, control *C.nox_window, unused2 C.uintptr_t) C.int {
-	root, w := C.dword_5d4594_1045468, C.dword_5d4594_1045464
+	root, w := serverSharedWindows.object_filter, serverSharedWindows.object_list
 	if root == nil || w == nil || control == nil {
 		return 0
 	}
@@ -200,7 +200,7 @@ func sub_453710() C.int {
 
 //export sub_453750
 func sub_453750() C.int {
-	w, root := C.dword_5d4594_1045464, C.dword_5d4594_1045468
+	w, root := serverSharedWindows.object_list, serverSharedWindows.object_filter
 	if w == nil || root == nil {
 		return 0
 	}
@@ -234,7 +234,7 @@ func sub_453750() C.int {
 
 //export sub_453B00
 func sub_453B00() *C.nox_window {
-	w, other, root := C.dword_5d4594_1045480, C.dword_5d4594_1045508, C.dword_5d4594_1045484
+	w, other, root := serverSharedWindows.spell_names, serverSharedWindows.spell_classes, serverSharedWindows.spell_filter
 	if w == nil || other == nil || root == nil {
 		return nil
 	}
@@ -320,7 +320,7 @@ func sub_4540E0(p *C.nox_cgo_const_void) C.int {
 
 //export sub_454120
 func sub_454120() C.int {
-	w, root := C.dword_5d4594_1045480, C.dword_5d4594_1045484
+	w, root := serverSharedWindows.spell_names, serverSharedWindows.spell_filter
 	if w == nil || root == nil {
 		return 0
 	}

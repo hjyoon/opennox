@@ -703,6 +703,21 @@ nonzero accumulator for 4,096 dimension pairs. The emulated x87
 sequence matched all 8,192 stored words with 53-bit precision and
 round-to-nearest.
 
+### Server configuration windows and lists
+
+The original constructor at `0x457500` publishes the server options
+root at `0x6D3D70`. The player tab constructor at `0x456270` publishes
+its root at `0x6D3A48`. Go keeps the tab controls and their two image
+references and clears the borrowed controls when the options root
+closes.
+
+The options, player, filter, and objective HUD slots shared with the C
+fixtures occupy 44 bytes on 32-bit targets and 88 bytes on 64-bit
+targets. Go allocates those slots and the existing server access state
+and player and team list heads in native memory. The fixtures use the
+same live addresses as the Go handlers. This removes 26 definitions
+from `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

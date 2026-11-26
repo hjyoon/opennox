@@ -50,21 +50,21 @@ func nox_xxx_guiServerPlayersLoad_456270(parent *C.nox_window) *C.nox_window {
 	if nox_xxx_guiFontHeightMB_43F320(nil) > 10 {
 		language = 2
 	}
-	if C.dword_5d4594_1045684 != nil {
+	if serverSharedWindows.players != nil {
 		return nil
 	}
 	root := nox_new_window_from_file(serverPlayersWindowFile(language), unsafe.Pointer(C.sub_4567C0))
-	C.dword_5d4594_1045684 = root
+	serverSharedWindows.players = root
 	if root == nil {
 		return nil
 	}
-	C.dword_5d4594_1045688 = nox_xxx_wndGetChildByID_46B0C0(root, 10507)
-	C.dword_5d4594_1045692 = nox_xxx_wndGetChildByID_46B0C0(root, 10509)
+	serverSharedWindows.remove_team = nox_xxx_wndGetChildByID_46B0C0(root, 10507)
+	serverSharedWindows.rename_team = nox_xxx_wndGetChildByID_46B0C0(root, 10509)
 	sub_46B120(root, parent)
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_456640))
 	nox_xxx_wndRetNULL_46A8A0()
-	nox_common_list_clear_425760(&C.nox_gui_server_players.players)
-	nox_common_list_clear_425760(&C.nox_gui_server_players.teams)
+	nox_common_list_clear_425760(&serverPlayersState.players)
+	nox_common_list_clear_425760(&serverPlayersState.teams)
 
 	slider := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISlider")))
 	lit := unsafe.Pointer(nox_xxx_gLoadImg_42F970(internCStr("UISliderLit")))
@@ -77,7 +77,7 @@ func nox_xxx_guiServerPlayersLoad_456270(parent *C.nox_window) *C.nox_window {
 		text := g2ServerLoad("Title1", serverPlayersStringsFile, 631)
 		g2ServerText(title, 16385, unsafe.Pointer(text), ^uintptr(0))
 	}
-	return C.dword_5d4594_1045684
+	return serverSharedWindows.players
 }
 
 func serverSelectedTeam(teams *nox_window, selected C.int) (*C.nox_team_t, bool) {
@@ -94,8 +94,8 @@ func serverSelectedTeam(teams *nox_window, selected C.int) (*C.nox_team_t, bool)
 func serverRosterTeamButtons(teams *nox_window) {
 	settings := sub_4165B0()
 	selected := int32(g2ServerEvent(teams, 16404, 0, 0))
-	remove := C.dword_5d4594_1045688
-	rename := C.dword_5d4594_1045692
+	remove := serverSharedWindows.remove_team
+	rename := serverSharedWindows.rename_team
 	if selected < 0 || noxflags.HasGame(serverOptionsClanLadder) || settings == nil || *(*int8)(g2ServerAt(settings, 53)) < 0 {
 		g2ServerEnabled(remove, false)
 		g2ServerEnabled(rename, false)
@@ -152,7 +152,7 @@ func serverRosterAssignPlayers(root, teams *nox_window) {
 
 //export sub_4567C0
 func sub_4567C0(unusedWindow *C.nox_window, event C.int, window *C.nox_window, unusedArg C.uintptr_t) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil || window == nil {
 		return 0
 	}
@@ -214,11 +214,11 @@ func serverRosterTeamTitle(line, name *C.wchar2_t, team *C.nox_team_t, settings 
 
 //export sub_457010
 func sub_457010(team *C.nox_team_t, name *C.wchar2_t) C.int {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil || team == nil || name == nil {
 		return 0
 	}
-	head := &C.nox_gui_server_players.teams
+	head := &serverPlayersState.teams
 	for pointer := g2ServerFirst(head); pointer != nil; pointer = g2ServerNext(pointer) {
 		entry := (*C.nox_gui_server_team_entry)(pointer)
 		if entry.team_id == C.uint32_t(team.field_57) {
@@ -246,7 +246,7 @@ func sub_457010(team *C.nox_team_t, name *C.wchar2_t) C.int {
 
 //export sub_457230
 func sub_457230(name *C.wchar2_t) C.uintptr_t {
-	root := C.dword_5d4594_1045684
+	root := serverSharedWindows.players
 	if root == nil || name == nil {
 		return 0
 	}
@@ -266,7 +266,7 @@ func sub_457230(name *C.wchar2_t) C.uintptr_t {
 	entry.def_ind = C.uint32_t(team.def_ind)
 	entry.color = C.uint8_t(sub_457120(team))
 	sub_425770(unsafe.Pointer(&entry.list))
-	nox_common_list_append_4258E0(&C.nox_gui_server_players.teams, &entry.list)
+	nox_common_list_append_4258E0(&serverPlayersState.teams, &entry.list)
 	copyWideString(&entry.name[0], name)
 
 	var line [56]C.wchar2_t

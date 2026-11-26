@@ -24,13 +24,13 @@ _Static_assert(
 	_Generic(&nox_xxx_windowAccessProc_454BA0,
 		server_access_event_fn: 1, default: 0),
 	"00454BA0 must preserve native-width GUI event payloads");
-_Static_assert(sizeof(nox_gui_server_access.root) == sizeof(void*),
+_Static_assert(sizeof(((nox_gui_server_access_state*)0)->root) == sizeof(void*),
 	"server-access root must remain native-width");
 _Static_assert(sizeof(nox_gui_server_access_state) == 21 * sizeof(void*),
 	"server-access state must contain only native-width window pointers");
-_Static_assert(sizeof(nox_gui_server_access.wnd_10200) == sizeof(void*),
+_Static_assert(sizeof(((nox_gui_server_access_state*)0)->wnd_10200) == sizeof(void*),
 	"server-access player list must remain native-width");
-_Static_assert(sizeof(nox_gui_server_access.active_list) == sizeof(void*),
+_Static_assert(sizeof(((nox_gui_server_access_state*)0)->active_list) == sizeof(void*),
 	"server-access active list must remain native-width");
 _Static_assert(_Generic(&sub_454640, server_access_layout_fn: 1, default: 0),
 	"00454640 must preserve its no-argument layout ABI");

@@ -78,13 +78,22 @@ static nox_drawable* nox_xxx_spriteSetActiveMB_45A990_drawable(nox_drawable* dr)
 static nox_drawable* nox_xxx_spriteSetFrameMB_45AB80_drawable(nox_drawable* dr, int frame);
 #define sub_457140 game2_server_old_sub_457140
 static int sub_457140(int a1,wchar2_t* a2);
+#define nox_gui_server_access (*nox_gui_server_access_storage())
+#define nox_gui_server_players (*nox_gui_server_players_storage())
+#define dword_5d4594_1045684 (nox_game2_server_windows_storage()->players)
+#define dword_5d4594_1046492 (nox_game2_server_windows_storage()->options)
 #include "game2_server_reference.inc"
+#undef dword_5d4594_1046492
+#undef dword_5d4594_1045684
+#undef nox_gui_server_players
+#undef nox_gui_server_access
+
 #undef nox_gui_server_options_rules
 int sub_457140(int a1, wchar2_t* a2) {
-	if (!dword_5d4594_1045684 || !a2) {
+	if (!nox_game2_server_windows_storage()->players || !a2) {
 		return 0;
 	}
-	nox_window* players = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1045684, 10501);
+	nox_window* players = nox_xxx_wndGetChildByID_46B0C0(nox_game2_server_windows_storage()->players, 10501);
 	if (!players) {
 		return 0;
 	}
@@ -93,7 +102,7 @@ int sub_457140(int a1, wchar2_t* a2) {
 		return 0;
 	}
 	sub_425770(&entry->list);
-	nox_common_list_append_4258E0(&nox_gui_server_players.players, &entry->list);
+	nox_common_list_append_4258E0(&nox_gui_server_players_storage()->players, &entry->list);
 	nox_wcscpy(entry->name, a2);
 	entry->net_code = a1;
 	return (int)nox_window_call_field_94(players, 16397, (uintptr_t)a2, 3);

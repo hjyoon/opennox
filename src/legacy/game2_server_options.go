@@ -25,20 +25,20 @@ func g2ServerMode(p *C.char) uint16                    { return *(*uint16)(g2Ser
 
 //export sub_457460
 func sub_457460(p *C.nox_cgo_const_char) C.int {
-	g2ServerIntText(C.dword_5d4594_1046516, int32(*(*uint16)(g2ServerAt(p, 54))), 0)
+	g2ServerIntText(serverOptionsChildren.lessonLimit, int32(*(*uint16)(g2ServerAt(p, 54))), 0)
 	buf, free := g2ServerTemp(16)
 	defer free()
 	C.nox_itow(C.int(*(*byte)(g2ServerAt(p, 56))), (*C.wchar2_t)(unsafe.Pointer(&buf[0])), 10)
-	return C.int(g2ServerText(C.dword_5d4594_1046520, 16414, unsafe.Pointer(&buf[0]), 0))
+	return C.int(g2ServerText(serverOptionsChildren.timeLimit, 16414, unsafe.Pointer(&buf[0]), 0))
 }
 
 //export nox_xxx_guiServerOptionsTryHide_4574D0
 func nox_xxx_guiServerOptionsTryHide_4574D0() C.int {
-	if C.dword_5d4594_1046492 == nil {
+	if serverSharedWindows.options == nil {
 		return 0
 	}
 	nox_xxx_guiServerOptionsHide_4597E0(0)
-	C.dword_5d4594_1046492 = nil
+	serverSharedWindows.options = nil
 	return 1
 }
 
@@ -53,10 +53,10 @@ func sub_457B60(input *C.char) C.int {
 	if g2ServerGame(128) {
 		id = 10122
 	}
-	g2ServerHidden(g2ServerChild(C.dword_5d4594_1046492, id), true)
+	g2ServerHidden(g2ServerChild(serverSharedWindows.options, id), true)
 	var data *C.char
 	if g2ServerGame(1) {
-		g2ServerEnabled(C.dword_5d4594_1046508, true)
+		g2ServerEnabled(serverOptionsChildren.pane10199, true)
 		if g2ServerGame(128) {
 			source := C.nox_xxx_cliGamedataGet_416590(1)
 			mode := *(*uint16)(unsafe.Add(unsafe.Pointer(source), 52)) & 0x17F0
@@ -65,43 +65,43 @@ func sub_457B60(input *C.char) C.int {
 			cell := (*uint16)(g2ServerAt(data, 52))
 			*cell = mode | (*cell & 0xE80F)
 			if C.sub_40A740() != 0 {
-				g2ServerEnabled(C.dword_5d4594_1046508, false)
+				g2ServerEnabled(serverOptionsChildren.pane10199, false)
 			} else if bool(C.nox_xxx_CheckGameplayFlags_417DA0(4)) {
-				g2ServerChild(C.dword_5d4594_1046508, 10330).draw_data.field_0 |= 4
+				g2ServerChild(serverOptionsChildren.pane10199, 10330).draw_data.field_0 |= 4
 			} else {
-				C.sub_46AD20(C.dword_5d4594_1046508, 10331, 10333, 0)
+				C.sub_46AD20(serverOptionsChildren.pane10199, 10331, 10333, 0)
 			}
 		} else {
 			if bool(C.nox_xxx_CheckGameplayFlags_417DA0(4)) {
-				C.sub_46AD20(C.dword_5d4594_1046508, 10330, 10331, 0)
+				C.sub_46AD20(serverOptionsChildren.pane10199, 10330, 10331, 0)
 			} else {
-				C.sub_46AD20(C.dword_5d4594_1046508, 10330, 10333, 0)
+				C.sub_46AD20(serverOptionsChildren.pane10199, 10330, 10333, 0)
 			}
 			data = input
 			nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
 		}
-		g2ServerIntText(C.dword_5d4594_1046516, int32(uint16(C.nox_xxx_servGamedataGet_40A020(C.short(g2ServerMode(data))))), 0)
-		g2ServerIntText(C.dword_5d4594_1046520, int32(C.sub_40A180(C.short(g2ServerMode(data)))), 0)
+		g2ServerIntText(serverOptionsChildren.lessonLimit, int32(uint16(C.nox_xxx_servGamedataGet_40A020(C.short(g2ServerMode(data))))), 0)
+		g2ServerIntText(serverOptionsChildren.timeLimit, int32(C.sub_40A180(C.short(g2ServerMode(data)))), 0)
 		C.sub_4580E0(data)
 	} else {
-		g2ServerEnabled(g2ServerChild(C.dword_5d4594_1046492, 10161), false)
-		g2ServerEnabled(C.dword_5d4594_1046536, false)
-		C.dword_5d4594_1046536.flags |= 8
-		g2ServerEnabled(C.dword_5d4594_1046504, true)
-		C.sub_46AD20(C.dword_5d4594_1046504, 10134, 10135, 0)
-		C.sub_46ACE0(C.dword_5d4594_1046492, 10141, 10141, 1)
+		g2ServerEnabled(g2ServerChild(serverSharedWindows.options, 10161), false)
+		g2ServerEnabled(serverOptionsChildren.pane10153, false)
+		serverOptionsChildren.pane10153.flags |= 8
+		g2ServerEnabled(serverOptionsChildren.pane10197, true)
+		C.sub_46AD20(serverOptionsChildren.pane10197, 10134, 10135, 0)
+		C.sub_46ACE0(serverSharedWindows.options, 10141, 10141, 1)
 		data = input
 		nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
 		sub_457460(input)
 	}
 	if bool(C.nox_xxx_CheckGameplayFlags_417DA0(2)) {
-		g2ServerChild(C.dword_5d4594_1046508, 10331).draw_data.field_0 |= 4
+		g2ServerChild(serverOptionsChildren.pane10199, 10331).draw_data.field_0 |= 4
 	}
 	if bool(C.nox_xxx_CheckGameplayFlags_417DA0(1)) {
-		g2ServerChild(C.dword_5d4594_1046508, 10333).draw_data.field_0 |= 4
+		g2ServerChild(serverOptionsChildren.pane10199, 10333).draw_data.field_0 |= 4
 	}
 	name := nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(g2ServerMode(data)))
-	g2ServerText(g2ServerChild(C.dword_5d4594_1046492, 10119), 16385, unsafe.Pointer(name), 0)
+	g2ServerText(g2ServerChild(serverSharedWindows.options, 10119), 16385, unsafe.Pointer(name), 0)
 	sub_459880(data)
 	return sub_457F30(C.int(g2ServerMode(data) >> 12 & 1))
 }
@@ -109,17 +109,17 @@ func sub_457B60(input *C.char) C.int {
 //export sub_457F30
 func sub_457F30(value C.int) C.int {
 	enabled := value != 1
-	g2ServerEnabled(g2ServerChild(C.dword_5d4594_1046504, 10152), enabled)
-	g2ServerEnabled(g2ServerChild(C.dword_5d4594_1046504, 10141), enabled)
-	g2ServerEnabled(C.dword_5d4594_1046516, enabled)
-	g2ServerEnabled(C.dword_5d4594_1046520, enabled)
+	g2ServerEnabled(g2ServerChild(serverOptionsChildren.pane10197, 10152), enabled)
+	g2ServerEnabled(g2ServerChild(serverOptionsChildren.pane10197, 10141), enabled)
+	g2ServerEnabled(serverOptionsChildren.lessonLimit, enabled)
+	g2ServerEnabled(serverOptionsChildren.timeLimit, enabled)
 	if value == 1 {
-		w := g2ServerChild(C.dword_5d4594_1046492, 10122)
+		w := g2ServerChild(serverSharedWindows.options, 10122)
 		if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(w) == 0 {
 			g2ServerHidden(w, true)
 		}
 	}
-	return C.nox_window_set_hidden(g2ServerChild(C.dword_5d4594_1046492, 10183), value)
+	return C.nox_window_set_hidden(g2ServerChild(serverSharedWindows.options, 10183), value)
 }
 
 //export nox_xxx_windowServerOptionsDrawProc_458500
@@ -128,7 +128,7 @@ func nox_xxx_windowServerOptionsDrawProc_458500(w *C.nox_window, unused1 C.int) 
 	var x, y C.uint
 	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
 	C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y)+25, C.int(w.width), C.int(w.height)-25)
-	v := g2ServerChild(C.dword_5d4594_1046492, 10120)
+	v := g2ServerChild(serverSharedWindows.options, 10120)
 	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(v) == 0 && !bool(C.nox_xxx_wndPointInWnd_46AAB0(v, pos.x, pos.y)) {
 		C.nox_xxx_wndClearCaptureMain_46ADE0(v)
 		g2ServerHidden(v, true)
@@ -216,7 +216,7 @@ func sub_459150() C.char {
 
 //export sub_4593B0
 func sub_4593B0(tab C.int) C.int {
-	root := C.dword_5d4594_1046492
+	root := serverSharedWindows.options
 	if root == nil {
 		return 0
 	}
@@ -225,60 +225,60 @@ func sub_4593B0(tab C.int) C.int {
 		return 0
 	}
 	if tab == 1 {
-		v1.draw_data.bg_image = C.dword_5d4594_1046360
-		v3.draw_data.bg_image = C.dword_5d4594_1046356
-		if C.dword_5d4594_1046532 != nil {
+		v1.draw_data.bg_image = serverOptionsTabImage3
+		v3.draw_data.bg_image = serverOptionsTabImage2
+		if serverOptionsChildren.playersTab != nil {
 			sub_456D60(1)
-			C.dword_5d4594_1046532 = nil
+			serverOptionsChildren.playersTab = nil
 		}
-		if C.dword_5d4594_1046540 != nil {
+		if serverOptionsChildren.generalTab != nil {
 			C.sub_4AD820()
-			C.dword_5d4594_1046540 = nil
+			serverOptionsChildren.generalTab = nil
 		}
-		C.dword_5d4594_1046528 = nox_xxx_guiServerAccessLoad_4541D0(root)
+		serverOptionsChildren.accessTab = nox_xxx_guiServerAccessLoad_4541D0(root)
 		return sub_459560(10161)
 	}
 	if tab == 2 {
-		v1.draw_data.bg_image = C.dword_5d4594_1046360
+		v1.draw_data.bg_image = serverOptionsTabImage3
 		if g2ServerGame(1) {
-			v2.draw_data.bg_image = C.dword_5d4594_1046360
+			v2.draw_data.bg_image = serverOptionsTabImage3
 		} else {
-			v2.draw_data.dis_image = C.dword_5d4594_1046360
+			v2.draw_data.dis_image = serverOptionsTabImage3
 		}
-		if C.dword_5d4594_1046528 != nil {
+		if serverOptionsChildren.accessTab != nil {
 			sub_4557D0(1)
-			C.dword_5d4594_1046528 = nil
+			serverOptionsChildren.accessTab = nil
 		}
-		if C.dword_5d4594_1046540 != nil {
+		if serverOptionsChildren.generalTab != nil {
 			C.sub_4AD820()
-			C.dword_5d4594_1046540 = nil
+			serverOptionsChildren.generalTab = nil
 		}
-		C.dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(root)
+		serverOptionsChildren.playersTab = nox_xxx_guiServerPlayersLoad_456270(root)
 		return sub_459560(10162)
 	}
 	if tab != 0 {
 		return tab - 2
 	}
 	if g2ServerGame(1) {
-		v2.draw_data.bg_image = C.dword_5d4594_1046356
+		v2.draw_data.bg_image = serverOptionsTabImage2
 	} else {
-		v2.draw_data.dis_image = C.dword_5d4594_1046356
+		v2.draw_data.dis_image = serverOptionsTabImage2
 	}
-	v3.draw_data.bg_image = C.dword_5d4594_1046356
-	if C.dword_5d4594_1046532 != nil {
+	v3.draw_data.bg_image = serverOptionsTabImage2
+	if serverOptionsChildren.playersTab != nil {
 		sub_456D60(1)
-		C.dword_5d4594_1046532 = nil
-	} else if C.dword_5d4594_1046528 != nil {
+		serverOptionsChildren.playersTab = nil
+	} else if serverOptionsChildren.accessTab != nil {
 		sub_4557D0(1)
-		C.dword_5d4594_1046528 = nil
+		serverOptionsChildren.accessTab = nil
 	}
-	C.dword_5d4594_1046540 = nox_xxx_gui_4AD320(root)
+	serverOptionsChildren.generalTab = nox_xxx_gui_4AD320(root)
 	return sub_459560(10163)
 }
 
 //export sub_459560
 func sub_459560(id C.int) C.int {
-	root := C.dword_5d4594_1046492
+	root := serverSharedWindows.options
 	if root == nil {
 		return 0
 	}
@@ -316,18 +316,18 @@ func sub_459560(id C.int) C.int {
 func sub_459700() C.int {
 	C.sub_416580()
 	data := C.sub_4165B0()
-	index := int(g2ServerEvent(C.dword_5d4594_1046496, 16404, 0, 0))
-	line := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046496, 16406, uintptr(index), 0)))
+	index := int(g2ServerEvent(serverOptionsChildren.mapList, 16404, 0, 0))
+	line := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsChildren.mapList, 16406, uintptr(index), 0)))
 	buf, free := g2ServerTemp(256)
 	defer free()
 	if line != nil {
 		nox_wcsncpy((*C.wchar2_t)(unsafe.Pointer(&buf[0])), line, 255)
 		buf[255] = 0
 	}
-	g2ServerEvent(C.dword_5d4594_1046496, 16398, uintptr(int32(index)), 0)
-	g2ServerEvent(C.dword_5d4594_1046496, 16402, uintptr(int32(index)), 0)
-	g2ServerText(C.dword_5d4594_1046496, 16397, unsafe.Pointer(&buf[0]), ^uintptr(0))
-	g2ServerEvent(C.dword_5d4594_1046496, 16403, uintptr(int32(index)), 0)
+	g2ServerEvent(serverOptionsChildren.mapList, 16398, uintptr(int32(index)), 0)
+	g2ServerEvent(serverOptionsChildren.mapList, 16402, uintptr(int32(index)), 0)
+	g2ServerText(serverOptionsChildren.mapList, 16397, unsafe.Pointer(&buf[0]), ^uintptr(0))
+	g2ServerEvent(serverOptionsChildren.mapList, 16403, uintptr(int32(index)), 0)
 	C.sub_57A9F0(data, internCStr("user.rul"))
 	C.sub_57A1E0((*C.int)(unsafe.Pointer(data)), internCStr("user.rul"), nil, 5, C.short(g2ServerMode(data)))
 	sub_459880(data)
@@ -336,21 +336,22 @@ func sub_459700() C.int {
 
 //export nox_xxx_guiServerOptionsHide_4597E0
 func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
-	root := C.dword_5d4594_1046492
+	root := serverSharedWindows.options
 	if root != nil {
 		focus := C.nox_xxx_wndGetFocus_46B4F0()
 		if C.nox_window_is_child(root, focus) != 0 {
 			C.nox_xxx_windowFocus_46B500(nil)
 		}
 		C.nox_xxx_windowDestroyMB_46C4E0(root)
-		C.dword_5d4594_1046492 = nil
+		serverSharedWindows.options = nil
 		sub_456D60(0)
 		C.sub_4BE610()
-		C.dword_5d4594_1046532 = nil
+		serverOptionsChildren.playersTab = nil
 		sub_4557D0(0)
-		C.dword_5d4594_1046528 = nil
+		serverOptionsChildren.accessTab = nil
 		C.sub_4AD820()
-		C.dword_5d4594_1046536 = nil
+		serverOptionsChildren = serverOptionsChildWindows{}
+		serverOptionsNameInput = nil
 	}
 	if save != 0 {
 		result := sub_57ADF0((*C.int)(unsafe.Pointer(serverOptionsRules)))
@@ -383,18 +384,18 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 	copy(unsafe.Slice((*byte)(unsafe.Add(output, 24)), 20), unsafe.Slice((*byte)(unsafe.Pointer(sub_453F90())), 20))
 	*(*uint32)(unsafe.Add(output, 44)) = *g2ServerWord(1045452)
 	*(*uint32)(unsafe.Add(output, 48)) = *g2ServerWord(1045456)
-	p := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046516, 16413, 0, 0)))
+	p := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsChildren.lessonLimit, 16413, 0, 0)))
 	if *p != 0 {
 		*(*uint16)(unsafe.Add(output, 54)) = uint16(parseLegacyWideDecimal(p))
 	}
-	p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046520, 16413, 0, 0)))
+	p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsChildren.timeLimit, 16413, 0, 0)))
 	if *p != 0 {
 		*(*byte)(unsafe.Add(output, 56)) = byte(parseLegacyWideDecimal(p))
 	}
-	*(*byte)(unsafe.Add(output, 57)) = byte(g2ServerChild(C.dword_5d4594_1046492, 10122).draw_data.field_0>>2) & 1
-	result := int(g2ServerEvent(C.dword_5d4594_1046496, 16404, 0, 0))
+	*(*byte)(unsafe.Add(output, 57)) = byte(g2ServerChild(serverSharedWindows.options, 10122).draw_data.field_0>>2) & 1
+	result := int(g2ServerEvent(serverOptionsChildren.mapList, 16404, 0, 0))
 	if result >= 0 {
-		p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(C.dword_5d4594_1046496, 16406, uintptr(result), 0)))
+		p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsChildren.mapList, 16406, uintptr(result), 0)))
 		copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(p)))
 		tokens := legacyByteTokens{next: &narrow[0]}
 		token := tokens.take("\t")
@@ -415,7 +416,7 @@ func sub_459C30() C.int {
 	sub_453F70((*C.nox_cgo_const_void)(g2ServerAt(data, 24)))
 	sub_4535E0((*C.int)(unsafe.Add(unsafe.Pointer(data), 44)))
 	sub_4535F0(C.int(*(*uint32)(unsafe.Add(unsafe.Pointer(data), 48))))
-	if C.dword_5d4594_1046492 == nil {
+	if serverSharedWindows.options == nil {
 		return 0
 	}
 	sub_459880(data)
@@ -423,7 +424,7 @@ func sub_459C30() C.int {
 	nox_client_guiserv_updateMapList_458230(C.int(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))), data, false)
 	sub_457460(data)
 	name := nox_xxx_guiServerOptionsGetGametypeName_4573C0(C.short(*(*uint16)(unsafe.Add(unsafe.Pointer(data), 52))))
-	return C.int(g2ServerText(g2ServerChild(C.dword_5d4594_1046492, 10119), 16385, unsafe.Pointer(name), 0))
+	return C.int(g2ServerText(g2ServerChild(serverSharedWindows.options, 10119), 16385, unsafe.Pointer(name), 0))
 }
 
 //export sub_459D50
@@ -434,11 +435,11 @@ func sub_459D60() C.int { return C.int(*g2ServerWord(1046544)) }
 
 //export sub_459D80
 func sub_459D80(hidden C.int) C.int {
-	if C.dword_5d4594_1046492 != nil {
-		return C.nox_window_set_hidden(C.dword_5d4594_1046492, hidden)
+	if serverSharedWindows.options != nil {
+		return C.nox_window_set_hidden(serverSharedWindows.options, hidden)
 	}
 	return 0
 }
 
 //export sub_459DA0
-func sub_459DA0() C.int { return g2ServerBool(C.dword_5d4594_1046492 != nil) }
+func sub_459DA0() C.int { return g2ServerBool(serverSharedWindows.options != nil) }

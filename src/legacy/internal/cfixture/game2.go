@@ -40,42 +40,42 @@ static uintptr_t game2_server_public_call(uint32_t entry,void* p,int a,int b) {
  }
 }
 static void** game2_server_fixture_owner(int field){switch(field){
-case 0:return (void**)&dword_5d4594_1045468;
-case 1:return (void**)&dword_5d4594_1045464;
-case 2:return (void**)&dword_5d4594_1045484;
-case 3:return (void**)&dword_5d4594_1045480;
-case 4:return (void**)&dword_5d4594_1045508;
-case 5:return (void**)&dword_5d4594_1045684;
-case 6:return (void**)&dword_5d4594_1045688;
-case 7:return (void**)&dword_5d4594_1045692;
-case 8:return (void**)&dword_5d4594_1046492;
-case 9:return (void**)&dword_5d4594_1045604;
-case 10:return (void**)&dword_5d4594_1045636;
-case 100:return (void**)&nox_gui_server_access.root;
-case 101:return (void**)&nox_gui_server_access.active_list;
-case 10102:return (void**)&nox_gui_server_access.wnd_10102;
-case 10103:return (void**)&nox_gui_server_access.wnd_10103;
-case 10104:return (void**)&nox_gui_server_access.wnd_10104;
-case 10105:return (void**)&nox_gui_server_access.wnd_10105;
-case 10109:return (void**)&nox_gui_server_access.wnd_10109;
-case 10111:return (void**)&nox_gui_server_access.wnd_10111;
-case 10112:return (void**)&nox_gui_server_access.wnd_10112;
-case 10113:return (void**)&nox_gui_server_access.wnd_10113;
-case 10123:return (void**)&nox_gui_server_access.wnd_10123;
-case 10125:return (void**)&nox_gui_server_access.wnd_10125;
-case 10126:return (void**)&nox_gui_server_access.wnd_10126;
-case 10127:return (void**)&nox_gui_server_access.wnd_10127;
-case 10128:return (void**)&nox_gui_server_access.wnd_10128;
-case 10129:return (void**)&nox_gui_server_access.wnd_10129;
-case 10130:return (void**)&nox_gui_server_access.wnd_10130;
-case 10131:return (void**)&nox_gui_server_access.wnd_10131;
-case 10132:return (void**)&nox_gui_server_access.wnd_10132;
-case 10133:return (void**)&nox_gui_server_access.wnd_10133;
-case 10200:return (void**)&nox_gui_server_access.wnd_10200;
+case 0:return (void**)&nox_game2_server_windows_storage()->object_filter;
+case 1:return (void**)&nox_game2_server_windows_storage()->object_list;
+case 2:return (void**)&nox_game2_server_windows_storage()->spell_filter;
+case 3:return (void**)&nox_game2_server_windows_storage()->spell_names;
+case 4:return (void**)&nox_game2_server_windows_storage()->spell_classes;
+case 5:return (void**)&nox_game2_server_windows_storage()->players;
+case 6:return (void**)&nox_game2_server_windows_storage()->remove_team;
+case 7:return (void**)&nox_game2_server_windows_storage()->rename_team;
+case 8:return (void**)&nox_game2_server_windows_storage()->options;
+case 9:return (void**)&nox_game2_server_windows_storage()->ctf_hud;
+case 10:return (void**)&nox_game2_server_windows_storage()->flagball_hud;
+case 100:return (void**)&nox_gui_server_access_storage()->root;
+case 101:return (void**)&nox_gui_server_access_storage()->active_list;
+case 10102:return (void**)&nox_gui_server_access_storage()->wnd_10102;
+case 10103:return (void**)&nox_gui_server_access_storage()->wnd_10103;
+case 10104:return (void**)&nox_gui_server_access_storage()->wnd_10104;
+case 10105:return (void**)&nox_gui_server_access_storage()->wnd_10105;
+case 10109:return (void**)&nox_gui_server_access_storage()->wnd_10109;
+case 10111:return (void**)&nox_gui_server_access_storage()->wnd_10111;
+case 10112:return (void**)&nox_gui_server_access_storage()->wnd_10112;
+case 10113:return (void**)&nox_gui_server_access_storage()->wnd_10113;
+case 10123:return (void**)&nox_gui_server_access_storage()->wnd_10123;
+case 10125:return (void**)&nox_gui_server_access_storage()->wnd_10125;
+case 10126:return (void**)&nox_gui_server_access_storage()->wnd_10126;
+case 10127:return (void**)&nox_gui_server_access_storage()->wnd_10127;
+case 10128:return (void**)&nox_gui_server_access_storage()->wnd_10128;
+case 10129:return (void**)&nox_gui_server_access_storage()->wnd_10129;
+case 10130:return (void**)&nox_gui_server_access_storage()->wnd_10130;
+case 10131:return (void**)&nox_gui_server_access_storage()->wnd_10131;
+case 10132:return (void**)&nox_gui_server_access_storage()->wnd_10132;
+case 10133:return (void**)&nox_gui_server_access_storage()->wnd_10133;
+case 10200:return (void**)&nox_gui_server_access_storage()->wnd_10200;
 default:abort();}}
 
 static void game2_server_fixture_drawable(void* raw,uint32_t cl,uint32_t sub,uint32_t flags,uint32_t anim,uint32_t frame,uint32_t prev,void* link){nox_drawable* p=raw;p->flags28=cl;p->flags29=sub;p->flags30=flags;p->field_69=anim;p->field_77=frame;p->field_78=prev;p->field_92=link;p->field_102=link;p->field_104=link;}
-static void* game2_server_fixture_head(int team){return team?(void*)&nox_gui_server_players.teams:(void*)&nox_gui_server_players.players;}
+static void* game2_server_fixture_head(int team){return team?(void*)&nox_gui_server_players_storage()->teams:(void*)&nox_gui_server_players_storage()->players;}
 static size_t game2_server_fixture_layout(int field){switch(field){
 case 0:return sizeof(nox_window);case 1:return sizeof(nox_window_data);case 2:return sizeof(nox_scrollListBox_data);case 3:return sizeof(nox_scrollListBox_item);
 case 4:return sizeof(nox_list_item_t);case 5:return sizeof(nox_drawable);case 6:return offsetof(nox_gui_server_player_entry,name);case 7:return offsetof(nox_gui_server_player_entry,net_code);case 8:return offsetof(nox_gui_server_team_entry,team_id);case 9:return offsetof(nox_gui_server_team_entry,color);case 10:return sizeof(nox_gui_server_player_entry);case 11:return sizeof(nox_gui_server_team_entry);default:abort();}}

@@ -18,7 +18,7 @@ var serverAccessClassLabels = [...]string{"WARRIOR", "WIZARD", "CONJURER"}
 
 //export sub_454640
 func sub_454640() C.int {
-	list := C.nox_gui_server_access.wnd_10123
+	list := serverAccessState.wnd_10123
 	if list == nil {
 		return 0
 	}
@@ -47,7 +47,7 @@ func setServerAccessLatency(control, checkbox *C.nox_window, value uint16) {
 
 //export sub_454740
 func sub_454740() *C.int {
-	s := &C.nox_gui_server_access
+	s := serverAccessState
 	settings := unsafe.Slice((*byte)(sub_416640()), 109)
 	password := g2ServerChild(s.root, 10136)
 	g2ServerText(password, 16414, unsafe.Pointer(nox_xxx_sysopGetPass_40A630()), 0)

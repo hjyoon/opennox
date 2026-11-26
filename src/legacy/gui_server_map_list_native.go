@@ -6,12 +6,6 @@ package legacy
 #include "client__gui__window.h"
 #include "noxstring.h"
 
-extern nox_window* dword_5d4594_1046492;
-extern nox_window* dword_5d4594_1046496;
-extern nox_window* dword_5d4594_1046500;
-extern nox_window* dword_5d4594_1046504;
-extern nox_window* dword_5d4594_1046516;
-extern nox_window* dword_5d4594_1046520;
 
 static void format_server_option_map_row(wchar2_t* out, const wchar2_t* format, const char* map, int min, int max) {
 	nox_swprintf(out, format, map, min, max);
@@ -56,7 +50,7 @@ func serverOptionMapNameFromRow(text *C.wchar2_t) string {
 
 //export nox_client_guiserv_updateMapList_458230
 func nox_client_guiserv_updateMapList_458230(mode C.int, current *C.char, apply C.bool) {
-	list := C.dword_5d4594_1046496
+	list := serverOptionsChildren.mapList
 	g2ServerEvent(list, 16399, 0, 0)
 	*g2ServerWord(1046552) = uint32(mode)
 	matched := false
@@ -112,18 +106,18 @@ func sub_459880(data *C.char) C.int {
 	if unlocked && g2ServerGame(uint32(noxflags.GameHost)) &&
 		(mode&(noxflags.GameModeCTF|noxflags.GameModeElimination) != 0 ||
 			!g2ServerGame(uint32(serverOptionsIndividualLadder|serverOptionsClanLadder))) {
-		g2ServerEnabled(C.dword_5d4594_1046516, true)
-		g2ServerEnabled(C.dword_5d4594_1046520, true)
+		g2ServerEnabled(serverOptionsChildren.lessonLimit, true)
+		g2ServerEnabled(serverOptionsChildren.timeLimit, true)
 	}
 	title := g2ServerLoad(labelKey, serverOptionsStringsFile, labelLine)
-	copyWideString(&C.dword_5d4594_1046516.draw_data.text[0], title)
+	copyWideString(&serverOptionsChildren.lessonLimit.draw_data.text[0], title)
 	sub_4580E0(data)
 	sub_459A40((*C.char)(g2ServerAt(data, 9)))
 	if g2ServerGame(uint32(noxflags.GameHost)) && !g2ServerGame(uint32(serverOptionsIndividualLadder|serverOptionsClanLadder)) {
-		g2ServerEnabled(C.dword_5d4594_1046500, *(*byte)(g2ServerAt(data, 57)) == 0)
-		g2ServerEnabled(C.dword_5d4594_1046504, *(*byte)(g2ServerAt(data, 57)) == 0)
+		g2ServerEnabled(serverOptionsChildren.mapPanel, *(*byte)(g2ServerAt(data, 57)) == 0)
+		g2ServerEnabled(serverOptionsChildren.pane10197, *(*byte)(g2ServerAt(data, 57)) == 0)
 	}
-	toggle := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1046492, 10122)
+	toggle := nox_xxx_wndGetChildByID_46B0C0(serverSharedWindows.options, 10122)
 	if *(*byte)(g2ServerAt(data, 57)) != 0 {
 		toggle.draw_data.field_0 |= 4
 	} else {

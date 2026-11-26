@@ -13,7 +13,6 @@ package legacy
 #include "common__net_list.h"
 #include "defs.h"
 typedef const nox_object_t nox_player_const_object_t;
-extern nox_window* dword_5d4594_1046492;
 extern uint32_t dword_5d4594_2650652;
 void nox_xxx_WideScreenDo_515240(bool enable);
 static void nox_xxx_printToAll_4D9FD0_go(int a1, wchar2_t* str) {
@@ -378,7 +377,7 @@ func Nox_xxx_playerResetImportantCtr_4E4F40(v ntype.PlayerInd) int {
 }
 
 func Get_dword_5d4594_1046492() unsafe.Pointer {
-	return unsafe.Pointer(C.dword_5d4594_1046492)
+	return unsafe.Pointer(serverSharedWindows.options)
 }
 
 //export nox_xxx_playerInitColors_461460

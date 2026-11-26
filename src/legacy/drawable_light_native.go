@@ -14,18 +14,20 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
-//export nox_drawable_set_light_color_go
-func nox_drawable_set_light_color_go(dr *nox_drawable, r, g, b C.int) {
+//export nox_drawable_change_light_color_native
+func nox_drawable_change_light_color_native(dr *nox_drawable, r, g, b C.int) *nox_drawable {
 	asDrawable(dr).SetLightColorRGB(noxrender.RGB{R: int(r), G: int(g), B: int(b)})
+	return dr
 }
 
-//export nox_drawable_set_packed_light_color_go
-func nox_drawable_set_packed_light_color_go(light *C.uint32_t, r, g, b C.int) {
+//export nox_xxx_spriteChangeLightColor_484BE0
+func nox_xxx_spriteChangeLightColor_484BE0(light *C.uint32_t, r, g, b C.int) *C.uint32_t {
 	data := unsafe.Slice((*byte)(unsafe.Pointer(light)), 28)
 	binary.LittleEndian.PutUint32(data[16:20], uint32(r))
 	binary.LittleEndian.PutUint32(data[:4], 2)
 	binary.LittleEndian.PutUint32(data[20:24], uint32(g))
 	binary.LittleEndian.PutUint32(data[24:28], uint32(b))
+	return light
 }
 
 //export nox_drawable_change_light_direction_native

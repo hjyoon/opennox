@@ -213,6 +213,18 @@ returns one when the mask overlaps the stored flags. A C probe checked
 seven masks including zero, multiple bits, and the signed gameplay
 mask's high bit. Observer replies keep their complete word.
 
+### Drawable light color
+
+Both C color setters now export from Go and return the input address.
+At `0x484BE0` the original code sets the packed light flag to 2 and
+stores the three color words at offsets 16, 20, and 24. The native C
+tests check signed inputs, a nil drawable, and an unaligned packed
+record with guard bytes. Their Go-backed test buffers are pinned for
+the C calls. The ColorLight end-to-end case completed its render and
+cleanup checks.
+
+Removing `client__drawable__drawdb.c` leaves 38 top-level legacy C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

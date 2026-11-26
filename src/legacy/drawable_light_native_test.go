@@ -3,6 +3,7 @@ package legacy
 import (
 	"encoding/binary"
 	"math"
+	"runtime"
 	"testing"
 	"unsafe"
 
@@ -12,6 +13,9 @@ import (
 
 func TestDrawableLightNativeABIOriginal(t *testing.T) {
 	dr := new(client.Drawable)
+	var pin runtime.Pinner
+	pin.Pin(dr)
+	t.Cleanup(pin.Unpin)
 	color := noxrender.RGB{R: -65537, G: 258, B: math.MinInt32}
 	if ret := drawableLightColorCABI(dr, color); ret != dr || dr.LightFlags != 2 || dr.LightColor != color {
 		t.Fatalf("color setter returned %p for %p, flags %#x, color %+v", ret, dr, dr.LightFlags, dr.LightColor)
@@ -116,6 +120,9 @@ func TestDrawableLightNativeABIOriginal(t *testing.T) {
 
 func TestDrawableLightPackedColorPreservesAddressAndOtherFields(t *testing.T) {
 	var raw [30]byte
+	var pin runtime.Pinner
+	pin.Pin(&raw[0])
+	t.Cleanup(pin.Unpin)
 	for i := range raw {
 		raw[i] = byte(i + 1)
 	}

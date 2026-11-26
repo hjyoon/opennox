@@ -110,16 +110,6 @@ extern uint32_t nox_color_cyan_2649820;
 extern uint32_t nox_color_orange_2614256;
 extern uint32_t nox_color_yellow_2589772;
 
-extern nox_gui_animation* nox_wnd_xxx_1307732;
-extern nox_window* nox_wnd_selclass_next;
-extern nox_gui_animation* nox_wnd_xxx_1308092;
-extern nox_gui_animation* nox_wnd_xxx_1309740;
-
-extern void* dword_5d4594_1308156;
-extern void* dword_5d4594_1308160;
-extern void* dword_5d4594_1308164;
-
-
 #include "game3_class_config_options.h"
 extern int nox_game_showOptions_native(void);
 void nox_video_setMenuOptions(nox_window*);
@@ -129,12 +119,24 @@ static inline void* game3_native_word_ptr(uintptr_t word) { return (void*)word; 
 import "C"
 
 import (
+	"strconv"
+	"unsafe"
+
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
-	"strconv"
-	"unsafe"
+	"github.com/opennox/opennox/v1/server"
+)
+
+var (
+	classSelectAnimation   *gui.Anim
+	classSelectNext        *nox_window
+	colorSelectAnimation   *gui.Anim
+	optionsAnimation       *gui.Anim
+	streetPantsModifier    *server.Modifier
+	streetShirtModifier    *server.Modifier
+	streetSneakersModifier *server.Modifier
 )
 
 //export nox_game_showSelClass_4A4840
@@ -148,11 +150,11 @@ func nox_game_showSelClass_4A4840() C.int {
 		return 0
 	}
 	C.nox_xxx_wndSetWindowProc_46B300(C.dword_5d4594_1307736, C.sub_4A18E0)
-	C.nox_wnd_xxx_1307732 = C.nox_gui_makeAnimation_43C5B0(C.dword_5d4594_1307736, 0, 0, 0, -460, 0, 20, 0, -40)
-	if C.nox_wnd_xxx_1307732 == nil {
+	a := Nox_gui_makeAnimation_43C5B0(asWindow(C.dword_5d4594_1307736), 0, 0, 0, -460, 0, 20, 0, -40)
+	classSelectAnimation = a
+	if a == nil {
 		return 0
 	}
-	a := asGUIAnim(C.nox_wnd_xxx_1307732)
 	a.StateID = 600
 	a.Func12Ptr = C.sub_4A4970
 	a.FncDoneOutPtr = C.sub_4A49A0
@@ -160,7 +162,7 @@ func nox_game_showSelClass_4A4840() C.int {
 		w := C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1307736, C.int(id))
 		C.nox_xxx_wndSetDrawFn_46B340(w, C.sub_4A49D0)
 	}
-	C.nox_wnd_selclass_next = C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1307736, 610)
+	classSelectNext = C.nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1307736, 610)
 	C.nox_xxx_wndRetNULL_46A8A0()
 	*memmap.PtrUint32(0x5D4594, 1307740) = 0
 	C.sub_4A19F0(internCStr("OptsBack.wnd:Back"))
@@ -170,7 +172,7 @@ func nox_game_showSelClass_4A4840() C.int {
 
 //export sub_4A4970
 func sub_4A4970() C.int {
-	asGUIAnim(C.nox_wnd_xxx_1307732).SetState(gui.AnimOut)
+	classSelectAnimation.SetState(gui.AnimOut)
 	C.sub_43BE40(2)
 	C.nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
 	return 1
@@ -178,12 +180,12 @@ func sub_4A4970() C.int {
 
 //export sub_4A49A0
 func sub_4A49A0() C.int {
-	done := asGUIAnim(C.nox_wnd_xxx_1307732).Func13Ptr
-	C.nox_gui_freeAnimation_43C570(C.nox_wnd_xxx_1307732)
+	done := classSelectAnimation.Func13Ptr
+	classSelectAnimation.Free()
 	C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1307736)
-	C.nox_wnd_xxx_1307732 = nil
+	classSelectAnimation = nil
 	C.dword_5d4594_1307736 = nil
-	C.nox_wnd_selclass_next = nil
+	classSelectNext = nil
 	ccall.CallIntVoid(done)
 	return 1
 }
@@ -308,7 +310,7 @@ func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C
 
 //export sub_4A6890
 func sub_4A6890() C.int {
-	asGUIAnim(C.nox_wnd_xxx_1308092).SetState(gui.AnimOut)
+	colorSelectAnimation.SetState(gui.AnimOut)
 	C.sub_43BE40(2)
 	C.nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
 	sub_4A68C0()
@@ -317,11 +319,11 @@ func sub_4A6890() C.int {
 
 //export sub_4A6C90
 func sub_4A6C90() C.int {
-	done := asGUIAnim(C.nox_wnd_xxx_1308092).Func13Ptr
-	C.nox_gui_freeAnimation_43C570(C.nox_wnd_xxx_1308092)
+	done := colorSelectAnimation.Func13Ptr
+	colorSelectAnimation.Free()
 	C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1308084)
 	C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1308088)
-	C.nox_wnd_xxx_1308092 = nil
+	colorSelectAnimation = nil
 	C.dword_5d4594_1308084 = nil
 	C.dword_5d4594_1308088 = nil
 	if done != nil {
@@ -343,7 +345,7 @@ func game3PaletteColor(win *C.nox_window) C.int {
 }
 func game3ModifierPalette(mod unsafe.Pointer) {
 	for i := 1; i < 8; i++ {
-		rgb := uint32(C.nox_modifier_getColorRGB(mod, C.int(i)))
+		rgb := uint32(nox_modifier_getColorRGB(mod, C.int(i)))
 		C.nox_draw_setMaterial_4340A0(C.int(i), C.int(rgb&255), C.int((rgb>>8)&255), C.int((rgb>>16)&255))
 	}
 }
@@ -392,19 +394,19 @@ func sub_4A6DC0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		var mod unsafe.Pointer
 		switch uint32(1) << layer {
 		case 4:
-			mod = C.dword_5d4594_1308156
+			mod = streetPantsModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(C.nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308116))
+			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308116))
 		case 1024:
-			mod = C.dword_5d4594_1308160
+			mod = streetShirtModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(C.nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308120))
-			C.nox_draw_setMaterial_4341D0(C.nox_modifier_getPriEnchant(mod), game3PaletteColor(C.dword_5d4594_1308124))
+			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308120))
+			C.nox_draw_setMaterial_4341D0(nox_modifier_getPriEnchant(mod), game3PaletteColor(C.dword_5d4594_1308124))
 		case 1:
-			mod = C.dword_5d4594_1308164
+			mod = streetSneakersModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(C.nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308128))
-			C.nox_draw_setMaterial_4341D0(C.nox_modifier_getEffectiveness(mod), game3PaletteColor(C.dword_5d4594_1308132))
+			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(C.dword_5d4594_1308128))
+			C.nox_draw_setMaterial_4341D0(nox_modifier_getEffectiveness(mod), game3PaletteColor(C.dword_5d4594_1308132))
 		default:
 			continue
 		}
@@ -506,7 +508,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 			}
 			C.sub_4A24C0(0)
 			sub_4A6890()
-			asGUIAnim(C.nox_wnd_xxx_1308092).Func13Ptr = nil
+			colorSelectAnimation.Func13Ptr = nil
 		}
 	}
 	C.nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
@@ -673,7 +675,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			}
 		} else if id == 341 {
 			C.sub_4AA9C0()
-			a := asGUIAnim(C.nox_wnd_xxx_1309740)
+			a := optionsAnimation
 			a.FncDoneOutPtr = C.sub_4AB0C0
 			a.Func13Ptr = C.sub_4CB880
 		} else {
@@ -802,10 +804,10 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 
 //export sub_4AB0C0
 func sub_4AB0C0() C.int {
-	done := asGUIAnim(C.nox_wnd_xxx_1309740).Func13Ptr
-	C.nox_gui_freeAnimation_43C570(C.nox_wnd_xxx_1309740)
+	done := optionsAnimation.Func13Ptr
+	optionsAnimation.Free()
 	C.nox_xxx_windowDestroyMB_46C4E0(C.dword_5d4594_1309720)
-	C.nox_wnd_xxx_1309740 = nil
+	optionsAnimation = nil
 	C.dword_5d4594_1309720 = nil
 	C.dword_5d4594_1309728 = nil
 	C.dword_5d4594_1309732 = nil

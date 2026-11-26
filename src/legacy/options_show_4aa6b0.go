@@ -10,7 +10,6 @@ extern nox_window* dword_5d4594_1309720;
 extern nox_window* dword_5d4594_1309728;
 extern nox_window* dword_5d4594_1309732;
 extern nox_window* dword_5d4594_1309736;
-extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
 
@@ -35,7 +34,7 @@ func OptionsNewAdvanced4AA6B0(win *gui.Window) int32 {
 }
 
 func OptionsStoreAnimation4AA6B0(anim *gui.Anim) {
-	C.nox_wnd_xxx_1309740 = (*C.nox_gui_animation)(unsafe.Pointer(anim))
+	optionsAnimation = anim
 }
 
 func OptionsStartOut4AA6B0() unsafe.Pointer { return C.sub_4AA9C0 }

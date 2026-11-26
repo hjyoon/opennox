@@ -6,9 +6,7 @@ package legacy
 #include "client__shell__selcolor.h"
 
 extern char* dword_5d4594_1307724;
-extern nox_gui_animation* nox_wnd_xxx_1307732;
 extern nox_window* dword_5d4594_1307736;
-extern nox_window* nox_wnd_selclass_next;
 */
 import "C"
 
@@ -28,7 +26,7 @@ func sub_4A4A20(unusedWindow *C.nox_window, event C.int, source *C.nox_window, u
 		id := nox_xxx_wndGetID_46B0A0(source)
 		if id >= 601 && id <= 603 {
 			index := id - 601
-			g2ServerEnabled(C.nox_wnd_selclass_next, true)
+			g2ServerEnabled(classSelectNext, true)
 			description := nox_xxx_wndGetChildByID_46B0C0(C.dword_5d4594_1307736, 605)
 			*(*byte)(unsafe.Add(unsafe.Pointer(C.dword_5d4594_1307724), 66)) = byte(index)
 			idPtr := (*C.char)(memmap.PtrOff(0x587000, 170220+8*uintptr(index)))
@@ -49,7 +47,7 @@ func sub_4A4A20(unusedWindow *C.nox_window, event C.int, source *C.nox_window, u
 				sub_4A4B70(C.int(bool2int(quest)))
 			}
 			sub_4A4970()
-			C.nox_wnd_xxx_1307732.field_13 = (*[0]byte)(C.nox_game_showSelColor_4A5D00)
+			classSelectAnimation.Func13Ptr = C.nox_game_showSelColor_4A5D00
 		}
 		nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 		return 1

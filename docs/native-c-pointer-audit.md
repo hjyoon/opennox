@@ -386,6 +386,39 @@ C comparisons. Linux ARM64 also passed the safe memory-access checks.
 The Linux 386 probe passed the storage, native accessor, and
 invalid-address diagnostic checks under QEMU.
 
+### Class, color, and options pointer storage
+
+Go holds the three animation references, the class Next button, and
+the three clothing modifiers in native-width pointer slots. The
+corresponding PE32 addresses in `GAME.EXE` are `0x7139E8`,
+`0x713B50`, and `0x7141C0` for animation, `0x7139E4` for the
+button, and `0x713B90` through `0x713B98` for the modifiers.
+
+The animation allocator and release path still use the shared native
+animation list. Its C and Go structure checks cover size, alignment,
+state ID, and the four callback offsets. The native records measure
+68 bytes on 32-bit hosts and 136 bytes on 64-bit hosts. The four
+callback offsets are 48, 52, 56, and 60 on 32-bit hosts and 96, 104,
+112, and 120 on 64-bit hosts.
+
+Class and color teardown save the continuation before releasing the
+animation and clear their slots before invoking it. The options apply
+transition at `0x4AB0C0` also clears its slots. The ordinary options
+close at `0x4AAA10` retains the original values after release.
+Lifecycle checks use the active window and animation lists.
+
+The options C entry and native GUI tests passed on macOS ARM64 with
+`cgocheck2` and `checkptr=2`. The menu E2E runs passed for options
+open, Escape and Back transitions, warrior chapter one, and NPC
+equipment colors. Chapter one matched all six reference screenshots.
+The selected GUI ABI tests also passed on Linux ARM64. The Windows 386
+server build compiled the 32-bit callback offset assertions.
+
+There are 32 top-level legacy C files. The audited 64-bit builds
+select 29 files with 54 C function bodies by default and 30 files
+with 58 bodies under the safe tag. The audited 32-bit builds select
+two additional float adapters.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

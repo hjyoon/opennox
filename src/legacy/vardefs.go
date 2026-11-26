@@ -680,10 +680,6 @@ extern uint32_t nox_color_orange_2614256;
 
 extern nox_window* dword_5d4594_1316972;
 
-extern void* dword_5d4594_1308156;
-extern void* dword_5d4594_1308160;
-extern void* dword_5d4594_1308164;
-
 extern int dword_5d4594_2386848;
 extern unsigned int dword_5d4594_2386852;
 
@@ -1333,13 +1329,13 @@ func Set_nox_server_kickQuestPlayerMinVotes_229992(v int) {
 	C.nox_server_kickQuestPlayerMinVotes_229992 = C.uint(v)
 }
 func Set_dword_5d4594_1308156(v unsafe.Pointer) {
-	C.dword_5d4594_1308156 = v
+	streetPantsModifier = (*server.Modifier)(v)
 }
 func Set_dword_5d4594_1308160(v unsafe.Pointer) {
-	C.dword_5d4594_1308160 = v
+	streetShirtModifier = (*server.Modifier)(v)
 }
 func Set_dword_5d4594_1308164(v unsafe.Pointer) {
-	C.dword_5d4594_1308164 = v
+	streetSneakersModifier = (*server.Modifier)(v)
 }
 func Set_dword_5d4594_2650676(v int) {
 	C.dword_5d4594_2650676 = C.uint(v)

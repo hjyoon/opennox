@@ -6,7 +6,6 @@ package legacy
 #include "GAME3.h"
 #include "GAME3_1.h"
 extern nox_window* dword_5d4594_1309720;
-extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
 import (
@@ -92,7 +91,7 @@ func Sub_4C35B0(v int) {
 }
 
 func Get_nox_wnd_xxx_1309740() *gui.Anim {
-	return asGUIAnim(C.nox_wnd_xxx_1309740)
+	return optionsAnimation
 }
 
 func Get_dword_5d4594_1309720() *gui.Window {

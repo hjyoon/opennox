@@ -17,8 +17,6 @@ package legacy
 extern uint32_t dword_5d4594_2650652;
 extern void* dword_587000_81128;
 extern unsigned int dword_587000_93156;
-
-extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
 

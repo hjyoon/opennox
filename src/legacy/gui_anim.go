@@ -15,7 +15,15 @@ var (
 	Nox_gui_makeAnimation_43C5B0 func(win *gui.Window, x1, y1, x2, y2, in_dx, in_dy, out_dx, out_dy int) *gui.Anim
 )
 
-var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_gui_animation{})-unsafe.Sizeof(gui.Anim{})]
+var (
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_gui_animation{})-unsafe.Sizeof(gui.Anim{})]
+	_ = [1]struct{}{}[unsafe.Alignof(C.nox_gui_animation{})-unsafe.Alignof(gui.Anim{})]
+	_ = [1]struct{}{}[unsafe.Offsetof(C.nox_gui_animation{}.field_0)-unsafe.Offsetof(gui.Anim{}.StateID)]
+	_ = [1]struct{}{}[unsafe.Offsetof(C.nox_gui_animation{}.field_12)-unsafe.Offsetof(gui.Anim{}.Func12Ptr)]
+	_ = [1]struct{}{}[unsafe.Offsetof(C.nox_gui_animation{}.field_13)-unsafe.Offsetof(gui.Anim{}.Func13Ptr)]
+	_ = [1]struct{}{}[unsafe.Offsetof(C.nox_gui_animation{}.fnc_done_out)-unsafe.Offsetof(gui.Anim{}.FncDoneOutPtr)]
+	_ = [1]struct{}{}[unsafe.Offsetof(C.nox_gui_animation{}.fnc_done_in)-unsafe.Offsetof(gui.Anim{}.FncDoneInPtr)]
+)
 
 func asGUIAnim(p *C.nox_gui_animation) *gui.Anim {
 	return (*gui.Anim)(unsafe.Pointer(p))

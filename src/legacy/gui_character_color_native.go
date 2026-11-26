@@ -33,7 +33,6 @@ extern nox_window* dword_5d4594_1308140;
 extern nox_window* dword_5d4594_1308144;
 extern nox_window* dword_5d4594_1308148;
 extern nox_window* dword_5d4594_1308152;
-extern nox_gui_animation* nox_wnd_xxx_1308092;
 extern uint32_t dword_587000_171388;
 extern char* dword_5d4594_1307784;
 */
@@ -109,14 +108,14 @@ func nox_game_showSelColor_4A5D00() C.int {
 		return 0
 	}
 	nox_xxx_wndSetWindowProc_46B300(root, unsafe.Pointer(C.sub_4A18E0))
-	ani := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -440, 0, 20, 0, -40)
-	C.nox_wnd_xxx_1308092 = ani
+	ani := Nox_gui_makeAnimation_43C5B0(asWindow(root), 0, 0, 0, -440, 0, 20, 0, -40)
+	colorSelectAnimation = ani
 	if ani == nil {
 		return 0
 	}
-	ani.field_0 = 700
-	ani.field_12 = (*[0]byte)(C.sub_4A6890)
-	ani.fnc_done_out = (*[0]byte)(C.sub_4A6C90)
+	ani.StateID = 700
+	ani.Func12Ptr = C.sub_4A6890
+	ani.FncDoneOutPtr = C.sub_4A6C90
 	sub_4A5E90()
 	for _, ids := range [...][2]int32{{720, 729}, {761, 792}} {
 		for id := ids[0]; id <= ids[1]; id++ {

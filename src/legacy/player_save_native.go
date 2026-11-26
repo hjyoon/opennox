@@ -282,7 +282,7 @@ func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object,
 			C.sub_56F780(C.int(token), C.int(value))
 		},
 		protectClass: func(token uint32, class byte) {
-			C.sub_56F820(C.int(token), C.uchar(class))
+			sub_56F820(C.int(token), C.uchar(class))
 		},
 		initColors: func(netCode uint32) {
 			if player := GetServer().S().Players.ByID(int(netCode)); player != nil {
@@ -474,7 +474,7 @@ func playerStatusReadRuntime41AA30(cf *cryptfile.CryptFile, unit *server.Object)
 			setSomePoisonDataCall4EEA90(unit, int32(poison))
 		},
 		protectExperience: func(token uint32, experience float32) {
-			C.sub_56F8C0(C.int(token), C.float(experience))
+			sub_56F8C0(C.int(token), C.float(experience))
 		},
 		reportExperience: func(unit *server.Object) {
 			GetServer().S().NetReportExperience(unit)

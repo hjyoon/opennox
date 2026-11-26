@@ -76,7 +76,7 @@ func serverOptionsListChanged(window *nox_window, row uintptr) {
 
 func serverOptionsApply() {
 	record := C.nox_xxx_cliGamedataGet_416590(1)
-	C.sub_459AA0(unsafe.Pointer(record))
+	nox_game2_server_apply_459AA0(unsafe.Pointer(record))
 	sub_4165F0(1, 0)
 	count := int(nox_xxx_getTeamCounter_417DD0())
 	root := C.dword_5d4594_1046492

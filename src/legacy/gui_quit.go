@@ -9,7 +9,6 @@ package legacy
 extern nox_window* nox_wnd_quitMenu_825760;
 extern uint32_t dword_5d4594_2650652;
 extern uint32_t dword_5d4594_830272;
-int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
 */
 import "C"
 import (
@@ -43,11 +42,11 @@ func Sub_41EC30() {
 }
 
 func Sub_446490(v int) {
-	C.sub_446490(C.int(v))
+	sub_446490_go(C.int(v))
 }
 
 func Nox_xxx_guiServerOptionsHide_4597E0(v int) {
-	C.nox_xxx_guiServerOptionsHide_4597E0(C.int(v))
+	nox_xxx_guiServerOptionsHide_4597E0(C.int(v))
 }
 
 func Sub_445C40() {

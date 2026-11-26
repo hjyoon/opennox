@@ -1,15 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-
-int32_t sub_56F820(int token, unsigned char level);
-
-static inline void nox_playerSyncLevel_protect_4EF140(
-		uint32_t token, uint8_t level) {
-	(void)sub_56F820((int32_t)token, (unsigned char)level);
-}
-*/
 import "C"
 
 import "github.com/opennox/opennox/v1/server"
@@ -17,10 +7,7 @@ import "github.com/opennox/opennox/v1/server"
 func playerSyncLevelRuntime4EF140() server.PlayerSyncLevelRuntime4EF140 {
 	return server.PlayerSyncLevelRuntime4EF140{
 		ProtectLevel: func(token uint32, level uint8) {
-			C.nox_playerSyncLevel_protect_4EF140(
-				C.uint32_t(token),
-				C.uint8_t(level),
-			)
+			sub_56F820(C.int(token), C.uchar(level))
 		},
 		ReadValues: playerReadValuesCall4EEDC0,
 	}

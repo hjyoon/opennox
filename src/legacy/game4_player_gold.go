@@ -13,18 +13,26 @@ import "github.com/opennox/opennox/v1/server"
 //
 //export nox_game4_player_gold_add_go
 func nox_game4_player_gold_add_go(unit *C.nox_object_t, delta C.int) C.uintptr_t {
-	var result C.uintptr_t
-	_ = playerInventoryAddGoldNative41AC30(asObjectS(unit), uint32(delta), func(token uint32, amount int32) {
-		result = C.uintptr_t(sub_56F920(C.int(token), C.int(amount)))
-	})
-	return result
+	return C.uintptr_t(game4GoldAdd(asObjectS(unit), uint32(delta)))
 }
 
 //export nox_game4_player_gold_sub_go
 func nox_game4_player_gold_sub_go(unit *C.nox_object_t, amount C.uint) C.uintptr_t {
-	var result C.uintptr_t
-	_ = playerInventorySubGoldNative41AC30(asObjectS(unit), uint32(amount), func(token uint32, delta int32) {
-		result = C.uintptr_t(sub_56F920(C.int(token), C.int(delta)))
+	return C.uintptr_t(game4GoldSub(asObjectS(unit), uint32(amount)))
+}
+
+func game4GoldAdd(unit *server.Object, amount uint32) uintptr {
+	var result uintptr
+	playerInventoryAddGoldNative41AC30(unit, amount, func(token uint32, delta int32) {
+		result = uintptr(sub_56F920(C.int(token), C.int(delta)))
+	})
+	return result
+}
+
+func game4GoldSub(unit *server.Object, amount uint32) uintptr {
+	var result uintptr
+	playerInventorySubGoldNative41AC30(unit, amount, func(token uint32, delta int32) {
+		result = uintptr(sub_56F920(C.int(token), C.int(delta)))
 	})
 	return result
 }
@@ -36,15 +44,18 @@ func nox_object_setGold_4FA620(unit *C.nox_object_t, delta C.int) {
 
 //export nox_xxx_playerGetGold_4FA6B0
 func nox_xxx_playerGetGold_4FA6B0(unit *C.nox_object_t) C.int {
-	o := asObjectS(unit)
-	if o == nil || o.UpdateData == nil {
+	return C.int(game4GoldGet(asObjectS(unit)))
+}
+
+func game4GoldGet(unit *server.Object) uint32 {
+	if unit == nil || unit.UpdateData == nil {
 		return 0
 	}
-	u := (*server.PlayerUpdateData)(o.UpdateData)
+	u := (*server.PlayerUpdateData)(unit.UpdateData)
 	if u.Player == nil {
 		return 0
 	}
-	return C.int(int32(u.Player.GoldVal))
+	return u.Player.GoldVal
 }
 
 //export nox_object_getGold_4FA6D0

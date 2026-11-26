@@ -345,6 +345,20 @@ The 64-bit default profile selects 31 top-level C files with 54
 function bodies. The safe profile selects 32 with 58 bodies.
 The 32-bit profiles also select the two float adapters.
 
+### Go calls for gold, player levels, and GUI settings
+
+Go trade code and the C gold exports share the same player balance
+workers. The original gold routines at `0x4FA590` and `0x4FA5D0`
+update a 32-bit balance and return the protection service's result.
+The native entry points still pass through that result word.
+
+The level routine at `0x4EF410` passes kind 3, the ability number, and
+the ability number minus one to the book service. Go now passes the
+kind as a word to the book and calls the protection setters directly
+for level updates and player-file loading. This removes six C helpers
+from cgo preambles. The Go menu handlers also call the existing MOTD
+cleanup, title loaders, and server settings services directly.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

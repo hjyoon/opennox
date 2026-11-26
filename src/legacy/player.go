@@ -433,7 +433,7 @@ func nox_xxx_netNewPlayerMakePacket_4DDA90(buf *C.uchar, player *nox_playerInfo)
 }
 
 func Sub_459AA0(a1 *server.Settings2) {
-	C.sub_459AA0(unsafe.Pointer(a1))
+	nox_game2_server_apply_459AA0(unsafe.Pointer(a1))
 }
 
 func Nox_xxx_netNotifyRate_4D7F10(v ntype.PlayerInd) {

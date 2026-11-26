@@ -5,8 +5,6 @@ package legacy
 #include "GAME2_2.h"
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
-#include "common__object__armrlook.h"
-#include "common__object__weaplook.h"
 
 extern nox_window* nox_wol_wnd_world_814980;
 extern nox_window* nox_wol_wnd_gameList_815012;
@@ -200,8 +198,8 @@ func nox_game_showGameSel_4379F0() C.int {
 	}
 	nox_xxx_createSocketLocal_554B40(0)
 	Set_nox_wol_server_result_cnt_815088(0)
-	C.nox_xxx_loadModifyers_4158C0()
-	C.nox_xxx_loadLook_415D50()
+	Nox_xxx_loadModifyers_4158C0()
+	Nox_xxx_loadLook_415D50()
 	sub_430C30_set_video_max(C.NOX_MAX_WIDTH, C.NOX_MAX_HEIGHT)
 	C.nox_client_setCursorType_477610(0)
 	if C.dword_5d4594_815096 != 0 {

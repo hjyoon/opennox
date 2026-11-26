@@ -1,17 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-#include "GAME4.h"
-static uintptr_t game4_consumer_gold_add(nox_object_t* owner, int32_t delta) {
-	return (uintptr_t)nox_xxx_playerAddGold_4FA590(owner, delta);
-}
-static uintptr_t game4_consumer_gold_sub(nox_object_t* owner, uint32_t amount) {
-	return (uintptr_t)nox_xxx_playerSubGold_4FA5D0(owner, amount);
-}
-*/
-import "C"
-
 import (
 	"runtime"
 	"unsafe"
@@ -67,24 +55,6 @@ func game4TradeRuntime() game4TradeServices {
 			game4TradeReprice50FB90(session)
 		},
 	}
-}
-
-func game4GoldAdd(owner *server.Object, amount uint32) uintptr {
-	result := C.game4_consumer_gold_add(asObjectC(owner), C.int32_t(amount))
-	runtime.KeepAlive(owner)
-	return uintptr(result)
-}
-
-func game4GoldSub(owner *server.Object, amount uint32) uintptr {
-	result := C.game4_consumer_gold_sub(asObjectC(owner), C.uint32_t(amount))
-	runtime.KeepAlive(owner)
-	return uintptr(result)
-}
-
-func game4GoldGet(owner *server.Object) uint32 {
-	result := uint32(C.nox_xxx_playerGetGold_4FA6B0(asObjectC(owner)))
-	runtime.KeepAlive(owner)
-	return result
 }
 
 func game4GoldReturn50F7F0(owner, gold *server.Object) uintptr {

@@ -1073,6 +1073,17 @@ the normal Action input before walking. A loopback replay confirmed
 a shared player netcode and over 194 world units of movement on the
 server and client with the unit in normal collision state.
 
+The manual-save replay uses the game's case-insensitive filesystem
+lookup when writing and reading its expected player state. The Linux
+ARM64 seed and fresh-process manual load both passed on a
+case-sensitive filesystem.
+
+The replays across this checkpoint passed all 203 stand-alone
+scenarios and the six dedicated, peer, and saved-game scenarios.
+Four campaign scenarios passed with verified earned checkpoints.
+Matching starting saves for 26 other campaign scenarios remain
+unavailable in the reviewed inputs.
+
 ### Checked tile edge reads
 
 The tile edge reader applies the memory check to its addressed byte.

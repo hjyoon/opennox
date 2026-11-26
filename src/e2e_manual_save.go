@@ -371,7 +371,7 @@ func (sc *e2eScenario) CheckManualSaveLoad(slot int, name string) {
 	sc.add(0, name+" record scalar expectation for fresh process", func() {
 		data, err := json.Marshal(f.want)
 		if err == nil {
-			err = os.WriteFile(datapath.Save(e2eManualSaveSnapshotFile), data, 0600)
+			err = os.WriteFile(ifs.Normalize(datapath.Save(e2eManualSaveSnapshotFile)), data, 0600)
 		}
 		if err != nil {
 			e2eError(err)
@@ -391,7 +391,7 @@ func (sc *e2eScenario) SelectManualCampaignSave(slot int, name string) {
 func (sc *e2eScenario) AssertManualSaveRestored(name string) {
 	var want e2eManualSaveSnapshot
 	sc.add(0, name+" read test-only scalar expectation", func() {
-		data, err := os.ReadFile(datapath.Save(e2eManualSaveSnapshotFile))
+		data, err := os.ReadFile(ifs.Normalize(datapath.Save(e2eManualSaveSnapshotFile)))
 		if err == nil {
 			err = json.Unmarshal(data, &want)
 		}

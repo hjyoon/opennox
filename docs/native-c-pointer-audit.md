@@ -1097,6 +1097,16 @@ matched by source definition and linked name. The count includes 18
 shared and 13 typed native call adapters, 31 native memory and scalar
 adapters, four platform CRT adapters, and 21 regression probes.
 
+### Callback ABI probes
+
+Eight callback ABI probes compute their markers with the C compiler's
+`_Generic` expressions and expose the results as C constants. Go
+selects the markers using the original signed 32-bit selectors. Four
+callback address getters read the linked C function symbols directly.
+The native call and field-layout controls still run through their C
+entries. The matching tests passed on Linux ARM64 PIE and on macOS
+ARM64 with `cgocheck2` and `checkptr=2`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

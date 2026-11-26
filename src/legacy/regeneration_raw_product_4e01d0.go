@@ -3,9 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 #include "regeneration_raw_4e01d0.h"
-static void* regeneration_raw_product_entry_4e01d0(void) {
- return (void*)&nox_xxx_effectRegeneration_4E01D0;
-}
 */
 import "C"
 
@@ -59,7 +56,7 @@ func RegenerationRawActualServices4E01D0(item *server.Object) (RegenerationRawPr
 	}
 	return RegenerationRawProductFacts4E01D0{
 		Frame: srv.Frame(), FPS: srv.TickRate(), ArmorFlags: armor,
-		RawEntry:         C.regeneration_raw_product_entry_4e01d0(),
+		RawEntry:         C.nox_xxx_effectRegeneration_4E01D0,
 		RegisteredUpdate: regenerationEffectPointerNative4E01D0(),
 	}, true
 }

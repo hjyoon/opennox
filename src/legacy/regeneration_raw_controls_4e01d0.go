@@ -43,9 +43,7 @@ static void regeneration_raw_public_4e01d0(void* effect,nox_object_t* item) {
   regeneration_raw_native_4e01d0:regeneration_raw_native_call_4e01d0)
  (&nox_xxx_effectRegeneration_4E01D0,effect,item);
 }
-static int regeneration_raw_abi_4e01d0(void) {
- return _Generic(&nox_xxx_effectRegeneration_4E01D0,regeneration_raw_old_4e01d0:1,regeneration_raw_native_4e01d0:2);
-}
+enum { regeneration_raw_abi_4e01d0 = _Generic(&nox_xxx_effectRegeneration_4E01D0,regeneration_raw_old_4e01d0:1,regeneration_raw_native_4e01d0:2) };
 static uintptr_t regeneration_raw_layout_4e01d0(int index) {
  switch(index) {
  case 0:return offsetof(nox_object_t,inv_holder);
@@ -100,7 +98,7 @@ func regenerationRawLayout4E01D0() (out [11]uintptr) {
 	return
 }
 
-func regenerationRawABI4E01D0() int { return int(C.regeneration_raw_abi_4e01d0()) }
+func regenerationRawABI4E01D0() int { return C.regeneration_raw_abi_4e01d0 }
 
 func regenerationRawInitialC4E01D0(base unsafe.Pointer, kind int) uintptr {
 	return uintptr(C.regeneration_raw_initial_read_4e01d0(base, C.int(kind)))

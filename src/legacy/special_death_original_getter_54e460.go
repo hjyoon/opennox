@@ -32,14 +32,12 @@ static void special_death_public_54e460(int entry,nox_object_t* u){
  case 3:SPECIAL_DEATH_CALL_54E460(sub_4D61B0,u);break;
  }
 }
-static int special_death_abi_54e460(int entry){
- switch(entry){
- case 0:return SPECIAL_DEATH_ABI_54E460(nox_xxx_dieMarker_54E460);
- case 1:return SPECIAL_DEATH_ABI_54E460(nox_xxx_dieBoulder_54E4B0);
- case 2:return SPECIAL_DEATH_ABI_54E460(nox_xxx_dieMonsterGen_54E630);
- default:return SPECIAL_DEATH_ABI_54E460(sub_4D61B0);
- }
-}
+enum {
+ special_marker_abi_54e460 = SPECIAL_DEATH_ABI_54E460(nox_xxx_dieMarker_54E460),
+ special_boulder_abi_54e460 = SPECIAL_DEATH_ABI_54E460(nox_xxx_dieBoulder_54E4B0),
+ special_generator_abi_54e460 = SPECIAL_DEATH_ABI_54E460(nox_xxx_dieMonsterGen_54E630),
+ special_immunity_abi_54e460 = SPECIAL_DEATH_ABI_54E460(sub_4D61B0),
+};
 static uintptr_t special_death_layout_54e460(int i){
  switch(i){
  case 0:return sizeof(nox_object_t);
@@ -106,7 +104,16 @@ func specialDeathOriginalC54E460(entry int, source *server.Object) {
 }
 
 func specialDeathOriginalABI54E460(entry int) int {
-	return int(C.special_death_abi_54e460(C.int(entry)))
+	switch int32(entry) {
+	case 0:
+		return C.special_marker_abi_54e460
+	case 1:
+		return C.special_boulder_abi_54e460
+	case 2:
+		return C.special_generator_abi_54e460
+	default:
+		return C.special_immunity_abi_54e460
+	}
 }
 
 func specialDeathOriginalLayout54E460() (out [29]uintptr) {

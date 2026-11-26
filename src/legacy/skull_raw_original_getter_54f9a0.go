@@ -34,15 +34,13 @@ static uint32_t skull_public_54f9a0(int entry,nox_object_t* source,nox_object_t*
  }
  return 0;
 }
-static int skull_abi_54f9a0(int e){
- switch(e){
- case 0:return _Generic(&nox_xxx_updateShootingTrap_54F9A0,int(*)(int):32,int(*)(nox_object_t*):64);
- case 1:return _Generic(&nox_xxx_createArrowTrapProjectile_54FA80,void(*)(int,int):32,void(*)(nox_object_t*,int):64);
- case 2:return _Generic(&sub_54FBB0,void(*)(int):32,void(*)(nox_object_t*):64);
- case 3:return _Generic(&sub_54FBF0,int(*)(int):32,int(*)(nox_object_t*):64);
- default:return _Generic(&nox_xxx_unitIsAttackReachable_54FC50,void(*)(int,int):32,void(*)(nox_object_t*,nox_object_t*):64);
- }
-}
+enum {
+ skull_update_abi_54f9a0 = _Generic(&nox_xxx_updateShootingTrap_54F9A0,int(*)(int):32,int(*)(nox_object_t*):64),
+ skull_create_abi_54f9a0 = _Generic(&nox_xxx_createArrowTrapProjectile_54FA80,void(*)(int,int):32,void(*)(nox_object_t*,int):64),
+ skull_arm_abi_54f9a0 = _Generic(&sub_54FBB0,void(*)(int):32,void(*)(nox_object_t*):64),
+ skull_activate_abi_54f9a0 = _Generic(&sub_54FBF0,int(*)(int):32,int(*)(nox_object_t*):64),
+ skull_reach_abi_54f9a0 = _Generic(&nox_xxx_unitIsAttackReachable_54FC50,void(*)(int,int):32,void(*)(nox_object_t*,nox_object_t*):64),
+};
 static uintptr_t skull_layout_54f9a0(int i){
  switch(i){
  case 0:return sizeof(nox_object_t);case 1:return offsetof(nox_object_t,typ_ind);
@@ -81,7 +79,18 @@ func skullOriginalC54F9A0(entry int, source, target *server.Object, projectile u
 // The marker distinguishes the signed32 and typed-pointer public prototypes
 // on both host widths; it is not a measurement of sizeof(void*).
 func skullOriginalABI54F9A0(entry int) int {
-	return int(C.skull_abi_54f9a0(C.int(entry)))
+	switch int32(entry) {
+	case 0:
+		return C.skull_update_abi_54f9a0
+	case 1:
+		return C.skull_create_abi_54f9a0
+	case 2:
+		return C.skull_arm_abi_54f9a0
+	case 3:
+		return C.skull_activate_abi_54f9a0
+	default:
+		return C.skull_reach_abi_54f9a0
+	}
 }
 
 func skullOriginalLayout54F9A0() (out [19]uintptr) {

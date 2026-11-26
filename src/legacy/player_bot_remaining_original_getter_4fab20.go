@@ -10,7 +10,6 @@ static uint32_t bot_remaining_original_4fab20(int root, void* p) {
  if(root==0)return nox_xxx_updatePlayerMonsterBot_4FAB20((uint32_t*)p);
  return nox_xxx_respawnPlayerBot_4FAC70((nox_object_t*)p);
 }
-static void* bot_regular_player_update_4fab20(void) { return (void*)nox_xxx_updatePlayer_4F8100; }
 */
 import "C"
 
@@ -27,5 +26,5 @@ func playerBotRemainingOriginalC4FAB20(root int, unit *server.Object) uint32 {
 }
 
 func playerBotRegularUpdate4FAB20() unsafe.Pointer {
-	return C.bot_regular_player_update_4fab20()
+	return C.nox_xxx_updatePlayer_4F8100
 }

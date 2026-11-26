@@ -14,10 +14,10 @@ static int golem_native_call_549e90(int(*fn)(nox_object_t*),nox_object_t* u) {re
 static int golem_public_549e90(int mech,nox_object_t* u) {
  if(mech)return GOLEM_CALL(sub_549E90,u);return GOLEM_CALL(sub_549FA0,u);
 }
-static int golem_abi_549e90(int mech) {
- if(mech)return _Generic(&sub_549E90,int(*)(int):32,int(*)(nox_object_t*):64);
- return _Generic(&sub_549FA0,int(*)(int):32,int(*)(nox_object_t*):64);
-}
+enum {
+ golem_mech_abi_549e90 = _Generic(&sub_549E90,int(*)(int):32,int(*)(nox_object_t*):64),
+ golem_stone_abi_549e90 = _Generic(&sub_549FA0,int(*)(int):32,int(*)(nox_object_t*):64),
+};
 static uintptr_t golem_layout_549e90(int i) {
  switch(i) {
  case 0:return offsetof(nox_object_t,obj_flags);
@@ -64,11 +64,10 @@ func golemOriginalC549E90(mech bool, unit *server.Object) int32 {
 	return int32(C.golem_public_549e90(n, asObjectC(unit)))
 }
 func golemOriginalABI549E90(mech bool) int {
-	n := C.int(0)
 	if mech {
-		n = 1
+		return C.golem_mech_abi_549e90
 	}
-	return int(C.golem_abi_549e90(n))
+	return C.golem_stone_abi_549e90
 }
 func golemOriginalLayout549E90() (out [8]uintptr) {
 	for i := range out {

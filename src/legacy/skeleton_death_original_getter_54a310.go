@@ -24,15 +24,12 @@ static int skeleton_public_54a310(int entry,nox_object_t* u,char* type,char** mo
  default:return -1;
  }
 }
-static int skeleton_abi_54a310(int entry) {
- switch(entry) {
- case 0:return _Generic(&sub_54A310,int(*)(int):32,int(*)(nox_object_t*):64);
- case 1:return _Generic(&sub_54A390,void(*)(int,char*,const char*,const char*,const char*,const char*,int):32,void(*)(nox_object_t*,char*,char*,char*,char*,char*,int):64);
- case 2:return _Generic(&sub_54A4C0,void(*)(int):32,void(*)(nox_object_t*):64);
- case 3:return _Generic(&sub_54A750,int(*)(int):32,int(*)(nox_object_t*):64);
- default:return 0;
- }
-}
+enum {
+ skeleton_death_abi_54a310 = _Generic(&sub_54A310,int(*)(int):32,int(*)(nox_object_t*):64),
+ skeleton_drop_abi_54a310 = _Generic(&sub_54A390,void(*)(int,char*,const char*,const char*,const char*,const char*,int):32,void(*)(nox_object_t*,char*,char*,char*,char*,char*,int):64),
+ skeleton_debris_abi_54a310 = _Generic(&sub_54A4C0,void(*)(int):32,void(*)(nox_object_t*):64),
+ skeleton_lord_abi_54a310 = _Generic(&sub_54A750,int(*)(int):32,int(*)(nox_object_t*):64),
+};
 static uintptr_t skeleton_layout_54a310(int i) {
  switch(i) {
  case 0:return offsetof(nox_object_t,obj_class);
@@ -79,7 +76,20 @@ func skeletonOriginalC54A310(entry int, unit *server.Object, name unsafe.Pointer
 	}
 	return int32(C.skeleton_public_54a310(C.int(entry), asObjectC(unit), (*C.char)(name), &cm[0], C.int(charge)))
 }
-func skeletonOriginalABI54A310(entry int) int { return int(C.skeleton_abi_54a310(C.int(entry))) }
+func skeletonOriginalABI54A310(entry int) int {
+	switch int32(entry) {
+	case 0:
+		return C.skeleton_death_abi_54a310
+	case 1:
+		return C.skeleton_drop_abi_54a310
+	case 2:
+		return C.skeleton_debris_abi_54a310
+	case 3:
+		return C.skeleton_lord_abi_54a310
+	default:
+		return 0
+	}
+}
 func skeletonOriginalLayout54A310() (out [11]uintptr) {
 	for i := range out {
 		out[i] = uintptr(C.skeleton_layout_54a310(C.int(i)))

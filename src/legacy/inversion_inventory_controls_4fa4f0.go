@@ -13,8 +13,7 @@ static int32_t inversion_inventory_call_native_4fa4f0(inversion_inventory_native
 static int32_t inversion_inventory_public_4fa4f0(nox_object_t* root,nox_object_t* target){
  return _Generic(&nox_xxx_checkInversionEffect_4FA4F0,inversion_inventory_old_4fa4f0:inversion_inventory_call_old_4fa4f0,inversion_inventory_native_4fa4f0:inversion_inventory_call_native_4fa4f0)(&nox_xxx_checkInversionEffect_4FA4F0,root,target);
 }
-static int inversion_inventory_abi_4fa4f0(void){return _Generic(&nox_xxx_checkInversionEffect_4FA4F0,inversion_inventory_old_4fa4f0:1,inversion_inventory_native_4fa4f0:2);}
-static void* inversion_inventory_pointer_4fa4f0(int parent){return parent?(void*)nox_xxx_findParentChainPlayer_4EC580:(void*)nox_xxx_checkInversionEffect_4FA4F0;}
+enum { inversion_inventory_abi_4fa4f0 = _Generic(&nox_xxx_checkInversionEffect_4FA4F0,inversion_inventory_old_4fa4f0:1,inversion_inventory_native_4fa4f0:2) };
 static uintptr_t inversion_inventory_layout_4fa4f0(int field){
  switch(field){
  case 0:return offsetof(nox_object_t,inv_first_item);
@@ -47,15 +46,14 @@ func inversionInventoryLayout4FA4F0() (out [5]uintptr) {
 }
 
 func inversionInventoryABI4FA4F0() int {
-	return int(C.inversion_inventory_abi_4fa4f0())
+	return C.inversion_inventory_abi_4fa4f0
 }
 
 func inversionInventoryPointer4FA4F0(parent bool) unsafe.Pointer {
-	index := 0
 	if parent {
-		index = 1
+		return C.nox_xxx_findParentChainPlayer_4EC580
 	}
-	return C.inversion_inventory_pointer_4fa4f0(C.int(index))
+	return C.nox_xxx_checkInversionEffect_4FA4F0
 }
 
 func inversionInventoryInitialC4FA4F0(p unsafe.Pointer, kind, index int) uintptr {

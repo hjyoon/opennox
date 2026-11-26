@@ -23,11 +23,11 @@ static uint32_t simple_polyp_public_54cae0(int entry,nox_object_t* u) {
  void(*)(int):simple_polyp_old_void_54cae0,void(*)(nox_object_t*):simple_polyp_native_void_54cae0)(&nox_xxx_diePotion_54CBB0,u);
  return 0;
 }
-static int simple_polyp_abi_54cae0(int entry) {
- if(entry==0)return _Generic(&nox_xxx_dieImpEgg_54CAE0,int(*)(int):32,int(*)(nox_object_t*):64);
- if(entry==1)return _Generic(&nox_xxx_diePolyp_54CB10,void(*)(int):32,void(*)(nox_object_t*):64);
- return _Generic(&nox_xxx_diePotion_54CBB0,void(*)(int):32,void(*)(nox_object_t*):64);
-}
+enum {
+ imp_egg_abi_54cae0 = _Generic(&nox_xxx_dieImpEgg_54CAE0,int(*)(int):32,int(*)(nox_object_t*):64),
+ polyp_abi_54cae0 = _Generic(&nox_xxx_diePolyp_54CB10,void(*)(int):32,void(*)(nox_object_t*):64),
+ potion_death_abi_54cae0 = _Generic(&nox_xxx_diePotion_54CBB0,void(*)(int):32,void(*)(nox_object_t*):64),
+};
 static uintptr_t simple_polyp_layout_54cae0(int index) {
  switch(index) {
  case 0:return offsetof(nox_object_t,obj_flags);
@@ -60,7 +60,14 @@ func simplePolypOriginalC54CAE0(entry int, source *server.Object) uint32 {
 }
 
 func simplePolypOriginalABI54CAE0(entry int) int {
-	return int(C.simple_polyp_abi_54cae0(C.int(entry)))
+	switch int32(entry) {
+	case 0:
+		return C.imp_egg_abi_54cae0
+	case 1:
+		return C.polyp_abi_54cae0
+	default:
+		return C.potion_death_abi_54cae0
+	}
 }
 
 func simplePolypOriginalLayout54CAE0() (out [5]uintptr) {

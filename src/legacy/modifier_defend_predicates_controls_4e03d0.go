@@ -31,16 +31,11 @@ static int32_t modifier_predicates_public_4e03d0(int which,void* argument,const 
  default:return _Generic(&nox_xxx_unusedCheckGripEffect_4E03F0,modifier_scan_old_4e03d0:modifier_scan_call_old_4e03d0,modifier_scan_native_4e03d0:modifier_scan_call_native_4e03d0)(&nox_xxx_unusedCheckGripEffect_4E03F0,argument,a);
  }
 }
-static int modifier_predicates_abi_4e03d0(int which){
- switch(which){
- case 0:return _Generic(&nox_xxx_inversionEffect_4E03D0,modifier_predicate_old_4e03d0:1,modifier_predicate_native_4e03d0:2);
- case 1:return _Generic(&nox_xxx_gripEffect_4E0480,modifier_predicate_old_4e03d0:1,modifier_predicate_native_4e03d0:2);
- default:return _Generic(&nox_xxx_unusedCheckGripEffect_4E03F0,modifier_scan_old_4e03d0:1,modifier_scan_native_4e03d0:2);
- }
-}
-static void* modifier_predicates_callback_4e03d0(int which){
- return which ? (void*)nox_xxx_gripEffect_4E0480 : (void*)nox_xxx_inversionEffect_4E03D0;
-}
+enum {
+ modifier_inversion_abi_4e03d0 = _Generic(&nox_xxx_inversionEffect_4E03D0,modifier_predicate_old_4e03d0:1,modifier_predicate_native_4e03d0:2),
+ modifier_grip_abi_4e03d0 = _Generic(&nox_xxx_gripEffect_4E0480,modifier_predicate_old_4e03d0:1,modifier_predicate_native_4e03d0:2),
+ modifier_scan_abi_4e03d0 = _Generic(&nox_xxx_unusedCheckGripEffect_4E03F0,modifier_scan_old_4e03d0:1,modifier_scan_native_4e03d0:2),
+};
 static uintptr_t modifier_predicates_layout_4e03d0(int field){
  switch(field){
  case 0:return sizeof(obj_412ae0_t);
@@ -83,11 +78,21 @@ func modifierPredicatesLayout4E03D0() (out [13]uintptr) {
 }
 
 func modifierPredicatesABI4E03D0(which int) int {
-	return int(C.modifier_predicates_abi_4e03d0(C.int(which)))
+	switch int32(which) {
+	case 0:
+		return C.modifier_inversion_abi_4e03d0
+	case 1:
+		return C.modifier_grip_abi_4e03d0
+	default:
+		return C.modifier_scan_abi_4e03d0
+	}
 }
 
 func modifierPredicatesCallback4E03D0(which int) unsafe.Pointer {
-	return C.modifier_predicates_callback_4e03d0(C.int(which))
+	if int32(which) != 0 {
+		return C.nox_xxx_gripEffect_4E0480
+	}
+	return C.nox_xxx_inversionEffect_4E03D0
 }
 
 func modifierPredicatesInitialC4E03D0(p unsafe.Pointer, kind, index int) uintptr {

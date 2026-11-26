@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include <stdint.h>
-extern uint32_t dword_5d4594_739392;
 */
 import "C"
 
@@ -18,11 +17,11 @@ import (
 // The kill-pair cursor is a relocated C-owned scalar, not the retired blob
 // slot at 5D4594+739392. No player pointer crosses these scalar accessors.
 func playerKillStatsPairCount425CA0() uint32 {
-	return uint32(C.dword_5d4594_739392)
+	return uint32(legacyWords.dword_5d4594_739392)
 }
 
 func playerKillStatsSetPairCount425CA0(value uint32) {
-	C.dword_5d4594_739392 = C.uint32_t(value)
+	legacyWords.dword_5d4594_739392 = C.uint32_t(value)
 }
 
 func copyStatsPlayerName(index uint32, player *server.Player) {

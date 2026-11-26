@@ -5,7 +5,6 @@ package legacy
 #include "noxstring.h"
 
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_587000_122956;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -207,7 +206,7 @@ func sub_44E8E0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 	tw, th = briefingMeasure(font, &text[0])
 	nox_xxx_drawSetTextColor_434390(int32(Get_nox_color_orange_2614256()))
 	nox_xxx_drawString_43F6E0(font, &text[0], originX+320-tw/2, originY+2*(225-th))
-	return briefingContinue(font, &C.dword_587000_122956, originY+450, 642)
+	return briefingContinue(font, &legacyAddressableWords.dword_587000_122956, originY+450, 642)
 }
 
 //export sub_44F0F0

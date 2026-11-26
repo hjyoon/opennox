@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_3.h"
-extern uint64_t qword_581450_9512;
 */
 import "C"
 
@@ -20,7 +19,7 @@ func nox_xxx_recalculateArmorVal_53E300(owner *nox_object_t) C.int {
 }
 
 func recalculateEquipmentArmor53E300(owner *server.Object) {
-	cap := math.Float64frombits(uint64(C.qword_581450_9512))
+	cap := math.Float64frombits(uint64(legacyWords.qword_581450_9512))
 	value := server.EquippedArmorValue53E300(owner, itemDefendNative415C00, cap)
 	npcSetArmorValueNative53E300(owner, value)
 }

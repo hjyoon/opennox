@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 #include "floor_brush_native.h"
-extern uint32_t dword_5d4594_3835348;
 */
 import "C"
 
@@ -89,7 +88,7 @@ func mapgenPlaceTileQuarter(x, y, dx, dy int32, brush *mapgenFloorBrush) int32 {
 //export sub_51D8F0
 func sub_51D8F0(position *C.float2) C.int {
 	tileID := memmap.Uint32(0x973F18, 35912)
-	variation := uint32(C.dword_5d4594_3835348)
+	variation := uint32(legacyWords.dword_5d4594_3835348)
 	return C.int(mapgenReadTileCoordinate((*mapgenWorldPoint)(unsafe.Pointer(position)), tileID, variation, mapgenPlaceTileQuarter))
 }
 

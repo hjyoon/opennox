@@ -22,7 +22,6 @@ package legacy
 #include "client__drawable__update__telwake.h"
 #include "client__drawable__update__vortexup.h"
 
-extern uint64_t qword_581450_9552;
 */
 import "C"
 
@@ -52,7 +51,7 @@ func legacyThingAngle(value string, limit int64) (C.uint16_t, bool) {
 		return 0, false
 	}
 	turn := memmap.Float64(0x581450, 9560)
-	scale := math.Float64frombits(uint64(C.qword_581450_9552))
+	scale := math.Float64frombits(uint64(legacyWords.qword_581450_9552))
 	bias := math.Float64frombits(uint64(legacyWords.qword_581450_9544))
 	return C.uint16_t(int64(float64(degrees)*turn*scale + bias)), true
 }

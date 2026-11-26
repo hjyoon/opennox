@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME3_3.h"
 
-extern uint32_t dword_5d4594_2649712;
 */
 import "C"
 
@@ -123,7 +122,7 @@ func importantListHeadsC() (first, last uint32) {
 }
 
 func importantRecipientMaskC() uint32 {
-	return uint32(C.dword_5d4594_2649712)
+	return uint32(legacyAddressableWords.dword_5d4594_2649712)
 }
 
 func importantCapacityC() uint32 {
@@ -135,7 +134,7 @@ func setImportantCapacityC(capacity uint32) {
 }
 
 func setImportantRecipientMaskC(mask uint32) {
-	C.dword_5d4594_2649712 = C.uint32_t(mask)
+	legacyAddressableWords.dword_5d4594_2649712 = C.uint32_t(mask)
 }
 
 func setImportantListHeadsC(first, last uint32) {

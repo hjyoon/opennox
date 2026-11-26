@@ -5,8 +5,6 @@ package legacy
 #include "GAME1.h"
 #include "stats_end_native.h"
 
-extern uint32_t dword_5d4594_600116;
-extern nox_stats_quest_columns_native nox_stats_quest_columns;
 */
 import "C"
 
@@ -25,7 +23,10 @@ const (
 	questStatsHeaderSize = 580
 )
 
-var questStatsNameCount int
+var (
+	questStatsColumns, _ = alloc.New(C.nox_stats_quest_columns_native{})
+	questStatsNameCount  int
+)
 
 func questStatsHeader() []byte {
 	return memmap.Slice(0x5D4594, questStatsHeaderBase)[:questStatsHeaderSize]
@@ -45,7 +46,7 @@ func nox_stats_start_header_native() {
 
 //export nox_stats_quest_columns_native_get
 func nox_stats_quest_columns_native_get() *C.nox_stats_quest_columns_native {
-	return &C.nox_stats_quest_columns
+	return questStatsColumns
 }
 
 //export nox_stats_quest_columns_clear_native
@@ -75,7 +76,7 @@ func nox_stats_quest_columns_clear_native() unsafe.Pointer {
 //export sub_426060
 func sub_426060() {
 	Set_dword_5d4594_608316(0)
-	C.dword_5d4594_600116 = C.uint32_t(time.Now().Unix())
+	legacyWords.dword_5d4594_600116 = C.uint32_t(time.Now().Unix())
 	port := sub_5545A0()
 	sub_4282D0(sub_554230(), C.int(port))
 	if noxflags.HasGame(noxflags.GameModeQuest) {

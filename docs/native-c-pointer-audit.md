@@ -881,6 +881,19 @@ They implement ABI calls, C varargs and runtime services, including
 four `safe` wrappers and two 32-bit adapters that preserve float bits.
 The three comparison units contain 115 reference and fixture functions.
 
+### Statistics, map generation, and startup storage
+
+Twenty-five further numeric cells are owned by Go. Seven use native
+allocation because their addresses are passed to comparison or
+runtime code. The same-width initial values cover the two 64-bit
+floating-point bit patterns as well as the existing 32-bit defaults.
+Each standalone C comparison keeps its independent storage.
+
+The quest statistics columns use eleven native pointers in a Go-owned
+native allocation. The startup focus registration keeps two adjacent
+six-byte strings with distinct addresses. Together these changes leave
+140 definitions in `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

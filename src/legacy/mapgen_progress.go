@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_2.h"
 #include "client__gui__guigen.h"
 
-extern uint32_t dword_5d4594_2487564;
-extern uint32_t dword_5d4594_2487568;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -55,8 +53,8 @@ func nox_xxx_mapGenSetFlags_5235F0(code C.char) {
 	if noxflags.HasEngine(noxflags.EngineNoRendering) || noxflags.HasGame(noxflags.GameFlag22) {
 		return
 	}
-	mapgenUpdateProgress(byte(code), (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487564)),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2487568)), mapgenProgressServices{
+	mapgenUpdateProgress(byte(code), (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487564)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487568)), mapgenProgressServices{
 			ticks:     PlatformTicks,
 			poll:      nox_input_pollEvents_4453A0,
 			threshold: func() int32 { return memmap.Int32(0x587000, 254948) },

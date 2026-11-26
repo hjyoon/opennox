@@ -4,7 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "stats_end_native.h"
 
-extern uint32_t dword_5d4594_741332;
 */
 import "C"
 
@@ -62,7 +61,7 @@ func buildQuestStatsPlayers(columns *C.nox_stats_quest_columns_native, header []
 			index++
 		}
 	}
-	C.dword_5d4594_741332 = C.uint32_t(questStatsPlayerCount(header))
+	legacyWords.dword_5d4594_741332 = C.uint32_t(questStatsPlayerCount(header))
 }
 
 func buildQuestStatsPacket(columns *C.nox_stats_quest_columns_native, header []byte, length *C.uint32_t) *C.uint16_t {

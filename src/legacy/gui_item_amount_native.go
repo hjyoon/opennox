@@ -7,7 +7,6 @@ package legacy
 #include "client__gui__window.h"
 #include "noxstring.h"
 extern int nox_win_width, nox_win_height;
-extern uint32_t dword_587000_183456, dword_587000_183460;
 
 _Static_assert(sizeof(nox_gui_item_amount_callback_t) == sizeof(uintptr_t),
 	"item-amount callback must occupy one native pointer slot");
@@ -126,7 +125,7 @@ func nox_gui_item_amount_call_callback(callback C.nox_gui_item_amount_callback_t
 
 func invokeItemAmount(callback C.nox_gui_item_amount_callback_t, amount uint32) {
 	x, y := itemAmountPosition(itemAmountRoot())
-	pos := C.int2{field_0: x + C.int(C.dword_587000_183456), field_4: y + C.int(C.dword_587000_183460)}
+	pos := C.int2{field_0: x + C.int(legacyWords.dword_587000_183456), field_4: y + C.int(legacyWords.dword_587000_183460)}
 	nox_gui_item_amount_call_callback(callback, &pos, C.uint32_t(amount))
 }
 
@@ -236,7 +235,7 @@ func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
 	}
 	drawImage(base)
 	item := asDrawable(itemAmountDialog.drawable)
-	item.SetPos(image.Pt(int(int32(x+C.int(C.dword_587000_183456))), int(int32(y+C.int(C.dword_587000_183460)))))
+	item.SetPos(image.Pt(int(int32(x+C.int(legacyWords.dword_587000_183456))), int(int32(y+C.int(legacyWords.dword_587000_183460)))))
 	viewport := packedGUIViewport(1319108)
 	item.CallDraw(&viewport)
 
@@ -321,8 +320,8 @@ func sub_4C0560(x, y C.int) C.int {
 	root := itemAmountRoot()
 	var width, height C.int
 	C.nox_window_get_size(root, &width, &height)
-	x = max(0, x-C.int(C.dword_587000_183456))
-	y = max(0, y-C.int(C.dword_587000_183460))
+	x = max(0, x-C.int(legacyWords.dword_587000_183456))
+	y = max(0, y-C.int(legacyWords.dword_587000_183460))
 	if x+width >= C.nox_win_width {
 		x = C.nox_win_width - width
 	}

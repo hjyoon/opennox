@@ -4,7 +4,6 @@ package legacy
 #include <stdio.h>
 #include "server__script__file.h"
 
-extern unsigned int dword_5d4594_2489420;
 */
 import "C"
 
@@ -100,7 +99,7 @@ func nox_script_readWriteVvv_541E40(first, second, destination *C.FILE) C.int {
 	if !firstOK || !secondOK || countFirst < 0 || countSecond < 4 {
 		return 0
 	}
-	C.dword_5d4594_2489420 = C.uint(countFirst)
+	legacyWords.dword_5d4594_2489420 = C.uint(countFirst)
 	nox_script_writeInt_542BB0(countFirst+countSecond-4, destination)
 	if !transferScriptPairHeader(first, second, destination, 4) ||
 		!transferScriptBytes(first, destination, 4*int64(countFirst)) ||
@@ -175,7 +174,7 @@ func nox_script_readWriteXxx_541A50(first, second, destination *C.FILE) C.int {
 
 //export nox_script_readWriteWww_5417C0
 func nox_script_readWriteWww_5417C0(first, second, destination *C.FILE) C.size_t {
-	C.dword_5d4594_2489420, legacyWords.dword_5d4594_2489424, legacyWords.dword_5d4594_2489428 = 0, 0, 0
+	legacyWords.dword_5d4594_2489420, legacyWords.dword_5d4594_2489424, legacyWords.dword_5d4594_2489428 = 0, 0, 0
 	if !transferScriptPairHeader(first, second, destination, 8) {
 		return 0
 	}

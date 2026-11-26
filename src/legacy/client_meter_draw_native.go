@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern uint64_t qword_581450_9512;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -95,7 +94,7 @@ func sub_471250(win *C.nox_window, _ *C.nox_window_data) C.int {
 	rowsPerCharge := (gap+meterChargeRows)/maximum - gap
 	fraction := float32(float64(gap+meterChargeRows-maximum*((gap+meterChargeRows)/maximum)) / float64(maximum))
 	phase := float32(0.001)
-	unit := math.Float64frombits(uint64(C.qword_581450_9512))
+	unit := math.Float64frombits(uint64(legacyWords.qword_581450_9512))
 	bottom := meterChargeRows - rowsPerCharge
 	for cell := uint32(0); ; cell++ {
 		color := meter.color_2

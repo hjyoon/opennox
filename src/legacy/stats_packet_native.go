@@ -4,8 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "GAME1_2.h"
 
-extern uint32_t dword_5d4594_741648;
-extern uint32_t dword_5d4594_741652;
 */
 import "C"
 
@@ -60,7 +58,7 @@ func statsCompressRLE(input []byte) []byte {
 }
 
 func statsRandomIndexCells() (first, second *uint32) {
-	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_741648)), (*uint32)(unsafe.Pointer(&C.dword_5d4594_741652))
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741648)), (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741652))
 }
 
 func statsNextRandom(seed *int32) float64 {

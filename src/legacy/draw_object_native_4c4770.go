@@ -8,7 +8,7 @@ package legacy
 #include "GAME3_1.h"
 #include "client__video__draw_common.h"
 extern int nox_win_width;
-extern uint32_t dword_5d4594_1321520, dword_8531A0_2572;
+extern uint32_t dword_8531A0_2572;
 */
 import "C"
 
@@ -85,7 +85,7 @@ func drawObjectSetTint(color C.int) {
 }
 
 func drawObjectFade4C4770(vp *noxrender.Viewport, dr *client.Drawable) {
-	ghost := dr.Field27() == uint32(C.dword_5d4594_1321520)
+	ghost := dr.Field27() == uint32(legacyWords.dword_5d4594_1321520)
 	if dr.Field_120 != 0 {
 		alpha := 1 - float64(gameFrame()-dr.Field_85)/float64(int32(gameFPS()))
 		if alpha < 0 {
@@ -107,7 +107,7 @@ func drawObjectFade4C4770(vp *noxrender.Viewport, dr *client.Drawable) {
 
 func drawObjectInvisibility4C4770(dr, local *client.Drawable, player *server.Player, sameTeam, observer bool) bool {
 	if !dr.HasEnchant(server.ENCHANT_INVISIBLE) && !observer &&
-		!(dr.Field27() == uint32(C.dword_5d4594_1321520) && local.HasEnchant(server.ENCHANT_INFRAVISION)) {
+		!(dr.Field27() == uint32(legacyWords.dword_5d4594_1321520) && local.HasEnchant(server.ENCHANT_INFRAVISION)) {
 		return true
 	}
 	if player != nil && player.Field3680&1 != 0 {
@@ -161,8 +161,8 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 	if vp == nil || dr == nil || img == nil {
 		return
 	}
-	if C.dword_5d4594_1321520 == 0 {
-		C.dword_5d4594_1321520 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Ghost")))
+	if legacyWords.dword_5d4594_1321520 == 0 {
+		legacyWords.dword_5d4594_1321520 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Ghost")))
 	}
 	var sameTeam, observer bool
 	if dr.Class().Has(object.ClassPlayer) {

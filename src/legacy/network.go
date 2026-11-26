@@ -16,8 +16,6 @@ package legacy
 #include "client__gui__chathelp.h"
 #include "client_ui_words.h"
 #include "noxstring_format_abi.h"
-extern unsigned int dword_5d4594_2649712;
-extern uint32_t dword_5d4594_1200832;
 unsigned int nox_client_getServerAddr_43B300();
 void nox_xxx_playerInitColors_461460(nox_playerInfo* pl);
 int nox_client_getServerPort_43B320();

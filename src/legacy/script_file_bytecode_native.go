@@ -3,7 +3,6 @@ package legacy
 /*
 #include <stdio.h>
 
-extern unsigned int dword_5d4594_2489420;
 */
 import "C"
 
@@ -73,7 +72,7 @@ func nox_script_readWriteYyy_542380(source, destination *C.FILE, relocate C.int)
 			global := nox_script_readInt_542B70(source)
 			index := nox_script_readInt_542B70(source)
 			if relocate != 0 && global != 0 && index >= 4 {
-				index += C.int(C.dword_5d4594_2489420) - 4
+				index += C.int(legacyWords.dword_5d4594_2489420) - 4
 			}
 			nox_script_writeInt_542BB0(opcode, destination)
 			nox_script_writeInt_542BB0(global, destination)

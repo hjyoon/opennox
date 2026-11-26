@@ -48,11 +48,9 @@ package legacy
 
 extern uint32_t dword_8531A0_2572;
 extern uint32_t dword_5d4594_1313788;
-extern uint32_t nox_server_sendMotd_108752;
 extern uint32_t dword_5d4594_1313740;
 extern uint32_t dword_5d4594_1307720;
 extern void* dword_587000_122852;
-extern uint64_t qword_581450_9552;
 extern void* dword_587000_93164;
 extern void* dword_587000_127004;
 extern int nox_win_width;

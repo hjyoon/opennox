@@ -4,7 +4,6 @@ package legacy
 #include "cgo_const.h"
 #include "defs.h"
 
-extern uint32_t dword_5d4594_1200832;
 */
 import "C"
 
@@ -129,12 +128,12 @@ func clientGUISettingsPacket(data []byte) {
 				sub_4165F0(1, 0)
 			}
 			if noxflags.HasGame(noxflags.GameModeChat) {
-				if C.dword_5d4594_1200832 != 0 {
+				if legacyWords.dword_5d4594_1200832 != 0 {
 					player := (*C.nox_playerInfo)(Get_dword_8531A0_2576().C())
 					var text [128]wchar2_t
 					formatWideStrings(text[:], clientDecodeString("NameChange", 1470), &player.name_final[0], nil)
 					nox_xxx_printCentered_445490(&text[0])
-					C.dword_5d4594_1200832 = 0
+					legacyWords.dword_5d4594_1200832 = 0
 				}
 				if Get_nox_server_sanctuaryHelp_54276() != 0 {
 					nox_xxx_cliShowHelpGui_49C560()

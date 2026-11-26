@@ -125,7 +125,7 @@ func sub_455EE0() C.int {
 //export sub_455F10
 func sub_455F10(show C.int) C.int {
 	w := serverSharedWindows.flagball_hud
-	if show != 0 && C.dword_5d4594_1045640 != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
+	if show != 0 && legacyWords.dword_5d4594_1045640 != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
 		return C.nox_xxx_wndShowModalMB_46A8C0(w)
 	}
 	return g2ServerHidden(w, true)
@@ -154,7 +154,7 @@ func sub_455F60() C.int {
 	if height > maxH {
 		height = maxH
 	}
-	C.dword_5d4594_1045640 = 1
+	legacyWords.dword_5d4594_1045640 = 1
 	w.off_x = C.intptr_t(width) - w.width/3 - 91
 	w.end_x = w.width + w.off_x
 	w.off_y = C.intptr_t(height) - 120
@@ -164,7 +164,7 @@ func sub_455F60() C.int {
 }
 
 //export sub_456050
-func sub_456050() C.int { C.dword_5d4594_1045640 = 0; return sub_455F10(0) }
+func sub_456050() C.int { legacyWords.dword_5d4594_1045640 = 0; return sub_455F10(0) }
 
 //export sub_456070
 func sub_456070() C.int {
@@ -201,7 +201,7 @@ func sub_456240() C.int {
 		result = C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.flagball_hud)
 	}
 	serverSharedWindows.flagball_hud = nil
-	C.dword_5d4594_1045640 = 0
+	legacyWords.dword_5d4594_1045640 = 0
 	return result
 }
 

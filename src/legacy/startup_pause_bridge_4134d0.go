@@ -5,7 +5,6 @@ package legacy
 #include "GAME1_3.h"
 #include "GAME2.h"
 #include "client__io__win95__focus.h"
-#include "vardefs.h"
 */
 import "C"
 
@@ -13,7 +12,16 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+var startupPauseNames4134D0 = func() *[2][6]byte {
+	names, _ := alloc.New([2][6]byte{})
+	for i := range names {
+		copy(names[i][:], "Pause")
+	}
+	return names
+}()
 
 func startupPauseDefaultCell4134D0(field int) unsafe.Pointer {
 	if field == 4 {
@@ -43,9 +51,9 @@ func startupPauseCallback4134D0(kind uint32) unsafe.Pointer {
 }
 func startupPauseString4134D0(kind uint32) unsafe.Pointer {
 	if kind == 1 {
-		return unsafe.Pointer(&C.nox_startup_pause_names[0][0])
+		return unsafe.Pointer(&startupPauseNames4134D0[0][0])
 	}
-	return unsafe.Pointer(&C.nox_startup_pause_names[1][0])
+	return unsafe.Pointer(&startupPauseNames4134D0[1][0])
 }
 func startupPauseDefaultService4134D0(site uint32, args []startupPauseArg4134D0) uint32 {
 	switch site {

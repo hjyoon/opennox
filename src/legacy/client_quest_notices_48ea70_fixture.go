@@ -2,12 +2,11 @@ package legacy
 
 /*
 #include "defs.h"
-extern uint32_t dword_5d4594_1200832;
 */
 import "C"
 
 func questNoticeNamePending48EA70() int {
-	return int(C.dword_5d4594_1200832)
+	return int(legacyWords.dword_5d4594_1200832)
 }
 
 func questNoticeGuideFixture48EA70(title string) func() {

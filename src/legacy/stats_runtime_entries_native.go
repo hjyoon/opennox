@@ -6,7 +6,6 @@ package legacy
 #include "stats_start_native.h"
 #include "stats_end_native.h"
 
-extern uint32_t dword_5d4594_600116;
 */
 import "C"
 
@@ -134,14 +133,14 @@ func nox_xxx_net_4263C0() *C.char {
 //export sub_4264D0
 func sub_4264D0() C.int {
 	if noxflags.HasGame(noxflags.GameModeQuest) {
-		*memmap.PtrUint32(0x5D4594, 739416) = uint32(time.Now().Unix()) - uint32(C.dword_5d4594_600116)
+		*memmap.PtrUint32(0x5D4594, 739416) = uint32(time.Now().Unix()) - uint32(legacyWords.dword_5d4594_600116)
 		return nox_stats_quest_end_native()
 	}
 	if noxflags.HasGame(noxflags.GameOnline) {
 		for player := nox_common_playerInfoGetFirst_416EA0(); player != nil; player = nox_common_playerInfoGetNext_416EE0(player) {
 			sub_425E90(player, 1)
 		}
-		*memmap.PtrUint32(0x5D4594, 599504) = uint32(time.Now().Unix()) - uint32(C.dword_5d4594_600116)
+		*memmap.PtrUint32(0x5D4594, 599504) = uint32(time.Now().Unix()) - uint32(legacyWords.dword_5d4594_600116)
 	}
 	return nox_stats_session_report_native(2)
 }

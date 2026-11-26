@@ -5,7 +5,6 @@ package legacy
 
 extern int nox_win_width;
 extern int nox_win_height;
-extern uint32_t dword_5d4594_1203832;
 extern uint32_t dword_5d4594_1203836;
 extern uint32_t dword_5d4594_1203840;
 extern uint32_t dword_8531A0_2572;
@@ -72,7 +71,7 @@ func sub_495210(data *C.uint8_t) C.int {
 
 //export sub_495430
 func sub_495430() C.int {
-	C.dword_5d4594_1203832 = 0
+	legacyWords.dword_5d4594_1203832 = 0
 	nox_client_drawEnableAlpha_434560(0)
 	sub_4345F0(0)
 	nox_xxx_draw_434600(0)
@@ -80,7 +79,7 @@ func sub_495430() C.int {
 	maxRow := C.uint32_t(C.nox_win_height / 4 / deathFeedRowHeight)
 	oldest := C.dword_5d4594_1203840
 	for index := oldest; index != C.dword_5d4594_1203836; index = (index + 1) % deathFeedCapacity {
-		if C.dword_5d4594_1203832 > maxRow {
+		if legacyWords.dword_5d4594_1203832 > maxRow {
 			break
 		}
 		if gameFrame()-ring[oldest].frame > 90 {
@@ -90,7 +89,7 @@ func sub_495430() C.int {
 		}
 		drawDeathFeedEntry(&ring[index])
 		oldest = C.dword_5d4594_1203840
-		C.dword_5d4594_1203832++
+		legacyWords.dword_5d4594_1203832++
 	}
 	return C.int(C.dword_5d4594_1203836)
 }
@@ -150,7 +149,7 @@ func drawDeathFeedEntry(entry *deathFeedEntry) int {
 	victimSize := r.GetStringSizeWrapped(face, victim, 0)
 	width += iconSize.X + victimSize.X
 	left := (int(C.nox_win_width) - width - 10) / 2
-	top := int(C.dword_5d4594_1203832) * deathFeedRowHeight
+	top := int(legacyWords.dword_5d4594_1203832) * deathFeedRowHeight
 	r.DrawRectFilledAlpha(left-5, top, width+20, deathFeedRowHeight)
 	textY := top + (deathFeedRowHeight-victimSize.Y)/2
 	drawName := func(code uint32, text string, x int) int {

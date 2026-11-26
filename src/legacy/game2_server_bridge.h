@@ -54,7 +54,6 @@
 void sub_4537F0(void);
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_5d4594_1045420;
-extern uint32_t dword_5d4594_1045640;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_831084;
 extern uint32_t dword_5d4594_830864;

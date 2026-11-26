@@ -5,7 +5,6 @@ package legacy
 #include "stats_bulk_native.h"
 #include "stats_end_native.h"
 
-extern uint32_t dword_5d4594_608316, dword_5d4594_739392, dword_5d4594_600116, dword_5d4594_741332;
 typedef const char nox_stats_const_name_t;
 typedef const void* nox_stats_const_data_t;
 
@@ -128,7 +127,7 @@ func (c *nativeStatsColumns) buildPlayers(header, records []byte, count int) {
 		c.durations[i] = elapsed
 	}
 	binary.NativeEndian.PutUint16(header[6:], uint16(count))
-	C.dword_5d4594_741332 = C.uint32_t(count)
+	legacyWords.dword_5d4594_741332 = C.uint32_t(count)
 }
 
 func (c *nativeStatsColumns) buildPairs(records []byte, count uint32) {
@@ -243,14 +242,14 @@ func nox_stats_bulk_flush_native() *C.char {
 	header := memmap.Slice(0x5D4594, 599476)
 	players := memmap.Slice(0x5D4594, 600124)[:0x2000]
 	pairs := memmap.Slice(0x5D4594, 608320)[:0x20000]
-	statsBulkColumns.buildPlayers(header, players, int(C.dword_5d4594_608316))
-	statsBulkColumns.buildPairs(pairs, uint32(C.dword_5d4594_739392))
-	binary.NativeEndian.PutUint32(header[28:], uint32(time.Now().Unix())-uint32(C.dword_5d4594_600116))
+	statsBulkColumns.buildPlayers(header, players, int(legacyWords.dword_5d4594_608316))
+	statsBulkColumns.buildPairs(pairs, uint32(legacyWords.dword_5d4594_739392))
+	binary.NativeEndian.PutUint32(header[28:], uint32(time.Now().Unix())-uint32(legacyWords.dword_5d4594_600116))
 	statsReport(&statsBulkColumns, header, 1)
 
 	clear(players)
 	clear(pairs)
-	C.dword_5d4594_608316, C.dword_5d4594_739392 = 0, 0
+	legacyWords.dword_5d4594_608316, legacyWords.dword_5d4594_739392 = 0, 0
 	for pl := nox_common_playerInfoGetFirst_416EA0(); pl != nil; pl = nox_common_playerInfoGetNext_416EE0(pl) {
 		pl.field_4648 = -1
 	}

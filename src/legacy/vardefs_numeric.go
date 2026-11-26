@@ -15,11 +15,14 @@ var legacyWords = struct {
 	dword_587000_171388                               C.uint32_t
 	dword_587000_180476                               C.uint32_t
 	dword_587000_180480                               C.uint32_t
+	dword_587000_183456                               C.uint32_t
+	dword_587000_183460                               C.uint32_t
 	dword_587000_237036                               C.uint32_t
 	dword_587000_87408                                C.uint32_t
 	dword_587000_87412                                C.int
 	dword_5d4594_1045432                              C.uint32_t
 	dword_5d4594_1045460                              C.uint32_t
+	dword_5d4594_1045640                              C.uint32_t
 	dword_5d4594_1047548                              C.uint32_t
 	dword_5d4594_1047552                              C.uint32_t
 	dword_5d4594_1049536                              C.uint32_t
@@ -47,6 +50,8 @@ var legacyWords = struct {
 	dword_5d4594_1200776                              C.uint32_t
 	dword_5d4594_1200796                              C.uint32_t
 	dword_5d4594_1200804                              C.uint32_t
+	dword_5d4594_1200832                              C.uint32_t
+	dword_5d4594_1203832                              C.uint32_t
 	dword_5d4594_1301796                              C.uint32_t
 	dword_5d4594_1301808                              C.uint32_t
 	dword_5d4594_1301812                              C.uint32_t
@@ -69,6 +74,7 @@ var legacyWords = struct {
 	dword_5d4594_1316484                              C.uint32_t
 	dword_5d4594_1316492                              C.uint32_t
 	dword_5d4594_1321208                              C.uint32_t
+	dword_5d4594_1321520                              C.uint32_t
 	dword_5d4594_1548524                              C.uint32_t
 	dword_5d4594_1556128                              C.uint32_t
 	dword_5d4594_1556136                              C.uint32_t
@@ -90,6 +96,9 @@ var legacyWords = struct {
 	dword_5d4594_2487652                              C.uint32_t
 	dword_5d4594_2488604                              C.uint32_t
 	dword_5d4594_2488608                              C.uint32_t
+	dword_5d4594_2488720                              C.uint32_t
+	dword_5d4594_2488724                              C.uint32_t
+	dword_5d4594_2489420                              C.uint
 	dword_5d4594_2489424                              C.uint
 	dword_5d4594_2489428                              C.uint
 	dword_5d4594_2490508                              C.uint32_t
@@ -116,6 +125,7 @@ var legacyWords = struct {
 	dword_5d4594_3807140                              C.uint32_t
 	dword_5d4594_3807152                              C.uint32_t
 	dword_5d4594_3835312                              C.uint32_t
+	dword_5d4594_3835348                              C.uint32_t
 	dword_5d4594_3835364                              C.uint32_t
 	dword_5d4594_528252                               C.uint32_t
 	dword_5d4594_528256                               C.uint32_t
@@ -126,6 +136,10 @@ var legacyWords = struct {
 	dword_5d4594_529340                               C.uint32_t
 	dword_5d4594_531652                               C.uint32_t
 	dword_5d4594_531656                               C.uint32_t
+	dword_5d4594_600116                               C.uint32_t
+	dword_5d4594_608316                               C.uint32_t
+	dword_5d4594_739392                               C.uint32_t
+	dword_5d4594_741332                               C.uint32_t
 	dword_5d4594_811904                               C.uint32_t
 	dword_5d4594_815056                               C.uint32_t
 	dword_5d4594_815104                               C.int
@@ -137,32 +151,43 @@ var legacyWords = struct {
 	nox_client_gui_flag_1556112                       C.uint32_t
 	nox_gameDisableMapDraw_5d4594_2650672             C.uint32_t
 	nox_server_connectionType_3596                    C.uint32_t
+	nox_server_sanctuaryHelp_54276                    C.uint32_t
+	nox_server_sendMotd_108752                        C.uint32_t
 	nox_wol_server_result_cnt_815088                  C.uint32_t
 	nox_xxx_lightningSteps_587000_178216              C.uint32_t
 	nox_xxx_normalWndBits_587000_172880               C.uint32_t
 	nox_xxx_polygonNextAngle_587000_60356             C.uint32_t
 	nox_xxx_respawnAllow_587000_205200                C.uint32_t
 	nox_xxx_screenWidth_587000_184452                 C.uint32_t
+	qword_581450_9512                                 C.uint64_t
 	qword_581450_9544                                 C.uint64_t
+	qword_581450_9552                                 C.uint64_t
 	qword_5d4594_1567940                              C.uint64_t
 }{
 	dword_587000_126996:                   0x1,
 	dword_587000_129656:                   0x1,
 	dword_587000_136184:                   0xffffff1f,
 	dword_587000_171388:                   0x1,
+	dword_587000_183456:                   0x67,
+	dword_587000_183460:                   0x26,
 	dword_587000_237036:                   0x1,
 	dword_587000_87408:                    0x1,
 	dword_587000_87412:                    -1,
+	nox_server_sanctuaryHelp_54276:        0x1,
+	nox_server_sendMotd_108752:            0x1,
 	nox_xxx_lightningSteps_587000_178216:  0x8,
 	nox_xxx_normalWndBits_587000_172880:   0x8,
 	nox_xxx_polygonNextAngle_587000_60356: 0x1,
 	nox_xxx_respawnAllow_587000_205200:    0x1,
 	nox_xxx_screenWidth_587000_184452:     0x32,
+	qword_581450_9512:                     0x3ff0000000000000,
 	qword_581450_9544:                     0x3fe0000000000000,
+	qword_581450_9552:                     0x40f0000000000000,
 }
 
 // Callbacks and fixtures retain addresses in this storage.
 type legacyAddressableWordState struct {
+	dword_587000_122956                     C.uint32_t
 	dword_587000_292488                     C.uint32_t
 	dword_587000_292492                     C.uint32_t
 	dword_5d4594_1062556                    C.uint32_t
@@ -173,6 +198,8 @@ type legacyAddressableWordState struct {
 	dword_5d4594_1548480                    C.uint32_t
 	dword_5d4594_1565512                    C.uint32_t
 	dword_5d4594_1565516                    C.uint32_t
+	dword_5d4594_2487564                    C.uint32_t
+	dword_5d4594_2487568                    C.uint32_t
 	dword_5d4594_2487620                    C.uint32_t
 	dword_5d4594_2487624                    C.uint32_t
 	dword_5d4594_2487628                    C.uint32_t
@@ -190,6 +217,7 @@ type legacyAddressableWordState struct {
 	dword_5d4594_251716                     C.uint32_t
 	dword_5d4594_251720                     C.uint32_t
 	dword_5d4594_251744                     C.uint32_t
+	dword_5d4594_2649712                    C.uint32_t
 	dword_5d4594_371692                     C.uint32_t
 	dword_5d4594_3804684                    C.uint32_t
 	dword_5d4594_3835388                    C.uint32_t
@@ -197,9 +225,12 @@ type legacyAddressableWordState struct {
 	dword_5d4594_599496                     C.uint32_t
 	dword_5d4594_741356                     C.uint32_t
 	dword_5d4594_741364                     C.uint32_t
+	dword_5d4594_741648                     C.uint32_t
+	dword_5d4594_741652                     C.uint32_t
 	dword_5d4594_815096                     C.uint32_t
 	dword_5d4594_815100                     C.uint32_t
 	dword_5d4594_831276                     C.uint32_t
+	dword_5d4594_832476                     C.uint32_t
 	dword_5d4594_832480                     C.uint32_t
 	nox_client_fadeObjects_80836            C.uint32_t
 	nox_client_highResFloors_154952         C.uint32_t
@@ -214,6 +245,7 @@ type legacyAddressableWordState struct {
 var legacyAddressableWords = func() *legacyAddressableWordState {
 	state, _ := alloc.New(legacyAddressableWordState{})
 	*state = legacyAddressableWordState{
+		dword_587000_122956:                     0x1,
 		dword_587000_292488:                     0x42200000,
 		dword_587000_292492:                     0x42c80000,
 		nox_client_fadeObjects_80836:            1,

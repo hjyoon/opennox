@@ -19,10 +19,8 @@ package legacy
 #include "client__video__draw_common.h"
 #include "input.h"
 #include "operators.h"
-extern uint32_t nox_server_sendMotd_108752;
 extern void *dword_587000_127004, *dword_587000_122852, *dword_587000_93164;
 extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
-extern uint64_t qword_581450_9552;
 extern int nox_win_width;
 int nox_gui_menu_proc_ext(int);
 void nox_video_setMenuOptions(nox_window*);
@@ -126,7 +124,7 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 				C.nox_xxx_ruleSetNoRespawn_40A5E0(1)
 			}
 		case 10302:
-			C.nox_server_sendMotd_108752 ^= 1
+			legacyWords.nox_server_sendMotd_108752 ^= 1
 		case 10304:
 			if sub_4D0D70() != 0 {
 				sub_4D0D90(0)
@@ -471,7 +469,7 @@ func sub_4AE3D0() C.int {
 //export sub_4AEE30
 func sub_4AEE30() C.longlong {
 	var out int64
-	scale := math.Float64frombits(uint64(C.qword_581450_9552))
+	scale := math.Float64frombits(uint64(legacyWords.qword_581450_9552))
 	for i := 0; i < 320; i++ {
 		angle := float64(i+192) * (*memmap.PtrFloat64(0x581450, 9768)) * (*memmap.PtrFloat64(0x581450, 9760))
 		out = int64(math.Sin(angle) * scale)

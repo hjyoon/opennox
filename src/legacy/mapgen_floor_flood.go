@@ -4,7 +4,7 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME4_3.h"
 extern uint32_t dword_5d4594_2487248;
-extern uint32_t dword_5d4594_3835348, dword_5d4594_3835352;
+extern uint32_t dword_5d4594_3835352;
 extern uint32_t dword_5d4594_3835356, dword_5d4594_3835360;
 */
 import "C"
@@ -81,7 +81,7 @@ func sub_51DE30(x, y, layer *C.uint32_t) C.int {
 func selectedFloorEdgeBrush() C.nox_floor_brush_t {
 	return C.nox_floor_brush_t{
 		tile_id:        C.uint32_t(memmap.Uint32(mapgenTileStateBase, mapgenTileIDOffset)),
-		variation:      C.dword_5d4594_3835348,
+		variation:      legacyWords.dword_5d4594_3835348,
 		edge_id:        C.dword_5d4594_3835356,
 		edge_variation: C.dword_5d4594_3835360,
 	}

@@ -5,7 +5,7 @@ package legacy
 #include "GAME4_3.h"
 #include "cgo_const.h"
 extern uint32_t dword_5d4594_2489436;
-extern uint32_t dword_5d4594_3835348, dword_5d4594_3835356, dword_5d4594_3835360;
+extern uint32_t dword_5d4594_3835356, dword_5d4594_3835360;
 */
 import "C"
 
@@ -90,11 +90,11 @@ func nox_xxx_tileCheckImageVari_51D570(variation C.int) C.int {
 	if index < uint32(len(floorTileStorage.definitions)) {
 		def := &floorTileStorage.definitions[index]
 		if variation < C.int(def.field_52)*C.int(def.field_53) {
-			C.dword_5d4594_3835348 = C.uint32_t(variation)
+			legacyWords.dword_5d4594_3835348 = C.uint32_t(variation)
 			return 1
 		}
 	}
-	C.dword_5d4594_3835348 = 0
+	legacyWords.dword_5d4594_3835348 = 0
 	return 0
 }
 

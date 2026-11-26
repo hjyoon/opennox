@@ -7,7 +7,6 @@ package legacy
 #include "common__strman.h"
 #include "GAME1.h"
 #include "GAME2.h"
-extern uint32_t dword_5d4594_832476;
 */
 import "C"
 
@@ -21,7 +20,7 @@ import (
 )
 
 func questWinWidthSlot450770() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_832476))
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_832476))
 }
 
 func questWinNativeHooks450770() questWinHooks450770[*byte, *server.Player, *gui.Window, unsafe.Pointer, *uint16] {

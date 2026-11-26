@@ -8,7 +8,7 @@ package legacy
 
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern void* dword_5d4594_588084;
-extern uint32_t dword_5d4594_3835348, dword_5d4594_3835352;
+extern uint32_t dword_5d4594_3835352;
 */
 import "C"
 
@@ -51,7 +51,7 @@ func mapgenBrushVariation(brush *mapgenFloorBrush, x, y, layer int32) C.int {
 		row += height
 	}
 	if memmap.Uint32(mapgenTileStateBase, mapgenTileModeOffset) == 1 {
-		return C.int(C.dword_5d4594_3835348)
+		return C.int(legacyWords.dword_5d4594_3835348)
 	}
 	return C.int(column + row*width)
 }

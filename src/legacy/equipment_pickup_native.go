@@ -4,7 +4,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME3_3.h"
 #include "GAME4_3.h"
-extern uint32_t dword_5d4594_2488720, dword_5d4594_2488724;
 */
 import "C"
 
@@ -116,8 +115,8 @@ func armorPickup53E7F0(owner, item *server.Object, report, equipReport C.int) in
 	if *shoes == 0 {
 		*shoes = uint32(world.Types.IndByID("StreetSneakers"))
 		*robe = uint32(world.Types.IndByID("WizardRobe"))
-		C.dword_5d4594_2488720 = C.uint32_t(world.Types.IndByID("WoodenShield"))
-		C.dword_5d4594_2488724 = C.uint32_t(world.Types.IndByID("SteelShield"))
+		legacyWords.dword_5d4594_2488720 = C.uint32_t(world.Types.IndByID("WoodenShield"))
+		legacyWords.dword_5d4594_2488724 = C.uint32_t(world.Types.IndByID("SteelShield"))
 	}
 	if equipmentPickupRulesAllowed() && sub_409F40(2) != 0 && Sub_4E7EC0(owner, item) != 0 {
 		return rejectEquipment(owner, "armor.c:CannotPickupDuplicateArmor", true)
@@ -156,8 +155,8 @@ func armorHasModifiers(item *server.Object) bool {
 }
 
 func shouldEquipPickedArmor53E7F0(item, equipped *server.Object, update *server.PlayerUpdateData) bool {
-	wooden := uint32(C.dword_5d4594_2488720)
-	steel := uint32(C.dword_5d4594_2488724)
+	wooden := uint32(legacyWords.dword_5d4594_2488720)
+	steel := uint32(legacyWords.dword_5d4594_2488724)
 	robe := memmap.Uint32(armorPickupLegacyBase, 2488716)
 	shoes := memmap.Uint32(armorPickupLegacyBase, 2488712)
 	if equipped != nil {

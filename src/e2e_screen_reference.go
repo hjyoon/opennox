@@ -15,6 +15,17 @@ type e2eScreenReference struct {
 	Frames     map[string]string `yaml:"frames"`
 }
 
+type e2eScreenReferences []*e2eScreenReference
+
+func (refs e2eScreenReferences) expectedFrame(name string, strings *strman.StringManager) string {
+	for _, ref := range refs {
+		if digest := ref.expectedFrame(name, strings); digest != "" {
+			return digest
+		}
+	}
+	return ""
+}
+
 func (r *e2eScreenReference) expectedFrame(name string, strings *strman.StringManager) string {
 	if r == nil || r.Frames[name] == "" {
 		return ""

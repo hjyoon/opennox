@@ -295,7 +295,7 @@ type e2eStep struct {
 type e2eScenario struct {
 	steps                 []e2eStep
 	done                  chan struct{}
-	screenReference       *e2eScreenReference
+	screenReferences      e2eScreenReferences
 	highObjectAddresses   bool
 	wizard1InitialUrchins map[*server.Object]struct{}
 	wizard1UrchinsBefore  int
@@ -9358,7 +9358,7 @@ func (sc *e2eScenario) Screen(name string) {
 				e2eLog.Println(err)
 			}
 		}
-		if want := sc.screenReference.expectedFrame(name, noxServer.Strings()); want != "" {
+		if want := sc.screenReferences.expectedFrame(name, noxServer.Strings()); want != "" {
 			if got := e2eScreenDigest(img); got != want {
 				if err := os.WriteFile(gotName, ibuf.Bytes(), 0644); err != nil {
 					panic(err)
@@ -9410,8 +9410,10 @@ func (sc *e2eScenario) Screen(name string) {
 }
 
 type e2eFileYML struct {
-	ScreenReference *e2eScreenReference `yaml:"screen-reference,omitempty"`
-	Steps           []e2eStepYML        `yaml:"steps"`
+	ScreenReference  *e2eScreenReference `yaml:"screen-reference,omitempty"`
+	ScreenReferences e2eScreenReferences `yaml:"screen-references,omitempty"`
+	MapProfile       string              `yaml:"map-profile,omitempty"`
+	Steps            []e2eStepYML        `yaml:"steps"`
 }
 
 type e2eStepYML struct {
@@ -9465,7 +9467,10 @@ func (sc *e2eScenario) Load(path string) {
 	if err != nil {
 		panic(err)
 	}
-	sc.screenReference = list.ScreenReference
+	sc.screenReferences = list.ScreenReferences
+	if list.ScreenReference != nil {
+		sc.screenReferences = append(sc.screenReferences, list.ScreenReference)
+	}
 	for _, l := range list.Steps {
 		dt := time.Duration(l.Time)
 		if l.Dur != 0 {

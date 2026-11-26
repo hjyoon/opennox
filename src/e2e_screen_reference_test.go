@@ -12,18 +12,26 @@ import (
 )
 
 func TestE2EScreenReferenceMatchesLoadedText(t *testing.T) {
-	reference := &e2eScreenReference{
-		TextID:     "Briefing:Title",
-		TextSHA256: fmt.Sprintf("%x", sha256.Sum256([]byte("Intro"))),
-		Frames:     map[string]string{"opening": "frame hash"},
+	references := e2eScreenReferences{
+		{
+			TextID:     "Briefing:Title",
+			TextSHA256: fmt.Sprintf("%x", sha256.Sum256([]byte("Intro"))),
+			Frames:     map[string]string{"opening": "English frame hash"},
+		},
+		{
+			TextID:     "Briefing:Title",
+			TextSHA256: fmt.Sprintf("%x", sha256.Sum256([]byte("소개"))),
+			Frames:     map[string]string{"opening": "Korean frame hash"},
+		},
 	}
 	path := filepath.Join(t.TempDir(), "strings.json")
 	for _, test := range []struct {
 		text string
 		want string
 	}{
-		{"Intro", "frame hash"},
-		{"소개", ""},
+		{"Intro", "English frame hash"},
+		{"소개", "Korean frame hash"},
+		{"Introduction", ""},
 	} {
 		if err := os.WriteFile(path, []byte(fmt.Sprintf(
 			`{"lang":8,"entries":[{"id":"Briefing:Title","vals":[{"str":%q}]}]}`, test.text)), 0600); err != nil {
@@ -33,10 +41,10 @@ func TestE2EScreenReferenceMatchesLoadedText(t *testing.T) {
 		if err := strings.ReadJSON(path); err != nil {
 			t.Fatal(err)
 		}
-		if got := reference.expectedFrame("opening", strings); got != test.want {
+		if got := references.expectedFrame("opening", strings); got != test.want {
 			t.Errorf("reference for %q = %q, want %q", test.text, got, test.want)
 		}
-		if got := reference.expectedFrame("other frame", strings); got != "" {
+		if got := references.expectedFrame("other frame", strings); got != "" {
 			t.Errorf("unlisted frame uses reference %q", got)
 		}
 	}

@@ -25,9 +25,11 @@ if [[ ! -f "$scenario" ]]; then
 	echo "error: E2E scenario not found: $scenario" >&2
 	exit 1
 fi
-case "${NOX_E2E_MAP_PROFILE:-all}" in
-all|campaign1to3) ;;
-*) echo "error: NOX_E2E_MAP_PROFILE must be all or campaign1to3" >&2; exit 2 ;;
+scenario_map_profile="$(awk '/^map-profile:[[:space:]]*/ { sub(/^[^:]*:[[:space:]]*/, ""); sub(/[[:space:]]*(#.*)?$/, ""); print; exit }' "$scenario")"
+map_profile="${NOX_E2E_MAP_PROFILE:-${scenario_map_profile:-all}}"
+case "$map_profile" in
+all|arena-lod|arena-stock|campaign1to3|quest-stock) ;;
+*) echo "error: unknown E2E map profile: $map_profile" >&2; exit 2 ;;
 esac
 seat_backend="${NOX_E2E_SEAT:-headless}"
 case "$seat_backend" in
@@ -120,12 +122,32 @@ mkdir "$runtime_data_dir/Save"
 mkdir "$runtime_data_dir/maps"
 while IFS= read -r -d '' source_map_path; do
 	map_name="$(basename "$source_map_path")"
-	if [[ "${NOX_E2E_MAP_PROFILE:-all}" == campaign1to3 ]]; then
+	case "$map_profile" in
+	arena-lod)
+		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
+		so_beach|so_lod) ;;
+		*) continue ;;
+		esac
+		;;
+	arena-stock)
+		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
+		bludeath|flagball|inferno|so_beach|so_lod) ;;
+		*) continue ;;
+		esac
+		;;
+	campaign1to3)
 		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
 		war01a|war02a|war02b|war03a|war03b|war03c|war03d|con01a|con02a|con03a|con03b|wiz01a|wiz02a|wiz02b|wiz02c|wiz03a|wiz03b|wiz03c) ;;
 		*) continue ;;
 		esac
-	fi
+		;;
+	quest-stock)
+		case "$(printf '%s' "$map_name" | tr '[:upper:]' '[:lower:]')" in
+		g_castld|g_castle|g_cryptd|g_crypts|g_foresd|g_forest|g_lotd|g_lotdd|g_lava|g_mines|g_swamp|g_templd|g_temple|so_lod|so_beach) ;;
+		*) continue ;;
+		esac
+		;;
+	esac
 	if [[ ! -d "$source_map_path" ]]; then
 		ln -s "$source_map_path" "$runtime_data_dir/maps/$map_name"
 		continue

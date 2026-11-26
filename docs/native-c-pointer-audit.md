@@ -1,5 +1,50 @@
 # Native C entry pointer audit
 
+## C and Go boundary inventory, 2026-11-26
+
+Source revision `817e81c75` selects all 54 top-level legacy C files
+across the 38 audited operating-system, architecture, and tag profiles.
+The standard compilation contains 135 function bodies in 53 files.
+The safe compilation contains 142 in 54 files. Together they contain
+144 definition sites for 142 symbols. Ten files contain declarations or
+storage. The bodies are native adapters, including C variadic handling,
+memory access, and reserved no-op callbacks. The audit identified zero
+standalone game algorithms in this set of C files.
+
+Compilers observed 490 of 496 top-level legacy headers and 18 inline
+helper definitions. The other six headers belong to retained references
+or had no observed product include. The macOS and Windows builds shared
+4,592 matching generated cgo declarations. Platform `long` remains part
+of four CRT-style file-position, file-size, and integer-parsing APIs.
+
+`11912070d` gives the window constructor, briefing initializer, and
+inventory initializer one typed callback ABI. The event code remains a
+C `int`. The window pointer, event payloads, and result use native
+width. The constructor test checks its initialization call and a
+full-width pointer round trip. `817e81c75` corrects four diagnostic
+declarations or stack-lifetime probes found while checking generated C.
+
+The eight shared object, player, drawable, window, thing, and viewport
+layout checks passed on macOS ARM64 and AMD64, native Linux ARM64, and
+emulated Linux 386, ARMv7, and AMD64. The Linux 386 and ARM64 callback
+tests passed, including the established PIE and high-address allocator
+profile on ARM64. Windows 386, AMD64, and ARM64 built the server and
+compiled the size assertions. The ARMv7 layout probe reported a linker
+attribute warning for two-byte `wchar_t` and passed its comparisons.
+
+Normal and HD completed six briefing and inventory end-to-end runs with
+28 exact screen matches. The Skull guard-page oracle passed with
+`cgocheck2` and `checkptr=2`. The same oracle observes an earlier
+base-address access with `-race`, which a separate protected-page probe
+reproduced. Other selected race tests and the forced-GC ownership replay
+passed.
+
+The window registration inventory records 82 call sites, including 54
+distinct directly named C callbacks and 14 sites that forward a callback
+argument. Fifty of the directly named callbacks return C `int`. The
+shared dispatcher still needs per-callback signature verification for
+integer results, pointer-sized results, and argument counts.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

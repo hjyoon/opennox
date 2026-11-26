@@ -76,9 +76,23 @@ func TestLegacyNetworkLogPrintf413D30(t *testing.T) {
 	t.Cleanup(func() { NetworkLogPrint = previous })
 	var messages []string
 	NetworkLogPrint = func(text string) { messages = append(messages, text) }
-	cfixture.NetworkLogPrintf413D30()
-	if len(messages) != 1 || messages[0] != "queue 0037 ready" {
+	cases := []struct{ format, want string }{
+		{"queue %0600d %s", "queue " + strings.Repeat("0", 505)},
+		{"queue %0505d", "queue " + strings.Repeat("0", 503) + "37"},
+		{"queue %04d %s", "queue 0037 ready"},
+	}
+	for _, tc := range cases {
+		format := CString(tc.format)
+		cfixture.NetworkLogPrintf413D30((*byte)(unsafe.Pointer(format)))
+		StrFree(format)
+	}
+	if len(messages) != len(cases) {
 		t.Fatalf("network log = %q", messages)
+	}
+	for i, tc := range cases {
+		if messages[i] != tc.want {
+			t.Errorf("format %q logged %q, want %q", tc.format, messages[i], tc.want)
+		}
 	}
 }
 

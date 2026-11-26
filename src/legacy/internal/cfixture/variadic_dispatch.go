@@ -69,8 +69,7 @@ static void ai_debug_printf_fixture(char* format, int frame) {
 	nox_ai_debug_printf_5341A0(format, frame, "monster");
 }
 
-static void network_log_printf_fixture(void) {
-	char format[] = "queue %04d %s";
+static void network_log_printf_fixture(char* format) {
 	nox_xxx_networkLog_printf_413D30(format, 37, "ready");
 }
 
@@ -209,8 +208,8 @@ func AIDebugPrintf5341A0(format *byte, frame int) {
 	C.ai_debug_printf_fixture((*C.char)(unsafe.Pointer(format)), C.int(frame))
 }
 
-func NetworkLogPrintf413D30() {
-	C.network_log_printf_fixture()
+func NetworkLogPrintf413D30(format *byte) {
+	C.network_log_printf_fixture((*C.char)(unsafe.Pointer(format)))
 }
 
 func FilePrintf(file unsafe.Pointer, width int) int {

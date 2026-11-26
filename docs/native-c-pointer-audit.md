@@ -411,13 +411,28 @@ The options C entry and native GUI tests passed on macOS ARM64 with
 `cgocheck2` and `checkptr=2`. The menu E2E runs passed for options
 open, Escape and Back transitions, warrior chapter one, and NPC
 equipment colors. Chapter one matched all six reference screenshots.
-The selected GUI ABI tests also passed on Linux ARM64. The Windows 386
-server build compiled the 32-bit callback offset assertions.
+The selected GUI ABI tests also passed on Linux ARM64 and emulated
+Linux 386. Windows 386 and AMD64 compiled the callback offset checks
+in their server builds.
 
 There are 32 top-level legacy C files. The audited 64-bit builds
 select 29 files with 54 C function bodies by default and 30 files
 with 58 bodies under the safe tag. The audited 32-bit builds select
 two additional float adapters.
+
+### Network log buffer
+
+The supplied `GAME.EXE` passes the static buffer at `0x611CFC` to
+its formatter from `0x413D30`. Go now formats each call into a
+zero-initialized 512-byte buffer. The output is limited to 511 bytes
+with a byte reserved for its terminator. The C variadic entry
+initializes the native argument list and passes it to Go.
+
+The C entry test exercises a message longer than the buffer, a
+message that fills the 511-byte payload, and an ordinary log call
+afterward. It compares all three strings delivered to the logger.
+The tests passed on macOS ARM64 with strict pointer checks, Linux
+ARM64, and emulated Linux 386.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

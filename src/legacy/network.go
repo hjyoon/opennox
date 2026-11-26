@@ -16,7 +16,6 @@ package legacy
 #include "client__gui__chathelp.h"
 #include "client_ui_words.h"
 #include "noxstring_format_abi.h"
-extern char nox_log_buf[512];
 extern unsigned int dword_5d4594_2649712;
 extern unsigned int dword_5d4594_2660032;
 extern uint32_t dword_5d4594_2650652;
@@ -98,9 +97,9 @@ func nox_xxx_networkLog_print(cstr *C.char) {
 
 //export nox_network_log_vprintf_413D30
 func nox_network_log_vprintf_413D30(format *C.nox_format_byte, args *C.nox_format_args) {
-	text := &C.nox_log_buf[0]
-	legacyFormat((*byte)(unsafe.Pointer(text)), 0x7fffffff, (*byte)(unsafe.Pointer(format)), args)
-	nox_xxx_networkLog_print(text)
+	var text [512]byte
+	legacyFormat(&text[0], uintptr(len(text)-1), (*byte)(unsafe.Pointer(format)), args)
+	NetworkLogPrint(alloc.GoStringS(text[:]))
 }
 
 //export nox_client_setServerConnectAddr_435720

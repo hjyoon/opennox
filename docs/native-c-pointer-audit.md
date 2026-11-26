@@ -692,6 +692,17 @@ as the Go entry. It compares the pointer and scalar return values,
 the packed color word, and the affected controls. This migration
 removes 27 definitions from `vardefs.c`.
 
+### Room ranking distance precision
+
+At `0x525A26` the original executable loads the two room dimensions
+as floats. The products, sum, and square root stay on the x87 stack.
+The accumulated distance is added at `0x525A42`, followed by the
+32-bit store at `0x525A53`. The Go path uses wide intermediates on
+each architecture. The C comparison checks both an empty and a
+nonzero accumulator for 4,096 dimension pairs. The emulated x87
+sequence matched all 8,192 stored words with 53-bit precision and
+round-to-nearest.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

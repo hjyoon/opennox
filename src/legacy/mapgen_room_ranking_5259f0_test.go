@@ -6,14 +6,17 @@ import (
 	"testing"
 )
 
-func TestMapgenRoomRankingDiagonalMatchesNativeArithmetic(t *testing.T) {
+func TestMapgenRoomRankingDistanceMatchesNativeArithmetic(t *testing.T) {
 	for i := uint32(0); i < 4096; i++ {
 		width := math.Float32frombits(0x41800000 + (0x1d872b41*i)&0x3ffffff)
 		height := math.Float32frombits(0x41800000 + (0x965e6217*i)&0x3ffffff)
-		got := mapgenRoomDiagonal(width, height)
-		want := mapgenRoomDiagonalCFixture(width, height)
-		if math.Float64bits(got) != math.Float64bits(want) {
-			t.Fatalf("room diagonal for %v × %v = %.17g, C evaluated %.17g", width, height, got, want)
+		accumulated := math.Float32frombits(0x41800000 + (0x3f5cbe47*i)&0x3ffffff)
+		for _, distance := range [2]float32{0, accumulated} {
+			got := float32(mapgenRoomDiagonal(width, height) + float64(distance))
+			want := mapgenRoomDistanceCFixture(width, height, distance)
+			if math.Float32bits(got) != math.Float32bits(want) {
+				t.Fatalf("distance for %v × %v with %v accumulated = %v, want %v", width, height, distance, got, want)
+			}
 		}
 	}
 }

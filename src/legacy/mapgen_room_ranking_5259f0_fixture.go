@@ -13,8 +13,11 @@ extern uint32_t dword_5d4594_2487576;
 extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487584;
 
-static double nox_test_mapgen_room_diagonal_5259f0(float width, float height) {
-	return sqrt(width * width + height * height);
+static float nox_test_mapgen_room_distance_5259f0(float width, float height, float accumulated) {
+	double w = width, h = height;
+	volatile double squared = w * w + h * h;
+	volatile double diagonal = sqrt(squared);
+	return (float)(diagonal + (double)accumulated);
 }
 
 typedef struct nox_test_mapgen_room_ranking_5259f0_result {
@@ -132,8 +135,8 @@ cleanup:
 */
 import "C"
 
-func mapgenRoomDiagonalCFixture(width, height float32) float64 {
-	return float64(C.nox_test_mapgen_room_diagonal_5259f0(C.float(width), C.float(height)))
+func mapgenRoomDistanceCFixture(width, height, accumulated float32) float32 {
+	return float32(C.nox_test_mapgen_room_distance_5259f0(C.float(width), C.float(height), C.float(accumulated)))
 }
 
 type mapgenRoomRankingResult5259F0 struct {

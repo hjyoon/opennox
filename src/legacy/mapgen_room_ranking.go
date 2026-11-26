@@ -11,7 +11,6 @@ import "C"
 
 import (
 	"math"
-	"runtime"
 	"unsafe"
 )
 
@@ -133,16 +132,11 @@ func (room *mapgenRankedRoom) eachNeighbor(visit func(*mapgenRankedRoom)) {
 	}
 }
 
-// On ARM64 the C build fuses the width product into the sum after rounding
-// the height product. The pinned Go compiler emits the same scalar operation.
-//
-//go:noinline
+// GAME.EXE computes the diagonal on the x87 stack and stores a float
+// only after adding the accumulated distance.
 func mapgenRoomDiagonal(width, height float32) float64 {
-	heightSquared := float32(height * height)
-	if runtime.GOARCH == "arm64" {
-		return math.Sqrt(float64(width*width + heightSquared))
-	}
-	return math.Sqrt(float64(float32(width*width) + heightSquared))
+	w, h := float64(width), float64(height)
+	return math.Sqrt(w*w + h*h)
 }
 
 func mapgenRoomEdgeDistance(parent *mapgenRankedRoom, accumulated float32) float64 {

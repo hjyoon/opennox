@@ -1060,6 +1060,19 @@ entry tests passed on macOS ARM64 with strict Cgo checking and on Linux
 ARM64 PIE. The four gameplay replays cover Polyp death, the Troll
 cloud and its damage ticks, and the shooting trap.
 
+### Headless replay artifacts and peer movement
+
+The headless GUI runner puts observed frames and pixel differences
+in the run's `screens` directory. The Warrior and Conjurer Quest
+starts have distinct screen names. Both Quest scenarios and the
+Warrior chapter-one reference passed in parallel. The expected
+fixtures retained the same file names and SHA-256 digests.
+
+The independent peer replay dismisses the stock dialogs and sends
+the normal Action input before walking. A loopback replay confirmed
+a shared player netcode and over 194 world units of movement on the
+server and client with the unit in normal collision state.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

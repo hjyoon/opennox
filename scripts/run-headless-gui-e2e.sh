@@ -16,6 +16,7 @@ scenario="$scenario_dir/$(basename "$2")"
 output_dir="${3:-${TMPDIR:-/tmp}/opennox-headless-gui-e2e}"
 mkdir -p "$output_dir"
 output_dir="$(cd "$output_dir" && pwd -P)"
+export NOX_E2E_SCREEN_ARTIFACTS="${NOX_E2E_SCREEN_ARTIFACTS:-$output_dir/screens}"
 
 if [[ ! -f "$data_dir/GAME.EXE" || ! -f "$data_dir/thing.bin" ]]; then
 	echo "error: $data_dir is not a complete Nox data directory" >&2

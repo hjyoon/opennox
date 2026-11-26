@@ -61,6 +61,25 @@ steps:
   - action: wait
     dt: 500
     name: wait for actual remote join and map
+  - action: click
+    x: 512
+    y: 486
+    name: dismiss stock chat information
+  - action: wait
+    dt: 2
+  - action: click
+    x: 463
+    y: 330
+    name: dismiss stock MOTD
+  - action: wait
+    dt: 2
+  - action: melee
+    dt: 2
+    ang: 0
+    name: join play with normal Action input
+  - action: wait
+    dt: 30
+    name: settle after normal participation input
   - action: capture-quest-map-audit-frame
     name: actual local UDP joined client
   - action: walk

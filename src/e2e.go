@@ -9335,9 +9335,13 @@ func (sc *e2eScenario) Screen(name string) {
 		}
 		itemAmountActive, itemAmount, itemAmountMax := legacy.Nox_gui_itemAmountState()
 		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x server_pos=(%.3f,%.3f) server_health=%d/%d dialog_active=%t drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t item_amount_active=%t item_amount=%d item_amount_max=%d", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, serverPos.X, serverPos.Y, serverHealthCur, serverHealthMax, dialogActive, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged(), itemAmountActive, itemAmount, itemAmountMax)
-		fname := strings.ReplaceAll(strings.ToLower(name), " ", "_")
-		fname = filepath.Join(e2e.path, "testdata", fname)
-		if err := os.MkdirAll(filepath.Dir(fname), 0755); err != nil {
+		screen := strings.ReplaceAll(strings.ToLower(name), " ", "_")
+		fname := filepath.Join(e2e.path, "testdata", screen)
+		artifact := fname
+		if dir := os.Getenv("NOX_E2E_SCREEN_ARTIFACTS"); dir != "" && !e2eOverride {
+			artifact = filepath.Join(dir, screen)
+		}
+		if err := os.MkdirAll(filepath.Dir(artifact), 0755); err != nil {
 			panic(err)
 		}
 		img := noxClient.r.CopyPixBuffer()
@@ -9351,8 +9355,8 @@ func (sc *e2eScenario) Screen(name string) {
 			}
 			return
 		}
-		gotName := fname + "_got.png"
-		diffName := fname + "_diff.png"
+		gotName := artifact + "_got.png"
+		diffName := artifact + "_diff.png"
 		if _, err := os.Stat(gotName); err == nil {
 			if err = os.Remove(gotName); err != nil {
 				e2eLog.Println(err)
@@ -9405,7 +9409,7 @@ func (sc *e2eScenario) Screen(name string) {
 				e2eError(fmt.Errorf("screen %q differs from %s", name, fname+".png"))
 			}
 		} else if os.IsNotExist(err) {
-			if err := os.WriteFile(fname+".png", ibuf.Bytes(), 0644); err != nil {
+			if err := os.WriteFile(artifact+".png", ibuf.Bytes(), 0644); err != nil {
 				panic(err)
 			}
 		} else {

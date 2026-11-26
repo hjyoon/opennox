@@ -50,7 +50,7 @@ steps:
   - action: wait
     dt: 530
   - action: screen
-    name: quest route start
+    name: quest conjurer route start
   - action: create-transition-spell-pets
     name: cast real Quest summons and Charm
   - action: create-transition-pixies

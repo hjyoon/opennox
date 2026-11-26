@@ -19,8 +19,16 @@ func TestLegacyMemoryPointerPreservesBlobOrder(t *testing.T) {
 			t.Fatalf("blob %#x starts at %p, want %p", base, got, address)
 		}
 		end := uintptr(len(blob.Data))
+		if ptr, size := cfixture.MemmapNativeBlobStorage(base); ptr != address || size != end {
+			t.Fatalf("blob %#x storage = %p/%d, want %p/%d", base, ptr, size, address, end)
+		}
 		if got := legacyMemoryPointer(base, end, 0); got != unsafe.Add(address, end) {
 			t.Fatalf("blob %#x zero-length end = %p", base, got)
+		}
+	}
+	for _, base := range []uintptr{0, 0x581451} {
+		if ptr, size := cfixture.MemmapNativeBlobStorage(base); ptr != nil || size != 0 {
+			t.Fatalf("blob storage at %#x = %p/%d, want nil/0", base, ptr, size)
 		}
 	}
 

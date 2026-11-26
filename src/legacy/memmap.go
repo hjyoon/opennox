@@ -1,33 +1,44 @@
 package legacy
 
-/*
-#include "memmap.h"
-extern unsigned char byte_581450[23472];
-extern unsigned char byte_587000[316820];
-extern unsigned char byte_5D4594[2598284];
-extern unsigned char byte_973CE0[568];
-extern unsigned char byte_973F18[44881];
-extern unsigned char byte_85B3FC[1029636];
-extern unsigned char byte_852978[40];
-extern unsigned char byte_973A20[704];
-*/
+// #include "memmap.h"
 import "C"
 import (
 	"slices"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	_ "github.com/opennox/opennox/v1/common/memmap/nox"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+// Keep the original switch order for lookups that fall through their first blob.
+var legacyMemoryBlobOrder = [...]uintptr{
+	0x581450, 0x587000, 0x5D4594, 0x973CE0, 0x973F18, 0x85B3FC, 0x852978, 0x973A20,
+}
+
+// Legacy code stores native addresses into and out of these buffers.
+// Each buffer stays in foreign memory for the process lifetime.
+var legacyMemoryBlobs [len(legacyMemoryBlobOrder)][]byte
+
 func init() {
-	memmap.RegisterBlobData(0x581450, "byte_581450", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_581450[0])), int(unsafe.Sizeof(C.byte_581450))))
-	memmap.RegisterBlobData(0x587000, "byte_587000", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_587000[0])), int(unsafe.Sizeof(C.byte_587000))))
-	memmap.RegisterBlobData(0x5D4594, "byte_5D4594", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_5D4594[0])), int(unsafe.Sizeof(C.byte_5D4594))))
-	memmap.RegisterBlobData(0x973CE0, "byte_973CE0", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_973CE0[0])), int(unsafe.Sizeof(C.byte_973CE0))))
-	memmap.RegisterBlobData(0x973F18, "byte_973F18", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_973F18[0])), int(unsafe.Sizeof(C.byte_973F18))))
-	memmap.RegisterBlobData(0x85B3FC, "byte_85B3FC", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_85B3FC[0])), int(unsafe.Sizeof(C.byte_85B3FC))))
-	memmap.RegisterBlobData(0x852978, "byte_852978", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_852978[0])), int(unsafe.Sizeof(C.byte_852978))))
-	memmap.RegisterBlobData(0x973A20, "byte_973A20", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_973A20[0])), int(unsafe.Sizeof(C.byte_973A20))))
+	for i, base := range legacyMemoryBlobOrder {
+		blob := memmap.BlobByAddr(base)
+		data, _ := alloc.Make([]byte(nil), blob.Size)
+		legacyMemoryBlobs[i] = data
+		memmap.RegisterBlobData(base, blob.Name, data)
+	}
+}
+
+//export nox_legacy_memory_blob
+func nox_legacy_memory_blob(base C.uintptr_t, size *C.size_t) *C.uint8_t {
+	var data []byte
+	if i := slices.Index(legacyMemoryBlobOrder[:], uintptr(base)); i >= 0 {
+		data = legacyMemoryBlobs[i]
+	}
+	if size != nil {
+		*size = C.size_t(len(data))
+	}
+	return (*C.uint8_t)(unsafe.Pointer(unsafe.SliceData(data)))
 }
 
 //export mem_getPtrValue
@@ -38,11 +49,6 @@ func mem_getPtrValue(base, off C.uintptr_t) unsafe.Pointer {
 //export mem_setPtrValue
 func mem_setPtrValue(base, off C.uintptr_t, value unsafe.Pointer) {
 	*memmap.PtrPtr(uintptr(base), uintptr(off)) = value
-}
-
-// Keep the original switch order for lookups that fall through their first blob.
-var legacyMemoryBlobOrder = [...]uintptr{
-	0x581450, 0x587000, 0x5D4594, 0x973CE0, 0x973F18, 0x85B3FC, 0x852978, 0x973A20,
 }
 
 func legacyMemoryBlobPointer(blob *memmap.Blob, off, size uintptr) unsafe.Pointer {

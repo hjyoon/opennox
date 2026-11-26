@@ -6,7 +6,6 @@ package cfixture
 #include <stdlib.h>
 #include <string.h>
 extern uint32_t dword_5d4594_10984;
-extern unsigned char byte_5D4594[2598284];
 _Static_assert(sizeof(int)==4 && sizeof(uint32_t)==4, "settings scalar DWORD ABI");
 typedef int (*game1_settings_get_fn)(void);
 typedef int (*game1_settings_set_fn)(int);
@@ -31,8 +30,10 @@ static uint32_t game1_settings_call_40aa00(uint32_t entry,uint32_t word) {
 }
 static void* game1_settings_cell_40aa00(size_t offset) { return getMemAt(0x5d4594,offset); }
 static void* game1_settings_raw_blob_40aa00(size_t offset,size_t width) {
-    if(offset>sizeof(byte_5D4594)||width>sizeof(byte_5D4594)-offset) abort();
-    return byte_5D4594+offset;
+    size_t capacity;
+    uint8_t* blob = nox_legacy_memory_blob(0x5D4594, &capacity);
+    if (!blob || offset > capacity || width > capacity - offset) abort();
+    return blob + offset;
 }
 static void* game1_settings_global_40aa00(void) { return &dword_5d4594_10984; }
 static size_t game1_settings_global_width_40aa00(void) { return sizeof(dword_5d4594_10984); }

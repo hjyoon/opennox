@@ -1,8 +1,10 @@
 #ifndef NOX_MEMMAP_H
 #define NOX_MEMMAP_H
+#include <stddef.h>
 #include <stdint.h>
 
 // generic
+extern uint8_t* nox_legacy_memory_blob(uintptr_t base, size_t* size);
 extern void* mem_getPtr(uintptr_t base, uintptr_t off);
 extern void* mem_getPtrSize(uintptr_t base, uintptr_t off, uintptr_t size);
 extern void* mem_getPtrValue(uintptr_t base, uintptr_t off);

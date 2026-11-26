@@ -7,8 +7,7 @@ package cfixture
 #include <stddef.h>
 #include <string.h>
 #include "GAME1.h"
-extern unsigned char byte_5D4594[2598284];
-static void* sub409b80_fixture_blob(void) { return &byte_5D4594[3452]; }
+static void* sub409b80_fixture_blob(void) { return nox_legacy_memory_blob(0x5D4594, NULL) + 3452; }
 static char* sub409b80_fixture_C_caller(void) { return sub_409B80(); }
 static uint32_t sub409b80_fixture_bad_u32(void) {
     return (uint32_t)(uintptr_t)sub_409B80();

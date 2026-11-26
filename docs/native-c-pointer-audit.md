@@ -366,6 +366,26 @@ The retained wide-integer fixture captures errno directly after
 the end cursor for an invalid base. The fixture checks zero consumed
 units for an invalid base and compares the CRT cursor for valid bases.
 
+### Legacy memory blob ownership
+
+Go allocates the eight zero-initialized buffers using the native
+allocator. The original base addresses, lookup order, and sizes total
+4,014,405 bytes. The buffers live for the process lifetime and the
+native lookup returns their full-width addresses.
+
+Three C fixtures now use the raw storage accessor to obtain the byte
+buffer and its size by the exact original base. They still compare
+the storage with the mapped accessors. The supplied `GAME.EXE`
+returns `0x5D5310` directly from `0x409B80` and reads buff state at
+`0x5971D0` and `0x597244`. Those addresses resolve to the same
+base and offset pairs in the native buffers.
+
+Removing the C array definitions brings the top-level legacy C file
+count to 33. macOS and Linux ARM64 passed the native access and retained
+C comparisons. Linux ARM64 also passed the safe memory-access checks.
+The Linux 386 probe passed the storage, native accessor, and
+invalid-address diagnostic checks under QEMU.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

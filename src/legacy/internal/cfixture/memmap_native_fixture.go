@@ -22,6 +22,12 @@ import "C"
 
 import "unsafe"
 
+func MemmapNativeBlobStorage(base uintptr) (unsafe.Pointer, uintptr) {
+	var size C.size_t
+	ptr := C.nox_legacy_memory_blob(C.uintptr_t(base), &size)
+	return unsafe.Pointer(ptr), uintptr(size)
+}
+
 func MemmapNativeAccessors(base, off uintptr) (out [12]uintptr) {
 	C.memmap_native_accessors(C.uintptr_t(base), C.uintptr_t(off), (*C.uintptr_t)(unsafe.Pointer(&out[0])))
 	return out

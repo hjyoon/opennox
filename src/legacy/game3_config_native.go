@@ -8,7 +8,6 @@ package legacy
 #include "compat.h"
 #include "GAME3.h"
 #include "game3_class_config_options.h"
-extern uint32_t dword_587000_171388;
 */
 import "C"
 
@@ -51,7 +50,7 @@ func sub_4A7C00(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 13083
 func sub_4A7D00(s *C.nox_cgo_const_char) C.int { return game3ConfigCopy(s, 1308192, 128) }
 
 //export sub_4A7A60
-func sub_4A7A60(v C.int) C.int { C.dword_587000_171388 = C.uint32_t(v); return v }
+func sub_4A7A60(v C.int) C.int { legacyWords.dword_587000_171388 = C.uint32_t(v); return v }
 
 //export sub_4A7A70
 func sub_4A7A70(v C.int) C.int { *memmap.PtrUint32(0x5D4594, 1308168) = uint32(v); return v }

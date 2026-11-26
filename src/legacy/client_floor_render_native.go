@@ -7,7 +7,6 @@ package legacy
 #include "client__draw__parse__parse.h"
 
 extern uint32_t dword_5d4594_3798800, dword_5d4594_3798804, dword_5d4594_3798808;
-extern uint32_t dword_5d4594_3798820, dword_5d4594_3798824, dword_5d4594_3798836, dword_5d4594_3798840;
 */
 import "C"
 
@@ -69,8 +68,8 @@ func fillFloorSpan(buffer []byte, offset int, color uint32, size int) {
 }
 
 func floorTileBase(x, y int32, shift uint8) int {
-	dx := int32(C.dword_5d4594_3798836) + x - int32(C.dword_5d4594_3798820)
-	dy := int32(C.dword_5d4594_3798840) + y - int32(C.dword_5d4594_3798824)
+	dx := int32(legacyWords.dword_5d4594_3798836) + x - int32(legacyWords.dword_5d4594_3798820)
+	dy := int32(legacyWords.dword_5d4594_3798840) + y - int32(legacyWords.dword_5d4594_3798824)
 	return int(C.dword_5d4594_3798804)*int(dy) + int(dx<<shift)
 }
 
@@ -218,7 +217,7 @@ func sub_476AE0(view *nox_draw_viewport_t, dr *nox_drawable) {
 	width, height := int32(read(pixels)), int32(read(pixels[4:]))
 	x := int32(read(pixels[8:])) + int32(dr.pos.x) - int32(byte(dr.field_0))
 	y := int32(read(pixels[12:])) + int32(dr.pos.y) - int32(dr.field_26_1) - int32(dr.z) - int32(byte(dr.field_0>>8))
-	originX, originY := int32(C.dword_5d4594_3798820), int32(C.dword_5d4594_3798824)
+	originX, originY := int32(legacyWords.dword_5d4594_3798820), int32(legacyWords.dword_5d4594_3798824)
 	if x < originX || x+width >= originX+int32(C.dword_5d4594_3798800) ||
 		y < originY || y+height >= originY+int32(C.dword_5d4594_3798808) {
 		dr.field_86 = 0

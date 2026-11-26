@@ -5,7 +5,6 @@ package legacy
 /*
 #include "defs.h"
 #include "GAME2_2.h"
-extern uint32_t dword_5d4594_3804684;
 
 // Follow the entry's actual declaration on either side of the port. Its
 // parameter and result have the same type, so this probe compiles against the
@@ -35,7 +34,7 @@ import "C"
 import "unsafe"
 
 // Declaration-only alias to the real descriptor counter.
-var videoCallbackDescriptorCountC48A210 = (*uint32)(unsafe.Pointer(&C.dword_5d4594_3804684))
+var videoCallbackDescriptorCountC48A210 = (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_3804684))
 
 func videoCallbackSetterReturnC48A210(callback unsafe.Pointer) uintptr {
 	return uintptr(C.nox_test_video_setter_return_48A210(callback))

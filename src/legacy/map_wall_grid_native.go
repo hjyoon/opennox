@@ -4,8 +4,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME1_2.h"
 
-extern uint32_t dword_5d4594_741356;
-extern uint32_t dword_5d4594_741364;
 */
 import "C"
 
@@ -35,8 +33,8 @@ type mapWallFrame struct {
 
 func writeMapWallFrame(region *[8]int32) mapWallFrame {
 	minX, minY := memmap.PtrUint32(0x5D4594, mapWallMinX), memmap.PtrUint32(0x5D4594, mapWallMinY)
-	maxX := (*uint32)(unsafe.Pointer(&C.dword_5d4594_741356))
-	maxY := (*uint32)(unsafe.Pointer(&C.dword_5d4594_741364))
+	maxX := (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741356))
+	maxY := (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741364))
 	if region != nil {
 		bounds := mapWallRegionBounds(region)
 		*minX, *minY = uint32(bounds[0]/wall.GridStep), uint32(bounds[1]/wall.GridStep)

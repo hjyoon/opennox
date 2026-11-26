@@ -7,9 +7,6 @@ package legacy
 #include "client__gui__guimsg.h"
 
 extern nox_drawable* dword_5d4594_1063116;
-extern uint32_t dword_5d4594_1049856, dword_5d4594_1062512;
-extern uint32_t dword_5d4594_1049796_inventory_click_column_index, dword_5d4594_1049800_inventory_click_row_index;
-extern uint32_t dword_5d4594_1049804, dword_5d4594_1049808;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -64,7 +61,7 @@ func clientInventoryMarkEquipped(cell *C.nox_inventory_cell_t, code uint32) {
 }
 
 func clientInventoryStorageIndex(point *C.int2) (column, row C.int) {
-	return (point.field_0 - 314) / 50, C.int((C.uint32_t(point.field_4) + C.dword_5d4594_1062512 - 13) / 50)
+	return (point.field_0 - 314) / 50, C.int((C.uint32_t(point.field_4) + legacyWords.dword_5d4594_1062512 - 13) / 50)
 }
 
 func clientInventoryCheckTabs(point *C.int2) bool {
@@ -199,8 +196,8 @@ func clientInventoryRelease(screen, local *C.int2) {
 	}
 	defer clientInventoryFinishDrag(dragged)
 
-	fromColumn := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
-	fromRow := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
+	fromColumn := C.int(legacyWords.dword_5d4594_1049796_inventory_click_column_index)
+	fromRow := C.int(legacyWords.dword_5d4594_1049800_inventory_click_row_index)
 	if !bool(C.nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, screen.field_0, screen.field_4)) || clientInventoryCheckTabs(local) {
 		clientInventoryDropOutside(dragged, screen, fromColumn, fromRow)
 		return
@@ -216,7 +213,7 @@ func clientInventoryRelease(screen, local *C.int2) {
 		return
 	}
 	if clientInventoryPointInRect(local, 0x587000, 136336) && memmap.Uint8(0x5D4594, 1049870) == 0 {
-		if C.dword_5d4594_1049856 == 0 {
+		if legacyWords.dword_5d4594_1049856 == 0 {
 			nox_xxx_clientEquip_4623B0(dragged)
 			sub_4649B0(dragged, fromColumn, fromRow)
 		}
@@ -227,12 +224,12 @@ func clientInventoryRelease(screen, local *C.int2) {
 		return
 	}
 	column, row := clientInventoryStorageIndex(local)
-	C.dword_5d4594_1049804, C.dword_5d4594_1049808 = C.uint32_t(column), C.uint32_t(row)
+	legacyWords.dword_5d4594_1049804, legacyWords.dword_5d4594_1049808 = C.uint32_t(column), C.uint32_t(row)
 	if sub_464B40(column, row) == 0 {
 		return
 	}
 	destination := inventoryGridCell(int(row), int(column))
-	if C.dword_5d4594_1049856 != 0 {
+	if legacyWords.dword_5d4594_1049856 != 0 {
 		*memmap.PtrUint32(0x5D4594, 1049860) = 1
 		if item := destination.field_0; destination.field_140 != 0 && item != nil && clientInventoryEquipmentMatches(item, dragged) {
 			item.field_32 = destination.field_4
@@ -301,7 +298,7 @@ func clientInventoryCheckWorldTarget(screen *C.int2) {
 func clientInventoryDropOutside(dragged *nox_drawable, screen *C.int2, column, row C.int) {
 	var world C.int2
 	sub_473970(screen, &world)
-	if C.dword_5d4594_1049856 == 1 {
+	if legacyWords.dword_5d4594_1049856 == 1 {
 		if sub_4C12C0() == 0 {
 			nox_xxx_clientDrop_465BE0(&world)
 		}
@@ -320,7 +317,7 @@ func clientInventoryDropOutside(dragged *nox_drawable, screen *C.int2, column, r
 	} else if sub_4C12C0() == 0 {
 		nox_xxx_clientDrop_465BE0(&world)
 	}
-	if C.dword_5d4594_1049856 == 0 {
+	if legacyWords.dword_5d4594_1049856 == 0 {
 		sub_4649B0(dragged, column, row)
 	}
 }

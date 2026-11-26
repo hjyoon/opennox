@@ -3,8 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_2516328;
-extern uint32_t dword_5d4594_2516348;
 */
 import "C"
 
@@ -19,11 +17,11 @@ func updatePlayerProtectedStat(token C.int, update func(uint32) uint32) C.int32_
 		return 0
 	}
 	oldValue := C.uint32_t(record.value)
-	C.dword_5d4594_2516328 ^= oldValue
-	key := C.dword_5d4594_2516348
+	legacyWords.dword_5d4594_2516328 ^= oldValue
+	key := legacyWords.dword_5d4594_2516348
 	newValue := C.uint32_t(update(uint32(oldValue^key))) ^ key
 	record.value = uint32(newValue)
-	C.dword_5d4594_2516328 ^= newValue
+	legacyWords.dword_5d4594_2516328 ^= newValue
 	return C.int32_t(nox_xxx_protectData_56F5C0())
 }
 

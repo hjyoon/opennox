@@ -13,7 +13,6 @@ package legacy
 #include "common__net_list.h"
 #include "defs.h"
 typedef const nox_object_t nox_player_const_object_t;
-extern uint32_t dword_5d4594_2650652;
 void nox_xxx_WideScreenDo_515240(bool enable);
 static void nox_xxx_printToAll_4D9FD0_go(int a1, wchar2_t* str) {
 	nox_xxx_printToAll_4D9FD0(a1, str);

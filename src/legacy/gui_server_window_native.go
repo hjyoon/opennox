@@ -3,7 +3,6 @@ package legacy
 /*
 #include "game2_server_bridge.h"
 
-extern uint32_t dword_587000_129656;
 */
 import "C"
 
@@ -60,7 +59,7 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 	}
 	if noxflags.HasGame(noxflags.GameHost) {
 		sub_459D50(1)
-		if C.dword_587000_129656 != 0 {
+		if legacyWords.dword_587000_129656 != 0 {
 			nox_common_list_clear_425760(serverOptionsRules)
 		}
 	}
@@ -126,13 +125,13 @@ func nox_xxx_guiServerOptsLoad_457500() C.int {
 		g2ServerHidden(serverOptionsChildren.pane10199, true)
 		sub_46ACE0(root, 10145, 10146, 1)
 	}
-	if C.dword_587000_129656 != 0 {
+	if legacyWords.dword_587000_129656 != 0 {
 		if sub_4D6F30() != 0 || nox_xxx_isQuest_4D6F50() != 0 {
 			nox_server_parseCmdText_443C80(internWStr("execrul OTQuest.rul"), 1)
 		} else if noxflags.HasEngine(noxflags.EngineNoRendering) {
 			nox_server_parseCmdText_443C80(internWStr("execrul server.rul"), 1)
 		}
 	}
-	C.dword_587000_129656 = 0
+	legacyWords.dword_587000_129656 = 0
 	return 1
 }

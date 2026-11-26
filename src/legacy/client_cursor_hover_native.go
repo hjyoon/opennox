@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 
-extern uint32_t dword_5d4594_1096636;
 */
 import "C"
 
@@ -34,7 +33,7 @@ func nox_xxx_clientEnumHover_476FA0() {
 	Set_dword_5d4594_1096640(nil)
 	Set_nox_client_spriteUnderCursorXxx_1096644(nil)
 	*g2ServerWord(1096628) = 0
-	C.dword_5d4594_1096636 = 0
+	legacyWords.dword_5d4594_1096636 = 0
 	bounds := image.Rect(pos.X-96, pos.Y-96, pos.X+96, pos.Y+96)
 	cli.Cli().Objs.EachInRect(bounds, func(dr *client.Drawable) {
 		clientOnCursorHover(dr, &pos)
@@ -92,7 +91,7 @@ func clientOnCursorHover(dr *client.Drawable, mouse *image.Point) {
 		*top = uint32(depth)
 		Set_dword_5d4594_1096640(dr)
 	}
-	if depth <= int32(C.dword_5d4594_1096636) ||
+	if depth <= int32(legacyWords.dword_5d4594_1096636) ||
 		nox_xxx_client_57B400((*nox_drawable)(dr.C())) == 0 {
 		return
 	}
@@ -100,10 +99,10 @@ func clientOnCursorHover(dr *client.Drawable, mouse *image.Point) {
 	if info != nil && info.PlayerClass() == player.Wizard && dr.TypeIDVal == *g2ServerWord(1096632) {
 		if Get_nox_client_spriteUnderCursorXxx_1096644() == nil {
 			Set_nox_client_spriteUnderCursorXxx_1096644(dr)
-			C.dword_5d4594_1096636 = 0
+			legacyWords.dword_5d4594_1096636 = 0
 		}
 	} else {
-		C.dword_5d4594_1096636 = C.uint32_t(depth)
+		legacyWords.dword_5d4594_1096636 = C.uint32_t(depth)
 		Set_nox_client_spriteUnderCursorXxx_1096644(dr)
 	}
 }

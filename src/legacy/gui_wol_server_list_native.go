@@ -11,7 +11,6 @@ package legacy
 typedef const nox_gui_server_ent_t nox_wol_const_server_t;
 
 extern nox_list_item_t nox_gui_wol_servers_list;
-extern uint32_t nox_wol_servers_sorting_166704;
 
 enum { nox_wol_record_offset = offsetof(nox_gui_server_node_t, server) };
 */
@@ -33,7 +32,7 @@ func wolServerRecord(item *C.nox_list_item_t) *Nox_gui_server_ent_t {
 
 func wolServerHead() *C.nox_list_item_t { return &C.nox_gui_wol_servers_list }
 
-func wolServerSortMode() *C.uint32_t { return &C.nox_wol_servers_sorting_166704 }
+func wolServerSortMode() *C.uint32_t { return &legacyAddressableWords.nox_wol_servers_sorting_166704 }
 
 func ensureWOLServerList() {
 	head := wolServerHead()

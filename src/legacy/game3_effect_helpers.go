@@ -8,7 +8,6 @@ package legacy
 #include "GAME4_1.h"
 #include "client__draw__fx.h"
 extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
-extern uint32_t dword_5d4594_1313532, dword_5d4594_1313536, dword_5d4594_1313540;
 */
 import "C"
 
@@ -144,13 +143,13 @@ func game3GlowColors(id uint32, h game3EffectServices) (uint32, uint32) {
 	}
 	switch id {
 	case memmap.Uint32(0x5D4594, offsets[0]), memmap.Uint32(0x5D4594, offsets[6]):
-		return uint32(C.dword_5d4594_1313536), uint32(C.dword_5d4594_1313540)
+		return uint32(legacyWords.dword_5d4594_1313536), uint32(legacyWords.dword_5d4594_1313540)
 	case memmap.Uint32(0x5D4594, offsets[2]):
 		return memmap.Uint32(0x5D4594, 1313580), memmap.Uint32(0x5D4594, 1313584)
 	case memmap.Uint32(0x5D4594, offsets[3]), memmap.Uint32(0x5D4594, offsets[4]), memmap.Uint32(0x5D4594, offsets[5]):
 		return memmap.Uint32(0x5D4594, 1313588), memmap.Uint32(0x5D4594, 1313592)
 	default:
-		return memmap.Uint32(0x5D4594, 1313528), uint32(C.dword_5d4594_1313532)
+		return memmap.Uint32(0x5D4594, 1313528), uint32(legacyWords.dword_5d4594_1313532)
 	}
 }
 

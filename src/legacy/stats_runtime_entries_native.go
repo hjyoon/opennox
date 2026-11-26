@@ -6,7 +6,7 @@ package legacy
 #include "stats_start_native.h"
 #include "stats_end_native.h"
 
-extern uint32_t dword_5d4594_599496, dword_5d4594_600116;
+extern uint32_t dword_5d4594_600116;
 */
 import "C"
 
@@ -83,7 +83,7 @@ func sub_426150() {
 	if !noxflags.HasGame(noxflags.GameOnline) || noxflags.HasGame(noxflags.GameModeQuest) {
 		return
 	}
-	fillStatsStartHeader((*uint32)(unsafe.Pointer(&C.dword_5d4594_599496)))
+	fillStatsStartHeader((*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_599496)))
 }
 
 func fillStatsStartHeader(modeCell *uint32) {

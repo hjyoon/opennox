@@ -4,7 +4,7 @@ package legacy
 #include <stdio.h>
 #include "server__script__file.h"
 
-extern unsigned int dword_5d4594_2489420, dword_5d4594_2489424, dword_5d4594_2489428;
+extern unsigned int dword_5d4594_2489420;
 */
 import "C"
 
@@ -47,7 +47,7 @@ func nox_script_readWriteJjj_5418C0(first, second, destination *C.FILE) C.int {
 	if !firstOK || !secondOK || countFirst < 0 || countSecond < 0 {
 		return 0
 	}
-	C.dword_5d4594_2489424 = C.uint(countFirst)
+	legacyWords.dword_5d4594_2489424 = C.uint(countFirst)
 	nox_script_writeInt_542BB0(countFirst+countSecond, destination)
 	for _, input := range [...]struct {
 		file  *FILE
@@ -158,7 +158,7 @@ func nox_script_readWriteXxx_541A50(first, second, destination *C.FILE) C.int {
 	if !firstOK || !secondOK || countFirst < 2 || countSecond < 2 {
 		return 0
 	}
-	C.dword_5d4594_2489428 = C.uint(countFirst)
+	legacyWords.dword_5d4594_2489428 = C.uint(countFirst)
 	nox_script_writeInt_542BB0(countFirst+countSecond-2, destination)
 	result := nox_script_readWriteVvv_541E40(first, second, destination)
 	for mode, input := range [...]struct {
@@ -175,7 +175,7 @@ func nox_script_readWriteXxx_541A50(first, second, destination *C.FILE) C.int {
 
 //export nox_script_readWriteWww_5417C0
 func nox_script_readWriteWww_5417C0(first, second, destination *C.FILE) C.size_t {
-	C.dword_5d4594_2489420, C.dword_5d4594_2489424, C.dword_5d4594_2489428 = 0, 0, 0
+	C.dword_5d4594_2489420, legacyWords.dword_5d4594_2489424, legacyWords.dword_5d4594_2489428 = 0, 0, 0
 	if !transferScriptPairHeader(first, second, destination, 8) {
 		return 0
 	}

@@ -9,7 +9,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME2_2.h"
 
-extern uint32_t dword_5d4594_815056;
 extern nox_gui_animation* nox_wnd_xxx_815040;
 */
 import "C"
@@ -44,7 +43,7 @@ func nox_client_setConnError_43AFA0(code C.int) {
 }
 
 func selectedLegacyServer() *Nox_gui_server_ent_t {
-	if C.dword_5d4594_815056 == 0 {
+	if legacyWords.dword_5d4594_815056 == 0 {
 		return nil
 	}
 	return (*Nox_gui_server_ent_t)(Get_dword_5d4594_814624())
@@ -60,7 +59,7 @@ func nox_client_getServerAddr_43B300() C.uint {
 
 //export nox_client_getServerPort_43B320
 func nox_client_getServerPort_43B320() C.int {
-	if C.dword_5d4594_815056 == 0 {
+	if legacyWords.dword_5d4594_815056 == 0 {
 		return 0
 	}
 	return C.int(memmap.Uint32(0x5D4594, 814604))

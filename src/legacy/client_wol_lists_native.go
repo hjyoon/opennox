@@ -6,8 +6,6 @@ package legacy
 
 typedef const char wol_const_char_t;
 extern uintptr_t dword_5d4594_529316, dword_5d4594_531648, dword_5d4594_534808;
-extern uint32_t dword_5d4594_529332, dword_5d4594_529336, dword_5d4594_529340;
-extern uint32_t dword_5d4594_531652, dword_5d4594_531656;
 */
 import "C"
 
@@ -72,8 +70,8 @@ func wolFreeOwnedRecord(record unsafe.Pointer) {
 //export sub_41EC30
 func sub_41EC30() C.int {
 	head := *wolChannelHead()
-	C.dword_5d4594_529332 = 0
-	C.dword_5d4594_529336 = 0
+	legacyWords.dword_5d4594_529332 = 0
+	legacyWords.dword_5d4594_529336 = 0
 	for channel := head; channel != nil; channel = channel.Next {
 		for message := channel.Messages; message != nil; {
 			next := message.Next
@@ -89,7 +87,7 @@ func sub_41EC30() C.int {
 	if result == 7 {
 		result = sub_41DA70(sub_41E2F0(), 10)
 	}
-	C.dword_5d4594_529340 = 0
+	legacyWords.dword_5d4594_529340 = 0
 	return result
 }
 
@@ -102,8 +100,8 @@ func sub_41F4B0() C.int {
 		game = next
 	}
 	C.dword_5d4594_531648 = 0
-	C.dword_5d4594_531652 = 0
-	C.dword_5d4594_531656 = 0
+	legacyWords.dword_5d4594_531652 = 0
+	legacyWords.dword_5d4594_531656 = 0
 	result := sub_41E2F0()
 	if result == 7 {
 		result = sub_41DA70(sub_41E2F0(), 11)

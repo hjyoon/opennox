@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_1.h"
 #include "GAME2_3.h"
-extern uint32_t dword_5d4594_1062512;
 */
 import "C"
 
@@ -56,7 +55,7 @@ func InventoryGridMetrics() (columns, rows, filled, lastRow int) {
 }
 
 func InventoryScrollOffset() int {
-	return int(int32(C.dword_5d4594_1062512))
+	return int(int32(legacyWords.dword_5d4594_1062512))
 }
 
 func InventoryCellDrawable(column, row int) *client.Drawable {

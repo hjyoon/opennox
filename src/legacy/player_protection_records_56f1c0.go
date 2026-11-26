@@ -6,9 +6,6 @@ package legacy
 
 extern void* dword_5d4594_2516344;
 extern void* dword_5d4594_2516352;
-extern uint32_t dword_5d4594_2516328;
-extern uint32_t dword_5d4594_2516348;
-extern uint32_t dword_5d4594_2516356;
 */
 import "C"
 
@@ -41,12 +38,12 @@ func playerProtectionCount() *uint16 {
 func sub_56F1C0() C.int {
 	sub_56FF00(int32(time.Now().Unix()))
 	C.dword_5d4594_2516352 = nil
-	C.dword_5d4594_2516348 = C.uint32_t(gameFrame())
+	legacyWords.dword_5d4594_2516348 = C.uint32_t(gameFrame())
 	C.dword_5d4594_2516344 = nil
 	*playerProtectionCount() = 0
-	C.dword_5d4594_2516356 = minimumPlayerProtectionToken
-	C.dword_5d4594_2516348 ^= C.uint32_t(nox_xxx_protect_56F240())
-	C.dword_5d4594_2516328 = ^C.dword_5d4594_2516348
+	legacyWords.dword_5d4594_2516356 = minimumPlayerProtectionToken
+	legacyWords.dword_5d4594_2516348 ^= C.uint32_t(nox_xxx_protect_56F240())
+	legacyWords.dword_5d4594_2516328 = ^legacyWords.dword_5d4594_2516348
 	*memmap.PtrUint32(0x5D4594, 2516340) = uint32(nox_xxx_protectionCreateInt_56F400(0))
 	sub_56F250()
 	last := nox_xxx_protectionCreateInt_56F400(1)
@@ -63,8 +60,8 @@ func nox_xxx_protect_56F240() C.int {
 func sub_56F250() C.int {
 	var result C.int
 	for range 7 {
-		result = createPlayerProtectionRecord(uint32(C.dword_5d4594_2516356), 0)
-		C.dword_5d4594_2516356++
+		result = createPlayerProtectionRecord(uint32(legacyWords.dword_5d4594_2516356), 0)
+		legacyWords.dword_5d4594_2516356++
 	}
 	return result
 }
@@ -84,10 +81,10 @@ func createPlayerProtectionRecord(token, value uint32) C.int {
 	if node == nil {
 		return 0
 	}
-	mask := uint32(C.dword_5d4594_2516348)
+	mask := uint32(legacyWords.dword_5d4594_2516348)
 	node.token = token ^ mask
 	node.value = value ^ mask
-	C.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
 	return insertPlayerProtectionRecord(node)
 }
 
@@ -111,7 +108,7 @@ func insertPlayerProtectionRecord(node *playerProtectionRecord) C.int {
 		before = before.next
 	}
 	node.prev = before.prev
-	if C.dword_5d4594_2516348 == 0 {
+	if legacyWords.dword_5d4594_2516348 == 0 {
 		nullsub_31(1)
 	}
 	node.next = before
@@ -133,9 +130,9 @@ func sub_56F3B0() *C.uint32_t {
 		C.free(unsafe.Pointer(node))
 		node = next
 	}
-	C.dword_5d4594_2516328 = 0
+	legacyWords.dword_5d4594_2516328 = 0
 	*playerProtectionCount() = 0
-	C.dword_5d4594_2516348 = 0
+	legacyWords.dword_5d4594_2516348 = 0
 	C.dword_5d4594_2516352 = nil
 	C.dword_5d4594_2516344 = nil
 	return nil
@@ -143,12 +140,12 @@ func sub_56F3B0() *C.uint32_t {
 
 //export nox_xxx_protectionCreateInt_56F400
 func nox_xxx_protectionCreateInt_56F400(value C.int) C.int {
-	if createPlayerProtectionRecord(uint32(C.dword_5d4594_2516356), uint32(value)) == 0 {
+	if createPlayerProtectionRecord(uint32(legacyWords.dword_5d4594_2516356), uint32(value)) == 0 {
 		nullsub_31(1)
 		return 0
 	}
-	token := C.dword_5d4594_2516356
-	C.dword_5d4594_2516356++
+	token := legacyWords.dword_5d4594_2516356
+	legacyWords.dword_5d4594_2516356++
 	return C.int(token)
 }
 
@@ -177,7 +174,7 @@ func sub_56F510(token C.int) C.int {
 	} else {
 		C.dword_5d4594_2516352 = unsafe.Pointer(node.prev)
 	}
-	C.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
 	*playerProtectionCount()--
 	C.free(unsafe.Pointer(node))
 	return 1
@@ -189,7 +186,7 @@ func sub_56F590(token C.int) *C.uint32_t {
 }
 
 func findPlayerProtectionRecord(token uint32) *playerProtectionRecord {
-	encoded := token ^ uint32(C.dword_5d4594_2516348)
+	encoded := token ^ uint32(legacyWords.dword_5d4594_2516348)
 	for node := playerProtectionHead(); node != nil; node = node.next {
 		if node.token == encoded {
 			return node
@@ -201,14 +198,14 @@ func findPlayerProtectionRecord(token uint32) *playerProtectionRecord {
 
 //export nox_xxx_protectData_56F5C0
 func nox_xxx_protectData_56F5C0() C.int {
-	if C.dword_5d4594_2516348 == 0 {
+	if legacyWords.dword_5d4594_2516348 == 0 {
 		nullsub_31(1)
 	}
 	frame := gameFrame()
-	oldMask := uint32(C.dword_5d4594_2516348)
+	oldMask := uint32(legacyWords.dword_5d4594_2516348)
 	newMask := frame ^ uint32(nox_xxx_protect_56F240())
 	delta := oldMask ^ newMask
-	C.dword_5d4594_2516328 = C.uint32_t(^newMask)
+	legacyWords.dword_5d4594_2516328 = C.uint32_t(^newMask)
 	count := playerProtectionCount()
 	for i := int32(0); i < int32(*count)>>2; i++ {
 		low := nox_common_randomInt_415FA0(0, int32(*count)>>1)
@@ -221,14 +218,14 @@ func nox_xxx_protectData_56F5C0() C.int {
 		}
 	}
 
-	C.dword_5d4594_2516348 = 0
+	legacyWords.dword_5d4594_2516348 = 0
 	for node := playerProtectionHead(); node != nil; node = node.next {
 		node.token ^= delta
 		node.value ^= delta
-		C.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
+		legacyWords.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
 	}
 	*memmap.PtrUint32(0x5D4594, 2516364)++
-	C.dword_5d4594_2516348 = C.uint32_t(newMask)
+	legacyWords.dword_5d4594_2516348 = C.uint32_t(newMask)
 	if newMask == 0 {
 		nullsub_31(1)
 	}
@@ -259,7 +256,7 @@ func sub_56F720(first, second *C.int) {
 	a[1] = b[1]
 	*b = old
 	*memmap.PtrUint32(0x5D4594, 2516360)++
-	if C.dword_5d4594_2516348 == 0 {
+	if legacyWords.dword_5d4594_2516348 == 0 {
 		nullsub_31(1)
 	}
 }

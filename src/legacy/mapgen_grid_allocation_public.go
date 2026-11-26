@@ -3,9 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487532;
-extern uint32_t dword_5d4594_2487536;
-extern uint32_t dword_5d4594_2487540;
 */
 import "C"
 
@@ -36,8 +33,8 @@ func sub_520EA0(rawTheme *C.uint8_t) C.int {
 	side := 2*half + 1
 
 	sub_520F80()
-	C.dword_5d4594_2487536 = C.uint32_t(half)
-	C.dword_5d4594_2487540 = C.uint32_t(side)
+	legacyWords.dword_5d4594_2487536 = C.uint32_t(half)
+	legacyWords.dword_5d4594_2487540 = C.uint32_t(side)
 	table := nox_mapgen_alloc_memory(C.size_t(side), C.size_t(unsafe.Sizeof((*mapgenGridCell)(nil))))
 	if table == nil {
 		return 0
@@ -47,7 +44,7 @@ func sub_520EA0(rawTheme *C.uint8_t) C.int {
 		nox_mapgen_release_memory(table)
 		return 0
 	}
-	C.dword_5d4594_2487532 = C.uint32_t(token)
+	legacyWords.dword_5d4594_2487532 = C.uint32_t(token)
 
 	grid := mapgenGridStorage{table: table}
 	grid.offset = int32(half)
@@ -58,7 +55,7 @@ func sub_520EA0(rawTheme *C.uint8_t) C.int {
 			if row == nil {
 				grid.rows = grid.rows[:x]
 				grid.release()
-				C.dword_5d4594_2487532 = 0
+				legacyWords.dword_5d4594_2487532 = 0
 				return 0
 			}
 			grid.rows[x] = (*mapgenGridCell)(row)
@@ -80,7 +77,7 @@ func sub_520EA0(rawTheme *C.uint8_t) C.int {
 func sub_520F80() {
 	mapgenGrid.release()
 	mapgenGrid = mapgenGridStorage{}
-	C.dword_5d4594_2487532 = 0
+	legacyWords.dword_5d4594_2487532 = 0
 }
 
 //export nox_mapgenRoomAtCellNative_521290

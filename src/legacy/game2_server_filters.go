@@ -59,7 +59,7 @@ func sub_4533D0(unused1 *C.nox_window, event C.int, control *C.nox_window, unuse
 		return 0
 	case 1515, 1516:
 		off := uintptr(1045452)
-		if C.dword_5d4594_1045460 != 0 {
+		if legacyWords.dword_5d4594_1045460 != 0 {
 			off = 1045456
 		}
 		*g2ServerWord(off) = 0
@@ -77,7 +77,7 @@ func sub_4533D0(unused1 *C.nox_window, event C.int, control *C.nox_window, unuse
 			}
 			name := (*C.wchar2_t)(unsafe.Pointer(&g2ServerItems(d)[i].Text[0]))
 			var flag C.int
-			if C.dword_5d4594_1045460 != 0 {
+			if legacyWords.dword_5d4594_1045460 != 0 {
 				flag = C.sub_415DA0(name)
 			} else {
 				flag = C.sub_415960(name)
@@ -86,7 +86,7 @@ func sub_4533D0(unused1 *C.nox_window, event C.int, control *C.nox_window, unuse
 				break
 			}
 			enabled := g2ServerBool(control.draw_data.field_0&4 == 0)
-			if C.dword_5d4594_1045460 != 0 {
+			if legacyWords.dword_5d4594_1045460 != 0 {
 				sub_453640((*C.uint32_t)(g2ServerMem(1045456)), flag, enabled)
 			} else {
 				i := uintptr(0)
@@ -205,7 +205,7 @@ func sub_453750() C.int {
 		return 0
 	}
 	index := g2ServerFirstVisible(g2ServerList(w))
-	count := int32(*g2ServerWord(1045472 + 4*uintptr(C.dword_5d4594_1045460)))
+	count := int32(*g2ServerWord(1045472 + 4*uintptr(legacyWords.dword_5d4594_1045460)))
 	var result C.int
 	for id := 1520; id <= 1533; id++ {
 		box := g2ServerChild(root, id)

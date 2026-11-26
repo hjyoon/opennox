@@ -4,7 +4,6 @@ package legacy
 #include <stdint.h>
 #include "chest_collide_4e9c40.h"
 
-extern uint64_t qword_5d4594_1567940;
 */
 import "C"
 
@@ -23,10 +22,10 @@ var chestCollideCall4E9C40 = func(source, target *server.Object, collision unsaf
 		server.ChestCollideRuntime4E9C40{
 			Ticks: PlatformTicks,
 			LoadFeedbackTicks: func() uint64 {
-				return uint64(C.qword_5d4594_1567940)
+				return uint64(legacyWords.qword_5d4594_1567940)
 			},
 			StoreFeedbackTicks: func(value uint64) {
-				C.qword_5d4594_1567940 = C.uint64_t(value)
+				legacyWords.qword_5d4594_1567940 = C.uint64_t(value)
 			},
 			DelayedDelete: srv.DelayedDelete,
 			ChestOpen:     chestOpenCall4EDF00,

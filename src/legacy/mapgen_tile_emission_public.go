@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_1.h"
-extern uint32_t dword_5d4594_3835364;
 */
 import "C"
 
@@ -48,7 +47,7 @@ func sub_51D5E0(position *C.float2) C.int {
 		paint: func(point *mapgenWorldPoint) bool {
 			return sub_51D8F0((*C.float2)(unsafe.Pointer(point))) != 0
 		},
-		rebuildWalls: func() bool { return C.dword_5d4594_3835364 == 1 },
+		rebuildWalls: func() bool { return legacyWords.dword_5d4594_3835364 == 1 },
 		rebuild: func(point *mapgenWorldPoint) bool {
 			return sub_527380((*C.float2)(unsafe.Pointer(point))) != 0
 		},

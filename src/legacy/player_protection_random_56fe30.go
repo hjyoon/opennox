@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME5_2.h"
 
-extern uint32_t dword_5d4594_2516372;
-extern uint32_t dword_5d4594_2516380;
 */
 import "C"
 
@@ -16,8 +14,8 @@ import (
 )
 
 var (
-	playerProtectionRandomWidth   = (*uint32)(unsafe.Pointer(&C.dword_5d4594_2516372))
-	playerProtectionRandomMinimum = (*uint32)(unsafe.Pointer(&C.dword_5d4594_2516380))
+	playerProtectionRandomWidth   = (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2516372))
+	playerProtectionRandomMinimum = (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2516380))
 )
 
 func playerProtectionRandomState() *[5]float64 {

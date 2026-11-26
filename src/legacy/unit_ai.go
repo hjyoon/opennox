@@ -12,8 +12,6 @@ package legacy
 #include "GAME5.h"
 #include "noxstring_format_abi.h"
 #include "server__script__script.h"
-extern uint32_t dword_5d4594_2491580;
-extern uint32_t dword_5d4594_2491588;
 */
 import "C"
 import (
@@ -483,16 +481,16 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 				BalanceFloat: s.Balance.Float,
 				DropItem:     monsterDieDropNative54A390,
 				GolemPartIndex: func() uint32 {
-					return uint32(C.dword_5d4594_2491580)
+					return uint32(legacyAddressableWords.dword_5d4594_2491580)
 				},
 				SetGolemPartIndex: func(index uint32) {
-					C.dword_5d4594_2491580 = C.uint32_t(index)
+					legacyAddressableWords.dword_5d4594_2491580 = C.uint32_t(index)
 				},
 				SkeletonPartIndex: func() uint32 {
-					return uint32(C.dword_5d4594_2491588)
+					return uint32(legacyAddressableWords.dword_5d4594_2491588)
 				},
 				SetSkeletonPartIndex: func(index uint32) {
-					C.dword_5d4594_2491588 = C.uint32_t(index)
+					legacyAddressableWords.dword_5d4594_2491588 = C.uint32_t(index)
 				},
 			}) {
 				if s.Log != nil {

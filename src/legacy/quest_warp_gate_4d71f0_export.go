@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 
-extern uint32_t dword_5d4594_1556136;
 */
 import "C"
 
@@ -27,7 +26,7 @@ func questWarpGateRuntime4D71F0() server.QuestWarpGateRuntime4D71F0 {
 	s := GetServer().S()
 	return server.QuestWarpGateRuntime4D71F0{
 		ExitCountdownStart: func() uint32 {
-			return uint32(C.dword_5d4594_1556136)
+			return uint32(legacyWords.dword_5d4594_1556136)
 		},
 		StoreExitCountdownStart: func(value uint32) {
 			sub_4D71E0(C.int(int32(value)))

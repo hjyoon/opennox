@@ -9,7 +9,6 @@ package legacy
 #include "client__gui__window.h"
 #include "common__strman.h"
 extern int nox_win_width, nox_win_height;
-extern uint32_t nox_xxx_screenWidth_587000_184452;
 extern uint32_t dword_8531A0_2572;
 */
 import "C"
@@ -301,18 +300,18 @@ var summonCommands = [...]uintptr{0, 1, 3, 4, 5}
 
 //export nox_xxx_wndSummonCreateList_4C2560
 func nox_xxx_wndSummonCreateList_4C2560(pos *C.int2) {
-	C.nox_xxx_screenWidth_587000_184452 = 0
+	legacyWords.nox_xxx_screenWidth_587000_184452 = 0
 	for _, command := range summonCommands {
 		text := summonCommandText(command, 588)
 		var width, height C.int
 		nox_xxx_drawGetStringSize_43F840(nil, text, &width, &height, int32(C.nox_win_width))
-		if w := C.uint32_t(width); w > C.nox_xxx_screenWidth_587000_184452 {
-			C.nox_xxx_screenWidth_587000_184452 = w
+		if w := C.uint32_t(width); w > legacyWords.nox_xxx_screenWidth_587000_184452 {
+			legacyWords.nox_xxx_screenWidth_587000_184452 = w
 		}
 	}
-	C.nox_xxx_screenWidth_587000_184452 += 8
+	legacyWords.nox_xxx_screenWidth_587000_184452 += 8
 	row := C.int(nox_xxx_guiFontHeightMB_43F320(nil) + 2)
-	width, height := C.int(C.nox_xxx_screenWidth_587000_184452), 5*row+12
+	width, height := C.int(legacyWords.nox_xxx_screenWidth_587000_184452), 5*row+12
 	x := pos.field_0 - width/2
 	y := pos.field_4 - height/2
 	if x < 0 {
@@ -374,7 +373,7 @@ func sub_4C27F0(win *nox_window, draw *C.nox_window_data) C.int {
 	nox_xxx_drawGetStringSize_43F840(nil, text, &textWidth, nil, 0)
 	mouse := nox_client_getMousePos_4309F0()
 	nox_xxx_guiFontHeightMB_43F320(nil)
-	x += (C.int(C.nox_xxx_screenWidth_587000_184452)-textWidth)/2 + 1
+	x += (C.int(legacyWords.nox_xxx_screenWidth_587000_184452)-textWidth)/2 + 1
 	y += 3
 	shadow := C.int(renderPalette.black)
 	if C.nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y) {

@@ -14,8 +14,6 @@ extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
 extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_3835396;
-extern uint32_t dword_5d4594_3835392;
-extern uint32_t dword_5d4594_3835312;
 
 int32_t nox_script_readWriteZzz_541670(char* path, char* path2, char* dst);
 */
@@ -149,7 +147,7 @@ func mapgenPlaceRuntimeGeometry503B30(
 
 func mapgenFinishScriptPayload503B30(delta [2]int32) {
 	*memmap.PtrUint32(0x973F18, 35880)++
-	ordinal := C.int32_t(C.dword_5d4594_3835312)
+	ordinal := C.int32_t(legacyWords.dword_5d4594_3835312)
 	C.sub_542BF0(ordinal, C.int32_t(delta[0]), C.int32_t(delta[1]))
 
 	offset := [2]C.int{C.int(delta[0]), C.int(delta[1])}
@@ -214,9 +212,9 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 		fixupPendingObjects: func(bounds [4]int32) {
 			origin := [2]uint32{uint32(bounds[0]), uint32(bounds[1])}
 			next := interestingXferNative4D0010(
-				&origin, int32(C.dword_5d4594_3835392), interestingXferRuntimeDeps4D0010(),
+				&origin, int32(legacyAddressableWords.dword_5d4594_3835392), interestingXferRuntimeDeps4D0010(),
 			)
-			C.dword_5d4594_3835392 = C.uint32_t(uint32(next))
+			legacyAddressableWords.dword_5d4594_3835392 = C.uint32_t(uint32(next))
 		},
 		placeGroups: func(delta [2]int32) bool {
 			return GetServer().Sub504720(uint32(delta[0]), uint32(delta[1])) != 0
@@ -245,7 +243,7 @@ func mapgenPlaceRuntimeDeps503B30() mapgenPlaceDeps503B30 {
 		},
 		finishScriptPayload: mapgenFinishScriptPayload503B30,
 		advancePlacementIndex: func() {
-			C.dword_5d4594_3835312++
+			legacyWords.dword_5d4594_3835312++
 		},
 	}
 }

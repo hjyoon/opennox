@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern uint32_t dword_587000_87408, dword_5d4594_815096, dword_5d4594_815100;
 */
 import "C"
 
@@ -43,7 +42,7 @@ func sub_4383A0() C.int {
 	sub_46AD20(wolWindows.root, 10006, 10007, 1)
 	sub_46ACE0(wolWindows.root, 10047, 10051, 0)
 	wolSetHeading(wolWindows.heading, wolWindowString("ListJoinServer", 418))
-	C.dword_587000_87408 = 1
+	legacyWords.dword_587000_87408 = 1
 	return 0
 }
 
@@ -164,12 +163,12 @@ func wolDisconnectedNotice(id string, line int32, pending *C.uint32_t) {
 
 //export sub_43B6E0
 func sub_43B6E0() {
-	wolDisconnectedNotice("Kicked", 3331, &C.dword_5d4594_815096)
+	wolDisconnectedNotice("Kicked", 3331, &legacyAddressableWords.dword_5d4594_815096)
 }
 
 //export sub_43B750
 func sub_43B750() {
-	wolDisconnectedNotice("Timeout", 3351, &C.dword_5d4594_815100)
+	wolDisconnectedNotice("Timeout", 3351, &legacyAddressableWords.dword_5d4594_815100)
 }
 
 //export nox_gui_wol_gameModeString_43BCB0

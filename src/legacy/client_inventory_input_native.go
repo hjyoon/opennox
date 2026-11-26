@@ -6,10 +6,6 @@ package legacy
 #include "client__gui__window.h"
 
 typedef const nox_inventory_cell_t nox_const_inventory_cell;
-extern uint32_t dword_5d4594_1049796_inventory_click_column_index;
-extern uint32_t dword_5d4594_1049800_inventory_click_row_index;
-extern uint32_t dword_5d4594_1049856;
-extern uint32_t dword_5d4594_1062512;
 extern uintptr_t dword_5d4594_1062492;
 */
 import "C"
@@ -60,7 +56,7 @@ func sub_464770(win *C.nox_window, event C.int, packed, unused C.uintptr_t) C.in
 
 func clientInventoryReleaseOnAlternate(dragged *nox_drawable) bool {
 	weapon := dragged.flags28&0x1001000 != 0
-	if C.dword_5d4594_1049856 != 0 {
+	if legacyWords.dword_5d4594_1049856 != 0 {
 		if weapon {
 			if clientInventoryAlternateCell() != nil {
 				nox_client_invAlterWeapon_4672C0()
@@ -71,8 +67,8 @@ func clientInventoryReleaseOnAlternate(dragged *nox_drawable) bool {
 		}
 		return true
 	}
-	column := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
-	row := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
+	column := C.int(legacyWords.dword_5d4594_1049796_inventory_click_column_index)
+	row := C.int(legacyWords.dword_5d4594_1049800_inventory_click_row_index)
 	if !weapon || sub_464B40(column, row) == 0 {
 		sub_4649B0(dragged, column, row)
 		return true
@@ -101,11 +97,11 @@ func clientInventoryReleaseOnAlternate(dragged *nox_drawable) bool {
 
 func clientInventoryFinishDrag(dragged *nox_drawable) {
 	nox_xxx_cursorResetDraggedItem_4776A0()
-	if C.dword_5d4594_1049856 == 0 {
+	if legacyWords.dword_5d4594_1049856 == 0 {
 		nox_xxx_spriteDelete_45A4B0(dragged)
 	}
 	nox_client_inventory_set_dragged(nil)
-	C.dword_5d4594_1049856 = 0
+	legacyWords.dword_5d4594_1049856 = 0
 }
 
 //export nox_xxx_trade_4657B0
@@ -125,7 +121,7 @@ func nox_xxx_clientTradeMB_4657E0(point *C.uint32_t) C.char {
 		return 0
 	}
 	column := (uint32(pos.field_0) - 314) / 50
-	row := (uint32(pos.field_4) + uint32(C.dword_5d4594_1062512) - 13) / 50
+	row := (uint32(pos.field_4) + uint32(legacyWords.dword_5d4594_1062512) - 13) / 50
 	if column >= uint32(inventoryColumns) || row >= uint32(inventoryRows) {
 		return 0
 	}
@@ -149,17 +145,17 @@ func sub_4658A0(win *C.nox_window, point *C.int2) {
 			dragged = (*nox_drawable)(inventoryStateNativeHeads()[slot].C())
 		}
 		nox_client_inventory_set_dragged(dragged)
-		C.dword_5d4594_1049856 = C.uint32_t(bool2int(dragged != nil))
+		legacyWords.dword_5d4594_1049856 = C.uint32_t(bool2int(dragged != nil))
 	case nox_xxx_pointInRect_4281F0(point, (*C.int4)(memmap.PtrOff(0x587000, 136368))) != 0:
-		C.dword_5d4594_1049856 = 0
+		legacyWords.dword_5d4594_1049856 = 0
 		if (point.field_4-13)/50 == 2 {
 			nox_client_toggleMap_473610()
 		}
 	default:
-		C.dword_5d4594_1049856 = 0
+		legacyWords.dword_5d4594_1049856 = 0
 		if nox_xxx_pointInRect_4281F0(point, (*C.int4)(memmap.PtrOff(0x587000, 136352))) != 0 {
 			column := (point.field_0 - 314) / 50
-			row := (point.field_4 + C.int(C.dword_5d4594_1062512) - 13) / 50
+			row := (point.field_4 + C.int(legacyWords.dword_5d4594_1062512) - 13) / 50
 			clientInventorySetClickCell(column, row)
 			if sub_464B40(column, row) != 0 {
 				nox_xxx_cliInventorySpriteUpd_465A30()
@@ -169,8 +165,8 @@ func sub_4658A0(win *C.nox_window, point *C.int2) {
 }
 
 func clientInventorySetClickCell(column, row C.int) {
-	C.dword_5d4594_1049796_inventory_click_column_index = C.uint32_t(column)
-	C.dword_5d4594_1049800_inventory_click_row_index = C.uint32_t(row)
+	legacyWords.dword_5d4594_1049796_inventory_click_column_index = C.uint32_t(column)
+	legacyWords.dword_5d4594_1049800_inventory_click_row_index = C.uint32_t(row)
 }
 
 //export nox_xxx_clientDrop_465BE0

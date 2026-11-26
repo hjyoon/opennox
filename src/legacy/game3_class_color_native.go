@@ -48,21 +48,13 @@ package legacy
 
 extern uint32_t dword_8531A0_2572;
 extern uint32_t dword_5d4594_1313788;
-extern uint32_t nox_xxx_normalWndBits_587000_172880;
-extern uint32_t dword_5d4594_1313532;
-extern uint32_t dword_5d4594_1313564;
 extern uint32_t nox_server_sendMotd_108752;
-extern uint32_t dword_587000_171388;
-extern uint32_t dword_5d4594_1313536;
 extern uint32_t dword_5d4594_1313740;
-extern uint32_t dword_5d4594_1313540;
 extern uint32_t dword_5d4594_1307720;
-extern uint32_t nox_server_connectionType_3596;
 extern void* dword_587000_122852;
 extern uint64_t qword_581450_9552;
 extern void* dword_587000_93164;
 extern void* dword_587000_127004;
-extern uint32_t dword_5d4594_2650652;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -182,8 +174,8 @@ func sub_4A5E90() C.int {
 		colorSelectPreviewControls[i] = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, id)
 	}
 	colorSelectName = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, 751)
-	result := C.int(C.dword_587000_171388)
-	if C.dword_587000_171388 == 0 {
+	result := C.int(legacyWords.dword_587000_171388)
+	if legacyWords.dword_587000_171388 == 0 {
 		C.nox_window_call_field_94_fnc(colorSelectName, 16414, C.uintptr_t(uintptr(unsafe.Pointer(colorSelectProfile))), 0, internCStr("game3_class_config_native.go"), 0)
 		for i, off := range []int{71, 68, 74, 77, 80} {
 			group := C.int(1)
@@ -426,7 +418,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 		}
 		C.nox_game_decStateInd_43BDC0()
 		C.nox_game_decStateInd_43BDC0()
-		C.dword_587000_171388 = 1
+		legacyWords.dword_587000_171388 = 1
 		if sub_4A75C0() != 0 {
 			switch *(*byte)(unsafe.Add(unsafe.Pointer(colorSelectProfile), 66)) {
 			case 0:
@@ -619,12 +611,12 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			case 314:
 				C.nox_video_setCutSize_4766A0(100)
 			case 332:
-				C.nox_xxx_normalWndBits_587000_172880 = 16
+				legacyWords.nox_xxx_normalWndBits_587000_172880 = 16
 				C.nox_video_setFullScreen(1)
 			case 333:
 				C.nox_video_setFullScreen(1)
 			case 331:
-				C.nox_xxx_normalWndBits_587000_172880 = 8
+				legacyWords.nox_xxx_normalWndBits_587000_172880 = 8
 				C.nox_video_setFullScreen(0)
 			case 334:
 				C.nox_video_setFullScreen(0)
@@ -789,7 +781,7 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 		return 0
 	}
 	C.sub_446380()
-	if C.dword_5d4594_2650652 != 0 && C.sub_41E2F0() == 9 {
+	if legacyWords.dword_5d4594_2650652 != 0 && C.sub_41E2F0() == 9 {
 		sub_41F4B0()
 		sub_41EC30()
 		Sub_446490(0)

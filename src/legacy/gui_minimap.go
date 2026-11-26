@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2_1.h"
-extern uint32_t nox_xxx_minimap_587000_149232;
 */
 import "C"
 
@@ -24,5 +23,5 @@ func DrawMinimap4Sprite4725C0(drawable *client.Drawable) {
 }
 
 func SetMinimapZoom(zoom uint32) {
-	C.nox_xxx_minimap_587000_149232 = C.uint32_t(zoom)
+	legacyAddressableWords.nox_xxx_minimap_587000_149232 = C.uint32_t(zoom)
 }

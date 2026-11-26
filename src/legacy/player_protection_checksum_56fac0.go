@@ -5,8 +5,6 @@ package legacy
 
 typedef const nox_object_t protection_const_object_t;
 
-extern uint32_t dword_5d4594_2516328;
-extern uint32_t dword_5d4594_2516348;
 */
 import "C"
 
@@ -62,7 +60,7 @@ func sub_56FB00(data *C.int, length C.uint, token C.int) C.int {
 	if record == nil {
 		return 0
 	}
-	if C.uint32_t(nox_xxx_protectionStringCRCLen_56FAE0(data, length))^C.dword_5d4594_2516348 == C.uint32_t(record.value) {
+	if C.uint32_t(nox_xxx_protectionStringCRCLen_56FAE0(data, length))^legacyWords.dword_5d4594_2516348 == C.uint32_t(record.value) {
 		return 1
 	}
 	nullsub_31(1)
@@ -98,11 +96,11 @@ func updatePlayerProtectionItem(token int32, item *server.Object) int32 {
 	if record == nil {
 		return 0
 	}
-	C.dword_5d4594_2516328 ^= C.uint32_t(record.value)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(record.value)
 	checksum := playerProtectionItemChecksum(item)
 	record.value ^= checksum
-	C.dword_5d4594_2516328 ^= C.uint32_t(record.value)
-	return int32(C.dword_5d4594_2516328)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(record.value)
+	return int32(legacyWords.dword_5d4594_2516328)
 }
 
 //export nox_xxx_protect_56FBF0
@@ -137,10 +135,10 @@ func nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, index, level C.int) C.i
 	if record == nil {
 		return 0
 	}
-	C.dword_5d4594_2516328 ^= C.uint32_t(record.value)
-	key := uint32(C.dword_5d4594_2516348)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(record.value)
+	key := uint32(legacyWords.dword_5d4594_2516348)
 	record.value = ((record.value ^ key) | playerProtectionIndexBit(int32(index), int32(level))) ^ key
-	C.dword_5d4594_2516328 ^= C.uint32_t(record.value)
+	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(record.value)
 	return C.int(record.value)
 }
 
@@ -155,7 +153,7 @@ func nox_xxx_playerApplyProtectionCRC_56FD50(token C.int, levels unsafe.Pointer,
 		word := (*[4]byte)(unsafe.Add(levels, uintptr(i)*4))
 		bits |= playerProtectionIndexBit(i, int32(binary.LittleEndian.Uint32(word[:])))
 	}
-	if bits^uint32(C.dword_5d4594_2516348) == record.value {
+	if bits^uint32(legacyWords.dword_5d4594_2516348) == record.value {
 		return 1
 	}
 	nullsub_31(1)

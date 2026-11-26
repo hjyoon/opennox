@@ -6,9 +6,8 @@ package legacy
 #include <string.h>
 extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_1098628, dword_5d4594_1321800;
+extern uint32_t dword_5d4594_1098628;
 extern nox_waypoint_t* dword_5d4594_2487244;
-extern uint32_t nox_xxx_minimap_587000_149232;
 static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
@@ -40,13 +39,13 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 9:
 		return unsafe.Pointer(&gameSetupWindows.connection)
 	case 10:
-		return unsafe.Pointer(&C.dword_5d4594_1321800)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_1321800)
 	case 11:
-		return unsafe.Pointer(&C.nox_xxx_waypointCounterMB_587000_154948)
+		return unsafe.Pointer(&legacyAddressableWords.nox_xxx_waypointCounterMB_587000_154948)
 	case 12:
 		return unsafe.Pointer(&C.dword_5d4594_2487244)
 	case 13, 14:
-		return unsafe.Pointer(&C.nox_xxx_minimap_587000_149232)
+		return unsafe.Pointer(&legacyAddressableWords.nox_xxx_minimap_587000_149232)
 	case 15:
 		return unsafe.Pointer(&clientMeterRecords[0].field_1)
 	case 16:

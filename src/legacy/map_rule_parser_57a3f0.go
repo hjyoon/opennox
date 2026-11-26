@@ -6,7 +6,6 @@ package legacy
 
 typedef const wchar2_t rule_const_wchar2_t;
 
-extern uint32_t dword_5d4594_2523764;
 */
 import "C"
 
@@ -33,7 +32,7 @@ func sub_57A3F0(filename, data *C.char, notes *C.int, mode C.int) C.int {
 }
 
 func readMapRuleFile(path string, settings *server.Settings2, notes *intrusiveListNode425760, mode noxflags.GameFlag) bool {
-	C.dword_5d4594_2523764 = C.uint32_t(noxflags.GameModeMask)
+	legacyWords.dword_5d4594_2523764 = C.uint32_t(noxflags.GameModeMask)
 	r, err := ifs.Open(path)
 	if err != nil {
 		return false
@@ -173,10 +172,10 @@ func applyMapRuleTokens(tokens [][]uint16, settings *server.Settings2, mode noxf
 		return false
 	}
 	if section := mapRuleModeByName(mapRuleNarrow(tokens[0])); section != 0 {
-		C.dword_5d4594_2523764 = C.uint32_t(section)
+		legacyWords.dword_5d4594_2523764 = C.uint32_t(section)
 		return mode == section
 	}
-	active := noxflags.GameFlag(C.dword_5d4594_2523764)
+	active := noxflags.GameFlag(legacyWords.dword_5d4594_2523764)
 	if active&mode == 0 || len(tokens) != 4 || !mapRuleKeyword(tokens[0], "set") {
 		return false
 	}
@@ -197,7 +196,7 @@ func applyMapRuleTokens(tokens [][]uint16, settings *server.Settings2, mode noxf
 	default:
 		return false
 	}
-	return mode == noxflags.GameFlag(C.dword_5d4594_2523764)
+	return mode == noxflags.GameFlag(legacyWords.dword_5d4594_2523764)
 }
 
 func applyMapRuleSpell(settings *server.Settings2, token []uint16, off bool) bool {

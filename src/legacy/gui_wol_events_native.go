@@ -4,7 +4,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern int dword_5d4594_815104;
 */
 import "C"
 
@@ -103,7 +102,7 @@ func wolConfirmLegacyDialog() {
 		sub_43A920()
 		nox_game_showGameSel_4379F0()
 	default:
-		if C.dword_5d4594_815104 != 0 {
+		if legacyWords.dword_5d4594_815104 != 0 {
 			Set_qword_5d4594_815068(uint64(nox_platform_get_ticks() + 1000))
 		}
 	}

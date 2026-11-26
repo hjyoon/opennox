@@ -3,9 +3,6 @@ package legacy
 /*
 #include <stdlib.h>
 #include "game2_audio_native.h"
-extern uint32_t dword_587000_126996;
-extern uint32_t dword_5d4594_1045432;
-extern uint32_t dword_5d4594_1045460;
 extern void *dword_587000_127004;
 */
 import "C"
@@ -123,9 +120,11 @@ func game2AudioCloseContext(p unsafe.Pointer) {
 func game2AudioSoundName(i int) unsafe.Pointer {
 	return unsafe.Pointer(internCStr(sound.ID(i).String()))
 }
-func game2AudioFXFlag() uint32        { return uint32(C.dword_587000_126996) }
-func game2AudioSetFXFlag(v uint32)    { C.dword_587000_126996 = C.uint32_t(v) }
-func game2AudioSetInitialized(v bool) { C.dword_5d4594_1045432 = C.uint32_t(game2AudioBool(v)) }
+func game2AudioFXFlag() uint32     { return uint32(legacyWords.dword_587000_126996) }
+func game2AudioSetFXFlag(v uint32) { legacyWords.dword_587000_126996 = C.uint32_t(v) }
+func game2AudioSetInitialized(v bool) {
+	legacyWords.dword_5d4594_1045432 = C.uint32_t(game2AudioBool(v))
+}
 func game2AudioNextSerial() uint32 {
 	p := memmap.PtrUint32(0x587000, 127000)
 	v := *p
@@ -495,7 +494,7 @@ func game2AudioAcquire452810(priority int32, flags int8) *game2AudioVoice {
 func game2AudioRandom(lo, hi int32, line int) int32 { return int32(game2AudioRandomC(lo, hi, line)) }
 func game2AudioMask453080(bit int8) int32 {
 	mask := uint32(1) << (uint8(bit) & 31)
-	return game2AudioMaskC(mask, C.dword_5d4594_1045460 != 0)
+	return game2AudioMaskC(mask, legacyWords.dword_5d4594_1045460 != 0)
 }
 
 // No raw offset272 getter is used by the new path: these functions expose the

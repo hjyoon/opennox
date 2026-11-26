@@ -6,9 +6,6 @@ package legacy
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern uint32_t dword_5d4594_3798800, dword_5d4594_3798808;
 extern uint32_t dword_5d4594_3798812, dword_5d4594_3798816;
-extern uint32_t dword_5d4594_3798820, dword_5d4594_3798824;
-extern uint32_t dword_5d4594_3798828, dword_5d4594_3798832;
-extern uint32_t dword_5d4594_3798836, dword_5d4594_3798840;
 typedef void (*nox_floor_tile_draw_fn)(int2*, nox_video_bag_image_t*, uint16_t);
 typedef void (*nox_floor_edge_draw_fn)(int2*, nox_tile_list_node_t*);
 
@@ -157,7 +154,7 @@ func nox_xxx_tileDrawImpl_4826A0(vp *nox_draw_viewport_t) C.int {
 	if vp == nil || C.ptr_5D4594_2650668 == nil {
 		return 0
 	}
-	C.dword_5d4594_3798836, C.dword_5d4594_3798840 = 0, 0
+	legacyWords.dword_5d4594_3798836, legacyWords.dword_5d4594_3798840 = 0, 0
 	sub_481410()
 	clear(memmap.PtrT[[176]uint32](0x85B3FC, 228)[:])
 	clear(memmap.PtrT[[64]uint32](0x5D4594, 2523980)[:])
@@ -166,9 +163,9 @@ func nox_xxx_tileDrawImpl_4826A0(vp *nox_draw_viewport_t) C.int {
 	if left < 0 || top < 0 || left >= right || top >= bottom {
 		return 0
 	}
-	C.dword_5d4594_3798828, C.dword_5d4594_3798832 = C.uint32_t(left), C.uint32_t(top)
-	C.dword_5d4594_3798820 = C.uint32_t(floorGridStep*left - 11)
-	C.dword_5d4594_3798824 = C.uint32_t(floorGridStep*top - 11)
+	legacyWords.dword_5d4594_3798828, legacyWords.dword_5d4594_3798832 = C.uint32_t(left), C.uint32_t(top)
+	legacyWords.dword_5d4594_3798820 = C.uint32_t(floorGridStep*left - 11)
+	legacyWords.dword_5d4594_3798824 = C.uint32_t(floorGridStep*top - 11)
 	for y := top; y < bottom; y++ {
 		for x := left; x < right; x++ {
 			drawFloorCell(mapgenFloorCell(x, y), floorGridStep*x-11, floorGridStep*y-11)
@@ -183,11 +180,11 @@ func nox_xxx_tileDrawMB_481C20_A(vp *nox_draw_viewport_t, world C.int) {
 		return
 	}
 	worldX := int32(world)
-	left, origin := int32(C.dword_5d4594_3798828), int32(C.dword_5d4594_3798820)
-	top, originY := int32(C.dword_5d4594_3798832), int32(C.dword_5d4594_3798824)
+	left, origin := int32(legacyWords.dword_5d4594_3798828), int32(legacyWords.dword_5d4594_3798820)
+	top, originY := int32(legacyWords.dword_5d4594_3798832), int32(legacyWords.dword_5d4594_3798824)
 	width, height := int32(C.dword_5d4594_3798800), int32(C.dword_5d4594_3798808)
 	columns, rows := int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816)
-	dx, dy := int32(C.dword_5d4594_3798836), int32(C.dword_5d4594_3798840)
+	dx, dy := int32(legacyWords.dword_5d4594_3798836), int32(legacyWords.dword_5d4594_3798840)
 	var column, screenX int32
 	if worldX >= origin+23 {
 		right := nox_getBackbufWidth() + worldX
@@ -229,8 +226,8 @@ func nox_xxx_tileDrawMB_481C20_A(vp *nox_draw_viewport_t, world C.int) {
 			}
 		}
 	}
-	C.dword_5d4594_3798828, C.dword_5d4594_3798820 = C.uint32_t(left), C.uint32_t(origin)
-	C.dword_5d4594_3798836, C.dword_5d4594_3798840 = C.uint32_t(dx), C.uint32_t(dy)
+	legacyWords.dword_5d4594_3798828, legacyWords.dword_5d4594_3798820 = C.uint32_t(left), C.uint32_t(origin)
+	legacyWords.dword_5d4594_3798836, legacyWords.dword_5d4594_3798840 = C.uint32_t(dx), C.uint32_t(dy)
 	sub_481410()
 	for y := top; y < top+rows; y++ {
 		drawFloorCell(mapgenFloorCell(column, y), screenX, originY+floorGridStep*(y-top))
@@ -243,9 +240,9 @@ func nox_xxx_tileDrawMB_481C20_B(vp *nox_draw_viewport_t, world C.int) {
 		return
 	}
 	worldY := int32(world)
-	top, origin := int32(C.dword_5d4594_3798832), int32(C.dword_5d4594_3798824)
-	left, originX := int32(C.dword_5d4594_3798828), int32(C.dword_5d4594_3798820)
-	height, dy := int32(C.dword_5d4594_3798808), int32(C.dword_5d4594_3798840)
+	top, origin := int32(legacyWords.dword_5d4594_3798832), int32(legacyWords.dword_5d4594_3798824)
+	left, originX := int32(legacyWords.dword_5d4594_3798828), int32(legacyWords.dword_5d4594_3798820)
+	height, dy := int32(C.dword_5d4594_3798808), int32(legacyWords.dword_5d4594_3798840)
 	columns, rows := int32(C.dword_5d4594_3798812), int32(C.dword_5d4594_3798816)
 	var row, screenY int32
 	if worldY >= origin+23 {
@@ -280,8 +277,8 @@ func nox_xxx_tileDrawMB_481C20_B(vp *nox_draw_viewport_t, world C.int) {
 			dy += height
 		}
 	}
-	C.dword_5d4594_3798832, C.dword_5d4594_3798824 = C.uint32_t(top), C.uint32_t(origin)
-	C.dword_5d4594_3798840 = C.uint32_t(dy)
+	legacyWords.dword_5d4594_3798832, legacyWords.dword_5d4594_3798824 = C.uint32_t(top), C.uint32_t(origin)
+	legacyWords.dword_5d4594_3798840 = C.uint32_t(dy)
 	sub_481410()
 	for x := left; x < left+columns-1; x++ {
 		drawFloorCell(mapgenFloorCell(x, row), originX+floorGridStep*(x-left), screenY)

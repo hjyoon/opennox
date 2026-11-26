@@ -15,11 +15,11 @@ import (
 )
 
 func respawnAddLoadAllow4EC5E0() uint32 {
-	return uint32(C.nox_xxx_respawnAllow_587000_205200)
+	return uint32(legacyWords.nox_xxx_respawnAllow_587000_205200)
 }
 
 func respawnAddStoreAllow4EC5E0(value uint32) {
-	C.nox_xxx_respawnAllow_587000_205200 = C.uint32_t(value)
+	legacyWords.nox_xxx_respawnAllow_587000_205200 = C.uint32_t(value)
 }
 
 func respawnAddLoadHead4EC5E0() *respawnRecord4EC5E0 {

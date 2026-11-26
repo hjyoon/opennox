@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 #include "common__system__settings.h"
 
-extern uint32_t dword_5d4594_2650652;
 */
 import "C"
 
@@ -134,7 +133,7 @@ func nox_cmd_window(i, n C.int, tokens **C.wchar2_t) C.int {
 }
 
 func consoleSetConnectionQuality(rate C.int, internet bool) C.int {
-	C.dword_5d4594_2650652 = C.uint32_t(bool2int(internet))
+	legacyWords.dword_5d4594_2650652 = C.uint32_t(bool2int(internet))
 	nox_xxx_rateUpdate_40A6D0(sub_40A710(rate))
 	Set_nox_server_connectionType_3596(int(rate))
 	Sub_4AD840()

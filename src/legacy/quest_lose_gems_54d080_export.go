@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME5.h"
-extern uint32_t dword_5d4594_2491676;
 */
 import "C"
 
@@ -15,7 +14,7 @@ import (
 
 func questGemTypeCache54D080() [3]*uint32 {
 	return [3]*uint32{
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2491676)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2491676)),
 		memmap.PtrUint32(0x5D4594, 2491680),
 		memmap.PtrUint32(0x5D4594, 2491684),
 	}

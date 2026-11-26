@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guiinv.h"
 
 extern uintptr_t dword_5d4594_1062492;
-extern uint32_t dword_5d4594_1062496, dword_5d4594_1049844;
 extern nox_drawable* dword_5d4594_1063116;
 */
 import "C"
@@ -34,7 +33,7 @@ func sub_465D50_draw(win *C.nox_window) C.int {
 			viewport := nox_client_inventory_viewport_native()
 			ccall.CallIntPtr2(unsafe.Pointer(item.draw_func), unsafe.Pointer(viewport), unsafe.Pointer(item))
 		}
-	} else if C.dword_5d4594_1062496 == 0 && C.dword_5d4594_1062492 == 0 {
+	} else if legacyWords.dword_5d4594_1062496 == 0 && C.dword_5d4594_1062492 == 0 {
 		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_FIST], int32(x+21), int32(y+50))
 	}
 	return 1
@@ -42,7 +41,7 @@ func sub_465D50_draw(win *C.nox_window) C.int {
 
 //export sub_465DE0
 func sub_465DE0(value C.int) C.int {
-	C.dword_5d4594_1049844 = C.uint32_t(value)
+	legacyWords.dword_5d4594_1049844 = C.uint32_t(value)
 	return nox_xxx_j_inventoryNameSignInit_467460()
 }
 

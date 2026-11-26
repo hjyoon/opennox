@@ -5,7 +5,6 @@ package legacy
 #include "GAME5_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_2650652;
 */
 import "C"
 
@@ -56,7 +55,7 @@ func readMapRuleDefaults57A1E0(settings *server.Settings2, filename *C.char, not
 			readMapRuleFile(prefix+mapName+".rul", settings, list, selection)
 		}
 	}
-	if sources&ruleSourceInternet != 0 && C.dword_5d4594_2650652 != 0 {
+	if sources&ruleSourceInternet != 0 && legacyWords.dword_5d4594_2650652 != 0 {
 		readMapRuleFile("internet.rul", settings, list, selection)
 	}
 	if noxflags.GameFlag(mode)&noxflags.GameModeFlagBall != 0 {

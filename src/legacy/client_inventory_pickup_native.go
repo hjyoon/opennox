@@ -6,10 +6,7 @@ package legacy
 #include "GAME2_1.h"
 
 typedef const nox_modifier_attrs_t inventory_const_modifier_attrs_t;
-extern uint32_t dword_5d4594_1062556, dword_5d4594_1062564, dword_5d4594_1062560;
-extern uint32_t dword_5d4594_1062516, dword_5d4594_1049856;
-extern uint32_t dword_5d4594_1062488, dword_5d4594_1062496;
-extern uint32_t dword_5d4594_1049796_inventory_click_column_index, dword_5d4594_1049800_inventory_click_row_index;
+extern uint32_t dword_5d4594_1062488;
 */
 import "C"
 
@@ -21,8 +18,8 @@ func clientInventoryString(key string, line int32) *wchar2_t {
 
 func clientInventoryIsSpecialThing(thingType C.uint32_t) bool {
 	switch uint32(thingType) {
-	case uint32(C.dword_5d4594_1062560), memmap.Uint32(0x5D4594, 1049728), memmap.Uint32(0x5D4594, 1049724),
-		uint32(C.dword_5d4594_1062556), uint32(C.dword_5d4594_1062564):
+	case uint32(legacyAddressableWords.dword_5d4594_1062560), memmap.Uint32(0x5D4594, 1049728), memmap.Uint32(0x5D4594, 1049724),
+		uint32(legacyAddressableWords.dword_5d4594_1062556), uint32(legacyAddressableWords.dword_5d4594_1062564):
 		return true
 	}
 	return false
@@ -50,9 +47,9 @@ func nox_xxx_spritePickup_461660(code, thingType C.int, attrs *C.inventory_const
 			sub_472310()
 		}
 		if drawable.flags28&0x03001000 != 0 {
-			C.dword_5d4594_1062516 = 0
+			legacyWords.dword_5d4594_1062516 = 0
 			if row >= 3 {
-				C.dword_5d4594_1062516 = C.uint32_t(10 * (5*row - 10))
+				legacyWords.dword_5d4594_1062516 = C.uint32_t(10 * (5*row - 10))
 			}
 		}
 	}
@@ -126,7 +123,7 @@ func sub_461A80(code C.int) {
 	}
 	nox_xxx_spriteDelete_45A4B0(dragged)
 	nox_client_inventory_set_dragged(nil)
-	C.dword_5d4594_1049856 = 0
+	legacyWords.dword_5d4594_1049856 = 0
 	nox_xxx_cursorResetDraggedItem_4776A0()
 }
 
@@ -183,11 +180,11 @@ func sub_462040(code C.int) {
 	if item := drawableItemData(equipped); item.Field_112_0 >= 0 {
 		sub_470D90(C.int(item.Field_112_0), C.int(item.Field_112_2))
 	}
-	if code := C.dword_5d4594_1062496; code != 0 {
+	if code := legacyWords.dword_5d4594_1062496; code != 0 {
 		if alternate, _ := inventoryLookupNativeSearch(uint32(code)); alternate != nil {
 			alternate.field_136 = 1
 			nox_xxx_clientSetAltWeapon_461550(alternate)
-			C.dword_5d4594_1062496 = 0
+			legacyWords.dword_5d4594_1062496 = 0
 		}
 	}
 }
@@ -215,7 +212,7 @@ func clientInventoryEquipAmmo() {
 
 //export nox_xxx_cliInventorySpriteUpd_465A30
 func nox_xxx_cliInventorySpriteUpd_465A30() {
-	cell := inventoryGridCell(int(C.dword_5d4594_1049800_inventory_click_row_index), int(C.dword_5d4594_1049796_inventory_click_column_index))
+	cell := inventoryGridCell(int(legacyWords.dword_5d4594_1049800_inventory_click_row_index), int(legacyWords.dword_5d4594_1049796_inventory_click_column_index))
 	if cell.field_140 == 0 {
 		return
 	}

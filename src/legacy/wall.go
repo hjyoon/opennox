@@ -5,8 +5,6 @@ package legacy
 #include "GAME4_1.h"
 #include "vote_5066d0.h"
 extern void* dword_5d4594_251560;
-extern uint32_t dword_5d4594_741356;
-extern uint32_t dword_5d4594_741364;
 */
 import "C"
 import (
@@ -183,9 +181,9 @@ func sub_42A0F0(wallPtr, _ unsafe.Pointer) {
 	wallMapBounds42A0F0(
 		asWallP(wallPtr),
 		memmap.PtrUint32(0x5D4594, 741360),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_741356)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741356)),
 		memmap.PtrUint32(0x5D4594, 741368),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_741364)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_741364)),
 	)
 }
 

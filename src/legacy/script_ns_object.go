@@ -7,8 +7,6 @@ package legacy
 
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
 int sub_467B00(int type_id, int amount);
-extern int dword_5d4594_2386848;
-extern unsigned int dword_5d4594_2386852;
 */
 import "C"
 import (
@@ -64,16 +62,16 @@ func Nox_xxx_playerCanCarryItem_513B00(a1 *server.Object, a2 *server.Object) {
 		InventoryCapacity: func(typeID uint16, amount int32) int32 {
 			return int32(C.sub_467B00(C.int(typeID), C.int(amount)))
 		},
-		PickupCount: func() int32 { return int32(C.dword_5d4594_2386848) },
+		PickupCount: func() int32 { return int32(legacyWords.dword_5d4594_2386848) },
 		ItemCost:    s.ShopItemCostNoMerchant50E3D0,
 		RandomPoint: func(radius float32, center, output *types.Pointf) {
 			s.RandomReachablePointAroundInto4ED970(radius, center, output)
 		},
 		Drop:          objectDropDispatchCall4ED790,
-		AlreadyWarned: func() bool { return C.dword_5d4594_2386852 != 0 },
+		AlreadyWarned: func() bool { return legacyWords.dword_5d4594_2386852 != 0 },
 		Warn: func(owner *server.Object) {
 			s.NetPriMsgToPlayer(owner, "pickup.c:CarryingTooMuch", 0)
-			C.dword_5d4594_2386852 = 1
+			legacyWords.dword_5d4594_2386852 = 1
 		},
 	})
 }

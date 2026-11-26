@@ -13,7 +13,6 @@ package legacy
 #include "GAME5.h"
 int nox_common_randomInt_415FA0(int min, int max);
 double nox_common_randomFloat_416030(float min, float max);
-extern uint32_t dword_5d4594_2491588;
 #include "decay_511660.h"
 #include "random_reachable_point_4ed970.h"
 // Only the malformed nil-source path carries an integer address across Go.
@@ -42,7 +41,7 @@ import (
 // SkeletonDeathIndex54A310 is the extracted C DWORD shared with the ordinary
 // monster callback. Its former blob slot is separate storage.
 func SkeletonDeathIndex54A310() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_2491588))
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2491588))
 }
 
 func skeletonDeathState54A310() *server.SkeletonDeathState54A310 {

@@ -7,7 +7,7 @@ package legacy
 #include "client__shell__noxworld.h"
 
 extern nox_gui_animation* nox_wnd_xxx_815040;
-extern uint32_t dword_5d4594_815052, dword_5d4594_815096, dword_5d4594_815100;
+extern uint32_t dword_5d4594_815052;
 */
 import "C"
 
@@ -208,10 +208,10 @@ func nox_game_showGameSel_4379F0() C.int {
 	Nox_xxx_loadLook_415D50()
 	sub_430C30_set_video_max(C.NOX_MAX_WIDTH, C.NOX_MAX_HEIGHT)
 	C.nox_client_setCursorType_477610(0)
-	if C.dword_5d4594_815096 != 0 {
-		wolDisconnectedNotice("Kicked", 2616, &C.dword_5d4594_815096)
-	} else if C.dword_5d4594_815100 != 0 {
-		wolDisconnectedNotice("Timeout", 2623, &C.dword_5d4594_815100)
+	if legacyAddressableWords.dword_5d4594_815096 != 0 {
+		wolDisconnectedNotice("Kicked", 2616, &legacyAddressableWords.dword_5d4594_815096)
+	} else if legacyAddressableWords.dword_5d4594_815100 != 0 {
+		wolDisconnectedNotice("Timeout", 2623, &legacyAddressableWords.dword_5d4594_815100)
 	}
 	sub_43DE40(C.sub_438770)
 	if sub_44A4A0() != 0 {

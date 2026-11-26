@@ -5,13 +5,9 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1049796_inventory_click_column_index;
-extern uint32_t dword_5d4594_1049800_inventory_click_row_index;
-extern uint32_t dword_5d4594_1049856;
-extern uint32_t dword_5d4594_1062488, dword_5d4594_1062496;
+extern uint32_t dword_5d4594_1062488;
 extern uintptr_t dword_5d4594_1062492;
-extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516, dword_5d4594_1062520;
-extern uint32_t dword_5d4594_1062552, dword_587000_136184;
+extern uint32_t dword_5d4594_1062552;
 */
 import "C"
 
@@ -80,32 +76,32 @@ func sub_467980() C.int {
 		}
 	}
 	nox_client_inventory_set_dragged(nil)
-	C.dword_5d4594_1049856 = 0
+	legacyWords.dword_5d4594_1049856 = 0
 	sub_462740()
 	inventoryState.mode = 0
 	nox_xxx_clientSetAltWeapon_461550(nil)
 	C.dword_5d4594_1062488 = 0
 	clear(inventoryStateNativeHeads()[:])
 	C.dword_5d4594_1062492 = 0
-	C.dword_5d4594_1062496 = 0
+	legacyWords.dword_5d4594_1062496 = 0
 	*memmap.PtrUint8(0x5D4594, 1062536) = 0
 	*memmap.PtrUint32(0x5D4594, 1062540) = 0
 	*memmap.PtrUint32(0x5D4594, 1062544) = 0
 	*memmap.PtrUint32(0x5D4594, 1062548) = 0
 	C.dword_5d4594_1062552 = 0
 	sub_472310()
-	C.dword_587000_136184 = ^C.uint32_t(224) // -225, the closed tray offset.
+	legacyWords.dword_587000_136184 = ^C.uint32_t(224) // -225, the closed tray offset.
 	*memmap.PtrUint8(0x5D4594, 1049868) = 0
 	*memmap.PtrUint8(0x5D4594, 1049869) = 0
-	C.dword_5d4594_1062516 = 0
-	C.dword_5d4594_1062520 = 0
-	C.dword_5d4594_1062512 = 0
+	legacyWords.dword_5d4594_1062516 = 0
+	legacyWords.dword_5d4594_1062520 = 0
+	legacyWords.dword_5d4594_1062512 = 0
 
 	scroll := inventoryWindows.slider
 	if slider := game3Slider(scroll); slider != nil {
 		file := internCStr("client_inventory_actions_native.go")
 		nox_window_call_field_94_fnc(scroll, 16395, 0, 850, file, 0)
-		nox_window_call_field_94_fnc(scroll, 16394, uintptr(uint32(slider.Max)-uint32(C.dword_5d4594_1062512)), 0, file, 0)
+		nox_window_call_field_94_fnc(scroll, 16394, uintptr(uint32(slider.Max)-uint32(legacyWords.dword_5d4594_1062512)), 0, file, 0)
 	}
 	journal := inventoryWindows.journal
 	nox_xxx_wndSetIcon_46AE60(journal, nil)
@@ -123,13 +119,13 @@ func sub_467980() C.int {
 func sub_467CD0() C.int {
 	dragged := nox_client_inventory_get_dragged()
 	if dragged != nil {
-		column := C.int(C.dword_5d4594_1049796_inventory_click_column_index)
-		row := C.int(C.dword_5d4594_1049800_inventory_click_row_index)
-		if C.dword_5d4594_1049856 == 0 && sub_4649B0(dragged, column, row) == 0 {
+		column := C.int(legacyWords.dword_5d4594_1049796_inventory_click_column_index)
+		row := C.int(legacyWords.dword_5d4594_1049800_inventory_click_row_index)
+		if legacyWords.dword_5d4594_1049856 == 0 && sub_4649B0(dragged, column, row) == 0 {
 			inventoryReinsertDraggedItem(dragged)
 		}
 		nox_client_inventory_set_dragged(nil)
-		C.dword_5d4594_1049856 = 0
+		legacyWords.dword_5d4594_1049856 = 0
 		nox_xxx_cursorResetDraggedItem_4776A0()
 	}
 	capture := nox_xxx_wndGetCaptureMain_46AE00()

@@ -10,7 +10,6 @@ package legacy
 #include "mapgen_legacy_ptr.h"
 
 extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487584;
 
 static float nox_test_mapgen_room_distance_5259f0(float width, float height, float accumulated) {

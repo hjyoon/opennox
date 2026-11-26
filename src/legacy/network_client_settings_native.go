@@ -4,7 +4,7 @@ package legacy
 #include "cgo_const.h"
 #include "defs.h"
 
-extern uint32_t dword_5d4594_1200768, dword_5d4594_1200832;
+extern uint32_t dword_5d4594_1200832;
 */
 import "C"
 
@@ -31,7 +31,7 @@ func clientDecodeString(key string, line int32) *wchar2_t {
 }
 
 func clientGameSettingsPacket(data []byte) {
-	C.dword_5d4594_1200768 = 0
+	legacyWords.dword_5d4594_1200768 = 0
 	frame := binary.LittleEndian.Uint32(data[1:5])
 	if uint32(nox_xxx_get3512_40A350()) >= frame {
 		return
@@ -50,7 +50,7 @@ func clientGameSettingsPacket(data []byte) {
 
 	settings := clientSettingsRecord(0)
 	if int(int8(settings[56])) != int(data[19]) || binary.LittleEndian.Uint16(settings[54:56]) != uint16(data[18]) {
-		C.dword_5d4594_1200768 = 1
+		legacyWords.dword_5d4594_1200768 = 1
 	}
 	binary.LittleEndian.PutUint16(settings[54:56], uint16(data[18]))
 	settings[56] = data[19]
@@ -97,7 +97,7 @@ func clientGameSettings2Packet(data []byte) {
 
 	snapshot := unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 1200708)), clientSettingsRecordSize)
 	if !bytes.Equal(snapshot[24:52], data[17:45]) {
-		C.dword_5d4594_1200768 = 1
+		legacyWords.dword_5d4594_1200768 = 1
 	}
 	copy(settings[24:44], data[17:37])
 	sub_4540E0((*C.nox_cgo_const_void)(unsafe.Pointer(&settings[24])))
@@ -109,7 +109,7 @@ func clientGameSettings2Packet(data []byte) {
 		sub_40A1F0(0)
 	}
 	copy(snapshot, settings)
-	if nox_client_isConnected_43C700() != 0 && C.dword_5d4594_1200768 != 0 {
+	if nox_client_isConnected_43C700() != 0 && legacyWords.dword_5d4594_1200768 != 0 {
 		nox_xxx_printCentered_445490(clientDecodeString("OptionsChanged", 1429))
 		nox_xxx_clientPlaySoundSpecial_452D80(310, 100)
 	}

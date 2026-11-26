@@ -3,7 +3,7 @@ package legacy
 /*
 #include <stdio.h>
 
-extern unsigned int dword_5d4594_2489420, dword_5d4594_2489424, dword_5d4594_2489428;
+extern unsigned int dword_5d4594_2489420;
 */
 import "C"
 
@@ -82,7 +82,7 @@ func nox_script_readWriteYyy_542380(source, destination *C.FILE, relocate C.int)
 			global := nox_script_readInt_542B70(source)
 			index := int8(nox_script_readInt_542B70(source))
 			if relocate != 0 && global != 0 {
-				index += int8(C.dword_5d4594_2489424)
+				index += int8(legacyWords.dword_5d4594_2489424)
 			}
 			nox_script_writeInt_542BB0(opcode, destination)
 			nox_script_writeInt_542BB0(global, destination)
@@ -90,7 +90,7 @@ func nox_script_readWriteYyy_542380(source, destination *C.FILE, relocate C.int)
 		case asm.OpPushInt, asm.OpPushString:
 			value := int8(nox_script_readInt_542B70(source))
 			if asm.Op(opcode) == asm.OpPushString && relocate != 0 {
-				value += int8(C.dword_5d4594_2489424)
+				value += int8(legacyWords.dword_5d4594_2489424)
 			}
 			nox_script_writeInt_542BB0(opcode, destination)
 			nox_script_writeInt_542BB0(C.int(value), destination)
@@ -105,7 +105,7 @@ func nox_script_readWriteYyy_542380(source, destination *C.FILE, relocate C.int)
 		case asm.OpCallBuiltin:
 			builtin := nox_script_readInt_542B70(source)
 			if relocate != 0 && bool(nox_script_shouldReadMoreXxx(int32(builtin))) {
-				adjustment := C.int(C.dword_5d4594_2489428) - 2
+				adjustment := C.int(legacyWords.dword_5d4594_2489428) - 2
 				relocateScriptCallArgument(destination, -4, adjustment)
 				if bool(nox_script_shouldReadEvenMoreXxx(int32(builtin))) {
 					relocateScriptCallArgument(destination, -12, adjustment)
@@ -117,7 +117,7 @@ func nox_script_readWriteYyy_542380(source, destination *C.FILE, relocate C.int)
 		case asm.OpCallScript:
 			index := nox_script_readInt_542B70(source)
 			if relocate != 0 {
-				index += C.int(C.dword_5d4594_2489428) - 2
+				index += C.int(legacyWords.dword_5d4594_2489428) - 2
 			}
 			nox_script_writeInt_542BB0(opcode, destination)
 			nox_script_writeInt_542BB0(index, destination)

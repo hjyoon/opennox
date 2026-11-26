@@ -5,7 +5,6 @@ package legacy
 #include "client__draw__fx.h"
 #include "cgo_const.h"
 typedef const nox_drawable nox_transient_const_drawable;
-extern uint32_t dword_5d4594_1304328;
 */
 import "C"
 
@@ -97,7 +96,7 @@ func initTransientRayTypes() {
 	} {
 		value := uint32(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr(entry.name)))
 		if entry.slot == 1304328 {
-			C.dword_5d4594_1304328 = C.uint32_t(value)
+			legacyWords.dword_5d4594_1304328 = C.uint32_t(value)
 		} else {
 			*g2ServerWord(entry.slot) = value
 		}
@@ -139,7 +138,7 @@ func drawTransientRay49BDD0(packet *[9]byte) *nox_drawable {
 	x1, y1 := int32(endpoints[0]), int32(endpoints[1])
 	x2, y2 := int32(endpoints[2]), int32(endpoints[3])
 	x, y := x1+(x2-x1)/2, y1+(y2-y1)/2
-	typeID := int32(C.dword_5d4594_1304328)
+	typeID := int32(legacyWords.dword_5d4594_1304328)
 	switch netmsg.Op(packet[0]) {
 	case netmsg.MSG_FX_PLASMA:
 		typeID = int32(*g2ServerWord(1304332))

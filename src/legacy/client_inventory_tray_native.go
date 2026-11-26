@@ -4,10 +4,8 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
 
-extern uint32_t dword_587000_136184;
 extern uint32_t dword_5d4594_1062488;
-extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516, dword_5d4594_1062520, dword_5d4594_1062552;
-extern uint64_t qword_581450_9544;
+extern uint32_t dword_5d4594_1062552;
 */
 import "C"
 
@@ -23,7 +21,7 @@ import (
 
 //export nox_xxx_inventoryDrawAllMB_463430
 func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_data) C.int {
-	nox_window_setPos_46A9B0(win.parent, 0, int32(C.dword_587000_136184))
+	nox_window_setPos_46A9B0(win.parent, 0, int32(legacyWords.dword_587000_136184))
 	x, y := meterWindowPosition(win)
 	nox_xxx_guiFontHeightMB_43F320(nil)
 	clientInventoryDrawStatusIcons(int32(x)+10, int32(y)+234)
@@ -36,7 +34,7 @@ func nox_xxx_inventoryDrawAllMB_463430(win *C.nox_window, draw *C.nox_window_dat
 			case 0:
 				nox_xxx_guiDrawInventoryTray_4643B0(left, top)
 			case 1:
-				nox_xxx_guiDrawJournal_469D40(left, top, C.int(C.dword_5d4594_1062512))
+				nox_xxx_guiDrawJournal_469D40(left, top, C.int(legacyWords.dword_5d4594_1062512))
 			}
 			sub_49F860()
 		}
@@ -102,7 +100,7 @@ func clientInventoryDrawStatusIcons(x, y int32) {
 
 func clientInventoryAdvanceAnimation() {
 	state := memmap.PtrUint8(0x5D4594, 1049868)
-	offset := int32(C.dword_587000_136184)
+	offset := int32(legacyWords.dword_587000_136184)
 	switch *state {
 	case 1:
 		offset += 64
@@ -110,24 +108,24 @@ func clientInventoryAdvanceAnimation() {
 			offset = 0
 			*state = 2
 		}
-		C.dword_587000_136184 = C.uint32_t(offset)
+		legacyWords.dword_587000_136184 = C.uint32_t(offset)
 	case 3:
 		offset -= 32
 		if offset > -225 {
-			C.dword_587000_136184 = C.uint32_t(offset)
+			legacyWords.dword_587000_136184 = C.uint32_t(offset)
 			return
 		}
-		C.dword_587000_136184 = ^C.uint32_t(224)
+		legacyWords.dword_587000_136184 = ^C.uint32_t(224)
 		*state = 0
 		journal := memmap.PtrUint8(0x5D4594, 1049869)
 		switch *journal {
 		case 0:
-			C.dword_5d4594_1062516 = C.dword_5d4594_1062512
+			legacyWords.dword_5d4594_1062516 = legacyWords.dword_5d4594_1062512
 		case 1:
-			C.dword_5d4594_1062520 = C.dword_5d4594_1062512
+			legacyWords.dword_5d4594_1062520 = legacyWords.dword_5d4594_1062512
 		}
 		*journal = 0
-		C.dword_5d4594_1062512 = C.dword_5d4594_1062516
+		legacyWords.dword_5d4594_1062512 = legacyWords.dword_5d4594_1062516
 		clientInventoryChangeScrollRange(inventoryWindows.slider, 850)
 		clientInventorySetButton(inventoryWindows.journal, nil, inventoryImages[C.NOX_INV_IMG_JOURNAL_LIT], 9105)
 		*memmap.PtrUint8(0x5D4594, 1049870) = 0
@@ -163,7 +161,7 @@ func nox_xxx_guiDrawInventoryTray_4643B0(left, top C.int) C.int {
 		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_TRAY_MAP_LIT], x, y+100)
 	}
 	for row := range inventoryRows {
-		rowY := y - int32(C.dword_5d4594_1062512) + 50*int32(row)
+		rowY := y - int32(legacyWords.dword_5d4594_1062512) + 50*int32(row)
 		if rowY <= y-50 {
 			continue
 		}
@@ -189,7 +187,7 @@ func clientInventoryDrawTrayCell(cell *C.nox_inventory_cell_t, x, y int32, buffe
 	color := uint32(0x80000000)
 	if durability < maximum*memmap.Float64(0x581450, 9608) {
 		color = memmap.Uint32(0x85B3FC, 940)
-	} else if durability < maximum*math.Float64frombits(uint64(C.qword_581450_9544)) {
+	} else if durability < maximum*math.Float64frombits(uint64(legacyWords.qword_581450_9544)) {
 		color = uint32(renderPalette.yellow)
 	}
 	if color != 0x80000000 {

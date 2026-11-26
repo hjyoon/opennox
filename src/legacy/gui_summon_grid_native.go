@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME3_1.h"
-extern uint32_t dword_5d4594_1321208;
 */
 import "C"
 
@@ -80,10 +79,10 @@ func sub_4C2D90(record *summonRecord) *summonRecord {
 }
 
 func summonCarnivorousPlant() uint32 {
-	if C.dword_5d4594_1321208 == 0 {
-		C.dword_5d4594_1321208 = C.uint32_t(nox_xxx_getNameId_4E3AA0(internCStr("CarnivorousPlant")))
+	if legacyWords.dword_5d4594_1321208 == 0 {
+		legacyWords.dword_5d4594_1321208 = C.uint32_t(nox_xxx_getNameId_4E3AA0(internCStr("CarnivorousPlant")))
 	}
-	return uint32(C.dword_5d4594_1321208)
+	return uint32(legacyWords.dword_5d4594_1321208)
 }
 
 //export sub_4C2DD0

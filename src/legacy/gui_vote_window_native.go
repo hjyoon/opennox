@@ -9,8 +9,6 @@ package legacy
 #include "client__gui__guivote.h"
 #include "noxstring.h"
 extern int nox_win_width;
-extern uint32_t dword_5d4594_1197308, dword_5d4594_1197324, dword_5d4594_1197328;
-extern uint32_t dword_5d4594_1197332, dword_5d4594_1197336;
 */
 import "C"
 
@@ -75,7 +73,7 @@ func sub_48D000_initGuiKick() C.int {
 	storeWindowReference(&voteWindow.topics, g2ServerChild(root, 4321))
 	nox_window_setPos_46A9B0(root, (int32(C.nox_win_width)-int32(root.width))/2, int32(root.off_y))
 	g2ServerHidden(root, true)
-	C.dword_5d4594_1197324, C.dword_5d4594_1197328 = 0, 0
+	legacyWords.dword_5d4594_1197324, legacyWords.dword_5d4594_1197328 = 0, 0
 	sub_48D4A0()
 	return 1
 }
@@ -87,7 +85,7 @@ func nox_xxx_guiKick_48D0A0(win *nox_window, event C.int, control *nox_window, e
 	}
 	switch nox_xxx_wndGetID_46B0A0(control) {
 	case 4311:
-		switch C.dword_5d4594_1197308 {
+		switch legacyWords.dword_5d4594_1197308 {
 		case 0, 1, 3:
 			sub_48D120()
 			sub_48CAD0()
@@ -112,27 +110,27 @@ func voteCurrentNames() *voteNames {
 func sub_48D120() C.int {
 	live := voteCurrentNames()
 	previous := memmap.PtrT[voteNames](0x5D4594, 1195512)
-	C.dword_5d4594_1197328 = C.dword_5d4594_1197324
+	legacyWords.dword_5d4594_1197328 = legacyWords.dword_5d4594_1197324
 	*previous = *live
-	C.dword_5d4594_1197324 = 0
+	legacyWords.dword_5d4594_1197324 = 0
 	win := voteWindow.players
 	selected := g2ServerEvent(win, 16404, 0, 0)
 	if data := g2ServerList(win); selected != 0 && data != nil && data.Field_4 != 0 {
 		indices := unsafe.Slice((*uint32)(unsafe.Pointer(selected)), int(data.Count))
 		for _, index := range indices {
-			if index == ^uint32(0) || C.dword_5d4594_1197324 == C.uint32_t(len(live)) {
+			if index == ^uint32(0) || legacyWords.dword_5d4594_1197324 == C.uint32_t(len(live)) {
 				break
 			}
 			if name := listBoxRowText(win, uintptr(index)); name != nil {
-				entry := &live[C.dword_5d4594_1197324]
+				entry := &live[legacyWords.dword_5d4594_1197324]
 				alloc.StrCopyZero16P(entry[:], (*uint16)(unsafe.Pointer(name)))
-				C.dword_5d4594_1197324++
+				legacyWords.dword_5d4594_1197324++
 			}
 		}
 	}
 
-	before := previous[:voteNameCount(C.dword_5d4594_1197328)]
-	after := live[:voteNameCount(C.dword_5d4594_1197324)]
+	before := previous[:voteNameCount(legacyWords.dword_5d4594_1197328)]
+	after := live[:voteNameCount(legacyWords.dword_5d4594_1197324)]
 	for i := range before {
 		name := (*wchar2_t)(unsafe.Pointer(&before[i][0]))
 		if !voteNameIn(name, after) {
@@ -145,7 +143,7 @@ func sub_48D120() C.int {
 			nox_xxx_netSendRenameMb_48D2D0(name)
 		}
 	}
-	return C.int(C.dword_5d4594_1197324)
+	return C.int(legacyWords.dword_5d4594_1197324)
 }
 
 func sendPlayerVote(name *wchar2_t, command uint8) C.int {
@@ -183,15 +181,15 @@ func nox_xxx_clientVote_48D3E0() C.int { return sendQuestResetVote(5) }
 func sub_48D340() C.int {
 	vote := g2ServerEvent(voteWindow.topics, 16404, 0, 0) == 0
 	next := C.uint32_t(bool2int(vote))
-	prior := C.dword_5d4594_1197336
-	C.dword_5d4594_1197332 = next
+	prior := legacyWords.dword_5d4594_1197336
+	legacyWords.dword_5d4594_1197332 = next
 	result := C.int(next)
 	if vote && prior == 0 {
 		result = sub_48D3B0()
 	} else if !vote && prior == 1 {
 		result = nox_xxx_clientVote_48D3E0()
 	}
-	C.dword_5d4594_1197336 = C.dword_5d4594_1197332
+	legacyWords.dword_5d4594_1197336 = legacyWords.dword_5d4594_1197332
 	return result
 }
 
@@ -215,13 +213,13 @@ func sub_48D450() C.int {
 	nox_xxx_wndClearCaptureMain_46ADE0(root)
 	nox_xxx_windowDestroyMB_46C4E0(root)
 	voteWindow.root, voteWindow.players, voteWindow.topics = nil, nil, nil
-	C.dword_5d4594_1197324, C.dword_5d4594_1197328 = 0, 0
+	legacyWords.dword_5d4594_1197324, legacyWords.dword_5d4594_1197328 = 0, 0
 	return sub_48D4A0()
 }
 
 //export sub_48D4A0
 func sub_48D4A0() C.int {
-	C.dword_5d4594_1197332, C.dword_5d4594_1197336 = 0, 0
+	legacyWords.dword_5d4594_1197332, legacyWords.dword_5d4594_1197336 = 0, 0
 	return 0
 }
 
@@ -256,7 +254,7 @@ func addVotePlayers(win *nox_window) {
 	}
 	currentPlayer := Get_dword_8531A0_2576()
 	players := &GetServer().S().Players
-	names := voteCurrentNames()[:voteNameCount(C.dword_5d4594_1197324)]
+	names := voteCurrentNames()[:voteNameCount(legacyWords.dword_5d4594_1197324)]
 	index := uintptr(0)
 	for p := players.First(); p != nil; p = players.Next(p) {
 		if p == currentPlayer {
@@ -283,7 +281,7 @@ func sub_48CB10(mode C.int) C.uintptr_t {
 	players, topics := voteWindow.players, voteWindow.topics
 	g2ServerEvent(players, 16399, 0, 0)
 	g2ServerEvent(topics, 16399, 0, 0)
-	C.dword_5d4594_1197308 = C.uint32_t(mode)
+	legacyWords.dword_5d4594_1197308 = C.uint32_t(mode)
 	switch mode {
 	case 4:
 		if p := Get_dword_8531A0_2576(); p != nil && p.Field4792 == 0 {
@@ -302,7 +300,7 @@ func sub_48CB10(mode C.int) C.uintptr_t {
 		C.sub_46AEE0(g2ServerChild(root, 4301), voteText("Vote:ResetQuest", 491))
 		g2ServerText(topics, 16397, unsafe.Pointer(voteText("WindowDir:Yes", 495)), 4)
 		g2ServerText(topics, 16397, unsafe.Pointer(voteText("WindowDir:No", 498)), 4)
-		g2ServerEvent(topics, 16403, uintptr(bool2int(C.dword_5d4594_1197332 != 1)), 0)
+		g2ServerEvent(topics, 16403, uintptr(bool2int(legacyWords.dword_5d4594_1197332 != 1)), 0)
 	case 0, 1, 3:
 		g2ServerHidden(players, false)
 		g2ServerHidden(topics, true)

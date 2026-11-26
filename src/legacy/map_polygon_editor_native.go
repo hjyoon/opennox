@@ -6,7 +6,6 @@ package legacy
 #include "GAME2_1.h"
 
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
-extern uint32_t nox_xxx_polygonNextAngle_587000_60356;
 */
 import "C"
 
@@ -30,7 +29,7 @@ const (
 //export sub_420E80
 func sub_420E80(x, y, limit C.float) *C.uint32_t {
 	var best *Nox_polygon_angle_data
-	for index := uint32(1); index < uint32(C.nox_xxx_polygonNextAngle_587000_60356); index++ {
+	for index := uint32(1); index < uint32(legacyWords.nox_xxx_polygonNextAngle_587000_60356); index++ {
 		angle := mapAngleByIndex(index)
 		if angle.Active == 0 {
 			continue
@@ -67,7 +66,7 @@ func sub_420DA0(x, y C.float) *C.uint {
 	}
 	index := sub_420D10()
 	if index >= mapPolygonAngleCapacity {
-		C.nox_xxx_polygonNextAngle_587000_60356 = C.uint32_t(index)
+		legacyWords.nox_xxx_polygonNextAngle_587000_60356 = C.uint32_t(index)
 		return nil
 	}
 	bitsX := C.int(int32(math.Float32bits(float32(x))))

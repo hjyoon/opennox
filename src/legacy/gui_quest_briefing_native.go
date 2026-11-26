@@ -6,7 +6,6 @@ package legacy
 
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_587000_122956;
-extern uint32_t nox_xxx_aSpellphoneme_3_587000_123008;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -226,5 +225,5 @@ func sub_44F0F0(_ *C.nox_window, draw *C.nox_window_data) C.int {
 		tw, th = briefingMeasure(font, message)
 		nox_xxx_drawString_43F6E0(font, message, width/2-tw/2, height/2+3*(80-th))
 	}
-	return briefingContinue(font, &C.nox_xxx_aSpellphoneme_3_587000_123008, (height-C.NOX_DEFAULT_HEIGHT)/2+462, 714)
+	return briefingContinue(font, &legacyAddressableWords.nox_xxx_aSpellphoneme_3_587000_123008, (height-C.NOX_DEFAULT_HEIGHT)/2+462, 714)
 }

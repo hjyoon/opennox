@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2_1.h"
-extern uint32_t nox_xxx_minimap_587000_149232;
 */
 import "C"
 
@@ -13,7 +12,7 @@ import (
 )
 
 func minimapZoom() uint32 {
-	return uint32(C.nox_xxx_minimap_587000_149232)
+	return uint32(legacyAddressableWords.nox_xxx_minimap_587000_149232)
 }
 
 //export nox_xxx_cliSetMinimapZoom_472520

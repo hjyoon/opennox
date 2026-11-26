@@ -17,7 +17,6 @@ package legacy
 #include "client__draw__fx.h"
 #include "client__draw__glowdraw.h"
 #include "client__gui__guiggovr.h"
-extern uint32_t dword_5d4594_1200776;
 void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3);
 void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78);
 void nox_xxx_tileDrawMB_481C20_C_textured(nox_draw_viewport_t* vp, int v72, int v78);
@@ -74,11 +73,11 @@ func Nox_xxx_netDrawRays_49BDD0(data [9]byte) {
 func Nox_xxx_makeRayLightningParticles_49BDD0(from, to image.Point) {
 	first := C.int2{field_0: C.int(from.X), field_4: C.int(from.Y)}
 	last := C.int2{field_0: C.int(to.X), field_4: C.int(to.Y)}
-	nox_xxx_makeLightningParticles_4999D0(C.int(C.dword_5d4594_1200776), &first, &last)
+	nox_xxx_makeLightningParticles_4999D0(C.int(legacyWords.dword_5d4594_1200776), &first, &last)
 }
 
 func Nox_xxx_makeRayPlasmaParticles_49BDD0(to image.Point) {
-	nox_xxx_drawEnergyBolt_499710(C.int(to.X), C.int(to.Y), 10, C.int(C.dword_5d4594_1200776))
+	nox_xxx_drawEnergyBolt_499710(C.int(to.X), C.int(to.Y), 10, C.int(legacyWords.dword_5d4594_1200776))
 }
 
 func Sub_49BBC0() {

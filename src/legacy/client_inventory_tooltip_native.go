@@ -6,8 +6,7 @@ package legacy
 #include "common__object__modifier.h"
 
 extern nox_drawable *dword_5d4594_1063116, *dword_5d4594_1063120;
-extern uint32_t dword_5d4594_1049844, dword_5d4594_1062484, dword_5d4594_1062512;
-extern uint32_t dword_5d4594_1049796_inventory_click_column_index, dword_5d4594_1049800_inventory_click_row_index;
+extern uint32_t dword_5d4594_1062484;
 
 static int nox_client_format_inventory_title(wchar2_t* dst, const wchar2_t* format,
 	const wchar2_t* name, const wchar2_t* level) {
@@ -104,8 +103,8 @@ func sub_466660(_ C.int, point *C.int2) *C.wchar2_t {
 	default:
 		return nil
 	}
-	C.dword_5d4594_1049796_inventory_click_column_index = C.uint32_t(column)
-	C.dword_5d4594_1049800_inventory_click_row_index = C.uint32_t(row)
+	legacyWords.dword_5d4594_1049796_inventory_click_column_index = C.uint32_t(column)
+	legacyWords.dword_5d4594_1049800_inventory_click_row_index = C.uint32_t(row)
 	if sub_464B40(column, row) != 0 {
 		drawable := nox_inventory_prepare_tooltip_drawable_466660(inventoryGridCell(int(row), int(column)))
 		if drawable != nil {
@@ -185,7 +184,7 @@ func nox_xxx_inventoryNameSignInit_4671E0() C.int {
 	player := Get_dword_8531A0_2576()
 	var level int32
 	if noxflags.HasGame(noxflags.GameModeQuest) || nox_xxx_isQuest_4D6F50() != 0 || sub_4D6F70() != 0 {
-		level = min(int32(C.dword_5d4594_1049844), C.NOX_PLAYER_MAX_LEVEL)
+		level = min(int32(legacyWords.dword_5d4594_1049844), C.NOX_PLAYER_MAX_LEVEL)
 	} else {
 		if player == nil {
 			return 0

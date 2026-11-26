@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 
-extern uint32_t dword_5d4594_3807140, dword_5d4594_3807116;
-extern uint32_t dword_5d4594_3807136, dword_5d4594_3807152;
 extern uint8_t** nox_pixbuffer_rows_3798784;
 */
 import "C"
@@ -34,8 +32,8 @@ func nox_xxx_edgeDraw_480EF0(sprite *nox_video_bag_image_t, x, y C.int, startLig
 	sourceHeight := int32(binary.LittleEndian.Uint32(pixels[4:8])) - int32(trimBottom)
 	xPos := int32(binary.LittleEndian.Uint32(pixels[8:12])) + int32(x)
 	yPos := int32(binary.LittleEndian.Uint32(pixels[12:16])) + int32(y)
-	clipLeft, clipRight := int32(C.dword_5d4594_3807140), int32(C.dword_5d4594_3807116)
-	clipTop, clipBottom := int32(C.dword_5d4594_3807136), int32(C.dword_5d4594_3807152)
+	clipLeft, clipRight := int32(legacyWords.dword_5d4594_3807140), int32(legacyWords.dword_5d4594_3807116)
+	clipTop, clipBottom := int32(legacyWords.dword_5d4594_3807136), int32(legacyWords.dword_5d4594_3807152)
 
 	drawX, drawY := max(xPos, clipLeft), max(yPos, clipTop)
 	skipX, skipY := drawX-xPos, drawY-yPos

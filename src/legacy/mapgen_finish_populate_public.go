@@ -9,7 +9,6 @@ package legacy
 
 extern uint32_t dword_5d4594_1550916;
 extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487672;
 
 static inline void mapgenPrintNoExit(wchar2_t* text) {
@@ -123,7 +122,7 @@ func sub_4D42C0() C.int {
 
 //export sub_5259D0
 func sub_5259D0() C.double {
-	return C.double(math.Float32frombits(uint32(C.dword_5d4594_2487580)))
+	return C.double(math.Float32frombits(uint32(legacyWords.dword_5d4594_2487580)))
 }
 
 //export sub_5259E0

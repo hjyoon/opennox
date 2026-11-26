@@ -10,7 +10,6 @@ typedef const uint32_t nox_shop_position_word_t;
 extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
 extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
 extern char* nox_shop_dialog_file_1098608;
-extern uint32_t dword_5d4594_1098616;
 */
 import "C"
 
@@ -110,7 +109,7 @@ func sub_478F80() C.int {
 	C.dword_5d4594_1098624, C.dword_5d4594_1098628 = 0, 1
 	C.dword_5d4594_1098596, C.dword_5d4594_1098600, C.dword_5d4594_1098604 = nil, nil, nil
 	C.nox_shop_dialog_file_1098608 = nil
-	C.dword_5d4594_1098616 = 0
+	legacyWords.dword_5d4594_1098616 = 0
 	return 0
 }
 

@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME3_2.h"
 
-extern uint32_t dword_5d4594_1556128;
-extern uint32_t dword_5d4594_1556136;
 */
 import "C"
 
@@ -49,7 +47,7 @@ func sub_4D6FA0() C.int {
 
 //export sub_4D71E0
 func sub_4D71E0(deadline C.int) C.int {
-	C.dword_5d4594_1556136 = C.uint32_t(deadline)
+	legacyWords.dword_5d4594_1556136 = C.uint32_t(deadline)
 	return deadline
 }
 
@@ -61,9 +59,9 @@ func sub_4D7280(recipient C.int, status C.char) C.int {
 
 //export sub_4D72D0
 func sub_4D72D0(stage C.int) C.int {
-	previous := uint32(C.dword_5d4594_1556128)
+	previous := uint32(legacyWords.dword_5d4594_1556128)
 	*legacyQuestStateWord(1556132) = previous
-	C.dword_5d4594_1556128 = C.uint32_t(stage)
+	legacyWords.dword_5d4594_1556128 = C.uint32_t(stage)
 	return C.int(int32(previous))
 }
 

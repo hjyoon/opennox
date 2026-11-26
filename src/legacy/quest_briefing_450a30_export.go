@@ -6,7 +6,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME2.h"
 #include "common__strman.h"
-extern uint32_t dword_5d4594_832480;
 */
 import "C"
 
@@ -18,7 +17,7 @@ import (
 )
 
 func questStartBriefingStatePtr450A30() *uint32 {
-	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_832480))
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_832480))
 }
 
 func questStartBriefingNativeHooks450A30() questStartBriefingHooks450A30[*byte, unsafe.Pointer, unsafe.Pointer] {

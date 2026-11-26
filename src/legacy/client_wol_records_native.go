@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME1_1.h"
 typedef const char global_record_const_char_t;
-extern uint32_t dword_5d4594_2660652;
 */
 import "C"
 
@@ -44,7 +43,7 @@ func sub_41DA70(index C.int, event C.short) C.int {
 	}
 	result := sub_41E300(11)
 	if result != 0 {
-		C.dword_5d4594_2660652 = 0
+		legacyWords.dword_5d4594_2660652 = 0
 	}
 	return C.int(result)
 }

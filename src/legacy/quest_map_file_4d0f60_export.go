@@ -2,8 +2,6 @@ package legacy
 
 /*
 #include "GAME3_2.h"
-extern uint32_t dword_5d4594_1548476;
-extern uint32_t dword_5d4594_1548480;
 */
 import "C"
 
@@ -14,8 +12,8 @@ import (
 )
 
 func questMapFileGlobals4D0F60() (count, clock *uint32) {
-	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_1548476)),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_1548480))
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_1548476)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_1548480))
 }
 
 func questMapFileCEntry4D0F60() unsafe.Pointer {

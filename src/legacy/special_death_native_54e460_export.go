@@ -16,7 +16,6 @@ package legacy
 #include "random_reachable_point_4ed970.h"
 int nox_common_randomInt_415FA0(int min,int max);
 double nox_common_randomFloat_416030(float min,float max);
-extern uint32_t dword_5d4594_2491704;
 // Only malformed nil origins use scalar addresses across Go. Normal origins
 // retain typed native pointers, and the original offset is formed only in C.
 static void special_death_point_address_54e460(float radius,uintptr_t origin,float2* output) {
@@ -46,7 +45,9 @@ import (
 
 // BoulderDeathIndex54E4B0 is the actual extracted C cache also shared by the
 // ordinary Boulder dispatcher. It is distinct from the Golem debris cache.
-func BoulderDeathIndex54E4B0() *uint32 { return (*uint32)(unsafe.Pointer(&C.dword_5d4594_2491704)) }
+func BoulderDeathIndex54E4B0() *uint32 {
+	return (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2491704))
+}
 func specialDeathState54E460() *server.GolemDeathState549E90 {
 	if specialDeathOriginalStateOverride54E460 != nil {
 		return specialDeathOriginalStateOverride54E460

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487560;
 */
 import "C"
 
@@ -107,7 +106,7 @@ func nox_xxx_mapGenAddNewRoom_521730(room *C.uint32_t) C.int {
 	if !mapgenRooms.add((*mapgenRoomListNode)(raw), mapgenRegisterListedRoom) {
 		return 0
 	}
-	C.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
+	legacyWords.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
 	return nox_mapgenRoomOccupyNative_521100((*C.uint8_t)(raw))
 }
 
@@ -117,7 +116,7 @@ func nox_mapgenRemoveRoomNative_521760(room *C.uint8_t) C.int {
 		return 0
 	}
 	mapgenRooms.remove((*mapgenRoomListNode)(unsafe.Pointer(room)), mapgenResolveListedRoom, mapgenRegisterListedRoom)
-	C.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
+	legacyWords.dword_5d4594_2487560 = C.uint32_t(mapgenRooms.token)
 	return nox_mapgenRoomVacateNative_521180(room)
 }
 
@@ -137,7 +136,7 @@ func sub_521A10(room unsafe.Pointer) {
 //export nox_xxx_mapGenFreeTopRoom_521A40
 func nox_xxx_mapGenFreeTopRoom_521A40() *C.uint32_t {
 	mapgenRooms.releaseAll(mapgenResolveListedRoom, mapgenReleaseListedRoom)
-	C.dword_5d4594_2487560 = 0
+	legacyWords.dword_5d4594_2487560 = 0
 	nox_mapgenResetRoomRankingNative()
 	return nil
 }

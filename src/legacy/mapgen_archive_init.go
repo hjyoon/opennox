@@ -4,10 +4,9 @@ package legacy
 #include "GAME3_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_3835312;
 extern uint32_t dword_5d4594_3835348, dword_5d4594_3835352, dword_5d4594_3835356;
-extern uint32_t dword_5d4594_3835360, dword_5d4594_3835364, dword_5d4594_3835368;
-extern uint32_t dword_5d4594_3835372, dword_5d4594_3835388, dword_5d4594_3835392;
+extern uint32_t dword_5d4594_3835360, dword_5d4594_3835368;
+extern uint32_t dword_5d4594_3835372;
 extern uint32_t dword_5d4594_3835396;
 */
 import "C"
@@ -37,11 +36,11 @@ func mapgenResetWorkspaceSettings() {
 	C.dword_5d4594_3835352 = 0
 	C.dword_5d4594_3835356 = 255
 	C.dword_5d4594_3835360 = 0
-	C.dword_5d4594_3835364 = 1
+	legacyWords.dword_5d4594_3835364 = 1
 	C.dword_5d4594_3835368 = 1
 	C.dword_5d4594_3835372 = 1
-	C.dword_5d4594_3835388 = 0
-	C.dword_5d4594_3835392 = 1
+	legacyAddressableWords.dword_5d4594_3835388 = 0
+	legacyAddressableWords.dword_5d4594_3835392 = 1
 	C.dword_5d4594_3835396 = ^C.uint32_t(0)
 	*memmap.PtrUint8(0x973F18, 35972) = 2
 	sub_51D0E0()
@@ -65,7 +64,7 @@ func mapgenInitializeAreaArchive(directory string) C.int {
 	sub_502A50((*C.char)(unsafe.Pointer(archivePath)))
 	sub_502AB0((*C.char)(unsafe.Pointer(archivePath)))
 	result := sub_502B10()
-	C.dword_5d4594_3835312 = 0
+	legacyWords.dword_5d4594_3835312 = 0
 	*memmap.PtrUint32(0x973F18, 35880) = 0
 	*memmap.PtrUint32(0x5D4594, 1599580) = 0
 	return result

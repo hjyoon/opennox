@@ -4,8 +4,6 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME2_3.h"
 #include "GAME3_1.h"
-extern uint32_t dword_5d4594_1316408, dword_5d4594_1316412, dword_5d4594_1313880;
-extern uint32_t dword_587000_180476, dword_587000_180480;
 */
 import "C"
 
@@ -34,9 +32,9 @@ func plasmaCurveForwardDeltas(steps C.int, x, y [4]int32) (dx, dy [4]float32) {
 	sixCube := float32(6 * float64(cube))
 	*memmap.PtrFloat32(0x587000, 180484) = float32(step)
 	// These two coefficients are also entries in the original PE32 matrix.
-	C.dword_587000_180480 = C.uint32_t(math.Float32bits(square))
+	legacyWords.dword_587000_180480 = C.uint32_t(math.Float32bits(square))
 	*memmap.PtrFloat32(0x587000, 180480) = square
-	C.dword_587000_180476 = C.uint32_t(math.Float32bits(cube))
+	legacyWords.dword_587000_180476 = C.uint32_t(math.Float32bits(cube))
 	*memmap.PtrFloat32(0x587000, 180476) = cube
 	*memmap.PtrFloat32(0x587000, 180496) = square + square
 	*memmap.PtrFloat32(0x587000, 180492) = sixCube
@@ -138,18 +136,18 @@ func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 	if distance/40+2 >= 30 {
 		count = 28
 	}
-	C.dword_5d4594_1316408 = C.uint32_t(count)
+	legacyWords.dword_5d4594_1316408 = C.uint32_t(count)
 
 	sinCos := memmap.PtrT[[2]float32](0x587000, uintptr(194136+8*int32(direction)))
 	unitX, unitY := float64(sinCos[0]), float64(sinCos[1])
 	dy32 := float32(dy)
-	C.dword_5d4594_1313880 = C.uint32_t(math.Float32bits(dy32))
+	legacyWords.dword_5d4594_1313880 = C.uint32_t(math.Float32bits(dy32))
 	*memmap.PtrFloat32(0x5D4594, 1313880) = dy32
 	magnitude := float32(math.Sqrt(float64(dy)*float64(dy32)+float64(dx)*float64(dx)) + 0.0099999998)
 	dirX := float32(float64(dx) / float64(magnitude))
 	dirY := float64(dy32) / float64(magnitude)
 	*memmap.PtrFloat32(0x5D4594, 1313876) = dirX
-	C.dword_5d4594_1313880 = C.uint32_t(math.Float32bits(float32(dirY)))
+	legacyWords.dword_5d4594_1313880 = C.uint32_t(math.Float32bits(float32(dirY)))
 	*memmap.PtrFloat32(0x5D4594, 1313880) = float32(dirY)
 	dot := dirY*unitY + float64(dirX)*unitX
 	if dot < 0 {
@@ -171,7 +169,7 @@ func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 			delta = 0.2
 		}
 		*progress = float32(float64(*progress) + delta)
-		segments := C.int(C.dword_5d4594_1316408)
+		segments := C.int(legacyWords.dword_5d4594_1316408)
 		if *progress >= 1 {
 			points := &paths[lane]
 			for i := int(segments) + 1; i > 0; i-- {
@@ -180,7 +178,7 @@ func sub_4BA670(direction, x1, y1, x2, y2 C.int) {
 			*progress = 0
 			points[0].motion.ticks = 0
 		}
-		C.dword_5d4594_1316412 = 0
+		legacyWords.dword_5d4594_1316412 = 0
 		plasmaSplineSamples(a, b, c, d, segments, *progress, func(from, to *plasmaCurvePoint) {
 			plasmaRememberSegment(from, to, lane)
 		})

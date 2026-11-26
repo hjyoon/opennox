@@ -13,7 +13,6 @@ void nox_xxx_dieMarker_54E460_go(nox_object_t* source);
 void nox_xxx_dieBoulder_54E4B0_go(nox_object_t* source);
 void nox_xxx_dieMonsterGen_54E630_go(nox_object_t* source);
 
-extern uint32_t dword_5d4594_2491704;
 
 static int nox_call_objectType_parseDeath_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 */
@@ -161,10 +160,10 @@ func boulderDeathRuntime54E4B0() server.BoulderDeathRuntime54E4B0 {
 		},
 		TickRate: s.TickRate,
 		PartIndex: func() uint32 {
-			return uint32(C.dword_5d4594_2491704)
+			return uint32(legacyAddressableWords.dword_5d4594_2491704)
 		},
 		SetPartIndex: func(index uint32) {
-			C.dword_5d4594_2491704 = C.uint32_t(index)
+			legacyAddressableWords.dword_5d4594_2491704 = C.uint32_t(index)
 		},
 		DelayedDelete: outer.DelayedDelete,
 	}

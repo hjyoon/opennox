@@ -4,7 +4,6 @@ package legacy
 #include "GAME3_1.h"
 #include "client__draw__fx.h"
 #include "client__draw__plasma.h"
-extern uint32_t dword_5d4594_1316408, dword_5d4594_1316412;
 */
 import "C"
 
@@ -109,7 +108,7 @@ func sub_4BA230(direction, fromX, fromY, toX, toY C.int) C.int {
 		initPlasmaPaths()
 	}
 	sub_4BA670(direction, fromX, fromY, toX, toY)
-	count := int(C.int(C.dword_5d4594_1316408))
+	count := int(C.int(legacyWords.dword_5d4594_1316408))
 	paths := plasmaPaths()
 	for lane := range paths {
 		for index := 0; index <= count; index++ {
@@ -142,12 +141,12 @@ func plasmaRememberSegment(from, to *plasmaCurvePoint, lane int) C.char {
 	if *spark == 0 {
 		*spark = uint32(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("CyanSpark")))
 	}
-	index := int(C.dword_5d4594_1316412)
+	index := int(legacyWords.dword_5d4594_1316412)
 	points := &plasmaPaths()[lane]
 	points[index].x, points[index].y = int32(from.field_0), int32(from.field_4)
 	points[index+1].x, points[index+1].y = int32(to.field_0), int32(to.field_4)
 	frame := byte(gameFrame())
-	C.dword_5d4594_1316412++
+	legacyWords.dword_5d4594_1316412++
 	if byte(gameFrame())&4 == 0 {
 		return C.char(frame)
 	}

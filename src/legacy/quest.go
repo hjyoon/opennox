@@ -9,7 +9,6 @@ package legacy
 int  sub_51A920(int a1);
 void sub_4D10F0(char* a1);
 void sub_51A1F0(int a1);
-extern unsigned int nox_client_gui_flag_1556112;
 */
 import "C"
 import (

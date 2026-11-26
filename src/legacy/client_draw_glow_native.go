@@ -3,7 +3,6 @@ package legacy
 /*
 #include "client__draw__glowdraw.h"
 
-extern uint32_t dword_5d4594_1313532, dword_5d4594_1313536, dword_5d4594_1313540;
 */
 import "C"
 
@@ -29,12 +28,12 @@ func sub_4B6770(vp *C.int, dr *C.nox_drawable, bright, dim C.int) C.int {
 
 //export nox_thing_red_spark_draw
 func nox_thing_red_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
-	return sub_4B6970(vp, dr, C.int(C.dword_5d4594_1313532), C.int(memmap.Int32(0x5D4594, 1313528)))
+	return sub_4B6970(vp, dr, C.int(legacyWords.dword_5d4594_1313532), C.int(memmap.Int32(0x5D4594, 1313528)))
 }
 
 //export nox_thing_blue_spark_draw
 func nox_thing_blue_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
-	return sub_4B6970(vp, dr, C.int(C.dword_5d4594_1313540), C.int(C.dword_5d4594_1313536))
+	return sub_4B6970(vp, dr, C.int(legacyWords.dword_5d4594_1313540), C.int(legacyWords.dword_5d4594_1313536))
 }
 
 //export nox_thing_cyan_spark_draw
@@ -49,7 +48,7 @@ func nox_thing_green_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
 
 //export nox_thing_yellow_spark_draw
 func nox_thing_yellow_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
-	return sub_4B6970(vp, dr, C.int(C.dword_5d4594_1313532), C.int(memmap.Int32(0x5D4594, 1313576)))
+	return sub_4B6970(vp, dr, C.int(legacyWords.dword_5d4594_1313532), C.int(memmap.Int32(0x5D4594, 1313576)))
 }
 
 //export nox_thing_violet_spark_draw
@@ -64,7 +63,7 @@ func nox_thing_death_ball_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
 
 //export nox_thing_white_spark_draw
 func nox_thing_white_spark_draw(vp *C.uint32_t, dr *C.nox_drawable) C.int {
-	return sub_4B6970(vp, dr, C.int(Get_nox_color_white_2523948()), C.int(C.dword_5d4594_1313540))
+	return sub_4B6970(vp, dr, C.int(Get_nox_color_white_2523948()), C.int(legacyWords.dword_5d4594_1313540))
 }
 
 func sparkDrawFromPalette(vp *C.uint32_t, dr *C.nox_drawable, offset uintptr) C.int {

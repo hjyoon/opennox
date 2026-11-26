@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 
-extern uint32_t dword_5d4594_3804684;
 */
 import "C"
 
@@ -66,14 +65,14 @@ func sub_47DBC0() C.uchar { return C.uchar(memmap.Uint8(0x5D4594, 1193128)) }
 func sub_47FCE0(descriptor *C.uint32_t, unused C.int) C.int {
 	fields := unsafe.Slice(descriptor, 27)
 	key := [4]uint32{uint32(fields[3]), uint32(fields[2]), uint32(fields[21]), uint32(fields[26])}
-	count := int32(C.dword_5d4594_3804684)
+	count := int32(legacyAddressableWords.dword_5d4594_3804684)
 	for i := range count {
 		if *memmap.PtrT[[4]uint32](0x973F18, uintptr(6088+16*i)) == key {
 			return 1
 		}
 	}
 	*memmap.PtrT[[4]uint32](0x973F18, uintptr(6088+16*count)) = key
-	C.dword_5d4594_3804684++
+	legacyAddressableWords.dword_5d4594_3804684++
 	return 1
 }
 

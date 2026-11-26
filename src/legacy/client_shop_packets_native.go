@@ -6,7 +6,7 @@ package legacy
 #include "client__gui__guishop.h"
 #include "client__gui__guimsg.h"
 
-extern uint32_t dword_5d4594_1098616, dword_5d4594_1098620, dword_5d4594_1098624;
+extern uint32_t dword_5d4594_1098624;
 */
 import "C"
 
@@ -73,12 +73,12 @@ func sub_4788F0(typeID, amount C.int) {
 
 //export sub_479680
 func sub_479680(position *C.int2, itemID, typeID, amount, extra C.uint32_t) {
-	C.dword_5d4594_1098616 = 0
+	legacyWords.dword_5d4594_1098616 = 0
 }
 
 //export sub_479690
 func sub_479690(position *C.int2, itemID, typeID, amount, extra C.uint32_t) {
-	C.dword_5d4594_1098616 = 0
+	legacyWords.dword_5d4594_1098616 = 0
 	switch amount {
 	case 0:
 	case 1:
@@ -100,13 +100,13 @@ func sub_479700(typeID C.short, amount C.char) C.int {
 
 //export sub_479810
 func sub_479810(position *C.int2, itemID, typeID, amount, extra C.uint32_t) {
-	C.dword_5d4594_1098620 = 0
+	legacyWords.dword_5d4594_1098620 = 0
 }
 
 //export sub_479820
 func sub_479820(position *C.int2, itemID, typeID, amount, extra C.uint32_t) {
 	sub_479840(C.short(itemID))
-	C.dword_5d4594_1098620 = 0
+	legacyWords.dword_5d4594_1098620 = 0
 }
 
 //export sub_479840

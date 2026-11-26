@@ -841,6 +841,19 @@ and the former spawn, monster-list, and pending-owner allocator
 pointers. Removing the definitions and their declarations leaves
 383 variables in `vardefs.c`, including 296 `uint32_t` words.
 
+### Numeric state accessed through Go
+
+Go owns 182 numeric cells previously defined in `vardefs.c`.
+136 are ordinary Go fields. The other 46 use native allocation so
+their addresses stay valid for C calls and legacy buffer readers.
+The field types preserve the previous widths and the signed connection
+state read. All 22 nonzero initial values carry over, including the
+32-bit all-ones sentinel read by Go as `-1`.
+The ten nonzero cells with segment offsets in their names also match
+the bytes at those offsets in the reference `GAME.EXE`.
+
+There are 201 remaining definitions in `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

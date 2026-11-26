@@ -6,8 +6,6 @@ package legacy
 #include "client__gui__guimeter.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516, dword_5d4594_1062520;
-extern uint32_t dword_5d4594_1062556, dword_5d4594_1062560, dword_5d4594_1062564;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -82,8 +80,8 @@ func clientInventoryInitializeReservedCells() {
 			*inventoryGridCell(row, column) = C.nox_inventory_cell_t{}
 		}
 	}
-	if C.dword_5d4594_1062560 == 0 {
-		C.dword_5d4594_1062560 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Gold")))
+	if legacyAddressableWords.dword_5d4594_1062560 == 0 {
+		legacyAddressableWords.dword_5d4594_1062560 = C.uint32_t(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("Gold")))
 		*memmap.PtrUint32(0x5D4594, 1049728) = uint32(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("QuestGoldPile")))
 		*memmap.PtrUint32(0x5D4594, 1049724) = uint32(nox_xxx_getTTByNameSpriteMB_44CFC0(internCStr("QuestGoldChest")))
 	}
@@ -91,9 +89,9 @@ func clientInventoryInitializeReservedCells() {
 		id   *C.uint32_t
 		name string
 	}{
-		{&C.dword_5d4594_1062560, "Gold"},
-		{&C.dword_5d4594_1062564, "Identify"},
-		{&C.dword_5d4594_1062556, "AutoMap"},
+		{&legacyAddressableWords.dword_5d4594_1062560, "Gold"},
+		{&legacyAddressableWords.dword_5d4594_1062564, "Identify"},
+		{&legacyAddressableWords.dword_5d4594_1062556, "AutoMap"},
 	}
 	for column, entry := range entries {
 		if *entry.id == 0 && column != 0 {
@@ -113,7 +111,7 @@ func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.uintpt
 	switch event {
 	case 16393:
 		if slider := game3Slider(scroll); slider != nil {
-			C.dword_5d4594_1062512 = C.uint32_t(uintptr(slider.Max) - uintptr(arg2))
+			legacyWords.dword_5d4594_1062512 = C.uint32_t(uintptr(slider.Max) - uintptr(arg2))
 		}
 	case 16391:
 		control := (*nox_window)(unsafe.Pointer(uintptr(arg1)))
@@ -124,7 +122,7 @@ func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.uintpt
 			if slider == nil {
 				return 0
 			}
-			value := int32(C.dword_5d4594_1062512)
+			value := int32(legacyWords.dword_5d4594_1062512)
 			if id == 9102 {
 				value = max(0, value-25) / 50 * 50
 			} else {
@@ -135,7 +133,7 @@ func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.uintpt
 					value = slider.Max
 				}
 			}
-			C.dword_5d4594_1062512 = C.uint32_t(value)
+			legacyWords.dword_5d4594_1062512 = C.uint32_t(value)
 			clientInventorySyncScroll(scroll, slider)
 			nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		case 9105:
@@ -144,14 +142,14 @@ func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.uintpt
 				return 0
 			}
 			*memmap.PtrUint8(0x5D4594, 1049869) = 1
-			C.dword_5d4594_1062516 = C.dword_5d4594_1062512
-			C.dword_5d4594_1062512 = C.dword_5d4594_1062520
+			legacyWords.dword_5d4594_1062516 = legacyWords.dword_5d4594_1062512
+			legacyWords.dword_5d4594_1062512 = legacyWords.dword_5d4594_1062520
 			clientInventoryChangeScrollRange(scroll, uintptr(height))
 			clientInventorySetButton(inventoryWindows.journal, inventoryImages[C.NOX_INV_IMG_INVENTORY], inventoryImages[C.NOX_INV_IMG_INVENTORY_LIT], 9106)
 		case 9106:
 			*memmap.PtrUint8(0x5D4594, 1049869) = 0
-			C.dword_5d4594_1062520 = C.dword_5d4594_1062512
-			C.dword_5d4594_1062512 = C.dword_5d4594_1062516
+			legacyWords.dword_5d4594_1062520 = legacyWords.dword_5d4594_1062512
+			legacyWords.dword_5d4594_1062512 = legacyWords.dword_5d4594_1062516
 			clientInventoryChangeScrollRange(scroll, 850)
 			clientInventorySetButton(inventoryWindows.journal, nil, inventoryImages[C.NOX_INV_IMG_JOURNAL_LIT], 9105)
 		case 9107:
@@ -183,7 +181,7 @@ func clientInventoryChangeScrollRange(win *nox_window, height uintptr) {
 }
 
 func clientInventorySyncScroll(win *nox_window, slider *game3SliderData) {
-	value := uint32(slider.Max) - uint32(C.dword_5d4594_1062512)
+	value := uint32(slider.Max) - uint32(legacyWords.dword_5d4594_1062512)
 	nox_window_call_field_94_fnc(win, 16394, uintptr(value), 0, internCStr("client_inventory_window_native.go"), 0)
 }
 

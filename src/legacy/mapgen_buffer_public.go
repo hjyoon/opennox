@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487556;
 */
 import "C"
 
@@ -33,7 +32,7 @@ func nox_xxx_mapgenAllocBuffer_5213E0() C.int {
 		return registerMapgenPointer(ptr)
 	})
 	mapgenBuffer = buffer
-	C.dword_5d4594_2487556 = C.uint32_t(token)
+	legacyWords.dword_5d4594_2487556 = C.uint32_t(token)
 	return C.int(bool2int(buffer != nil))
 }
 
@@ -44,7 +43,7 @@ func nox_xxx_mapgenFreeBuffer_521400() {
 		nox_mapgen_release_memory(mapgenBuffer)
 		mapgenBuffer = nil
 	}
-	C.dword_5d4594_2487556 = 0
+	legacyWords.dword_5d4594_2487556 = 0
 }
 
 //export nox_mapgenPrepareWorkspaceNative

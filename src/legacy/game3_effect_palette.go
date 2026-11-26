@@ -2,10 +2,6 @@ package legacy
 
 /*
 #include "GAME3.h"
-extern uint32_t dword_5d4594_1313532;
-extern uint32_t dword_5d4594_1313536;
-extern uint32_t dword_5d4594_1313540;
-extern uint32_t dword_5d4594_1313564;
 */
 import "C"
 
@@ -56,13 +52,13 @@ func sub_4B64C0() int32 {
 		v := game3EffectColor(rgb[0], rgb[1], rgb[2])
 		switch i {
 		case 2:
-			C.dword_5d4594_1313532 = C.uint32_t(v)
+			legacyWords.dword_5d4594_1313532 = C.uint32_t(v)
 		case 3:
-			C.dword_5d4594_1313536 = C.uint32_t(v)
+			legacyWords.dword_5d4594_1313536 = C.uint32_t(v)
 		case 4:
-			C.dword_5d4594_1313540 = C.uint32_t(v)
+			legacyWords.dword_5d4594_1313540 = C.uint32_t(v)
 		case 10:
-			C.dword_5d4594_1313564 = C.uint32_t(v)
+			legacyWords.dword_5d4594_1313564 = C.uint32_t(v)
 		default:
 			*memmap.PtrUint32(0x5D4594, 1313524+uintptr(4*i)) = v
 		}

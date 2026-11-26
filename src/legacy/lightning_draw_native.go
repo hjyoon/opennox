@@ -3,9 +3,6 @@ package legacy
 /*
 #include "client__draw__fx.h"
 #include "client__draw__lightning.h"
-extern uint32_t dword_5d4594_1316436, dword_5d4594_1316448, dword_5d4594_1316452;
-extern uint32_t dword_5d4594_1316456, dword_5d4594_1316472, dword_5d4594_1316476;
-extern uint32_t dword_5d4594_1316484, dword_5d4594_1316492, nox_xxx_lightningSteps_587000_178216;
 */
 import "C"
 
@@ -35,7 +32,7 @@ func lightningSpan(from, to C.int2) (dx, dy int32) {
 }
 
 func drawLightningSegment(from, to C.int2) {
-	color := int32(C.dword_5d4594_1316472)
+	color := int32(legacyWords.dword_5d4594_1316472)
 	thick := memmap.Uint32(0x5D4594, 1316508) != 0
 	halo, intensity, extent := color, int32(3), int32(32)
 	if thick {
@@ -73,10 +70,10 @@ func drawLightningSegment(from, to C.int2) {
 
 //export nox_xxx_drawLightningStep_4BB070
 func nox_xxx_drawLightningStep_4BB070(start, end C.uint32_t) C.int {
-	C.dword_5d4594_1316492++
-	depth := int32(C.dword_5d4594_1316492)
+	legacyWords.dword_5d4594_1316492++
+	depth := int32(legacyWords.dword_5d4594_1316492)
 	from, to := lightningUnpackPoint(start), lightningUnpackPoint(end)
-	if C.dword_5d4594_1316492 == C.dword_5d4594_1316448 {
+	if legacyWords.dword_5d4594_1316492 == legacyWords.dword_5d4594_1316448 {
 		drawLightningSegment(from, to)
 	} else {
 		num, den := int32(1), int32(1)
@@ -85,7 +82,7 @@ func nox_xxx_drawLightningStep_4BB070(start, end C.uint32_t) C.int {
 			num *= 10
 			den *= decay
 		}
-		jitter := int32(C.dword_5d4594_1316476)
+		jitter := int32(legacyWords.dword_5d4594_1316476)
 		source := internCStr(lightningDrawSource)
 		dx := num * nox_common_randomIntMinMax_415FF0(-jitter, jitter, source, 193) / den
 		dy := num * nox_common_randomIntMinMax_415FF0(-jitter, jitter, source, 196) / den
@@ -96,8 +93,8 @@ func nox_xxx_drawLightningStep_4BB070(start, end C.uint32_t) C.int {
 		nox_xxx_drawLightningStep_4BB070(start, mid)
 		nox_xxx_drawLightningStep_4BB070(mid, end)
 	}
-	C.dword_5d4594_1316492--
-	return C.int(C.dword_5d4594_1316492)
+	legacyWords.dword_5d4594_1316492--
+	return C.int(legacyWords.dword_5d4594_1316492)
 }
 
 func lightningConfigureDistance(dx, dy int32) {
@@ -105,15 +102,15 @@ func lightningConfigureDistance(dx, dy int32) {
 	if squared := dx*dx + dy*dy; squared > 0 {
 		distance = int32(math.Sqrt(float64(squared)))
 	}
-	steps := C.nox_xxx_lightningSteps_587000_178216
+	steps := legacyWords.nox_xxx_lightningSteps_587000_178216
 	far := memmap.Uint32(0x587000, 178204)
 	if distance >= 512 {
-		C.dword_5d4594_1316476 = C.uint32_t(far)
-		C.dword_5d4594_1316448 = steps
+		legacyWords.dword_5d4594_1316476 = C.uint32_t(far)
+		legacyWords.dword_5d4594_1316448 = steps
 		return
 	}
 	near := memmap.Uint32(0x587000, 178208)
-	C.dword_5d4594_1316476 = C.uint32_t(near + uint32(distance)*(far-near)/512)
+	legacyWords.dword_5d4594_1316476 = C.uint32_t(near + uint32(distance)*(far-near)/512)
 	switch {
 	case distance < 64:
 		steps = C.uint32_t(max(1, int32(steps)-3))
@@ -122,7 +119,7 @@ func lightningConfigureDistance(dx, dy int32) {
 	case distance < 256:
 		steps = C.uint32_t(max(1, int32(steps)-1))
 	}
-	C.dword_5d4594_1316448 = steps
+	legacyWords.dword_5d4594_1316448 = steps
 }
 
 //export nox_xxx_lightningProc2_4BAE60
@@ -146,16 +143,16 @@ func nox_xxx_lightningProc2_4BAE60(from, to *C.int2, mode C.int, bounds *C.short
 	start, end := lightningPackPoint(*from), lightningPackPoint(*to)
 	if sideLayers != 0 {
 		*memmap.PtrUint32(0x5D4594, 1316508) = 0
-		for _, color := range [...]C.uint32_t{C.dword_5d4594_1316456, C.dword_5d4594_1316452} {
-			C.dword_5d4594_1316492 = 1
-			C.dword_5d4594_1316472 = color
+		for _, color := range [...]C.uint32_t{legacyWords.dword_5d4594_1316456, legacyWords.dword_5d4594_1316452} {
+			legacyWords.dword_5d4594_1316492 = 1
+			legacyWords.dword_5d4594_1316472 = color
 			nox_xxx_drawLightningStep_4BB070(start, end)
 		}
 	}
 	if core != 0 {
-		C.dword_5d4594_1316492 = 1
-		C.dword_5d4594_1316472 = C.dword_5d4594_1316436
-		*memmap.PtrUint32(0x5D4594, 1316440) = uint32(C.dword_5d4594_1316484)
+		legacyWords.dword_5d4594_1316492 = 1
+		legacyWords.dword_5d4594_1316472 = legacyWords.dword_5d4594_1316436
+		*memmap.PtrUint32(0x5D4594, 1316440) = uint32(legacyWords.dword_5d4594_1316484)
 		*memmap.PtrUint32(0x5D4594, 1316508) = 1
 		return nox_xxx_drawLightningStep_4BB070(start, end)
 	}
@@ -192,21 +189,21 @@ func drawLightningRay(view *C.int, dr *nox_drawable, kind lightningKind) C.int {
 	width, sideLayers := byte(1), C.int(1)
 	switch kind {
 	case lightningNormal:
-		C.dword_5d4594_1316452 = C.uint32_t(memmap.Uint32(0x5D4594, 1316428))
-		C.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316464))
-		C.dword_5d4594_1316456 = C.uint32_t(memmap.Uint32(0x5D4594, 1316424))
-		C.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316488))
+		legacyWords.dword_5d4594_1316452 = C.uint32_t(memmap.Uint32(0x5D4594, 1316428))
+		legacyWords.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316464))
+		legacyWords.dword_5d4594_1316456 = C.uint32_t(memmap.Uint32(0x5D4594, 1316424))
+		legacyWords.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316488))
 		particleOffset = 1316520
 	case lightningEnergy:
 		width, sideLayers = byte(2*(int(int8(ray[1]))+127)), 0
-		C.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316496))
-		C.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316468))
+		legacyWords.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316496))
+		legacyWords.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316468))
 		particleOffset = 1316524
 	case lightningGreen:
-		C.dword_5d4594_1316452 = C.uint32_t(memmap.Uint32(0x5D4594, 1316444))
-		C.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316504))
-		C.dword_5d4594_1316456 = C.uint32_t(memmap.Uint32(0x5D4594, 1316460))
-		C.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316480))
+		legacyWords.dword_5d4594_1316452 = C.uint32_t(memmap.Uint32(0x5D4594, 1316444))
+		legacyWords.dword_5d4594_1316436 = C.uint32_t(memmap.Uint32(0x5D4594, 1316504))
+		legacyWords.dword_5d4594_1316456 = C.uint32_t(memmap.Uint32(0x5D4594, 1316460))
+		legacyWords.dword_5d4594_1316484 = C.uint32_t(memmap.Uint32(0x5D4594, 1316480))
 		particleOffset = 1316528
 	}
 	*memmap.PtrUint8(0x5D4594, 1316420) = width

@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME4_1.h"
-extern uint32_t dword_587000_237036;
 */
 import "C"
 
@@ -73,7 +72,7 @@ func initializeScriptObjectCache() {
 	for i := range scriptObjectCache.nodes {
 		scriptObjectCache.free.prepend(&scriptObjectCache.nodes[i])
 	}
-	C.dword_587000_237036 = 0
+	legacyWords.dword_587000_237036 = 0
 }
 
 func scriptObjectCachePopFree() *scriptObjectCacheNode {
@@ -85,7 +84,7 @@ func scriptObjectCachePopFree() *scriptObjectCacheNode {
 }
 
 func findScriptObjectCacheNode(id int32, nativeOnly bool) *scriptObjectCacheNode {
-	if C.dword_587000_237036 != 0 {
+	if legacyWords.dword_587000_237036 != 0 {
 		initializeScriptObjectCache()
 	}
 	for node := scriptObjectCache.used.first; node != nil; node = node.next {
@@ -106,7 +105,7 @@ func rememberScriptObject(object *server.Object, native *nox_object_t) *scriptOb
 	if object == nil {
 		return nil
 	}
-	if C.dword_587000_237036 != 0 || scriptObjectCache.nodes == nil {
+	if legacyWords.dword_587000_237036 != 0 || scriptObjectCache.nodes == nil {
 		initializeScriptObjectCache()
 	}
 	node := scriptObjectCachePopFree()
@@ -123,7 +122,7 @@ func rememberScriptObject(object *server.Object, native *nox_object_t) *scriptOb
 }
 
 func forgetCachedScriptObject(object *server.Object) uintptr {
-	if flag := C.dword_587000_237036; flag != 0 {
+	if flag := legacyWords.dword_587000_237036; flag != 0 {
 		return uintptr(flag)
 	}
 	if scriptObjectCache.used.first == nil {
@@ -141,7 +140,7 @@ func forgetCachedScriptObject(object *server.Object) uintptr {
 }
 
 func clearScriptObjectCache() uintptr {
-	if flag := C.dword_587000_237036; flag != 0 {
+	if flag := legacyWords.dword_587000_237036; flag != 0 {
 		return uintptr(flag)
 	}
 	var last *scriptObjectCacheNode

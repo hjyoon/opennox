@@ -2,8 +2,6 @@ package legacy
 
 /*
 #include "GAME4_3.h"
-extern uint32_t dword_5d4594_2488604;
-extern uint32_t dword_5d4594_2488608;
 
 typedef uintptr_t (*pending_fixture_next_fn)(nox_object_t*);
 _Static_assert(_Generic(&sub_537750, pending_fixture_next_fn: 1, default: 0), "collision next return word ABI");
@@ -48,7 +46,7 @@ type pendingMachine537580 struct {
 
 func pendingProbeMachine537580(fist, undead unsafe.Pointer) pendingMachine537580 {
 	oldQueue, oldRuntime := pendingCollisionQueue537580, pendingCollisionRuntime537610
-	oldHead, oldTail := C.dword_5d4594_2488604, C.dword_5d4594_2488608
+	oldHead, oldTail := legacyWords.dword_5d4594_2488604, legacyWords.dword_5d4594_2488608
 	pendingCollisionQueue537580 = server.PendingCollisionQueue537580{}
 	pendingCollisionRuntime537610 = server.PendingCollisionRuntime537610{Fist: fist, UndeadKiller: undead,
 		TypeByName:  func(name string) uint32 { return pendingProbeLookup537610(name) },
@@ -72,10 +70,12 @@ func pendingProbeMachine537580(fist, undead unsafe.Pointer) pendingMachine537580
 			}
 			return uintptr(o.Field115)
 		},
-		compat: func() [2]uint32 { return [2]uint32{uint32(C.dword_5d4594_2488604), uint32(C.dword_5d4594_2488608)} },
+		compat: func() [2]uint32 {
+			return [2]uint32{uint32(legacyWords.dword_5d4594_2488604), uint32(legacyWords.dword_5d4594_2488608)}
+		},
 		close: func() {
 			pendingCollisionQueue537580, pendingCollisionRuntime537610 = oldQueue, oldRuntime
-			C.dword_5d4594_2488604, C.dword_5d4594_2488608 = oldHead, oldTail
+			legacyWords.dword_5d4594_2488604, legacyWords.dword_5d4594_2488608 = oldHead, oldTail
 		},
 	}
 }

@@ -4,7 +4,6 @@ package legacy
 #include "GAME4_2.h"
 
 extern uint32_t dword_5d4594_2487576;
-extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487584;
 */
 import "C"
@@ -61,7 +60,7 @@ func mapgenRankedRoomByToken(token uint32) *mapgenRankedRoom {
 
 func mapgenSetMaximumRoomDistance(distance float32) {
 	mapgenRoomRanking.maxDistance = distance
-	C.dword_5d4594_2487580 = C.uint32_t(math.Float32bits(distance))
+	legacyWords.dword_5d4594_2487580 = C.uint32_t(math.Float32bits(distance))
 }
 
 func mapgenSetFarthestRoom(room *mapgenRankedRoom) {

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_3.h"
 
-extern uint32_t dword_5d4594_1200776, dword_5d4594_1200796;
 */
 import "C"
 
@@ -148,7 +147,7 @@ func sub_494F00() C.int {
 	for index, name := range names {
 		id := uint32(things.IndByID(name))
 		if index == 1 {
-			C.dword_5d4594_1200776 = C.uint32_t(id)
+			legacyWords.dword_5d4594_1200776 = C.uint32_t(id)
 		} else {
 			*g2ServerWord(1200772 + 4*uintptr(index)) = id
 		}
@@ -164,6 +163,6 @@ func sub_494F00() C.int {
 		}
 	}
 	violet := things.IndByID("VioletSpark")
-	C.dword_5d4594_1200796 = C.uint32_t(violet)
+	legacyWords.dword_5d4594_1200796 = C.uint32_t(violet)
 	return C.int(bool2int(violet != 0))
 }

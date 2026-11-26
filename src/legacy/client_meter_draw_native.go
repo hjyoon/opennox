@@ -4,7 +4,7 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME2_3.h"
 
-extern uint64_t qword_581450_9512, qword_581450_9544;
+extern uint64_t qword_581450_9512;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -46,7 +46,7 @@ func sub_470F40_draw(win *C.nox_window, _ *C.nox_window_data) C.int {
 			if current < maximum*memmap.Float64(0x581450, 9608) {
 				meter.color_2 = C.uint32_t(memmap.Uint32(0x85B3FC, 940))
 				dial = true
-			} else if current < maximum*math.Float64frombits(uint64(C.qword_581450_9544)) {
+			} else if current < maximum*math.Float64frombits(uint64(legacyWords.qword_581450_9544)) {
 				meter.color_2 = renderPalette.yellow
 				dial = true
 			}

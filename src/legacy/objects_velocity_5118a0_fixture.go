@@ -4,8 +4,6 @@ package legacy
 #include "defs.h"
 #include "GAME4_1.h"
 #include <string.h>
-extern uint32_t dword_5d4594_2488604;
-extern uint32_t dword_5d4594_2488608;
 #if defined(__i386__) && defined(__GNUC__)
 #define NOX_VELOCITY_LABEL_INNER(x) #x
 #define NOX_VELOCITY_LABEL(x) NOX_VELOCITY_LABEL_INNER(x)
@@ -64,14 +62,14 @@ func ObjectsVelocityCProbe5118A0(step float32) int32 {
 // retaining its production enqueue gates and all production velocity services.
 func ObjectsVelocityQueueFixture5118A0(objects ...*server.Object) func() {
 	old := pendingCollisionQueue537580
-	oldHead, oldTail := C.dword_5d4594_2488604, C.dword_5d4594_2488608
+	oldHead, oldTail := legacyWords.dword_5d4594_2488604, legacyWords.dword_5d4594_2488608
 	pendingCollisionQueue537580 = server.PendingCollisionQueue537580{}
 	for _, o := range objects {
 		pendingCollisionEnqueue537610(o)
 	}
 	return func() {
 		pendingCollisionQueue537580 = old
-		C.dword_5d4594_2488604, C.dword_5d4594_2488608 = oldHead, oldTail
+		legacyWords.dword_5d4594_2488604, legacyWords.dword_5d4594_2488608 = oldHead, oldTail
 	}
 }
 

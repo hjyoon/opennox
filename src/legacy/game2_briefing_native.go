@@ -62,31 +62,23 @@ extern uint32_t dword_5d4594_1045420;
 extern char* dword_5d4594_831240;
 extern uint32_t dword_5d4594_1045640;
 extern uint32_t dword_5d4594_831260;
-extern uint32_t dword_587000_129656;
-extern uint32_t dword_5d4594_832480;
-extern uint32_t dword_587000_126996;
 extern uint32_t dword_5d4594_831244;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_1047524;
 extern uint32_t dword_5d4594_1046864;
-extern uint32_t dword_5d4594_831256;
-extern uint32_t dword_5d4594_1049536;
 extern void* dword_5d4594_1049696;
-extern uint32_t dword_5d4594_831276;
 extern uint32_t dword_5d4594_1046648;
 extern uint32_t dword_5d4594_1046640;
 extern uint32_t dword_5d4594_831084;
 extern uint32_t dword_5d4594_1047936;
 extern float2 obj_5d4594_1046620;
 extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_5d4594_1045460;
 extern uint32_t dword_587000_122848;
 extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_830864;
 extern uint32_t dword_5d4594_1047528;
 extern uint32_t dword_5d4594_1046636;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern uint32_t dword_5d4594_831224;
 extern uint32_t dword_5d4594_1047512;
 extern uint32_t dword_5d4594_1046656;
 extern uint32_t dword_5d4594_1049484;
@@ -94,14 +86,12 @@ extern void* dword_587000_81128;
 extern void* dword_587000_122852;
 extern uint32_t dword_5d4594_1049496;
 extern uint32_t dword_5d4594_1047932;
-extern uint32_t dword_5d4594_1045432;
 extern void* dword_587000_127004;
 extern uint32_t dword_5d4594_1047520;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern uint32_t dword_5d4594_1046936;
 extern uint32_t dword_5d4594_1047540;
 extern uint32_t dword_5d4594_1046872;
-extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
 extern uintptr_t dword_5d4594_1047516;
 extern nox_video_bag_image_t* nox_ctf_flag_team_border;
 extern uint32_t dword_5d4594_1046868;
@@ -110,7 +100,6 @@ extern int nox_win_width;
 extern int nox_win_height;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
-extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
 int nox_client_getBriefDuration(void);
 */
 import "C"
@@ -153,7 +142,9 @@ func g2bDelete(p unsafe.Pointer) int32 {
 	}
 	return int32(C.nox_xxx_spriteDelete_45A4B0((*C.nox_drawable)(p)))
 }
-func g2bPosition() *float32 { return (*float32)(unsafe.Pointer(&C.dword_5d4594_831276)) }
+func g2bPosition() *float32 {
+	return (*float32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_831276))
+}
 func g2bEvent(win *C.nox_window, event C.int, arg C.uintptr_t) C.uintptr_t {
 	return C.nox_window_call_field_94_fnc(win, event, arg, 0, internCStr("GAME2.c"), 0)
 }
@@ -205,7 +196,7 @@ func sub_44E110() *C.uint32_t { return nox_client_questPreview_native_44E110() }
 
 //export nox_xxx_playGMCAPsmth_44E3E0
 func nox_xxx_playGMCAPsmth_44E3E0() C.int {
-	result := C.int(C.dword_5d4594_831224)
+	result := C.int(legacyWords.dword_5d4594_831224)
 	*memmap.PtrUint32(0x5D4594, 831248) = 1
 	if result != 0 {
 		result = C.nox_xxx_playDialogFile_44D900((*C.uchar)(unsafe.Pointer(C.dword_5d4594_831240)), 100)
@@ -243,15 +234,15 @@ func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unu
 		C.sub_450580()
 		if C.dword_5d4594_831220 != 0 {
 			if C.dword_5d4594_831220 == 255 {
-				C.nox_gameDisableMapDraw_5d4594_2650672 = 0
+				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 				duration := C.nox_client_getIntroScreenDuration_44E3B0()
 				C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
-				C.nox_gameDisableMapDraw_5d4594_2650672 = 1
+				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
 			}
 		} else {
 			C.nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
 			C.nox_xxx_windowFocus_46B500(nil)
-			C.dword_5d4594_831256 = 1
+			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
 		}
 		C.nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
@@ -285,18 +276,18 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	}
 	C.nox_client_copyRect_49F6F0(0, 0, C.nox_getBackbufWidth(), C.nox_getBackbufHeight())
 	if int64(*g2bPosition()) <= int64(memmap.Int32(0x5D4594, 831280)) && C.dword_5d4594_831244 == 1 && C.sub_44D930() == 0 && uint64(C.nox_platform_get_ticks())-memmap.Uint64(0x5D4594, 831292) > uint64(C.nox_client_getBriefDuration()) && (memmap.Uint32(0x5D4594, 832488) == 1 || flags&5 == 0) {
-		if flags&2 != 0 && C.dword_5d4594_832480 != 0 {
+		if flags&2 != 0 && legacyAddressableWords.dword_5d4594_832480 != 0 {
 			g2qSound(582, 100)
 		}
 		C.sub_450580()
 		if C.dword_5d4594_831220 != 0 {
-			C.nox_gameDisableMapDraw_5d4594_2650672 = 0
+			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 			duration := C.nox_client_getIntroScreenDuration_44E3B0()
 			C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
-			C.nox_gameDisableMapDraw_5d4594_2650672 = 1
-		} else if C.dword_5d4594_831256 == 0 {
+			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
+		} else if legacyWords.dword_5d4594_831256 == 0 {
 			C.nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
-			C.dword_5d4594_831256 = 1
+			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
 			C.nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
 		}
@@ -323,7 +314,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	C.dword_5d4594_831244 = 1
 	*memmap.PtrUint32(0x5D4594, 832488) = 0
 	*memmap.PtrUint32(0x5D4594, 832472) = 0
-	C.dword_5d4594_831256 = 0
+	legacyWords.dword_5d4594_831256 = 0
 	*memmap.PtrUint8(0x5D4594, 831252) = byte(screen + 1)
 	class := mode
 	if player != nil {
@@ -368,7 +359,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		C.sub_446780()
 		C.dword_5d4594_831240 = nil
 		C.dword_5d4594_831244 = 1
-		C.dword_5d4594_831224 = 0
+		legacyWords.dword_5d4594_831224 = 0
 	default:
 		offset := uintptr(32 * (screen + class + 10*class))
 		base := uintptr(831300)
@@ -385,26 +376,26 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	C.nox_xxx_drawGetStringSize_43F840(textWin.draw_data.font, text, nil, height, 480)
 	C.sub_46AB20(textWin, 640, *height)
 	if screen == 255 {
-		C.dword_5d4594_831276 = 1140457472
+		legacyAddressableWords.dword_5d4594_831276 = 1140457472
 		*height = -20 - *height
 	} else {
 		*height = (480 - C.nox_xxx_guiFontHeightMB_43F320(textWin.draw_data.font) - *height) / 2
 		*g2bPosition() = float32(*height)
 	}
 	C.sub_431290()
-	C.dword_5d4594_831224 = 0
+	legacyWords.dword_5d4594_831224 = 0
 	if mode != 0 || screen == 255 {
 		if screen != 254 {
-			C.dword_5d4594_831224 = 1
+			legacyWords.dword_5d4594_831224 = 1
 		}
 	} else if screen != 254 {
 		if player.field_4408_4576[screen] != 0 {
 			C.nox_xxx_wndClearCaptureMain_46ADE0(outer)
-			C.dword_5d4594_831256 = 1
+			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
 			C.nox_xxx_wndSetWindowProc_46B300(outer, nil)
 		} else {
-			C.dword_5d4594_831224 = 1
+			legacyWords.dword_5d4594_831224 = 1
 			player.field_4408_4576[screen] = 1
 		}
 	}
@@ -413,10 +404,10 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	*memmap.PtrUint32(0x5D4594, 831248) = 0
 	duration := C.nox_client_getIntroScreenDuration_44E3B0()
 	C.nox_video_fadeOutScreen_44DB30(duration, 1, unsafe.Pointer(C.nox_xxx_playGMCAPsmth_44E3E0))
-	if C.dword_5d4594_831224 != 0 {
+	if legacyWords.dword_5d4594_831224 != 0 {
 		C.dword_5d4594_831244 = 0
 	}
-	return C.int(C.dword_5d4594_831224)
+	return C.int(legacyWords.dword_5d4594_831224)
 }
 
 //export sub_4505E0

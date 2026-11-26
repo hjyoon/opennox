@@ -355,7 +355,7 @@ func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
 	}
 	if save != 0 {
 		result := sub_57ADF0((*C.int)(unsafe.Pointer(serverOptionsRules)))
-		C.dword_587000_129656 = 1
+		legacyWords.dword_587000_129656 = 1
 		return result
 	}
 	return nil

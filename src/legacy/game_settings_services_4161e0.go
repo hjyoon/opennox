@@ -4,7 +4,6 @@ package legacy
 #include <stdint.h>
 #include <limits.h>
 #include "GAME1.h"
-extern uint32_t dword_5d4594_371692;
 */
 import "C"
 
@@ -13,7 +12,7 @@ import "unsafe"
 const gameSettingsPlainCharSigned4161E0 = C.CHAR_MIN < 0
 
 func gameSettingsActualDirtyCell4161E0() unsafe.Pointer {
-	return unsafe.Pointer(&C.dword_5d4594_371692)
+	return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_371692)
 }
 
 func gameSettingsDefaultWord4161E0(service int, arg int32) uint32 {

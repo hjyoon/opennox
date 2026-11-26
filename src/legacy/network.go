@@ -17,11 +17,7 @@ package legacy
 #include "client_ui_words.h"
 #include "noxstring_format_abi.h"
 extern unsigned int dword_5d4594_2649712;
-extern unsigned int dword_5d4594_2660032;
-extern uint32_t dword_5d4594_2650652;
-extern uint32_t dword_5d4594_1200804;
 extern uint32_t dword_5d4594_1200832;
-extern uint32_t dword_5d4594_1563276;
 unsigned int nox_client_getServerAddr_43B300();
 void nox_xxx_playerInitColors_461460(nox_playerInfo* pl);
 int nox_client_getServerPort_43B320();
@@ -414,10 +410,10 @@ func Sub_4DDE10(recipient int, player *server.Player) {
 	if unit == nil {
 		return
 	}
-	flagType := C.dword_5d4594_1563276
+	flagType := legacyWords.dword_5d4594_1563276
 	if flagType == 0 {
 		flagType = C.uint32_t(GetServer().S().Types.IndByID("Flag"))
-		C.dword_5d4594_1563276 = flagType
+		legacyWords.dword_5d4594_1563276 = flagType
 	}
 	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
 		if item.Class().Has(object.ClassInfoBook) || C.uint32_t(item.TypeInd) == flagType {

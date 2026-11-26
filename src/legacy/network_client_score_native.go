@@ -3,7 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_1200804;
 */
 import "C"
 
@@ -207,7 +206,7 @@ func clientMatchWinnerPacket(op netmsg.Op, data []byte) {
 		return
 	}
 	frame := binary.LittleEndian.Uint32(data[4:8])
-	last := uint32(C.dword_5d4594_1200804)
+	last := uint32(legacyWords.dword_5d4594_1200804)
 	signedFrame := op == netmsg.MSG_REPORT_FLAG_BALL_WINNER || op == netmsg.MSG_REPORT_DEATHMATCH_WINNER
 	if signedFrame && int32(frame) <= int32(last) || !signedFrame && frame <= last {
 		return

@@ -10,8 +10,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 #include "GAME4_2.h"
-extern uint32_t dword_5d4594_1049844;
-extern uint32_t dword_5d4594_1563096;
 void nox_xxx_unitsNewAddToList_4DAC00();
 int sub_41C280(void* a1);
 int nox_xxx_parseFileInfoData_41C3B0(int a1);

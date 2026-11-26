@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include <stdint.h>
-extern uint32_t dword_5d4594_3835312;
 */
 import "C"
 import (
@@ -79,5 +78,5 @@ func sub_504720(a1, a2 uint32) int32 {
 }
 
 func Get_dword_5d4594_3835312() int {
-	return int(C.dword_5d4594_3835312)
+	return int(legacyWords.dword_5d4594_3835312)
 }

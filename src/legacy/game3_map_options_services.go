@@ -19,10 +19,9 @@ package legacy
 #include "client__video__draw_common.h"
 #include "input.h"
 #include "operators.h"
-extern uint32_t nox_server_sendMotd_108752, nox_server_connectionType_3596, dword_5d4594_2650652;
+extern uint32_t nox_server_sendMotd_108752;
 extern void *dword_587000_127004, *dword_587000_122852, *dword_587000_93164;
-extern uint32_t dword_5d4594_1313532, dword_5d4594_1313536, dword_5d4594_1313540;
-extern uint32_t dword_5d4594_1313564, dword_5d4594_1313740, dword_5d4594_1313788;
+extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
 extern uint64_t qword_581450_9552;
 extern int nox_win_width;
 int nox_gui_menu_proc_ext(int);
@@ -99,7 +98,7 @@ func sub_4AD040(id C.int) C.int { return C.int(game3LoadObject(int32(id), 4, gam
 
 //export sub_4AD570
 func sub_4AD570(win *C.nox_window, draw *C.nox_window_data) C.int {
-	if C.dword_5d4594_2650652 != 1 || serverGeneralWindow == nil {
+	if legacyWords.dword_5d4594_2650652 != 1 || serverGeneralWindow == nil {
 		return 1
 	}
 	list := C.nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10317)
@@ -175,7 +174,7 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 		return 0
 	}
 	C.nox_window_call_field_94_fnc(typ, 16385, text, ^C.uintptr_t(0), internCStr("game3_map_options_services.go"), 0)
-	C.nox_server_connectionType_3596 = C.uint32_t(selected + 1)
+	legacyWords.nox_server_connectionType_3596 = C.uint32_t(selected + 1)
 	C.nox_xxx_rateUpdate_40A6D0(C.sub_40A710(C.int(selected + 1)))
 	C.nox_window_call_field_94_fnc(rate, 16394, C.uintptr_t(4-C.nox_xxx_rateGet_40A6C0()), 0, internCStr("game3_map_options_services.go"), 0)
 	C.nox_window_set_hidden(sender, 1)

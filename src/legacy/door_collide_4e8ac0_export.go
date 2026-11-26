@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 
-extern uint64_t qword_5d4594_1567940;
 */
 import "C"
 
@@ -24,10 +23,10 @@ var doorCollideCall4E8AC0 = func(door, unit *server.Object, collision unsafe.Poi
 		server.DoorCollideRuntime4E8AC0{
 			Ticks: PlatformTicks,
 			LoadFeedbackTicks: func() uint64 {
-				return uint64(C.qword_5d4594_1567940)
+				return uint64(legacyWords.qword_5d4594_1567940)
 			},
 			StoreFeedbackTicks: func(value uint64) {
-				C.qword_5d4594_1567940 = C.uint64_t(value)
+				legacyWords.qword_5d4594_1567940 = C.uint64_t(value)
 			},
 			StoreQuestFrame: func(frame uint32) {
 				sub_4D71E0(C.int(frame))

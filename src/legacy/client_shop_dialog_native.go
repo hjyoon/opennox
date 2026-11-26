@@ -10,7 +10,6 @@ package legacy
 
 typedef const wchar2_t nox_shop_const_wchar2_t;
 
-extern uint32_t dword_5d4594_1098616, dword_5d4594_1098620;
 extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
 extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
 extern char* nox_shop_dialog_file_1098608;
@@ -133,7 +132,7 @@ func sub_479520(amount C.int) {
 //export sub_4795E0
 func sub_4795E0(code, price C.int) C.int {
 	pos := nox_client_getMousePos_4309F0()
-	active := C.dword_5d4594_1098616
+	active := legacyWords.dword_5d4594_1098616
 	if active == 1 {
 		return 1
 	}
@@ -146,7 +145,7 @@ func sub_4795E0(code, price C.int) C.int {
 	result := nox_gui_itemAmountDialog_4C0430(shopString("SellLabel", 1504), pos.x, pos.y,
 		C.uint32_t(code), dr.field_27, shopItemAttrs(dr), C.uint32_t(quantity), 0,
 		(C.nox_gui_item_amount_callback_t)(C.sub_479690), (C.nox_gui_item_amount_callback_t)(C.sub_479680))
-	C.dword_5d4594_1098616 = 1
+	legacyWords.dword_5d4594_1098616 = 1
 	return result
 }
 
@@ -154,7 +153,7 @@ func sub_4795E0(code, price C.int) C.int {
 func sub_479740(code C.int, price C.uint) {
 	pos := nox_client_getMousePos_4309F0()
 	gold := C.uint(sub_4674A0())
-	if C.dword_5d4594_1098620 == 1 {
+	if legacyWords.dword_5d4594_1098620 == 1 {
 		return
 	}
 	dr := C.sub_4676D0(code)
@@ -170,5 +169,5 @@ func sub_479740(code C.int, price C.uint) {
 	nox_gui_itemAmountDialog_4C0430(shopString("RepairLabel", 1580), pos.x, pos.y,
 		C.uint32_t(code), dr.field_27, shopItemAttrs(dr), 1, 0,
 		(C.nox_gui_item_amount_callback_t)(C.sub_479820), (C.nox_gui_item_amount_callback_t)(C.sub_479810))
-	C.dword_5d4594_1098620 = 1
+	legacyWords.dword_5d4594_1098620 = 1
 }

@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME3_2.h"
 
-extern uint32_t dword_5d4594_1556144;
 */
 import "C"
 
@@ -24,7 +23,7 @@ func questObserverReadyPlayer4D7150(unit *server.Object) *server.Player {
 
 //export sub_4D7150
 func sub_4D7150() {
-	if C.dword_5d4594_1556144 == 0 || gameFrame() <= uint32(C.dword_5d4594_1556144) {
+	if legacyWords.dword_5d4594_1556144 == 0 || gameFrame() <= uint32(legacyWords.dword_5d4594_1556144) {
 		return
 	}
 	s := GetServer().S()

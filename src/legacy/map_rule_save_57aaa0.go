@@ -5,7 +5,6 @@ package legacy
 #include "GAME5_2.h"
 #include "cgo_const.h"
 
-extern uint32_t dword_5d4594_2650652;
 */
 import "C"
 
@@ -43,7 +42,7 @@ func sub_57AAA0(filename *C.nox_cgo_const_char, data *C.char, ruleList *C.int) (
 	}()
 
 	var online, mapDefaults server.Settings2
-	compareDefaults := C.dword_5d4594_2650652 != 0
+	compareDefaults := legacyWords.dword_5d4594_2650652 != 0
 	if compareDefaults {
 		online.Field0, mapDefaults.Field0 = settings.Field0, settings.Field0
 		readMapRuleDefaults57A1E0(&online, nil, nil, ruleSourceInternet, mode)

@@ -16,7 +16,6 @@ package legacy
 #include "common__savegame.h"
 #include "noxstring.h"
 
-extern uint32_t dword_587000_171388;
 */
 import "C"
 
@@ -108,7 +107,7 @@ func nox_game_showSelColor_4A5D00() C.int {
 			nox_xxx_wndSetDrawFn_46B340(window, unsafe.Pointer(C.sub_4A6D20))
 		}
 	}
-	if C.dword_587000_171388 != 0 {
+	if legacyWords.dword_587000_171388 != 0 {
 		name := g2ServerLoad("DefaultName", colorSelectionStringsFile, 1138)
 		g2ServerText(colorSelectName, 16414, unsafe.Pointer(name), 0)
 	}

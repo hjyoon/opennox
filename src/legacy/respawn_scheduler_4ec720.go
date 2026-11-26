@@ -66,11 +66,11 @@ type respawnSchedulerRuntime4EC720 struct {
 }
 
 func respawnSchedulerLoadCrown4EC720() uint32 {
-	return uint32(C.dword_5d4594_1568028)
+	return uint32(legacyWords.dword_5d4594_1568028)
 }
 
 func respawnSchedulerStoreCrown4EC720(value uint32) {
-	C.dword_5d4594_1568028 = C.uint32_t(value)
+	legacyWords.dword_5d4594_1568028 = C.uint32_t(value)
 }
 
 func respawnSchedulerNative4EC720(runtime respawnSchedulerRuntime4EC720) {

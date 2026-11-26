@@ -7,7 +7,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1062512, dword_5d4594_1062516;
 extern uint32_t dword_5d4594_1062552;
 */
 import "C"
@@ -275,8 +274,8 @@ func sub_467BB0() C.int {
 		*state = 1
 		nox_xxx_clientPlaySoundSpecial_452D80(789, 100)
 	}
-	position := C.dword_5d4594_1062516
-	C.dword_5d4594_1062512 = position
+	position := legacyWords.dword_5d4594_1062516
+	legacyWords.dword_5d4594_1062512 = position
 	return C.int(position)
 }
 
@@ -316,7 +315,7 @@ func sub_467CA0() C.int {
 	if result := sub_467C80(); result != 0 {
 		return result
 	}
-	C.dword_5d4594_1062516 = 0
+	legacyWords.dword_5d4594_1062516 = 0
 	win := inventoryWindows.slider
 	if win == nil {
 		return 0

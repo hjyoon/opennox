@@ -9,7 +9,6 @@ typedef char* (*join_roster_fn)(int);
 _Static_assert(_Generic(&nox_xxx_netGuiGameSettings_4DD9B0, gui_settings_fn:1, default:0), "GUI settings ABI");
 _Static_assert(_Generic(&nox_xxx_netNewPlayerMakePacket_4DDA90, new_player_packet_fn:1, default:0), "new player packet ABI");
 _Static_assert(_Generic(&nox_xxx_newPlayerSendAllPlayers_4DE300, join_roster_fn:1, default:0), "join roster ABI");
-extern uint32_t dword_5d4594_1563276;
 */
 import "C"
 
@@ -36,8 +35,8 @@ func callJoinInventoryC(index int32, player *server.Player) {
 }
 
 func swapJoinFlagTypeC(value uint32) uint32 {
-	old := C.dword_5d4594_1563276
-	C.dword_5d4594_1563276 = C.uint32_t(value)
+	old := legacyWords.dword_5d4594_1563276
+	legacyWords.dword_5d4594_1563276 = C.uint32_t(value)
 	return uint32(old)
 }
 

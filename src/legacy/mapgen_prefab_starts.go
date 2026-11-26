@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME4_2.h"
 
-extern uint32_t dword_5d4594_2487620, dword_5d4594_2487624;
-extern uint32_t dword_5d4594_2487628, dword_5d4594_2487632, dword_5d4594_2487652;
 */
 import "C"
 
@@ -19,8 +17,8 @@ func mapgenPrefabStartCells() [10]*uint32 {
 	// The second and third position pairs use named C globals.
 	return [10]*uint32{
 		memmap.PtrUint32(0x5D4594, 2487612), memmap.PtrUint32(0x5D4594, 2487616),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2487620)), (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487624)),
-		(*uint32)(unsafe.Pointer(&C.dword_5d4594_2487628)), (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487632)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487620)), (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487624)),
+		(*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487628)), (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_2487632)),
 		memmap.PtrUint32(0x5D4594, 2487636), memmap.PtrUint32(0x5D4594, 2487640),
 		memmap.PtrUint32(0x5D4594, 2487644), memmap.PtrUint32(0x5D4594, 2487648),
 	}
@@ -88,7 +86,7 @@ func sub_525DF0(raw *C.uint8_t) {
 	count := min(int(int32(theme[21])), 5)
 	size := float32(mapgenRoomFloat(theme[16])) * 0.5
 	*memmap.PtrUint32(0x5D4594, 2487608) = 0
-	C.dword_5d4594_2487652 = C.uint32_t(count)
+	legacyWords.dword_5d4594_2487652 = C.uint32_t(count)
 	if count <= 0 {
 		return
 	}

@@ -7,7 +7,6 @@ package legacy
 typedef const nox_draw_viewport_t nox_const_inventory_viewport;
 typedef const nox_inventory_cell_t nox_const_inventory_cell;
 
-extern uint32_t dword_587000_136184;
 */
 import "C"
 
@@ -65,7 +64,7 @@ func nox_client_inventory_animation_state() C.int {
 
 //export nox_client_inventory_animation_offset
 func nox_client_inventory_animation_offset() C.int {
-	return C.int(C.dword_587000_136184)
+	return C.int(legacyWords.dword_587000_136184)
 }
 
 //export nox_client_inventory_has_dragged

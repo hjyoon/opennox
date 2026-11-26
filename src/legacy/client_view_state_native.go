@@ -5,8 +5,6 @@ package legacy
 #include "GAME2_2.h"
 
 extern uint32_t dword_5d4594_805820, nox_xxx_useAudio_587000_80772;
-extern uint32_t dword_5d4594_3807140, dword_5d4594_3807136;
-extern uint32_t dword_5d4594_3807116, dword_5d4594_3807152;
 */
 import "C"
 
@@ -38,8 +36,8 @@ func nox_client_setMousePos_430B10(x, y C.int) {
 
 //export sub_430B50
 func sub_430B50(left, top, right, bottom C.int) C.int {
-	C.dword_5d4594_3807140, C.dword_5d4594_3807136 = C.uint32_t(left), C.uint32_t(top)
-	C.dword_5d4594_3807116, C.dword_5d4594_3807152 = C.uint32_t(right), C.uint32_t(bottom)
+	legacyWords.dword_5d4594_3807140, legacyWords.dword_5d4594_3807136 = C.uint32_t(left), C.uint32_t(top)
+	legacyWords.dword_5d4594_3807116, legacyWords.dword_5d4594_3807152 = C.uint32_t(right), C.uint32_t(bottom)
 	return bottom
 }
 

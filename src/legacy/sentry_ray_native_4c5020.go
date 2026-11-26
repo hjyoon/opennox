@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3_1.h"
 #include "client__video__draw_common.h"
-extern uint32_t dword_5d4594_1321800;
 */
 import "C"
 
@@ -32,11 +31,11 @@ func nox_xxx_colorInit_4C4FD0() C.int {
 }
 
 func addSentryRayNative4C5020(ray [4]uint16) int32 {
-	count := int32(C.dword_5d4594_1321800)
+	count := int32(legacyAddressableWords.dword_5d4594_1321800)
 	if count < 32 {
 		*sentryRaySlot4C5020(int(count)) = ray
 		count++
-		C.dword_5d4594_1321800 = C.uint32_t(count)
+		legacyAddressableWords.dword_5d4594_1321800 = C.uint32_t(count)
 	}
 	return count
 }
@@ -48,7 +47,7 @@ func nox_client_addSentryRay_4C5020(x1, y1, x2, y2 C.uint16_t) C.int {
 
 //export nox_client_sentryRayCount_4C5020
 func nox_client_sentryRayCount_4C5020() C.int {
-	return C.int(C.dword_5d4594_1321800)
+	return C.int(legacyAddressableWords.dword_5d4594_1321800)
 }
 
 //export nox_client_sentryRayAt_4C5020

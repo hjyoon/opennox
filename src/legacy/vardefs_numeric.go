@@ -1,0 +1,228 @@
+package legacy
+
+/*
+#include <stdint.h>
+*/
+import "C"
+
+import "github.com/opennox/opennox/v1/legacy/common/alloc"
+
+// Keep the original names and widths so the callers can trace each state word.
+var legacyWords = struct {
+	dword_587000_126996                               C.uint32_t
+	dword_587000_129656                               C.uint32_t
+	dword_587000_136184                               C.uint32_t
+	dword_587000_171388                               C.uint32_t
+	dword_587000_180476                               C.uint32_t
+	dword_587000_180480                               C.uint32_t
+	dword_587000_237036                               C.uint32_t
+	dword_587000_87408                                C.uint32_t
+	dword_587000_87412                                C.int
+	dword_5d4594_1045432                              C.uint32_t
+	dword_5d4594_1045460                              C.uint32_t
+	dword_5d4594_1047548                              C.uint32_t
+	dword_5d4594_1047552                              C.uint32_t
+	dword_5d4594_1049536                              C.uint32_t
+	dword_5d4594_1049796_inventory_click_column_index C.uint32_t
+	dword_5d4594_1049800_inventory_click_row_index    C.uint32_t
+	dword_5d4594_1049804                              C.uint32_t
+	dword_5d4594_1049808                              C.uint32_t
+	dword_5d4594_1049844                              C.uint32_t
+	dword_5d4594_1049856                              C.uint32_t
+	dword_5d4594_1062496                              C.uint32_t
+	dword_5d4594_1062512                              C.uint32_t
+	dword_5d4594_1062516                              C.uint32_t
+	dword_5d4594_1062520                              C.uint32_t
+	dword_5d4594_1096636                              C.uint32_t
+	dword_5d4594_1098616                              C.uint32_t
+	dword_5d4594_1098620                              C.uint32_t
+	dword_5d4594_1193156                              C.uint32_t
+	dword_5d4594_1193188                              C.uint32_t
+	dword_5d4594_1197308                              C.uint32_t
+	dword_5d4594_1197324                              C.uint32_t
+	dword_5d4594_1197328                              C.uint32_t
+	dword_5d4594_1197332                              C.uint32_t
+	dword_5d4594_1197336                              C.uint32_t
+	dword_5d4594_1200768                              C.uint32_t
+	dword_5d4594_1200776                              C.uint32_t
+	dword_5d4594_1200796                              C.uint32_t
+	dword_5d4594_1200804                              C.uint32_t
+	dword_5d4594_1301796                              C.uint32_t
+	dword_5d4594_1301808                              C.uint32_t
+	dword_5d4594_1301812                              C.uint32_t
+	dword_5d4594_1301816                              C.uint32_t
+	dword_5d4594_1304328                              C.uint32_t
+	dword_5d4594_1305788                              C.uint32_t
+	dword_5d4594_1313532                              C.uint32_t
+	dword_5d4594_1313536                              C.uint32_t
+	dword_5d4594_1313540                              C.uint32_t
+	dword_5d4594_1313564                              C.uint32_t
+	dword_5d4594_1313880                              C.uint32_t
+	dword_5d4594_1316408                              C.uint32_t
+	dword_5d4594_1316412                              C.uint32_t
+	dword_5d4594_1316436                              C.uint32_t
+	dword_5d4594_1316448                              C.uint32_t
+	dword_5d4594_1316452                              C.uint32_t
+	dword_5d4594_1316456                              C.uint32_t
+	dword_5d4594_1316472                              C.uint32_t
+	dword_5d4594_1316476                              C.uint32_t
+	dword_5d4594_1316484                              C.uint32_t
+	dword_5d4594_1316492                              C.uint32_t
+	dword_5d4594_1321208                              C.uint32_t
+	dword_5d4594_1548524                              C.uint32_t
+	dword_5d4594_1556128                              C.uint32_t
+	dword_5d4594_1556136                              C.uint32_t
+	dword_5d4594_1556144                              C.uint32_t
+	dword_5d4594_1563096                              C.uint32_t
+	dword_5d4594_1563276                              C.uint32_t
+	dword_5d4594_1565520                              C.uint32_t
+	dword_5d4594_1568028                              C.uint32_t
+	dword_5d4594_1569672                              C.uint32_t
+	dword_5d4594_2386836                              C.uint32_t
+	dword_5d4594_2386848                              C.int
+	dword_5d4594_2386852                              C.uint
+	dword_5d4594_2487532                              C.uint32_t
+	dword_5d4594_2487536                              C.uint32_t
+	dword_5d4594_2487540                              C.uint32_t
+	dword_5d4594_2487556                              C.uint32_t
+	dword_5d4594_2487560                              C.uint32_t
+	dword_5d4594_2487580                              C.uint32_t
+	dword_5d4594_2487652                              C.uint32_t
+	dword_5d4594_2488604                              C.uint32_t
+	dword_5d4594_2488608                              C.uint32_t
+	dword_5d4594_2489424                              C.uint
+	dword_5d4594_2489428                              C.uint
+	dword_5d4594_2490508                              C.uint32_t
+	dword_5d4594_2491544                              C.uint32_t
+	dword_5d4594_2491552                              C.uint32_t
+	dword_5d4594_2516328                              C.uint32_t
+	dword_5d4594_2516348                              C.uint32_t
+	dword_5d4594_2516356                              C.uint32_t
+	dword_5d4594_2523764                              C.uint32_t
+	dword_5d4594_2650652                              C.uint32_t
+	dword_5d4594_2650676                              C.uint32_t
+	dword_5d4594_2650680                              C.uint32_t
+	dword_5d4594_2660032                              C.uint32_t
+	dword_5d4594_2660652                              C.uint32_t
+	dword_5d4594_3798820                              C.uint32_t
+	dword_5d4594_3798824                              C.uint32_t
+	dword_5d4594_3798828                              C.uint32_t
+	dword_5d4594_3798832                              C.uint32_t
+	dword_5d4594_3798836                              C.uint32_t
+	dword_5d4594_3798840                              C.uint32_t
+	dword_5d4594_3799452                              C.uint32_t
+	dword_5d4594_3807116                              C.uint32_t
+	dword_5d4594_3807136                              C.uint32_t
+	dword_5d4594_3807140                              C.uint32_t
+	dword_5d4594_3807152                              C.uint32_t
+	dword_5d4594_3835312                              C.uint32_t
+	dword_5d4594_3835364                              C.uint32_t
+	dword_5d4594_528252                               C.uint32_t
+	dword_5d4594_528256                               C.uint32_t
+	dword_5d4594_528260                               C.uint32_t
+	dword_5d4594_528264                               C.uint32_t
+	dword_5d4594_529332                               C.uint32_t
+	dword_5d4594_529336                               C.uint32_t
+	dword_5d4594_529340                               C.uint32_t
+	dword_5d4594_531652                               C.uint32_t
+	dword_5d4594_531656                               C.uint32_t
+	dword_5d4594_811904                               C.uint32_t
+	dword_5d4594_815056                               C.uint32_t
+	dword_5d4594_815104                               C.int
+	dword_5d4594_816444                               C.uint32_t
+	dword_5d4594_823776                               C.uint32_t
+	dword_5d4594_830272                               C.uint32_t
+	dword_5d4594_831224                               C.uint32_t
+	dword_5d4594_831256                               C.uint32_t
+	nox_client_gui_flag_1556112                       C.uint32_t
+	nox_gameDisableMapDraw_5d4594_2650672             C.uint32_t
+	nox_server_connectionType_3596                    C.uint32_t
+	nox_wol_server_result_cnt_815088                  C.uint32_t
+	nox_xxx_lightningSteps_587000_178216              C.uint32_t
+	nox_xxx_normalWndBits_587000_172880               C.uint32_t
+	nox_xxx_polygonNextAngle_587000_60356             C.uint32_t
+	nox_xxx_respawnAllow_587000_205200                C.uint32_t
+	nox_xxx_screenWidth_587000_184452                 C.uint32_t
+	qword_581450_9544                                 C.uint64_t
+	qword_5d4594_1567940                              C.uint64_t
+}{
+	dword_587000_126996:                   0x1,
+	dword_587000_129656:                   0x1,
+	dword_587000_136184:                   0xffffff1f,
+	dword_587000_171388:                   0x1,
+	dword_587000_237036:                   0x1,
+	dword_587000_87408:                    0x1,
+	dword_587000_87412:                    -1,
+	nox_xxx_lightningSteps_587000_178216:  0x8,
+	nox_xxx_normalWndBits_587000_172880:   0x8,
+	nox_xxx_polygonNextAngle_587000_60356: 0x1,
+	nox_xxx_respawnAllow_587000_205200:    0x1,
+	nox_xxx_screenWidth_587000_184452:     0x32,
+	qword_581450_9544:                     0x3fe0000000000000,
+}
+
+// Callbacks and fixtures retain addresses in this storage.
+type legacyAddressableWordState struct {
+	dword_587000_292488                     C.uint32_t
+	dword_587000_292492                     C.uint32_t
+	dword_5d4594_1062556                    C.uint32_t
+	dword_5d4594_1062560                    C.uint32_t
+	dword_5d4594_1062564                    C.uint32_t
+	dword_5d4594_1321800                    C.uint32_t
+	dword_5d4594_1548476                    C.uint32_t
+	dword_5d4594_1548480                    C.uint32_t
+	dword_5d4594_1565512                    C.uint32_t
+	dword_5d4594_1565516                    C.uint32_t
+	dword_5d4594_2487620                    C.uint32_t
+	dword_5d4594_2487624                    C.uint32_t
+	dword_5d4594_2487628                    C.uint32_t
+	dword_5d4594_2487632                    C.uint32_t
+	dword_5d4594_2487712                    C.uint32_t
+	dword_5d4594_2487804                    C.uint32_t
+	dword_5d4594_2491580                    C.uint32_t
+	dword_5d4594_2491588                    C.uint32_t
+	dword_5d4594_2491676                    C.uint32_t
+	dword_5d4594_2491704                    C.uint32_t
+	dword_5d4594_2516372                    C.uint32_t
+	dword_5d4594_2516380                    C.uint32_t
+	dword_5d4594_251708                     C.uint32_t
+	dword_5d4594_251712                     C.uint32_t
+	dword_5d4594_251716                     C.uint32_t
+	dword_5d4594_251720                     C.uint32_t
+	dword_5d4594_251744                     C.uint32_t
+	dword_5d4594_371692                     C.uint32_t
+	dword_5d4594_3804684                    C.uint32_t
+	dword_5d4594_3835388                    C.uint32_t
+	dword_5d4594_3835392                    C.uint32_t
+	dword_5d4594_599496                     C.uint32_t
+	dword_5d4594_741356                     C.uint32_t
+	dword_5d4594_741364                     C.uint32_t
+	dword_5d4594_815096                     C.uint32_t
+	dword_5d4594_815100                     C.uint32_t
+	dword_5d4594_831276                     C.uint32_t
+	dword_5d4594_832480                     C.uint32_t
+	nox_client_fadeObjects_80836            C.uint32_t
+	nox_client_highResFloors_154952         C.uint32_t
+	nox_client_highResFrontWalls_80820      C.uint32_t
+	nox_client_translucentFrontWalls_805844 C.uint32_t
+	nox_wol_servers_sorting_166704          C.uint32_t
+	nox_xxx_aSpellphoneme_3_587000_123008   C.uint32_t
+	nox_xxx_minimap_587000_149232           C.uint32_t
+	nox_xxx_waypointCounterMB_587000_154948 C.uint32_t
+}
+
+var legacyAddressableWords = func() *legacyAddressableWordState {
+	state, _ := alloc.New(legacyAddressableWordState{})
+	*state = legacyAddressableWordState{
+		dword_587000_292488:                     0x42200000,
+		dword_587000_292492:                     0x42c80000,
+		nox_client_fadeObjects_80836:            1,
+		nox_client_highResFloors_154952:         1,
+		nox_client_highResFrontWalls_80820:      0x1,
+		nox_wol_servers_sorting_166704:          0x6,
+		nox_xxx_aSpellphoneme_3_587000_123008:   0x1,
+		nox_xxx_minimap_587000_149232:           0x456,
+		nox_xxx_waypointCounterMB_587000_154948: 0xffffffff,
+	}
+	return state
+}()

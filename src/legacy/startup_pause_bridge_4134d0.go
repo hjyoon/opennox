@@ -6,8 +6,6 @@ package legacy
 #include "GAME2.h"
 #include "client__io__win95__focus.h"
 #include "vardefs.h"
-extern uint32_t dword_5d4594_251708, dword_5d4594_251712;
-extern uint32_t dword_5d4594_251716, dword_5d4594_251720;
 */
 import "C"
 
@@ -23,15 +21,15 @@ func startupPauseDefaultCell4134D0(field int) unsafe.Pointer {
 	}
 	switch int32(field) {
 	case 0:
-		return unsafe.Pointer(&C.dword_5d4594_251708)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_251708)
 	case 1:
-		return unsafe.Pointer(&C.dword_5d4594_251712)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_251712)
 	case 2:
-		return unsafe.Pointer(&C.dword_5d4594_251716)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_251716)
 	case 3:
-		return unsafe.Pointer(&C.dword_5d4594_251720)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_251720)
 	case 5:
-		return unsafe.Pointer(&C.dword_5d4594_251744)
+		return unsafe.Pointer(&legacyAddressableWords.dword_5d4594_251744)
 	default:
 		return nil
 	}

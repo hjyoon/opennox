@@ -6,7 +6,6 @@ package legacy
 
 extern void* dword_5d4594_588068;
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
-extern uint32_t nox_xxx_polygonNextAngle_587000_60356;
 */
 import "C"
 
@@ -105,7 +104,7 @@ func sub_420C70() *C.uint32_t {
 }
 
 func mapAngleNext(index uint32) *Nox_polygon_angle_data {
-	for limit := uint32(C.nox_xxx_polygonNextAngle_587000_60356); index < limit; index++ {
+	for limit := uint32(legacyWords.nox_xxx_polygonNextAngle_587000_60356); index < limit; index++ {
 		angle := mapAngleByIndex(index)
 		if angle.Active != 0 {
 			return angle
@@ -126,13 +125,13 @@ func nox_xxx_polygon_420CD0(index *C.uint32_t) *C.char {
 
 //export sub_420D10
 func sub_420D10() C.int {
-	limit := C.nox_xxx_polygonNextAngle_587000_60356
+	limit := legacyWords.nox_xxx_polygonNextAngle_587000_60356
 	for index := uint32(1); index < uint32(limit); index++ {
 		if mapAngleByIndex(index).Active == 0 {
 			return C.int(index)
 		}
 	}
-	C.nox_xxx_polygonNextAngle_587000_60356++
+	legacyWords.nox_xxx_polygonNextAngle_587000_60356++
 	return C.int(limit)
 }
 
@@ -144,8 +143,8 @@ func nox_xxx_polygonSetAngle_420D40(x, y C.int, index C.uint, remap C.int) *C.ui
 	angle := mapAngleByIndex(uint32(index))
 	angle.Index, angle.Active = uint32(index), 1
 	angle.X, angle.Y = math.Float32frombits(uint32(x)), math.Float32frombits(uint32(y))
-	if C.uint32_t(index) >= C.nox_xxx_polygonNextAngle_587000_60356 {
-		C.nox_xxx_polygonNextAngle_587000_60356 = C.uint32_t(index) + 1
+	if C.uint32_t(index) >= legacyWords.nox_xxx_polygonNextAngle_587000_60356 {
+		legacyWords.nox_xxx_polygonNextAngle_587000_60356 = C.uint32_t(index) + 1
 	}
 	return (*C.uint)(unsafe.Pointer(angle))
 }
@@ -155,7 +154,7 @@ func sub_421010() *C.char {
 	for index := uint32(1); index < mapPolygonAngleCapacity; index++ {
 		mapAngleByIndex(index).Active = 0
 	}
-	C.nox_xxx_polygonNextAngle_587000_60356 = 1
+	legacyWords.nox_xxx_polygonNextAngle_587000_60356 = 1
 	firstPolygon := mapPolygonByIndex(0)
 	return (*C.char)(unsafe.Add(unsafe.Pointer(firstPolygon), 12))
 }

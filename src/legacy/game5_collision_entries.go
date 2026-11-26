@@ -3,9 +3,6 @@ package legacy
 /*
 #include "defs.h"
 extern void* nox_alloc_hit_2491548;
-extern uint32_t dword_5d4594_2490508;
-extern uint32_t dword_5d4594_2491544;
-extern uint32_t dword_5d4594_2491552;
 void sub_548220(nox_object_t*, nox_object_t*);
 void nox_xxx_getUnitsInRect_517C10(float4*, void*, void*);
 void nox_script_callByIndex_507310(int, void*, void*);
@@ -91,7 +88,7 @@ func nox_xxx_allocHitArray_5486D0() {
 	clear(game5Collisions.owners)
 	alloc.AsClass(C.nox_alloc_hit_2491548).FreeAllObjects()
 	clear(unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 2490520)), 0x400))
-	C.dword_5d4594_2491544 = 0
+	legacyWords.dword_5d4594_2491544 = 0
 }
 
 //export nox_xxx_collide_548740
@@ -202,8 +199,8 @@ func sub_548220(candidateRaw, movingRaw *nox_object_t) {
 //export sub_548360
 func sub_548360(firstRaw, secondRaw *nox_object_t) C.int {
 	first, second := asObjectS(firstRaw), asObjectS(secondRaw)
-	if C.dword_5d4594_2490508 == 0 {
-		C.dword_5d4594_2490508 = C.uint32_t(GetServer().S().Types.IndByID("Trigger"))
+	if legacyWords.dword_5d4594_2490508 == 0 {
+		legacyWords.dword_5d4594_2490508 = C.uint32_t(GetServer().S().Types.IndByID("Trigger"))
 		*memmap.PtrUint32(0x5D4594, 2490512) = uint32(GetServer().S().Types.IndByID("BlackPowder"))
 		*memmap.PtrUint32(0x5D4594, 2490516) = uint32(GetServer().S().Types.IndByID("TelekinesisHand"))
 	}
@@ -230,7 +227,7 @@ func sub_548360(firstRaw, secondRaw *nox_object_t) C.int {
 	if fclass&0x2000 != 0 && uint32(second.TypeInd) == powder || sclass&0x2000 != 0 && uint32(first.TypeInd) == powder {
 		return 1
 	}
-	trigger := uint32(C.dword_5d4594_2490508)
+	trigger := uint32(legacyWords.dword_5d4594_2490508)
 	if ff&8 != 0 && sf&8 != 0 || fclass&0x80 != 0 && sf&8 != 0 || sclass&0x80 != 0 && ff&8 != 0 ||
 		uint32(first.TypeInd) != trigger && uint32(second.TypeInd) != trigger && (ff&0x11 != 0 && sf&0x24000 != 0 || sf&0x11 != 0 && ff&0x24000 != 0) ||
 		fclass&sclass&0xC080 != 0 || ff&0x400 != 0 && server.UnitsHaveSameTeam4EC520(first, second) {
@@ -252,7 +249,7 @@ func game5EnqueueDoor(data *server.DoorUpdateData) {
 	}
 	game5DoorQueueHead = &game5DoorQueueNode{data: data, next: game5DoorQueueHead}
 	data.Queued = 1
-	C.dword_5d4594_2491552 = 1
+	legacyWords.dword_5d4594_2491552 = 1
 }
 
 //export sub_548830
@@ -303,7 +300,7 @@ func sub_548B60() {
 		data.CurrentDirection = (direction%32 + 32) % 32
 		data.Queued, data.AngularVelocity = 0, 0
 	}
-	C.dword_5d4594_2491552 = 0
+	legacyWords.dword_5d4594_2491552 = 0
 }
 
 //export nox_xxx_script_forcedialog_548CD0

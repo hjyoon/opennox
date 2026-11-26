@@ -4,7 +4,6 @@ package legacy
 #include "game2_server_bridge.h"
 #include "client__gui__servopts__objlst.h"
 
-extern uint32_t dword_5d4594_1045460;
 */
 import "C"
 
@@ -42,11 +41,11 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	var itemName func(C.int) *wchar2_t
 	switch classMask {
 	case 0x1000000:
-		C.dword_5d4594_1045460 = 0
+		legacyWords.dword_5d4594_1045460 = 0
 		copyWideString(&title[0], g2ServerLoad("Weapons", serverObjectFilterStrings, 321))
 		mask, rows, itemName = 4, 25, sub_4159F0
 	case 0x2000000:
-		C.dword_5d4594_1045460 = 1
+		legacyWords.dword_5d4594_1045460 = 1
 		copyWideString(&title[0], g2ServerLoad("servopts.wnd:Armor", serverObjectFilterStrings, 308))
 		mask, rows, itemName = 1, 26, sub_415E80
 	}
@@ -61,7 +60,7 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	g2ServerText(list, 16385, unsafe.Pointer(&title[0]), 0)
 	g2ServerText(list, 16408, unsafe.Pointer(g2ServerChild(root, 1513)), 0)
 	g2ServerText(list, 16409, unsafe.Pointer(g2ServerChild(root, 1514)), 0)
-	*g2ServerWord(1045472 + 4*uintptr(C.dword_5d4594_1045460)) = count
+	*g2ServerWord(1045472 + 4*uintptr(legacyWords.dword_5d4594_1045460)) = count
 	sub_453750()
 	if !g2ServerGame(1) || g2ServerGame(49152) {
 		C.sub_46AD20(root, 1515, 1533, 0)

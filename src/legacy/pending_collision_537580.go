@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_3.h"
 #include "fist_collide_4eadf0.h"
 #include "undead_killer_collide_4ebd40.h"
-extern uint32_t dword_5d4594_2488604;
-extern uint32_t dword_5d4594_2488608;
 */
 import "C"
 
@@ -24,13 +22,13 @@ var pendingCollisionRuntime537610 = server.PendingCollisionRuntime537610{
 }
 
 func pendingCollisionSync537580() {
-	C.dword_5d4594_2488604 = 0
-	C.dword_5d4594_2488608 = 0
+	legacyWords.dword_5d4594_2488604 = 0
+	legacyWords.dword_5d4594_2488608 = 0
 	if pendingCollisionQueue537580.Head() != nil {
-		C.dword_5d4594_2488604 = 1
+		legacyWords.dword_5d4594_2488604 = 1
 	}
 	if pendingCollisionQueue537580.Tail() != nil {
-		C.dword_5d4594_2488608 = 1
+		legacyWords.dword_5d4594_2488608 = 1
 	}
 }
 func pendingCollisionEnqueue537610(o *server.Object) byte {

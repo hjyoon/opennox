@@ -3,9 +3,6 @@ package legacy
 /*
 #include "GAME3_3.h"
 
-extern uint32_t dword_5d4594_1565512;
-extern uint32_t dword_5d4594_1565516;
-extern uint32_t dword_5d4594_1565520;
 extern uint32_t dword_5d4594_2649712;
 */
 import "C"
@@ -83,12 +80,12 @@ func writeImportantABISlot(slot *C.uint32_t, pointer unsafe.Pointer) {
 
 func setImportantFirst(packet *importantPacketC) {
 	importantQueue.first = packet
-	writeImportantABISlot(&C.dword_5d4594_1565512, unsafe.Pointer(packet))
+	writeImportantABISlot(&legacyAddressableWords.dword_5d4594_1565512, unsafe.Pointer(packet))
 }
 
 func setImportantLast(packet *importantPacketC) {
 	importantQueue.last = packet
-	writeImportantABISlot(&C.dword_5d4594_1565516, unsafe.Pointer(packet))
+	writeImportantABISlot(&legacyAddressableWords.dword_5d4594_1565516, unsafe.Pointer(packet))
 }
 
 type importantLegacyPointers struct {
@@ -122,7 +119,7 @@ func setImportantPrev(packet, prev *importantPacketC) {
 }
 
 func importantListHeadsC() (first, last uint32) {
-	return uint32(C.dword_5d4594_1565512), uint32(C.dword_5d4594_1565516)
+	return uint32(legacyAddressableWords.dword_5d4594_1565512), uint32(legacyAddressableWords.dword_5d4594_1565516)
 }
 
 func importantRecipientMaskC() uint32 {
@@ -130,11 +127,11 @@ func importantRecipientMaskC() uint32 {
 }
 
 func importantCapacityC() uint32 {
-	return uint32(C.dword_5d4594_1565520)
+	return uint32(legacyWords.dword_5d4594_1565520)
 }
 
 func setImportantCapacityC(capacity uint32) {
-	C.dword_5d4594_1565520 = C.uint32_t(capacity)
+	legacyWords.dword_5d4594_1565520 = C.uint32_t(capacity)
 }
 
 func setImportantRecipientMaskC(mask uint32) {
@@ -142,8 +139,8 @@ func setImportantRecipientMaskC(mask uint32) {
 }
 
 func setImportantListHeadsC(first, last uint32) {
-	C.dword_5d4594_1565512 = C.uint32_t(first)
-	C.dword_5d4594_1565516 = C.uint32_t(last)
+	legacyAddressableWords.dword_5d4594_1565512 = C.uint32_t(first)
+	legacyAddressableWords.dword_5d4594_1565516 = C.uint32_t(last)
 }
 
 func importantPacketSizeC() uintptr {

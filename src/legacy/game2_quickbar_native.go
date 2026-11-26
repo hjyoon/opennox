@@ -61,31 +61,23 @@ extern uint32_t dword_5d4594_1045420;
 extern char* dword_5d4594_831240;
 extern uint32_t dword_5d4594_1045640;
 extern uint32_t dword_5d4594_831260;
-extern uint32_t dword_587000_129656;
-extern uint32_t dword_5d4594_832480;
-extern uint32_t dword_587000_126996;
 extern uint32_t dword_5d4594_831244;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_1047524;
 extern uint32_t dword_5d4594_1046864;
-extern uint32_t dword_5d4594_831256;
-extern uint32_t dword_5d4594_1049536;
 extern void* dword_5d4594_1049696;
-extern uint32_t dword_5d4594_831276;
 extern uint32_t dword_5d4594_1046648;
 extern uint32_t dword_5d4594_1046640;
 extern uint32_t dword_5d4594_831084;
 extern uint32_t dword_5d4594_1047936;
 extern float2 obj_5d4594_1046620;
 extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_5d4594_1045460;
 extern uint32_t dword_587000_122848;
 extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_830864;
 extern uint32_t dword_5d4594_1047528;
 extern uint32_t dword_5d4594_1046636;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern uint32_t dword_5d4594_831224;
 extern uint32_t dword_5d4594_1047512;
 extern uint32_t dword_5d4594_1046656;
 extern uint32_t dword_5d4594_1049484;
@@ -93,14 +85,12 @@ extern void* dword_587000_81128;
 extern void* dword_587000_122852;
 extern uint32_t dword_5d4594_1049496;
 extern uint32_t dword_5d4594_1047932;
-extern uint32_t dword_5d4594_1045432;
 extern void* dword_587000_127004;
 extern uint32_t dword_5d4594_1047520;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern uint32_t dword_5d4594_1046936;
 extern uint32_t dword_5d4594_1047540;
 extern uint32_t dword_5d4594_1046872;
-extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
 extern uintptr_t dword_5d4594_1047516;
 extern nox_video_bag_image_t* nox_ctf_flag_team_border;
 extern uint32_t dword_5d4594_1046868;
@@ -109,7 +99,6 @@ extern int nox_win_width;
 extern int nox_win_height;
 extern uint32_t dword_8531A0_2572;
 extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
-extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;
 */
 import "C"
 
@@ -890,12 +879,12 @@ func nox_xxx_quickbarDrawFn_460000(unused1 *C.nox_window, unused2 *C.nox_window_
 		return 0
 	}
 	y := int32(win.off_y)
-	delta := y - int32(C.dword_5d4594_1049536)
+	delta := y - int32(legacyWords.dword_5d4594_1049536)
 	if delta >= 0 {
 		if delta <= 0 {
-			if uint32(C.dword_5d4594_1049536) > uint32(C.nox_win_height) {
+			if uint32(legacyWords.dword_5d4594_1049536) > uint32(C.nox_win_height) {
 				sub_460070()
-				C.dword_5d4594_1049536 = C.uint32_t(C.nox_win_height - 74)
+				legacyWords.dword_5d4594_1049536 = C.uint32_t(C.nox_win_height - 74)
 			}
 		} else {
 			C.nox_window_setPos_46A9B0(win, C.int(win.off_x), C.int(y-1))

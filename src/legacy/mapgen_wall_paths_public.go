@@ -3,7 +3,7 @@ package legacy
 /*
 #include "GAME3_2.h"
 #include "GAME4_2.h"
-extern uint32_t dword_5d4594_3835364, dword_5d4594_3835368;
+extern uint32_t dword_5d4594_3835368;
 */
 import "C"
 
@@ -20,7 +20,7 @@ func sub_526C40(mode C.int) C.int {
 	if mode != 0 && mode != 1 {
 		return 0
 	}
-	C.dword_5d4594_3835364 = C.uint32_t(mode)
+	legacyWords.dword_5d4594_3835364 = C.uint32_t(mode)
 	return 1
 }
 

@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 
 typedef const nox_drawable inventory_const_drawable_t;
-extern uint32_t dword_5d4594_1062496;
 extern uintptr_t dword_5d4594_1062492;
 */
 import "C"
@@ -164,7 +163,7 @@ func sub_4624D0(code C.int) C.int {
 	}
 	C.dword_5d4594_1062492 = 0
 	if alternate := clientInventoryAlternateCell(); alternate != nil && alternate.field_0 != nil {
-		C.dword_5d4594_1062496 = equipped.field_32
+		legacyWords.dword_5d4594_1062496 = equipped.field_32
 		alternate.field_0.field_32 = alternate.field_4
 		nox_xxx_clientEquip_4623B0(alternate.field_0)
 	} else {

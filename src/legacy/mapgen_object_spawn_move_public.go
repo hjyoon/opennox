@@ -4,8 +4,6 @@ package legacy
 #include "GAME4_2.h"
 #include "xfer_door_4f4cb0.h"
 
-extern uint32_t dword_5d4594_3835388;
-extern uint32_t dword_5d4594_3835392;
 */
 import "C"
 
@@ -92,21 +90,21 @@ func nox_xxx_mapGenGetObjID_527940(name *C.char) C.int {
 	if name == nil {
 		return 0
 	}
-	selected := (*uint32)(unsafe.Pointer(&C.dword_5d4594_3835388))
+	selected := (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_3835388))
 	mapgenSelectObjectType(GoString(name), selected, func() int32 { return nox_xxx_getNameId_4E3AA0(name) })
 	return 1
 }
 
 //export nox_xxx_mapGenPlaceObj_5279B0
 func nox_xxx_mapGenPlaceObj_5279B0(position *C.float2) *C.nox_object_t {
-	extent := (*uint32)(unsafe.Pointer(&C.dword_5d4594_3835392))
+	extent := (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_3835392))
 	return asObjectC(mapgenPlaceObject((*mapgenWorldPoint)(unsafe.Pointer(position)),
-		uint32(C.dword_5d4594_3835388), extent, mapgenObjectPlacementProductionAccess()))
+		uint32(legacyAddressableWords.dword_5d4594_3835388), extent, mapgenObjectPlacementProductionAccess()))
 }
 
 //export nox_xxx_mapGenMoveObject_527A10
 func nox_xxx_mapGenMoveObject_527A10(obj *C.nox_object_t, position *C.float2) *C.nox_object_t {
-	extent := (*uint32)(unsafe.Pointer(&C.dword_5d4594_3835392))
+	extent := (*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_3835392))
 	return asObjectC(mapgenMoveObject(asObjectS(obj), (*mapgenWorldPoint)(unsafe.Pointer(position)),
 		extent, mapgenObjectPlacementProductionAccess()))
 }

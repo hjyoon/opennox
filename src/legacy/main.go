@@ -14,7 +14,6 @@ package legacy
 #include "common__object__weaplook.h"
 #include "common__log.h"
 
-extern void* dword_587000_81128;
 extern unsigned int dword_587000_93156;
 */
 import "C"

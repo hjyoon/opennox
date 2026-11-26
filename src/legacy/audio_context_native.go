@@ -4,8 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "audio_source_native.h"
 #include "cgo_const.h"
-extern void *dword_587000_155144;
-extern void *dword_5d4594_805984;
 */
 import "C"
 
@@ -20,15 +18,15 @@ var audioGlobalOwner *audioGlobalNative
 
 //export sub_431270
 func sub_431270() {
-	if p := C.dword_5d4594_805984; p != nil {
+	if p := legacyPointers.audioPlaybackContext; p != nil {
 		sub_487680(p)
-		C.dword_5d4594_805984 = nil
+		legacyPointers.audioPlaybackContext = nil
 	}
 }
 
 //export sub_431290
 func sub_431290() {
-	if p := C.dword_5d4594_805984; p != nil {
+	if p := legacyPointers.audioPlaybackContext; p != nil {
 		sub_487970(p, -1)
 	}
 }
@@ -53,7 +51,7 @@ func audioNativeMasterGroup() *timer.TimerGroup {
 
 // The blob's old 128-byte DWORD/list record is no longer a native owner.
 // Reconnect its external global after each blob initialization.
-func initAudioNativeGlobal() { C.dword_587000_155144 = unsafe.Pointer(audioNativeGlobal()) }
+func initAudioNativeGlobal() { legacyPointers.audioGlobal = unsafe.Pointer(audioNativeGlobal()) }
 
 func AudioInitNative() {
 	g := audioNativeGlobal()

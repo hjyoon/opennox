@@ -4,8 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "GAME5_2.h"
 
-extern void* dword_5d4594_2516344;
-extern void* dword_5d4594_2516352;
 */
 import "C"
 
@@ -27,7 +25,7 @@ type playerProtectionRecord struct {
 }
 
 func playerProtectionHead() *playerProtectionRecord {
-	return (*playerProtectionRecord)(C.dword_5d4594_2516344)
+	return (*playerProtectionRecord)(legacyPointers.playerProtectionHead)
 }
 
 func playerProtectionCount() *uint16 {
@@ -37,9 +35,9 @@ func playerProtectionCount() *uint16 {
 //export sub_56F1C0
 func sub_56F1C0() C.int {
 	sub_56FF00(int32(time.Now().Unix()))
-	C.dword_5d4594_2516352 = nil
+	legacyPointers.playerProtectionTail = nil
 	legacyWords.dword_5d4594_2516348 = C.uint32_t(gameFrame())
-	C.dword_5d4594_2516344 = nil
+	legacyPointers.playerProtectionHead = nil
 	*playerProtectionCount() = 0
 	legacyWords.dword_5d4594_2516356 = minimumPlayerProtectionToken
 	legacyWords.dword_5d4594_2516348 ^= C.uint32_t(nox_xxx_protect_56F240())
@@ -97,8 +95,8 @@ func insertPlayerProtectionRecord(node *playerProtectionRecord) C.int {
 	count := playerProtectionCount()
 	if *count == 0 {
 		*count++
-		C.dword_5d4594_2516352 = unsafe.Pointer(node)
-		C.dword_5d4594_2516344 = unsafe.Pointer(node)
+		legacyPointers.playerProtectionTail = unsafe.Pointer(node)
+		legacyPointers.playerProtectionHead = unsafe.Pointer(node)
 		return 1
 	}
 
@@ -118,7 +116,7 @@ func insertPlayerProtectionRecord(node *playerProtectionRecord) C.int {
 		*count++
 	} else {
 		*count++
-		C.dword_5d4594_2516344 = unsafe.Pointer(node)
+		legacyPointers.playerProtectionHead = unsafe.Pointer(node)
 	}
 	return 1
 }
@@ -133,8 +131,8 @@ func sub_56F3B0() *C.uint32_t {
 	legacyWords.dword_5d4594_2516328 = 0
 	*playerProtectionCount() = 0
 	legacyWords.dword_5d4594_2516348 = 0
-	C.dword_5d4594_2516352 = nil
-	C.dword_5d4594_2516344 = nil
+	legacyPointers.playerProtectionTail = nil
+	legacyPointers.playerProtectionHead = nil
 	return nil
 }
 
@@ -167,12 +165,12 @@ func sub_56F510(token C.int) C.int {
 	if node.prev != nil {
 		node.prev.next = node.next
 	} else {
-		C.dword_5d4594_2516344 = unsafe.Pointer(node.next)
+		legacyPointers.playerProtectionHead = unsafe.Pointer(node.next)
 	}
 	if node.next != nil {
 		node.next.prev = node.prev
 	} else {
-		C.dword_5d4594_2516352 = unsafe.Pointer(node.prev)
+		legacyPointers.playerProtectionTail = unsafe.Pointer(node.prev)
 	}
 	legacyWords.dword_5d4594_2516328 ^= C.uint32_t(node.token ^ node.value)
 	*playerProtectionCount()--

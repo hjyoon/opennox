@@ -50,7 +50,6 @@ extern uint32_t dword_8531A0_2572;
 extern uint32_t dword_5d4594_1313788;
 extern uint32_t dword_5d4594_1313740;
 extern uint32_t dword_5d4594_1307720;
-extern void* dword_587000_122852;
 extern void* dword_587000_93164;
 extern void* dword_587000_127004;
 extern int nox_win_width;
@@ -646,7 +645,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			game3OptionsToggle(optionsAudioChecks[0])
 			return 0
 		case 352:
-			C.sub_486320(C.dword_587000_122852, C.int(arg))
+			C.sub_486320(legacyPointers.dialogTimer, C.int(arg))
 			if arg != 0 {
 				if C.sub_44D990() != 0 {
 					optionsDialogCycleNative4AA650()
@@ -689,7 +688,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			if id != 1 {
 				return 0
 			}
-			C.sub_486320(C.dword_587000_122852, C.int(arg))
+			C.sub_486320(legacyPointers.dialogTimer, C.int(arg))
 			if arg != 0 {
 				if C.sub_44D990() == 0 {
 					game3OptionsToggle(optionsAudioChecks[1])

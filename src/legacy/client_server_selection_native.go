@@ -9,7 +9,6 @@ package legacy
 #include "GAME1_2.h"
 #include "GAME2_2.h"
 
-extern nox_gui_animation* nox_wnd_xxx_815040;
 */
 import "C"
 
@@ -76,7 +75,7 @@ func sub_43B340() C.int {
 //export sub_43B460
 func sub_43B460() C.int {
 	C.sub_438370()
-	C.nox_wnd_xxx_815040.fnc_done_out = (*[0]byte)(C.sub_43B490)
+	legacyPointers.wolWindowAnimation.fnc_done_out = (*[0]byte)(C.sub_43B490)
 	nox_xxx_wnd_46C6E0(wolWindows.serverInfo)
 	return C.int(nox_xxx_wnd_46ABB0_go(wolWindows.mapPanel, 0))
 }

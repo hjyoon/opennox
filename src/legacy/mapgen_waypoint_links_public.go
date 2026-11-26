@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME4_1.h"
 #include "GAME4_2.h"
-extern nox_waypoint_t* dword_5d4594_2487244;
 */
 import "C"
 
@@ -72,12 +71,12 @@ func sub_51D120(position *C.float2) *C.nox_waypoint_t {
 	if created == nil {
 		return nil
 	}
-	last := asWaypointS(C.dword_5d4594_2487244)
+	last := asWaypointS(legacyPointers.mapgenLastWaypoint)
 	if last != nil && memmap.Uint32(mapgenWaypointStateBase, mapgenWaypointAutoLinkOffset) == 1 {
 		mapgenLinkWaypoints(last, created, memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset))
-		mapgenLinkWaypoints(created, asWaypointS(C.dword_5d4594_2487244), memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset))
+		mapgenLinkWaypoints(created, asWaypointS(legacyPointers.mapgenLastWaypoint), memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset))
 	}
-	globalStateNativeStorePointer(unsafe.Pointer(&C.dword_5d4594_2487244), unsafe.Pointer(created))
+	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.mapgenLastWaypoint), unsafe.Pointer(created))
 	return asWaypointC(created)
 }
 

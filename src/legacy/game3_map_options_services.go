@@ -19,7 +19,7 @@ package legacy
 #include "client__video__draw_common.h"
 #include "input.h"
 #include "operators.h"
-extern void *dword_587000_127004, *dword_587000_122852, *dword_587000_93164;
+extern void *dword_587000_127004, *dword_587000_93164;
 extern uint32_t dword_5d4594_1313740, dword_5d4594_1313788;
 extern int nox_win_width;
 int nox_gui_menu_proc_ext(int);
@@ -287,7 +287,7 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 	}
 	inGameOptionsWindows.audioChecks[0] = C.nox_xxx_wndGetChildByID_46B0C0(root, 361)
 	game3IngameOptionsChecked(inGameOptionsWindows.audioChecks[0], C.sub_453070())
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 352), C.dword_587000_122852, image, lit) {
+	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 352), legacyPointers.dialogTimer, image, lit) {
 		return 0
 	}
 	inGameOptionsWindows.audioChecks[1] = C.nox_xxx_wndGetChildByID_46B0C0(root, 362)
@@ -422,7 +422,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 				game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[0])
 			}
 		case 352:
-			C.sub_486320(C.dword_587000_122852, value)
+			C.sub_486320(legacyPointers.dialogTimer, value)
 			if arg != 0 {
 				if C.sub_44D990() == 0 {
 					game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[1])

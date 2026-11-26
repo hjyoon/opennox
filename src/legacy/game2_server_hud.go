@@ -96,8 +96,8 @@ func sub_455CD0(w *C.nox_window, d *C.nox_window_data) C.int {
 	if image != nil {
 		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), C.int(x), C.int(y))
 	}
-	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && C.nox_ctf_flag_team_border != nil {
-		C.nox_client_drawImageAt_47D2C0(C.nox_ctf_flag_team_border, C.int(x)-4, C.int(y)-4)
+	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && legacyPointers.flagTeamBorder != nil {
+		C.nox_client_drawImageAt_47D2C0(legacyPointers.flagTeamBorder, C.int(x)-4, C.int(y)-4)
 	}
 	return 1
 }
@@ -226,7 +226,7 @@ func sub_455C30() C.int {
 		nox_xxx_wndWddSetTooltip_46B000(&child.draw_data, g2ServerLoad("FlagHomeTT", clientCTFSource, 201))
 	}
 	sub_455A00(0)
-	C.nox_ctf_flag_team_border = nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder"))
+	legacyPointers.flagTeamBorder = nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder"))
 	return 1
 }
 

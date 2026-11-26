@@ -10,7 +10,6 @@ package legacy
 
 typedef const nox_gui_server_ent_t nox_wol_const_server_t;
 
-extern nox_list_item_t nox_gui_wol_servers_list;
 
 enum { nox_wol_record_offset = offsetof(nox_gui_server_node_t, server) };
 */
@@ -30,7 +29,7 @@ func wolServerRecord(item *C.nox_list_item_t) *Nox_gui_server_ent_t {
 	return (*Nox_gui_server_ent_t)(unsafe.Add(unsafe.Pointer(item), C.nox_wol_record_offset))
 }
 
-func wolServerHead() *C.nox_list_item_t { return &C.nox_gui_wol_servers_list }
+func wolServerHead() *C.nox_list_item_t { return &legacyPointers.wolServerList }
 
 func wolServerSortMode() *C.uint32_t { return &legacyAddressableWords.nox_wol_servers_sorting_166704 }
 

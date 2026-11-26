@@ -4,8 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "GAME2_2.h"
 
-extern void* dword_5d4594_1193348;
-extern void* dword_5d4594_1193360;
 */
 import "C"
 
@@ -302,23 +300,23 @@ func drawEntryFieldPE32(win *gui.Window, native *C.nox_window_data, imageBacked 
 
 //export sub_488B60
 func sub_488B60() C.int {
-	if C.dword_5d4594_1193348 == nil {
-		C.dword_5d4594_1193348 = C.calloc(1, 4)
+	if legacyPointers.entryFieldState == nil {
+		legacyPointers.entryFieldState = C.calloc(1, 4)
 	}
 	return 1
 }
 
 //export sub_488BA0
 func sub_488BA0() C.int {
-	C.free(C.dword_5d4594_1193348)
-	C.dword_5d4594_1193348 = nil
+	C.free(legacyPointers.entryFieldState)
+	legacyPointers.entryFieldState = nil
 	return 1
 }
 
 //export nox_xxx_onChar_488BD0
 func nox_xxx_onChar_488BD0(ch C.ushort) {
 	native := entryFieldIMEWindow
-	if C.dword_5d4594_1193348 == nil || native == nil {
+	if legacyPointers.entryFieldState == nil || native == nil {
 		return
 	}
 	if lang := nox_strman_get_lang_code(); lang != 6 && lang != 8 {
@@ -352,7 +350,7 @@ func nox_xxx_onChar_488BD0(ch C.ushort) {
 
 //export sub_4896E0
 func sub_4896E0() C.int {
-	C.free(C.dword_5d4594_1193360)
-	C.dword_5d4594_1193360 = nil
+	C.free(legacyPointers.entryFieldBuffer)
+	legacyPointers.entryFieldBuffer = nil
 	return 1
 }

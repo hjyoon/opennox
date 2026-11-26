@@ -8,8 +8,6 @@ typedef const uint8_t nox_shop_modifier_id_t;
 typedef const uint32_t nox_shop_position_word_t;
 
 extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
-extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
-extern char* nox_shop_dialog_file_1098608;
 */
 import "C"
 
@@ -107,8 +105,8 @@ func sub_478F80() C.int {
 	nox_xxx_windowDestroyMB_46C4E0(shopRoot())
 	shopWindow, shopSlider = nil, nil
 	C.dword_5d4594_1098624, C.dword_5d4594_1098628 = 0, 1
-	C.dword_5d4594_1098596, C.dword_5d4594_1098600, C.dword_5d4594_1098604 = nil, nil, nil
-	C.nox_shop_dialog_file_1098608 = nil
+	legacyPointers.shopSellInstructions, legacyPointers.shopRepairInstructions, legacyPointers.shopBuyInstructions = nil, nil, nil
+	legacyPointers.shopDialogFile = nil
 	legacyWords.dword_5d4594_1098616 = 0
 	return 0
 }

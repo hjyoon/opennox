@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME5.h"
-extern nox_object_t* dword_5d4594_2491592;
 static uintptr_t game5_hit_objects[8][2];
 static float2 game5_hit_normals[8];
 static int game5_hit_calls;
@@ -78,5 +77,5 @@ func game5CursorScanC(obj *server.Object, cursor *types.Pointf) {
 func game5CursorClearFixture() {
 	game5Cursor.source = nil
 	game5Cursor.result = nil
-	C.dword_5d4594_2491592 = nil
+	legacyPointers.cursorCollisionSource = nil
 }

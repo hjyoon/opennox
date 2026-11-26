@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__guimsg.h"
 #include "common__object__modifier.h"
 
-extern nox_drawable *dword_5d4594_1063116, *dword_5d4594_1063120;
 extern uint32_t dword_5d4594_1062484;
 
 static int nox_client_format_inventory_title(wchar2_t* dst, const wchar2_t* format,
@@ -29,7 +28,7 @@ func sub_462740() C.int {
 		return 0
 	}
 	nox_window_set_hidden(inventoryWindows.identify, 1)
-	C.dword_5d4594_1063116, C.dword_5d4594_1063120 = nil, nil
+	legacyPointers.inventoryTooltipItem, legacyPointers.inventoryPreviousTooltipItem = nil, nil
 	text := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
 	copyWideString(text, clientInventoryString("thing.db:IdentifyDescription", 2361))
 	child := nox_xxx_wndGetChildByID_46B0C0(inventoryWindows.identify, 9156)

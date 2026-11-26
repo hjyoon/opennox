@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-#include "vardefs.h"
 */
 import "C"
 
@@ -23,11 +22,11 @@ func respawnAddStoreAllow4EC5E0(value uint32) {
 }
 
 func respawnAddLoadHead4EC5E0() *respawnRecord4EC5E0 {
-	return (*respawnRecord4EC5E0)(unsafe.Pointer(C.dword_5d4594_1568024))
+	return legacyPointers.respawnHead
 }
 
 func respawnAddStoreHead4EC5E0(value *respawnRecord4EC5E0) {
-	globalStateNativeStorePointer(unsafe.Pointer(&C.dword_5d4594_1568024), unsafe.Pointer(value))
+	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.respawnHead), unsafe.Pointer(value))
 }
 
 // Nox_xxx_respawnAdd_4EC5E0 restores GAME.EXE 004EC5E0 while retaining the

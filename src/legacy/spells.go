@@ -16,7 +16,6 @@ package legacy
 #include "collision_enchant_4fdf90.h"
 #include "random_spell_selection_4fe060.h"
 
-extern void* nox_alloc_magicEnt_1569668;
 
 int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6);
 int nox_xxx_spellWallCreate_4FFA90(void* a1);

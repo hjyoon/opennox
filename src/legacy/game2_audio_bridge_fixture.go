@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "game2_audio_native.h"
-extern void* dword_587000_81128;
 */
 import "C"
 
@@ -25,7 +24,7 @@ func Game2AudioBridgeSnapshot(id int) Game2AudioBridgeState {
 	game2AudioMu.Lock()
 	defer game2AudioMu.Unlock()
 	s := &game2Audio
-	v := Game2AudioBridgeState{OrdinaryOwner: C.dword_587000_81128, Initialized: s.Initialized, Master: unsafe.Pointer(s.Master), Events: len(s.Live), Banks: len(game2AudioBanks), Contexts: len(game2AudioContexts), Samples: len(game2AudioSamples)}
+	v := Game2AudioBridgeState{OrdinaryOwner: legacyPointers.ordinaryMusicTimer, Initialized: s.Initialized, Master: unsafe.Pointer(s.Master), Events: len(s.Live), Banks: len(game2AudioBanks), Contexts: len(game2AudioContexts), Samples: len(game2AudioSamples)}
 	if s.Context != nil {
 		v.Context = unsafe.Pointer(s.Context)
 		v.ContextMaster = unsafe.Pointer(s.Context.EventMaster)

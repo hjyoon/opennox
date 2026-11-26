@@ -894,6 +894,18 @@ native allocation. The startup focus registration keeps two adjacent
 six-byte strings with distinct addresses. Together these changes leave
 140 definitions in `vardefs.c`.
 
+### Native pointer slots
+
+Go now allocates 41 further slots in native memory. They cover mixer
+and timer references, video rows, inventory and shop references,
+server list heads, and allocators for gameplay records. The C and Go
+callers that retain slot addresses still share the live slots for the
+duration of the process. Inventory drag identity and the WOL list heads
+use typed native pointers. The respawn list and allocator keep the
+existing native pointer stores used by the scheduler.
+
+There are 99 remaining definitions in `vardefs.c`.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

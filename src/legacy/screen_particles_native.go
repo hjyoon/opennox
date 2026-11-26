@@ -3,8 +3,6 @@ package legacy
 /*
 #include "GAME1_2.h"
 #include "client__draw__partscrn.h"
-extern void* nox_alloc_screenParticles_806044;
-extern nox_screenParticle *nox_screenParticles_head, *dword_5d4594_806052;
 */
 import "C"
 
@@ -24,13 +22,13 @@ var screenParticleColors = [...][2]uintptr{
 
 //export nox_client_newScreenParticle_431540
 func nox_client_newScreenParticle_431540(color, x, y, vx, vy, accel C.int, radius, interval, mode, flags C.char) *C.nox_screenParticle {
-	pool := (*C.nox_alloc_class)(C.nox_alloc_screenParticles_806044)
+	pool := (*C.nox_alloc_class)(legacyPointers.screenParticleAllocator)
 	if pool == nil || color < 0 || int(color) >= len(screenParticleColors) {
 		return nil
 	}
 	p := (*C.nox_screenParticle)(nox_alloc_class_new_obj_zero(pool))
 	if p == nil {
-		p = C.dword_5d4594_806052
+		p = legacyPointers.screenParticleTail
 		if p == nil {
 			return nil
 		}
@@ -55,21 +53,21 @@ func nox_client_newScreenParticle_431540(color, x, y, vx, vy, accel C.int, radiu
 
 //export nox_client_addScreenParticle_431680
 func nox_client_addScreenParticle_431680(p *C.nox_screenParticle) {
-	head := C.nox_screenParticles_head
+	head := legacyPointers.screenParticleHead
 	p.field_44, p.field_48 = head, nil
 	if head != nil {
 		head.field_48 = p
 	} else {
-		C.dword_5d4594_806052 = p
+		legacyPointers.screenParticleTail = p
 	}
-	C.nox_screenParticles_head = p
+	legacyPointers.screenParticleHead = p
 }
 
 //export sub_4316C0
 func sub_4316C0(p *C.nox_screenParticle) {
 	next, prev := p.field_44, p.field_48
-	if p == C.dword_5d4594_806052 {
-		C.dword_5d4594_806052 = prev
+	if p == legacyPointers.screenParticleTail {
+		legacyPointers.screenParticleTail = prev
 	}
 	if next != nil {
 		next.field_48 = prev
@@ -77,14 +75,14 @@ func sub_4316C0(p *C.nox_screenParticle) {
 	if prev != nil {
 		prev.field_44 = next
 	} else {
-		C.nox_screenParticles_head = next
+		legacyPointers.screenParticleHead = next
 	}
 }
 
 //export sub_431700
 func sub_431700(p *C.nox_screenParticle) {
 	sub_4316C0(p)
-	nox_alloc_class_free_obj_first((*C.nox_alloc_class)(C.nox_alloc_screenParticles_806044), unsafe.Pointer(p))
+	nox_alloc_class_free_obj_first((*C.nox_alloc_class)(legacyPointers.screenParticleAllocator), unsafe.Pointer(p))
 }
 
 //export nox_client_screenParticlesDraw_431720
@@ -94,7 +92,7 @@ func nox_client_screenParticlesDraw_431720(view *nox_draw_viewport_t) {
 	}
 	vp := asViewport(view)
 	C.sub_430B50(C.int(vp.Screen.Min.X), C.int(vp.Screen.Min.Y), C.int(vp.Screen.Max.X), C.int(vp.Screen.Max.Y))
-	for p := C.nox_screenParticles_head; p != nil; {
+	for p := legacyPointers.screenParticleHead; p != nil; {
 		set_dword_5d4594_3799468(1)
 		// The draw callback can release or recycle the current particle.
 		next := p.field_44

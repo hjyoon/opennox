@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 
 extern uint32_t dword_5d4594_1062488;
-extern uintptr_t dword_5d4594_1062492;
 extern uint32_t dword_5d4594_1062552;
 */
 import "C"
@@ -56,7 +55,7 @@ func nox_client_invAlterWeapon_4672C0() {
 }
 
 func inventoryDequipForAlternate(equipped *nox_drawable) {
-	C.dword_5d4594_1062492 = C.uintptr_t(uintptr(unsafe.Pointer(equipped)))
+	legacyPointers.inventoryDragItem = equipped
 	nox_xxx_clientDequip_464B70(equipped)
 	nox_xxx_clientPlaySoundSpecial_452D80(895, 100)
 }
@@ -82,7 +81,7 @@ func sub_467980() C.int {
 	nox_xxx_clientSetAltWeapon_461550(nil)
 	C.dword_5d4594_1062488 = 0
 	clear(inventoryStateNativeHeads()[:])
-	C.dword_5d4594_1062492 = 0
+	legacyPointers.inventoryDragItem = nil
 	legacyWords.dword_5d4594_1062496 = 0
 	*memmap.PtrUint8(0x5D4594, 1062536) = 0
 	*memmap.PtrUint32(0x5D4594, 1062540) = 0

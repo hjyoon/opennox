@@ -5,8 +5,6 @@ package legacy
 #include "common/alloc/classes/alloc_class.h"
 #include <stdlib.h>
 
-extern void* nox_alloc_pixelSpan_1301844;
-extern void* dword_5d4594_1301848;
 */
 import "C"
 
@@ -18,13 +16,13 @@ import (
 
 //export sub_49AEA0
 func sub_49AEA0() C.int {
-	if pool := C.nox_alloc_pixelSpan_1301844; pool != nil {
+	if pool := legacyPointers.pixelSpanAllocator; pool != nil {
 		nox_free_alloc_class((*C.nox_alloc_class)(pool))
-		C.nox_alloc_pixelSpan_1301844 = nil
+		legacyPointers.pixelSpanAllocator = nil
 	}
-	if pixels := C.dword_5d4594_1301848; pixels != nil {
+	if pixels := legacyPointers.pixelSpanBuffer; pixels != nil {
 		C.free(pixels)
-		C.dword_5d4594_1301848 = nil
+		legacyPointers.pixelSpanBuffer = nil
 	}
 	return 1
 }

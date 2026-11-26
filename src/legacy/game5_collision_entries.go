@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern void* nox_alloc_hit_2491548;
 void sub_548220(nox_object_t*, nox_object_t*);
 void nox_xxx_getUnitsInRect_517C10(float4*, void*, void*);
 void nox_script_callByIndex_507310(int, void*, void*);
@@ -64,7 +63,7 @@ func nox_xxx_collSysAddCollision_548630(raw *nox_object_t, word C.uintptr_t, nor
 			return
 		}
 	}
-	hit := (*game5CollisionHit)(alloc.AsClass(C.nox_alloc_hit_2491548).NewObject())
+	hit := (*game5CollisionHit)(alloc.AsClass(legacyPointers.collisionHitAllocator).NewObject())
 	if hit == nil {
 		return
 	}
@@ -80,13 +79,13 @@ func nox_xxx_collSysAddCollision_548630(raw *nox_object_t, word C.uintptr_t, nor
 
 //export nox_xxx_allocHitArray_5486D0
 func nox_xxx_allocHitArray_5486D0() {
-	if C.nox_alloc_hit_2491548 == nil {
-		C.nox_alloc_hit_2491548 = alloc.NewClass("Hit", unsafe.Sizeof(game5CollisionHit{}), 1024).UPtr()
+	if legacyPointers.collisionHitAllocator == nil {
+		legacyPointers.collisionHitAllocator = alloc.NewClass("Hit", unsafe.Sizeof(game5CollisionHit{}), 1024).UPtr()
 	}
 	game5Collisions.buckets = [256]*game5CollisionHit{}
 	game5Collisions.head = nil
 	clear(game5Collisions.owners)
-	alloc.AsClass(C.nox_alloc_hit_2491548).FreeAllObjects()
+	alloc.AsClass(legacyPointers.collisionHitAllocator).FreeAllObjects()
 	clear(unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 2490520)), 0x400))
 	legacyWords.dword_5d4594_2491544 = 0
 }

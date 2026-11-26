@@ -11,8 +11,6 @@ package legacy
 typedef const wchar2_t nox_shop_const_wchar2_t;
 
 extern uint32_t dword_5d4594_1098624, dword_5d4594_1098628, dword_5d4594_1107036;
-extern wchar2_t *dword_5d4594_1098596, *dword_5d4594_1098600, *dword_5d4594_1098604;
-extern char* nox_shop_dialog_file_1098608;
 
 static inline void shop_format_gold_shortage(wchar2_t* dst, const wchar2_t* format, int amount) {
 	nox_swprintf(dst, format, amount);
@@ -74,19 +72,19 @@ func drawShopInstructions(pos *C.int2, text **wchar2_t, key string, line int32, 
 
 //export sub_478A70
 func sub_478A70(pos *C.int2) C.int {
-	return drawShopInstructions(pos, &C.dword_5d4594_1098604, "", 0, true)
+	return drawShopInstructions(pos, &legacyPointers.shopBuyInstructions, "", 0, true)
 }
 
 //export sub_478B10
 func sub_478B10(pos *C.int2) *wchar2_t {
-	drawShopInstructions(pos, &C.dword_5d4594_1098596, "SellInstructions", 597, false)
-	return C.dword_5d4594_1098596
+	drawShopInstructions(pos, &legacyPointers.shopSellInstructions, "SellInstructions", 597, false)
+	return legacyPointers.shopSellInstructions
 }
 
 //export sub_478BC0
 func sub_478BC0(pos *C.int) *wchar2_t {
-	drawShopInstructions((*C.int2)(unsafe.Pointer(pos)), &C.dword_5d4594_1098600, "RepairInstructions", 628, true)
-	return C.dword_5d4594_1098600
+	drawShopInstructions((*C.int2)(unsafe.Pointer(pos)), &legacyPointers.shopRepairInstructions, "RepairInstructions", 628, true)
+	return legacyPointers.shopRepairInstructions
 }
 
 //export nox_xxx_cliStartShopDlg_478FD0
@@ -108,12 +106,12 @@ func nox_xxx_cliStartShopDlg_478FD0(name *C.nox_shop_const_wchar2_t, intro *C.ch
 	copyWideString(title, (*wchar2_t)(unsafe.Pointer(name)))
 	C.sub_46AEE0(label, title)
 	if intro != nil && *intro != 0 {
-		C.dword_5d4594_1098604 = nox_strman_loadString_40F1D0(intro, &C.nox_shop_dialog_file_1098608, internCStr(shopSource), 1128)
+		legacyPointers.shopBuyInstructions = nox_strman_loadString_40F1D0(intro, &legacyPointers.shopDialogFile, internCStr(shopSource), 1128)
 	} else {
-		C.dword_5d4594_1098604, C.nox_shop_dialog_file_1098608 = nil, nil
+		legacyPointers.shopBuyInstructions, legacyPointers.shopDialogFile = nil, nil
 	}
 	nox_xxx_getShopPic_4790F0(typeID)
-	if file := C.nox_shop_dialog_file_1098608; file != nil {
+	if file := legacyPointers.shopDialogFile; file != nil {
 		nox_xxx_playDialogFile_44D900((*byte)(unsafe.Pointer(file)), 100)
 	}
 	C.dword_5d4594_1107036 = 0

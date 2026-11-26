@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 
 typedef const nox_inventory_cell_t nox_const_inventory_cell;
-extern uintptr_t dword_5d4594_1062492;
 */
 import "C"
 
@@ -61,7 +60,7 @@ func clientInventoryReleaseOnAlternate(dragged *nox_drawable) bool {
 			if clientInventoryAlternateCell() != nil {
 				nox_client_invAlterWeapon_4672C0()
 			} else {
-				C.dword_5d4594_1062492 = C.uintptr_t(uintptr(unsafe.Pointer(dragged)))
+				legacyPointers.inventoryDragItem = dragged
 				nox_xxx_clientDequip_464B70(dragged)
 			}
 		}

@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__guiinv.h"
 #include "client__gui__guimsg.h"
 
-extern nox_drawable* dword_5d4594_1063116;
 extern int nox_win_width, nox_win_height;
 */
 import "C"
@@ -136,10 +135,10 @@ func clientInventoryPress(local *C.int2) C.int {
 		if clientInventoryPointInRect(local, 0x587000, 136352) {
 			column, row := clientInventoryStorageIndex(local)
 			if sub_464B40(column, row) != 0 {
-				C.dword_5d4594_1063116 = nox_inventory_prepare_tooltip_drawable_466660(inventoryGridCell(int(row), int(column)))
+				legacyPointers.inventoryTooltipItem = nox_inventory_prepare_tooltip_drawable_466660(inventoryGridCell(int(row), int(column)))
 			}
 		} else if sub_478030() != 0 && sub_479870() != 0 && bool(sub_479880((*C.uint32_t)(unsafe.Pointer(local)))) {
-			C.dword_5d4594_1063116 = sub_4798A0((*C.uint32_t)(unsafe.Pointer(local)))
+			legacyPointers.inventoryTooltipItem = sub_4798A0((*C.uint32_t)(unsafe.Pointer(local)))
 		}
 	case 6:
 		if clientInventoryPointInRect(local, 0x587000, 136352) {

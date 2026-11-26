@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME2_2.h"
 
-extern uint8_t** nox_pixbuffer_rows_3798784;
 */
 import "C"
 
@@ -51,11 +50,11 @@ func nox_xxx_edgeDraw_480EF0(sprite *nox_video_bag_image_t, x, y C.int, startLig
 	pitch := int(nox_getBackbufferPitch()) / 2
 	frameHeight := int(nox_getBackbufHeight())
 	if width <= 0 || height <= 0 || drawX < 0 || int(drawX+width) > pitch || drawY < 0 ||
-		int(drawY+height) > frameHeight || C.nox_pixbuffer_rows_3798784 == nil {
+		int(drawY+height) > frameHeight || legacyPointers.videoRows == nil {
 		return result
 	}
 
-	rows := unsafe.Slice(C.nox_pixbuffer_rows_3798784, frameHeight)
+	rows := unsafe.Slice(legacyPointers.videoRows, frameHeight)
 	if rows[drawY] == nil {
 		return result
 	}

@@ -6,7 +6,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_gui_animation* nox_wnd_xxx_815040;
 extern uint32_t dword_5d4594_815052;
 */
 import "C"
@@ -85,7 +84,7 @@ func wolWorldTrigger(event int32, senderID int32) {
 
 func wolShowExistingWorld() {
 	Set_dword_5d4594_815044(0)
-	anim := C.nox_wnd_xxx_815040
+	anim := legacyPointers.wolWindowAnimation
 	anim.state = C.NOX_GUI_ANIM_IN
 	anim.fnc_done_out = (*[0]byte)(C.sub_438330)
 	sub_43BE40(3)
@@ -172,7 +171,7 @@ func nox_game_showGameSel_4379F0() C.int {
 	nox_xxx_wndShowModalMB_46A8C0(root)
 	nox_window_set_all_funcs(root, C.sub_439D00, nil, nil)
 	anim := nox_gui_makeAnimation_43C5B0(root, 0, 0, 0, -480, 0, 20, 0, -40)
-	C.nox_wnd_xxx_815040 = anim
+	legacyPointers.wolWindowAnimation = anim
 	if anim == nil {
 		return 0
 	}

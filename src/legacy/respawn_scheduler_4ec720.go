@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include "vardefs.h"
+#include <stdint.h>
 */
 import "C"
 

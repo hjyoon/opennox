@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-extern nox_object_t* dword_5d4594_2491592;
 int nox_float2int(float);
 */
 import "C"
@@ -25,7 +24,7 @@ func nox_xxx_findObjectAtCursor_54AF40(raw *nox_object_t) *nox_object_t {
 	source := asObjectS(raw)
 	cursor := source.UpdateDataPlayer().Player.CursorPos()
 	game5Cursor.source, game5Cursor.result = source, nil
-	C.dword_5d4594_2491592 = raw
+	legacyPointers.cursorCollisionSource = raw
 	*memmap.PtrUint32(0x5D4594, 2491600) = 0
 	GetServer().S().Map.EachObjInCircle(cursor, 100, func(obj *server.Object) bool {
 		game5CursorScan(obj, &cursor)
@@ -39,7 +38,7 @@ func game5CursorScan(obj *server.Object, cursor *types.Pointf) {
 	if *polyp == 0 {
 		*polyp = uint32(GetServer().S().Types.IndByID("Polyp"))
 	}
-	source := asObjectS(C.dword_5d4594_2491592)
+	source := asObjectS(legacyPointers.cursorCollisionSource)
 	if obj == source || obj.Flags()&0x8020 != 0 || obj.HasEnchant(0) && !source.HasEnchant(21) || obj.ObjClass&0x80000206 == 0 && uint32(obj.TypeInd) != *polyp {
 		return
 	}

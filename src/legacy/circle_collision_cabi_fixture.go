@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME5.h"
 #include "common/alloc/classes/alloc_class.h"
-extern void* nox_alloc_hit_2491548;
 */
 import "C"
 
@@ -15,10 +14,10 @@ import (
 )
 
 func circleCollisionCABIReleaseFixturePool() {
-	if C.nox_alloc_hit_2491548 != nil {
+	if legacyPointers.collisionHitAllocator != nil {
 		C.nox_xxx_allocHitArray_5486D0()
-		C.nox_free_alloc_class((*C.nox_alloc_class)(C.nox_alloc_hit_2491548))
-		C.nox_alloc_hit_2491548 = nil
+		C.nox_free_alloc_class((*C.nox_alloc_class)(legacyPointers.collisionHitAllocator))
+		legacyPointers.collisionHitAllocator = nil
 	}
 }
 

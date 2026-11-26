@@ -4,8 +4,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guiinv.h"
 
-extern uintptr_t dword_5d4594_1062492;
-extern nox_drawable* dword_5d4594_1063116;
 */
 import "C"
 
@@ -33,7 +31,7 @@ func sub_465D50_draw(win *C.nox_window) C.int {
 			viewport := nox_client_inventory_viewport_native()
 			ccall.CallIntPtr2(unsafe.Pointer(item.draw_func), unsafe.Pointer(viewport), unsafe.Pointer(item))
 		}
-	} else if legacyWords.dword_5d4594_1062496 == 0 && C.dword_5d4594_1062492 == 0 {
+	} else if legacyWords.dword_5d4594_1062496 == 0 && legacyPointers.inventoryDragItem == nil {
 		nox_client_drawImageAt_47D2C0(inventoryImages[C.NOX_INV_IMG_FIST], int32(x+21), int32(y+50))
 	}
 	return 1
@@ -88,7 +86,7 @@ func sub_466BF0(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 
 //export sub_466F50
 func sub_466F50(win *C.nox_window, draw *C.nox_window_data) C.int {
-	item := C.dword_5d4594_1063116
+	item := legacyPointers.inventoryTooltipItem
 	if item == nil {
 		return 1
 	}

@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include "vardefs.h"
-*/
-import "C"
-
 import (
 	"unsafe"
 
@@ -18,11 +13,11 @@ type respawnAllocatorRuntime4ECA60 struct {
 }
 
 func respawnAllocatorLoad4ECA60() unsafe.Pointer {
-	return C.nox_alloc_respawn_1568020
+	return legacyPointers.respawnAllocator
 }
 
 func respawnAllocatorStore4ECA60(value unsafe.Pointer) {
-	globalStateNativeStorePointer(unsafe.Pointer(&C.nox_alloc_respawn_1568020), value)
+	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.respawnAllocator), value)
 }
 
 func respawnAllocatorNative4ECA60(runtime respawnAllocatorRuntime4ECA60) int {

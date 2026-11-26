@@ -6,8 +6,6 @@ package legacy
 extern uint32_t dword_5d4594_830864;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_831084;
-extern void* dword_587000_81128;
-extern void* dword_587000_122852;
 */
 import "C"
 import (
@@ -40,8 +38,8 @@ func initDialog() {
 		},
 		memmap.PtrT[timer.TimerGroup](0x5D4594, 830876),
 		memmap.PtrT[timer.TimerGroup](0x5D4594, 830980),
-		(*timer.TimerGroup)(C.dword_587000_81128),
-		(*timer.TimerGroup)(C.dword_587000_122852),
+		(*timer.TimerGroup)(legacyPointers.ordinaryMusicTimer),
+		(*timer.TimerGroup)(legacyPointers.dialogTimer),
 		Sub_413890,
 
 		func() ail.Driver {

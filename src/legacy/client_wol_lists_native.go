@@ -5,7 +5,6 @@ package legacy
 #include <stdlib.h>
 
 typedef const char wol_const_char_t;
-extern uintptr_t dword_5d4594_529316, dword_5d4594_531648, dword_5d4594_534808;
 */
 import "C"
 
@@ -50,15 +49,15 @@ type wolServiceEntry struct {
 type wolEndpointPort = C.uint16_t
 
 func wolChannelHead() **wolChannel {
-	return (**wolChannel)(unsafe.Pointer(&C.dword_5d4594_529316))
+	return &legacyPointers.wolChannelHead
 }
 
 func wolGameListHead() **wolGameListNode {
-	return (**wolGameListNode)(unsafe.Pointer(&C.dword_5d4594_531648))
+	return &legacyPointers.wolGameHead
 }
 
 func wolServiceListHead() **wolServiceEntry {
-	return (**wolServiceEntry)(unsafe.Pointer(&C.dword_5d4594_534808))
+	return &legacyPointers.wolServiceHead
 }
 
 func wolFreeOwnedRecord(record unsafe.Pointer) {
@@ -99,7 +98,7 @@ func sub_41F4B0() C.int {
 		wolFreeOwnedRecord(unsafe.Pointer(game))
 		game = next
 	}
-	C.dword_5d4594_531648 = 0
+	legacyPointers.wolGameHead = nil
 	legacyWords.dword_5d4594_531652 = 0
 	legacyWords.dword_5d4594_531656 = 0
 	result := sub_41E2F0()

@@ -4,7 +4,6 @@ package legacy
 #include "GAME2_3.h"
 #include "common/alloc/classes/alloc_class.h"
 
-extern void *nox_alloc_friendList_1203860, *dword_5d4594_1203864;
 */
 import "C"
 
@@ -21,17 +20,17 @@ var (
 )
 
 func friendListHeadSlot() **clientFriendNode {
-	return (**clientFriendNode)(unsafe.Pointer(&C.dword_5d4594_1203864))
+	return &legacyPointers.friendListHead
 }
 
 func friendListAllocator() *C.nox_alloc_class {
-	return (*C.nox_alloc_class)(C.nox_alloc_friendList_1203860)
+	return (*C.nox_alloc_class)(legacyPointers.friendListAllocator)
 }
 
 //export nox_xxx_allocClassListFriends_495980
 func nox_xxx_allocClassListFriends_495980() C.int {
 	pool := nox_new_alloc_class(internCStr("FriendListClass"), C.int(unsafe.Sizeof(clientFriendNode{})), 128)
-	C.nox_alloc_friendList_1203860 = unsafe.Pointer(pool)
+	legacyPointers.friendListAllocator = unsafe.Pointer(pool)
 	return C.int(bool2int(pool != nil))
 }
 
@@ -44,7 +43,7 @@ func sub_4959B0() {
 //export sub_4959D0
 func sub_4959D0() C.int {
 	nox_free_alloc_class(friendListAllocator())
-	C.nox_alloc_friendList_1203860 = nil
+	legacyPointers.friendListAllocator = nil
 	*friendListHeadSlot() = nil
 	return 0
 }

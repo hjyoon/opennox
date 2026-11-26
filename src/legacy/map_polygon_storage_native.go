@@ -4,7 +4,6 @@ package legacy
 #include <stdlib.h>
 #include "GAME1_1.h"
 
-extern void* dword_5d4594_588068;
 extern uint32_t nox_xxx_polygonNextIdx_587000_60352;
 */
 import "C"
@@ -86,20 +85,20 @@ func sub_420C40(index, original C.int) *C.uint32_t {
 		return nil
 	}
 	p.index, p.original = uint32(index), uint32(original)
-	p.next = (*mapAngleRemap)(C.dword_5d4594_588068)
-	C.dword_5d4594_588068 = unsafe.Pointer(p)
+	p.next = (*mapAngleRemap)(legacyPointers.polygonAngleRemapHead)
+	legacyPointers.polygonAngleRemapHead = unsafe.Pointer(p)
 	return (*C.uint32_t)(unsafe.Pointer(p))
 }
 
 //export sub_420C70
 func sub_420C70() *C.uint32_t {
-	head := (*mapAngleRemap)(C.dword_5d4594_588068)
+	head := (*mapAngleRemap)(legacyPointers.polygonAngleRemapHead)
 	for p := head; p != nil; {
 		next := p.next
 		C.free(unsafe.Pointer(p))
 		p = next
 	}
-	C.dword_5d4594_588068 = nil
+	legacyPointers.polygonAngleRemapHead = nil
 	return (*C.uint32_t)(unsafe.Pointer(head))
 }
 
@@ -172,7 +171,7 @@ func sub_421040(polygon unsafe.Pointer) {
 	}
 	vertices := unsafe.Slice(data, (*mapPolygonRecord)(polygon).VertexCount)
 	for i, index := range vertices {
-		for p := (*mapAngleRemap)(C.dword_5d4594_588068); p != nil; p = p.next {
+		for p := (*mapAngleRemap)(legacyPointers.polygonAngleRemapHead); p != nil; p = p.next {
 			if uint32(index) == p.original {
 				vertices[i] = C.uint32_t(p.index)
 				break

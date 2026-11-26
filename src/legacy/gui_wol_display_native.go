@@ -5,7 +5,6 @@ package legacy
 #include "client__gui__window.h"
 #include "client__shell__noxworld.h"
 
-extern nox_gui_animation* nox_wnd_xxx_815040;
 */
 import "C"
 
@@ -65,7 +64,7 @@ func sub_4379C0() {
 
 //export sub_438330
 func sub_438330() C.int {
-	anim := asGUIAnim(C.nox_wnd_xxx_815040)
+	anim := asGUIAnim(legacyPointers.wolWindowAnimation)
 	callback := anim.Func13Ptr
 	anim.Free()
 	if !noxflags.HasGame(noxflags.GameFlag29) {
@@ -79,7 +78,7 @@ func sub_438330() C.int {
 
 //export sub_438370
 func sub_438370() C.int {
-	anim := asGUIAnim(C.nox_wnd_xxx_815040)
+	anim := asGUIAnim(legacyPointers.wolWindowAnimation)
 	if anim.State() == gui.AnimOutDone {
 		return sub_438330()
 	}

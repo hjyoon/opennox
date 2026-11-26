@@ -24,11 +24,7 @@ void sub_43DC00();
 void sub_44D960();
 void sub_453050(void);
 int sub_451850(void* a2, void* a3);
-extern void* dword_587000_122852;
-extern void* dword_587000_81128;
 extern void* dword_587000_93164;
-extern void* dword_5d4594_805984;
-extern void* dword_587000_155144;
 */
 import "C"
 import (
@@ -387,15 +383,15 @@ func Sub_486640(a1 unsafe.Pointer, a2 int) int {
 }
 
 func Get_dword_5d4594_805984() unsafe.Pointer {
-	return C.dword_5d4594_805984
+	return legacyPointers.audioPlaybackContext
 }
 
 func Set_dword_5d4594_805984(v unsafe.Pointer) {
-	C.dword_5d4594_805984 = v
+	legacyPointers.audioPlaybackContext = v
 }
 
 func Set_dword_587000_81128(v unsafe.Pointer) {
-	C.dword_587000_81128 = v
+	legacyPointers.ordinaryMusicTimer = v
 }
 
 //export sub_4864A0

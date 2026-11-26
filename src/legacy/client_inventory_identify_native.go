@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 #include "client__gui__guiinv.h"
 
-extern nox_drawable *dword_5d4594_1063116, *dword_5d4594_1063120;
 
 static void nox_client_format_identify_damage(wchar2_t* out, const wchar2_t* format, double value) {
 	nox_swprintf(out, format, value);
@@ -81,12 +80,12 @@ func sub_4627F0(origin *C.uint32_t) C.uintptr_t {
 	nox_client_drawRectFilledOpaque_49CE30(int32(pos[0])+11, int32(pos[1])+15, 200, 200)
 	clientInventoryIdentifyCursor()
 
-	selected := C.dword_5d4594_1063116
-	previous := C.dword_5d4594_1063120
+	selected := legacyPointers.inventoryTooltipItem
+	previous := legacyPointers.inventoryPreviousTooltipItem
 	if selected == previous {
 		return C.uintptr_t(uintptr(unsafe.Pointer(selected)))
 	}
-	C.dword_5d4594_1063120 = selected
+	legacyPointers.inventoryPreviousTooltipItem = selected
 	root := inventoryWindows.identify
 	title := (*wchar2_t)(memmap.PtrOff(0x5D4594, 1063124))
 	if selected == nil {
@@ -96,7 +95,7 @@ func sub_4627F0(origin *C.uint32_t) C.uintptr_t {
 	}
 	name := GoWString(nox_xxx_clientAskInfoMb_4BF050(selected))
 	if name == GoWString((*wchar2_t)(memmap.PtrOff(0x5D4594, 1063652))) {
-		C.dword_5d4594_1063120 = nil
+		legacyPointers.inventoryPreviousTooltipItem = nil
 	}
 	header := GoWString(clientInventoryString("IdentifyItem", 2545)) + " " + name
 	CWStringCopyTo(title, 260, header)

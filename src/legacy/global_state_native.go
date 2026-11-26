@@ -2,12 +2,10 @@ package legacy
 
 /*
 #include "defs.h"
-#include "vardefs.h"
 #include <string.h>
 extern uintptr_t dword_8531A0_2576, dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062488;
 extern uint32_t dword_5d4594_1098628;
-extern nox_waypoint_t* dword_5d4594_2487244;
 static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
@@ -43,7 +41,7 @@ func globalStateNativeSlot(index int) unsafe.Pointer {
 	case 11:
 		return unsafe.Pointer(&legacyAddressableWords.nox_xxx_waypointCounterMB_587000_154948)
 	case 12:
-		return unsafe.Pointer(&C.dword_5d4594_2487244)
+		return unsafe.Pointer(&legacyPointers.mapgenLastWaypoint)
 	case 13, 14:
 		return unsafe.Pointer(&legacyAddressableWords.nox_xxx_minimap_587000_149232)
 	case 15:
@@ -64,8 +62,8 @@ func globalStateNativePointer(index int) unsafe.Pointer {
 }
 
 func globalStateNativeStorePointer(slot, value unsafe.Pointer) {
-	// These slots belong to C and may contain foreign pointer bits. Copy them
-	// without applying Go's deletion barrier to the previous contents.
+	// Copy foreign pointer bits in native memory without applying Go's
+	// deletion barrier to the previous contents.
 	C.global_state_pointer_store_C(slot, value)
 }
 

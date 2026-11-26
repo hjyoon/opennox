@@ -5,7 +5,6 @@ package legacy
 #include "GAME3_2.h"
 
 typedef const nox_drawable inventory_const_drawable_t;
-extern uintptr_t dword_5d4594_1062492;
 */
 import "C"
 
@@ -152,7 +151,7 @@ func sub_4624D0(code C.int) C.int {
 		return C.int(nox_xxx_spriteDelete_45A4B0(equipped))
 	}
 	source.field_132 = 0
-	if C.dword_5d4594_1062492 != C.uintptr_t(uintptr(unsafe.Pointer(equipped))) {
+	if legacyPointers.inventoryDragItem != equipped {
 		alternate := clientInventoryAlternateCell()
 		if nox_xxx_ammoCheck_415880(int32(equipped.field_27))&0xc != 0 && alternate != nil &&
 			alternate.field_0 != nil && nox_xxx_ammoCheck_415880(int32(alternate.field_0.field_27)) == 2 {
@@ -161,7 +160,7 @@ func sub_4624D0(code C.int) C.int {
 		}
 		return C.int(nox_xxx_spriteDelete_45A4B0(equipped))
 	}
-	C.dword_5d4594_1062492 = 0
+	legacyPointers.inventoryDragItem = nil
 	if alternate := clientInventoryAlternateCell(); alternate != nil && alternate.field_0 != nil {
 		legacyWords.dword_5d4594_1062496 = equipped.field_32
 		alternate.field_0.field_32 = alternate.field_4

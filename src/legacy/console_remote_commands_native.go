@@ -4,16 +4,6 @@ package legacy
 #include "client__system__parsecmd.h"
 #include "client__gui__guicon.h"
 #include "GAME3_2.h"
-
-static void nox_console_print_remote_line(wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, text);
-}
-static void nox_console_print_remote_value(wchar2_t* format, wchar2_t* value) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, value);
-}
-static void nox_console_print_remote_command(wchar2_t* format, wchar2_t* sender, wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, sender, text);
-}
 */
 import "C"
 
@@ -42,7 +32,8 @@ func nox_xxx_serverHandleClientConsole_443E90(pl *C.nox_playerInfo, action C.cha
 		}
 	case 2:
 		if consoleRemoteAuthorized(pl) {
-			C.nox_console_print_remote_command(consoleLegacyString("RemoteSysop", 4345), &pl.name_final[0], text)
+			consolePrintRed(consoleLegacyString("RemoteSysop", 4345),
+				formatValue{text: unsafe.Pointer(&pl.name_final[0])}, formatValue{text: unsafe.Pointer(text)})
 			nox_server_parseCmdText_443C80(text, 0)
 		}
 	case 3:
@@ -57,7 +48,8 @@ func nox_xxx_serverHandleClientConsole_443E90(pl *C.nox_playerInfo, action C.cha
 			}
 		}
 	default:
-		C.nox_console_print_remote_command(consoleLegacyString("invalidattempt", 4400), &pl.name_final[0], text)
+		consolePrintRed(consoleLegacyString("invalidattempt", 4400),
+			formatValue{text: unsafe.Pointer(&pl.name_final[0])}, formatValue{text: unsafe.Pointer(text)})
 	}
 	return 1
 }
@@ -93,7 +85,7 @@ func consolePlayerObserve(pl *nox_playerInfo, text string) {
 	if unit := pl.playerUnit; unit != nil {
 		nox_xxx_netChangeTeamMb_419570((*C.nox_object_team_t)(unsafe.Pointer(&unit.field_12)), C.int(pl.netCode))
 	}
-	C.nox_console_print_remote_value(consoleLegacyString("observermode", 4308), label)
+	consolePrintRed(consoleLegacyString("observermode", 4308), formatValue{text: unsafe.Pointer(label)})
 }
 
 func consoleRunScript(pl *nox_playerInfo, text string) {
@@ -111,10 +103,10 @@ func consoleRunScript(pl *nox_playerInfo, text string) {
 		index = nox_script_indexByEvent((*C.char)(unsafe.Pointer(key)))
 	}
 	if index == -1 {
-		C.nox_console_print_remote_value(consoleLegacyString("InvalidFunction", 4329), name)
+		consolePrintRed(consoleLegacyString("InvalidFunction", 4329), formatValue{text: unsafe.Pointer(name)})
 		return
 	}
-	C.nox_console_print_remote_value(consoleLegacyString("ExecutingFunction", 4332), name)
+	consolePrintRed(consoleLegacyString("ExecutingFunction", 4332), formatValue{text: unsafe.Pointer(name)})
 	unit := unsafe.Pointer(pl.playerUnit)
 	nox_script_callByIndex_507310(index, unit, unit)
 }
@@ -122,7 +114,7 @@ func consoleRunScript(pl *nox_playerInfo, text string) {
 func consoleCameraFollow(pl *nox_playerInfo, text *wchar2_t) {
 	if pl.field_3680&1 == 0 && !noxflags.HasEngine(noxflags.EngineReplayRead) {
 		if noxflags.HasGame(noxflags.GameHost) {
-			C.nox_console_print_remote_line(consoleLegacyString("notinobserver", 4392))
+			consolePrintRed(consoleLegacyString("notinobserver", 4392))
 		}
 		return
 	}

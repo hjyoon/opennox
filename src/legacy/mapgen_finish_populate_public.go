@@ -6,11 +6,6 @@ package legacy
 #include "GAME4_1.h"
 #include "GAME4_2.h"
 #include "server__mapgen__generate__populate.h"
-
-
-static inline void mapgenPrintNoExit(wchar2_t* text) {
-    nox_xxx_printToAll_4D9FD0(0, text);
-}
 */
 import "C"
 
@@ -150,7 +145,7 @@ func nox_mapgenFinishPopulateNative_5228B0(theme *C.uint8_t) {
 		printNoExit: func(line int32) {
 			text := nox_strman_loadString_40F1D0(internCStr("NoExit"), nil,
 				internCStr(`C:\NoxPost\src\Server\MapGen\Generate\populate.c`), line)
-			C.mapgenPrintNoExit(text)
+			broadcastFormattedText(0, text, formatArguments{})
 		},
 		maxRoomDistance: func() { nox_mapgenMaxRoomDistanceNative_5259D0() },
 		firstRoom: func() *mapgenPopulateRoom {

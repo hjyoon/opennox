@@ -5,14 +5,6 @@ package legacy
 
 #include "server__object__health.h"
 
-typedef uint16_t wchar2_t;
-
-intptr_t nox_xxx_netSendLineMessage_4D9EB0(nox_object_t* player, wchar2_t* format, ...);
-
-static inline void nox_soloMonsterKillRewardSendLine_4EE500(
-		nox_object_t* player, wchar2_t* format, uint32_t points) {
-	nox_xxx_netSendLineMessage_4D9EB0(player, format, points);
-}
 */
 import "C"
 
@@ -26,11 +18,7 @@ func soloMonsterKillRewardRuntime4EE500() server.SoloMonsterKillRewardRuntime4EE
 		SendLineMessage: func(player *server.Object, format string, points uint32) {
 			message, free := CWString(format)
 			defer free()
-			C.nox_soloMonsterKillRewardSendLine_4EE500(
-				asObjectC(player),
-				message,
-				C.uint32_t(points),
-			)
+			sendNumberedLineMessage(player, message, points)
 		},
 	}
 }

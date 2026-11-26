@@ -16,6 +16,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/server"
 )
 
 const lineMessageWideFlag = noxnet.TextFlags(0x4)
@@ -59,15 +60,23 @@ func sendLineMessageText(update unsafe.Pointer, text *wchar2_t) C.intptr_t {
 
 //export nox_net_line_message_vprintf_4D9EB0
 func nox_net_line_message_vprintf_4D9EB0(obj *nox_object_t, format *C.nox_format_word, args *C.nox_format_args) C.intptr_t {
-	player := asObjectS(obj)
+	return sendFormattedLineMessage(asObjectS(obj), format, formatArguments{native: args})
+}
+
+func sendNumberedLineMessage(player *server.Object, format *wchar2_t, value uint32) {
+	values := [...]formatValue{{number: int32(value)}}
+	sendFormattedLineMessage(player, format, formatArguments{values: values[:]})
+}
+
+func sendFormattedLineMessage(player *server.Object, format *wchar2_t, args formatArguments) C.intptr_t {
 	if !player.Class().Has(object.ClassPlayer) {
-		return C.intptr_t(uintptr(unsafe.Pointer(obj)))
+		return C.intptr_t(uintptr(unsafe.Pointer(player)))
 	}
 
 	// Cache update data before formatting reads any arguments. Reserve the
 	// final zero-initialized word for the terminator of a truncated message.
 	update := player.UpdateData
-	var text [256]uint16
-	legacyFormat(&text[0], uintptr(len(text)-1), (*uint16)(unsafe.Pointer(format)), args)
-	return sendLineMessageText(update, (*wchar2_t)(unsafe.Pointer(&text[0])))
+	var text [256]wchar2_t
+	formatBoundedWide(text[:], format, args)
+	return sendLineMessageText(update, &text[0])
 }

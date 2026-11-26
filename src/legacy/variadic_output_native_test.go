@@ -21,6 +21,8 @@ func TestLegacyConsolePrintf450C00UsesBoundedWideBuffer(t *testing.T) {
 	t.Cleanup(func() { GetConsole = previous })
 	GetConsole = func() *console.Console { return con }
 
+	narrow := internCStr("xp")
+	wide := internWStr("ź")
 	for i, tc := range []struct{ format, want string }{
 		{"%S %04d %s", "xp 0037 ź"},
 		{"%S %0507d%s", "xp " + strings.Repeat("0", 505) + "37ź"},
@@ -30,8 +32,12 @@ func TestLegacyConsolePrintf450C00UsesBoundedWideBuffer(t *testing.T) {
 	} {
 		format, free := CWString(tc.format)
 		result := cfixture.ConsolePrintf450C00(byte(console.ColorRed), (*uint16)(unsafe.Pointer(format)), 37)
+		consolePrintRed(format, formatValue{text: unsafe.Pointer(narrow)}, formatValue{number: 37},
+			formatValue{text: unsafe.Pointer(wide)})
 		free()
-		if result != 1 || len(printer.lines) != i+1 || printer.colors[i] != console.ColorRed || printer.lines[i] != tc.want {
+		if result != 1 || len(printer.lines) != 2*(i+1) ||
+			printer.colors[2*i] != console.ColorRed || printer.colors[2*i+1] != console.ColorRed ||
+			printer.lines[2*i] != tc.want || printer.lines[2*i+1] != tc.want {
 			t.Fatalf("format %q result %d, output %q", tc.format, result, printer.lines)
 		}
 	}

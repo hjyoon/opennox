@@ -4,11 +4,6 @@ package legacy
 #include "client__gui__guicon.h"
 #include "client__gui__guimsg.h"
 #include "common__system__settings.h"
-
-
-static void nox_center_console_text(wchar2_t* format, wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, text);
-}
 */
 import "C"
 
@@ -38,7 +33,7 @@ func nox_xxx_printCentered_445490(text *C.wchar2_t) {
 	*(*byte)(game1CenterMemory(0x5D4594, 824444+offset)) = 0
 	format := nox_strman_loadString_40F1D0(internCStr("systemmsg"), nil,
 		internCStr(`C:\NoxPost\src\Client\Gui\guimsg.c`), 69)
-	C.nox_center_console_text(format, text)
+	consolePrintRed(format, formatValue{text: unsafe.Pointer(text)})
 }
 
 func centerMessageWithNumber(format *wchar2_t, value C.int) {

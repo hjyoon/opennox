@@ -5,20 +5,13 @@ package legacy
 
 #include "server__gamemech__explevel.h"
 
-typedef uint16_t wchar2_t;
-
 int32_t sub_56FA40(int token, float award);
-intptr_t nox_xxx_netSendLineMessage_4D9EB0(nox_object_t* unit, wchar2_t* message, ...);
 
 static inline void nox_directExperienceProtect_4EF3A0(
 		uint32_t token, float award) {
 	(void)sub_56FA40((int32_t)token, award);
 }
 
-static inline intptr_t nox_directExperienceLine_4EF3A0(
-		nox_object_t* unit, wchar2_t* message, uint32_t points) {
-	return nox_xxx_netSendLineMessage_4D9EB0(unit, message, points);
-}
 */
 import "C"
 
@@ -35,11 +28,7 @@ func directExperienceGrantRuntime4EF3A0() server.DirectExperienceGrantRuntime4EF
 		SendLineMessage: func(unit *server.Object, message string, points uint32) {
 			text, free := CWString(message)
 			defer free()
-			C.nox_directExperienceLine_4EF3A0(
-				asObjectC(unit),
-				text,
-				C.uint32_t(points),
-			)
+			sendNumberedLineMessage(unit, text, points)
 		},
 		SyncLevel: experienceLevelUpdateCall4EF2E0,
 	}

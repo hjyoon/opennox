@@ -2,17 +2,13 @@ package legacy
 
 /*
 #include "client__gui__guicon.h"
-
-static void nox_console_print_settings_line(wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, text);
-}
-static void nox_console_print_settings_value(wchar2_t* format, wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, format, text);
-}
 */
 import "C"
 
-import "strings"
+import (
+	"strings"
+	"unsafe"
+)
 
 func consoleLegacyString(key string, line int32) *wchar2_t {
 	return nox_strman_loadString_40F1D0(internCStr(key), nil,
@@ -27,10 +23,10 @@ func nox_cmd_set_cycle(i, n C.int, tokens **C.wchar2_t) C.int {
 	switch strings.ToLower(GoWString(consoleLegacyToken(tokens, i, n))) {
 	case "on":
 		sub_4D0D90(1)
-		C.nox_console_print_settings_line(consoleLegacyString("MapCycleOn", 2614))
+		consolePrintRed(consoleLegacyString("MapCycleOn", 2614))
 	case "off":
 		sub_4D0D90(0)
-		C.nox_console_print_settings_line(consoleLegacyString("MapCycleOff", 2621))
+		consolePrintRed(consoleLegacyString("MapCycleOff", 2621))
 	default:
 		return 0
 	}
@@ -54,7 +50,7 @@ func consoleSetEquipmentRule(token *wchar2_t, bit C.int, label string, lineOn, l
 	nox_server_gameSettingsUpdated_40A670()
 	value := consoleLegacyString(state, line)
 	format := consoleLegacyString(label, line+1)
-	C.nox_console_print_settings_value(format, value)
+	consolePrintRed(format, formatValue{text: unsafe.Pointer(value)})
 	return 1
 }
 
@@ -94,6 +90,6 @@ func nox_cmd_set_players(i, n C.int, tokens **C.wchar2_t) C.int {
 
 //export nox_cmd_set_spellpts
 func nox_cmd_set_spellpts(i, n C.int, tokens **C.wchar2_t) C.int {
-	C.nox_console_print_settings_line(consoleLegacyString("notyetimplemented", 3830))
+	consolePrintRed(consoleLegacyString("notyetimplemented", 3830))
 	return 1
 }

@@ -5,11 +5,6 @@ package legacy
 
 #include "GAME3_2.h"
 #include "pickup_gold_4f3a60.h"
-
-static inline void nox_pickupGoldSendLine_4F3A60(
-		nox_object_t* owner, wchar2_t* message, uint32_t amount) {
-	(void)nox_xxx_netSendLineMessage_4D9EB0(owner, message, amount);
-}
 */
 import "C"
 
@@ -35,7 +30,7 @@ func pickupGoldExportCall4F3A60(
 }
 
 // Nox_xxx_pickupGoldSendLine_4F3A60 formats the localized GoldPickup message
-// through the existing native-object line-message boundary.
+// with the shared line-message formatter.
 func Nox_xxx_pickupGoldSendLine_4F3A60(
 	owner *server.Object,
 	message string,
@@ -43,11 +38,7 @@ func Nox_xxx_pickupGoldSendLine_4F3A60(
 ) {
 	text, free := CWString(message)
 	defer free()
-	C.nox_pickupGoldSendLine_4F3A60(
-		asObjectC(owner),
-		text,
-		C.uint32_t(amount),
-	)
+	sendNumberedLineMessage(owner, text, amount)
 }
 
 //export nox_xxx_pickupGold_4F3A60

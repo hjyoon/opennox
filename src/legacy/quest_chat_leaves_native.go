@@ -47,9 +47,12 @@ func questClosingSettings4D70B0() uintptr {
 
 //export nox_print_to_all_go_4D9FD0
 func nox_print_to_all_go_4D9FD0(tag C.char, format *C.nox_format_word, args *C.nox_format_args) C.int {
+	return broadcastFormattedText(tag, format, formatArguments{native: args})
+}
+
+func broadcastFormattedText(tag C.char, format *wchar2_t, args formatArguments) C.int {
 	var text [256]wchar2_t
-	nox_format_wide_go(&text[0], C.size_t(len(text)), format, args)
-	text[len(text)-1] = 0
+	formatBoundedWide(text[:], format, args)
 	return nox_broadcast_player_text_4D9FD0(tag, &text[0])
 }
 

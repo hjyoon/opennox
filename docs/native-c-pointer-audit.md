@@ -985,6 +985,21 @@ damage formatter passes its promoted double directly from Go.
 The fixed-signature CRT call receives the raw bits and supplies
 the native decimal rounding, nonfinite spelling, and bounded output.
 
+### Console and network notices
+
+Go calls the console, player broadcast, and direct line-message
+formatters with their typed arguments. Twelve Cgo helpers were
+removed from the console, map generator, and reward paths.
+The C variadic entries use the same Go formatters. Console output
+keeps its 512-word buffer. Broadcast and direct line messages
+retain their 256-word buffers, packet encoding, and recipient order.
+
+The default macOS ARM64 client linked Go callers for 166 Cgo
+preamble definitions at `cc5ea78dc`. The three formatting changes
+bring that count to 125, with 107 in `legacy` and 18 in
+`legacy/common/ccall`. This is a linked-symbol count for one product.
+It includes helpers used by in-game regression probes.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -26,8 +26,16 @@ func nox_gui_console_Print_450B90(cl C.uchar, cstr *wchar2_t) int32 {
 
 //export nox_gui_console_vprintf_450C00
 func nox_gui_console_vprintf_450C00(cl C.uchar, format *C.nox_format_word, args *C.nox_format_args) C.int {
+	return consolePrintFormatted(cl, format, formatArguments{native: args})
+}
+
+func consolePrintRed(format *wchar2_t, values ...formatValue) {
+	consolePrintFormatted(C.NOX_CONSOLE_RED, format, formatArguments{values: values})
+}
+
+func consolePrintFormatted(cl C.uchar, format *wchar2_t, args formatArguments) C.int {
 	var text [512]wchar2_t
-	nox_format_bounded_wide_go(&text[0], C.size_t(len(text)), format, args)
+	formatBoundedWide(text[:], format, args)
 	return C.int(nox_gui_console_Print_450B90(cl, &text[0]))
 }
 

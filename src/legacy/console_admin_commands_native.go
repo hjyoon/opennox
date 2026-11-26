@@ -2,10 +2,6 @@ package legacy
 
 /*
 #include "client__gui__guicon.h"
-
-static void nox_console_print_admin_line(wchar2_t* text) {
-	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, text);
-}
 */
 import "C"
 
@@ -42,13 +38,13 @@ func nox_cmd_ban(i, n C.int, tokens **C.wchar2_t) C.int {
 
 //export nox_cmd_allow_user
 func nox_cmd_allow_user(i, n C.int, tokens **C.wchar2_t) C.int {
-	C.nox_console_print_admin_line(consoleLegacyString("notyetimplemented", 3698))
+	consolePrintRed(consoleLegacyString("notyetimplemented", 3698))
 	return 1
 }
 
 //export nox_cmd_allow_ip
 func nox_cmd_allow_ip(i, n C.int, tokens **C.wchar2_t) C.int {
-	C.nox_console_print_admin_line(consoleLegacyString("notyetimplemented", 3704))
+	consolePrintRed(consoleLegacyString("notyetimplemented", 3704))
 	return 1
 }
 

@@ -14,10 +14,6 @@ package legacy
 #include "defs.h"
 typedef const nox_object_t nox_player_const_object_t;
 void nox_xxx_WideScreenDo_515240(bool enable);
-static void nox_xxx_printToAll_4D9FD0_go(int a1, wchar2_t* str) {
-	nox_xxx_printToAll_4D9FD0(a1, str);
-}
-
 */
 import "C"
 import (
@@ -315,7 +311,7 @@ func Nox_xxx_netMsgFadeBeginPlayer(ind int, dir int, a3 int) {
 func PrintToPlayers(text string) {
 	cstr, free := CWString(text)
 	defer free()
-	C.nox_xxx_printToAll_4D9FD0_go(0, cstr)
+	broadcastFormattedText(0, cstr, formatArguments{})
 }
 
 func ClientPlayerNetCode() int {

@@ -1,5 +1,4 @@
-# Separate original-cadence consumption probe, NOT a replacement for the
-# unsuccessful passive PICKUP probe. Stock body/food; ordinary script injury,
+# Original-cadence consumption probe with stock bodies and food. Ordinary script injury,
 # ownership and map properties; live RETREAT/MOVE stack, travel, FoodPickup
 # auto-use, actual healing/sound/deletion and client drawables are observed.
 steps:

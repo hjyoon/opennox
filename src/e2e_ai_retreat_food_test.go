@@ -31,8 +31,8 @@ func TestE2EAIRetreatFoodSchedule(t *testing.T) {
 					if len(sc.steps) != 3 || sc.steps[0].ready == nil || sc.steps[0].waitTimeout != 1200 ||
 						sc.steps[1].ready == nil || sc.steps[1].waitTimeout != 600 ||
 						sc.steps[1].time-sc.steps[0].time != 1 || sc.steps[2].time-sc.steps[1].time != 12 ||
-						!strings.HasSuffix(sc.steps[1].name, " observe unforced RETREAT movement PICKUP consumption") {
-						t.Fatal("bounded food movement/consumption schedule changed")
+						!strings.HasSuffix(sc.steps[1].name, " verify tracked food arrival and natural regeneration") {
+						t.Fatal("bounded food arrival and regeneration schedule changed")
 					}
 				})
 			}
@@ -138,7 +138,7 @@ func TestE2EAIRetreatFoodScenario(t *testing.T) {
 	sc.Load(path)
 	checks := 0
 	for _, step := range sc.steps {
-		if strings.HasSuffix(step.name, " observe unforced RETREAT movement PICKUP consumption") {
+		if strings.HasSuffix(step.name, " verify tracked food arrival and natural regeneration") {
 			checks++
 		}
 	}

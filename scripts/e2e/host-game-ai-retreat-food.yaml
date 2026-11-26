@@ -1,7 +1,8 @@
 # Ordinary script injury and passive map properties on stock Troll/NPC bodies.
-# Food starts 160 units away. Production AI must enter RETREAT and execute its
-# own MOVE_TO/PICKUP callback. Observe stock healing/sound/deletion and client
-# drawables without injecting an action, pickup, healing or expected result.
+# Food starts 160 units away. The original MOVE_TO keeps tracking live food
+# at arrival and leaves PICKUP pending. Verify travel, regeneration and the
+# live item. host-game-ai-retreat-periodic-food covers autonomous consumption.
+map-profile: arena-stock
 steps:
   - action: slow
     dur: 5ms

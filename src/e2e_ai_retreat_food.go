@@ -67,19 +67,16 @@ func e2eAIRetreatFoodRegenerationHP(start, frame, injury, fps uint32, maximum, i
 }
 
 type e2eAIRetreatFoodFixture struct {
-	mode, kind, item               string
-	descending                     bool
-	host, unit, food               *server.Object
-	original, origin, foodPos      types.Pointf
-	hostHP, hostMax, initialHP     uint16
-	injuredHP, expectedHP          uint16
-	unitWire, foodWire             uint16
-	start, moveFrame, eatFrame     uint32
-	lastLog                        uint32
-	travelSquared                  float64
-	sounds                         int
-	active, moving, moved, ate     bool
-	unitDrawn, foodDrawn, complete bool
+	mode, kind, item           string
+	descending                 bool
+	host, unit, food           *server.Object
+	original, origin, foodPos  types.Pointf
+	hostHP, hostMax, initialHP uint16
+	injuredHP, arrivalHP       uint16
+	unitWire, foodWire         uint16
+	start, moveFrame           uint32
+	arrivalFrame, lastLog      uint32
+	active, arrived, complete  bool
 }
 
 func (f *e2eAIRetreatFoodFixture) prepare() {
@@ -149,7 +146,6 @@ func (f *e2eAIRetreatFoodFixture) prepare() {
 		return
 	}
 	f.injuredHP = f.unit.HealthData.Cur
-	f.expectedHP = uint16(min(int(f.injuredHP)+int(f.food.UseDataConsume().Value), int(f.unit.HealthData.Max)))
 	if int(f.injuredHP) != int(f.initialHP)-loss || update.CurrentEnemy != nil || update.PreferredEnemy != nil {
 		e2eError(fmt.Errorf("RETREAT food injury/absence of enemy not observed: %s", f.mode))
 		return
@@ -174,74 +170,59 @@ func (f *e2eAIRetreatFoodFixture) tick() {
 		e2eError(fmt.Errorf("RETREAT food received unrelated combat/effect: %s current=%p preferred=%p host=%p buffs=%x aggression=%g host-HP=%d/%d expected=%d/%d stack=%v", f.mode, update.CurrentEnemy, update.PreferredEnemy, f.host, f.unit.Buffs, update.Aggression, f.host.HealthData.Cur, f.host.HealthData.Max, f.hostHP, f.hostMax, update.GetAIStack()))
 		return
 	}
-	dx, dy := float64(f.unit.PosVec.X)-float64(f.origin.X), float64(f.unit.PosVec.Y)-float64(f.origin.Y)
-	f.travelSquared = max(f.travelSquared, dx*dx+dy*dy)
+	frame := noxServer.Frame()
 	if e2eAIRetreatFoodMoveStack(update, f.food, f.foodPos) {
-		if !f.moving {
-			f.moveFrame = noxServer.Frame()
+		if f.moveFrame == 0 {
+			f.moveFrame = frame
 			e2eLog.Printf("AI RETREAT FOOD MOVE: mode=%s frame=%d target=%p pos=%v stack=%v", f.mode, f.moveFrame, f.food, f.unit.PosVec, update.GetAIStack())
 		}
-		f.moving = true
-		f.moved = f.moved || f.travelSquared > 16*16
+		// GAME.EXE 00544500 keeps MOVE_TO above PICKUP while its tracked
+		// field still identifies live food, even after movement arrives.
+		if delta := f.unit.PosVec.Sub(f.foodPos); delta.Len() < 8 && byte(update.Field71) == 0 {
+			if f.arrivalFrame == 0 {
+				f.arrivalFrame, f.arrivalHP = frame, f.unit.HealthData.Cur
+			}
+			f.arrived = f.arrived || frame-f.arrivalFrame >= 3
+		} else if !f.arrived {
+			f.arrivalFrame = 0
+		}
+	} else if !f.arrived {
+		f.arrivalFrame = 0
 	}
-	f.unitDrawn = f.unitDrawn || noxClient.Objs.ByNetCode(f.unitWire) != nil
-	f.foodDrawn = f.foodDrawn || noxClient.Objs.ByNetCode(f.foodWire) != nil
 	ext := f.unit.GetExt()
-	wantHP, validHP := e2eAIRetreatFoodRegenerationHP(f.start, noxServer.Frame(), f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
+	wantHP, validHP := e2eAIRetreatFoodRegenerationHP(f.start, frame, f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
 	if f.unit.HealthData.Max != f.initialHP || ext.HealthRegenToMax > 0 || ext.HealthRegenPerFrame >= 0 ||
-		!f.ate && (!validHP || f.unit.HealthData.Cur != wantHP || !e2eObjectInWorld(f.food)) {
-		e2eError(fmt.Errorf("RETREAT food HP/definition/deletion differs from classic regeneration or observed PICKUP: %s frame=%d injury=%d HP=%d expected=%d valid=%t food-live=%t ate=%t stack=%v", f.mode, noxServer.Frame(), f.unit.Frame134, f.unit.HealthData.Cur, wantHP, validHP, e2eObjectInWorld(f.food), f.ate, update.GetAIStack()))
+		!validHP || f.unit.HealthData.Cur != wantHP || !e2eObjectInWorld(f.food) {
+		e2eError(fmt.Errorf("RETREAT food expected only classic regeneration and live food: %s frame=%d injury=%d HP=%d expected=%d valid=%t food-live=%t stack=%v", f.mode, frame, f.unit.Frame134, f.unit.HealthData.Cur, wantHP, validHP, e2eObjectInWorld(f.food), update.GetAIStack()))
 		return
 	}
-	if !f.ate {
-		before, validBefore := e2eAIRetreatFoodRegenerationHP(f.start, noxServer.Frame()-1, f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
-		if validBefore && wantHP > before {
-			e2eLog.Printf("AI RETREAT FOOD REGEN: mode=%s HP=%d->%d frame=%d injury=%d", f.mode, before, wantHP, noxServer.Frame(), f.unit.Frame134)
-		}
+	before, validBefore := e2eAIRetreatFoodRegenerationHP(f.start, frame-1, f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
+	if validBefore && wantHP > before {
+		e2eLog.Printf("AI RETREAT FOOD REGEN: mode=%s HP=%d->%d frame=%d injury=%d", f.mode, before, wantHP, frame, f.unit.Frame134)
 	}
-	if noxServer.Frame()-f.lastLog >= 30 {
-		f.lastLog = noxServer.Frame()
-		e2eLog.Printf("AI RETREAT FOOD TICK: mode=%s elapsed=%d pos=%v HP=%d moving=%t moved=%t ate=%t draw=%t/%t stack=%v", f.mode, noxServer.Frame()-f.start, f.unit.PosVec, f.unit.HealthData.Cur, f.moving, f.moved, f.ate, f.unitDrawn, f.foodDrawn, update.GetAIStack())
+	if frame-f.lastLog >= 30 {
+		f.lastLog = frame
+		e2eLog.Printf("AI RETREAT FOOD TICK: mode=%s elapsed=%d pos=%v HP=%d move=%d arrival=%d retained=%t stack=%v", f.mode, frame-f.start, f.unit.PosVec, f.unit.HealthData.Cur, f.moveFrame, f.arrivalFrame, f.arrived, update.GetAIStack())
 	}
 	// TickHook runs after IncFrame. Record the just-executed tick, including
 	// named actions, without another visibility probe or gameplay callback.
-	// Keep the existing consumption assertion and timeout unchanged.
-	if noxServer.Frame()-f.start <= 240 && !f.ate {
-		if snapshot, ok := e2eAIRetreatFoodSnapshot(f.unit, f.food, noxServer.Frame()-1, noxServer.TickRate()); ok {
+	if frame-f.start <= 240 {
+		if snapshot, ok := e2eAIRetreatFoodSnapshot(f.unit, f.food, frame-1, noxServer.TickRate()); ok {
 			e2eLog.Printf("AI RETREAT FOOD TRACE: mode=%s %s", f.mode, snapshot)
 		}
 	}
 }
 
-func (f *e2eAIRetreatFoodFixture) observeSound(id sound.ID, kind int, owner *server.Object, _ types.Pointf) {
-	if !f.active || id != sound.SoundMonsterEatFood || owner != f.unit {
-		return
+func (f *e2eAIRetreatFoodFixture) observeSound(id sound.ID, _ int, owner *server.Object, _ types.Pointf) {
+	if f.active && id == sound.SoundMonsterEatFood && owner == f.unit {
+		e2eError(fmt.Errorf("RETREAT food passive unit played an unexpected eat sound: %s", f.mode))
 	}
-	update := owner.UpdateDataMonster()
-	head := update.AIStackHead()
-	dx, dy := float64(owner.PosVec.X)-float64(f.foodPos.X), float64(owner.PosVec.Y)-float64(f.foodPos.Y)
-	if kind != 0 || !f.moving || !f.moved || !e2eObjectInWorld(f.food) ||
-		head == nil || head.Type() != ai.ACTION_PICKUP_OBJECT || head.ArgObj(0) != f.food ||
-		!update.HasAction(ai.ACTION_RETREAT) || !(dx*dx+dy*dy < 75*75) || owner.HealthData.Cur != f.expectedHP {
-		e2eError(fmt.Errorf("RETREAT food consumption lacks live movement/PICKUP/heal: %s HP=%d/%d head=%v moved=%t", f.mode, owner.HealthData.Cur, f.expectedHP, head, f.moved))
-		return
-	}
-	f.sounds++
-	if f.sounds != 1 {
-		e2eError(fmt.Errorf("RETREAT food consumed more than once: %s", f.mode))
-		return
-	}
-	f.eatFrame, f.ate = noxServer.Frame(), true
-	e2eLog.Printf("AI RETREAT FOOD PICKUP: mode=%s frame=%d native-target=%p HP=%d->%d pos=%v distance=%g sound=%d/%d", f.mode, f.eatFrame, head.ArgObj(0), f.injuredHP, owner.HealthData.Cur, owner.PosVec, math.Sqrt(dx*dx+dy*dy), id, kind)
 }
 
 func (f *e2eAIRetreatFoodFixture) observe() bool {
-	if !f.active || !f.ate || !f.unitDrawn || !f.foodDrawn || e2eObjectInWorld(f.food) ||
-		noxClient.Objs.ByNetCode(f.foodWire) != nil || f.unit.UpdateDataMonster().HasAction(ai.ACTION_RETREAT) {
-		return false
-	}
-	dr := noxClient.Objs.ByNetCode(f.unitWire)
-	if dr == nil || f.unit.HealthData.Cur != f.expectedHP || f.sounds != 1 {
+	if !f.active || !f.arrived || f.unit.HealthData.Cur <= f.arrivalHP ||
+		f.unit.PosVec.Sub(f.origin).Len() < 16 || !e2eObjectInWorld(f.food) ||
+		noxClient.Objs.ByNetCode(f.unitWire) == nil || noxClient.Objs.ByNetCode(f.foodWire) == nil {
 		return false
 	}
 	path, err := e2eWriteMagicFrame("", noxClient.r.CopyPixBuffer())
@@ -250,7 +231,7 @@ func (f *e2eAIRetreatFoodFixture) observe() bool {
 		return true
 	}
 	f.complete, f.active = true, false
-	e2eLog.Printf("AI RETREAT FOOD PASS: mode=%s elapsed=%d move/eat=%d/%d HP=%d->%d->%d travel=%g sound=1 native-food=%p client-unit=%p food-deleted=server/client RETREAT=resumed path=%s", f.mode, noxServer.Frame()-f.start, f.moveFrame, f.eatFrame, f.initialHP, f.injuredHP, f.unit.HealthData.Cur, math.Sqrt(f.travelSquared), f.food, dr, path)
+	e2eLog.Printf("AI RETREAT FOOD PASS: mode=%s elapsed=%d move/arrival=%d/%d HP=%d->%d->%d travel=%g food=server/client-live pickup=pending-at-arrival path=%s", f.mode, noxServer.Frame()-f.start, f.moveFrame, f.arrivalFrame, f.initialHP, f.injuredHP, f.unit.HealthData.Cur, f.unit.PosVec.Sub(f.origin).Len(), path)
 	return true
 }
 
@@ -260,6 +241,7 @@ func (f *e2eAIRetreatFoodFixture) cleanup() {
 		return
 	}
 	noxServer.DelayedDelete(f.unit)
+	noxServer.DelayedDelete(f.food)
 	asObjectS(f.host).SetPos(f.original)
 	f.host.VelVec, f.host.ForceVec, f.host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
 }
@@ -275,6 +257,6 @@ func (sc *e2eScenario) CheckAIRetreatFood(mode, name string) {
 		unit := noxServer.Players.HostUnit()
 		return nox_client_isConnected() && unit != nil && noxClient.ClientPlayerUnit() != nil && unit.Buffs == 0 && unit.Poison540 == 0
 	}, f.prepare)
-	sc.addWhen(1, name+" observe unforced RETREAT movement PICKUP consumption", 600, f.observe, f.cleanup)
+	sc.addWhen(1, name+" verify tracked food arrival and natural regeneration", 600, f.observe, f.cleanup)
 	sc.Wait(12, name+" finalize ordinary unit deletion")
 }

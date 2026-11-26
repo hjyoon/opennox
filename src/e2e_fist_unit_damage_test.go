@@ -64,7 +64,8 @@ func TestE2EFistUnitDamageArmorCarryPrediction(t *testing.T) {
 		armor, carry float32
 		wantDamage   int32
 		wantCarry    float32
-	}{{9, 0.5, 0.4, 7, 0.15}, {5, 1, 0, 2, 0.5}, {7, 1, 0, 4, -0.5}, {1, 1, 0, 1, 0.5}, {100, 0, 0, 100, 0}} {
+	}{{9, 0.5, 0.4, 7, 0.15}, {5, 1, 0, 2, 0.5}, {7, 1, 0, 3, 0.5},
+		{1, 1, 0, 1, 0.5}, {100, 0, 0, 100, 0}, {100, 0.22999997, 0.25, 88, 0.75}} {
 		got, carry := e2eFistUnitExpectedDamage(tc.damage, tc.armor, tc.carry)
 		if got != tc.wantDamage || math.Abs(float64(carry-tc.wantCarry)) > 1e-6 {
 			t.Fatalf("prediction=%d/%g want=%d/%g", got, carry, tc.wantDamage, tc.wantCarry)

@@ -2566,7 +2566,7 @@ func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
 			e2eError(fmt.Errorf("LAVA fixture killed player: health=%d flags=%#x", after, uint32(player.Flags())))
 			return
 		}
-		if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageLava)) ||
+		if update.Field76 != 2 || update.Field75 != uint32(object.DamageLava) ||
 			player.Obj130 != nil || player.Field131 != uint32(object.DamageLava) || player.Pos132 != (types.Pointf{}) {
 			e2eError(fmt.Errorf("LAVA metadata = marker:%#x/%#x source:%p type:%d hit-pos:%v",
 				update.Field75, update.Field76, player.Obj130, player.Field131, player.Pos132))

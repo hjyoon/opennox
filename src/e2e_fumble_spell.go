@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"math/big"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -41,11 +42,33 @@ func e2eFumbleShouldDrop(item *server.Object, ordinary bool) bool {
 }
 
 func e2eFumbleExpectedForce(origin, position types.Pointf, mass float32) types.Pointf {
-	delta := position.Sub(origin)
-	length := float32(math.Hypot(float64(delta.X), float64(delta.Y)) + 0.1)
-	strength := float32(500) / mass
-	return types.Ptf(float32(float64(delta.X)*float64(strength)/float64(length)),
-		float32(float64(delta.Y)*float64(strength)/float64(length)))
+	// The original force call multiplies 50 by 10 and uses startup
+	// PC53/toward-zero arithmetic. Its Y difference remains wide while
+	// computing the length, even after the binary32 Y store.
+	wide := func(value float64) *big.Float {
+		return new(big.Float).SetPrec(53).SetMode(big.ToZero).SetFloat64(value)
+	}
+	spill := func(value *big.Float) float32 {
+		result, _ := new(big.Float).SetPrec(24).SetMode(big.ToZero).Set(value).Float32()
+		return result
+	}
+	dx := wide(float64(position.X))
+	dx.Sub(dx, wide(float64(origin.X)))
+	dy := wide(float64(position.Y))
+	dy.Sub(dy, wide(float64(origin.Y)))
+	x, y := wide(float64(spill(dx))), wide(float64(spill(dy)))
+	square := wide(0).Mul(x, x)
+	square.Add(wide(0).Mul(dy, y), square)
+	radius := wide(0).Sqrt(square)
+	radius.Add(radius, wide(float64(float32(0.1))))
+	length := wide(float64(spill(radius)))
+	strength := wide(500)
+	strength.Quo(strength, wide(float64(mass)))
+	component := func(delta *big.Float) float32 {
+		force := wide(0).Mul(delta, strength)
+		return spill(force.Quo(force, length))
+	}
+	return types.Ptf(component(x), component(y))
 }
 
 type e2eFumbleFixture struct {

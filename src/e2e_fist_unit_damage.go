@@ -24,18 +24,11 @@ func e2eFistUnitDirection(direction string) (fromNPC, ok bool) {
 	}
 }
 
-// CRUSH spills the scaled damage to binary32 before adding the unit's live
-// fractional carry and rounding to even. Read this expectation independently
-// of the production damage service; never replace the service or set its result.
+// CRUSH uses half the unit's absorption. The stock carry routine spills
+// toward zero, then converts to a signed integer before retaining the fraction.
 func e2eFistUnitExpectedDamage(damage int32, armor, carry float32) (int32, float32) {
-	scaled := float32((1 - 0.5*float64(armor)) * float64(damage))
-	accumulated := scaled + carry
-	effective := int32(math.RoundToEven(float64(accumulated)))
-	nextCarry := accumulated - float32(effective)
-	if damage > 0 && effective == 0 {
-		effective = 1
-	}
-	return effective, nextCarry
+	effective, remainder := e2eExpectedArmorCarry(damage, armor*0.5, carry)
+	return effective, math.Float32frombits(remainder)
 }
 
 type e2eFistUnitFixture struct {

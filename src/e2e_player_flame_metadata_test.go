@@ -30,11 +30,11 @@ func TestE2EPlayerFlameMetadata(t *testing.T) {
 		{"non-player layout", func(p *server.Object, _ *server.PlayerUpdateData) { p.ObjClass = object.ClassMonster }, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			flame := &server.Object{ObjClass: object.ClassFire}
+			flame := &server.Object{ObjClass: object.ClassFire, PrevPos: types.Ptf(1533, 2348)}
 			update := &server.PlayerUpdateData{Field75: uint32(object.DamageFlame), Field76: 2}
 			player := &server.Object{
 				ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update),
-				Obj130: flame, Field131: uint32(object.DamageFlame),
+				Obj130: flame, Field131: uint32(object.DamageFlame), Pos132: flame.PrevPos,
 				HealthData: &server.HealthData{Cur: 147, Max: 150},
 			}
 			tc.mutate(player, update)

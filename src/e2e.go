@@ -3819,12 +3819,14 @@ func (sc *e2eScenario) AssertManaBombUpdateAndCancel(name string) {
 		e2eLog.Printf("MANA BOMB UPDATED: record=%p frame=%d power=%d->%d charge=%p",
 			record, noxServer.Frame(), e2e.manaBombPower, record.Field72, e2e.manaBombCharge)
 		noxServer.Spells.Dur.CancelSpell(record)
+		// The duration loop unlinks canceled spells during a later server frame.
+		e2e.manaBombFrame = noxServer.Frame()
 	})
 }
 
 func (sc *e2eScenario) AssertManaBombCompleted(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
-		return e2e.manaBombRecord != nil && noxServer.Frame() >= e2e.manaBombFrame+5
+		return e2e.manaBombRecord != nil && noxServer.Frame()-e2e.manaBombFrame >= 2
 	}, func() {
 		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
 			if cur == e2e.manaBombRecord {
@@ -3909,12 +3911,13 @@ func (sc *e2eScenario) AssertChainLightningUpdateAndCancel(name string) {
 		e2eLog.Printf("CHAIN LIGHTNING UPDATED: record=%p ray=%p target=%p frame=%d",
 			record, record.Sub108, e2e.chainLightningTarget, noxServer.Frame())
 		noxServer.Spells.Dur.CancelSpell(record)
+		e2e.chainLightningFrame = noxServer.Frame()
 	})
 }
 
 func (sc *e2eScenario) AssertChainLightningCompleted(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
-		return e2e.chainLightningRecord != nil && noxServer.Frame() >= e2e.chainLightningFrame+5
+		return e2e.chainLightningRecord != nil && noxServer.Frame()-e2e.chainLightningFrame >= 2
 	}, func() {
 		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
 			if cur == e2e.chainLightningRecord {
@@ -4091,12 +4094,13 @@ func (sc *e2eScenario) AssertEnergyBoltUpdateAndCancel(name string) {
 		e2eLog.Printf("ENERGY BOLT UPDATED: record=%p target=%p frame=%d health=%d", record, target,
 			noxServer.Frame(), target.HealthData.Cur)
 		noxServer.Spells.Dur.CancelSpell(record)
+		e2e.energyBoltFrame = noxServer.Frame()
 	})
 }
 
 func (sc *e2eScenario) AssertEnergyBoltCompleted(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
-		return e2e.energyBoltRecord != nil && noxServer.Frame() >= e2e.energyBoltFrame+5
+		return e2e.energyBoltRecord != nil && noxServer.Frame()-e2e.energyBoltFrame >= 2
 	}, func() {
 		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
 			if cur == e2e.energyBoltRecord {
@@ -4166,12 +4170,13 @@ func (sc *e2eScenario) AssertDrainManaUpdateAndCancel(name string) {
 		e2eLog.Printf("DRAIN MANA UPDATED: record=%p target=%p frame=%d mana=%d", record, target,
 			noxServer.Frame(), mana)
 		noxServer.Spells.Dur.CancelSpell(record)
+		e2e.drainManaFrame = noxServer.Frame()
 	})
 }
 
 func (sc *e2eScenario) AssertDrainManaCompleted(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
-		return e2e.drainManaRecord != nil && noxServer.Frame() >= e2e.drainManaFrame+5
+		return e2e.drainManaRecord != nil && noxServer.Frame()-e2e.drainManaFrame >= 2
 	}, func() {
 		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
 			if cur == e2e.drainManaRecord {

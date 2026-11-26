@@ -7,7 +7,8 @@ package ail
 #define MINIMP3_ONLY_MP3
 #define MINIMP3_NO_SIMD
 #include "../mp3/minimp3.h"
-#cgo noescape mp3dec_decode_layer3
+#cgo noescape mp3dec_unpack_layer3
+#cgo noescape mp3dec_synthesize_layer3
 */
 import "C"
 import (
@@ -51,7 +52,8 @@ type waveFormatMP3 struct {
 
 type mp3Decoder struct {
 	r          *wavReader
-	dec        C.mp3dec_t
+	synthesis  C.mp3dec_synthesis_t
+	overlap    [2][mp3OverlapSamples]float32
 	sync       mp3FrameSync
 	reservoir  mp3BitReservoir
 	sampleRate int
@@ -93,7 +95,8 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 		data := d.buf[d.bufOff : d.bufOff+d.bufSz]
 		skip, size, reset := d.sync.next(data)
 		if reset {
-			d.dec = C.mp3dec_t{}
+			d.synthesis = C.mp3dec_synthesis_t{}
+			clear(d.overlap[:])
 			d.reservoir.used = 0
 		}
 		if skip+size == 0 {
@@ -111,14 +114,14 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 			d.sync.header[0] = 0
 			continue
 		}
-		if d.decodeLayer3(frame, &info, out) {
+		if d.decodeLayer3(frame, header, &info, out) {
 			return header.samples(), true
 		}
 	}
 	return 0, false
 }
 
-func (d *mp3Decoder) decodeLayer3(frame []byte, info *mp3SideInfo, out []int16) bool {
+func (d *mp3Decoder) decodeLayer3(frame []byte, header mp3FrameHeader, info *mp3SideInfo, out []int16) bool {
 	var scratch [mp3ReservoirSize + mp3MaxFreeFormatBytes]byte
 	data, ready := d.reservoir.restore(scratch[:], frame[info.mainDataOffset:], info.mainDataBegin)
 	if !ready {
@@ -149,8 +152,27 @@ func (d *mp3Decoder) decodeLayer3(frame []byte, info *mp3SideInfo, out []int16) 
 		dst.count1_table = C.uint8_t(src.countOneTable)
 		dst.scfsi = C.uint8_t(src.scalefacReuseMask)
 	}
-	consumed := C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
-		(*C.uint8_t)(unsafe.Pointer(&scratch[0])), C.int(len(data)), (*C.int16_t)(unsafe.Pointer(&out[0])))
+	var spectra C.mp3dec_spectral_frame_t
+	consumed := C.mp3dec_unpack_layer3((*C.uint8_t)(unsafe.Pointer(&frame[0])), &granules[0],
+		(*C.uint8_t)(unsafe.Pointer(&scratch[0])), C.int(len(data)), &spectra)
+	spectrum := (*[2][2][mp3SpectralSamples]float32)(unsafe.Pointer(&spectra))
+	channels, count := header.channelCount(), header.granuleCount()
+	mixedLongSubbands := 2
+	if header.bandRateIndex() == 2 {
+		mixedLongSubbands = 4
+	}
+	for g := range count {
+		for ch := range channels {
+			side := &info.granules[g*channels+ch]
+			longSubbands := 0
+			if side.mixedBlock != 0 {
+				longSubbands = mixedLongSubbands
+			}
+			mp3Hybrid(&spectrum[g][ch], &d.overlap[ch], side.blockType, longSubbands)
+		}
+	}
+	C.mp3dec_synthesize_layer3(&d.synthesis, &spectra, C.int(count), C.int(channels),
+		(*C.int16_t)(unsafe.Pointer(&out[0])))
 	d.reservoir.save(data, int(consumed))
 	return true
 }

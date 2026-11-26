@@ -11,8 +11,10 @@
 #define MINIMP3_MAX_SAMPLES_PER_FRAME (1152 * 2)
 
 typedef struct {
-	float mdct_overlap[2][9 * 32], qmf_state[15 * 2 * 32];
-} mp3dec_t;
+	float qmf_state[15 * 2 * 32];
+} mp3dec_synthesis_t;
+
+typedef float mp3dec_spectral_frame_t[2][2][576];
 
 typedef struct {
 	uint8_t sfbtab[40];
@@ -32,9 +34,11 @@ typedef int16_t mp3d_sample_t;
 typedef float mp3d_sample_t;
 void mp3dec_f32_to_s16(const float* in, int16_t* out, int num_samples);
 #endif /* MINIMP3_FLOAT_OUTPUT */
-// Decode an assembled Layer III payload and return the number of bits consumed.
-int mp3dec_decode_layer3(mp3dec_t* dec, const uint8_t* hdr, const mp3dec_granule_t* granules,
-							const uint8_t* main_data, int data_bytes, mp3d_sample_t* pcm);
+// Unpack the coefficients from an assembled Layer III payload and return the bits consumed.
+int mp3dec_unpack_layer3(const uint8_t* hdr, const mp3dec_granule_t* granules, const uint8_t* main_data,
+						int data_bytes, mp3dec_spectral_frame_t* spectrum);
+void mp3dec_synthesize_layer3(mp3dec_synthesis_t* dec, mp3dec_spectral_frame_t* spectrum, int granules,
+							 int channels, mp3d_sample_t* pcm);
 
 #ifdef __cplusplus
 }
@@ -51,8 +55,6 @@ int mp3dec_decode_layer3(mp3dec_t* dec, const uint8_t* hdr, const mp3dec_granule
 #define MAX_L3_FRAME_PAYLOAD_BYTES MAX_FREE_FORMAT_FRAME_SIZE /* MUST be >= 320000/8/32000*1152 = 1440 */
 
 #define MAX_BITRESERVOIR_BYTES 511
-#define SHORT_BLOCK_TYPE 2
-#define STOP_BLOCK_TYPE 3
 #define MODE_MONO 3
 #define MODE_JOINT_STEREO 1
 #define HDR_IS_MONO(h) (((h[3]) & 0xC0) == 0xC0)
@@ -895,168 +897,7 @@ static void L3_antialias(float* grbuf, int nbands) {
 	}
 }
 
-static void L3_dct3_9(float* y) {
-	float s0, s1, s2, s3, s4, s5, s6, s7, s8, t0, t2, t4;
-
-	s0 = y[0];
-	s2 = y[2];
-	s4 = y[4];
-	s6 = y[6];
-	s8 = y[8];
-	t0 = s0 + s6 * 0.5f;
-	s0 -= s6;
-	t4 = (s4 + s2) * 0.93969262f;
-	t2 = (s8 + s2) * 0.76604444f;
-	s6 = (s4 - s8) * 0.17364818f;
-	s4 += s8 - s2;
-
-	s2 = s0 - s4 * 0.5f;
-	y[4] = s4 + s0;
-	s8 = t0 - t2 + s6;
-	s0 = t0 - t4 + t2;
-	s4 = t0 + t4 - s6;
-
-	s1 = y[1];
-	s3 = y[3];
-	s5 = y[5];
-	s7 = y[7];
-
-	s3 *= 0.86602540f;
-	t0 = (s5 + s1) * 0.98480775f;
-	t4 = (s5 - s7) * 0.34202014f;
-	t2 = (s1 + s7) * 0.64278761f;
-	s1 = (s1 - s5 - s7) * 0.86602540f;
-
-	s5 = t0 - s3 - t2;
-	s7 = t4 - s3 - t0;
-	s3 = t4 + s3 - t2;
-
-	y[0] = s4 - s7;
-	y[1] = s2 + s1;
-	y[2] = s0 - s3;
-	y[3] = s8 + s5;
-	y[5] = s8 - s5;
-	y[6] = s0 + s3;
-	y[7] = s2 - s1;
-	y[8] = s4 + s7;
-}
-
-static void L3_imdct36(float* grbuf, float* overlap, const float* window, int nbands) {
-	int i, j;
-	static const float g_twid9[18] = {0.73727734f, 0.79335334f, 0.84339145f, 0.88701083f, 0.92387953f, 0.95371695f,
-									  0.97629601f, 0.99144486f, 0.99904822f, 0.67559021f, 0.60876143f, 0.53729961f,
-									  0.46174861f, 0.38268343f, 0.30070580f, 0.21643961f, 0.13052619f, 0.04361938f};
-
-	for (j = 0; j < nbands; j++, grbuf += 18, overlap += 9) {
-		float co[9], si[9];
-		co[0] = -grbuf[0];
-		si[0] = grbuf[17];
-		for (i = 0; i < 4; i++) {
-			si[8 - 2 * i] = grbuf[4 * i + 1] - grbuf[4 * i + 2];
-			co[1 + 2 * i] = grbuf[4 * i + 1] + grbuf[4 * i + 2];
-			si[7 - 2 * i] = grbuf[4 * i + 4] - grbuf[4 * i + 3];
-			co[2 + 2 * i] = -(grbuf[4 * i + 3] + grbuf[4 * i + 4]);
-		}
-		L3_dct3_9(co);
-		L3_dct3_9(si);
-
-		si[1] = -si[1];
-		si[3] = -si[3];
-		si[5] = -si[5];
-		si[7] = -si[7];
-
-		i = 0;
-
-#if HAVE_SIMD
-		if (have_simd())
-			for (; i < 8; i += 4) {
-				f4 vovl = VLD(overlap + i);
-				f4 vc = VLD(co + i);
-				f4 vs = VLD(si + i);
-				f4 vr0 = VLD(g_twid9 + i);
-				f4 vr1 = VLD(g_twid9 + 9 + i);
-				f4 vw0 = VLD(window + i);
-				f4 vw1 = VLD(window + 9 + i);
-				f4 vsum = VADD(VMUL(vc, vr1), VMUL(vs, vr0));
-				VSTORE(overlap + i, VSUB(VMUL(vc, vr0), VMUL(vs, vr1)));
-				VSTORE(grbuf + i, VSUB(VMUL(vovl, vw0), VMUL(vsum, vw1)));
-				vsum = VADD(VMUL(vovl, vw1), VMUL(vsum, vw0));
-				VSTORE(grbuf + 14 - i, VREV(vsum));
-			}
-#endif /* HAVE_SIMD */
-		for (; i < 9; i++) {
-			float ovl = overlap[i];
-			float sum = co[i] * g_twid9[9 + i] + si[i] * g_twid9[0 + i];
-			overlap[i] = co[i] * g_twid9[0 + i] - si[i] * g_twid9[9 + i];
-			grbuf[i] = ovl * window[0 + i] - sum * window[9 + i];
-			grbuf[17 - i] = ovl * window[9 + i] + sum * window[0 + i];
-		}
-	}
-}
-
-static void L3_idct3(float x0, float x1, float x2, float* dst) {
-	float m1 = x1 * 0.86602540f;
-	float a1 = x0 - x2 * 0.5f;
-	dst[1] = x0 + x2;
-	dst[0] = a1 + m1;
-	dst[2] = a1 - m1;
-}
-
-static void L3_imdct12(float* x, float* dst, float* overlap) {
-	static const float g_twid3[6] = {0.79335334f, 0.92387953f, 0.99144486f, 0.60876143f, 0.38268343f, 0.13052619f};
-	float co[3], si[3];
-	int i;
-
-	L3_idct3(-x[0], x[6] + x[3], x[12] + x[9], co);
-	L3_idct3(x[15], x[12] - x[9], x[6] - x[3], si);
-	si[1] = -si[1];
-
-	for (i = 0; i < 3; i++) {
-		float ovl = overlap[i];
-		float sum = co[i] * g_twid3[3 + i] + si[i] * g_twid3[0 + i];
-		overlap[i] = co[i] * g_twid3[0 + i] - si[i] * g_twid3[3 + i];
-		dst[i] = ovl * g_twid3[2 - i] - sum * g_twid3[5 - i];
-		dst[5 - i] = ovl * g_twid3[5 - i] + sum * g_twid3[2 - i];
-	}
-}
-
-static void L3_imdct_short(float* grbuf, float* overlap, int nbands) {
-	for (; nbands > 0; nbands--, overlap += 9, grbuf += 18) {
-		float tmp[18];
-		memcpy(tmp, grbuf, sizeof(tmp));
-		memcpy(grbuf, overlap, 6 * sizeof(float));
-		L3_imdct12(tmp, grbuf + 6, overlap + 6);
-		L3_imdct12(tmp + 1, grbuf + 12, overlap + 6);
-		L3_imdct12(tmp + 2, overlap, overlap + 6);
-	}
-}
-
-static void L3_change_sign(float* grbuf) {
-	int b, i;
-	for (b = 0, grbuf += 18; b < 32; b += 2, grbuf += 36)
-		for (i = 1; i < 18; i += 2)
-			grbuf[i] = -grbuf[i];
-}
-
-static void L3_imdct_gr(float* grbuf, float* overlap, unsigned block_type, unsigned n_long_bands) {
-	static const float g_mdct_window[2][18] = {{0.99904822f, 0.99144486f, 0.97629601f, 0.95371695f, 0.92387953f,
-												0.88701083f, 0.84339145f, 0.79335334f, 0.73727734f, 0.04361938f,
-												0.13052619f, 0.21643961f, 0.30070580f, 0.38268343f, 0.46174861f,
-												0.53729961f, 0.60876143f, 0.67559021f},
-											   {1, 1, 1, 1, 1, 1, 0.99144486f, 0.92387953f, 0.79335334f, 0, 0, 0, 0, 0,
-												0, 0.13052619f, 0.38268343f, 0.60876143f}};
-	if (n_long_bands) {
-		L3_imdct36(grbuf, overlap, g_mdct_window[0], n_long_bands);
-		grbuf += 18 * n_long_bands;
-		overlap += 9 * n_long_bands;
-	}
-	if (block_type == SHORT_BLOCK_TYPE)
-		L3_imdct_short(grbuf, overlap, 32 - n_long_bands);
-	else
-		L3_imdct36(grbuf, overlap, g_mdct_window[block_type == STOP_BLOCK_TYPE], 32 - n_long_bands);
-}
-
-static void L3_decode(mp3dec_t* h, const uint8_t* hdr, mp3dec_scratch_t* s, const mp3dec_granule_t* gr_info, int nch) {
+static void L3_decode(const uint8_t* hdr, mp3dec_scratch_t* s, const mp3dec_granule_t* gr_info, int nch) {
 	int ch;
 
 	for (ch = 0; ch < nch; ch++) {
@@ -1081,8 +922,6 @@ static void L3_decode(mp3dec_t* h, const uint8_t* hdr, mp3dec_scratch_t* s, cons
 		}
 
 		L3_antialias(s->grbuf[ch], aa_bands);
-		L3_imdct_gr(s->grbuf[ch], h->mdct_overlap[ch], gr_info->block_type, n_long_bands);
-		L3_change_sign(s->grbuf[ch]);
 	}
 }
 
@@ -1511,19 +1350,27 @@ static void mp3d_synth_granule(float* qmf_state, float* grbuf, int nbands, int n
 	}
 }
 
-int mp3dec_decode_layer3(mp3dec_t* dec, const uint8_t* hdr, const mp3dec_granule_t* granules,
-							const uint8_t* main_data, int data_bytes, mp3d_sample_t* pcm) {
+int mp3dec_unpack_layer3(const uint8_t* hdr, const mp3dec_granule_t* granules, const uint8_t* main_data,
+						int data_bytes, mp3dec_spectral_frame_t* spectrum) {
 	int channels = HDR_IS_MONO(hdr) ? 1 : 2;
 	mp3dec_scratch_t scratch;
 
 	memcpy(scratch.maindata, main_data, data_bytes);
 	bs_init(&scratch.bs, scratch.maindata, data_bytes);
-	for (int igr = 0; igr < (HDR_TEST_MPEG1(hdr) ? 2 : 1); igr++, pcm += 576 * channels) {
-		memset(scratch.grbuf[0], 0, 576 * 2 * sizeof(float));
-		L3_decode(dec, hdr, &scratch, granules + igr * channels, channels);
-		mp3d_synth_granule(dec->qmf_state, scratch.grbuf[0], 18, channels, pcm, scratch.syn[0]);
+	for (int igr = 0; igr < (HDR_TEST_MPEG1(hdr) ? 2 : 1); igr++) {
+		memset(scratch.grbuf, 0, sizeof(scratch.grbuf));
+		L3_decode(hdr, &scratch, granules + igr * channels, channels);
+		memcpy((*spectrum)[igr], scratch.grbuf, sizeof(scratch.grbuf));
 	}
 	return scratch.bs.pos;
+}
+
+void mp3dec_synthesize_layer3(mp3dec_synthesis_t* dec, mp3dec_spectral_frame_t* spectrum, int granules,
+							 int channels, mp3d_sample_t* pcm) {
+	float workspace[18 + 15][2 * 32];
+	for (int igr = 0; igr < granules; igr++, pcm += 576 * channels) {
+		mp3d_synth_granule(dec->qmf_state, (*spectrum)[igr][0], 18, channels, pcm, workspace[0]);
+	}
 }
 
 #ifdef MINIMP3_FLOAT_OUTPUT

@@ -49,6 +49,25 @@ type mp3SideInfo struct {
 	granules       [4]mp3Granule
 }
 
+func (h mp3FrameHeader) bandRateIndex() int {
+	version := int(h[1]>>3&1) + int(h[1]>>4&1)
+	return 3*version + int(h[2]>>2&3)
+}
+
+func (h mp3FrameHeader) channelCount() int {
+	if h[3]&0xc0 == 0xc0 {
+		return 1
+	}
+	return 2
+}
+
+func (h mp3FrameHeader) granuleCount() int {
+	if h[1]&8 != 0 {
+		return 2
+	}
+	return 1
+}
+
 func readMP3SideInfo(frame []byte, header mp3FrameHeader) (mp3SideInfo, bool) {
 	var info mp3SideInfo
 	if len(frame) < mp3HeaderSize {
@@ -58,19 +77,13 @@ func readMP3SideInfo(frame []byte, header mp3FrameHeader) (mp3SideInfo, bool) {
 	if header[1]&1 == 0 {
 		bits.read(16) // CRC precedes side information when protection is enabled.
 	}
-	version := int(header[1]>>3&1) + int(header[1]>>4&1)
-	bandRate := max(0, 3*version+int(header[2]>>2&3)-1)
-	mono := header[3]&0xc0 == 0xc0
-	channels := 2
-	if mono {
-		channels = 1
-	}
-	count := channels
-	mpeg1 := header[1]&8 != 0
+	bandRate := max(0, header.bandRateIndex()-1)
+	channels, granules := header.channelCount(), header.granuleCount()
+	count := channels * granules
+	mpeg1 := granules == 2
 	scalefacBits := 9
 	var reuse uint32
 	if mpeg1 {
-		count *= 2
 		scalefacBits = 4
 		info.mainDataBegin = int(bits.read(9))
 		reuse = bits.read(7 + count)
@@ -80,7 +93,7 @@ func readMP3SideInfo(frame []byte, header mp3FrameHeader) (mp3SideInfo, bool) {
 
 	var dataBits int
 	for i := 0; i < count; i++ {
-		if mono {
+		if channels == 1 {
 			reuse <<= 4
 		}
 		g := &info.granules[i]

@@ -5,17 +5,16 @@ package cfixture
 #include "GAME2.h"
 #include "client__gui__guibrief.h"
 #include "quest_win_screen_450770.h"
-extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_587000_122848,dword_5d4594_831260,dword_5d4594_831244;
 static size_t g2bt_layout(int f){switch(f){case 0:return sizeof(nox_thing);case 1:return offsetof(nox_thing,pri_class);case 2:return offsetof(nox_thing,sub_class);case 3:return sizeof(nox_quest_stats_row_450770);case 4:return offsetof(nox_quest_stats_row_450770,score);default:return (size_t)-1;}}
 static uint32_t g2bt_word(int f, uint32_t value, int set) {
+    nox_briefing_state_t* state = nox_briefing_storage();
     uint32_t* word;
     switch (f) {
-    case 0: word = &dword_587000_122848; break;
+    case 0: word = &state->dialog_enabled; break;
     case 1: word = nox_dialog_audio_driver_word(); break;
-    case 2: word = &dword_5d4594_831220; break;
-    case 3: word = &dword_5d4594_831260; break;
-    default: word = &dword_5d4594_831244; break;
+    case 2: word = &state->mode; break;
+    case 3: word = &state->active; break;
+    default: word = &state->ready_for_dialog_end; break;
     }
     if (set) *word = value;
     return *word;

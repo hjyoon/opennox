@@ -24,9 +24,18 @@ typedef struct {
 	nox_window* trap_activate;
 	nox_window* book_button;
 	nox_window* dragged_slot;
+	void* drag_source_data;
+	void* drag_source_row;
+	void* font;
+	uint32_t expanded;
+	uint32_t trap_visible;
+	uint32_t targeting_ability;
+	uint32_t target_ability_id;
 } nox_quickbar_controls_t;
-_Static_assert(sizeof(nox_quickbar_controls_t) == 8 * sizeof(nox_window*),
-	"quickbar controls must contain eight native pointers");
+_Static_assert(offsetof(nox_quickbar_controls_t, expanded) == 11 * sizeof(void*),
+	"quickbar state word offset");
+_Static_assert(sizeof(nox_quickbar_controls_t) == 11 * sizeof(void*) + 4 * sizeof(uint32_t),
+	"quickbar controls size");
 nox_quickbar_controls_t* nox_quickbar_controls_storage(void);
 uintptr_t nox_game2_book_insert_native(uintptr_t kind, int spell, int slot);
 int nox_client_localPlayerHasFlags30(uint32_t flags);

@@ -5,7 +5,6 @@ package legacy
 #include "GAME2_1.h"
 #include "client__gui__guibook.h"
 
-extern uint32_t dword_5d4594_1047932, dword_5d4594_1047936;
 */
 import "C"
 
@@ -94,12 +93,12 @@ func sub_461160(id C.int) C.int {
 
 //export sub_4611B0
 func sub_4611B0() C.int {
-	id := C.int(C.dword_5d4594_1047936)
+	id := C.int(quickbarControls.target_ability_id)
 	if id == 0 {
 		return 0
 	}
 	result := nox_xxx_clientSendAbil_45DAF0(id)
-	C.dword_5d4594_1047936, C.dword_5d4594_1047932 = 0, 0
+	quickbarControls.target_ability_id, quickbarControls.targeting_ability = 0, 0
 	return result
 }
 

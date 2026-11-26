@@ -854,6 +854,33 @@ the bytes at those offsets in the reference `GAME.EXE`.
 
 There are 201 remaining definitions in `vardefs.c`.
 
+### Spellbook, quickbar, and briefing state
+
+Go owns another 34 cells across the spellbook, quickbar, and briefing.
+The spellbook keeps the original 32-bit reward coordinates and a
+native-width player reference. Quickbar drag sources and briefing
+dialog names retain their native pointer types. The C comparison
+fixtures access the same addresses through their storage accessors.
+The live dialog service also keeps the address of the briefing
+enable word.
+The frozen spellbook reference and the standalone C oracles retain
+their original bodies.
+
+| Shared structure | 32-bit size | 64-bit size |
+| --- | ---: | ---: |
+| Spellbook state | 92 bytes | 96 bytes |
+| Quickbar controls | 60 bytes | 104 bytes |
+| Briefing state | 32 bytes | 48 bytes |
+
+There are 167 remaining definitions in `vardefs.c`.
+
+The legacy directory contains 28 production C translation units and
+three comparison units outside `testdata`. The production units
+contain 60 function bodies across the supported build configurations.
+They implement ABI calls, C varargs and runtime services, including
+four `safe` wrappers and two 32-bit adapters that preserve float bits.
+The three comparison units contain 115 reference and fixture functions.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

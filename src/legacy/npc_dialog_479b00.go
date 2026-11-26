@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2_2.h"
-extern uint32_t dword_5d4594_1047520;
 */
 import "C"
 import (
@@ -53,7 +52,7 @@ func npcDialogSendResponse(choice byte) {
 // constructor. It is also used by native CGo/window regression tests.
 func NPCDialogProc479B00() unsafe.Pointer { return C.nox_xxx_guiDialog_479B00 }
 
-func npcDialogPauseSlot479B00() *uint32 { return (*uint32)(&C.dword_5d4594_1047520) }
+func npcDialogPauseSlot479B00() *uint32 { return (*uint32)(&bookState.reward_active) }
 
 func npcDialogWindowSlot479B00() **gui.Window {
 	return (**gui.Window)(unsafe.Pointer(&npcDialogWindow))

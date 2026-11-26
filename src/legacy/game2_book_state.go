@@ -53,8 +53,8 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 			}
 		}
 	}
-	C.dword_5d4594_1046868 = 0
-	C.dword_5d4594_1046872 = 0
+	bookState.page_mode = 0
+	bookState.guide_mode = 0
 	nox_xxx_guiSpellSortList_45ADF0(C.int(game2PlayerClass(player)))
 	if id == 34 {
 		show := C.int(0)
@@ -97,8 +97,8 @@ func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
 	if player == nil {
 		return
 	}
-	C.dword_5d4594_1046868 = 0
-	C.dword_5d4594_1046872 = 0
+	bookState.page_mode = 0
+	bookState.guide_mode = 0
 	nox_xxx_guiSpellSortList_45ADF0(C.int(game2PlayerClass(player)))
 	if notify != 0 {
 		if page := game2BookFind(id, 6); page != 6 {
@@ -172,12 +172,12 @@ func game2_book_disable_ability_word(id C.int) C.uintptr_t {
 
 //export sub_45D500
 func sub_45D500(show C.int) C.int {
-	result := C.int(C.dword_5d4594_1046864)
+	result := C.int(bookState.open_requested)
 	if show != 0 {
-		if C.dword_5d4594_1046864 != 0 {
+		if bookState.open_requested != 0 {
 			result = game2BookHide(bookUI.list_window, 0)
 		}
-	} else if C.dword_5d4594_1046864 != 0 {
+	} else if bookState.open_requested != 0 {
 		result = C.sub_47A260()
 		if result == 0 {
 			result = game2BookHide(bookUI.list_window, 1)
@@ -197,7 +197,7 @@ func game2_book_position_word(position *C.uint32_t) C.uintptr_t {
 
 //export nox_xxx_bookFillAll_45D570
 func nox_xxx_bookFillAll_45D570(kind, id C.int) {
-	if C.dword_5d4594_1047520 == 1 {
+	if bookState.reward_active == 1 {
 		return
 	}
 	C.nox_xxx_quickBarClose_4606B0()
@@ -217,37 +217,37 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	default:
 		return
 	}
-	C.dword_5d4594_1046852 = C.uint32_t(slot)
+	bookState.reward_slot = C.uint32_t(slot)
 	if slot == -1 {
 		return
 	}
-	C.dword_5d4594_1047520 = 1
-	C.dword_5d4594_1046868 = 1
-	C.dword_5d4594_1046872 = 1
+	bookState.reward_active = 1
+	bookState.page_mode = 1
+	bookState.guide_mode = 1
 	if kind == 2 || kind == 3 {
-		C.dword_5d4594_1046868 = 0
-		C.dword_5d4594_1046872 = 0
+		bookState.page_mode = 0
+		bookState.guide_mode = 0
 	}
 	game2_book_position_word((*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046844)))
-	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046636)) = float32(int32(*game2BookU(1046844)))
-	*(*float32)(unsafe.Pointer(&C.dword_5d4594_1046640)) = float32(int32(*game2BookU(1046848)))
+	*(*float32)(unsafe.Pointer(&bookState.reward_x_bits)) = float32(int32(*game2BookU(1046844)))
+	*(*float32)(unsafe.Pointer(&bookState.reward_y_bits)) = float32(int32(*game2BookU(1046848)))
 	C.nox_window_setPos_46A9B0(bookDetails.reward, C.int(*game2BookU(1046844)), C.int(*game2BookU(1046848)))
 	nox_xxx_buttonSetImgMB_461320(slot, (*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046668)))
 	first := C.int2{field_0: 400, field_4: -500}
 	second := C.int2{field_0: 350, field_4: 400}
-	C.dword_5d4594_1047524 = C.uint32_t(id)
-	C.dword_5d4594_1046652 = 0
+	bookState.reward_id = C.uint32_t(id)
+	bookState.reward_ability = 0
 	if kind == 3 {
-		C.dword_5d4594_1046652 = 1
+		bookState.reward_ability = 1
 	}
 	*game2BookU(1046676) = uint32(kind)
 	C.nox_client_setRenderGUI(1)
 	*game2BookU(1046680) = 0
 	sub_4BEDE0((*C.int2)(memmap.PtrOff(0x5D4594, 1046844)), (*C.int2)(memmap.PtrOff(0x5D4594, 1046668)), &first, &second, 19, 0, C.uintptr_t(uintptr(unsafe.Pointer(C.sub_45D7D0))), nil)
 	*game2BookU(1046628) = 0
-	C.obj_5d4594_1046620.field_0 = C.float(*memmap.PtrFloat32(0x5D4594, 1046692) - *memmap.PtrFloat32(0x5D4594, 1046684))
-	C.obj_5d4594_1046620.field_4 = C.float(*memmap.PtrFloat32(0x5D4594, 1046696) - *memmap.PtrFloat32(0x5D4594, 1046688))
-	C.nox_xxx_utilNormalizeVector_509F20(&C.obj_5d4594_1046620)
+	bookState.reward_velocity.field_0 = C.float(*memmap.PtrFloat32(0x5D4594, 1046692) - *memmap.PtrFloat32(0x5D4594, 1046684))
+	bookState.reward_velocity.field_4 = C.float(*memmap.PtrFloat32(0x5D4594, 1046696) - *memmap.PtrFloat32(0x5D4594, 1046688))
+	C.nox_xxx_utilNormalizeVector_509F20(&bookState.reward_velocity)
 	scale := float64(10)
 	if C.nox_win_width < 1000 {
 		scale = 8
@@ -255,14 +255,14 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 			scale = 6
 		}
 	}
-	C.obj_5d4594_1046620.field_0 = C.float(float64(C.obj_5d4594_1046620.field_0) * scale)
-	C.obj_5d4594_1046620.field_4 = C.float(float64(C.obj_5d4594_1046620.field_4) * scale)
+	bookState.reward_velocity.field_0 = C.float(float64(bookState.reward_velocity.field_0) * scale)
+	bookState.reward_velocity.field_4 = C.float(float64(bookState.reward_velocity.field_4) * scale)
 	game2BookHide(bookDetails.reward, 0)
 	C.nox_xxx_wndShowModalMB_46A8C0(bookDetails.reward)
 	if game2BookGameFlag(2048) {
 		C.sub_57AF30(nil, kind)
 	}
-	C.dword_5d4594_1046648 = C.uint32_t(C.nox_xxx_bookGet_430B40_get_mouse_prev_seq())
+	bookState.reward_start_frame = C.uint32_t(C.nox_xxx_bookGet_430B40_get_mouse_prev_seq())
 	if !game2BookGameFlag(2048) || C.nox_gui_xxx_check_446360() == 1 || C.nox_xxx_gameGet_4DB1B0() == 1 {
 		sub_45D870()
 	}
@@ -285,10 +285,10 @@ func sub_45D7D0(a, b *C.int) C.int {
 
 //export sub_45D810
 func sub_45D810() {
-	if C.dword_5d4594_1047520 != 0 {
-		C.dword_5d4594_1047520 = 0
+	if bookState.reward_active != 0 {
+		bookState.reward_active = 0
 		game2BookHide(bookDetails.reward, 1)
-		C.dword_5d4594_1046648 = 0
+		bookState.reward_start_frame = 0
 		C.nox_xxx_clientUpdateButtonRow_45E110(C.int(*game2BookU(1046612)))
 		if game2BookGameFlag(2048) {
 			C.sub_57B0A0()

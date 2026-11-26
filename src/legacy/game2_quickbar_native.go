@@ -52,48 +52,15 @@ package legacy
 #include <string.h>
 #include "game2_quickbar_native.h"
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_5d4594_1046852;
-extern uint32_t dword_5d4594_1047532;
-extern void* dword_5d4594_1049692;
-extern uint32_t dword_5d4594_1046652;
-extern uint32_t dword_5d4594_1047536;
 extern uint32_t dword_5d4594_1045420;
-extern char* dword_5d4594_831240;
 extern uint32_t dword_5d4594_1045640;
-extern uint32_t dword_5d4594_831260;
-extern uint32_t dword_5d4594_831244;
 extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_1047524;
-extern uint32_t dword_5d4594_1046864;
-extern void* dword_5d4594_1049696;
-extern uint32_t dword_5d4594_1046648;
-extern uint32_t dword_5d4594_1046640;
 extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_1047936;
-extern float2 obj_5d4594_1046620;
-extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_587000_122848;
-extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_830864;
-extern uint32_t dword_5d4594_1047528;
-extern uint32_t dword_5d4594_1046636;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern uint32_t dword_5d4594_1047512;
-extern uint32_t dword_5d4594_1046656;
-extern uint32_t dword_5d4594_1049484;
 extern void* dword_587000_81128;
 extern void* dword_587000_122852;
-extern uint32_t dword_5d4594_1049496;
-extern uint32_t dword_5d4594_1047932;
 extern void* dword_587000_127004;
-extern uint32_t dword_5d4594_1047520;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
-extern uint32_t dword_5d4594_1046936;
-extern uint32_t dword_5d4594_1047540;
-extern uint32_t dword_5d4594_1046872;
-extern uintptr_t dword_5d4594_1047516;
 extern nox_video_bag_image_t* nox_ctf_flag_team_border;
-extern uint32_t dword_5d4594_1046868;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern int nox_win_width;
 extern int nox_win_height;
@@ -447,27 +414,27 @@ func nox_xxx_guiSpellSetCursor_45DF60(spell C.int, flags C.char) C.int {
 //export sub_45DFC0
 func sub_45DFC0(ability C.int) C.int {
 	if ability == 0 {
-		C.dword_5d4594_1047932 = 0
-		C.dword_5d4594_1047936 = 0
+		quickbarControls.targeting_ability = 0
+		quickbarControls.target_ability_id = 0
 		return 0
 	}
 	word := memmap.Uint32(0x5D4594, 1047764+uintptr(24*ability)+4)
 	if word != 0 {
-		C.dword_5d4594_1047932 = 0
-		C.dword_5d4594_1047936 = 0
+		quickbarControls.targeting_ability = 0
+		quickbarControls.target_ability_id = 0
 		C.nox_xxx_clientSendAbil_45DAF0(ability)
 		g2qSound(766, 100)
 		return C.int(word)
 	}
-	C.dword_5d4594_1047932 = 1
-	C.dword_5d4594_1047936 = C.uint32_t(memmap.Uint32(0x5D4594, 1047764+uintptr(24*ability)))
+	quickbarControls.targeting_ability = 1
+	quickbarControls.target_ability_id = C.uint32_t(memmap.Uint32(0x5D4594, 1047764+uintptr(24*ability)))
 	g2qSound(766, 100)
 	return 0
 }
 
 //export nox_xxx_clientUpdateButtonRow_45E110
 func nox_xxx_clientUpdateButtonRow_45E110(index C.int) C.int {
-	if index >= 0 && index < 5 && memmap.Uint32(0x5D4594, 1049476) == 0 && C.dword_5d4594_1049496 == 0 {
+	if index >= 0 && index < 5 && memmap.Uint32(0x5D4594, 1049476) == 0 && quickbarControls.expanded == 0 {
 		data := g2qMain()
 		if data == nil {
 			return index
@@ -524,13 +491,13 @@ func nox_xxx_quickBarWnd_45EF50(win *C.nox_window, event C.int, pos C.uint) C.in
 	x, y := C.int(uint16(pos)), C.int(uint32(pos)>>16)
 	switch event {
 	case 5:
-		if *spell == 0 || memmap.Uint32(0x5D4594, 1047928) != 0 || C.dword_5d4594_1047932 != 0 || g2qBlocked() != 0 || (player != nil && game2PlayerClass(player) != 0 && !g2qEnabled(*spell)) {
+		if *spell == 0 || memmap.Uint32(0x5D4594, 1047928) != 0 || quickbarControls.targeting_ability != 0 || g2qBlocked() != 0 || (player != nil && game2PlayerClass(player) != 0 && !g2qEnabled(*spell)) {
 			return 1
 		}
 		g2qCaptureSet(win)
 		g2qDragSave(*spell, 2)
-		C.dword_5d4594_1049692 = data
-		C.dword_5d4594_1049696 = row
+		quickbarControls.drag_source_data = data
+		quickbarControls.drag_source_row = row
 		g2qSound(793, 100)
 		return 1
 	case 6, 7:
@@ -538,7 +505,7 @@ func nox_xxx_quickBarWnd_45EF50(win *C.nox_window, event C.int, pos C.uint) C.in
 			return 1
 		}
 		target := nox_xxx_spellBoxPointToWnd_45DE60(data, x, y)
-		if g2qBlocked() == 0 && memmap.Uint32(0x5D4594, 1047928) == 0 && C.dword_5d4594_1047932 == 0 {
+		if g2qBlocked() == 0 && memmap.Uint32(0x5D4594, 1047928) == 0 && quickbarControls.targeting_ability == 0 {
 			if target == slot {
 				quickbarControls.dragged_slot = win
 				if data != g2qTrap() {
@@ -560,7 +527,7 @@ func nox_xxx_quickBarWnd_45EF50(win *C.nox_window, event C.int, pos C.uint) C.in
 				dropped := g2qEventDrop(*spell, *g2qB(row, uintptr(8*slot+4)), x, y, data)
 				replacement := dropped >> 16
 				if replacement == 137 {
-					if !g2qPointRect(x, y) && (C.dword_5d4594_1049696 == nil || C.dword_5d4594_1049696 == row) {
+					if !g2qPointRect(x, y) && (quickbarControls.drag_source_row == nil || quickbarControls.drag_source_row == row) {
 						replacement = 0
 						dropped = 0
 					}
@@ -573,16 +540,16 @@ func nox_xxx_quickBarWnd_45EF50(win *C.nox_window, event C.int, pos C.uint) C.in
 					}
 				}
 			}
-		} else if C.dword_5d4594_1047932 != 0 && target < 0 {
+		} else if quickbarControls.targeting_ability != 0 && target < 0 {
 			g2qCancelAbility()
-			C.dword_5d4594_1047932 = 0
+			quickbarControls.targeting_ability = 0
 		} else if memmap.Uint32(0x5D4594, 1047928) != 0 {
 			if target < 0 {
 				g2qTarget(memmap.Uint32(0x5D4594, 1047556))
 			}
 			*memmap.PtrUint32(0x5D4594, 1047928) = 0
 		}
-		if memmap.Uint32(0x5D4594, 1047928) == 0 && C.dword_5d4594_1047932 == 0 {
+		if memmap.Uint32(0x5D4594, 1047928) == 0 && quickbarControls.targeting_ability == 0 {
 			g2qCaptureClear(win)
 			quickbarControls.dragged_slot = nil
 		}
@@ -690,7 +657,7 @@ func sub_45F5D0(win *C.nox_window, unused1 *C.nox_window_data) C.int {
 	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if text := C.sub_42E8E0(C.int(win.field_92+28), 1); text != nil {
 		C.nox_xxx_drawSetTextColor_434390(C.int(renderPalette.white))
-		C.nox_xxx_drawString_43F6E0(C.nox_quickbar_font, (*C.wchar2_t)(unsafe.Pointer(text)), C.int(x), C.int(y))
+		C.nox_xxx_drawString_43F6E0(quickbarControls.font, (*C.wchar2_t)(unsafe.Pointer(text)), C.int(x), C.int(y))
 	}
 	return 1
 }
@@ -830,16 +797,16 @@ func sub_45F900() {
 	}
 	sequence := uint32(C.nox_xxx_bookGet_430B40_get_mouse_prev_seq())
 	old := memmap.Uint32(0x5D4594, 1049492)
-	if C.dword_5d4594_1049496 != 0 {
+	if quickbarControls.expanded != 0 {
 		if old == sequence {
 			return
 		}
-		C.dword_5d4594_1049496 = 0
+		quickbarControls.expanded = 0
 	} else {
 		if old != sequence {
 			return
 		}
-		C.dword_5d4594_1049496 = 1
+		quickbarControls.expanded = 1
 	}
 	row := g2qRow(data)
 	if row == nil {
@@ -1008,7 +975,7 @@ func sub_4604E0() C.int { return C.int(memmap.Uint8(0x5D4594, 1048140)) }
 func nox_client_spellSetNext_4604F0() C.int {
 	result := C.int(memmap.Uint32(0x5D4594, 1049476))
 	if result == 0 {
-		result = C.int(C.dword_5d4594_1049496)
+		result = C.int(quickbarControls.expanded)
 		if result == 0 {
 			result = C.nox_xxx_get_57AF20()
 			if result == 0 {
@@ -1028,7 +995,7 @@ func nox_client_spellSetNext_4604F0() C.int {
 func nox_client_spellSetPrev_460540() C.int {
 	result := C.int(memmap.Uint32(0x5D4594, 1049476))
 	if result == 0 {
-		result = C.int(C.dword_5d4594_1049496)
+		result = C.int(quickbarControls.expanded)
 		if result == 0 {
 			result = C.nox_xxx_get_57AF20()
 			if result == 0 {
@@ -1046,7 +1013,7 @@ func nox_client_spellSetPrev_460540() C.int {
 
 //export nox_client_spellSetSelect_460590
 func nox_client_spellSetSelect_460590() {
-	if memmap.Uint32(0x5D4594, 1049476) != 0 || C.dword_5d4594_1049496 != 0 {
+	if memmap.Uint32(0x5D4594, 1049476) != 0 || quickbarControls.expanded != 0 {
 		return
 	}
 	data := g2qMain()
@@ -1084,7 +1051,7 @@ func nox_xxx_guiSpell_460650() C.int { return C.int(memmap.Uint32(0x5D4594, 1047
 func clearQuickbarDragState() {
 	quickbarControls.dragged_slot = nil
 	*memmap.PtrUint32(0x5D4594, 1047928) = 0
-	C.dword_5d4594_1047932 = 0
+	quickbarControls.targeting_ability = 0
 }
 
 func registerQuickbarDragCleanup(win *nox_window) {
@@ -1097,7 +1064,7 @@ func registerQuickbarDragCleanup(win *nox_window) {
 
 //export sub_460660
 func sub_460660() C.int {
-	if quickbarControls.dragged_slot == nil && memmap.Uint32(0x5D4594, 1047928) == 0 && C.dword_5d4594_1047932 == 0 {
+	if quickbarControls.dragged_slot == nil && memmap.Uint32(0x5D4594, 1047928) == 0 && quickbarControls.targeting_ability == 0 {
 		return 0
 	}
 	capture := quickbarControls.dragged_slot
@@ -1146,19 +1113,19 @@ func nox_xxx_quickBarClose_4606B0() C.int {
 
 //export sub_461010
 func sub_461010() {
-	if C.dword_5d4594_1049484 == 0 {
+	if quickbarControls.trap_visible == 0 {
 		return
 	}
 	g2qHidden(nox_quickbar_root(g2qTrap()), 1)
 	g2qHidden(quickbarControls.title, 0)
 	g2qStyle(quickbarControls.trap_construct, 0)
 	g2qSound(797, 100)
-	C.dword_5d4594_1049484 = 0
+	quickbarControls.trap_visible = 0
 }
 
 //export sub_461060
 func sub_461060() {
-	if C.dword_5d4594_1049484 == 1 {
+	if quickbarControls.trap_visible == 1 {
 		sub_461010()
 		return
 	}
@@ -1169,7 +1136,7 @@ func sub_461060() {
 	g2qHidden(quickbarControls.title, 1)
 	g2qStyle(quickbarControls.trap_construct, 1)
 	g2qSound(796, 100)
-	C.dword_5d4594_1049484 = 1
+	quickbarControls.trap_visible = 1
 }
 
 //export sub_460920
@@ -1178,10 +1145,10 @@ func sub_460920() {
 		nox_xxx_quickBarClose_4606B0()
 		return
 	}
-	if C.dword_5d4594_1049496 != 0 || C.nox_xxx_get_57AF20() != 0 {
+	if quickbarControls.expanded != 0 || C.nox_xxx_get_57AF20() != 0 {
 		return
 	}
-	if C.dword_5d4594_1049484 == 1 {
+	if quickbarControls.trap_visible == 1 {
 		sub_461010()
 	}
 	main := g2qMain()
@@ -1305,11 +1272,11 @@ func sub_460B90(show C.int) C.int {
 		g2qHidden(nox_quickbar_nugget(main, i), hidden)
 	}
 	trapHidden := int32(0)
-	if show == 0 || C.dword_5d4594_1049484 == 0 {
+	if show == 0 || quickbarControls.trap_visible == 0 {
 		trapHidden = 1
 	}
 	g2qHidden(nox_quickbar_root(g2qTrap()), trapHidden)
-	if show != 0 && C.dword_5d4594_1049484 != 0 {
+	if show != 0 && quickbarControls.trap_visible != 0 {
 		for i := C.int(0); i < 3; i++ {
 			g2qHidden(nox_quickbar_button(g2qTrap(), i), 0)
 			g2qHidden(nox_quickbar_nugget(g2qTrap(), i), 0)

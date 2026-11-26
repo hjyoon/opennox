@@ -31,7 +31,7 @@ func game2PlayerClass(p *C.nox_playerInfo) C.uchar {
 }
 
 func bookSelectedPlayer() *nox_playerInfo {
-	return *(**nox_playerInfo)(unsafe.Pointer(&C.dword_5d4594_1047516))
+	return *(**nox_playerInfo)(unsafe.Pointer(&bookState.player_word))
 }
 
 func game2BookU(off uintptr) *uint32  { return memmap.PtrUint32(0x5D4594, off) }
@@ -93,7 +93,7 @@ func nox_xxx_guiSpellSortFn_45ABC0(a, b *C.nox_cgo_const_void) C.int {
 func compareBookEntries(left, right uint32) int {
 	id1, id2 := int32(left), int32(right)
 	var s1, s2 *C.wchar2_t
-	if C.dword_5d4594_1046868 == 1 {
+	if bookState.page_mode == 1 {
 		s1 = nox_xxx_guiCreatureGetName_427240(C.int(id1))
 		s2 = nox_xxx_guiCreatureGetName_427240(C.int(id2))
 	} else if game2PlayerClass(bookSelectedPlayer()) != 0 {
@@ -128,14 +128,14 @@ func nox_client_toggleSpellbook_45AC70() {
 
 //export nox_xxx_bookHideMB_45ACA0
 func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 || C.dword_5d4594_1047520 == 1 {
+	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 || bookState.reward_active == 1 {
 		return 0
 	}
-	C.dword_5d4594_1046864 = 0
+	bookState.open_requested = 0
 	C.set_dword_5d4594_3799468(1)
-	C.dword_5d4594_1046868 = 0
-	if C.dword_5d4594_1046872 != 0 {
-		C.dword_5d4594_1046868 = 1
+	bookState.page_mode = 0
+	if bookState.guide_mode != 0 {
+		bookState.page_mode = 1
 	}
 	if C.nox_xxx_wndGetCaptureMain_46AE00() == bookUI.list_window {
 		C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
@@ -143,8 +143,8 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 	game2BookHide(bookUI.list_window, 1)
 	game2BookSound(787)
 	if animate != 0 {
-		C.nox_xxx_aNox_cfg_0_587000_132132 = 1
-		C.dword_5d4594_1046936 = 0
+		bookState.show_detail_page = 1
+		bookState.list_page = 0
 		game2BookHide(bookDetails.page_icon, 1)
 	}
 	if C.nox_xxx_bookGetSpellDnDType_477670() == 1 {
@@ -157,10 +157,10 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 	player := bookSelectedPlayer()
 	found := C.int(0)
-	C.dword_5d4594_1046656 = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
+	bookState.line_height = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
 	*game2BookU(1047508) = 0
-	C.dword_5d4594_1047512 = 0
-	perPage := uint32(2*(uint32(141)/uint32(C.dword_5d4594_1046656)) - 2)
+	bookState.hidden_entry_count = 0
+	perPage := uint32(2*(uint32(141)/uint32(bookState.line_height)) - 2)
 	appendID := func(id C.int) {
 		found = 1
 		n := *game2BookU(1047508)
@@ -176,7 +176,7 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 		}
 		return player.spell_lvl[int(id)] != 0
 	}
-	if C.dword_5d4594_1046868 == 1 {
+	if bookState.page_mode == 1 {
 		for id := nox_xxx_bookGetFirstCreMB_427300(); id != 0; id = nox_xxx_bookGetNextCre_427320(id) {
 			if known(id, true) && nox_xxx_bookCreatureTest_4D70C0(id) != 0 {
 				appendID(id)
@@ -186,7 +186,7 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 		for id := C.nox_xxx_spellFirstValid_424AD0(); id != 0; id = C.nox_xxx_spellNextValid_424AF0(id) {
 			if id != 34 && nox_xxx_playerCheckSpellClass_57AEA0(class, id) == 0 && known(id, false) {
 				if game2BookSpellFlag(id, 0x15000) {
-					C.dword_5d4594_1047512++
+					bookState.hidden_entry_count++
 				}
 				if !game2BookSpellFlag(id, 0x2000) {
 					appendID(id)
@@ -201,7 +201,7 @@ func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 		}
 	}
 	count := *game2BookU(1047508)
-	n := count - min(count, uint32(C.dword_5d4594_1047512))
+	n := count - min(count, uint32(bookState.hidden_entry_count))
 	*game2BookU(1046940) = n/perPage + 1
 	sortLegacyQsort(unsafe.Slice(game2BookU(1046960), int(n)), func(left, right *uint32) int {
 		return compareBookEntries(*left, *right)
@@ -215,10 +215,10 @@ func nox_xxx_book_45B010(force C.int) {
 		return
 	}
 	if force != 0 || C.nox_xxx_get_57AF20() == 0 {
-		C.dword_5d4594_1046864 = 1
-		C.dword_5d4594_1046868 = 0
-		if C.dword_5d4594_1046872 != 0 {
-			C.dword_5d4594_1046868 = 1
+		bookState.open_requested = 1
+		bookState.page_mode = 0
+		if bookState.guide_mode != 0 {
+			bookState.page_mode = 1
 		}
 		C.nox_xxx_wndShowModalMB_46A8C0(bookUI.list_window)
 		game2BookSound(786)
@@ -227,15 +227,15 @@ func nox_xxx_book_45B010(force C.int) {
 
 //export nox_xxx_bookClickSpell_45B1F0
 func nox_xxx_bookClickSpell_45B1F0() C.int {
-	C.dword_5d4594_1046868 = 0
-	C.dword_5d4594_1046872 = 0
+	bookState.page_mode = 0
+	bookState.guide_mode = 0
 	return 0
 }
 
 //export nox_xxx_bookClickCreature_45B200
 func nox_xxx_bookClickCreature_45B200() C.int {
-	C.dword_5d4594_1046868 = 1
-	C.dword_5d4594_1046872 = 1
+	bookState.page_mode = 1
+	bookState.guide_mode = 1
 	return 1
 }
 
@@ -245,7 +245,7 @@ func sub_45CFC0() C.int {
 }
 
 //export sub_45D9B0
-func sub_45D9B0() C.int { return C.int(C.dword_5d4594_1047520) }
+func sub_45D9B0() C.int { return C.int(bookState.reward_active) }
 
 //export nox_xxx_guiSpellTargetClickSet_45D9D0
 func nox_xxx_guiSpellTargetClickSet_45D9D0(id C.int) C.int {

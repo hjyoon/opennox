@@ -53,48 +53,15 @@ package legacy
 #include <string.h>
 #include "game2_quickbar_native.h"
 extern uintptr_t dword_8531A0_2576;
-extern uint32_t dword_5d4594_1046852;
-extern uint32_t dword_5d4594_1047532;
-extern void* dword_5d4594_1049692;
-extern uint32_t dword_5d4594_1046652;
-extern uint32_t dword_5d4594_1047536;
 extern uint32_t dword_5d4594_1045420;
-extern char* dword_5d4594_831240;
 extern uint32_t dword_5d4594_1045640;
-extern uint32_t dword_5d4594_831260;
-extern uint32_t dword_5d4594_831244;
 extern uint32_t dword_5d4594_831076;
-extern uint32_t dword_5d4594_1047524;
-extern uint32_t dword_5d4594_1046864;
-extern void* dword_5d4594_1049696;
-extern uint32_t dword_5d4594_1046648;
-extern uint32_t dword_5d4594_1046640;
 extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_1047936;
-extern float2 obj_5d4594_1046620;
-extern uint32_t dword_5d4594_831220;
-extern uint32_t dword_587000_122848;
-extern uint32_t dword_5d4594_1046932;
 extern uint32_t dword_5d4594_830864;
-extern uint32_t dword_5d4594_1047528;
-extern uint32_t dword_5d4594_1046636;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
-extern uint32_t dword_5d4594_1047512;
-extern uint32_t dword_5d4594_1046656;
-extern uint32_t dword_5d4594_1049484;
 extern void* dword_587000_81128;
 extern void* dword_587000_122852;
-extern uint32_t dword_5d4594_1049496;
-extern uint32_t dword_5d4594_1047932;
 extern void* dword_587000_127004;
-extern uint32_t dword_5d4594_1047520;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
-extern uint32_t dword_5d4594_1046936;
-extern uint32_t dword_5d4594_1047540;
-extern uint32_t dword_5d4594_1046872;
-extern uintptr_t dword_5d4594_1047516;
 extern nox_video_bag_image_t* nox_ctf_flag_team_border;
-extern uint32_t dword_5d4594_1046868;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern int nox_win_width;
 extern int nox_win_height;
@@ -111,7 +78,11 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-var briefingState, _ = alloc.New(C.nox_briefing_state_t{})
+var briefingState = func() *C.nox_briefing_state_t {
+	state, _ := alloc.New(C.nox_briefing_state_t{})
+	state.dialog_enabled = 1
+	return state
+}()
 
 //export nox_briefing_storage
 func nox_briefing_storage() *C.nox_briefing_state_t { return briefingState }
@@ -177,19 +148,19 @@ func sub_44D090(id C.int) C.int {
 }
 
 //export sub_44D960
-func sub_44D960() { C.dword_587000_122848 = 0 }
+func sub_44D960() { briefingState.dialog_enabled = 0 }
 
 //export sub_44D970
 func sub_44D970() C.int {
 	v := dialogAudioDriverLegacyMirror()
 	if v != 0 {
-		C.dword_587000_122848 = 1
+		briefingState.dialog_enabled = 1
 	}
 	return C.int(v)
 }
 
 //export sub_44D990
-func sub_44D990() C.int { return C.int(C.dword_587000_122848) }
+func sub_44D990() C.int { return C.int(briefingState.dialog_enabled) }
 
 //export sub_44E110
 func sub_44E110() *C.uint32_t { return nox_client_questPreview_native_44E110() }
@@ -199,8 +170,8 @@ func nox_xxx_playGMCAPsmth_44E3E0() C.int {
 	result := C.int(legacyWords.dword_5d4594_831224)
 	*memmap.PtrUint32(0x5D4594, 831248) = 1
 	if result != 0 {
-		result = C.nox_xxx_playDialogFile_44D900((*C.uchar)(unsafe.Pointer(C.dword_5d4594_831240)), 100)
-		C.dword_5d4594_831244 = 1
+		result = C.nox_xxx_playDialogFile_44D900((*C.uchar)(unsafe.Pointer(briefingState.dialog_path)), 100)
+		briefingState.ready_for_dialog_end = 1
 	}
 	return result
 }
@@ -232,8 +203,8 @@ func sub_44E560() *C.nox_window {
 func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unused2 C.uintptr_t, unused3 C.uintptr_t) C.int {
 	if memmap.Uint32(0x5D4594, 831248) != 0 && event != 18 && event != 17 && sub_41D1B0() != 1 {
 		C.sub_450580()
-		if C.dword_5d4594_831220 != 0 {
-			if C.dword_5d4594_831220 == 255 {
+		if briefingState.mode != 0 {
+			if briefingState.mode == 255 {
 				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 				duration := C.nox_client_getIntroScreenDuration_44E3B0()
 				C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
@@ -275,12 +246,12 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		C.nox_xxx_wndStaticDrawNoImage_488D00(win, draw)
 	}
 	C.nox_client_copyRect_49F6F0(0, 0, C.nox_getBackbufWidth(), C.nox_getBackbufHeight())
-	if int64(*g2bPosition()) <= int64(memmap.Int32(0x5D4594, 831280)) && C.dword_5d4594_831244 == 1 && C.sub_44D930() == 0 && uint64(C.nox_platform_get_ticks())-memmap.Uint64(0x5D4594, 831292) > uint64(C.nox_client_getBriefDuration()) && (memmap.Uint32(0x5D4594, 832488) == 1 || flags&5 == 0) {
+	if int64(*g2bPosition()) <= int64(memmap.Int32(0x5D4594, 831280)) && briefingState.ready_for_dialog_end == 1 && C.sub_44D930() == 0 && uint64(C.nox_platform_get_ticks())-memmap.Uint64(0x5D4594, 831292) > uint64(C.nox_client_getBriefDuration()) && (memmap.Uint32(0x5D4594, 832488) == 1 || flags&5 == 0) {
 		if flags&2 != 0 && legacyAddressableWords.dword_5d4594_832480 != 0 {
 			g2qSound(582, 100)
 		}
 		C.sub_450580()
-		if C.dword_5d4594_831220 != 0 {
+		if briefingState.mode != 0 {
 			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 			duration := C.nox_client_getIntroScreenDuration_44E3B0()
 			C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
@@ -298,7 +269,7 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 
 //export sub_44E8B0
 func sub_44E8B0() C.double {
-	if C.dword_5d4594_831220 == 255 {
+	if briefingState.mode == 255 {
 		return 1
 	}
 	return 0
@@ -310,8 +281,8 @@ func sub_44E8D0(unused1 *C.nox_window, unused2 *C.nox_window_data) C.int { retur
 //export nox_client_lockScreenBriefing_450160
 func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.int {
 	player := g2qPlayer()
-	C.dword_5d4594_831260 = 1
-	C.dword_5d4594_831244 = 1
+	briefingState.active = 1
+	briefingState.ready_for_dialog_end = 1
 	*memmap.PtrUint32(0x5D4594, 832488) = 0
 	*memmap.PtrUint32(0x5D4594, 832472) = 0
 	legacyWords.dword_5d4594_831256 = 0
@@ -327,16 +298,16 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	C.nox_xxx_wndSetWindowProc_46B300(outer, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
 	textWin := C.nox_xxx_wndGetChildByID_46B0C0(briefingState.panel, 1010)
 	C.nox_xxx_wndSetDrawFn_46B340(textWin, unsafe.Pointer(C.sub_44E6F0))
-	C.dword_5d4594_831220 = C.uint32_t(mode)
+	briefingState.mode = C.uint32_t(mode)
 	sound := C.int(0)
 	switch screen {
 	case 255:
 		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, nil)
 		g2bEvent(textWin, 16385, C.uintptr_t(uintptr(*memmap.PtrPtr(0x5D4594, 831268))))
 		C.nox_xxx_wndClearFlag_46AD80(textWin, 0x2000)
-		C.dword_5d4594_831240 = C.nox_xxx_GetEndgameDialog_578D80()
+		briefingState.dialog_path = C.nox_xxx_GetEndgameDialog_578D80()
 		sound = 24
-		C.dword_5d4594_831220 = 255
+		briefingState.mode = 255
 	case 254:
 		C.nox_server_currentMapGetFilename_409B30()
 		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("GauntletStartMines"))
@@ -357,8 +328,8 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		C.nox_client_resetScreenParticles_431510()
 		C.nox_xxx_bookHideMB_45ACA0(1)
 		C.sub_446780()
-		C.dword_5d4594_831240 = nil
-		C.dword_5d4594_831244 = 1
+		briefingState.dialog_path = nil
+		briefingState.ready_for_dialog_end = 1
 		legacyWords.dword_5d4594_831224 = 0
 	default:
 		offset := uintptr(32 * (screen + class + 10*class))
@@ -368,7 +339,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		}
 		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, base+offset)))
 		g2bEvent(textWin, 16385, C.uintptr_t(uintptr(*memmap.PtrPtr(0x5D4594, base+4+offset))))
-		C.dword_5d4594_831240 = (*C.char)(*memmap.PtrPtr(0x5D4594, base+8+offset))
+		briefingState.dialog_path = (*C.char)(*memmap.PtrPtr(0x5D4594, base+8+offset))
 		sound = C.int(memmap.Uint32(0x5D4594, base+12+offset))
 	}
 	text := *(**C.wchar2_t)(textWin.widget_data)
@@ -405,7 +376,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	duration := C.nox_client_getIntroScreenDuration_44E3B0()
 	C.nox_video_fadeOutScreen_44DB30(duration, 1, unsafe.Pointer(C.nox_xxx_playGMCAPsmth_44E3E0))
 	if legacyWords.dword_5d4594_831224 != 0 {
-		C.dword_5d4594_831244 = 0
+		briefingState.ready_for_dialog_end = 0
 	}
 	return C.int(legacyWords.dword_5d4594_831224)
 }
@@ -417,7 +388,7 @@ func sub_4505E0() C.int {
 		briefingState.outer = nil
 		briefingState.panel = nil
 	}
-	C.dword_5d4594_831260 = 0
+	briefingState.active = 0
 	briefingState.preview_font = nil
 	slots := questPreviewSlots44E110()
 	result := C.int(0)

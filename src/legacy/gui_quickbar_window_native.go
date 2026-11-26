@@ -12,7 +12,6 @@ package legacy
 #include "client__gui__guispell.h"
 #include "client__gui__window.h"
 
-extern uint32_t dword_5d4594_1049484;
 extern int nox_win_width;
 extern int nox_win_height;
 */
@@ -120,7 +119,7 @@ func createQuickbarTrapTray(x, y, fontHeight C.int) {
 	nox_xxx_wndSetOffsetMB_46AE40(root, -40, -20)
 	*memmap.PtrUint8(0x5D4594, 1048192) |= 1
 	nox_window_set_hidden(root, 1)
-	C.dword_5d4594_1049484 = 0
+	quickbarControls.trap_visible = 0
 
 	label := nox_window_new(root, 1032, 20, -7, 110, fontHeight, nil)
 	nox_window_set_all_funcs(label, nil, unsafe.Pointer(C.nox_xxx_quickbarDraw_45FAC0), nil)
@@ -235,9 +234,9 @@ func nox_xxx_quickBarCreate_45E190() C.int {
 	fontHeight := C.int(nox_xxx_guiFontHeightMB_43F320(nil))
 	x, y := (C.nox_win_width-320)/2, C.nox_win_height-74
 	legacyWords.dword_5d4594_1047548, legacyWords.dword_5d4594_1047552 = C.uint32_t(x), C.uint32_t(y)
-	C.nox_quickbar_font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
+	quickbarControls.font = nox_xxx_guiFontPtrByName_43F360(internCStr("small"))
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		*memmap.PtrUint32(0x5D4594, 1049684) = uint32(uintptr(C.nox_quickbar_font))
+		*memmap.PtrUint32(0x5D4594, 1049684) = uint32(uintptr(quickbarControls.font))
 	}
 	*memmap.PtrUint32(0x587000, 133656) = uint32(x)
 	*memmap.PtrUint32(0x587000, 133660) = uint32(y - 17)

@@ -5,9 +5,6 @@ package legacy
 
 #include "GAME2.h"
 
-extern uint32_t dword_5d4594_1046868;
-extern uint32_t dword_5d4594_1046864;
-extern uint32_t dword_5d4594_1046872;
 */
 import "C"
 
@@ -19,8 +16,8 @@ var clientGuideRewardCall45D140 = func(guide, notify int32) {
 			currentPlayer: Get_dword_8531A0_2576,
 			relatedGuides: clientGuideRelationsNative45D140,
 			setBookModes: func() {
-				C.dword_5d4594_1046868 = 1
-				C.dword_5d4594_1046872 = 1
+				bookState.page_mode = 1
+				bookState.guide_mode = 1
 			},
 			sortGuideList: func(class uint8) {
 				C.nox_xxx_guiSpellSortList_45ADF0(C.int(class))
@@ -52,10 +49,10 @@ func clientGuideRewardExportCall45D140(guide, notify int32) {
 func Nox_client_guideRewardState45D140(guide int) (level uint32, guideMode, bookOpen bool, page int, found bool) {
 	player := Get_dword_8531A0_2576()
 	if player == nil || guide <= 0 || guide >= len(player.BeastScrollLvl) {
-		return 0, C.dword_5d4594_1046872 != 0, C.dword_5d4594_1046864 != 0, 0, false
+		return 0, bookState.guide_mode != 0, bookState.open_requested != 0, 0, false
 	}
 	page, found = clientGuidePageNative45D140(guide)
-	return player.BeastScrollLvl[guide], C.dword_5d4594_1046872 != 0, C.dword_5d4594_1046864 != 0, page, found
+	return player.BeastScrollLvl[guide], bookState.guide_mode != 0, bookState.open_requested != 0, page, found
 }
 
 //export nox_xxx_netGuideRewardCli_45D140

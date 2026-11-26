@@ -10,7 +10,6 @@ extern unsigned int dword_5d4594_527988;
 extern uint32_t dword_5d4594_805820;
 extern uint32_t nox_xxx_useAudio_587000_80772;
 extern uint32_t dword_5d4594_815052;
-extern uint32_t dword_5d4594_1047932;
 extern uint32_t dword_5d4594_1062552;
 #include "client_ui_words.h"
 extern uint32_t dword_5d4594_1098624;
@@ -46,7 +45,7 @@ func sub_43AF40() C.int { return C.int(C.nox_game_createOrJoin_815048) }
 func sub_43AF80() C.int { return C.int(C.dword_5d4594_814548) }
 
 //export sub_4611A0
-func sub_4611A0() C.int { return C.int(C.dword_5d4594_1047932) }
+func sub_4611A0() C.int { return C.int(quickbarControls.targeting_ability) }
 
 //export sub_4674A0
 func sub_4674A0() C.int { return C.int(C.dword_5d4594_1062552) }

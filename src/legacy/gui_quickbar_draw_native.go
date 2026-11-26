@@ -38,7 +38,7 @@ func sub_45F9B0(win *C.nox_window, _ *C.nox_window_data) C.int {
 	}
 	if memmap.Uint32(0x5D4594, 1049476) == 0 {
 		set := int(*g2qB(bar, 200)) + 1
-		y := nox_xxx_guiFontHeightMB_43F320(C.nox_quickbar_font) - nox_xxx_guiFontHeightMB_43F320(nil) + 1
+		y := nox_xxx_guiFontHeightMB_43F320(quickbarControls.font) - nox_xxx_guiFontHeightMB_43F320(nil) + 1
 		drawQuickbarSetName(win, "SpellSet", 1276, set, int32(y))
 	}
 	return 1

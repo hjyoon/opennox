@@ -4,13 +4,6 @@ package legacy
 #include "client__gui__guibook.h"
 #include "noxstring.h"
 
-extern uint32_t dword_5d4594_1046656;
-extern uint32_t dword_5d4594_1046868;
-extern uint32_t dword_5d4594_1046872;
-extern uint32_t dword_5d4594_1046932;
-extern uint32_t dword_5d4594_1046936;
-extern uint32_t dword_5d4594_1047512;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 
 static inline void nox_book_format_level(wchar2_t* dst, const wchar2_t* format, int level) {
 	nox_swprintf(dst, format, level);
@@ -59,15 +52,15 @@ func (page bookPageLayout) drawCenteredLine(text *C.wchar2_t, y int32) {
 }
 
 func (page bookPageLayout) drawContents(player *C.nox_playerInfo) {
-	if C.dword_5d4594_1046936 == 0 {
+	if bookState.list_page == 0 {
 		nox_window_set_hidden(bookDetails.left_arrow, 1)
 	}
-	spacing := int32(C.dword_5d4594_1046656)
+	spacing := int32(bookState.line_height)
 	rows := 141/spacing - 1
 	x, y := page.x+78, page.y+19
 	for slot := int32(0); slot < 2*rows; slot++ {
-		index := slot + 2*rows*int32(C.dword_5d4594_1046936)
-		if index >= memmap.Int32(0x5D4594, 1047508)-int32(C.dword_5d4594_1047512) {
+		index := slot + 2*rows*int32(bookState.list_page)
+		if index >= memmap.Int32(0x5D4594, 1047508)-int32(bookState.hidden_entry_count) {
 			break
 		}
 		if slot == rows {
@@ -78,7 +71,7 @@ func (page bookPageLayout) drawContents(player *C.nox_playerInfo) {
 		id := int32(game2BookID(uint32(index)))
 		var title *C.wchar2_t
 		switch {
-		case C.dword_5d4594_1046868 == 1:
+		case bookState.page_mode == 1:
 			if class == playerlib.Conjurer && !bool(nox_xxx_spellIsEnabled_424B70(id+74)) {
 				nox_xxx_drawSetTextColor_434390(memmap.Int32(0x5D4594, 1046884))
 			}
@@ -94,7 +87,7 @@ func (page bookPageLayout) drawContents(player *C.nox_playerInfo) {
 		var width C.int
 		nox_xxx_drawGetStringSize_43F840(nil, title, &width, nil, 128)
 		nox_xxx_drawString_43F6E0(nil, title, x-int32(width)/2, y)
-		y += int32(C.dword_5d4594_1046656)
+		y += int32(bookState.line_height)
 	}
 }
 
@@ -173,27 +166,27 @@ func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
 	var x, y C.uint
 	nox_gui_getWindowOffs_46AA20(win, &x, &y)
 	page := bookPageLayout{int32(x), int32(y), nox_xxx_guiFontHeightMB_43F320(nil)}
-	C.dword_5d4594_1046656 = C.uint32_t(page.fontHeight + 2)
+	bookState.line_height = C.uint32_t(page.fontHeight + 2)
 	nox_xxx_drawSetTextColor_434390(memmap.Int32(0x5D4594, 1046880))
 	nox_client_drawImageAt_47D2C0(bookUI.background, page.x-24, page.y-76)
 	tab := bookUI.spell_tab_lit
-	if C.dword_5d4594_1046872 != 0 {
+	if bookState.guide_mode != 0 {
 		tab = bookUI.guide_tab_lit
 	}
 	nox_client_drawImageAt_47D2C0(tab, page.x-24, page.y-76)
 
-	switch C.dword_5d4594_1046868 {
+	switch bookState.page_mode {
 	case 3:
 		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(bookDetails.backward)), page.x-24, page.y-76)
 	case 2:
 		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr(unsafe.Pointer(bookDetails.forward)), page.x-24, page.y-76)
 	default:
-		if C.nox_xxx_aNox_cfg_0_587000_132132 != 0 {
+		if bookState.show_detail_page != 0 {
 			page.drawContents(player)
 		} else {
-			id := int32(game2BookID(uint32(C.dword_5d4594_1046932)))
+			id := int32(game2BookID(uint32(bookState.entry_index)))
 			switch {
-			case C.dword_5d4594_1046868 == 1:
+			case bookState.page_mode == 1:
 				page.drawCreature(player, C.int(id))
 			case asPlayerS(player).PlayerClass() == playerlib.Warrior:
 				sub_425450(id)
@@ -204,8 +197,8 @@ func nox_xxx_bookDrawList_45BD40(win *C.nox_window) C.int {
 			}
 		}
 	}
-	if C.nox_xxx_aNox_cfg_0_587000_132132 == 0 &&
-		int32(C.dword_5d4594_1046932) >= memmap.Int32(0x5D4594, 1047508)-int32(C.dword_5d4594_1047512)-1 {
+	if bookState.show_detail_page == 0 &&
+		int32(bookState.entry_index) >= memmap.Int32(0x5D4594, 1047508)-int32(bookState.hidden_entry_count)-1 {
 		nox_window_set_hidden(bookDetails.right_arrow, 1)
 	}
 	return 1

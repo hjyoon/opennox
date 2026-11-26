@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME2.h"
-extern uint32_t dword_5d4594_1049484;
 */
 import "C"
 
@@ -21,7 +20,7 @@ func ClientTrapQuickbarSnapshot() (entries [25][2]uint32, row int, open bool) {
 		entries[i][0] = binary.LittleEndian.Uint32(data[8*i:])
 		entries[i][1] = binary.LittleEndian.Uint32(data[8*i+4:])
 	}
-	return entries, int(data[200]), C.dword_5d4594_1049484 != 0
+	return entries, int(data[200]), quickbarControls.trap_visible != 0
 }
 
 func ClientTrapQuickbarRoot() *gui.Window {

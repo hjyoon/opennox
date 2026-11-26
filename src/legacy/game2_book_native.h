@@ -31,19 +31,36 @@
 #include "common__gamemech__pausefx.h"
 
 extern uintptr_t dword_8531A0_2576;
-extern uintptr_t dword_5d4594_1047516;
-extern uint32_t dword_5d4594_1046656, dword_5d4594_1047512;
-extern uint32_t dword_5d4594_1046864, dword_5d4594_1046868, dword_5d4594_1046872;
-extern uint32_t dword_5d4594_1046932, dword_5d4594_1046936;
-extern uint32_t dword_5d4594_1047520, dword_5d4594_1047524, dword_5d4594_1047528;
-extern uint32_t dword_5d4594_1047532, dword_5d4594_1047536, dword_5d4594_1047540;
-extern uint32_t dword_5d4594_1046852, dword_5d4594_1046636, dword_5d4594_1046640;
-extern uint32_t dword_5d4594_1046652, dword_5d4594_1046648;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
-extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
-extern float2 obj_5d4594_1046620;
 extern int nox_win_width, nox_win_height;
+
+typedef struct {
+	uintptr_t player_word;
+	float2 reward_velocity;
+	uint32_t reward_x_bits;
+	uint32_t reward_y_bits;
+	uint32_t reward_start_frame;
+	uint32_t reward_ability;
+	uint32_t line_height;
+	uint32_t reward_slot;
+	uint32_t open_requested;
+	uint32_t page_mode;
+	uint32_t guide_mode;
+	uint32_t entry_index;
+	uint32_t list_page;
+	uint32_t hidden_entry_count;
+	uint32_t reward_active;
+	uint32_t reward_id;
+	uint32_t list_drag_id;
+	uint32_t list_drag_x;
+	uint32_t list_drag_y;
+	uint32_t page_drag_id;
+	uint32_t show_detail_page;
+	uint32_t list_drag_index;
+} nox_book_state_t;
+_Static_assert(offsetof(nox_book_state_t, reward_velocity) == sizeof(uintptr_t), "book reward velocity offset");
+_Static_assert(sizeof(nox_book_state_t) == sizeof(uintptr_t) + 22 * sizeof(uint32_t), "book state size");
+nox_book_state_t* nox_book_state_storage(void);
 
 typedef struct nox_book_ui_slots {
 	nox_window* list_window;

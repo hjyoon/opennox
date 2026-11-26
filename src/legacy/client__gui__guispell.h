@@ -6,7 +6,6 @@
 typedef struct nox_window_data nox_window_data;
 typedef struct nox_window nox_window;
 
-extern void* nox_quickbar_font;
 
 int nox_xxx_spellPutInBox_45DEB0(void* data, int spell, int x, int y);
 void nox_client_buildTrap_45E040();

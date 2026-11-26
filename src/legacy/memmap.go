@@ -1,7 +1,7 @@
 package legacy
 
 /*
-#include <stdint.h>
+#include "memmap.h"
 extern unsigned char byte_581450[23472];
 extern unsigned char byte_587000[316820];
 extern unsigned char byte_5D4594[2598284];
@@ -76,7 +76,62 @@ func legacyMemoryPointer(base, off, size uintptr) unsafe.Pointer {
 	return nil
 }
 
-//export nox_legacy_memory_pointer
-func nox_legacy_memory_pointer(base, off, size C.uintptr_t) unsafe.Pointer {
-	return legacyMemoryPointer(uintptr(base), uintptr(off), uintptr(size))
+//export mem_getPtr
+func mem_getPtr(base, off C.uintptr_t) unsafe.Pointer {
+	return legacyCMapPointer(uintptr(base), uintptr(off), unsafe.Sizeof(C.int(0)))
+}
+
+//export mem_getPtrSize
+func mem_getPtrSize(base, off, size C.uintptr_t) unsafe.Pointer {
+	return legacyCMapPointer(uintptr(base), uintptr(off), uintptr(size))
+}
+
+//export mem_getU8Ptr
+func mem_getU8Ptr(base, off C.uintptr_t) *C.uint8_t {
+	return (*C.uint8_t)(legacyCMapPointer(uintptr(base), uintptr(off), 1))
+}
+
+//export mem_getI8Ptr
+func mem_getI8Ptr(base, off C.uintptr_t) *C.int8_t {
+	return (*C.int8_t)(legacyCMapPointer(uintptr(base), uintptr(off), 1))
+}
+
+//export mem_getU16Ptr
+func mem_getU16Ptr(base, off C.uintptr_t) *C.uint16_t {
+	return (*C.uint16_t)(legacyCMapPointer(uintptr(base), uintptr(off), 2))
+}
+
+//export mem_getI16Ptr
+func mem_getI16Ptr(base, off C.uintptr_t) *C.int16_t {
+	return (*C.int16_t)(legacyCMapPointer(uintptr(base), uintptr(off), 2))
+}
+
+//export mem_getU32Ptr
+func mem_getU32Ptr(base, off C.uintptr_t) *C.uint32_t {
+	return (*C.uint32_t)(legacyCMapPointer(uintptr(base), uintptr(off), 4))
+}
+
+//export mem_getI32Ptr
+func mem_getI32Ptr(base, off C.uintptr_t) *C.int32_t {
+	return (*C.int32_t)(legacyCMapPointer(uintptr(base), uintptr(off), 4))
+}
+
+//export mem_getU64Ptr
+func mem_getU64Ptr(base, off C.uintptr_t) *C.uint64_t {
+	return (*C.uint64_t)(legacyCMapPointer(uintptr(base), uintptr(off), 8))
+}
+
+//export mem_getI64Ptr
+func mem_getI64Ptr(base, off C.uintptr_t) *C.int64_t {
+	return (*C.int64_t)(legacyCMapPointer(uintptr(base), uintptr(off), 8))
+}
+
+//export mem_getFloatPtr
+func mem_getFloatPtr(base, off C.uintptr_t) *C.float {
+	return (*C.float)(legacyCMapPointer(uintptr(base), uintptr(off), 4))
+}
+
+//export mem_getDoublePtr
+func mem_getDoublePtr(base, off C.uintptr_t) *C.double {
+	return (*C.double)(legacyCMapPointer(uintptr(base), uintptr(off), 8))
 }

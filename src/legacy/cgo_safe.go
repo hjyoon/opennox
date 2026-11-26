@@ -3,7 +3,7 @@
 package legacy
 
 /*
-#cgo CFLAGS: -g -O0 -DNOX_CGO_MEMMAP
+#cgo CFLAGS: -g -O0
 #cgo CFLAGS: -fsanitize=address
 #cgo LDFLAGS: -fsanitize=address
 #cgo CFLAGS: -Dmalloc=nox_malloc
@@ -17,9 +17,9 @@ package legacy
 #cgo CFLAGS: -Dstrcpy=nox_strcpy
 #cgo CFLAGS: -Dstrcat=nox_strcat
 #cgo CFLAGS: -Dstrcmp=nox_strcmp
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 */
 import "C"
 import (
@@ -37,29 +37,14 @@ func init() {
 	memmap.SetRuntimeChecks(true)
 }
 
-func checkPanicC(r any, ok *C.bool) {
-	if r != nil {
-		fmt.Fprintln(os.Stderr, r)
-		*ok = false
-	} else {
-		*ok = true
-	}
-}
-
-//export mem_getPtr_go
-func mem_getPtr_go(base, off C.uintptr_t, ok *C.bool) unsafe.Pointer {
+func legacyCMapPointer(base, off, size uintptr) unsafe.Pointer {
 	defer func() {
-		checkPanicC(recover(), ok)
+		if fault := recover(); fault != nil {
+			fmt.Fprintln(os.Stderr, fault)
+			C.abort()
+		}
 	}()
-	return memmap.PtrOff(uintptr(base), uintptr(off))
-}
-
-//export mem_getPtrSize_go
-func mem_getPtrSize_go(base, off, size C.uintptr_t, ok *C.bool) unsafe.Pointer {
-	defer func() {
-		checkPanicC(recover(), ok)
-	}()
-	return memmap.PtrSizeOff(uintptr(base), uintptr(off), uintptr(size))
+	return memmap.PtrSizeOff(base, off, size)
 }
 
 //export nox_malloc

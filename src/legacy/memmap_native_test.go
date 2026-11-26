@@ -1,10 +1,14 @@
 package legacy
 
 import (
+	"bytes"
+	"os"
+	"os/exec"
 	"testing"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestLegacyMemoryPointerPreservesBlobOrder(t *testing.T) {
@@ -36,5 +40,38 @@ func TestLegacyMemoryPointerPreservesBlobOrder(t *testing.T) {
 		if got := legacyMemoryPointer(tc.base, tc.off, tc.size); got != nil {
 			t.Fatalf("out-of-bounds %#x+%d[%d] = %p", tc.base, tc.off, tc.size, got)
 		}
+	}
+}
+
+func TestLegacyMemoryNativeAccessors(t *testing.T) {
+	const base, off = 0x581450, 16
+	want := uintptr(memmap.PtrOff(base, off))
+	for i, got := range cfixture.MemmapNativeAccessors(base, off) {
+		if got != want {
+			t.Errorf("accessor %d returned %#x, want %#x", i, got, want)
+		}
+	}
+}
+
+func TestLegacyMemoryNativeAccessorsAbort(t *testing.T) {
+	const subprocess = "OPENNOX_TEST_MEMMAP_BAD_ADDRESS"
+	if os.Getenv(subprocess) == "1" {
+		cfixture.MemmapNativeAccessors(0, 0)
+		t.Fatal("invalid memory access returned")
+	}
+
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command(exe, "-test.run=^TestLegacyMemoryNativeAccessorsAbort$")
+	cmd.Env = append(os.Environ(), subprocess+"=1")
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		t.Fatal("invalid memory access did not abort")
+	}
+	if !bytes.Contains(output, []byte("Invalid memory access! Requested = 0+0[4]\n")) &&
+		!bytes.Contains(output, []byte("no blobs matching the address: 0x0\n")) {
+		t.Fatalf("missing invalid memory access diagnostic (%v):\n%s", err, output)
 	}
 }

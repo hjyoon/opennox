@@ -1,28 +1,8 @@
 //go:build safe
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "memmap.h"
 #include "_cgo_export.h"
-
-void* mem_getPtr(uintptr_t base, uintptr_t off) {
-	bool ok = true;
-	void* p = mem_getPtr_go(base, off, &ok);
-	if (!ok) {
-		abort();
-	}
-	return p;
-}
-
-void* mem_getPtrSize(uintptr_t base, uintptr_t off, uintptr_t size) {
-	bool ok = true;
-	void* p = mem_getPtrSize_go(base, off, size, &ok);
-	if (!ok) {
-		abort();
-	}
-	return p;
-}
 
 // Keep the destination pointer on the C side of the callback.
 void* nox_memset(void* dst, int val, size_t size) {

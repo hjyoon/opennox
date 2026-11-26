@@ -2,9 +2,21 @@
 
 package legacy
 
-// only import C, but do nothing; cgo_safe defines NOX_CGO_MEMMAP instead
-
+// #include <stdlib.h>
 import "C"
-import "os"
+import (
+	"fmt"
+	"os"
+	"unsafe"
+)
 
 var cgoSafe = os.Getenv("NOX_SAFE") == "true"
+
+func legacyCMapPointer(base, off, size uintptr) unsafe.Pointer {
+	if p := legacyMemoryPointer(base, off, size); p != nil {
+		return p
+	}
+	fmt.Fprintf(os.Stderr, "Invalid memory access! Requested = %x+%d[%d]\n", base, off, size)
+	C.abort()
+	return nil
+}

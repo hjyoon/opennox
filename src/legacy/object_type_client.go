@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME2_3.h"
+#include "cgo_const.h"
 #include "client__draw__debugdraw.h"
 
 */
@@ -24,12 +25,8 @@ func init() {
 
 type nox_thing = C.nox_thing
 
-//export nox_xxx_getTTByNameSpriteMB_44CFC0_go
-func nox_xxx_getTTByNameSpriteMB_44CFC0_go(cstr *C.char) int32 {
-	return nox_xxx_getTTByNameSpriteMB_44CFC0(cstr)
-}
-
-func nox_xxx_getTTByNameSpriteMB_44CFC0(cstr *C.char) int32 {
+//export nox_xxx_getTTByNameSpriteMB_44CFC0
+func nox_xxx_getTTByNameSpriteMB_44CFC0(cstr *C.nox_cgo_const_char) int32 {
 	id := GoString(cstr)
 	return int32(GetClient().Cli().Things.IndByID(id))
 }

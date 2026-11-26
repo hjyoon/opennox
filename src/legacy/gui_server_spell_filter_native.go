@@ -19,7 +19,7 @@ const serverSpellFilterStrings = `C:\NoxPost\src\client\Gui\ServOpts\spelllst.c`
 
 //export nox_xxx_guiSpelllistLoad_453850
 func nox_xxx_guiSpelllistLoad_453850(parent *C.nox_window) *C.nox_window {
-	root := nox_new_window_from_file_go(internCStr("spelllst.wnd"), unsafe.Pointer(C.sub_453C00))
+	root := nox_new_window_from_file(internCStr("spelllst.wnd"), unsafe.Pointer(C.sub_453C00))
 	C.dword_5d4594_1045484 = root
 	if root == nil {
 		return nil

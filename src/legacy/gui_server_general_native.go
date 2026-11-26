@@ -48,7 +48,7 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 		return nil
 	}
 	proc := unsafe.Pointer(C.nox_xxx_windowServerOptionsGeneralProc_4AD5D0)
-	root := nox_new_window_from_file_go(path, proc)
+	root := nox_new_window_from_file(path, proc)
 	C.dword_5d4594_1309812 = root
 	if root == nil {
 		return nil

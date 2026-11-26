@@ -109,6 +109,22 @@ count to 47. The default macOS ARM64 build selects 46 files with 111
 function bodies. The safe profile selects all 47 files with 118
 function bodies. Ten of the selected files provide data or declarations.
 
+### Read-only C inputs
+
+The 14 public window, image, sprite, file, equipment, countdown,
+modifier, localization, and text-measurement entries now export
+directly from Go. Named C pointee types retain the original `const`
+qualifiers in the generated declarations. The original PE32 text
+measurement reads two-byte units. Its native export uses the same
+`wchar2_t` input and separate integer outputs.
+
+The C file probe exercised binary and text opens, read-write opens,
+copy, and remove, including missing paths. A 64-bit fixture supplied
+native file handles above 4 GiB. The selected macOS E2E runs completed
+chapter one, manual save and load, and advanced server options.
+Removing `readonly_bindings.c` brings the top-level legacy C file count
+to 46.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

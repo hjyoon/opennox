@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "GAME1.h"
+#include "cgo_const.h"
 #include "GAME1_2.h"
 #include "GAME1_1.h"
 #include "GAME1_3.h"
@@ -168,12 +169,8 @@ func nox_getHostPlayerUnit() *nox_object_t {
 	return asObjectC(GetServer().S().Players.HostUnit())
 }
 
-//export nox_xxx_servStartCountdown_40A2A0_go
-func nox_xxx_servStartCountdown_40A2A0_go(a1_cgo int32, a2 *C.char) {
-	nox_xxx_servStartCountdown_40A2A0(a1_cgo, a2)
-}
-
-func nox_xxx_servStartCountdown_40A2A0(a1_cgo int32, a2 *C.char) {
+//export nox_xxx_servStartCountdown_40A2A0
+func nox_xxx_servStartCountdown_40A2A0(a1_cgo int32, a2 *C.nox_cgo_const_char) {
 	a1 := int(a1_cgo)
 	GetServer().ServStartCountdown(a1, strman.ID(GoString(a2)))
 }

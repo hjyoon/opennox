@@ -16,6 +16,7 @@ package legacy
 #include "client__gui__guiquit.h"
 #include "client__draw__debugdraw.h"
 #include "client__draw__fx.h"
+typedef const wchar2_t nox_draw_const_wchar2;
 */
 import "C"
 import (
@@ -355,12 +356,8 @@ func nox_draw_setTabWidth_43FE20(v_cgo int32) int32 {
 	return int32(old)
 }
 
-//export nox_xxx_drawGetStringSize_43F840_go
-func nox_xxx_drawGetStringSize_43F840_go(font unsafe.Pointer, sp *wchar2_t, outW, outH *C.int, maxW_cgo int32) int32 {
-	return nox_xxx_drawGetStringSize_43F840(font, sp, outW, outH, maxW_cgo)
-}
-
-func nox_xxx_drawGetStringSize_43F840(font unsafe.Pointer, sp *wchar2_t, outW, outH *C.int, maxW_cgo int32) int32 {
+//export nox_xxx_drawGetStringSize_43F840
+func nox_xxx_drawGetStringSize_43F840(font unsafe.Pointer, sp *C.nox_draw_const_wchar2, outW, outH *C.int, maxW_cgo int32) int32 {
 	maxW := int(maxW_cgo)
 	r := GetClient().R2()
 	sz := r.GetStringSizeWrapped(r.GetFonts().AsFont(font), GoWString(sp), maxW)

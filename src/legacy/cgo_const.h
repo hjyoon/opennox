@@ -8,5 +8,6 @@ typedef const char nox_cgo_const_char;
 typedef const unsigned char nox_cgo_const_uchar;
 typedef const void nox_cgo_const_void;
 typedef const uint32_t nox_cgo_const_uint32;
+typedef const struct nox_object_t nox_cgo_const_object_t;
 
 #endif

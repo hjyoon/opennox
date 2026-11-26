@@ -15,7 +15,7 @@ const serverObjectFilterStrings = `C:\NoxPost\src\client\Gui\ServOpts\objlst.c`
 
 //export nox_xxx_guiObjlistLoad_4530C0
 func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox_window {
-	root := nox_new_window_from_file_go(internCStr("objlst.wnd"), unsafe.Pointer(C.sub_4533D0))
+	root := nox_new_window_from_file(internCStr("objlst.wnd"), unsafe.Pointer(C.sub_4533D0))
 	C.dword_5d4594_1045468 = root
 	if root == nil {
 		return nil

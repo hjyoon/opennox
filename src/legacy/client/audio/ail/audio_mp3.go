@@ -33,7 +33,6 @@ func newMP3Decoder(r *wavReader, hr io.Reader, wf waveFormat, hdr []byte) (*mp3D
 		sampleRate: int(wf.samplesPerSec),
 		channel:    int(wf.channels),
 	}
-	C.mp3dec_init(&d.dec)
 	audioLog.Printf("MP3 stream: %q, %d channels", r.Name(), wf.channels)
 	return d, nil
 }
@@ -52,6 +51,7 @@ type waveFormatMP3 struct {
 type mp3Decoder struct {
 	r          *wavReader
 	dec        C.mp3dec_t
+	sync       mp3FrameSync
 	sampleRate int
 	channel    int
 
@@ -79,8 +79,7 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 		copy(d.buf[:], d.buf[d.bufOff:d.bufOff+d.bufSz])
 		d.bufOff = 0
 	}
-	// The decoder we use is very naive and will break if we pass partial frame.
-	// So make sure we have as much data in the buffer as we can get.
+	// Synchronization needs enough data to look ahead to the next frame.
 	if d.bufSz < len(d.buf) {
 		n, err := d.r.Read(d.buf[d.bufOff+d.bufSz:])
 		d.bufSz += n
@@ -88,25 +87,36 @@ func (d *mp3Decoder) Decode(out []int16) (int, bool) {
 			return 0, false
 		}
 	}
-	for {
-		var info C.mp3dec_frame_info_t
-		samples := int(C.mp3dec_decode_frame(&d.dec, (*C.uchar)(unsafe.Pointer(&d.buf[d.bufOff])), C.int(d.bufSz), (*C.short)(unsafe.Pointer(&out[0])), &info))
-		n := int(info.frame_bytes)
-		d.bufOff += n
-		d.bufSz -= n
-		if samples != 0 {
-			return samples, true
+	for d.bufSz != 0 {
+		data := d.buf[d.bufOff : d.bufOff+d.bufSz]
+		skip, size, reset := d.sync.next(data)
+		if reset {
+			d.dec = C.mp3dec_t{}
 		}
-		if d.bufSz == 0 {
-			return 0, false
+		if skip+size == 0 {
+			break // An incomplete trailing header cannot advance the stream.
+		}
+		d.bufOff += skip + size
+		d.bufSz -= skip + size
+		header := d.sync.header
+		if size == 0 || header.layer() != 3 {
+			continue
+		}
+		status := C.mp3dec_decode_layer3(&d.dec, (*C.uint8_t)(unsafe.Pointer(&data[skip])),
+			C.int(size), (*C.int16_t)(unsafe.Pointer(&out[0])))
+		if status < 0 {
+			d.sync.header[0] = 0
+		} else if status > 0 {
+			return header.samples(), true
 		}
 	}
+	return 0, false
 }
 
 func (d *mp3Decoder) Seek(position int) {
 	d.bufOff = 0
 	d.bufSz = 0
-	C.mp3dec_init(&d.dec)
+	d.sync = mp3FrameSync{}
 }
 
 func (d *mp3Decoder) Position() int {

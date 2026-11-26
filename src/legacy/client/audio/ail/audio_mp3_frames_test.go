@@ -66,9 +66,8 @@ func openMP3FrameFixture(t *testing.T, data []byte) *wavReader {
 	return r
 }
 
-// Use the unchanged minimp3 decoder, a full-sized destination, and its native
-// per-channel return count as an independent reference for the stream adapter.
-// This does not assert bit-exact agreement with ffmpeg or the PE32 audio engine.
+// Use the underlying frame decoder with a full-size destination and its
+// per-channel return count as the reference for the stream adapter.
 func referenceMP3FramePCM(t *testing.T, data []byte) []int16 {
 	t.Helper()
 	r := openMP3FrameFixture(t, data)
@@ -145,7 +144,7 @@ func TestWAVMP3ReferenceFixtures(t *testing.T) {
 			if len(pcm) == 0 || !nonzero || f.channels == 2 && !distinct {
 				t.Fatal("fixture must contain nonzero, distinct channel PCM")
 			}
-			t.Logf("unchanged minimp3 reference: rate=%d channels=%d frames=%d bytes=%d pcm_sha256=%s", f.rate, f.channels, len(pcm)/f.channels, len(pcm)*2, mp3FramePCMHash(pcm))
+			t.Logf("MP3 frame reference: rate=%d channels=%d frames=%d bytes=%d pcm_sha256=%s", f.rate, f.channels, len(pcm)/f.channels, len(pcm)*2, mp3FramePCMHash(pcm))
 		})
 	}
 }

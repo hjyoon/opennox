@@ -94,6 +94,13 @@ static void wide_fixed_printf_host(char* output, int digits, ...) {
 	va_end(args.list);
 }
 
+static double wide_fixed_printf_value(const volatile uint64_t* input) {
+	uint64_t bits = *input;
+	double value;
+	memcpy(&value, &bits, sizeof(value));
+	return value;
+}
+
 static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 	const int modes[] = {FE_TONEAREST, FE_TOWARDZERO, FE_DOWNWARD, FE_UPWARD};
 	fenv_t saved;
@@ -111,25 +118,26 @@ static int wide_fixed_printf_matches(uint64_t bits, int digits, int rounding) {
 	for (size_t i = 0; i <= strlen(narrow); ++i) {
 		format[i] = (unsigned char)narrow[i];
 	}
-	double value;
-	memcpy(&value, &bits, sizeof(value));
+	// Each invocation needs a fresh copy of the input bits. On x87, a
+	// floating-point load can quiet a signaling NaN and raise FE_INVALID.
+	volatile uint64_t input = bits;
 	char expected[32] = {0}, host[32] = {0};
 	int precision = digits > 0 ? digits : 5;
 
 	feclearexcept(FE_ALL_EXCEPT);
-	wide_fixed_printf_reference(expected, precision, value);
+	wide_fixed_printf_reference(expected, precision, wide_fixed_printf_value(&input));
 	int flags = fetestexcept(FE_ALL_EXCEPT);
 	size_t length = strlen(expected);
 
 	// Compare CRT exception flags within C. The Go callback may run runtime
 	// bookkeeping on this thread before the formatting call.
 	feclearexcept(FE_ALL_EXCEPT);
-	wide_fixed_printf_host(host, precision, value);
+	wide_fixed_printf_host(host, precision, wide_fixed_printf_value(&input));
 	int status = (flags != fetestexcept(FE_ALL_EXCEPT) || memcmp(host, expected, sizeof(host))) ? 4 : 0;
 
 	feclearexcept(FE_ALL_EXCEPT);
 	actual[length + 1] = 0x4242;
-	int used = nox_swprintf(actual, format, value);
+	int used = nox_swprintf(actual, format, wide_fixed_printf_value(&input));
 	if (used != (int)length) status |= 2;
 	if (actual[length + 1] != 0x4242) status |= 8;
 	if (fegetround() != modes[rounding]) status |= 16;

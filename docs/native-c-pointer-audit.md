@@ -155,6 +155,9 @@ units. The original Nox string table uses the numeric and string
 formats for server limits, player names, and game notices. The C
 comparisons exercise 40 combinations of formats and arguments at each
 of 33 buffer capacities. They check every output word and the guards.
+The floating-point formatting test reloads the original double bits for
+the reference, native helper, and Go-backed entry. On 386, x87 can quiet a
+signaling NaN and raise `FE_INVALID` before the formatter runs.
 
 Removing `localized_text_abi.c` leaves 40 top-level legacy C files.
 Clang counts 82 function bodies in the 39 files selected by the

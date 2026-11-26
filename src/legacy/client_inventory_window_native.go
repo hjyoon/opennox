@@ -41,7 +41,7 @@ func nox_xxx_wndCreateInventoryMB_465E00() *C.nox_window {
 	hover := nox_window_new_go(root, 8, 0, 224, width, 40, nil)
 	nox_window_set_all_funcs_go(hover, C.nox_xxx_XorEaxEaxSub_464BA0, C.nox_xxx_movEax1Sub_4661C0, C.nox_xxx_inventroryOnHovewerSub_4667E0)
 
-	inventory := nox_window_new_go(root, 40, 0, 0, 563, 224, C.sub_466220)
+	inventory := nox_window_new_go(root, 40, 0, 0, 563, 224, C.nox_window_init_proc(C.sub_466220))
 	C.nox_inventory_window = inventory
 	if inventory == nil {
 		return nil
@@ -108,7 +108,7 @@ func clientInventoryInitializeReservedCells() {
 }
 
 //export sub_466220
-func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
+func sub_466220(win *C.nox_window, event C.int, arg1, arg2 C.uintptr_t) C.uintptr_t {
 	scroll := C.nox_inventory_scroll_window
 	switch event {
 	case 16393:

@@ -276,7 +276,7 @@ func nox_xxx_playGMCAPsmth_44E3E0() C.int {
 func sub_44E560() *C.nox_window {
 	*memmap.PtrUint32(0x5D4594, 831284) = uint32((C.nox_win_width - 640) / 2)
 	*memmap.PtrUint32(0x5D4594, 831288) = uint32((C.nox_win_height - 480) / 2)
-	result := C.nox_window_new(nil, 56, 0, 0, C.nox_win_width, C.nox_win_height, (*[0]byte)(unsafe.Pointer(C.nox_xxx_wndProc_44E6E0)))
+	result := C.nox_window_new(nil, 56, 0, 0, C.nox_win_width, C.nox_win_height, C.nox_window_init_proc(C.nox_xxx_wndProc_44E6E0))
 	C.dword_5d4594_831236 = result
 	if result != nil {
 		C.nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
@@ -318,7 +318,7 @@ func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unu
 }
 
 //export nox_xxx_wndProc_44E6E0
-func nox_xxx_wndProc_44E6E0(unused1 *C.nox_window, event C.int, unused2 C.uintptr_t, unused3 C.uintptr_t) C.int {
+func nox_xxx_wndProc_44E6E0(unused1 *C.nox_window, event C.int, unused2 C.uintptr_t, unused3 C.uintptr_t) C.uintptr_t {
 	if event == 23 {
 		return 1
 	}

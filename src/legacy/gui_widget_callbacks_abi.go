@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stdint.h>
 
+#include "GAME2.h"
 #include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "GAME3.h"
@@ -13,6 +14,15 @@ package legacy
 typedef int (*nox_test_widget_event_callback_t)(nox_window*, int, uintptr_t, uintptr_t);
 typedef uintptr_t (*nox_test_widget_pre_callback_t)(nox_window*, unsigned int, uintptr_t, uintptr_t);
 typedef int (*nox_test_widget_draw_callback_t)(nox_window*, nox_window_data*);
+typedef nox_window* (*nox_test_window_constructor_t)(nox_window*, int, int, int, int, int,
+	uintptr_t (*)(nox_window*, int, uintptr_t, uintptr_t));
+
+_Static_assert(_Generic(&nox_window_new, nox_test_window_constructor_t: 1, default: 0),
+	"window constructor must take a native-width callback");
+_Static_assert(_Generic(&nox_xxx_wndProc_44E6E0, nox_window_init_proc: 1, default: 0),
+	"briefing initializer must use the window constructor callback ABI");
+_Static_assert(_Generic(&sub_466220, nox_window_init_proc: 1, default: 0),
+	"inventory initializer must use the window constructor callback ABI");
 
 _Static_assert(_Generic(&nox_xxx_wndEditProc_487D70, nox_test_widget_event_callback_t: 1, default: 0),
 	"edit event callback must use native-width arguments");
@@ -59,6 +69,20 @@ static int nox_test_edit_draw_callback(nox_window* win) {
 
 static nox_window* nox_test_edit_constructor(nox_window* parent, nox_window_data* draw, void* data) {
 	return nox_gui_newEntryField_488500(parent, 8, 10, 20, 120, 20, draw, data);
+}
+
+static uintptr_t nox_test_window_initializer(nox_window* win, int event, uintptr_t a3, uintptr_t a4) {
+	if (event == 1) {
+		win->field_92++;
+	}
+	if (event == 0x5005 && a3 == (uintptr_t)win && a4 == ~a3) {
+		return a3;
+	}
+	return 0;
+}
+
+static nox_window* nox_test_window_constructor(void) {
+	return nox_window_new(NULL, 8, 10, 20, 120, 20, nox_test_window_initializer);
 }
 
 static int nox_test_listbox_event_callback(nox_window* win, int multi, int event, uintptr_t a3, uintptr_t a4) {
@@ -120,6 +144,14 @@ func editConstructorC(parent *gui.Window, draw *gui.WindowData, data *gui.EntryF
 	return asWindow(C.nox_test_edit_constructor(
 		(*C.nox_window)(parent.C()), (*C.nox_window_data)(draw.C()), data.CWidgetData(),
 	))
+}
+
+func windowWithInitializerC() (*gui.Window, uint32) {
+	win := C.nox_test_window_constructor()
+	if win == nil {
+		return nil, 0
+	}
+	return asWindow(win), uint32(win.field_92)
 }
 
 func listBoxEventCallbackC(win *gui.Window, multi bool, event int, a3, a4 uintptr) int {

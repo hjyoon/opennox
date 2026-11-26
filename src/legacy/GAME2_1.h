@@ -105,7 +105,7 @@ int sub_465D50_draw(nox_window* win);
 int sub_465DE0(int a1);
 nox_window* nox_xxx_wndCreateInventoryMB_465E00();
 int nox_xxx_movEax1Sub_4661C0(nox_window* win, void* data);
-int sub_466220(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
+uintptr_t sub_466220(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 int sub_466550(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 int nox_xxx_inventoryDrawProc_466580(nox_window* win, nox_window_data* draw);
 int sub_466620(int a1, int a2, unsigned int a3);

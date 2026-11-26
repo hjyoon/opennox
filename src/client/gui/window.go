@@ -501,7 +501,7 @@ func (win *Window) Func93(e WindowEvent) WindowEventResp {
 	}
 	ev := e.EventCode()
 	a1, a2 := e.EventArgsC()
-	r := ccall.CallUPtrUPtr4(win.field93, uintptr(win.C()), uintptr(ev), a1, a2)
+	r := ccall.CallUPtrPtrIntUPtr2(win.field93, win.C(), ev, a1, a2)
 	if r == 0 {
 		return nil
 	}
@@ -520,7 +520,7 @@ func (win *Window) Func94(e WindowEvent) WindowEventResp {
 	}
 	ev := e.EventCode()
 	a1, a2 := e.EventArgsC()
-	r := ccall.CallUPtrUPtr4(win.field94, uintptr(win.C()), uintptr(ev), a1, a2)
+	r := ccall.CallUPtrPtrIntUPtr2(win.field94, win.C(), ev, a1, a2)
 	if r == 0 {
 		return nil
 	}

@@ -3,9 +3,11 @@ package ccall
 /*
 #include <stdint.h>
 
+typedef struct nox_window nox_window;
+
 static uintptr_t go_call_uptr_ptr_int_uptr2_func(
-	uintptr_t (*fnc)(void*, int, uintptr_t, uintptr_t),
-	void* a1, int a2, uintptr_t a3, uintptr_t a4
+	uintptr_t (*fnc)(nox_window*, int, uintptr_t, uintptr_t),
+	nox_window* a1, int a2, uintptr_t a3, uintptr_t a4
 ) {
 	return fnc(a1, a2, a3, a4);
 }
@@ -19,7 +21,7 @@ import "unsafe"
 func CallUPtrPtrIntUPtr2(fnc unsafe.Pointer, a1 unsafe.Pointer, a2 int, a3, a4 uintptr) uintptr {
 	return uintptr(C.go_call_uptr_ptr_int_uptr2_func(
 		(*[0]byte)(fnc),
-		a1,
+		(*C.nox_window)(a1),
 		C.int(a2),
 		C.uintptr_t(a3),
 		C.uintptr_t(a4),

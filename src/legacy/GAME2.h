@@ -38,7 +38,7 @@ int nox_client_getIntroScreenDuration_44E3B0();
 int nox_xxx_playGMCAPsmth_44E3E0();
 nox_window* sub_44E560();
 int nox_client_wndQuestBriefProc_44E630(nox_window* win, int event, uintptr_t arg1, uintptr_t arg2);
-int nox_xxx_wndProc_44E6E0(nox_window* win, int event, uintptr_t arg1, uintptr_t arg2);
+uintptr_t nox_xxx_wndProc_44E6E0(nox_window* win, int event, uintptr_t arg1, uintptr_t arg2);
 int sub_44E6F0(nox_window* win, nox_window_data* draw);
 double sub_44E8B0();
 int sub_44E8D0(nox_window* win, nox_window_data* draw);

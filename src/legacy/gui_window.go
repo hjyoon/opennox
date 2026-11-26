@@ -85,10 +85,10 @@ func set_dword_5d4594_3799468(v_cgo int32) {
 }
 
 //export nox_window_new_go
-func nox_window_new_go(par *nox_window, flags, a3, a4, w, h C.int, fnc unsafe.Pointer) *nox_window {
+func nox_window_new_go(par *nox_window, flags, a3, a4, w, h C.int, fnc C.nox_window_init_proc) *nox_window {
 	win := GetClient().Cli().GUI.NewWindowRaw(asWindow(par), gui.StatusFlags(flags), int(a3), int(a4), int(w), int(h), nil)
 	if fnc != nil {
-		win.SetFunc94C(fnc)
+		win.SetFunc94C(unsafe.Pointer(fnc))
 		win.Func94(gui.WindowInit{})
 	}
 	return (*nox_window)(win.C())

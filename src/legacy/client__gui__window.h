@@ -11,6 +11,7 @@
 typedef enum { NOX_WIN_HIDDEN = 0x10, NOX_WIN_LAYER_FRONT = 0x20, NOX_WIN_LAYER_BACK = 0x40 } nox_window_flags;
 
 typedef struct nox_window nox_window;
+typedef uintptr_t (*nox_window_init_proc)(nox_window*, int, uintptr_t, uintptr_t);
 typedef struct nox_window_data {
 	unsigned int field_0; // 0, 0 (36)
 	int group;            // 1, 4 (40)
@@ -49,8 +50,8 @@ typedef struct nox_window {
 	void* widget_data;                                       // 8, 32; different types
 	nox_window_data draw_data;                               // 9, 36
 	unsigned int field_92;                                   // 92, 368
-	int (*field_93)(nox_window*, int, int, int);             // 93
-	int (*field_94)(nox_window*, int, int, int);             // 94, 376
+	void* field_93;                                          // 93, legacy event procedure address
+	void* field_94;                                          // 94, legacy control procedure address
 	int (*draw_func)(nox_window*, nox_window_data*);         // 95, 380, second arg is &field_9
 	int (*tooltip_func)(nox_window*, nox_window_data*, int); // 96, 384
 	nox_window* prev;                                        // 97, 388
@@ -60,6 +61,10 @@ typedef struct nox_window {
 } nox_window;
 _Static_assert(sizeof(nox_window) == (sizeof(void*) == 4 ? 404 : 528),
 	"wrong native size of nox_window structure!");
+_Static_assert(offsetof(nox_window, field_93) == (sizeof(void*) == 4 ? 372 : 464),
+	"wrong native offset of nox_window.field_93!");
+_Static_assert(offsetof(nox_window, field_94) == (sizeof(void*) == 4 ? 376 : 472),
+	"wrong native offset of nox_window.field_94!");
 typedef struct nox_window_ref nox_window_ref;
 typedef struct nox_window_ref {
 	nox_window* win;
@@ -86,7 +91,7 @@ int nox_xxx_wndGetID_46B0A0(nox_window* win);
 nox_window* nox_xxx_wndGetChildByID_46B0C0(nox_window* root, int id);
 int sub_46B120(nox_window* win, nox_window* a2);
 void nox_gui_draw();
-nox_window* nox_window_new(nox_window* a1, int flags, int a3, int a4, int w, int h, int (*fnc)(int, int, int, int));
+nox_window* nox_window_new(nox_window* parent, int flags, int x, int y, int w, int h, nox_window_init_proc init);
 int nox_window_set_all_funcs(nox_window* win, void* event_func, void* draw_func, void* tooltip_func);
 uintptr_t nox_window_call_field_94_fnc(nox_window* win, int a2, uintptr_t a3, uintptr_t a4, char* file, int line);
 #define nox_window_call_field_94(win, a2, a3, a4) nox_window_call_field_94_fnc(win, a2, a3, a4, __FILE__, __LINE__)

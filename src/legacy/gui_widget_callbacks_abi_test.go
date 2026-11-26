@@ -71,6 +71,22 @@ func requireNativeWindowAddress(t *testing.T, win *gui.Window) {
 	}
 }
 
+func TestWindowConstructorUsesNativeCallbackABI(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+
+	win, calls := windowWithInitializerC()
+	if win == nil || calls != 1 {
+		t.Fatalf("constructor window = %p, initializer calls = %d", win, calls)
+	}
+	requireNativeWindowAddress(t, win)
+	addr := uintptr(win.C())
+	response := win.Func94(&gui.RawEvent{Event: 0x5005, Arg1: addr, Arg2: ^addr})
+	if response == nil || response.EventRespC() != addr {
+		t.Fatalf("constructor callback response = %v, want address %#x", response, addr)
+	}
+}
+
 func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 	g := newWidgetCallbackGUI(t)
 	defer g.DestroyAll()

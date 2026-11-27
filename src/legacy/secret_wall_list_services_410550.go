@@ -1,22 +1,9 @@
 package legacy
 
 /*
-#include <stdint.h>
-#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include "GAME1.h"
 
-static void* secret_wall_native_foreign_load_pointer_410550(const void* slot) {
-    void* value;
-    memcpy(&value, slot, sizeof(value));
-    return value;
-}
-static uint16_t secret_wall_native_foreign_load_word_410550(const void* slot) {
-    uint16_t value;
-    memcpy(&value, slot, sizeof(value));
-    return value;
-}
 static void secret_wall_native_foreign_store_pointer_410550(void* slot, void* value) {
     memcpy(slot, &value, sizeof(value));
 }
@@ -24,8 +11,11 @@ static void secret_wall_native_foreign_store_pointer_410550(void* slot, void* va
 import "C"
 
 import (
+	"encoding/binary"
 	"runtime"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
 )
 
 // The live native slot holds the secret wall list head.
@@ -33,16 +23,8 @@ func secretWallNativeHeadCell410550() unsafe.Pointer {
 	return unsafe.Pointer(&worldOwnerStorage.secret_wall_head)
 }
 
-func secretWallNativeForeignLoadPointer410550(slot unsafe.Pointer) unsafe.Pointer {
-	value := C.secret_wall_native_foreign_load_pointer_410550(slot)
-	runtime.KeepAlive(slot)
-	return value
-}
-
 func secretWallNativeForeignLoadWord410550(slot unsafe.Pointer) uint16 {
-	value := uint16(C.secret_wall_native_foreign_load_word_410550(slot))
-	runtime.KeepAlive(slot)
-	return value
+	return binary.NativeEndian.Uint16(unsafe.Slice((*byte)(slot), 2))
 }
 
 func secretWallNativeForeignStorePointer410550(slot, value unsafe.Pointer) {
@@ -51,15 +33,14 @@ func secretWallNativeForeignStorePointer410550(slot, value unsafe.Pointer) {
 	runtime.KeepAlive(value)
 }
 
-// These helper bodies remain external. A handled diagnostic reply is checked
-// before this function; no returned scalar is recast as a native pointer.
+// The observer handles diagnostic replies before the live service runs.
 func secretWallNativeServiceDefault410550(site uint32, args []secretWallNativeArg410550) secretWallNativeReply410550 {
 	defer func() { runtime.KeepAlive(args) }()
 	switch site {
 	case 0x410551:
-		return secretWallNativeReply410550{Pointer: unsafe.Pointer(C.nox_xxx_wallSecretGetFirstWall_410780())}
+		return secretWallNativeReply410550{Pointer: unsafe.Pointer(secretWallFirstNative410780())}
 	case 0x410569, 0x4107b8, 0x4107d2, 0x4107eb:
-		return secretWallNativeReply410550{Pointer: unsafe.Pointer(C.nox_xxx_wallSecretNext_410790((*C.nox_secret_wall_t)(args[0].Pointer)))}
+		return secretWallNativeReply410550{Pointer: unsafe.Pointer(secretWallNextNative410790((*server.SecretWall)(args[0].Pointer)))}
 	case 0x41073d, 0x4107e0, 0x4107f6:
 		// Real C free is only valid for C-owned allocations. Pinned Go graph
 		// controls must handle Free through the observer without deallocation.

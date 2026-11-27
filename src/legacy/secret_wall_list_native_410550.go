@@ -101,7 +101,7 @@ func secretWallNativeLoadPointer410550(address unsafe.Pointer) unsafe.Pointer {
 		return *(*unsafe.Pointer)(address)
 	}
 	// Unaligned storage is foreign memory only, never a Go pointer field.
-	return secretWallNativeForeignLoadPointer410550(address)
+	return loadUnalignedNativePointer(address)
 }
 
 //go:noinline

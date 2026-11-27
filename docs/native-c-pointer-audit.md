@@ -1124,6 +1124,29 @@ The native entry and layout tests passed on macOS ARM64 with
 `cgocheck2` and `checkptr=2`. The Golem, Skeleton, special death, and
 object death spawns replays passed with the resulting gameplay paths.
 
+### Unaligned tile and secret wall reads
+
+The native tile-list and secret-wall readers load unaligned integers
+in host byte order and copy exactly the native pointer width into a
+typed local pointer. The wall iterator reaches the existing Go service
+with the same record pointer. The raw wall store and freeing of C-owned
+nodes continue through their C entries.
+
+The new test exercises a misaligned pointer and both integer widths.
+It passed against the previous C loads and the new Go loads. On macOS
+ARM64 with `cgocheck2` and `checkptr=2`, the full native tile corpus
+passed 2,098 calls with 4,196 original control-word comparisons. The
+secret-wall corpus passed 1,092 calls and comparisons. The secret-wall
+gameplay replay also passed.
+
+The default macOS ARM64 client now links 63 Go-callable Cgo preamble
+entries, down from 87 at `dacc21866`. The census pairs source
+definitions with linked symbols in their Go packages. It finds 18
+shared call adapters and 45 legacy package adapters. The latter
+include 13 typed indirect calls, 13 pointer and scalar transports,
+eight malformed-address adapters, three CRT integrations, and eight
+regression probes. The top-level legacy directory has 27 C files.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

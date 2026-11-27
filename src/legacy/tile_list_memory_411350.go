@@ -1,22 +1,7 @@
 package legacy
 
-/*
-#include <stdint.h>
-#include <string.h>
-static uint32_t tile_list_foreign_word_411350(const void* address) {
-    uint32_t value;
-    memcpy(&value, address, sizeof(value));
-    return value;
-}
-static void* tile_list_foreign_pointer_411350(const void* address) {
-    void* value;
-    memcpy(&value, address, sizeof(value));
-    return value;
-}
-*/
-import "C"
-
 import (
+	"encoding/binary"
 	"runtime"
 	"unsafe"
 
@@ -75,7 +60,7 @@ func tileListNativeLoadWord411350(address unsafe.Pointer) uint32 {
 	if uintptr(address)%unsafe.Alignof(uint32(0)) == 0 {
 		return *(*uint32)(address)
 	}
-	return uint32(C.tile_list_foreign_word_411350(address))
+	return binary.NativeEndian.Uint32(unsafe.Slice((*byte)(address), 4))
 }
 
 //go:noinline
@@ -83,7 +68,14 @@ func tileListNativeLoadPointer411350(address unsafe.Pointer) unsafe.Pointer {
 	if uintptr(address)%unsafe.Alignof(unsafe.Pointer(nil)) == 0 {
 		return *(*unsafe.Pointer)(address)
 	}
-	return C.tile_list_foreign_pointer_411350(address)
+	return loadUnalignedNativePointer(address)
+}
+
+func loadUnalignedNativePointer(address unsafe.Pointer) unsafe.Pointer {
+	var value unsafe.Pointer
+	width := unsafe.Sizeof(value)
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(&value)), width), unsafe.Slice((*byte)(address), width))
+	return value
 }
 
 func tileListNativeReadWord411350(site uint32, field int, base unsafe.Pointer, offset uintptr) uint32 {

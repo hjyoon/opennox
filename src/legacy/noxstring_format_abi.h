@@ -10,12 +10,17 @@ typedef struct nox_format_args {
 #if defined(__i386__) || defined(__x86_64__) || defined(__arm__) || defined(__aarch64__)
 #define NOX_GO_FORMAT_WORDS
 #if defined(__x86_64__) && !defined(_WIN32)
+/* A va_list in a function prototype decays to the cursor element pointer. */
+typedef __typeof__((*(va_list*)0)[0])* nox_format_list_arg;
 _Static_assert(sizeof(va_list) == 24 && _Alignof(va_list) == 8, "SysV AMD64 va_list layout");
-#elif defined(__aarch64__) && !defined(__APPLE__) && !defined(_WIN32)
+#else
+typedef va_list nox_format_list_arg;
+#if defined(__aarch64__) && !defined(__APPLE__) && !defined(_WIN32)
 _Static_assert(sizeof(va_list) == 32 && _Alignof(va_list) == 8, "AAPCS64 va_list layout");
 #else
 _Static_assert(sizeof(va_list) == sizeof(void*) &&
 	_Alignof(va_list) == _Alignof(void*), "variadic pointer cursor layout");
+#endif
 #endif
 #endif
 

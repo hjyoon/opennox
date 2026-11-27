@@ -29,21 +29,9 @@ uint64_t nox_format_arg_double_bits(nox_format_args* args) {
 	memcpy(&bits, &value, sizeof(bits));
 	return bits;
 }
-#endif
-
-void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision) {
-	double value;
-	memcpy(&value, &bits, sizeof(value));
-	snprintf(out, capacity, "%.*f", precision, value);
-}
 
 void nox_format_host_narrow(nox_format_args* args, char* out, size_t capacity, const char* format) {
 	vsnprintf(out, capacity, format, args->list);
-}
-
-void nox_format_abort(int code) {
-	printf("Unhandled format character: '%c'", code);
-	abort();
 }
 
 int nox_vsnprintf(char* out, size_t capacity, const char* format, va_list args) {
@@ -66,16 +54,28 @@ int nox_vsprintf(char* out, const char* format, va_list args) {
 	return nox_vsnprintf(out, 0x7fffffff, format, args);
 }
 
+int nox_vswprintf(wchar2_t* out, const wchar2_t* format, va_list args) {
+	return nox_vsnwprintf(out, 0x3fffffff, format, args);
+}
+#endif
+
+void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision) {
+	double value;
+	memcpy(&value, &bits, sizeof(value));
+	snprintf(out, capacity, "%.*f", precision, value);
+}
+
+void nox_format_abort(int code) {
+	printf("Unhandled format character: '%c'", code);
+	abort();
+}
+
 int nox_sprintf(char* out, const char* format, ...) {
 	va_list args;
 	va_start(args, format);
 	int length = nox_vsprintf(out, format, args);
 	va_end(args);
 	return length;
-}
-
-int nox_vswprintf(wchar2_t* out, const wchar2_t* format, va_list args) {
-	return nox_vsnwprintf(out, 0x3fffffff, format, args);
 }
 
 int nox_swprintf(wchar2_t* out, const wchar2_t* format, ...) {

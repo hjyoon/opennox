@@ -77,6 +77,63 @@ static int file_printf_fixture(FILE* file, int width) {
 	return nox_fs_fprintf(file, "%0*d", width, 7);
 }
 
+static int file_mixed_printf_fixture(FILE* file) {
+	return nox_fs_fprintf(file, "[%*.*s|%#08x|%+.2f|%cignored]", 5, 2, "abcdef", 0x12u, 2.5, 0);
+}
+
+static int narrow_vprintf_preserves_cursor(const char* format, ...) {
+	const char expected[] = "-37|2|3|4|5|6|7|spill";
+	char bounded[11], full[64];
+	unsigned char before[sizeof(va_list)];
+	va_list args;
+	va_start(args, format);
+	(void)va_arg(args, int);
+	memcpy(before, &args, sizeof(before));
+	memset(bounded, 0x5a, sizeof(bounded));
+	memset(full, 0x5a, sizeof(full));
+
+	int bounded_length = nox_vsnprintf(bounded + 1, 9, format, args);
+	int unchanged = memcmp(before, &args, sizeof(before)) == 0;
+	int full_length = unchanged ? nox_vsprintf(full + 1, format, args) : -1;
+	unchanged = unchanged && memcmp(before, &args, sizeof(before)) == 0;
+	va_end(args);
+
+	return unchanged && bounded_length == sizeof(expected) - 1 && full_length == bounded_length &&
+		bounded[0] == 0x5a && bounded[10] == 0x5a && memcmp(bounded + 1, expected, 9) == 0 &&
+		full[0] == 0x5a && full[sizeof(expected) + 1] == 0x5a &&
+		memcmp(full + 1, expected, sizeof(expected)) == 0;
+}
+
+static int wide_vprintf_preserves_cursor(const wchar2_t* format, ...) {
+	const wchar2_t expected[] = {'2', '.', '5', '0', '|', '-', '8', '|', 'w', 'i', 'd', 'e', '|', '%', 0};
+	wchar2_t bounded[11], full[64];
+	unsigned char before[sizeof(va_list)];
+	va_list args;
+	va_start(args, format);
+	(void)va_arg(args, int);
+	memcpy(before, &args, sizeof(before));
+	memset(bounded, 0x5a, sizeof(bounded));
+	memset(full, 0x5a, sizeof(full));
+
+	int bounded_length = nox_vsnwprintf(bounded + 1, 9, format, args);
+	int unchanged = memcmp(before, &args, sizeof(before)) == 0;
+	int full_length = unchanged ? nox_vswprintf(full + 1, format, args) : -1;
+	unchanged = unchanged && memcmp(before, &args, sizeof(before)) == 0;
+	va_end(args);
+
+	return unchanged && bounded_length == sizeof(expected)/sizeof(expected[0]) - 1 && full_length == bounded_length &&
+		bounded[0] == 0x5a5a && bounded[10] == 0x5a5a && memcmp(bounded + 1, expected, 9*sizeof(expected[0])) == 0 &&
+		full[0] == 0x5a5a && full[sizeof(expected)/sizeof(expected[0]) + 1] == 0x5a5a &&
+		memcmp(full + 1, expected, sizeof(expected)) == 0;
+}
+
+static int vprintf_preserves_cursor_fixture(void) {
+	const wchar2_t format[] = {'%', '.', '2', 'f', '|', '%', 'd', '|', '%', 's', '|', '%', '%', 0};
+	const wchar2_t text[] = {'w', 'i', 'd', 'e', 0};
+	return narrow_vprintf_preserves_cursor("%d|%d|%d|%d|%d|%d|%d|%s", 101, -37, 2, 3, 4, 5, 6, 7, "spill") &&
+		wide_vprintf_preserves_cursor(format, 101, 2.5, -8, text);
+}
+
 static int wide_mixed_fixture(wchar2_t* out, const wchar2_t* format, const char* narrow,
 			      int first, const wchar2_t* wide, unsigned int second) {
 	return nox_swprintf(out, format, narrow, first, wide, second);
@@ -218,6 +275,14 @@ func NetworkLogPrintf413D30(format *byte) {
 
 func FilePrintf(file unsafe.Pointer, width int) int {
 	return int(C.file_printf_fixture((*C.FILE)(file), C.int(width)))
+}
+
+func FileMixedPrintf(file unsafe.Pointer) int {
+	return int(C.file_mixed_printf_fixture((*C.FILE)(file)))
+}
+
+func VPrintfPreservesCursor() bool {
+	return C.vprintf_preserves_cursor_fixture() != 0
 }
 
 func WideMixedPrintf(out, format *uint16, narrow *byte, first int32, wide *uint16, second uint32) int {

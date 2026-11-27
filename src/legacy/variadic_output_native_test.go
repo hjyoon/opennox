@@ -138,6 +138,7 @@ func TestLegacyFilePrintfNativeBuffer(t *testing.T) {
 		t.Fatal(err)
 	}
 	handle := NewFileHandle(file.File)
+	const mixed = "[   ab|0x000012|+2.50|"
 	func() {
 		defer nox_fs_close(handle)
 		for _, test := range []struct{ width, written int }{{4, 4}, {3000, 2047}} {
@@ -145,13 +146,22 @@ func TestLegacyFilePrintfNativeBuffer(t *testing.T) {
 				t.Fatalf("width %d wrote %d bytes, want %d", test.width, n, test.written)
 			}
 		}
+		if n := cfixture.FileMixedPrintf(unsafe.Pointer(handle)); n != len(mixed) {
+			t.Fatalf("mixed format wrote %d bytes, want %d", n, len(mixed))
+		}
 	}()
 	content, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(content) != "0007"+strings.Repeat("0", 2047) {
+	if string(content) != "0007"+strings.Repeat("0", 2047)+mixed {
 		t.Fatalf("unexpected file contents of %d bytes", len(content))
+	}
+}
+
+func TestLegacyVPrintfPreservesCallerCursor(t *testing.T) {
+	if !cfixture.VPrintfPreservesCursor() {
+		t.Fatal("bounded or unbounded printf changed its input cursor, output, or guard bytes")
 	}
 }
 

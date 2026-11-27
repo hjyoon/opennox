@@ -153,7 +153,7 @@ func nox_fs_fputs(f *FILE, str *C.char) int32 {
 //export nox_fs_vfprintf_go
 func nox_fs_vfprintf_go(file *FILE, format *C.nox_format_byte, args *C.nox_format_args) C.int {
 	var text [2048]C.char
-	C.nox_format_host_narrow(args, &text[0], C.size_t(len(text)), format)
+	nox_format_host_narrow(args, &text[0], C.size_t(len(text)), format)
 	return C.int(nox_fs_fputs(file, &text[0]))
 }
 

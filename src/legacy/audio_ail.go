@@ -80,17 +80,14 @@ type WIN32_FIND_DATAA struct {
 	cAlternateFileName [14]byte
 }
 
-func FindFirstFileA(a1 *byte, f *WIN32_FIND_DATAA) uintptr {
-	return uintptr(unsafe.Pointer(C.FindFirstFileA((*C.char)(unsafe.Pointer(a1)), (*_WIN32_FIND_DATAA)(unsafe.Pointer(f)))))
-}
+const invalidFindFileHandle = ^uintptr(0)
 
-func FindNextFileA(h uintptr, f *WIN32_FIND_DATAA) int {
-	return int(C.FindNextFileA(C.HANDLE(unsafe.Pointer(h)), (*_WIN32_FIND_DATAA)(unsafe.Pointer(f))))
-}
+const findFileDataSize = unsafe.Sizeof(_WIN32_FIND_DATAA{})
 
-func FindClose(h uintptr) {
-	C.FindClose(C.HANDLE(unsafe.Pointer(h)))
-}
+var _ [findFileDataSize - unsafe.Sizeof(WIN32_FIND_DATAA{})]byte
+var _ [unsafe.Sizeof(WIN32_FIND_DATAA{}) - findFileDataSize]byte
+
+func FindClose(h uintptr) { closeFileSearch(h) }
 
 const audioSampleNativeSize = 32 + 8*(unsafe.Sizeof(uintptr(0))-4)
 

@@ -1199,6 +1199,27 @@ and the live report's record and pair reset. The original C packet,
 lifecycle, and fault-prefix comparisons also passed on macOS ARM64
 with `cgocheck2` and `checkptr=2`, and on Linux ARM64 PIE.
 
+### File enumeration handle transport
+
+The Go audio, save, and rule-list paths use the same search API. Its
+result and cursor key have native integer width. Closing a search
+releases its backing allocation once. The Unix compatibility entry
+points convert opaque handles at the C edge. Windows uses its
+original ANSI file APIs and converts handles in the same way.
+
+The C-call regression checks the full-width invalid word, an
+interleaved C and Go cursor, and both size words of a sparse file
+above 4 GiB. It passed on macOS ARM64 with strict Cgo and pointer
+checks, Linux ARM64 PIE, and Linux 386 under QEMU with `server,safe`.
+Both Windows server architectures built. The client passed five
+targeted replays, including a fresh-process manual Save and Load.
+Unix uses its host `glob` for wildcard matching. The probed Darwin
+and Linux libraries differ on bracket expressions.
+
+The two return-word changes reduce the linked macOS ARM64 preamble
+definitions from 63 to 61. The product no longer links the two
+sentinel getters or the three Go calls to C file enumeration.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

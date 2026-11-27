@@ -6,10 +6,6 @@ package legacy
 #include <glob.h>
 #include "windows_compat.h"
 #include "cgo_const.h"
-
-static inline HANDLE nox_find_invalid_handle(void) {
-	return (HANDLE)(intptr_t)-1;
-}
 */
 import "C"
 
@@ -20,12 +16,19 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/ifs"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+type fileSearch struct {
+	remaining []string
+	release   func()
+}
 
 var findFileSearches = struct {
 	sync.Mutex
-	paths map[C.HANDLE][]string
-}{paths: make(map[C.HANDLE][]string)}
+	active map[uintptr]*fileSearch
+}{active: make(map[uintptr]*fileSearch)}
 
 func findFilePaths(pattern string) []string {
 	pattern = strings.TrimSuffix(ifs.Normalize(pattern), ".*")
@@ -45,63 +48,77 @@ func findFilePaths(pattern string) []string {
 	return paths
 }
 
-func fillFindFileData(path string, entry *C.WIN32_FIND_DATAA) {
+func fillFindFileData(path string, entry *WIN32_FIND_DATAA) {
 	clear(unsafe.Slice((*byte)(unsafe.Pointer(entry)), int(unsafe.Sizeof(*entry))))
-	entry.dwFileAttributes = C.FILE_ATTRIBUTE_NORMAL
+	entry.FileAttributes = C.FILE_ATTRIBUTE_NORMAL
 	if info, err := os.Stat(path); err == nil {
 		if info.IsDir() {
-			entry.dwFileAttributes = C.FILE_ATTRIBUTE_DIRECTORY
+			entry.FileAttributes = C.FILE_ATTRIBUTE_DIRECTORY
 		}
 		size := uint64(info.Size())
-		entry.nFileSizeHigh = C.uint32_t(size >> 32)
-		entry.nFileSizeLow = C.uint32_t(size)
+		entry.nFileSizeHigh = uint32(size >> 32)
+		entry.nFileSizeLow = uint32(size)
 	}
-	StrCopy(&entry.cFileName[0], len(entry.cFileName), path[strings.LastIndexByte(path, '/')+1:])
+	StrCopyBytes(entry.cFileName[:], path[strings.LastIndexByte(path, '/')+1:])
 }
 
-//export compatFindFirstFileA
-func compatFindFirstFileA(pattern *C.nox_cgo_const_char, entry *C.WIN32_FIND_DATAA) C.HANDLE {
+func FindFirstFileA(pattern *byte, entry *WIN32_FIND_DATAA) uintptr {
 	if pattern == nil || entry == nil {
-		return C.nox_find_invalid_handle()
+		return invalidFindFileHandle
 	}
-	paths := findFilePaths(GoString((*C.char)(pattern)))
+	paths := findFilePaths(alloc.GoString(pattern))
 	if len(paths) == 0 {
-		return C.nox_find_invalid_handle()
+		return invalidFindFileHandle
 	}
-	handle := C.HANDLE(C.malloc(1))
+	raw, release := alloc.Malloc(1)
+	handle := uintptr(raw)
 	fillFindFileData(paths[0], entry)
 	findFileSearches.Lock()
-	findFileSearches.paths[handle] = paths[1:]
+	findFileSearches.active[handle] = &fileSearch{remaining: paths[1:], release: release}
 	findFileSearches.Unlock()
 	return handle
 }
 
-//export compatFindNextFileA
-func compatFindNextFileA(handle C.HANDLE, entry *C.WIN32_FIND_DATAA) C.int {
+func FindNextFileA(handle uintptr, entry *WIN32_FIND_DATAA) int {
 	if entry == nil {
 		return 0
 	}
 	findFileSearches.Lock()
-	paths := findFileSearches.paths[handle]
-	if len(paths) == 0 {
+	search := findFileSearches.active[handle]
+	if search == nil || len(search.remaining) == 0 {
 		findFileSearches.Unlock()
 		return 0
 	}
-	findFileSearches.paths[handle] = paths[1:]
+	path := search.remaining[0]
+	search.remaining = search.remaining[1:]
 	findFileSearches.Unlock()
-	fillFindFileData(paths[0], entry)
+	fillFindFileData(path, entry)
 	return 1
 }
 
-//export compatFindClose
-func compatFindClose(handle C.HANDLE) C.int {
+func closeFileSearch(handle uintptr) int {
 	findFileSearches.Lock()
-	_, ok := findFileSearches.paths[handle]
-	delete(findFileSearches.paths, handle)
+	search := findFileSearches.active[handle]
+	delete(findFileSearches.active, handle)
 	findFileSearches.Unlock()
-	if !ok {
+	if search == nil {
 		return 0
 	}
-	C.free(unsafe.Pointer(handle))
+	search.release()
 	return 1
+}
+
+//export nox_compat_find_first_file_word
+func nox_compat_find_first_file_word(pattern *C.nox_cgo_const_char, entry *C.WIN32_FIND_DATAA) C.uintptr_t {
+	return C.uintptr_t(FindFirstFileA((*byte)(unsafe.Pointer(pattern)), (*WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
+}
+
+//export nox_compat_find_next_file_word
+func nox_compat_find_next_file_word(handle C.uintptr_t, entry *C.WIN32_FIND_DATAA) C.int {
+	return C.int(FindNextFileA(uintptr(handle), (*WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
+}
+
+//export nox_compat_find_close_word
+func nox_compat_find_close_word(handle C.uintptr_t) C.int {
+	return C.int(closeFileSearch(uintptr(handle)))
 }

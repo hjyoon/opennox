@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
 
 func TestFindFileNativeEnumeration(t *testing.T) {
@@ -61,5 +62,49 @@ func TestFindFileNativeEnumeration(t *testing.T) {
 	if handle := FindFirstFileA((*byte)(unsafe.Pointer(missing)), &first); handle != ^uintptr(0) {
 		FindClose(handle)
 		t.Fatalf("empty search returned handle %#x", handle)
+	}
+}
+
+func TestFindFileNativeCEntry(t *testing.T) {
+	dir := t.TempDir()
+	first := filepath.Join(dir, "a.plr")
+	if err := os.WriteFile(first, nil, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Truncate(first, 1<<32+5); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "b.plr"), []byte("second"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	pattern, free := alloc.CString(filepath.Join(dir, "*.plr"))
+	defer free()
+	entry := WIN32_FIND_DATAA{FileAttributes: 0xa5}
+	out := unsafe.Pointer(&entry)
+	if got := cfixture.FindFileFirst(nil, out); got != invalidFindFileHandle || entry.FileAttributes != 0xa5 {
+		t.Fatalf("C nil pattern returned %#x with output %+v", got, entry)
+	}
+	if got := cfixture.FindFileFirst(pattern, nil); got != invalidFindFileHandle {
+		t.Fatalf("C nil output returned %#x", got)
+	}
+	if cfixture.FindFileNext(invalidFindFileHandle, out) != 0 || cfixture.FindFileClose(invalidFindFileHandle) != 0 {
+		t.Fatal("C search accepted the invalid handle")
+	}
+
+	handle := cfixture.FindFileFirst(pattern, out)
+	if handle == invalidFindFileHandle || handle == 0 {
+		t.Fatalf("C search returned %#x", handle)
+	}
+	defer FindClose(handle)
+	if alloc.GoStringS(entry.cFileName[:]) != "a.plr" || entry.nFileSizeHigh != 1 || entry.nFileSizeLow != 5 {
+		t.Fatalf("C search lost the file name or high size word: %+v", entry)
+	}
+	if cfixture.FindFileNext(handle, nil) != 0 || FindNextFileA(handle, &entry) != 1 ||
+		alloc.GoStringS(entry.cFileName[:]) != "b.plr" {
+		t.Fatalf("C and Go searches did not share the cursor: %+v", entry)
+	}
+	if cfixture.FindFileNext(handle, out) != 0 || cfixture.FindFileClose(handle) != 1 ||
+		cfixture.FindFileClose(handle) != 0 || FindNextFileA(handle, &entry) != 0 {
+		t.Fatal("C search handle did not close exactly once")
 	}
 }

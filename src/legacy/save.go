@@ -103,24 +103,24 @@ func nox_client_countPlayerFiles02_4DC630() C.int {
 	_ = ifs.Chdir(dir)
 	defer ifs.Chdir(root)
 
-	var entry C.WIN32_FIND_DATAA
-	search := C.FindFirstFileA(internCStr("*.plr"), &entry)
-	if uintptr(unsafe.Pointer(search)) == ^uintptr(0) {
+	var entry WIN32_FIND_DATAA
+	search := FindFirstFileA((*byte)(unsafe.Pointer(internCStr("*.plr"))), &entry)
+	if search == invalidFindFileHandle {
 		return 0
 	}
-	defer C.FindClose(search)
+	defer FindClose(search)
 
 	var info server.SaveGameInfo
 	var count C.int
 	for {
-		if entry.dwFileAttributes&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
-			name := C.GoString(&entry.cFileName[0])
+		if entry.FileAttributes&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
+			name := GoStringS(entry.cFileName[:])
 			Sub_41A000(root+"\\Save\\"+name, &info)
 			if info.Flags&2 != 0 {
 				count++
 			}
 		}
-		if C.FindNextFileA(search, &entry) == 0 {
+		if FindNextFileA(search, &entry) == 0 {
 			return count
 		}
 	}

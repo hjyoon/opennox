@@ -98,25 +98,25 @@ func refreshRuleList4CED40(mapName *C.char) uintptr {
 	}
 	g2ServerEvent(list, 16399, 0, 0)
 	name := GoString(mapName)
-	path := CString("maps\\" + name + "\\*.rul")
-	defer StrFree(path)
-	var entry C.struct__WIN32_FIND_DATAA
-	handle := C.FindFirstFileA(path, &entry)
-	if uintptr(unsafe.Pointer(handle)) == ^uintptr(0) {
+	path, free := alloc.CString("maps\\" + name + "\\*.rul")
+	defer free()
+	var entry WIN32_FIND_DATAA
+	handle := FindFirstFileA(path, &entry)
+	if handle == invalidFindFileHandle {
 		return ^uintptr(0)
 	}
 	for {
-		if uint32(entry.dwFileAttributes)&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
-			filename := GoString(&entry.cFileName[0])
+		if entry.FileAttributes&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
+			filename := alloc.GoStringS(entry.cFileName[:])
 			if title := listedRuleName(name, filename); title != "" {
 				addRuleListTitle(list, title)
 			}
 		}
-		if C.FindNextFileA(handle, &entry) == 0 {
+		if FindNextFileA(handle, &entry) == 0 {
 			break
 		}
 	}
-	return uintptr(C.FindClose(handle))
+	return uintptr(closeFileSearch(handle))
 }
 
 func listedRuleName(mapName, fileName string) string {

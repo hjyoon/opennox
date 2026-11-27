@@ -12,6 +12,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -114,9 +115,9 @@ func TestPlayerDamageItemsCEntry4E2180NativePointersAndLiveLinks(t *testing.T) {
 					t.Fatalf("native pointer=%p, want above 4 GiB", pointer)
 				}
 			}
-			// Actual C symbol -> exported Go 004E2180 -> unmodified C
-			// 00415C00/slot-zero effect -> production EquipDamage/carry.
-			Nox_xxx_playerDamageItems_4E2180(owner, source, effective, 8, object.DamageImpale)
+			// Call the C ABI through the original armor lookup, slot-zero
+			// modifier and live durability calculation.
+			cfixture.PlayerDamageItemsC4E2180(owner, source, effective, 8, object.DamageImpale)
 			if len(wears) != 2 || wears[0] != first.TypeInd || wears[1] != later.TypeInd || first.HealthData != liveHP || firstHP.Cur != 10 || liveHP.Cur != 6 || laterHP.Cur != 18 || first.InvNextItem != later {
 				t.Fatalf("native wears=%v oldHP=%d liveHP=%d laterHP=%d", wears, firstHP.Cur, liveHP.Cur, laterHP.Cur)
 			}
@@ -152,7 +153,7 @@ func TestPlayerDamageItemsCEntry4E2180ClassReturnBeforeServices(t *testing.T) {
 		if target.UpdateData != nil {
 			pin.Pin(target.UpdateData)
 		}
-		Nox_xxx_playerDamageItems_4E2180(target, nil, nil, 0, object.DamageType(0x11223344))
+		cfixture.PlayerDamageItemsC4E2180(target, nil, nil, 0, object.DamageType(0x11223344))
 		pin.Unpin()
 	}
 }

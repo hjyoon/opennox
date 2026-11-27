@@ -6,7 +6,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 int nox_xxx_soundPlayerDamageSound_5328B0(nox_object_t* a1, nox_object_t* a2);
-double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item);
 int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int damage, int damage_type);
 */
@@ -279,7 +278,7 @@ func playerDamageRuntime4E17B0(s *server.Server) server.PlayerDamageRuntime4E17B
 			}
 		},
 		ItemArmorValue: func(item *server.Object) float32 {
-			return float32(C.nox_xxx_itemApplyDefendEffect_415C00(asObjectC(item)))
+			return float32(itemDefendNative415C00(item))
 		},
 		CanApplyArmorDefend: itemDurabilityCanApplyDefendNative4E1560,
 		ApplyArmorDefend:    itemDurabilityApplyDefendNative4E1560,

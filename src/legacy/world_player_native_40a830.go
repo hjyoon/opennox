@@ -160,14 +160,15 @@ func itemDefendNative415C00(item *server.Object) float64 {
 	if item == nil || uint32(item.ObjClass)&0x02000000 == 0 {
 		return 0
 	}
+	attributes := (*server.ModifierInitData)(item.InitData)
 	definition := worldPlayerRuntimeCurrent40A830().ArmorDefinition(item.TypeInd)
 	if definition == nil {
 		return 0
 	}
 	value := definition.DamageCoeffOrArmor64
 	var effect *server.ModifierEff
-	if item.InitData != nil {
-		effect = (*server.ModifierInitData)(item.InitData).Modifiers[0]
+	if attributes != nil {
+		effect = attributes.Modifiers[0]
 	}
 	if effect != nil && effect.Defend76.Fnc != nil {
 		worldPlayerCallDefend415C00(effect.Defend76.Fnc, effect, item, &value)

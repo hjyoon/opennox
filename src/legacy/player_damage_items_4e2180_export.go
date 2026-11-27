@@ -14,9 +14,7 @@ import (
 
 func playerDamageItemsNative4E2180(target, source, effective *server.Object, damage int32, typ object.DamageType) {
 	server.PlayerDamageItems4E2180(target, source, effective, damage, typ, server.PlayerDamageItemsRuntime4E2180{
-		ItemArmorValue: func(item *server.Object) float64 {
-			return float64(C.nox_xxx_itemApplyDefendEffect_415C00(asObjectC(item)))
-		},
+		ItemArmorValue: itemDefendNative415C00,
 		EquipDamage: func(item, owner, source, effective *server.Object, amount float32, typ object.DamageType) {
 			equipDamageNative4E16D0(item, owner, source, effective, amount, typ)
 		},
@@ -32,8 +30,5 @@ func nox_xxx_playerDamageItems_4E2180(target, source, effective *C.nox_object_t,
 }
 
 func Nox_xxx_playerDamageItems_4E2180(target, source, effective *server.Object, damage int32, typ object.DamageType) {
-	C.nox_xxx_playerDamageItems_4E2180(
-		(*C.nox_object_t)(asObjectC(target)), (*C.nox_object_t)(asObjectC(source)), (*C.nox_object_t)(asObjectC(effective)),
-		C.int32_t(damage), C.int32_t(typ),
-	)
+	playerDamageItemsNative4E2180(target, source, effective, damage, typ)
 }

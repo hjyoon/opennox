@@ -18,9 +18,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// Synthetic native-width records, not a stock-map assertion. The actual C
-// 004E2180 entry, C armor lookup, EquipDamage, registered ArmorDamage,
-// DefaultDamage and UnitSetHP run without replacement damage/HP callbacks.
+// Synthetic native-width records exercise the Go armor-wear entry, lookup,
+// EquipDamage, ArmorDamage, DefaultDamage and UnitSetHP.
 // Only outgoing player item-health transport is captured.
 func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
 	base := server.NewHigh(nil, nil, strman.New())
@@ -154,7 +153,7 @@ func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
 						t.Fatal("no-change/NPC wear emitted an item-health packet")
 					}
 				}
-				t.Logf("C 004E2180 -> registered ArmorDamage: owner=%p item=%p HP=%v carry=%v", owner, item, tc.health, tc.carries)
+			t.Logf("Go armor wear -> registered ArmorDamage: owner=%p item=%p HP=%v carry=%v", owner, item, tc.health, tc.carries)
 			})
 		}
 	}

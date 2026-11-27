@@ -81,3 +81,5 @@ require (
 )
 
 replace github.com/timshannon/go-openal => ./third_party/go-openal
+
+replace github.com/opennox/xwis v0.1.1 => ./third_party/xwis

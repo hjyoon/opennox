@@ -16,7 +16,7 @@ import (
 var questNecroSpawnCall51A7A0 = func(position *types.Pointf) {
 	outer := GetServer()
 	outer.S().QuestSpawnNecro51A7A0(position, server.QuestNecroSpawnRuntime51A7A0{
-		HealthScale: func() float64 { return float64(C.sub_4E40F0()) },
+		HealthScale: func() float64 { return questParameterFloat(questHealthScale) },
 		SetHP:       Nox_xxx_unitSetHP_4E4560,
 		CreateAt: func(unit *server.Object, position types.Pointf) {
 			outer.CreateObjectAt(unit, nil, position)

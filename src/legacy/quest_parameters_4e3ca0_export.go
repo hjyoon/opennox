@@ -24,14 +24,19 @@ const (
 	questDifficultyDeltaReady = 1563928
 )
 
-func questParameterFloat(offset uintptr) C.double {
+func questParameterFloat(offset uintptr) float64 {
 	bits := memmap.Uint32(questParametersBase, offset)
-	// The x87 load preserves the sign and payload, including the quiet bit.
+	// The original x87 load quiets signaling NaNs with the game's masked
+	// exceptions. Keep the sign and remaining payload while widening.
 	if bits&0x7f800000 == 0x7f800000 {
-		wide := uint64(bits&0x80000000)<<32 | 0x7ff0000000000000 | uint64(bits&0x007fffff)<<29
-		return C.double(math.Float64frombits(wide))
+		fraction := bits & 0x007fffff
+		if fraction != 0 {
+			fraction |= 0x00400000
+		}
+		wide := uint64(bits&0x80000000)<<32 | 0x7ff0000000000000 | uint64(fraction)<<29
+		return math.Float64frombits(wide)
 	}
-	return C.double(math.Float32frombits(bits))
+	return float64(math.Float32frombits(bits))
 }
 
 func questParameterStore(value float64) float32 {
@@ -45,27 +50,39 @@ func questParameterStore(value float64) float32 {
 }
 
 //export sub_4E3CA0
-func sub_4E3CA0() C.double { return questParameterFloat(questDifficulty) }
+func sub_4E3CA0() C.double { return C.double(questParameterFloat(questDifficulty)) }
 
 //export sub_4E3CB0
 func sub_4E3CB0(value C.float) C.int {
-	bits := math.Float32bits(float32(value))
+	return C.int(storeQuestDifficulty(float32(value)))
+}
+
+func storeQuestDifficulty(value float32) int32 {
+	bits := math.Float32bits(value)
 	*memmap.PtrUint32(questParametersBase, questDifficulty) = bits
-	return C.int(int32(bits))
+	return int32(bits)
 }
 
 //export nox_game_getQuestStage_4E3CC0
 func nox_game_getQuestStage_4E3CC0() C.int {
-	return C.int(memmap.Int32(questParametersBase, questStage))
+	return C.int(questStageNative4E3CC0())
 }
 
 //export nox_game_setQuestStage_4E3CD0
 func nox_game_setQuestStage_4E3CD0(stage C.int) {
-	*memmap.PtrInt32(questParametersBase, questStage) = int32(stage)
+	setQuestStageNative4E3CD0(int32(stage))
+}
+
+func questStageNative4E3CC0() int32 { return memmap.Int32(questParametersBase, questStage) }
+
+func setQuestStageNative4E3CD0(stage int32) {
+	*memmap.PtrInt32(questParametersBase, questStage) = stage
 }
 
 //export sub_4E3D50
-func sub_4E3D50() C.int {
+func sub_4E3D50() C.int { return C.int(questDifficultyNative4E3D50()) }
+
+func questDifficultyNative4E3D50() int32 {
 	ready := memmap.PtrUint32(questDifficultyCacheBase, questDifficultyDeltaReady)
 	delta := memmap.PtrFloat32(questDifficultyCacheBase, questDifficultyDelta)
 	if *ready == 0 {
@@ -73,8 +90,8 @@ func sub_4E3D50() C.int {
 		*ready = 1
 	}
 	players := int32(nox_xxx_player_4E3CE0())
-	stage := uint32(nox_game_getQuestStage_4E3CC0())
-	return sub_4E3CB0(C.float(server.QuestDifficulty4E3D50(stage, players, *delta)))
+	stage := uint32(questStageNative4E3CC0())
+	return storeQuestDifficulty(server.QuestDifficulty4E3D50(stage, players, *delta))
 }
 
 func setQuestScale(offset uintptr, value float32, key string) {
@@ -86,17 +103,21 @@ func setQuestScale(offset uintptr, value float32, key string) {
 	*memmap.PtrFloat32(questParametersBase, offset) = value
 }
 
+func setQuestDamageScale(value float32) { setQuestScale(questDamageScale, value, "PlayerDamageCap") }
+
+func setQuestHealthScale(value float32) { setQuestScale(questHealthScale, value, "SystemHealthCap") }
+
 //export sub_4E4080
-func sub_4E4080(value C.float) { setQuestScale(questDamageScale, float32(value), "PlayerDamageCap") }
+func sub_4E4080(value C.float) { setQuestDamageScale(float32(value)) }
 
 //export sub_4E40B0
-func sub_4E40B0() C.double { return questParameterFloat(questDamageScale) }
+func sub_4E40B0() C.double { return C.double(questParameterFloat(questDamageScale)) }
 
 //export sub_4E40C0
-func sub_4E40C0(value C.float) { setQuestScale(questHealthScale, float32(value), "SystemHealthCap") }
+func sub_4E40C0(value C.float) { setQuestHealthScale(float32(value)) }
 
 //export sub_4E40F0
-func sub_4E40F0() C.double { return questParameterFloat(questHealthScale) }
+func sub_4E40F0() C.double { return C.double(questParameterFloat(questHealthScale)) }
 
 //export sub_4E4DC0
 func sub_4E4DC0() { nox_platform_srand(0x1429) }

@@ -470,7 +470,7 @@ func sub_507090(vote *C.nox_vote_5066D0) {
 			C.nox_xxx_playerRespawn_4F7EF0(p.playerUnit)
 		}
 	}
-	C.nox_game_setQuestStage_4E3CD0(0)
+	setQuestStageNative4E3CD0(0)
 	nox_xxx_mapLoad_4D2450(nox_xxx_getQuestMapFile_4D0F60())
 	sub_5067B0(vote)
 }

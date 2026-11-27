@@ -49,7 +49,7 @@ var exitCollideCall4E9090 = func(exit, unit *server.Object, collision unsafe.Poi
 				Sub_4FC300(obj, int32(ability))
 			},
 			CurrentQuestStage: func() uint32 {
-				return uint32(C.nox_game_getQuestStage_4E3CC0())
+				return uint32(questStageNative4E3CC0())
 			},
 			NextStageThreshold: func(stage uint32) uint32 {
 				return uint32(Nox_server_questNextStageThreshold_4D74F0(int32(stage)))
@@ -68,7 +68,7 @@ var exitCollideCall4E9090 = func(exit, unit *server.Object, collision unsafe.Poi
 			},
 			StoreNextMap: storeQuestNextMap4E9090,
 			SetCurrentQuestStage: func(stage uint32) {
-				C.nox_game_setQuestStage_4E3CD0(C.int(stage))
+				setQuestStageNative4E3CD0(int32(stage))
 			},
 			SetQuestWarping: func(value int32) {
 				sub_4D76E0(C.int(value))

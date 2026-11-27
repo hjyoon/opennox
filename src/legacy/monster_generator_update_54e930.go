@@ -174,7 +174,7 @@ func monsterGeneratorRuntime54E930() server.MonsterGeneratorRuntime54E930 {
 		},
 		EquipWeapon:       npcWeaponEquipNative53A2C0,
 		EquipArmor:        npcArmorEquipNative53E520,
-		QuestHealthFactor: func() float64 { return float64(C.sub_4E40F0()) },
+		QuestHealthFactor: func() float64 { return questParameterFloat(questHealthScale) },
 		FloatToInt:        server.X87TruncateSignedDWORD419A70,
 	}
 }

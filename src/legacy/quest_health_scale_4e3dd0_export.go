@@ -17,14 +17,13 @@ func questHealthScaleRuntime4E3DD0() server.QuestHealthScaleRuntime4E3DD0 {
 		HealthInit:       memmap.PtrFloat32(0x5D4594, 1563916),
 		DamageCoeff:      memmap.PtrFloat32(0x5D4594, 1563920),
 		HealthCoeff:      memmap.PtrFloat32(0x5D4594, 1563924),
-		Difficulty:       func() float64 { return float64(C.sub_4E3CA0()) },
-		StoreDamageScale: func(value float32) { C.sub_4E4080(C.float(value)) },
-		StoreHealthScale: func(value float32) { C.sub_4E40C0(C.float(value)) },
-		HealthScale:      func() float64 { return float64(C.sub_4E40F0()) },
+		Difficulty:       func() float64 { return questParameterFloat(questDifficulty) },
+		StoreDamageScale: setQuestDamageScale,
+		StoreHealthScale: setQuestHealthScale,
+		HealthScale:      func() float64 { return questParameterFloat(questHealthScale) },
 		SetHP: func(obj *server.Object, value uint16) int32 {
-			defer pinObjectForC(obj)()
 			// Quest scaling observes only the low WORD of the setter result.
-			return int32(uint16(C.nox_xxx_unitSetHP_4E4560(asObjectC(obj), C.ushort(value))))
+			return int32(uint16(unitSetHPNative4E4560(obj, value)))
 		},
 	}
 }

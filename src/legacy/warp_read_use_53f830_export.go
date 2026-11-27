@@ -17,7 +17,7 @@ func warpReadUseRuntime53F830() server.WarpReadUseRuntime53F830 {
 			return int32(C.sub_4D75E0())
 		},
 		CurrentQuestStage: func() int32 {
-			return int32(C.nox_game_getQuestStage_4E3CC0())
+			return questStageNative4E3CC0()
 		},
 		NextStageThreshold: func(stage int32) int32 {
 			return Nox_server_questNextStageThreshold_4D74F0(stage)

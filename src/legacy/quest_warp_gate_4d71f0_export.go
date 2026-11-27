@@ -51,7 +51,7 @@ func questWarpGateRuntime4D71F0() server.QuestWarpGateRuntime4D71F0 {
 		MaybeWarp: func() int32 {
 			return s.QuestMaybeWarp4E8F60(server.QuestMaybeWarpRuntime4E8F60{
 				CurrentQuestStage: func() uint32 {
-					return uint32(C.nox_game_getQuestStage_4E3CC0())
+					return uint32(questStageNative4E3CC0())
 				},
 				NextStageThreshold: func(stage uint32) uint32 {
 					return uint32(Nox_server_questNextStageThreshold_4D74F0(int32(stage)))

@@ -13,6 +13,17 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+func TestQuestHealthScaleNativeSetterKeepsGoOwnedHealth(t *testing.T) {
+	holder := &server.Object{ObjClass: object.ClassArmor}
+	health := &server.HealthData{Cur: 12, Max: 40}
+	obj := &server.Object{ObjClass: object.ClassArmor, HealthData: health, InvHolder: holder}
+	got := questHealthScaleRuntime4E3DD0().SetHP(obj, 26)
+	want := int32(uint16(uintptr(unsafe.Pointer(holder))))
+	if got != want || health.Cur != 26 || health.Max != 40 || obj.Field38 != math.MaxUint32 {
+		t.Fatalf("quest setter return=%#x want=%#x health=%d/%d sync=%#x", got, want, health.Cur, health.Max, obj.Field38)
+	}
+}
+
 func TestQuestHealthScale4E3DD0CEntryDelegatesWholeBody(t *testing.T) {
 	srv := server.NewHigh(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
@@ -76,17 +87,17 @@ func TestQuestHealthScale4E3DD0CEntryNativeWorldAndRetainedSetter(t *testing.T) 
 	r.Difficulty = func() float64 { return 2 }
 	r.StoreDamageScale, r.StoreHealthScale = func(float32) {}, func(float32) {}
 	r.HealthScale = func() float64 { return 2.5 }
-	// r.SetHP still calls the actual typed C setter, including NeedSync.
+	// The actual native setter updates HP and marks the objects for sync.
 	questHealthScaleCall4E3DD0 = func() int16 { return srv.QuestHealthScale4E3DD0(r) }
 	wantReturn := uint16(uintptr(unsafe.Pointer(&update.HealthGraph103[0])) + unsafe.Sizeof(update.HealthGraph103))
 	if got := questHealthScaleCEntry4E3DD0(); uint16(got) != wantReturn {
 		t.Fatalf("short return=%04x want=%04x", uint16(got), wantReturn)
 	}
 	if genHP.Cur != 0 || genHP.Max != 0 || monsterHP.Cur != 8 || monsterHP.Max != 8 {
-		t.Fatalf("C-set health=%+v/%+v", genHP, monsterHP)
+		t.Fatalf("scaled health=%+v/%+v", genHP, monsterHP)
 	}
 	if gen.Field38 != math.MaxUint32 || monster.Field38 != math.MaxUint32 {
-		t.Fatal("retained C setter did not mark native objects for synchronization")
+		t.Fatal("health setter did not mark native objects for synchronization")
 	}
 	for i, value := range update.HealthGraph103 {
 		if value != 8 {

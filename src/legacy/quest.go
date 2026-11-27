@@ -32,16 +32,16 @@ func nox_server_questNextStageThreshold_4D74F0(lvl C.int) C.int {
 //export sub_4D6F30
 func sub_4D6F30() int32 { return int32(Sub_4D6F30()) }
 func Nox_game_getQuestStage_4E3CC0() int {
-	return int(C.nox_game_getQuestStage_4E3CC0())
+	return int(questStageNative4E3CC0())
 }
 func Nox_xxx_getQuestStage_51A930() int {
 	return int(nox_xxx_getQuestStage_51A930())
 }
 func Sub_4E3D50() {
-	C.sub_4E3D50()
+	questDifficultyNative4E3D50()
 }
 func Sub_4E3DD0() {
-	C.sub_4E3DD0()
+	questHealthScaleCall4E3DD0()
 }
 func Sub_4F1F20() {
 	rewardContainerProcessCall4F1F20()
@@ -53,7 +53,7 @@ func Sub_4D0F30() {
 	sub_4D0F30()
 }
 func Nox_game_setQuestStage_4E3CD0(a1 int) {
-	C.nox_game_setQuestStage_4E3CD0(C.int(a1))
+	setQuestStageNative4E3CD0(int32(a1))
 }
 func Sub_51A920(a1 int) {
 	sub_51A920(C.int(a1))

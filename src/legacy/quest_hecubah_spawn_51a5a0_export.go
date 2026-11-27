@@ -16,7 +16,7 @@ import (
 var questHecubahSpawnCall51A5A0 = func(position *types.Pointf) {
 	outer := GetServer()
 	outer.S().QuestSpawnHecubah51A5A0(position, server.QuestHecubahSpawnRuntime51A5A0{
-		HealthScale: func() float64 { return float64(C.sub_4E40F0()) },
+		HealthScale: func() float64 { return questParameterFloat(questHealthScale) },
 		SetHP:       Nox_xxx_unitSetHP_4E4560,
 		CreateAt:    func(unit *server.Object, position types.Pointf) { outer.CreateObjectAt(unit, nil, position) },
 		Stage:       func() uint32 { return uint32(Nox_game_getQuestStage_4E3CC0()) },

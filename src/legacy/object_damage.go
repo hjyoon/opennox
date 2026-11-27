@@ -271,7 +271,7 @@ func playerDamageRuntime4E17B0(s *server.Server) server.PlayerDamageRuntime4E17B
 		CoopMode:         func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		GameplayFlag1:    func() bool { return noxflags.HasGamePlay(noxflags.GameplayFlag1) },
 		QuestMode:        func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
-		QuestDamageScale: func() float32 { return float32(C.sub_4E40B0()) },
+		QuestDamageScale: func() float32 { return float32(questParameterFloat(questDamageScale)) },
 		GodMode:          func() bool { return noxflags.HasEngine(noxflags.EngineGodMode) },
 		IsEnemy:          s.IsEnemyTo,
 		SentryGlobeType:  uint16(s.Types.IndByID("SentryGlobe")),

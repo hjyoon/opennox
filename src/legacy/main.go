@@ -41,11 +41,11 @@ func nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(w_cgo, h_cgo, d_cgo *
 func sub_4AA9C0() int32 { return int32(Sub_4AA9C0()) }
 
 func Nox_xxx_loadLook_415D50() {
-	titleLoadTable415960(titleArmor415960)
+	nox_xxx_loadLook_415D50()
 }
 
 func Nox_xxx_loadModifyers_4158C0() {
-	titleLoadTable415960(titleWeapon415960)
+	nox_xxx_loadModifyers_4158C0()
 }
 
 func Sub_4D11A0() {

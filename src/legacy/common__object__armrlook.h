@@ -3,6 +3,6 @@
 
 #include "defs.h"
 
-char** nox_xxx_loadLook_415D50();
+uintptr_t nox_xxx_loadLook_415D50(void);
 
 #endif // NOX_PORT_COMMON_OBJECT_ARMRLOOK

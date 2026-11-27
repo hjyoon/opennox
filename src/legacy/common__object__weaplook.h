@@ -3,6 +3,6 @@
 
 #include "defs.h"
 
-char** nox_xxx_loadModifyers_4158C0();
+uintptr_t nox_xxx_loadModifyers_4158C0(void);
 
 #endif // NOX_PORT_COMMON_OBJECT_WEAPLOOK

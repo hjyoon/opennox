@@ -6,16 +6,16 @@ package legacy
 int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int, unsigned char*, int, nox_playerInfo*, nox_object_t*, void*);
 static unsigned game4_consumer_abi(void) {
  return _Generic(&sub_50F3A0, void(*)(void*):1, default:0)
- | (_Generic(&sub_50F7F0, uint32_t*(*)(nox_object_t*,nox_object_t*):1, default:0)<<1)
- | (_Generic(&sub_50FB90, uint32_t*(*)(void*):1, default:0)<<2)
+ | (_Generic(&sub_50F7F0, uintptr_t(*)(nox_object_t*,nox_object_t*):1, default:0)<<1)
+ | (_Generic(&sub_50FB90, uintptr_t(*)(void*):1, default:0)<<2)
  | (_Generic(&sub_5100C0_trade, void(*)(nox_object_t*,void*,uint16_t):1, default:0)<<3)
  | (_Generic(&sub_510640_trade, float*(*)(nox_object_t*,void*,uint16_t,uint8_t):1, default:0)<<4)
  | (_Generic(&sub_510BE0_trade, uint32_t*(*)(nox_object_t*,void*,uint16_t):1, default:0)<<5)
  | (_Generic(&sub_510AE0, uint32_t*(*)(nox_object_t*,void*,uint16_t):1, default:0)<<6)
  | (_Generic(&sub_510D10, void(*)(nox_object_t*,void*,uint16_t,uint8_t):1, default:0)<<7);
 }
-static uintptr_t game4_consumer_return(nox_object_t* owner,nox_object_t* gold) { return (uintptr_t)sub_50F7F0(owner,gold); }
-static uintptr_t game4_consumer_reprice(void* session) { return (uintptr_t)sub_50FB90(session); }
+static uintptr_t game4_consumer_return(nox_object_t* owner,nox_object_t* gold) { return sub_50F7F0(owner,gold); }
+static uintptr_t game4_consumer_reprice(void* session) { return sub_50FB90(session); }
 static uintptr_t game4_consumer_sell(nox_object_t* owner,void* session,uint16_t code) { return (uintptr_t)sub_510BE0_trade(owner,session,code); }
 static uintptr_t game4_consumer_repair(nox_object_t* owner,void* session,uint16_t code) { return (uintptr_t)sub_510AE0(owner,session,code); }
 static uintptr_t game4_consumer_buy_many(nox_object_t* owner,void* session,uint16_t typ,uint8_t count) { return (uintptr_t)sub_510640_trade(owner,session,typ,count); }

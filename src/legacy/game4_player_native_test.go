@@ -2,7 +2,6 @@ package legacy
 
 import (
 	"bytes"
-	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"math"
 	"reflect"
 	"runtime"
@@ -14,6 +13,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -60,6 +60,14 @@ func TestGame4GoldCEntryNativeWordsAndUnsignedBoundaries(t *testing.T) {
 		if got := cfixture.Game4GoldC(o, 4, 0); got != uintptr(tc.want) {
 			t.Fatalf("object getter=%#x", got)
 		}
+	}
+	p.ProtPlayerGold = math.MaxUint32
+	p.GoldVal = 2
+	if got := cfixture.Game4GoldC(o, 0, math.MaxUint32); got != ^uintptr(0) || p.GoldVal != 1 {
+		t.Fatalf("signed protection result after add = %#x, gold = %d", got, p.GoldVal)
+	}
+	if got := cfixture.Game4GoldC(o, 1, 2); got != ^uintptr(0) || p.GoldVal != 0 {
+		t.Fatalf("signed protection result after subtract = %#x, gold = %d", got, p.GoldVal)
 	}
 	p.GoldVal = 0xdeadbeef
 	o.ObjClass = object.ClassMonster

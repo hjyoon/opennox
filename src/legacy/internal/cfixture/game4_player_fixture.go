@@ -5,8 +5,8 @@ package cfixture
 #include <stdlib.h>
 #include "GAME4.h"
 
-_Static_assert(_Generic(&nox_xxx_playerAddGold_4FA590, uint32_t*(*)(nox_object_t*,int):1, default:0), "native AddGold ABI");
-_Static_assert(_Generic(&nox_xxx_playerSubGold_4FA5D0, uint32_t*(*)(nox_object_t*,unsigned int):1, default:0), "native SubGold ABI");
+_Static_assert(_Generic(&nox_xxx_playerAddGold_4FA590, int32_t(*)(nox_object_t*,int32_t):1, default:0), "native AddGold ABI");
+_Static_assert(_Generic(&nox_xxx_playerSubGold_4FA5D0, int32_t(*)(nox_object_t*,uint32_t):1, default:0), "native SubGold ABI");
 _Static_assert(_Generic(&sub_4FB050, int(*)(nox_object_t*,nox_object_t*,int*):1, default:0), "native guide damage ABI");
 static uintptr_t game4_player_gold_entry(nox_object_t* unit, int op, uint32_t value) {
  switch(op) {

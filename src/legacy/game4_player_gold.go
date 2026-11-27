@@ -9,30 +9,28 @@ import "C"
 
 import "github.com/opennox/opennox/v1/server"
 
-// The legacy caller consumes a scalar protection result in a pointer-sized return slot.
-//
-//export nox_game4_player_gold_add_go
-func nox_game4_player_gold_add_go(unit *C.nox_object_t, delta C.int) C.uintptr_t {
-	return C.uintptr_t(game4GoldAdd(asObjectS(unit), uint32(delta)))
+//export nox_xxx_playerAddGold_4FA590
+func nox_xxx_playerAddGold_4FA590(unit *C.nox_object_t, delta C.int32_t) C.int32_t {
+	return C.int32_t(game4GoldAdd(asObjectS(unit), uint32(delta)))
 }
 
-//export nox_game4_player_gold_sub_go
-func nox_game4_player_gold_sub_go(unit *C.nox_object_t, amount C.uint) C.uintptr_t {
-	return C.uintptr_t(game4GoldSub(asObjectS(unit), uint32(amount)))
+//export nox_xxx_playerSubGold_4FA5D0
+func nox_xxx_playerSubGold_4FA5D0(unit *C.nox_object_t, amount C.uint32_t) C.int32_t {
+	return C.int32_t(game4GoldSub(asObjectS(unit), uint32(amount)))
 }
 
-func game4GoldAdd(unit *server.Object, amount uint32) uintptr {
-	var result uintptr
+func game4GoldAdd(unit *server.Object, amount uint32) int32 {
+	var result int32
 	playerInventoryAddGoldNative41AC30(unit, amount, func(token uint32, delta int32) {
-		result = uintptr(sub_56F920(C.int(token), C.int(delta)))
+		result = addPlayerProtectedStat(token, uint32(delta))
 	})
 	return result
 }
 
-func game4GoldSub(unit *server.Object, amount uint32) uintptr {
-	var result uintptr
+func game4GoldSub(unit *server.Object, amount uint32) int32 {
+	var result int32
 	playerInventorySubGoldNative41AC30(unit, amount, func(token uint32, delta int32) {
-		result = uintptr(sub_56F920(C.int(token), C.int(delta)))
+		result = addPlayerProtectedStat(token, uint32(delta))
 	})
 	return result
 }

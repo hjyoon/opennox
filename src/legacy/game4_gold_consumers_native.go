@@ -61,7 +61,7 @@ func game4GoldReturn50F7F0(owner, gold *server.Object) uintptr {
 	if uint8(owner.ObjClass)&4 == 0 {
 		return uintptr(unsafe.Pointer(owner))
 	}
-	return game4GoldAdd(owner, gold.InitDataGold().Amount)
+	return uintptr(game4GoldAdd(owner, gold.InitDataGold().Amount))
 }
 
 func game4TradeOfferValue50FD20(session *server.TradeSession, owner *server.Object) uint32 {
@@ -79,9 +79,8 @@ func game4TradeOfferValue50FD20(session *server.TradeSession, owner *server.Obje
 	return result
 }
 
-// All pointer fields come from the native TradeSession layout. The return
-// word may be a scalar EAX residue or a genuine native CRC/Gold field address;
-// it stays uintptr until the tiny C adapter, never a manufactured Go pointer.
+// The return word carries either a scalar result or the native address of a
+// session's gold amount.
 func game4TradeReprice50FB90(session *server.TradeSession) uintptr {
 	first := session.Field8
 	result := uintptr(uint32(first.ObjClass) & 4)
@@ -116,7 +115,7 @@ func game4TradeReprice50FB90(session *server.TradeSession) uintptr {
 			}
 			session.Field44 += delta
 			session.Field52.InitDataGold().Amount += delta
-			result = game4GoldSub(session.Field12, delta)
+			result = uintptr(game4GoldSub(session.Field12, delta))
 		} else {
 			session.Field44 = valueA
 			amount := &session.Field52.InitDataGold().Amount
@@ -133,7 +132,7 @@ func game4TradeReprice50FB90(session *server.TradeSession) uintptr {
 			}
 			session.Field40 += delta
 			session.Field48.InitDataGold().Amount += delta
-			result = game4GoldSub(session.Field8, delta)
+			result = uintptr(game4GoldSub(session.Field8, delta))
 		} else {
 			session.Field40 += delta
 			amount := &session.Field48.InitDataGold().Amount

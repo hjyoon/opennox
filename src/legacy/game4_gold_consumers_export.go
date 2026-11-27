@@ -19,13 +19,13 @@ func sub_50F3A0(ptr unsafe.Pointer) {
 	rt.world.CancelP2PTradeNative50F3A0((*server.TradeSession)(ptr), rt.p2p())
 }
 
-//export nox_game4_goldReturn_50F7F0
-func nox_game4_goldReturn_50F7F0(owner, gold *nox_object_t) C.uintptr_t {
+//export sub_50F7F0
+func sub_50F7F0(owner, gold *nox_object_t) C.uintptr_t {
 	return C.uintptr_t(game4GoldReturn50F7F0(asObjectS(owner), asObjectS(gold)))
 }
 
-//export nox_game4_tradeReprice_50FB90
-func nox_game4_tradeReprice_50FB90(ptr unsafe.Pointer) C.uintptr_t {
+//export sub_50FB90
+func sub_50FB90(ptr unsafe.Pointer) C.uintptr_t {
 	return C.uintptr_t(game4TradeReprice50FB90((*server.TradeSession)(ptr)))
 }
 

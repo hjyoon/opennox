@@ -1915,6 +1915,12 @@ player, and audio layout checks. The normal client at this revision
 passed both the stock multiplayer field-guide shop and the Conjurer
 chapter-two field-guide shop replays.
 
+The focused `8836b5460` server and C-entry tests passed with
+`cgocheck2` and `checkptr=2` on Linux ARM64 and QEMU Linux 386.
+Linux ARM64 passed 13 top-level tests and Linux 386 passed three.
+The ARM64 retry used one build action at a time and a 1700 MiB Go
+memory limit after the earlier compiler process was killed.
+
 The `src/legacy` package's `.CFiles` selection contains 22 definitions
 across ten top-level files for the audited profiles. The default
 macOS ARM64 client selects 16 definitions in seven files. Five

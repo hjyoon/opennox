@@ -96,8 +96,8 @@ static int game3_test_selection(uintptr_t* address) {
  short* result=sub_4A3090((short*)&p->d,1);
  int ok=result==(short*)&p->d&&p->d.field_12==p->selection&&p->selection[0]==100&&p->selection[1]==102&&p->selection[2]==103&&p->selection[3]==UINT32_MAX&&p->selection[4]==104&&p->selection[5]==105&&p->before==p->after;nox_native_fixture_free_high(p);return ok;
 }
-static int game3_test_destroy(int vertical) {
- nox_window* w=nox_native_fixture_calloc_high(1,sizeof(*w));w->flags=8;w->widget_data=calloc(1,16);
+static int game3_test_destroy(int vertical, void* widget_data) {
+ nox_window* w=nox_native_fixture_calloc_high(1,sizeof(*w));w->flags=8;w->widget_data=widget_data;
  int v=vertical?nox_xxx_wndScrollBoxProc_4B5320(w,2,0,0):sub_4B5010(w,2,0,0);
  int ok=v==0&&w->widget_data==NULL;nox_native_fixture_free_high(w);return ok;
 }
@@ -142,6 +142,8 @@ import "C"
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func Game3WidgetPositionCOwner(ref bool, x, y int32) (out [2]uint32, address uintptr, intact bool) {
@@ -213,12 +215,20 @@ func Game3WidgetSelectionCheck() (uintptr, bool) {
 	v := C.game3_test_selection(&p) != 0
 	return uintptr(p), v
 }
-func Game3WidgetDestroyCheck(vertical bool) bool {
+func Game3WidgetDestroyCheck(vertical, checkedAllocator bool) bool {
+	const size = C.sizeof_nox_slider_data_4B4860
+	data := C.calloc(1, size)
+	if data == nil {
+		return false
+	}
+	if checkedAllocator {
+		alloc.AdoptCAllocation(data, size)
+	}
 	v := C.int(0)
 	if vertical {
 		v = 1
 	}
-	return C.game3_test_destroy(v) != 0
+	return C.game3_test_destroy(v, data) != 0
 }
 func Game3WidgetLayout() (out [8]uintptr) {
 	C.game3_test_layout((*C.size_t)(unsafe.Pointer(&out[0])))

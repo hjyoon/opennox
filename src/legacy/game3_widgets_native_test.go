@@ -143,7 +143,7 @@ func TestGame3WidgetsNativeLayoutAndPinnedSelection(t *testing.T) {
 		}
 	}
 	for _, vertical := range []bool{false, true} {
-		if !cfixture.Game3WidgetDestroyCheck(vertical) {
+		if !cfixture.Game3WidgetDestroyCheck(vertical, cgoSafe) {
 			t.Fatal("destroy did not free and clear native slider data")
 		}
 	}

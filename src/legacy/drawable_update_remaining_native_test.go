@@ -147,10 +147,12 @@ func TestRemainingDrawableUpdateEntriesNative228(t *testing.T) {
 				}
 			}
 			dr.PosVec = image.Pt(123, -456)
-			// Only bypass old renderer type-cache setup, not a game condition. The
-			// subject is the registered ABI, with opaque records and a recording hook.
+			// Seed the cache entries still owned by the blob. The callback probe
+			// observes the opaque records through a recording hook.
 			for off := uintptr(1522944); off <= 1523020; off += 4 {
-				*memmap.PtrUint32(0x5D4594, off) = 71
+				if memmap.VariableByAddr(0x5D4594+off) == nil {
+					*memmap.PtrUint32(0x5D4594, off) = 71
+				}
 			}
 			*memmap.PtrInt32(0x587000, 190108) = 0
 			world := new(server.Server)

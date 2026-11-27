@@ -12,7 +12,6 @@ static inline void nox_selcolor_set_value(nox_window* win, uint32_t value) {
 	}
 }
 #include "game3_class_config_reference.h"
-#include "game3_class_config_options.h"
 static int game3_fixture_config(int reference, int which, char* p) {
  switch(which) {
  case 0: return reference ? game3_reference_sub_4A7A80(p) : sub_4A7A80(p);
@@ -34,7 +33,7 @@ static uintptr_t game3_fixture_match(int reference, nox_window* root, nox_window
  if (reference) {
    return (uintptr_t)game3_reference_sub_4A61E0(w, group, p, root);
  }
- return (uintptr_t)sub_4A61E0(w, group, p);
+ return sub_4A61E0(w, group, p);
 }
 static int game3_fixture_radio(nox_window* w,int code,uintptr_t a,uintptr_t b,int pre) {return pre?nox_xxx_wndRadioButtonProcPre_4A93C0(w,code,a,b):nox_xxx_wndRadioButtonProc_4A84E0(w,code,a,b);}
 static size_t game3_fixture_layout(int which) {switch(which){case 0:return sizeof(nox_window);case 1:return offsetof(nox_window,widget_data);case 2:return offsetof(nox_window,draw_data);case 3:return offsetof(nox_window,parent);case 4:return offsetof(nox_window,field_100);case 5:return sizeof(nox_window_data);}return 0;}

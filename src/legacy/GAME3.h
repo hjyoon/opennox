@@ -33,7 +33,7 @@ int sub_4A49D0(nox_window* win, nox_window_data* draw);
 int sub_4A50A0();
 int sub_4A50D0();
 int sub_4A5E90();
-unsigned char* sub_4A61E0(nox_window* a1, int a2, unsigned char* a3);
+uintptr_t sub_4A61E0(nox_window* window, int group, unsigned char* rgb);
 int sub_4A6890();
 int sub_4A6B50(wchar2_t* a1);
 int sub_4A6C90();

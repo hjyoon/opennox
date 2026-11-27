@@ -48,7 +48,6 @@ package legacy
 
 
 
-#include "game3_class_config_options.h"
 extern int nox_game_showOptions_native(void);
 void nox_video_setMenuOptions(nox_window*);
 int nox_gui_menu_proc_ext(int);
@@ -171,7 +170,7 @@ func sub_4A5E90() C.int {
 			if i == 0 {
 				group = 2
 			}
-			game3_selcolor_match_4A61E0(colorSelectSwatches[i], group, (*C.uchar)(unsafe.Add(unsafe.Pointer(colorSelectProfile), off)))
+			sub_4A61E0(colorSelectSwatches[i], group, (*C.uchar)(unsafe.Add(unsafe.Pointer(colorSelectProfile), off)))
 		}
 		for i := 5; i < len(colorSelectSwatches); i++ {
 			result = C.int(uint32(*(*byte)(unsafe.Add(unsafe.Pointer(colorSelectProfile), 78+i))) << 16)
@@ -181,8 +180,8 @@ func sub_4A5E90() C.int {
 	return result
 }
 
-//export game3_selcolor_match_4A61E0
-func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C.uintptr_t {
+//export sub_4A61E0
+func sub_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C.uintptr_t {
 	index := uint32(0)
 	p := memmap.PtrOff(0x5D4594, uintptr(int64(1307797)+96*int64(group)))
 	result := uintptr(p)
@@ -198,10 +197,9 @@ func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C
 		}
 	}
 	if index < 32 && group == 1 {
-		id := C.int(nox_xxx_wndGetID_46B0A0(win))
-		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id-10))
+		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, nox_xxx_wndGetID_46B0A0(win)-10)
 		nox_xxx_wnd_46ABB0(w, 1)
-		w = nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id+10))
+		w = nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, nox_xxx_wndGetID_46B0A0(win)+10)
 		if w != nil {
 			w.draw_data.field_0 |= 6
 		}

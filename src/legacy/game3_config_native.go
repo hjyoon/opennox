@@ -7,7 +7,6 @@ package legacy
 #include <wctype.h>
 #include "compat.h"
 #include "GAME3.h"
-#include "game3_class_config_options.h"
 */
 import "C"
 

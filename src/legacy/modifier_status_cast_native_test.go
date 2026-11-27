@@ -120,7 +120,7 @@ func modifierStatusPlayerUpdates(t *testing.T) (*server.PlayerUpdateData, *serve
 	return update, liveUpdate
 }
 
-// Keep the actual enchantment-slot gate, C ABI callback,
+// Keep the actual enchantment-slot gate, registered callback,
 // shared server spell logic and live player attribution. Buff application is
 // an explicit service that retargets the local spell argument before attribution.
 func TestModifierStatusCastActualPreAttack(t *testing.T) {
@@ -158,7 +158,7 @@ func TestModifierStatusCastActualPreAttack(t *testing.T) {
 							casts++
 							argument = arg
 							if caster != source || arg.Obj != target || arg.Pos != target.PosVec || level != power {
-								t.Fatal("C callback lost cast identity, full power or cached target position")
+								t.Fatal("callback lost cast identity, full power or cached target position")
 							}
 							if unsafe.Sizeof(uintptr(0)) > 4 {
 								for _, p := range []unsafe.Pointer{unsafe.Pointer(arg), unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(effect), unsafe.Pointer(weapon)} {
@@ -192,9 +192,42 @@ func TestModifierStatusCastActualPreAttack(t *testing.T) {
 					if pending, index, frame := livePlayer.LastAggressorState(); pending != 1 || index != 254 || frame != 1400 {
 						t.Fatalf("live attribution=%d/%d/%d", pending, index, frame)
 					}
-					t.Logf("actual enchantment slot %d -> status C ABI callback -> shared native cast -> live attribution", slot)
+					t.Logf("actual enchantment slot %d -> registered status callback -> shared native cast -> live attribution", slot)
 				})
 			}
 		}
+	}
+}
+
+func TestModifierStatusCastGoHeapPreAttack(t *testing.T) {
+	srv := npcReflectLegacyServer4E17B0(t)
+	oldStun := castStunCall52C2C0
+	t.Cleanup(func() { castStunCall52C2C0 = oldStun })
+
+	owner := &server.Object{ObjClass: object.ClassPlayer, HealthData: &server.HealthData{Cur: 19, Max: 20}}
+	target := &server.Object{
+		ObjClass:   object.ClassMonster,
+		HealthData: &server.HealthData{Cur: 17, Max: 20},
+		PosVec:     types.Ptf(-12.75, -4.5),
+	}
+	const power int32 = -129
+	modifier := &server.ModifierEff{AttackPreHit52: server.ModifierEffFnc{
+		Fnc: modifierStatusEffectPointers4E04D0()[0], Val: power,
+	}}
+	item := &server.Object{InitData: unsafe.Pointer(&server.ModifierInitData{
+		Modifiers: [4]*server.ModifierEff{2: modifier},
+	})}
+	attack := &server.ArrowAttackData{Damage: 8, Owner: owner, Source: item}
+
+	casts := 0
+	castStunCall52C2C0 = func(caster *server.Object, arg *server.SpellAcceptArg, level int32) int32 {
+		casts++
+		if caster != owner || arg.Obj != target || arg.Pos != target.PosVec || level != power {
+			t.Fatalf("cast=%p/%p pos=%+v level=%d", caster, arg.Obj, arg.Pos, level)
+		}
+		return 1
+	}
+	if result := srv.PlayerPreAttackEffects538290(target, owner, item, unsafe.Pointer(attack)); result != 0 || casts != 1 {
+		t.Fatalf("result=%d casts=%d", result, casts)
 	}
 }

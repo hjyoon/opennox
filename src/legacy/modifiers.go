@@ -382,25 +382,42 @@ func nullsub_43() {}
 func nullsub_44() {}
 
 func init() {
+	registerAttack := func(name string, address unsafe.Pointer, parse server.ModifierParseFunc,
+		apply func(unsafe.Pointer, *nox_object_t, *nox_object_t, *nox_object_t, unsafe.Pointer),
+	) {
+		server.RegisterNativeModifAttackEffect(name, address, parse,
+			func(effect *server.ModifierEff, item, owner, target *server.Object, context unsafe.Pointer) {
+				apply(effect.C(), asObjectC(item), asObjectC(owner), asObjectC(target), context)
+			})
+	}
 	statusEffects := modifierStatusEffectPointers4E04D0()
 	server.RegisterNativeModifDamageEffect("DamageMultiplierEffect", C.nox_xxx_effectDamageMultiplier_4E04C0, server.ModEffectParseFloat,
 		func(effect *server.ModifierEff, context unsafe.Pointer) {
 			applyModifierDamageMultiplier4E04C0(effect, (*float32)(context))
 		})
 	noop := func(*server.ModifierEff, unsafe.Pointer) {}
-	server.RegisterModifDamageEffect("StunEffect", statusEffects[0], server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("FireEffect", C.nox_xxx_fireEffect_4E0550, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("FireRingEffect", C.nox_xxx_fireRingEffect_4E05B0, server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("BlueFireRingEffect", C.nox_xxx_blueFREffect_4E05F0, server.ModEffectParseInt)
+	registerAttack("StunEffect", statusEffects[0], server.ModEffectParseInt, nox_xxx_stunEffect_4E04D0)
+	registerAttack("FireEffect", C.nox_xxx_fireEffect_4E0550, server.ModEffectParseFloat, nox_xxx_fireEffect_4E0550)
+	registerAttack("FireRingEffect", C.nox_xxx_fireRingEffect_4E05B0, server.ModEffectParseInt, nox_xxx_fireRingEffect_4E05B0)
+	registerAttack("BlueFireRingEffect", C.nox_xxx_blueFREffect_4E05F0, server.ModEffectParseInt, nox_xxx_blueFREffect_4E05F0)
 	server.RegisterNativeModifDamageEffect("FrostEffect", C.nullsub_38, server.ModEffectParseInt, noop)
-	server.RegisterModifDamageEffect("RecoilEffect", C.nox_xxx_recoilEffect_4E0640, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("ConfuseEffect", statusEffects[1], server.ModEffectParseInt)
-	server.RegisterModifDamageEffect("LightningEffect", C.nox_xxx_lightngEffect_4E06F0, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("DrainManaEffect", C.nox_xxx_drainMEffect_4E0740, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("VampirismEffect", C.nox_xxx_vampirismEffect_4E07C0, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("PoisonEffect", C.nox_xxx_poisonEffect_4E0850, server.ModEffectParseInt)
+	registerAttack("RecoilEffect", C.nox_xxx_recoilEffect_4E0640, server.ModEffectParseFloat, nox_xxx_recoilEffect_4E0640)
+	registerAttack("ConfuseEffect", statusEffects[1], server.ModEffectParseInt, nox_xxx_confuseEffect_4E0670)
+	registerAttack("LightningEffect", C.nox_xxx_lightngEffect_4E06F0, server.ModEffectParseFloat, nox_xxx_lightngEffect_4E06F0)
+	server.RegisterNativeModifAttackEffect("DrainManaEffect", C.nox_xxx_drainMEffect_4E0740, server.ModEffectParseFloat,
+		func(effect *server.ModifierEff, _ *server.Object, owner, target *server.Object, context unsafe.Pointer) {
+			modifierDrainMana4E0740(effect, owner, target, (*int32)(context), modifierResourceServices)
+		})
+	server.RegisterNativeModifAttackEffect("VampirismEffect", C.nox_xxx_vampirismEffect_4E07C0, server.ModEffectParseFloat,
+		func(effect *server.ModifierEff, _ *server.Object, owner, target *server.Object, context unsafe.Pointer) {
+			modifierVampirism4E07C0(effect, owner, target, (*int32)(context), modifierResourceServices)
+		})
+	registerAttack("PoisonEffect", C.nox_xxx_poisonEffect_4E0850, server.ModEffectParseInt, nox_xxx_poisonEffect_4E0850)
 	server.RegisterNativeModifDamageEffect("PanicEffect", C.nullsub_39, server.ModEffectParseInt, noop)
-	server.RegisterModifDamageEffect("SympathyEffect", C.nox_xxx_sympathyEffect_4E08E0, server.ModEffectParseFloat)
+	server.RegisterNativeModifAttackEffect("SympathyEffect", C.nox_xxx_sympathyEffect_4E08E0, server.ModEffectParseFloat,
+		func(effect *server.ModifierEff, _ *server.Object, owner, target *server.Object, context unsafe.Pointer) {
+			modifierSympathy4E08E0(effect, owner, target, (*int32)(context), modifierResourceServices)
+		})
 	server.RegisterNativeModifDamageEffect("ReadinessEffect", C.nullsub_22, server.ModEffectParseInt, noop)
 	server.RegisterNativeModifDamageEffect("ProjectileSpeedEffect", C.nox_xxx_effectProjectileSpeed_4E09B0, server.ModEffectParseFloat,
 		func(effect *server.ModifierEff, context unsafe.Pointer) {

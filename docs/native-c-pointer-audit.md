@@ -1290,6 +1290,25 @@ also passed on Linux ARM64 PIE and Linux 386 `server,safe`. Six
 macOS headless replays covered damage, poison, armor, equipment,
 monster attacks, and Wizard chapter one.
 
+### Registered attack effect dispatch
+
+The supplied `modifier.bin` uses six Attack, five AttackPreHit, and
+three AttackPreDamage callback names. All 14 resolve to Go callbacks
+through the shared attack registry. The three other built-in attack
+registrations also use Go. Entries retain their C addresses and
+parser functions. The Go call supplies the item, owner, target, and
+attack context at native width. The original C call remains available
+for external callbacks.
+
+The pre-hit path previously failed Cgo validation when the item,
+owner, and attack record were Go-owned. The regression now passes
+macOS ARM64 `cgocheck2` and `checkptr=2`. It verifies the target,
+owner, target position, and full signed effect power received by the
+Stun callback. The original resource, status, and damage effect
+comparisons passed in the focused suite. The local bow and chakram
+replays passed. The default macOS client links 861 legacy Go-to-C
+call symbols after the equipment damage changes, down from 867.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

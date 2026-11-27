@@ -53,26 +53,8 @@ func itemPreDamageApplyNative4E13B0(
 	weapon, source, target *server.Object,
 	damage *int32,
 ) {
-	if effect == nil || effect.AttackPreDmg64.Fnc == nil {
+	if effect == nil || effect.AttackPreDmg64.Fnc == nil || !itemPreDamageCanApplyNative4E13B0(effect) {
 		return
 	}
-	fnc := effect.AttackPreDmg64.Fnc
-	fns := itemPreDamageFunctionsNative4E13B0()
-	switch fnc {
-	case fns.drainMana:
-		modifierDrainMana4E0740(effect, source, target, damage, modifierResourceServices)
-	case fns.vampirism:
-		modifierVampirism4E07C0(effect, source, target, damage, modifierResourceServices)
-	case fns.poison:
-		modifierPoison4E0850(effect, source, target)
-	case fns.panic:
-		return
-	case fns.sympathy:
-		modifierSympathy4E08E0(effect, source, target, damage, modifierResourceServices)
-	default:
-		if unsafe.Sizeof(uintptr(0)) != 4 {
-			return
-		}
-		server.CallModifierAttackEffect(fnc, effect, weapon, source, target, unsafe.Pointer(damage))
-	}
+	server.CallModifierAttackEffect(effect.AttackPreDmg64.Fnc, effect, weapon, source, target, unsafe.Pointer(damage))
 }

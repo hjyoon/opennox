@@ -54,7 +54,7 @@ var (
 	modUpdateEffects = make(map[string]modFuncs)
 	modEngageEffects = make(map[string]modFuncs)
 
-	modNativeDamageEffects = make(map[unsafe.Pointer]func(*ModifierEff, unsafe.Pointer))
+	modNativeDamageEffects = make(map[unsafe.Pointer]ModifierAttackFunc)
 )
 
 func registerModif(m map[string]modFuncs, name string, fnc unsafe.Pointer, parse ModifierParseFunc) {
@@ -68,9 +68,22 @@ func RegisterModifDamageEffect(name string, fnc unsafe.Pointer, parse ModifierPa
 	registerModif(modDamageEffects, name, fnc, parse)
 }
 
+type ModifierAttackFunc func(effect *ModifierEff, item, owner, target *Object, context unsafe.Pointer)
+
 // RegisterNativeModifDamageEffect retains the published callback address
-// and supplies a Go call for game-owned attack records.
+// and supplies a Go call for effects that only use the modifier and context.
 func RegisterNativeModifDamageEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc, apply func(*ModifierEff, unsafe.Pointer)) {
+	if apply == nil {
+		RegisterNativeModifAttackEffect(name, fnc, parse, nil)
+		return
+	}
+	RegisterNativeModifAttackEffect(name, fnc, parse, func(effect *ModifierEff, _, _, _ *Object, context unsafe.Pointer) {
+		apply(effect, context)
+	})
+}
+
+// RegisterNativeModifAttackEffect associates a published C identity with a Go attack callback.
+func RegisterNativeModifAttackEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc, apply ModifierAttackFunc) {
 	RegisterModifDamageEffect(name, fnc, parse)
 	modNativeDamageEffects[fnc] = apply
 }
@@ -78,7 +91,7 @@ func RegisterNativeModifDamageEffect(name string, fnc unsafe.Pointer, parse Modi
 // CallModifierAttackEffect invokes a modifier with the game's attack context.
 func CallModifierAttackEffect(fnc unsafe.Pointer, effect *ModifierEff, item, owner, target *Object, context unsafe.Pointer) {
 	if apply := modNativeDamageEffects[fnc]; apply != nil {
-		apply(effect, context)
+		apply(effect, item, owner, target, context)
 		return
 	}
 	ccall.CallVoidPtr5(fnc, effect.C(), item.CObj(), owner.CObj(), target.CObj(), context)

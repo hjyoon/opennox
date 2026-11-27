@@ -41,6 +41,11 @@ NOX_NATIVE_CALL(void, nox_legacy_call_world_defend, nox_ccall_void_ptr6,
      nox_object_t* target, uintptr_t target_arg, float* value),
     ((void (*)(void*, nox_object_t*, uintptr_t, nox_object_t*, uintptr_t, float*))callback)(
         effect, source, source_arg, target, target_arg, value);)
+NOX_NATIVE_CALL(int32_t, nox_legacy_call_modifier_predicate, nox_ccall_int_ptr6,
+    (void* callback, void* effect, uintptr_t item, uintptr_t context,
+     uintptr_t target, uintptr_t other, int32_t* output),
+    return ((int32_t (*)(void*, nox_object_t*, uintptr_t, nox_object_t*, uintptr_t, int32_t*))callback)(
+        effect, (nox_object_t*)item, context, (nox_object_t*)target, other, output);)
 NOX_NATIVE_CALL(void, nox_legacy_call_map_push_before, nox_ccall_void_ptr3,
     (uintptr_t callback, nox_object_t* candidate, uint32_t distance, uintptr_t arg),
     ((void (*)(nox_object_t*, uint32_t, uintptr_t))callback)(candidate, distance, arg);)

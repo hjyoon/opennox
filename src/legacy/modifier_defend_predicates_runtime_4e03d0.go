@@ -4,38 +4,7 @@ package legacy
 #include <stdint.h>
 #include "defs.h"
 #include "GAME3_2.h"
-typedef int32_t (*modifier_predicate_call_4e03d0)(void*,nox_object_t*,uintptr_t,nox_object_t*,uintptr_t,int32_t*);
-typedef struct {
- uintptr_t fn,args[6];
- int32_t phase,before,after,result;
-} modifier_predicate_trace_4e03d0;
-static int modifier_predicate_tracing_4e03d0,modifier_predicate_trace_count_4e03d0;
-static modifier_predicate_trace_4e03d0 modifier_predicate_trace_data_4e03d0[32];
-static void modifier_predicate_trace_begin_4e03d0(void){modifier_predicate_trace_count_4e03d0=0;modifier_predicate_tracing_4e03d0=1;}
-static void modifier_predicate_trace_end_4e03d0(void){modifier_predicate_tracing_4e03d0=0;}
-static int modifier_predicate_trace_append_4e03d0(void* fn,int phase,void* first,const uintptr_t* a,void* output,int32_t before,int32_t after,int32_t result){
- if(!modifier_predicate_tracing_4e03d0)return -1;
- int index=modifier_predicate_trace_count_4e03d0++;
- if(index>=32)return -1;
- modifier_predicate_trace_4e03d0* r=&modifier_predicate_trace_data_4e03d0[index];
- r->fn=(uintptr_t)fn;r->phase=phase;r->before=before;r->after=after;r->result=result;
- r->args[0]=(uintptr_t)first;for(int i=0;i<4;i++)r->args[i+1]=a[i];r->args[5]=(uintptr_t)output;
- return index;
-}
-static int modifier_predicate_trace_count_get_4e03d0(void){return modifier_predicate_trace_count_4e03d0;}
-static modifier_predicate_trace_4e03d0 modifier_predicate_trace_get_4e03d0(int index){return modifier_predicate_trace_data_4e03d0[index];}
-static void* modifier_predicate_trace_root_4e03d0(int which){
- switch(which){case 0:return (void*)nox_xxx_inversionEffect_4E03D0;case 1:return (void*)nox_xxx_gripEffect_4E0480;default:return (void*)nox_xxx_unusedCheckGripEffect_4E03F0;}
-}
-// No game algorithm: call the supplied full-width callback and observe its
-// actual ABI arguments and caller-owned scratch word when tracing is enabled.
-static int32_t modifier_predicate_invoke_4e03d0(void* fn,void* effect,const uintptr_t* a,int32_t* out){
- int32_t before=modifier_predicate_tracing_4e03d0?*out:0;
- modifier_predicate_trace_append_4e03d0(fn,2,effect,a,out,before,0,0);
- int32_t result=((modifier_predicate_call_4e03d0)fn)(effect,(nox_object_t*)a[0],a[1],(nox_object_t*)a[2],a[3],out);
- modifier_predicate_trace_append_4e03d0(fn,3,effect,a,out,before,modifier_predicate_tracing_4e03d0?*out:0,result);
- return result;
-}
+#include "native_callback_calls.h"
 static uintptr_t modifier_predicate_transport_seen_4e03d0[6];
 static int32_t modifier_predicate_transport_stub_4e03d0(void* effect,nox_object_t* item,uintptr_t context,nox_object_t* target,uintptr_t other,int32_t* out){
  uintptr_t values[6]={(uintptr_t)effect,(uintptr_t)item,context,(uintptr_t)target,other,(uintptr_t)out};
@@ -106,52 +75,78 @@ type modifierPredicateTrace4E03D0 struct {
 	Before, After, Result int32
 }
 
-func modifierPredicateTracing4E03D0(enabled bool) {
-	if enabled {
-		C.modifier_predicate_trace_begin_4e03d0()
-	} else {
-		C.modifier_predicate_trace_end_4e03d0()
-	}
+var modifierPredicateTraceState4E03D0 struct {
+	enabled bool
+	count   int
+	records [32]modifierPredicateTrace4E03D0
 }
 
-func modifierPredicateTraceRecords4E03D0() (records []modifierPredicateTrace4E03D0) {
-	count := int(C.modifier_predicate_trace_count_get_4e03d0())
-	if count < 0 || count > 32 {
+func modifierPredicateTracing4E03D0(enabled bool) {
+	state := &modifierPredicateTraceState4E03D0
+	if enabled {
+		state.count = 0
+	}
+	state.enabled = enabled
+}
+
+func modifierPredicateTraceRecords4E03D0() []modifierPredicateTrace4E03D0 {
+	state := &modifierPredicateTraceState4E03D0
+	if state.count > len(state.records) {
 		panic("modifier predicate trace overflow")
 	}
-	for i := 0; i < count; i++ {
-		r := C.modifier_predicate_trace_get_4e03d0(C.int(i))
-		row := modifierPredicateTrace4E03D0{Function: uintptr(r.fn), Phase: int(r.phase), Before: int32(r.before), After: int32(r.after), Result: int32(r.result)}
-		for j := range row.Args {
-			row.Args[j] = uintptr(r.args[j])
-		}
-		records = append(records, row)
+	return append([]modifierPredicateTrace4E03D0(nil), state.records[:state.count]...)
+}
+
+func recordModifierPredicateCall4E03D0(fn, first, output unsafe.Pointer, opaque [4]uintptr, phase int, before, after, result int32) {
+	state := &modifierPredicateTraceState4E03D0
+	if !state.enabled {
+		return
 	}
-	return
+	i := state.count
+	state.count++
+	if i < len(state.records) {
+		state.records[i] = modifierPredicateTrace4E03D0{
+			Function: uintptr(fn),
+			Args:     [6]uintptr{uintptr(first), opaque[0], opaque[1], opaque[2], opaque[3], uintptr(output)},
+			Phase:    phase, Before: before, After: after, Result: result,
+		}
+	}
 }
 
 func modifierPredicateRootPointer4E03D0(which int) unsafe.Pointer {
-	return C.modifier_predicate_trace_root_4e03d0(C.int(which))
+	switch int32(which) {
+	case 0, 1:
+		return modifierPredicatesCallback4E03D0(which)
+	default:
+		return C.nox_xxx_unusedCheckGripEffect_4E03F0
+	}
 }
 
 func modifierPredicatesTracedPublic4E03D0(which int, argument unsafe.Pointer, opaque [4]uint32, output unsafe.Pointer) int32 {
-	var args [4]C.uintptr_t
+	var args [4]uintptr
 	for i, value := range opaque {
-		args[i] = C.uintptr_t(value)
+		args[i] = uintptr(value)
 	}
 	fn := modifierPredicateRootPointer4E03D0(which)
-	C.modifier_predicate_trace_append_4e03d0(fn, 0, argument, &args[0], output, 0, 0, 0)
+	recordModifierPredicateCall4E03D0(fn, argument, output, args, 0, 0, 0, 0)
 	result := modifierPredicatesPublic4E03D0(which, argument, opaque, output)
-	C.modifier_predicate_trace_append_4e03d0(fn, 1, argument, &args[0], output, 0, 0, C.int32_t(result))
+	recordModifierPredicateCall4E03D0(fn, argument, output, args, 1, 0, 0, result)
 	return result
 }
 
 func modifierPredicateInvoke4E03D0(fn, effect unsafe.Pointer, opaque [4]uintptr, output *int32) int32 {
-	var args [4]C.uintptr_t
-	for i, value := range opaque {
-		args[i] = C.uintptr_t(value)
+	var before int32
+	if modifierPredicateTraceState4E03D0.enabled {
+		before = *output
+		recordModifierPredicateCall4E03D0(fn, effect, unsafe.Pointer(output), opaque, 2, before, 0, 0)
 	}
-	return int32(C.modifier_predicate_invoke_4e03d0(fn, effect, &args[0], (*C.int32_t)(unsafe.Pointer(output))))
+	result := int32(C.nox_legacy_call_modifier_predicate(fn, effect,
+		C.uintptr_t(opaque[0]), C.uintptr_t(opaque[1]), C.uintptr_t(opaque[2]), C.uintptr_t(opaque[3]),
+		(*C.int32_t)(unsafe.Pointer(output))))
+	if modifierPredicateTraceState4E03D0.enabled {
+		recordModifierPredicateCall4E03D0(fn, effect, unsafe.Pointer(output), opaque, 3, before, *output, result)
+	}
+	return result
 }
 
 func modifierPredicateTransportControl4E03D0(effect unsafe.Pointer, opaque [4]uintptr, output *int32) (result int32, actual [6]uintptr) {

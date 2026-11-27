@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"image"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -8,26 +9,65 @@ import (
 	"testing"
 	"unsafe"
 
+	"golang.org/x/image/font"
+
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-func TestDeathFeedEntryResultPreservesPointerAndSignedCoordinate(t *testing.T) {
-	entry, release := alloc.NewHigh(deathFeedEntry{})
-	t.Cleanup(release)
+type deathFeedEntryTestRender struct {
+	Render2
+	entry *deathFeedEntry
+}
+
+func (r deathFeedEntryTestRender) DrawString(face font.Face, text string, point image.Point) int {
+	result := r.Render2.DrawString(face, text, point)
+	r.entry.victim = 0
+	return result
+}
+
+type deathFeedEntryTestClient struct {
+	Client
+	render Render2
+}
+
+func (c deathFeedEntryTestClient) R2() Render2 { return c.render }
+
+func TestDeathFeed495500NativeWordThroughC(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+	data := GetClient().R2().Data()
+	data.SetClip(true)
+	data.SetClipRect(image.Rect(0, 0, 640, 480))
+
+	oldWidth, oldRow, oldIcon := clientDisplayStorage.width, legacyWords.dword_5d4594_1203832, deathFeedFallbackIcon
+	clientDisplayStorage.width, legacyWords.dword_5d4594_1203832, deathFeedFallbackIcon = -50, 0, nil
+	defer func() {
+		clientDisplayStorage.width, legacyWords.dword_5d4594_1203832, deathFeedFallbackIcon = oldWidth, oldRow, oldIcon
+	}()
+	entry, free := alloc.NewHigh(deathFeedEntry{})
+	defer free()
 	address := uintptr(unsafe.Pointer(entry))
-	if unsafe.Sizeof(address) == 8 && address <= uintptr(^uint32(0)) {
-		t.Fatalf("entry pointer %p does not exercise the native width", entry)
+	if unsafe.Sizeof(address) > 4 && address <= uintptr(^uint32(0)) {
+		t.Fatalf("entry address %#x does not exercise the native width", address)
 	}
-	if got := deathFeedEntryResult(entry, -17); got != address {
-		t.Fatalf("no victim returned %#x, want entry pointer %#x", got, address)
+	if got := deathFeedEntryCallC(entry); got != address {
+		t.Fatalf("no victim returned %#x, want entry address %#x", got, address)
+	}
+	entry.victim = 1
+	clientDisplayStorage.width = 640
+	if got := deathFeedEntryCallC(entry); got != 325 {
+		t.Fatalf("victim text returned %#x, want positive coordinate 325", got)
 	}
 
-	entry.victim = 1
-	if got := deathFeedEntryResult(entry, 19); got != 19 {
-		t.Fatalf("positive draw coordinate = %#x, want 19", got)
+	clientDisplayStorage.width = -50
+	oldClient := GetClient
+	base := GetClient()
+	GetClient = func() Client {
+		return deathFeedEntryTestClient{Client: base, render: deathFeedEntryTestRender{Render2: base.R2(), entry: entry}}
 	}
-	if got, want := deathFeedEntryResult(entry, -17), ^uintptr(0)-16; got != want {
-		t.Fatalf("signed draw coordinate = %#x, want %#x", got, want)
+	defer func() { GetClient = oldClient }()
+	if got, want := deathFeedEntryCallC(entry), ^uintptr(0)-19; got != want || entry.victim != 0 {
+		t.Fatalf("victim text returned %#x with victim %d, want signed coordinate %#x and cleared victim", got, entry.victim, want)
 	}
 }
 

@@ -89,26 +89,12 @@ func sub_495430() C.int {
 	return C.int(worldWordStorage.death_message_word_1203836)
 }
 
-//export nox_death_feed_draw_495500
-func nox_death_feed_draw_495500(entry *C.int) C.int {
-	return C.int(drawDeathFeedEntry((*deathFeedEntry)(unsafe.Pointer(entry))))
+//export sub_495500
+func sub_495500(entry *C.int) C.uintptr_t {
+	return C.uintptr_t(drawDeathFeedEntry((*deathFeedEntry)(unsafe.Pointer(entry))))
 }
 
-//export nox_death_feed_draw_result_495500
-func nox_death_feed_draw_result_495500(entry *C.int) C.uintptr_t {
-	record := (*deathFeedEntry)(unsafe.Pointer(entry))
-	result := int32(drawDeathFeedEntry(record))
-	return C.uintptr_t(deathFeedEntryResult(record, result))
-}
-
-func deathFeedEntryResult(entry *deathFeedEntry, result int32) uintptr {
-	if entry.victim != 0 {
-		return uintptr(result)
-	}
-	return uintptr(unsafe.Pointer(entry))
-}
-
-func drawDeathFeedEntry(entry *deathFeedEntry) int {
+func drawDeathFeedEntry(entry *deathFeedEntry) uintptr {
 	r := GetClient().R2()
 	face := r.GetFonts().FontByName("large")
 	name := func(netCode uint32) (string, bool) {
@@ -147,23 +133,26 @@ func drawDeathFeedEntry(entry *deathFeedEntry) int {
 	top := int(legacyWords.dword_5d4594_1203832) * deathFeedRowHeight
 	r.DrawRectFilledAlpha(left-5, top, width+20, deathFeedRowHeight)
 	textY := top + (deathFeedRowHeight-victimSize.Y)/2
-	drawName := func(code uint32, text string, x int) int {
-		if code == 0 {
+	drawName := func(code *uint32, text string, x int) int {
+		if *code == 0 {
 			return x
 		}
 		nox_xxx_drawSetTextColor_434390(memmap.Int32(0x5D4594, 2597996))
-		if code == uint32(ClientPlayerNetCode()) {
+		if *code == uint32(ClientPlayerNetCode()) {
 			nox_xxx_drawSetTextColor_434390(int32(worldWordStorage.local_player_color))
 		}
 		return r.DrawString(face, text, image.Pt(x, textY))
 	}
-	left = drawName(entry.attacker, attacker, left)
-	left = drawName(entry.assistant, assistant, left)
+	left = drawName(&entry.attacker, attacker, left)
+	left = drawName(&entry.assistant, assistant, left)
 	left += 5
 	if icon != nil {
 		r.DrawImageAt(icon, image.Pt(left-iconOffset.X, top+(deathFeedRowHeight-iconSize.Y)/2-iconOffset.Y))
 	}
-	return drawName(entry.victim, victim, left+iconSize.X+5)
+	if entry.victim == 0 {
+		return uintptr(unsafe.Pointer(entry))
+	}
+	return uintptr(int32(drawName(&entry.victim, victim, left+iconSize.X+5)))
 }
 
 func deathFeedIcon(entry *deathFeedEntry) *noxrender.Image {

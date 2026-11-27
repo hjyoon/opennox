@@ -9,6 +9,50 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 )
 
+func TestChatBubbleCandidate48E6A0NativeWord(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+
+	moving := chatBubbleCandidateRecord{x: 30, y: 40, width: 11, height: 17}
+	earlier := chatBubbleCandidateRecord{x: 100, y: 200, width: 23, height: 29}
+	out, free := alloc.NewHigh([2]int32{})
+	defer free()
+	xWord, yWord := uintptr(unsafe.Pointer(&out[0])), uintptr(unsafe.Pointer(&out[1]))
+	if unsafe.Sizeof(xWord) > 4 && xWord <= uintptr(^uint32(0)) {
+		t.Fatalf("output address %#x does not exercise the native width", xWord)
+	}
+	want := map[byte]struct {
+		coords [2]int32
+		word   uintptr
+	}{
+		0x01: {[2]int32{89, 183}, 0},
+		0x02: {[2]int32{123, 183}, yWord},
+		0x04: {[2]int32{89, 229}, yWord},
+		0x08: {[2]int32{123, 229}, yWord},
+		0x10: {[2]int32{30, 183}, yWord},
+		0x20: {[2]int32{30, 229}, yWord},
+		0x40: {[2]int32{89, 40}, xWord},
+		0x80: {[2]int32{123, 40}, yWord},
+	}
+	for i := range 256 {
+		dir := byte(i)
+		*out = [2]int32{-111, -222}
+		if tc, ok := want[dir]; ok {
+			if got := chatBubbleCandidateCallC(dir, &moving, &earlier, &out[0], &out[1]); got != tc.word || *out != tc.coords {
+				t.Fatalf("direction %#02x returned %#x and %v, want %#x and %v", dir, got, *out, tc.word, tc.coords)
+			}
+		} else if got := chatBubbleCandidateCallC(dir, nil, nil, &out[0], &out[1]); got != 0 || *out != [2]int32{-111, -222} {
+			t.Fatalf("invalid direction %#02x returned %#x and changed outputs to %v", dir, got, *out)
+		}
+	}
+
+	aliasX := (*int32)(unsafe.Pointer(&earlier.y))
+	got := chatBubbleCandidateCallC(1, &moving, &earlier, aliasX, &out[1])
+	if got != 0 || earlier.y != 89 || out[1] != 72 {
+		t.Fatalf("aliased outputs returned %#x with %d, %d, want 0 with 89, 72", got, earlier.y, out[1])
+	}
+}
+
 func TestChatBubbleNativeListLifecycle(t *testing.T) {
 	if got, min := ChatBubbleSize(), uintptr(692)+3*unsafe.Sizeof(uintptr(0)); got < min {
 		t.Fatalf("chat bubble size = %d, want at least %d", got, min)

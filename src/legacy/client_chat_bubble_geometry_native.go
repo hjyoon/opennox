@@ -90,9 +90,10 @@ func sub_48E240(unused C.int, ptr *C.uint32_t) C.char {
 					continue
 				}
 				gap := C.int32_t(2 * nox_xxx_guiFontHeightMB_43F320(nil))
-				x, y := chatBubbleCandidate(result, gap, bubble, earlier)
-				if chatBubblePositionAvailable(bubble, x, y) {
-					bubble.x, bubble.y = x, y
+				var x, y C.int
+				chatBubbleCandidate(result, gap, bubble, earlier, &x, &y)
+				if chatBubblePositionAvailable(bubble, C.int32_t(x), C.int32_t(y)) {
+					bubble.x, bubble.y = C.int32_t(x), C.int32_t(y)
 					return 1
 				}
 				result = 0
@@ -164,48 +165,41 @@ func sub_48E5C0(ptr *C.uint32_t, x, y C.int) C.int {
 	return C.int(bool2int(chatBubblePositionAvailable((*C.nox_chat_bubble)(unsafe.Pointer(ptr)), C.int32_t(x), C.int32_t(y))))
 }
 
-func chatBubbleCandidate(direction byte, gap C.int32_t, moving, earlier *C.nox_chat_bubble) (C.int32_t, C.int32_t) {
-	left := earlier.x - moving.width - gap
-	right := earlier.x + earlier.width + gap
-	top := earlier.y - moving.height - gap
-	bottom := earlier.y + earlier.height + gap
+func chatBubbleCandidate(direction byte, gap C.int32_t, moving, earlier *C.nox_chat_bubble, x, y *C.int) uintptr {
+	switch direction {
+	case 0x01, 0x04, 0x40:
+		*x = C.int(earlier.x - moving.width - gap)
+	case 0x02, 0x08, 0x80:
+		*x = C.int(earlier.x + earlier.width + gap)
+	case 0x10, 0x20:
+		*x = C.int(moving.x)
+	default:
+		return uintptr(gap)
+	}
+
+	// The original stores X before loading the fields needed for Y.
+	switch direction {
+	case 0x01, 0x02, 0x10:
+		*y = C.int(earlier.y - moving.height - gap)
+	case 0x04, 0x08, 0x20:
+		*y = C.int(earlier.y + earlier.height + gap)
+	case 0x40, 0x80:
+		*y = C.int(moving.y)
+	}
+
 	switch direction {
 	case 0x01:
-		return left, top
-	case 0x02:
-		return right, top
-	case 0x04:
-		return left, bottom
-	case 0x08:
-		return right, bottom
-	case 0x10:
-		return moving.x, top
-	case 0x20:
-		return moving.x, bottom
+		return uintptr(gap)
 	case 0x40:
-		return left, moving.y
-	case 0x80:
-		return right, moving.y
+		return uintptr(unsafe.Pointer(x))
 	default:
-		return moving.x, moving.y
+		return uintptr(unsafe.Pointer(y))
 	}
 }
 
-//export nox_client_chat_candidate_word
-func nox_client_chat_candidate_word(direction C.char, moving, earlier *C.uint32_t, x, y *C.int) C.uintptr_t {
+//export sub_48E6A0
+func sub_48E6A0(direction C.char, moving, earlier *C.uint32_t, x, y *C.int) C.uintptr_t {
 	gap := C.int32_t(2 * nox_xxx_guiFontHeightMB_43F320(nil))
-	dir := byte(direction)
-	if dir == 0 || dir&(dir-1) != 0 {
-		return C.uintptr_t(gap)
-	}
-	cx, cy := chatBubbleCandidate(dir, gap, (*C.nox_chat_bubble)(unsafe.Pointer(moving)), (*C.nox_chat_bubble)(unsafe.Pointer(earlier)))
-	*x, *y = C.int(cx), C.int(cy)
-	switch dir {
-	case 1:
-		return C.uintptr_t(gap)
-	case 0x40:
-		return C.uintptr_t(uintptr(unsafe.Pointer(x)))
-	default:
-		return C.uintptr_t(uintptr(unsafe.Pointer(y)))
-	}
+	return C.uintptr_t(chatBubbleCandidate(byte(direction), gap,
+		(*C.nox_chat_bubble)(unsafe.Pointer(moving)), (*C.nox_chat_bubble)(unsafe.Pointer(earlier)), x, y))
 }

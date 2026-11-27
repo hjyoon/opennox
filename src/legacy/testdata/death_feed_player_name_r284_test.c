@@ -1,5 +1,6 @@
 #include <stdarg.h>
 #include <stdio.h>
+#define sub_495500 fixture_live_death_feed_495500
 #include "../GAME1.h"
 #include "../GAME1_1.h"
 #include "../GAME1_2.h"
@@ -9,6 +10,7 @@
 #include "../GAME2_3.h"
 #include "../GAME3_1.h"
 #include "../common__magic__speltree.h"
+#undef sub_495500
 
 // Formatting remains actual production code, including bare names as format
 // strings. Interpose only to reject old-offset format/name pointers safely.

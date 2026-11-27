@@ -2133,6 +2133,26 @@ client still compiles C function bodies in cgo preambles, including
 the floor draw callbacks in `client_floor_cache_native.go` and the
 shared callback dispatch in `common/ccall/ccall.go`.
 
+### Cgo preambles selected by the products
+
+The same 18 platform and tag selections cover 1,414 distinct project
+Go files with `import "C"`. Scanning their cgo preambles found 826
+explicit C definition sites across 208 files. There are 744 sites in
+`legacy`, 80 in `legacy/common/ccall`, and two in `legacy/common/alloc`.
+The audio callback fixture's macro also instantiates 32 callback
+bodies. The source count includes conditional definitions and
+diagnostic fixtures selected at build time.
+
+The macOS ARM64 default client at `da824da0a` retains 63 matching Go
+cgo call stubs in its executable symbol table. Of those, 45 target
+`legacy` preambles and 18 target shared callback dispatch. The
+`legacy` entries include full-width pointer and word transport,
+typed indirect floor and object callbacks, original ABI replay
+controls, and the host `strtol` dialect and `errno` adapters.
+Native calls through C symbols or function pointers need separate
+call-site evidence. The symbol count gives the starting set for
+that audit on the default macOS ARM64 client.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

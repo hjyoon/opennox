@@ -274,7 +274,7 @@ func nox_quickbar_windows_destroy_all() {
 //export nox_xxx_book_45DBE0
 func nox_xxx_book_45DBE0(kind C.uintptr_t, spell, slot C.int) C.uintptr_t {
 	nox_xxx_spellKeyPackSetSpell_45DC40(g2qMain(), spell, slot)
-	if kind != 2 || slot < 0 || slot >= 5 {
+	if kind != 2 || slot < 0 || slot >= 5 || g2qRow(g2qMain()) == nil {
 		return kind
 	}
 	var flags C.uintptr_t

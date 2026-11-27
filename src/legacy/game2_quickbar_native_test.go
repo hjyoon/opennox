@@ -63,6 +63,7 @@ func TestGame2QuickbarBookInsert45DBE0UsesLiveRow(t *testing.T) {
 	defer freeBefore()
 	after, freeAfter := alloc.NewHigh([256]byte{})
 	defer freeAfter()
+	defer g2qTestPointer(0, nil, true)
 	before[200], after[200] = 1, 3
 	baseBefore, baseAfter := unsafe.Pointer(before), unsafe.Pointer(after)
 	afterWord := uintptr(baseAfter)
@@ -105,11 +106,15 @@ func TestGame2QuickbarBookInsert45DBE0UsesLiveRow(t *testing.T) {
 
 	g2qTestPointer(0, baseBefore, true)
 	game2QuickbarTestHooks.SpellFlags = func(uint32, uint32) int32 {
-		t.Error("opaque kind queried spell flags")
+		t.Error("unexpected spell flags query")
 		return 0
 	}
 	if got := g2qTestBookInsert(afterWord, 71, slot); got != afterWord || *spellBefore != 71 {
 		t.Fatalf("opaque kind returned %#x with slot %d, want %#x with 71", got, *spellBefore, afterWord)
+	}
+	g2qTestPointer(0, nil, true)
+	if got := g2qTestBookInsert(2, spell, slot); got != 2 {
+		t.Fatalf("missing row returned %#x, want 2", got)
 	}
 }
 

@@ -70,7 +70,7 @@ func serverOptionsListChanged(window *nox_window, row uintptr) {
 
 func serverOptionsApply() {
 	record := C.nox_xxx_cliGamedataGet_416590(1)
-	nox_game2_server_apply_459AA0(unsafe.Pointer(record))
+	game2ServerApply459AA0(unsafe.Pointer(record))
 	sub_4165F0(1, 0)
 	count := int(nox_xxx_getTeamCounter_417DD0())
 	root := serverSharedWindows.options

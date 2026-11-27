@@ -372,15 +372,19 @@ func sub_459A40(name *C.char) C.int {
 	return C.int(g2ServerText(serverOptionsNameInput, 16414, unsafe.Pointer(&wide[0]), 0))
 }
 
-//export nox_game2_server_apply_459AA0
-func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
+//export sub_459AA0
+func sub_459AA0(output unsafe.Pointer) C.int {
+	return C.int(game2ServerApply459AA0(output))
+}
+
+func game2ServerApply459AA0(output unsafe.Pointer) int32 {
 	narrow, free := alloc.Make([]byte{}, 100)
 	defer free()
 	buf := (*C.char)(unsafe.Pointer(&narrow[0]))
 	name := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsNameInput, 16413, 0, 0)))
 	copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(name)))
 	C.strncpy((*C.char)(unsafe.Add(output, 9)), buf, 15)
-	*(*uint16)(unsafe.Add(output, 52)) = uint16(C.sub_459C10())
+	*(*uint16)(unsafe.Add(output, 52)) = uint16(sub_459C10())
 	copy(unsafe.Slice((*byte)(unsafe.Add(output, 24)), 20), unsafe.Slice((*byte)(unsafe.Pointer(sub_453F90())), 20))
 	*(*uint32)(unsafe.Add(output, 44)) = *g2ServerWord(1045452)
 	*(*uint32)(unsafe.Add(output, 48)) = *g2ServerWord(1045456)
@@ -393,7 +397,8 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 		*(*byte)(unsafe.Add(output, 56)) = byte(parseLegacyWideDecimal(p))
 	}
 	*(*byte)(unsafe.Add(output, 57)) = byte(g2ServerChild(serverSharedWindows.options, 10122).draw_data.field_0>>2) & 1
-	result := int(g2ServerEvent(serverOptionsChildren.mapList, 16404, 0, 0))
+	// The list-box selection is the signed low word of the event response.
+	result := int32(g2ServerEvent(serverOptionsChildren.mapList, 16404, 0, 0))
 	if result >= 0 {
 		p = (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(serverOptionsChildren.mapList, 16406, uintptr(result), 0)))
 		copyLegacyCString(narrow, (*uint16)(unsafe.Pointer(p)))
@@ -407,7 +412,7 @@ func nox_game2_server_apply_459AA0(output unsafe.Pointer) C.intptr_t {
 		return 0
 	}
 	*(*byte)(output) = 0
-	return C.intptr_t(result)
+	return result
 }
 
 //export sub_459C30

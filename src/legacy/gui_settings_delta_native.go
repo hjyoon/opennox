@@ -26,7 +26,7 @@ func readAndReportGUISettings4DF020() int {
 	// The GUI applies only nonempty edit fields. Start from the current
 	// settings so clearing an input retains its configured value.
 	settings := *(*server.Settings2)(cliGamedataNative416590(1))
-	status := int(nox_game2_server_apply_459AA0(unsafe.Pointer(&settings)))
+	status := int(game2ServerApply459AA0(unsafe.Pointer(&settings)))
 	return reportGUISettingsIfChanged4DF020(&settings, status)
 }
 

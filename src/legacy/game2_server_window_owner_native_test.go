@@ -6,7 +6,10 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
+	"github.com/opennox/opennox/v1/server"
 )
 
 func TestGame2ServerNativeRulesHead(t *testing.T) {
@@ -76,5 +79,95 @@ func TestGame2ServerNativeOptionsWindowGetter(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestGame2ServerApply459AA0SignedSelection(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+	oldRoot, oldName, oldChildren := serverSharedWindows.options, serverOptionsNameInput, serverOptionsChildren
+	defer func() {
+		serverSharedWindows.options, serverOptionsNameInput, serverOptionsChildren = oldRoot, oldName, oldChildren
+	}()
+
+	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
+	serverSharedWindows.options = (*nox_window)(root.C())
+	check := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 10, 10, nil)
+	check.SetID(10122)
+	(*nox_window)(check.C()).draw_data.field_0 = 4
+
+	wideWord := func(text []uint16) gui.RawEventResp {
+		buf, free := alloc.MakeHigh(text, len(text))
+		t.Cleanup(free)
+		return gui.RawEventResp(uintptr(unsafe.Pointer(&buf[0])))
+	}
+	input := func(text []uint16) *nox_window {
+		value := wideWord(text)
+		win := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 10, 10, func(_ *gui.Window, event gui.WindowEvent) gui.WindowEventResp {
+			if event.EventCode() == 16413 {
+				return value
+			}
+			return nil
+		})
+		return (*nox_window)(win.C())
+	}
+	serverOptionsNameInput = input([]uint16{'H', 'o', 's', 't', 0})
+	serverOptionsChildren.lessonLimit = input([]uint16{'1', '2', 0})
+	serverOptionsChildren.timeLimit = input([]uint16{0})
+	mapText := wideWord([]uint16{'c', 'a', 's', 't', 'l', 'e', '\t', 'x', 0})
+	noToken := wideWord([]uint16{'\t', '\t', 0})
+
+	var selection, textCalls, requested uintptr
+	var line gui.RawEventResp
+	maps := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 10, 10, func(_ *gui.Window, event gui.WindowEvent) gui.WindowEventResp {
+		switch event.EventCode() {
+		case 16404:
+			return gui.RawEventResp(selection)
+		case 16406:
+			textCalls++
+			requested, _ = event.EventArgsC()
+			return line
+		}
+		return nil
+	})
+	serverOptionsChildren.mapList = (*nox_window)(maps.C())
+
+	for _, route := range []struct {
+		name  string
+		apply func(unsafe.Pointer) int32
+	}{{"Go", game2ServerApply459AA0}, {"C", cfixture.Game2ServerApply459AA0}} {
+		t.Run(route.name, func(t *testing.T) {
+			for _, tc := range []struct {
+				name    string
+				word    uint32
+				text    gui.RawEventResp
+				want    int32
+				mapName string
+			}{
+				{"missing", 0xffffffff, mapText, -1, ""},
+				{"minimum", 0x80000000, mapText, -2147483648, ""},
+				{"selected", 4, mapText, 0, "castle"},
+				{"empty token", 0, noToken, 0, ""},
+			} {
+				t.Run(tc.name, func(t *testing.T) {
+					selection, line = uintptr(tc.word), tc.text
+					textCalls, requested = 0, 0
+					record := server.Settings2{Field56: 22}
+					copy(record.Field0[:], "stale")
+					got := route.apply(unsafe.Pointer(&record))
+					if got != tc.want {
+						t.Fatalf("selection %#x returned %d, want %d", tc.word, got, tc.want)
+					}
+					if tc.want < 0 && textCalls != 0 || tc.want >= 0 && (textCalls != 1 || requested != selection) {
+						t.Fatalf("selection %#x requested row %#x %d times", tc.word, requested, textCalls)
+					}
+					name, _, _ := bytes.Cut(record.Field0[:9], []byte{0})
+					if string(name) != tc.mapName || string(record.Field0[9:14]) != "Host\x00" ||
+						record.Field54 != 12 || record.Field56 != 22 || record.Field57 != 1 {
+						t.Fatalf("applied settings = %+v", record)
+					}
+				})
+			}
+		})
 	}
 }

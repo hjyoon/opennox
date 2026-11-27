@@ -222,7 +222,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		}
 		filename := ruleListFilename(title, 191640)
 		defer StrFree(filename)
-		nox_game2_server_apply_459AA0(unsafe.Pointer(settings))
+		game2ServerApply459AA0(unsafe.Pointer(settings))
 		sub_57AAA0(filename, settings, nil)
 		if data := (*C.nox_scrollListBox_data)(list.widget_data); data != nil {
 			for i := 0; i < int(data.field_11_0); i++ {
@@ -249,7 +249,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		}
 		filename := ruleListFilename(title, 191592)
 		defer StrFree(filename)
-		nox_game2_server_apply_459AA0(unsafe.Pointer(settings))
+		game2ServerApply459AA0(unsafe.Pointer(settings))
 		sub_57AAA0(filename, settings, nil)
 		g2ServerEvent(list, 16403, ^uintptr(0), 0)
 	case 10174:

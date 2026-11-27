@@ -16,9 +16,6 @@ static void regeneration_raw_transport_control_4e01d0(void* effect,nox_object_t*
 static uintptr_t regeneration_raw_transport_get_4e01d0(int index) {
  return regeneration_raw_transport_seen_4e01d0[index];
 }
-static uintptr_t regeneration_raw_root_pointer_4e01d0(void) {
- return (uintptr_t)&nox_xxx_effectRegeneration_4E01D0;
-}
 */
 import "C"
 
@@ -87,7 +84,7 @@ var regenerationRawObserveCall4E01D0 func(regenerationRawCall4E01D0)
 func regenerationRawCallBegin4E01D0(kind string, first, second uintptr) regenerationRawCall4E01D0 {
 	call := regenerationRawCall4E01D0{Kind: kind, Args: [2]uintptr{first, second}}
 	if kind == "regeneration" {
-		call.Function = uintptr(C.regeneration_raw_root_pointer_4e01d0())
+		call.Function = uintptr(C.nox_xxx_effectRegeneration_4E01D0)
 	}
 	if regenerationRawObserveCall4E01D0 != nil {
 		regenerationRawObserveCall4E01D0(call)

@@ -17,7 +17,7 @@ func respawnAllocatorLoad4ECA60() unsafe.Pointer {
 }
 
 func respawnAllocatorStore4ECA60(value unsafe.Pointer) {
-	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.respawnAllocator), value)
+	storeForeignPointer(unsafe.Pointer(&legacyPointers.respawnAllocator), value)
 }
 
 func respawnAllocatorNative4ECA60(runtime respawnAllocatorRuntime4ECA60) int {

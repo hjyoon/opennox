@@ -205,13 +205,13 @@ func sub_467750(code C.int, rejected C.char) C.int {
 			if previous != nil {
 				previous.field_136 = 0
 			}
-			globalStateNativeStorePointer(globalStateNativeSlot(2), unsafe.Pointer(cell))
+			storeForeignPointer(globalStateNativeSlot(2), unsafe.Pointer(cell))
 			cell.field_136 = 1
 			return 1
 		}
 	} else if previous != nil {
 		previous.field_136 = 0
-		globalStateNativeStorePointer(globalStateNativeSlot(2), nil)
+		storeForeignPointer(globalStateNativeSlot(2), nil)
 	}
 	if rejected != 0 {
 		if rejected != 1 {

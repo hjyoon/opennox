@@ -3,7 +3,6 @@ package legacy
 /*
 #include <stdint.h>
 #include <stddef.h>
-#include <string.h>
 #include "GAME1.h"
 #include "GAME1_1.h"
 
@@ -11,9 +10,6 @@ _Static_assert(sizeof(int) == 4, "wall-attach410390 C int width");
 _Static_assert(sizeof(float) == 4, "wall-attach410390 C float width");
 _Static_assert(sizeof(int2) == 8 && offsetof(int2, field_4) == 4, "wall-attach410390 local int2 layout");
 
-static void wall_attach_foreign_store_pointer_410390(void* slot, void* value) {
-	memcpy(slot, &value, sizeof(value));
-}
 */
 import "C"
 
@@ -22,12 +18,6 @@ import (
 	"runtime"
 	"unsafe"
 )
-
-func wallAttachNativeForeignStorePointer410390(slot, value unsafe.Pointer) {
-	C.wall_attach_foreign_store_pointer_410390(slot, value)
-	runtime.KeepAlive(slot)
-	runtime.KeepAlive(value)
-}
 
 // Observer handling is checked by the caller before any production helper.
 // The service calls share the implementations used by the C entry points.

@@ -10,7 +10,7 @@ func pointerChainAttach50F370(session *server.TradeSession, owner *server.Object
 	session.Field0 = 1
 	if owner.ObjClass&4 != 0 {
 		update := (*server.PlayerUpdateData)(owner.UpdateData)
-		globalStateNativeStorePointer(unsafe.Pointer(&update.Trade70), unsafe.Pointer(session))
+		storeForeignPointer(unsafe.Pointer(&update.Trade70), unsafe.Pointer(session))
 	}
 	return session
 }
@@ -22,7 +22,7 @@ func pointerChainDetach50F490(session *server.TradeSession, owner *server.Object
 	}
 	update := (*server.PlayerUpdateData)(owner.UpdateData)
 	if update.Trade70 == session {
-		globalStateNativeStorePointer(unsafe.Pointer(&update.Trade70), nil)
+		storeForeignPointer(unsafe.Pointer(&update.Trade70), nil)
 	}
 	return unsafe.Pointer(update)
 }

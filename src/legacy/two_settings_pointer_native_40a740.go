@@ -91,14 +91,7 @@ func twoSettingsPointerNativeLoadPointer40A740(address unsafe.Pointer) unsafe.Po
 		// semantics. Nil also takes this path and performs the actual read.
 		return *(*unsafe.Pointer)(address)
 	}
-	// A misaligned pointer slot is foreign storage, not a legal Go pointer
-	// field. Read its full native word before converting those foreign bits
-	// in C, following the existing raw damage operand reader. This avoids a
-	// checkptr alignment rejection before the actual guarded memory load.
-	bits := *(*uintptr)(address)
-	value := twoSettingsPointerNativeForeignPointer40A740(bits)
-	runtime.KeepAlive(address)
-	return value
+	return loadUnalignedNativePointer(address)
 }
 
 //go:noinline

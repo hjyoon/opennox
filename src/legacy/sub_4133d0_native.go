@@ -65,7 +65,7 @@ func material7ReadPointer4133D0(base unsafe.Pointer, offset uintptr, site uint32
 	if uintptr(address)%unsafe.Alignof(unsafe.Pointer(nil)) == 0 {
 		event.Pointer = *(*unsafe.Pointer)(address)
 	} else {
-		event.Pointer = material7ForeignPointer4133D0(*(*uintptr)(address))
+		event.Pointer = loadUnalignedNativePointer(address)
 	}
 	event.Complete = true
 	event.ValueValid = true

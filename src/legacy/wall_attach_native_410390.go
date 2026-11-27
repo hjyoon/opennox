@@ -121,9 +121,8 @@ func wallAttachNativeStorePointer410390(address, value unsafe.Pointer) {
 		// Actual typed Go pointer slots retain the compiler's write barrier.
 		*(*unsafe.Pointer)(address) = value
 	} else {
-		// Unaligned diagnostic slots belong to foreign memory. C memcpy keeps
-		// the full pointer and cgo checks; no uintptr pointer reconstruction.
-		wallAttachNativeForeignStorePointer410390(address, value)
+		// Unaligned diagnostic slots hold the native pointer bytes.
+		storeForeignPointer(address, value)
 	}
 	runtime.KeepAlive(value)
 }

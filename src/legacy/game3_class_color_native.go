@@ -51,7 +51,6 @@ package legacy
 extern int nox_game_showOptions_native(void);
 void nox_video_setMenuOptions(nox_window*);
 int nox_gui_menu_proc_ext(int);
-static inline void* game3_native_word_ptr(uintptr_t word) { return (void*)word; }
 */
 import "C"
 
@@ -379,7 +378,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 	if event != 16391 {
 		return 0
 	}
-	child := (*C.nox_window)(C.game3_native_word_ptr(a3))
+	child := (*C.nox_window)(nativePointerFromWord(uintptr(a3)))
 	id := C.int(nox_xxx_wndGetID_46B0A0(child))
 	switch {
 	case id >= 720 && id <= 729:
@@ -462,7 +461,7 @@ func nox_xxx_wndRadioButtonProcPre_4A93C0(w *C.nox_window, e C.int, a, b C.uintp
 		event = gui.WindowFocus(a != 0)
 	case 16385:
 		// Preserve raw UTF-16 and the original63-word read bound.
-		src := (*uint16)(C.game3_native_word_ptr(a))
+		src := (*uint16)(nativePointerFromWord(uintptr(a)))
 		ended := false
 		for i := 0; i < 63; i++ {
 			var value uint16

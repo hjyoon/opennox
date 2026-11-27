@@ -177,30 +177,30 @@ func (a *pointerChainNativeArena) run(t *testing.T, route int, c pointerChainNat
 	}
 	a.owner.ObjClass = object.Class(c.Input.ClassBits)
 	a.owner.ObjFlags = object.Flags(c.Input.ObjectFlags)
-	globalStateNativeStorePointer(unsafe.Pointer(&a.owner.UpdateData), unsafe.Pointer(a.update))
-	globalStateNativeStorePointer(unsafe.Pointer(&a.update.Player), unsafe.Pointer(a.player))
+	storeForeignPointer(unsafe.Pointer(&a.owner.UpdateData), unsafe.Pointer(a.update))
+	storeForeignPointer(unsafe.Pointer(&a.update.Player), unsafe.Pointer(a.player))
 	var active *server.TradeSession
 	if c.Input.TradeRole == 1 {
 		active = a.session
 	} else if c.Input.TradeRole == 2 {
 		active = a.other
 	}
-	globalStateNativeStorePointer(unsafe.Pointer(&a.update.Trade70), unsafe.Pointer(active))
+	storeForeignPointer(unsafe.Pointer(&a.update.Trade70), unsafe.Pointer(active))
 	a.session.Field0 = c.Input.Value
 	pointerChainNativeSeedPlayer(a.player, c.Input.Value, c.Input.Counter, c.Input.StatusBits, c.Input.Gate)
 	var head *server.TradeItem
 	if c.Input.ListCount > 0 {
 		head = a.nodes[0]
 	}
-	globalStateNativeStorePointer(unsafe.Pointer(&a.session.Field20), unsafe.Pointer(head))
-	globalStateNativeStorePointer(unsafe.Pointer(&a.other.Field20), unsafe.Pointer(head))
+	storeForeignPointer(unsafe.Pointer(&a.session.Field20), unsafe.Pointer(head))
+	storeForeignPointer(unsafe.Pointer(&a.other.Field20), unsafe.Pointer(head))
 	for i, node := range a.nodes {
-		globalStateNativeStorePointer(unsafe.Pointer(&node.Item0), unsafe.Pointer(a.items[i]))
+		storeForeignPointer(unsafe.Pointer(&node.Item0), unsafe.Pointer(a.items[i]))
 		var next *server.TradeItem
 		if i+1 < c.Input.ListCount {
 			next = a.nodes[i+1]
 		}
-		globalStateNativeStorePointer(unsafe.Pointer(&node.Field8), unsafe.Pointer(next))
+		storeForeignPointer(unsafe.Pointer(&node.Field8), unsafe.Pointer(next))
 		a.items[i].NetCode = c.Input.Codes[i]
 	}
 	copy(a.before, a.raw)

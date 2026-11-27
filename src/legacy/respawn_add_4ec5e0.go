@@ -26,7 +26,7 @@ func respawnAddLoadHead4EC5E0() *respawnRecord4EC5E0 {
 }
 
 func respawnAddStoreHead4EC5E0(value *respawnRecord4EC5E0) {
-	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.respawnHead), unsafe.Pointer(value))
+	storeForeignPointer(unsafe.Pointer(&legacyPointers.respawnHead), unsafe.Pointer(value))
 }
 
 // Nox_xxx_respawnAdd_4EC5E0 restores GAME.EXE 004EC5E0 while retaining the

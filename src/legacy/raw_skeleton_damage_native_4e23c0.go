@@ -89,9 +89,7 @@ func rawSkeletonRead4E23C0(base unsafe.Pointer, offset uintptr, width int, site 
 		if uintptr(address)%unsafe.Alignof(unsafe.Pointer(nil)) == 0 {
 			event.Pointer = *(*unsafe.Pointer)(address)
 		} else {
-			// Unaligned foreign input still transports every native pointer
-			// bit; it is never reconstructed from an original 32-bit word.
-			event.Pointer = rawSkeletonForeignPointer4E23C0(*(*uintptr)(address))
+			event.Pointer = loadUnalignedNativePointer(address)
 		}
 	} else {
 		switch width {

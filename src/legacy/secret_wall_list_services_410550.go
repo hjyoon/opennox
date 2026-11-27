@@ -2,11 +2,6 @@ package legacy
 
 /*
 #include <stdlib.h>
-#include <string.h>
-
-static void secret_wall_native_foreign_store_pointer_410550(void* slot, void* value) {
-    memcpy(slot, &value, sizeof(value));
-}
 */
 import "C"
 
@@ -25,12 +20,6 @@ func secretWallNativeHeadCell410550() unsafe.Pointer {
 
 func secretWallNativeForeignLoadWord410550(slot unsafe.Pointer) uint16 {
 	return binary.NativeEndian.Uint16(unsafe.Slice((*byte)(slot), 2))
-}
-
-func secretWallNativeForeignStorePointer410550(slot, value unsafe.Pointer) {
-	C.secret_wall_native_foreign_store_pointer_410550(slot, value)
-	runtime.KeepAlive(slot)
-	runtime.KeepAlive(value)
 }
 
 // The observer handles diagnostic replies before the live service runs.

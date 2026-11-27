@@ -245,7 +245,7 @@ func clientInventoryRelease(screen, local *C.int2) {
 	nox_xxx_clientPlaySoundSpecial_452D80(792, 100)
 	if source.field_136 != 0 {
 		destination.field_136, source.field_136 = source.field_136, 0
-		globalStateNativeStorePointer(globalStateNativeSlot(2), unsafe.Pointer(destination))
+		storeForeignPointer(globalStateNativeSlot(2), unsafe.Pointer(destination))
 	}
 	sub_461B50()
 }

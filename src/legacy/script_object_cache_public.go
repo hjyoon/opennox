@@ -116,7 +116,7 @@ func rememberScriptObject(object *server.Object, native *nox_object_t) *scriptOb
 	// Go callers can own objects on the Go heap. The pointer exported to C
 	// belongs to the native ABI, while the Go slot retains the object lifetime.
 	*scriptObjectCacheSlot(node) = object
-	globalStateNativeStorePointer(unsafe.Pointer(&node.object), unsafe.Pointer(native))
+	storeForeignPointer(unsafe.Pointer(&node.object), unsafe.Pointer(native))
 	scriptObjectCache.used.prepend(node)
 	return node
 }

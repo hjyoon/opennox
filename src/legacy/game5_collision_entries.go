@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-static void* game5_word_pointer(uintptr_t p) { return (void*)p; }
 */
 import "C"
 
@@ -39,7 +38,7 @@ func game5CollisionPeer(word uintptr) *server.Object {
 	if word <= 6 {
 		return nil
 	}
-	return (*server.Object)(C.game5_word_pointer(C.uintptr_t(word)))
+	return (*server.Object)(nativePointerFromWord(word))
 }
 
 //export nox_xxx_collSysAddCollision_548630
@@ -250,7 +249,7 @@ func game5EnqueueDoor(data *server.DoorUpdateData) {
 
 //export sub_548830
 func sub_548830(word C.uintptr_t) {
-	game5EnqueueDoor((*server.DoorUpdateData)(C.game5_word_pointer(word)))
+	game5EnqueueDoor((*server.DoorUpdateData)(nativePointerFromWord(uintptr(word))))
 }
 
 //export sub_548860

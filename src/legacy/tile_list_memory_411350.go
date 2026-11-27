@@ -71,13 +71,6 @@ func tileListNativeLoadPointer411350(address unsafe.Pointer) unsafe.Pointer {
 	return loadUnalignedNativePointer(address)
 }
 
-func loadUnalignedNativePointer(address unsafe.Pointer) unsafe.Pointer {
-	var value unsafe.Pointer
-	width := unsafe.Sizeof(value)
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(&value)), width), unsafe.Slice((*byte)(address), width))
-	return value
-}
-
 func tileListNativeReadWord411350(site uint32, field int, base unsafe.Pointer, offset uintptr) uint32 {
 	address := tileListNativeAddress411350(base, offset)
 	event := tileListNativeOperand411350{Site: site, Field: field, Base: base, Address: address, Offset: offset, Width: 4, AddressValid: true}

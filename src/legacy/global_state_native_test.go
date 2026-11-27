@@ -100,7 +100,7 @@ func TestGlobalStateNativeOriginal(t *testing.T) {
 							if (j < 3 && !c.Input.Nonnull) || (j >= 3 && c.Input.Word == 0) {
 								value = nil
 							}
-							globalStateNativeStorePointer(globalStateNativeSlot(j), value)
+							storeForeignPointer(globalStateNativeSlot(j), value)
 						} else {
 							*globalStateNativeWord(j) = 0xabcdef01 + uint32(j)
 						}
@@ -110,8 +110,8 @@ func TestGlobalStateNativeOriginal(t *testing.T) {
 						playerPtr = unsafe.Pointer(player)
 						cellPtr = cell
 					}
-					globalStateNativeStorePointer(globalStateNativeSlot(0), playerPtr)
-					globalStateNativeStorePointer(globalStateNativeSlot(2), cellPtr)
+					storeForeignPointer(globalStateNativeSlot(0), playerPtr)
+					storeForeignPointer(globalStateNativeSlot(2), cellPtr)
 					*(*uint32)(unsafe.Pointer(&player.Active)) = c.Input.ActiveWord
 					player.Field3680 = c.Input.Flags
 					player.Level = c.Input.Level

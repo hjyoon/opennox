@@ -110,7 +110,7 @@ func TestGUIBarStateNativeOriginal(t *testing.T) {
 					if !c.Input.Nonnull {
 						value = nil
 					}
-					globalStateNativeStorePointer(globalStateNativeSlot(0), value)
+					storeForeignPointer(globalStateNativeSlot(0), value)
 					pointerBefore := append([]byte(nil), pointerSlot...)
 					copy(before, raw)
 					windowBefore := append([]byte(nil), windows...)

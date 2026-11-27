@@ -1,12 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-// Opaque full-width transport only; never dereference here.
-static void* rdd_native_foreign_pointer_4e0b30(uintptr_t bits){return(void*)bits;}
-*/
-import "C"
-
 import (
 	"runtime"
 	"unsafe"
@@ -110,8 +103,7 @@ func rawDefaultDamageReadNativeOperand4E0B30(base unsafe.Pointer, field, width i
 		if uintptr(address)%unsafe.Alignof(unsafe.Pointer(nil)) == 0 {
 			value.Pointer = *(*unsafe.Pointer)(address)
 		} else {
-			bits := *(*uintptr)(address)
-			value.Pointer = C.rdd_native_foreign_pointer_4e0b30(C.uintptr_t(bits))
+			value.Pointer = loadUnalignedNativePointer(address)
 		}
 	} else {
 		switch width {

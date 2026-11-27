@@ -30,7 +30,7 @@ func windowFieldImage(win *gui.Window, value unsafe.Pointer, index int) int32 {
 	default:
 		panic("invalid window image entry")
 	}
-	globalStateNativeStorePointer(slot, value)
+	storeForeignPointer(slot, value)
 	return 0
 }
 

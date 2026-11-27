@@ -32,7 +32,7 @@ func mapgenLinkWaypoints(from, to *server.Waypoint, kind byte) bool {
 	}
 	point := &from.Points[from.PointsCnt]
 	// The next slot belongs to C and can still contain an unused pointer.
-	globalStateNativeStorePointer(unsafe.Pointer(&point.Waypoint), unsafe.Pointer(to))
+	storeForeignPointer(unsafe.Pointer(&point.Waypoint), unsafe.Pointer(to))
 	point.Ind = kind
 	from.PointsCnt++
 	return true
@@ -76,7 +76,7 @@ func sub_51D120(position *C.float2) *C.nox_waypoint_t {
 		mapgenLinkWaypoints(last, created, memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset))
 		mapgenLinkWaypoints(created, asWaypointS(legacyPointers.mapgenLastWaypoint), memmap.Uint8(mapgenWaypointStateBase, mapgenWaypointKindOffset))
 	}
-	globalStateNativeStorePointer(unsafe.Pointer(&legacyPointers.mapgenLastWaypoint), unsafe.Pointer(created))
+	storeForeignPointer(unsafe.Pointer(&legacyPointers.mapgenLastWaypoint), unsafe.Pointer(created))
 	return asWaypointC(created)
 }
 

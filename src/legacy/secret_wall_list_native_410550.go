@@ -118,7 +118,7 @@ func secretWallNativeStorePointer410550(address, value unsafe.Pointer) {
 		// Retain Go's pointer write barrier for actual Go-owned slots.
 		*(*unsafe.Pointer)(address) = value
 	} else {
-		secretWallNativeForeignStorePointer410550(address, value)
+		storeForeignPointer(address, value)
 	}
 	runtime.KeepAlive(value)
 }

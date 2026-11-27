@@ -11,7 +11,6 @@ typedef nox_object_t* (*two_settings_pointer_next_unit_fn_40a740)(const nox_obje
 _Static_assert(_Generic(&sub_4165B0,two_settings_pointer_info_fn_40a740:1,default:0), "Info native char pointer ABI");
 _Static_assert(_Generic(&nox_xxx_getFirstPlayerUnit_4DA7C0,two_settings_pointer_first_unit_fn_40a740:1,default:0), "FirstUnit native pointer ABI");
 _Static_assert(_Generic(&nox_xxx_getNextPlayerUnit_4DA7F0,two_settings_pointer_next_unit_fn_40a740:1,default:0), "NextUnit native pointer ABI");
-static void* two_settings_pointer_foreign_pointer_40a740(uintptr_t bits) { return (void*)bits; }
 */
 import "C"
 
@@ -19,12 +18,6 @@ import (
 	"runtime"
 	"unsafe"
 )
-
-// Only full words read from misaligned foreign pointer slots use this
-// conversion. An actual Go pointer is not hidden in an integer for cgo.
-func twoSettingsPointerNativeForeignPointer40A740(bits uintptr) unsafe.Pointer {
-	return C.two_settings_pointer_foreign_pointer_40a740(C.uintptr_t(bits))
-}
 
 // The observer intercepts before this function and before any typed helper
 // conversion. These are existing production services, not original helper

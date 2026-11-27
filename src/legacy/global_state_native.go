@@ -2,8 +2,6 @@ package legacy
 
 /*
 #include "defs.h"
-#include <string.h>
-static void global_state_pointer_store_C(void* slot, void* value) { memcpy(slot, &value, sizeof(value)); }
 */
 import "C"
 
@@ -58,12 +56,6 @@ func globalStateNativePointer(index int) unsafe.Pointer {
 	return *(*unsafe.Pointer)(globalStateNativeSlot(index))
 }
 
-func globalStateNativeStorePointer(slot, value unsafe.Pointer) {
-	// Copy foreign pointer bits in native memory without applying Go's
-	// deletion barrier to the previous contents.
-	C.global_state_pointer_store_C(slot, value)
-}
-
 func globalStateNativeValue(index int) int32 {
 	switch index {
 	case 0:
@@ -102,7 +94,7 @@ func globalStateNativeValue(index int) int32 {
 
 func globalStateNativeMutate(index int) {
 	if index == 12 {
-		globalStateNativeStorePointer(globalStateNativeSlot(index), nil)
+		storeForeignPointer(globalStateNativeSlot(index), nil)
 		return
 	}
 	word := globalStateNativeWord(index)

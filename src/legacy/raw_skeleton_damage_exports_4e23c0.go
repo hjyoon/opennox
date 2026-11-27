@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME3_3.h"
-static void* raw_skeleton_foreign_pointer_4e23c0(uintptr_t bits) { return (void*)bits; }
 */
 import "C"
 
@@ -12,10 +11,6 @@ import (
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
-
-func rawSkeletonForeignPointer4E23C0(bits uintptr) unsafe.Pointer {
-	return C.raw_skeleton_foreign_pointer_4e23c0(C.uintptr_t(bits))
-}
 
 func rawSkeletonFallbackService4E23C0(call rawSkeletonService4E23C0) uint32 {
 	a := call.Arguments

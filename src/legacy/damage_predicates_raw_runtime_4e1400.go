@@ -48,8 +48,6 @@ static int32_t damage_raw_transport_4e1400(int entry,void* source,void* weapon){
 static int damage_raw_trace_size_4e1400(void){return damage_raw_trace_count_4e1400;}
 static damage_raw_trace_4e1400 damage_raw_trace_get_4e1400(int i){return damage_raw_trace_data_4e1400[i];}
 static int32_t damage_raw_return_4e1400(int32_t value){return value;}
-// Opaque bit transport only: no field/pointee dereference and no C memory fault.
-static void* damage_raw_pointer_from_bits_4e1400(uintptr_t bits){return (void*)bits;}
 */
 import "C"
 
@@ -113,16 +111,7 @@ func damagePredicateRawRead4E1400(base unsafe.Pointer, kind int) (value damagePr
 				// Actual aligned Go pointer storage retains GC pointer semantics.
 				value.Pointer = *(*unsafe.Pointer)(address)
 			} else {
-				// Unaligned storage is a C-owned memory domain. A Go-owned
-				// typed pointer field cannot legally have this alignment.
-				var bits uintptr
-				if unsafe.Sizeof(uintptr(0)) == 8 {
-					bits = uintptr(*(*uint64)(address))
-				} else {
-					bits = uintptr(*(*uint32)(address))
-				}
-				value.Pointer = C.damage_raw_pointer_from_bits_4e1400(C.uintptr_t(bits))
-				runtime.KeepAlive(base)
+				value.Pointer = loadUnalignedNativePointer(address)
 			}
 		default:
 			value.Word = *(*uint32)(address)

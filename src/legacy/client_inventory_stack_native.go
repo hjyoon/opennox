@@ -46,7 +46,7 @@ func nox_xxx_clientSetAltWeapon_461550(cell *C.nox_inventory_cell_t) C.int {
 	if cell != nil && cell.field_0 == nil {
 		cell = nil
 	}
-	globalStateNativeStorePointer(globalStateNativeSlot(2), unsafe.Pointer(cell))
+	storeForeignPointer(globalStateNativeSlot(2), unsafe.Pointer(cell))
 	sub_4619F0()
 	if cell == nil {
 		return nox_xxx_clientReportSecondaryWeapon_4BF010(nil)
@@ -147,7 +147,7 @@ func sub_461B50() {
 		}
 		*target = *source
 		if target.field_136 != 0 {
-			globalStateNativeStorePointer(globalStateNativeSlot(2), unsafe.Pointer(target))
+			storeForeignPointer(globalStateNativeSlot(2), unsafe.Pointer(target))
 		}
 		source.field_140, source.field_0, source.field_132 = 0, nil, 0
 		i++

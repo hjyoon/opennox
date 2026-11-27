@@ -99,6 +99,12 @@ func TestFindFileNativeCEntry(t *testing.T) {
 	if alloc.GoStringS(entry.cFileName[:]) != "a.plr" || entry.nFileSizeHigh != 1 || entry.nFileSizeLow != 5 {
 		t.Fatalf("C search lost the file name or high size word: %+v", entry)
 	}
+	if unsafe.Sizeof(handle) == 8 {
+		other := uintptr(uint64(handle) ^ (1 << 32))
+		if cfixture.FindFileNext(other, out) != 0 || cfixture.FindFileClose(other) != 0 {
+			t.Fatal("search accepted a different native handle with matching low bits")
+		}
+	}
 	if cfixture.FindFileNext(handle, nil) != 0 || FindNextFileA(handle, &entry) != 1 ||
 		alloc.GoStringS(entry.cFileName[:]) != "b.plr" {
 		t.Fatalf("C and Go searches did not share the cursor: %+v", entry)

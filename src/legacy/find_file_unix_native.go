@@ -108,17 +108,17 @@ func closeFileSearch(handle uintptr) int {
 	return 1
 }
 
-//export nox_compat_find_first_file_word
-func nox_compat_find_first_file_word(pattern *C.nox_cgo_const_char, entry *C.WIN32_FIND_DATAA) C.uintptr_t {
-	return C.uintptr_t(FindFirstFileA((*byte)(unsafe.Pointer(pattern)), (*WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
+//export compatFindFirstFileA
+func compatFindFirstFileA(pattern *C.nox_cgo_const_char, entry *C.WIN32_FIND_DATAA) C.HANDLE {
+	return C.HANDLE(FindFirstFileA((*byte)(unsafe.Pointer(pattern)), (*WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
 }
 
-//export nox_compat_find_next_file_word
-func nox_compat_find_next_file_word(handle C.uintptr_t, entry *C.WIN32_FIND_DATAA) C.int {
+//export compatFindNextFileA
+func compatFindNextFileA(handle C.HANDLE, entry *C.WIN32_FIND_DATAA) C.int {
 	return C.int(FindNextFileA(uintptr(handle), (*WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
 }
 
-//export nox_compat_find_close_word
-func nox_compat_find_close_word(handle C.uintptr_t) C.int {
+//export compatFindClose
+func compatFindClose(handle C.HANDLE) C.int {
 	return C.int(closeFileSearch(uintptr(handle)))
 }

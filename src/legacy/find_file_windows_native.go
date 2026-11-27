@@ -2,26 +2,32 @@
 
 package legacy
 
-/*
-#include <stdint.h>
-#include "compat.h"
+import (
+	"unsafe"
 
-uintptr_t nox_win_find_first_file_word(const char*, WIN32_FIND_DATAA*);
-int nox_win_find_next_file_word(uintptr_t, WIN32_FIND_DATAA*);
-int nox_win_find_close_word(uintptr_t);
-*/
-import "C"
+	"golang.org/x/sys/windows"
+)
 
-import "unsafe"
+// The ANSI system calls write the WIN32_FIND_DATAA record used by saved
+// players and audio lookup. The path and record are borrowed for one call.
+var (
+	findFileKernel     = windows.NewLazySystemDLL("kernel32.dll")
+	findFirstFileAProc = findFileKernel.NewProc("FindFirstFileA")
+	findNextFileAProc  = findFileKernel.NewProc("FindNextFileA")
+	findCloseProc      = findFileKernel.NewProc("FindClose")
+)
 
 func FindFirstFileA(pattern *byte, entry *WIN32_FIND_DATAA) uintptr {
-	return uintptr(C.nox_win_find_first_file_word((*C.char)(unsafe.Pointer(pattern)), (*_WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
+	handle, _, _ := findFirstFileAProc.Call(uintptr(unsafe.Pointer(pattern)), uintptr(unsafe.Pointer(entry)))
+	return handle
 }
 
 func FindNextFileA(handle uintptr, entry *WIN32_FIND_DATAA) int {
-	return int(C.nox_win_find_next_file_word(C.uintptr_t(handle), (*_WIN32_FIND_DATAA)(unsafe.Pointer(entry))))
+	status, _, _ := findNextFileAProc.Call(handle, uintptr(unsafe.Pointer(entry)))
+	return int(int32(status))
 }
 
 func closeFileSearch(handle uintptr) int {
-	return int(C.nox_win_find_close_word(C.uintptr_t(handle)))
+	status, _, _ := findCloseProc.Call(handle)
+	return int(int32(status))
 }

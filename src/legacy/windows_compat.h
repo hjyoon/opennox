@@ -13,7 +13,8 @@ extern "C" {
 
 #define MAX_PATH 260
 
-typedef void* HANDLE;
+/* File-search handles are opaque native words, with UINTPTR_MAX on failure. */
+typedef uintptr_t HANDLE;
 typedef void* HINSTANCE;
 typedef int HWND;
 typedef int LCID;

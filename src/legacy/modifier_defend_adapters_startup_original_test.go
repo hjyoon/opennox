@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -86,7 +87,7 @@ func TestModifierDefendAdaptersStartupOriginal(t *testing.T) {
 					if !itemDurabilityApplyDefendNative4E1560(effect, item, target, weapon, source, (*float32)(unsafe.Pointer(&output[1]))) {
 						t.Fatal("known durability callback rejected")
 					}
-				} else if result := Nox_xxx_itemApplyDefendEffect2_4E1320(target, source, weapon, (*int32)(unsafe.Pointer(&output[1])), object.DamageBite); result != 0 {
+				} else if result := cfixture.ItemDefendEffectsC4E1320(target, source, weapon, (*int32)(unsafe.Pointer(&output[1])), object.DamageBite); result != 0 {
 					t.Fatal("equipped-item loop return changed")
 				}
 				if output[0] != 0xa5a5a5a5 || output[2] != 0x5a5a5a5a || output[1] != row.Value {

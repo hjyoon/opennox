@@ -1267,6 +1267,29 @@ passed the three comparisons that require an artifact directory using
 its generated path. The Linux 386 `server,safe` ABI checks passed under
 QEMU, and both Windows server architectures cross-built.
 
+### Equipment damage callback ownership
+
+Default damage calls the equipped Defend and weapon Pre-Damage helpers
+in Go. Drain Mana, Vampirism, Poison, and Sympathy use the same Go
+implementations as their C exports. The public C symbols
+retain native-width object pointers, a pointer to the signed 32-bit
+damage value, and a signed 32-bit result. Defend also takes a signed
+32-bit damage type.
+
+The supplied `GAME.EXE` routines at `0x4E1320` and `0x4E13B0` executed
+under QEMU 386. The original callbacks saw the same damage address
+or reused Defend context as appropriate. The probe changed the next
+modifier and inventory link during a callback, checked the resulting
+read order, and compared the final stored damage and result words.
+
+Both helpers previously failed the Cgo pointer check when called with
+unpinned Go objects containing Go-owned fields. Those cases passed
+with macOS ARM64 `cgocheck2` and `checkptr=2`. Separate typed C calls
+checked the public symbols with C-owned records. The native tests
+also passed on Linux ARM64 PIE and Linux 386 `server,safe`. Six
+macOS headless replays covered damage, poison, armor, equipment,
+monster attacks, and Wizard chapter one.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

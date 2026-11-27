@@ -60,27 +60,15 @@ func itemPreDamageApplyNative4E13B0(
 	fns := itemPreDamageFunctionsNative4E13B0()
 	switch fnc {
 	case fns.drainMana:
-		C.nox_xxx_drainMEffect_4E0740(
-			effect.C(), asObjectC(weapon), asObjectC(source), asObjectC(target),
-			(*C.int32_t)(unsafe.Pointer(damage)),
-		)
+		modifierDrainMana4E0740(effect, source, target, damage, modifierResourceServices)
 	case fns.vampirism:
-		C.nox_xxx_vampirismEffect_4E07C0(
-			effect.C(), asObjectC(weapon), asObjectC(source), asObjectC(target),
-			(*C.int32_t)(unsafe.Pointer(damage)),
-		)
+		modifierVampirism4E07C0(effect, source, target, damage, modifierResourceServices)
 	case fns.poison:
-		C.nox_xxx_poisonEffect_4E0850(
-			effect.C(), asObjectC(weapon), asObjectC(source), asObjectC(target),
-			unsafe.Pointer(damage),
-		)
+		modifierPoison4E0850(effect, source, target)
 	case fns.panic:
 		return
 	case fns.sympathy:
-		C.nox_xxx_sympathyEffect_4E08E0(
-			effect.C(), asObjectC(weapon), asObjectC(source), asObjectC(target),
-			(*C.int32_t)(unsafe.Pointer(damage)),
-		)
+		modifierSympathy4E08E0(effect, source, target, damage, modifierResourceServices)
 	default:
 		if unsafe.Sizeof(uintptr(0)) != 4 {
 			return

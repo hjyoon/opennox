@@ -91,8 +91,12 @@ func applyModifierPoison4E0850(
 	}
 }
 
+func modifierPoison4E0850(effect *server.ModifierEff, owner, target *server.Object) {
+	applyModifierPoison4E0850(effect, owner, target,
+		modifierPoisonFacing4E0850, Nox_xxx_activatePoison_4EE7E0, reportModifierStatus4E04D0)
+}
+
 //export nox_xxx_poisonEffect_4E0850
 func nox_xxx_poisonEffect_4E0850(effect unsafe.Pointer, weapon, owner, target *nox_object_t, context unsafe.Pointer) {
-	applyModifierPoison4E0850((*server.ModifierEff)(effect), asObjectS(owner), asObjectS(target),
-		modifierPoisonFacing4E0850, Nox_xxx_activatePoison_4EE7E0, reportModifierStatus4E04D0)
+	modifierPoison4E0850((*server.ModifierEff)(effect), asObjectS(owner), asObjectS(target))
 }

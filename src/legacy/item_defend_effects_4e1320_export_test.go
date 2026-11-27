@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -58,7 +59,7 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 	oldGetServer := GetServer
 	GetServer = func() Server { t.Fatal("known/empty effects consulted the global server"); return nil }
 	t.Cleanup(func() { GetServer = oldGetServer })
-	if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, nil, nil, nil, object.DamageType(math.MinInt32)); got != int32(uint32(uintptr(unsafe.Pointer(target)))) {
+	if got := cfixture.ItemDefendEffectsC4E1320(target, nil, nil, nil, object.DamageType(math.MinInt32)); got != int32(uint32(uintptr(unsafe.Pointer(target)))) {
 		t.Fatalf("empty return=%#x, want target low DWORD", uint32(got))
 	}
 	target.InvFirstItem = item
@@ -67,16 +68,16 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 	// The original gate is flags-only: an equipped item of class zero still
 	// reaches slots two and three. It needs neither health nor update data.
 	initData.Modifiers[2] = armor
-	if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != int32(math.Float32bits(2)) {
+	if got := cfixture.ItemDefendEffectsC4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != int32(math.Float32bits(2)) {
 		t.Fatalf("armor callback return=%d damage=%#x, want 0/%#x", got, uint32(*damage), math.Float32bits(2))
 	}
 	initData.Modifiers[3] = grip
 	*damage = int32(math.Float32bits(8))
-	if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, source, weapon, damage, object.DamagePoison); got != 0 || *damage != 1 {
+	if got := cfixture.ItemDefendEffectsC4E1320(target, source, weapon, damage, object.DamagePoison); got != 0 || *damage != 1 {
 		t.Fatalf("armor then Grip return=%d damage=%d, want 0/1", got, *damage)
 	}
 	item.ObjFlags = object.Flags(0xf0000000)
-	if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, nil, nil, nil, object.DamageType(math.MaxInt32)); uint32(got) != 0xf0000000 {
+	if got := cfixture.ItemDefendEffectsC4E1320(target, nil, nil, nil, object.DamageType(math.MaxInt32)); uint32(got) != 0xf0000000 {
 		t.Fatalf("unequipped return=%#x, want flags DWORD", uint32(got))
 	}
 	item.ObjFlags = object.FlagEquipped
@@ -101,7 +102,7 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 	} {
 		*armor = server.ModifierEff{Defend76: server.ModifierEffFnc{Fnc: tc.function, Valf: tc.value}, DefendCollide88: server.ModifierEffFnc{Val: tc.collision}}
 		*damage = tc.damage
-		if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != tc.wantDamage {
+		if got := cfixture.ItemDefendEffectsC4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != tc.wantDamage {
 			t.Fatalf("%s C entry return=%d damage=%#x, want 0/%#x", tc.name, got, uint32(*damage), uint32(tc.wantDamage))
 		}
 	}
@@ -114,7 +115,7 @@ func TestItemDefendEffectsCEntry4E1320(t *testing.T) {
 		*armor = server.ModifierEff{Defend76: server.ModifierEffFnc{Fnc: unsafe.Pointer(source)}}
 		initData.Modifiers[3] = grip
 		*damage = math.MinInt32
-		if got := Nox_xxx_itemApplyDefendEffect2_4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != 1 {
+		if got := cfixture.ItemDefendEffectsC4E1320(target, source, weapon, damage, object.DamageType(math.MinInt32)); got != 0 || *damage != 1 {
 			t.Fatalf("unsupported then Grip return=%d damage=%d, want 0/1", got, *damage)
 		}
 		for _, message := range []string{"equipped Defend native callback is not ported", "procedure=004E1320", "damage=-2147483648", "damage_type=-2147483648"} {

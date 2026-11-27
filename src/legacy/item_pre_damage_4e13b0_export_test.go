@@ -13,6 +13,7 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -46,7 +47,7 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 		}
 	}
 	t.Logf("real C pre-Damage: weapon=%p init=%p", weapon, initData)
-	if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(nil, nil, weapon, nil); got != 0 {
+	if got := cfixture.ItemPreDamageC4E13B0(nil, nil, weapon, nil); got != 0 {
 		t.Fatalf("empty four-slot counter=%d, want 0", got)
 	}
 	target, freeTarget := alloc.NewHigh(server.Object{})
@@ -72,10 +73,10 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 		*effect = server.ModifierEff{AttackPreDmg64: server.ModifierEffFnc{Fnc: fnc}}
 		initData.Modifiers = [4]*server.ModifierEff{effect, empty, nil, effect}
 		*damage = math.MinInt32
-		if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, damage); got != 0 || *damage != math.MinInt32 {
+		if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, damage); got != 0 || *damage != math.MinInt32 {
 			t.Fatalf("stock callback=%p counter=%d damage=%#x", fnc, got, uint32(*damage))
 		}
-		if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, nil); got != 0 {
+		if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, nil); got != 0 {
 			t.Fatalf("stock callback=%p nil-damage counter=%d", fnc, got)
 		}
 	}
@@ -101,14 +102,14 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 	*other = server.ModifierEff{AttackPreDmg64: server.ModifierEffFnc{Fnc: fns.sympathy, Valf: 0.25}}
 	initData.Modifiers = [4]*server.ModifierEff{effect, empty, nil, other}
 	*damage = 8
-	if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, damage); got != 0 || *damage != 8 || sourceHP.Cur != 18 || targetHP.Cur != 20 {
+	if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, damage); got != 0 || *damage != 8 || sourceHP.Cur != 18 || targetHP.Cur != 20 {
 		t.Fatalf("actual C stock effects counter=%d damage=%d source HP=%d target HP=%d, want 0/8/18/20", got, *damage, sourceHP.Cur, targetHP.Cur)
 	}
 	// Poison ignores its damage/context argument. A helper-level nil guard
 	// must not suppress this original callback when the address is nil.
 	*effect = server.ModifierEff{AttackPreDmg64: server.ModifierEffFnc{Fnc: fns.poison, Val: 4}}
 	initData.Modifiers = [4]*server.ModifierEff{3: effect}
-	if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, nil); got != 0 || target.Poison540 != 1 {
+	if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, nil); got != 0 || target.Poison540 != 1 {
 		t.Fatalf("nil-context stock Poison counter=%d poison=%d, want 0/1", got, target.Poison540)
 	}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
@@ -116,7 +117,7 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 		srv.Log = slog.New(slog.NewTextHandler(&logs, nil))
 		*effect = server.ModifierEff{AttackPreDmg64: server.ModifierEffFnc{Fnc: unsafe.Pointer(source)}}
 		initData.Modifiers = [4]*server.ModifierEff{effect, empty, nil, other}
-		if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, damage); got != 0 || sourceHP.Cur != 16 || *damage != 8 {
+		if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, damage); got != 0 || sourceHP.Cur != 16 || *damage != 8 {
 			t.Fatalf("unsupported then actual Sympathy counter=%d HP=%d damage=%d", got, sourceHP.Cur, *damage)
 		}
 		for _, message := range []string{"weapon pre-damage native callback is not ported", "procedure=004E13B0", "damage=8"} {
@@ -126,10 +127,10 @@ func TestItemPreDamageCEntry4E13B0(t *testing.T) {
 		}
 		*other = server.ModifierEff{AttackPreDmg64: server.ModifierEffFnc{Fnc: fns.panic}}
 		*damage = math.MinInt32
-		if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, damage); got != 0 || *damage != math.MinInt32 {
+		if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, damage); got != 0 || *damage != math.MinInt32 {
 			t.Fatalf("raw signed unknown counter=%d damage=%#x", got, uint32(*damage))
 		}
-		if got := Nox_xxx_itemApplyPreDamageEffect_4E13B0(target, source, weapon, nil); got != 0 || !strings.Contains(logs.String(), "damage_present=false") {
+		if got := cfixture.ItemPreDamageC4E13B0(target, source, weapon, nil); got != 0 || !strings.Contains(logs.String(), "damage_present=false") {
 			t.Fatalf("nil-context unknown counter=%d log=%q", got, logs.String())
 		}
 	}

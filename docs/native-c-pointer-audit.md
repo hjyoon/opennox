@@ -1434,6 +1434,67 @@ limits and the package reached its 24-minute limit while starting
 passed the three map generation tests on replay and all 569 remaining
 top-level tests from that point through the end of the package.
 
+### Window access, callbacks, and rendering
+
+The original `0x46B0C0` starts at the live GUI tail when its root
+argument is null. The Go entry now does the same, preserving the
+root-first, newest-child-first and previous-sibling traversal.
+The original getter and setter at `0x46B0A0` and `0x46B080` use
+a signed 32-bit ID. The original lookup and geometry bodies ran
+under QEMU with duplicate IDs, a negative ID, signed offsets, and
+inclusive point containment.
+
+The ordinary Go paths call 39 window functions directly at 368
+source sites. Server settings also call the Go window event entry
+directly. The C exports retain their declared signatures. Control
+events preserve both native-width payloads and the result word.
+The baseline missed the global lookup and failed Cgo validation
+when the server options lookup received a Go-owned window tree.
+
+The original `0x49F6F0` returns the status from USER32 `CopyRect`.
+`0x49F780` forwards that status. The original bodies ran under QEMU
+with signed and overflowing coordinates and intercepted standard
+Win32 rectangle operations. Both Go entries export the signed
+32-bit return word, and briefing rendering calls Go directly.
+The two C forwarding bodies were removed with
+`client_render_clip_abi.c`.
+
+### Special sound and server settings status
+
+The special sound entry at `0x452D80` receives the signed low
+32 bits of the sound ID and volume on the Go and C paths. The
+original body ran under QEMU with missing definitions, missing
+voice reservations, and volume set before submission.
+
+The server settings entry at `0x459AA0` compares the signed
+selection word before requesting a map row, returns that word for
+a negative selection, and returns zero after processing a row.
+The original body ran under QEMU with `-1`, the minimum signed
+word, a selected row, and an empty token. The Go export uses a C
+`int`, and the status shim in `game2_server_abi.c` was removed.
+
+The final Linux ARM64 PIE and Linux 386 `server,safe` profiles
+passed 76 selected top-level legacy and GUI tests each. The QEMU
+386 gate passed the interpreter prefix to child processes so both
+the isolated quest replay and the compiled Trap Set fixture ran.
+The macOS ARM64 strict gate passed the complete GUI and renderer
+packages and the same 76 selected top-level tests. Windows 386
+and AMD64 server cross-builds produced the expected PE architectures.
+
+The macOS clients passed nine end-to-end runs with 24 exact screen
+matches. The normal and HD builds each matched the Chapter One
+briefing before the first click and the inventory clipping
+screens. The other runs exercised main-menu options, advanced
+server options, OpenAL gameplay audio, HD quest stage transition,
+and minimap clipping.
+
+The macOS ARM64 client links 805 distinct legacy `_Cfunc_` wrappers
+after the window, renderer, sound, and settings changes. The linked
+Go export and source-call matches account for 718 wrappers. The
+preceding client linked 850 wrappers with 761 Go export matches.
+The two adapter removals leave 25 top-level legacy C files and
+remove three definitions from the recorded 68-definition union.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

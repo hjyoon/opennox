@@ -85,13 +85,13 @@ type mapgenExtractViaCResult5034B0 struct {
 }
 
 func mapgenExtractViaC5034B0(source, directory, name, attachmentPath string) mapgenExtractViaCResult5034B0 {
-	csource := C.CString(source)
+	csource := CString(source)
 	defer C.free(unsafe.Pointer(csource))
-	cdirectory := C.CString(directory)
+	cdirectory := CString(directory)
 	defer C.free(unsafe.Pointer(cdirectory))
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
-	cattachment := C.CString(attachmentPath)
+	cattachment := CString(attachmentPath)
 	defer C.free(unsafe.Pointer(cattachment))
 	v := C.nox_test_mapgen_extract_5034B0(csource, cdirectory, cname, cattachment)
 	return mapgenExtractViaCResult5034B0{

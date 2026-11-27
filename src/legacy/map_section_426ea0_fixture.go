@@ -36,7 +36,7 @@ type mapSectionViaCResult426EA0 struct {
 }
 
 func mapSectionViaC426EA0(name string) mapSectionViaCResult426EA0 {
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	v := C.nox_test_map_section_426EA0(cname)
 	return mapSectionViaCResult426EA0{

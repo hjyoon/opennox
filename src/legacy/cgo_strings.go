@@ -144,14 +144,6 @@ func GoStringS(s []byte) string {
 	return string(s[:StrLenBytes(s)])
 }
 
-func CString(s string) *C.char {
-	return C.CString(s)
-}
-
-func CBytes(s []byte) unsafe.Pointer {
-	return C.CBytes(s)
-}
-
 func GoWStringP(s unsafe.Pointer) string {
 	return GoWString((*wchar2_t)(s))
 }

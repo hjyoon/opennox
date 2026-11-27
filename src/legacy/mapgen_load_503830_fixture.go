@@ -130,7 +130,7 @@ type mapgenLoadViaCResult503830 struct {
 }
 
 func mapgenLoadViaC503830(source string) mapgenLoadViaCResult503830 {
-	csource := C.CString(source)
+	csource := CString(source)
 	defer C.free(unsafe.Pointer(csource))
 	v := C.nox_test_mapgen_load_503830(csource)
 	return mapgenLoadViaCResult503830{

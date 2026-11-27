@@ -12,6 +12,14 @@ import (
 
 var cgoSafe = os.Getenv("NOX_SAFE") == "true"
 
+func CString(s string) *C.char {
+	return C.CString(s)
+}
+
+func CBytes(s []byte) unsafe.Pointer {
+	return C.CBytes(s)
+}
+
 func legacyCMapPointer(base, off, size uintptr) unsafe.Pointer {
 	if p := legacyMemoryPointer(base, off, size); p != nil {
 		return p

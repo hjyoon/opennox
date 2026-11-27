@@ -142,19 +142,19 @@ func QuestJournalSetFloat5006B0(name string, value float32) {
 }
 
 func questJournalSetExportCall500540(name string, value int32) *C.nox_quest_journal_native {
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	return C.nox_xxx_journalQuestSet_500540(cname, C.int32_t(value))
 }
 
 func questJournalGetIntExportCall500750(name string) int32 {
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	return int32(C.sub_500750(cname))
 }
 
 func questJournalGetFloatExportCall500770(name string) float64 {
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	return float64(C.sub_500770(cname))
 }
@@ -164,13 +164,13 @@ func questJournalDeleteEntryExportCall500790(entry *C.nox_quest_journal_native) 
 }
 
 func questJournalDeletePatternExportCall5007E0(pattern string) {
-	cpattern := C.CString(pattern)
+	cpattern := CString(pattern)
 	defer C.free(unsafe.Pointer(cpattern))
 	C.sub_5007E0(cpattern)
 }
 
 func questJournalQualifyExportCall5009B0(name string) uint32 {
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	return uint32(C.sub_5009B0(cname))
 }

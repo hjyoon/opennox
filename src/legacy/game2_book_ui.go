@@ -321,7 +321,7 @@ func nox_xxx_book_45BD30(unused1 *C.nox_window, unused2 *C.nox_window_data) C.in
 func nox_xxx_bookInit_45B9D0() C.int {
 	bookState.player_word = worldOwnerStorage.local_player_word
 	loadImage := func(name string) *C.nox_video_bag_image_t {
-		p := C.CString(name)
+		p := CString(name)
 		defer C.free(unsafe.Pointer(p))
 		return nox_xxx_gLoadImg_42F970(p)
 	}
@@ -345,7 +345,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 		return 0
 	}
 	loadAnim := func(name string) *C.nox_things_imageRef_t {
-		p := C.CString(name)
+		p := CString(name)
 		defer C.free(unsafe.Pointer(p))
 		return nox_xxx_gLoadAnim_42FA20(p)
 	}

@@ -132,7 +132,7 @@ type mapgenItemSetsResult51F030 struct {
 func mapgenItemSetsFixture51F030(path string, armor bool) mapgenItemSetsResult51F030 {
 	restore := mapgenHighFixtureMemory()
 	defer restore()
-	cpath := C.CString(path)
+	cpath := CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 	var carmor C.int
 	if armor {

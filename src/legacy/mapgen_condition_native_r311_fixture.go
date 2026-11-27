@@ -70,7 +70,7 @@ type mapgenConditionResultR311 struct {
 }
 
 func mapgenConditionFixtureR311(path string, mode int, legacy bool) mapgenConditionResultR311 {
-	cpath := C.CString(path)
+	cpath := CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 	var flag C.int
 	if legacy {

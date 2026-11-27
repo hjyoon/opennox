@@ -114,9 +114,9 @@ type mapgenStreamAccessResult502D70 struct {
 }
 
 func mapgenStreamAccess502D70(path, missing string) mapgenStreamAccessResult502D70 {
-	cpath := C.CString(path)
+	cpath := CString(path)
 	defer C.free(unsafe.Pointer(cpath))
-	cmissing := C.CString(missing)
+	cmissing := CString(missing)
 	defer C.free(unsafe.Pointer(cmissing))
 	v := C.nox_test_mapgen_stream_access_502D70(cpath, cmissing)
 	return mapgenStreamAccessResult502D70{

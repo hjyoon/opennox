@@ -34,6 +34,19 @@ import (
 
 const cgoSafe = true
 
+// The cgo builtins use a leaf malloc adapter. Under safe, the replacement
+// allocator can grow the Go stack on a callback, so use the allocator directly.
+func CString(s string) *C.char {
+	p, _ := alloc.CString(s)
+	return (*C.char)(unsafe.Pointer(p))
+}
+
+func CBytes(s []byte) unsafe.Pointer {
+	p, _ := alloc.Malloc(uintptr(max(len(s), 1)))
+	copy(unsafe.Slice((*byte)(p), len(s)), s)
+	return p
+}
+
 func init() {
 	memmap.SetRuntimeChecks(true)
 }

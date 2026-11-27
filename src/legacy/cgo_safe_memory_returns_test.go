@@ -3,6 +3,7 @@
 package legacy
 
 import (
+	"bytes"
 	"runtime"
 	"testing"
 	"unsafe"
@@ -10,6 +11,24 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
+
+func TestSafeLegacyCBufferAllocations(t *testing.T) {
+	for _, text := range []string{"", "left\x00right\xff"} {
+		p := CString(text)
+		got := unsafe.Slice((*byte)(unsafe.Pointer(p)), len(text)+1)
+		if string(got[:len(text)]) != text || got[len(text)] != 0 {
+			t.Errorf("CString(%q) = %x", text, got)
+		}
+		StrFree(p)
+	}
+	for _, input := range [][]byte{nil, {0, 0xff, 7}} {
+		p := (*byte)(CBytes(input))
+		if p == nil || !bytes.Equal(unsafe.Slice(p, len(input)), input) {
+			t.Errorf("CBytes(%x) produced the wrong buffer", input)
+		}
+		StrFree(p)
+	}
+}
 
 func TestSafeMemoryReturnsCallerDestination(t *testing.T) {
 	check := func(t *testing.T, dst unsafe.Pointer) {

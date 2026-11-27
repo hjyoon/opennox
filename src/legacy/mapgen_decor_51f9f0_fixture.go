@@ -282,11 +282,11 @@ type mapgenDecorResult51F9F0 struct {
 func mapgenDecorFixture51F9F0(templatePath, backdropPath, rejectedPath string) mapgenDecorResult51F9F0 {
 	restore := mapgenHighFixtureMemory()
 	defer restore()
-	ctemplatePath := C.CString(templatePath)
+	ctemplatePath := CString(templatePath)
 	defer C.free(unsafe.Pointer(ctemplatePath))
-	cbackdropPath := C.CString(backdropPath)
+	cbackdropPath := CString(backdropPath)
 	defer C.free(unsafe.Pointer(cbackdropPath))
-	crejectedPath := C.CString(rejectedPath)
+	crejectedPath := CString(rejectedPath)
 	defer C.free(unsafe.Pointer(crejectedPath))
 	value := C.nox_test_mapgen_decor_51f9f0(ctemplatePath, cbackdropPath, crejectedPath)
 	names := [6]string{}

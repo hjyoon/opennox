@@ -97,13 +97,13 @@ type mapgenRenameViaCResult503230 struct {
 }
 
 func mapgenRenameViaC503230(source, directory, oldName, newName string) mapgenRenameViaCResult503230 {
-	csource := C.CString(source)
+	csource := CString(source)
 	defer C.free(unsafe.Pointer(csource))
-	cdirectory := C.CString(directory)
+	cdirectory := CString(directory)
 	defer C.free(unsafe.Pointer(cdirectory))
-	coldName := C.CString(oldName)
+	coldName := CString(oldName)
 	defer C.free(unsafe.Pointer(coldName))
-	cnewName := C.CString(newName)
+	cnewName := CString(newName)
 	defer C.free(unsafe.Pointer(cnewName))
 	v := C.nox_test_mapgen_rename_503230(csource, cdirectory, coldName, cnewName)
 	return mapgenRenameViaCResult503230{

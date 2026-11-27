@@ -57,7 +57,7 @@ func complexObjectTakeImportantPacketC518960() (int32, []byte) {
 }
 
 func complexObjectWordIDC518960(name string) uint32 {
-	p := C.CString(name)
+	p := CString(name)
 	defer C.free(unsafe.Pointer(p))
 	return uint32(C.nox_xxx_getNameId_4E3AA0(p))
 }

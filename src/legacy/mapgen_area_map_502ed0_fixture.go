@@ -92,11 +92,11 @@ type mapgenRewriteViaCResult502ED0 struct {
 }
 
 func mapgenRewriteViaC502ED0(source, directory, name string) mapgenRewriteViaCResult502ED0 {
-	csource := C.CString(source)
+	csource := CString(source)
 	defer C.free(unsafe.Pointer(csource))
-	cdirectory := C.CString(directory)
+	cdirectory := CString(directory)
 	defer C.free(unsafe.Pointer(cdirectory))
-	cname := C.CString(name)
+	cname := CString(name)
 	defer C.free(unsafe.Pointer(cname))
 	v := C.nox_test_mapgen_rewrite_502ED0(csource, cdirectory, cname)
 	return mapgenRewriteViaCResult502ED0{

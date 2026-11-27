@@ -35,7 +35,8 @@ func statsPrependField(head *nativeStatsField, name string, kind, length uint16,
 		length = uint16(alloc.StrLen((*byte)(data)) + 1)
 	}
 	field.kind, field.length = kind, length
-	field.data = C.calloc(1, C.size_t(length))
+	// Empty report fields still need a releasable block in the checked allocator.
+	field.data = C.calloc(1, C.size_t(max(length, 1)))
 	copy(unsafe.Slice((*byte)(field.data), int(length)), unsafe.Slice((*byte)(data), int(length)))
 	field.next = head
 	return field

@@ -1199,6 +1199,12 @@ and the live report's record and pair reset. The original C packet,
 lifecycle, and fault-prefix comparisons also passed on macOS ARM64
 with `cgocheck2` and `checkptr=2`, and on Linux ARM64 PIE.
 
+An empty statistics field uses a one-byte backing allocation and
+carries zero as its encoded length. The report owns that allocation
+until it serializes and releases the field. The public C flush
+regression includes zero-player and zero-pair reports and passed on
+Linux 386 under QEMU with `server,safe`.
+
 ### File enumeration handle transport
 
 The Go audio, save, and rule-list paths use the same search API. Its

@@ -2222,6 +2222,52 @@ isolated two-package cgo test used the shared assembly entry from
 another package on macOS and Linux ARM64. It preserved typed
 pointer arguments, an in-place update, and a signed result.
 
+### Direct callback and death effect calls
+
+Engine `83ad383b2` removes 13 forwarding definitions from the root
+`legacy` cgo preambles. Floor draws, object parsers and constructors,
+visitors, prefab connections, item amount updates, spell calls, and
+world callbacks use the shared ABI frames. The cgo declarations keep
+the native pointer, C-int, and narrow integer argument types. Comparing
+the old and new calls covered 24 cases at each of `-O0` and `-O2` on
+macOS ARM64 and AMD64, Linux ARM64, and QEMU Linux 386, AMD64, and ARMv7.
+The portable C fallback passed the same cases. The Windows contract
+and two-package cgo probe linked on 386, AMD64, and ARM64.
+
+The focused tests passed on macOS ARM64 and on Linux ARM64 and QEMU
+386 with `server,safe`, PIE, `cgocheck2`, and `checkptr=2`. The macOS
+client completed 13 GUI scenarios with 24 reference screen matches.
+The options audits checked 226 menu and 201 in-game conditions with
+mock audio handles. The dedicated server started, changed maps three
+times, and quit through its server command.
+
+Engine `9cb3920bb` removes eight forwarding definitions and their C
+helper for the nil-object position. Debris, blast damage, push, point
+and spark effects, script events, and generator effects call their
+existing native entries. Raw addresses travel as `uintptr_t` through
+the cgo boundary. The position displacement comes from the native
+object layout, and the Go-owned debris output stays pinned during
+the call. The comparison matched 48 cases per optimization on the
+same six runnable profiles and passed with the portable fallback.
+It covered signed results, byte selectors, pointer width, floating-point
+words and exception flags. LLVM-MinGW linked the C contract on Windows
+386, AMD64, and ARM64 and the Go legacy test package on 386 and AMD64.
+
+The golem, blast, special death, and point effect suites passed on macOS
+ARM64 and Linux ARM64 and QEMU 386. The point effect regression checks
+the original native address, packet bytes, and signed result through
+the new call. Seven macOS GUI scenarios passed on the same engine,
+including the special death replay on Fortress. That replay observed
+the three C entries, 20 replicated rocks, one generator remnant, and
+three actual server sound events. The stock lobby map profile had let
+the scenario quit before reaching the host diagnostic.
+
+The default macOS ARM64 client links 25 direct calls to bodies in the
+root `legacy` cgo preambles, down from 45 before these changes. The 25
+cover eight address conversions, three native stores, two indirect
+modifier calls, nine original entry probes or accessors, and three
+host `strtol` and `errno` adapters.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

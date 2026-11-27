@@ -1,6 +1,6 @@
 # Three raw C death entries / four calls with stock-map services and prepared stock sources.
 # Temporary Quest gate and constructor name failure are explicit diagnostics, without earned credit.
-map-profile: arena-lod
+map-profile: arena-fortress
 steps:
   - action: slow
     dur: 1ms

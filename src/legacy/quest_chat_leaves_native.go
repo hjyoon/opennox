@@ -30,19 +30,15 @@ func sub_4D61F0(unit *nox_object_t) *nox_playerInfo {
 }
 
 func Sub_4D70B0() {
-	questClosingSettings4D70B0()
+	sub_4D70B0()
 }
 
-//export nox_quest_closing_settings_4D70B0
-func nox_quest_closing_settings_4D70B0() C.uintptr_t {
-	return C.uintptr_t(questClosingSettings4D70B0())
-}
-
-func questClosingSettings4D70B0() uintptr {
+//export sub_4D70B0
+func sub_4D70B0() C.uintptr_t {
 	if state := memmap.Uint32(0x5D4594, 1556152); state != 0 {
-		return uintptr(state)
+		return C.uintptr_t(state)
 	}
-	return uintptr(sub4169F0Native())
+	return C.uintptr_t(uintptr(sub4169F0Native()))
 }
 
 //export nox_print_to_all_go_4D9FD0

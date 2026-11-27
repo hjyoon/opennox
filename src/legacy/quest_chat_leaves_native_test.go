@@ -38,11 +38,11 @@ func TestQuestClosingSettingsNative4D70B0(t *testing.T) {
 	oldState, oldFlags := *state, *flags
 	t.Cleanup(func() { *state, *flags = oldState, oldFlags })
 	*state, *flags = 0xf0010001, 0xff
-	if got := questClosingSettings4D70B0(); got != 0xf0010001 || *flags != 0xff {
+	if got := sub_4D70B0(); got != 0xf0010001 || *flags != 0xff {
 		t.Fatalf("closed quest result = %#x, flags = %#x", got, *flags)
 	}
 	*state = 0
-	if got := questClosingSettings4D70B0(); got != uintptr(settings) || *flags != 0xef {
+	if got := uintptr(sub_4D70B0()); got != uintptr(settings) || *flags != 0xef {
 		t.Fatalf("reopened quest result = %#x, flags = %#x", got, *flags)
 	}
 }

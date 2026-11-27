@@ -82,19 +82,15 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 	nox_xxx_wnd_46B280(down, list)
 	data := (*C.nox_scrollListBox_data)(list.widget_data)
 	data.field_9, data.field_7, data.field_8 = unsafe.Pointer(thumb), unsafe.Pointer(up), unsafe.Pointer(down)
-	refreshRuleList4CED40(mapName)
+	sub_4CED40(mapName)
 	return ruleListWindows.root
 }
 
-//export nox_gui_refresh_rule_list_4CED40
-func nox_gui_refresh_rule_list_4CED40(mapName *C.char) C.uintptr_t {
-	return C.uintptr_t(refreshRuleList4CED40(mapName))
-}
-
-func refreshRuleList4CED40(mapName *C.char) uintptr {
+//export sub_4CED40
+func sub_4CED40(mapName *C.char) C.int {
 	list := ruleListWindows.list
 	if mapName == nil || list == nil {
-		return ^uintptr(0)
+		return -1
 	}
 	g2ServerEvent(list, 16399, 0, 0)
 	name := GoString(mapName)
@@ -103,11 +99,11 @@ func refreshRuleList4CED40(mapName *C.char) uintptr {
 	var entry WIN32_FIND_DATAA
 	handle := FindFirstFileA(path, &entry)
 	if handle == invalidFindFileHandle {
-		return ^uintptr(0)
+		return -1
 	}
 	for {
 		if entry.FileAttributes&C.FILE_ATTRIBUTE_DIRECTORY == 0 {
-			filename := alloc.GoStringS(entry.cFileName[:])
+			filename := ruleListEntryName(&entry)
 			if title := listedRuleName(name, filename); title != "" {
 				addRuleListTitle(list, title)
 			}
@@ -116,7 +112,14 @@ func refreshRuleList4CED40(mapName *C.char) uintptr {
 			break
 		}
 	}
-	return uintptr(closeFileSearch(handle))
+	return C.int(closeFileSearch(handle))
+}
+
+func ruleListEntryName(entry *WIN32_FIND_DATAA) string {
+	if entry.cAlternateFileName[0] != 0 {
+		return alloc.GoStringS(entry.cAlternateFileName[:])
+	}
+	return alloc.GoStringS(entry.cFileName[:])
 }
 
 func listedRuleName(mapName, fileName string) string {
@@ -131,10 +134,11 @@ func listedRuleName(mapName, fileName string) string {
 }
 
 func ruleNameEqual(a, b string) bool {
-	first, second := CString(a), CString(b)
-	defer StrFree(first)
-	defer StrFree(second)
-	return C.nox_strcmpi(first, second) == 0
+	first, freeFirst := alloc.CString(a)
+	defer freeFirst()
+	second, freeSecond := alloc.CString(b)
+	defer freeSecond()
+	return C.nox_strcmpi((*C.char)(unsafe.Pointer(first)), (*C.char)(unsafe.Pointer(second))) == 0
 }
 
 func addRuleListTitle(list *nox_window, title string) {
@@ -180,7 +184,7 @@ func sub_4CEED0(win *nox_window, draw *C.nox_window_data) C.int {
 	return 1
 }
 
-func ruleListFilename(title *wchar2_t, suffixOffset uintptr) *C.nox_cgo_const_char {
+func ruleListFilename(title *wchar2_t, suffixOffset uintptr) (*C.nox_cgo_const_char, func()) {
 	words := (*uint16)(unsafe.Pointer(title))
 	length := alloc.StrLen(words)
 	var filename strings.Builder
@@ -188,7 +192,8 @@ func ruleListFilename(title *wchar2_t, suffixOffset uintptr) *C.nox_cgo_const_ch
 		filename.WriteByte(byte(word))
 	}
 	filename.WriteString(alloc.GoStringS(memmap.Slice(0x587000, suffixOffset)))
-	return (*C.nox_cgo_const_char)(CString(filename.String()))
+	path, free := alloc.CString(filename.String())
+	return (*C.nox_cgo_const_char)(unsafe.Pointer(path)), free
 }
 
 func ruleListText(win *nox_window, event int, index uintptr) *wchar2_t {
@@ -220,8 +225,8 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		if title == nil || *title == 0 || settings == nil {
 			return 1
 		}
-		filename := ruleListFilename(title, 191640)
-		defer StrFree(filename)
+		filename, free := ruleListFilename(title, 191640)
+		defer free()
 		game2ServerApply459AA0(unsafe.Pointer(settings))
 		sub_57AAA0(filename, settings, nil)
 		if data := (*C.nox_scrollListBox_data)(list.widget_data); data != nil {
@@ -247,8 +252,8 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		if title == nil || settings == nil {
 			return 1
 		}
-		filename := ruleListFilename(title, 191592)
-		defer StrFree(filename)
+		filename, free := ruleListFilename(title, 191592)
+		defer free()
 		game2ServerApply459AA0(unsafe.Pointer(settings))
 		sub_57AAA0(filename, settings, nil)
 		g2ServerEvent(list, 16403, ^uintptr(0), 0)
@@ -264,8 +269,8 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 			return 1
 		}
 		data := unsafe.Pointer(settings)
-		filename := ruleListFilename(title, 191608)
-		defer StrFree(filename)
+		filename, free := ruleListFilename(title, 191608)
+		defer free()
 		sub_57A1E0((*C.int)(data), filename, nil, 7, *(*C.short)(unsafe.Add(data, 52)))
 		sub_453F70((*C.nox_cgo_const_void)(unsafe.Add(data, 24)))
 		sub_4535E0((*C.int)(unsafe.Add(data, 44)))
@@ -283,8 +288,8 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 		if title == nil {
 			return 1
 		}
-		filename := ruleListFilename(title, 191624)
-		defer StrFree(filename)
+		filename, free := ruleListFilename(title, 191624)
+		defer free()
 		sub_57A9F0((*C.nox_cgo_const_char)(unsafe.Pointer(settings)), filename)
 		g2ServerEvent(list, 16398, uintptr(selected), 0)
 	}

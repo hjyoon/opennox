@@ -16,7 +16,9 @@ typedef int (*list_event_fn)(nox_window*, int, nox_window*, uintptr_t);
 typedef int (*advanced_load_fn)(int*);
 typedef int (*rules_event_fn)(nox_window*, unsigned int, nox_window*, uintptr_t);
 typedef nox_window* (*rules_load_fn)(nox_window*, char*);
-typedef void* (*rules_scan_fn)(char*);
+typedef int (*rules_scan_fn)(char*);
+typedef int (*settings_report_fn)(void);
+typedef uintptr_t (*quest_closing_settings_fn)(void);
 typedef int (*title_to_mask_fn)(wchar2_t*);
 typedef wchar2_t* (*mask_to_title_fn)(int);
 
@@ -63,6 +65,10 @@ _Static_assert(_Generic(&sub_4CEBA0, rules_load_fn: 1, default: 0),
 	"004CEBA0 must accept and return native window pointers");
 _Static_assert(_Generic(&sub_4CED40, rules_scan_fn: 1, default: 0),
 	"004CED40 must preserve the rule-file scan result");
+_Static_assert(_Generic(&sub_4DF020, settings_report_fn: 1, default: 0),
+	"004DF020 must preserve the signed settings report result");
+_Static_assert(_Generic(&sub_4D70B0, quest_closing_settings_fn: 1, default: 0),
+	"004D70B0 must preserve its state or native settings address");
 _Static_assert(_Generic(&sub_4CEED0, list_draw_fn: 1, default: 0),
 	"004CEED0 must preserve the native rule-list draw ABI");
 _Static_assert(_Generic(&sub_4CF060, rules_event_fn: 1, default: 0),

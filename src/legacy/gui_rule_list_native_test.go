@@ -21,6 +21,16 @@ func TestRuleListFileTitles4CED40KeepsMapExclusions(t *testing.T) {
 			t.Errorf("listed rule %q as %q, want %q", row.file, got, row.want)
 		}
 	}
+	var entry WIN32_FIND_DATAA
+	copy(entry.cFileName[:], "Long tour name.rul")
+	copy(entry.cAlternateFileName[:], "LONGTO~1.RUL")
+	if got := ruleListEntryName(&entry); got != "LONGTO~1.RUL" {
+		t.Fatalf("Windows rule-list entry = %q", got)
+	}
+	clear(entry.cAlternateFileName[:])
+	if got := ruleListEntryName(&entry); got != "Long tour name.rul" {
+		t.Fatalf("rule-list entry without a short alias = %q", got)
+	}
 }
 
 func TestRuleListFilename4CF060KeepsNarrowEncoding(t *testing.T) {
@@ -29,8 +39,8 @@ func TestRuleListFilename4CF060KeepsNarrowEncoding(t *testing.T) {
 	old := [5]byte(bytes)
 	t.Cleanup(func() { copy(bytes, old[:]) })
 	copy(bytes, ".rul\x00")
-	got := ruleListFilename(internWStr("café"), suffix)
-	defer StrFree(got)
+	got, free := ruleListFilename(internWStr("café"), suffix)
+	defer free()
 	if s := alloc.GoString((*byte)(unsafe.Pointer(got))); s != "caf\xe9.rul" {
 		t.Fatalf("legacy filename = %q", s)
 	}

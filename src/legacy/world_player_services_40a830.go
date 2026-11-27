@@ -9,9 +9,6 @@ package legacy
 #include "GAME3_3.h"
 #include "noxstring.h"
 #include "world_native_storage.h"
-static void world_defend_call(void* callback,void* effect,nox_object_t* item,float* value){
- ((void(*)(void*,nox_object_t*,uintptr_t,nox_object_t*,uintptr_t,float*))callback)(effect,item,0,item,0,value);
-}
 _Static_assert(sizeof(int)==4 && sizeof(short)==2 && sizeof(float)==4,"world/player scalar ABI");
 */
 import "C"
@@ -80,7 +77,7 @@ func worldPlayerCallDefend415C00(callback unsafe.Pointer, effect *server.Modifie
 	if applyModifierDefendScalar(callback, effect, value) {
 		return
 	}
-	C.world_defend_call(callback, unsafe.Pointer(effect), (*C.nox_object_t)(unsafe.Pointer(item)), (*C.float)(unsafe.Pointer(value)))
+	callWorldDefend(callback, unsafe.Pointer(effect), (*C.nox_object_t)(unsafe.Pointer(item)), (*C.float)(unsafe.Pointer(value)))
 	runtime.KeepAlive(effect)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(value)

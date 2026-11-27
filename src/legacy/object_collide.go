@@ -4,8 +4,6 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "GAME5.h"
-
-static int nox_call_objectType_parseCollide_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 */
 import "C"
 import (
@@ -465,7 +463,7 @@ func wrapObjectCollideParseC(ptr unsafe.Pointer) server.ObjectParseFunc {
 func Nox_call_objectType_parseCollide_go(a1 unsafe.Pointer, a2 string, a3 unsafe.Pointer) int {
 	cstr := CString(a2)
 	defer StrFree(cstr)
-	return int(C.nox_call_objectType_parseCollide_go((*[0]byte)(a1), cstr, a3))
+	return callObjectTypeParser(a1, cstr, a3)
 }
 
 //export nox_xxx_castCounterSpell_52BBB0

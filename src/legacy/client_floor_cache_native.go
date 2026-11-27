@@ -2,18 +2,6 @@ package legacy
 
 /*
 #include "GAME2_2.h"
-
-typedef void (*nox_floor_tile_draw_fn)(int2*, nox_video_bag_image_t*, uint16_t);
-typedef void (*nox_floor_edge_draw_fn)(int2*, nox_tile_list_node_t*);
-
-static inline void nox_floor_call_tile_draw(nox_floor_tile_draw_fn draw, int2* pos,
-                                           nox_video_bag_image_t* image, uint16_t tile) {
-	draw(pos, image, tile);
-}
-
-static inline void nox_floor_call_edge_draw(nox_floor_edge_draw_fn draw, int2* pos, nox_tile_list_node_t* edge) {
-	draw(pos, edge);
-}
 */
 import "C"
 
@@ -69,7 +57,7 @@ func nox_xxx_tileCallDrawEdges_481BF0(pos *C.int2, edges *C.nox_tile_list_node_t
 		case Get_nox_xxx_drawTexEdgesProbably_481900():
 			nox_xxx_drawTexEdgesProbably_481900(pos, edge)
 		default:
-			C.nox_floor_call_edge_draw(C.nox_floor_edge_draw_fn(fn), pos, edge)
+			callFloorEdgeDraw(fn, pos, edge)
 		}
 	}
 }
@@ -92,7 +80,7 @@ func drawFloorCellPart(pos *C.int2, tileIndex C.uint16_t, variation C.int, edges
 	case Get_sub_481770():
 		sub_481770(pos, image, tileIndex)
 	default:
-		C.nox_floor_call_tile_draw(C.nox_floor_tile_draw_fn(fn), pos, image, tileIndex)
+		callFloorTileDraw(fn, pos, image, tileIndex)
 	}
 	*memmap.PtrUint32(0x85B3FC, 228+4*uintptr(tileIndex)) = 1
 	nox_xxx_tileCallDrawEdges_481BF0(pos, edges)

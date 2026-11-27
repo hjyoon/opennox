@@ -2,10 +2,6 @@ package legacy
 
 /*
 #include "map_push_units_52e040.h"
-
-static inline void nox_map_push_before_52E0E0(uintptr_t callback, nox_object_t* candidate, uint32_t distance, uintptr_t arg) {
-	((void (*)(nox_object_t*, uint32_t, uintptr_t))callback)(candidate, distance, arg);
-}
 */
 import "C"
 
@@ -21,7 +17,7 @@ func mapPushRuntime52E040(callback, arg int) server.MapPushUnitsAroundRuntime52E
 	runtime := server.MapPushUnitsAroundRuntime52E040{Wake: Nox_xxx_unitHasCollideOrUpdateFn_537610}
 	if callback != 0 {
 		runtime.BeforeForce = func(p *server.Object, distance float32) {
-			C.nox_map_push_before_52E0E0(C.uintptr_t(uintptr(callback)), asObjectC(p), C.uint32_t(math.Float32bits(distance)), C.uintptr_t(uintptr(arg)))
+			callMapPushBefore(C.uintptr_t(uintptr(callback)), asObjectC(p), C.uint32_t(math.Float32bits(distance)), C.uintptr_t(uintptr(arg)))
 		}
 	}
 	return runtime
@@ -61,7 +57,7 @@ func nox_xxx_unitPushAroundFn_52E0E0(candidate *nox_object_t, args *C.nox_map_pu
 	}, server.MapPushUnitsAroundRuntime52E040{
 		BeforeForce: func(p *server.Object, distance float32) {
 			if callback := args.callback; callback != 0 {
-				C.nox_map_push_before_52E0E0(callback, asObjectC(p), C.uint32_t(math.Float32bits(distance)), args.callback_arg)
+				callMapPushBefore(callback, asObjectC(p), C.uint32_t(math.Float32bits(distance)), args.callback_arg)
 			}
 		},
 		Wake: Nox_xxx_unitHasCollideOrUpdateFn_537610,

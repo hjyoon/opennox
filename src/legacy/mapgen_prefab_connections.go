@@ -2,11 +2,6 @@ package legacy
 
 /*
 #include "GAME4_2.h"
-
-static inline int nox_mapgen_call_prefab_connector(nox_mapgen_prefab_connect_cb_5266f0 callback,
-	uint8_t* prefab, int direction, uint8_t* candidate) {
-	return callback(prefab, direction, candidate);
-}
 */
 import "C"
 
@@ -153,7 +148,7 @@ func nox_mapgenConnectPrefabsWithCallback_5266F0(theme *C.uint8_t, callback C.no
 		return 0
 	}
 	return C.int(bool2int(mapgenConnectPrefabs(theme, func(prefab *mapgenThemePrefabRecord, side C.int, candidate *mapgenRankedRoom) bool {
-		return C.nox_mapgen_call_prefab_connector(callback, (*C.uint8_t)(unsafe.Pointer(prefab)), side,
+		return callPrefabConnector(callback, (*C.uint8_t)(unsafe.Pointer(prefab)), side,
 			(*C.uint8_t)(unsafe.Pointer(candidate))) != 0
 	})))
 }

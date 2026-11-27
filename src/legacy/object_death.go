@@ -12,9 +12,6 @@ void nox_xxx_diePolyp_54CB10_go(nox_object_t* source);
 void nox_xxx_dieMarker_54E460_go(nox_object_t* source);
 void nox_xxx_dieBoulder_54E4B0_go(nox_object_t* source);
 void nox_xxx_dieMonsterGen_54E630_go(nox_object_t* source);
-
-
-static int nox_call_objectType_parseDeath_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 */
 import "C"
 import (
@@ -425,5 +422,5 @@ func wrapObjectDeathParseC(ptr unsafe.Pointer) server.ObjectParseFunc {
 func Nox_call_objectType_parseDeath_go(a1 unsafe.Pointer, a2 string, a3 unsafe.Pointer) int {
 	cstr := CString(a2)
 	defer StrFree(cstr)
-	return int(C.nox_call_objectType_parseDeath_go((*[0]byte)(a1), cstr, a3))
+	return callObjectTypeParser(a1, cstr, a3)
 }

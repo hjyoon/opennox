@@ -5,9 +5,6 @@ package legacy
 extern int nox_drawable_count;
 int sub_4523D0(void* a1);
 #include "audio_ambient_native_45a9b0.h"
-static void go_nox_drawable_call_sprite_func(void(* fnc)(nox_drawable*, void*), nox_drawable* dr, void* arg) {
-	fnc(dr, arg);
-}
 */
 import "C"
 import (
@@ -45,7 +42,7 @@ func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data unsafe.P
 	}
 	rect := image.Rect(int(a1.field_0), int(a1.field_4), int(a1.field_8), int(a1.field_C))
 	GetClient().Cli().Objs.EachInRect(rect, func(dr *client.Drawable) {
-		C.go_nox_drawable_call_sprite_func((*[0]byte)(cfnc), (*nox_drawable)(dr.C()), data)
+		callDrawableVisitor(cfnc, (*nox_drawable)(dr.C()), data)
 	})
 }
 

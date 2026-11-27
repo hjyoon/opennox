@@ -2,10 +2,6 @@ package legacy
 
 /*
 #include "GAME4_1.h"
-
-static inline void nox_call_unit_radius_callback(nox_unit_radius_callback_t callback, nox_object_t* candidate, void* data) {
-	callback(candidate, data);
-}
 */
 import "C"
 
@@ -39,7 +35,7 @@ func sub_518040(center *C.float2, radius C.float, callback C.nox_unit_radius_cal
 	server.PlayerAttackScanCircle518040((*types.Pointf)(unsafe.Pointer(center)), float32(radius),
 		s.Map.EachObjInRect, circleBoxCollisionNative54A990,
 		func(candidate *server.Object) {
-			C.nox_call_unit_radius_callback(callback, asObjectC(candidate), data)
+			callUnitRadiusCallback(callback, asObjectC(candidate), data)
 		})
 	return center
 }
@@ -53,6 +49,6 @@ func sub_5180B0(candidate *C.nox_object_t, context *C.nox_unit_radius_context_t)
 	server.PlayerAttackScanCircle518040(center, float32(context.radius), func(_ types.Rectf, filter func(*server.Object) bool) {
 		filter(asObjectS(candidate))
 	}, circleBoxCollisionNative54A990, func(*server.Object) {
-		C.nox_call_unit_radius_callback(context.callback, candidate, context.data)
+		callUnitRadiusCallback(context.callback, candidate, context.data)
 	})
 }

@@ -8,7 +8,6 @@ package legacy
 #include "GAME5.h"
 #include "xfer_invlight_4f5aa0.h"
 
-static void nox_call_objectType_new_go(void (*fnc)(nox_object_t*), nox_object_t* arg1) { fnc(arg1); }
 int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int damage, int damage_type);
 */
@@ -212,5 +211,5 @@ func Get_nox_xxx_unitInitGold_4F04B0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_unitInitGold_4F04B0)
 }
 func Nox_call_objectType_new_go(a1 unsafe.Pointer, a2 *server.Object) {
-	C.nox_call_objectType_new_go((*[0]byte)(a1), asObjectC(a2))
+	callObjectTypeConstructor(a1, asObjectC(a2))
 }

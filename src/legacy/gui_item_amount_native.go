@@ -9,11 +9,6 @@ package legacy
 
 _Static_assert(sizeof(nox_gui_item_amount_callback_t) == sizeof(uintptr_t),
 	"item-amount callback must occupy one native pointer slot");
-
-static inline void item_amount_call(nox_gui_item_amount_callback_t callback, int2* pos, uint32_t id,
-									uint32_t thing, uint32_t amount, uint32_t extra) {
-	callback(pos, id, thing, amount, extra);
-}
 */
 import "C"
 
@@ -114,7 +109,7 @@ func nox_gui_item_amount_copy_attrs(item *nox_drawable, attrs *C.nox_item_amount
 //export nox_gui_item_amount_call_callback
 func nox_gui_item_amount_call_callback(callback C.nox_gui_item_amount_callback_t, pos *C.int2, amount C.uint32_t) {
 	if callback != nil {
-		C.item_amount_call(callback, pos, C.uint32_t(*g2ServerWord(1319244)), C.uint32_t(*g2ServerWord(1319240)),
+		callItemAmountCallback(callback, pos, C.uint32_t(*g2ServerWord(1319244)), C.uint32_t(*g2ServerWord(1319240)),
 			amount, C.uint32_t(*g2ServerWord(1319252)))
 	}
 }

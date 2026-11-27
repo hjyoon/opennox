@@ -37,6 +37,5 @@ _Static_assert(offsetof(nox_quickbar_controls_t, expanded) == 11 * sizeof(void*)
 _Static_assert(sizeof(nox_quickbar_controls_t) == 11 * sizeof(void*) + 4 * sizeof(uint32_t),
 	"quickbar controls size");
 nox_quickbar_controls_t* nox_quickbar_controls_storage(void);
-uintptr_t nox_game2_book_insert_native(uintptr_t kind, int spell, int slot);
 int nox_client_localPlayerHasFlags30(uint32_t flags);
 #endif

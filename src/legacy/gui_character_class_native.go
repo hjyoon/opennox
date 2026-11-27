@@ -81,7 +81,7 @@ func sub_4A4B70(clearSpells C.int) C.uintptr_t {
 		for set := range 5 {
 			nox_xxx_clientUpdateButtonRow_45E110(C.int(set))
 			for slot, spell := range spells {
-				nox_game2_book_insert_native(2, C.int(spell), C.int(slot))
+				nox_xxx_book_45DBE0(2, C.int(spell), C.int(slot))
 			}
 		}
 		return C.uintptr_t(nox_xxx_clientUpdateButtonRow_45E110(0))
@@ -89,7 +89,7 @@ func sub_4A4B70(clearSpells C.int) C.uintptr_t {
 	nox_xxx_clientUpdateButtonRow_45E110(0)
 	var result C.uintptr_t
 	for slot, ability := range spells {
-		result = nox_game2_book_insert_native(3, C.int(ability), C.int(slot))
+		result = nox_xxx_book_45DBE0(3, C.int(ability), C.int(slot))
 	}
 	return result
 }

@@ -57,6 +57,62 @@ func g2qTestObjects(t *testing.T, count int) unsafe.Pointer {
 	return unsafe.Pointer(&b[0])
 }
 
+func TestGame2QuickbarBookInsert45DBE0UsesLiveRow(t *testing.T) {
+	g2qTestIsolate(t)
+	before, freeBefore := alloc.NewHigh([256]byte{})
+	defer freeBefore()
+	after, freeAfter := alloc.NewHigh([256]byte{})
+	defer freeAfter()
+	before[200], after[200] = 1, 3
+	baseBefore, baseAfter := unsafe.Pointer(before), unsafe.Pointer(after)
+	afterWord := uintptr(baseAfter)
+	if unsafe.Sizeof(afterWord) > 4 && afterWord <= uintptr(^uint32(0)) {
+		t.Fatalf("quickbar address %#x does not exercise the native width", afterWord)
+	}
+	const spell, slot int32 = 52, 2
+	spellBefore := g2qW(baseBefore, 40+8*uintptr(slot))
+	spellAfter := g2qW(baseAfter, 120+8*uintptr(slot))
+	flagBefore := g2qB(baseBefore, 40+8*uintptr(slot)+4)
+	flagAfter := g2qB(baseAfter, 120+8*uintptr(slot)+4)
+	for _, tc := range []struct {
+		name  string
+		flags int32
+		word  uintptr
+		flag  byte
+	}{
+		{"pointer", 0, afterWord, 0},
+		{"signed flag", -17, ^uintptr(0) - 16, 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			g2qTestPointer(0, baseBefore, true)
+			*spellBefore, *spellAfter = 0, 0x10203040
+			*flagBefore, *flagAfter = 0xa5, 0x5a
+			checks := 0
+			game2QuickbarTestHooks.SpellFlags = func(id, mask uint32) int32 {
+				checks++
+				if id != uint32(spell) || mask != 0x600 || *spellBefore != uint32(spell) {
+					t.Errorf("flag query = (%d, %#x) with slot %d", id, mask, *spellBefore)
+				}
+				g2qTestPointer(0, baseAfter, true)
+				return tc.flags
+			}
+			if got := g2qTestBookInsert(2, spell, slot); got != tc.word || checks != 1 ||
+				*flagBefore != 0xa5 || *flagAfter != tc.flag || *spellAfter != 0x10203040 {
+				t.Fatalf("result %#x, checks %d, flags %x/%x, replacement spell %#x", got, checks, *flagBefore, *flagAfter, *spellAfter)
+			}
+		})
+	}
+
+	g2qTestPointer(0, baseBefore, true)
+	game2QuickbarTestHooks.SpellFlags = func(uint32, uint32) int32 {
+		t.Error("opaque kind queried spell flags")
+		return 0
+	}
+	if got := g2qTestBookInsert(afterWord, 71, slot); got != afterWord || *spellBefore != 71 {
+		t.Fatalf("opaque kind returned %#x with slot %d, want %#x with 71", got, *spellBefore, afterWord)
+	}
+}
+
 func TestGame2QuickbarNativeRegistryABIAndGC(t *testing.T) {
 	g2qTestIsolate(t)
 	type owner struct {

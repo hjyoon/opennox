@@ -18,7 +18,7 @@ func bookRewardRandom(min, max, line int32) C.int {
 
 func completeBookReward() {
 	kind := C.uintptr_t(memmap.Uint32(0x5D4594, 1046676))
-	nox_game2_book_insert_native(kind, C.int(bookState.reward_id), C.int(bookState.reward_slot))
+	nox_xxx_book_45DBE0(kind, C.int(bookState.reward_id), C.int(bookState.reward_slot))
 	sub_45D810()
 }
 

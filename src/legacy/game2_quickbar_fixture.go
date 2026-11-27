@@ -100,6 +100,10 @@ func g2qTestCall(op, arg int, data unsafe.Pointer) int32 {
 }
 func g2qTestSwap(data unsafe.Pointer, a, b int) { C.g2qt_swap(data, C.int(a), C.int(b)) }
 
+func g2qTestBookInsert(kind uintptr, spell, slot int32) uintptr {
+	return uintptr(C.nox_xxx_book_45DBE0(C.uintptr_t(kind), C.int(spell), C.int(slot)))
+}
+
 func g2qTestEvent(win unsafe.Pointer, event int, pos uint32) int32 {
 	return int32(C.g2qt_event(win, C.int(event), C.uint(pos)))
 }

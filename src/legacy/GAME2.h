@@ -186,7 +186,7 @@ int nox_xxx_clientSendAbil_45DAF0(int a1);
 int nox_xxx_clientSendSpell_45DB20(char* a1, int a2, char a3);
 int sub_45DB90();
 void nox_xxx_guiSpellTargetClickCheckSend_45DBB0();
-void* nox_xxx_book_45DBE0(void* a1, int a2, int a3);
+uintptr_t nox_xxx_book_45DBE0(uintptr_t kind, int spell, int slot);
 void nox_xxx_spellKeyPackSetSpell_45DC40(void* a1, int a2, int a3);
 int nox_xxx_bookSpellDrop_45DCA0(int a1, char a2, int a3, int a4, void* a5);
 int nox_xxx_updateSpellIcons_45DDF0(void* data);

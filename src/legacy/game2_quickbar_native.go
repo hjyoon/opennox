@@ -136,7 +136,7 @@ func g2qFlags(spell uint32, mask uint32) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.SpellFlags != nil {
 		return h.SpellFlags(spell, mask)
 	}
-	if bool(C.nox_xxx_spellHasFlags_424A50(C.int(spell), C.int(mask))) {
+	if bool(nox_xxx_spellHasFlags_424A50(int32(spell), int32(mask))) {
 		return 1
 	}
 	return 0
@@ -271,26 +271,28 @@ func nox_quickbar_windows_destroy_all() {
 	}
 }
 
-//export nox_game2_book_insert_native
-func nox_game2_book_insert_native(kind C.uintptr_t, spell, slot C.int) C.uintptr_t {
+//export nox_xxx_book_45DBE0
+func nox_xxx_book_45DBE0(kind C.uintptr_t, spell, slot C.int) C.uintptr_t {
 	nox_xxx_spellKeyPackSetSpell_45DC40(g2qMain(), spell, slot)
-	result := kind
-	if kind == 2 {
-		row := g2qRow(g2qMain())
-		if row == nil || slot < 0 || slot >= 5 {
-			return result
-		}
-		if spell != 0 {
-			result = C.uintptr_t(g2qFlags(uint32(spell), 0x600))
-		}
-		if spell != 0 && result != 0 {
-			*g2qB(row, uintptr(8*slot+4)) = 1
-		} else {
-			result = C.uintptr_t(uintptr(g2qMain()))
-			*g2qB(row, uintptr(8*slot+4)) = 0
-		}
+	if kind != 2 || slot < 0 || slot >= 5 {
+		return kind
 	}
-	return result
+	var flags C.uintptr_t
+	if spell != 0 {
+		flags = C.uintptr_t(g2qFlags(uint32(spell), 0x600))
+	}
+	base := g2qMain()
+	row := g2qRow(base)
+	if row == nil {
+		return kind
+	}
+	flag := g2qB(row, uintptr(8*slot+4))
+	if flags != 0 {
+		*flag = 1
+		return flags
+	}
+	*flag = 0
+	return C.uintptr_t(uintptr(base))
 }
 
 //export nox_xxx_spellKeyPackSetSpell_45DC40

@@ -15,7 +15,7 @@ func playerLevelSetRuntime4EF410() server.PlayerLevelSetRuntime4EF410 {
 		},
 		ReadValues: playerReadValuesCall4EEDC0,
 		BookAbility: func(kind, ability, index int32) {
-			nox_game2_book_insert_native(C.uintptr_t(uint32(kind)), C.int(ability), C.int(index))
+			nox_xxx_book_45DBE0(C.uintptr_t(uint32(kind)), C.int(ability), C.int(index))
 		},
 		PauseFX: experienceLevelUpdateRuntime4EF2E0().PauseFX,
 	}

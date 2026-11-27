@@ -953,13 +953,15 @@ The storage migration removes `vardefs.c` after its last definitions.
 
 ### Remaining top-level C entry points
 
-The 27 top-level C files have 60 function definitions across the
-supported architecture and tag profiles. Default 64-bit builds select
-24 files and 54 definitions. Default 32-bit builds select 26 files
-and 56 definitions. The `safe` tag adds four definitions in one file
-to either selection.
+The 27 top-level C files have 68 function definitions across the
+audited macOS ARM64, Linux ARM64 and 386, and Windows AMD64 and 386
+profiles. The 64-bit builds select 24 files and 59 definitions.
+The 386 builds select 26 files and 61 definitions. The `safe` tag
+adds four definitions in one file to the tested macOS and Linux
+selections. The file enumeration adapters contribute three Unix
+definitions and three Windows definitions to the union.
 
-The union includes 38 pointer and scalar ABI adapters, 14 variadic and
+The union includes 46 pointer and scalar ABI adapters, 14 variadic and
 host formatting entries, two native indirect-call frames, two float
 bit adapters, and four safe memory and string entries. Their standalone
 game algorithm count is zero. The count covers the top-level C files.
@@ -1255,6 +1257,15 @@ five Linux ARM64 replays, including exact chapter-one captures
 and fresh-process manual Save and Load. Four earned campaign
 replays also passed again. They covered Warrior3 WarCry, the two
 Wizard2 Swap stages, and the Wizard3 HP33/MP49 stat audit.
+
+The Linux ARM64 PIE suite passed in all 41 test packages using the
+CI allocator setting `MALLOC_MMAP_THRESHOLD_=0` for test execution.
+`OPENNOX_LOCAL_TEST_ARTIFACTS` pointed to an absolute directory for the
+retained comparisons. The GitHub release lookup test passed in a
+separate network-enabled invocation. The macOS prepared test launcher
+passed the three comparisons that require an artifact directory using
+its generated path. The Linux 386 `server,safe` ABI checks passed under
+QEMU, and both Windows server architectures cross-built.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

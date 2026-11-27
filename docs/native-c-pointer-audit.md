@@ -1842,6 +1842,105 @@ carry scalar results. The Go shop engine reports gameplay status
 and purchase counts. The C adapters still need the original
 callback results for these branches.
 
+### Shop transaction and file-search results, 2026-11-27
+
+Engine `b41d2d6b1` exports the three shop transaction entries from
+Go. Bulk buy returns the requested count after completing it. A
+stock miss returns zero, including after a partial purchase. The
+insufficient-gold branch returns the signed packet-queue result and
+the food limit returns the localized line-queue result. The Ankh and
+Force of Nature limits return their sound result.
+
+Sale and repair preserve the original inventory-miss words and the
+sound result on the completion paths. Sale rejection also returns
+the sound result. A successful sound insertion returns the previous
+queue head at native pointer width. The audio pool owns that record
+until the next reset. The audio event preserves the DWORD audience
+code. The typed game path still schedules audio in its regular
+collection phase.
+
+The unchanged PE32 executable ran 21 entry calls under QEMU. The
+cases covered sale and repair results, late pricing, live health
+replacement, stock shortfalls, purchase limits, and audio allocation
+and suppression. macOS ARM64 passed 74 focused top-level tests with
+`cgocheck2` and `checkptr=2`. The generated C declarations and entry
+symbols compiled for macOS ARM64, Linux 386, and Windows 386 and AMD64.
+
+The `b41d2d6b1` normal client passed 15 targeted replays with 41
+exact screen matches. These include the Chapter One briefing before
+the click for each of the three classes, shop purchases and sales,
+wand repair, and a map transition with the purchased wolf. The
+equipped and quantity sale scenarios submitted sound 307 through
+OpenAL Soft's null driver with positive gain and queued buffers.
+The replays used a loopback server list and checked the recorded
+screen references.
+
+Engine `c5994b982` replaces the six file-search adapters. The Unix
+compatibility entries export their original symbols from Go and keep
+search handles as opaque native-width words. The search table owns
+each active handle through close. Windows Go code calls the ANSI
+system functions with the path and output record borrowed for the
+duration of the call. The 320-byte record's file-size DWORD offsets
+are 28 and 32, and its two name offsets are 44 and 304 on 32- and
+64-bit builds. The Unix C calls verify independent cursors, the
+full-width handle, close, and a file size above 4 GiB. The macOS and
+QEMU Linux 386 controls passed. The Windows test programs cross-built
+for both x86 architectures.
+
+Engine `2f9621d64` preserves the original words at the sale and repair
+quote entries `5109C0` and `5108D0`. The result includes the signed
+queue status when the quote is sent and the native audio word when
+it is rejected. The two established inventory-miss results remain
+the requested DWORD and zero, respectively. All 240 frozen original
+cases passed through both C call routes on macOS ARM64 and QEMU
+Linux 386 with strict pointer checks. An independent high-address
+case covers both C entries.
+
+The `2f9621d64` macOS client combines the shop, file-search, and
+quote changes. It passed the stock server shop, Fireball staff
+repair, OpenAL quantity sale, and Warrior Chapter One replays
+with 13 exact screen matches. The Windows 386 and AMD64 native jobs
+for that revision also passed.
+[Windows native gate](https://github.com/hjyoon/opennox/actions/runs/45972763019)
+
+Engine `8836b5460` shares the reward notification packet builder
+between the server and the C entry at `4FAD50`. The status uses the
+original signed DWORD value and the nonplayer branch returns the
+borrowed object's complete address. Eight PE32 cases ran under QEMU
+and verified the three notification packets and the return words for
+nil, nonplayer, and invalid subtype inputs. The macOS ARM64 C-entry
+control also checked the complete address above 4 GiB. The strict
+macOS run passed 20 reward and spell tests and seven object, trade,
+player, and audio layout checks. The normal client at this revision
+passed both the stock multiplayer field-guide shop and the Conjurer
+chapter-two field-guide shop replays.
+
+The `src/legacy` package's `.CFiles` selection contains 22 definitions
+across ten top-level files for the audited profiles. The default
+macOS ARM64 client selects 16 definitions in seven files. Five
+conditional variadic argument readers bring the source total to 27
+and are inactive on those audited architectures.
+
+| Remaining boundary | Active definitions | Source files | Ownership and layout |
+| --- | ---: | --- | --- |
+| Variadic dispatch and host formatting | 14 | `cgo_fs.c`, `common__log.c`, `game3_2_abi.c`, `game4_3_abi.c`, `network_line_message_4d9eb0.c`, `noxstring_format_abi.c` | The C frame owns its argument cursor through `va_end`. The header asserts the 24-byte SysV AMD64, 32-byte AAPCS64, and pointer-sized cursor layouts. |
+| Safe-build memory and string functions | 4 | `cgo_safe.c` | The Go callback writes the caller's destination. The C frame returns that address. |
+| Radial damage and velocity float bridges | 2 | `map_radial_damage_4e25b0.c`, `objects_velocity_5118a0.c` | Selected fallback builds preserve the incoming float DWORD before cgo can quiet a signaling NaN. |
+| Default damage and sound callbacks | 2 | `raw_default_damage_native_bridge_4e0b30.c` | The C frame calls the registered function with borrowed objects and, for damage, two 32-bit scalars. |
+
+The safe-build audit exercised native buffers, explicitly pinned Go
+buffers, and Go buffers borrowed for a synchronous C call. The
+current wrappers passed all three cases on Linux ARM64. A direct
+Go pointer return passed the first two and failed the borrowed
+case at the generated cgo result store with `cgocheck2`. The four
+C returns continue to support that caller lifetime.
+
+The Linux 386 float control passed raw words through the velocity and
+radial damage C entries. The existing bridges preserved both signaling
+NaN words. The direct cgo float exports changed `7f800001` to
+`7fc00001` and `ff814567` to `ffc14567` with the tested GCC profile.
+The quiet NaN, signed zero, subnormal, and finite controls passed.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

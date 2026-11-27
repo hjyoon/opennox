@@ -71,16 +71,6 @@ func nox_free(ptr unsafe.Pointer) {
 	}
 }
 
-//export nox_memset_go
-func nox_memset_go(ptr unsafe.Pointer, v C.int, size C.size_t) {
-	alloc.Memset(ptr, byte(v), uintptr(size))
-}
-
-//export nox_memcpy_go
-func nox_memcpy_go(dst, src unsafe.Pointer, size C.size_t) {
-	alloc.Memcpy(dst, src, uintptr(size))
-}
-
 //export nox_memcmp
 func nox_memcmp(ptr1, ptr2 *C.nox_cgo_const_void, size C.size_t) C.int {
 	return C.int(alloc.Memcmp(unsafe.Pointer(ptr1), unsafe.Pointer(ptr2), uintptr(size)))
@@ -89,16 +79,6 @@ func nox_memcmp(ptr1, ptr2 *C.nox_cgo_const_void, size C.size_t) C.int {
 //export nox_strlen
 func nox_strlen(ptr *C.nox_cgo_const_char) C.size_t {
 	return C.size_t(alloc.Strlen(unsafe.Pointer(ptr)))
-}
-
-//export nox_strcpy_go
-func nox_strcpy_go(dst, src *C.char) {
-	alloc.Strcpy(unsafe.Pointer(dst), unsafe.Pointer(src))
-}
-
-//export nox_strcat_go
-func nox_strcat_go(dst, src *C.char) {
-	alloc.Strcat(unsafe.Pointer(dst), unsafe.Pointer(src))
 }
 
 //export nox_strcmp

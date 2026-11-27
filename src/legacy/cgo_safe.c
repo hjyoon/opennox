@@ -1,4 +1,4 @@
-//go:build safe
+//go:build safe && !386 && !amd64 && !arm && !arm64
 #include <stdlib.h>
 #include <string.h>
 

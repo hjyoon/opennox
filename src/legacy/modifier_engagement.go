@@ -17,6 +17,15 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+func registerNativeModifEngageEffect(name string, address unsafe.Pointer, parse server.ModifierParseFunc,
+	apply func(unsafe.Pointer, *nox_object_t, *C.modifier_engage_const_item_t),
+) {
+	server.RegisterNativeModifEngageEffect(name, address, parse,
+		func(effect *server.ModifierEff, owner, item *server.Object) {
+			apply(effect.C(), asObjectC(owner), (*C.modifier_engage_const_item_t)(item.CObj()))
+		})
+}
+
 func enchantItemTestInventoryNative4DFBB0(owner *server.Object, flag byte) bool {
 	engage := modifierEngagePointerNative4DFBB0(flag)
 	if engage == nil || owner == nil {

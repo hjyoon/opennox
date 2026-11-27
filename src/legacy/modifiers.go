@@ -433,23 +433,28 @@ func init() {
 	server.RegisterModifDefendEffect("BreakingEffect", C.nullsub_41, server.ModEffectParseFloat)
 	server.RegisterModifDefendEffect("PunctureProneEffect", C.nullsub_42, server.ModEffectParseFloat)
 
-	server.RegisterModifUpdateEffect("RegenerationUpdate", C.nox_xxx_effectRegenerationNative_4E01D0, server.ModEffectParseInt)
-	server.RegisterModifUpdateEffect("ParasiteUpdate", C.nullsub_43, server.ModEffectParseInt)
-	server.RegisterModifUpdateEffect("AttractionUpdate", C.nullsub_44, server.ModEffectParseInt)
-	server.RegisterModifUpdateEffect("ContinualReplenishmentUpdate", C.nox_xxx_attribContinualReplen_4E02C0, server.ModEffectParseInt)
+	server.RegisterNativeModifUpdateEffect("RegenerationUpdate", C.nox_xxx_effectRegenerationNative_4E01D0, server.ModEffectParseInt,
+		func(effect *server.ModifierEff, item *server.Object) {
+			regenerationEffectCall4E01D0(effect, item)
+		})
+	noopUpdate := func(*server.ModifierEff, *server.Object) {}
+	server.RegisterNativeModifUpdateEffect("ParasiteUpdate", C.nullsub_43, server.ModEffectParseInt, noopUpdate)
+	server.RegisterNativeModifUpdateEffect("AttractionUpdate", C.nullsub_44, server.ModEffectParseInt, noopUpdate)
+	server.RegisterNativeModifUpdateEffect("ContinualReplenishmentUpdate", C.nox_xxx_attribContinualReplen_4E02C0,
+		server.ModEffectParseInt, continualReplenishmentEffectCall4E02C0)
 
-	server.RegisterModifEngageEffect("BrillianceEngage", C.sub_4DFB50, server.ModEffectParseInt)
-	server.RegisterModifEngageEffect("BrillianceDisengage", C.sub_4DFB80, server.ModEffectParseInt)
-	server.RegisterModifEngageEffect("SpeedEngage", C.nox_xxx_effectSpeedEngage_4DFC30, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("SpeedDisengage", C.nox_xxx_effectSpeedDisengage_4DFCA0, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("FireProtectEngage", C.sub_4DFD10, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("FireProtectDisengage", C.nox_xxx_modifFireProtection_4DFD40, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("LightningProtectEngage", C.nox_xxx_buff_4DFD80, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("LightningProtectDisengage", C.sub_4DFDB0, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("PoisonProtectEngage", C.nox_xxx_checkPoisonProtectEnch_4DFDE0, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("PoisonProtectDisengage", C.sub_4DFE10, server.ModEffectParseFloat)
-	server.RegisterModifEngageEffect("RegenerationEngage", C.sub_4E0140, nil)
-	server.RegisterModifEngageEffect("RegenerationDisengage", C.sub_4E0170, nil)
+	registerNativeModifEngageEffect("BrillianceEngage", C.sub_4DFB50, server.ModEffectParseInt, sub_4DFB50)
+	registerNativeModifEngageEffect("BrillianceDisengage", C.sub_4DFB80, server.ModEffectParseInt, sub_4DFB80)
+	registerNativeModifEngageEffect("SpeedEngage", C.nox_xxx_effectSpeedEngage_4DFC30, server.ModEffectParseFloat, nox_xxx_effectSpeedEngage_4DFC30)
+	registerNativeModifEngageEffect("SpeedDisengage", C.nox_xxx_effectSpeedDisengage_4DFCA0, server.ModEffectParseFloat, nox_xxx_effectSpeedDisengage_4DFCA0)
+	registerNativeModifEngageEffect("FireProtectEngage", C.sub_4DFD10, server.ModEffectParseFloat, sub_4DFD10)
+	registerNativeModifEngageEffect("FireProtectDisengage", C.nox_xxx_modifFireProtection_4DFD40, server.ModEffectParseFloat, nox_xxx_modifFireProtection_4DFD40)
+	registerNativeModifEngageEffect("LightningProtectEngage", C.nox_xxx_buff_4DFD80, server.ModEffectParseFloat, nox_xxx_buff_4DFD80)
+	registerNativeModifEngageEffect("LightningProtectDisengage", C.sub_4DFDB0, server.ModEffectParseFloat, sub_4DFDB0)
+	registerNativeModifEngageEffect("PoisonProtectEngage", C.nox_xxx_checkPoisonProtectEnch_4DFDE0, server.ModEffectParseFloat, nox_xxx_checkPoisonProtectEnch_4DFDE0)
+	registerNativeModifEngageEffect("PoisonProtectDisengage", C.sub_4DFE10, server.ModEffectParseFloat, sub_4DFE10)
+	registerNativeModifEngageEffect("RegenerationEngage", C.sub_4E0140, nil, sub_4E0140)
+	registerNativeModifEngageEffect("RegenerationDisengage", C.sub_4E0170, nil, sub_4E0170)
 }
 
 //export nox_xxx_modifGetDescById_413330

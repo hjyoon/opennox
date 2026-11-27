@@ -1,18 +1,12 @@
 package server
 
-import (
-	"unsafe"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
-)
+import "unsafe"
 
 // ItemsApplyUpdateEffect preserves GAME.EXE 004FA490. Each callback receives
 // the equipped item, not its owner. The next item and all modifier slots are
 // live after callbacks; the current item's modifier-array pointer is cached.
 func (s *Server) ItemsApplyUpdateEffect(owner *Object) {
-	itemsApplyUpdateEffect4FA490(owner, func(fn unsafe.Pointer, mod *ModifierEff, item *Object) {
-		ccall.CallVoidPtr3(fn, mod.C(), item.CObj(), nil)
-	})
+	itemsApplyUpdateEffect4FA490(owner, callModifierUpdateEffect)
 }
 
 func itemsApplyUpdateEffect4FA490(owner *Object, invoke func(unsafe.Pointer, *ModifierEff, *Object)) {

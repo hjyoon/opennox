@@ -1305,9 +1305,28 @@ owner, and attack record were Go-owned. The regression now passes
 macOS ARM64 `cgocheck2` and `checkptr=2`. It verifies the target,
 owner, target position, and full signed effect power received by the
 Stun callback. The original resource, status, and damage effect
-comparisons passed in the focused suite. The local bow and chakram
-replays passed. The default macOS client links 861 legacy Go-to-C
+comparisons passed in the focused suite. Seven macOS replays passed,
+covering ranged and unarmed attacks, equipment, poison, and armor
+reports. The default macOS client links 861 legacy Go-to-C
 call symbols after the equipment damage changes, down from 867.
+
+### Equipped item updates and equipment effects
+
+The two active stock item updates and six pairs of engage and
+disengage effects dispatch to Go with the published C addresses.
+The two reserved update registrations have Go no-op callbacks.
+Update receives the equipped item and supplies nil context to an
+external C callback. Engage and disengage receive modifier, owner,
+and item in that order.
+
+The original `GAME.EXE` dispatchers at `0x4FA490`, `0x4F2FF0`, and
+`0x4F3030` ran under QEMU 386. The probe checked the cached modifier
+array, the live slot and inventory-link reads, and the forwarded nil
+owner and context. Native tests keep actual C callers for both update
+effects. The Go-owned regeneration and protection tests passed with
+`cgocheck2` and `checkptr=2` on macOS ARM64. The protection test covers
+removing the last equipped item with a given modifier. Three macOS
+replays verified equipment state, colors, and armor pickup and drop.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

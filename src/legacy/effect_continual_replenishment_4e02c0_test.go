@@ -9,6 +9,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -33,7 +34,7 @@ func runContinualReplenishmentNative218(t *testing.T, dispatch bool) {
 			if len(out) > 5000 {
 				out = append(out[:2500], out[len(out)-2500:]...)
 			}
-			t.Fatalf("actual CGo equipped-item callback failed: %v\n%s", err, out)
+			t.Fatalf("equipped-item update %s failed: %v\n%s", child, err, out)
 		}
 		t.Log(string(out))
 		return
@@ -77,7 +78,7 @@ func runContinualReplenishmentNative218(t *testing.T, dispatch bool) {
 	if dispatch {
 		srv.ItemsApplyUpdateEffect(owner)
 	} else {
-		effect.CallUpdateNil(item)
+		ccall.CallVoidPtr3(effect.Update100.Fnc, effect.C(), item.CObj(), nil)
 	}
 	if use.Charge != 5 || use.MaxCharge != 5 || use.Progress != 0x5a5a5a5a {
 		t.Fatalf("charge/max/progress=%d/%d/%x", use.Charge, use.MaxCharge, use.Progress)
@@ -85,7 +86,7 @@ func runContinualReplenishmentNative218(t *testing.T, dispatch bool) {
 	if !bytes.Equal(beforeOwner, snapshot(owner.CObj(), unsafe.Sizeof(*owner))) || !bytes.Equal(beforeItem, snapshot(item.CObj(), unsafe.Sizeof(*item))) || !bytes.Equal(beforeEffect, snapshot(effect.C(), unsafe.Sizeof(*effect))) || !bytes.Equal(beforeAttrs, snapshot(unsafe.Pointer(attrs), unsafe.Sizeof(*attrs))) {
 		t.Fatal("callback changed native input records")
 	}
-	t.Logf("actual native CGo continual replenishment: dispatch=%t charge4->5 max5 progress unchanged", dispatch)
+	t.Logf("continual replenishment %s: charge4->5 max5 progress unchanged", child)
 }
 
 func TestContinualReplenishment4E02C0NativeCallback(t *testing.T) {

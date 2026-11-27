@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -48,32 +49,24 @@ func TestRegenerationUpdate4E01D0NativeCallback(t *testing.T) {
 			health.Cur++
 		})
 	}
-	effect.CallUpdateNil(item)
+	ccall.CallVoidPtr3(effect.Update100.Fnc, effect.C(), item.CObj(), nil)
 	if calls != 1 || health.Cur != 150 {
 		t.Fatalf("heals/HP=%d/%d, want 1/150", calls, health.Cur)
 	}
 }
 
 func TestItemsApplyUpdateEffect4FA490NativeRegeneration(t *testing.T) {
-	owner, freeOwner := alloc.NewHigh(server.Object{})
-	defer freeOwner()
-	health, freeHealth := alloc.NewHigh(server.HealthData{})
-	defer freeHealth()
-	*health = server.HealthData{Cur: 149, Max: 150}
-	item, freeItem := alloc.NewHigh(server.Object{})
-	defer freeItem()
-	attrs, freeAttrs := alloc.NewHigh(server.ModifierInitData{})
-	defer freeAttrs()
-	effect, freeEffect := alloc.NewHigh(server.ModifierEff{})
-	defer freeEffect()
-	owner.HealthData = health
+	health := &server.HealthData{Cur: 149, Max: 150}
+	owner := &server.Object{HealthData: health}
+	effect := &server.ModifierEff{Update100: server.ModifierEffFnc{Fnc: regenerationEffectPointerNative4E01D0(), Val: 60}}
+	attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{2: effect}}
+	item := &server.Object{
+		InvHolder: owner,
+		ObjFlags:  0x100,
+		ObjClass:  0x01000000,
+		InitData:  unsafe.Pointer(attrs),
+	}
 	owner.InvFirstItem = item
-	item.InvHolder = owner
-	item.ObjFlags = 0x100
-	item.ObjClass = 0x01000000
-	item.InitData = unsafe.Pointer(attrs)
-	attrs.Modifiers[2] = effect
-	effect.Update100 = server.ModifierEffFnc{Fnc: regenerationEffectPointerNative4E01D0(), Val: 60}
 	previous := regenerationEffectCall4E01D0
 	defer func() { regenerationEffectCall4E01D0 = previous }()
 	var srv server.Server

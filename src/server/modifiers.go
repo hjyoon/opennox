@@ -55,6 +55,8 @@ var (
 	modEngageEffects = make(map[string]modFuncs)
 
 	modNativeDamageEffects = make(map[unsafe.Pointer]ModifierAttackFunc)
+	modNativeUpdateEffects = make(map[unsafe.Pointer]func(*ModifierEff, *Object))
+	modNativeEngageEffects = make(map[unsafe.Pointer]func(*ModifierEff, *Object, *Object))
 )
 
 func registerModif(m map[string]modFuncs, name string, fnc unsafe.Pointer, parse ModifierParseFunc) {
@@ -105,8 +107,36 @@ func RegisterModifUpdateEffect(name string, fnc unsafe.Pointer, parse ModifierPa
 	registerModif(modUpdateEffects, name, fnc, parse)
 }
 
+// RegisterNativeModifUpdateEffect keeps the C identity for a Go item update.
+func RegisterNativeModifUpdateEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc, apply func(effect *ModifierEff, item *Object)) {
+	RegisterModifUpdateEffect(name, fnc, parse)
+	modNativeUpdateEffects[fnc] = apply
+}
+
+func callModifierUpdateEffect(fnc unsafe.Pointer, effect *ModifierEff, item *Object) {
+	if apply := modNativeUpdateEffects[fnc]; apply != nil {
+		apply(effect, item)
+		return
+	}
+	ccall.CallVoidPtr3(fnc, effect.C(), item.CObj(), nil)
+}
+
 func RegisterModifEngageEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc) {
 	registerModif(modEngageEffects, name, fnc, parse)
+}
+
+// RegisterNativeModifEngageEffect keeps the C identity for a Go equipment effect.
+func RegisterNativeModifEngageEffect(name string, fnc unsafe.Pointer, parse ModifierParseFunc, apply func(effect *ModifierEff, owner, item *Object)) {
+	RegisterModifEngageEffect(name, fnc, parse)
+	modNativeEngageEffects[fnc] = apply
+}
+
+func callModifierEngageEffect(fnc unsafe.Pointer, effect *ModifierEff, owner, item *Object) {
+	if apply := modNativeEngageEffects[fnc]; apply != nil {
+		apply(effect, owner, item)
+		return
+	}
+	ccall.CallVoidPtr3(fnc, effect.C(), owner.CObj(), item.CObj())
 }
 
 type serverModifiers struct {
@@ -299,7 +329,7 @@ func (p *ModifierEff) Next() *ModifierEff {
 
 func (p *ModifierEff) CallUpdateNil(obj *Object) {
 	if p.Update100.Fnc != nil {
-		ccall.CallVoidPtr3(p.Update100.Fnc, p.C(), obj.CObj(), nil)
+		callModifierUpdateEffect(p.Update100.Fnc, p, obj)
 	}
 }
 

@@ -93,3 +93,31 @@ func TestEquipmentProtectionDisengageKeepsRemainingModifiers(t *testing.T) {
 		t.Fatalf("guarded fire and regeneration callbacks wrote flags %#x", owner.Field110)
 	}
 }
+
+func TestEquipmentProtectionGoHeapEngageAndDisengage(t *testing.T) {
+	objectStatusTestServer(t, 1)
+	const flag = 4
+	effect := &server.ModifierEff{
+		Engage112:    modifierEngagePointerNative4DFBB0(flag),
+		Disengage116: modifierDisengagePointerNative4DFBB0(flag),
+	}
+	attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{2: effect}}
+	second := &server.Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, InitData: unsafe.Pointer(attrs)}
+	first := &server.Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, InitData: unsafe.Pointer(attrs), InvNextItem: second}
+	owner := &server.Object{ObjClass: object.ClassPlayer, InvFirstItem: first, Field110: 0x40000000}
+
+	server.ItemApplyEngageEffect4F2FF0(first, owner)
+	if owner.Field110 != 0x40000000|flag {
+		t.Fatalf("engage flags=%#x", owner.Field110)
+	}
+	first.ObjFlags &^= object.FlagEquipped
+	server.ItemApplyDisengageEffect4F3030(first, owner)
+	if owner.Field110 != 0x40000000|flag {
+		t.Fatalf("remaining item flags=%#x", owner.Field110)
+	}
+	second.ObjFlags &^= object.FlagEquipped
+	server.ItemApplyDisengageEffect4F3030(second, owner)
+	if owner.Field110 != 0x40000000 {
+		t.Fatalf("final disengage flags=%#x", owner.Field110)
+	}
+}

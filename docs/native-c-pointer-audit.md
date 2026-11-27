@@ -1740,6 +1740,108 @@ header also asserts each supported `va_list` representation. Three
 standalone C files under `legacy/internal/cfixture` are reference
 fixtures outside the production count.
 
+### Packed reports and public return types
+
+Statistics startup at `426060` now calls the same Go implementation
+of `426150` as a standalone update. Both write the four-byte GSTY mode
+at byte 20 of the packed report header. The 386 archive-reader fixture
+uses the project allocator for its temporary C string. The statistics
+fault trials still require the expected signal and every service event
+byte. The Linux 386 harness accounts for QEMU's terminal diagnostic.
+
+The gold mutators at `4FA590` and `4FA5D0` return signed 32-bit
+protection results. The refund and repricing entries carry their
+scalar or native address in `uintptr_t`. The rule search and settings
+report return signed status. Quest closing carries the original raw
+DWORD or the address of the shared settings record. The rule search
+prefers the Windows short name when the file system supplies it and
+uses the ordinary name on hosts where that alias is unavailable.
+
+The summon entry returns a frame DWORD and writes the same frame
+to its live drawable. The child coordinates are read again after
+allocation. Shield searches read the owner's position after the
+search callback and preserve all network-code bits except the static
+selector at bit 15. The material callback rereads each modifier after
+the previous setter, carries the final scalar or one-past row address,
+and writes the packed channels when the original expansion mode is
+set. The normal weapon draw path shares this material selection.
+
+On 32-bit and 64-bit hosts the equipment row strides are 24 and 48
+bytes, and their first modifier pointers start at byte 4 and byte 8
+respectively. The drawable union grows from 20 to 40 bytes and
+carries a native child pointer before the two summon WORDs. The
+native trade session is 64 or 104 bytes, with its gold objects
+retained by the active session. Their fields use their native layout
+throughout a callback.
+
+An isolated PE32 probe executed the original bodies using the local
+`GAME.EXE` with SHA-256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+Controlled services supplied player lists, file-search callbacks and
+drawable allocation. The probe exercised all five GSTY values and
+the precedence and gate cases, signed report and file-close status,
+both quest results, signed gold and the four trade result paths,
+summon failure and live coordinates, shield duplicate and spawn,
+and packed material lane writes and result words.
+
+The four fight schedulers retain typed native unit and target
+pointers. Their Go exports carry the original return word in
+`uintptr_t` and share the production scheduler implementation.
+The stored PE32 oracle compares result words, action stack records,
+callback order, and untouched regions with the C entries.
+
+The wider macOS ARM64 regression run passed 148 top-level tests.
+The final public ABI run passed 24 on macOS ARM64 and 28 each on
+Linux ARM64 and Linux 386 `server,safe` under QEMU. These runs used
+`cgocheck2` and `checkptr=2`. The scheduler oracle exercised all
+4,138 original contexts. The Linux ARM64 run included standalone C
+AddressSanitizer trials. Seven structure-layout tests also passed
+on macOS ARM64 and Linux 386. Windows AMD64 and 386 dedicated
+server builds produced PE32+ and PE32 executables respectively.
+
+The gameplay builds passed 14 normal and six HD client replays
+with 44 exact screen matches. The three Chapter One briefings
+matched before the click in both profiles. The dedicated server
+passed three stock map transitions and a console quit. These
+replays and the Windows AMD64 build used the gameplay snapshot
+before the final scheduler exports and integer-only one-past
+address calculation. The final linked ABI tests and Windows 386
+build include those changes.
+
+Seven replays needed a second run. The retry allowed more time for
+the original input sequences and supplied a loopback server list
+after the external XWIS decoder stopped one run. The two shop audio
+replays used the native OpenAL Soft null driver and passed their
+gain checks. Public XWIS discovery remains unaudited here.
+
+Fourteen public entries moved from C wrappers to Go. The remaining
+11 top-level legacy C files contain 31 definition sites across the
+audited profiles. The default macOS ARM64 client selects eight of
+these files with 22 sites.
+
+| Remaining boundary | Sites | Ownership and layout |
+| --- | ---: | --- |
+| Shop buy, sell and repair return adapters | 3 | Native unit and session pointers are borrowed. The item code is a WORD and the quantity is a BYTE. The original sound and report calls still need exact result checks. |
+| Variadic dispatch and C library formatting | 14 | The argument cursor is valid until `va_end`. The header asserts the 24-byte SysV AMD64 layout, 32-byte AAPCS64 layout, or native pointer cursor. |
+| Windows and compatibility file searches | 6 | Each profile selects three functions. Windows uses a native HANDLE and a pointer-free find record. The compatibility implementation holds its handle owner until close. |
+| Safe-build memory and string writes | 4 | Destinations stay owned by the calling C code and are returned after the Go write. Sizes use `size_t`. |
+| Radial damage and velocity float bridges | 2 | Fallback builds copy raw float DWORDs before cgo can quiet a signaling NaN. |
+| Default damage and sound callbacks | 2 | C invokes the registered native function pointer with borrowed objects. The bridge checks the typed callback field and 32-bit damage arguments at compile time. |
+
+The five variadic argument readers for other architectures and the
+three standalone C reference fixtures remain outside this count.
+
+The original merchant probes also captured the remaining return
+differences. A bulk purchase shortfall at `510640` propagates the
+packet send result from `5104F0`. The original sends `C9 1B`
+followed by the missing amount as a little-endian WORD. A completed
+repair at `510AE0` and a completed or rejected sale at `510BE0`
+propagate the final call to `501960`. On successful sound insertion
+that call returns the previous live queue head. Its early exits
+carry scalar results. The Go shop engine reports gameplay status
+and purchase counts. The C adapters still need the original
+callback results for these branches.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

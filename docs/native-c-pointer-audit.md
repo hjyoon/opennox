@@ -1176,7 +1176,7 @@ retained its DEAD flag and native HP0. Loading the resulting HP33/MP49
 Save verified the exact stat words and the original maxima of 32 HP
 and 98 MP.
 
-The same current macOS client passed 12 of 29 individual campaign
+The macOS client at `4bc184f1b` passed 12 of 29 individual campaign
 cases. The two Swap stages and the Warrior crypt caster passed with
 archives matched to the recorded save manifests. Wizard2 passed
 Fireball acquisition and Spike from an earned GoldKey checkpoint.
@@ -1327,6 +1327,74 @@ effects. The Go-owned regeneration and protection tests passed with
 `cgocheck2` and `checkptr=2` on macOS ARM64. The protection test covers
 removing the last equipped item with a given modifier. Three macOS
 replays verified equipment state, colors, and armor pickup and drop.
+
+The native C and Go layouts agreed on a 208-byte modifier record on
+macOS ARM64 and Linux ARM64, and a 144-byte record on Linux 386.
+The checks covered the modifier array, seven callback field offsets,
+and the object initialization pointer. Windows AMD64 and 386 also
+compiled the C layout assertions and passed the native server CI.
+
+The registration and lifecycle commits passed 19 targeted macOS
+client replays across three builds, including six on `a43fd4a31`.
+Linux ARM64 PIE passed all 41 test packages at `e51e19da4` and
+`a43fd4a31`.
+The final lifecycle changes passed focused Linux ARM64 tests, Linux
+386 `server,safe` tests, and the macOS ARM64 strict pointer checks.
+
+### Player damage sound ownership
+
+Both typed damage runtimes call the registered Go player damage
+sound with the original receiver and source. Type registration uses
+the signed 32-bit C export as its callback identity.
+The old round trips in DefaultDamage and PlayerDamage each failed
+Cgo validation on an unpinned Go receiver with a Go-owned inventory.
+Both regressions pass macOS ARM64 `cgocheck2` and `checkptr=2`.
+The sound change removes the linked Go-to-C player damage sound
+call symbol. The armor report, unarmed attack, and OpenAL gameplay
+audio replays passed on the new client.
+
+### Earned campaign replay of the item effect changes
+
+The `a43fd4a31` macOS client passed all 29 individual campaign cases
+using earned saves from the original scenarios. Each successful run
+preserved the input save tree, data files, and prebuilt client. The
+replays included the three previously unverified checkpoints for
+Warrior3 Cemetery, Wizard2 Gold Key, and the Necromancer pit.
+
+The Swap replay pauses promptly after observing the reciprocal
+exchange. The recovery replay moves into range before using the
+earned Chain Lightning and Lesser Heal. Both landing saves passed
+the original health, poison, and spider death checks. The two-stage
+sequence transferred the newly earned save through the actual menu
+and passed on the same client. The two-stage upper cave sequence
+also passed the Urchin and mana recovery checks.
+
+The north bookcase replay heals after the original chamber spider
+and uses Chain Lightning from the bookcase plate before crossing.
+The changed stage passed three independent replays and handed off
+a healthy save to the next stage. It checks the original enemy
+deaths, bookcase movement, and exact final player resources.
+
+The FlyingGolem replay captures another frame after the final
+Chain Lightning input. The golem's native DEAD flag and zero HP
+are visible before the game removes it. The four-stage eastern
+sequence passed, and the eight-stage north-to-book sequence passed
+through the Necromancer pit, book pickup, and mana recovery.
+
+The WarCry replay waits for a living player on the paired elevator
+landing in both the server and client. It observes the original
+caster before and during WarCry, then moves to the far side of the
+landing to observe natural expiry and save. The archived crypt save
+and the freshly earned Cemetery save passed on the updated client.
+All five campaign sequences passed, covering 18 stage executions
+across the five manifests.
+
+The local macOS full suite passed 40 packages. The legacy package
+hit a timeout in AddressSanitizer children. A minimal C executable
+reproduced the AddressSanitizer startup hang with both installed
+Apple Clang toolchains. A separate prepared original-comparison
+run reached its 15-minute limit while processing the Go damage
+rows. The focused strict native-pointer runs completed.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

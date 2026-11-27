@@ -139,7 +139,7 @@ int sub_502AB0(char* a1);
 char* sub_502AF0();
 int sub_502B10();
 int sub_502D70(int a1);
-FILE* sub_502DA0(char* a1);
+int sub_502DA0(char* name);
 FILE* sub_502DF0();
 FILE* sub_502E10(int a1);
 FILE* sub_502E50(char* name);

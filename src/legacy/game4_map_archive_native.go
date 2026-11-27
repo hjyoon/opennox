@@ -149,7 +149,7 @@ func sub_502B10() C.int {
 	if n := StrLenBytes(path); n == 0 || n == len(path) {
 		return 0
 	}
-	if game4MapOpen(first) == 0 {
+	if sub_502DA0(first) == 0 {
 		return 0
 	}
 	defer sub_502DF0()
@@ -217,8 +217,8 @@ func sub_502D70(index C.int) C.int {
 	return C.int(bool2int(nox_xxx_mapgenSaveMap_503830(index) == 0))
 }
 
-//export game4MapOpen
-func game4MapOpen(name *C.char) C.int {
+//export sub_502DA0
+func sub_502DA0(name *C.char) C.int {
 	file := game4Mapgen.archive
 	if file == nil {
 		if nox_xxx_cryptOpen_426910(name, 1, -1) == 0 {
@@ -361,7 +361,7 @@ func sub_5034B0(name *C.char) C.int {
 	copy(path[:], directory[:dirLength])
 	copy(path[dirLength:], suffix)
 	outputPath := (*C.char)(unsafe.Pointer(&path[0]))
-	game4MapOpen(source)
+	sub_502DA0(source)
 	input := sub_502E50(name)
 	if input == nil {
 		sub_502DF0()
@@ -421,7 +421,7 @@ func sub_5036D0(name, outputPath *C.char) C.int {
 	if source == nil {
 		return 0
 	}
-	game4MapOpen(source)
+	sub_502DA0(source)
 	input := sub_502E50(name)
 	if input == nil {
 		sub_502DF0()
@@ -459,7 +459,7 @@ func nox_xxx_mapgenSaveMap_503830(index C.int) C.int {
 	C.nox_xxx_free_503F40()
 	*memmap.PtrUint32(0x5D4594, 1599572) = math.MaxUint32
 	archiveAndMapgenStorage.objects_placed = 0
-	if game4MapOpen((*C.char)(game4Mapgen.archive_path)) == 0 || sub_502E10(index) == nil || !mapgenLoadCurrent503830() {
+	if sub_502DA0((*C.char)(game4Mapgen.archive_path)) == 0 || sub_502E10(index) == nil || !mapgenLoadCurrent503830() {
 		sub_502DF0()
 		return 0
 	}

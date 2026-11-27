@@ -65,7 +65,7 @@ static nox_test_mapgen_stream_access_502D70_result nox_test_mapgen_stream_access
 		sub_502EA0(-1) == -1.0 && sub_502EA0(2) == -1.0;
 	out.closed_seek = sub_502E10(0) == NULL && sub_502E50((char*)"Alpha") == NULL;
 
-	out.opened = sub_502DA0((char*)path) != NULL && nox_file_8 != NULL;
+	out.opened = sub_502DA0((char*)path) == 1 && nox_file_8 != NULL;
 	if (out.opened) {
 		FILE* opened_file = nox_file_8;
 		out.file_address = (uintptr_t)opened_file;
@@ -74,14 +74,14 @@ static nox_test_mapgen_stream_access_502D70_result nox_test_mapgen_stream_access
 		out.seek_by_name = sub_502E50((char*)"aLpHa") == opened_file && nox_fs_ftell(opened_file) == 7;
 		out.absent_name = sub_502E50((char*)"Absent") == NULL && nox_fs_ftell(opened_file) == 7;
 		out.nil_name = sub_502E50(NULL) == NULL && nox_fs_ftell(opened_file) == 7;
-		out.reopen_rewinds = sub_502DA0((char*)missing) != NULL &&
+		out.reopen_rewinds = sub_502DA0((char*)missing) == 1 &&
 			nox_file_8 == opened_file && nox_fs_ftell(opened_file) == 0;
 		sub_502DF0();
 		out.closed = nox_file_8 == NULL && sub_502E10(0) == NULL;
 	}
 	sub_502DF0();
 	out.idempotent_close = nox_file_8 == NULL;
-	out.missing_file = sub_502DA0((char*)missing) == NULL && nox_file_8 == NULL;
+	out.missing_file = sub_502DA0((char*)missing) == 0 && nox_file_8 == NULL;
 
 	dword_5d4594_1599576 = old_records;
 	dword_5d4594_1599596 = old_count;

@@ -6,7 +6,6 @@ package legacy
 #include "GAME4.h"
 #include "GAME3_2.h"
 #include "GAME1_2.h"
-#include "game4_map_archive.h"
 typedef const float2 nox_const_float2;
 
 */

@@ -129,17 +129,9 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 	}
 	for _, fault := range []string{"names_alloc", "node_alloc", "data_alloc", "packet_alloc", "transport"} {
 		t.Run(fault, func(t *testing.T) {
-			output, err := exec.Command(binary, "--fault="+fault).CombinedOutput()
-			exit, ok := err.(*exec.ExitError)
-			if !ok {
-				t.Fatalf("original fault became success: %v %q", err, output)
-			}
-			want := syscall.SIGSEGV
+			signal := syscall.SIGSEGV
 			if fault == "transport" {
-				want = syscall.SIGABRT
-			}
-			if !nativeFixtureFaultIs(t, exit, want) {
-				t.Fatalf("want %v: %v %q", want, exit, output)
+				signal = syscall.SIGABRT
 			}
 			prefix := "GQTQK" + strings.Repeat("A", 12) + "LUVIII"
 			packet := prefix + strings.Repeat("NZD", 20) + "P"
@@ -147,9 +139,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 				"names_alloc": "GQTQKAA", "node_alloc": prefix + "N", "data_alloc": prefix + "NZD",
 				"packet_alloc": packet, "transport": packet + strings.Repeat("FF", 20) + "EFB",
 			}[fault]
-			if string(output) != expected {
-				t.Fatalf("original fault service prefix changed: %q, want %q", output, expected)
-			}
+			output := nativeFixtureFaultEvents(t, exec.Command(binary, "--fault="+fault), signal, expected)
 			if receipt := os.Getenv("NOX_STATS_END_NATIVE_JSON"); receipt != "" {
 				if err := os.WriteFile(receipt+"."+fault+".events", output, 0600); err != nil {
 					t.Fatal(err)

@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"bytes"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,6 +11,28 @@ import (
 	"syscall"
 	"testing"
 )
+
+func nativeFixtureFaultEvents(t *testing.T, cmd *exec.Cmd, signal syscall.Signal, want string) []byte {
+	t.Helper()
+	output, err := cmd.CombinedOutput()
+	exit, ok := err.(*exec.ExitError)
+	if !ok || !nativeFixtureFaultIs(t, exit, signal) {
+		t.Fatalf("want native %v, got %v output=%q", signal, err, output)
+	}
+	if runtime.GOOS == "linux" && runtime.GOARCH == "386" {
+		// QEMU emits this terminal diagnostic after the child's stderr events.
+		switch signal {
+		case syscall.SIGSEGV:
+			output = bytes.TrimSuffix(output, []byte("qemu: uncaught target signal 11 (Segmentation fault) - core dumped\n"))
+		case syscall.SIGABRT:
+			output = bytes.TrimSuffix(output, []byte("qemu: uncaught target signal 6 (Aborted) - core dumped\n"))
+		}
+	}
+	if string(output) != want {
+		t.Fatalf("original fault service prefix changed: got %q, want %q", output, want)
+	}
+	return output
+}
 
 // Windows reports the native DWORD process status instead of a POSIX signal.
 // Callers still compare every byte of the original service prefix, including

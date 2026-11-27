@@ -222,7 +222,6 @@ type legacyAddressableWordState struct {
 	dword_5d4594_3804684                    C.uint32_t
 	dword_5d4594_3835388                    C.uint32_t
 	dword_5d4594_3835392                    C.uint32_t
-	dword_5d4594_599496                     C.uint32_t
 	dword_5d4594_741356                     C.uint32_t
 	dword_5d4594_741364                     C.uint32_t
 	dword_5d4594_741648                     C.uint32_t

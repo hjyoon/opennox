@@ -81,10 +81,6 @@ func sub_426150() {
 	if !noxflags.HasGame(noxflags.GameOnline) || noxflags.HasGame(noxflags.GameModeQuest) {
 		return
 	}
-	fillStatsStartHeader((*uint32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_599496)))
-}
-
-func fillStatsStartHeader(modeCell *uint32) {
 	settings := (*[109]byte)(sub_416640())
 	data := (*[124]byte)(unsafe.Pointer(nox_xxx_cliGamedataGet_416590(0)))
 	*memmap.PtrUint16(0x5D4594, 599482) = uint16(settings[103])
@@ -95,7 +91,8 @@ func fillStatsStartHeader(modeCell *uint32) {
 	mode := binary.LittleEndian.Uint16(data[52:])
 	for report, flag := range [...]uint16{0x100, 0x20, 0x40, 0x10, 0x400} {
 		if mode&flag != 0 {
-			*modeCell = uint32(report)
+			// GSTY is a DWORD at byte offset 20 of the packed report header.
+			*memmap.PtrUint32(0x5D4594, 599496) = uint32(report)
 			break
 		}
 	}

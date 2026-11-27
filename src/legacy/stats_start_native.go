@@ -37,13 +37,6 @@ func statsCopyStringField(dst, src []byte) {
 	clear(dst[n:])
 }
 
-//export nox_stats_start_header_native
-func nox_stats_start_header_native() {
-	if noxflags.HasGame(noxflags.GameOnline) && !noxflags.HasGame(noxflags.GameModeQuest) {
-		fillStatsStartHeader(memmap.PtrUint32(0x5D4594, 599496))
-	}
-}
-
 //export nox_stats_quest_columns_native_get
 func nox_stats_quest_columns_native_get() *C.nox_stats_quest_columns_native {
 	return questStatsColumns
@@ -107,7 +100,7 @@ func sub_426060() {
 			sub_425F10(player)
 		}
 	}
-	nox_stats_start_header_native()
+	sub_426150()
 	nox_stats_session_report_native(0)
 	*memmap.PtrUint16(0x5D4594, 599482) = 0
 }

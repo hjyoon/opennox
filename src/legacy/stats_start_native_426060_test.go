@@ -102,21 +102,11 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	}
 	for _, fault := range []string{"settings_nil", "game_nil", "node_alloc", "data_alloc", "packet_alloc", "quest_names_nil", "transport"} {
 		t.Run(fault, func(t *testing.T) {
-			output, err := exec.Command(binary, "--fault="+fault).CombinedOutput()
-			exit, ok := err.(*exec.ExitError)
-			if !ok {
-				t.Fatalf("original fault became success: %v %q", err, output)
-			}
-			want := syscall.SIGSEGV
+			signal := syscall.SIGSEGV
 			if fault == "transport" {
-				want = syscall.SIGABRT
+				signal = syscall.SIGABRT
 			}
-			if !nativeFixtureFaultIs(t, exit, want) {
-				t.Fatalf("want %v: %v %q", want, exit, output)
-			}
-			if string(output) != faultPrefixes[fault] {
-				t.Fatalf("original fault service prefix changed: %q, want %q", output, faultPrefixes[fault])
-			}
+			output := nativeFixtureFaultEvents(t, exec.Command(binary, "--fault="+fault), signal, faultPrefixes[fault])
 			if receipt := os.Getenv("NOX_STATS_START_NATIVE_JSON"); receipt != "" {
 				if err := os.WriteFile(receipt+"."+fault+".events", output, 0600); err != nil {
 					t.Fatal(err)
@@ -188,7 +178,7 @@ func TestStatsStart426060CgoEntry(t *testing.T) {
 			}
 			copy(game[:9], "map-1234\x00")
 			copy(game[9:24], "server-123456789")
-			binary.LittleEndian.PutUint16(game[52:54], 0x4320)
+			binary.LittleEndian.PutUint16(game[52:54], 0x4420)
 			Set_dword_5d4594_608316(75)
 			Sub_426060()
 			if *address != [16]byte{'2', '0', '3', '.', '0', '.', '1', '1', '3', '.', '2', '5', '0'} {
@@ -202,9 +192,14 @@ func TestStatsStart426060CgoEntry(t *testing.T) {
 				if Get_dword_5d4594_608316() != 3 || slots[31].Field4648 != 0 || slots[0].Field4648 != 1 || slots[2].Field4648 != 2 {
 					t.Fatal("real player callbacks did not register host first, then list order")
 				}
-				if header[25] != 2 || binary.LittleEndian.Uint32(header[20:24]) != 0 || binary.LittleEndian.Uint16(header[6:8]) != 0 ||
+				if header[25] != 2 || binary.LittleEndian.Uint32(header[20:24]) != 1 || binary.LittleEndian.Uint16(header[6:8]) != 0 ||
 					!bytes.Equal(header[608:], make([]byte, 32)) {
 					t.Fatalf("team count, post-report count or ABI32 slots changed: %x", header[:32])
+				}
+				binary.LittleEndian.PutUint16(game[52:54], 0x10)
+				sub_426150()
+				if got := binary.LittleEndian.Uint32(header[20:24]); got != 3 {
+					t.Fatalf("standalone header update left GSTY at %d, want 3", got)
 				}
 			} else if Get_dword_5d4594_608316() != 0 {
 				t.Fatal("non-online start registered players")

@@ -106,7 +106,11 @@ static int nox_test_mapgen_reader_502B10_lazy_alloc(uintptr_t* first, uintptr_t*
 }
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
 
 type mapgenReaderRecord502B10 struct {
 	name       string
@@ -135,9 +139,9 @@ func mapgenReaderRecordFromC502B10(v C.nox_test_mapgen_record_502B10) mapgenRead
 }
 
 func mapgenReadFile502B10(path string) mapgenReaderResult502B10 {
-	cpath := C.CString(path)
-	defer C.free(unsafe.Pointer(cpath))
-	v := C.nox_test_mapgen_reader_502B10(cpath)
+	cpath, free := alloc.CString(path)
+	defer free()
+	v := C.nox_test_mapgen_reader_502B10((*C.char)(unsafe.Pointer(cpath)))
 	return mapgenReaderResult502B10{
 		result:         int(v.result),
 		count:          uint32(v.count),

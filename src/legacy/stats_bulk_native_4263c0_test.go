@@ -93,17 +93,7 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 		{"transport", syscall.SIGABRT, strings.Repeat("NZD", 31) + "P" + strings.Repeat("FF", 31) + "EFB"},
 	} {
 		t.Run(fault.name, func(t *testing.T) {
-			output, err := exec.Command(binary, "--fault="+fault.name).CombinedOutput()
-			exit, ok := err.(*exec.ExitError)
-			if !ok {
-				t.Fatalf("fault boundary became success: err=%v output=%q", err, output)
-			}
-			if !nativeFixtureFaultIs(t, exit, fault.signal) {
-				t.Fatalf("want native %v, got %v output=%q", fault.signal, exit, output)
-			}
-			if string(output) != fault.events {
-				t.Fatalf("original fault service prefix changed: got %q, want %q", output, fault.events)
-			}
+			output := nativeFixtureFaultEvents(t, exec.Command(binary, "--fault="+fault.name), fault.signal, fault.events)
 			if receipt := os.Getenv("NOX_STATS_BULK_NATIVE_JSON"); receipt != "" {
 				if err := os.WriteFile(receipt+"."+fault.name+".events", output, 0600); err != nil {
 					t.Fatal(err)

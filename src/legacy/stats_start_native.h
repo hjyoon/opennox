@@ -15,7 +15,6 @@ typedef struct nox_stats_quest_columns_native {
 _Static_assert(offsetof(nox_stats_quest_columns_native, scores) == 3 * sizeof(void*), "quest stats score columns");
 _Static_assert(sizeof(nox_stats_quest_columns_native) == 11 * sizeof(void*), "quest stats columns size");
 
-void nox_stats_start_header_native(void);
 void* nox_stats_quest_columns_clear_native(void);
 int nox_stats_session_report_native(int mode);
 

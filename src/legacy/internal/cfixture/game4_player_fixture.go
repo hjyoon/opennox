@@ -8,6 +8,7 @@ package cfixture
 _Static_assert(_Generic(&nox_xxx_playerAddGold_4FA590, int32_t(*)(nox_object_t*,int32_t):1, default:0), "native AddGold ABI");
 _Static_assert(_Generic(&nox_xxx_playerSubGold_4FA5D0, int32_t(*)(nox_object_t*,uint32_t):1, default:0), "native SubGold ABI");
 _Static_assert(_Generic(&sub_4FB050, int(*)(nox_object_t*,nox_object_t*,int*):1, default:0), "native guide damage ABI");
+_Static_assert(_Generic(&nox_xxx_netSendRewardNotify_4FAD50, uintptr_t(*)(nox_object_t*,int,nox_object_t*,char):1, default:0), "native reward notification ABI");
 static uintptr_t game4_player_gold_entry(nox_object_t* unit, int op, uint32_t value) {
  switch(op) {
  case 0: return (uintptr_t)nox_xxx_playerAddGold_4FA590(unit,(int32_t)value);
@@ -27,7 +28,7 @@ static int game4_player_waypoint_entry(nox_object_t* unit,int op,float x,float y
  default:return nox_xxx_playerCanAttack_4F9C40(unit);
  }
 }
-static int game4_player_reward_entry(nox_object_t* unit,int kind,nox_object_t* target,char flags) { return nox_xxx_netSendRewardNotify_4FAD50(unit,kind,target,flags); }
+static uintptr_t game4_player_reward_entry(nox_object_t* unit,int kind,nox_object_t* target,char flags) { return nox_xxx_netSendRewardNotify_4FAD50(unit,kind,target,flags); }
 static void game4_player_string_entry(nox_object_t* unit,const char* text,char flags) { sub_4FADD0(unit,text,flags); }
 static int game4_player_guide_entry(nox_object_t* unit,nox_object_t* target,int* damage) { return damage?sub_4FB050(unit,target,damage):sub_4FB000(unit,target); }
 static int game4_player_damage_entry(nox_object_t* unit,nox_object_t* target,int* damage) { return sub_4FB050(unit,target,damage); }
@@ -49,8 +50,8 @@ func Game4GoldC(o *server.Object, op int, n uint32) uintptr {
 func Game4WaypointC(o *server.Object, op int, x, y float32) int {
 	return int(C.game4_player_waypoint_entry((*C.nox_object_t)(o.CObj()), C.int(op), C.float(x), C.float(y)))
 }
-func Game4RewardC(o *server.Object, kind int, target *server.Object, flags byte) int {
-	return int(C.game4_player_reward_entry((*C.nox_object_t)(o.CObj()), C.int(kind), (*C.nox_object_t)(target.CObj()), C.char(flags)))
+func Game4RewardC(o *server.Object, kind int, target *server.Object, flags byte) uintptr {
+	return uintptr(C.game4_player_reward_entry((*C.nox_object_t)(o.CObj()), C.int(kind), (*C.nox_object_t)(target.CObj()), C.char(flags)))
 }
 func Game4StringC(o *server.Object, text string, flags byte) {
 	p := C.CString(text)

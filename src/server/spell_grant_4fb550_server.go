@@ -111,25 +111,29 @@ func spellGrantRewardNotifyNative4FAD50(
 	source *Object,
 	spellID int32,
 ) {
+	RewardNotifyNative4FAD50(recipient, source, kind, byte(spellID), func(recipient int, packet []byte) int {
+		return s.NetSendPacketXxx0(recipient, packet, nil, 1)
+	})
+}
+
+// RewardNotifyNative4FAD50 sends the original reward notification and carries
+// its native return word through the C entry.
+func RewardNotifyNative4FAD50(
+	recipient, source *Object, kind int32, flag byte, send func(int, []byte) int,
+) uintptr {
 	if recipient == nil || uint8(recipient.ObjClass)&spellGrantPlayerClass4FB550 == 0 {
-		return
+		return uintptr(unsafe.Pointer(recipient))
+	}
+	if kind < 0 || kind > 2 {
+		return uintptr(kind - 2)
 	}
 	update := (*PlayerUpdateData)(recipient.UpdateData)
-	packet := [5]byte{byte(netmsg.MSG_GAUNTLET)}
-	switch kind {
-	case 0:
-		packet[1] = 30
-	case 1:
-		packet[1] = 31
-	case 2:
-		packet[1] = 32
-	default:
-		return
+	if update == nil || update.Player == nil || source == nil {
+		return 0
 	}
-	packet[2] = byte(spellID)
+	packet := [5]byte{byte(netmsg.MSG_GAUNTLET), byte(30 + kind), flag}
 	binary.LittleEndian.PutUint16(packet[3:], uint16(source.NetCode))
-	player := update.Player
-	s.NetSendPacketXxx0(int(player.PlayerInd), packet[:], nil, 1)
+	return uintptr(int32(send(update.Player.Index(), packet[:])))
 }
 
 func spellGrantReportNative4D7F90(

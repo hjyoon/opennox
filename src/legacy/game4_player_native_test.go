@@ -233,17 +233,18 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 	old := game4RewardServices
 	t.Cleanup(func() { game4RewardServices = old })
 	var packets [][]byte
+	queueResult := int32(-23)
 	r := game4RewardRuntime{send: func(ind int, b []byte) int {
 		if ind != 7 {
 			t.Fatal(ind)
 		}
 		packets = append(packets, bytes.Clone(b))
 		runtime.GC()
-		return 23
+		return int(queueResult)
 	}}
 	game4RewardServices = func() game4RewardRuntime { return r }
 	for kind := 0; kind < 3; kind++ {
-		if got := cfixture.Game4RewardC(o, kind, target, 0xfe); got != 23 {
+		if got := cfixture.Game4RewardC(o, kind, target, 0xfe); got != uintptr(queueResult) {
 			t.Fatal(got)
 		}
 		want := []byte{0xf0, byte(30 + kind), 0xfe, 0x34, 0x12}
@@ -253,6 +254,16 @@ func TestGame4RewardCEntryPacketsBoundsAndGuideReload(t *testing.T) {
 	}
 	if cfixture.Game4RewardC(o, 8, nil, 0) != 6 || len(packets) != 3 {
 		t.Fatal("invalid subtype")
+	}
+	invalidResult := int32(-9)
+	if got := cfixture.Game4RewardC(o, -7, nil, 0); got != uintptr(invalidResult) {
+		t.Fatalf("negative subtype returned %#x, want %#x", got, uintptr(invalidResult))
+	}
+	if got := cfixture.Game4RewardC(target, 1, nil, 0); got != uintptr(unsafe.Pointer(target)) {
+		t.Fatalf("nonplayer reward returned %#x, want recipient %p", got, target)
+	}
+	if got := cfixture.Game4RewardC(nil, 1, nil, 0); got != 0 || len(packets) != 3 {
+		t.Fatalf("nil recipient returned %#x with %d packets", got, len(packets))
 	}
 	for _, n := range []int{0, 1, 48, 49, 255, 256, 257} {
 		before := len(packets)

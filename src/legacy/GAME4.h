@@ -102,7 +102,7 @@ char nox_xxx_mobMorphToPlayer_4FAAF0(uint32_t* a1);
 int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1);
 char nox_xxx_monsterActionToPlrState_4FABC0(nox_object_t* a1);
 int nox_xxx_respawnPlayerBot_4FAC70(nox_object_t* a1);
-int nox_xxx_netSendRewardNotify_4FAD50(nox_object_t* a1, int a2, nox_object_t* a3, char a4);
+uintptr_t nox_xxx_netSendRewardNotify_4FAD50(nox_object_t* a1, int a2, nox_object_t* a3, char a4);
 void sub_4FADD0(nox_object_t* a1, const char* a2, char a3);
 int sub_4FB000(nox_object_t* a1, nox_object_t* a2);
 int sub_4FB050(nox_object_t* a1, nox_object_t* a2, int* a3);

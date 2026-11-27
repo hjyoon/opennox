@@ -9,7 +9,6 @@ package legacy
 import "C"
 
 import (
-	"encoding/binary"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -35,23 +34,11 @@ var game4RewardServices = func() game4RewardRuntime {
 }
 
 //export nox_xxx_netSendRewardNotify_4FAD50
-func nox_xxx_netSendRewardNotify_4FAD50(unit *C.nox_object_t, kind C.int, target *C.nox_object_t, flags C.char) C.int {
-	o := asObjectS(unit)
-	// This legacy EAX value is an opaque status word, never an address carrier.
-	result := C.int(int32(uintptr(unsafe.Pointer(unit))))
-	if o == nil || o.ObjClass&object.ClassPlayer == 0 {
-		return result
-	}
-	if kind < 0 || kind > 2 {
-		return kind - 2
-	}
-	u := (*server.PlayerUpdateData)(o.UpdateData)
-	if u == nil || u.Player == nil || target == nil {
-		return 0
-	}
-	packet := [5]byte{0xf0, byte(30 + kind), byte(flags)}
-	binary.LittleEndian.PutUint16(packet[3:], uint16(asObjectS(target).NetCode))
-	return C.int(game4RewardServices().send(int(u.Player.PlayerInd), packet[:]))
+func nox_xxx_netSendRewardNotify_4FAD50(unit *C.nox_object_t, kind C.int, target *C.nox_object_t, flags C.char) C.uintptr_t {
+	result := server.RewardNotifyNative4FAD50(asObjectS(unit), asObjectS(target), int32(kind), byte(flags), func(recipient int, packet []byte) int {
+		return game4RewardServices().send(recipient, packet)
+	})
+	return C.uintptr_t(result)
 }
 
 //export sub_4FADD0

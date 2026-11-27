@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include <stdint.h>
-*/
-import "C"
-
 import "unsafe"
 
 // Collision coefficients are extracted C-owned variables. Their retired blob

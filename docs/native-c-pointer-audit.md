@@ -1620,6 +1620,126 @@ ARM64, Linux ARM64 PIE, and QEMU Linux 386. The ARM64 profiles used
 Windows AMD64 and 386 server cross-builds produced PE executables for
 the requested architectures.
 
+### Map records, MOTD, statistics, and equipment title exports
+
+The area record loader at `0x526950` returns the processed count for
+a populated table, the native allocation word for an empty table,
+or zero after allocation failure. It preserves the 64-byte record
+and the attachment flags at offset 60. The token registry resolves
+the four-byte table link to its native allocation. Replacement
+forgets and releases the previous owner. The C layout assertions for
+the occupied rectangle and decor records now live in their headers.
+The reference theme and floor fixtures compile the retained C
+registry with its archived declarations. The safe allocator passes
+zero-size C requests to the CRT and tracks any returned owner until
+the matching release.
+
+The MOTD release at `0x446490` returns the signed index after freeing
+an owner and returns zero when there is no owner. Its length-slot
+calculation wraps at 32 bits. When the calculated address aliases
+the original owner slot, clearing the native owner completes that
+write. The insertion at `0x446730` returns the input address for an
+empty line. A populated line keeps its UTF-16 buffer live through
+the synchronous list callback and returns the callback's native word.
+
+The report entry at `0x4263C0` returns an integer status. The original
+flag checks return zero offline and one for online Quest. A regular
+online flush clears the packed report buffers, resets the player
+tracking slots, and repopulates the host before the other players.
+The armor and weapon title loaders return a native word with the
+ready value or the address of the terminating key slot. Their
+12-byte table rows and live lookup order remain part of the fixture.
+
+Eight instruction bodies extracted from the installed PE32 executable
+ran under QEMU with controlled leaf calls. These included the area
+lookup and index accessors, both title loaders, both MOTD entries,
+the report flush, and the area loader. The probes checked the
+allocator result, signed returns, live title keys, and the report's
+real game flag checks and player traversal order.
+
+The macOS ARM64 dedicated server generated and loaded the authored
+map twice with a stock So_Beach load in between. The test used the
+server's map-mode override for that transition. The before and after
+builds used the same encrypted theme, AreaMap input and fixed seed.
+They produced identical 9,352-byte MAP and 9,712-byte NXZ files,
+plus the same live object coordinates, 228 walls, nine waypoints,
+and four exits. Both products quit normally. The Go decoder
+reconstructed the exact MAP from both candidate NXZ files.
+The November 21 authored run produced different geometry under its
+earlier source. The start-of-batch build reproduced the current
+geometry before these changes.
+
+The 386 random draw uses binary64 arithmetic in the Go runtime's
+x87 precision mode. The Go and retained C expressions matched for
+all 4,096 test vectors. The installed PE32 executable loads a
+distinct binary32 scale at `0x583080`. Full draw equivalence with
+that operand remains open.
+
+The verification snapshot and platform overlays match the 38
+source paths changed by `ab89f7e42` since `e5456d0d2`.
+The macOS ARM64 gate passed 134 top-level tests and the Linux ARM64
+PIE gate passed 130. Both used `cgocheck2` and `checkptr=2`.
+The macOS run excluded standalone C AddressSanitizer subtests after
+even a minimal instrumented program stalled at shadow initialization.
+The Linux ARM64 run included those subtests. The QEMU Linux 386
+`server,safe` gate passed all 29 cases focused on the changed
+interfaces, including empty allocation and signed MOTD release.
+Windows AMD64 and 386 dedicated-server builds produced the expected
+PE files.
+
+The end-to-end gate passed eight normal and four HD client replays
+with 49 exact screen matches. Both profiles matched the three
+Chapter One briefings before the click and the inventory clipping
+frames. The normal client also passed two equipment scenarios and
+the six-stage and twenty-stage Quest replays. The dedicated server
+passed its stock startup, three map transitions, and console quit.
+
+The broader 386 run exposed a statistics-start access to the mapped
+mode slot and a malformed-archive fixture that stopped in
+`C.CString`. Nineteen retained C fault trials had the expected signal
+and service events followed by QEMU's diagnostic on stderr. The
+combined-output checks reported those trials as failures. These
+findings remain open in the broader gate.
+
+A localhost remote client joined the dedicated server and both
+processes quit normally. The dedicated server's existing transfer
+guard prevents that setup from exercising the MOTD insert event.
+The linked C fixture verifies the MOTD text and response word with
+a live native window and forced garbage collection.
+
+Seven C entry points now export from Go. Removing their five adapter
+files and the duplicate report entry leaves 13 top-level legacy C
+files with 45 definition sites across the audited build profiles.
+Clang finds 36 sites in 10 files for the default macOS ARM64 client.
+The linked macOS client has 769 `_Cfunc_` wrappers across the legacy
+packages, and 682 of those match a linked Go export and a Go call.
+
+| Remaining file | Sites | Boundary |
+| --- | ---: | --- |
+| `cgo_fs.c` | 7 | Variadic file formatting and native search handles. Windows and compatibility builds each use three search functions. |
+| `cgo_safe.c` | 4 | Safe-build memory and string writes return the caller's destination. Buffers are borrowed for the call. |
+| `common__log.c` | 1 | Variadic network logging with a call-scoped argument list. |
+| `game3_2_abi.c` | 4 | Three quest and settings return adapters and one variadic broadcast entry. |
+| `game3_map_effect_abi.c` | 3 | Summon and shield results and the equipment materials word. The summon input keeps 16-bit coordinates and an 8-bit direction. |
+| `game4_3_abi.c` | 5 | Four monster scheduler results with native unit and target pointers, plus one variadic debug log. |
+| `game4_gold_consumers_abi.c` | 5 | Gold return, repricing and shop results with native object and trade session arguments. Item codes are 16-bit and bulk quantities are 8-bit. |
+| `game4_player_abi.c` | 2 | Gold protection results. Addition takes a signed 32-bit delta and subtraction takes an unsigned 32-bit quantity. |
+| `map_radial_damage_4e25b0.c` | 1 | Preserves the two input float bit patterns before the non-AMD64 and non-ARM64 cgo call. |
+| `network_line_message_4d9eb0.c` | 1 | A variadic object-message entry with a native-width signed result. |
+| `noxstring_format_abi.c` | 9 | Call-scoped variadic cursors and C library formatting. Five additional argument readers compile on fallback architectures outside the audited profiles. |
+| `objects_velocity_5118a0.c` | 1 | Preserves the input float word before the non-AMD64 and non-ARM64 cgo call. |
+| `raw_default_damage_native_bridge_4e0b30.c` | 2 | Indirect damage and sound calls with native object pointers and 32-bit damage values. |
+
+The 17 remaining word adapters are in the quest, map effect, monster,
+and gold files. The GUI headers assert the native layout separately
+for each pointer width. For example, `nox_window` is 404 bytes on 32-bit
+hosts and 528 on 64-bit hosts, with separate callback offset checks.
+The mapgen record assertions keep the archived offsets while the
+token registry owns the mapping to native addresses. The variadic
+header also asserts each supported `va_list` representation. Three
+standalone C files under `legacy/internal/cfixture` are reference
+fixtures outside the production count.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

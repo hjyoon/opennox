@@ -7,8 +7,6 @@ package legacy
 
 typedef const char nox_stats_const_name_t;
 typedef const void* nox_stats_const_data_t;
-
-static char* nox_stats_bulk_quest_result(void) { return (char*)(uintptr_t)1; }
 */
 import "C"
 
@@ -231,13 +229,17 @@ func freeStatsPacket(packet *C.uint16_t) {
 	C.free(unsafe.Pointer(packet))
 }
 
-//export nox_stats_bulk_flush_native
-func nox_stats_bulk_flush_native() *C.char {
+//export nox_stats_bulk_flush_word
+func nox_stats_bulk_flush_word() C.uintptr_t {
+	return C.uintptr_t(statsBulkFlushNative())
+}
+
+func statsBulkFlushNative() uintptr {
 	if !noxflags.HasGame(noxflags.GameOnline) {
-		return nil
+		return 0
 	}
 	if noxflags.HasGame(noxflags.GameModeQuest) {
-		return C.nox_stats_bulk_quest_result()
+		return 1
 	}
 	header := memmap.Slice(0x5D4594, 599476)
 	players := memmap.Slice(0x5D4594, 600124)[:0x2000]
@@ -261,7 +263,7 @@ func nox_stats_bulk_flush_native() *C.char {
 			sub_425F10(pl)
 		}
 	}
-	return nil
+	return 0
 }
 
 //export nox_stats_session_report_native

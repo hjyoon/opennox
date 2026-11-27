@@ -1,8 +1,10 @@
 package legacy
 
 /*
+#include "GAME1_1.h"
 #include "GAME3_2.h"
 #include "GAME5_2.h"
+#include "stats_bulk_native.h"
 
 typedef short (*health_delta_entry)(int, short, short);
 typedef intptr_t (*item_health_entry)(int, nox_object_t*);
@@ -10,6 +12,7 @@ typedef char (*player_stats_entry)(int, nox_object_t*, char);
 typedef int (*armor_value_entry)(int, int);
 typedef intptr_t (*durability_report_entry)(int, nox_object_t*, unsigned short, unsigned short);
 typedef int (*health_bucket_entry)(unsigned short, unsigned short);
+typedef char* (*bulk_stats_flush_entry)(void);
 _Static_assert(_Generic(&nox_xxx_netReportHealthDelta_4D8760, health_delta_entry: 1, default: 0), "health delta ABI");
 _Static_assert(_Generic(&nox_xxx_itemReportHealth_4D87A0, item_health_entry: 1, default: 0), "item health ABI");
 _Static_assert(_Generic(&nox_xxx_netReportPickup_4D8A60, item_health_entry: 1, default: 0), "pickup result ABI");
@@ -18,6 +21,13 @@ _Static_assert(_Generic(&nox_xxx_servSendStats_4D8990, player_stats_entry: 1, de
 _Static_assert(_Generic(&nox_xxx_netReportArmorVal_4D8A30, armor_value_entry: 1, default: 0), "armor value ABI");
 _Static_assert(_Generic(&nox_xxx_itemDestroyed_4E1650, durability_report_entry: 1, default: 0), "durability report ABI");
 _Static_assert(_Generic(&sub_57B190, health_bucket_entry: 1, default: 0), "health bucket ABI");
+_Static_assert(_Generic(&nox_xxx_net_4263C0, bulk_stats_flush_entry: 1, default: 0), "bulk stats public ABI");
+_Static_assert(_Generic(&nox_stats_bulk_flush_native, bulk_stats_flush_entry: 1, default: 0), "bulk stats compatibility ABI");
+
+static uintptr_t call_bulk_stats_flush(int direct) {
+	bulk_stats_flush_entry volatile flush = direct ? nox_stats_bulk_flush_native : nox_xxx_net_4263C0;
+	return (uintptr_t)flush();
+}
 
 static uintptr_t call_stats_report_entry(int entry, int recipient, nox_object_t* obj, uint32_t a, uint32_t b) {
 	switch (entry) {
@@ -55,4 +65,8 @@ import "github.com/opennox/opennox/v1/server"
 
 func callStatsReportEntry(entry int, recipient int32, unit *server.Object, a, b uint32) uintptr {
 	return uintptr(C.call_stats_report_entry(C.int(entry), C.int(recipient), asObjectC(unit), C.uint32_t(a), C.uint32_t(b)))
+}
+
+func callStatsBulkFlushEntry(direct bool) uintptr {
+	return uintptr(C.call_bulk_stats_flush(C.int(bool2int(direct))))
 }

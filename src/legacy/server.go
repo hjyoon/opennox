@@ -350,7 +350,7 @@ func Nox_xxx_voteUptate_506F30() {
 	C.nox_xxx_voteUptate_506F30()
 }
 func Nox_xxx_net_4263C0() {
-	nox_xxx_net_4263C0()
+	statsBulkFlushNative()
 }
 func Nox_xxx_protectData_56F5C0() {
 	nox_xxx_protectData_56F5C0()

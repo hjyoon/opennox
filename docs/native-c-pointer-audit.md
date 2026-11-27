@@ -1185,6 +1185,20 @@ An ordinary replay of the upper Urchin route saved at HP26/MP2
 after 105 frames of recovery at the refuge. The potion and food
 replay loaded that exact state and passed with the required pickups.
 
+### Bulk statistics return word
+
+The stock `GAME.EXE` entry at `0x4263C0` checks the online flag
+`0x2000` before the Quest flag `0x1000`. Its early returns retain the
+flag check's zero or one in EAX. The native Go report uses the same
+integer result. The two callable C signatures retain `char*` and
+apply their pointer-shaped conversion after the Go call returns.
+
+The C caller test exercises both native symbols with offline, Quest,
+and online flags. It checks the two status values, packet envelope,
+and the live report's record and pair reset. The original C packet,
+lifecycle, and fault-prefix comparisons also passed on macOS ARM64
+with `cgocheck2` and `checkptr=2`, and on Linux ARM64 PIE.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

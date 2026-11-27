@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include "GAME1_1.h"
-#include "stats_bulk_native.h"
 #include "stats_start_native.h"
 #include "stats_end_native.h"
 
@@ -123,11 +122,6 @@ func fillStatsStartHeader(modeCell *uint32) {
 	for _, address := range [...]uintptr{600112, 600084, 600088, 600092, 600096} {
 		*memmap.PtrUint32(0x5D4594, address) = 0
 	}
-}
-
-//export nox_xxx_net_4263C0
-func nox_xxx_net_4263C0() *C.char {
-	return nox_stats_bulk_flush_native()
 }
 
 //export sub_4264D0

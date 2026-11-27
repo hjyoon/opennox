@@ -1564,6 +1564,62 @@ and the five inventory clipping frames. The normal client also passed
 host chat with IME submission, hosted player death, Trap Set quickbar
 icons, the wizard and conjurer book defaults, and minimap clipping.
 
+### Spellbook, archive, palette, and key binding exports
+
+Five spellbook and reward entries now export directly from Go.
+`0x45D200` accepts a native-width kind and returns that word, a
+one-past-table address, or the sign-extended page transition status.
+`0x45D550` returns the signed position status and writes two 32-bit
+coordinates. The original returned zero for a null destination and
+`-2` for a missing page icon. The ability disable entry at `0x45D4A0`
+returns the signed sorter status after updating the live player.
+`0x45D290` and `0x499CF0` use native-width notification and kind words.
+The cooperative reward gate reads the input sequence for the interval
+check and reloads it when recording an accepted reward.
+
+The map archive opener at `0x502DA0` returns a C `int` with value zero
+or one. It keeps the stream in archive state and seeks an existing
+stream to the start. The original returned one after that seek even
+when the seek callback returned an error. The native C entry fixture
+checks the status and the identity of the separately stored file.
+
+The in-game and shell key binding entries at `0x4C3620` and
+`0x4CBD30` return the Escape binding parser's signed status. They
+read the list row count as a signed 16-bit value and reread it after
+each row. A native C caller exercised both entries with a negative
+row count and with a parser that shortens the list during the first row.
+
+The palette selector at `0x4A61E0` returns a native word containing a
+palette address, a window address, or a signed enable status. On a
+matching group-one swatch, it reads the current swatch ID and root
+again after enabling the first window. The native fixture compares
+the address and packed selection against retained C.
+
+The original instruction bodies ran under QEMU for 51 cases across
+these nine entries, including the cooperative sequence wrap, the
+two signed input status paths, and live row and window changes.
+
+Removing the four adapters leaves 18 top-level legacy C files and
+53 definition sites across the audited build profiles. The default
+macOS ARM64 profile includes 44 definitions in 15 files. The
+pointer and scalar adapter count falls from 34 to 25.
+The macOS client links 769 legacy `_Cfunc_` wrappers, with 682
+matching both a linked Go export and a Go source call.
+
+Source revision `bce2d890d` passed eight normal and three HD
+macOS replays using the original maps in private runtime directories.
+The two hosted book replays picked up, dropped, and reacquired the same
+item through the normal input and packet paths. The in-game options
+audit passed 201 checks, and the main-menu options lifecycle passed
+in both clients. The wizard, conjurer, and warrior briefing and
+inventory replays produced 31 exact frame hash matches.
+
+The same revision passed 39 selected top-level tests on each of macOS
+ARM64, Linux ARM64 PIE, and QEMU Linux 386. The ARM64 profiles used
+`cgocheck2` and `checkptr=2`. The 386 profile used `server,safe`.
+Windows AMD64 and 386 server cross-builds produced PE executables for
+the requested architectures.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

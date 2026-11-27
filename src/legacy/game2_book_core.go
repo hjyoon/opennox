@@ -41,7 +41,7 @@ func game2BookGameFlag(flag C.int) bool {
 	return bool(C.nox_common_gameFlags_check_40A5C0(C.uint(flag)))
 }
 func game2BookSpellFlag(id, flag C.int) bool            { return bool(C.nox_xxx_spellHasFlags_424A50(id, flag)) }
-func game2BookSound(id C.int)                           { C.nox_xxx_clientPlaySoundSpecial_452D80(id, 100) }
+func game2BookSound(id C.int)                           { nox_xxx_clientPlaySoundSpecial_452D80(id, 100) }
 func game2BookHide(w *C.nox_window, hidden C.int) C.int { return C.nox_window_set_hidden(w, hidden) }
 func game2BookPtr32(p unsafe.Pointer, i int) *uint32    { return (*uint32)(unsafe.Add(p, i*4)) }
 func game2BookAnimChoose(ref *C.nox_things_imageRef_t, guide bool) {

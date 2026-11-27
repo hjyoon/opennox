@@ -51,7 +51,6 @@ package legacy
 #include "input_common.h"
 #include <string.h>
 #include "game2_quickbar_native.h"
-extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 */
 import "C"
 
@@ -110,7 +109,7 @@ func g2qSound(id, vol int32) {
 		h.Sound(id, vol)
 		return
 	}
-	C.nox_xxx_clientPlaySoundSpecial_452D80(C.int(id), C.int(vol))
+	nox_xxx_clientPlaySoundSpecial_452D80(C.int(id), C.int(vol))
 }
 func g2qDestroy(w *C.nox_window) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.Destroy != nil {

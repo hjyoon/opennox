@@ -113,6 +113,11 @@ func Game2AudioInit(context, bank unsafe.Pointer) int32 {
 	return int32(C.ga_fixture_init(context, bank))
 }
 func Game2AudioShutdown() { C.ga_fixture_shutdown() }
+
+func Game2AudioPlaySoundSpecial(id, volume int32) {
+	C.nox_xxx_clientPlaySoundSpecial_452D80(C.int(id), C.int(volume))
+}
+
 func Game2AudioStop(e unsafe.Pointer) int32 {
 	return int32(C.ga_fixture_stop(e))
 }

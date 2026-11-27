@@ -188,7 +188,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 		}
 		clicked := (*C.nox_window)(unsafe.Pointer(uintptr(a)))
 		id := int(clicked.id)
-		C.nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		var controls unsafe.Pointer
 		switch id {
 		case 10102:

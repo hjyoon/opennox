@@ -143,7 +143,7 @@ func nox_xxx_guiServerOptionsProc_458590(unused1 *C.nox_window, event C.int, a, 
 			return 0
 		}
 		if b == 2 {
-			C.nox_xxx_clientPlaySoundSpecial_452D80(231, 100)
+			nox_xxx_clientPlaySoundSpecial_452D80(231, 100)
 			nox_xxx_guiServerOptionsHide_4597E0(0)
 		}
 	}

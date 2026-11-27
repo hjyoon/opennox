@@ -237,11 +237,6 @@ func sub_452BD0(f *C.nox_memfile, scratch *C.char) C.int {
 	return C.int(game2AudioParseAUD452BD0((*binfile.MemFile)(unsafe.Pointer(f)), unsafe.Pointer(scratch)))
 }
 
-//export nox_xxx_clientPlaySoundSpecial_452D80
-func nox_xxx_clientPlaySoundSpecial_452D80(id, volume C.int) {
-	nox_xxx_clientPlaySoundSpecial_native_452D80(id, volume)
-}
-
 //export sub_452DC0
 func sub_452DC0(id, volume, pan C.int) {
 	game2AudioMu.Lock()

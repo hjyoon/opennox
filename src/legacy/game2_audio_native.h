@@ -70,6 +70,7 @@ int nox_thing_read_AVNT_452890(nox_memfile*,void*);
 int nox_thing_skip_AVNT_452B00(nox_memfile*);
 int nox_thing_skip_AVNT_inner_452B30(nox_memfile*);
 int sub_452BD0(nox_memfile*,char*);
+void nox_xxx_clientPlaySoundSpecial_452D80(int id, int volume);
 void sub_452DC0(int,int,int); void sub_452E10(int,int,int);
 void *sub_452E90(void*,void*); void *sub_452EB0(void*);
 int sub_452EE0(void*,int); unsigned int sub_452F10(void*,int);

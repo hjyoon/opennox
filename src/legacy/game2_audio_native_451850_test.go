@@ -16,6 +16,34 @@ import (
 	"unsafe"
 )
 
+func TestGame2AudioPlaySoundSpecialSignedWords452D80(t *testing.T) {
+	old := ClientPlaySoundSpecial
+	t.Cleanup(func() { ClientPlaySoundSpecial = old })
+	for _, pair := range [][2]int32{{923, 73}, {math.MinInt32, -1}, {-7, math.MaxInt32}} {
+		calls := 0
+		ClientPlaySoundSpecial = func(id sound.ID, volume int) {
+			calls++
+			if id != sound.ID(pair[0]) || volume != int(pair[1]) {
+				t.Fatalf("sound callback = (%d, %d), want %v", id, volume, pair)
+			}
+		}
+		Nox_xxx_clientPlaySoundSpecial_452D80(sound.ID(pair[0]), int(pair[1]))
+		cfixture.Game2AudioPlaySoundSpecial(pair[0], pair[1])
+		want := 2
+		if unsafe.Sizeof(int(0)) > 4 {
+			upper := int64(1) << 32
+			Nox_xxx_clientPlaySoundSpecial_452D80(sound.ID(upper+int64(pair[0])), int(upper+int64(pair[1])))
+			want++
+		}
+		if calls != want {
+			t.Fatalf("sound callback ran %d times, want %d", calls, want)
+		}
+	}
+	ClientPlaySoundSpecial = nil
+	Nox_xxx_clientPlaySoundSpecial_452D80(1, 1)
+	cfixture.Game2AudioPlaySoundSpecial(1, 1)
+}
+
 func game2AudioTestSetup(t *testing.T) *game2AudioDefinition {
 	t.Helper()
 	t.Cleanup(game2AudioHighFixtureMemory())

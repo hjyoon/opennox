@@ -564,7 +564,7 @@ func nox_xxx_guiMotdLoad_4465C0() *nox_window {
 //export sub_4466C0
 func sub_4466C0(unused1 C.int, event C.int, unused2 C.int, unused3 C.int) C.int {
 	if event == 16391 {
-		C.nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		sub_446780()
 	}
 	return 0

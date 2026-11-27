@@ -3,8 +3,8 @@ package legacy
 /*
 #include <stdint.h>
 #include "defs.h"
+#include "game2_audio_native.h"
 int sub_4133D0(nox_object_t* a1);
-void nox_xxx_clientPlaySoundSpecial_452D80(int a1, int a2);
 */
 import "C"
 import (
@@ -18,15 +18,15 @@ var (
 	ClientPlaySoundSpecial                 func(sound.ID, int)
 )
 
-//export nox_xxx_clientPlaySoundSpecial_native_452D80
-func nox_xxx_clientPlaySoundSpecial_native_452D80(a1, a2 C.int) {
+//export nox_xxx_clientPlaySoundSpecial_452D80
+func nox_xxx_clientPlaySoundSpecial_452D80(id, volume C.int) {
 	if ClientPlaySoundSpecial != nil {
-		ClientPlaySoundSpecial(sound.ID(a1), int(a2))
+		ClientPlaySoundSpecial(sound.ID(id), int(volume))
 	}
 }
 
-func Nox_xxx_clientPlaySoundSpecial_452D80(a1 sound.ID, a2 int) {
-	C.nox_xxx_clientPlaySoundSpecial_452D80(C.int(a1), C.int(a2))
+func Nox_xxx_clientPlaySoundSpecial_452D80(id sound.ID, volume int) {
+	nox_xxx_clientPlaySoundSpecial_452D80(C.int(id), C.int(volume))
 }
 
 func Sub_4133D0(a1 *server.Object) int {

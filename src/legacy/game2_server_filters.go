@@ -99,7 +99,7 @@ func sub_4533D0(unused1 *C.nox_window, event C.int, control *C.nox_window, unuse
 			sub_459D50(1)
 		}
 	}
-	C.nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
+	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	return 0
 }
 

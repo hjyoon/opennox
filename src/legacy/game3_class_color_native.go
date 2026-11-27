@@ -116,7 +116,7 @@ func nox_game_showSelClass_4A4840() C.int {
 func sub_4A4970() C.int {
 	classSelectAnimation.SetState(gui.AnimOut)
 	C.sub_43BE40(2)
-	C.nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
+	nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
 	return 1
 }
 
@@ -220,7 +220,7 @@ func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C
 func sub_4A6890() C.int {
 	colorSelectAnimation.SetState(gui.AnimOut)
 	C.sub_43BE40(2)
-	C.nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
+	nox_xxx_clientPlaySoundSpecial_452D80(923, 100)
 	sub_4A68C0()
 	return 1
 }
@@ -375,7 +375,7 @@ func sub_4A7580(x, y C.int) C.int {
 //export sub_4A7330
 func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t {
 	if event == 16389 {
-		C.nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
 		return 1
 	}
 	if event != 16391 {
@@ -422,7 +422,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 			colorSelectAnimation.Func13Ptr = nil
 		}
 	}
-	C.nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
+	nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 	return 1
 }
 
@@ -548,7 +548,7 @@ func game3OptionsToggle(w *C.nox_window) {
 func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uintptr_t) C.int {
 	switch event {
 	case 16389:
-		C.nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
 		return 1
 	case 16391:
 		id := C.nox_xxx_wndGetID_46B0A0(sender)
@@ -611,7 +611,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 				C.nox_video_setFullScreen(0)
 			}
 		}
-		C.nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 		return 1
 	case 16393:
 		id := C.nox_xxx_wndGetID_46B0A0(sender)
@@ -624,11 +624,11 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 			}
 			if arg != 0 {
 				if C.sub_453070() != 0 {
-					C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
+					nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
 					return 0
 				}
 				game3OptionsToggle(optionsAudioChecks[0])
-				C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
+				nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
 				return 0
 			}
 			if C.sub_453070() != 1 {
@@ -697,11 +697,11 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 		C.sub_486320(clientAudioStorage.effects_timer, C.int(arg))
 		if arg != 0 {
 			if C.sub_453070() != 0 {
-				C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
+				nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
 				return 0
 			}
 			game3OptionsToggle(optionsAudioChecks[0])
-			C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
+			nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
 			return 0
 		}
 		if C.sub_453070() != 1 {

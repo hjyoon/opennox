@@ -52,7 +52,6 @@ package legacy
 #include "input_common.h"
 #include <string.h>
 #include "game2_quickbar_native.h"
-extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 int nox_client_getBriefDuration(void);
 */
 import "C"

@@ -113,7 +113,7 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 			return 0
 		}
 		id := C.nox_xxx_wndGetID_46B0A0(sender)
-		C.nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		switch id {
 		case 10301:
 			if C.nox_server_doPlayersAutoRespawn_40A5F0() != 0 {
@@ -351,7 +351,7 @@ func sub_4ADEF0(win *C.nox_window, draw *C.nox_window_data) C.int {
 func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uintptr_t) C.int {
 	switch event {
 	case 16389:
-		C.nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
 		return 1
 	case 16391:
 		id := C.nox_xxx_wndGetID_46B0A0(sender)
@@ -393,7 +393,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 		case 371:
 			sub_4AD9B0(0)
 		}
-		C.nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
+		nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 		return 1
 	case 16393, 16396:
 		id := C.nox_xxx_wndGetID_46B0A0(sender)
@@ -415,7 +415,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 				if C.sub_453070() == 0 {
 					game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[0])
 				}
-				C.nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
+				nox_xxx_clientPlaySoundSpecial_452D80(768, 100)
 			} else if C.sub_453070() == 1 {
 				game3IngameOptionsToggle(inGameOptionsWindows.audioChecks[0])
 			}

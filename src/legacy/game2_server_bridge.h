@@ -52,7 +52,6 @@
 #include "common__magic__speltree.h"
 #include "audio_ambient_native_45a9b0.h"
 void sub_4537F0(void);
-extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 // Keep the source location used by the C window dispatch macro.
 static uintptr_t game2_server_event(nox_window* w,int e,uintptr_t a,uintptr_t b) {
  return nox_window_call_field_94(w,e,a,b);

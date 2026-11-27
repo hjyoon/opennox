@@ -50,7 +50,6 @@ nox_video_bag_image_t* sub_450AD0(nox_video_bag_image_t* image);
 wchar2_t* sub_450AF0(wchar2_t* text);
 void nox_gui_setQuestStage_450B00(int a1);
 int nox_gui_getQuestStage_450B10();
-void nox_xxx_clientPlaySoundSpecial_452D80(int id, int volume);
 nox_window* sub_4532E0(void);
 int sub_453350(nox_window* win, nox_window_data* draw);
 int sub_4533D0(nox_window* win, int event, nox_window* control, uintptr_t event_arg);

@@ -1,3 +1,5 @@
+//go:build !386 && !amd64 && !arm && !arm64
+
 #include "common__log.h"
 #include "noxstring_format_abi.h"
 

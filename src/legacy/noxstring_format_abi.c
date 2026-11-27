@@ -56,13 +56,6 @@ int nox_vsprintf(char* out, const char* format, va_list args) {
 int nox_vswprintf(wchar2_t* out, const wchar2_t* format, va_list args) {
 	return nox_vsnwprintf(out, 0x3fffffff, format, args);
 }
-#endif
-
-void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision) {
-	double value;
-	memcpy(&value, &bits, sizeof(value));
-	snprintf(out, capacity, "%.*f", precision, value);
-}
 
 int nox_sprintf(char* out, const char* format, ...) {
 	va_list args;
@@ -78,4 +71,11 @@ int nox_swprintf(wchar2_t* out, const wchar2_t* format, ...) {
 	int length = nox_vswprintf(out, format, args);
 	va_end(args);
 	return length;
+}
+#endif
+
+void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precision) {
+	double value;
+	memcpy(&value, &bits, sizeof(value));
+	snprintf(out, capacity, "%.*f", precision, value);
 }

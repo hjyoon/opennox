@@ -76,7 +76,7 @@ static void ai_debug_printf_fixture(char* format, int frame) {
 }
 
 static void network_log_printf_fixture(char* format) {
-	nox_xxx_networkLog_printf_413D30(format, 37, "ready");
+	nox_xxx_networkLog_printf_413D30(format, 37, "ready", 2, 3, 4, 5, 6, 7, "spill");
 }
 
 static int file_printf_fixture(FILE* file, int width) {

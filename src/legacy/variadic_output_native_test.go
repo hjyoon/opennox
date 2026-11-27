@@ -145,6 +145,7 @@ func TestLegacyNetworkLogPrintf413D30(t *testing.T) {
 		{"queue %0600d %s", "queue " + strings.Repeat("0", 505)},
 		{"queue %0505d", "queue " + strings.Repeat("0", 503) + "37"},
 		{"queue %04d %s", "queue 0037 ready"},
+		{"queue %04d %s %d|%d|%d|%d|%d|%d|%s", "queue 0037 ready 2|3|4|5|6|7|spill"},
 	}
 	for _, tc := range cases {
 		format := CString(tc.format)

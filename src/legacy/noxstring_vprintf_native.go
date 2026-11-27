@@ -28,7 +28,11 @@ import (
 	"unsafe"
 )
 
-const sysVFormatListByPointer = runtime.GOARCH == "amd64" && runtime.GOOS != "windows"
+const (
+	sysVFormatListByPointer = runtime.GOARCH == "amd64" && runtime.GOOS != "windows"
+	narrowFormatMaximum     = 0x7fffffff
+	wideFormatMaximum       = 0x3fffffff
+)
 
 // These ABIs copy the cursor by value and have no va_end work after the
 // copy. On SysV AMD64 the incoming parameter points to the cursor array.
@@ -63,12 +67,22 @@ func nox_vsnwprintf(out *C.wchar2_t, capacity C.size_t, format *C.nox_format_wor
 
 //export nox_vsprintf
 func nox_vsprintf(out *C.char, format *C.nox_format_byte, arg C.nox_format_list_arg) C.int {
-	return nox_vsnprintf(out, 0x7fffffff, format, arg)
+	return nox_vsnprintf(out, narrowFormatMaximum, format, arg)
 }
 
 //export nox_vswprintf
 func nox_vswprintf(out *C.wchar2_t, format *C.nox_format_word, arg C.nox_format_list_arg) C.int {
-	return nox_vsnwprintf(out, 0x3fffffff, format, arg)
+	return nox_vsnwprintf(out, wideFormatMaximum, format, arg)
+}
+
+//export nox_sprintf_args_go
+func nox_sprintf_args_go(out *C.char, format *C.nox_format_byte, args *nativeFormatArgs) C.int {
+	return nox_format_narrow_go(out, narrowFormatMaximum, format, args)
+}
+
+//export nox_swprintf_args_go
+func nox_swprintf_args_go(out *C.wchar2_t, format *C.nox_format_word, args *nativeFormatArgs) C.int {
+	return nox_format_wide_go(out, wideFormatMaximum, format, args)
 }
 
 //export nox_format_host_narrow

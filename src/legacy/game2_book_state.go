@@ -6,8 +6,9 @@ package legacy
 import "C"
 
 import (
-	"github.com/opennox/opennox/v1/common/memmap"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
 )
 
 func game2BookRewardMask(id C.int) C.int {
@@ -48,7 +49,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 	player.spell_lvl[int(id)] = C.uint32_t(level)
 	if mask := game2BookRewardMask(id); mask != 0 {
 		for spell := C.int(1); spell < 137; spell++ {
-			if game2BookSpellFlag(spell, mask) && bool(C.nox_xxx_spellIsValid_424B50(spell)) {
+			if game2BookSpellFlag(spell, mask) && bool(nox_xxx_spellIsValid_424B50(int32(spell))) {
 				player.spell_lvl[int(spell)] = C.uint32_t(level)
 			}
 		}
@@ -65,35 +66,34 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 	} else if notify != 0 {
 		if page := game2BookFind(id, 137); page != 137 {
 			game2BookNotify(id, page)
-			nox_client_book_reward_word(2, id, extra)
+			nox_xxx_bookRewardCli_499CF0(2, id, extra)
 		}
 	}
 }
 
-//export game2_book_forward_word
-func game2_book_forward_word(kind C.uintptr_t, id C.int, position *C.int2) C.uintptr_t {
+//export nox_xxx_bookSetForward_45D200
+func nox_xxx_bookSetForward_45D200(kind C.uintptr_t, id C.int, position *C.int2) C.uintptr_t {
 	nox_xxx_bookShowMB_45AD70(1)
 	nox_window_setPos_46A9B0(bookUI.list_window, int32(position.field_0), int32(position.field_4))
-	token := uintptr(kind)
 	count := 0
-	switch token {
+	switch kind {
 	case 2, 4:
 		count = 137
 	case 3:
 		count = 6
 	default:
-		return C.uintptr_t(token)
+		return kind
 	}
 	page := game2BookFind(id, count)
 	if page != count {
-		return C.uintptr_t(uintptr(int64(nox_xxx_bookMoveToPage_45B930(C.int(page)))))
+		return C.uintptr_t(nox_xxx_bookMoveToPage_45B930(C.int(page)))
 	}
 	return C.uintptr_t(uintptr(memmap.PtrOff(0x5D4594, 1046960+4*uintptr(count))))
 }
 
-//export game2_book_ability_reward
-func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
-	player := C.nox_common_playerInfoGetByID_417040(C.int(clientPlayerNetCode))
+//export nox_xxx_abilityReward_45D290
+func nox_xxx_abilityReward_45D290(id C.int, notify C.uintptr_t, extra C.int) {
+	player := nox_common_playerInfoGetByID_417040(int32(clientPlayerNetCode))
 	if player == nil {
 		return
 	}
@@ -104,7 +104,7 @@ func game2_book_ability_reward(id C.int, notify C.uintptr_t, extra C.int) {
 		if page := game2BookFind(id, 6); page != 6 {
 			game2BookNotify(id, page)
 			if extra != 0 {
-				nox_client_book_reward_word(3, id, extra)
+				nox_xxx_bookRewardCli_499CF0(3, id, extra)
 			}
 		}
 	}
@@ -116,12 +116,12 @@ func sub_45D320(id C.int) C.int {
 	result := nox_xxx_bookHideMB_45ACA0(1)
 	if player != nil {
 		player.spell_lvl[int(id)] = 0
-		C.sub_461360(id)
+		sub_461360(id)
 		if mask := game2BookRewardMask(id); mask != 0 {
 			for spell := C.int(1); spell < 137; spell++ {
-				if game2BookSpellFlag(spell, mask) && bool(C.nox_xxx_spellIsValid_424B50(spell)) {
+				if game2BookSpellFlag(spell, mask) && bool(nox_xxx_spellIsValid_424B50(int32(spell))) {
 					player.spell_lvl[int(spell)] = 0
-					C.sub_461360(spell)
+					sub_461360(spell)
 				}
 			}
 		}
@@ -136,7 +136,7 @@ func sub_45D400(id C.int) C.int {
 	result := nox_xxx_bookHideMB_45ACA0(1)
 	if player != nil {
 		player.beast_scroll_lvl[int(id)] = 0
-		C.sub_461360(id + 74)
+		sub_461360(id + 74)
 		for groupIndex := uintptr(0); groupIndex < 41; groupIndex++ {
 			group := *memmap.PtrPtr(0x587000, 132124+4*groupIndex)
 			if group == nil {
@@ -146,7 +146,7 @@ func sub_45D400(id C.int) C.int {
 				for member := unsafe.Add(group, 4); *(*uint32)(member) != 0; member = unsafe.Add(member, 4) {
 					spell := *(*uint32)(member)
 					player.beast_scroll_lvl[int(spell)] = 0
-					C.sub_461360(C.int(spell) + 74)
+					sub_461360(C.int(spell) + 74)
 				}
 			}
 		}
@@ -155,19 +155,19 @@ func sub_45D400(id C.int) C.int {
 	return result
 }
 
-//export game2_book_disable_ability_word
-func game2_book_disable_ability_word(id C.int) C.uintptr_t {
+//export nox_xxx_clientQuestDisableAbility_45D4A0
+func nox_xxx_clientQuestDisableAbility_45D4A0(id C.int) C.int {
 	nox_xxx_bookHideMB_45ACA0(1)
-	C.nox_xxx_netAbilityRewardCli_4611E0(id, 0, nil)
+	nox_xxx_netAbilityRewardCli_4611E0(id, 0, nil)
 	if player := bookSelectedPlayer(); player != nil {
 		player.spell_lvl[int(id)] = 0
 	}
-	C.sub_461360(id)
-	player := C.nox_common_playerInfoGetByID_417040(C.int(clientPlayerNetCode))
+	sub_461360(id)
+	player := nox_common_playerInfoGetByID_417040(int32(clientPlayerNetCode))
 	if player == nil {
 		return 0
 	}
-	return C.uintptr_t(uintptr(int64(nox_xxx_guiSpellSortList_45ADF0(C.int(game2PlayerClass(player))))))
+	return nox_xxx_guiSpellSortList_45ADF0(C.int(game2PlayerClass(player)))
 }
 
 //export sub_45D500
@@ -186,13 +186,13 @@ func sub_45D500(show C.int) C.int {
 	return result
 }
 
-//export game2_book_position_word
-func game2_book_position_word(position *C.uint32_t) C.uintptr_t {
+//export sub_45D550
+func sub_45D550(position *C.uint32_t) C.int {
 	if position == nil {
 		return 0
 	}
-	result := nox_client_wndGetPosition_46AA60(bookDetails.page_icon, (*C.uint)(unsafe.Pointer(position)), (*C.uint)(unsafe.Add(unsafe.Pointer(position), 4)))
-	return C.uintptr_t(uintptr(int64(result)))
+	coords := unsafe.Pointer(position)
+	return nox_client_wndGetPosition_46AA60(bookDetails.page_icon, (*C.uint)(coords), (*C.uint)(unsafe.Add(coords, 4)))
 }
 
 //export nox_xxx_bookFillAll_45D570
@@ -200,18 +200,18 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	if bookState.reward_active == 1 {
 		return
 	}
-	C.nox_xxx_quickBarClose_4606B0()
-	*game2BookU(1046612) = uint32(C.nox_xxx_buttonsGetSelectedRow_45E180())
+	nox_xxx_quickBarClose_4606B0()
+	*game2BookU(1046612) = uint32(nox_xxx_buttonsGetSelectedRow_45E180())
 	if kind == 2 && game2BookSpellFlag(id, 0x15000) {
 		return
 	}
-	if C.nox_xxx_buttonHaveSpellInBarMB_4612D0(id) == 1 {
+	if nox_xxx_buttonHaveSpellInBarMB_4612D0(id) == 1 {
 		return
 	}
 	var slot C.int
 	switch kind {
 	case 2, 4:
-		slot = C.nox_xxx_buttonFindFirstEmptySlot_461250()
+		slot = nox_xxx_buttonFindFirstEmptySlot_461250()
 	case 3:
 		slot = sub_4612A0()
 	default:
@@ -228,7 +228,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 		bookState.page_mode = 0
 		bookState.guide_mode = 0
 	}
-	game2_book_position_word((*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046844)))
+	sub_45D550((*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046844)))
 	*(*float32)(unsafe.Pointer(&bookState.reward_x_bits)) = float32(int32(*game2BookU(1046844)))
 	*(*float32)(unsafe.Pointer(&bookState.reward_y_bits)) = float32(int32(*game2BookU(1046848)))
 	nox_window_setPos_46A9B0(bookDetails.reward, int32(*game2BookU(1046844)), int32(*game2BookU(1046848)))
@@ -241,13 +241,13 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 		bookState.reward_ability = 1
 	}
 	*game2BookU(1046676) = uint32(kind)
-	C.nox_client_setRenderGUI(1)
+	nox_client_setRenderGUI(1)
 	*game2BookU(1046680) = 0
 	sub_4BEDE0((*C.int2)(memmap.PtrOff(0x5D4594, 1046844)), (*C.int2)(memmap.PtrOff(0x5D4594, 1046668)), &first, &second, 19, 0, C.uintptr_t(uintptr(unsafe.Pointer(C.sub_45D7D0))), nil)
 	*game2BookU(1046628) = 0
 	bookState.reward_velocity.field_0 = C.float(*memmap.PtrFloat32(0x5D4594, 1046692) - *memmap.PtrFloat32(0x5D4594, 1046684))
 	bookState.reward_velocity.field_4 = C.float(*memmap.PtrFloat32(0x5D4594, 1046696) - *memmap.PtrFloat32(0x5D4594, 1046688))
-	C.nox_xxx_utilNormalizeVector_509F20(&bookState.reward_velocity)
+	nox_xxx_utilNormalizeVector_509F20(&bookState.reward_velocity)
 	scale := float64(10)
 	if clientDisplayStorage.width < 1000 {
 		scale = 8

@@ -4,6 +4,11 @@ package cfixture
 #include <stddef.h>
 #include <string.h>
 #include "game2_book_native.h"
+_Static_assert(_Generic(&nox_xxx_bookSetForward_45D200, uintptr_t (*)(uintptr_t, int, int2*): 1, default: 0), "book forward native words");
+_Static_assert(_Generic(&nox_xxx_abilityReward_45D290, void (*)(int, uintptr_t, int): 1, default: 0), "ability reward notification word");
+_Static_assert(_Generic(&nox_xxx_clientQuestDisableAbility_45D4A0, int (*)(int): 1, default: 0), "disable ability integer status");
+_Static_assert(_Generic(&sub_45D550, int (*)(uint32_t*): 1, default: 0), "book position integer status");
+_Static_assert(_Generic(&nox_xxx_bookRewardCli_499CF0, void (*)(uintptr_t, int, int): 1, default: 0), "client book reward kind word");
 static int book_ref_cursor, book_ref_result, book_ref_len, book_ref_calls;
 static unsigned char book_ref_packet[22];
 static int game2_book_old_cursor(void) { return book_ref_cursor; }
@@ -51,7 +56,9 @@ static int game2_book_old_send(int a,int b,unsigned char* p,int n) {
 #include "world_native_storage.h"
 #define dword_8531A0_2576 (nox_world_owner_storage()->local_player_word)
 #define nox_xxx_aClosewoodengat_587000_133480 (nox_world_owner_storage()->quickbar_data)
+#define nox_xxx_bookRewardCli_499CF0(kind, id, extra) nox_xxx_bookRewardCli_499CF0((uintptr_t)(kind), id, extra)
 #include "game2_book_reference.h"
+#undef nox_xxx_bookRewardCli_499CF0
 static void game2_book_test_config(int cursor,int result) {
  book_ref_cursor=cursor;book_ref_result=result;book_ref_len=book_ref_calls=0;memset(book_ref_packet,0,22);
 }
@@ -87,6 +94,14 @@ static int game2_book_test_move(int old,void* a,void* b) { return old?game2_book
 static int game2_book_test_click(int old,int creature) {
  if(creature)return old?game2_book_old_nox_xxx_bookClickCreature_45B200():nox_xxx_bookClickCreature_45B200();
  return old?game2_book_old_nox_xxx_bookClickSpell_45B1F0():nox_xxx_bookClickSpell_45B1F0();
+}
+static uintptr_t game2_book_test_forward(uintptr_t kind, int id, int x, int y) {
+ int2 position = {x, y};
+ return nox_xxx_bookSetForward_45D200(kind, id, &position);
+}
+static int game2_book_test_position(int reference, uint32_t* position) {
+ if (reference) return (int)(intptr_t)game2_book_old_sub_45D550(position);
+ return sub_45D550(position);
 }
 static uint32_t game2_book_test_mode(int field,uint32_t value,int set) {
  uint32_t* p=field==0?&dword_5d4594_1046868:&dword_5d4594_1046872;
@@ -148,6 +163,15 @@ func Game2BookMove(old bool, a, b unsafe.Pointer) int32 {
 }
 func Game2BookClick(old, creature bool) int32 {
 	return int32(C.game2_book_test_click(C.int(boolInt(old)), C.int(boolInt(creature))))
+}
+func Game2BookForward(kind uintptr, id, x, y int32) uintptr {
+	return uintptr(C.game2_book_test_forward(C.uintptr_t(kind), C.int(id), C.int(x), C.int(y)))
+}
+func Game2BookPosition(reference bool, position *[2]uint32) int32 {
+	return int32(C.game2_book_test_position(C.int(boolInt(reference)), (*C.uint32_t)(unsafe.Pointer(position))))
+}
+func Game2BookReward(kind uintptr, id, extra int32) {
+	C.nox_xxx_bookRewardCli_499CF0(C.uintptr_t(kind), C.int(id), C.int(extra))
 }
 func Game2BookMode(field int, value uint32, set bool) uint32 {
 	return uint32(C.game2_book_test_mode(C.int(field), C.uint32_t(value), C.int(boolInt(set))))

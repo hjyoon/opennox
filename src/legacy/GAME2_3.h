@@ -114,7 +114,7 @@ int sub_499450();
 int nox_xxx_drawShield_499810(nox_draw_viewport_t* vp, nox_drawable* dr);
 uint32_t* nox_xxx_fxDrawTurnUndead_499880(short* a1);
 void nox_xxx_drawPointMB_499B70(int xLeft, int yTop, int a3);
-void nox_xxx_bookRewardCli_499CF0(int* a1, int a2, int a3);
+void nox_xxx_bookRewardCli_499CF0(uintptr_t kind, int id, int extra);
 void sub_499F60(int a1, int a2, int a3, short a4, char a5, char a6, char a7, char a8, char a9, int a10);
 void* nox_npc_by_id(int id);
 char* nox_xxx_clientEquip_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type, const uint8_t modifiers[4]);

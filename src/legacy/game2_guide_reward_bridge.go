@@ -7,5 +7,5 @@ import "C"
 
 //export nox_xxx_bookGuideRewardCli_native_45D140
 func nox_xxx_bookGuideRewardCli_native_45D140(guide C.int) {
-	nox_client_book_reward_word(4, guide, 0)
+	nox_xxx_bookRewardCli_499CF0(4, guide, 0)
 }

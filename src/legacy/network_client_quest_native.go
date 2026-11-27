@@ -198,7 +198,7 @@ func clientQuestPacket(data []byte) int {
 	case 17:
 		sub_45D320(C.int(word(2)))
 	case 18:
-		game2_book_disable_ability_word(C.int(word(2)))
+		nox_xxx_clientQuestDisableAbility_45D4A0(C.int(word(2)))
 	case 19:
 		sub_45D400(C.int(word(2)))
 	case 20:

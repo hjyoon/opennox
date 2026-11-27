@@ -83,13 +83,7 @@ _Static_assert(sizeof(nox_book_details_t) == 6 * sizeof(void*),
 nox_book_details_t* nox_book_details_storage(void);
 uint32_t nox_client_player_net_code(void);
 
-// Public mixed pointer/tag ABIs stay in root-owned thin C adapters. The private
-// Go exports return words, so Go never manufactures unsafe.Pointer(1/2/3/4).
 int nox_xxx_book_45BD30(nox_window* win, nox_window_data* draw);
-uintptr_t game2_book_forward_word(uintptr_t kind, int id, int2* pos);
-void game2_book_ability_reward(int id, uintptr_t notify, int extra);
-uintptr_t game2_book_disable_ability_word(int id);
-uintptr_t game2_book_position_word(uint32_t* pos);
 
 nox_image_ref_anim_t* nox_book_anim_data(nox_things_imageRef_t* ref);
 void nox_book_anim_set_end(nox_things_imageRef_t* ref, void* fnc);

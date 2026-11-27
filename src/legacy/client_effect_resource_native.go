@@ -76,14 +76,13 @@ func nox_xxx_drawShield_499810(view *nox_draw_viewport_t, drawable *nox_drawable
 	return 0
 }
 
-//export nox_client_book_reward_word
-func nox_client_book_reward_word(kind C.uintptr_t, id, extra C.int) {
+//export nox_xxx_bookRewardCli_499CF0
+func nox_xxx_bookRewardCli_499CF0(kind C.uintptr_t, id, extra C.int) {
 	last := g2ServerWord(1217504)
-	frame := uint32(nox_xxx_bookGet_430B40_get_mouse_prev_seq())
-	if noxflags.HasGame(noxflags.GameModeCoop) && frame-*last < 2 {
+	if noxflags.HasGame(noxflags.GameModeCoop) && uint32(nox_xxx_bookGet_430B40_get_mouse_prev_seq())-*last < 2 {
 		return
 	}
-	*last = frame
+	*last = uint32(nox_xxx_bookGet_430B40_get_mouse_prev_seq())
 	color := C.int(2)
 	switch kind {
 	case 2:
@@ -92,7 +91,7 @@ func nox_client_book_reward_word(kind C.uintptr_t, id, extra C.int) {
 		color = 3
 	}
 	at := C.int2{field_0: 5, field_4: clientDisplayStorage.height / 3}
-	game2_book_forward_word(kind, id, &at)
+	nox_xxx_bookSetForward_45D200(kind, id, &at)
 	x, y := at.field_0, at.field_4
 	nox_xxx_draw_499E70(color, x, y, 271, 166, 1, 1)
 	nox_xxx_draw_499E70(color, x, y, 135, 166, 2, 1)

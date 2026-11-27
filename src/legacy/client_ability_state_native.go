@@ -125,7 +125,7 @@ func clientAbilityReward(id, value C.int, notify bool) {
 		state.reward = uint32(value)
 		if value != 0 {
 			bit := C.int(bool2int(notify))
-			game2_book_ability_reward(id, C.uintptr_t(bit), bit)
+			nox_xxx_abilityReward_45D290(id, C.uintptr_t(bit), bit)
 		}
 	}
 }

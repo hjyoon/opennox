@@ -1353,6 +1353,87 @@ The sound change removes the linked Go-to-C player damage sound
 call symbol. The armor report, unarmed attack, and OpenAL gameplay
 audio replays passed on the new client.
 
+### Armor value and durability ownership
+
+PlayerDamage armor value and inventory wear use the Go armor lookup.
+The Go wear entry also calls the typed implementation directly. The
+C entries at `0x415C00` and `0x4E2180` use the same implementations,
+and the ABI fixtures invoke both C symbols with native records.
+
+The original bodies ran under QEMU 386 with both player and NPC
+update layouts. The armor lookup caches the initial attributes
+pointer, then reads its live first slot after resolving the armor
+definition. Under a test that replaces both the object field and
+the cached array's slot, the prior Go lookup returned `0.0625` and
+the original and updated Go bodies return `0.125`. The original
+wear loop consumes the cached denominator and the updated item link.
+
+### Indirect damage and live sound selection
+
+The original DefaultDamage path looks up a native Go handler at
+`0x4E0D05`. Skeleton, Stone, MechGolem, Flammable, and BlackPowder
+use the raw bodies of their public entries. The dispatcher accepts
+signed 32-bit damage and type words and discards the callback result.
+The two stock sound callbacks use Go at `0x4E1049` and `0x4E104F`.
+Foreign function pointers use the existing typed C call frames.
+The previous typed dispatcher reached the original parent zero times
+for all five entries in the new regression. The corrected dispatcher
+reaches each parent once and preserves the original transformed damage.
+
+The structured DefaultDamage path reloads the sound callback after
+the protection and item effects. The registered player sound works
+on armor as well as player objects. The original sound tail ran
+under QEMU 386 with callback replacement, clearing to the default
+sound, weapon and attacker arguments, and self-weapon suppression.
+All four live sound regressions pass in the Mac strict server suite.
+
+### Quest stage and scaling services
+
+The quest stage read and write, difficulty update, damage and health
+scale, and health setter use Go in the ordinary runtime. The setter
+preserves the low 16 bits of the native return word. The old setter
+failed Cgo validation with a pinned object and Go-owned health data.
+
+The original stage read and write and three floating-point getters
+ran under QEMU 386. The stage retains its signed 32-bit word. The
+two tested x87 control words quiet signaling NaNs while preserving
+their sign and payload. The Go getters reproduce the observed
+binary64 values, including signed zero and infinity.
+
+### Linked Go-to-C calls after the quest changes
+
+The macOS ARM64 client links 850 distinct legacy `_Cfunc_` symbols,
+down from 861 in the preceding item-effect build. Of these, 761
+match a Go `C.` source call and a Go export present in the same
+binary. The symbol count includes the legacy subpackages. The
+source matches include OS and tag variants. Window child lookup
+accounts for 39 source calls, and special sound and window
+destruction account for 21 each. The top-level C file count is 27.
+The 89 other linked wrappers include 18 typed indirect-call frames
+in `legacy/common/ccall`, three allocation wrappers in
+`legacy/common/alloc`, and 68 wrappers in the main legacy package.
+
+### Runtime verification of damage and quest services
+
+The final legacy and server selections passed on macOS ARM64 with
+`cgocheck2` and `checkptr=2`, Linux ARM64 with PIE and the
+high-address allocator profile, and Linux 386 under QEMU with
+`server,safe`. The final macOS ARM64 client passed the armor report,
+quest stage transition, FlyingGolem piercing damage, and OpenAL
+gameplay audio replays.
+
+The preceding quest build passed eight replays, including the
+six-stage quest loop, player death, minion combat, and the
+Necromancer summon. Windows 386 and AMD64 server builds for that
+revision produced the expected PE architectures.
+
+The preceding Linux ARM64 PIE package run passed 40 packages. Three
+C fixture compilations in the legacy package exceeded their 30-second
+limits and the package reached its 24-minute limit while starting
+`TestStatsPacketEnvelope42A8B0NativeBody`. The same legacy test binary
+passed the three map generation tests on replay and all 569 remaining
+top-level tests from that point through the end of the package.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

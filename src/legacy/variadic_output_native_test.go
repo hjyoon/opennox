@@ -1,11 +1,15 @@
 package legacy
 
 import (
+	"context"
 	"math"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 	"unsafe"
 
 	"github.com/opennox/libs/console"
@@ -13,6 +17,34 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/legacy/internal/cfixture"
 )
+
+func TestLegacyFormatAbortPreservesDiagnosticBytes(t *testing.T) {
+	const env = "NOX_FORMAT_ABORT_TEST_CODE"
+	if value := os.Getenv(env); value != "" {
+		code, err := strconv.ParseUint(value, 10, 16)
+		if err != nil {
+			t.Fatal(err)
+		}
+		cfixture.AbortUnsupportedWideFormat(uint16(code))
+		return
+	}
+	binary, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, code := range []uint16{0, '?', 0x1e9} {
+		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		cmd := exec.CommandContext(ctx, binary, "-test.run=^TestLegacyFormatAbortPreservesDiagnosticBytes$")
+		cmd.Env = append(os.Environ(), env+"="+strconv.Itoa(int(code)))
+		output, err := cmd.Output()
+		timedOut := ctx.Err() != nil
+		cancel()
+		want := "Unhandled format character: '" + string([]byte{byte(code)}) + "'"
+		if _, exited := err.(*exec.ExitError); timedOut || !exited || string(output) != want {
+			t.Fatalf("format character %#x: stdout %q, want %q and CRT abort, got %v", code, output, want, err)
+		}
+	}
+}
 
 func TestLegacyConsolePrintf450C00UsesBoundedWideBuffer(t *testing.T) {
 	printer := &deathMessagePrinter4952E0{}

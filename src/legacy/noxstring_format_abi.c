@@ -1,7 +1,6 @@
 #include "noxstring_format_abi.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 _Static_assert(sizeof(double) == sizeof(uint64_t), "double bit transport width");
@@ -63,11 +62,6 @@ void nox_format_fixed_bits(uint64_t bits, char* out, size_t capacity, int precis
 	double value;
 	memcpy(&value, &bits, sizeof(value));
 	snprintf(out, capacity, "%.*f", precision, value);
-}
-
-void nox_format_abort(int code) {
-	printf("Unhandled format character: '%c'", code);
-	abort();
 }
 
 int nox_sprintf(char* out, const char* format, ...) {

@@ -26,6 +26,12 @@ static void bounded_wide_variadic_reference(wchar2_t* out, size_t capacity, cons
 	out[capacity - 1] = 0;
 }
 
+static void abort_unsupported_wide_format(wchar2_t code) {
+	const wchar2_t format[] = {'%', code, 0};
+	setvbuf(stdout, NULL, _IONBF, 0);
+	nox_swprintf(NULL, format);
+}
+
 static int bounded_wide_fixed_matches(const wchar2_t* format, int value,
                                      const wchar2_t* first, const wchar2_t* second, int strings) {
 	for (size_t capacity = 0; capacity <= 32; capacity++) {
@@ -251,6 +257,10 @@ import "unsafe"
 
 func VariadicRegistersAndStack() bool {
 	return C.variadic_registers_and_stack_fixture() != 0
+}
+
+func AbortUnsupportedWideFormat(code uint16) {
+	C.abort_unsupported_wide_format(C.wchar2_t(code))
 }
 
 func LineMessage4D9EB0(unit unsafe.Pointer, format *uint16, points int) uintptr {

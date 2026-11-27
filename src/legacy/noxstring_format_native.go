@@ -1,6 +1,8 @@
 package legacy
 
 /*
+#include <stdio.h>
+#include <stdlib.h>
 #include "noxstring_format_abi.h"
 */
 import "C"
@@ -161,7 +163,7 @@ func formatWithArgs[T formatCodeUnit](dst *T, capacity uintptr, format *T, args 
 			}
 		case 'f':
 			if !wide {
-				C.nox_format_abort(C.int(code))
+				nox_format_abort(C.int(code))
 			}
 			if precision <= 0 {
 				precision = 5
@@ -179,11 +181,19 @@ func formatWithArgs[T formatCodeUnit](dst *T, capacity uintptr, format *T, args 
 		case '%', '!':
 			emit(code)
 		default:
-			C.nox_format_abort(C.int(code))
+			nox_format_abort(C.int(code))
 		}
 	}
 	emit(0)
 	return out - 1
+}
+
+//export nox_format_abort
+func nox_format_abort(code C.int) {
+	message := []byte("Unhandled format character: ' '")
+	message[len(message)-2] = byte(code)
+	C.fwrite(unsafe.Pointer(&message[0]), 1, C.size_t(len(message)), C.stdout)
+	C.abort()
 }
 
 //export nox_format_narrow_go

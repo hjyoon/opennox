@@ -381,6 +381,15 @@ func RegisterObjectDamageGo(name string, cfnc unsafe.Pointer, fnc DamageFunc) {
 	objDamage.Register(cfnc, fnc)
 }
 
+// LookupObjectDamageGo resolves a registered Go damage callback by its C address.
+func LookupObjectDamageGo(fnc unsafe.Pointer) DamageFunc {
+	if fnc == nil {
+		return nil
+	}
+	handler, _ := objDamage.Lookup(fnc)
+	return handler
+}
+
 // CallObjectDamage dispatches restored callbacks without an indirect PE32 C
 // call. Unknown callbacks retain their original path on 32-bit targets and
 // fail closed on wider targets until their implementation is restored.

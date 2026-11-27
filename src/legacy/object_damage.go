@@ -77,6 +77,17 @@ func init() {
 	server.RegisterObjectDamageSound("PlayerDamageSound", C.nox_xxx_soundPlayerDamageSound_5328B0)
 }
 
+func registeredDamageSound(callback unsafe.Pointer) func(*server.Object, *server.Object) int {
+	switch callback {
+	case C.nox_xxx_soundDefaultDamageSound_532E20:
+		return Nox_xxx_soundDefaultDamageSound_532E20
+	case C.nox_xxx_soundPlayerDamageSound_5328B0:
+		return Nox_xxx_soundPlayerDamageSound_5328B0
+	default:
+		return nil
+	}
+}
+
 //export nox_object_call_damage_native
 func nox_object_call_damage_native(
 	targetp, sourcep, weaponp *nox_object_t,

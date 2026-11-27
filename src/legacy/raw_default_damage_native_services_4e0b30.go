@@ -51,15 +51,24 @@ func rawDefaultDamageInvokeService4E0B30(call rawDefaultDamageNativeService4E0B3
 		return reply
 	}
 	a := call.Arguments
+	unit := func(i int) *server.Object { return (*server.Object)(a[i].Pointer) }
 	var reply rawDefaultDamageNativeReply4E0B30
-	// The actual callback must precede any typed Go object cast or world
-	// lookup: nil and unknown targets retain their attempted-call fault.
+	// Foreign callbacks receive the opaque pointers through their native C
+	// frame before any typed object access or world lookup.
 	switch call.Site {
 	case 0x4e0d05:
-		rawDefaultDamageCallDamageNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer, a[2].Pointer, int32(a[3].Word), int32(a[4].Word))
+		if damage := server.LookupObjectDamageGo(call.Callback); damage != nil {
+			damage(unit(0), unit(1), unit(2), int32(a[3].Word), object.DamageType(a[4].Word))
+		} else {
+			rawDefaultDamageCallDamageNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer, a[2].Pointer, int32(a[3].Word), int32(a[4].Word))
+		}
 		return reply
 	case 0x4e1049, 0x4e104f:
-		rawDefaultDamageCallSoundNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer)
+		if play := registeredDamageSound(call.Callback); play != nil {
+			play(unit(0), unit(1))
+		} else {
+			rawDefaultDamageCallSoundNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer)
+		}
 		return reply
 	case 0x4e0c45, 0x4e1168:
 		reply.Word = rawDefaultDamageGameFlagsNative4E0B30(a[0].Word)
@@ -68,7 +77,6 @@ func rawDefaultDamageInvokeService4E0B30(call rawDefaultDamageNativeService4E0B3
 		reply.Word = rawDefaultDamageGameplayFlagsNative4E0B30(int32(a[0].Word))
 		return reply
 	}
-	unit := func(i int) *server.Object { return (*server.Object)(a[i].Pointer) }
 	world := func() *server.Server { return GetServer().S() }
 	switch call.Site {
 	case 0x4e0b46, 0x4e0ca5, 0x4e1079, 0x4e11c2:

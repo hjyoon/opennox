@@ -22,12 +22,18 @@ func (r *Funcs[F]) Register(cfnc unsafe.Pointer, fnc F) {
 	r.byPtr[cfnc] = fnc
 }
 
+// Lookup returns the registered implementation without wrapping the C pointer.
+func (r *Funcs[F]) Lookup(cfnc unsafe.Pointer) (F, bool) {
+	fnc, ok := r.byPtr[cfnc]
+	return fnc, ok
+}
+
 func (r *Funcs[F]) Get(cfnc unsafe.Pointer) F {
 	if cfnc == nil {
 		var zero F
 		return zero
 	}
-	fnc, ok := r.byPtr[cfnc]
+	fnc, ok := r.Lookup(cfnc)
 	if ok {
 		return fnc
 	}

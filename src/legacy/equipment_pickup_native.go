@@ -30,7 +30,7 @@ func weaponPickup53A720(owner, item *server.Object, report, equipReport C.int) i
 	world := GetServer().S()
 	if owner.ObjClass.Has(object.ClassPlayer) && noxflags.HasGame(noxflags.GameModeQuest) &&
 		uint32(item.ObjSubClass)&0x200000 != 0 {
-		limit := int32(C.nox_float2int(C.float(nox_xxx_gamedataGetFloat_419D40(internCStr("ForceOfNatureStaffLimit")))))
+		limit := server.X87TruncateSignedDWORD419A70(float32(nox_xxx_gamedataGetFloat_419D40(internCStr("ForceOfNatureStaffLimit"))))
 		if nox_xxx_inventoryCountObjects_4E7D30(asObjectC(owner), int32(item.TypeInd)) >= limit {
 			world.NetPriMsgToPlayer(owner, "pickup.c:MaxSameItem", 0)
 			world.Audio.EventObj(925, owner, 0, 0)

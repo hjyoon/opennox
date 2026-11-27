@@ -31,12 +31,13 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/server"
 )
 
 var game3MapFactory = game3MapRuntime
 
 func game3MapLoadError()               { C.nox_xxx_spriteLoadError_4356E0() }
-func game3MapFloatInt(v float32) int32 { return int32(C.nox_float2int(C.float(v))) }
+func game3MapFloatInt(v float32) int32 { return server.X87TruncateSignedDWORD419A70(v) }
 func game3MapTOC(v uint16) uint16      { return uint16(C.nox_xxx_objectTOCgetTT_42C2B0(C.ushort(v))) }
 func game3MapClass(v uint16, kind int) bool {
 	switch kind {

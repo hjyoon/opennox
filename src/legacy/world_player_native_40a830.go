@@ -316,10 +316,10 @@ func tileFromPointNative411160(point *types.Pointf) int32 {
 	defer runtime.KeepAlive(point)
 	// Unsuffixed C literals promote to double before the named float stores.
 	x, y := point.X, point.Y
-	i := worldTileFloatToInt411160(float32((float64(x) + 11.5) * 0.021739131))
-	j := worldTileFloatToInt411160(float32((float64(y) + 11.5) * 0.021739131))
-	dx := worldTileFloatToInt411160(float32(float64(point.X)+11.5)) % 46
-	dy := worldTileFloatToInt411160(float32(float64(point.Y)+11.5)) % 46
+	i := server.X87TruncateSignedDWORD419A70(float32((float64(x) + 11.5) * 0.021739131))
+	j := server.X87TruncateSignedDWORD419A70(float32((float64(y) + 11.5) * 0.021739131))
+	dx := server.X87TruncateSignedDWORD419A70(float32(float64(point.X)+11.5)) % 46
+	dy := server.X87TruncateSignedDWORD419A70(float32(float64(point.Y)+11.5)) % 46
 	if int32(uint32(i)-1) <= 0 || i >= 127 || int32(uint32(j)-1) <= 0 || j >= 127 {
 		return -1
 	}

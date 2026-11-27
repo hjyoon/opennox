@@ -24,27 +24,23 @@ var complexObjectSendRuntimeNative518960 = func() server.ComplexObjectSendNative
 		Frame:        func() uint32 { return GetServer().S().Frame() },
 		ReportHealth: PlayerSendHealthDeltaNative4D8760,
 		UnitCode: func(unit *server.Object) uint32 {
-			return uint32(C.nox_xxx_netGetUnitCodeServ_578AC0(asObjectC(unit)))
+			return uint32(nox_xxx_netGetUnitCodeServ_578AC0(asObjectC(unit)))
 		},
-		FloatToInt: func(value float32) int32 { return int32(C.nox_float2int(C.float(value))) },
+		FloatToInt: server.X87TruncateSignedDWORD419A70,
 		Animation: func(unit *server.Object) int32 {
-			return int32(C.nox_xxx_mobActionToAnimation_533790(asObjectC(unit)))
+			return int32(nox_xxx_mobActionToAnimation_533790(asObjectC(unit)))
 		},
-		Random: func(min, max int32) int32 {
-			return int32(C.nox_common_randomInt_415FA0(C.int(min), C.int(max)))
-		},
+		Random: nox_common_randomInt_415FA0,
 		Frames: func(index int32) (int32, int32) {
 			var frames, duration C.int
-			C.nox_xxx_animPlayerGetFrameRange_4F9F90(C.int(index), &frames, &duration)
+			nox_xxx_animPlayerGetFrameRange_4F9F90(index, &frames, &duration)
 			return int32(frames), int32(duration)
 		},
 		Direction: func(index int32, out *server.IndexedDirectionVector509E20) {
-			var value C.int2
-			C.nox_xxx_xferIndexedDirection_509E20(C.int(index), &value)
-			out.X, out.Y = int32(value.field_0), int32(value.field_4)
+			server.IndexedDirection509E20(index, out)
 		},
 		Enqueue: func(player int32, packet [11]byte) int32 {
-			if C.nox_netlist_addToMsgListSrv_40EF40(C.int(player), (*C.uchar)(unsafe.Pointer(&packet[0])), C.int(len(packet))) {
+			if nox_netlist_addToMsgListSrv_40EF40(player, (*C.uchar)(unsafe.Pointer(&packet[0])), int32(len(packet))) {
 				return 1
 			}
 			return 0

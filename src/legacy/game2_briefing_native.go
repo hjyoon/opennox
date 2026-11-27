@@ -218,7 +218,7 @@ func nox_xxx_wndProc_44E6E0(unused1 *C.nox_window, event C.int, unused2 C.uintpt
 //export sub_44E6F0
 func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	*g2bPosition() = float32(float64(*g2bPosition()) - float64(sub_44E8B0()))
-	y := C.nox_float2int(C.float(*g2bPosition()))
+	y := nox_float2int(C.float(*g2bPosition()))
 	C.nox_window_setPos_46A9B0(win, 0, y)
 	C.nox_client_copyRect_49F6F0(C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)), 640, 480)
 	flags := memmap.Uint8(0x5D4594, 832472)

@@ -123,7 +123,7 @@ func drawObjectInvisibility4C4770(dr, local *client.Drawable, player *server.Pla
 		if scale == 0 {
 			scale = 1
 		}
-		distance = int32(C.nox_double2int(C.double(math.Sqrt(float64(dx*dx+dy*dy))))) / scale
+		distance = int32(nox_double2int(C.double(math.Sqrt(float64(dx*dx+dy*dy))))) / scale
 	}
 	if observer {
 		drawObjectSetAlpha(0x80)

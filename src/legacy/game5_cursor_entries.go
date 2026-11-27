@@ -72,7 +72,7 @@ func game5CursorScan(obj *server.Object, cursor *types.Pointf) {
 // original cursor scan. The shape is addressed by its native field location.
 func game5CursorContains(obj *server.Object, cursor *types.Pointf) bool {
 	return server.PlayerCursorGeometry54AFB0(obj, cursor, func(radius float32) int32 {
-		return int32(C.nox_float2int(C.float(radius)))
+		return server.X87TruncateSignedDWORD419A70(radius)
 	})
 }
 

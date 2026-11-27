@@ -291,7 +291,7 @@ func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object,
 		},
 		maxExtraLives: func() int32 {
 			value := GetServer().S().Balance.Float("MaxExtraLives")
-			return int32(C.nox_float2int(C.float(value)))
+			return server.X87TruncateSignedDWORD419A70(float32(value))
 		},
 		resetQuest: Sub_4D6000,
 		sendQuestStage: func(player *server.Player) {

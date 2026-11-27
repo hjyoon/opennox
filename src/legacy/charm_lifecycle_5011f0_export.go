@@ -24,9 +24,7 @@ func charmRuntime5011F0() server.CharmRuntime5011F0 {
 		Charmable: func(typeIndex uint16) int32 {
 			return int32(nox_xxx_creatureIsCharmableByTT_4272B0(C.int(typeIndex)))
 		},
-		FloatToInt: func(value float32) int32 {
-			return int32(C.nox_float2int(C.float(value)))
-		},
+		FloatToInt:        server.X87TruncateSignedDWORD419A70,
 		Distance:          objectDistance_4E6C00,
 		CheckLimit:        Nox_xxx_checkSummonedCreaturesLimit_500D70,
 		BuffApplyRuntime:  buffApplyRuntime4FF380(),

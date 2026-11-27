@@ -41,7 +41,7 @@ func summonRuntime500DA0() server.SummonRuntime500DA0 {
 			*memmap.PtrUint16(0x5D4594, summonEffectIDOffset500DA0) = value
 		},
 		FloatToInt: func(value float32) int32 {
-			return int32(C.nox_float2int(C.float(value)))
+			return server.X87TruncateSignedDWORD419A70(value)
 		},
 	}
 }

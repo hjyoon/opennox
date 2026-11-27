@@ -12,7 +12,7 @@ import (
 )
 
 func resourceSpellFloatToInt52DD50(value float32) int32 {
-	return int32(C.nox_float2int(C.float(value)))
+	return server.X87TruncateSignedDWORD419A70(value)
 }
 
 //export nox_xxx_castSpellWinkORrestoreHealth_52BF20

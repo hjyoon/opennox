@@ -92,8 +92,7 @@ func worldTileCapacity411160() int32 { return C.NOX_WORLD_TILE_CAPACITY }
 func worldTileCalloc411160(count, size uintptr) unsafe.Pointer {
 	return game4SupportAllocate(count, size)
 }
-func worldTileFree411160(p unsafe.Pointer)          { game4SupportReleaseMemory(p) }
-func worldTileFloatToInt411160(value float32) int32 { return int32(C.nox_float2int(C.float(value))) }
+func worldTileFree411160(p unsafe.Pointer) { game4SupportReleaseMemory(p) }
 func worldTileDefinitions411160() []server.TileDef {
 	return unsafe.Slice((*server.TileDef)(unsafe.Pointer(&floorTileStorage.definitions[0])), len(floorTileStorage.definitions))
 }

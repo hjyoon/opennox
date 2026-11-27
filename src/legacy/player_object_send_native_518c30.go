@@ -26,7 +26,7 @@ func PlayerSendHealthDeltaNative4D8760(index int32, code uint16, delta int16) {
 }
 
 func PlayerSendFloatToIntNative419A70(value float32) int32 {
-	return int32(C.nox_float2int(C.float(value)))
+	return server.X87TruncateSignedDWORD419A70(value)
 }
 
 func PlayerSendDirectionNative509E20(index int32) server.IndexedDirectionVector509E20 {

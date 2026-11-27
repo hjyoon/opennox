@@ -1223,8 +1223,38 @@ Unix uses its host `glob` for wildcard matching. The probed Darwin
 and Linux libraries differ on bracket expressions.
 
 The two return-word changes reduce the linked macOS ARM64 preamble
-definitions from 63 to 61. The product no longer links the two
-sentinel getters or the three Go calls to C file enumeration.
+definitions from 63 to 61. The retired call symbols are the two
+sentinel getters and the three Go calls to C file enumeration.
+
+### Number conversions and complex object packets
+
+Go player and complex object sends, tile coordinates, map data,
+spells, generator updates, equipment, briefing, and save fields
+use the existing signed 32-bit conversion. The save binding
+performs the original binary32 conversion before truncation.
+The complex object sender calls the Go unit-code, animation,
+random, direction, frame-range, and packet services in the same
+order. The C exports keep their declared argument and result types.
+
+The 17 original bytes at `GAME.EXE` address `0x419A70` executed
+under Linux 386 emulation with the original x87 control word
+`0x0E3F`. All 65,557 raw inputs produced the same integer results
+as the Go conversion, including NaNs, infinities, and signed
+range boundaries.
+
+This change retires 19 Cgo call sites in the Go runtime paths.
+Across the return-word and conversion changes, the default macOS
+ARM64 client links 867 Cgo call symbols in the legacy packages,
+down from 877. Clang and GCC observed a 320-byte file search record
+with the same field offsets on macOS ARM64, Linux ARM64 and 386,
+and Windows 386 and AMD64.
+
+The focused native tests passed on macOS ARM64 with `cgocheck2`
+and `checkptr=2`. The client passed 12 targeted macOS replays and
+five Linux ARM64 replays, including exact chapter-one captures
+and fresh-process manual Save and Load. Four earned campaign
+replays also passed again. They covered Warrior3 WarCry, the two
+Wizard2 Swap stages, and the Wizard3 HP33/MP49 stat audit.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

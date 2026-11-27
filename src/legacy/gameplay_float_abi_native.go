@@ -1,4 +1,4 @@
-//go:build amd64 || arm64
+//go:build amd64 || arm || arm64
 
 package legacy
 
@@ -15,8 +15,7 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-// The native float ABI on these targets copies 32-bit register values
-// without converting them through x87.
+// These native ABIs copy float arguments as binary32 values.
 //
 //export nox_xxx_mapDamageUnitsAround_4E25B0
 func nox_xxx_mapDamageUnitsAround_4E25B0(center *C.float, outer, inner C.float, damage, typ C.int, source, excluded *nox_object_t) {

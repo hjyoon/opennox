@@ -15,6 +15,7 @@ package legacy
 #include "GAME3_1.h"
 #include "GAME3_2.h"
 #include "GAME3_3.h"
+#include "gameplay_float_abi_386.h"
 #include "GAME4.h"
 #include "GAME4_1.h"
 #include "GAME4_3.h"

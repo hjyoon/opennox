@@ -137,7 +137,7 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 			server.Nox_xxx_soundDefaultDamageSound_532E20(target, source)
 		},
 		PlayerDamageSound: func(target, source *server.Object) {
-			C.nox_xxx_soundPlayerDamageSound_5328B0(asObjectC(target), asObjectC(source))
+			Nox_xxx_soundPlayerDamageSound_5328B0(target, source)
 		},
 		GameBallType: uint16(s.Types.GameBallID()),
 		GameBallOnDamage: func(source, target *server.Object, damage int32) {
@@ -340,7 +340,7 @@ func playerDamageRuntime4E17B0(s *server.Server) server.PlayerDamageRuntime4E17B
 			s.Nox_xxx_netSendVampFx_523270(netmsg.Op(id), source, target, int(amount))
 		},
 		PlayerDamageSound: func(target, source *server.Object) {
-			C.nox_xxx_soundPlayerDamageSound_5328B0(asObjectC(target), asObjectC(source))
+			Nox_xxx_soundPlayerDamageSound_5328B0(target, source)
 		},
 		PlayerDamageSoundC: C.nox_xxx_soundPlayerDamageSound_5328B0,
 		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {

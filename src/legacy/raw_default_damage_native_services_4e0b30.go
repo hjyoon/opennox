@@ -57,10 +57,13 @@ func rawDefaultDamageInvokeService4E0B30(call rawDefaultDamageNativeService4E0B3
 	// frame before any typed object access or world lookup.
 	switch call.Site {
 	case 0x4e0d05:
-		if damage := server.LookupObjectDamageGo(call.Callback); damage != nil {
-			damage(unit(0), unit(1), unit(2), int32(a[3].Word), object.DamageType(a[4].Word))
+		amount, typ := int32(a[3].Word), int32(a[4].Word)
+		if raw := rawObjectDamageEntry(call.Callback); raw != nil {
+			raw(a[0].Pointer, a[1].Pointer, a[2].Pointer, amount, typ)
+		} else if damage := server.LookupObjectDamageGo(call.Callback); damage != nil {
+			damage(unit(0), unit(1), unit(2), amount, object.DamageType(typ))
 		} else {
-			rawDefaultDamageCallDamageNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer, a[2].Pointer, int32(a[3].Word), int32(a[4].Word))
+			rawDefaultDamageCallDamageNativeCallback4E0B30(call.Callback, a[0].Pointer, a[1].Pointer, a[2].Pointer, amount, typ)
 		}
 		return reply
 	case 0x4e1049, 0x4e104f:

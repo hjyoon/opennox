@@ -77,6 +77,25 @@ func init() {
 	server.RegisterObjectDamageSound("PlayerDamageSound", C.nox_xxx_soundPlayerDamageSound_5328B0)
 }
 
+// The public entries for these handlers run the original raw bodies. The
+// ordinary Go registry also holds structured versions for gameplay callers.
+func rawObjectDamageEntry(callback unsafe.Pointer) func(target, source, weapon unsafe.Pointer, damage, typ int32) int32 {
+	switch callback {
+	case C.sub_4E23C0:
+		return rawSkeletonDamageNative4E23C0
+	case C.sub_4E24B0:
+		return rawStoneDamageNative4E24B0
+	case C.sub_4E24E0:
+		return rawMechGolemDamageNative4E24E0
+	case C.nox_xxx_damageFlammable_4E2520:
+		return rawFlammableDamageNative4E2520
+	case C.nox_xxx_damageBlackPowder_4E2560:
+		return rawBlackPowderDamageNative4E2560
+	default:
+		return nil
+	}
+}
+
 func registeredDamageSound(callback unsafe.Pointer) func(*server.Object, *server.Object) int {
 	switch callback {
 	case C.nox_xxx_soundDefaultDamageSound_532E20:

@@ -1495,6 +1495,75 @@ preceding client linked 850 wrappers with 761 Go export matches.
 The two adapter removals leave 25 top-level legacy C files and
 remove three definitions from the recorded 68-definition union.
 
+### Chat, death feed, quickbar, and renderer calls
+
+The original chat placement routine at `0x48E6A0` writes the
+coordinates in branch order. The second coordinate can read the first
+store when the destination aliases a bubble field. The original body
+ran under QEMU for all 256 direction values at four font heights and
+eight aliased writes. The Go export preserves that order and returns the
+same native-width address or signed gap. The prior build read both
+coordinates before either store and failed the aliased cases.
+
+The death feed draw tail at `0x495846` tests the live victim field after
+drawing. Its original instructions ran with a record address, positive
+and negative text coordinates, and a draw callback that clears the
+victim. The Go entry at `0x495500` exports the complete return word.
+The previous entry consulted the victim before drawing and returned the
+record address in the callback case.
+
+The original quickbar book insert at `0x45DBE0` writes the spell before
+querying its flags. It rereads the current quickbar and its selected row
+after the query. Four QEMU cases verified the zero and nonzero flag
+returns with a changed row, the zero spell, and an opaque kind. The Go
+export updates the live row's byte and uses a C `uintptr_t` for the kind
+and return word. The C entry regression uses native allocations above
+4 GiB where the platform supports them. It reproduces the prior
+incorrect write to the previous row for both flag results. A missing
+initial row still returns the kind before querying spell flags.
+
+Thirty renderer and resource services now take direct Go calls at 139
+sites. The native entries retain their declared types. Signed
+coordinates and colors retain their 32-bit representation, and window
+loading keeps the callback's original address. Literal image and window
+names without embedded zeros reach the same loaders as Go strings.
+
+Removing the chat, death feed, and quickbar adapters leaves 22 top-level
+legacy C files with 62 definition sites across the audited profiles.
+Clang found 53 definitions in 19 files for the default macOS ARM64
+build. The additional sites are the three Windows file search wrappers,
+the four safe-build memory and string wrappers, and the two 32-bit float
+bit transfers.
+
+| Remaining C responsibility | Definition sites |
+| --- | ---: |
+| Pointer and scalar word adapters | 34 |
+| Variadic formatting and C library calls | 14 |
+| Platform file search wrappers | 6 |
+| Safe-build destination returns | 4 |
+| Float bit transfer on 32-bit hosts | 2 |
+| Indirect native damage and sound calls | 2 |
+
+The macOS ARM64 client links 775 distinct legacy `_Cfunc_` wrappers.
+Of those, 688 match a linked Go export and a Go source call. The
+preceding count was 805 wrappers with 718 Go matches.
+
+Source revision `146c5690a` passed 56 selected top-level tests each
+on macOS ARM64 and Linux ARM64 PIE with `cgocheck2` and `checkptr=2`.
+The QEMU Linux 386 `server,safe` gate passed 54. This includes the
+two stock-image tests run separately with the original asset bag on
+each Linux profile. The complete macOS renderer and GUI suites also
+passed, including validation of 126,687 stock sprite pixel streams.
+Windows AMD64 and 386 server builds produced the expected PE
+architectures.
+
+The same revision passed eight normal and two HD macOS end-to-end
+replays with 33 exact screen matches. Both clients matched the Chapter
+One briefing before the first click, the transition into gameplay,
+and the five inventory clipping frames. The normal client also passed
+host chat with IME submission, hosted player death, Trap Set quickbar
+icons, the wizard and conjurer book defaults, and minimap clipping.
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

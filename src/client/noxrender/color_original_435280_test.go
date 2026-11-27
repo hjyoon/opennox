@@ -112,6 +112,20 @@ func TestRenderMaterialRGBMatchesOriginal4340A0(t *testing.T) {
 		if *d != want {
 			t.Fatalf("material %d, RGB=%v differs from original state or changed neighbors", row.Index, row.Input)
 		}
+		d = originalMaterialData()
+		result := int32(row.Index)
+		if row.RGB != nil {
+			m := &want.materials[row.Index]
+			red, green, blue := uint32(row.RGB[0]), uint32(row.RGB[1]), uint32(row.RGB[2])
+			m.field0, m.field1 = red<<16|red, red<<16|red
+			m.field2, m.field3 = green<<16|green, green<<16|green
+			m.field4, m.field5 = blue<<16|blue, blue<<16|blue
+			result = int32(blue<<16 | blue)
+		}
+		got := d.SetMaterialRGBWithExpansion(row.Index, row.Input[0], row.Input[1], row.Input[2], true)
+		if *d != want || got != result {
+			t.Fatalf("expanded material %d, RGB=%v, result=%#x, want result=%#x", row.Index, row.Input, got, result)
+		}
 	}
 }
 

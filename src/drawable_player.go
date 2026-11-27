@@ -415,34 +415,7 @@ func (c *Client) DrawWeapon(vp *noxrender.Viewport, dr *client.Drawable, equip u
 	}
 }
 func (c *Client) sub_4B8E10(earr *[server.PlayerWeaponCnt]server.EquipmentData, bit uint32) {
-	var found *server.EquipmentData
-	for i := range earr {
-		e := &earr[i]
-		if e.Field0 == bit {
-			found = e
-			break
-		}
-	}
-	if found == nil {
-		return
-	}
-	id := c.Server.Weapons.Sub_415840(bit)
-	m := c.Server.Modif.Nox_xxx_getProjectileClassById413250(id)
-	if m == nil {
-		return
-	}
-	for i := 1; i <= 6; i++ {
-		cl := m.Colors12[i]
-		c.r.Data().SetMaterialRGB(i, int(cl.R), int(cl.G), int(cl.B))
-	}
-	inds := m.ColorIndexes()
-	for i := 0; i < 4; i++ {
-		p := found.Field4[i]
-		if p != nil {
-			cl := (*server.ModifierEff)(p).Color24
-			c.r.Data().SetMaterialRGB(int(inds[i]), int(cl.R), int(cl.G), int(cl.B))
-		}
-	}
+	legacy.SetWeaponMaterials4B8E10(c.Server, c.r.Data(), earr, bit)
 }
 func (c *Client) drawOtherPlayerHP(vp *noxrender.Viewport, dr *client.Drawable, perc int, alt bool) {
 	if dr == nil {

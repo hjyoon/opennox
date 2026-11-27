@@ -28,25 +28,29 @@ func handleSummonFXNative48EA70(data []byte, hooks summonFXHooks48EA70) int {
 	if !hooks.connected() {
 		return 12
 	}
-	pos := image.Pt(
-		int(binary.LittleEndian.Uint16(data[1:3])),
-		int(binary.LittleEndian.Uint16(data[3:5])),
-	)
+	readPosition := func() image.Point {
+		return image.Pt(int(binary.LittleEndian.Uint16(data[1:3])), int(binary.LittleEndian.Uint16(data[3:5])))
+	}
+	pos := readPosition()
+	id := binary.LittleEndian.Uint16(data[5:7])
+	thing := binary.LittleEndian.Uint16(data[7:9])
+	direction := data[9]
+	lifetime := binary.LittleEndian.Uint16(data[10:12])
 	parent := hooks.spawnParent(hooks.typeID("SummonEffect"), pos)
 	if parent == nil {
 		return 12
 	}
-	child := hooks.newChild(int(binary.LittleEndian.Uint16(data[7:9])))
+	child := hooks.newChild(int(thing))
 	if child == nil {
 		return 12
 	}
-	child.PosVec = pos
-	child.AnimDir = hooks.direction(data[9])
+	child.PosVec = readPosition()
+	child.AnimDir = hooks.direction(direction)
 	child.AnimInd = 8
 	state := parent.UnionSummon()
 	state.Child = child
-	state.Lifetime = binary.LittleEndian.Uint16(data[10:12])
-	state.ID = binary.LittleEndian.Uint16(data[5:7])
+	state.Lifetime = lifetime
+	state.ID = id
 	parent.AnimStart = hooks.frame()
 	return 12
 }

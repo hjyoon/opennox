@@ -120,8 +120,14 @@ func (p *RenderData) material(ind int) *RenderMat {
 }
 
 func (p *RenderData) SetMaterialRGB(ind int, r, g, b int) {
+	p.SetMaterialRGBWithExpansion(ind, r, g, b, false)
+}
+
+// SetMaterialRGBWithExpansion retains the optional four-lane channel values
+// and the scalar result of the native material callback.
+func (p *RenderData) SetMaterialRGBWithExpansion(ind int, r, g, b int, expand bool) int32 {
 	if ind < 0 || ind >= 16 {
-		return
+		return int32(ind)
 	}
 	r = r & 0xFF
 	g = g & 0xFF
@@ -129,6 +135,14 @@ func (p *RenderData) SetMaterialRGB(ind int, r, g, b int) {
 	m := p.material(ind)
 	m.Color = RGB{R: r, G: g, B: b}
 	m.Color32 = noxcolor.RGB5551Color(byte(r), byte(g), byte(b)).Color32()
+	if !expand {
+		return 0
+	}
+	red, green, blue := uint32(r)*0x10001, uint32(g)*0x10001, uint32(b)*0x10001
+	m.field0, m.field1 = red, red
+	m.field2, m.field3 = green, green
+	m.field4, m.field5 = blue, blue
+	return int32(blue)
 }
 
 func (p *RenderData) Clip() bool {

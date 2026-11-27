@@ -27,6 +27,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
@@ -111,12 +112,13 @@ func nox_draw_splitColor_435280(cl C.short, pr, pg, pb *C.uchar) {
 }
 
 //export nox_draw_setMaterial_4340A0
-func nox_draw_setMaterial_4340A0(ind_cgo, r_cgo, g_cgo, b_cgo int32) {
-	ind := int(ind_cgo)
-	r := int(r_cgo)
-	g := int(g_cgo)
-	b := int(b_cgo)
-	GetClient().R2().Data().SetMaterialRGB(ind, r, g, b)
+func nox_draw_setMaterial_4340A0(ind, r, g, b int32) int32 {
+	return setMaterialRGB4340A0(GetClient().R2().Data(), ind, r, g, b)
+}
+
+func setMaterialRGB4340A0(data *noxrender.RenderData, ind, r, g, b int32) int32 {
+	expand := memmap.Uint32(0x973F18, 2376) != 0
+	return data.SetMaterialRGBWithExpansion(int(ind), int(r), int(g), int(b), expand)
 }
 
 //export nox_draw_setMaterial_4341D0

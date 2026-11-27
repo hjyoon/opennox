@@ -274,6 +274,7 @@ func TestGame3SummonFullChildPointerAndFreeOrder(t *testing.T) {
 	old := game3EffectsFactory
 	defer func() { game3EffectsFactory = old }()
 	clock := uint32(0xfedcba98)
+	pos := [2]uint16{65535, 32768}
 	calls := []string{}
 	h := game3EffectServices{typeID: func(s string) uint32 { calls = append(calls, s); return 17 }, load: func(id uint32, p image.Point) *client.Drawable {
 		if id != 17 || p != image.Pt(65535, 32768) {
@@ -286,13 +287,17 @@ func TestGame3SummonFullChildPointerAndFreeOrder(t *testing.T) {
 		if id != 0xaffe {
 			t.Error("WORD thing id")
 		}
+		pos = [2]uint16{2222, 4444}
 		return child
 	}, direction: func(v byte) byte { return v ^ 0x80 }, frame: func() uint32 { v := clock; clock++; return v }}
 	game3EffectsFactory = func() game3EffectServices { return h }
-	got := cfixture.Game3PublicSummon(-123, [2]uint16{65535, 32768}, 0xaffe, 255, -4)
+	got := cfixture.Game3PublicSummon(-123, &pos, 0xaffe, 255, -4)
 	runtime.GC()
-	if got != 0xfedcba98 || parent.AnimStart != 0xfedcba99 || cfixture.Game3SummonChild(parent) != child.C() || parent.UnionSummon().ID != uint16(0xff85) || parent.UnionSummon().Lifetime != 65532 || child.AnimDir != 127 || child.AnimInd != 8 {
+	if got != 0xfedcba98 || parent.AnimStart != got || clock != 0xfedcba99 || cfixture.Game3SummonChild(parent) != child.C() || parent.UnionSummon().ID != uint16(0xff85) || parent.UnionSummon().Lifetime != 65532 || child.AnimDir != 127 || child.AnimInd != 8 {
 		t.Fatalf("native summon child/token fields: %#x child=%p", got, cfixture.Game3SummonChild(parent))
+	}
+	if child.PosVec != image.Pt(2222, 4444) || parent.PosVec != image.Pt(65535, 32768) {
+		t.Fatalf("parent position = %v, child position = %v", parent.PosVec, child.PosVec)
 	}
 	p := memmap.PtrUint32(0x5D4594, 1313744)
 	save := *p
@@ -354,7 +359,7 @@ func TestGame3ShieldTypedPointerAndOpaqueSentinel(t *testing.T) {
 		f(existing)
 	}, load: func(id uint32, p image.Point) *client.Drawable {
 		loadCalls++
-		if id != 1001 || p != image.Pt(50, 73) {
+		if id != 1001 || p != image.Pt(80, 93) {
 			t.Error("typed shield location/id")
 		}
 		return created
@@ -363,7 +368,9 @@ func TestGame3ShieldTypedPointerAndOpaqueSentinel(t *testing.T) {
 	if got := cfixture.Game3PublicShield(0x80001234, 1); got != 1 || loadCalls != 0 {
 		t.Fatalf("opaque found sentinel %#x loads=%d", got, loadCalls)
 	}
-	h.each = func(image.Rectangle, func(*client.Drawable)) {}
+	h.each = func(image.Rectangle, func(*client.Drawable)) {
+		owner.PosVec = image.Pt(80, 90)
+	}
 	game3EffectsFactory = func() game3EffectServices { return h }
 	if got := cfixture.Game3PublicShield(0x80001234, 1); got != uintptr(created.C()) || created.UnionEffect().Field_108 != 0x80001234 {
 		t.Fatalf("full native shield %#x", got)
@@ -405,7 +412,7 @@ func TestGame3EquipmentNativeStrideModifiersAndGC(t *testing.T) {
 		def.Colors12[i].G = byte(2 * i)
 		def.Colors12[i].B = byte(3 * i)
 	}
-	calls := [][4]int{}
+	calls := [][4]int32{}
 	old := game3MaterialFactory
 	defer func() { game3MaterialFactory = old }()
 	game3MaterialFactory = func() game3MaterialServices {
@@ -414,22 +421,37 @@ func TestGame3EquipmentNativeStrideModifiersAndGC(t *testing.T) {
 				t.Error("wire bit narrowed")
 			}
 			return def
-		}, set: func(i, r, g, b int) { calls = append(calls, [4]int{i, r, g, b}) }}
+		}, set: func(i, r, g, b int32) int32 {
+			calls = append(calls, [4]int32{i, r, g, b})
+			if i == 11 {
+				entries[index].Field4[3] = unsafe.Pointer(owners[0])
+				def.SecEnchant48 = 13
+			}
+			return b * 0x10001
+		}}
 	}
 	runtime.GC()
 	got := cfixture.Game3PublicMaterial(p, 0x80000000)
-	if got != uintptr(unsafe.Pointer(owners[3])) || len(calls) != 10 {
+	if got != 0x00c800c8 || len(calls) != 10 {
 		t.Fatalf("native modifier return/call count %#x %v", got, calls)
 	}
-	for i := 1; i <= 6; i++ {
-		if calls[i-1] != [4]int{i, i, 2 * i, 3 * i} {
+	for i := int32(1); i <= 6; i++ {
+		if calls[i-1] != [4]int32{i, i, 2 * i, 3 * i} {
 			t.Fatalf("base material %d", i)
 		}
 	}
-	for i := 0; i < 4; i++ {
-		if calls[6+i] != [4]int{9 + i, 100 + i, 150 + i, 200 + i} {
+	for i := int32(0); i < 3; i++ {
+		if calls[6+i] != [4]int32{9 + i, 100 + i, 150 + i, 200 + i} {
 			t.Fatalf("modifier order %d", i)
 		}
+	}
+	if calls[9] != [4]int32{13, 100, 150, 200} {
+		t.Fatalf("last modifier did not reload the live index and pointer: %v", calls[9])
+	}
+	entries[index].Field4[2] = nil
+	entries[index].Field4[3] = nil
+	if got := cfixture.Game3PublicMaterial(p, 0x80000000); got != 0 {
+		t.Fatalf("empty final modifier returned %#x", got)
 	}
 	if !cfixture.Game3Guards(p, n) {
 		t.Fatal("native equipment array canary changed")

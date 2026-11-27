@@ -38,12 +38,14 @@ func TestHandleSummonFXNative48EA70HighAddress(t *testing.T) {
 			}
 			parent.TypeIDVal = uint32(typ)
 			parent.PosVec = pos
+			clear(packet[5:])
 			return parent
 		},
 		newChild: func(typ int) *client.Drawable {
 			if typ != 0x1357 {
 				t.Fatalf("child type = %#x", typ)
 			}
+			copy(packet[1:5], []byte{0x44, 0x33, 0x66, 0x55})
 			return child
 		},
 		direction: func(v byte) byte {
@@ -58,7 +60,7 @@ func TestHandleSummonFXNative48EA70HighAddress(t *testing.T) {
 	if got != 12 || state.Child != child || state.Lifetime != 0x2468 || state.ID != 0xabcd || parent.AnimStart != 9001 {
 		t.Fatalf("summon result=%d state=%+v animStart=%d", got, state, parent.AnimStart)
 	}
-	if child.PosVec != image.Pt(0x1234, 0x5678) || child.AnimDir != 6 || child.AnimInd != 8 {
+	if child.PosVec != image.Pt(0x3344, 0x5566) || child.AnimDir != 6 || child.AnimInd != 8 {
 		t.Fatalf("child state = pos:%v dir:%d anim:%d", child.PosVec, child.AnimDir, child.AnimInd)
 	}
 }

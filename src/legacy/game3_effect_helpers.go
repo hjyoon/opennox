@@ -49,13 +49,8 @@ func game3EffectsRuntime() game3EffectServices {
 		}, newChild: func(id uint16) *client.Drawable { return cl.Nox_new_drawable_for_thing(int(id)) },
 		deleteSelf: cl.Nox_xxx_spriteDeleteStatic_45A4E0_drawable, deleteChild: func(d *client.Drawable) { cl.Nox_xxx_spriteDelete_45A4B0(d) },
 		update: func(d *client.Drawable, p image.Point) { c.Nox_xxx_updateSpritePosition_49AA90(d, p.X, p.Y) }, first: c.Objs.FirstList1,
-		byCode: func(code uint32) *client.Drawable {
-			if code&0x8000 != 0 {
-				return c.Objs.ByNetCodeStatic(int(code & 0x7fff))
-			}
-			return c.Objs.ByNetCodeDynamic(int(code & 0x7fff))
-		},
-		each: c.Objs.EachInRect, pointFX: func(id uint32, p image.Point) {
+		byCode: c.Objs.ByNetCode32,
+		each:   c.Objs.EachInRect, pointFX: func(id uint32, p image.Point) {
 			nox_xxx_makePointFxCli_499610(C.int(id), 50, 1000, 30, C.int(p.X), C.int(p.Y))
 		},
 		direction: func(v byte) byte { return byte(C.nox_xxx_math_509EA0(C.int(v))) }, render: cl.R2(), distance: approximateDistance32,
@@ -198,32 +193,32 @@ func sub_4B6B80(vp *C.int, dr *C.nox_drawable, moving C.int) C.int {
 	return C.int(game3GlowDraw((*noxrender.Viewport)(unsafe.Pointer(vp)), asDrawable(dr), moving != 0, game3EffectsFactory()))
 }
 
-func game3Summon(id int16, pos image.Point, thing uint16, direction byte, lifetime int16, h game3EffectServices) uintptr {
+//export nox_xxx_netHandleSummonPacket_4B7C40
+func nox_xxx_netHandleSummonPacket_4B7C40(id C.short, xy *C.ushort, thing C.ushort, direction C.uchar, lifetime C.short) C.uint32_t {
+	raw := unsafe.Slice((*byte)(unsafe.Pointer(xy)), 4)
+	readPosition := func() image.Point {
+		return image.Pt(int(binary.LittleEndian.Uint16(raw)), int(binary.LittleEndian.Uint16(raw[2:])))
+	}
+	pos := readPosition()
+	h := game3EffectsFactory()
 	d := h.load(h.typeID("SummonEffect"), pos)
 	if d == nil {
 		return 0
 	}
-	child := h.newChild(thing)
+	child := h.newChild(uint16(thing))
 	if child == nil {
 		return 0
 	}
-	child.PosVec = pos
-	child.AnimDir = h.direction(direction)
+	child.PosVec = readPosition()
+	child.AnimDir = h.direction(byte(direction))
 	child.AnimInd = 8
 	data := d.UnionSummon()
 	data.Child = child
 	data.Lifetime = uint16(lifetime)
 	data.ID = uint16(id)
-	result := h.frame()
-	d.AnimStart = h.frame()
-	return uintptr(result)
-}
-
-//export game3_summon_packet_native
-func game3_summon_packet_native(id C.short, xy *C.ushort, thing C.ushort, direction C.uchar, lifetime C.short) C.uintptr_t {
-	raw := unsafe.Slice((*byte)(unsafe.Pointer(xy)), 4)
-	pos := image.Pt(int(binary.LittleEndian.Uint16(raw)), int(binary.LittleEndian.Uint16(raw[2:])))
-	return C.uintptr_t(game3Summon(int16(id), pos, uint16(thing), byte(direction), int16(lifetime), game3EffectsFactory()))
+	frame := h.frame()
+	d.AnimStart = frame
+	return C.uint32_t(frame)
 }
 
 //export sub_4B7EE0
@@ -293,6 +288,7 @@ func game3Shield(code uint32, direction int32, h game3EffectServices) uintptr {
 	if worldWordStorage.map_effect_word_1313788 == 1 {
 		return 1
 	}
+	p = d.PosVec
 	shield := h.load(memmap.Uint32(0x5D4594, uintptr(uint32(1313748+4*direction))), image.Pt(p.X, p.Y+3))
 	if shield == nil {
 		return 0
@@ -301,24 +297,40 @@ func game3Shield(code uint32, direction int32, h game3EffectServices) uintptr {
 	return uintptr(shield.C())
 }
 
-//export game3_fx_shield_native
-func game3_fx_shield_native(code C.uint, direction C.int) C.uintptr_t {
+//export nox_xxx_fxShield_4B8090
+func nox_xxx_fxShield_4B8090(code C.uint, direction C.int) C.uintptr_t {
 	return C.uintptr_t(game3Shield(uint32(code), int32(direction), game3EffectsFactory()))
 }
 
 type game3MaterialServices struct {
 	definition func(uint32) *server.Modifier
-	set        func(int, int, int, int)
+	set        func(int32, int32, int32, int32) int32
 }
 
-func game3MaterialRuntime() game3MaterialServices {
-	return game3MaterialServices{definition: func(bit uint32) *server.Modifier {
-		s := GetServer().S()
-		return s.Modif.Nox_xxx_getProjectileClassById413250(s.Weapons.Sub_415840(bit))
-	}, set: func(i, r, g, b int) { GetClient().R2().Data().SetMaterialRGB(i, r, g, b) }}
+func game3MaterialRuntime(s *server.Server, data *noxrender.RenderData) game3MaterialServices {
+	return game3MaterialServices{
+		definition: func(bit uint32) *server.Modifier {
+			return s.Modif.Nox_xxx_getProjectileClassById413250(s.Weapons.Sub_415840(bit))
+		},
+		set: func(ind, r, g, b int32) int32 {
+			return setMaterialRGB4340A0(data, ind, r, g, b)
+		},
+	}
 }
 
-var game3MaterialFactory = game3MaterialRuntime
+var game3MaterialFactory = func() game3MaterialServices {
+	return game3MaterialServices{
+		definition: func(bit uint32) *server.Modifier {
+			s := GetServer().S()
+			return s.Modif.Nox_xxx_getProjectileClassById413250(s.Weapons.Sub_415840(bit))
+		},
+		set: nox_draw_setMaterial_4340A0,
+	}
+}
+
+func SetWeaponMaterials4B8E10(s *server.Server, data *noxrender.RenderData, entries *server.EquipWeaponData, bit uint32) {
+	game3EquipmentMaterials(entries, uintptr(bit), game3MaterialRuntime(s, data))
+}
 
 func game3EquipmentMaterials(entries *[server.PlayerWeaponCnt]server.EquipmentData, token uintptr, h game3MaterialServices) uintptr {
 	var found *server.EquipmentData
@@ -329,29 +341,29 @@ func game3EquipmentMaterials(entries *[server.PlayerWeaponCnt]server.EquipmentDa
 		}
 	}
 	if found == nil {
-		return uintptr(unsafe.Add(unsafe.Pointer(entries), unsafe.Sizeof(*entries)))
+		return uintptr(unsafe.Pointer(entries)) + unsafe.Sizeof(*entries)
 	}
 	def := h.definition(uint32(token))
 	if def == nil {
 		return 0
 	}
-	for i := 1; i <= 6; i++ {
+	for i := int32(1); i <= 6; i++ {
 		c := def.Colors12[i]
-		h.set(i, int(c.R), int(c.G), int(c.B))
+		h.set(i, int32(c.R), int32(c.G), int32(c.B))
 	}
 	inds := def.ColorIndexes()
-	var result unsafe.Pointer
-	for i, p := range found.Field4 {
-		result = p
-		if p != nil {
+	var result int32
+	for i := range found.Field4 {
+		result = 0
+		if p := found.Field4[i]; p != nil {
 			c := (*server.ModifierEff)(p).Color24
-			h.set(int(inds[i]), int(c.R), int(c.G), int(c.B))
+			result = h.set(inds[i], int32(c.R), int32(c.G), int32(c.B))
 		}
 	}
-	return uintptr(result)
+	return uintptr(uint32(result))
 }
 
-//export game3_equipment_materials_native
-func game3_equipment_materials_native(entries unsafe.Pointer, token C.uintptr_t) C.uintptr_t {
+//export sub_4B8E10
+func sub_4B8E10(entries unsafe.Pointer, token C.uintptr_t) C.uintptr_t {
 	return C.uintptr_t(game3EquipmentMaterials((*[server.PlayerWeaponCnt]server.EquipmentData)(entries), uintptr(token), game3MaterialFactory()))
 }

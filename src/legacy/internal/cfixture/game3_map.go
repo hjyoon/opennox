@@ -34,9 +34,9 @@ static size_t game3_test_draw_union_offset(void){return offsetof(nox_drawable,fi
 static void* game3_test_item_modifier(nox_drawable* d,int i){return d->item_modifiers[i];}
 static void* game3_test_summon_child(nox_drawable* d){void* child;memcpy(&child,&d->field_108_1,sizeof child);return child;}
 static uint32_t game3_test_union_word(nox_drawable* d,int i){return d->union_u32[i];}
-static uintptr_t game3_test_summon(short id,unsigned short* pos,unsigned short thing,unsigned char direction,short life){return(uintptr_t)nox_xxx_netHandleSummonPacket_4B7C40(id,pos,thing,direction,life);}
-static uintptr_t game3_test_shield(unsigned int code,int direction){return(uintptr_t)nox_xxx_fxShield_4B8090(code,direction);}
-static uintptr_t game3_test_material(void* entries,uintptr_t bit){return(uintptr_t)sub_4B8E10(entries,(char*)bit);}
+_Static_assert(_Generic(&nox_xxx_netHandleSummonPacket_4B7C40, uint32_t(*)(short,unsigned short*,unsigned short,unsigned char,short):1, default:0), "native summon frame ABI");
+_Static_assert(_Generic(&nox_xxx_fxShield_4B8090, uintptr_t(*)(unsigned int,int):1, default:0), "native shield address or sentinel ABI");
+_Static_assert(_Generic(&sub_4B8E10, uintptr_t(*)(void*,uintptr_t):1, default:0), "native equipment result ABI");
 
 static unsigned char game3_ref_bytes[4096];
 static size_t game3_ref_len,game3_ref_pos;
@@ -194,15 +194,15 @@ func Game3ItemModifier(d *client.Drawable, i int) unsafe.Pointer {
 func Game3SummonChild(d *client.Drawable) unsafe.Pointer {
 	return C.game3_test_summon_child((*C.nox_drawable)(d.C()))
 }
-func Game3PublicSummon(id int16, pos [2]uint16, thing uint16, dir byte, life int16) uintptr {
-	return uintptr(C.game3_test_summon(C.short(id), (*C.ushort)(unsafe.Pointer(&pos[0])), C.ushort(thing), C.uchar(dir), C.short(life)))
+func Game3PublicSummon(id int16, pos *[2]uint16, thing uint16, dir byte, life int16) uint32 {
+	return uint32(C.nox_xxx_netHandleSummonPacket_4B7C40(C.short(id), (*C.ushort)(unsafe.Pointer(&pos[0])), C.ushort(thing), C.uchar(dir), C.short(life)))
 }
 func Game3PublicRemoveSummon(id int16) { C.sub_4B7EE0(C.short(id)) }
 func Game3PublicShield(code uint32, dir int32) uintptr {
-	return uintptr(C.game3_test_shield(C.uint(code), C.int(dir)))
+	return uintptr(C.nox_xxx_fxShield_4B8090(C.uint(code), C.int(dir)))
 }
 func Game3PublicMaterial(entries unsafe.Pointer, bit uintptr) uintptr {
-	return uintptr(C.game3_test_material(entries, C.uintptr_t(bit)))
+	return uintptr(C.sub_4B8E10(entries, C.uintptr_t(bit)))
 }
 func Game3Owner(n int) uint32       { return uint32(C.game3_test_owner(C.int(n))) }
 func Game3SetOwner(n int, v uint32) { C.game3_test_set_owner(C.int(n), C.uint(v)) }

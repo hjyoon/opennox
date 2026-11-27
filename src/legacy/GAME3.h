@@ -127,12 +127,12 @@ int sub_4B6880(uint32_t* a1, nox_drawable* dr, int a3, int a4);
 int sub_4B6970(uint32_t* a1, nox_drawable* dr, int a3, int a4);
 short sub_4B69F0(nox_drawable* dr);
 int sub_4B6B80(int* a1, nox_drawable* dr, int a3);
-uint32_t* nox_xxx_netHandleSummonPacket_4B7C40(short a1, unsigned short* a2, unsigned short a3, unsigned char a4,
-											   short a5);
+uint32_t nox_xxx_netHandleSummonPacket_4B7C40(short id, unsigned short* pos, unsigned short thing,
+										   unsigned char direction, short lifetime);
 void sub_4B7EE0(short a1);
 int nox_xxx_spriteShieldLoad_4B7F90();
-uint32_t* nox_xxx_fxShield_4B8090(unsigned int a1, int a2);
+uintptr_t nox_xxx_fxShield_4B8090(unsigned int code, int direction);
 void nox_xxx_spriteScanForShield_4B81E0(nox_drawable* dr, void* data);
-uint32_t* sub_4B8E10(uint32_t* a1, char* a2);
+uintptr_t sub_4B8E10(void* entries, uintptr_t token);
 
 #endif // NOX_PORT_GAME3

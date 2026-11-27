@@ -8,6 +8,22 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
+func TestDrawableNetCode32PreservesHighBits(t *testing.T) {
+	dynamic := &Drawable{NetCode32: 0x80001234}
+	static := &Drawable{NetCode32: 0x80001234, ObjClass: 0x20000000, NextPtr: dynamic}
+	low := &Drawable{NetCode32: 0x1234, NextPtr: static}
+	drawables := clientDrawables{List1: low}
+	if got := drawables.ByNetCode32(0x80001234); got != dynamic {
+		t.Fatalf("dynamic DWORD code returned %p, want %p", got, dynamic)
+	}
+	if got := drawables.ByNetCode32(0x80009234); got != static {
+		t.Fatalf("static DWORD code returned %p, want %p", got, static)
+	}
+	if got := drawables.ByNetCode(0x1234); got != low {
+		t.Fatalf("WORD code returned %p, want %p", got, low)
+	}
+}
+
 func TestDrawableMinimapFieldsNativeLayout(t *testing.T) {
 	var drawable Drawable
 	wantPosX := uintptr(12)

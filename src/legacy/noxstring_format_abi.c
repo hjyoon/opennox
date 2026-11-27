@@ -1,9 +1,9 @@
+//go:build !386 && !amd64 && !arm && !arm64
+
 #include "noxstring_format_abi.h"
 
 #include <stdio.h>
 #include <string.h>
-
-_Static_assert(sizeof(double) == sizeof(uint64_t), "double bit transport width");
 
 #ifndef NOX_GO_FORMAT_WORDS
 int nox_format_arg_int(nox_format_args* args) {

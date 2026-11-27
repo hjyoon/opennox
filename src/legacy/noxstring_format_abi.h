@@ -3,6 +3,8 @@
 
 #include "noxstring.h"
 
+_Static_assert(sizeof(double) == sizeof(uint64_t), "double bit transport width");
+
 typedef struct nox_format_args {
 	va_list list;
 } nox_format_args;

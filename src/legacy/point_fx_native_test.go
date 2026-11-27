@@ -88,6 +88,26 @@ func TestPointFXNativeLayout(t *testing.T) {
 	}
 }
 
+func TestPointFXAddressCallPreservesNativePointer(t *testing.T) {
+	_, point := pointFXForeignOwner(t, 0x2044)
+	*point = types.Ptf(129, 340)
+	old := pointFXRuntimeForCall522FF0
+	t.Cleanup(func() { pointFXRuntimeForCall522FF0 = old })
+	calls := 0
+	pointFXRuntimeForCall522FF0 = func() server.PointFXNativeRuntime522FF0 {
+		return server.PointFXNativeRuntime522FF0{Send: func(owner *types.Pointf, packet []byte) int32 {
+			calls++
+			if want := []byte{0xa1, 129, 0, 84, 1}; owner != point || !bytes.Equal(packet, want) {
+				t.Fatalf("point FX send received owner %p and packet %x, want %p and %x", owner, packet, point, want)
+			}
+			return -211
+		}}
+	}
+	if got, want := debrisPointFXAtAddress(0x1a1, uintptr(unsafe.Pointer(point))), uint32(0xffffff2d); got != want || calls != 1 {
+		t.Fatalf("point FX returned %#x after %d calls, want %#x after one call", got, calls, want)
+	}
+}
+
 func TestPointFXNativeOriginalMatrix(t *testing.T) {
 	rows := pointFXOriginalCases(t)
 	old := pointFXRuntimeForCall522FF0

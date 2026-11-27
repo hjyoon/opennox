@@ -12,12 +12,7 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5.h"
 #include "server__script__script.h"
-static void special_death_script_address_54e460(uintptr_t data,nox_object_t* caller,nox_object_t* trigger,uint32_t event) {
- nox_xxx_scriptCallByEventBlock_502490((void*)data,caller,trigger,(int)event);
-}
-static void special_death_generator_address_54e460(uintptr_t origin,uint32_t intensity) {
- nox_xxx_sendGeneratorBreakFX_523200((float*)origin,(char)intensity);
-}
+#include "native_death_calls.h"
 */
 import "C"
 
@@ -96,7 +91,7 @@ func specialDeathRuntime54E460() server.SpecialDeathRuntime54E460 {
 			if callback := data.NativeCallback(); callback != nil {
 				nox_xxx_scriptCallByEventBlock_502490(unsafe.Pointer(callback), unsafe.Pointer(caller), unsafe.Pointer(trigger), int32(event))
 			} else {
-				C.special_death_script_address_54e460(C.uintptr_t(data.Address()), asObjectC(caller), asObjectC(trigger), C.uint32_t(event))
+				C.nox_legacy_death_script_at_address(C.uintptr_t(data.Address()), asObjectC(caller), asObjectC(trigger), C.int(int32(event)))
 			}
 			return 0
 		},
@@ -104,7 +99,7 @@ func specialDeathRuntime54E460() server.SpecialDeathRuntime54E460 {
 			if point := origin.NativePoint(); point != nil {
 				server.SendGeneratorBreakFXNative523200(point, byte(intensity), pointFXRuntimeForCall522FF0())
 			} else {
-				C.special_death_generator_address_54e460(C.uintptr_t(origin.Address()), C.uint32_t(intensity))
+				C.nox_legacy_generator_fx_at_address(C.uintptr_t(origin.Address()), C.char(intensity))
 			}
 			return 0
 		},

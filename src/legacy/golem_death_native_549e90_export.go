@@ -12,16 +12,7 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5.h"
 #include "random_reachable_point_4ed970.h"
-// Carry the original nil-object field address into the consuming C entry.
-static void debris_point_address(float radius,uintptr_t origin,float2* output) {
- sub_4ED970(radius,(float2*)origin,output);
-}
-static void debris_force_address(uintptr_t origin,nox_object_t* object,float force) {
- nox_xxx_objectApplyForce_52DF80((float*)origin,object,force);
-}
-static uint32_t debris_pointfx_address(char id,uintptr_t origin) {
- return (uint32_t)nox_xxx_netSendPointFx_522FF0(id,(float2*)origin);
-}
+#include "native_death_calls.h"
 */
 import "C"
 
@@ -44,14 +35,14 @@ func debrisPoint(radius float32, origin server.SkeletonOrigin54A310, output *typ
 	var pin runtime.Pinner
 	pin.Pin(output)
 	defer pin.Unpin()
-	C.debris_point_address(C.float(radius), C.uintptr_t(origin.Address()), (*C.float2)(unsafe.Pointer(output)))
+	C.nox_legacy_debris_point_at_address(C.float(radius), C.uintptr_t(origin.Address()), (*C.float2)(unsafe.Pointer(output)))
 }
 
 func debrisForce(origin server.SkeletonOrigin54A310, o *server.Object, force float32) uint32 {
 	if point := origin.NativePoint(); point != nil {
 		applyForceExport52DF80(o, unsafe.Pointer(point), force)
 	} else {
-		C.debris_force_address(C.uintptr_t(origin.Address()), asObjectC(o), C.float(force))
+		C.nox_legacy_debris_force_at_address(C.uintptr_t(origin.Address()), asObjectC(o), C.float(force))
 	}
 	return 0
 }
@@ -64,7 +55,7 @@ func debrisPointFX(id uint32, origin server.SkeletonOrigin54A310) uint32 {
 }
 
 func debrisPointFXAtAddress(id uint32, address uintptr) uint32 {
-	return uint32(C.debris_pointfx_address(C.char(id), C.uintptr_t(address)))
+	return uint32(C.nox_legacy_point_fx_at_address(C.char(id), C.uintptr_t(address)))
 }
 
 // GolemDeathIndex549E90 is the actual extracted C cache shared by ordinary

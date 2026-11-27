@@ -22,10 +22,10 @@
 #include "spell_mana_bomb_native_530f90.h"
 int nox_xxx_spellTurnUndeadUpdate_531410();
 #include "spell_plasma_native_531580.h"
-int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(nox_object_t* unit, nox_object_t* target);
-int* sub_531C10(nox_object_t* unit, nox_object_t* target);
-int* nox_xxx_monsterAction_531C60(nox_object_t* unit, nox_object_t* target);
-int* sub_531D50(nox_object_t* unit, nox_object_t* target);
+uintptr_t nox_xxx_TODOsomeCallingMeleeAttack_531B40(nox_object_t* unit, nox_object_t* target);
+uintptr_t sub_531C10(nox_object_t* unit, nox_object_t* target);
+uintptr_t nox_xxx_monsterAction_531C60(nox_object_t* unit, nox_object_t* target);
+uintptr_t sub_531D50(nox_object_t* unit, nox_object_t* target);
 #include "monster_fight_run_state_native_531e20.h"
 char nox_xxx_mobActionFight_531EC0(nox_object_t* unit);
 uintptr_t sub_532040(nox_object_t* candidate, void* context);

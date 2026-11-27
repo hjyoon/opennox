@@ -1175,11 +1175,12 @@ func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
 			events = append(events, "glyph")
 			return false
 		},
-		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) {
+		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) int {
 			events = append(events, "quote")
 			if gotPlayer != player || gotItem != item || cost != 20 {
 				t.Fatalf("quote = %p/%p/%d, want %p/%p/20", gotPlayer, gotItem, cost, player, item)
 			}
+			return 1
 		},
 		DetachInventory: func(gotPlayer, gotItem *Object) {
 			events = append(events, "detach")
@@ -1252,11 +1253,12 @@ func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	quoted := (*Object)(nil)
 	got := s.QuoteShopSellNative5109C0(playerUnit, session, 0x1234, ShopSellRuntime5109C0{
-		SendQuote: func(_ *Player, item *Object, cost uint32) {
+		SendQuote: func(_ *Player, item *Object, cost uint32) int {
 			quoted = item
 			if cost != 7 {
 				t.Fatalf("quote cost = %d, want 7", cost)
 			}
+			return 1
 		},
 	})
 	if got != ShopSellQuoted5109C0 || quoted != exact {
@@ -1428,11 +1430,12 @@ func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 	events := make([]string, 0, 7)
 	runtime := ShopRepairRuntime5108D0{
 		RepairCoefficient: 0.5,
-		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) {
+		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) int {
 			events = append(events, "quote")
 			if gotPlayer != player || gotItem != item || cost != 75 {
 				t.Fatalf("repair quote = %p/%p/%d, want %p/%p/75", gotPlayer, gotItem, cost, player, item)
 			}
+			return 1
 		},
 		ProtectGold: func(token uint32, delta int32) {
 			events = append(events, "protect")
@@ -1502,13 +1505,17 @@ func TestShopRepairQuoteRejectsPristineItem5108D0(t *testing.T) {
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	rejects := 0
 	got := s.QuoteShopRepairNative5108D0(playerUnit, session, 9, ShopRepairRuntime5108D0{
-		PlayRejectSound: func(gotPlayer *Object) {
+		PlayRejectSound: func(gotPlayer *Object) uintptr {
 			rejects++
 			if gotPlayer != playerUnit {
 				t.Fatalf("reject player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return 0
 		},
-		SendQuote: func(*Player, *Object, uint32) { t.Fatal("pristine item was quoted") },
+		SendQuote: func(*Player, *Object, uint32) int {
+			t.Fatal("pristine item was quoted")
+			return 0
+		},
 	})
 	if got != ShopRepairNotDamaged5108D0 || rejects != 1 {
 		t.Fatalf("pristine quote = result %d rejects %d", got, rejects)

@@ -95,7 +95,7 @@ type ShopSellRuntime5109C0 struct {
 	DetachInventory       func(player, item *Object)
 	DelayedDelete         func(*Object)
 	ProtectGold           func(token uint32, delta int32)
-	SendQuote             func(*Player, *Object, uint32)
+	SendQuote             func(*Player, *Object, uint32) int
 	ReportGold            func(*Player, *Object)
 	ReportCannotSellQuest func(*Object)
 	ReportCannotSellItem  func(*Object)
@@ -119,11 +119,11 @@ type ShopRepairRuntime5108D0 struct {
 	RepairCoefficient float32
 	SetHealth         func(*Object, uint16)
 	ProtectGold       func(token uint32, delta int32)
-	SendQuote         func(*Player, *Object, uint32)
+	SendQuote         func(*Player, *Object, uint32) int
 	ReportHealth      func(*Player, *Object)
 	ReportCharges     func(*Player, *Object, uint8, uint8)
 	ReportGold        func(*Player, *Object)
-	PlayRejectSound   func(*Object)
+	PlayRejectSound   func(*Object) uintptr
 	PlayRepairSound   func(*Object) uintptr
 }
 
@@ -1034,34 +1034,40 @@ func (s *Server) QuoteShopSellNative5109C0(
 	netCode uint16,
 	runtime ShopSellRuntime5109C0,
 ) ShopSellResult5109C0 {
-	return s.quoteShopSell5109C0(playerUnit, session, uint32(netCode), runtime, true)
+	result, _ := s.quoteShopSell5109C0(playerUnit, session, uint32(netCode), runtime, true)
+	return result
 }
 
+// QuoteShopSellByCodeNative5109C0 returns the word from the original C
+// entry, whose inventory lookup accepts the full DWORD net code.
 func (s *Server) QuoteShopSellByCodeNative5109C0(
 	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopSellRuntime5109C0,
-) ShopSellResult5109C0 {
-	return s.quoteShopSell5109C0(playerUnit, session, netCode, runtime, false)
+) uintptr {
+	_, word := s.quoteShopSell5109C0(playerUnit, session, netCode, runtime, false)
+	return word
 }
 
 func (s *Server) quoteShopSell5109C0(
 	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopSellRuntime5109C0, requireShop bool,
-) ShopSellResult5109C0 {
+) (ShopSellResult5109C0, uintptr) {
 	if requireShop && !s.IsTradeSessionNative(session) {
-		return ShopSellUnsupported5109C0
+		return ShopSellUnsupported5109C0, 0
 	}
-	update, item, result, _ := s.shopSellCandidate5109C0(playerUnit, netCode, runtime)
+	update, item, result, word := s.shopSellCandidate5109C0(playerUnit, netCode, runtime)
+	if result == ShopSellNoItem5109C0 {
+		return result, uintptr(netCode)
+	}
 	if result != ShopSellQuoted5109C0 {
-		return result
+		return result, word
 	}
 	if (requireShop && (!s.IsTradeSessionNative(session) || session.Field16 == 0)) || runtime.SendQuote == nil || update.Player == nil {
-		return ShopSellUnsupported5109C0
+		return ShopSellUnsupported5109C0, 0
 	}
 	price, ok := shopItemCostNative50E3D0(session, item, shopPriceSell50E3D0, 0, s.shopItemCostRuntime50E3D0())
 	if !ok || (requireShop && price < 0) {
-		return ShopSellUnsupported5109C0
+		return ShopSellUnsupported5109C0, 0
 	}
-	runtime.SendQuote(update.Player, item, uint32(price))
-	return ShopSellQuoted5109C0
+	return ShopSellQuoted5109C0, uintptr(int32(runtime.SendQuote(update.Player, item, uint32(price))))
 }
 
 func (s *Server) SendShopSellQuoteNative5109C0(player *Player, item *Object, cost uint32) int {
@@ -1197,46 +1203,47 @@ func (s *Server) QuoteShopRepairNative5108D0(
 	if !s.IsTradeSessionNative(session) {
 		return ShopRepairUnsupported5108D0
 	}
-	return s.quoteShopRepair5108D0(playerUnit, session, uint32(netCode), runtime, true)
+	result, _ := s.quoteShopRepair5108D0(playerUnit, session, uint32(netCode), runtime, true)
+	return result
 }
 
-// QuoteShopRepairByCodeNative5108D0 accepts the full code used by the C
-// entry. A nil session prices the repair without a merchant multiplier.
+// QuoteShopRepairByCodeNative5108D0 returns the original entry's word.
+// A nil session prices the repair without a merchant multiplier.
 func (s *Server) QuoteShopRepairByCodeNative5108D0(
 	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopRepairRuntime5108D0,
-) ShopRepairResult5108D0 {
-	return s.quoteShopRepair5108D0(playerUnit, session, netCode, runtime, false)
+) uintptr {
+	_, word := s.quoteShopRepair5108D0(playerUnit, session, netCode, runtime, false)
+	return word
 }
 
 func (s *Server) quoteShopRepair5108D0(
 	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopRepairRuntime5108D0, requireShop bool,
-) ShopRepairResult5108D0 {
+) (ShopRepairResult5108D0, uintptr) {
 	player, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
-		return ShopRepairUnsupported5108D0
+		return ShopRepairUnsupported5108D0, 0
 	}
 	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
 	if item == nil {
-		return ShopRepairNoItem5108D0
+		return ShopRepairNoItem5108D0, 0
 	}
 	wand := shopRepairWand5108D0(item)
 	needsCharge := wand != nil && wand.MaxCharge != 0 && wand.Charge < wand.MaxCharge
 	health := item.HealthData
 	if !needsCharge && (health == nil || health.Max == 0 || health.Cur == health.Max) {
 		if runtime.PlayRejectSound != nil {
-			runtime.PlayRejectSound(playerUnit)
+			return ShopRepairNotDamaged5108D0, runtime.PlayRejectSound(playerUnit)
 		}
-		return ShopRepairNotDamaged5108D0
+		return ShopRepairNotDamaged5108D0, 0
 	}
 	if (requireShop && session.Field16 == 0) || runtime.SendQuote == nil {
-		return ShopRepairUnsupported5108D0
+		return ShopRepairUnsupported5108D0, 0
 	}
 	price, ok := shopItemCostNative50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient, s.shopItemCostRuntime50E3D0())
 	if !ok || (requireShop && price < 0) {
-		return ShopRepairUnsupported5108D0
+		return ShopRepairUnsupported5108D0, 0
 	}
-	runtime.SendQuote(player, item, uint32(price))
-	return ShopRepairQuoted5108D0
+	return ShopRepairQuoted5108D0, uintptr(int32(runtime.SendQuote(player, item, uint32(price))))
 }
 
 func (s *Server) SendShopRepairQuoteNative5108D0(player *Player, item *Object, cost uint32) int {

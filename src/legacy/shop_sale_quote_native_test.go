@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"slices"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/server"
 )
@@ -26,6 +27,7 @@ type shopSaleQuoteCase struct {
 		PlayerCode uint32 `json:"player_code"`
 		Receiver   byte
 		Queue      uint32
+		Sound      uint32
 	}
 	Observed struct {
 		Events []struct {
@@ -88,6 +90,7 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 		world: world,
 		sell: func() server.ShopSellRuntime5109C0 {
 			return server.ShopSellRuntime5109C0{
+				SendQuote: world.SendShopSellQuoteNative5109C0,
 				ItemIsQuest: func(item *server.Object) bool {
 					events = append(events, "quest:"+labels[item])
 					return in.Quest
@@ -102,7 +105,7 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 				ReportCannotSellItem:  func(actor *server.Object) { recordRejection(actor, "line:CantSellItem") },
 				PlayRejectSound: func(actor *server.Object) uintptr {
 					recordRejection(actor, "sound")
-					return 0
+					return uintptr(in.Sound)
 				},
 			}
 		},
@@ -123,7 +126,7 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 		events = append(events, "quote")
 		return int(int32(in.Queue))
 	}
-	wantWord := expected.ReturnWord
+	wantWord := uintptr(expected.ReturnWord)
 	for _, event := range expected.Events {
 		switch event.Service {
 		case "quest_flag":
@@ -132,9 +135,9 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 			want = append(want, "line:"+event.Key)
 		case "sound":
 			want = append(want, "sound")
-			wantWord = 0
 		case "quote":
 			want = append(want, "quote")
+			wantWord = uintptr(int32(expected.ReturnWord))
 		}
 	}
 	beforePlayer, beforeFirst, beforeLast := *player, *first, *last
@@ -143,5 +146,39 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 	}
 	if *player != beforePlayer || *first != beforeFirst || *last != beforeLast {
 		t.Fatal("sale quote changed a player or inventory object")
+	}
+}
+
+func TestShopQuoteRejectionNativeAudioAddress(t *testing.T) {
+	world := &server.Server{}
+	owner, _ := game4ConsumerPlayer(t, 0)
+	item := game4ConsumerValue(t, server.Object{NetCode: 0xfedc1234})
+	owner.InvFirstItem = item
+	previous := game4ConsumerValue(t, server.AudioEvent{})
+	reject := func(unit *server.Object) uintptr {
+		if unit != owner {
+			t.Fatalf("reject owner = %p, want %p", unit, owner)
+		}
+		return uintptr(unsafe.Pointer(previous))
+	}
+	game4ConsumerServices(t, game4TradeServices{
+		world: world,
+		sell: func() server.ShopSellRuntime5109C0 {
+			return server.ShopSellRuntime5109C0{
+				ItemIsGlyph:     func(*server.Object) bool { return true },
+				PlayRejectSound: reject,
+			}
+		},
+		repair: func() server.ShopRepairRuntime5108D0 {
+			return server.ShopRepairRuntime5108D0{PlayRejectSound: reject}
+		},
+	})
+	for route := range 2 {
+		if got := callShopSaleQuote5109C0(route, owner, nil, item.NetCode); got != uintptr(unsafe.Pointer(previous)) {
+			t.Fatalf("sale quote returned %#x, want audio event %p", got, previous)
+		}
+		if got := callShopRepairQuote5108D0(route, owner, nil, item.NetCode); got != uintptr(unsafe.Pointer(previous)) {
+			t.Fatalf("repair quote returned %#x, want audio event %p", got, previous)
+		}
 	}
 }

@@ -65,7 +65,7 @@ void* sub_50FFE0(void* head, int code);
 void sub_510000(void* session);
 int nox_xxx_getSomeShopData_5103A0(void* session, nox_object_t* item);
 int sub_5103F0(nox_object_t* item, void* definition);
-uint32_t sub_5108D0(nox_object_t* player, void* session, uint32_t code);
+uintptr_t sub_5108D0(nox_object_t* player, void* session, uint32_t code);
 void nox_xxx_shopCancelSession_510DC0(void* session);
 nox_object_t* sub_510DE0(nox_object_t* owner, int code);
 void sub_510E20(int player_index);

@@ -67,7 +67,7 @@ func TestShopRepairWandQuote5108D0(t *testing.T) {
 			quotes, rejects := 0, 0
 			got := s.QuoteShopRepairNative5108D0(unit, session, uint16(item.NetCode), ShopRepairRuntime5108D0{
 				RepairCoefficient: 0.5,
-				SendQuote: func(p *Player, got *Object, cost uint32) {
+				SendQuote: func(p *Player, got *Object, cost uint32) int {
 					quotes++
 					want := uint32(25)
 					if tc.charge == 0 {
@@ -77,8 +77,12 @@ func TestShopRepairWandQuote5108D0(t *testing.T) {
 					if p != unit.UpdateDataPlayer().Player || got != item || cost != want {
 						t.Fatalf("quote = %p/%p/%d, want player/item/%d", p, got, cost, want)
 					}
+					return 1
 				},
-				PlayRejectSound: func(*Object) { rejects++ },
+				PlayRejectSound: func(*Object) uintptr {
+					rejects++
+					return 0
+				},
 			})
 			want := ShopRepairNotDamaged5108D0
 			wantQuotes, wantRejects := 0, 1

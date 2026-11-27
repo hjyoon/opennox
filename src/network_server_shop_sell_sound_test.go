@@ -97,6 +97,7 @@ func TestShopNativeProductionSoundReturnsImmediately(t *testing.T) {
 	}{
 		{sound.SoundTreasurePickup, s.Game4ShopSellRuntime().PlaySellSound, 2, unit.NetCode},
 		{sound.SoundShopRepairItem, s.Game4ShopRepairRuntime().PlayRepairSound, 2, unit.NetCode},
+		{sound.SoundNoCanDo, s.Game4ShopRepairRuntime().PlayRejectSound, 0, 0},
 		{sound.SoundNoCanDo, s.Game4ShopBuyRuntime().PlayRejectSound, 0, 0},
 	} {
 		previous := head()

@@ -652,10 +652,8 @@ func (s *Server) shopSellRuntimeWithSound5109C0(play func(sound.ID, *server.Obje
 		DetachInventory: legacy.Sub_4ED0C0,
 		DelayedDelete:   s.DelayedDelete,
 		ProtectGold:     legacy.Nox_xxx_protectGoldDelta_56F920,
-		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
-			s.Server.SendShopSellQuoteNative5109C0(player, item, cost)
-		},
-		ReportGold: s.reportShopGold,
+		SendQuote:       s.Server.SendShopSellQuoteNative5109C0,
+		ReportGold:      s.reportShopGold,
 		ReportCannotSellQuest: func(player *server.Object) {
 			message := s.Strings().GetStringInFile("CantSellQuestItem", "Trade.c")
 			legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
@@ -694,9 +692,7 @@ func (s *Server) shopRepairRuntimeWithSound5108D0(play func(sound.ID, *server.Ob
 		RepairCoefficient: float32(s.Server.Balance.Float("RepairCoefficient")),
 		SetHealth:         legacy.Nox_xxx_unitSetHP_4E4560,
 		ProtectGold:       legacy.Nox_xxx_protectGoldDelta_56F920,
-		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
-			s.Server.SendShopRepairQuoteNative5108D0(player, item, cost)
-		},
+		SendQuote:         s.Server.SendShopRepairQuoteNative5108D0,
 		ReportHealth: func(player *server.Player, item *server.Object) {
 			packet := server.BuildShopItemHealthPacket4D87A0(item)
 			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
@@ -705,8 +701,8 @@ func (s *Server) shopRepairRuntimeWithSound5108D0(play func(sound.ID, *server.Ob
 			legacy.Nox_xxx_netReportCharges_4D82B0(player.PlayerInd, item, charge, maximum)
 		},
 		ReportGold: s.reportShopGold,
-		PlayRejectSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundNoCanDo, player, 0, 0)
+		PlayRejectSound: func(player *server.Object) uintptr {
+			return play(sound.SoundNoCanDo, player, 0, 0)
 		},
 		PlayRepairSound: func(player *server.Object) uintptr {
 			return play(sound.SoundShopRepairItem, player, 2, player.NetCode)

@@ -26,6 +26,7 @@ type shopRepairQuoteCase struct {
 		NetCode   uint32 `json:"net_code"`
 		Receiver  byte
 		SendWord  uint32 `json:"send_word"`
+		SoundWord uint32 `json:"sound_word"`
 		Shop      bool
 	}
 	Observed struct {
@@ -96,11 +97,13 @@ func checkShopRepairQuoteCase(t *testing.T, route int, row shopRepairQuoteCase) 
 		repair: func() server.ShopRepairRuntime5108D0 {
 			return server.ShopRepairRuntime5108D0{
 				RepairCoefficient: 1,
-				PlayRejectSound: func(owner *server.Object) {
+				SendQuote:         world.SendShopRepairQuoteNative5108D0,
+				PlayRejectSound: func(owner *server.Object) uintptr {
 					if owner != playerUnit {
 						t.Fatalf("reject sound owner %p, want %p", owner, playerUnit)
 					}
 					rejections++
+					return uintptr(in.SoundWord)
 				},
 			}
 		},
@@ -125,9 +128,9 @@ func checkShopRepairQuoteCase(t *testing.T, route int, row shopRepairQuoteCase) 
 	}
 	beforePlayer, beforeFirst, beforeLast := *playerUnit, *first, *last
 	got := callShopRepairQuote5108D0(route, playerUnit, session, in.NetCode)
-	wantResult := uint32(0)
+	wantResult := uintptr(want.ReturnWord)
 	if expectedQuote {
-		wantResult = want.ReturnWord
+		wantResult = uintptr(int32(want.ReturnWord))
 	}
 	if got != wantResult || (quotes == 1) != expectedQuote || (rejections == 1) != expectedReject || quotes > 1 || rejections > 1 {
 		t.Fatalf("quote result = %#x, quote events %d, reject events %d, want %#x/%t/%t",

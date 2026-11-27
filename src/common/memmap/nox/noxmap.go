@@ -161,7 +161,7 @@ var noxMemmap = []struct {
 	{0x587000, 205696, 4, "nox_server_needInitNetCodeCache"},           // 0x5B9380
 	{0x587000, 229988, 4, "nox_server_resetQuestMinVotes_229988"},      // 0x5BF264
 	{0x587000, 229992, 4, "nox_server_kickQuestPlayerMinVotes_229992"}, // 0x5BF268
-	{0x587000, 230092, 4, "dword_587000_230092"},                       // 0x5BF2CC
+	// The indexed Blow direction reader still reads the 0x5BF2CC threshold from the blob.
 	{0x587000, 234176, 4, "dword_587000_234176"},                       // 0x5C02C0
 	{0x587000, 237036, 4, "dword_587000_237036"},                       // 0x5C0DEC
 	{0x587000, 249172, 4, "nox_xxx_triggersCount_587000_249172"},       // 0x5C3D54

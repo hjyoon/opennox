@@ -11,29 +11,15 @@ package legacy
 #include "GAME4_2.h"
 #include "GAME4_3.h"
 #include "GAME5.h"
-int nox_common_randomInt_415FA0(int min, int max);
-double nox_common_randomFloat_416030(float min, float max);
-#include "decay_511660.h"
-#include "random_reachable_point_4ed970.h"
-// Only the malformed nil-source path carries an integer address across Go.
-// Form its original nil+position-offset pointer in C, outside Go GC slots.
-static void skeleton_point_address_54a310(float radius, uintptr_t origin, float2* output) {
- sub_4ED970(radius, (float2*)origin, output);
-}
-static void skeleton_force_address_54a310(uintptr_t origin, nox_object_t* object, float force) {
- nox_xxx_objectApplyForce_52DF80((float*)origin, object, force);
-}
-static uint32_t skeleton_pointfx_address_54a310(char id, uintptr_t origin) {
- return (uint32_t)nox_xxx_netSendPointFx_522FF0(id, (float2*)origin);
-}
 */
 import "C"
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -57,18 +43,18 @@ func skeletonDeathRuntime54A310() server.SkeletonDeathRuntime54A310 {
 	return server.SkeletonDeathRuntime54A310{
 		Names: server.SkeletonDeathNames54A310{Skull: skeletonOriginalName54A310(5), Sword: skeletonOriginalName54A310(8), WoodenShield: skeletonOriginalName54A310(9), SteelShield: skeletonOriginalName54A310(10), Power: skeletonOriginalName54A310(1), Material: skeletonOriginalName54A310(2)},
 		RandomInt: func(lo, hi int32, _ server.SkeletonRandomSite54A310) int32 {
-			return int32(C.nox_common_randomInt_415FA0(C.int(lo), C.int(hi)))
+			return nox_common_randomInt_415FA0(lo, hi)
 		},
 		RandomFloat: func(lo, hi float32) float64 {
-			return float64(C.nox_common_randomFloat_416030(C.float(lo), C.float(hi)))
+			return GetServer().S().RandomFloat416030(lo, hi)
 		},
 		Flags: func() uint32 {
-			if bool(C.nox_common_gameFlags_check_40A5C0(2048)) {
+			if noxflags.HasGame(noxflags.GameModeCoop) {
 				return 1
 			}
 			return 0
 		},
-		FPS: func() uint32 { return uint32(C.gameFPS()) },
+		FPS: gameFPS,
 		BoneName: func(index int32) unsafe.Pointer {
 			// Original PE32 scale/add wraps before the packed pointer slot lookup;
 			// PtrPtr supplies the native side slot rather than reading a DWORD address.
@@ -76,57 +62,34 @@ func skeletonDeathRuntime54A310() server.SkeletonDeathRuntime54A310 {
 			return *memmap.PtrPtr(0x587000, uintptr(off))
 		},
 		New: func(name unsafe.Pointer) *server.Object {
-			return asObjectS(C.nox_xxx_newObjectByTypeID_4E3810((*C.char)(name)))
+			return asObjectS(nox_xxx_newObjectByTypeID_4E3810((*C.char)(name)))
 		},
-		Point: func(radius float32, origin server.SkeletonOrigin54A310, output *types.Pointf) {
-			// This service returns the output pointer through its C export. Keep
-			// the Go-owned point pinned until that return crosses back into Go.
-			var pin runtime.Pinner
-			pin.Pin(output)
-			defer pin.Unpin()
-			if point := origin.NativePoint(); point != nil {
-				C.sub_4ED970(C.float(radius), (*C.float2)(unsafe.Pointer(point)), (*C.float2)(unsafe.Pointer(output)))
-			} else {
-				C.skeleton_point_address_54a310(C.float(radius), C.uintptr_t(origin.Address()), (*C.float2)(unsafe.Pointer(output)))
-			}
-		},
+		Point: debrisPoint,
 		Create: func(o, owner *server.Object, pos types.Pointf, _ uint32) uint32 {
-			C.nox_xxx_createAt_4DAA50(asObjectC(o), asObjectC(owner), C.float(pos.X), C.float(pos.Y))
+			nox_xxx_createAt_4DAA50(asObjectC(o), asObjectC(owner), C.float(pos.X), C.float(pos.Y))
 			return 0
 		},
 		Raise: func(o *server.Object, height float32) uint32 {
-			objectRaiseC(o, height)
+			o.Raise(height)
 			return 0
 		},
-		Force: func(origin server.SkeletonOrigin54A310, o *server.Object, force float32) uint32 {
-			if point := origin.NativePoint(); point != nil {
-				C.nox_xxx_objectApplyForce_52DF80((*C.float)(unsafe.Pointer(point)), asObjectC(o), C.float(force))
-			} else {
-				C.skeleton_force_address_54a310(C.uintptr_t(origin.Address()), asObjectC(o), C.float(force))
-			}
-			return 0
-		},
+		Force: debrisForce,
 		Audio: func(id uint32, o *server.Object, kind, arg uint32) uint32 {
-			C.nox_xxx_aud_501960(C.int(id), asObjectC(o), C.int(kind), C.int(arg))
+			nox_xxx_aud_501960(int32(id), asObjectC(o), int32(kind), int32(arg))
 			return 0
 		},
-		PointFX: func(id uint32, origin server.SkeletonOrigin54A310) uint32 {
-			if point := origin.NativePoint(); point != nil {
-				return uint32(C.nox_xxx_netSendPointFx_522FF0(C.char(id), (*C.float2)(unsafe.Pointer(point))))
-			}
-			return uint32(C.skeleton_pointfx_address_54a310(C.char(id), C.uintptr_t(origin.Address())))
-		},
+		PointFX: debrisPointFX,
 		Decay: func(o *server.Object, duration uint32) uint32 {
-			return uint32(C.nox_xxx_unitSetDecayTime_511660(asObjectC(o), C.int(int32(duration))))
+			return uint32(GetServer().S().DecaySetTime511660(o, duration))
 		},
-		ModifierID:   func(name unsafe.Pointer) int32 { return int32(C.nox_xxx_modifGetIdByName_413290((*C.char)(name))) },
-		ModifierDesc: func(id int32) unsafe.Pointer { return C.nox_xxx_modifGetDescById_413330(C.int(id)) },
+		ModifierID:   func(name unsafe.Pointer) int32 { return nox_xxx_modifGetIdByName_413290((*C.char)(name)) },
+		ModifierDesc: func(id int32) unsafe.Pointer { return nox_xxx_modifGetDescById_413330(id) },
 		Apply: func(o *server.Object, attrs *server.ModifierInitData) uint32 {
-			C.nox_xxx_modifSetItemAttrs_4E4990(asObjectC(o), (*C.nox_modifier_attrs_t)(unsafe.Pointer(attrs)))
+			nox_xxx_modifSetItemAttrs_4E4990(asObjectC(o), (*C.nox_modifier_attrs_t)(unsafe.Pointer(attrs)))
 			return 0
 		},
-		ArmorSound:  func(o *server.Object) uint32 { C.sub_53EAE0(asObjectC(o)); return 0 },
-		WeaponSound: func(o *server.Object) uint32 { C.sub_53AAB0(asObjectC(o)); return 0 },
+		ArmorSound:  func(o *server.Object) uint32 { sub_53EAE0(asObjectC(o)); return 0 },
+		WeaponSound: func(o *server.Object) uint32 { sub_53AAB0(asObjectC(o)); return 0 },
 	}
 }
 

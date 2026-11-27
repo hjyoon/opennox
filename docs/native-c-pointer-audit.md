@@ -1107,6 +1107,23 @@ The native call and field-layout controls still run through their C
 entries. The matching tests passed on Linux ARM64 PIE and on macOS
 ARM64 with `cgocheck2` and `checkptr=2`.
 
+### Monster death services
+
+Golem, Skeleton, Boulder, and monster explosion callbacks pass the
+live origin field directly to the Go point, force, damage, and packet
+services. Each service reads the field at its original call site so a
+preceding operation can change the next position. Three shared debris
+adapters carry a nil object's field address through C as a scalar and
+leave the first dereference to the original consumer. The explosion
+uses the same point effect adapter. The live paths use the existing
+Go random, object, decay, sound, and game flag services.
+
+Seven Cgo helper definitions disappear from these sources. The C flag
+query for the monster edible behavior links only in the test binary.
+The native entry and layout tests passed on macOS ARM64 with
+`cgocheck2` and `checkptr=2`. The Golem, Skeleton, special death, and
+object death spawns replays passed with the resulting gameplay paths.
+
 ## GAME4 native ownership and validation boundary, 2026-11-10
 
 The complete 140,091-byte `GAME4.c` baseline remains byte-exact inside one

@@ -12,6 +12,7 @@ import "C"
 
 import (
 	"github.com/opennox/libs/types"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/server"
 	"unsafe"
@@ -27,8 +28,8 @@ func edibleNativeRuntime544A00() server.MonsterEdibleNativeRuntime544A00 {
 			s.Map.EachObjInCircle(*point, radius, func(candidate *server.Object) bool { callback(candidate, unit); return true })
 		},
 		CanInteract: s.CanInteract,
-		Quest:       func() bool { return edibleOriginalNativeFlags544A00(4096) },
-		Online:      func() bool { return edibleOriginalNativeFlags544A00(8192) },
+		Quest:       func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
+		Online:      func() bool { return noxflags.HasGame(noxflags.GameOnline) },
 		Push: func(unit *server.Object, action ai.ActionType) *server.AIStackItem {
 			return unit.MonsterPushAction(action)
 		},

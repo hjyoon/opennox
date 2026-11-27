@@ -55,6 +55,20 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	Unsupported         func(reason string, target, source, weapon *Object, damage int32, typ object.DamageType)
 }
 
+func (runtime *DefaultDamageWorldRuntime4E0B30) damageSound(callback unsafe.Pointer) (func(*Object, *Object), string) {
+	switch {
+	case callback == nil || callback == runtime.DefaultDamageSoundC:
+		return runtime.DefaultDamageSound, ""
+	case callback == runtime.PlayerDamageSoundC:
+		if runtime.PlayerDamageSound != nil {
+			return runtime.PlayerDamageSound, ""
+		}
+		return nil, "missing player damage sound"
+	default:
+		return nil, "custom damage sound"
+	}
+}
+
 func defaultDamageUnsupported4E0B30(
 	runtime DefaultDamageWorldRuntime4E0B30,
 	reason string,
@@ -835,12 +849,8 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "weapon pre-damage modifiers", target, source, weapon, damage, typ)
 		}
 	}
-	playerSound := playerTail && target.DamageSound != nil && target.DamageSound == runtime.PlayerDamageSoundC
-	if playerSound && runtime.PlayerDamageSound == nil {
-		return defaultDamageUnsupported4E0B30(runtime, "missing player damage sound", target, source, weapon, damage, typ)
-	}
-	if target.DamageSound != nil && target.DamageSound != runtime.DefaultDamageSoundC && !playerSound {
-		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
+	if _, reason := runtime.damageSound(target.DamageSound); reason != "" {
+		return defaultDamageUnsupported4E0B30(runtime, reason, target, source, weapon, damage, typ)
 	}
 	// Electric resistance or late defend can raise even a small input above
 	// the ball-release threshold. Validate the carrier tail before any stores.
@@ -969,10 +979,13 @@ func DefaultDamageWorld4E0B30(
 		if weapon != nil {
 			soundSource = weapon
 		}
-		if playerSound {
-			runtime.PlayerDamageSound(target, soundSource)
-		} else if runtime.DefaultDamageSound != nil {
-			runtime.DefaultDamageSound(target, soundSource)
+		// GAME.EXE loads the receiver's callback after protection and modifiers.
+		play, reason := runtime.damageSound(target.DamageSound)
+		if reason != "" {
+			return defaultDamageUnsupported4E0B30(runtime, reason, target, source, weapon, damage, typ)
+		}
+		if play != nil {
+			play(target, soundSource)
 		}
 	}
 	if vampirism {

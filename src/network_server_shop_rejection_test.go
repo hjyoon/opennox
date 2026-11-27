@@ -19,10 +19,10 @@ import (
 
 func TestShopSaleRejectionLocalizedLine5109C0(t *testing.T) {
 	for _, tc := range []struct {
-		name, quest, item string
+		name, quest, item, food string
 	}{
-		{"English", "You cannot sell a quest item.", "I am not interested in buying that."},
-		{"Korean", "퀘스트 아이템은 팔 수 없습니다.", "이 아이템은 살 수 없습니다."},
+		{"English", "You cannot sell a quest item.", "I am not interested in buying that.", "You have too many of these."},
+		{"Korean", "퀘스트 아이템은 팔 수 없습니다.", "이 아이템은 살 수 없습니다.", "이 아이템은 더 살 수 없습니다."},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			s, unit, _, _ := basicSenderProductionFixture5187E0(t)
@@ -38,6 +38,7 @@ func TestShopSaleRejectionLocalizedLine5109C0(t *testing.T) {
 			}{Entries: []strman.Entry{
 				{ID: "Trade.c:CantSellQuestItem", Vals: []strman.Variant{{Str: tc.quest}}},
 				{ID: "Trade.c:CantSellItem", Vals: []strman.Variant{{Str: tc.item}}},
+				{ID: "pickup.c:MaxSameItem", Vals: []strman.Variant{{Str: tc.food}}},
 			}})
 			if err != nil {
 				t.Fatal(err)
@@ -50,6 +51,7 @@ func TestShopSaleRejectionLocalizedLine5109C0(t *testing.T) {
 				t.Fatal(err)
 			}
 			runtime := s.shopSellRuntime5109C0()
+			buy := s.shopBuyRuntime5100C0()
 			for _, rejection := range []struct {
 				name string
 				send func(*server.Object)
@@ -57,6 +59,11 @@ func TestShopSaleRejectionLocalizedLine5109C0(t *testing.T) {
 			}{
 				{"quest item", runtime.ReportCannotSellQuest, tc.quest},
 				{"other unsellable item", runtime.ReportCannotSellItem, tc.item},
+				{"food limit", func(u *server.Object) {
+					if !buy.ReportMaxSameItem(u) {
+						t.Error("food-limit line returned a failed queue result")
+					}
+				}, tc.food},
 			} {
 				t.Run(rejection.name, func(t *testing.T) {
 					s.NetList.ResetAll()

@@ -48,23 +48,24 @@ const (
 // The native transaction owns all Object, Player, TradeSession, and TradeItem
 // pointers; callbacks receive native pointers without an IA-32 integer cast.
 type ShopBuyRuntime5100C0 struct {
-	ExpandedFoodLimit     bool
-	QuestMode             bool
-	QuestPersistent       func(*Object) bool
-	ClonePersistent       func(*Object) *Object
-	ItemIsAnkhTradable    func(*Object) bool
-	MaxExtraLives         float32
-	ForceOfNatureLimit    float32
-	PutInventory          func(player, item *Object)
-	CallPickup            func(player, item *Object)
-	PlayPickupSound       func(*Object)
-	PlayRejectSound       func(*Object)
-	ProtectGold           func(token uint32, delta int32)
-	SendItemRemoved       func(*Player, *Object)
-	ReportGold            func(*Player, *Object)
-	ReportMissingGold     func(*Player, uint16)
-	ReportMaxSameItem     func(*Object)
-	ReportMaxTradableAnkh func(*Object)
+	ExpandedFoodLimit      bool
+	QuestMode              bool
+	QuestPersistent        func(*Object) bool
+	ClonePersistent        func(*Object) *Object
+	ItemIsAnkhTradable     func(*Object) bool
+	MaxExtraLives          float32
+	ForceOfNatureLimit     float32
+	PutInventory           func(player, item *Object)
+	CallPickup             func(player, item *Object)
+	PlayPickupSound        func(*Object)
+	PlayRejectSound        func(*Object) uintptr
+	ProtectGold            func(token uint32, delta int32)
+	SendItemRemoved        func(*Player, *Object)
+	ReportGold             func(*Player, *Object)
+	ReportMissingGold      func(*Player, uint16) int
+	ReportMaxSameItem      func(*Object) bool
+	ReportMaxForceOfNature func(*Object)
+	ReportMaxTradableAnkh  func(*Object)
 }
 
 // ShopItemLoadRuntime50E970 binds the three type-specific parameter writes
@@ -98,8 +99,8 @@ type ShopSellRuntime5109C0 struct {
 	ReportGold            func(*Player, *Object)
 	ReportCannotSellQuest func(*Object)
 	ReportCannotSellItem  func(*Object)
-	PlayRejectSound       func(*Object)
-	PlaySellSound         func(*Object)
+	PlayRejectSound       func(*Object) uintptr
+	PlaySellSound         func(*Object) uintptr
 }
 
 type ShopRepairResult5108D0 uint8
@@ -123,7 +124,7 @@ type ShopRepairRuntime5108D0 struct {
 	ReportCharges     func(*Player, *Object, uint8, uint8)
 	ReportGold        func(*Player, *Object)
 	PlayRejectSound   func(*Object)
-	PlayRepairSound   func(*Object)
+	PlayRepairSound   func(*Object) uintptr
 }
 
 type TradeSession struct {
@@ -699,58 +700,60 @@ func shopBuyLimitViolation5100C0(
 	playerUnit, item *Object,
 	update *PlayerUpdateData,
 	runtime ShopBuyRuntime5100C0,
-) (ShopBuyResult5100C0, bool) {
+) (ShopBuyResult5100C0, uintptr) {
 	if item.Class().Has(object.ClassFood) {
 		limit := int32(3)
 		if runtime.ExpandedFoodLimit {
 			limit = 9
 		}
 		if playerUnit.CountInventoryWithType(int32(item.TypeInd)) >= limit {
-			if runtime.ReportMaxSameItem != nil {
-				runtime.ReportMaxSameItem(playerUnit)
+			if runtime.ReportMaxSameItem != nil && runtime.ReportMaxSameItem(playerUnit) {
+				return ShopBuyMaxSameItem5100C0, 1
 			}
-			return ShopBuyMaxSameItem5100C0, true
+			return ShopBuyMaxSameItem5100C0, 0
 		}
 	}
 	if runtime.ItemIsAnkhTradable != nil && runtime.ItemIsAnkhTradable(item) {
-		limit := uint32(questInventoryRoundFloat32ToInt32_4F2C30(runtime.MaxExtraLives))
-		if update.ExtraLives >= limit {
+		limit := questInventoryRoundFloat32ToInt32_4F2C30(runtime.MaxExtraLives)
+		if int32(update.ExtraLives) >= limit {
 			if runtime.ReportMaxTradableAnkh != nil {
 				runtime.ReportMaxTradableAnkh(playerUnit)
 			}
 			if runtime.PlayRejectSound != nil {
-				runtime.PlayRejectSound(playerUnit)
+				return ShopBuyMaxTradableAnkh5100C0, runtime.PlayRejectSound(playerUnit)
 			}
-			return ShopBuyMaxTradableAnkh5100C0, true
+			return ShopBuyMaxTradableAnkh5100C0, 0
 		}
 	}
-	if runtime.QuestMode && item.Class().Has(object.ClassWeapon) && item.WeaponClass().Has(object.WeaponStaffForceOfNature) {
+	if runtime.QuestMode && item.Class().Has(object.ClassWand) && item.SubClass().AsWeapon().Has(object.WeaponStaffForceOfNature) {
 		limit := questInventoryRoundFloat32ToInt32_4F2C30(runtime.ForceOfNatureLimit)
 		if playerUnit.CountInventoryWithType(int32(item.TypeInd)) >= limit {
-			if runtime.ReportMaxSameItem != nil {
-				runtime.ReportMaxSameItem(playerUnit)
+			if runtime.ReportMaxForceOfNature != nil {
+				runtime.ReportMaxForceOfNature(playerUnit)
 			}
 			if runtime.PlayRejectSound != nil {
-				runtime.PlayRejectSound(playerUnit)
+				return ShopBuyMaxSameItem5100C0, runtime.PlayRejectSound(playerUnit)
 			}
-			return ShopBuyMaxSameItem5100C0, true
+			return ShopBuyMaxSameItem5100C0, 0
 		}
 	}
-	return ShopBuyComplete5100C0, false
+	return ShopBuyComplete5100C0, 0
 }
 
-func shopBuySubtractGold5100C0(player *Player, playerUnit *Object, cost uint32, runtime ShopBuyRuntime5100C0) {
-	gold := player.GoldVal
-	if gold >= cost {
-		player.GoldVal = gold - cost
-	} else {
-		player.GoldVal = 0
+func subtractShopGold4FA5D0(owner *Object, cost uint32, protect func(uint32, int32)) {
+	player, ok := shopPlayer5108D0(owner)
+	if !ok {
+		return
 	}
-	if runtime.ProtectGold != nil {
-		runtime.ProtectGold(player.ProtPlayerGold, int32(uint32(0)-cost))
+	player.GoldVal -= min(player.GoldVal, cost)
+	if protect != nil {
+		protect(player.ProtPlayerGold, int32(uint32(0)-cost))
 	}
-	if runtime.ReportGold != nil {
-		runtime.ReportGold(player, playerUnit)
+}
+
+func reportShopGold4D8870(update *PlayerUpdateData, owner *Object, report func(*Player, *Object)) {
+	if report != nil && update.Player != nil {
+		report(update.Player, owner)
 	}
 }
 
@@ -784,7 +787,7 @@ func (s *Server) BuyShopItemNative5100C0(
 		}
 		return ShopBuyMissingGold5100C0
 	}
-	if result, blocked := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); blocked {
+	if result, _ := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); result != ShopBuyComplete5100C0 {
 		return result
 	}
 
@@ -823,7 +826,8 @@ func (s *Server) BuyShopItemNative5100C0(
 			return ShopBuyUnsupported5100C0
 		}
 	}
-	shopBuySubtractGold5100C0(player, playerUnit, cost, runtime)
+	subtractShopGold4FA5D0(playerUnit, cost, runtime.ProtectGold)
+	reportShopGold4D8870(update, playerUnit, runtime.ReportGold)
 	return ShopBuyComplete5100C0
 }
 
@@ -840,13 +844,26 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 	count uint8,
 	runtime ShopBuyRuntime5100C0,
 ) int {
+	n, _ := s.BuyShopItemsByType510640(playerUnit, session, typeInd, count, runtime)
+	return n
+}
+
+// BuyShopItemsByType510640 also returns the original entry's result word.
+// Only completing the requested count returns that count to the C caller.
+func (s *Server) BuyShopItemsByType510640(
+	playerUnit *Object,
+	session *TradeSession,
+	typeInd uint16,
+	count uint8,
+	runtime ShopBuyRuntime5100C0,
+) (int, uintptr) {
 	allocation := s.tradeNative.sessions[session]
 	if allocation == nil || count == 0 {
-		return 0
+		return 0, 0
 	}
 	player, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
-		return 0
+		return 0, 0
 	}
 	update := (*PlayerUpdateData)(playerUnit.UpdateData)
 	startingGold := player.GoldVal
@@ -861,59 +878,71 @@ func (s *Server) BuyShopItemsByTypeNative510640(
 			}
 		}
 		if node == nil {
-			return purchasedCount
+			return purchasedCount, 0
 		}
 		item := node.Item0
 		cost, ok := s.shopItemBuyCost50E3D0(session, item)
 		if !ok {
-			return purchasedCount
+			return purchasedCount, 0
 		}
 		if cost > startingGold {
 			if runtime.ReportMissingGold != nil {
-				runtime.ReportMissingGold(player, uint16(cost-startingGold))
+				if recipient, ok := shopPlayer5108D0(playerUnit); ok {
+					status := runtime.ReportMissingGold(recipient, uint16(cost-startingGold))
+					return purchasedCount, uintptr(int32(status))
+				}
 			}
-			return purchasedCount
+			return purchasedCount, 0
 		}
-		if _, blocked := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); blocked {
-			return purchasedCount
+		if status, word := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); status != ShopBuyComplete5100C0 {
+			return purchasedCount, word
 		}
 
 		purchased := item
 		persistent := runtime.QuestPersistent != nil && runtime.QuestPersistent(item)
 		if persistent {
 			if runtime.ClonePersistent == nil {
-				return purchasedCount
+				return purchasedCount, 0
 			}
 			purchased = runtime.ClonePersistent(item)
 			if purchased == nil {
-				return purchasedCount
+				return purchasedCount, 0
 			}
 		}
 		if purchased.Pickup.Ptr != nil {
 			if runtime.CallPickup == nil {
-				return purchasedCount
+				return purchasedCount, 0
 			}
 			runtime.CallPickup(playerUnit, purchased)
 		} else {
 			if runtime.PutInventory == nil {
-				return purchasedCount
+				return purchasedCount, 0
 			}
 			runtime.PutInventory(playerUnit, purchased)
+		}
+		if s.tradeNative.sessions[session] != allocation {
+			return purchasedCount, 0
 		}
 		s.DecrementShopDefinitionNative510320(session, item)
 		if !persistent {
 			if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
 				if runtime.SendItemRemoved != nil {
-					runtime.SendItemRemoved(player, item)
+					if recipient := update.Player; recipient != nil {
+						runtime.SendItemRemoved(recipient, item)
+					}
 				}
 			}) {
-				return purchasedCount
+				return purchasedCount, 0
 			}
 		}
-		shopBuySubtractGold5100C0(player, playerUnit, cost, runtime)
+		subtractShopGold4FA5D0(playerUnit, cost, runtime.ProtectGold)
+		reportShopGold4D8870(update, playerUnit, runtime.ReportGold)
 		purchasedCount++
 	}
-	return purchasedCount
+	if purchasedCount == int(count) {
+		return purchasedCount, uintptr(purchasedCount)
+	}
+	return purchasedCount, 0
 }
 
 func (s *Server) findInventoryItemByNetCode5108D0(playerUnit *Object, netCode uint32) *Object {
@@ -960,51 +989,41 @@ func (s *Server) shopInventoryItemCost50E3D0(
 	return uint32(cost), true
 }
 
-func shopSellCandidate5109C0(
-	s *Server,
+func (s *Server) shopSellCandidate5109C0(
 	playerUnit *Object,
-	session *TradeSession,
 	netCode uint32,
 	runtime ShopSellRuntime5109C0,
-	requireShop bool,
-) (*Player, *Object, uint32, ShopSellResult5109C0) {
-	if requireShop && !s.IsTradeSessionNative(session) {
-		return nil, nil, 0, ShopSellUnsupported5109C0
-	}
-	player, ok := shopPlayer5108D0(playerUnit)
+) (*PlayerUpdateData, *Object, ShopSellResult5109C0, uintptr) {
+	_, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
-		return nil, nil, 0, ShopSellUnsupported5109C0
+		return nil, nil, ShopSellUnsupported5109C0, 0
+	}
+	update := playerUnit.UpdateDataPlayer()
+	if playerUnit.InvFirstItem == nil {
+		return update, nil, ShopSellNoItem5109C0, uintptr(s.Types.IndByID("Glyph"))
 	}
 	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
 	if item == nil {
-		return player, nil, 0, ShopSellNoItem5109C0
+		return update, nil, ShopSellNoItem5109C0, uintptr(netCode)
 	}
+	result := ShopSellQuoted5109C0
+	var rejection func(*Object)
 	if runtime.ItemIsQuest != nil && runtime.ItemIsQuest(item) {
-		if runtime.ReportCannotSellQuest != nil {
-			runtime.ReportCannotSellQuest(playerUnit)
+		result, rejection = ShopSellQuestItem5109C0, runtime.ReportCannotSellQuest
+	} else if runtime.ItemIsGlyph != nil && runtime.ItemIsGlyph(item) {
+		result, rejection = ShopSellGlyph5109C0, runtime.ReportCannotSellItem
+	}
+	if result != ShopSellQuoted5109C0 {
+		if rejection != nil {
+			rejection(playerUnit)
 		}
+		var word uintptr
 		if runtime.PlayRejectSound != nil {
-			runtime.PlayRejectSound(playerUnit)
+			word = runtime.PlayRejectSound(playerUnit)
 		}
-		return player, item, 0, ShopSellQuestItem5109C0
+		return update, item, result, word
 	}
-	if runtime.ItemIsGlyph != nil && runtime.ItemIsGlyph(item) {
-		if runtime.ReportCannotSellItem != nil {
-			runtime.ReportCannotSellItem(playerUnit)
-		}
-		if runtime.PlayRejectSound != nil {
-			runtime.PlayRejectSound(playerUnit)
-		}
-		return player, item, 0, ShopSellGlyph5109C0
-	}
-	if requireShop && session.Field16 == 0 {
-		return player, item, 0, ShopSellUnsupported5109C0
-	}
-	price, ok := shopItemCostNative50E3D0(session, item, shopPriceSell50E3D0, 0, s.shopItemCostRuntime50E3D0())
-	if !ok || (requireShop && price < 0) {
-		return player, item, 0, ShopSellUnsupported5109C0
-	}
-	return player, item, uint32(price), ShopSellQuoted5109C0
+	return update, item, result, 0
 }
 
 // QuoteShopSellNative5109C0 restores the C9/1C request and C9/1D response
@@ -1027,14 +1046,21 @@ func (s *Server) QuoteShopSellByCodeNative5109C0(
 func (s *Server) quoteShopSell5109C0(
 	playerUnit *Object, session *TradeSession, netCode uint32, runtime ShopSellRuntime5109C0, requireShop bool,
 ) ShopSellResult5109C0 {
-	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime, requireShop)
+	if requireShop && !s.IsTradeSessionNative(session) {
+		return ShopSellUnsupported5109C0
+	}
+	update, item, result, _ := s.shopSellCandidate5109C0(playerUnit, netCode, runtime)
 	if result != ShopSellQuoted5109C0 {
 		return result
 	}
-	if runtime.SendQuote == nil {
+	if (requireShop && (!s.IsTradeSessionNative(session) || session.Field16 == 0)) || runtime.SendQuote == nil || update.Player == nil {
 		return ShopSellUnsupported5109C0
 	}
-	runtime.SendQuote(player, item, cost)
+	price, ok := shopItemCostNative50E3D0(session, item, shopPriceSell50E3D0, 0, s.shopItemCostRuntime50E3D0())
+	if !ok || (requireShop && price < 0) {
+		return ShopSellUnsupported5109C0
+	}
+	runtime.SendQuote(update.Player, item, uint32(price))
 	return ShopSellQuoted5109C0
 }
 
@@ -1052,26 +1078,53 @@ func (s *Server) SellShopItemNative510BE0(
 	netCode uint16,
 	runtime ShopSellRuntime5109C0,
 ) ShopSellResult5109C0 {
-	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, uint32(netCode), runtime, true)
-	if result != ShopSellQuoted5109C0 {
-		return result
-	}
-	if runtime.DetachInventory == nil || runtime.DelayedDelete == nil {
+	if !s.IsTradeSessionNative(session) {
 		return ShopSellUnsupported5109C0
 	}
+	result, _ := s.SellShopItem510BE0(playerUnit, session, netCode, runtime)
+	return result
+}
+
+// SellShopItem510BE0 carries the sound service's result on completion or
+// rejection and the original scalar when the inventory lookup ends early.
+func (s *Server) SellShopItem510BE0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopSellRuntime5109C0,
+) (ShopSellResult5109C0, uintptr) {
+	update, item, result, word := s.shopSellCandidate5109C0(playerUnit, uint32(netCode), runtime)
+	if result != ShopSellQuoted5109C0 {
+		return result, word
+	}
+	allocation := s.tradeNative.sessions[session]
+	if allocation == nil || runtime.DetachInventory == nil || runtime.DelayedDelete == nil {
+		return ShopSellUnsupported5109C0, 0
+	}
+	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
+	if !ok {
+		return ShopSellUnsupported5109C0, 0
+	}
+	// Keep the admitted price if a callback closes or reuses the session.
+	// A live session prices the item after the detach and delayed deletion.
 	runtime.DetachInventory(playerUnit, item)
 	runtime.DelayedDelete(item)
-	player.GoldVal += cost
-	if runtime.ProtectGold != nil {
-		runtime.ProtectGold(player.ProtPlayerGold, int32(cost))
+	if s.tradeNative.sessions[session] == allocation {
+		if live, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); ok {
+			cost = live
+		}
 	}
-	if runtime.ReportGold != nil {
-		runtime.ReportGold(player, playerUnit)
+	if player, ok := shopPlayer5108D0(playerUnit); ok {
+		player.GoldVal += cost
+		if runtime.ProtectGold != nil {
+			runtime.ProtectGold(player.ProtPlayerGold, int32(cost))
+		}
 	}
+	reportShopGold4D8870(update, playerUnit, runtime.ReportGold)
 	if runtime.PlaySellSound != nil {
-		runtime.PlaySellSound(playerUnit)
+		return ShopSellComplete5109C0, runtime.PlaySellSound(playerUnit)
 	}
-	return ShopSellComplete5109C0
+	return ShopSellComplete5109C0, 0
 }
 
 // SellShopItemsByTypeNative510D10 restores the C9/19 bulk-sale path. GAME.EXE
@@ -1200,47 +1253,57 @@ func (s *Server) RepairShopItemNative510AE0(
 	netCode uint16,
 	runtime ShopRepairRuntime5108D0,
 ) ShopRepairResult5108D0 {
-	if session == nil || !s.IsTradeSessionNative(session) {
+	if !s.IsTradeSessionNative(session) {
 		return ShopRepairUnsupported5108D0
 	}
+	result, _ := s.RepairShopItem510AE0(playerUnit, session, netCode, runtime)
+	return result
+}
+
+// RepairShopItem510AE0 returns the original scalar on an inventory miss
+// and the sound service's result after a completed repair.
+func (s *Server) RepairShopItem510AE0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopRepairRuntime5108D0,
+) (ShopRepairResult5108D0, uintptr) {
 	player, ok := shopPlayer5108D0(playerUnit)
 	if !ok {
-		return ShopRepairUnsupported5108D0
+		return ShopRepairUnsupported5108D0, 0
+	}
+	if playerUnit.InvFirstItem == nil {
+		return ShopRepairNoItem5108D0, uintptr(player.GoldVal)
 	}
 	item := s.findInventoryItemByNetCode5108D0(playerUnit, uint32(netCode))
 	if item == nil {
-		return ShopRepairNoItem5108D0
+		return ShopRepairNoItem5108D0, uintptr(netCode)
 	}
-	health := item.HealthData
-	if health == nil || health.Max == 0 || runtime.SetHealth == nil {
-		return ShopRepairUnsupported5108D0
+	if !s.IsTradeSessionNative(session) || item.HealthData == nil || item.HealthData.Max == 0 || runtime.SetHealth == nil {
+		return ShopRepairUnsupported5108D0, 0
 	}
+	update := playerUnit.UpdateDataPlayer()
 	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
 	if !ok {
-		return ShopRepairUnsupported5108D0
+		return ShopRepairUnsupported5108D0, 0
 	}
-	if player.GoldVal >= cost {
-		player.GoldVal -= cost
-	} else {
-		player.GoldVal = 0
+	subtractShopGold4FA5D0(playerUnit, cost, runtime.ProtectGold)
+	if health := item.HealthData; health != nil {
+		runtime.SetHealth(item, health.Max)
+		if runtime.ReportHealth != nil && update.Player != nil {
+			runtime.ReportHealth(update.Player, item)
+		}
 	}
-	if runtime.ProtectGold != nil {
-		runtime.ProtectGold(player.ProtPlayerGold, -int32(cost))
+	if wand := shopRepairWand5108D0(item); wand != nil && ObeliskRechargeItem53C520(item, 100) {
+		if runtime.ReportCharges != nil && update.Player != nil {
+			runtime.ReportCharges(update.Player, item, wand.Charge, wand.MaxCharge)
+		}
 	}
-	runtime.SetHealth(item, health.Max)
-	if runtime.ReportHealth != nil {
-		runtime.ReportHealth(player, item)
-	}
-	if wand := shopRepairWand5108D0(item); wand != nil && ObeliskRechargeItem53C520(item, 100) && runtime.ReportCharges != nil {
-		runtime.ReportCharges(player, item, wand.Charge, wand.MaxCharge)
-	}
-	if runtime.ReportGold != nil {
-		runtime.ReportGold(player, playerUnit)
-	}
+	reportShopGold4D8870(update, playerUnit, runtime.ReportGold)
 	if runtime.PlayRepairSound != nil {
-		runtime.PlayRepairSound(playerUnit)
+		return ShopRepairComplete5108D0, runtime.PlayRepairSound(playerUnit)
 	}
-	return ShopRepairComplete5108D0
+	return ShopRepairComplete5108D0, 0
 }
 
 func (s *Server) shopItemBuyCost50E3D0(session *TradeSession, item *Object) (uint32, bool) {

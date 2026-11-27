@@ -100,7 +100,10 @@ func checkShopSaleQuoteCase(t *testing.T, route int, row shopSaleQuoteCase) {
 				},
 				ReportCannotSellQuest: func(actor *server.Object) { recordRejection(actor, "line:CantSellQuestItem") },
 				ReportCannotSellItem:  func(actor *server.Object) { recordRejection(actor, "line:CantSellItem") },
-				PlayRejectSound:       func(actor *server.Object) { recordRejection(actor, "sound") },
+				PlayRejectSound: func(actor *server.Object) uintptr {
+					recordRejection(actor, "sound")
+					return 0
+				},
 			}
 		},
 	})

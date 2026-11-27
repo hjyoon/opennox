@@ -827,11 +827,12 @@ func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
 	node := addTestNativeTradeItem(t, s, session, item, 40)
 	missingCalls := 0
 	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
-		ReportMissingGold: func(gotPlayer *Player, amount uint16) {
+		ReportMissingGold: func(gotPlayer *Player, amount uint16) int {
 			missingCalls++
 			if gotPlayer != player || amount != 37 {
 				t.Fatalf("missing gold = %p/%d, want %p/37", gotPlayer, amount, player)
 			}
+			return 1
 		},
 		PutInventory: func(*Object, *Object) { t.Fatal("rejected purchase moved inventory") },
 	})
@@ -862,11 +863,12 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 	node := addTestNativeTradeItem(t, s, session, item, 40)
 	maxCalls := 0
 	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
-		ReportMaxSameItem: func(gotPlayer *Object) {
+		ReportMaxSameItem: func(gotPlayer *Object) bool {
 			maxCalls++
 			if gotPlayer != playerUnit {
 				t.Fatalf("max-item player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return true
 		},
 		PutInventory: func(*Object, *Object) { t.Fatal("limited purchase moved inventory") },
 	})
@@ -934,12 +936,13 @@ func TestBuyShopItemsByTypeNative510640UsesStartingGoldAndNativePointers(t *test
 			}
 			reportedGold = append(reportedGold, gotPlayer.GoldVal)
 		},
-		ReportMissingGold: func(*Player, uint16) {
+		ReportMissingGold: func(*Player, uint16) int {
 			t.Fatal("bulk buy compared a later item with the depleted live balance")
+			return 0
 		},
 	}
-	if got := s.BuyShopItemsByTypeNative510640(playerUnit, session, 7, 3, runtime); got != 2 {
-		t.Fatalf("purchased = %d, want 2", got)
+	if got, word := s.BuyShopItemsByType510640(playerUnit, session, 7, 3, runtime); got != 2 || word != 0 {
+		t.Fatalf("purchased = %d, native return = %#x, want 2/0", got, word)
 	}
 	if want := []*Object{second, first}; !reflect.DeepEqual(moved, want) {
 		t.Fatalf("moved = %p, want %p", moved, want)
@@ -1048,15 +1051,16 @@ func TestBuyShopItemsByTypeNative510640ClonesQuestAnkhAndStopsAtLimit(t *testing
 				t.Fatalf("max-Ankh player = %p, want %p", gotPlayer, playerUnit)
 			}
 		},
-		PlayRejectSound: func(gotPlayer *Object) {
+		PlayRejectSound: func(gotPlayer *Object) uintptr {
 			events = append(events, "reject")
 			if gotPlayer != playerUnit {
 				t.Fatalf("reject player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return 7
 		},
 	}
-	if got := s.BuyShopItemsByTypeNative510640(playerUnit, session, 7, 2, runtime); got != 1 {
-		t.Fatalf("purchased = %d, want 1", got)
+	if got, word := s.BuyShopItemsByType510640(playerUnit, session, 7, 2, runtime); got != 1 || word != 7 {
+		t.Fatalf("purchased = %d, native return = %#x, want 1/7", got, word)
 	}
 	if want := []string{"pickup", "protect", "gold", "max-ankh", "reject"}; !reflect.DeepEqual(events, want) {
 		t.Fatalf("events = %v, want %v", events, want)
@@ -1080,31 +1084,32 @@ func TestBuyShopItemsByTypeNative510640ClonesQuestAnkhAndStopsAtLimit(t *testing
 
 func TestShopBuyLimitViolation5100C0EnforcesQuestForceOfNatureLimit(t *testing.T) {
 	item := &Object{
-		ObjClass:    object.ClassWeapon,
+		ObjClass:    object.ClassWand,
 		ObjSubClass: object.SubClass(object.WeaponStaffForceOfNature),
 		TypeInd:     9,
 	}
 	playerUnit := &Object{InvFirstItem: &Object{TypeInd: 9}}
 	maxCalls := 0
 	rejectCalls := 0
-	result, blocked := shopBuyLimitViolation5100C0(playerUnit, item, &PlayerUpdateData{}, ShopBuyRuntime5100C0{
+	result, word := shopBuyLimitViolation5100C0(playerUnit, item, &PlayerUpdateData{}, ShopBuyRuntime5100C0{
 		QuestMode:          true,
 		ForceOfNatureLimit: 1,
-		ReportMaxSameItem: func(got *Object) {
+		ReportMaxForceOfNature: func(got *Object) {
 			maxCalls++
 			if got != playerUnit {
 				t.Fatalf("max-item player = %p, want %p", got, playerUnit)
 			}
 		},
-		PlayRejectSound: func(got *Object) {
+		PlayRejectSound: func(got *Object) uintptr {
 			rejectCalls++
 			if got != playerUnit {
 				t.Fatalf("reject player = %p, want %p", got, playerUnit)
 			}
+			return 11
 		},
 	})
-	if !blocked || result != ShopBuyMaxSameItem5100C0 || maxCalls != 1 || rejectCalls != 1 {
-		t.Fatalf("limit = blocked %v result %d max %d reject %d", blocked, result, maxCalls, rejectCalls)
+	if word != 11 || result != ShopBuyMaxSameItem5100C0 || maxCalls != 1 || rejectCalls != 1 {
+		t.Fatalf("limit = word %#x result %d max %d reject %d", word, result, maxCalls, rejectCalls)
 	}
 }
 
@@ -1203,11 +1208,12 @@ func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
 				t.Fatalf("gold report = %p/%p/%d", gotPlayer, gotUnit, player.GoldVal)
 			}
 		},
-		PlaySellSound: func(gotPlayer *Object) {
+		PlaySellSound: func(gotPlayer *Object) uintptr {
 			events = append(events, "sound")
 			if gotPlayer != playerUnit {
 				t.Fatalf("sound player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return 0
 		},
 	}
 	if got := s.QuoteShopSellNative5109C0(playerUnit, session, 0x1234, runtime); got != ShopSellQuoted5109C0 {
@@ -1333,11 +1339,12 @@ func TestSellShopItemsByTypeNative510D10UsesNativePointers(t *testing.T) {
 				t.Fatalf("gold report = %p/%p", gotPlayer, gotUnit)
 			}
 		},
-		PlaySellSound: func(gotPlayer *Object) {
+		PlaySellSound: func(gotPlayer *Object) uintptr {
 			events = append(events, "sound")
 			if gotPlayer != playerUnit {
 				t.Fatalf("sound player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return 0
 		},
 	}
 	if got := s.SellShopItemsByTypeNative510D10(playerUnit, session, 7, 2, runtime); got != 2 {
@@ -1383,8 +1390,9 @@ func TestSellShopItemsByTypeNative510D10StopsWithoutCompletionSound(t *testing.T
 			got.InvHolder = nil
 		},
 		DelayedDelete: func(*Object) {},
-		PlaySellSound: func(*Object) {
+		PlaySellSound: func(*Object) uintptr {
 			sounds++
+			return 0
 		},
 	})
 	if sold != 1 || sounds != 0 || player.GoldVal != 10 {
@@ -1451,11 +1459,12 @@ func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 				t.Fatalf("repair gold report = %p/%p/%d", gotPlayer, gotUnit, player.GoldVal)
 			}
 		},
-		PlayRepairSound: func(gotPlayer *Object) {
+		PlayRepairSound: func(gotPlayer *Object) uintptr {
 			events = append(events, "sound")
 			if gotPlayer != playerUnit {
 				t.Fatalf("repair sound player = %p, want %p", gotPlayer, playerUnit)
 			}
+			return 0
 		},
 	}
 	if got := s.QuoteShopRepairNative5108D0(playerUnit, session, 0x4321, runtime); got != ShopRepairQuoted5108D0 {

@@ -129,8 +129,11 @@ func TestShopRepairWandCompletion510AE0(t *testing.T) {
 						t.Fatalf("charge report = %p/%p/%d/%d health=%d gold=%d", p, got, charge, maximum, item.HealthData.Cur, player.GoldVal)
 					}
 				},
-				ReportGold:      func(*Player, *Object) { events = append(events, "gold") },
-				PlayRepairSound: func(*Object) { events = append(events, "sound") },
+				ReportGold: func(*Player, *Object) { events = append(events, "gold") },
+				PlayRepairSound: func(*Object) uintptr {
+					events = append(events, "sound")
+					return 0
+				},
 			})
 			data := item.UseData.AsWand()
 			if got != ShopRepairComplete5108D0 || item.HealthData.Cur != 100 || data.Charge != 4 || data.Progress != 100 || player.GoldVal != 200-tc.cost {

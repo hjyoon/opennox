@@ -1,6 +1,8 @@
 package server
 
 import (
+	"unsafe"
+
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -130,29 +132,48 @@ func (s *serverAudio) Field20(id sound.ID) int {
 	return s.bySound[id].Field20
 }
 
-func (s *serverAudio) newAudioEventObj(id sound.ID, iobj Obj, kind int, code uint32) {
-	obj := ToObject(iobj)
+func (s *serverAudio) eventObj501960(id sound.ID, obj *Object, kind int, code uint32, native bool) uintptr {
 	if noxflags.HasGame(noxflags.GameFlag20) {
-		return
+		return 1
 	}
-	if id == 0 || obj == nil || s.Field12(id) <= 0 {
-		return
+	if id == 0 || obj == nil {
+		return 0
 	}
-	p := s.alloc.NewObject()
-	if p == nil {
-		return
+	if available := s.Field12(id); available <= 0 {
+		return uintptr(available)
 	}
-	p.Sound = id
-	if obj.Flags().Has(object.FlagDestroyed) {
-		p.Obj = nil
-	} else {
-		p.Obj = obj
+	if noxflags.HasGame(noxflags.GameModeQuest) && obj.Class().Has(object.ClassPlayer) && s.s.Players.CheckXxx(obj) {
+		return 1
 	}
-	p.Pos = obj.Pos()
-	p.Kind = kind
-	p.Code = code
-	p.next0 = s.head
-	s.head = p
+
+	var previous *AudioEvent
+	if p := s.alloc.NewObject(); p != nil {
+		p.Sound = id
+		if obj.Flags().Has(object.FlagDestroyed) {
+			p.Obj = nil
+		} else {
+			p.Obj = obj
+		}
+		p.Pos = obj.Pos()
+		p.Kind = kind
+		p.Code = code
+		if native && kind != 2 {
+			s.notifyObjectSound(id, obj, kind)
+		}
+		previous = s.head
+		p.next0 = previous
+		s.head = p
+	}
+	if !native {
+		s.notifyObjectSound(id, obj, kind)
+	}
+	return uintptr(unsafe.Pointer(previous))
+}
+
+func (s *serverAudio) notifyObjectSound(id sound.ID, obj *Object, kind int) {
+	for _, fnc := range s.onSound {
+		fnc(id, kind, obj, obj.Pos())
+	}
 }
 
 func (s *serverAudio) newAudioEventPos(id sound.ID, pos types.Pointf, kind int, code uint32) {
@@ -189,19 +210,14 @@ func (s *serverAudio) EventObj(id sound.ID, iobj Obj, kind int, code uint32) {
 		})
 		return
 	}
-	if noxflags.HasGame(noxflags.GameFlag20) {
-		return
-	}
-	if id == 0 || obj == nil || s.Field12(id) <= 0 {
-		return
-	}
-	if noxflags.HasGame(noxflags.GameModeQuest) && obj.Class().Has(object.ClassPlayer) && s.s.Players.CheckXxx(obj) {
-		return
-	}
-	s.newAudioEventObj(id, obj, kind, code)
-	for _, fnc := range s.onSound {
-		fnc(id, kind, obj, obj.Pos())
-	}
+	s.eventObj501960(id, obj, kind, code, false)
+}
+
+// EventObjNative501960 inserts immediately and returns the previous event
+// from the server's audio pool, or the original scalar on an early exit.
+// The pool owns that address until the next audio reset.
+func (s *serverAudio) EventObjNative501960(id sound.ID, obj *Object, kind int, code uint32) uintptr {
+	return s.eventObj501960(id, obj, kind, code, true)
 }
 
 func (s *serverAudio) EventPos(id sound.ID, pos types.Pointf, kind int, code uint32) {

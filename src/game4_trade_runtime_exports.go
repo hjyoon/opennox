@@ -14,15 +14,15 @@ func (s *Server) Game4TradeP2PRuntime() server.TradeP2PRuntime50F3A0 {
 }
 
 func (s *Server) Game4ShopBuyRuntime() server.ShopBuyRuntime5100C0 {
-	return s.shopBuyRuntime5100C0()
+	return s.shopBuyRuntimeWithSound5100C0(s.Audio.EventObjNative501960)
 }
 
 func (s *Server) Game4ShopSellRuntime() server.ShopSellRuntime5109C0 {
-	return s.shopSellRuntime5109C0()
+	return s.shopSellRuntimeWithSound5109C0(s.Audio.EventObjNative501960)
 }
 
 func (s *Server) Game4ShopRepairRuntime() server.ShopRepairRuntime5108D0 {
-	return s.shopRepairRuntime5108D0()
+	return s.shopRepairRuntimeWithSound5108D0(s.Audio.EventObjNative501960)
 }
 
 func (s *Server) Game4TradeStartNative50EF10(starter, target *server.Object) *server.TradeSession {

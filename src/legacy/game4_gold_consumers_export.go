@@ -1,13 +1,11 @@
 package legacy
 
 /*
-#include <stdint.h>
-#include "defs.h"
+#include "game4_gold_consumers.h"
 */
 import "C"
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/server"
@@ -35,26 +33,17 @@ func sub_5100C0_trade(owner *nox_object_t, ptr unsafe.Pointer, code C.uint16_t) 
 	rt.world.BuyShopItemNative5100C0(asObjectS(owner), (*server.TradeSession)(ptr), uint16(code), rt.buy())
 }
 
-//export nox_game4_shopBuyByType_510640
-func nox_game4_shopBuyByType_510640(owner *nox_object_t, ptr unsafe.Pointer, typ C.uint16_t, count C.uint8_t) C.uintptr_t {
+//export sub_510640_trade
+func sub_510640_trade(owner *nox_object_t, ptr unsafe.Pointer, typ C.uint16_t, count C.uint8_t) C.uintptr_t {
 	rt := game4TradeRuntime()
-	return C.uintptr_t(rt.world.BuyShopItemsByTypeNative510640(asObjectS(owner), (*server.TradeSession)(ptr), uint16(typ), uint8(count), rt.buy()))
+	_, result := rt.world.BuyShopItemsByType510640(asObjectS(owner), (*server.TradeSession)(ptr), uint16(typ), uint8(count), rt.buy())
+	return C.uintptr_t(result)
 }
 
-//export nox_game4_shopSell_510BE0
-func nox_game4_shopSell_510BE0(owner *nox_object_t, ptr unsafe.Pointer, code C.uint16_t) C.uintptr_t {
+//export sub_510BE0_trade
+func sub_510BE0_trade(owner *nox_object_t, ptr unsafe.Pointer, code C.uint16_t) C.uintptr_t {
 	rt := game4TradeRuntime()
-	unit := asObjectS(owner)
-	// The decoded callers discard EAX. Keep its meaningful original
-	// inventory-present residue without interpreting a wire code as a pointer.
-	result := uintptr(0)
-	if unit.InvFirstItem != nil {
-		result = uintptr(uint16(code))
-	} else if glyph := rt.world.Types.ByID("Glyph"); glyph != nil {
-		result = uintptr(uint32(glyph.Ind()))
-	}
-	rt.world.SellShopItemNative510BE0(unit, (*server.TradeSession)(ptr), uint16(code), rt.sell())
-	runtime.KeepAlive(unit)
+	_, result := rt.world.SellShopItem510BE0(asObjectS(owner), (*server.TradeSession)(ptr), uint16(code), rt.sell())
 	return C.uintptr_t(result)
 }
 
@@ -64,16 +53,10 @@ func sub_510D10(owner *nox_object_t, ptr unsafe.Pointer, typ C.uint16_t, count C
 	rt.world.SellShopItemsByTypeNative510D10(asObjectS(owner), (*server.TradeSession)(ptr), uint16(typ), uint8(count), rt.sell())
 }
 
-//export nox_game4_shopRepair_510AE0
-func nox_game4_shopRepair_510AE0(owner *nox_object_t, ptr unsafe.Pointer, code C.uint16_t) C.uintptr_t {
+//export sub_510AE0
+func sub_510AE0(owner *nox_object_t, ptr unsafe.Pointer, code C.uint16_t) C.uintptr_t {
 	rt := game4TradeRuntime()
-	unit := asObjectS(owner)
-	result := uintptr(game4GoldGet(unit))
-	if unit.InvFirstItem != nil {
-		result = uintptr(uint16(code))
-	}
-	rt.world.RepairShopItemNative510AE0(unit, (*server.TradeSession)(ptr), uint16(code), rt.repair())
-	runtime.KeepAlive(unit)
+	_, result := rt.world.RepairShopItem510AE0(asObjectS(owner), (*server.TradeSession)(ptr), uint16(code), rt.repair())
 	return C.uintptr_t(result)
 }
 

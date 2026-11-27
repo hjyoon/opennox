@@ -3,11 +3,14 @@ package server
 import (
 	"reflect"
 	"testing"
+	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func TestResetAudioEventsNative502100OnlyClearsOriginalState(t *testing.T) {
@@ -119,5 +122,57 @@ func TestServerAudioResetReplaysDelayedEventsAfter502100(t *testing.T) {
 	if audio.head == nil || audio.head.Sound != secondID || audio.head.next0 == nil ||
 		audio.head.next0.Sound != firstID || audio.head.next0.next0 != nil {
 		t.Fatalf("replayed list = %#v, want second then first", audio.head)
+	}
+}
+
+func TestAudioEventObjNative501960ReturnsLiveHead(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() { noxflags.ResetGame(); noxflags.SetGame(oldFlags) })
+
+	audio := &serverAudio{alloc: alloc.NewClassTHigh("AudEvent", AudioEvent{}, 3)}
+	t.Cleanup(audio.alloc.Free)
+	obj := nativeTradeTestValue(t, Object{PosVec: types.Ptf(17, 23)})
+	const id = sound.SoundNoCanDo
+	const code = uint32(0xa5b61234)
+	disabled := int32(-31)
+	audio.bySound[id].Field12 = uint32(disabled)
+	if got := audio.EventObjNative501960(id, obj, 2, code); got != uintptr(disabled) || audio.head != nil {
+		t.Fatalf("unavailable sound returned %#x, head %p", got, audio.head)
+	}
+	noxflags.SetGame(noxflags.GameFlag20)
+	if got := audio.EventObjNative501960(id, obj, 2, code); got != 1 || audio.head != nil {
+		t.Fatalf("muted sound returned %#x, head %p", got, audio.head)
+	}
+	noxflags.ResetGame()
+	audio.bySound[id].Field12 = 1
+	if got := audio.EventObjNative501960(id, obj, 2, code); got != 0 || audio.head == nil {
+		t.Fatalf("first sound returned %#x, head %p", got, audio.head)
+	}
+	first := audio.head
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(first)) <= uintptr(^uint32(0)) {
+		t.Fatalf("event address %p does not exercise native pointer width", first)
+	}
+	var nested *AudioEvent
+	audio.OnSound(func(gotID sound.ID, kind int, unit *Object, pos types.Pointf) {
+		if audio.head != first || gotID != id || kind != 0 || unit != obj || pos != obj.PosVec {
+			t.Fatalf("sound callback saw head %p, sound %d, kind %d, object %p, position %v", audio.head, gotID, kind, unit, pos)
+		}
+		if got := audio.EventObjNative501960(id, obj, 2, code); got != uintptr(unsafe.Pointer(first)) {
+			t.Fatalf("nested sound returned %#x, want %p", got, first)
+		}
+		nested = audio.head
+	})
+	obj.ObjFlags = object.FlagDestroyed
+	if got := audio.EventObjNative501960(id, obj, 0, code); nested == nil || got != uintptr(unsafe.Pointer(nested)) {
+		t.Fatalf("outer sound returned %#x, want %p", got, nested)
+	}
+	head := audio.head
+	if head.next0 != nested || nested.next0 != first || head.Sound != id || head.Obj != nil || head.Pos != obj.PosVec ||
+		head.Kind != 0 || head.Code != code || first.Obj != obj || first.Kind != 2 || first.Code != code {
+		t.Fatalf("event list = %#v, nested %#v, first %#v", head, nested, first)
+	}
+	if got := audio.EventObjNative501960(id, obj, 0, code); got != 0 || audio.head != head {
+		t.Fatalf("exhausted event pool returned %#x, head %p", got, audio.head)
 	}
 }

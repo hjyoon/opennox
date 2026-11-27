@@ -538,7 +538,28 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 	}
 }
 
+func (s *Server) queueShopSound(id sound.ID, unit *server.Object, kind int, code uint32) uintptr {
+	s.Audio.EventObj(id, unit, kind, code)
+	return 0
+}
+
+func (s *Server) reportShopGold(recipient *server.Player, owner *server.Object) {
+	if owner == nil || !owner.Class().Has(object.ClassPlayer) || owner.UpdateData == nil {
+		return
+	}
+	current := owner.UpdateDataPlayer().Player
+	if current == nil {
+		return
+	}
+	packet := server.BuildShopGoldReportPacket4D8870(current.GoldVal)
+	s.NetSendPacketXxx0(recipient.Index(), packet[:], nil, 1)
+}
+
 func (s *Server) shopBuyRuntime5100C0() server.ShopBuyRuntime5100C0 {
+	return s.shopBuyRuntimeWithSound5100C0(s.queueShopSound)
+}
+
+func (s *Server) shopBuyRuntimeWithSound5100C0(play func(sound.ID, *server.Object, int, uint32) uintptr) server.ShopBuyRuntime5100C0 {
 	quest := noxflags.HasGame(noxflags.GameModeQuest)
 	isType := func(item *server.Object, id string) bool {
 		if item == nil {
@@ -581,23 +602,24 @@ func (s *Server) shopBuyRuntime5100C0() server.ShopBuyRuntime5100C0 {
 		PlayPickupSound: func(player *server.Object) {
 			s.Audio.EventObj(sound.SoundInventoryPickup, player, 2, player.NetCode)
 		},
-		PlayRejectSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundNoCanDo, player, 0, 0)
+		PlayRejectSound: func(player *server.Object) uintptr {
+			return play(sound.SoundNoCanDo, player, 0, 0)
 		},
 		ProtectGold: legacy.Nox_xxx_protectGoldDelta_56F920,
 		SendItemRemoved: func(player *server.Player, item *server.Object) {
 			packet := server.BuildShopItemRemovePacket50E820(item)
 			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
 		},
-		ReportGold: func(player *server.Player, _ *server.Object) {
-			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
-		},
-		ReportMissingGold: func(player *server.Player, amount uint16) {
+		ReportGold: s.reportShopGold,
+		ReportMissingGold: func(player *server.Player, amount uint16) int {
 			packet := server.BuildShopMissingGoldPacket5104F0(amount)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+			return s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
 		},
-		ReportMaxSameItem: func(player *server.Object) {
+		ReportMaxSameItem: func(player *server.Object) bool {
+			message := s.Strings().GetString("pickup.c:MaxSameItem")
+			return legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
+		},
+		ReportMaxForceOfNature: func(player *server.Object) {
 			s.NetPriMsgToPlayer(player, "pickup.c:MaxSameItem", 0)
 		},
 		ReportMaxTradableAnkh: func(player *server.Object) {
@@ -615,6 +637,10 @@ func (s *Server) shopBuyByTypeNative510640(playerUnit *server.Object, session *s
 }
 
 func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
+	return s.shopSellRuntimeWithSound5109C0(s.queueShopSound)
+}
+
+func (s *Server) shopSellRuntimeWithSound5109C0(play func(sound.ID, *server.Object, int, uint32) uintptr) server.ShopSellRuntime5109C0 {
 	return server.ShopSellRuntime5109C0{
 		ItemIsQuest: func(item *server.Object) bool {
 			return s.Server.ItemIsDroppable53EBF0(item) == 1
@@ -629,10 +655,7 @@ func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
 		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
 			s.Server.SendShopSellQuoteNative5109C0(player, item, cost)
 		},
-		ReportGold: func(player *server.Player, _ *server.Object) {
-			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
-		},
+		ReportGold: s.reportShopGold,
 		ReportCannotSellQuest: func(player *server.Object) {
 			message := s.Strings().GetStringInFile("CantSellQuestItem", "Trade.c")
 			legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
@@ -641,11 +664,11 @@ func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
 			message := s.Strings().GetStringInFile("CantSellItem", "Trade.c")
 			legacy.Nox_xxx_netSendLineMessage_4D9EB0(player, message)
 		},
-		PlayRejectSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundNoCanDo, player, 2, player.NetCode)
+		PlayRejectSound: func(player *server.Object) uintptr {
+			return play(sound.SoundNoCanDo, player, 2, player.NetCode)
 		},
-		PlaySellSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundTreasurePickup, player, 2, player.NetCode)
+		PlaySellSound: func(player *server.Object) uintptr {
+			return play(sound.SoundTreasurePickup, player, 2, player.NetCode)
 		},
 	}
 }
@@ -663,6 +686,10 @@ func (s *Server) shopSellByTypeNative510D10(playerUnit *server.Object, session *
 }
 
 func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {
+	return s.shopRepairRuntimeWithSound5108D0(s.queueShopSound)
+}
+
+func (s *Server) shopRepairRuntimeWithSound5108D0(play func(sound.ID, *server.Object, int, uint32) uintptr) server.ShopRepairRuntime5108D0 {
 	return server.ShopRepairRuntime5108D0{
 		RepairCoefficient: float32(s.Server.Balance.Float("RepairCoefficient")),
 		SetHealth:         legacy.Nox_xxx_unitSetHP_4E4560,
@@ -677,15 +704,12 @@ func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {
 		ReportCharges: func(player *server.Player, item *server.Object, charge, maximum uint8) {
 			legacy.Nox_xxx_netReportCharges_4D82B0(player.PlayerInd, item, charge, maximum)
 		},
-		ReportGold: func(player *server.Player, _ *server.Object) {
-			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
-			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
-		},
+		ReportGold: s.reportShopGold,
 		PlayRejectSound: func(player *server.Object) {
 			s.Audio.EventObj(sound.SoundNoCanDo, player, 0, 0)
 		},
-		PlayRepairSound: func(player *server.Object) {
-			s.Audio.EventObj(sound.SoundShopRepairItem, player, 2, player.NetCode)
+		PlayRepairSound: func(player *server.Object) uintptr {
+			return play(sound.SoundShopRepairItem, player, 2, player.NetCode)
 		},
 	}
 }

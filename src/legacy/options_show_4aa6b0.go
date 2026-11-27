@@ -21,7 +21,7 @@ var optionsAudioChecks [3]*nox_window
 func OptionsShowCEntry4AA6B0() int32 { return int32(C.nox_game_showOptions_4AA6B0()) }
 
 func OptionsNewWindow4AA6B0(name string) *gui.Window {
-	return asWindow(C.nox_new_window_from_file(internCStr(name), C.sub_4AABE0))
+	return asWindow(nox_new_window_from_file(internCStr(name), C.sub_4AABE0))
 }
 
 func OptionsStoreRoot4AA6B0(win *gui.Window) {

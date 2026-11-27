@@ -90,7 +90,7 @@ func g2bImage(name string) *C.nox_video_bag_image_t {
 	if h := game2BriefingTestHooks; h != nil && h.Image != nil {
 		return (*C.nox_video_bag_image_t)(h.Image(name))
 	}
-	return C.nox_xxx_gLoadImg_42F970(internCStr(name))
+	return nox_xxx_gLoadImg_42F970(internCStr(name))
 }
 func g2bDelete(p unsafe.Pointer) int32 {
 	if h := game2BriefingTestHooks; h != nil && h.DeleteSprite != nil {
@@ -170,7 +170,7 @@ func sub_44E560() *C.nox_window {
 	if result != nil {
 		nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
 		result.draw_data.bg_color = renderPalette.black
-		result = C.nox_new_window_from_file(internCStr("Briefing.wnd"), nil)
+		result = loadWindowFromFile("Briefing.wnd", nil)
 		storeWindowReference(&briefingState.panel, result)
 		if result != nil {
 			sub_46B120(result, briefingState.outer)
@@ -192,7 +192,7 @@ func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unu
 			if briefingState.mode == 255 {
 				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 				duration := C.nox_client_getIntroScreenDuration_44E3B0()
-				C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
+				nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
 				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
 			}
 		} else {
@@ -239,7 +239,7 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		if briefingState.mode != 0 {
 			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 0
 			duration := C.nox_client_getIntroScreenDuration_44E3B0()
-			C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
+			nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
 			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
 		} else if legacyWords.dword_5d4594_831256 == 0 {
 			nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
@@ -329,13 +329,13 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	}
 	text := *(**C.wchar2_t)(textWin.widget_data)
 	height := (*C.int)(memmap.PtrOff(0x5D4594, 831280))
-	C.nox_xxx_drawGetStringSize_43F840(textWin.draw_data.font, text, nil, height, 480)
+	nox_xxx_drawGetStringSize_43F840(textWin.draw_data.font, text, nil, height, 480)
 	sub_46AB20(textWin, 640, *height)
 	if screen == 255 {
 		legacyAddressableWords.dword_5d4594_831276 = 1140457472
 		*height = -20 - *height
 	} else {
-		*height = (480 - C.nox_xxx_guiFontHeightMB_43F320(textWin.draw_data.font) - *height) / 2
+		*height = (480 - C.int(nox_xxx_guiFontHeightMB_43F320(textWin.draw_data.font)) - *height) / 2
 		*g2bPosition() = float32(*height)
 	}
 	C.sub_431290()
@@ -359,7 +359,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	*memmap.PtrUint64(0x5D4594, 831292) = uint64(C.nox_platform_get_ticks())
 	*memmap.PtrUint32(0x5D4594, 831248) = 0
 	duration := C.nox_client_getIntroScreenDuration_44E3B0()
-	C.nox_video_fadeOutScreen_44DB30(duration, 1, unsafe.Pointer(C.nox_xxx_playGMCAPsmth_44E3E0))
+	nox_video_fadeOutScreen_44DB30(duration, 1, unsafe.Pointer(C.nox_xxx_playGMCAPsmth_44E3E0))
 	if legacyWords.dword_5d4594_831224 != 0 {
 		briefingState.ready_for_dialog_end = 0
 	}

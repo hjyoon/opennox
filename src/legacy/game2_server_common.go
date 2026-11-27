@@ -103,10 +103,10 @@ func g2ServerDrawBackground(w *C.nox_window, d *C.nox_window_data, requireImage 
 	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	if int8(w.flags) >= 0 {
 		if uint32(d.bg_color) != 0x80000000 {
-			C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y), C.int(w.width), C.int(w.height))
+			nox_client_drawRectFilledAlpha_49CF10(int32(x), int32(y), int32(w.width), int32(w.height))
 		}
 	} else if !requireImage || d.bg_image != nil {
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), int32(x), int32(y))
 	}
 	return 1
 }

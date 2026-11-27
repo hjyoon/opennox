@@ -327,7 +327,7 @@ func game3SliderDraw(w *C.nox_window, d *C.nox_window_data, vertical, image bool
 			img = d.dis_image
 		}
 		if img != nil {
-			C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(img), C.int(x), C.int(y))
+			nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(img), int32(x), int32(y))
 		}
 		return 1
 	}
@@ -338,23 +338,23 @@ func game3SliderDraw(w *C.nox_window, d *C.nox_window_data, vertical, image bool
 				line = uint32(d.sel_color)
 			}
 			if uint32(d.hl_color) != 0x80000000 {
-				C.nox_client_drawSetColor_434460(C.int(d.hl_color))
-				C.nox_client_drawBorderLines_49CC70(C.int(x), C.int(y), C.int(width), C.int(height))
+				nox_client_drawSetColor_434460(int32(d.hl_color))
+				nox_client_drawBorderLines_49CC70(int32(x), int32(y), int32(width), int32(height))
 			}
 		}
 	} else {
 		bg = uint32(d.dis_color)
 	}
 	if bg != 0x80000000 {
-		C.nox_client_drawSetColor_434460(C.int(bg))
-		C.nox_client_drawRectFilledOpaque_49CE30(C.int(x+1), C.int(y+1), C.int(width-2), C.int(height-2))
+		nox_client_drawSetColor_434460(int32(bg))
+		nox_client_drawRectFilledOpaque_49CE30(int32(x+1), int32(y+1), int32(width-2), int32(height-2))
 	}
 	if line != 0x80000000 {
-		C.nox_client_drawSetColor_434460(C.int(line))
+		nox_client_drawSetColor_434460(int32(line))
 		if vertical {
-			C.nox_client_drawRectFilledOpaque_49CE30(C.int(x+width/2-1), C.int(y+4), 3, C.int(height-8))
+			nox_client_drawRectFilledOpaque_49CE30(int32(x+width/2-1), int32(y+4), 3, int32(height-8))
 		} else {
-			C.nox_client_drawRectFilledOpaque_49CE30(C.int(x), C.int(y+height/2-1), C.int(width), 3)
+			nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y+height/2-1), int32(width), 3)
 		}
 	}
 	return 1

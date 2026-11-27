@@ -31,7 +31,7 @@ func sub_4649B0(drawable *C.nox_drawable, column, row C.int) C.int {
 	if count == 0 {
 		cell.field_0 = clientInventoryCloneDrawable(drawable)
 		if cell.field_0 == nil {
-			C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 898))
+			nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 898))
 			return 0
 		}
 	}
@@ -282,14 +282,14 @@ func clientInventoryCheckWorldTarget(screen *C.int2) {
 	point := C.nox_point{x: world.field_0, y: world.field_4}
 	target := nox_drawable_find_49ABF0(&point, 20)
 	if target == nil {
-		C.nox_xxx_printCentered_445490(clientInventoryString("NoObject", 3869))
+		nox_xxx_printCentered_445490(clientInventoryString("NoObject", 3869))
 		return
 	}
 	center := C.int2{field_0: clientDisplayStorage.width / 2, field_4: clientDisplayStorage.height / 2}
 	sub_473970(&center, &center)
 	dx, dy := center.field_0-C.int(target.pos.x), center.field_4-C.int(target.pos.y)
 	if dx*dx+dy*dy > 5625 {
-		C.nox_xxx_printCentered_445490(clientInventoryString("ObjectTooFar", 3858))
+		nox_xxx_printCentered_445490(clientInventoryString("ObjectTooFar", 3858))
 	}
 }
 

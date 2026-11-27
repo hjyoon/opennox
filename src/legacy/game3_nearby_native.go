@@ -92,7 +92,7 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 		sub_4A2890()
 		return nil
 	}
-	normal, lit := C.nox_xxx_gLoadImg_42F970(internCStr("UISlider")), C.nox_xxx_gLoadImg_42F970(internCStr("UISliderLit"))
+	normal, lit := loadImageHandle("UISlider"), loadImageHandle("UISliderLit")
 	C.sub_4B5700(slider, nil, nil, unsafe.Pointer(normal), unsafe.Pointer(lit), unsafe.Pointer(lit))
 	nox_xxx_wnd_46B280(slider, list)
 	nox_xxx_wnd_46B280(up, list)

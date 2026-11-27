@@ -13,7 +13,7 @@ func sub_4532E0() *C.nox_window {
 	if w == nil || root == nil {
 		return nil
 	}
-	h := C.nox_xxx_guiFontHeightMB_43F320(w.draw_data.font) + 1
+	h := C.int(nox_xxx_guiFontHeightMB_43F320(w.draw_data.font)) + 1
 	sub_46AB20(w, C.int(w.width), 15*h+2)
 	y := w.off_y + C.intptr_t(h) + 2
 	var last *C.nox_window
@@ -238,7 +238,7 @@ func sub_453B00() *C.nox_window {
 	if w == nil || other == nil || root == nil {
 		return nil
 	}
-	h := C.nox_xxx_guiFontHeightMB_43F320(w.draw_data.font) + 1
+	h := C.int(nox_xxx_guiFontHeightMB_43F320(w.draw_data.font)) + 1
 	sub_46AB20(w, C.int(w.width), 15*h+2)
 	sub_46AB20(other, C.int(other.width), 15*h+2)
 	y := w.off_y + C.intptr_t(h) + 2

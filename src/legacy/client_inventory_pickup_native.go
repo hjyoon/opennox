@@ -37,7 +37,7 @@ func nox_xxx_spritePickup_461660(code, thingType C.int, attrs *C.inventory_const
 	} else {
 		var pos C.int2
 		if sub_4617C0(code, thingType, attrs, &pos) == 0 {
-			C.nox_xxx_printCentered_445490(clientInventoryString("InventoryFull", 682))
+			nox_xxx_printCentered_445490(clientInventoryString("InventoryFull", 682))
 			return 0
 		}
 		row, column = int(pos.field_4), int(pos.field_0)
@@ -69,7 +69,7 @@ func sub_4617C0(code, thingType C.int, attrs *C.inventory_const_modifier_attrs_t
 			drawable := nox_new_drawable_for_thing(int32(thingType))
 			cell.field_0 = drawable
 			if drawable == nil {
-				C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 550))
+				nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 550))
 				return 0
 			}
 			drawable.flags30 |= 0x40000000
@@ -114,7 +114,7 @@ func sub_461A80(code C.int) {
 	}
 	dragged := nox_client_inventory_get_dragged()
 	if dragged == nil || dragged.field_32 != C.uint32_t(code) {
-		C.nox_xxx_printCentered_445490(clientInventoryString("DroppedNotFound", 1439))
+		nox_xxx_printCentered_445490(clientInventoryString("DroppedNotFound", 1439))
 		return
 	}
 	if dragged.flags28&0x10 != 0 {
@@ -148,17 +148,17 @@ func sub_462040(code C.int) {
 	}
 	// The stack owns an item's net code until the sprite is being dragged.
 	if source == nil || cell == nil && source.field_32 != C.uint32_t(code) {
-		C.nox_xxx_printCentered_445490(clientInventoryString("EquippedNotFound", 1605))
+		nox_xxx_printCentered_445490(clientInventoryString("EquippedNotFound", 1605))
 		return
 	}
 	slot := sub_4622E0(source)
 	if slot == 9 {
-		C.nox_xxx_printCentered_445490(clientInventoryString("TooManyEquipped", 1701))
+		nox_xxx_printCentered_445490(clientInventoryString("TooManyEquipped", 1701))
 		return
 	}
 	equipped := clientInventoryCloneDrawable(source)
 	if equipped == nil {
-		C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1619))
+		nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1619))
 		return
 	}
 	equipped.field_32 = C.uint32_t(code)
@@ -218,7 +218,7 @@ func nox_xxx_cliInventorySpriteUpd_465A30() {
 	dragged := clientInventoryCloneDrawable(cell.field_0)
 	nox_client_inventory_set_dragged(dragged)
 	if dragged == nil {
-		C.nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1123))
+		nox_xxx_printCentered_445490(clientInventoryString("DrawablesExhausted", 1123))
 		return
 	}
 	dragged.field_32 = cell.field_4

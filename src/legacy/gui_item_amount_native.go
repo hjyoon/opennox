@@ -220,7 +220,7 @@ func packedGUIViewport(offset uintptr) noxrender.Viewport {
 
 //export sub_4C0030
 func sub_4C0030(win *nox_window, draw unsafe.Pointer) C.int {
-	C.nox_client_drawRectFilledAlpha_49CF10(0, 0, clientDisplayStorage.width, clientDisplayStorage.height)
+	nox_client_drawRectFilledAlpha_49CF10(0, 0, int32(clientDisplayStorage.width), int32(clientDisplayStorage.height))
 	x, y := itemAmountPosition(win)
 	drawImage := func(index int) {
 		nox_client_drawImageAt_47D2C0(itemAmountDialog.images[index], int32(x), int32(y))

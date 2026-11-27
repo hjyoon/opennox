@@ -13,7 +13,7 @@ import (
 )
 
 var itemEnchantmentIconLoad413420 = func(name *byte) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_gLoadImg_42F970((*C.char)(unsafe.Pointer(name))))
+	return unsafe.Pointer(nox_xxx_gLoadImg_42F970((*C.char)(unsafe.Pointer(name))))
 }
 
 func itemEnchantmentIconNativeHooks413420() itemEnchantmentIconHooks413420 {

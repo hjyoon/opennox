@@ -641,8 +641,8 @@ func sub_45F5D0(win *C.nox_window, unused1 *C.nox_window_data) C.int {
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if text := C.sub_42E8E0(C.int(win.field_92+28), 1); text != nil {
-		C.nox_xxx_drawSetTextColor_434390(C.int(renderPalette.white))
-		C.nox_xxx_drawString_43F6E0(quickbarControls.font, (*C.wchar2_t)(unsafe.Pointer(text)), C.int(x), C.int(y))
+		nox_xxx_drawSetTextColor_434390(int32(renderPalette.white))
+		nox_xxx_drawString_43F6E0(quickbarControls.font, (*C.wchar2_t)(unsafe.Pointer(text)), int32(x), int32(y))
 	}
 	return 1
 }
@@ -692,11 +692,11 @@ func nox_xxx_quickbarTrapUpDownDraw_45F6F0(win *C.nox_window, data *C.nox_window
 	dx, dy := C.int(int32(x)+int32(data.img_px)), C.int(int32(y)+int32(data.img_py))
 	if memmap.Int32(0x5D4594, 1049700) <= 0 || memmap.Int32(0x5D4594, 1049704) != int32(win.field_92) {
 		if data.bg_image != nil {
-			C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(data.bg_image), dx, dy)
+			nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(data.bg_image), int32(dx), int32(dy))
 		}
 	} else {
 		if data.hl_image != nil {
-			C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(data.hl_image), dx, dy)
+			nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(data.hl_image), int32(dx), int32(dy))
 		}
 		p := memmap.PtrUint32(0x5D4594, 1049700)
 		*p--
@@ -858,7 +858,7 @@ func nox_xxx_quickBarInitWindow_4601F0(data unsafe.Pointer, x, y, count, spacing
 		nox_quickbar_windows_clear(data)
 		return 0
 	}
-	nox_xxx_wndSetIcon_46AE60(set.root, C.nox_xxx_gLoadImg_42F970(internCStr("QuickBarBase")))
+	nox_xxx_wndSetIcon_46AE60(set.root, loadImageHandle("QuickBarBase"))
 	nox_xxx_wndSetOffsetMB_46AE40(set.root, -61, -18)
 	nox_xxx_wndSetWindowProc_46B300(set.root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0))
 	bx := spacing + 10

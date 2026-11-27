@@ -214,6 +214,6 @@ func sub_4C15D0(data *C.nox_trade_const_u8_t) C.int {
 			return C.int(slot.count)
 		}
 	}
-	C.nox_xxx_printCentered_445490(tradeString("TradeGUIItemNotFound", 1141))
+	nox_xxx_printCentered_445490(tradeString("TradeGUIItemNotFound", 1141))
 	return 0
 }

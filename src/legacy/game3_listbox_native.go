@@ -188,13 +188,13 @@ func nox_xxx_wndListBoxAddLine_4A3AC0(text *C.wchar2_t, color C.int, w *C.nox_wi
 	}
 	var height C.int
 	if uint32(w.flags)&0x4000 != 0 {
-		height = C.nox_xxx_guiFontHeightMB_43F320(w.draw_data.font)
+		height = C.int(nox_xxx_guiFontHeightMB_43F320(w.draw_data.font))
 	} else {
 		width := int32(w.width) - 7
 		if d.Field_3 != 0 {
 			width = int32(w.width) - 17
 		}
-		C.nox_xxx_drawGetStringSize_43F840(w.draw_data.font, (*C.wchar2_t)(unsafe.Pointer(&item.Text[0])), nil, &height, C.int(width))
+		nox_xxx_drawGetStringSize_43F840(w.draw_data.font, (*C.wchar2_t)(unsafe.Pointer(&item.Text[0])), nil, &height, int32(width))
 	}
 	item.Field_130 = (item.Field_130 & 0xffffff00) | uint32(uint8(height))
 	d.Field_11_1++

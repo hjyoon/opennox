@@ -123,28 +123,28 @@ func sentryAbs4C51D0(value C.int) C.int {
 func sub_4C51D0(from, to *C.int2) C.int {
 	x, y := from.field_0, from.field_4
 	dx, dy := to.field_0-x, to.field_4-y
-	C.nox_client_drawSetColor_434460(C.int(memmap.Uint32(0x5D4594, 1321532)))
-	C.nox_client_drawEnableAlpha_434560(1)
-	C.nox_client_drawAddPoint_49F500(x, y)
-	C.nox_xxx_rasterPointRel_49F570(dx, dy)
-	C.nox_client_drawLineFromPoints_49E4B0()
-	C.nox_client_drawEnableAlpha_434560(0)
+	nox_client_drawSetColor_434460(int32(memmap.Uint32(0x5D4594, 1321532)))
+	nox_client_drawEnableAlpha_434560(1)
+	nox_client_drawAddPoint_49F500(int32(x), int32(y))
+	nox_xxx_rasterPointRel_49F570(int32(dx), int32(dy))
+	nox_client_drawLineFromPoints_49E4B0()
+	nox_client_drawEnableAlpha_434560(0)
 
 	y -= 22
-	C.nox_client_drawSetColor_434460(C.int(memmap.Uint32(0x5D4594, 1321536)))
-	C.nox_client_drawAddPoint_49F500(x, y)
-	C.nox_xxx_rasterPointRel_49F570(dx, dy)
-	C.nox_client_drawLineFromPoints_49E4B0()
+	nox_client_drawSetColor_434460(int32(memmap.Uint32(0x5D4594, 1321536)))
+	nox_client_drawAddPoint_49F500(int32(x), int32(y))
+	nox_xxx_rasterPointRel_49F570(int32(dx), int32(dy))
+	nox_client_drawLineFromPoints_49E4B0()
 
-	C.nox_client_drawSetColor_434460(C.int(memmap.Uint32(0x5D4594, 1321796)))
+	nox_client_drawSetColor_434460(int32(memmap.Uint32(0x5D4594, 1321796)))
 	offsetX, offsetY := C.int(1), C.int(0)
 	if sentryAbs4C51D0(dx) > sentryAbs4C51D0(dy) {
 		offsetX, offsetY = 0, 1
 	}
-	C.nox_client_drawAddPoint_49F500(x-offsetX, y-offsetY)
-	C.nox_client_drawAddPoint_49F500(x+dx-offsetX, y+dy-offsetY)
-	C.nox_client_drawLineFromPoints_49E4B0()
-	C.nox_client_drawAddPoint_49F500(x+offsetX, y+offsetY)
-	C.nox_client_drawAddPoint_49F500(x+dx+offsetX, y+dy+offsetY)
-	return C.nox_client_drawLineFromPoints_49E4B0()
+	nox_client_drawAddPoint_49F500(int32(x-offsetX), int32(y-offsetY))
+	nox_client_drawAddPoint_49F500(int32(x+dx-offsetX), int32(y+dy-offsetY))
+	nox_client_drawLineFromPoints_49E4B0()
+	nox_client_drawAddPoint_49F500(int32(x+offsetX), int32(y+offsetY))
+	nox_client_drawAddPoint_49F500(int32(x+dx+offsetX), int32(y+dy+offsetY))
+	return C.int(nox_client_drawLineFromPoints_49E4B0())
 }

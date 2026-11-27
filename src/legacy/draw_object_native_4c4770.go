@@ -67,7 +67,7 @@ func drawObjectLight4C4770(dr *client.Drawable) *[9]byte {
 	} else {
 		raw := dr.Pos()
 		pos := C.nox_point{x: C.int(raw.X), y: C.int(raw.Y)}
-		light = unsafe.Pointer(C.sub_469920(&pos))
+		light = unsafe.Pointer(sub_469920(&pos))
 	}
 	return (*[9]byte)(light)
 }
@@ -79,7 +79,7 @@ func drawObjectSetAlpha(alpha byte) {
 
 func drawObjectSetTint(color C.int) {
 	nox_xxx_draw_434600(1)
-	C.nox_draw_setColorMultAndIntensity_433E40(color)
+	nox_draw_setColorMultAndIntensity_433E40(int32(color))
 }
 
 func drawObjectFade4C4770(vp *noxrender.Viewport, dr *client.Drawable) {
@@ -197,7 +197,7 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 		drawObjectSetTint(C.int(renderPalette.blue))
 	} else {
 		sub_4345F0(1)
-		C.nox_draw_setColorMultAndIntensityRGB_433CD0(C.uint8_t(light[0]), C.uint8_t(light[4]), C.uint8_t(light[8]))
+		nox_draw_setColorMultAndIntensityRGB_433CD0(C.uint8_t(light[0]), C.uint8_t(light[4]), C.uint8_t(light[8]))
 	}
 
 	drawObjectFade4C4770(vp, dr)
@@ -216,9 +216,9 @@ func drawObject4C4770(vp *noxrender.Viewport, dr *client.Drawable, img noxrender
 	}
 	if restoreClip {
 		nox_xxx_wndDraw_49F7F0()
-		C.sub_49F7C0_def()
+		sub_49F7C0_def()
 	} else {
-		C.sub_47D370(C.int(max(0, -z)))
+		sub_47D370(int32(max(0, -z)))
 	}
 	nox_client_drawImageAt_47D2C0((*nox_video_bag_image_t)(img), screenX, screenY)
 	sub_4345F0(0)

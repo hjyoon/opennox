@@ -55,8 +55,8 @@ func nox_client_getPlayerDollImage_4BF9F0(offset C.uintptr_t, layer C.int) *C.no
 func sub_4BF7E0(origin *C.uint32_t) C.short {
 	p := (*[2]C.uint32_t)(unsafe.Pointer(origin))
 	x, y := C.int(p[0]+11), C.int(p[1]+15)
-	C.nox_client_drawSetColor_434460(C.int(renderPalette.black))
-	C.nox_client_drawRectFilledOpaque_49CE30(x, y, 200, 200)
+	nox_client_drawSetColor_434460(int32(renderPalette.black))
+	nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y), 200, 200)
 	if *memmap.PtrPtr(0x852978, 8) == nil {
 		return 0
 	}

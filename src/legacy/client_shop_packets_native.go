@@ -48,7 +48,7 @@ func sub_478850(position *C.int2, itemID, typeID, amount, extra C.uint32_t) {
 
 func shopBuyTooHeavy(line int32) {
 	nox_xxx_clientPlaySoundSpecial_452D80(925, 100)
-	C.nox_xxx_printCentered_445490(nox_strman_loadString_40F1D0(
+	nox_xxx_printCentered_445490(nox_strman_loadString_40F1D0(
 		internCStr("pickup.c:CarryingTooMuch"), nil, internCStr(shopSource), line))
 }
 

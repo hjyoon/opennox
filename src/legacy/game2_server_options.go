@@ -127,7 +127,7 @@ func nox_xxx_windowServerOptionsDrawProc_458500(w *C.nox_window, unused1 C.int) 
 	pos := C.nox_client_getMousePos_4309F0()
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(w, &x, &y)
-	C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y)+25, C.int(w.width), C.int(w.height)-25)
+	nox_client_drawRectFilledAlpha_49CF10(int32(x), int32(C.int(y)+25), int32(w.width), int32(C.int(w.height)-25))
 	v := g2ServerChild(serverSharedWindows.options, 10120)
 	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(v)) == 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(v, pos.x, pos.y)) {
 		nox_xxx_wndClearCaptureMain_46ADE0(v)

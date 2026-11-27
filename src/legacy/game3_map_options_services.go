@@ -232,7 +232,7 @@ func sub_4ADA40() C.int {
 	if w := nox_xxx_wndGetChildByID_46B0C0(inGameOptionsWindows.root, int32(id)); w != nil {
 		nox_window_call_field_94_fnc(w, 16392, 0, 0, internCStr("game3_map_options_services.go"), 0)
 	}
-	return C.nox_draw_setTabWidth_43FE20(15)
+	return C.int(nox_draw_setTabWidth_43FE20(15))
 }
 
 func game3IngameOptionsSlider(w *C.nox_window, state unsafe.Pointer, image, lit *C.nox_video_bag_image_t) bool {
@@ -264,9 +264,9 @@ func game3IngameOptionsToggle(w *C.nox_window) {
 
 //export nox_game_initOptionsInGame_4ADAD0
 func nox_game_initOptionsInGame_4ADAD0() C.int {
-	image := C.nox_xxx_gLoadImg_42F970(internCStr("OptionsVolumeSlider"))
-	lit := C.nox_xxx_gLoadImg_42F970(internCStr("OptionsVolumeSliderLit"))
-	inGameOptionsWindows.root = C.nox_new_window_from_file(internCStr("Options.wnd"), unsafe.Pointer(C.nox_xxx_windowOptionsProc_4ADF30))
+	image := loadImageHandle("OptionsVolumeSlider")
+	lit := loadImageHandle("OptionsVolumeSliderLit")
+	inGameOptionsWindows.root = loadWindowFromFile("Options.wnd", unsafe.Pointer(C.nox_xxx_windowOptionsProc_4ADF30))
 	root := inGameOptionsWindows.root
 	if root == nil {
 		return 0

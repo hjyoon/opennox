@@ -164,10 +164,10 @@ func sub_4CEED0(win *nox_window, draw *C.nox_window_data) C.int {
 	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if int8(win.flags) >= 0 {
 		if uint32(draw.bg_color) != 0x80000000 {
-			C.nox_client_drawRectFilledOpaque_49CE30(C.int(x), C.int(y), C.int(win.width), C.int(win.height))
+			nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y), int32(win.width), int32(win.height))
 		}
 	} else if draw.bg_image != nil {
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(draw.bg_image), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(draw.bg_image), int32(x), int32(y))
 	}
 	selected := int32(g2ServerEvent(list, 16404, 0, 0)) >= 0
 	setRuleListEnabled(replace, selected)

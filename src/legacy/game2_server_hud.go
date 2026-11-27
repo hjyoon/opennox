@@ -94,10 +94,10 @@ func sub_455CD0(w *C.nox_window, d *C.nox_window_data) C.int {
 		image = d.dis_image
 	}
 	if image != nil {
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), int32(x), int32(y))
 	}
 	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && legacyPointers.flagTeamBorder != nil {
-		C.nox_client_drawImageAt_47D2C0(legacyPointers.flagTeamBorder, C.int(x)-4, C.int(y)-4)
+		nox_client_drawImageAt_47D2C0(legacyPointers.flagTeamBorder, int32(C.int(x)-4), int32(C.int(y)-4))
 	}
 	return 1
 }
@@ -169,14 +169,14 @@ func sub_456050() C.int { legacyWords.dword_5d4594_1045640 = 0; return sub_455F1
 //export sub_456070
 func sub_456070() C.int {
 	if serverSharedWindows.flagball_hud == nil {
-		w := C.nox_new_window_from_file(internCStr("gui_fb.wnd"), nil)
+		w := loadWindowFromFile("gui_fb.wnd", nil)
 		serverSharedWindows.flagball_hud = w
 		if w == nil {
 			return 0
 		}
 		nox_window_set_all_funcs(w, nil, unsafe.Pointer(C.sub_4560D0), nil)
 		sub_455F10(0)
-		flagballTeamBorder = (*C.nox_video_bag_image_t)(C.nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder")))
+		flagballTeamBorder = loadImageHandle("FlagTeamBorder")
 	}
 	return 1
 }
@@ -186,10 +186,10 @@ func sub_4560D0(w *C.nox_window, d *C.nox_window_data) C.int {
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	if d.bg_image != nil {
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), int32(x), int32(y))
 	}
 	if w.flags&C.NOX_WIN_LAYER_FRONT != 0 && flagballTeamBorder != nil {
-		C.nox_client_drawImageAt_47D2C0(flagballTeamBorder, C.int(x)-4, C.int(y)-4)
+		nox_client_drawImageAt_47D2C0(flagballTeamBorder, int32(C.int(x)-4), int32(C.int(y)-4))
 	}
 	return 1
 }
@@ -212,7 +212,7 @@ func sub_455C30() C.int {
 	if serverSharedWindows.ctf_hud != nil {
 		return 1
 	}
-	root := C.nox_new_window_from_file(internCStr("GUI_CTF.wnd"), nil)
+	root := loadWindowFromFile("GUI_CTF.wnd", nil)
 	serverSharedWindows.ctf_hud = root
 	if root == nil {
 		return 0

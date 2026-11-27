@@ -87,7 +87,7 @@ func nox_game_showSelClass_4A4840() C.int {
 	C.sub_4A1BE0(1)
 	classSelectProfile = C.nox_xxx_getHostInfoPtr_431770()
 	C.nox_game_addStateCode_43BDD0(600)
-	classSelectRoot = C.nox_new_window_from_file(internCStr("SelClass.wnd"), C.sub_4A4A20)
+	classSelectRoot = loadWindowFromFile("SelClass.wnd", C.sub_4A4A20)
 	if classSelectRoot == nil {
 		return 0
 	}
@@ -139,7 +139,7 @@ func sub_4A49D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 		var w, h C.int
 		nox_client_wndGetPosition_46AA60(win, &x, &y)
 		nox_window_get_size(win, &w, &h)
-		C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y), w, h)
+		nox_client_drawRectFilledAlpha_49CF10(int32(x), int32(y), int32(w), int32(h))
 	}
 	return 1
 }
@@ -257,7 +257,7 @@ func game3PaletteColor(win *C.nox_window) C.int {
 func game3ModifierPalette(mod unsafe.Pointer) {
 	for i := 1; i < 8; i++ {
 		rgb := uint32(nox_modifier_getColorRGB(mod, C.int(i)))
-		C.nox_draw_setMaterial_4340A0(C.int(i), C.int(rgb&255), C.int((rgb>>8)&255), C.int((rgb>>16)&255))
+		nox_draw_setMaterial_4340A0(int32(i), int32(rgb&255), int32((rgb>>8)&255), int32((rgb>>16)&255))
 	}
 }
 
@@ -267,8 +267,8 @@ func sub_4A6D20(win *C.nox_window, draw *C.nox_window_data) C.int {
 	var w, h C.int
 	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	nox_window_get_size(win, &w, &h)
-	C.nox_client_drawSetColor_434460(game3PaletteColor(win))
-	C.nox_client_drawRectFilledOpaque_49CE30(C.int(x), C.int(y), w, h)
+	nox_client_drawSetColor_434460(int32(game3PaletteColor(win)))
+	nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y), int32(w), int32(h))
 	return 1
 }
 
@@ -277,51 +277,51 @@ func sub_4A6DC0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	body := game3PaletteColor(colorSelectSwatches[0])
-	C.nox_draw_setMaterial_4341D0(6, body)
-	C.nox_draw_setMaterial_4341D0(1, game3PaletteColor(colorSelectSwatches[1]))
+	nox_draw_setMaterial_4341D0(6, int32(body))
+	nox_draw_setMaterial_4341D0(1, int32(game3PaletteColor(colorSelectSwatches[1])))
 	color := body
 	if colorSelectPreviewControls[2].flags&8 != 0 {
 		color = game3PaletteColor(colorSelectSwatches[3])
 	}
-	C.nox_draw_setMaterial_4341D0(2, color)
-	C.nox_draw_setMaterial_4341D0(3, body)
+	nox_draw_setMaterial_4341D0(2, int32(color))
+	nox_draw_setMaterial_4341D0(3, int32(body))
 	color = body
 	if colorSelectPreviewControls[3].flags&8 != 0 {
 		color = game3PaletteColor(colorSelectSwatches[4])
 	}
-	C.nox_draw_setMaterial_4341D0(4, color)
+	nox_draw_setMaterial_4341D0(4, int32(color))
 	color = body
 	if colorSelectPreviewControls[1].flags&8 != 0 {
 		color = game3PaletteColor(colorSelectSwatches[2])
 	}
-	C.nox_draw_setMaterial_4341D0(5, color)
+	nox_draw_setMaterial_4341D0(5, int32(color))
 	variant := uint32(*(*byte)(unsafe.Add(unsafe.Pointer(colorSelectProfile), 67)))
 	off := uintptr(24 + 4*variant)
 	if colorSelectPreviewControls[0].flags&8 != 0 {
 		off = uintptr(16 + 4*variant)
 	}
-	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(off))), C.int(x), C.int(y))
+	nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(off))), int32(x), int32(y))
 	for layer := 0; layer < 26; layer++ {
 		var mod unsafe.Pointer
 		switch uint32(1) << layer {
 		case 4:
 			mod = streetPantsModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(colorSelectSwatches[5]))
+			nox_draw_setMaterial_4341D0(int32(nox_modifier_getMaterial(mod)), int32(game3PaletteColor(colorSelectSwatches[5])))
 		case 1024:
 			mod = streetShirtModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(colorSelectSwatches[6]))
-			C.nox_draw_setMaterial_4341D0(nox_modifier_getPriEnchant(mod), game3PaletteColor(colorSelectSwatches[7]))
+			nox_draw_setMaterial_4341D0(int32(nox_modifier_getMaterial(mod)), int32(game3PaletteColor(colorSelectSwatches[6])))
+			nox_draw_setMaterial_4341D0(int32(nox_modifier_getPriEnchant(mod)), int32(game3PaletteColor(colorSelectSwatches[7])))
 		case 1:
 			mod = streetSneakersModifier.C()
 			game3ModifierPalette(mod)
-			C.nox_draw_setMaterial_4341D0(nox_modifier_getMaterial(mod), game3PaletteColor(colorSelectSwatches[8]))
-			C.nox_draw_setMaterial_4341D0(nox_modifier_getEffectiveness(mod), game3PaletteColor(colorSelectSwatches[9]))
+			nox_draw_setMaterial_4341D0(int32(nox_modifier_getMaterial(mod)), int32(game3PaletteColor(colorSelectSwatches[8])))
+			nox_draw_setMaterial_4341D0(int32(nox_modifier_getEffectiveness(mod)), int32(game3PaletteColor(colorSelectSwatches[9])))
 		default:
 			continue
 		}
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(32+104*variant+4*uint32(layer)))), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(mem_getPtrValue(0x973A20, C.uintptr_t(32+104*variant+4*uint32(layer)))), int32(x), int32(y))
 	}
 	return 1
 }
@@ -727,11 +727,11 @@ func sub_4AB0C0() C.int {
 
 //export sub_4AB260
 func sub_4AB260() C.int {
-	mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(C.nox_xxx_gLoadImg_42F970(internCStr("DisconnectIcon"))))
+	mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(loadImageHandle("DisconnectIcon")))
 	disconnectIndicator = nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2+3, 50, 50, nil)
 	nox_xxx_wndSetIcon_46AE60(disconnectIndicator, (*C.nox_video_bag_image_t)(mem_getPtrValue(0x5D4594, 1309752)))
 	nox_window_set_all_funcs(disconnectIndicator, nil, C.sub_4AB420, nil)
-	disconnectDialog = C.nox_new_window_from_file(internCStr("discon.wnd"), C.sub_4AB390)
+	disconnectDialog = loadWindowFromFile("discon.wnd", C.sub_4AB390)
 	nox_xxx_wndSetWindowProc_46B300(disconnectDialog, C.sub_4AB340)
 	sub_46B120(disconnectDialog, nil)
 	nox_window_setPos_46A9B0(disconnectDialog, int32(int64(clientDisplayStorage.width)/2-int64(disconnectDialog.end_x)/2), int32(int64(clientDisplayStorage.height)/2-int64(disconnectDialog.end_y)/2))
@@ -787,7 +787,7 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 func sub_4AB420(win *C.nox_window, draw unsafe.Pointer) C.int {
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(win, &x, &y)
-	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(win.draw_data.bg_image), C.int(int64(x)+int64(win.draw_data.img_px)), C.int(int64(y)+int64(win.draw_data.img_py)))
+	nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(win.draw_data.bg_image), int32(int64(x)+int64(win.draw_data.img_px)), int32(int64(y)+int64(win.draw_data.img_py)))
 	return 1
 }
 
@@ -811,7 +811,7 @@ func sub_4AB4A0(show C.int) C.int {
 //export sub_4AB4D0
 func sub_4AB4D0(show C.int) C.int {
 	if show != 0 {
-		C.nox_video_stopAllFades_44E040()
+		nox_video_stopAllFades_44E040()
 		nox_window_set_hidden(disconnectDialog, 0)
 		nox_xxx_wndShowModalMB_46A8C0(disconnectDialog)
 		sub_46C690(disconnectDialog)

@@ -214,7 +214,7 @@ func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int 
 		}
 		return 0
 	}
-	bookState.line_height = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
+	bookState.line_height = C.uint32_t(nox_xxx_guiFontHeightMB_43F320(nil) + 2)
 	rows := int32(uint32(141)/uint32(bookState.line_height) - 1)
 	var wx, wy C.uint
 	nox_gui_getWindowOffs_46AA20(win, &wx, &wy)
@@ -323,7 +323,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 	loadImage := func(name string) *C.nox_video_bag_image_t {
 		p := C.CString(name)
 		defer C.free(unsafe.Pointer(p))
-		return C.nox_xxx_gLoadImg_42F970(p)
+		return nox_xxx_gLoadImg_42F970(p)
 	}
 	for i, name := range []string{"ArrowNW", "ArrowN", "ArrowNE", "ArrowW", "ArrowE", "ArrowSW", "ArrowS", "ArrowSE"} {
 		image := loadImage(name)
@@ -347,7 +347,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 	loadAnim := func(name string) *C.nox_things_imageRef_t {
 		p := C.CString(name)
 		defer C.free(unsafe.Pointer(p))
-		return C.nox_xxx_gLoadAnim_42FA20(p)
+		return nox_xxx_gLoadAnim_42FA20(p)
 	}
 	bookDetails.forward = loadAnim("BookPageForward")
 	if bookDetails.forward == nil {
@@ -423,7 +423,7 @@ func nox_xxx_bookDrawIconFn_45CB30(window *C.uint32_t) C.int {
 	if image != nil {
 		var x, y C.uint
 		nox_client_wndGetPosition_46AA60((*C.nox_window)(unsafe.Pointer(window)), &x, &y)
-		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), C.int(x), C.int(y))
+		nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), int32(x), int32(y))
 	}
 	return 1
 }

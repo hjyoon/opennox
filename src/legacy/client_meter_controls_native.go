@@ -153,9 +153,9 @@ func sub_472080() C.int {
 
 //export sub_4720C0
 func sub_4720C0(x, y C.int) C.int {
-	C.nox_client_drawPixel_49EFA0(x+1, y)
-	C.nox_client_drawRectFilledOpaque_49CE30(x, y+1, 3, 1)
-	C.nox_client_drawPixel_49EFA0(x+1, y+2)
+	nox_client_drawPixel_49EFA0(int32(x+1), int32(y))
+	nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y+1), 3, 1)
+	nox_client_drawPixel_49EFA0(int32(x+1), int32(y+2))
 	return 0
 }
 

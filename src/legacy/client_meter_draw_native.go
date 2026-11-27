@@ -64,7 +64,7 @@ const meterChargeRows = 61
 
 func drawMeterChargeRow(x, y C.int, row uintptr) {
 	pos := memmap.PtrT[[3]byte](0x587000, 147904+8*row)
-	C.nox_client_drawRectFilledOpaque_49CE30(x+C.int(pos[0]), y+C.int(pos[1]), C.int(pos[2]), 1)
+	nox_client_drawRectFilledOpaque_49CE30(int32(x+C.int(pos[0])), int32(y+C.int(pos[1])), int32(pos[2]), 1)
 }
 
 //export sub_471250
@@ -207,9 +207,9 @@ func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C
 		fill = C.int(48 * meter.field_1 / meter.field_2)
 	}
 	nox_client_drawSetColor_434460(int32(renderPalette.black))
-	C.nox_client_drawRectFilledOpaque_49CE30(x, y, 2, 48)
+	nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y), 2, 48)
 	nox_client_drawSetColor_434460(int32(meter.color_1))
-	C.nox_client_drawRectFilledOpaque_49CE30(x, y-fill+48, 2, fill)
+	nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y-fill+48), 2, int32(fill))
 	border := int32(renderPalette.violet)
 	if index != 0 {
 		border = memmap.Int32(0x85B3FC, 944)
@@ -217,6 +217,6 @@ func nox_xxx_drawHealthManaBar_471C00(win *C.nox_window, _ *C.nox_window_data) C
 		border = memmap.Int32(0x85B3FC, 984)
 	}
 	nox_client_drawSetColor_434460(border)
-	C.nox_client_drawBorderLines_49CC70(x-1, y-1, 4, 50)
+	nox_client_drawBorderLines_49CC70(int32(x-1), int32(y-1), 4, 50)
 	return 1
 }

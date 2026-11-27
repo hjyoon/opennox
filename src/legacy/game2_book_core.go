@@ -159,7 +159,7 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 func nox_xxx_guiSpellSortList_45ADF0(class C.int) C.int {
 	player := bookSelectedPlayer()
 	found := C.int(0)
-	bookState.line_height = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
+	bookState.line_height = C.uint32_t(C.int(nox_xxx_guiFontHeightMB_43F320(nil)) + 2)
 	*game2BookU(1047508) = 0
 	bookState.hidden_entry_count = 0
 	perPage := uint32(2*(uint32(141)/uint32(bookState.line_height)) - 2)

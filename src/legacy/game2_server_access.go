@@ -22,15 +22,15 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 		return nil
 	}
 	lang := int(C.nox_strman_get_lang_code())
-	if C.nox_xxx_guiFontHeightMB_43F320(nil) > 10 {
+	if C.int(nox_xxx_guiFontHeightMB_43F320(nil)) > 10 {
 		lang = 2
 	}
 	path := (*C.char)(g2ServerPointerSlot(0x587000, uintptr(127824+4*lang)))
-	s.root = C.nox_new_window_from_file(path, unsafe.Pointer(C.nox_xxx_windowAccessProc_454BA0))
+	s.root = nox_new_window_from_file(path, unsafe.Pointer(C.nox_xxx_windowAccessProc_454BA0))
 	if s.root == nil {
 		return nil
 	}
-	C.nox_draw_setTabWidth_43FE20(100)
+	nox_draw_setTabWidth_43FE20(100)
 	sub_46B120(s.root, parent)
 	s.wnd_10102 = g2ServerChild(s.root, 10102)
 	s.wnd_10103 = g2ServerChild(s.root, 10103)
@@ -51,8 +51,8 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 	s.wnd_10132 = g2ServerChild(s.root, 10132)
 	s.wnd_10133 = g2ServerChild(s.root, 10133)
 	s.wnd_10200 = g2ServerChild(s.root, 10200)
-	slider := C.nox_xxx_gLoadImg_42F970(internCStr("UISlider"))
-	lit := C.nox_xxx_gLoadImg_42F970(internCStr("UISliderLit"))
+	slider := loadImageHandle("UISlider")
+	lit := loadImageHandle("UISliderLit")
 	for _, row := range []struct {
 		list            *C.nox_window
 		thumb, up, down int

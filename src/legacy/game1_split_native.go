@@ -110,7 +110,7 @@ func sub_43BC10(text *wchar2_t, limit C.uchar) *C.ushort {
 		if h := game1SplitTestHooks; h != nil && h.StringWidth != nil {
 			width = C.int(h.StringWidth(text))
 		} else {
-			C.nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
+			nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
 		}
 		*(*uint16)(unsafe.Add(unsafe.Pointer(text), 2*n)) = 0
 		// The original measures before removing the previous last character.
@@ -387,7 +387,7 @@ func game1CenterViewport() (int32, int32) {
 	if h := game1SplitTestHooks; h != nil && h.Viewport != nil {
 		return h.Viewport()
 	}
-	r := C.nox_draw_getViewport_437250()
+	r := nox_draw_getViewport_437250()
 	return int32(r.height), int32(r.y1)
 }
 func game1CenterFrame() uint32 {
@@ -401,14 +401,14 @@ func game1CenterColor(color uint32) {
 		h.TextColor(color)
 		return
 	}
-	C.nox_xxx_drawSetTextColor_434390(C.int(color))
+	nox_xxx_drawSetTextColor_434390(int32(color))
 }
 func game1CenterWidth(text *wchar2_t) int32 {
 	if h := game1SplitTestHooks; h != nil && h.StringWidth != nil {
 		return h.StringWidth(text)
 	}
 	var width C.int
-	C.nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
+	nox_xxx_drawGetStringSize_43F840(nil, text, &width, nil, 0)
 	return int32(width)
 }
 func game1CenterDraw(text *wchar2_t, x, y int32) {
@@ -416,13 +416,13 @@ func game1CenterDraw(text *wchar2_t, x, y int32) {
 		h.DrawText(text, x, y)
 		return
 	}
-	C.nox_xxx_drawString_43F6E0(nil, text, C.int(x), C.int(y))
+	nox_xxx_drawString_43F6E0(nil, text, int32(x), int32(y))
 }
 func game1CenterFontHeight() int32 {
 	if h := game1SplitTestHooks; h != nil && h.FontHeight != nil {
 		return h.FontHeight()
 	}
-	return int32(C.nox_xxx_guiFontHeightMB_43F320(nil))
+	return int32(nox_xxx_guiFontHeightMB_43F320(nil))
 }
 
 //export nox_xxx_guiChatMode_4456E0
@@ -432,7 +432,7 @@ func nox_xxx_guiChatMode_4456E0(w *nox_window, unused unsafe.Pointer) C.int {
 	}
 	var x, y C.uint
 	nox_client_wndGetPosition_46AA60(w, &x, &y)
-	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(w.draw_data.bg_image), C.int(x)+C.int(w.draw_data.img_px), C.int(y)+C.int(w.draw_data.img_py))
+	nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(w.draw_data.bg_image), int32(C.int(x)+C.int(w.draw_data.img_px)), int32(C.int(y)+C.int(w.draw_data.img_py)))
 	return 1
 }
 
@@ -532,7 +532,7 @@ func sub_446490_go(index C.int) C.uintptr_t {
 
 //export nox_xxx_guiMotdLoad_4465C0
 func nox_xxx_guiMotdLoad_4465C0() *nox_window {
-	root := C.nox_new_window_from_file(internCStr("motd.wnd"), unsafe.Pointer(C.sub_4466C0))
+	root := loadWindowFromFile("motd.wnd", unsafe.Pointer(C.sub_4466C0))
 	storeWindowReference(&motdRoot, root)
 	if root == nil {
 		return nil
@@ -543,8 +543,8 @@ func nox_xxx_guiMotdLoad_4465C0() *nox_window {
 		return nil
 	}
 	list := (*C.nox_scrollListBox_data)(w.widget_data)
-	slider := C.nox_xxx_gLoadImg_42F970(internCStr("UISlider"))
-	lit := C.nox_xxx_gLoadImg_42F970(internCStr("UISliderLit"))
+	slider := loadImageHandle("UISlider")
+	lit := loadImageHandle("UISliderLit")
 	thumb := nox_xxx_wndGetChildByID_46B0C0(root, 4204)
 	down := nox_xxx_wndGetChildByID_46B0C0(root, 4205)
 	up := nox_xxx_wndGetChildByID_46B0C0(root, 4206)

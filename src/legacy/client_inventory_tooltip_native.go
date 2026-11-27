@@ -217,7 +217,7 @@ func sub_467750(code C.int, rejected C.char) C.int {
 		if rejected != 1 {
 			return 0
 		}
-		C.nox_xxx_printCentered_445490(clientInventoryString("Weapon2CantUse", 5379))
+		nox_xxx_printCentered_445490(clientInventoryString("Weapon2CantUse", 5379))
 		if code := clientItemStorage.secondary_previous; code != 0 {
 			if cell, _ := inventoryLookupNativeSearch(uint32(code)); cell != nil {
 				nox_xxx_clientSetAltWeapon_461550(cell)

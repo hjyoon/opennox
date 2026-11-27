@@ -174,14 +174,14 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	y := windowY + 38*C.int(record.grid_y) + 2
 	width, height := 38*C.int(w)-4, 38*C.int(h)-4
 	if record.highlight != 0 {
-		C.nox_client_drawSetColor_434460(C.int(renderPalette.yellow))
+		nox_client_drawSetColor_434460(int32(renderPalette.yellow))
 		record.highlight = 0
-		C.nox_client_drawRectFilledOpaque_49CE30(x, y, width, height)
+		nox_client_drawRectFilledOpaque_49CE30(int32(x), int32(y), int32(width), int32(height))
 	} else if img := nox_xxx_guiDrawSummon_4C2440(C.int(record.thing_id)); img != nil {
 		nox_client_drawImageAt_47D2C0(img, int32(x), int32(y))
 	} else {
 		cx, cy := int32(x+width/2), int32(y+height/2)
-		C.nox_client_drawSetColor_434460(C.int(memmap.Int32(0x85B3FC, 956)))
+		nox_client_drawSetColor_434460(int32(memmap.Int32(0x85B3FC, 956)))
 		nox_client_drawPoint_4B0BC0(cx, cy, 9)
 		nox_video_drawCircleColored_4C3270(cx, cy, 9, memmap.Int32(0x852978, 4))
 	}
@@ -198,10 +198,10 @@ func drawSummonCell(record *summonRecord, windowX, windowY C.int) {
 	if alternate != 0 {
 		emptyColor, fillColor = C.int(memmap.Int32(0x85B3FC, 984)), C.int(worldWordStorage.local_player_color)
 	}
-	C.nox_client_drawSetColor_434460(emptyColor)
-	C.nox_client_drawRectFilledOpaque_49CE30(x+width-2, y, 2, height)
-	C.nox_client_drawSetColor_434460(fillColor)
-	C.nox_client_drawRectFilledOpaque_49CE30(x+width-2, y+height-fill, 2, fill)
+	nox_client_drawSetColor_434460(int32(emptyColor))
+	nox_client_drawRectFilledOpaque_49CE30(int32(x+width-2), int32(y), 2, int32(height))
+	nox_client_drawSetColor_434460(int32(fillColor))
+	nox_client_drawRectFilledOpaque_49CE30(int32(x+width-2), int32(y+height-fill), 2, int32(fill))
 }
 
 func summonRecordUnder(x, y, windowX, windowY C.int) *summonRecord {

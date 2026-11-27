@@ -28,7 +28,7 @@ func questStartBriefingNativeHooks450A30() questStartBriefingHooks450A30[*byte, 
 		prepare:        Sub_446780,
 		offset:         func(p *byte, off uintptr) *byte { return (*byte)(unsafe.Add(unsafe.Pointer(p), off)) },
 		loadImage: func(name *byte) unsafe.Pointer {
-			return unsafe.Pointer(C.nox_xxx_gLoadImg_42F970((*C.char)(unsafe.Pointer(name))))
+			return unsafe.Pointer(nox_xxx_gLoadImg_42F970((*C.char)(unsafe.Pointer(name))))
 		},
 		setImage: func(image unsafe.Pointer) { C.sub_450AD0((*C.nox_video_bag_image_t)(image)) },
 		// Preserve the original unbounded NUL scan, not a capped 32-byte field.

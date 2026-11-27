@@ -1406,7 +1406,7 @@ var noxMemmap = []struct {
 	{0x973F18, 2356, 4, "nox_backbuffer_width"},            // 0x97484C
 	{0x973F18, 2360, 4, "nox_backbuffer_height"},           // 0x974850
 	{0x973F18, 2372, 4, "nox_backbuffer_width32"},          // 0x97485C
-	{0x973F18, 2376, 4, "cpuid_5d4594_3801804"},            // 0x974860
+	// Material channel expansion still reads the 0x974860 flag from this blob.
 	{0x973F18, 2380, 4, "nox_backbuffer_pitch_3801808"},    // 0x974864
 	{0x973F18, 3872, 4, "dword_973f18_3872"},
 	{0x973F18, 4936, 160, "byte_5D4594_3804364"},             // 0x975260

@@ -123,7 +123,7 @@ func sub_46A5D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	nox_xxx_drawGetStringSize_43F840(nil, (*wchar2_t)(unsafe.Pointer(&data.Text[256])), &prefixWidth, nil, 0)
 	width := min(320, max(100, textWidth+prefixWidth+10))
 	nox_window_setPos_46A9B0(root, int32((clientDisplayStorage.width-width)/2), int32(root.off_y))
-	C.sub_46AB20(win, width, 20)
+	sub_46AB20(win, width, 20)
 	return nox_xxx_wndEditDrawNoImage_488160(win, draw)
 }
 

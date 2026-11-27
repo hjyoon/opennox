@@ -11,8 +11,8 @@ var flagballTeamBorder *C.nox_video_bag_image_t
 //export sub_455A00
 func sub_455A00(show C.int) C.int {
 	w := serverSharedWindows.ctf_hud
-	if show != 0 && *g2ServerWord(1045608) != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
-		return C.nox_xxx_wndShowModalMB_46A8C0(w)
+	if show != 0 && *g2ServerWord(1045608) != 0 && nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
+		return C.int(nox_xxx_wndShowModalMB_46A8C0(w))
 	}
 	return g2ServerHidden(w, true)
 }
@@ -45,7 +45,7 @@ func sub_455A50(count C.char) C.char {
 	}
 	*g2ServerWord(1045608) = 1
 	*g2ServerWord(1045624) = 0
-	C.sub_46ACE0(w, 8811, 8826, 1)
+	sub_46ACE0(w, 8811, 8826, 1)
 	*g2ServerByte(1045628) = byte(count)
 	var last *C.nox_window
 	if count != 0 {
@@ -75,7 +75,7 @@ func sub_455A50(count C.char) C.char {
 		w.off_y = C.intptr_t(height) - w.height
 	}
 	w.end_y = w.height + w.off_y
-	return C.char(C.nox_xxx_wndShowModalMB_46A8C0(w))
+	return C.char(C.int(nox_xxx_wndShowModalMB_46A8C0(w)))
 }
 
 //export sub_455C10
@@ -84,7 +84,7 @@ func sub_455C10() C.int { *g2ServerWord(1045608) = 0; return sub_455A00(0) }
 //export sub_455CD0
 func sub_455CD0(w *C.nox_window, d *C.nox_window_data) C.int {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
+	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	index := uint8(int32(w.id) - 8811)
 	image := d.bg_image
 	v := *g2ServerByte(1045612 + uintptr(index))
@@ -106,16 +106,16 @@ func sub_455CD0(w *C.nox_window, d *C.nox_window_data) C.int {
 func sub_455E70(index C.uchar) C.int {
 	w := serverSharedWindows.ctf_hud
 	for i := 0; i < int(*g2ServerByte(1045628)); i++ {
-		C.nox_xxx_wndClearFlag_46AD80(g2ServerChild(w, i+8811), 32)
+		nox_xxx_wndClearFlag_46AD80(g2ServerChild(w, i+8811), 32)
 	}
-	return C.nox_xxx_wnd_46AD60(g2ServerChild(w, int(index)+8810), 32)
+	return nox_xxx_wnd_46AD60(g2ServerChild(w, int(index)+8810), 32)
 }
 
 //export sub_455EE0
 func sub_455EE0() C.int {
 	var result C.int
 	if serverSharedWindows.ctf_hud != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.ctf_hud)
+		result = C.int(nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.ctf_hud))
 	}
 	serverSharedWindows.ctf_hud = nil
 	*g2ServerWord(1045608) = 0
@@ -125,8 +125,8 @@ func sub_455EE0() C.int {
 //export sub_455F10
 func sub_455F10(show C.int) C.int {
 	w := serverSharedWindows.flagball_hud
-	if show != 0 && legacyWords.dword_5d4594_1045640 != 0 && C.nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
-		return C.nox_xxx_wndShowModalMB_46A8C0(w)
+	if show != 0 && legacyWords.dword_5d4594_1045640 != 0 && nox_xxx_wndGetFlags_46ADA0(w)&C.NOX_WIN_HIDDEN != 0 {
+		return C.int(nox_xxx_wndShowModalMB_46A8C0(w))
 	}
 	return g2ServerHidden(w, true)
 }
@@ -160,7 +160,7 @@ func sub_455F60() C.int {
 	w.off_y = C.intptr_t(height) - 120
 	w.end_y = w.height + w.off_y
 	*g2ServerByte(1045644) = 0
-	return C.nox_xxx_wndShowModalMB_46A8C0(w)
+	return C.int(nox_xxx_wndShowModalMB_46A8C0(w))
 }
 
 //export sub_456050
@@ -174,7 +174,7 @@ func sub_456070() C.int {
 		if w == nil {
 			return 0
 		}
-		C.nox_window_set_all_funcs(w, nil, unsafe.Pointer(C.sub_4560D0), nil)
+		nox_window_set_all_funcs(w, nil, unsafe.Pointer(C.sub_4560D0), nil)
 		sub_455F10(0)
 		flagballTeamBorder = (*C.nox_video_bag_image_t)(C.nox_xxx_gLoadImg_42F970(internCStr("FlagTeamBorder")))
 	}
@@ -184,7 +184,7 @@ func sub_456070() C.int {
 //export sub_4560D0
 func sub_4560D0(w *C.nox_window, d *C.nox_window_data) C.int {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
+	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	if d.bg_image != nil {
 		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(d.bg_image), C.int(x), C.int(y))
 	}
@@ -198,7 +198,7 @@ func sub_4560D0(w *C.nox_window, d *C.nox_window_data) C.int {
 func sub_456240() C.int {
 	var result C.int
 	if serverSharedWindows.flagball_hud != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.flagball_hud)
+		result = C.int(nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.flagball_hud))
 	}
 	serverSharedWindows.flagball_hud = nil
 	legacyWords.dword_5d4594_1045640 = 0
@@ -222,7 +222,7 @@ func sub_455C30() C.int {
 		if child == nil {
 			return 0
 		}
-		C.nox_window_set_all_funcs(child, nil, unsafe.Pointer(C.sub_455CD0), nil)
+		nox_window_set_all_funcs(child, nil, unsafe.Pointer(C.sub_455CD0), nil)
 		nox_xxx_wndWddSetTooltip_46B000(&child.draw_data, g2ServerLoad("FlagHomeTT", clientCTFSource, 201))
 	}
 	sub_455A00(0)

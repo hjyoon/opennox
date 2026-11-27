@@ -97,11 +97,11 @@ func sub_4AD570(win *C.nox_window, draw *C.nox_window_data) C.int {
 	if legacyWords.dword_5d4594_2650652 != 1 || serverGeneralWindow == nil {
 		return 1
 	}
-	list := C.nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10317)
+	list := nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10317)
 	p := GetClient().GetMousePos()
-	if list != nil && C.wndIsShown_nox_xxx_wndIsShown_46ACC0(list) == 0 && !bool(C.nox_xxx_wndPointInWnd_46AAB0(list, C.int(p.X), C.int(p.Y))) {
-		C.nox_xxx_wndClearCaptureMain_46ADE0(list)
-		C.nox_window_set_hidden(list, 1)
+	if list != nil && C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(list)) == 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(list, C.int(p.X), C.int(p.Y))) {
+		nox_xxx_wndClearCaptureMain_46ADE0(list)
+		nox_window_set_hidden(list, 1)
 	}
 	return 1
 }
@@ -112,7 +112,7 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 		if sender == nil {
 			return 0
 		}
-		id := C.nox_xxx_wndGetID_46B0A0(sender)
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender))
 		nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		switch id {
 		case 10301:
@@ -137,11 +137,11 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 				C.sub_4D7EA0()
 			}
 		case 10316:
-			p := C.nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10317)
+			p := nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10317)
 			if p != nil {
-				C.nox_window_set_hidden(p, 0)
-				C.nox_xxx_wndShowModalMB_46A8C0(p)
-				C.nox_xxx_wndSetCaptureMain_46ADC0(p)
+				nox_window_set_hidden(p, 0)
+				nox_xxx_wndShowModalMB_46A8C0(p)
+				nox_xxx_wndSetCaptureMain_46ADC0(p)
 			}
 		case 10319:
 			C.sub_4BDFD0()
@@ -152,36 +152,36 @@ func nox_xxx_windowServerOptionsGeneralProc_4AD5D0(win *C.nox_window, event C.in
 		C.nox_xxx_rateUpdate_40A6D0(C.int(4 - int32(arg)))
 		return 0
 	}
-	if event != 16400 || sender == nil || serverGeneralWindow == nil || C.nox_xxx_wndGetID_46B0A0(sender) != 10317 {
+	if event != 16400 || sender == nil || serverGeneralWindow == nil || C.int(nox_xxx_wndGetID_46B0A0(sender)) != 10317 {
 		return 0
 	}
 	data := (*C.nox_scrollListBox_data)(sender.widget_data)
-	selected := int32(C.nox_window_call_field_94_fnc(sender, 16404, 0, 0, internCStr("game3_map_options_services.go"), 0))
+	selected := int32(nox_window_call_field_94_fnc(sender, 16404, 0, 0, internCStr("game3_map_options_services.go"), 0))
 	if data == nil || selected < 0 || selected >= int32(data.field_11_0) {
 		return 0
 	}
-	typ := C.nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10316)
-	rate := C.nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10312)
+	typ := nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10316)
+	rate := nox_xxx_wndGetChildByID_46B0C0(serverGeneralWindow, 10312)
 	if typ == nil || rate == nil {
 		return 0
 	}
-	text := C.nox_window_call_field_94_fnc(sender, 16406, arg, 0, internCStr("game3_map_options_services.go"), 0)
+	text := nox_window_call_field_94_fnc(sender, 16406, uintptr(arg), 0, internCStr("game3_map_options_services.go"), 0)
 	if text == 0 {
 		return 0
 	}
-	C.nox_window_call_field_94_fnc(typ, 16385, text, ^C.uintptr_t(0), internCStr("game3_map_options_services.go"), 0)
+	nox_window_call_field_94_fnc(typ, 16385, text, ^uintptr(0), internCStr("game3_map_options_services.go"), 0)
 	legacyWords.nox_server_connectionType_3596 = C.uint32_t(selected + 1)
 	C.nox_xxx_rateUpdate_40A6D0(C.sub_40A710(C.int(selected + 1)))
-	C.nox_window_call_field_94_fnc(rate, 16394, C.uintptr_t(4-C.nox_xxx_rateGet_40A6C0()), 0, internCStr("game3_map_options_services.go"), 0)
-	C.nox_window_set_hidden(sender, 1)
-	C.nox_xxx_wndClearCaptureMain_46ADE0(sender)
+	nox_window_call_field_94_fnc(rate, 16394, uintptr(4-C.nox_xxx_rateGet_40A6C0()), 0, internCStr("game3_map_options_services.go"), 0)
+	nox_window_set_hidden(sender, 1)
+	nox_xxx_wndClearCaptureMain_46ADE0(sender)
 	return 0
 }
 
 //export sub_4AD820
 func sub_4AD820() C.int {
 	if serverGeneralWindow != nil {
-		C.nox_xxx_windowDestroyMB_46C4E0(serverGeneralWindow)
+		nox_xxx_windowDestroyMB_46C4E0(serverGeneralWindow)
 	}
 	serverGeneralWindow = nil
 	return C.sub_4BE610()
@@ -195,7 +195,7 @@ var inGameOptionsWindows struct {
 
 //export sub_4AD9B0
 func sub_4AD9B0(skip C.int) C.int {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(inGameOptionsWindows.root) != 0 {
+	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(inGameOptionsWindows.root)) != 0 {
 		return 0
 	}
 	C.sub_413A00(0)
@@ -204,8 +204,8 @@ func sub_4AD9B0(skip C.int) C.int {
 		C.nox_video_applyOptions()
 		C.nox_common_writecfgfile(internCStr("nox.cfg"))
 	}
-	C.nox_window_set_hidden(inGameOptionsWindows.root, 1)
-	C.nox_window_set_hidden(inGameOptionsWindows.backdrop, 1)
+	nox_window_set_hidden(inGameOptionsWindows.root, 1)
+	nox_window_set_hidden(inGameOptionsWindows.backdrop, 1)
 	if skip == 0 {
 		sub_445C40()
 	}
@@ -215,8 +215,8 @@ func sub_4AD9B0(skip C.int) C.int {
 //export sub_4ADA40
 func sub_4ADA40() C.int {
 	C.sub_413A00(1)
-	C.nox_xxx_wndShowModalMB_46A8C0(inGameOptionsWindows.root)
-	C.nox_xxx_wndShowModalMB_46A8C0(inGameOptionsWindows.backdrop)
+	nox_xxx_wndShowModalMB_46A8C0(inGameOptionsWindows.root)
+	nox_xxx_wndShowModalMB_46A8C0(inGameOptionsWindows.backdrop)
 	C.nox_client_advVideoOptsLoad_4CB330()
 	cut := C.nox_video_getCutSize_4766D0()
 	id := C.int(311)
@@ -229,8 +229,8 @@ func sub_4ADA40() C.int {
 			}
 		}
 	}
-	if w := C.nox_xxx_wndGetChildByID_46B0C0(inGameOptionsWindows.root, id); w != nil {
-		C.nox_window_call_field_94_fnc(w, 16392, 0, 0, internCStr("game3_map_options_services.go"), 0)
+	if w := nox_xxx_wndGetChildByID_46B0C0(inGameOptionsWindows.root, int32(id)); w != nil {
+		nox_window_call_field_94_fnc(w, 16392, 0, 0, internCStr("game3_map_options_services.go"), 0)
 	}
 	return C.nox_draw_setTabWidth_43FE20(15)
 }
@@ -242,8 +242,8 @@ func game3IngameOptionsSlider(w *C.nox_window, state unsafe.Pointer, image, lit 
 	w.field_100.width = 24
 	w.field_100.height = 20
 	C.sub_4B5700(w, nil, nil, unsafe.Pointer(image), unsafe.Pointer(lit), unsafe.Pointer(lit))
-	C.nox_window_call_field_94_fnc(w, 16395, 0, 0x4000, internCStr("game3_map_options_services.go"), 0)
-	C.nox_window_call_field_94_fnc(w, 16394, C.uintptr_t(*(*uint32)(unsafe.Add(state, 4))>>16), 0, internCStr("game3_map_options_services.go"), 0)
+	nox_window_call_field_94_fnc(w, 16395, 0, 0x4000, internCStr("game3_map_options_services.go"), 0)
+	nox_window_call_field_94_fnc(w, 16394, uintptr(*(*uint32)(unsafe.Add(state, 4))>>16), 0, internCStr("game3_map_options_services.go"), 0)
 	return true
 }
 func game3IngameOptionsChecked(w *C.nox_window, on C.int) {
@@ -258,7 +258,7 @@ func game3IngameOptionsChecked(w *C.nox_window, on C.int) {
 }
 func game3IngameOptionsToggle(w *C.nox_window) {
 	if w != nil {
-		C.nox_window_call_field_93(w, 21, 28, 2)
+		nox_window_call_field_93(w, 21, 28, 2)
 	}
 }
 
@@ -280,35 +280,35 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 	if C.nox_client_advVideoOpts_New_4CB590(root) == 0 {
 		return 0
 	}
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 351), clientAudioStorage.effects_timer, image, lit) {
+	if !game3IngameOptionsSlider(nox_xxx_wndGetChildByID_46B0C0(root, 351), clientAudioStorage.effects_timer, image, lit) {
 		return 0
 	}
-	inGameOptionsWindows.audioChecks[0] = C.nox_xxx_wndGetChildByID_46B0C0(root, 361)
+	inGameOptionsWindows.audioChecks[0] = nox_xxx_wndGetChildByID_46B0C0(root, 361)
 	game3IngameOptionsChecked(inGameOptionsWindows.audioChecks[0], C.sub_453070())
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 352), legacyPointers.dialogTimer, image, lit) {
+	if !game3IngameOptionsSlider(nox_xxx_wndGetChildByID_46B0C0(root, 352), legacyPointers.dialogTimer, image, lit) {
 		return 0
 	}
-	inGameOptionsWindows.audioChecks[1] = C.nox_xxx_wndGetChildByID_46B0C0(root, 362)
+	inGameOptionsWindows.audioChecks[1] = nox_xxx_wndGetChildByID_46B0C0(root, 362)
 	game3IngameOptionsChecked(inGameOptionsWindows.audioChecks[1], C.sub_44D990())
-	if !game3IngameOptionsSlider(C.nox_xxx_wndGetChildByID_46B0C0(root, 353), clientAudioStorage.music_timer, image, lit) {
+	if !game3IngameOptionsSlider(nox_xxx_wndGetChildByID_46B0C0(root, 353), clientAudioStorage.music_timer, image, lit) {
 		return 0
 	}
-	inGameOptionsWindows.audioChecks[2] = C.nox_xxx_wndGetChildByID_46B0C0(root, 363)
+	inGameOptionsWindows.audioChecks[2] = nox_xxx_wndGetChildByID_46B0C0(root, 363)
 	game3IngameOptionsChecked(inGameOptionsWindows.audioChecks[2], C.sub_43DC30())
 	C.nox_video_setMenuOptions(root)
 	id := C.int(334)
 	if C.nox_video_getFullScreen() != 0 {
 		id = 333
 	}
-	if w := C.nox_xxx_wndGetChildByID_46B0C0(root, id); w != nil {
-		C.nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_map_options_services.go"), 0)
+	if w := nox_xxx_wndGetChildByID_46B0C0(root, int32(id)); w != nil {
+		nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_map_options_services.go"), 0)
 	}
 	for id := C.int(320); id <= 332; id++ {
-		if w := C.nox_xxx_wndGetChildByID_46B0C0(root, id); w != nil && w.draw_data.field_0&4 == 0 {
-			C.nox_xxx_wndClearFlag_46AD80(w, 8)
+		if w := nox_xxx_wndGetChildByID_46B0C0(root, int32(id)); w != nil && w.draw_data.field_0&4 == 0 {
+			nox_xxx_wndClearFlag_46AD80(w, 8)
 		}
 	}
-	inGameOptionsWindows.backdrop = C.nox_window_new(nil, 32, 0, 0, 1, 1, nil)
+	inGameOptionsWindows.backdrop = nox_window_new(nil, 32, 0, 0, 1, 1, nil)
 	back := inGameOptionsWindows.backdrop
 	if back == nil {
 		return 0
@@ -321,20 +321,20 @@ func nox_game_initOptionsInGame_4ADAD0() C.int {
 	x := memmap.Int32(0x587000, 174072)
 	off := uintptr(174080)
 	for x != -1 {
-		w := C.nox_window_new(back, 0, C.int(x), C.int(memmap.Int32(0x587000, off-4)), C.int(memmap.Int32(0x587000, off)), C.int(memmap.Int32(0x587000, off+4)), nil)
+		w := nox_window_new(back, 0, C.int(x), C.int(memmap.Int32(0x587000, off-4)), C.int(memmap.Int32(0x587000, off)), C.int(memmap.Int32(0x587000, off+4)), nil)
 		if w == nil {
 			return 0
 		}
-		C.nox_xxx_wndSetDrawFn_46B340(w, unsafe.Pointer(C.sub_4ADEF0))
+		nox_xxx_wndSetDrawFn_46B340(w, unsafe.Pointer(C.sub_4ADEF0))
 		x = memmap.Int32(0x587000, off+8)
 		off += 16
 	}
 	left := (int(clientDisplayStorage.width) - int(root.width)) / 2
-	C.nox_window_setPos_46A9B0(root, C.int(left), 0)
-	C.nox_window_setPos_46A9B0(back, C.int(left), 0)
-	C.nox_window_set_hidden(C.nox_xxx_wndGetChildByID_46B0C0(root, 371), 0)
-	C.nox_window_set_hidden(root, 1)
-	C.nox_window_set_hidden(back, 1)
+	nox_window_setPos_46A9B0(root, int32(left), 0)
+	nox_window_setPos_46A9B0(back, int32(left), 0)
+	nox_window_set_hidden(nox_xxx_wndGetChildByID_46B0C0(root, 371), 0)
+	nox_window_set_hidden(root, 1)
+	nox_window_set_hidden(back, 1)
 	return 1
 }
 
@@ -354,7 +354,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 		nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
 		return 1
 	case 16391:
-		id := C.nox_xxx_wndGetID_46B0A0(sender)
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender))
 		if id >= 380 {
 			return C.nox_gui_menu_proc_ext(id)
 		}
@@ -396,7 +396,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 		nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 		return 1
 	case 16393, 16396:
-		id := C.nox_xxx_wndGetID_46B0A0(sender)
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender))
 		if event == 16396 && id != 351 && id != 352 {
 			return 0
 		}
@@ -450,7 +450,7 @@ func nox_xxx_windowOptionsProc_4ADF30(win *C.nox_window, event C.int, sender *C.
 
 //export sub_4AE3B0
 func sub_4AE3B0() C.int {
-	v := C.nox_xxx_windowDestroyMB_46C4E0(inGameOptionsWindows.root)
+	v := C.int(nox_xxx_windowDestroyMB_46C4E0(inGameOptionsWindows.root))
 	inGameOptionsWindows.root = nil
 	clear(inGameOptionsWindows.audioChecks[:])
 	return v
@@ -458,7 +458,7 @@ func sub_4AE3B0() C.int {
 
 //export sub_4AE3D0
 func sub_4AE3D0() C.int {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(inGameOptionsWindows.root) != 0 {
+	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(inGameOptionsWindows.root)) != 0 {
 		return C.sub_4C4280()
 	}
 	return 1

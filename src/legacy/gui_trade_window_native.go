@@ -167,9 +167,9 @@ func sub_4C11E0(pos *C.int2) *tradeClientSlot { return tradeSlotFromPosition(1, 
 func sub_4C1120(win *nox_window, draw *C.nox_window_data, packed C.int) C.int {
 	pos := C.int2{field_0: C.int(uint16(packed)), field_4: C.int(uint32(packed) >> 16)}
 	var slot *tradeClientSlot
-	if C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4) {
+	if nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4) {
 		slot = sub_4C0910(&pos)
-	} else if C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3705), pos.field_0, pos.field_4) {
+	} else if nox_xxx_wndPointInWnd_46AAB0(tradeChild(3705), pos.field_0, pos.field_4) {
 		slot = sub_4C11E0(&pos)
 	}
 	if slot != nil && slot.count != 0 && slot.drawable != nil {

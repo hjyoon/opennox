@@ -11,7 +11,7 @@ import "github.com/opennox/opennox/v1/client/gui"
 //export sub_438E30
 func sub_438E30(win *C.nox_window, _ *C.nox_window_data) C.int {
 	var ux, uy C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &ux, &uy)
+	nox_client_wndGetPosition_46AA60(win, &ux, &uy)
 	x, y := int32(ux), int32(uy)
 
 	draw := &win.draw_data

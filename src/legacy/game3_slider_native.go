@@ -135,10 +135,10 @@ func game3SliderInput(w *C.nox_window, vertical bool, e int, a, b uintptr) C.int
 				color = w.draw_data.hl_color
 				event = 16389
 			}
-			C.nox_xxx_wndSetRectColor2MB_46AFE0(w, C.int(color))
+			nox_xxx_wndSetRectColor2MB_46AFE0(w, int32(color))
 			game3WidgetNotify(w, w.draw_data.win, event, 0)
 			if e == 17 {
-				C.nox_xxx_windowFocus_46B500(w)
+				nox_xxx_windowFocus_46B500(w)
 			}
 		}
 		return 1

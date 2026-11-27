@@ -91,7 +91,7 @@ func nox_game_showSelClass_4A4840() C.int {
 	if classSelectRoot == nil {
 		return 0
 	}
-	C.nox_xxx_wndSetWindowProc_46B300(classSelectRoot, C.sub_4A18E0)
+	nox_xxx_wndSetWindowProc_46B300(classSelectRoot, C.sub_4A18E0)
 	a := Nox_gui_makeAnimation_43C5B0(asWindow(classSelectRoot), 0, 0, 0, -460, 0, 20, 0, -40)
 	classSelectAnimation = a
 	if a == nil {
@@ -101,10 +101,10 @@ func nox_game_showSelClass_4A4840() C.int {
 	a.Func12Ptr = C.sub_4A4970
 	a.FncDoneOutPtr = C.sub_4A49A0
 	for _, id := range []int{601, 603, 602} {
-		w := C.nox_xxx_wndGetChildByID_46B0C0(classSelectRoot, C.int(id))
-		C.nox_xxx_wndSetDrawFn_46B340(w, C.sub_4A49D0)
+		w := nox_xxx_wndGetChildByID_46B0C0(classSelectRoot, int32(id))
+		nox_xxx_wndSetDrawFn_46B340(w, C.sub_4A49D0)
 	}
-	classSelectNext = C.nox_xxx_wndGetChildByID_46B0C0(classSelectRoot, 610)
+	classSelectNext = nox_xxx_wndGetChildByID_46B0C0(classSelectRoot, 610)
 	C.nox_xxx_wndRetNULL_46A8A0()
 	*memmap.PtrUint32(0x5D4594, 1307740) = 0
 	C.sub_4A19F0(internCStr("OptsBack.wnd:Back"))
@@ -124,7 +124,7 @@ func sub_4A4970() C.int {
 func sub_4A49A0() C.int {
 	done := classSelectAnimation.Func13Ptr
 	classSelectAnimation.Free()
-	C.nox_xxx_windowDestroyMB_46C4E0(classSelectRoot)
+	nox_xxx_windowDestroyMB_46C4E0(classSelectRoot)
 	classSelectAnimation = nil
 	classSelectRoot = nil
 	classSelectNext = nil
@@ -134,11 +134,11 @@ func sub_4A49A0() C.int {
 
 //export sub_4A49D0
 func sub_4A49D0(win *C.nox_window, draw *C.nox_window_data) C.int {
-	if memmap.Uint32(0x5D4594, 1307740) != uint32(C.nox_xxx_wndGetID_46B0A0(win)) {
+	if memmap.Uint32(0x5D4594, 1307740) != uint32(nox_xxx_wndGetID_46B0A0(win)) {
 		var x, y C.uint
 		var w, h C.int
-		C.nox_client_wndGetPosition_46AA60(win, &x, &y)
-		C.nox_window_get_size(win, &w, &h)
+		nox_client_wndGetPosition_46AA60(win, &x, &y)
+		nox_window_get_size(win, &w, &h)
 		C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y), w, h)
 	}
 	return 1
@@ -148,7 +148,7 @@ func sub_4A49D0(win *C.nox_window, draw *C.nox_window_data) C.int {
 func sub_4A5E90() C.int {
 	sub_4A5E90_A()
 	for i := range colorSelectSwatches {
-		win := C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, C.int(720+i))
+		win := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(720+i))
 		colorSelectSwatches[i] = win
 		value := uint32(589825)
 		if i == 0 {
@@ -160,12 +160,12 @@ func sub_4A5E90() C.int {
 		setColorSelectionPacked(win, value)
 	}
 	for i, id := range [...]C.int{711, 712, 713, 714} {
-		colorSelectPreviewControls[i] = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, id)
+		colorSelectPreviewControls[i] = nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id))
 	}
-	colorSelectName = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, 751)
+	colorSelectName = nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, 751)
 	result := C.int(legacyWords.dword_587000_171388)
 	if legacyWords.dword_587000_171388 == 0 {
-		C.nox_window_call_field_94_fnc(colorSelectName, 16414, C.uintptr_t(uintptr(unsafe.Pointer(colorSelectProfile))), 0, internCStr("game3_class_config_native.go"), 0)
+		nox_window_call_field_94_fnc(colorSelectName, 16414, uintptr(unsafe.Pointer(colorSelectProfile)), 0, internCStr("game3_class_config_native.go"), 0)
 		for i, off := range []int{71, 68, 74, 77, 80} {
 			group := C.int(1)
 			if i == 0 {
@@ -198,18 +198,18 @@ func game3_selcolor_match_4A61E0(win *C.nox_window, group C.int, rgb *C.uchar) C
 		}
 	}
 	if index < 32 && group == 1 {
-		id := C.nox_xxx_wndGetID_46B0A0(win)
-		w := C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, id-10)
-		C.nox_xxx_wnd_46ABB0(w, 1)
-		w = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, id+10)
+		id := C.int(nox_xxx_wndGetID_46B0A0(win))
+		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id-10))
+		nox_xxx_wnd_46ABB0(w, 1)
+		w = nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id+10))
 		if w != nil {
 			w.draw_data.field_0 |= 6
 		}
 		result = uintptr(unsafe.Pointer(w))
 	}
 	if index == 32 && group == 1 {
-		w := C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, C.nox_xxx_wndGetID_46B0A0(win)-10)
-		result = uintptr(int(C.nox_xxx_wnd_46ABB0(w, 0)))
+		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, nox_xxx_wndGetID_46B0A0(win)-10)
+		result = uintptr(int(nox_xxx_wnd_46ABB0(w, 0)))
 		index = 9
 	}
 	setColorSelectionPacked(win, uint32(uint16(group))|uint32(uint16(index))<<16)
@@ -229,8 +229,8 @@ func sub_4A6890() C.int {
 func sub_4A6C90() C.int {
 	done := colorSelectAnimation.Func13Ptr
 	colorSelectAnimation.Free()
-	C.nox_xxx_windowDestroyMB_46C4E0(colorSelectRoot)
-	C.nox_xxx_windowDestroyMB_46C4E0(colorSelectPalette)
+	nox_xxx_windowDestroyMB_46C4E0(colorSelectRoot)
+	nox_xxx_windowDestroyMB_46C4E0(colorSelectPalette)
 	colorSelectAnimation = nil
 	colorSelectRoot = nil
 	colorSelectPalette = nil
@@ -241,7 +241,7 @@ func sub_4A6C90() C.int {
 		ccall.CallIntVoid(done)
 	} else {
 		C.nox_client_resetScreenParticles_431510()
-		C.nox_gui_draw()
+		nox_gui_draw()
 		if !bool(C.nox_common_gameFlags_check_40A5C0(0x2000)) {
 			C.nox_client_guiXxxDestroy_4A24A0()
 			return 1
@@ -265,8 +265,8 @@ func game3ModifierPalette(mod unsafe.Pointer) {
 func sub_4A6D20(win *C.nox_window, draw *C.nox_window_data) C.int {
 	var x, y C.uint
 	var w, h C.int
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
-	C.nox_window_get_size(win, &w, &h)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_window_get_size(win, &w, &h)
 	C.nox_client_drawSetColor_434460(game3PaletteColor(win))
 	C.nox_client_drawRectFilledOpaque_49CE30(C.int(x), C.int(y), w, h)
 	return 1
@@ -275,7 +275,7 @@ func sub_4A6D20(win *C.nox_window, draw *C.nox_window_data) C.int {
 //export sub_4A6DC0
 func sub_4A6DC0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	body := game3PaletteColor(colorSelectSwatches[0])
 	C.nox_draw_setMaterial_4341D0(6, body)
 	C.nox_draw_setMaterial_4341D0(1, game3PaletteColor(colorSelectSwatches[1]))
@@ -331,7 +331,7 @@ func sub_4A7270(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.int {
 	if event != 5 {
 		return 0
 	}
-	if bool(C.nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(a3)), C.int(uintptr(a3)>>16))) {
+	if bool(nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(a3)), C.int(uintptr(a3)>>16))) {
 		return 0
 	}
 	sub_4A72D0(0xDEAD)
@@ -340,10 +340,10 @@ func sub_4A7270(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.int {
 
 //export sub_4A72D0
 func sub_4A72D0(index C.ushort) *C.nox_window {
-	C.nox_xxx_wnd_46C6E0(colorSelectPalette)
-	C.nox_window_set_hidden(colorSelectPalette, 1)
+	nox_xxx_wnd_46C6E0(colorSelectPalette)
+	nox_window_set_hidden(colorSelectPalette, 1)
 	if index < 32 {
-		w := C.nox_xxx_wndGetChildByID_46B0C0(colorSelectPalette, C.int(colorSelectPaletteButton))
+		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectPalette, int32(colorSelectPaletteButton))
 		if w != nil {
 			setColorSelectionPacked(w, uint32(memmap.Uint16(0x5D4594, 1307788))|uint32(index)<<16)
 		}
@@ -357,7 +357,7 @@ func sub_4A7530(group C.ushort) *C.nox_window {
 	*memmap.PtrUint32(0x5D4594, 1307788) = uint32(group)
 	var w *C.nox_window
 	for id := 761; id <= 792; id++ {
-		w = C.nox_xxx_wndGetChildByID_46B0C0(colorSelectPalette, C.int(id))
+		w = nox_xxx_wndGetChildByID_46B0C0(colorSelectPalette, int32(id))
 		if w != nil {
 			setColorSelectionPacked(w, uint32(group)|uint32(id-761)<<16)
 		}
@@ -367,9 +367,9 @@ func sub_4A7530(group C.ushort) *C.nox_window {
 
 //export sub_4A7580
 func sub_4A7580(x, y C.int) C.int {
-	C.nox_xxx_wndShowModalMB_46A8C0(colorSelectPalette)
-	C.sub_46C690(colorSelectPalette)
-	return C.nox_window_setPos_46A9B0(colorSelectPalette, C.int(int64(x)-int64(colorSelectPalette.width)), C.int(int64(y)-int64(colorSelectPalette.height)/2))
+	nox_xxx_wndShowModalMB_46A8C0(colorSelectPalette)
+	sub_46C690(colorSelectPalette)
+	return C.int(nox_window_setPos_46A9B0(colorSelectPalette, int32(int64(x)-int64(colorSelectPalette.width)), int32(int64(y)-int64(colorSelectPalette.height)/2)))
 }
 
 //export sub_4A7330
@@ -382,7 +382,7 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 		return 0
 	}
 	child := (*C.nox_window)(C.game3_native_word_ptr(a3))
-	id := C.nox_xxx_wndGetID_46B0A0(child)
+	id := C.int(nox_xxx_wndGetID_46B0A0(child))
 	switch {
 	case id >= 720 && id <= 729:
 		colorSelectPaletteButton = uint32(id)
@@ -395,9 +395,9 @@ func sub_4A7330(win *C.nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t 
 		sub_4A7530(group)
 		sub_4A7580(C.int(uint16(a4)), C.int(uintptr(a4)>>16))
 	case id >= 731 && id <= 734:
-		w := C.nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, id-20)
+		w := nox_xxx_wndGetChildByID_46B0C0(colorSelectRoot, int32(id-20))
 		if w != nil {
-			C.nox_xxx_wnd_46ABB0(w, C.int((^uint32(w.flags)>>3)&1))
+			nox_xxx_wnd_46ABB0(w, C.int((^uint32(w.flags)>>3)&1))
 		}
 	case id >= 761 && id <= 792:
 		sub_4A72D0(C.ushort(id - 761))
@@ -490,9 +490,9 @@ func nox_xxx_wndRadioButtonSetAllFn_4A87E0(w *C.nox_window) C.int {
 		return -2
 	}
 	if uint32(w.flags)&0x80 != 0 {
-		return C.nox_window_set_all_funcs(w, C.nox_xxx_wndRadioButtonProc_4A84E0, C.nox_xxx_wndRadioButtonDraw_4A8A20, nil)
+		return nox_window_set_all_funcs(w, C.nox_xxx_wndRadioButtonProc_4A84E0, C.nox_xxx_wndRadioButtonDraw_4A8A20, nil)
 	}
-	return C.nox_window_set_all_funcs(w, C.nox_xxx_wndRadioButtonProc_4A84E0, C.nox_xxx_wndRadioButtonDrawNoImg_4A8820, nil)
+	return nox_window_set_all_funcs(w, C.nox_xxx_wndRadioButtonProc_4A84E0, C.nox_xxx_wndRadioButtonDrawNoImg_4A8820, nil)
 }
 
 //export nox_xxx_wndRadioButtonDrawNoImg_4A8820
@@ -518,8 +518,8 @@ func sub_4AAA70() C.uintptr_t {
 	if C.nox_video_getFullScreen() != 0 {
 		id = 332
 	}
-	if w := C.nox_xxx_wndGetChildByID_46B0C0(optionsRoot, id); w != nil {
-		C.nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_options"), 0)
+	if w := nox_xxx_wndGetChildByID_46B0C0(optionsRoot, int32(id)); w != nil {
+		nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_options"), 0)
 	}
 	cut := C.nox_video_getCutSize_4766D0()
 	*memmap.PtrUint32(0x587000, 172884) = uint32(cut)
@@ -533,14 +533,14 @@ func sub_4AAA70() C.uintptr_t {
 	default:
 		id = 314
 	}
-	if w := C.nox_xxx_wndGetChildByID_46B0C0(optionsRoot, id); w != nil {
-		return C.nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_options"), 0)
+	if w := nox_xxx_wndGetChildByID_46B0C0(optionsRoot, int32(id)); w != nil {
+		return C.uintptr_t(nox_window_call_field_94_fnc(w, 16392, 1, 0, internCStr("game3_options"), 0))
 	}
 	return 0
 }
 func game3OptionsToggle(w *C.nox_window) {
 	if w != nil {
-		C.nox_window_call_field_93(w, 21, 28, 2)
+		nox_window_call_field_93(w, 21, 28, 2)
 	}
 }
 
@@ -551,7 +551,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 		nox_xxx_clientPlaySoundSpecial_452D80(920, 100)
 		return 1
 	case 16391:
-		id := C.nox_xxx_wndGetID_46B0A0(sender)
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender))
 		if id >= 380 {
 			return C.nox_gui_menu_proc_ext(id)
 		}
@@ -614,7 +614,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 		nox_xxx_clientPlaySoundSpecial_452D80(921, 100)
 		return 1
 	case 16393:
-		id := C.nox_xxx_wndGetID_46B0A0(sender)
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender))
 		active := C.nox_client_getWin1064916_46C720()
 		switch id {
 		case 351:
@@ -675,7 +675,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 		}
 		return 0
 	case 16396:
-		id := C.nox_xxx_wndGetID_46B0A0(sender) - 351
+		id := C.int(nox_xxx_wndGetID_46B0A0(sender)) - 351
 		if id != 0 {
 			if id != 1 {
 				return 0
@@ -717,7 +717,7 @@ func sub_4AABE0(win *C.nox_window, event C.int, sender *C.nox_window, arg C.uint
 func sub_4AB0C0() C.int {
 	done := optionsAnimation.Func13Ptr
 	optionsAnimation.Free()
-	C.nox_xxx_windowDestroyMB_46C4E0(optionsRoot)
+	nox_xxx_windowDestroyMB_46C4E0(optionsRoot)
 	optionsAnimation = nil
 	optionsRoot = nil
 	clear(optionsAudioChecks[:])
@@ -728,13 +728,13 @@ func sub_4AB0C0() C.int {
 //export sub_4AB260
 func sub_4AB260() C.int {
 	mem_setPtrValue(0x5D4594, 1309752, unsafe.Pointer(C.nox_xxx_gLoadImg_42F970(internCStr("DisconnectIcon"))))
-	disconnectIndicator = C.nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2+3, 50, 50, nil)
-	C.nox_xxx_wndSetIcon_46AE60(disconnectIndicator, (*C.nox_video_bag_image_t)(mem_getPtrValue(0x5D4594, 1309752)))
-	C.nox_window_set_all_funcs(disconnectIndicator, nil, C.sub_4AB420, nil)
+	disconnectIndicator = nox_window_new(nil, 136, clientDisplayStorage.width-50, clientDisplayStorage.height/2+3, 50, 50, nil)
+	nox_xxx_wndSetIcon_46AE60(disconnectIndicator, (*C.nox_video_bag_image_t)(mem_getPtrValue(0x5D4594, 1309752)))
+	nox_window_set_all_funcs(disconnectIndicator, nil, C.sub_4AB420, nil)
 	disconnectDialog = C.nox_new_window_from_file(internCStr("discon.wnd"), C.sub_4AB390)
-	C.nox_xxx_wndSetWindowProc_46B300(disconnectDialog, C.sub_4AB340)
-	C.sub_46B120(disconnectDialog, nil)
-	C.nox_window_setPos_46A9B0(disconnectDialog, C.int(int64(clientDisplayStorage.width)/2-int64(disconnectDialog.end_x)/2), C.int(int64(clientDisplayStorage.height)/2-int64(disconnectDialog.end_y)/2))
+	nox_xxx_wndSetWindowProc_46B300(disconnectDialog, C.sub_4AB340)
+	sub_46B120(disconnectDialog, nil)
+	nox_window_setPos_46A9B0(disconnectDialog, int32(int64(clientDisplayStorage.width)/2-int64(disconnectDialog.end_x)/2), int32(int64(clientDisplayStorage.height)/2-int64(disconnectDialog.end_y)/2))
 	return 1
 }
 
@@ -748,7 +748,7 @@ func sub_4AB340(win *C.nox_window, event, a3, a4 C.int) C.int {
 	}
 	if a3 == 57 {
 		p := C.nox_client_getMousePos_4309F0()
-		C.nox_window_call_field_93(win, 5, C.uintptr_t(uint32(p.x)|uint32(p.y)<<16), 0)
+		nox_window_call_field_93(win, 5, uintptr(uint32(p.x)|uint32(p.y)<<16), 0)
 	}
 	return 0
 }
@@ -761,7 +761,7 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 	if event != 16391 {
 		return 0
 	}
-	id := C.nox_xxx_wndGetID_46B0A0(sender) - 576
+	id := C.int(nox_xxx_wndGetID_46B0A0(sender)) - 576
 	if id == 0 {
 		C.sub_43CF40()
 		return 0
@@ -786,15 +786,15 @@ func sub_4AB390(win *C.nox_window, event C.int, sender *C.nox_window, arg C.int)
 //export sub_4AB420
 func sub_4AB420(win *C.nox_window, draw unsafe.Pointer) C.int {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(win.draw_data.bg_image), C.int(int64(x)+int64(win.draw_data.img_px)), C.int(int64(y)+int64(win.draw_data.img_py)))
 	return 1
 }
 
 //export sub_4AB470
 func sub_4AB470() C.int {
-	C.nox_xxx_windowDestroyMB_46C4E0(disconnectDialog)
-	C.nox_xxx_windowDestroyMB_46C4E0(disconnectIndicator)
+	nox_xxx_windowDestroyMB_46C4E0(disconnectDialog)
+	nox_xxx_windowDestroyMB_46C4E0(disconnectIndicator)
 	disconnectIndicator = nil
 	disconnectDialog = nil
 	return 0
@@ -803,23 +803,23 @@ func sub_4AB470() C.int {
 //export sub_4AB4A0
 func sub_4AB4A0(show C.int) C.int {
 	if show != 0 {
-		return C.nox_window_set_hidden(disconnectIndicator, 0)
+		return C.int(nox_window_set_hidden(disconnectIndicator, 0))
 	}
-	return C.nox_window_set_hidden(disconnectIndicator, 1)
+	return C.int(nox_window_set_hidden(disconnectIndicator, 1))
 }
 
 //export sub_4AB4D0
 func sub_4AB4D0(show C.int) C.int {
 	if show != 0 {
 		C.nox_video_stopAllFades_44E040()
-		C.nox_window_set_hidden(disconnectDialog, 0)
-		C.nox_xxx_wndShowModalMB_46A8C0(disconnectDialog)
-		C.sub_46C690(disconnectDialog)
-		C.nox_xxx_windowFocus_46B500(disconnectDialog)
-		return C.nox_xxx_wnd_46ABB0(disconnectDialog, 1)
+		nox_window_set_hidden(disconnectDialog, 0)
+		nox_xxx_wndShowModalMB_46A8C0(disconnectDialog)
+		sub_46C690(disconnectDialog)
+		nox_xxx_windowFocus_46B500(disconnectDialog)
+		return nox_xxx_wnd_46ABB0(disconnectDialog, 1)
 	}
-	C.nox_window_set_hidden(disconnectDialog, 1)
-	C.nox_xxx_wnd_46C6E0(disconnectDialog)
-	C.nox_xxx_windowFocus_46B500(nil)
-	return C.nox_xxx_wnd_46ABB0(disconnectDialog, 0)
+	nox_window_set_hidden(disconnectDialog, 1)
+	nox_xxx_wnd_46C6E0(disconnectDialog)
+	nox_xxx_windowFocus_46B500(nil)
+	return nox_xxx_wnd_46ABB0(disconnectDialog, 0)
 }

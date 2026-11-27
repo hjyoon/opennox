@@ -46,7 +46,7 @@ func summonImage(offset uintptr) *nox_video_bag_image_t {
 
 func summonWindowPosition(win *nox_window) (x, y C.int) {
 	var px, py C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &px, &py)
+	nox_client_wndGetPosition_46AA60(win, &px, &py)
 	return C.int(px), C.int(py)
 }
 
@@ -227,8 +227,8 @@ func nox_xxx_guiDrawSummonBox_4C1FE0(win *nox_window, draw *C.nox_window_data) C
 		}
 	}
 	hoverFlag := memmap.PtrUint32(0x5D4594, 1321212)
-	overButton := bool(C.nox_xxx_wndPointInWnd_46AAB0(summonWindows.button, mouse.x, mouse.y))
-	if bool(C.nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y)) || overButton || *hoverFlag == 1 {
+	overButton := bool(nox_xxx_wndPointInWnd_46AAB0(summonWindows.button, mouse.x, mouse.y))
+	if bool(nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y)) || overButton || *hoverFlag == 1 {
 		hovered := summonRecordUnder(mouse.x, mouse.y, wx, wy)
 		*hoverFlag = 0
 		for record := sub_4C2D60(); record != nil; record = sub_4C2D90(record) {
@@ -242,7 +242,7 @@ func nox_xxx_guiDrawSummonBox_4C1FE0(win *nox_window, draw *C.nox_window_data) C
 			}
 		}
 	}
-	if popup := summonWindows.popup; popup != nil && !C.nox_xxx_wndPointInWnd_46AAB0(popup, mouse.x, mouse.y) {
+	if popup := summonWindows.popup; popup != nil && !nox_xxx_wndPointInWnd_46AAB0(popup, mouse.x, mouse.y) {
 		nox_xxx_guiHideSummonWindow_4C2470()
 	}
 	return 1
@@ -374,7 +374,7 @@ func sub_4C27F0(win *nox_window, draw *C.nox_window_data) C.int {
 	x += (C.int(legacyWords.nox_xxx_screenWidth_587000_184452)-textWidth)/2 + 1
 	y += 3
 	shadow := C.int(renderPalette.black)
-	if C.nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y) {
+	if nox_xxx_wndPointInWnd_46AAB0(win, mouse.x, mouse.y) {
 		drawSummonOutlinedText(x, y, C.int(renderPalette.yellow), shadow, text)
 		last := memmap.PtrUint32(0x587000, 184552)
 		if command != uintptr(*last) {

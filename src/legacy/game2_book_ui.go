@@ -155,7 +155,7 @@ func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
 			nox_book_anim_set_end(bookDetails.backward, unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0))
 			game2BookHide(bookDetails.page_icon, 1)
 			game2BookHide(bookDetails.right_arrow, 0)
-			C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
+			nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 			C.nox_xxx_bookSpellDnDclear_477660()
 		}
 		return 1
@@ -189,7 +189,7 @@ func nox_xxx_bookChildWndProcMB_45B360(window *C.uint32_t, event C.uint) C.int {
 	nox_book_anim_set_end(ref, unsafe.Pointer(C.nox_xxx_bookClickCreature_45B200))
 	game2BookHide(bookDetails.page_icon, 1)
 	game2BookHide(bookDetails.right_arrow, 0)
-	C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
+	nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 	C.nox_xxx_bookSpellDnDclear_477660()
 	return 1
 }
@@ -217,7 +217,7 @@ func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int 
 	bookState.line_height = C.uint32_t(C.nox_xxx_guiFontHeightMB_43F320(nil) + 2)
 	rows := int32(uint32(141)/uint32(bookState.line_height) - 1)
 	var wx, wy C.uint
-	C.nox_gui_getWindowOffs_46AA20(win, &wx, &wy)
+	nox_gui_getWindowOffs_46AA20(win, &wx, &wy)
 	switch event {
 	case 5:
 		if nox_client_localPlayerHasFlags30(2) != 0 {
@@ -239,7 +239,7 @@ func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int 
 			row += rows
 		}
 		bookState.list_drag_index = C.uint32_t(uint32(2*rows)*uint32(bookState.list_page) + uint32(row))
-		C.nox_xxx_wndSetCaptureMain_46ADC0(win)
+		nox_xxx_wndSetCaptureMain_46ADC0(win)
 		index := uint32(bookState.list_drag_index)
 		if index >= *game2BookU(1047508)-uint32(bookState.hidden_entry_count) {
 			bookState.list_drag_index = ^C.uint32_t(0)
@@ -255,7 +255,7 @@ func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int 
 			bookState.list_drag_id = C.uint32_t(game2BookID(index))
 		} else {
 			if player.spell_lvl[134] == 0 && (!game2BookGameFlag(0x2000) || game2BookGameFlag(4096)) {
-				C.nox_xxx_wndClearCaptureMain_46ADE0(win)
+				nox_xxx_wndClearCaptureMain_46ADE0(win)
 				nox_xxx_bookMoveToPage_45B930(C.int(index))
 				bookState.list_drag_id = 0
 				bookState.list_drag_index = ^C.uint32_t(0)
@@ -285,8 +285,8 @@ func nox_xxx_bookListWndProc_45B5F0(win *C.nox_window, event, pos C.uint) C.int 
 				nox_xxx_bookMoveToPage_45B930(C.int(bookState.list_drag_index))
 			}
 		}
-		if C.nox_xxx_wndGetCaptureMain_46AE00() != nil {
-			C.nox_xxx_wndClearCaptureMain_46ADE0(win)
+		if nox_xxx_wndGetCaptureMain_46AE00() != nil {
+			nox_xxx_wndClearCaptureMain_46ADE0(win)
 		}
 		C.nox_xxx_bookSpellDnDclear_477660()
 		return 1
@@ -359,7 +359,7 @@ func nox_xxx_bookInit_45B9D0() C.int {
 		return 0
 	}
 	nox_book_anim_set_end(bookDetails.backward, unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0))
-	bookUI.list_window = C.nox_window_new(nil, 1196, 5, clientDisplayStorage.height-323, 285, 168, nil)
+	bookUI.list_window = nox_window_new(nil, 1196, 5, clientDisplayStorage.height-323, 285, 168, nil)
 	root := bookUI.list_window
 	asWindow(root).AddCleanup(func() {
 		if bookUI.list_window == root {
@@ -367,37 +367,37 @@ func nox_xxx_bookInit_45B9D0() C.int {
 			bookDetails.left_arrow, bookDetails.right_arrow, bookDetails.page_icon = nil, nil, nil
 		}
 	})
-	C.nox_window_set_all_funcs(bookUI.list_window, unsafe.Pointer(C.nox_xxx_bookListWndProc_45B5F0), unsafe.Pointer(C.nox_xxx_bookDrawList_45BD40), nil)
+	nox_window_set_all_funcs(bookUI.list_window, unsafe.Pointer(C.nox_xxx_bookListWndProc_45B5F0), unsafe.Pointer(C.nox_xxx_bookDrawList_45BD40), nil)
 	game2BookHide(bookUI.list_window, 1)
-	first := C.nox_window_new(bookUI.list_window, 8, 257, 15, 27, 40, nil)
+	first := nox_window_new(bookUI.list_window, 8, 257, 15, 27, 40, nil)
 	if first == nil {
 		return 0
 	}
-	C.nox_window_set_all_funcs(first, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
+	nox_window_set_all_funcs(first, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
 	first.id = 1320
-	second := C.nox_window_new(bookUI.list_window, 8, 253, 61, 27, 40, nil)
+	second := nox_window_new(bookUI.list_window, 8, 253, 61, 27, 40, nil)
 	if second == nil {
 		return 0
 	}
-	C.nox_window_set_all_funcs(second, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
+	nox_window_set_all_funcs(second, unsafe.Pointer(C.nox_xxx_bookChildWndProcMB_45B360), unsafe.Pointer(C.nox_xxx_book_45BD30), unsafe.Pointer(C.nox_xxx_book_45CF00))
 	second.id = 1310
-	bookDetails.left_arrow = C.nox_window_new(bookUI.list_window, 136, 24, 138, 20, 20, nil)
-	C.nox_window_set_all_funcs(bookDetails.left_arrow, unsafe.Pointer(C.nox_xxx_book_45B210), nil, nil)
-	C.nox_xxx_wndSetIcon_46AE60(bookDetails.left_arrow, loadImage("ArrowW"))
-	bookDetails.right_arrow = C.nox_window_new(bookUI.list_window, 136, 233, 138, 20, 20, nil)
-	C.nox_window_set_all_funcs(bookDetails.right_arrow, unsafe.Pointer(C.nox_xxx_bookWndProc_45B070), nil, nil)
-	C.nox_xxx_wndSetIcon_46AE60(bookDetails.right_arrow, loadImage("ArrowE"))
-	bookDetails.page_icon = C.nox_window_new(bookUI.list_window, 8, 63, 19, 30, 30, nil)
-	C.nox_window_set_all_funcs(bookDetails.page_icon, unsafe.Pointer(C.nox_xxx_bookWndFn_45CC10), unsafe.Pointer(C.nox_xxx_bookDrawIconFn_45CB30), nil)
+	bookDetails.left_arrow = nox_window_new(bookUI.list_window, 136, 24, 138, 20, 20, nil)
+	nox_window_set_all_funcs(bookDetails.left_arrow, unsafe.Pointer(C.nox_xxx_book_45B210), nil, nil)
+	nox_xxx_wndSetIcon_46AE60(bookDetails.left_arrow, loadImage("ArrowW"))
+	bookDetails.right_arrow = nox_window_new(bookUI.list_window, 136, 233, 138, 20, 20, nil)
+	nox_window_set_all_funcs(bookDetails.right_arrow, unsafe.Pointer(C.nox_xxx_bookWndProc_45B070), nil, nil)
+	nox_xxx_wndSetIcon_46AE60(bookDetails.right_arrow, loadImage("ArrowE"))
+	bookDetails.page_icon = nox_window_new(bookUI.list_window, 8, 63, 19, 30, 30, nil)
+	nox_window_set_all_funcs(bookDetails.page_icon, unsafe.Pointer(C.nox_xxx_bookWndFn_45CC10), unsafe.Pointer(C.nox_xxx_bookDrawIconFn_45CB30), nil)
 	game2BookHide(bookDetails.page_icon, 1)
-	bookDetails.reward = C.nox_window_new(nil, 40, 0, 0, 30, 30, nil)
+	bookDetails.reward = nox_window_new(nil, 40, 0, 0, 30, 30, nil)
 	reward := bookDetails.reward
 	asWindow(reward).AddCleanup(func() {
 		if bookDetails.reward == reward {
 			bookDetails.reward = nil
 		}
 	})
-	C.nox_window_set_all_funcs(bookDetails.reward, nil, unsafe.Pointer(C.nox_xxx_bookDrawFn_45C7D0), nil)
+	nox_window_set_all_funcs(bookDetails.reward, nil, unsafe.Pointer(C.nox_xxx_bookDrawFn_45C7D0), nil)
 	game2BookHide(bookDetails.reward, 1)
 	bookState.page_mode = 0
 	bookState.guide_mode = 0
@@ -422,7 +422,7 @@ func nox_xxx_bookDrawIconFn_45CB30(window *C.uint32_t) C.int {
 	}
 	if image != nil {
 		var x, y C.uint
-		C.nox_client_wndGetPosition_46AA60((*C.nox_window)(unsafe.Pointer(window)), &x, &y)
+		nox_client_wndGetPosition_46AA60((*C.nox_window)(unsafe.Pointer(window)), &x, &y)
 		C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(image), C.int(x), C.int(y))
 	}
 	return 1
@@ -446,19 +446,19 @@ func nox_xxx_bookWndFn_45CC10(window *C.uint32_t, event C.int, pos C.uint) C.int
 	drag := func(id uint32) {
 		bookState.page_drag_id = C.uint32_t(id)
 		C.nox_xxx_bookSaveSpellForDragDrop_477640(C.int(id), 1)
-		C.nox_xxx_wndSetCaptureMain_46ADC0(win)
+		nox_xxx_wndSetCaptureMain_46ADC0(win)
 		game2BookSound(793)
 	}
 	finish := func(clear bool) {
 		if clear {
 			bookState.page_drag_id = 0
-			C.nox_xxx_wndClearCaptureMain_46ADE0(win)
+			nox_xxx_wndClearCaptureMain_46ADE0(win)
 		}
 		C.nox_xxx_bookSpellDnDclear_477660()
 	}
 	switch event {
 	case 5:
-		if C.nox_xxx_wndGetCaptureMain_46AE00() != nil || bookState.page_drag_id != 0 {
+		if nox_xxx_wndGetCaptureMain_46AE00() != nil || bookState.page_drag_id != 0 {
 			return 1
 		}
 		if game2PlayerClass(player) == 0 && bookState.page_mode == 0 {
@@ -485,7 +485,7 @@ func nox_xxx_bookWndFn_45CC10(window *C.uint32_t, event C.int, pos C.uint) C.int
 			return 1
 		}
 		id := C.int(bookState.page_drag_id)
-		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(win, x, y)) {
+		if !bool(nox_xxx_wndPointInWnd_46AAB0(win, x, y)) {
 			if C.nox_xxx_guiSpell_460650() != 0 {
 				nox_xxx_guiSpellTargetClickSet_45D9D0(id)
 			} else if C.sub_4611A0() != 0 {

@@ -48,7 +48,7 @@ func sub_4BFBF0() C.int {
 	g2ServerHidden(root, false)
 	g2ServerEnabled(root, true)
 	var width, height C.int
-	C.nox_window_get_size(root, &width, &height)
+	nox_window_get_size(root, &width, &height)
 	nox_window_setPos_46A9B0(root, int32(clientDisplayStorage.width/2-width/2), int32(clientDisplayStorage.height/2-height/2))
 	return C.int(nox_xxx_windowFocus_46B500(nil))
 }
@@ -84,7 +84,7 @@ func sub_4BFC90() C.int {
 //export sub_4BFCD0
 func sub_4BFCD0(win *nox_window, event C.int, control *nox_window, arg C.uintptr_t) C.int {
 	if event == 16391 {
-		id := C.nox_xxx_wndGetID_46B0A0(control)
+		id := C.int(nox_xxx_wndGetID_46B0A0(control))
 		nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 		if id == 10803 {
 			sub_4BFC70()

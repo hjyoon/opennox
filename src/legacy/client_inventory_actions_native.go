@@ -126,7 +126,7 @@ func sub_467CD0() C.int {
 		nox_xxx_cursorResetDraggedItem_4776A0()
 	}
 	capture := nox_xxx_wndGetCaptureMain_46AE00()
-	if C.nox_window_is_child(nox_xxx_wndGetHandle_4676A0(), capture) == 1 {
+	if nox_window_is_child(nox_xxx_wndGetHandle_4676A0(), capture) == 1 {
 		nox_xxx_wndClearCaptureMain_46ADE0(capture)
 	}
 	return C.int(bool2int(dragged != nil))

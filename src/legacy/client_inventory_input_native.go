@@ -35,7 +35,7 @@ func sub_464770(win *C.nox_window, event C.int, packed, unused C.uintptr_t) C.in
 		return 1
 	case 6:
 		if dragged := nox_client_inventory_get_dragged(); dragged != nil {
-			inside := bool(C.nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, C.int(uint16(packed)), C.int(uint32(packed)>>16)))
+			inside := bool(nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, C.int(uint16(packed)), C.int(uint32(packed)>>16)))
 			clearCapture := !inside || clientInventoryReleaseOnAlternate(dragged)
 			clientInventoryFinishDrag(dragged)
 			if !clearCapture {

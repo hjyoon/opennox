@@ -30,10 +30,10 @@ func g2ServerBool(v bool) C.int {
 	return 0
 }
 func g2ServerChild(w *g2ServerWindow, id int) *g2ServerWindow {
-	return C.nox_xxx_wndGetChildByID_46B0C0(w, C.int(id))
+	return nox_xxx_wndGetChildByID_46B0C0(w, int32(id))
 }
 func g2ServerEvent(w *g2ServerWindow, e int, a, b uintptr) uintptr {
-	return uintptr(C.game2_server_event(w, C.int(e), C.uintptr_t(a), C.uintptr_t(b)))
+	return nox_window_call_field_94_fnc(w, int32(e), a, b, internCStr("game2_server_common.go"), 0)
 }
 func g2ServerText(w *g2ServerWindow, e int, p unsafe.Pointer, b uintptr) uintptr {
 	v := g2ServerEvent(w, e, uintptr(p), b)
@@ -41,10 +41,10 @@ func g2ServerText(w *g2ServerWindow, e int, p unsafe.Pointer, b uintptr) uintptr
 	return v
 }
 func g2ServerEnabled(w *g2ServerWindow, v bool) C.int {
-	return C.nox_xxx_wnd_46ABB0(w, g2ServerBool(v))
+	return nox_xxx_wnd_46ABB0(w, g2ServerBool(v))
 }
 func g2ServerHidden(w *g2ServerWindow, v bool) C.int {
-	return C.nox_window_set_hidden(w, g2ServerBool(v))
+	return C.int(nox_window_set_hidden(w, int32(g2ServerBool(v))))
 }
 func g2ServerList(w *g2ServerWindow) *gui.ScrollListBoxData {
 	if w == nil {
@@ -100,7 +100,7 @@ func g2ServerPlayerByName(name *C.wchar2_t) *C.nox_playerInfo {
 }
 func g2ServerDrawBackground(w *C.nox_window, d *C.nox_window_data, requireImage bool) C.int {
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
+	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	if int8(w.flags) >= 0 {
 		if uint32(d.bg_color) != 0x80000000 {
 			C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y), C.int(w.width), C.int(w.height))

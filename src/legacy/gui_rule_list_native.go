@@ -63,7 +63,7 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 	if list == nil || edit == nil || save == nil || replace == nil || load == nil || remove == nil ||
 		background == nil || thumb == nil || up == nil || down == nil || list.widget_data == nil || thumb.field_100 == nil {
 		ruleListWindows = ruleListControls{}
-		C.nox_xxx_windowDestroyMB_46C4E0(root)
+		nox_xxx_windowDestroyMB_46C4E0(root)
 		return nil
 	}
 	asWindow(root).AddCleanup(func() {
@@ -77,9 +77,9 @@ func sub_4CEBA0(parent *nox_window, mapName *C.char) *nox_window {
 	sliderLit := unsafe.Pointer(Nox_xxx_gLoadImg("UISliderLit").C())
 	thumb.field_100.width, thumb.field_100.height = 16, 10
 	sub_4B5700(thumb, nil, nil, slider, sliderLit, sliderLit)
-	C.nox_xxx_wnd_46B280(thumb, list)
-	C.nox_xxx_wnd_46B280(up, list)
-	C.nox_xxx_wnd_46B280(down, list)
+	nox_xxx_wnd_46B280(thumb, list)
+	nox_xxx_wnd_46B280(up, list)
+	nox_xxx_wnd_46B280(down, list)
 	data := (*C.nox_scrollListBox_data)(list.widget_data)
 	data.field_9, data.field_7, data.field_8 = unsafe.Pointer(thumb), unsafe.Pointer(up), unsafe.Pointer(down)
 	refreshRuleList4CED40(mapName)
@@ -161,7 +161,7 @@ func sub_4CEED0(win *nox_window, draw *C.nox_window_data) C.int {
 		return 1
 	}
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if int8(win.flags) >= 0 {
 		if uint32(draw.bg_color) != 0x80000000 {
 			C.nox_client_drawRectFilledOpaque_49CE30(C.int(x), C.int(y), C.int(win.width), C.int(win.height))
@@ -199,7 +199,7 @@ func ruleListText(win *nox_window, event int, index uintptr) *wchar2_t {
 func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.uintptr_t) C.int {
 	if event > 0x4007 {
 		if event == 16400 && control != nil && uintptr(unsafe.Pointer(control)) != 1 {
-			C.nox_xxx_wndGetID_46B0A0(control)
+			nox_xxx_wndGetID_46B0A0(control)
 		}
 		return 1
 	}
@@ -210,7 +210,7 @@ func sub_4CF060(win *nox_window, event C.uint, control *nox_window, eventArg C.u
 	if event != 16391 || control == nil || uintptr(unsafe.Pointer(control)) == 1 || list == nil || edit == nil {
 		return 1
 	}
-	id := C.nox_xxx_wndGetID_46B0A0(control)
+	id := C.int(nox_xxx_wndGetID_46B0A0(control))
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	switch id {
 	case 10172:

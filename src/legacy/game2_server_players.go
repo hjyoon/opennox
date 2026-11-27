@@ -159,7 +159,7 @@ func sub_456D00(index C.int, out *C.wchar2_t) *C.wchar2_t {
 //export sub_456D60
 func sub_456D60(destroy C.int) *C.int {
 	if destroy != 0 && serverSharedWindows.players != nil {
-		C.nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.players)
+		nox_xxx_windowDestroyMB_46C4E0(serverSharedWindows.players)
 	}
 	g2ServerClearList(&serverPlayersState.players)
 	g2ServerClearList(&serverPlayersState.teams)

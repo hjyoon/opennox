@@ -56,7 +56,7 @@ func questWinNativeHooks450770() questWinHooks450770[*byte, *server.Player, *gui
 		loadWidth:  func() int32 { return int32(*questWinWidthSlot450770()) },
 		storeWidth: func(v int32) { *questWinWidthSlot450770() = uint32(v) },
 		child: func(id int32) *gui.Window {
-			return (*gui.Window)(unsafe.Pointer(C.nox_xxx_wndGetChildByID_46B0C0(briefingState.panel, C.int(id))))
+			return (*gui.Window)(unsafe.Pointer(nox_xxx_wndGetChildByID_46B0C0(briefingState.panel, int32(id))))
 		},
 		loadText: func(key, source string, line int32) *uint16 {
 			return (*uint16)(unsafe.Pointer(C.nox_strman_loadString_40F1D0(internCStr(key), nil, internCStr(source), C.int(line))))

@@ -199,6 +199,10 @@ func windowNullSettersC() bool {
 	return C.nox_test_window_null_setters() != 0
 }
 
+func windowChildByIDC(root *gui.Window, id int32) *gui.Window {
+	return asWindow(C.nox_xxx_wndGetChildByID_46B0C0((*nox_window)(root.C()), C.int(id)))
+}
+
 func windowSetSignedProcC(win *gui.Window) bool {
 	return C.nox_test_window_set_signed_proc((*nox_window)(win.C())) != 0
 }

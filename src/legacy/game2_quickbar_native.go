@@ -115,13 +115,13 @@ func g2qDestroy(w *C.nox_window) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.Destroy != nil {
 		return h.Destroy(unsafe.Pointer(w))
 	}
-	return int32(C.nox_xxx_windowDestroyMB_46C4E0(w))
+	return int32(nox_xxx_windowDestroyMB_46C4E0(w))
 }
 func g2qHidden(w *C.nox_window, hidden int32) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.Hidden != nil {
 		return h.Hidden(unsafe.Pointer(w), hidden)
 	}
-	return int32(C.nox_window_set_hidden(w, C.int(hidden)))
+	return int32(nox_window_set_hidden(w, int32(hidden)))
 }
 func g2qStyle(w *C.nox_window, on int32) int32 {
 	if h := game2QuickbarTestHooks; h != nil && h.Style != nil {
@@ -314,7 +314,7 @@ func nox_xxx_bookSpellDrop_45DCA0(spell C.int, flags C.char, x, y C.int, source 
 	oldFlags := byte(0)
 	trap := g2qTrap()
 	root := nox_quickbar_root(trap)
-	shown := root != nil && C.wndIsShown_nox_xxx_wndIsShown_46ACC0(root) != 0
+	shown := root != nil && C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(root)) != 0
 	if (shown || nox_xxx_spellPutInBox_45DEB0(trap, spell, x, y) == 0) && source != trap {
 		first := 4
 		if memmap.Uint32(0x5D4594, 1049476) != 0 {
@@ -639,7 +639,7 @@ func sub_45F5D0(win *C.nox_window, unused1 *C.nox_window_data) C.int {
 		return 0
 	}
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	if text := C.sub_42E8E0(C.int(win.field_92+28), 1); text != nil {
 		C.nox_xxx_drawSetTextColor_434390(C.int(renderPalette.white))
 		C.nox_xxx_drawString_43F6E0(quickbarControls.font, (*C.wchar2_t)(unsafe.Pointer(text)), C.int(x), C.int(y))
@@ -688,7 +688,7 @@ func nox_xxx_quickbarTrapUpDownDraw_45F6F0(win *C.nox_window, data *C.nox_window
 		data = &win.draw_data
 	}
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(win, &x, &y)
+	nox_client_wndGetPosition_46AA60(win, &x, &y)
 	dx, dy := C.int(int32(x)+int32(data.img_px)), C.int(int32(y)+int32(data.img_py))
 	if memmap.Int32(0x5D4594, 1049700) <= 0 || memmap.Int32(0x5D4594, 1049704) != int32(win.field_92) {
 		if data.bg_image != nil {
@@ -725,10 +725,10 @@ func nox_xxx_quickbarTrapButtonProc_45F7A0(win *C.nox_window, event, pos C.uint)
 		return 0
 	}
 	if memmap.Uint32(0x5D4594, 1047928) != 0 {
-		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(pos)), C.int(uint32(pos)>>16))) {
+		if !bool(nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(pos)), C.int(uint32(pos)>>16))) {
 			nox_client_buildTrap_45E040()
 		}
-		C.nox_xxx_wndClearCaptureMain_46ADE0(win)
+		nox_xxx_wndClearCaptureMain_46ADE0(win)
 		quickbarControls.dragged_slot = nil
 		*memmap.PtrUint32(0x5D4594, 1047928) = 0
 		return 1
@@ -739,7 +739,7 @@ func nox_xxx_quickbarTrapButtonProc_45F7A0(win *C.nox_window, event, pos C.uint)
 		return 1
 	}
 	if game2PlayerClass(player) == 1 && sub_45F890() != 0 {
-		C.nox_xxx_wndSetCaptureMain_46ADC0(win)
+		nox_xxx_wndSetCaptureMain_46ADC0(win)
 		quickbarControls.dragged_slot = win
 		*memmap.PtrUint32(0x5D4594, 1047928) = 1
 	} else {
@@ -815,7 +815,7 @@ func nox_xxx_quickbarTrapProc_45FB90(win *C.nox_window, event C.uint, unused1 C.
 			return 1
 		}
 		if event == 7 {
-			if win != nil && C.wndIsShown_nox_xxx_wndIsShown_46ACC0(win) == 0 {
+			if win != nil && C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(win)) == 0 {
 				sub_461060()
 			}
 			return 1
@@ -839,10 +839,10 @@ func nox_xxx_quickbarDrawFn_460000(unused1 *C.nox_window, unused2 *C.nox_window_
 				legacyWords.dword_5d4594_1049536 = C.uint32_t(clientDisplayStorage.height - 74)
 			}
 		} else {
-			C.nox_window_setPos_46A9B0(win, C.int(win.off_x), C.int(y-1))
+			nox_window_setPos_46A9B0(win, int32(win.off_x), int32(y-1))
 		}
 	} else {
-		C.nox_window_setPos_46A9B0(win, C.int(win.off_x), C.int(y+1))
+		nox_window_setPos_46A9B0(win, int32(win.off_x), int32(y+1))
 	}
 	return 1
 }
@@ -853,22 +853,22 @@ func nox_xxx_quickBarInitWindow_4601F0(data unsafe.Pointer, x, y, count, spacing
 	if data == nil || set == nil || count < 0 || count > 5 {
 		return 0
 	}
-	set.root = C.nox_window_new(nil, 1224, x-10, y-15, 199, 59, nil)
+	set.root = nox_window_new(nil, 1224, x-10, y-15, 199, 59, nil)
 	if set.root == nil {
 		nox_quickbar_windows_clear(data)
 		return 0
 	}
-	C.nox_xxx_wndSetIcon_46AE60(set.root, C.nox_xxx_gLoadImg_42F970(internCStr("QuickBarBase")))
-	C.nox_xxx_wndSetOffsetMB_46AE40(set.root, -61, -18)
-	C.nox_xxx_wndSetWindowProc_46B300(set.root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0))
+	nox_xxx_wndSetIcon_46AE60(set.root, C.nox_xxx_gLoadImg_42F970(internCStr("QuickBarBase")))
+	nox_xxx_wndSetOffsetMB_46AE40(set.root, -61, -18)
+	nox_xxx_wndSetWindowProc_46B300(set.root, unsafe.Pointer(C.nox_xxx_quickbar_45F8D0))
 	bx := spacing + 10
 	for i := C.int(0); i < count; i++ {
-		set.buttons[i] = C.nox_window_new(set.root, 1032, bx, 15, 34, 34, nil)
+		set.buttons[i] = nox_window_new(set.root, 1032, bx, 15, 34, 34, nil)
 		if set.buttons[i] == nil {
 			return 0
 		}
 		registerQuickbarDragCleanup(set.buttons[i])
-		C.nox_window_set_all_funcs(set.buttons[i], proc, draw, nil)
+		nox_window_set_all_funcs(set.buttons[i], proc, draw, nil)
 		if unsafe.Sizeof(uintptr(0)) == 4 {
 			*(*unsafe.Pointer)(unsafe.Add(data, uintptr(212+4*i))) = unsafe.Pointer(set.buttons[i])
 			set.buttons[i].field_92 = C.uint(uintptr(data))
@@ -1054,10 +1054,10 @@ func sub_460660() C.int {
 	}
 	capture := quickbarControls.dragged_slot
 	if capture == nil {
-		capture = C.nox_xxx_wndGetCaptureMain_46AE00()
+		capture = nox_xxx_wndGetCaptureMain_46AE00()
 	}
 	if capture != nil {
-		C.nox_xxx_wndClearCaptureMain_46ADE0(capture)
+		nox_xxx_wndClearCaptureMain_46ADE0(capture)
 	}
 	clearQuickbarDragState()
 	return 1
@@ -1279,21 +1279,21 @@ func g2qCapture() *C.nox_window {
 	if h := game2QuickbarTestHooks; h != nil && h.Capture != nil {
 		return (*C.nox_window)(h.Capture())
 	}
-	return C.nox_xxx_wndGetCaptureMain_46AE00()
+	return nox_xxx_wndGetCaptureMain_46AE00()
 }
 func g2qCaptureSet(w *C.nox_window) {
 	if h := game2QuickbarTestHooks; h != nil && h.SetCapture != nil {
 		h.SetCapture(unsafe.Pointer(w))
 		return
 	}
-	C.nox_xxx_wndSetCaptureMain_46ADC0(w)
+	nox_xxx_wndSetCaptureMain_46ADC0(w)
 }
 func g2qCaptureClear(w *C.nox_window) {
 	if h := game2QuickbarTestHooks; h != nil && h.ClearCapture != nil {
 		h.ClearCapture(unsafe.Pointer(w))
 		return
 	}
-	C.nox_xxx_wndClearCaptureMain_46ADE0(w)
+	nox_xxx_wndClearCaptureMain_46ADE0(w)
 }
 func g2qDragSave(spell uint32, kind int32) {
 	if h := game2QuickbarTestHooks; h != nil && h.DragSave != nil {
@@ -1325,7 +1325,7 @@ func g2qPointIn(w *C.nox_window, x, y C.int) bool {
 	if h := game2QuickbarTestHooks; h != nil && h.PointIn != nil {
 		return h.PointIn(unsafe.Pointer(w), int32(x), int32(y))
 	}
-	return bool(C.nox_xxx_wndPointInWnd_46AAB0(w, x, y))
+	return bool(nox_xxx_wndPointInWnd_46AAB0(w, x, y))
 }
 func g2qPointRect(x, y C.int) bool {
 	if h := game2QuickbarTestHooks; h != nil && h.PointRect != nil {

@@ -276,7 +276,7 @@ func sub_466ED0(parent *C.nox_window) C.int {
 	if win == nil {
 		return 0
 	}
-	C.sub_46AB20(win, 200, 200)
+	sub_46AB20(win, 200, 200)
 	sub_46B120(win, parent)
 	nox_window_setPos_46A9B0(win, 51, 15)
 	child := nox_xxx_wndGetChildByID_46B0C0(win, 9155)

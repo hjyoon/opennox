@@ -177,7 +177,7 @@ func sub_489DC0() {
 	nox_window_set_hidden(options, 0)
 	ping := nox_xxx_wndGetChildByID_46B0C0(options, 10031)
 	nox_xxx_wnd_46ABB0_go(ping, int32(wolFilterSelected(nox_xxx_wndGetChildByID_46B0C0(options, 10028))))
-	C.sub_46AD20(options, 10016, 10017, C.int(wolFilterSelected(nox_xxx_wndGetChildByID_46B0C0(options, 10015))))
+	sub_46AD20(options, 10016, 10017, C.int(wolFilterSelected(nox_xxx_wndGetChildByID_46B0C0(options, 10015))))
 }
 
 //export nox_xxx_windowMplayFilterProc_489E70
@@ -194,7 +194,7 @@ func nox_xxx_windowMplayFilterProc_489E70(win *nox_window, event C.int, eventArg
 	root, options := wolFilterWindow, wolFilterOptions
 	switch id {
 	case 10015:
-		C.sub_46AD20(root, 10016, 10017, C.int(1-wolFilterSelected(control)))
+		sub_46AD20(root, 10016, 10017, C.int(1-wolFilterSelected(control)))
 	case 10024, 10025:
 		*wolServerFilterMode(0) = uint32(id - 10024)
 		nox_window_set_hidden(options, 1)

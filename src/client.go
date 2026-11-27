@@ -21,6 +21,9 @@ var (
 
 func init() {
 	legacy.GetClient = func() legacy.Client {
+		if noxClient == nil {
+			return nil
+		}
 		return noxClient
 	}
 }

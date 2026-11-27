@@ -73,7 +73,7 @@ func nox_xxx_netSpellRewardCli_45CFE0(id, level, notify, extra C.int) {
 //export game2_book_forward_word
 func game2_book_forward_word(kind C.uintptr_t, id C.int, position *C.int2) C.uintptr_t {
 	nox_xxx_bookShowMB_45AD70(1)
-	C.nox_window_setPos_46A9B0(bookUI.list_window, position.field_0, position.field_4)
+	nox_window_setPos_46A9B0(bookUI.list_window, int32(position.field_0), int32(position.field_4))
 	token := uintptr(kind)
 	count := 0
 	switch token {
@@ -191,7 +191,7 @@ func game2_book_position_word(position *C.uint32_t) C.uintptr_t {
 	if position == nil {
 		return 0
 	}
-	result := C.nox_client_wndGetPosition_46AA60(bookDetails.page_icon, (*C.uint)(unsafe.Pointer(position)), (*C.uint)(unsafe.Add(unsafe.Pointer(position), 4)))
+	result := nox_client_wndGetPosition_46AA60(bookDetails.page_icon, (*C.uint)(unsafe.Pointer(position)), (*C.uint)(unsafe.Add(unsafe.Pointer(position), 4)))
 	return C.uintptr_t(uintptr(int64(result)))
 }
 
@@ -231,7 +231,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	game2_book_position_word((*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046844)))
 	*(*float32)(unsafe.Pointer(&bookState.reward_x_bits)) = float32(int32(*game2BookU(1046844)))
 	*(*float32)(unsafe.Pointer(&bookState.reward_y_bits)) = float32(int32(*game2BookU(1046848)))
-	C.nox_window_setPos_46A9B0(bookDetails.reward, C.int(*game2BookU(1046844)), C.int(*game2BookU(1046848)))
+	nox_window_setPos_46A9B0(bookDetails.reward, int32(*game2BookU(1046844)), int32(*game2BookU(1046848)))
 	nox_xxx_buttonSetImgMB_461320(slot, (*C.uint32_t)(memmap.PtrOff(0x5D4594, 1046668)))
 	first := C.int2{field_0: 400, field_4: -500}
 	second := C.int2{field_0: 350, field_4: 400}
@@ -258,7 +258,7 @@ func nox_xxx_bookFillAll_45D570(kind, id C.int) {
 	bookState.reward_velocity.field_0 = C.float(float64(bookState.reward_velocity.field_0) * scale)
 	bookState.reward_velocity.field_4 = C.float(float64(bookState.reward_velocity.field_4) * scale)
 	game2BookHide(bookDetails.reward, 0)
-	C.nox_xxx_wndShowModalMB_46A8C0(bookDetails.reward)
+	nox_xxx_wndShowModalMB_46A8C0(bookDetails.reward)
 	if game2BookGameFlag(2048) {
 		C.sub_57AF30(nil, kind)
 	}

@@ -31,7 +31,7 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 		return nil
 	}
 	C.nox_draw_setTabWidth_43FE20(100)
-	C.sub_46B120(s.root, parent)
+	sub_46B120(s.root, parent)
 	s.wnd_10102 = g2ServerChild(s.root, 10102)
 	s.wnd_10103 = g2ServerChild(s.root, 10103)
 	s.wnd_10104 = g2ServerChild(s.root, 10104)
@@ -64,9 +64,9 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 			thumb.field_100.height = 10
 		}
 		C.sub_4B5700(thumb, nil, nil, unsafe.Pointer(slider), unsafe.Pointer(lit), unsafe.Pointer(lit))
-		C.nox_xxx_wnd_46B280(thumb, row.list)
-		C.nox_xxx_wnd_46B280(up, row.list)
-		C.nox_xxx_wnd_46B280(down, row.list)
+		nox_xxx_wnd_46B280(thumb, row.list)
+		nox_xxx_wnd_46B280(up, row.list)
+		nox_xxx_wnd_46B280(down, row.list)
 		d.Field_9 = unsafe.Pointer(thumb)
 		d.Field_7 = unsafe.Pointer(up)
 		d.Field_8 = unsafe.Pointer(down)
@@ -74,7 +74,7 @@ func nox_xxx_guiServerAccessLoad_4541D0(parent *C.nox_window) *C.nox_window {
 	sub_454740()
 	sub_454640()
 	if g2ServerGame(1) {
-		C.nox_xxx_wndSetDrawFn_46B340(s.root, unsafe.Pointer(C.sub_454A90))
+		nox_xxx_wndSetDrawFn_46B340(s.root, unsafe.Pointer(C.sub_454A90))
 	}
 	C.nox_xxx_wndRetNULL_46A8A0()
 	return s.root
@@ -176,7 +176,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 		}
 		id := (*C.nox_window)(unsafe.Pointer(uintptr(a))).id
 		if id == 10200 {
-			C.sub_46AD20(s.root, 10191, 10192, g2ServerBool(sub_455770() != 0))
+			sub_46AD20(s.root, 10191, 10192, g2ServerBool(sub_455770() != 0))
 		} else if id == 10123 {
 			settings := C.sub_416640()
 			*(*byte)(unsafe.Add(settings, 100)) ^= byte(uint32(1) << uint(uint32(b)&31))
@@ -202,9 +202,9 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 				ban.draw_data.field_0 &^= 4
 				allow.draw_data.field_0 |= 4
 				g2ServerHidden(s.wnd_10109, true)
-				C.sub_46ACE0(s.root, 10188, 10190, 1)
+				sub_46ACE0(s.root, 10188, 10190, 1)
 				g2ServerHidden(s.wnd_10105, false)
-				C.sub_46ACE0(s.root, 10185, 10187, 0)
+				sub_46ACE0(s.root, 10185, 10187, 0)
 			}
 		case 10103:
 			controls = unsafe.Pointer(C.sub_416630())
@@ -212,7 +212,7 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 			*(*byte)(controls) ^= 0x20
 		case 10112:
 			text := (*C.wchar2_t)(unsafe.Pointer(g2ServerEvent(s.wnd_10111, 16413, 0, 0)))
-			if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(s.wnd_10105) != 0 {
+			if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(s.wnd_10105)) != 0 {
 				C.sub_4168A0(text)
 			} else {
 				C.sub_416770(0, text, nil)
@@ -295,15 +295,15 @@ func nox_xxx_windowAccessProc_454BA0(unused1 *C.nox_window, event C.int, a, b C.
 			}
 		case 10206:
 			g2ServerHidden(s.wnd_10109, false)
-			C.sub_46ACE0(s.root, 10188, 10190, 0)
+			sub_46ACE0(s.root, 10188, 10190, 0)
 			g2ServerHidden(s.wnd_10105, true)
-			C.sub_46ACE0(s.root, 10185, 10187, 1)
+			sub_46ACE0(s.root, 10185, 10187, 1)
 			s.active_list = s.wnd_10109
 		case 10207:
 			g2ServerHidden(s.wnd_10109, true)
-			C.sub_46ACE0(s.root, 10188, 10190, 1)
+			sub_46ACE0(s.root, 10188, 10190, 1)
 			g2ServerHidden(s.wnd_10105, false)
-			C.sub_46ACE0(s.root, 10185, 10187, 0)
+			sub_46ACE0(s.root, 10185, 10187, 0)
 			s.active_list = s.wnd_10105
 		}
 	}
@@ -335,7 +335,7 @@ func sub_4557D0(v C.int) C.int {
 	s := serverAccessState
 	result := v
 	if v != 0 && s.root != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(s.root)
+		result = C.int(nox_xxx_windowDestroyMB_46C4E0(s.root))
 	}
 	*s = C.nox_gui_server_access_state{}
 	return result
@@ -386,7 +386,7 @@ func sub_455950(name *C.wchar2_t) {
 		if i != -1 {
 			g2ServerEvent(s.wnd_10200, 16398, uintptr(i), 0)
 			if sub_455770() == 0 {
-				C.sub_46AD20(s.root, 10191, 10192, 0)
+				sub_46AD20(s.root, 10191, 10192, 0)
 			}
 		}
 	}

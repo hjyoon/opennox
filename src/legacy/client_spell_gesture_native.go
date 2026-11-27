@@ -49,7 +49,7 @@ func sub_476E20() *nox_window {
 			return nil
 		}
 	}
-	win := C.nox_window_new(nil, 64, (clientDisplayStorage.width-100)/2, (clientDisplayStorage.height-100)/2, 1, 1, nil)
+	win := nox_window_new(nil, 64, (clientDisplayStorage.width-100)/2, (clientDisplayStorage.height-100)/2, 1, 1, nil)
 	nox_window_set_all_funcs(win, nil, C.sub_476E90, nil)
 	return win
 }

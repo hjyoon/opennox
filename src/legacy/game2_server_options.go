@@ -69,13 +69,13 @@ func sub_457B60(input *C.char) C.int {
 			} else if bool(C.nox_xxx_CheckGameplayFlags_417DA0(4)) {
 				g2ServerChild(serverOptionsChildren.pane10199, 10330).draw_data.field_0 |= 4
 			} else {
-				C.sub_46AD20(serverOptionsChildren.pane10199, 10331, 10333, 0)
+				sub_46AD20(serverOptionsChildren.pane10199, 10331, 10333, 0)
 			}
 		} else {
 			if bool(C.nox_xxx_CheckGameplayFlags_417DA0(4)) {
-				C.sub_46AD20(serverOptionsChildren.pane10199, 10330, 10331, 0)
+				sub_46AD20(serverOptionsChildren.pane10199, 10330, 10331, 0)
 			} else {
-				C.sub_46AD20(serverOptionsChildren.pane10199, 10330, 10333, 0)
+				sub_46AD20(serverOptionsChildren.pane10199, 10330, 10333, 0)
 			}
 			data = input
 			nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
@@ -88,8 +88,8 @@ func sub_457B60(input *C.char) C.int {
 		g2ServerEnabled(serverOptionsChildren.pane10153, false)
 		serverOptionsChildren.pane10153.flags |= 8
 		g2ServerEnabled(serverOptionsChildren.pane10197, true)
-		C.sub_46AD20(serverOptionsChildren.pane10197, 10134, 10135, 0)
-		C.sub_46ACE0(serverSharedWindows.options, 10141, 10141, 1)
+		sub_46AD20(serverOptionsChildren.pane10197, 10134, 10135, 0)
+		sub_46ACE0(serverSharedWindows.options, 10141, 10141, 1)
 		data = input
 		nox_client_guiserv_updateMapList_458230(C.int(g2ServerMode(input)), input, false)
 		sub_457460(input)
@@ -115,22 +115,22 @@ func sub_457F30(value C.int) C.int {
 	g2ServerEnabled(serverOptionsChildren.timeLimit, enabled)
 	if value == 1 {
 		w := g2ServerChild(serverSharedWindows.options, 10122)
-		if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(w) == 0 {
+		if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(w)) == 0 {
 			g2ServerHidden(w, true)
 		}
 	}
-	return C.nox_window_set_hidden(g2ServerChild(serverSharedWindows.options, 10183), value)
+	return C.int(nox_window_set_hidden(g2ServerChild(serverSharedWindows.options, 10183), int32(value)))
 }
 
 //export nox_xxx_windowServerOptionsDrawProc_458500
 func nox_xxx_windowServerOptionsDrawProc_458500(w *C.nox_window, unused1 C.int) C.int {
 	pos := C.nox_client_getMousePos_4309F0()
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
+	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	C.nox_client_drawRectFilledAlpha_49CF10(C.int(x), C.int(y)+25, C.int(w.width), C.int(w.height)-25)
 	v := g2ServerChild(serverSharedWindows.options, 10120)
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(v) == 0 && !bool(C.nox_xxx_wndPointInWnd_46AAB0(v, pos.x, pos.y)) {
-		C.nox_xxx_wndClearCaptureMain_46ADE0(v)
+	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(v)) == 0 && !bool(nox_xxx_wndPointInWnd_46AAB0(v, pos.x, pos.y)) {
+		nox_xxx_wndClearCaptureMain_46ADE0(v)
 		g2ServerHidden(v, true)
 	}
 	return 1
@@ -304,12 +304,12 @@ func sub_459560(id C.int) C.int {
 	if first == nil || second == nil {
 		return 0
 	}
-	C.sub_46B120(first, nil)
-	C.sub_46B120(first, parent)
-	C.sub_46B120(second, nil)
-	C.sub_46B120(second, parent)
-	C.sub_46B120(selected, nil)
-	return C.sub_46B120(selected, parent)
+	sub_46B120(first, nil)
+	sub_46B120(first, parent)
+	sub_46B120(second, nil)
+	sub_46B120(second, parent)
+	sub_46B120(selected, nil)
+	return C.int(sub_46B120(selected, parent))
 }
 
 //export sub_459700
@@ -338,11 +338,11 @@ func sub_459700() C.int {
 func nox_xxx_guiServerOptionsHide_4597E0(save C.int) *C.int {
 	root := serverSharedWindows.options
 	if root != nil {
-		focus := C.nox_xxx_wndGetFocus_46B4F0()
-		if C.nox_window_is_child(root, focus) != 0 {
-			C.nox_xxx_windowFocus_46B500(nil)
+		focus := nox_xxx_wndGetFocus_46B4F0()
+		if nox_window_is_child(root, focus) != 0 {
+			nox_xxx_windowFocus_46B500(nil)
 		}
-		C.nox_xxx_windowDestroyMB_46C4E0(root)
+		nox_xxx_windowDestroyMB_46C4E0(root)
 		serverSharedWindows.options = nil
 		sub_456D60(0)
 		C.sub_4BE610()
@@ -436,7 +436,7 @@ func sub_459D60() C.int { return C.int(*g2ServerWord(1046544)) }
 //export sub_459D80
 func sub_459D80(hidden C.int) C.int {
 	if serverSharedWindows.options != nil {
-		return C.nox_window_set_hidden(serverSharedWindows.options, hidden)
+		return C.int(nox_window_set_hidden(serverSharedWindows.options, int32(hidden)))
 	}
 	return 0
 }

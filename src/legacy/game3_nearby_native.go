@@ -94,9 +94,9 @@ func sub_4A2610(owner *C.nox_window, xy *C.uint32_t, head *C.nox_list_item_t) *C
 	}
 	normal, lit := C.nox_xxx_gLoadImg_42F970(internCStr("UISlider")), C.nox_xxx_gLoadImg_42F970(internCStr("UISliderLit"))
 	C.sub_4B5700(slider, nil, nil, unsafe.Pointer(normal), unsafe.Pointer(lit), unsafe.Pointer(lit))
-	C.nox_xxx_wnd_46B280(slider, list)
-	C.nox_xxx_wnd_46B280(up, list)
-	C.nox_xxx_wnd_46B280(down, list)
+	nox_xxx_wnd_46B280(slider, list)
+	nox_xxx_wnd_46B280(up, list)
+	nox_xxx_wnd_46B280(down, list)
 	data := (*gui.ScrollListBoxData)(list.widget_data)
 	data.Field_9 = unsafe.Pointer(slider)
 	data.Field_7 = unsafe.Pointer(up)
@@ -157,7 +157,7 @@ func sub_4A2830(x, y C.int, out *C.uint32_t) *C.uint32_t {
 func sub_4A2890() C.int {
 	var result C.int
 	if game3NearbyWindow != nil {
-		result = C.nox_xxx_windowDestroyMB_46C4E0(game3NearbyWindow)
+		result = C.int(nox_xxx_windowDestroyMB_46C4E0(game3NearbyWindow))
 		game3NearbyWindow = nil
 	}
 	worldWordStorage.nearby_server_count = 0

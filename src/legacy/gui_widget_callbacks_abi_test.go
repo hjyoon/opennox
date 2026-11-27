@@ -85,6 +85,9 @@ func TestWindowConstructorUsesNativeCallbackABI(t *testing.T) {
 	if response == nil || response.EventRespC() != addr {
 		t.Fatalf("constructor callback response = %v, want address %#x", response, addr)
 	}
+	if got := g2ServerEvent((*nox_window)(win.C()), 0x5005, addr, ^addr); got != addr {
+		t.Fatalf("server window event response = %#x, want address %#x", got, addr)
+	}
 
 	if !windowSetSignedProcC(win) {
 		t.Fatal("C setters did not store the signed event callback in both slots")
@@ -101,6 +104,46 @@ func TestWindowConstructorUsesNativeCallbackABI(t *testing.T) {
 func TestWindowCallbackSettersRejectNullThroughC(t *testing.T) {
 	if !windowNullSettersC() {
 		t.Fatal("a window callback setter did not return -2 for a null window")
+	}
+}
+
+func TestWindowChildLookup46B0C0UsesGlobalRoot(t *testing.T) {
+	g := newWidgetCallbackGUI(t)
+	defer g.DestroyAll()
+	id := int32(-7)
+	if found := windowChildByIDC(nil, id); found != nil {
+		t.Fatalf("empty global lookup = %p", found)
+	}
+	older := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
+	root := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 10, 10, nil)
+	first := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 8, 8, nil)
+	last := g.NewWindowRaw(root, gui.StatusEnabled, 0, 0, 8, 8, nil)
+	for _, win := range []*gui.Window{older, first, last} {
+		win.SetID(uint(int(id)))
+	}
+	requireNativeWindowAddress(t, last)
+	if found := windowChildByIDC(nil, id); found != last {
+		t.Fatalf("global lookup = %p, want last child %p", found, last)
+	}
+	if found := windowChildByIDC(older, id); found != older {
+		t.Fatalf("explicit root lookup = %p, want %p", found, older)
+	}
+	if found := windowChildByIDC(nil, 900); found != nil {
+		t.Fatalf("missing ID returned %p", found)
+	}
+	root.Destroy()
+	g.FreeDestroyed()
+	if found := windowChildByIDC(nil, id); found != older {
+		t.Fatalf("lookup after root cleanup = %p, want %p", found, older)
+	}
+}
+
+func TestServerOptionsChildLookupKeepsGoOwnedWindow(t *testing.T) {
+	child := new(gui.Window)
+	child.SetID(71)
+	root := &gui.Window{Field100Ptr: child}
+	if found := asWindow(g2ServerChild((*nox_window)(root.C()), 71)); found != child {
+		t.Fatalf("server options child = %p, want Go-owned child %p", found, child)
 	}
 }
 

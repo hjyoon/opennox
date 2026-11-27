@@ -14,7 +14,7 @@ func sub_4532E0() *C.nox_window {
 		return nil
 	}
 	h := C.nox_xxx_guiFontHeightMB_43F320(w.draw_data.font) + 1
-	C.sub_46AB20(w, C.int(w.width), 15*h+2)
+	sub_46AB20(w, C.int(w.width), 15*h+2)
 	y := w.off_y + C.intptr_t(h) + 2
 	var last *C.nox_window
 	for id := 1520; id < 1534; id++ {
@@ -239,8 +239,8 @@ func sub_453B00() *C.nox_window {
 		return nil
 	}
 	h := C.nox_xxx_guiFontHeightMB_43F320(w.draw_data.font) + 1
-	C.sub_46AB20(w, C.int(w.width), 15*h+2)
-	C.sub_46AB20(other, C.int(other.width), 15*h+2)
+	sub_46AB20(w, C.int(w.width), 15*h+2)
+	sub_46AB20(other, C.int(other.width), 15*h+2)
 	y := w.off_y + C.intptr_t(h) + 2
 	var last *C.nox_window
 	for id := 1120; id < 1134; id++ {

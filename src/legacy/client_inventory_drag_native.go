@@ -196,7 +196,7 @@ func clientInventoryRelease(screen, local *C.int2) {
 
 	fromColumn := C.int(legacyWords.dword_5d4594_1049796_inventory_click_column_index)
 	fromRow := C.int(legacyWords.dword_5d4594_1049800_inventory_click_row_index)
-	if !bool(C.nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, screen.field_0, screen.field_4)) || clientInventoryCheckTabs(local) {
+	if !bool(nox_xxx_wndPointInWnd_46AAB0(inventoryWindows.panel, screen.field_0, screen.field_4)) || clientInventoryCheckTabs(local) {
 		clientInventoryDropOutside(dragged, screen, fromColumn, fromRow)
 		return
 	}

@@ -29,7 +29,7 @@ func questGameOverTimerNativeHooks49B6E0() questGameOverTimerHooks49B6E0[*gui.Wi
 	return questGameOverTimerHooks49B6E0[*gui.Window, *server.Player, unsafe.Pointer]{
 		root: func() *gui.Window { return *questGameOverTimerRootSlot49B6E0() },
 		hidden: func(win *gui.Window) int32 {
-			return int32(C.wndIsShown_nox_xxx_wndIsShown_46ACC0((*C.nox_window)(win.C())))
+			return int32(wndIsShown_nox_xxx_wndIsShown_46ACC0((*C.nox_window)(win.C())))
 		},
 		fps:    gameFPS,
 		frame:  gameFrame,
@@ -47,7 +47,7 @@ func questGameOverTimerNativeHooks49B6E0() questGameOverTimerHooks49B6E0[*gui.Wi
 			formatFixedWide(questGameOverTimerBuffer49B6E0(), internWStr(questGameOverTimerFormat49B6E0), formatValue{text: unsafe.Pointer((*C.wchar2_t)(title))}, formatValue{number: int32(seconds)})
 		},
 		child: func(win *gui.Window, id int32) *gui.Window {
-			return (*gui.Window)(unsafe.Pointer(C.nox_xxx_wndGetChildByID_46B0C0((*C.nox_window)(win.C()), C.int(id))))
+			return (*gui.Window)(unsafe.Pointer(nox_xxx_wndGetChildByID_46B0C0((*C.nox_window)(win.C()), int32(id))))
 		},
 		setText: func(win *gui.Window) int32 {
 			// The original helper discards the GUI procedure response and returns 0.

@@ -45,7 +45,7 @@ func nox_xxx_loadAdvancedWnd_4BDC10(settings *C.int) C.int {
 	sub_46B120(root, nil)
 	sub_46C690(root)
 	nox_xxx_wndShowModalMB_46A8C0(root)
-	C.nox_xxx_wndSetWindowProc_46B300(root, C.sub_4BDDA0)
+	nox_xxx_wndSetWindowProc_46B300(root, C.sub_4BDDA0)
 	nox_xxx_windowFocus_46B500(root)
 	return sub_4BDC70(settings)
 }
@@ -123,7 +123,7 @@ func nox_xxx_windowAdvancedServProc_4BDDB0(win *nox_window, event C.int, control
 	if event != 16391 || control == nil {
 		return 1
 	}
-	id := int(C.nox_xxx_wndGetID_46B0A0(control))
+	id := int(nox_xxx_wndGetID_46B0A0(control))
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	if id == 10148 {
 		if settings := (*server.Settings2)(unsafe.Pointer(sub_4165B0())); settings != nil {
@@ -138,7 +138,7 @@ func nox_xxx_windowAdvancedServProc_4BDDB0(win *nox_window, event C.int, control
 		return 1
 	}
 	if tab := advancedServerTab; tab != nil {
-		C.nox_xxx_windowDestroyMB_46C4E0(tab)
+		nox_xxx_windowDestroyMB_46C4E0(tab)
 		advancedServerTab = nil
 	}
 	advancedServerTabIndex = uint32((id - 10163) % 4)
@@ -152,8 +152,8 @@ func sub_4BDF30() C.int {
 	if root == nil {
 		return 0
 	}
-	C.nox_xxx_wnd_46C6E0(root)
-	C.nox_xxx_windowDestroyMB_46C4E0(root)
+	nox_xxx_wnd_46C6E0(root)
+	nox_xxx_windowDestroyMB_46C4E0(root)
 	advancedServerWindow = nil
 	advancedServerTab = nil
 	return C.int(nox_xxx_windowFocus_46B500(nil))
@@ -216,14 +216,14 @@ func sub_4BDFD0() C.int {
 	sub_46C690(root)
 	nox_xxx_wndShowModalMB_46A8C0(root)
 	nox_xxx_windowFocus_46B500(root)
-	C.nox_xxx_wndSetWindowProc_46B300(root, C.sub_4BE320)
+	nox_xxx_wndSetWindowProc_46B300(root, C.sub_4BE320)
 	host := g2ServerChild(nil, 10100)
 	var x, y C.uint
-	C.nox_gui_getWindowOffs_46AA20(host, &x, &y)
+	nox_gui_getWindowOffs_46AA20(host, &x, &y)
 	nox_window_setPos_46A9B0(root, int32(x)+15, int32(y)+80)
 	if panel := g2ServerChild(root, 2104); panel != nil {
-		C.nox_xxx_wnd_46B280(panel, root)
-		C.nox_xxx_wndSetProc_46B2C0(panel, C.sub_4BE330)
+		nox_xxx_wnd_46B280(panel, root)
+		nox_xxx_wndSetProc_46B2C0(panel, C.sub_4BE330)
 	}
 	return sub_4BE120(settings)
 }
@@ -277,7 +277,7 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 			nox_xxx_gameSetAudioFadeoutMb_501AC0(int32(arg2))
 		case 16415:
 			if entry := (*nox_window)(unsafe.Pointer(uintptr(arg1))); entry != nil {
-				if value, ok := performanceRate(entry); ok && C.nox_xxx_wndGetID_46B0A0(entry) == 2110 {
+				if value, ok := performanceRate(entry); ok && C.int(nox_xxx_wndGetID_46B0A0(entry)) == 2110 {
 					binary.LittleEndian.PutUint32(settings[advancedPerfRateValue:], value)
 				}
 			}
@@ -298,7 +298,7 @@ func sub_4BE330(win *nox_window, event C.int, arg1, arg2 C.uintptr_t) C.int {
 	if event != 16391 || control == nil {
 		return 1
 	}
-	id := int(C.nox_xxx_wndGetID_46B0A0(control))
+	id := int(nox_xxx_wndGetID_46B0A0(control))
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	switch id {
 	case 2102:
@@ -325,8 +325,8 @@ func sub_4BE610() C.int {
 	if root == nil {
 		return 0
 	}
-	C.nox_xxx_wnd_46C6E0(root)
-	C.nox_xxx_windowDestroyMB_46C4E0(root)
+	nox_xxx_wnd_46C6E0(root)
+	nox_xxx_windowDestroyMB_46C4E0(root)
 	serverPerformanceWindow = nil
 	return C.int(nox_xxx_windowFocus_46B500(nil))
 }

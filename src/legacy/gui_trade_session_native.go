@@ -40,15 +40,15 @@ func sub_4C0630(win *nox_window, event C.int, packed, unused C.uintptr_t) C.int 
 	pos := C.int2{field_0: C.int(uint16(packed)), field_4: C.int(uint32(packed) >> 16)}
 	switch event {
 	case 5:
-		if C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4) {
+		if nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4) {
 			if slot := sub_4C0910(&pos); slot != nil && slot.count != 0 && slot.drawable != nil {
 				startTradeDrag(slot, pos)
 			}
 		}
 		return 1
 	case 6, 7:
-		if C.nox_xxx_wndGetCaptureMain_46AE00() == tradeRoot() {
-			C.nox_xxx_wndClearCaptureMain_46ADE0(tradeRoot())
+		if nox_xxx_wndGetCaptureMain_46AE00() == tradeRoot() {
+			nox_xxx_wndClearCaptureMain_46ADE0(tradeRoot())
 		}
 		if clientItemStorage.trade_dragged != nil && clientItemStorage.trade_source != nil {
 			finishTradeDrag(pos)
@@ -60,7 +60,7 @@ func sub_4C0630(win *nox_window, event C.int, packed, unused C.uintptr_t) C.int 
 }
 
 func startTradeDrag(slot *tradeClientSlot, pos C.int2) {
-	C.nox_xxx_wndSetCaptureMain_46ADC0(tradeRoot())
+	nox_xxx_wndSetCaptureMain_46ADC0(tradeRoot())
 	nox_xxx_setKeybTimeout_4160D0(2)
 	*(*C.int2)(g2ServerMem(1319276)) = pos
 	drawable := slot.drawable
@@ -87,11 +87,11 @@ func finishTradeDrag(pos C.int2) {
 	drawable := clientItemStorage.trade_dragged
 	switch *g2ServerWord(1320304) {
 	case 0:
-		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4)) || tradeShortClick(pos, 2) {
+		if !bool(nox_xxx_wndPointInWnd_46AAB0(tradeChild(3704), pos.field_0, pos.field_4)) || tradeShortClick(pos, 2) {
 			nox_xxx_clientTrade_0_4C08E0(drawable)
 		}
 	case 1:
-		if !bool(C.nox_xxx_wndPointInWnd_46AAB0(tradeChild(3705), pos.field_0, pos.field_4)) || tradeShortClick(pos, 3) {
+		if !bool(nox_xxx_wndPointInWnd_46AAB0(tradeChild(3705), pos.field_0, pos.field_4)) || tradeShortClick(pos, 3) {
 			nox_xxx_clientTrade_0_4C08E0(drawable)
 		}
 	}
@@ -153,7 +153,7 @@ func nox_xxx_netP2PStartTrade_4C1320(data *C.nox_trade_const_u8_t) C.int {
 	g2ServerEnabled(tradeRoot(), true)
 	nox_xxx_showP2PTradeWnd_4C12D0()
 	var width, height C.int
-	C.nox_window_get_size(tradeRoot(), &width, &height)
+	nox_window_get_size(tradeRoot(), &width, &height)
 	nox_window_setPos_46A9B0(tradeRoot(), 198, 193)
 	tradeSetNames(player)
 	C.sub_467BB0()

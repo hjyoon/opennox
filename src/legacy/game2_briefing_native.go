@@ -102,7 +102,7 @@ func g2bPosition() *float32 {
 	return (*float32)(unsafe.Pointer(&legacyAddressableWords.dword_5d4594_831276))
 }
 func g2bEvent(win *C.nox_window, event C.int, arg C.uintptr_t) C.uintptr_t {
-	return C.nox_window_call_field_94_fnc(win, event, arg, 0, internCStr("GAME2.c"), 0)
+	return C.uintptr_t(nox_window_call_field_94_fnc(win, int32(event), uintptr(arg), 0, internCStr("GAME2.c"), 0))
 }
 
 //export sub_44D040
@@ -165,18 +165,18 @@ func nox_xxx_playGMCAPsmth_44E3E0() C.int {
 func sub_44E560() *C.nox_window {
 	*memmap.PtrUint32(0x5D4594, 831284) = uint32((clientDisplayStorage.width - 640) / 2)
 	*memmap.PtrUint32(0x5D4594, 831288) = uint32((clientDisplayStorage.height - 480) / 2)
-	result := C.nox_window_new(nil, 56, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, C.nox_window_init_proc(C.nox_xxx_wndProc_44E6E0))
+	result := nox_window_new(nil, 56, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, C.nox_window_init_proc(C.nox_xxx_wndProc_44E6E0))
 	storeWindowReference(&briefingState.outer, result)
 	if result != nil {
-		C.nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
+		nox_xxx_wndSetWindowProc_46B300(result, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
 		result.draw_data.bg_color = renderPalette.black
 		result = C.nox_new_window_from_file(internCStr("Briefing.wnd"), nil)
 		storeWindowReference(&briefingState.panel, result)
 		if result != nil {
-			C.sub_46B120(result, briefingState.outer)
-			C.nox_window_setPos_46A9B0(result, C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)))
-			child := C.nox_xxx_wndGetChildByID_46B0C0(result, 1010)
-			C.nox_xxx_wndSetDrawFn_46B340(child, unsafe.Pointer(C.sub_44E6F0))
+			sub_46B120(result, briefingState.outer)
+			nox_window_setPos_46A9B0(result, int32(memmap.Int32(0x5D4594, 831284)), int32(memmap.Int32(0x5D4594, 831288)))
+			child := nox_xxx_wndGetChildByID_46B0C0(result, 1010)
+			nox_xxx_wndSetDrawFn_46B340(child, unsafe.Pointer(C.sub_44E6F0))
 			sub_44E410()
 			result = briefingState.outer
 		}
@@ -196,12 +196,12 @@ func nox_client_wndQuestBriefProc_44E630(unused1 *C.nox_window, event C.int, unu
 				legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
 			}
 		} else {
-			C.nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
-			C.nox_xxx_windowFocus_46B500(nil)
+			nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
+			nox_xxx_windowFocus_46B500(nil)
 			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
 		}
-		C.nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
+		nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
 	}
 	return 1
 }
@@ -218,7 +218,7 @@ func nox_xxx_wndProc_44E6E0(unused1 *C.nox_window, event C.int, unused2 C.uintpt
 func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	*g2bPosition() = float32(float64(*g2bPosition()) - float64(sub_44E8B0()))
 	y := nox_float2int(C.float(*g2bPosition()))
-	C.nox_window_setPos_46A9B0(win, 0, y)
+	nox_window_setPos_46A9B0(win, 0, int32(y))
 	currentDrawClipRect(C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)), 640, 480)
 	flags := memmap.Uint8(0x5D4594, 832472)
 	if flags&1 != 0 {
@@ -242,12 +242,12 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 			C.nox_video_fadeInScreen_44DAB0(duration, 1, unsafe.Pointer(C.sub_44E320))
 			legacyWords.nox_gameDisableMapDraw_5d4594_2650672 = 1
 		} else if legacyWords.dword_5d4594_831256 == 0 {
-			C.nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
+			nox_xxx_wndClearCaptureMain_46ADE0(briefingState.outer)
 			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
-			C.nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
+			nox_xxx_wndSetWindowProc_46B300(briefingState.outer, nil)
 		}
-		C.nox_xxx_wndSetDrawFn_46B340(win, unsafe.Pointer(C.sub_44E8D0))
+		nox_xxx_wndSetDrawFn_46B340(win, unsafe.Pointer(C.sub_44E8D0))
 	}
 	return 1
 }
@@ -277,35 +277,35 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		class = C.int(game2PlayerClass(player))
 	}
 	outer := briefingState.outer
-	C.nox_xxx_wndShowModalMB_46A8C0(outer)
-	C.nox_xxx_wndSetCaptureMain_46ADC0(outer)
-	C.nox_xxx_windowFocus_46B500(outer)
-	C.nox_xxx_wndSetWindowProc_46B300(outer, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
-	textWin := C.nox_xxx_wndGetChildByID_46B0C0(briefingState.panel, 1010)
-	C.nox_xxx_wndSetDrawFn_46B340(textWin, unsafe.Pointer(C.sub_44E6F0))
+	nox_xxx_wndShowModalMB_46A8C0(outer)
+	nox_xxx_wndSetCaptureMain_46ADC0(outer)
+	nox_xxx_windowFocus_46B500(outer)
+	nox_xxx_wndSetWindowProc_46B300(outer, unsafe.Pointer(C.nox_client_wndQuestBriefProc_44E630))
+	textWin := nox_xxx_wndGetChildByID_46B0C0(briefingState.panel, 1010)
+	nox_xxx_wndSetDrawFn_46B340(textWin, unsafe.Pointer(C.sub_44E6F0))
 	briefingState.mode = C.uint32_t(mode)
 	sound := C.int(0)
 	switch screen {
 	case 255:
-		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, nil)
+		nox_xxx_wndSetIcon_46AE60(briefingState.panel, nil)
 		g2bEvent(textWin, 16385, C.uintptr_t(uintptr(*memmap.PtrPtr(0x5D4594, 831268))))
-		C.nox_xxx_wndClearFlag_46AD80(textWin, 0x2000)
+		nox_xxx_wndClearFlag_46AD80(textWin, 0x2000)
 		briefingState.dialog_path = C.nox_xxx_GetEndgameDialog_578D80()
 		sound = 24
 		briefingState.mode = 255
 	case 254:
 		C.nox_server_currentMapGetFilename_409B30()
-		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("GauntletStartMines"))
+		nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("GauntletStartMines"))
 		g2bEvent(textWin, 16385, C.uintptr_t(uintptr(memmap.PtrOff(0x5D4594, 832540))))
 		if byte(flags)&1 != 0 {
 			*memmap.PtrUint32(0x5D4594, 832472) = 1
-			C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("MenuSystemBG"))
+			nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("MenuSystemBG"))
 		} else if byte(flags)&4 != 0 {
 			*memmap.PtrUint32(0x5D4594, 832472) = 4
-			C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("GauntletInstructionBackground"))
+			nox_xxx_wndSetIcon_46AE60(briefingState.panel, g2bImage("GauntletInstructionBackground"))
 		} else {
 			*memmap.PtrUint32(0x5D4594, 832472) = 2
-			C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, 832460)))
+			nox_xxx_wndSetIcon_46AE60(briefingState.panel, (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, 832460)))
 			if text := *memmap.PtrPtr(0x5D4594, 832464); text != nil {
 				g2bEvent(textWin, 16385, C.uintptr_t(uintptr(text)))
 			}
@@ -322,7 +322,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		if mode == 0 {
 			base = 831316
 		}
-		C.nox_xxx_wndSetIcon_46AE60(briefingState.panel, (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, base+offset)))
+		nox_xxx_wndSetIcon_46AE60(briefingState.panel, (*C.nox_video_bag_image_t)(*memmap.PtrPtr(0x5D4594, base+offset)))
 		g2bEvent(textWin, 16385, C.uintptr_t(uintptr(*memmap.PtrPtr(0x5D4594, base+4+offset))))
 		briefingState.dialog_path = (*C.char)(*memmap.PtrPtr(0x5D4594, base+8+offset))
 		sound = C.int(memmap.Uint32(0x5D4594, base+12+offset))
@@ -330,7 +330,7 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 	text := *(**C.wchar2_t)(textWin.widget_data)
 	height := (*C.int)(memmap.PtrOff(0x5D4594, 831280))
 	C.nox_xxx_drawGetStringSize_43F840(textWin.draw_data.font, text, nil, height, 480)
-	C.sub_46AB20(textWin, 640, *height)
+	sub_46AB20(textWin, 640, *height)
 	if screen == 255 {
 		legacyAddressableWords.dword_5d4594_831276 = 1140457472
 		*height = -20 - *height
@@ -346,10 +346,10 @@ func nox_client_lockScreenBriefing_450160(screen, mode C.int, flags C.char) C.in
 		}
 	} else if screen != 254 {
 		if player.field_4408_4576[screen] != 0 {
-			C.nox_xxx_wndClearCaptureMain_46ADE0(outer)
+			nox_xxx_wndClearCaptureMain_46ADE0(outer)
 			legacyWords.dword_5d4594_831256 = 1
 			C.nox_savegame_sub_46D580()
-			C.nox_xxx_wndSetWindowProc_46B300(outer, nil)
+			nox_xxx_wndSetWindowProc_46B300(outer, nil)
 		} else {
 			legacyWords.dword_5d4594_831224 = 1
 			player.field_4408_4576[screen] = 1

@@ -204,8 +204,22 @@ func nox_window_call_field_93(p *nox_window, a2_cgo int32, a3, a4 uintptr) uintp
 
 //export nox_xxx_wndGetChildByID_46B0C0
 func nox_xxx_wndGetChildByID_46B0C0(root *nox_window, id_cgo int32) *nox_window {
-	id := int(id_cgo)
-	return (*nox_window)(asWindow(root).ChildByID(uint(id)).C())
+	win := asWindow(root)
+	if root == nil {
+		if GetClient == nil {
+			return nil
+		}
+		c := GetClient()
+		if c == nil {
+			return nil
+		}
+		cli := c.Cli()
+		if cli == nil || cli.GUI == nil {
+			return nil
+		}
+		win = cli.GUI.Last()
+	}
+	return (*nox_window)(win.ChildByID(uint(int(id_cgo))).C())
 }
 
 //export nox_xxx_windowDestroyMB_46C4E0

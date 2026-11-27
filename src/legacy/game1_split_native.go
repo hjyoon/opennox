@@ -249,7 +249,7 @@ func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 		if h := game1SplitTestHooks; h != nil && h.NewBackdrop != nil {
 			w = h.NewBackdrop()
 		} else {
-			w = C.nox_window_new(nil, 552, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, nil)
+			w = nox_window_new(nil, 552, 0, 0, clientDisplayStorage.width, clientDisplayStorage.height, nil)
 		}
 		storeWindowReference(&shellBackdrop, w)
 		if w != nil {
@@ -261,7 +261,7 @@ func nox_xxx_gui_43E1A0(show C.int) *C.uint32_t {
 		if h := game1SplitTestHooks; h != nil && h.DestroyWindow != nil {
 			h.DestroyWindow(w)
 		} else {
-			C.nox_xxx_windowDestroyMB_46C4E0(w)
+			nox_xxx_windowDestroyMB_46C4E0(w)
 		}
 		shellBackdrop = nil
 	}
@@ -431,19 +431,19 @@ func nox_xxx_guiChatMode_4456E0(w *nox_window, unused unsafe.Pointer) C.int {
 		return 0
 	}
 	var x, y C.uint
-	C.nox_client_wndGetPosition_46AA60(w, &x, &y)
+	nox_client_wndGetPosition_46AA60(w, &x, &y)
 	C.nox_client_drawImageAt_47D2C0((*C.nox_video_bag_image_t)(w.draw_data.bg_image), C.int(x)+C.int(w.draw_data.img_px), C.int(y)+C.int(w.draw_data.img_py))
 	return 1
 }
 
 //export nox_xxx_guiChatShowHide_445730
 func nox_xxx_guiChatShowHide_445730(hidden C.int) C.int {
-	return C.nox_window_set_hidden(chatStatusIcon, hidden)
+	return C.int(nox_window_set_hidden(chatStatusIcon, int32(hidden)))
 }
 
 //export sub_445770
 func sub_445770() C.int {
-	result := C.nox_xxx_windowDestroyMB_46C4E0(chatStatusIcon)
+	result := C.int(nox_xxx_windowDestroyMB_46C4E0(chatStatusIcon))
 	chatStatusIcon = nil
 	return result
 }
@@ -453,7 +453,7 @@ func nox_xxx_quitDialogYes_445B20() { C.nox_client_quit_4460C0(); sub_445C40() }
 
 //export nox_xxx_quitDialogNo_445B30
 func nox_xxx_quitDialogNo_445B30() C.int {
-	return C.nox_xxx_wndSetCaptureMain_46ADC0(quitMenuWindow)
+	return C.int(nox_xxx_wndSetCaptureMain_46ADC0(quitMenuWindow))
 }
 
 //export sub_445BA0
@@ -461,7 +461,7 @@ func sub_445BA0() { C.sub_413A00(0) }
 
 //export sub_445C20
 func sub_445C20() {
-	if C.nox_xxx_wndGetFlags_46ADA0(quitMenuWindow)&0x10 == 0 {
+	if nox_xxx_wndGetFlags_46ADA0(quitMenuWindow)&0x10 == 0 {
 		sub_445C40()
 	}
 }
@@ -473,7 +473,7 @@ func sub_445FF0() *C.uint32_t {
 	}
 	var result *nox_window
 	for id := C.int(9001); id <= 9006; id++ {
-		result = C.nox_xxx_wndGetChildByID_46B0C0(quitMenuWindow, id)
+		result = nox_xxx_wndGetChildByID_46B0C0(quitMenuWindow, int32(id))
 		if result != nil {
 			result.draw_data.text_color = renderPalette.orange
 		}
@@ -484,7 +484,7 @@ func sub_445FF0() *C.uint32_t {
 //export nox_gui_xxx_check_446360
 func nox_gui_xxx_check_446360() C.uint {
 	if w := quitMenuWindow; w != nil {
-		return C.uint((^uint32(C.nox_xxx_wndGetFlags_46ADA0(w)) >> 4) & 1)
+		return C.uint((^uint32(nox_xxx_wndGetFlags_46ADA0(w)) >> 4) & 1)
 	}
 	return 0
 }
@@ -537,7 +537,7 @@ func nox_xxx_guiMotdLoad_4465C0() *nox_window {
 	if root == nil {
 		return nil
 	}
-	w := C.nox_xxx_wndGetChildByID_46B0C0(root, 4203)
+	w := nox_xxx_wndGetChildByID_46B0C0(root, 4203)
 	storeWindowReference(&motdList, w)
 	if w == nil {
 		return nil
@@ -545,18 +545,18 @@ func nox_xxx_guiMotdLoad_4465C0() *nox_window {
 	list := (*C.nox_scrollListBox_data)(w.widget_data)
 	slider := C.nox_xxx_gLoadImg_42F970(internCStr("UISlider"))
 	lit := C.nox_xxx_gLoadImg_42F970(internCStr("UISliderLit"))
-	thumb := C.nox_xxx_wndGetChildByID_46B0C0(root, 4204)
-	down := C.nox_xxx_wndGetChildByID_46B0C0(root, 4205)
-	up := C.nox_xxx_wndGetChildByID_46B0C0(root, 4206)
+	thumb := nox_xxx_wndGetChildByID_46B0C0(root, 4204)
+	down := nox_xxx_wndGetChildByID_46B0C0(root, 4205)
+	up := nox_xxx_wndGetChildByID_46B0C0(root, 4206)
 	if list == nil || thumb == nil || down == nil || up == nil || thumb.field_100 == nil {
 		return nil
 	}
 	thumb.field_100.width = 16
 	thumb.field_100.height = 10
 	C.sub_4B5700(thumb, nil, nil, unsafe.Pointer(slider), unsafe.Pointer(lit), unsafe.Pointer(lit))
-	C.nox_xxx_wnd_46B280(thumb, w)
-	C.nox_xxx_wnd_46B280(down, w)
-	C.nox_xxx_wnd_46B280(up, w)
+	nox_xxx_wnd_46B280(thumb, w)
+	nox_xxx_wnd_46B280(down, w)
+	nox_xxx_wnd_46B280(up, w)
 	list.field_9, list.field_7, list.field_8 = unsafe.Pointer(thumb), unsafe.Pointer(down), unsafe.Pointer(up)
 	return root
 }
@@ -605,20 +605,20 @@ func nox_xxx_motdAddSomeTextMB_446730_go(input *C.uint8_t) C.uintptr_t {
 	// The listbox copies synchronously; release this foreign owner afterwards.
 	text, free := game1ByteWide(GoString((*C.char)(unsafe.Pointer(input))))
 	defer free()
-	return C.nox_window_call_field_94_fnc(motdList, 16397, C.uintptr_t(uintptr(unsafe.Pointer(&text[0]))), ^C.uintptr_t(0), internCStr("game1_split_native.go"), 0)
+	return C.uintptr_t(nox_window_call_field_94_fnc(motdList, 16397, uintptr(unsafe.Pointer(&text[0])), ^uintptr(0), internCStr("game1_split_native.go"), 0))
 }
 
 //export sub_446780
 func sub_446780() C.int {
 	root, list := motdRoot, motdList
-	if root == nil || list == nil || C.wndIsShown_nox_xxx_wndIsShown_46ACC0(root) != 0 {
+	if root == nil || list == nil || C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(root)) != 0 {
 		return 0
 	}
-	C.nox_xxx_windowFocus_46B500(nil)
-	C.nox_window_set_hidden(root, 1)
+	nox_xxx_windowFocus_46B500(nil)
+	nox_window_set_hidden(root, 1)
 	root.flags &= ^C.nox_window_flags(8)
 	list.flags &= ^C.nox_window_flags(8)
-	C.nox_window_call_field_94_fnc(list, 16399, 0, 0, internCStr("game1_split_native.go"), 0)
+	nox_window_call_field_94_fnc(list, 16399, 0, 0, internCStr("game1_split_native.go"), 0)
 	return 1
 }
 
@@ -629,10 +629,10 @@ func nox_xxx_motd_4467F0() {
 	}
 	root, list := motdRoot, motdList
 	if !bool(C.nox_common_getEngineFlag(C.NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) && root != nil && list != nil &&
-		C.nox_xxx_wndGetFlags_46ADA0(root)&0x10 != 0 && C.sub_44A4A0() == 0 && C.sub_49C810() == 0 && C.sub_49CB40() == 0 {
-		C.nox_xxx_wndShowModalMB_46A8C0(root)
-		if other := C.nox_xxx_wndGetChildByID_46B0C0(nil, 4100); other != nil {
-			C.nox_xxx_wndShowModalMB_46A8C0(other)
+		nox_xxx_wndGetFlags_46ADA0(root)&0x10 != 0 && C.sub_44A4A0() == 0 && C.sub_49C810() == 0 && C.sub_49CB40() == 0 {
+		nox_xxx_wndShowModalMB_46A8C0(root)
+		if other := nox_xxx_wndGetChildByID_46B0C0(nil, 4100); other != nil {
+			nox_xxx_wndShowModalMB_46A8C0(other)
 		}
 		root.flags |= 8
 		list.flags |= 8
@@ -661,14 +661,14 @@ func nox_xxx_motd_4467F0() {
 				}
 			}
 		}
-		C.nox_xxx_windowFocus_46B500(C.nox_xxx_wndGetChildByID_46B0C0(root, 4202))
+		nox_xxx_windowFocus_46B500(nox_xxx_wndGetChildByID_46B0C0(root, 4202))
 	}
 	*memmap.PtrUint32(0x5D4594, 826068) = 0
 }
 
 //export sub_446950
 func sub_446950() C.int {
-	if w := motdRoot; w != nil && C.nox_xxx_wndGetFlags_46ADA0(w)&0x10 == 0 {
+	if w := motdRoot; w != nil && nox_xxx_wndGetFlags_46ADA0(w)&0x10 == 0 {
 		return 1
 	}
 	return 0

@@ -40,10 +40,12 @@ func game2BookClass() C.int           { return C.int(game2PlayerClass(bookSelect
 func game2BookGameFlag(flag C.int) bool {
 	return bool(C.nox_common_gameFlags_check_40A5C0(C.uint(flag)))
 }
-func game2BookSpellFlag(id, flag C.int) bool            { return bool(C.nox_xxx_spellHasFlags_424A50(id, flag)) }
-func game2BookSound(id C.int)                           { nox_xxx_clientPlaySoundSpecial_452D80(id, 100) }
-func game2BookHide(w *C.nox_window, hidden C.int) C.int { return C.nox_window_set_hidden(w, hidden) }
-func game2BookPtr32(p unsafe.Pointer, i int) *uint32    { return (*uint32)(unsafe.Add(p, i*4)) }
+func game2BookSpellFlag(id, flag C.int) bool { return bool(C.nox_xxx_spellHasFlags_424A50(id, flag)) }
+func game2BookSound(id C.int)                { nox_xxx_clientPlaySoundSpecial_452D80(id, 100) }
+func game2BookHide(w *C.nox_window, hidden C.int) C.int {
+	return C.int(nox_window_set_hidden(w, int32(hidden)))
+}
+func game2BookPtr32(p unsafe.Pointer, i int) *uint32 { return (*uint32)(unsafe.Add(p, i*4)) }
 func game2BookAnimChoose(ref *C.nox_things_imageRef_t, guide bool) {
 	fn := unsafe.Pointer(C.nox_xxx_bookClickSpell_45B1F0)
 	if guide {
@@ -119,7 +121,7 @@ func nox_xxx_bookSetColor_45AC40() C.int {
 
 //export nox_client_toggleSpellbook_45AC70
 func nox_client_toggleSpellbook_45AC70() {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 {
+	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window)) != 0 {
 		nox_xxx_bookShowMB_45AD70(0)
 	} else {
 		nox_xxx_bookHideMB_45ACA0(0)
@@ -128,7 +130,7 @@ func nox_client_toggleSpellbook_45AC70() {
 
 //export nox_xxx_bookHideMB_45ACA0
 func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
-	if C.wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window) != 0 || bookState.reward_active == 1 {
+	if C.int(wndIsShown_nox_xxx_wndIsShown_46ACC0(bookUI.list_window)) != 0 || bookState.reward_active == 1 {
 		return 0
 	}
 	bookState.open_requested = 0
@@ -137,8 +139,8 @@ func nox_xxx_bookHideMB_45ACA0(animate C.int) C.int {
 	if bookState.guide_mode != 0 {
 		bookState.page_mode = 1
 	}
-	if C.nox_xxx_wndGetCaptureMain_46AE00() == bookUI.list_window {
-		C.nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
+	if nox_xxx_wndGetCaptureMain_46AE00() == bookUI.list_window {
+		nox_xxx_wndClearCaptureMain_46ADE0(bookUI.list_window)
 	}
 	game2BookHide(bookUI.list_window, 1)
 	game2BookSound(787)
@@ -220,7 +222,7 @@ func nox_xxx_book_45B010(force C.int) {
 		if bookState.guide_mode != 0 {
 			bookState.page_mode = 1
 		}
-		C.nox_xxx_wndShowModalMB_46A8C0(bookUI.list_window)
+		nox_xxx_wndShowModalMB_46A8C0(bookUI.list_window)
 		game2BookSound(786)
 	}
 }
@@ -241,7 +243,7 @@ func nox_xxx_bookClickCreature_45B200() C.int {
 
 //export sub_45CFC0
 func sub_45CFC0() C.int {
-	return C.int((^uint8(C.nox_xxx_wndGetFlags_46ADA0(bookUI.list_window)) >> 4) & 1)
+	return C.int((^uint8(nox_xxx_wndGetFlags_46ADA0(bookUI.list_window)) >> 4) & 1)
 }
 
 //export sub_45D9B0

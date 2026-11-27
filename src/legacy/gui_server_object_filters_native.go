@@ -24,7 +24,7 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 		}
 	})
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_453350))
-	C.sub_46B120(root, parent)
+	sub_46B120(root, parent)
 	nox_xxx_wnd_46B280(root, parent)
 	list := g2ServerChild(root, 1510)
 	serverSharedWindows.object_list = list
@@ -63,7 +63,7 @@ func nox_xxx_guiObjlistLoad_4530C0(parent *C.nox_window, classMask C.int) *C.nox
 	*g2ServerWord(1045472 + 4*uintptr(legacyWords.dword_5d4594_1045460)) = count
 	sub_453750()
 	if !g2ServerGame(1) || g2ServerGame(49152) {
-		C.sub_46AD20(root, 1515, 1533, 0)
+		sub_46AD20(root, 1515, 1533, 0)
 	}
 	return serverSharedWindows.object_filter
 }

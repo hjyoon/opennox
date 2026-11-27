@@ -54,7 +54,7 @@ func nox_xxx_gui_4AD320(parent *C.nox_window) *C.nox_window {
 			serverGeneralWindow = nil
 		}
 	})
-	C.sub_46B120(root, parent)
+	sub_46B120(root, parent)
 	nox_xxx_wndSetDrawFn_46B340(root, unsafe.Pointer(C.sub_4AD570))
 	if spells := g2ServerChild(root, 10306); spells != nil && noxflags.HasGame(noxflags.GameModeCTF|noxflags.GameModeElimination) {
 		g2ServerEnabled(spells, false)

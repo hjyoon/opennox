@@ -84,7 +84,7 @@ func sub_43A920() C.int {
 
 //export nox_client_guiXxx_43A9D0
 func nox_client_guiXxx_43A9D0() C.int {
-	C.nox_xxx_wndClearCaptureMain_46ADE0(wolWindows.mapPanel)
+	nox_xxx_wndClearCaptureMain_46ADE0(wolWindows.mapPanel)
 	sub_489FB0()
 	sub_4A2890()
 	if popup := wolWindows.serverInfo; popup != nil && popup.parent == nil {

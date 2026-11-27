@@ -52,7 +52,7 @@ func itemAmountRoot() *nox_window { return itemAmountDialog.root }
 
 func itemAmountPosition(win *nox_window) (x, y C.int) {
 	var px, py C.uint
-	C.nox_gui_getWindowOffs_46AA20(win, &px, &py)
+	nox_gui_getWindowOffs_46AA20(win, &px, &py)
 	return C.int(px), C.int(py)
 }
 
@@ -146,7 +146,7 @@ func sub_4BFD40() {
 func sub_4BFDD0(win *nox_window, event C.int, packed, unused C.uintptr_t) C.int {
 	switch event {
 	case 5, 9, 13:
-		if !C.nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(packed)), C.int(uint32(packed)>>16)) {
+		if !nox_xxx_wndPointInWnd_46AAB0(win, C.int(uint16(packed)), C.int(uint32(packed)>>16)) {
 			sub_4BFE40()
 		}
 		return 1
@@ -250,7 +250,7 @@ func sub_4C01C0(win *nox_window, event C.int, control *nox_window, arg C.uintptr
 	if event != 16391 || !itemAmountDialog.active {
 		return 0
 	}
-	id := C.nox_xxx_wndGetID_46B0A0(control)
+	id := C.int(nox_xxx_wndGetID_46B0A0(control))
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100)
 	switch id {
 	case 3602:
@@ -315,7 +315,7 @@ func nox_gui_itemAmountDialog_4C0430(title *wchar2_t, x, y C.int, id, thing C.ui
 func sub_4C0560(x, y C.int) C.int {
 	root := itemAmountRoot()
 	var width, height C.int
-	C.nox_window_get_size(root, &width, &height)
+	nox_window_get_size(root, &width, &height)
 	x = max(0, x-C.int(legacyWords.dword_587000_183456))
 	y = max(0, y-C.int(legacyWords.dword_587000_183460))
 	if x+width >= clientDisplayStorage.width {

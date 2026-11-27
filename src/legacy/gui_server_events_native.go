@@ -54,7 +54,7 @@ func serverOptionsListChanged(window *nox_window, row uintptr) {
 			nox_client_guiserv_updateMapList_458230(C.int(settings.Field52), (*C.char)(g2ServerMem(1046556)), true)
 		}
 		g2ServerHidden(window, true)
-		C.nox_xxx_wndClearCaptureMain_46ADE0(window)
+		nox_xxx_wndClearCaptureMain_46ADE0(window)
 		settings.Field54 = uint16(nox_xxx_servGamedataGet_40A020(C.short(settings.Field52)))
 		settings.Field56 = uint8(sub_40A180(C.short(settings.Field52)))
 		sub_457460((*C.nox_cgo_const_char)(unsafe.Pointer(record)))
@@ -151,8 +151,8 @@ func serverOptionsButton(window *nox_window) {
 	case 10119:
 		modes := serverOptionsChild(10120)
 		g2ServerHidden(modes, false)
-		C.nox_xxx_wndSetCaptureMain_46ADC0(modes)
-		C.nox_xxx_wndShowModalMB_46A8C0(modes)
+		nox_xxx_wndSetCaptureMain_46ADC0(modes)
+		nox_xxx_wndShowModalMB_46A8C0(modes)
 		nox_xxx_windowServerOptionsFillGametypeList_4596A0()
 	case 10122:
 		enable := window.draw_data.field_0&4 != 0

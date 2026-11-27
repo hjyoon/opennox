@@ -1,11 +1,119 @@
 package legacy
 
 import (
+	"slices"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/client/keybind"
+	"github.com/opennox/libs/strman"
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/server"
 )
+
+type inputApplyTestClient struct {
+	widgetCallbackClient
+	CtrlEventHandler
+	resets int
+}
+
+func (c *inputApplyTestClient) GetCtrlEvent() CtrlEventHandler { return c }
+func (c *inputApplyTestClient) Reset()                         { c.resets++ }
+
+type inputApplyTestServer struct {
+	Server
+	world *server.Server
+}
+
+func (s *inputApplyTestServer) S() *server.Server { return s.world }
+
+func TestInputConfigApplyUsesLiveSignedRowCountAndReturnsParserStatus(t *testing.T) {
+	g := gui.NewHigh(nil)
+	defer g.DestroyAll()
+	list, free := alloc.NewHigh(gui.ScrollListBoxData{})
+	defer free()
+	world := server.NewHigh(nil, nil, strman.New())
+	defer world.Close()
+	cl := &inputApplyTestClient{widgetCallbackClient: widgetCallbackClient{cli: &client.Client{GUI: g}}}
+	oldClient, oldServer := GetClient, GetServer
+	oldGame, oldShell := gameInputBindings, shellInputBindings
+	oldKey, oldEvent := Nox_xxx_keybind_nameByTitle_42E960, Nox_xxx_bindevent_bindNameByTitle_42EA40
+	oldParse := Nox_client_parseConfigHotkeysLine_42CF50
+	defer func() {
+		GetClient, GetServer = oldClient, oldServer
+		gameInputBindings, shellInputBindings = oldGame, oldShell
+		Nox_xxx_keybind_nameByTitle_42E960, Nox_xxx_bindevent_bindNameByTitle_42EA40 = oldKey, oldEvent
+		Nox_client_parseConfigHotkeysLine_42CF50 = oldParse
+	}()
+	GetClient = func() Client { return cl }
+	GetServer = func() Server { return &inputApplyTestServer{world: world} }
+	Nox_xxx_keybind_nameByTitle_42E960 = func(title string) keybind.Key {
+		switch title {
+		case "primary":
+			return keybind.KeyA
+		case "secondary":
+			return keybind.KeyB
+		default:
+			return keybind.KeyEsc
+		}
+	}
+	Nox_xxx_bindevent_bindNameByTitle_42EA40 = func(string) *keybind.BindEvent { return nil }
+
+	var rows []string
+	rowWindow := func(text string) *gui.Window {
+		return g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 80, 30, func(_ *gui.Window, event gui.WindowEvent) gui.WindowEventResp {
+			if event.EventCode() != 16406 {
+				return nil
+			}
+			index, _ := event.EventArgsC()
+			if index != 0 || len(rows) >= 3 {
+				t.Errorf("read row %d of %s after %v", index, text, rows)
+				list.Field_11_0 = 0
+				return nil
+			}
+			rows = append(rows, text)
+			return gui.RawEventResp(uintptr(unsafe.Pointer(internWStr(text))))
+		})
+	}
+	labels := rowWindow("label")
+	labels.WidgetData = unsafe.Pointer(list)
+	defer func() { labels.WidgetData = nil }()
+	main, secondary := rowWindow("primary"), rowWindow("secondary")
+	for _, panel := range []*inputBindingPanel{&gameInputBindings, &shellInputBindings} {
+		panel.labels = (*nox_window)(labels.C())
+		panel.columns = [2]*nox_window{(*nox_window)(main.C()), (*nox_window)(secondary.C())}
+	}
+	primaryLine := keybind.KeyA.String() + " = (null)"
+	secondaryLine := keybind.KeyB.String() + " = (null)"
+	escapeLine := keybind.KeyEsc.String() + " = (null)"
+	var parsed []string
+	Nox_client_parseConfigHotkeysLine_42CF50 = func(line string) int {
+		parsed = append(parsed, line)
+		if line == primaryLine {
+			list.Field_11_0 = 0
+		}
+		return -73
+	}
+	for _, shell := range []bool{false, true} {
+		for _, count := range []uint16{0xffff, 2} {
+			rows, parsed = nil, nil
+			cl.resets = 0
+			list.Field_11_0 = count
+			var wantRows []string
+			wantParsed := []string{escapeLine}
+			if count == 2 {
+				wantRows = []string{"label", "primary", "secondary"}
+				wantParsed = []string{secondaryLine, primaryLine, escapeLine}
+			}
+			if got := inputConfigApplyBindingsC(shell); got != -73 || cl.resets != 1 ||
+				!slices.Equal(rows, wantRows) || !slices.Equal(parsed, wantParsed) {
+				t.Fatalf("shell=%t rows=%#x returned %d with %d resets, rows %v and parsed %v", shell, count, got, cl.resets, rows, parsed)
+			}
+		}
+	}
+}
 
 func TestInputConfigRootCallbacksDecodeEventPayload(t *testing.T) {
 	for _, shell := range []bool{false, true} {

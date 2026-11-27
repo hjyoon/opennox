@@ -35,7 +35,7 @@ func sub_4C35B0(cancel C.int) C.int {
 	if cancel != 0 {
 		g2ServerHidden(gameInputBindings.root, true)
 	} else {
-		gameInputBindings.apply()
+		sub_4C3620()
 		nox_common_writecfgfile(internCStr("nox.cfg"))
 		g2ServerHidden(gameInputBindings.root, true)
 		C.sub_472280()
@@ -100,12 +100,13 @@ func inputBindingEventName(title *wchar2_t) string {
 }
 
 func (p *inputBindingPanel) apply() C.int {
+	list := g2ServerList(p.labels)
 	sub_42CD90()
-	if list := g2ServerList(p.labels); list != nil {
-		for i, count := uintptr(0), uintptr(list.Field_11_0); i < count; i++ {
-			event := inputBindingEventName(listBoxRowText(p.labels, i))
-			primary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(p.columns[0], i)))
-			secondary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(p.columns[1], i)))
+	if list != nil {
+		for i := 0; i < int(int16(list.Field_11_0)); i++ {
+			event := inputBindingEventName(listBoxRowText(p.labels, uintptr(i)))
+			primary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(p.columns[0], uintptr(i))))
+			secondary := Nox_xxx_keybind_nameByTitle_42E960(GoWString(listBoxRowText(p.columns[1], uintptr(i))))
 			if secondary != 0 {
 				Nox_client_parseConfigHotkeysLine_42CF50(secondary.String() + " = " + event)
 			}
@@ -122,11 +123,11 @@ func (p *inputBindingPanel) apply() C.int {
 	return C.int(Nox_client_parseConfigHotkeysLine_42CF50(escape.String() + " = " + event))
 }
 
-//export nox_gameInputApplyBindings
-func nox_gameInputApplyBindings() C.int { return gameInputBindings.apply() }
+//export sub_4C3620
+func sub_4C3620() C.int { return gameInputBindings.apply() }
 
-//export nox_shellInputApplyBindings
-func nox_shellInputApplyBindings() C.int { return shellInputBindings.apply() }
+//export sub_4CBD30
+func sub_4CBD30() C.int { return shellInputBindings.apply() }
 
 func (p *inputBindingPanel) listColumns() [3]*nox_window {
 	return [3]*nox_window{p.labels, p.columns[0], p.columns[1]}

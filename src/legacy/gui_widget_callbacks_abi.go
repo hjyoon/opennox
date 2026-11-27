@@ -18,6 +18,8 @@ typedef nox_window* (*nox_test_window_constructor_t)(nox_window*, int, int, int,
 
 _Static_assert(_Generic(&nox_window_new, nox_test_window_constructor_t: 1, default: 0),
 	"window constructor must take a native-width callback");
+_Static_assert(_Generic(&sub_4C3620, int (*)(void): 1, default: 0), "in-game binding status ABI");
+_Static_assert(_Generic(&sub_4CBD30, int (*)(void): 1, default: 0), "shell binding status ABI");
 _Static_assert(_Generic(&nox_xxx_wndProc_44E6E0, nox_window_init_proc: 1, default: 0),
 	"briefing initializer must use the window constructor callback ABI");
 _Static_assert(_Generic(&sub_466220, nox_window_init_proc: 1, default: 0),
@@ -259,4 +261,11 @@ func inputConfigRootCallbackC(win *gui.Window, shell bool, event int, a3, a4 uin
 	return int(C.nox_test_input_config_root_callback(
 		(*C.nox_window)(win.C()), cshell, C.int(event), C.uintptr_t(a3), C.uintptr_t(a4),
 	))
+}
+
+func inputConfigApplyBindingsC(shell bool) int32 {
+	if shell {
+		return int32(C.sub_4CBD30())
+	}
+	return int32(C.sub_4C3620())
 }

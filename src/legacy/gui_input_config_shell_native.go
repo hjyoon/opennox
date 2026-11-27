@@ -55,7 +55,7 @@ func sub_4CB880() C.int {
 
 //export sub_4CBB70
 func sub_4CBB70() C.int {
-	shellInputBindings.apply()
+	sub_4CBD30()
 	nox_common_writecfgfile(internCStr("nox.cfg"))
 	shellInputAnimation.SetState(gui.AnimOut)
 	sub_43BE40(2)

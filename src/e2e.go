@@ -9720,6 +9720,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "walk-to-world":
 			sc.Wait(dt, "")
 			sc.MoveToWorld(image.Pt(l.X, l.Y), true, l.Name)
+		case "wait-player-near-world":
+			sc.Wait(dt, "")
+			sc.WaitPlayerNearWorld(image.Pt(l.X, l.Y), l.Name)
 		case "run-start":
 			sc.RunStart(l.Ang, dt, l.Name)
 		case "run-dir":

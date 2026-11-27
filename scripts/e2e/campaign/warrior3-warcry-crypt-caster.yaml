@@ -1,4 +1,4 @@
-# Original earned lineage and original waypoint roads. Stops before physical pit transport.
+# Original earned lineage, crypt waypoint roads, and physical pit transport.
 steps:
   - {"action": "slow", "dur": "1ms"}
   - {"action": "click", "dt": 30, "x": 320, "y": 240}
@@ -21,8 +21,8 @@ steps:
   - {"action": "run-to-world", "x": 2185, "y": 5145, "name": "ordinary original mausoleum road"}
   - {"action": "run-to-world", "x": 2250, "y": 5245, "name": "ordinary original mausoleum road"}
   - {"action": "run-to-world", "x": 2280, "y": 5250, "name": "ordinary original mausoleum road"}
-  - {"action": "walk-to-world", "x": 2334.5, "y": 5301.5, "name": "ordinary cave shaft center boarding input"}
-  - {"action": "wait", "dt": 40, "name": "ordinary shaft passenger descent before departure"}
+  - {"action": "walk-to-world", "x": 2338, "y": 5306, "name": "ordinary walking input across the cave shaft center"}
+  - {"action": "wait-player-near-world", "x": 2300, "y": 3059, "name": "read original shaft passenger arrival before departure"}
   - {"action": "observe-player-target", "name": "read original shaft arrival before immediate departure"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original paired crypt landing"}
   - {"action": "run-to-world", "x": 2300, "y": 3061, "name": "ordinary original crypt waypoint558"}
@@ -59,13 +59,13 @@ steps:
   - {"action": "wait", "dt": 30, "name": "ordinary original physical pit fall"}
   - {"action": "observe-player-target", "name": "read original arena landing before earned WarCry"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original living caster before WarCry"}
-  - {"action": "wait", "dt": 15, "name": "ordinary before-cast snapshot readiness"}
+  - {"action": "wait", "dt": 5, "name": "ordinary before-cast snapshot readiness"}
   - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": true}, "name": "ordinary original earned WarCry S press"}
   - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": false}, "name": "ordinary original earned WarCry S release"}
-  - {"action": "wait", "dt": 25, "name": "ordinary short observation of original silence effect"}
+  - {"action": "wait", "dt": 16, "name": "ordinary short observation of original silence effect"}
   - {"action": "observe-player-target", "name": "read Warrior during original caster silence"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original caster after actual WarCry S"}
-  - {"action": "run-to-world", "x": 4749, "y": 4059, "name": "ordinary return to original pit landing observation position"}
+  - {"action": "run-to-world", "x": 4760, "y": 4072, "name": "ordinary retreat to the far side of the original pit landing"}
   - {"action": "wait", "dt": 160, "name": "ordinary original anti magic duration expiry"}
   - {"action": "observe-player-target", "name": "read living Warrior after natural silence expiry"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original caster natural silence expiry"}

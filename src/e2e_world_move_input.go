@@ -16,6 +16,25 @@ type e2eWorldMoveInputTarget struct {
 	clientDistance float64
 }
 
+// WaitPlayerNearWorld observes a living player arriving by game-controlled movement.
+func (sc *e2eScenario) WaitPlayerNearWorld(goal image.Point, name string) {
+	sc.addWhen(0, name, 180, func() bool {
+		if noxServer == nil || noxClient == nil {
+			return false
+		}
+		unit, drawable := noxServer.Players.HostUnit(), noxClient.ClientPlayerUnit()
+		if unit == nil || drawable == nil || unit.HealthData == nil || unit.HealthData.Cur == 0 || unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			return false
+		}
+		const radius = 32
+		clientPos := drawable.Pos()
+		return math.Hypot(float64(unit.PosVec.X)-float64(goal.X), float64(unit.PosVec.Y)-float64(goal.Y)) <= radius &&
+			math.Hypot(float64(clientPos.X-goal.X), float64(clientPos.Y-goal.Y)) <= radius
+	}, func() {
+		e2eLog.Printf("PLAYER WORLD ARRIVAL: goal=%v server=%v frame=%d", goal, noxServer.Players.HostUnit().PosVec, noxServer.Frame())
+	})
+}
+
 // MoveToWorld sends ordinary mouse input toward a requested world position.
 // Arrival requires current server and client observations; collision, speed,
 // camera, health and path selection remain owned by the normal game.

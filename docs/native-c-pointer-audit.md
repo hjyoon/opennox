@@ -1995,8 +1995,8 @@ run uses the stock map set required when the server leaves the
 multiplayer staging map.
 
 A Go-backed fixed-decimal cursor matched the output bytes in a
-macOS stress control but raised `FE_INEXACT` where the original
-C call left the flags clear. The C fixed-decimal adapter remains
+macOS stress control and raised `FE_INEXACT` where the original
+C call left the flags clear. This revision kept the C adapter
 active to preserve the original floating-point environment.
 
 Engine `cb8811309` moves the four safe memory and string results
@@ -2013,8 +2013,8 @@ AMD64 and QEMU Linux AMD64 and ARMv7. LLVM-MinGW built both Windows
 fixtures and verified that each public symbol shares the address
 of its Go entry.
 
-The default macOS ARM64 client selects ten remaining C function
-bodies in seven files. The audited profiles select 12 bodies
+The default macOS ARM64 client at `cb8811309` selects ten remaining
+C function bodies in seven files. The audited profiles select 12 bodies
 across nine files when the two raw-float entries are included.
 Five cursor readers, five formatting entries, and four safe
 memory results remain in conditional source for other architectures.
@@ -2025,6 +2025,113 @@ memory results remain in conditional source for other architectures.
 | Fixed decimal formatting | 1 | `nox_format_fixed_bits` |
 | Preserve incoming float words | 2 | `nox_xxx_mapDamageUnitsAround_4E25B0`, `nox_xxx_updateObjectsVelocity_5118A0` |
 | Invoke native callbacks | 2 | `rdd_native_damage_callback_4e0b30`, `rdd_native_sound_callback_4e0b30` |
+
+### Gameplay float arguments on 32-bit hosts
+
+Engine `e39083c8c` connects the public i386 radial damage and velocity
+names to the existing word-based Go exports. The cdecl caller passes
+each float in a DWORD slot. The two public names occupy the same
+addresses as their Go wrapper targets, and the native integer and
+pointer parameters keep their existing widths. ARMv7 uses the same
+typed float exports as AMD64 and ARM64. The two C adapters are
+selected on other architectures.
+
+The C-entry series passed 257 original radial damage rows and 426
+original velocity rows on macOS ARM64 and QEMU Linux 386 and ARMv7
+with `cgocheck2` and `checkptr=2`. The Go server series also passed
+the complete set of 497 radial damage and 426 velocity rows on
+macOS ARM64. Both fixtures identify the supplied `GAME.EXE` SHA-256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+The raw argument control checked signaling and quiet NaNs, signed
+zero, subnormal values, negative integer arguments, and borrowed
+pointer identity. LLVM-MinGW linked the Windows 386 legacy test
+binary. A separate symbol check verified identical public and
+word-based entry addresses in its 386 ABI probe.
+
+The macOS ARM64 client passed the Fireball, powder barrel,
+environmental damage, and Warrior Chapter One replays. All six
+Warrior reference screens matched, including the briefing before
+the click.
+
+### Variadic and indirect native call frames
+
+Engine `b4c715e53` makes the `safe` build's string and byte conversions
+use the Go allocation owner directly. The previous cgo builtin
+called the remapped `nox_malloc` and stored the return pointer through
+its original Go stack address after that callback. The control build
+reproduced the lost return on Linux ARM64 with a small string. The
+repaired C-buffer, network-log, and destination-return tests passed
+30 iterations each with AddressSanitizer, `cgocheck2`, and `checkptr=2`.
+The buffers preserve embedded zero bytes, terminators, and the
+existing release path.
+
+Engine `1ef882a76` supplies the seven legacy variadic symbols through
+platform ABI entry frames. The frame keeps the named arguments and
+creates the native cursor for the existing Go display, logging, packet,
+or formatting service. File output continues to use the host CRT.
+The C contract passed for all seven entries on macOS ARM64 and AMD64,
+native Linux ARM64, and QEMU Linux 386, AMD64, and ARMv7. Each entry
+received 12 groups with a signed integer, a double, and a pointer,
+followed by a 64-bit integer. The check covered register spill, an
+empty list, and the pointer-width network return. The contract
+cross-linked on Windows 386, AMD64, and ARM64.
+
+The exact legacy package passed the combined formatting tests on
+macOS ARM64 and all four Linux processor profiles. The Windows 386
+and AMD64 legacy test executables linked with the pinned UCRT
+toolchain. The macOS ARM64 client passed six replays covering the F1
+console and file log, Korean IME and multiplayer chat, stock arena
+startup, and each Chapter One briefing. It matched 21 reference
+screens.
+
+Engine `8c934e498` preserves the two named indirect call frames while
+the Go caller retains its existing pointer lifetime barriers. The ABI
+adapters forward the three object pointers and two 32-bit damage
+arguments, or the two sound arguments. The macOS ARM64 native fault
+suite passed all six controls, including an actual caller mutation
+followed by a fault. Separate native ARM64 controls on macOS and
+Linux recorded the nil fetch, aligned stack, and the `BLR` at LR-4
+inside each named function. The positive callback payload checks
+passed on both macOS and all four Linux processor profiles.
+The Windows 386, AMD64, and ARM64 callback contracts linked with
+LLVM-MinGW. The strict Linux ARM64 and QEMU Linux 386 integration
+tests passed. The macOS client passed the shield, powder-barrel,
+Fireball, and environmental damage replays.
+
+### Fixed-decimal CRT call and remaining C sources
+
+Engine `1c92648b5` gives `nox_format_fixed_bits` a native assembly
+entry for 386, AMD64, ARM, and ARM64. Each entry forwards the raw
+double, output pointer, capacity, and precision into the host CRT's
+variadic `snprintf` frame. The call preserves the caller's rounding
+mode and carries the CRT's floating-point flags back to the caller.
+
+The original C adapter and its replacement matched across 6,048
+comparisons at each of `-O0` and `-O2` on macOS ARM64 and AMD64,
+native Linux ARM64, and QEMU Linux 386, AMD64, and ARMv7. The
+comparisons covered exact output and guard bytes, all four rounding
+modes, and the final exception flags with seeded flags. The Windows
+386, AMD64, and ARM64 contracts linked with LLVM-MinGW. The strict
+legacy package suite passed on macOS ARM64, native Linux ARM64, and
+QEMU Linux 386. Full Windows 386 and AMD64 legacy test executables
+also linked with the pinned UCRT toolchain.
+
+The macOS ARM64 client passed eight focused replays. Three Chapter
+One briefings and the stock arena matched 21 reference screens. The
+other replays exercised 44 console commands, console file logging
+and F2, four host chat submissions with IME, shield, and powder
+barrel damage. The console replay passed after clearing a log left
+by an earlier run in its scratch scenario directory.
+
+`go list` selects zero top-level `src/legacy` C files on Darwin AMD64
+and ARM64, Linux 386, AMD64, ARMv7, and ARM64, and Windows 386, AMD64,
+and ARM64. The default and `server,safe` tags both select three
+assembly files per architecture for the seven variadic entries, two
+indirect callbacks, and fixed-decimal CRT entry. Ten tracked C files
+provide conditional support for other architectures. The default
+client still compiles C function bodies in cgo preambles, including
+the floor draw callbacks in `client_floor_cache_native.go` and the
+shared callback dispatch in `common/ccall/ccall.go`.
 
 ### Earned campaign replay of the item effect changes
 

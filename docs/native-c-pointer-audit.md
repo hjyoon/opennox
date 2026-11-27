@@ -1947,6 +1947,85 @@ NaN words. The direct cgo float exports changed `7f800001` to
 `7fc00001` and `ff814567` to `ffc14567` with the tested GCC profile.
 The quiet NaN, signed zero, subnormal, and finite controls passed.
 
+### Go entries for C argument cursors, diagnostics, and memory results
+
+Engine `f692ca297` moves `nox_vsnprintf`, `nox_vsnwprintf`,
+`nox_vsprintf`, `nox_vswprintf`, and `nox_format_host_narrow` to
+Go for 386, AMD64, ARM, and ARM64. The public formatting prototypes
+keep their C `va_list` parameters. The four buffer entries copy the
+cursor before reading values. The original caller can continue using
+its list, and the register-save area and stack slots stay borrowed
+through the call. File output uses the host `vsnprintf` with its
+native cursor and preserves the existing 2,048-byte buffer.
+
+The C fixture reuses a list after a prefix argument has been consumed.
+It compares all cursor bytes, bounded and unbounded results, and
+adjacent guards. It also exercises narrow strings after register
+spill, wide strings and doubles, dynamic field width and precision,
+and an embedded NUL in a file log message. Twelve focused legacy
+tests passed on macOS ARM64, Linux ARM64, and QEMU Linux 386 with
+`cgocheck2` and `checkptr=2`. The isolated formatter also passed on
+QEMU Linux AMD64 and ARMv7 and built with MinGW for Windows 386
+and AMD64. The Windows 386 and AMD64 native server gates passed.
+[Windows native gate](https://github.com/hjyoon/opennox/actions/runs/45981168975)
+
+Four stock PE32 calls at `5677C0` covered signed integers after a
+prefix word, zero padding, mixed wide and narrow strings, and an
+exact fixed decimal. The probe loaded the original `GAME.EXE`
+sections, supplied the two Win32 interlocked operations, and ran
+the original float formatter initialization before the decimal case.
+All four calls matched the expected lengths, UTF-16 bytes and
+terminators, and destination guards. The game executable came from
+the supplied data with SHA-256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+
+Engine `8ac3ab5f3` emits the unsupported-format diagnostic from Go
+through the existing CRT stdout stream and aborts in the CRT. The
+actual wide C entry passed subprocess checks for an unsupported
+ASCII character, an embedded NUL, and truncation to one byte.
+The macOS and Linux ARM64 controls matched the old diagnostic and
+exit status for six inputs with buffered and unbuffered stdout.
+
+A macOS ARM64 client at each of those revisions passed Chapter
+One for all three classes and stock arena startup with 21 exact
+screen matches per build. The stock arena also passed the F1
+console and F2 macro, including file logging, and the four host
+chat submissions, including Korean IME composition. The arena
+run uses the stock map set required when the server leaves the
+multiplayer staging map.
+
+A Go-backed fixed-decimal cursor matched the output bytes in a
+macOS stress control but raised `FE_INEXACT` where the original
+C call left the flags clear. The C fixed-decimal adapter remains
+active to preserve the original floating-point environment.
+
+Engine `cb8811309` moves the four safe memory and string results
+to Go for 386, AMD64, ARM, and ARM64. The public C declarations
+return their existing pointer types. The Go callback uses the
+native integer result register to return the identical address
+that the C caller already owns or borrows. The legacy package
+tests exercise native allocations, synchronously borrowed Go
+memory, and explicitly pinned Go memory. Each case compares
+the returned address, written bytes, terminator, and adjacent
+guards. The strict C-entry test passed on Linux ARM64 and QEMU
+Linux 386. The isolated entries also passed on macOS ARM64 and
+AMD64 and QEMU Linux AMD64 and ARMv7. LLVM-MinGW built both Windows
+fixtures and verified that each public symbol shares the address
+of its Go entry.
+
+The default macOS ARM64 client selects ten remaining C function
+bodies in seven files. The audited profiles select 12 bodies
+across nine files when the two raw-float entries are included.
+Five cursor readers, five formatting entries, and four safe
+memory results remain in conditional source for other architectures.
+
+| C responsibility | Active bodies across the audited profiles | Entries |
+| --- | ---: | --- |
+| Create and close variadic cursors | 7 | `nox_fs_fprintf`, `nox_xxx_networkLog_printf_413D30`, `nox_xxx_printToAll_4D9FD0`, `nox_ai_debug_printf_5341A0`, `nox_xxx_netSendLineMessage_4D9EB0`, `nox_sprintf`, `nox_swprintf` |
+| Fixed decimal formatting | 1 | `nox_format_fixed_bits` |
+| Preserve incoming float words | 2 | `nox_xxx_mapDamageUnitsAround_4E25B0`, `nox_xxx_updateObjectsVelocity_5118A0` |
+| Invoke native callbacks | 2 | `rdd_native_damage_callback_4e0b30`, `rdd_native_sound_callback_4e0b30` |
+
 ### Earned campaign replay of the item effect changes
 
 The `a43fd4a31` macOS client passed all 29 individual campaign cases

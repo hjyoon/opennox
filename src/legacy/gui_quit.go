@@ -41,7 +41,7 @@ func Sub_41EC30() {
 }
 
 func Sub_446490(v int) {
-	sub_446490_go(C.int(v))
+	sub_446490(C.int(v))
 }
 
 func Nox_xxx_guiServerOptionsHide_4597E0(v int) {

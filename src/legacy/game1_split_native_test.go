@@ -7,10 +7,12 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/music"
@@ -217,6 +219,68 @@ func TestGame1SplitBackdropAndTransferNativeCABI(t *testing.T) {
 			t.Fatal("adjacent length overwritten")
 		}
 	}
+}
+
+func TestGame1SplitMOTDNativeCABI(t *testing.T) {
+	t.Run("signed release", func(t *testing.T) {
+		slots := memmap.PtrT[[3]uint32](0x5D4594, 826040)
+		oldSlots, oldOwner := *slots, motdBuffer
+		motdBuffer = nil
+		defer func() {
+			if motdBuffer != nil {
+				g1sMotdRelease(0)
+			}
+			*slots, motdBuffer = oldSlots, oldOwner
+		}()
+
+		*slots = [3]uint32{8, 9, 10}
+		if got := g1sMotdRelease(1); got != 0 || *slots != [3]uint32{8, 0, 10} {
+			t.Fatalf("empty release returned %d with slots %v", got, *slots)
+		}
+		motdBuffer = g1sMotdBuffer()
+		if motdBuffer == nil {
+			t.Fatal("allocate MOTD buffer")
+		}
+		if got := g1sMotdRelease(-1); got != -1 || motdBuffer != nil || *slots != [3]uint32{8, 0, 10} {
+			t.Fatalf("signed release returned %d with owner %p and slots %v", got, motdBuffer, *slots)
+		}
+	})
+
+	t.Run("native window response", func(t *testing.T) {
+		g := newWidgetCallbackGUI(t)
+		defer g.DestroyAll()
+		win := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
+		requireNativeWindowAddress(t, win)
+		old := motdList
+		storeWindowReference(&motdList, (*nox_window)(win.C()))
+		defer func() { motdList = old }()
+
+		input, release := alloc.CallocHigh(1, 4)
+		defer release()
+		if input == nil {
+			t.Fatal("allocate MOTD text")
+		}
+		calls := 0
+		win.SetFunc94(func(_ *gui.Window, e gui.WindowEvent) gui.WindowEventResp {
+			if e.EventCode() != 0x400d {
+				return nil
+			}
+			calls++
+			text, index := e.EventArgsC()
+			runtime.GC()
+			if got := alloc.GoString16((*uint16)(unsafe.Pointer(text))); got != "Xéÿ" || index != ^uintptr(0) {
+				t.Errorf("MOTD event received text %q and index %#x", got, index)
+			}
+			return gui.RawEventResp(uintptr(win.C()))
+		})
+		if got := g1sMotdInsert(input); got != uintptr(input) || calls != 0 {
+			t.Fatalf("empty insert returned %#x for input %p with %d callbacks", got, input, calls)
+		}
+		*(*[4]byte)(input) = [4]byte{'X', 0xe9, 0xff, 0}
+		if got := g1sMotdInsert(input); got != uintptr(win.C()) || calls != 1 {
+			t.Fatalf("insert returned %#x for window %p with %d callbacks", got, win.C(), calls)
+		}
+	})
 }
 
 func TestGame1SplitMusicStackCABI(t *testing.T) {

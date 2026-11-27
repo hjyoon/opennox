@@ -16,6 +16,4 @@ typedef struct nox_stats_columns_native {
 	uint8_t* pairs;
 } nox_stats_columns_native;
 
-char* nox_stats_bulk_flush_native(void);
-
 #endif

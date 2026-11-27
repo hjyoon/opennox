@@ -2,7 +2,7 @@ package legacy
 
 /*
 #include <stdlib.h>
-#include "stats_bulk_native.h"
+#include "GAME1_1.h"
 #include "stats_end_native.h"
 
 typedef const char nox_stats_const_name_t;
@@ -230,12 +230,8 @@ func freeStatsPacket(packet *C.uint16_t) {
 	C.free(unsafe.Pointer(packet))
 }
 
-//export nox_stats_bulk_flush_word
-func nox_stats_bulk_flush_word() C.uintptr_t {
-	return C.uintptr_t(statsBulkFlushNative())
-}
-
-func statsBulkFlushNative() uintptr {
+//export nox_xxx_net_4263C0
+func nox_xxx_net_4263C0() C.int {
 	if !noxflags.HasGame(noxflags.GameOnline) {
 		return 0
 	}

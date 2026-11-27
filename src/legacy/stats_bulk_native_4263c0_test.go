@@ -127,7 +127,7 @@ func TestStatsBulk4263C0CgoEntry(t *testing.T) {
 	noxflags.ResetGame()
 	for _, tc := range []struct {
 		flags noxflags.GameFlag
-		want  uintptr
+		want  int32
 	}{
 		{0, 0},
 		{noxflags.GameModeQuest, 0},
@@ -135,13 +135,11 @@ func TestStatsBulk4263C0CgoEntry(t *testing.T) {
 	} {
 		noxflags.ResetGame()
 		noxflags.SetGame(tc.flags)
-		if got := statsBulkFlushNative(); got != tc.want {
+		if got := int32(nox_xxx_net_4263C0()); got != tc.want {
 			t.Fatalf("flags %#x Go result = %#x, want %#x", tc.flags, got, tc.want)
 		}
-		for _, direct := range []bool{false, true} {
-			if got := callStatsBulkFlushEntry(direct); got != tc.want {
-				t.Fatalf("flags %#x C result = %#x, want %#x (direct=%t)", tc.flags, got, tc.want, direct)
-			}
+		if got := callStatsBulkFlushEntry(); got != tc.want {
+			t.Fatalf("flags %#x C result = %#x, want %#x", tc.flags, got, tc.want)
 		}
 	}
 	noxflags.ResetGame()
@@ -169,7 +167,7 @@ func TestStatsBulk4263C0CgoEntry(t *testing.T) {
 		}
 		Set_dword_5d4594_608316(count)
 		playerKillStatsSetPairCount425CA0(uint32(cycle))
-		if got := callStatsBulkFlushEntry(cycle%2 != 0); got != 0 {
+		if got := callStatsBulkFlushEntry(); got != 0 {
 			t.Fatalf("cycle %d C result = %#x, want zero", cycle, got)
 		}
 		if got := binary.LittleEndian.Uint16(header[6:8]); got != uint16(count) {

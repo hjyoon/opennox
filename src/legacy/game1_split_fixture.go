@@ -65,6 +65,20 @@ static size_t g1s_layout(int op) {
  default:return sizeof(void*);
  }
 }
+
+typedef int (*g1s_motd_release_fn)(int);
+typedef uintptr_t (*g1s_motd_insert_fn)(uint8_t*);
+_Static_assert(_Generic(&sub_446490, g1s_motd_release_fn: 1, default: 0), "signed MOTD release");
+_Static_assert(_Generic(&nox_xxx_motdAddSomeTextMB_446730, g1s_motd_insert_fn: 1, default: 0), "native MOTD result");
+
+static int g1s_motd_release(int index) {
+ g1s_motd_release_fn volatile release = sub_446490;
+ return release(index);
+}
+static uintptr_t g1s_motd_insert(uint8_t* text) {
+ g1s_motd_insert_fn volatile insert = nox_xxx_motdAddSomeTextMB_446730;
+ return insert(text);
+}
 */
 import "C"
 
@@ -89,7 +103,13 @@ func g1sCall(op, value int, p unsafe.Pointer) int32 {
 func g1sPointer(op, value int, p, out unsafe.Pointer) unsafe.Pointer {
 	return C.g1s_pointer(C.int(op), C.int(value), p, out)
 }
-func g1sLayout(op int) uintptr { return uintptr(C.g1s_layout(C.int(op))) }
+func g1sLayout(op int) uintptr         { return uintptr(C.g1s_layout(C.int(op))) }
+func g1sMotdBuffer() unsafe.Pointer    { return C.calloc(1, 8) }
+func g1sMotdRelease(index int32) int32 { return int32(C.g1s_motd_release(C.int(index))) }
+func g1sMotdInsert(text unsafe.Pointer) uintptr {
+	return uintptr(C.g1s_motd_insert((*C.uint8_t)(text)))
+}
+
 func g1sSwapBackdrop(p unsafe.Pointer) unsafe.Pointer {
 	old := shellBackdrop
 	shellBackdrop = (*nox_window)(p)

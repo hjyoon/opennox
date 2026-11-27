@@ -492,10 +492,15 @@ func nox_gui_xxx_check_446360() C.uint {
 var motdRoot, motdList *nox_window
 var motdBuffer unsafe.Pointer
 
+func motdLengthSlotOffset(index C.int) uintptr {
+	// The indexed address wraps at 32 bits in GAME.EXE.
+	return uintptr(uint32(826040) + 4*uint32(index))
+}
+
 //export nox_motd_4463E0
 func nox_motd_4463E0(index C.int) C.int {
 	motdBuffer = nil
-	size := memmap.PtrUint32(0x5D4594, 826040+uintptr(4*uint32(index)))
+	size := memmap.PtrUint32(0x5D4594, motdLengthSlotOffset(index))
 	*size = 0
 	f := C.nox_fs_open(internCStr("motd.txt"))
 	if f == nil {
@@ -518,15 +523,18 @@ func nox_motd_4463E0(index C.int) C.int {
 	return 0
 }
 
-//export sub_446490_go
-func sub_446490_go(index C.int) C.uintptr_t {
-	result := C.uintptr_t(0)
+//export sub_446490
+func sub_446490(index C.int) C.int {
+	var result C.int
 	if p := motdBuffer; p != nil {
 		C.free(p)
-		result = C.uintptr_t(C.intptr_t(index))
+		result = index
 	}
 	motdBuffer = nil
-	*memmap.PtrUint32(0x5D4594, 826040+uintptr(4*uint32(index))) = 0
+	// Offset 826036 aliases the owner in the PE32 layout.
+	if offset := motdLengthSlotOffset(index); offset != 826036 {
+		*memmap.PtrUint32(0x5D4594, offset) = 0
+	}
 	return result
 }
 
@@ -596,13 +604,13 @@ func sub_4466F0(input *C.char, output *C.uint8_t) *C.char {
 	}
 }
 
-//export nox_xxx_motdAddSomeTextMB_446730_go
-func nox_xxx_motdAddSomeTextMB_446730_go(input *C.uint8_t) C.uintptr_t {
+//export nox_xxx_motdAddSomeTextMB_446730
+func nox_xxx_motdAddSomeTextMB_446730(input *C.uint8_t) C.uintptr_t {
 	if input == nil || *input == 0 {
 		return C.uintptr_t(uintptr(unsafe.Pointer(input)))
 	}
-	// The existing formatter widens bytes, rather than interpreting UTF-8.
-	// The listbox copies synchronously; release this foreign owner afterwards.
+	// The formatter widens each byte to one UTF-16 code unit. The listbox
+	// copies synchronously, so the buffer is live for the callback.
 	text, free := game1ByteWide(GoString((*C.char)(unsafe.Pointer(input))))
 	defer free()
 	return C.uintptr_t(nox_window_call_field_94_fnc(motdList, 16397, uintptr(unsafe.Pointer(&text[0])), ^uintptr(0), internCStr("game1_split_native.go"), 0))
@@ -657,7 +665,7 @@ func nox_xxx_motd_4467F0() {
 					text = ""
 				}
 				if line != "" {
-					nox_xxx_motdAddSomeTextMB_446730_go((*C.uint8_t)(unsafe.Pointer(internCStr(line))))
+					nox_xxx_motdAddSomeTextMB_446730((*C.uint8_t)(unsafe.Pointer(internCStr(line))))
 				}
 			}
 		}

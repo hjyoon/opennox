@@ -2128,8 +2128,8 @@ and ARM64, Linux 386, AMD64, ARMv7, and ARM64, and Windows 386, AMD64,
 and ARM64. The default and `server,safe` tags both select three
 assembly files per architecture for the seven variadic entries, two
 indirect callbacks, and fixed-decimal CRT entry. Ten tracked C files
-provide conditional support for other architectures. The default
-client still compiles C function bodies in cgo preambles, including
+provide conditional support for other architectures. At `1c92648b5`,
+the default client compiled C function bodies in cgo preambles, including
 the floor draw callbacks in `client_floor_cache_native.go` and the
 shared callback dispatch in `common/ccall/ccall.go`.
 
@@ -2152,6 +2152,75 @@ controls, and the host `strtol` dialect and `errno` adapters.
 Native calls through C symbols or function pointers need separate
 call-site evidence. The symbol count gives the starting set for
 that audit on the default macOS ARM64 client.
+
+### Shared typed callback entry frames
+
+Engine `6155c818a` replaces the 80 C callback forwarding bodies in
+`legacy/common/ccall` on 386, AMD64, ARM, and ARM64. The generated and
+mixed Go calls keep their typed cgo declarations. The assembly entries
+forward the register and stack arguments and preserve the callback's
+result register. The C definitions remain available on other
+architectures. The macOS ARM64 client links 18 of the Go call stubs
+that use these entries.
+
+The C control compared the preceding implementation with all 80
+entries at `-O0` and `-O2`. It passed on macOS ARM64 and AMD64, Linux
+ARM64, and QEMU Linux 386, AMD64, and ARMv7. It checked signed C-int
+arguments, full-width words and pointers, all arities from zero to
+six, native returns, and the four mixed window callbacks. A Linux
+AMD64 control also ran the Windows instruction sequence with
+Microsoft ABI callers and callbacks. The Windows 386, AMD64, and
+ARM64 contract and Go test executables linked with LLVM-MinGW. Both
+64-bit Windows objects contain unwind records for all 80 frames.
+
+The Go tests exercised six arguments, signed and pointer-width
+returns, and six pinned pointers across forced GC with `cgocheck2`
+and `checkptr=2`. Each of the six runnable profiles passed 10
+iterations. The macOS client passed ten GUI replays and matched
+21 reference screens. With mock audio handles, the options audits
+passed 226 menu checks and 201 in-game checks. The dedicated server
+started, switched maps three times, and exited through its quit
+command. The isolated data view used the supplied maps and the
+retained video bags whose executable and indexes matched the
+installation.
+
+Engine `52bdc667e` keeps the live Blow direction threshold at
+`0x5BF2CC` in the mapped blob. The `safe` build reproduced the stale
+extracted-variable registration panic before the change. The
+corrected test checked the stock table against the original bytes
+and all 256 indexed directions.
+
+Engine `d3246b648` keeps the retired collision coefficient slots
+behind the memory guard. The ownership test snapshots their bytes
+and verifies that writes to the two live coefficients leave those
+bytes intact. Engine `6f571424c` keeps the material expansion flag
+at `0x974860` in the mapped renderer data. The legacy entry passes
+its zero and nonzero flag checks, and the renderer still matches
+the original color and expansion records. Linux ARM64 passed the
+focused `server,safe` checks with PIE, `cgocheck2`, and `checkptr=2`,
+including the cache owner and GUI address controls above 4 GiB.
+
+Engine `a06bd7409` seeds the drawable probe's mapped cache slots
+and registers the slider fixture's allocation with the checked
+allocator before invoking destruction. The drawable callback and
+widget lifetime tests passed on macOS ARM64 and on the Linux ARM64
+`server,safe` PIE build. The Linux rerun also passed the timer and
+two settings comparisons with their artifact root supplied. QEMU
+Linux 386 passed the focused callback, material, table, and widget
+checks. The prepared macOS ARM64 fault and raw floating-point
+controls also passed.
+
+Engine `e0a6019c7` keeps the second live prefab room token at
+`0x834A74` in mapped storage. The old `server,safe` build aborted
+when the connector stored the token. The revised build passed all
+16 public connector and rollback cases.
+
+The client still links 45 Go cgo stubs that call `src/legacy`
+preamble definitions. The floor draw, object type parsers, and
+radius callbacks are among the typed forwarding functions. An
+isolated two-package cgo test used the shared assembly entry from
+another package on macOS and Linux ARM64. It preserved typed
+pointer arguments, an in-place update, and a signed result.
 
 ### Earned campaign replay of the item effect changes
 

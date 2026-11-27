@@ -631,7 +631,7 @@ func Nox_xxx_wndDraw_49F7F0() {
 	nox_xxx_wndDraw_49F7F0()
 }
 func Sub_49F780(a1 int, a2 int) {
-	nox_client_clipHorizontal_49F780(C.int(a1), C.int(a2))
+	sub_49F780(C.int(a1), C.int(a2))
 }
 func Sub_49F860() {
 	sub_49F860()

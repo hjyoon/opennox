@@ -17,8 +17,8 @@ func sub_49F6D0(flag C.int) C.int {
 	return C.int(previous)
 }
 
-//export nox_client_clipHorizontal_49F780
-func nox_client_clipHorizontal_49F780(left, right C.int) C.int {
+//export sub_49F780
+func sub_49F780(left, right C.int) C.int {
 	clip := currentDrawData.clip
 	left = max(left, C.int(clip.min_x))
 	right = min(right, C.int(clip.max_x))

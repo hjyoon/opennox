@@ -1,23 +1,22 @@
 package legacy
 
 /*
-#include "defs.h"
 #include "GAME2_3.h"
-#include "client_ui_words.h"
-static uintptr_t draw_clip_rect_test_49F6F0(int x, int y, int w, int h) {
-	return (uintptr_t)nox_client_copyRect_49F6F0(x, y, w, h);
-}
 */
 import "C"
 import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
-func drawClipRectCEntry49F6F0(data *noxrender.RenderData, x, y, w, h int32) uintptr {
+func drawClipRectCEntry49F6F0(data *noxrender.RenderData, x, y, w, h int32) int32 {
 	saved := currentDrawData
 	Set_nox_draw_curDrawData_3799572(data)
 	defer func() { currentDrawData = saved }()
-	return uintptr(C.draw_clip_rect_test_49F6F0(C.int(x), C.int(y), C.int(w), C.int(h)))
+	return int32(C.nox_client_copyRect_49F6F0(C.int(x), C.int(y), C.int(w), C.int(h)))
+}
+
+func drawClipHorizontalCEntry49F780(left, right int32) int32 {
+	return int32(C.sub_49F780(C.int(left), C.int(right)))
 }
 
 func useDrawClipTestData(data *noxrender.RenderData) func() {

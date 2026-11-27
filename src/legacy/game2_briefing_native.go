@@ -220,7 +220,7 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	*g2bPosition() = float32(float64(*g2bPosition()) - float64(sub_44E8B0()))
 	y := nox_float2int(C.float(*g2bPosition()))
 	C.nox_window_setPos_46A9B0(win, 0, y)
-	C.nox_client_copyRect_49F6F0(C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)), 640, 480)
+	currentDrawClipRect(C.int(memmap.Int32(0x5D4594, 831284)), C.int(memmap.Int32(0x5D4594, 831288)), 640, 480)
 	flags := memmap.Uint8(0x5D4594, 832472)
 	if flags&1 != 0 {
 		sub_44E8E0(win, draw)
@@ -231,7 +231,7 @@ func sub_44E6F0(win *C.nox_window, draw *C.nox_window_data) C.int {
 	} else {
 		C.nox_xxx_wndStaticDrawNoImage_488D00(win, draw)
 	}
-	C.nox_client_copyRect_49F6F0(0, 0, C.nox_getBackbufWidth(), C.nox_getBackbufHeight())
+	currentDrawClipRect(0, 0, C.int(nox_getBackbufWidth()), C.int(nox_getBackbufHeight()))
 	if int64(*g2bPosition()) <= int64(memmap.Int32(0x5D4594, 831280)) && briefingState.ready_for_dialog_end == 1 && C.sub_44D930() == 0 && uint64(C.nox_platform_get_ticks())-memmap.Uint64(0x5D4594, 831292) > uint64(C.nox_client_getBriefDuration()) && (memmap.Uint32(0x5D4594, 832488) == 1 || flags&5 == 0) {
 		if flags&2 != 0 && legacyAddressableWords.dword_5d4594_832480 != 0 {
 			g2qSound(582, 100)

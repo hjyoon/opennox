@@ -96,6 +96,44 @@ func TestDrawClipRestoreKeepsSignedBounds(t *testing.T) {
 	}
 }
 
+func TestDrawClipHorizontal49F780CEntry(t *testing.T) {
+	data, free := noxrender.NewRenderDataHigh()
+	defer free()
+	restore := useDrawClipTestData(data)
+	defer restore()
+	data.SetRect3(image.Rect(-20, -25, 40, 50))
+	before := image.Rect(-8, -5, 13, 21)
+	inclusive := image.Rect(-8, -5, 12, 20)
+	for _, tc := range []struct {
+		name        string
+		left, right int32
+		want        image.Rectangle
+	}{
+		{"left clamped", -17, 7, image.Rect(-8, -5, 7, 21)},
+		{"right clamped", -1, 20, image.Rect(-1, -5, 13, 21)},
+		{"single column", 12, 13, image.Rect(12, -5, 13, 21)},
+		{"touch right", 13, 20, image.Rectangle{}},
+		{"inverted", 10, -10, image.Rectangle{}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			data.SetClipRect(before)
+			data.SetClipRect2(inclusive)
+			saved := *data
+			got := drawClipHorizontalCEntry49F780(tc.left, tc.right)
+			if tc.want.Empty() {
+				if got != 0 || *data != saved {
+					t.Fatalf("empty horizontal clip returned %d or modified render data", got)
+				}
+				return
+			}
+			end := image.Rectangle{Min: tc.want.Min, Max: tc.want.Max.Sub(image.Pt(1, 1))}
+			if got != 1 || data.ClipRect() != tc.want || data.ClipRect2() != end {
+				t.Fatalf("horizontal clip returned %d with bounds %v and %v, want 1 with %v and %v", got, data.ClipRect(), data.ClipRect2(), tc.want, end)
+			}
+		})
+	}
+}
+
 func TestDrawClipRect49F6F0MinimapPixels(t *testing.T) {
 	data, free := noxrender.NewRenderDataHigh()
 	defer free()

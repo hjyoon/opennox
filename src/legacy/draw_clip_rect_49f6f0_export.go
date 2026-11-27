@@ -21,7 +21,7 @@ func currentDrawClipRect(x, y, w, h C.int) C.int {
 	return 0
 }
 
-//export nox_client_copyRect_current_49F6F0
-func nox_client_copyRect_current_49F6F0(x, y, w, h C.int) C.int {
+//export nox_client_copyRect_49F6F0
+func nox_client_copyRect_49F6F0(x, y, w, h C.int) C.int {
 	return currentDrawClipRect(x, y, w, h)
 }

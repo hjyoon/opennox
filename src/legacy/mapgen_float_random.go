@@ -40,7 +40,8 @@ func mapgenFloatRandomFromDraw(draw uint32, low, high float32) float64 {
 	if mapgenFloatEvalMethod > 0 {
 		width = maximum - minimum
 	}
-	if mapgenFloatEvalMethod == 2 && !math.IsNaN(width) && !math.IsInf(width, 0) {
+	// Go configures the 386 x87 for binary64 precision before running cgo.
+	if mapgenFloatEvalMethod == 2 && runtime.GOARCH != "386" && !math.IsNaN(width) && !math.IsInf(width, 0) {
 		return mapgenExtendedFloatRandom(draw, minimum, maximum)
 	}
 	scaled := float64(float64(draw) * width)

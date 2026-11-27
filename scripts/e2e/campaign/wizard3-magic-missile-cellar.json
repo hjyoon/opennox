@@ -15,7 +15,7 @@
       "timeout_seconds": 240,
       "expected_maximum_health": 32,
       "expected_maximum_mana": 98,
-      "expected_health": 33,
+      "required_lesser_heal_recovery": {"loaded_health": 33},
       "minimum_mana": 40,
       "required_checkpoints": [
         "actual fresh-process Wiz03b Wizard Load",

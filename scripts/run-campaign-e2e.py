@@ -39,7 +39,7 @@ CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_pois
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'require_monster_health_zero', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds', 'required_map_pickups',
-               'required_swap_pairs', 'required_warcry_effect'}
+               'required_swap_pairs', 'required_warcry_effect', 'required_lesser_heal_recovery'}
 STAT_INPUT_WORDS = {'base_bits32', 'maximum_bits32', 'warrior_bits32', 'multipliers_bits32'}
 
 
@@ -64,6 +64,14 @@ def validate_suite_fields(suite):
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
         if 'expected_stat_inputs' in case:
             validate_stat_inputs(case['expected_stat_inputs'])
+        if 'required_lesser_heal_recovery' in case:
+            recovery = case['required_lesser_heal_recovery']
+            maximum = case.get('expected_maximum_health')
+            if (not isinstance(recovery, dict) or set(recovery) != {'loaded_health'}
+                    or type(recovery['loaded_health']) is not int or type(maximum) is not int
+                    or not 0 < maximum <= recovery['loaded_health'] <= 0xffff
+                    or 'expected_health' in case):
+                raise ValueError('required_lesser_heal_recovery needs loaded and maximum health')
         if 'required_warcry_effect' in case:
             effect = case['required_warcry_effect']
             phases = ('before_checkpoint', 'active_checkpoint', 'expired_checkpoint')
@@ -572,6 +580,35 @@ def required_plate_holds(samples, requirements):
     return {'holds': holds, 'passed': bool(holds) and all(row['passed'] for row in holds)}
 
 
+def lesser_heal_recovery(samples, expected_loaded, maximum):
+    players = [sample.get('player', {}) for sample in samples]
+    health = [player.get('health') for player in players]
+    result = {'observed_health': health, 'expected_loaded_health': expected_loaded,
+              'expected_maximum_health': maximum, 'expected_recovered_health': None,
+              'passed': False}
+    if len(health) != 5 or any(type(hp) is not int for hp in health):
+        return result
+    if any(player.get('present') is not True or player.get('health_present') is not True
+           or type(player.get('maximum_health')) is not int
+           or player['maximum_health'] != maximum for player in players):
+        return result
+
+    # The observations bracket the key input, passive recovery and Save.
+    # Healing preserves an undamaged value above max and fills injured HP to max.
+    loaded, before, after, recovered, saved = health
+    if loaded != expected_loaded:
+        return result
+    if before == loaded:
+        expected = loaded
+    elif 0 < before < maximum:
+        expected = maximum
+    else:
+        return result
+    result.update(expected_recovered_health=expected,
+                  passed=after == recovered == saved == expected)
+    return result
+
+
 def player_value_failures(player, case):
     values = {'expected_health': player['player']['health'],
               'expected_mana': player['mana'],
@@ -956,6 +993,14 @@ def run_case(args, binary, suite_dir, case, port):
         failures.extend(player_value_failures(player, case))
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
+    if 'required_lesser_heal_recovery' in case:
+        recovery = lesser_heal_recovery(report['player_observations'],
+                                       case['required_lesser_heal_recovery']['loaded_health'],
+                                       case['expected_maximum_health'])
+        report['required_lesser_heal_recovery'] = recovery
+        outcomes_ok = outcomes_ok and recovery['passed']
+        if not recovery['passed']:
+            failures.append({'check': 'required_lesser_heal_recovery', **recovery})
     if (case.get('created_type') or case.get('required_defeated_script_ids')
             or case.get('required_enable_transitions') or case.get('required_position_transitions')
             or case.get('required_plate_holds') or case.get('required_map_pickups') or case.get('required_swap_pairs')) and snapshots_ok:

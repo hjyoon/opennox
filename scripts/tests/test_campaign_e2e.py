@@ -130,6 +130,36 @@ class RequiredMapPickupTests(unittest.TestCase):
 
 
 class PlayerOutcomeTests(unittest.TestCase):
+    def test_lesser_heal_distinguishes_historical_health_from_injury(self):
+        paths = (
+            ((33, 33, 33, 33, 33), 33, True),
+            ((33, 29, 32, 32, 32), 32, True),
+            ((33, 33, 32, 32, 32), 33, False),
+            ((33, 32, 32, 32, 32), None, False),
+            ((33, 29, 29, 32, 32), 32, False),
+            ((33, 29, 32, 32, 33), 32, False),
+            ((32, 29, 32, 32, 32), None, False),
+            ((33, 29, 32, 32), None, False),
+        )
+        for health, expected, passed in paths:
+            with self.subTest(health=health):
+                samples = [{'player': {'present': True, 'health_present': True,
+                                       'health': hp, 'maximum_health': 32}} for hp in health]
+                result = runner.lesser_heal_recovery(samples, 33, 32)
+                self.assertEqual(result['expected_recovered_health'], expected)
+                self.assertIs(result['passed'], passed)
+
+    def test_lesser_heal_recovery_requires_explicit_native_health_bounds(self):
+        valid = {'required_lesser_heal_recovery': {'loaded_health': 33},
+                 'expected_maximum_health': 32}
+        runner.validate_suite_fields({'cases': [valid]})
+        for case in (dict(valid, expected_health=33),
+                     dict(valid, expected_maximum_health=None),
+                     dict(valid, expected_maximum_health=34),
+                     dict(valid, required_lesser_heal_recovery={'loaded_health': True})):
+            with self.subTest(case=case), self.assertRaises(ValueError):
+                runner.validate_suite_fields({'cases': [case]})
+
     def test_failed_recovery_reports_actual_values_and_unchanged_minimums(self):
         # Preserved upper-cave recovery: a living manual Save is still below HP20.
         player = {'player': {'health': 17, 'maximum_health': 26},

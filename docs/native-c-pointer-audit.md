@@ -1080,9 +1080,7 @@ case-sensitive filesystem.
 
 The replays across this checkpoint passed all 203 stand-alone
 scenarios and the six dedicated, peer, and saved-game scenarios.
-Four campaign scenarios passed with verified earned checkpoints.
-Matching starting saves for 26 other campaign scenarios remain
-unavailable in the reviewed inputs.
+Four campaign cases passed with verified earned checkpoints.
 
 ### Checked tile edge reads
 
@@ -1146,6 +1144,46 @@ shared call adapters and 45 legacy package adapters. The latter
 include 13 typed indirect calls, 13 pointer and scalar transports,
 eight malformed-address adapters, three CRT integrations, and eight
 regression probes. The top-level legacy directory has 27 C files.
+
+### Native verification and earned campaign checkpoints
+
+Linux ARM64 PIE passed the 41 packages with tests and the network
+release probe. The focused native death tests also passed. Linux 386
+and ARMv7 ran the unaligned field and related legacy tests with the
+`server,safe` tags under QEMU. The ARMv7 linker emitted the existing
+two-byte `wchar_t` diagnostic. Both Windows 386 and AMD64 server builds
+completed.
+
+The client passed 17 targeted macOS ARM64 replays and eight Linux
+ARM64 replays. They include real death callbacks, raw regeneration,
+inversion, secret-wall contact, and the chapter-one screen on macOS.
+
+The Wizard3 MagicMissile replay observes historical HP33 on Load and
+native HP immediately before and after Lesser Heal. When the hero
+retains HP33 through combat, subsequent observations must retain 33.
+An observed injury below maximum must heal to HP32 and persist through
+manual Save. The new passive recovery wait provides enough time for
+the existing 40 MP minimum after variable combat spending. The
+revised replay passed with both the `dacc21866` client and the
+client containing the three boundary changes.
+
+The Wizard3 stat audit used a combat-cleared HP33/MP47 Save from the
+archived cellar replay. Ordinary gameplay recovered two mana in 182
+frames, followed by the game's manual Save. The original Swordsman
+retained its DEAD flag and native HP0. Loading the resulting HP33/MP49
+Save verified the exact stat words and the original maxima of 32 HP
+and 98 MP.
+
+The same current macOS client passed 12 of 29 individual campaign
+cases. The two Swap stages and the Warrior crypt caster passed with
+archives matched to the recorded save manifests. Wizard2 passed
+Fireball acquisition and Spike from an earned GoldKey checkpoint.
+An archived pit-cleared checkpoint led to Book of Oblivion
+acquisition and reload, the video Save/Load smoke, the upper
+Urchins, and potion and food recovery.
+An ordinary replay of the upper Urchin route saved at HP26/MP2
+after 105 frames of recovery at the refuge. The potion and food
+replay loaded that exact state and passed with the required pickups.
 
 ## GAME4 native ownership and validation boundary, 2026-11-10
 

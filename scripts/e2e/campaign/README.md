@@ -32,7 +32,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 | `wizard2-swap-escape.json` | Earned Wiz02b Swap-book save, HP20/MP78, F=Swap115, player at2822.5457,2758.513 | One ordinary F cast at the original moving SmallAlbinoSpider; reciprocal native position exchange in one frame, full resources and living manual Save |
-| `wizard3-magic-missile-cellar.json` | Earned Wiz03b lift-return save, HP33/MP99, learned MagicMissile50 level2 in A and LesserHeal41 in S | Ordinary A inputs across the original lift cycle; Swordsman01 script1000451500 alive-to-DEAD with native HP0, Heal and living manual Save at HP33/MP at least40 |
+| `wizard3-magic-missile-cellar.json` | Earned Wiz03b lift-return save, HP33/MP99, learned MagicMissile50 level2 in A and LesserHeal41 in S | Ordinary A inputs across the original lift cycle, Swordsman01 script1000451500 alive-to-DEAD with native HP0, and a living manual Save at HP33 when unhurt or HP32 after Lesser Heal, with at least 40 MP |
 | `wizard3-player-stat-audit.json` | Earned combat-cleared Wiz03b MagicMissile-cellar manual Save, HP33/MP49, maxima32/98, original Swordsman defeated | Load, exact copied level/class/stat words, maxima32/98 and living manual Save; no movement, casting or new combat objective |
 
 For a short Load, movement, pickup and manual Save regression, use
@@ -57,15 +57,15 @@ from `wizard3-original-b-cellar-bandit-lift-return-v516-normal`. It preserves
 the original35 ordinary aiming/key attempts and waits from the earlier combat
 route, adding read-only A50/S41 binding and initial-player checks. The original
 Swordsman must be alive with positive native HP in the first observation and
-end with DEAD and native HP0. This case enables `require_monster_health_zero`;
-missing health, flags alone or a healthy process exit cannot pass it. Current
-HP33 from the historical Save is retained; the maxima32/98 match complete
-unchanged original execution with the observed level3 Wizard inputs and its
-actual PC53/ToZero startup mode. The scenario allows 1,800 ordinary
-frames of passive recovery after combat and requires at least 40 MP before Save.
+end with DEAD and native HP0. The historical Save loads with HP33. The
+maxima of 32 HP and 98 MP match original execution with the observed
+level 3 Wizard inputs and its PC53/ToZero startup mode. The health
+observations before and after Lesser Heal distinguish retaining HP33
+from recovering an observed injury to HP32. The scenario allows 3,800
+ordinary frames of passive recovery and requires at least 40 MP before Save.
 
 For an observation-only stat regression, use `wizard3-player-stat-audit.json`
-with the MagicMissile case's successful combat-cleared Save. Its 28 steps
+with a combat-cleared Save that meets the HP33 and MP49 seed contract. Its 28 steps
 have passed in about54 seconds using the same prebuilt executable. It pins
 the actual class, level and four binary32 stat arrays, as well as the maxima
 and living manual Save; a missing observation cannot pass. The earlier

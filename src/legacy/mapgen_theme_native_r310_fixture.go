@@ -61,19 +61,19 @@ static nox_r310_theme_result nox_r310_read_theme(const char* name, int legacy) {
 		out.result = nox_mapgenReadThemeNative_51E260((int*)value->words, name);
 	}
 	memcpy(out.words, value->words, sizeof(out.words));
-	void* room = nox_mapgenLegacyPtrResolve(value->words[22]);
-	void* hall = nox_mapgenLegacyPtrResolve(value->words[30]);
+	void* room = (void*)nox_mapgenLegacyPtrResolve(value->words[22]);
+	void* hall = (void*)nox_mapgenLegacyPtrResolve(value->words[30]);
 	out.room_address = (uintptr_t)room;
 	out.hall_address = (uintptr_t)hall;
 	if (room) memcpy(out.room_name, room, sizeof(out.room_name));
 	if (hall) memcpy(out.hall_name, hall, sizeof(out.hall_name));
 	memcpy(out.exit_name, (uint8_t*)value->words + 216, sizeof(out.exit_name));
 	memcpy(out.link_data, (uint8_t*)value->words + 476, sizeof(out.link_data));
-	uint32_t* prefab = nox_mapgenLegacyPtrResolve(value->words[20]);
+	uint32_t* prefab = (uint32_t*)nox_mapgenLegacyPtrResolve(value->words[20]);
 	for (unsigned i = 0; prefab && i < 2; ++i) {
 		memcpy(out.prefab_names[i], prefab, sizeof(out.prefab_names[i]));
 		out.prefab_required[i] = prefab[18];
-		prefab = nox_mapgenLegacyPtrResolve(prefab[39]);
+		prefab = (uint32_t*)nox_mapgenLegacyPtrResolve(prefab[39]);
 	}
 	sub_520D50(value->words);
 	out.cleanup_cleared = value->words[20] == 0 && value->words[21] == 0 &&

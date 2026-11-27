@@ -12,6 +12,7 @@ import (
 )
 
 const mapgenThemeReferenceR310 = "testdata/mapgen_theme_before_go.c"
+const mapgenPointerReferenceHeader = "testdata/retired-game-sources/mapgen_legacy_ptr.h"
 
 // The complete producers execute with the actual token registry and controlled
 // file/token/formatter/lookup/settings callbacks. Fixed expectations cover the
@@ -78,7 +79,7 @@ func TestMapgenThemeNativeOriginalContractsR310(t *testing.T) {
 				args = append(args, "-Wno-deprecated-declarations")
 			}
 			args = append(args, mode.flags...)
-			args = append(args, "-I.", "-x", "c", "-", "-o", binary)
+			args = append(args, "-include", mapgenPointerReferenceHeader, "-I.", "-x", "c", "-", "-o", binary)
 			var env []string
 			for _, value := range os.Environ() {
 				if !strings.HasPrefix(value, "ASAN_OPTIONS=") && !strings.HasPrefix(value, "UBSAN_OPTIONS=") {

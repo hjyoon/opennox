@@ -78,7 +78,7 @@ func floorFillProgramR305(t *testing.T) (string, []byte, []byte) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	header, err := os.ReadFile("mapgen_legacy_ptr.h")
+	header, err := os.ReadFile(mapgenPointerReferenceHeader)
 	if err != nil {
 		t.Fatal(err)
 	}

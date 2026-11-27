@@ -99,6 +99,11 @@ typedef struct nox_mapgen_occupied_rect_legacy {
 	uint32_t next_token;
 } nox_mapgen_occupied_rect_legacy;
 
+_Static_assert(sizeof(nox_mapgen_occupied_rect_legacy) == 28,
+			   "wrong mapgen occupied-rectangle record size");
+_Static_assert(offsetof(nox_mapgen_occupied_rect_legacy, next_token) == 24,
+			   "wrong mapgen occupied-rectangle next-token offset");
+
 float* sub_521BC0(int a1, float2* a2, float a3, float a4);
 nox_mapgen_occupied_rect_legacy* nox_mapgenAddOccupiedRectNative_521BC0(
 	uint8_t* room, float2* pos, float width, float height);
@@ -226,7 +231,8 @@ int nox_mapgenPlacePrefabsWithCallback_526830(
 	uint8_t* theme, nox_mapgen_prefab_finalize_cb_526830 callback);
 int nox_xxx_mapGenPlacePrefabs_526830(uint8_t* theme);
 int sub_5268F0(const char* a1);
-char* sub_526950();
+// The result is the processed count, zero on failure, or the owner for an empty table.
+uintptr_t sub_526950(void);
 char* sub_526AA0(int a1);
 void nox_xxx_mapGenSetRngSeed_526AB0(unsigned int a1);
 signed int nox_xxx_mapGenRandFunc_526AC0(int a1, signed int a2);

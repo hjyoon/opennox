@@ -18,6 +18,7 @@ import (
 const mapgenAreaRecordBytes = 64
 
 var _ [mapgenAreaRecordBytes]byte = [unsafe.Sizeof(mapGenDecorAreaFlags{})]byte{}
+var _ [60]byte = [unsafe.Offsetof(mapGenDecorAreaFlags{}.flags)]byte{}
 
 func mapgenAreaRecords() *mapGenDecorAreaFlags {
 	return (*mapGenDecorAreaFlags)(resolveMapgenPointer(uintptr(archiveAndMapgenStorage.object_record_head)))
@@ -77,8 +78,8 @@ func mapgenAreaAttachmentFlags(name string) uint32 {
 	return flags
 }
 
-//export nox_mapgenLoadAreaRecordsNative
-func nox_mapgenLoadAreaRecordsNative() C.uintptr_t {
+//export sub_526950
+func sub_526950() C.uintptr_t {
 	sub_526A90()
 	count := sub_502A20()
 	if count < 0 {

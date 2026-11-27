@@ -46,6 +46,41 @@ func TestMapgenAreaRecordNamesAndAttachmentFlags(t *testing.T) {
 	}
 }
 
+func TestMapgenAreaRecordLoadOwnerAndFailure(t *testing.T) {
+	sourceCount := archiveAndMapgenStorage.archive_record_count
+	t.Cleanup(func() { archiveAndMapgenStorage.archive_record_count = sourceCount })
+	archiveAndMapgenStorage.archive_record_count = 0
+
+	got, release := mapgenLoadAreaRecordsCFixture()
+	defer release()
+	owner := uintptr(unsafe.Pointer(mapgenAreaRecords()))
+	token := uintptr(archiveAndMapgenStorage.object_record_head)
+	if got != owner || archiveAndMapgenStorage.object_record_cursor != 0 {
+		t.Fatalf("empty load returned %#x for owner %#x", got, owner)
+	}
+	if owner != 0 && (token == 0 || mapgenPointers.resolve(token) != owner) {
+		t.Fatalf("empty load did not register owner %#x with token %#x", owner, token)
+	}
+
+	oldAllocate := game4SupportAllocationService
+	defer func() { game4SupportAllocationService = oldAllocate }()
+	game4SupportAllocationService = func(count, size uintptr) unsafe.Pointer {
+		if count != 1 || size != 64 {
+			t.Errorf("area allocation = (%d, %d), want (1, 64)", count, size)
+		}
+		return nil
+	}
+	archiveAndMapgenStorage.archive_record_count = 1
+	got, releaseFailed := mapgenLoadAreaRecordsCFixture()
+	defer releaseFailed()
+	if got != 0 || mapgenAreaRecords() != nil || archiveAndMapgenStorage.object_record_cursor != 0 {
+		t.Fatalf("failed load left result %#x or published record state", got)
+	}
+	if mapgenPointers.resolve(token) != token {
+		t.Fatalf("failed replacement retained released owner %#x", owner)
+	}
+}
+
 func TestMapgenObjectRecords5268F0PreserveNativePointer(t *testing.T) {
 	got := mapgenObjectRecordsFixture5268F0()
 	if !got.setupClean || got.recordsAddress == 0 || got.recordsToken == 0 {

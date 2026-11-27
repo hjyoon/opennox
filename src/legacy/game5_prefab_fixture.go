@@ -38,7 +38,7 @@ static game5_prefab_result game5_prefab_probe(int entry,int side,int ax,int ay,i
  case 4:{int32_t prefab[40]={0};prefab[4*side+20]=ax;prefab[4*side+21]=ay;prefab[4*side+22]=1;prefab[37]=(int32_t)nox_mapgenLegacyPtrRegister(first);out.ok=sub_54B2D0((uint8_t*)prefab,side,second);break;}
  }
  out.count=*getMemU32Ptr(0x5D4594,2491608);
- if(out.ok){for(int i=0;i<out.count&&i<3;i++){uint8_t* room=nox_mapgenLegacyPtrResolve(*getMemU32Ptr(0x5D4594,2491612+4*i));out.owners[2+i]=(uintptr_t)room;for(int k=0;k<5;k++)out.geometry[i][k]=((int32_t*)room)[k];}}
+ if(out.ok){for(int i=0;i<out.count&&i<3;i++){uint8_t* room=(uint8_t*)nox_mapgenLegacyPtrResolve(*getMemU32Ptr(0x5D4594,2491612+4*i));out.owners[2+i]=(uintptr_t)room;for(int k=0;k<5;k++)out.geometry[i][k]=((int32_t*)room)[k];}}
  for(uint8_t* room=nox_xxx_mapGenGetTopRoom_521710();room;room=nox_mapgenRoomNextNative_521720(room))out.total++;
  for(int i=0;i<5;i++){uint8_t* room=(uint8_t*)out.owners[i];if(!room)continue;for(int d=0;d<4;d++)out.neighbors[i][d]=(uintptr_t)nox_mapgenLegacyPtrResolve(*(uint32_t*)(room+88+32*d));}
  nox_xxx_mapGenFreeTopRoom_521A40();

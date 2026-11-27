@@ -61,8 +61,7 @@ func nox_realloc(ptr unsafe.Pointer, size C.size_t) unsafe.Pointer {
 
 //export nox_calloc
 func nox_calloc(num, size C.size_t) unsafe.Pointer {
-	p, _ := alloc.Calloc(int(num), uintptr(size))
-	return p
+	return alloc.CallocC(uintptr(num), uintptr(size))
 }
 
 //export nox_free

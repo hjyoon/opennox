@@ -91,8 +91,8 @@ func nox_mapgenLegacyPtrRegister(ptr unsafe.Pointer) C.uint32_t {
 	return C.uint32_t(registerMapgenPointer(ptr))
 }
 
-//export nox_mapgen_resolve_address_go
-func nox_mapgen_resolve_address_go(value C.uintptr_t) C.uintptr_t {
+//export nox_mapgenLegacyPtrResolve
+func nox_mapgenLegacyPtrResolve(value C.uintptr_t) C.uintptr_t {
 	return C.uintptr_t(mapgenPointers.resolve(uintptr(value)))
 }
 

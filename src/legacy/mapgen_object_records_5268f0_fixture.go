@@ -14,8 +14,12 @@ package legacy
 #include "server__mapgen__generate__populate.h"
 
 
+typedef uintptr_t (*nox_mapgen_area_loader)(void);
+_Static_assert(_Generic(&sub_526950, nox_mapgen_area_loader: 1, default: 0), "mapgen area loader result word");
+
 static uintptr_t nox_test_mapgen_load_area_records(void) {
-	return (uintptr_t)sub_526950();
+	nox_mapgen_area_loader volatile load = sub_526950;
+	return load();
 }
 
 typedef struct nox_test_mapgen_object_records_5268f0_result {

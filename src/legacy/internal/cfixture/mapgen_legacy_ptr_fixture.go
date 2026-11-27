@@ -6,18 +6,18 @@ package cfixture
 
 _Static_assert(_Generic(&nox_mapgenLegacyPtrRegister, uint32_t (*)(void*): 1, default: 0), "mapgen token registration ABI");
 _Static_assert(_Generic(&nox_mapgenLegacyPtrForget, void (*)(void*): 1, default: 0), "mapgen token release ABI");
-_Static_assert(_Generic(&nox_mapgenLegacyPtrResolve, void* (*)(uintptr_t): 1, default: 0), "mapgen token resolution ABI");
+_Static_assert(_Generic(&nox_mapgenLegacyPtrResolve, uintptr_t (*)(uintptr_t): 1, default: 0), "mapgen token resolution ABI");
 
 static int mapgen_legacy_ptr_lifecycle(void* owner) {
 	uint32_t token = nox_mapgenLegacyPtrRegister(owner);
 	int registered = token != 0 && nox_mapgenLegacyPtrRegister(owner) == token &&
-		nox_mapgenLegacyPtrResolve(token) == owner &&
-		nox_mapgenLegacyPtrResolve((uintptr_t)owner) == owner;
+		nox_mapgenLegacyPtrResolve(token) == (uintptr_t)owner &&
+		nox_mapgenLegacyPtrResolve((uintptr_t)owner) == (uintptr_t)owner;
 	nox_mapgenLegacyPtrForget(owner);
 	nox_mapgenLegacyPtrForget(NULL);
-	return registered && (uintptr_t)nox_mapgenLegacyPtrResolve(token) == token &&
-		nox_mapgenLegacyPtrRegister(NULL) == 0 && nox_mapgenLegacyPtrResolve(0) == NULL &&
-		(uintptr_t)nox_mapgenLegacyPtrResolve(1) == 1;
+	return registered && nox_mapgenLegacyPtrResolve(token) == token &&
+		nox_mapgenLegacyPtrRegister(NULL) == 0 && nox_mapgenLegacyPtrResolve(0) == 0 &&
+		nox_mapgenLegacyPtrResolve(1) == 1;
 }
 */
 import "C"
